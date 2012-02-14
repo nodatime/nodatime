@@ -15,6 +15,7 @@
 // limitations under the License.
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -88,7 +89,6 @@ namespace NodaTime.TimeZones
             this.version = source.GetString(VersionKey);
         }
 
-        #region IDateTimeZoneProvider Members
         /// <summary>
         /// Returns the time zone definition associated with the given id.
         /// </summary>
@@ -119,6 +119,13 @@ namespace NodaTime.TimeZones
         /// Returns a version identifier for this provider.
         /// </summary>
         public string VersionId { get { return "TZDB: " + version; } }
-        #endregion
+
+        /// <summary>
+        /// Attempts to map the system time zone to a zoneinfo ID, and return that ID.
+        /// </summary>
+        public string MapTimeZoneId(TimeZoneInfo zone)
+        {
+            return WindowsToPosixResource.GetIdFromWindowsName(zone.Id);
+        }
     }
 }

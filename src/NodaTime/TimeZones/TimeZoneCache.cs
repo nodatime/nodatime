@@ -57,25 +57,28 @@ namespace NodaTime.TimeZones
         internal string ProviderVersionId { get { return providerVersionId; } }
 
         /// <summary>
-        /// Gets the system default time zone which can only be changed by the system.
+        /// Gets the system default time zone, as mapped by the underlying provider.
         /// </summary>
         /// <remarks>
-        /// The time zones defined in the operating system are different than the ones defines in
-        /// this library so a mapping will occur. If an exact mapping can be made then that will be
-        /// used otherwise UTC will be used.
+        /// This method never returns null, or defaults to a particular time zone. If the local system time zone cannot
+        /// be mapped, it will throw <see cref="InvalidOperationException"/>.
         /// </remarks>
-        /// <value>The system default <see cref="T:NodaTime.DateTimeZone" /> this will never be <c>null</c>.</value>
-        internal DateTimeZone SystemDefault
+        /// <exception cref="InvalidOperationException">The system time zone could not be mapped by the underlying provider.</exception>
+        // TODO(Post-V1): Take another look at this policy and canvas user opinion.
+        internal DateTimeZone GetSystemDefault()
         {
-            get
+            TimeZoneInfo bcl = TimeZoneInfo.Local;
+            string id = provider.MapTimeZoneId(bcl);
+            if (id == null)
             {
-                // TODO(Post-V1): Cache this?
-                string systemName = TimeZone.CurrentTimeZone.StandardName;
-                string timeZoneId = WindowsToPosixResource.GetIdFromWindowsName(systemName) ?? DateTimeZone.UtcId;
-                // TODO(V1-Blocker): Reconsider this policy. Could throw or return null.
-                // Use UTC if we can't find the time zone ID - e.g. if DateTimeZone has been set to use UTC only.
-                return this[timeZoneId] ?? DateTimeZone.Utc;
+                throw new InvalidOperationException("The system time zone '" + bcl.Id + "' has no mapping with the current DateTimeZoneProvider");
             }
+            DateTimeZone zone = this[id];
+            if (zone == null)
+            {
+                throw new InvalidOperationException("The system time zone '" + bcl.Id + "' maps to provider ID '" + id + "'; which couldn't be found");
+            }
+            return zone;
         }
 
         /// <summary>

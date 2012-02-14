@@ -47,5 +47,13 @@ namespace NodaTime.TimeZones
         /// Returns a version identifier for this provider.
         /// </summary>
         public string VersionId { get { return "Empty (UTC-only)"; } }
+
+        /// <summary>
+        /// Always maps any time zone to null.
+        /// </summary>
+        public string MapTimeZoneId(TimeZoneInfo timeZone)
+        {
+            return null;
+        }
     }
 }

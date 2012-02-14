@@ -15,6 +15,7 @@
 // limitations under the License.
 #endregion
 
+using System;
 using System.Collections.Generic;
 
 namespace NodaTime.TimeZones
@@ -63,5 +64,14 @@ namespace NodaTime.TimeZones
         /// returned by the <see cref="Ids"/> property.</param>
         /// <returns>The <see cref="DateTimeZone"/> for the given ID; must not be null.</returns>
         DateTimeZone ForId(string id);
+
+        /// <summary>
+        /// Returns this provider's corresponding ID for the given time zone.
+        /// </summary>
+        /// <returns>
+        /// The ID for the system default time zone for this provider, or null if the default time
+        /// zone has no mapping in this provider.
+        /// </returns>
+        string MapTimeZoneId(TimeZoneInfo timeZone);
     }
 }

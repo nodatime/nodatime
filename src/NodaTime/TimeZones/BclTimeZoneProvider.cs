@@ -62,5 +62,13 @@ namespace NodaTime.TimeZones
                 throw new ArgumentException(id + " is not a system time zone ID", "id");
             }
         }
+
+        /// <summary>
+        /// Maps the BCL ID to "our" ID as an identity projection.
+        /// </summary>
+        public string MapTimeZoneId(TimeZoneInfo timeZone)
+        {
+            return timeZone.Id;
+        }
     }
 }
