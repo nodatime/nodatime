@@ -204,7 +204,7 @@
     <Compile Include="TimeZones\ZoneRecurrenceCollection.cs" />
     <Compile Include="TimeZones\ZoneTransition.cs" />
     <Compile Include="TimeZones\TransitionMode.cs" />
-    <Compile Include="TimeZones\DateTimeZoneResourceProvider.cs" />
+    <Compile Include="TimeZones\TzdbTimeZoneProvider.cs" />
     <Compile Include="LocalDateTime.cs" />
     <Compile Include="Fields\DateTimeFieldType.cs" />
     <Compile Include="DateTimeZone.cs" />
