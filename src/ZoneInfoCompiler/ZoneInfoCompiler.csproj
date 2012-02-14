@@ -96,7 +96,6 @@
     <Compile Include="Tzdb\ZoneList.cs" />
     <Compile Include="Tzdb\ZoneRule.cs" />
     <Compile Include="winmap\WindowsMapperCompiler.cs" />
-    <Compile Include="winmap\WindowsMapperCompilerOptions.cs" />
     <Compile Include="ZoneInfoCompiler.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -186,7 +185,7 @@
     <Folder Include="resources\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Data\winmap\windowsZones.xml" />
+    <Content Include="Data\winmap\windowsZones-5311.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

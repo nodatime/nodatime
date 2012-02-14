@@ -184,7 +184,6 @@
     <Compile Include="TimeZones\NamespaceDoc.cs" />
     <Compile Include="TimeZones\TimeZoneCache.cs" />
     <Compile Include="TimeZones\Transition.cs" />
-    <Compile Include="TimeZones\WindowsToPosixResource.cs" />
     <Compile Include="TimeZones\DateTimeZoneCompressionReader.cs" />
     <Compile Include="TimeZones\DateTimeZoneCompressionWriter.cs" />
     <Compile Include="TimeZones\DateTimeZoneBuilder.cs" />

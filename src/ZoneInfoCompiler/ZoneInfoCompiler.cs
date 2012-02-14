@@ -16,73 +16,66 @@
 #endregion
 
 using System;
+using CommandLine;
 using NodaTime.ZoneInfoCompiler.Tzdb;
 using NodaTime.ZoneInfoCompiler.winmap;
 
 namespace NodaTime.ZoneInfoCompiler
 {
     /// <summary>
-    ///   Main entry point for the time zone information compiler. In theory we could support
-    ///   multiple sources and formats but currently we only support one:
-    ///   http://www.twinsun.com/tz/tz-link.htm. This system refers to it as TZDB.
+    /// Main entry point for the time zone information compiler. In theory we could support
+    /// multiple sources and formats but currently we only support one:
+    /// http://www.twinsun.com/tz/tz-link.htm. This system refers to it as TZDB.
+    /// This also requires a windowsZone.xml file from the Unicode CLDR repository, to
+    /// map Windows time zone names to TZDB IDs.
     /// </summary>
     /// <remarks>
-    ///   Original name: ZoneInfoCompiler (in org.joda.time.tz)
+    /// Original name: ZoneInfoCompiler (in org.joda.time.tz)
     /// </remarks>
     internal sealed class ZoneInfoCompiler
     {
         /// <summary>
-        ///   Runs the compiler from the command line.
+        /// Runs the compiler from the command line.
         /// </summary>
         /// <param name="arguments">The command line arguments. Each compiler defines its own.</param>
         /// <returns>0 for success, non-0 for error.</returns>
         private static int Main(string[] arguments)
         {
-            int result;
             var log = new ConsoleLog();
             if (arguments.Length < 1)
             {
-                result = Usage(log);
+                DisplayUsage(log);
+                return 1;
             }
-            else
+
+            TzdbCompilerOptions options = new TzdbCompilerOptions();
+            ICommandLineParser parser = new CommandLineParser(new CommandLineParserSettings(log.InfoWriter));
+            if (!parser.ParseArguments(arguments, options))
             {
-                var command = arguments[0];
-                var remainingArguments = new string[arguments.Length - 1];
-                Array.ConstrainedCopy(arguments, 1, remainingArguments, 0, remainingArguments.Length);
-                if (command.Equals("tzdb", StringComparison.OrdinalIgnoreCase))
-                {
-                    var compiler = new TzdbZoneInfoCompiler(log);
-                    result = compiler.Execute(remainingArguments);
-                }
-                else if (command.Equals("winmap", StringComparison.OrdinalIgnoreCase))
-                {
-                    var compiler = new WindowsMapperCompiler(log);
-                    result = compiler.Execute(remainingArguments);
-                }
-                else
-                {
-                    log.Error("Unknown comamnd: {0}", command);
-                    result = Usage(log);
-                }
+                return 1;
             }
-            return result;
+
+            using (var output = new ResourceOutput(options.OutputFileName, options.OutputType))
+            {
+                var tzdbCompiler = new TzdbZoneInfoCompiler(log);
+                int ret = tzdbCompiler.Execute(options.SourceDirectoryName, output);
+                if (ret != 0)
+                {
+                    return ret;
+                }
+                var mappinCompiler = new WindowsMapperCompiler(log);
+                return mappinCompiler.Execute(options.WindowsMappingFile, output);
+            }
         }
 
         /// <summary>
-        ///   Usages the specified log.
+        /// Writes usage messages to the log.
         /// </summary>
-        /// <param name="log">The log.</param>
-        /// <returns></returns>
-        private static int Usage(ILog log)
+        private static void DisplayUsage(ILog log)
         {
             log.Info("");
-            log.Info("Usage: command [ options ]");
+            log.Info("Usage: -s <tzdb directory> -w <windowsZone.xml file> -o <output file> [-t ResX/Resource]");
             log.Info("");
-            log.Info("where command is one of:");
-            log.Info("   tzdb          Build a TZDB resource file");
-            log.Info("   winmap        Build a Windows to Posix mapping file");
-            log.Info("");
-            return 1;
         }
     }
 }

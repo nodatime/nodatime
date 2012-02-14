@@ -1,6 +1,6 @@
 #region Copyright and license information
 // Copyright 2001-2009 Stephen Colebourne
-// Copyright 2009-2011 Jon Skeet
+// Copyright 2009-2012 Jon Skeet
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,14 +15,13 @@
 // limitations under the License.
 #endregion
 
-using System.Collections.Generic;
 using CommandLine;
 using CommandLine.Text;
 
 namespace NodaTime.ZoneInfoCompiler.Tzdb
 {
     /// <summary>
-    ///   Defines the command line options that are valid.
+    /// Defines the command line options that are valid.
     /// </summary>
     public class TzdbCompilerOptions
     {
@@ -35,38 +34,11 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         [Option("t", "type", HelpText = "The type of the output file { ResX, Resource }.")]
         public ResourceOutputType OutputType = ResourceOutputType.ResX;
 
-        [Option("s", "source", Required = true, HelpText = "Source directory containing the input files.")]
+        [Option("s", "source", Required = true, HelpText = "Source directory containing the TZDB input files.")]
         public string SourceDirectoryName = string.Empty;
-        #endregion
 
-        #region Specialized Option Attribute
-        [ValueList(typeof(List<string>))]
-        public IList<string> InputFiles;
-
-        [HelpOption(HelpText = "Display this help.")]
-        public string GetUsage()
-        {
-            var help = new HelpText(HeadingInfo);
-            help.AdditionalNewLineAfterOption = true;
-            help.Copyright = new CopyrightInfo("Jon Skeet", 2009);
-            help.AddPreOptionsLine(" ");
-            help.AddPreOptionsLine("Licensed under the Apache License, Version 2.0 (the \"License\");");
-            help.AddPreOptionsLine("you may not use this file except in compliance with the License.");
-            help.AddPreOptionsLine("You may obtain a copy of the License at");
-            help.AddPreOptionsLine("      http://www.apache.org/licenses/LICENSE-2.0");
-            help.AddPreOptionsLine("Unless required by applicable law or agreed to in writing, software");
-            help.AddPreOptionsLine("distributed under the License is distributed on an \"AS IS\" BASIS,");
-            help.AddPreOptionsLine("WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.");
-            help.AddPreOptionsLine("See the License for the specific language governing permissions and");
-            help.AddPreOptionsLine("limitations under the License.");
-            help.AddPreOptionsLine(" ");
-            help.AddPreOptionsLine("Usage: " + AssemblyInfo.Product + " tzdb -s source -o foo.resx");
-            help.AddPreOptionsLine("       " + AssemblyInfo.Product + " tzdb -s source -o foo.resource --type Resource");
-
-            help.AddOptions(this);
-
-            return help;
-        }
+        [Option("w", "windows", Required = true, HelpText = "Windows to TZDB time zone mapping file (windowsZones.xml")]
+        public string WindowsMappingFile = string.Empty;
         #endregion
     }
 }
