@@ -29,6 +29,8 @@ namespace NodaTime.TimeZones
     /// Provides an implementation of a <see cref="IDateTimeZoneProvider" /> that looks
     /// for its time zone definitions from a named resource in an assembly.
     /// </summary>
+    // TODO(V1-Blocker): Move the Windows mappings into the same resource file, and rename this
+    // to TzdbZoneResourceProvider.
     public sealed class DateTimeZoneResourceProvider : IDateTimeZoneProvider
     {
         /// <summary>
