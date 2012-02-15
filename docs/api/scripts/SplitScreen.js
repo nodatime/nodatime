@@ -5,10 +5,9 @@
 		this.nonScrollingRegion = document.getElementById(nonScrollingRegionId);
 		this.scrollingRegion = document.getElementById(scrollingRegionId);
 
-		// set the scrolling settings
-		this.scrollingRegion.parentElement.style.margin = "0px";
-		this.scrollingRegion.parentElement.style.overflow = "hidden";
-		this.scrollingRegion.style.overflow = "auto";
+        // set the position model for each region
+		this.nonScrollingRegion.style.position = "fixed";
+		this.scrollingRegion.style.position = "absolute";
 
 		// fix the size of the scrolling region
 		this.resize(null);
@@ -19,11 +18,18 @@
 	}
 
 	SplitScreen.prototype.resize = function(e) {
-		var height = document.body.clientHeight - this.nonScrollingRegion.offsetHeight;
-		if (height > 0) {
-			this.scrollingRegion.style.height = height;
-		} else {
-			this.scrollingRegion.style.height = 0;
+
+		if(navigator.userAgent.indexOf("Firefox")==-1)
+  		{	
+			var height = document.body.clientHeight - this.nonScrollingRegion.offsetHeight;
+
+			if(height > 0) this.scrollingRegion.style.height = height + "px";
+			else this.scrollingRegion.style.height = 0 + "px";
+
+			this.scrollingRegion.style.width = document.body.clientWidth + "px";
 		}
-		this.scrollingRegion.style.width = this.scrollingRegion.parentElement.clientWidth;
+
+	
+        // update the vertical offset of the scrolling region to account for the height of the non-scrolling region
+        this.scrollingRegion.style.top = this.nonScrollingRegion.offsetHeight + "px";
 	}
