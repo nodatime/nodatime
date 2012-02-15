@@ -258,15 +258,6 @@
       <LastGenOutput>Messages.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <Compile Include="Properties\PatternResources.de-DE.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>PatternResources.de-DE.resx</DependentUpon>
-    </Compile>
-    <EmbeddedResource Include="Properties\PatternResources.de-DE.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>PatternResources.de-DE.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
     <EmbeddedResource Include="TimeZones\Tzdb.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
