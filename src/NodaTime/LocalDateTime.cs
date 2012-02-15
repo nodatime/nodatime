@@ -392,7 +392,7 @@ namespace NodaTime
         /// </summary>
         /// <param name="dateTime">Value to convert into a Noda Time local date and time</param>
         /// <returns>A new <see cref="LocalDateTime"/> with the same values as the specified one.</returns>
-        internal static LocalDateTime FromDateTime(DateTime dateTime)
+        public static LocalDateTime FromDateTime(DateTime dateTime)
         {
             return new LocalDateTime(LocalInstant.FromDateTime(dateTime), CalendarSystem.Iso);
         }
