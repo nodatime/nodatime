@@ -16,6 +16,7 @@
 #endregion
 
 using NUnit.Framework;
+using System;
 
 namespace NodaTime.Test
 {
@@ -109,6 +110,21 @@ namespace NodaTime.Test
 
             test = Duration.FromTicks(0);
             Assert.AreEqual(Duration.Zero, test);
+        }
+
+        [Test]
+        public void FromAndToTimeSpan()
+        {
+            TimeSpan timeSpan = TimeSpan.FromHours(3) + TimeSpan.FromSeconds(2) + TimeSpan.FromTicks(1);
+            Duration duration = Duration.FromHours(3) + Duration.FromSeconds(2) + Duration.FromTicks(1);
+            Assert.AreEqual(duration, Duration.FromTimeSpan(timeSpan));
+            Assert.AreEqual(timeSpan, duration.ToTimeSpan());
+
+            Assert.AreEqual(Duration.MaxValue, Duration.FromTimeSpan(TimeSpan.MaxValue));
+            Assert.AreEqual(TimeSpan.MaxValue, Duration.MaxValue.ToTimeSpan());
+
+            Assert.AreEqual(Duration.MinValue, Duration.FromTimeSpan(TimeSpan.MinValue));
+            Assert.AreEqual(TimeSpan.MinValue, Duration.MinValue.ToTimeSpan());
         }
 
         [Test]

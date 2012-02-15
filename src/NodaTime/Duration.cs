@@ -568,5 +568,26 @@ namespace NodaTime
         {
             return new Duration(ticks);
         }
+
+        /// <summary>
+        /// Returns a <see cref="Duration"/> that represents the same number of ticks as the
+        /// given <see cref="TimeSpan"/>.
+        /// </summary>
+        /// <param name="timeSpan">The TimeSpan value to convert</param>
+        /// <returns>A new Duration with the same number of ticks as the given TimeSpan.</returns>
+        public static Duration FromTimeSpan(TimeSpan timeSpan)
+        {
+            return FromTicks(timeSpan.Ticks);
+        }
+
+        /// <summary>
+        /// Returns a <see cref="TimeSpan"/> that represents the same number of ticks as thi
+        /// <see cref="Duration"/>.
+        /// </summary>
+        /// <returns>A new TimeSpan with the same number of ticks as this Duration.</returns>
+        public TimeSpan ToTimeSpan()
+        {
+            return new TimeSpan(ticks);
+        }
     }
 }
