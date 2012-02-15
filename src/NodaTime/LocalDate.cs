@@ -55,6 +55,31 @@ namespace NodaTime
         {
         }
 
+        /// <summary>
+        /// Constructs an instance for the given era, year of era, month and day in the ISO calendar.
+        /// </summary>
+        /// <param name="era">The era within which to create a date. Must be a valid era within the ISO calendar.</param>
+        /// <param name="yearOfEra">Year of the new date/</param>
+        /// <param name="month">Month of year of the new date/</param>
+        /// <param name="day">Day of month of the new date/</param>
+        public LocalDate(Era era, int yearOfEra, int month, int day)
+            : this(era, yearOfEra, month, day, CalendarSystem.Iso)
+        {
+        }
+
+        /// <summary>
+        /// Constructs an instance for the given era, year of era, month and day in the specified calendar.
+        /// </summary>
+        /// <param name="era">The era within which to create a date. Must be a valid era within the specified calendar.</param>
+        /// <param name="yearOfEra">Year of the new date/</param>
+        /// <param name="month">Month of year of the new date/</param>
+        /// <param name="day">Day of month of the new date/</param>
+        /// <param name="calendar">Calendar system in which to create the date</param>
+        public LocalDate(Era era, int yearOfEra, int month, int day, CalendarSystem calendar)
+            : this(new LocalDateTime(Preconditions.CheckNotNull(calendar, "calendar").GetLocalInstant(era, yearOfEra, month, day), calendar))
+        {
+        }
+
         // Visible for extension methods.
         internal LocalDate(LocalDateTime localTime)
         {

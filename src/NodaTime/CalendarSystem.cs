@@ -19,6 +19,7 @@ using System;
 using System.Collections.Generic;
 using NodaTime.Calendars;
 using NodaTime.Fields;
+using NodaTime.Utility;
 
 namespace NodaTime
 {
@@ -328,15 +329,9 @@ namespace NodaTime
         /// </summary>
         private int GetEraIndex(Era era)
         {
-            if (era == null)
-            {
-                throw new ArgumentNullException("era");
-            }
+            Preconditions.CheckNotNull(era, "era");
             int index = Eras.IndexOf(era);
-            if (index == -1)
-            {
-                throw new ArgumentException("Era does not belong to this calendar", "era");
-            }
+            Preconditions.CheckArgument(index != -1, "era", "Era does not belong to this calendar");
             return index;
         }
 
@@ -379,7 +374,7 @@ namespace NodaTime
 
         /// <summary>
         /// Returns a local instant, formed from the given year, month, day, and ticks values.
-        /// The set of given values must refer to a valid datetime, or else an IllegalArgumentException is thrown.
+        /// The set of given values must refer to a valid datetime.
         /// <para>
         /// The default implementation calls upon separate DateTimeFields to
         /// determine the result. Subclasses are encouraged to provide a more
@@ -390,6 +385,8 @@ namespace NodaTime
         /// <param name="monthOfYear">Month to use</param>
         /// <param name="dayOfMonth">Day of month to use</param>
         /// <param name="tickOfDay">Tick of day to use</param>
+        /// <exception cref="ArgumentOutOfRangeException">The year of era, month of year and day of month values don't
+        /// form a valid date.</exception>
         /// <returns>A <see cref="LocalInstant"/> with the given year, month, day and tick-of-day.</returns>
         internal virtual LocalInstant GetLocalInstant(int year, int monthOfYear, int dayOfMonth, long tickOfDay)
         {
@@ -397,6 +394,28 @@ namespace NodaTime
             instant = Fields.MonthOfYear.SetValue(instant, monthOfYear);
             instant = Fields.DayOfMonth.SetValue(instant, dayOfMonth);
             return Fields.TickOfDay.SetValue(instant, tickOfDay);
+        }
+
+        /// <summary>
+        /// Returns a local instant, at the start of the day formed from the given year of era, month, day, and era arguments.
+        /// The set of given values must refer to a valid datetime.
+        /// </summary>
+        /// <param name="era">Era to use. This must be one of the eras within this calendar</param>
+        /// <param name="yearOfEra">Year of era to use</param>
+        /// <param name="monthOfYear">Month to use</param>
+        /// <param name="dayOfMonth">Day of month to use</param>
+        /// <exception cref="ArgumentNullException"><paramref name="era" />is null.</exception>
+        /// <exception cref="ArgumentException"><paramref name="era" />is not a valid era in this calendar.</exception>
+        /// <exception cref="ArgumentOutOfRangeException">The year of era, month of year and day of month values don't
+        /// form a valid date.</exception>
+        /// <returns>A <see cref="LocalInstant"/> with the given year, month, day and era.</returns>
+        internal virtual LocalInstant GetLocalInstant(Era era, int yearOfEra, int monthOfYear, int dayOfMonth)
+        {
+            int eraIndex = GetEraIndex(era);
+            LocalInstant instant = Fields.Era.SetValue(LocalInstant.LocalUnixEpoch, eraIndex);
+            instant = Fields.YearOfEra.SetValue(instant, yearOfEra);
+            instant = Fields.MonthOfYear.SetValue(instant, monthOfYear);
+            return Fields.DayOfMonth.SetValue(instant, dayOfMonth);
         }
 
         /// <summary>

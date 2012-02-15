@@ -96,10 +96,7 @@ namespace NodaTime
         /// <exception cref="ArgumentNullException">If <paramref name="calendar"/> is <c>null</c>.</exception>
         public LocalDateTime(int year, int month, int day, int hour, int minute, CalendarSystem calendar)
         {
-            if (calendar == null)
-            {
-                throw new ArgumentNullException("calendar");
-            }
+            Preconditions.CheckNotNull(calendar, "calendar");
             localInstant = calendar.GetLocalInstant(year, month, day, hour, minute);
             this.calendar = calendar;
         }

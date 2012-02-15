@@ -17,6 +17,7 @@
 
 using System;
 using NUnit.Framework;
+using NodaTime.Calendars;
 
 namespace NodaTime.Test
 {
@@ -69,6 +70,31 @@ namespace NodaTime.Test
         public void Constructor_InvalidYear()
         {
             Assert.Throws<ArgumentOutOfRangeException>(() => new LocalDate(CalendarSystem.Iso.MaxYear + 1, 1, 1));
+        }
+
+        [Test]
+        public void Constructor_WithYearOfEra_BC()
+        {
+            LocalDate absolute = new LocalDate(-10, 1, 1);
+            LocalDate withEra = new LocalDate(Era.BeforeCommon, 11, 1, 1);
+            Assert.AreEqual(absolute, withEra);
+        }
+
+        [Test]
+        public void Constructor_WithYearOfEra_AD()
+        {
+            LocalDate absolute = new LocalDate(50, 6, 19);
+            LocalDate withEra = new LocalDate(Era.Common, 50, 6, 19);
+            Assert.AreEqual(absolute, withEra);
+        }
+
+        [Test]
+        public void Constructor_WithYearOfEra_NonIsoCalendar()
+        {
+            var calendar = CalendarSystem.GetCopticCalendar(4);
+            LocalDate absolute = new LocalDate(50, 6, 19, calendar);
+            LocalDate withEra = new LocalDate(Era.AnnoMartyrm, 50, 6, 19, calendar);
+            Assert.AreEqual(absolute, withEra);
         }
     }
 }
