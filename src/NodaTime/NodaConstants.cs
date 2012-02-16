@@ -99,12 +99,12 @@ namespace NodaTime
         /// A constant for the number of seconds per standard 24-hour day.
         /// The value of this constant is 86,400.
         /// </summary>
-        public const int SecondsPerDay = SecondsPerHour * HoursPerStandardDay;
+        public const int SecondsPerStandardDay = SecondsPerHour * HoursPerStandardDay;
         /// <summary>
         /// A constant for the number of seconds per standard week of seven 24-hour days.
         /// The value of this constant is 604,800.
         /// </summary>
-        public const int SecondsPerWeek = SecondsPerDay * DaysPerStandardWeek;
+        public const int SecondsPerWeek = SecondsPerStandardDay * DaysPerStandardWeek;
 
         /// <summary>
         /// A constant for the number of minutes per hour.

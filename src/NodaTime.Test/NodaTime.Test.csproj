@@ -198,6 +198,9 @@
     <Compile Include="DurationTest.Construction.cs">
       <DependentUpon>DurationTest.cs</DependentUpon>
     </Compile>
+    <Compile Include="DurationTest.Properties.cs">
+      <DependentUpon>DurationTest.cs</DependentUpon>
+    </Compile>
     <Compile Include="Fields\DateTimeFieldTest.cs" />
     <Compile Include="Fields\DecoratedDateTimeFieldTest.cs" />
     <Compile Include="Fields\PeriodFieldTest.cs" />

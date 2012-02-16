@@ -158,5 +158,17 @@ namespace NodaTime.Test
             Assert.AreEqual(1000 * new Duration(-50000), Duration.Multiply(1000, new Duration(-50000)));
         }
         #endregion
+
+        #region Unary operator -
+        public static void UnaryMinus()
+        {
+            Assert.AreEqual(Duration.FromTicks(-5000), -Duration.FromTicks(5000));
+        }
+
+        public static void Negate()
+        {
+            Assert.AreEqual(Duration.FromTicks(-5000), Duration.Negate(Duration.FromTicks(5000)));
+        }
+        #endregion
     }
 }
