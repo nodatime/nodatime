@@ -49,15 +49,14 @@ namespace NodaTime.Fields
             Preconditions.CheckArgumentRange("value", value, BeforeCommonEraIndex, CommonEraIndex);
 
             int oldEra = GetValue(localInstant);
-            if (oldEra != value)
-            {
-                int year = calendarSystem.GetYear(localInstant);
-                return calendarSystem.SetYear(localInstant, -year);
-            }
-            else
+            if (oldEra == value)
             {
                 return localInstant;
             }
+
+            int yearOfEra = calendarSystem.Fields.YearOfEra.GetValue(localInstant);
+            int newAbsoluteYear = value == 1 ? yearOfEra : 1 - yearOfEra;
+            return calendarSystem.SetYear(localInstant, newAbsoluteYear);
         }
         #endregion
 

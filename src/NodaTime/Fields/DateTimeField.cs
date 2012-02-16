@@ -112,14 +112,20 @@ namespace NodaTime.Fields
         /// If the value is invalid, an exception if thrown.
         /// </para>
         /// <para>
-        /// If setting this field would make other fields invalid, then those fields
+        /// If setting this field would make other fields invalid, then "smaller" fields
         /// may be changed. For example if the current date is the 31st January, and
         /// the month is set to February, the day would be invalid. Instead, the day
         /// would be changed to the closest value - the 28th/29th February as appropriate.
         /// </para>
+        /// <para>
+        /// If setting this field is invalid in the context of "larger" fields, an exception
+        /// is thrown. For example, if the current date is February 20th, and the day of month
+        /// is set to 30, then this is invalid within the larger context.
+        /// </para>
         /// </summary>
         /// <param name="localInstant">The local instant to set in</param>
         /// <param name="value">The value to set, in the units of the field</param>
+        /// <exception cref="ArgumentOutOfRangeException">The field value is invalid in terms of the "larger" existing fields</exception>
         /// <returns>The updated local instant</returns>
         internal abstract LocalInstant SetValue(LocalInstant localInstant, long value);
         #endregion

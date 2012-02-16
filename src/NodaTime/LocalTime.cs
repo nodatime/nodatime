@@ -49,6 +49,8 @@ namespace NodaTime
         /// <param name="hour">The hour of day.</param>
         /// <param name="minute">The minute of the hour.</param>
         /// <param name="second">The second of the minute.</param>
+        /// <exception cref="ArgumentOutOfRangeException">The parameters do not form a valid time</exception>
+        /// <returns>The resulting time.</returns>
         public LocalTime(int hour, int minute, int second)
         {
             Preconditions.CheckArgumentRange("hour", hour, 0, NodaConstants.HoursPerStandardDay - 1);
@@ -68,6 +70,8 @@ namespace NodaTime
         /// <param name="minute">The minute of the hour.</param>
         /// <param name="second">The second of the minute.</param>
         /// <param name="millisecond">The millisecond of the second.</param>
+        /// <exception cref="ArgumentOutOfRangeException">The parameters do not form a valid time</exception>
+        /// <returns>The resulting time.</returns>
         public LocalTime(int hour, int minute, int second, int millisecond)
         {
             Preconditions.CheckArgumentRange("hour", hour, 0, NodaConstants.HoursPerStandardDay - 1);
@@ -89,6 +93,8 @@ namespace NodaTime
         /// <param name="second">The second of the minute.</param>
         /// <param name="millisecond">The millisecond of the second.</param>
         /// <param name="tickWithinMillisecond">The tick within the millisecond.</param>
+        /// <exception cref="ArgumentOutOfRangeException">The parameters do not form a valid time</exception>
+        /// <returns>The resulting time.</returns>
         public LocalTime(int hour, int minute, int second, int millisecond, int tickWithinMillisecond)
         {
             Preconditions.CheckArgumentRange("hour", hour, 0, NodaConstants.HoursPerStandardDay - 1);
@@ -112,6 +118,7 @@ namespace NodaTime
         /// <param name="minute">The minute of hour in the desired time, in the range [0, 59].</param>
         /// <param name="second">The second of minute in the desired time, in the range [0, 59].</param>
         /// <param name="tickWithinSecond">The tick within the second in the desired time, in the range [0, 9999999].</param>
+        /// <exception cref="ArgumentOutOfRangeException">The parameters do not form a valid time</exception>
         /// <returns>The resulting time.</returns>
         public static LocalTime FromHourMinuteSecondTick(int hour, int minute, int second, int tickWithinSecond)
         {
