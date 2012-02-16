@@ -1,6 +1,6 @@
 #region Copyright and license information
 // Copyright 2001-2009 Stephen Colebourne
-// Copyright 2009-2011 Jon Skeet
+// Copyright 2009-2012 Jon Skeet
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -21,7 +21,6 @@ using NodaTime.Globalization;
 using NodaTime.Text;
 using NodaTime.Text.Patterns;
 using NodaTime.Utility;
-using NodaTime.Fields;
 
 namespace NodaTime
 {
@@ -52,6 +51,7 @@ namespace NodaTime
         /// calendar system.
         /// </summary>
         /// <param name="localInstant">The local instant.</param>
+        /// <returns>The resulting date/time.</returns>
         internal LocalDateTime(LocalInstant localInstant) : this(localInstant, CalendarSystem.Iso)
         {
         }
@@ -62,6 +62,7 @@ namespace NodaTime
         /// <param name="localInstant">The local instant.</param>
         /// <param name="calendar">The calendar system.</param>
         /// <exception cref="ArgumentNullException">If <paramref name="calendar"/> is <c>null</c>.</exception>
+        /// <returns>The resulting date/time.</returns>
         internal LocalDateTime(LocalInstant localInstant, CalendarSystem calendar)
         {
             if (calendar == null)
@@ -75,25 +76,30 @@ namespace NodaTime
         /// <summary>
         /// Initializes a new instance of the <see cref="LocalDateTime"/> struct using the ISO calendar system.
         /// </summary>
-        /// <param name="year">The year.</param>
+        /// <param name="year">The year. This is the "absolute year", so a value of 0 means 1BC, for example.</param>
         /// <param name="month">The month.</param>
         /// <param name="day">The day.</param>
         /// <param name="hour">The hour.</param>
         /// <param name="minute">The minute.</param>
-        public LocalDateTime(int year, int month, int day, int hour, int minute) : this(year, month, day, hour, minute, CalendarSystem.Iso)
+        /// <exception cref="ArgumentOutOfRangeException">The parameters do not form a valid date/time</exception>
+        /// <returns>The resulting date/time.</returns>
+        public LocalDateTime(int year, int month, int day, int hour, int minute)
+            : this(year, month, day, hour, minute, CalendarSystem.Iso)
         {
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LocalDateTime"/> struct.
         /// </summary>
-        /// <param name="year">The year.</param>
+        /// <param name="year">The year. This is the "absolute year", so a value of 0 means 1BC, for example.</param>
         /// <param name="month">The month.</param>
         /// <param name="day">The day.</param>
         /// <param name="hour">The hour.</param>
         /// <param name="minute">The minute.</param>
         /// <param name="calendar">The calendar.</param>
         /// <exception cref="ArgumentNullException">If <paramref name="calendar"/> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentOutOfRangeException">The parameters do not form a valid date/time</exception>
+        /// <returns>The resulting date/time.</returns>
         public LocalDateTime(int year, int month, int day, int hour, int minute, CalendarSystem calendar)
         {
             Preconditions.CheckNotNull(calendar, "calendar");
@@ -104,20 +110,23 @@ namespace NodaTime
         /// <summary>
         /// Initializes a new instance of the <see cref="LocalDateTime"/> struct using the ISO calendar system.
         /// </summary>
-        /// <param name="year">The year.</param>
+        /// <param name="year">The year. This is the "absolute year", so a value of 0 means 1BC, for example.</param>
         /// <param name="month">The month.</param>
         /// <param name="day">The day.</param>
         /// <param name="hour">The hour.</param>
         /// <param name="minute">The minute.</param>
         /// <param name="second">The second.</param>
-        public LocalDateTime(int year, int month, int day, int hour, int minute, int second) : this(year, month, day, hour, minute, second, CalendarSystem.Iso)
+        /// <exception cref="ArgumentOutOfRangeException">The parameters do not form a valid date/time</exception>
+        /// <returns>The resulting date/time.</returns>
+        public LocalDateTime(int year, int month, int day, int hour, int minute, int second)
+            : this(year, month, day, hour, minute, second, CalendarSystem.Iso)
         {
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LocalDateTime"/> struct.
         /// </summary>
-        /// <param name="year">The year.</param>
+        /// <param name="year">The year. This is the "absolute year", so a value of 0 means 1BC, for example.</param>
         /// <param name="month">The month.</param>
         /// <param name="day">The day.</param>
         /// <param name="hour">The hour.</param>
@@ -125,6 +134,8 @@ namespace NodaTime
         /// <param name="second">The second.</param>
         /// <param name="calendar">The calendar.</param>
         /// <exception cref="ArgumentNullException">If <paramref name="calendar"/> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentOutOfRangeException">The parameters do not form a valid date/time</exception>
+        /// <returns>The resulting date/time.</returns>
         public LocalDateTime(int year, int month, int day, int hour, int minute, int second, CalendarSystem calendar)
         {
             if (calendar == null)
@@ -138,13 +149,15 @@ namespace NodaTime
         /// <summary>
         /// Initializes a new instance of the <see cref="LocalDateTime"/> struct using the ISO calendar system.
         /// </summary>
-        /// <param name="year">The year.</param>
+        /// <param name="year">The year. This is the "absolute year", so a value of 0 means 1BC, for example.</param>
         /// <param name="month">The month.</param>
         /// <param name="day">The day.</param>
         /// <param name="hour">The hour.</param>
         /// <param name="minute">The minute.</param>
         /// <param name="second">The second.</param>
         /// <param name="millisecond">The millisecond.</param>
+        /// <exception cref="ArgumentOutOfRangeException">The parameters do not form a valid date/time</exception>
+        /// <returns>The resulting date/time.</returns>
         public LocalDateTime(int year, int month, int day, int hour, int minute, int second, int millisecond)
             : this(year, month, day, hour, minute, second, millisecond, 0, CalendarSystem.Iso)
         {
@@ -153,7 +166,7 @@ namespace NodaTime
         /// <summary>
         /// Initializes a new instance of the <see cref="LocalDateTime"/> struct.
         /// </summary>
-        /// <param name="year">The year.</param>
+        /// <param name="year">The year. This is the "absolute year", so a value of 0 means 1BC, for example.</param>
         /// <param name="month">The month.</param>
         /// <param name="day">The day.</param>
         /// <param name="hour">The hour.</param>
@@ -162,6 +175,8 @@ namespace NodaTime
         /// <param name="millisecond">The millisecond.</param>
         /// <param name="calendar">The calendar.</param>
         /// <exception cref="ArgumentNullException">If <paramref name="calendar"/> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentOutOfRangeException">The parameters do not form a valid date/time</exception>
+        /// <returns>The resulting date/time.</returns>
         public LocalDateTime(int year, int month, int day, int hour, int minute, int second, int millisecond, CalendarSystem calendar)
             : this(year, month, day, hour, minute, second, millisecond, 0, calendar)
         {
@@ -170,7 +185,7 @@ namespace NodaTime
         /// <summary>
         /// Initializes a new instance of the <see cref="LocalDateTime"/> struct.
         /// </summary>
-        /// <param name="year">The year.</param>
+        /// <param name="year">The year. This is the "absolute year", so a value of 0 means 1BC, for example.</param>
         /// <param name="month">The month.</param>
         /// <param name="day">The day.</param>
         /// <param name="hour">The hour.</param>
@@ -178,6 +193,8 @@ namespace NodaTime
         /// <param name="second">The second.</param>
         /// <param name="millisecond">The millisecond.</param>
         /// <param name="tickWithinMillisecond">The tick within millisecond.</param>
+        /// <exception cref="ArgumentOutOfRangeException">The parameters do not form a valid date/time</exception>
+        /// <returns>The resulting date/time.</returns>
         public LocalDateTime(int year, int month, int day, int hour, int minute, int second, int millisecond, int tickWithinMillisecond)
             : this(year, month, day, hour, minute, second, millisecond, tickWithinMillisecond, CalendarSystem.Iso)
         {
@@ -186,7 +203,7 @@ namespace NodaTime
         /// <summary>
         /// Initializes a new instance of the <see cref="LocalDateTime"/> struct.
         /// </summary>
-        /// <param name="year">The year.</param>
+        /// <param name="year">The year. This is the "absolute year", so a value of 0 means 1BC, for example.</param>
         /// <param name="month">The month.</param>
         /// <param name="day">The day.</param>
         /// <param name="hour">The hour.</param>
@@ -196,12 +213,11 @@ namespace NodaTime
         /// <param name="tickWithinMillisecond">The tick within millisecond.</param>
         /// <param name="calendar">The calendar.</param>
         /// <exception cref="ArgumentNullException">If <paramref name="calendar"/> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentOutOfRangeException">The parameters do not form a valid date/time</exception>
+        /// <returns>The resulting date/time.</returns>
         public LocalDateTime(int year, int month, int day, int hour, int minute, int second, int millisecond, int tickWithinMillisecond, CalendarSystem calendar)
         {
-            if (calendar == null)
-            {
-                throw new ArgumentNullException("calendar");
-            }
+            Preconditions.CheckNotNull(calendar, "calendar");
             localInstant = calendar.GetLocalInstant(year, month, day, hour, minute, second, millisecond, tickWithinMillisecond);
             this.calendar = calendar;
         }
@@ -688,13 +704,13 @@ namespace NodaTime
                 throw new ArgumentOutOfRangeException("targetDayOfWeek");
             }
             // This will throw the desired exception for calendars with different week systems.
-            IsoDayOfWeek thisDay = this.IsoDayOfWeek;
+            IsoDayOfWeek thisDay = IsoDayOfWeek;
             int difference = targetDayOfWeek - thisDay;
             if (difference <= 0)
             {
                 difference += 7;
             }
-            return this.PlusDays(difference);
+            return PlusDays(difference);
         }
 
         /// <summary>
@@ -716,13 +732,13 @@ namespace NodaTime
                 throw new ArgumentOutOfRangeException("targetDayOfWeek");
             }
             // This will throw the desired exception for calendars with different week systems.
-            IsoDayOfWeek thisDay = this.IsoDayOfWeek;
+            IsoDayOfWeek thisDay = IsoDayOfWeek;
             int difference = targetDayOfWeek - thisDay;
             if (difference >= 0)
             {
                 difference -= 7;
             }
-            return this.PlusDays(difference);
+            return PlusDays(difference);
         }
 
         #region Formatting

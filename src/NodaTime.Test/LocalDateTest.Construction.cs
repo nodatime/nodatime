@@ -73,6 +73,15 @@ namespace NodaTime.Test
         }
 
         [Test]
+        public void Constructor_InvalidYearOfEra()
+        {
+            Assert.Throws<ArgumentOutOfRangeException>(() => new LocalDate(Era.Common, 0, 1, 1));
+            Assert.Throws<ArgumentOutOfRangeException>(() => new LocalDate(Era.BeforeCommon, 0, 1, 1));
+            // We go further in AD than in BC
+            Assert.Throws<ArgumentOutOfRangeException>(() => new LocalDate(Era.BeforeCommon, CalendarSystem.Iso.MaxYear, 1, 1));
+        }
+
+        [Test]
         public void Constructor_WithYearOfEra_BC()
         {
             LocalDate absolute = new LocalDate(-10, 1, 1);

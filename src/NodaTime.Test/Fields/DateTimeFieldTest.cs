@@ -57,6 +57,24 @@ namespace NodaTime.Test.Fields
             Assert.That(field.GetInt64ValueWasCalled, Is.True);
             Assert.That(field.GetInt64ValueArg, Is.EqualTo(arg));
         }
+
+        [Test]
+        public void SetValue_InvalidFromSmaller_Adjusts()
+        {
+            // Field will adjust *smaller* units to make things valid
+            LocalInstant jan30th = new LocalDate(2001, 1, 30).LocalDateTime.LocalInstant;
+            LocalInstant actual = CalendarSystem.Iso.Fields.MonthOfYear.SetValue(jan30th, 2);
+            LocalInstant expected = new LocalDate(2001, 2, 28).LocalDateTime.LocalInstant;
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void SetValue_InvalidFromLarger_Throws()
+        {
+            // Field cannot adjust *larger* units
+            LocalInstant feb20th = new LocalDate(2001, 2, 20).LocalDateTime.LocalInstant;
+            Assert.Throws<ArgumentOutOfRangeException>(() => CalendarSystem.Iso.Fields.DayOfMonth.SetValue(feb20th, 30));
+        }
         #endregion
 
         #region Leap

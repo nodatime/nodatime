@@ -94,6 +94,7 @@
       <DependentUpon>JulianCalendarSystemTest.cs</DependentUpon>
     </Compile>
     <Compile Include="Calendars\PeriodAdditionTest.cs" />
+    <Compile Include="Fields\GJEraDateTimeFieldTest.cs" />
     <Compile Include="IntervalTest.cs" />
     <Compile Include="Text\Cultures.cs" />
     <Compile Include="Text\InstantPatternTest.cs" />

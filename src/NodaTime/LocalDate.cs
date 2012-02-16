@@ -35,9 +35,11 @@ namespace NodaTime
         /// <summary>
         /// Constructs an instance for the given year, month and day in the ISO calendar.
         /// </summary>
-        /// <param name="year">Year of the new date/</param>
+        /// <param name="year">Year of the new date. This is the "absolute year", so a value of 0 means 1BC, for example.</param>
         /// <param name="month">Month of year of the new date/</param>
         /// <param name="day">Day of month of the new date/</param>
+        /// <exception cref="ArgumentOutOfRangeException">The parameters do not form a valid date</exception>
+        /// <returns>The resulting date.</returns>
         public LocalDate(int year, int month, int day)
             : this(year, month, day, CalendarSystem.Iso)
         {
@@ -46,10 +48,13 @@ namespace NodaTime
         /// <summary>
         /// Constructs an instance for the given year, month and day in the specified calendar.
         /// </summary>
-        /// <param name="year">Year of the new date/</param>
+        /// <param name="year">Year of the new date. This is the "absolute year", so a value of 0 means 1BC, for example.</param>
         /// <param name="month">Month of year of the new date/</param>
         /// <param name="day">Day of month of the new date/</param>
         /// <param name="calendar">Calendar system in which to create the date</param>
+        /// <exception cref="ArgumentOutOfRangeException">The parameters do not form a valid date</exception>
+        /// <exception cref="ArgumentNullException">If <paramref name="calendar"/> is <c>null</c>.</exception>
+        /// <returns>The resulting date.</returns>
         public LocalDate(int year, int month, int day, CalendarSystem calendar)
             : this(new LocalDateTime(year, month, day, 0, 0, calendar))
         {
@@ -62,6 +67,8 @@ namespace NodaTime
         /// <param name="yearOfEra">Year of the new date/</param>
         /// <param name="month">Month of year of the new date/</param>
         /// <param name="day">Day of month of the new date/</param>
+        /// <exception cref="ArgumentOutOfRangeException">The parameters do not form a valid date</exception>
+        /// <returns>The resulting date.</returns>
         public LocalDate(Era era, int yearOfEra, int month, int day)
             : this(era, yearOfEra, month, day, CalendarSystem.Iso)
         {
@@ -75,6 +82,9 @@ namespace NodaTime
         /// <param name="month">Month of year of the new date/</param>
         /// <param name="day">Day of month of the new date/</param>
         /// <param name="calendar">Calendar system in which to create the date</param>
+        /// <exception cref="ArgumentOutOfRangeException">The parameters do not form a valid date</exception>
+        /// <exception cref="ArgumentNullException">If <paramref name="calendar"/> is <c>null</c>.</exception>
+        /// <returns>The resulting date.</returns>
         public LocalDate(Era era, int yearOfEra, int month, int day, CalendarSystem calendar)
             : this(new LocalDateTime(Preconditions.CheckNotNull(calendar, "calendar").GetLocalInstant(era, yearOfEra, month, day), calendar))
         {
