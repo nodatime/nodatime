@@ -21,16 +21,14 @@ using System.Globalization;
 namespace NodaTime
 {
     /// <summary>
-    /// A length of time in ticks. (There are 10,000 ticks in a millisecond.)
+    /// A length of time in ticks. (There are 10,000 ticks in a millisecond.) A duration represents
+    /// a fixed length of time, with no concept of calendars.
     /// </summary>
     /// <remarks>
     /// <para>
-    /// There is no concept of fields, such as days or seconds, as these fields can vary in length.
-    /// A duration may be converted to a <see cref="Period" /> to obtain field values. This
-    /// conversion will typically cause a loss of precision.
-    /// </para>
-    /// <para>
-    /// This type is immutable and thread-safe.
+    /// Properties for this type only go as far as StandardDays, as there's no way of considering a
+    /// "month" without reference to a calendar. For human calculations, use a <see cref="Period"/> instead,
+    /// computing values against local dates/times.
     /// </para>
     /// </remarks>
     public struct Duration : IEquatable<Duration>, IComparable<Duration>, IComparable
@@ -176,11 +174,83 @@ namespace NodaTime
         private readonly long ticks;
 
         /// <summary>
-        /// The number of ticks in the duration.
+        /// The total number of ticks in the duration.
         /// </summary>
+        /// <remarks>
+        /// This property is not prefixed with Total as it's so widely used within Noda Time, and the fundamental
+        /// concept of a duration is "a number of ticks".
+        /// </remarks>
         public long Ticks { get { return ticks; } }
 
-        // TODO(Post-V1): Add milliseconds, seconds, minutes, hours, standard days?
+        /// <summary>
+        /// The total number of milliseconds in this duration (so a second and a half would return 1500).
+        /// </summary>
+        public long TotalMilliseconds { get { return ticks / NodaConstants.TicksPerMillisecond; } }
+
+        /// <summary>
+        /// The total number of seconds in this duration (so a minute and a half would return 90).
+        /// </summary>
+        public long TotalSeconds { get { return ticks / NodaConstants.TicksPerSecond; } }
+
+        /// <summary>
+        /// The total number of minutes in this duration (so an hour and a half would return 90).
+        /// </summary>
+        public long TotalMinutes { get { return ticks / NodaConstants.TicksPerMinute; } }
+
+        /// <summary>
+        /// The total number of hours in this duration (so a day and a half would return 36).
+        /// </summary>
+        public long TotalHours { get { return ticks / NodaConstants.TicksPerHour; } }
+
+        /// <summary>
+        /// The total number of standard (24 hour) days in this duration (so a day and a half would return 36).
+        /// </summary>
+        public long StandardDays { get { return ticks / NodaConstants.TicksPerStandardDay; } }
+
+        /// <summary>
+        /// The number of ticks within a millisecond in this duration, in the range [-9999, 9999].
+        /// </summary>
+        /// <remarks>
+        /// A negative duration will always return a negative value, rounded towards zero. So
+        /// a value of -1.5 milliseconds would give -5000 for TicksRemainder, and -1 for <see cref="MillisecondsRemainder" />
+        /// </remarks>
+        public long TicksRemainder { get { return ticks % NodaConstants.TicksPerMillisecond; } }
+
+        /// <summary>
+        /// The number of milliseconds within a second in this duration, in the range [-999, 999].
+        /// </summary>
+        /// <remarks>
+        /// A negative duration will always return a negative value, rounded towards zero. So
+        /// a value of -1.5 seconds would give -500 for MillisecondsRemainder, and -1 for <see cref="SecondsRemainder" />
+        /// </remarks>
+        public long MillisecondsRemainder { get { return (ticks % NodaConstants.TicksPerSecond) / NodaConstants.TicksPerMillisecond; } }
+
+        /// <summary>
+        /// The number of seconds within a minute in this duration, in the range [-59, 59].
+        /// </summary>
+        /// <remarks>
+        /// A negative duration will always return a negative value, rounded towards zero. So
+        /// a value of -90 seconds would give -30 for SecondsRemainder, and -1 for <see cref="MinutesRemainder" />.
+        /// </remarks>
+        public long SecondsRemainder { get { return (ticks % NodaConstants.TicksPerMinute) / NodaConstants.TicksPerSecond; } }
+
+        /// <summary>
+        /// The number of minutes within an hour in this duration, in the range [-59, 59].
+        /// </summary>
+        /// <remarks>
+        /// A negative duration will always return a negative value, rounded towards zero. So
+        /// a value of -90 minutes would give -30 for MinutesRemainder, and -1 for <see cref="HoursRemainder" />.
+        /// </remarks>
+        public long MinutesRemainder { get { return (ticks % NodaConstants.TicksPerHour) / NodaConstants.TicksPerMinute; } }
+
+        /// <summary>
+        /// The number of hours within an day in this duration, in the range [-23, 23].
+        /// </summary>
+        /// <remarks>
+        /// A negative duration will always return a negative value, rounded towards zero. So
+        /// a value of -36 hours would give -12 for HoursRemainder, and -1 for <see cref="StandardDays" />.
+        /// </remarks>
+        public long HoursRemainder { get { return (ticks % NodaConstants.TicksPerStandardDay) / NodaConstants.TicksPerHour; } }
 
         #region Object overrides
         /// <summary>
@@ -418,6 +488,26 @@ namespace NodaTime
         public static bool operator >=(Duration left, Duration right)
         {
             return left.CompareTo(right) >= 0;
+        }
+
+        /// <summary>
+        /// Implements the unary negation operator.
+        /// </summary>
+        /// <param name="duration">Duration to negate</param>
+        /// <returns>The negative value of this duration</returns>
+        public static Duration operator -(Duration duration)
+        {
+            return new Duration(-duration.Ticks);
+        }
+
+        /// <summary>
+        /// Implements a friendly alternative to the unary negation operator.
+        /// </summary>
+        /// <param name="duration">Duration to negate</param>
+        /// <returns>The negative value of this duration</returns>
+        public static Duration Negate (Duration duration)
+        {
+            return -duration;
         }
         #endregion // Operators
 
