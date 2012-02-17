@@ -49,3 +49,4 @@ NodaTime.shfbproj_Jon
 *.jar
 *.ncrunchproject
 *.ncrunchsolution
+docs/PublicApi/*.xml
