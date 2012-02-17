@@ -50,3 +50,4 @@ NodaTime.shfbproj_Jon
 *.ncrunchproject
 *.ncrunchsolution
 docs/PublicApi/*.xml
+nuget/*
