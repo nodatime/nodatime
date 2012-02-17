@@ -23,8 +23,9 @@
 Joda Time is the industry standard date and time handling library for Java. Noda Time is an idiomatic port to the .NET platform.</ProjectSummary>
     <DocumentationSources>
       <DocumentationSource sourceFile="src\NodaTime\bin\Release\NodaTime.dll" />
-      <DocumentationSource sourceFile="src\NodaTime\bin\Release\NodaTime.xml" />
-    </DocumentationSources>
+<DocumentationSource sourceFile="src\NodaTime.Testing\bin\Release\NodaTime.Testing.dll" />
+<DocumentationSource sourceFile="src\NodaTime.Testing\bin\Release\NodaTime.Testing.xml" />
+<DocumentationSource sourceFile="src\NodaTime\bin\Release\NodaTime.xml" /></DocumentationSources>
     <HelpFileFormat>Website</HelpFileFormat>
     <CopyrightHref>http://www.apache.org/licenses/LICENSE-2.0</CopyrightHref>
     <CopyrightText>Copyright 2001-2009 Stephen Colebourne, 2009-2011 Jon Skeet, All rights reserved.</CopyrightText>
@@ -44,7 +45,12 @@ Joda Time is the industry standard date and time handling library for Java. Noda
         </component>
       </ComponentConfig>
 <ComponentConfig id="Cached MSDN URL References" enabled="True"><component id="Cached MSDN URL References" type="SandcastleBuilder.Components.CachedResolveReferenceLinksComponent" assembly="{@SHFBFolder}SandcastleBuilder.Components.dll" locale="{@Locale}" linkTarget="{@SdkLinkTarget}"><helpOutput format="HtmlHelp1"><cache filename="{@LocalDataFolder}Cache\MsdnUrl.cache" /><targets base="{@SandcastlePath}Data\Reflection" recurse="true" files="*.xml" type="{@HtmlSdkLinkType}" /><targets files="reflection.xml" type="Local" /></helpOutput><helpOutput format="MSHelp2"><cache filename="{@LocalDataFolder}Cache\MsdnUrl.cache" /><targets base="{@SandcastlePath}Data\Reflection" recurse="true" files="*.xml" type="{@MSHelp2SdkLinkType}" /><targets files="reflection.xml" type="Index" /></helpOutput><helpOutput format="MSHelpViewer"><cache filename="{@LocalDataFolder}Cache\MsdnUrl.cache" /><targets base="{@SandcastlePath}Data\Reflection" recurse="true" files="*.xml" type="{@MSHelpViewerSdkLinkType}" /><targets files="reflection.xml" type="Id" /></helpOutput><helpOutput format="Website"><cache filename="{@LocalDataFolder}Cache\MsdnUrl.cache" /><targets base="{@SandcastlePath}Data\Reflection" recurse="true" files="*.xml" type="{@WebsiteSdkLinkType}" /><targets files="reflection.xml" type="Local" /></helpOutput></component></ComponentConfig>
-<ComponentConfig id="Cached Reflection Index Data" enabled="True"><component id="Cached Reflection Index Data" type="SandcastleBuilder.Components.CachedCopyFromIndexComponent" assembly="{@SHFBFolder}SandcastleBuilder.Components.dll"><index name="reflection" value="/reflection/apis/api" key="@id" cache="10"><cache base="{@SandcastlePath}Data\Reflection" recurse="true" files="*.xml" cacheFile="{@LocalDataFolder}Cache\Reflection.cache" /><data files="reflection.xml" /></index><copy name="reflection" source="*" target="/document/reference" /></component></ComponentConfig></ComponentConfigurations>
+<ComponentConfig id="Cached Reflection Index Data" enabled="True"><component id="Cached Reflection Index Data" type="SandcastleBuilder.Components.CachedCopyFromIndexComponent" assembly="{@SHFBFolder}SandcastleBuilder.Components.dll"><index name="reflection" value="/reflection/apis/api" key="@id" cache="10"><cache base="{@SandcastlePath}Data\Reflection" recurse="true" files="*.xml" cacheFile="{@LocalDataFolder}Cache\Reflection.cache" /><data files="reflection.xml" /></index><copy name="reflection" source="*" target="/document/reference" /></component></ComponentConfig>
+<ComponentConfig id="IntelliSense Component" enabled="True"><component id="IntelliSense Component" type="SandcastleBuilder.Components.IntelliSenseComponent" assembly="{@SHFBFolder}SandcastleBuilder.Components.dll"><!-- Output options (optional)
+                 Attributes:
+                    Include Namespaces (false by default)
+                    Namespaces filename ("Namespaces" if not specified or empty)
+                    Directory (current folder if not specified or empty) --><output includeNamespaces="false" namespacesFile="Namespaces" folder="{@OutputFolder}\..\PublicApi" /></component></ComponentConfig></ComponentConfigurations>
     <PresentationStyle>Prototype</PresentationStyle>
   </PropertyGroup>
   <!-- There are no properties for these groups.  AnyCPU needs to appear in
