@@ -72,9 +72,9 @@
             </p><p>
             Noda Time provides various options when mapping local time to a specific instant:
             <ul><li><a href="M_NodaTime_DateTimeZone_AtExactly.htm">AtExactly(LocalDateTime)</a> will throw an exception if the mapping from local time is either ambiguous
-                or impossible, i.e. if there is anything other than one instant which maps to the given local time.<a href="M_NodaTime_DateTimeZone_AtEarlier.htm">AtEarlier(LocalDateTime)</a> will throw an exception if the mapping from local time is impossible, i.e.
-                if that time is skipped, but will return the earlier of two valid mappings where there is ambiguity.<a href="M_NodaTime_DateTimeZone_AtLater.htm">AtLater(LocalDateTime)</a> will throw an exception if the mapping from local time is impossible, i.e.
-                if that time is skipped, but will return the later of two valid mappings where there is ambiguity.<a href="M_NodaTime_DateTimeZone_MapLocalDateTime.htm">MapLocalDateTime(LocalDateTime)</a> will not throw any exceptions, but return a <a href="T_NodaTime_TimeZones_ZoneLocalMapping.htm">ZoneLocalMapping</a>
+                or impossible, i.e. if there is anything other than one instant which maps to the given local time.</li><li><a href="M_NodaTime_DateTimeZone_AtEarlier.htm">AtEarlier(LocalDateTime)</a> will throw an exception if the mapping from local time is impossible, i.e.
+                if that time is skipped, but will return the earlier of two valid mappings where there is ambiguity.</li><li><a href="M_NodaTime_DateTimeZone_AtLater.htm">AtLater(LocalDateTime)</a> will throw an exception if the mapping from local time is impossible, i.e.
+                if that time is skipped, but will return the later of two valid mappings where there is ambiguity.</li><li><a href="M_NodaTime_DateTimeZone_MapLocalDateTime.htm">MapLocalDateTime(LocalDateTime)</a> will not throw any exceptions, but return a <a href="T_NodaTime_TimeZones_ZoneLocalMapping.htm">ZoneLocalMapping</a>
                 with complete information about whether the given local time occurs zero times, once or twice. This is the most
                 fine-grained approach, which is the fiddliest to use but puts the caller in the most control.</li></ul></p><p>
             Noda Time has two sources of time zone data available: a built-in copy of the
