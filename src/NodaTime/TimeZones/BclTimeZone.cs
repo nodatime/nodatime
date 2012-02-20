@@ -26,6 +26,13 @@ namespace NodaTime.TimeZones
     /// </summary>
     public sealed class BclTimeZone : DateTimeZone
     {
+        /// <summary>
+        /// This is used to cache the last result of a call to <see cref="WrapLocalTimeZoneInfo"/>, but it doesn't
+        /// matter if it's out of date - we'll just create another wrapper if necessary. It's not *that* expensive to make
+        /// a few more wrappers than we need.
+        /// </summary>
+        private static BclTimeZone systemDefault;
+
         private readonly TimeZoneInfo bclZone;
         private readonly List<AdjustmentInterval> adjustmentIntervals;
         private readonly ZoneInterval headInterval;
@@ -256,5 +263,34 @@ namespace NodaTime.TimeZones
                 return adjustmentZone.GetZoneInterval(instant);
             }
         }
+
+        /// <summary>
+        /// Returns a time zone converted from the BCL representation of the system local time zone.
+        /// If this method is called more than once, it may return the same reference multiple times if
+        /// the local time zone has not changed.
+        /// </summary>
+        /// <remarks>
+        /// When the <see cref="DateTimeZone"/> provider is set to an instance of <see cref="BclTimeZoneProvider"/> it
+        /// is highly likely that <see cref="DateTimeZone.GetSystemDefault"/> will return a non-null value - but in
+        /// rare cases (such as the set of system time zones changing after the provider is installed, or the local zone
+        /// not being a normal "system" one) it is possible that it wouldn't be mapped. By contrast, this method will never return null.
+        /// </remarks>
+        /// <returns>A <see cref="BclTimeZone"/> wrapping the "local" (system) time zone as returned by
+        /// <see cref="TimeZoneInfo.Local"/>.</returns>
+        public static BclTimeZone ForSystemDefault()
+        {
+            TimeZoneInfo local = TimeZoneInfo.Local;
+            BclTimeZone currentSystemDefault = systemDefault;
+
+            // Cached copy is out of date - wrap a new one
+            if (currentSystemDefault == null || currentSystemDefault.OriginalZone != local)
+            {
+                currentSystemDefault = FromTimeZoneInfo(local);
+                systemDefault = currentSystemDefault;
+            }
+            // Always return our local variable; the variable may have changed again.
+            return currentSystemDefault;
+        }
+
     }
 }

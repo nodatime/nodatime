@@ -52,6 +52,19 @@ namespace NodaTime.Test.TimeZones
             }
         }
 
+        [Test]
+        public void ForSystemDefault()
+        {
+            // Assume that the local time zone doesn't change between two calls...
+            TimeZoneInfo local = TimeZoneInfo.Local;
+            BclTimeZone nodaLocal1 = BclTimeZone.ForSystemDefault();
+            BclTimeZone nodaLocal2 = BclTimeZone.ForSystemDefault();
+            // Check it's actually the right zone
+            Assert.AreSame(local, nodaLocal1.OriginalZone);
+            // Check it's cached
+            Assert.AreSame(nodaLocal1, nodaLocal2);
+        }
+
         private void ValidateZoneEquality(Instant instant, DateTimeZone nodaZone, TimeZoneInfo windowsZone)
         {
             var interval = nodaZone.GetZoneInterval(instant);
