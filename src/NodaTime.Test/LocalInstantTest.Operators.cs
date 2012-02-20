@@ -360,15 +360,15 @@ namespace NodaTime.Test
         {
             Assert.AreEqual(LocalInstant.LocalUnixEpoch, LocalInstant.LocalUnixEpoch + Duration.Zero, "LocalUnixEpoch + Duration.Zero");
             Assert.AreEqual(one, one + Duration.Zero, "LocalInstant(1) + Duration.Zero");
-            Assert.AreEqual(one, LocalInstant.LocalUnixEpoch + Duration.One, "LocalUnixEpoch + Duration.One");
+            Assert.AreEqual(one, LocalInstant.LocalUnixEpoch + Duration.OneTick, "LocalUnixEpoch + Duration.One");
         }
 
         [Test]
         public void OperatorPlus_DurationNonZero()
         {
-            Assert.AreEqual(3000001L, (threeMillion + Duration.One).Ticks, "3,000,000 + 1");
-            Assert.AreEqual(0L, (one + Duration.NegativeOne).Ticks, "1 + (-1)");
-            Assert.AreEqual(-49999999L, (negativeFiftyMillion + Duration.One).Ticks, "-50,000,000 + 1");
+            Assert.AreEqual(3000001L, (threeMillion + Duration.OneTick).Ticks, "3,000,000 + 1");
+            Assert.AreEqual(0L, (one + Duration.NegativeOneTick).Ticks, "1 + (-1)");
+            Assert.AreEqual(-49999999L, (negativeFiftyMillion + Duration.OneTick).Ticks, "-50,000,000 + 1");
         }
         #endregion
 

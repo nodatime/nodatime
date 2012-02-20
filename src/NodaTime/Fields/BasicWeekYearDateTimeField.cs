@@ -103,11 +103,11 @@ namespace NodaTime.Fields
             // At most we are off by one year, which can be "fixed" by adding or subtracting a week
             if (workWeekYear < year)
             {
-                workInstant += Duration.OneWeek;
+                workInstant += Duration.OneStandardWeek;
             }
             else if (workWeekYear > year)
             {
-                workInstant -= Duration.OneWeek;
+                workInstant -= Duration.OneStandardWeek;
             }
 
             // Set the proper week in the current weekyear

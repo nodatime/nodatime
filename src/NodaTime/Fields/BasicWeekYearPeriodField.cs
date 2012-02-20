@@ -58,7 +58,7 @@ namespace NodaTime.Fields
             // Balance leap weekyear differences on remainders.
             if (subtrahendRemainder >= Week53Ticks && calendarSystem.GetWeeksInYear(minuendWeekYear) <= 52)
             {
-                subtrahendRemainder -= Duration.OneWeek;
+                subtrahendRemainder -= Duration.OneStandardWeek;
             }
 
             int difference = minuendWeekYear - subtrahendWeekYear;

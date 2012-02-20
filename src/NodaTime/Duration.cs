@@ -38,7 +38,7 @@ namespace NodaTime
         /// Represents <see cref="Duration"/> value equal to negative 1 tick. 
         /// This field is read-only.
         /// </summary>
-        public static readonly Duration NegativeOne = new Duration(-1L);
+        public static readonly Duration NegativeOneTick = new Duration(-1L);
 
         /// <summary>
         /// Represents the zero <see cref="Duration"/> value. 
@@ -50,7 +50,7 @@ namespace NodaTime
         /// Represents the <see cref="Duration"/> value equals to 1 tick. 
         /// This field is read-only.
         /// </summary>
-        public static readonly Duration One = new Duration(1L);
+        public static readonly Duration OneTick = new Duration(1L);
 
         /// <summary>
         /// Represents the mimimum <see cref="Duration"/> value. 
@@ -73,13 +73,14 @@ namespace NodaTime
         public static readonly Duration MaxValue = new Duration(Int64.MaxValue);
 
         /// <summary>
-        /// Represents the <see cref="Duration"/> value equals to number of ticks in 1 week.
+        /// Represents the <see cref="Duration"/> value equals to number of ticks in 1 standard week (7 days).
         /// This field is constant.
         /// </summary>
         /// <remarks>
-        /// The value of this constant is 6,048.000,000,000 ticks.
+        /// The value of this constant is 6,048,000,000,000 ticks.
         /// </remarks>
-        public static readonly Duration OneWeek = new Duration(NodaConstants.TicksPerStandardWeek);
+        // TODO: Consider exposing this publicly. We use it internally, but I'm not sure about making it public...
+        internal static readonly Duration OneStandardWeek = new Duration(NodaConstants.TicksPerStandardWeek);
 
         /// <summary>
         /// Represents the <see cref="Duration"/> value equals to number of ticks in 1 day.
@@ -88,7 +89,7 @@ namespace NodaTime
         /// <remarks>
         /// The value of this constant is 864 billion ticks; that is, 864,000,000,000 ticks.
         /// </remarks>
-        public static readonly Duration OneDay = new Duration(NodaConstants.TicksPerStandardDay);
+        public static readonly Duration OneStandardDay = new Duration(NodaConstants.TicksPerStandardDay);
 
         /// <summary>
         /// Represents the <see cref="Duration"/> value equals to number of ticks in 1 hour.
@@ -596,7 +597,7 @@ namespace NodaTime
         /// <returns>A <see cref="Duration"/> number of weeks.</returns>
         public static Duration FromStandardWeeks(long weeks)
         {
-            return OneWeek * weeks;
+            return OneStandardWeek * weeks;
         }
 
         /// <summary>
@@ -607,7 +608,7 @@ namespace NodaTime
         /// <returns>A <see cref="Duration"/> number of days.</returns>
         public static Duration FromStandardDays(long days)
         {
-            return OneDay * days;
+            return OneStandardDay * days;
         }
 
         /// <summary>

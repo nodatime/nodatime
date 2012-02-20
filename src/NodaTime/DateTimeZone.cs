@@ -474,7 +474,7 @@ namespace NodaTime
             Instant endOfPrevious = intervalStart;
             if (endOfPrevious.Ticks + maxOffsetTicks > localInstant.Ticks)
             {
-                ZoneInterval candidate = GetZoneInterval(endOfPrevious - Duration.One);
+                ZoneInterval candidate = GetZoneInterval(endOfPrevious - Duration.OneTick);
                 if (candidate.Contains(localInstant))
                 {
                     return candidate;
@@ -515,7 +515,7 @@ namespace NodaTime
             // it's therefore the one we want.
             if (localInstant.Minus(guessInterval.WallOffset) < guessInterval.Start)
             {
-                return GetZoneInterval(guessInterval.Start - Duration.One);
+                return GetZoneInterval(guessInterval.Start - Duration.OneTick);
             }
             else
             {
