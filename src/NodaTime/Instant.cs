@@ -170,7 +170,7 @@ namespace NodaTime
         /// <returns>A new <see cref="Instant" /> representing the sum of the given values.</returns>
         public static Instant operator +(Instant left, Duration right)
         {
-            return new Instant(left.Ticks + right.Ticks);
+            return new Instant(left.Ticks + right.TotalTicks);
         }
 
         /// <summary>
@@ -226,7 +226,7 @@ namespace NodaTime
         /// <returns>A new <see cref="Instant" /> representing the sum of the given values.</returns>
         public static Instant operator -(Instant left, Duration right)
         {
-            return new Instant(left.Ticks - right.Ticks);
+            return new Instant(left.Ticks - right.TotalTicks);
         }
 
         /// <summary>

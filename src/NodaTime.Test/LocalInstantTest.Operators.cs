@@ -376,17 +376,17 @@ namespace NodaTime.Test
         [Test]
         public void OperatorMinusDuratino_Zero_IsNeutralElement()
         {
-            Assert.AreEqual(0L, (LocalInstant.LocalUnixEpoch - LocalInstant.LocalUnixEpoch).Ticks, "0 - 0");
-            Assert.AreEqual(1L, (one - LocalInstant.LocalUnixEpoch).Ticks, "1 - 0");
-            Assert.AreEqual(-1L, (LocalInstant.LocalUnixEpoch - one).Ticks, "0 - 1");
+            Assert.AreEqual(0L, (LocalInstant.LocalUnixEpoch - LocalInstant.LocalUnixEpoch).TotalTicks, "0 - 0");
+            Assert.AreEqual(1L, (one - LocalInstant.LocalUnixEpoch).TotalTicks, "1 - 0");
+            Assert.AreEqual(-1L, (LocalInstant.LocalUnixEpoch - one).TotalTicks, "0 - 1");
         }
 
         [Test]
         public void OperatorMinusDuration_NonZero()
         {
-            Assert.AreEqual(2999999L, (threeMillion - one).Ticks, "3,000,000 - 1");
-            Assert.AreEqual(2L, (one - negativeOne).Ticks, "1 - (-1)");
-            Assert.AreEqual(-50000001L, (negativeFiftyMillion - one).Ticks, "-50,000,000 - 1");
+            Assert.AreEqual(2999999L, (threeMillion - one).TotalTicks, "3,000,000 - 1");
+            Assert.AreEqual(2L, (one - negativeOne).TotalTicks, "1 - (-1)");
+            Assert.AreEqual(-50000001L, (negativeFiftyMillion - one).TotalTicks, "-50,000,000 - 1");
         }
 
         [Test]

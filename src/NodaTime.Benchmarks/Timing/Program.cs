@@ -88,7 +88,7 @@ namespace NodaTime.Benchmarks.Timing
                 if (duration >= options.WarmUpTime)
                 {
                     // Scale up the iterations to work out the full test time
-                    double scale = ((double)options.TestTime.Ticks) / duration.Ticks;
+                    double scale = ((double)options.TestTime.TotalTicks) / duration.TotalTicks;
                     double scaledIterations = scale * iterations;
                     // Make sure we never end up overflowing...
                     iterations = (int)Math.Min(scaledIterations, int.MaxValue - 1);

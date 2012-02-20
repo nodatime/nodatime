@@ -92,7 +92,7 @@ namespace NodaTime.Fields
         /// <returns>The value of the field, in the units of the field, which may be negative</returns>
         internal virtual long GetInt64Value(Duration duration)
         {
-            return duration.Ticks / UnitTicks;
+            return duration.TotalTicks / UnitTicks;
         }
 
         /// <summary>
