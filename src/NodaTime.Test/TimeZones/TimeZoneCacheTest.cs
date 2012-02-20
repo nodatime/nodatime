@@ -38,34 +38,48 @@ namespace NodaTime.Test.TimeZones
         [Test]
         public void CachingForPresentValues()
         {
-            var cache = new TimeZoneCache(new TestDateTimeZoneProvider());
+            var provider = new TestDateTimeZoneProvider("Test1", "Test2");
+            var cache = new TimeZoneCache(provider);
             var zone = cache["Test1"];
             Assert.IsNotNull(zone);
+            Assert.AreEqual("Test1", provider.LastRequestedId);
             Assert.AreSame(zone, cache["Test1"]);
         }
 
         [Test]
-        public void ProviderIsNotAskedForUtc()
+        public void ProviderIsNotAskedForUtcIfNotAdvertised()
         {
-            var cache = new TimeZoneCache(new TestDateTimeZoneProvider());
+            var provider = new TestDateTimeZoneProvider("Test1", "Test2");
+            var cache = new TimeZoneCache(provider);
             var zone = cache[DateTimeZone.UtcId];
-            // Well it can't come from our test provider...
             Assert.IsNotNull(zone);
+            Assert.IsNull(provider.LastRequestedId);
+        }
+
+        [Test]
+        public void ProviderIsAskedForUtcIfAdvertised()
+        {
+            var provider = new TestDateTimeZoneProvider("Test1", "Test2", "UTC");
+            var cache = new TimeZoneCache(provider);
+            var zone = cache[DateTimeZone.UtcId];
+            Assert.IsNotNull(zone);
+            Assert.AreEqual("UTC", provider.LastRequestedId);
         }
 
         [Test]
         public void ProviderIsNotAskedForUnknownIds()
         {
-            var cache = new TimeZoneCache(new TestDateTimeZoneProvider());
-            // This would throw...
+            var provider = new TestDateTimeZoneProvider("Test1", "Test2");
+            var cache = new TimeZoneCache(provider);
             var zone = cache["Unknown"];
             Assert.IsNull(zone);
+            Assert.IsNull(provider.LastRequestedId);
         }
 
         [Test]
         public void NullIdRejected()
         {
-            var cache = new TimeZoneCache(new TestDateTimeZoneProvider());
+            var cache = new TimeZoneCache(new TestDateTimeZoneProvider("Test1", "Test2"));
             // GetType call just to avoid trying to use a property as a statement...
             Assert.Throws<ArgumentNullException>(() => cache[null].GetType());
         }
@@ -73,35 +87,33 @@ namespace NodaTime.Test.TimeZones
         [Test]
         public void EmptyIdAccepted()
         {
-            var cache = new TimeZoneCache(new TestDateTimeZoneProvider());
+            var cache = new TimeZoneCache(new TestDateTimeZoneProvider("Test1", "Test2"));
             Assert.IsNull(cache[""]);
         }
 
         [Test]
         public void VersionIdPassThrough()
         {
-            var cache = new TimeZoneCache(new TestDateTimeZoneProvider());
+            var cache = new TimeZoneCache(new TestDateTimeZoneProvider("Test1", "Test2"));
             Assert.AreEqual("test-version", cache.ProviderVersionId);
         }
 
         private class TestDateTimeZoneProvider : IDateTimeZoneProvider
         {
-            public IEnumerable<string> Ids
+            public string LastRequestedId { get; set; }
+            private readonly string[] ids;
+
+            public TestDateTimeZoneProvider(params string[] ids)
             {
-                get { return new[] { "Test1", "Test2" }; }
+                this.ids = ids;
             }
+
+            public IEnumerable<string> Ids { get { return ids; } }
 
             public DateTimeZone ForId(string id)
             {
-                switch (id)
-                {
-                    case "Test1":
-                        return new SingleTransitionZone(Instant.UnixEpoch, 0, 1);
-                    case "Test2":
-                        return new SingleTransitionZone(Instant.UnixEpoch, 0, 2);
-                    default:
-                        throw new InvalidOperationException();
-                }
+                LastRequestedId = id;
+                return new SingleTransitionZone(Instant.UnixEpoch, 0, id.GetHashCode() % 24);
             }
 
             public string VersionId { get { return "test-version"; } }

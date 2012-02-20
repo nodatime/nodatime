@@ -27,7 +27,7 @@ namespace NodaTime.TimeZones
     public sealed class BclTimeZone : DateTimeZone
     {
         /// <summary>
-        /// This is used to cache the last result of a call to <see cref="WrapLocalTimeZoneInfo"/>, but it doesn't
+        /// This is used to cache the last result of a call to <see cref="ForSystemDefault"/>, but it doesn't
         /// matter if it's out of date - we'll just create another wrapper if necessary. It's not *that* expensive to make
         /// a few more wrappers than we need.
         /// </summary>
