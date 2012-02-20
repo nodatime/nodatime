@@ -39,10 +39,16 @@ namespace NodaTime
     ///   <item>
     ///     <description><see cref="AtExactly"/> will throw an exception if the mapping from local time is either ambiguous
     ///     or impossible, i.e. if there is anything other than one instant which maps to the given local time.</description>
+    ///   </item>
+    ///   <item>
     ///     <description><see cref="AtEarlier"/> will throw an exception if the mapping from local time is impossible, i.e.
     ///     if that time is skipped, but will return the earlier of two valid mappings where there is ambiguity.</description>
+    ///   </item>
+    ///   <item>
     ///     <description><see cref="AtLater"/> will throw an exception if the mapping from local time is impossible, i.e.
     ///     if that time is skipped, but will return the later of two valid mappings where there is ambiguity.</description>
+    ///   </item>
+    ///   <item>
     ///     <description><see cref="MapLocalDateTime"/> will not throw any exceptions, but return a <see cref="ZoneLocalMapping"/>
     ///     with complete information about whether the given local time occurs zero times, once or twice. This is the most
     ///     fine-grained approach, which is the fiddliest to use but puts the caller in the most control.</description>
