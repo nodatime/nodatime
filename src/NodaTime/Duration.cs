@@ -184,26 +184,31 @@ namespace NodaTime
 
         /// <summary>
         /// The total number of milliseconds in this duration (so a second and a half would return 1500).
+        /// This value is always truncated towards zero.
         /// </summary>
         public long TotalMilliseconds { get { return ticks / NodaConstants.TicksPerMillisecond; } }
 
         /// <summary>
         /// The total number of seconds in this duration (so a minute and a half would return 90).
+        /// This value is always truncated towards zero.
         /// </summary>
         public long TotalSeconds { get { return ticks / NodaConstants.TicksPerSecond; } }
 
         /// <summary>
         /// The total number of minutes in this duration (so an hour and a half would return 90).
+        /// This value is always truncated towards zero.
         /// </summary>
         public long TotalMinutes { get { return ticks / NodaConstants.TicksPerMinute; } }
 
         /// <summary>
         /// The total number of hours in this duration (so a day and a half would return 36).
+        /// This value is always truncated towards zero.
         /// </summary>
         public long TotalHours { get { return ticks / NodaConstants.TicksPerHour; } }
 
         /// <summary>
-        /// The total number of standard (24 hour) days in this duration (so a day and a half would return 36).
+        /// The total number of standard (24 hour) days in this duration (so a day and a half would return 1).
+        /// This value is always truncated towards zero.
         /// </summary>
         public long StandardDays { get { return ticks / NodaConstants.TicksPerStandardDay; } }
 
