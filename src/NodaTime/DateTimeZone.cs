@@ -22,24 +22,60 @@ using NodaTime.TimeZones;
 namespace NodaTime
 {
     /// <summary>
-    /// Represents a time zone - a mapping between UTC and local time.
+    /// Represents a time zone - a mapping between UTC and local time. A time zone maps UTC instants to local instants
+    ///  - or, equivalently, to the offset from UTC at any particular instant.
     /// </summary>
     /// <remarks>
     /// <para>
-    /// A time zone maps UTC instants to local instants - or, equivalently, to the offset from UTC
-    /// at any particular instant.
-    /// </para>
-    /// <para>The mapping is unambiguous in the "UTC to local" direction, but
+    /// The mapping is unambiguous in the "UTC to local" direction, but
     /// the reverse is not true: when the offset changes, usually due to a Daylight Saving transition,
     /// the change either creates a gap (a period of local time which never occurs in the time zone)
     /// or an ambiguity (a period of local time which occurs twice in the time zone). Mapping back from
     /// local time to an instant requires consideration of how these problematic times will be handled.
     /// </para>
+    /// <para>
+    /// Noda Time provides various options when mapping local time to a specific instant:
+    /// <list type="bullet">
+    ///   <item>
+    ///     <description><see cref="AtExactly"/> will throw an exception if the mapping from local time is either ambiguous
+    ///     or impossible, i.e. if there is anything other than one instant which maps to the given local time.</description>
+    ///     <description><see cref="AtEarlier"/> will throw an exception if the mapping from local time is impossible, i.e.
+    ///     if that time is skipped, but will return the earlier of two valid mappings where there is ambiguity.</description>
+    ///     <description><see cref="AtLater"/> will throw an exception if the mapping from local time is impossible, i.e.
+    ///     if that time is skipped, but will return the later of two valid mappings where there is ambiguity.</description>
+    ///     <description><see cref="MapLocalDateTime"/> will not throw any exceptions, but return a <see cref="ZoneLocalMapping"/>
+    ///     with complete information about whether the given local time occurs zero times, once or twice. This is the most
+    ///     fine-grained approach, which is the fiddliest to use but puts the caller in the most control.</description>
+    ///   </item>
+    /// </list>
+    /// </para>
+    /// <para>
+    /// Noda Time has two sources of time zone data available: a built-in copy of the
+    /// <see href="http://www.iana.org/time-zones">"zoneinfo"</see> (aka tz or Olson) database, and the ability to convert .NET's own
+    /// <see cref="TimeZoneInfo"/>  format into a "native" Noda Time zone. Which of these is most appropriate for you to use
+    /// will very much depend on your exact needs. The zoneinfo database is widely used outside Windows, and has more historical data
+    /// than the Windows-provided information, but if you need to interoperate with other Windows systems by specifying time zone IDs,
+    /// you may wish to stick to the Windows time zones.
+    /// </para>
+    /// <para>The static <see cref="ForId"/> method will fetch a time zone with the given ID; the set of valid IDs is dependent on the
+    /// current time zone provider, which can be replaced with the <see cref="SetProvider"/> method. The default provider is
+    /// a <see cref="TzdbTimeZoneProvider"/> which loads its data from inside the Noda Time assembly; it can be replaced either with another
+    /// TzdbTimeZoneProvider instance which may obtain data from external resources (e.g. to use a more recent version of the zoneinfo database
+    /// than the version of Noda Time you're using) or an instance of <see cref="BclTimeZoneProvider"/>.
+    /// </para>
+    /// <para>Unlike many other date/time APIs, Noda Time does not use the system default time zone without you explicitly asking it to.
+    /// You can fetch the Noda Time representation of the system default time zone using <see cref="GetSystemDefault"/>, which will attempt to
+    /// find an appropriate time zone using the current provider. You should be aware that this may fail, however (in which case the method will return null)
+    /// if no mapping is found. This could occur due to the system having a "custom" time zone installed, or there being no mapping for the BCL zone ID
+    /// to the provider's set of IDs due to the BCL zone ID being added recently. You can always use <see cref="BclTimeZone.ForSystemDefault"/> to convert
+    /// the local <see cref="TimeZoneInfo"/> to guarantee that a representation is available.</para>
     /// </remarks>
     public abstract class DateTimeZone
     {
         /// <summary>
-        /// The ID of the UTC (Coordinated Universal Time) time zone.
+        /// The ID of the UTC (Coordinated Universal Time) time zone. This ID is always valid, whatever provider is
+        /// used. If the provider has its own mapping for UTC, that will be returned by <see cref="ForId" />, but otherwise
+        /// the value of the <see cref="Utc"/> property will be returned.
         /// </summary>
         public const string UtcId = "UTC";
 
@@ -63,7 +99,9 @@ namespace NodaTime
         private readonly long maxOffsetTicks;
 
         /// <summary>
-        ///   Gets the UTC (Coordinated Universal Time) time zone.
+        /// Gets the UTC (Coordinated Universal Time) time zone. This is a single instance which is not
+        /// provider-specific; it may or may not be the value returned by <c>DateTimeZone.ForId("UTC")</c>; that
+        /// depends on whether the current provider has its own mapping for the UTC ID.
         /// </summary>
         /// <value>The UTC <see cref="T:NodaTime.DateTimeZone" />.</value>
         public static DateTimeZone Utc { get { return UtcZone; } }

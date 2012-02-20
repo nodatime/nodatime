@@ -40,9 +40,11 @@ namespace NodaTime.TimeZones
             this.provider = Preconditions.CheckNotNull(provider, "provider");
             this.providerVersionId = provider.VersionId;
             var ids = new List<string>(provider.Ids);
+            bool fakeUtc = false;
             if (!ids.Contains(DateTimeZone.UtcId))
             {
                 ids.Add(DateTimeZone.UtcId);
+                fakeUtc = true;
             }
             ids.Sort();
             // Populate the dictionary with null values meaning "the ID is valid, we haven't fetched the zone yet".
@@ -51,7 +53,10 @@ namespace NodaTime.TimeZones
             {
                 timeZoneMap[id] = null;
             }
-            timeZoneMap[DateTimeZone.UtcId] = DateTimeZone.Utc;
+            if (fakeUtc)
+            {
+                timeZoneMap[DateTimeZone.UtcId] = DateTimeZone.Utc;
+            }
         }
 
         internal string ProviderVersionId { get { return providerVersionId; } }

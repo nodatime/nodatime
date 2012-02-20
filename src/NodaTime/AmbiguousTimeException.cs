@@ -20,8 +20,8 @@ using System;
 namespace NodaTime
 {
     /// <summary>
-    /// Exception thrown to indicate that the specified local time occurs twice
-    /// in a particular time zone due to daylight saving time changes.    
+    /// Exception thrown to indicate that the specified local date/time occurs twice
+    /// in a particular time zone due to daylight saving time changes.
     /// </summary>
     /// <remarks>
     /// <para>

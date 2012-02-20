@@ -33,5 +33,13 @@ namespace NodaTime.Test.TimeZones
                 Assert.AreEqual(zone.Id, provider.MapTimeZoneId(zone));
             }
         }
+
+        [Test]
+        public void UtcMapping()
+        {
+            // Effectively check that we end up with a BclTimeZone when we use the UTC ID.
+            TimeZoneCache cache = new TimeZoneCache(new BclTimeZoneProvider());
+            Assert.IsInstanceOf<BclTimeZone>(cache[DateTimeZone.UtcId]);
+        }
     }
 }
