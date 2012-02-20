@@ -44,7 +44,7 @@ namespace NodaTime.Test.TimeZones
             var nameChangeInstant = Instant.FromUtc(1891, 3, 14, 23, 51, 39);
             var utcChangeInstant = Instant.FromUtc(1911, 3, 10, 23, 51, 39);
 
-            var beforeNameChange = Paris.GetZoneInterval(nameChangeInstant - Duration.One);
+            var beforeNameChange = Paris.GetZoneInterval(nameChangeInstant - Duration.OneTick);
             var afterNameChange = Paris.GetZoneInterval(nameChangeInstant);
             var afterSmallChange = Paris.GetZoneInterval(utcChangeInstant);
 

@@ -340,7 +340,7 @@ namespace NodaTime.Calendars
             int week = GetWeekOfWeekYear(localInstant, year);
             if (week == 1)
             {
-                return GetYear(localInstant + Duration.OneWeek);
+                return GetYear(localInstant + Duration.OneStandardWeek);
             }
             else if (week > 51)
             {

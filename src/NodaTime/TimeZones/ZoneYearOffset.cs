@@ -273,7 +273,7 @@ namespace NodaTime.TimeZones
             Offset offset = GetOffset(standardOffset, savings);
             if (addDay)
             {
-                instant += Duration.OneDay;
+                instant += Duration.OneStandardDay;
             }
 
             // Convert from local time to UTC.
@@ -392,7 +392,7 @@ namespace NodaTime.TimeZones
                 }
                 if (addDay)
                 {
-                    newInstant += Duration.OneDay;
+                    newInstant += Duration.OneStandardDay;
                 }
                 // Convert from local time to UTC.
                 return newInstant.Minus(offset);

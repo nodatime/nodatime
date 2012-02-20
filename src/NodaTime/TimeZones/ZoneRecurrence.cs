@@ -163,7 +163,7 @@ namespace NodaTime.TimeZones
                 instant = calendar.Fields.Year.SetValue(LocalInstant.LocalUnixEpoch, fromYear).Minus(wallOffset);
                 // Back off one tick to account for next recurrence being exactly at the beginning
                 // of the year.
-                instant = instant - Duration.One;
+                instant = instant - Duration.OneTick;
             }
 
             Instant next = yearOffset.Next(instant, standardOffset, previousSavings);
