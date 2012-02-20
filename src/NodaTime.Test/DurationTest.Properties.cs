@@ -69,7 +69,7 @@ namespace NodaTime.Test
                 35 * NodaConstants.TicksPerMinute +
                 14 * NodaConstants.TicksPerHour +
                 2 * NodaConstants.TicksPerStandardDay,
-                duration.Ticks);
+                duration.TotalTicks);
         }
 
         [Test]
@@ -122,7 +122,7 @@ namespace NodaTime.Test
                 35 * NodaConstants.TicksPerMinute +
                 14 * NodaConstants.TicksPerHour +
                 2 * NodaConstants.TicksPerStandardDay),
-                duration.Ticks);
+                duration.TotalTicks);
         }
     }
 }

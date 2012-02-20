@@ -82,18 +82,18 @@ namespace NodaTime.Test.Fields
         [Test]
         public void GetDuration()
         {
-            Assert.AreEqual(0L, TicksPeriodField.Instance.GetDuration(0).Ticks);
-            Assert.AreEqual(1234L, TicksPeriodField.Instance.GetDuration(1234).Ticks);
-            Assert.AreEqual(-1234L, TicksPeriodField.Instance.GetDuration(-1234).Ticks);
+            Assert.AreEqual(0L, TicksPeriodField.Instance.GetDuration(0).TotalTicks);
+            Assert.AreEqual(1234L, TicksPeriodField.Instance.GetDuration(1234).TotalTicks);
+            Assert.AreEqual(-1234L, TicksPeriodField.Instance.GetDuration(-1234).TotalTicks);
         }
 
         [Test]
         public void GetDuration_WithLocalInstant()
         {
             LocalInstant when = new LocalInstant(56789L);
-            Assert.AreEqual(0L, TicksPeriodField.Instance.GetDuration(0, when).Ticks);
-            Assert.AreEqual(1234L, TicksPeriodField.Instance.GetDuration(1234, when).Ticks);
-            Assert.AreEqual(-1234L, TicksPeriodField.Instance.GetDuration(-1234, when).Ticks);
+            Assert.AreEqual(0L, TicksPeriodField.Instance.GetDuration(0, when).TotalTicks);
+            Assert.AreEqual(1234L, TicksPeriodField.Instance.GetDuration(1234, when).TotalTicks);
+            Assert.AreEqual(-1234L, TicksPeriodField.Instance.GetDuration(-1234, when).TotalTicks);
         }
 
         [Test]

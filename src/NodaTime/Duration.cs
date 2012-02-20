@@ -166,7 +166,7 @@ namespace NodaTime
         /// </summary>
         /// <param name="interval">The interval.</param>
         public Duration(Interval interval)
-            : this(interval.Duration.Ticks)
+            : this(interval.Duration.TotalTicks)
         {
         }
         #endregion
@@ -177,10 +177,10 @@ namespace NodaTime
         /// The total number of ticks in the duration.
         /// </summary>
         /// <remarks>
-        /// This property is not prefixed with Total as it's so widely used within Noda Time, and the fundamental
-        /// concept of a duration is "a number of ticks".
+        /// This property effectively represents all of the information within a Duration value; a duration
+        /// is simply a number of ticks.
         /// </remarks>
-        public long Ticks { get { return ticks; } }
+        public long TotalTicks { get { return ticks; } }
 
         /// <summary>
         /// The total number of milliseconds in this duration (so a second and a half would return 1500).
@@ -279,7 +279,7 @@ namespace NodaTime
         /// </returns>
         public override int GetHashCode()
         {
-            return Ticks.GetHashCode();
+            return TotalTicks.GetHashCode();
         }
 
         // TODO(Post-V1): We should *consider* representing this as in the same way as a period.
@@ -289,7 +289,7 @@ namespace NodaTime
         /// <returns>A string representation of this duration.</returns>
         public override string ToString()
         {
-            return Ticks.ToString();
+            return TotalTicks.ToString();
         }
         #endregion  // Object overrides
 
@@ -302,7 +302,7 @@ namespace NodaTime
         /// <returns>A new <see cref="Duration"/> representing the sum of the given values.</returns>
         public static Duration operator +(Duration left, Duration right)
         {
-            return new Duration(left.Ticks + right.Ticks);
+            return new Duration(left.TotalTicks + right.TotalTicks);
         }
 
         /// <summary>
@@ -334,7 +334,7 @@ namespace NodaTime
         /// <returns>A new <see cref="Duration"/> representing the difference of the given values.</returns>
         public static Duration operator -(Duration left, Duration right)
         {
-            return new Duration(left.Ticks - right.Ticks);
+            return new Duration(left.TotalTicks - right.TotalTicks);
         }
 
         /// <summary>
@@ -366,7 +366,7 @@ namespace NodaTime
         /// <returns>A new <see cref="Duration"/> representing the duration divided by the scale.</returns>
         public static Duration operator /(Duration left, long right)
         {
-            return new Duration(left.Ticks / right);
+            return new Duration(left.TotalTicks / right);
         }
 
         /// <summary>
@@ -388,7 +388,7 @@ namespace NodaTime
         /// <returns>A new <see cref="Duration"/> representing the duration multiplied by the scale.</returns>
         public static Duration operator *(Duration left, long right)
         {
-            return new Duration(left.Ticks * right);
+            return new Duration(left.TotalTicks * right);
         }
 
         /// <summary>
@@ -399,7 +399,7 @@ namespace NodaTime
         /// <returns>A new <see cref="Duration"/> representing the duration multiplied by the scale.</returns>
         public static Duration operator *(long left, Duration right)
         {
-            return new Duration(left * right.Ticks);
+            return new Duration(left * right.TotalTicks);
         }
 
         /// <summary>
@@ -497,7 +497,7 @@ namespace NodaTime
         /// <returns>The negative value of this duration</returns>
         public static Duration operator -(Duration duration)
         {
-            return new Duration(-duration.Ticks);
+            return new Duration(-duration.TotalTicks);
         }
 
         /// <summary>
@@ -540,7 +540,7 @@ namespace NodaTime
         /// </returns>
         public int CompareTo(Duration other)
         {
-            return Ticks.CompareTo(other.Ticks);
+            return TotalTicks.CompareTo(other.TotalTicks);
         }
 
         /// <summary>
@@ -579,7 +579,7 @@ namespace NodaTime
         /// </returns>
         public bool Equals(Duration other)
         {
-            return Ticks == other.Ticks;
+            return TotalTicks == other.TotalTicks;
         }
         #endregion
 

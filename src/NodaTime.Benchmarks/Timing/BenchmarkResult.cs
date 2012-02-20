@@ -40,8 +40,8 @@ namespace NodaTime.Benchmarks.Timing
         internal MethodInfo Method { get { return method; } }
         internal long Iterations { get { return iterations; } }
         internal Duration Duration { get { return duration; } }
-        internal long CallsPerSecond { get { return iterations * NodaConstants.TicksPerSecond / duration.Ticks; } }
-        internal long TicksPerCall { get { return Duration.Ticks / iterations; } }
+        internal long CallsPerSecond { get { return iterations * NodaConstants.TicksPerSecond / duration.TotalTicks; } }
+        internal long TicksPerCall { get { return Duration.TotalTicks / iterations; } }
 
         public string ToString(BenchmarkOptions options)
         {
@@ -50,7 +50,7 @@ namespace NodaTime.Benchmarks.Timing
                 return string.Format("Invalid result: duration was 0 ({0} iterations)", Iterations);
             }
             string formatString = options.DisplayRawData ? LongFormatString : ShortFormatString;
-            return string.Format(formatString, Method.Name, CallsPerSecond, Iterations, Duration.Ticks, TicksPerCall);
+            return string.Format(formatString, Method.Name, CallsPerSecond, Iterations, Duration.TotalTicks, TicksPerCall);
         }
     }
 }

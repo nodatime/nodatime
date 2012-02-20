@@ -197,11 +197,11 @@ namespace NodaTime.Test.Fields
         public void Remainder()
         {
             DateTimeField field = new StubDateTimeField();
-            Assert.AreEqual(0L, field.Remainder(new LocalInstant(0L)).Ticks);
-            Assert.AreEqual(29L, field.Remainder(new LocalInstant(29L)).Ticks);
-            Assert.AreEqual(30L, field.Remainder(new LocalInstant(30L)).Ticks);
-            Assert.AreEqual(31L, field.Remainder(new LocalInstant(31L)).Ticks);
-            Assert.AreEqual(0L, field.Remainder(new LocalInstant(60L)).Ticks);
+            Assert.AreEqual(0L, field.Remainder(new LocalInstant(0L)).TotalTicks);
+            Assert.AreEqual(29L, field.Remainder(new LocalInstant(29L)).TotalTicks);
+            Assert.AreEqual(30L, field.Remainder(new LocalInstant(30L)).TotalTicks);
+            Assert.AreEqual(31L, field.Remainder(new LocalInstant(31L)).TotalTicks);
+            Assert.AreEqual(0L, field.Remainder(new LocalInstant(60L)).TotalTicks);
         }
         #endregion
 
