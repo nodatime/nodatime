@@ -202,7 +202,7 @@ namespace NodaTime.Fields
         }
 
         /// <summary>
-        /// Computes the difference between two instants, as measured in the units
+        /// Computes the difference between two local instants, as measured in the units
         /// of this field. Any fractional units are dropped from the result. Calling
         /// GetDifference reverses the effect of calling add. In the following code:
         /// <code>
@@ -221,9 +221,9 @@ namespace NodaTime.Fields
         }
 
         /// <summary>
-        /// Computes the difference between two instants, as measured in the units
+        /// Computes the difference between two local instants, as measured in the units
         /// of this field. Any fractional units are dropped from the result. Calling
-        /// GetDifference reverses the effect of calling add. In the following code:
+        /// GetInt64Difference reverses the effect of calling Add. In the following code:
         /// <code>
         /// LocalInstant instant = ...
         /// long v = ...
