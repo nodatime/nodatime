@@ -347,6 +347,34 @@ namespace NodaTime.Test
             Assert.IsTrue(Period.Between(dt1.Date, dt2.Date).HasDateComponent);
         }
 
+        [Test]
+        public void ToString_Positive()
+        {
+            Period period = Period.FromDays(1) +  Period.FromHours(2);
+            Assert.AreEqual("P1D2H", period.ToString());
+        }
+
+        [Test]
+        public void ToString_Negative()
+        {
+            Period period = Period.FromDays(-1) + Period.FromHours(-2);
+            Assert.AreEqual("P-1D-2H", period.ToString());
+        }
+
+        [Test]
+        public void ToString_Mixed()
+        {
+            Period period = Period.FromDays(-1) + Period.FromHours(2);
+            Assert.AreEqual("P-1D2H", period.ToString());
+        }
+
+        [Test]
+        public void ToString_CompoundZero()
+        {
+            Period period = Period.FromDays(0) + Period.FromHours(0);
+            Assert.AreEqual("P0D0H", period.ToString());
+        }
+
         private void SpecialAssertEqual(Period period1, Period period2)
         {
             Assert.AreEqual(period1.GetHashCode(), period2.GetHashCode());
