@@ -17,6 +17,7 @@
 
 using System;
 using NodaTime.Calendars;
+using NodaTime.TimeZones;
 using NodaTime.Utility;
 
 namespace NodaTime
@@ -223,7 +224,7 @@ namespace NodaTime
         /// <returns>True if the specified value is the same instant in the same time zone; false otherwise.</returns>
         public bool Equals(ZonedDateTime other)
         {
-            return LocalDateTime == other.LocalDateTime && Offset == other.Offset && Zone == other.Zone;
+            return LocalDateTime == other.LocalDateTime && Offset == other.Offset && Zone.Equals(other.Zone);
         }
 
         /// <summary>
@@ -381,6 +382,18 @@ namespace NodaTime
         public DateTimeOffset ToDateTimeOffset()
         {
             return new DateTimeOffset(NodaConstants.DateTimeEpochTicks + LocalInstant.Ticks, Offset.ToTimeSpan());
+        }
+
+        /// <summary>
+        /// Converts a <see cref="DateTimeOffset"/> into a new ZonedDateTime representing the same instant in time, with
+        /// the same offset. The time zone used will be a fixed time zone, which uses the same offset throughout time.
+        /// </summary>
+        /// <param name="dateTimeOffset">Date and time value with an offset.</param>
+        /// <returns>A <see cref="ZonedDateTime"/> value representing the same instant in time as the given <see cref="DateTimeOffset"/>.</returns>
+        public static ZonedDateTime FromDateTimeOffset(DateTimeOffset dateTimeOffset)
+        {
+            return new ZonedDateTime(Instant.FromDateTimeOffset(dateTimeOffset),
+                new FixedDateTimeZone(Offset.FromTimeSpan(dateTimeOffset.Offset)));
         }
 
         /// <summary>

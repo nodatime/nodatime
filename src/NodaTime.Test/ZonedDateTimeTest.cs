@@ -19,6 +19,7 @@ using System;
 using NUnit.Framework;
 using NodaTime.Calendars;
 using NodaTime.Testing.TimeZones;
+using NodaTime.TimeZones;
 
 namespace NodaTime.Test
 {
@@ -196,6 +197,16 @@ namespace NodaTime.Test
             ZonedDateTime converted = zoned.WithZone(newZone);
             Assert.AreEqual(new LocalDateTime(2012, 2, 4, 4, 35, 0), converted.LocalDateTime);
             Assert.AreEqual(converted.ToInstant(), instant);
+        }
+
+        [Test]
+        public void FromDateTimeOffset()
+        {
+            DateTimeOffset dateTimeOffset = new DateTimeOffset(2011, 3, 5, 1, 0, 0, TimeSpan.FromHours(3));
+            DateTimeZone fixedZone = new FixedDateTimeZone(Offset.FromHours(3));
+            ZonedDateTime expected = fixedZone.AtExactly(new LocalDateTime(2011, 3, 5, 1, 0, 0));
+            ZonedDateTime actual = ZonedDateTime.FromDateTimeOffset(dateTimeOffset);
+            Assert.AreEqual(expected, actual);
         }
 
         [Test]

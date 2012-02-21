@@ -158,6 +158,14 @@ namespace NodaTime.Test
         }
 
         [Test]
+        public void FromDateTimeOffset()
+        {
+            DateTimeOffset dateTimeOffset = new DateTimeOffset(2011, 08, 18, 20, 53, 0, TimeSpan.FromHours(5));
+            Instant expected = Instant.FromUtc(2011, 08, 18, 15, 53);
+            Assert.AreEqual(expected, Instant.FromDateTimeOffset(dateTimeOffset));
+        }
+
+        [Test]
         public void FromDateTimeUtc_Invalid()
         {
             Assert.Throws<ArgumentException>(() => Instant.FromDateTimeUtc(new DateTime(2011, 08, 18, 20, 53, 0, DateTimeKind.Local)));
