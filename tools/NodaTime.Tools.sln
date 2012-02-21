@@ -17,7 +17,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "markdown", "markdown", "{C762C267-287B-4B8F-81D1-C92AB1AFF729}"
 	ProjectSection(SolutionItems) = preProject
 		userguide-src\markdown\arithmetic.txt = userguide-src\markdown\arithmetic.txt
-		bcl-conversions.txt = bcl-conversions.txt
+		userguide-src\markdown\bcl-conversions.txt = userguide-src\markdown\bcl-conversions.txt
 		userguide-src\markdown\concepts.txt = userguide-src\markdown\concepts.txt
 		userguide-src\markdown\design.txt = userguide-src\markdown\design.txt
 		userguide-src\markdown\index.txt = userguide-src\markdown\index.txt

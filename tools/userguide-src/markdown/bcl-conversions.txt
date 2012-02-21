@@ -54,13 +54,13 @@ However, the following mappings are reasonable:
 	  <td>`FromDateTime` uses the "local" value of the `DateTime` regardless of kind</td>
     </tr>
   </tbody>
-</thead>
+</table>
 
 Note that there are no conversions to a `DateTime` with a kind of `Local` - this would effectively
 be for the system default time zone, which you should generally be explicit about to start with.
 
-`DateTimeOffset`
-================
+DateTimeOffset
+==============
 
 There's no direct corresponding type to `DateTimeOffset` in Noda Time, but it can be represented as
 a `ZonedDateTime` with a fixed time zone. That's exactly what `ZonedDateTime.FromDateTimeOffset` does,
