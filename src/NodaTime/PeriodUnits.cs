@@ -34,78 +34,78 @@ namespace NodaTime
     public enum PeriodUnits
     {
         /// <summary>
-        /// Year element within a <see cref="Period" />
+        /// Years element within a <see cref="Period" />
         /// </summary>
-        Year = 1,
+        Years = 1,
 
         /// <summary>
-        /// Month element within a <see cref="Period" />
+        /// Months element within a <see cref="Period" />
         /// </summary>
-        Month = 2,
+        Months = 2,
 
         /// <summary>
-        /// Week element within a <see cref="Period" />
+        /// Weeks element within a <see cref="Period" />
         /// </summary>
-        Week = 4,
+        Weeks = 4,
 
         /// <summary>
-        /// Day element within a <see cref="Period" />
+        /// Days element within a <see cref="Period" />
         /// </summary>
-        Day = 8,
+        Days = 8,
 
         /// <summary>
-        /// Compound value representing the combination of <see cref="Year"/>, <see cref="Month"/>, <see cref="Week"/> and <see cref="Day"/>.
+        /// Compound value representing the combination of <see cref="Years"/>, <see cref="Months"/>, <see cref="Weeks"/> and <see cref="Days"/>.
         /// </summary>
-        AllDateUnits = Year | Month | Week | Day,
+        AllDateUnits = Years | Months | Weeks | Days,
 
         /// <summary>
-        /// Compound value representing the combination of <see cref="Year"/>, <see cref="Month"/> and <see cref="Day"/>.
+        /// Compound value representing the combination of <see cref="Years"/>, <see cref="Months"/> and <see cref="Days"/>.
         /// </summary>
-        YearMonthDay = Year | Month | Day,
+        YearMonthDay = Years | Months | Days,
 
         /// <summary>
-        /// Hour element within a <see cref="Period" />
+        /// Hours element within a <see cref="Period" />
         /// </summary>
-        Hour = 16,
+        Hours = 16,
 
         /// <summary>
-        /// Minute element within a <see cref="Period" />
+        /// Minutes element within a <see cref="Period" />
         /// </summary>
-        Minute = 32,
+        Minutes = 32,
 
         /// <summary>
-        /// Second element within a <see cref="Period" />
+        /// Seconds element within a <see cref="Period" />
         /// </summary>
-        Second = 64,
+        Seconds = 64,
 
         /// <summary>
-        /// Millisecond element within a <see cref="Period" />
+        /// Milliseconds element within a <see cref="Period" />
         /// </summary>
-        Millisecond = 128,
+        Milliseconds = 128,
 
         /// <summary>
         /// Tick element within a <see cref="Period" />
         /// </summary>
-        Tick = 256,
+        Ticks = 256,
 
         /// <summary>
-        /// Compound value representing the combination of <see cref="Hour"/>, <see cref="Minute"/> and <see cref="Second"/>.
+        /// Compound value representing the combination of <see cref="Hours"/>, <see cref="Minutes"/> and <see cref="Seconds"/>.
         /// </summary>
-        HourMinuteSecond = Hour | Minute | Second,
+        HourMinuteSecond = Hours | Minutes | Seconds,
 
         /// <summary>
         /// Compound value representing the combination of all time elements.
         /// </summary>
-        AllTimeUnits = Hour | Minute | Second | Millisecond | Tick,
+        AllTimeUnits = Hours | Minutes | Seconds | Milliseconds | Ticks,
 
         /// <summary>
         /// Compound value representing the combination of all possible elements except weeks.
         /// </summary>
-        DateAndTime = Year | Month | Day | Hour | Minute | Second | Millisecond | Tick,
+        DateAndTime = Years | Months | Days | Hours | Minutes | Seconds | Milliseconds | Ticks,
 
         /// <summary>
         /// Compound value representing the combination of all possible elements.
         /// </summary>
-        AllUnits = Year | Month | Week | Day | Hour | Minute | Second | Millisecond | Tick
+        AllUnits = Years | Months | Weeks | Days | Hours | Minutes | Seconds | Milliseconds | Ticks
     }
 }
