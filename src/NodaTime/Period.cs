@@ -18,8 +18,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using NodaTime.Fields;
 using NodaTime.Utility;
+using System.Text;
 
 namespace NodaTime
 {
@@ -141,7 +143,7 @@ namespace NodaTime
         /// <returns>A period consisting of the given number of years.</returns>
         public static Period FromYears(long years)
         {
-            return new Period(PeriodUnits.Year, years);
+            return new Period(PeriodUnits.Years, years);
         }
 
         /// <summary>
@@ -151,7 +153,7 @@ namespace NodaTime
         /// <returns>A period consisting of the given number of months.</returns>
         public static Period FromMonths(long months)
         {
-            return new Period(PeriodUnits.Month, months);
+            return new Period(PeriodUnits.Months, months);
         }
 
         /// <summary>
@@ -161,7 +163,7 @@ namespace NodaTime
         /// <returns>A period consisting of the given number of days.</returns>
         public static Period FromDays(long days)
         {
-            return new Period(PeriodUnits.Day, days);
+            return new Period(PeriodUnits.Days, days);
         }
 
         /// <summary>
@@ -171,7 +173,7 @@ namespace NodaTime
         /// <returns>A period consisting of the given number of hours.</returns>
         public static Period FromHours(long hours)
         {
-            return new Period(PeriodUnits.Hour, hours);
+            return new Period(PeriodUnits.Hours, hours);
         }
 
         /// <summary>
@@ -181,7 +183,7 @@ namespace NodaTime
         /// <returns>A period consisting of the given number of minutes.</returns>
         public static Period FromMinutes(long minutes)
         {
-            return new Period(PeriodUnits.Minute, minutes);
+            return new Period(PeriodUnits.Minutes, minutes);
         }
 
         /// <summary>
@@ -191,7 +193,7 @@ namespace NodaTime
         /// <returns>A period consisting of the given number of seconds.</returns>
         public static Period FromSeconds(long seconds)
         {
-            return new Period(PeriodUnits.Second, seconds);
+            return new Period(PeriodUnits.Seconds, seconds);
         }
 
         /// <summary>
@@ -201,7 +203,7 @@ namespace NodaTime
         /// <returns>A period consisting of the given number of milliseconds.</returns>
         public static Period FromMillseconds(long milliseconds)
         {
-            return new Period(PeriodUnits.Millisecond, milliseconds);
+            return new Period(PeriodUnits.Milliseconds, milliseconds);
         }
 
         /// <summary>
@@ -211,7 +213,7 @@ namespace NodaTime
         /// <returns>A period consisting of the given number of ticks.</returns>
         public static Period FromTicks(long ticks)
         {
-            return new Period(PeriodUnits.Tick, ticks);
+            return new Period(PeriodUnits.Ticks, ticks);
         }
 
         /// <summary>
@@ -228,7 +230,7 @@ namespace NodaTime
             long[] sum = new long[ValuesArraySize];
             left.AddValuesTo(sum);
             right.AddValuesTo(sum);
-            return new Period(PeriodUnits.AllUnits, sum);
+            return new Period(left.Units | right.Units, sum);
         }
 
         /// <summary>
@@ -269,7 +271,7 @@ namespace NodaTime
                 sum[i] = -sum[i];
             }
             minuend.AddValuesTo(sum);
-            return new Period(PeriodUnits.AllUnits, sum);
+            return new Period(minuend.Units | subtrahend.Units, sum);
         }
 
         /// <summary>
@@ -385,7 +387,7 @@ namespace NodaTime
         /// <returns>The period between the two date and time values, using all period fields.</returns>
         public static Period Between(LocalDateTime start, LocalDateTime end)
         {
-            return Between(start, end, PeriodUnits.AllUnits);
+            return Between(start, end, PeriodUnits.DateAndTime);
         }
 
         /// <summary>
@@ -581,15 +583,15 @@ namespace NodaTime
         {
             switch (units)
             {
-                case PeriodUnits.Year: return 0;
-                case PeriodUnits.Month: return 1;
-                case PeriodUnits.Week: return 2;
-                case PeriodUnits.Day: return 3;
-                case PeriodUnits.Hour: return 4;
-                case PeriodUnits.Minute: return 5;
-                case PeriodUnits.Second: return 6;
-                case PeriodUnits.Millisecond: return 7;
-                case PeriodUnits.Tick: return 8;
+                case PeriodUnits.Years: return 0;
+                case PeriodUnits.Months: return 1;
+                case PeriodUnits.Weeks: return 2;
+                case PeriodUnits.Days: return 3;
+                case PeriodUnits.Hours: return 4;
+                case PeriodUnits.Minutes: return 5;
+                case PeriodUnits.Seconds: return 6;
+                case PeriodUnits.Milliseconds: return 7;
+                case PeriodUnits.Ticks: return 8;
                 default: return -1;
             }
         }
@@ -654,6 +656,40 @@ namespace NodaTime
         #endregion
 
         #region Object overrides
+
+        const string UnitAbbreviations = "YMWDHmsSt";
+
+        /// <summary>
+        /// Returns a string of the form "P[nnY][nnM][nnW][nnD][nnH][nnm][nns][nnS][nnt]"
+        /// where each "nn" represents a component value (possibly negative) and the
+        /// Y, M, W, D, H, m, s, S, t characters represent years, months, weeks, days,
+        /// hours, minutes, seconds, milliseconds and ticks respectively. Only those units
+        /// present in the period are represented, but all are represented even if zero. The
+        /// representation always uses the invariant culture's digits, with no separators and with a
+        /// '-' prefix for negative numbers.
+        /// </summary>
+        /// <remarks>
+        /// Due to the possibility of negative numbers, milliseconds and ticks, this result
+        /// does not necessarily comply with an ISO-8601 duration format. However, it is useful
+        /// for debugging purposes. It's possible that the format will change in future releases,
+        /// and should not be depended upon.
+        /// </remarks>
+        /// <returns>A formatted representation of this period.</returns>
+        public override string ToString()
+        {
+            StringBuilder builder = new StringBuilder("P");
+            int numericFields = (int)units;
+            for (int i = 0; i < ValuesArraySize; i++)
+            {
+                if ((numericFields & (1 << i)) != 0)
+                {
+                    builder.Append(values[i].ToString(CultureInfo.InvariantCulture));
+                    builder.Append(UnitAbbreviations[i]);                    
+                }
+            }
+            return builder.ToString();
+        }
+
         /// <summary>
         /// Compares the given object for equality with this one, as per <see cref="Equals(Period)"/>.
         /// </summary>
