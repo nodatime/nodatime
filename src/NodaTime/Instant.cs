@@ -609,6 +609,17 @@ namespace NodaTime
         }
 
         /// <summary>
+        /// Converts a <see cref="DateTimeOffset"/> into a new Instant representing the same instant in time. Note that
+        /// the offset information is not preserved in the returned Instant.
+        /// </summary>
+        /// <returns>An <see cref="Instant"/> value representing the same instant in time as the given <see cref="DateTimeOffset"/>.</returns>
+        /// <param name="dateTimeOffset">Date and time value with an offset.</param>
+        public static Instant FromDateTimeOffset(DateTimeOffset dateTimeOffset)
+        {
+            return new Instant(dateTimeOffset.Ticks - dateTimeOffset.Offset.Ticks - NodaConstants.DateTimeEpochTicks);
+        }
+
+        /// <summary>
         /// Converts a <see cref="DateTime"/> into a new Instant representing the same instant in time.
         /// </summary>
         /// <returns>An <see cref="Instant"/> value representing the same instant in time as the given universal <see cref="DateTime"/>.</returns>

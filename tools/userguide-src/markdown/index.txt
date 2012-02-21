@@ -13,6 +13,7 @@ User guide contents
 - [Design principles](design.html)
 - [Arithmetic](arithmetic.html)
 - [Text handling](text.html)
+- [BCL conversions](bcl-conversions.html)
 - [Mono support](mono.html)
 
 Resources
