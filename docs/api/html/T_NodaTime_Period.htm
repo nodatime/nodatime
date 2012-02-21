@@ -74,7 +74,15 @@
             returns a period with a period type of "all fields".
             </div><br /></td></tr><tr data="property; public; instance; declared"><td><img src="../icons/pubproperty.gif" /></td><td><a href="P_NodaTime_Period_Ticks.htm">Ticks</a></td><td><div class="summary">
             Gets the number of ticks within this period.
-            </div><br /></td></tr><tr data="method; public; instance; inherited"><td><img src="../icons/pubmethod.gif" /></td><td><a href="http://msdn2.microsoft.com/en-us/library/7bxwbwt2" target="_blank">ToString<span class="languageSpecificText"><span class="cs">()</span><span class="cpp">()</span><span class="nu">()</span><span class="fs">()</span></span></a></td><td><div class="summary">Returns a string that represents the current object.</div> (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/e5kfa45b" target="_blank">Object</a>.)<br /></td></tr><tr data="property; public; instance; declared"><td><img src="../icons/pubproperty.gif" /></td><td><a href="P_NodaTime_Period_Units.htm">Units</a></td><td><div class="summary">
+            </div><br /></td></tr><tr data="method; public; instance; declared"><td><img src="../icons/pubmethod.gif" /></td><td><a href="M_NodaTime_Period_ToString.htm">ToString<span class="languageSpecificText"><span class="cs">()</span><span class="cpp">()</span><span class="nu">()</span><span class="fs">()</span></span></a></td><td><div class="summary">
+            Returns a string of the form "P[nnY][nnM][nnW][nnD][nnH][nnm][nns][nnS][nnt]"
+            where each "nn" represents a component value (possibly negative) and the
+            Y, M, W, D, H, m, s, S, t characters represent years, months, weeks, days,
+            hours, minutes, seconds, milliseconds and ticks respectively. Only those units
+            present in the period are represented, but all are represented even if zero. The
+            representation always uses the invariant culture's digits, with no separators and with a
+            '-' prefix for negative numbers.
+            </div> (Overrides <a href="http://msdn2.microsoft.com/en-us/library/e5kfa45b" target="_blank">Object</a>.<a href="http://msdn2.microsoft.com/en-us/library/7bxwbwt2" target="_blank">ToString<span class="languageSpecificText"><span class="cs">()</span><span class="cpp">()</span><span class="nu">()</span><span class="fs">()</span></span></a>.)<br /></td></tr><tr data="property; public; instance; declared"><td><img src="../icons/pubproperty.gif" /></td><td><a href="P_NodaTime_Period_Units.htm">Units</a></td><td><div class="summary">
             Returns the units within this period, such as "year, month, day" or "hour".
             </div><br /></td></tr><tr data="property; public; instance; declared"><td><img src="../icons/pubproperty.gif" /></td><td><a href="P_NodaTime_Period_Weeks.htm">Weeks</a></td><td><div class="summary">
             Gets the number of weeks within this period.
