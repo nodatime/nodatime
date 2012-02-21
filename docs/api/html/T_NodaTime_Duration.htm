@@ -91,15 +91,9 @@
             Multiplies a duration by a number. Friendly alternative to <span class="code">operator*()</span>.
             </div><br /></td></tr><tr data="method; public; static; declared"><td><img src="../icons/pubmethod.gif" /><img src="../icons/static.gif" title="static member" /></td><td><a href="M_NodaTime_Duration_Negate.htm">Negate(Duration)</a></td><td><div class="summary">
             Implements a friendly alternative to the unary negation operator.
-            </div><br /></td></tr><tr data="field; public; static; declared"><td><img src="../icons/pubfield.gif" /><img src="../icons/static.gif" title="static member" /></td><td><a href="F_NodaTime_Duration_NegativeOne.htm">NegativeOne</a></td><td><div class="summary">
+            </div><br /></td></tr><tr data="field; public; static; declared"><td><img src="../icons/pubfield.gif" /><img src="../icons/static.gif" title="static member" /></td><td><a href="F_NodaTime_Duration_NegativeOneTick.htm">NegativeOneTick</a></td><td><div class="summary">
             Represents <span class="selflink">Duration</span> value equal to negative 1 tick. 
             This field is read-only.
-            </div><br /></td></tr><tr data="field; public; static; declared"><td><img src="../icons/pubfield.gif" /><img src="../icons/static.gif" title="static member" /></td><td><a href="F_NodaTime_Duration_One.htm">One</a></td><td><div class="summary">
-            Represents the <span class="selflink">Duration</span> value equals to 1 tick. 
-            This field is read-only.
-            </div><br /></td></tr><tr data="field; public; static; declared"><td><img src="../icons/pubfield.gif" /><img src="../icons/static.gif" title="static member" /></td><td><a href="F_NodaTime_Duration_OneDay.htm">OneDay</a></td><td><div class="summary">
-            Represents the <span class="selflink">Duration</span> value equals to number of ticks in 1 day.
-            This field is constant.
             </div><br /></td></tr><tr data="field; public; static; declared"><td><img src="../icons/pubfield.gif" /><img src="../icons/static.gif" title="static member" /></td><td><a href="F_NodaTime_Duration_OneHour.htm">OneHour</a></td><td><div class="summary">
             Represents the <span class="selflink">Duration</span> value equals to number of ticks in 1 hour.
             This field is constant.
@@ -112,33 +106,41 @@
             </div><br /></td></tr><tr data="field; public; static; declared"><td><img src="../icons/pubfield.gif" /><img src="../icons/static.gif" title="static member" /></td><td><a href="F_NodaTime_Duration_OneSecond.htm">OneSecond</a></td><td><div class="summary">
             Represents the <span class="selflink">Duration</span> value equals to number of ticks in 1 second.
             This field is constant.
-            </div><br /></td></tr><tr data="field; public; static; declared"><td><img src="../icons/pubfield.gif" /><img src="../icons/static.gif" title="static member" /></td><td><a href="F_NodaTime_Duration_OneWeek.htm">OneWeek</a></td><td><div class="summary">
-            Represents the <span class="selflink">Duration</span> value equals to number of ticks in 1 week.
+            </div><br /></td></tr><tr data="field; public; static; declared"><td><img src="../icons/pubfield.gif" /><img src="../icons/static.gif" title="static member" /></td><td><a href="F_NodaTime_Duration_OneStandardDay.htm">OneStandardDay</a></td><td><div class="summary">
+            Represents the <span class="selflink">Duration</span> value equals to number of ticks in 1 day.
             This field is constant.
+            </div><br /></td></tr><tr data="field; public; static; declared"><td><img src="../icons/pubfield.gif" /><img src="../icons/static.gif" title="static member" /></td><td><a href="F_NodaTime_Duration_OneTick.htm">OneTick</a></td><td><div class="summary">
+            Represents the <span class="selflink">Duration</span> value equals to 1 tick. 
+            This field is read-only.
             </div><br /></td></tr><tr data="method; public; instance; declared"><td><img src="../icons/pubmethod.gif" /></td><td><a href="M_NodaTime_Duration_Plus.htm">Plus(Duration)</a></td><td><div class="summary">
             Returns the result of adding another duration to this one, for a fluent alternative to <span class="code">operator+()</span>.
             </div><br /></td></tr><tr data="property; public; instance; declared"><td><img src="../icons/pubproperty.gif" /></td><td><a href="P_NodaTime_Duration_SecondsRemainder.htm">SecondsRemainder</a></td><td><div class="summary">
             The number of seconds within a minute in this duration, in the range [-59, 59].
             </div><br /></td></tr><tr data="property; public; instance; declared"><td><img src="../icons/pubproperty.gif" /></td><td><a href="P_NodaTime_Duration_StandardDays.htm">StandardDays</a></td><td><div class="summary">
-            The total number of standard (24 hour) days in this duration (so a day and a half would return 36).
+            The total number of standard (24 hour) days in this duration (so a day and a half would return 1).
+            This value is always truncated towards zero.
             </div><br /></td></tr><tr data="method; public; static; declared"><td><img src="../icons/pubmethod.gif" /><img src="../icons/static.gif" title="static member" /></td><td><a href="M_NodaTime_Duration_Subtract.htm">Subtract(Duration, Duration)</a></td><td><div class="summary">
             Subtracts one duration from another. Friendly alternative to <span class="code">operator-()</span>.
             </div><br /></td></tr><tr data="method; public; static; declared"><td><img src="../icons/puboperator.gif" /><img src="../icons/static.gif" title="static member" /></td><td><a href="M_NodaTime_Duration_op_Subtraction.htm">Subtraction(Duration, Duration)</a></td><td><div class="summary">
             Implements the operator - (subtraction).
-            </div><br /></td></tr><tr data="property; public; instance; declared"><td><img src="../icons/pubproperty.gif" /></td><td><a href="P_NodaTime_Duration_Ticks.htm">Ticks</a></td><td><div class="summary">
-            The total number of ticks in the duration.
             </div><br /></td></tr><tr data="property; public; instance; declared"><td><img src="../icons/pubproperty.gif" /></td><td><a href="P_NodaTime_Duration_TicksRemainder.htm">TicksRemainder</a></td><td><div class="summary">
             The number of ticks within a millisecond in this duration, in the range [-9999, 9999].
             </div><br /></td></tr><tr data="method; public; instance; declared"><td><img src="../icons/pubmethod.gif" /></td><td><a href="M_NodaTime_Duration_ToString.htm">ToString<span class="languageSpecificText"><span class="cs">()</span><span class="cpp">()</span><span class="nu">()</span><span class="fs">()</span></span></a></td><td><div class="summary">
             Gets the value as a <a href="http://msdn2.microsoft.com/en-us/library/s1wwdcbf" target="_blank">String</a> showing the number of ticks represented by this duration.
             </div> (Overrides <a href="http://msdn2.microsoft.com/en-us/library/aey3s293" target="_blank">ValueType</a>.<a href="http://msdn2.microsoft.com/en-us/library/wb77sz3h" target="_blank">ToString<span class="languageSpecificText"><span class="cs">()</span><span class="cpp">()</span><span class="nu">()</span><span class="fs">()</span></span></a>.)<br /></td></tr><tr data="property; public; instance; declared"><td><img src="../icons/pubproperty.gif" /></td><td><a href="P_NodaTime_Duration_TotalHours.htm">TotalHours</a></td><td><div class="summary">
             The total number of hours in this duration (so a day and a half would return 36).
+            This value is always truncated towards zero.
             </div><br /></td></tr><tr data="property; public; instance; declared"><td><img src="../icons/pubproperty.gif" /></td><td><a href="P_NodaTime_Duration_TotalMilliseconds.htm">TotalMilliseconds</a></td><td><div class="summary">
             The total number of milliseconds in this duration (so a second and a half would return 1500).
+            This value is always truncated towards zero.
             </div><br /></td></tr><tr data="property; public; instance; declared"><td><img src="../icons/pubproperty.gif" /></td><td><a href="P_NodaTime_Duration_TotalMinutes.htm">TotalMinutes</a></td><td><div class="summary">
             The total number of minutes in this duration (so an hour and a half would return 90).
+            This value is always truncated towards zero.
             </div><br /></td></tr><tr data="property; public; instance; declared"><td><img src="../icons/pubproperty.gif" /></td><td><a href="P_NodaTime_Duration_TotalSeconds.htm">TotalSeconds</a></td><td><div class="summary">
             The total number of seconds in this duration (so a minute and a half would return 90).
+            This value is always truncated towards zero.
+            </div><br /></td></tr><tr data="property; public; instance; declared"><td><img src="../icons/pubproperty.gif" /></td><td><a href="P_NodaTime_Duration_TotalTicks.htm">TotalTicks</a></td><td><div class="summary">
+            The total number of ticks in the duration.
             </div><br /></td></tr><tr data="method; public; instance; declared"><td><img src="../icons/pubmethod.gif" /></td><td><a href="M_NodaTime_Duration_ToTimeSpan.htm">ToTimeSpan<span class="languageSpecificText"><span class="cs">()</span><span class="cpp">()</span><span class="nu">()</span><span class="fs">()</span></span></a></td><td><div class="summary">
             Returns a <a href="http://msdn2.microsoft.com/en-us/library/269ew577" target="_blank">TimeSpan</a> that represents the same number of ticks as thi
             <span class="selflink">Duration</span>.
