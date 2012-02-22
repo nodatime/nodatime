@@ -8,9 +8,11 @@
   </head>
   <body onload="prettyPrint()">
     <h1>BCL Conversions</h1>
-    <p>Various Noda Time types have "broadly similar" types in the .NET framework. Where appropriate,
-conversions are provided - we have no illusions that you'll be able to use Noda Time for <em>everything</em>.
-Noda Time attempts to shield you from using "the wrong kind of <code>DateTime</code>"</p>
+    <p>Various Noda Time types have "broadly similar" types in the .NET
+framework's Base Class Library (BCL). Where appropriate,
+conversions are provided - we have no illusions that you'll be able 
+to use Noda Time for <em>everything</em>. Noda Time attempts to shield you
+from using "the wrong kind of <code>DateTime</code>"</p>
 
 <p>All BCL type conversions to Noda Time types which have implicit calendar systems (<code>LocalDateTime</code> etc) use
 the ISO-8601 calendar.</p>
@@ -110,7 +112,41 @@ mechanism:</p>
 </code></pre></li>
 </ul>
 
-<p>There are various pros and cons involved in using the zoneinfo time zones vs the BCL ones.</p>
+<p>There are various pros and cons involved in using the zoneinfo time
+zones vs the BCL ones. In particular:</p>
+
+<ul>
+<li>If you need to interoperate with non-Windows systems, they're
+likely to use the zoneinfo IDs</li>
+<li>If you need to interoperate with Windows systems, they're likely
+to use the Windows IDs</li>
+<li>zoneinfo provides more historical information</li>
+<li>If you're running Noda Time under Windows, change to BCL time zone
+information will become available automatically</li>
+<li>Using the zoneinfo database allows you to decide exactly when you
+update your time zone information (e.g. if you need to check that
+all the zones still have the same IDs, or even to find zones which
+have changed in a meaningful way for your data)</li>
+</ul>
+
+<h1>DayOfWeek</h1>
+
+<p>For every day other than Sunday, <code>DayOfWeek</code> and
+<a href="../api/html/T_NodaTime_IsoDayOfWeek.htm"><code>IsoDayOfWeek</code></a> have the same
+value. However, <code>DayOfWeek</code> uses 0 for Sunday, and <code>IsoDayOfWeek</code>
+uses 7 (as per ISO-8601). Converting between the two isn't
+difficult, but there are utility methods in
+<a href="../api/html/T_NodaTime_Utility_BclConversions.htm"><code>BclConversions</code></a> to
+make things slightly smoother:</p>
+
+<pre class="prettyprint"><code>DayOfWeek bcl = BclConversions.ToDayOfWeek(IsoDayOfWeek.Wednesday);
+IsoDayOfWeek iso = BclConversions.ToIsoDayOfWeek(DayOfWeek.Wednesday);
+</code></pre>
+
+<h1>Any others?</h1>
+
+<p>If you have other requirements around BCL conversions, please ask on
+the <a href="http://groups.google.com/group/noda-time">mailing list</a>.</p>
 
   </body>
 </html>
