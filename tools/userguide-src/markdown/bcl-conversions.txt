@@ -18,7 +18,7 @@ However, the following mappings are reasonable:
   <thead>
     <tr>
       <td>Noda Time type</td>
-      <td>`DateTime` kind</td>
+      <td>DateTime kind</td>
       <td>Noda Time to BCL conversion</td>
       <td>BCL to Noda Time conversion</td>
 	  <td>Notes</td>
@@ -26,32 +26,32 @@ However, the following mappings are reasonable:
   </thead>
   <tbody>
     <tr>
-	  <td>[`Instant`](noda-type://NodaTime.Instant)</td>
+	  <td>Instant</td>
 	  <td>Universal</td>
-	  <td>`Instant.ToDateTimeUtc`</td>
-	  <td>`Instant.FromDateTimeUtc`</td>
+	  <td>Instant.ToDateTimeUtc</td>
+	  <td>Instant.FromDateTimeUtc</td>
 	  <td></td>
     </tr>
     <tr>
-	  <td>[`ZonedDateTime`](noda-type://NodaTime.ZonedDateTime)</td>
+	  <td>ZonedDateTime</td>
 	  <td>Universal</td>
-	  <td>`ZonedDateTime.ToDateTimeUtc`</td>
+	  <td>ZonedDateTime.ToDateTimeUtc</td>
 	  <td>n/a</td>
 	  <td>This preserves the instant, but loses the time zone information</td>
     </tr>
     <tr>
-	  <td>[`ZonedDateTime`](noda-type://NodaTime.ZonedDateTime)</td>
+	  <td>ZonedDateTime</td>
 	  <td>Unspecified</td>
-	  <td>`ZonedDateTime.ToDateTimeUnspecified`</td>
+	  <td>ZonedDateTime.ToDateTimeUnspecified</td>
 	  <td>n/a</td>
 	  <td>This preserves the local time, but loses the time zone information</td>
     </tr>
     <tr>
-	  <td>[`LocalDateTime`](noda-type://NodaTime.LocalDateTime)</td>
+	  <td>LocalDateTime</td>
 	  <td>Unspecified</td>
-	  <td>`LocalDateTime.ToDateTimeUnspecified`</td>
-	  <td>`LocalDateTime.FromDateTime`</td>
-	  <td>`FromDateTime` uses the "local" value of the `DateTime` regardless of kind</td>
+	  <td>LocalDateTime.ToDateTimeUnspecified</td>
+	  <td>LocalDateTime.FromDateTime</td>
+	  <td>FromDateTime uses the "local" value of the DateTime regardless of kind</td>
     </tr>
   </tbody>
 </table>
@@ -87,4 +87,20 @@ if the `TimeSpan` has a magnitude of 24 hours or more.
 TimeZoneInfo
 ============
 
-TBD
+The main time zone type in Noda Time is [`DateTimeZone`](noda-type://NodaTime.DateTimeZone) and by default this will use the
+zoneinfo time zone database. However, if you want to create a `DateTimeZone` which corresponds exactly to a particular `TimeZoneInfo`,
+there are some options using [`BclTimeZone`](noda-type://NodaTime.TimeZones.BclTimeZone):
+
+- You can call `DateTimeZone.SetProvider(new BclTimeZoneProvider())` which will replace the zoneinfo provider with one
+  which simply uses the system time zones provided by the BCL. This is appropriate if you're going to work with various time zones,
+  and you only ever care about the BCL versions.
+- To convert a single time zone, you can can `BclTimeZone.FromTimeZoneInfo`
+- If you just need the system default time zone, you can call `BclTimeZone.ForSystemDefault`. There are some circumstances where
+  using `DateTimeZone.GetSystemDefault` may return null, indicating that there's no known mapping from the local BCL time zone
+  ID to the current provider's time zone database. Using `BclTimeZone.ForSystemDefault()` *always* returns a converted version
+  of the BCL time zone. This doesn't require that you've set the BCL time zone provider, and can be used to provide a fallback
+  mechanism:
+
+        DateTimeZone systemZone = DateTimeZone.GetSystemDefault() ?? BclTimeZone.ForSystemDefault();
+
+There are various pros and cons involved in using the zoneinfo time zones vs the BCL ones.
