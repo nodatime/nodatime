@@ -15,6 +15,7 @@ User guide contents
 - [Text handling](text.html)
 - [BCL conversions](bcl-conversions.html)
 - [Mono support](mono.html)
+- [Limitations](limitations.html)
 
 Resources
 ---------
