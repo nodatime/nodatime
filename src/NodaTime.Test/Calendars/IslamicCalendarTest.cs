@@ -42,14 +42,14 @@ namespace NodaTime.Test.Calendars
             Assert.AreEqual(1364, ldt.YearOfEra);
 
             Assert.AreEqual(1364, ldt.Year);
-            Assert.AreEqual(12, ldt.MonthOfYear);
-            Assert.AreEqual(6, ldt.DayOfMonth);
+            Assert.AreEqual(12, ldt.Month);
+            Assert.AreEqual(6, ldt.Day);
             Assert.AreEqual(IsoDayOfWeek.Monday, ldt.IsoDayOfWeek);
             Assert.AreEqual(6 * 30 + 5 * 29 + 6, ldt.DayOfYear);
 
-            Assert.AreEqual(0, ldt.HourOfDay);
-            Assert.AreEqual(0, ldt.MinuteOfHour);
-            Assert.AreEqual(0, ldt.SecondOfMinute);
+            Assert.AreEqual(0, ldt.Hour);
+            Assert.AreEqual(0, ldt.Minute);
+            Assert.AreEqual(0, ldt.Second);
             Assert.AreEqual(0, ldt.TickOfSecond);
         }
 
@@ -64,13 +64,13 @@ namespace NodaTime.Test.Calendars
             Assert.AreEqual(1426, ldt.YearOfEra);
 
             Assert.AreEqual(1426, ldt.Year);
-            Assert.AreEqual(10, ldt.MonthOfYear);
-            Assert.AreEqual(24, ldt.DayOfMonth);
+            Assert.AreEqual(10, ldt.Month);
+            Assert.AreEqual(24, ldt.Day);
             Assert.AreEqual(IsoDayOfWeek.Saturday, ldt.IsoDayOfWeek);
             Assert.AreEqual(5 * 30 + 4 * 29 + 24, ldt.DayOfYear);
-            Assert.AreEqual(0, ldt.HourOfDay);
-            Assert.AreEqual(0, ldt.MinuteOfHour);
-            Assert.AreEqual(0, ldt.SecondOfMinute);
+            Assert.AreEqual(0, ldt.Hour);
+            Assert.AreEqual(0, ldt.Minute);
+            Assert.AreEqual(0, ldt.Second);
             Assert.AreEqual(0, ldt.TickOfSecond);
         }
 
@@ -81,13 +81,13 @@ namespace NodaTime.Test.Calendars
             Assert.AreEqual(Era.AnnoHegirae, ldt.Era);
 
             Assert.AreEqual(1426, ldt.Year);
-            Assert.AreEqual(12, ldt.MonthOfYear);
-            Assert.AreEqual(24, ldt.DayOfMonth);
+            Assert.AreEqual(12, ldt.Month);
+            Assert.AreEqual(24, ldt.Day);
             Assert.AreEqual(IsoDayOfWeek.Tuesday, ldt.IsoDayOfWeek);
             Assert.AreEqual(6 * 30 + 5 * 29 + 24, ldt.DayOfYear);
-            Assert.AreEqual(0, ldt.HourOfDay);
-            Assert.AreEqual(0, ldt.MinuteOfHour);
-            Assert.AreEqual(0, ldt.SecondOfMinute);
+            Assert.AreEqual(0, ldt.Hour);
+            Assert.AreEqual(0, ldt.Minute);
+            Assert.AreEqual(0, ldt.Second);
             Assert.AreEqual(0, ldt.TickOfSecond);
         }
 
@@ -304,8 +304,8 @@ namespace NodaTime.Test.Calendars
             {
                 Assert.AreEqual(bclDirect, islamicDate.LocalDateTime.ToDateTimeUnspecified());
                 Assert.AreEqual(hijri.GetYear(bclDirect), islamicDate.Year, i.ToString());
-                Assert.AreEqual(hijri.GetMonth(bclDirect), islamicDate.MonthOfYear);
-                Assert.AreEqual(hijri.GetDayOfMonth(bclDirect), islamicDate.DayOfMonth);
+                Assert.AreEqual(hijri.GetMonth(bclDirect), islamicDate.Month);
+                Assert.AreEqual(hijri.GetDayOfMonth(bclDirect), islamicDate.Day);
                 bclDirect = hijri.AddDays(bclDirect, 1);
                 islamicDate = islamicDate.PlusDays(1);
             }

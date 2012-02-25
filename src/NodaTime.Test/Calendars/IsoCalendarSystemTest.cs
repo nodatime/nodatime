@@ -47,20 +47,20 @@ namespace NodaTime.Test.Calendars
             Assert.AreEqual(19, epoch.CenturyOfEra);
             Assert.AreEqual(1970, epoch.WeekYear);
             Assert.AreEqual(1, epoch.WeekOfWeekYear);
-            Assert.AreEqual(1, epoch.MonthOfYear);
-            Assert.AreEqual(1, epoch.DayOfMonth);
+            Assert.AreEqual(1, epoch.Month);
+            Assert.AreEqual(1, epoch.Day);
             Assert.AreEqual(1, epoch.DayOfYear);
             Assert.AreEqual(IsoDayOfWeek.Thursday, epoch.IsoDayOfWeek);
             Assert.AreEqual(4, epoch.DayOfWeek);
             Assert.AreEqual(Era.Common, epoch.Era);
-            Assert.AreEqual(0, epoch.HourOfDay);
-            Assert.AreEqual(0, epoch.MinuteOfHour);
-            Assert.AreEqual(0, epoch.SecondOfMinute);
+            Assert.AreEqual(0, epoch.Hour);
+            Assert.AreEqual(0, epoch.Minute);
+            Assert.AreEqual(0, epoch.Second);
             Assert.AreEqual(0, epoch.SecondOfDay);
-            Assert.AreEqual(0, epoch.MillisecondOfSecond);
+            Assert.AreEqual(0, epoch.Millisecond);
             Assert.AreEqual(0, epoch.MillisecondOfDay);
             Assert.AreEqual(0, epoch.TickOfDay);
-            Assert.AreEqual(0, epoch.TickOfMillisecond);
+            Assert.AreEqual(0, epoch.Tick);
             Assert.AreEqual(0, epoch.TickOfSecond);
         }
 
@@ -75,20 +75,20 @@ namespace NodaTime.Test.Calendars
             Assert.AreEqual(20, now.CenturyOfEra);
             Assert.AreEqual(2009, now.WeekYear);
             Assert.AreEqual(48, now.WeekOfWeekYear);
-            Assert.AreEqual(11, now.MonthOfYear);
-            Assert.AreEqual(27, now.DayOfMonth);
+            Assert.AreEqual(11, now.Month);
+            Assert.AreEqual(27, now.Day);
             Assert.AreEqual(TimeOfGreatAchievement.DayOfYear, now.DayOfYear);
             Assert.AreEqual(IsoDayOfWeek.Friday, now.IsoDayOfWeek);
             Assert.AreEqual(5, now.DayOfWeek);
             Assert.AreEqual(Era.Common, now.Era);
-            Assert.AreEqual(18, now.HourOfDay);
-            Assert.AreEqual(38, now.MinuteOfHour);
-            Assert.AreEqual(25, now.SecondOfMinute);
+            Assert.AreEqual(18, now.Hour);
+            Assert.AreEqual(38, now.Minute);
+            Assert.AreEqual(25, now.Second);
             Assert.AreEqual((18 * 60 * 60) + (38 * 60) + 25, now.SecondOfDay);
-            Assert.AreEqual(345, now.MillisecondOfSecond);
+            Assert.AreEqual(345, now.Millisecond);
             Assert.AreEqual(345 + now.SecondOfDay * 1000, now.MillisecondOfDay);
             Assert.AreEqual(now.MillisecondOfDay * 10000L + 8765, now.TickOfDay);
-            Assert.AreEqual(8765, now.TickOfMillisecond);
+            Assert.AreEqual(8765, now.Tick);
             Assert.AreEqual(3458765, now.TickOfSecond);
         }
 

@@ -265,7 +265,7 @@ namespace NodaTime
         /// <summary>
         /// Gets the month of this local date and time within the year.
         /// </summary>
-        public int MonthOfYear { get { return calendar.Fields.MonthOfYear.GetValue(localInstant); } }
+        public int Month { get { return calendar.Fields.MonthOfYear.GetValue(localInstant); } }
 
         /// <summary>
         /// Gets the week within the WeekYear. See <see cref="WeekYear"/> for more details.
@@ -280,7 +280,7 @@ namespace NodaTime
         /// <summary>
         /// Gets the day of this local date and time within the month.
         /// </summary>
-        public int DayOfMonth { get { return calendar.Fields.DayOfMonth.GetValue(localInstant); } }
+        public int Day { get { return calendar.Fields.DayOfMonth.GetValue(localInstant); } }
 
         /// <summary>
         /// Gets the week day of this local date and time expressed as an <see cref="NodaTime.IsoDayOfWeek"/> value,
@@ -301,7 +301,7 @@ namespace NodaTime
         /// <summary>
         /// Gets the hour of day of this local date and time, in the range 0 to 23 inclusive.
         /// </summary>
-        public int HourOfDay { get { return calendar.Fields.HourOfDay.GetValue(localInstant); } }
+        public int Hour { get { return calendar.Fields.HourOfDay.GetValue(localInstant); } }
 
         /// <summary>
         /// Gets the hour of the half-day of this local date and time, in the range 1 to 12 inclusive.
@@ -311,12 +311,12 @@ namespace NodaTime
         /// <summary>
         /// Gets the minute of this local date and time, in the range 0 to 59 inclusive.
         /// </summary>
-        public int MinuteOfHour { get { return calendar.Fields.MinuteOfHour.GetValue(localInstant); } }
+        public int Minute { get { return calendar.Fields.MinuteOfHour.GetValue(localInstant); } }
 
         /// <summary>
         /// Gets the second of this local date and time within the minute, in the range 0 to 59 inclusive.
         /// </summary>
-        public int SecondOfMinute { get { return calendar.Fields.SecondOfMinute.GetValue(localInstant); } }
+        public int Second { get { return calendar.Fields.SecondOfMinute.GetValue(localInstant); } }
 
         /// <summary>
         /// Gets the second of this local date and time within the day, in the range 0 to 86,399 inclusive.
@@ -326,7 +326,7 @@ namespace NodaTime
         /// <summary>
         /// Gets the millisecond of this local date and time within the second, in the range 0 to 999 inclusive.
         /// </summary>
-        public int MillisecondOfSecond { get { return calendar.Fields.MillisecondOfSecond.GetValue(localInstant); } }
+        public int Millisecond { get { return calendar.Fields.MillisecondOfSecond.GetValue(localInstant); } }
 
         /// <summary>
         /// Gets the millisecond of this local date and time within the day, in the range 0 to 86,399,999 inclusive.
@@ -336,7 +336,7 @@ namespace NodaTime
         /// <summary>
         /// Gets the tick of this local date and time within the millisecond, in the range 0 to 9,999 inclusive.
         /// </summary>
-        public int TickOfMillisecond { get { return calendar.Fields.TickOfMillisecond.GetValue(localInstant); } }
+        public int Tick { get { return calendar.Fields.TickOfMillisecond.GetValue(localInstant); } }
 
         /// <summary>
         /// Gets the tick of this local time within the second, in the range 0 to 9,999,999 inclusive.

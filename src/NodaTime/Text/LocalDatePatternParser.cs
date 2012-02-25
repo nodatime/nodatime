@@ -49,9 +49,9 @@ namespace NodaTime.Text
             { 'Y', SteppedPatternBuilder<LocalDate, LocalDateParseBucket>.HandlePaddedField
                        (5, PatternFields.YearOfEra, 0, 99999, value => value.YearOfEra, (bucket, value) => bucket.YearOfEra = value) },
             { 'M', DatePatternHelper.CreateMonthOfYearHandler<LocalDate, LocalDateParseBucket>
-                        (value => value.MonthOfYear, (bucket, value) => bucket.MonthOfYearText = value, (bucket, value) => bucket.MonthOfYearNumeric = value) },
+                        (value => value.Month, (bucket, value) => bucket.MonthOfYearText = value, (bucket, value) => bucket.MonthOfYearNumeric = value) },
             { 'd', DatePatternHelper.CreateDayHandler<LocalDate, LocalDateParseBucket>
-                        (value => value.DayOfMonth, value => value.DayOfWeek, (bucket, value) => bucket.DayOfMonth = value, (bucket, value) => bucket.DayOfWeek = value) },
+                        (value => value.Day, value => value.DayOfWeek, (bucket, value) => bucket.DayOfMonth = value, (bucket, value) => bucket.DayOfWeek = value) },
         };
 
         internal LocalDatePatternParser(LocalDate templateValue)
@@ -174,7 +174,7 @@ namespace NodaTime.Text
                     return failure;
                 }
 
-                int day = IsFieldUsed(usedFields, PatternFields.DayOfMonth) ? DayOfMonth : templateValue.DayOfMonth;
+                int day = IsFieldUsed(usedFields, PatternFields.DayOfMonth) ? DayOfMonth : templateValue.Day;
                 if (day > calendar.GetDaysInMonth(Year, MonthOfYearNumeric))
                 {
                     return ParseResult<LocalDate>.DayOfMonthOutOfRange(day, MonthOfYearNumeric, Year);
@@ -286,7 +286,7 @@ namespace NodaTime.Text
                         // No need to change MonthOfYearNumeric - this was just a check
                         break;
                     case 0:
-                        MonthOfYearNumeric = templateValue.MonthOfYear;
+                        MonthOfYearNumeric = templateValue.Month;
                         break;
                 }
                 if (MonthOfYearNumeric > calendar.GetMaxMonth(Year))

@@ -69,8 +69,8 @@ namespace NodaTime.Test
             LocalDateTime isoEpoch = new LocalDateTime(1970, 1, 1, 0, 0, 0);
             LocalDateTime julianEpoch = isoEpoch.WithCalendar(CalendarSystem.GetJulianCalendar(4));
             Assert.AreEqual(1969, julianEpoch.Year);
-            Assert.AreEqual(12, julianEpoch.MonthOfYear);
-            Assert.AreEqual(19, julianEpoch.DayOfMonth);
+            Assert.AreEqual(12, julianEpoch.Month);
+            Assert.AreEqual(19, julianEpoch.Day);
             Assert.AreEqual(isoEpoch.TimeOfDay, julianEpoch.TimeOfDay);
         }
 
