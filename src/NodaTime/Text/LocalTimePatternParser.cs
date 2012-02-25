@@ -42,14 +42,14 @@ namespace NodaTime.Text
             { 'h', SteppedPatternBuilder<LocalTime, LocalTimeParseBucket>.HandlePaddedField
                        (2, PatternFields.Hours12, 1, 12, value => value.ClockHourOfHalfDay, (bucket, value) => bucket.Hours12 = value) },
             { 'H', SteppedPatternBuilder<LocalTime, LocalTimeParseBucket>.HandlePaddedField
-                       (2, PatternFields.Hours24, 0, 23, value => value.HourOfDay, (bucket, value) => bucket.Hours24 = value) },
+                       (2, PatternFields.Hours24, 0, 23, value => value.Hour, (bucket, value) => bucket.Hours24 = value) },
             { 'm', SteppedPatternBuilder<LocalTime, LocalTimeParseBucket>.HandlePaddedField
-                       (2, PatternFields.Minutes, 0, 59, value => value.MinuteOfHour, (bucket, value) => bucket.Minutes = value) },
+                       (2, PatternFields.Minutes, 0, 59, value => value.Minute, (bucket, value) => bucket.Minutes = value) },
             { 's', SteppedPatternBuilder<LocalTime, LocalTimeParseBucket>.HandlePaddedField
-                       (2, PatternFields.Seconds, 0, 59, value => value.SecondOfMinute, (bucket, value) => bucket.Seconds = value) },
+                       (2, PatternFields.Seconds, 0, 59, value => value.Second, (bucket, value) => bucket.Seconds = value) },
             { 'f', TimePatternHelper.CreateFractionHandler<LocalTime, LocalTimeParseBucket>(7, value => value.TickOfSecond, (bucket, value) => bucket.FractionalSeconds = value) },
             { 'F', TimePatternHelper.CreateFractionHandler<LocalTime, LocalTimeParseBucket>(7, value => value.TickOfSecond, (bucket, value) => bucket.FractionalSeconds = value) },
-            { 't', TimePatternHelper.CreateAmPmHandler<LocalTime, LocalTimeParseBucket>(time => time.HourOfDay, (bucket, value) => bucket.AmPm = value) }
+            { 't', TimePatternHelper.CreateAmPmHandler<LocalTime, LocalTimeParseBucket>(time => time.Hour, (bucket, value) => bucket.AmPm = value) }
         };
 
         public LocalTimePatternParser(LocalTime templateValue)
@@ -174,7 +174,7 @@ namespace NodaTime.Text
             {
                 if (AmPm == 2)
                 {
-                    AmPm = templateValue.HourOfDay / 12;
+                    AmPm = templateValue.Hour / 12;
                 }
                 int hour;
                 ParseResult<LocalTime> failure = DetermineHour(usedFields, out hour);
@@ -182,8 +182,8 @@ namespace NodaTime.Text
                 {
                     return failure;
                 }
-                int minutes = IsFieldUsed(usedFields, PatternFields.Minutes) ? Minutes : templateValue.MinuteOfHour;
-                int seconds = IsFieldUsed(usedFields, PatternFields.Seconds) ? Seconds : templateValue.SecondOfMinute;
+                int minutes = IsFieldUsed(usedFields, PatternFields.Minutes) ? Minutes : templateValue.Minute;
+                int seconds = IsFieldUsed(usedFields, PatternFields.Seconds) ? Seconds : templateValue.Second;
                 int fraction = IsFieldUsed(usedFields, PatternFields.FractionalSeconds) ? FractionalSeconds : templateValue.TickOfSecond;
                 return ParseResult<LocalTime>.ForValue(LocalTime.FromHourMinuteSecondTick(hour, minutes, seconds, fraction));
             }
@@ -218,14 +218,14 @@ namespace NodaTime.Text
                         break;
                     case PatternFields.Hours12:
                         // Preserve AM/PM from template value
-                        hour = (Hours12 % 12) + (templateValue.HourOfDay / 12) * 12;
+                        hour = (Hours12 % 12) + (templateValue.Hour / 12) * 12;
                         break;
                     case PatternFields.AmPm:
                         // Preserve 12-hour hour of day from template value, use specified AM/PM
-                        hour = (templateValue.HourOfDay % 12) + AmPm * 12;
+                        hour = (templateValue.Hour % 12) + AmPm * 12;
                         break;
                     case 0:
-                        hour = templateValue.HourOfDay;
+                        hour = templateValue.Hour;
                         break;
                 }
                 return null;

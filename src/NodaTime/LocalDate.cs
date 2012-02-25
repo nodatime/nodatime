@@ -103,10 +103,10 @@ namespace NodaTime
         public int Year { get { return localTime.Year; } }
 
         /// <summary>Gets the month of this local date within the year.</summary>
-        public int MonthOfYear { get { return localTime.MonthOfYear; } }
+        public int Month { get { return localTime.Month; } }
 
         /// <summary>Gets the day of this local date within the month.</summary>
-        public int DayOfMonth { get { return localTime.DayOfMonth; } }
+        public int Day { get { return localTime.Day; } }
 
         /// <summary>
         /// Week day of this local date expressed as an <see cref="NodaTime.IsoDayOfWeek"/> value,

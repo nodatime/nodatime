@@ -67,13 +67,13 @@ namespace NodaTime.Benchmarks
         [Benchmark]
         public void Month()
         {
-            SampleLocalDateTime.MonthOfYear.Consume();
+            SampleLocalDateTime.Month.Consume();
         }
 
         [Benchmark]
         public void DayOfMonth()
         {
-            SampleLocalDateTime.DayOfMonth.Consume();
+            SampleLocalDateTime.Day.Consume();
         }
 
         [Benchmark]
@@ -91,31 +91,31 @@ namespace NodaTime.Benchmarks
         [Benchmark]
         public void Hour()
         {
-            SampleLocalDateTime.HourOfDay.Consume();
+            SampleLocalDateTime.Hour.Consume();
         }
 
         [Benchmark]
         public void Minute()
         {
-            SampleLocalDateTime.MinuteOfHour.Consume();
+            SampleLocalDateTime.Minute.Consume();
         }
 
         [Benchmark]
         public void Second()
         {
-            SampleLocalDateTime.SecondOfMinute.Consume();
+            SampleLocalDateTime.Second.Consume();
         }
 
         [Benchmark]
         public void Millisecond()
         {
-            SampleLocalDateTime.MillisecondOfSecond.Consume();
+            SampleLocalDateTime.Millisecond.Consume();
         }
 
         [Benchmark]
         public void TickOfMillisecond()
         {
-            SampleLocalDateTime.TickOfMillisecond.Consume();
+            SampleLocalDateTime.Tick.Consume();
         }
 
         [Benchmark]

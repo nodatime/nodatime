@@ -240,9 +240,9 @@ namespace NodaTime.Test
             LocalDateTime start = new LocalDateTime(2011, 11, dayOfMonth, 15, 25, 30, 100, 5000);
             LocalDateTime target = start.Next(targetDayOfWeek);
             Assert.AreEqual(2011, target.Year);
-            Assert.AreEqual(11, target.MonthOfYear);
+            Assert.AreEqual(11, target.Month);
             Assert.AreEqual(start.TimeOfDay, target.TimeOfDay);
-            return target.DayOfMonth;
+            return target.Day;
         }
 
         [TestCase(0)]
@@ -271,8 +271,8 @@ namespace NodaTime.Test
             LocalDateTime start = new LocalDateTime(2011, 11, dayOfMonth, 15, 25, 30, 100, 5000);
             LocalDateTime target = start.Previous(targetDayOfWeek);
             Assert.AreEqual(2011, target.Year);
-            Assert.AreEqual(11, target.MonthOfYear);
-            return target.DayOfMonth;
+            Assert.AreEqual(11, target.Month);
+            return target.Day;
         }
 
         [TestCase(0)]

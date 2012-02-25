@@ -35,8 +35,8 @@ namespace NodaTime.Test
         {
             LocalDate date = new LocalDate(2023, 7, 27);
             Assert.AreEqual(2023, date.Year);
-            Assert.AreEqual(7, date.MonthOfYear);
-            Assert.AreEqual(27, date.DayOfMonth);
+            Assert.AreEqual(7, date.Month);
+            Assert.AreEqual(27, date.Day);
         }
 
         [Test]
@@ -44,8 +44,8 @@ namespace NodaTime.Test
         {
             LocalDate date = new LocalDate(2023, 7, 27, CalendarSystem.GetJulianCalendar(4));
             Assert.AreEqual(2023, date.Year);
-            Assert.AreEqual(7, date.MonthOfYear);
-            Assert.AreEqual(27, date.DayOfMonth);
+            Assert.AreEqual(7, date.Month);
+            Assert.AreEqual(27, date.Day);
         }
 
         [Test]

@@ -41,13 +41,13 @@ namespace NodaTime.Benchmarks
         [Benchmark]
         public void Month()
         {
-            SampleZoned.MonthOfYear.Consume();
+            SampleZoned.Month.Consume();
         }
 
         [Benchmark]
         public void DayOfMonth()
         {
-            SampleZoned.DayOfMonth.Consume();
+            SampleZoned.Day.Consume();
         }
 
         [Benchmark]
@@ -65,25 +65,25 @@ namespace NodaTime.Benchmarks
         [Benchmark]
         public void Hour()
         {
-            SampleZoned.HourOfDay.Consume();
+            SampleZoned.Hour.Consume();
         }
 
         [Benchmark]
         public void Minute()
         {
-            SampleZoned.MinuteOfHour.Consume();
+            SampleZoned.Minute.Consume();
         }
 
         [Benchmark]
         public void Second()
         {
-            SampleZoned.SecondOfMinute.Consume();
+            SampleZoned.Second.Consume();
         }
 
         [Benchmark]
         public void Millisecond()
         {
-            SampleZoned.MillisecondOfSecond.Consume();
+            SampleZoned.Millisecond.Consume();
         }
 
         [Benchmark]
