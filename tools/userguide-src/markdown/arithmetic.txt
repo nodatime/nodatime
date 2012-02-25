@@ -10,10 +10,13 @@ Time Line Arithmetic
 
 The [`Instant`](noda-type://NodaTime.Instant) and
 [`ZonedDateTime`](noda-type://NodaTime.ZonedDateTime) types both unambiguously
-refer to a point in time. We can add a length of time to that point to get
+refer to a point in time (with the latter additionally holding time
+zone and calendar information). We can add a length of time to that point to get
 another point in time - but only if it's a truly fixed length of time, such as
 "3 minutes". While a minute is a fixed length of time, a month isn't - so
-the concept of adding "3 months" to an instant makes no sense.
+the concept of adding "3 months" to an instant makes no sense. (Note
+that Noda Time doesn't support leap seconds, otherwise even "3
+minutes" wouldn't be a fixed length of time.)
 
 These "fixed lengths of time" are represented in Noda Time with the
 [`Duration`](noda-type://NodaTime.Duration) type, and they can be
@@ -31,7 +34,7 @@ or `Plus` methods:
 the instance `Minus` method on both `Instant` and `ZonedDateTime`.)
 
 Time line arithmetic is pretty simple, except you might not *always* get
-what you expect when you add time to a `ZonedDateTime`, due to daylight savings:
+what you expect when using `ZonedDateTime`, due to daylight saving transitions:
 
     DateTimeZone london = DateTimeZone.ForId("Europe/London");
     // 12:45am on March 27th 2012
@@ -46,7 +49,7 @@ time of 2:05am, not the 1:05am you might have expected.
 
 The reverse effect can happen at the other daylight saving transition, when clocks go backward
 instead of forward: so twenty minutes after 1:45am could easily be 1:05am! So even though we
-have a concept of "local time" in `ZonedDateTime`, any arithmetic performed on it is computed
+expose the concept of "local time" in `ZonedDateTime`, any arithmetic performed on it is computed
 using the underlying time line.
 
 Calendrical Arithmetic
@@ -96,9 +99,9 @@ would create an invalid date, the day-of-month is truncated. For
 example:
 
     LocalDate date = new LocalDate(2012, 2, 29);
-    date1 = date.PlusYears(1); // February 28th 2013
+    LocalDate date1 = date.PlusYears(1); // February 28th 2013
 
-    date2 = date.PlusMonths(1).PlusDays(1); // March 29th 2012
+    LocalDate date2 = date.PlusMonths(1).PlusDays(1); // March 30th 2012
     date2 = date2.PlusMonths(-1); // Back to February 29th 2012
 
 `LocalTime` wraps around midnight transparently, but the same

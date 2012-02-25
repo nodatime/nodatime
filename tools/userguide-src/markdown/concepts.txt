@@ -15,7 +15,9 @@ date and time data for your whole project.
 
 This document introduces the core concepts, but in order to avoid it
 being too overwhelming, we won't go into the fine details. See
-individual pages and the [API documentation][1] for more information.
+individual pages (particularly the ["choosing between
+types"](type-choices.html) page) and the [API documentation][1]
+for more information.
 
 "Local" and "global" (or "absolute") types
 ------------------------------------------
@@ -43,8 +45,8 @@ changes). However, the [`LocalDate`][4] and [`LocalDateTime]`[5] types *do*
 both refer to calendar systems... see the later section on calendars
 for more information.
 
-The global timeline, and `Instant`
-----------------------------------
+The global time line, and `Instant`
+-----------------------------------
 
 Noda Time assumes a single non-relativistic time line: global time
 progresses linearly, and everyone in the universe would agree on the

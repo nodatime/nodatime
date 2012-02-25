@@ -10,6 +10,7 @@ User guide contents
 
 - [Why does this project exist?](rationale.html)
 - [Core concepts](concepts.html)
+- [Choosing (and converting) between types](type-choices.html)
 - [Design principles](design.html)
 - [Arithmetic](arithmetic.html)
 - [Text handling](text.html)
