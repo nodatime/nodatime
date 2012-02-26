@@ -127,7 +127,7 @@
     <Compile Include="LocalDateTest.Conversion.cs">
       <DependentUpon>LocalDateTest.cs</DependentUpon>
     </Compile>
-    <Compile Include="LocalDateTest.Equality.cs">
+    <Compile Include="LocalDateTest.Comparison.cs">
       <DependentUpon>LocalDateTest.cs</DependentUpon>
     </Compile>
     <Compile Include="LocalDateTest.PeriodArithmetic.cs">

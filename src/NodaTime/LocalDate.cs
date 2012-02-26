@@ -28,7 +28,22 @@ namespace NodaTime
     /// LocalDate is an immutable struct representing a date within the calendar,
     /// with no reference to a particular time zone or time of day.
     /// </summary>
-    public struct LocalDate : IEquatable<LocalDate>, IFormattable
+    /// <remarks>
+    /// <para>Comparisons of dates can be handled in a way which is either calendar-sensitive or calendar-insensitive.
+    /// Noda Time implements all the operators (and the <see cref="Equals(NodaTime.LocalDate)"/> method) such that all operators other than <see cref="op_Inequality"/>
+    /// will return false if asked to compare two values in different calendar systems.
+    /// </para>
+    /// <para>
+    /// However, the <see cref="CompareTo"/> method (implementing <see cref="IComparable{LocalDate}"/>) is calendar-insensitive; it compares the two
+    /// dates historically in terms of when they actually occurred, as if they're both converted to some "neutral" calendar system first.
+    /// </para>
+    /// <para>
+    /// It's unclear at the time of this writing whether this is the most appropriate approach, and it may change in future versions. In general,
+    /// it would be a good idea for users to avoid comparing dates in different calendar systems, and indeed most users are unlikely to ever explicitly
+    /// consider which calendar system they're working in anyway.
+    /// </para>
+    /// </remarks>
+    public struct LocalDate : IEquatable<LocalDate>, IComparable<LocalDate>, IFormattable
     {
         private readonly LocalDateTime localTime;
 
@@ -273,6 +288,10 @@ namespace NodaTime
         /// Compares two LocalDate values to see if the left one is strictly earlier than the right
         /// one.
         /// </summary>
+        /// <remarks>
+        /// This operator always returns false if the two operands have different calendars. See the top-level type
+        /// documentation for more information about comparisons.
+        /// </remarks>
         /// <param name="lhs">First operand of the comparison</param>
         /// <param name="rhs">Second operand of the comparison</param>
         /// <returns>true if the <paramref name="lhs"/> is strictly earlier than <paramref name="rhs"/>, false otherwise.</returns>
@@ -285,6 +304,10 @@ namespace NodaTime
         /// Compares two LocalDate values to see if the left one is earlier than or equal to the right
         /// one.
         /// </summary>
+        /// <remarks>
+        /// This operator always returns false if the two operands have different calendars. See the top-level type
+        /// documentation for more information about comparisons.
+        /// </remarks>
         /// <param name="lhs">First operand of the comparison</param>
         /// <param name="rhs">Second operand of the comparison</param>
         /// <returns>true if the <paramref name="lhs"/> is earlier than or equal to <paramref name="rhs"/>, false otherwise.</returns>
@@ -297,6 +320,10 @@ namespace NodaTime
         /// Compares two LocalDate values to see if the left one is strictly later than the right
         /// one.
         /// </summary>
+        /// <remarks>
+        /// This operator always returns false if the two operands have different calendars. See the top-level type
+        /// documentation for more information about comparisons.
+        /// </remarks>
         /// <param name="lhs">First operand of the comparison</param>
         /// <param name="rhs">Second operand of the comparison</param>
         /// <returns>true if the <paramref name="lhs"/> is strictly later than <paramref name="rhs"/>, false otherwise.</returns>
@@ -309,12 +336,31 @@ namespace NodaTime
         /// Compares two LocalDate values to see if the left one is later than or equal to the right
         /// one.
         /// </summary>
+        /// <remarks>
+        /// This operator always returns false if the two operands have different calendars. See the top-level type
+        /// documentation for more information about comparisons.
+        /// </remarks>
         /// <param name="lhs">First operand of the comparison</param>
         /// <param name="rhs">Second operand of the comparison</param>
         /// <returns>true if the <paramref name="lhs"/> is later than or equal to <paramref name="rhs"/>, false otherwise.</returns>
         public static bool operator >=(LocalDate lhs, LocalDate rhs)
         {
             return lhs.localTime >= rhs.localTime;
+        }
+
+        /// <summary>
+        /// Indicates whether this date is earlier, later or the same as another one. This is purely
+        /// done in terms of the local instant represented; the calendar system is ignored. This can lead
+        /// to surprising results - for example, 1945 in the ISO calendar corresponds to around 1364
+        /// in the Islamic calendar, so an Islamic date in year 1400 is "after" a date in 1945 in the ISO calendar.
+        /// </summary>
+        /// <param name="other">The other date to compare this one with</param>
+        /// <returns>A value less than zero if this date is earlier than <paramref name="other"/>;
+        /// zero if this date is the same as <paramref name="other"/>; a value greater than zero if this date is
+        /// later than <paramref name="other"/>.</returns>
+        public int CompareTo(LocalDate other)
+        {
+            return localTime.CompareTo(other.LocalDateTime);
         }
 
         /// <summary>

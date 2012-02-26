@@ -292,6 +292,66 @@ namespace NodaTime
         }
 
         /// <summary>
+        /// Compares two LocalTime values to see if the left one is strictly earlier than the right
+        /// one.
+        /// </summary>
+        /// <param name="lhs">First operand of the comparison</param>
+        /// <param name="rhs">Second operand of the comparison</param>
+        /// <returns>true if the <paramref name="lhs"/> is strictly earlier than <paramref name="rhs"/>, false otherwise.</returns>
+        public static bool operator <(LocalTime lhs, LocalTime rhs)
+        {
+            return lhs.localInstant < rhs.localInstant;
+        }
+
+        /// <summary>
+        /// Compares two LocalTime values to see if the left one is earlier than or equal to the right
+        /// one.
+        /// </summary>
+        /// <param name="lhs">First operand of the comparison</param>
+        /// <param name="rhs">Second operand of the comparison</param>
+        /// <returns>true if the <paramref name="lhs"/> is earlier than or equal to <paramref name="rhs"/>, false otherwise.</returns>
+        public static bool operator <=(LocalTime lhs, LocalTime rhs)
+        {
+            return lhs.localInstant <= rhs.localInstant;
+        }
+
+        /// <summary>
+        /// Compares two LocalTime values to see if the left one is strictly later than the right
+        /// one.
+        /// </summary>
+        /// <param name="lhs">First operand of the comparison</param>
+        /// <param name="rhs">Second operand of the comparison</param>
+        /// <returns>true if the <paramref name="lhs"/> is strictly later than <paramref name="rhs"/>, false otherwise.</returns>
+        public static bool operator >(LocalTime lhs, LocalTime rhs)
+        {
+            return lhs.localInstant > rhs.localInstant;
+        }
+
+        /// <summary>
+        /// Compares two LocalTime values to see if the left one is later than or equal to the right
+        /// one.
+        /// </summary>
+        /// <param name="lhs">First operand of the comparison</param>
+        /// <param name="rhs">Second operand of the comparison</param>
+        /// <returns>true if the <paramref name="lhs"/> is later than or equal to <paramref name="rhs"/>, false otherwise.</returns>
+        public static bool operator >=(LocalTime lhs, LocalTime rhs)
+        {
+            return lhs.localInstant >= rhs.localInstant;
+        }
+
+        /// <summary>
+        /// Indicates whether this time is earlier, later or the same as another one.
+        /// </summary>
+        /// <param name="other">The other date/time to compare this one with</param>
+        /// <returns>A value less than zero if this time is earlier than <paramref name="other"/>;
+        /// zero if this time is the same as <paramref name="other"/>; a value greater than zero if this time is
+        /// later than <paramref name="other"/>.</returns>
+        public int CompareTo(LocalTime other)
+        {
+            return localInstant.CompareTo(other.localInstant);
+        }
+
+        /// <summary>
         /// Returns a hash code for this local time.
         /// </summary>
         /// <returns>A hash code for this local time.</returns>
