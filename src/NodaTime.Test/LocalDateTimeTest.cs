@@ -18,6 +18,7 @@
 using System;
 using System.Globalization;
 using NUnit.Framework;
+using NodaTime.Calendars;
 
 namespace NodaTime.Test
 {
@@ -122,6 +123,72 @@ namespace NodaTime.Test
             Assert.AreEqual(12, new LocalDateTime(1975, 11, 8, 12, 0, 0).ClockHourOfHalfDay);
             Assert.AreEqual(1, new LocalDateTime(1975, 11, 8, 13, 0, 0).ClockHourOfHalfDay);
             Assert.AreEqual(11, new LocalDateTime(1975, 11, 8, 23, 0, 0).ClockHourOfHalfDay);
+        }
+
+        [Test]
+        public void ComparisonOperators_SameCalendar()
+        {
+            LocalDateTime value1 = new LocalDateTime(2011, 1, 2, 10, 30, 0);
+            LocalDateTime value2 = new LocalDateTime(2011, 1, 2, 10, 30, 0);
+            LocalDateTime value3 = new LocalDateTime(2011, 1, 2, 10, 45, 0);
+
+            Assert.IsFalse(value1 < value2);
+            Assert.IsTrue(value1 < value3);
+            Assert.IsFalse(value2 < value1);
+            Assert.IsFalse(value3 < value1);
+
+            Assert.IsTrue(value1 <= value2);
+            Assert.IsTrue(value1 <= value3);
+            Assert.IsTrue(value2 <= value1);
+            Assert.IsFalse(value3 <= value1);
+
+            Assert.IsFalse(value1 > value2);
+            Assert.IsFalse(value1 > value3);
+            Assert.IsFalse(value2 > value1);
+            Assert.IsTrue(value3 > value1);
+
+            Assert.IsTrue(value1 >= value2);
+            Assert.IsFalse(value1 >= value3);
+            Assert.IsTrue(value2 >= value1);
+            Assert.IsTrue(value3 >= value1);
+        }
+
+        [Test]
+        public void ComparisonOperators_DifferentCalendars_AlwaysReturnsFalse()
+        {
+            LocalDateTime value1 = new LocalDateTime(2011, 1, 2, 10, 30);
+            LocalDateTime value2 = new LocalDateTime(2011, 1, 3, 10, 30, CalendarSystem.GetJulianCalendar(4));
+
+            // All inequality comparisons return false
+            Assert.IsFalse(value1 < value2);
+            Assert.IsFalse(value1 <= value2);
+            Assert.IsFalse(value1 > value2);
+            Assert.IsFalse(value1 >= value2);
+        }
+
+        [Test]
+        public void CompareTo_SameCalendar()
+        {
+            LocalDateTime value1 = new LocalDateTime(2011, 1, 2, 10, 30);
+            LocalDateTime value2 = new LocalDateTime(2011, 1, 2, 10, 30);
+            LocalDateTime value3 = new LocalDateTime(2011, 1, 2, 10, 45);
+
+            Assert.That(value1.CompareTo(value2), Is.EqualTo(0));
+            Assert.That(value1.CompareTo(value3), Is.LessThan(0));
+            Assert.That(value3.CompareTo(value2), Is.GreaterThan(0));
+        }
+
+        [Test]
+        public void CompareTo_DifferentCalendars_OnlyLocalInstantMatters()
+        {
+            CalendarSystem islamic = CalendarSystem.GetIslamicCalendar(IslamicLeapYearPattern.Base15, IslamicEpoch.Astronomical);
+            LocalDateTime value1 = new LocalDateTime(2011, 1, 2, 10, 30);
+            LocalDateTime value2 = new LocalDateTime(1500, 1, 1, 10, 30, islamic);
+            LocalDateTime value3 = value1.WithCalendar(islamic);
+
+            Assert.That(value1.CompareTo(value2), Is.LessThan(0));
+            Assert.That(value2.CompareTo(value1), Is.GreaterThan(0));
+            Assert.That(value1.CompareTo(value3), Is.EqualTo(0));
         }
     }
 }
