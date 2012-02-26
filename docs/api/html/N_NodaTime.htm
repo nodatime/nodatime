@@ -33,7 +33,9 @@
             LocalDate is an immutable struct representing a date within the calendar,
             with no reference to a particular time zone or time of day.
             </div><br /></td></tr><tr data="structure; public"><td><img src="../icons/pubstructure.gif" /></td><td><b><a href="T_NodaTime_LocalDateTime.htm">LocalDateTime</a></b></td><td><div class="summary">
-            A date and time in a particular calendar system.
+            A date and time in a particular calendar system. A LocalDateTime value does not represent an
+            instant on the time line, because it has no associated time zone: "November 12th 2009 7pm, ISO calendar"
+            occurred at different instants for different people around the world.
             </div><br /></td></tr><tr data="structure; public"><td><img src="../icons/pubstructure.gif" /></td><td><b><a href="T_NodaTime_LocalTime.htm">LocalTime</a></b></td><td><div class="summary">
             LocalTime is an immutable struct representing a time of day, with no reference
             to a particular calendar, time zone or date.
