@@ -34,7 +34,7 @@ namespace NodaTime
     /// will return false if asked to compare two values in different calendar systems.
     /// </para>
     /// <para>
-    /// However, the <see cref="CompareTo"/> method (implementing <see cref="IComparable{LocalDate}"/>) is calendar-insensitive; it compares the two
+    /// However, the <see cref="CompareTo"/> method (implementing <see cref="IComparable{T}"/>) is calendar-insensitive; it compares the two
     /// dates historically in terms of when they actually occurred, as if they're both converted to some "neutral" calendar system first.
     /// </para>
     /// <para>
