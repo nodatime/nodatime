@@ -271,6 +271,102 @@ namespace NodaTime.Test
         }
 
         [Test]
+        public void ComparisonOperators_SameCalendarAndZone()
+        {
+            ZonedDateTime value1 = SampleZone.AtExactly(new LocalDateTime(2011, 1, 2, 10, 30, 0));
+            ZonedDateTime value2 = SampleZone.AtExactly(new LocalDateTime(2011, 1, 2, 10, 30, 0));
+            ZonedDateTime value3 = SampleZone.AtExactly(new LocalDateTime(2011, 1, 2, 10, 45, 0));
+
+            Assert.IsFalse(value1 < value2);
+            Assert.IsTrue(value1 < value3);
+            Assert.IsFalse(value2 < value1);
+            Assert.IsFalse(value3 < value1);
+
+            Assert.IsTrue(value1 <= value2);
+            Assert.IsTrue(value1 <= value3);
+            Assert.IsTrue(value2 <= value1);
+            Assert.IsFalse(value3 <= value1);
+
+            Assert.IsFalse(value1 > value2);
+            Assert.IsFalse(value1 > value3);
+            Assert.IsFalse(value2 > value1);
+            Assert.IsTrue(value3 > value1);
+
+            Assert.IsTrue(value1 >= value2);
+            Assert.IsFalse(value1 >= value3);
+            Assert.IsTrue(value2 >= value1);
+            Assert.IsTrue(value3 >= value1);
+        }
+
+        [Test]
+        public void ComparisonOperators_DifferentCalendars_AlwaysReturnsFalse()
+        {
+            LocalDateTime value1 = new LocalDateTime(2011, 1, 2, 10, 30);
+            LocalDateTime value2 = new LocalDateTime(2011, 1, 3, 10, 30, CalendarSystem.GetJulianCalendar(4));
+
+            // All inequality comparisons return false
+            Assert.IsFalse(value1 < value2);
+            Assert.IsFalse(value1 <= value2);
+            Assert.IsFalse(value1 > value2);
+            Assert.IsFalse(value1 >= value2);
+        }
+
+        [Test]
+        public void ComparisonOperators_DifferentZones_AlwaysReturnsFalse()
+        {
+            // Note that the offsets will be the same as for SampleZone in the values we're using
+            var otherZone = new FixedDateTimeZone(SampleZone.EarlyInterval.WallOffset);
+
+            ZonedDateTime value1 = SampleZone.AtExactly(new LocalDateTime(2011, 1, 2, 10, 30));
+            ZonedDateTime value2 = otherZone.AtExactly(new LocalDateTime(2011, 1, 3, 10, 30));
+
+            // All inequality comparisons return false
+            Assert.IsFalse(value1 < value2);
+            Assert.IsFalse(value1 <= value2);
+            Assert.IsFalse(value1 > value2);
+            Assert.IsFalse(value1 >= value2);
+        }
+
+        [Test]
+        public void CompareTo_SameCalendarAndZone()
+        {
+            ZonedDateTime value1 = SampleZone.AtExactly(new LocalDateTime(2011, 1, 2, 10, 30, 0));
+            ZonedDateTime value2 = SampleZone.AtExactly(new LocalDateTime(2011, 1, 2, 10, 30, 0));
+            ZonedDateTime value3 = SampleZone.AtExactly(new LocalDateTime(2011, 1, 2, 10, 45, 0));
+
+            Assert.That(value1.CompareTo(value2), Is.EqualTo(0));
+            Assert.That(value1.CompareTo(value3), Is.LessThan(0));
+            Assert.That(value3.CompareTo(value2), Is.GreaterThan(0));
+        }
+
+        [Test]
+        public void CompareTo_DifferentCalendars_OnlyInstantMatters()
+        {
+            CalendarSystem islamic = CalendarSystem.GetIslamicCalendar(IslamicLeapYearPattern.Base15, IslamicEpoch.Astronomical);
+            ZonedDateTime value1 = SampleZone.AtExactly(new LocalDateTime(2011, 1, 2, 10, 30));
+            ZonedDateTime value2 = SampleZone.AtExactly(new LocalDateTime(1500, 1, 1, 10, 30, islamic));
+            ZonedDateTime value3 = SampleZone.AtExactly(value1.LocalDateTime.WithCalendar(islamic));
+
+            Assert.That(value1.CompareTo(value2), Is.LessThan(0));
+            Assert.That(value2.CompareTo(value1), Is.GreaterThan(0));
+            Assert.That(value1.CompareTo(value3), Is.EqualTo(0));
+        }
+
+        [Test]
+        public void CompareTo_DifferentZones_OnlyInstantMatters()
+        {
+            var otherZone = new FixedDateTimeZone(Offset.FromHours(-20));
+
+            ZonedDateTime value1 = SampleZone.AtExactly(new LocalDateTime(2011, 1, 2, 10, 30));
+            // Earlier local time, but later instant
+            ZonedDateTime value2 = otherZone.AtExactly(new LocalDateTime(2011, 1, 2, 5, 30));
+            ZonedDateTime value3 = value1.WithZone(otherZone);
+
+            Assert.That(value1.CompareTo(value2), Is.LessThan(0));
+            Assert.That(value2.CompareTo(value1), Is.GreaterThan(0));
+            Assert.That(value1.CompareTo(value3), Is.EqualTo(0));
+        }
+        [Test]
         public void Constructor_ArgumentValidation()
         {
             Assert.Throws<ArgumentNullException>(() => new ZonedDateTime(new Instant(1000), null));

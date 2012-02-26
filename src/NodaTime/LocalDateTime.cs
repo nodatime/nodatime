@@ -35,11 +35,11 @@ namespace NodaTime
     /// specified.
     /// </para>
     /// <para>Comparisons of values can be handled in a way which is either calendar-sensitive or calendar-insensitive.
-    /// Noda Time implements all the operators (and the <see cref="Equals(NodaTime.LocalDateTime)"/> method) such that all operators other than <see cref="op_Inequality"/>
+    /// Noda Time implements all the operators (and the <see cref="Equals(LocalDateTime)"/> method) such that all operators other than <see cref="op_Inequality"/>
     /// will return false if asked to compare two values in different calendar systems.
     /// </para>
     /// <para>
-    /// However, the <see cref="CompareTo"/> method (implementing <see cref="IComparable{LocalDate}"/>) is calendar-insensitive; it compares the two
+    /// However, the <see cref="CompareTo"/> method (implementing <see cref="IComparable{T}"/>) is calendar-insensitive; it compares the two
     /// values historically in terms of when they actually occurred, as if they're both converted to some "neutral" calendar system first.
     /// </para>
     /// <para>
@@ -526,7 +526,7 @@ namespace NodaTime
         /// </summary>
         /// <param name="other">The other date/time to compare this one with</param>
         /// <returns>A value less than zero if this date/time is earlier than <paramref name="other"/>;
-        /// zero if this date/time is the same as <paramref name="other"/>; a value greater than zero if this date is
+        /// zero if this date/time is the same as <paramref name="other"/>; a value greater than zero if this date/time is
         /// later than <paramref name="other"/>.</returns>
         public int CompareTo(LocalDateTime other)
         {
