@@ -448,6 +448,55 @@ namespace NodaTime
         }
 
         /// <summary>
+        /// Compares two LocalDateTime values to see if the left one is strictly earlier than the right
+        /// one.
+        /// </summary>
+        /// <param name="lhs">First operand of the comparison</param>
+        /// <param name="rhs">Second operand of the comparison</param>
+        /// <returns>true if the <paramref name="lhs"/> is strictly earlier than <paramref name="rhs"/>, false otherwise.</returns>
+        public static bool operator <(LocalDateTime lhs, LocalDateTime rhs)
+        {
+            // TODO(V1-Blocker): Tests for these, and consideration of different calendars.
+            return lhs.LocalInstant < rhs.LocalInstant;
+        }
+
+        /// <summary>
+        /// Compares two LocalDateTime values to see if the left one is earlier than or equal to the right
+        /// one.
+        /// </summary>
+        /// <param name="lhs">First operand of the comparison</param>
+        /// <param name="rhs">Second operand of the comparison</param>
+        /// <returns>true if the <paramref name="lhs"/> is earlier than or equal to <paramref name="rhs"/>, false otherwise.</returns>
+        public static bool operator <=(LocalDateTime lhs, LocalDateTime rhs)
+        {
+            return lhs.LocalInstant <= rhs.LocalInstant;
+        }
+
+        /// <summary>
+        /// Compares two LocalDateTime values to see if the left one is strictly later than the right
+        /// one.
+        /// </summary>
+        /// <param name="lhs">First operand of the comparison</param>
+        /// <param name="rhs">Second operand of the comparison</param>
+        /// <returns>true if the <paramref name="lhs"/> is strictly later than <paramref name="rhs"/>, false otherwise.</returns>
+        public static bool operator >(LocalDateTime lhs, LocalDateTime rhs)
+        {
+            return lhs.LocalInstant > rhs.LocalInstant;
+        }
+
+        /// <summary>
+        /// Compares two LocalDateTime values to see if the left one is later than or equal to the right
+        /// one.
+        /// </summary>
+        /// <param name="lhs">First operand of the comparison</param>
+        /// <param name="rhs">Second operand of the comparison</param>
+        /// <returns>true if the <paramref name="lhs"/> is later than or equal to <paramref name="rhs"/>, false otherwise.</returns>
+        public static bool operator >=(LocalDateTime lhs, LocalDateTime rhs)
+        {
+            return lhs.LocalInstant >= rhs.LocalInstant;
+        }
+
+        /// <summary>
         /// Adds a period to a local date/time. Fields are added in the order provided by the period.
         /// This is a convenience operator over the <see cref="Plus"/> method.
         /// </summary>
