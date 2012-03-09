@@ -109,5 +109,61 @@ namespace NodaTime.Test
             Assert.AreEqual(start - period, LocalTime.Subtract(start, period));
             Assert.AreEqual(start - period, start.Minus(period));
         }
+
+        [Test]
+        public void ComparisonOperators()
+        {
+            LocalTime time1 = new LocalTime(10, 30, 45);
+            LocalTime time2 = new LocalTime(10, 30, 45);
+            LocalTime time3 = new LocalTime(10, 30, 50);
+
+            Assert.IsTrue(time1 == time2);
+            Assert.IsFalse(time1 == time3);
+            Assert.IsFalse(time1 != time2);
+            Assert.IsTrue(time1 != time3);
+
+            Assert.IsFalse(time1 < time2);
+            Assert.IsTrue(time1 < time3);
+            Assert.IsFalse(time2 < time1);
+            Assert.IsFalse(time3 < time1);
+
+            Assert.IsTrue(time1 <= time2);
+            Assert.IsTrue(time1 <= time3);
+            Assert.IsTrue(time2 <= time1);
+            Assert.IsFalse(time3 <= time1);
+
+            Assert.IsFalse(time1 > time2);
+            Assert.IsFalse(time1 > time3);
+            Assert.IsFalse(time2 > time1);
+            Assert.IsTrue(time3 > time1);
+
+            Assert.IsTrue(time1 >= time2);
+            Assert.IsFalse(time1 >= time3);
+            Assert.IsTrue(time2 >= time1);
+            Assert.IsTrue(time3 >= time1);
+        }
+
+        [Test]
+        public void Comparison_IgnoresOriginalCalendar()
+        {
+            LocalDateTime dateTime1 = new LocalDateTime(1900, 1, 1, 10, 30, 0);
+            LocalDateTime dateTime2 = dateTime1.WithCalendar(CalendarSystem.GetJulianCalendar(3));
+
+            // Calendar information is propagated into LocalDate, but not into LocalTime
+            Assert.IsFalse(dateTime1.Date == dateTime2.Date);
+            Assert.IsTrue(dateTime1.TimeOfDay == dateTime2.TimeOfDay);
+        }
+
+        [Test]
+        public void CompareTo()
+        {
+            LocalTime time1 = new LocalTime(10, 30, 45);
+            LocalTime time2 = new LocalTime(10, 30, 45);
+            LocalTime time3 = new LocalTime(10, 30, 50);
+
+            Assert.That(time1.CompareTo(time2), Is.EqualTo(0));
+            Assert.That(time1.CompareTo(time3), Is.LessThan(0));
+            Assert.That(time3.CompareTo(time2), Is.GreaterThan(0));
+        }
     }
 }

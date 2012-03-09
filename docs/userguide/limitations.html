@@ -1,0 +1,81 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+  <head>
+    <link href="prettify.css" type="text/css" rel="stylesheet" />
+    <link href="styles.css" type="text/css" rel="stylesheet" />
+    <script type="text/javascript" src="prettify.js"></script>
+    <title>Limitations of Noda Time</title>
+  </head>
+  <body onload="prettyPrint()">
+    <h1>Limitations of Noda Time</h1>
+    <p>Noda Time is a work in progress. It has various limitations, some of
+which we'd obviously like to remove over time. Here's a list of some
+aspects we'd like to improve; see the 
+<a href="http://code.google.com/p/noda-time/issues/list">issues list</a> for
+others.</p>
+
+<p>Without <em>your</em> help, we won't know which of these features to work
+on first - or whether there are other limitations we hadn't even
+considered. If there's something that should be within Noda Time's
+scope, but we don't support it yet, then <em>please</em> either raise an
+issue or post on the
+<a href="http://groups.google.com/group/noda-time">mailing list</a>.</p>
+
+<h1>Serialization</h1>
+
+<p>None of the types in Noda Time support serialization (except the
+exceptions, ironically). This definitely needs fixing, but it has to
+be done carefully if we're to avoid invalidating the data later on.
+We also need to consider all the various <em>kinds</em> of serialization
+available these days - the default binary formatter, XML, JSON etc.</p>
+
+<h1>Versioning and strong naming</h1>
+
+<p>We're using <a href="http://nuget.org">NuGet</a> for distribution, which takes
+care of some of the versioning - but we should also use assembly
+versioning as appropriate, and quite possibly sign the assembly.
+We're aiming to follow the
+<a href="http://semver.org/">SemVer (semantic versioning)</a> model.</p>
+
+<h1>Fuller text support</h1>
+
+<p>Currently there's no way of parsing or formatting a
+<a href="../api/html/T_NodaTime_ZonedDateTime.htm"><code>ZonedDateTime</code></a>, partly due to
+the difficulty of representing time zones or offsets. While this is
+the primary deficiency of our current text support, it's not the
+only one. Some other types lack flexible formatting, and we may want
+to optimize further at some point too.</p>
+
+<h1>Better resource handling</h1>
+
+<p>We'd like to be able to bundle appropriate patterns (and other
+internationalizable materials) within Noda Time while keeping it as
+a single DLL. (Satellite DLLs are fine for some scenarios, but messy
+in others.) Additionally we'd like to allow these resources to be
+augmented or replaced by the caller at execution time, to allow
+hot-fixes for cultures which we don't support as well as we might.</p>
+
+<h1>More time zone information</h1>
+
+<p><a href="http://cldr.unicode.org">CLDR</a> provides useful information about
+time zones such as a canonical ID and user-friendly representations
+(countries and sample cities). We'd also like to make it clearer
+when one zoneinfo time zone is an alias for another.</p>
+
+<h1>More calendars</h1>
+
+<p>There will probably always be more calendars we could support. The
+highest priority is probably a "cutover" calendar which models how
+various countries transitioned from using a Julian calendar to a
+Gregorian one, usually skipping some days at the transition.</p>
+
+<h1>Smarter arithmetic</h1>
+
+<p>As noted in the <a href="arithmetic.html">arithmetic guide</a>, arithmetic using
+<a href="../api/html/T_NodaTime_Period.htm"><code>Period</code></a> is pretty simplistic. We may
+want something smarter, probably to go alongside the "dumb but
+predictable" existing logic. This will definitely be driven by real
+user requirements though - it would be far too easy to speculate.</p>
+
+  </body>
+</html>

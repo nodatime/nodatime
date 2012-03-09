@@ -29,7 +29,7 @@ namespace NodaTime.Demo
         {
             ZonedDateTime dt = Dublin.AtExactly(new LocalDateTime(2010, 6, 9, 15, 15, 0));
 
-            Assert.AreEqual(15, dt.HourOfDay);
+            Assert.AreEqual(15, dt.Hour);
             Assert.AreEqual(2010, dt.Year);
             // Not 21... we're not in the Gregorian calendar!
             Assert.AreEqual(20, dt.CenturyOfEra);

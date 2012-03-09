@@ -48,21 +48,21 @@ namespace NodaTime.Test
             Assert.AreEqual(12, value.YearOfCentury);
             Assert.AreEqual(2012, value.Year);
             Assert.AreEqual(2012, value.YearOfEra);
-            Assert.AreEqual(2, value.MonthOfYear);
-            Assert.AreEqual(10, value.DayOfMonth);
+            Assert.AreEqual(2, value.Month);
+            Assert.AreEqual(10, value.Day);
             Assert.AreEqual(6, value.WeekOfWeekYear);
             Assert.AreEqual(2012, value.WeekYear);
             Assert.AreEqual(IsoDayOfWeek.Friday, value.IsoDayOfWeek);
             Assert.AreEqual((int) IsoDayOfWeek.Friday, value.DayOfWeek);
             Assert.AreEqual(41, value.DayOfYear);
             Assert.AreEqual(8, value.ClockHourOfHalfDay);
-            Assert.AreEqual(8, value.HourOfDay);
-            Assert.AreEqual(9, value.MinuteOfHour);
-            Assert.AreEqual(10, value.SecondOfMinute);
+            Assert.AreEqual(8, value.Hour);
+            Assert.AreEqual(9, value.Minute);
+            Assert.AreEqual(10, value.Second);
             Assert.AreEqual(8 * 3600 + 9 * 60 + 10, value.SecondOfDay);
-            Assert.AreEqual(11, value.MillisecondOfSecond);
+            Assert.AreEqual(11, value.Millisecond);
             Assert.AreEqual(value.SecondOfDay * 1000 + 11, value.MillisecondOfDay);
-            Assert.AreEqual(12, value.TickOfMillisecond);
+            Assert.AreEqual(12, value.Tick);
             Assert.AreEqual(11 * 10000 + 12, value.TickOfSecond);
             Assert.AreEqual(value.MillisecondOfDay * 10000L + 12, value.TickOfDay);
         }
@@ -76,12 +76,12 @@ namespace NodaTime.Test
             Assert.AreEqual(instant, localInstant.Minus(Offset.FromHours(-8)));
 
             Assert.AreEqual(2009, when.Year);
-            Assert.AreEqual(12, when.MonthOfYear);
-            Assert.AreEqual(22, when.DayOfMonth);
+            Assert.AreEqual(12, when.Month);
+            Assert.AreEqual(22, when.Day);
             Assert.AreEqual(2, when.DayOfWeek);
-            Assert.AreEqual(21, when.HourOfDay);
-            Assert.AreEqual(39, when.MinuteOfHour);
-            Assert.AreEqual(30, when.SecondOfMinute);
+            Assert.AreEqual(21, when.Hour);
+            Assert.AreEqual(39, when.Minute);
+            Assert.AreEqual(30, when.Second);
         }
 
         [Test]
@@ -93,11 +93,11 @@ namespace NodaTime.Test
             Assert.AreEqual(instant, localInstant.Minus(Offset.FromHours(-7)));
 
             Assert.AreEqual(2009, when.Year);
-            Assert.AreEqual(6, when.MonthOfYear);
-            Assert.AreEqual(22, when.DayOfMonth);
-            Assert.AreEqual(21, when.HourOfDay);
-            Assert.AreEqual(39, when.MinuteOfHour);
-            Assert.AreEqual(30, when.SecondOfMinute);
+            Assert.AreEqual(6, when.Month);
+            Assert.AreEqual(22, when.Day);
+            Assert.AreEqual(21, when.Hour);
+            Assert.AreEqual(39, when.Minute);
+            Assert.AreEqual(30, when.Second);
         }
 
         /// <summary>
@@ -115,19 +115,19 @@ namespace NodaTime.Test
             Assert.AreEqual(localInstant.Minus(Offset.FromHours(-8)), instant);
 
             Assert.AreEqual(2009, when.Year);
-            Assert.AreEqual(11, when.MonthOfYear);
-            Assert.AreEqual(2, when.DayOfMonth);
-            Assert.AreEqual(1, when.HourOfDay);
-            Assert.AreEqual(30, when.MinuteOfHour);
-            Assert.AreEqual(0, when.SecondOfMinute);
+            Assert.AreEqual(11, when.Month);
+            Assert.AreEqual(2, when.Day);
+            Assert.AreEqual(1, when.Hour);
+            Assert.AreEqual(30, when.Minute);
+            Assert.AreEqual(0, when.Second);
 
             var utc = new LocalDateTime(new LocalInstant(instant.Ticks));
             Assert.AreEqual(2009, utc.Year);
-            Assert.AreEqual(11, utc.MonthOfYear);
-            Assert.AreEqual(2, utc.DayOfMonth);
-            Assert.AreEqual(9, utc.HourOfDay);
-            Assert.AreEqual(30, utc.MinuteOfHour);
-            Assert.AreEqual(0, utc.SecondOfMinute);
+            Assert.AreEqual(11, utc.Month);
+            Assert.AreEqual(2, utc.Day);
+            Assert.AreEqual(9, utc.Hour);
+            Assert.AreEqual(30, utc.Minute);
+            Assert.AreEqual(0, utc.Second);
         }
 
         /// <summary>
@@ -270,6 +270,102 @@ namespace NodaTime.Test
             Assert.AreNotEqual(sample, withOtherCalendar);
         }
 
+        [Test]
+        public void ComparisonOperators_SameCalendarAndZone()
+        {
+            ZonedDateTime value1 = SampleZone.AtExactly(new LocalDateTime(2011, 1, 2, 10, 30, 0));
+            ZonedDateTime value2 = SampleZone.AtExactly(new LocalDateTime(2011, 1, 2, 10, 30, 0));
+            ZonedDateTime value3 = SampleZone.AtExactly(new LocalDateTime(2011, 1, 2, 10, 45, 0));
+
+            Assert.IsFalse(value1 < value2);
+            Assert.IsTrue(value1 < value3);
+            Assert.IsFalse(value2 < value1);
+            Assert.IsFalse(value3 < value1);
+
+            Assert.IsTrue(value1 <= value2);
+            Assert.IsTrue(value1 <= value3);
+            Assert.IsTrue(value2 <= value1);
+            Assert.IsFalse(value3 <= value1);
+
+            Assert.IsFalse(value1 > value2);
+            Assert.IsFalse(value1 > value3);
+            Assert.IsFalse(value2 > value1);
+            Assert.IsTrue(value3 > value1);
+
+            Assert.IsTrue(value1 >= value2);
+            Assert.IsFalse(value1 >= value3);
+            Assert.IsTrue(value2 >= value1);
+            Assert.IsTrue(value3 >= value1);
+        }
+
+        [Test]
+        public void ComparisonOperators_DifferentCalendars_AlwaysReturnsFalse()
+        {
+            LocalDateTime value1 = new LocalDateTime(2011, 1, 2, 10, 30);
+            LocalDateTime value2 = new LocalDateTime(2011, 1, 3, 10, 30, CalendarSystem.GetJulianCalendar(4));
+
+            // All inequality comparisons return false
+            Assert.IsFalse(value1 < value2);
+            Assert.IsFalse(value1 <= value2);
+            Assert.IsFalse(value1 > value2);
+            Assert.IsFalse(value1 >= value2);
+        }
+
+        [Test]
+        public void ComparisonOperators_DifferentZones_AlwaysReturnsFalse()
+        {
+            // Note that the offsets will be the same as for SampleZone in the values we're using
+            var otherZone = new FixedDateTimeZone(SampleZone.EarlyInterval.WallOffset);
+
+            ZonedDateTime value1 = SampleZone.AtExactly(new LocalDateTime(2011, 1, 2, 10, 30));
+            ZonedDateTime value2 = otherZone.AtExactly(new LocalDateTime(2011, 1, 3, 10, 30));
+
+            // All inequality comparisons return false
+            Assert.IsFalse(value1 < value2);
+            Assert.IsFalse(value1 <= value2);
+            Assert.IsFalse(value1 > value2);
+            Assert.IsFalse(value1 >= value2);
+        }
+
+        [Test]
+        public void CompareTo_SameCalendarAndZone()
+        {
+            ZonedDateTime value1 = SampleZone.AtExactly(new LocalDateTime(2011, 1, 2, 10, 30, 0));
+            ZonedDateTime value2 = SampleZone.AtExactly(new LocalDateTime(2011, 1, 2, 10, 30, 0));
+            ZonedDateTime value3 = SampleZone.AtExactly(new LocalDateTime(2011, 1, 2, 10, 45, 0));
+
+            Assert.That(value1.CompareTo(value2), Is.EqualTo(0));
+            Assert.That(value1.CompareTo(value3), Is.LessThan(0));
+            Assert.That(value3.CompareTo(value2), Is.GreaterThan(0));
+        }
+
+        [Test]
+        public void CompareTo_DifferentCalendars_OnlyInstantMatters()
+        {
+            CalendarSystem islamic = CalendarSystem.GetIslamicCalendar(IslamicLeapYearPattern.Base15, IslamicEpoch.Astronomical);
+            ZonedDateTime value1 = SampleZone.AtExactly(new LocalDateTime(2011, 1, 2, 10, 30));
+            ZonedDateTime value2 = SampleZone.AtExactly(new LocalDateTime(1500, 1, 1, 10, 30, islamic));
+            ZonedDateTime value3 = SampleZone.AtExactly(value1.LocalDateTime.WithCalendar(islamic));
+
+            Assert.That(value1.CompareTo(value2), Is.LessThan(0));
+            Assert.That(value2.CompareTo(value1), Is.GreaterThan(0));
+            Assert.That(value1.CompareTo(value3), Is.EqualTo(0));
+        }
+
+        [Test]
+        public void CompareTo_DifferentZones_OnlyInstantMatters()
+        {
+            var otherZone = new FixedDateTimeZone(Offset.FromHours(-20));
+
+            ZonedDateTime value1 = SampleZone.AtExactly(new LocalDateTime(2011, 1, 2, 10, 30));
+            // Earlier local time, but later instant
+            ZonedDateTime value2 = otherZone.AtExactly(new LocalDateTime(2011, 1, 2, 5, 30));
+            ZonedDateTime value3 = value1.WithZone(otherZone);
+
+            Assert.That(value1.CompareTo(value2), Is.LessThan(0));
+            Assert.That(value2.CompareTo(value1), Is.GreaterThan(0));
+            Assert.That(value1.CompareTo(value3), Is.EqualTo(0));
+        }
         [Test]
         public void Constructor_ArgumentValidation()
         {

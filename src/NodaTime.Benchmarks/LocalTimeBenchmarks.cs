@@ -52,31 +52,31 @@ namespace NodaTime.Benchmarks
         [Benchmark]
         public void Hour()
         {
-            sample.HourOfDay.Consume();
+            sample.Hour.Consume();
         }
 
         [Benchmark]
         public void Minute()
         {
-            sample.MinuteOfHour.Consume();
+            sample.Minute.Consume();
         }
 
         [Benchmark]
         public void Second()
         {
-            sample.SecondOfMinute.Consume();
+            sample.Second.Consume();
         }
 
         [Benchmark]
         public void Millisecond()
         {
-            sample.MillisecondOfSecond.Consume();
+            sample.Millisecond.Consume();
         }
 
         [Benchmark]
         public void TickOfMillisecond()
         {
-            sample.TickOfMillisecond.Consume();
+            sample.Tick.Consume();
         }
 
         [Benchmark]

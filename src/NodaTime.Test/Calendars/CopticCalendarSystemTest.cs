@@ -63,8 +63,8 @@ namespace NodaTime.Test.Calendars
             Assert.AreEqual(1720, coptic.Year);
             Assert.IsFalse(copticCalendar.IsLeapYear(1720));
         
-            Assert.AreEqual(10, coptic.MonthOfYear);
-            Assert.AreEqual(2, coptic.DayOfMonth);
+            Assert.AreEqual(10, coptic.Month);
+            Assert.AreEqual(2, coptic.Day);
             
             // TODO(Post-V1): Determine whether we should consider the Coptic calendar to use ISO
             // days of the week.
@@ -72,11 +72,11 @@ namespace NodaTime.Test.Calendars
 
             Assert.AreEqual(9 * 30 + 2, coptic.DayOfYear);
 
-            Assert.AreEqual(0, coptic.HourOfDay);
-            Assert.AreEqual(0, coptic.MinuteOfHour);
-            Assert.AreEqual(0, coptic.SecondOfMinute);
-            Assert.AreEqual(0, coptic.MillisecondOfSecond);
-            Assert.AreEqual(0, coptic.TickOfMillisecond);
+            Assert.AreEqual(0, coptic.Hour);
+            Assert.AreEqual(0, coptic.Minute);
+            Assert.AreEqual(0, coptic.Second);
+            Assert.AreEqual(0, coptic.Millisecond);
+            Assert.AreEqual(0, coptic.Tick);
         }
     }
 }

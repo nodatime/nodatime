@@ -27,14 +27,14 @@ namespace NodaTime.Demo
         {
             CalendarSystem calendar = CalendarSystem.Iso;
             LocalDateTime dt = new LocalDateTime(2010, 6, 16, 16, 20, calendar);
-            Assert.AreEqual(20, dt.MinuteOfHour);
+            Assert.AreEqual(20, dt.Minute);
         }
 
         [Test]
         public void ImplicitIsoCalendar()
         {
             LocalDateTime dt = new LocalDateTime(2010, 6, 16, 16, 20);
-            Assert.AreEqual(20, dt.MinuteOfHour);
+            Assert.AreEqual(20, dt.Minute);
         }
 
         [Test]

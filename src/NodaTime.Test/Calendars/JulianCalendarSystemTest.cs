@@ -38,8 +38,8 @@ namespace NodaTime.Test.Calendars
         {
             LocalDateTime julianEpoch = new LocalDateTime(LocalInstant.LocalUnixEpoch, Julian);
             Assert.AreEqual(1969, julianEpoch.Year);
-            Assert.AreEqual(12, julianEpoch.MonthOfYear);
-            Assert.AreEqual(19, julianEpoch.DayOfMonth);
+            Assert.AreEqual(12, julianEpoch.Month);
+            Assert.AreEqual(19, julianEpoch.Day);
         }
 
         [Test]

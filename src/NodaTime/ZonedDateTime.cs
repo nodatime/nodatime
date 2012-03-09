@@ -26,7 +26,22 @@ namespace NodaTime
     /// A <see cref="LocalDateTime"/> in a specific time zone and with a particular offset to distinguish between otherwise-ambiguous
     /// instants. A ZonedDateTime is global, in that it maps to a single <see cref="Instant"/>.
     /// </summary>
-    public struct ZonedDateTime : IEquatable<ZonedDateTime>
+    /// <remarks>
+    /// <para>Comparisons of values can be handled in a way which is either calendar and zone sensitive or insensitive.
+    /// Noda Time implements all the operators (and the <see cref="Equals(ZonedDateTime)"/> method) such that all operators other than <see cref="op_Inequality"/>
+    /// will return false if asked to compare two values in different calendar systems and time zones.
+    /// </para>
+    /// <para>
+    /// However, the <see cref="CompareTo"/> method (implementing <see cref="IComparable{T}"/>) is calendar and zone insensitive; it compares the two
+    /// global instants in terms of when they actually occurred.
+    /// </para>
+    /// <para>
+    /// It's unclear at the time of this writing whether this is the most appropriate approach, and it may change in future versions. In general,
+    /// it would be a good idea for users to avoid comparing dates in different calendar systems, and indeed most users are unlikely to ever explicitly
+    /// consider which calendar system they're working in anyway.
+    /// </para>
+    /// </remarks>
+    public struct ZonedDateTime : IEquatable<ZonedDateTime>, IComparable<ZonedDateTime>
     {
         private readonly LocalDateTime localDateTime;
         private readonly DateTimeZone zone;
@@ -127,7 +142,7 @@ namespace NodaTime
         public int WeekYear { get { return LocalDateTime.WeekYear; } }
 
         /// <summary>Gets the month of this date and time within the year.</summary>
-        public int MonthOfYear { get { return LocalDateTime.MonthOfYear; } }
+        public int Month { get { return LocalDateTime.Month; } }
 
         /// <summary>Gets the week within the WeekYear. See <see cref="WeekYear"/> for more details.</summary>
         public int WeekOfWeekYear { get { return LocalDateTime.WeekOfWeekYear; } }
@@ -138,7 +153,7 @@ namespace NodaTime
         /// <summary>
         /// Gets the day of this date and time within the month.
         /// </summary>
-        public int DayOfMonth { get { return LocalDateTime.DayOfMonth; } }
+        public int Day { get { return LocalDateTime.Day; } }
 
         /// <summary>
         /// Gets the week day of this date and time expressed as an <see cref="NodaTime.IsoDayOfWeek"/> value,
@@ -157,28 +172,28 @@ namespace NodaTime
         public int DayOfWeek { get { return LocalDateTime.DayOfWeek; } }
 
         /// <summary>Gets the hour of day of this date and time, in the range 0 to 23 inclusive.</summary>
-        public int HourOfDay { get { return LocalDateTime.HourOfDay; } }
+        public int Hour { get { return LocalDateTime.Hour; } }
 
         /// <summary>Gets the hour of the half-day of this date and time, in the range 1 to 12 inclusive.</summary>
         public int ClockHourOfHalfDay { get { return LocalDateTime.ClockHourOfHalfDay; } }
         
         /// <summary>Gets the minute of this date and time, in the range 0 to 59 inclusive.</summary>
-        public int MinuteOfHour { get { return LocalDateTime.MinuteOfHour; } }
+        public int Minute { get { return LocalDateTime.Minute; } }
 
         /// <summary>Gets the second of this date and time within the minute, in the range 0 to 59 inclusive.</summary>
-        public int SecondOfMinute { get { return LocalDateTime.SecondOfMinute; } }
+        public int Second { get { return LocalDateTime.Second; } }
 
         /// <summary>Gets the second of this date and time within the day, in the range 0 to 86,399 inclusive.</summary>
         public int SecondOfDay { get { return LocalDateTime.SecondOfDay; } }
 
         /// <summary>Gets the millisecond of this date and time within the second, in the range 0 to 999 inclusive.</summary>
-        public int MillisecondOfSecond { get { return LocalDateTime.MillisecondOfSecond; } }
+        public int Millisecond { get { return LocalDateTime.Millisecond; } }
 
         /// <summary>Gets the millisecond of this date and time within the day, in the range 0 to 86,399,999 inclusive.</summary>
         public int MillisecondOfDay { get { return LocalDateTime.MillisecondOfDay; } }
 
         /// <summary>Gets the tick of this date and time within the millisecond, in the range 0 to 9,999 inclusive.</summary>
-        public int TickOfMillisecond { get { return LocalDateTime.TickOfMillisecond; } }
+        public int Tick { get { return LocalDateTime.Tick; } }
 
         /// <summary>Gets the tick of this local time within the second, in the range 0 to 9,999,999 inclusive.</summary>
         public int TickOfSecond { get { return LocalDateTime.TickOfSecond; } }
@@ -283,6 +298,83 @@ namespace NodaTime
         public static bool operator !=(ZonedDateTime left, ZonedDateTime right)
         {
             return !(left == right);
+        }
+
+        /// <summary>
+        /// Compares two ZonedDateTime values to see if the left one is strictly earlier than the right
+        /// one.
+        /// </summary>
+        /// <remarks>
+        /// This operator always returns false if the two operands have different calendars or time zones.
+        /// See the top-level type documentation for more information about comparisons.
+        /// </remarks>
+        /// <param name="lhs">First operand of the comparison</param>
+        /// <param name="rhs">Second operand of the comparison</param>
+        /// <returns>true if the <paramref name="lhs"/> is strictly earlier than <paramref name="rhs"/>, false otherwise.</returns>
+        public static bool operator <(ZonedDateTime lhs, ZonedDateTime rhs)
+        {
+            return lhs.ToInstant() < rhs.ToInstant() && Equals(lhs.LocalDateTime.Calendar, rhs.LocalDateTime.Calendar) && Equals(lhs.zone, rhs.zone);
+        }
+
+        /// <summary>
+        /// Compares two LocalDateTime values to see if the left one is earlier than or equal to the right
+        /// one.
+        /// </summary>
+        /// <remarks>
+        /// This operator always returns false if the two operands have different calendars or time zones.
+        /// See the top-level type documentation for more information about comparisons.
+        /// </remarks>
+        /// <param name="lhs">First operand of the comparison</param>
+        /// <param name="rhs">Second operand of the comparison</param>
+        /// <returns>true if the <paramref name="lhs"/> is earlier than or equal to <paramref name="rhs"/>, false otherwise.</returns>
+        public static bool operator <=(ZonedDateTime lhs, ZonedDateTime rhs)
+        {
+            return lhs.ToInstant() <= rhs.ToInstant() && Equals(lhs.LocalDateTime.Calendar, rhs.LocalDateTime.Calendar) && Equals(lhs.zone, rhs.zone);
+        }
+
+        /// <summary>
+        /// Compares two LocalDateTime values to see if the left one is strictly later than the right
+        /// one.
+        /// </summary>
+        /// <remarks>
+        /// This operator always returns false if the two operands have different calendars or time zones.
+        /// See the top-level type documentation for more information about comparisons.
+        /// </remarks>
+        /// <param name="lhs">First operand of the comparison</param>
+        /// <param name="rhs">Second operand of the comparison</param>
+        /// <returns>true if the <paramref name="lhs"/> is strictly later than <paramref name="rhs"/>, false otherwise.</returns>
+        public static bool operator >(ZonedDateTime lhs, ZonedDateTime rhs)
+        {
+            return lhs.ToInstant() > rhs.ToInstant() && Equals(lhs.LocalDateTime.Calendar, rhs.LocalDateTime.Calendar) && Equals(lhs.zone, rhs.zone);
+        }
+
+        /// <summary>
+        /// Compares two LocalDateTime values to see if the left one is later than or equal to the right
+        /// one.
+        /// </summary>
+        /// <remarks>
+        /// This operator always returns false if the two operands have different calendars or time zones.
+        /// See the top-level type documentation for more information about comparisons.
+        /// </remarks>
+        /// <param name="lhs">First operand of the comparison</param>
+        /// <param name="rhs">Second operand of the comparison</param>
+        /// <returns>true if the <paramref name="lhs"/> is later than or equal to <paramref name="rhs"/>, false otherwise.</returns>
+        public static bool operator >=(ZonedDateTime lhs, ZonedDateTime rhs)
+        {
+            return lhs.ToInstant() >= rhs.ToInstant() && Equals(lhs.LocalDateTime.Calendar, rhs.LocalDateTime.Calendar) && Equals(lhs.zone, rhs.zone);
+        }
+
+        /// <summary>
+        /// Indicates whether this date/time is earlier, later or the same as another one. This is purely
+        /// done in terms of the instant represented; the calendar system and time zone are ignored.
+        /// </summary>
+        /// <param name="other">The other zoned date/time to compare this one with</param>
+        /// <returns>A value less than zero if the instant represented by this zoned date/time is earlier than the one in
+        /// <paramref name="other"/>; zero if the instant is the same as the one in <paramref name="other"/>;
+        /// a value greater than zero if the instant is later than the one in <paramref name="other"/>.</returns>
+        public int CompareTo(ZonedDateTime other)
+        {
+            return ToInstant().CompareTo(other.ToInstant());
         }
 
         /// <summary>

@@ -144,7 +144,7 @@ namespace NodaTime
         /// <summary>
         /// Gets the hour of day of this local time, in the range 0 to 23 inclusive.
         /// </summary>
-        public int HourOfDay { get { return IsoFields.HourOfDay.GetValue(localInstant); } }
+        public int Hour { get { return IsoFields.HourOfDay.GetValue(localInstant); } }
 
         /// <summary>
         /// Gets the hour of the half-day of this date and time, in the range 1 to 12 inclusive.
@@ -154,12 +154,12 @@ namespace NodaTime
         /// <summary>
         /// Gets the minute of this local time, in the range 0 to 59 inclusive.
         /// </summary>
-        public int MinuteOfHour { get { return IsoFields.MinuteOfHour.GetValue(localInstant); ; } }
+        public int Minute { get { return IsoFields.MinuteOfHour.GetValue(localInstant); ; } }
 
         /// <summary>
         /// Gets the second of this local time within the minute, in the range 0 to 59 inclusive.
         /// </summary>
-        public int SecondOfMinute { get { return IsoFields.SecondOfMinute.GetValue(localInstant); } }
+        public int Second { get { return IsoFields.SecondOfMinute.GetValue(localInstant); } }
 
         /// <summary>
         /// Gets the second of this local time within the day, in the range 0 to 86,399 inclusive.
@@ -169,7 +169,7 @@ namespace NodaTime
         /// <summary>
         /// Gets the millisecond of this local time within the second, in the range 0 to 999 inclusive.
         /// </summary>
-        public int MillisecondOfSecond { get { return IsoFields.MillisecondOfSecond.GetValue(localInstant); } }
+        public int Millisecond { get { return IsoFields.MillisecondOfSecond.GetValue(localInstant); } }
 
         /// <summary>
         /// Gets the millisecond of this local time within the day, in the range 0 to 86,399,999 inclusive.
@@ -179,7 +179,7 @@ namespace NodaTime
         /// <summary>
         /// Gets the tick of this local time within the millisecond, in the range 0 to 9,999 inclusive.
         /// </summary>
-        public int TickOfMillisecond { get { return IsoFields.TickOfMillisecond.GetValue(localInstant); } }
+        public int Tick { get { return IsoFields.TickOfMillisecond.GetValue(localInstant); } }
 
         /// <summary>
         /// Gets the tick of this local time within the second, in the range 0 to 9,999,999 inclusive.
@@ -289,6 +289,66 @@ namespace NodaTime
         public static bool operator !=(LocalTime lhs, LocalTime rhs)
         {
             return lhs.localInstant != rhs.localInstant;
+        }
+
+        /// <summary>
+        /// Compares two LocalTime values to see if the left one is strictly earlier than the right
+        /// one.
+        /// </summary>
+        /// <param name="lhs">First operand of the comparison</param>
+        /// <param name="rhs">Second operand of the comparison</param>
+        /// <returns>true if the <paramref name="lhs"/> is strictly earlier than <paramref name="rhs"/>, false otherwise.</returns>
+        public static bool operator <(LocalTime lhs, LocalTime rhs)
+        {
+            return lhs.localInstant < rhs.localInstant;
+        }
+
+        /// <summary>
+        /// Compares two LocalTime values to see if the left one is earlier than or equal to the right
+        /// one.
+        /// </summary>
+        /// <param name="lhs">First operand of the comparison</param>
+        /// <param name="rhs">Second operand of the comparison</param>
+        /// <returns>true if the <paramref name="lhs"/> is earlier than or equal to <paramref name="rhs"/>, false otherwise.</returns>
+        public static bool operator <=(LocalTime lhs, LocalTime rhs)
+        {
+            return lhs.localInstant <= rhs.localInstant;
+        }
+
+        /// <summary>
+        /// Compares two LocalTime values to see if the left one is strictly later than the right
+        /// one.
+        /// </summary>
+        /// <param name="lhs">First operand of the comparison</param>
+        /// <param name="rhs">Second operand of the comparison</param>
+        /// <returns>true if the <paramref name="lhs"/> is strictly later than <paramref name="rhs"/>, false otherwise.</returns>
+        public static bool operator >(LocalTime lhs, LocalTime rhs)
+        {
+            return lhs.localInstant > rhs.localInstant;
+        }
+
+        /// <summary>
+        /// Compares two LocalTime values to see if the left one is later than or equal to the right
+        /// one.
+        /// </summary>
+        /// <param name="lhs">First operand of the comparison</param>
+        /// <param name="rhs">Second operand of the comparison</param>
+        /// <returns>true if the <paramref name="lhs"/> is later than or equal to <paramref name="rhs"/>, false otherwise.</returns>
+        public static bool operator >=(LocalTime lhs, LocalTime rhs)
+        {
+            return lhs.localInstant >= rhs.localInstant;
+        }
+
+        /// <summary>
+        /// Indicates whether this time is earlier, later or the same as another one.
+        /// </summary>
+        /// <param name="other">The other date/time to compare this one with</param>
+        /// <returns>A value less than zero if this time is earlier than <paramref name="other"/>;
+        /// zero if this time is the same as <paramref name="other"/>; a value greater than zero if this time is
+        /// later than <paramref name="other"/>.</returns>
+        public int CompareTo(LocalTime other)
+        {
+            return localInstant.CompareTo(other.localInstant);
         }
 
         /// <summary>

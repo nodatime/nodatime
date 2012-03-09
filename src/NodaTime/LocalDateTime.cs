@@ -25,23 +25,30 @@ using NodaTime.Utility;
 namespace NodaTime
 {
     /// <summary>
-    /// A date and time in a particular calendar system.
+    /// A date and time in a particular calendar system. A LocalDateTime value does not represent an
+    /// instant on the time line, because it has no associated time zone: "November 12th 2009 7pm, ISO calendar"
+    /// occurred at different instants for different people around the world.
     /// </summary>
     /// <remarks>
-    /// <para>
-    /// A LocalDateTime value does not represent an instant on the time line, mostly because it has
-    /// no associated time zone: "November 12th 2009 7pm, ISO calendar" occurred at different
-    /// instants for different people around the world.
-    /// </para>
     /// <para>
     /// This type defaults to using the IsoCalendarSystem unless a different calendar system is
     /// specified.
     /// </para>
+    /// <para>Comparisons of values can be handled in a way which is either calendar-sensitive or calendar-insensitive.
+    /// Noda Time implements all the operators (and the <see cref="Equals(LocalDateTime)"/> method) such that all operators other than <see cref="op_Inequality"/>
+    /// will return false if asked to compare two values in different calendar systems.
+    /// </para>
     /// <para>
-    /// This type is immutable and thread-safe.
+    /// However, the <see cref="CompareTo"/> method (implementing <see cref="IComparable{T}"/>) is calendar-insensitive; it compares the two
+    /// values historically in terms of when they actually occurred, as if they're both converted to some "neutral" calendar system first.
+    /// </para>
+    /// <para>
+    /// It's unclear at the time of this writing whether this is the most appropriate approach, and it may change in future versions. In general,
+    /// it would be a good idea for users to avoid comparing dates in different calendar systems, and indeed most users are unlikely to ever explicitly
+    /// consider which calendar system they're working in anyway.
     /// </para>
     /// </remarks>
-    public struct LocalDateTime : IEquatable<LocalDateTime>, IFormattable
+    public struct LocalDateTime : IEquatable<LocalDateTime>, IComparable<LocalDateTime>, IFormattable
     {
         private readonly CalendarSystem calendar;
         private readonly LocalInstant localInstant;
@@ -265,7 +272,7 @@ namespace NodaTime
         /// <summary>
         /// Gets the month of this local date and time within the year.
         /// </summary>
-        public int MonthOfYear { get { return calendar.Fields.MonthOfYear.GetValue(localInstant); } }
+        public int Month { get { return calendar.Fields.MonthOfYear.GetValue(localInstant); } }
 
         /// <summary>
         /// Gets the week within the WeekYear. See <see cref="WeekYear"/> for more details.
@@ -280,7 +287,7 @@ namespace NodaTime
         /// <summary>
         /// Gets the day of this local date and time within the month.
         /// </summary>
-        public int DayOfMonth { get { return calendar.Fields.DayOfMonth.GetValue(localInstant); } }
+        public int Day { get { return calendar.Fields.DayOfMonth.GetValue(localInstant); } }
 
         /// <summary>
         /// Gets the week day of this local date and time expressed as an <see cref="NodaTime.IsoDayOfWeek"/> value,
@@ -301,7 +308,7 @@ namespace NodaTime
         /// <summary>
         /// Gets the hour of day of this local date and time, in the range 0 to 23 inclusive.
         /// </summary>
-        public int HourOfDay { get { return calendar.Fields.HourOfDay.GetValue(localInstant); } }
+        public int Hour { get { return calendar.Fields.HourOfDay.GetValue(localInstant); } }
 
         /// <summary>
         /// Gets the hour of the half-day of this local date and time, in the range 1 to 12 inclusive.
@@ -311,12 +318,12 @@ namespace NodaTime
         /// <summary>
         /// Gets the minute of this local date and time, in the range 0 to 59 inclusive.
         /// </summary>
-        public int MinuteOfHour { get { return calendar.Fields.MinuteOfHour.GetValue(localInstant); } }
+        public int Minute { get { return calendar.Fields.MinuteOfHour.GetValue(localInstant); } }
 
         /// <summary>
         /// Gets the second of this local date and time within the minute, in the range 0 to 59 inclusive.
         /// </summary>
-        public int SecondOfMinute { get { return calendar.Fields.SecondOfMinute.GetValue(localInstant); } }
+        public int Second { get { return calendar.Fields.SecondOfMinute.GetValue(localInstant); } }
 
         /// <summary>
         /// Gets the second of this local date and time within the day, in the range 0 to 86,399 inclusive.
@@ -326,7 +333,7 @@ namespace NodaTime
         /// <summary>
         /// Gets the millisecond of this local date and time within the second, in the range 0 to 999 inclusive.
         /// </summary>
-        public int MillisecondOfSecond { get { return calendar.Fields.MillisecondOfSecond.GetValue(localInstant); } }
+        public int Millisecond { get { return calendar.Fields.MillisecondOfSecond.GetValue(localInstant); } }
 
         /// <summary>
         /// Gets the millisecond of this local date and time within the day, in the range 0 to 86,399,999 inclusive.
@@ -336,7 +343,7 @@ namespace NodaTime
         /// <summary>
         /// Gets the tick of this local date and time within the millisecond, in the range 0 to 9,999 inclusive.
         /// </summary>
-        public int TickOfMillisecond { get { return calendar.Fields.TickOfMillisecond.GetValue(localInstant); } }
+        public int Tick { get { return calendar.Fields.TickOfMillisecond.GetValue(localInstant); } }
 
         /// <summary>
         /// Gets the tick of this local time within the second, in the range 0 to 9,999,999 inclusive.
@@ -445,6 +452,85 @@ namespace NodaTime
         public static bool operator !=(LocalDateTime left, LocalDateTime right)
         {
             return !(left == right);
+        }
+
+        /// <summary>
+        /// Compares two LocalDateTime values to see if the left one is strictly earlier than the right
+        /// one.
+        /// </summary>
+        /// <remarks>
+        /// This operator always returns false if the two operands have different calendars. See the top-level type
+        /// documentation for more information about comparisons.
+        /// </remarks>
+        /// <param name="lhs">First operand of the comparison</param>
+        /// <param name="rhs">Second operand of the comparison</param>
+        /// <returns>true if the <paramref name="lhs"/> is strictly earlier than <paramref name="rhs"/>, false otherwise.</returns>
+        public static bool operator <(LocalDateTime lhs, LocalDateTime rhs)
+        {
+            return lhs.LocalInstant < rhs.LocalInstant && Equals(lhs.calendar, rhs.calendar);
+        }
+
+        /// <summary>
+        /// Compares two LocalDateTime values to see if the left one is earlier than or equal to the right
+        /// one.
+        /// </summary>
+        /// <remarks>
+        /// This operator always returns false if the two operands have different calendars. See the top-level type
+        /// documentation for more information about comparisons.
+        /// </remarks>
+        /// <param name="lhs">First operand of the comparison</param>
+        /// <param name="rhs">Second operand of the comparison</param>
+        /// <returns>true if the <paramref name="lhs"/> is earlier than or equal to <paramref name="rhs"/>, false otherwise.</returns>
+        public static bool operator <=(LocalDateTime lhs, LocalDateTime rhs)
+        {
+            return lhs.LocalInstant <= rhs.LocalInstant && Equals(lhs.calendar, rhs.calendar);
+        }
+
+        /// <summary>
+        /// Compares two LocalDateTime values to see if the left one is strictly later than the right
+        /// one.
+        /// </summary>
+        /// <remarks>
+        /// This operator always returns false if the two operands have different calendars. See the top-level type
+        /// documentation for more information about comparisons.
+        /// </remarks>
+        /// <param name="lhs">First operand of the comparison</param>
+        /// <param name="rhs">Second operand of the comparison</param>
+        /// <returns>true if the <paramref name="lhs"/> is strictly later than <paramref name="rhs"/>, false otherwise.</returns>
+        public static bool operator >(LocalDateTime lhs, LocalDateTime rhs)
+        {
+            return lhs.LocalInstant > rhs.LocalInstant && Equals(lhs.calendar, rhs.calendar);
+        }
+
+        /// <summary>
+        /// Compares two LocalDateTime values to see if the left one is later than or equal to the right
+        /// one.
+        /// </summary>
+        /// <remarks>
+        /// This operator always returns false if the two operands have different calendars. See the top-level type
+        /// documentation for more information about comparisons.
+        /// </remarks>
+        /// <param name="lhs">First operand of the comparison</param>
+        /// <param name="rhs">Second operand of the comparison</param>
+        /// <returns>true if the <paramref name="lhs"/> is later than or equal to <paramref name="rhs"/>, false otherwise.</returns>
+        public static bool operator >=(LocalDateTime lhs, LocalDateTime rhs)
+        {
+            return lhs.LocalInstant >= rhs.LocalInstant && Equals(lhs.calendar, rhs.calendar);
+        }
+
+        /// <summary>
+        /// Indicates whether this date/time is earlier, later or the same as another one. This is purely
+        /// done in terms of the local instant represented; the calendar system is ignored. This can lead
+        /// to surprising results - for example, 1945 in the ISO calendar corresponds to around 1364
+        /// in the Islamic calendar, so an Islamic date in year 1400 is "after" a date in 1945 in the ISO calendar.
+        /// </summary>
+        /// <param name="other">The other date/time to compare this one with</param>
+        /// <returns>A value less than zero if this date/time is earlier than <paramref name="other"/>;
+        /// zero if this date/time is the same as <paramref name="other"/>; a value greater than zero if this date/time is
+        /// later than <paramref name="other"/>.</returns>
+        public int CompareTo(LocalDateTime other)
+        {
+            return LocalInstant.CompareTo(other.LocalInstant);
         }
 
         /// <summary>
