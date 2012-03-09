@@ -208,13 +208,13 @@ namespace NodaTime
         public string Id { get { return id; } }
 
         /// <summary>
-        ///   Indicates whether the time zone is fixed, i.e. contains no transitions.
+        /// Indicates whether the time zone is fixed, i.e. contains no transitions.
         /// </summary>
         /// <remarks>
-        ///   This is used as an optimization. If the time zone has not transitions but returns <c>true</c>
-        ///   for this then the behavior will be correct but the system will have to do extra work. However
-        ///   if the time zone has transitions and this returns <c>false</c> then the transitions will never
-        ///   be examined.
+        /// This is used as an optimization. If the time zone has not transitions but returns <c>false</c>
+        /// for this then the behavior will be correct but the system will have to do extra work. However
+        /// if the time zone has transitions and this returns <c>true</c> then the transitions will never
+        /// be examined.
         /// </remarks>
         public bool IsFixed { get { return isFixed; } }
 
