@@ -114,7 +114,7 @@ namespace NodaTime.Test.TimeZones
         {
             try
             {
-                zone.AtExactly(localTime);
+                zone.MapLocal(localTime).Single();
                 Assert.Fail("Expected exception");
             }
             catch (SkippedTimeException e)
@@ -126,15 +126,15 @@ namespace NodaTime.Test.TimeZones
 
         private static void AssertAmbiguous(LocalDateTime localTime, DateTimeZone zone)
         {
-            ZonedDateTime earlier = zone.AtEarlier(localTime);
-            ZonedDateTime later = zone.AtLater(localTime);
+            ZonedDateTime earlier = zone.MapLocal(localTime).First();
+            ZonedDateTime later = zone.MapLocal(localTime).Last();
             Assert.AreEqual(localTime, earlier.LocalDateTime);
             Assert.AreEqual(localTime, later.LocalDateTime);
             Assert.That(earlier.ToInstant(), Is.LessThan(later.ToInstant()));
 
             try
             {
-                zone.AtExactly(localTime);
+                zone.MapLocal(localTime).Single();
                 Assert.Fail("Expected exception");
             }
             catch (AmbiguousTimeException e)
@@ -148,7 +148,7 @@ namespace NodaTime.Test.TimeZones
 
         private static void AssertOffset(int expectedHours, LocalDateTime localTime, DateTimeZone zone)
         {
-            var zoned = zone.AtExactly(localTime);
+            var zoned = zone.MapLocal(localTime).Single();
             int actualHours = zoned.Offset.TotalMilliseconds / NodaConstants.MillisecondsPerHour;
             Assert.AreEqual(expectedHours, actualHours);
         }
@@ -240,29 +240,26 @@ namespace NodaTime.Test.TimeZones
         {
             //2011-11-09 01:30:00 - not ambiguous in America/New York timezone
             var unambigiousTime = new LocalDateTime(2011, 11, 9, 1, 30); 
-            var actual = NewYork.MapLocalDateTime(unambigiousTime).Type;
-
-            Assert.AreEqual(ZoneLocalMapping.ResultType.Unambiguous, actual);
+            var mapping = NewYork.MapLocal(unambigiousTime);
+            Assert.AreEqual(1, mapping.Count);
         }
 
         [Test]
         public void MapLocalDateTime_AmbiguousDateReturnsAmbigousMapping()
         {
             //2011-11-06 01:30:00 - falls during DST - EST conversion in America/New York timezone
-            var ambiguousTime = new LocalDateTime(2011, 11, 6, 1, 30); 
-            var actual = NewYork.MapLocalDateTime(ambiguousTime).Type;
-
-            Assert.AreEqual(ZoneLocalMapping.ResultType.Ambiguous, actual);
+            var ambiguousTime = new LocalDateTime(2011, 11, 6, 1, 30);
+            var mapping = NewYork.MapLocal(ambiguousTime);
+            Assert.AreEqual(2, mapping.Count);
         }
 
         [Test]
         public void MapLocalDateTime_SkippedDateReturnsSkippedMapping()
         {
             //2011-03-13 02:30:00 - falls during EST - DST conversion in America/New York timezone
-            var skippedTime = new LocalDateTime(2011, 3, 13, 2, 30); 
-            var actual = NewYork.MapLocalDateTime(skippedTime).Type;
-
-            Assert.AreEqual(ZoneLocalMapping.ResultType.Skipped, actual);
+            var skippedTime = new LocalDateTime(2011, 3, 13, 2, 30);
+            var mapping = NewYork.MapLocal(skippedTime);
+            Assert.AreEqual(0, mapping.Count);
         }
 
         // Samoa (Pacific/Apia) skipped December 30th 2011, going from

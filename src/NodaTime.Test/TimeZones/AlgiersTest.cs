@@ -43,7 +43,7 @@ namespace NodaTime.Test.TimeZones
         [Test]
         public void GetPeriod_AfterLastTransition()
         {
-            var may1981 = DateTimeZone.Utc.AtExactly(new LocalDateTime(1981, 5, 1, 0, 0, 1)).ToInstant();
+            var may1981 = DateTimeZone.Utc.AtStrictly(new LocalDateTime(1981, 5, 1, 0, 0, 1)).ToInstant();
             var actual = Algiers.GetZoneInterval(may1981);
             var expected = new ZoneInterval("CET", new Instant(3575232000000000L), Instant.MaxValue, Offset.FromMilliseconds(NodaConstants.MillisecondsPerHour), Offset.Zero);
             Assert.AreEqual(expected, actual);
