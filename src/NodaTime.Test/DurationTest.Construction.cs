@@ -135,27 +135,5 @@ namespace NodaTime.Test
             var test = new Duration(length);
             Assert.AreEqual(length, test.TotalTicks);
         }
-
-        [Test]
-        public void ConstructFrom_TickEndPoints()
-        {
-            var test = new Duration(StartTicks, EndTicks);
-            Assert.AreEqual(EndTicks - StartTicks, test.TotalTicks);
-        }
-
-        [Test]
-        public void ConstructFrom_InstantEndPoints()
-        {
-            var test = new Duration(Start, End);
-            Assert.AreEqual(End.Ticks - Start.Ticks, test.TotalTicks);
-        }
-
-        [Test]
-        public void ConstructFrom_Interval()
-        {
-            var interval = new Interval(Start, End);
-            var test = new Duration(interval);
-            Assert.AreEqual(End.Ticks - Start.Ticks, test.TotalTicks);
-        }
     }
 }
