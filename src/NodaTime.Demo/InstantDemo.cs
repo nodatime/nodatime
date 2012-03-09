@@ -39,7 +39,7 @@ namespace NodaTime.Demo
             // Some arbitrary instant. I've no idea when.
             Instant instant = new Instant(150000000);
             // A very short duration: a duration is simply a number of ticks.
-            Duration duration = new Duration(1000);
+            Duration duration = Duration.FromTicks(1000);
             Instant later = instant + duration;
             Assert.AreEqual(new Instant(150001000), later);
         }
