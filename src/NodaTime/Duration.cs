@@ -127,49 +127,14 @@ namespace NodaTime
         public static readonly Duration OneMillisecond = new Duration(NodaConstants.TicksPerMillisecond);
         #endregion
 
-        #region Constructors
         /// <summary>
         /// Initializes a new instance of the <see cref="Duration"/> struct.
         /// </summary>
         /// <param name="ticks">The number of ticks.</param>
-        public Duration(long ticks)
+        internal Duration(long ticks)
         {
             this.ticks = ticks;
         }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Duration"/> struct as the difference
-        /// betweeen the given ticks. This is effectively <c>new Duration(end - start)</c>.
-        /// </summary>
-        /// <param name="startTicks">The start ticks.</param>
-        /// <param name="endTicks">The end ticks.</param>
-        public Duration(long startTicks, long endTicks)
-            : this(endTicks - startTicks)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Duration"/> struct as the difference
-        /// betweeen the given <see cref="Instant"/> values. This is effectively <c>new
-        /// Duration(end.Ticks - start.Ticks)</c>.
-        /// </summary>
-        /// <param name="start">The start <see cref="Instant"/> value.</param>
-        /// <param name="end">The end <see cref="Instant"/> value.</param>
-        public Duration(Instant start, Instant end)
-            : this(end.Ticks - start.Ticks)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Duration"/> struct as the duration of the
-        /// given <see cref="Interval"/> object.
-        /// </summary>
-        /// <param name="interval">The interval.</param>
-        public Duration(Interval interval)
-            : this(interval.Duration.TotalTicks)
-        {
-        }
-        #endregion
 
         private readonly long ticks;
 
