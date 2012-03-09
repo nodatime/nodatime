@@ -41,7 +41,7 @@ local value without reference to any particular calendar system, but
 this is currently not exposed. Similarly, [`LocalTime`][3] does not refer
 to a calendar system - we assume that all calendars are based around
 solar days 24 hours in length (give or take daylight saving
-changes). However, the [`LocalDate`][4] and [`LocalDateTime]`[5] types *do*
+changes). However, the [`LocalDate`][4] and [`LocalDateTime`][5] types *do*
 both refer to calendar systems... see the later section on calendars
 for more information.
 
