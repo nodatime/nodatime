@@ -20,6 +20,7 @@ using NodaTime.Calendars;
 using NodaTime.Globalization;
 using NodaTime.Text;
 using NodaTime.Text.Patterns;
+using NodaTime.TimeZones;
 using NodaTime.Utility;
 
 namespace NodaTime
@@ -825,6 +826,41 @@ namespace NodaTime
                 difference -= 7;
             }
             return PlusDays(difference);
+        }
+
+        /// <summary>
+        /// Returns the mapping of this local date/time within the given <see cref="DateTimeZone" />,
+        /// with "strict" rules applied such that an exception is thrown if either the mapping is
+        /// ambiguous or the time is skipped.
+        /// </summary>
+        /// <remarks>
+        /// This is solely a convenience method for calling <see cref="DateTimeZone.AtStrictly" />.
+        /// </remarks>
+        /// <param name="zone">The time zone in which to map this local date/time.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="zone"/> is null</exception>
+        /// <returns>The result of mapping this local date/time in the given time zone.</returns>
+        public ZonedDateTime InZoneStrictly(DateTimeZone zone)
+        {
+            Preconditions.CheckNotNull(zone, "zone");
+            return zone.AtStrictly(this);
+        }
+
+        /// <summary>
+        /// Returns the mapping of this local date/time within the given <see cref="DateTimeZone" />,
+        /// with "lenient" rules applied such that ambiguous values map to the
+        /// later of the alternatives, and "skipped" values map to the start of the zone interval
+        /// after the "gap".
+        /// </summary>
+        /// <remarks>
+        /// This is solely a convenience method for calling <see cref="DateTimeZone.AtLeniently" />.
+        /// </remarks>
+        /// <param name="zone">The time zone in which to map this local date/time.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="zone"/> is null</exception>
+        /// <returns>The result of mapping this local date/time in the given time zone.</returns>
+        public ZonedDateTime InZoneLeniently(DateTimeZone zone)
+        {
+            Preconditions.CheckNotNull(zone, "zone");
+            return zone.AtLeniently(this);
         }
 
         #region Formatting

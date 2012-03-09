@@ -27,7 +27,7 @@ namespace NodaTime.Demo
         [Test]
         public void Construction()
         {
-            ZonedDateTime dt = Dublin.AtExactly(new LocalDateTime(2010, 6, 9, 15, 15, 0));
+            ZonedDateTime dt = Dublin.AtStrictly(new LocalDateTime(2010, 6, 9, 15, 15, 0));
 
             Assert.AreEqual(15, dt.Hour);
             Assert.AreEqual(2010, dt.Year);
@@ -41,13 +41,13 @@ namespace NodaTime.Demo
         [Test]
         public void Ambiguity()
         {
-            Assert.Throws<AmbiguousTimeException>(() => Dublin.AtExactly(new LocalDateTime(2010, 10, 31, 1, 15, 0)));
+            Assert.Throws<AmbiguousTimeException>(() => Dublin.AtStrictly(new LocalDateTime(2010, 10, 31, 1, 15, 0)));
         }
 
         [Test]
         public void Impossibility()
         {
-            Assert.Throws<SkippedTimeException>(() => Dublin.AtExactly(new LocalDateTime(2010, 3, 28, 1, 15, 0)));
+            Assert.Throws<SkippedTimeException>(() => Dublin.AtStrictly(new LocalDateTime(2010, 3, 28, 1, 15, 0)));
         }
     }
 }

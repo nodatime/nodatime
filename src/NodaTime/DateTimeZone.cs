@@ -18,6 +18,7 @@
 using System;
 using System.Collections.Generic;
 using NodaTime.TimeZones;
+using NodaTime.Utility;
 
 namespace NodaTime
 {
@@ -37,19 +38,20 @@ namespace NodaTime
     /// Noda Time provides various options when mapping local time to a specific instant:
     /// <list type="bullet">
     ///   <item>
-    ///     <description><see cref="AtExactly"/> will throw an exception if the mapping from local time is either ambiguous
+    ///     <description><see cref="AtStrictly"/> will throw an exception if the mapping from local time is either ambiguous
     ///     or impossible, i.e. if there is anything other than one instant which maps to the given local time.</description>
     ///   </item>
     ///   <item>
-    ///     <description><see cref="AtEarlier"/> will throw an exception if the mapping from local time is impossible, i.e.
-    ///     if that time is skipped, but will return the earlier of two valid mappings where there is ambiguity.</description>
+    ///     <description><see cref="AtLeniently"/> will never throw an exception due to ambiguous or skipped times,
+    ///     resolving to the later option of ambiguous matches or the start of the zone interval after the gap for
+    ///     skipped times.</description>
     ///   </item>
     ///   <item>
-    ///     <description><see cref="AtLater"/> will throw an exception if the mapping from local time is impossible, i.e.
-    ///     if that time is skipped, but will return the later of two valid mappings where there is ambiguity.</description>
+    ///     <description><see cref="ResolveLocal"/> will apply a <see cref="ZoneLocalMappingResolver"/> to the result of
+    ///     a mapping.</description>
     ///   </item>
     ///   <item>
-    ///     <description><see cref="MapLocalDateTime"/> will not throw any exceptions, but return a <see cref="ZoneLocalMapping"/>
+    ///     <description><see cref="MapLocal"/> will return a <see cref="ZoneLocalMapping"/>
     ///     with complete information about whether the given local time occurs zero times, once or twice. This is the most
     ///     fine-grained approach, which is the fiddliest to use but puts the caller in the most control.</description>
     ///   </item>
@@ -317,81 +319,6 @@ namespace NodaTime
 
         #region Conversion between local dates/times and ZonedDateTime
         /// <summary>
-        /// If the given local date/time is mapped unambiguously to a single ZonedDateTime value, that is returned.
-        /// For ambiguous or skipped local date/time values, AmbiguousTimeException or SkippedTimeException are thrown respectively.
-        /// </summary>
-        /// <param name="localDateTime">The local date and time to map in this time zone.</param>
-        /// <returns>The unambiguous <see cref="ZonedDateTime"/> with the same local date and time as the given parameter in this time zone.</returns>
-        /// <exception cref="SkippedTimeException">The given LocalDateTime is skipped due to a transition where the clocks go forward</exception>
-        /// <exception cref="AmbiguousTimeException">The given LocalDateTime is ambiguous due to a transition where the clocks go forward</exception>
-        public ZonedDateTime AtExactly(LocalDateTime localDateTime)
-        {
-            ZoneIntervalPair pair = GetZoneIntervals(localDateTime.LocalInstant);
-            switch (pair.MatchingIntervals)
-            {
-                case 0:
-                    throw new SkippedTimeException(localDateTime, this);
-                case 1:
-                    return new ZonedDateTime(localDateTime, pair.EarlyInterval.WallOffset, this);
-                case 2:
-                    throw new AmbiguousTimeException(localDateTime, this,
-                        new ZonedDateTime(localDateTime, pair.EarlyInterval.WallOffset, this),
-                        new ZonedDateTime(localDateTime, pair.LateInterval.WallOffset, this));
-                default:
-                    throw new InvalidOperationException("This won't happen.");
-            }
-        }
-
-        /// <summary>
-        /// If the given local date/time is mapped unambiguously to a single ZonedDateTime value, that is returned.
-        /// For ambiguous local date/time values, the earlier mapping is returned.
-        /// For skipped local date/time values, SkippedTimeException is thrown.
-        /// </summary>
-        /// <param name="localDateTime">The local date and time to map in this time zone.</param>
-        /// <returns>The <see cref="ZonedDateTime"/> value with the same local time as <paramref name="localDateTime"/>,
-        /// either unambiguously or the earlier of two ambiguous possibilities.</returns>
-        /// <exception cref="SkippedTimeException">The given LocalDateTime is skipped due to a transition where the clocks go forward</exception>
-        public ZonedDateTime AtEarlier(LocalDateTime localDateTime)
-        {
-            ZoneIntervalPair pair = GetZoneIntervals(localDateTime.LocalInstant);
-            switch (pair.MatchingIntervals)
-            {
-                case 0:
-                    throw new SkippedTimeException(localDateTime, this);
-                case 1:
-                case 2:
-                    return new ZonedDateTime(localDateTime, pair.EarlyInterval.WallOffset, this);
-                default:
-                    throw new InvalidOperationException("This won't happen.");
-            }
-        }
-
-        /// <summary>
-        /// If the given local date/time is mapped unambiguously to a single ZonedDateTime value, that is returned.
-        /// For ambiguous local date/time values, the later mapping is returned.
-        /// For skipped local date/time values, SkippedTimeException is thrown.
-        /// </summary>
-        /// <param name="localDateTime">The local date and time to map in this time zone.</param>
-        /// <returns>The <see cref="ZonedDateTime"/> value with the same local time as <paramref name="localDateTime"/>,
-        /// either unambiguously or the earlier of two ambiguous possibilities.</returns>
-        /// <exception cref="SkippedTimeException">The given LocalDateTime is skipped due to a transition where the clocks go forward</exception>
-        public ZonedDateTime AtLater(LocalDateTime localDateTime)
-        {
-            ZoneIntervalPair pair = GetZoneIntervals(localDateTime.LocalInstant);
-            switch (pair.MatchingIntervals)
-            {
-                case 0:
-                    throw new SkippedTimeException(localDateTime, this);
-                case 1:
-                    return new ZonedDateTime(localDateTime, pair.EarlyInterval.WallOffset, this);
-                case 2:
-                    return new ZonedDateTime(localDateTime, pair.LateInterval.WallOffset, this);
-                default:
-                    throw new InvalidOperationException("This won't happen.");
-            }
-        }
-
-        /// <summary>
         /// Returns the ZonedDateTime with a LocalDateTime as early as possible on the given date.
         /// If midnight exists unambiguously on the given date, it is returned.
         /// If the given date has an ambiguous start time (e.g. the clocks go back from 1am to midnight)
@@ -427,33 +354,97 @@ namespace NodaTime
         }
 
         /// <summary>
-        /// Returns complete information about how the given LocalDateTime is mapped in this time zone.
+        /// Returns complete information about how the given <see cref="LocalDateTime" /> is mapped in this time zone.
         /// </summary>
-        /// <remarks>Use this method if you need to know whether the given value is ambiguous, or if you
-        /// want to find out about a potential "gap" in local dates and times due to a daylight saving transition.
+        /// <remarks>
+        /// Mapping a local date/time to a time zone can give an unambiguous, ambiguous or impossible result, depending on
+        /// time zone transitions. Use the return value of this method to handle these cases in an appropriate way for
+        /// your use case.
         /// </remarks>
         /// <param name="localDateTime">The local date and time to map in this time zone.</param>
         /// <returns>A mapping of the given local date and time to zero, one or two zoned date/time values.</returns>
-        public ZoneLocalMapping MapLocalDateTime(LocalDateTime localDateTime)
+        public ZoneLocalMapping MapLocal(LocalDateTime localDateTime)
         {
             LocalInstant localInstant = localDateTime.LocalInstant;
-            ZoneIntervalPair pair = GetZoneIntervals(localInstant);
-            switch (pair.MatchingIntervals)
+            Instant firstGuess = new Instant(localInstant.Ticks);
+            ZoneInterval interval = GetZoneInterval(firstGuess);
+
+            // Most of the time we'll go into here... the local instant and the instant
+            // are close enough that we've found the right instant.
+            if (interval.Contains(localInstant))
             {
-                case 0:
-                    var before = GetIntervalBeforeGap(localInstant);
-                    var after = GetIntervalAfterGap(localInstant);
-                    return ZoneLocalMapping.SkippedResult(before, after);
-                case 1:
-                    var mapping = new ZonedDateTime(localDateTime, pair.EarlyInterval.WallOffset, this);
-                    return ZoneLocalMapping.UnambiguousResult(mapping);
-                case 2:
-                    var earlier = new ZonedDateTime(localDateTime, pair.EarlyInterval.WallOffset, this);
-                    var later = new ZonedDateTime(localDateTime, pair.LateInterval.WallOffset, this);
-                    return ZoneLocalMapping.AmbiguousResult(earlier, later);
-                default:
-                    throw new InvalidOperationException("This won't happen.");
+                ZoneInterval earlier = GetEarlierMatchingInterval(interval, localInstant);
+                if (earlier != null)
+                {
+                    return new ZoneLocalMapping(this, localDateTime, earlier, interval, 2);
+                }
+                ZoneInterval later = GetLaterMatchingInterval(interval, localInstant);
+                if (later != null)
+                {
+                    return new ZoneLocalMapping(this, localDateTime, interval, later, 2);
+                }
+                return new ZoneLocalMapping(this, localDateTime, interval, interval, 1);
             }
+            else
+            {
+                // Our first guess was wrong. Either we need to change interval by one (either direction)
+                // or we're in a gap.
+                ZoneInterval earlier = GetEarlierMatchingInterval(interval, localInstant);
+                if (earlier != null)
+                {
+                    return new ZoneLocalMapping(this, localDateTime, earlier, earlier, 1);
+                }
+                ZoneInterval later = GetLaterMatchingInterval(interval, localInstant);
+                if (later != null)
+                {
+                    return new ZoneLocalMapping(this, localDateTime, later, later, 1);
+                }
+                return new ZoneLocalMapping(this, localDateTime, GetIntervalBeforeGap(localInstant), GetIntervalAfterGap(localInstant), 0);
+            }
+        }
+
+        /// <summary>
+        /// Resolves the given local date and time into a <see cref="ZonedDateTime"/> in this time zone, following
+        /// the given <see cref="ZoneLocalMappingResolver"/> to handle ambiguity and skipped times.
+        /// </summary>
+        /// <remarks>
+        /// This is a convenience method for calling <see cref="MapLocal"/> and passing the result to the resolver.
+        /// Common options for resolvers are provided in the static <see cref="Resolvers"/> class.
+        /// </remarks>
+        /// <param name="localDateTime"></param>
+        /// <param name="resolver">The resolver to apply to the mapping.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="resolver"/> is null</exception>
+        /// <returns>The result of resolving the mapping.</returns>
+        public ZonedDateTime ResolveLocal(LocalDateTime localDateTime, ZoneLocalMappingResolver resolver)
+        {
+            Preconditions.CheckNotNull(resolver, "resolver");
+            return resolver(MapLocal(localDateTime));
+        }
+
+        /// <summary>
+        /// If the given <see cref="LocalDateTime"/> is mapped unambiguously in this time zone, the
+        /// corresponding <see cref="ZonedDateTime"/> is returned. Otherwise, <see cref="SkippedTimeException"/> or <see cref="AmbiguousTimeException"/>
+        /// is thrown, depending on whether the mapping is ambiguous or the local date/time is skipped entirely.
+        /// </summary>
+        /// <param name="localDateTime">The local date and time to map into this time zone.</param>
+        /// <exception cref="SkippedTimeException">The given local date/time is skipped in this time zone.</exception>
+        /// <exception cref="AmbiguousTimeException">The given local date/time is ambiguous in this time zone.</exception>
+        /// <returns>The unambiguous matching <see cref="ZonedDateTime"/> if it exists.</returns>
+        public ZonedDateTime AtStrictly(LocalDateTime localDateTime)
+        {
+            return MapLocal(localDateTime).Single();
+        }
+
+        /// <summary>
+        /// Maps the given local date/time to this time zone in a lenient manner: ambiguous values map to the
+        /// later of the alternatives, and "skipped" values map to the start of the zone interval after the "gap".
+        /// </summary>
+        /// <param name="localDateTime">The local date/time to map.</param>
+        /// <returns>The unambiguous mapping if there is one, the later result if the mapping is ambiguous,
+        /// or the start of the later zone interval if the given local date/time is skipped.</returns>
+        public ZonedDateTime AtLeniently(LocalDateTime localDateTime)
+        {
+            return ResolveLocal(localDateTime, Resolvers.LenientResolver);
         }
         #endregion
 
@@ -510,7 +501,7 @@ namespace NodaTime
         {
             Instant guess = new Instant(localInstant.Ticks);
             ZoneInterval guessInterval = GetZoneInterval(guess);
-            // If the local interval occurs before the zone interval we're looking at start,
+            // If the local interval occurs before the zone interval we're looking at starts,
             // we need to find the earlier one; otherwise this interval must come after the gap, and
             // it's therefore the one we want.
             if (localInstant.Minus(guessInterval.WallOffset) < guessInterval.Start)

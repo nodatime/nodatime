@@ -66,14 +66,14 @@ namespace NodaTime.Test
         [Test]
         public void FromUtcNoSeconds()
         {
-            Instant viaUtc = DateTimeZone.Utc.AtExactly(new LocalDateTime(2008, 4, 3, 10, 35, 0)).ToInstant();
+            Instant viaUtc = DateTimeZone.Utc.AtStrictly(new LocalDateTime(2008, 4, 3, 10, 35, 0)).ToInstant();
             Assert.AreEqual(viaUtc, Instant.FromUtc(2008, 4, 3, 10, 35));
         }
 
         [Test]
         public void FromUtcWithSeconds()
         {
-            Instant viaUtc = DateTimeZone.Utc.AtExactly(new LocalDateTime(2008, 4, 3, 10, 35, 23)).ToInstant();
+            Instant viaUtc = DateTimeZone.Utc.AtStrictly(new LocalDateTime(2008, 4, 3, 10, 35, 23)).ToInstant();
             Assert.AreEqual(viaUtc, Instant.FromUtc(2008, 4, 3, 10, 35, 23));
         }
 
@@ -81,7 +81,7 @@ namespace NodaTime.Test
         public void ToIsoUtc()
         {
             ZonedDateTime viaInstant = Instant.FromUtc(2008, 4, 3, 10, 35, 23).InIsoUtc();
-            ZonedDateTime expected = DateTimeZone.Utc.AtExactly(new LocalDateTime(2008, 4, 3, 10, 35, 23));
+            ZonedDateTime expected = DateTimeZone.Utc.AtStrictly(new LocalDateTime(2008, 4, 3, 10, 35, 23));
             Assert.AreEqual(expected, viaInstant);
         }
 
@@ -93,7 +93,7 @@ namespace NodaTime.Test
 
             // London is UTC+1 in the Summer, so the above is 14:16:17 local.
             LocalDateTime local = new LocalDateTime(2008, 6, 10, 14, 16, 17);
-            ZonedDateTime expected = london.AtExactly(local);
+            ZonedDateTime expected = london.AtStrictly(local);
 
             Assert.AreEqual(expected, viaInstant);
         }
@@ -107,7 +107,7 @@ namespace NodaTime.Test
 
             // Date taken from CopticCalendarSystemTest. Time will be 12:10 (London is UTC+1 in Summer)
             LocalDateTime local = new LocalDateTime(1720, 10, 2, 12, 10, 0, copticCalendar);
-            ZonedDateTime expected = london.AtExactly(local);
+            ZonedDateTime expected = london.AtStrictly(local);
             Assert.AreEqual(expected, viaInstant);
         }
 
