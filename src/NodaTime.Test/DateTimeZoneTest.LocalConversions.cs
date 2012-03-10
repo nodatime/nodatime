@@ -17,9 +17,8 @@
 
 using NUnit.Framework;
 using NodaTime.Testing.TimeZones;
-using NodaTime.TimeZones;
 
-namespace NodaTime.Test.TimeZones
+namespace NodaTime.Test
 {
     /// <summary>
     /// Tests for aspects of DateTimeZone to do with converting from LocalDateTime and 

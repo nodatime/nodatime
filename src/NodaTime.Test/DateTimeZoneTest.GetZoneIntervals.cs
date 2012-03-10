@@ -19,7 +19,7 @@ using NUnit.Framework;
 using NodaTime.Testing.TimeZones;
 using NodaTime.TimeZones;
 
-namespace NodaTime.Test.TimeZones
+namespace NodaTime.Test
 {
     // Tests for GetZoneIntervals within DateTimeZone.
     // We have two zones, each with a single transition at midnight January 1st 2000.
