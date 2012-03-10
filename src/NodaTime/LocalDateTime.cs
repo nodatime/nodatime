@@ -863,6 +863,24 @@ namespace NodaTime
             return zone.AtLeniently(this);
         }
 
+        /// <summary>
+        /// Resolves this local date and time into a <see cref="ZonedDateTime"/> in the given time zone, following
+        /// the given <see cref="ZoneLocalMappingResolver"/> to handle ambiguity and skipped times.
+        /// </summary>
+        /// <remarks>
+        /// This is a convenience method for calling <see cref="DateTimeZone.ResolveLocal"/>.
+        /// </remarks>
+        /// <param name="zone">The time zone to map this local date and time into</param>
+        /// <param name="resolver">The resolver to apply to the mapping.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="zone"/> or <paramref name="resolver"/> is null</exception>
+        /// <returns>The result of resolving the mapping.</returns>
+        public ZonedDateTime InZone(DateTimeZone zone, ZoneLocalMappingResolver resolver)
+        {
+            Preconditions.CheckNotNull(zone, "zone");
+            Preconditions.CheckNotNull(resolver, "resolver");
+            return zone.ResolveLocal(this, resolver);
+        }
+
         #region Formatting
         /// <summary>Formats the value of the current instance using the specified format.</summary>
         /// <returns>A <see cref="T:System.String" /> containing the value of the current instance in the specified format.</returns>
