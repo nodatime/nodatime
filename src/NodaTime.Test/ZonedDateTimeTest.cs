@@ -37,8 +37,6 @@ namespace NodaTime.Test
         /// </summary>
         private static SingleTransitionZone SampleZone = new SingleTransitionZone(Instant.FromUtc(2011, 6, 12, 22, 0), 3, 4);
 
-        private static readonly DateTimeZone Pacific = DateTimeZone.ForId("America/Los_Angeles");
-
         [Test]
         public void SimpleProperties()
         {
@@ -65,62 +63,6 @@ namespace NodaTime.Test
             Assert.AreEqual(12, value.Tick);
             Assert.AreEqual(11 * 10000 + 12, value.TickOfSecond);
             Assert.AreEqual(value.MillisecondOfDay * 10000L + 12, value.TickOfDay);
-        }
-
-        [Test]
-        public void AtStrictly_InWinter()
-        {
-            var when = Pacific.AtStrictly(new LocalDateTime(2009, 12, 22, 21, 39, 30));
-            Instant instant = when.ToInstant();
-            LocalInstant localInstant = when.LocalInstant;
-            Assert.AreEqual(instant, localInstant.Minus(Offset.FromHours(-8)));
-
-            Assert.AreEqual(2009, when.Year);
-            Assert.AreEqual(12, when.Month);
-            Assert.AreEqual(22, when.Day);
-            Assert.AreEqual(2, when.DayOfWeek);
-            Assert.AreEqual(21, when.Hour);
-            Assert.AreEqual(39, when.Minute);
-            Assert.AreEqual(30, when.Second);
-        }
-
-        [Test]
-        public void AtStrictly_InSummer()
-        {
-            var when = Pacific.AtStrictly(new LocalDateTime(2009, 6, 22, 21, 39, 30));
-            Instant instant = when.ToInstant();
-            LocalInstant localInstant = when.LocalInstant;
-            Assert.AreEqual(instant, localInstant.Minus(Offset.FromHours(-7)));
-
-            Assert.AreEqual(2009, when.Year);
-            Assert.AreEqual(6, when.Month);
-            Assert.AreEqual(22, when.Day);
-            Assert.AreEqual(21, when.Hour);
-            Assert.AreEqual(39, when.Minute);
-            Assert.AreEqual(30, when.Second);
-        }
-
-        /// <summary>
-        /// Pacific time changed from -7 to -8 at 2am wall time on November 2nd 2009,
-        /// so 2am became 1am. Using the constructor of ZonedDateTime, we should get
-        /// the *later* version, i.e. when the offset is 8 hours. The instant should
-        /// therefore represent 09:30 UTC.
-        /// FIXME: This test makes no sense. It passes because the time went back on November 1st, not November 2nd.
-        /// </summary>
-        [Test]
-        public void AtStrictly_ThrowsWhenAmbiguous()
-        {
-            Assert.Throws<AmbiguousTimeException>(() => Pacific.AtStrictly(new LocalDateTime(2009, 11, 1, 1, 30, 0)));
-        }
-
-        /// <summary>
-        /// Pacific time changed from -8 to -7 at 2am wall time on March 8th 2009,
-        /// so 2am became 3am. This means that 2.30am doesn't exist on that day.
-        /// </summary>
-        [Test]
-        public void AtStrictly_ThrowsWhenSkipped()
-        {
-            Assert.Throws<SkippedTimeException>(() => Pacific.AtStrictly(new LocalDateTime(2009, 3, 8, 2, 30, 0)));
         }
 
         [Test]

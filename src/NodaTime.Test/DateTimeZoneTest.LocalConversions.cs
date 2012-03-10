@@ -17,6 +17,7 @@
 
 using NUnit.Framework;
 using NodaTime.Testing.TimeZones;
+using NodaTime.TimeZones;
 
 namespace NodaTime.Test
 {
@@ -32,6 +33,7 @@ namespace NodaTime.Test
         private static readonly DateTimeZone NewZealand = DateTimeZone.ForId("Pacific/Auckland");
         private static readonly DateTimeZone Paris = DateTimeZone.ForId("Europe/Paris");
         private static readonly DateTimeZone NewYork = DateTimeZone.ForId("America/New_York");
+        private static readonly DateTimeZone Pacific = DateTimeZone.ForId("America/Los_Angeles");
 
         /// <summary>
         /// Local midnight at the start of the transition (June 1st) becomes 1am.
@@ -271,6 +273,96 @@ namespace NodaTime.Test
             DateTimeZone samoa = DateTimeZone.ForId("Pacific/Apia");
             var exception = Assert.Throws<SkippedTimeException>(() => samoa.AtStartOfDay(badDate));
             Assert.AreEqual(new LocalDateTime(2011, 12, 30, 0, 0), exception.LocalDateTime);
+        }
+
+        [Test]
+        public void AtStrictly_InWinter()
+        {
+            var when = Pacific.AtStrictly(new LocalDateTime(2009, 12, 22, 21, 39, 30));
+            Instant instant = when.ToInstant();
+            LocalInstant localInstant = when.LocalInstant;
+            Assert.AreEqual(instant, localInstant.Minus(Offset.FromHours(-8)));
+
+            Assert.AreEqual(2009, when.Year);
+            Assert.AreEqual(12, when.Month);
+            Assert.AreEqual(22, when.Day);
+            Assert.AreEqual(2, when.DayOfWeek);
+            Assert.AreEqual(21, when.Hour);
+            Assert.AreEqual(39, when.Minute);
+            Assert.AreEqual(30, when.Second);
+        }
+
+        [Test]
+        public void AtStrictly_InSummer()
+        {
+            var when = Pacific.AtStrictly(new LocalDateTime(2009, 6, 22, 21, 39, 30));
+            Instant instant = when.ToInstant();
+            LocalInstant localInstant = when.LocalInstant;
+            Assert.AreEqual(instant, localInstant.Minus(Offset.FromHours(-7)));
+
+            Assert.AreEqual(2009, when.Year);
+            Assert.AreEqual(6, when.Month);
+            Assert.AreEqual(22, when.Day);
+            Assert.AreEqual(21, when.Hour);
+            Assert.AreEqual(39, when.Minute);
+            Assert.AreEqual(30, when.Second);
+        }
+
+        /// <summary>
+        /// Pacific time changed from -7 to -8 at 2am wall time on November 2nd 2009,
+        /// so 2am became 1am.
+        /// </summary>
+        [Test]
+        public void AtStrictly_ThrowsWhenAmbiguous()
+        {
+            Assert.Throws<AmbiguousTimeException>(() => Pacific.AtStrictly(new LocalDateTime(2009, 11, 1, 1, 30, 0)));
+        }
+
+        /// <summary>
+        /// Pacific time changed from -8 to -7 at 2am wall time on March 8th 2009,
+        /// so 2am became 3am. This means that 2.30am doesn't exist on that day.
+        /// </summary>
+        [Test]
+        public void AtStrictly_ThrowsWhenSkipped()
+        {
+            Assert.Throws<SkippedTimeException>(() => Pacific.AtStrictly(new LocalDateTime(2009, 3, 8, 2, 30, 0)));
+        }
+
+        /// <summary>
+        /// Pacific time changed from -7 to -8 at 2am wall time on November 2nd 2009,
+        /// so 2am became 1am. We'll return the later result, i.e. with the offset of -8
+        /// </summary>
+        [Test]
+        public void AtLeniently_AmbiguousTime_ReturnsLaterMapping()
+        {
+            var local = new LocalDateTime(2009, 11, 1, 1, 30, 0);
+            var zoned = Pacific.AtLeniently(local);
+            Assert.AreEqual(local, zoned.LocalDateTime);
+            Assert.AreEqual(Offset.FromHours(-8), zoned.Offset);
+        }
+
+        /// <summary>
+        /// Pacific time changed from -8 to -7 at 2am wall time on March 8th 2009,
+        /// so 2am became 3am. This means that 2.30am doesn't exist on that day.
+        /// We'll return 3am, the start of the second interval.
+        /// </summary>
+        [Test]
+        public void AtLeniently_ReturnsStartOfSecondInterval()
+        {
+            var local = new LocalDateTime(2009, 3, 8, 2, 30, 0);
+            var zoned = Pacific.AtLeniently(local);
+            Assert.AreEqual(new LocalDateTime(2009, 3, 8, 3, 0, 0), zoned.LocalDateTime);
+            Assert.AreEqual(Offset.FromHours(-7), zoned.Offset);
+        }
+
+        [Test]
+        public void ResolveLocal()
+        {
+            // Don't need much for this - it only delegates.
+            var ambiguous = new LocalDateTime(2009, 11, 1, 1, 30, 0);
+            var skipped = new LocalDateTime(2009, 3, 8, 2, 30, 0);
+            Assert.AreEqual(Pacific.AtLeniently(ambiguous), Pacific.ResolveLocal(ambiguous, Resolvers.LenientResolver));
+            Assert.AreEqual(Pacific.AtLeniently(skipped), Pacific.ResolveLocal(skipped, Resolvers.LenientResolver));
         }
     }
 }
