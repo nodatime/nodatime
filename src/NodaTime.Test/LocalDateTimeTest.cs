@@ -19,6 +19,7 @@ using System;
 using System.Globalization;
 using NUnit.Framework;
 using NodaTime.Calendars;
+using NodaTime.TimeZones;
 
 namespace NodaTime.Test
 {
@@ -29,6 +30,8 @@ namespace NodaTime.Test
     [TestFixture]
     public partial class LocalDateTimeTest
     {
+        private static readonly DateTimeZone Pacific = DateTimeZone.ForId("America/Los_Angeles");
+
         [Test]
         public void ToDateTimeUnspecified()
         {
@@ -189,6 +192,83 @@ namespace NodaTime.Test
             Assert.That(value1.CompareTo(value2), Is.LessThan(0));
             Assert.That(value2.CompareTo(value1), Is.GreaterThan(0));
             Assert.That(value1.CompareTo(value3), Is.EqualTo(0));
+        }
+
+        [Test]
+        public void InZoneStrictly_InWinter()
+        {
+            var local = new LocalDateTime(2009, 12, 22, 21, 39, 30);
+            var zoned = local.InZoneStrictly(Pacific);
+            Assert.AreEqual(local, zoned.LocalDateTime);
+            Assert.AreEqual(Offset.FromHours(-8), zoned.Offset);
+        }
+
+        [Test]
+        public void InZoneStrictly_InSummer()
+        {
+            var local = new LocalDateTime(2009, 6, 22, 21, 39, 30);
+            var zoned = local.InZoneStrictly(Pacific);
+            Assert.AreEqual(local, zoned.LocalDateTime);
+            Assert.AreEqual(Offset.FromHours(-7), zoned.Offset);
+        }
+
+        /// <summary>
+        /// Pacific time changed from -7 to -8 at 2am wall time on November 2nd 2009,
+        /// so 2am became 1am.
+        /// </summary>
+        [Test]
+        public void InZoneStrictly_ThrowsWhenAmbiguous()
+        {
+            var local = new LocalDateTime(2009, 11, 1, 1, 30, 0);
+            Assert.Throws<AmbiguousTimeException>(() => local.InZoneStrictly(Pacific));
+        }
+
+        /// <summary>
+        /// Pacific time changed from -8 to -7 at 2am wall time on March 8th 2009,
+        /// so 2am became 3am. This means that 2.30am doesn't exist on that day.
+        /// </summary>
+        [Test]
+        public void InZoneStrictly_ThrowsWhenSkipped()
+        {
+            var local = new LocalDateTime(2009, 3, 8, 2, 30, 0);
+            Assert.Throws<SkippedTimeException>(() => local.InZoneStrictly(Pacific));
+        }
+
+        /// <summary>
+        /// Pacific time changed from -7 to -8 at 2am wall time on November 2nd 2009,
+        /// so 2am became 1am. We'll return the later result, i.e. with the offset of -8
+        /// </summary>
+        [Test]
+        public void InZoneLeniently_AmbiguousTime_ReturnsLaterMapping()
+        {
+            var local = new LocalDateTime(2009, 11, 1, 1, 30, 0);
+            var zoned = local.InZoneLeniently(Pacific);
+            Assert.AreEqual(local, zoned.LocalDateTime);
+            Assert.AreEqual(Offset.FromHours(-8), zoned.Offset);
+        }
+
+        /// <summary>
+        /// Pacific time changed from -8 to -7 at 2am wall time on March 8th 2009,
+        /// so 2am became 3am. This means that 2.30am doesn't exist on that day.
+        /// We'll return 3am, the start of the second interval.
+        /// </summary>
+        [Test]
+        public void InZoneLeniently_ReturnsStartOfSecondInterval()
+        {
+            var local = new LocalDateTime(2009, 3, 8, 2, 30, 0);
+            var zoned = local.InZoneLeniently(Pacific);
+            Assert.AreEqual(new LocalDateTime(2009, 3, 8, 3, 0, 0), zoned.LocalDateTime);
+            Assert.AreEqual(Offset.FromHours(-7), zoned.Offset);
+        }
+
+        [Test]
+        public void InZone()
+        {
+            // Don't need much for this - it only delegates.
+            var ambiguous = new LocalDateTime(2009, 11, 1, 1, 30, 0);
+            var skipped = new LocalDateTime(2009, 3, 8, 2, 30, 0);
+            Assert.AreEqual(Pacific.AtLeniently(ambiguous), ambiguous.InZone(Pacific, Resolvers.LenientResolver));
+            Assert.AreEqual(Pacific.AtLeniently(skipped), skipped.InZone(Pacific, Resolvers.LenientResolver));
         }
     }
 }
