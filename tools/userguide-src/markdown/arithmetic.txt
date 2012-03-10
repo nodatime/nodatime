@@ -39,7 +39,7 @@ what you expect when using `ZonedDateTime`, due to daylight saving transitions:
     DateTimeZone london = DateTimeZone.ForId("Europe/London");
     // 12:45am on March 27th 2012
     LocalDateTime local = new LocalDateTime(2012, 3, 27, 0, 45, 00);
-    ZonedDateTime before = london.AtExactly(local);
+    ZonedDateTime before = london.AtStrictly(local);
     ZonedDateTime after = before + Duration.FromMinutes(20);
     
 We start off with a *local* time of 12.45am. The time that we add is effectively
