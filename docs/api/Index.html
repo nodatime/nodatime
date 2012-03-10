@@ -54,7 +54,7 @@ Keyword Index
 <img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="Collapsed.gif"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="html/T_NodaTime_AmbiguousTimeException.htm" target="TopicContent">AmbiguousTimeException Class</a>
 <div class="Hidden">
 <div class="TreeItem">
-<img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/M_NodaTime_AmbiguousTimeException__ctor.htm" target="TopicContent">AmbiguousTimeException Constructor (localDateTime, zone, earlierMapping, laterMapping)</a>
+<img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/M_NodaTime_AmbiguousTimeException__ctor.htm" target="TopicContent">AmbiguousTimeException Constructor (earlierMapping, laterMapping)</a>
 </div>
 <div class="TreeItem">
 <img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/P_NodaTime_AmbiguousTimeException_EarlierMapping.htm" target="TopicContent">EarlierMapping Property </a>
@@ -130,16 +130,13 @@ Keyword Index
 <img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/M_NodaTime_DateTimeZone__ctor.htm" target="TopicContent">DateTimeZone Constructor (id, isFixed, minOffset, maxOffset)</a>
 </div>
 <div class="TreeItem">
-<img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/M_NodaTime_DateTimeZone_AtEarlier.htm" target="TopicContent">AtEarlier Method (localDateTime)</a>
-</div>
-<div class="TreeItem">
-<img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/M_NodaTime_DateTimeZone_AtExactly.htm" target="TopicContent">AtExactly Method (localDateTime)</a>
-</div>
-<div class="TreeItem">
-<img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/M_NodaTime_DateTimeZone_AtLater.htm" target="TopicContent">AtLater Method (localDateTime)</a>
+<img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/M_NodaTime_DateTimeZone_AtLeniently.htm" target="TopicContent">AtLeniently Method (localDateTime)</a>
 </div>
 <div class="TreeItem">
 <img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/M_NodaTime_DateTimeZone_AtStartOfDay.htm" target="TopicContent">AtStartOfDay Method (date)</a>
+</div>
+<div class="TreeItem">
+<img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/M_NodaTime_DateTimeZone_AtStrictly.htm" target="TopicContent">AtStrictly Method (localDateTime)</a>
 </div>
 <div class="TreeItem">
 <img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/F_NodaTime_DateTimeZone_DefaultDateTimeZoneProvider.htm" target="TopicContent">DefaultDateTimeZoneProvider Field</a>
@@ -166,7 +163,7 @@ Keyword Index
 <img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/P_NodaTime_DateTimeZone_IsFixed.htm" target="TopicContent">IsFixed Property </a>
 </div>
 <div class="TreeItem">
-<img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/M_NodaTime_DateTimeZone_MapLocalDateTime.htm" target="TopicContent">MapLocalDateTime Method (localDateTime)</a>
+<img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/M_NodaTime_DateTimeZone_MapLocal.htm" target="TopicContent">MapLocal Method (localDateTime)</a>
 </div>
 <div class="TreeItem">
 <img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/P_NodaTime_DateTimeZone_MaxOffset.htm" target="TopicContent">MaxOffset Property </a>
@@ -176,6 +173,9 @@ Keyword Index
 </div>
 <div class="TreeItem">
 <img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/P_NodaTime_DateTimeZone_ProviderVersionId.htm" target="TopicContent">ProviderVersionId Property </a>
+</div>
+<div class="TreeItem">
+<img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/M_NodaTime_DateTimeZone_ResolveLocal.htm" target="TopicContent">ResolveLocal Method (localDateTime, resolver)</a>
 </div>
 <div class="TreeItem">
 <img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/M_NodaTime_DateTimeZone_SetProvider.htm" target="TopicContent">SetProvider Method (provider)</a>
@@ -194,23 +194,6 @@ Keyword Index
 <div class="TreeNode">
 <img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="Collapsed.gif"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="html/T_NodaTime_Duration.htm" target="TopicContent">Duration Structure</a>
 <div class="Hidden">
-<div class="TreeNode">
-<img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="Collapsed.gif"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="html/Overload_NodaTime_Duration__ctor.htm" target="TopicContent">Duration Constructor </a>
-<div class="Hidden">
-<div class="TreeItem">
-<img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/M_NodaTime_Duration__ctor.htm" target="TopicContent">Duration Constructor (start, end)</a>
-</div>
-<div class="TreeItem">
-<img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/M_NodaTime_Duration__ctor_1.htm" target="TopicContent">Duration Constructor (interval)</a>
-</div>
-<div class="TreeItem">
-<img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/M_NodaTime_Duration__ctor_2.htm" target="TopicContent">Duration Constructor (ticks)</a>
-</div>
-<div class="TreeItem">
-<img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/M_NodaTime_Duration__ctor_3.htm" target="TopicContent">Duration Constructor (startTicks, endTicks)</a>
-</div>
-</div>
-</div>
 <div class="TreeItem">
 <img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/M_NodaTime_Duration_Add.htm" target="TopicContent">Add Method (left, right)</a>
 </div>
@@ -943,6 +926,12 @@ Keyword Index
 </div>
 <div class="TreeItem">
 <img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/M_NodaTime_LocalDateTime_op_Inequality.htm" target="TopicContent">Inequality Operator</a>
+</div>
+<div class="TreeItem">
+<img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/M_NodaTime_LocalDateTime_InZoneLeniently.htm" target="TopicContent">InZoneLeniently Method (zone)</a>
+</div>
+<div class="TreeItem">
+<img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/M_NodaTime_LocalDateTime_InZoneStrictly.htm" target="TopicContent">InZoneStrictly Method (zone)</a>
 </div>
 <div class="TreeItem">
 <img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/P_NodaTime_LocalDateTime_IsoDayOfWeek.htm" target="TopicContent">IsoDayOfWeek Property </a>
@@ -2437,6 +2426,9 @@ Keyword Index
 <div class="TreeNode">
 <img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="Collapsed.gif"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="html/N_NodaTime_TimeZones.htm" target="TopicContent">NodaTime.TimeZones Namespace</a>
 <div class="Hidden">
+<div class="TreeItem">
+<img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/T_NodaTime_TimeZones_AmbiguousTimeResolver.htm" target="TopicContent">AmbiguousTimeResolver Delegate</a>
+</div>
 <div class="TreeNode">
 <img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="Collapsed.gif"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="html/T_NodaTime_TimeZones_BclTimeZone.htm" target="TopicContent">BclTimeZone Class</a>
 <div class="Hidden">
@@ -2513,6 +2505,41 @@ Keyword Index
 <img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/P_NodaTime_TimeZones_IDateTimeZoneProvider_VersionId.htm" target="TopicContent">VersionId Property </a>
 </div>
 </div>
+</div>
+<div class="TreeNode">
+<img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="Collapsed.gif"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="html/T_NodaTime_TimeZones_Resolvers.htm" target="TopicContent">Resolvers Class</a>
+<div class="Hidden">
+<div class="TreeItem">
+<img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/M_NodaTime_TimeZones_Resolvers_CreateMappingResolver.htm" target="TopicContent">CreateMappingResolver Method (ambiguousTimeResolver, skippedTimeResolver)</a>
+</div>
+<div class="TreeItem">
+<img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/F_NodaTime_TimeZones_Resolvers_LenientResolver.htm" target="TopicContent">LenientResolver Field</a>
+</div>
+<div class="TreeItem">
+<img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/F_NodaTime_TimeZones_Resolvers_ReturnEarlier.htm" target="TopicContent">ReturnEarlier Field</a>
+</div>
+<div class="TreeItem">
+<img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/F_NodaTime_TimeZones_Resolvers_ReturnEndOfIntervalBefore.htm" target="TopicContent">ReturnEndOfIntervalBefore Field</a>
+</div>
+<div class="TreeItem">
+<img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/F_NodaTime_TimeZones_Resolvers_ReturnLater.htm" target="TopicContent">ReturnLater Field</a>
+</div>
+<div class="TreeItem">
+<img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/F_NodaTime_TimeZones_Resolvers_ReturnStartOfIntervalAfter.htm" target="TopicContent">ReturnStartOfIntervalAfter Field</a>
+</div>
+<div class="TreeItem">
+<img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/F_NodaTime_TimeZones_Resolvers_StrictResolver.htm" target="TopicContent">StrictResolver Field</a>
+</div>
+<div class="TreeItem">
+<img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/F_NodaTime_TimeZones_Resolvers_ThrowWhenAmbiguous.htm" target="TopicContent">ThrowWhenAmbiguous Field</a>
+</div>
+<div class="TreeItem">
+<img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/F_NodaTime_TimeZones_Resolvers_ThrowWhenSkipped.htm" target="TopicContent">ThrowWhenSkipped Field</a>
+</div>
+</div>
+</div>
+<div class="TreeItem">
+<img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/T_NodaTime_TimeZones_SkippedTimeResolver.htm" target="TopicContent">SkippedTimeResolver Delegate</a>
 </div>
 <div class="TreeNode">
 <img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="Collapsed.gif"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="html/T_NodaTime_TimeZones_TzdbTimeZoneProvider.htm" target="TopicContent">TzdbTimeZoneProvider Class</a>
@@ -2619,27 +2646,33 @@ Keyword Index
 <img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="Collapsed.gif"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="html/T_NodaTime_TimeZones_ZoneLocalMapping.htm" target="TopicContent">ZoneLocalMapping Class</a>
 <div class="Hidden">
 <div class="TreeItem">
-<img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/P_NodaTime_TimeZones_ZoneLocalMapping_EarlierMapping.htm" target="TopicContent">EarlierMapping Property </a>
+<img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/P_NodaTime_TimeZones_ZoneLocalMapping_Count.htm" target="TopicContent">Count Property </a>
 </div>
 <div class="TreeItem">
-<img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/P_NodaTime_TimeZones_ZoneLocalMapping_LaterMapping.htm" target="TopicContent">LaterMapping Property </a>
+<img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/P_NodaTime_TimeZones_ZoneLocalMapping_EarlyInterval.htm" target="TopicContent">EarlyInterval Property </a>
 </div>
 <div class="TreeItem">
-<img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/P_NodaTime_TimeZones_ZoneLocalMapping_Type.htm" target="TopicContent">Type Property </a>
+<img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/M_NodaTime_TimeZones_ZoneLocalMapping_First.htm" target="TopicContent">First Method </a>
 </div>
 <div class="TreeItem">
-<img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/P_NodaTime_TimeZones_ZoneLocalMapping_UnambiguousMapping.htm" target="TopicContent">UnambiguousMapping Property </a>
+<img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/M_NodaTime_TimeZones_ZoneLocalMapping_Last.htm" target="TopicContent">Last Method </a>
 </div>
 <div class="TreeItem">
-<img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/P_NodaTime_TimeZones_ZoneLocalMapping_ZoneIntervalAfterTransition.htm" target="TopicContent">ZoneIntervalAfterTransition Property </a>
+<img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/P_NodaTime_TimeZones_ZoneLocalMapping_LateInterval.htm" target="TopicContent">LateInterval Property </a>
 </div>
 <div class="TreeItem">
-<img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/P_NodaTime_TimeZones_ZoneLocalMapping_ZoneIntervalBeforeTransition.htm" target="TopicContent">ZoneIntervalBeforeTransition Property </a>
+<img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/P_NodaTime_TimeZones_ZoneLocalMapping_LocalDateTime.htm" target="TopicContent">LocalDateTime Property </a>
+</div>
+<div class="TreeItem">
+<img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/M_NodaTime_TimeZones_ZoneLocalMapping_Single.htm" target="TopicContent">Single Method </a>
+</div>
+<div class="TreeItem">
+<img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/P_NodaTime_TimeZones_ZoneLocalMapping_Zone.htm" target="TopicContent">Zone Property </a>
 </div>
 </div>
 </div>
 <div class="TreeItem">
-<img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/T_NodaTime_TimeZones_ZoneLocalMapping_ResultType.htm" target="TopicContent">ZoneLocalMapping.ResultType Enumeration</a>
+<img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/T_NodaTime_TimeZones_ZoneLocalMappingResolver.htm" target="TopicContent">ZoneLocalMappingResolver Delegate</a>
 </div>
 </div>
 </div>

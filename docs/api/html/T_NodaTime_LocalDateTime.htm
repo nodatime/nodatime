@@ -67,6 +67,15 @@
             Gets the hour of day of this local date and time, in the range 0 to 23 inclusive.
             </div><br /></td></tr><tr data="method; public; static; declared"><td><img src="../icons/puboperator.gif" /><img src="../icons/static.gif" title="static member" /></td><td><a href="M_NodaTime_LocalDateTime_op_Inequality.htm">Inequality(LocalDateTime, LocalDateTime)</a></td><td><div class="summary">
             Implements the operator != (inequality).
+            </div><br /></td></tr><tr data="method; public; instance; declared"><td><img src="../icons/pubmethod.gif" /></td><td><a href="M_NodaTime_LocalDateTime_InZoneLeniently.htm">InZoneLeniently(DateTimeZone)</a></td><td><div class="summary">
+            Returns the mapping of this local date/time within the given <a href="T_NodaTime_DateTimeZone.htm">DateTimeZone</a>,
+            with "lenient" rules applied such that ambiguous values map to the
+            later of the alternatives, and "skipped" values map to the start of the zone interval
+            after the "gap".
+            </div><br /></td></tr><tr data="method; public; instance; declared"><td><img src="../icons/pubmethod.gif" /></td><td><a href="M_NodaTime_LocalDateTime_InZoneStrictly.htm">InZoneStrictly(DateTimeZone)</a></td><td><div class="summary">
+            Returns the mapping of this local date/time within the given <a href="T_NodaTime_DateTimeZone.htm">DateTimeZone</a>,
+            with "strict" rules applied such that an exception is thrown if either the mapping is
+            ambiguous or the time is skipped.
             </div><br /></td></tr><tr data="property; public; instance; declared"><td><img src="../icons/pubproperty.gif" /></td><td><a href="P_NodaTime_LocalDateTime_IsoDayOfWeek.htm">IsoDayOfWeek</a></td><td><div class="summary">
             Gets the week day of this local date and time expressed as an <a href="T_NodaTime_IsoDayOfWeek.htm">IsoDayOfWeek</a> value,
             for calendars which use ISO days of the week.
