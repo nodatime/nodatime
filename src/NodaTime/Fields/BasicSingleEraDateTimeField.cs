@@ -78,7 +78,7 @@ namespace NodaTime.Fields
             return LocalInstant.MinValue;
         }
 
-        // FIXME: Joda returns a null. Could return an unsupported field?
+        // TODO(Post-V1): Joda returns a null. Could return an unsupported field?
         internal override PeriodField RangePeriodField
         {
             get { throw new NotSupportedException(); }
