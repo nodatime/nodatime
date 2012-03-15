@@ -26,7 +26,7 @@
             </div><br /></td></tr><tr data="method; public; instance; declared"><td><img src="../icons/pubmethod.gif" /></td><td><a href="M_NodaTime_Instant_Equals_1.htm">Equals(Object)</a></td><td><div class="summary">
               Determines whether the specified <a href="http://msdn2.microsoft.com/en-us/library/e5kfa45b" target="_blank">Object</a> is equal to this instance.
             </div> (Overrides <a href="http://msdn2.microsoft.com/en-us/library/aey3s293" target="_blank">ValueType</a>.<a href="http://msdn2.microsoft.com/en-us/library/2dts52z7" target="_blank">Equals(Object)</a>.)<br /></td></tr><tr data="method; public; instance; declared"><td><img src="../icons/pubmethod.gif" /></td><td><a href="M_NodaTime_Instant_Equals.htm">Equals(Instant)</a></td><td><div class="summary">
-              Indicates whether the current object is equal to another object of the same type.
+            Indicates whether the value of this instant is equal to the value of the specified instant.
             </div><br /></td></tr><tr data="method; protected; instance; inherited"><td><img src="../icons/protmethod.gif" /></td><td><a href="http://msdn2.microsoft.com/en-us/library/4k87zsw7" target="_blank">Finalize<span class="languageSpecificText"><span class="cs">()</span><span class="cpp">()</span><span class="nu">()</span><span class="fs">()</span></span></a></td><td><div class="summary">Allows an object to try to free resources and perform other cleanup operations before it is reclaimed by garbage collection.</div> (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/e5kfa45b" target="_blank">Object</a>.)<br /></td></tr><tr data="method; public; static; declared"><td><img src="../icons/pubmethod.gif" /><img src="../icons/static.gif" title="static member" /></td><td><a href="M_NodaTime_Instant_FromDateTimeOffset.htm">FromDateTimeOffset(DateTimeOffset)</a></td><td><div class="summary">
             Converts a <a href="http://msdn2.microsoft.com/en-us/library/bb341783" target="_blank">DateTimeOffset</a> into a new Instant representing the same instant in time. Note that
             the offset information is not preserved in the returned Instant.
@@ -53,7 +53,7 @@
               Implements the operator != (inequality).
             </div><br /></td></tr><tr data="method; public; instance; declared"><td><img src="../icons/pubmethod.gif" /></td><td><a href="M_NodaTime_Instant_InIsoUtc.htm">InIsoUtc<span class="languageSpecificText"><span class="cs">()</span><span class="cpp">()</span><span class="nu">()</span><span class="fs">()</span></span></a></td><td><div class="summary">
             Returns the representation of this instant in the UTC time zone, in the ISO-8601 calendar.
-            This is a shortcut for calling InZone with an argument of DateTimeZone.Utc.
+            This is a shortcut for calling <a href="M_NodaTime_Instant_InZone.htm">InZone(DateTimeZone)</a> with an argument of DateTimeZone.Utc.
             </div><br /></td></tr><tr data="method; public; instance; declared"><td><img src="../icons/pubmethod.gif" /></td><td><a href="M_NodaTime_Instant_InZone.htm">InZone(DateTimeZone)</a></td><td><div class="summary">
             Returns the representation of this instant in the specified time zone, in the ISO-8601 calendar.
             </div><br /></td></tr><tr data="method; public; instance; declared"><td><img src="../icons/pubmethod.gif" /></td><td><a href="M_NodaTime_Instant_InZone_1.htm">InZone(DateTimeZone, CalendarSystem)</a></td><td><div class="summary">
@@ -100,14 +100,14 @@
             Constructs a <a href="http://msdn2.microsoft.com/en-us/library/03ybds8y" target="_blank">DateTime</a> from this Instant which has a <a href="http://msdn2.microsoft.com/en-us/library/e3t6hfy5" target="_blank">Kind</a>
             of <a href="http://msdn2.microsoft.com/en-us/library/bb505696" target="_blank">Utc</a> and represents the same instant of time as this value.
             </div><br /></td></tr><tr data="method; public; instance; declared"><td><img src="../icons/pubmethod.gif" /></td><td><a href="M_NodaTime_Instant_ToString_3.htm">ToString(String, IFormatProvider)</a></td><td><div class="summary">
-              Formats the value of the current instance using the specified format.
+            Formats the value of the current instance using the specified pattern.
             </div><br /></td></tr><tr data="method; public; instance; declared"><td><img src="../icons/pubmethod.gif" /></td><td><a href="M_NodaTime_Instant_ToString.htm">ToString<span class="languageSpecificText"><span class="cs">()</span><span class="cpp">()</span><span class="nu">()</span><span class="fs">()</span></span></a></td><td><div class="summary">
-              Returns a <a href="http://msdn2.microsoft.com/en-us/library/s1wwdcbf" target="_blank">String</a> that represents this instance. Equivalent to
-              calling <span class="code">ToString(null)</span>.
+            Returns a <a href="http://msdn2.microsoft.com/en-us/library/s1wwdcbf" target="_blank">String</a> that represents this instance. Equivalent to
+            calling <span class="code">ToString(null)</span>.
             </div> (Overrides <a href="http://msdn2.microsoft.com/en-us/library/aey3s293" target="_blank">ValueType</a>.<a href="http://msdn2.microsoft.com/en-us/library/wb77sz3h" target="_blank">ToString<span class="languageSpecificText"><span class="cs">()</span><span class="cpp">()</span><span class="nu">()</span><span class="fs">()</span></span></a>.)<br /></td></tr><tr data="method; public; instance; declared"><td><img src="../icons/pubmethod.gif" /></td><td><a href="M_NodaTime_Instant_ToString_2.htm">ToString(String)</a></td><td><div class="summary">
-              Formats the value of the current instance using the specified format.
+            Formats the value of the current instance using the specified pattern.
             </div><br /></td></tr><tr data="method; public; instance; declared"><td><img src="../icons/pubmethod.gif" /></td><td><a href="M_NodaTime_Instant_ToString_1.htm">ToString(IFormatProvider)</a></td><td><div class="summary">
-              Formats the value of the current instance using the specified <a href="http://msdn2.microsoft.com/en-us/library/efh2ww9y" target="_blank">IFormatProvider</a>.
+            Formats the value of the current instance using the specified <a href="http://msdn2.microsoft.com/en-us/library/efh2ww9y" target="_blank">IFormatProvider</a>.
             </div><br /></td></tr><tr data="method; public; static; declared"><td><img src="../icons/pubmethod.gif" /><img src="../icons/static.gif" title="static member" /></td><td><a href="M_NodaTime_Instant_TryParse.htm">TryParse(String, Instant<span class="languageSpecificText"><span class="cpp">%</span></span>)</a></td><td><div class="summary">
             Attempts to parse the given string using the current culture's default format provider. If the parse is successful,
             the result is stored in the <span class="parameter">result</span> parameter and the return value is true;
