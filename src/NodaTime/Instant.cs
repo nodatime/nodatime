@@ -17,6 +17,7 @@
 #region usings
 using System;
 using NodaTime.Globalization;
+using NodaTime.Text;
 using NodaTime.Text.Patterns;
 using NodaTime.Utility;
 
@@ -124,7 +125,7 @@ namespace NodaTime
             }
             if (!(obj is Instant))
             {
-                throw new ArgumentException("Argument did not refer to an instance of NodaTime.Instant.", "obj");
+                throw new ArgumentException("Object must be of type Instant.", "obj");
             }
             return CompareTo((Instant)obj);
         }
@@ -301,7 +302,7 @@ namespace NodaTime
         /// <returns><c>true</c> if the left value is less than the right value, otherwise <c>false</c>.</returns>
         public static bool operator <(Instant left, Instant right)
         {
-            return left.CompareTo(right) < 0;
+            return left.Ticks < right.Ticks;
         }
 
         /// <summary>
@@ -312,7 +313,7 @@ namespace NodaTime
         /// <returns><c>true</c> if the left value is less than or equal to the right value, otherwise <c>false</c>.</returns>
         public static bool operator <=(Instant left, Instant right)
         {
-            return left.CompareTo(right) <= 0;
+            return left.Ticks <= right.Ticks;
         }
 
         /// <summary>
@@ -323,7 +324,7 @@ namespace NodaTime
         /// <returns><c>true</c> if the left value is greater than the right value, otherwise <c>false</c>.</returns>
         public static bool operator >(Instant left, Instant right)
         {
-            return left.CompareTo(right) > 0;
+            return left.Ticks > right.Ticks;
         }
 
         /// <summary>
@@ -334,7 +335,7 @@ namespace NodaTime
         /// <returns><c>true</c> if the left value is greater than or equal to the right value, otherwise <c>false</c>.</returns>
         public static bool operator >=(Instant left, Instant right)
         {
-            return left.CompareTo(right) >= 0;
+            return left.Ticks >= right.Ticks;
         }
         #endregion // Operators
 
@@ -402,18 +403,16 @@ namespace NodaTime
 
         #region Formatting
         /// <summary>
-        ///   Formats the value of the current instance using the specified format.
+        /// Formats the value of the current instance using the specified pattern.
         /// </summary>
         /// <returns>
-        ///   A <see cref="T:System.String" /> containing the value of the current instance in the specified format.
+        /// A <see cref="T:System.String" /> containing the value of the current instance in the specified format.
         /// </returns>
-        /// <param name="patternText">The <see cref="T:System.String" /> specifying the pattern to use.
-        ///   -or- 
-        ///   null to use the default pattern defined for the type of the <see cref="T:System.IFormattable" /> implementation. 
+        /// <param name="patternText">The <see cref="T:System.String" /> specifying the pattern to use,
+        /// or null to use the default format pattern.
         /// </param>
-        /// <param name="formatProvider">The <see cref="T:System.IFormatProvider" /> to use to format the value.
-        ///   -or- 
-        ///   null to obtain the numeric format information from the current locale setting of the operating system. 
+        /// <param name="formatProvider">The <see cref="T:System.IFormatProvider" /> to use when formatting the value,
+        /// or null to use the current thread's culture to obtain a format provider.
         /// </param>
         /// <filterpriority>2</filterpriority>
         public string ToString(string patternText, IFormatProvider formatProvider)
@@ -422,11 +421,12 @@ namespace NodaTime
         }
 
         /// <summary>
-        ///   Returns a <see cref="System.String" /> that represents this instance. Equivalent to
-        ///   calling <c>ToString(null)</c>.
+        /// Returns a <see cref="System.String" /> that represents this instance. Equivalent to
+        /// calling <c>ToString(null)</c>.
         /// </summary>
         /// <returns>
-        ///   A <see cref="System.String" /> that represents this instance.
+        /// The value of the current instance in the standard format pattern, using the current thread's
+        /// culture to obtain a format provider.
         /// </returns>
         public override string ToString()
         {
@@ -434,14 +434,13 @@ namespace NodaTime
         }
 
         /// <summary>
-        ///   Formats the value of the current instance using the specified format.
+        /// Formats the value of the current instance using the specified pattern.
         /// </summary>
         /// <returns>
-        ///   A <see cref="T:System.String" /> containing the value of the current instance in the specified format.
+        /// The value of the current instance in the specified format.
         /// </returns>
-        /// <param name="patternText">The <see cref="T:System.String" /> specifying the pattern to use.
-        ///   -or- 
-        ///   null to use the default pattern defined for the type. 
+        /// <param name="patternText">The <see cref="T:System.String" /> specifying the pattern to use,
+        /// or null to use the default format pattern.
         /// </param>
         /// <filterpriority>2</filterpriority>
         public string ToString(string patternText)
@@ -450,14 +449,13 @@ namespace NodaTime
         }
 
         /// <summary>
-        ///   Formats the value of the current instance using the specified <see cref="IFormatProvider" />.
+        /// Formats the value of the current instance using the specified <see cref="IFormatProvider" />.
         /// </summary>
         /// <returns>
-        ///   A <see cref="T:System.String" /> containing the value of the current instance.
+        /// The formatted value of the current instance.
         /// </returns>
-        /// <param name="formatProvider">The <see cref="T:System.IFormatProvider" /> to use to format the value.
-        ///   -or- 
-        ///   null to obtain the format information from the current locale setting of the current thread. 
+        /// <param name="formatProvider">The <see cref="T:System.IFormatProvider" /> to use when formatting the value,
+        /// or null to use the current thread's culture to obtain a format provider.
         /// </param>
         /// <filterpriority>2</filterpriority>
         public string ToString(IFormatProvider formatProvider)
@@ -474,8 +472,9 @@ namespace NodaTime
         /// <summary>
         /// Parses the given string using the current culture's default format provider.
         /// </summary>
-        /// <param name="value">The value to parse.</param>
-        /// <returns>The parsed instant.</returns>
+        /// <param name="value">The text to parse.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="value"/> is null.</exception>
+        /// <returns>The parsed value.</returns>
         public static Instant Parse(string value)
         {
             return InstantPattern.Parse(value, NodaFormatInfo.CurrentInfo);
@@ -484,9 +483,12 @@ namespace NodaTime
         /// <summary>
         /// Parses the given string using the specified format provider.
         /// </summary>
-        /// <param name="value">The value to parse.</param>
-        /// <param name="formatProvider">The format provider to use for culture-specific settings.</param>
-        /// <returns>The parsed instant.</returns>
+        /// <param name="value">The text to parse.</param>
+        /// <param name="formatProvider">The <see cref="T:System.IFormatProvider" /> to use when parsing the text,
+        /// or null to use the current thread's culture to obtain a format provider.
+        /// </param>
+        /// <exception cref="ArgumentNullException"><paramref name="value"/> is null.</exception>
+        /// <returns>The parsed value.</returns>
         public static Instant Parse(string value, IFormatProvider formatProvider)
         {
             return InstantPattern.Parse(value, NodaFormatInfo.GetInstance(formatProvider));
@@ -495,10 +497,13 @@ namespace NodaTime
         /// <summary>
         /// Parses the given string using the specified pattern and format provider.
         /// </summary>
-        /// <param name="value">The value to parse.</param>
+        /// <param name="value">The text to parse.</param>
         /// <param name="patternText">The text of the pattern to use for parsing.</param>
-        /// <param name="formatProvider">The format provider to use for culture-specific settings.</param>
-        /// <returns>The parsed instant.</returns>
+        /// <param name="formatProvider">The <see cref="T:System.IFormatProvider" /> to use when parsing the text,
+        /// or null to use the current thread's culture to obtain a format provider.
+        /// </param>
+        /// <exception cref="ArgumentNullException"><paramref name="value"/> or <paramref name="patternText"/> is null.</exception>
+        /// <returns>The parsed value.</returns>
         public static Instant ParseExact(string value, string patternText, IFormatProvider formatProvider)
         {
             return InstantPattern.ParseExact(value, patternText, NodaFormatInfo.GetInstance(formatProvider));
@@ -507,10 +512,13 @@ namespace NodaTime
         /// <summary>
         /// Parses the given string using the specified patterns and format provider.
         /// </summary>
-        /// <param name="value">The value to parse.</param>
+        /// <param name="value">The text to parse.</param>
         /// <param name="patterns">The patterns to use for parsing.</param>
-        /// <param name="formatProvider">The format provider to use for culture-specific settings.</param>
-        /// <returns>The parsed instant.</returns>
+        /// <param name="formatProvider">The <see cref="T:System.IFormatProvider" /> to use when parsing the text,
+        /// or null to use the current thread's culture to obtain a format provider.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="value"/> or <paramref name="patterns"/> is null.</exception>
+        /// <exception cref="InvalidPatternException"><paramref name="patterns"/> is empty.</exception>
+        /// <returns>The parsed value.</returns>
         public static Instant ParseExact(string value, string[] patterns, IFormatProvider formatProvider)
         {
             return InstantPattern.ParseExact(value, patterns, NodaFormatInfo.GetInstance(formatProvider));
@@ -521,8 +529,8 @@ namespace NodaTime
         /// the result is stored in the <paramref name="result"/> parameter and the return value is true;
         /// otherwise <see cref="Instant.MinValue"/> is stored in the parameter and the return value is false.
         /// </summary>
-        /// <param name="value">The value to parse.</param>
-        /// <param name="result">The parsed instant, when successful.</param>
+        /// <param name="value">The text to parse.</param>
+        /// <param name="result">The parsed value, when successful.</param>
         /// <returns>true if the value was parsed successfully; false otherwise.</returns>
         public static bool TryParse(string value, out Instant result)
         {
@@ -534,9 +542,10 @@ namespace NodaTime
         /// If the parse is successful, the result is stored in the <paramref name="result"/> parameter and the return value is true;
         /// otherwise <see cref="Instant.MinValue"/> is stored in the parameter and the return value is false.
         /// </summary>
-        /// <param name="value">The value to parse.</param>
-        /// <param name="formatProvider">The format provider to use for culture-specific settings.</param>
-        /// <param name="result">The parsed instant, when successful.</param>
+        /// <param name="value">The text to parse.</param>
+        /// <param name="formatProvider">The <see cref="T:System.IFormatProvider" /> to use when parsing the text,
+        /// or null to use the current thread's culture to obtain a format provider.</param>
+        /// <param name="result">The parsed value, when successful.</param>
         /// <returns>true if the value was parsed successfully; false otherwise.</returns>
         public static bool TryParse(string value, IFormatProvider formatProvider, out Instant result)
         {
@@ -548,10 +557,11 @@ namespace NodaTime
         /// If the parse is successful, the result is stored in the <paramref name="result"/> parameter and the return value is true;
         /// otherwise <see cref="Instant.MinValue"/> is stored in the parameter and the return value is false.
         /// </summary>
-        /// <param name="value">The value to parse.</param>
+        /// <param name="value">The text to parse.</param>
         /// <param name="patternText">The text of the pattern to use for parsing.</param>
-        /// <param name="formatProvider">The format provider to use for culture-specific settings.</param>
-        /// <param name="result">The parsed instant, when successful.</param>
+        /// <param name="formatProvider">The <see cref="T:System.IFormatProvider" /> to use when parsing the text,
+        /// or null to use the current thread's culture to obtain a format provider.</param>
+        /// <param name="result">The parsed value, when successful.</param>
         /// <returns>true if the value was parsed successfully; false otherwise.</returns>
         public static bool TryParseExact(string value, string patternText, IFormatProvider formatProvider, out Instant result)
         {
@@ -563,10 +573,11 @@ namespace NodaTime
         /// If the parse is successful, the result is stored in the <paramref name="result"/> parameter and the return value is true;
         /// otherwise <see cref="Instant.MinValue"/> is stored in the parameter and the return value is false.
         /// </summary>
-        /// <param name="value">The value to parse.</param>
+        /// <param name="value">The text to parse.</param>
         /// <param name="patterns">The patterns to use for parsing.</param>
-        /// <param name="formatProvider">The format provider to use for culture-specific settings.</param>
-        /// <param name="result">The parsed instant, when successful.</param>
+        /// <param name="formatProvider">The <see cref="T:System.IFormatProvider" /> to use when parsing the text,
+        /// or null to use the current thread's culture to obtain a format provider.</param>
+        /// <param name="result">The parsed value, when successful.</param>
         /// <returns>true if the value was parsed successfully; false otherwise.</returns>
         public static bool TryParseExact(string value, string[] patterns, IFormatProvider formatProvider, out Instant result)
         {
@@ -576,12 +587,12 @@ namespace NodaTime
 
         #region IEquatable<Instant> Members
         /// <summary>
-        ///   Indicates whether the current object is equal to another object of the same type.
+        /// Indicates whether the value of this instant is equal to the value of the specified instant.
         /// </summary>
-        /// <param name="other">An object to compare with this object.</param>
+        /// <param name="other">The value to compare with this instance.</param>
         /// <returns>
-        ///   true if the current object is equal to the <paramref name = "other" /> parameter;
-        ///   otherwise, false.
+        /// true if the value of this instant is equal to the value of the <paramref name="other" /> parameter;
+        /// otherwise, false.
         /// </returns>
         public bool Equals(Instant other)
         {
@@ -636,7 +647,7 @@ namespace NodaTime
 
         /// <summary>
         /// Returns the representation of this instant in the UTC time zone, in the ISO-8601 calendar.
-        /// This is a shortcut for calling InZone with an argument of DateTimeZone.Utc.
+        /// This is a shortcut for calling <see cref="InZone(DateTimeZone)" /> with an argument of DateTimeZone.Utc.
         /// </summary>
         /// <returns>A <see cref="ZonedDateTime"/> for the same instant, in the UTC time zone
         /// and the ISO-8601 calendar</returns>
