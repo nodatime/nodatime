@@ -71,8 +71,7 @@ namespace NodaTime.Test.TimeZones
         {
             var provider = new TestDateTimeZoneProvider("Test1", "Test2");
             var cache = new TimeZoneCache(provider);
-            var zone = cache["Unknown"];
-            Assert.IsNull(zone);
+            Assert.Throws<TimeZoneNotFoundException>(() => { var ignored = cache["Unknown"]; });
             Assert.IsNull(provider.LastRequestedId);
         }
 
@@ -88,7 +87,7 @@ namespace NodaTime.Test.TimeZones
         public void EmptyIdAccepted()
         {
             var cache = new TimeZoneCache(new TestDateTimeZoneProvider("Test1", "Test2"));
-            Assert.IsNull(cache[""]);
+            Assert.Throws<TimeZoneNotFoundException>(() => { var ignored = cache[""]; });
         }
 
         [Test]

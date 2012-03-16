@@ -62,7 +62,7 @@ namespace NodaTime.Test
         [Test]
         public void TestForId_InvalidId()
         {
-            Assert.IsNull(DateTimeZone.ForId("not a known id"));
+            Assert.Throws<TimeZoneNotFoundException>(() => DateTimeZone.ForId("not a known id"));
         }
 
         [Test]
