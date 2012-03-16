@@ -62,7 +62,36 @@ namespace NodaTime.TimeZones
         internal string ProviderVersionId { get { return providerVersionId; } }
 
         /// <summary>
-        /// Gets the system default time zone, as mapped by the underlying provider.
+        /// Gets the system default time zone, as mapped by the underlying provider. If the time zone
+        /// is not mapped by this provider, a <see cref="TimeZoneNotFoundException"/> is thrown.
+        /// </summary>
+        /// <remarks>
+        /// Callers should be aware that this method can throw <see cref="TimeZoneNotFoundException"/>,
+        /// even with standard Windows time zones.
+        /// This could be due to either the Unicode CLDR not being up-to-date with Windows time zone IDs,
+        /// or Noda Time not being up-to-date with CLDR - or a provider-specific problem. Callers can use
+        /// the null-coalescing operator to effectively provider a default:
+        /// </remarks>
+        /// <exception cref="TimeZoneNotFoundException">The system default time zone is not mapped by
+        /// the current provider.</exception>
+        /// <returns>
+        /// The provider-specific representation of the system time zone, or null if the time zone
+        /// could not be mapped.
+        /// </returns>
+        public DateTimeZone GetSystemDefault()
+        {
+            TimeZoneInfo bcl = TimeZoneInfo.Local;
+            string id = provider.MapTimeZoneId(bcl);
+            if (id == null)
+            {
+                throw new TimeZoneNotFoundException("TimeZoneInfo ID " + bcl.Id + " is unknown to provider " + providerVersionId);
+            }
+            return this[id];
+        }
+
+        /// <summary>
+        /// Gets the system default time zone, as mapped by the underlying provider. If the time zone
+        /// is not mapped by this provider, a null reference is returned.
         /// </summary>
         /// <remarks>
         /// Callers should be aware that this method can return null, even with standard Windows time zones.
@@ -74,8 +103,7 @@ namespace NodaTime.TimeZones
         /// The provider-specific representation of the system time zone, or null if the time zone
         /// could not be mapped.
         /// </returns>
-        // TODO(Post-V1): Take another look at this policy and canvas user opinion.
-        internal DateTimeZone GetSystemDefault()
+        public DateTimeZone GetSystemDefaultOrNull()
         {
             TimeZoneInfo bcl = TimeZoneInfo.Local;
             string id = provider.MapTimeZoneId(bcl);
@@ -83,7 +111,7 @@ namespace NodaTime.TimeZones
             {
                 return null;
             }
-            return this[id];
+            return GetZoneOrNull(id);
         }
 
         /// <summary>
@@ -94,6 +122,34 @@ namespace NodaTime.TimeZones
         internal IEnumerable<string> Ids { get { return ids; } }
 
         /// <summary>
+        /// Returns the time zone with the given id, if it's available.
+        /// </summary>
+        /// <param name="id">The time zone id to find. Must not be null.</param>
+        /// <returns>The <see cref="DateTimeZone" /> with the given id or <c>null</c> if there isn't one defined.</returns>
+        internal DateTimeZone GetZoneOrNull(string id)
+        {
+            Preconditions.CheckNotNull(id, "id");
+            lock (accessLock)
+            {
+                DateTimeZone zone;
+                if (!timeZoneMap.TryGetValue(id, out zone))
+                {
+                    return null;
+                }
+                if (zone == null)
+                {
+                    zone = provider.ForId(id);
+                    if (zone == null)
+                    {
+                        throw new InvalidOperationException("Time zone " + id + " is supported by provider " + providerVersionId + " but not returned");
+                    }
+                    timeZoneMap[id] = zone;
+                }
+                return zone;
+            }
+        }
+
+        /// <summary>
         /// Returns the time zone with the given id.
         /// </summary>
         /// <param name="id">The time zone id to find. Must not be null.</param>
@@ -102,21 +158,12 @@ namespace NodaTime.TimeZones
         {
             get
             {
-                Preconditions.CheckNotNull(id, "id");
-                lock (accessLock)
+                var zone = GetZoneOrNull(id);
+                if (zone == null)
                 {
-                    DateTimeZone zone;
-                    if (!timeZoneMap.TryGetValue(id, out zone))
-                    {
-                        return null;
-                    }
-                    if (zone == null)
-                    {
-                        zone = provider.ForId(id);
-                        timeZoneMap[id] = zone;
-                    }
-                    return zone;
+                    throw new TimeZoneNotFoundException("Time zone " + id + " is unknown to provider " + providerVersionId);
                 }
+                return zone;
             }
         }
     }

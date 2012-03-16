@@ -40,6 +40,9 @@ namespace NodaTime
     /// it would be a good idea for users to avoid comparing dates in different calendar systems, and indeed most users are unlikely to ever explicitly
     /// consider which calendar system they're working in anyway.
     /// </para>
+    /// <para>
+    /// Currently there is no real text handling support for this type. For the moment, you should 
+    /// </para>
     /// </remarks>
     public struct ZonedDateTime : IEquatable<ZonedDateTime>, IComparable<ZonedDateTime>
     {
@@ -102,7 +105,7 @@ namespace NodaTime
         /// <summary>
         /// Gets the local date and time represented by this zoned date and time. The returned <see cref="LocalDateTime"/>
         /// will have the same calendar system and return the same values for each of the calendar properties
-        /// (Year, MonthOfYear and so on), but not be associated with any particular time zone.
+        /// (Year, MonthOfYear and so on), but will not be associated with any particular time zone.
         /// </summary>
         public LocalDateTime LocalDateTime { get { return localDateTime; } }
 
@@ -127,10 +130,10 @@ namespace NodaTime
         /// <remarks>
         /// <para>
         /// The WeekYear is the year that matches with the WeekOfWeekYear field.
-        /// In the standard ISO8601 week algorithm, the first week of the year
+        /// In the standard ISO-8601 week algorithm, the first week of the year
         /// is that in which at least 4 days are in the year. As a result of this
         /// definition, day 1 of the first week may be in the previous year.
-        /// The WeekYear allows you to query the effective year for that day
+        /// The WeekYear allows you to query the effective year for that day.
         /// </para>
         /// <para>
         /// For example, January 1st 2011 was a Saturday, so only two days of that week
@@ -203,12 +206,12 @@ namespace NodaTime
 
         /// <summary>
         /// Converts this value to the instant it represents on the time line.
-        /// If two instants are represented by the same set of values, the later
-        /// instant is returned.
         /// </summary>
         /// <remarks>
-        /// Conceptually this is a conversion (which is why it's not a property) but
-        /// in reality the conversion is done at the point of construction.
+        /// This is always an unambiguous conversion. Any difficulties due to daylight saving
+        /// transitions or other changes in time zone are handled when converting from a <see cref="LocalDateTime"/>
+        /// to a <see cref="ZonedDateTime"/>; the <c>ZonedDateTime</c> remembers the actual offset from UTC to local time,
+        /// so it always knows the exact instant represented.
         /// </remarks>
         /// <returns>The instant corresponding to this value.</returns>
         public Instant ToInstant()

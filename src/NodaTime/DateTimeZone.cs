@@ -72,8 +72,9 @@ namespace NodaTime
     /// than the version of Noda Time you're using) or an instance of <see cref="BclTimeZoneProvider"/>.
     /// </para>
     /// <para>Unlike many other date/time APIs, Noda Time does not use the system default time zone without you explicitly asking it to.
-    /// You can fetch the Noda Time representation of the system default time zone using <see cref="GetSystemDefault"/>, which will attempt to
-    /// find an appropriate time zone using the current provider. You should be aware that this may fail, however (in which case the method will return null)
+    /// You can fetch the Noda Time representation of the system default time zone using <see cref="GetSystemDefault"/> or
+    /// <see cref="GetSystemDefaultOrNull"/>, which will attempt to find an appropriate time zone using the current provider.
+    /// You should be aware that this may fail, however (in which case the first method will throw an exception, and the second method will return null)
     /// if no mapping is found. This could occur due to the system having a "custom" time zone installed, or there being no mapping for the BCL zone ID
     /// to the provider's set of IDs due to the BCL zone ID being added recently. You can always use <see cref="BclTimeZone.ForSystemDefault"/> to convert
     /// the local <see cref="TimeZoneInfo"/> to guarantee that a representation is available.</para>
@@ -115,7 +116,30 @@ namespace NodaTime
         public static DateTimeZone Utc { get { return UtcZone; } }
 
         /// <summary>
-        /// Gets the system default time zone, as mapped by the underlying provider.
+        /// Gets the system default time zone, as mapped by the underlying provider. If the time zone
+        /// is not mapped by this provider, a <see cref="TimeZoneNotFoundException"/> is thrown.
+        /// </summary>
+        /// <remarks>
+        /// Callers should be aware that this method can throw <see cref="TimeZoneNotFoundException"/>,
+        /// even with standard Windows time zones.
+        /// This could be due to either the Unicode CLDR not being up-to-date with Windows time zone IDs,
+        /// or Noda Time not being up-to-date with CLDR - or a provider-specific problem. Callers can use
+        /// the null-coalescing operator to effectively provider a default:
+        /// </remarks>
+        /// <exception cref="TimeZoneNotFoundException">The system default time zone is not mapped by
+        /// the current provider.</exception>
+        /// <returns>
+        /// The provider-specific representation of the system time zone, or null if the time zone
+        /// could not be mapped.
+        /// </returns>
+        public static DateTimeZone GetSystemDefault()
+        {
+            return cache.GetSystemDefault();
+        }
+
+        /// <summary>
+        /// Gets the system default time zone, as mapped by the underlying provider. If the time zone
+        /// is not mapped by this provider, a null reference is returned.
         /// </summary>
         /// <remarks>
         /// Callers should be aware that this method can return null, even with standard Windows time zones.
@@ -127,16 +151,17 @@ namespace NodaTime
         /// The provider-specific representation of the system time zone, or null if the time zone
         /// could not be mapped.
         /// </returns>
-        public static DateTimeZone GetSystemDefault()
+        public static DateTimeZone GetSystemDefaultOrNull()
         {
-            return cache.GetSystemDefault();
+            return cache.GetSystemDefaultOrNull();
         }
 
         /// <summary>
-        ///   Returns the time zone with the given id.
+        /// Returns the time zone with the given ID. This must be one of the IDs returned by <see cref="Ids"/>.
         /// </summary>
-        /// <param name="id">The time zone id to find.</param>
-        /// <returns>The <see cref="DateTimeZone" /> with the given id or <c>null</c> if there isn't one defined.</returns>
+        /// <param name="id">The time zone ID to find.</param>
+        /// <exception cref="TimeZoneNotFoundException"></exception>
+        /// <returns>The <see cref="DateTimeZone" /> with the given ID.</returns>
         public static DateTimeZone ForId(string id)
         {
             TimeZoneCache localCache;
