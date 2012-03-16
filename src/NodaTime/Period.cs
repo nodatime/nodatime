@@ -304,7 +304,7 @@ namespace NodaTime
             CalendarSystem calendar = start.Calendar;
             if (!calendar.Equals(end.Calendar))
             {
-                throw new ArgumentException("start and end must use the same calendar system", "calendar");
+                throw new ArgumentException("start and end must use the same calendar system", "end");
             }
 
             LocalInstant startLocalInstant = start.LocalInstant;
