@@ -28,13 +28,15 @@ namespace NodaTime
     /// </remarks>
     public struct Interval : IEquatable<Interval>
     {
-        private readonly Instant end;
+        /// <summary>The start of the interval.</summary>
         private readonly Instant start;
 
+        /// <summary>The end of the interval. This will never be earlier than the start.</summary>
+        private readonly Instant end;
+
         /// <summary>
-        /// Initializes a new instance of the <see cref="Interval"/> struct. The <see
-        /// cref="Interval"/> includes the <paramref name="start"/> instant and excludes the
-        /// <paramref name="end"/> instant. The end may equal the start, but must not be before the start.
+        /// Initializes a new <see cref="Interval"/> The interval includes the <paramref name="start"/> instant and excludes the
+        /// <paramref name="end"/> instant. The end may equal the start (resulting in an empty interval), but must not be before the start.
         /// </summary>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="end"/> is earlier than <paramref name="start"/>.</exception>
         /// <param name="start">The start <see cref="Instant"/>.</param>
@@ -62,20 +64,20 @@ namespace NodaTime
         public Instant End { get { return end; } }
 
         /// <summary>
-        /// Gets the duration.
+        /// Returns the duration of the interval, which will always be non-negative.
         /// </summary>
-        /// <value>The duration.</value>
+        /// <value>The duration of the interval.</value>
         public Duration Duration { get { return end - start; } }
 
         #region Implementation of IEquatable<Interval>
         /// <summary>
-        /// Indicates whether the current object is equal to another object of the same type.
+        /// Indicates whether the value of this interval is equal to the value of the specified interval.
         /// </summary>
+        /// <param name="other">The value to compare with this instance.</param>
         /// <returns>
-        /// true if the current object is equal to the <paramref name="other"/> parameter;
+        /// true if the value of this instant is equal to the value of the <paramref name="other" /> parameter;
         /// otherwise, false.
         /// </returns>
-        /// <param name="other">An object to compare with this object.</param>
         public bool Equals(Interval other)
         {
             return Start == other.Start && End == other.End;
@@ -83,14 +85,15 @@ namespace NodaTime
         #endregion
 
         #region object overrides
+
         /// <summary>
-        /// Indicates whether this instance and a specified object are equal.
+        /// Determines whether the specified <see cref="System.Object" /> is equal to this instance.
         /// </summary>
+        /// <param name="obj">The <see cref="System.Object" /> to compare with this instance.</param>
         /// <returns>
-        /// true if <paramref name="obj"/> and this instance are the same type and represent the same value; otherwise, false.
+        /// <c>true</c> if the specified <see cref="System.Object" /> is equal to this instance;
+        /// otherwise, <c>false</c>.
         /// </returns>
-        /// <param name="obj">Another object to compare to. 
-        ///                 </param><filterpriority>2</filterpriority>
         public override bool Equals(object obj)
         {
             if (obj is Interval)
