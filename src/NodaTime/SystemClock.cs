@@ -16,12 +16,14 @@
 #endregion
 
 using System;
-using NodaTime.Utility;
 
 namespace NodaTime
 {
     /// <summary>
     /// Singleton implementation of <see cref="IClock"/> which reads the current system time.
+    /// It is recommended that for anything other than throwaway code, this is only referenced
+    /// in a single place in your code: where you provide a value to inject into the rest of
+    /// your application, which should only depend on the instance.
     /// </summary>
     public sealed class SystemClock : IClock
     {
