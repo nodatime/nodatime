@@ -55,7 +55,7 @@ namespace NodaTime.Serialization.JsonNet
                 }
             }
 
-            if (!gotStartInstant && !gotEndInstant)
+            if (!(gotStartInstant && gotEndInstant))
                 throw new Exception("An Interval must contain Start and End properties.");
 
             return new Interval(startInstant, endInstant);
