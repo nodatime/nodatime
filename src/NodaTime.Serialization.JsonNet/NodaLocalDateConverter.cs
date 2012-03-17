@@ -14,20 +14,20 @@ namespace NodaTime.Serialization.JsonNet
         public NodaLocalDateConverter()
         {
             // default values
-            DateTimeFormat = DefaultDateTimeFormat;
+            DateFormat = DefaultDateTimeFormat;
             Culture = CultureInfo.CurrentCulture;
         }
 
         /// <summary>
-        /// Gets or sets the date time format used when converting a date to and from JSON.
+        /// Gets or sets the date format used when converting to and from JSON.
         /// </summary>
-        /// <value>The date time format used when converting a date to and from JSON.</value>
-        public string DateTimeFormat { get; set; }
+        /// <value>The date format used when converting to and from JSON.</value>
+        public string DateFormat { get; set; }
 
         /// <summary>
-        /// Gets or sets the culture used when converting a date to and from JSON.
+        /// Gets or sets the culture used when converting to and from JSON.
         /// </summary>
-        /// <value>The culture used when converting a date to and from JSON.</value>
+        /// <value>The culture used when converting to and from JSON.</value>
         public CultureInfo Culture { get; set; }
 
         public override bool CanConvert(Type objectType)
@@ -45,7 +45,7 @@ namespace NodaTime.Serialization.JsonNet
             if (localDate.Calendar.Name != "ISO")
                 throw new NotSupportedException("Sorry, only the ISO calendar is currently supported for serialization.");
 
-            var text = localDate.ToString(DateTimeFormat, Culture);
+            var text = localDate.ToString(DateFormat, Culture);
             writer.WriteValue(text);
         }
 
@@ -67,9 +67,9 @@ namespace NodaTime.Serialization.JsonNet
             if (string.IsNullOrEmpty(localDateText) && objectType == typeof(LocalDate?))
                 return null;
 
-            return string.IsNullOrEmpty(DateTimeFormat)
+            return string.IsNullOrEmpty(DateFormat)
                        ? LocalDate.Parse(localDateText, Culture)
-                       : LocalDate.ParseExact(localDateText, DateTimeFormat, Culture);
+                       : LocalDate.ParseExact(localDateText, DateFormat, Culture);
         }
     }
 }

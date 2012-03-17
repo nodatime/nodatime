@@ -5,24 +5,24 @@ using Newtonsoft.Json;
 namespace NodaTime.Serialization.JsonNet
 {
     /// <summary>
-    /// Converts an <see cref="Instant"/> to and from the ISO 8601 date format (e.g. 2008-04-12T12:53Z).
+    /// Converts an <see cref="LocalTime"/> to and from the ISO 8601 time format without a timezone specified (e.g. 12:53).
     /// </summary>
-    public class NodaInstantConverter : JsonConverter
+    public class NodaLocalTimeConverter : JsonConverter
     {
-        private const string DefaultDateTimeFormat = "yyyy'-'MM'-'dd'T'HH':'mm':'ss.FFFFFFFZ";
+        private const string DefaultDateTimeFormat = "HH':'mm':'ss.FFFFFFF";
 
-        public NodaInstantConverter()
+        public NodaLocalTimeConverter()
         {
             // default values
-            DateTimeFormat = DefaultDateTimeFormat;
+            TimeFormat = DefaultDateTimeFormat;
             Culture = CultureInfo.CurrentCulture;
         }
 
         /// <summary>
-        /// Gets or sets the date time format used when converting to and from JSON.
+        /// Gets or sets the time format used when converting to and from JSON.
         /// </summary>
         /// <value>The date time format used when converting to and from JSON.</value>
-        public string DateTimeFormat { get; set; }
+        public string TimeFormat { get; set; }
 
         /// <summary>
         /// Gets or sets the culture used when converting to and from JSON.
@@ -32,16 +32,17 @@ namespace NodaTime.Serialization.JsonNet
 
         public override bool CanConvert(Type objectType)
         {
-            return objectType == typeof (Instant) || objectType == typeof (Instant?);
+            return objectType == typeof(LocalTime) || objectType == typeof(LocalTime?);
         }
 
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
-            if (!(value is Instant))
-                throw new Exception(string.Format("Unexpected value when converting. Expected NodaTime.Instant, got {0}.", value.GetType().FullName));
-            
-            var instant = (Instant) value;
-            var text = instant.ToString(DateTimeFormat, Culture);
+            if (!(value is LocalTime))
+                throw new Exception(string.Format("Unexpected value when converting. Expected NodaTime.LocalTime, got {0}.", value.GetType().FullName));
+
+            var localTime = (LocalTime)value;
+
+            var text = localTime.ToString(TimeFormat, Culture);
             writer.WriteValue(text);
         }
 
@@ -49,7 +50,7 @@ namespace NodaTime.Serialization.JsonNet
         {
             if (reader.TokenType == JsonToken.Null)
             {
-                if (objectType != typeof(Instant?))
+                if (objectType != typeof(LocalTime?))
                     throw new Exception(string.Format("Cannot convert null value to {0}.", objectType));
 
                 return null;
@@ -58,14 +59,14 @@ namespace NodaTime.Serialization.JsonNet
             if (reader.TokenType != JsonToken.String)
                 throw new Exception(string.Format("Unexpected token parsing instant. Expected String, got {0}.", reader.TokenType));
 
-            var instantText = reader.Value.ToString();
+            var localTimeText = reader.Value.ToString();
 
-            if (string.IsNullOrEmpty(instantText) && objectType == typeof(Instant?))
+            if (string.IsNullOrEmpty(localTimeText) && objectType == typeof(LocalTime?))
                 return null;
 
-            return string.IsNullOrEmpty(DateTimeFormat)
-                       ? Instant.Parse(instantText, Culture)
-                       : Instant.ParseExact(instantText, DateTimeFormat, Culture);
+            return string.IsNullOrEmpty(TimeFormat)
+                       ? LocalTime.Parse(localTimeText, Culture)
+                       : LocalTime.ParseExact(localTimeText, TimeFormat, Culture);
         }
     }
 }
