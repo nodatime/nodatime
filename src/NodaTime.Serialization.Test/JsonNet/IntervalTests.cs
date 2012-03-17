@@ -24,7 +24,7 @@ namespace NodaTime.Serialization.Test.JsonNet
     [TestFixture]
     public class IntervalTests
     {
-        private readonly JsonSerializerSettings jsonSettings = new JsonSerializerSettings().ConfigureForNodaTime();
+        private readonly JsonConverter[] converters = { new NodaIntervalConverter(), new NodaInstantConverter() };
 
         [Test]
         public void Serialize_NonNullableType()
@@ -33,7 +33,7 @@ namespace NodaTime.Serialization.Test.JsonNet
             var endInstant = Instant.FromUtc(2013, 6, 7, 8, 9, 10);
             var interval = new Interval(startInstant, endInstant);
 
-            var json = JsonConvert.SerializeObject(interval, Formatting.None, jsonSettings);
+            var json = JsonConvert.SerializeObject(interval, Formatting.None, converters);
 
             string expectedJson = "{\"Start\":\"2012-01-02T03:04:05Z\",\"End\":\"2013-06-07T08:09:10Z\"}";
             Assert.AreEqual(expectedJson, json);
@@ -46,7 +46,7 @@ namespace NodaTime.Serialization.Test.JsonNet
             var endInstant = Instant.FromUtc(2013, 6, 7, 8, 9, 10);
             var interval = new Interval?(new Interval(startInstant, endInstant));
 
-            var json = JsonConvert.SerializeObject(interval, Formatting.None, jsonSettings);
+            var json = JsonConvert.SerializeObject(interval, Formatting.None, converters);
 
             string expectedJson = "{\"Start\":\"2012-01-02T03:04:05Z\",\"End\":\"2013-06-07T08:09:10Z\"}";
             Assert.AreEqual(expectedJson, json);
@@ -57,7 +57,7 @@ namespace NodaTime.Serialization.Test.JsonNet
         {
             var interval = new Interval?();
 
-            var json = JsonConvert.SerializeObject(interval, Formatting.None, jsonSettings);
+            var json = JsonConvert.SerializeObject(interval, Formatting.None, converters);
 
             string expectedJson = "null";
             Assert.AreEqual(expectedJson, json);
@@ -68,7 +68,7 @@ namespace NodaTime.Serialization.Test.JsonNet
         {
             string json = "{\"Start\":\"2012-01-02T03:04:05Z\",\"End\":\"2013-06-07T08:09:10Z\"}";
 
-            var interval = JsonConvert.DeserializeObject<Interval>(json, jsonSettings);
+            var interval = JsonConvert.DeserializeObject<Interval>(json, converters);
 
             var startInstant = Instant.FromUtc(2012, 1, 2, 3, 4, 5);
             var endInstant = Instant.FromUtc(2013, 6, 7, 8, 9, 10);
@@ -81,7 +81,7 @@ namespace NodaTime.Serialization.Test.JsonNet
         {
             string json = "{\"Start\":\"2012-01-02T03:04:05Z\",\"End\":\"2013-06-07T08:09:10Z\"}";
 
-            var interval = JsonConvert.DeserializeObject<Interval?>(json, jsonSettings);
+            var interval = JsonConvert.DeserializeObject<Interval?>(json, converters);
 
             var startInstant = Instant.FromUtc(2012, 1, 2, 3, 4, 5);
             var endInstant = Instant.FromUtc(2013, 6, 7, 8, 9, 10);
@@ -94,7 +94,7 @@ namespace NodaTime.Serialization.Test.JsonNet
         {
             string json = "null";
 
-            var interval = JsonConvert.DeserializeObject<Interval?>(json, jsonSettings);
+            var interval = JsonConvert.DeserializeObject<Interval?>(json, converters);
 
             var expectedInterval = new Interval?();
             Assert.AreEqual(expectedInterval, interval);
