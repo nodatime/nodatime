@@ -37,7 +37,7 @@ namespace NodaTime.Serialization.Test.JsonNet
 
             var json = JsonConvert.SerializeObject(localDateTime, Formatting.None, jsonSettings);
 
-            const string expectedJson = "\"2012-01-02T03:04:05.0060007\"";
+            string expectedJson = "\"2012-01-02T03:04:05.0060007\"";
             Assert.AreEqual(expectedJson, json);
         }
 
@@ -48,7 +48,7 @@ namespace NodaTime.Serialization.Test.JsonNet
 
             var json = JsonConvert.SerializeObject(localDateTime, Formatting.None, jsonSettings);
 
-            const string expectedJson = "\"2012-01-02T03:04:05.0060007\"";
+            string expectedJson = "\"2012-01-02T03:04:05.0060007\"";
             Assert.AreEqual(expectedJson, json);
         }
 
@@ -59,14 +59,14 @@ namespace NodaTime.Serialization.Test.JsonNet
 
             var json = JsonConvert.SerializeObject(localDateTime, Formatting.None, jsonSettings);
 
-            const string expectedJson = "null";
+            string expectedJson = "null";
             Assert.AreEqual(expectedJson, json);
         }
 
         [Test]
         public void Deserialize_ToNonNullableType()
         {
-            const string json = "\"2012-01-02T03:04:05.0060007\"";
+            string json = "\"2012-01-02T03:04:05.0060007\"";
 
             var localDateTime = JsonConvert.DeserializeObject<LocalDateTime>(json, jsonSettings);
 
@@ -77,7 +77,7 @@ namespace NodaTime.Serialization.Test.JsonNet
         [Test]
         public void Deserialize_ToNullableType_NonNullValue()
         {
-            const string json = "\"2012-01-02T03:04:05.0060007\"";
+            string json = "\"2012-01-02T03:04:05.0060007\"";
 
             var localDateTime = JsonConvert.DeserializeObject<LocalDateTime?>(json, jsonSettings);
 
@@ -88,7 +88,7 @@ namespace NodaTime.Serialization.Test.JsonNet
         [Test]
         public void Deserialize_ToNullableType_NullValue()
         {
-            const string json = "null";
+            string json = "null";
 
             var localDateTime = JsonConvert.DeserializeObject<LocalDateTime?>(json, jsonSettings);
 
