@@ -19,15 +19,15 @@ namespace NodaTime.Serialization.JsonNet
         }
 
         /// <summary>
-        /// Gets or sets the date time format used when converting a date to and from JSON.
+        /// Gets or sets the date time format used when converting to and from JSON.
         /// </summary>
-        /// <value>The date time format used when converting a date to and from JSON.</value>
+        /// <value>The date time format used when converting to and from JSON.</value>
         public string DateTimeFormat { get; set; }
 
         /// <summary>
-        /// Gets or sets the culture used when converting a date to and from JSON.
+        /// Gets or sets the culture used when converting to and from JSON.
         /// </summary>
-        /// <value>The culture used when converting a date to and from JSON.</value>
+        /// <value>The culture used when converting to and from JSON.</value>
         public CultureInfo Culture { get; set; }
 
         public override bool CanConvert(Type objectType)

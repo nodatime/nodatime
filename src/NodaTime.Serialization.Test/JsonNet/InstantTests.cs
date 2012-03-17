@@ -9,6 +9,8 @@ namespace NodaTime.Serialization.Test.JsonNet
     [TestFixture]
     public class InstantTests
     {
+        private readonly JsonSerializerSettings jsonSettings = new JsonSerializerSettings().ConfigureForNodaTime();
+
         [Test]
         public void JsonNet_Can_Serialize_Instant()
         {
@@ -16,7 +18,7 @@ namespace NodaTime.Serialization.Test.JsonNet
             var instant = Instant.FromUtc(2012, 1, 2, 3, 4, 5);
 
             /* Act */
-            var json = JsonConvert.SerializeObject(instant, new NodaInstantConverter());
+            var json = JsonConvert.SerializeObject(instant, Formatting.None, jsonSettings);
 
             /* Assert */
             const string expectedJson = "\"2012-01-02T03:04:05Z\"";
@@ -30,7 +32,7 @@ namespace NodaTime.Serialization.Test.JsonNet
             var instant = new Instant?(Instant.FromUtc(2012, 1, 2, 3, 4, 5));
 
             /* Act */
-            var json = JsonConvert.SerializeObject(instant, new NodaInstantConverter());
+            var json = JsonConvert.SerializeObject(instant, Formatting.None, jsonSettings);
 
             /* Assert */
             const string expectedJson = "\"2012-01-02T03:04:05Z\"";
@@ -44,7 +46,7 @@ namespace NodaTime.Serialization.Test.JsonNet
             var instant = new Instant?();
 
             /* Act */
-            var json = JsonConvert.SerializeObject(instant, new NodaInstantConverter());
+            var json = JsonConvert.SerializeObject(instant, Formatting.None, jsonSettings);
 
             /* Assert */
             const string expectedJson = "null";
@@ -58,7 +60,7 @@ namespace NodaTime.Serialization.Test.JsonNet
             const string json = "\"2012-01-02T03:04:05Z\"";
 
             /* Act */
-            var instant = JsonConvert.DeserializeObject<Instant>(json, new NodaInstantConverter());
+            var instant = JsonConvert.DeserializeObject<Instant>(json, jsonSettings);
 
             /* Assert */
             var expectedInstant = Instant.FromUtc(2012, 1, 2, 3, 4, 5);
@@ -72,7 +74,7 @@ namespace NodaTime.Serialization.Test.JsonNet
             const string json = "\"2012-01-02T03:04:05Z\"";
 
             /* Act */
-            var instant = JsonConvert.DeserializeObject<Instant?>(json, new NodaInstantConverter());
+            var instant = JsonConvert.DeserializeObject<Instant?>(json, jsonSettings);
 
             /* Assert */
             var expectedInstant = new Instant?(Instant.FromUtc(2012, 1, 2, 3, 4, 5));
@@ -86,7 +88,7 @@ namespace NodaTime.Serialization.Test.JsonNet
             const string json = "null";
 
             /* Act */
-            var instant = JsonConvert.DeserializeObject<Instant?>(json, new NodaInstantConverter());
+            var instant = JsonConvert.DeserializeObject<Instant?>(json, jsonSettings);
 
             /* Assert */
             var expectedInstant = new Instant?();
@@ -102,8 +104,8 @@ namespace NodaTime.Serialization.Test.JsonNet
 
             /* Act */
             var jsonDateTime = JsonConvert.SerializeObject(dateTime, new IsoDateTimeConverter());
-            var jsonInstant = JsonConvert.SerializeObject(instant, new NodaInstantConverter());
-
+            var jsonInstant = JsonConvert.SerializeObject(instant, Formatting.None, jsonSettings);
+            
             /* Assert */
             Assert.AreEqual(jsonDateTime, jsonInstant);
         }
