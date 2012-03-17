@@ -27,14 +27,14 @@ namespace NodaTime.Serialization.Test.JsonNet
     {
         // TODO: we need tests for other calendars.
 
-        private readonly JsonSerializerSettings jsonSettings = new JsonSerializerSettings().ConfigureForNodaTime();
+        private readonly NodaLocalDateConverter converter = new NodaLocalDateConverter();
 
         [Test]
         public void Serialize_NonNullableType()
         {
             var localDate = new LocalDate(Era.Common, 2012, 1, 2, CalendarSystem.Iso);
 
-            var json = JsonConvert.SerializeObject(localDate, Formatting.None, jsonSettings);
+            var json = JsonConvert.SerializeObject(localDate, Formatting.None, converter);
 
             string expectedJson = "\"2012-01-02\"";
             Assert.AreEqual(expectedJson, json);
@@ -45,7 +45,7 @@ namespace NodaTime.Serialization.Test.JsonNet
         {
             var localDate = new LocalDate?(new LocalDate(Era.Common, 2012, 1, 2, CalendarSystem.Iso));
 
-            var json = JsonConvert.SerializeObject(localDate, Formatting.None, jsonSettings);
+            var json = JsonConvert.SerializeObject(localDate, Formatting.None, converter);
 
             string expectedJson = "\"2012-01-02\"";
             Assert.AreEqual(expectedJson, json);
@@ -56,7 +56,7 @@ namespace NodaTime.Serialization.Test.JsonNet
         {
             var localDate = new LocalDate?();
 
-            var json = JsonConvert.SerializeObject(localDate, Formatting.None, jsonSettings);
+            var json = JsonConvert.SerializeObject(localDate, Formatting.None, converter);
 
             string expectedJson = "null";
             Assert.AreEqual(expectedJson, json);
@@ -67,7 +67,7 @@ namespace NodaTime.Serialization.Test.JsonNet
         {
             string json = "\"2012-01-02\"";
 
-            var localDate = JsonConvert.DeserializeObject<LocalDate>(json, jsonSettings);
+            var localDate = JsonConvert.DeserializeObject<LocalDate>(json, converter);
 
             var expectedLocalDate = new LocalDate(Era.Common, 2012, 1, 2, CalendarSystem.Iso);
             Assert.AreEqual(expectedLocalDate, localDate);
@@ -78,7 +78,7 @@ namespace NodaTime.Serialization.Test.JsonNet
         {
             string json = "\"2012-01-02\"";
 
-            var localDate = JsonConvert.DeserializeObject<LocalDate?>(json, jsonSettings);
+            var localDate = JsonConvert.DeserializeObject<LocalDate?>(json, converter);
 
             var expectedLocalDate = new LocalDate?(new LocalDate(Era.Common, 2012, 1, 2, CalendarSystem.Iso));
             Assert.AreEqual(expectedLocalDate, localDate);
@@ -89,7 +89,7 @@ namespace NodaTime.Serialization.Test.JsonNet
         {
             string json = "null";
 
-            var localDate = JsonConvert.DeserializeObject<LocalDate?>(json, jsonSettings);
+            var localDate = JsonConvert.DeserializeObject<LocalDate?>(json, converter);
 
             var expectedLocalDate = new LocalDate?();
             Assert.AreEqual(expectedLocalDate, localDate);
