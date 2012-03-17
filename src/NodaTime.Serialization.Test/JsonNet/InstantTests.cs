@@ -29,7 +29,7 @@ namespace NodaTime.Serialization.Test.JsonNet
         private readonly JsonSerializerSettings jsonSettings = new JsonSerializerSettings().ConfigureForNodaTime();
 
         [Test]
-        public void JsonNet_Can_Serialize_Instant()
+        public void Serialize_NonNullableType()
         {
             /* Arrange */
             var instant = Instant.FromUtc(2012, 1, 2, 3, 4, 5);
@@ -43,7 +43,7 @@ namespace NodaTime.Serialization.Test.JsonNet
         }
 
         [Test]
-        public void JsonNet_Can_Serialize_NullableInstant()
+        public void Serialize_NullableType_NonNullValue()
         {
             /* Arrange */
             var instant = new Instant?(Instant.FromUtc(2012, 1, 2, 3, 4, 5));
@@ -57,7 +57,7 @@ namespace NodaTime.Serialization.Test.JsonNet
         }
 
         [Test]
-        public void JsonNet_Can_Serialize_NullInstant()
+        public void Serialize_NullableType_NullValue()
         {
             /* Arrange */
             var instant = new Instant?();
@@ -71,7 +71,7 @@ namespace NodaTime.Serialization.Test.JsonNet
         }
 
         [Test]
-        public void JsonNet_Can_Deserialize_Instant()
+        public void Deserialize_ToNonNullableType()
         {
             /* Arrange */
             const string json = "\"2012-01-02T03:04:05Z\"";
@@ -85,7 +85,7 @@ namespace NodaTime.Serialization.Test.JsonNet
         }
 
         [Test]
-        public void JsonNet_Can_Deserialize_NullableInstant()
+        public void Deserialize_ToNullableType_NonNullValue()
         {
             /* Arrange */
             const string json = "\"2012-01-02T03:04:05Z\"";
@@ -113,7 +113,7 @@ namespace NodaTime.Serialization.Test.JsonNet
         }
         
         [Test]
-        public void JsonNet_Serializes_Instant_Like_UTCDateTime()
+        public void Deserialize_ToNullableType_NullValue()
         {
             /* Arrange */
             var dateTime = new DateTime(2012, 1, 2, 3, 4, 5, DateTimeKind.Utc);

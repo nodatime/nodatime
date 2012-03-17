@@ -24,13 +24,13 @@ namespace NodaTime.Serialization.Test.JsonNet
     public class PeriodTests
     {
         [Test, Ignore]
-        public void JsonNet_Can_Serialize_Period()
+        public void Serialize()
         {
             throw new NotImplementedException();
         }
 
         [Test, Ignore]
-        public void JsonNet_Can_Deserialize_Period()
+        public void Deserialize()
         {
             throw new NotImplementedException();
         }

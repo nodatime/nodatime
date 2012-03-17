@@ -31,7 +31,7 @@ namespace NodaTime.Serialization.Test.JsonNet
         private readonly JsonSerializerSettings jsonSettings = new JsonSerializerSettings().ConfigureForNodaTime();
 
         [Test]
-        public void JsonNet_Can_Serialize_LocalDateTime_UsingIsoCalendar()
+        public void Serialize_NonNullableType()
         {
             /* Arrange */
             var localDateTime = new LocalDateTime(2012, 1, 2, 3, 4, 5, 6, 7, CalendarSystem.Iso);
@@ -45,7 +45,7 @@ namespace NodaTime.Serialization.Test.JsonNet
         }
 
         [Test]
-        public void JsonNet_Can_Serialize_NullableLocalDateTime_UsingIsoCalendar()
+        public void Serialize_NullableType_NonNullValue()
         {
             /* Arrange */
             var localDateTime = new LocalDateTime?(new LocalDateTime(2012, 1, 2, 3, 4, 5, 6, 7, CalendarSystem.Iso));
@@ -59,7 +59,7 @@ namespace NodaTime.Serialization.Test.JsonNet
         }
 
         [Test]
-        public void JsonNet_Can_Serialize_NullLocalDateTime_UsingIsoCalendar()
+        public void Serialize_NullableType_NullValue()
         {
             /* Arrange */
             var localDateTime = new LocalDateTime?();
@@ -73,7 +73,7 @@ namespace NodaTime.Serialization.Test.JsonNet
         }
 
         [Test]
-        public void JsonNet_Can_Deserialize_LocalDateTime_UsingIsoCalendar()
+        public void Deserialize_ToNonNullableType()
         {
             /* Arrange */
             const string json = "\"2012-01-02T03:04:05.0060007\"";
@@ -87,7 +87,7 @@ namespace NodaTime.Serialization.Test.JsonNet
         }
 
         [Test]
-        public void JsonNet_Can_Deserialize_NullableLocalDateTime_UsingIsoCalendar()
+        public void Deserialize_ToNullableType_NonNullValue()
         {
             /* Arrange */
             const string json = "\"2012-01-02T03:04:05.0060007\"";
@@ -101,7 +101,7 @@ namespace NodaTime.Serialization.Test.JsonNet
         }
 
         [Test]
-        public void JsonNet_Can_Deserialize_NullLocalDateTime_UsingIsoCalendar()
+        public void Deserialize_ToNullableType_NullValue()
         {
             /* Arrange */
             const string json = "null";
@@ -115,7 +115,7 @@ namespace NodaTime.Serialization.Test.JsonNet
         }
 
         [Test]
-        public void JsonNet_Serializes_LocalDateTime_Like_DateTime_UsingIsoCalendar()
+        public void Serialize_EquivalentToIsoDateTimeConverter()
         {
             /* Arrange */
             var dateTime = new DateTime(2012, 1, 2, 3, 4, 5, 6, DateTimeKind.Unspecified);
