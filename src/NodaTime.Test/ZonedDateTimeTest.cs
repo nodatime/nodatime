@@ -291,12 +291,57 @@ namespace NodaTime.Test
             Assert.That(value2.CompareTo(value1), Is.GreaterThan(0));
             Assert.That(value1.CompareTo(value3), Is.EqualTo(0));
         }
+
         [Test]
         public void Constructor_ArgumentValidation()
         {
             Assert.Throws<ArgumentNullException>(() => new ZonedDateTime(new Instant(1000), null));
             Assert.Throws<ArgumentNullException>(() => new ZonedDateTime(new Instant(1000), null, CalendarSystem.Iso));
             Assert.Throws<ArgumentNullException>(() => new ZonedDateTime(new Instant(1000), SampleZone, null));
+        }
+
+        [Test]
+        public void Construct_FromLocal_ValidUnambiguousOffset()
+        {
+            SingleTransitionZone zone = new SingleTransitionZone(Instant.FromUtc(2011, 6, 12, 22, 0), 4, 3);
+
+            LocalDateTime local = new LocalDateTime(2000, 1, 2, 3, 4, 5);
+            ZonedDateTime zoned = new ZonedDateTime(local, zone, zone.EarlyInterval.WallOffset);
+            Assert.AreEqual(zoned, local.InZoneStrictly(zone));
+        }
+
+        [Test]
+        public void Construct_FromLocal_ValidEarlierOffset()
+        {
+            SingleTransitionZone zone = new SingleTransitionZone(Instant.FromUtc(2011, 6, 12, 22, 0), 4, 3);
+
+            LocalDateTime local = new LocalDateTime(2011, 6, 13, 1, 30);
+            ZonedDateTime zoned = new ZonedDateTime(local, zone, zone.EarlyInterval.WallOffset);
+
+            // Map the local time to the earlier of the offsets in a way which is tested elsewhere.
+            var resolver = Resolvers.CreateMappingResolver(Resolvers.ReturnEarlier, Resolvers.ThrowWhenSkipped);
+            Assert.AreEqual(zoned, local.InZone(zone, resolver));
+        }
+
+        [Test]
+        public void Construct_FromLocal_ValidLaterOffset()
+        {
+            SingleTransitionZone zone = new SingleTransitionZone(Instant.FromUtc(2011, 6, 12, 22, 0), 4, 3);
+
+            LocalDateTime local = new LocalDateTime(2011, 6, 13, 1, 30);
+            ZonedDateTime zoned = new ZonedDateTime(local, zone, zone.LateInterval.WallOffset);
+            // Leniently will return the later instant
+            Assert.AreEqual(zoned, local.InZoneLeniently(zone));
+        }
+
+        [Test]
+        public void Construct_FromLocal_InvalidOffset()
+        {
+            SingleTransitionZone zone = new SingleTransitionZone(Instant.FromUtc(2011, 6, 12, 22, 0), 4, 3);
+
+            // Attempt to ask for the later offset in the earlier interval
+            LocalDateTime local = new LocalDateTime(2000, 1, 1, 0, 0, 0);
+            Assert.Throws<ArgumentException>(() => new ZonedDateTime(local, zone, zone.LateInterval.WallOffset));
         }
     }
 }

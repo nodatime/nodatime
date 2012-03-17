@@ -93,6 +93,33 @@ namespace NodaTime
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ZonedDateTime"/> struct in the specified time zone
+        /// from a given local time and offset. The offset is validated to be correct as part of initialization.
+        /// In most cases a local time can only map to a single instant anyway, but the offset is included here for cases
+        /// where the local time is ambiguous, usually due to daylight saving transitions.
+        /// </summary>
+        /// <param name="localDateTime">The local date and time to represent</param>
+        /// <param name="zone">The time zone to represent the local date and time within</param>
+        /// <param name="offset">The offset between UTC and local time at the desired instant</param>
+        /// <exception cref="ArgumentNullException"><paramref name="zone"/> is null</exception>
+        /// <exception cref="ArgumentException"><paramref name="offset"/> is not a valid offset at the given
+        /// local date and time</exception>
+        public ZonedDateTime(LocalDateTime localDateTime, DateTimeZone zone, Offset offset)
+        {
+            Preconditions.CheckNotNull(zone, "zone");
+            Instant candidateInstant = localDateTime.LocalInstant.Minus(offset);
+            Offset correctOffset = zone.GetOffsetFromUtc(candidateInstant);
+            if (correctOffset != offset)
+            {
+                throw new ArgumentException("Offset " + offset + " is invalid for local date and time " + localDateTime
+                    + " in time zone " + zone.Id, "offset");
+            }
+            this.localDateTime = localDateTime;
+            this.offset = offset;
+            this.zone = zone;
+        }
+
         /// <summary>Gets the offset of the local representation of this value from UTC.</summary>
         public Offset Offset { get { return offset; } }
 
