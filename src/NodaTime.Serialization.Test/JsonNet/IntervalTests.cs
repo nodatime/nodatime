@@ -35,7 +35,7 @@ namespace NodaTime.Serialization.Test.JsonNet
 
             var json = JsonConvert.SerializeObject(interval, Formatting.None, jsonSettings);
 
-            const string expectedJson = "{\"Start\":\"2012-01-02T03:04:05Z\",\"End\":\"2013-06-07T08:09:10Z\"}";
+            string expectedJson = "{\"Start\":\"2012-01-02T03:04:05Z\",\"End\":\"2013-06-07T08:09:10Z\"}";
             Assert.AreEqual(expectedJson, json);
         }
 
@@ -48,7 +48,7 @@ namespace NodaTime.Serialization.Test.JsonNet
 
             var json = JsonConvert.SerializeObject(interval, Formatting.None, jsonSettings);
 
-            const string expectedJson = "{\"Start\":\"2012-01-02T03:04:05Z\",\"End\":\"2013-06-07T08:09:10Z\"}";
+            string expectedJson = "{\"Start\":\"2012-01-02T03:04:05Z\",\"End\":\"2013-06-07T08:09:10Z\"}";
             Assert.AreEqual(expectedJson, json);
         }
 
@@ -59,14 +59,14 @@ namespace NodaTime.Serialization.Test.JsonNet
 
             var json = JsonConvert.SerializeObject(interval, Formatting.None, jsonSettings);
 
-            const string expectedJson = "null";
+            string expectedJson = "null";
             Assert.AreEqual(expectedJson, json);
         }
 
         [Test]
         public void Deserialize_ToNonNullableType()
         {
-            const string json = "{\"Start\":\"2012-01-02T03:04:05Z\",\"End\":\"2013-06-07T08:09:10Z\"}";
+            string json = "{\"Start\":\"2012-01-02T03:04:05Z\",\"End\":\"2013-06-07T08:09:10Z\"}";
 
             var interval = JsonConvert.DeserializeObject<Interval>(json, jsonSettings);
 
@@ -79,7 +79,7 @@ namespace NodaTime.Serialization.Test.JsonNet
         [Test]
         public void Deserialize_ToNullableType_NonNullValue()
         {
-            const string json = "{\"Start\":\"2012-01-02T03:04:05Z\",\"End\":\"2013-06-07T08:09:10Z\"}";
+            string json = "{\"Start\":\"2012-01-02T03:04:05Z\",\"End\":\"2013-06-07T08:09:10Z\"}";
 
             var interval = JsonConvert.DeserializeObject<Interval?>(json, jsonSettings);
 
@@ -92,7 +92,7 @@ namespace NodaTime.Serialization.Test.JsonNet
         [Test]
         public void Deserialize_ToNullableType_NullValue()
         {
-            const string json = "null";
+            string json = "null";
 
             var interval = JsonConvert.DeserializeObject<Interval?>(json, jsonSettings);
 

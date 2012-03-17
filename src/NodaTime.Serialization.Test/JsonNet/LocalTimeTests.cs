@@ -31,7 +31,7 @@ namespace NodaTime.Serialization.Test.JsonNet
         {
             var localTime = new LocalTime(1, 2, 3, 4, 5);
             var json = JsonConvert.SerializeObject(localTime, Formatting.None, jsonSettings);
-            const string expectedJson = "\"01:02:03.0040005\"";
+            string expectedJson = "\"01:02:03.0040005\"";
             Assert.AreEqual(expectedJson, json);
         }
 
@@ -40,7 +40,7 @@ namespace NodaTime.Serialization.Test.JsonNet
         {
             var localTime = new LocalTime?(new LocalTime(1, 2, 3, 4, 5));
             var json = JsonConvert.SerializeObject(localTime, Formatting.None, jsonSettings);
-            const string expectedJson = "\"01:02:03.0040005\"";
+            string expectedJson = "\"01:02:03.0040005\"";
             Assert.AreEqual(expectedJson, json);
         }
 
@@ -49,14 +49,14 @@ namespace NodaTime.Serialization.Test.JsonNet
         {
             var localTime = new LocalTime?();
             var json = JsonConvert.SerializeObject(localTime, Formatting.None, jsonSettings);
-            const string expectedJson = "null";
+            string expectedJson = "null";
             Assert.AreEqual(expectedJson, json);
         }
 
         [Test]
         public void Deserialize_ToNonNullableType()
         {
-            const string json = "\"01:02:03.0040005\"";
+            string json = "\"01:02:03.0040005\"";
             var localTime = JsonConvert.DeserializeObject<LocalTime>(json, jsonSettings);
             var expectedLocalTime = new LocalTime(1, 2, 3, 4, 5);
             Assert.AreEqual(expectedLocalTime, localTime);
@@ -65,7 +65,7 @@ namespace NodaTime.Serialization.Test.JsonNet
         [Test]
         public void Deserialize_ToNullableType_NonNullValue()
         {
-            const string json = "\"01:02:03.0040005\"";
+            string json = "\"01:02:03.0040005\"";
             var localTime = JsonConvert.DeserializeObject<LocalTime?>(json, jsonSettings);
             var expectedLocalTime = new LocalTime?(new LocalTime(1, 2, 3, 4, 5));
             Assert.AreEqual(expectedLocalTime, localTime);
@@ -74,7 +74,7 @@ namespace NodaTime.Serialization.Test.JsonNet
         [Test]
         public void Deserialize_ToNullableType_NullValue()
         {
-            const string json = "null";
+            string json = "null";
             var localTime = JsonConvert.DeserializeObject<LocalTime?>(json, jsonSettings);
             var expectedLocalTime = new LocalTime?();
             Assert.AreEqual(expectedLocalTime, localTime);
