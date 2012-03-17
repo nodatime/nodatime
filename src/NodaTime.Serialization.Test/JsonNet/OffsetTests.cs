@@ -24,13 +24,13 @@ namespace NodaTime.Serialization.Test.JsonNet
     public class OffsetTests
     {
         [Test, Ignore]
-        public void JsonNet_Can_Serialize_Offset()
+        public void Serialize()
         {
             throw new NotImplementedException();
         }
 
         [Test, Ignore]
-        public void JsonNet_Can_Deserialize_Offset()
+        public void Deserialize()
         {
             throw new NotImplementedException();
         }

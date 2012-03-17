@@ -24,13 +24,13 @@ namespace NodaTime.Serialization.Test.JsonNet
     public class DateTimeZoneTests
     {
         [Test, Ignore]
-        public void JsonNet_Can_Serialize_DateTimeZone()
+        public void Serialize()
         {
             throw new NotImplementedException();
         }
 
         [Test, Ignore]
-        public void JsonNet_Can_Deserialize_DateTimeZone()
+        public void Deserialize()
         {
             throw new NotImplementedException();
         }

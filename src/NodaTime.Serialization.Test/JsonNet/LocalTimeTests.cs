@@ -27,7 +27,7 @@ namespace NodaTime.Serialization.Test.JsonNet
         private readonly JsonSerializerSettings jsonSettings = new JsonSerializerSettings().ConfigureForNodaTime();
 
         [Test]
-        public void JsonNet_Can_Serialize_LocalTime()
+        public void Serialize_NonNullableType()
         {
             /* Arrange */
             var localTime = new LocalTime(1, 2, 3, 4, 5);
@@ -41,7 +41,7 @@ namespace NodaTime.Serialization.Test.JsonNet
         }
 
         [Test]
-        public void JsonNet_Can_Serialize_NullableLocalTime()
+        public void Serialize_NullableType_NonNullValue()
         {
             /* Arrange */
             var localTime = new LocalTime?(new LocalTime(1, 2, 3, 4, 5));
@@ -55,7 +55,7 @@ namespace NodaTime.Serialization.Test.JsonNet
         }
 
         [Test]
-        public void JsonNet_Can_Serialize_NullLocalTime()
+        public void Serialize_NullableType_NullValue()
         {
             /* Arrange */
             var localTime = new LocalTime?();
@@ -69,7 +69,7 @@ namespace NodaTime.Serialization.Test.JsonNet
         }
 
         [Test]
-        public void JsonNet_Can_Deserialize_LocalTime()
+        public void Deserialize_ToNonNullableType()
         {
             /* Arrange */
             const string json = "\"01:02:03.0040005\"";
@@ -83,7 +83,7 @@ namespace NodaTime.Serialization.Test.JsonNet
         }
 
         [Test]
-        public void JsonNet_Can_Deserialize_NullableLocalTime()
+        public void Deserialize_ToNullableType_NonNullValue()
         {
             /* Arrange */
             const string json = "\"01:02:03.0040005\"";
@@ -97,7 +97,7 @@ namespace NodaTime.Serialization.Test.JsonNet
         }
 
         [Test]
-        public void JsonNet_Can_Deserialize_NullLocalTime()
+        public void Deserialize_ToNullableType_NullValue()
         {
             /* Arrange */
             const string json = "null";

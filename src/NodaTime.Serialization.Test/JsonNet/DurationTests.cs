@@ -24,13 +24,13 @@ namespace NodaTime.Serialization.Test.JsonNet
     public class DurationTests
     {
         [Test, Ignore]
-        public void JsonNet_Can_Serialize_Duration()
+        public void Serialize()
         {
             throw new NotImplementedException();
         }
 
         [Test, Ignore]
-        public void JsonNet_Can_Deserialize_Duration()
+        public void Deserialize()
         {
             throw new NotImplementedException();
         }

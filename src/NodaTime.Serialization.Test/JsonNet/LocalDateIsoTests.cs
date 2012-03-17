@@ -30,7 +30,7 @@ namespace NodaTime.Serialization.Test.JsonNet
         private readonly JsonSerializerSettings jsonSettings = new JsonSerializerSettings().ConfigureForNodaTime();
 
         [Test]
-        public void JsonNet_Can_Serialize_LocalDate_UsingIsoCalendar()
+        public void Serialize_NonNullableType()
         {
             /* Arrange */
             var localDate = new LocalDate(Era.Common, 2012, 1, 2, CalendarSystem.Iso);
@@ -44,7 +44,7 @@ namespace NodaTime.Serialization.Test.JsonNet
         }
 
         [Test]
-        public void JsonNet_Can_Serialize_NullableLocalDate_UsingIsoCalendar()
+        public void Serialize_NullableType_NonNullValue()
         {
             /* Arrange */
             var localDate = new LocalDate?(new LocalDate(Era.Common, 2012, 1, 2, CalendarSystem.Iso));
@@ -58,7 +58,7 @@ namespace NodaTime.Serialization.Test.JsonNet
         }
 
         [Test]
-        public void JsonNet_Can_Serialize_NullLocalDate_UsingIsoCalendar()
+        public void Serialize_NullableType_NullValue()
         {
             /* Arrange */
             var localDate = new LocalDate?();
@@ -72,7 +72,7 @@ namespace NodaTime.Serialization.Test.JsonNet
         }
 
         [Test]
-        public void JsonNet_Can_Deserialize_LocalDate_UsingIsoCalendar()
+        public void Deserialize_ToNonNullableType()
         {
             /* Arrange */
             const string json = "\"2012-01-02\"";
@@ -86,7 +86,7 @@ namespace NodaTime.Serialization.Test.JsonNet
         }
 
         [Test]
-        public void JsonNet_Can_Deserialize_NullableLocalDate_UsingIsoCalendar()
+        public void Deserialize_ToNullableType_NonNullValue()
         {
             /* Arrange */
             const string json = "\"2012-01-02\"";
@@ -100,7 +100,7 @@ namespace NodaTime.Serialization.Test.JsonNet
         }
 
         [Test]
-        public void JsonNet_Can_Deserialize_NullLocalDate_UsingIsoCalendar()
+        public void Deserialize_ToNullableType_NullValue()
         {
             /* Arrange */
             const string json = "null";

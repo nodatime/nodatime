@@ -27,7 +27,7 @@ namespace NodaTime.Serialization.Test.JsonNet
         private readonly JsonSerializerSettings jsonSettings = new JsonSerializerSettings().ConfigureForNodaTime();
 
         [Test]
-        public void JsonNet_Can_Serialize_Interval()
+        public void Serialize_NonNullableType()
         {
             /* Arrange */
             var startInstant = Instant.FromUtc(2012, 1, 2, 3, 4, 5);
@@ -43,7 +43,7 @@ namespace NodaTime.Serialization.Test.JsonNet
         }
 
         [Test]
-        public void JsonNet_Can_Serialize_NullableInterval()
+        public void Serialize_NullableType_NonNullValue()
         {
             /* Arrange */
             var startInstant = Instant.FromUtc(2012, 1, 2, 3, 4, 5);
@@ -59,7 +59,7 @@ namespace NodaTime.Serialization.Test.JsonNet
         }
 
         [Test]
-        public void JsonNet_Can_Serialize_NullInterval()
+        public void Serialize_NullableType_NullValue()
         {
             /* Arrange */
             var interval = new Interval?();
@@ -73,7 +73,7 @@ namespace NodaTime.Serialization.Test.JsonNet
         }
 
         [Test]
-        public void JsonNet_Can_Deserialize_Interval()
+        public void Deserialize_ToNonNullableType()
         {
             /* Arrange */
             const string json = "{\"Start\":\"2012-01-02T03:04:05Z\",\"End\":\"2013-06-07T08:09:10Z\"}";
@@ -89,7 +89,7 @@ namespace NodaTime.Serialization.Test.JsonNet
         }
 
         [Test]
-        public void JsonNet_Can_Deserialize_NullableInterval()
+        public void Deserialize_ToNullableType_NonNullValue()
         {
             /* Arrange */
             const string json = "{\"Start\":\"2012-01-02T03:04:05Z\",\"End\":\"2013-06-07T08:09:10Z\"}";
@@ -105,7 +105,7 @@ namespace NodaTime.Serialization.Test.JsonNet
         }
 
         [Test]
-        public void JsonNet_Can_Deserialize_NullInterval()
+        public void Deserialize_ToNullableType_NullValue()
         {
             /* Arrange */
             const string json = "null";
