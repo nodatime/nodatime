@@ -19,5 +19,21 @@ namespace NodaTime.Serialization.JsonNet
             // return to allow fluent chaining if desired
             return settings;
         }
+
+        /// <summary>
+        /// Configures json.net with everything required to properly serialize and deserialize NodaTime data types.
+        /// </summary>
+        public static JsonSerializer ConfigureForNodaTime(this JsonSerializer serializer)
+        {
+            // add our converters
+            serializer.Converters.Add(new NodaInstantConverter());
+            serializer.Converters.Add(new NodaIntervalConverter());
+            serializer.Converters.Add(new NodaLocalDateConverter());
+            serializer.Converters.Add(new NodaLocalDateTimeConverter());
+            serializer.Converters.Add(new NodaLocalTimeConverter());
+
+            // return to allow fluent chaining if desired
+            return serializer;
+        }
     }
 }
