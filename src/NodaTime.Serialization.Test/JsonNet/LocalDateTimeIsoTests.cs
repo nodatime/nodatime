@@ -33,13 +33,10 @@ namespace NodaTime.Serialization.Test.JsonNet
         [Test]
         public void Serialize_NonNullableType()
         {
-            /* Arrange */
             var localDateTime = new LocalDateTime(2012, 1, 2, 3, 4, 5, 6, 7, CalendarSystem.Iso);
 
-            /* Act */
             var json = JsonConvert.SerializeObject(localDateTime, Formatting.None, jsonSettings);
 
-            /* Assert */
             const string expectedJson = "\"2012-01-02T03:04:05.0060007\"";
             Assert.AreEqual(expectedJson, json);
         }
@@ -47,13 +44,10 @@ namespace NodaTime.Serialization.Test.JsonNet
         [Test]
         public void Serialize_NullableType_NonNullValue()
         {
-            /* Arrange */
             var localDateTime = new LocalDateTime?(new LocalDateTime(2012, 1, 2, 3, 4, 5, 6, 7, CalendarSystem.Iso));
 
-            /* Act */
             var json = JsonConvert.SerializeObject(localDateTime, Formatting.None, jsonSettings);
 
-            /* Assert */
             const string expectedJson = "\"2012-01-02T03:04:05.0060007\"";
             Assert.AreEqual(expectedJson, json);
         }
@@ -61,13 +55,10 @@ namespace NodaTime.Serialization.Test.JsonNet
         [Test]
         public void Serialize_NullableType_NullValue()
         {
-            /* Arrange */
             var localDateTime = new LocalDateTime?();
 
-            /* Act */
             var json = JsonConvert.SerializeObject(localDateTime, Formatting.None, jsonSettings);
 
-            /* Assert */
             const string expectedJson = "null";
             Assert.AreEqual(expectedJson, json);
         }
@@ -75,13 +66,10 @@ namespace NodaTime.Serialization.Test.JsonNet
         [Test]
         public void Deserialize_ToNonNullableType()
         {
-            /* Arrange */
             const string json = "\"2012-01-02T03:04:05.0060007\"";
 
-            /* Act */
             var localDateTime = JsonConvert.DeserializeObject<LocalDateTime>(json, jsonSettings);
 
-            /* Assert */
             var expectedLocalDateTime = new LocalDateTime(2012, 1, 2, 3, 4, 5, 6, 7, CalendarSystem.Iso);
             Assert.AreEqual(expectedLocalDateTime, localDateTime);
         }
@@ -89,13 +77,10 @@ namespace NodaTime.Serialization.Test.JsonNet
         [Test]
         public void Deserialize_ToNullableType_NonNullValue()
         {
-            /* Arrange */
             const string json = "\"2012-01-02T03:04:05.0060007\"";
 
-            /* Act */
             var localDateTime = JsonConvert.DeserializeObject<LocalDateTime?>(json, jsonSettings);
 
-            /* Assert */
             var expectedLocalDateTime = new LocalDateTime?(new LocalDateTime(2012, 1, 2, 3, 4, 5, 6, 7, CalendarSystem.Iso));
             Assert.AreEqual(expectedLocalDateTime, localDateTime);
         }
@@ -103,13 +88,10 @@ namespace NodaTime.Serialization.Test.JsonNet
         [Test]
         public void Deserialize_ToNullableType_NullValue()
         {
-            /* Arrange */
             const string json = "null";
 
-            /* Act */
             var localDateTime = JsonConvert.DeserializeObject<LocalDateTime?>(json, jsonSettings);
 
-            /* Assert */
             var expectedLocalDateTime = new LocalDateTime?();
             Assert.AreEqual(expectedLocalDateTime, localDateTime);
         }
@@ -117,15 +99,12 @@ namespace NodaTime.Serialization.Test.JsonNet
         [Test]
         public void Serialize_EquivalentToIsoDateTimeConverter()
         {
-            /* Arrange */
             var dateTime = new DateTime(2012, 1, 2, 3, 4, 5, 6, DateTimeKind.Unspecified);
             var localDateTime = new LocalDateTime(2012, 1, 2, 3, 4, 5, 6, CalendarSystem.Iso);
 
-            /* Act */
             var jsonDateTime = JsonConvert.SerializeObject(dateTime, new IsoDateTimeConverter());
             var jsonLocalDateTime = JsonConvert.SerializeObject(localDateTime, Formatting.None, jsonSettings);
 
-            /* Assert */
             Assert.AreEqual(jsonDateTime, jsonLocalDateTime);
         }
     }
