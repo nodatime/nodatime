@@ -21,7 +21,7 @@ using NUnit.Framework;
 namespace NodaTime.Serialization.Test.JsonNet
 {
     [TestFixture]
-    public class OffsetTests
+    public class NodaPeriodConverterTest
     {
         [Test, Ignore]
         public void Serialize()

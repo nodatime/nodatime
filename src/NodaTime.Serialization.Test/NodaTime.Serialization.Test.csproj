@@ -42,16 +42,16 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="JsonNet\DateTimeZoneTests.cs" />
-    <Compile Include="JsonNet\DurationTests.cs" />
-    <Compile Include="JsonNet\InstantTests.cs" />
-    <Compile Include="JsonNet\IntervalTests.cs" />
-    <Compile Include="JsonNet\LocalDateIsoTests.cs" />
-    <Compile Include="JsonNet\LocalDateTimeIsoTests.cs" />
-    <Compile Include="JsonNet\LocalTimeTests.cs" />
-    <Compile Include="JsonNet\OffsetTests.cs" />
-    <Compile Include="JsonNet\PeriodTests.cs" />
-    <Compile Include="JsonNet\ZonedDateTimeTests.cs" />
+    <Compile Include="JsonNet\NodaDateTimeZoneConverterTest.cs" />
+    <Compile Include="JsonNet\NodaDurationConverterTest.cs" />
+    <Compile Include="JsonNet\NodaInstantConverterTest.cs" />
+    <Compile Include="JsonNet\NodaIntervalConverterTest.cs" />
+    <Compile Include="JsonNet\NodaLocalDateConverterTest.cs" />
+    <Compile Include="JsonNet\NodaLocalDateTimeConverterTest.cs" />
+    <Compile Include="JsonNet\NodaLocalTimeConverterTest.cs" />
+    <Compile Include="JsonNet\NodaOffsetConverterTest.cs" />
+    <Compile Include="JsonNet\NodaPeriodConverterTest.cs" />
+    <Compile Include="JsonNet\NodaZonedDateTimeConverterTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

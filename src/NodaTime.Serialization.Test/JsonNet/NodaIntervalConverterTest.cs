@@ -22,7 +22,7 @@ using NodaTime.Serialization.JsonNet;
 namespace NodaTime.Serialization.Test.JsonNet
 {
     [TestFixture]
-    public class IntervalTests
+    public class NodaIntervalConverterTest
     {
         private readonly JsonConverter[] converters = { new NodaIntervalConverter(), new NodaInstantConverter() };
 
