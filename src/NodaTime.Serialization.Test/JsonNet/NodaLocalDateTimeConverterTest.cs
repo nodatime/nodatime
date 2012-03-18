@@ -28,7 +28,7 @@ namespace NodaTime.Serialization.Test.JsonNet
     {
         // TODO: we need tests for other calendars.
 
-        private readonly NodaLocalDateTimeConverter converter = new NodaLocalDateTimeConverter();
+        private readonly JsonConverter converter = NodaConverters.LocalDateTimeConverter;
 
         [Test]
         public void Serialize_NonNullableType()

@@ -27,11 +27,11 @@ namespace NodaTime.Serialization.JsonNet
         public static JsonSerializerSettings ConfigureForNodaTime(this JsonSerializerSettings settings)
         {
             // add our converters
-            settings.Converters.Add(new NodaInstantConverter());
-            settings.Converters.Add(new NodaIntervalConverter());
-            settings.Converters.Add(new NodaLocalDateConverter());
-            settings.Converters.Add(new NodaLocalDateTimeConverter());
-            settings.Converters.Add(new NodaLocalTimeConverter());
+            settings.Converters.Add(NodaConverters.InstantConverter);
+            settings.Converters.Add(NodaConverters.IntervalConverter);
+            settings.Converters.Add(NodaConverters.LocalDateConverter);
+            settings.Converters.Add(NodaConverters.LocalDateTimeConverter);
+            settings.Converters.Add(NodaConverters.LocalTimeConverter);
 
             // return to allow fluent chaining if desired
             return settings;
@@ -43,11 +43,11 @@ namespace NodaTime.Serialization.JsonNet
         public static JsonSerializer ConfigureForNodaTime(this JsonSerializer serializer)
         {
             // add our converters
-            serializer.Converters.Add(new NodaInstantConverter());
-            serializer.Converters.Add(new NodaIntervalConverter());
-            serializer.Converters.Add(new NodaLocalDateConverter());
-            serializer.Converters.Add(new NodaLocalDateTimeConverter());
-            serializer.Converters.Add(new NodaLocalTimeConverter());
+            serializer.Converters.Add(NodaConverters.InstantConverter);
+            serializer.Converters.Add(NodaConverters.IntervalConverter);
+            serializer.Converters.Add(NodaConverters.LocalDateConverter);
+            serializer.Converters.Add(NodaConverters.LocalDateTimeConverter);
+            serializer.Converters.Add(NodaConverters.LocalTimeConverter);
 
             // return to allow fluent chaining if desired
             return serializer;

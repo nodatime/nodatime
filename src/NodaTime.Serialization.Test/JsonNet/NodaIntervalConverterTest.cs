@@ -24,7 +24,7 @@ namespace NodaTime.Serialization.Test.JsonNet
     [TestFixture]
     public class NodaIntervalConverterTest
     {
-        private readonly JsonConverter[] converters = { new NodaIntervalConverter(), new NodaInstantConverter() };
+        private readonly JsonConverter[] converters = { NodaConverters.IntervalConverter, NodaConverters.InstantConverter };
 
         [Test]
         public void Serialize_NonNullableType()
