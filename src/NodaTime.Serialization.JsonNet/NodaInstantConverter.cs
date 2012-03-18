@@ -17,6 +17,7 @@
 
 using System;
 using System.Globalization;
+using System.IO;
 using Newtonsoft.Json;
 
 namespace NodaTime.Serialization.JsonNet
@@ -24,7 +25,7 @@ namespace NodaTime.Serialization.JsonNet
     /// <summary>
     /// Converts an <see cref="Instant"/> to and from the ISO 8601 date format (e.g. 2008-04-12T12:53Z).
     /// </summary>
-    public class NodaInstantConverter : JsonConverter
+    public class NodaInstantConverter : NodaConverterBase<Instant>
     {
         private const string DefaultDateTimeFormat = "yyyy'-'MM'-'dd'T'HH':'mm':'ss.FFFFFFFZ";
 
@@ -47,42 +48,23 @@ namespace NodaTime.Serialization.JsonNet
         /// <value>The culture used when converting to and from JSON.</value>
         public CultureInfo Culture { get; set; }
 
-        public override bool CanConvert(Type objectType)
+        protected override Instant ReadJsonImpl(JsonReader reader, JsonSerializer serializer)
         {
-            return objectType == typeof (Instant) || objectType == typeof (Instant?);
-        }
-
-        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
-        {
-            if (!(value is Instant))
-                throw new Exception(string.Format("Unexpected value when converting. Expected NodaTime.Instant, got {0}.", value.GetType().FullName));
-            
-            var instant = (Instant) value;
-            var text = instant.ToString(DateTimeFormat, Culture);
-            writer.WriteValue(text);
-        }
-
-        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
-        {
-            if (reader.TokenType == JsonToken.Null)
-            {
-                if (objectType != typeof(Instant?))
-                    throw new Exception(string.Format("Cannot convert null value to {0}.", objectType));
-
-                return null;
-            }
-
             if (reader.TokenType != JsonToken.String)
-                throw new Exception(string.Format("Unexpected token parsing instant. Expected String, got {0}.", reader.TokenType));
-
-            var instantText = reader.Value.ToString();
-
-            if (string.IsNullOrEmpty(instantText) && objectType == typeof(Instant?))
-                return null;
-
+            {
+                throw new InvalidDataException(
+                    string.Format("Unexpected token parsing instant. Expected String, got {0}.",
+                    reader.TokenType));
+            }
+            string text = reader.Value.ToString();
             return string.IsNullOrEmpty(DateTimeFormat)
-                       ? Instant.Parse(instantText, Culture)
-                       : Instant.ParseExact(instantText, DateTimeFormat, Culture);
+                       ? Instant.Parse(text, Culture)
+                       : Instant.ParseExact(text, DateTimeFormat, Culture);
+        }
+
+        protected override void WriteJsonImpl(JsonWriter writer, Instant value, JsonSerializer serializer)
+        {
+            writer.WriteValue(value.ToString(DateTimeFormat, Culture));
         }
     }
 }
