@@ -17,6 +17,7 @@
 
 using System;
 using System.Globalization;
+using System.IO;
 using Newtonsoft.Json;
 
 namespace NodaTime.Serialization.JsonNet
@@ -24,7 +25,7 @@ namespace NodaTime.Serialization.JsonNet
     /// <summary>
     /// Converts an <see cref="LocalDate"/> to and from the ISO 8601 date format (e.g. 2008-04-12).
     /// </summary>
-    public class NodaLocalDateConverter : JsonConverter
+    public class NodaLocalDateConverter : NodaConverterBase<LocalDate>
     {
         private const string DefaultDateTimeFormat = "yyyy'-'MM'-'dd";
 
@@ -47,46 +48,23 @@ namespace NodaTime.Serialization.JsonNet
         /// <value>The culture used when converting to and from JSON.</value>
         public CultureInfo Culture { get; set; }
 
-        public override bool CanConvert(Type objectType)
+        protected override LocalDate ReadJsonImpl(JsonReader reader, JsonSerializer serializer)
         {
-            return objectType == typeof(LocalDate) || objectType == typeof(LocalDate?);
-        }
-
-        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
-        {
-            if (!(value is LocalDate))
-                throw new Exception(string.Format("Unexpected value when converting. Expected NodaTime.LocalDate, got {0}.", value.GetType().FullName));
-            
-            var localDate = (LocalDate)value;
-
-            if (localDate.Calendar.Name != "ISO")
-                throw new NotSupportedException("Sorry, only the ISO calendar is currently supported for serialization.");
-
-            var text = localDate.ToString(DateFormat, Culture);
-            writer.WriteValue(text);
-        }
-
-        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
-        {
-            if (reader.TokenType == JsonToken.Null)
-            {
-                if (objectType != typeof(LocalDate?))
-                    throw new Exception(string.Format("Cannot convert null value to {0}.", objectType));
-
-                return null;
-            }
-
             if (reader.TokenType != JsonToken.String)
-                throw new Exception(string.Format("Unexpected token parsing instant. Expected String, got {0}.", reader.TokenType));
-
-            var localDateText = reader.Value.ToString();
-
-            if (string.IsNullOrEmpty(localDateText) && objectType == typeof(LocalDate?))
-                return null;
-
+            {
+                throw new InvalidDataException(
+                    string.Format("Unexpected token parsing instant. Expected String, got {0}.",
+                    reader.TokenType));
+            }
+            string text = reader.Value.ToString();
             return string.IsNullOrEmpty(DateFormat)
-                       ? LocalDate.Parse(localDateText, Culture)
-                       : LocalDate.ParseExact(localDateText, DateFormat, Culture);
+                       ? LocalDate.Parse(text, Culture)
+                       : LocalDate.ParseExact(text, DateFormat, Culture);
+        }
+
+        protected override void WriteJsonImpl(JsonWriter writer, LocalDate value, JsonSerializer serializer)
+        {
+            writer.WriteValue(value.ToString(DateFormat, Culture));
         }
     }
 }

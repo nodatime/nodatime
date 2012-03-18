@@ -17,6 +17,7 @@
 
 using System;
 using System.Globalization;
+using System.IO;
 using Newtonsoft.Json;
 
 namespace NodaTime.Serialization.JsonNet
@@ -24,7 +25,7 @@ namespace NodaTime.Serialization.JsonNet
     /// <summary>
     /// Converts an <see cref="LocalTime"/> to and from the ISO 8601 time format without a timezone specified (e.g. 12:53).
     /// </summary>
-    public class NodaLocalTimeConverter : JsonConverter
+    public class NodaLocalTimeConverter : NodaConverterBase<LocalTime>
     {
         private const string DefaultDateTimeFormat = "HH':'mm':'ss.FFFFFFF";
 
@@ -47,43 +48,23 @@ namespace NodaTime.Serialization.JsonNet
         /// <value>The culture used when converting to and from JSON.</value>
         public CultureInfo Culture { get; set; }
 
-        public override bool CanConvert(Type objectType)
+        protected override LocalTime ReadJsonImpl(JsonReader reader, JsonSerializer serializer)
         {
-            return objectType == typeof(LocalTime) || objectType == typeof(LocalTime?);
-        }
-
-        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
-        {
-            if (!(value is LocalTime))
-                throw new Exception(string.Format("Unexpected value when converting. Expected NodaTime.LocalTime, got {0}.", value.GetType().FullName));
-
-            var localTime = (LocalTime)value;
-
-            var text = localTime.ToString(TimeFormat, Culture);
-            writer.WriteValue(text);
-        }
-
-        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
-        {
-            if (reader.TokenType == JsonToken.Null)
-            {
-                if (objectType != typeof(LocalTime?))
-                    throw new Exception(string.Format("Cannot convert null value to {0}.", objectType));
-
-                return null;
-            }
-
             if (reader.TokenType != JsonToken.String)
-                throw new Exception(string.Format("Unexpected token parsing instant. Expected String, got {0}.", reader.TokenType));
-
-            var localTimeText = reader.Value.ToString();
-
-            if (string.IsNullOrEmpty(localTimeText) && objectType == typeof(LocalTime?))
-                return null;
-
+            {
+                throw new InvalidDataException(
+                    string.Format("Unexpected token parsing instant. Expected String, got {0}.",
+                    reader.TokenType));
+            }
+            string text = reader.Value.ToString();
             return string.IsNullOrEmpty(TimeFormat)
-                       ? LocalTime.Parse(localTimeText, Culture)
-                       : LocalTime.ParseExact(localTimeText, TimeFormat, Culture);
+                       ? LocalTime.Parse(text, Culture)
+                       : LocalTime.ParseExact(text, TimeFormat, Culture);
+        }
+
+        protected override void WriteJsonImpl(JsonWriter writer, LocalTime value, JsonSerializer serializer)
+        {
+            writer.WriteValue(value.ToString(TimeFormat, Culture));
         }
     }
 }

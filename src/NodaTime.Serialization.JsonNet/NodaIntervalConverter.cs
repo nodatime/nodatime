@@ -15,37 +15,15 @@
 // limitations under the License.
 #endregion
 
-using System;
+using System.IO;
 using Newtonsoft.Json;
 
 namespace NodaTime.Serialization.JsonNet
 {
-    public class NodaIntervalConverter : JsonConverter
+    public class NodaIntervalConverter : NodaConverterBase<Interval>
     {
-        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+        protected override Interval ReadJsonImpl(JsonReader reader, JsonSerializer serializer)
         {
-            if (!(value is Interval))
-                throw new Exception(string.Format("Unexpected value when converting. Expected NodaTime.Interval, got {0}.", value.GetType().FullName));
-
-            var instant = (Interval)value;
-            writer.WriteStartObject();
-            writer.WritePropertyName("Start");
-            serializer.Serialize(writer, instant.Start);
-            writer.WritePropertyName("End");
-            serializer.Serialize(writer, instant.End);
-            writer.WriteEndObject();
-        }
-
-        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
-        {
-            if (reader.TokenType == JsonToken.Null)
-            {
-                if (objectType != typeof(Interval?))
-                    throw new Exception(string.Format("Cannot convert null value to {0}.", objectType));
-
-                return null;
-            }
-
             var startInstant = default(Instant);
             var endInstant = default(Instant);
             var gotStartInstant = false;
@@ -73,14 +51,21 @@ namespace NodaTime.Serialization.JsonNet
             }
 
             if (!(gotStartInstant && gotEndInstant))
-                throw new Exception("An Interval must contain Start and End properties.");
+            {
+                throw new InvalidDataException("An Interval must contain Start and End properties.");
+            }
 
             return new Interval(startInstant, endInstant);
         }
 
-        public override bool CanConvert(Type objectType)
+        protected override void WriteJsonImpl(JsonWriter writer, Interval value, JsonSerializer serializer)
         {
-            return objectType == typeof(Interval) || objectType == typeof(Interval?);
+            writer.WriteStartObject();
+            writer.WritePropertyName("Start");
+            serializer.Serialize(writer, value.Start);
+            writer.WritePropertyName("End");
+            serializer.Serialize(writer, value.End);
+            writer.WriteEndObject();
         }
     }
 }

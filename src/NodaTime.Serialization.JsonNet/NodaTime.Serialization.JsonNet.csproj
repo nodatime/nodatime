@@ -39,6 +39,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="NodaConverterBase.cs" />
     <Compile Include="NodaIntervalConverter.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="NodaLocalDateConverter.cs" />
