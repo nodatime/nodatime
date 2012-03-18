@@ -44,7 +44,7 @@ namespace NodaTime.Serialization.Test.JsonNet
         {
             var startInstant = Instant.FromUtc(2012, 1, 2, 3, 4, 5);
             var endInstant = Instant.FromUtc(2013, 6, 7, 8, 9, 10);
-            var interval = new Interval?(new Interval(startInstant, endInstant));
+            Interval? interval = new Interval(startInstant, endInstant);
 
             var json = JsonConvert.SerializeObject(interval, Formatting.None, converters);
 
@@ -55,7 +55,7 @@ namespace NodaTime.Serialization.Test.JsonNet
         [Test]
         public void Serialize_NullableType_NullValue()
         {
-            var interval = new Interval?();
+            Interval? interval = null;
 
             var json = JsonConvert.SerializeObject(interval, Formatting.None, converters);
 
@@ -85,7 +85,7 @@ namespace NodaTime.Serialization.Test.JsonNet
 
             var startInstant = Instant.FromUtc(2012, 1, 2, 3, 4, 5);
             var endInstant = Instant.FromUtc(2013, 6, 7, 8, 9, 10);
-            var expectedInterval = new Interval?(new Interval(startInstant, endInstant));
+            Interval? expectedInterval = new Interval(startInstant, endInstant);
             Assert.AreEqual(expectedInterval, interval);
         }
 
@@ -96,8 +96,7 @@ namespace NodaTime.Serialization.Test.JsonNet
 
             var interval = JsonConvert.DeserializeObject<Interval?>(json, converters);
 
-            var expectedInterval = new Interval?();
-            Assert.AreEqual(expectedInterval, interval);
+            Assert.IsNull(interval);
         }
     }
 }
