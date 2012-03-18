@@ -8,13 +8,13 @@ Standard Patterns
 The following standard patterns are supported:
 
 - `f`: Full format, displaying all information including fractional seconds.  
-  Typical pattern text: `+H:mm:ss.fff`
+  Typical pattern text: `+HH:mm:ss.fff`
 - `l`: Long format, displaying information down to the second.  
-  Typical pattern text: `+H:mm:ss`
+  Typical pattern text: `+HH:mm:ss`
 - `m`: Medium format, displaying information down to the minute.  
-  Typical pattern text: `+H:mm`
+  Typical pattern text: `+HH:mm`
 - `s`: Short format, displaying information down to the hour.  
-  Typical pattern text: `+H`
+  Typical pattern text: `+HH`
 - `g`: General pattern. Formatting depends on the value passed in:
   - If the offset has fractional seconds, the full format is used; otherwise
   - If the offset has seconds, the long format is used; otherwise

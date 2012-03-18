@@ -133,15 +133,15 @@
     <value>A.D.|AD|C.E.|CE</value>
   </data>
   <data name="OffsetPatternFull" xml:space="preserve">
-    <value>+H:mm:ss.fff</value>
+    <value>+HH:mm:ss.fff</value>
   </data>
   <data name="OffsetPatternLong" xml:space="preserve">
-    <value>+H:mm:ss</value>
+    <value>+HH:mm:ss</value>
   </data>
   <data name="OffsetPatternMedium" xml:space="preserve">
-    <value>+H:mm</value>
+    <value>+HH:mm</value>
   </data>
   <data name="OffsetPatternShort" xml:space="preserve">
-    <value>+H</value>
+    <value>+HH</value>
   </data>
 </root>
