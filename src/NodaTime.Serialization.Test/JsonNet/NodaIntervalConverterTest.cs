@@ -15,6 +15,7 @@
 // limitations under the License.
 #endregion
 
+using System.IO;
 using NUnit.Framework;
 using Newtonsoft.Json;
 using NodaTime.Serialization.JsonNet;
@@ -27,7 +28,7 @@ namespace NodaTime.Serialization.Test.JsonNet
         private readonly JsonConverter[] converters = { NodaConverters.IntervalConverter, NodaConverters.InstantConverter };
 
         [Test]
-        public void Serialize_NonNullableType()
+        public void Serialize()
         {
             var startInstant = Instant.FromUtc(2012, 1, 2, 3, 4, 5);
             var endInstant = Instant.FromUtc(2013, 6, 7, 8, 9, 10);
@@ -40,31 +41,7 @@ namespace NodaTime.Serialization.Test.JsonNet
         }
 
         [Test]
-        public void Serialize_NullableType_NonNullValue()
-        {
-            var startInstant = Instant.FromUtc(2012, 1, 2, 3, 4, 5);
-            var endInstant = Instant.FromUtc(2013, 6, 7, 8, 9, 10);
-            Interval? interval = new Interval(startInstant, endInstant);
-
-            var json = JsonConvert.SerializeObject(interval, Formatting.None, converters);
-
-            string expectedJson = "{\"Start\":\"2012-01-02T03:04:05Z\",\"End\":\"2013-06-07T08:09:10Z\"}";
-            Assert.AreEqual(expectedJson, json);
-        }
-
-        [Test]
-        public void Serialize_NullableType_NullValue()
-        {
-            Interval? interval = null;
-
-            var json = JsonConvert.SerializeObject(interval, Formatting.None, converters);
-
-            string expectedJson = "null";
-            Assert.AreEqual(expectedJson, json);
-        }
-
-        [Test]
-        public void Deserialize_ToNonNullableType()
+        public void Deserialize()
         {
             string json = "{\"Start\":\"2012-01-02T03:04:05Z\",\"End\":\"2013-06-07T08:09:10Z\"}";
 
@@ -77,26 +54,19 @@ namespace NodaTime.Serialization.Test.JsonNet
         }
 
         [Test]
-        public void Deserialize_ToNullableType_NonNullValue()
+        public void Deserialize_MissingEnd()
         {
-            string json = "{\"Start\":\"2012-01-02T03:04:05Z\",\"End\":\"2013-06-07T08:09:10Z\"}";
+            string json = "{\"Start\":\"2012-01-02T03:04:05Z\"}";
 
-            var interval = JsonConvert.DeserializeObject<Interval?>(json, converters);
-
-            var startInstant = Instant.FromUtc(2012, 1, 2, 3, 4, 5);
-            var endInstant = Instant.FromUtc(2013, 6, 7, 8, 9, 10);
-            Interval? expectedInterval = new Interval(startInstant, endInstant);
-            Assert.AreEqual(expectedInterval, interval);
+            Assert.Throws<InvalidDataException>(() => JsonConvert.DeserializeObject<Interval>(json, converters));
         }
 
         [Test]
-        public void Deserialize_ToNullableType_NullValue()
+        public void Deserialize_MissingStart()
         {
-            string json = "null";
+            string json = "{\"End\":\"2012-01-02T03:04:05Z\"}";
 
-            var interval = JsonConvert.DeserializeObject<Interval?>(json, converters);
-
-            Assert.IsNull(interval);
+            Assert.Throws<InvalidDataException>(() => JsonConvert.DeserializeObject<Interval>(json, converters));
         }
     }
 }

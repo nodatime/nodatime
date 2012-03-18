@@ -15,8 +15,11 @@
 // limitations under the License.
 #endregion
 
+using System;
 using NUnit.Framework;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using NodaTime.Calendars;
 using NodaTime.Serialization.JsonNet;
 
 namespace NodaTime.Serialization.Test.JsonNet
@@ -47,6 +50,126 @@ namespace NodaTime.Serialization.Test.JsonNet
 
             var expectedOffset = Offset.Create(5, 30, 0, 0);
             Assert.AreEqual(expectedOffset, offset);
+        }
+
+        [Test]
+        public void InstantConverter_Serialize()
+        {
+            var instant = Instant.FromUtc(2012, 1, 2, 3, 4, 5);
+            var json = JsonConvert.SerializeObject(instant, Formatting.None, NodaConverters.InstantConverter);
+            string expectedJson = "\"2012-01-02T03:04:05Z\"";
+            Assert.AreEqual(expectedJson, json);
+        }
+
+        [Test]
+        public void InstantConverter_Deserialize()
+        {
+            string json = "\"2012-01-02T03:04:05Z\"";
+
+            var instant = JsonConvert.DeserializeObject<Instant>(json, NodaConverters.InstantConverter);
+
+            var expectedInstant = Instant.FromUtc(2012, 1, 2, 3, 4, 5);
+            Assert.AreEqual(expectedInstant, instant);
+        }
+
+        [Test]
+        public void InstantConverter_EquivalentToIsoDateTimeConverter()
+        {
+            var dateTime = new DateTime(2012, 1, 2, 3, 4, 5, DateTimeKind.Utc);
+            var instant = Instant.FromDateTimeUtc(dateTime);
+            var jsonDateTime = JsonConvert.SerializeObject(dateTime, new IsoDateTimeConverter());
+            var jsonInstant = JsonConvert.SerializeObject(instant, Formatting.None, NodaConverters.InstantConverter);
+            Assert.AreEqual(jsonDateTime, jsonInstant);
+        }
+
+        [Test]
+        public void LocalDateConverter_Serialize()
+        {
+            var localDate = new LocalDate(2012, 1, 2, CalendarSystem.Iso);
+
+            var json = JsonConvert.SerializeObject(localDate, Formatting.None, NodaConverters.LocalDateConverter);
+
+            string expectedJson = "\"2012-01-02\"";
+            Assert.AreEqual(expectedJson, json);
+        }
+
+        [Test]
+        public void LocalDateConverter_Deserialize()
+        {
+            string json = "\"2012-01-02\"";
+
+            var localDate = JsonConvert.DeserializeObject<LocalDate>(json, NodaConverters.LocalDateConverter);
+
+            var expectedLocalDate = new LocalDate(2012, 1, 2, CalendarSystem.Iso);
+            Assert.AreEqual(expectedLocalDate, localDate);
+        }
+
+        [Test]
+        public void LocalDateConverter_SerializeNonIso_Throws()
+        {
+            var localDate = new LocalDate(2012, 1, 2, CalendarSystem.GetCopticCalendar(4));
+
+            Assert.Throws<ArgumentException>(() => JsonConvert.SerializeObject(localDate, Formatting.None, NodaConverters.LocalDateConverter));
+        }
+
+        [Test]
+        public void LocalDateTimeConverter_Serialize()
+        {
+            var localDateTime = new LocalDateTime(2012, 1, 2, 3, 4, 5, 6, 7, CalendarSystem.Iso);
+
+            var json = JsonConvert.SerializeObject(localDateTime, Formatting.None, NodaConverters.LocalDateTimeConverter);
+
+            string expectedJson = "\"2012-01-02T03:04:05.0060007\"";
+            Assert.AreEqual(expectedJson, json);
+        }
+
+        [Test]
+        public void LocalDateTimeConverter_Deserialize()
+        {
+            string json = "\"2012-01-02T03:04:05.0060007\"";
+
+            var localDateTime = JsonConvert.DeserializeObject<LocalDateTime>(json, NodaConverters.LocalDateTimeConverter);
+
+            var expectedLocalDateTime = new LocalDateTime(2012, 1, 2, 3, 4, 5, 6, 7, CalendarSystem.Iso);
+            Assert.AreEqual(expectedLocalDateTime, localDateTime);
+        }
+
+        [Test]
+        public void LocalDateTimeConverter_EquivalentToIsoDateTimeConverter()
+        {
+            var dateTime = new DateTime(2012, 1, 2, 3, 4, 5, 6, DateTimeKind.Unspecified);
+            var localDateTime = new LocalDateTime(2012, 1, 2, 3, 4, 5, 6, CalendarSystem.Iso);
+
+            var jsonDateTime = JsonConvert.SerializeObject(dateTime, new IsoDateTimeConverter());
+            var jsonLocalDateTime = JsonConvert.SerializeObject(localDateTime, Formatting.None, NodaConverters.LocalDateTimeConverter);
+
+            Assert.AreEqual(jsonDateTime, jsonLocalDateTime);
+        }
+
+        [Test]
+        public void LocalDateTimeConverter_SerializeNonIso_Throws()
+        {
+            var localDateTime = new LocalDateTime(2012, 1, 2, 3, 4, 5, CalendarSystem.GetCopticCalendar(4));
+
+            Assert.Throws<ArgumentException>(() => JsonConvert.SerializeObject(localDateTime, Formatting.None, NodaConverters.LocalDateTimeConverter));
+        }
+
+        [Test]
+        public void LocalTimeConverter_Serialize()
+        {
+            var localTime = new LocalTime(1, 2, 3, 4, 5);
+            var json = JsonConvert.SerializeObject(localTime, Formatting.None, NodaConverters.LocalTimeConverter);
+            string expectedJson = "\"01:02:03.0040005\"";
+            Assert.AreEqual(expectedJson, json);
+        }
+
+        [Test]
+        public void LocalTimeConverter_Deserialize()
+        {
+            string json = "\"01:02:03.0040005\"";
+            var localTime = JsonConvert.DeserializeObject<LocalTime>(json, NodaConverters.LocalTimeConverter);
+            var expectedLocalTime = new LocalTime(1, 2, 3, 4, 5);
+            Assert.AreEqual(expectedLocalTime, localTime);
         }
     }
 }

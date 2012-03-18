@@ -22,11 +22,34 @@ using NodaTime.Text;
 
 namespace NodaTime.Serialization.JsonNet
 {
+    /// <summary>
+    /// A JSON converter for types which can be represented by a single string value, parsed or formatted
+    /// from an <see cref="IPattern{T}"/>.
+    /// </summary>
+    /// <typeparam name="T">The type to convert to/from JSON.</typeparam>
     public class NodaPatternConverter<T> : NodaConverterBase<T> where T : struct
     {
         private readonly IPattern<T> pattern;
+        private readonly Action<T> validator;
 
-        public NodaPatternConverter(IPattern<T> pattern)
+        /// <summary>
+        /// Creates a new instance with a pattern and no validator.
+        /// </summary>
+        /// <param name="pattern">The pattern to use for parsing and formatting. Must not be null.</param>
+        /// <param name="validator">The validator to call before writing values. May be null, indicating that no validation is required.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="pattern"/> is null</exception>
+        public NodaPatternConverter(IPattern<T> pattern) : this(pattern, null)
+        {
+        }
+
+        /// <summary>
+        /// Creates a new instance with a pattern and an optional validator. The validator will be called before each
+        /// value is written, and may throw an exception to indicate that the value cannot be serialized.
+        /// </summary>
+        /// <param name="pattern">The pattern to use for parsing and formatting. Must not be null.</param>
+        /// <param name="validator">The validator to call before writing values. May be null, indicating that no validation is required.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="pattern"/> is null</exception>
+        public NodaPatternConverter(IPattern<T> pattern, Action<T> validator)
         {
             // Note: We could use Preconditions.CheckNotNull, but only if we either made that public in NodaTime
             // or made InternalsVisibleTo this assembly. 
@@ -35,6 +58,7 @@ namespace NodaTime.Serialization.JsonNet
                 throw new ArgumentNullException("pattern");
             }
             this.pattern = pattern;
+            this.validator = validator;
         }
 
         protected override T ReadJsonImpl(JsonReader reader, JsonSerializer serializer)
@@ -51,6 +75,10 @@ namespace NodaTime.Serialization.JsonNet
 
         protected override void WriteJsonImpl(JsonWriter writer, T value, JsonSerializer serializer)
         {
+            if (validator != null)
+            {
+                validator(value);
+            }
             writer.WriteValue(pattern.Format(value));
         }
     }

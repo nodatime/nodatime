@@ -42,14 +42,12 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="JsonNet\NodaConverterBaseTest.cs" />
     <Compile Include="JsonNet\NodaDateTimeZoneConverterTest.cs" />
     <Compile Include="JsonNet\NodaDurationConverterTest.cs" />
     <Compile Include="JsonNet\NodaInstantConverterTest.cs" />
     <Compile Include="JsonNet\NodaIntervalConverterTest.cs" />
-    <Compile Include="JsonNet\NodaLocalDateConverterTest.cs" />
-    <Compile Include="JsonNet\NodaLocalDateTimeConverterTest.cs" />
-    <Compile Include="JsonNet\NodaLocalTimeConverterTest.cs" />
-    <Compile Include="JsonNet\NodaOffsetConverterTest.cs" />
+    <Compile Include="JsonNet\NodaPatternConverterTest.cs" />
     <Compile Include="JsonNet\NodaPeriodConverterTest.cs" />
     <Compile Include="JsonNet\NodaZonedDateTimeConverterTest.cs" />
     <Compile Include="JsonNet\NodaConvertersTest.cs" />

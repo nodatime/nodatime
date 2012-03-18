@@ -15,6 +15,7 @@
 // limitations under the License.
 #endregion
 
+using System;
 using Newtonsoft.Json;
 using NodaTime.Text;
 
@@ -34,14 +35,18 @@ namespace NodaTime.Serialization.JsonNet
         /// <summary>
         /// Converter for local dates, using the ISO-8601 date pattern.
         /// </summary>
-        // TODO: Consider the behaviour with non-ISO calendars. We probably want a pattern which "knows" about a particular calendar, and restricts itself to that calendar.
-        public static readonly JsonConverter LocalDateConverter = new NodaPatternConverter<LocalDate>(LocalDatePattern.CreateWithInvariantInfo("yyyy'-'MM'-'dd"));
+        // TODO(Post-V1): Consider improving the behaviour with non-ISO calendars. We probably want a pattern which "knows" about a particular calendar, and restricts itself to that calendar.
+        public static readonly JsonConverter LocalDateConverter = new NodaPatternConverter<LocalDate>(
+            LocalDatePattern.CreateWithInvariantInfo("yyyy'-'MM'-'dd"),
+            CreateIsoValidator<LocalDate>(x => x.Calendar));
 
         /// <summary>
         /// Converter for local dates and times, using the ISO-8601 date/time pattern, extended as required to accommodate milliseconds and ticks.
         /// No time zone designator is applied.
         /// </summary>
-        public static readonly JsonConverter LocalDateTimeConverter = new NodaPatternConverter<LocalDateTime>(LocalDateTimePattern.CreateWithInvariantInfo("yyyy'-'MM'-'dd'T'HH':'mm':'ss.FFFFFFF"));
+        public static readonly JsonConverter LocalDateTimeConverter = new NodaPatternConverter<LocalDateTime>(
+            LocalDateTimePattern.CreateWithInvariantInfo("yyyy'-'MM'-'dd'T'HH':'mm':'ss.FFFFFFF"),
+            CreateIsoValidator<LocalDateTime>(x => x.Calendar));
 
         /// <summary>
         /// Converter for local times, using the ISO-8601 time pattern, extended as required to accommodate milliseconds and ticks.
@@ -57,5 +62,19 @@ namespace NodaTime.Serialization.JsonNet
         /// Converter for offsets.
         /// </summary>
         public static readonly JsonConverter OffsetConverter = new NodaPatternConverter<Offset>(OffsetPattern.CreateWithInvariantInfo("g"));
+
+        private static Action<T> CreateIsoValidator<T>(Func<T, CalendarSystem> calendarProjection)
+        {
+            return value => {
+                var calendar = calendarProjection(value);
+                // TODO(Post-V1): Implement equality on CalendarSystem...
+                if (calendar.Name != CalendarSystem.Iso.Name)
+                {
+                    throw new ArgumentException(
+                        string.Format("Values of type {0} must (currently) use the ISO calendar in order to be serialized.",
+                        typeof(T).Name));
+                }
+            };
+        }
     }
 }
