@@ -52,5 +52,10 @@ namespace NodaTime.Serialization.JsonNet
         /// Converter for intervals. This must be used in a serializer which also has an instant converter.
         /// </summary>
         public static readonly JsonConverter IntervalConverter = new NodaIntervalConverter();
+
+        /// <summary>
+        /// Converter for offsets.
+        /// </summary>
+        public static readonly JsonConverter OffsetConverter = new NodaPatternConverter<Offset>(OffsetPattern.CreateWithInvariantInfo("g"));
     }
 }
