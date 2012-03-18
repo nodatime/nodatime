@@ -24,7 +24,7 @@ using NodaTime.Serialization.JsonNet;
 namespace NodaTime.Serialization.Test.JsonNet
 {
     [TestFixture]
-    public class LocalDateTimeIsoTests
+    public class NodaLocalDateTimeConverterTest
     {
         // TODO: we need tests for other calendars.
 

@@ -24,7 +24,7 @@ using NodaTime.Serialization.JsonNet;
 namespace NodaTime.Serialization.Test.JsonNet
 {
     [TestFixture]
-    public class InstantTests
+    public class NodaInstantConverterTest
     {
         private readonly NodaInstantConverter converter = new NodaInstantConverter();
 

@@ -22,7 +22,7 @@ using NodaTime.Serialization.JsonNet;
 namespace NodaTime.Serialization.Test.JsonNet
 {
     [TestFixture]
-    public class LocalTimeTests
+    public class NodaLocalTimeConverterTest
     {
         private readonly JsonSerializerSettings converter = new JsonSerializerSettings().ConfigureForNodaTime();
 
