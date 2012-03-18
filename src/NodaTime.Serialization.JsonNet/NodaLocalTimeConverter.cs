@@ -15,56 +15,24 @@
 // limitations under the License.
 #endregion
 
-using System;
-using System.Globalization;
-using System.IO;
-using Newtonsoft.Json;
+using NodaTime.Text;
 
 namespace NodaTime.Serialization.JsonNet
 {
     /// <summary>
-    /// Converts an <see cref="LocalTime"/> to and from the ISO 8601 time format without a timezone specified (e.g. 12:53).
+    /// Converts a <see cref="LocalTime"/> to and from the ISO 8601 time format without a timezone specified (e.g. 12:53).
     /// </summary>
-    public class NodaLocalTimeConverter : NodaConverterBase<LocalTime>
+    /// <summary>
+    /// Simple converter for types represented by a single string in JSON, which can be
+    /// parsed and formatted with a Noda Time pattern.
+    /// </summary>
+    /// <typeparam name="T">The type to convert to/from JSON.</typeparam>
+    public class NodaLocalTimeConverter : NodaPatternConverter<LocalTime>
     {
-        private const string DefaultDateTimeFormat = "HH':'mm':'ss.FFFFFFF";
+        private static readonly LocalTimePattern LocalTimePattern = LocalTimePattern.CreateWithInvariantInfo("HH':'mm':'ss.FFFFFFF");
 
-        public NodaLocalTimeConverter()
+        public NodaLocalTimeConverter() : base(LocalTimePattern)
         {
-            // default values
-            TimeFormat = DefaultDateTimeFormat;
-            Culture = CultureInfo.CurrentCulture;
-        }
-
-        /// <summary>
-        /// Gets or sets the time format used when converting to and from JSON.
-        /// </summary>
-        /// <value>The date time format used when converting to and from JSON.</value>
-        public string TimeFormat { get; set; }
-
-        /// <summary>
-        /// Gets or sets the culture used when converting to and from JSON.
-        /// </summary>
-        /// <value>The culture used when converting to and from JSON.</value>
-        public CultureInfo Culture { get; set; }
-
-        protected override LocalTime ReadJsonImpl(JsonReader reader, JsonSerializer serializer)
-        {
-            if (reader.TokenType != JsonToken.String)
-            {
-                throw new InvalidDataException(
-                    string.Format("Unexpected token parsing instant. Expected String, got {0}.",
-                    reader.TokenType));
-            }
-            string text = reader.Value.ToString();
-            return string.IsNullOrEmpty(TimeFormat)
-                       ? LocalTime.Parse(text, Culture)
-                       : LocalTime.ParseExact(text, TimeFormat, Culture);
-        }
-
-        protected override void WriteJsonImpl(JsonWriter writer, LocalTime value, JsonSerializer serializer)
-        {
-            writer.WriteValue(value.ToString(TimeFormat, Culture));
         }
     }
 }

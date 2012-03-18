@@ -15,56 +15,20 @@
 // limitations under the License.
 #endregion
 
-using System;
-using System.Globalization;
-using System.IO;
-using Newtonsoft.Json;
+using NodaTime.Text;
 
 namespace NodaTime.Serialization.JsonNet
 {
     /// <summary>
     /// Converts an <see cref="Instant"/> to and from the ISO 8601 date format (e.g. 2008-04-12T12:53Z).
     /// </summary>
-    public class NodaInstantConverter : NodaConverterBase<Instant>
+    public class NodaInstantConverter : NodaPatternConverter<Instant>
     {
-        private const string DefaultDateTimeFormat = "yyyy'-'MM'-'dd'T'HH':'mm':'ss.FFFFFFFZ";
+        // TODO(Post-V1): We should really expose things like this as properties on InstantPattern.
+        private static readonly InstantPattern InstantPattern = InstantPattern.CreateWithInvariantInfo("yyyy'-'MM'-'dd'T'HH':'mm':'ss.FFFFFFF'Z'");
 
-        public NodaInstantConverter()
-        {
-            // default values
-            DateTimeFormat = DefaultDateTimeFormat;
-            Culture = CultureInfo.CurrentCulture;
-        }
-
-        /// <summary>
-        /// Gets or sets the date time format used when converting to and from JSON.
-        /// </summary>
-        /// <value>The date time format used when converting to and from JSON.</value>
-        public string DateTimeFormat { get; set; }
-
-        /// <summary>
-        /// Gets or sets the culture used when converting to and from JSON.
-        /// </summary>
-        /// <value>The culture used when converting to and from JSON.</value>
-        public CultureInfo Culture { get; set; }
-
-        protected override Instant ReadJsonImpl(JsonReader reader, JsonSerializer serializer)
-        {
-            if (reader.TokenType != JsonToken.String)
-            {
-                throw new InvalidDataException(
-                    string.Format("Unexpected token parsing instant. Expected String, got {0}.",
-                    reader.TokenType));
-            }
-            string text = reader.Value.ToString();
-            return string.IsNullOrEmpty(DateTimeFormat)
-                       ? Instant.Parse(text, Culture)
-                       : Instant.ParseExact(text, DateTimeFormat, Culture);
-        }
-
-        protected override void WriteJsonImpl(JsonWriter writer, Instant value, JsonSerializer serializer)
-        {
-            writer.WriteValue(value.ToString(DateTimeFormat, Culture));
+        public NodaInstantConverter() : base(InstantPattern)
+        {            
         }
     }
 }
