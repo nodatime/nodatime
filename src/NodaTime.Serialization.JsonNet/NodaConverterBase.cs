@@ -80,9 +80,10 @@ namespace NodaTime.Serialization.JsonNet
             }
 
             // Note: don't need to worry about value is T? due to the way boxing works.
+            // Again, Json.NET probably prevents us from needing to check this, really.
             if (!(value is T))
             {
-                throw new ArgumentException(string.Format("Unexpected value when converting. Expected NodaTime.Instant, got {0}.", value.GetType().FullName));
+                throw new ArgumentException(string.Format("Unexpected value when converting. Expected {0}, got {1}.", typeof(T).FullName, value.GetType().FullName));
             }
             WriteJsonImpl(writer, (T)value, serializer);
         }

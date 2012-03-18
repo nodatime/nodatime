@@ -15,24 +15,13 @@
 // limitations under the License.
 #endregion
 
-using System;
 using NUnit.Framework;
 
 namespace NodaTime.Serialization.Test.JsonNet
 {
     [TestFixture]
-    public class NodaOffsetConverterTest
+    public class NodaPatternConverterTest
     {
-        [Test, Ignore]
-        public void Serialize()
-        {
-            throw new NotImplementedException();
-        }
-
-        [Test, Ignore]
-        public void Deserialize()
-        {
-            throw new NotImplementedException();
-        }
+        // TODO: Add some tests!
     }
 }
