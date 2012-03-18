@@ -46,6 +46,7 @@
     <Compile Include="NodaLocalDateTimeConverter.cs" />
     <Compile Include="NodaInstantConverter.cs" />
     <Compile Include="NodaLocalTimeConverter.cs" />
+    <Compile Include="NodaPatternConverter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
