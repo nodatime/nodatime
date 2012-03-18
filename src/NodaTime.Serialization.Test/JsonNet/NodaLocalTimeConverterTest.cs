@@ -24,7 +24,7 @@ namespace NodaTime.Serialization.Test.JsonNet
     [TestFixture]
     public class NodaLocalTimeConverterTest
     {
-        private readonly NodaLocalTimeConverter converter = new NodaLocalTimeConverter();
+        private readonly JsonConverter converter = NodaConverters.LocalTimeConverter;
 
         [Test]
         public void Serialize_NonNullableType()
