@@ -44,7 +44,7 @@ namespace NodaTime.Serialization.Test.JsonNet
         [Test]
         public void Serialize_NullableType_NonNullValue()
         {
-            var localDateTime = new LocalDateTime?(new LocalDateTime(2012, 1, 2, 3, 4, 5, 6, 7, CalendarSystem.Iso));
+            LocalDateTime? localDateTime = new LocalDateTime(2012, 1, 2, 3, 4, 5, 6, 7, CalendarSystem.Iso);
 
             var json = JsonConvert.SerializeObject(localDateTime, Formatting.None, converter);
 
@@ -55,7 +55,7 @@ namespace NodaTime.Serialization.Test.JsonNet
         [Test]
         public void Serialize_NullableType_NullValue()
         {
-            var localDateTime = new LocalDateTime?();
+            LocalDateTime? localDateTime = null;
 
             var json = JsonConvert.SerializeObject(localDateTime, Formatting.None, converter);
 
@@ -81,7 +81,7 @@ namespace NodaTime.Serialization.Test.JsonNet
 
             var localDateTime = JsonConvert.DeserializeObject<LocalDateTime?>(json, converter);
 
-            var expectedLocalDateTime = new LocalDateTime?(new LocalDateTime(2012, 1, 2, 3, 4, 5, 6, 7, CalendarSystem.Iso));
+            LocalDateTime? expectedLocalDateTime = new LocalDateTime(2012, 1, 2, 3, 4, 5, 6, 7, CalendarSystem.Iso);
             Assert.AreEqual(expectedLocalDateTime, localDateTime);
         }
 
@@ -92,8 +92,7 @@ namespace NodaTime.Serialization.Test.JsonNet
 
             var localDateTime = JsonConvert.DeserializeObject<LocalDateTime?>(json, converter);
 
-            var expectedLocalDateTime = new LocalDateTime?();
-            Assert.AreEqual(expectedLocalDateTime, localDateTime);
+            Assert.IsNull(localDateTime);
         }
 
         [Test]

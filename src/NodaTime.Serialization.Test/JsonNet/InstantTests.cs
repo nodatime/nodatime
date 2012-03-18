@@ -40,7 +40,7 @@ namespace NodaTime.Serialization.Test.JsonNet
         [Test]
         public void Serialize_NullableType_NonNullValue()
         {
-            var instant = new Instant?(Instant.FromUtc(2012, 1, 2, 3, 4, 5));
+            Instant? instant = Instant.FromUtc(2012, 1, 2, 3, 4, 5);
             var json = JsonConvert.SerializeObject(instant, Formatting.None, converter);
             string expectedJson = "\"2012-01-02T03:04:05Z\"";
             Assert.AreEqual(expectedJson, json);
@@ -49,7 +49,7 @@ namespace NodaTime.Serialization.Test.JsonNet
         [Test]
         public void Serialize_NullableType_NullValue()
         {
-            var instant = new Instant?();
+            Instant? instant = null;
             var json = JsonConvert.SerializeObject(instant, Formatting.None, converter);
             string expectedJson = "null";
             Assert.AreEqual(expectedJson, json);
@@ -69,21 +69,20 @@ namespace NodaTime.Serialization.Test.JsonNet
         {
             string json = "\"2012-01-02T03:04:05Z\"";
             var instant = JsonConvert.DeserializeObject<Instant?>(json, converter);
-            var expectedInstant = new Instant?(Instant.FromUtc(2012, 1, 2, 3, 4, 5));
+            Instant? expectedInstant = Instant.FromUtc(2012, 1, 2, 3, 4, 5);
             Assert.AreEqual(expectedInstant, instant);
         }
 
         [Test]
-        public void JsonNet_Can_Deserialize_NullInstant()
+        public void Deserialize_ToNullableType_NullValue()
         {
             string json = "null";
             var instant = JsonConvert.DeserializeObject<Instant?>(json, converter);
-            var expectedInstant = new Instant?();
-            Assert.AreEqual(expectedInstant, instant);
+            Assert.IsNull(instant);
         }
         
         [Test]
-        public void Deserialize_ToNullableType_NullValue()
+        public void Serialize_EquivalentToIsoDateTimeConverter()
         {
             var dateTime = new DateTime(2012, 1, 2, 3, 4, 5, DateTimeKind.Utc);
             var instant = Instant.FromDateTimeUtc(dateTime);
