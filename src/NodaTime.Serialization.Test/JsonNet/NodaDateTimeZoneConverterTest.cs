@@ -15,24 +15,50 @@
 // limitations under the License.
 #endregion
 
-using System;
 using NUnit.Framework;
+using Newtonsoft.Json;
+using NodaTime.Serialization.JsonNet;
 
 namespace NodaTime.Serialization.Test.JsonNet
 {
     [TestFixture]
     public class NodaDateTimeZoneConverterTest
     {
-        [Test, Ignore]
+        private readonly JsonConverter converter = NodaConverters.DateTimeZoneConverter;
+
+        [Test]
         public void Serialize()
         {
-            throw new NotImplementedException();
+            var dateTimeZone = DateTimeZone.ForId("America/Los_Angeles");
+            var json = JsonConvert.SerializeObject(dateTimeZone, Formatting.None, converter);
+            string expectedJson = "\"America/Los_Angeles\"";
+            Assert.AreEqual(expectedJson, json);
         }
 
-        [Test, Ignore]
+        [Test]
+        public void Serialize_NullValue()
+        {
+            DateTimeZone dateTimeZone = null;
+            var json = JsonConvert.SerializeObject(dateTimeZone, Formatting.None, converter);
+            string expectedJson = "null";
+            Assert.AreEqual(expectedJson, json);
+        }
+
+        [Test]
         public void Deserialize()
         {
-            throw new NotImplementedException();
+            string json = "\"America/Los_Angeles\"";
+            var dateTimeZone = JsonConvert.DeserializeObject<DateTimeZone>(json, converter);
+            var expectedDateTimeZone = DateTimeZone.ForId("America/Los_Angeles");
+            Assert.AreEqual(expectedDateTimeZone, dateTimeZone);
+        }
+
+        [Test]
+        public void Deserialize_NullValue()
+        {
+            string json = "null";
+            var dateTimeZone = JsonConvert.DeserializeObject<DateTimeZone>(json, converter);
+            Assert.IsNull(dateTimeZone);
         }
     }
 }
