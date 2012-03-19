@@ -68,6 +68,11 @@ namespace NodaTime.Serialization.JsonNet
         /// </summary>
         public static readonly JsonConverter DateTimeZoneConverter = new NodaDateTimeZoneConverter();
 
+        /// <summary>
+        /// Converter for durations.
+        /// </summary>
+        public static readonly JsonConverter DurationConverter = new NodaDurationConverter();
+
         private static Action<T> CreateIsoValidator<T>(Func<T, CalendarSystem> calendarProjection)
         {
             return value => {

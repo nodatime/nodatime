@@ -17,22 +17,68 @@
 
 using System;
 using NUnit.Framework;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using NodaTime.Serialization.JsonNet;
 
 namespace NodaTime.Serialization.Test.JsonNet
 {
     [TestFixture]
     public class NodaDurationConverterTest
     {
-        [Test, Ignore]
-        public void Serialize()
+        private readonly JsonConverter converter = NodaConverters.DurationConverter;
+
+        [Test]
+        public void Serialize_NonNullableType()
         {
-            throw new NotImplementedException();
+            var duration = Duration.FromHours(48);
+            var json = JsonConvert.SerializeObject(duration, Formatting.None, converter);
+            string expectedJson = "\"48:00:00\"";
+            Assert.AreEqual(expectedJson, json);
         }
 
-        [Test, Ignore]
-        public void Deserialize()
+        [Test]
+        public void Serialize_NullableType_NonNullValue()
         {
-            throw new NotImplementedException();
+            Duration? duration = Duration.FromHours(48);
+            var json = JsonConvert.SerializeObject(duration, Formatting.None, converter);
+            string expectedJson = "\"48:00:00\"";
+            Assert.AreEqual(expectedJson, json);
+        }
+
+        [Test]
+        public void Serialize_NullableType_NullValue()
+        {
+            Duration? duration = null;
+            var json = JsonConvert.SerializeObject(duration, Formatting.None, converter);
+            string expectedJson = "null";
+            Assert.AreEqual(expectedJson, json);
+        }
+
+        [Test]
+        public void Deserialize_ToNonNullableType()
+        {
+            string json = "\"48:00:00\"";
+            var duration = JsonConvert.DeserializeObject<Duration>(json, converter);
+            var expectedDuration = Duration.FromHours(48);
+            Assert.AreEqual(expectedDuration, duration);
+        }
+
+        [Test]
+        public void Deserialize_ToNullableType_NonNullValue()
+        {
+            string json = "\"48:00:00\"";
+            var duration = JsonConvert.DeserializeObject<Duration?>(json, converter);
+            Duration? expectedDuration = Duration.FromHours(48);
+            Assert.AreEqual(expectedDuration, duration);
+        }
+
+        [Test]
+        public void Deserialize_ToNullableType_NullValue()
+        {
+            string json = "null";
+            var duration = JsonConvert.DeserializeObject<Duration?>(json, converter);
+            Assert.IsNull(duration);
         }
     }
 }
