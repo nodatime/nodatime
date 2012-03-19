@@ -66,7 +66,8 @@ namespace NodaTime.Serialization.JsonNet
             if (reader.TokenType != JsonToken.String)
             {
                 throw new InvalidDataException(
-                    string.Format("Unexpected token parsing instant. Expected String, got {0}.",
+                    string.Format("Unexpected token parsing {0}. Expected String, got {1}.",
+                    typeof(T).Name,
                     reader.TokenType));
             }
             string text = reader.Value.ToString();
