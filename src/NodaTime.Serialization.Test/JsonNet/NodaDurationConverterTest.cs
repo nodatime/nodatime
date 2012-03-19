@@ -29,7 +29,7 @@ namespace NodaTime.Serialization.Test.JsonNet
         private readonly JsonConverter converter = NodaConverters.DurationConverter;
 
         [Test]
-        public void Serialize_NonNullableType()
+        public void Serialize()
         {
             var duration = Duration.FromHours(48);
             var json = JsonConvert.SerializeObject(duration, Formatting.None, converter);
@@ -38,47 +38,12 @@ namespace NodaTime.Serialization.Test.JsonNet
         }
 
         [Test]
-        public void Serialize_NullableType_NonNullValue()
-        {
-            Duration? duration = Duration.FromHours(48);
-            var json = JsonConvert.SerializeObject(duration, Formatting.None, converter);
-            string expectedJson = "\"48:00:00\"";
-            Assert.AreEqual(expectedJson, json);
-        }
-
-        [Test]
-        public void Serialize_NullableType_NullValue()
-        {
-            Duration? duration = null;
-            var json = JsonConvert.SerializeObject(duration, Formatting.None, converter);
-            string expectedJson = "null";
-            Assert.AreEqual(expectedJson, json);
-        }
-
-        [Test]
-        public void Deserialize_ToNonNullableType()
+        public void Deserialize()
         {
             string json = "\"48:00:00\"";
             var duration = JsonConvert.DeserializeObject<Duration>(json, converter);
             var expectedDuration = Duration.FromHours(48);
             Assert.AreEqual(expectedDuration, duration);
-        }
-
-        [Test]
-        public void Deserialize_ToNullableType_NonNullValue()
-        {
-            string json = "\"48:00:00\"";
-            var duration = JsonConvert.DeserializeObject<Duration?>(json, converter);
-            Duration? expectedDuration = Duration.FromHours(48);
-            Assert.AreEqual(expectedDuration, duration);
-        }
-
-        [Test]
-        public void Deserialize_ToNullableType_NullValue()
-        {
-            string json = "null";
-            var duration = JsonConvert.DeserializeObject<Duration?>(json, converter);
-            Assert.IsNull(duration);
         }
     }
 }
