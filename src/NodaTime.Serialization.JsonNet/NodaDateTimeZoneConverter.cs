@@ -16,6 +16,7 @@
 #endregion
 
 using System;
+using System.IO;
 using Newtonsoft.Json;
 
 namespace NodaTime.Serialization.JsonNet
@@ -25,7 +26,11 @@ namespace NodaTime.Serialization.JsonNet
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
             if (!(value is DateTimeZone))
-                throw new Exception(string.Format("Unexpected value when converting. Expected NodaTime.DateTimeZone, got {0}.", value.GetType().FullName));
+            {
+                throw new ArgumentException(
+                    string.Format("Unexpected value when converting. Expected NodaTime.DateTimeZone, got {0}.",
+                    value.GetType().FullName));
+            }
 
             var dateTimeZone = (DateTimeZone)value;
             writer.WriteValue(dateTimeZone.Id);
@@ -34,14 +39,22 @@ namespace NodaTime.Serialization.JsonNet
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
             if (reader.TokenType == JsonToken.Null)
+            {
                 return null;
+            }
 
             if (reader.TokenType != JsonToken.String)
-                throw new Exception(string.Format("Unexpected token parsing instant. Expected String, got {0}.", reader.TokenType));
+            {
+                throw new InvalidDataException(
+                    string.Format("Unexpected token parsing instant. Expected String, got {0}.",
+                    reader.TokenType));
+            }
 
             var timeZoneId = reader.Value.ToString();
             if (string.IsNullOrEmpty(timeZoneId))
+            {
                 return null;
+            }
 
             return DateTimeZone.ForId(timeZoneId);
         }

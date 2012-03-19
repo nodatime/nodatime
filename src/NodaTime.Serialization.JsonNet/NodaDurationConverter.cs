@@ -29,28 +29,38 @@ namespace NodaTime.Serialization.JsonNet
 
             var parts = durationText.Split(':');
             if (parts.Length < 2)
+            {
                 throw new InvalidDataException("A Duration must have at least hours and minutes in hh:mm format.");
+            }
 
             if (parts.Length > 3)
+            {
                 throw new InvalidDataException("Too many components provided for a duration.  Should be in hh:mm:ss.fffffff format.");
+            }
 
             var duration = Duration.Zero;
 
             long hours;
             if (!long.TryParse(parts[0], out hours))
+            {
                 throw new InvalidDataException("Invalid hours component of duration.");
+            }
 
             duration += Duration.FromHours(hours);
 
             long minutes;
             if (!long.TryParse(parts[1], out minutes))
+            {
                 throw new InvalidDataException("Invalid minutes component of duration.");
+            }
 
             duration += Duration.FromMinutes(minutes);
 
             decimal seconds;
             if (!decimal.TryParse(parts[2], out seconds))
+            {
                 throw new InvalidDataException("Invalid seconds component of duration.");
+            }
 
             // if we convert to ticks, we get all fractional parts of the seconds component at once.
             var ticks = Convert.ToInt64(seconds * 1000 * 10000);
@@ -75,7 +85,9 @@ namespace NodaTime.Serialization.JsonNet
                 durationText += string.Format(".{0:D3}", milliseconds);
 
                 if (ticks > 0)
+                {
                     durationText += string.Format("{0:D4}", ticks);
+                }
             }
 
             writer.WriteValue(durationText);
