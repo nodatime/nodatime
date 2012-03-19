@@ -42,6 +42,7 @@
     <Compile Include="NodaConverterBase.cs" />
     <Compile Include="NodaConverters.cs" />
     <Compile Include="NodaDateTimeZoneConverter.cs" />
+    <Compile Include="NodaDurationConverter.cs" />
     <Compile Include="NodaIntervalConverter.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="NodaPatternConverter.cs" />

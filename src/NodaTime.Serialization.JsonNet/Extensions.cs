@@ -33,6 +33,8 @@ namespace NodaTime.Serialization.JsonNet
             settings.Converters.Add(NodaConverters.LocalDateTimeConverter);
             settings.Converters.Add(NodaConverters.LocalTimeConverter);
             settings.Converters.Add(NodaConverters.OffsetConverter);
+            settings.Converters.Add(NodaConverters.DateTimeZoneConverter);
+            settings.Converters.Add(NodaConverters.DurationConverter);
 
             // return to allow fluent chaining if desired
             return settings;
@@ -50,6 +52,8 @@ namespace NodaTime.Serialization.JsonNet
             serializer.Converters.Add(NodaConverters.LocalDateTimeConverter);
             serializer.Converters.Add(NodaConverters.LocalTimeConverter);
             serializer.Converters.Add(NodaConverters.OffsetConverter);
+            serializer.Converters.Add(NodaConverters.DateTimeZoneConverter);
+            serializer.Converters.Add(NodaConverters.DurationConverter);
 
             // return to allow fluent chaining if desired
             return serializer;
