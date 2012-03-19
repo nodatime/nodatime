@@ -72,10 +72,10 @@ namespace NodaTime.Serialization.JsonNet
 
             if (milliseconds > 0 || ticks > 0)
             {
-                durationText += string.Format(".{0:3D}", milliseconds);
+                durationText += string.Format(".{0:D3}", milliseconds);
 
                 if (ticks > 0)
-                    durationText += string.Format("{0:4D}", ticks);
+                    durationText += string.Format("{0:D4}", ticks);
             }
 
             writer.WriteValue(durationText);
