@@ -90,6 +90,93 @@ namespace NodaTime.Text
         }
 
         /// <summary>
+        /// Parses digits at the current point in the string as a signed 64-bit integer value.
+        /// </summary>
+        /// <param name="result">The result integer value. The value of this is not guaranteed
+        /// to be anything specific if the return value is non-null.</param>
+        /// <returns>null if the digits were parsed, or the appropriate parse failure</returns>
+        internal ParseResult<T> ParseInt64<T>(out long result)
+        {
+            unchecked
+            {
+                result = 0L;
+                int startIndex = Index;
+                bool negative = Current == '-';
+                if (negative)
+                {
+                    if (!MoveNext())
+                    {
+                        return ParseResult<T>.EndOfString;
+                    }
+                }
+                int count = 0;
+                int digit;
+                while (result < 922337203685477580 && (digit = GetDigit()) != -1)
+                {
+                    result = result * 10 + digit;
+                    count++;
+                    if (!MoveNext())
+                    {
+                        break;
+                    }
+                }
+
+                if (count == 0)
+                {
+                    return ParseResult<T>.MissingNumber;
+                }
+
+                if (result >= 922337203685477580 && (digit = GetDigit()) != -1)
+                {
+                    if (result > 922337203685477580)
+                    {
+                        return BuildNumberOutOfRangeResult<T>(startIndex);
+                    }
+                    if (negative && digit == 8)
+                    {
+                        MoveNext();
+                        result = long.MinValue;
+                        return null;
+                    }
+                    if (digit > 7)
+                    {
+                        return BuildNumberOutOfRangeResult<T>(startIndex);
+                    }
+                    // We know we can cope with this digit...
+                    result = result * 10 + digit;
+                    MoveNext();
+                    if (GetDigit() != -1)
+                    {
+                        // Too many digits. Die.
+                        return BuildNumberOutOfRangeResult<T>(startIndex);
+                    }
+                }
+                if (negative)
+                {
+                    result = -result;
+                }
+                return null;
+            }
+        }
+
+        private ParseResult<T> BuildNumberOutOfRangeResult<T>(int startIndex)
+        {
+            Move(startIndex);
+            if (Current == '-')
+            {
+                MoveNext();
+            }
+            // End of string works like not finding a digit.
+            while (GetDigit() != -1)
+            {
+                MoveNext();
+            }
+            string badValue = Value.Substring(startIndex, Index - startIndex);
+            Move(startIndex);
+            return ParseResult<T>.ValueOutOfRange(badValue);
+        }
+
+        /// <summary>
         /// Parses digits at the current point in the string. If the minimum required
         /// digits are not present then the index is unchanged. If there are more digits than
         /// the maximum allowed they are ignored.

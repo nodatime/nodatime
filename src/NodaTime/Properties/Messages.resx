@@ -150,6 +150,12 @@
   <data name="Parse_EmptyFormatsArray" xml:space="preserve">
     <value>The list of formats cannot be empty.</value>
   </data>
+  <data name="Parse_EmptyPeriod" xml:space="preserve">
+    <value>The specified period was empty.</value>
+  </data>
+  <data name="Parse_EndOfString" xml:space="preserve">
+    <value>Input string ended unexpectedly early.</value>
+  </data>
   <data name="Parse_EraWithoutYearOfEra" xml:space="preserve">
     <value>The "era" designator cannot be specificied without the "year of era" field.</value>
   </data>
@@ -186,6 +192,9 @@
   <data name="Parse_InconsistentValues2" xml:space="preserve">
     <value>The individual values for the fields '{0}' and '{1}' created an inconsistency in the {2} type.</value>
   </data>
+  <data name="Parse_InvalidUnitSpecifier" xml:space="preserve">
+    <value>The period unit specifier '{0}' is invalid.</value>
+  </data>
   <data name="Parse_MismatchedCharacter" xml:space="preserve">
     <value>The value string does not match a simple character in the format string "{0}".</value>
   </data>
@@ -195,11 +204,17 @@
   <data name="Parse_MismatchedText" xml:space="preserve">
     <value>The value string does not match the text-based field '{0}'.</value>
   </data>
+  <data name="Parse_MisplacedUnitSpecifier" xml:space="preserve">
+    <value>The period unit specifier '{0}' appears at the wrong place in the input string.</value>
+  </data>
   <data name="Parse_MissingAmPmDesignator" xml:space="preserve">
     <value>The value string does not match the AM or PM designator for the culture at the required place.</value>
   </data>
   <data name="Parse_MissingEndQuote" xml:space="preserve">
     <value>The format string is missing the end quote character "{0}".</value>
+  </data>
+  <data name="Parse_MissingNumber" xml:space="preserve">
+    <value>The value string does not include a number in the expected position.</value>
   </data>
   <data name="Parse_MissingSign" xml:space="preserve">
     <value>The required value sign is missing.</value>
@@ -230,6 +245,9 @@
   </data>
   <data name="Parse_RepeatedFieldInPattern" xml:space="preserve">
     <value>The field "{0}" is specified multiple times in the pattern.</value>
+  </data>
+  <data name="Parse_RepeatedUnitSpecifier" xml:space="preserve">
+    <value>The period unit specifier '{0}' appears multiple times in the input string.</value>
   </data>
   <data name="Parse_StandardFormatWhitespace" xml:space="preserve">
     <value>The standard format "{0}" for type {1} cannot contain white space.</value>

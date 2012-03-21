@@ -31,6 +31,11 @@ namespace NodaTime.Text
         /// </summary>
         internal const int MaximumPaddingLength = 16;
 
+        /// <summary>
+        /// Maximum number of digits in a (positive) long.
+        /// </summary>
+        internal const int MaximumInt64Length = 19;
+
         private static readonly string[] FixedNumberFormats = new[]
                                                               {
                                                                   "0", "00", "000", "0000", "00000", "000000", "0000000", "00000000", "000000000", "0000000000",
@@ -151,6 +156,40 @@ namespace NodaTime.Text
                 var decimalSeparatorLength = decimalSeparator.Length;
                 outputBuffer.Remove(outputBuffer.Length - decimalSeparatorLength, decimalSeparatorLength);
             }
+        }
+
+        /// <summary>
+        /// Formats the given value using the invariant culture, with no truncation or padding.
+        /// </summary>
+        /// <param name="value">The value to format.</param>
+        /// <param name="outputBuffer">The output buffer to add the digits to.</param>
+        internal static void FormatInvariant(long value, StringBuilder outputBuffer)
+        {
+            if (value == 0)
+            {
+                outputBuffer.Append('0');
+                return;
+            }
+            if (value == long.MinValue)
+            {
+                outputBuffer.Append("-9223372036854775808");
+                return;
+            }
+            if (value < 0)
+            {
+                outputBuffer.Append('-');
+                FormatInvariant(-value, outputBuffer);
+                return;
+            }
+
+            var digits = new char[MaximumInt64Length];
+            int pos = MaximumInt64Length;
+            do
+            {
+                digits[--pos] = "0123456789"[(int)(value % 10)];
+                value /= 10;
+            } while (value != 0);
+            outputBuffer.Append(digits, pos, MaximumInt64Length - pos);
         }
     }
 }

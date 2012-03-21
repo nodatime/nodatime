@@ -31,14 +31,6 @@
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <SccProjectName>
-    </SccProjectName>
-    <SccLocalPath>
-    </SccLocalPath>
-    <SccAuxPath>
-    </SccAuxPath>
-    <SccProvider>
-    </SccProvider>
     <StartAction>Program</StartAction>
     <StartProgram>C:\Program Files\NUnit 2.5.2\bin\net-2.0\nunit.exe</StartProgram>
   </PropertyGroup>
@@ -108,6 +100,10 @@
     </Compile>
     <Compile Include="Text\LocalTimePatternTest.Data.cs">
       <DependentUpon>LocalTimePatternTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Text\PeriodPatternTest.cs" />
+    <Compile Include="Text\PeriodPatternTest.Data.cs">
+      <DependentUpon>PeriodPatternTest.cs</DependentUpon>
     </Compile>
     <Compile Include="Text\PatternTestData.cs" />
     <Compile Include="Text\LocalDatePatternTest.cs" />
