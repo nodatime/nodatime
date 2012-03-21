@@ -132,6 +132,18 @@ namespace NodaTime
         }
 
         /// <summary>
+        /// Internal method to create a new period with the given units and values.
+        /// This just delegates to the private constructor with the same parameters;
+        /// this method only exists (rather than the constructor being internal) for
+        /// clarity of naming. It must *only* be used where the array will never
+        /// be published.
+        /// </summary>
+        internal static Period UnsafeCreate(PeriodUnits units, long[] values)
+        {
+            return new Period(units, values);
+        }
+
+        /// <summary>
         /// Returns the units within this period, such as "year, month, day" or "hour".
         /// </summary>
         public PeriodUnits Units { get { return units; } }
@@ -144,6 +156,16 @@ namespace NodaTime
         public static Period FromYears(long years)
         {
             return new Period(PeriodUnits.Years, years);
+        }
+
+        /// <summary>
+        /// Creates a period representing the specified number of weeks.
+        /// </summary>
+        /// <param name="weeks">The number of weeks in the new period</param>
+        /// <returns>A period consisting of the given number of weeks.</returns>
+        public static Period FromWeeks(long weeks)
+        {
+            return new Period(PeriodUnits.Weeks, weeks);
         }
 
         /// <summary>
@@ -546,6 +568,28 @@ namespace NodaTime
                 }
                 return false;
             }
+        }
+
+        /// <summary>
+        /// Creates a <see cref="PeriodBuilder"/> from this instance. The new builder
+        /// is populated with the values from this period, but is then detached from it:
+        /// changes made to the builder are not reflected in this period.
+        /// </summary>
+        /// <returns>A builder with the same values and units as this period.</returns>
+        public PeriodBuilder ToBuilder()
+        {
+            return new PeriodBuilder
+            {
+                Years = (units & PeriodUnits.Years) == 0 ? (long?)null : Years,
+                Months = (units & PeriodUnits.Months) == 0 ? (long?)null : Months,
+                Weeks = (units & PeriodUnits.Weeks) == 0 ? (long?)null : Weeks,
+                Days = (units & PeriodUnits.Days) == 0 ? (long?)null : Days,
+                Hours = (units & PeriodUnits.Hours) == 0 ? (long?)null : Hours,
+                Minutes = (units & PeriodUnits.Minutes) == 0 ? (long?)null : Minutes,
+                Seconds = (units & PeriodUnits.Seconds) == 0 ? (long?)null : Seconds,
+                Milliseconds = (units & PeriodUnits.Milliseconds) == 0 ? (long?)null : Milliseconds,
+                Ticks = (units & PeriodUnits.Milliseconds) == 0 ? (long?)null : Ticks
+            };
         }
 
         /// <summary>

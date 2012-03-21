@@ -375,6 +375,22 @@ namespace NodaTime.Test
             Assert.AreEqual("P0D0H", period.ToString());
         }
 
+        [Test]
+        public void ToBuilder_SingleUnit()
+        {
+            var builder = Period.FromHours(5).ToBuilder();
+            var expected = new PeriodBuilder { Hours = 5 };
+            Assert.AreEqual(expected, builder);
+        }
+
+        [Test]
+        public void ToBuilder_MultipleUnits()
+        {
+            var builder = (Period.FromHours(5) + Period.FromWeeks(2)).ToBuilder();
+            var expected = new PeriodBuilder { Hours = 5, Weeks = 2 };
+            Assert.AreEqual(expected, builder);
+        }
+
         private void SpecialAssertEqual(Period period1, Period period2)
         {
             Assert.AreEqual(period1.GetHashCode(), period2.GetHashCode());
