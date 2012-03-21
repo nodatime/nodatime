@@ -131,5 +131,37 @@ namespace NodaTime.Test.Text
             var builder = new StringBuilder();
             Assert.Throws<FormatException>(() => FormatHelper.RightPadTruncate(1, 2, 0, ".", builder));
         }
+
+        [Test]
+        public void FormatInvariant_Zero()
+        {
+            var builder = new StringBuilder("x");
+            FormatHelper.FormatInvariant(0, builder);
+            Assert.AreEqual("x0", builder.ToString());
+        }
+
+        [Test]
+        public void FormatInvariant_Negative()
+        {
+            var builder = new StringBuilder("x");
+            FormatHelper.FormatInvariant(-1230, builder);
+            Assert.AreEqual("x-1230", builder.ToString());
+        }
+
+        [Test]
+        public void FormatInvariant_Positive()
+        {
+            var builder = new StringBuilder("x");
+            FormatHelper.FormatInvariant(1230, builder);
+            Assert.AreEqual("x1230", builder.ToString());
+        }
+
+        [Test]
+        public void FormatInvariant_MinValue()
+        {
+            var builder = new StringBuilder("x");
+            FormatHelper.FormatInvariant(long.MinValue, builder);
+            Assert.AreEqual("x-9223372036854775808", builder.ToString());
+        }
     }
 }

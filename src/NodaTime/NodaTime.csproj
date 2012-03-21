@@ -123,6 +123,7 @@
     <Compile Include="Text\Patterns\PatternParseResult.cs" />
     <Compile Include="Text\Patterns\PatternBclSupport.cs" />
     <Compile Include="Text\Patterns\TimePatternHelper.cs" />
+    <Compile Include="Text\PeriodPattern.cs" />
     <Compile Include="Text\TextCursor.cs" />
     <Compile Include="Text\ParseBucket.cs" />
     <Compile Include="Text\ParseResult.cs" />

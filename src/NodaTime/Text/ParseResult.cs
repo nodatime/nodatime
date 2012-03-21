@@ -168,8 +168,11 @@ namespace NodaTime.Text
             return ForInvalidValue(Messages.Parse_EscapedCharacterMismatch, patternCharacter);
         }
 
+        internal static readonly ParseResult<T> EndOfString = ForInvalidValue(Messages.Parse_EndOfString);
+
         internal static ParseResult<T> TimeSeparatorMismatch = ForInvalidValue(Messages.Parse_TimeSeparatorMismatch);
         internal static ParseResult<T> DateSeparatorMismatch = ForInvalidValue(Messages.Parse_DateSeparatorMismatch);
+        internal static ParseResult<T> MissingNumber = ForInvalidValue(Messages.Parse_MissingNumber);
 
         internal static ParseResult<T> MismatchedNumber(string pattern)
         {
