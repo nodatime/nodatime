@@ -96,6 +96,7 @@
     <Compile Include="Calendars\PeriodAdditionTest.cs" />
     <Compile Include="Fields\GJEraDateTimeFieldTest.cs" />
     <Compile Include="IntervalTest.cs" />
+    <Compile Include="PeriodBuilderTest.cs" />
     <Compile Include="Text\Cultures.cs" />
     <Compile Include="Text\InstantPatternTest.cs" />
     <Compile Include="Text\InstantPatternTest.Data.cs">
