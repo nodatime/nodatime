@@ -578,18 +578,7 @@ namespace NodaTime
         /// <returns>A builder with the same values and units as this period.</returns>
         public PeriodBuilder ToBuilder()
         {
-            return new PeriodBuilder
-            {
-                Years = (units & PeriodUnits.Years) == 0 ? (long?)null : Years,
-                Months = (units & PeriodUnits.Months) == 0 ? (long?)null : Months,
-                Weeks = (units & PeriodUnits.Weeks) == 0 ? (long?)null : Weeks,
-                Days = (units & PeriodUnits.Days) == 0 ? (long?)null : Days,
-                Hours = (units & PeriodUnits.Hours) == 0 ? (long?)null : Hours,
-                Minutes = (units & PeriodUnits.Minutes) == 0 ? (long?)null : Minutes,
-                Seconds = (units & PeriodUnits.Seconds) == 0 ? (long?)null : Seconds,
-                Milliseconds = (units & PeriodUnits.Milliseconds) == 0 ? (long?)null : Milliseconds,
-                Ticks = (units & PeriodUnits.Milliseconds) == 0 ? (long?)null : Ticks
-            };
+            return new PeriodBuilder(this);
         }
 
         /// <summary>
@@ -599,6 +588,48 @@ namespace NodaTime
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
+        }
+
+        /// <summary>
+        /// Returns a normalized version of this period. Months and years are unchanged
+        /// (as they can vary in length), but weeks are multiplied by 7 and added to the
+        /// Days property, and all time fields are normalized to their natural range
+        /// (where ticks are "within a millisecond"), adding to larger property where
+        /// necessary. So for example, a period of 25 hours becomes a period of 1 day
+        /// and 1 hour. Units are also normalized - only non-zero values have their
+        /// units retained. Aside from months and years, either all the properties
+        /// end up negative, or they all end up positive.
+        /// </summary>
+        /// <returns></returns>
+        public Period Normalize()
+        {
+            // Simplest way to normalize: grab all the fields up to "week" and
+            // sum them.
+            long totalTicks = Ticks +
+                Milliseconds * NodaConstants.TicksPerMillisecond +
+                Seconds * NodaConstants.TicksPerSecond +
+                Minutes * NodaConstants.TicksPerMinute +
+                Hours * NodaConstants.TicksPerHour +
+                Days * NodaConstants.TicksPerStandardDay +
+                Weeks * NodaConstants.TicksPerStandardWeek;
+            // TODO(Post-V1): Could use Duration for this...
+            long days = totalTicks / NodaConstants.TicksPerStandardDay;
+            long hours = (totalTicks / NodaConstants.TicksPerHour) % NodaConstants.HoursPerStandardDay;
+            long minutes = (totalTicks / NodaConstants.TicksPerMinute) % NodaConstants.MinutesPerHour;
+            long seconds = (totalTicks / NodaConstants.TicksPerSecond) % NodaConstants.SecondsPerMinute;
+            long milliseconds = (totalTicks / NodaConstants.TicksPerMillisecond) % NodaConstants.MillisecondsPerSecond;
+            long ticks = totalTicks % NodaConstants.TicksPerMillisecond;
+            return new PeriodBuilder
+            {
+                Years = this.Years == 0 ? (long?)null : this.Years,
+                Months = this.Months == 0 ? (long?)null : this.Months,
+                Days = days == 0 ? (long?)null : days,
+                Hours = hours == 0 ? (long?)null : hours,
+                Minutes = minutes == 0 ? (long?)null : minutes,
+                Seconds = seconds == 0 ? (long?)null : seconds,
+                Milliseconds = milliseconds == 0 ? (long?)null : milliseconds,
+                Ticks = ticks == 0 ? (long?)null : ticks,
+            }.Build();
         }
 
         /// <summary>
@@ -727,7 +758,8 @@ namespace NodaTime
             {
                 if ((numericFields & (1 << i)) != 0)
                 {
-                    builder.Append(values[i].ToString(CultureInfo.InvariantCulture));
+                    long value = values == null ? singleValue : values[i];
+                    builder.Append(value.ToString(CultureInfo.InvariantCulture));
                     builder.Append(UnitAbbreviations[i]);                    
                 }
             }

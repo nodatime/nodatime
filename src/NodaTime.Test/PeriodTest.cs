@@ -259,6 +259,15 @@ namespace NodaTime.Test
         }
 
         [Test]
+        public void Equality_IgnoresUnits()
+        {
+            Period period1 = Period.FromHours(5);
+            Period period2 = period1 + Period.FromMinutes(0);
+            SpecialAssertEqual(period1, period2);
+            Assert.AreNotEqual(period1.Units, period2.Units);
+        }
+
+        [Test]
         public void Equality_WhenEqual()
         {
             SpecialAssertEqual(Period.FromHours(10), Period.FromHours(10));
@@ -389,6 +398,133 @@ namespace NodaTime.Test
             var builder = (Period.FromHours(5) + Period.FromWeeks(2)).ToBuilder();
             var expected = new PeriodBuilder { Hours = 5, Weeks = 2 };
             Assert.AreEqual(expected, builder);
+        }
+
+        [Test]
+        public void Normalize_ZeroUnitsRemoved()
+        {
+            var original = new PeriodBuilder { Hours = 0, Minutes = 5 }.Build();
+            Assert.AreEqual(PeriodUnits.Minutes | PeriodUnits.Hours, original.Units);
+
+            var normalized = original.Normalize();
+
+            // Equals doesn't check units, but Assert.AreEqual would.
+            SpecialAssertEqual(original, normalized);
+            Assert.AreEqual(PeriodUnits.Minutes, normalized.Units);
+        }
+
+        [Test]
+        public void Normalize_Weeks()
+        {
+            var original = new PeriodBuilder { Weeks = 2, Days = 5 }.Build();
+            var normalized = original.Normalize();
+            var expected = new PeriodBuilder { Days = 19 }.Build();
+            Assert.AreEqual(expected, normalized);
+        }
+
+        [Test]
+        public void Normalize_Hours()
+        {
+            var original = new PeriodBuilder { Hours = 25, Days = 1 }.Build();
+            var normalized = original.Normalize();
+            var expected = new PeriodBuilder { Hours = 1, Days = 2 }.Build();
+            Assert.AreEqual(expected, normalized);
+        }
+
+        [Test]
+        public void Normalize_Minutes()
+        {
+            var original = new PeriodBuilder { Hours = 1, Minutes = 150 }.Build();
+            var normalized = original.Normalize();
+            var expected = new PeriodBuilder { Hours = 3, Minutes = 30}.Build();
+            Assert.AreEqual(expected, normalized);
+        }
+
+
+        [Test]
+        public void Normalize_Seconds()
+        {
+            var original = new PeriodBuilder { Minutes = 1, Seconds = 150 }.Build();
+            var normalized = original.Normalize();
+            var expected = new PeriodBuilder { Minutes = 3, Seconds = 30 }.Build();
+            Assert.AreEqual(expected, normalized);
+        }
+
+        [Test]
+        public void Normalize_Milliseconds()
+        {
+            var original = new PeriodBuilder { Seconds = 1, Milliseconds = 1500 }.Build();
+            var normalized = original.Normalize();
+            var expected = new PeriodBuilder { Seconds = 2, Milliseconds= 500 }.Build();
+            Assert.AreEqual(expected, normalized);
+        }
+
+        [Test]
+        public void Normalize_Ticks()
+        {
+            var original = new PeriodBuilder { Milliseconds = 1, Ticks = 15000 }.Build();
+            var normalized = original.Normalize();
+            var expected = new PeriodBuilder { Milliseconds = 2, Ticks = 5000 }.Build();
+            Assert.AreEqual(expected, normalized);
+        }
+
+        [Test]
+        public void Normalize_MultipleFields()
+        {
+            var original = new PeriodBuilder { Hours = 1, Minutes = 119, Seconds = 150 }.Build();
+            var normalized = original.Normalize();
+            var expected = new PeriodBuilder { Hours = 3, Minutes = 1, Seconds = 30 }.Build();
+            Assert.AreEqual(expected, normalized);
+        }
+
+        [Test]
+        public void Normalize_AllNegative()
+        {
+            var original = new PeriodBuilder { Hours = -1, Minutes = -119, Seconds = -150 }.Build();
+            var normalized = original.Normalize();
+            var expected = new PeriodBuilder { Hours = -3, Minutes = -1, Seconds = -30 }.Build();
+            Assert.AreEqual(expected, normalized);
+        }
+
+        [Test]
+        public void Normalize_MixedSigns_PositiveResult()
+        {
+            var original = new PeriodBuilder { Hours = 3, Minutes = -1 }.Build();
+            var normalized = original.Normalize();
+            var expected = new PeriodBuilder { Hours = 2, Minutes = 59 }.Build();
+            Assert.AreEqual(expected, normalized);
+        }
+
+        [Test]
+        public void Normalize_MixedSigns_NegativeResult()
+        {
+            var original = new PeriodBuilder { Hours = 1, Minutes = -121 }.Build();
+            var normalized = original.Normalize();
+            var expected = new PeriodBuilder { Hours = -1, Minutes = -1 }.Build();
+            Assert.AreEqual(expected, normalized);
+        }
+
+        [Test]
+        public void Normalize_DoesntAffectMonthsAndYears()
+        {
+            var original = new PeriodBuilder { Years = 2, Months = 1, Days = 400 }.Build();
+            Assert.AreEqual(original, original.Normalize());
+        }
+
+        // TODO(V1-Blocker) These tests need to be fixed when period parsing/formatting
+        // is improved, but it's to validate that Jon has fixed a temporary bug. 
+        [Test]
+        public void ToString_SingleUnit()
+        {
+            var period = Period.FromHours(5);
+            Assert.AreEqual("P5H", period.ToString());
+        }
+
+        [Test]
+        public void ToString_MultipleUnits()
+        {
+            var period = new PeriodBuilder { Hours = 5, Minutes = 30 }.Build();
+            Assert.AreEqual("P5H30m", period.ToString());
         }
 
         private void SpecialAssertEqual(Period period1, Period period2)

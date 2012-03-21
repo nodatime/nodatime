@@ -97,6 +97,36 @@ namespace NodaTime
         #endregion
 
         /// <summary>
+        /// Creates a new period builder with an initially empty period. At least one
+        /// property must be set to a non-null value before building.
+        /// </summary>
+        public PeriodBuilder()
+        {
+        }
+
+        /// <summary>
+        /// Creates a new period builder with the values (and units) from an existing
+        /// period. Calling this constructor instead of <see cref="Period.ToBuilder"/>
+        /// allows object initializers to be used.
+        /// </summary>
+        /// <param name="period">An existing period to copy values from.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="period"/> is null</exception>
+        public PeriodBuilder(Period period)
+        {
+            Preconditions.CheckNotNull(period, "period");
+            var units = period.Units;
+            Years = (units & PeriodUnits.Years) == 0 ? (long?)null : period.Years;
+            Months = (units & PeriodUnits.Months) == 0 ? (long?)null : period.Months;
+            Weeks = (units & PeriodUnits.Weeks) == 0 ? (long?)null : period.Weeks;
+            Days = (units & PeriodUnits.Days) == 0 ? (long?)null : period.Days;
+            Hours = (units & PeriodUnits.Hours) == 0 ? (long?)null : period.Hours;
+            Minutes = (units & PeriodUnits.Minutes) == 0 ? (long?)null : period.Minutes;
+            Seconds = (units & PeriodUnits.Seconds) == 0 ? (long?)null : period.Seconds;
+            Milliseconds = (units & PeriodUnits.Milliseconds) == 0 ? (long?)null : period.Milliseconds;
+            Ticks = (units & PeriodUnits.Milliseconds) == 0 ? (long?)null : period.Ticks;
+        }
+
+        /// <summary>
         /// Builds a period from the properties in this builder.
         /// </summary>
         /// <exception cref="InvalidOperationException">The builder has no non-null properties.</exception>
