@@ -108,6 +108,7 @@ namespace NodaTime.Text
                 {
                     if (!MoveNext())
                     {
+                        Move(startIndex);
                         return ParseResult<T>.EndOfString;
                     }
                 }
@@ -125,6 +126,7 @@ namespace NodaTime.Text
 
                 if (count == 0)
                 {
+                    Move(startIndex);
                     return ParseResult<T>.MissingNumber;
                 }
 
