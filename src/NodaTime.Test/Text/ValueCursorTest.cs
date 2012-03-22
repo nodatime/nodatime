@@ -234,6 +234,17 @@ namespace NodaTime.Test.Text
         }
 
         [Test]
+        public void ParseInt64_NegativeThenNonDigit()
+        {
+            var value = new ValueCursor("-x");
+            Assert.True(value.MoveNext());
+            long result;
+            Assert.IsNotNull(value.ParseInt64<string>(out result));
+            // Cursor has not moved
+            Assert.AreEqual(0, value.Index);
+        }
+
+        [Test]
         public void ParseInt64_NumberOutOfRange_LowLeadingDigits()
         {
             var value = new ValueCursor("1000000000000000000000000");
