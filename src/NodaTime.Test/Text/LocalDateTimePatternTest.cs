@@ -21,12 +21,13 @@ using System.Globalization;
 using System.Linq;
 using NUnit.Framework;
 using NodaTime.Globalization;
+using NodaTime.Properties;
 using NodaTime.Text;
 
 namespace NodaTime.Test.Text
 {
     [TestFixture]
-    public partial class LocalDateTimePatternTest
+    public class LocalDateTimePatternTest : PatternTestBase<LocalDateTime>
     {
         private static readonly LocalDateTime SampleLocalDateTime = new LocalDateTime(1376, 6, 19, 21, 13, 34, 123, 4567);
         private static readonly LocalDateTime SampleLocalDateTimeNoTicks = new LocalDateTime(1376, 6, 19, 21, 13, 34, 123);
@@ -41,33 +42,59 @@ namespace NodaTime.Test.Text
                                                                         select new TestCaseData(culture, format).SetName(culture + ": " + format)).ToArray();
 #pragma warning restore 0414
 
-        [Test]
-        [TestCaseSource("InvalidPatternData")]
-        public void InvalidPatterns(Data data)
-        {
-            data.TestInvalidPattern();
-        }
+        // The standard example date/time used in all the MSDN samples, which means we can just cut and paste
+        // the expected results of the standard patterns.
+        private static readonly LocalDateTime MsdnStandardExample = new LocalDateTime(2009, 06, 15, 13, 45, 30, 90);
+        private static readonly LocalDateTime MsdnStandardExampleNoMillis = new LocalDateTime(2009, 06, 15, 13, 45, 30);
+        private static readonly LocalDateTime MsdnStandardExampleNoSeconds = new LocalDateTime(2009, 06, 15, 13, 45);
 
-        [Test]
-        [TestCaseSource("ParseFailureData")]
-        public void ParseFailures(Data data)
-        {
-            data.TestParseFailure();
-        }
+        internal static readonly Data[] InvalidPatternData = {
+            new Data { Pattern = "dd MM yyyy HH:MM:SS", Message = Messages.Parse_RepeatedFieldInPattern, Parameters = { 'M' } }
+        };
 
-        [Test]
-        [TestCaseSource("ParseData")]
-        public void Parse(Data data)
-        {
-            data.TestParse();
-        }
+        internal static Data[] ParseFailureData = {
+            new Data { Pattern = "dd MM yyyy HH:mm:ss", Text = "Complete mismatch", Message = Messages.Parse_MismatchedNumber, Parameters = { "dd" }}
+        };
 
-        [Test]
-        [TestCaseSource("FormatData")]
-        public void Format(Data data)
-        {
-            data.TestFormat();
-        }
+        internal static Data[] ParseOnlyData = {
+            new Data(2011, 10, 19, 16, 05, 20) { Pattern = "dd MM yyyy", Text = "19 10 2011", Template = new LocalDateTime(2000, 1, 1, 16, 05, 20) },
+            new Data(2011, 10, 19, 16, 05, 20) { Pattern = "HH:mm:ss", Text = "16:05:20", Template = new LocalDateTime(2011, 10, 19, 0, 0, 0) },
+        };
+
+        internal static Data[] FormatOnlyData = {
+            new Data(2011, 10, 19, 16, 05, 20) { Pattern = "ddd yyyy", Text = "Wed 2011" },
+        };
+
+        internal static Data[] FormatAndParseData = {
+            // Standard patterns (US)
+            // Full date/time (short time)
+            new Data(MsdnStandardExampleNoSeconds) { Pattern = "f", Text = "Monday, June 15, 2009 1:45 PM", Culture = Cultures.EnUs },
+            // Full date/time (long time)
+            new Data(MsdnStandardExampleNoMillis) { Pattern = "F", Text = "Monday, June 15, 2009 1:45:30 PM", Culture = Cultures.EnUs },
+            // General date/time (short time)
+            new Data(MsdnStandardExampleNoSeconds) { Pattern = "g", Text = "6/15/2009 1:45 PM", Culture = Cultures.EnUs },
+            // General date/time (longtime)
+            new Data(MsdnStandardExampleNoMillis) { Pattern = "G", Text = "6/15/2009 1:45:30 PM", Culture = Cultures.EnUs },
+            // Round-trip (o and O - same effect)
+            new Data(MsdnStandardExample) { Pattern = "o", Text = "2009-06-15T13:45:30.0900000", Culture = Cultures.EnUs },
+            new Data(MsdnStandardExample) { Pattern = "O", Text = "2009-06-15T13:45:30.0900000", Culture = Cultures.EnUs },
+            // Note: No RFC1123, as that requires a time zone.
+            // Sortable / ISO8601
+            new Data(MsdnStandardExampleNoMillis) { Pattern = "s", Text = "2009-06-15T13:45:30", Culture = Cultures.EnUs },
+
+            // Standard patterns (French)
+            new Data(MsdnStandardExampleNoSeconds) { Pattern = "f", Text = "lundi 15 juin 2009 13:45", Culture = Cultures.FrFr },
+            new Data(MsdnStandardExampleNoMillis) { Pattern = "F", Text = "lundi 15 juin 2009 13:45:30", Culture = Cultures.FrFr },
+            new Data(MsdnStandardExampleNoSeconds) { Pattern = "g", Text = "15/06/2009 13:45", Culture = Cultures.FrFr },
+            new Data(MsdnStandardExampleNoMillis) { Pattern = "G", Text = "15/06/2009 13:45:30", Culture = Cultures.FrFr },
+            // Culture has no impact on round-trip or sortable formats
+            new Data(MsdnStandardExample) { Pattern = "o", Text = "2009-06-15T13:45:30.0900000", Culture = Cultures.FrFr },
+            new Data(MsdnStandardExample) { Pattern = "O", Text = "2009-06-15T13:45:30.0900000", Culture = Cultures.FrFr },
+            new Data(MsdnStandardExampleNoMillis) { Pattern = "s", Text = "2009-06-15T13:45:30", Culture = Cultures.FrFr },
+        };
+
+        internal static IEnumerable<Data> ParseData = ParseOnlyData.Concat(FormatAndParseData);
+        internal static IEnumerable<Data> FormatData = FormatOnlyData.Concat(FormatAndParseData);
 
         [Test]
         [TestCaseSource("AllCulturesStandardPatterns")]
@@ -136,6 +163,51 @@ namespace NodaTime.Test.Text
                                                    DateTimeKind.Unspecified).AddTicks(4567);
 
             Assert.AreEqual(sampleDateTime.ToString(patternText, culture), pattern.Format(SampleLocalDateTime));
+        }
+
+        public sealed class Data : PatternTestData<LocalDateTime>
+        {
+            // Default to the start of the year 2000.
+            protected override LocalDateTime DefaultTemplate
+            {
+                get { return LocalDateTimePattern.DefaultTemplateValue; }
+            }
+
+            /// <summary>
+            /// Initializes a new instance of the <see cref="Data" /> class.
+            /// </summary>
+            /// <param name="value">The value.</param>
+            public Data(LocalDateTime value)
+                : base(value)
+            {
+            }
+
+            public Data(int year, int month, int day)
+                : this(new LocalDateTime(year, month, day, 0, 0))
+            {
+            }
+
+            public Data(int year, int month, int day, int hour, int minute, int second)
+                : this(new LocalDateTime(year, month, day, hour, minute, second))
+            {
+            }
+
+            public Data(LocalDate date, LocalTime time)
+                : this(date + time)
+            {
+            }
+
+            public Data()
+                : this(LocalDateTimePattern.DefaultTemplateValue)
+            {
+            }
+
+            internal override IPattern<LocalDateTime> CreatePattern()
+            {
+                return LocalDateTimePattern.CreateWithInvariantInfo(Pattern)
+                    .WithTemplateValue(Template)
+                    .WithCulture(Culture);
+            }
         }
     }
 }

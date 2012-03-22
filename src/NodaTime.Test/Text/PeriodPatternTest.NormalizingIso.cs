@@ -19,10 +19,10 @@ using NUnit.Framework;
 
 namespace NodaTime.Test.Text
 {
-    public partial class PeriodPatternTest
+    public static partial class PeriodPatternTest
     {
         [TestFixture]
-        public class PeriodPatternNormalizingIsoTest : PeriodPatternTest
+        public class PeriodPatternNormalizingIsoTest : PatternTestBase<Period>
         {
         }
     }
