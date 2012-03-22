@@ -12,6 +12,11 @@
             </div><br /></td></tr><tr data="constructor; public; instance; declared"><td><img src="../icons/pubmethod.gif" /></td><td><a href="M_NodaTime_ZonedDateTime__ctor.htm">ZonedDateTime(Instant, DateTimeZone)</a></td><td><div class="summary">
             Initializes a new instance of the <span class="selflink">ZonedDateTime</span> struct in the specified time zone
             and the ISO calendar.
+            </div><br /></td></tr><tr data="constructor; public; instance; declared"><td><img src="../icons/pubmethod.gif" /></td><td><a href="M_NodaTime_ZonedDateTime__ctor_2.htm">ZonedDateTime(LocalDateTime, DateTimeZone, Offset)</a></td><td><div class="summary">
+            Initializes a new instance of the <span class="selflink">ZonedDateTime</span> struct in the specified time zone
+            from a given local time and offset. The offset is validated to be correct as part of initialization.
+            In most cases a local time can only map to a single instant anyway, but the offset is included here for cases
+            where the local time is ambiguous, usually due to daylight saving transitions.
             </div><br /></td></tr><tr data="method; public; static; declared"><td><img src="../icons/pubmethod.gif" /><img src="../icons/static.gif" title="static member" /></td><td><a href="M_NodaTime_ZonedDateTime_Add.htm">Add(ZonedDateTime, Duration)</a></td><td><div class="summary">
             Adds a duration to zoned date and time. Friendly alternative to <span class="code">operator+()</span>.
             </div><br /></td></tr><tr data="method; public; static; declared"><td><img src="../icons/puboperator.gif" /><img src="../icons/static.gif" title="static member" /></td><td><a href="M_NodaTime_ZonedDateTime_op_Addition.htm">Addition(ZonedDateTime, Duration)</a></td><td><div class="summary">
