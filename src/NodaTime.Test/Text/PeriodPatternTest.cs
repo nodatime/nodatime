@@ -20,33 +20,9 @@ using NodaTime.Text;
 
 namespace NodaTime.Test.Text
 {
-    public abstract partial class PeriodPatternTest
+    // Container class just to house the nested types
+    public static partial class PeriodPatternTest
     {
-        // Each derived class will declare these properties, which will be found
-        // when NUnit examines the actual class (instead of the abstract base class).
-        // Each derived class can also add its own specific tests, of course.
-
-        [Test]
-        [TestCaseSource("ParseFailureData")]
-        public void ParseFailures(Data data)
-        {
-            data.TestParseFailure();
-        }
-
-        [Test]
-        [TestCaseSource("ParseData")]
-        public void Parse(Data data)
-        {
-            data.TestParse();
-        }
-
-        [Test]
-        [TestCaseSource("FormatData")]
-        public void Format(Data data)
-        {
-            data.TestFormat();
-        }
-
         /// <summary>
         /// A container for test data for formatting and parsing <see cref="Period" /> objects.
         /// </summary>

@@ -23,13 +23,13 @@ using NodaTime.Text;
 
 namespace NodaTime.Test.Text
 {
-    public partial class PeriodPatternTest
+    public static partial class PeriodPatternTest
     {
         /// <summary>
         /// Tests for RoundtripPatternImpl.
         /// </summary>
         [TestFixture]
-        public class PeriodPatternRoundtripTest : PeriodPatternTest
+        public class PeriodPatternRoundtripTest : PatternTestBase<Period>
         {
             internal static Data[] ParseFailureData = {
                 new Data { Text = "X5H", Message = Messages.Parse_MismatchedCharacter, Parameters = { 'P' } },

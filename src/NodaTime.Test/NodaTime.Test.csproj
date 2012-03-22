@@ -91,16 +91,8 @@
     <Compile Include="PeriodBuilderTest.cs" />
     <Compile Include="Text\Cultures.cs" />
     <Compile Include="Text\InstantPatternTest.cs" />
-    <Compile Include="Text\InstantPatternTest.Data.cs">
-      <DependentUpon>InstantPatternTest.cs</DependentUpon>
-    </Compile>
     <Compile Include="Text\LocalDateTimePatternTest.cs" />
-    <Compile Include="Text\LocalDateTimePatternTest.Data.cs">
-      <DependentUpon>LocalDateTimePatternTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Text\LocalTimePatternTest.Data.cs">
-      <DependentUpon>LocalTimePatternTest.cs</DependentUpon>
-    </Compile>
+    <Compile Include="Text\PatternTestBase.cs" />
     <Compile Include="Text\PeriodPatternTest.cs" />
     <Compile Include="Text\PeriodPatternTest.Roundtrip.cs">
       <DependentUpon>PeriodPatternTest.cs</DependentUpon>
@@ -110,9 +102,6 @@
     </Compile>
     <Compile Include="Text\PatternTestData.cs" />
     <Compile Include="Text\LocalDatePatternTest.cs" />
-    <Compile Include="Text\LocalDatePatternTest.Data.cs">
-      <DependentUpon>LocalDatePatternTest.cs</DependentUpon>
-    </Compile>
     <Compile Include="CultureSaver.cs" />
     <Compile Include="LocalDateTest.cs" />
     <Compile Include="LocalDateTest.Pseudomutators.cs">
@@ -268,9 +257,6 @@
     <Compile Include="Utility\BclConversionsTest.cs" />
     <Compile Include="ZonedDateTimeTest.cs" />
     <None Include="Tests.nunit" />
-    <Compile Include="Text\LocalTimePatternTest.WithTemplateValue.cs">
-      <DependentUpon>LocalTimePatternTest.cs</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NodaTime.Testing\NodaTime.Testing.csproj">
