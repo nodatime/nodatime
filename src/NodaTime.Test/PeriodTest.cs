@@ -41,7 +41,7 @@ namespace NodaTime.Test
         {
             Period actual = Period.Between(new LocalDateTime(2012, 2, 21, 0, 0), new LocalDateTime(2012, 2, 28, 0, 0));
             Period expected = Period.FromDays(7);
-            SpecialAssertEqual(expected, actual);
+            Assert.AreEqual(expected, actual);
         }
 
         [Test]
@@ -49,7 +49,7 @@ namespace NodaTime.Test
         {
             Period actual = Period.Between(TestDateTime1, TestDateTime2);
             Period expected = Period.FromHours(2) + Period.FromMinutes(14) + Period.FromSeconds(55);
-            SpecialAssertEqual(expected, actual);
+            Assert.AreEqual(expected, actual);
         }
 
         [Test]
@@ -57,7 +57,7 @@ namespace NodaTime.Test
         {
             Period actual = Period.Between(TestDateTime2, TestDateTime1);
             Period expected = Period.FromHours(-2) + Period.FromMinutes(-14) + Period.FromSeconds(-55);
-            SpecialAssertEqual(expected, actual);
+            Assert.AreEqual(expected, actual);
         }
 
         [Test]
@@ -65,7 +65,7 @@ namespace NodaTime.Test
         {
             Period actual = Period.Between(TestDateTime1, TestDateTime2, HoursMinutesPeriodType);
             Period expected = Period.FromHours(2) + Period.FromMinutes(14);
-            SpecialAssertEqual(expected, actual);
+            Assert.AreEqual(expected, actual);
         }
 
         [Test]
@@ -73,7 +73,7 @@ namespace NodaTime.Test
         {
             Period actual = Period.Between(TestDateTime2, TestDateTime1, HoursMinutesPeriodType);
             Period expected = Period.FromHours(-2) + Period.FromMinutes(-14);
-            SpecialAssertEqual(expected, actual);
+            Assert.AreEqual(expected, actual);
         }
 
         [Test]
@@ -90,7 +90,7 @@ namespace NodaTime.Test
         {
             Period actual = Period.Between(TestDate1, TestDate2);
             Period expected = Period.FromMonths(8) + Period.FromDays(10);
-            SpecialAssertEqual(expected, actual);
+            Assert.AreEqual(expected, actual);
         }
 
         [Test]
@@ -98,7 +98,7 @@ namespace NodaTime.Test
         {
             Period actual = Period.Between(TestDate1, TestDate3);
             Period expected = Period.FromYears(1) + Period.FromMonths(8) + Period.FromDays(11);
-            SpecialAssertEqual(expected, actual);
+            Assert.AreEqual(expected, actual);
         }
 
         [Test]
@@ -106,7 +106,7 @@ namespace NodaTime.Test
         {
             Period actual = Period.Between(TestDate2, TestDate1);
             Period expected = Period.FromMonths(-8) + Period.FromDays(-12);
-            SpecialAssertEqual(expected, actual);
+            Assert.AreEqual(expected, actual);
         }
 
         [Test]
@@ -118,7 +118,7 @@ namespace NodaTime.Test
             // year had no effect.
             Period actual = Period.Between(TestDate3, TestDate1);
             Period expected = Period.FromYears(-1) + Period.FromMonths(-8) + Period.FromDays(-12);
-            SpecialAssertEqual(expected, actual);
+            Assert.AreEqual(expected, actual);
         }
 
         [Test]
@@ -126,7 +126,7 @@ namespace NodaTime.Test
         {
             Period actual = Period.Between(TestDate1, TestDate3, PeriodUnits.Months);
             Period expected = Period.FromMonths(20);
-            SpecialAssertEqual(expected, actual);
+            Assert.AreEqual(expected, actual);
         }
 
         [Test]
@@ -134,7 +134,7 @@ namespace NodaTime.Test
         {
             Period actual = Period.Between(TestDate3, TestDate1, PeriodUnits.Months);
             Period expected = Period.FromMonths(-20);
-            SpecialAssertEqual(expected, actual);
+            Assert.AreEqual(expected, actual);
         }
 
         [Test]
@@ -145,9 +145,9 @@ namespace NodaTime.Test
             // March 30th 2010
             LocalDate d2 = new LocalDate(2010, 3, 30);
             // Going forward, we go to March 10th (1 month) then March 30th (20 days)
-            SpecialAssertEqual(Period.FromMonths(1) + Period.FromDays(20), Period.Between(d1, d2));
+            Assert.AreEqual(Period.FromMonths(1) + Period.FromDays(20), Period.Between(d1, d2));
             // Going backward, we go to February 28th (-1 month, day is rounded) then February 10th (-18 days)
-            SpecialAssertEqual(Period.FromMonths(-1) + Period.FromDays(-18), Period.Between(d2, d1));
+            Assert.AreEqual(Period.FromMonths(-1) + Period.FromDays(-18), Period.Between(d2, d1));
         }
 
         [Test]
@@ -173,7 +173,7 @@ namespace NodaTime.Test
         {
             LocalTime t1 = new LocalTime(10, 0, 0);
             LocalTime t2 = new LocalTime(15, 30, 45, 20, 5);
-            SpecialAssertEqual(Period.FromHours(5) + Period.FromMinutes(30) + Period.FromSeconds(45) +
+            Assert.AreEqual(Period.FromHours(5) + Period.FromMinutes(30) + Period.FromSeconds(45) +
                                Period.FromMillseconds(20) + Period.FromTicks(5),
                                Period.Between(t1, t2));
         }
@@ -183,7 +183,7 @@ namespace NodaTime.Test
         {
             LocalTime t1 = new LocalTime(15, 30, 45, 20, 5);
             LocalTime t2 = new LocalTime(10, 0, 0);
-            SpecialAssertEqual(Period.FromHours(-5) + Period.FromMinutes(-30) + Period.FromSeconds(-45) +
+            Assert.AreEqual(Period.FromHours(-5) + Period.FromMinutes(-30) + Period.FromSeconds(-45) +
                                Period.FromMillseconds(-20) + Period.FromTicks(-5),
                                Period.Between(t1, t2));
         }
@@ -193,7 +193,7 @@ namespace NodaTime.Test
         {
             LocalTime t1 = new LocalTime(11, 30, 0);
             LocalTime t2 = new LocalTime(17, 15, 0);
-            SpecialAssertEqual(Period.FromHours(5), Period.Between(t1, t2, PeriodUnits.Hours));
+            Assert.AreEqual(Period.FromHours(5), Period.Between(t1, t2, PeriodUnits.Hours));
         }
 
         [Test]
@@ -201,7 +201,7 @@ namespace NodaTime.Test
         {
             LocalTime t1 = new LocalTime(17, 15, 0);
             LocalTime t2 = new LocalTime(11, 30, 0);
-            SpecialAssertEqual(Period.FromHours(-5), Period.Between(t1, t2, PeriodUnits.Hours));
+            Assert.AreEqual(Period.FromHours(-5), Period.Between(t1, t2, PeriodUnits.Hours));
         }
 
         [Test]
@@ -263,16 +263,16 @@ namespace NodaTime.Test
         {
             Period period1 = Period.FromHours(5);
             Period period2 = period1 + Period.FromMinutes(0);
-            SpecialAssertEqual(period1, period2);
+            Assert.AreEqual(period1, period2);
             Assert.AreNotEqual(period1.Units, period2.Units);
         }
 
         [Test]
         public void Equality_WhenEqual()
         {
-            SpecialAssertEqual(Period.FromHours(10), Period.FromHours(10));
-            SpecialAssertEqual(Period.FromMinutes(15), Period.FromMinutes(15));
-            SpecialAssertEqual(Period.FromDays(5), Period.FromDays(5));
+            Assert.AreEqual(Period.FromHours(10), Period.FromHours(10));
+            Assert.AreEqual(Period.FromMinutes(15), Period.FromMinutes(15));
+            Assert.AreEqual(Period.FromDays(5), Period.FromDays(5));
         }
 
         [Test]
@@ -284,7 +284,7 @@ namespace NodaTime.Test
             Period justHours = Period.FromHours(1);
             Assert.AreEqual(PeriodUnits.Hours, justHours.Units);
 
-            SpecialAssertEqual(allFields, justHours);
+            Assert.AreEqual(allFields, justHours);
         }
 
         [Test]
@@ -408,8 +408,8 @@ namespace NodaTime.Test
 
             var normalized = original.Normalize();
 
-            // Equals doesn't check units, but Assert.AreEqual would.
-            SpecialAssertEqual(original, normalized);
+            // Equals doesn't check units, so check explicitly.
+            Assert.AreEqual(original, normalized);
             Assert.AreEqual(PeriodUnits.Minutes, normalized.Units);
         }
 
@@ -534,13 +534,6 @@ namespace NodaTime.Test
         {
             var period = new PeriodBuilder { Hours = 5, Minutes = 30 }.Build();
             Assert.AreEqual("P5H30m", period.ToString());
-        }
-
-        private void SpecialAssertEqual(Period period1, Period period2)
-        {
-            Assert.AreEqual(period1.GetHashCode(), period2.GetHashCode());
-            // Don't use Assert.Equals, which will iterate over the period
-            Assert.IsTrue(period1.Equals(period2));
         }
     }
 }
