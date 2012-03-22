@@ -16,12 +16,16 @@
 #endregion
 
 using NUnit.Framework;
+using NodaTime.Text;
 
 namespace NodaTime.Test.Text
 {
-    [TestFixture]
-    public partial class PeriodPatternTest
+    public abstract partial class PeriodPatternTest
     {
+        // Each derived class will declare these properties, which will be found
+        // when NUnit examines the actual class (instead of the abstract base class).
+        // Each derived class can also add its own specific tests, of course.
+
         [Test]
         [TestCaseSource("ParseFailureData")]
         public void ParseFailures(Data data)
@@ -41,6 +45,38 @@ namespace NodaTime.Test.Text
         public void Format(Data data)
         {
             data.TestFormat();
+        }
+
+        /// <summary>
+        /// A container for test data for formatting and parsing <see cref="Period" /> objects.
+        /// </summary>
+        public sealed class Data : PatternTestData<Period>
+        {
+            // Irrelevant
+            protected override Period DefaultTemplate
+            {
+                get { return Period.FromDays(0); }
+            }
+
+            public Data()
+                : base(Period.FromDays(0))
+            {
+            }
+
+            public Data(Period value)
+                : base(value)
+            {
+            }
+
+            public Data(PeriodBuilder builder)
+                : this(builder.Build())
+            {
+            }
+
+            internal override IPattern<Period> CreatePattern()
+            {
+                return PeriodPattern.RoundtripPattern;
+            }
         }
 
     }
