@@ -39,7 +39,7 @@ namespace NodaTime
     /// and skipped date/time values becoming a problem within a series of calculations; instead,
     /// these can be considered just once, at the point of conversion to a ZonedDateTime.
     /// </remarks>
-    public sealed class Period : IEnumerable<Period.UnitValue>, IEquatable<Period>
+    public sealed class Period : IEquatable<Period>
     {
         // Just to avoid magic numbers elsewhere. Not an enum as we normally want to use
         // the value as an index immediately afterwards.
@@ -52,40 +52,6 @@ namespace NodaTime
         private const int SecondIndex = 6;
         private const int MillisecondIndex = 7;
         private const int TickIndex = 8;
-
-        /// <summary>
-        /// A simple combination of a single unit (year, month, hour, minute etc) with a 64-bit integer value.
-        /// </summary>
-        public struct UnitValue
-        {
-            private readonly long value;
-            private readonly PeriodUnits unit;
-
-            /// <summary>
-            /// The magnitude of the value, e.g. the number of months in a period.
-            /// </summary>
-            public long Value { get { return value; } }
-
-            /// <summary>
-            /// The single unit (Month, Year etc) that this value applies to.
-            /// </summary>
-            public PeriodUnits Unit { get { return unit; } }
-
-            /// <summary>
-            /// Constructs a 
-            /// </summary>
-            /// <param name="unit">The unit of the new unit/value pair. Must be a single unit rather than a combination of multiple units.</param>
-            /// <param name="value">The value of the new unit/value pair.</param>
-            public UnitValue(PeriodUnits unit, long value)
-            {
-                if (Period.GetSingleFieldIndex(unit) == -1)
-                {
-                    throw new ArgumentOutOfRangeException("unit", "Value " + unit + " does not represent a single unit");
-                }
-                this.unit = unit;
-                this.value = value;
-            }
-        }
 
         /// <summary>
         /// The number of values in an array for a compound period. This is always the same, representing
@@ -488,29 +454,6 @@ namespace NodaTime
         }
 
         /// <summary>
-        /// Returns the units and values within this period.
-        /// </summary>
-        /// <returns>The units and values within this period.</returns>
-        public IEnumerator<UnitValue> GetEnumerator()
-        {
-            if (values == null)
-            {
-                yield return new UnitValue(units, singleValue);
-            }
-            else
-            {
-                for (int i = 0; i < values.Length; i++)
-                {
-                    PeriodUnits singlePeriodUnit = (PeriodUnits) (1 << i);
-                    if ((singlePeriodUnit & units) != 0)
-                    {
-                        yield return new UnitValue(singlePeriodUnit, values[i]);
-                    }
-                }                
-            }
-        }
-
-        /// <summary>
         /// Returns whether or not this period contains any non-zero-valued time-based units (hours or lower).
         /// The units of this period may include time units, so long as they have zero values.
         /// </summary>
@@ -579,15 +522,6 @@ namespace NodaTime
         public PeriodBuilder ToBuilder()
         {
             return new PeriodBuilder(this);
-        }
-
-        /// <summary>
-        /// Returns the fields and values within this period.
-        /// </summary>
-        /// <returns>The fields and values within this period.</returns>
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
         }
 
         /// <summary>
