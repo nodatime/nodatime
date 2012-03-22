@@ -188,5 +188,113 @@ namespace NodaTime.Test.Text
             int actual;
             Assert.False(value.ParseFraction(2, 2, out actual, true));
         }
+
+        [Test]
+        public void ParseInt64_Simple()
+        {
+            var value = new ValueCursor("56x");
+            Assert.True(value.MoveNext());
+            long result;
+            Assert.IsNull(value.ParseInt64<string>(out result));
+            Assert.AreEqual(56L, result);
+            // Cursor ends up post-number
+            Assert.AreEqual(2, value.Index);
+        }
+
+        [Test]
+        public void ParseInt64_Negative()
+        {
+            var value = new ValueCursor("-56x");
+            Assert.True(value.MoveNext());
+            long result;
+            Assert.IsNull(value.ParseInt64<string>(out result));
+            Assert.AreEqual(-56L, result);
+        }
+
+        [Test]
+        public void ParseInt64_NonNumber()
+        {
+            var value = new ValueCursor("xyz");
+            Assert.True(value.MoveNext());
+            long result;
+            Assert.IsNotNull(value.ParseInt64<string>(out result));
+            // Cursor has not moved
+            Assert.AreEqual(0, value.Index);
+        }
+
+        [Test]
+        public void ParseInt64_DoubleNegativeSign()
+        {
+            var value = new ValueCursor("--10xyz");
+            Assert.True(value.MoveNext());
+            long result;
+            Assert.IsNotNull(value.ParseInt64<string>(out result));
+            // Cursor has not moved
+            Assert.AreEqual(0, value.Index);
+        }
+
+        [Test]
+        public void ParseInt64_NumberOutOfRange_LowLeadingDigits()
+        {
+            var value = new ValueCursor("1000000000000000000000000");
+            Assert.True(value.MoveNext());
+            long result;
+            Assert.IsNotNull(value.ParseInt64<string>(out result));
+            // Cursor has not moved
+            Assert.AreEqual(0, value.Index);
+        }
+
+        [Test]
+        public void ParseInt64_NumberOutOfRange_HighLeadingDigits()
+        {
+            var value = new ValueCursor("999999999999999999999999");
+            Assert.True(value.MoveNext());
+            long result;
+            Assert.IsNotNull(value.ParseInt64<string>(out result));
+            // Cursor has not moved
+            Assert.AreEqual(0, value.Index);
+        }
+
+        [Test]
+        public void ParseInt64_NumberOutOfRange_MaxValueLeadingDigits()
+        {
+            var value = new ValueCursor("9223372036854775808");
+            Assert.True(value.MoveNext());
+            long result;
+            Assert.IsNotNull(value.ParseInt64<string>(out result));
+            // Cursor has not moved
+            Assert.AreEqual(0, value.Index);
+        }
+
+        [Test]
+        public void ParseInt64_NumberOutOfRange_MinValueLeadingDigits()
+        {
+            var value = new ValueCursor("-9223372036854775809");
+            Assert.True(value.MoveNext());
+            long result;
+            Assert.IsNotNull(value.ParseInt64<string>(out result));
+            // Cursor has not moved
+            Assert.AreEqual(0, value.Index);
+        }
+
+        [Test]
+        public void ParseInt64_MaxValue()
+        {
+            var value = new ValueCursor("9223372036854775807");
+            Assert.True(value.MoveNext());
+            long result;
+            Assert.IsNull(value.ParseInt64<string>(out result));
+            Assert.AreEqual(long.MaxValue, result);
+        }
+
+        [Test]
+        public void ParseInt64_MinValue()
+        {
+            var value = new ValueCursor("-9223372036854775808");
+            Assert.True(value.MoveNext());
+            long result;
+            Assert.IsNull(value.ParseInt64<string>(out result));
+            Assert.AreEqual(long.MinValue, result);
+        }
     }
 }

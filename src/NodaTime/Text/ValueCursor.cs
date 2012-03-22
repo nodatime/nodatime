@@ -49,7 +49,7 @@ namespace NodaTime.Text
 
         /// <summary>
         /// Attempts to match the specified string with the current point in the string. If the
-        /// character matches then the index is moved passed the string.
+        /// character matches then the index is moved past the string.
         /// </summary>
         /// <param name="match">The string to match.</param>
         /// <returns><c>true</c> if the string matches.</returns>
@@ -91,6 +91,8 @@ namespace NodaTime.Text
 
         /// <summary>
         /// Parses digits at the current point in the string as a signed 64-bit integer value.
+        /// Currently this method only supports cultures whose negative sign is "-" (and
+        /// using ASCII digits).
         /// </summary>
         /// <param name="result">The result integer value. The value of this is not guaranteed
         /// to be anything specific if the return value is non-null.</param>
