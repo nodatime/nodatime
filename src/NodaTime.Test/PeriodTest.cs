@@ -511,6 +511,15 @@ namespace NodaTime.Test
             Assert.AreEqual(original, original.Normalize());
         }
 
+        // TODO(V1-Blocker): Fix this
+        [Test, Ignore]
+        public void Normalize_EmptyResult()
+        {
+            var original = new PeriodBuilder { Years = 0 }.Build();
+            var empty = new PeriodBuilder().Build();
+            Assert.AreEqual(empty, original.Normalize());
+        }
+
         // TODO(V1-Blocker) These tests need to be fixed when period parsing/formatting
         // is improved, but it's to validate that Jon has fixed a temporary bug. 
         [Test]
