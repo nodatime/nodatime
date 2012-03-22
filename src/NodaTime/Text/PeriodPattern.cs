@@ -16,9 +16,7 @@
 #endregion
 
 using System.Text;
-using NodaTime.Globalization;
 using NodaTime.Properties;
-using NodaTime.Text.Patterns;
 using NodaTime.Utility;
 
 namespace NodaTime.Text
@@ -153,48 +151,15 @@ namespace NodaTime.Text
                     PeriodUnits unit;
                     switch (valueCursor.Current)
                     {
-                        case 'Y':
-                            unit = PeriodUnits.Years;
-                            builder.Years = unitValue;
-                            break;
-                        case 'M':
-                            if (inDate)
-                            {
-                                unit = PeriodUnits.Months;
-                                builder.Months = unitValue;
-                            }
-                            else
-                            {
-                                unit = PeriodUnits.Minutes;
-                                builder.Minutes = unitValue;                                
-                            }
-                            break;
-                        case 'W':
-                            unit = PeriodUnits.Weeks;
-                            builder.Weeks = unitValue;
-                            break;
-                        case 'D':
-                            unit = PeriodUnits.Days;
-                            builder.Days = unitValue;
-                            break;
-                        case 'H':
-                            unit = PeriodUnits.Hours;
-                            builder.Hours = unitValue;
-                            break;
-                        case 'S':
-                            unit = PeriodUnits.Seconds;
-                            builder.Seconds = unitValue;
-                            break;
-                        case 's':
-                            unit = PeriodUnits.Milliseconds;
-                            builder.Milliseconds = unitValue;
-                            break;
-                        case 't':
-                            unit = PeriodUnits.Ticks;
-                            builder.Ticks = unitValue;
-                            break;
-                        default:
-                            return InvalidUnit(valueCursor.Current);
+                        case 'Y': unit = PeriodUnits.Years; break;
+                        case 'M': unit = inDate ? PeriodUnits.Months : PeriodUnits.Minutes; break;
+                        case 'W': unit = PeriodUnits.Weeks; break;
+                        case 'D': unit = PeriodUnits.Days; break;
+                        case 'H': unit = PeriodUnits.Hours; break;
+                        case 'S': unit = PeriodUnits.Seconds; break;
+                        case 's': unit = PeriodUnits.Milliseconds; break;
+                        case 't': unit = PeriodUnits.Ticks; break;
+                        default: return InvalidUnit(valueCursor.Current);
                     }
                     if ((unit & unitsSoFar) != 0)
                     {
@@ -213,6 +178,7 @@ namespace NodaTime.Text
                     {
                         return MisplacedUnit(valueCursor.Current);
                     }
+                    builder[unit] = unitValue;
                     unitsSoFar |= unit;
                 }
                 if (unitsSoFar == 0)

@@ -29,6 +29,7 @@ namespace NodaTime.Test.Text
             new Data { Text = "", Message = Messages.Parse_ValueStringEmpty},
             new Data { Text = "P5J", Message = Messages.Parse_InvalidUnitSpecifier, Parameters = {'J'}},
             new Data { Text = "P5D10M", Message = Messages.Parse_MisplacedUnitSpecifier, Parameters = {'M'}},
+            new Data { Text = "P6M5D6D", Message = Messages.Parse_RepeatedUnitSpecifier, Parameters = {'D'}},
             new Data { Text = "PT5M10H", Message = Messages.Parse_MisplacedUnitSpecifier, Parameters = {'H'}},
             new Data { Text = "P5H", Message = Messages.Parse_MisplacedUnitSpecifier, Parameters = {'H'}},
             new Data { Text = "PT5Y", Message = Messages.Parse_MisplacedUnitSpecifier, Parameters = {'Y'}},
