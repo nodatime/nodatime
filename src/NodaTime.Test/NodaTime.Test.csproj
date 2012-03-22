@@ -102,7 +102,10 @@
       <DependentUpon>LocalTimePatternTest.cs</DependentUpon>
     </Compile>
     <Compile Include="Text\PeriodPatternTest.cs" />
-    <Compile Include="Text\PeriodPatternTest.Data.cs">
+    <Compile Include="Text\PeriodPatternTest.Roundtrip.cs">
+      <DependentUpon>PeriodPatternTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Text\PeriodPatternTest.NormalizingIso.cs">
       <DependentUpon>PeriodPatternTest.cs</DependentUpon>
     </Compile>
     <Compile Include="Text\PatternTestData.cs" />
