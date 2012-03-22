@@ -49,6 +49,12 @@
             Represents a period of time expressed in human chronological terms: hours, days,
             weeks, months and so on. All implementations in Noda Time are immutable, and return fields
             in descending size order: hours before minutes, for example.
+            </div><br /></td></tr><tr data="class; public"><td><img src="../icons/pubclass.gif" /></td><td><b><a href="T_NodaTime_PeriodBuilder.htm">PeriodBuilder</a></b></td><td><div class="summary">
+            A mutable builder class for <a href="T_NodaTime_Period.htm">Period</a> values. Each property can
+            be set independently, and then a Period can be created from the result
+            using the <a href="M_NodaTime_PeriodBuilder_Build.htm">Build<span class="languageSpecificText"><span class="cs">()</span><span class="cpp">()</span><span class="nu">()</span><span class="fs">()</span></span></a> method.
+            The properties are all nullable: the units of the period created are
+            determined by the non-null properties at build time.
             </div><br /></td></tr><tr data="enumeration; public"><td><img src="../icons/pubenum.gif" /></td><td><b><a href="T_NodaTime_PeriodUnits.htm">PeriodUnits</a></b></td><td><div class="summary">
             The units within a <a href="T_NodaTime_Period.htm">Period</a>. When a period is created to find the difference between two local values,
             the caller may specify which units are required - for example, you can ask for the difference between two dates
@@ -61,8 +67,6 @@
             It is recommended that for anything other than throwaway code, this is only referenced
             in a single place in your code: where you provide a value to inject into the rest of
             your application, which should only depend on the instance.
-            </div><br /></td></tr><tr data="structure; public"><td><img src="../icons/pubstructure.gif" /></td><td><b><a href="T_NodaTime_Period_UnitValue.htm">Period<span class="languageSpecificText"><span class="cs">.</span><span class="vb">.</span><span class="cpp">::</span><span class="nu">.</span><span class="fs">.</span></span>UnitValue</a></b></td><td><div class="summary">
-            A simple combination of a single unit (year, month, hour, minute etc) with a 64-bit integer value.
             </div><br /></td></tr><tr data="structure; public"><td><img src="../icons/pubstructure.gif" /></td><td><b><a href="T_NodaTime_ZonedDateTime.htm">ZonedDateTime</a></b></td><td><div class="summary">
             A <a href="P_NodaTime_ZonedDateTime_LocalDateTime.htm">LocalDateTime</a> in a specific time zone and with a particular offset to distinguish between otherwise-ambiguous
             instants. A ZonedDateTime is global, in that it maps to a single <a href="T_NodaTime_Instant.htm">Instant</a>.
