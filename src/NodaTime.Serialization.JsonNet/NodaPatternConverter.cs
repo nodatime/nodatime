@@ -27,7 +27,7 @@ namespace NodaTime.Serialization.JsonNet
     /// from an <see cref="IPattern{T}"/>.
     /// </summary>
     /// <typeparam name="T">The type to convert to/from JSON.</typeparam>
-    public class NodaPatternConverter<T> : NodaConverterBase<T> where T : struct
+    public class NodaPatternConverter<T> : NodaConverterBase<T>
     {
         private readonly IPattern<T> pattern;
         private readonly Action<T> validator;
