@@ -109,18 +109,18 @@ namespace NodaTime.Text
 
         private class RoundtripPatternImpl : IPattern<Period>
         {            
-            public ParseResult<Period> Parse(string value)
+            public ParseResult<Period> Parse(string text)
             {
-                if (value == null)
+                if (text == null)
                 {
-                    return ParseResult<Period>.ArgumentNull("value");
+                    return ParseResult<Period>.ArgumentNull("text");
                 }
-                if (value.Length == 0)
+                if (text.Length == 0)
                 {
                     return ParseResult<Period>.ValueStringEmpty;
                 }
 
-                ValueCursor valueCursor = new ValueCursor(value);
+                ValueCursor valueCursor = new ValueCursor(text);
                 
                 valueCursor.MoveNext();
                 if (valueCursor.Current != 'P')
