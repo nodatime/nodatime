@@ -205,6 +205,15 @@ namespace NodaTime.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Expected end of input, but more data remains..
+        /// </summary>
+        internal static string Parse_ExpectedEndOfString {
+            get {
+                return ResourceManager.GetString("Parse_ExpectedEndOfString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The format matches a prefix of the value string but not the entire string. Part not matching: &quot;{0}&quot;..
         /// </summary>
         internal static string Parse_ExtraValueCharacters {

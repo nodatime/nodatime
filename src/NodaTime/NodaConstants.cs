@@ -37,7 +37,7 @@ namespace NodaTime
         /// </summary>
         public const long TicksPerMinute = TicksPerSecond * SecondsPerMinute;
         /// <summary>
-        /// A constant for the number of ticks in a minute. The value of this constant is 36,000,000,000.
+        /// A constant for the number of ticks in an hour. The value of this constant is 36,000,000,000.
         /// </summary>
         public const long TicksPerHour = TicksPerMinute * MinutesPerHour;
 
