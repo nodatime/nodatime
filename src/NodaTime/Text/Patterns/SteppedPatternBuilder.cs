@@ -377,18 +377,18 @@ namespace NodaTime.Text.Patterns
                 this.usedFields = usedFields;
             }
 
-            public ParseResult<TResult> Parse(string value)
+            public ParseResult<TResult> Parse(string text)
             {
-                if (value == null)
+                if (text == null)
                 {
-                    return ParseResult<TResult>.ArgumentNull("value");
+                    return ParseResult<TResult>.ArgumentNull("text");
                 }
-                if (value.Length == 0)
+                if (text.Length == 0)
                 {
                     return ParseResult<TResult>.ValueStringEmpty;
                 }
 
-                ValueCursor valueCursor = new ValueCursor(value);
+                ValueCursor valueCursor = new ValueCursor(text);
                 TBucket bucket = bucketProvider();
 
                 foreach (var action in parseActions)

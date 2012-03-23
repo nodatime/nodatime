@@ -32,9 +32,9 @@ namespace NodaTime.Text.Patterns
             this.formatter = formatter;
         }
 
-        public ParseResult<T> Parse(string value)
+        public ParseResult<T> Parse(string text)
         {
-            return parser(value);
+            return parser(text);
         }
 
         public string Format(T value)

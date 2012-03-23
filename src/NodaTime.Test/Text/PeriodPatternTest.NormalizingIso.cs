@@ -57,6 +57,7 @@ namespace NodaTime.Test.Text
                 new Data(new PeriodBuilder { Hours = 5 }) { Text = "PT005H" },
                 new Data(new PeriodBuilder { Milliseconds = 500 }) { Text = "PT0,5S" },
                 new Data(new PeriodBuilder { Hours = 5 }) { Text = "PT00000000000000000000005H" },
+                new Data(new PeriodBuilder { Weeks = 5 }) { Text = "P5W" },
             };
 
             // Only a small amount of testing here - it's around normalization, which is

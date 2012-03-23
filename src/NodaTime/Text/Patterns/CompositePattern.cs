@@ -40,11 +40,11 @@ namespace NodaTime.Text.Patterns
             this.formatter = formatter;
         }
 
-        public ParseResult<T> Parse(string value)
+        public ParseResult<T> Parse(string text)
         {
             foreach (IPattern<T> pattern in parsePatterns)
             {
-                ParseResult<T> result = pattern.Parse(value);
+                ParseResult<T> result = pattern.Parse(text);
                 if (result.Success || !result.ContinueAfterErrorWithMultipleFormats)
                 {
                     return result;

@@ -37,17 +37,17 @@ namespace NodaTime.Text.Patterns
         /// Performs the first part of the parse, validating the value is non-empty before
         /// handing over to ParseImpl for the meat of the work.
         /// </summary>
-        public ParseResult<T> Parse(string value)
+        public ParseResult<T> Parse(string text)
         {
-            if (value == null)
+            if (text == null)
             {
-                return ParseResult<T>.ArgumentNull("value");
+                return ParseResult<T>.ArgumentNull("text");
             }
-            if (value.Length == 0)
+            if (text.Length == 0)
             {
                 return ParseResult<T>.ValueStringEmpty;
             }
-            return ParseImpl(value);
+            return ParseImpl(text);
         }
 
         /// <summary>
