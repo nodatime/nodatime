@@ -165,6 +165,9 @@
   <data name="Parse_EscapedCharacterMismatch" xml:space="preserve">
     <value>The value string does not match an escaped character in the format string: "\{0}"</value>
   </data>
+  <data name="Parse_ExpectedEndOfString" xml:space="preserve">
+    <value>Expected end of input, but more data remains.</value>
+  </data>
   <data name="Parse_ExtraValueCharacters" xml:space="preserve">
     <value>The format matches a prefix of the value string but not the entire string. Part not matching: "{0}".</value>
   </data>

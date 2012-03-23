@@ -224,6 +224,11 @@ namespace NodaTime.Text
         /// </summary>
         internal static readonly ParseResult<T> InconsistentDayOfWeekTextValue = ForInvalidValue(Messages.Parse_InconsistentDayOfWeekTextValue);
 
+        /// <summary>
+        /// We'd expected to get to the end of the string now, but we haven't.
+        /// </summary>
+        internal static readonly ParseResult<T> ExpectedEndOfString = ForInvalidValue(Messages.Parse_ExpectedEndOfString);
+
         internal static ParseResult<T> YearOfEraOutOfRange(int value, int eraIndex, CalendarSystem calendar)
         {
             return ForInvalidValue(Messages.Parse_YearOfEraOutOfRange, value, calendar.Eras[eraIndex].Name, calendar.Name);

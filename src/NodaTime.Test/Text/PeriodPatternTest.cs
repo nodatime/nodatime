@@ -28,6 +28,8 @@ namespace NodaTime.Test.Text
         /// </summary>
         public sealed class Data : PatternTestData<Period>
         {
+            public IPattern<Period> StandardPattern { get; set; }
+
             // Irrelevant
             protected override Period DefaultTemplate
             {
@@ -35,13 +37,14 @@ namespace NodaTime.Test.Text
             }
 
             public Data()
-                : base(Period.FromDays(0))
+                : this(Period.FromDays(0))
             {
             }
 
             public Data(Period value)
                 : base(value)
             {
+                this.StandardPattern = PeriodPattern.RoundtripPattern;
             }
 
             public Data(PeriodBuilder builder)
@@ -51,9 +54,8 @@ namespace NodaTime.Test.Text
 
             internal override IPattern<Period> CreatePattern()
             {
-                return PeriodPattern.RoundtripPattern;
+                return StandardPattern;
             }
         }
-
     }
 }
