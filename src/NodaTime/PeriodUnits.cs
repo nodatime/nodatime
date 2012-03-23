@@ -34,6 +34,11 @@ namespace NodaTime
     public enum PeriodUnits
     {
         /// <summary>
+        /// Value indicating no units - an empty period.
+        /// </summary>        
+        None = 0,
+
+        /// <summary>
         /// Years element within a <see cref="Period" />
         /// </summary>
         Years = 1,

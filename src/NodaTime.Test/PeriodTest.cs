@@ -533,5 +533,11 @@ namespace NodaTime.Test
             var period = new PeriodBuilder { Hours = 5, Minutes = 30 }.Build();
             Assert.AreEqual("PT5H30M", period.ToString());
         }
+
+        [Test]
+        public void EmptyPeriodHasNoUnits()
+        {
+            Assert.AreEqual(PeriodUnits.None, Period.Empty.Units);
+        }
     }
 }

@@ -187,7 +187,7 @@ namespace NodaTime
                 (Ticks == null ? 0 : PeriodUnits.Ticks);
             switch (units)
             {
-                case 0: throw new InvalidOperationException("Cannot build a period with no units");
+                case PeriodUnits.None: return Period.Empty;
                 case PeriodUnits.Years: return Period.FromYears(Years.Value);
                 case PeriodUnits.Months: return Period.FromMonths(Months.Value);
                 case PeriodUnits.Weeks: return Period.FromWeeks(Weeks.Value);

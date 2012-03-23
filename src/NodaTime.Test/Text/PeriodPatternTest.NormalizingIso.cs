@@ -39,8 +39,11 @@ namespace NodaTime.Test.Text
                 new Data { Text = "PT5M10H", Message = Messages.Parse_MisplacedUnitSpecifier, Parameters = { 'H' } },
                 new Data { Text = "P5H", Message = Messages.Parse_MisplacedUnitSpecifier, Parameters = { 'H' } },
                 new Data { Text = "PT5Y", Message = Messages.Parse_MisplacedUnitSpecifier, Parameters = { 'Y' } },
-                new Data { Text = "P", Message = Messages.Parse_EmptyPeriod }, new Data { Text = "PX", Message = Messages.Parse_MissingNumber },
-                new Data { Text = "P10M-", Message = Messages.Parse_EndOfString }, new Data { Text = "P5", Message = Messages.Parse_EndOfString },
+                // Invalid in ISO.
+                new Data { Text = "P", Message = Messages.Parse_EmptyPeriod },
+                new Data { Text = "PX", Message = Messages.Parse_MissingNumber },
+                new Data { Text = "P10M-", Message = Messages.Parse_EndOfString },
+                new Data { Text = "P5", Message = Messages.Parse_EndOfString },
                 new Data { Text = "PT9223372036854775808H", Message = Messages.Parse_ValueOutOfRange, Parameters = { "9223372036854775808", typeof(Period) } },
                 new Data { Text = "PT-9223372036854775809H", Message = Messages.Parse_ValueOutOfRange, Parameters = { "-9223372036854775809", typeof(Period) } },
                 new Data { Text = "PT10000000000000000000H", Message = Messages.Parse_ValueOutOfRange, Parameters = { "10000000000000000000", typeof(Period) } },
@@ -71,6 +74,8 @@ namespace NodaTime.Test.Text
             };
 
             internal static readonly Data[] FormatAndParseData = {
+                new Data(Period.Empty) { Text = "P0D" },
+
                 // All single values                                                                
                 new Data(new PeriodBuilder { Years = 5 }) { Text = "P5Y" },
                 new Data(new PeriodBuilder { Months = 5 }) { Text = "P5M" },

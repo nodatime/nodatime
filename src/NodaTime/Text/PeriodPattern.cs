@@ -105,8 +105,6 @@ namespace NodaTime.Text
             return ParseResult<Period>.ForInvalidValue(Messages.Parse_MisplacedUnitSpecifier, unitCharacter);
         }
 
-        private static readonly ParseResult<Period> EmptyPeriod = ParseResult<Period>.ForInvalidValue(Messages.Parse_EmptyPeriod);
-
         private class RoundtripPatternImpl : IPattern<Period>
         {            
             public ParseResult<Period> Parse(string text)
@@ -186,10 +184,6 @@ namespace NodaTime.Text
                     }
                     builder[unit] = unitValue;
                     unitsSoFar |= unit;
-                }
-                if (unitsSoFar == 0)
-                {
-                    return EmptyPeriod;
                 }
                 return ParseResult<Period>.ForValue(builder.Build());
             }
@@ -339,12 +333,16 @@ namespace NodaTime.Text
                         return ParseResult<Period>.ForValue(builder.Build());
                     }
 
-                    builder[unit] = unitValue;
+                    // Normalize to the extend of excluding 0 values.
+                    if (unitValue != 0)
+                    {
+                        builder[unit] = unitValue;
+                    }
                     unitsSoFar |= unit;
                 }
                 if (unitsSoFar == 0)
                 {
-                    return EmptyPeriod;
+                    return ParseResult<Period>.ForInvalidValue(Messages.Parse_EmptyPeriod);
                 }
                 return ParseResult<Period>.ForValue(builder.Build());
             }
@@ -353,6 +351,11 @@ namespace NodaTime.Text
             {
                 Preconditions.CheckNotNull(value, "value");
                 value = value.Normalize();
+                // Always ensure we've got *some* unit; arbitrarily pick days.
+                if (value.Units == 0)
+                {
+                    return "P0D";
+                }
                 StringBuilder builder = new StringBuilder("P");
                 AppendValue(builder, value.Units & PeriodUnits.Years, value.Years, "Y");
                 AppendValue(builder, value.Units & PeriodUnits.Months, value.Months, "M");
