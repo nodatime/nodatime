@@ -20,6 +20,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using NodaTime.Fields;
+using NodaTime.Text;
 using NodaTime.Utility;
 using System.Text;
 
@@ -669,35 +670,12 @@ namespace NodaTime
         const string UnitAbbreviations = "YMWDHmsSt";
 
         /// <summary>
-        /// Returns a string of the form "P[nnY][nnM][nnW][nnD][nnH][nnm][nns][nnS][nnt]"
-        /// where each "nn" represents a component value (possibly negative) and the
-        /// Y, M, W, D, H, m, s, S, t characters represent years, months, weeks, days,
-        /// hours, minutes, seconds, milliseconds and ticks respectively. Only those units
-        /// present in the period are represented, but all are represented even if zero. The
-        /// representation always uses the invariant culture's digits, with no separators and with a
-        /// '-' prefix for negative numbers.
+        /// Returns this string formatted according to the <see cref="PeriodPattern.RoundtripPattern"/>.
         /// </summary>
-        /// <remarks>
-        /// Due to the possibility of negative numbers, milliseconds and ticks, this result
-        /// does not necessarily comply with an ISO-8601 duration format. However, it is useful
-        /// for debugging purposes. It's possible that the format will change in future releases,
-        /// and should not be depended upon.
-        /// </remarks>
         /// <returns>A formatted representation of this period.</returns>
         public override string ToString()
         {
-            StringBuilder builder = new StringBuilder("P");
-            int numericFields = (int)units;
-            for (int i = 0; i < ValuesArraySize; i++)
-            {
-                if ((numericFields & (1 << i)) != 0)
-                {
-                    long value = values == null ? singleValue : values[i];
-                    builder.Append(value.ToString(CultureInfo.InvariantCulture));
-                    builder.Append(UnitAbbreviations[i]);                    
-                }
-            }
-            return builder.ToString();
+            return PeriodPattern.RoundtripPattern.Format(this);
         }
 
         /// <summary>
