@@ -360,28 +360,28 @@ namespace NodaTime.Test
         public void ToString_Positive()
         {
             Period period = Period.FromDays(1) +  Period.FromHours(2);
-            Assert.AreEqual("P1D2H", period.ToString());
+            Assert.AreEqual("P1DT2H", period.ToString());
         }
 
         [Test]
         public void ToString_Negative()
         {
             Period period = Period.FromDays(-1) + Period.FromHours(-2);
-            Assert.AreEqual("P-1D-2H", period.ToString());
+            Assert.AreEqual("P-1DT-2H", period.ToString());
         }
 
         [Test]
         public void ToString_Mixed()
         {
             Period period = Period.FromDays(-1) + Period.FromHours(2);
-            Assert.AreEqual("P-1D2H", period.ToString());
+            Assert.AreEqual("P-1DT2H", period.ToString());
         }
 
         [Test]
         public void ToString_CompoundZero()
         {
             Period period = Period.FromDays(0) + Period.FromHours(0);
-            Assert.AreEqual("P0D0H", period.ToString());
+            Assert.AreEqual("P0DT0H", period.ToString());
         }
 
         [Test]
@@ -520,20 +520,18 @@ namespace NodaTime.Test
             Assert.AreEqual(empty, original.Normalize());
         }
 
-        // TODO(V1-Blocker) These tests need to be fixed when period parsing/formatting
-        // is improved, but it's to validate that Jon has fixed a temporary bug. 
         [Test]
         public void ToString_SingleUnit()
         {
             var period = Period.FromHours(5);
-            Assert.AreEqual("P5H", period.ToString());
+            Assert.AreEqual("PT5H", period.ToString());
         }
 
         [Test]
         public void ToString_MultipleUnits()
         {
             var period = new PeriodBuilder { Hours = 5, Minutes = 30 }.Build();
-            Assert.AreEqual("P5H30m", period.ToString());
+            Assert.AreEqual("PT5H30M", period.ToString());
         }
     }
 }
