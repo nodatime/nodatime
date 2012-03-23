@@ -25,18 +25,20 @@ namespace NodaTime.Serialization.JsonNet
     /// This deals handles all the boilerplate code dealing with nullity.
     /// </summary>
     /// <typeparam name="T">The type to convert to/from JSON.</typeparam>
-    public abstract class NodaConverterBase<T> : JsonConverter where T : struct
+    public abstract class NodaConverterBase<T> : JsonConverter
     {
+        private static readonly Type NullableT = typeof(T).IsValueType ? typeof(Nullable<>).MakeGenericType(typeof(T)) : typeof(T);
+
         public override bool CanConvert(Type objectType)
         {
-            return objectType == typeof(T) || objectType == typeof(T?);
+            return objectType == typeof(T) || objectType == NullableT;
         }
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
             if (reader.TokenType == JsonToken.Null)
             {
-                if (objectType != typeof(T?))
+                if (objectType != NullableT)
                 {
                     throw new InvalidDataException(string.Format("Cannot convert null value to {0}.", objectType));
                 }
@@ -49,7 +51,7 @@ namespace NodaTime.Serialization.JsonNet
                 string value = (string) reader.Value;
                 if (value == "")
                 {
-                    if (objectType != typeof(T?))
+                    if (objectType != NullableT)
                     {
                         throw new InvalidDataException(string.Format("Cannot convert null value to {0}.", objectType));
                     }

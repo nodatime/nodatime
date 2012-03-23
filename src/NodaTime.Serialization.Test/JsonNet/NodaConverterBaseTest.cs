@@ -51,6 +51,15 @@ namespace NodaTime.Serialization.Test.JsonNet
         }
 
         [Test]
+        public void Deserialize_ReferenceType_NullValue()
+        {
+            var converter = new TestStringConverter();
+
+            Assert.IsNull(JsonConvert.DeserializeObject<string>("null", converter));
+            Assert.IsNull(JsonConvert.DeserializeObject<string>("\"\"", converter));
+        }
+
+        [Test]
         public void Deserialize_NullableType_NonNullValue()
         {
             var converter = new TestConverter();
@@ -102,6 +111,19 @@ namespace NodaTime.Serialization.Test.JsonNet
             protected override void WriteJsonImpl(JsonWriter writer, int value, JsonSerializer serializer)
             {
                 writer.WriteValue(value.ToString());
+            }
+        }
+
+        private class TestStringConverter : NodaConverterBase<string>
+        {
+            protected override string ReadJsonImpl(JsonReader reader, JsonSerializer serializer)
+            {
+                return reader.Value.ToString();
+            }
+
+            protected override void WriteJsonImpl(JsonWriter writer, string value, JsonSerializer serializer)
+            {
+                writer.WriteValue(value);
             }
         }
     }
