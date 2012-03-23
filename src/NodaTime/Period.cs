@@ -42,6 +42,17 @@ namespace NodaTime
     /// </remarks>
     public sealed class Period : IEquatable<Period>
     {
+        /// <summary>
+        /// The number of values in an array for a compound period. This is always the same, representing
+        /// all possible units.
+        /// </summary>
+        private const int ValuesArraySize = 9;
+
+        /// <summary>
+        /// An empty period with no units.
+        /// </summary>
+        public static readonly Period Empty = new Period(0, new long[ValuesArraySize]);
+
         // Just to avoid magic numbers elsewhere. Not an enum as we normally want to use
         // the value as an index immediately afterwards.
         private const int YearIndex = 0;
@@ -53,12 +64,6 @@ namespace NodaTime
         private const int SecondIndex = 6;
         private const int MillisecondIndex = 7;
         private const int TickIndex = 8;
-
-        /// <summary>
-        /// The number of values in an array for a compound period. This is always the same, representing
-        /// all possible units.
-        /// </summary>
-        private const int ValuesArraySize = 9;
 
         /// <summary>
         /// The units contained within this period.
@@ -666,8 +671,6 @@ namespace NodaTime
         #endregion
 
         #region Object overrides
-
-        const string UnitAbbreviations = "YMWDHmsSt";
 
         /// <summary>
         /// Returns this string formatted according to the <see cref="PeriodPattern.RoundtripPattern"/>.

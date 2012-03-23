@@ -121,7 +121,7 @@ namespace NodaTime.Test
         [Test]
         public void Build_Empty()
         {
-            Assert.Throws<InvalidOperationException>(() => new PeriodBuilder().Build());
+            Assert.AreEqual(PeriodUnits.None, new PeriodBuilder().Build().Units);
         }
 
         [Test]
