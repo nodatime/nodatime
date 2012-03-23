@@ -171,5 +171,41 @@ namespace NodaTime.Serialization.Test.JsonNet
             var expectedLocalTime = new LocalTime(1, 2, 3, 4, 5);
             Assert.AreEqual(expectedLocalTime, localTime);
         }
+
+        [Test]
+        public void RoundtripPeriodConverter_Serialize()
+        {
+            var period = Period.FromDays(2) + Period.FromHours(3) + Period.FromMinutes(90);
+            var json = JsonConvert.SerializeObject(period, Formatting.None, NodaConverters.RoundtripPeriodConverter);
+            string expectedJson = "\"P2DT3H90M\"";
+            Assert.AreEqual(expectedJson, json);
+        }
+
+        [Test]
+        public void PeriodConverter_Deserialize()
+        {
+            string json = "\"P2DT3H90M\"";
+            var period = JsonConvert.DeserializeObject<Period>(json, NodaConverters.RoundtripPeriodConverter);
+            var expectedPeriod = Period.FromDays(2) + Period.FromHours(3) + Period.FromMinutes(90);
+            Assert.AreEqual(expectedPeriod, period);
+        }
+
+        [Test]
+        public void NormalizingIsoPeriodConverter_Serialize()
+        {
+            var period = Period.FromDays(2) + Period.FromHours(3) + Period.FromMinutes(90);
+            var json = JsonConvert.SerializeObject(period, Formatting.None, NodaConverters.NormalizingIsoPeriodConverter);
+            string expectedJson = "\"P2DT4H30M\"";
+            Assert.AreEqual(expectedJson, json);
+        }
+
+        [Test]
+        public void NormalizingIsoPeriodConverter_Deserialize()
+        {
+            string json = "\"P2DT4H30M\"";
+            var period = JsonConvert.DeserializeObject<Period>(json, NodaConverters.NormalizingIsoPeriodConverter);
+            var expectedPeriod = Period.FromDays(2) + Period.FromHours(4) + Period.FromMinutes(30);
+            Assert.AreEqual(expectedPeriod, period);
+        }
     }
 }
