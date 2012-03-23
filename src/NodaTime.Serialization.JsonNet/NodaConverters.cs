@@ -73,6 +73,19 @@ namespace NodaTime.Serialization.JsonNet
         /// </summary>
         public static readonly JsonConverter DurationConverter = new NodaDurationConverter();
 
+        /// <summary>
+        /// Round-tripping converter for periods. Use this when you really want to preserve information,
+        /// and don't need interoperability with systems expecting ISO.
+        /// </summary>
+        public static readonly JsonConverter RoundtripPeriodConverter = new NodaPatternConverter<Period>(PeriodPattern.RoundtripPattern);
+
+        /// <summary>
+        /// Normalizing ISO converter for periods. Use this when you want compatibility with systems expecting
+        /// ISO durations (~= Noda Time periods). However, note that Noda Time can have negative periods. Note that
+        /// this converter losees information - after serialization and deserialization, "90 minutes" will become "an hour and 30 minutes".
+        /// </summary>
+        public static readonly JsonConverter NormalizingIsoPeriodConverter = new NodaPatternConverter<Period>(PeriodPattern.NormalizingIsoPattern);
+
         private static Action<T> CreateIsoValidator<T>(Func<T, CalendarSystem> calendarProjection)
         {
             return value => {
