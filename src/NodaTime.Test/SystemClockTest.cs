@@ -29,7 +29,7 @@ namespace NodaTime.Test
         {
             long frameworkNowTicks = DateTime.UtcNow.Ticks - NodaConstants.DateTimeEpochTicks;
             long nodaTicks = SystemClock.SystemNow.Ticks;
-            Assert.Less(Math.Abs(nodaTicks - frameworkNowTicks), Duration.FromSeconds(1).TotalTicks);
+            Assert.Less(Math.Abs(nodaTicks - frameworkNowTicks), Duration.FromSeconds(1).Ticks);
         }
 
         [Test]
@@ -37,7 +37,7 @@ namespace NodaTime.Test
         {
             long frameworkNowTicks = DateTime.UtcNow.Ticks - NodaConstants.DateTimeEpochTicks;
             long nodaTicks = SystemClock.Instance.Now.Ticks;
-            Assert.Less(Math.Abs(nodaTicks - frameworkNowTicks), Duration.FromSeconds(1).TotalTicks);
+            Assert.Less(Math.Abs(nodaTicks - frameworkNowTicks), Duration.FromSeconds(1).Ticks);
         }
 
         [Test]

@@ -31,22 +31,22 @@ namespace NodaTime.Fields
 
         internal override int GetValue(Duration duration)
         {
-            return (int)duration.TotalTicks;
+            return (int)duration.Ticks;
         }
 
         internal override long GetInt64Value(Duration duration)
         {
-            return duration.TotalTicks;
+            return duration.Ticks;
         }
 
         internal override int GetValue(Duration duration, LocalInstant localInstant)
         {
-            return (int)duration.TotalTicks;
+            return (int)duration.Ticks;
         }
 
         internal override long GetInt64Value(Duration duration, LocalInstant localInstant)
         {
-            return duration.TotalTicks;
+            return duration.Ticks;
         }
 
         internal override Duration GetDuration(long value)

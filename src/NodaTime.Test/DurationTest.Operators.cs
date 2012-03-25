@@ -41,17 +41,17 @@ namespace NodaTime.Test
         [Test]
         public void OperatorPlus_Zero_IsNeutralElement()
         {
-            Assert.AreEqual(0L, (Duration.Zero + Duration.Zero).TotalTicks, "0 + 0");
-            Assert.AreEqual(1L, (Duration.OneTick + Duration.Zero).TotalTicks, "1 + 0");
-            Assert.AreEqual(1L, (Duration.Zero + Duration.OneTick).TotalTicks, "0 + 1");
+            Assert.AreEqual(0L, (Duration.Zero + Duration.Zero).Ticks, "0 + 0");
+            Assert.AreEqual(1L, (Duration.OneTick + Duration.Zero).Ticks, "1 + 0");
+            Assert.AreEqual(1L, (Duration.Zero + Duration.OneTick).Ticks, "0 + 1");
         }
 
         [Test]
         public void OperatorPlus_NonZero()
         {
-            Assert.AreEqual(3000001L, (threeMillion + Duration.OneTick).TotalTicks, "3,000,000 + 1");
-            Assert.AreEqual(0L, (Duration.OneTick + Duration.NegativeOneTick).TotalTicks, "1 + (-1)");
-            Assert.AreEqual(-49999999L, (negativeFiftyMillion + Duration.OneTick).TotalTicks, "-50,000,000 + 1");
+            Assert.AreEqual(3000001L, (threeMillion + Duration.OneTick).Ticks, "3,000,000 + 1");
+            Assert.AreEqual(0L, (Duration.OneTick + Duration.NegativeOneTick).Ticks, "1 + (-1)");
+            Assert.AreEqual(-49999999L, (negativeFiftyMillion + Duration.OneTick).Ticks, "-50,000,000 + 1");
         }
 
         [Test]
@@ -68,17 +68,17 @@ namespace NodaTime.Test
         [Test]
         public void OperatorMinus_Zero_IsNeutralElement()
         {
-            Assert.AreEqual(0L, (Duration.Zero - Duration.Zero).TotalTicks, "0 - 0");
-            Assert.AreEqual(1L, (Duration.OneTick - Duration.Zero).TotalTicks, "1 - 0");
-            Assert.AreEqual(-1L, (Duration.Zero - Duration.OneTick).TotalTicks, "0 - 1");
+            Assert.AreEqual(0L, (Duration.Zero - Duration.Zero).Ticks, "0 - 0");
+            Assert.AreEqual(1L, (Duration.OneTick - Duration.Zero).Ticks, "1 - 0");
+            Assert.AreEqual(-1L, (Duration.Zero - Duration.OneTick).Ticks, "0 - 1");
         }
 
         [Test]
         public void OperatorMinus_NonZero()
         {
-            Assert.AreEqual(2999999L, (threeMillion - Duration.OneTick).TotalTicks, "3,000,000 - 1");
-            Assert.AreEqual(2L, (Duration.OneTick - Duration.NegativeOneTick).TotalTicks, "1 - (-1)");
-            Assert.AreEqual(-50000001L, (negativeFiftyMillion - Duration.OneTick).TotalTicks, "-50,000,000 - 1");
+            Assert.AreEqual(2999999L, (threeMillion - Duration.OneTick).Ticks, "3,000,000 - 1");
+            Assert.AreEqual(2L, (Duration.OneTick - Duration.NegativeOneTick).Ticks, "1 - (-1)");
+            Assert.AreEqual(-50000001L, (negativeFiftyMillion - Duration.OneTick).Ticks, "-50,000,000 - 1");
         }
 
         [Test]
@@ -95,7 +95,7 @@ namespace NodaTime.Test
         [Test]
         public void OperatorDivision_ByNonZero()
         {
-            Assert.AreEqual(1000, (threeMillion / 3000).TotalTicks, "3000000 / 3000");
+            Assert.AreEqual(1000, (threeMillion / 3000).Ticks, "3000000 / 3000");
         }
 
         [Test]
@@ -107,8 +107,8 @@ namespace NodaTime.Test
         [Test]
         public void OperatorDivision_Truncates()
         {
-            Assert.AreEqual(1, (threeMillion / 2000000).TotalTicks, "3000000 / 2000000");
-            Assert.AreEqual(-1, (threeMillion / -2000000).TotalTicks, "3000000 / -2000000");
+            Assert.AreEqual(1, (threeMillion / 2000000).Ticks, "3000000 / 2000000");
+            Assert.AreEqual(-1, (threeMillion / -2000000).Ticks, "3000000 / -2000000");
         }
 
         [Test]

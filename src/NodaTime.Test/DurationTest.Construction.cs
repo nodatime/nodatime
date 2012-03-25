@@ -31,17 +31,17 @@ namespace NodaTime.Test
         public void Zero()
         {
             Duration test = Duration.Zero;
-            Assert.AreEqual(0, test.TotalTicks);
+            Assert.AreEqual(0, test.Ticks);
         }
 
         [Test]
         public void Factory_StandardDays()
         {
             Duration test = Duration.FromStandardDays(1);
-            Assert.AreEqual(1 * NodaConstants.TicksPerStandardDay, test.TotalTicks);
+            Assert.AreEqual(1 * NodaConstants.TicksPerStandardDay, test.Ticks);
 
             test = Duration.FromStandardDays(2);
-            Assert.AreEqual(2 * NodaConstants.TicksPerStandardDay, test.TotalTicks);
+            Assert.AreEqual(2 * NodaConstants.TicksPerStandardDay, test.Ticks);
 
             test = Duration.FromStandardDays(0);
             Assert.AreEqual(Duration.Zero, test);
@@ -51,10 +51,10 @@ namespace NodaTime.Test
         public void Factory_StandardHours()
         {
             Duration test = Duration.FromHours(1);
-            Assert.AreEqual(1 * NodaConstants.TicksPerHour, test.TotalTicks);
+            Assert.AreEqual(1 * NodaConstants.TicksPerHour, test.Ticks);
 
             test = Duration.FromHours(2);
-            Assert.AreEqual(2 * NodaConstants.TicksPerHour, test.TotalTicks);
+            Assert.AreEqual(2 * NodaConstants.TicksPerHour, test.Ticks);
 
             test = Duration.FromHours(0);
             Assert.AreEqual(Duration.Zero, test);
@@ -64,10 +64,10 @@ namespace NodaTime.Test
         public void FromMinutes()
         {
             Duration test = Duration.FromMinutes(1);
-            Assert.AreEqual(1 * NodaConstants.TicksPerMinute, test.TotalTicks);
+            Assert.AreEqual(1 * NodaConstants.TicksPerMinute, test.Ticks);
 
             test = Duration.FromMinutes(2);
-            Assert.AreEqual(2 * NodaConstants.TicksPerMinute, test.TotalTicks);
+            Assert.AreEqual(2 * NodaConstants.TicksPerMinute, test.Ticks);
 
             test = Duration.FromMinutes(0);
             Assert.AreEqual(Duration.Zero, test);
@@ -77,10 +77,10 @@ namespace NodaTime.Test
         public void FromSeconds()
         {
             Duration test = Duration.FromSeconds(1);
-            Assert.AreEqual(1 * NodaConstants.TicksPerSecond, test.TotalTicks);
+            Assert.AreEqual(1 * NodaConstants.TicksPerSecond, test.Ticks);
 
             test = Duration.FromSeconds(2);
-            Assert.AreEqual(2 * NodaConstants.TicksPerSecond, test.TotalTicks);
+            Assert.AreEqual(2 * NodaConstants.TicksPerSecond, test.Ticks);
 
             test = Duration.FromSeconds(0);
             Assert.AreEqual(Duration.Zero, test);
@@ -90,10 +90,10 @@ namespace NodaTime.Test
         public void FromMilliseconds()
         {
             Duration test = Duration.FromMilliseconds(1);
-            Assert.AreEqual(1 * NodaConstants.TicksPerMillisecond, test.TotalTicks);
+            Assert.AreEqual(1 * NodaConstants.TicksPerMillisecond, test.Ticks);
 
             test = Duration.FromMilliseconds(2);
-            Assert.AreEqual(2 * NodaConstants.TicksPerMillisecond, test.TotalTicks);
+            Assert.AreEqual(2 * NodaConstants.TicksPerMillisecond, test.Ticks);
 
             test = Duration.FromMilliseconds(0);
             Assert.AreEqual(Duration.Zero, test);
@@ -103,10 +103,10 @@ namespace NodaTime.Test
         public void FromTicks()
         {
             Duration test = Duration.FromTicks(1);
-            Assert.AreEqual(1, test.TotalTicks);
+            Assert.AreEqual(1, test.Ticks);
 
             test = Duration.FromTicks(2);
-            Assert.AreEqual(2, test.TotalTicks);
+            Assert.AreEqual(2, test.Ticks);
 
             test = Duration.FromTicks(0);
             Assert.AreEqual(Duration.Zero, test);
@@ -133,7 +133,7 @@ namespace NodaTime.Test
             long length = 4 * NodaConstants.TicksPerStandardDay + 5 * NodaConstants.TicksPerHour + 6 * NodaConstants.TicksPerMinute + 7 * NodaConstants.TicksPerSecond +
                                 8 * NodaConstants.TicksPerMillisecond + 9;
             var test = new Duration(length);
-            Assert.AreEqual(length, test.TotalTicks);
+            Assert.AreEqual(length, test.Ticks);
         }
     }
 }

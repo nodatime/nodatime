@@ -121,10 +121,10 @@ namespace NodaTime.Test.Fields
         [Test]
         public void GetDuration()
         {
-            Assert.AreEqual(0L, sample.GetDuration(0).TotalTicks);
-            Assert.AreEqual(1234 * 90L, sample.GetDuration(1234).TotalTicks);
-            Assert.AreEqual(-1234 * 90L, sample.GetDuration(-1234).TotalTicks);
-            Assert.AreEqual(int.MaxValue * 90L, sample.GetDuration(int.MaxValue).TotalTicks);
+            Assert.AreEqual(0L, sample.GetDuration(0).Ticks);
+            Assert.AreEqual(1234 * 90L, sample.GetDuration(1234).Ticks);
+            Assert.AreEqual(-1234 * 90L, sample.GetDuration(-1234).Ticks);
+            Assert.AreEqual(int.MaxValue * 90L, sample.GetDuration(int.MaxValue).Ticks);
         }
 
         [Test]
@@ -136,10 +136,10 @@ namespace NodaTime.Test.Fields
         [Test]
         public void GetDuration_WithLocalInstant()
         {
-            Assert.AreEqual(0L, sample.GetDuration(0, localInstant).TotalTicks);
-            Assert.AreEqual(1234 * 90L, sample.GetDuration(1234, localInstant).TotalTicks);
-            Assert.AreEqual(-1234 * 90L, sample.GetDuration(-1234, localInstant).TotalTicks);
-            Assert.AreEqual(int.MaxValue * 90L, sample.GetDuration(int.MaxValue, localInstant).TotalTicks);
+            Assert.AreEqual(0L, sample.GetDuration(0, localInstant).Ticks);
+            Assert.AreEqual(1234 * 90L, sample.GetDuration(1234, localInstant).Ticks);
+            Assert.AreEqual(-1234 * 90L, sample.GetDuration(-1234, localInstant).Ticks);
+            Assert.AreEqual(int.MaxValue * 90L, sample.GetDuration(int.MaxValue, localInstant).Ticks);
         }
 
         [Test]

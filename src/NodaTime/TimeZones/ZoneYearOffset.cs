@@ -371,7 +371,7 @@ namespace NodaTime.TimeZones
                 int signDirection = Math.Sign(direction);
                 if (dayOfWeek == 0)
                 {
-                    int signDifference = Math.Sign((localInstant - newInstant).TotalTicks);
+                    int signDifference = Math.Sign((localInstant - newInstant).Ticks);
                     if (signDifference == 0 || signDirection == signDifference)
                     {
                         newInstant = calendar.Fields.Years.Add(newInstant, direction);
@@ -381,7 +381,7 @@ namespace NodaTime.TimeZones
                 else
                 {
                     newInstant = SetDayOfWeek(calendar, newInstant);
-                    int signDifference = Math.Sign((localInstant - newInstant).TotalTicks);
+                    int signDifference = Math.Sign((localInstant - newInstant).Ticks);
                     if (signDifference == 0 || signDirection == signDifference)
                     {
                         newInstant = calendar.Fields.Years.Add(newInstant, direction);
