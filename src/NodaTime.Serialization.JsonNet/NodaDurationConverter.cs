@@ -72,11 +72,11 @@ namespace NodaTime.Serialization.JsonNet
 
         protected override void WriteJsonImpl(JsonWriter writer, Duration value, JsonSerializer serializer)
         {
-            var hours = value.TotalTicks / NodaConstants.TicksPerHour;
-            var minutes = (value.TotalTicks % NodaConstants.TicksPerHour) / NodaConstants.TicksPerMinute;
-            var seconds = (value.TotalTicks % NodaConstants.TicksPerMinute) / NodaConstants.TicksPerSecond;
-            var milliseconds = (value.TotalTicks % NodaConstants.TicksPerSecond) / NodaConstants.TicksPerMillisecond;
-            var ticks = value.TotalTicks % NodaConstants.TicksPerMillisecond;
+            var hours = value.Ticks / NodaConstants.TicksPerHour;
+            var minutes = (value.Ticks % NodaConstants.TicksPerHour) / NodaConstants.TicksPerMinute;
+            var seconds = (value.Ticks % NodaConstants.TicksPerMinute) / NodaConstants.TicksPerSecond;
+            var milliseconds = (value.Ticks % NodaConstants.TicksPerSecond) / NodaConstants.TicksPerMillisecond;
+            var ticks = value.Ticks % NodaConstants.TicksPerMillisecond;
 
             var durationText = string.Format("{0:D2}:{1:D2}:{2:D2}", hours, minutes, seconds);
 

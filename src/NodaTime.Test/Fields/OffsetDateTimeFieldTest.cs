@@ -206,11 +206,11 @@ namespace NodaTime.Test.Fields
         public void Remainder_DelegatesToWrappedField()
         {
             OffsetDateTimeField field = GetSampleField();
-            Assert.AreEqual(0, field.Remainder(new LocalInstant(0)).TotalTicks);
-            Assert.AreEqual(499 * NodaConstants.TicksPerMillisecond, field.Remainder(new LocalInstant(499 * NodaConstants.TicksPerMillisecond)).TotalTicks);
-            Assert.AreEqual(500 * NodaConstants.TicksPerMillisecond, field.Remainder(new LocalInstant(500 * NodaConstants.TicksPerMillisecond)).TotalTicks);
-            Assert.AreEqual(501 * NodaConstants.TicksPerMillisecond, field.Remainder(new LocalInstant(501 * NodaConstants.TicksPerMillisecond)).TotalTicks);
-            Assert.AreEqual(0, field.Remainder(new LocalInstant(1000 * NodaConstants.TicksPerMillisecond)).TotalTicks);
+            Assert.AreEqual(0, field.Remainder(new LocalInstant(0)).Ticks);
+            Assert.AreEqual(499 * NodaConstants.TicksPerMillisecond, field.Remainder(new LocalInstant(499 * NodaConstants.TicksPerMillisecond)).Ticks);
+            Assert.AreEqual(500 * NodaConstants.TicksPerMillisecond, field.Remainder(new LocalInstant(500 * NodaConstants.TicksPerMillisecond)).Ticks);
+            Assert.AreEqual(501 * NodaConstants.TicksPerMillisecond, field.Remainder(new LocalInstant(501 * NodaConstants.TicksPerMillisecond)).Ticks);
+            Assert.AreEqual(0, field.Remainder(new LocalInstant(1000 * NodaConstants.TicksPerMillisecond)).Ticks);
         }
 
         /// <summary>

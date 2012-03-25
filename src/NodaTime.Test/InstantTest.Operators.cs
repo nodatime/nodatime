@@ -375,17 +375,17 @@ namespace NodaTime.Test
         [Test]
         public void OperatorMinusInstant_NonZero()
         {
-            Assert.AreEqual(2999999L, (threeMillion - one).TotalTicks, "3,000,000 - 1");
-            Assert.AreEqual(2L, (one - negativeOne).TotalTicks, "1 - (-1)");
-            Assert.AreEqual(-50000001L, (negativeFiftyMillion - one).TotalTicks, "-50,000,000 - 1");
+            Assert.AreEqual(2999999L, (threeMillion - one).Ticks, "3,000,000 - 1");
+            Assert.AreEqual(2L, (one - negativeOne).Ticks, "1 - (-1)");
+            Assert.AreEqual(-50000001L, (negativeFiftyMillion - one).Ticks, "-50,000,000 - 1");
         }
 
         [Test]
         public void OperatorMinusInstant_UnixEpoch_IsNeutralElement()
         {
-            Assert.AreEqual(0L, (Instant.UnixEpoch - Instant.UnixEpoch).TotalTicks, "0 - 0");
-            Assert.AreEqual(1L, (one - Instant.UnixEpoch).TotalTicks, "1 - 0");
-            Assert.AreEqual(-1L, (Instant.UnixEpoch - one).TotalTicks, "0 - 1");
+            Assert.AreEqual(0L, (Instant.UnixEpoch - Instant.UnixEpoch).Ticks, "0 - 0");
+            Assert.AreEqual(1L, (one - Instant.UnixEpoch).Ticks, "1 - 0");
+            Assert.AreEqual(-1L, (Instant.UnixEpoch - one).Ticks, "0 - 1");
         }
 
         // Smoke tests for methods which simply delegate to the - operator.

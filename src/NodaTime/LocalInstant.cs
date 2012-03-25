@@ -88,7 +88,7 @@ namespace NodaTime
         /// </summary>
         public static LocalInstant operator +(LocalInstant left, Duration right)
         {
-            return new LocalInstant(left.Ticks + right.TotalTicks);
+            return new LocalInstant(left.Ticks + right.Ticks);
         }
 
         /// <summary>
@@ -130,7 +130,7 @@ namespace NodaTime
         /// </summary>
         public static LocalInstant operator -(LocalInstant left, Duration right)
         {
-            return new LocalInstant(left.Ticks - right.TotalTicks);
+            return new LocalInstant(left.Ticks - right.Ticks);
         }
 
         /// <summary>

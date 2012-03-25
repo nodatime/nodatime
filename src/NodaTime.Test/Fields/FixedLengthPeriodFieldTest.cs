@@ -109,10 +109,10 @@ namespace NodaTime.Test.Fields
         [Test]
         public void GetDuration()
         {
-            Assert.AreEqual(0L, field.GetDuration(0).TotalTicks);
-            Assert.AreEqual(12340000L, field.GetDuration(1234).TotalTicks);
-            Assert.AreEqual(-12340000L, field.GetDuration(-1234).TotalTicks);
-            Assert.AreEqual(int.MaxValue * 10000L, field.GetDuration(int.MaxValue).TotalTicks);
+            Assert.AreEqual(0L, field.GetDuration(0).Ticks);
+            Assert.AreEqual(12340000L, field.GetDuration(1234).Ticks);
+            Assert.AreEqual(-12340000L, field.GetDuration(-1234).Ticks);
+            Assert.AreEqual(int.MaxValue * 10000L, field.GetDuration(int.MaxValue).Ticks);
         }
 
         [Test]
@@ -125,10 +125,10 @@ namespace NodaTime.Test.Fields
         public void GetDuration_WithLocalInstant()
         {
             LocalInstant when = new LocalInstant(987654321L);
-            Assert.AreEqual(0L, field.GetDuration(0, when).TotalTicks);
-            Assert.AreEqual(12340000L, field.GetDuration(1234, when).TotalTicks);
-            Assert.AreEqual(-12340000L, field.GetDuration(-1234, when).TotalTicks);
-            Assert.AreEqual(int.MaxValue * 10000L, field.GetDuration(int.MaxValue, when).TotalTicks);
+            Assert.AreEqual(0L, field.GetDuration(0, when).Ticks);
+            Assert.AreEqual(12340000L, field.GetDuration(1234, when).Ticks);
+            Assert.AreEqual(-12340000L, field.GetDuration(-1234, when).Ticks);
+            Assert.AreEqual(int.MaxValue * 10000L, field.GetDuration(int.MaxValue, when).Ticks);
         }
 
         [Test]

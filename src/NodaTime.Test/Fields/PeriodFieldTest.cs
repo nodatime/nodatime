@@ -49,7 +49,7 @@ namespace NodaTime.Test.Fields
         public void GetDurationWithoutLocalInstant_UsesUnitTicks()
         {
             PeriodField field = new StubPeriodField();
-            Assert.AreEqual(1230L, field.GetDuration(10).TotalTicks);
+            Assert.AreEqual(1230L, field.GetDuration(10).Ticks);
         }
 
         [Test]
