@@ -160,7 +160,7 @@ namespace NodaTime
         /// Returns the time zone with the given ID. This must be one of the IDs returned by <see cref="Ids"/>.
         /// </summary>
         /// <param name="id">The time zone ID to find.</param>
-        /// <exception cref="TimeZoneNotFoundException"></exception>
+        /// <exception cref="TimeZoneNotFoundException">The provider does not support a time zone with the given ID.</exception>
         /// <returns>The <see cref="DateTimeZone" /> with the given ID.</returns>
         public static DateTimeZone ForId(string id)
         {

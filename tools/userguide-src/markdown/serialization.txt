@@ -29,9 +29,12 @@ All default patterns use the invariant culture.
 - `Interval`: A compound object of the form `{ Start: xxx, End: yyy }` where `xxx` and `yyy` are represented however the serializer sees fit. (Typically using the default representation above.)
 - `Period`: The round-trip period pattern; `NodaConverters.NormalizingIsoPeriodConverter` provides a converter using the normalizing ISO-like pattern
 - `Duration`: TBD
-- `DateTimeZone`: TBD
+- `ZonedDateTime`: TBD
+- `DateTimeZone`: The ID is written as a string.
 
 Limitations
 ===========
 
-Currently only ISO calendars are supported, and handling for negative and non-four-digit years will depend on the appropriate underlying pattern implementation.
+- Currently only ISO calendars are supported, and handling for negative and non-four-digit years will depend on the appropriate underlying pattern implementation.
+- There's no indication of the time zone provider or its version in the `DateTimeZone` representation.
+

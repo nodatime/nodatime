@@ -23,7 +23,6 @@ namespace NodaTime
     /// A length of time in ticks. (There are 10,000 ticks in a millisecond.) A duration represents
     /// a fixed length of time, with no concept of calendars.
     /// </summary>
-    /// </remarks>
     public struct Duration : IEquatable<Duration>, IComparable<Duration>, IComparable
     {
         #region Public readonly fields

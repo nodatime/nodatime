@@ -21,28 +21,20 @@ using Newtonsoft.Json;
 
 namespace NodaTime.Serialization.JsonNet
 {
-    public class NodaDateTimeZoneConverter : JsonConverter
+    /// <summary>
+    /// Json.NET converter for <see cref="DateTimeZone"/>.
+    /// </summary>
+    public class NodaDateTimeZoneConverter : NodaConverterBase<DateTimeZone>
     {
-        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+        /// <summary>
+        /// Reads the time zone ID (which must be a string) from the reader, and converts it to a time zone.
+        /// </summary>
+        /// <param name="reader">The JSON reader to fetch data from.</param>
+        /// <param name="serializer">The serializer for embedded serialization.</param>
+        /// <exception cref="TimeZoneNotFoundException">The provider does not support a time zone with the given ID.</exception>
+        /// <returns>The <see cref="DateTimeZone"/> identified in the JSON, or null.</returns>
+        protected override DateTimeZone ReadJsonImpl(JsonReader reader, JsonSerializer serializer)
         {
-            if (!(value is DateTimeZone))
-            {
-                throw new ArgumentException(
-                    string.Format("Unexpected value when converting. Expected NodaTime.DateTimeZone, got {0}.",
-                    value.GetType().FullName));
-            }
-
-            var dateTimeZone = (DateTimeZone)value;
-            writer.WriteValue(dateTimeZone.Id);
-        }
-
-        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
-        {
-            if (reader.TokenType == JsonToken.Null)
-            {
-                return null;
-            }
-
             if (reader.TokenType != JsonToken.String)
             {
                 throw new InvalidDataException(
@@ -51,17 +43,18 @@ namespace NodaTime.Serialization.JsonNet
             }
 
             var timeZoneId = reader.Value.ToString();
-            if (string.IsNullOrEmpty(timeZoneId))
-            {
-                return null;
-            }
-
             return DateTimeZone.ForId(timeZoneId);
         }
 
-        public override bool CanConvert(Type objectType)
+        /// <summary>
+        /// Writes the time zone ID to the writer.
+        /// </summary>
+        /// <param name="writer">The writer to write JSON data to</param>
+        /// <param name="value">The value to serializer</param>
+        /// <param name="serializer">The serializer to use for nested serialization</param>
+        protected override void WriteJsonImpl(JsonWriter writer, DateTimeZone value, JsonSerializer serializer)
         {
-            return typeof(DateTimeZone).IsAssignableFrom(objectType);
+            writer.WriteValue(value.Id);
         }
     }
 }

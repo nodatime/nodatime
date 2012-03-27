@@ -19,6 +19,9 @@ using Newtonsoft.Json;
 
 namespace NodaTime.Serialization.JsonNet
 {
+    /// <summary>
+    /// Static class containing extension methods to configure Json.NET for Noda Time types.
+    /// </summary>
     public static class Extensions
     {
         /// <summary>

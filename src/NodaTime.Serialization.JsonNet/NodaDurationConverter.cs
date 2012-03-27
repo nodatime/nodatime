@@ -21,8 +21,17 @@ using Newtonsoft.Json;
 
 namespace NodaTime.Serialization.JsonNet
 {
+    /// <summary>
+    /// Json.NET converter for <see cref="Duration"/>.
+    /// </summary>
     public class NodaDurationConverter : NodaConverterBase<Duration>
     {
+        /// <summary>
+        /// Reads a string from the reader, and converts it to a duration.
+        /// </summary>
+        /// <param name="reader">The JSON reader to fetch data from.</param>
+        /// <param name="serializer">The serializer for embedded serialization.</param>
+        /// <returns>The <see cref="DateTimeZone"/> identified in the JSON, or null.</returns>
         protected override Duration ReadJsonImpl(JsonReader reader, JsonSerializer serializer)
         {
             var durationText = (string)reader.Value;
@@ -70,6 +79,12 @@ namespace NodaTime.Serialization.JsonNet
             return duration;
         }
 
+        /// <summary>
+        /// Converts the given duration to JSON.
+        /// </summary>
+        /// <param name="writer">The writer to write to</param>
+        /// <param name="value">The value to convert</param>
+        /// <param name="serializer">Unused by this serializer</param>
         protected override void WriteJsonImpl(JsonWriter writer, Duration value, JsonSerializer serializer)
         {
             var hours = value.Ticks / NodaConstants.TicksPerHour;

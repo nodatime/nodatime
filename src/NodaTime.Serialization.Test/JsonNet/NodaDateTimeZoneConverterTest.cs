@@ -15,6 +15,7 @@
 // limitations under the License.
 #endregion
 
+using System;
 using NUnit.Framework;
 using Newtonsoft.Json;
 using NodaTime.Serialization.JsonNet;
@@ -36,15 +37,6 @@ namespace NodaTime.Serialization.Test.JsonNet
         }
 
         [Test]
-        public void Serialize_NullValue()
-        {
-            DateTimeZone dateTimeZone = null;
-            var json = JsonConvert.SerializeObject(dateTimeZone, Formatting.None, converter);
-            string expectedJson = "null";
-            Assert.AreEqual(expectedJson, json);
-        }
-
-        [Test]
         public void Deserialize()
         {
             string json = "\"America/Los_Angeles\"";
@@ -54,11 +46,10 @@ namespace NodaTime.Serialization.Test.JsonNet
         }
 
         [Test]
-        public void Deserialize_NullValue()
+        public void Deserialize_TimeZoneNotFound()
         {
-            string json = "null";
-            var dateTimeZone = JsonConvert.DeserializeObject<DateTimeZone>(json, converter);
-            Assert.IsNull(dateTimeZone);
+            string json = "\"America/DOES_NOT_EXIST\"";
+            Assert.Throws<TimeZoneNotFoundException>(() => JsonConvert.DeserializeObject<DateTimeZone>(json, converter));
         }
     }
 }
