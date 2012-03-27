@@ -36,7 +36,6 @@ namespace NodaTime.Serialization.JsonNet
         /// Creates a new instance with a pattern and no validator.
         /// </summary>
         /// <param name="pattern">The pattern to use for parsing and formatting. Must not be null.</param>
-        /// <param name="validator">The validator to call before writing values. May be null, indicating that no validation is required.</param>
         /// <exception cref="ArgumentNullException"><paramref name="pattern"/> is null</exception>
         public NodaPatternConverter(IPattern<T> pattern) : this(pattern, null)
         {
@@ -61,6 +60,12 @@ namespace NodaTime.Serialization.JsonNet
             this.validator = validator;
         }
 
+        /// <summary>
+        /// Implemented by concrete subclasses, this performs the final conversion from a non-null JSON value to
+        /// a value of type T.
+        /// </summary>
+        /// <param name="reader">The JSON reader to pull data from</param>
+        /// <param name="serializer">The serializer to use for nested serialization</param>
         protected override T ReadJsonImpl(JsonReader reader, JsonSerializer serializer)
         {
             if (reader.TokenType != JsonToken.String)
@@ -74,6 +79,12 @@ namespace NodaTime.Serialization.JsonNet
             return pattern.Parse(text).Value;
         }
 
+        /// <summary>
+        /// Writes the formatted value to the writer.
+        /// </summary>
+        /// <param name="writer">The writer to write JSON data to</param>
+        /// <param name="value">The value to serializer</param>
+        /// <param name="serializer">The serializer to use for nested serialization</param>
         protected override void WriteJsonImpl(JsonWriter writer, T value, JsonSerializer serializer)
         {
             if (validator != null)

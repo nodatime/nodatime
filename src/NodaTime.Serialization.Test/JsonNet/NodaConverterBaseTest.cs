@@ -19,6 +19,7 @@ using System.IO;
 using NUnit.Framework;
 using Newtonsoft.Json;
 using NodaTime.Serialization.JsonNet;
+using System;
 
 namespace NodaTime.Serialization.Test.JsonNet
 {
@@ -101,6 +102,14 @@ namespace NodaTime.Serialization.Test.JsonNet
             Assert.IsFalse(converter.CanConvert(typeof(uint)));
         }
 
+        [Test]
+        public void CanConvert_Inheritance()
+        {
+            var converter = new TestInheritanceConverter();
+
+            Assert.IsTrue(converter.CanConvert(typeof(MemoryStream)));
+        }
+
         private class TestConverter : NodaConverterBase<int>
         {
             protected override int ReadJsonImpl(JsonReader reader, JsonSerializer serializer)
@@ -124,6 +133,22 @@ namespace NodaTime.Serialization.Test.JsonNet
             protected override void WriteJsonImpl(JsonWriter writer, string value, JsonSerializer serializer)
             {
                 writer.WriteValue(value);
+            }
+        }
+
+        /// <summary>
+        /// Just use for CanConvert testing...
+        /// </summary>
+        private class TestInheritanceConverter : NodaConverterBase<Stream>
+        {
+            protected override Stream ReadJsonImpl(JsonReader reader, JsonSerializer serializer)
+            {
+                throw new NotImplementedException();
+            }
+
+            protected override void WriteJsonImpl(JsonWriter writer, Stream value, JsonSerializer serializer)
+            {
+                throw new NotImplementedException();
             }
         }
     }
