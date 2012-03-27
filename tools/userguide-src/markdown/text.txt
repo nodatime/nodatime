@@ -102,6 +102,7 @@ specifiers being available for some types but not others.
 - [LocalTime patterns](localtime-patterns.html)
 - [LocalDate patterns](localdate-patterns.html)
 - [LocalDateTime patterns](localdatetime-patterns.html)
+- [Period patterns](period-patterns.html)
 
 <a name="custom-patterns">Custom patterns</a>
 ---------------
