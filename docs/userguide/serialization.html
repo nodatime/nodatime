@@ -1,0 +1,47 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+  <head>
+    <link href="prettify.css" type="text/css" rel="stylesheet" />
+    <link href="styles.css" type="text/css" rel="stylesheet" />
+    <script type="text/javascript" src="prettify.js"></script>
+    <title>Serialization</title>
+  </head>
+  <body onload="prettyPrint()">
+    <h1>Serialization</h1>
+    <p>Currently serialization is experimental. We will have one serialization assembly for each type of
+serialization we support which requires separate dependencies; if and when "stock" binary and XML
+serialization are supported, they will be included within the main Noda Time assembly.</p>
+
+<h2>Json.NET: NodaTime.Serialization.JsonNet</h2>
+
+<p><a href="http://json.net">Json.NET</a> is supported within the <code>NodaTime.Serialization.JsonNet</code> and the namespace
+of the same name.</p>
+
+<p>An extension method of <code>ConfigureForNodaTime</code> is provided on both <code>JsonSerializer</code> and
+<code>JsonSerializerSettings</code>. Alternatively, the <code>NodaConverters</code> type provides public static read-only fields
+for individual converters. (All converters are immutable.)</p>
+
+<p>Custom converters can be created easily from patterns using <code>NodaPatternConverter</code>.</p>
+
+<h1>Supported types and default representations</h1>
+
+<p>All default patterns use the invariant culture.</p>
+
+<ul>
+<li><code>Offset</code>: general pattern, e.g. <code>+05</code> or <code>-03:30</code></li>
+<li><code>LocalDate</code>: ISO-8601 date pattern: <code>yyyy'-'MM'-'dd</code></li>
+<li><code>LocalTime</code>: ISO-8601 time pattern, extended to handle fractional seconds: <code>HH':'mm':'ss.FFFFFFF</code></li>
+<li><code>LocalDateTime</code>: ISO-8601 date/time pattern with no time zone specifier, extended to handle fractional seconds: <code>yyyy'-'MM'-'dd'T'HH':'mm':'ss.FFFFFFF</code></li>
+<li><code>Instant</code>: an ISO-8601 pattern extended to handle fractional seconds: <code>yyyy'-'MM'-'dd'T'HH':'mm':'ss.FFFFFFF'Z'</code></li>
+<li><code>Interval</code>: A compound object of the form <code>{ Start: xxx, End: yyy }</code> where <code>xxx</code> and <code>yyy</code> are represented however the serializer sees fit. (Typically using the default representation above.)</li>
+<li><code>Period</code>: The round-trip period pattern; <code>NodaConverters.NormalizingIsoPeriodConverter</code> provides a converter using the normalizing ISO-like pattern</li>
+<li><code>Duration</code>: TBD</li>
+<li><code>DateTimeZone</code>: TBD</li>
+</ul>
+
+<h1>Limitations</h1>
+
+<p>Currently only ISO calendars are supported, and handling for negative and non-four-digit years will depend on the appropriate underlying pattern implementation.</p>
+
+  </body>
+</html>
