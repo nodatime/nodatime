@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 11
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NodaTime.Tools.BuildMarkdownDocs", "NodaTime.Tools.BuildMarkdownDocs\NodaTime.Tools.BuildMarkdownDocs.csproj", "{420792C8-51C7-4129-9663-5EF765557CCF}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "userguide-src", "userguide-src", "{9A04E3F6-25AD-46C6-9B5C-C53600A2074F}"
@@ -16,6 +16,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "raw", "raw", "{5663A352-33C
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "markdown", "markdown", "{C762C267-287B-4B8F-81D1-C92AB1AFF729}"
 	ProjectSection(SolutionItems) = preProject
+		localdatetime-patterns.txt = localdatetime-patterns.txt
 		userguide-src\markdown\arithmetic.txt = userguide-src\markdown\arithmetic.txt
 		userguide-src\markdown\bcl-conversions.txt = userguide-src\markdown\bcl-conversions.txt
 		userguide-src\markdown\concepts.txt = userguide-src\markdown\concepts.txt
@@ -23,11 +24,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "markdown", "markdown", "{C7
 		userguide-src\markdown\index.txt = userguide-src\markdown\index.txt
 		userguide-src\markdown\instant-patterns.txt = userguide-src\markdown\instant-patterns.txt
 		userguide-src\markdown\localdate-patterns.txt = userguide-src\markdown\localdate-patterns.txt
-		localdatetime-patterns.txt = localdatetime-patterns.txt
 		userguide-src\markdown\localtime-patterns.txt = userguide-src\markdown\localtime-patterns.txt
 		userguide-src\markdown\mono.txt = userguide-src\markdown\mono.txt
 		userguide-src\markdown\offset-patterns.txt = userguide-src\markdown\offset-patterns.txt
+		userguide-src\markdown\period-patterns.txt = userguide-src\markdown\period-patterns.txt
 		userguide-src\markdown\rationale.txt = userguide-src\markdown\rationale.txt
+		userguide-src\markdown\serialization.txt = userguide-src\markdown\serialization.txt
 		userguide-src\markdown\template.html = userguide-src\markdown\template.html
 		userguide-src\markdown\text.txt = userguide-src\markdown\text.txt
 	EndProjectSection

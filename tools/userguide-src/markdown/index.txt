@@ -15,6 +15,7 @@ User guide contents
 - [Arithmetic](arithmetic.html)
 - [Text handling](text.html)
 - [BCL conversions](bcl-conversions.html)
+- [Serialization](serialization.html)
 - [Mono support](mono.html)
 - [Limitations](limitations.html)
 
