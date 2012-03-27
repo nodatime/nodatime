@@ -11,10 +11,10 @@ Json.NET: NodaTime.Serialization.JsonNet
 of the same name.
 
 An extension method of `ConfigureForNodaTime` is provided on both `JsonSerializer` and
-`JsonSerializerSettings`. Alternatively, the `NodaConverters` type provides public static read-only fields
+`JsonSerializerSettings`. Alternatively, the [`NodaConverters`](noda-type://NodaTime.Serialization.JsonNet.NodaConverters) type provides public static read-only fields
 for individual converters. (All converters are immutable.)
 
-Custom converters can be created easily from patterns using `NodaPatternConverter`.
+Custom converters can be created easily from patterns using [`NodaPatternConverter`](noda-type://NodaTime.Serialization.JsonNet.NodaPatternConverter).
 
 Supported types and default representations
 ===========================================
@@ -37,4 +37,3 @@ Limitations
 
 - Currently only ISO calendars are supported, and handling for negative and non-four-digit years will depend on the appropriate underlying pattern implementation.
 - There's no indication of the time zone provider or its version in the `DateTimeZone` representation.
-
