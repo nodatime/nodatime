@@ -15,6 +15,7 @@
 // limitations under the License.
 #endregion
 
+using System;
 using NUnit.Framework;
 
 namespace NodaTime.Test
@@ -40,6 +41,53 @@ namespace NodaTime.Test
         public void DefaultProviderIsTzdb()
         {
             Assert.IsTrue(DateTimeZone.ProviderVersionId.StartsWith("TZDB: "));
+        }
+
+        // The current implementation caches every half hour, -12 to +15.
+        [Test]
+        public void ForOffset_UncachedExample_NotOnHalfHour()
+        {
+            var offset = Offset.FromMilliseconds(12345);
+            var zone1 = DateTimeZone.ForOffset(offset);
+            var zone2 = DateTimeZone.ForOffset(offset);
+
+            Assert.AreNotSame(zone1, zone2);
+            Assert.IsTrue(zone1.IsFixed);
+            Assert.AreEqual(offset, zone1.MaxOffset);
+            Assert.AreEqual(offset, zone1.MinOffset);
+        }
+
+        [Test]
+        public void ForOffset_UncachedExample_OutsideCacheRange()
+        {
+            var offset = Offset.FromHours(-14);
+            var zone1 = DateTimeZone.ForOffset(offset);
+            var zone2 = DateTimeZone.ForOffset(offset);
+
+            Assert.AreNotSame(zone1, zone2);
+            Assert.IsTrue(zone1.IsFixed);
+            Assert.AreEqual(offset, zone1.MaxOffset);
+            Assert.AreEqual(offset, zone1.MinOffset);
+        }
+
+        [Test]
+        public void ForOffset_CachedExample()
+        {
+            var offset = Offset.FromHours(2);
+            var zone1 = DateTimeZone.ForOffset(offset);
+            var zone2 = DateTimeZone.ForOffset(offset);
+            // Caching check...
+            Assert.AreSame(zone1, zone2);
+
+            Assert.IsTrue(zone1.IsFixed);
+            Assert.AreEqual(offset, zone1.MaxOffset);
+            Assert.AreEqual(offset, zone1.MinOffset);
+        }
+
+        [Test]
+        public void ForOffset_Zero_SameAsUtc()
+        {
+            Assert.AreSame(DateTimeZone.Utc, DateTimeZone.ForOffset(Offset.Zero));
         }
     }
 }
