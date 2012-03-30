@@ -94,6 +94,10 @@ namespace NodaTime
         public static readonly TzdbTimeZoneProvider DefaultDateTimeZoneProvider = new TzdbTimeZoneProvider("NodaTime.TimeZones.Tzdb");
 
         private static readonly DateTimeZone UtcZone = new FixedDateTimeZone(Offset.Zero);
+        private const int FixedZoneCacheGranularityMilliseconds = NodaConstants.MillisecondsPerMinute * 30;
+        private const int FixedZoneCacheMinimumMilliseconds = -FixedZoneCacheGranularityMilliseconds * 12 * 2; // From UTC-12
+        private const int FixedZoneCacheSize = (12 + 15) * 2 + 1; // To UTC+15 inclusive
+        private static readonly DateTimeZone[] FixedZoneCache = BuildFixedZoneCache();
 
         private static TimeZoneCache cache = new TimeZoneCache(DefaultDateTimeZoneProvider);
         private static readonly object cacheLock = new object();
@@ -154,6 +158,29 @@ namespace NodaTime
         public static DateTimeZone GetSystemDefaultOrNull()
         {
             return cache.GetSystemDefaultOrNull();
+        }
+
+        /// <summary>
+        /// Returns a fixed time zone with the given offset. This may or may not be cached;
+        /// callers should not rely upon any particular caching policy. Additionally, there is
+        /// no guarantee that <see cref="ForId"/> will return a time zone when presented with the
+        /// ID returned from a fixed time zone.
+        /// </summary>
+        /// <param name="offset">The offset for the returned time zone</param>
+        /// <returns>A fixed time zone with the given offset.</returns>
+        public static DateTimeZone ForOffset(Offset offset)
+        {
+            int millis = offset.TotalMilliseconds;
+            if (millis % FixedZoneCacheGranularityMilliseconds != 0)
+            {
+                return new FixedDateTimeZone(offset);
+            }
+            int index = (millis - FixedZoneCacheMinimumMilliseconds) / FixedZoneCacheGranularityMilliseconds;
+            if (index < 0 || index >= FixedZoneCacheSize)
+            {
+                return new FixedDateTimeZone(offset);
+            }
+            return FixedZoneCache[index];
         }
 
         /// <summary>
@@ -568,5 +595,21 @@ namespace NodaTime
             return Id;
         }
         #endregion
+
+        /// <summary>
+        /// Creates a fixed time zone for offsets -23.5 to +23.5 at every half hour,
+        /// fixing the 0 offset as DateTimeZone.Utc.
+        /// </summary>
+        private static DateTimeZone[] BuildFixedZoneCache()
+        {
+            DateTimeZone[] ret = new DateTimeZone[FixedZoneCacheSize];
+            for (int i = 0; i < FixedZoneCacheSize; i++)
+            {
+                int offsetMillis = i * FixedZoneCacheGranularityMilliseconds + FixedZoneCacheMinimumMilliseconds;
+                ret[i] = new FixedDateTimeZone(Offset.FromMilliseconds(offsetMillis));
+            }
+            ret[-FixedZoneCacheMinimumMilliseconds / FixedZoneCacheGranularityMilliseconds] = DateTimeZone.Utc;
+            return ret;
+        }
     }
 }
