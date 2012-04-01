@@ -160,6 +160,12 @@ period containing time units to a <code>LocalDate</code> will result in an
 simply summed, with no normalization. Subtraction works in the same
 way.</p>
 
+<p>An alternative way of creating a period is to use <a href="../api/html/T_NodaTime_PeriodBuilder.htm"><code>PeriodBuilder</code></a>
+which is mutable, with a nullable property for each component:</p>
+
+<pre class="prettyprint"><code>Period compound = new PeriodBuilder { Days = 1, Months = 1 }.Build();
+</code></pre>
+
 <p>Adding a compound period can sometimes give unexpected results if
 you don't understand how they're handled, but the rule is extremely
 simple: <strong>One component is added at a time, starting with the most

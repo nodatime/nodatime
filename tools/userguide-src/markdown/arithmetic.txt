@@ -147,6 +147,11 @@ Again, this is very simple - the components in the two periods are
 simply summed, with no normalization. Subtraction works in the same
 way.
 
+An alternative way of creating a period is to use [`PeriodBuilder`](noda-type://NodaTime.PeriodBuilder)
+which is mutable, with a nullable property for each component:
+
+    Period compound = new PeriodBuilder { Days = 1, Months = 1 }.Build();
+
 Adding a compound period can sometimes give unexpected results if
 you don't understand how they're handled, but the rule is extremely
 simple: **One component is added at a time, starting with the most
