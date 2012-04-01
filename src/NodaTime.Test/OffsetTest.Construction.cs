@@ -80,6 +80,13 @@ namespace NodaTime.Test
         }
 
         [Test]
+        public void FromHoursAndMinutes_Valid()
+        {
+            Offset value = Offset.FromHoursAndMinutes(5, 30);
+            Assert.AreEqual(5 * NodaConstants.MillisecondsPerHour + 30 * NodaConstants.MillisecondsPerMinute, value.TotalMilliseconds);
+        }
+
+        [Test]
         public void Create_NoSign_Valid()
         {
             Offset value = Offset.Create(5, 4, 3, 200);
