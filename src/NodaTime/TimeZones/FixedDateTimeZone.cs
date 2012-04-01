@@ -17,6 +17,7 @@
 
 using System;
 using System.Globalization;
+using NodaTime.Text;
 using NodaTime.Utility;
 
 namespace NodaTime.TimeZones
@@ -65,7 +66,29 @@ namespace NodaTime.TimeZones
             {
                 return DateTimeZone.UtcId;
             }
-            return string.Format(CultureInfo.InvariantCulture, "{0}{1}", DateTimeZone.UtcId, offset.ToString("g"));
+            return string.Format(CultureInfo.InvariantCulture,
+                "{0}{1}", DateTimeZone.UtcId,
+                OffsetPattern.GeneralInvariantPattern.Format(offset));
+        }
+
+        /// <summary>
+        /// Returns a fixed time zone for the given ID, which must be "UTC" or "UTC[offset]" where "[offset]" can be parsed
+        /// using the "general" offset pattern.
+        /// </summary>
+        /// <param name="id">ID </param>
+        /// <returns>The parsed time zone, or null if the ID doesn't match.</returns>
+        internal static DateTimeZone GetFixedZoneOrNull(string id)
+        {
+            if (!id.StartsWith(UtcId))
+            {
+                return null;
+            }
+            if (id == UtcId)
+            {
+                return DateTimeZone.Utc;
+            }
+            var parseResult = OffsetPattern.GeneralInvariantPattern.Parse(id.Substring(UtcId.Length));
+            return parseResult.Success ? DateTimeZone.ForOffset(parseResult.Value) : null;
         }
 
         /// <summary>

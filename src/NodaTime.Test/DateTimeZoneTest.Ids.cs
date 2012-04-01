@@ -48,25 +48,25 @@ namespace NodaTime.Test
         }
 
         [Test]
-        public void TestForId_nullId()
+        public void ForId_nullId()
         {
             Assert.Throws<ArgumentNullException>(() => DateTimeZone.ForId(null));
         }
 
         [Test]
-        public void TestForId_UtcId()
+        public void ForId_UtcId()
         {
             Assert.AreEqual(DateTimeZone.Utc, DateTimeZone.ForId(DateTimeZone.UtcId));
         }
 
         [Test]
-        public void TestForId_InvalidId()
+        public void ForId_InvalidId()
         {
             Assert.Throws<TimeZoneNotFoundException>(() => DateTimeZone.ForId("not a known id"));
         }
 
         [Test]
-        public void TestForId_AmericaLosAngeles()
+        public void ForId_AmericaLosAngeles()
         {
             const string americaLosAngeles = "America/Los_Angeles";
             var actual = DateTimeZone.ForId(americaLosAngeles);
@@ -76,7 +76,7 @@ namespace NodaTime.Test
         }
 
         [Test]
-        public void TestIds_All()
+        public void Ids_All()
         {
             var actual = DateTimeZone.Ids;
             var actualCount = actual.Count();
@@ -91,7 +91,7 @@ namespace NodaTime.Test
         /// invariant holds for all time zones...
         /// </summary>
         [Test]
-        public void TestForId_AllIds()
+        public void ForId_AllIds()
         {
             foreach (string id in DateTimeZone.Ids)
             {
@@ -99,51 +99,28 @@ namespace NodaTime.Test
             }
         }
 
-        private static void ExcerciseProvider(TestProvider provider)
+        [Test]
+        public void For_Id_FixedOffset()
         {
-            var ids = DateTimeZone.Ids;
-            Assert.AreEqual(1, ids.Count());
-            Assert.AreEqual(1, provider.Calls.Count);
-            Assert.AreEqual("Ids", provider.Calls[0]);
-            var unknown = DateTimeZone.ForId("an unknown id");
-            Assert.IsNull(unknown);
-            Assert.AreEqual(2, provider.Calls.Count);
-            Assert.AreEqual("ForId(an unknown id)", provider.Calls[1]);
+            string id = "UTC+05:30";
+            DateTimeZone zone = DateTimeZone.ForId(id);
+            Assert.AreEqual(DateTimeZone.ForOffset(Offset.FromHoursAndMinutes(5, 30)), zone);
+            Assert.AreEqual(id, zone.Id);
         }
 
-        /// <summary>
-        /// Time zone provider which doesn't know about any zones, and remembers calls made
-        /// to it. (We could use a mocking framework as an alternative, if we need it elsewhere.)
-        /// </summary>
-        private class TestProvider : IDateTimeZoneProvider
+        [Test]
+        public void For_Id_FixedOffset_NonCanonicalId()
         {
-            private readonly List<string> calls = new List<string>();
-            private readonly string[] list = new string[0];
+            string id = "UTC+05:00:00";
+            DateTimeZone zone = DateTimeZone.ForId(id);
+            Assert.AreEqual(zone, DateTimeZone.ForOffset(Offset.FromHours(5)));
+            Assert.AreEqual("UTC+05", zone.Id);
+        }
 
-            public IEnumerable<string> Ids
-            {
-                get
-                {
-                    calls.Add("Ids");
-                    return list;
-                }
-            }
-
-            public DateTimeZone ForId(string id)
-            {
-                calls.Add("ForId(" + id + ")");
-                return null;
-            }
-
-            public List<String> Calls { get { return calls; } }
-
-            public string VersionId { get { return "version"; } }
-
-
-            public string MapTimeZoneId(TimeZoneInfo timeZone)
-            {
-                return "map";
-            }
+        [Test]
+        public void For_Id_InvalidFixedOffset()
+        {
+            Assert.Throws<TimeZoneNotFoundException>(() => DateTimeZone.ForId("UTC+5Months"));
         }
     }
 }
