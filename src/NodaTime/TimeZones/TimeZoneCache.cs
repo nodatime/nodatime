@@ -18,6 +18,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using NodaTime.Text;
 using NodaTime.Utility;
 
 namespace NodaTime.TimeZones
@@ -39,23 +40,13 @@ namespace NodaTime.TimeZones
         {
             this.provider = Preconditions.CheckNotNull(provider, "provider");
             this.providerVersionId = provider.VersionId;
-            var ids = new List<string>(provider.Ids);
-            bool fakeUtc = false;
-            if (!ids.Contains(DateTimeZone.UtcId))
-            {
-                ids.Add(DateTimeZone.UtcId);
-                fakeUtc = true;
-            }
-            ids.Sort();
+            var idList = new List<string>(provider.Ids);
+            idList.Sort();
             // Populate the dictionary with null values meaning "the ID is valid, we haven't fetched the zone yet".
-            this.ids = ids.AsReadOnly();
+            ids = idList.AsReadOnly();
             foreach (string id in ids)
             {
                 timeZoneMap[id] = null;
-            }
-            if (fakeUtc)
-            {
-                timeZoneMap[DateTimeZone.UtcId] = DateTimeZone.Utc;
             }
         }
 
@@ -134,7 +125,7 @@ namespace NodaTime.TimeZones
                 DateTimeZone zone;
                 if (!timeZoneMap.TryGetValue(id, out zone))
                 {
-                    return null;
+                    return FixedDateTimeZone.GetFixedZoneOrNull(id);
                 }
                 if (zone == null)
                 {

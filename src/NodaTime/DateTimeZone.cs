@@ -162,9 +162,7 @@ namespace NodaTime
 
         /// <summary>
         /// Returns a fixed time zone with the given offset. This may or may not be cached;
-        /// callers should not rely upon any particular caching policy. Additionally, there is
-        /// no guarantee that <see cref="ForId"/> will return a time zone when presented with the
-        /// ID returned from a fixed time zone.
+        /// callers should not rely upon any particular caching policy.
         /// </summary>
         /// <param name="offset">The offset for the returned time zone</param>
         /// <returns>A fixed time zone with the given offset.</returns>
@@ -184,7 +182,8 @@ namespace NodaTime
         }
 
         /// <summary>
-        /// Returns the time zone with the given ID. This must be one of the IDs returned by <see cref="Ids"/>.
+        /// Returns the time zone with the given ID. This must be one of the IDs returned by <see cref="Ids"/>, or an ID
+        /// returned by a fixed time zone as returned by <see cref="ForOffset"/>.
         /// </summary>
         /// <param name="id">The time zone ID to find.</param>
         /// <exception cref="TimeZoneNotFoundException">The provider does not support a time zone with the given ID.</exception>
@@ -228,12 +227,13 @@ namespace NodaTime
         }
 
         /// <summary>
-        /// Gets the complete list of valid time zone ids provided by all of the registered
-        /// providers. This list will be sorted in lexigraphical order by the id name.
+        /// Gets the complete list of valid time zone ids provided by the current provider.
+        /// This list is sorted in lexigraphical order.
         /// </summary>
         /// <remarks>
-        /// The ID "UTC" will always be present in this list; it is guaranteed to be available regardless
-        /// of the time zone provider in use.
+        /// The ID "UTC" is guaranteed to be available regardless of the time zone provider in use,
+        /// as is UTC+05:00 and the like for fixed offset zones. The "UTC" ID will only be present
+        /// in this collection if the provider explicitly advertises it, but will be valid either way.
         /// </remarks>
         /// <value>The <see cref="IEnumerable{T}" /> of string ids.</value>
         public static IEnumerable<string> Ids { get { return cache.Ids; } }

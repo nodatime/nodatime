@@ -17,6 +17,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using NUnit.Framework;
 using NodaTime.Testing.TimeZones;
 using NodaTime.TimeZones;
@@ -73,6 +74,22 @@ namespace NodaTime.Test.TimeZones
             var cache = new TimeZoneCache(provider);
             Assert.Throws<TimeZoneNotFoundException>(() => { var ignored = cache["Unknown"]; });
             Assert.IsNull(provider.LastRequestedId);
+        }
+
+        [Test]
+        public void UtcIsReturnedInIdsIfAdvertisedByProvider()
+        {
+            var provider = new TestDateTimeZoneProvider("Test1", "Test2", "UTC");
+            var cache = new TimeZoneCache(provider);
+            Assert.True(cache.Ids.Contains(DateTimeZone.UtcId));
+        }
+
+        [Test]
+        public void UtcIsNotReturnedInIdsIfNotAdvertisedByProvider()
+        {
+            var provider = new TestDateTimeZoneProvider("Test1", "Test2");
+            var cache = new TimeZoneCache(provider);
+            Assert.False(cache.Ids.Contains(DateTimeZone.UtcId));
         }
 
         [Test]
