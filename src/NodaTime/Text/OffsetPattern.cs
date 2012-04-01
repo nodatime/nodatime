@@ -31,6 +31,11 @@ namespace NodaTime.Text
         private readonly IPattern<Offset> pattern;
 
         /// <summary>
+        /// The "general" offset pattern (e.g. +HH, +HH:mm, +HH:mm:ss, HH:mm:ss.fff) for the invariant culture.
+        /// </summary>
+        public static readonly OffsetPattern GeneralInvariantPattern = OffsetPattern.CreateWithInvariantInfo("g");
+
+        /// <summary>
         /// Returns the pattern text for this pattern, as supplied on creation.
         /// </summary>
         public string PatternText { get { return patternText; } }
