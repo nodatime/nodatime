@@ -30,28 +30,26 @@ namespace NodaTime.Serialization.JsonNet
         /// Converter for instants, using the ISO-8601 date/time pattern, extended as required to accommodate milliseconds and ticks, and
         /// specifying 'Z' at the end to show it's effectively in UTC.
         /// </summary>
-        public static readonly JsonConverter InstantConverter = new NodaPatternConverter<Instant>(InstantPattern.CreateWithInvariantInfo("yyyy'-'MM'-'dd'T'HH':'mm':'ss.FFFFFFF'Z'"));
+        public static readonly JsonConverter InstantConverter = new NodaPatternConverter<Instant>(InstantPattern.ExtendedIsoPattern);
 
         /// <summary>
         /// Converter for local dates, using the ISO-8601 date pattern.
         /// </summary>
         // TODO(Post-V1): Consider improving the behaviour with non-ISO calendars. We probably want a pattern which "knows" about a particular calendar, and restricts itself to that calendar.
         public static readonly JsonConverter LocalDateConverter = new NodaPatternConverter<LocalDate>(
-            LocalDatePattern.CreateWithInvariantInfo("yyyy'-'MM'-'dd"),
-            CreateIsoValidator<LocalDate>(x => x.Calendar));
+            LocalDatePattern.IsoPattern, CreateIsoValidator<LocalDate>(x => x.Calendar));
 
         /// <summary>
         /// Converter for local dates and times, using the ISO-8601 date/time pattern, extended as required to accommodate milliseconds and ticks.
         /// No time zone designator is applied.
         /// </summary>
         public static readonly JsonConverter LocalDateTimeConverter = new NodaPatternConverter<LocalDateTime>(
-            LocalDateTimePattern.CreateWithInvariantInfo("yyyy'-'MM'-'dd'T'HH':'mm':'ss.FFFFFFF"),
-            CreateIsoValidator<LocalDateTime>(x => x.Calendar));
+            LocalDateTimePattern.ExtendedIsoPattern, CreateIsoValidator<LocalDateTime>(x => x.Calendar));
 
         /// <summary>
         /// Converter for local times, using the ISO-8601 time pattern, extended as required to accommodate milliseconds and ticks.
         /// </summary>
-        public static readonly JsonConverter LocalTimeConverter = new NodaPatternConverter<LocalTime>(LocalTimePattern.CreateWithInvariantInfo("HH':'mm':'ss.FFFFFFF"));
+        public static readonly JsonConverter LocalTimeConverter = new NodaPatternConverter<LocalTime>(LocalTimePattern.ExtendedIsoPattern);
 
         /// <summary>
         /// Converter for intervals. This must be used in a serializer which also has an instant converter.
@@ -61,7 +59,7 @@ namespace NodaTime.Serialization.JsonNet
         /// <summary>
         /// Converter for offsets.
         /// </summary>
-        public static readonly JsonConverter OffsetConverter = new NodaPatternConverter<Offset>(OffsetPattern.CreateWithInvariantInfo("g"));
+        public static readonly JsonConverter OffsetConverter = new NodaPatternConverter<Offset>(OffsetPattern.GeneralInvariantPattern);
 
         /// <summary>
         /// Converter for timezones, serializing only the timezone id.
