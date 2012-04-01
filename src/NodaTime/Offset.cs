@@ -623,6 +623,19 @@ namespace NodaTime
         }
 
         /// <summary>
+        /// Creates an offset with the specified number of hours and minutes
+        /// </summary>
+        /// <param name="hours">The number of hours to represent in the new offset.</param>
+        /// <param name="minutes">The number of minutes to represent in the new offset.</param>
+        /// <returns>
+        /// A new <see cref="Offset" /> representing the given value.
+        /// </returns>
+        public static Offset FromHoursAndMinutes(int hours, int minutes)
+        {
+            return new Offset(hours * NodaConstants.MillisecondsPerHour + minutes * NodaConstants.MillisecondsPerMinute);
+        }
+
+        /// <summary>
         /// Creates an offset with the specified number of hours, minutes, seconds, and
         /// milliseconds. This offset is always non-negative.
         /// </summary>
