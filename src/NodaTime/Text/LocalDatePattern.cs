@@ -27,6 +27,21 @@ namespace NodaTime.Text
     public sealed class LocalDatePattern : IPattern<LocalDate>
     {
         internal static readonly LocalDate DefaultTemplateValue = new LocalDate(2000, 1, 1);
+
+        /// <summary>
+        /// Returns an invariant local date pattern which is ISO-8601 compatible.
+        /// This corresponds to the text pattern "yyyy'-'MM'-'dd".
+        /// </summary>
+        public static LocalDatePattern IsoPattern { get { return Patterns.IsoPatternImpl; } }
+        /// <summary>
+        /// Class whose existence is solely to avoid type initialization order issues, most of which stem
+        /// from needing NodaFormatInfo.InvariantInfo...
+        /// </summary>
+        private static class Patterns
+        {
+            internal static readonly LocalDatePattern IsoPatternImpl = CreateWithInvariantInfo("yyyy'-'MM'-'dd");
+        }
+
         private readonly string patternText;
         private readonly NodaFormatInfo formatInfo;
         private readonly IPattern<LocalDate> pattern;
@@ -97,7 +112,7 @@ namespace NodaTime.Text
             // TODO(Post-V1): Work out the best place to do this test. Currently it's also done in LocalDatePatternParser.
             Preconditions.CheckNotNull(patternText, "patternText");
             Preconditions.CheckNotNull(formatInfo, "formatInfo");
-            // Use the "fixed" parser for the common case of the 
+            // Use the "fixed" parser for the common case of the default template value.
             var patternParseResult = templateValue == DefaultTemplateValue
                 ? formatInfo.LocalDatePatternParser.ParsePattern(patternText)
                 : new LocalDatePatternParser(templateValue).ParsePattern(patternText, formatInfo);
