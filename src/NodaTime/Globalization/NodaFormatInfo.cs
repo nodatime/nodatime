@@ -60,7 +60,8 @@ namespace NodaTime.Globalization
         /// <summary>
         /// A NodaFormatInfo wrapping the invariant culture.
         /// </summary>
-        public static NodaFormatInfo InvariantInfo  = new NodaFormatInfo(CultureInfo.InvariantCulture);
+        // Note: this must occur below the pattern parsers, to make type initialization work...
+        public static readonly NodaFormatInfo InvariantInfo  = new NodaFormatInfo(CultureInfo.InvariantCulture);
 
         // TODO(Post-V1): Reconsider everything about caching, cloning etc.
         private static readonly IDictionary<CultureInfo, NodaFormatInfo> Cache = new Dictionary<CultureInfo, NodaFormatInfo>(new ReferenceEqualityComparer<CultureInfo>());
