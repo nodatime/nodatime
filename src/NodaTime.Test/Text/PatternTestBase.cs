@@ -23,7 +23,7 @@ namespace NodaTime.Test.Text
     /// Base class for all the pattern tests (when we've migrated OffsetPattern off FormattingTestSupport).
     /// Derived classes should have internal static fields with the names listed in the TestCaseSource
     /// attributes here: InvalidPatternData, ParseFailureData, ParseData, FormatData. Any field
-    /// which is missing cause that test to be ignored for that concrete subclass.
+    /// which is missing cause that test to be "not runnable" for that concrete subclass.
     /// </summary>
     public abstract class PatternTestBase<T>
     {
