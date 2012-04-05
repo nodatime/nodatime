@@ -91,20 +91,25 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
                 }
                 else
                 {
-                    try
+                    IList<ZoneRule> ruleSet;
+                    if (ruleSets.TryGetValue(zone.Rules, out ruleSet))
                     {
-                        // Check if Rules actually just refers to a savings.
-                        var savings = ParserHelper.ParseOffset(zone.Rules);
-                        builder.SetFixedSavings(zone.Format, savings);
+                        AddRecurring(builder, zone.Format, ruleSet);
                     }
-                    catch (FormatException)
+                    else
                     {
-                        var rs = ruleSets[zone.Rules];
-                        if (rs == null)
+                        try
                         {
-                            throw new ArgumentException("Rules not found: " + zone.Rules);
+                            // Check if Rules actually just refers to a savings.
+                            var savings = ParserHelper.ParseOffset(zone.Rules);
+                            builder.SetFixedSavings(zone.Format, savings);
                         }
-                        AddRecurring(builder, zone.Format, rs);
+                        catch (FormatException)
+                        {
+                            throw new ArgumentException(
+                                string.Format("Daylight savings rule name '{0}' for zone {1} is neither a known ruleset nor a fixed offset", 
+                                    zone.Rules, zone.Name));
+                        }                        
                     }
                 }
                 if (zone.UntilYear == Int32.MaxValue)
