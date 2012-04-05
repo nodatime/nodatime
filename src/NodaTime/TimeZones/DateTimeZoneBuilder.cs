@@ -17,7 +17,6 @@
 
 using System;
 using System.Collections.Generic;
-using NodaTime.Fields;
 
 namespace NodaTime.TimeZones
 {
