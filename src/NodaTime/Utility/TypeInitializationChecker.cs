@@ -84,7 +84,7 @@ namespace NodaTime.Utility
         public Dependency[] FindDependencies(string name)
         {
             dependencies = new List<Dependency>();
-            Type type = typeof(TypeInitializationChecker).Assembly.GetType(name);
+            Type type = typeof(TypeInitializationChecker).Assembly.GetType(name, true);
             RuntimeHelpers.RunClassConstructor(type.TypeHandle);
             return dependencies.ToArray();
         }
