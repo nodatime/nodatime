@@ -35,6 +35,8 @@ namespace NodaTime.Test.Utility
             // Test each type in a new AppDomain - we want to see what happens where each type is initialized first.
             foreach (var type in assembly.GetTypes())
             {
+                // Note: this won't be enough to load the assembly in all test runners. In particular, it fails in
+                // NCrunch at the moment.
                 AppDomainSetup setup = new AppDomainSetup { ApplicationBase = AppDomain.CurrentDomain.BaseDirectory };
                 AppDomain domain = AppDomain.CreateDomain("InitializationTest" + type.Name, AppDomain.CurrentDomain.Evidence, setup);
                 var helper = (TypeInitializationChecker)domain.CreateInstanceAndUnwrap(assembly.FullName,
