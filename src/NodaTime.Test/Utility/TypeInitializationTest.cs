@@ -33,7 +33,9 @@ namespace NodaTime.Test.Utility
             Assembly assembly = typeof(TypeInitializationChecker).Assembly;
             var dependencies = new List<TypeInitializationChecker.Dependency>();
             // Test each type in a new AppDomain - we want to see what happens where each type is initialized first.
-            foreach (var type in assembly.GetTypes())
+            // Note: Namespace prefix check is present to get this to survive in test runners which
+            // inject extra types. (Seen with JetBrains.Profiler.Core.Instrumentation.DataOnStack.)
+            foreach (var type in assembly.GetTypes().Where(t => t.FullName.StartsWith("NodaTime")))
             {
                 // Note: this won't be enough to load the assembly in all test runners. In particular, it fails in
                 // NCrunch at the moment.
