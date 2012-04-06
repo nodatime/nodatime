@@ -26,6 +26,8 @@ namespace NodaTime.Text
     /// </summary>
     internal static class FormatHelper
     {
+        private static readonly int TypeInitializationChecking = NodaTime.Utility.TypeInitializationChecker.RecordInitializationStart();
+
         /// <summary>
         /// The maximum number of characters allowed for padded values.
         /// </summary>

@@ -81,6 +81,8 @@ namespace NodaTime
     /// </remarks>
     public abstract class DateTimeZone
     {
+        private static readonly int TypeInitializationChecking = NodaTime.Utility.TypeInitializationChecker.RecordInitializationStart();
+
         /// <summary>
         /// The ID of the UTC (Coordinated Universal Time) time zone. This ID is always valid, whatever provider is
         /// used. If the provider has its own mapping for UTC, that will be returned by <see cref="ForId" />, but otherwise

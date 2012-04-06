@@ -36,6 +36,8 @@ namespace NodaTime.Globalization
     //[DebuggerStepThrough]
     public class NodaFormatInfo : IFormatProvider, ICloneable
     {
+        private static readonly int TypeInitializationChecking = NodaTime.Utility.TypeInitializationChecker.RecordInitializationStart();
+
         // Names that we can use to check for broken Mono behaviour.
         // The cloning is *also* to work around a Mono bug, where even read-only cultures can change...
         // See http://bugzilla.xamarin.com/show_bug.cgi?id=3279

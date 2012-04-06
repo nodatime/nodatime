@@ -51,6 +51,8 @@ namespace NodaTime
     /// </remarks>
     public abstract class CalendarSystem
     {
+        private static readonly int TypeInitializationChecking = NodaTime.Utility.TypeInitializationChecker.RecordInitializationStart();
+
         /// <summary>
         /// Delegate used to construct fields. This is called within the base constructor, before the
         /// derived class constructor bodies have been run - so it's *somewhat* unsafe to pass "this"
@@ -78,7 +80,7 @@ namespace NodaTime
         /// is the value of the last two year digits.
         /// </para>
         /// </remarks>
-        public static CalendarSystem Iso { get { return GregorianCalendarSystem.IsoInstance; } }
+        public static CalendarSystem Iso { get { return GregorianCalendarSystem.Iso.Instance; } }
 
         /// <summary>
         /// Returns a pure proleptic Gregorian calendar system, which defines every

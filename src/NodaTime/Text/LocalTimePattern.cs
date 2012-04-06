@@ -18,6 +18,7 @@
 using System;
 using System.Globalization;
 using NodaTime.Globalization;
+using NodaTime.Text.Patterns;
 using NodaTime.Utility;
 
 namespace NodaTime.Text
@@ -27,12 +28,20 @@ namespace NodaTime.Text
     /// </summary>
     public sealed class LocalTimePattern : IPattern<LocalTime>
     {
+        private static readonly int TypeInitializationChecking = TypeInitializationChecker.RecordInitializationStart();
+
         /// <summary>
         /// Returns an invariant local time pattern which is ISO-8601 compatible other than providing up to 7 decimal places
         /// of sub-second accuracy. (These digits are omitted when unnecessary.)
         /// This corresponds to the text pattern "HH':'mm':'ss.FFFFFFF".
         /// </summary>
         public static LocalTimePattern ExtendedIsoPattern { get { return Patterns.ExtendedIsoPatternImpl; } }
+
+        private static readonly string[] AllPatterns = { "T", "t", "r" }; // Long, short, round-trip
+        private const string DefaultFormatPattern = "T"; // Long
+
+        internal static readonly PatternBclSupport<LocalTime> BclSupport =
+            new PatternBclSupport<LocalTime>(AllPatterns, DefaultFormatPattern, LocalTime.Midnight, fi => fi.LocalTimePatternParser);
 
         /// <summary>
         /// Class whose existence is solely to avoid type initialization order issues, most of which stem

@@ -28,6 +28,8 @@ namespace NodaTime
     /// </remarks>
     public struct Interval : IEquatable<Interval>
     {
+        private static readonly int TypeInitializationChecking = NodaTime.Utility.TypeInitializationChecker.RecordInitializationStart();
+
         /// <summary>The start of the interval.</summary>
         private readonly Instant start;
 

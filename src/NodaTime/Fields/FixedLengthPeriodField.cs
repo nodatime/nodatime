@@ -21,6 +21,8 @@ namespace NodaTime.Fields
     /// </summary>
     internal sealed class FixedLengthPeriodField : PeriodField
     {
+        private static readonly int TypeInitializationChecking = NodaTime.Utility.TypeInitializationChecker.RecordInitializationStart();
+
         internal static readonly FixedLengthPeriodField Milliseconds = new FixedLengthPeriodField(PeriodFieldType.Milliseconds, NodaConstants.TicksPerMillisecond);
         internal static readonly FixedLengthPeriodField Seconds = new FixedLengthPeriodField(PeriodFieldType.Seconds, NodaConstants.TicksPerSecond);
         internal static readonly FixedLengthPeriodField Minutes = new FixedLengthPeriodField(PeriodFieldType.Minutes, NodaConstants.TicksPerMinute);

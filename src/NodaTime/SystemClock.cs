@@ -27,6 +27,8 @@ namespace NodaTime
     /// </summary>
     public sealed class SystemClock : IClock
     {
+        private static readonly int TypeInitializationChecking = NodaTime.Utility.TypeInitializationChecker.RecordInitializationStart();
+
         /// <summary>
         /// The singleton instance of <see cref="SystemClock"/>.
         /// </summary>

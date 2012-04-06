@@ -46,6 +46,8 @@ namespace NodaTime
     /// </remarks>
     public struct ZonedDateTime : IEquatable<ZonedDateTime>, IComparable<ZonedDateTime>
     {
+        private static readonly int TypeInitializationChecking = NodaTime.Utility.TypeInitializationChecker.RecordInitializationStart();
+
         private readonly LocalDateTime localDateTime;
         private readonly DateTimeZone zone;
         private readonly Offset offset;

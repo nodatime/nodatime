@@ -25,6 +25,8 @@ namespace NodaTime.Fields
     // Needs partial and max for set support.
     internal sealed class BasicWeekOfWeekYearDateTimeField : FixedLengthPeriodDateTimeField
     {
+        private static readonly int TypeInitializationChecking = NodaTime.Utility.TypeInitializationChecker.RecordInitializationStart();
+
         private static readonly Duration ThreeDays = Duration.FromStandardDays(3);
         private readonly BasicCalendarSystem calendarSystem;
 

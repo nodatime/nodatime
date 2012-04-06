@@ -26,6 +26,8 @@ namespace NodaTime.Text
     /// </summary>
     public class PeriodPattern : IPattern<Period>
     {
+        private static readonly int TypeInitializationChecking = NodaTime.Utility.TypeInitializationChecker.RecordInitializationStart();
+
         /// <summary>
         /// Pattern which uses the normal ISO format for all the supported ISO
         /// fields, but extends the time part with "s" for milliseconds and "t" for ticks.
@@ -34,6 +36,7 @@ namespace NodaTime.Text
         /// values: a parse/format cycle will produce an identical period, including units.
         /// </summary>
         public static readonly PeriodPattern RoundtripPattern = new PeriodPattern(new RoundtripPatternImpl());
+
         /// <summary>
         /// A "normalizing" pattern which abides by the ISO-8601 duration format as far as possible.
         /// Weeks are added to the number of days (after multiplying by 7). Time units are normalized

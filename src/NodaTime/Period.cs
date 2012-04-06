@@ -42,6 +42,8 @@ namespace NodaTime
     /// </remarks>
     public sealed class Period : IEquatable<Period>
     {
+        private static readonly int TypeInitializationChecking = NodaTime.Utility.TypeInitializationChecker.RecordInitializationStart();
+
         /// <summary>
         /// The number of values in an array for a compound period. This is always the same, representing
         /// all possible units.

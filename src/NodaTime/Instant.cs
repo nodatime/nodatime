@@ -35,6 +35,8 @@ namespace NodaTime
     /// </remarks>
     public struct Instant : IEquatable<Instant>, IComparable<Instant>, IFormattable, IComparable
     {
+        private static readonly int TypeInitializationChecking = NodaTime.Utility.TypeInitializationChecker.RecordInitializationStart();
+
         /// <summary>
         /// String used to represent "the beginning of time" (as far as Noda Time is concerned).
         /// </summary>
@@ -412,7 +414,7 @@ namespace NodaTime
         /// </returns>
         public override string ToString()
         {
-            return PatternSupport.Format(this, null, NodaFormatInfo.CurrentInfo);
+            return InstantPattern.BclSupport.Format(this, null, NodaFormatInfo.CurrentInfo);
         }
 
         /// <summary>
@@ -427,7 +429,7 @@ namespace NodaTime
         /// <filterpriority>2</filterpriority>
         public string ToString(string patternText)
         {
-            return PatternSupport.Format(this, patternText, NodaFormatInfo.CurrentInfo);
+            return InstantPattern.BclSupport.Format(this, patternText, NodaFormatInfo.CurrentInfo);
         }
 
         /// <summary>
@@ -442,7 +444,7 @@ namespace NodaTime
         /// <filterpriority>2</filterpriority>
         public string ToString(IFormatProvider formatProvider)
         {
-            return PatternSupport.Format(this, null, NodaFormatInfo.GetInstance(formatProvider));
+            return InstantPattern.BclSupport.Format(this, null, NodaFormatInfo.GetInstance(formatProvider));
         }
 
         /// <summary>
@@ -460,16 +462,11 @@ namespace NodaTime
         /// <filterpriority>2</filterpriority>
         public string ToString(string patternText, IFormatProvider formatProvider)
         {
-            return PatternSupport.Format(this, patternText, NodaFormatInfo.GetInstance(formatProvider));
+            return InstantPattern.BclSupport.Format(this, patternText, NodaFormatInfo.GetInstance(formatProvider));
         }
         #endregion Formatting
 
         #region Parsing
-        private static readonly string[] AllPatterns = { "g", "n" };
-        private const string DefaultFormatPattern = "g";
-
-        private static readonly PatternBclSupport<Instant> PatternSupport = new PatternBclSupport<Instant>(AllPatterns, DefaultFormatPattern, Instant.MinValue, fi => fi.InstantPatternParser);
-
         /// <summary>
         /// Parses the given string using the current culture's default format provider.
         /// </summary>
@@ -478,7 +475,7 @@ namespace NodaTime
         /// <returns>The parsed value.</returns>
         public static Instant Parse(string value)
         {
-            return PatternSupport.Parse(value, NodaFormatInfo.CurrentInfo);
+            return InstantPattern.BclSupport.Parse(value, NodaFormatInfo.CurrentInfo);
         }
 
         /// <summary>
@@ -492,7 +489,7 @@ namespace NodaTime
         /// <returns>The parsed value.</returns>
         public static Instant Parse(string value, IFormatProvider formatProvider)
         {
-            return PatternSupport.Parse(value, NodaFormatInfo.GetInstance(formatProvider));
+            return InstantPattern.BclSupport.Parse(value, NodaFormatInfo.GetInstance(formatProvider));
         }
 
         /// <summary>
@@ -507,7 +504,7 @@ namespace NodaTime
         /// <returns>The parsed value.</returns>
         public static Instant ParseExact(string value, string patternText, IFormatProvider formatProvider)
         {
-            return PatternSupport.ParseExact(value, patternText, NodaFormatInfo.GetInstance(formatProvider));
+            return InstantPattern.BclSupport.ParseExact(value, patternText, NodaFormatInfo.GetInstance(formatProvider));
         }
 
         /// <summary>
@@ -522,7 +519,7 @@ namespace NodaTime
         /// <returns>The parsed value.</returns>
         public static Instant ParseExact(string value, string[] patterns, IFormatProvider formatProvider)
         {
-            return PatternSupport.ParseExact(value, patterns, NodaFormatInfo.GetInstance(formatProvider));
+            return InstantPattern.BclSupport.ParseExact(value, patterns, NodaFormatInfo.GetInstance(formatProvider));
         }
 
         /// <summary>
@@ -535,7 +532,7 @@ namespace NodaTime
         /// <returns>true if the value was parsed successfully; false otherwise.</returns>
         public static bool TryParse(string value, out Instant result)
         {
-            return PatternSupport.TryParse(value, NodaFormatInfo.CurrentInfo, out result);
+            return InstantPattern.BclSupport.TryParse(value, NodaFormatInfo.CurrentInfo, out result);
         }
 
         /// <summary>
@@ -550,7 +547,7 @@ namespace NodaTime
         /// <returns>true if the value was parsed successfully; false otherwise.</returns>
         public static bool TryParse(string value, IFormatProvider formatProvider, out Instant result)
         {
-            return PatternSupport.TryParse(value, NodaFormatInfo.GetInstance(formatProvider), out result);
+            return InstantPattern.BclSupport.TryParse(value, NodaFormatInfo.GetInstance(formatProvider), out result);
         }
 
         /// <summary>
@@ -566,7 +563,7 @@ namespace NodaTime
         /// <returns>true if the value was parsed successfully; false otherwise.</returns>
         public static bool TryParseExact(string value, string patternText, IFormatProvider formatProvider, out Instant result)
         {
-            return PatternSupport.TryParseExact(value, patternText, NodaFormatInfo.GetInstance(formatProvider), out result);
+            return InstantPattern.BclSupport.TryParseExact(value, patternText, NodaFormatInfo.GetInstance(formatProvider), out result);
         }
 
         /// <summary>
@@ -582,7 +579,7 @@ namespace NodaTime
         /// <returns>true if the value was parsed successfully; false otherwise.</returns>
         public static bool TryParseExact(string value, string[] patterns, IFormatProvider formatProvider, out Instant result)
         {
-            return PatternSupport.TryParseExact(value, patterns, NodaFormatInfo.GetInstance(formatProvider), out result);
+            return InstantPattern.BclSupport.TryParseExact(value, patterns, NodaFormatInfo.GetInstance(formatProvider), out result);
         }
         #endregion Parsing
 

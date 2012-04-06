@@ -26,6 +26,8 @@ namespace NodaTime.Text
     /// </summary>
     internal sealed class LocalDateTimePatternParser : IPatternParser<LocalDateTime>
     {
+        private static readonly int TypeInitializationChecking = NodaTime.Utility.TypeInitializationChecker.RecordInitializationStart();
+
         private static readonly CharacterHandler<LocalDateTime, LocalDateTimeParseBucket> DefaultCharacterHandler =
             SteppedPatternBuilder<LocalDateTime, LocalDateTimeParseBucket>.HandleDefaultCharacter;
 
@@ -63,12 +65,6 @@ namespace NodaTime.Text
             { 't', TimePatternHelper.CreateAmPmHandler<LocalDateTime, LocalDateTimeParseBucket>(time => time.Hour, (bucket, value) => bucket.Time.AmPm = value) }
         };
 
-        // These have to come *after* the above field initializers...
-        private static readonly IPattern<LocalDateTime> RoundTripPattern =
-            new LocalDateTimePatternParser(LocalDateTimePattern.DefaultTemplateValue).ParsePattern("yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fffffff", NodaFormatInfo.InvariantInfo).GetResultOrThrow();
-        private static readonly IPattern<LocalDateTime> SortablePattern =
-            new LocalDateTimePatternParser(LocalDateTimePattern.DefaultTemplateValue).ParsePattern("yyyy'-'MM'-'dd'T'HH':'mm':'ss", NodaFormatInfo.InvariantInfo).GetResultOrThrow();
-
         internal LocalDateTimePatternParser(LocalDateTime templateValue)
         {
             templateValueDate = templateValue.Date;
@@ -93,11 +89,11 @@ namespace NodaTime.Text
                 char patternCharacter = patternText[0];
                 if (patternCharacter == 'o' || patternCharacter == 'O')
                 {
-                    return PatternParseResult<LocalDateTime>.ForValue(RoundTripPattern);
+                    return PatternParseResult<LocalDateTime>.ForValue(LocalDateTimePattern.Patterns.RoundTripPattern);
                 }
                 if (patternCharacter == 's')
                 {
-                    return PatternParseResult<LocalDateTime>.ForValue(SortablePattern);
+                    return PatternParseResult<LocalDateTime>.ForValue(LocalDateTimePattern.Patterns.SortablePattern);
                 }
                 patternText = ExpandStandardFormatPattern(patternCharacter, formatInfo);
                 if (patternText == null)

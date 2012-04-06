@@ -27,6 +27,8 @@ namespace NodaTime.Calendars
     // TODO(Post-V1): Decide whether or not this is actually useful. It may only be used by the Buddhist calendar system...
     internal abstract class WrappedCalendarSystem : CalendarSystem
     {
+        private static readonly int TypeInitializationChecking = NodaTime.Utility.TypeInitializationChecker.RecordInitializationStart();
+
         private readonly CalendarSystem baseCalendar;
         private readonly bool useBaseTimeOfDayFields;
         private readonly bool useBaseTickOfDayFields;

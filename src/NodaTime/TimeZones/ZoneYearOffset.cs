@@ -51,6 +51,8 @@ namespace NodaTime.TimeZones
     /// </remarks>
     internal class ZoneYearOffset : IEquatable<ZoneYearOffset>
     {
+        private static readonly int TypeInitializationChecking = NodaTime.Utility.TypeInitializationChecker.RecordInitializationStart();
+
         /// <summary>
         /// An offset that specifies the beginning of the year.
         /// </summary>

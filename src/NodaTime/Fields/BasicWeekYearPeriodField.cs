@@ -22,6 +22,8 @@ namespace NodaTime.Fields
 {
     internal class BasicWeekYearPeriodField : VaryiableLengthPeriodField
     {
+        private static readonly int TypeInitializationChecking = NodaTime.Utility.TypeInitializationChecker.RecordInitializationStart();
+
         private static readonly Duration Week53Ticks = Duration.FromStandardWeeks(52);
         private readonly BasicCalendarSystem calendarSystem;
 

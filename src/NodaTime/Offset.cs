@@ -17,6 +17,7 @@
 #region usings
 using System;
 using NodaTime.Globalization;
+using NodaTime.Text;
 using NodaTime.Text.Patterns;
 using NodaTime.Utility;
 
@@ -46,6 +47,8 @@ namespace NodaTime
     /// </remarks>
     public struct Offset : IEquatable<Offset>, IComparable<Offset>, IFormattable, IComparable
     {
+        private static readonly int TypeInitializationChecking = NodaTime.Utility.TypeInitializationChecker.RecordInitializationStart();
+
         /// <summary>
         /// An offset of zero ticks - effectively the permanent offset for UTC.
         /// </summary>
@@ -430,7 +433,7 @@ namespace NodaTime
         /// <filterpriority>2</filterpriority>
         public string ToString(string patternText, IFormatProvider formatProvider)
         {
-            return OffsetPattern.Format(this, patternText, NodaFormatInfo.GetInstance(formatProvider));
+            return OffsetPattern.BclSupport.Format(this, patternText, NodaFormatInfo.GetInstance(formatProvider));
         }
 
         /// <summary>
@@ -441,7 +444,7 @@ namespace NodaTime
         /// </returns>
         public override string ToString()
         {
-            return OffsetPattern.Format(this, null, NodaFormatInfo.CurrentInfo);
+            return OffsetPattern.BclSupport.Format(this, null, NodaFormatInfo.CurrentInfo);
         }
 
         /// <summary>
@@ -457,7 +460,7 @@ namespace NodaTime
         /// <filterpriority>2</filterpriority>
         public string ToString(string patternText)
         {
-            return OffsetPattern.Format(this, patternText, NodaFormatInfo.CurrentInfo);
+            return OffsetPattern.BclSupport.Format(this, patternText, NodaFormatInfo.CurrentInfo);
         }
 
         /// <summary>
@@ -473,15 +476,11 @@ namespace NodaTime
         /// <filterpriority>2</filterpriority>
         public string ToString(IFormatProvider formatProvider)
         {
-            return OffsetPattern.Format(this, null, NodaFormatInfo.GetInstance(formatProvider));
+            return OffsetPattern.BclSupport.Format(this, null, NodaFormatInfo.GetInstance(formatProvider));
         }
         #endregion Formatting
 
         #region Parsing
-        private static readonly string[] AllPatterns = { "g", "n", "d" };
-        private const string DefaultFormatPattern = "g";
-
-        private static readonly PatternBclSupport<Offset> OffsetPattern = new PatternBclSupport<Offset>(AllPatterns, DefaultFormatPattern, Offset.Zero, fi => fi.OffsetPatternParser);
         /// <summary>
         /// Parses the given string using the current culture's default format provider.
         /// </summary>
@@ -489,7 +488,7 @@ namespace NodaTime
         /// <returns>The parsed offset.</returns>
         public static Offset Parse(string value)
         {
-            return OffsetPattern.Parse(value, NodaFormatInfo.CurrentInfo);
+            return OffsetPattern.BclSupport.Parse(value, NodaFormatInfo.CurrentInfo);
         }
 
         /// <summary>
@@ -500,7 +499,7 @@ namespace NodaTime
         /// <returns>The parsed offset.</returns>
         public static Offset Parse(string value, IFormatProvider formatProvider)
         {
-            return OffsetPattern.Parse(value, NodaFormatInfo.GetInstance(formatProvider));
+            return OffsetPattern.BclSupport.Parse(value, NodaFormatInfo.GetInstance(formatProvider));
         }
 
         /// <summary>
@@ -512,7 +511,7 @@ namespace NodaTime
         /// <returns>The parsed offset.</returns>
         public static Offset ParseExact(string value, string patternText, IFormatProvider formatProvider)
         {
-            return OffsetPattern.ParseExact(value, patternText, NodaFormatInfo.GetInstance(formatProvider));
+            return OffsetPattern.BclSupport.ParseExact(value, patternText, NodaFormatInfo.GetInstance(formatProvider));
         }
 
         /// <summary>
@@ -524,7 +523,7 @@ namespace NodaTime
         /// <returns>The parsed offset.</returns>
         public static Offset ParseExact(string value, string[] patterns, IFormatProvider formatProvider)
         {
-            return OffsetPattern.ParseExact(value, patterns, NodaFormatInfo.GetInstance(formatProvider));
+            return OffsetPattern.BclSupport.ParseExact(value, patterns, NodaFormatInfo.GetInstance(formatProvider));
         }
 
         /// <summary>
@@ -537,7 +536,7 @@ namespace NodaTime
         /// <returns>true if the value was parsed successfully; false otherwise.</returns>
         public static bool TryParse(string value, out Offset result)
         {
-            return OffsetPattern.TryParse(value, NodaFormatInfo.CurrentInfo, out result);
+            return OffsetPattern.BclSupport.TryParse(value, NodaFormatInfo.CurrentInfo, out result);
         }
 
         /// <summary>
@@ -551,7 +550,7 @@ namespace NodaTime
         /// <returns>true if the value was parsed successfully; false otherwise.</returns>
         public static bool TryParse(string value, IFormatProvider formatProvider, out Offset result)
         {
-            return OffsetPattern.TryParse(value, NodaFormatInfo.GetInstance(formatProvider), out result);
+            return OffsetPattern.BclSupport.TryParse(value, NodaFormatInfo.GetInstance(formatProvider), out result);
         }
 
         /// <summary>
@@ -566,7 +565,7 @@ namespace NodaTime
         /// <returns>true if the value was parsed successfully; false otherwise.</returns>
         public static bool TryParseExact(string value, string patternText, IFormatProvider formatProvider, out Offset result)
         {
-            return OffsetPattern.TryParseExact(value, patternText, NodaFormatInfo.GetInstance(formatProvider), out result);
+            return OffsetPattern.BclSupport.TryParseExact(value, patternText, NodaFormatInfo.GetInstance(formatProvider), out result);
         }
 
         /// <summary>
@@ -581,7 +580,7 @@ namespace NodaTime
         /// <returns>true if the value was parsed successfully; false otherwise.</returns>
         public static bool TryParseExact(string value, string[] patterns, IFormatProvider formatProvider, out Offset result)
         {
-            return OffsetPattern.TryParseExact(value, patterns, NodaFormatInfo.GetInstance(formatProvider), out result);
+            return OffsetPattern.BclSupport.TryParseExact(value, patterns, NodaFormatInfo.GetInstance(formatProvider), out result);
         }
         #endregion Parsing
 

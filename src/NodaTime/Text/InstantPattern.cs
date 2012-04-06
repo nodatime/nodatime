@@ -18,6 +18,8 @@
 using System;
 using System.Globalization;
 using NodaTime.Globalization;
+using NodaTime.Text.Patterns;
+using NodaTime.Utility;
 
 namespace NodaTime.Text
 {
@@ -26,6 +28,8 @@ namespace NodaTime.Text
     /// </summary>
     public sealed class InstantPattern : IPattern<Instant>
     {
+        private static readonly int TypeInitializationChecking = TypeInitializationChecker.RecordInitializationStart();
+
         /// <summary>
         /// Returns the general pattern, which always uses an invariant culture. The general pattern represents
         /// an instant as a UTC date/time in ISO-8601 style "yyyy-MM-ddTHH:mm:ssZ".
@@ -38,6 +42,11 @@ namespace NodaTime.Text
         /// This corresponds to the text pattern "yyyy'-'MM'-'dd'T'HH':'mm':'ss.FFFFFFF'Z'".
         /// </summary>
         public static InstantPattern ExtendedIsoPattern { get { return Patterns.ExtendedIsoPatternImpl; } }
+
+        private static readonly string[] AllPatterns = { "g", "n" };
+        private const string DefaultFormatPattern = "g";
+
+        internal static readonly PatternBclSupport<Instant> BclSupport = new PatternBclSupport<Instant>(AllPatterns, DefaultFormatPattern, Instant.MinValue, fi => fi.InstantPatternParser);
 
         /// <summary>
         /// Class whose existence is solely to avoid type initialization order issues, most of which stem
