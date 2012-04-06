@@ -26,6 +26,8 @@ namespace NodaTime.TimeZones
     /// </summary>
     public static class Resolvers
     {
+        private static readonly int TypeInitializationChecking = NodaTime.Utility.TypeInitializationChecker.RecordInitializationStart();
+
         /// <summary>
         /// <see cref="AmbiguousTimeResolver"/> which returns the earlier of the two matching times.
         /// </summary>

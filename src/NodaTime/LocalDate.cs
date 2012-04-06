@@ -19,7 +19,6 @@ using System;
 using NodaTime.Calendars;
 using NodaTime.Globalization;
 using NodaTime.Text;
-using NodaTime.Text.Patterns;
 using NodaTime.Utility;
 
 namespace NodaTime
@@ -45,6 +44,8 @@ namespace NodaTime
     /// </remarks>
     public struct LocalDate : IEquatable<LocalDate>, IComparable<LocalDate>, IFormattable
     {
+        private static readonly int TypeInitializationChecking = NodaTime.Utility.TypeInitializationChecker.RecordInitializationStart();
+
         private readonly LocalDateTime localTime;
 
         /// <summary>
@@ -515,7 +516,7 @@ namespace NodaTime
         /// </returns>
         public override string ToString()
         {
-            return PatternSupport.Format(this, null, NodaFormatInfo.CurrentInfo);
+            return LocalDatePattern.BclSupport.Format(this, null, NodaFormatInfo.CurrentInfo);
         }
 
         /// <summary>
@@ -530,7 +531,7 @@ namespace NodaTime
         /// <filterpriority>2</filterpriority>
         public string ToString(string patternText)
         {
-            return PatternSupport.Format(this, patternText, NodaFormatInfo.CurrentInfo);
+            return LocalDatePattern.BclSupport.Format(this, patternText, NodaFormatInfo.CurrentInfo);
         }
 
         /// <summary>
@@ -545,7 +546,7 @@ namespace NodaTime
         /// <filterpriority>2</filterpriority>
         public string ToString(IFormatProvider formatProvider)
         {
-            return PatternSupport.Format(this, null, NodaFormatInfo.GetInstance(formatProvider));
+            return LocalDatePattern.BclSupport.Format(this, null, NodaFormatInfo.GetInstance(formatProvider));
         }
 
         /// <summary>
@@ -563,17 +564,11 @@ namespace NodaTime
         /// <filterpriority>2</filterpriority>
         public string ToString(string patternText, IFormatProvider formatProvider)
         {
-            return PatternSupport.Format(this, patternText, NodaFormatInfo.GetInstance(formatProvider));
+            return LocalDatePattern.BclSupport.Format(this, patternText, NodaFormatInfo.GetInstance(formatProvider));
         }
         #endregion Formatting
 
         #region Parsing
-        private static readonly string[] AllPatterns = { "D", "d" }; // Long, short
-        private const string DefaultFormatPattern = "D"; // Long
-
-        private static readonly PatternBclSupport<LocalDate> PatternSupport =
-            new PatternBclSupport<LocalDate>(AllPatterns, DefaultFormatPattern, LocalDatePattern.DefaultTemplateValue, fi => fi.LocalDatePatternParser);
-
         /// <summary>
         /// Parses the given string using the current culture's default format provider.
         /// </summary>
@@ -582,7 +577,7 @@ namespace NodaTime
         /// <returns>The parsed value.</returns>
         public static LocalDate Parse(string value)
         {
-            return PatternSupport.Parse(value, NodaFormatInfo.CurrentInfo);
+            return LocalDatePattern.BclSupport.Parse(value, NodaFormatInfo.CurrentInfo);
         }
 
         /// <summary>
@@ -596,7 +591,7 @@ namespace NodaTime
         /// <returns>The parsed value.</returns>
         public static LocalDate Parse(string value, IFormatProvider formatProvider)
         {
-            return PatternSupport.Parse(value, NodaFormatInfo.GetInstance(formatProvider));
+            return LocalDatePattern.BclSupport.Parse(value, NodaFormatInfo.GetInstance(formatProvider));
         }
 
         /// <summary>
@@ -611,7 +606,7 @@ namespace NodaTime
         /// <returns>The parsed value.</returns>
         public static LocalDate ParseExact(string value, string patternText, IFormatProvider formatProvider)
         {
-            return PatternSupport.ParseExact(value, patternText, NodaFormatInfo.GetInstance(formatProvider));
+            return LocalDatePattern.BclSupport.ParseExact(value, patternText, NodaFormatInfo.GetInstance(formatProvider));
         }
 
         /// <summary>
@@ -626,7 +621,7 @@ namespace NodaTime
         /// <returns>The parsed value.</returns>
         public static LocalDate ParseExact(string value, string[] patterns, IFormatProvider formatProvider)
         {
-            return PatternSupport.ParseExact(value, patterns, NodaFormatInfo.GetInstance(formatProvider));
+            return LocalDatePattern.BclSupport.ParseExact(value, patterns, NodaFormatInfo.GetInstance(formatProvider));
         }
 
         /// <summary>
@@ -639,7 +634,7 @@ namespace NodaTime
         /// <returns>true if the value was parsed successfully; false otherwise.</returns>
         public static bool TryParse(string value, out LocalDate result)
         {
-            return PatternSupport.TryParse(value, NodaFormatInfo.CurrentInfo, out result);
+            return LocalDatePattern.BclSupport.TryParse(value, NodaFormatInfo.CurrentInfo, out result);
         }
 
         /// <summary>
@@ -654,7 +649,7 @@ namespace NodaTime
         /// <returns>true if the value was parsed successfully; false otherwise.</returns>
         public static bool TryParse(string value, IFormatProvider formatProvider, out LocalDate result)
         {
-            return PatternSupport.TryParse(value, NodaFormatInfo.GetInstance(formatProvider), out result);
+            return LocalDatePattern.BclSupport.TryParse(value, NodaFormatInfo.GetInstance(formatProvider), out result);
         }
 
         /// <summary>
@@ -670,7 +665,7 @@ namespace NodaTime
         /// <returns>true if the value was parsed successfully; false otherwise.</returns>
         public static bool TryParseExact(string value, string patternText, IFormatProvider formatProvider, out LocalDate result)
         {
-            return PatternSupport.TryParseExact(value, patternText, NodaFormatInfo.GetInstance(formatProvider), out result);
+            return LocalDatePattern.BclSupport.TryParseExact(value, patternText, NodaFormatInfo.GetInstance(formatProvider), out result);
         }
 
         /// <summary>
@@ -686,7 +681,7 @@ namespace NodaTime
         /// <returns>true if the value was parsed successfully; false otherwise.</returns>
         public static bool TryParseExact(string value, string[] patterns, IFormatProvider formatProvider, out LocalDate result)
         {
-            return PatternSupport.TryParseExact(value, patterns, NodaFormatInfo.GetInstance(formatProvider), out result);
+            return LocalDatePattern.BclSupport.TryParseExact(value, patterns, NodaFormatInfo.GetInstance(formatProvider), out result);
         }
         #endregion Parsing
     }

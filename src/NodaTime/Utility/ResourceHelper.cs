@@ -32,6 +32,8 @@ namespace NodaTime.Utility
     /// </summary>
     internal static class ResourceHelper
     {
+        private static readonly int TypeInitializationChecking = NodaTime.Utility.TypeInitializationChecker.RecordInitializationStart();
+
         private static readonly Regex InvalidResourceNameCharacters = new Regex("[^A-Za-z0-9_/]", RegexOptions.Compiled | RegexOptions.CultureInvariant);
 
         internal static CultureInfo GetCulture(IFormatProvider formatProvider)

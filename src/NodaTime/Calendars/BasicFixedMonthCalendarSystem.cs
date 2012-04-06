@@ -1,6 +1,6 @@
 ﻿#region Copyright and license information
 // Copyright 2001-2009 Stephen Colebourne
-// Copyright 2009-2011 Jon Skeet
+// Copyright 2009-2010 Jon Skeet
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -29,6 +29,8 @@ namespace NodaTime.Calendars
     /// </remarks>
     internal abstract class BasicFixedMonthCalendarSystem : BasicCalendarSystem
     {
+        private static readonly int TypeInitializationChecking = NodaTime.Utility.TypeInitializationChecker.RecordInitializationStart();
+
         private const int DaysInMonth = 30;
 
         private const long TicksPerMonth = DaysInMonth * NodaConstants.TicksPerStandardDay;

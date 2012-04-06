@@ -25,7 +25,9 @@ namespace NodaTime
     /// </summary>
     public struct Duration : IEquatable<Duration>, IComparable<Duration>, IComparable
     {
-        #region Public readonly fields
+        private static readonly int TypeInitializationChecking = NodaTime.Utility.TypeInitializationChecker.RecordInitializationStart();
+
+        #region Public static readonly fields
         /// <summary>
         /// Represents <see cref="Duration"/> value equal to negative 1 tick. 
         /// This field is read-only.

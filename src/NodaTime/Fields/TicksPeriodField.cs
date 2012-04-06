@@ -21,6 +21,8 @@ namespace NodaTime.Fields
     /// </summary>
     internal sealed class TicksPeriodField : PeriodField
     {
+        private static readonly int TypeInitializationChecking = NodaTime.Utility.TypeInitializationChecker.RecordInitializationStart();
+
         private static readonly TicksPeriodField instance = new TicksPeriodField();
 
         public static TicksPeriodField Instance { get { return instance; } }

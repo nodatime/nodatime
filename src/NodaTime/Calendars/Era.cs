@@ -27,6 +27,8 @@ namespace NodaTime.Calendars
     /// eras.</remarks>
     public sealed class Era
     {
+        private static readonly int TypeInitializationChecking = NodaTime.Utility.TypeInitializationChecker.RecordInitializationStart();
+
         /// <summary>
         /// The "Common" era (CE), also known as Anno Domini (AD). This is used in the ISO, Gregorian and Julian calendars.
         /// </summary>

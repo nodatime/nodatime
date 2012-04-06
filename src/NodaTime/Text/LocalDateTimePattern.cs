@@ -15,10 +15,11 @@
 // limitations under the License.
 #endregion
 
-using System;
 using System.Globalization;
 using NodaTime.Globalization;
+using NodaTime.Text.Patterns;
 using NodaTime.Utility;
+
 namespace NodaTime.Text
 {
     /// <summary>
@@ -26,7 +27,15 @@ namespace NodaTime.Text
     /// </summary>
     public sealed class LocalDateTimePattern : IPattern<LocalDateTime>
     {
+        private static readonly int TypeInitializationChecking = TypeInitializationChecker.RecordInitializationStart();
+
         internal static readonly LocalDateTime DefaultTemplateValue = new LocalDateTime(2000, 1, 1, 0, 0);
+
+        private static readonly string[] AllPatterns = { "F", "f", "G", "g", "o", "s" }; // Full (long time), full (short time), general (long), general (short time), round-trip, sortable
+        private const string DefaultFormatPattern = "G"; // General (long time)
+
+        internal static readonly PatternBclSupport<LocalDateTime> BclSupport =
+            new PatternBclSupport<LocalDateTime>(AllPatterns, DefaultFormatPattern, DefaultTemplateValue, fi => fi.LocalDateTimePatternParser);
 
         /// <summary>
         /// Returns an invariant local date/time pattern which is ISO-8601 compatible other than providing up to 7 decimal places
@@ -39,9 +48,16 @@ namespace NodaTime.Text
         /// Class whose existence is solely to avoid type initialization order issues, most of which stem
         /// from needing NodaFormatInfo.InvariantInfo...
         /// </summary>
-        private static class Patterns
+        internal static class Patterns
         {
             internal static readonly LocalDateTimePattern ExtendedIsoPatternImpl = CreateWithInvariantInfo("yyyy'-'MM'-'dd'T'HH':'mm':'ss.FFFFFFF");
+
+            // TODO(Post-V1): Expose these through properties, possibly renaming them?
+            internal static readonly IPattern<LocalDateTime> RoundTripPattern =
+                new LocalDateTimePatternParser(DefaultTemplateValue).ParsePattern("yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fffffff", NodaFormatInfo.InvariantInfo).GetResultOrThrow();
+
+            internal static readonly IPattern<LocalDateTime> SortablePattern =
+                new LocalDateTimePatternParser(DefaultTemplateValue).ParsePattern("yyyy'-'MM'-'dd'T'HH':'mm':'ss", NodaFormatInfo.InvariantInfo).GetResultOrThrow();
         }
 
         private readonly string patternText;

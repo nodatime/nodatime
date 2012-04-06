@@ -26,6 +26,8 @@ namespace NodaTime.Fields
     /// </summary>
     internal class UnsupportedDateTimeField : DateTimeField
     {
+        private static readonly int TypeInitializationChecking = NodaTime.Utility.TypeInitializationChecker.RecordInitializationStart();
+
         // Convenience fields
         public static readonly UnsupportedDateTimeField Era = new UnsupportedDateTimeField(DateTimeFieldType.Era);
         public static readonly UnsupportedDateTimeField YearOfEra = new UnsupportedDateTimeField(DateTimeFieldType.YearOfEra);

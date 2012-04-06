@@ -30,6 +30,8 @@ namespace NodaTime.TimeZones
     /// </summary>
     internal struct ZoneIntervalPair : IEquatable<ZoneIntervalPair>
     {
+        private static readonly int TypeInitializationChecking = NodaTime.Utility.TypeInitializationChecker.RecordInitializationStart();
+
         internal static readonly ZoneIntervalPair NoMatch = new ZoneIntervalPair(null, null, 0);
         
         private readonly ZoneInterval earlyInterval;

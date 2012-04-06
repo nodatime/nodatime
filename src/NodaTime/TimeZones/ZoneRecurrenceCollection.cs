@@ -31,6 +31,8 @@ namespace NodaTime.TimeZones
     /// </remarks>
     internal class ZoneRecurrenceCollection : IEnumerable<ZoneRecurrence>
     {
+        private static readonly int TypeInitializationChecking = NodaTime.Utility.TypeInitializationChecker.RecordInitializationStart();
+
         // Don't pre-calculate more than 100 years into the future. Almost all zones will stop
         // pre-calculating far sooner anyhow. Either a simple DST cycle is detected or the last
         // rule is a fixed offset. If a zone has a fixed offset set more than 100 years into the

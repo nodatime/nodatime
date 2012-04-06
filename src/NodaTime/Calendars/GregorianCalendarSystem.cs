@@ -17,6 +17,7 @@
 
 using System;
 using NodaTime.Fields;
+using NodaTime.Utility;
 
 namespace NodaTime.Calendars
 {
@@ -43,6 +44,8 @@ namespace NodaTime.Calendars
     /// </remarks>
     internal sealed class GregorianCalendarSystem : BasicGJCalendarSystem
     {
+        private static readonly int TypeInitializationChecking = TypeInitializationChecker.RecordInitializationStart();
+
         private const string GregorianName = "Gregorian";
         private const string IsoName = "ISO";
 
@@ -58,7 +61,6 @@ namespace NodaTime.Calendars
         private const long AverageTicksPerGregorianYear = (long)(365.2425m * NodaConstants.TicksPerStandardDay);
 
         private static readonly GregorianCalendarSystem[] GregorianCache;
-        internal static readonly GregorianCalendarSystem IsoInstance;
 
         static GregorianCalendarSystem()
         {
@@ -67,16 +69,16 @@ namespace NodaTime.Calendars
             {
                 GregorianCache[i] = new GregorianCalendarSystem(GregorianName, i + 1, null);
             }
-            IsoInstance = new GregorianCalendarSystem(IsoName, 4, AssembleIsoFields);
-            
+
+            var sample = GregorianCache[0];            
             for (int year = FirstOptimizedYear; year <= LastOptimizedYear; year++)
             {
-                YearStartTicks[year - FirstOptimizedYear] = IsoInstance.CalculateStartOfYear(year).Ticks;
+                YearStartTicks[year - FirstOptimizedYear] = sample.CalculateStartOfYear(year).Ticks;
                 for (int month = 1; month <= 12; month++)
                 {
                     int yearMonthIndex = (year - FirstOptimizedYear) * 12 + month;
-                    MonthStartTicks[yearMonthIndex] = IsoInstance.GetYearMonthTicks(year, month);
-                    MonthLengths[yearMonthIndex] = IsoInstance.GetDaysInMonth(year, month);
+                    MonthStartTicks[yearMonthIndex] = sample.GetYearMonthTicks(year, month);
+                    MonthLengths[yearMonthIndex] = sample.GetDaysInMonth(year, month);
                 }
             }
         }
@@ -98,19 +100,6 @@ namespace NodaTime.Calendars
         private GregorianCalendarSystem(string name, int minDaysInFirstWeek, FieldAssembler fieldAssembler)
             : base(name, minDaysInFirstWeek, -27256, 31196, fieldAssembler)
         {
-        }
-
-        /// <summary>
-        /// Field assembly used solely for the ISO calendar variation.
-        /// </summary>
-        private static void AssembleIsoFields(FieldSet.Builder builder, CalendarSystem @this)
-        {
-            // Use zero based century and year of century.
-            DividedDateTimeField centuryOfEra = new DividedDateTimeField(IsoYearOfEraDateTimeField.Instance, DateTimeFieldType.CenturyOfEra, 100);
-            builder.CenturyOfEra = centuryOfEra;
-            builder.YearOfCentury = new RemainderDateTimeField(centuryOfEra, DateTimeFieldType.YearOfCentury);
-            builder.WeekYearOfCentury = new RemainderDateTimeField(centuryOfEra, DateTimeFieldType.WeekYearOfCentury);
-            builder.Centuries = centuryOfEra.PeriodField;
         }
 
         internal override long AverageTicksPerYear { get { return AverageTicksPerGregorianYear; } }
@@ -226,6 +215,28 @@ namespace NodaTime.Calendars
         public override bool IsLeapYear(int year)
         {
             return ((year & 3) == 0) && ((year % 100) != 0 || (year % 400) == 0);
+        }
+
+        /// <summary>
+        /// Separate class to ensure that GregorianCalendarSystem can be properly initialized first.
+        /// We need that to be valid so that IsoYearOfEraDateTimeField.Instance can be initialized appropriately. Ick.
+        /// </summary>
+        internal static class Iso
+        {
+            internal static readonly GregorianCalendarSystem Instance = new GregorianCalendarSystem(IsoName, 4, AssembleIsoFields);
+
+            /// <summary>
+            /// Field assembly used solely for the ISO calendar variation.
+            /// </summary>
+            private static void AssembleIsoFields(FieldSet.Builder builder, CalendarSystem @this)
+            {
+                // Use zero based century and year of century.
+                DividedDateTimeField centuryOfEra = new DividedDateTimeField(IsoYearOfEraDateTimeField.Instance, DateTimeFieldType.CenturyOfEra, 100);
+                builder.CenturyOfEra = centuryOfEra;
+                builder.YearOfCentury = new RemainderDateTimeField(centuryOfEra, DateTimeFieldType.YearOfCentury);
+                builder.WeekYearOfCentury = new RemainderDateTimeField(centuryOfEra, DateTimeFieldType.WeekYearOfCentury);
+                builder.Centuries = centuryOfEra.PeriodField;
+            }
         }
     }
 }

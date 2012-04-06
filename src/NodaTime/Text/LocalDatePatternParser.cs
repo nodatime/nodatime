@@ -27,6 +27,8 @@ namespace NodaTime.Text
     /// </summary>
     internal sealed class LocalDatePatternParser : IPatternParser<LocalDate>
     {
+        private static readonly int TypeInitializationChecking = NodaTime.Utility.TypeInitializationChecker.RecordInitializationStart();
+
         private static readonly CharacterHandler<LocalDate, LocalDateParseBucket> DefaultCharacterHandler = SteppedPatternBuilder<LocalDate, LocalDateParseBucket>.HandleDefaultCharacter;
 
         private readonly LocalDate templateValue;

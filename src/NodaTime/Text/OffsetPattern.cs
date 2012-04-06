@@ -18,6 +18,8 @@
 using System;
 using System.Globalization;
 using NodaTime.Globalization;
+using NodaTime.Text.Patterns;
+using NodaTime.Utility;
 
 namespace NodaTime.Text
 {
@@ -26,14 +28,21 @@ namespace NodaTime.Text
     /// </summary>
     public sealed class OffsetPattern : IPattern<Offset>
     {
-        private readonly string patternText;
-        private readonly NodaFormatInfo formatInfo;
-        private readonly IPattern<Offset> pattern;
+        private static readonly int TypeInitializationChecking = TypeInitializationChecker.RecordInitializationStart();
 
         /// <summary>
         /// The "general" offset pattern (e.g. +HH, +HH:mm, +HH:mm:ss, HH:mm:ss.fff) for the invariant culture.
         /// </summary>
-        public static readonly OffsetPattern GeneralInvariantPattern = OffsetPattern.CreateWithInvariantInfo("g");
+        public static readonly OffsetPattern GeneralInvariantPattern = CreateWithInvariantInfo("g");
+
+        private static readonly string[] AllPatterns = { "g", "n", "d" };
+        private const string DefaultFormatPattern = "g";
+
+        internal static readonly PatternBclSupport<Offset> BclSupport = new PatternBclSupport<Offset>(AllPatterns, DefaultFormatPattern, Offset.Zero, fi => fi.OffsetPatternParser);
+
+        private readonly string patternText;
+        private readonly NodaFormatInfo formatInfo;
+        private readonly IPattern<Offset> pattern;
 
         /// <summary>
         /// Returns the pattern text for this pattern, as supplied on creation.

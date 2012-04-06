@@ -24,6 +24,8 @@ namespace NodaTime.Fields
     /// </summary>
     internal sealed class DateTimeFieldType
     {
+        private static readonly int TypeInitializationChecking = NodaTime.Utility.TypeInitializationChecker.RecordInitializationStart();
+
         public static readonly DateTimeFieldType Era = new DateTimeFieldType("Era", PeriodFieldType.Eras, null);
         public static readonly DateTimeFieldType YearOfEra = new DateTimeFieldType("YearOfEra", PeriodFieldType.Years, PeriodFieldType.Eras);
         public static readonly DateTimeFieldType CenturyOfEra = new DateTimeFieldType("CenturyOfEra", PeriodFieldType.Centuries, PeriodFieldType.Eras);

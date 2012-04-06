@@ -23,6 +23,8 @@ namespace NodaTime.Fields
 {
     internal class IsoYearOfEraDateTimeField : DecoratedDateTimeField
     {
+        private static readonly int TypeInitializationChecking = NodaTime.Utility.TypeInitializationChecker.RecordInitializationStart();
+
         internal static readonly DateTimeField Instance = new IsoYearOfEraDateTimeField();
 
         private IsoYearOfEraDateTimeField() : base(GregorianCalendarSystem.GetInstance(4).Fields.Year, DateTimeFieldType.YearOfEra)

@@ -1,6 +1,6 @@
 ﻿#region Copyright and license information
 // Copyright 2001-2009 Stephen Colebourne
-// Copyright 2009-2011 Jon Skeet
+// Copyright 2009-2010 Jon Skeet
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,10 +15,11 @@
 // limitations under the License.
 #endregion
 
-using System;
 using System.Globalization;
 using NodaTime.Globalization;
+using NodaTime.Text.Patterns;
 using NodaTime.Utility;
+
 namespace NodaTime.Text
 {
     /// <summary>
@@ -26,7 +27,15 @@ namespace NodaTime.Text
     /// </summary>
     public sealed class LocalDatePattern : IPattern<LocalDate>
     {
+        private static readonly int TypeInitializationChecking = TypeInitializationChecker.RecordInitializationStart();
+
         internal static readonly LocalDate DefaultTemplateValue = new LocalDate(2000, 1, 1);
+
+        private static readonly string[] AllPatterns = { "D", "d" }; // Long, short
+        private const string DefaultFormatPattern = "D"; // Long
+
+        internal static readonly PatternBclSupport<LocalDate> BclSupport =
+            new PatternBclSupport<LocalDate>(AllPatterns, DefaultFormatPattern, DefaultTemplateValue, fi => fi.LocalDatePatternParser);
 
         /// <summary>
         /// Returns an invariant local date pattern which is ISO-8601 compatible.
