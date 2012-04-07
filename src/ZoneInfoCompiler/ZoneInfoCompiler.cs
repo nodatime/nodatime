@@ -41,20 +41,14 @@ namespace NodaTime.ZoneInfoCompiler
         /// <returns>0 for success, non-0 for error.</returns>
         private static int Main(string[] arguments)
         {
-            var log = new ConsoleLog();
-            if (arguments.Length < 1)
-            {
-                DisplayUsage(log);
-                return 1;
-            }
-
             TzdbCompilerOptions options = new TzdbCompilerOptions();
-            ICommandLineParser parser = new CommandLineParser(new CommandLineParserSettings(log.InfoWriter));
+            ICommandLineParser parser = new CommandLineParser(new CommandLineParserSettings(Console.Error));
             if (!parser.ParseArguments(arguments, options))
             {
                 return 1;
             }
 
+            var log = new ConsoleLog();
             using (var output = new ResourceOutput(options.OutputFileName, options.OutputType))
             {
                 var tzdbCompiler = new TzdbZoneInfoCompiler(log);
@@ -63,19 +57,9 @@ namespace NodaTime.ZoneInfoCompiler
                 {
                     return ret;
                 }
-                var mappinCompiler = new WindowsMapperCompiler(log);
-                return mappinCompiler.Execute(options.WindowsMappingFile, output);
+                var mapperCompiler = new WindowsMapperCompiler(log);
+                return mapperCompiler.Execute(options.WindowsMappingFile, output);
             }
-        }
-
-        /// <summary>
-        /// Writes usage messages to the log.
-        /// </summary>
-        private static void DisplayUsage(ILog log)
-        {
-            log.Info("");
-            log.Info("Usage: -s <tzdb directory> -w <windowsZone.xml file> -o <output file> [-t ResX/Resource]");
-            log.Info("");
         }
     }
 }
