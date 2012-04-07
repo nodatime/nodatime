@@ -1,0 +1,99 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+  <head>
+    <link href="prettify.css" type="text/css" rel="stylesheet" />
+    <link href="styles.css" type="text/css" rel="stylesheet" />
+    <script type="text/javascript" src="prettify.js"></script>
+    <title>Updating the time zone database in Noda Time</title>
+  </head>
+  <body onload="prettyPrint()">
+    <h1>Updating the time zone database in Noda Time</h1>
+    <p>Noda Time comes with a version of the <a href="http://www.iana.org/time-zones">tzdb</a> (aka zoneinfo) database, which is
+now hosted by IANA. This database changes over time, as countries decide to change their time zone rules.
+As new versions of Noda Time are released, the version of tzdb will be updated. However, you may wish to use
+a new version of tzdb <em>without</em> changing which version of Noda Time you're using. This documentation tells you how
+to do so.</p>
+
+<h2>"Compiling" the database to a resource file</h2>
+
+<p>Noda Time's main library doesn't read tzdb text files directly - it uses a binary form which is the output of <code>ZoneInfoCompiler</code> - another
+part of the Noda Time project. This saves both space (the 2012c version takes about 189K when compiled, or about 598K in text form) and
+time, as the binary form contains various precomputed transitions. The resource file also contains a mapping from Windows time zone names
+to tzdb time zone IDs, primarily so that Noda Time can map the local time zone reported by <code>TimeZoneInfo</code> to a tzdb time zone.</p>
+
+<p><code>ZoneInfoCompiler</code> is not currently provided in binary form in Nuget packages (although this decision can easily be revisited if there's
+enough demand). You'll need to build it yourself - which should be as simple as getting hold of a Noda Time source distribution (the latest
+for your binary's major version number should be good enough; we won't change the format of the resource file without bumping the version
+number) and building the whole solution. You'll end up with binaries in ZoneInfoCompiler/bin/Debug (or Release).</p>
+
+<h1>Steps</h1>
+
+<ol>
+<li>Download the <a href="http://www.iana.org/time-zones">latest tzdb release</a></li>
+<li>Unpack the tar.gz file - you may need to download extra tools for this; <a href="http://www.7-zip.org/">7-Zip</a> can cope with .tar.gz
+files for example, and I'd expect other zip tools to do so too. You should end up with a directory containing files such
+as "america", "africa", "etcetera".</li>
+<li>Ideally, rename the directory to match the version number, e.g. "2012c". The directory name will be used in the version ID
+reported by the time zone provider later.</li>
+<li>Remove unwanted files. Various extra files are provided for backward compatibility on Unix systems, but they're unlikely
+to be useful to you. The main Noda Time distribution uses <code>africa</code>, <code>antarctica</code>, <code>asia</code>, <code>australasia</code>, <code>backward</code>, <code>etcetera</code>, 
+<code>europe</code>, <code>northamerica</code>, <code>pacificnew</code>, <code>southamerica</code>, <code>systemv</code>. (I suspect the <code>systemv</code> file isn't terribly useful in
+fact; but it's present at the time of this writing.)</li>
+<li><p>Find the Windows mapping file you want to use. Currently, I'd recommend using the version supplied with the Noda Time source
+in ZoneInfoCompiler\Data\winmap in a file beginning "windowsZones". This file comes from <a href="http://cldr.unicode.org">CLDR</a> -
+but unfortunately at the time of this writing, Noda Time doesn't support the CLDR v2 mappings (which map some Windows time zone
+IDs to multiple tzdb IDs, by region).</p></li>
+<li><p>Run ZoneInfoCompiler. I'd suggest leaving it in its build directory and running it like this:</p>
+
+<p>path\to\ZoneInfoCompiler.exe -s path\to\tzdb-files -w path\to\windowsMapping-file.xml -o path\to\output.resources -t Resource</p>
+
+<p>For example, rebuilding the 2012c data from NodaTime itself, starting in the ZoneInfoCompiler directory:</p>
+
+<p>bin\Release\ZoneInfoCompiler -s Data\2012c -w Data\winmap\windowsZones-5311.xml -o tzdb-2012c.resources -t Resource</p></li>
+</ol>
+
+<p>As an alternative, if there's enough demand, we may well provide pre-built resource files in the Noda Time project download section.
+It's worth knowing the above steps, however, in case you wish to use a cut-down set of time zones for resource-constrained environments.</p>
+
+<h2>Using a compiled resource file</h2>
+
+<p>Typically you'll want to use the newly-created resource file as the default time zone provider, across your whole application.
+While it's possible to have multiple time zone providers in play at a time, that's a very rare scenario. Using a resource
+file is relatively straightforward:</p>
+
+<ul>
+<li>Create a <a href="http://msdn.microsoft.com/en-us/library/t15hy0dt.aspx"><code>ResourceSet</code></a> from the file</li>
+<li>Create a [<code>TzdbTimeZoneProvider</code>] with the <code>ResourceSet</code></li>
+<li>Call <code>DateTimeZone.SetProvider</code> with the provider</li>
+</ul>
+
+<p>For the sake of sanity, this should be done as early in your application's initialization as possible - it would
+be unfortunate to accidentally end up with a mixture of time zone versions active concurrently.</p>
+
+<p>Here's some sample code doing exactly that:</p>
+
+<pre class="prettyprint"><code>using NodaTime;
+using NodaTime.TimeZones;
+using System;
+using System.Resources;
+
+public class CustomTzdb
+{
+    static void Main()
+    {
+        var resourceSet = new ResourceSet("tzdb-2012c.resources");
+        var provider = new TzdbTimeZoneProvider(resourceSet);
+        DateTimeZone.SetProvider(provider);
+        Console.WriteLine(DateTimeZone.ProviderVersionId);
+    }
+}
+</code></pre>
+
+<p>You may be surprised that <code>TzdbTimeZoneProvider</code> doesn't implement <code>IDisposable</code> even though <code>ResourceSet</code> does. <code>TzdbTimeZoneProvider</code>
+will never close or dispose the resource set it's given - it doesn't assume ownership of it. However, it will fail if you dispose the
+resource set and then ask for a time zone which hasn't yet been loaded. If you wish to have a completely disconnected time zone provider,
+I'd recommend loading the contents of the file into a <code>MemoryStream</code> and passing <em>that</em> to the <code>ResourceSet</code> constructor. Otherwise, in
+most cases it probably isn't a big deal to have the handle to the resource file open throughout the lifetime of the application.</p>
+
+  </body>
+</html>
