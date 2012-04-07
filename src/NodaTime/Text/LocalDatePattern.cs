@@ -42,12 +42,14 @@ namespace NodaTime.Text
         /// This corresponds to the text pattern "yyyy'-'MM'-'dd".
         /// </summary>
         public static LocalDatePattern IsoPattern { get { return Patterns.IsoPatternImpl; } }
+        
         /// <summary>
         /// Class whose existence is solely to avoid type initialization order issues, most of which stem
         /// from needing NodaFormatInfo.InvariantInfo...
         /// </summary>
         private static class Patterns
         {
+            private static readonly int TypeInitializationChecking = TypeInitializationChecker.RecordInitializationStart();
             internal static readonly LocalDatePattern IsoPatternImpl = CreateWithInvariantInfo("yyyy'-'MM'-'dd");
         }
 

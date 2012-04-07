@@ -98,8 +98,8 @@ namespace NodaTime.Utility
             public string To { get; private set; }
             internal Dependency(Type from, Type to)
             {
-                From = from.Name;
-                To = to.Name;
+                From = from.FullName;
+                To = to.FullName;
             }
         }
 

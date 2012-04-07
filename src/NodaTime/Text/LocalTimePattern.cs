@@ -49,6 +49,7 @@ namespace NodaTime.Text
         /// </summary>
         private static class Patterns
         {
+            private static readonly int TypeInitializationChecking = TypeInitializationChecker.RecordInitializationStart();
             internal static readonly LocalTimePattern ExtendedIsoPatternImpl = CreateWithInvariantInfo("HH':'mm':'ss.FFFFFFF");
         }
 

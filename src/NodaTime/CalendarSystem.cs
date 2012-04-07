@@ -80,7 +80,7 @@ namespace NodaTime
         /// is the value of the last two year digits.
         /// </para>
         /// </remarks>
-        public static CalendarSystem Iso { get { return GregorianCalendarSystem.Iso.Instance; } }
+        public static CalendarSystem Iso { get { return GregorianCalendarSystem.IsoHelper.Instance; } }
 
         /// <summary>
         /// Returns a pure proleptic Gregorian calendar system, which defines every
