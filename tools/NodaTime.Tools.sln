@@ -16,7 +16,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "raw", "raw", "{5663A352-33C
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "markdown", "markdown", "{C762C267-287B-4B8F-81D1-C92AB1AFF729}"
 	ProjectSection(SolutionItems) = preProject
-		localdatetime-patterns.txt = localdatetime-patterns.txt
 		userguide-src\markdown\arithmetic.txt = userguide-src\markdown\arithmetic.txt
 		userguide-src\markdown\bcl-conversions.txt = userguide-src\markdown\bcl-conversions.txt
 		userguide-src\markdown\concepts.txt = userguide-src\markdown\concepts.txt
@@ -24,6 +23,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "markdown", "markdown", "{C7
 		userguide-src\markdown\index.txt = userguide-src\markdown\index.txt
 		userguide-src\markdown\instant-patterns.txt = userguide-src\markdown\instant-patterns.txt
 		userguide-src\markdown\localdate-patterns.txt = userguide-src\markdown\localdate-patterns.txt
+		userguide-src\markdown\localdatetime-patterns.txt = userguide-src\markdown\localdatetime-patterns.txt
 		userguide-src\markdown\localtime-patterns.txt = userguide-src\markdown\localtime-patterns.txt
 		userguide-src\markdown\mono.txt = userguide-src\markdown\mono.txt
 		userguide-src\markdown\offset-patterns.txt = userguide-src\markdown\offset-patterns.txt
@@ -32,6 +32,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "markdown", "markdown", "{C7
 		userguide-src\markdown\serialization.txt = userguide-src\markdown\serialization.txt
 		userguide-src\markdown\template.html = userguide-src\markdown\template.html
 		userguide-src\markdown\text.txt = userguide-src\markdown\text.txt
+		userguide-src\markdown\tzdb.txt = userguide-src\markdown\tzdb.txt
 	EndProjectSection
 EndProject
 Global
