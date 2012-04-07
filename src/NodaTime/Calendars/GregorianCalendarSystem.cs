@@ -221,8 +221,10 @@ namespace NodaTime.Calendars
         /// Separate class to ensure that GregorianCalendarSystem can be properly initialized first.
         /// We need that to be valid so that IsoYearOfEraDateTimeField.Instance can be initialized appropriately. Ick.
         /// </summary>
-        internal static class Iso
+        internal static class IsoHelper
         {
+            private static readonly int TypeInitializationChecking = TypeInitializationChecker.RecordInitializationStart();
+
             internal static readonly GregorianCalendarSystem Instance = new GregorianCalendarSystem(IsoName, 4, AssembleIsoFields);
 
             /// <summary>

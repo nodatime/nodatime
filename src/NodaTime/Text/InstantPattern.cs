@@ -54,6 +54,7 @@ namespace NodaTime.Text
         /// </summary>
         private static class Patterns
         {
+            private static readonly int TypeInitializationChecking = TypeInitializationChecker.RecordInitializationStart();
             internal static readonly InstantPattern ExtendedIsoPatternImpl = CreateWithInvariantInfo("yyyy'-'MM'-'dd'T'HH':'mm':'ss.FFFFFFF'Z'");
             internal static readonly InstantPattern GeneralPatternImpl = CreateWithInvariantInfo("g");
         }

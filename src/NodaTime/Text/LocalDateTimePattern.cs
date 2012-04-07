@@ -50,6 +50,8 @@ namespace NodaTime.Text
         /// </summary>
         internal static class Patterns
         {
+            private static readonly int TypeInitializationChecking = TypeInitializationChecker.RecordInitializationStart();
+
             internal static readonly LocalDateTimePattern ExtendedIsoPatternImpl = CreateWithInvariantInfo("yyyy'-'MM'-'dd'T'HH':'mm':'ss.FFFFFFF");
 
             // TODO(Post-V1): Expose these through properties, possibly renaming them?
