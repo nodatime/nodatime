@@ -45,7 +45,8 @@ namespace NodaTime.TimeZones
         }
 
         /// <summary>
-        /// 
+        /// Creates a new instance of <see cref="BclTimeZone" /> from the <see cref="TimeZoneInfo"/> with the given
+        /// ID. The ID must be a known system time zone ID.
         /// </summary>
         /// <param name="id">The ID of the system time zone to convert</param>
         /// <exception cref="ArgumentException">The given zone doesn't exist</exception>

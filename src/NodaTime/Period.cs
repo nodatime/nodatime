@@ -289,19 +289,10 @@ namespace NodaTime
         /// <returns>The period between the given date/times</returns>
         public static Period Between(LocalDateTime start, LocalDateTime end, PeriodUnits units)
         {
-            if (units == 0)
-            {
-                throw new ArgumentException("Units must not be empty", "units");
-            }
-            if ((units & ~PeriodUnits.AllUnits) != 0)
-            {
-                throw new ArgumentException("Units contains an unknown value: " + units, "units");
-            }
+            Preconditions.CheckArgument(units != 0, "units", "Units must not be empty");
+            Preconditions.CheckArgument((units & ~PeriodUnits.AllUnits) == 0, "units", "Units contains an unknown value: " + units);
             CalendarSystem calendar = start.Calendar;
-            if (!calendar.Equals(end.Calendar))
-            {
-                throw new ArgumentException("start and end must use the same calendar system", "end");
-            }
+            Preconditions.CheckArgument(calendar.Equals(end.Calendar), "end", "start and end must use the same calendar system");
 
             LocalInstant startLocalInstant = start.LocalInstant;
             LocalInstant endLocalInstant = end.LocalInstant;
@@ -405,11 +396,7 @@ namespace NodaTime
         /// <returns>The period between the given dates using the specified period type</returns>
         public static Period Between(LocalDate start, LocalDate end, PeriodUnits units)
         {
-            if ((units & PeriodUnits.AllTimeUnits) != 0)
-            {
-                throw new ArgumentException("Units contain time fields: " + units, "units");
-            }
-
+            Preconditions.CheckArgument((units & PeriodUnits.AllTimeUnits) == 0, "units", "Units contain time fields: " + units);
             return Between(start.LocalDateTime, end.LocalDateTime, units);
         }
 
@@ -443,10 +430,7 @@ namespace NodaTime
         /// <returns>The period between the given times</returns>
         public static Period Between(LocalTime start, LocalTime end, PeriodUnits units)
         {
-            if ((units & PeriodUnits.AllDateUnits) != 0)
-            {
-                throw new ArgumentException("Units contain date fields: " + units, "units");
-            }
+            Preconditions.CheckArgument((units & PeriodUnits.AllDateUnits) == 0, "units", "Units contain date fields: " + units);
             return Between(start.LocalDateTime, end.LocalDateTime, units);
         }
 

@@ -19,6 +19,7 @@ using System;
 using System.Globalization;
 using System.IO;
 using NodaTime.TimeZones;
+using NodaTime.Utility;
 
 namespace NodaTime.ZoneInfoCompiler.Tzdb
 {
@@ -298,16 +299,12 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         /// </summary>
         /// <param name="text">The text.</param>
         /// <returns></returns>
-        internal static int ParseDayOfWeek(String text)
+        private static int ParseDayOfWeek(string text)
         {
-            for (int i = 1; i < DaysOfWeek.Length; i++)
-            {
-                if (text == DaysOfWeek[i])
-                {
-                    return i;
-                }
-            }
-            throw new ArgumentException("The value is not a valid day of week: " + text);
+            int index = Array.IndexOf(DaysOfWeek, text, 1);
+            // TODO(Post-V1): This isn't really a bug, so probably shouldn't be an ArgumentException.
+            Preconditions.CheckArgument(index > 0, "text", "The value is not a valid day of week: " + text);
+            return index;
         }
 
         /// <summary>

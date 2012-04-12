@@ -107,7 +107,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
             {
                 if (CurrentZoneList == null)
                 {
-                    throw new ArgumentException("A continuation zone must be preceeded by an initially named zone");
+                    throw new InvalidOperationException("A continuation zone must be preceeded by an initially named zone");
                 }
                 name = CurrentZoneList.Name;
             }

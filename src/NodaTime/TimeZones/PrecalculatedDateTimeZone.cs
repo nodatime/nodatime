@@ -17,6 +17,7 @@
 
 using System;
 using System.Collections.Generic;
+using NodaTime.Utility;
 
 namespace NodaTime.TimeZones
 {
@@ -48,10 +49,7 @@ namespace NodaTime.TimeZones
                    ComputeOffset(transitions, t => t.WallOffset, tailZone, Offset.Min),
                    ComputeOffset(transitions, t => t.WallOffset, tailZone, Offset.Max))
         {
-            if (transitions == null)
-            {
-                throw new ArgumentNullException("transitions");
-            }
+            Preconditions.CheckNotNull(transitions, "transitions");
             this.tailZone = tailZone;
             this.tailZoneStart = tailZoneStart;
             if (tailZone != null)
@@ -114,25 +112,13 @@ namespace NodaTime.TimeZones
         /// <exception cref="ArgumentException">The periods specified are invalid</exception>
         internal static void ValidatePeriods(ZoneInterval[] periods, DateTimeZone tailZone)
         {
-            if (periods.Length == 0)
-            {
-                throw new ArgumentException("No periods specified in precalculated time zone");
-            }
-            if (periods[0].Start != Instant.MinValue)
-            {
-                throw new ArgumentException("Periods in precalculated time zone must start with the beginning of time");
-            }
+            Preconditions.CheckArgument(periods.Length > 0, "periods", "No periods specified in precalculated time zone");
+            Preconditions.CheckArgument(periods[0].Start == Instant.MinValue, "periods", "Periods in precalculated time zone must start with the beginning of time");
             for (int i = 0; i < periods.Length - 1; i++)
             {
-                if (periods[i].End != periods[i + 1].Start)
-                {
-                    throw new ArgumentException("Non-adjoining ZoneIntervals for precalculated time zone");
-                }
+                Preconditions.CheckArgument(periods[i].End == periods[i + 1].Start, "periods", "Non-adjoining ZoneIntervals for precalculated time zone");
             }
-            if (tailZone == null && periods[periods.Length - 1].End != Instant.MaxValue)
-            {
-                throw new ArgumentException("Null tail zone given but periods don't cover all of time");
-            }
+            Preconditions.CheckArgument(tailZone != null || periods[periods.Length - 1].End == Instant.MaxValue, "tailZone", "Null tail zone given but periods don't cover all of time");
         }
 
         /// <summary>
@@ -200,10 +186,7 @@ namespace NodaTime.TimeZones
         /// <param name="writer">The writer to write to.</param>
         internal override void Write(DateTimeZoneWriter writer)
         {
-            if (writer == null)
-            {
-                throw new ArgumentNullException("writer");
-            }
+            Preconditions.CheckNotNull(writer, "writer");
 
             // Keep a pool of strings; we don't want to write the same strings out time and time again.
             List<string> stringPool = new List<string>();
@@ -285,17 +268,12 @@ namespace NodaTime.TimeZones
             DateTimeZone tailZone,
             OffsetAggregator aggregator)
         {
-            if (elements == null)
-            {
-                throw new ArgumentException("elements");
-            }
+            Preconditions.CheckNotNull(elements, "elements");
             Offset ret;
             using (var iterator = elements.GetEnumerator())
             {
-                if (!iterator.MoveNext())
-                {
-                    throw new ArgumentException("No transitions / periods specified");
-                }
+                var hasFirst = iterator.MoveNext();
+                Preconditions.CheckArgument(hasFirst, "iterator", "No transitions / periods specified");
                 ret = extractor(iterator.Current);
                 while (iterator.MoveNext())
                 {

@@ -16,6 +16,7 @@
 #endregion
 
 using System;
+using NodaTime.Utility;
 
 namespace NodaTime.TimeZones
 {
@@ -87,10 +88,7 @@ namespace NodaTime.TimeZones
         /// <returns>The cached time zone.</returns>
         private static DateTimeZone ForZone(DateTimeZone timeZone, CacheType type)
         {
-            if (timeZone == null)
-            {
-                throw new ArgumentNullException("timeZone");
-            }
+            Preconditions.CheckNotNull(timeZone, "timeZone");
             if (timeZone is CachedDateTimeZone || timeZone.IsFixed)
             {
                 return timeZone;
@@ -111,10 +109,7 @@ namespace NodaTime.TimeZones
         /// <param name="writer">The writer to write to.</param>
         internal override void Write(DateTimeZoneWriter writer)
         {
-            if (writer == null)
-            {
-                throw new ArgumentNullException("writer");
-            }
+            Preconditions.CheckNotNull(writer, "writer");
             writer.WriteTimeZone(timeZone);
         }
 
@@ -126,10 +121,7 @@ namespace NodaTime.TimeZones
         /// <returns></returns>
         internal static DateTimeZone Read(DateTimeZoneReader reader, string id)
         {
-            if (reader == null)
-            {
-                throw new ArgumentNullException("reader");
-            }
+            Preconditions.CheckNotNull(reader, "reader");
             var timeZone = reader.ReadTimeZone(id);
             return ForZone(timeZone);
         }
@@ -174,10 +166,7 @@ namespace NodaTime.TimeZones
             /// <param name="timeZone">The time zone to cache.</param>
             internal HashArrayCache(DateTimeZone timeZone) : base(timeZone)
             {
-                if (timeZone == null)
-                {
-                    throw new ArgumentNullException("timeZone");
-                }
+                Preconditions.CheckNotNull(timeZone, "timeZone");
                 instantCache = new HashCacheNode[CacheSize];
             }
 

@@ -21,6 +21,7 @@ using System.IO;
 using System.Linq;
 using CommandLine;
 using NodaTime.TimeZones;
+using NodaTime.Utility;
 
 namespace NodaTime.ZoneInfoCompiler.Tzdb
 {
@@ -238,39 +239,6 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
             finally
             {
                 log.FileName = null;
-            }
-        }
-
-        /// <summary>
-        ///   Validates the program arguments. If anything is not setup correctly then an exception os
-        ///   thrown and compilation does not proceed.
-        /// </summary>
-        /// <param name="source">The source directory <see cref="DirectoryInfo" /> object.</param>
-        /// <param name="fileList">The <see cref="IEnumerable{T}" /> of <see cref="FileInfo" /> objects. Cannot be <c>null</c>.</param>
-        private static void ValidateArguments(FileSystemInfo source, IEnumerable<FileInfo> fileList)
-        {
-            ValidateExistingDirectory(source, "source");
-            if (fileList.Count() == 0)
-            {
-                throw new ArgumentException("There are no files to process");
-            }
-        }
-
-        /// <summary>
-        ///   Validates the the given directory info object is valid and refers to an existing
-        ///   directory.
-        /// </summary>
-        /// <param name="directory">The <see cref="DirectoryInfo" /> to check.</param>
-        /// <param name="name">The name to use in error messages.</param>
-        private static void ValidateExistingDirectory(FileSystemInfo directory, string name)
-        {
-            if (directory == null)
-            {
-                throw new ArgumentNullException(name, "The " + name + " parameter cannot be null");
-            }
-            if (!directory.Exists)
-            {
-                throw new ArgumentException("The " + name + " location does not exist or is not a directory: " + directory.FullName, name);
             }
         }
     }

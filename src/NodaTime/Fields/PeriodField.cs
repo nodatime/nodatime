@@ -16,6 +16,7 @@
 #endregion
 
 using System;
+using NodaTime.Utility;
 
 namespace NodaTime.Fields
 {
@@ -42,6 +43,11 @@ namespace NodaTime.Fields
             if (!IsTypeValid(fieldType))
             {
                 throw new ArgumentOutOfRangeException("fieldType");
+            }
+            // TODO(Post-V1): Take another look at unsupported fields. Do we really want them?
+            if (supported)
+            {
+                Preconditions.CheckArgumentRange("unitTicks", unitTicks, 1L, long.MaxValue);
             }
             this.fieldType = fieldType;
             this.unitTicks = unitTicks;

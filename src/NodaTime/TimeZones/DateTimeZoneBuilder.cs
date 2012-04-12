@@ -17,6 +17,7 @@
 
 using System;
 using System.Collections.Generic;
+using NodaTime.Utility;
 
 namespace NodaTime.TimeZones
 {
@@ -104,10 +105,7 @@ namespace NodaTime.TimeZones
         /// </remarks>
         public DateTimeZoneBuilder AddCutover(int year, ZoneYearOffset yearOffset)
         {
-            if (yearOffset == null)
-            {
-                throw new ArgumentNullException("yearOffset");
-            }
+            Preconditions.CheckNotNull(yearOffset, "yearOffset");
 
             if (ruleSets.Count > 0)
             {
@@ -147,10 +145,7 @@ namespace NodaTime.TimeZones
         /// <returns>This <see cref="DateTimeZoneBuilder"/> for chaining.</returns> 
         public DateTimeZoneBuilder AddRecurringSavings(ZoneRecurrence recurrence)
         {
-            if (recurrence == null)
-            {
-                throw new ArgumentNullException("recurrence");
-            }
+            Preconditions.CheckNotNull(recurrence, "recurrence");
             if (recurrence.FromYear <= recurrence.ToYear)
             {
                 LastRuleSet.AddRule(recurrence);
@@ -164,10 +159,7 @@ namespace NodaTime.TimeZones
         /// <param name="zoneId">Time zone ID to assign</param>
         public DateTimeZone ToDateTimeZone(String zoneId)
         {
-            if (zoneId == null)
-            {
-                throw new ArgumentNullException("zoneId");
-            }
+            Preconditions.CheckNotNull(zoneId, "zoneId");
 
             var transitions = new List<ZoneTransition>();
             DateTimeZone tailZone = null;

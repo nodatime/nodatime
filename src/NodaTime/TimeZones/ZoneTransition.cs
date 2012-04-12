@@ -17,6 +17,7 @@
 
 using System;
 using System.Text;
+using NodaTime.Utility;
 
 namespace NodaTime.TimeZones
 {
@@ -49,10 +50,7 @@ namespace NodaTime.TimeZones
         /// <param name="savings">The actual offset at this transition.</param>
         internal ZoneTransition(Instant instant, String name, Offset standardOffset, Offset savings)
         {
-            if (name == null)
-            {
-                throw new ArgumentNullException("name");
-            }
+            Preconditions.CheckNotNull(name, "name");
             this.instant = instant;
             this.name = name;
             this.standardOffset = standardOffset;

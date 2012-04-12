@@ -16,6 +16,7 @@
 #endregion
 
 using System;
+using NodaTime.Utility;
 
 namespace NodaTime.Fields
 {
@@ -212,10 +213,7 @@ namespace NodaTime.Fields
 
             internal Builder(FieldSet baseSet)
             {
-                if (baseSet == null)
-                {
-                    throw new ArgumentNullException("baseSet");
-                }
+                Preconditions.CheckNotNull(baseSet, "baseSet");
                 Ticks = baseSet.Ticks;
                 Milliseconds = baseSet.Milliseconds;
                 Seconds = baseSet.Seconds;
@@ -265,10 +263,7 @@ namespace NodaTime.Fields
             /// <param name="other">The set of fields to copy.</param>
             internal Builder WithSupportedFieldsFrom(FieldSet other)
             {
-                if (other == null)
-                {
-                    throw new ArgumentNullException("other");
-                }
+                Preconditions.CheckNotNull(other, "other");
                 Ticks = other.Ticks.IsSupported ? other.Ticks : Ticks;
                 Milliseconds = other.Milliseconds.IsSupported ? other.Milliseconds : Milliseconds;
                 Seconds = other.Seconds.IsSupported ? other.Seconds : Seconds;

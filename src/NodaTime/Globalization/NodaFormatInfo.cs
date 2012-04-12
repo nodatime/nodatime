@@ -531,10 +531,7 @@ namespace NodaTime.Globalization
             {
                 throw new InvalidOperationException(Messages.Noda_CannotChangeReadOnly);
             }
-            if (value == null)
-            {
-                throw new ArgumentNullException("value", Messages.Noda_ArgumentNull);
-            }
+            Preconditions.CheckNotNull(value, "value");
             property = value;
         }
 

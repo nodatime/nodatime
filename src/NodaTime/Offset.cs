@@ -361,10 +361,7 @@ namespace NodaTime
             {
                 return 1;
             }
-            if (!(obj is Offset))
-            {
-                throw new ArgumentException("Argument did not refer to an instance of NodaTime.Offset.", "obj");
-            }
+            Preconditions.CheckArgument(obj is Offset, "obj", "Object must be of type NodaTime.Offset.");
             return CompareTo((Offset)obj);
         }
         #endregion

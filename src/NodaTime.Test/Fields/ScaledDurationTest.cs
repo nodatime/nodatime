@@ -34,7 +34,7 @@ namespace NodaTime.Test.Fields
         }
 
         [Test]
-        public void Constructor_WithUnsupportedField_ThrowsArgumentNullException()
+        public void Constructor_WithUnsupportedField_ThrowsArgumentException()
         {
             Assert.Throws<ArgumentException>(() => new ScaledPeriodField(UnsupportedPeriodField.Milliseconds, PeriodFieldType.Minutes, 10));
         }
