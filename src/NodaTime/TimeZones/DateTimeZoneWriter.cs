@@ -19,6 +19,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using NodaTime.Utility;
 
 namespace NodaTime.TimeZones
 {
@@ -72,10 +73,7 @@ namespace NodaTime.TimeZones
         /// <param name="dictionary">The <see cref="IDictionary{TKey,TValue}" /> to write.</param>
         internal void WriteDictionary(IDictionary<string, string> dictionary)
         {
-            if (dictionary == null)
-            {
-                throw new ArgumentNullException("dictionary");
-            }
+            Preconditions.CheckNotNull(dictionary, "dictionary");
             WriteCount(dictionary.Count);
             foreach (var entry in dictionary)
             {

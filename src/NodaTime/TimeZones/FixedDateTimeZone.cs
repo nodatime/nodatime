@@ -132,10 +132,7 @@ namespace NodaTime.TimeZones
         /// <param name="writer">The writer.</param>
         internal override void Write(DateTimeZoneWriter writer)
         {
-            if (writer == null)
-            {
-                throw new ArgumentNullException("writer");
-            }
+            Preconditions.CheckNotNull(writer, "writer");
             writer.WriteOffset(offset);
         }
 
@@ -147,10 +144,7 @@ namespace NodaTime.TimeZones
         /// <returns></returns>
         public static DateTimeZone Read(DateTimeZoneReader reader, string id)
         {
-            if (reader == null)
-            {
-                throw new ArgumentNullException("reader");
-            }
+            Preconditions.CheckNotNull(reader, "reader");
             var offset = reader.ReadOffset();
             return new FixedDateTimeZone(id, offset);
         }

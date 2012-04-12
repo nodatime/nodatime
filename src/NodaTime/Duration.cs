@@ -16,6 +16,7 @@
 #endregion
 
 using System;
+using NodaTime.Utility;
 
 namespace NodaTime
 {
@@ -450,10 +451,7 @@ namespace NodaTime
             {
                 return 1;
             }
-            if (!(obj is Duration))
-            {
-                throw new ArgumentException("Argument did not refer to an instance of NodaTime.Duration.", "obj");
-            }
+            Preconditions.CheckArgument(obj is Duration, "obj", "Object must be of type NodaTime.Duration.");
             return CompareTo((Duration)obj);
         }
         #endregion

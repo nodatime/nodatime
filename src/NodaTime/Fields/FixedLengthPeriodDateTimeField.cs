@@ -35,16 +35,9 @@ namespace NodaTime.Fields
         protected FixedLengthPeriodDateTimeField(DateTimeFieldType fieldType, PeriodField unitField)
             : base(fieldType, unitField)
         {
-            if (!unitField.IsFixedLength)
-            {
-                throw new ArgumentException("Unit period field must have a fixed length");
-            }
-
+            Preconditions.CheckArgument(unitField.IsFixedLength, "unitField", "Unit period field must have a fixed length");
+            Preconditions.CheckArgument(unitField.IsSupported, "unitField", "Unit period field must be supported");
             unitTicks = unitField.UnitTicks;
-            if (unitTicks < 1)
-            {
-                throw new ArgumentException("The unit ticks must be at least one");
-            }
         }
 
         internal long UnitTicks { get { return unitTicks; } }

@@ -18,6 +18,7 @@
 using System;
 using System.Collections.Generic;
 using NodaTime.Fields;
+using NodaTime.Utility;
 
 namespace NodaTime.Calendars
 {
@@ -44,10 +45,7 @@ namespace NodaTime.Calendars
         {
             // Quick sanity check - the point of separating out this class is to only use it in
             // situations where we really have a calendar to wrap.
-            if (baseCalendar == null)
-            {
-                throw new ArgumentNullException("baseCalendar");
-            }
+            Preconditions.CheckNotNull(baseCalendar, "baseCalendar");
             this.baseCalendar = baseCalendar;
             // Work out which fields from the base are still valid, so we can
             // optimize by calling directly to the base calendar sometimes.

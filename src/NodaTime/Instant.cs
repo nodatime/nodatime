@@ -125,10 +125,7 @@ namespace NodaTime
             {
                 return 1;
             }
-            if (!(obj is Instant))
-            {
-                throw new ArgumentException("Object must be of type Instant.", "obj");
-            }
+            Preconditions.CheckArgument(obj is Instant, "obj", "Object must be of type NodaTime.Instant.");
             return CompareTo((Instant)obj);
         }
         #endregion
@@ -636,10 +633,7 @@ namespace NodaTime
         /// <exception cref="ArgumentException"><paramref name="dateTime"/> has the wrong <see cref="DateTime.Kind"/>.</exception>
         public static Instant FromDateTimeUtc(DateTime dateTime)
         {
-            if (dateTime.Kind != DateTimeKind.Utc)
-            {
-                throw new ArgumentException("Invalid DateTime.Kind for Instant.FromDateTimeUtc", "dateTime");
-            }
+            Preconditions.CheckArgument(dateTime.Kind == DateTimeKind.Utc, "dateTime", "Invalid DateTime.Kind for Instant.FromDateTimeUtc");
             return new Instant(dateTime.Ticks - NodaConstants.DateTimeEpochTicks);
         }
 

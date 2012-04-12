@@ -58,21 +58,16 @@ namespace NodaTime.TimeZones
             // Treat the recurrences as if they extended to the start of time.
             startRecurrence = startRecurrence.ToStartOfTime();
             endRecurrence = endRecurrence.ToStartOfTime();
+            Preconditions.CheckArgument(startRecurrence.IsInfinite, "startRecurrence", "Start recurrence must extend to the end of time");
+            Preconditions.CheckArgument(endRecurrence.IsInfinite, "endRecurrence", "End recurrence must extend to the end of time");
             var dst = startRecurrence;
             var standard = endRecurrence;
-            if (!dst.IsInfinite || !standard.IsInfinite)
-            {
-                throw new ArgumentException("Both recurrences must extend to the end of time");
-            }
             if (startRecurrence.Savings == Offset.Zero)
             {
                 dst = endRecurrence;
                 standard = startRecurrence;
             }
-            if (standard.Savings != Offset.Zero)
-            {
-                throw new ArgumentException("At least one recurrence must not have savings applied");
-            }
+            Preconditions.CheckArgument(standard.Savings == Offset.Zero, "startRecurrence", "At least one recurrence must not have savings applied");
             dstRecurrence = dst;
             standardRecurrence = standard;
         }
@@ -211,10 +206,7 @@ namespace NodaTime.TimeZones
         /// <param name="writer">The writer to write to.</param>
         internal override void Write(DateTimeZoneWriter writer)
         {
-            if (writer == null)
-            {
-                throw new ArgumentNullException("writer");
-            }
+            Preconditions.CheckNotNull(writer, "writer");
             writer.WriteOffset(standardOffset);
             dstRecurrence.Write(writer);
             standardRecurrence.Write(writer);
@@ -222,10 +214,7 @@ namespace NodaTime.TimeZones
 
         internal static DateTimeZone Read(DateTimeZoneReader reader, string id)
         {
-            if (reader == null)
-            {
-                throw new ArgumentNullException("reader");
-            }
+            Preconditions.CheckNotNull(reader, "reader");
             Offset offset = reader.ReadOffset();
             ZoneRecurrence start = ZoneRecurrence.Read(reader);
             ZoneRecurrence end = ZoneRecurrence.Read(reader);

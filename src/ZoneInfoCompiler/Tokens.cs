@@ -18,6 +18,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using NodaTime.Utility;
 using NodaTime.ZoneInfoCompiler.Tzdb;
 
 namespace NodaTime.ZoneInfoCompiler
@@ -94,10 +95,7 @@ namespace NodaTime.ZoneInfoCompiler
         /// <exception cref="ArgumentNullException">If the text is null.</exception>
         public static Tokens Tokenize(string text)
         {
-            if (text == null)
-            {
-                throw new ArgumentNullException("text");
-            }
+            Preconditions.CheckNotNull(text, "text");
             text = text.TrimEnd();
             var parts = Regex.Split(text, @"\s+", RegexOptions.Compiled | RegexOptions.CultureInvariant);
             if (parts.Length == 1 && string.IsNullOrEmpty(parts[0]))

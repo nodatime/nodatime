@@ -47,10 +47,7 @@ namespace NodaTime.Fields
             : base(fieldType, periodField, Preconditions.CheckNotNull(wrappedField, "wrappedField").IsLenient, true)
         {
             // Already checked for nullity by now
-            if (!wrappedField.IsSupported)
-            {
-                throw new ArgumentException("The wrapped field must be supported");
-            }
+            Preconditions.CheckArgument(wrappedField.IsSupported, "wrappedField", "The wrapped field must be supported");
             this.wrappedField = wrappedField;
         }
 

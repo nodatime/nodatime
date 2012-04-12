@@ -42,7 +42,6 @@ namespace NodaTime.Utility
         {
             if (value < minInclusive || value > maxInclusive)
             {
-
                 throw new ArgumentOutOfRangeException(paramName,
                     "Value should be in range [" + minInclusive + "-" + maxInclusive + "]");
             }

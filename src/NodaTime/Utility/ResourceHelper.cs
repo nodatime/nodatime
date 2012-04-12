@@ -86,10 +86,7 @@ namespace NodaTime.Utility
         /// <returns>The normalized name.</returns>
         internal static string NormalizeAsResourceName(string name)
         {
-            if (name == null)
-            {
-                throw new ArgumentNullException("name");
-            }
+            Preconditions.CheckNotNull(name, "name");
             name = name.Replace("-", "_minus_");
             name = name.Replace("+", "_plus_");
             name = name.Replace("<", "_less_");
@@ -118,10 +115,7 @@ namespace NodaTime.Utility
         /// <returns>The <see cref="IDictionary{TKey,TValue}"/> or <c>null</c> if there is no such resource.</returns>
         internal static IDictionary<string, string> LoadDictionary(ResourceSet source, string name)
         {
-            if (source == null)
-            {
-                throw new ArgumentNullException("source");
-            }
+            Preconditions.CheckNotNull(source, "source");
             var bytes = source.GetObject(name) as byte[];
             if (bytes != null)
             {
@@ -144,16 +138,10 @@ namespace NodaTime.Utility
         /// <exception cref="ArgumentException">The </exception>
         internal static DateTimeZone LoadTimeZone(ResourceSet source, string name, string id)
         {
-            if (source == null)
-            {
-                throw new ArgumentNullException("source");
-            }
+            Preconditions.CheckNotNull(source, "source");
             object obj = source.GetObject(NormalizeAsResourceName(name));
             // We should never be asked for time zones which don't exist.
-            if (obj == null)
-            {
-                throw new ArgumentException("id");
-            }
+            Preconditions.CheckArgument(obj != null, "id", "ID is not one of the recognized time zone identifiers within this resource");
             byte[] bytes = (byte[])obj;            
             using (var stream = new MemoryStream(bytes))
             {

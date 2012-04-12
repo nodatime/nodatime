@@ -109,10 +109,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         /// <returns></returns>
         public String FormatName(String nameFormat)
         {
-            if (nameFormat == null)
-            {
-                throw new ArgumentNullException("nameFormat");
-            }
+            Preconditions.CheckNotNull(nameFormat, "nameFormat");
             int index = nameFormat.IndexOf("/", StringComparison.Ordinal);
             if (index > 0)
             {

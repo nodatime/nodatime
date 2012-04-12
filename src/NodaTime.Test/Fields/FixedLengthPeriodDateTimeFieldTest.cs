@@ -31,10 +31,9 @@ namespace NodaTime.Test.Fields
         }
 
         [Test]
-        public void Constructor_GivenZeroTicksPeriodField_ThrowsArgumentException()
+        public void Constructor_GivenUnsupportedPeriodField_ThrowsArgumentException()
         {
-            PeriodField badField = new FakePeriodField(0, true);
-            Assert.Throws<ArgumentException>(() => new StubFixedLengthPeriodDateTimeField(badField));
+            Assert.Throws<ArgumentException>(() => new StubFixedLengthPeriodDateTimeField(UnsupportedPeriodField.Hours));
         }
 
         [Test]

@@ -29,10 +29,7 @@ namespace NodaTime.Fields
     {
         internal ZeroIsMaxDateTimeField(DateTimeField wrappedField, DateTimeFieldType fieldType) : base(wrappedField, fieldType)
         {
-            if (wrappedField.GetMinimumValue() != 0)
-            {
-                throw new ArgumentException("Wrapped field's minumum value must be zero");
-            }
+            Preconditions.CheckArgument(wrappedField.GetMinimumValue() == 0, "wrappedField", "Wrapped field's minumum value must be zero");
         }
 
         #region Values

@@ -47,14 +47,8 @@ namespace NodaTime.TimeZones
         /// <exception cref="ArgumentNullException">If the <paramref name = "name" /> parameter is null.</exception>
         public ZoneInterval(string name, Instant start, Instant end, Offset wallOffset, Offset savings)
         {
-            if (name == null)
-            {
-                throw new ArgumentNullException("name");
-            }
-            if (start >= end)
-            {
-                throw new ArgumentException("The start Instant must be less than the end Instant", "start");
-            }
+            Preconditions.CheckNotNull(name, "name");
+            Preconditions.CheckArgument(start < end, "start", "The start Instant must be less than the end Instant");
             this.name = name;
             this.start = start;
             this.end = end;

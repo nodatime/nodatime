@@ -19,6 +19,7 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Text.RegularExpressions;
+using NodaTime.Utility;
 
 namespace NodaTime.ZoneInfoCompiler.Tzdb
 {
@@ -118,10 +119,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         /// <exception cref="ArgumentNullException">If the text is null.</exception>
         public static Offset ParseOffset(string text)
         {
-            if (text == null)
-            {
-                throw new ArgumentNullException("text");
-            }
+            Preconditions.CheckNotNull(text, "text");
             int sign = 1;
             if (text.StartsWith("-", StringComparison.Ordinal))
             {
@@ -155,10 +153,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         /// <exception cref="ArgumentNullException">If the text is null.</exception>
         public static string ParseOptional(String text)
         {
-            if (text == null)
-            {
-                throw new ArgumentNullException("text");
-            }
+            Preconditions.CheckNotNull(text, "text");
             return text == "-" ? null : text;
         }
 

@@ -18,6 +18,7 @@
 using System;
 using System.Globalization;
 using NodaTime.Text;
+using NodaTime.Utility;
 
 namespace NodaTime
 {
@@ -273,10 +274,7 @@ namespace NodaTime
             {
                 return 1;
             }
-            if (!(obj is LocalInstant))
-            {
-                throw new ArgumentException("Argument did not refer to an instance of NodaTime.LocalInstant.", "obj");
-            }
+            Preconditions.CheckArgument(obj is LocalInstant, "obj", "Object must be of type NodaTime.LocalInstant.");
             return CompareTo((LocalInstant)obj);
         }
         #endregion

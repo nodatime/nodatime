@@ -327,10 +327,7 @@ namespace NodaTime.TimeZones
 
         public static ZoneYearOffset Read(DateTimeZoneReader reader)
         {
-            if (reader == null)
-            {
-                throw new ArgumentNullException("reader");
-            }
+            Preconditions.CheckNotNull(reader, "reader");
             var mode = (TransitionMode)reader.ReadCount();
             // Remove the additions performed before
             int monthOfYear = reader.ReadCount() - 12;

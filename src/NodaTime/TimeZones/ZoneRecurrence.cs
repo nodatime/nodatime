@@ -53,14 +53,8 @@ namespace NodaTime.TimeZones
         /// <param name="toYear">The last year in which this recurrence is valid</param>
         public ZoneRecurrence(String name, Offset savings, ZoneYearOffset yearOffset, int fromYear, int toYear)
         {
-            if (name == null)
-            {
-                throw new ArgumentNullException("name");
-            }
-            if (yearOffset == null)
-            {
-                throw new ArgumentNullException("yearOffset");
-            }
+            Preconditions.CheckNotNull(name, "name");
+            Preconditions.CheckNotNull(yearOffset, "yearOffset");
             this.name = name;
             this.savings = savings;
             this.yearOffset = yearOffset;
@@ -266,10 +260,7 @@ namespace NodaTime.TimeZones
         /// <returns></returns>
         public static ZoneRecurrence Read(DateTimeZoneReader reader)
         {
-            if (reader == null)
-            {
-                throw new ArgumentNullException("reader");
-            }
+            Preconditions.CheckNotNull(reader, "reader");
             string name = reader.ReadString();
             Offset savings = reader.ReadOffset();
             ZoneYearOffset yearOffset = ZoneYearOffset.Read(reader);

@@ -29,18 +29,18 @@ namespace NodaTime.Fields
         private readonly PeriodField wrappedField;
 
         internal ScaledPeriodField(PeriodField wrappedField, PeriodFieldType fieldType, int scale)
-            : base(fieldType, Preconditions.CheckNotNull(wrappedField, "wrappedField").UnitTicks * scale, wrappedField.IsFixedLength, true)
+            : base(fieldType, ValidateWrappedField(wrappedField).UnitTicks * scale, wrappedField.IsFixedLength, true)
         {
-            if (!wrappedField.IsSupported)
-            {
-                throw new ArgumentException("Wrapped field must be supported", "wrappedField");
-            }
-            if (scale < 2)
-            {
-                throw new ArgumentOutOfRangeException("scale", "The scale must be 2 or more");
-            }
+            Preconditions.CheckArgumentRange("scale", scale, 2, int.MaxValue);
             this.scale = scale;
             this.wrappedField = wrappedField;
+        }
+
+        private static PeriodField ValidateWrappedField(PeriodField wrappedField)
+        {
+            Preconditions.CheckNotNull(wrappedField, "wrappedField");
+            Preconditions.CheckArgument(wrappedField.IsSupported, "wrappedField", "Wrapped field must be supported");
+            return wrappedField;
         }
 
         internal override int GetValue(Duration duration)

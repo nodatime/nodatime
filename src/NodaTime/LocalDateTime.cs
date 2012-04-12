@@ -74,10 +74,7 @@ namespace NodaTime
         /// <returns>The resulting date/time.</returns>
         internal LocalDateTime(LocalInstant localInstant, CalendarSystem calendar)
         {
-            if (calendar == null)
-            {
-                throw new ArgumentNullException("calendar");
-            }
+            Preconditions.CheckNotNull(calendar, "calendar");
             this.localInstant = localInstant;
             this.calendar = calendar;
         }
@@ -147,10 +144,7 @@ namespace NodaTime
         /// <returns>The resulting date/time.</returns>
         public LocalDateTime(int year, int month, int day, int hour, int minute, int second, CalendarSystem calendar)
         {
-            if (calendar == null)
-            {
-                throw new ArgumentNullException("calendar");
-            }
+            Preconditions.CheckNotNull(calendar, "calendar");
             localInstant = calendar.GetLocalInstant(year, month, day, hour, minute, second);
             this.calendar = calendar;
         }

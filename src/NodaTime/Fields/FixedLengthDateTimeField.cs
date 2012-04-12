@@ -35,19 +35,10 @@ namespace NodaTime.Fields
 
         internal FixedLengthDateTimeField(DateTimeFieldType type, PeriodField unit, PeriodField rangeField) : base(type, unit)
         {
-            if (rangeField == null)
-            {
-                throw new ArgumentNullException("rangeField");
-            }
-            if (!rangeField.IsFixedLength)
-            {
-                throw new ArgumentException("Range period field must have a fixed length");
-            }
+            Preconditions.CheckNotNull(rangeField, "rangeField");
+            Preconditions.CheckArgument(rangeField.IsFixedLength, "rangeField", "Range period field must have a fixed length");
             effectiveRange = rangeField.UnitTicks / unit.UnitTicks;
-            if (effectiveRange < 2)
-            {
-                throw new ArgumentException("The effective range must be at least 2.");
-            }
+            Preconditions.CheckArgument(effectiveRange >= 2, "rangeField", "The effective range must be at least 2");
             this.rangeField = rangeField;
         }
 

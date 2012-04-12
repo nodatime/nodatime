@@ -72,14 +72,8 @@ namespace NodaTime
         /// <exception cref="ArgumentNullException">Thrown if the <paramref name="calendar"/> or <paramref name="zone"/> is <c>null</c>.</exception>
         public ZonedDateTime(Instant instant, DateTimeZone zone, CalendarSystem calendar)
         {
-            if (zone == null)
-            {
-                throw new ArgumentNullException("zone");
-            }
-            if (calendar == null)
-            {
-                throw new ArgumentNullException("calendar");
-            }
+            Preconditions.CheckNotNull(zone, "zone");
+            Preconditions.CheckNotNull(calendar, "calendar");
             offset = zone.GetOffsetFromUtc(instant);
             localDateTime = new LocalDateTime(instant.Plus(offset), calendar);
             this.zone = zone;
@@ -112,6 +106,7 @@ namespace NodaTime
             Preconditions.CheckNotNull(zone, "zone");
             Instant candidateInstant = localDateTime.LocalInstant.Minus(offset);
             Offset correctOffset = zone.GetOffsetFromUtc(candidateInstant);
+            // Not using Preconditions, to avoid building the string unnecessarily.
             if (correctOffset != offset)
             {
                 throw new ArgumentException("Offset " + offset + " is invalid for local date and time " + localDateTime
