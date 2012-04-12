@@ -10,7 +10,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>
       Noda Time is a date and time API acting as an alternative to the
-      built-in DateTime/DateTimeOffet etc types built into the .NET
+      built-in DateTime/DateTimeOffset etc types built into the .NET
       framework. It's based on the "engine" of Joda Time, the popular Java
       library - but with an API designed from the ground up.
     </description>
