@@ -64,8 +64,8 @@ used some other zero point (such a January 1st 2000 UTC) it would
 simply have offset the values, and changed the maximum and minimum
 representable values. It's just an origin.
 
-The Noda Time [`Instant`] type represents a point on this global
-timeline: the number of ticks which have elapsed since the Unix
+The Noda Time [`Instant`][Instant] type represents a point on this
+global timeline: the number of ticks which have elapsed since the Unix
 epoch. The value can be negative for dates and times before 1970 of
 course - the range of supported dates is from around 27000 BCE to
 around 31000 CE in the Gregorian calendar.
@@ -100,14 +100,14 @@ agreeing a single system to use. So there are multiple different
 calendars, including Gregorian, Julian, Coptic and Buddhist. These
 allow different people to talk about the same local time in
 different ways - the Unix epoch occurred on December 19th 1969 in
-the Juliant calendar system, for example.
+the Julian calendar system, for example.
 
 The calendar system you use is one of the few things Noda Time is
 willing to use a default for: unless you specify otherwise, the
 ISO-8601 calendar is used. If you don't know which calendar you ought
 to use, this is almost certainly the one for you.
 
-In Noda Time, the [CalendarSystem][CalendarSystem] type handles the
+In Noda Time, the [`CalendarSystem`][CalendarSystem] type handles the
 details of different calendar systems. Most of the methods are internal,
 although a few useful methods are exposed. Most of the time even if you
 *do* need to use a `CalendarSystem`, you can just fetch a reference to
@@ -132,16 +132,16 @@ the summer; the offset in California is -8 hours in the winter and
 California and 1pm in France.
 
 As well as mapping any particular instant to an offset,
-[`DateTimeZone`] allows you to find out the name of the part of the
+`DateTimeZone` allows you to find out the name of the part of the
 time zone for that instant, as well as when the next or previous
 change occurs - usually for daylight saving changes.
 
-Most of the time when you use a [`DateTimeZone`] you won't need
+Most of the time when you use a `DateTimeZone` you won't need
 worry about that - the main purpose is usually to convert between a
 [`ZonedDateTime`][ZonedDateTime] and a [`LocalDateTime`][LocalDateTime]
 - where the names mean exactly what you expect them to. There's a slight
-twist to this: converting from an [`Instant`] or a [`ZonedDateTime`] to a
-[`LocalDateTime`] is unambiguous; at any point in time, all the (accurate)
+twist to this: converting from an `Instant` or a `ZonedDateTime` to a
+`LocalDateTime` is unambiguous; at any point in time, all the (accurate)
 clocks in a particular time zone will show the same time... but the
 reverse isn't true. Any one local time can map to:
 
@@ -157,8 +157,8 @@ forward in the spring. If the clocks go forward at 1am local time to
 2am local time, then 1.30am doesn't occur at all.
 
 Noda Time makes it *reasonably* easy to handle these situations, but
-you need to work out what you want to happen. See the `DateTimeZone`
-documentation for more details and options.
+you need to work out what you want to happen. See the [`DateTimeZone`
+documentation][DateTimeZone] for more details and options.
 
 [api]: ../api/Index.html
 [2]: http://blogs.msdn.com/b/bclteam/archive/2007/06/18/a-brief-history-of-datetime-anthony-moore.aspx
@@ -171,4 +171,3 @@ documentation for more details and options.
 [DateTimeZone]: noda-type://NodaTime.DateTimeZone
 [Offset]: noda-type://NodaTime.Offset
 [ZonedDateTime]: noda-type://NodaTime.ZonedDateTime
-[12]: noda-type://NodaTime.LocalDateTime
