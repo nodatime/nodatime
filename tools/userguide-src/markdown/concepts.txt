@@ -16,7 +16,7 @@ date and time data for your whole project.
 This document introduces the core concepts, but in order to avoid it
 being too overwhelming, we won't go into the fine details. See
 individual pages (particularly the ["choosing between
-types"](type-choices.html) page) and the [API documentation][1]
+types"](type-choices.html) page) and the [API documentation][api]
 for more information.
 
 "Local" and "global" (or "absolute") types
@@ -38,12 +38,12 @@ interpreted in .NET.
 
 Internally, Noda Time has a concept of a `LocalInstant` which is a
 local value without reference to any particular calendar system, but
-this is currently not exposed. Similarly, [`LocalTime`][3] does not refer
-to a calendar system - we assume that all calendars are based around
-solar days 24 hours in length (give or take daylight saving
-changes). However, the [`LocalDate`][4] and [`LocalDateTime`][5] types *do*
-both refer to calendar systems... see the later section on calendars
-for more information.
+this is currently not exposed. Similarly, [`LocalTime`][LocalTime] does
+not refer to a calendar system - we assume that all calendars are based
+around solar days 24 hours in length (give or take daylight saving
+changes). However, the [`LocalDate`][LocalDate] and
+[`LocalDateTime`][LocalDateTime] types *do* both refer to calendar
+systems... see the later section on calendars for more information.
 
 The global time line, and `Instant`
 -----------------------------------
@@ -107,22 +107,22 @@ willing to use a default for: unless you specify otherwise, the
 ISO-8601 calendar is used. If you don't know which calendar you ought
 to use, this is almost certainly the one for you.
 
-In Noda Time, the [CalendarSystem][1] type handles the details of
-different calendar systems. Most of the methods are internal, although
-a few useful methods are exposed. Most of the time even if you *do*
-need to use a `CalendarSystem`, you can just fetch a reference to an
-appropriate object, and then pass it to other constructors etc as a
+In Noda Time, the [CalendarSystem][CalendarSystem] type handles the
+details of different calendar systems. Most of the methods are internal,
+although a few useful methods are exposed. Most of the time even if you
+*do* need to use a `CalendarSystem`, you can just fetch a reference to
+an appropriate object, and then pass it to other constructors etc as a
 little bundle of magic which simply does the right thing for you.
 
 Time zones
 ----------
 
-In the most basic sense, a time zone is a mapping between [UTC][8]
+In the most basic sense, a time zone is a mapping between [UTC][]
 date/times and local date/times - or equivalently, a mapping from
 UTC instants to *offsets*, where an offset is simply the difference
 between UTC and local time. In Noda Time, time zones are represented
-by the [`DateTimeZone`][9] class, and offsets are represented by the
-[`Offset`][10] struct.
+by the [`DateTimeZone`][DateTimeZone] class, and offsets are represented
+by the [`Offset`][Offset] struct.
 
 An offset is positive if local time is later than (ahead of) UTC,
 and negative if local time is earlier than (behind) UTC. For
@@ -138,12 +138,12 @@ change occurs - usually for daylight saving changes.
 
 Most of the time when you use a [`DateTimeZone`] you won't need
 worry about that - the main purpose is usually to convert between a
-[`ZonedDateTime`](noda-type://NodaTime.ZonedDateTime) and a [`LocalDateTime`][12] - where the names
-mean exactly what you expect them to. There's a slight twist to
-this: converting from an [`Instant`] or a [`ZonedDateTime`] to a
-[`LocalDateTime`] is unambiguous; at any point in time, all the
-(accurate) clocks in a particular time zone will show the same
-time... but the reverse isn't true. Any one local time can map to:
+[`ZonedDateTime`][ZonedDateTime] and a [`LocalDateTime`][LocalDateTime]
+- where the names mean exactly what you expect them to. There's a slight
+twist to this: converting from an [`Instant`] or a [`ZonedDateTime`] to a
+[`LocalDateTime`] is unambiguous; at any point in time, all the (accurate)
+clocks in a particular time zone will show the same time... but the
+reverse isn't true. Any one local time can map to:
 
 - A single instant in time: this is the case for almost all the time.
 - Two instants in time: this occurs around a time zone transition
@@ -160,15 +160,15 @@ Noda Time makes it *reasonably* easy to handle these situations, but
 you need to work out what you want to happen. See the `DateTimeZone`
 documentation for more details and options.
 
-[1]: ../api/Index.html
+[api]: ../api/Index.html
 [2]: http://blogs.msdn.com/b/bclteam/archive/2007/06/18/a-brief-history-of-datetime-anthony-moore.aspx
-[3]: noda-type://NodaTime.LocalTime
-[4]: noda-type://NodaTime.LocalDate
-[5]: noda-type://NodaTime.LocalDateTime
-[6]: noda-type://NodaTime.Instant
-[7]: noda-type://NodaTime.CalendarSystem
-[8]: http://en.wikipedia.org/wiki/Coordinated_Universal_Time
-[9]: noda-type://NodaTime.DateTimeZone
-[10]: noda-type://NodaTime.Offset
-[11]: noda-type://NodaTime.ZonedDateTime
+[LocalTime]: noda-type://NodaTime.LocalTime
+[LocalDate]: noda-type://NodaTime.LocalDate
+[LocalDateTime]: noda-type://NodaTime.LocalDateTime
+[Instant]: noda-type://NodaTime.Instant
+[CalendarSystem]: noda-type://NodaTime.CalendarSystem
+[UTC]: http://en.wikipedia.org/wiki/Coordinated_Universal_Time
+[DateTimeZone]: noda-type://NodaTime.DateTimeZone
+[Offset]: noda-type://NodaTime.Offset
+[ZonedDateTime]: noda-type://NodaTime.ZonedDateTime
 [12]: noda-type://NodaTime.LocalDateTime
