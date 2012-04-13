@@ -41,7 +41,7 @@ namespace NodaTime
     /// consider which calendar system they're working in anyway.
     /// </para>
     /// <para>
-    /// Currently there is no real text handling support for this type. For the moment, you should 
+    /// Currently there is no real text handling support for this type.
     /// </para>
     /// </remarks>
     public struct ZonedDateTime : IEquatable<ZonedDateTime>, IComparable<ZonedDateTime>
