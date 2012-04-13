@@ -115,8 +115,9 @@ namespace NodaTime
 
         /// <summary>
         /// Gets the UTC (Coordinated Universal Time) time zone. This is a single instance which is not
-        /// provider-specific; it may or may not be the value returned by <c>DateTimeZone.ForId("UTC")</c>; that
-        /// depends on whether the current provider has its own mapping for the UTC ID.
+        /// provider-specific; it is guaranteed to have the ID "UTC", but may or may not be the same as the value
+        /// returned by <c>DateTimeZone.ForId("UTC")</c>; that depends on whether the current provider has its own
+        /// mapping for that ID.
         /// </summary>
         /// <value>The UTC <see cref="T:NodaTime.DateTimeZone" />.</value>
         public static DateTimeZone Utc { get { return UtcZone; } }
@@ -166,6 +167,9 @@ namespace NodaTime
         /// Returns a fixed time zone with the given offset. This may or may not be cached;
         /// callers should not rely upon any particular caching policy.
         /// </summary>
+        /// <remarks>
+        /// The returned time zone will have an ID of "UTC" if the offset is zero, or "UTC+/-Offset" otherwise.
+        /// </remarks>
         /// <param name="offset">The offset for the returned time zone</param>
         /// <returns>A fixed time zone with the given offset.</returns>
         public static DateTimeZone ForOffset(Offset offset)
