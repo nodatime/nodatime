@@ -17,22 +17,12 @@
 
 using System;
 using NUnit.Framework;
-using NodaTime.Utility;
 
 namespace NodaTime.Test
 {
     [TestFixture]
     public class SystemClockTest
     {
-        [Test]
-        public void SystemNow()
-        {
-            long frameworkNowTicks = DateTime.UtcNow.Ticks - NodaConstants.DateTimeEpochTicks;
-            long nodaTicks = SystemClock.SystemNow.Ticks;
-            Assert.Less(Math.Abs(nodaTicks - frameworkNowTicks), Duration.FromSeconds(1).Ticks);
-        }
-
-        [Test]
         public void InstanceNow()
         {
             long frameworkNowTicks = DateTime.UtcNow.Ticks - NodaConstants.DateTimeEpochTicks;
@@ -47,7 +37,7 @@ namespace NodaTime.Test
             // so they were self-consistent but not consistent with sanity.
             Instant minimumExpected = Instant.FromUtc(2011, 8, 1, 0, 0);
             Instant maximumExpected = Instant.FromUtc(2020, 1, 1, 0, 0);
-            Instant now = SystemClock.SystemNow;
+            Instant now = SystemClock.Instance.Now;
             Assert.Less(minimumExpected.Ticks, now.Ticks);
             Assert.Less(now.Ticks, maximumExpected.Ticks);
         }
