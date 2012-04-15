@@ -40,11 +40,11 @@ namespace NodaTime
         /// <summary>
         /// String used to represent "the beginning of time" (as far as Noda Time is concerned).
         /// </summary>
-        public const string BeginningOfTimeLabel = "BOT";
+        internal const string BeginningOfTimeLabel = "BOT";
         /// <summary>
         /// String used to represent "the end of time" (as far as Noda Time is concerned).
         /// </summary>
-        public const string EndOfTimeLabel = "EOT";
+        internal const string EndOfTimeLabel = "EOT";
 
         /// <summary>
         /// The instant at the Unix epoch of midnight 1st January 1970 UTC.
