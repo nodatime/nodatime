@@ -21,6 +21,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "markdown", "markdown", "{C7
 		userguide-src\markdown\concepts.txt = userguide-src\markdown\concepts.txt
 		userguide-src\markdown\design.txt = userguide-src\markdown\design.txt
 		userguide-src\markdown\index.txt = userguide-src\markdown\index.txt
+		userguide-src\markdown\installation.txt = userguide-src\markdown\installation.txt
 		userguide-src\markdown\instant-patterns.txt = userguide-src\markdown\instant-patterns.txt
 		userguide-src\markdown\localdate-patterns.txt = userguide-src\markdown\localdate-patterns.txt
 		userguide-src\markdown\localdatetime-patterns.txt = userguide-src\markdown\localdatetime-patterns.txt
@@ -31,8 +32,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "markdown", "markdown", "{C7
 		userguide-src\markdown\rationale.txt = userguide-src\markdown\rationale.txt
 		userguide-src\markdown\serialization.txt = userguide-src\markdown\serialization.txt
 		userguide-src\markdown\template.html = userguide-src\markdown\template.html
+		userguide-src\markdown\testing.txt = userguide-src\markdown\testing.txt
 		userguide-src\markdown\text.txt = userguide-src\markdown\text.txt
 		userguide-src\markdown\tzdb.txt = userguide-src\markdown\tzdb.txt
+		userguide-src\markdown\versions.txt = userguide-src\markdown\versions.txt
 	EndProjectSection
 EndProject
 Global

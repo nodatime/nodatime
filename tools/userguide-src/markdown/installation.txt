@@ -1,0 +1,16 @@
+Installation
+
+Our primary distribution channel is [NuGet](http://nuget.org) with
+two packages:
+
+- [NodaTime](http://nuget.org/packages/NodaTime)
+- [NodaTime.Testing](http://nuget.org/packages/NodaTime.Testing)
+
+System requirements
+-------------------
+
+Currently Noda Time requires .NET 3.5 (client profile). It supports
+Mono ([with some caveats](mono.html)) but does *not* support
+Silverlight (or, by extension, Windows Phone 7). We'd like to
+support these in the future, but it will involve a non-trivial
+amount of work.

@@ -1,0 +1,12 @@
+Unit testing with Noda Time
+
+This page is not about how Noda Time itself is tested - it's about how you to test code
+which *uses* Noda Time.
+
+NodaTime.Testing
+----------------
+
+Firstly, get hold of the [NodaTime.Testing](http://nuget.org/packages/NodaTime.Testing) assembly. It's currently fairly
+small, but it will no doubt grow - and it will make your life much easier. The purpose of the assembly is to provide
+easy-to-use fakes which can be used instead of the real implementations.
+
