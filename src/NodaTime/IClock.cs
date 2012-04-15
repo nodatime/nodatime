@@ -23,7 +23,7 @@ namespace NodaTime
     /// Represents a clock which can tell the current time as an <see cref="Instant" />.
     /// </summary>
     /// <remarks>
-    /// Although it's not strictly incorrect to call <see cref="SystemClock.SystemNow"/> statically,
+    /// Although it's not strictly incorrect to call <c>SystemClock.Instance.Now</c> directly,
     /// in the same way as you might call <see cref="DateTime.UtcNow"/>, it's strongly discouraged
     /// as a matter of style for production code. We recommend providing an instance of <see cref="IClock"/>
     /// to anything that needs it, which allows you to write tests using the stub clock in the NodaTime.Testing
