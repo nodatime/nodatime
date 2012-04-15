@@ -6,7 +6,7 @@ including Windows, Linux and OS X.
 
 Noda Time runs on Mono, but with some limitations:
 
-- Noda Time is not *developed* on Mono, so releases will be tested
+- Noda Time is not *developed* on Mono, so while releases will be tested
   against it (running all the unit tests), code which isn't part
   of a release may not work. Please raise an issue on the
   [tracker page](http://code.google.com/p/noda-time/issues/list) if
@@ -30,7 +30,7 @@ Noda Time runs on Mono, but with some limitations:
   type initializers and `RuntimeHelpers.InitializeArray`. We believe
   this to be due to a [bug in .NET](http://connect.microsoft.com/VisualStudio/feedback/details/635365)
   which the Mono compiler happens to trigger. We would recommend that
-  you use a binary build by the Microsoft C# compiler if you wish
+  you use a binary built by the Microsoft C# compiler if you wish
   to run using this CLR.
 
 System requirements

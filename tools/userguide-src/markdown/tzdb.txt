@@ -56,7 +56,7 @@ While it's possible to have multiple time zone providers in play at a time, that
 file is relatively straightforward:
 
 - Create a [`ResourceSet`](http://msdn.microsoft.com/en-us/library/t15hy0dt.aspx) from the file
-- Create a [`TzdbTimeZoneProvider`] with the `ResourceSet`
+- Create a [`TzdbTimeZoneProvider`][TzdbTimeZoneProvider] with the `ResourceSet`
 - Call `DateTimeZone.SetProvider` with the provider
 
 For the sake of sanity, this should be done as early in your application's initialization as possible - it would
@@ -85,3 +85,5 @@ will never close or dispose the resource set it's given - it doesn't assume owne
 resource set and then ask for a time zone which hasn't yet been loaded. If you wish to have a completely disconnected time zone provider,
 I'd recommend loading the contents of the file into a `MemoryStream` and passing *that* to the `ResourceSet` constructor. Otherwise, in
 most cases it probably isn't a big deal to have the handle to the resource file open throughout the lifetime of the application.
+
+[TzdbTimeZoneProvider]: noda-type://NodaTime.TimeZones.TzdbTimeZoneProvider
