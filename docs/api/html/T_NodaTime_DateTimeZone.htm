@@ -64,8 +64,9 @@
               Returns a <a href="http://msdn2.microsoft.com/en-us/library/s1wwdcbf" target="_blank">String</a> that represents the current <a href="http://msdn2.microsoft.com/en-us/library/e5kfa45b" target="_blank">Object</a>.
             </div> (Overrides <a href="http://msdn2.microsoft.com/en-us/library/e5kfa45b" target="_blank">Object</a>.<a href="http://msdn2.microsoft.com/en-us/library/7bxwbwt2" target="_blank">ToString<span class="languageSpecificText"><span class="cs">()</span><span class="cpp">()</span><span class="nu">()</span><span class="fs">()</span></span></a>.)<br /></td></tr><tr data="property; public; static; declared"><td><img src="../icons/pubproperty.gif" /><img src="../icons/static.gif" title="static member" /></td><td><a href="P_NodaTime_DateTimeZone_Utc.htm">Utc</a></td><td><div class="summary">
             Gets the UTC (Coordinated Universal Time) time zone. This is a single instance which is not
-            provider-specific; it may or may not be the value returned by <span class="code">DateTimeZone.ForId("UTC")</span>; that
-            depends on whether the current provider has its own mapping for the UTC ID.
+            provider-specific; it is guaranteed to have the ID "UTC", but may or may not be the same as the value
+            returned by <span class="code">DateTimeZone.ForId("UTC")</span>; that depends on whether the current provider has its own
+            mapping for that ID.
             </div><br /></td></tr><tr data="field; public; static; declared"><td><img src="../icons/pubfield.gif" /><img src="../icons/static.gif" title="static member" /></td><td><a href="F_NodaTime_DateTimeZone_UtcId.htm">UtcId</a></td><td><div class="summary">
             The ID of the UTC (Coordinated Universal Time) time zone. This ID is always valid, whatever provider is
             used. If the provider has its own mapping for UTC, that will be returned by <a href="M_NodaTime_DateTimeZone_ForId.htm">ForId(String)</a>, but otherwise
