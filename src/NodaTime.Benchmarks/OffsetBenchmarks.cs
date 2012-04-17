@@ -15,11 +15,10 @@
 // limitations under the License.
 #endregion
 
+using System.Globalization;
 using NodaTime.Benchmarks.Timing;
 using NodaTime.Globalization;
-using System.Globalization;
 using NodaTime.Text;
-using NodaTime.Text.Patterns;
 
 namespace NodaTime.Benchmarks
 {

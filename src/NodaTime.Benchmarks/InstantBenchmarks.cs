@@ -18,7 +18,6 @@
 using NodaTime.Benchmarks.Timing;
 using NodaTime.Globalization;
 using NodaTime.Text;
-using NodaTime.Text.Patterns;
 
 namespace NodaTime.Benchmarks
 {

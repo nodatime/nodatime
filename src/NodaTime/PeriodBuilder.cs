@@ -16,9 +16,6 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using NodaTime.Utility;
 
 namespace NodaTime
@@ -33,7 +30,7 @@ namespace NodaTime
     /// <remarks>
     /// This type is not thread-safe without extra synchronization, but has no
     /// thread affinity. Note that although this method implements
-    /// <see cref="IEquatable{PeriodBuilder}"/> and overrides <see cref="GetHashCode"/>,
+    /// <see cref="IEquatable{T}"/> and overrides <see cref="GetHashCode"/>,
     /// it should generally not be used as a key in a dictionary, as it is mutable. If you
     /// mutate an instance after using it as a key, you may not be able to look it up
     /// again, even using the same reference.

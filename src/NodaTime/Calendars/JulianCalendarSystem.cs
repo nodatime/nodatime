@@ -16,7 +16,6 @@
 #endregion
 
 using System;
-using NodaTime.Fields;
 
 namespace NodaTime.Calendars
 {

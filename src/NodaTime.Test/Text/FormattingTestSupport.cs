@@ -16,7 +16,6 @@
 #endregion
 #region usings
 using System;
-using System.Globalization;
 using NUnit.Framework;
 using NodaTime.Properties;
 using NodaTime.Text;

@@ -18,10 +18,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using CommandLine;
 using NodaTime.TimeZones;
-using NodaTime.Utility;
 
 namespace NodaTime.ZoneInfoCompiler.Tzdb
 {

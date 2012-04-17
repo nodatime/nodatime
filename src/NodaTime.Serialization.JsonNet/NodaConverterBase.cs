@@ -18,6 +18,7 @@
 using System;
 using System.IO;
 using Newtonsoft.Json;
+
 namespace NodaTime.Serialization.JsonNet
 {
     /// <summary>

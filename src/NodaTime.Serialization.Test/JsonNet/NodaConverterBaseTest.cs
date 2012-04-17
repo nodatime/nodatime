@@ -15,11 +15,11 @@
 // limitations under the License.
 #endregion
 
+using System;
 using System.IO;
 using NUnit.Framework;
 using Newtonsoft.Json;
 using NodaTime.Serialization.JsonNet;
-using System;
 
 namespace NodaTime.Serialization.Test.JsonNet
 {
