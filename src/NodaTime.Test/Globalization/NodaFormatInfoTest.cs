@@ -22,6 +22,7 @@ using System.Threading;
 using NUnit.Framework;
 using NodaTime.Calendars;
 using NodaTime.Globalization;
+
 #endregion
 
 namespace NodaTime.Test.Globalization

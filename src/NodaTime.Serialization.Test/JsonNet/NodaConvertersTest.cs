@@ -19,7 +19,6 @@ using System;
 using NUnit.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
-using NodaTime.Calendars;
 using NodaTime.Serialization.JsonNet;
 
 namespace NodaTime.Serialization.Test.JsonNet

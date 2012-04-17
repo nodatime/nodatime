@@ -15,7 +15,6 @@
 // limitations under the License.
 #endregion
 
-using System;
 using NodaTime.Calendars;
 
 namespace NodaTime.Fields

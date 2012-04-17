@@ -15,12 +15,12 @@
 // limitations under the License.
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using NUnit.Framework;
 using NodaTime.Calendars;
-using System;
 
 namespace NodaTime.Test.Calendars
 {

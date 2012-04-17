@@ -17,7 +17,6 @@
 
 using System;
 using System.Globalization;
-using NodaTime.Fields;
 using NodaTime.Globalization;
 using NodaTime.Text.Patterns;
 

@@ -16,10 +16,10 @@
 #endregion
 
 using System;
+using System.IO;
 using NUnit.Framework;
 using NodaTime.Testing.TimeZones;
 using NodaTime.TimeZones;
-using System.IO;
 
 namespace NodaTime.Test.TimeZones
 {

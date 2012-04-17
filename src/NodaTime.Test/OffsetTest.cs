@@ -16,9 +16,7 @@
 #endregion
 
 using System;
-using System.Globalization;
 using NUnit.Framework;
-using NodaTime.Globalization;
 
 namespace NodaTime.Test
 {

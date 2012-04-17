@@ -15,7 +15,6 @@
 // limitations under the License.
 #endregion
 
-using System;
 using System.Globalization;
 using NodaTime.Globalization;
 using NodaTime.Text.Patterns;

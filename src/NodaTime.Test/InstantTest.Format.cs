@@ -15,7 +15,6 @@
 // limitations under the License.
 #endregion
 
-using System;
 using System.Globalization;
 using NUnit.Framework;
 using NodaTime.Text;

@@ -16,13 +16,9 @@
 #endregion
 
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Globalization;
 using NodaTime.Fields;
 using NodaTime.Text;
 using NodaTime.Utility;
-using System.Text;
 
 namespace NodaTime
 {

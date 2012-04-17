@@ -15,8 +15,8 @@
 // limitations under the License.
 #endregion
 
-using NUnit.Framework;
 using System;
+using NUnit.Framework;
 
 namespace NodaTime.Test
 {

@@ -15,8 +15,6 @@
 // limitations under the License.
 #endregion
 
-using System;
-
 namespace NodaTime.Fields
 {
     /// <summary>

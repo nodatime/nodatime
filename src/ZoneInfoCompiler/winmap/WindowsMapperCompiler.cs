@@ -17,10 +17,10 @@
 
 using System.Collections.Generic;
 using System.IO;
-using System.Xml;
 using System.Linq;
-using NodaTime.TimeZones;
+using System.Xml;
 using System.Xml.Linq;
+using NodaTime.TimeZones;
 
 namespace NodaTime.ZoneInfoCompiler.winmap
 {
