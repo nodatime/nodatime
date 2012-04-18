@@ -22,11 +22,11 @@ namespace NodaTime.Test
     public partial class LocalDateTest
     {
         [Test]
-        public void LocalDateTime()
+        public void AtMidnight()
         {
             LocalDate date = new LocalDate(2011, 6, 29);
             LocalDateTime expected = new LocalDateTime(2011, 6, 29, 0, 0, 0);
-            Assert.AreEqual(expected, date.LocalDateTime);
+            Assert.AreEqual(expected, date.AtMidnight());
         }
 
         [Test]

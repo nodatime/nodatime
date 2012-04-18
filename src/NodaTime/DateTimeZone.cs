@@ -390,7 +390,7 @@ namespace NodaTime
         /// <returns>The <see cref="ZonedDateTime"/> representing the earliest time in the given date, in this time zone.</returns>
         public ZonedDateTime AtStartOfDay(LocalDate date)
         {
-            LocalInstant localInstant = date.LocalDateTime.LocalInstant;
+            LocalInstant localInstant = date.AtMidnight().LocalInstant;
             ZoneIntervalPair pair = GetZoneIntervals(localInstant);
             switch (pair.MatchingIntervals)
             {
@@ -405,7 +405,7 @@ namespace NodaTime
                     return new ZonedDateTime(localDateTime, interval.WallOffset, this);
                 case 1:
                 case 2:
-                    return new ZonedDateTime(date.LocalDateTime, pair.EarlyInterval.WallOffset, this);
+                    return new ZonedDateTime(date.AtMidnight(), pair.EarlyInterval.WallOffset, this);
                 default:
                     throw new InvalidOperationException("This won't happen.");
             }

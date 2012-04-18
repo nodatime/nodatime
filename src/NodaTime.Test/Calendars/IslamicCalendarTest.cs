@@ -270,7 +270,7 @@ namespace NodaTime.Test.Calendars
             CalendarSystem julianCalendar = CalendarSystem.GetJulianCalendar(4);
             LocalDate julianIslamicEpoch = new LocalDate(622, 7, 15, julianCalendar);
             LocalDate isoIslamicEpoch = julianIslamicEpoch.WithCalendar(CalendarSystem.Iso);
-            DateTime bclFromNoda = isoIslamicEpoch.LocalDateTime.ToDateTimeUnspecified();
+            DateTime bclFromNoda = isoIslamicEpoch.AtMidnight().ToDateTimeUnspecified();
             Assert.AreEqual(bclDirect, bclFromNoda);
         }
 
@@ -282,7 +282,7 @@ namespace NodaTime.Test.Calendars
 
             CalendarSystem islamicCalendar = CalendarSystem.GetIslamicCalendar(IslamicLeapYearPattern.Base16, IslamicEpoch.Astronomical);
             LocalDate iso = new LocalDate(1302, 10, 15, islamicCalendar);
-            DateTime bclFromNoda = iso.LocalDateTime.ToDateTimeUnspecified();
+            DateTime bclFromNoda = iso.AtMidnight().ToDateTimeUnspecified();
             Assert.AreEqual(bclDirect, bclFromNoda);
         }
 
@@ -302,7 +302,7 @@ namespace NodaTime.Test.Calendars
 
             for (int i = 0; i < 9000 * 365; i++)
             {
-                Assert.AreEqual(bclDirect, islamicDate.LocalDateTime.ToDateTimeUnspecified());
+                Assert.AreEqual(bclDirect, islamicDate.AtMidnight().ToDateTimeUnspecified());
                 Assert.AreEqual(hijri.GetYear(bclDirect), islamicDate.Year, i.ToString());
                 Assert.AreEqual(hijri.GetMonth(bclDirect), islamicDate.Month);
                 Assert.AreEqual(hijri.GetDayOfMonth(bclDirect), islamicDate.Day);
