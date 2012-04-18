@@ -27,7 +27,7 @@ namespace NodaTime
     /// LocalTime is an immutable struct representing a time of day, with no reference
     /// to a particular calendar, time zone or date.
     /// </summary>
-    public struct LocalTime : IEquatable<LocalTime>, IFormattable
+    public struct LocalTime : IEquatable<LocalTime>, IComparable<LocalTime>, IFormattable
     {
         private static readonly int TypeInitializationChecking = NodaTime.Utility.TypeInitializationChecker.RecordInitializationStart();
 
