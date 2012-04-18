@@ -40,7 +40,7 @@ namespace NodaTime.Demo
         public void CombineWithTime()
         {
             LocalDate date = new LocalDate(2010, 6, 16);
-            LocalTime time = new LocalTime(16, 20, 0);
+            LocalTime time = new LocalTime(16, 20);
             LocalDateTime dateTime = date + time;
             Assert.AreEqual(new LocalDateTime(2010, 6, 16, 16, 20, 0), dateTime);
         }
