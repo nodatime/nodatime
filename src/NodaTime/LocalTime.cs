@@ -45,6 +45,23 @@ namespace NodaTime
         private readonly LocalInstant localInstant;
 
         /// <summary>
+        /// Creates a local time at the given hour and minute, with second, millisecond-of-second
+        /// and tick-of-millisecond values of zero.
+        /// </summary>
+        /// <param name="hour">The hour of day.</param>
+        /// <param name="minute">The minute of the hour.</param>
+        /// <exception cref="ArgumentOutOfRangeException">The parameters do not form a valid time</exception>
+        /// <returns>The resulting time.</returns>
+        public LocalTime(int hour, int minute)
+        {
+            Preconditions.CheckArgumentRange("hour", hour, 0, NodaConstants.HoursPerStandardDay - 1);
+            Preconditions.CheckArgumentRange("minute", minute, 0, NodaConstants.MinutesPerHour - 1);
+            localInstant = new LocalInstant(
+                hour * NodaConstants.TicksPerHour +
+                minute * NodaConstants.TicksPerMinute);
+        }
+
+        /// <summary>
         /// Creates a local time at the given hour, minute and second,
         /// with millisecond-of-second and tick-of-millisecond values of zero.
         /// </summary>

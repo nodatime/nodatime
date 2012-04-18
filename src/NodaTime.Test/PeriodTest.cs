@@ -160,7 +160,7 @@ namespace NodaTime.Test
         [Test]
         public void BetweenLocalTimes_InvalidUnits()
         {
-            LocalTime t1 = new LocalTime(10, 0, 0);
+            LocalTime t1 = new LocalTime(10, 0);
             LocalTime t2 = new LocalTime(15, 30, 45, 20, 5);
             Assert.Throws<ArgumentException>(() => Period.Between(t1, t2, 0));
             Assert.Throws<ArgumentException>(() => Period.Between(t1, t2, (PeriodUnits)(-1)));
@@ -171,7 +171,7 @@ namespace NodaTime.Test
         [Test]
         public void BetweenLocalTimes_MovingForwards()
         {
-            LocalTime t1 = new LocalTime(10, 0, 0);
+            LocalTime t1 = new LocalTime(10, 0);
             LocalTime t2 = new LocalTime(15, 30, 45, 20, 5);
             Assert.AreEqual(Period.FromHours(5) + Period.FromMinutes(30) + Period.FromSeconds(45) +
                                Period.FromMillseconds(20) + Period.FromTicks(5),
@@ -182,7 +182,7 @@ namespace NodaTime.Test
         public void BetweenLocalTimes_MovingBackwards()
         {
             LocalTime t1 = new LocalTime(15, 30, 45, 20, 5);
-            LocalTime t2 = new LocalTime(10, 0, 0);
+            LocalTime t2 = new LocalTime(10, 0);
             Assert.AreEqual(Period.FromHours(-5) + Period.FromMinutes(-30) + Period.FromSeconds(-45) +
                                Period.FromMillseconds(-20) + Period.FromTicks(-5),
                                Period.Between(t1, t2));
@@ -191,16 +191,16 @@ namespace NodaTime.Test
         [Test]
         public void BetweenLocalTimes_MovingForwards_WithJustHours()
         {
-            LocalTime t1 = new LocalTime(11, 30, 0);
-            LocalTime t2 = new LocalTime(17, 15, 0);
+            LocalTime t1 = new LocalTime(11, 30);
+            LocalTime t2 = new LocalTime(17, 15);
             Assert.AreEqual(Period.FromHours(5), Period.Between(t1, t2, PeriodUnits.Hours));
         }
 
         [Test]
         public void BetweenLocalTimes_MovingBackwards_WithJustHours()
         {
-            LocalTime t1 = new LocalTime(17, 15, 0);
-            LocalTime t2 = new LocalTime(11, 30, 0);
+            LocalTime t1 = new LocalTime(17, 15);
+            LocalTime t2 = new LocalTime(11, 30);
             Assert.AreEqual(Period.FromHours(-5), Period.Between(t1, t2, PeriodUnits.Hours));
         }
 

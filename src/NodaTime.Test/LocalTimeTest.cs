@@ -25,11 +25,11 @@ namespace NodaTime.Test
         [Test]
         public void ClockHourOfHalfDay()
         {
-            Assert.AreEqual(12, new LocalTime(0, 0, 0).ClockHourOfHalfDay);
-            Assert.AreEqual(1, new LocalTime(1, 0, 0).ClockHourOfHalfDay);
-            Assert.AreEqual(12, new LocalTime(12, 0, 0).ClockHourOfHalfDay);
-            Assert.AreEqual(1, new LocalTime(13, 0, 0).ClockHourOfHalfDay);
-            Assert.AreEqual(11, new LocalTime(23, 0, 0).ClockHourOfHalfDay);
+            Assert.AreEqual(12, new LocalTime(0, 0).ClockHourOfHalfDay);
+            Assert.AreEqual(1, new LocalTime(1, 0).ClockHourOfHalfDay);
+            Assert.AreEqual(12, new LocalTime(12, 0).ClockHourOfHalfDay);
+            Assert.AreEqual(1, new LocalTime(13, 0).ClockHourOfHalfDay);
+            Assert.AreEqual(11, new LocalTime(23, 0).ClockHourOfHalfDay);
         }
     }
 }
