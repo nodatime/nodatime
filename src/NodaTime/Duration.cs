@@ -559,7 +559,7 @@ namespace NodaTime
         }
 
         /// <summary>
-        /// Returns a <see cref="TimeSpan"/> that represents the same number of ticks as thi
+        /// Returns a <see cref="TimeSpan"/> that represents the same number of ticks as this
         /// <see cref="Duration"/>.
         /// </summary>
         /// <returns>A new TimeSpan with the same number of ticks as this Duration.</returns>
