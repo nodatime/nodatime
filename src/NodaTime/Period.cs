@@ -393,7 +393,7 @@ namespace NodaTime
         public static Period Between(LocalDate start, LocalDate end, PeriodUnits units)
         {
             Preconditions.CheckArgument((units & PeriodUnits.AllTimeUnits) == 0, "units", "Units contain time fields: " + units);
-            return Between(start.LocalDateTime, end.LocalDateTime, units);
+            return Between(start.AtMidnight(), end.AtMidnight(), units);
         }
 
         /// <summary>
@@ -404,7 +404,7 @@ namespace NodaTime
         /// <returns>The period between the two dates, using year, month and day fields.</returns>
         public static Period Between(LocalDate start, LocalDate end)
         {
-            return Between(start.LocalDateTime, end.LocalDateTime, PeriodUnits.YearMonthDay);
+            return Between(start.AtMidnight(), end.AtMidnight(), PeriodUnits.YearMonthDay);
         }
 
         /// <summary>

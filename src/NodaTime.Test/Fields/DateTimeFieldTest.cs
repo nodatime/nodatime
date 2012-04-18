@@ -62,9 +62,9 @@ namespace NodaTime.Test.Fields
         public void SetValue_InvalidFromSmaller_Adjusts()
         {
             // Field will adjust *smaller* units to make things valid
-            LocalInstant jan30th = new LocalDate(2001, 1, 30).LocalDateTime.LocalInstant;
+            LocalInstant jan30th = new LocalDate(2001, 1, 30).AtMidnight().LocalInstant;
             LocalInstant actual = CalendarSystem.Iso.Fields.MonthOfYear.SetValue(jan30th, 2);
-            LocalInstant expected = new LocalDate(2001, 2, 28).LocalDateTime.LocalInstant;
+            LocalInstant expected = new LocalDate(2001, 2, 28).AtMidnight().LocalInstant;
             Assert.AreEqual(expected, actual);
         }
 
@@ -72,7 +72,7 @@ namespace NodaTime.Test.Fields
         public void SetValue_InvalidFromLarger_Throws()
         {
             // Field cannot adjust *larger* units
-            LocalInstant feb20th = new LocalDate(2001, 2, 20).LocalDateTime.LocalInstant;
+            LocalInstant feb20th = new LocalDate(2001, 2, 20).AtMidnight().LocalInstant;
             Assert.Throws<ArgumentOutOfRangeException>(() => CalendarSystem.Iso.Fields.DayOfMonth.SetValue(feb20th, 30));
         }
         #endregion

@@ -178,7 +178,10 @@ namespace NodaTime
         /// <summary>
         /// Gets a <see cref="LocalDateTime" /> at midnight on the date represented by this local date, in the same calendar system.
         /// </summary>
-        public LocalDateTime LocalDateTime { get { return localTime; } }
+        public LocalDateTime AtMidnight()
+        {
+            return localTime;
+        }
 
         /// <summary>
         /// Adds the specified period to the date.
@@ -190,7 +193,7 @@ namespace NodaTime
         {
             Preconditions.CheckNotNull(period, "period");
             Preconditions.CheckArgument(!period.HasTimeComponent, "period", "Cannot add a period with a time component to a date");
-            return new LocalDate(date.LocalDateTime + period);
+            return new LocalDate(date.localTime + period);
         }
 
         /// <summary>
@@ -238,7 +241,7 @@ namespace NodaTime
         {
             Preconditions.CheckNotNull(period, "period");
             Preconditions.CheckArgument(!period.HasTimeComponent, "period", "Cannot subtract a period with a time component from a date");
-            return new LocalDate(date.LocalDateTime - period);
+            return new LocalDate(date.localTime - period);
         }
 
         /// <summary>
@@ -361,7 +364,7 @@ namespace NodaTime
         /// later than <paramref name="other"/>.</returns>
         public int CompareTo(LocalDate other)
         {
-            return localTime.CompareTo(other.LocalDateTime);
+            return localTime.CompareTo(other.localTime);
         }
 
         /// <summary>
@@ -408,7 +411,7 @@ namespace NodaTime
         /// <returns>The converted LocalDate</returns>
         public LocalDate WithCalendar(CalendarSystem calendarSystem)
         {
-            return new LocalDate(LocalDateTime.WithCalendar(calendarSystem));
+            return new LocalDate(localTime.WithCalendar(calendarSystem));
         }
 
         /// <summary>
@@ -423,7 +426,7 @@ namespace NodaTime
         /// <returns>The current value plus the given number of years.</returns>
         public LocalDate PlusYears(int years)
         {
-            return new LocalDate(LocalDateTime.PlusYears(years));
+            return new LocalDate(localTime.PlusYears(years));
         }
 
         /// <summary>
@@ -444,7 +447,7 @@ namespace NodaTime
         /// <returns>The current date plus the given number of months</returns>
         public LocalDate PlusMonths(int months)
         {
-            return new LocalDate(LocalDateTime.PlusMonths(months));
+            return new LocalDate(localTime.PlusMonths(months));
         }
 
         /// <summary>
@@ -460,7 +463,7 @@ namespace NodaTime
         /// <returns>The current value plus the given number of days.</returns>
         public LocalDate PlusDays(int days)
         {
-            return new LocalDate(LocalDateTime.PlusDays(days));
+            return new LocalDate(localTime.PlusDays(days));
         }
 
         /// <summary>
@@ -470,7 +473,7 @@ namespace NodaTime
         /// <returns>The current value plus the given number of weeks.</returns>
         public LocalDate PlusWeeks(int weeks)
         {
-            return new LocalDate(LocalDateTime.PlusWeeks(weeks));
+            return new LocalDate(localTime.PlusWeeks(weeks));
         }
 
         /// <summary>
@@ -486,7 +489,7 @@ namespace NodaTime
         public LocalDate Next(IsoDayOfWeek targetDayOfWeek)
         {
             // LocalDateTime.Next performs all the validation we need.
-            return new LocalDate(LocalDateTime.Next(targetDayOfWeek));
+            return new LocalDate(localTime.Next(targetDayOfWeek));
         }
 
         /// <summary>
@@ -502,7 +505,7 @@ namespace NodaTime
         public LocalDate Previous(IsoDayOfWeek targetDayOfWeek)
         {
             // LocalDateTime.Next performs all the validation we need.
-            return new LocalDate(LocalDateTime.Previous(targetDayOfWeek));
+            return new LocalDate(localTime.Previous(targetDayOfWeek));
         }
 
         #region Formatting
