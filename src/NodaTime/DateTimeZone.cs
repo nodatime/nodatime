@@ -93,7 +93,7 @@ namespace NodaTime
         /// <summary>
         /// Gets the default time zone provider, which is initialized from resources within the NodaTime assembly.
         /// </summary>
-        public static readonly TzdbTimeZoneProvider DefaultDateTimeZoneProvider = new TzdbTimeZoneProvider("NodaTime.TimeZones.Tzdb");
+        public static readonly IDateTimeZoneProvider DefaultDateTimeZoneProvider = new TzdbTimeZoneProvider("NodaTime.TimeZones.Tzdb");
 
         private static readonly DateTimeZone UtcZone = new FixedDateTimeZone(Offset.Zero);
         private const int FixedZoneCacheGranularityMilliseconds = NodaConstants.MillisecondsPerMinute * 30;
