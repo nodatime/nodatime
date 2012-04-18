@@ -88,7 +88,7 @@ namespace NodaTime
         /// used. If the provider has its own mapping for UTC, that will be returned by <see cref="ForId" />, but otherwise
         /// the value of the <see cref="Utc"/> property will be returned.
         /// </summary>
-        public const string UtcId = "UTC";
+        internal const string UtcId = "UTC";
 
         /// <summary>
         /// Gets the default time zone provider, which is initialized from resources within the NodaTime assembly.
