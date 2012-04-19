@@ -31,7 +31,7 @@ added to either an <code>Instant</code> or <code>ZonedDateTime</code> using eith
 or <code>Plus</code> methods:</p>
 
 <pre class="prettyprint"><code>Duration duration = Duration.FromMinutes(3);
-Instant now = SystemClock.SystemNow;    
+Instant now = SystemClock.Instance.Now;    
 Instant future = now + duration; // Or now.Plus(duration)
 
 ZonedDateTime nowInIsoUtc = now.InIsoUtc();
