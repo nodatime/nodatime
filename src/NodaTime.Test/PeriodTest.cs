@@ -537,5 +537,67 @@ namespace NodaTime.Test
         {
             Assert.AreEqual(PeriodUnits.None, Period.Empty.Units);
         }
+
+        [Test]
+        public void ToDuration_InvalidWithYears()
+        {
+            Period period = Period.FromYears(1);
+            Assert.Throws<InvalidOperationException>(() => period.ToDuration());
+        }
+
+        [Test]
+        public void ToDuration_InvalidWithMonths()
+        {
+            Period period = Period.FromMonths(1);
+            Assert.Throws<InvalidOperationException>(() => period.ToDuration());
+        }
+
+        [Test]
+        public void ToDuration_ValidAllAcceptableUnits()
+        {
+            Period period = new PeriodBuilder
+            {
+                Weeks = 1,
+                Days = 2,
+                Hours = 3,
+                Minutes = 4,
+                Seconds = 5,
+                Milliseconds = 6,
+                Ticks = 7
+            }.Build();
+            Assert.AreEqual(
+                1 * NodaConstants.TicksPerStandardWeek +
+                2 * NodaConstants.TicksPerStandardDay +
+                3 * NodaConstants.TicksPerHour +
+                4 * NodaConstants.TicksPerMinute +
+                5 * NodaConstants.TicksPerSecond +
+                6 * NodaConstants.TicksPerMillisecond + 7,
+                period.ToDuration().Ticks);
+        }
+
+        [Test]
+        public void ToDuration_ValidWithZeroValuesInMonthYearUnits()
+        {
+            Period period = Period.FromMonths(1) + Period.FromYears(1);
+            period = period - period + Period.FromDays(1);
+            Assert.AreEqual(PeriodUnits.YearMonthDay, period.Units);
+            Assert.AreEqual(Duration.OneStandardDay, period.ToDuration());
+        }
+
+        [Test]
+        public void ToDuration_Overflow()
+        {
+            Period period = Period.FromSeconds(long.MaxValue);
+            Assert.Throws<OverflowException>(() => period.ToDuration());
+        }
+
+        [Test]
+        public void ToDuration_Overflow_WhenPossiblyValid()
+        {
+            // These two should pretty much cancel each other out - and would, if we had a 128-bit integer
+            // representation to use.
+            Period period = Period.FromSeconds(long.MaxValue) + Period.FromMinutes(long.MinValue / 60);
+            Assert.Throws<OverflowException>(() => period.ToDuration());
+        }
     }
 }
