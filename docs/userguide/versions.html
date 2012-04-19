@@ -8,6 +8,28 @@
   </head>
   <body onload="prettyPrint()">
     <h1>Version history</h1>
-    
+    <p>Public API changes from 1.0.0-beta-1 onwards. See the <a href="http://code.google.com/p/noda-time/source/list">project repository</a> for
+more details.</p>
+
+<ul>
+<li>(1.0.0-beta2 - assumed)
+<ul>
+<li><code>LocalDate.LocalDateTime</code> property changed to <code>LocalDate.AtMidnight()</code> method</li>
+<li><code>LocalTime</code> constructor taking hours and minutes</li>
+<li><code>LocalTime</code> now implements <code>IComparable&lt;LocalTime&gt;</code></li>
+<li><code>DateTimeZone</code> providers reworked</li>
+<li>Various members made internal:</li>
+<li><code>Instant.BeginningOfTimeLabel</code> and <code>Instant.EndOfTimeLabel</code></li>
+<li><code>DateTimeZone</code> constructor</li>
+<li><code>DateTimeZone.UtcId</code></li>
+<li><code>DateTimeZone.IsFixed</code></li>
+<li><code>SystemClock.SystemNow</code> removed in favour of using <code>SystemClock.Instance.Now</code> if you really have to</li>
+</ul></li>
+<li>1.0.0-beta1
+<ul>
+<li>Initial beta release</li>
+</ul></li>
+</ul>
+
   </body>
 </html>

@@ -24,6 +24,8 @@
             period type.
             </div><br /></td></tr><tr data="method; public; static; declared"><td><img src="../icons/pubmethod.gif" /><img src="../icons/static.gif" title="static member" /></td><td><a href="M_NodaTime_Period_Between_4.htm">Between(LocalTime, LocalTime)</a></td><td><div class="summary">
             Returns the difference between two dates using the "time" period type.
+            </div><br /></td></tr><tr data="method; public; static; declared"><td><img src="../icons/pubmethod.gif" /><img src="../icons/static.gif" title="static member" /></td><td><a href="M_NodaTime_Period_CreateComparer.htm">CreateComparer(LocalDateTime)</a></td><td><div class="summary">
+            Creates an <a href="http://msdn2.microsoft.com/en-us/library/8ehhxeaf" target="_blank">IComparer<span class="languageSpecificText"><span class="cs">&lt;</span><span class="vb">(Of </span><span class="cpp">&lt;</span><span class="nu">(</span><span class="fs">&lt;'</span></span>T<span class="languageSpecificText"><span class="cs">&gt;</span><span class="vb">)</span><span class="cpp">&gt;</span><span class="nu">)</span><span class="fs">&gt;</span></span></a> for periods, using the given "base" local date/time.
             </div><br /></td></tr><tr data="property; public; instance; declared"><td><img src="../icons/pubproperty.gif" /></td><td><a href="P_NodaTime_Period_Days.htm">Days</a></td><td><div class="summary">
             Gets the number of days within this period.
             </div><br /></td></tr><tr data="field; public; static; declared"><td><img src="../icons/pubfield.gif" /><img src="../icons/static.gif" title="static member" /></td><td><a href="F_NodaTime_Period_Empty.htm">Empty</a></td><td><div class="summary">
@@ -75,6 +77,10 @@
             and 1 hour. Units are also normalized - only non-zero values have their
             units retained. Aside from months and years, either all the properties
             end up negative, or they all end up positive.
+            </div><br /></td></tr><tr data="property; public; static; declared"><td><img src="../icons/pubproperty.gif" /><img src="../icons/static.gif" title="static member" /></td><td><a href="P_NodaTime_Period_NormalizingEqualityComparer.htm">NormalizingEqualityComparer</a></td><td><div class="summary">
+            Returns an equality comparer which compares periods by first normalizing them - so 24 hours is deemed equal to 1 day, and so on.
+            Note that as per the <a href="M_NodaTime_Period_Normalize.htm">Normalize<span class="languageSpecificText"><span class="cs">()</span><span class="cpp">()</span><span class="nu">()</span><span class="fs">()</span></span></a> method, years and months are unchanged by normalization - so 12 months does not
+            equal 1 year.
             </div><br /></td></tr><tr data="property; public; instance; declared"><td><img src="../icons/pubproperty.gif" /></td><td><a href="P_NodaTime_Period_Seconds.htm">Seconds</a></td><td><div class="summary">
             Gets the number of seconds within this period.
             </div><br /></td></tr><tr data="method; public; static; declared"><td><img src="../icons/puboperator.gif" /><img src="../icons/static.gif" title="static member" /></td><td><a href="M_NodaTime_Period_op_Subtraction.htm">Subtraction(Period, Period)</a></td><td><div class="summary">
@@ -86,6 +92,10 @@
             Creates a <a href="T_NodaTime_PeriodBuilder.htm">PeriodBuilder</a> from this instance. The new builder
             is populated with the values from this period, but is then detached from it:
             changes made to the builder are not reflected in this period.
+            </div><br /></td></tr><tr data="method; public; instance; declared"><td><img src="../icons/pubmethod.gif" /></td><td><a href="M_NodaTime_Period_ToDuration.htm">ToDuration<span class="languageSpecificText"><span class="cs">()</span><span class="cpp">()</span><span class="nu">()</span><span class="fs">()</span></span></a></td><td><div class="summary">
+            For periods which don't contain months or years, computes the duration assuming a standard
+            7-day week, 24-hour day, 60-minute hour etc. The period may contain year or month units,
+            so long as the values of those components are zero.
             </div><br /></td></tr><tr data="method; public; instance; declared"><td><img src="../icons/pubmethod.gif" /></td><td><a href="M_NodaTime_Period_ToString.htm">ToString<span class="languageSpecificText"><span class="cs">()</span><span class="cpp">()</span><span class="nu">()</span><span class="fs">()</span></span></a></td><td><div class="summary">
             Returns this string formatted according to the <a href="F_NodaTime_Text_PeriodPattern_RoundtripPattern.htm">RoundtripPattern</a>.
             </div> (Overrides <a href="http://msdn2.microsoft.com/en-us/library/e5kfa45b" target="_blank">Object</a>.<a href="http://msdn2.microsoft.com/en-us/library/7bxwbwt2" target="_blank">ToString<span class="languageSpecificText"><span class="cs">()</span><span class="cpp">()</span><span class="nu">()</span><span class="fs">()</span></span></a>.)<br /></td></tr><tr data="property; public; instance; declared"><td><img src="../icons/pubproperty.gif" /></td><td><a href="P_NodaTime_Period_Units.htm">Units</a></td><td><div class="summary">

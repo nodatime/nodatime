@@ -11,7 +11,11 @@
             Creates a zone with a single transition between two offsets.
             </div><br /></td></tr><tr data="constructor; public; instance; declared"><td><img src="../icons/pubmethod.gif" /></td><td><a href="M_NodaTime_Testing_TimeZones_SingleTransitionZone__ctor.htm">SingleTransitionZone(Instant, Offset, Offset)</a></td><td><div class="summary">
             Creates a zone with a single transition between two offsets.
-            </div><br /></td></tr><tr data="method; public; instance; inherited"><td><img src="../icons/pubmethod.gif" /></td><td><a href="M_NodaTime_DateTimeZone_AtLeniently.htm">AtLeniently(LocalDateTime)</a></td><td> (Inherited from <a href="T_NodaTime_DateTimeZone.htm">DateTimeZone</a>.)<br /></td></tr><tr data="method; public; instance; inherited"><td><img src="../icons/pubmethod.gif" /></td><td><a href="M_NodaTime_DateTimeZone_AtStartOfDay.htm">AtStartOfDay(LocalDate)</a></td><td><div class="summary">
+            </div><br /></td></tr><tr data="method; public; instance; inherited"><td><img src="../icons/pubmethod.gif" /></td><td><a href="M_NodaTime_DateTimeZone_AtLeniently.htm">AtLeniently(LocalDateTime)</a></td><td><div class="summary">
+            Maps the given <a href="T_NodaTime_LocalDateTime.htm">LocalDateTime</a> to the corresponding <a href="T_NodaTime_ZonedDateTime.htm">ZonedDateTime</a> in a lenient
+            manner: ambiguous values map to the later of the alternatives, and "skipped" values map to the start of the
+            zone interval after the "gap".
+            </div> (Inherited from <a href="T_NodaTime_DateTimeZone.htm">DateTimeZone</a>.)<br /></td></tr><tr data="method; public; instance; inherited"><td><img src="../icons/pubmethod.gif" /></td><td><a href="M_NodaTime_DateTimeZone_AtStartOfDay.htm">AtStartOfDay(LocalDate)</a></td><td><div class="summary">
             Returns the earliest valid <a href="T_NodaTime_ZonedDateTime.htm">ZonedDateTime</a> with the given local date.
             </div> (Inherited from <a href="T_NodaTime_DateTimeZone.htm">DateTimeZone</a>.)<br /></td></tr><tr data="method; public; instance; inherited"><td><img src="../icons/pubmethod.gif" /></td><td><a href="M_NodaTime_DateTimeZone_AtStrictly.htm">AtStrictly(LocalDateTime)</a></td><td><div class="summary">
             Maps the given <a href="T_NodaTime_LocalDateTime.htm">LocalDateTime</a> to the corresponding <a href="T_NodaTime_ZonedDateTime.htm">ZonedDateTime</a>, if and only if
