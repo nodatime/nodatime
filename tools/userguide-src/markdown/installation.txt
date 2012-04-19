@@ -14,3 +14,5 @@ Mono ([with some caveats](mono.html)) but does *not* support
 Silverlight (or, by extension, Windows Phone 7). We'd like to
 support these in the future, but it will involve a non-trivial
 amount of work.
+
+(More to come.)
