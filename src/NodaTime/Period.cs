@@ -502,6 +502,33 @@ namespace NodaTime
         }
 
         /// <summary>
+        /// For periods which don't contain months or years, computes the duration assuming a standard
+        /// 7-day week, 24-hour day, 60-minute hour etc. The period may contain year or month units,
+        /// so long as the values of those components are zero.
+        /// </summary>
+        /// <exception cref="InvalidOperationException">The month or year value in the period is non-zero.</exception>
+        /// <exception cref="OverflowException">The period doesn't have years or months, but the calculation
+        /// overflows the bounds of <see cref="Duration"/>. In some cases this may occur even though the theoretical
+        /// result would be valid due to balancing positive and negative values, but for simplicity there is
+        /// no attempt to work around this - in realistic periods, it shouldn't be a problem.</exception>
+        /// <returns>The duration of the period using standard measures.</returns>
+        public Duration ToDuration()
+        {
+            if (Months != 0 || Years != 0)
+            {
+                throw new InvalidOperationException("Cannot construct duration of period with non-zero months or years.");
+            }
+            long totalTicks = Ticks +
+                Milliseconds * NodaConstants.TicksPerMillisecond +
+                Seconds * NodaConstants.TicksPerSecond +
+                Minutes * NodaConstants.TicksPerMinute +
+                Hours * NodaConstants.TicksPerHour +
+                Days * NodaConstants.TicksPerStandardDay +
+                Weeks * NodaConstants.TicksPerStandardWeek;
+            return Duration.FromTicks(totalTicks);
+        }
+
+        /// <summary>
         /// Creates a <see cref="PeriodBuilder"/> from this instance. The new builder
         /// is populated with the values from this period, but is then detached from it:
         /// changes made to the builder are not reflected in this period.
