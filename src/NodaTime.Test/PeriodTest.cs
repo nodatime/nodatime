@@ -599,5 +599,42 @@ namespace NodaTime.Test
             Period period = Period.FromSeconds(long.MaxValue) + Period.FromMinutes(long.MinValue / 60);
             Assert.Throws<OverflowException>(() => period.ToDuration());
         }
+
+        [Test]
+        public void NormalizingEqualityComparer_NullToNonNull()
+        {
+            Period period = Period.FromYears(1);
+            Assert.IsFalse(Period.NormalizingEqualityComparer.Equals(period, null));
+            Assert.IsFalse(Period.NormalizingEqualityComparer.Equals(null, period));
+        }
+
+        [Test]
+        public void NormalizingEqualityComparer_NullToNull()
+        {
+            Assert.IsTrue(Period.NormalizingEqualityComparer.Equals(null, null));
+        }
+
+        [Test]
+        public void NormalizingEqualityComparer_PeriodToItself()
+        {
+            Period period = Period.FromYears(1);
+            Assert.IsTrue(Period.NormalizingEqualityComparer.Equals(period, period));
+        }
+
+        [Test]
+        public void NormalizingEqualityComparer_NonEqualAfterNormalization()
+        {
+            Period period1 = Period.FromHours(2);
+            Period period2 = Period.FromMinutes(150);
+            Assert.IsFalse(Period.NormalizingEqualityComparer.Equals(period1, period2));
+        }
+
+        [Test]
+        public void NormalizingEqualityComparer_EqualAfterNormalization()
+        {
+            Period period1 = Period.FromHours(2);
+            Period period2 = Period.FromMinutes(120);
+            Assert.IsTrue(Period.NormalizingEqualityComparer.Equals(period1, period2));
+        }
     }
 }

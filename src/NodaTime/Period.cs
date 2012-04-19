@@ -16,6 +16,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using NodaTime.Fields;
 using NodaTime.Text;
 using NodaTime.Utility;
@@ -50,6 +51,13 @@ namespace NodaTime
         /// An empty period with no units.
         /// </summary>
         public static readonly Period Empty = new Period(0, new long[ValuesArraySize]);
+
+        /// <summary>
+        /// Returns an equality comparer which compares periods by first normalizing them - so 24 hours is deemed equal to 1 day, and so on.
+        /// Note that as per the <see cref="Normalize"/> method, years and months are unchanged by normalization - so 12 months does not
+        /// equal 1 year.
+        /// </summary>
+        public static IEqualityComparer<Period> NormalizingEqualityComparer { get { return NormalizingPeriodEqualityComparer.Instance; } }
 
         // Just to avoid magic numbers elsewhere. Not an enum as we normally want to use
         // the value as an index immediately afterwards.
@@ -552,6 +560,7 @@ namespace NodaTime
         /// <returns></returns>
         public Period Normalize()
         {
+            // TODO(Post-V1): Consider improving the efficiency of this: return "this" when it's already normalized.
             // Simplest way to normalize: grab all the fields up to "week" and
             // sum them.
             long totalTicks = Ticks +
@@ -741,5 +750,36 @@ namespace NodaTime
             return true;
         }
         #endregion
+
+        /// <summary>
+        /// Equality comparer which simply normalizes periods before comparing them.
+        /// </summary>
+        private class NormalizingPeriodEqualityComparer : EqualityComparer<Period>
+        {
+            internal static readonly NormalizingPeriodEqualityComparer Instance = new NormalizingPeriodEqualityComparer();
+
+            private NormalizingPeriodEqualityComparer()
+            {
+            }
+
+            // Note: nullity is handled by EqualityComparer<T> itself.
+            public override bool Equals(Period x, Period y)
+            {
+                if (ReferenceEquals(x, y))
+                {
+                    return true;
+                }
+                if (x == null || y == null)
+                {
+                    return false;
+                }
+                return x.Normalize().Equals(y.Normalize());
+            }
+
+            public override int GetHashCode(Period obj)
+            {
+                return Preconditions.CheckNotNull(obj, "obj").Normalize().GetHashCode();
+            }
+        }
     }
 }
