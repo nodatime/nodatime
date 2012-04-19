@@ -78,6 +78,8 @@ namespace NodaTime
     /// if no mapping is found. This could occur due to the system having a "custom" time zone installed, or there being no mapping for the BCL zone ID
     /// to the provider's set of IDs due to the BCL zone ID being added recently. You can always use <see cref="BclTimeZone.ForSystemDefault"/> to convert
     /// the local <see cref="TimeZoneInfo"/> to guarantee that a representation is available.</para>
+    /// <para>Currently Noda Time does not support 3rd party time zone implementations. If you wish to create your own implementation,
+    /// please ask for support on the Noda Time mailing list.</para>
     /// </remarks>
     public abstract class DateTimeZone
     {
@@ -249,13 +251,13 @@ namespace NodaTime
         public static IEnumerable<string> Ids { get { return cache.Ids; } }
 
         /// <summary>
-        ///   Initializes a new instance of the <see cref="T:NodaTime.DateTimeZone" /> class.
+        /// Initializes a new instance of the <see cref="T:NodaTime.DateTimeZone" /> class.
         /// </summary>
         /// <param name="id">The unique id of this time zone.</param>
         /// <param name="isFixed">Set to <c>true</c> if this time zone has no transitions.</param>
         /// <param name="minOffset">Minimum offset applied within this zone</param>
         /// <param name="maxOffset">Maximum offset applied within this zone</param>
-        protected DateTimeZone(string id, bool isFixed, Offset minOffset, Offset maxOffset)
+        internal DateTimeZone(string id, bool isFixed, Offset minOffset, Offset maxOffset)
         {
             this.id = id;
             this.isFixed = isFixed;
@@ -281,7 +283,7 @@ namespace NodaTime
         /// if the time zone has transitions and this returns <c>true</c> then the transitions will never
         /// be examined.
         /// </remarks>
-        public bool IsFixed { get { return isFixed; } }
+        internal bool IsFixed { get { return isFixed; } }
 
         /// <summary>
         /// Returns the least (most negative) offset within this time zone, over all time.
