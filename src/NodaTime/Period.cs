@@ -234,6 +234,23 @@ namespace NodaTime
         }
 
         /// <summary>
+        /// Creates an <see cref="IComparer{T}"/> for periods, using the given "base" local date/time.
+        /// </summary>
+        /// <remarks>
+        /// Certain periods can't naturally be compared without more context - how "one month" compares to
+        /// "30 days" depends on where you start. In order to compare two periods, the returned comparer
+        /// effectively adds both periods to the "base" specified by <paramref name="baseDateTime"/> and compares
+        /// the results. In some cases this arithmetic isn't actually required - when two periods can be
+        /// converted to durations, the comparer uses that conversion for efficiency.
+        /// </remarks>
+        /// <param name="baseDateTime"></param>
+        /// <returns></returns>
+        public static IComparer<Period> CreateComparer(LocalDateTime baseDateTime)
+        {
+            return new PeriodComparer(baseDateTime);
+        }
+
+        /// <summary>
         /// Adds all the values in this period to the given array of values (which is assumed to be of the right length).
         /// </summary>
         private void AddValuesTo(long[] newValues)
@@ -754,7 +771,7 @@ namespace NodaTime
         /// <summary>
         /// Equality comparer which simply normalizes periods before comparing them.
         /// </summary>
-        private class NormalizingPeriodEqualityComparer : EqualityComparer<Period>
+        private sealed class NormalizingPeriodEqualityComparer : EqualityComparer<Period>
         {
             internal static readonly NormalizingPeriodEqualityComparer Instance = new NormalizingPeriodEqualityComparer();
 
@@ -762,14 +779,13 @@ namespace NodaTime
             {
             }
 
-            // Note: nullity is handled by EqualityComparer<T> itself.
             public override bool Equals(Period x, Period y)
             {
                 if (ReferenceEquals(x, y))
                 {
                     return true;
                 }
-                if (x == null || y == null)
+                if (ReferenceEquals(x, null) || ReferenceEquals(y, null))
                 {
                     return false;
                 }
@@ -779,6 +795,40 @@ namespace NodaTime
             public override int GetHashCode(Period obj)
             {
                 return Preconditions.CheckNotNull(obj, "obj").Normalize().GetHashCode();
+            }
+        }
+
+        private sealed class PeriodComparer : Comparer<Period>
+        {
+            private readonly LocalDateTime baseDateTime;
+
+            internal PeriodComparer(LocalDateTime baseDateTime)
+            {
+                this.baseDateTime = baseDateTime;
+            }
+
+            public override int Compare(Period x, Period y)
+            {
+                if (ReferenceEquals(x, y))
+                {
+                    return 0;
+                }
+                if (x == null)
+                {
+                    return -1;
+                }
+                if (y == null)
+                {
+                    return 1;
+                }
+                if (x.Months == 0 && y.Months == 0 &&
+                    x.Years == 0 && y.Years == 0)
+                {
+                    // Note: this *could* throw an OverflowException when the normal approach
+                    // wouldn't, but it's highly unlikely
+                    return x.ToDuration().CompareTo(y.ToDuration());
+                }
+                return (baseDateTime + x).CompareTo(baseDateTime + y);
             }
         }
     }
