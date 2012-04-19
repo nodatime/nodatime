@@ -7,7 +7,7 @@
             Gets the current instant in time according to this clock. This is an instant on
             the time line which is independent of both time zone and calendar system.
             </div><br /></td></tr></table></div></div></div><div class="section"><div class="sectionTitle" onclick="toggleSection(this.parentNode)"><img src="../icons/collapse_all.gif" /> Remarks</div><div class="sectionContent">
-            Although it's not strictly incorrect to call <a href="P_NodaTime_SystemClock_SystemNow.htm">SystemNow</a> statically,
+            Although it's not strictly incorrect to call <span class="code">SystemClock.Instance.Now</span> directly,
             in the same way as you might call <a href="http://msdn2.microsoft.com/en-us/library/89w2e3y3" target="_blank">UtcNow</a>, it's strongly discouraged
             as a matter of style for production code. We recommend providing an instance of <span class="selflink">IClock</span>
             to anything that needs it, which allows you to write tests using the stub clock in the NodaTime.Testing
