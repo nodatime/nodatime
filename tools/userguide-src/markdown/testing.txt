@@ -10,3 +10,4 @@ Firstly, get hold of the [NodaTime.Testing](http://nuget.org/packages/NodaTime.T
 small, but it will no doubt grow - and it will make your life much easier. The purpose of the assembly is to provide
 easy-to-use fakes which can be used instead of the real implementations.
 
+(Incomplete, obviously.)

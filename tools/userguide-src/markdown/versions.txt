@@ -1,1 +1,18 @@
 Version history
+
+Public API changes from 1.0.0-beta-1 onwards. See the [project repository](http://code.google.com/p/noda-time/source/list) for
+more details.
+
+- (1.0.0-beta2 - assumed)
+  - `LocalDate.LocalDateTime` property changed to `LocalDate.AtMidnight()` method
+  - `LocalTime` constructor taking hours and minutes
+  - `LocalTime` now implements `IComparable<LocalTime>`
+  - `DateTimeZone` providers reworked
+  - Various members made internal:
+    - `Instant.BeginningOfTimeLabel` and `Instant.EndOfTimeLabel`
+	- `DateTimeZone` constructor
+	- `DateTimeZone.UtcId`
+	- `DateTimeZone.IsFixed`
+  - `SystemClock.SystemNow` removed in favour of using `SystemClock.Instance.Now` if you really have to
+- 1.0.0-beta1
+  - Initial beta release
