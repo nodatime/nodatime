@@ -636,5 +636,64 @@ namespace NodaTime.Test
             Period period2 = Period.FromMinutes(120);
             Assert.IsTrue(Period.NormalizingEqualityComparer.Equals(period1, period2));
         }
+
+        [Test]
+        public void NormalizingEqualityComparer_GetHashCodeAfterNormalization()
+        {
+            Period period1 = Period.FromHours(2);
+            Period period2 = Period.FromMinutes(120);
+            Assert.AreEqual(Period.NormalizingEqualityComparer.GetHashCode(period1),
+                Period.NormalizingEqualityComparer.GetHashCode(period2));
+        }
+
+        [Test]
+        public void Comparer_NullWithNull()
+        {
+            var comparer = Period.CreateComparer(new LocalDateTime(2000, 1, 1, 0, 0));
+            Assert.AreEqual(0, comparer.Compare(null, null));
+        }
+
+        [Test]
+        public void Comparer_NullWithNonNull()
+        {
+            var comparer = Period.CreateComparer(new LocalDateTime(2000, 1, 1, 0, 0));
+            Assert.That(comparer.Compare(null, Period.Empty), Is.LessThan(0));
+        }
+
+        [Test]
+        public void Comparer_NonNullWithNull()
+        {
+            var comparer = Period.CreateComparer(new LocalDateTime(2000, 1, 1, 0, 0));
+            Assert.That(comparer.Compare(Period.Empty, null), Is.GreaterThan(0));
+        }
+
+        [Test]
+        public void Comparer_DurationablePeriods()
+        {
+            var bigger = Period.FromHours(25);
+            var smaller = Period.FromDays(1);
+            var comparer = Period.CreateComparer(new LocalDateTime(2000, 1, 1, 0, 0));
+            Assert.That(comparer.Compare(bigger, smaller), Is.GreaterThan(0));
+            Assert.That(comparer.Compare(smaller, bigger), Is.LessThan(0));
+            Assert.AreEqual(0, comparer.Compare(bigger, bigger));
+        }
+
+        [Test]
+        public void Comparer_NonDurationablePeriods()
+        {
+            var month = Period.FromMonths(1);
+            var days = Period.FromDays(30);
+            // At the start of January, a month is longer than 30 days
+            var januaryComparer = Period.CreateComparer(new LocalDateTime(2000, 1, 1, 0, 0));
+            Assert.That(januaryComparer.Compare(month, days), Is.GreaterThan(0));
+            Assert.That(januaryComparer.Compare(days, month), Is.LessThan(0));
+            Assert.AreEqual(0, januaryComparer.Compare(month, month));
+
+            // At the start of February, a month is shorter than 30 days
+            var februaryComparer = Period.CreateComparer(new LocalDateTime(2000, 2, 1, 0, 0));
+            Assert.That(februaryComparer.Compare(month, days), Is.LessThan(0));
+            Assert.That(februaryComparer.Compare(days, month), Is.GreaterThan(0));
+            Assert.AreEqual(0, februaryComparer.Compare(month, month));
+        }
     }
 }
