@@ -526,7 +526,6 @@ namespace NodaTime
         /// See <see cref="AtStrictly"/> and <see cref="ResolveLocal"/> for alternative ways to map a local time to a
         /// specific instant.
         /// </remarks>
-        /// </summary>
         /// <param name="localDateTime">The local date/time to map.</param>
         /// <returns>The unambiguous mapping if there is one, the later result if the mapping is ambiguous,
         /// or the start of the later zone interval if the given local date/time is skipped.</returns>
