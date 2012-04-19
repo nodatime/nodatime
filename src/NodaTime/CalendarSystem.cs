@@ -74,7 +74,7 @@ namespace NodaTime
         /// </para>
         /// <para>
         /// With the exception of century related fields, the ISO calendar is exactly the
-        /// same as the Gregorian calendar system. In this system, centuries and year
+        /// same as the Gregorian calendar system. In the ISO system, centuries and year
         /// of century are zero based. For all years, the century is determined by
         /// dropping the last two digits of the year, ignoring sign. The year of century
         /// is the value of the last two year digits.
@@ -142,6 +142,11 @@ namespace NodaTime
         /// implemented.
         /// </para>
         /// </remarks>
+        /// <param name="minDaysInFirstWeek">The minimum number of days in the first week of the year.
+        /// When computing the WeekOfWeekYear and WeekYear properties of a particular date, this is
+        /// used to decide at what point the week year changes.</param>
+        /// <returns>A suitable Coptic calendar reference; the same reference may be returned by several
+        /// calls as the object is immutable and thread-safe.</returns>
         public static CalendarSystem GetCopticCalendar(int minDaysInFirstWeek)
         {
             return CopticCalendarSystem.GetInstance(minDaysInFirstWeek);
@@ -253,9 +258,8 @@ namespace NodaTime
         /// </summary>
         /// <param name="year">The year to consider.</param>
         /// <exception cref="ArgumentOutOfRangeException">The given year is invalid for this calendar.
-        /// In some cases this may not be thrown whatever value you provide, for example if all years have
-        /// the same months in this calendar. Failure to throw an exception should not be treated as an
-        /// indication that the year is valid.</exception>
+        /// Note that some implementations may return a value rather than throw this exception. Failure to throw an
+        /// exception should not be treated as an indication that the year is valid.</exception>
         /// <returns>True if the given year is a leap year; false otherwise.</returns>
         public abstract bool IsLeapYear(int year);
 
@@ -273,16 +277,17 @@ namespace NodaTime
         /// The maximum valid month (inclusive) within this calendar in the given year. It is assumed that
         /// all calendars start with month 1 and go up to this month number in any valid year.
         /// </summary>
+        /// <param name="year">The year to consider.</param>
         /// <exception cref="ArgumentOutOfRangeException">The given year is invalid for this calendar.
-        /// In some cases this may not be thrown whatever value you provide, for example if all years have
-        /// the same months in this calendar. Failure to throw an exception should not be treated as an
-        /// indication that the year is valid.</exception>
+        /// Note that some implementations may return a month rather than throw this exception (for example, if all
+        /// years have the same number of months in this calendar system). Failure to throw an exception should not be
+        /// treated as an indication that the year is valid.</exception>
         /// <returns>The maximum month number within the given year.</returns>
         public abstract int GetMaxMonth(int year);
 
         #region Era-based members
         /// <summary>
-        /// Returns a read-only list of eras for this calendar.
+        /// Returns a read-only list of eras supported by this calendar system.
         /// </summary>
         public IList<Era> Eras { get { return eras; } }
 
@@ -290,6 +295,12 @@ namespace NodaTime
         /// Returns the "absolute year" (the one used throughout most of the API, without respect to eras)
         /// from a year-of-era and an era.
         /// </summary>
+        /// <remarks>
+        /// For example, in the Gregorian and Julian calendar systems, the BCE era starts at year 1, which is
+        /// equivalent to an "absolute year" of 0 (then BCE year 2 has an absolute year of -1, and so on).  The absolute
+        /// year is the year that is used throughout the API; year-of-era is typically used primarily when formatting
+        /// and parsing date values to and from text.
+        /// </remarks>
         /// <param name="yearOfEra">The year within the era.</param>
         /// <param name="era">The era in which to consider the year</param>
         /// <returns>The absolute year represented by the specified year of era.</returns>
@@ -302,7 +313,7 @@ namespace NodaTime
         }
 
         /// <summary>
-        /// Returns the maximum valid year in the given era.
+        /// Returns the maximum valid year-of-era in the given era.
         /// </summary>
         /// <param name="era">The era in which to find the greatest year</param>
         /// <returns>The maximum valid year in the given era.</returns>
@@ -314,7 +325,7 @@ namespace NodaTime
         }
 
         /// <summary>
-        /// Returns the minimum valid year in the given era.
+        /// Returns the minimum valid year-of-era in the given era.
         /// </summary>
         /// <param name="era">The era in which to find the greatest year</param>
         /// <returns>The minimum valid year in the given eraera.</returns>

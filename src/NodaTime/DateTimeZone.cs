@@ -131,7 +131,7 @@ namespace NodaTime
         /// even with standard Windows time zones.
         /// This could be due to either the Unicode CLDR not being up-to-date with Windows time zone IDs,
         /// or Noda Time not being up-to-date with CLDR - or a provider-specific problem. Callers can use
-        /// the null-coalescing operator to effectively provider a default:
+        /// <see cref="GetSystemDefaultOrNull"/> with the null-coalescing operator to effectively provide a default.
         /// </remarks>
         /// <exception cref="TimeZoneNotFoundException">The system default time zone is not mapped by
         /// the current provider.</exception>
@@ -152,7 +152,7 @@ namespace NodaTime
         /// Callers should be aware that this method can return null, even with standard Windows time zones.
         /// This could be due to either the Unicode CLDR not being up-to-date with Windows time zone IDs,
         /// or Noda Time not being up-to-date with CLDR - or a provider-specific problem. Callers can use
-        /// the null-coalescing operator to effectively provider a default:
+        /// the null-coalescing operator to effectively provide a default.
         /// </remarks>
         /// <returns>
         /// The provider-specific representation of the system time zone, or null if the time zone
@@ -205,8 +205,12 @@ namespace NodaTime
         }
 
         /// <summary>
-        /// Returns a version identifier for the time zone provider.
+        /// Returns a version identifier for the current time zone provider.
         /// </summary>
+        /// <remarks>
+        /// The version identifier is a provider-specific string, but would typically include the type and version of
+        /// the time zone provider.
+        /// </remarks>
         public static string ProviderVersionId        
         {
             get
@@ -260,10 +264,11 @@ namespace NodaTime
         }
 
         /// <summary>
-        ///   The database ID for the time zone.
+        /// The ID for the time zone.
         /// </summary>
         /// <remarks>
-        ///   This must be unique across all time zone providers.
+        /// This uniquely identifies the time zone within the current time zone provider; a different provider may
+        /// provide a different time zone with the same ID, or may not provide a time zone with that ID at all.
         /// </remarks>
         public string Id { get { return id; } }
 
@@ -271,7 +276,7 @@ namespace NodaTime
         /// Indicates whether the time zone is fixed, i.e. contains no transitions.
         /// </summary>
         /// <remarks>
-        /// This is used as an optimization. If the time zone has not transitions but returns <c>false</c>
+        /// This is used as an optimization. If the time zone has no transitions but returns <c>false</c>
         /// for this then the behavior will be correct but the system will have to do extra work. However
         /// if the time zone has transitions and this returns <c>true</c> then the transitions will never
         /// be examined.
@@ -279,12 +284,12 @@ namespace NodaTime
         public bool IsFixed { get { return isFixed; } }
 
         /// <summary>
-        /// Returns the least offset within this time zone.
+        /// Returns the least (most negative) offset within this time zone, over all time.
         /// </summary>
         public Offset MinOffset { get { return Offset.FromTicks(minOffsetTicks); } }
 
         /// <summary>
-        /// Returns the greatest offset within this time zone.
+        /// Returns the greatest (most positive) offset within this time zone, over all time.
         /// </summary>
         public Offset MaxOffset { get { return Offset.FromTicks(maxOffsetTicks); } }
 
@@ -294,7 +299,7 @@ namespace NodaTime
         /// later than UTC. In other words, local time = UTC + offset.
         /// </summary>
         /// <remarks>
-        /// This is mostly a convenience method for calling <code>GetZoneInterval(instant).Offset</code>,
+        /// This is mostly a convenience method for calling <c>GetZoneInterval(instant).WallOffset</c>,
         /// although it can also be overridden for more efficiency.
         /// </remarks>
         /// <param name="instant">The instant for which to calculate the offset.</param>
@@ -307,8 +312,12 @@ namespace NodaTime
         }
 
         /// <summary>
-        ///   Gets the zone interval for the given instant. This will never return null.
+        /// Gets the zone interval for the given instant; the range of time around the instant in which the same Offset
+        /// applies.
         /// </summary>
+        /// <remarks>
+        /// This will always return a valid zone interval, as time zones cover the whole of time.
+        /// </remarks>
         /// <param name="instant">The <see cref="T:NodaTime.Instant" /> to query.</param>
         /// <returns>The defined <see cref="T:NodaTime.TimeZones.ZoneInterval" />.</returns>
         public abstract ZoneInterval GetZoneInterval(Instant instant);
@@ -377,13 +386,15 @@ namespace NodaTime
 
         #region Conversion between local dates/times and ZonedDateTime
         /// <summary>
-        /// Returns the ZonedDateTime with a LocalDateTime as early as possible on the given date.
+        /// Returns the earliest valid <see cref="ZonedDateTime"/> with the given local date.
+        /// </summary>
+        /// <remarks>
         /// If midnight exists unambiguously on the given date, it is returned.
         /// If the given date has an ambiguous start time (e.g. the clocks go back from 1am to midnight)
         /// then the earlier ZonedDateTime is returned. If the given date has no midnight (e.g. the clocks
         /// go forward from midnight to 1am) then the earliest valid value is returned; this will be the instant
         /// of the transition.
-        /// </summary>
+        /// </remarks>
         /// <param name="date">The local date to map in this time zone.</param>
         /// <exception cref="SkippedTimeException">The entire day was skipped due to a very large time zone transition.
         /// (This is extremely rare.)</exception>
@@ -462,12 +473,18 @@ namespace NodaTime
         }
 
         /// <summary>
-        /// Resolves the given local date and time into a <see cref="ZonedDateTime"/> in this time zone, following
+        /// Maps the given <see cref="LocalDateTime"/> to the corresponding <see cref="ZonedDateTime"/>, following
         /// the given <see cref="ZoneLocalMappingResolver"/> to handle ambiguity and skipped times.
         /// </summary>
         /// <remarks>
+        /// <para>
         /// This is a convenience method for calling <see cref="MapLocal"/> and passing the result to the resolver.
         /// Common options for resolvers are provided in the static <see cref="Resolvers"/> class.
+        /// </para>
+        /// <para>
+        /// See <see cref="AtStrictly"/> and <see cref="AtLeniently"/> for alternative ways to map a local time to a
+        /// specific instant.
+        /// </para>
         /// </remarks>
         /// <param name="localDateTime"></param>
         /// <param name="resolver">The resolver to apply to the mapping.</param>
@@ -480,10 +497,15 @@ namespace NodaTime
         }
 
         /// <summary>
-        /// If the given <see cref="LocalDateTime"/> is mapped unambiguously in this time zone, the
-        /// corresponding <see cref="ZonedDateTime"/> is returned. Otherwise, <see cref="SkippedTimeException"/> or <see cref="AmbiguousTimeException"/>
-        /// is thrown, depending on whether the mapping is ambiguous or the local date/time is skipped entirely.
+        /// Maps the given <see cref="LocalDateTime"/> to the corresponding <see cref="ZonedDateTime"/>, if and only if
+        /// that mapping is unambiguous in this time zone.  Otherwise, <see cref="SkippedTimeException"/> or
+        /// <see cref="AmbiguousTimeException"/> is thrown, depending on whether the mapping is ambiguous or the local
+        /// date/time is skipped entirely.
         /// </summary>
+        /// <remarks>
+        /// See <see cref="AtLeniently"/> and <see cref="ResolveLocal"/> for alternative ways to map a local time to a
+        /// specific instant.
+        /// </remarks>
         /// <param name="localDateTime">The local date and time to map into this time zone.</param>
         /// <exception cref="SkippedTimeException">The given local date/time is skipped in this time zone.</exception>
         /// <exception cref="AmbiguousTimeException">The given local date/time is ambiguous in this time zone.</exception>
@@ -494,8 +516,14 @@ namespace NodaTime
         }
 
         /// <summary>
-        /// Maps the given local date/time to this time zone in a lenient manner: ambiguous values map to the
-        /// later of the alternatives, and "skipped" values map to the start of the zone interval after the "gap".
+        /// Maps the given <see cref="LocalDateTime"/> to the corresponding <see cref="ZonedDateTime"/> in a lenient
+        /// manner: ambiguous values map to the later of the alternatives, and "skipped" values map to the start of the
+        /// zone interval after the "gap".
+        /// </summary>
+        /// <remarks>
+        /// See <see cref="AtStrictly"/> and <see cref="ResolveLocal"/> for alternative ways to map a local time to a
+        /// specific instant.
+        /// </remarks>
         /// </summary>
         /// <param name="localDateTime">The local date/time to map.</param>
         /// <returns>The unambiguous mapping if there is one, the later result if the mapping is ambiguous,
@@ -590,10 +618,10 @@ namespace NodaTime
 
         #region Object overrides
         /// <summary>
-        ///   Returns a <see cref="T:System.String" /> that represents the current <see cref="T:System.Object" />.
+        /// Returns the ID of this time zone.
         /// </summary>
         /// <returns>
-        ///   A <see cref="T:System.String" /> that represents the current <see cref="T:System.Object" />.
+        /// The ID of this time zone.
         /// </returns>
         /// <filterpriority>2</filterpriority>
         public override string ToString()

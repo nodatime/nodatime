@@ -26,8 +26,8 @@ namespace NodaTime
     /// </summary>
     /// <remarks>
     /// <para>
-    /// This occurs for fall transitions, where the clock goes backward
-    /// (usually by an hour). For example, suppose the time zone goes backward
+    /// This occurs for transitions where the clock goes backward (usually by
+    /// an hour). For example, suppose the time zone goes backward
     /// at 2am, so the second after 01:59:59 becomes 01:00:00. In that case,
     /// times such as 01:30:00 occur twice.
     /// </para>
@@ -73,8 +73,13 @@ namespace NodaTime
         /// Constructs an instance from the given information.
         /// </summary>
         /// <remarks>
+        /// <para>
         /// User code is unlikely to need to deliberately call this constructor except
         /// possibly for testing.
+        /// </para>
+        /// <para>
+        /// The two mappings must have the same local time and time zone.
+        /// </para>
         /// </remarks>
         /// <param name="earlierMapping">The earlier possible mapping</param>
         /// <param name="laterMapping">The later possible mapping</param>
