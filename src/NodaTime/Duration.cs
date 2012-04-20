@@ -21,9 +21,12 @@ using NodaTime.Utility;
 namespace NodaTime
 {
     /// <summary>
-    /// A length of time in ticks. (There are 10,000 ticks in a millisecond.) A duration represents
-    /// a fixed length of time, with no concept of calendars.
+    /// Represents a fixed length of time, with no concept of calendars.
     /// </summary>
+    /// <remarks>
+    /// A duration is a length of time defined by an integral number of 'ticks', where a tick is equal to 100
+    /// nanoseconds. There are 10,000 ticks in a millisecond.
+    /// </remarks>
     public struct Duration : IEquatable<Duration>, IComparable<Duration>, IComparable
     {
         private static readonly int TypeInitializationChecking = NodaTime.Utility.TypeInitializationChecker.RecordInitializationStart();
@@ -254,7 +257,8 @@ namespace NodaTime
         /// </summary>
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
-        /// <returns>A new <see cref="Duration"/> representing the duration divided by the scale.</returns>
+        /// <returns>A new <see cref="Duration"/> representing the result of dividing <paramref name="left"/> by
+        /// <paramref name="right"/>.</returns>
         public static Duration operator /(Duration left, long right)
         {
             return new Duration(left.Ticks / right);
@@ -265,7 +269,8 @@ namespace NodaTime
         /// </summary>
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
-        /// <returns>A new <see cref="Duration"/> representing the quotient of the given values.</returns>
+        /// <returns>A new <see cref="Duration"/> representing the result of dividing <paramref name="left"/> by
+        /// <paramref name="right"/>.</returns>
         public static Duration Divide(Duration left, long right)
         {
             return left / right;
@@ -276,7 +281,8 @@ namespace NodaTime
         /// </summary>
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
-        /// <returns>A new <see cref="Duration"/> representing the duration multiplied by the scale.</returns>
+        /// <returns>A new <see cref="Duration"/> representing the result of multiplying <paramref name="left"/> by
+        /// <paramref name="right"/>.</returns>
         public static Duration operator *(Duration left, long right)
         {
             return new Duration(left.Ticks * right);
@@ -287,7 +293,8 @@ namespace NodaTime
         /// </summary>
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
-        /// <returns>A new <see cref="Duration"/> representing the duration multiplied by the scale.</returns>
+        /// <returns>A new <see cref="Duration"/> representing the result of multiplying <paramref name="left"/> by
+        /// <paramref name="right"/>.</returns>
         public static Duration operator *(long left, Duration right)
         {
             return new Duration(left * right.Ticks);
@@ -536,10 +543,6 @@ namespace NodaTime
         /// <summary>
         /// Returns a <see cref="Duration"/> that represents the given number of ticks.
         /// </summary>
-        /// <remarks>
-        /// This is simply an alternative to calling the constructor, allowing for consistent
-        /// code when there are multiple <c>FromXyz</c> calls.
-        /// </remarks>
         /// <param name="ticks">The number of ticks.</param>
         /// <returns>A <see cref="Duration"/> number of ticks.</returns>
         public static Duration FromTicks(long ticks)
