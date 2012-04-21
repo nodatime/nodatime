@@ -24,8 +24,20 @@ namespace NodaTime
     /// Represents a fixed length of time, with no concept of calendars.
     /// </summary>
     /// <remarks>
+    /// <para>
     /// A duration is a length of time defined by an integral number of 'ticks', where a tick is equal to 100
     /// nanoseconds. There are 10,000 ticks in a millisecond.
+    /// </para>
+    /// <para>
+    /// A duration represents a fixed length of elapsed time along the time line that occupies the same amount of
+    /// time regardless of when it is applied.  In contrast, <see cref="Period"/> represents a period of time in
+    /// calendrical terms (hours, days, and so on) that may vary in elapsed time when applied.
+    /// </para>
+    /// <para>
+    /// In general, use <see cref="Duration"/> to represent durations applied to global types like <see cref="Instant"/>
+    /// and <see cref="ZonedDateTime"/>; use <c>Period</c> to represent a period applied to local types like
+    /// <see cref="LocalDateTime"/>.
+    /// </para>
     /// </remarks>
     public struct Duration : IEquatable<Duration>, IComparable<Duration>, IComparable
     {
@@ -479,22 +491,22 @@ namespace NodaTime
         #endregion
 
         /// <summary>
-        /// Returns a <see cref="Duration"/> that represents the given number of standard weeks made
-        /// up from 7 24-hour days.
+        /// Returns a <see cref="Duration"/> that represents the given number of weeks, assuming a 'standard' week
+        /// consisting of seven 24-hour days.
         /// </summary>
         /// <param name="weeks">The number of weeks.</param>
-        /// <returns>A <see cref="Duration"/> number of weeks.</returns>
+        /// <returns>A <see cref="Duration"/> representing the given number of weeks.</returns>
         public static Duration FromStandardWeeks(long weeks)
         {
             return OneStandardWeek * weeks;
         }
 
         /// <summary>
-        /// Returns a <see cref="Duration"/> that represents the given number of standard days made
-        /// up from 24 hours.
+        /// Returns a <see cref="Duration"/> that represents the given number of days, assuming a 'standard' 24-hour
+        /// day.
         /// </summary>
         /// <param name="days">The number of days.</param>
-        /// <returns>A <see cref="Duration"/> number of days.</returns>
+        /// <returns>A <see cref="Duration"/> representing the given number of days.</returns>
         public static Duration FromStandardDays(long days)
         {
             return OneStandardDay * days;
@@ -504,7 +516,7 @@ namespace NodaTime
         /// Returns a <see cref="Duration"/> that represents the given number of hours.
         /// </summary>
         /// <param name="hours">The number of hours.</param>
-        /// <returns>A <see cref="Duration"/> number of hours.</returns>
+        /// <returns>A <see cref="Duration"/> representing the given number of hours.</returns>
         public static Duration FromHours(long hours)
         {
             return OneHour * hours;
@@ -514,7 +526,7 @@ namespace NodaTime
         /// Returns a <see cref="Duration"/> that represents the given number of minutes.
         /// </summary>
         /// <param name="minutes">The number of minutes.</param>
-        /// <returns>A <see cref="Duration"/> number of minutes.</returns>
+        /// <returns>A <see cref="Duration"/> representing the given number of minutes.</returns>
         public static Duration FromMinutes(long minutes)
         {
             return OneMinute * minutes;
@@ -524,7 +536,7 @@ namespace NodaTime
         /// Returns a <see cref="Duration"/> that represents the given number of seconds.
         /// </summary>
         /// <param name="seconds">The number of seconds.</param>
-        /// <returns>A <see cref="Duration"/> number of seconds.</returns>
+        /// <returns>A <see cref="Duration"/> representing the given number of seconds.</returns>
         public static Duration FromSeconds(long seconds)
         {
             return OneSecond * seconds;
@@ -534,7 +546,7 @@ namespace NodaTime
         /// Returns a <see cref="Duration"/> that represents the given number of milliseconds.
         /// </summary>
         /// <param name="milliseconds">The number of milliseconds.</param>
-        /// <returns>A <see cref="Duration"/> number of milliseconds.</returns>
+        /// <returns>A <see cref="Duration"/> representing the given number of milliseconds.</returns>
         public static Duration FromMilliseconds(long milliseconds)
         {
             return OneMillisecond * milliseconds;
@@ -544,7 +556,7 @@ namespace NodaTime
         /// Returns a <see cref="Duration"/> that represents the given number of ticks.
         /// </summary>
         /// <param name="ticks">The number of ticks.</param>
-        /// <returns>A <see cref="Duration"/> number of ticks.</returns>
+        /// <returns>A <see cref="Duration"/> representing the given number of ticks.</returns>
         public static Duration FromTicks(long ticks)
         {
             return new Duration(ticks);
