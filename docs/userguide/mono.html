@@ -45,8 +45,10 @@ to run using this CLR.</li>
 
 <h2>System requirements</h2>
 
-<p>We have tested Mono support using Mono 2.10.5 and 2.10.8. To build
-Noda Time under Linux, you need to install the following packages:</p>
+<p>We have tested Mono support using Mono 2.10.5 and 2.10.8.</p>
+
+<p>To build Noda Time under Linux, you typically need to install the following
+packages:</p>
 
 <ul>
 <li>mono-devel</li>
@@ -54,6 +56,16 @@ Noda Time under Linux, you need to install the following packages:</p>
 </ul>
 
 <p>(These will add the other dependencies you need.)</p>
+
+<p>Note that for Ubuntu specifically, you'll either need Ubuntu 11.10 (Oneiric) or
+later, or work out how to install an unofficial backport; earlier versions of
+Ubuntu <a href="http://www.mono-project.com/DistroPackages/Ubuntu">do not include a suitable version of Mono</a>.</p>
+
+<p>To build Noda Time under OS X, <a href="http://www.mono-project.com/Download">download</a> the latest stable
+release of Mono. Be sure to choose the developer package, not the smaller
+runtime-only package.  To use the provided <code>Makefile</code>, you'll either need to
+install <a href="https://developer.apple.com/xcode/">Xcode</a> or obtain <code>make</code> separately (for example, using
+<a href="https://github.com/kennethreitz/osx-gcc-installer#readme">osx-gcc-installer</a> to install just the open-source parts of Xcode).</p>
 
 <p>To fetch the source code from the main Google Code repository,
 you'll need a Mercurial client.</p>
@@ -66,17 +78,35 @@ tests of Noda Time.)</p>
 
 <h2>Fetching and building</h2>
 
-<p>Building is performed with <code>xbuild</code>, which needs a couple of properties to help it
-recognize which version of the framework we're using:</p>
+<p>To fetch the source code, just clone the Google Code repository:</p>
 
 <pre class="prettyprint"><code>$ hg clone https://code.google.com/p/noda-time/
-$ cd noda-time/src
-$ xbuild /p:TargetFrameworkVersion="v3.5" /p:TargetFrameworkProfile="" "NodaTime Mono.sln"
-$ mono /path/to/nunit-console.exe NodaTime.Test/bin/Debug/NodaTime.Test.dll
 </code></pre>
 
-<p>To build the release configuration (which also builds the XML documentation file) use
-<code>/p:Configuration=Release</code> in addition to the existing properties when running <code>xbuild</code>.</p>
+<p>Building is performed with <code>make</code>, using the included Makefile. (If you don't
+have a working <code>make</code>, you can also run <code>xbuild</code> by hand; see <code>Makefile</code> for
+the commands you'll need to run.)</p>
+
+<pre class="prettyprint"><code>$ cd noda-time
+$ make
+</code></pre>
+
+<p>This will build all the Noda Time main projects. The main assembly will be
+written to <code>src/NodaTime/bin/Debug/NodaTime.dll</code>; this is all you need to use
+Noda Time itself.</p>
+
+<p>Other build targets are also available; again, see <code>Makefile</code> for documentation.
+In particular, to build and run the tests, run:</p>
+
+<pre class="prettyprint"><code>$ make check
+</code></pre>
+
+<p>to use the default (probably Mono-supplied) version of NUnit to run the tests,
+or something like the following to override the location of the NUnit test
+runner:</p>
+
+<pre class="prettyprint"><code>$ make check NUNIT='mono ../NUnit-2.6.0.12051/bin/nunit-console.exe'
+</code></pre>
 
   </body>
 </html>
