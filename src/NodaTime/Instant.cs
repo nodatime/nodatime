@@ -25,12 +25,21 @@ using NodaTime.Utility;
 namespace NodaTime
 {
     /// <summary>
-    ///   Represents an instant on the timeline, measured in ticks from the Unix epoch,
-    ///   which is typically described as January 1st 1970, midnight, UTC (ISO calendar).
-    ///   (There are 10,000 ticks in a millisecond.)
+    /// Represents an instant on the global timeline.
     /// </summary>
     /// <remarks>
-    ///   This type is immutable and thread-safe.
+    /// <para>
+    /// An instant is defined by an integral number of 'ticks' since the Unix epoch (typically described as January 1st
+    /// 1970, midnight, UTC, ISO calendar), where a tick is equal to 100 nanoseconds. There are 10,000 ticks in a
+    /// millisecond.
+    /// </para>
+    /// <para>
+    /// An <see cref="Instant"/> has no concept of a particular time zone or calendar: it simply represents a point in
+    /// time that can be globally agreed-upon.
+    /// </para>
+    /// <para>
+    /// This type is immutable and thread-safe.
+    /// </para>
     /// </remarks>
     public struct Instant : IEquatable<Instant>, IComparable<Instant>, IFormattable, IComparable
     {
@@ -51,12 +60,18 @@ namespace NodaTime
         public static readonly Instant UnixEpoch = new Instant(0);
 
         /// <summary>
-        /// The minimum instant value, which is also used to represent the beginning of time.
+        /// Represents the smallest possible <see cref="Instant"/>.
         /// </summary>
+        /// <remarks>
+        /// Within Noda Time, this is also used to represent 'the beginning of time'.
+        /// </remarks>
         public static readonly Instant MinValue = new Instant(Int64.MinValue);
         /// <summary>
-        /// The maximum instant value, which is also used to represent the end of time.
+        /// Represents the largest possible <see cref="Instant"/>.
         /// </summary>
+        /// <remarks>
+        /// Within Noda Time, this is also used to represent 'the end of time'.
+        /// </remarks>
         public static readonly Instant MaxValue = new Instant(Int64.MaxValue);
 
         private readonly long ticks;
@@ -64,14 +79,15 @@ namespace NodaTime
         /// <summary>
         /// Initializes a new instance of the <see cref="Instant" /> struct.
         /// </summary>
-        /// <param name="ticks">The ticks from the unix epoch.</param>
+        /// <param name="ticks">The number of ticks since the Unix epoch. Negative values represent instants before the
+        /// Unix epoch.</param>
         public Instant(long ticks)
         {
             this.ticks = ticks;
         }
 
         /// <summary>
-        /// Ticks since the Unix epoch.
+        /// The number of ticks since the Unix epoch. Negative values represent instants before the Unix epoch.
         /// </summary>
         public long Ticks { get { return ticks; } }
 
@@ -637,8 +653,9 @@ namespace NodaTime
         }
 
         /// <summary>
-        /// Returns the representation of this instant in the UTC time zone, in the ISO-8601 calendar.
-        /// This is a shortcut for calling <see cref="InZone(DateTimeZone)" /> with an argument of DateTimeZone.Utc.
+        /// Returns the <see cref="ZonedDateTime"/> representing the same point in time as this instant, in the UTC time
+        /// zone and ISO-8601 calendar. This is a shortcut for calling <see cref="InZone(DateTimeZone)" /> with an
+        /// argument of <see cref="DateTimeZone.Utc"/>.
         /// </summary>
         /// <returns>A <see cref="ZonedDateTime"/> for the same instant, in the UTC time zone
         /// and the ISO-8601 calendar</returns>
@@ -648,7 +665,8 @@ namespace NodaTime
         }
 
         /// <summary>
-        /// Returns the representation of this instant in the specified time zone, in the ISO-8601 calendar.
+        /// Returns the <see cref="ZonedDateTime"/> representing the same point in time as this instant, in the
+        /// specified time zone and ISO-8601 calendar.
         /// </summary>
         /// <param name="zone">The time zone in which to represent this instant. Must not be null.</param>
         /// <returns>A <see cref="ZonedDateTime"/> for the same instant, in the given time zone
@@ -660,7 +678,8 @@ namespace NodaTime
         }
 
         /// <summary>
-        /// Returns the representation of this instant in the specified time zone and calendar system.
+        /// Returns the <see cref="ZonedDateTime"/> representing the same point in time as this instant, in the
+        /// specified time zone and calendar system.
         /// </summary>
         /// <param name="zone">The time zone in which to represent this instant. Must not be null.</param>
         /// <param name="calendar">The calendar system in which to represent this instant. Must not be null.</param>
