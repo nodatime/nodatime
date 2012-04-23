@@ -120,11 +120,13 @@ namespace NodaTime.Test
             Assert.AreEqual(duration, Duration.FromTimeSpan(timeSpan));
             Assert.AreEqual(timeSpan, duration.ToTimeSpan());
 
-            Assert.AreEqual(Duration.MaxValue, Duration.FromTimeSpan(TimeSpan.MaxValue));
-            Assert.AreEqual(TimeSpan.MaxValue, Duration.MaxValue.ToTimeSpan());
+            Duration maxDuration = Duration.FromTicks(Int64.MaxValue);
+            Assert.AreEqual(maxDuration, Duration.FromTimeSpan(TimeSpan.MaxValue));
+            Assert.AreEqual(TimeSpan.MaxValue, maxDuration.ToTimeSpan());
+            Duration minDuration = Duration.FromTicks(Int64.MinValue);
 
-            Assert.AreEqual(Duration.MinValue, Duration.FromTimeSpan(TimeSpan.MinValue));
-            Assert.AreEqual(TimeSpan.MinValue, Duration.MinValue.ToTimeSpan());
+            Assert.AreEqual(minDuration, Duration.FromTimeSpan(TimeSpan.MinValue));
+            Assert.AreEqual(TimeSpan.MinValue, minDuration.ToTimeSpan());
         }
 
         [Test]
