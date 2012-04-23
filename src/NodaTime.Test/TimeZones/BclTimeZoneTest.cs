@@ -46,7 +46,7 @@ namespace NodaTime.Test.TimeZones
 
             while (instant < end)
             {
-                ValidateZoneEquality(instant - Duration.OneTick, nodaZone, windowsZone);
+                ValidateZoneEquality(instant - Duration.Epsilon, nodaZone, windowsZone);
                 ValidateZoneEquality(instant, nodaZone, windowsZone);
                 instant = nodaZone.GetZoneInterval(instant).End;
             }

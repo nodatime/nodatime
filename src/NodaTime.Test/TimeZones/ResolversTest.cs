@@ -71,7 +71,7 @@ namespace NodaTime.Test.TimeZones
             var mapping = GapZone.MapLocal(TimeInTransition);
             Assert.AreEqual(0, mapping.Count);
             var resolved = Resolvers.ReturnEndOfIntervalBefore(TimeInTransition, GapZone, mapping.EarlyInterval, mapping.LateInterval);
-            Assert.AreEqual(GapZone.EarlyInterval.End - Duration.OneTick, resolved.ToInstant());
+            Assert.AreEqual(GapZone.EarlyInterval.End - Duration.Epsilon, resolved.ToInstant());
             Assert.AreEqual(GapZone, resolved.Zone);
         }
 
