@@ -24,8 +24,6 @@ namespace NodaTime.Test
     {
         private const long StartTicks = 123456789L;
         private const long EndTicks = 987654321L;
-        private static readonly Instant Start = new Instant(StartTicks);
-        private static readonly Instant End = new Instant(EndTicks);
 
         [Test]
         public void Zero()
