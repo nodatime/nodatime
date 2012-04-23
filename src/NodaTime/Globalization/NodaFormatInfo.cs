@@ -542,8 +542,6 @@ namespace NodaTime.Globalization
         internal static NodaFormatInfo GetFormatInfo(CultureInfo cultureInfo)
         {
             Preconditions.CheckNotNull(cultureInfo, "cultureInfo");
-            string name = cultureInfo.Name;
-            NodaFormatInfo result;
             if (cultureInfo == CultureInfo.InvariantCulture)
             {
                 return InvariantInfo;
@@ -553,6 +551,7 @@ namespace NodaTime.Globalization
             {
                 return new NodaFormatInfo(cultureInfo);
             }
+            NodaFormatInfo result;
             lock (Cache)
             {
                 if (!Cache.TryGetValue(cultureInfo, out result))
