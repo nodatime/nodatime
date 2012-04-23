@@ -43,13 +43,7 @@ namespace NodaTime
     {
         private static readonly int TypeInitializationChecking = NodaTime.Utility.TypeInitializationChecker.RecordInitializationStart();
 
-        #region Public static readonly fields
-        /// <summary>
-        /// Represents <see cref="Duration"/> value equal to negative 1 tick. 
-        /// This field is read-only.
-        /// </summary>
-        public static readonly Duration NegativeOneTick = new Duration(-1L);
-
+        #region Readonly static fields
         /// <summary>
         /// Represents the zero <see cref="Duration"/> value. 
         /// This field is read-only.
@@ -57,30 +51,10 @@ namespace NodaTime
         public static readonly Duration Zero = new Duration(0L);
 
         /// <summary>
-        /// Represents the <see cref="Duration"/> value equals to 1 tick. 
+        /// Represents the <see cref="Duration"/> value equals to 1 tick; the smallest amount by which an instant can vary.
         /// This field is read-only.
         /// </summary>
-        public static readonly Duration OneTick = new Duration(1L);
-
-        /// <summary>
-        /// Represents the mimimum <see cref="Duration"/> value. 
-        /// This field is read-only.
-        /// </summary>
-        /// <remarks>
-        /// The value of this field is equivalent to <see cref="Int64.MinValue"/> ticks. 
-        /// The string representation of this value is PT-922337203685.4775808S.
-        /// </remarks>
-        public static readonly Duration MinValue = new Duration(Int64.MinValue);
-
-        /// <summary>
-        /// Represents the maximum <see cref="Duration"/> value. 
-        /// This field is read-only.
-        /// </summary>
-        /// <remarks>
-        /// The value of this field is equivalent to <see cref="Int64.MaxValue"/> ticks. 
-        /// The string representation of this value is PT922337203685.4775807S.
-        /// </remarks>
-        public static readonly Duration MaxValue = new Duration(Int64.MaxValue);
+        public static readonly Duration Epsilon = new Duration(1L);
 
         /// <summary>
         /// Represents the <see cref="Duration"/> value equals to number of ticks in 1 standard week (7 days).
@@ -89,7 +63,6 @@ namespace NodaTime
         /// <remarks>
         /// The value of this constant is 6,048,000,000,000 ticks.
         /// </remarks>
-        // TODO: Consider exposing this publicly. We use it internally, but I'm not sure about making it public...
         internal static readonly Duration OneStandardWeek = new Duration(NodaConstants.TicksPerStandardWeek);
 
         /// <summary>
@@ -99,7 +72,7 @@ namespace NodaTime
         /// <remarks>
         /// The value of this constant is 864 billion ticks; that is, 864,000,000,000 ticks.
         /// </remarks>
-        public static readonly Duration OneStandardDay = new Duration(NodaConstants.TicksPerStandardDay);
+        internal static readonly Duration OneStandardDay = new Duration(NodaConstants.TicksPerStandardDay);
 
         /// <summary>
         /// Represents the <see cref="Duration"/> value equals to number of ticks in 1 hour.
@@ -108,7 +81,7 @@ namespace NodaTime
         /// <remarks>
         /// The value of this constant is 36 billion ticks; that is, 36,000,000,000 ticks.
         /// </remarks>
-        public static readonly Duration OneHour = new Duration(NodaConstants.TicksPerHour);
+        private static readonly Duration OneHour = new Duration(NodaConstants.TicksPerHour);
 
         /// <summary>
         /// Represents the <see cref="Duration"/> value equals to number of ticks in 1 minute.
@@ -117,7 +90,7 @@ namespace NodaTime
         /// <remarks>
         /// The value of this constant is 600 million ticks; that is, 600,000,000 ticks.
         /// </remarks>
-        public static readonly Duration OneMinute = new Duration(NodaConstants.TicksPerMinute);
+        private static readonly Duration OneMinute = new Duration(NodaConstants.TicksPerMinute);
 
         /// <summary>
         /// Represents the <see cref="Duration"/> value equals to number of ticks in 1 second.
@@ -126,16 +99,16 @@ namespace NodaTime
         /// <remarks>
         /// The value of this constant is 10 million ticks; that is, 10,000,000 ticks.
         /// </remarks>
-        public static readonly Duration OneSecond = new Duration(NodaConstants.TicksPerSecond);
+        private static readonly Duration OneSecond = new Duration(NodaConstants.TicksPerSecond);
 
         /// <summary>
         /// Represents the <see cref="Duration"/> value equals to number of ticks in 1 millisecond.
         /// This field is constant.
         /// </summary>
         /// <remarks>
-        /// TThe value of this constant is 10 thousand; that is, 10,000.
+        /// The value of this constant is 10 thousand ticks; that is, 10,000 ticks.
         /// </remarks>
-        public static readonly Duration OneMillisecond = new Duration(NodaConstants.TicksPerMillisecond);
+        private static readonly Duration OneMillisecond = new Duration(NodaConstants.TicksPerMillisecond);
         #endregion
 
         /// <summary>

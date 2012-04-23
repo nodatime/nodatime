@@ -47,6 +47,7 @@ namespace NodaTime.Test
         private LocalInstant threeMillion = new LocalInstant(3000000L);
         private LocalInstant negativeFiftyMillion = new LocalInstant(-50000000L);
 
+        private readonly Duration durationNegativeEpsilon = Duration.FromTicks(-1L);
         private readonly Offset offsetOneHour = Offset.FromHours(1);
 
         [Test]

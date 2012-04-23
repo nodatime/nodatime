@@ -137,7 +137,7 @@ namespace NodaTime.TimeZones
         /// of the recurrence rules of the zone.</exception>
         public override ZoneInterval GetZoneInterval(Instant instant)
         {
-            var previous = PreviousTransition(instant + Duration.OneTick);
+            var previous = PreviousTransition(instant + Duration.Epsilon);
             var next = NextTransition(instant);
             var recurrence = FindMatchingRecurrence(instant);
             return new ZoneInterval(recurrence.Name, previous.Instant, next.Instant,

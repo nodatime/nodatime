@@ -94,7 +94,7 @@ namespace NodaTime.Test
         [Test]
         public void ZoneWithAmbiguity_JustBeforeAmbiguity()
         {
-            var actual = ZoneWithAmbiguity.GetZoneIntervals(TransitionMinus5 - Duration.OneTick);
+            var actual = ZoneWithAmbiguity.GetZoneIntervals(TransitionMinus5 - Duration.Epsilon);
             var expected = ZoneIntervalPair.Unambiguous(IntervalBeforeAmbiguity);
             Assert.AreEqual(expected, actual);
         }
@@ -102,7 +102,7 @@ namespace NodaTime.Test
         [Test]
         public void ZoneWithAmbiguity_JustAfterTransition()
         {
-            var actual = ZoneWithAmbiguity.GetZoneIntervals(TransitionPlus10 + Duration.OneTick);
+            var actual = ZoneWithAmbiguity.GetZoneIntervals(TransitionPlus10 + Duration.Epsilon);
             var expected = ZoneIntervalPair.Unambiguous(IntervalAfterAmbiguity);
             Assert.AreEqual(expected, actual);
         }
@@ -126,7 +126,7 @@ namespace NodaTime.Test
         [Test]
         public void ZoneWithAmbiguity_LastTickOfTransition()
         {
-            var actual = ZoneWithAmbiguity.GetZoneIntervals(TransitionPlus10 - Duration.OneTick);
+            var actual = ZoneWithAmbiguity.GetZoneIntervals(TransitionPlus10 - Duration.Epsilon);
             var expected = ZoneIntervalPair.Ambiguous(IntervalBeforeAmbiguity, IntervalAfterAmbiguity);
             Assert.AreEqual(expected, actual);
         }
@@ -175,7 +175,7 @@ namespace NodaTime.Test
         [Test]
         public void ZoneWithGap_JustBeforeGap()
         {
-            var actual = ZoneWithGap.GetZoneIntervals(TransitionMinus5 - Duration.OneTick);
+            var actual = ZoneWithGap.GetZoneIntervals(TransitionMinus5 - Duration.Epsilon);
             var expected = ZoneIntervalPair.Unambiguous(IntervalBeforeGap);
             Assert.AreEqual(expected, actual);
         }
@@ -183,7 +183,7 @@ namespace NodaTime.Test
         [Test]
         public void ZoneWithGap_JustAfterTransition()
         {
-            var actual = ZoneWithGap.GetZoneIntervals(TransitionPlus10 + Duration.OneTick);
+            var actual = ZoneWithGap.GetZoneIntervals(TransitionPlus10 + Duration.Epsilon);
             var expected = ZoneIntervalPair.Unambiguous(IntervalAfterGap);
             Assert.AreEqual(expected, actual);
         }
@@ -207,7 +207,7 @@ namespace NodaTime.Test
         [Test]
         public void ZoneWithGap_LastTickOfTransition()
         {
-            var actual = ZoneWithGap.GetZoneIntervals(TransitionPlus10 - Duration.OneTick);
+            var actual = ZoneWithGap.GetZoneIntervals(TransitionPlus10 - Duration.Epsilon);
             var expected = ZoneIntervalPair.NoMatch;
             Assert.AreEqual(expected, actual);
         }

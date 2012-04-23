@@ -128,7 +128,7 @@ namespace NodaTime.Test.TimeZones
         {
             var januaryFirstMidnight = new ZoneYearOffset(TransitionMode.Utc, 1, 1, 0, true, Offset.Zero);
             var recurrence = new ZoneRecurrence("bob", Offset.Zero, januaryFirstMidnight, 1970, 1972);
-            Transition? actual = recurrence.Previous(Instant.UnixEpoch - Duration.OneTick, Offset.Zero, Offset.Zero);
+            Transition? actual = recurrence.Previous(Instant.UnixEpoch - Duration.Epsilon, Offset.Zero, Offset.Zero);
             Transition? expected = null;
             Assert.AreEqual(expected, actual);
         }

@@ -75,7 +75,7 @@ namespace NodaTime.Test.TimeZones
         [Test]
         public void GetZoneIntervalInstant_End()
         {
-            Assert.AreEqual(SecondInterval, TestZone.GetZoneInterval(SecondInterval.End - Duration.OneTick));
+            Assert.AreEqual(SecondInterval, TestZone.GetZoneInterval(SecondInterval.End - Duration.Epsilon));
         }
 
         [Test]
@@ -87,7 +87,7 @@ namespace NodaTime.Test.TimeZones
         [Test]
         public void GetZoneIntervalInstant_FinalInterval_End()
         {
-            Assert.AreEqual(ThirdInterval, TestZone.GetZoneInterval(ThirdInterval.End - Duration.OneTick));
+            Assert.AreEqual(ThirdInterval, TestZone.GetZoneInterval(ThirdInterval.End - Duration.Epsilon));
         }
 
         [Test]
@@ -131,7 +131,7 @@ namespace NodaTime.Test.TimeZones
         public void GetZoneIntervals_AmbiguousAroundTailZoneTransition()
         {
             // Transition from -5 to -6 has a 1 hour ambiguity
-            var pair = TestZone.GetZoneIntervals(ThirdInterval.LocalEnd - Duration.OneTick);
+            var pair = TestZone.GetZoneIntervals(ThirdInterval.LocalEnd - Duration.Epsilon);
             Assert.AreEqual(ThirdInterval, pair.EarlyInterval);
             Assert.AreEqual(ClampedTailZoneInterval, pair.LateInterval);
         }

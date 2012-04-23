@@ -52,7 +52,7 @@ namespace NodaTime.TimeZones
         /// </summary>
         public static readonly SkippedTimeResolver ReturnEndOfIntervalBefore = (local, zone, before, after) =>
         {
-            var localDateTime = new LocalDateTime(before.LocalEnd - Duration.OneTick, local.Calendar);
+            var localDateTime = new LocalDateTime(before.LocalEnd - Duration.Epsilon, local.Calendar);
             return new ZonedDateTime(localDateTime, before.WallOffset, zone);
         };
 

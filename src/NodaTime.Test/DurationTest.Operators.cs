@@ -42,16 +42,16 @@ namespace NodaTime.Test
         public void OperatorPlus_Zero_IsNeutralElement()
         {
             Assert.AreEqual(0L, (Duration.Zero + Duration.Zero).Ticks, "0 + 0");
-            Assert.AreEqual(1L, (Duration.OneTick + Duration.Zero).Ticks, "1 + 0");
-            Assert.AreEqual(1L, (Duration.Zero + Duration.OneTick).Ticks, "0 + 1");
+            Assert.AreEqual(1L, (Duration.Epsilon + Duration.Zero).Ticks, "1 + 0");
+            Assert.AreEqual(1L, (Duration.Zero + Duration.Epsilon).Ticks, "0 + 1");
         }
 
         [Test]
         public void OperatorPlus_NonZero()
         {
-            Assert.AreEqual(3000001L, (threeMillion + Duration.OneTick).Ticks, "3,000,000 + 1");
-            Assert.AreEqual(0L, (Duration.OneTick + Duration.NegativeOneTick).Ticks, "1 + (-1)");
-            Assert.AreEqual(-49999999L, (negativeFiftyMillion + Duration.OneTick).Ticks, "-50,000,000 + 1");
+            Assert.AreEqual(3000001L, (threeMillion + Duration.Epsilon).Ticks, "3,000,000 + 1");
+            Assert.AreEqual(0L, (Duration.Epsilon + negativeEpsilon).Ticks, "1 + (-1)");
+            Assert.AreEqual(-49999999L, (negativeFiftyMillion + Duration.Epsilon).Ticks, "-50,000,000 + 1");
         }
 
         [Test]
@@ -69,16 +69,16 @@ namespace NodaTime.Test
         public void OperatorMinus_Zero_IsNeutralElement()
         {
             Assert.AreEqual(0L, (Duration.Zero - Duration.Zero).Ticks, "0 - 0");
-            Assert.AreEqual(1L, (Duration.OneTick - Duration.Zero).Ticks, "1 - 0");
-            Assert.AreEqual(-1L, (Duration.Zero - Duration.OneTick).Ticks, "0 - 1");
+            Assert.AreEqual(1L, (Duration.Epsilon - Duration.Zero).Ticks, "1 - 0");
+            Assert.AreEqual(-1L, (Duration.Zero - Duration.Epsilon).Ticks, "0 - 1");
         }
 
         [Test]
         public void OperatorMinus_NonZero()
         {
-            Assert.AreEqual(2999999L, (threeMillion - Duration.OneTick).Ticks, "3,000,000 - 1");
-            Assert.AreEqual(2L, (Duration.OneTick - Duration.NegativeOneTick).Ticks, "1 - (-1)");
-            Assert.AreEqual(-50000001L, (negativeFiftyMillion - Duration.OneTick).Ticks, "-50,000,000 - 1");
+            Assert.AreEqual(2999999L, (threeMillion - Duration.Epsilon).Ticks, "3,000,000 - 1");
+            Assert.AreEqual(2L, (Duration.Epsilon - negativeEpsilon).Ticks, "1 - (-1)");
+            Assert.AreEqual(-50000001L, (negativeFiftyMillion - Duration.Epsilon).Ticks, "-50,000,000 - 1");
         }
 
         [Test]
@@ -132,7 +132,7 @@ namespace NodaTime.Test
         public void OperatorMultiplication_Zero_IsAbsorbingElement()
         {
             Assert.AreEqual(Duration.Zero, Duration.Zero * 0, "0 * 0");
-            Assert.AreEqual(Duration.Zero, Duration.OneTick * 0, "1 * 0");
+            Assert.AreEqual(Duration.Zero, Duration.Epsilon * 0, "1 * 0");
             Assert.AreEqual(Duration.Zero, threeMillion * 0, "3000000 * 0");
             Assert.AreEqual(Duration.Zero, negativeFiftyMillion * 0, "-50000000 * 0");
         }
