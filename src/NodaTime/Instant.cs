@@ -37,10 +37,8 @@ namespace NodaTime
     /// An <see cref="Instant"/> has no concept of a particular time zone or calendar: it simply represents a point in
     /// time that can be globally agreed-upon.
     /// </para>
-    /// <para>
-    /// This type is immutable and thread-safe.
-    /// </para>
     /// </remarks>
+    /// <threadsafety>This type is an immutable value type. See the thread safety section of the user guide for more information.</threadsafety>
     public struct Instant : IEquatable<Instant>, IComparable<Instant>, IFormattable, IComparable
     {
         private static readonly int TypeInitializationChecking = NodaTime.Utility.TypeInitializationChecker.RecordInitializationStart();

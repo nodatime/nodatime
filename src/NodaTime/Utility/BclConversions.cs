@@ -30,6 +30,7 @@ namespace NodaTime.Utility
     /// Noda Time always builds against .NET 2. In a future version, there may be multiple build targets,
     /// allowing these to become extension methods for the builds which use .NET 3.5 and higher.
     /// </remarks>
+    /// <threadsafety>All members of this type are thread-safe. See the thread safety section of the user guide for more information.</threadsafety>
     public static class BclConversions
     {
         /// <summary>

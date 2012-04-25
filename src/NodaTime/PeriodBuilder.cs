@@ -35,6 +35,9 @@ namespace NodaTime
     /// mutate an instance after using it as a key, you may not be able to look it up
     /// again, even using the same reference.
     /// </remarks>
+    /// <threadsafety>
+    /// This type is not thread-safe, but the periods it builds are.
+    /// </threadsafety>
     public sealed class PeriodBuilder : IEquatable<PeriodBuilder>
     {
         #region Properties

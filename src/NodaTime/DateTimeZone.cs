@@ -81,6 +81,10 @@ namespace NodaTime
     /// <para>Currently Noda Time does not support 3rd party time zone implementations. If you wish to create your own implementation,
     /// please ask for support on the Noda Time mailing list.</para>
     /// </remarks>
+    /// <threadsafety>
+    /// All time zone implementations within Noda Time are immutable and thread-safe. See the thread safety
+    /// section of the user guide for more information.
+    /// </threadsafety>
     public abstract class DateTimeZone
     {
         private static readonly int TypeInitializationChecking = NodaTime.Utility.TypeInitializationChecker.RecordInitializationStart();

@@ -32,6 +32,9 @@ namespace NodaTime
     /// </remarks>
     /// <seealso cref="SystemClock"/>
     /// <seealso cref="T:NodaTime.Testing.StubClock"/>
+    /// <threadsafety>All implementations in Noda Time are thread-safe; custom implementations
+    /// should be thread-safe too. See the thread safety section of the user guide for more information.
+    /// </threadsafety>
     public interface IClock
     {
         /// <summary>

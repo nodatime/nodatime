@@ -23,9 +23,7 @@ namespace NodaTime
     /// <summary>
     /// An interval between two instants in time.
     /// </summary>
-    /// <remarks>
-    /// This type is immutable and thread-safe.
-    /// </remarks>
+    /// <threadsafety>This type is an immutable value type. See the thread safety section of the user guide for more information.</threadsafety>
     public struct Interval : IEquatable<Interval>
     {
         private static readonly int TypeInitializationChecking = NodaTime.Utility.TypeInitializationChecker.RecordInitializationStart();

@@ -44,6 +44,7 @@ namespace NodaTime
     /// Currently there is no real text handling support for this type.
     /// </para>
     /// </remarks>
+    /// <threadsafety>This type is an immutable value type. See the thread safety section of the user guide for more information.</threadsafety>
     public struct ZonedDateTime : IEquatable<ZonedDateTime>, IComparable<ZonedDateTime>
     {
         private static readonly int TypeInitializationChecking = NodaTime.Utility.TypeInitializationChecker.RecordInitializationStart();

@@ -27,6 +27,7 @@ namespace NodaTime.TimeZones
     /// loading and creating time zones is potentially long (it could conceivably include network
     /// requests) so caching them is necessary.
     /// </summary>
+    /// <threadsafety>All members of this type are thread-safe.</threadsafety>
     internal class TimeZoneCache
     {
         private readonly object accessLock = new object();

@@ -54,6 +54,7 @@ namespace NodaTime.TimeZones
     ///   </item>
     /// </list>
     /// </remarks>
+    /// <threadsafety>This type is an immutable reference type. See the thread safety section of the user guide for more information.</threadsafety>
     public sealed class ZoneLocalMapping
     {
         private readonly DateTimeZone zone;

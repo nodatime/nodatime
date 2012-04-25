@@ -24,6 +24,7 @@ namespace NodaTime.TimeZones
     /// "Constant" fields representing commonly-used implementations of the resolver delegates,
     /// and a method to combine two "partial" resolvers into a full one.
     /// </summary>
+    /// <threadsafety>All members of this class are thread-safe, as are the values returned by them.</threadsafety>
     public static class Resolvers
     {
         private static readonly int TypeInitializationChecking = NodaTime.Utility.TypeInitializationChecker.RecordInitializationStart();

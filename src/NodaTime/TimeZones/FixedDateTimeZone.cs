@@ -26,9 +26,7 @@ namespace NodaTime.TimeZones
     /// Basic <see cref="DateTimeZone" /> implementation that has a fixed name key and offset i.e.
     /// no daylight savings.
     /// </summary>
-    /// <remarks>
-    /// This type is thread-safe and immutable.
-    /// </remarks>
+    /// <threadsafety>This type is immutable reference type. See the thread safety section of the user guide for more information.</threadsafety>
     internal sealed class FixedDateTimeZone : DateTimeZone, IEquatable<FixedDateTimeZone>
     {
         private readonly Offset offset;

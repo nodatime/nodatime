@@ -60,7 +60,7 @@
             </p><p>
             If you need to obtain a <span class="selflink">CalendarSystem</span> instance, use one of the static properties or methods in this
             class, such as the <a href="P_NodaTime_CalendarSystem_Iso.htm">Iso</a> property or the <a href="M_NodaTime_CalendarSystem_GetGregorianCalendar.htm">GetGregorianCalendar(Int32)</a> method.
-            </p><p>Although this class is abstract, other assemblies cannot derive from it: it contains internal
+            </p><p>Although this class is abstract, other assemblies cannot introduce types which derive from it: it contains internal
             abstract methods, referring to internal types. This ensures that all calendar types are genuinely
             immutable and thread-safe, aside from anything else. If you require a calendar system which is not
             currently supported, please file a feature request and we'll see what we can do.
@@ -69,7 +69,10 @@
             the functionality of Chronology, BaseChronology and AssembledChronology all mashed
             together. Unlike Chronology, there's no time zone handling in CalendarSystem - that's
             treated entirely separately to calendaring.
-            </p></div></div><div class="section"><div class="sectionTitle" onclick="toggleSection(this.parentNode)"><img src="../icons/collapse_all.gif" /> Inheritance Hierarchy</div><div class="sectionContent"><table cellspacing="0" cellpadding="0"><tr><td colspan="2"><a href="http://msdn2.microsoft.com/en-us/library/e5kfa45b" target="_blank">Object</a></td></tr><tr><td><img src="../icons/LastChild.gif" /></td><td><span class="selflink">CalendarSystem</span></td></tr></table></div></div><p><div id="footer"><p />Send comments on this topic to
+            </p></div></div><div class="section"><div class="sectionTitle" onclick="toggleSection(this.parentNode)"><img src="../icons/collapse_all.gif" /> Thread Safety</div><div class="sectionContent">
+            All calendar implementations within Noda Time are immutable and thread-safe. See the thread safety
+            section of the user guide for more information.
+            </div></div><div class="section"><div class="sectionTitle" onclick="toggleSection(this.parentNode)"><img src="../icons/collapse_all.gif" /> Inheritance Hierarchy</div><div class="sectionContent"><table cellspacing="0" cellpadding="0"><tr><td colspan="2"><a href="http://msdn2.microsoft.com/en-us/library/e5kfa45b" target="_blank">Object</a></td></tr><tr><td><img src="../icons/LastChild.gif" /></td><td><span class="selflink">CalendarSystem</span></td></tr></table></div></div><p><div id="footer"><p />Send comments on this topic to
         <a id="HT_MailLink" href="mailto:noda-time%40googlegroups.com?Subject=Noda-Time">Noda-Time Google Groups</a><script type="text/javascript">
         var HT_mailLink = document.getElementById("HT_MailLink");
         var HT_mailLinkText = HT_mailLink.innerHTML;

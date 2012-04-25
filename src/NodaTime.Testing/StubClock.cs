@@ -20,8 +20,13 @@ namespace NodaTime.Testing
     /// Clock which can be constructed with an initial instant, and then advanced programmatically.
     /// This class is designed to be used when testing classes which take an <see cref="IClock"/> as a dependency.
     /// </summary>
+    /// <threadsafety>
+    /// This type is thread-safe, primarily in order to allow <see cref="IClock"/> to be documented as
+    /// "thread safe in all built-in implementations".
+    /// </threadsafety>
     public sealed class StubClock : IClock
     {
+        private readonly object mutex = new object();
         private Instant now;
 
         /// <summary>
@@ -53,7 +58,10 @@ namespace NodaTime.Testing
         /// </summary>
         public void Advance(Duration duration)
         {
-            now += duration;
+            lock (mutex)
+            {
+                now += duration;
+            }
         }
 
         /// <summary>
@@ -93,7 +101,7 @@ namespace NodaTime.Testing
         /// </summary>
         public void AdvanceHours(long hours)
         {
-            now += Duration.FromHours(hours);
+            Advance(Duration.FromHours(hours));
         }
 
         /// <summary>
@@ -101,7 +109,7 @@ namespace NodaTime.Testing
         /// </summary>
         public void AdvanceDays(long days)
         {
-            now += Duration.FromStandardDays(days);
+            Advance(Duration.FromStandardDays(days));
         }
 
         /// <summary>
@@ -109,7 +117,10 @@ namespace NodaTime.Testing
         /// </summary>
         public void Reset(Instant instant)
         {
-            now = instant;
+            lock (mutex)
+            {
+                now = instant;
+            }
         }
 
         /// <summary>
@@ -119,7 +130,13 @@ namespace NodaTime.Testing
         /// </summary>
         public Instant Now
         {
-            get { return now; }
+            get
+            {
+                lock (mutex)
+                {
+                    return now;
+                }
+            }
         }
     }
 }
