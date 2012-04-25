@@ -37,6 +37,7 @@ namespace NodaTime
     /// and skipped date/time values becoming a problem within a series of calculations; instead,
     /// these can be considered just once, at the point of conversion to a ZonedDateTime.
     /// </remarks>
+    /// <threadsafety>This type is immutable reference type. See the thread safety section of the user guide for more information.</threadsafety>
     public sealed class Period : IEquatable<Period>
     {
         private static readonly int TypeInitializationChecking = NodaTime.Utility.TypeInitializationChecker.RecordInitializationStart();

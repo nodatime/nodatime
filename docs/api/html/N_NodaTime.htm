@@ -15,14 +15,11 @@
             Represents a time zone - a mapping between UTC and local time. A time zone maps UTC instants to local instants
              - or, equivalently, to the offset from UTC at any particular instant.
             </div><br /></td></tr><tr data="structure; public"><td><img src="../icons/pubstructure.gif" /></td><td><b><a href="T_NodaTime_Duration.htm">Duration</a></b></td><td><div class="summary">
-            A length of time in ticks. (There are 10,000 ticks in a millisecond.) A duration represents
-            a fixed length of time, with no concept of calendars.
+            Represents a fixed length of time, with no concept of calendars.
             </div><br /></td></tr><tr data="interface; public"><td><img src="../icons/pubinterface.gif" /></td><td><b><a href="T_NodaTime_IClock.htm">IClock</a></b></td><td><div class="summary">
-            Represents a clock which can tell the current time as an <a href="T_NodaTime_Instant.htm">Instant</a>.
+            Represents a clock which can return the current time as an <a href="T_NodaTime_Instant.htm">Instant</a>.
             </div><br /></td></tr><tr data="structure; public"><td><img src="../icons/pubstructure.gif" /></td><td><b><a href="T_NodaTime_Instant.htm">Instant</a></b></td><td><div class="summary">
-              Represents an instant on the timeline, measured in ticks from the Unix epoch,
-              which is typically described as January 1st 1970, midnight, UTC (ISO calendar).
-              (There are 10,000 ticks in a millisecond.)
+            Represents an instant on the global timeline.
             </div><br /></td></tr><tr data="structure; public"><td><img src="../icons/pubstructure.gif" /></td><td><b><a href="T_NodaTime_Interval.htm">Interval</a></b></td><td><div class="summary">
             An interval between two instants in time.
             </div><br /></td></tr><tr data="enumeration; public"><td><img src="../icons/pubenum.gif" /></td><td><b><a href="T_NodaTime_IsoDayOfWeek.htm">IsoDayOfWeek</a></b></td><td><div class="summary">
@@ -42,9 +39,9 @@
             </div><br /></td></tr><tr data="class; public"><td><img src="../icons/pubclass.gif" /></td><td><b><a href="T_NodaTime_NodaConstants.htm">NodaConstants</a></b></td><td><div class="summary">
             Useful constants, mostly along the lines of "number of milliseconds in an hour".
             </div><br /></td></tr><tr data="structure; public"><td><img src="../icons/pubstructure.gif" /></td><td><b><a href="T_NodaTime_Offset.htm">Offset</a></b></td><td><div class="summary">
-              An offset from UTC in milliseconds. A positive value means that the local time is
-              ahead of UTC (e.g. for Europe); a negative value means that the local time is behind
-              UTC (e.g. for America).
+            An offset from UTC in milliseconds. A positive value means that the local time is
+            ahead of UTC (e.g. for Europe); a negative value means that the local time is behind
+            UTC (e.g. for America).
             </div><br /></td></tr><tr data="class; public"><td><img src="../icons/pubclass.gif" /></td><td><b><a href="T_NodaTime_Period.htm">Period</a></b></td><td><div class="summary">
             Represents a period of time expressed in human chronological terms: hours, days,
             weeks, months and so on. All implementations in Noda Time are immutable, and return fields

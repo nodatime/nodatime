@@ -25,25 +25,23 @@ using NodaTime.Utility;
 namespace NodaTime
 {
     /// <summary>
-    ///   An offset from UTC in milliseconds. A positive value means that the local time is
-    ///   ahead of UTC (e.g. for Europe); a negative value means that the local time is behind
-    ///   UTC (e.g. for America).
+    /// An offset from UTC in milliseconds. A positive value means that the local time is
+    /// ahead of UTC (e.g. for Europe); a negative value means that the local time is behind
+    /// UTC (e.g. for America).
     /// </summary>
     /// <remarks>
-    ///   <para>
-    ///     Offsets are constrained to the range (-24 hours, 24 hours). If the millisecond value given
-    ///     is outside this range then an exception is thrown.
-    ///   </para>
-    ///   <para>
-    ///     Internally, offsets are stored as an <see cref="int" /> number of milliseconds instead of
-    ///     as ticks. This is because as a description of the offset of a time zone from UTC, there is
-    ///     no offset of less than one second. Using milliseconds gives more than enough resolution and
-    ///     allows us to save 4 bytes per Offset.
-    ///   </para>
-    ///   <para>
-    ///     This type is immutable and thread-safe.
-    ///   </para>
+    /// <para>
+    /// Offsets are constrained to the range (-24 hours, 24 hours). If the millisecond value given
+    /// is outside this range then an exception is thrown.
+    /// </para>
+    /// <para>
+    /// Internally, offsets are stored as an <see cref="int" /> number of milliseconds instead of
+    /// as ticks. This is because as a description of the offset of a time zone from UTC, there is
+    /// no offset of less than one second. Using milliseconds gives more than enough resolution and
+    /// allows us to save 4 bytes per Offset.
+    /// </para>
     /// </remarks>
+    /// <threadsafety>This type is an immutable value type. See the thread safety section of the user guide for more information.</threadsafety>
     public struct Offset : IEquatable<Offset>, IComparable<Offset>, IFormattable, IComparable
     {
         private static readonly int TypeInitializationChecking = NodaTime.Utility.TypeInitializationChecker.RecordInitializationStart();

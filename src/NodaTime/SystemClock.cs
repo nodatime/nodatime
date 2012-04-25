@@ -25,6 +25,7 @@ namespace NodaTime
     /// in a single place in your code: where you provide a value to inject into the rest of
     /// your application, which should only depend on the interface.
     /// </summary>
+    /// <threadsafety>This type has no state, and is thread-safe. See the thread safety section of the user guide for more information.</threadsafety>
     public sealed class SystemClock : IClock
     {
         private static readonly int TypeInitializationChecking = NodaTime.Utility.TypeInitializationChecker.RecordInitializationStart();

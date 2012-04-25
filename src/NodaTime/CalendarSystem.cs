@@ -37,7 +37,7 @@ namespace NodaTime
     /// If you need to obtain a <see cref="CalendarSystem" /> instance, use one of the static properties or methods in this
     /// class, such as the <see cref="Iso" /> property or the <see cref="GetGregorianCalendar(int)" /> method.
     /// </para>
-    /// <para>Although this class is abstract, other assemblies cannot derive from it: it contains internal
+    /// <para>Although this class is abstract, other assemblies cannot introduce types which derive from it: it contains internal
     /// abstract methods, referring to internal types. This ensures that all calendar types are genuinely
     /// immutable and thread-safe, aside from anything else. If you require a calendar system which is not
     /// currently supported, please file a feature request and we'll see what we can do.
@@ -49,6 +49,10 @@ namespace NodaTime
     /// treated entirely separately to calendaring.
     /// </para>
     /// </remarks>
+    /// <threadsafety>
+    /// All calendar implementations within Noda Time are immutable and thread-safe. See the thread safety
+    /// section of the user guide for more information.
+    /// </threadsafety>
     public abstract class CalendarSystem
     {
         private static readonly int TypeInitializationChecking = NodaTime.Utility.TypeInitializationChecker.RecordInitializationStart();

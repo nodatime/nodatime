@@ -24,6 +24,7 @@ namespace NodaTime.TimeZones
     /// <summary>
     /// Representation of a time zone converted from a <see cref="TimeZoneInfo"/> from the Base Class Library.
     /// </summary>
+    /// <threadsafety>This type is immutable reference type. See the thread safety section of the user guide for more information.</threadsafety>
     public sealed class BclTimeZone : DateTimeZone
     {
         private static readonly int TypeInitializationChecking = NodaTime.Utility.TypeInitializationChecker.RecordInitializationStart();

@@ -24,6 +24,7 @@ namespace NodaTime.TimeZones
     /// Time zone provider which never provides any time zones. Setting this as the provider
     /// for the system will effectively mean that only UTC is recognized.
     /// </summary>
+    /// <threadsafety>This type has no state, and all members are thread-safe. See the thread safety section of the user guide for more information.</threadsafety>
     public sealed class EmptyDateTimeZoneProvider : IDateTimeZoneProvider
     {
         /// <summary>
