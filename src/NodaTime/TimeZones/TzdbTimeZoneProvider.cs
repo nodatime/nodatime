@@ -29,6 +29,7 @@ namespace NodaTime.TimeZones
     /// Provides an implementation of a <see cref="IDateTimeZoneProvider" /> that looks
     /// for its time zone definitions from a named resource in an assembly.
     /// </summary>
+    /// <threadsafety>This type is immutable reference type. See the thread safety section of the user guide for more information.</threadsafety>
     public sealed class TzdbTimeZoneProvider : IDateTimeZoneProvider
     {
         /// <summary>

@@ -30,6 +30,9 @@ namespace NodaTime.Globalization
     ///   so it does not have to be passed around. If the underlying culture info is read only then this is also
     ///   read only. To change it you need to clone it first.
     /// </summary>
+    /// <threadsafety>Read-only instances are immutable, and may be used freely between threads. Mutable instances
+    /// should not be shared between threads without external synchronization.
+    /// See the thread safety section of the user guide for more information.</threadsafety>
     public class NodaCultureInfo : CultureInfo, IFormatProvider, ICloneable
     {
         private static readonly int TypeInitializationChecking = NodaTime.Utility.TypeInitializationChecker.RecordInitializationStart();

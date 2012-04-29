@@ -16,6 +16,10 @@
 #endregion
 namespace NodaTime.Calendars
 {
+    /// <summary>
+    /// Base class for both the Gregorian and Julian calendar systems, which differ only by
+    /// when leap years occur. (This also affects the date of the Unix epoch, affecting some other calculations.)
+    /// </summary>
     internal abstract class BasicGJCalendarSystem : BasicCalendarSystem
     {
         private static readonly int TypeInitializationChecking = NodaTime.Utility.TypeInitializationChecker.RecordInitializationStart();
@@ -63,7 +67,7 @@ namespace NodaTime.Calendars
             // 1024 * 10000. No precision is lost (except time of day) since the number of
             // ticks per day contains 1024 * 10000 as a factor. After the division,
             // the instant isn't measured in ticks, but in units of
-            // (128/125)seconds.
+            // (128/125) seconds.
             int i = (int)((((localInstant.Ticks - GetYearTicks(year))) >> 10) / NodaConstants.TicksPerMillisecond);
 
             return (IsLeapYear(year))

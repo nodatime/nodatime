@@ -25,6 +25,11 @@ namespace NodaTime.Text
     /// <summary>
     /// Represents a pattern for parsing and formatting <see cref="LocalDate"/> values.
     /// </summary>
+    /// <threadsafety>
+    /// When used with read-only <see cref="NodaFormatInfo" /> using a read-only <see cref="CultureInfo" />, this type is immutable and instances
+    /// may be shared freely between threads. We recommend only using read-only formatting information for patterns, although this is
+    /// not currently enforced.
+    /// </threadsafety>
     public sealed class LocalDatePattern : IPattern<LocalDate>
     {
         private static readonly int TypeInitializationChecking = TypeInitializationChecker.RecordInitializationStart();

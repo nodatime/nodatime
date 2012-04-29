@@ -23,6 +23,7 @@ namespace NodaTime.Calendars
     /// <remarks>All the built-in calendars in Noda Time use the values specified by the static
     /// read-only fields in this class. These may be compared for reference equality to check for specific
     /// eras.</remarks>
+    /// <threadsafety>This type is immutable reference type. See the thread safety section of the user guide for more information.</threadsafety>
     public sealed class Era
     {
         private static readonly int TypeInitializationChecking = NodaTime.Utility.TypeInitializationChecker.RecordInitializationStart();
