@@ -83,7 +83,7 @@ namespace NodaTime.Calendars
 
         protected override LocalInstant CalculateStartOfYear(int year)
         {
-            // Java epoch is 1970-01-01 Gregorian which is 1969-12-19 Julian.
+            // Unix epoch is 1970-01-01 Gregorian which is 1969-12-19 Julian.
             // Calculate relative to the nearest leap year and account for the
             // difference later.
 

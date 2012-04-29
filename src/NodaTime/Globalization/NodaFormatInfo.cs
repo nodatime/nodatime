@@ -32,6 +32,13 @@ namespace NodaTime.Globalization
     /// <summary>
     /// Defines how NodaTime values are formatted and displayed, depending on the culture.
     /// </summary>
+    /// <remarks>
+    /// The mutability of this class is based on the mutability model of the similar BCL classes. This leads
+    /// to various extra complexities, and may be changed in a future version.
+    /// </remarks>
+    /// <threadsafety>Read-only instances which use read-only CultureInfo instances are immutable,
+    /// and may be used freely between threads. Mutable instances should not be shared between threads without external synchronization.
+    /// See the thread safety section of the user guide for more information.</threadsafety>
     //[DebuggerStepThrough]
     public class NodaFormatInfo : IFormatProvider, ICloneable
     {

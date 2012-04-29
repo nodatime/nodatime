@@ -15,6 +15,7 @@
 // limitations under the License.
 #endregion
 
+using System.Globalization;
 using System.Text;
 using NodaTime.Properties;
 using NodaTime.Utility;
@@ -24,6 +25,7 @@ namespace NodaTime.Text
     /// <summary>
     /// Represents a pattern for parsing and formatting <see cref="Period"/> values.
     /// </summary>
+    /// <threadsafety>This type is immutable reference type. See the thread safety section of the user guide for more information.</threadsafety>
     public class PeriodPattern : IPattern<Period>
     {
         private static readonly int TypeInitializationChecking = NodaTime.Utility.TypeInitializationChecker.RecordInitializationStart();

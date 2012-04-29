@@ -21,7 +21,7 @@ using System.IO;
 namespace NodaTime.TimeZones
 {
     /// <summary>
-    ///   Very specific compressing binary writer for time zones.
+    /// Very specific compressing binary writer for time zones.
     /// </summary>
     internal class DateTimeZoneCompressionWriter : DateTimeZoneWriter
     {
@@ -51,7 +51,7 @@ namespace NodaTime.TimeZones
         internal const byte FlagMinValue = 0xff;
 
         /// <summary>
-        ///   Initializes a new instance of the <see cref="DateTimeZoneCompressionWriter" /> class.
+        /// Initializes a new instance of the <see cref="DateTimeZoneCompressionWriter" /> class.
         /// </summary>
         /// <param name="output">Where to send the serialized output.</param>
         internal DateTimeZoneCompressionWriter(Stream output) : base(output)
@@ -59,7 +59,7 @@ namespace NodaTime.TimeZones
         }
 
         /// <summary>
-        ///   Writes the given non-negative integer value to the stream.
+        /// Writes the given non-negative integer value to the stream.
         /// </summary>
         /// <remarks>
         /// Negative values are handled but in an inefficient way (5 bytes).
@@ -115,7 +115,7 @@ namespace NodaTime.TimeZones
         }
 
         /// <summary>
-        ///   Writes the integer milliseconds value to the stream.
+        /// Writes the integer milliseconds value to the stream.
         /// </summary>
         /// <param name="value">The value to write.</param>
         internal override void WriteMilliseconds(int value)
@@ -180,7 +180,7 @@ namespace NodaTime.TimeZones
         }
 
         /// <summary>
-        ///   Writes the long ticks value to the stream.
+        /// Writes the long ticks value to the stream.
         /// </summary>
         /// <param name="value">The value to write.</param>
         internal override void WriteTicks(long value)

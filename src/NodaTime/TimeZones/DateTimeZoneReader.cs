@@ -24,9 +24,9 @@ using System.Text;
 namespace NodaTime.TimeZones
 {
     /// <summary>
-    ///   Provides an <see cref="DateTimeZone" /> reader that simply reads the values
-    ///   without any compression. Can be used as a base for implementing specific 
-    ///   compression readers by overriding the methods for the types to be compressed.
+    /// Provides an <see cref="DateTimeZone" /> reader that simply reads the values
+    /// without any compression. Can be used as a base for implementing specific 
+    /// compression readers by overriding the methods for the types to be compressed.
     /// </summary>
     internal class DateTimeZoneReader
     {
@@ -38,10 +38,10 @@ namespace NodaTime.TimeZones
         protected Stream Input { get; private set; }
 
         /// <summary>
-        ///   Reads a boolean value from the stream.
+        /// Reads a boolean value from the stream.
         /// </summary>
         /// <remarks>
-        ///   The value must have been written by <see cref="DateTimeZoneWriter.WriteBoolean" />.
+        /// The value must have been written by <see cref="DateTimeZoneWriter.WriteBoolean" />.
         /// </remarks>
         /// <returns>The boolean value.</returns>
         internal bool ReadBoolean()
@@ -50,10 +50,10 @@ namespace NodaTime.TimeZones
         }
 
         /// <summary>
-        ///   Reads a non-negative integer value from the stream.
+        /// Reads a non-negative integer value from the stream.
         /// </summary>
         /// <remarks>
-        ///   The value must have been written by <see cref="DateTimeZoneWriter.WriteCount" />.
+        /// The value must have been written by <see cref="DateTimeZoneWriter.WriteCount" />.
         /// </remarks>
         /// <returns>The integer value from the stream.</returns>
         internal virtual int ReadCount()
@@ -62,10 +62,10 @@ namespace NodaTime.TimeZones
         }
 
         /// <summary>
-        ///   Reads a string to string dictionary value from the stream.
+        /// Reads a string to string dictionary value from the stream.
         /// </summary>
         /// <remarks>
-        ///   The value must have been written by <see cref="DateTimeZoneWriter.WriteDictionary" />.
+        /// The value must have been written by <see cref="DateTimeZoneWriter.WriteDictionary" />.
         /// </remarks>
         /// <returns>The <see cref="IDictionary{TKey,TValue}" /> value from the stream.</returns>
         internal IDictionary<string, string> ReadDictionary()
@@ -82,10 +82,10 @@ namespace NodaTime.TimeZones
         }
 
         /// <summary>
-        ///   Reads an <see cref="Instant" /> value from the stream.
+        /// Reads an <see cref="Instant" /> value from the stream.
         /// </summary>
         /// <remarks>
-        ///   The value must have been written by <see cref="DateTimeZoneWriter.WriteInstant" />.
+        /// The value must have been written by <see cref="DateTimeZoneWriter.WriteInstant" />.
         /// </remarks>
         /// <returns>The <see cref="Instant" /> value from the stream.</returns>
         internal Instant ReadInstant()
@@ -94,10 +94,10 @@ namespace NodaTime.TimeZones
         }
 
         /// <summary>
-        ///   Reads an <see cref="LocalInstant" /> value from the stream.
+        /// Reads an <see cref="LocalInstant" /> value from the stream.
         /// </summary>
         /// <remarks>
-        ///   The value must have been written by <see cref="DateTimeZoneWriter.WriteLocalInstant" />.
+        /// The value must have been written by <see cref="DateTimeZoneWriter.WriteLocalInstant" />.
         /// </remarks>
         /// <returns>The <see cref="LocalInstant" /> value from the stream.</returns>
         internal LocalInstant ReadLocalInstant()
@@ -106,10 +106,10 @@ namespace NodaTime.TimeZones
         }
 
         /// <summary>
-        ///   Reads an integer millisecond value from the stream.
+        /// Reads an integer millisecond value from the stream.
         /// </summary>
         /// <remarks>
-        ///   The value must have been written by <see cref="DateTimeZoneWriter.WriteMilliseconds" />.
+        /// The value must have been written by <see cref="DateTimeZoneWriter.WriteMilliseconds" />.
         /// </remarks>
         /// <returns>The integer millisecond value from the stream.</returns>
         internal virtual int ReadMilliseconds()
@@ -123,10 +123,10 @@ namespace NodaTime.TimeZones
         }
 
         /// <summary>
-        ///   Reads a string value from the stream.
+        /// Reads a string value from the stream.
         /// </summary>
         /// <remarks>
-        ///   The value must have been written by <see cref="DateTimeZoneWriter.WriteString" />.
+        /// The value must have been written by <see cref="DateTimeZoneWriter.WriteString" />.
         /// </remarks>
         /// <returns>The string value from the stream.</returns>
         internal string ReadString()
@@ -138,10 +138,10 @@ namespace NodaTime.TimeZones
         }
 
         /// <summary>
-        ///   Reads a long ticks value from the stream.
+        /// Reads a long ticks value from the stream.
         /// </summary>
         /// <remarks>
-        ///   The value must have been written by <see cref="DateTimeZoneWriter.WriteTicks" />.
+        /// The value must have been written by <see cref="DateTimeZoneWriter.WriteTicks" />.
         /// </remarks>
         /// <returns>The long ticks value from the stream.</returns>
         internal virtual long ReadTicks()
@@ -150,10 +150,10 @@ namespace NodaTime.TimeZones
         }
 
         /// <summary>
-        ///   Reads an <see cref="DateTimeZone" /> value from the stream.
+        /// Reads an <see cref="DateTimeZone" /> value from the stream.
         /// </summary>
         /// <remarks>
-        ///   The value must have been written by <see cref="DateTimeZoneWriter.WriteTimeZone" />.
+        /// The value must have been written by <see cref="DateTimeZoneWriter.WriteTimeZone" />.
         /// </remarks>
         /// <returns>The <see cref="DateTimeZone" /> value from the stream.</returns>
         internal DateTimeZone ReadTimeZone(string id)
@@ -204,7 +204,7 @@ namespace NodaTime.TimeZones
         }
 
         /// <summary>
-        ///   Reads a signed 32 bit integer value from the stream and returns it as an int.
+        /// Reads a signed 32 bit integer value from the stream and returns it as an int.
         /// </summary>
         /// <returns>The 32 bit int value.</returns>
         internal int ReadInt32()
@@ -218,7 +218,7 @@ namespace NodaTime.TimeZones
         }
 
         /// <summary>
-        ///   Reads a signed 64 bit integer value from the stream and returns it as an long.
+        /// Reads a signed 64 bit integer value from the stream and returns it as an long.
         /// </summary>
         /// <returns>The 64 bit long value.</returns>
         internal long ReadInt64()
@@ -232,7 +232,7 @@ namespace NodaTime.TimeZones
         }
 
         /// <summary>
-        ///   Reads a signed 8 bit integer value from the stream and returns it as an int.
+        /// Reads a signed 8 bit integer value from the stream and returns it as an int.
         /// </summary>
         /// <returns>The 8 bit int value.</returns>
         /// <exception cref="EndOfStreamException">The data in the stream has been exhausted</exception>

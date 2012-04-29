@@ -23,6 +23,9 @@ namespace NodaTime.Text
     /// <summary>
     /// Exception thrown to indicate that the specified value could not be parsed.
     /// </summary>
+    /// <threadsafety>Any public static members of this type are thread safe. Any instance members are not guaranteed to be thread safe.
+    /// See the thread safety section of the user guide for more information.
+    /// </threadsafety>
     [Serializable]
     public class UnparsableValueException : FormatException
     {
