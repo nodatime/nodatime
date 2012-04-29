@@ -16,6 +16,7 @@ User guide contents
 - [Text handling](text.html)
 - [BCL conversions](bcl-conversions.html)
 - [Serialization](serialization.html)
+- [Threading](threading.html)
 - [Updating the time zone database](tzdb.html)
 - [Mono support](mono.html)
 - [Limitations](limitations.html)
