@@ -30,28 +30,28 @@ namespace NodaTime.Test
         [TestCaseSource(typeof(OffsetFormattingTestSupport), "AllParseData")]
         public void TestParseExact_multiple(OffsetFormattingTestSupport.OffsetData data)
         {
-            FormattingTestSupport.RunParseMultipleTest(data, formats => Offset.ParseExact(data.S, formats, new NodaFormatInfo(data.C)));
+            FormattingTestSupport.RunParseMultipleTest(data, formats => Offset.ParseExact(data.S, formats, NodaFormatInfo.GetFormatInfo(data.C ?? data.ThreadCulture)));
         }
 
         [Test]
         [TestCaseSource(typeof(OffsetFormattingTestSupport), "AllParseData")]
         public void TestParseExact(OffsetFormattingTestSupport.OffsetData data)
         {
-            FormattingTestSupport.RunParseSingleTest(data, format => Offset.ParseExact(data.S, format, new NodaFormatInfo(data.C)));
+            FormattingTestSupport.RunParseSingleTest(data, format => Offset.ParseExact(data.S, format, NodaFormatInfo.GetFormatInfo(data.C ?? data.ThreadCulture)));
         }
 
         [Test]
         [TestCaseSource(typeof(OffsetFormattingTestSupport), "AllParseData")]
         public void TestTryParseExact_multiple(OffsetFormattingTestSupport.OffsetData data)
         {
-            FormattingTestSupport.RunTryParseMultipleTest(data, (string[] formats, out Offset value) => Offset.TryParseExact(data.S, formats, new NodaFormatInfo(data.C), out value));
+            FormattingTestSupport.RunTryParseMultipleTest(data, (string[] formats, out Offset value) => Offset.TryParseExact(data.S, formats, NodaFormatInfo.GetFormatInfo(data.C ?? data.ThreadCulture), out value));
         }
 
         [Test]
         [TestCaseSource(typeof(OffsetFormattingTestSupport), "AllParseData")]
         public void TestTryParseExact_single(OffsetFormattingTestSupport.OffsetData data)
         {
-            FormattingTestSupport.RunTryParseSingleTest(data, (string format, out Offset value) => Offset.TryParseExact(data.S, format, new NodaFormatInfo(data.C), out value));
+            FormattingTestSupport.RunTryParseSingleTest(data, (string format, out Offset value) => Offset.TryParseExact(data.S, format, NodaFormatInfo.GetFormatInfo(data.C ?? data.ThreadCulture), out value));
         }
     }
 }

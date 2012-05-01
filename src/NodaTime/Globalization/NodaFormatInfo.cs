@@ -99,10 +99,7 @@ namespace NodaTime.Globalization
         /// <param name="cultureInfo">The culture info to base this on.</param>
         internal NodaFormatInfo(CultureInfo cultureInfo)
         {
-            if (cultureInfo == null)
-            {
-                cultureInfo = Thread.CurrentThread.CurrentCulture;
-            }
+            Preconditions.CheckNotNull(cultureInfo, "cultureInfo");
             CultureInfo = cultureInfo;
             NumberFormat = cultureInfo.NumberFormat;
             DateTimeFormat = cultureInfo.DateTimeFormat;
