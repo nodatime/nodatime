@@ -60,7 +60,7 @@ namespace NodaTime.Test.Globalization
         public void TestClone_WithNodaCultureInfo()
         {
             NodaCultureInfo culture = NodaCultureInfo.InvariantCulture;
-            NodaFormatInfo formatInfo = new NodaFormatInfo(culture);
+            NodaFormatInfo formatInfo = NodaFormatInfo.GetFormatInfo(culture);
 
             NodaFormatInfo clone = formatInfo.Clone();
             Assert.AreNotSame(clone, formatInfo);
@@ -146,8 +146,7 @@ namespace NodaTime.Test.Globalization
         [Test]
         public void TestConstructor_null()
         {
-            var info = new NodaFormatInfo(null);
-            Assert.AreEqual(Thread.CurrentThread.CurrentCulture.Name, info.CultureInfo.Name);
+            Assert.Throws<ArgumentNullException>(() => new NodaFormatInfo(null));
         }
 
         [Test]
