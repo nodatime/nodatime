@@ -23,6 +23,7 @@ using NUnit.Framework;
 using NodaTime.Globalization;
 using NodaTime.Properties;
 using NodaTime.Text;
+using NodaTime.Text.Patterns;
 
 namespace NodaTime.Test.Text
 {
@@ -386,9 +387,21 @@ namespace NodaTime.Test.Text
 
         private static void AssertValidNodaPattern(CultureInfo culture, string pattern)
         {
-            Assert.IsTrue(pattern.All(c => ExpectedCharacters.Contains(c)),
-                "Culture {0} uses pattern '{1}' which contains unexpected characters",
-                culture.Name, pattern);
+            PatternCursor cursor = new PatternCursor(pattern);
+            while (cursor.MoveNext())
+            {
+                if (cursor.Current == '\'')
+                {
+                    PatternParseResult<LocalTime> parseResult = null;
+                    cursor.GetQuotedString(ref parseResult);
+                    Assert.IsTrue(parseResult.Success, "Pattern '" + pattern + "' is misquoted");
+                }
+                else
+                {
+                    Assert.IsTrue(ExpectedCharacters.Contains(cursor.Current),
+                        "Pattern '" + pattern + "' contains unquoted, unexpected characters");
+                }
+            }
             // Check that the pattern parses
             LocalTimePattern.Create(pattern, NodaFormatInfo.GetFormatInfo(culture));
         }
