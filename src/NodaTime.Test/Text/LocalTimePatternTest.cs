@@ -394,7 +394,7 @@ namespace NodaTime.Test.Text
                 {
                     PatternParseResult<LocalTime> parseResult = null;
                     cursor.GetQuotedString(ref parseResult);
-                    Assert.IsTrue(parseResult.Success, "Pattern '" + pattern + "' is misquoted");
+                    Assert.IsTrue(parseResult == null, "Pattern '" + pattern + "' is misquoted");
                 }
                 else
                 {
