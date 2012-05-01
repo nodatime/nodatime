@@ -15,7 +15,9 @@
 // limitations under the License.
 #endregion
 
+using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 
 namespace NodaTime.Test.Text
 {
@@ -24,16 +26,24 @@ namespace NodaTime.Test.Text
     /// </summary>
     internal static class Cultures
     {
+#pragma warning disable 0414 // Used by tests via reflection - do not remove!
+        internal static readonly IEnumerable<CultureInfo> AllCultures = CultureInfo.GetCultures(CultureTypes.SpecificCultures).ToList();
+        // Some tests don't run nicely on Mono, e.g. as they have characters we don't expect in their long/short patterns.
+        // Pretend we have no cultures, for the sake of these tests.
+        // TODO(Post-V1): Make the tests pass instead?
+        internal static readonly IEnumerable<CultureInfo> AllCulturesOrEmptyOnMono = TestHelper.IsRunningOnMono ? new CultureInfo[0] : Cultures.AllCultures;
+#pragma warning restore 0414
+
         internal static readonly CultureInfo Invariant = CultureInfo.InvariantCulture;
-        internal static readonly CultureInfo EnUs = new CultureInfo("en-US");
-        internal static readonly CultureInfo FrFr = new CultureInfo("fr-FR");
-        internal static readonly CultureInfo FrCa = new CultureInfo("fr-CA");
+        internal static readonly CultureInfo EnUs = CultureInfo.ReadOnly(new CultureInfo("en-US"));
+        internal static readonly CultureInfo FrFr = CultureInfo.ReadOnly(new CultureInfo("fr-FR"));
+        internal static readonly CultureInfo FrCa = CultureInfo.ReadOnly(new CultureInfo("fr-CA"));
 
         // We mostly use Italy as an example of a culture with a "." as the time separator
         // - but it doesn't have it on Mono, so force it here. (In fact, it looks like it
         // changed to : between .NET 2 and .NET 4 anyway... another reason to force it.)
-        internal static readonly CultureInfo ItIt = new CultureInfo("it-IT") {
+        internal static readonly CultureInfo ItIt = CultureInfo.ReadOnly(new CultureInfo("it-IT") {
             DateTimeFormat = { TimeSeparator = "." }
-        };
+        });
     }
 }

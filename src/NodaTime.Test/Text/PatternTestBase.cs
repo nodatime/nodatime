@@ -15,6 +15,9 @@
 // limitations under the License.
 #endregion
 
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
 using NUnit.Framework;
 
 namespace NodaTime.Test.Text

@@ -30,14 +30,6 @@ namespace NodaTime.Test.Text
     [TestFixture]
     public partial class LocalTimePatternTest : PatternTestBase<LocalTime>
     {
-#pragma warning disable 0414 // Used by tests via reflection - do not remove!
-        private static readonly IEnumerable<CultureInfo> AllCultures = CultureInfo.GetCultures(CultureTypes.SpecificCultures).ToList();
-        // Some tests don't run nicely on Mono, e.g. as they have characters we don't expect in their long/short patterns.
-        // Pretend we have no cultures, for the sake of these tests.
-        // TODO(Post-V1): Make the tests pass instead?
-        private static readonly IEnumerable<CultureInfo> AllCulturesOrEmptyOnMono = TestHelper.IsRunningOnMono ? new CultureInfo[0] : AllCultures;
-#pragma warning restore 0414
-
         private static readonly DateTime SampleDateTime = new DateTime(2000, 1, 1, 21, 13, 34, 123, DateTimeKind.Unspecified).AddTicks(4567);
         private static readonly LocalTime SampleLocalTime = new LocalTime(21, 13, 34, 123, 4567);
 
@@ -304,28 +296,28 @@ namespace NodaTime.Test.Text
         }
 
         [Test]
-        [TestCaseSource("AllCulturesOrEmptyOnMono")]
+        [TestCaseSource(typeof(Cultures), "AllCulturesOrEmptyOnMono")]
         public void BclLongTimePatternIsValidNodaPattern(CultureInfo culture)
         {
             AssertValidNodaPattern(culture, culture.DateTimeFormat.LongTimePattern);
         }
 
         [Test]
-        [TestCaseSource("AllCulturesOrEmptyOnMono")]
+        [TestCaseSource(typeof(Cultures), "AllCulturesOrEmptyOnMono")]
         public void BclShortTimePatternIsValidNodaPattern(CultureInfo culture)
         {
             AssertValidNodaPattern(culture, culture.DateTimeFormat.ShortTimePattern);
         }
 
         [Test]
-        [TestCaseSource("AllCultures")]
+        [TestCaseSource(typeof(Cultures), "AllCultures")]
         public void BclLongTimePatternGivesSameResultsInNoda(CultureInfo culture)
         {
             AssertBclNodaEquality(culture, culture.DateTimeFormat.LongTimePattern);
         }
 
         [Test]
-        [TestCaseSource("AllCultures")]
+        [TestCaseSource(typeof(Cultures), "AllCultures")]
         public void BclShortTimePatternGivesSameResultsInNoda(CultureInfo culture)
         {
             AssertBclNodaEquality(culture, culture.DateTimeFormat.ShortTimePattern);

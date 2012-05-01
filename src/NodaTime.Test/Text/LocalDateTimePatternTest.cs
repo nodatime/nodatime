@@ -34,10 +34,9 @@ namespace NodaTime.Test.Text
         private static readonly LocalDateTime SampleLocalDateTimeNoMillis = new LocalDateTime(1376, 6, 19, 21, 13, 34);
         private static readonly LocalDateTime SampleLocalDateTimeNoSeconds = new LocalDateTime(1376, 6, 19, 21, 13);
         private static readonly string[] AllStandardPatterns = { "f", "F", "g", "G", "o", "O", "s" };
-        private static readonly IEnumerable<CultureInfo> AllCultures = CultureInfo.GetCultures(CultureTypes.SpecificCultures).ToList();
 
 #pragma warning disable 0414 // Used by tests via reflection - do not remove!
-        private static readonly object[] AllCulturesStandardPatterns = (from culture in AllCultures
+        private static readonly object[] AllCulturesStandardPatterns = (from culture in Cultures.AllCultures
                                                                         from format in AllStandardPatterns
                                                                         select new TestCaseData(culture, format).SetName(culture + ": " + format)).ToArray();
 #pragma warning restore 0414
