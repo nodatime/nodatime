@@ -17,6 +17,7 @@
 #region usings
 using System;
 using System.Globalization;
+using NodaTime.Test.Text;
 using NUnit.Framework;
 
 #endregion
@@ -62,7 +63,7 @@ namespace NodaTime.Test
         [Test, Category("Formatting"), Category("Parse")]
         public void TestParse_N_frFR()
         {
-            var frFr = new CultureInfo("fr-FR");
+            var frFr = Cultures.FrFr;
             var actual = Instant.Parse(threeMillion.Ticks.ToString("N0", frFr), frFr);
             Assert.AreEqual(threeMillion, actual);
         }
@@ -148,7 +149,7 @@ namespace NodaTime.Test
         [Test, Category("Formatting"), Category("Parse")]
         public void TestTryParseExact_N_fr()
         {
-            var frFr = new CultureInfo("fr-FR");
+            var frFr = Cultures.FrFr;
             Instant result;
             Assert.IsTrue(Instant.TryParseExact(threeMillion.Ticks.ToString("N0", frFr), "n", frFr, out result));
             Assert.AreEqual(threeMillion, result);
