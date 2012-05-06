@@ -29,7 +29,10 @@ namespace NodaTime.Test.Text
 #pragma warning disable 0414 // Used by tests via reflection - do not remove!
         // Force the cultures to be read-only for tests, to take advantage of caching. Our Continuous Integration system
         // is very slow at reading resources (in the NodaFormatInfo constructor).
-        internal static readonly IEnumerable<CultureInfo> AllCultures = CultureInfo.GetCultures(CultureTypes.SpecificCultures).Select(CultureInfo.ReadOnly).ToList();
+        // Note: R# suggests using a method group conversion for the Select call here, which is fine with the C# 4 compiler,
+        // but doesn't work with the C# 3 compiler (which doesn't have quite as good type inference).
+        internal static readonly IEnumerable<CultureInfo> AllCultures = CultureInfo.GetCultures(CultureTypes.SpecificCultures)
+            .Select(culture => CultureInfo.ReadOnly(culture)).ToList();
         // Some tests don't run nicely on Mono, e.g. as they have characters we don't expect in their long/short patterns.
         // Pretend we have no cultures, for the sake of these tests.
         // TODO(Post-V1): Make the tests pass instead?
