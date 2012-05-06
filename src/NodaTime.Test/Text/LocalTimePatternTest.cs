@@ -292,7 +292,7 @@ namespace NodaTime.Test.Text
             CultureInfo clone = (CultureInfo)CultureInfo.InvariantCulture.Clone();
             clone.DateTimeFormat.AMDesignator = amDesignator;
             clone.DateTimeFormat.PMDesignator = pmDesignator;
-            return clone;
+            return CultureInfo.ReadOnly(clone);
         }
 
         [Test]
