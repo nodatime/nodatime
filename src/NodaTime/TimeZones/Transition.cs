@@ -23,9 +23,9 @@ namespace NodaTime.TimeZones
     /// A transition between two offsets, usually for daylight saving reasons.
     /// </summary>
     /// 
+    /// <threadsafety>This type is an immutable value type. See the thread safety section of the user guide for more information.</threadsafety>
     // TODO(Post-V1): Potentially rename this to ZoneTransition after doing something
     // else with the current ZoneTransition class :)
-    /// <threadsafety>This type is an immutable value type. See the thread safety section of the user guide for more information.</threadsafety>
     internal struct Transition : IEquatable<Transition>
     {
         private readonly Instant instant;
