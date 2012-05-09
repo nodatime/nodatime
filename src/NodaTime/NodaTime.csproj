@@ -83,7 +83,6 @@
     <Compile Include="Calendars\IslamicLeapYearPattern.cs" />
     <Compile Include="Calendars\JulianCalendarSystem.cs" />
     <Compile Include="Calendars\NamespaceDoc.cs" />
-    <Compile Include="Calendars\WrappedCalendarSystem.cs" />
     <Compile Include="Delegates.cs" />
     <Compile Include="Fields\BasicMonthPeriodField.cs" />
     <Compile Include="Fields\BasicSingleEraDateTimeField.cs" />
