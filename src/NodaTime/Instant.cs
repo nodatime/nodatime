@@ -225,7 +225,7 @@ namespace NodaTime
         /// </summary>
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
-        /// <returns>A new <see cref="Instant" /> representing the sum of the given values.</returns>
+        /// <returns>A new <see cref="Instant" /> representing the difference of the given values.</returns>
         public static Duration operator -(Instant left, Instant right)
         {
             return new Duration(left.Ticks - right.Ticks);
@@ -236,7 +236,7 @@ namespace NodaTime
         /// </summary>
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
-        /// <returns>A new <see cref="Instant" /> representing the sum of the given values.</returns>
+        /// <returns>A new <see cref="Instant" /> representing the difference of the given values.</returns>
         public static Instant operator -(Instant left, Duration right)
         {
             return new Instant(left.Ticks - right.Ticks);
