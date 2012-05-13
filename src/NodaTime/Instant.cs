@@ -77,6 +77,13 @@ namespace NodaTime
         /// <summary>
         /// Initializes a new instance of the <see cref="Instant" /> struct.
         /// </summary>
+        /// <remarks>
+        /// Note that while the Noda Time <see cref="Instant"/> type and BCL <see cref="DateTime"/> and
+        /// <see cref="DateTimeOffset"/> types are all defined in terms of a number of ticks, they use different
+        /// origins: the Noda Time types count ticks from the Unix epoch (the start of 1970 AD), while the BCL types
+        /// count from the start of 1 AD. This constructor requires the former; to convert from a number-of-ticks since
+        /// the BCL epoch, construct a <see cref="DateTime"/> first, then use <see cref="FromDateTimeUtc"/>.
+        /// </remarks>
         /// <param name="ticks">The number of ticks since the Unix epoch. Negative values represent instants before the
         /// Unix epoch.</param>
         public Instant(long ticks)
@@ -643,7 +650,8 @@ namespace NodaTime
         /// </summary>
         /// <returns>An <see cref="Instant"/> value representing the same instant in time as the given universal <see cref="DateTime"/>.</returns>
         /// <param name="dateTime">Date and time value which must have a <see cref="DateTime.Kind"/> of <see cref="DateTimeKind.Utc"/></param>
-        /// <exception cref="ArgumentException"><paramref name="dateTime"/> has the wrong <see cref="DateTime.Kind"/>.</exception>
+        /// <exception cref="ArgumentException"><paramref name="dateTime"/> is not of <see cref="DateTime.Kind"/>
+        /// <see cref="DateTimeKind.Utc"/>.</exception>
         public static Instant FromDateTimeUtc(DateTime dateTime)
         {
             Preconditions.CheckArgument(dateTime.Kind == DateTimeKind.Utc, "dateTime", "Invalid DateTime.Kind for Instant.FromDateTimeUtc");
