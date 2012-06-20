@@ -66,7 +66,7 @@ namespace NodaTime.TimeZones
         DateTimeZone ForId(string id);
 
         /// <summary>
-        /// Returns this provider's corresponding ID for the given time zone.
+        /// Returns this provider's corresponding ID for the given BCL time zone.
         /// </summary>
         /// <returns>
         /// The ID for the system default time zone for this provider, or null if the default time
