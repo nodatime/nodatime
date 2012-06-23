@@ -261,7 +261,7 @@ namespace NodaTime
         /// <param name="isFixed">Set to <c>true</c> if this time zone has no transitions.</param>
         /// <param name="minOffset">Minimum offset applied within this zone</param>
         /// <param name="maxOffset">Maximum offset applied within this zone</param>
-        internal DateTimeZone(string id, bool isFixed, Offset minOffset, Offset maxOffset)
+        protected DateTimeZone(string id, bool isFixed, Offset minOffset, Offset maxOffset)
         {
             this.id = id;
             this.isFixed = isFixed;
@@ -337,7 +337,7 @@ namespace NodaTime
         /// </summary>
         /// <remarks>
         /// This method is implemented in terms of GetZoneInterval(Instant) within DateTimeZone,
-        /// and should work for any zone. However, derived classes may override this method
+        /// and should work for any zone. However, internal derived classes may override this method
         /// for optimization purposes, e.g. if the zone interval is always ambiguous with
         /// a fixed value.
         /// </remarks>
@@ -382,12 +382,6 @@ namespace NodaTime
             }
         }
 
-
-        /// <summary>
-        /// Writes the time zone to the specified writer. Used within ZoneInfoCompiler.
-        /// </summary>
-        /// <param name="writer">The writer to write to.</param>
-        internal abstract void Write(DateTimeZoneWriter writer);
         #endregion
 
         #region Conversion between local dates/times and ZonedDateTime

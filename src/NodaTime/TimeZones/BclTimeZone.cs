@@ -229,14 +229,6 @@ namespace NodaTime.TimeZones
         }
 
         /// <summary>
-        /// Would write the time zone to a stream; not supported at the moment.
-        /// </summary>
-        internal override void Write(DateTimeZoneWriter writer)
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
         /// Interval covered by an adjustment rule. The start instant is that of the
         /// first transition reported by this rule, and the seam covers the gap between
         /// two adjustment rules.

@@ -125,10 +125,10 @@ namespace NodaTime.TimeZones
         }
 
         /// <summary>
-        /// Writes the specified writer.
+        /// Writes the time zone to the specified writer.
         /// </summary>
         /// <param name="writer">The writer.</param>
-        internal override void Write(DateTimeZoneWriter writer)
+        internal void Write(DateTimeZoneWriter writer)
         {
             Preconditions.CheckNotNull(writer, "writer");
             writer.WriteOffset(offset);
