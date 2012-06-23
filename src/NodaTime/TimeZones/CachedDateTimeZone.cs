@@ -102,12 +102,12 @@ namespace NodaTime.TimeZones
             }
         }
 
-        #region Overrides of DateTimeZone
+        #region I/O
         /// <summary>
         /// Writes the time zone to the specified writer.
         /// </summary>
         /// <param name="writer">The writer to write to.</param>
-        internal override void Write(DateTimeZoneWriter writer)
+        internal void Write(DateTimeZoneWriter writer)
         {
             Preconditions.CheckNotNull(writer, "writer");
             writer.WriteTimeZone(timeZone);

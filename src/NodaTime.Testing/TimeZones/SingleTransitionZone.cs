@@ -73,13 +73,5 @@ namespace NodaTime.Testing.TimeZones
         {
             return earlyInterval.Contains(instant) ? earlyInterval : lateInterval;
         }
-
-        /// <summary>
-        /// Always throws <see cref="NotSupportedException"/> - this time zone cannot be written to a <see cref="DateTimeZoneWriter"/>.
-        /// </summary>
-        internal override void Write(DateTimeZoneWriter writer)
-        {
-            throw new NotSupportedException();
-        }
     }
 }

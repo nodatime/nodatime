@@ -28,6 +28,7 @@ namespace NodaTime.TimeZones
     /// without any compression. Can be used as a base for implementing specific 
     /// compression readers by overriding the methods for the types to be compressed.
     /// </summary>
+    // TODO: Consider renaming to TzdbDateTimeZoneReader
     internal class DateTimeZoneReader
     {
         internal DateTimeZoneReader(Stream input)
@@ -171,19 +172,6 @@ namespace NodaTime.TimeZones
                     return CachedDateTimeZone.Read(this, id);
                 case DateTimeZoneWriter.FlagTimeZoneDst:
                     return DaylightSavingsTimeZone.Read(this, id);
-                case DateTimeZoneWriter.FlagTimeZoneUser:
-                    string className = ReadString();
-                    Type type = Type.GetType(className);
-                    if (type == null)
-                    {
-                        throw new InvalidOperationException("Unknown DateTimeZone type: " + className);
-                    }
-                    MethodInfo method = type.GetMethod("Read", new[] { typeof(DateTimeZoneReader), typeof(string) });
-                    if (method == null)
-                    {
-                        throw new InvalidOperationException("Type " + type + " doesn't have appropriate Read method");
-                    }
-                    return (DateTimeZone)method.Invoke(null, new object[] { this, id });
                 default:
                     throw new InvalidDataException("Unknown flag type " + flag);
             }

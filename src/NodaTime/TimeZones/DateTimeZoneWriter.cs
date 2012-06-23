@@ -15,6 +15,7 @@
 // limitations under the License.
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
@@ -27,6 +28,7 @@ namespace NodaTime.TimeZones
     /// without any compression. Can be used as a base for implementing specific 
     /// compression writers by overriding the methods for the types to be compressed.
     /// </summary>
+    // TODO: Consider renaming to TzdbDateTimeZoneWriter
     internal class DateTimeZoneWriter
     {
         internal const byte FlagTimeZoneCached = 0;
@@ -34,7 +36,6 @@ namespace NodaTime.TimeZones
         internal const byte FlagTimeZoneFixed = 2;
         internal const byte FlagTimeZoneNull = 3;
         internal const byte FlagTimeZonePrecalculated = 4;
-        internal const byte FlagTimeZoneUser = 5;
 
         protected readonly Stream Output;
 
@@ -152,25 +153,27 @@ namespace NodaTime.TimeZones
             if (value is FixedDateTimeZone)
             {
                 WriteByte(FlagTimeZoneFixed);
+                ((FixedDateTimeZone)value).Write(this);
             }
             else if (value is PrecalculatedDateTimeZone)
             {
                 WriteByte(FlagTimeZonePrecalculated);
+                ((PrecalculatedDateTimeZone)value).Write(this);
             }
             else if (value is CachedDateTimeZone)
             {
                 WriteByte(FlagTimeZoneCached);
+                ((CachedDateTimeZone)value).Write(this);
             }
             else if (value is DaylightSavingsTimeZone)
             {
                 WriteByte(FlagTimeZoneDst);
+                ((DaylightSavingsTimeZone)value).Write(this);
             }
             else
             {
-                WriteByte(FlagTimeZoneUser);
-                WriteString(value.GetType().AssemblyQualifiedName);
+                throw new ArgumentException("Time zone type unknown to DateTimeZoneWriter");                
             }
-            value.Write(this);
         }
         #endregion
 
