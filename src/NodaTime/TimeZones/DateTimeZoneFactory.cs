@@ -23,12 +23,12 @@ using NodaTime.Utility;
 namespace NodaTime.TimeZones
 {
     /// <summary>
-    /// Provides a cache for time zone providers and previously looked up time zones. The process of
+    /// Provides a caching factory between user code and time zone providers. The process of
     /// loading and creating time zones is potentially long (it could conceivably include network
     /// requests) so caching them is necessary.
     /// </summary>
     /// <threadsafety>All members of this type are thread-safe.</threadsafety>
-    internal class DateTimeZoneFactory
+    public class DateTimeZoneFactory
     {
         private readonly object accessLock = new object();
         private readonly IDateTimeZoneProvider provider;
@@ -36,21 +36,48 @@ namespace NodaTime.TimeZones
         private readonly IDictionary<string, DateTimeZone> timeZoneMap = new Dictionary<string, DateTimeZone>();
         private readonly string providerVersionId;
 
-        internal DateTimeZoneFactory(IDateTimeZoneProvider provider)
+        /// <summary>
+        /// Creates a factory backed by the given <see cref="IDateTimeZoneProvider"/>.
+        /// </summary>
+        /// <remarks>
+        /// The provider is immediately asked for its version ID and supported time zone IDs; those properties
+        /// are then not requested again for the lifetime of this factory.
+        /// </remarks>
+        /// <param name="provider">The <see cref="IDateTimeZoneProvider"/>; must not be null.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="provider"/> is null</exception>
+        /// <exception cref="InvalidDateTimeZoneProviderException"><paramref name="provider"/> violates its contract</exception>
+        public DateTimeZoneFactory(IDateTimeZoneProvider provider)
         {
             this.provider = Preconditions.CheckNotNull(provider, "provider");
             this.providerVersionId = provider.VersionId;
-            var idList = new List<string>(provider.Ids);
+            if (providerVersionId == null)
+            {
+                throw new InvalidDateTimeZoneProviderException("Provider-returned version ID was null");
+            }
+            var providerIds = provider.Ids;
+            if (providerIds == null)
+            {
+                throw new InvalidDateTimeZoneProviderException("Provider-returned ID sequence was null");
+            }
+            var idList = new List<string>(providerIds);
+            // TODO(Post-V1): Handle duplicates?
             idList.Sort();
-            // Populate the dictionary with null values meaning "the ID is valid, we haven't fetched the zone yet".
             ids = idList.AsReadOnly();
+            // Populate the dictionary with null values meaning "the ID is valid, we haven't fetched the zone yet".
             foreach (string id in ids)
             {
+                if (id == null)
+                {
+                    throw new InvalidDateTimeZoneProviderException("Provider-returned ID sequence contained a null reference");
+                }
                 timeZoneMap[id] = null;
             }
         }
 
-        internal string ProviderVersionId { get { return providerVersionId; } }
+        /// <summary>
+        /// The version ID of the provider, cached within the factory.
+        /// </summary>
+        public string ProviderVersionId { get { return providerVersionId; } }
 
         /// <summary>
         /// Gets the system default time zone, as mapped by the underlying provider. If the time zone
@@ -106,18 +133,25 @@ namespace NodaTime.TimeZones
         }
 
         /// <summary>
-        /// Gets the complete list of valid time zone ids provided by all of the registered
-        /// providers. This list will be sorted in lexigraphical order.
+        /// Gets the complete list of valid time zone ids provided by the provider associated
+        /// with this factory.
         /// </summary>
+        /// <remarks>
+        /// This list will be sorted in lexigraphical order. It cannot be modified by callers, and
+        /// will never be modified by the factory either: client code can safely treat it as thread-safe
+        /// and deeply immutable.
+        /// </remarks>
         /// <value>The <see cref="IEnumerable{T}" /> of string ids.</value>
-        internal IEnumerable<string> Ids { get { return ids; } }
+        public ReadOnlyCollection<string> Ids { get { return ids; } }
 
         /// <summary>
-        /// Returns the time zone with the given id, if it's available.
+        /// Returns the time zone with the given ID, if it's available.
         /// </summary>
         /// <param name="id">The time zone id to find. Must not be null.</param>
-        /// <returns>The <see cref="DateTimeZone" /> with the given id or <c>null</c> if there isn't one defined.</returns>
-        internal DateTimeZone GetZoneOrNull(string id)
+        /// <returns>The <see cref="DateTimeZone" /> with the given ID or <c>null</c> if the provider does not support it.</returns>
+        /// <exception cref="InvalidDateTimeZoneProviderException">The time zone provider violates its contract by failing
+        /// to support a time zone it previously advertised.</exception>
+        public DateTimeZone GetZoneOrNull(string id)
         {
             Preconditions.CheckNotNull(id, "id");
             lock (accessLock)
@@ -132,7 +166,7 @@ namespace NodaTime.TimeZones
                     zone = provider.ForId(id);
                     if (zone == null)
                     {
-                        throw new InvalidOperationException("Time zone " + id + " is supported by provider " + providerVersionId + " but not returned");
+                        throw new InvalidDateTimeZoneProviderException("Time zone " + id + " is supported by provider " + providerVersionId + " but not returned");
                     }
                     timeZoneMap[id] = zone;
                 }
@@ -143,9 +177,12 @@ namespace NodaTime.TimeZones
         /// <summary>
         /// Returns the time zone with the given id.
         /// </summary>
+        /// <remarks>Unlike <see cref="GetZoneOrNull"/>, this indexer will never return a null reference. If the ID is not
+        /// supported by the provider, it will throw <see cref="TimeZoneNotFoundException"/>.</remarks>
         /// <param name="id">The time zone id to find. Must not be null.</param>
-        /// <returns>The <see cref="DateTimeZone" /> with the given id or <c>null</c> if there isn't one defined.</returns>
-        internal DateTimeZone this[string id]
+        /// <returns>The <see cref="DateTimeZone" /> with the given ID.</returns>
+        /// <exception cref="TimeZoneNotFoundException">The underlying provider does not support the given ID.</exception>
+        public DateTimeZone this[string id]
         {
             get
             {

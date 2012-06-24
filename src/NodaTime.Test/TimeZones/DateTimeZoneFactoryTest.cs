@@ -37,22 +37,44 @@ namespace NodaTime.Test.TimeZones
         }
 
         [Test]
+        public void InvalidProvider_NullVersionId()
+        {
+            var provider = new TestDateTimeZoneProvider("Test1", "Test2") { VersionId = null };
+            Assert.Throws<InvalidDateTimeZoneProviderException>(() => new DateTimeZoneFactory(provider));
+        }
+
+        [Test]
+        public void InvalidProvider_NullIdSequence()
+        {
+            string[] ids = null;
+            var provider = new TestDateTimeZoneProvider(ids);
+            Assert.Throws<InvalidDateTimeZoneProviderException>(() => new DateTimeZoneFactory(provider));
+        }
+
+        [Test]
+        public void InvalidProvider_NullIdWithinSequence()
+        {
+            var provider = new TestDateTimeZoneProvider("Test1", null);
+            Assert.Throws<InvalidDateTimeZoneProviderException>(() => new DateTimeZoneFactory(provider));
+        }
+
+        [Test]
         public void CachingForPresentValues()
         {
             var provider = new TestDateTimeZoneProvider("Test1", "Test2");
-            var cache = new DateTimeZoneFactory(provider);
-            var zone = cache["Test1"];
+            var factory = new DateTimeZoneFactory(provider);
+            var zone = factory["Test1"];
             Assert.IsNotNull(zone);
             Assert.AreEqual("Test1", provider.LastRequestedId);
-            Assert.AreSame(zone, cache["Test1"]);
+            Assert.AreSame(zone, factory["Test1"]);
         }
 
         [Test]
         public void ProviderIsNotAskedForUtcIfNotAdvertised()
         {
             var provider = new TestDateTimeZoneProvider("Test1", "Test2");
-            var cache = new DateTimeZoneFactory(provider);
-            var zone = cache[DateTimeZone.UtcId];
+            var factory = new DateTimeZoneFactory(provider);
+            var zone = factory[DateTimeZone.UtcId];
             Assert.IsNotNull(zone);
             Assert.IsNull(provider.LastRequestedId);
         }
@@ -61,8 +83,8 @@ namespace NodaTime.Test.TimeZones
         public void ProviderIsAskedForUtcIfAdvertised()
         {
             var provider = new TestDateTimeZoneProvider("Test1", "Test2", "UTC");
-            var cache = new DateTimeZoneFactory(provider);
-            var zone = cache[DateTimeZone.UtcId];
+            var factory = new DateTimeZoneFactory(provider);
+            var zone = factory[DateTimeZone.UtcId];
             Assert.IsNotNull(zone);
             Assert.AreEqual("UTC", provider.LastRequestedId);
         }
@@ -71,8 +93,8 @@ namespace NodaTime.Test.TimeZones
         public void ProviderIsNotAskedForUnknownIds()
         {
             var provider = new TestDateTimeZoneProvider("Test1", "Test2");
-            var cache = new DateTimeZoneFactory(provider);
-            Assert.Throws<TimeZoneNotFoundException>(() => { var ignored = cache["Unknown"]; });
+            var factory = new DateTimeZoneFactory(provider);
+            Assert.Throws<TimeZoneNotFoundException>(() => { var ignored = factory["Unknown"]; });
             Assert.IsNull(provider.LastRequestedId);
         }
 
@@ -80,38 +102,38 @@ namespace NodaTime.Test.TimeZones
         public void UtcIsReturnedInIdsIfAdvertisedByProvider()
         {
             var provider = new TestDateTimeZoneProvider("Test1", "Test2", "UTC");
-            var cache = new DateTimeZoneFactory(provider);
-            Assert.True(cache.Ids.Contains(DateTimeZone.UtcId));
+            var factory = new DateTimeZoneFactory(provider);
+            Assert.True(factory.Ids.Contains(DateTimeZone.UtcId));
         }
 
         [Test]
         public void UtcIsNotReturnedInIdsIfNotAdvertisedByProvider()
         {
             var provider = new TestDateTimeZoneProvider("Test1", "Test2");
-            var cache = new DateTimeZoneFactory(provider);
-            Assert.False(cache.Ids.Contains(DateTimeZone.UtcId));
+            var factory = new DateTimeZoneFactory(provider);
+            Assert.False(factory.Ids.Contains(DateTimeZone.UtcId));
         }
 
         [Test]
         public void NullIdRejected()
         {
-            var cache = new DateTimeZoneFactory(new TestDateTimeZoneProvider("Test1", "Test2"));
+            var factory = new DateTimeZoneFactory(new TestDateTimeZoneProvider("Test1", "Test2"));
             // GetType call just to avoid trying to use a property as a statement...
-            Assert.Throws<ArgumentNullException>(() => cache[null].GetType());
+            Assert.Throws<ArgumentNullException>(() => factory[null].GetType());
         }
 
         [Test]
         public void EmptyIdAccepted()
         {
-            var cache = new DateTimeZoneFactory(new TestDateTimeZoneProvider("Test1", "Test2"));
-            Assert.Throws<TimeZoneNotFoundException>(() => { var ignored = cache[""]; });
+            var factory = new DateTimeZoneFactory(new TestDateTimeZoneProvider("Test1", "Test2"));
+            Assert.Throws<TimeZoneNotFoundException>(() => { var ignored = factory[""]; });
         }
 
         [Test]
         public void VersionIdPassThrough()
         {
-            var cache = new DateTimeZoneFactory(new TestDateTimeZoneProvider("Test1", "Test2"));
-            Assert.AreEqual("test-version", cache.ProviderVersionId);
+            var factory = new DateTimeZoneFactory(new TestDateTimeZoneProvider("Test1", "Test2") { VersionId = "foo" });
+            Assert.AreEqual("foo", factory.ProviderVersionId);
         }
 
         private class TestDateTimeZoneProvider : IDateTimeZoneProvider
@@ -122,6 +144,7 @@ namespace NodaTime.Test.TimeZones
             public TestDateTimeZoneProvider(params string[] ids)
             {
                 this.ids = ids;
+                this.VersionId = "test version";
             }
 
             public IEnumerable<string> Ids { get { return ids; } }
@@ -132,7 +155,7 @@ namespace NodaTime.Test.TimeZones
                 return new SingleTransitionZone(Instant.UnixEpoch, 0, id.GetHashCode() % 24);
             }
 
-            public string VersionId { get { return "test-version"; } }
+            public string VersionId { get; set; }
 
 
             public string MapTimeZoneId(TimeZoneInfo timeZone)

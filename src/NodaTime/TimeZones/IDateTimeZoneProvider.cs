@@ -47,14 +47,15 @@ namespace NodaTime.TimeZones
         /// <remarks>
         /// This property will be requested be <see cref="DateTimeZoneFactory"/> on construction, and never thereafter.
         /// If the set of valid IDs changes over time, the factory may request values which aren't currently
-        /// being advertized.
+        /// being advertised.
         /// </remarks>
         /// <value>The <see cref="IEnumerable{T}"/> of ids.</value>
         IEnumerable<string> Ids { get; }
 
         /// <summary>
-        /// Returns an appropriate version ID for diagnostic purposes. This doesn't have any specific format;
-        /// it's solely for diagnostic purposes. For example, the default provider returns a string such as
+        /// Returns an appropriate version ID for diagnostic purposes, which must not be null.
+        /// This doesn't have any specific format; it's solely for diagnostic purposes.
+        /// For example, the default provider returns a string such as
         /// "TZDB: 2011n" indicating where the information comes from and which version of that information
         /// it's loaded.
         /// </summary>
