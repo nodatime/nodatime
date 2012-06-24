@@ -40,7 +40,7 @@ namespace NodaTime.ZoneInfoCompiler.winmap
         public int Execute(string inputFileName, ResourceOutput output)
         {
             log.Info("Starting compilation of {0}", inputFileName);
-            DateTimeZone.SetProvider(new EmptyDateTimeZoneProvider());
+            DateTimeZone.Factory = new DateTimeZoneFactory(new EmptyDateTimeZoneProvider());
             var inputFile = new FileInfo(inputFileName);
             if (!inputFile.Exists)
             {

@@ -16,6 +16,7 @@
 #endregion
 
 using NUnit.Framework;
+using NodaTime.TimeZones;
 
 namespace NodaTime.Test
 {
@@ -25,15 +26,15 @@ namespace NodaTime.Test
         [SetUp]
         public void Setup()
         {
-            // Reset the cache...
-            DateTimeZone.SetProvider(DateTimeZone.DefaultDateTimeZoneProvider);
+            // Create a new factory
+            DateTimeZone.Factory = new DateTimeZoneFactory(new TzdbTimeZoneProvider("NodaTime.TimeZones.Tzdb"));
         }
 
         [TearDown]
         public void TearDown()
         {
-            // Reset the cache...
-            DateTimeZone.SetProvider(DateTimeZone.DefaultDateTimeZoneProvider);
+            // Reset back to the default factory.
+            DateTimeZone.Factory = DateTimeZoneFactory.Default;
         }
 
         [Test]
