@@ -17,6 +17,7 @@
 
 using System;
 using NUnit.Framework;
+using NodaTime.TimeZones;
 
 namespace NodaTime.Test.TimeZones
 {
@@ -26,8 +27,9 @@ namespace NodaTime.Test.TimeZones
         [Test]
         public void ZoneMapping()
         {
+            var provider = new TzdbTimeZoneProvider("NodaTime.TimeZones.Tzdb");
             var bclZone = TimeZoneInfo.FindSystemTimeZoneById("GMT Standard Time");
-            Assert.AreEqual("Europe/London", DateTimeZone.DefaultDateTimeZoneProvider.MapTimeZoneId(bclZone));
+            Assert.AreEqual("Europe/London", provider.MapTimeZoneId(bclZone));
         }
     }
 }

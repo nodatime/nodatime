@@ -30,6 +30,15 @@ namespace NodaTime.TimeZones
     /// <threadsafety>All members of this type are thread-safe.</threadsafety>
     public class DateTimeZoneFactory
     {
+        private static readonly int TypeInitializationChecking = NodaTime.Utility.TypeInitializationChecker.RecordInitializationStart();
+
+        private static readonly DateTimeZoneFactory defaultFactory = new DateTimeZoneFactory(new TzdbTimeZoneProvider("NodaTime.TimeZones.Tzdb"));
+
+        /// <summary>
+        /// Gets the default time zone factory, which is initialized from resources within the NodaTime assembly.
+        /// </summary>
+        public static DateTimeZoneFactory Default { get { return defaultFactory; } }
+
         private readonly object accessLock = new object();
         private readonly IDateTimeZoneProvider provider;
         private readonly ReadOnlyCollection<string> ids;

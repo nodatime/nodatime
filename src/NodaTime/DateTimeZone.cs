@@ -17,6 +17,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using NodaTime.TimeZones;
 using NodaTime.Utility;
 
@@ -96,19 +97,13 @@ namespace NodaTime
         /// </summary>
         internal const string UtcId = "UTC";
 
-        /// <summary>
-        /// Gets the default time zone provider, which is initialized from resources within the NodaTime assembly.
-        /// </summary>
-        public static readonly IDateTimeZoneProvider DefaultDateTimeZoneProvider = new TzdbTimeZoneProvider("NodaTime.TimeZones.Tzdb");
-
         private static readonly DateTimeZone UtcZone = new FixedDateTimeZone(Offset.Zero);
         private const int FixedZoneCacheGranularityMilliseconds = NodaConstants.MillisecondsPerMinute * 30;
         private const int FixedZoneCacheMinimumMilliseconds = -FixedZoneCacheGranularityMilliseconds * 12 * 2; // From UTC-12
         private const int FixedZoneCacheSize = (12 + 15) * 2 + 1; // To UTC+15 inclusive
         private static readonly DateTimeZone[] FixedZoneCache = BuildFixedZoneCache();
 
-        private static DateTimeZoneFactory factory = new DateTimeZoneFactory(DefaultDateTimeZoneProvider);
-        private static readonly object cacheLock = new object();
+        private static volatile DateTimeZoneFactory factory = DateTimeZoneFactory.Default;
 
         private readonly string id;
         private readonly bool isFixed;
@@ -147,7 +142,7 @@ namespace NodaTime
         /// </returns>
         public static DateTimeZone GetSystemDefault()
         {
-            return factory.GetSystemDefault();
+            return Factory.GetSystemDefault();
         }
 
         /// <summary>
@@ -166,7 +161,7 @@ namespace NodaTime
         /// </returns>
         public static DateTimeZone GetSystemDefaultOrNull()
         {
-            return factory.GetSystemDefaultOrNull();
+            return Factory.GetSystemDefaultOrNull();
         }
 
         /// <summary>
@@ -202,12 +197,7 @@ namespace NodaTime
         /// <returns>The <see cref="DateTimeZone" /> with the given ID.</returns>
         public static DateTimeZone ForId(string id)
         {
-            DateTimeZoneFactory localFactory;
-            lock (cacheLock)
-            {
-                localFactory = factory;
-            }
-            return localFactory[id];
+            return Factory[id];
         }
 
         /// <summary>
@@ -221,24 +211,22 @@ namespace NodaTime
         {
             get
             {
-                lock (cacheLock)
-                {
-                    return factory.ProviderVersionId;
-                }
+                return Factory.ProviderVersionId;
             }
         }
-
+        
         /// <summary>
-        /// Sets the provider to use for time zone lookup. Note that this is a global change; it is expected
-        /// that users will only call this on start-up if at all.
+        /// Gets or sets the <see cref="DateTimeZoneFactory"/> used by the static convenience methods (<see cref="ForId"/> and so on).
         /// </summary>
-        /// <param name="provider">The provider to use for time zones.</param>
-        public static void SetProvider(IDateTimeZoneProvider provider)
+        public static DateTimeZoneFactory Factory
         {
-            var localCache = new DateTimeZoneFactory(provider);
-            lock (cacheLock)
+            get
             {
-                factory = localCache;
+                return factory;
+            }
+            set
+            {
+                factory = Preconditions.CheckNotNull(value, "value");
             }
         }
 

@@ -122,7 +122,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         public int Execute(string sourceDirectoryName, ResourceOutput output)
         {
             log.Info("Starting compilation of directory {0}", sourceDirectoryName);
-            DateTimeZone.SetProvider(new EmptyDateTimeZoneProvider());
+            DateTimeZone.Factory = new DateTimeZoneFactory(new EmptyDateTimeZoneProvider());
             var sourceDirectory = new DirectoryInfo(sourceDirectoryName);
             var fileList = sourceDirectory.GetFiles();
             //// Using this conditional code makes debugging simpler in Visual Studio because exceptions will
