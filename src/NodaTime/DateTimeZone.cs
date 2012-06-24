@@ -107,7 +107,7 @@ namespace NodaTime
         private const int FixedZoneCacheSize = (12 + 15) * 2 + 1; // To UTC+15 inclusive
         private static readonly DateTimeZone[] FixedZoneCache = BuildFixedZoneCache();
 
-        private static TimeZoneCache cache = new TimeZoneCache(DefaultDateTimeZoneProvider);
+        private static DateTimeZoneFactory factory = new DateTimeZoneFactory(DefaultDateTimeZoneProvider);
         private static readonly object cacheLock = new object();
 
         private readonly string id;
@@ -147,7 +147,7 @@ namespace NodaTime
         /// </returns>
         public static DateTimeZone GetSystemDefault()
         {
-            return cache.GetSystemDefault();
+            return factory.GetSystemDefault();
         }
 
         /// <summary>
@@ -166,7 +166,7 @@ namespace NodaTime
         /// </returns>
         public static DateTimeZone GetSystemDefaultOrNull()
         {
-            return cache.GetSystemDefaultOrNull();
+            return factory.GetSystemDefaultOrNull();
         }
 
         /// <summary>
@@ -202,12 +202,12 @@ namespace NodaTime
         /// <returns>The <see cref="DateTimeZone" /> with the given ID.</returns>
         public static DateTimeZone ForId(string id)
         {
-            TimeZoneCache localCache;
+            DateTimeZoneFactory localFactory;
             lock (cacheLock)
             {
-                localCache = cache;
+                localFactory = factory;
             }
-            return localCache[id];
+            return localFactory[id];
         }
 
         /// <summary>
@@ -223,7 +223,7 @@ namespace NodaTime
             {
                 lock (cacheLock)
                 {
-                    return cache.ProviderVersionId;
+                    return factory.ProviderVersionId;
                 }
             }
         }
@@ -235,10 +235,10 @@ namespace NodaTime
         /// <param name="provider">The provider to use for time zones.</param>
         public static void SetProvider(IDateTimeZoneProvider provider)
         {
-            var localCache = new TimeZoneCache(provider);
+            var localCache = new DateTimeZoneFactory(provider);
             lock (cacheLock)
             {
-                cache = localCache;
+                factory = localCache;
             }
         }
 
@@ -252,7 +252,7 @@ namespace NodaTime
         /// in this collection if the provider explicitly advertises it, but will be valid either way.
         /// </remarks>
         /// <value>The <see cref="IEnumerable{T}" /> of string ids.</value>
-        public static IEnumerable<string> Ids { get { return cache.Ids; } }
+        public static IEnumerable<string> Ids { get { return factory.Ids; } }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="T:NodaTime.DateTimeZone" /> class.

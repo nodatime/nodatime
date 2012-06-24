@@ -28,7 +28,7 @@ namespace NodaTime.TimeZones
     /// requests) so caching them is necessary.
     /// </summary>
     /// <threadsafety>All members of this type are thread-safe.</threadsafety>
-    internal class TimeZoneCache
+    internal class DateTimeZoneFactory
     {
         private readonly object accessLock = new object();
         private readonly IDateTimeZoneProvider provider;
@@ -36,7 +36,7 @@ namespace NodaTime.TimeZones
         private readonly IDictionary<string, DateTimeZone> timeZoneMap = new Dictionary<string, DateTimeZone>();
         private readonly string providerVersionId;
 
-        internal TimeZoneCache(IDateTimeZoneProvider provider)
+        internal DateTimeZoneFactory(IDateTimeZoneProvider provider)
         {
             this.provider = Preconditions.CheckNotNull(provider, "provider");
             this.providerVersionId = provider.VersionId;

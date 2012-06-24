@@ -25,22 +25,22 @@ using NodaTime.TimeZones;
 namespace NodaTime.Test.TimeZones
 {
     /// <summary>
-    /// Tests for TimeZoneCache.
+    /// Tests for DateTimeZoneFactory.
     /// </summary>
     [TestFixture]
-    public class TimeZoneCacheTest
+    public class DateTimeZoneFactoryTest
     {
         [Test]
         public void Construction_NullProvider()
         {
-            Assert.Throws<ArgumentNullException>(() => new TimeZoneCache(null));
+            Assert.Throws<ArgumentNullException>(() => new DateTimeZoneFactory(null));
         }
 
         [Test]
         public void CachingForPresentValues()
         {
             var provider = new TestDateTimeZoneProvider("Test1", "Test2");
-            var cache = new TimeZoneCache(provider);
+            var cache = new DateTimeZoneFactory(provider);
             var zone = cache["Test1"];
             Assert.IsNotNull(zone);
             Assert.AreEqual("Test1", provider.LastRequestedId);
@@ -51,7 +51,7 @@ namespace NodaTime.Test.TimeZones
         public void ProviderIsNotAskedForUtcIfNotAdvertised()
         {
             var provider = new TestDateTimeZoneProvider("Test1", "Test2");
-            var cache = new TimeZoneCache(provider);
+            var cache = new DateTimeZoneFactory(provider);
             var zone = cache[DateTimeZone.UtcId];
             Assert.IsNotNull(zone);
             Assert.IsNull(provider.LastRequestedId);
@@ -61,7 +61,7 @@ namespace NodaTime.Test.TimeZones
         public void ProviderIsAskedForUtcIfAdvertised()
         {
             var provider = new TestDateTimeZoneProvider("Test1", "Test2", "UTC");
-            var cache = new TimeZoneCache(provider);
+            var cache = new DateTimeZoneFactory(provider);
             var zone = cache[DateTimeZone.UtcId];
             Assert.IsNotNull(zone);
             Assert.AreEqual("UTC", provider.LastRequestedId);
@@ -71,7 +71,7 @@ namespace NodaTime.Test.TimeZones
         public void ProviderIsNotAskedForUnknownIds()
         {
             var provider = new TestDateTimeZoneProvider("Test1", "Test2");
-            var cache = new TimeZoneCache(provider);
+            var cache = new DateTimeZoneFactory(provider);
             Assert.Throws<TimeZoneNotFoundException>(() => { var ignored = cache["Unknown"]; });
             Assert.IsNull(provider.LastRequestedId);
         }
@@ -80,7 +80,7 @@ namespace NodaTime.Test.TimeZones
         public void UtcIsReturnedInIdsIfAdvertisedByProvider()
         {
             var provider = new TestDateTimeZoneProvider("Test1", "Test2", "UTC");
-            var cache = new TimeZoneCache(provider);
+            var cache = new DateTimeZoneFactory(provider);
             Assert.True(cache.Ids.Contains(DateTimeZone.UtcId));
         }
 
@@ -88,14 +88,14 @@ namespace NodaTime.Test.TimeZones
         public void UtcIsNotReturnedInIdsIfNotAdvertisedByProvider()
         {
             var provider = new TestDateTimeZoneProvider("Test1", "Test2");
-            var cache = new TimeZoneCache(provider);
+            var cache = new DateTimeZoneFactory(provider);
             Assert.False(cache.Ids.Contains(DateTimeZone.UtcId));
         }
 
         [Test]
         public void NullIdRejected()
         {
-            var cache = new TimeZoneCache(new TestDateTimeZoneProvider("Test1", "Test2"));
+            var cache = new DateTimeZoneFactory(new TestDateTimeZoneProvider("Test1", "Test2"));
             // GetType call just to avoid trying to use a property as a statement...
             Assert.Throws<ArgumentNullException>(() => cache[null].GetType());
         }
@@ -103,14 +103,14 @@ namespace NodaTime.Test.TimeZones
         [Test]
         public void EmptyIdAccepted()
         {
-            var cache = new TimeZoneCache(new TestDateTimeZoneProvider("Test1", "Test2"));
+            var cache = new DateTimeZoneFactory(new TestDateTimeZoneProvider("Test1", "Test2"));
             Assert.Throws<TimeZoneNotFoundException>(() => { var ignored = cache[""]; });
         }
 
         [Test]
         public void VersionIdPassThrough()
         {
-            var cache = new TimeZoneCache(new TestDateTimeZoneProvider("Test1", "Test2"));
+            var cache = new DateTimeZoneFactory(new TestDateTimeZoneProvider("Test1", "Test2"));
             Assert.AreEqual("test-version", cache.ProviderVersionId);
         }
 
