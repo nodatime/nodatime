@@ -185,7 +185,7 @@
     <Compile Include="TimeZones\EmptyDateTimeZoneProvider.cs" />
     <Compile Include="TimeZones\NamespaceDoc.cs" />
     <Compile Include="TimeZones\Resolvers.cs" />
-    <Compile Include="TimeZones\TimeZoneCache.cs" />
+    <Compile Include="TimeZones\DateTimeZoneFactory.cs" />
     <Compile Include="TimeZones\Transition.cs" />
     <Compile Include="TimeZones\DateTimeZoneCompressionReader.cs" />
     <Compile Include="TimeZones\DateTimeZoneCompressionWriter.cs" />

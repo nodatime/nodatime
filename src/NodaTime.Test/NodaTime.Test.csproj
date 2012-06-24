@@ -174,7 +174,7 @@
     <Compile Include="TimeZones\DateTimeZoneBuilderTest.cs" />
     <Compile Include="TimeZones\ResolversTest.cs" />
     <Compile Include="TimeZones\TzdbTimeZoneProviderTest.cs" />
-    <Compile Include="TimeZones\TimeZoneCacheTest.cs" />
+    <Compile Include="TimeZones\DateTimeZoneFactoryTest.cs" />
     <Compile Include="TimeZones\DaylightSavingTimeZoneTest.cs" />
     <Compile Include="TimeZones\EtcTest.cs" />
     <Compile Include="TimeZones\JordanTest.cs" />

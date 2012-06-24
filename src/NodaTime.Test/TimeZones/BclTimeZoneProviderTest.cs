@@ -38,8 +38,8 @@ namespace NodaTime.Test.TimeZones
         public void UtcMapping()
         {
             // Effectively check that we end up with a BclTimeZone when we use the UTC ID.
-            TimeZoneCache cache = new TimeZoneCache(new BclTimeZoneProvider());
-            Assert.IsInstanceOf<BclTimeZone>(cache[DateTimeZone.UtcId]);
+            DateTimeZoneFactory factory = new DateTimeZoneFactory(new BclTimeZoneProvider());
+            Assert.IsInstanceOf<BclTimeZone>(factory[DateTimeZone.UtcId]);
         }
     }
 }

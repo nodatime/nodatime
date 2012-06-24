@@ -21,7 +21,10 @@ using System.Collections.Generic;
 namespace NodaTime.TimeZones
 {
     /// <summary>
-    /// Provides the interface for objects that can retrieve time zone definitions given and id.
+    /// Provides the interface for objects that can retrieve time zone definitions given an id.
+    /// This interface is designed to work with <see cref="DateTimeZoneFactory"/>, and implementations should
+    /// expect that to be the class through which the provider is called. Client code should not use this
+    /// interface directly, primarily for reasons of 
     /// </summary>
     /// <remarks>
     /// Note that the ID "UTC" is reserved - it's the only zone which is guaranteed to be present.
@@ -38,9 +41,14 @@ namespace NodaTime.TimeZones
     {
         /// <summary>
         /// Returns an enumeration of the available ids from this provider. The order in which the
-        /// values are returned is irrelevant, as the time zone cache will sort them anyway. The sequence
-        /// returned may be empty, but must not be null.
+        /// values are returned is irrelevant, as the time zone factory will sort them anyway. The sequence
+        /// returned may be empty, but must not be null, and must not contain a null reference.
         /// </summary>
+        /// <remarks>
+        /// This property will be requested be <see cref="DateTimeZoneFactory"/> on construction, and never thereafter.
+        /// If the set of valid IDs changes over time, the factory may request values which aren't currently
+        /// being advertized.
+        /// </remarks>
         /// <value>The <see cref="IEnumerable{T}"/> of ids.</value>
         IEnumerable<string> Ids { get; }
 
@@ -58,9 +66,9 @@ namespace NodaTime.TimeZones
         /// <remarks>
         /// If the time zone does not yet exist, its definition is loaded from where ever this
         /// provider gets time zone definitions. The provider should not attempt to cache time zones;
-        /// the time zone cache handles that automatically.
+        /// the time zone factory handles that automatically.
         /// </remarks>
-        /// <param name="id">The id of the time zone to return. This will be one of the IDs
+        /// <param name="id">The id of the time zone to return. This must be one of the IDs
         /// returned by the <see cref="Ids"/> property.</param>
         /// <returns>The <see cref="DateTimeZone"/> for the given ID; must not be null.</returns>
         DateTimeZone ForId(string id);
