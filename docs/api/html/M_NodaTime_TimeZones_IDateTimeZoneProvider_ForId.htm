@@ -9,11 +9,11 @@
 ) <span class="keyword">As</span> <a href="T_NodaTime_DateTimeZone.htm">DateTimeZone</a></pre></div><div class="code" x-lang="ManagedCPlusPlus"><pre xml:space="preserve">
 <a href="T_NodaTime_DateTimeZone.htm">DateTimeZone</a>^ <span class="identifier">ForId</span>(
 	<a href="http://msdn2.microsoft.com/en-us/library/s1wwdcbf" target="_blank">String</a>^ <span class="parameter">id</span>
-)</pre></div></div></div></div></div><div id="parameters"><div class="section"><div class="sectionTitle" onclick="toggleSection(this.parentNode)"><img src="../icons/collapse_all.gif" /> Parameters</div><div class="sectionContent"><dl paramName="id"><dt><span class="parameter">id</span> (<a href="http://msdn2.microsoft.com/en-us/library/s1wwdcbf" target="_blank">String</a>)</dt><dd>The id of the time zone to return. This will be one of the IDs
+)</pre></div></div></div></div></div><div id="parameters"><div class="section"><div class="sectionTitle" onclick="toggleSection(this.parentNode)"><img src="../icons/collapse_all.gif" /> Parameters</div><div class="sectionContent"><dl paramName="id"><dt><span class="parameter">id</span> (<a href="http://msdn2.microsoft.com/en-us/library/s1wwdcbf" target="_blank">String</a>)</dt><dd>The id of the time zone to return. This must be one of the IDs
             returned by the <a href="P_NodaTime_TimeZones_IDateTimeZoneProvider_Ids.htm">Ids</a> property.</dd></dl></div></div></div><div class="section"><div class="sectionTitle" onclick="toggleSection(this.parentNode)"><img src="../icons/collapse_all.gif" /> Return Value</div><div class="sectionContent">The <a href="T_NodaTime_DateTimeZone.htm">DateTimeZone</a> for the given ID; must not be null.</div></div><div class="section"><div class="sectionTitle" onclick="toggleSection(this.parentNode)"><img src="../icons/collapse_all.gif" /> Remarks</div><div class="sectionContent">
             If the time zone does not yet exist, its definition is loaded from where ever this
             provider gets time zone definitions. The provider should not attempt to cache time zones;
-            the time zone cache handles that automatically.
+            the time zone factory handles that automatically.
             </div></div><p><div id="footer"><p />Send comments on this topic to
         <a id="HT_MailLink" href="mailto:noda-time%40googlegroups.com?Subject=Noda-Time">Noda-Time Google Groups</a><script type="text/javascript">
         var HT_mailLink = document.getElementById("HT_MailLink");
