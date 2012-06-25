@@ -118,8 +118,9 @@ namespace NodaTime.Test
             Offset offset = Offset.FromHours(1);
             OffsetDateTime expected = new OffsetDateTime(local, offset);
 
-            // We can build an OffsetDateTime regardless of kind
-            DateTimeOffset bcl = new DateTimeOffset(DateTime.SpecifyKind(new DateTime(2012, 10, 6, 1, 2, 3), DateTimeKind.Local),
+            // We can build an OffsetDateTime regardless of kind... although if the kind is Local, the offset
+            // has to be valid for the local time zone when building a DateTimeOffset, and if the kind is Utc, the offset has to be zero.
+            DateTimeOffset bcl = new DateTimeOffset(DateTime.SpecifyKind(new DateTime(2012, 10, 6, 1, 2, 3), DateTimeKind.Unspecified),
                 TimeSpan.FromHours(1));
             OffsetDateTime actual = OffsetDateTime.FromDateTimeOffset(bcl);
             Assert.AreEqual(expected, actual);
