@@ -91,6 +91,7 @@
     <Compile Include="Fields\VariableLengthPeriodField.cs" />
     <Compile Include="Fields\NamespaceDoc.cs" />
     <Compile Include="Globalization\NamespaceDoc.cs" />
+    <Compile Include="OffsetDateTime.cs" />
     <Compile Include="PeriodBuilder.cs" />
     <Compile Include="PeriodUnits.cs" />
     <Compile Include="Properties\PatternResources.Designer.cs">

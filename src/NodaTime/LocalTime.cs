@@ -167,7 +167,7 @@ namespace NodaTime
         public int Hour { get { return IsoFields.HourOfDay.GetValue(localInstant); } }
 
         /// <summary>
-        /// Gets the hour of the half-day of this date and time, in the range 1 to 12 inclusive.
+        /// Gets the hour of the half-day of this local time, in the range 1 to 12 inclusive.
         /// </summary>
         public int ClockHourOfHalfDay { get { return IsoFields.ClockHourOfHalfDay.GetValue(localInstant); } }
 
