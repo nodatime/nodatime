@@ -83,11 +83,12 @@ ambiguities converting back and so on.</p>
 <h2>User-generated values</h2>
 
 <p>If a user has entered the value (whether directly into your
-application or not), Noda Time offers four types which may be
+application or not), Noda Time offers five types which may be
 appropriate:</p>
 
 <ul>
 <li><a href="../api/html/T_NodaTime_ZonedDateTime.htm"><code>ZonedDateTime</code></a></li>
+<li><a href="../api/html/T_NodaTime_OffsetDateTime.htm"><code>OffsetDateTime</code></a></li>
 <li><a href="../api/html/T_NodaTime_LocalDateTime.htm"><code>LocalDateTime</code></a></li>
 <li><a href="../api/html/T_NodaTime_LocalDate.htm"><code>LocalDate</code></a></li>
 <li><a href="../api/html/T_NodaTime_LocalTime.htm"><code>LocalTime</code></a></li>
@@ -110,6 +111,12 @@ the user's time zone may change between when it's first scheduled,
 and when it actually rings... you need to decide (and make it clear
 to the user) whether that time zone change should affect the alarm
 or not.</p>
+
+<p>Sometimes - particularly when parsing values from headers - you may not
+know the user's full time zone, but you <em>do</em> know the offset from UTC at
+that particular point in time. In that case, <code>OffsetDateTime</code> is the most
+appropriate choice: it preserves the offset information you genuinely have,
+but without giving the impression of knowing the "real" time zone.</p>
 
 <p>If it's definitely meant to represent an instant in time, then
 <code>Instant</code> <em>may</em> be even more appropriate than <code>ZonedDateTime</code> - it

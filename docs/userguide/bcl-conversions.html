@@ -36,7 +36,7 @@ the ISO-8601 calendar.</p>
   <tbody>
     <tr>
       <td>Instant</td>
-      <td>Universal</td>
+      <td>Utc</td>
       <td>Instant.ToDateTimeUtc</td>
       <td>Instant.FromDateTimeUtc</td>
       <td></td>
@@ -62,6 +62,12 @@ the ISO-8601 calendar.</p>
       <td>LocalDateTime.FromDateTime</td>
       <td>FromDateTime uses the "local" value of the DateTime regardless of kind</td>
     </tr>
+    <tr>
+      <td>OffsetDateTime</td>
+      <td>Unspecified</td>
+      <td>OffsetDateTime.ToDateTimeOffset</td>
+      <td>OffsetDateTime.FromDateTime</td>
+    </tr>
   </tbody>
 </table>
 
@@ -70,8 +76,7 @@ be for the system default time zone, which you should generally be explicit abou
 
 <h1>DateTimeOffset</h1>
 
-<p>There's no direct corresponding type to <code>DateTimeOffset</code> in Noda Time, but it can be represented as
-a <code>ZonedDateTime</code> with a fixed time zone. That's exactly what <code>ZonedDateTime.FromDateTimeOffset</code> does,
+<p><a href="../api/html/T_NodaTime_OffsetDateTime.htm"><code>OffsetDateTime</code></a> corresponds most closely to <code>DateTimeOffset</code>, although you can also use a <a href="../api/html/T_NodaTime_ZonedDateTime.htm"><code>ZonedDateTime</code></a> with a fixed time zone. That's exactly what <code>ZonedDateTime.FromDateTimeOffset</code> does,
 but you must be aware that "real" time zone information is lost as soon as you've got a <code>DateTimeOffset</code> - 
 it represents an exact instant in time, with a local offset from UTC, but that doesn't tell you what the
 local offset would be a minute later or earlier. The reverse conversion (<code>ZonedDateTime.ToDateTimeOffset</code>)
@@ -79,8 +84,7 @@ loses the time zone information in a similar way.</p>
 
 <p><code>Instant</code> also provides conversions to and from <code>DateTimeOffset</code>; <code>ToDateTimeOffset</code> will always return a
 <code>DateTimeOffset</code> with an offset of zero, and <code>FromDateTimeOffset</code> will "subtract" the offset from local time,
-to represent the appropriate instant in time - but without any further trace of the offset, which isn't stored
-in an <code>Instant</code>.</p>
+to represent the appropriate instant in time - but without any further trace of the offset, which isn't stored in an <code>Instant</code>.</p>
 
 <h1>TimeSpan</h1>
 
