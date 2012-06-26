@@ -168,6 +168,16 @@ namespace NodaTime.Test
         }
 
         [Test]
+        public void ToOffsetDateTime()
+        {
+            var local = new LocalDateTime(1911, 3, 5, 1, 0, 0); // Early interval
+            var zoned = SampleZone.AtStrictly(local);
+            var offsetDateTime = zoned.ToOffsetDateTime();
+            Assert.AreEqual(local, offsetDateTime.LocalDateTime);
+            Assert.AreEqual(SampleZone.EarlyInterval.WallOffset, offsetDateTime.Offset);
+        }
+
+        [Test]
         public void Equality()
         {
             // Goes back from 2am to 1am on June 13th

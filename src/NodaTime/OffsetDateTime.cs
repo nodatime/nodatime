@@ -187,6 +187,16 @@ namespace NodaTime
         }
 
         /// <summary>
+        /// Creates a <see cref="ZonedDateTime"/> in a time zone with a fixed offset (which is the same as the offset
+        /// for this value), and with the same local date and time.
+        /// </summary>
+        /// <returns>A zoned date/time with the same local time and a fixed time zone using the offset from this value.</returns>
+        public ZonedDateTime InFixedZone()
+        {
+            return new ZonedDateTime(localDateTime, offset, DateTimeZone.ForOffset(offset));
+        }
+
+        /// <summary>
         /// Returns the BCL <see cref="DateTimeOffset"/> corresponding to this offset date and time.
         /// </summary>
         /// <returns>A DateTimeOffset with the same local date/time and offset as this. The <see cref="DateTime"/> part of

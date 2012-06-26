@@ -545,5 +545,15 @@ namespace NodaTime
         {
             return LocalInstant.ToDateTimeUnspecified();
         }
+
+        /// <summary>
+        /// Constructs an <see cref="OffsetDateTime"/> with the same local date and time, and the same offset
+        /// as this zoned date and time, effectively just "removing" the time zone itself.
+        /// </summary>
+        /// <returns>An OffsetDateTime with the same local date/time and offset as this value.</returns>
+        public OffsetDateTime ToOffsetDateTime()
+        {
+            return new OffsetDateTime(localDateTime, offset);
+        }
     }
 }
