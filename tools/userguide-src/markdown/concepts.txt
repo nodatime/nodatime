@@ -160,6 +160,12 @@ Noda Time makes it *reasonably* easy to handle these situations, but
 you need to work out what you want to happen. See the [`DateTimeZone`
 documentation][DateTimeZone] for more details and options.
 
+Also note that in some cases, you may not have full time zone information,
+but have just a local time and an offset. For example, if you're parsing the string
+"2012-06-26T20:41:00+01:00" that gives the information that the local time is one hour
+ahead of UTC - but it doesn't give any indication of what the offset would be at any other
+time. In this situation, you should use [`OffsetDateTime`][OffsetDateTime]
+
 [api]: ../api/Index.html
 [2]: http://blogs.msdn.com/b/bclteam/archive/2007/06/18/a-brief-history-of-datetime-anthony-moore.aspx
 [LocalTime]: noda-type://NodaTime.LocalTime
@@ -170,4 +176,5 @@ documentation][DateTimeZone] for more details and options.
 [UTC]: http://en.wikipedia.org/wiki/Coordinated_Universal_Time
 [DateTimeZone]: noda-type://NodaTime.DateTimeZone
 [Offset]: noda-type://NodaTime.Offset
+[Offset]: noda-type://NodaTime.OffsetDateTime
 [ZonedDateTime]: noda-type://NodaTime.ZonedDateTime

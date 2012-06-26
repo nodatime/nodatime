@@ -78,10 +78,11 @@ User-generated values
 ---------------------
 
 If a user has entered the value (whether directly into your
-application or not), Noda Time offers four types which may be
+application or not), Noda Time offers five types which may be
 appropriate:
 
 - [`ZonedDateTime`](noda-type://NodaTime.ZonedDateTime)
+- [`OffsetDateTime`](noda-type://NodaTime.OffsetDateTime)
 - [`LocalDateTime`](noda-type://NodaTime.LocalDateTime)
 - [`LocalDate`](noda-type://NodaTime.LocalDate)
 - [`LocalTime`](noda-type://NodaTime.LocalTime)
@@ -103,6 +104,12 @@ the user's time zone may change between when it's first scheduled,
 and when it actually rings... you need to decide (and make it clear
 to the user) whether that time zone change should affect the alarm
 or not.
+
+Sometimes - particularly when parsing values from headers - you may not
+know the user's full time zone, but you *do* know the offset from UTC at
+that particular point in time. In that case, `OffsetDateTime` is the most
+appropriate choice: it preserves the offset information you genuinely have,
+but without giving the impression of knowing the "real" time zone.
 
 If it's definitely meant to represent an instant in time, then
 `Instant` *may* be even more appropriate than `ZonedDateTime` - it

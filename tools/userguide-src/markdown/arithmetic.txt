@@ -207,8 +207,6 @@ how many "months and days" old I am at the time of this writing, I'd use:
     Console.WriteLine("Age: {0} months and {1} days",
                       period.Months, period.Days);
 
-FIXME: Make this so! (Don't use weeks by default.) Also fix names.
-
 Just as when adding periods, computing a period works from the largest
 specified unit down to the smallest, at each stage finding the appropriate
 component value with the greatest magnitude so that adding it to the running
@@ -257,6 +255,11 @@ there, then convert back to `ZonedDateTime` *once*, specifying how to handle amb
 skipped times in the normal way. We believe this makes the API easier to follow and forces you
 to think about the problems which you might otherwise brush under the carpet... but if you have
 better suggestions, please raise them!
+
+Currently Noda Time doesn't support arithmetic with [`OffsetDateTime`](noda-type://NodaTime.OffsetDateTime)
+either, mostly because it's not clear what the use cases would be. You can always convert to either local or
+zoned date/time values, perform arithmetic in that domain and convert back if necessary - but if you find
+yourself in this situation, we'd love to hear about it on the Noda Time mailing list.
 
 Days of the week
 ================
