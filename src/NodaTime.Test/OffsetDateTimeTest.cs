@@ -125,5 +125,16 @@ namespace NodaTime.Test
             OffsetDateTime actual = OffsetDateTime.FromDateTimeOffset(bcl);
             Assert.AreEqual(expected, actual);
         }
+
+        [Test]
+        public void InFixedZone()
+        {
+            Offset offset = Offset.FromHours(5);
+            LocalDateTime local = new LocalDateTime(2012, 1, 2, 3, 4);
+            OffsetDateTime odt = new OffsetDateTime(local, offset);
+
+            ZonedDateTime zoned = odt.InFixedZone();
+            Assert.AreEqual(DateTimeZone.ForOffset(offset).AtStrictly(local), zoned);
+        }
     }
 }
