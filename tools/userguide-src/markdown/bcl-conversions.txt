@@ -29,7 +29,7 @@ However, the following mappings are reasonable:
   <tbody>
     <tr>
 	  <td>Instant</td>
-	  <td>Universal</td>
+	  <td>Utc</td>
 	  <td>Instant.ToDateTimeUtc</td>
 	  <td>Instant.FromDateTimeUtc</td>
 	  <td></td>
@@ -55,6 +55,12 @@ However, the following mappings are reasonable:
 	  <td>LocalDateTime.FromDateTime</td>
 	  <td>FromDateTime uses the "local" value of the DateTime regardless of kind</td>
     </tr>
+    <tr>
+      <td>OffsetDateTime</td>
+      <td>Unspecified</td>
+      <td>OffsetDateTime.ToDateTimeOffset</td>
+      <td>OffsetDateTime.FromDateTime</td>
+    </tr>
   </tbody>
 </table>
 
@@ -64,8 +70,7 @@ be for the system default time zone, which you should generally be explicit abou
 DateTimeOffset
 ==============
 
-There's no direct corresponding type to `DateTimeOffset` in Noda Time, but it can be represented as
-a `ZonedDateTime` with a fixed time zone. That's exactly what `ZonedDateTime.FromDateTimeOffset` does,
+[`OffsetDateTime`](noda-type://NodaTime.OffsetDateTime) corresponds most closely to `DateTimeOffset`, although you can also use a [`ZonedDateTime`](noda-type://NodaTime.ZonedDateTime) with a fixed time zone. That's exactly what `ZonedDateTime.FromDateTimeOffset` does,
 but you must be aware that "real" time zone information is lost as soon as you've got a `DateTimeOffset` - 
 it represents an exact instant in time, with a local offset from UTC, but that doesn't tell you what the
 local offset would be a minute later or earlier. The reverse conversion (`ZonedDateTime.ToDateTimeOffset`)
@@ -73,8 +78,7 @@ loses the time zone information in a similar way.
 
 `Instant` also provides conversions to and from `DateTimeOffset`; `ToDateTimeOffset` will always return a
 `DateTimeOffset` with an offset of zero, and `FromDateTimeOffset` will "subtract" the offset from local time,
-to represent the appropriate instant in time - but without any further trace of the offset, which isn't stored
-in an `Instant`.
+to represent the appropriate instant in time - but without any further trace of the offset, which isn't stored in an `Instant`.
 
 TimeSpan
 ========
