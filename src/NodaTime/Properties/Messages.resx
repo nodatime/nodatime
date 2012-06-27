@@ -153,6 +153,9 @@
   <data name="Parse_EmptyPeriod" xml:space="preserve">
     <value>The specified period was empty.</value>
   </data>
+  <data name="Parse_EmptyZPrefixedOffsetPattern" xml:space="preserve">
+    <value>The Z prefix for an Offset pattern must be followed by a custom pattern.</value>
+  </data>
   <data name="Parse_EndOfString" xml:space="preserve">
     <value>Input string ended unexpectedly early.</value>
   </data>
@@ -275,5 +278,8 @@
   </data>
   <data name="Parse_YearOfEraOutOfRange" xml:space="preserve">
     <value>The year {0} is out of range for the {1} era in the {2} calendar.</value>
+  </data>
+  <data name="Parse_ZPrefixNotAtStartOfPattern" xml:space="preserve">
+    <value>The Z prefix for an Offset pattern must occur at the beginning of the pattern.</value>
   </data>
 </root>

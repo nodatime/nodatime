@@ -20,6 +20,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using NodaTime.Globalization;
+using NodaTime.Properties;
 using NodaTime.Text.Patterns;
 
 namespace NodaTime.Text
@@ -50,6 +51,7 @@ namespace NodaTime.Text
             { '-', HandleMinus },
             { 'f', TimePatternHelper.CreateFractionHandler<Offset, OffsetParseBucket>(3, value => value.FractionalSeconds, (bucket, value) => bucket.FractionalSeconds = value) },
             { 'F', TimePatternHelper.CreateFractionHandler<Offset, OffsetParseBucket>(3, value => value.FractionalSeconds, (bucket, value) => bucket.FractionalSeconds = value) },
+            { 'Z', (ignored1, ignored2) => PatternParseResult<Offset>.ForInvalidFormat(Messages.Parse_ZPrefixNotAtStartOfPattern) }
         };
 
         // Note: public to implement the interface. It does no harm, and it's simpler than using explicit
@@ -82,9 +84,18 @@ namespace NodaTime.Text
                     return PatternParseResult<Offset>.UnknownStandardFormat(patternCharacter);
                 }
             }
+            // This is the only way we'd normally end up in custom parsing land for Z on its own.
+            if (patternText == "%Z")
+            {
+                return PatternParseResult<Offset>.ForInvalidFormat(Messages.Parse_EmptyZPrefixedOffsetPattern);
+            }
+
+            // Handle Z-prefix by stripping it, parsing the rest as a normal pattern, then building a special pattern
+            // which decides whether or not to delegate.
+            bool zPrefix = patternText.StartsWith("Z");
 
             var patternBuilder = new SteppedPatternBuilder<Offset, OffsetParseBucket>(formatInfo, () => new OffsetParseBucket());
-            var patternCursor = new PatternCursor(patternText);
+            var patternCursor = new PatternCursor(zPrefix ? patternText.Substring(1) : patternText);
 
             // Prime the pump...
             // TODO(Post-V1): Add this to the builder?
@@ -107,7 +118,8 @@ namespace NodaTime.Text
                     return possiblePatternParseFailure;
                 }
             }
-            return PatternParseResult<Offset>.ForValue(patternBuilder.Build());
+            IPattern<Offset> pattern = patternBuilder.Build();
+            return PatternParseResult<Offset>.ForValue(zPrefix ? new ZPrefixPattern(pattern) : pattern);
         }
 
         #region Standard patterns
@@ -191,6 +203,29 @@ namespace NodaTime.Text
             return new SimplePattern<Offset>(parser, formatter);
         }
         #endregion
+
+        /// <summary>
+        /// Pattern which optionally delegates to another, but both parses and formats Offset.Zero as "Z".
+        /// </summary>
+        private class ZPrefixPattern : IPattern<Offset>
+        {
+            private readonly IPattern<Offset> fullPattern;
+
+            internal ZPrefixPattern(IPattern<Offset> fullPattern)
+            {
+                this.fullPattern = fullPattern;
+            }
+
+            public ParseResult<Offset> Parse(string text)
+            {
+                return text == "Z" ? ParseResult<Offset>.ForValue(Offset.Zero) : fullPattern.Parse(text);
+            }
+
+            public string Format(Offset value)
+            {
+                return value == Offset.Zero ? "Z" : fullPattern.Format(value);
+            }
+        }
 
         #region Character handlers
         private static PatternParseResult<Offset> HandlePlus(PatternCursor pattern, SteppedPatternBuilder<Offset, OffsetParseBucket> builder)
