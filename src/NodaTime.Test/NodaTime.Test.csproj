@@ -158,15 +158,12 @@
     <Compile Include="LocalTimeTest.cs" />
     <Compile Include="PeriodTest.cs" />
     <Compile Include="SystemClockTest.cs" />
-    <Compile Include="Text\AbstractFormattingData.cs" />
-    <Compile Include="Text\FormattingTestSupport.cs" />
     <Compile Include="Text\OffsetPatternTest.cs" />
     <Compile Include="Text\ParseBucketTest.cs" />
     <Compile Include="Text\ParseResultTest.cs" />
     <Compile Include="Text\Patterns\PatternCursorTest.cs" />
     <Compile Include="Text\Patterns\PatternParseResultTest.cs" />
     <Compile Include="Text\TextCursorTestBase.cs" />
-    <Compile Include="Text\OffsetFormattingTestSupport.cs" />
     <Compile Include="Text\ValueCursorTest.cs" />
     <Compile Include="TimeZones\AlgiersTest.cs" />
     <Compile Include="TimeZones\BclTimeZoneProviderTest.cs" />
@@ -218,12 +215,6 @@
       <DependentUpon>IsoCalendarSystemTest.cs</DependentUpon>
     </Compile>
     <Compile Include="OffsetTest.cs" />
-    <Compile Include="OffsetTest.Format.cs">
-      <DependentUpon>OffsetTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="OffsetTest.Parse.cs">
-      <DependentUpon>OffsetTest.cs</DependentUpon>
-    </Compile>
     <Compile Include="OffsetTest.Operators.cs">
       <DependentUpon>OffsetTest.cs</DependentUpon>
     </Compile>
