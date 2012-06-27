@@ -39,6 +39,21 @@ for general notes on custom patterns, including characters used for escaping and
   </thead>
   <tbody>
     <tr>
+      <td><code>Z</code></td>
+      <td>
+        This can only occur at the start of a pattern, as a prefix to a normal pattern. When it's
+		used, an offset of zero is always formatted as "Z", and "Z" will be parsed as a zero offset.
+		When formatting, a non-zero offset falls back to the remainder of the pattern. When parsing,
+		a non-Z value is always parsed by the remainder of the pattern, and a result of a zero offset
+		is still acceptable. (So a pattern of "ZHH:mm" can still parse a value of "00:00" even though
+		it would be formatted as "Z".)
+      </td>
+      <td>
+        Zero: <code>ZHH:mm</code> => <code>Z</code>
+        5 hours: <code>ZHH:mm</code> => <code>05:00</code>
+      </td>
+    </tr>
+    <tr>
       <td><code>H</code> or <code>HH</code></td>
       <td>
         Number of hours in the offset. <code>HH</code> is zero-padded; <code>H</code> is not.
