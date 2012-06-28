@@ -22,7 +22,7 @@ using System.Text;
 namespace NodaTime.ZoneInfoCompiler
 {
     /// <summary>
-    ///   Proveides a base clase for logging instances.
+    /// Provides a base clase for logging instances.
     /// </summary>
     public abstract class LogBase : ILog
     {
