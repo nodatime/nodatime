@@ -154,7 +154,7 @@
     <Compile Include="LocalDateTimeTest.Pseudomutators.cs">
       <DependentUpon>LocalDateTimeTest.cs</DependentUpon>
     </Compile>
-    <Compile Include="Testing\StubClockTest.cs" />
+    <Compile Include="Testing\FakeClockTest.cs" />
     <Compile Include="LocalTimeTest.cs" />
     <Compile Include="PeriodTest.cs" />
     <Compile Include="SystemClockTest.cs" />

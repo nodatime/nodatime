@@ -20,37 +20,51 @@ namespace NodaTime.Testing
     /// Clock which can be constructed with an initial instant, and then advanced programmatically.
     /// This class is designed to be used when testing classes which take an <see cref="IClock"/> as a dependency.
     /// </summary>
+    /// <remarks>
+    /// This class is somewhere between a fake and a stub, depending on how it's used - if it's set to
+    /// <see cref="AutoAdvance"/> then time will pass, but in a pretty odd way (i.e. dependent on how
+    /// often it's consulted).
+    /// </remarks>
     /// <threadsafety>
     /// This type is thread-safe, primarily in order to allow <see cref="IClock"/> to be documented as
     /// "thread safe in all built-in implementations".
     /// </threadsafety>
-    public sealed class StubClock : IClock
+    public sealed class FakeClock : IClock
     {
         private readonly object mutex = new object();
         private Instant now;
+        private Duration autoAdvance = Duration.Zero;
 
         /// <summary>
-        /// Creates a stub clock initially set to the given instant.
+        /// Creates a stub clock initially set to the given instant, with no auto-advance.
         /// </summary>
-        public StubClock(Instant initial)
+        public FakeClock(Instant initial) : this(initial, Duration.Zero)
+        {            
+        }
+
+        /// <summary>
+        /// Creates a stub clock initially set to the given instant, with a given level of auto-advance.
+        /// </summary>
+        public FakeClock(Instant initial, Duration autoAdvance)
         {
             now = initial;
+            this.autoAdvance = autoAdvance;
         }
 
         /// <summary>
         /// Returns a fake clock initially set to midnight of the given year/month/day in UTC in the ISO calendar.
         /// </summary>
-        public static StubClock FromUtc(int year, int month, int dayOfMonth)
+        public static FakeClock FromUtc(int year, int month, int dayOfMonth)
         {
-            return new StubClock(Instant.FromUtc(year, month, dayOfMonth, 0, 0));
+            return new FakeClock(Instant.FromUtc(year, month, dayOfMonth, 0, 0));
         }
 
         /// <summary>
         /// Returns a fake clock initially set to the given year/month/day/time in UTC in the ISO calendar.
         /// </summary>
-        public static StubClock FromUtc(int year, int month, int dayOfMonth, int hour, int minute, int second)
+        public static FakeClock FromUtc(int year, int month, int dayOfMonth, int hour, int minute, int second)
         {
-            return new StubClock(Instant.FromUtc(year, month, dayOfMonth, hour, minute, second));
+            return new FakeClock(Instant.FromUtc(year, month, dayOfMonth, hour, minute, second));
         }
 
         /// <summary>
@@ -134,7 +148,35 @@ namespace NodaTime.Testing
             {
                 lock (mutex)
                 {
-                    return now;
+                    Instant then = now;
+                    now += autoAdvance;
+                    return then;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Amount of time to advance the clock by each time <see cref="Now"/> is fetched.
+        /// </summary>
+        /// <remarks>
+        /// This defaults to zero, in which case the clock doesn't change other than by calls
+        /// to <see cref="Reset"/>. The value may be negative, to simulate particularly odd
+        /// system clock effects.
+        /// </remarks>
+        public Duration AutoAdvance
+        {
+            get
+            {
+                lock (mutex)
+                {
+                    return autoAdvance;
+                }
+            }
+            set
+            {
+                lock (mutex)
+                {
+                    autoAdvance = value;
                 }
             }
         }
