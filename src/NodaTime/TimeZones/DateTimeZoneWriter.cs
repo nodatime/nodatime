@@ -165,10 +165,10 @@ namespace NodaTime.TimeZones
                 WriteByte(FlagTimeZoneCached);
                 ((CachedDateTimeZone)value).Write(this);
             }
-            else if (value is DaylightSavingsTimeZone)
+            else if (value is DaylightSavingsDateTimeZone)
             {
                 WriteByte(FlagTimeZoneDst);
-                ((DaylightSavingsTimeZone)value).Write(this);
+                ((DaylightSavingsDateTimeZone)value).Write(this);
             }
             else
             {
