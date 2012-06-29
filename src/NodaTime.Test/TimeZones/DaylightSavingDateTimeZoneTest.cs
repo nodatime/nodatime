@@ -21,7 +21,7 @@ using NodaTime.TimeZones;
 namespace NodaTime.Test.TimeZones
 {
     [TestFixture]
-    public class DaylightSavingTimeZoneTest
+    public class DaylightSavingDateTimeZoneTest
     {
         private static readonly ZoneRecurrence Winter = new ZoneRecurrence("Winter", Offset.Zero,
             new ZoneYearOffset(TransitionMode.Wall, 10, 5, 0, false, Offset.FromHours(2)), 2000, int.MaxValue);
@@ -36,7 +36,7 @@ namespace NodaTime.Test.TimeZones
         /// - Summer time (DST = 1 hour) always starts at 1am local time on March 10th (skips to 2am)
         /// - Winter time (DST = 0) always starts at 2am local time on October 5th (skips to 1am)
         /// </summary>
-        private static readonly DaylightSavingsTimeZone TestZone = new DaylightSavingsTimeZone("Test",
+        private static readonly DaylightSavingsDateTimeZone TestZone = new DaylightSavingsDateTimeZone("Test",
             Offset.FromHours(5), Winter, Summer);
 
         [Test]

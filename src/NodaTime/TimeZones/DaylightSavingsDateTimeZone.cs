@@ -31,14 +31,14 @@ namespace NodaTime.TimeZones
     /// only be used as part of a PrecalculatedDateTimeZone which will only ask it for
     /// values within the right portion of the timeline.
     /// </remarks>
-    internal class DaylightSavingsTimeZone : DateTimeZone, IEquatable<DaylightSavingsTimeZone>
+    internal class DaylightSavingsDateTimeZone : DateTimeZone, IEquatable<DaylightSavingsDateTimeZone>
     {
         private readonly ZoneRecurrence standardRecurrence;
         private readonly Offset standardOffset;
         private readonly ZoneRecurrence dstRecurrence;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DaylightSavingsTimeZone"/> class.
+        /// Initializes a new instance of the <see cref="DaylightSavingsDateTimeZone"/> class.
         /// </summary>
         /// <remarks>
         /// At least one of the recurrences (it doesn't matter which) must be a "standard", i.e. not have any savings
@@ -49,7 +49,7 @@ namespace NodaTime.TimeZones
         /// <param name="standardOffset">The standard offset.</param>
         /// <param name="startRecurrence">The start recurrence.</param>
         /// <param name="endRecurrence">The end recurrence.</param>
-        internal DaylightSavingsTimeZone(String id, Offset standardOffset, ZoneRecurrence startRecurrence, ZoneRecurrence endRecurrence)
+        internal DaylightSavingsDateTimeZone(String id, Offset standardOffset, ZoneRecurrence startRecurrence, ZoneRecurrence endRecurrence)
             : base(id, false,
             standardOffset + Offset.Min(startRecurrence.Savings, endRecurrence.Savings),
             standardOffset + Offset.Max(startRecurrence.Savings, endRecurrence.Savings))
@@ -80,7 +80,7 @@ namespace NodaTime.TimeZones
         /// true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
         /// </returns>
         /// <param name="other">An object to compare with this object.</param>
-        public bool Equals(DaylightSavingsTimeZone other)
+        public bool Equals(DaylightSavingsDateTimeZone other)
         {
             if (ReferenceEquals(null, other))
             {
@@ -107,7 +107,7 @@ namespace NodaTime.TimeZones
         ///                 </exception><filterpriority>2</filterpriority>
         public override bool Equals(Object obj)
         {
-            return Equals(obj as DaylightSavingsTimeZone);
+            return Equals(obj as DaylightSavingsDateTimeZone);
         }
 
         /// <summary>
@@ -218,7 +218,7 @@ namespace NodaTime.TimeZones
             Offset offset = reader.ReadOffset();
             ZoneRecurrence start = ZoneRecurrence.Read(reader);
             ZoneRecurrence end = ZoneRecurrence.Read(reader);
-            return new DaylightSavingsTimeZone(id, offset, start, end);
+            return new DaylightSavingsDateTimeZone(id, offset, start, end);
         }
     }
 }

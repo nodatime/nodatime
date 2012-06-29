@@ -67,16 +67,16 @@ namespace NodaTime
     /// </para>
     /// <para>The static <see cref="ForId"/> method will fetch a time zone with the given ID; the set of valid IDs is dependent on the
     /// current time zone provider, which can be replaced with the <see cref="SetProvider"/> method. The default provider is
-    /// a <see cref="TzdbTimeZoneProvider"/> which loads its data from inside the Noda Time assembly; it can be replaced either with another
-    /// TzdbTimeZoneProvider instance which may obtain data from external resources (e.g. to use a more recent version of the zoneinfo database
-    /// than the version of Noda Time you're using) or an instance of <see cref="BclTimeZoneProvider"/>.
+    /// a <see cref="TzdbDateTimeZoneProvider"/> which loads its data from inside the Noda Time assembly; it can be replaced either with another
+    /// TzdbDateTimeZoneProvider instance which may obtain data from external resources (e.g. to use a more recent version of the zoneinfo database
+    /// than the version of Noda Time you're using) or an instance of <see cref="BclDateTimeZoneProvider"/>.
     /// </para>
     /// <para>Unlike many other date/time APIs, Noda Time does not use the system default time zone without you explicitly asking it to.
     /// You can fetch the Noda Time representation of the system default time zone using <see cref="GetSystemDefault"/> or
     /// <see cref="GetSystemDefaultOrNull"/>, which will attempt to find an appropriate time zone using the current provider.
     /// You should be aware that this may fail, however (in which case the first method will throw an exception, and the second method will return null)
     /// if no mapping is found. This could occur due to the system having a "custom" time zone installed, or there being no mapping for the BCL zone ID
-    /// to the provider's set of IDs due to the BCL zone ID being added recently. You can always use <see cref="BclTimeZone.ForSystemDefault"/> to convert
+    /// to the provider's set of IDs due to the BCL zone ID being added recently. You can always use <see cref="BclDateTimeZone.ForSystemDefault"/> to convert
     /// the local <see cref="TimeZoneInfo"/> to guarantee that a representation is available.</para>
     /// <para>Currently Noda Time does not support 3rd party time zone implementations. If you wish to create your own implementation,
     /// please ask for support on the Noda Time mailing list.</para>
@@ -99,7 +99,7 @@ namespace NodaTime
         /// <summary>
         /// Gets the default time zone provider, which is initialized from resources within the NodaTime assembly.
         /// </summary>
-        public static readonly IDateTimeZoneProvider DefaultDateTimeZoneProvider = new TzdbTimeZoneProvider("NodaTime.TimeZones.Tzdb");
+        public static readonly IDateTimeZoneProvider DefaultDateTimeZoneProvider = new TzdbDateTimeZoneProvider("NodaTime.TimeZones.Tzdb");
 
         private static readonly DateTimeZone UtcZone = new FixedDateTimeZone(Offset.Zero);
         private const int FixedZoneCacheGranularityMilliseconds = NodaConstants.MillisecondsPerMinute * 30;

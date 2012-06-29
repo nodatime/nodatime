@@ -26,7 +26,7 @@ namespace NodaTime.TimeZones
     /// .NET 3.5 and later.
     /// </summary>
     /// <threadsafety>This type maintains no state, and all members are thread-safe. See the thread safety section of the user guide for more information.</threadsafety>
-    public class BclTimeZoneProvider : IDateTimeZoneProvider
+    public class BclDateTimeZoneProvider : IDateTimeZoneProvider
     {
         /// <summary>
         /// Returns the IDs of all system time zones.
@@ -46,7 +46,7 @@ namespace NodaTime.TimeZones
         }
 
         /// <summary>
-        /// Creates a new instance of <see cref="BclTimeZone" /> from the <see cref="TimeZoneInfo"/> with the given
+        /// Creates a new instance of <see cref="BclDateTimeZone" /> from the <see cref="TimeZoneInfo"/> with the given
         /// ID. The ID must be a known system time zone ID.
         /// </summary>
         /// <param name="id">The ID of the system time zone to convert</param>
@@ -57,7 +57,7 @@ namespace NodaTime.TimeZones
             try
             {
                 TimeZoneInfo zone = TimeZoneInfo.FindSystemTimeZoneById(id);
-                return BclTimeZone.FromTimeZoneInfo(zone);
+                return BclDateTimeZone.FromTimeZoneInfo(zone);
             }
             catch (TimeZoneNotFoundException)
             {                
