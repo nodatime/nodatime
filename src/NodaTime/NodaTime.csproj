@@ -177,8 +177,8 @@
     <Compile Include="SkippedTimeException.cs" />
     <Compile Include="SystemClock.cs" />
     <Compile Include="Text\ValueCursor.cs" />
-    <Compile Include="TimeZones\BclTimeZone.cs" />
-    <Compile Include="TimeZones\BclTimeZoneProvider.cs" />
+    <Compile Include="TimeZones\BclDateTimeZone.cs" />
+    <Compile Include="TimeZones\BclDateTimeZoneProvider.cs" />
     <Compile Include="TimeZones\CachedDateTimeZone.cs" />
     <Compile Include="TimeZones\DateTimeZoneReader.cs" />
     <Compile Include="TimeZones\DateTimeZoneWriter.cs" />
@@ -191,7 +191,7 @@
     <Compile Include="TimeZones\DateTimeZoneCompressionReader.cs" />
     <Compile Include="TimeZones\DateTimeZoneCompressionWriter.cs" />
     <Compile Include="TimeZones\DateTimeZoneBuilder.cs" />
-    <Compile Include="TimeZones\DaylightSavingsTimeZone.cs" />
+    <Compile Include="TimeZones\DaylightSavingsDateTimeZone.cs" />
     <Compile Include="TimeZones\FixedDateTimeZone.cs" />
     <Compile Include="TimeZones\IDateTimeZoneProvider.cs" />
     <Compile Include="TimeZones\winmap.Designer.cs">
@@ -208,7 +208,7 @@
     <Compile Include="TimeZones\ZoneRecurrenceCollection.cs" />
     <Compile Include="TimeZones\ZoneTransition.cs" />
     <Compile Include="TimeZones\TransitionMode.cs" />
-    <Compile Include="TimeZones\TzdbTimeZoneProvider.cs" />
+    <Compile Include="TimeZones\TzdbDateTimeZoneProvider.cs" />
     <Compile Include="LocalDateTime.cs" />
     <Compile Include="Fields\DateTimeFieldType.cs" />
     <Compile Include="DateTimeZone.cs" />

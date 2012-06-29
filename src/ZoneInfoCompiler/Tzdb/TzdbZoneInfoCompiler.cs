@@ -25,7 +25,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
     /// <summary>
     ///   Provides a compiler for Olson (TZDB) zone info files into the internal format used by Noda
     ///   Time for its <see cref="DateTimeZone" /> definitions. This read a set of files and generates
-    ///   a resource file with the compiled contents suitable for reading with <see cref="TzdbTimeZoneProvider" /> or one of its variants.
+    ///   a resource file with the compiled contents suitable for reading with <see cref="TzdbDateTimeZoneProvider" /> or one of its variants.
     /// </summary>
     public class TzdbZoneInfoCompiler
     {
@@ -183,8 +183,8 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
                 }
                 timeZoneMap.Add(key, value);
             }
-            output.WriteString(TzdbTimeZoneProvider.VersionKey, database.Version);
-            output.WriteDictionary(TzdbTimeZoneProvider.IdMapKey, timeZoneMap);
+            output.WriteString(TzdbDateTimeZoneProvider.VersionKey, database.Version);
+            output.WriteDictionary(TzdbDateTimeZoneProvider.IdMapKey, timeZoneMap);
         }
 
         /// <summary>

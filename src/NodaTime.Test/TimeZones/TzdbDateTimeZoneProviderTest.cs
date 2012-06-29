@@ -21,7 +21,7 @@ using NUnit.Framework;
 namespace NodaTime.Test.TimeZones
 {
     [TestFixture]
-    public class TzdbTimeZoneProviderTest
+    public class TzdbDateTimeZoneProviderTest
     {
         [Test]
         public void ZoneMapping()

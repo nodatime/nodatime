@@ -24,7 +24,7 @@ using NodaTime.TimeZones;
 namespace NodaTime.Test.TimeZones
 {
     [TestFixture]
-    public class BclTimeZoneTest
+    public class BclDateTimeZoneTest
     {
 #pragma warning disable 0414 // Used by tests via reflection - do not remove!
         // This test is effectively disabled on Mono as its time zone support is broken in the current
@@ -39,7 +39,7 @@ namespace NodaTime.Test.TimeZones
         [TestCaseSource("BclZonesOrEmptyOnMono")]
         public void AllZoneTransitions(TimeZoneInfo windowsZone)
         {
-            var nodaZone = BclTimeZone.FromTimeZoneInfo(windowsZone);
+            var nodaZone = BclDateTimeZone.FromTimeZoneInfo(windowsZone);
 
             Instant instant = Instant.FromUtc(1800, 1, 1, 0, 0);
             Instant end = Instant.FromUtc(2050, 1, 1, 0, 0);
@@ -57,8 +57,8 @@ namespace NodaTime.Test.TimeZones
         {
             // Assume that the local time zone doesn't change between two calls...
             TimeZoneInfo local = TimeZoneInfo.Local;
-            BclTimeZone nodaLocal1 = BclTimeZone.ForSystemDefault();
-            BclTimeZone nodaLocal2 = BclTimeZone.ForSystemDefault();
+            BclDateTimeZone nodaLocal1 = BclDateTimeZone.ForSystemDefault();
+            BclDateTimeZone nodaLocal2 = BclDateTimeZone.ForSystemDefault();
             // Check it's actually the right zone
             Assert.AreSame(local, nodaLocal1.OriginalZone);
             // Check it's cached

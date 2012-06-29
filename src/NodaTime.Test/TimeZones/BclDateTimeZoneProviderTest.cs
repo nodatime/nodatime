@@ -22,12 +22,12 @@ using NodaTime.TimeZones;
 namespace NodaTime.Test.TimeZones
 {
     [TestFixture]
-    public class BclTimeZoneProviderTest
+    public class BclDateTimeZoneProviderTest
     {
         [Test]
         public void AllZonesMapToTheirId()
         {
-            BclTimeZoneProvider provider = new BclTimeZoneProvider();
+            BclDateTimeZoneProvider provider = new BclDateTimeZoneProvider();
             foreach (var zone in TimeZoneInfo.GetSystemTimeZones())
             {
                 Assert.AreEqual(zone.Id, provider.MapTimeZoneId(zone));
@@ -37,9 +37,9 @@ namespace NodaTime.Test.TimeZones
         [Test]
         public void UtcMapping()
         {
-            // Effectively check that we end up with a BclTimeZone when we use the UTC ID.
-            TimeZoneCache cache = new TimeZoneCache(new BclTimeZoneProvider());
-            Assert.IsInstanceOf<BclTimeZone>(cache[DateTimeZone.UtcId]);
+            // Effectively check that we end up with a BclDateTimeZone when we use the UTC ID.
+            TimeZoneCache cache = new TimeZoneCache(new BclDateTimeZoneProvider());
+            Assert.IsInstanceOf<BclDateTimeZone>(cache[DateTimeZone.UtcId]);
         }
     }
 }

@@ -25,7 +25,7 @@ namespace NodaTime.TimeZones
     /// Representation of a time zone converted from a <see cref="TimeZoneInfo"/> from the Base Class Library.
     /// </summary>
     /// <threadsafety>This type is immutable reference type. See the thread safety section of the user guide for more information.</threadsafety>
-    public sealed class BclTimeZone : DateTimeZone
+    public sealed class BclDateTimeZone : DateTimeZone
     {
         private static readonly int TypeInitializationChecking = NodaTime.Utility.TypeInitializationChecker.RecordInitializationStart();
 
@@ -34,7 +34,7 @@ namespace NodaTime.TimeZones
         /// matter if it's out of date - we'll just create another wrapper if necessary. It's not *that* expensive to make
         /// a few more wrappers than we need.
         /// </summary>
-        private static BclTimeZone systemDefault;
+        private static BclDateTimeZone systemDefault;
 
         private readonly TimeZoneInfo bclZone;
         private readonly List<AdjustmentInterval> adjustmentIntervals;
@@ -50,7 +50,7 @@ namespace NodaTime.TimeZones
         /// </summary>
         public string DisplayName { get { return OriginalZone.DisplayName; } }
 
-        private BclTimeZone(TimeZoneInfo bclZone, Offset minOffset, Offset maxOffset, List<AdjustmentInterval> adjustmentIntervals, ZoneInterval headInterval)
+        private BclDateTimeZone(TimeZoneInfo bclZone, Offset minOffset, Offset maxOffset, List<AdjustmentInterval> adjustmentIntervals, ZoneInterval headInterval)
             : base(bclZone.Id, bclZone.SupportsDaylightSavingTime, minOffset, maxOffset)
         {
             this.bclZone = bclZone;
@@ -98,11 +98,11 @@ namespace NodaTime.TimeZones
         }
 
         /// <summary>
-        /// Creates a new <see cref="BclTimeZone" /> from a <see cref="TimeZoneInfo"/> from the Base Class Library.
+        /// Creates a new <see cref="BclDateTimeZone" /> from a <see cref="TimeZoneInfo"/> from the Base Class Library.
         /// </summary>
         /// <param name="bclZone">The original time zone to take information from; must not be null.</param>
         /// <returns>A Noda Time representation of the given time zone.</returns>
-        public static BclTimeZone FromTimeZoneInfo(TimeZoneInfo bclZone)
+        public static BclDateTimeZone FromTimeZoneInfo(TimeZoneInfo bclZone)
         {
             Preconditions.CheckNotNull(bclZone, "bclZone");
             Offset standardOffset = Offset.FromTimeSpan(bclZone.BaseUtcOffset);
@@ -113,7 +113,7 @@ namespace NodaTime.TimeZones
             if (!bclZone.SupportsDaylightSavingTime || rules.Length == 0)
             {
                 var fixedInterval = new ZoneInterval(bclZone.StandardName, Instant.MinValue, Instant.MaxValue, standardOffset, Offset.Zero);
-                return new BclTimeZone(bclZone, standardOffset, standardOffset, null, fixedInterval);
+                return new BclDateTimeZone(bclZone, standardOffset, standardOffset, null, fixedInterval);
             }
             var adjustmentIntervals = new List<AdjustmentInterval>();
             var headInterval = ComputeHeadInterval(bclZone, rules[0]);
@@ -156,13 +156,13 @@ namespace NodaTime.TimeZones
                     nextStart = firstRecurrence.NextOrFail(lastTransition.Instant, standardOffset, seamSavings).Instant;
                 }
                 var seam = new ZoneInterval(seamName, lastTransition.Instant, nextStart, lastTransition.NewOffset, seamSavings);
-                var adjustmentZone = new DaylightSavingsTimeZone("ignored", standardOffset, standard.ToInfinity(), daylight.ToInfinity());
+                var adjustmentZone = new DaylightSavingsDateTimeZone("ignored", standardOffset, standard.ToInfinity(), daylight.ToInfinity());
 
                 adjustmentIntervals.Add(new AdjustmentInterval(previousEnd, adjustmentZone, seam));
                 previousEnd = nextStart;
             }
 
-            return new BclTimeZone(bclZone, standardOffset + minSavings, standardOffset + maxSavings, adjustmentIntervals, headInterval);
+            return new BclDateTimeZone(bclZone, standardOffset + minSavings, standardOffset + maxSavings, adjustmentIntervals, headInterval);
         }
 
         /// <summary>
@@ -237,12 +237,12 @@ namespace NodaTime.TimeZones
         {
             private readonly Instant start;
             private readonly ZoneInterval seam;
-            private readonly DaylightSavingsTimeZone adjustmentZone;
+            private readonly DaylightSavingsDateTimeZone adjustmentZone;
 
             internal Instant Start { get { return start; } }
             internal Instant End { get { return seam.End; } }
 
-            internal AdjustmentInterval(Instant start, DaylightSavingsTimeZone adjustmentZone, ZoneInterval seam)
+            internal AdjustmentInterval(Instant start, DaylightSavingsDateTimeZone adjustmentZone, ZoneInterval seam)
             {
                 this.start = start;
                 this.seam = seam;
@@ -265,17 +265,17 @@ namespace NodaTime.TimeZones
         /// the local time zone has not changed.
         /// </summary>
         /// <remarks>
-        /// When the <see cref="DateTimeZone"/> provider is set to an instance of <see cref="BclTimeZoneProvider"/> it
+        /// When the <see cref="DateTimeZone"/> provider is set to an instance of <see cref="BclDateTimeZoneProvider"/> it
         /// is highly likely that <see cref="DateTimeZone.GetSystemDefault"/> will return a non-null value - but in
         /// rare cases (such as the set of system time zones changing after the provider is installed, or the local zone
         /// not being a normal "system" one) it is possible that it wouldn't be mapped. By contrast, this method will never return null.
         /// </remarks>
-        /// <returns>A <see cref="BclTimeZone"/> wrapping the "local" (system) time zone as returned by
+        /// <returns>A <see cref="BclDateTimeZone"/> wrapping the "local" (system) time zone as returned by
         /// <see cref="TimeZoneInfo.Local"/>.</returns>
-        public static BclTimeZone ForSystemDefault()
+        public static BclDateTimeZone ForSystemDefault()
         {
             TimeZoneInfo local = TimeZoneInfo.Local;
-            BclTimeZone currentSystemDefault = systemDefault;
+            BclDateTimeZone currentSystemDefault = systemDefault;
 
             // Cached copy is out of date - wrap a new one
             if (currentSystemDefault == null || currentSystemDefault.OriginalZone != local)
