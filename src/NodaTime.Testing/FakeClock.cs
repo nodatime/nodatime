@@ -36,14 +36,14 @@ namespace NodaTime.Testing
         private Duration autoAdvance = Duration.Zero;
 
         /// <summary>
-        /// Creates a stub clock initially set to the given instant, with no auto-advance.
+        /// Creates a fake clock initially set to the given instant, with no auto-advance.
         /// </summary>
         public FakeClock(Instant initial) : this(initial, Duration.Zero)
         {            
         }
 
         /// <summary>
-        /// Creates a stub clock initially set to the given instant, with a given level of auto-advance.
+        /// Creates a fake clock initially set to the given instant, with a given level of auto-advance.
         /// </summary>
         public FakeClock(Instant initial, Duration autoAdvance)
         {
