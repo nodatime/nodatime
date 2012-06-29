@@ -230,7 +230,7 @@ namespace NodaTime.TimeZones
                         // The order of rules can come in any order, and it doesn't really matter
                         // which rule was chosen the 'start' and which is chosen the 'end'. DaylightSavingsTimeZone
                         // works properly either way.
-                        return new DaylightSavingsTimeZone(id, ruleSet.StandardOffset, startRule, endRule);
+                        return new DaylightSavingsDateTimeZone(id, ruleSet.StandardOffset, startRule, endRule);
                     }
                 }
                 return null;

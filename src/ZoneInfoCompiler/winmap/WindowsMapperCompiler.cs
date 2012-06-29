@@ -50,9 +50,9 @@ namespace NodaTime.ZoneInfoCompiler.winmap
             var document = LoadFile(inputFile);
             var mappings = MapZones(document);
             log.Info("Mapped {0} zones in total.", mappings.Count);
-            output.WriteDictionary(TzdbTimeZoneProvider.WindowsToPosixMapKey, mappings);
+            output.WriteDictionary(TzdbDateTimeZoneProvider.WindowsToPosixMapKey, mappings);
             var version = FindVersion(document);
-            output.WriteString(TzdbTimeZoneProvider.WindowsToPosixMapVersionKey, version);
+            output.WriteString(TzdbDateTimeZoneProvider.WindowsToPosixMapVersionKey, version);
             log.Info("Finished compiling.", inputFileName);
             return 0;
         }

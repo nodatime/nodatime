@@ -171,7 +171,7 @@ namespace NodaTime.TimeZones
                 case DateTimeZoneWriter.FlagTimeZoneCached:
                     return CachedDateTimeZone.Read(this, id);
                 case DateTimeZoneWriter.FlagTimeZoneDst:
-                    return DaylightSavingsTimeZone.Read(this, id);
+                    return DaylightSavingsDateTimeZone.Read(this, id);
                 default:
                     throw new InvalidDataException("Unknown flag type " + flag);
             }
