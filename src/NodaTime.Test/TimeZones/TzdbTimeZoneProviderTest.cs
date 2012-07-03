@@ -31,5 +31,20 @@ namespace NodaTime.Test.TimeZones
             var bclZone = TimeZoneInfo.FindSystemTimeZoneById("GMT Standard Time");
             Assert.AreEqual("Europe/London", provider.MapTimeZoneId(bclZone));
         }
+
+        /// <summary>
+        /// Simply tests that every ID in the built-in database can be fetched. This is also
+        /// helpful for diagnostic debugging when we want to check that some potential
+        /// invariant holds for all time zones...
+        /// </summary>
+        [Test]
+        public void ForId_AllIds()
+        {
+            var provider = new TzdbTimeZoneProvider("NodaTime.TimeZones.Tzdb");
+            foreach (string id in provider.Ids)
+            {
+                Assert.IsNotNull(provider.ForId(id));
+            }
+        }
     }
 }

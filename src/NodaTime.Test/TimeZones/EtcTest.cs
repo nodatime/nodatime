@@ -31,7 +31,7 @@ namespace NodaTime.Test.TimeZones
         public void FixedEasternZone()
         {
             string id = "Etc/GMT+5";
-            var zone = DateTimeZone.ForId(id);
+            var zone = DateTimeZoneFactory.Tzdb[id];
             Assert.AreEqual(id, zone.Id);
             Assert.IsInstanceOf<FixedDateTimeZone>(zone);
             FixedDateTimeZone fixedZone = (FixedDateTimeZone)zone;
@@ -42,7 +42,7 @@ namespace NodaTime.Test.TimeZones
         public void FixedWesternZone()
         {
             string id = "Etc/GMT-4";
-            var zone = DateTimeZone.ForId(id);
+            var zone = DateTimeZoneFactory.Tzdb[id];
             Assert.AreEqual(id, zone.Id);
             Assert.IsInstanceOf<FixedDateTimeZone>(zone);
             FixedDateTimeZone fixedZone = (FixedDateTimeZone)zone;

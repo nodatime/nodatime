@@ -62,11 +62,6 @@ namespace NodaTime.Serialization.JsonNet
         public static readonly JsonConverter OffsetConverter = new NodaPatternConverter<Offset>(OffsetPattern.GeneralInvariantPattern);
 
         /// <summary>
-        /// Converter for timezones, serializing only the timezone id.
-        /// </summary>
-        public static readonly JsonConverter DateTimeZoneConverter = new NodaDateTimeZoneConverter();
-
-        /// <summary>
         /// Converter for durations.
         /// </summary>
         public static readonly JsonConverter DurationConverter = new NodaDurationConverter();

@@ -23,26 +23,6 @@ namespace NodaTime.Test
     [TestFixture]
     public partial class DateTimeZoneTest
     {
-        [SetUp]
-        public void Setup()
-        {
-            // Create a new factory
-            DateTimeZone.Factory = new DateTimeZoneFactory(new TzdbTimeZoneProvider("NodaTime.TimeZones.Tzdb"));
-        }
-
-        [TearDown]
-        public void TearDown()
-        {
-            // Reset back to the default factory.
-            DateTimeZone.Factory = DateTimeZoneFactory.Default;
-        }
-
-        [Test]
-        public void DefaultProviderIsTzdb()
-        {
-            Assert.IsTrue(DateTimeZone.ProviderVersionId.StartsWith("TZDB: "));
-        }
-
         // The current implementation caches every half hour, -12 to +15.
         [Test]
         public void ForOffset_UncachedExample_NotOnHalfHour()

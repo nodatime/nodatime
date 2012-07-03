@@ -25,12 +25,12 @@ namespace NodaTime.Serialization.Test.JsonNet
     [TestFixture]
     public class NodaDateTimeZoneConverterTest
     {
-        private readonly JsonConverter converter = NodaConverters.DateTimeZoneConverter;
+        private readonly JsonConverter converter = new NodaDateTimeZoneConverter(DateTimeZoneFactory.Tzdb);
 
         [Test]
         public void Serialize()
         {
-            var dateTimeZone = DateTimeZone.ForId("America/Los_Angeles");
+            var dateTimeZone = DateTimeZoneFactory.Tzdb["America/Los_Angeles"];
             var json = JsonConvert.SerializeObject(dateTimeZone, Formatting.None, converter);
             string expectedJson = "\"America/Los_Angeles\"";
             Assert.AreEqual(expectedJson, json);
@@ -41,7 +41,7 @@ namespace NodaTime.Serialization.Test.JsonNet
         {
             string json = "\"America/Los_Angeles\"";
             var dateTimeZone = JsonConvert.DeserializeObject<DateTimeZone>(json, converter);
-            var expectedDateTimeZone = DateTimeZone.ForId("America/Los_Angeles");
+            var expectedDateTimeZone = DateTimeZoneFactory.Tzdb["America/Los_Angeles"];
             Assert.AreEqual(expectedDateTimeZone, dateTimeZone);
         }
 

@@ -29,11 +29,11 @@ namespace NodaTime.Test
     public partial class DateTimeZoneTest
     {
         // Sample time zones for DateTimeZone.AtStartOfDay etc. I didn't want to only test midnight transitions.
-        private static readonly DateTimeZone LosAngeles = DateTimeZone.ForId("America/Los_Angeles");
-        private static readonly DateTimeZone NewZealand = DateTimeZone.ForId("Pacific/Auckland");
-        private static readonly DateTimeZone Paris = DateTimeZone.ForId("Europe/Paris");
-        private static readonly DateTimeZone NewYork = DateTimeZone.ForId("America/New_York");
-        private static readonly DateTimeZone Pacific = DateTimeZone.ForId("America/Los_Angeles");
+        private static readonly DateTimeZone LosAngeles = DateTimeZoneFactory.Tzdb["America/Los_Angeles"];
+        private static readonly DateTimeZone NewZealand = DateTimeZoneFactory.Tzdb["Pacific/Auckland"];
+        private static readonly DateTimeZone Paris = DateTimeZoneFactory.Tzdb["Europe/Paris"];
+        private static readonly DateTimeZone NewYork = DateTimeZoneFactory.Tzdb["America/New_York"];
+        private static readonly DateTimeZone Pacific = DateTimeZoneFactory.Tzdb["America/Los_Angeles"];
 
         /// <summary>
         /// Local midnight at the start of the transition (June 1st) becomes 1am.
@@ -270,7 +270,7 @@ namespace NodaTime.Test
         public void AtStartOfDay_DayDoesntExist()
         {
             LocalDate badDate = new LocalDate(2011, 12, 30);
-            DateTimeZone samoa = DateTimeZone.ForId("Pacific/Apia");
+            DateTimeZone samoa = DateTimeZoneFactory.Tzdb["Pacific/Apia"];
             var exception = Assert.Throws<SkippedTimeException>(() => samoa.AtStartOfDay(badDate));
             Assert.AreEqual(new LocalDateTime(2011, 12, 30, 0, 0), exception.LocalDateTime);
         }

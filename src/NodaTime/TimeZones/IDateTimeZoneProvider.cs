@@ -1,4 +1,4 @@
-#region Copyright and license information
+﻿#region Copyright and license information
 // Copyright 2001-2009 Stephen Colebourne
 // Copyright 2009-2011 Jon Skeet
 // 
@@ -22,34 +22,34 @@ namespace NodaTime.TimeZones
 {
     /// <summary>
     /// Provides the interface for objects that can retrieve time zone definitions given an id.
-    /// This interface is designed to work with <see cref="DateTimeZoneFactory"/>, and implementations should
-    /// expect that to be the class through which the provider is called. Client code should not use this
-    /// interface directly, primarily for reasons of 
     /// </summary>
     /// <remarks>
-    /// Note that the ID "UTC" is reserved - it's the only zone which is guaranteed to be present.
-    /// Even if the provider advertises that it knows about the UTC zone, it will never be asked for it;
-    /// even if it *doesn't* advertise that it knows about UTC, <see cref="DateTimeZone.Ids" /> will always
-    /// include it.
+    /// Note that the ID "UTC" is reserved in NodaTime - even if the provider advertises that it knows about the UTC zone, 
+    /// other NodaTime types (such as <see cref="DateTimeZoneFactory"/> will never ask the provider for it.
     /// </remarks>
     /// <remarks>
-    /// Implementations should be accessible from any thread, but will not usually be accessed from more than
-    /// one thread concurrently. (Clients could call <see cref="DateTimeZone.SetProvider"/> with the same
-    /// provider in multiple threads, but that would be extremely unlikely.)
+    /// <para>
+    /// The interface presumes that the available time zones are static; there is no mechanism for 
+    /// updating the list of available time zones. Any time zone ID that is returned in <see cref="Ids"/> 
+    /// must be resolved by <see cref="ForId"/> for the life of the provider.
+    /// </para>
+    /// <para>
+    /// Implementations need not cache time zones or the available time zone IDs. 
+    /// Caching is provided by <see cref="DateTimeZoneFactory"/>, which most consumers should use instead of 
+    /// consuming <see cref="IDateTimeZoneProvider"/> directly in order to get better performance.
+    /// </para>
     /// </remarks>
+    /// <threadsafety>Implementations are not required to be thread-safe.</threadsafety>
     public interface IDateTimeZoneProvider
     {
         /// <summary>
-        /// Returns an enumeration of the available ids from this provider. The order in which the
-        /// values are returned is irrelevant, as the time zone factory will sort them anyway. The sequence
-        /// returned may be empty, but must not be null, and must not contain a null reference.
+        /// Returns an enumeration of the available ids from this provider.
         /// </summary>
         /// <remarks>
-        /// This property will be requested be <see cref="DateTimeZoneFactory"/> on construction, and never thereafter.
-        /// If the set of valid IDs changes over time, the factory may request values which aren't currently
-        /// being advertised.
+        /// Every value in this enumeration must return a valid time zone from <see cref="ForId"/> for the life of the provider.
         /// </remarks>
-        /// <value>The <see cref="IEnumerable{T}"/> of ids.</value>
+        /// <value>The <see cref="IEnumerable{T}"/> of ids. It may be empty, but must not be <see langword="null"/>, 
+        /// and must not contain any elements which are <see langword="null"/>.</value>
         IEnumerable<string> Ids { get; }
 
         /// <summary>
@@ -65,20 +65,21 @@ namespace NodaTime.TimeZones
         /// Returns the time zone definition associated with the given id.
         /// </summary>
         /// <remarks>
-        /// If the time zone does not yet exist, its definition is loaded from where ever this
+        /// If the time zone does not yet exist, its definition should be loaded from where ever this
         /// provider gets time zone definitions. The provider should not attempt to cache time zones;
-        /// the time zone factory handles that automatically.
+        /// caching is provided by <see cref="DateTimeZoneFactory"/>.
         /// </remarks>
         /// <param name="id">The id of the time zone to return. This must be one of the IDs
-        /// returned by the <see cref="Ids"/> property.</param>
-        /// <returns>The <see cref="DateTimeZone"/> for the given ID; must not be null.</returns>
+        /// returned in the <see cref="Ids"/> enumeration.</param>
+        /// <returns>The <see cref="DateTimeZone"/> for the given ID; must not be <see langword="null"/>.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="id"/> is <see langword="null"/>.</exception>
         DateTimeZone ForId(string id);
 
         /// <summary>
         /// Returns this provider's corresponding ID for the given BCL time zone.
         /// </summary>
         /// <returns>
-        /// The ID for the system default time zone for this provider, or null if the default time
+        /// The ID for the system default time zone for this provider, or <see langword="null"/> if the default time
         /// zone has no mapping in this provider.
         /// </returns>
         string MapTimeZoneId(TimeZoneInfo timeZone);

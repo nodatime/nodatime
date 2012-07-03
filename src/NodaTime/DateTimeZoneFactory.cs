@@ -1,4 +1,4 @@
-﻿#region Copyright and license information
+#region Copyright and license information
 // Copyright 2001-2009 Stephen Colebourne
 // Copyright 2009-2011 Jon Skeet
 // 
@@ -18,12 +18,13 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using NodaTime.TimeZones;
 using NodaTime.Utility;
 
-namespace NodaTime.TimeZones
+namespace NodaTime
 {
     /// <summary>
-    /// Provides a caching factory between user code and time zone providers. The process of
+    /// Provides a caching factory for time zone providers. The process of
     /// loading and creating time zones is potentially long (it could conceivably include network
     /// requests) so caching them is necessary.
     /// </summary>
@@ -32,12 +33,23 @@ namespace NodaTime.TimeZones
     {
         private static readonly int TypeInitializationChecking = NodaTime.Utility.TypeInitializationChecker.RecordInitializationStart();
 
-        private static readonly DateTimeZoneFactory defaultFactory = new DateTimeZoneFactory(new TzdbTimeZoneProvider("NodaTime.TimeZones.Tzdb"));
+        private static readonly DateTimeZoneFactory tzdbFactory = new DateTimeZoneFactory(new TzdbTimeZoneProvider("NodaTime.TimeZones.Tzdb"));
+        private static readonly DateTimeZoneFactory bclFactory = new DateTimeZoneFactory(new BclTimeZoneProvider());
 
         /// <summary>
         /// Gets the default time zone factory, which is initialized from resources within the NodaTime assembly.
         /// </summary>
-        public static DateTimeZoneFactory Default { get { return defaultFactory; } }
+        public static DateTimeZoneFactory Default { get { return Tzdb; } }
+
+        /// <summary>
+        /// Gets a time zone factory which uses the <see cref="TzdbTimeZoneProvider"/>.
+        /// </summary>
+        public static DateTimeZoneFactory Tzdb { get { return tzdbFactory; } }
+
+        /// <summary>
+        /// Gets a time zone factory which uses the <see cref="BclTimeZoneProvider"/>.
+        /// </summary>
+        public static DateTimeZoneFactory Bcl { get { return bclFactory; } }
 
         private readonly object accessLock = new object();
         private readonly IDateTimeZoneProvider provider;
