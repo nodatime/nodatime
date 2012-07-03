@@ -66,8 +66,8 @@ namespace NodaTime
     /// than the Windows-provided information, but if you need to interoperate with other Windows systems by specifying time zone IDs,
     /// you may wish to stick to the Windows time zones.
     /// </para>
-    /// <para>To get a Noda Time representation of the system default time zone using <see cref="DateTimeZoneFactory.GetSystemDefault"/> or
-    /// <see cref="DateTimeZoneFactory.GetSystemDefaultOrNull"/>, which will attempt to find an appropriate time zone.
+    /// <para>To get a Noda Time representation of the system default time zone using <see cref="DateTimeZoneCache.GetSystemDefault"/> or
+    /// <see cref="DateTimeZoneCache.GetSystemDefaultOrNull"/>, which will attempt to find an appropriate time zone.
     /// This may fail, however (in which case the first method will throw an exception, and the second method will return null)
     /// if no mapping is found. This could occur due to the system having a "custom" time zone installed, or there being no mapping for the BCL zone ID
     /// to the provider's set of IDs. You can always use <see cref="BclTimeZone.ForSystemDefault"/> to convert
@@ -85,7 +85,7 @@ namespace NodaTime
 
         /// <summary>
         /// The ID of the UTC (Coordinated Universal Time) time zone. This ID is always valid, whatever provider is
-        /// used. If the provider has its own mapping for UTC, that will be returned by <see cref="DateTimeZoneFactory.GetZoneOrNull" />, but otherwise
+        /// used. If the provider has its own mapping for UTC, that will be returned by <see cref="DateTimeZoneCache.GetZoneOrNull" />, but otherwise
         /// the value of the <see cref="Utc"/> property will be returned.
         /// </summary>
         internal const string UtcId = "UTC";

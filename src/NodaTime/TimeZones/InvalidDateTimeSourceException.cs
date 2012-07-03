@@ -21,7 +21,7 @@ namespace NodaTime.TimeZones
 {
     /// <summary>
     /// Exception thrown to indicate that a time zone source has violated the conditions of <see cref="IDateTimeZoneSource"/>.
-    /// This exception is primarily intended to be thrown from <see cref="DateTimeZoneFactory"/>, and only in the face of a buggy
+    /// This exception is primarily intended to be thrown from <see cref="DateTimeZoneCache"/>, and only in the face of a buggy
     /// source; user code should not 
     /// </summary>
     /// <threadsafety>Any public static members of this type are thread safe. Any instance members are not guaranteed to be thread safe.

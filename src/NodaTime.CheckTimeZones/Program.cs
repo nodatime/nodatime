@@ -47,9 +47,9 @@ namespace NodaTime.CheckTimeZones
         private static void Main()
         {
             // Ensure it really is a culture-insensitive ordinal ordering.
-            foreach (var id in DateTimeZoneFactory.Default.Ids.OrderBy(x => x, StringComparer.Ordinal))
+            foreach (var id in DateTimeZoneProviders.Default.Ids.OrderBy(x => x, StringComparer.Ordinal))
             {
-                DumpZone(DateTimeZoneFactory.Default[id], Console.Out);
+                DumpZone(DateTimeZoneProviders.Default[id], Console.Out);
             }
         }
 

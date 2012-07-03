@@ -265,8 +265,8 @@ namespace NodaTime.TimeZones
         /// the local time zone has not changed.
         /// </summary>
         /// <remarks>
-        /// When the source of a <see cref="DateTimeZoneFactory"/> is set to an instance of <see cref="BclTimeZoneSource"/> it
-        /// is highly likely that <see cref="DateTimeZoneFactory.GetSystemDefault"/> will return a non-null value - but in
+        /// When the source of a <see cref="DateTimeZoneCache"/> is set to an instance of <see cref="BclTimeZoneSource"/> it
+        /// is highly likely that <see cref="DateTimeZoneCache.GetSystemDefault"/> will return a non-null value - but in
         /// rare cases (such as the set of system time zones changing after the source is installed, or the local zone
         /// not being a normal "system" one) it is possible that it wouldn't be mapped. By contrast, this method will never return null.
         /// </remarks>

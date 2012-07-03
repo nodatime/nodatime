@@ -84,7 +84,7 @@
     <Compile Include="Calendars\IslamicLeapYearPattern.cs" />
     <Compile Include="Calendars\JulianCalendarSystem.cs" />
     <Compile Include="Calendars\NamespaceDoc.cs" />
-    <Compile Include="DateTimeZoneFactory.cs" />
+    <Compile Include="DateTimeZoneProviders.cs" />
     <Compile Include="Delegates.cs" />
     <Compile Include="Fields\BasicMonthPeriodField.cs" />
     <Compile Include="Fields\BasicSingleEraDateTimeField.cs" />
@@ -93,6 +93,7 @@
     <Compile Include="Fields\VariableLengthPeriodField.cs" />
     <Compile Include="Fields\NamespaceDoc.cs" />
     <Compile Include="Globalization\NamespaceDoc.cs" />
+    <Compile Include="IDateTimeZoneProvider.cs" />
     <Compile Include="PeriodBuilder.cs" />
     <Compile Include="PeriodUnits.cs" />
     <Compile Include="Properties\PatternResources.Designer.cs">
@@ -181,6 +182,7 @@
     <Compile Include="TimeZones\BclTimeZone.cs" />
     <Compile Include="TimeZones\BclTimeZoneSource.cs" />
     <Compile Include="TimeZones\CachedDateTimeZone.cs" />
+    <Compile Include="TimeZones\DateTimeZoneCache.cs" />
     <Compile Include="TimeZones\DateTimeZoneReader.cs" />
     <Compile Include="TimeZones\DateTimeZoneWriter.cs" />
     <Compile Include="TimeZones\Delegates.cs" />

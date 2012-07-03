@@ -31,7 +31,7 @@ namespace NodaTime.TimeZones
     /// </para>
     /// <para>
     /// Implementations need not cache time zones or the available time zone IDs. 
-    /// Caching is provided by <see cref="DateTimeZoneFactory"/>, which most consumers should use instead of 
+    /// Caching is provided by <see cref="DateTimeZoneCache"/>, which most consumers should use instead of 
     /// consuming <see cref="IDateTimeZoneSource"/> directly in order to get better performance.
     /// </para>
     /// </remarks>
@@ -61,7 +61,7 @@ namespace NodaTime.TimeZones
         /// Returns the time zone definition associated with the given id.
         /// </summary>
         /// <remarks>
-        /// The source should not attempt to cache time zones; caching is provided by <see cref="DateTimeZoneFactory"/>.
+        /// The source should not attempt to cache time zones; caching is provided by <see cref="DateTimeZoneCache"/>.
         /// </remarks>
         /// <param name="id">The id of the time zone to return. This must be one of the IDs
         /// returned by <see cref="GetIds"/>.</param>
