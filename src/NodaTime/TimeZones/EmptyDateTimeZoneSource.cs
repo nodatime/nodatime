@@ -22,7 +22,7 @@ namespace NodaTime.TimeZones
 {
     /// <summary>
     /// Time zone source which never provides any time zones. Using this as the source
-    /// for a <see cref="DateTimeZoneFactory"/> will effectively mean that only UTC is recognized.
+    /// for a <see cref="DateTimeZoneCache"/> will effectively mean that only UTC is recognized.
     /// </summary>
     /// <threadsafety>This type has no state, and all members are thread-safe. See the thread safety section of the user guide for more information.</threadsafety>
     public sealed class EmptyDateTimeZoneSource : IDateTimeZoneSource

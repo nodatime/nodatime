@@ -30,7 +30,7 @@ namespace NodaTime.Test
     [TestFixture]
     public partial class LocalDateTimeTest
     {
-        private static readonly DateTimeZone Pacific = DateTimeZoneFactory.Tzdb["America/Los_Angeles"];
+        private static readonly DateTimeZone Pacific = DateTimeZoneProviders.Tzdb["America/Los_Angeles"];
 
         [Test]
         public void ToDateTimeUnspecified()

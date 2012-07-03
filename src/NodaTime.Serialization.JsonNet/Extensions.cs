@@ -27,7 +27,7 @@ namespace NodaTime.Serialization.JsonNet
         /// <summary>
         /// Configures json.net with everything required to properly serialize and deserialize NodaTime data types.
         /// </summary>
-        public static JsonSerializerSettings ConfigureForNodaTime(this JsonSerializerSettings settings, DateTimeZoneFactory provider)
+        public static JsonSerializerSettings ConfigureForNodaTime(this JsonSerializerSettings settings, IDateTimeZoneProvider provider)
         {
             // add our converters
             settings.Converters.Add(NodaConverters.InstantConverter);
@@ -47,7 +47,7 @@ namespace NodaTime.Serialization.JsonNet
         /// <summary>
         /// Configures json.net with everything required to properly serialize and deserialize NodaTime data types.
         /// </summary>
-        public static JsonSerializer ConfigureForNodaTime(this JsonSerializer serializer, DateTimeZoneFactory provider)
+        public static JsonSerializer ConfigureForNodaTime(this JsonSerializer serializer, IDateTimeZoneProvider provider)
         {
             // add our converters
             serializer.Converters.Add(NodaConverters.InstantConverter);

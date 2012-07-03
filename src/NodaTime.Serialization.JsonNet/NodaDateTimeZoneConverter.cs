@@ -26,10 +26,10 @@ namespace NodaTime.Serialization.JsonNet
     /// </summary>
     public class NodaDateTimeZoneConverter : NodaConverterBase<DateTimeZone>
     {
-        private readonly DateTimeZoneFactory provider;
+        private readonly IDateTimeZoneProvider provider;
 
         /// <param name="provider">Provides the <see cref="DateTimeZone"/> that corresponds to each time zone ID in the JSON string.</param>
-        public NodaDateTimeZoneConverter(DateTimeZoneFactory provider)
+        public NodaDateTimeZoneConverter(IDateTimeZoneProvider provider)
         {
             this.provider = provider;
         }

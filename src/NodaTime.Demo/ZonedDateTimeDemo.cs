@@ -22,7 +22,7 @@ namespace NodaTime.Demo
     [TestFixture]
     internal class ZonedDateTimeDemo
     {
-        private static readonly DateTimeZone Dublin = DateTimeZoneFactory.Tzdb["Europe/Dublin"];
+        private static readonly DateTimeZone Dublin = DateTimeZoneProviders.Tzdb["Europe/Dublin"];
 
         [Test]
         public void Construction()

@@ -89,7 +89,7 @@ namespace NodaTime.Test
         [Test]
         public void InZone()
         {
-            DateTimeZone london = DateTimeZoneFactory.Tzdb["Europe/London"];
+            DateTimeZone london = DateTimeZoneProviders.Tzdb["Europe/London"];
             ZonedDateTime viaInstant = Instant.FromUtc(2008, 6, 10, 13, 16, 17).InZone(london);
 
             // London is UTC+1 in the Summer, so the above is 14:16:17 local.
@@ -103,7 +103,7 @@ namespace NodaTime.Test
         public void InZoneWithCalendar()
         {
             CalendarSystem copticCalendar = CalendarSystem.GetCopticCalendar(4);
-            DateTimeZone london = DateTimeZoneFactory.Tzdb["Europe/London"];
+            DateTimeZone london = DateTimeZoneProviders.Tzdb["Europe/London"];
             ZonedDateTime viaInstant = Instant.FromUtc(2004, 6, 9, 11, 10).InZone(london, copticCalendar);
 
             // Date taken from CopticCalendarSystemTest. Time will be 12:10 (London is UTC+1 in Summer)

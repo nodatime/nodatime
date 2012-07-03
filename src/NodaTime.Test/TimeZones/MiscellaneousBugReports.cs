@@ -31,7 +31,7 @@ namespace NodaTime.Test.TimeZones
         [Test]
         public void Niue()
         {
-            DateTimeZone niue = DateTimeZoneFactory.Tzdb["Pacific/Niue"];
+            DateTimeZone niue = DateTimeZoneProviders.Tzdb["Pacific/Niue"];
             var offset = niue.GetOffsetFromUtc(niue.AtStrictly(new LocalDateTime(2010, 1, 1, 0, 0, 0)).ToInstant());
             Assert.AreEqual(Offset.FromHours(-11), offset);
         }
@@ -39,7 +39,7 @@ namespace NodaTime.Test.TimeZones
         [Test]
         public void Kiritimati()
         {
-            DateTimeZone kiritimati = DateTimeZoneFactory.Tzdb["Pacific/Kiritimati"];
+            DateTimeZone kiritimati = DateTimeZoneProviders.Tzdb["Pacific/Kiritimati"];
             var offset = kiritimati.GetOffsetFromUtc(kiritimati.AtStrictly(new LocalDateTime(2010, 1, 1, 0, 0, 0)).ToInstant());
             Assert.AreEqual(Offset.FromHours(14), offset);
         }
@@ -47,7 +47,7 @@ namespace NodaTime.Test.TimeZones
         [Test]
         public void Pyongyang()
         {
-            DateTimeZone pyongyang = DateTimeZoneFactory.Tzdb["Asia/Pyongyang"];
+            DateTimeZone pyongyang = DateTimeZoneProviders.Tzdb["Asia/Pyongyang"];
             var offset = pyongyang.GetOffsetFromUtc(pyongyang.AtStrictly(new LocalDateTime(2010, 1, 1, 0, 0, 0)).ToInstant());
             Assert.AreEqual(Offset.FromHours(9), offset);
         }
@@ -55,7 +55,7 @@ namespace NodaTime.Test.TimeZones
         [Test]
         public void Khartoum()
         {
-            DateTimeZone khartoum = DateTimeZoneFactory.Tzdb["Africa/Khartoum"];
+            DateTimeZone khartoum = DateTimeZoneProviders.Tzdb["Africa/Khartoum"];
             Assert.IsNotNull(khartoum);
             Instant utc = Instant.FromUtc(2000, 1, 1, 0, 0, 0);
             ZonedDateTime inKhartoum = new ZonedDateTime(utc, khartoum);
@@ -75,7 +75,7 @@ namespace NodaTime.Test.TimeZones
         [Test]
         public void Tbilisi()
         {
-            var zone = DateTimeZoneFactory.Tzdb["Asia/Tbilisi"];
+            var zone = DateTimeZoneProviders.Tzdb["Asia/Tbilisi"];
             Instant summer1996 = Instant.FromUtc(1996, 6, 1, 0, 0);
             var interval = zone.GetZoneInterval(summer1996);
             Assert.AreEqual(new LocalDateTime(1996, 3, 31, 1, 0), interval.IsoLocalStart);
