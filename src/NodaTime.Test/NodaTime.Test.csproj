@@ -168,12 +168,12 @@
     <Compile Include="Text\OffsetFormattingTestSupport.cs" />
     <Compile Include="Text\ValueCursorTest.cs" />
     <Compile Include="TimeZones\AlgiersTest.cs" />
-    <Compile Include="TimeZones\BclTimeZoneProviderTest.cs" />
+    <Compile Include="TimeZones\BclTimeZoneSourceTest.cs" />
     <Compile Include="TimeZones\BclTimeZoneTest.cs" />
     <Compile Include="TimeZones\CachedDateTimeZoneTest.cs" />
     <Compile Include="TimeZones\DateTimeZoneBuilderTest.cs" />
     <Compile Include="TimeZones\ResolversTest.cs" />
-    <Compile Include="TimeZones\TzdbTimeZoneProviderTest.cs" />
+    <Compile Include="TimeZones\TzdbTimeZoneSourceTest.cs" />
     <Compile Include="TimeZones\DateTimeZoneFactoryTest.cs" />
     <Compile Include="TimeZones\DaylightSavingTimeZoneTest.cs" />
     <Compile Include="TimeZones\EtcTest.cs" />

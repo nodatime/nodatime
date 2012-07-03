@@ -26,11 +26,11 @@ using NodaTime.Utility;
 namespace NodaTime.TimeZones
 {
     /// <summary>
-    /// Provides an implementation of a <see cref="IDateTimeZoneProvider" /> that looks
+    /// Provides an implementation of a <see cref="IDateTimeZoneSource" /> that looks
     /// for its time zone definitions from a named resource in an assembly.
     /// </summary>
     /// <threadsafety>This type is immutable reference type. See the thread safety section of the user guide for more information.</threadsafety>
-    public sealed class TzdbTimeZoneProvider : IDateTimeZoneProvider
+    public sealed class TzdbTimeZoneSource : IDateTimeZoneSource
     {
         /// <summary>
         /// The key used to find the Windows to TZDB ID mappings.
@@ -60,37 +60,37 @@ namespace NodaTime.TimeZones
         private readonly string version;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="TzdbTimeZoneProvider" /> class.
+        /// Initializes a new instance of the <see cref="TzdbTimeZoneSource" /> class.
         /// </summary>
         /// <param name="baseName">GetName of the base.</param>
-        public TzdbTimeZoneProvider(string baseName) : this(baseName, Assembly.GetExecutingAssembly())
+        public TzdbTimeZoneSource(string baseName) : this(baseName, Assembly.GetExecutingAssembly())
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="TzdbTimeZoneProvider" /> class.
+        /// Initializes a new instance of the <see cref="TzdbTimeZoneSource" /> class.
         /// </summary>
         /// <param name="baseName">GetName of the base.</param>
         /// <param name="assembly">The assembly to search for the time zone resources.</param>
-        public TzdbTimeZoneProvider(string baseName, Assembly assembly)
+        public TzdbTimeZoneSource(string baseName, Assembly assembly)
             : this(new ResourceManager(baseName, assembly))
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="TzdbTimeZoneProvider" /> class.
+        /// Initializes a new instance of the <see cref="TzdbTimeZoneSource" /> class.
         /// </summary>
         /// <param name="source">The <see cref="ResourceManager"/> to search for the time zone resources.</param>
-        public TzdbTimeZoneProvider(ResourceManager source)
+        public TzdbTimeZoneSource(ResourceManager source)
             : this(ResourceHelper.GetDefaultResourceSet(source))
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="TzdbTimeZoneProvider" /> class.
+        /// Initializes a new instance of the <see cref="TzdbTimeZoneSource" /> class.
         /// </summary>
         /// <param name="source">The <see cref="ResourceSet"/> to search for the time zone resources.</param>
-        public TzdbTimeZoneProvider(ResourceSet source)
+        public TzdbTimeZoneSource(ResourceSet source)
         {
             this.source = source;
             timeZoneIdMap = ResourceHelper.LoadDictionary(source, IdMapKey);
@@ -114,11 +114,6 @@ namespace NodaTime.TimeZones
         /// <returns>
         /// The <see cref="DateTimeZone"/> or <c>null</c> if there is no time zone with the given id.
         /// </returns>
-        /// <remarks>
-        /// If the time zone does not yet exist, its definition is loaded from where ever this
-        /// provider gets time zone definitions. Time zones should not be cached in the provider as
-        /// they will be cached in <see cref="DateTimeZone" />.
-        /// </remarks>
         public DateTimeZone ForId(string id)
         {
             var queryId = timeZoneIdMap.ContainsKey(id) ? timeZoneIdMap[id] : id;
@@ -126,15 +121,16 @@ namespace NodaTime.TimeZones
         }
 
         /// <summary>
-        /// Returns a sequence of the available IDs from this provider.
+        /// Returns a sequence of the available IDs from this source.
         /// </summary>
-        public IEnumerable<string> Ids
+        [DebuggerStepThrough]
+        public IEnumerable<string> GetIds()
         {
-            [DebuggerStepThrough] get { return timeZoneIdMap.Keys; }
+            return timeZoneIdMap.Keys;
         }
 
         /// <summary>
-        /// Returns a version identifier for this provider.
+        /// Returns a version identifier for this source.
         /// </summary>
         public string VersionId { get { return "TZDB: " + version; } }
 

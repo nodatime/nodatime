@@ -33,8 +33,8 @@ namespace NodaTime
     {
         private static readonly int TypeInitializationChecking = NodaTime.Utility.TypeInitializationChecker.RecordInitializationStart();
 
-        private static readonly DateTimeZoneFactory tzdbFactory = new DateTimeZoneFactory(new TzdbTimeZoneProvider("NodaTime.TimeZones.Tzdb"));
-        private static readonly DateTimeZoneFactory bclFactory = new DateTimeZoneFactory(new BclTimeZoneProvider());
+        private static readonly DateTimeZoneFactory tzdbFactory = new DateTimeZoneFactory(new TzdbTimeZoneSource("NodaTime.TimeZones.Tzdb"));
+        private static readonly DateTimeZoneFactory bclFactory = new DateTimeZoneFactory(new BclTimeZoneSource());
 
         /// <summary>
         /// Gets the default time zone factory, which is initialized from resources within the NodaTime assembly.
@@ -42,43 +42,43 @@ namespace NodaTime
         public static DateTimeZoneFactory Default { get { return Tzdb; } }
 
         /// <summary>
-        /// Gets a time zone factory which uses the <see cref="TzdbTimeZoneProvider"/>.
+        /// Gets a time zone factory which uses the <see cref="TzdbTimeZoneSource"/>.
         /// </summary>
         public static DateTimeZoneFactory Tzdb { get { return tzdbFactory; } }
 
         /// <summary>
-        /// Gets a time zone factory which uses the <see cref="BclTimeZoneProvider"/>.
+        /// Gets a time zone factory which uses the <see cref="BclTimeZoneSource"/>.
         /// </summary>
         public static DateTimeZoneFactory Bcl { get { return bclFactory; } }
 
         private readonly object accessLock = new object();
-        private readonly IDateTimeZoneProvider provider;
+        private readonly IDateTimeZoneSource source;
         private readonly ReadOnlyCollection<string> ids;
         private readonly IDictionary<string, DateTimeZone> timeZoneMap = new Dictionary<string, DateTimeZone>();
         private readonly string providerVersionId;
 
         /// <summary>
-        /// Creates a factory backed by the given <see cref="IDateTimeZoneProvider"/>.
+        /// Creates a factory backed by the given <see cref="IDateTimeZoneSource"/>.
         /// </summary>
         /// <remarks>
-        /// The provider is immediately asked for its version ID and supported time zone IDs; those properties
+        /// The source is immediately asked for its version ID and supported time zone IDs; those properties
         /// are then not requested again for the lifetime of this factory.
         /// </remarks>
-        /// <param name="provider">The <see cref="IDateTimeZoneProvider"/>; must not be null.</param>
-        /// <exception cref="ArgumentNullException"><paramref name="provider"/> is null</exception>
-        /// <exception cref="InvalidDateTimeZoneProviderException"><paramref name="provider"/> violates its contract</exception>
-        public DateTimeZoneFactory(IDateTimeZoneProvider provider)
+        /// <param name="source">The <see cref="IDateTimeZoneSource"/> for this factory.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
+        /// <exception cref="InvalidDateTimeZoneSourceException"><paramref name="source"/> violates its contract</exception>
+        public DateTimeZoneFactory(IDateTimeZoneSource source)
         {
-            this.provider = Preconditions.CheckNotNull(provider, "provider");
-            this.providerVersionId = provider.VersionId;
+            this.source = Preconditions.CheckNotNull(source, "source");
+            this.providerVersionId = source.VersionId;
             if (providerVersionId == null)
             {
-                throw new InvalidDateTimeZoneProviderException("Provider-returned version ID was null");
+                throw new InvalidDateTimeZoneSourceException("Source-returned version ID was null");
             }
-            var providerIds = provider.Ids;
+            var providerIds = source.GetIds();
             if (providerIds == null)
             {
-                throw new InvalidDateTimeZoneProviderException("Provider-returned ID sequence was null");
+                throw new InvalidDateTimeZoneSourceException("Source-returned ID sequence was null");
             }
             var idList = new List<string>(providerIds);
             // TODO(Post-V1): Handle duplicates?
@@ -89,63 +89,63 @@ namespace NodaTime
             {
                 if (id == null)
                 {
-                    throw new InvalidDateTimeZoneProviderException("Provider-returned ID sequence contained a null reference");
+                    throw new InvalidDateTimeZoneSourceException("Source-returned ID sequence contained a null reference");
                 }
                 timeZoneMap[id] = null;
             }
         }
 
         /// <summary>
-        /// The version ID of the provider, cached within the factory.
+        /// The version ID of the source, cached within the factory.
         /// </summary>
-        public string ProviderVersionId { get { return providerVersionId; } }
+        public string SourceVersionId { get { return providerVersionId; } }
 
         /// <summary>
-        /// Gets the system default time zone, as mapped by the underlying provider. If the time zone
-        /// is not mapped by this provider, a <see cref="TimeZoneNotFoundException"/> is thrown.
+        /// Gets the system default time zone, as mapped by the underlying source. If the time zone
+        /// is not mapped by this source, a <see cref="TimeZoneNotFoundException"/> is thrown.
         /// </summary>
         /// <remarks>
         /// Callers should be aware that this method can throw <see cref="TimeZoneNotFoundException"/>,
         /// even with standard Windows time zones.
         /// This could be due to either the Unicode CLDR not being up-to-date with Windows time zone IDs,
-        /// or Noda Time not being up-to-date with CLDR - or a provider-specific problem. Callers can use
-        /// the null-coalescing operator to effectively provider a default:
+        /// or Noda Time not being up-to-date with CLDR - or a source-specific problem. Callers can use
+        /// the null-coalescing operator to effectively provide a default.
         /// </remarks>
         /// <exception cref="TimeZoneNotFoundException">The system default time zone is not mapped by
-        /// the current provider.</exception>
+        /// the current source.</exception>
         /// <returns>
-        /// The provider-specific representation of the system time zone, or null if the time zone
+        /// The source-specific representation of the system time zone, or null if the time zone
         /// could not be mapped.
         /// </returns>
         public DateTimeZone GetSystemDefault()
         {
             TimeZoneInfo bcl = TimeZoneInfo.Local;
-            string id = provider.MapTimeZoneId(bcl);
+            string id = source.MapTimeZoneId(bcl);
             if (id == null)
             {
-                throw new TimeZoneNotFoundException("TimeZoneInfo ID " + bcl.Id + " is unknown to provider " + providerVersionId);
+                throw new TimeZoneNotFoundException("TimeZoneInfo ID " + bcl.Id + " is unknown to source" + providerVersionId);
             }
             return this[id];
         }
 
         /// <summary>
-        /// Gets the system default time zone, as mapped by the underlying provider. If the time zone
-        /// is not mapped by this provider, a null reference is returned.
+        /// Gets the system default time zone, as mapped by the underlying source. If the time zone
+        /// is not mapped by this source, a null reference is returned.
         /// </summary>
         /// <remarks>
         /// Callers should be aware that this method can return null, even with standard Windows time zones.
         /// This could be due to either the Unicode CLDR not being up-to-date with Windows time zone IDs,
-        /// or Noda Time not being up-to-date with CLDR - or a provider-specific problem. Callers can use
-        /// the null-coalescing operator to effectively provider a default:
+        /// or Noda Time not being up-to-date with CLDR - or a source-specific problem. Callers can use
+        /// the null-coalescing operator to effectively provide a default.
         /// </remarks>
         /// <returns>
-        /// The provider-specific representation of the system time zone, or null if the time zone
+        /// The source-specific representation of the system time zone, or null if the time zone
         /// could not be mapped.
         /// </returns>
         public DateTimeZone GetSystemDefaultOrNull()
         {
             TimeZoneInfo bcl = TimeZoneInfo.Local;
-            string id = provider.MapTimeZoneId(bcl);
+            string id = source.MapTimeZoneId(bcl);
             if (id == null)
             {
                 return null;
@@ -154,7 +154,7 @@ namespace NodaTime
         }
 
         /// <summary>
-        /// Gets the complete list of valid time zone ids provided by the provider associated
+        /// Gets the complete list of valid time zone ids provided by the source associated
         /// with this factory.
         /// </summary>
         /// <remarks>
@@ -169,8 +169,8 @@ namespace NodaTime
         /// Returns the time zone with the given ID, if it's available.
         /// </summary>
         /// <param name="id">The time zone id to find. Must not be null.</param>
-        /// <returns>The <see cref="DateTimeZone" /> with the given ID or <c>null</c> if the provider does not support it.</returns>
-        /// <exception cref="InvalidDateTimeZoneProviderException">The time zone provider violates its contract by failing
+        /// <returns>The <see cref="DateTimeZone" /> with the given ID or <c>null</c> if the source does not support it.</returns>
+        /// <exception cref="InvalidDateTimeZoneSourceException">The time zone source violates its contract by failing
         /// to support a time zone it previously advertised.</exception>
         public DateTimeZone GetZoneOrNull(string id)
         {
@@ -184,10 +184,10 @@ namespace NodaTime
                 }
                 if (zone == null)
                 {
-                    zone = provider.ForId(id);
+                    zone = source.ForId(id);
                     if (zone == null)
                     {
-                        throw new InvalidDateTimeZoneProviderException("Time zone " + id + " is supported by provider " + providerVersionId + " but not returned");
+                        throw new InvalidDateTimeZoneSourceException("Time zone " + id + " is supported by source " + providerVersionId + " but not returned");
                     }
                     timeZoneMap[id] = zone;
                 }
@@ -199,10 +199,10 @@ namespace NodaTime
         /// Returns the time zone with the given id.
         /// </summary>
         /// <remarks>Unlike <see cref="GetZoneOrNull"/>, this indexer will never return a null reference. If the ID is not
-        /// supported by the provider, it will throw <see cref="TimeZoneNotFoundException"/>.</remarks>
+        /// supported by the source, it will throw <see cref="TimeZoneNotFoundException"/>.</remarks>
         /// <param name="id">The time zone id to find. Must not be null.</param>
         /// <returns>The <see cref="DateTimeZone" /> with the given ID.</returns>
-        /// <exception cref="TimeZoneNotFoundException">The underlying provider does not support the given ID.</exception>
+        /// <exception cref="TimeZoneNotFoundException">The underlying source does not support the given ID.</exception>
         public DateTimeZone this[string id]
         {
             get
@@ -210,7 +210,7 @@ namespace NodaTime
                 var zone = GetZoneOrNull(id);
                 if (zone == null)
                 {
-                    throw new TimeZoneNotFoundException("Time zone " + id + " is unknown to provider " + providerVersionId);
+                    throw new TimeZoneNotFoundException("Time zone " + id + " is unknown to source " + providerVersionId);
                 }
                 return zone;
             }

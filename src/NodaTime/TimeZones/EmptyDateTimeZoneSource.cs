@@ -21,23 +21,23 @@ using System.Collections.Generic;
 namespace NodaTime.TimeZones
 {
     /// <summary>
-    /// Time zone provider which never provides any time zones. Setting this as the provider
-    /// for the system will effectively mean that only UTC is recognized.
+    /// Time zone source which never provides any time zones. Using this as the source
+    /// for a <see cref="DateTimeZoneFactory"/> will effectively mean that only UTC is recognized.
     /// </summary>
     /// <threadsafety>This type has no state, and all members are thread-safe. See the thread safety section of the user guide for more information.</threadsafety>
-    public sealed class EmptyDateTimeZoneProvider : IDateTimeZoneProvider
+    public sealed class EmptyDateTimeZoneSource : IDateTimeZoneSource
     {
         /// <summary>
         /// Always returns an empty array.
         /// </summary>
-        public IEnumerable<string> Ids
+        public IEnumerable<string> GetIds()
         {
-            get { return new string[0];  }
+            return new string[0];
         }
 
         /// <summary>
         /// Always throws <see cref="InvalidOperationException"/> as no time zones are supported.
-        /// (A provider should not be asked for time zones it doesn't support.)
+        /// (A source should not be asked for time zones it doesn't support.)
         /// </summary>
         public DateTimeZone ForId(string id)
         {
@@ -45,7 +45,7 @@ namespace NodaTime.TimeZones
         }
 
         /// <summary>
-        /// Returns a version identifier for this provider.
+        /// Returns a version identifier for this source.
         /// </summary>
         public string VersionId { get { return "Empty (UTC-only)"; } }
 

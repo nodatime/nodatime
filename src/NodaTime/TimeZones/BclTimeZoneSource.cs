@@ -22,18 +22,18 @@ using System.Linq;
 namespace NodaTime.TimeZones
 {
     /// <summary>
-    /// An <see cref="IDateTimeZoneProvider" /> implementation which uses <see cref="TimeZoneInfo"/> from
+    /// An <see cref="IDateTimeZoneSource" /> implementation which uses <see cref="TimeZoneInfo"/> from
     /// .NET 3.5 and later.
     /// </summary>
     /// <threadsafety>This type maintains no state, and all members are thread-safe. See the thread safety section of the user guide for more information.</threadsafety>
-    public class BclTimeZoneProvider : IDateTimeZoneProvider
+    public class BclTimeZoneSource : IDateTimeZoneSource
     {
         /// <summary>
         /// Returns the IDs of all system time zones.
         /// </summary>
-        public IEnumerable<string> Ids
+        public IEnumerable<string> GetIds()
         {
-            get { return TimeZoneInfo.GetSystemTimeZones().Select(zone => zone.Id); }
+            return TimeZoneInfo.GetSystemTimeZones().Select(zone => zone.Id);
         }
 
         /// <summary>

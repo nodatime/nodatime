@@ -33,7 +33,7 @@ namespace NodaTime.Test.TimeZones
         [Test]
         public void DefaultProviderIsTzdb()
         {
-            Assert.IsTrue(DateTimeZoneFactory.Default.ProviderVersionId.StartsWith("TZDB: "));
+            Assert.IsTrue(DateTimeZoneFactory.Default.SourceVersionId.StartsWith("TZDB: "));
         }
 
         [Test]
@@ -45,85 +45,85 @@ namespace NodaTime.Test.TimeZones
         [Test]
         public void InvalidProvider_NullVersionId()
         {
-            var provider = new TestDateTimeZoneProvider("Test1", "Test2") { VersionId = null };
-            Assert.Throws<InvalidDateTimeZoneProviderException>(() => new DateTimeZoneFactory(provider));
+            var source = new TestDateTimeZoneSource("Test1", "Test2") { VersionId = null };
+            Assert.Throws<InvalidDateTimeZoneSourceException>(() => new DateTimeZoneFactory(source));
         }
 
         [Test]
         public void InvalidProvider_NullIdSequence()
         {
             string[] ids = null;
-            var provider = new TestDateTimeZoneProvider(ids);
-            Assert.Throws<InvalidDateTimeZoneProviderException>(() => new DateTimeZoneFactory(provider));
+            var source = new TestDateTimeZoneSource(ids);
+            Assert.Throws<InvalidDateTimeZoneSourceException>(() => new DateTimeZoneFactory(source));
         }
 
         [Test]
         public void InvalidProvider_NullIdWithinSequence()
         {
-            var provider = new TestDateTimeZoneProvider("Test1", null);
-            Assert.Throws<InvalidDateTimeZoneProviderException>(() => new DateTimeZoneFactory(provider));
+            var source = new TestDateTimeZoneSource("Test1", null);
+            Assert.Throws<InvalidDateTimeZoneSourceException>(() => new DateTimeZoneFactory(source));
         }
 
         [Test]
         public void CachingForPresentValues()
         {
-            var provider = new TestDateTimeZoneProvider("Test1", "Test2");
-            var factory = new DateTimeZoneFactory(provider);
+            var source = new TestDateTimeZoneSource("Test1", "Test2");
+            var factory = new DateTimeZoneFactory(source);
             var zone = factory["Test1"];
             Assert.IsNotNull(zone);
-            Assert.AreEqual("Test1", provider.LastRequestedId);
+            Assert.AreEqual("Test1", source.LastRequestedId);
             Assert.AreSame(zone, factory["Test1"]);
         }
 
         [Test]
         public void ProviderIsNotAskedForUtcIfNotAdvertised()
         {
-            var provider = new TestDateTimeZoneProvider("Test1", "Test2");
-            var factory = new DateTimeZoneFactory(provider);
+            var source = new TestDateTimeZoneSource("Test1", "Test2");
+            var factory = new DateTimeZoneFactory(source);
             var zone = factory[DateTimeZone.UtcId];
             Assert.IsNotNull(zone);
-            Assert.IsNull(provider.LastRequestedId);
+            Assert.IsNull(source.LastRequestedId);
         }
 
         [Test]
         public void ProviderIsAskedForUtcIfAdvertised()
         {
-            var provider = new TestDateTimeZoneProvider("Test1", "Test2", "UTC");
-            var factory = new DateTimeZoneFactory(provider);
+            var source = new TestDateTimeZoneSource("Test1", "Test2", "UTC");
+            var factory = new DateTimeZoneFactory(source);
             var zone = factory[DateTimeZone.UtcId];
             Assert.IsNotNull(zone);
-            Assert.AreEqual("UTC", provider.LastRequestedId);
+            Assert.AreEqual("UTC", source.LastRequestedId);
         }
 
         [Test]
         public void ProviderIsNotAskedForUnknownIds()
         {
-            var provider = new TestDateTimeZoneProvider("Test1", "Test2");
-            var factory = new DateTimeZoneFactory(provider);
+            var source = new TestDateTimeZoneSource("Test1", "Test2");
+            var factory = new DateTimeZoneFactory(source);
             Assert.Throws<TimeZoneNotFoundException>(() => { var ignored = factory["Unknown"]; });
-            Assert.IsNull(provider.LastRequestedId);
+            Assert.IsNull(source.LastRequestedId);
         }
 
         [Test]
         public void UtcIsReturnedInIdsIfAdvertisedByProvider()
         {
-            var provider = new TestDateTimeZoneProvider("Test1", "Test2", "UTC");
-            var factory = new DateTimeZoneFactory(provider);
+            var source = new TestDateTimeZoneSource("Test1", "Test2", "UTC");
+            var factory = new DateTimeZoneFactory(source);
             Assert.True(factory.Ids.Contains(DateTimeZone.UtcId));
         }
 
         [Test]
         public void UtcIsNotReturnedInIdsIfNotAdvertisedByProvider()
         {
-            var provider = new TestDateTimeZoneProvider("Test1", "Test2");
-            var factory = new DateTimeZoneFactory(provider);
+            var source = new TestDateTimeZoneSource("Test1", "Test2");
+            var factory = new DateTimeZoneFactory(source);
             Assert.False(factory.Ids.Contains(DateTimeZone.UtcId));
         }
 
         [Test]
         public void NullIdRejected()
         {
-            var factory = new DateTimeZoneFactory(new TestDateTimeZoneProvider("Test1", "Test2"));
+            var factory = new DateTimeZoneFactory(new TestDateTimeZoneSource("Test1", "Test2"));
             // GetType call just to avoid trying to use a property as a statement...
             Assert.Throws<ArgumentNullException>(() => factory[null].GetType());
         }
@@ -131,15 +131,15 @@ namespace NodaTime.Test.TimeZones
         [Test]
         public void EmptyIdAccepted()
         {
-            var factory = new DateTimeZoneFactory(new TestDateTimeZoneProvider("Test1", "Test2"));
+            var factory = new DateTimeZoneFactory(new TestDateTimeZoneSource("Test1", "Test2"));
             Assert.Throws<TimeZoneNotFoundException>(() => { var ignored = factory[""]; });
         }
 
         [Test]
         public void VersionIdPassThrough()
         {
-            var factory = new DateTimeZoneFactory(new TestDateTimeZoneProvider("Test1", "Test2") { VersionId = "foo" });
-            Assert.AreEqual("foo", factory.ProviderVersionId);
+            var factory = new DateTimeZoneFactory(new TestDateTimeZoneSource("Test1", "Test2") { VersionId = "foo" });
+            Assert.AreEqual("foo", factory.SourceVersionId);
         }
 
         [Test(Description = "Test for issue 7 in bug tracker")]
@@ -217,18 +217,18 @@ namespace NodaTime.Test.TimeZones
             Assert.Throws<TimeZoneNotFoundException>(() => { var ignored = DateTimeZoneFactory.Tzdb["UTC+5Months"]; });
         }
 
-        private class TestDateTimeZoneProvider : IDateTimeZoneProvider
+        private class TestDateTimeZoneSource : IDateTimeZoneSource
         {
             public string LastRequestedId { get; set; }
             private readonly string[] ids;
 
-            public TestDateTimeZoneProvider(params string[] ids)
+            public TestDateTimeZoneSource(params string[] ids)
             {
                 this.ids = ids;
                 this.VersionId = "test version";
             }
 
-            public IEnumerable<string> Ids { get { return ids; } }
+            public IEnumerable<string> GetIds() { return ids; }
 
             public DateTimeZone ForId(string id)
             {

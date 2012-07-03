@@ -22,14 +22,14 @@ using NodaTime.TimeZones;
 namespace NodaTime.Test.TimeZones
 {
     [TestFixture]
-    public class TzdbTimeZoneProviderTest
+    public class TzdbTimeZoneSourceTest
     {
         [Test]
         public void ZoneMapping()
         {
-            var provider = new TzdbTimeZoneProvider("NodaTime.TimeZones.Tzdb");
+            var source = new TzdbTimeZoneSource("NodaTime.TimeZones.Tzdb");
             var bclZone = TimeZoneInfo.FindSystemTimeZoneById("GMT Standard Time");
-            Assert.AreEqual("Europe/London", provider.MapTimeZoneId(bclZone));
+            Assert.AreEqual("Europe/London", source.MapTimeZoneId(bclZone));
         }
 
         /// <summary>
@@ -40,10 +40,10 @@ namespace NodaTime.Test.TimeZones
         [Test]
         public void ForId_AllIds()
         {
-            var provider = new TzdbTimeZoneProvider("NodaTime.TimeZones.Tzdb");
-            foreach (string id in provider.Ids)
+            var source = new TzdbTimeZoneSource("NodaTime.TimeZones.Tzdb");
+            foreach (string id in source.GetIds())
             {
-                Assert.IsNotNull(provider.ForId(id));
+                Assert.IsNotNull(source.ForId(id));
             }
         }
     }
