@@ -31,6 +31,12 @@ namespace NodaTime.Test.TimeZones
     public class DateTimeZoneFactoryTest
     {
         [Test]
+        public void DefaultProviderIsTzdb()
+        {
+            Assert.IsTrue(DateTimeZoneFactory.Default.ProviderVersionId.StartsWith("TZDB: "));
+        }
+
+        [Test]
         public void Construction_NullProvider()
         {
             Assert.Throws<ArgumentNullException>(() => new DateTimeZoneFactory(null));
@@ -134,6 +140,81 @@ namespace NodaTime.Test.TimeZones
         {
             var factory = new DateTimeZoneFactory(new TestDateTimeZoneProvider("Test1", "Test2") { VersionId = "foo" });
             Assert.AreEqual("foo", factory.ProviderVersionId);
+        }
+
+        [Test(Description = "Test for issue 7 in bug tracker")]
+        public void Tzdb_IterateOverIds()
+        {
+            // According to bug, this would go bang
+            int count = DateTimeZoneFactory.Tzdb.Ids.Count();
+
+            Assert.IsTrue(count > 1);
+            int utcCount = DateTimeZoneFactory.Tzdb.Ids.Count(id => id == DateTimeZone.UtcId);
+            Assert.AreEqual(1, utcCount);
+        }
+
+        [Test]
+        public void Tzdb_ForId_UtcId()
+        {
+            Assert.AreEqual(DateTimeZone.Utc, DateTimeZoneFactory.Tzdb[DateTimeZone.UtcId]);
+        }
+
+        [Test]
+        public void Tzdb_ForId_AmericaLosAngeles()
+        {
+            const string americaLosAngeles = "America/Los_Angeles";
+            var actual = DateTimeZoneFactory.Tzdb[americaLosAngeles];
+            Assert.IsNotNull(actual);
+            Assert.AreNotEqual(DateTimeZone.Utc, actual);
+            Assert.AreEqual(americaLosAngeles, actual.Id);
+        }
+
+        [Test]
+        public void Tzdb_Ids_All()
+        {
+            var actual = DateTimeZoneFactory.Tzdb.Ids;
+            var actualCount = actual.Count();
+            Assert.IsTrue(actualCount > 1);
+            var utc = actual.Single(id => id == DateTimeZone.UtcId);
+            Assert.AreEqual(DateTimeZone.UtcId, utc);
+        }
+
+        /// <summary>
+        /// Simply tests that every ID in the built-in database can be fetched. This is also
+        /// helpful for diagnostic debugging when we want to check that some potential
+        /// invariant holds for all time zones...
+        /// </summary>
+        [Test]
+        public void Tzdb_ForId_AllIds()
+        {
+            foreach (string id in DateTimeZoneFactory.Tzdb.Ids)
+            {
+                Assert.IsNotNull(DateTimeZoneFactory.Tzdb[id]);
+            }
+        }
+
+        [Test]
+        public void Tzdb_ForId_FixedOffset()
+        {
+            string id = "UTC+05:30";
+            DateTimeZone zone = DateTimeZoneFactory.Tzdb[id];
+            Assert.AreEqual(DateTimeZone.ForOffset(Offset.FromHoursAndMinutes(5, 30)), zone);
+            Assert.AreEqual(id, zone.Id);
+        }
+
+        [Test]
+        public void Tzdb_ForId_FixedOffset_NonCanonicalId()
+        {
+            string id = "UTC+05:00:00";
+            DateTimeZone zone = DateTimeZoneFactory.Tzdb[id];
+            Assert.AreEqual(zone, DateTimeZone.ForOffset(Offset.FromHours(5)));
+            Assert.AreEqual("UTC+05", zone.Id);
+        }
+
+        [Test]
+        public void Tzdb_ForId_InvalidFixedOffset()
+        {
+            Assert.Throws<TimeZoneNotFoundException>(() => { var ignored = DateTimeZoneFactory.Tzdb["UTC+5Months"]; });
         }
 
         private class TestDateTimeZoneProvider : IDateTimeZoneProvider

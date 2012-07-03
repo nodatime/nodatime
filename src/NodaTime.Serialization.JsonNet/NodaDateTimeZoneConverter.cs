@@ -26,6 +26,13 @@ namespace NodaTime.Serialization.JsonNet
     /// </summary>
     public class NodaDateTimeZoneConverter : NodaConverterBase<DateTimeZone>
     {
+        private readonly DateTimeZoneFactory provider;
+
+        public NodaDateTimeZoneConverter(DateTimeZoneFactory provider)
+        {
+            this.provider = provider;
+        }
+
         /// <summary>
         /// Reads the time zone ID (which must be a string) from the reader, and converts it to a time zone.
         /// </summary>
@@ -43,7 +50,7 @@ namespace NodaTime.Serialization.JsonNet
             }
 
             var timeZoneId = reader.Value.ToString();
-            return DateTimeZone.ForId(timeZoneId);
+            return provider[timeZoneId];
         }
 
         /// <summary>

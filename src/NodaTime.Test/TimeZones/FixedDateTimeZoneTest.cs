@@ -15,6 +15,7 @@
 // limitations under the License.
 #endregion
 
+using System;
 using NUnit.Framework;
 using NodaTime.TimeZones;
 
@@ -64,6 +65,30 @@ namespace NodaTime.Test.TimeZones
             var intervals = TestZone.GetZoneIntervals(new LocalDateTime(2001, 7, 1, 1, 0, 0).LocalInstant);
             Assert.AreEqual(FixedPeriod, intervals.EarlyInterval);
             Assert.IsNull(intervals.LateInterval);
+        }
+
+        [Test]
+        public void For_Id_FixedOffset()
+        {
+            string id = "UTC+05:30";
+            DateTimeZone zone = FixedDateTimeZone.GetFixedZoneOrNull(id);
+            Assert.AreEqual(DateTimeZone.ForOffset(Offset.FromHoursAndMinutes(5, 30)), zone);
+            Assert.AreEqual(id, zone.Id);
+        }
+
+        [Test]
+        public void For_Id_FixedOffset_NonCanonicalId()
+        {
+            string id = "UTC+05:00:00";
+            DateTimeZone zone = FixedDateTimeZone.GetFixedZoneOrNull(id);
+            Assert.AreEqual(zone, DateTimeZone.ForOffset(Offset.FromHours(5)));
+            Assert.AreEqual("UTC+05", zone.Id);
+        }
+
+        [Test]
+        public void For_Id_InvalidFixedOffset()
+        {
+            Assert.IsNull(FixedDateTimeZone.GetFixedZoneOrNull("UTC+5Months"));
         }
     }
 }

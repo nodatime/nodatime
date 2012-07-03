@@ -103,8 +103,6 @@ namespace NodaTime
         private const int FixedZoneCacheSize = (12 + 15) * 2 + 1; // To UTC+15 inclusive
         private static readonly DateTimeZone[] FixedZoneCache = BuildFixedZoneCache();
 
-        private static volatile DateTimeZoneFactory factory = DateTimeZoneFactory.Default;
-
         private readonly string id;
         private readonly bool isFixed;
 
@@ -122,47 +120,6 @@ namespace NodaTime
         /// </summary>
         /// <value>The UTC <see cref="T:NodaTime.DateTimeZone" />.</value>
         public static DateTimeZone Utc { get { return UtcZone; } }
-
-        /// <summary>
-        /// Gets the system default time zone, as mapped by the underlying provider. If the time zone
-        /// is not mapped by this provider, a <see cref="TimeZoneNotFoundException"/> is thrown.
-        /// </summary>
-        /// <remarks>
-        /// Callers should be aware that this method can throw <see cref="TimeZoneNotFoundException"/>,
-        /// even with standard Windows time zones.
-        /// This could be due to either the Unicode CLDR not being up-to-date with Windows time zone IDs,
-        /// or Noda Time not being up-to-date with CLDR - or a provider-specific problem. Callers can use
-        /// <see cref="GetSystemDefaultOrNull"/> with the null-coalescing operator to effectively provide a default.
-        /// </remarks>
-        /// <exception cref="TimeZoneNotFoundException">The system default time zone is not mapped by
-        /// the current provider.</exception>
-        /// <returns>
-        /// The provider-specific representation of the system time zone, or null if the time zone
-        /// could not be mapped.
-        /// </returns>
-        public static DateTimeZone GetSystemDefault()
-        {
-            return Factory.GetSystemDefault();
-        }
-
-        /// <summary>
-        /// Gets the system default time zone, as mapped by the underlying provider. If the time zone
-        /// is not mapped by this provider, a null reference is returned.
-        /// </summary>
-        /// <remarks>
-        /// Callers should be aware that this method can return null, even with standard Windows time zones.
-        /// This could be due to either the Unicode CLDR not being up-to-date with Windows time zone IDs,
-        /// or Noda Time not being up-to-date with CLDR - or a provider-specific problem. Callers can use
-        /// the null-coalescing operator to effectively provide a default.
-        /// </remarks>
-        /// <returns>
-        /// The provider-specific representation of the system time zone, or null if the time zone
-        /// could not be mapped.
-        /// </returns>
-        public static DateTimeZone GetSystemDefaultOrNull()
-        {
-            return Factory.GetSystemDefaultOrNull();
-        }
 
         /// <summary>
         /// Returns a fixed time zone with the given offset. This may or may not be cached;
@@ -187,60 +144,6 @@ namespace NodaTime
             }
             return FixedZoneCache[index];
         }
-
-        /// <summary>
-        /// Returns the time zone with the given ID. This must be one of the IDs returned by <see cref="Ids"/>, or an ID
-        /// returned by a fixed time zone as returned by <see cref="ForOffset"/>.
-        /// </summary>
-        /// <param name="id">The time zone ID to find.</param>
-        /// <exception cref="TimeZoneNotFoundException">The provider does not support a time zone with the given ID.</exception>
-        /// <returns>The <see cref="DateTimeZone" /> with the given ID.</returns>
-        public static DateTimeZone ForId(string id)
-        {
-            return Factory[id];
-        }
-
-        /// <summary>
-        /// Returns a version identifier for the current time zone provider.
-        /// </summary>
-        /// <remarks>
-        /// The version identifier is a provider-specific string, but would typically include the type and version of
-        /// the time zone provider.
-        /// </remarks>
-        public static string ProviderVersionId        
-        {
-            get
-            {
-                return Factory.ProviderVersionId;
-            }
-        }
-        
-        /// <summary>
-        /// Gets or sets the <see cref="DateTimeZoneFactory"/> used by the static convenience methods (<see cref="ForId"/> and so on).
-        /// </summary>
-        public static DateTimeZoneFactory Factory
-        {
-            get
-            {
-                return factory;
-            }
-            set
-            {
-                factory = Preconditions.CheckNotNull(value, "value");
-            }
-        }
-
-        /// <summary>
-        /// Gets the complete list of valid time zone ids provided by the current provider.
-        /// This list is sorted in lexigraphical order.
-        /// </summary>
-        /// <remarks>
-        /// The ID "UTC" is guaranteed to be available regardless of the time zone provider in use,
-        /// as is UTC+05:00 and the like for fixed offset zones. The "UTC" ID will only be present
-        /// in this collection if the provider explicitly advertises it, but will be valid either way.
-        /// </remarks>
-        /// <value>The <see cref="IEnumerable{T}" /> of string ids.</value>
-        public static IEnumerable<string> Ids { get { return factory.Ids; } }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="T:NodaTime.DateTimeZone" /> class.
