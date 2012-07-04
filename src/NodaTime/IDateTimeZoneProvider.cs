@@ -22,7 +22,7 @@ namespace NodaTime
         /// Gets the complete list of valid time zone ids supported by this provider.
         /// </summary>
         /// <remarks>
-        /// This list will be sorted in lexigraphical order. It cannot be modified by callers, and
+        /// This list will be sorted in ordinal lexicographic order. It cannot be modified by callers, and
         /// must not be modified by the provider either: client code can safely treat it as thread-safe
         /// and deeply immutable.
         /// </remarks>
