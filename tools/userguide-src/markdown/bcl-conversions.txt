@@ -91,19 +91,19 @@ TimeZoneInfo
 
 The main time zone type in Noda Time is [`DateTimeZone`](noda-type://NodaTime.DateTimeZone) and by default this will use the
 zoneinfo time zone database. However, if you want to create a `DateTimeZone` which corresponds exactly to a particular `TimeZoneInfo`,
-there are some options using [`BclTimeZone`](noda-type://NodaTime.TimeZones.BclTimeZone):
+there are some options using [`BclDateTimeZone`](noda-type://NodaTime.TimeZones.BclDateTimeZone):
 
-- You can call `DateTimeZone.SetProvider(new BclTimeZoneProvider())` which will replace the zoneinfo provider with one
-  which simply uses the system time zones provided by the BCL. This is appropriate if you're going to work with various time zones,
+- You can use `DateTimeZoneProviders.Bcl` everywhere you use time zones. (You may well want to inject this as an [`IDateTimeZoneProvider`](noda-type://NodaTime.IDateTimeZoneProvider)
+  if you're using dependency injection). This is appropriate if you're going to work with various time zones,
   and you only ever care about the BCL versions.
-- To convert a single time zone, you can can `BclTimeZone.FromTimeZoneInfo`
-- If you just need the system default time zone, you can call `BclTimeZone.ForSystemDefault`. There are some circumstances where
-  using `DateTimeZone.GetSystemDefault` may return null, indicating that there's no known mapping from the local BCL time zone
-  ID to the current provider's time zone database. Using `BclTimeZone.ForSystemDefault()` *always* returns a converted version
+- To convert a single time zone, you can can `BclDateTimeZone.FromTimeZoneInfo`
+- If you just need the system default time zone, you can call `BclDateTimeZone.ForSystemDefault`. There are some circumstances where
+  using `DateTimeZoneProviders.Tzdb.GetSystemDefault` may return null, indicating that there's no known mapping from the local BCL time zone
+  ID to TZDB. Using `BclDateTimeZone.ForSystemDefault()` *always* returns a converted version
   of the BCL time zone. This doesn't require that you've set the BCL time zone provider, and can be used to provide a fallback
   mechanism:
 
-        DateTimeZone systemZone = DateTimeZone.GetSystemDefault() ?? BclTimeZone.ForSystemDefault();
+        DateTimeZone systemZone = DateTimeZoneProviders.Tzdb.GetSystemDefault() ?? BclDateTimeZone.ForSystemDefault();
 
 There are various pros and cons involved in using the zoneinfo time
 zones vs the BCL ones. In particular:
