@@ -160,6 +160,15 @@ Noda Time makes it *reasonably* easy to handle these situations, but
 you need to work out what you want to happen. See the [`DateTimeZone`
 documentation][DateTimeZone] for more details and options.
 
+There are various different sources of time zone information available, and Noda Time
+handles two of them: it is able to map BCL `TimeZoneInfo` objects using `BclDateTimeZone`,
+and the [TZDB][TZDB] (aka Olson) database. A version of TZDB is embedded within the Noda Time
+distribution, and if you need a more recent one, there are [instructions on how to download and
+use new data](tzdb.txt). We generally recommend that you isolate yourself from the provider you're
+using by only depending on [`IDateTimeZoneProvider`][IDateTimeZoneProvider], and injecting the appropriate
+provider in the normal way. "Stock" providers are available via the [`DateTimeZoneProviders`][DateTimeZoneProviders]
+class.
+
 [api]: ../api/Index.html
 [2]: http://blogs.msdn.com/b/bclteam/archive/2007/06/18/a-brief-history-of-datetime-anthony-moore.aspx
 [LocalTime]: noda-type://NodaTime.LocalTime
@@ -171,3 +180,6 @@ documentation][DateTimeZone] for more details and options.
 [DateTimeZone]: noda-type://NodaTime.DateTimeZone
 [Offset]: noda-type://NodaTime.Offset
 [ZonedDateTime]: noda-type://NodaTime.ZonedDateTime
+[TZDB]: http://www.iana.org/time-zones
+[IDateTimeZoneProvider]: noda-type://NodaTime.IDateTimeZoneProvider
+[DateTimeZoneProviders]: noda-type://NodaTime.DateTimeZoneProviders

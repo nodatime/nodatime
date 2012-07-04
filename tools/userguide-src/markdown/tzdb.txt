@@ -56,13 +56,11 @@ While it's possible to have multiple time zone providers in play at a time, that
 file is relatively straightforward:
 
 - Create a [`ResourceSet`](http://msdn.microsoft.com/en-us/library/t15hy0dt.aspx) from the file
-- Create a [`TzdbTimeZoneProvider`][TzdbTimeZoneProvider] with the `ResourceSet`
-- Call `DateTimeZone.SetProvider` with the provider
+- Create a [`TzdbDateTimeZoneSource`][TzdbDateTimeZoneSource] with the `ResourceSet`
+- Create [`DateTimeZoneCache`][DateTimeZoneCache] with the source 
+- Use that cache (usually by way of dependency injection as an `IDateTimeZoneProvider`) wherever you need time zone information
 
-For the sake of sanity, this should be done as early in your application's initialization as possible - it would
-be unfortunate to accidentally end up with a mixture of time zone versions active concurrently.
-
-Here's some sample code doing exactly that:
+Here's some sample code for the first three steps above:
 
 	using NodaTime;
 	using NodaTime.TimeZones;
@@ -74,16 +72,17 @@ Here's some sample code doing exactly that:
 		static void Main()
 		{
 			var resourceSet = new ResourceSet("tzdb-2012c.resources");
-			var provider = new TzdbTimeZoneProvider(resourceSet);
-			DateTimeZone.SetProvider(provider);
-			Console.WriteLine(DateTimeZone.ProviderVersionId);
+			var source = new TzdbDateTimeZoneSource(resourceSet);
+			IDateTimeZoneProvider provider = new DateTimeZoneCache(source);
+			Console.WriteLine(provider.SourceVersionId);
 		}
 	}
 
-You may be surprised that `TzdbTimeZoneProvider` doesn't implement `IDisposable` even though `ResourceSet` does. `TzdbTimeZoneProvider`
+You may be surprised that `TzdbDateTimeZoneSource` doesn't implement `IDisposable` even though `ResourceSet` does. `TzdbDateTimeZoneSource`
 will never close or dispose the resource set it's given - it doesn't assume ownership of it. However, it will fail if you dispose the
 resource set and then ask for a time zone which hasn't yet been loaded. If you wish to have a completely disconnected time zone provider,
 I'd recommend loading the contents of the file into a `MemoryStream` and passing *that* to the `ResourceSet` constructor. Otherwise, in
 most cases it probably isn't a big deal to have the handle to the resource file open throughout the lifetime of the application.
 
-[TzdbTimeZoneProvider]: noda-type://NodaTime.TimeZones.TzdbTimeZoneProvider
+[TzdbDateTimeZoneProvider]: noda-type://NodaTime.TimeZones.TzdbDateTimeZoneProvider
+[DateTimeZoneCache]: noda-type://NodaTime.TimeZones.DateTimeZoneCache

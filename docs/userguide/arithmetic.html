@@ -44,7 +44,7 @@ the instance <code>Minus</code> method on both <code>Instant</code> and <code>Zo
 <p>Time line arithmetic is pretty simple, except you might not <em>always</em> get
 what you expect when using <code>ZonedDateTime</code>, due to daylight saving transitions:</p>
 
-<pre class="prettyprint"><code>DateTimeZone london = DateTimeZone.ForId("Europe/London");
+<pre class="prettyprint"><code>DateTimeZone london = DateTimeZoneProviders.Tzdb["Europe/London"];
 // 12:45am on March 27th 2012
 LocalDateTime local = new LocalDateTime(2012, 3, 27, 0, 45, 00);
 ZonedDateTime before = london.AtStrictly(local);

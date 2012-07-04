@@ -36,7 +36,7 @@ the instance `Minus` method on both `Instant` and `ZonedDateTime`.)
 Time line arithmetic is pretty simple, except you might not *always* get
 what you expect when using `ZonedDateTime`, due to daylight saving transitions:
 
-    DateTimeZone london = DateTimeZone.ForId("Europe/London");
+    DateTimeZone london = DateTimeZoneProviders.Tzdb["Europe/London"];
     // 12:45am on March 27th 2012
     LocalDateTime local = new LocalDateTime(2012, 3, 27, 0, 45, 00);
     ZonedDateTime before = london.AtStrictly(local);
