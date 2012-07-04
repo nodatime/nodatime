@@ -25,7 +25,7 @@ using NodaTime.TimeZones;
 namespace NodaTime.Test.TimeZones
 {
     /// <summary>
-    /// Tests for DateTimeZoneFactory.
+    /// Tests for DateTimeZoneCache.
     /// </summary>
     [TestFixture]
     public class DateTimeZoneCacheTest
@@ -154,13 +154,13 @@ namespace NodaTime.Test.TimeZones
         }
 
         [Test]
-        public void Tzdb_ForId_UtcId()
+        public void Tzdb_Indexer_UtcId()
         {
             Assert.AreEqual(DateTimeZone.Utc, DateTimeZoneProviders.Tzdb[DateTimeZone.UtcId]);
         }
 
         [Test]
-        public void Tzdb_ForId_AmericaLosAngeles()
+        public void Tzdb_Indexer_AmericaLosAngeles()
         {
             const string americaLosAngeles = "America/Los_Angeles";
             var actual = DateTimeZoneProviders.Tzdb[americaLosAngeles];
@@ -185,7 +185,7 @@ namespace NodaTime.Test.TimeZones
         /// invariant holds for all time zones...
         /// </summary>
         [Test]
-        public void Tzdb_ForId_AllIds()
+        public void Tzdb_Indexer_AllIds()
         {
             foreach (string id in DateTimeZoneProviders.Tzdb.Ids)
             {
@@ -194,7 +194,7 @@ namespace NodaTime.Test.TimeZones
         }
 
         [Test]
-        public void Tzdb_ForId_FixedOffset()
+        public void Tzdb_Indexer_FixedOffset()
         {
             string id = "UTC+05:30";
             DateTimeZone zone = DateTimeZoneProviders.Tzdb[id];
@@ -203,7 +203,7 @@ namespace NodaTime.Test.TimeZones
         }
 
         [Test]
-        public void Tzdb_ForId_FixedOffset_NonCanonicalId()
+        public void Tzdb_Indexer_FixedOffset_NonCanonicalId()
         {
             string id = "UTC+05:00:00";
             DateTimeZone zone = DateTimeZoneProviders.Tzdb[id];
@@ -212,7 +212,7 @@ namespace NodaTime.Test.TimeZones
         }
 
         [Test]
-        public void Tzdb_ForId_InvalidFixedOffset()
+        public void Tzdb_Indexer_InvalidFixedOffset()
         {
             Assert.Throws<TimeZoneNotFoundException>(() => { var ignored = DateTimeZoneProviders.Tzdb["UTC+5Months"]; });
         }

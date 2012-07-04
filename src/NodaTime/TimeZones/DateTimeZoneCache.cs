@@ -59,7 +59,7 @@ namespace NodaTime.TimeZones
             }
             var idList = new List<string>(providerIds);
             // TODO(Post-V1): Handle duplicates?
-            idList.Sort();
+            idList.Sort(StringComparer.Ordinal);
             ids = idList.AsReadOnly();
             // Populate the dictionary with null values meaning "the ID is valid, we haven't fetched the zone yet".
             foreach (string id in ids)
@@ -72,10 +72,10 @@ namespace NodaTime.TimeZones
             }
         }
 
-        /// <ineritdoc />
+        /// <inheritdoc />
         public string VersionId { get { return providerVersionId; } }
 
-        /// <ineritdoc />
+        /// <inheritdoc />
         public DateTimeZone GetSystemDefault()
         {
             TimeZoneInfo bcl = TimeZoneInfo.Local;
@@ -87,7 +87,7 @@ namespace NodaTime.TimeZones
             return this[id];
         }
 
-        /// <ineritdoc />
+        /// <inheritdoc />
         public DateTimeZone GetSystemDefaultOrNull()
         {
             TimeZoneInfo bcl = TimeZoneInfo.Local;
@@ -99,10 +99,10 @@ namespace NodaTime.TimeZones
             return GetZoneOrNull(id);
         }
 
-        /// <ineritdoc />
+        /// <inheritdoc />
         public ReadOnlyCollection<string> Ids { get { return ids; } }
 
-        /// <ineritdoc />
+        /// <inheritdoc />
         public DateTimeZone GetZoneOrNull(string id)
         {
             Preconditions.CheckNotNull(id, "id");
@@ -126,7 +126,7 @@ namespace NodaTime.TimeZones
             }
         }
 
-        /// <ineritdoc />
+        /// <inheritdoc />
         public DateTimeZone this[string id]
         {
             get
