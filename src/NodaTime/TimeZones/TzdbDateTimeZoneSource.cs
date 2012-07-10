@@ -30,7 +30,7 @@ namespace NodaTime.TimeZones
     /// for its time zone definitions from a named resource in an assembly.
     /// </summary>
     /// <threadsafety>This type is immutable reference type. See the thread safety section of the user guide for more information.</threadsafety>
-    public sealed class TzdbTimeZoneSource : IDateTimeZoneSource
+    public sealed class TzdbDateTimeZoneSource : IDateTimeZoneSource
     {
         /// <summary>
         /// The key used to find the Windows to TZDB ID mappings.
@@ -60,37 +60,37 @@ namespace NodaTime.TimeZones
         private readonly string version;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="TzdbTimeZoneSource" /> class.
+        /// Initializes a new instance of the <see cref="TzdbDateTimeZoneSource" /> class.
         /// </summary>
         /// <param name="baseName">GetName of the base.</param>
-        public TzdbTimeZoneSource(string baseName) : this(baseName, Assembly.GetExecutingAssembly())
+        public TzdbDateTimeZoneSource(string baseName) : this(baseName, Assembly.GetExecutingAssembly())
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="TzdbTimeZoneSource" /> class.
+        /// Initializes a new instance of the <see cref="TzdbDateTimeZoneSource" /> class.
         /// </summary>
         /// <param name="baseName">GetName of the base.</param>
         /// <param name="assembly">The assembly to search for the time zone resources.</param>
-        public TzdbTimeZoneSource(string baseName, Assembly assembly)
+        public TzdbDateTimeZoneSource(string baseName, Assembly assembly)
             : this(new ResourceManager(baseName, assembly))
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="TzdbTimeZoneSource" /> class.
+        /// Initializes a new instance of the <see cref="TzdbDateTimeZoneSource" /> class.
         /// </summary>
         /// <param name="source">The <see cref="ResourceManager"/> to search for the time zone resources.</param>
-        public TzdbTimeZoneSource(ResourceManager source)
+        public TzdbDateTimeZoneSource(ResourceManager source)
             : this(ResourceHelper.GetDefaultResourceSet(source))
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="TzdbTimeZoneSource" /> class.
+        /// Initializes a new instance of the <see cref="TzdbDateTimeZoneSource" /> class.
         /// </summary>
         /// <param name="source">The <see cref="ResourceSet"/> to search for the time zone resources.</param>
-        public TzdbTimeZoneSource(ResourceSet source)
+        public TzdbDateTimeZoneSource(ResourceSet source)
         {
             this.source = source;
             timeZoneIdMap = ResourceHelper.LoadDictionary(source, IdMapKey);

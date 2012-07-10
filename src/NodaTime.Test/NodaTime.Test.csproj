@@ -166,12 +166,12 @@
     <Compile Include="Text\TextCursorTestBase.cs" />
     <Compile Include="Text\ValueCursorTest.cs" />
     <Compile Include="TimeZones\AlgiersTest.cs" />
-    <Compile Include="TimeZones\BclTimeZoneSourceTest.cs" />
+    <Compile Include="TimeZones\BclDateTimeZoneSourceTest.cs" />
     <Compile Include="TimeZones\BclDateTimeZoneTest.cs" />
     <Compile Include="TimeZones\CachedDateTimeZoneTest.cs" />
     <Compile Include="TimeZones\DateTimeZoneBuilderTest.cs" />
     <Compile Include="TimeZones\ResolversTest.cs" />
-    <Compile Include="TimeZones\TzdbTimeZoneSourceTest.cs" />
+    <Compile Include="TimeZones\TzdbDateTimeZoneSourceTest.cs" />
     <Compile Include="TimeZones\DateTimeZoneCacheTest.cs" />
     <Compile Include="TimeZones\DaylightSavingDateTimeZoneTest.cs" />
     <Compile Include="TimeZones\EtcTest.cs" />

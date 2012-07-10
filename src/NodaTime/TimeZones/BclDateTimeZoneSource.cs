@@ -26,7 +26,7 @@ namespace NodaTime.TimeZones
     /// .NET 3.5 and later.
     /// </summary>
     /// <threadsafety>This type maintains no state, and all members are thread-safe. See the thread safety section of the user guide for more information.</threadsafety>
-    public class BclTimeZoneSource : IDateTimeZoneSource
+    public class BclDateTimeZoneSource : IDateTimeZoneSource
     {
         /// <summary>
         /// Returns the IDs of all system time zones.
