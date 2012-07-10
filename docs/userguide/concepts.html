@@ -126,7 +126,7 @@ date/times and local date/times - or equivalently, a mapping from
 UTC instants to <em>offsets</em>, where an offset is simply the difference
 between UTC and local time. In Noda Time, time zones are represented
 by the <a href="../api/html/T_NodaTime_DateTimeZone.htm"><code>DateTimeZone</code></a> class, and offsets are represented
-by the <a href="../api/html/T_NodaTime_Offset.htm"><code>Offset</code></a> struct.</p>
+by the <a href="../api/html/T_NodaTime_OffsetDateTime.htm"><code>Offset</code></a> struct.</p>
 
 <p>An offset is positive if local time is later than (ahead of) UTC,
 and negative if local time is earlier than (behind) UTC. For
@@ -174,6 +174,12 @@ use new data</a>. We generally recommend that you isolate yourself from the prov
 using by only depending on <a href="../api/html/T_NodaTime_IDateTimeZoneProvider.htm"><code>IDateTimeZoneProvider</code></a>, and injecting the appropriate
 provider in the normal way. "Stock" providers are available via the <a href="../api/html/T_NodaTime_DateTimeZoneProviders.htm"><code>DateTimeZoneProviders</code></a>
 class.</p>
+
+<p>Also note that in some cases, you may not have full time zone information,
+but have just a local time and an offset. For example, if you're parsing the string
+"2012-06-26T20:41:00+01:00" that gives the information that the local time is one hour
+ahead of UTC - but it doesn't give any indication of what the offset would be at any other
+time. In this situation, you should use [<code>OffsetDateTime</code>][OffsetDateTime]</p>
 
   </body>
 </html>
