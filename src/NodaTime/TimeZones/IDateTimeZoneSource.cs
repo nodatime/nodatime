@@ -21,7 +21,7 @@ using System.Collections.Generic;
 namespace NodaTime.TimeZones
 {
     /// <summary>
-    /// Provides the interface for objects that can retrieve time zone definitions given an id.
+    /// Provides the interface for objects that can retrieve time zone definitions given an ID.
     /// </summary>
     /// <remarks>
     /// <para>
@@ -42,7 +42,13 @@ namespace NodaTime.TimeZones
         /// Returns an enumeration of the available ids from this source.
         /// </summary>
         /// <remarks>
+        /// <para>
         /// Every value in this enumeration must return a valid time zone from <see cref="ForId"/> for the life of the source.
+        /// </para>
+        /// <para>
+        /// This list may optionally contain any of the fixed-offset timezones with IDs "UTC" and "UTC+/-Offset", but
+        /// only those that are included will be requested via <see cref="ForId"/>.
+        /// </para>
         /// </remarks>
         /// <returns>The <see cref="IEnumerable{T}"/> of ids. It may be empty, but must not be <see langword="null"/>, 
         /// and must not contain any elements which are <see langword="null"/>.</returns>
@@ -61,9 +67,19 @@ namespace NodaTime.TimeZones
         /// Returns the time zone definition associated with the given id.
         /// </summary>
         /// <remarks>
+        /// <para>
         /// The source should not attempt to cache time zones; caching is provided by <see cref="DateTimeZoneCache"/>.
+        /// </para>
+        /// <para>
+        /// Note that this is permitted to return a <see cref="DateTimeZone"/> that has a different ID to that
+        /// requested, if the ID provided is an alias.
+        /// </para>
+        /// <para>
+        /// Note also that this method is not required to return the same <see cref="DateTimeZone"/> instance for
+        /// successive requests for the same ID; however, all instances returned for a given ID should be equivalent.
+        /// </para>
         /// </remarks>
-        /// <param name="id">The id of the time zone to return. This must be one of the IDs
+        /// <param name="id">The ID of the time zone to return. This must be one of the IDs
         /// returned by <see cref="GetIds"/>.</param>
         /// <returns>The <see cref="DateTimeZone"/> for the given ID.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="id"/> is <see langword="null"/>.</exception>
