@@ -22,24 +22,29 @@ using NodaTime.TimeZones;
 namespace NodaTime.Test.TimeZones
 {
     [TestFixture]
-    public class BclTimeZoneSourceTest
+    public class TzdbDateTimeZoneSourceTest
     {
         [Test]
-        public void AllZonesMapToTheirId()
+        public void ZoneMapping()
         {
-            BclTimeZoneSource source = new BclTimeZoneSource();
-            foreach (var zone in TimeZoneInfo.GetSystemTimeZones())
-            {
-                Assert.AreEqual(zone.Id, source.MapTimeZoneId(zone));
-            }
+            var source = new TzdbDateTimeZoneSource("NodaTime.TimeZones.Tzdb");
+            var bclZone = TimeZoneInfo.FindSystemTimeZoneById("GMT Standard Time");
+            Assert.AreEqual("Europe/London", source.MapTimeZoneId(bclZone));
         }
 
+        /// <summary>
+        /// Simply tests that every ID in the built-in database can be fetched. This is also
+        /// helpful for diagnostic debugging when we want to check that some potential
+        /// invariant holds for all time zones...
+        /// </summary>
         [Test]
-        public void UtcMapping()
+        public void ForId_AllIds()
         {
-            // Effectively check that we end up with a BclTimeZone when we use the UTC ID.
-            DateTimeZoneCache provider = new DateTimeZoneCache(new BclTimeZoneSource());
-            Assert.IsInstanceOf<BclDateTimeZone>(provider[DateTimeZone.UtcId]);
+            var source = new TzdbDateTimeZoneSource("NodaTime.TimeZones.Tzdb");
+            foreach (string id in source.GetIds())
+            {
+                Assert.IsNotNull(source.ForId(id));
+            }
         }
     }
 }
