@@ -27,7 +27,7 @@ namespace NodaTime.Test.TimeZones
         [SetUp]
         public void Setup()
         {
-            timeZone = DateTimeZone.ForId("America/Los_Angeles") as CachedDateTimeZone;
+            timeZone = DateTimeZoneProviders.Tzdb["America/Los_Angeles"] as CachedDateTimeZone;
             if (timeZone == null)
             {
                 Assert.Fail("The America/Los_Angeles time zone does not contain a CachedDateTimeZone.");

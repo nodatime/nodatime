@@ -63,14 +63,12 @@ file is relatively straightforward:</p>
 
 <ul>
 <li>Create a <a href="http://msdn.microsoft.com/en-us/library/t15hy0dt.aspx"><code>ResourceSet</code></a> from the file</li>
-<li>Create a <a href="../api/html/T_NodaTime_TimeZones_TzdbTimeZoneProvider.htm"><code>TzdbTimeZoneProvider</code></a> with the <code>ResourceSet</code></li>
-<li>Call <code>DateTimeZone.SetProvider</code> with the provider</li>
+<li>Create a [<code>TzdbDateTimeZoneSource</code>][TzdbDateTimeZoneSource] with the <code>ResourceSet</code></li>
+<li>Create <a href="../api/html/T_NodaTime_TimeZones_DateTimeZoneCache.htm"><code>DateTimeZoneCache</code></a> with the source </li>
+<li>Use that cache (usually by way of dependency injection as an <code>IDateTimeZoneProvider</code>) wherever you need time zone information</li>
 </ul>
 
-<p>For the sake of sanity, this should be done as early in your application's initialization as possible - it would
-be unfortunate to accidentally end up with a mixture of time zone versions active concurrently.</p>
-
-<p>Here's some sample code doing exactly that:</p>
+<p>Here's some sample code for the first three steps above:</p>
 
 <pre class="prettyprint"><code>using NodaTime;
 using NodaTime.TimeZones;
@@ -82,14 +80,14 @@ public class CustomTzdb
     static void Main()
     {
         var resourceSet = new ResourceSet("tzdb-2012c.resources");
-        var provider = new TzdbTimeZoneProvider(resourceSet);
-        DateTimeZone.SetProvider(provider);
-        Console.WriteLine(DateTimeZone.ProviderVersionId);
+        var source = new TzdbDateTimeZoneSource(resourceSet);
+        IDateTimeZoneProvider provider = new DateTimeZoneCache(source);
+        Console.WriteLine(provider.SourceVersionId);
     }
 }
 </code></pre>
 
-<p>You may be surprised that <code>TzdbTimeZoneProvider</code> doesn't implement <code>IDisposable</code> even though <code>ResourceSet</code> does. <code>TzdbTimeZoneProvider</code>
+<p>You may be surprised that <code>TzdbDateTimeZoneSource</code> doesn't implement <code>IDisposable</code> even though <code>ResourceSet</code> does. <code>TzdbDateTimeZoneSource</code>
 will never close or dispose the resource set it's given - it doesn't assume ownership of it. However, it will fail if you dispose the
 resource set and then ask for a time zone which hasn't yet been loaded. If you wish to have a completely disconnected time zone provider,
 I'd recommend loading the contents of the file into a <code>MemoryStream</code> and passing <em>that</em> to the <code>ResourceSet</code> constructor. Otherwise, in

@@ -17,6 +17,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using NodaTime.TimeZones;
 using NodaTime.Utility;
 
@@ -65,18 +66,11 @@ namespace NodaTime
     /// than the Windows-provided information, but if you need to interoperate with other Windows systems by specifying time zone IDs,
     /// you may wish to stick to the Windows time zones.
     /// </para>
-    /// <para>The static <see cref="ForId"/> method will fetch a time zone with the given ID; the set of valid IDs is dependent on the
-    /// current time zone provider, which can be replaced with the <see cref="SetProvider"/> method. The default provider is
-    /// a <see cref="TzdbDateTimeZoneProvider"/> which loads its data from inside the Noda Time assembly; it can be replaced either with another
-    /// TzdbDateTimeZoneProvider instance which may obtain data from external resources (e.g. to use a more recent version of the zoneinfo database
-    /// than the version of Noda Time you're using) or an instance of <see cref="BclDateTimeZoneProvider"/>.
-    /// </para>
-    /// <para>Unlike many other date/time APIs, Noda Time does not use the system default time zone without you explicitly asking it to.
-    /// You can fetch the Noda Time representation of the system default time zone using <see cref="GetSystemDefault"/> or
-    /// <see cref="GetSystemDefaultOrNull"/>, which will attempt to find an appropriate time zone using the current provider.
-    /// You should be aware that this may fail, however (in which case the first method will throw an exception, and the second method will return null)
+    /// <para>To get a Noda Time representation of the system default time zone using <see cref="DateTimeZoneCache.GetSystemDefault"/> or
+    /// <see cref="DateTimeZoneCache.GetSystemDefaultOrNull"/>, which will attempt to find an appropriate time zone.
+    /// This may fail, however (in which case the first method will throw an exception, and the second method will return null)
     /// if no mapping is found. This could occur due to the system having a "custom" time zone installed, or there being no mapping for the BCL zone ID
-    /// to the provider's set of IDs due to the BCL zone ID being added recently. You can always use <see cref="BclDateTimeZone.ForSystemDefault"/> to convert
+    /// to the provider's set of IDs. You can always use <see cref="BclDateTimeZone.ForSystemDefault"/> to convert
     /// the local <see cref="TimeZoneInfo"/> to guarantee that a representation is available.</para>
     /// <para>Currently Noda Time does not support 3rd party time zone implementations. If you wish to create your own implementation,
     /// please ask for support on the Noda Time mailing list.</para>
@@ -91,24 +85,16 @@ namespace NodaTime
 
         /// <summary>
         /// The ID of the UTC (Coordinated Universal Time) time zone. This ID is always valid, whatever provider is
-        /// used. If the provider has its own mapping for UTC, that will be returned by <see cref="ForId" />, but otherwise
+        /// used. If the provider has its own mapping for UTC, that will be returned by <see cref="DateTimeZoneCache.GetZoneOrNull" />, but otherwise
         /// the value of the <see cref="Utc"/> property will be returned.
         /// </summary>
         internal const string UtcId = "UTC";
-
-        /// <summary>
-        /// Gets the default time zone provider, which is initialized from resources within the NodaTime assembly.
-        /// </summary>
-        public static readonly IDateTimeZoneProvider DefaultDateTimeZoneProvider = new TzdbDateTimeZoneProvider("NodaTime.TimeZones.Tzdb");
 
         private static readonly DateTimeZone UtcZone = new FixedDateTimeZone(Offset.Zero);
         private const int FixedZoneCacheGranularityMilliseconds = NodaConstants.MillisecondsPerMinute * 30;
         private const int FixedZoneCacheMinimumMilliseconds = -FixedZoneCacheGranularityMilliseconds * 12 * 2; // From UTC-12
         private const int FixedZoneCacheSize = (12 + 15) * 2 + 1; // To UTC+15 inclusive
         private static readonly DateTimeZone[] FixedZoneCache = BuildFixedZoneCache();
-
-        private static TimeZoneCache cache = new TimeZoneCache(DefaultDateTimeZoneProvider);
-        private static readonly object cacheLock = new object();
 
         private readonly string id;
         private readonly bool isFixed;
@@ -127,47 +113,6 @@ namespace NodaTime
         /// </summary>
         /// <value>The UTC <see cref="T:NodaTime.DateTimeZone" />.</value>
         public static DateTimeZone Utc { get { return UtcZone; } }
-
-        /// <summary>
-        /// Gets the system default time zone, as mapped by the underlying provider. If the time zone
-        /// is not mapped by this provider, a <see cref="TimeZoneNotFoundException"/> is thrown.
-        /// </summary>
-        /// <remarks>
-        /// Callers should be aware that this method can throw <see cref="TimeZoneNotFoundException"/>,
-        /// even with standard Windows time zones.
-        /// This could be due to either the Unicode CLDR not being up-to-date with Windows time zone IDs,
-        /// or Noda Time not being up-to-date with CLDR - or a provider-specific problem. Callers can use
-        /// <see cref="GetSystemDefaultOrNull"/> with the null-coalescing operator to effectively provide a default.
-        /// </remarks>
-        /// <exception cref="TimeZoneNotFoundException">The system default time zone is not mapped by
-        /// the current provider.</exception>
-        /// <returns>
-        /// The provider-specific representation of the system time zone, or null if the time zone
-        /// could not be mapped.
-        /// </returns>
-        public static DateTimeZone GetSystemDefault()
-        {
-            return cache.GetSystemDefault();
-        }
-
-        /// <summary>
-        /// Gets the system default time zone, as mapped by the underlying provider. If the time zone
-        /// is not mapped by this provider, a null reference is returned.
-        /// </summary>
-        /// <remarks>
-        /// Callers should be aware that this method can return null, even with standard Windows time zones.
-        /// This could be due to either the Unicode CLDR not being up-to-date with Windows time zone IDs,
-        /// or Noda Time not being up-to-date with CLDR - or a provider-specific problem. Callers can use
-        /// the null-coalescing operator to effectively provide a default.
-        /// </remarks>
-        /// <returns>
-        /// The provider-specific representation of the system time zone, or null if the time zone
-        /// could not be mapped.
-        /// </returns>
-        public static DateTimeZone GetSystemDefaultOrNull()
-        {
-            return cache.GetSystemDefaultOrNull();
-        }
 
         /// <summary>
         /// Returns a fixed time zone with the given offset. This may or may not be cached;
@@ -192,67 +137,6 @@ namespace NodaTime
             }
             return FixedZoneCache[index];
         }
-
-        /// <summary>
-        /// Returns the time zone with the given ID. This must be one of the IDs returned by <see cref="Ids"/>, or an ID
-        /// returned by a fixed time zone as returned by <see cref="ForOffset"/>.
-        /// </summary>
-        /// <param name="id">The time zone ID to find.</param>
-        /// <exception cref="TimeZoneNotFoundException">The provider does not support a time zone with the given ID.</exception>
-        /// <returns>The <see cref="DateTimeZone" /> with the given ID.</returns>
-        public static DateTimeZone ForId(string id)
-        {
-            TimeZoneCache localCache;
-            lock (cacheLock)
-            {
-                localCache = cache;
-            }
-            return localCache[id];
-        }
-
-        /// <summary>
-        /// Returns a version identifier for the current time zone provider.
-        /// </summary>
-        /// <remarks>
-        /// The version identifier is a provider-specific string, but would typically include the type and version of
-        /// the time zone provider.
-        /// </remarks>
-        public static string ProviderVersionId        
-        {
-            get
-            {
-                lock (cacheLock)
-                {
-                    return cache.ProviderVersionId;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Sets the provider to use for time zone lookup. Note that this is a global change; it is expected
-        /// that users will only call this on start-up if at all.
-        /// </summary>
-        /// <param name="provider">The provider to use for time zones.</param>
-        public static void SetProvider(IDateTimeZoneProvider provider)
-        {
-            var localCache = new TimeZoneCache(provider);
-            lock (cacheLock)
-            {
-                cache = localCache;
-            }
-        }
-
-        /// <summary>
-        /// Gets the complete list of valid time zone ids provided by the current provider.
-        /// This list is sorted in lexigraphical order.
-        /// </summary>
-        /// <remarks>
-        /// The ID "UTC" is guaranteed to be available regardless of the time zone provider in use,
-        /// as is UTC+05:00 and the like for fixed offset zones. The "UTC" ID will only be present
-        /// in this collection if the provider explicitly advertises it, but will be valid either way.
-        /// </remarks>
-        /// <value>The <see cref="IEnumerable{T}" /> of string ids.</value>
-        public static IEnumerable<string> Ids { get { return cache.Ids; } }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="T:NodaTime.DateTimeZone" /> class.

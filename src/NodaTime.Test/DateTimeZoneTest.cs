@@ -16,32 +16,13 @@
 #endregion
 
 using NUnit.Framework;
+using NodaTime.TimeZones;
 
 namespace NodaTime.Test
 {
     [TestFixture]
     public partial class DateTimeZoneTest
     {
-        [SetUp]
-        public void Setup()
-        {
-            // Reset the cache...
-            DateTimeZone.SetProvider(DateTimeZone.DefaultDateTimeZoneProvider);
-        }
-
-        [TearDown]
-        public void TearDown()
-        {
-            // Reset the cache...
-            DateTimeZone.SetProvider(DateTimeZone.DefaultDateTimeZoneProvider);
-        }
-
-        [Test]
-        public void DefaultProviderIsTzdb()
-        {
-            Assert.IsTrue(DateTimeZone.ProviderVersionId.StartsWith("TZDB: "));
-        }
-
         // The current implementation caches every half hour, -12 to +15.
         [Test]
         public void ForOffset_UncachedExample_NotOnHalfHour()

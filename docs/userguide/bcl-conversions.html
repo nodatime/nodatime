@@ -36,7 +36,7 @@ the ISO-8601 calendar.</p>
   <tbody>
     <tr>
       <td>Instant</td>
-      <td>Utc</td>
+      <td>Universal</td>
       <td>Instant.ToDateTimeUtc</td>
       <td>Instant.FromDateTimeUtc</td>
       <td></td>
@@ -62,13 +62,6 @@ the ISO-8601 calendar.</p>
       <td>LocalDateTime.FromDateTime</td>
       <td>FromDateTime uses the "local" value of the DateTime regardless of kind</td>
     </tr>
-    <tr>
-      <td>OffsetDateTime</td>
-      <td>Unspecified</td>
-      <td>OffsetDateTime.ToDateTimeOffset</td>
-      <td>OffsetDateTime.FromDateTimeOffset</td>
-      <td>FromDateTimeOffset uses the "local" value of the DateTime regardless of kind</td>
-    </tr>
   </tbody>
 </table>
 
@@ -77,7 +70,8 @@ be for the system default time zone, which you should generally be explicit abou
 
 <h1>DateTimeOffset</h1>
 
-<p><a href="../api/html/T_NodaTime_OffsetDateTime.htm"><code>OffsetDateTime</code></a> corresponds most closely to <code>DateTimeOffset</code>, although you can also use a <a href="../api/html/T_NodaTime_ZonedDateTime.htm"><code>ZonedDateTime</code></a> with a fixed time zone. That's exactly what <code>ZonedDateTime.FromDateTimeOffset</code> does,
+<p>There's no direct corresponding type to <code>DateTimeOffset</code> in Noda Time, but it can be represented as
+a <code>ZonedDateTime</code> with a fixed time zone. That's exactly what <code>ZonedDateTime.FromDateTimeOffset</code> does,
 but you must be aware that "real" time zone information is lost as soon as you've got a <code>DateTimeOffset</code> - 
 it represents an exact instant in time, with a local offset from UTC, but that doesn't tell you what the
 local offset would be a minute later or earlier. The reverse conversion (<code>ZonedDateTime.ToDateTimeOffset</code>)
@@ -85,7 +79,8 @@ loses the time zone information in a similar way.</p>
 
 <p><code>Instant</code> also provides conversions to and from <code>DateTimeOffset</code>; <code>ToDateTimeOffset</code> will always return a
 <code>DateTimeOffset</code> with an offset of zero, and <code>FromDateTimeOffset</code> will "subtract" the offset from local time,
-to represent the appropriate instant in time - but without any further trace of the offset, which isn't stored in an <code>Instant</code>.</p>
+to represent the appropriate instant in time - but without any further trace of the offset, which isn't stored
+in an <code>Instant</code>.</p>
 
 <h1>TimeSpan</h1>
 
@@ -100,20 +95,20 @@ if the <code>TimeSpan</code> has a magnitude of 24 hours or more.</p>
 
 <p>The main time zone type in Noda Time is <a href="../api/html/T_NodaTime_DateTimeZone.htm"><code>DateTimeZone</code></a> and by default this will use the
 zoneinfo time zone database. However, if you want to create a <code>DateTimeZone</code> which corresponds exactly to a particular <code>TimeZoneInfo</code>,
-there are some options using <a href="../api/html/T_NodaTime_TimeZones_BclTimeZone.htm"><code>BclTimeZone</code></a>:</p>
+there are some options using <a href="../api/html/T_NodaTime_TimeZones_BclDateTimeZone.htm"><code>BclDateTimeZone</code></a>:</p>
 
 <ul>
-<li>You can call <code>DateTimeZone.SetProvider(new BclTimeZoneProvider())</code> which will replace the zoneinfo provider with one
-which simply uses the system time zones provided by the BCL. This is appropriate if you're going to work with various time zones,
+<li>You can use <code>DateTimeZoneProviders.Bcl</code> everywhere you use time zones. (You may well want to inject this as an <a href="../api/html/T_NodaTime_IDateTimeZoneProvider.htm"><code>IDateTimeZoneProvider</code></a>
+if you're using dependency injection). This is appropriate if you're going to work with various time zones,
 and you only ever care about the BCL versions.</li>
-<li>To convert a single time zone, you can can <code>BclTimeZone.FromTimeZoneInfo</code></li>
-<li><p>If you just need the system default time zone, you can call <code>BclTimeZone.ForSystemDefault</code>. There are some circumstances where
-using <code>DateTimeZone.GetSystemDefault</code> may return null, indicating that there's no known mapping from the local BCL time zone
-ID to the current provider's time zone database. Using <code>BclTimeZone.ForSystemDefault()</code> <em>always</em> returns a converted version
+<li>To convert a single time zone, you can can <code>BclDateTimeZone.FromTimeZoneInfo</code></li>
+<li><p>If you just need the system default time zone, you can call <code>BclDateTimeZone.ForSystemDefault</code>. There are some circumstances where
+using <code>DateTimeZoneProviders.Tzdb.GetSystemDefault</code> may return null, indicating that there's no known mapping from the local BCL time zone
+ID to TZDB. Using <code>BclDateTimeZone.ForSystemDefault()</code> <em>always</em> returns a converted version
 of the BCL time zone. This doesn't require that you've set the BCL time zone provider, and can be used to provide a fallback
 mechanism:</p>
 
-<pre class="prettyprint"><code>DateTimeZone systemZone = DateTimeZone.GetSystemDefault() ?? BclTimeZone.ForSystemDefault();
+<pre class="prettyprint"><code>DateTimeZone systemZone = DateTimeZoneProviders.Tzdb.GetSystemDefault() ?? BclDateTimeZone.ForSystemDefault();
 </code></pre></li>
 </ul>
 

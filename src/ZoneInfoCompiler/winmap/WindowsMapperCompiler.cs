@@ -40,7 +40,6 @@ namespace NodaTime.ZoneInfoCompiler.winmap
         public int Execute(string inputFileName, ResourceOutput output)
         {
             log.Info("Starting compilation of {0}", inputFileName);
-            DateTimeZone.SetProvider(new EmptyDateTimeZoneProvider());
             var inputFile = new FileInfo(inputFileName);
             if (!inputFile.Exists)
             {
@@ -50,9 +49,9 @@ namespace NodaTime.ZoneInfoCompiler.winmap
             var document = LoadFile(inputFile);
             var mappings = MapZones(document);
             log.Info("Mapped {0} zones in total.", mappings.Count);
-            output.WriteDictionary(TzdbDateTimeZoneProvider.WindowsToPosixMapKey, mappings);
+            output.WriteDictionary(TzdbTimeZoneSource.WindowsToPosixMapKey, mappings);
             var version = FindVersion(document);
-            output.WriteString(TzdbDateTimeZoneProvider.WindowsToPosixMapVersionKey, version);
+            output.WriteString(TzdbTimeZoneSource.WindowsToPosixMapVersionKey, version);
             log.Info("Finished compiling.", inputFileName);
             return 0;
         }
