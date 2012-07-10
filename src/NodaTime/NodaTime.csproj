@@ -66,6 +66,7 @@
     <DocumentationFile>bin\Release\NodaTime.xml</DocumentationFile>
     <NoWarn>
     </NoWarn>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -83,6 +84,7 @@
     <Compile Include="Calendars\IslamicLeapYearPattern.cs" />
     <Compile Include="Calendars\JulianCalendarSystem.cs" />
     <Compile Include="Calendars\NamespaceDoc.cs" />
+    <Compile Include="DateTimeZoneProviders.cs" />
     <Compile Include="Delegates.cs" />
     <Compile Include="Fields\BasicMonthPeriodField.cs" />
     <Compile Include="Fields\BasicSingleEraDateTimeField.cs" />
@@ -92,6 +94,7 @@
     <Compile Include="Fields\NamespaceDoc.cs" />
     <Compile Include="Globalization\NamespaceDoc.cs" />
     <Compile Include="OffsetDateTime.cs" />
+    <Compile Include="IDateTimeZoneProvider.cs" />
     <Compile Include="PeriodBuilder.cs" />
     <Compile Include="PeriodUnits.cs" />
     <Compile Include="Properties\PatternResources.Designer.cs">
@@ -178,22 +181,23 @@
     <Compile Include="SystemClock.cs" />
     <Compile Include="Text\ValueCursor.cs" />
     <Compile Include="TimeZones\BclDateTimeZone.cs" />
-    <Compile Include="TimeZones\BclDateTimeZoneProvider.cs" />
+    <Compile Include="TimeZones\BclTimeZoneSource.cs" />
     <Compile Include="TimeZones\CachedDateTimeZone.cs" />
+    <Compile Include="TimeZones\DateTimeZoneCache.cs" />
     <Compile Include="TimeZones\DateTimeZoneReader.cs" />
     <Compile Include="TimeZones\DateTimeZoneWriter.cs" />
     <Compile Include="TimeZones\Delegates.cs" />
-    <Compile Include="TimeZones\EmptyDateTimeZoneProvider.cs" />
+    <Compile Include="TimeZones\EmptyDateTimeZoneSource.cs" />
     <Compile Include="TimeZones\NamespaceDoc.cs" />
     <Compile Include="TimeZones\Resolvers.cs" />
-    <Compile Include="TimeZones\TimeZoneCache.cs" />
+    <Compile Include="TimeZones\InvalidDateTimeSourceException.cs" />
     <Compile Include="TimeZones\Transition.cs" />
     <Compile Include="TimeZones\DateTimeZoneCompressionReader.cs" />
     <Compile Include="TimeZones\DateTimeZoneCompressionWriter.cs" />
     <Compile Include="TimeZones\DateTimeZoneBuilder.cs" />
     <Compile Include="TimeZones\DaylightSavingsDateTimeZone.cs" />
     <Compile Include="TimeZones\FixedDateTimeZone.cs" />
-    <Compile Include="TimeZones\IDateTimeZoneProvider.cs" />
+    <Compile Include="TimeZones\IDateTimeZoneSource.cs" />
     <Compile Include="TimeZones\winmap.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -208,7 +212,7 @@
     <Compile Include="TimeZones\ZoneRecurrenceCollection.cs" />
     <Compile Include="TimeZones\ZoneTransition.cs" />
     <Compile Include="TimeZones\TransitionMode.cs" />
-    <Compile Include="TimeZones\TzdbDateTimeZoneProvider.cs" />
+    <Compile Include="TimeZones\TzdbTimeZoneSource.cs" />
     <Compile Include="LocalDateTime.cs" />
     <Compile Include="Fields\DateTimeFieldType.cs" />
     <Compile Include="DateTimeZone.cs" />

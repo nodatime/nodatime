@@ -23,7 +23,7 @@ namespace NodaTime.Benchmarks
     {
         private readonly Instant[] cacheInstants = new Instant[100];
         private readonly Instant[] noCacheInstants = new Instant[500];
-        private readonly DateTimeZone paris = DateTimeZone.ForId("Europe/Paris");
+        private readonly DateTimeZone paris = DateTimeZoneProviders.Tzdb["Europe/Paris"];
         private readonly Instant[] twoYearsCacheInstants = new Instant[365];
         private int cacheIndex;
         private int noCacheIndex;

@@ -27,7 +27,7 @@ namespace NodaTime.Serialization.JsonNet
         /// <summary>
         /// Configures json.net with everything required to properly serialize and deserialize NodaTime data types.
         /// </summary>
-        public static JsonSerializerSettings ConfigureForNodaTime(this JsonSerializerSettings settings)
+        public static JsonSerializerSettings ConfigureForNodaTime(this JsonSerializerSettings settings, IDateTimeZoneProvider provider)
         {
             // add our converters
             settings.Converters.Add(NodaConverters.InstantConverter);
@@ -36,7 +36,7 @@ namespace NodaTime.Serialization.JsonNet
             settings.Converters.Add(NodaConverters.LocalDateTimeConverter);
             settings.Converters.Add(NodaConverters.LocalTimeConverter);
             settings.Converters.Add(NodaConverters.OffsetConverter);
-            settings.Converters.Add(NodaConverters.DateTimeZoneConverter);
+            settings.Converters.Add(new NodaDateTimeZoneConverter(provider));
             settings.Converters.Add(NodaConverters.DurationConverter);
             settings.Converters.Add(NodaConverters.RoundtripPeriodConverter);
 
@@ -47,7 +47,7 @@ namespace NodaTime.Serialization.JsonNet
         /// <summary>
         /// Configures json.net with everything required to properly serialize and deserialize NodaTime data types.
         /// </summary>
-        public static JsonSerializer ConfigureForNodaTime(this JsonSerializer serializer)
+        public static JsonSerializer ConfigureForNodaTime(this JsonSerializer serializer, IDateTimeZoneProvider provider)
         {
             // add our converters
             serializer.Converters.Add(NodaConverters.InstantConverter);
@@ -56,7 +56,7 @@ namespace NodaTime.Serialization.JsonNet
             serializer.Converters.Add(NodaConverters.LocalDateTimeConverter);
             serializer.Converters.Add(NodaConverters.LocalTimeConverter);
             serializer.Converters.Add(NodaConverters.OffsetConverter);
-            serializer.Converters.Add(NodaConverters.DateTimeZoneConverter);
+            serializer.Converters.Add(new NodaDateTimeZoneConverter(provider));
             serializer.Converters.Add(NodaConverters.DurationConverter);
             serializer.Converters.Add(NodaConverters.RoundtripPeriodConverter);
 

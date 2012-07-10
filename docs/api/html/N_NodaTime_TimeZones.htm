@@ -9,16 +9,22 @@
             Resolves a <a href="T_NodaTime_LocalDateTime.htm">LocalDateTime</a> to a <a href="T_NodaTime_ZonedDateTime.htm">ZonedDateTime</a> in the situation
             where the requested local time is ambiguous, due to clocks moving backward in a time zone transition
             (usually due to an autumnal daylight saving transition).
-            </div><br /></td></tr><tr data="class; public"><td><img src="../icons/pubclass.gif" /></td><td><b><a href="T_NodaTime_TimeZones_BclDateTimeZone.htm">BclDateTimeZone</a></b></td><td><div class="summary">
+            </div><br /></td></tr><tr data="class; public"><td><img src="../icons/pubclass.gif" /></td><td><b><a href="T_NodaTime_TimeZones_BclTimeZone.htm">BclTimeZone</a></b></td><td><div class="summary">
             Representation of a time zone converted from a <a href="http://msdn2.microsoft.com/en-us/library/bb396389" target="_blank">TimeZoneInfo</a> from the Base Class Library.
-            </div><br /></td></tr><tr data="class; public"><td><img src="../icons/pubclass.gif" /></td><td><b><a href="T_NodaTime_TimeZones_BclDateTimeZoneProvider.htm">BclDateTimeZoneProvider</a></b></td><td><div class="summary">
-            An <a href="T_NodaTime_TimeZones_IDateTimeZoneProvider.htm">IDateTimeZoneProvider</a> implementation which uses <a href="http://msdn2.microsoft.com/en-us/library/bb396389" target="_blank">TimeZoneInfo</a> from
+            </div><br /></td></tr><tr data="class; public"><td><img src="../icons/pubclass.gif" /></td><td><b><a href="T_NodaTime_TimeZones_BclTimeZoneSource.htm">BclTimeZoneSource</a></b></td><td><div class="summary">
+            An <a href="T_NodaTime_TimeZones_IDateTimeZoneSource.htm">IDateTimeZoneSource</a> implementation which uses <a href="http://msdn2.microsoft.com/en-us/library/bb396389" target="_blank">TimeZoneInfo</a> from
             .NET 3.5 and later.
-            </div><br /></td></tr><tr data="class; public"><td><img src="../icons/pubclass.gif" /></td><td><b><a href="T_NodaTime_TimeZones_EmptyDateTimeZoneProvider.htm">EmptyDateTimeZoneProvider</a></b></td><td><div class="summary">
-            Time zone provider which never provides any time zones. Setting this as the provider
-            for the system will effectively mean that only UTC is recognized.
-            </div><br /></td></tr><tr data="interface; public"><td><img src="../icons/pubinterface.gif" /></td><td><b><a href="T_NodaTime_TimeZones_IDateTimeZoneProvider.htm">IDateTimeZoneProvider</a></b></td><td><div class="summary">
-            Provides the interface for objects that can retrieve time zone definitions given and id.
+            </div><br /></td></tr><tr data="class; public"><td><img src="../icons/pubclass.gif" /></td><td><b><a href="T_NodaTime_TimeZones_DateTimeZoneCache.htm">DateTimeZoneCache</a></b></td><td><div class="summary">
+            Provides a stable cache for time zone sources.
+            </div><br /></td></tr><tr data="class; public"><td><img src="../icons/pubclass.gif" /></td><td><b><a href="T_NodaTime_TimeZones_EmptyDateTimeZoneSource.htm">EmptyDateTimeZoneSource</a></b></td><td><div class="summary">
+            Time zone source which never provides any time zones. Using this as the source
+            for a <a href="T_NodaTime_TimeZones_DateTimeZoneCache.htm">DateTimeZoneCache</a> will effectively mean that only UTC is recognized.
+            </div><br /></td></tr><tr data="interface; public"><td><img src="../icons/pubinterface.gif" /></td><td><b><a href="T_NodaTime_TimeZones_IDateTimeZoneSource.htm">IDateTimeZoneSource</a></b></td><td><div class="summary">
+            Provides the interface for objects that can retrieve time zone definitions given an id.
+            </div><br /></td></tr><tr data="class; public"><td><img src="../icons/pubclass.gif" /></td><td><b><a href="T_NodaTime_TimeZones_InvalidDateTimeZoneSourceException.htm">InvalidDateTimeZoneSourceException</a></b></td><td><div class="summary">
+            Exception thrown to indicate that a time zone source has violated the conditions of <a href="T_NodaTime_TimeZones_IDateTimeZoneSource.htm">IDateTimeZoneSource</a>.
+            This exception is primarily intended to be thrown from <a href="T_NodaTime_TimeZones_DateTimeZoneCache.htm">DateTimeZoneCache</a>, and only in the face of a buggy
+            source; user code should not 
             </div><br /></td></tr><tr data="class; public"><td><img src="../icons/pubclass.gif" /></td><td><b><a href="T_NodaTime_TimeZones_Resolvers.htm">Resolvers</a></b></td><td><div class="summary">
             "Constant" fields representing commonly-used implementations of the resolver delegates,
             and a method to combine two "partial" resolvers into a full one.
@@ -26,8 +32,8 @@
             Resolves a <a href="T_NodaTime_LocalDateTime.htm">LocalDateTime</a> to a <a href="T_NodaTime_ZonedDateTime.htm">ZonedDateTime</a> in the situation
             where the requested local time does not exist, due to clocks moving forward in a time zone transition
             (usually due to a spring daylight saving transition).
-            </div><br /></td></tr><tr data="class; public"><td><img src="../icons/pubclass.gif" /></td><td><b><a href="T_NodaTime_TimeZones_TzdbDateTimeZoneProvider.htm">TzdbDateTimeZoneProvider</a></b></td><td><div class="summary">
-            Provides an implementation of a <a href="T_NodaTime_TimeZones_IDateTimeZoneProvider.htm">IDateTimeZoneProvider</a> that looks
+            </div><br /></td></tr><tr data="class; public"><td><img src="../icons/pubclass.gif" /></td><td><b><a href="T_NodaTime_TimeZones_TzdbTimeZoneSource.htm">TzdbTimeZoneSource</a></b></td><td><div class="summary">
+            Provides an implementation of a <a href="T_NodaTime_TimeZones_IDateTimeZoneSource.htm">IDateTimeZoneSource</a> that looks
             for its time zone definitions from a named resource in an assembly.
             </div><br /></td></tr><tr data="class; public"><td><img src="../icons/pubclass.gif" /></td><td><b><a href="T_NodaTime_TimeZones_ZoneInterval.htm">ZoneInterval</a></b></td><td><div class="summary">
             Represents a range of time for which a particular Offset applies.

@@ -27,7 +27,7 @@ namespace NodaTime.Test.TimeZones
     [TestFixture]
     public class JordanTest
     {
-        private static readonly DateTimeZone Jordan = DateTimeZone.ForId("Asia/Amman");
+        private static readonly DateTimeZone Jordan = DateTimeZoneProviders.Tzdb["Asia/Amman"];
 
         /// <summary>
         /// If all of these transitions are right, we're probably okay... in particular,

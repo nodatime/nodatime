@@ -1,0 +1,304 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{F870636C-1018-4392-8C74-76AD498EDD66}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>NodaTime.Test</RootNamespace>
+    <AssemblyName>NodaTime.Test</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation />
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <StartAction>Program</StartAction>
+    <StartProgram>C:\Program Files\NUnit 2.5.2\bin\net-2.0\nunit.exe</StartProgram>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;CODE_ANALYSIS</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="nunit.framework, Version=2.5.2.9222, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\nunit\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CalendarSystemTest.cs" />
+    <Compile Include="CalendarSystemTest.Era.cs">
+      <DependentUpon>CalendarSystemTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Calendars\CopticCalendarSystemTest.cs" />
+    <Compile Include="Calendars\GregorianCalendarSystemTest.cs" />
+    <Compile Include="Calendars\IslamicCalendarTest.cs" />
+    <Compile Include="Calendars\IsoCalendarSystemTest.Era.cs">
+      <DependentUpon>IsoCalendarSystemTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Calendars\JulianCalendarSystemTest.cs" />
+    <Compile Include="Calendars\JulianCalendarSystemTest.Era.cs">
+      <DependentUpon>JulianCalendarSystemTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Calendars\PeriodAdditionTest.cs" />
+    <Compile Include="Fields\GJEraDateTimeFieldTest.cs" />
+    <Compile Include="IntervalTest.cs" />
+    <Compile Include="OffsetDateTimeTest.cs" />
+    <Compile Include="PeriodBuilderTest.cs" />
+    <Compile Include="Text\Cultures.cs" />
+    <Compile Include="Text\InstantPatternTest.cs" />
+    <Compile Include="Text\LocalDateTimePatternTest.cs" />
+    <Compile Include="Text\PatternTestBase.cs" />
+    <Compile Include="Text\PeriodPatternTest.cs" />
+    <Compile Include="Text\PeriodPatternTest.Roundtrip.cs">
+      <DependentUpon>PeriodPatternTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Text\PeriodPatternTest.NormalizingIso.cs">
+      <DependentUpon>PeriodPatternTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Text\PatternTestData.cs" />
+    <Compile Include="Text\LocalDatePatternTest.cs" />
+    <Compile Include="CultureSaver.cs" />
+    <Compile Include="LocalDateTest.cs" />
+    <Compile Include="LocalDateTest.Pseudomutators.cs">
+      <DependentUpon>LocalDateTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="LocalDateTest.BasicProperties.cs">
+      <DependentUpon>LocalDateTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="LocalDateTest.Construction.cs">
+      <DependentUpon>LocalDateTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="LocalDateTest.Conversion.cs">
+      <DependentUpon>LocalDateTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="LocalDateTest.Comparison.cs">
+      <DependentUpon>LocalDateTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="LocalDateTest.PeriodArithmetic.cs">
+      <DependentUpon>LocalDateTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="LocalTimeTest.Pseudomutators.cs">
+      <DependentUpon>LocalTimeTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="LocalTimeTest.Operators.cs">
+      <DependentUpon>LocalTimeTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Text\LocalTimePatternTest.cs" />
+    <Compile Include="Text\FormatHelperTest.cs" />
+    <Compile Include="Globalization\FailingCultureInfo.cs" />
+    <Compile Include="Globalization\NodaCultureInfoTest.cs" />
+    <Compile Include="Globalization\NodaFormatInfoTest.cs" />
+    <Compile Include="InstantTest.Format.cs">
+      <DependentUpon>InstantTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="InstantTest.Parse.cs">
+      <DependentUpon>InstantTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DateTimeZoneTest.cs" />
+    <Compile Include="DateTimeZoneTest.Ids.cs">
+      <DependentUpon>DateTimeZoneTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DateTimeZoneTest.GetZoneIntervals.cs">
+      <DependentUpon>DateTimeZoneTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DateTimeZoneTest.LocalConversions.cs">
+      <DependentUpon>DateTimeZoneTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="LocalDateTimeTest.cs" />
+    <Compile Include="LocalDateTimeTest.Pseudomutators.cs">
+      <DependentUpon>LocalDateTimeTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Testing\FakeClockTest.cs" />
+    <Compile Include="LocalTimeTest.cs" />
+    <Compile Include="PeriodTest.cs" />
+    <Compile Include="SystemClockTest.cs" />
+    <Compile Include="Text\OffsetPatternTest.cs" />
+    <Compile Include="Text\ParseBucketTest.cs" />
+    <Compile Include="Text\ParseResultTest.cs" />
+    <Compile Include="Text\Patterns\PatternCursorTest.cs" />
+    <Compile Include="Text\Patterns\PatternParseResultTest.cs" />
+    <Compile Include="Text\TextCursorTestBase.cs" />
+    <Compile Include="Text\ValueCursorTest.cs" />
+    <Compile Include="TimeZones\AlgiersTest.cs" />
+<<<<<<< local
+    <Compile Include="TimeZones\BclDateTimeZoneProviderTest.cs" />
+    <Compile Include="TimeZones\BclDateTimeZoneTest.cs" />
+=======
+    <Compile Include="TimeZones\BclTimeZoneSourceTest.cs" />
+    <Compile Include="TimeZones\BclTimeZoneTest.cs" />
+>>>>>>> other
+    <Compile Include="TimeZones\CachedDateTimeZoneTest.cs" />
+    <Compile Include="TimeZones\DateTimeZoneBuilderTest.cs" />
+    <Compile Include="TimeZones\ResolversTest.cs" />
+<<<<<<< local
+    <Compile Include="TimeZones\TzdbDateTimeZoneProviderTest.cs" />
+    <Compile Include="TimeZones\TimeZoneCacheTest.cs" />
+    <Compile Include="TimeZones\DaylightSavingDateTimeZoneTest.cs" />
+=======
+    <Compile Include="TimeZones\TzdbTimeZoneSourceTest.cs" />
+    <Compile Include="TimeZones\DateTimeZoneCacheTest.cs" />
+    <Compile Include="TimeZones\DaylightSavingTimeZoneTest.cs" />
+>>>>>>> other
+    <Compile Include="TimeZones\EtcTest.cs" />
+    <Compile Include="TimeZones\JordanTest.cs" />
+    <Compile Include="TimeZones\ReadWriteCompressTest.cs" />
+    <Compile Include="TimeZones\IoStream.cs" />
+    <Compile Include="TimeZones\PrecalculatedDateTimeZoneTest.cs" />
+    <Compile Include="DurationTest.cs" />
+    <Compile Include="DurationTest.Operators.cs">
+      <DependentUpon>DurationTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DurationTest.Construction.cs">
+      <DependentUpon>DurationTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Fields\DateTimeFieldTest.cs" />
+    <Compile Include="Fields\DecoratedDateTimeFieldTest.cs" />
+    <Compile Include="Fields\PeriodFieldTest.cs" />
+    <Compile Include="Fields\FakePeriodField.cs" />
+    <Compile Include="Fields\FieldSetTest.cs" />
+    <Compile Include="Fields\MockCountingPeriodField.cs" />
+    <Compile Include="Fields\OffsetDateTimeFieldTest.cs" />
+    <Compile Include="Fields\FixedLengthDateTimeFieldTest.cs" />
+    <Compile Include="Fields\FixedLengthPeriodDateTimeFieldTest.cs" />
+    <Compile Include="Fields\FixedLengthPeriodFieldTest.cs" />
+    <Compile Include="Fields\ScaledDurationTest.cs" />
+    <Compile Include="Fields\TicksPeriodFieldTest.cs" />
+    <Compile Include="Fields\UnsupportedDateTimeFieldTest.cs" />
+    <Compile Include="Fields\UnsupportedPeriodFieldTest.cs" />
+    <Compile Include="Fields\ZeroIsMaxDateTimeFieldTest.cs" />
+    <Compile Include="Calendars\IsoCalendarSystemTest.cs" />
+    <Compile Include="Calendars\IsoCalendarSystemTest.DateFields.cs">
+      <DependentUpon>IsoCalendarSystemTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Calendars\IsoCalendarSystemTest.DurationFields.cs">
+      <DependentUpon>IsoCalendarSystemTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Calendars\IsoCalendarSystemTest.TimeFields.cs">
+      <DependentUpon>IsoCalendarSystemTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Calendars\IsoCalendarSystemTest.FieldValidation.cs">
+      <DependentUpon>IsoCalendarSystemTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="OffsetTest.cs" />
+    <Compile Include="OffsetTest.Operators.cs">
+      <DependentUpon>OffsetTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="OffsetTest.Construction.cs">
+      <DependentUpon>OffsetTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="InstantTest.cs" />
+    <Compile Include="InstantTest.Operators.cs">
+      <DependentUpon>InstantTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="LocalInstantTest.cs" />
+    <Compile Include="LocalInstantTest.Operators.cs">
+      <DependentUpon>LocalInstantTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TestHelper.cs" />
+    <Compile Include="TimeZones\FixedDateTimeZoneTest.cs" />
+    <Compile Include="TimeZones\MiscellaneousBugReports.cs" />
+    <Compile Include="TimeZones\ParisTest.cs" />
+    <Compile Include="TimeZones\ReadWriteStandardTest.cs" />
+    <Compile Include="TimeZones\TzTestHelper.cs" />
+    <Compile Include="TimeZones\ZoneIntervalPairTest.cs" />
+    <Compile Include="TimeZones\ZoneIntervalTest.cs" />
+    <Compile Include="TimeZones\ZoneRecurrenceTest.cs" />
+    <Compile Include="TimeZones\DtzIoHelper.cs" />
+    <Compile Include="TimeZones\ZoneTransitionTest.cs" />
+    <Compile Include="TimeZones\ReadWriteTest.cs" />
+    <Compile Include="TimeZones\ZoneYearOffsetTest.cs" />
+    <Compile Include="Utility\BclConversionsTest.cs" />
+    <Compile Include="Utility\TypeInitializationTest.cs" />
+    <Compile Include="ZonedDateTimeTest.cs" />
+    <None Include="Tests.nunit" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\NodaTime.Testing\NodaTime.Testing.csproj">
+      <Project>{BC9407FE-A661-4DFE-8B24-D2E2F450743F}</Project>
+      <Name>NodaTime.Testing</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NodaTime\NodaTime.csproj">
+      <Project>{42B687A6-0F76-4638-A372-161C922A998B}</Project>
+      <Name>NodaTime</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.VisualBasic.PowerPacks.10.0">
+      <Visible>False</Visible>
+      <ProductName>Microsoft Visual Basic PowerPacks 10.0</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
