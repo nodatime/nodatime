@@ -59,7 +59,7 @@ namespace NodaTime
     /// </list>
     /// </para>
     /// <para>
-    /// Noda Time has two sources of time zone data available: a built-in copy of the
+    /// Noda Time has two built-in sources of time zone data available: a copy of the
     /// <see href="http://www.iana.org/time-zones">"zoneinfo"</see> (aka tz or Olson) database, and the ability to convert .NET's own
     /// <see cref="TimeZoneInfo"/>  format into a "native" Noda Time zone. Which of these is most appropriate for you to use
     /// will very much depend on your exact needs. The zoneinfo database is widely used outside Windows, and has more historical data
@@ -74,6 +74,9 @@ namespace NodaTime
     /// the local <see cref="TimeZoneInfo"/> to guarantee that a representation is available.</para>
     /// <para>Currently Noda Time does not support 3rd party time zone implementations. If you wish to create your own implementation,
     /// please ask for support on the Noda Time mailing list.</para>
+    /// <para>Note that Noda Time does not require that <see cref="DateTimeZone"/> instances be singletons, and so
+    /// instances cannot be meaningfully compared for equality: two instances from the same provider may be equivalent,
+    /// even to the extent of having the same ID, yet be distinct instances.</para>
     /// </remarks>
     /// <threadsafety>
     /// All time zone implementations within Noda Time are immutable and thread-safe. See the thread safety
@@ -107,11 +110,11 @@ namespace NodaTime
 
         /// <summary>
         /// Gets the UTC (Coordinated Universal Time) time zone. This is a single instance which is not
-        /// provider-specific; it is guaranteed to have the ID "UTC", but may or may not be the same as the value
-        /// returned by <c>DateTimeZone.ForId("UTC")</c>; that depends on whether the current provider has its own
+        /// provider-specific; it is guaranteed to have the ID "UTC", but may or may not be the instance returned by
+        /// <c>DateTimeZoneProviders.Default["UTC"]</c>; that depends on whether the default provider has its own
         /// mapping for that ID.
         /// </summary>
-        /// <value>The UTC <see cref="T:NodaTime.DateTimeZone" />.</value>
+        /// <value>A UTC <see cref="T:NodaTime.DateTimeZone" />.</value>
         public static DateTimeZone Utc { get { return UtcZone; } }
 
         /// <summary>
@@ -154,11 +157,17 @@ namespace NodaTime
         }
 
         /// <summary>
-        /// The ID for the time zone.
+        /// The provider's ID for the time zone.
         /// </summary>
         /// <remarks>
-        /// This uniquely identifies the time zone within the current time zone provider; a different provider may
+        /// <para>
+        /// This identifies the time zone within the current time zone provider; a different provider may
         /// provide a different time zone with the same ID, or may not provide a time zone with that ID at all.
+        /// </para>
+        /// <para>
+        /// Note that a given provider may return multiple distinct <see cref="DateTimeZone"/> instances with the same
+        /// ID; these can be considered equivalent.
+        /// </para>
         /// </remarks>
         public string Id { get { return id; } }
 
