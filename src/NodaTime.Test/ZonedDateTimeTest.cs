@@ -186,8 +186,8 @@ namespace NodaTime.Test
             var fromUtc = Instant.FromUtc(2011, 6, 12, 21, 30).InZone(zone);
 
             // Checks all the overloads etc: first check is that the zone matters
-            TestHelper.TestEqualsStruct(sample, fromUtc, Instant.FromUtc(2011, 6, 12, 21, 30).InIsoUtc());
-            TestHelper.TestOperatorEquality(sample, fromUtc, Instant.FromUtc(2011, 6, 12, 21, 30).InIsoUtc());
+            TestHelper.TestEqualsStruct(sample, fromUtc, Instant.FromUtc(2011, 6, 12, 21, 30).InUtc());
+            TestHelper.TestOperatorEquality(sample, fromUtc, Instant.FromUtc(2011, 6, 12, 21, 30).InUtc());
 
             // Now just use a simple inequality check for other aspects...
 
