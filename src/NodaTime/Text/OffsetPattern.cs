@@ -35,7 +35,7 @@ namespace NodaTime.Text
         private static readonly int TypeInitializationChecking = TypeInitializationChecker.RecordInitializationStart();
 
         /// <summary>
-        /// The "general" offset pattern (e.g. +HH, +HH:mm, +HH:mm:ss, HH:mm:ss.fff) for the invariant culture.
+        /// The "general" offset pattern (e.g. +HH, +HH:mm, +HH:mm:ss, +HH:mm:ss.fff) for the invariant culture.
         /// </summary>
         public static readonly OffsetPattern GeneralInvariantPattern = CreateWithInvariantInfo("g");
 

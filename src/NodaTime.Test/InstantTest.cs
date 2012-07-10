@@ -79,9 +79,9 @@ namespace NodaTime.Test
         }
 
         [Test]
-        public void ToIsoUtc()
+        public void InUtc()
         {
-            ZonedDateTime viaInstant = Instant.FromUtc(2008, 4, 3, 10, 35, 23).InIsoUtc();
+            ZonedDateTime viaInstant = Instant.FromUtc(2008, 4, 3, 10, 35, 23).InUtc();
             ZonedDateTime expected = DateTimeZone.Utc.AtStrictly(new LocalDateTime(2008, 4, 3, 10, 35, 23));
             Assert.AreEqual(expected, viaInstant);
         }
