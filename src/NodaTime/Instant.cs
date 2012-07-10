@@ -665,7 +665,7 @@ namespace NodaTime
         /// </summary>
         /// <returns>A <see cref="ZonedDateTime"/> for the same instant, in the UTC time zone
         /// and the ISO-8601 calendar</returns>
-        public ZonedDateTime InIsoUtc()
+        public ZonedDateTime InUtc()
         {
             return new ZonedDateTime(this, DateTimeZone.Utc, CalendarSystem.Iso);
         }
