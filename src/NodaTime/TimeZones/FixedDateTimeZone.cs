@@ -27,7 +27,7 @@ namespace NodaTime.TimeZones
     /// no daylight savings.
     /// </summary>
     /// <threadsafety>This type is immutable reference type. See the thread safety section of the user guide for more information.</threadsafety>
-    internal sealed class FixedDateTimeZone : DateTimeZone, IEquatable<FixedDateTimeZone>
+    internal sealed class FixedDateTimeZone : DateTimeZone
     {
         private readonly Offset offset;
         private readonly ZoneInterval interval;
@@ -147,58 +147,18 @@ namespace NodaTime.TimeZones
             return new FixedDateTimeZone(id, offset);
         }
 
-        #region Implementation of IEquatable<FixedDateTimeZone>
-        /// <summary>
-        /// Indicates whether the current object is equal to another object of the same type.
-        /// </summary>
-        /// <returns>
-        /// true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
-        /// </returns>
-        /// <param name="other">An object to compare with this object.</param>
-        public bool Equals(FixedDateTimeZone other)
-        {
-            if (ReferenceEquals(null, other))
-            {
-                return false;
-            }
-            if (ReferenceEquals(this, other))
-            {
-                return true;
-            }
-            return IsFixed == other.IsFixed && offset == other.offset && Id == other.Id;
-        }
-        #endregion
 
-        #region Object overrides
-        /// <summary>
-        /// Determines whether the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>.
-        /// </summary>
-        /// <returns>
-        /// true if the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>; otherwise, false.
-        /// </returns>
-        /// <param name="obj">The <see cref="T:System.Object"/> to compare with the current <see cref="T:System.Object"/>. 
-        ///                 </param><exception cref="T:System.NullReferenceException">The <paramref name="obj"/> parameter is null.
-        ///                 </exception><filterpriority>2</filterpriority>
-        public override bool Equals(object obj)
+        /// <inheritdoc />
+        protected override bool EqualsImpl(DateTimeZone other)
         {
-            if (ReferenceEquals(null, obj))
-            {
-                return false;
-            }
-            return ReferenceEquals(this, obj) || Equals(obj as FixedDateTimeZone);
+            FixedDateTimeZone otherZone = (FixedDateTimeZone) other;
+            return offset == otherZone.offset && Id == other.Id;
         }
 
-        /// <summary>
-        /// Serves as a hash function for a particular type. 
-        /// </summary>
-        /// <returns>
-        /// A hash code for the current <see cref="T:System.Object"/>.
-        /// </returns>
-        /// <filterpriority>2</filterpriority>
+        /// <inheritdoc />
         public override int GetHashCode()
         {
             int hash = HashCodeHelper.Initialize();
-            hash = HashCodeHelper.Hash(hash, IsFixed);
             hash = HashCodeHelper.Hash(hash, offset);
             hash = HashCodeHelper.Hash(hash, Id);
             return hash;
@@ -214,6 +174,5 @@ namespace NodaTime.TimeZones
         {
             return Id;
         }
-        #endregion // Object overrides
     }
 }

@@ -90,5 +90,17 @@ namespace NodaTime.Test.TimeZones
         {
             Assert.IsNull(FixedDateTimeZone.GetFixedZoneOrNull("UTC+5Months"));
         }
+
+        [Test]
+        public void Equals()
+        {
+            TestHelper.TestEqualsClass<DateTimeZone>(new FixedDateTimeZone(Offset.FromMilliseconds(300)),
+                new FixedDateTimeZone(Offset.FromMilliseconds(300)),
+                new FixedDateTimeZone(Offset.FromMilliseconds(500)));
+
+            TestHelper.TestEqualsClass<DateTimeZone>(new FixedDateTimeZone("Foo", Offset.FromMilliseconds(300)),
+                new FixedDateTimeZone("Foo", Offset.FromMilliseconds(300)),
+                new FixedDateTimeZone("Bar", Offset.FromMilliseconds(300)));
+        }
     }
 }

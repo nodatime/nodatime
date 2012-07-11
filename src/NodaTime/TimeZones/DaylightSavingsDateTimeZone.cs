@@ -31,7 +31,7 @@ namespace NodaTime.TimeZones
     /// only be used as part of a PrecalculatedDateTimeZone which will only ask it for
     /// values within the right portion of the timeline.
     /// </remarks>
-    internal class DaylightSavingsDateTimeZone : DateTimeZone, IEquatable<DaylightSavingsDateTimeZone>
+    internal class DaylightSavingsDateTimeZone : DateTimeZone
     {
         private readonly ZoneRecurrence standardRecurrence;
         private readonly Offset standardOffset;
@@ -72,51 +72,17 @@ namespace NodaTime.TimeZones
             standardRecurrence = standard;
         }
 
-        #region IEquatable<DaylightSavingsTimeZone> Members
-        /// <summary>
-        /// Indicates whether the current object is equal to another object of the same type.
-        /// </summary>
-        /// <returns>
-        /// true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
-        /// </returns>
-        /// <param name="other">An object to compare with this object.</param>
-        public bool Equals(DaylightSavingsDateTimeZone other)
+        /// <inheritdoc />
+        protected override bool EqualsImpl(DateTimeZone other)
         {
-            if (ReferenceEquals(null, other))
-            {
-                return false;
-            }
-            if (ReferenceEquals(this, other))
-            {
-                return true;
-            }
-            return Id == other.Id && standardOffset == other.standardOffset && dstRecurrence.Equals(other.dstRecurrence) &&
-                   standardRecurrence.Equals(other.standardRecurrence);
-        }
-        #endregion
-
-        #region Object overrides
-        /// <summary>
-        /// Determines whether the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>.
-        /// </summary>
-        /// <returns>
-        /// true if the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>; otherwise, false.
-        /// </returns>
-        /// <param name="obj">The <see cref="T:System.Object"/> to compare with the current <see cref="T:System.Object"/>. 
-        ///                 </param><exception cref="T:System.NullReferenceException">The <paramref name="obj"/> parameter is null.
-        ///                 </exception><filterpriority>2</filterpriority>
-        public override bool Equals(Object obj)
-        {
-            return Equals(obj as DaylightSavingsDateTimeZone);
+            DaylightSavingsDateTimeZone otherZone = (DaylightSavingsDateTimeZone)other;
+            return Id == otherZone.Id && 
+                standardOffset == otherZone.standardOffset && 
+                dstRecurrence.Equals(otherZone.dstRecurrence) &&
+                standardRecurrence.Equals(otherZone.standardRecurrence);
         }
 
-        /// <summary>
-        /// Serves as a hash function for a particular type. 
-        /// </summary>
-        /// <returns>
-        /// A hash code for the current <see cref="T:System.Object"/>.
-        /// </returns>
-        /// <filterpriority>2</filterpriority>
+        /// <inheritdoc />
         public override int GetHashCode()
         {
             int hashCode = HashCodeHelper.Initialize();
@@ -126,7 +92,6 @@ namespace NodaTime.TimeZones
             hashCode = HashCodeHelper.Hash(hashCode, standardRecurrence);
             return hashCode;
         }
-        #endregion // Object overrides
 
         /// <summary>
         /// Gets the zone interval for the given instant.

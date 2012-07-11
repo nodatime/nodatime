@@ -75,14 +75,14 @@ namespace NodaTime
     /// <para>Currently Noda Time does not support 3rd party time zone implementations. If you wish to create your own implementation,
     /// please ask for support on the Noda Time mailing list.</para>
     /// <para>Note that Noda Time does not require that <see cref="DateTimeZone"/> instances be singletons.
-    /// As far as reasonably possible, implementations should implement <see cref="IEquatable"/> in such a way
+    /// As far as reasonably possible, implementations should implement <see cref="IEquatable{DateTimeZone}"/> in such a way
     /// that equivalent time zones compare as equal.</para>
     /// </remarks>
     /// <threadsafety>
     /// All time zone implementations within Noda Time are immutable and thread-safe. See the thread safety
     /// section of the user guide for more information.
     /// </threadsafety>
-    public abstract class DateTimeZone
+    public abstract class DateTimeZone : IEquatable<DateTimeZone>
     {
         private static readonly int TypeInitializationChecking = NodaTime.Utility.TypeInitializationChecker.RecordInitializationStart();
 
@@ -540,5 +540,58 @@ namespace NodaTime
             ret[-FixedZoneCacheMinimumMilliseconds / FixedZoneCacheGranularityMilliseconds] = DateTimeZone.Utc;
             return ret;
         }
+
+        #region Equality
+        /// <summary>
+        /// Determines whether the specified <see cref="System.Object"/> is equal to this instance.
+        /// </summary>
+        /// <param name="obj">The <see cref="System.Object"/> to compare with this instance.</param>
+        /// <returns>
+        /// <c>true</c> if the specified <see cref="System.Object"/> is equal to this instance;
+        /// otherwise, <c>false</c>.
+        /// </returns>
+        public override sealed bool Equals(object obj)
+        {
+            return Equals(obj as DateTimeZone);
+        }
+
+        /// <summary>
+        /// Determines whether the specified <see cref="DateTimeZone"/> is equal to this instance.
+        /// </summary>
+        /// <remarks>
+        /// This implementation performs initial checks which would be common to all child implementations,
+        /// and then delegates to <see cref="EqualsImpl"/>.
+        /// </remarks>
+        /// <param name="obj">The <see cref="DateTimeZone"/> to compare with this instance.</param>
+        /// <returns>
+        /// <c>true</c> if the specified <see cref="DateTimeZone"/> is equal to this instance;
+        /// otherwise, <c>false</c>.
+        /// </returns>
+        public bool Equals(DateTimeZone obj)
+        {
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+            return !ReferenceEquals(obj, null) && obj.GetType() == GetType() && EqualsImpl(obj);
+        }
+
+        /// <summary>
+        /// Implements equality in derived classes.
+        /// </summary>
+        /// <param name="zone">The zone to compare with this one. This is guaranteed (when called by <see cref="Equals(DateTimeZone)"/>) to
+        /// be a non-null reference of the same type as this instance.</param>
+        /// <returns></returns>
+        protected abstract bool EqualsImpl(DateTimeZone zone);
+
+        /// <summary>
+        /// Returns a hash code for this instance.
+        /// </summary>
+        /// <returns>
+        /// A hash code for this instance, suitable for use in hashing algorithms and data
+        /// structures like a hash table. 
+        /// </returns>
+        public abstract override int GetHashCode();
+        #endregion
     }
 }
