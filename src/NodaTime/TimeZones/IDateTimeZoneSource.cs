@@ -46,8 +46,8 @@ namespace NodaTime.TimeZones
         /// Every value in this enumeration must return a valid time zone from <see cref="ForId"/> for the life of the source.
         /// </para>
         /// <para>
-        /// This list may optionally contain any of the fixed-offset timezones with IDs "UTC" and "UTC+/-Offset", but
-        /// only those that are included will be requested via <see cref="ForId"/>.
+        /// Note that this list may optionally contain any of the fixed-offset timezones (with IDs "UTC" and
+        /// "UTC+/-Offset"), but there is no requirement they be included.
         /// </para>
         /// </remarks>
         /// <returns>The <see cref="IEnumerable{T}"/> of ids. It may be empty, but must not be <see langword="null"/>, 
@@ -76,7 +76,12 @@ namespace NodaTime.TimeZones
         /// </para>
         /// <para>
         /// Note also that this method is not required to return the same <see cref="DateTimeZone"/> instance for
-        /// successive requests for the same ID; however, all instances returned for a given ID should be equivalent.
+        /// successive requests for the same ID; however, all instances returned for a given ID must compare as equal.
+        /// </para>
+        /// <para>
+        /// Finally, if any of the fixed-offset timezones (i.e. "UTC" and "UTC+/-Offset") are included in the list
+        /// returned by <see cref="GetIds"/>, then the instances returned by this method must be equal to those returned
+        /// by <see cref="DateTimeZone.ForOffset"/>.
         /// </para>
         /// </remarks>
         /// <param name="id">The ID of the time zone to return. This must be one of the IDs

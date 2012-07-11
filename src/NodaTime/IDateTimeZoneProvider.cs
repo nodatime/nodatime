@@ -78,10 +78,12 @@ namespace NodaTime
         /// </para>
         /// <para>
         /// Note also that this method is not required to return the same <see cref="DateTimeZone"/> instance for
-        /// successive requests for the same ID; however, all instances returned for a given ID should be equivalent.
+        /// successive requests for the same ID; however, all instances returned for a given ID must compare
+        /// as equal.
         /// </para>
         /// <para>
-        /// The fixed-offset timezones with IDs "UTC" and "UTC+/-Offset" are always available.
+        /// The fixed-offset timezones with IDs "UTC" and "UTC+/-Offset" are always available. These must
+        /// return instances that are equal to those returned by <see cref="DateTimeZone.ForOffset"/>.
         /// </para>
         /// </remarks>
         /// <param name="id">The time zone ID to find. Must not be null.</param>
@@ -103,10 +105,12 @@ namespace NodaTime
         /// </para>
         /// <para>
         /// Note also that this method is not required to return the same <see cref="DateTimeZone"/> instance for
-        /// successive requests for the same ID; however, all instances returned for a given ID should be equivalent.
+        /// successive requests for the same ID; however, all instances returned for a given ID must compare
+        /// as equal.
         /// </para>
         /// <para>
-        /// The fixed-offset timezones with IDs "UTC" and "UTC+/-Offset" are always available.
+        /// The fixed-offset timezones with IDs "UTC" and "UTC+/-Offset" are always available. These must
+        /// return instances that are equal to those returned by <see cref="DateTimeZone.ForOffset"/>.
         /// </para>
         /// </remarks>
         /// <param name="id">The time zone id to find. Must not be null.</param>

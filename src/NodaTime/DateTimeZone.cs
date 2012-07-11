@@ -74,9 +74,9 @@ namespace NodaTime
     /// the local <see cref="TimeZoneInfo"/> to guarantee that a representation is available.</para>
     /// <para>Currently Noda Time does not support 3rd party time zone implementations. If you wish to create your own implementation,
     /// please ask for support on the Noda Time mailing list.</para>
-    /// <para>Note that Noda Time does not require that <see cref="DateTimeZone"/> instances be singletons, and so
-    /// instances cannot be meaningfully compared for equality: two instances from the same provider may be equivalent,
-    /// even to the extent of having the same ID, yet be distinct instances.</para>
+    /// <para>Note that Noda Time does not require that <see cref="DateTimeZone"/> instances be singletons.
+    /// As far as reasonably possible, implementations should implement <see cref="IEquatable"/> in such a way
+    /// that equivalent time zones compare as equal.</para>
     /// </remarks>
     /// <threadsafety>
     /// All time zone implementations within Noda Time are immutable and thread-safe. See the thread safety
@@ -118,11 +118,18 @@ namespace NodaTime
         public static DateTimeZone Utc { get { return UtcZone; } }
 
         /// <summary>
-        /// Returns a fixed time zone with the given offset. This may or may not be cached;
-        /// callers should not rely upon any particular caching policy.
+        /// Returns a fixed time zone with the given offset.
         /// </summary>
         /// <remarks>
-        /// The returned time zone will have an ID of "UTC" if the offset is zero, or "UTC+/-Offset" otherwise.
+        /// <para>
+        /// The returned time zone will have an ID of "UTC" if the offset is zero, or "UTC+/-Offset"
+        /// otherwise. In the former case, the returned instance will be equal to <see cref="Utc"/>.
+        /// </para>
+        /// <para>
+        /// Note also that this method is not required to return the same <see cref="DateTimeZone"/> instance for
+        /// successive requests for the same offset; however, all instances returned for a given offset will compare
+        /// as equal.
+        /// </para>
         /// </remarks>
         /// <param name="offset">The offset for the returned time zone</param>
         /// <returns>A fixed time zone with the given offset.</returns>
@@ -163,10 +170,6 @@ namespace NodaTime
         /// <para>
         /// This identifies the time zone within the current time zone provider; a different provider may
         /// provide a different time zone with the same ID, or may not provide a time zone with that ID at all.
-        /// </para>
-        /// <para>
-        /// Note that a given provider may return multiple distinct <see cref="DateTimeZone"/> instances with the same
-        /// ID; these can be considered equivalent.
         /// </para>
         /// </remarks>
         public string Id { get { return id; } }
