@@ -125,6 +125,18 @@ namespace NodaTime.TimeZones
             var timeZone = reader.ReadTimeZone(id);
             return ForZone(timeZone);
         }
+
+        /// <inheritdoc />
+        protected override bool EqualsImpl(DateTimeZone zone)
+        {
+            return TimeZone.Equals(((CachedDateTimeZone) zone).TimeZone);
+        }
+
+        /// <inheritdoc />
+        public override int GetHashCode()
+        {
+            return TimeZone.GetHashCode();
+        }
         #endregion
 
         #region Nested type: HashArrayCache

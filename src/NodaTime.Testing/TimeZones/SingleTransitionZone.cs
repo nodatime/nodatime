@@ -17,6 +17,7 @@
 
 using System;
 using NodaTime.TimeZones;
+using NodaTime.Utility;
 
 namespace NodaTime.Testing.TimeZones
 {
@@ -72,6 +73,23 @@ namespace NodaTime.Testing.TimeZones
         public override ZoneInterval GetZoneInterval(Instant instant)
         {
             return earlyInterval.Contains(instant) ? earlyInterval : lateInterval;
+        }
+
+        /// <inheritdoc />
+        protected override bool EqualsImpl(DateTimeZone zone)
+        {
+            SingleTransitionZone otherZone = (SingleTransitionZone)zone;
+            return Id == otherZone.Id && earlyInterval.Equals(otherZone.earlyInterval) && lateInterval.Equals(otherZone.lateInterval);
+        }
+
+        /// <inheritdoc />
+        public override int GetHashCode()
+        {
+            int hash = HashCodeHelper.Initialize();
+            hash = HashCodeHelper.Hash(hash, Id);
+            hash = HashCodeHelper.Hash(hash, earlyInterval);
+            hash = HashCodeHelper.Hash(hash, lateInterval);
+            return hash;
         }
     }
 }

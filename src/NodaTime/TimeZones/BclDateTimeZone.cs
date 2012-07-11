@@ -287,5 +287,16 @@ namespace NodaTime.TimeZones
             return currentSystemDefault;
         }
 
+        /// <inheritdoc />
+        protected override bool EqualsImpl(DateTimeZone zone)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <inheritdoc />
+        public override int GetHashCode()
+        {
+            return OriginalZone.GetHashCode();
+        }
     }
 }
