@@ -42,8 +42,9 @@ namespace NodaTime.TimeZones
         /// Creates a provider backed by the given <see cref="IDateTimeZoneSource"/>.
         /// </summary>
         /// <remarks>
-        /// The source will be consulted first on all requests for time zones, even the fixed-offset timezones, "UTC"
-        /// and "UTC+/-Offset".
+        /// Note that the source will never be consulted for requests for the fixed-offset timezones "UTC" and
+        /// "UTC+/-Offset" (a standard implementation will be returned instead). This is true even if these IDs are
+        /// advertised by the source.
         /// </remarks>
         /// <param name="source">The <see cref="IDateTimeZoneSource"/> for this provider.</param>
         /// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
