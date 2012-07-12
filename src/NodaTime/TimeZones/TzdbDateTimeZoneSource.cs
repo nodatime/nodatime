@@ -29,6 +29,10 @@ namespace NodaTime.TimeZones
     /// Provides an implementation of a <see cref="IDateTimeZoneSource" /> that looks
     /// for its time zone definitions from a named resource in an assembly.
     /// </summary>
+    /// <remarks>
+    /// All calls to <see cref="ForId"/> for fixed-offset IDs advertsed by the source (i.e. "UTC" and "UTC+/-Offset")
+    /// will return zones equal to those returned by <see cref="DateTimeZone.ForOffset"/>.
+    /// </remarks>
     /// <threadsafety>This type is immutable reference type. See the thread safety section of the user guide for more information.</threadsafety>
     public sealed class TzdbDateTimeZoneSource : IDateTimeZoneSource
     {
