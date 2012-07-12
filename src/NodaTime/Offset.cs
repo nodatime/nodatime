@@ -580,7 +580,7 @@ namespace NodaTime
 
         #region Construction
         /// <summary>
-        ///   Returns the offset for the given milliseconds value.
+        /// Returns the offset for the given milliseconds value, which may be negative.
         /// </summary>
         /// <param name="milliseconds">The int milliseconds value.</param>
         /// <returns>The <see cref="Offset" /> for the given milliseconds value</returns>
@@ -591,7 +591,7 @@ namespace NodaTime
         }
 
         /// <summary>
-        /// Creates a new offset from the given number of ticks.
+        /// Creates a new offset from the given number of ticks, which may be negative.
         /// </summary>
         /// <remarks>
         /// Offsets are only accurate to millisecond precision; the given number of ticks is simply divided
@@ -606,7 +606,7 @@ namespace NodaTime
         }
 
         /// <summary>
-        /// Creates an offset with the specified number of hours.
+        /// Creates an offset with the specified number of hours, which may be negative.
         /// </summary>
         /// <param name="hours">The number of hours to represent in the new offset.</param>
         /// <returns>
@@ -619,8 +619,14 @@ namespace NodaTime
         }
 
         /// <summary>
-        /// Creates an offset with the specified number of hours and minutes
+        /// Creates an offset with the specified number of hours and minutes.
         /// </summary>
+        /// <remarks>
+        /// The result simply takes the hours and minutes and converts each component into milliseconds
+        /// separately. As a result, a negative offset should usually be obtained by making both arguments
+        /// negative. For example, to obtain "three hours and ten minutes behind UTC" you might call
+        /// <c>Offset.FromHoursAndMinutes(-3, -10)</c>.
+        /// </remarks>
         /// <param name="hours">The number of hours to represent in the new offset.</param>
         /// <param name="minutes">The number of minutes to represent in the new offset.</param>
         /// <returns>
