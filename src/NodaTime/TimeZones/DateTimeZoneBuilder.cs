@@ -95,14 +95,14 @@ namespace NodaTime.TimeZones
         /// <summary>
         /// Adds a cutover for added rules.
         /// </summary>
-        /// <param name="year">The year of cutover.</param>
-        /// <param name="yearOffset">The offset into the year of the cutover.</param>
-        /// <returns></returns>
         /// <remarks>
         /// A cutover is a point where the standard offset from GMT/UTC changed. This occurs mostly
         /// pre-1900. The standard offset at the cutover defaults to 0.
         /// Call <see cref="DateTimeZoneBuilder.SetStandardOffset"/> afterwards to change it.
         /// </remarks>
+        /// <param name="year">The year of cutover.</param>
+        /// <param name="yearOffset">The offset into the year of the cutover.</param>
+        /// <returns>This <see cref="DateTimeZoneBuilder"/> for chaining.</returns>
         public DateTimeZoneBuilder AddCutover(int year, ZoneYearOffset yearOffset)
         {
             Preconditions.CheckNotNull(yearOffset, "yearOffset");

@@ -106,7 +106,6 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         ///   Formats the name.
         /// </summary>
         /// <param name="nameFormat">The name format.</param>
-        /// <returns></returns>
         public String FormatName(String nameFormat)
         {
             Preconditions.CheckNotNull(nameFormat, "nameFormat");

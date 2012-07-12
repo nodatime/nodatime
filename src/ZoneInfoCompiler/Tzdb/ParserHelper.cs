@@ -82,10 +82,9 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         }
 
         /// <summary>
-        ///   Formats the optional.
+        /// Formats the optional.
         /// </summary>
         /// <param name="value">The value.</param>
-        /// <returns></returns>
         public static string FormatOptional(string value)
         {
             return value ?? "-";
