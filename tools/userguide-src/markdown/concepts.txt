@@ -185,7 +185,7 @@ time. In this situation, you should use [`OffsetDateTime`][OffsetDateTime]
 [UTC]: http://en.wikipedia.org/wiki/Coordinated_Universal_Time
 [DateTimeZone]: noda-type://NodaTime.DateTimeZone
 [Offset]: noda-type://NodaTime.Offset
-[Offset]: noda-type://NodaTime.OffsetDateTime
+[OffsetDateTime]: noda-type://NodaTime.OffsetDateTime
 [ZonedDateTime]: noda-type://NodaTime.ZonedDateTime
 [TZDB]: http://www.iana.org/time-zones
 [IDateTimeZoneProvider]: noda-type://NodaTime.IDateTimeZoneProvider
