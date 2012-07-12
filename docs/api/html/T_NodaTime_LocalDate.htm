@@ -24,14 +24,14 @@
             Combines the given <span class="selflink">LocalDate</span> and <a href="T_NodaTime_LocalTime.htm">LocalTime</a> components
             into a single <a href="T_NodaTime_LocalDateTime.htm">LocalDateTime</a>.
             </div><br /></td></tr><tr data="method; public; instance; declared"><td><img src="../icons/pubmethod.gif" /></td><td><a href="M_NodaTime_LocalDate_AtMidnight.htm">AtMidnight<span class="languageSpecificText"><span class="cs">()</span><span class="cpp">()</span><span class="nu">()</span><span class="fs">()</span></span></a></td><td><div class="summary">
-            Gets a <a href="T_NodaTime_LocalDateTime.htm">LocalDateTime</a> at midnight on the date represented by this local date, in the same calendar system.
+            Gets a <a href="T_NodaTime_LocalDateTime.htm">LocalDateTime</a> at midnight on the date represented by this local date.
             </div><br /></td></tr><tr data="property; public; instance; declared"><td><img src="../icons/pubproperty.gif" /></td><td><a href="P_NodaTime_LocalDate_Calendar.htm">Calendar</a></td><td><div class="summary">Gets the calendar system associated with this local date.</div><br /></td></tr><tr data="method; public; instance; declared"><td><img src="../icons/pubmethod.gif" /></td><td><a href="M_NodaTime_LocalDate_CompareTo.htm">CompareTo(LocalDate)</a></td><td><div class="summary">
             Indicates whether this date is earlier, later or the same as another one. This is purely
             done in terms of the local instant represented; the calendar system is ignored. This can lead
             to surprising results - for example, 1945 in the ISO calendar corresponds to around 1364
             in the Islamic calendar, so an Islamic date in year 1400 is "after" a date in 1945 in the ISO calendar.
             </div><br /></td></tr><tr data="property; public; instance; declared"><td><img src="../icons/pubproperty.gif" /></td><td><a href="P_NodaTime_LocalDate_Day.htm">Day</a></td><td><div class="summary">Gets the day of this local date within the month.</div><br /></td></tr><tr data="property; public; instance; declared"><td><img src="../icons/pubproperty.gif" /></td><td><a href="P_NodaTime_LocalDate_DayOfWeek.htm">DayOfWeek</a></td><td><div class="summary">
-            Week day of this local date as a number.
+            Gets the week day of this local date as a number.
             </div><br /></td></tr><tr data="property; public; instance; declared"><td><img src="../icons/pubproperty.gif" /></td><td><a href="P_NodaTime_LocalDate_DayOfYear.htm">DayOfYear</a></td><td><div class="summary">Gets the day of this local date within the year.</div><br /></td></tr><tr data="method; public; static; declared"><td><img src="../icons/puboperator.gif" /><img src="../icons/static.gif" title="static member" /></td><td><a href="M_NodaTime_LocalDate_op_Equality.htm">Equality(LocalDate, LocalDate)</a></td><td><div class="summary">
             Compares two <span class="selflink">LocalDate</span> values for equality. This requires
             that the dates be the same, within the same calendar.
@@ -52,7 +52,7 @@
             </div><br /></td></tr><tr data="method; public; static; declared"><td><img src="../icons/puboperator.gif" /><img src="../icons/static.gif" title="static member" /></td><td><a href="M_NodaTime_LocalDate_op_Inequality.htm">Inequality(LocalDate, LocalDate)</a></td><td><div class="summary">
             Compares two <span class="selflink">LocalDate</span> values for inequality.
             </div><br /></td></tr><tr data="property; public; instance; declared"><td><img src="../icons/pubproperty.gif" /></td><td><a href="P_NodaTime_LocalDate_IsoDayOfWeek.htm">IsoDayOfWeek</a></td><td><div class="summary">
-            Week day of this local date expressed as an <a href="T_NodaTime_IsoDayOfWeek.htm">IsoDayOfWeek</a> value,
+            Gets the week day of this local date expressed as an <a href="T_NodaTime_IsoDayOfWeek.htm">IsoDayOfWeek</a> value,
             for calendars which use ISO days of the week.
             </div><br /></td></tr><tr data="method; public; static; declared"><td><img src="../icons/puboperator.gif" /><img src="../icons/static.gif" title="static member" /></td><td><a href="M_NodaTime_LocalDate_op_LessThan.htm">LessThan(LocalDate, LocalDate)</a></td><td><div class="summary">
             Compares two LocalDate values to see if the left one is strictly earlier than the right
@@ -104,19 +104,19 @@
             </div><br /></td></tr><tr data="method; public; static; declared"><td><img src="../icons/pubmethod.gif" /><img src="../icons/static.gif" title="static member" /></td><td><a href="M_NodaTime_LocalDate_TryParse.htm">TryParse(String, LocalDate<span class="languageSpecificText"><span class="cpp">%</span></span>)</a></td><td><div class="summary">
             Attempts to parse the given string using the current culture's default format provider. If the parse is successful,
             the result is stored in the <span class="parameter">result</span> parameter and the return value is true;
-            otherwise <a href="F_NodaTime_Instant_MinValue.htm">MinValue</a> is stored in the parameter and the return value is false.
+            otherwise January 1st, 2000 is stored in the parameter and the return value is false.
             </div><br /></td></tr><tr data="method; public; static; declared"><td><img src="../icons/pubmethod.gif" /><img src="../icons/static.gif" title="static member" /></td><td><a href="M_NodaTime_LocalDate_TryParse_1.htm">TryParse(String, IFormatProvider, LocalDate<span class="languageSpecificText"><span class="cpp">%</span></span>)</a></td><td><div class="summary">
             Attempts to parse the given string using the specified format provider.
             If the parse is successful, the result is stored in the <span class="parameter">result</span> parameter and the return value is true;
-            otherwise <a href="F_NodaTime_Instant_MinValue.htm">MinValue</a> is stored in the parameter and the return value is false.
+            otherwise January 1st, 2000 is stored in the parameter and the return value is false.
             </div><br /></td></tr><tr data="method; public; static; declared"><td><img src="../icons/pubmethod.gif" /><img src="../icons/static.gif" title="static member" /></td><td><a href="M_NodaTime_LocalDate_TryParseExact.htm">TryParseExact(String, String, IFormatProvider, LocalDate<span class="languageSpecificText"><span class="cpp">%</span></span>)</a></td><td><div class="summary">
             Attempts to parse the given string using the specified pattern and format provider.
             If the parse is successful, the result is stored in the <span class="parameter">result</span> parameter and the return value is true;
-            otherwise <a href="F_NodaTime_Instant_MinValue.htm">MinValue</a> is stored in the parameter and the return value is false.
+            otherwise January 1st, 2000 is stored in the parameter and the return value is false.
             </div><br /></td></tr><tr data="method; public; static; declared"><td><img src="../icons/pubmethod.gif" /><img src="../icons/static.gif" title="static member" /></td><td><a href="M_NodaTime_LocalDate_TryParseExact_1.htm">TryParseExact(String, <span class="languageSpecificText"><span class="cpp">array&lt;</span></span>String<span class="languageSpecificText"><span class="cpp">&gt;</span><span class="cs">[]</span><span class="vb">()</span><span class="nu">[]</span><span class="fs">[]</span></span>, IFormatProvider, LocalDate<span class="languageSpecificText"><span class="cpp">%</span></span>)</a></td><td><div class="summary">
             Attempts to parse the given string using the specified patterns and format provider.
             If the parse is successful, the result is stored in the <span class="parameter">result</span> parameter and the return value is true;
-            otherwise <a href="F_NodaTime_Instant_MinValue.htm">MinValue</a> is stored in the parameter and the return value is false.
+            otherwise January 1st, 2000 is stored in the parameter and the return value is false.
             </div><br /></td></tr><tr data="property; public; instance; declared"><td><img src="../icons/pubproperty.gif" /></td><td><a href="P_NodaTime_LocalDate_WeekOfWeekYear.htm">WeekOfWeekYear</a></td><td><div class="summary">Gets the week within the WeekYear. See <a href="P_NodaTime_LocalDate_WeekYear.htm">WeekYear</a> for more details.</div><br /></td></tr><tr data="property; public; instance; declared"><td><img src="../icons/pubproperty.gif" /></td><td><a href="P_NodaTime_LocalDate_WeekYear.htm">WeekYear</a></td><td><div class="summary">
             Gets the "week year" of this local date.
             </div><br /></td></tr><tr data="method; public; instance; declared"><td><img src="../icons/pubmethod.gif" /></td><td><a href="M_NodaTime_LocalDate_WithCalendar.htm">WithCalendar(CalendarSystem)</a></td><td><div class="summary">

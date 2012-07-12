@@ -122,8 +122,7 @@
             </div><br /></td></tr><tr data="field; public; static; declared"><td><img src="../icons/pubfield.gif" /><img src="../icons/static.gif" title="static member" /></td><td><a href="F_NodaTime_Offset_Zero.htm">Zero</a></td><td><div class="summary">
             An offset of zero ticks - effectively the permanent offset for UTC.
             </div><br /></td></tr></table></div></div></div><div class="section"><div class="sectionTitle" onclick="toggleSection(this.parentNode)"><img src="../icons/collapse_all.gif" /> Remarks</div><div class="sectionContent"><p>
-            Offsets are constrained to the range (-24 hours, 24 hours). If the millisecond value given
-            is outside this range then an exception is thrown.
+            Offsets are always strictly less than 24 hours (as either a positive or negative offset).
             </p><p>
             Internally, offsets are stored as an <a href="http://msdn2.microsoft.com/en-us/library/td2s409d" target="_blank">Int32</a> number of milliseconds instead of
             as ticks. This is because as a description of the offset of a time zone from UTC, there is

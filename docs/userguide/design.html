@@ -47,7 +47,7 @@ to sacrifice <em>public</em> elegance for this.</p></li>
 <li><p><strong>We want your code to be robust in the face of new versions.</strong><br />
 Noda Time follows <a href="http://semver.org/">Semantic Versioning</a> so you should be able to
 spot incompatible versions - but additionally, by limiting the
-amount of "hooks" we provide, we've reduced the coupling between
+amount of "hooks" we provide, we've reduced the opportunities for coupling between
 your code and ours.</p></li>
 <li><p><strong>We want your code using Noda Time to be testable.</strong><br />
 To some people that will conjure up images of interfaces and virtual
@@ -83,10 +83,11 @@ boxing and the like. In many cases the default value of the type (e.g. <code>new
 LocalDateTime()</code> or <code>default(LocalDateTime)</code>) is <em>not</em> a useful
 value. This is unfortunate, but hard to avoid.</p></li>
 <li><p>All the value types and almost all the reference types are
-immutable and thread-safe. We expect objects like calendars, time
+immutable and <a href="threading.html">thread-safe</a>. We expect objects like calendars, time
 zones, and patterns for formatting and parsing text to be reused
 freely between many threads. Occasionally there's hidden mutability
-in terms of caches, but this should not be visible to you, the user.</p></li>
+in terms of caches, but this should not affect you, the user. We make sure it
+all stays thread-safe for you.</p></li>
 <li><p>Almost all types are sealed, and there actually aren't very many
 interfaces. Even the abstract classes often have internal abstract
 methods, so can't be derived from by your code. This follows Josh

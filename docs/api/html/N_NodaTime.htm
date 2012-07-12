@@ -25,7 +25,8 @@
             </div><br /></td></tr><tr data="structure; public"><td><img src="../icons/pubstructure.gif" /></td><td><b><a href="T_NodaTime_Instant.htm">Instant</a></b></td><td><div class="summary">
             Represents an instant on the global timeline.
             </div><br /></td></tr><tr data="structure; public"><td><img src="../icons/pubstructure.gif" /></td><td><b><a href="T_NodaTime_Interval.htm">Interval</a></b></td><td><div class="summary">
-            An interval between two instants in time.
+            An interval between two instants in time (start and end). The interval include the start instant and excludes
+            the end instant. The end may equal the start (resulting in an empty interval), but will not be before the start.
             </div><br /></td></tr><tr data="enumeration; public"><td><img src="../icons/pubenum.gif" /></td><td><b><a href="T_NodaTime_IsoDayOfWeek.htm">IsoDayOfWeek</a></b></td><td><div class="summary">
             Equates the days of the week with their numerical value according to
             ISO-8601. This corresponds with System.DayOfWeek except for Sunday, which
