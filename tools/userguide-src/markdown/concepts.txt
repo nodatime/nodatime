@@ -114,8 +114,8 @@ although a few useful methods are exposed. Most of the time even if you
 an appropriate object, and then pass it to other constructors etc as a
 little bundle of magic which simply does the right thing for you.
 
-Time zones
-----------
+<a name="time-zones">Time zones</a>
+-----------------------------------
 
 In the most basic sense, a time zone is a mapping between [UTC][]
 date/times and local date/times - or equivalently, a mapping from
@@ -173,7 +173,7 @@ Also note that in some cases, you may not have full time zone information,
 but have just a local time and an offset. For example, if you're parsing the string
 "2012-06-26T20:41:00+01:00" that gives the information that the local time is one hour
 ahead of UTC - but it doesn't give any indication of what the offset would be at any other
-time. In this situation, you should use [`OffsetDateTime`][OffsetDateTime]
+time. In this situation, you should use [`OffsetDateTime`][OffsetDateTime].
 
 [api]: ../api/Index.html
 [2]: http://blogs.msdn.com/b/bclteam/archive/2007/06/18/a-brief-history-of-datetime-anthony-moore.aspx
