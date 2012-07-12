@@ -38,7 +38,7 @@ namespace NodaTime.Test.TimeZones
         [Test]
         public void GetZoneIntervalInstant_ZoneInterval()
         {
-            var actual = TestZone.GetZoneInterval(Instant.UnixEpoch);
+            var actual = TestZone.GetZoneInterval(NodaConstants.UnixEpoch);
             Assert.AreEqual(FixedPeriod, actual);
         }
 
@@ -46,8 +46,8 @@ namespace NodaTime.Test.TimeZones
         public void SimpleProperties_ReturnValuesFromConstructor()
         {
             Assert.AreEqual("UTC-08", TestZone.Id, "TestZone.Id");
-            Assert.AreEqual("UTC-08", TestZone.GetZoneInterval(Instant.UnixEpoch).Name);
-            Assert.AreEqual(ZoneOffset, TestZone.GetOffsetFromUtc(Instant.UnixEpoch), "TestZone.GetOffsetFromUtc()");
+            Assert.AreEqual("UTC-08", TestZone.GetZoneInterval(NodaConstants.UnixEpoch).Name);
+            Assert.AreEqual(ZoneOffset, TestZone.GetOffsetFromUtc(NodaConstants.UnixEpoch), "TestZone.GetOffsetFromUtc()");
             Assert.AreEqual(ZoneOffset, TestZone.MinOffset);
             Assert.AreEqual(ZoneOffset, TestZone.MaxOffset);
         }

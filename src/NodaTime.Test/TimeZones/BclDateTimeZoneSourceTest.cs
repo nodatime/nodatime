@@ -53,7 +53,7 @@ namespace NodaTime.Test.TimeZones
             var zone = source.ForId(id);
             Assert.AreNotEqual(DateTimeZone.ForOffset(Offset.FromHours(-2)), zone);
             Assert.AreEqual(id, zone.Id);
-            Assert.AreEqual(Offset.FromHours(-2), zone.GetZoneInterval(Instant.UnixEpoch).WallOffset);
+            Assert.AreEqual(Offset.FromHours(-2), zone.GetZoneInterval(NodaConstants.UnixEpoch).WallOffset);
         }
     }
 }

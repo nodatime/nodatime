@@ -34,23 +34,23 @@ namespace NodaTime.Benchmarks
             var adjustment = new Duration(NodaConstants.TicksPerStandardDay * 365);
             for (int i = 0; i < noCacheInstants.Length; i++)
             {
-                noCacheInstants[i] = Instant.UnixEpoch + (adjustment * i);
+                noCacheInstants[i] = NodaConstants.UnixEpoch + (adjustment * i);
             }
             for (int i = 0; i < cacheInstants.Length; i++)
             {
-                cacheInstants[i] = Instant.UnixEpoch + (adjustment * i);
+                cacheInstants[i] = NodaConstants.UnixEpoch + (adjustment * i);
             }
             var twoDays = new Duration(NodaConstants.TicksPerStandardDay * 2);
             for (int i = 0; i < twoYearsCacheInstants.Length; i++)
             {
-                twoYearsCacheInstants[i] = Instant.UnixEpoch + (twoDays * i);
+                twoYearsCacheInstants[i] = NodaConstants.UnixEpoch + (twoDays * i);
             }
         }
 
         [Benchmark]
         public void GetPeriodInstant()
         {
-            paris.GetZoneInterval(Instant.UnixEpoch);
+            paris.GetZoneInterval(NodaConstants.UnixEpoch);
         }
 
         [Benchmark]
@@ -77,7 +77,7 @@ namespace NodaTime.Benchmarks
         [Benchmark]
         public void GetOffsetFromUtc()
         {
-            paris.GetOffsetFromUtc(Instant.UnixEpoch);
+            paris.GetOffsetFromUtc(NodaConstants.UnixEpoch);
         }
     }
 }

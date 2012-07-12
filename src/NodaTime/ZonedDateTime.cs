@@ -502,7 +502,7 @@ namespace NodaTime
         /// <returns>A <see cref="DateTimeOffset"/> representation of this value.</returns>
         public DateTimeOffset ToDateTimeOffset()
         {
-            return new DateTimeOffset(NodaConstants.DateTimeEpochTicks + LocalInstant.Ticks, Offset.ToTimeSpan());
+            return new DateTimeOffset(LocalInstant.Ticks - NodaConstants.BclEpoch.Ticks, Offset.ToTimeSpan());
         }
 
         /// <summary>

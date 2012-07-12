@@ -25,7 +25,7 @@ namespace NodaTime.Test
     {
         public void InstanceNow()
         {
-            long frameworkNowTicks = DateTime.UtcNow.Ticks - NodaConstants.DateTimeEpochTicks;
+            long frameworkNowTicks = NodaConstants.BclEpoch.PlusTicks(DateTime.UtcNow.Ticks).Ticks;
             long nodaTicks = SystemClock.Instance.Now.Ticks;
             Assert.Less(Math.Abs(nodaTicks - frameworkNowTicks), Duration.FromSeconds(1).Ticks);
         }

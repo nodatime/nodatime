@@ -164,12 +164,12 @@ namespace NodaTime
 
         // TODO(Post-V1): We should *consider* representing this as in the same way as a period.
         /// <summary>
-        /// Gets the value as a <see cref="String"/> showing the number of ticks represented by this duration.
+        /// Gets the value as a <see cref="String"/> including the number of ticks represented by this duration.
         /// </summary>
         /// <returns>A string representation of this duration.</returns>
         public override string ToString()
         {
-            return Ticks.ToString();
+            return string.Format("Duration: {0} ticks", Ticks);
         }
         #endregion  // Object overrides
 

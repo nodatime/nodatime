@@ -27,7 +27,7 @@ namespace NodaTime.Test
         [Test, Category("Formatting"), Category("Format")]
         public void TestToString_InvalidFormat()
         {
-            Assert.Throws<InvalidPatternException>(() => Instant.UnixEpoch.ToString("A"));
+            Assert.Throws<InvalidPatternException>(() => NodaConstants.UnixEpoch.ToString("A"));
         }
 
         [Test, Category("Formatting"), Category("Format")]
@@ -45,7 +45,7 @@ namespace NodaTime.Test
         [Test, Category("Formatting"), Category("Format")]
         public void TestToString_UnixEpoch()
         {
-            TestToStringBase(Instant.UnixEpoch, "1970-01-01T00:00:00Z");
+            TestToStringBase(NodaConstants.UnixEpoch, "1970-01-01T00:00:00Z");
         }
 
         [Test, Category("Formatting"), Category("Format")]

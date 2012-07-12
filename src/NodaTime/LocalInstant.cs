@@ -71,7 +71,7 @@ namespace NodaTime
         /// </remarks>
         public DateTime ToDateTimeUnspecified()
         {
-            return new DateTime(ticks + NodaConstants.DateTimeEpochTicks, DateTimeKind.Unspecified);
+            return new DateTime(ticks - NodaConstants.BclEpoch.Ticks, DateTimeKind.Unspecified);
         }
 
         /// <summary>
@@ -81,7 +81,7 @@ namespace NodaTime
         /// </summary>
         internal static LocalInstant FromDateTime(DateTime dateTime)
         {
-            return new LocalInstant(dateTime.Ticks - NodaConstants.DateTimeEpochTicks);
+            return new LocalInstant(NodaConstants.BclEpoch.Ticks + dateTime.Ticks);
         }
 
         #region Operators
