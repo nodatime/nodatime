@@ -52,11 +52,11 @@ namespace NodaTime
         /// <summary>
         /// Constructs an instance for the given year, month and day in the ISO calendar.
         /// </summary>
-        /// <param name="year">Year of the new date. This is the "absolute year", so a value of 0 means 1BC, for example.</param>
-        /// <param name="month">Month of year of the new date/</param>
-        /// <param name="day">Day of month of the new date/</param>
+        /// <param name="year">The year. This is the "absolute year", so a value of 0 means 1 BC, for example.</param>
+        /// <param name="month">The month of year.</param>
+        /// <param name="day">The day of month.</param>
         /// <returns>The resulting date.</returns>
-        /// <exception cref="ArgumentOutOfRangeException">The parameters do not form a valid date</exception>
+        /// <exception cref="ArgumentOutOfRangeException">The parameters do not form a valid date.</exception>
         public LocalDate(int year, int month, int day)
             : this(year, month, day, CalendarSystem.Iso)
         {
@@ -65,12 +65,13 @@ namespace NodaTime
         /// <summary>
         /// Constructs an instance for the given year, month and day in the specified calendar.
         /// </summary>
-        /// <param name="year">Year of the new date. This is the "absolute year", so a value of 0 means 1BC, for example.</param>
-        /// <param name="month">Month of year of the new date/</param>
-        /// <param name="day">Day of month of the new date/</param>
-        /// <param name="calendar">Calendar system in which to create the date</param>
+        /// <param name="year">The year. This is the "absolute year", so, for
+        /// the ISO calendar, a value of 0 means 1 BC, for example.</param>
+        /// <param name="month">The month of year.</param>
+        /// <param name="day">The day of month.</param>
+        /// <param name="calendar">Calendar system in which to create the date.</param>
         /// <returns>The resulting date.</returns>
-        /// <exception cref="ArgumentOutOfRangeException">The parameters do not form a valid date</exception>
+        /// <exception cref="ArgumentOutOfRangeException">The parameters do not form a valid date.</exception>
         /// <exception cref="ArgumentNullException"><paramref name="calendar"/> is null.</exception>
         public LocalDate(int year, int month, int day, CalendarSystem calendar)
             : this(new LocalDateTime(year, month, day, 0, 0, calendar))
@@ -81,11 +82,11 @@ namespace NodaTime
         /// Constructs an instance for the given era, year of era, month and day in the ISO calendar.
         /// </summary>
         /// <param name="era">The era within which to create a date. Must be a valid era within the ISO calendar.</param>
-        /// <param name="yearOfEra">Year of the new date/</param>
-        /// <param name="month">Month of year of the new date/</param>
-        /// <param name="day">Day of month of the new date/</param>
+        /// <param name="yearOfEra">The year of era.</param>
+        /// <param name="month">The month of year.</param>
+        /// <param name="day">The day of month.</param>
         /// <returns>The resulting date.</returns>
-        /// <exception cref="ArgumentOutOfRangeException">The parameters do not form a valid date</exception>
+        /// <exception cref="ArgumentOutOfRangeException">The parameters do not form a valid date.</exception>
         public LocalDate(Era era, int yearOfEra, int month, int day)
             : this(era, yearOfEra, month, day, CalendarSystem.Iso)
         {
@@ -95,12 +96,12 @@ namespace NodaTime
         /// Constructs an instance for the given era, year of era, month and day in the specified calendar.
         /// </summary>
         /// <param name="era">The era within which to create a date. Must be a valid era within the specified calendar.</param>
-        /// <param name="yearOfEra">Year of the new date/</param>
-        /// <param name="month">Month of year of the new date/</param>
-        /// <param name="day">Day of month of the new date/</param>
-        /// <param name="calendar">Calendar system in which to create the date</param>
+        /// <param name="yearOfEra">The year of era.</param>
+        /// <param name="month">The month of year.</param>
+        /// <param name="day">The day of month.</param>
+        /// <param name="calendar">Calendar system in which to create the date.</param>
         /// <returns>The resulting date.</returns>
-        /// <exception cref="ArgumentOutOfRangeException">The parameters do not form a valid date</exception>
+        /// <exception cref="ArgumentOutOfRangeException">The parameters do not form a valid date.</exception>
         /// <exception cref="ArgumentNullException"><paramref name="calendar"/> is null.</exception>
         public LocalDate(Era era, int yearOfEra, int month, int day, CalendarSystem calendar)
             : this(new LocalDateTime(Preconditions.CheckNotNull(calendar, "calendar").GetLocalInstant(era, yearOfEra, month, day), calendar))
@@ -117,6 +118,8 @@ namespace NodaTime
         public CalendarSystem Calendar { get { return localTime.Calendar; } }
 
         /// <summary>Gets the year of this local date.</summary>
+        /// <remarks>This returns the "absolute year", so, for the ISO calendar,
+        /// a value of 0 means 1 BC, for example.</remarks>
         public int Year { get { return localTime.Year; } }
 
         /// <summary>Gets the month of this local date within the year.</summary>
@@ -126,14 +129,15 @@ namespace NodaTime
         public int Day { get { return localTime.Day; } }
 
         /// <summary>
-        /// Week day of this local date expressed as an <see cref="NodaTime.IsoDayOfWeek"/> value,
+        /// Gets the week day of this local date expressed as an <see cref="NodaTime.IsoDayOfWeek"/> value,
         /// for calendars which use ISO days of the week.
         /// </summary>
         /// <exception cref="InvalidOperationException">The underlying calendar doesn't use ISO days of the week.</exception>
+        /// <seealso cref="DayOfWeek"/>
         public IsoDayOfWeek IsoDayOfWeek { get { return localTime.IsoDayOfWeek; } }
 
         /// <summary>
-        /// Week day of this local date as a number.
+        /// Gets the week day of this local date as a number.
         /// </summary>
         /// <remarks>
         /// For calendars using ISO week days, this gives 1 for Monday to 7 for Sunday.
@@ -146,7 +150,7 @@ namespace NodaTime
         /// </summary>
         /// <remarks>
         /// <para>
-        /// The WeekYear is the year that matches with the WeekOfWeekYear field.
+        /// The WeekYear is the year that matches with the <see cref="WeekOfWeekYear"/> field.
         /// In the standard ISO8601 week algorithm, the first week of the year
         /// is that in which at least 4 days are in the year. As a result of this
         /// definition, day 1 of the first week may be in the previous year.
@@ -165,6 +169,7 @@ namespace NodaTime
         public int WeekOfWeekYear { get { return localTime.WeekOfWeekYear; } }
 
         /// <summary>Gets the year of this local date within the century.</summary>
+        /// <remarks>This always returns a value in the range 0 to 99 inclusive.</remarks>
         public int YearOfCentury { get { return localTime.YearOfCentury; } }
 
         /// <summary>Gets the year of this local date within the era.</summary>
@@ -177,8 +182,10 @@ namespace NodaTime
         public int DayOfYear { get { return localTime.DayOfYear; } }
 
         /// <summary>
-        /// Gets a <see cref="LocalDateTime" /> at midnight on the date represented by this local date, in the same calendar system.
+        /// Gets a <see cref="LocalDateTime" /> at midnight on the date represented by this local date.
         /// </summary>
+        /// <returns>The <see cref="LocalDateTime" /> representing midnight on tthis local date, in the same calendar
+        /// system.</returns>
         public LocalDateTime AtMidnight()
         {
             return localTime;
@@ -632,7 +639,7 @@ namespace NodaTime
         /// <summary>
         /// Attempts to parse the given string using the current culture's default format provider. If the parse is successful,
         /// the result is stored in the <paramref name="result"/> parameter and the return value is true;
-        /// otherwise <see cref="Instant.MinValue"/> is stored in the parameter and the return value is false.
+        /// otherwise January 1st, 2000 is stored in the parameter and the return value is false.
         /// </summary>
         /// <param name="value">The text to parse.</param>
         /// <param name="result">The parsed value, when successful.</param>
@@ -645,7 +652,7 @@ namespace NodaTime
         /// <summary>
         /// Attempts to parse the given string using the specified format provider.
         /// If the parse is successful, the result is stored in the <paramref name="result"/> parameter and the return value is true;
-        /// otherwise <see cref="Instant.MinValue"/> is stored in the parameter and the return value is false.
+        /// otherwise January 1st, 2000 is stored in the parameter and the return value is false.
         /// </summary>
         /// <param name="value">The text to parse.</param>
         /// <param name="formatProvider">The <see cref="T:System.IFormatProvider" /> to use when parsing the text,
@@ -660,7 +667,7 @@ namespace NodaTime
         /// <summary>
         /// Attempts to parse the given string using the specified pattern and format provider.
         /// If the parse is successful, the result is stored in the <paramref name="result"/> parameter and the return value is true;
-        /// otherwise <see cref="Instant.MinValue"/> is stored in the parameter and the return value is false.
+        /// otherwise January 1st, 2000 is stored in the parameter and the return value is false.
         /// </summary>
         /// <param name="value">The text to parse.</param>
         /// <param name="patternText">The text of the pattern to use for parsing.</param>
@@ -676,7 +683,7 @@ namespace NodaTime
         /// <summary>
         /// Attempts to parse the given string using the specified patterns and format provider.
         /// If the parse is successful, the result is stored in the <paramref name="result"/> parameter and the return value is true;
-        /// otherwise <see cref="Instant.MinValue"/> is stored in the parameter and the return value is false.
+        /// otherwise January 1st, 2000 is stored in the parameter and the return value is false.
         /// </summary>
         /// <param name="value">The text to parse.</param>
         /// <param name="patterns">The patterns to use for parsing.</param>

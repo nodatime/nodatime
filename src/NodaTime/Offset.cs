@@ -31,8 +31,7 @@ namespace NodaTime
     /// </summary>
     /// <remarks>
     /// <para>
-    /// Offsets are constrained to the range (-24 hours, 24 hours). If the millisecond value given
-    /// is outside this range then an exception is thrown.
+    /// Offsets are always strictly less than 24 hours (as either a positive or negative offset).
     /// </para>
     /// <para>
     /// Internally, offsets are stored as an <see cref="int" /> number of milliseconds instead of
@@ -68,6 +67,7 @@ namespace NodaTime
         /// Offsets are constrained to the range (-24 hours, 24 hours).
         /// </remarks>
         /// <param name="milliseconds">The number of milliseconds in the offset.</param>
+        /// <exception cref="ArgumentOutOfRangeException">The result of the operation is outside the range of Offset.</exception>
         private Offset(int milliseconds)
         {
             Preconditions.CheckArgumentRange("milliseconds", milliseconds,
@@ -112,6 +112,10 @@ namespace NodaTime
         /// <summary>
         /// Returns the number of ticks represented by this offset.
         /// </summary>
+        /// <remarks>
+        /// Offsets are only accurate to millisecond precision; the number of milliseconds is simply multiplied
+        /// by 10,000 to give the number of ticks.
+        /// </remarks>
         /// <value>The number of ticks.</value>
         public long TotalTicks { get { return TotalMilliseconds * NodaConstants.TicksPerMillisecond; } }
 
@@ -179,6 +183,7 @@ namespace NodaTime
         /// <param name="right">The right hand side of the operator.</param>
         /// <exception cref="ArgumentOutOfRangeException">The result of the operation is outside the range of Offset.</exception>
         /// <returns>A new <see cref="Offset" /> representing the sum of the given values.</returns>
+        /// <exception cref="ArgumentOutOfRangeException">The result of the operation is outside the range of Offset.</exception>
         public static Offset operator +(Offset left, Offset right)
         {
             return Offset.FromMilliseconds(left.TotalMilliseconds + right.TotalMilliseconds);
@@ -191,6 +196,7 @@ namespace NodaTime
         /// <param name="right">The right hand side of the operator.</param>
         /// <exception cref="ArgumentOutOfRangeException">The result of the operation is outside the range of Offset.</exception>
         /// <returns>A new <see cref="Offset" /> representing the sum of the given values.</returns>
+        /// <exception cref="ArgumentOutOfRangeException">The result of the operation is outside the range of Offset.</exception>
         public static Offset Add(Offset left, Offset right)
         {
             return left + right;
@@ -214,6 +220,7 @@ namespace NodaTime
         /// <param name="subtrahend">The right hand side of the operator.</param>
         /// <exception cref="ArgumentOutOfRangeException">The result of the operation is outside the range of Offset.</exception>
         /// <returns>A new <see cref="Offset" /> representing the difference of the given values.</returns>
+        /// <exception cref="ArgumentOutOfRangeException">The result of the operation is outside the range of Offset.</exception>
         public static Offset operator -(Offset minuend, Offset subtrahend)
         {
             return Offset.FromMilliseconds(minuend.TotalMilliseconds - subtrahend.TotalMilliseconds);
@@ -226,6 +233,7 @@ namespace NodaTime
         /// <param name="subtrahend">The right hand side of the operator.</param>
         /// <exception cref="ArgumentOutOfRangeException">The result of the operation is outside the range of Offset.</exception>
         /// <returns>A new <see cref="Offset" /> representing the difference of the given values.</returns>
+        /// <exception cref="ArgumentOutOfRangeException">The result of the operation is outside the range of Offset.</exception>
         public static Offset Subtract(Offset minuend, Offset subtrahend)
         {
             return minuend - subtrahend;
@@ -584,6 +592,7 @@ namespace NodaTime
         /// </summary>
         /// <param name="milliseconds">The int milliseconds value.</param>
         /// <returns>The <see cref="Offset" /> for the given milliseconds value</returns>
+        /// <exception cref="ArgumentOutOfRangeException">The result of the operation is outside the range of Offset.</exception>
         public static Offset FromMilliseconds(int milliseconds)
         {
              return new Offset(milliseconds);
@@ -598,6 +607,7 @@ namespace NodaTime
         /// </remarks>
         /// <param name="ticks">The number of ticks specifying the length of the new offset.</param>
         /// <returns>An offset representing the given number of ticks, to the (truncated) millisecond.</returns>
+        /// <exception cref="ArgumentOutOfRangeException">The result of the operation is outside the range of Offset.</exception>
         public static Offset FromTicks(long ticks)
         {
             return new Offset((int)(ticks / NodaConstants.TicksPerMillisecond));
@@ -610,6 +620,7 @@ namespace NodaTime
         /// <returns>
         /// A new <see cref="Offset" /> representing the given value.
         /// </returns>
+        /// <exception cref="ArgumentOutOfRangeException">The result of the operation is outside the range of Offset.</exception>
         public static Offset FromHours(int hours)
         {
             return new Offset(hours * NodaConstants.MillisecondsPerHour);
@@ -623,6 +634,7 @@ namespace NodaTime
         /// <returns>
         /// A new <see cref="Offset" /> representing the given value.
         /// </returns>
+        /// <exception cref="ArgumentOutOfRangeException">The result of the operation is outside the range of Offset.</exception>
         public static Offset FromHoursAndMinutes(int hours, int minutes)
         {
             return new Offset(hours * NodaConstants.MillisecondsPerHour + minutes * NodaConstants.MillisecondsPerMinute);
@@ -637,10 +649,8 @@ namespace NodaTime
         /// <param name="seconds">The number of second, in the range [0, 60).</param>
         /// <param name="fractionalSeconds">The number of milliseconds within the second,
         /// in the range [0, 1000).</param>
-        /// <returns>
-        ///   A new <see cref="Offset" /> representing the given values.
-        /// </returns>
         /// <returns>A new <see cref="Offset"/> representing the given values.</returns>
+        /// <exception cref="ArgumentOutOfRangeException">The result of the operation is outside the range of Offset.</exception>
         public static Offset Create(int hours, int minutes, int seconds, int fractionalSeconds)
         {
             return Create(hours, minutes, seconds, fractionalSeconds, false);
@@ -657,6 +667,7 @@ namespace NodaTime
         /// in the range [0, 1000).</param>
         /// <param name="negative">True if a negative offset should be created, false for a positive one.</param>
         /// <returns>A new <see cref="Offset"/> representing the given values.</returns>
+        /// <exception cref="ArgumentOutOfRangeException">The result of the operation is outside the range of Offset.</exception>
         public static Offset Create(int hours, int minutes, int seconds, int fractionalSeconds, bool negative)
         {
             Preconditions.CheckArgumentRange("hours", hours, 0, 23);
@@ -689,6 +700,7 @@ namespace NodaTime
         /// <param name="timeSpan">The timespan to convert</param>
         /// <exception cref="ArgumentOutOfRangeException">The given time span falls outside the range of +/- 24 hours.</exception>
         /// <returns>A new offset for the same time as the given time span.</returns>
+        /// <exception cref="ArgumentOutOfRangeException">The result of the operation is outside the range of Offset.</exception>
         internal static Offset FromTimeSpan(TimeSpan timeSpan)
         {
             long milliseconds = (long) timeSpan.TotalMilliseconds;
