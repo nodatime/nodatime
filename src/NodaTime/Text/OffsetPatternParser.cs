@@ -292,8 +292,15 @@ namespace NodaTime.Text
             /// </summary>
             internal override ParseResult<Offset> CalculateValue(PatternFields usedFields)
             {
-                Offset offset = Offset.Create(Hours, Minutes, Seconds, FractionalSeconds, IsNegative);
-                return ParseResult<Offset>.ForValue(offset);
+                int milliseconds = Hours * NodaConstants.MillisecondsPerHour +
+                    Minutes * NodaConstants.MillisecondsPerMinute +
+                    Seconds * NodaConstants.MillisecondsPerSecond +
+                    FractionalSeconds;
+                if (IsNegative)
+                {
+                    milliseconds = -milliseconds;
+                }
+                return ParseResult<Offset>.ForValue(Offset.FromMilliseconds(milliseconds));
             }
         }
     }

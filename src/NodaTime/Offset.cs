@@ -30,15 +30,7 @@ namespace NodaTime
     /// UTC (e.g. for America).
     /// </summary>
     /// <remarks>
-    /// <para>
     /// Offsets are always strictly less than 24 hours (as either a positive or negative offset).
-    /// </para>
-    /// <para>
-    /// Internally, offsets are stored as an <see cref="int" /> number of milliseconds instead of
-    /// as ticks. This is because as a description of the offset of a time zone from UTC, there is
-    /// no offset of less than one second. Using milliseconds gives more than enough resolution and
-    /// allows us to save 4 bytes per Offset.
-    /// </para>
     /// </remarks>
     /// <threadsafety>This type is an immutable value type. See the thread safety section of the user guide for more information.</threadsafety>
     public struct Offset : IEquatable<Offset>, IComparable<Offset>, IFormattable, IComparable
@@ -638,49 +630,6 @@ namespace NodaTime
         public static Offset FromHoursAndMinutes(int hours, int minutes)
         {
             return new Offset(hours * NodaConstants.MillisecondsPerHour + minutes * NodaConstants.MillisecondsPerMinute);
-        }
-
-        /// <summary>
-        /// Creates an offset with the specified number of hours, minutes, seconds, and
-        /// milliseconds. This offset is always non-negative.
-        /// </summary>
-        /// <param name="hours">The number of hours, in the range [0, 24).</param>
-        /// <param name="minutes">The number of minutes, in the range [0, 60).</param>
-        /// <param name="seconds">The number of second, in the range [0, 60).</param>
-        /// <param name="fractionalSeconds">The number of milliseconds within the second,
-        /// in the range [0, 1000).</param>
-        /// <returns>A new <see cref="Offset"/> representing the given values.</returns>
-        /// <exception cref="ArgumentOutOfRangeException">The result of the operation is outside the range of Offset.</exception>
-        public static Offset Create(int hours, int minutes, int seconds, int fractionalSeconds)
-        {
-            return Create(hours, minutes, seconds, fractionalSeconds, false);
-        }
-
-        /// <summary>
-        /// Creates an offset from the given values, including a sign to indicate whether or not the returned
-        /// offset should be negative.
-        /// </summary>
-        /// <param name="hours">The number of hours, in the range [0, 24).</param>
-        /// <param name="minutes">The number of minutes, in the range [0, 60).</param>
-        /// <param name="seconds">The number of second, in the range [0, 60).</param>
-        /// <param name="fractionalSeconds">The number of milliseconds within the second,
-        /// in the range [0, 1000).</param>
-        /// <param name="negative">True if a negative offset should be created, false for a positive one.</param>
-        /// <returns>A new <see cref="Offset"/> representing the given values.</returns>
-        /// <exception cref="ArgumentOutOfRangeException">The result of the operation is outside the range of Offset.</exception>
-        public static Offset Create(int hours, int minutes, int seconds, int fractionalSeconds, bool negative)
-        {
-            Preconditions.CheckArgumentRange("hours", hours, 0, 23);
-            Preconditions.CheckArgumentRange("minutes", minutes, 0, 59);
-            Preconditions.CheckArgumentRange("seconds", seconds, 0, 59);
-            Preconditions.CheckArgumentRange("fractionalSeconds", fractionalSeconds, 0, 999);
-            int sign = negative ? -1 : 1;
-            int milliseconds = 0;
-            milliseconds += hours * NodaConstants.MillisecondsPerHour;
-            milliseconds += minutes * NodaConstants.MillisecondsPerMinute;
-            milliseconds += seconds * NodaConstants.MillisecondsPerSecond;
-            milliseconds += fractionalSeconds;
-            return Offset.FromMilliseconds(sign * milliseconds);
         }
         #endregion
 

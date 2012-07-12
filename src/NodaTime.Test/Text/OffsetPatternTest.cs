@@ -296,7 +296,7 @@ namespace NodaTime.Test.Text
             // This means "minutes" not "use the medium pattern".
             formatInfo.OffsetPatternLong = "m";
 
-            Offset offset = Offset.Create(5, 9, 0, 0);
+            Offset offset = TestObjects.CreatePositiveOffset(5, 9, 0, 0);
             // Long pattern: we need a better way of expressing "the long pattern"...
             var pattern = OffsetPattern.Create("l", formatInfo);
             Assert.AreEqual("9", pattern.Format(offset));
@@ -324,17 +324,18 @@ namespace NodaTime.Test.Text
             }
 
             public Data(int hours, int minutes, int seconds)
-                : this(Offset.Create(hours, minutes, seconds, 0))
+                : this(TestObjects.CreatePositiveOffset(hours, minutes, seconds, 0))
             {
             }
 
             public Data(int hours, int minutes, int seconds, int milliseconds)
-                : this(Offset.Create(hours, minutes, seconds, milliseconds))
+                : this(TestObjects.CreatePositiveOffset(hours, minutes, seconds, milliseconds))
             {
             }
 
             public Data(int hours, int minutes, int seconds, int milliseconds, bool negative)
-                : this(Offset.Create(hours, minutes, seconds, milliseconds, negative))
+                : this(negative ? TestObjects.CreateNegativeOffset(hours, minutes, seconds, milliseconds) :
+                                  TestObjects.CreatePositiveOffset(hours, minutes, seconds, milliseconds))
             {
             }
 

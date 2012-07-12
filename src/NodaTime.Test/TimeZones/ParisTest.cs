@@ -35,7 +35,7 @@ namespace NodaTime.Test.TimeZones
         private static readonly DateTimeZone Paris = DateTimeZoneProviders.Tzdb["Europe/Paris"].Uncached();
 
         // Until 1911, Paris was 9 minutes and 21 seconds off UTC.
-        private static readonly Offset InitialOffset = Offset.Create(0, 9, 21, 0);
+        private static readonly Offset InitialOffset = TestObjects.CreatePositiveOffset(0, 9, 21, 0);
 
         [Test]
         public void FirstTransitions()
