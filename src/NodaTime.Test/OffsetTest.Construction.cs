@@ -32,14 +32,8 @@ namespace NodaTime.Test
         [Test]
         public void FromMillis_Valid()
         {
-            int length = 5 * NodaConstants.MillisecondsPerHour + 6 * NodaConstants.MillisecondsPerMinute +
-                         7 * NodaConstants.MillisecondsPerSecond + 8;
-            var test = Offset.FromMilliseconds(length);
-            Assert.AreEqual(5, test.Hours);
-            Assert.AreEqual(6, test.Minutes);
-            Assert.AreEqual(7, test.Seconds);
-            Assert.AreEqual(8, test.FractionalSeconds);
-            Assert.AreEqual(length, test.TotalMilliseconds);
+            var test = Offset.FromMilliseconds(12345);
+            Assert.AreEqual(12345, test.TotalMilliseconds);
         }
 
         [Test]
