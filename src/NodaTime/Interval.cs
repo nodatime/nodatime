@@ -21,7 +21,8 @@ using NodaTime.Utility;
 namespace NodaTime
 {
     /// <summary>
-    /// An interval between two instants in time.
+    /// An interval between two instants in time (start and end). The interval include the start instant and excludes
+    /// the end instant. The end may equal the start (resulting in an empty interval), but will not be before the start.
     /// </summary>
     /// <threadsafety>This type is an immutable value type. See the thread safety section of the user guide for more information.</threadsafety>
     public struct Interval : IEquatable<Interval>
@@ -35,7 +36,8 @@ namespace NodaTime
         private readonly Instant end;
 
         /// <summary>
-        /// Initializes a new <see cref="Interval"/> The interval includes the <paramref name="start"/> instant and excludes the
+        /// Initializes a new instance of the <see cref="Interval"/> struct.
+        /// The interval includes the <paramref name="start"/> instant and excludes the
         /// <paramref name="end"/> instant. The end may equal the start (resulting in an empty interval), but must not be before the start.
         /// </summary>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="end"/> is earlier than <paramref name="start"/>.</exception>
@@ -54,18 +56,27 @@ namespace NodaTime
         /// <summary>
         /// Gets the start instant.
         /// </summary>
+        /// <remarks>
+        /// This will never be later than <see cref="End"/>, though it may be equal to it.
+        /// </remarks>
         /// <value>The start <see cref="Instant"/>.</value>
         public Instant Start { get { return start; } }
 
         /// <summary>
         /// Gets the end instant.
         /// </summary>
+        /// <remarks>
+        /// This will never be earlier than <see cref="Start"/>, though it may be equal to it.
+        /// </remarks>
         /// <value>The end <see cref="Instant"/>.</value>
         public Instant End { get { return end; } }
 
         /// <summary>
-        /// Returns the duration of the interval, which will always be non-negative.
+        /// Returns the duration of the interval.
         /// </summary>
+        /// <remarks>
+        /// This will always be a non-negative duration, though it may be zero.
+        /// </remarks>
         /// <value>The duration of the interval.</value>
         public Duration Duration { get { return end - start; } }
 

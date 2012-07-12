@@ -9,19 +9,18 @@ more details.
   - `LocalTime` now implements `IComparable<LocalTime>`
   - `DateTimeZone` providers reworked
   - Various members made internal:
-    - `Instant.BeginningOfTimeLabel` and `Instant.EndOfTimeLabel`
-	- `DateTimeZone` constructor
-	- `DateTimeZone.UtcId`
-	- `DateTimeZone.IsFixed`
+     - `Instant.BeginningOfTimeLabel` and `Instant.EndOfTimeLabel`
+     - `DateTimeZone` constructor
+     - `DateTimeZone.UtcId`
+     - `DateTimeZone.IsFixed`
   - `SystemClock.SystemNow` removed in favour of using `SystemClock.Instance.Now` if you really have to
   - `Instant.InIsoUtc` renamed to `Instant.InUtc`
   - Overhaul of how to get a `DateTimeZone` from an ID:
-    - `IDateTimeZoneProvider` (SPI for time zones) renamed to `IDateTimeZoneSource`
-	- New interface `IDateTimeZoneProvider` aimed at *callers*, with caching assumed
-	- Removed various `DateTimeZone` static methods, in favour of always going via an `IDateTimeZoneProvider` implementation
-	- `DateTimeZoneProviders` added with static properties to access TZDB, BCL and default (currently TZDB) providers
-	- `DateTimeZoneCache` now public and implements `IDateTimeZoneProvider`
-	- `DateTimeZone` implementations must now provide equality comparisons
+     - `IDateTimeZoneProvider` (SPI for time zones) renamed to `IDateTimeZoneSource`
+     - New interface `IDateTimeZoneProvider` aimed at *callers*, with caching assumed
+     - Removed various `DateTimeZone` static methods, in favour of always going via an `IDateTimeZoneProvider` implementation
+     - `DateTimeZoneProviders` added with static properties to access TZDB, BCL and default (currently TZDB) providers
+     - `DateTimeZoneCache` now public and implements `IDateTimeZoneProvider`
   - New core type: `OffsetDateTime` representing a local date/time and an offset from UTC, but not full time zone information
 - 1.0.0-beta1
   - Initial beta release

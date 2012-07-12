@@ -141,7 +141,7 @@ namespace NodaTime
         /// </summary>
         /// <remarks>
         /// Noda Time and the .NET framework use different "epochs" or origins for their time frames.
-        /// Noda Time associates 0 ticks with midnight on January 1st 1970 UTC; .NET associates
+        /// Noda Time associates the origin (i.e. 0 ticks) with midnight on January 1st 1970 UTC; .NET associates
         /// 0 ticks with midnight on January 0001 UTC. If the value of this field is added to
         /// the number of ticks in an <see cref="Instant"/>, the result is the number of ticks in
         /// the corresponding DateTime.
