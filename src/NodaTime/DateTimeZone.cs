@@ -72,8 +72,6 @@ namespace NodaTime
     /// if no mapping is found. This could occur due to the system having a "custom" time zone installed, or there being no mapping for the BCL zone ID
     /// to the provider's set of IDs. You can always use <see cref="BclDateTimeZone.ForSystemDefault"/> to convert
     /// the local <see cref="TimeZoneInfo"/> to guarantee that a representation is available.</para>
-    /// <para>Currently Noda Time does not support 3rd party time zone implementations. If you wish to create your own implementation,
-    /// please ask for support on the Noda Time mailing list.</para>
     /// <para>Note that Noda Time does not require that <see cref="DateTimeZone"/> instances be singletons.
     /// As far as reasonably possible, implementations should implement <see cref="IEquatable{DateTimeZone}"/> in such a way
     /// that equivalent time zones compare as equal.</para>
