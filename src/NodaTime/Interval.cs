@@ -128,6 +128,16 @@ namespace NodaTime
             hash = HashCodeHelper.Hash(hash, End);
             return hash;
         }
+
+        /// <summary>
+        /// Returns a string representation of this interval. The format of this string is
+        /// not yet specified, and may change without notice. 
+        /// </summary>
+        /// <returns>A string representation of this interval.</returns>
+        public override string ToString()
+        {
+            return string.Format("Interval: [{0}, {1})", Start, End);
+        }
         #endregion
 
         #region Operators
