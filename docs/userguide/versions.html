@@ -24,6 +24,14 @@ more details.</p>
 <li><code>DateTimeZone.UtcId</code></li>
 <li><code>DateTimeZone.IsFixed</code></li>
 <li><code>SystemClock.SystemNow</code> removed in favour of using <code>SystemClock.Instance.Now</code> if you really have to</li>
+<li><code>Instant.InIsoUtc</code> renamed to <code>Instant.InUtc</code></li>
+<li>Overhaul of how to get a <code>DateTimeZone</code> from an ID:</li>
+<li><code>IDateTimeZoneProvider</code> (SPI for time zones) renamed to <code>IDateTimeZoneSource</code></li>
+<li>New interface <code>IDateTimeZoneProvider</code> aimed at <em>callers</em>, with caching assumed</li>
+<li>Removed various <code>DateTimeZone</code> static methods, in favour of always going via an <code>IDateTimeZoneProvider</code> implementation</li>
+<li><code>DateTimeZoneProviders</code> added with static properties to access TZDB, BCL and default (currently TZDB) providers</li>
+<li><code>DateTimeZoneCache</code> now public and implements <code>IDateTimeZoneProvider</code></li>
+<li>New core type: <code>OffsetDateTime</code> representing a local date/time and an offset from UTC, but not full time zone information</li>
 </ul></li>
 <li>1.0.0-beta1
 <ul>
