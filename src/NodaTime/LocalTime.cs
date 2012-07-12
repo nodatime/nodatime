@@ -446,10 +446,10 @@ namespace NodaTime
         }
 
         /// <summary>
-        /// Returns a new LocalTime representing the current value with the given number of seconds added.
+        /// Returns a new LocalTime representing the current value with the given number of milliseconds added.
         /// </summary>
-        /// <param name="milliseconds">The number of seconds to add</param>
-        /// <returns>The current value plus the given number of seconds.</returns>
+        /// <param name="milliseconds">The number of milliseconds to add</param>
+        /// <returns>The current value plus the given number of milliseconds.</returns>
         public LocalTime PlusMilliseconds(long milliseconds)
         {
             return LocalDateTime.PlusMilliseconds(milliseconds).TimeOfDay;
@@ -459,7 +459,7 @@ namespace NodaTime
         /// Returns a new LocalTime representing the current value with the given number of ticks added.
         /// </summary>
         /// <param name="ticks">The number of ticks to add</param>
-        /// <returns>The current value plus the given number of seconds.</returns>
+        /// <returns>The current value plus the given number of ticks.</returns>
         public LocalTime PlusTicks(long ticks)
         {
             return LocalDateTime.PlusTicks(ticks).TimeOfDay;
@@ -587,7 +587,7 @@ namespace NodaTime
         /// <summary>
         /// Attempts to parse the given string using the current culture's default format provider. If the parse is successful,
         /// the result is stored in the <paramref name="result"/> parameter and the return value is true;
-        /// otherwise <see cref="Instant.MinValue"/> is stored in the parameter and the return value is false.
+        /// otherwise <see cref="Midnight"/> is stored in the parameter and the return value is false.
         /// </summary>
         /// <param name="value">The text to parse.</param>
         /// <param name="result">The parsed value, when successful.</param>
@@ -600,7 +600,7 @@ namespace NodaTime
         /// <summary>
         /// Attempts to parse the given string using the specified format provider.
         /// If the parse is successful, the result is stored in the <paramref name="result"/> parameter and the return value is true;
-        /// otherwise <see cref="Instant.MinValue"/> is stored in the parameter and the return value is false.
+        /// otherwise <see cref="Midnight"/> is stored in the parameter and the return value is false.
         /// </summary>
         /// <param name="value">The text to parse.</param>
         /// <param name="formatProvider">The <see cref="T:System.IFormatProvider" /> to use when parsing the text,
@@ -615,7 +615,7 @@ namespace NodaTime
         /// <summary>
         /// Attempts to parse the given string using the specified pattern and format provider.
         /// If the parse is successful, the result is stored in the <paramref name="result"/> parameter and the return value is true;
-        /// otherwise <see cref="Instant.MinValue"/> is stored in the parameter and the return value is false.
+        /// otherwise <see cref="Midnight"/> is stored in the parameter and the return value is false.
         /// </summary>
         /// <param name="value">The text to parse.</param>
         /// <param name="patternText">The text of the pattern to use for parsing.</param>
@@ -631,7 +631,7 @@ namespace NodaTime
         /// <summary>
         /// Attempts to parse the given string using the specified patterns and format provider.
         /// If the parse is successful, the result is stored in the <paramref name="result"/> parameter and the return value is true;
-        /// otherwise <see cref="Instant.MinValue"/> is stored in the parameter and the return value is false.
+        /// otherwise <see cref="Midnight"/> is stored in the parameter and the return value is false.
         /// </summary>
         /// <param name="value">The text to parse.</param>
         /// <param name="patterns">The patterns to use for parsing.</param>
