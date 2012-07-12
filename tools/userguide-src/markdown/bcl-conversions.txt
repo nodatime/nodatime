@@ -94,19 +94,19 @@ if the `TimeSpan` has a magnitude of 24 hours or more.
 TimeZoneInfo
 ============
 
-The main time zone type in Noda Time is [`DateTimeZone`](noda-type://NodaTime.DateTimeZone) and by default this will use the
-zoneinfo time zone database. However, if you want to create a `DateTimeZone` which corresponds exactly to a particular `TimeZoneInfo`,
+The main time zone type in Noda Time is [`DateTimeZone`](noda-type://NodaTime.DateTimeZone), which the default provider
+creates from the zoneinfo time zone database. However, if you want to create a
+`DateTimeZone` which corresponds exactly to a particular `TimeZoneInfo`,
 there are some options using [`BclDateTimeZone`](noda-type://NodaTime.TimeZones.BclDateTimeZone):
 
-- You can use `DateTimeZoneProviders.Bcl` everywhere you use time zones. (You may well want to inject this as an [`IDateTimeZoneProvider`](noda-type://NodaTime.IDateTimeZoneProvider)
+- You can use `DateTimeZoneProviders.Bcl` everywhere you create time zones. (You may well want to inject this as an [`IDateTimeZoneProvider`](noda-type://NodaTime.IDateTimeZoneProvider)
   if you're using dependency injection). This is appropriate if you're going to work with various time zones,
   and you only ever care about the BCL versions.
-- To convert a single time zone, you can can `BclDateTimeZone.FromTimeZoneInfo`
+- To convert a single time zone, you can can `BclDateTimeZone.FromTimeZoneInfo`.
 - If you just need the system default time zone, you can call `BclDateTimeZone.ForSystemDefault`. There are some circumstances where
   using `DateTimeZoneProviders.Tzdb.GetSystemDefault` may return null, indicating that there's no known mapping from the local BCL time zone
   ID to TZDB. Using `BclDateTimeZone.ForSystemDefault()` *always* returns a converted version
-  of the BCL time zone. This doesn't require that you've set the BCL time zone provider, and can be used to provide a fallback
-  mechanism:
+  of the BCL time zone. This can be used to provide a fallback mechanism:
 
         DateTimeZone systemZone = DateTimeZoneProviders.Tzdb.GetSystemDefault() ?? BclDateTimeZone.ForSystemDefault();
 
@@ -118,7 +118,7 @@ zones vs the BCL ones. In particular:
 - If you need to interoperate with Windows systems, they're likely
   to use the Windows IDs
 - zoneinfo provides more historical information
-- If you're running Noda Time under Windows, change to BCL time zone
+- If you're running Noda Time under Windows, changes to BCL time zone
   information will become available automatically
 - Using the zoneinfo database allows you to decide exactly when you
   update your time zone information (e.g. if you need to check that

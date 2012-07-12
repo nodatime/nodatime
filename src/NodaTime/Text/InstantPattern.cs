@@ -47,6 +47,7 @@ namespace NodaTime.Text
         /// </summary>
         public static InstantPattern ExtendedIsoPattern { get { return Patterns.ExtendedIsoPatternImpl; } }
 
+        // TODO: Possibly support an "f" standard pattern which is like "g" but down to ticks.
         private static readonly string[] AllPatterns = { "g", "n" };
         private const string DefaultFormatPattern = "g";
 

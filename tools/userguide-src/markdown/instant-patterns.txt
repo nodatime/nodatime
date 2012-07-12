@@ -21,9 +21,6 @@ The following standard patterns are supported:
   not including thousands separators. Sample on September 16th 2011:
   "13161548674473131"
 
-(TODO: Possibly support an "f" standard pattern which is like "g"
-but down to ticks.)
-
 Custom Patterns
 ---------------
 
