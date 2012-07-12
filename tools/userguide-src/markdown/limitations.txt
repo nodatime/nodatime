@@ -13,14 +13,6 @@ scope, but we don't support it yet, then *please* either raise an
 issue or post on the
 [mailing list](http://groups.google.com/group/noda-time).
 
-Serialization
-=============
-
-None of the types in Noda Time support serialization (except the
-exceptions, ironically). This definitely needs fixing, but it has to
-be done carefully if we're to avoid invalidating the data later on.
-We also need to consider all the various *kinds* of serialization
-available these days - the default binary formatter, XML, JSON etc.
 
 Versioning and strong naming
 ============================
@@ -63,9 +55,7 @@ More calendars
 ==============
 
 There will probably always be more calendars we could support. The
-highest priority is probably a "cutover" calendar which models how
-various countries transitioned from using a Julian calendar to a
-Gregorian one, usually skipping some days at the transition.
+highest priority is probably an adapter for the BCL calendars.
 
 Smarter arithmetic
 ==================
