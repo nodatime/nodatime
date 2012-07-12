@@ -319,6 +319,13 @@ namespace NodaTime.Test
 
         #region operator +
         [Test]
+        public void PlusTicks()
+        {
+            Instant instant = new Instant(5);
+            Assert.AreEqual(new Instant(8), instant.PlusTicks(3));
+        }
+
+        [Test]
         public void OperatorPlusDuration_Zero_IsNeutralElement()
         {
             Assert.AreEqual(NodaConstants.UnixEpoch, NodaConstants.UnixEpoch + Duration.Zero, "UnixEpoch + Duration.Zero");
