@@ -62,7 +62,7 @@ namespace NodaTime.Test
         [Test]
         public void OperatorPlus_Zero_IsNeutralElement()
         {
-            Assert.AreEqual(0, (Offset.Zero + Offset.Zero).TotalMilliseconds, "0 + 0");
+            Assert.AreEqual(0, (Offset.Zero + Offset.Zero).Milliseconds, "0 + 0");
             Assert.AreEqual(TestObjects.CreatePositiveOffset(3, 0, 0, 0), ThreeHours + Offset.Zero, "1 + 0");
             Assert.AreEqual(TestObjects.CreatePositiveOffset(3, 0, 0, 0), Offset.Zero + ThreeHours, "0 + 1");
         }
@@ -79,7 +79,7 @@ namespace NodaTime.Test
         [Test]
         public void MethodAdd_Zero_IsNeutralElement()
         {
-            Assert.AreEqual(0, Offset.Add(Offset.Zero, Offset.Zero).TotalMilliseconds, "0 + 0");
+            Assert.AreEqual(0, Offset.Add(Offset.Zero, Offset.Zero).Milliseconds, "0 + 0");
             Assert.AreEqual(TestObjects.CreatePositiveOffset(3, 0, 0, 0), Offset.Add(ThreeHours, Offset.Zero), "1 + 0");
             Assert.AreEqual(TestObjects.CreatePositiveOffset(3, 0, 0, 0), Offset.Add(Offset.Zero, ThreeHours), "0 + 1");
         }
@@ -96,7 +96,7 @@ namespace NodaTime.Test
         [Test]
         public void MethodPlus_Zero_IsNeutralElement()
         {
-            Assert.AreEqual(0, Offset.Zero.Plus(Offset.Zero).TotalMilliseconds, "0 + 0");
+            Assert.AreEqual(0, Offset.Zero.Plus(Offset.Zero).Milliseconds, "0 + 0");
             Assert.AreEqual(TestObjects.CreatePositiveOffset(3, 0, 0, 0), ThreeHours.Plus(Offset.Zero), "1 + 0");
             Assert.AreEqual(TestObjects.CreatePositiveOffset(3, 0, 0, 0), Offset.Zero.Plus(ThreeHours), "0 + 1");
         }

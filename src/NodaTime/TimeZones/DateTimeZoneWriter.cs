@@ -115,7 +115,7 @@ namespace NodaTime.TimeZones
         /// <param name="value">The value to write.</param>
         internal void WriteOffset(Offset value)
         {
-            WriteMilliseconds(value.TotalMilliseconds);
+            WriteMilliseconds(value.Milliseconds);
         }
 
         /// <summary>

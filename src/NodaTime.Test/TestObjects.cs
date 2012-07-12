@@ -64,7 +64,7 @@ namespace NodaTime.Test
         /// <exception cref="ArgumentOutOfRangeException">The result of the operation is outside the range of Offset.</exception>
         public static Offset CreateNegativeOffset(int hours, int minutes, int seconds, int fractionalSeconds)
         {
-            return Offset.FromMilliseconds(-CreatePositiveOffset(hours, minutes, seconds, fractionalSeconds).TotalMilliseconds);
+            return Offset.FromMilliseconds(-CreatePositiveOffset(hours, minutes, seconds, fractionalSeconds).Milliseconds);
         }
     }
 }

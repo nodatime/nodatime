@@ -69,19 +69,19 @@ namespace NodaTime
         }
 
         /// <summary>
-        /// Gets the total number of milliseconds in the offset.
+        /// Gets the total number of milliseconds in the offset, which may be negative.
         /// </summary>
-        public int TotalMilliseconds { get { return milliseconds; } }
+        public int Milliseconds { get { return milliseconds; } }
 
         /// <summary>
-        /// Returns the number of ticks represented by this offset.
+        /// Returns the number of ticks represented by this offset, which may be negative.
         /// </summary>
         /// <remarks>
         /// Offsets are only accurate to millisecond precision; the number of milliseconds is simply multiplied
         /// by 10,000 to give the number of ticks.
         /// </remarks>
         /// <value>The number of ticks.</value>
-        public long TotalTicks { get { return TotalMilliseconds * NodaConstants.TicksPerMillisecond; } }
+        public long Ticks { get { return Milliseconds * NodaConstants.TicksPerMillisecond; } }
 
         /// <summary>
         /// Returns the greater offset of the given two, i.e. the one which will give a later local
@@ -115,7 +115,7 @@ namespace NodaTime
         /// <returns>A new <see cref="Offset" /> instance with a negated value.</returns>
         public static Offset operator -(Offset offset)
         {
-            return Offset.FromMilliseconds(-offset.TotalMilliseconds);
+            return Offset.FromMilliseconds(-offset.Milliseconds);
         }
 
         /// <summary>
@@ -150,7 +150,7 @@ namespace NodaTime
         /// <exception cref="ArgumentOutOfRangeException">The result of the operation is outside the range of Offset.</exception>
         public static Offset operator +(Offset left, Offset right)
         {
-            return Offset.FromMilliseconds(left.TotalMilliseconds + right.TotalMilliseconds);
+            return Offset.FromMilliseconds(left.Milliseconds + right.Milliseconds);
         }
 
         /// <summary>
@@ -187,7 +187,7 @@ namespace NodaTime
         /// <exception cref="ArgumentOutOfRangeException">The result of the operation is outside the range of Offset.</exception>
         public static Offset operator -(Offset minuend, Offset subtrahend)
         {
-            return Offset.FromMilliseconds(minuend.TotalMilliseconds - subtrahend.TotalMilliseconds);
+            return Offset.FromMilliseconds(minuend.Milliseconds - subtrahend.Milliseconds);
         }
 
         /// <summary>
@@ -310,7 +310,7 @@ namespace NodaTime
         /// </returns>
         public int CompareTo(Offset other)
         {
-            return TotalMilliseconds.CompareTo(other.TotalMilliseconds);
+            return Milliseconds.CompareTo(other.Milliseconds);
         }
 
         /// <summary>
@@ -346,7 +346,7 @@ namespace NodaTime
         /// </returns>
         public bool Equals(Offset other)
         {
-            return TotalMilliseconds == other.TotalMilliseconds;
+            return Milliseconds == other.Milliseconds;
         }
         #endregion
 
@@ -377,7 +377,7 @@ namespace NodaTime
         /// </returns>
         public override int GetHashCode()
         {
-            return TotalMilliseconds.GetHashCode();
+            return Milliseconds.GetHashCode();
         }
         #endregion  // Object overrides
 
@@ -631,7 +631,7 @@ namespace NodaTime
         internal static Offset FromTimeSpan(TimeSpan timeSpan)
         {
             long milliseconds = (long) timeSpan.TotalMilliseconds;
-            Preconditions.CheckArgumentRange("timeSpan", milliseconds, MinValue.TotalMilliseconds, MaxValue.TotalMilliseconds);
+            Preconditions.CheckArgumentRange("timeSpan", milliseconds, MinValue.Milliseconds, MaxValue.Milliseconds);
             return new Offset((int) milliseconds);
         }
         #endregion

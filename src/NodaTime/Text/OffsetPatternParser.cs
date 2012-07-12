@@ -59,22 +59,22 @@ namespace NodaTime.Text
         // of 3, and a "positive minutes" value of 30. The sign is computed elsewhere.
         private static int GetPositiveHours(Offset offset)
         {
-            return Math.Abs(offset.TotalMilliseconds) / NodaConstants.MillisecondsPerHour;
+            return Math.Abs(offset.Milliseconds) / NodaConstants.MillisecondsPerHour;
         }
 
         private static int GetPositiveMinutes(Offset offset)
         {
-            return (Math.Abs(offset.TotalMilliseconds) % NodaConstants.MillisecondsPerHour) / NodaConstants.MillisecondsPerMinute;
+            return (Math.Abs(offset.Milliseconds) % NodaConstants.MillisecondsPerHour) / NodaConstants.MillisecondsPerMinute;
         }
 
         private static int GetPositiveSeconds(Offset offset)
         {
-            return (Math.Abs(offset.TotalMilliseconds) % NodaConstants.MillisecondsPerMinute) / NodaConstants.MillisecondsPerSecond;
+            return (Math.Abs(offset.Milliseconds) % NodaConstants.MillisecondsPerMinute) / NodaConstants.MillisecondsPerSecond;
         }
 
         private static int GetPositiveMilliseconds(Offset offset)
         {
-            return Math.Abs(offset.TotalMilliseconds) % NodaConstants.MillisecondsPerSecond;
+            return Math.Abs(offset.Milliseconds) % NodaConstants.MillisecondsPerSecond;
         }
 
         // Note: public to implement the interface. It does no harm, and it's simpler than using explicit
@@ -187,7 +187,7 @@ namespace NodaTime.Text
             // Note: this relies on the order in ExpandStandardFormatPattern
             int index;
             // Work out the least significant non-zero part.
-            int absoluteMilliseconds = Math.Abs(value.TotalMilliseconds);
+            int absoluteMilliseconds = Math.Abs(value.Milliseconds);
             if (absoluteMilliseconds % NodaConstants.MillisecondsPerSecond != 0)
             {
                 index = 0;
@@ -224,7 +224,7 @@ namespace NodaTime.Text
                 }
                 return ParseResult<Offset>.CannotParseValue(value, "n");
             };
-            NodaFunc<Offset, string> formatter = value => value.TotalMilliseconds.ToString("N0", formatInfo);
+            NodaFunc<Offset, string> formatter = value => value.Milliseconds.ToString("N0", formatInfo);
             return new SimplePattern<Offset>(parser, formatter);
         }
         #endregion
@@ -261,7 +261,7 @@ namespace NodaTime.Text
                 return failure;
             }
 
-            builder.AddRequiredSign((bucket, positive) => bucket.IsNegative = !positive, offset => offset.TotalMilliseconds >= 0);
+            builder.AddRequiredSign((bucket, positive) => bucket.IsNegative = !positive, offset => offset.Milliseconds >= 0);
             return null;
         }
 
@@ -273,7 +273,7 @@ namespace NodaTime.Text
                 return failure;
             }
 
-            builder.AddNegativeOnlySign((bucket, positive) => bucket.IsNegative = !positive, offset => offset.TotalMilliseconds >= 0);
+            builder.AddNegativeOnlySign((bucket, positive) => bucket.IsNegative = !positive, offset => offset.Milliseconds >= 0);
             return null;
         }
         #endregion

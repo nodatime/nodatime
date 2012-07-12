@@ -26,14 +26,14 @@ namespace NodaTime.Test
         public void Zero()
         {
             Offset test = Offset.Zero;
-            Assert.AreEqual(0, test.TotalMilliseconds);
+            Assert.AreEqual(0, test.Milliseconds);
         }
 
         [Test]
         public void FromMillis_Valid()
         {
             var test = Offset.FromMilliseconds(12345);
-            Assert.AreEqual(12345, test.TotalMilliseconds);
+            Assert.AreEqual(12345, test.Milliseconds);
         }
 
         [Test]
@@ -48,7 +48,7 @@ namespace NodaTime.Test
         public void FromTicks_Valid()
         {
             Offset value = Offset.FromTicks(-15 * NodaConstants.TicksPerMinute);
-            Assert.AreEqual(-15 * NodaConstants.MillisecondsPerMinute, value.TotalMilliseconds);
+            Assert.AreEqual(-15 * NodaConstants.MillisecondsPerMinute, value.Milliseconds);
         }
         
         [Test]
@@ -63,7 +63,7 @@ namespace NodaTime.Test
         public void FromHours_Valid()
         {
             Offset value = Offset.FromHours(-15);
-            Assert.AreEqual(-15 * NodaConstants.MillisecondsPerHour, value.TotalMilliseconds);
+            Assert.AreEqual(-15 * NodaConstants.MillisecondsPerHour, value.Milliseconds);
         }
 
         [Test]
@@ -77,7 +77,7 @@ namespace NodaTime.Test
         public void FromHoursAndMinutes_Valid()
         {
             Offset value = Offset.FromHoursAndMinutes(5, 30);
-            Assert.AreEqual(5 * NodaConstants.MillisecondsPerHour + 30 * NodaConstants.MillisecondsPerMinute, value.TotalMilliseconds);
+            Assert.AreEqual(5 * NodaConstants.MillisecondsPerHour + 30 * NodaConstants.MillisecondsPerMinute, value.Milliseconds);
         }
     }
 }

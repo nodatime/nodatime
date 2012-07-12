@@ -123,8 +123,8 @@ namespace NodaTime.Test.TimeZones
         public void TestOffset(int testValue)
         {
             // Just ignore any invalid values we're asked to test
-            if (testValue < Offset.MinValue.TotalMilliseconds ||
-                testValue > Offset.MaxValue.TotalMilliseconds)
+            if (testValue < Offset.MinValue.Milliseconds ||
+                testValue > Offset.MaxValue.Milliseconds)
             {
                 return;
             }
