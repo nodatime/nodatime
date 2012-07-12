@@ -22,6 +22,7 @@ User guide contents
 - [Updating the time zone database](tzdb.html)
 - [Mono support](mono.html)
 - [Limitations](limitations.html)
+- [Version history](versions.html)
 
 Resources
 ---------

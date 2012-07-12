@@ -148,14 +148,12 @@ namespace NodaTime.TimeZones
         }
 
 
-        /// <inheritdoc />
         protected override bool EqualsImpl(DateTimeZone other)
         {
             FixedDateTimeZone otherZone = (FixedDateTimeZone) other;
             return offset == otherZone.offset && Id == other.Id;
         }
 
-        /// <inheritdoc />
         public override int GetHashCode()
         {
             int hash = HashCodeHelper.Initialize();
