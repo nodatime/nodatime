@@ -50,11 +50,11 @@ namespace NodaTime.Test
         private static readonly LocalInstant YearBeforeTransition = new LocalInstant(1999, 1, 1, 0, 0);
         private static readonly LocalInstant YearAfterTransition = new LocalInstant(2001, 1, 1, 0, 0);
 
-        private static readonly SingleTransitionZone ZoneWithGap = new SingleTransitionZone(Transition, Minus5, Plus10);
+        private static readonly SingleTransitionDateTimeZone ZoneWithGap = new SingleTransitionDateTimeZone(Transition, Minus5, Plus10);
         private static readonly ZoneInterval IntervalBeforeGap = ZoneWithGap.EarlyInterval;
         private static readonly ZoneInterval IntervalAfterGap = ZoneWithGap.LateInterval;
 
-        private static readonly SingleTransitionZone ZoneWithAmbiguity = new SingleTransitionZone(Transition, Plus10, Minus5);
+        private static readonly SingleTransitionDateTimeZone ZoneWithAmbiguity = new SingleTransitionDateTimeZone(Transition, Plus10, Minus5);
         private static readonly ZoneInterval IntervalBeforeAmbiguity = ZoneWithAmbiguity.EarlyInterval;
         private static readonly ZoneInterval IntervalAfterAmbiguity = ZoneWithAmbiguity.LateInterval;
 
@@ -230,7 +230,7 @@ namespace NodaTime.Test
         public void TrickyCase()
         {
             // 1am occurs unambiguously in the early zone.
-            var zone = new SingleTransitionZone(Transition, Offset.FromHours(3), Offset.FromHours(5));
+            var zone = new SingleTransitionDateTimeZone(Transition, Offset.FromHours(3), Offset.FromHours(5));
             var actual = zone.GetZoneIntervals(new LocalInstant(2000, 1, 1, 1, 0));
             var expected = ZoneIntervalPair.Unambiguous(zone.EarlyInterval);
             Assert.AreEqual(expected, actual);

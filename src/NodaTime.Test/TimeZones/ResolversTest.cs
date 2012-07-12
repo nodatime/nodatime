@@ -27,12 +27,12 @@ namespace NodaTime.Test.TimeZones
         /// <summary>
         /// Zone where the clocks go back at 1am at the start of the year 2000, back to midnight.
         /// </summary>
-        private static readonly SingleTransitionZone AmbiguousZone = new SingleTransitionZone(Instant.FromUtc(2000, 1, 1, 0, 0), 1, 0);
+        private static readonly SingleTransitionDateTimeZone AmbiguousZone = new SingleTransitionDateTimeZone(Instant.FromUtc(2000, 1, 1, 0, 0), 1, 0);
 
         /// <summary>
         /// Zone where the clocks go forward at midnight at the start of the year 2000, to 1am.
         /// </summary>
-        private static readonly SingleTransitionZone GapZone = new SingleTransitionZone(Instant.FromUtc(2000, 1, 1, 0, 0), 0, 1);
+        private static readonly SingleTransitionDateTimeZone GapZone = new SingleTransitionDateTimeZone(Instant.FromUtc(2000, 1, 1, 0, 0), 0, 1);
 
         /// <summary>
         /// Local time which is either skipped or ambiguous, depending on the zones above.

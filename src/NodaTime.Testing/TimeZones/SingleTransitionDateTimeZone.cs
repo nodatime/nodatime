@@ -27,7 +27,7 @@ namespace NodaTime.Testing.TimeZones
     /// tail zone, but it's simpler to construct and can be used to test
     /// PrecalculatedDateTimeZone.
     /// </summary>
-    public class SingleTransitionZone : DateTimeZone
+    public class SingleTransitionDateTimeZone : DateTimeZone
     {
         private readonly ZoneInterval earlyInterval;
         /// <summary>
@@ -47,7 +47,7 @@ namespace NodaTime.Testing.TimeZones
         /// <param name="transitionPoint">The transition point as an <see cref="Instant"/>.</param>
         /// <param name="offsetBeforeHours">The offset of local time from UTC, in hours, before the transition.</param>
         /// <param name="offsetAfterHours">The offset of local time from UTC, in hours, before the transition.</param>
-        public SingleTransitionZone(Instant transitionPoint, int offsetBeforeHours, int offsetAfterHours)
+        public SingleTransitionDateTimeZone(Instant transitionPoint, int offsetBeforeHours, int offsetAfterHours)
             : this(transitionPoint, Offset.FromHours(offsetBeforeHours), Offset.FromHours(offsetAfterHours))
         {
         }
@@ -58,7 +58,7 @@ namespace NodaTime.Testing.TimeZones
         /// <param name="transitionPoint">The transition point as an <see cref="Instant"/>.</param>
         /// <param name="offsetBefore">The offset of local time from UTC before the transition.</param>
         /// <param name="offsetAfter">The offset of local time from UTC before the transition.</param>
-        public SingleTransitionZone(Instant transitionPoint, Offset offsetBefore, Offset offsetAfter)
+        public SingleTransitionDateTimeZone(Instant transitionPoint, Offset offsetBefore, Offset offsetAfter)
             : base("Single", false, Offset.Min(offsetBefore, offsetAfter), Offset.Max(offsetBefore, offsetAfter))
         {
             earlyInterval = new ZoneInterval("Single-Early", Instant.MinValue, transitionPoint,
@@ -78,7 +78,7 @@ namespace NodaTime.Testing.TimeZones
         /// <inheritdoc />
         protected override bool EqualsImpl(DateTimeZone zone)
         {
-            SingleTransitionZone otherZone = (SingleTransitionZone)zone;
+            SingleTransitionDateTimeZone otherZone = (SingleTransitionDateTimeZone)zone;
             return Id == otherZone.Id && earlyInterval.Equals(otherZone.earlyInterval) && lateInterval.Equals(otherZone.lateInterval);
         }
 

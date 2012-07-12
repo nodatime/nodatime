@@ -63,7 +63,7 @@
   <ItemGroup>
     <Compile Include="FakeClock.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TimeZones\SingleTransitionZone.cs" />
+    <Compile Include="TimeZones\SingleTransitionDateTimeZone.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NodaTime\NodaTime.csproj">
