@@ -24,7 +24,8 @@ more details.
 - New core type: `OffsetDateTime` representing a local date/time and an offset from UTC, but not full time zone information
 - Instant.UnixEpoch moved to NodaConstants
 - Duration.ToString now returns more descriptive text
-
+- Removed "component" properties from Offset, and renamed the "total" properties to just Ticks and Milliseconds.
+- Removed Offset.Create methods (and moved them in slightly different form in a new internal TestObjects class in NodaTime.Test).
 
 **1.0.0-beta1**
 
