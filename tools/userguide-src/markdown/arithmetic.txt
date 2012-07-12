@@ -27,7 +27,7 @@ or `Plus` methods:
     Instant now = SystemClock.Instance.Now;    
     Instant future = now + duration; // Or now.Plus(duration)
     
-    ZonedDateTime nowInIsoUtc = now.InIsoUtc();
+    ZonedDateTime nowInIsoUtc = now.InUtc();
     ZonedDateTime thenInIsoUtc = nowInIsoUtc + duration;
 
 (There are also static `Add` and `Subtract` methods, the `-` operator and
