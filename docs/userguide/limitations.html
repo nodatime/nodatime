@@ -21,14 +21,6 @@ scope, but we don't support it yet, then <em>please</em> either raise an
 issue or post on the
 <a href="http://groups.google.com/group/noda-time">mailing list</a>.</p>
 
-<h1>Serialization</h1>
-
-<p>None of the types in Noda Time support serialization (except the
-exceptions, ironically). This definitely needs fixing, but it has to
-be done carefully if we're to avoid invalidating the data later on.
-We also need to consider all the various <em>kinds</em> of serialization
-available these days - the default binary formatter, XML, JSON etc.</p>
-
 <h1>Versioning and strong naming</h1>
 
 <p>We're using <a href="http://nuget.org">NuGet</a> for distribution, which takes
@@ -65,9 +57,7 @@ when one zoneinfo time zone is an alias for another.</p>
 <h1>More calendars</h1>
 
 <p>There will probably always be more calendars we could support. The
-highest priority is probably a "cutover" calendar which models how
-various countries transitioned from using a Julian calendar to a
-Gregorian one, usually skipping some days at the transition.</p>
+highest priority is probably an adapter for the BCL calendars.</p>
 
 <h1>Smarter arithmetic</h1>
 

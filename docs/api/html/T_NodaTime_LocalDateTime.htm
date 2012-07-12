@@ -119,7 +119,7 @@
             </div><br /></td></tr><tr data="method; public; instance; declared"><td><img src="../icons/pubmethod.gif" /></td><td><a href="M_NodaTime_LocalDateTime_PlusHours.htm">PlusHours(Int64)</a></td><td><div class="summary">
             Returns a new LocalDateTime representing the current value with the given number of hours added.
             </div><br /></td></tr><tr data="method; public; instance; declared"><td><img src="../icons/pubmethod.gif" /></td><td><a href="M_NodaTime_LocalDateTime_PlusMilliseconds.htm">PlusMilliseconds(Int64)</a></td><td><div class="summary">
-            Returns a new LocalDateTime representing the current value with the given number of seconds added.
+            Returns a new LocalDateTime representing the current value with the given number of milliseconds added.
             </div><br /></td></tr><tr data="method; public; instance; declared"><td><img src="../icons/pubmethod.gif" /></td><td><a href="M_NodaTime_LocalDateTime_PlusMinutes.htm">PlusMinutes(Int64)</a></td><td><div class="summary">
             Returns a new LocalDateTime representing the current value with the given number of minutes added.
             </div><br /></td></tr><tr data="method; public; instance; declared"><td><img src="../icons/pubmethod.gif" /></td><td><a href="M_NodaTime_LocalDateTime_PlusMonths.htm">PlusMonths(Int32)</a></td><td><div class="summary">
@@ -133,7 +133,7 @@
             </div><br /></td></tr><tr data="method; public; instance; declared"><td><img src="../icons/pubmethod.gif" /></td><td><a href="M_NodaTime_LocalDateTime_PlusYears.htm">PlusYears(Int32)</a></td><td><div class="summary">
             Returns a new LocalDateTime representing the current value with the given number of years added.
             </div><br /></td></tr><tr data="method; public; instance; declared"><td><img src="../icons/pubmethod.gif" /></td><td><a href="M_NodaTime_LocalDateTime_Previous.htm">Previous(IsoDayOfWeek)</a></td><td><div class="summary">
-            Returns the previous <a href="T_NodaTime_LocalDate.htm">LocalDate</a> falling on the specified <a href="P_NodaTime_LocalDateTime_IsoDayOfWeek.htm">IsoDayOfWeek</a>,
+            Returns the previous <span class="selflink">LocalDateTime</span> falling on the specified <a href="P_NodaTime_LocalDateTime_IsoDayOfWeek.htm">IsoDayOfWeek</a>,
             at the same time of day as this value.
             This is a strict "previous" - if this value on already falls on the target
             day of the week, the returned value will be a week earlier.
@@ -169,19 +169,19 @@
             </div><br /></td></tr><tr data="method; public; static; declared"><td><img src="../icons/pubmethod.gif" /><img src="../icons/static.gif" title="static member" /></td><td><a href="M_NodaTime_LocalDateTime_TryParse.htm">TryParse(String, LocalDateTime<span class="languageSpecificText"><span class="cpp">%</span></span>)</a></td><td><div class="summary">
             Attempts to parse the given string using the current culture's default format provider. If the parse is successful,
             the result is stored in the <span class="parameter">result</span> parameter and the return value is true;
-            otherwise <a href="F_NodaTime_Instant_MinValue.htm">MinValue</a> is stored in the parameter and the return value is false.
+            otherwise January 1st, 2000, midnight is stored in the parameter and the return value is false.
             </div><br /></td></tr><tr data="method; public; static; declared"><td><img src="../icons/pubmethod.gif" /><img src="../icons/static.gif" title="static member" /></td><td><a href="M_NodaTime_LocalDateTime_TryParse_1.htm">TryParse(String, IFormatProvider, LocalDateTime<span class="languageSpecificText"><span class="cpp">%</span></span>)</a></td><td><div class="summary">
             Attempts to parse the given string using the specified format provider.
             If the parse is successful, the result is stored in the <span class="parameter">result</span> parameter and the return value is true;
-            otherwise <a href="F_NodaTime_Instant_MinValue.htm">MinValue</a> is stored in the parameter and the return value is false.
+            otherwise January 1st, 2000, midnight is stored in the parameter and the return value is false.
             </div><br /></td></tr><tr data="method; public; static; declared"><td><img src="../icons/pubmethod.gif" /><img src="../icons/static.gif" title="static member" /></td><td><a href="M_NodaTime_LocalDateTime_TryParseExact.htm">TryParseExact(String, String, IFormatProvider, LocalDateTime<span class="languageSpecificText"><span class="cpp">%</span></span>)</a></td><td><div class="summary">
             Attempts to parse the given string using the specified pattern and format provider.
             If the parse is successful, the result is stored in the <span class="parameter">result</span> parameter and the return value is true;
-            otherwise <a href="F_NodaTime_Instant_MinValue.htm">MinValue</a> is stored in the parameter and the return value is false.
+            otherwise January 1st, 2000, midnight is stored in the parameter and the return value is false.
             </div><br /></td></tr><tr data="method; public; static; declared"><td><img src="../icons/pubmethod.gif" /><img src="../icons/static.gif" title="static member" /></td><td><a href="M_NodaTime_LocalDateTime_TryParseExact_1.htm">TryParseExact(String, <span class="languageSpecificText"><span class="cpp">array&lt;</span></span>String<span class="languageSpecificText"><span class="cpp">&gt;</span><span class="cs">[]</span><span class="vb">()</span><span class="nu">[]</span><span class="fs">[]</span></span>, IFormatProvider, LocalDateTime<span class="languageSpecificText"><span class="cpp">%</span></span>)</a></td><td><div class="summary">
             Attempts to parse the given string using the specified patterns and format provider.
             If the parse is successful, the result is stored in the <span class="parameter">result</span> parameter and the return value is true;
-            otherwise <a href="F_NodaTime_Instant_MinValue.htm">MinValue</a> is stored in the parameter and the return value is false.
+            otherwise January 1st, 2000, midnight is stored in the parameter and the return value is false.
             </div><br /></td></tr><tr data="property; public; instance; declared"><td><img src="../icons/pubproperty.gif" /></td><td><a href="P_NodaTime_LocalDateTime_WeekOfWeekYear.htm">WeekOfWeekYear</a></td><td><div class="summary">
             Gets the week within the WeekYear. See <a href="P_NodaTime_LocalDateTime_WeekYear.htm">WeekYear</a> for more details.
             </div><br /></td></tr><tr data="property; public; instance; declared"><td><img src="../icons/pubproperty.gif" /></td><td><a href="P_NodaTime_LocalDateTime_WeekYear.htm">WeekYear</a></td><td><div class="summary">
