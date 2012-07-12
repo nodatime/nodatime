@@ -16,6 +16,7 @@
 #endregion
 
 using System;
+using System.Linq;
 using NUnit.Framework;
 using NodaTime.TimeZones;
 
@@ -35,11 +36,24 @@ namespace NodaTime.Test.TimeZones
         }
 
         [Test]
-        public void UtcMapping()
+        public void UtcDoesNotEqualBuiltIn()
         {
-            // Effectively check that we don't end up with a BclTimeZone when we use the UTC ID.
-            DateTimeZoneCache provider = new DateTimeZoneCache(new BclDateTimeZoneSource());
-            Assert.AreEqual(DateTimeZone.Utc, provider[DateTimeZone.UtcId]);
+            var zone = new BclDateTimeZoneSource().ForId("UTC");
+            Assert.AreNotEqual(DateTimeZone.Utc, zone);
+        }
+
+        [Test]
+        public void FixedOffsetDoesNotEqualBuiltIn()
+        {
+            // Only a few fixed zones are advertised by Windows. We happen to know this one
+            // is wherever we run tests :)
+            string id = "UTC-02";
+            var source = new BclDateTimeZoneSource();
+            Assert.Contains(id, source.GetIds().ToList());
+            var zone = source.ForId(id);
+            Assert.AreNotEqual(DateTimeZone.ForOffset(Offset.FromHours(-2)), zone);
+            Assert.AreEqual(id, zone.Id);
+            Assert.AreEqual(Offset.FromHours(-2), zone.GetZoneInterval(Instant.UnixEpoch).WallOffset);
         }
     }
 }

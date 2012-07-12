@@ -79,9 +79,10 @@ namespace NodaTime.TimeZones
         /// successive requests for the same ID; however, all instances returned for a given ID must compare as equal.
         /// </para>
         /// <para>
-        /// Finally, if any of the fixed-offset timezones (i.e. "UTC" and "UTC+/-Offset") are included in the list
-        /// returned by <see cref="GetIds"/>, then the instances returned by this method must be equal to those returned
-        /// by <see cref="DateTimeZone.ForOffset"/>.
+        /// It is advised that sources should document their behaviour regarding any fixed-offset timezones
+        /// (i.e. "UTC" and "UTC+/-Offset") that are included in the list returned by <see cref="GetIds"/>.
+        /// (These IDs will not be requested by <see cref="DateTimeZoneCache"/> anyway, but any users calling
+        /// into the source directly may care.)
         /// </para>
         /// </remarks>
         /// <param name="id">The ID of the time zone to return. This must be one of the IDs

@@ -16,6 +16,7 @@
 #endregion
 
 using System;
+using System.Linq;
 using NUnit.Framework;
 using NodaTime.TimeZones;
 
@@ -45,6 +46,13 @@ namespace NodaTime.Test.TimeZones
             {
                 Assert.IsNotNull(source.ForId(id));
             }
+        }
+
+        [Test]
+        public void UtcEqualsBuiltIn()
+        {
+            var zone = new TzdbDateTimeZoneSource("NodaTime.TimeZones.Tzdb").ForId("UTC");
+            Assert.AreEqual(DateTimeZone.Utc, zone);
         }
     }
 }
