@@ -45,6 +45,7 @@ namespace NodaTime.Test
             var zone2 = DateTimeZone.ForOffset(offset);
 
             Assert.AreNotSame(zone1, zone2);
+            Assert.AreEqual(zone1, zone2);
             Assert.IsTrue(zone1.IsFixed);
             Assert.AreEqual(offset, zone1.MaxOffset);
             Assert.AreEqual(offset, zone1.MinOffset);

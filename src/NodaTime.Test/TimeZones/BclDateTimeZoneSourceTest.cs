@@ -37,9 +37,9 @@ namespace NodaTime.Test.TimeZones
         [Test]
         public void UtcMapping()
         {
-            // Effectively check that we end up with a BclTimeZone when we use the UTC ID.
+            // Effectively check that we don't end up with a BclTimeZone when we use the UTC ID.
             DateTimeZoneCache provider = new DateTimeZoneCache(new BclDateTimeZoneSource());
-            Assert.IsInstanceOf<BclDateTimeZone>(provider[DateTimeZone.UtcId]);
+            Assert.AreEqual(DateTimeZone.Utc, provider[DateTimeZone.UtcId]);
         }
     }
 }
