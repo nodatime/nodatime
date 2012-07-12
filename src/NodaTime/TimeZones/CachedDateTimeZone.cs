@@ -187,7 +187,7 @@ namespace NodaTime.TimeZones
             /// defined by the time zone for the given instant.
             /// </summary>
             /// <param name="instant">The Instant to test.</param>
-            /// <returns>The defined ZoneOffsetPeriod or <c>null</c>.</returns>
+            /// <returns>The defined ZoneOffsetPeriod or null.</returns>
             public override ZoneInterval GetZoneInterval(Instant instant)
             {
                 int period = (int)(instant.Ticks >> PeriodShift);

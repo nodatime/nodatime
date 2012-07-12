@@ -71,8 +71,8 @@ namespace NodaTime
         /// </summary>
         /// <param name="localInstant">The local instant.</param>
         /// <param name="calendar">The calendar system.</param>
-        /// <exception cref="ArgumentNullException">If <paramref name="calendar"/> is <c>null</c>.</exception>
         /// <returns>The resulting date/time.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="calendar"/> is null.</exception>
         internal LocalDateTime(LocalInstant localInstant, CalendarSystem calendar)
         {
             Preconditions.CheckNotNull(calendar, "calendar");
@@ -88,8 +88,8 @@ namespace NodaTime
         /// <param name="day">The day.</param>
         /// <param name="hour">The hour.</param>
         /// <param name="minute">The minute.</param>
-        /// <exception cref="ArgumentOutOfRangeException">The parameters do not form a valid date/time</exception>
         /// <returns>The resulting date/time.</returns>
+        /// <exception cref="ArgumentOutOfRangeException">The parameters do not form a valid date/time</exception>
         public LocalDateTime(int year, int month, int day, int hour, int minute)
             : this(year, month, day, hour, minute, CalendarSystem.Iso)
         {
@@ -104,9 +104,9 @@ namespace NodaTime
         /// <param name="hour">The hour.</param>
         /// <param name="minute">The minute.</param>
         /// <param name="calendar">The calendar.</param>
-        /// <exception cref="ArgumentNullException">If <paramref name="calendar"/> is <c>null</c>.</exception>
-        /// <exception cref="ArgumentOutOfRangeException">The parameters do not form a valid date/time</exception>
         /// <returns>The resulting date/time.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="calendar"/> is null.</exception>
+        /// <exception cref="ArgumentOutOfRangeException">The parameters do not form a valid date/time</exception>
         public LocalDateTime(int year, int month, int day, int hour, int minute, CalendarSystem calendar)
         {
             Preconditions.CheckNotNull(calendar, "calendar");
@@ -123,8 +123,8 @@ namespace NodaTime
         /// <param name="hour">The hour.</param>
         /// <param name="minute">The minute.</param>
         /// <param name="second">The second.</param>
-        /// <exception cref="ArgumentOutOfRangeException">The parameters do not form a valid date/time</exception>
         /// <returns>The resulting date/time.</returns>
+        /// <exception cref="ArgumentOutOfRangeException">The parameters do not form a valid date/time</exception>
         public LocalDateTime(int year, int month, int day, int hour, int minute, int second)
             : this(year, month, day, hour, minute, second, CalendarSystem.Iso)
         {
@@ -140,9 +140,9 @@ namespace NodaTime
         /// <param name="minute">The minute.</param>
         /// <param name="second">The second.</param>
         /// <param name="calendar">The calendar.</param>
-        /// <exception cref="ArgumentNullException">If <paramref name="calendar"/> is <c>null</c>.</exception>
-        /// <exception cref="ArgumentOutOfRangeException">The parameters do not form a valid date/time</exception>
         /// <returns>The resulting date/time.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="calendar"/> is null.</exception>
+        /// <exception cref="ArgumentOutOfRangeException">The parameters do not form a valid date/time</exception>
         public LocalDateTime(int year, int month, int day, int hour, int minute, int second, CalendarSystem calendar)
         {
             Preconditions.CheckNotNull(calendar, "calendar");
@@ -160,8 +160,8 @@ namespace NodaTime
         /// <param name="minute">The minute.</param>
         /// <param name="second">The second.</param>
         /// <param name="millisecond">The millisecond.</param>
-        /// <exception cref="ArgumentOutOfRangeException">The parameters do not form a valid date/time</exception>
         /// <returns>The resulting date/time.</returns>
+        /// <exception cref="ArgumentOutOfRangeException">The parameters do not form a valid date/time</exception>
         public LocalDateTime(int year, int month, int day, int hour, int minute, int second, int millisecond)
             : this(year, month, day, hour, minute, second, millisecond, 0, CalendarSystem.Iso)
         {
@@ -178,9 +178,9 @@ namespace NodaTime
         /// <param name="second">The second.</param>
         /// <param name="millisecond">The millisecond.</param>
         /// <param name="calendar">The calendar.</param>
-        /// <exception cref="ArgumentNullException">If <paramref name="calendar"/> is <c>null</c>.</exception>
-        /// <exception cref="ArgumentOutOfRangeException">The parameters do not form a valid date/time</exception>
         /// <returns>The resulting date/time.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="calendar"/> is null.</exception>
+        /// <exception cref="ArgumentOutOfRangeException">The parameters do not form a valid date/time</exception>
         public LocalDateTime(int year, int month, int day, int hour, int minute, int second, int millisecond, CalendarSystem calendar)
             : this(year, month, day, hour, minute, second, millisecond, 0, calendar)
         {
@@ -197,8 +197,8 @@ namespace NodaTime
         /// <param name="second">The second.</param>
         /// <param name="millisecond">The millisecond.</param>
         /// <param name="tickWithinMillisecond">The tick within millisecond.</param>
-        /// <exception cref="ArgumentOutOfRangeException">The parameters do not form a valid date/time</exception>
         /// <returns>The resulting date/time.</returns>
+        /// <exception cref="ArgumentOutOfRangeException">The parameters do not form a valid date/time</exception>
         public LocalDateTime(int year, int month, int day, int hour, int minute, int second, int millisecond, int tickWithinMillisecond)
             : this(year, month, day, hour, minute, second, millisecond, tickWithinMillisecond, CalendarSystem.Iso)
         {
@@ -216,9 +216,9 @@ namespace NodaTime
         /// <param name="millisecond">The millisecond.</param>
         /// <param name="tickWithinMillisecond">The tick within millisecond.</param>
         /// <param name="calendar">The calendar.</param>
-        /// <exception cref="ArgumentNullException">If <paramref name="calendar"/> is <c>null</c>.</exception>
-        /// <exception cref="ArgumentOutOfRangeException">The parameters do not form a valid date/time</exception>
         /// <returns>The resulting date/time.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="calendar"/> is null.</exception>
+        /// <exception cref="ArgumentOutOfRangeException">The parameters do not form a valid date/time</exception>
         public LocalDateTime(int year, int month, int day, int hour, int minute, int second, int millisecond, int tickWithinMillisecond, CalendarSystem calendar)
         {
             Preconditions.CheckNotNull(calendar, "calendar");
@@ -639,8 +639,9 @@ namespace NodaTime
         /// The returned LocalDateTime is likely to have different date field values to this one.
         /// For example, January 1st 1970 in the Gregorian calendar was December 19th 1969 in the Julian calendar.
         /// </summary>
-        /// <param name="calendarSystem">The calendar system to convert this local date to. Must not be null.</param>
+        /// <param name="calendarSystem">The calendar system to convert this local date to.</param>
         /// <returns>The converted LocalDateTime.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="calendarSystem"/> is null.</exception>
         public LocalDateTime WithCalendar(CalendarSystem calendarSystem)
         {
             Preconditions.CheckNotNull(calendarSystem, "calendarSystem");
@@ -833,8 +834,8 @@ namespace NodaTime
         /// This is solely a convenience method for calling <see cref="DateTimeZone.AtStrictly" />.
         /// </remarks>
         /// <param name="zone">The time zone in which to map this local date/time.</param>
-        /// <exception cref="ArgumentNullException"><paramref name="zone"/> is null</exception>
         /// <returns>The result of mapping this local date/time in the given time zone.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="zone"/> is null</exception>
         public ZonedDateTime InZoneStrictly(DateTimeZone zone)
         {
             Preconditions.CheckNotNull(zone, "zone");
@@ -851,8 +852,8 @@ namespace NodaTime
         /// This is solely a convenience method for calling <see cref="DateTimeZone.AtLeniently" />.
         /// </remarks>
         /// <param name="zone">The time zone in which to map this local date/time.</param>
-        /// <exception cref="ArgumentNullException"><paramref name="zone"/> is null</exception>
         /// <returns>The result of mapping this local date/time in the given time zone.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="zone"/> is null</exception>
         public ZonedDateTime InZoneLeniently(DateTimeZone zone)
         {
             Preconditions.CheckNotNull(zone, "zone");
@@ -868,8 +869,8 @@ namespace NodaTime
         /// </remarks>
         /// <param name="zone">The time zone to map this local date and time into</param>
         /// <param name="resolver">The resolver to apply to the mapping.</param>
-        /// <exception cref="ArgumentNullException"><paramref name="zone"/> or <paramref name="resolver"/> is null</exception>
         /// <returns>The result of resolving the mapping.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="zone"/> or <paramref name="resolver"/> is null</exception>
         public ZonedDateTime InZone(DateTimeZone zone, ZoneLocalMappingResolver resolver)
         {
             Preconditions.CheckNotNull(zone, "zone");
@@ -945,8 +946,8 @@ namespace NodaTime
         /// Parses the given string using the current culture's default format provider.
         /// </summary>
         /// <param name="value">The text to parse.</param>
-        /// <exception cref="ArgumentNullException"><paramref name="value"/> is null.</exception>
         /// <returns>The parsed value.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="value"/> is null.</exception>
         public static LocalDateTime Parse(string value)
         {
             return LocalDateTimePattern.BclSupport.Parse(value, NodaFormatInfo.CurrentInfo);
@@ -959,8 +960,8 @@ namespace NodaTime
         /// <param name="formatProvider">The <see cref="T:System.IFormatProvider" /> to use when parsing the text,
         /// or null to use the current thread's culture to obtain a format provider.
         /// </param>
-        /// <exception cref="ArgumentNullException"><paramref name="value"/> is null.</exception>
         /// <returns>The parsed value.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="value"/> is null.</exception>
         public static LocalDateTime Parse(string value, IFormatProvider formatProvider)
         {
             return LocalDateTimePattern.BclSupport.Parse(value, NodaFormatInfo.GetInstance(formatProvider));
@@ -974,8 +975,8 @@ namespace NodaTime
         /// <param name="formatProvider">The <see cref="T:System.IFormatProvider" /> to use when parsing the text,
         /// or null to use the current thread's culture to obtain a format provider.
         /// </param>
-        /// <exception cref="ArgumentNullException"><paramref name="value"/> or <paramref name="patternText"/> is null.</exception>
         /// <returns>The parsed value.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="value"/> or <paramref name="patternText"/> is null.</exception>
         public static LocalDateTime ParseExact(string value, string patternText, IFormatProvider formatProvider)
         {
             return LocalDateTimePattern.BclSupport.ParseExact(value, patternText, NodaFormatInfo.GetInstance(formatProvider));
@@ -988,9 +989,9 @@ namespace NodaTime
         /// <param name="patterns">The patterns to use for parsing.</param>
         /// <param name="formatProvider">The <see cref="T:System.IFormatProvider" /> to use when parsing the text,
         /// or null to use the current thread's culture to obtain a format provider.</param>
+        /// <returns>The parsed value.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="value"/> or <paramref name="patterns"/> is null.</exception>
         /// <exception cref="InvalidPatternException"><paramref name="patterns"/> is empty.</exception>
-        /// <returns>The parsed value.</returns>
         public static LocalDateTime ParseExact(string value, string[] patterns, IFormatProvider formatProvider)
         {
             return LocalDateTimePattern.BclSupport.ParseExact(value, patterns, NodaFormatInfo.GetInstance(formatProvider));

@@ -92,7 +92,7 @@ namespace NodaTime.ZoneInfoCompiler
         /// </summary>
         /// <param name="text">The text to break into words.</param>
         /// <returns>The tokenized text.</returns>
-        /// <exception cref="ArgumentNullException">If the text is null.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="text"/> is null.</exception>
         public static Tokens Tokenize(string text)
         {
             Preconditions.CheckNotNull(text, "text");

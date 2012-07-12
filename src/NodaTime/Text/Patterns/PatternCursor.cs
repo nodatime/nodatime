@@ -35,7 +35,7 @@ namespace NodaTime.Text.Patterns
         /// <param name="failure">A ref parameter to accept an early failure result of the current parsing operation.
         /// It is expected that this will be null before the call, and this method will set it to a non-null value
         /// if this method could not complete successfully.</param>
-        /// <returns>The quoted string sans open and close quotes. This can be an empty string but will not be <c>null</c>.</returns>
+        /// <returns>The quoted string sans open and close quotes. This can be an empty string but will not be null.</returns>
         internal string GetQuotedString<T>(ref PatternParseResult<T> failure)
         {
             return GetQuotedString(Current, ref failure);
@@ -49,7 +49,7 @@ namespace NodaTime.Text.Patterns
         /// <param name="failure">A ref parameter to accept an early failure result of the current parsing operation.
         /// It is expected that this will be null before the call, and this method will set it to a non-null value
         /// if this method could not complete successfully.</param>
-        /// <returns>The quoted string sans open and close quotes. This can be an empty string but will not be <c>null</c>.</returns>
+        /// <returns>The quoted string sans open and close quotes. This can be an empty string but will not be null.</returns>
         internal string GetQuotedString<T>(char closeQuote, ref PatternParseResult<T> failure)
         {
             var builder = new StringBuilder(Length - Index);

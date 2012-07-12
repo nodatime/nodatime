@@ -35,7 +35,7 @@ namespace NodaTime.Serialization.JsonNet
         /// <summary>
         /// Creates a new instance with a pattern and no validator.
         /// </summary>
-        /// <param name="pattern">The pattern to use for parsing and formatting. Must not be null.</param>
+        /// <param name="pattern">The pattern to use for parsing and formatting.</param>
         /// <exception cref="ArgumentNullException"><paramref name="pattern"/> is null</exception>
         public NodaPatternConverter(IPattern<T> pattern) : this(pattern, null)
         {
@@ -45,7 +45,7 @@ namespace NodaTime.Serialization.JsonNet
         /// Creates a new instance with a pattern and an optional validator. The validator will be called before each
         /// value is written, and may throw an exception to indicate that the value cannot be serialized.
         /// </summary>
-        /// <param name="pattern">The pattern to use for parsing and formatting. Must not be null.</param>
+        /// <param name="pattern">The pattern to use for parsing and formatting.</param>
         /// <param name="validator">The validator to call before writing values. May be null, indicating that no validation is required.</param>
         /// <exception cref="ArgumentNullException"><paramref name="pattern"/> is null</exception>
         public NodaPatternConverter(IPattern<T> pattern, Action<T> validator)

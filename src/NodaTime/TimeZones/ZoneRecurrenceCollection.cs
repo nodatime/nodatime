@@ -188,7 +188,7 @@ namespace NodaTime.TimeZones
             /// Returns the first transition. If called after iteration has started, resets to the
             /// beginning and returns the first transition.
             /// </summary>
-            /// <returns>The first <see cref="ZoneTransition"/> or <c>null</c> there are none.</returns>
+            /// <returns>The first <see cref="ZoneTransition"/> or null if there are none.</returns>
             internal ZoneTransition First()
             {
                 rules = new List<ZoneRecurrence>(ruleSet.rules);
@@ -201,7 +201,7 @@ namespace NodaTime.TimeZones
             /// <summary>
             /// Returns the next transition if any.
             /// </summary>
-            /// <returns>The next <see cref="ZoneTransition"/> or <c>null</c> if no more.</returns>
+            /// <returns>The next <see cref="ZoneTransition"/> or null if no more exist.</returns>
             internal ZoneTransition Next()
             {
                 var result = GetNext(instant);
@@ -215,7 +215,7 @@ namespace NodaTime.TimeZones
             /// otherwise null is returned.
             /// </summary>
             /// <param name="id">The id of the new <see cref="DateTimeZone"/>.</param>
-            /// <returns>The new <see cref="DateTimeZone"/> or <c>null</c>.</returns>
+            /// <returns>The new <see cref="DateTimeZone"/> or null.</returns>
             internal DateTimeZone BuildTailZone(String id)
             {
                 if (rules.Count == 2)

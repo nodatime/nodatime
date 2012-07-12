@@ -112,7 +112,7 @@ namespace NodaTime.Utility
         /// </summary>
         /// <param name="source">The <see cref="ResourceSet"/> to load from.</param>
         /// <param name="name">The resource name.</param>
-        /// <returns>The <see cref="IDictionary{TKey,TValue}"/> or <c>null</c> if there is no such resource.</returns>
+        /// <returns>The <see cref="IDictionary{TKey,TValue}"/> or null if there is no such resource.</returns>
         internal static IDictionary<string, string> LoadDictionary(ResourceSet source, string name)
         {
             Preconditions.CheckNotNull(source, "source");

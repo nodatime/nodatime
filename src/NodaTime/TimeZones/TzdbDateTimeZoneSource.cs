@@ -116,7 +116,7 @@ namespace NodaTime.TimeZones
         /// </summary>
         /// <param name="id">The id of the time zone to return.</param>
         /// <returns>
-        /// The <see cref="DateTimeZone"/> or <c>null</c> if there is no time zone with the given id.
+        /// The <see cref="DateTimeZone"/> or null if there is no time zone with the given id.
         /// </returns>
         public DateTimeZone ForId(string id)
         {

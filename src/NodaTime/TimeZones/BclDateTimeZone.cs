@@ -100,8 +100,9 @@ namespace NodaTime.TimeZones
         /// <summary>
         /// Creates a new <see cref="BclDateTimeZone" /> from a <see cref="TimeZoneInfo"/> from the Base Class Library.
         /// </summary>
-        /// <param name="bclZone">The original time zone to take information from; must not be null.</param>
+        /// <param name="bclZone">The original time zone to take information from.</param>
         /// <returns>A Noda Time representation of the given time zone.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="bclZone"/> is null.</exception>
         public static BclDateTimeZone FromTimeZoneInfo(TimeZoneInfo bclZone)
         {
             Preconditions.CheckNotNull(bclZone, "bclZone");

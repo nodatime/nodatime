@@ -45,7 +45,7 @@ namespace NodaTime.TimeZones
         /// <param name="wallOffset">The <see cref="WallOffset" /> from UTC for this period including any daylight savings.</param>
         /// <param name="savings">The <see cref="WallOffset" /> daylight savings contribution to the offset.</param>
         /// <exception cref="ArgumentException">If <c><paramref name = "start" /> &gt;= <paramref name = "end" /></c>.</exception>
-        /// <exception cref="ArgumentNullException">If the <paramref name = "name" /> parameter is null.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="name"/> is null.</exception>
         public ZoneInterval(string name, Instant start, Instant end, Offset wallOffset, Offset savings)
         {
             Preconditions.CheckNotNull(name, "name");
@@ -246,7 +246,6 @@ namespace NodaTime.TimeZones
         ///   <c>true</c> if the specified <see cref="T:System.Object" /> is equal to the current <see cref="T:System.Object" />; otherwise, <c>false</c>.
         /// </returns>
         /// <param name="obj">The <see cref="T:System.Object" /> to compare with the current <see cref="T:System.Object" />.</param>
-        /// <exception cref="T:System.NullReferenceException">The <paramref name = "obj" /> parameter is null.</exception>
         /// <filterpriority>2</filterpriority>
         [DebuggerStepThrough]
         public override bool Equals(object obj)

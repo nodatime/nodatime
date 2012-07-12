@@ -87,7 +87,6 @@ namespace NodaTime.TimeZones
         ///   <c>true</c> if the specified <see cref="T:System.Object" /> is equal to the current <see cref="T:System.Object" />; otherwise, <c>false</c>.
         /// </returns>
         /// <param name="obj">The <see cref="T:System.Object" /> to compare with the current <see cref="T:System.Object" />.</param>
-        /// <exception cref="T:System.NullReferenceException">The <paramref name = "obj" /> parameter is null.</exception>
         /// <filterpriority>2</filterpriority>
         [DebuggerStepThrough]
         public override bool Equals(object obj)
