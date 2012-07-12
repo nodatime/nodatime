@@ -365,7 +365,7 @@ namespace NodaTime
         /// </summary>
         /// <remarks>
         /// The comparison is performed in terms of a calendar-independent notion of date;
-        /// the calendar systems of both LocalDate values are ignored. When both values use the same calendar,
+        /// the calendar systems of both <see cref="LocalDate" /> values are ignored. When both values use the same calendar,
         /// this is absolutely natural. However, when comparing a value in one calendar with a value in another,
         /// this can lead to surprising results. For example, 1945 in the ISO calendar corresponds to around 1364
         /// in the Islamic calendar, so an Islamic date in year 1400 is "after" a date in 1945 in the ISO calendar.
