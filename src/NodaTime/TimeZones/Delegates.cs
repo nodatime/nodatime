@@ -80,6 +80,6 @@ namespace NodaTime.TimeZones
     /// </remarks>
     /// <param name="mapping">The intermediate result of mapping a local time to a target time zone.</param>
     /// <exception cref="SkippedTimeException">The implementation rejects requests to map skipped times.</exception>
-    /// <returns></returns>
+    /// <returns>The resolved date and time.</returns>
     public delegate ZonedDateTime ZoneLocalMappingResolver(ZoneLocalMapping mapping);
 }

@@ -254,10 +254,10 @@ namespace NodaTime.TimeZones
         }
 
         /// <summary>
-        /// Reads the specified reader.
+        /// Reads a recurrence from the specified reader.
         /// </summary>
         /// <param name="reader">The reader.</param>
-        /// <returns></returns>
+        /// <returns>The recurrence read from the reader.</returns>
         public static ZoneRecurrence Read(DateTimeZoneReader reader)
         {
             Preconditions.CheckNotNull(reader, "reader");

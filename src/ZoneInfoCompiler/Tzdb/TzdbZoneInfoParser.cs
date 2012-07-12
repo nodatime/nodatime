@@ -87,7 +87,6 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         /// </summary>
         /// <param name="tokens">The tokens.</param>
         /// <param name="name">The name.</param>
-        /// <returns></returns>
         private int NextMonth(Tokens tokens, string name)
         {
             var value = NextString(tokens, name);
@@ -100,7 +99,6 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         /// </summary>
         /// <param name="tokens">The tokens.</param>
         /// <param name="name">The name.</param>
-        /// <returns></returns>
         private Offset NextOffset(Tokens tokens, string name)
         {
             return ParserHelper.ParseOffset(NextString(tokens, name));
@@ -111,7 +109,6 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         /// </summary>
         /// <param name="tokens">The tokens.</param>
         /// <param name="name">The name.</param>
-        /// <returns></returns>
         private string NextOptional(Tokens tokens, string name)
         {
             return ParserHelper.ParseOptional(NextString(tokens, name));
@@ -122,7 +119,6 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         /// </summary>
         /// <param name="tokens">The tokens.</param>
         /// <param name="name">The name.</param>
-        /// <returns></returns>
         private string NextString(Tokens tokens, string name)
         {
             if (!tokens.HasNextToken)
@@ -138,7 +134,6 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         /// <param name="tokens">The tokens.</param>
         /// <param name="name">The name.</param>
         /// <param name="defaultValue">The default value.</param>
-        /// <returns></returns>
         private static int NextYear(Tokens tokens, string name, int defaultValue)
         {
             int result = defaultValue;
@@ -298,7 +293,6 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         ///   Parses the day of week.
         /// </summary>
         /// <param name="text">The text.</param>
-        /// <returns></returns>
         private static int ParseDayOfWeek(string text)
         {
             int index = Array.IndexOf(DaysOfWeek, text, 1);
