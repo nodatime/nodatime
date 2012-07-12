@@ -154,5 +154,3 @@ operators have method equivalents.
 Most of these are pretty simple, but a few are worth calling out
 specifically. The biggest "gotcha" is converting `LocalDateTime` to
 `ZonedDateTime` - it has some corner cases you need to consider.
-
-(In progress)

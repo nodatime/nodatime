@@ -72,7 +72,6 @@ namespace NodaTime.TimeZones
             standardRecurrence = standard;
         }
 
-        /// <inheritdoc />
         protected override bool EqualsImpl(DateTimeZone other)
         {
             DaylightSavingsDateTimeZone otherZone = (DaylightSavingsDateTimeZone)other;
@@ -82,7 +81,6 @@ namespace NodaTime.TimeZones
                 standardRecurrence.Equals(otherZone.standardRecurrence);
         }
 
-        /// <inheritdoc />
         public override int GetHashCode()
         {
             int hashCode = HashCodeHelper.Initialize();

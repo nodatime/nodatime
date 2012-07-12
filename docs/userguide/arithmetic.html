@@ -34,7 +34,7 @@ or <code>Plus</code> methods:</p>
 Instant now = SystemClock.Instance.Now;    
 Instant future = now + duration; // Or now.Plus(duration)
 
-ZonedDateTime nowInIsoUtc = now.InIsoUtc();
+ZonedDateTime nowInIsoUtc = now.InUtc();
 ZonedDateTime thenInIsoUtc = nowInIsoUtc + duration;
 </code></pre>
 

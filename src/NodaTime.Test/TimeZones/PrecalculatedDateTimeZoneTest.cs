@@ -144,7 +144,7 @@ namespace NodaTime.Test.TimeZones
             // A local instant of one hour before after the transition from the precalculated zone (which is -5)
             // will therefore be ambiguous, but the resulting instants from the ambiguity occur
             // before our transition into the tail zone, so are ignored.
-            var tailZone = new SingleTransitionZone(ThirdInterval.End + Duration.FromHours(1), 10, 8);
+            var tailZone = new SingleTransitionDateTimeZone(ThirdInterval.End + Duration.FromHours(1), 10, 8);
             var gapZone = new PrecalculatedDateTimeZone("Test",
                 new[] { FirstInterval, SecondInterval, ThirdInterval }, tailZone);
             var pair = gapZone.GetZoneIntervals(ThirdInterval.LocalEnd - Duration.FromHours(1));
@@ -200,7 +200,7 @@ namespace NodaTime.Test.TimeZones
             // A local instant of one hour after the transition from the precalculated zone (which is -5)
             // will therefore be in the gap. No zone interval matches, so the result is
             // an empty pair.
-            var tailZone = new SingleTransitionZone(ThirdInterval.End + Duration.FromHours(1), -10, +5);
+            var tailZone = new SingleTransitionDateTimeZone(ThirdInterval.End + Duration.FromHours(1), -10, +5);
             var gapZone = new PrecalculatedDateTimeZone("Test",
                 new[] { FirstInterval, SecondInterval, ThirdInterval }, tailZone);
             var pair = gapZone.GetZoneIntervals(ThirdInterval.LocalEnd + Duration.FromHours(1));

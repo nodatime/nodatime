@@ -579,7 +579,10 @@ namespace NodaTime
         /// </summary>
         /// <param name="zone">The zone to compare with this one. This is guaranteed (when called by <see cref="Equals(DateTimeZone)"/>) to
         /// be a non-null reference of the same type as this instance.</param>
-        /// <returns></returns>
+        /// <returns>
+        /// <c>true</c> if the specified <see cref="DateTimeZone"/> is equal to this instance;
+        /// otherwise, <c>false</c>.
+        /// </returns>
         protected abstract bool EqualsImpl(DateTimeZone zone);
 
         /// <summary>

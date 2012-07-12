@@ -35,7 +35,7 @@ namespace NodaTime.Test
         /// <summary>
         /// Changes from UTC+3 to UTC+4 at 1am local time on June 13th 2011.
         /// </summary>
-        private static SingleTransitionZone SampleZone = new SingleTransitionZone(Instant.FromUtc(2011, 6, 12, 22, 0), 3, 4);
+        private static SingleTransitionDateTimeZone SampleZone = new SingleTransitionDateTimeZone(Instant.FromUtc(2011, 6, 12, 22, 0), 3, 4);
 
         [Test]
         public void SimpleProperties()
@@ -118,7 +118,7 @@ namespace NodaTime.Test
             Assert.AreEqual(new LocalDateTime(2012, 2, 4, 16, 35, 0), zoned.LocalDateTime);
 
             // Will be UTC-8 for our instant.
-            DateTimeZone newZone = new SingleTransitionZone(Instant.FromUtc(2000, 1, 1, 0, 0), -7, -8);
+            DateTimeZone newZone = new SingleTransitionDateTimeZone(Instant.FromUtc(2000, 1, 1, 0, 0), -7, -8);
             ZonedDateTime converted = zoned.WithZone(newZone);
             Assert.AreEqual(new LocalDateTime(2012, 2, 4, 4, 35, 0), converted.LocalDateTime);
             Assert.AreEqual(converted.ToInstant(), instant);
@@ -181,7 +181,7 @@ namespace NodaTime.Test
         public void Equality()
         {
             // Goes back from 2am to 1am on June 13th
-            SingleTransitionZone zone = new SingleTransitionZone(Instant.FromUtc(2011, 6, 12, 22, 0), 4, 3);
+            SingleTransitionDateTimeZone zone = new SingleTransitionDateTimeZone(Instant.FromUtc(2011, 6, 12, 22, 0), 4, 3);
             var sample = zone.MapLocal(new LocalDateTime(2011, 6, 13, 1, 30)).First();
             var fromUtc = Instant.FromUtc(2011, 6, 12, 21, 30).InZone(zone);
 
@@ -313,7 +313,7 @@ namespace NodaTime.Test
         [Test]
         public void Construct_FromLocal_ValidUnambiguousOffset()
         {
-            SingleTransitionZone zone = new SingleTransitionZone(Instant.FromUtc(2011, 6, 12, 22, 0), 4, 3);
+            SingleTransitionDateTimeZone zone = new SingleTransitionDateTimeZone(Instant.FromUtc(2011, 6, 12, 22, 0), 4, 3);
 
             LocalDateTime local = new LocalDateTime(2000, 1, 2, 3, 4, 5);
             ZonedDateTime zoned = new ZonedDateTime(local, zone, zone.EarlyInterval.WallOffset);
@@ -323,7 +323,7 @@ namespace NodaTime.Test
         [Test]
         public void Construct_FromLocal_ValidEarlierOffset()
         {
-            SingleTransitionZone zone = new SingleTransitionZone(Instant.FromUtc(2011, 6, 12, 22, 0), 4, 3);
+            SingleTransitionDateTimeZone zone = new SingleTransitionDateTimeZone(Instant.FromUtc(2011, 6, 12, 22, 0), 4, 3);
 
             LocalDateTime local = new LocalDateTime(2011, 6, 13, 1, 30);
             ZonedDateTime zoned = new ZonedDateTime(local, zone, zone.EarlyInterval.WallOffset);
@@ -336,7 +336,7 @@ namespace NodaTime.Test
         [Test]
         public void Construct_FromLocal_ValidLaterOffset()
         {
-            SingleTransitionZone zone = new SingleTransitionZone(Instant.FromUtc(2011, 6, 12, 22, 0), 4, 3);
+            SingleTransitionDateTimeZone zone = new SingleTransitionDateTimeZone(Instant.FromUtc(2011, 6, 12, 22, 0), 4, 3);
 
             LocalDateTime local = new LocalDateTime(2011, 6, 13, 1, 30);
             ZonedDateTime zoned = new ZonedDateTime(local, zone, zone.LateInterval.WallOffset);
@@ -347,7 +347,7 @@ namespace NodaTime.Test
         [Test]
         public void Construct_FromLocal_InvalidOffset()
         {
-            SingleTransitionZone zone = new SingleTransitionZone(Instant.FromUtc(2011, 6, 12, 22, 0), 4, 3);
+            SingleTransitionDateTimeZone zone = new SingleTransitionDateTimeZone(Instant.FromUtc(2011, 6, 12, 22, 0), 4, 3);
 
             // Attempt to ask for the later offset in the earlier interval
             LocalDateTime local = new LocalDateTime(2000, 1, 1, 0, 0, 0);

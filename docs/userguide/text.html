@@ -115,6 +115,9 @@ specifiers being available for some types but not others.</p>
 <li><a href="period-patterns.html">Period patterns</a></li>
 </ul>
 
+<p>Note that at present, neither <code>ZonedDateTime</code> nor <code>OffsetDateTime</code> support
+any form of parsing or user-specified formatting.</p>
+
 <h2><a name="custom-patterns">Custom patterns</a></h2>
 
 <p>All custom patterns support the following characters:</p>
@@ -164,15 +167,6 @@ specifiers being available for some types but not others.</p>
 <ul>
 <li>Where valid, <code>:</code> always refers to the culture-specific time separator (a colon in the invariant culture)</li>
 <li>Where valid, <code>/</code> always refers to the culture-specific date separator (a forward slash in the invariant culture)</li>
-</ul>
-
-<p>Notes to come, including:</p>
-
-<ul>
-<li>Handling of duplicate fields vs inconsistent data</li>
-<li>Repeat character count including fractional values</li>
-<li>Template values</li>
-<li>Potential future options</li>
 </ul>
 
   </body>
