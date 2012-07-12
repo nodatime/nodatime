@@ -8,7 +8,6 @@ more details.
 - `LocalDate.LocalDateTime` property changed to `LocalDate.AtMidnight()` method
 - `LocalTime` constructor taking hours and minutes
 - `LocalTime` now implements `IComparable<LocalTime>`
-- `DateTimeZone` providers reworked
 - Various members made internal:
    - `Instant.BeginningOfTimeLabel` and `Instant.EndOfTimeLabel`
    - `DateTimeZone` constructor
@@ -23,6 +22,8 @@ more details.
    - `DateTimeZoneProviders` added with static properties to access TZDB, BCL and default (currently TZDB) providers
    - `DateTimeZoneCache` now public and implements `IDateTimeZoneProvider`
 - New core type: `OffsetDateTime` representing a local date/time and an offset from UTC, but not full time zone information
+- Instant.UnixEpoch moved to NodaConstants
+- Duration.ToString now returns more descriptive text
 
 
 **1.0.0-beta1**
