@@ -69,14 +69,24 @@ namespace NodaTime.Test.TimeZones
         {
             var source = new TestDateTimeZoneSource("Test1", "Test2");
             var provider = new DateTimeZoneCache(source);
-            var zone = provider["Test1"];
-            Assert.IsNotNull(zone);
+            var zone1a = provider["Test1"];
+            Assert.IsNotNull(zone1a);
             Assert.AreEqual("Test1", source.LastRequestedId);
-            Assert.AreSame(zone, provider["Test1"]);
+
+            // Hit up the cache (and thus the source) for Test2
+            Assert.IsNotNull(provider["Test2"]);
+            Assert.AreEqual("Test2", source.LastRequestedId);
+
+            // Ask for Test1 again
+            var zone1b = provider["Test1"];
+            // We won't have consulted the source again
+            Assert.AreEqual("Test2", source.LastRequestedId);
+
+            Assert.AreSame(zone1a, zone1b);
         }
 
         [Test]
-        public void ProviderIsNotAskedForUtcIfNotAdvertised()
+        public void SourceIsNotAskedForUtcIfNotAdvertised()
         {
             var source = new TestDateTimeZoneSource("Test1", "Test2");
             var provider = new DateTimeZoneCache(source);
@@ -86,17 +96,17 @@ namespace NodaTime.Test.TimeZones
         }
 
         [Test]
-        public void ProviderIsAskedForUtcIfAdvertised()
+        public void SourceIsNotAskedForUtcIfAdvertised()
         {
             var source = new TestDateTimeZoneSource("Test1", "Test2", "UTC");
             var provider = new DateTimeZoneCache(source);
             var zone = provider[DateTimeZone.UtcId];
             Assert.IsNotNull(zone);
-            Assert.AreEqual("UTC", source.LastRequestedId);
+            Assert.IsNull(source.LastRequestedId);
         }
 
         [Test]
-        public void ProviderIsNotAskedForUnknownIds()
+        public void SourceIsNotAskedForUnknownIds()
         {
             var source = new TestDateTimeZoneSource("Test1", "Test2");
             var provider = new DateTimeZoneCache(source);
@@ -118,6 +128,59 @@ namespace NodaTime.Test.TimeZones
             var source = new TestDateTimeZoneSource("Test1", "Test2");
             var provider = new DateTimeZoneCache(source);
             Assert.False(provider.Ids.Contains(DateTimeZone.UtcId));
+        }
+
+        [Test]
+        public void FixedOffsetSucceedsWhenNotAdvertised()
+        {
+            var source = new TestDateTimeZoneSource("Test1", "Test2");
+            var provider = new DateTimeZoneCache(source);
+            string id = "UTC+05:30";
+            DateTimeZone zone = provider[id];
+            Assert.AreEqual(DateTimeZone.ForOffset(Offset.FromHoursAndMinutes(5, 30)), zone);
+            Assert.AreEqual(id, zone.Id);
+            Assert.IsNull(source.LastRequestedId);
+        }
+
+        [Test]
+        public void FixedOffsetSucceedsWithoutConsultingSourceWhenAdvertised()
+        {
+            string id = "UTC+05:30";
+            var source = new TestDateTimeZoneSource("Test1", "Test2", id);
+            var provider = new DateTimeZoneCache(source);
+            DateTimeZone zone = provider[id];
+            Assert.AreEqual(DateTimeZone.ForOffset(Offset.FromHoursAndMinutes(5, 30)), zone);
+            Assert.AreEqual(id, zone.Id);
+            Assert.IsNull(source.LastRequestedId);
+        }
+
+        [Test]
+        public void FixedOffsetUncached()
+        {
+            string id = "UTC+05:26";
+            var source = new TestDateTimeZoneSource("Test1", "Test2");
+            var provider = new DateTimeZoneCache(source);
+            DateTimeZone zone1 = provider[id];
+            DateTimeZone zone2 = provider[id];
+            Assert.AreNotSame(zone1, zone2);
+            Assert.AreEqual(zone1, zone2);
+        }
+
+        [Test]
+        public void FixedOffsetZeroReturnsUtc()
+        {
+            string id = "UTC+00:00";
+            var source = new TestDateTimeZoneSource("Test1", "Test2", id);
+            var provider = new DateTimeZoneCache(source);
+            DateTimeZone zone = provider[id];
+            Assert.AreEqual(DateTimeZone.Utc, zone);
+            Assert.IsNull(source.LastRequestedId);
+        }
+
+        [Test]
+        public void Tzdb_Indexer_InvalidFixedOffset()
+        {
+            Assert.Throws<TimeZoneNotFoundException>(() => { var ignored = DateTimeZoneProviders.Tzdb["UTC+5Months"]; });
         }
 
         [Test]
@@ -191,30 +254,6 @@ namespace NodaTime.Test.TimeZones
             {
                 Assert.IsNotNull(DateTimeZoneProviders.Tzdb[id]);
             }
-        }
-
-        [Test]
-        public void Tzdb_Indexer_FixedOffset()
-        {
-            string id = "UTC+05:30";
-            DateTimeZone zone = DateTimeZoneProviders.Tzdb[id];
-            Assert.AreEqual(DateTimeZone.ForOffset(Offset.FromHoursAndMinutes(5, 30)), zone);
-            Assert.AreEqual(id, zone.Id);
-        }
-
-        [Test]
-        public void Tzdb_Indexer_FixedOffset_NonCanonicalId()
-        {
-            string id = "UTC+05:00:00";
-            DateTimeZone zone = DateTimeZoneProviders.Tzdb[id];
-            Assert.AreEqual(zone, DateTimeZone.ForOffset(Offset.FromHours(5)));
-            Assert.AreEqual("UTC+05", zone.Id);
-        }
-
-        [Test]
-        public void Tzdb_Indexer_InvalidFixedOffset()
-        {
-            Assert.Throws<TimeZoneNotFoundException>(() => { var ignored = DateTimeZoneProviders.Tzdb["UTC+5Months"]; });
         }
 
         private class TestDateTimeZoneSource : IDateTimeZoneSource

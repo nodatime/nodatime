@@ -111,12 +111,17 @@ namespace NodaTime.TimeZones
         public DateTimeZone GetZoneOrNull(string id)
         {
             Preconditions.CheckNotNull(id, "id");
+            DateTimeZone fixedZone = FixedDateTimeZone.GetFixedZoneOrNull(id);
+            if (fixedZone != null)
+            {
+                return fixedZone;
+            }
             lock (accessLock)
             {
                 DateTimeZone zone;
                 if (!timeZoneMap.TryGetValue(id, out zone))
                 {
-                    return FixedDateTimeZone.GetFixedZoneOrNull(id);
+                    return null;
                 }
                 if (zone == null)
                 {
