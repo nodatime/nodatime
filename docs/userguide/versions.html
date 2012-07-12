@@ -31,6 +31,7 @@ more details.</p>
 <li>Removed various <code>DateTimeZone</code> static methods, in favour of always going via an <code>IDateTimeZoneProvider</code> implementation</li>
 <li><code>DateTimeZoneProviders</code> added with static properties to access TZDB, BCL and default (currently TZDB) providers</li>
 <li><code>DateTimeZoneCache</code> now public and implements <code>IDateTimeZoneProvider</code></li>
+<li><code>DateTimeZone</code> implementations must now provide equality comparisons</li>
 <li>New core type: <code>OffsetDateTime</code> representing a local date/time and an offset from UTC, but not full time zone information</li>
 </ul></li>
 <li>1.0.0-beta1

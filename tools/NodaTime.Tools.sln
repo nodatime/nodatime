@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 11
+# Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NodaTime.Tools.BuildMarkdownDocs", "NodaTime.Tools.BuildMarkdownDocs\NodaTime.Tools.BuildMarkdownDocs.csproj", "{420792C8-51C7-4129-9663-5EF765557CCF}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "userguide-src", "userguide-src", "{9A04E3F6-25AD-46C6-9B5C-C53600A2074F}"
@@ -35,6 +35,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "markdown", "markdown", "{C7
 		userguide-src\markdown\testing.txt = userguide-src\markdown\testing.txt
 		userguide-src\markdown\text.txt = userguide-src\markdown\text.txt
 		userguide-src\markdown\threading.txt = userguide-src\markdown\threading.txt
+		userguide-src\markdown\type-choices.txt = userguide-src\markdown\type-choices.txt
 		userguide-src\markdown\tzdb.txt = userguide-src\markdown\tzdb.txt
 		userguide-src\markdown\versions.txt = userguide-src\markdown\versions.txt
 	EndProjectSection

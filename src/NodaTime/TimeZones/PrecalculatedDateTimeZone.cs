@@ -291,7 +291,6 @@ namespace NodaTime.TimeZones
         }
         #endregion
 
-        /// <inheritdoc />
         protected override bool EqualsImpl(DateTimeZone zone)
         {
             PrecalculatedDateTimeZone otherZone = (PrecalculatedDateTimeZone)zone;
@@ -320,7 +319,6 @@ namespace NodaTime.TimeZones
             return true;                        
         }
 
-        /// <inheritdoc />
         public override int GetHashCode()
         {
             int hash = HashCodeHelper.Initialize();

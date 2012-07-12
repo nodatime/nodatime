@@ -16,15 +16,29 @@ two packages:</p>
 <li><a href="http://nuget.org/packages/NodaTime.Testing">NodaTime.Testing</a></li>
 </ul>
 
+<p>Alternatively, source and binary downloads are available on the <a href="https://code.google.com/p/noda-time/downloads/list">project download page</a>.</p>
+
+<p>An experimental assembly to support Json.NET is also available; see the <a href="serialization.html">serialization guide</a> for more information.</p>
+
 <h2>System requirements</h2>
 
 <p>Currently Noda Time requires .NET 3.5 (client profile). It supports
 Mono (<a href="mono.html">with some caveats</a>) but does <em>not</em> support
 Silverlight (or, by extension, Windows Phone 7). We'd like to
 support these in the future, but it will involve a non-trivial
-amount of work.</p>
+amount of work. The same goes for creating a Portable Class Library project,
+although that may be simpler.</p>
 
-<p>(More to come.)</p>
+<h2>Package contents and getting started</h2>
+
+<p>Everything you need to <em>use</em> Noda Time is contained in the NodaTime package. The NodaTime.Testing package is designed
+for testing code which uses Noda Time. See the <a href="testing.html">testing guide</a> for more information. It is expected
+that production code will only refer to the <code>NodaTime.dll</code> assembly, and that's all that's required at execution time.
+This assembly includes the <a href="tzdb.html">TZDB database</a> as an embedded resource.</p>
+
+<p>Everything within the NodaTime assembly is in the NodaTime namespace or a "child" namespace. After adding a reference to
+the main assembly (either directly via the file system or with NuGet) and including an appropriate <code>using</code> directive, you should
+be able to start using Noda Time immediately, with no further effort.</p>
 
   </body>
 </html>
