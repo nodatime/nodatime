@@ -59,12 +59,13 @@ namespace NodaTime.ZoneInfoCompiler.winmap
         /// <summary>
         /// Reads the input XML file for the windows mappings.
         /// </summary>
-        /// <returns>An <see cref="IDictionary{TKey,TValue}" /> of Windows time zone names to POSIX names.</returns>
+        /// <returns>A list of Windows time zone mappings</returns>
         private IDictionary<string, string> MapZones(XDocument document)
         {
             return document.Root.Element("windowsZones")
                 .Element("mapTimezones")
                 .Elements("mapZone")
+                .Where(x => x.Attribute("territory").Value == "001") // "Default" territory
                 .ToDictionary(x => x.Attribute("other").Value, x => x.Attribute("type").Value);
         }
 
