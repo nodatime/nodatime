@@ -116,7 +116,7 @@ namespace NodaTime.TimeZones
             {
                 VerifyFieldValue(CalendarSystem.Iso.Fields.DayOfWeek, "dayOfWeek", dayOfWeek, false);
             }
-            VerifyFieldValue(CalendarSystem.Iso.Fields.TickOfDay, "tickOfDay", tickOfDay.TotalTicks, false);
+            VerifyFieldValue(CalendarSystem.Iso.Fields.TickOfDay, "tickOfDay", tickOfDay.Ticks, false);
 
             this.mode = mode;
             this.monthOfYear = monthOfYear;
@@ -268,7 +268,7 @@ namespace NodaTime.TimeZones
             CalendarSystem calendar = CalendarSystem.Iso;
             LocalInstant instant = calendar.Fields.Year.SetValue(LocalInstant.LocalUnixEpoch, year);
             instant = calendar.Fields.MonthOfYear.SetValue(instant, monthOfYear);
-            instant = calendar.Fields.TickOfDay.SetValue(instant, tickOfDay.TotalTicks);
+            instant = calendar.Fields.TickOfDay.SetValue(instant, tickOfDay.Ticks);
             instant = SetDayOfMonth(calendar, instant);
             instant = SetDayOfWeek(calendar, instant);
 
@@ -364,7 +364,7 @@ namespace NodaTime.TimeZones
                 CalendarSystem calendar = CalendarSystem.Iso;
                 LocalInstant newInstant = calendar.Fields.MonthOfYear.SetValue(localInstant, monthOfYear);
                 // Be lenient with tick of day.
-                newInstant = calendar.Fields.TickOfDay.SetValue(newInstant, tickOfDay.TotalTicks);
+                newInstant = calendar.Fields.TickOfDay.SetValue(newInstant, tickOfDay.Ticks);
                 newInstant = SetDayOfMonthWithLeap(calendar, newInstant, direction);
 
                 int signDirection = Math.Sign(direction);
