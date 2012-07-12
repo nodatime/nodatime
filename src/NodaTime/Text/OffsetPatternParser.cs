@@ -38,21 +38,44 @@ namespace NodaTime.Text
             { '\'', SteppedPatternBuilder<Offset, OffsetParseBucket>.HandleQuote },
             { '\"', SteppedPatternBuilder<Offset, OffsetParseBucket>.HandleQuote },
             { '\\', SteppedPatternBuilder<Offset, OffsetParseBucket>.HandleBackslash },
-            { '.', TimePatternHelper.CreatePeriodHandler<Offset, OffsetParseBucket>(3, value => value.FractionalSeconds, (bucket, value) => bucket.FractionalSeconds = value) },
+            { '.', TimePatternHelper.CreatePeriodHandler<Offset, OffsetParseBucket>(3, GetPositiveMilliseconds, (bucket, value) => bucket.Milliseconds = value) },
             { ':', (pattern, builder) => builder.AddLiteral(builder.FormatInfo.TimeSeparator, ParseResult<Offset>.TimeSeparatorMismatch) },
             { 'h', (pattern, builder) => PatternParseResult<Offset>.Hour12PatternNotSupported },
             { 'H', SteppedPatternBuilder<Offset, OffsetParseBucket>.HandlePaddedField
-                       (2, PatternFields.Hours24, 0, 23, value => value.Hours, (bucket, value) => bucket.Hours = value) },
+                       (2, PatternFields.Hours24, 0, 23, GetPositiveHours, (bucket, value) => bucket.Hours = value) },
             { 'm', SteppedPatternBuilder<Offset, OffsetParseBucket>.HandlePaddedField
-                       (2, PatternFields.Minutes, 0, 59, value => value.Minutes, (bucket, value) => bucket.Minutes = value) },
+                       (2, PatternFields.Minutes, 0, 59, GetPositiveMinutes, (bucket, value) => bucket.Minutes = value) },
             { 's', SteppedPatternBuilder<Offset, OffsetParseBucket>.HandlePaddedField
-                       (2, PatternFields.Seconds, 0, 59, value => value.Seconds, (bucket, value) => bucket.Seconds = value) },
+                       (2, PatternFields.Seconds, 0, 59, GetPositiveSeconds, (bucket, value) => bucket.Seconds = value) },
             { '+', HandlePlus },
             { '-', HandleMinus },
-            { 'f', TimePatternHelper.CreateFractionHandler<Offset, OffsetParseBucket>(3, value => value.FractionalSeconds, (bucket, value) => bucket.FractionalSeconds = value) },
-            { 'F', TimePatternHelper.CreateFractionHandler<Offset, OffsetParseBucket>(3, value => value.FractionalSeconds, (bucket, value) => bucket.FractionalSeconds = value) },
+            { 'f', TimePatternHelper.CreateFractionHandler<Offset, OffsetParseBucket>(3, GetPositiveMilliseconds, (bucket, value) => bucket.Milliseconds = value) },
+            { 'F', TimePatternHelper.CreateFractionHandler<Offset, OffsetParseBucket>(3, GetPositiveMilliseconds, (bucket, value) => bucket.Milliseconds = value) },
             { 'Z', (ignored1, ignored2) => PatternParseResult<Offset>.ForInvalidFormat(Messages.Parse_ZPrefixNotAtStartOfPattern) }
         };
+
+        // These are used to compute the individual (always-positive) components of an offset.
+        // For example, an offset of "three and a half hours behind UTC" would have a "positive hours" value
+        // of 3, and a "positive minutes" value of 30. The sign is computed elsewhere.
+        private static int GetPositiveHours(Offset offset)
+        {
+            return Math.Abs(offset.TotalMilliseconds) / NodaConstants.MillisecondsPerHour;
+        }
+
+        private static int GetPositiveMinutes(Offset offset)
+        {
+            return (Math.Abs(offset.TotalMilliseconds) % NodaConstants.MillisecondsPerHour) / NodaConstants.MillisecondsPerMinute;
+        }
+
+        private static int GetPositiveSeconds(Offset offset)
+        {
+            return (Math.Abs(offset.TotalMilliseconds) % NodaConstants.MillisecondsPerMinute) / NodaConstants.MillisecondsPerSecond;
+        }
+
+        private static int GetPositiveMilliseconds(Offset offset)
+        {
+            return Math.Abs(offset.TotalMilliseconds) % NodaConstants.MillisecondsPerSecond;
+        }
 
         // Note: public to implement the interface. It does no harm, and it's simpler than using explicit
         // interface implementation.
@@ -163,15 +186,17 @@ namespace NodaTime.Text
         {
             // Note: this relies on the order in ExpandStandardFormatPattern
             int index;
-            if (value.FractionalSeconds != 0)
+            // Work out the least significant non-zero part.
+            int absoluteMilliseconds = Math.Abs(value.TotalMilliseconds);
+            if (absoluteMilliseconds % NodaConstants.MillisecondsPerSecond != 0)
             {
                 index = 0;
             }
-            else if (value.Seconds != 0)
+            else if ((absoluteMilliseconds % NodaConstants.MillisecondsPerMinute) / NodaConstants.MillisecondsPerSecond != 0)
             {
                 index = 1;
             }
-            else if (value.Minutes != 0)
+            else if ((absoluteMilliseconds % NodaConstants.MillisecondsPerHour) / NodaConstants.MillisecondsPerMinute != 0)
             {
                 index = 2;
             }
@@ -275,9 +300,9 @@ namespace NodaTime.Text
             internal int Seconds;
 
             /// <summary>
-            /// The fractions of a second in milliseconds.
+            /// The milliseconds in the range [0, 999].
             /// </summary>
-            internal int FractionalSeconds;
+            internal int Milliseconds;
 
             /// <summary>
             /// Gets a value indicating whether this instance is negative.
@@ -295,7 +320,7 @@ namespace NodaTime.Text
                 int milliseconds = Hours * NodaConstants.MillisecondsPerHour +
                     Minutes * NodaConstants.MillisecondsPerMinute +
                     Seconds * NodaConstants.MillisecondsPerSecond +
-                    FractionalSeconds;
+                    Milliseconds;
                 if (IsNegative)
                 {
                     milliseconds = -milliseconds;

@@ -69,34 +69,6 @@ namespace NodaTime
         }
 
         /// <summary>
-        ///   Gets a value indicating whether this instance is negative.
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if this instance is negative; otherwise, <c>false</c>.
-        /// </value>
-        public bool IsNegative { get { return milliseconds < 0; } }
-
-        /// <summary>
-        ///   Gets the hours of the offset. This is always a positive value.
-        /// </summary>
-        public int Hours { get { return Math.Abs(milliseconds) / NodaConstants.MillisecondsPerHour; } }
-
-        /// <summary>
-        ///   Gets the minutes of the offset. This is always a positive value.
-        /// </summary>
-        public int Minutes { get { return (Math.Abs(milliseconds) % NodaConstants.MillisecondsPerHour) / NodaConstants.MillisecondsPerMinute; } }
-
-        /// <summary>
-        /// Gets the seconds of the offset. This is always a positive value.
-        /// </summary>
-        public int Seconds { get { return (Math.Abs(milliseconds) % NodaConstants.MillisecondsPerMinute) / NodaConstants.MillisecondsPerSecond; } }
-
-        /// <summary>
-        /// Gets the fractional seconds of the offset i.e. the milliseconds of the second. This is always a positive value.
-        /// </summary>
-        public int FractionalSeconds { get { return Math.Abs(milliseconds) % NodaConstants.MillisecondsPerSecond; } }
-
-        /// <summary>
         /// Gets the total number of milliseconds in the offset.
         /// </summary>
         public int TotalMilliseconds { get { return milliseconds; } }
