@@ -25,7 +25,7 @@ namespace NodaTime.Test
         [Test]
         public void IEquatableEquals_ToSelf_IsTrue()
         {
-            Assert.True(Instant.UnixEpoch.Equals(Instant.UnixEpoch), "epoch == epoch (same object)");
+            Assert.True(NodaConstants.UnixEpoch.Equals(NodaConstants.UnixEpoch), "epoch == epoch (same object)");
         }
 
         [Test]
@@ -321,9 +321,9 @@ namespace NodaTime.Test
         [Test]
         public void OperatorPlusDuration_Zero_IsNeutralElement()
         {
-            Assert.AreEqual(Instant.UnixEpoch, Instant.UnixEpoch + Duration.Zero, "UnixEpoch + Duration.Zero");
+            Assert.AreEqual(NodaConstants.UnixEpoch, NodaConstants.UnixEpoch + Duration.Zero, "UnixEpoch + Duration.Zero");
             Assert.AreEqual(one, one + Duration.Zero, "Instant(1) + Duration.Zero");
-            Assert.AreEqual(one, Instant.UnixEpoch + Duration.Epsilon, "UnixEpoch + Duration.Epsilon");
+            Assert.AreEqual(one, NodaConstants.UnixEpoch + Duration.Epsilon, "UnixEpoch + Duration.Epsilon");
         }
 
         [Test]
@@ -346,9 +346,9 @@ namespace NodaTime.Test
         [Test]
         public void OperatorPlusOffset_Zero_IsNeutralElement()
         {
-            Assert.AreEqual(LocalInstant.LocalUnixEpoch, Instant.UnixEpoch.Plus(Offset.Zero), "UnixEpoch + Offset.Zero");
+            Assert.AreEqual(LocalInstant.LocalUnixEpoch, NodaConstants.UnixEpoch.Plus(Offset.Zero), "UnixEpoch + Offset.Zero");
             Assert.AreEqual(new LocalInstant(1L), one.Plus(Offset.Zero), "Instant(1) + Offset.Zero");
-            Assert.AreEqual(new LocalInstant(NodaConstants.TicksPerHour), Instant.UnixEpoch.Plus(offsetOneHour), "UnixEpoch + offsetOneHour");
+            Assert.AreEqual(new LocalInstant(NodaConstants.TicksPerHour), NodaConstants.UnixEpoch.Plus(offsetOneHour), "UnixEpoch + offsetOneHour");
         }
         #endregion
 
@@ -383,9 +383,9 @@ namespace NodaTime.Test
         [Test]
         public void OperatorMinusInstant_UnixEpoch_IsNeutralElement()
         {
-            Assert.AreEqual(0L, (Instant.UnixEpoch - Instant.UnixEpoch).Ticks, "0 - 0");
-            Assert.AreEqual(1L, (one - Instant.UnixEpoch).Ticks, "1 - 0");
-            Assert.AreEqual(-1L, (Instant.UnixEpoch - one).Ticks, "0 - 1");
+            Assert.AreEqual(0L, (NodaConstants.UnixEpoch - NodaConstants.UnixEpoch).Ticks, "0 - 0");
+            Assert.AreEqual(1L, (one - NodaConstants.UnixEpoch).Ticks, "1 - 0");
+            Assert.AreEqual(-1L, (NodaConstants.UnixEpoch - one).Ticks, "0 - 1");
         }
 
         // Smoke tests for methods which simply delegate to the - operator.

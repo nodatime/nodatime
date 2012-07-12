@@ -53,11 +53,6 @@ namespace NodaTime
         internal const string EndOfTimeLabel = "EOT";
 
         /// <summary>
-        /// The instant at the Unix epoch of midnight 1st January 1970 UTC.
-        /// </summary>
-        public static readonly Instant UnixEpoch = new Instant(0);
-
-        /// <summary>
         /// Represents the smallest possible <see cref="Instant"/>.
         /// </summary>
         /// <remarks>
@@ -94,6 +89,9 @@ namespace NodaTime
         /// <summary>
         /// The number of ticks since the Unix epoch. Negative values represent instants before the Unix epoch.
         /// </summary>
+        /// <remarks>
+        /// A tick is equal to 100 nanoseconds. There are 10,000 ticks in a millisecond.
+        /// </remarks>
         public long Ticks { get { return ticks; } }
 
         #region IComparable<Instant> and IComparable Members
@@ -180,6 +178,16 @@ namespace NodaTime
             return Ticks.GetHashCode();
         }
         #endregion  // Object overrides
+
+        /// <summary>
+        /// Returns a new value of this instant with the given number of ticks added to it.
+        /// </summary>
+        /// <param name="ticksToAdd">The ticks to add to this instant to create the return value.</param>
+        /// <returns>The result of adding the given number of ticks to this instant.</returns>
+        public Instant PlusTicks(long ticksToAdd)
+        {
+            return new Instant(this.ticks + ticksToAdd);
+        }
 
         #region Operators
         /// <summary>
@@ -365,12 +373,13 @@ namespace NodaTime
         /// and time, but this method is useful in some situations where an <see cref="Instant" /> is
         /// required, such as time zone testing.
         /// </summary>
-        /// <param name="year">Year of the instant to return.</param>
-        /// <param name="monthOfYear">Month of year of the instant to return.</param>
-        /// <param name="dayOfMonth">Day of month of the instant to return.</param>
-        /// <param name="hourOfDay">Hour of day of the instant to return.</param>
-        /// <param name="minuteOfHour">Minute of hour of the instant to return.</param>
-        /// <returns>The instant representing the given date and time in UTC and the ISO calendar.</returns>
+        /// <param name="year">The year. This is the "absolute year",
+        /// so a value of 0 means 1 BC, for example.</param>
+        /// <param name="monthOfYear">The month of year.</param>
+        /// <param name="dayOfMonth">The day of month.</param>
+        /// <param name="hourOfDay">The hour.</param>
+        /// <param name="minuteOfHour">The minute.</param>
+        /// <returns>An <see cref="Instant"/> value representing the given date and time in UTC and the ISO calendar.</returns>
         public static Instant FromUtc(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour)
         {
             var local = CalendarSystem.Iso.GetLocalInstant(year, monthOfYear, dayOfMonth, hourOfDay, minuteOfHour);
@@ -384,13 +393,14 @@ namespace NodaTime
         /// to represent a date and time, but this method is useful in some 
         /// situations where an Instant is required, such as time zone testing.
         /// </summary>
-        /// <param name="year">Year of the instant to return.</param>
-        /// <param name="monthOfYear">Month of year of the instant to return.</param>
-        /// <param name="dayOfMonth">Day of month of the instant to return.</param>
-        /// <param name="hourOfDay">Hour of day of the instant to return.</param>
-        /// <param name="minuteOfHour">Minute of hour of the instant to return.</param>
-        /// <param name="secondOfMinute">Second of minute of the instant to return.</param>
-        /// <returns>The instant representing the given date and time in UTC and the ISO calendar.</returns>
+        /// <param name="year">The year. This is the "absolute year",
+        /// so a value of 0 means 1 BC, for example.</param>
+        /// <param name="monthOfYear">The month of year.</param>
+        /// <param name="dayOfMonth">The day of month.</param>
+        /// <param name="hourOfDay">The hour.</param>
+        /// <param name="minuteOfHour">The minute.</param>
+        /// <param name="secondOfMinute">The second.</param>
+        /// <returns>An <see cref="Instant"/> value representing the given date and time in UTC and the ISO calendar.</returns>
         public static Instant FromUtc(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour, int secondOfMinute)
         {
             var local = CalendarSystem.Iso.GetLocalInstant(year, monthOfYear, dayOfMonth, hourOfDay, minuteOfHour, secondOfMinute);
@@ -622,7 +632,7 @@ namespace NodaTime
         /// <returns>A <see cref="DateTime"/> representing the same instant in time as this value, with a kind of "universal".</returns>
         public DateTime ToDateTimeUtc()
         {
-            return new DateTime(ticks + NodaConstants.DateTimeEpochTicks, DateTimeKind.Utc);
+            return new DateTime((this - NodaConstants.BclEpoch).Ticks, DateTimeKind.Utc);
         }
 
         /// <summary>
@@ -631,7 +641,7 @@ namespace NodaTime
         /// <returns>A <see cref="DateTimeOffset"/> representing the same instant in time as this value.</returns>
         public DateTimeOffset ToDateTimeOffset()
         {
-            return new DateTimeOffset(ticks + NodaConstants.DateTimeEpochTicks, TimeSpan.Zero);
+            return new DateTimeOffset((this - NodaConstants.BclEpoch).Ticks, TimeSpan.Zero);
         }
 
         /// <summary>
@@ -642,7 +652,7 @@ namespace NodaTime
         /// <param name="dateTimeOffset">Date and time value with an offset.</param>
         public static Instant FromDateTimeOffset(DateTimeOffset dateTimeOffset)
         {
-            return new Instant(dateTimeOffset.Ticks - dateTimeOffset.Offset.Ticks - NodaConstants.DateTimeEpochTicks);
+            return NodaConstants.BclEpoch.PlusTicks(dateTimeOffset.Ticks - dateTimeOffset.Offset.Ticks);
         }
 
         /// <summary>
@@ -655,7 +665,7 @@ namespace NodaTime
         public static Instant FromDateTimeUtc(DateTime dateTime)
         {
             Preconditions.CheckArgument(dateTime.Kind == DateTimeKind.Utc, "dateTime", "Invalid DateTime.Kind for Instant.FromDateTimeUtc");
-            return new Instant(dateTime.Ticks - NodaConstants.DateTimeEpochTicks);
+            return NodaConstants.BclEpoch.PlusTicks(dateTime.Ticks);
         }
 
         /// <summary>

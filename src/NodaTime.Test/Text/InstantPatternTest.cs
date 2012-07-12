@@ -68,7 +68,7 @@ namespace NodaTime.Test.Text
         {
             protected override Instant DefaultTemplate
             {
-                get { return Instant.UnixEpoch; }
+                get { return NodaConstants.UnixEpoch; }
             }
 
             public Data(Instant value)
@@ -82,7 +82,7 @@ namespace NodaTime.Test.Text
             }
 
             public Data()
-                : this(Instant.UnixEpoch)
+                : this(NodaConstants.UnixEpoch)
             {
             }
 

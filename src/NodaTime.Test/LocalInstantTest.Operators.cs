@@ -392,7 +392,7 @@ namespace NodaTime.Test
         [Test]
         public void OperatorMinusOffset_Zero_IsNeutralElement()
         {
-            Assert.AreEqual(Instant.UnixEpoch, LocalInstant.LocalUnixEpoch.Minus(Offset.Zero), "LocalUnixEpoch - Offset.Zero");
+            Assert.AreEqual(NodaConstants.UnixEpoch, LocalInstant.LocalUnixEpoch.Minus(Offset.Zero), "LocalUnixEpoch - Offset.Zero");
             Assert.AreEqual(new Instant(1L), one.Minus(Offset.Zero), "LocalInstant(1) - Offset.Zero");
             Assert.AreEqual(new Instant(-NodaConstants.TicksPerHour), LocalInstant.LocalUnixEpoch.Minus(offsetOneHour), "LocalUnixEpoch - offsetOneHour");
         }

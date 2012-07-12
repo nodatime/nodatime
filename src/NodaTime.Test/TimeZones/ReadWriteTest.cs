@@ -77,7 +77,7 @@ namespace NodaTime.Test.TimeZones
             tester(3575231999999999L);
             tester(Instant.MinValue.Ticks);
             tester(Instant.MaxValue.Ticks);
-            tester(Instant.UnixEpoch.Ticks);
+            tester(NodaConstants.UnixEpoch.Ticks);
             for (long i = DateTimeZoneCompressionWriter.MinHalfHours; i <= DateTimeZoneCompressionWriter.MaxHalfHours; i++)
             {
                 long value = i * 30 * NodaConstants.TicksPerMinute;

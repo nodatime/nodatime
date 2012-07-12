@@ -55,7 +55,7 @@ namespace NodaTime.Test
             TestHelper.TestEqualsStruct(
                 new Interval(SampleStart, SampleEnd),
                 new Interval(SampleStart, SampleEnd),
-                new Interval(Instant.UnixEpoch, SampleEnd));
+                new Interval(NodaConstants.UnixEpoch, SampleEnd));
         }
 
         [Test]
@@ -64,7 +64,7 @@ namespace NodaTime.Test
             TestHelper.TestOperatorEquality(
                 new Interval(SampleStart, SampleEnd),
                 new Interval(SampleStart, SampleEnd),
-                new Interval(Instant.UnixEpoch, SampleEnd));
+                new Interval(NodaConstants.UnixEpoch, SampleEnd));
         }
 
         [Test]
