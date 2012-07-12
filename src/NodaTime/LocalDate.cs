@@ -361,11 +361,15 @@ namespace NodaTime
         }
 
         /// <summary>
-        /// Indicates whether this date is earlier, later or the same as another one. This is purely
-        /// done in terms of the local instant represented; the calendar system is ignored. This can lead
-        /// to surprising results - for example, 1945 in the ISO calendar corresponds to around 1364
-        /// in the Islamic calendar, so an Islamic date in year 1400 is "after" a date in 1945 in the ISO calendar.
+        /// Indicates whether this date is earlier, later or the same as another one.
         /// </summary>
+        /// <remarks>
+        /// The comparison is performed in terms of a calendar-independent notion of date;
+        /// the calendar systems of both LocalDate values are ignored. When both values use the same calendar,
+        /// this is absolutely natural. However, when comparing a value in one calendar with a value in another,
+        /// this can lead to surprising results. For example, 1945 in the ISO calendar corresponds to around 1364
+        /// in the Islamic calendar, so an Islamic date in year 1400 is "after" a date in 1945 in the ISO calendar.
+        /// </remarks>
         /// <param name="other">The other date to compare this one with</param>
         /// <returns>A value less than zero if this date is earlier than <paramref name="other"/>;
         /// zero if this date is the same as <paramref name="other"/>; a value greater than zero if this date is
