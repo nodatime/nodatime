@@ -126,9 +126,6 @@
   <data name="Eras_BeforeCommon" xml:space="preserve">
     <value>B.C.|B.C.E.|BC|BCE</value>
   </data>
-  <data name="Eras_Buddhist" xml:space="preserve">
-    <value>B.E.|BE</value>
-  </data>
   <data name="Eras_Common" xml:space="preserve">
     <value>A.D.|AD|C.E.|CE</value>
   </data>

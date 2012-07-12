@@ -149,8 +149,11 @@ the types.
 Note that I haven't shown *every* possible option here - in particular
 you can often use the constructor for the target type as an
 alternative to calling a method on the source type, and all the
-operators have method equivalents.
+operators have method equivalents. (I also haven't highlighted the `OffsetDateTime` conversions,
+as they're generally very straightforward.)
 
 Most of these are pretty simple, but a few are worth calling out
 specifically. The biggest "gotcha" is converting `LocalDateTime` to
-`ZonedDateTime` - it has some corner cases you need to consider.
+`ZonedDateTime` - it has some corner cases you need to consider. See the ["times zones" section of
+the core concepts guide](concepts.html#time-zones) and the [`DateTimeZone`](noda-type://NodaTime.DateTimeZone) documentation
+for more information.

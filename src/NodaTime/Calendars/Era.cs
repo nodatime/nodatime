@@ -44,11 +44,6 @@ namespace NodaTime.Calendars
         public static readonly Era AnnoMartyrm = new Era("AM", "Eras_AnnoMartyrum"); // AM
 
         /// <summary>
-        /// Sole era used by the Buddhist calendar.
-        /// </summary>
-        public static readonly Era Buddhist = new Era("BE", "Eras_Buddhist"); // BE
-
-        /// <summary>
         /// The "Anno Hegira" era. This is the sole era used by the Hijri (Islamic) calendar.
         /// </summary>
         public static readonly Era AnnoHegirae = new Era("EH", "Eras_AnnoHegirae"); // AH
