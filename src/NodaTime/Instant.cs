@@ -674,9 +674,10 @@ namespace NodaTime
         /// Returns the <see cref="ZonedDateTime"/> representing the same point in time as this instant, in the
         /// specified time zone and ISO-8601 calendar.
         /// </summary>
-        /// <param name="zone">The time zone in which to represent this instant. Must not be null.</param>
+        /// <param name="zone">The time zone in which to represent this instant.</param>
         /// <returns>A <see cref="ZonedDateTime"/> for the same instant, in the given time zone
         /// and the ISO-8601 calendar</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="zone"/> is null.</exception>
         public ZonedDateTime InZone(DateTimeZone zone)
         {
             Preconditions.CheckNotNull(zone, "zone");
@@ -687,10 +688,11 @@ namespace NodaTime
         /// Returns the <see cref="ZonedDateTime"/> representing the same point in time as this instant, in the
         /// specified time zone and calendar system.
         /// </summary>
-        /// <param name="zone">The time zone in which to represent this instant. Must not be null.</param>
-        /// <param name="calendar">The calendar system in which to represent this instant. Must not be null.</param>
+        /// <param name="zone">The time zone in which to represent this instant.</param>
+        /// <param name="calendar">The calendar system in which to represent this instant.</param>
         /// <returns>A <see cref="ZonedDateTime"/> for the same instant, in the given time zone
         /// and calendar</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="zone"/> or <paramref name="calendar"/> is null.</exception>
         public ZonedDateTime InZone(DateTimeZone zone, CalendarSystem calendar)
         {
             Preconditions.CheckNotNull(zone, "zone");

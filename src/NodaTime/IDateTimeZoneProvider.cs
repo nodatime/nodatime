@@ -86,9 +86,10 @@ namespace NodaTime
         /// return instances that are equal to those returned by <see cref="DateTimeZone.ForOffset"/>.
         /// </para>
         /// </remarks>
-        /// <param name="id">The time zone ID to find. Must not be null.</param>
-        /// <returns>The <see cref="DateTimeZone" /> for the given ID or <c>null</c> if the provider does not support
+        /// <param name="id">The time zone ID to find.</param>
+        /// <returns>The <see cref="DateTimeZone" /> for the given ID or null if the provider does not support
         /// the given ID.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="id"/> is null.</exception>
         DateTimeZone GetZoneOrNull(string id);
 
         /// <summary>
@@ -113,9 +114,10 @@ namespace NodaTime
         /// return instances that are equal to those returned by <see cref="DateTimeZone.ForOffset"/>.
         /// </para>
         /// </remarks>
-        /// <param name="id">The time zone id to find. Must not be null.</param>
+        /// <param name="id">The time zone id to find.</param>
         /// <returns>The <see cref="DateTimeZone" /> for the given ID.</returns>
         /// <exception cref="TimeZoneNotFoundException">This provider does not support the given ID.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="id"/> is null.</exception>
         DateTimeZone this[string id] { get; }
     }
 }

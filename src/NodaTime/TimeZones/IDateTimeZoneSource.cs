@@ -50,8 +50,8 @@ namespace NodaTime.TimeZones
         /// "UTC+/-Offset"), but there is no requirement they be included.
         /// </para>
         /// </remarks>
-        /// <returns>The <see cref="IEnumerable{T}"/> of ids. It may be empty, but must not be <see langword="null"/>, 
-        /// and must not contain any elements which are <see langword="null"/>.</returns>
+        /// <returns>The <see cref="IEnumerable{T}"/> of ids. It may be empty, but must not be null, 
+        /// and must not contain any elements which are null.</returns>
         IEnumerable<string> GetIds();
 
         /// <summary>
@@ -88,7 +88,7 @@ namespace NodaTime.TimeZones
         /// <param name="id">The ID of the time zone to return. This must be one of the IDs
         /// returned by <see cref="GetIds"/>.</param>
         /// <returns>The <see cref="DateTimeZone"/> for the given ID.</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="id"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="id"/> is null.</exception>
         /// <exception cref="ArgumentException"><paramref name="id"/> is not supported by this source.</exception>
         DateTimeZone ForId(string id);
 
@@ -96,7 +96,7 @@ namespace NodaTime.TimeZones
         /// Returns this source's corresponding ID for the given BCL time zone.
         /// </summary>
         /// <returns>
-        /// The ID for the given system time zone for this source, or <see langword="null"/> if the system time
+        /// The ID for the given system time zone for this source, or null if the system time
         /// zone has no mapping in this source.
         /// </returns>
         string MapTimeZoneId(TimeZoneInfo timeZone);

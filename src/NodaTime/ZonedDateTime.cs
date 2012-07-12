@@ -70,7 +70,7 @@ namespace NodaTime
         /// <param name="calendar">The calendar system.</param>
         /// <param name="instant">The instant.</param>
         /// <param name="zone">The time zone.</param>
-        /// <exception cref="ArgumentNullException">Thrown if the <paramref name="calendar"/> or <paramref name="zone"/> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="calendar"/> or <paramref name="zone"/> is null.</exception>
         public ZonedDateTime(Instant instant, DateTimeZone zone, CalendarSystem calendar)
         {
             Preconditions.CheckNotNull(zone, "zone");
@@ -248,8 +248,9 @@ namespace NodaTime
         /// Creates a new <see cref="ZonedDateTime"/> representing the same instant in time, in the
         /// same calendar but a different time zone.
         /// </summary>
-        /// <param name="targetZone">The target time zone to convert to. Must not be null.</param>
+        /// <param name="targetZone">The target time zone to convert to.</param>
         /// <returns>A new value in the target time zone.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="targetZone"/> is null.</exception>
         public ZonedDateTime WithZone(DateTimeZone targetZone)
         {
             Preconditions.CheckNotNull(targetZone, "targetZone");

@@ -106,7 +106,7 @@ namespace NodaTime.Globalization
         ///   Gets or sets the noda format info of this object.
         /// </summary>
         /// <value>
-        ///   The <see cref="NodaFormatInfo" /> value. This will never be <c>null</c>.
+        ///   The <see cref="NodaFormatInfo" /> value. This will never be null.
         /// </value>
         public NodaFormatInfo NodaFormatInfo
         {

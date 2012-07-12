@@ -234,8 +234,9 @@ namespace NodaTime.Globalization
         /// changed indepedently.
         /// </summary>
         /// <value>
-        /// The <see cref="NumberFormatInfo" />. May not be <c>null</c>.
+        /// The <see cref="NumberFormatInfo" />.
         /// </value>
+        /// <exception cref="ArgumentNullException"><paramref name="value"/> is null.</exception>
         public NumberFormatInfo NumberFormat
         {            
             get { return numberFormat; }
@@ -246,8 +247,9 @@ namespace NodaTime.Globalization
         /// Gets or sets the date time format.
         /// </summary>
         /// <value>
-        /// The <see cref="DateTimeFormatInfo" />. May not be <c>null</c>.
+        /// The <see cref="DateTimeFormatInfo" />.
         /// </value>
+        /// <exception cref="ArgumentNullException"><paramref name="value"/> is null.</exception>
         public DateTimeFormatInfo DateTimeFormat
         {
             get { return dateTimeFormat; }            
@@ -300,7 +302,7 @@ namespace NodaTime.Globalization
         /// <param name="era">The era to find the names of.</param>
         /// <returns>A read-only list of names for the given era, or an empty list if
         /// the era is not known in this culture.</returns>
-        /// <exception cref="ArgumentNullException">If <paramref name="era"/> is null.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="era"/> is null.</exception>
         public IList<string> GetEraNames(Era era)
         {
             Preconditions.CheckNotNull(era, "era");
@@ -335,7 +337,7 @@ namespace NodaTime.Globalization
         /// </summary>
         /// <param name="era">The era to find the primary name of.</param>
         /// <returns>The primary name for the given era, or an empty string if the era name is not known.</returns>
-        /// <exception cref="ArgumentNullException">If <paramref name="era"/> is null.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="era"/> is null.</exception>
         public string GetEraPrimaryName(Era era)
         {
             Preconditions.CheckNotNull(era, "era");
@@ -542,7 +544,7 @@ namespace NodaTime.Globalization
         ///   Gets the <see cref="NodaFormatInfo" /> for the given <see cref="CultureInfo" />.
         /// </summary>
         /// <param name="cultureInfo">The culture info.</param>
-        /// <returns>The <see cref="NodaFormatInfo" />. Will next be <c>null</c>.</returns>
+        /// <returns>The <see cref="NodaFormatInfo" />. Will never be null.</returns>
         // TODO(Post-V1): Consider making this private.
         internal static NodaFormatInfo GetFormatInfo(CultureInfo cultureInfo)
         {
@@ -570,11 +572,11 @@ namespace NodaTime.Globalization
 
         /// <summary>
         ///   Gets the <see cref="NodaFormatInfo" /> for the given <see cref="IFormatProvider" />. If the
-        ///   format provider is <c>null</c> or if it does not provide a <see cref="NodaFormatInfo" />
+        ///   format provider is null or if it does not provide a <see cref="NodaFormatInfo" />
         ///   object then the format object for the current thread is returned.
         /// </summary>
         /// <param name="provider">The <see cref="IFormatProvider" />.</param>
-        /// <returns>The <see cref="NodaFormatInfo" />. Will next be <c>null.</c></returns>
+        /// <returns>The <see cref="NodaFormatInfo" />. Will never be null.</returns>
         public static NodaFormatInfo GetInstance(IFormatProvider provider)
         {
             if (provider != null)
