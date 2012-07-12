@@ -39,25 +39,25 @@ namespace NodaTime.Test
         /// Local midnight at the start of the transition (June 1st) becomes 1am.
         /// </summary>
         private static readonly DateTimeZone TransitionForwardAtMidnightZone =
-            new SingleTransitionZone(Instant.FromUtc(2000, 6, 1, 2, 0), Offset.FromHours(-2), Offset.FromHours(-1));
+            new SingleTransitionDateTimeZone(Instant.FromUtc(2000, 6, 1, 2, 0), Offset.FromHours(-2), Offset.FromHours(-1));
 
         /// <summary>
         /// Local 1am at the start of the transition (June 1st) becomes midnight.
         /// </summary>
         private static readonly DateTimeZone TransitionBackwardToMidnightZone =
-            new SingleTransitionZone(Instant.FromUtc(2000, 6, 1, 3, 0), Offset.FromHours(-2), Offset.FromHours(-3));
+            new SingleTransitionDateTimeZone(Instant.FromUtc(2000, 6, 1, 3, 0), Offset.FromHours(-2), Offset.FromHours(-3));
 
         /// <summary>
         /// Local 11.20pm at the start of the transition (May 30th) becomes 12.20am of June 1st.
         /// </summary>
         private static readonly DateTimeZone TransitionForwardBeforeMidnightZone =
-            new SingleTransitionZone(Instant.FromUtc(2000, 6, 1, 1, 20), Offset.FromHours(-2), Offset.FromHours(-1));
+            new SingleTransitionDateTimeZone(Instant.FromUtc(2000, 6, 1, 1, 20), Offset.FromHours(-2), Offset.FromHours(-1));
 
         /// <summary>
         /// Local 12.20am at the start of the transition (June 1st) becomes 11.20pm of the previous day.
         /// </summary>
         private static readonly DateTimeZone TransitionBackwardAfterMidnightZone =
-            new SingleTransitionZone(Instant.FromUtc(2000, 6, 1, 2, 20), Offset.FromHours(-2), Offset.FromHours(-3));
+            new SingleTransitionDateTimeZone(Instant.FromUtc(2000, 6, 1, 2, 20), Offset.FromHours(-2), Offset.FromHours(-3));
 
         private static readonly LocalDate TransitionDate = new LocalDate(2000, 6, 1);
 

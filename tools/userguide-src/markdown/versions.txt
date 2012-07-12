@@ -21,6 +21,7 @@ more details.
 	- Removed various `DateTimeZone` static methods, in favour of always going via an `IDateTimeZoneProvider` implementation
 	- `DateTimeZoneProviders` added with static properties to access TZDB, BCL and default (currently TZDB) providers
 	- `DateTimeZoneCache` now public and implements `IDateTimeZoneProvider`
+	- `DateTimeZone` implementations must now provide equality comparisons
   - New core type: `OffsetDateTime` representing a local date/time and an offset from UTC, but not full time zone information
 - 1.0.0-beta1
   - Initial beta release

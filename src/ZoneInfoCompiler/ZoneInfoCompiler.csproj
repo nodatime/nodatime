@@ -198,7 +198,9 @@
   <ItemGroup>
     <Content Include="Data\2012c\Readme.txt" />
     <Content Include="Data\winmap\readme.txt" />
-    <Content Include="Data\winmap\windowsZones-21.xml" />
+    <Content Include="Data\winmap\windowsZones-21.xml">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
