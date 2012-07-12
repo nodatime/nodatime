@@ -32,7 +32,7 @@ namespace NodaTime.Serialization.Test.JsonNet
         [Test]
         public void OffsetConverter_Serialize()
         {
-            var offset = Offset.Create(5, 30, 0, 0);
+            var offset = Offset.FromHoursAndMinutes(5, 30);
 
             var json = JsonConvert.SerializeObject(offset, Formatting.None, NodaConverters.OffsetConverter);
 
@@ -47,7 +47,7 @@ namespace NodaTime.Serialization.Test.JsonNet
 
             var offset = JsonConvert.DeserializeObject<Offset>(json, NodaConverters.OffsetConverter);
 
-            var expectedOffset = Offset.Create(5, 30, 0, 0);
+            var expectedOffset = Offset.FromHoursAndMinutes(5, 30);
             Assert.AreEqual(expectedOffset, offset);
         }
 
