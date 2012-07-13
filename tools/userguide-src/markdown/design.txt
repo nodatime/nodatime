@@ -41,7 +41,7 @@ to sacrifice *public* elegance for this.
 - **We want your code to be robust in the face of new versions.**  
 Noda Time follows [Semantic Versioning][2] so you should be able to
 spot incompatible versions - but additionally, by limiting the
-amount of "hooks" we provide, we've reduced the coupling between
+amount of "hooks" we provide, we've reduced the opportunities for coupling between
 your code and ours.
 
 - **We want your code using Noda Time to be testable.**  
@@ -80,10 +80,11 @@ LocalDateTime()` or `default(LocalDateTime)`) is *not* a useful
 value. This is unfortunate, but hard to avoid.
 
 - All the value types and almost all the reference types are
-immutable and thread-safe. We expect objects like calendars, time
+immutable and [thread-safe](threading.html). We expect objects like calendars, time
 zones, and patterns for formatting and parsing text to be reused
 freely between many threads. Occasionally there's hidden mutability
-in terms of caches, but this should not be visible to you, the user.
+in terms of caches, but this should not affect you, the user. We make sure it
+all stays thread-safe for you.
 
 - Almost all types are sealed, and there actually aren't very many
 interfaces. Even the abstract classes often have internal abstract

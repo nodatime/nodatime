@@ -155,11 +155,14 @@ the types.</p>
 <p>Note that I haven't shown <em>every</em> possible option here - in particular
 you can often use the constructor for the target type as an
 alternative to calling a method on the source type, and all the
-operators have method equivalents.</p>
+operators have method equivalents. (I also haven't highlighted the <code>OffsetDateTime</code> conversions,
+as they're generally very straightforward.)</p>
 
 <p>Most of these are pretty simple, but a few are worth calling out
 specifically. The biggest "gotcha" is converting <code>LocalDateTime</code> to
-<code>ZonedDateTime</code> - it has some corner cases you need to consider.</p>
+<code>ZonedDateTime</code> - it has some corner cases you need to consider. See the <a href="concepts.html#time-zones">"times zones" section of
+the core concepts guide</a> and the <a href="../api/html/T_NodaTime_DateTimeZone.htm"><code>DateTimeZone</code></a> documentation
+for more information.</p>
 
   </body>
 </html>

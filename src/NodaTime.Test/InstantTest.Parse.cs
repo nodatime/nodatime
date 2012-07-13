@@ -44,7 +44,7 @@ namespace NodaTime.Test
         public void TestParse_G()
         {
             var actual = Instant.Parse("1970-01-01T00:00:00Z");
-            Assert.AreEqual(Instant.UnixEpoch, actual);
+            Assert.AreEqual(NodaConstants.UnixEpoch, actual);
         }
 
         [Test, Category("Formatting"), Category("Parse")]
@@ -95,7 +95,7 @@ namespace NodaTime.Test
         {
             Instant result;
             Assert.IsTrue(Instant.TryParseExact("1970-01-01T00:00:00Z", "g", null, out result));
-            Assert.AreEqual(Instant.UnixEpoch, result);
+            Assert.AreEqual(NodaConstants.UnixEpoch, result);
         }
 
         [Test, Category("Formatting"), Category("Parse")]
@@ -135,7 +135,7 @@ namespace NodaTime.Test
         {
             Instant result;
             Assert.IsTrue(Instant.TryParseExact("1970-01-01T00:00:00Z", new[] { "n", "g" }, null, out result));
-            Assert.AreEqual(Instant.UnixEpoch, result);
+            Assert.AreEqual(NodaConstants.UnixEpoch, result);
         }
 
         [Test, Category("Formatting"), Category("Parse")]
@@ -208,7 +208,7 @@ namespace NodaTime.Test
         {
             Instant result;
             Assert.IsTrue(Instant.TryParse("1970-01-01T00:00:00Z", null, out result));
-            Assert.AreEqual(Instant.UnixEpoch, result);
+            Assert.AreEqual(NodaConstants.UnixEpoch, result);
         }
 
         [Test, Category("Formatting"), Category("Parse")]

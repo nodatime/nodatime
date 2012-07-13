@@ -135,11 +135,11 @@ namespace NodaTime.TimeZones
         }
 
         /// <summary>
-        /// Reads the specified reader.
+        /// Reads a fixed time zone from the specified reader.
         /// </summary>
         /// <param name="reader">The reader.</param>
         /// <param name="id">The id.</param>
-        /// <returns></returns>
+        /// <returns>The fixed time zone.</returns>
         public static DateTimeZone Read(DateTimeZoneReader reader, string id)
         {
             Preconditions.CheckNotNull(reader, "reader");

@@ -25,8 +25,7 @@ namespace NodaTime
 {
     /// <summary>
     /// Represents a period of time expressed in human chronological terms: hours, days,
-    /// weeks, months and so on. All implementations in Noda Time are immutable, and return fields
-    /// in descending size order: hours before minutes, for example.
+    /// weeks, months and so on.
     /// </summary>
     /// <remarks>
     /// Periods operate on calendar-related types such as
@@ -566,7 +565,10 @@ namespace NodaTime
         }
 
         /// <summary>
-        /// Returns a normalized version of this period. Months and years are unchanged
+        /// Returns a normalized version of this period.
+        /// </summary>
+        /// <remarks>
+        /// Months and years are unchanged
         /// (as they can vary in length), but weeks are multiplied by 7 and added to the
         /// Days property, and all time fields are normalized to their natural range
         /// (where ticks are "within a millisecond"), adding to larger property where
@@ -574,8 +576,8 @@ namespace NodaTime
         /// and 1 hour. Units are also normalized - only non-zero values have their
         /// units retained. Aside from months and years, either all the properties
         /// end up negative, or they all end up positive.
-        /// </summary>
-        /// <returns></returns>
+        /// </remarks>
+        /// <returns>The normalized period.</returns>
         public Period Normalize()
         {
             // TODO(Post-V1): Consider improving the efficiency of this: return "this" when it's already normalized.

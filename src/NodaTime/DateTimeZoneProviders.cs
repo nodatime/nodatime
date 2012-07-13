@@ -3,7 +3,7 @@
 namespace NodaTime
 {
     /// <summary>
-    /// Known NodaTime date/time zone providers.
+    /// Static access to date/time zone providers built into Noda Time. These are all thread-safe and caching.
     /// </summary>
     public static class DateTimeZoneProviders
     {
@@ -13,6 +13,9 @@ namespace NodaTime
         /// <summary>
         /// Gets the default time zone provider, which is initialized from resources within the NodaTime assembly.
         /// </summary>
+        /// <remarks>
+        /// Currently this returns the same value as the <see cref="Tzdb"/> property.
+        /// </remarks>
         public static IDateTimeZoneProvider Default { get { return Tzdb; } }
 
         /// <summary>

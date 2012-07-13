@@ -62,7 +62,6 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         /// </summary>
         /// <param name="fileList">The enumeration of <see cref="FileInfo" /> objects.</param>
         /// <param name="output">The destination <see cref="DirectoryInfo" /> object.</param>
-        /// <returns></returns>
         internal int Compile(string version, IEnumerable<FileInfo> fileList, ResourceOutput output)
         {
             var database = new TzdbDatabase(version);

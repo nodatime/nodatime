@@ -81,7 +81,7 @@ namespace NodaTime.Test.Globalization
         [Test]
         public void TestClonePatternParsersUncached()
         {
-            var offset = Offset.Create(5, 10, 0, 0);
+            var offset = TestObjects.CreatePositiveOffset(5, 10, 0, 0);
             var clone1 = NodaFormatInfo.InvariantInfo.Clone();
             clone1.OffsetPatternLong = "HH";
             var clone2 = clone1.Clone();

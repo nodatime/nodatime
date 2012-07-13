@@ -133,7 +133,7 @@ namespace NodaTime
         /// <returns>A fixed time zone with the given offset.</returns>
         public static DateTimeZone ForOffset(Offset offset)
         {
-            int millis = offset.TotalMilliseconds;
+            int millis = offset.Milliseconds;
             if (millis % FixedZoneCacheGranularityMilliseconds != 0)
             {
                 return new FixedDateTimeZone(offset);
@@ -157,8 +157,8 @@ namespace NodaTime
         {
             this.id = id;
             this.isFixed = isFixed;
-            this.minOffsetTicks = minOffset.TotalTicks;
-            this.maxOffsetTicks = maxOffset.TotalTicks;
+            this.minOffsetTicks = minOffset.Ticks;
+            this.maxOffsetTicks = maxOffset.Ticks;
         }
 
         /// <summary>

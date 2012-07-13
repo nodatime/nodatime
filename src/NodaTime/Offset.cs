@@ -30,15 +30,7 @@ namespace NodaTime
     /// UTC (e.g. for America).
     /// </summary>
     /// <remarks>
-    /// <para>
     /// Offsets are always strictly less than 24 hours (as either a positive or negative offset).
-    /// </para>
-    /// <para>
-    /// Internally, offsets are stored as an <see cref="int" /> number of milliseconds instead of
-    /// as ticks. This is because as a description of the offset of a time zone from UTC, there is
-    /// no offset of less than one second. Using milliseconds gives more than enough resolution and
-    /// allows us to save 4 bytes per Offset.
-    /// </para>
     /// </remarks>
     /// <threadsafety>This type is an immutable value type. See the thread safety section of the user guide for more information.</threadsafety>
     public struct Offset : IEquatable<Offset>, IComparable<Offset>, IFormattable, IComparable
@@ -77,47 +69,19 @@ namespace NodaTime
         }
 
         /// <summary>
-        ///   Gets a value indicating whether this instance is negative.
+        /// Gets the total number of milliseconds in the offset, which may be negative.
         /// </summary>
-        /// <value>
-        ///   <c>true</c> if this instance is negative; otherwise, <c>false</c>.
-        /// </value>
-        public bool IsNegative { get { return milliseconds < 0; } }
+        public int Milliseconds { get { return milliseconds; } }
 
         /// <summary>
-        ///   Gets the hours of the offset. This is always a positive value.
-        /// </summary>
-        public int Hours { get { return Math.Abs(milliseconds) / NodaConstants.MillisecondsPerHour; } }
-
-        /// <summary>
-        ///   Gets the minutes of the offset. This is always a positive value.
-        /// </summary>
-        public int Minutes { get { return (Math.Abs(milliseconds) % NodaConstants.MillisecondsPerHour) / NodaConstants.MillisecondsPerMinute; } }
-
-        /// <summary>
-        /// Gets the seconds of the offset. This is always a positive value.
-        /// </summary>
-        public int Seconds { get { return (Math.Abs(milliseconds) % NodaConstants.MillisecondsPerMinute) / NodaConstants.MillisecondsPerSecond; } }
-
-        /// <summary>
-        /// Gets the fractional seconds of the offset i.e. the milliseconds of the second. This is always a positive value.
-        /// </summary>
-        public int FractionalSeconds { get { return Math.Abs(milliseconds) % NodaConstants.MillisecondsPerSecond; } }
-
-        /// <summary>
-        /// Gets the total number of milliseconds in the offset.
-        /// </summary>
-        public int TotalMilliseconds { get { return milliseconds; } }
-
-        /// <summary>
-        /// Returns the number of ticks represented by this offset.
+        /// Returns the number of ticks represented by this offset, which may be negative.
         /// </summary>
         /// <remarks>
         /// Offsets are only accurate to millisecond precision; the number of milliseconds is simply multiplied
         /// by 10,000 to give the number of ticks.
         /// </remarks>
         /// <value>The number of ticks.</value>
-        public long TotalTicks { get { return TotalMilliseconds * NodaConstants.TicksPerMillisecond; } }
+        public long Ticks { get { return Milliseconds * NodaConstants.TicksPerMillisecond; } }
 
         /// <summary>
         /// Returns the greater offset of the given two, i.e. the one which will give a later local
@@ -151,7 +115,7 @@ namespace NodaTime
         /// <returns>A new <see cref="Offset" /> instance with a negated value.</returns>
         public static Offset operator -(Offset offset)
         {
-            return Offset.FromMilliseconds(-offset.TotalMilliseconds);
+            return Offset.FromMilliseconds(-offset.Milliseconds);
         }
 
         /// <summary>
@@ -186,7 +150,7 @@ namespace NodaTime
         /// <exception cref="ArgumentOutOfRangeException">The result of the operation is outside the range of Offset.</exception>
         public static Offset operator +(Offset left, Offset right)
         {
-            return Offset.FromMilliseconds(left.TotalMilliseconds + right.TotalMilliseconds);
+            return Offset.FromMilliseconds(left.Milliseconds + right.Milliseconds);
         }
 
         /// <summary>
@@ -223,7 +187,7 @@ namespace NodaTime
         /// <exception cref="ArgumentOutOfRangeException">The result of the operation is outside the range of Offset.</exception>
         public static Offset operator -(Offset minuend, Offset subtrahend)
         {
-            return Offset.FromMilliseconds(minuend.TotalMilliseconds - subtrahend.TotalMilliseconds);
+            return Offset.FromMilliseconds(minuend.Milliseconds - subtrahend.Milliseconds);
         }
 
         /// <summary>
@@ -346,7 +310,7 @@ namespace NodaTime
         /// </returns>
         public int CompareTo(Offset other)
         {
-            return TotalMilliseconds.CompareTo(other.TotalMilliseconds);
+            return Milliseconds.CompareTo(other.Milliseconds);
         }
 
         /// <summary>
@@ -382,7 +346,7 @@ namespace NodaTime
         /// </returns>
         public bool Equals(Offset other)
         {
-            return TotalMilliseconds == other.TotalMilliseconds;
+            return Milliseconds == other.Milliseconds;
         }
         #endregion
 
@@ -413,7 +377,7 @@ namespace NodaTime
         /// </returns>
         public override int GetHashCode()
         {
-            return TotalMilliseconds.GetHashCode();
+            return Milliseconds.GetHashCode();
         }
         #endregion  // Object overrides
 
@@ -588,7 +552,7 @@ namespace NodaTime
 
         #region Construction
         /// <summary>
-        ///   Returns the offset for the given milliseconds value.
+        /// Returns the offset for the given milliseconds value, which may be negative.
         /// </summary>
         /// <param name="milliseconds">The int milliseconds value.</param>
         /// <returns>The <see cref="Offset" /> for the given milliseconds value</returns>
@@ -599,7 +563,7 @@ namespace NodaTime
         }
 
         /// <summary>
-        /// Creates a new offset from the given number of ticks.
+        /// Creates a new offset from the given number of ticks, which may be negative.
         /// </summary>
         /// <remarks>
         /// Offsets are only accurate to millisecond precision; the given number of ticks is simply divided
@@ -614,7 +578,7 @@ namespace NodaTime
         }
 
         /// <summary>
-        /// Creates an offset with the specified number of hours.
+        /// Creates an offset with the specified number of hours, which may be negative.
         /// </summary>
         /// <param name="hours">The number of hours to represent in the new offset.</param>
         /// <returns>
@@ -627,8 +591,14 @@ namespace NodaTime
         }
 
         /// <summary>
-        /// Creates an offset with the specified number of hours and minutes
+        /// Creates an offset with the specified number of hours and minutes.
         /// </summary>
+        /// <remarks>
+        /// The result simply takes the hours and minutes and converts each component into milliseconds
+        /// separately. As a result, a negative offset should usually be obtained by making both arguments
+        /// negative. For example, to obtain "three hours and ten minutes behind UTC" you might call
+        /// <c>Offset.FromHoursAndMinutes(-3, -10)</c>.
+        /// </remarks>
         /// <param name="hours">The number of hours to represent in the new offset.</param>
         /// <param name="minutes">The number of minutes to represent in the new offset.</param>
         /// <returns>
@@ -638,49 +608,6 @@ namespace NodaTime
         public static Offset FromHoursAndMinutes(int hours, int minutes)
         {
             return new Offset(hours * NodaConstants.MillisecondsPerHour + minutes * NodaConstants.MillisecondsPerMinute);
-        }
-
-        /// <summary>
-        /// Creates an offset with the specified number of hours, minutes, seconds, and
-        /// milliseconds. This offset is always non-negative.
-        /// </summary>
-        /// <param name="hours">The number of hours, in the range [0, 24).</param>
-        /// <param name="minutes">The number of minutes, in the range [0, 60).</param>
-        /// <param name="seconds">The number of second, in the range [0, 60).</param>
-        /// <param name="fractionalSeconds">The number of milliseconds within the second,
-        /// in the range [0, 1000).</param>
-        /// <returns>A new <see cref="Offset"/> representing the given values.</returns>
-        /// <exception cref="ArgumentOutOfRangeException">The result of the operation is outside the range of Offset.</exception>
-        public static Offset Create(int hours, int minutes, int seconds, int fractionalSeconds)
-        {
-            return Create(hours, minutes, seconds, fractionalSeconds, false);
-        }
-
-        /// <summary>
-        /// Creates an offset from the given values, including a sign to indicate whether or not the returned
-        /// offset should be negative.
-        /// </summary>
-        /// <param name="hours">The number of hours, in the range [0, 24).</param>
-        /// <param name="minutes">The number of minutes, in the range [0, 60).</param>
-        /// <param name="seconds">The number of second, in the range [0, 60).</param>
-        /// <param name="fractionalSeconds">The number of milliseconds within the second,
-        /// in the range [0, 1000).</param>
-        /// <param name="negative">True if a negative offset should be created, false for a positive one.</param>
-        /// <returns>A new <see cref="Offset"/> representing the given values.</returns>
-        /// <exception cref="ArgumentOutOfRangeException">The result of the operation is outside the range of Offset.</exception>
-        public static Offset Create(int hours, int minutes, int seconds, int fractionalSeconds, bool negative)
-        {
-            Preconditions.CheckArgumentRange("hours", hours, 0, 23);
-            Preconditions.CheckArgumentRange("minutes", minutes, 0, 59);
-            Preconditions.CheckArgumentRange("seconds", seconds, 0, 59);
-            Preconditions.CheckArgumentRange("fractionalSeconds", fractionalSeconds, 0, 999);
-            int sign = negative ? -1 : 1;
-            int milliseconds = 0;
-            milliseconds += hours * NodaConstants.MillisecondsPerHour;
-            milliseconds += minutes * NodaConstants.MillisecondsPerMinute;
-            milliseconds += seconds * NodaConstants.MillisecondsPerSecond;
-            milliseconds += fractionalSeconds;
-            return Offset.FromMilliseconds(sign * milliseconds);
         }
         #endregion
 
@@ -704,7 +631,7 @@ namespace NodaTime
         internal static Offset FromTimeSpan(TimeSpan timeSpan)
         {
             long milliseconds = (long) timeSpan.TotalMilliseconds;
-            Preconditions.CheckArgumentRange("timeSpan", milliseconds, MinValue.TotalMilliseconds, MaxValue.TotalMilliseconds);
+            Preconditions.CheckArgumentRange("timeSpan", milliseconds, MinValue.Milliseconds, MaxValue.Milliseconds);
             return new Offset((int) milliseconds);
         }
         #endregion

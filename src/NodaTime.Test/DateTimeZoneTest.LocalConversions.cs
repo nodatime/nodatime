@@ -150,7 +150,7 @@ namespace NodaTime.Test
         private static void AssertOffset(int expectedHours, LocalDateTime localTime, DateTimeZone zone)
         {
             var zoned = zone.MapLocal(localTime).Single();
-            int actualHours = zoned.Offset.TotalMilliseconds / NodaConstants.MillisecondsPerHour;
+            int actualHours = zoned.Offset.Milliseconds / NodaConstants.MillisecondsPerHour;
             Assert.AreEqual(expectedHours, actualHours);
         }
 

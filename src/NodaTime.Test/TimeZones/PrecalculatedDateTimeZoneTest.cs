@@ -40,7 +40,7 @@ namespace NodaTime.Test.TimeZones
 
         // We don't actually want an interval from the beginning of time when we ask our composite time zone for an interval
         // - because that could give the wrong idea. So we clamp it at the end of the precalculated interval.
-        private static readonly ZoneInterval ClampedTailZoneInterval = TailZone.GetZoneInterval(Instant.UnixEpoch).WithStart(ThirdInterval.End);
+        private static readonly ZoneInterval ClampedTailZoneInterval = TailZone.GetZoneInterval(NodaConstants.UnixEpoch).WithStart(ThirdInterval.End);
 
         private static readonly PrecalculatedDateTimeZone TestZone =
             new PrecalculatedDateTimeZone("Test", new[] { FirstInterval, SecondInterval, ThirdInterval }, TailZone);

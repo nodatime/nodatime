@@ -43,7 +43,7 @@ The BCL-based API
 -----------------
 
 Each of the core Noda Time types ([`LocalDateTime`][4],
-[`Instant`][5] etc) provides (or will provide :) methods with the
+[`Instant`][5] etc) provides methods with the
 following signatures:
 
 **Formatting (instance methods):**
@@ -104,7 +104,7 @@ specifiers being available for some types but not others.
 - [LocalDateTime patterns](localdatetime-patterns.html)
 - [Period patterns](period-patterns.html)
 
-Note that at present, neither `ZonedDateTime` nor `OffsetDateTime` support
+Note that at present, `ZonedDateTime`, `OffsetDateTime` and `Duration` do not support
 any form of parsing or user-specified formatting.
 
 <a name="custom-patterns">Custom patterns</a>

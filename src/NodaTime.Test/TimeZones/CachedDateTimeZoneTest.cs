@@ -61,10 +61,10 @@ namespace NodaTime.Test.TimeZones
         public void GetZoneIntervalInstant_RepeatedCallsReturnSameObjectWithOthersInterspersed()
         {
             var actual = timeZone.GetZoneInterval(summer);
-            Assert.IsNotNull(timeZone.GetZoneInterval(Instant.UnixEpoch));
-            Assert.IsNotNull(timeZone.GetZoneInterval(Instant.UnixEpoch + Duration.FromStandardWeeks(2000)));
-            Assert.IsNotNull(timeZone.GetZoneInterval(Instant.UnixEpoch + Duration.FromStandardWeeks(3000)));
-            Assert.IsNotNull(timeZone.GetZoneInterval(Instant.UnixEpoch + Duration.FromStandardWeeks(4000)));
+            Assert.IsNotNull(timeZone.GetZoneInterval(NodaConstants.UnixEpoch));
+            Assert.IsNotNull(timeZone.GetZoneInterval(NodaConstants.UnixEpoch + Duration.FromStandardWeeks(2000)));
+            Assert.IsNotNull(timeZone.GetZoneInterval(NodaConstants.UnixEpoch + Duration.FromStandardWeeks(3000)));
+            Assert.IsNotNull(timeZone.GetZoneInterval(NodaConstants.UnixEpoch + Duration.FromStandardWeeks(4000)));
             var newPeriod = timeZone.GetZoneInterval(summer);
             Assert.AreSame(actual, newPeriod);
         }

@@ -47,6 +47,6 @@ namespace NodaTime
         /// Gets the current time as an <see cref="Instant"/>.
         /// </summary>
         /// <value>The current time in ticks as an <see cref="Instant"/>.</value>
-        public Instant Now { get { return new Instant(DateTime.UtcNow.Ticks - NodaConstants.DateTimeEpochTicks); } }
+        public Instant Now { get { return NodaConstants.BclEpoch.PlusTicks(DateTime.UtcNow.Ticks); } }
     }
 }
