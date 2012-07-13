@@ -21,7 +21,7 @@ namespace NodaTime.Calendars
 {
     /// <summary>
     /// <para>
-    /// The NodaTime.Calendar namespace contains types related to calendars beyond the
+    /// The NodaTime.Calendars namespace contains types related to calendars beyond the
     /// <see cref="CalendarSystem"/> type in the core NodaTime namespace.
     /// </para>
     /// </summary>
