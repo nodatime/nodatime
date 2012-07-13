@@ -179,7 +179,7 @@ namespace NodaTime
         /// <summary>
         /// Returns the offset from UTC.
         /// </summary>
-        public object Offset { get { return offset; } }
+        public Offset Offset { get { return offset; } }
 
         /// <summary>
         /// Converts this offset date and time to an instant in time by subtracting the offset from the local date and time.
