@@ -81,6 +81,8 @@
             Parses the given string using the specified patterns and format provider.
             </div><br /></td></tr><tr data="method; public; instance; declared"><td><img src="../icons/pubmethod.gif" /></td><td><a href="M_NodaTime_Instant_Plus.htm">Plus(Duration)</a></td><td><div class="summary">
             Returns the result of adding a duration to this instant, for a fluent alternative to <span class="code">operator+()</span>.
+            </div><br /></td></tr><tr data="method; public; instance; declared"><td><img src="../icons/pubmethod.gif" /></td><td><a href="M_NodaTime_Instant_PlusTicks.htm">PlusTicks(Int64)</a></td><td><div class="summary">
+            Returns a new value of this instant with the given number of ticks added to it.
             </div><br /></td></tr><tr data="method; public; static; declared"><td><img src="../icons/pubmethod.gif" /><img src="../icons/static.gif" title="static member" /></td><td><a href="M_NodaTime_Instant_Subtract_1.htm">Subtract(Instant, Instant)</a></td><td><div class="summary">
               Subtracts one instant from another. Friendly alternative to <span class="code">operator-()</span>.
             </div><br /></td></tr><tr data="method; public; static; declared"><td><img src="../icons/pubmethod.gif" /><img src="../icons/static.gif" title="static member" /></td><td><a href="M_NodaTime_Instant_Subtract.htm">Subtract(Instant, Duration)</a></td><td><div class="summary">
@@ -121,8 +123,6 @@
             Attempts to parse the given string using the specified patterns and format provider.
             If the parse is successful, the result is stored in the <span class="parameter">result</span> parameter and the return value is true;
             otherwise <a href="F_NodaTime_Instant_MinValue.htm">MinValue</a> is stored in the parameter and the return value is false.
-            </div><br /></td></tr><tr data="field; public; static; declared"><td><img src="../icons/pubfield.gif" /><img src="../icons/static.gif" title="static member" /></td><td><a href="F_NodaTime_Instant_UnixEpoch.htm">UnixEpoch</a></td><td><div class="summary">
-            The instant at the Unix epoch of midnight 1st January 1970 UTC.
             </div><br /></td></tr></table></div></div></div><div class="section"><div class="sectionTitle" onclick="toggleSection(this.parentNode)"><img src="../icons/collapse_all.gif" /> Remarks</div><div class="sectionContent"><p>
             An instant is defined by an integral number of 'ticks' since the Unix epoch (typically described as January 1st
             1970, midnight, UTC, ISO calendar), where a tick is equal to 100 nanoseconds. There are 10,000 ticks in a
