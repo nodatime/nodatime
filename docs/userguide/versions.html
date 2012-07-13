@@ -17,7 +17,6 @@ more details.</p>
 <li><code>LocalDate.LocalDateTime</code> property changed to <code>LocalDate.AtMidnight()</code> method</li>
 <li><code>LocalTime</code> constructor taking hours and minutes</li>
 <li><code>LocalTime</code> now implements <code>IComparable&lt;LocalTime&gt;</code></li>
-<li><code>DateTimeZone</code> providers reworked</li>
 <li>Various members made internal:
 <ul>
 <li><code>Instant.BeginningOfTimeLabel</code> and <code>Instant.EndOfTimeLabel</code></li>
@@ -36,6 +35,10 @@ more details.</p>
 <li><code>DateTimeZoneCache</code> now public and implements <code>IDateTimeZoneProvider</code></li>
 </ul></li>
 <li>New core type: <code>OffsetDateTime</code> representing a local date/time and an offset from UTC, but not full time zone information</li>
+<li>Instant.UnixEpoch moved to NodaConstants</li>
+<li>Duration.ToString now returns more descriptive text</li>
+<li>Removed "component" properties from Offset, and renamed the "total" properties to just Ticks and Milliseconds.</li>
+<li>Removed Offset.Create methods (and moved them in slightly different form in a new internal TestObjects class in NodaTime.Test).</li>
 </ul>
 
 <p><strong>1.0.0-beta1</strong></p>
