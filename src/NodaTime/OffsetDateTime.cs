@@ -54,10 +54,12 @@ namespace NodaTime
             this.offset = offset;
         }
 
-        /// <summary>Gets the calendar system associated with this local date.</summary>
+        /// <summary>Gets the calendar system associated with this local date and time.</summary>
         public CalendarSystem Calendar { get { return localDateTime.Calendar; } }
 
         /// <summary>Gets the year of this offset date and time.</summary>
+        /// <remarks>This returns the "absolute year", so, for the ISO calendar,
+        /// a value of 0 means 1 BC, for example.</remarks>
         public int Year { get { return localDateTime.Year; } }
 
         /// <summary>Gets the month of this offset date and time within the year.</summary>
@@ -67,14 +69,15 @@ namespace NodaTime
         public int Day { get { return localDateTime.Day; } }
 
         /// <summary>
-        /// Week day of this offset date and time expressed as an <see cref="NodaTime.IsoDayOfWeek"/> value,
+        /// Gets the week day of this offset date and time expressed as an <see cref="NodaTime.IsoDayOfWeek"/> value,
         /// for calendars which use ISO days of the week.
         /// </summary>
         /// <exception cref="InvalidOperationException">The underlying calendar doesn't use ISO days of the week.</exception>
+        /// <seealso cref="DayOfWeek"/>
         public IsoDayOfWeek IsoDayOfWeek { get { return localDateTime.IsoDayOfWeek; } }
 
         /// <summary>
-        /// Week day of this offset date and time as a number.
+        /// Gets the week day of this offset date and time as a number.
         /// </summary>
         /// <remarks>
         /// For calendars using ISO week days, this gives 1 for Monday to 7 for Sunday.
@@ -87,7 +90,7 @@ namespace NodaTime
         /// </summary>
         /// <remarks>
         /// <para>
-        /// The WeekYear is the year that matches with the WeekOfWeekYear field.
+        /// The WeekYear is the year that matches with the <see cref="WeekOfWeekYear"/> field.
         /// In the standard ISO8601 week algorithm, the first week of the year
         /// is that in which at least 4 days are in the year. As a result of this
         /// definition, day 1 of the first week may be in the previous year.
@@ -106,6 +109,7 @@ namespace NodaTime
         public int WeekOfWeekYear { get { return localDateTime.WeekOfWeekYear; } }
 
         /// <summary>Gets the year of this offset date and time within the century.</summary>
+        /// <remarks>This always returns a value in the range 0 to 99 inclusive.</remarks>
         public int YearOfCentury { get { return localDateTime.YearOfCentury; } }
 
         /// <summary>Gets the year of this offset date and time within the era.</summary>
@@ -175,7 +179,7 @@ namespace NodaTime
         /// <summary>
         /// Returns the offset from UTC.
         /// </summary>
-        public object Offset { get { return offset; } }
+        public Offset Offset { get { return offset; } }
 
         /// <summary>
         /// Converts this offset date and time to an instant in time by subtracting the offset from the local date and time.
@@ -231,11 +235,11 @@ namespace NodaTime
         }
 
         /// <summary>
-        /// Compares two <see cref="LocalDate"/> values for equality. This requires
-        /// that the dates be the same, within the same calendar.
+        /// Compares two <see cref="OffsetDateTime"/> values for equality. This requires
+        /// that the local date/time values be the same (in the same calendar) and the offsets.
         /// </summary>
         /// <param name="obj">The object to compare this date with.</param>
-        /// <returns>True if the given value is another local date equal to this one; false otherwise.</returns>
+        /// <returns>True if the given value is another offset date/time equal to this one; false otherwise.</returns>
         public override bool Equals(object obj)
         {
             if (!(obj is OffsetDateTime))
