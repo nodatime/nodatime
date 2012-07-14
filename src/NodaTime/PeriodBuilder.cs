@@ -171,8 +171,10 @@ namespace NodaTime
         /// <summary>
         /// Builds a period from the properties in this builder.
         /// </summary>
-        /// <exception cref="InvalidOperationException">The builder has no non-null properties.</exception>
-        /// <returns></returns>
+        /// <remarks>
+        /// Any non-null property contributes the corresponding unit to the returned period (even if the value is 0).
+        /// </remarks>
+        /// <returns>A period containing the values from this builder.</returns>
         public Period Build()
         {
             PeriodUnits units = 
