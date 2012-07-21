@@ -33,12 +33,19 @@ namespace NodaTime.Test.Utility
             Assembly assembly = typeof(TypeInitializationChecker).Assembly;
             var dependencies = new List<TypeInitializationChecker.Dependency>();
             // Test each type in a new AppDomain - we want to see what happens where each type is initialized first.
-            // Note: Namespace prefix check is present to get this to survive in test runners which
+            // We can't easily test generic types, as we'd have to run the type initializer for a constructed type,
+            // which means working out a valid constructed type... (Additionally, Mono falls over in some cases when
+            // trying to load generic types in a new AppDomain.)
+            // Additionally, we can ignore any type which doesn't have a type initializer.
+
+            // The namespace prefix check is present to get this to survive in test runners which
             // inject extra types. (Seen with JetBrains.Profiler.Core.Instrumentation.DataOnStack.)
 
-            // Checking for the presence of a type initializer beforehand should make this considerably swifter,
-            // but comes with an odd risk; see http://tinyurl.com/cljz4nx for details.
-            foreach (var type in assembly.GetTypes().Where(t => t.FullName.StartsWith("NodaTime") && t.TypeInitializer != null))
+            // Checking for the presence of a type initializer beforehand comes with an odd risk
+            // in the .NET 4.5 beta; see http://tinyurl.com/cljz4nx for details.
+            foreach (var type in assembly.GetTypes().Where(t => t.FullName.StartsWith("NodaTime"))
+                                                    .Where(t => !t.IsGenericTypeDefinition)
+                                                    .Where(t => t.TypeInitializer != null))
             {
                 // Note: this won't be enough to load the assembly in all test runners. In particular, it fails in
                 // NCrunch at the moment.
