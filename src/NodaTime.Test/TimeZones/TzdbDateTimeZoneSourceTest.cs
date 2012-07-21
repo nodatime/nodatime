@@ -28,6 +28,11 @@ namespace NodaTime.Test.TimeZones
         [Test]
         public void ZoneMapping()
         {
+            // We don't know what the mapping will be like on Mono. (We could be on TZDB-based system time zones, for example.)
+            if (TestHelper.IsRunningOnMono)
+            {
+                return;
+            }
             var source = new TzdbDateTimeZoneSource("NodaTime.TimeZones.Tzdb");
             var bclZone = TimeZoneInfo.FindSystemTimeZoneById("GMT Standard Time");
             Assert.AreEqual("Europe/London", source.MapTimeZoneId(bclZone));
