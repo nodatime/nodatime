@@ -35,7 +35,10 @@ namespace NodaTime.Test.Utility
             // Test each type in a new AppDomain - we want to see what happens where each type is initialized first.
             // Note: Namespace prefix check is present to get this to survive in test runners which
             // inject extra types. (Seen with JetBrains.Profiler.Core.Instrumentation.DataOnStack.)
-            foreach (var type in assembly.GetTypes().Where(t => t.FullName.StartsWith("NodaTime")))
+
+            // Checking for the presence of a type initializer beforehand should make this considerably swifter,
+            // but comes with an odd risk; see http://tinyurl.com/cljz4nx for details.
+            foreach (var type in assembly.GetTypes().Where(t => t.FullName.StartsWith("NodaTime") && t.TypeInitializer != null))
             {
                 // Note: this won't be enough to load the assembly in all test runners. In particular, it fails in
                 // NCrunch at the moment.
@@ -43,7 +46,10 @@ namespace NodaTime.Test.Utility
                 AppDomain domain = AppDomain.CreateDomain("InitializationTest" + type.Name, AppDomain.CurrentDomain.Evidence, setup);
                 var helper = (TypeInitializationChecker)domain.CreateInstanceAndUnwrap(assembly.FullName,
                     typeof(TypeInitializationChecker).FullName);
-                dependencies.AddRange(helper.FindDependencies(type.FullName));
+                // Clone the dependencies in *our* AppDomain so we can unload the test one.
+                dependencies.AddRange(helper.FindDependencies(type.FullName)
+                                            .Select(dep => new TypeInitializationChecker.Dependency(dep.From, dep.To)));
+                AppDomain.Unload(domain);
             }
             var lookup = dependencies.ToLookup(d => d.From, d => d.To);
             // This is less efficient than it might be, but I'm aiming for simplicity: starting at each type

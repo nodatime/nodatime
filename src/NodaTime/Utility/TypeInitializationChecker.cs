@@ -101,7 +101,12 @@ namespace NodaTime.Utility
                 From = from.FullName;
                 To = to.FullName;
             }
-        }
 
+            internal Dependency(string from, string to)
+            {
+                From = from;
+                To = to;
+            }
+        }
     }
 }
