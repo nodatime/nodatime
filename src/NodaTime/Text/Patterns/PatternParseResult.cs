@@ -28,12 +28,10 @@ namespace NodaTime.Text.Patterns
     {
         private readonly IPattern<T> value;
         private readonly NodaFunc<Exception> exceptionProvider;
-        private readonly bool continueWithMultiple;
 
-        private PatternParseResult(NodaFunc<Exception> exceptionProvider, bool continueWithMultiple)
+        private PatternParseResult(NodaFunc<Exception> exceptionProvider)
         {
             this.exceptionProvider = exceptionProvider;
-            this.continueWithMultiple = continueWithMultiple;
         }
 
         private PatternParseResult(IPattern<T> value)
@@ -77,8 +75,6 @@ namespace NodaTime.Text.Patterns
 
         internal bool Success { get { return exceptionProvider == null; } }
 
-        internal bool ContinueAfterErrorWithMultipleFormats { get { return continueWithMultiple; } }
-
         /// <summary>
         /// Returns a new result with the target type. This result must be a failure.
         /// </summary>
@@ -88,7 +84,7 @@ namespace NodaTime.Text.Patterns
             {
                 throw new InvalidOperationException("Can't change type of a success result");
             }
-            return new PatternParseResult<TTarget>(exceptionProvider, continueWithMultiple);
+            return new PatternParseResult<TTarget>(exceptionProvider);
         }
 
         #region Factory methods and readonly static fields
@@ -99,12 +95,12 @@ namespace NodaTime.Text.Patterns
 
         internal static PatternParseResult<T> ForInvalidFormat(NodaFunc<Exception> exceptionProvider)
         {
-            return new PatternParseResult<T>(exceptionProvider, false);
+            return new PatternParseResult<T>(exceptionProvider);
         }
 
         internal static PatternParseResult<T> ArgumentNull(string parameter)
         {
-            return new PatternParseResult<T>(() => new ArgumentNullException(parameter), false);
+            return new PatternParseResult<T>(() => new ArgumentNullException(parameter));
         }
 
         internal static PatternParseResult<T> EscapeAtEndOfString = ForInvalidFormat(Messages.Parse_EscapeAtEndOfString);

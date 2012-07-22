@@ -36,11 +36,10 @@ namespace NodaTime.Text
 
         internal static readonly LocalDate DefaultTemplateValue = new LocalDate(2000, 1, 1);
 
-        private static readonly string[] AllPatterns = { "D", "d" }; // Long, short
         private const string DefaultFormatPattern = "D"; // Long
 
         internal static readonly PatternBclSupport<LocalDate> BclSupport =
-            new PatternBclSupport<LocalDate>(AllPatterns, DefaultFormatPattern, DefaultTemplateValue, fi => fi.LocalDatePatternParser);
+            new PatternBclSupport<LocalDate>(DefaultFormatPattern, fi => fi.LocalDatePatternParser);
 
         /// <summary>
         /// Returns an invariant local date pattern which is ISO-8601 compatible.

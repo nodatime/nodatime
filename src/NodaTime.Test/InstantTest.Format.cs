@@ -27,7 +27,7 @@ namespace NodaTime.Test
         [Test, Category("Formatting"), Category("Format")]
         public void TestToString_InvalidFormat()
         {
-            Assert.Throws<InvalidPatternException>(() => NodaConstants.UnixEpoch.ToString("A"));
+            Assert.Throws<InvalidPatternException>(() => NodaConstants.UnixEpoch.ToString("A", null));
         }
 
         [Test, Category("Formatting"), Category("Format")]
@@ -58,15 +58,15 @@ namespace NodaTime.Test
         {
             string actual = value.ToString();
             Assert.AreEqual(gvalue, actual);
-            actual = value.ToString("G");
+            actual = value.ToString("G", null);
             Assert.AreEqual(gvalue, actual);
-            actual = value.ToString("N");
+            actual = value.ToString("N", null);
             Assert.AreEqual(value.Ticks.ToString("N0"), actual);
             actual = value.ToString("N", CultureInfo.InvariantCulture);
             Assert.AreEqual(value.Ticks.ToString("N0", CultureInfo.InvariantCulture), actual);
-            actual = value.ToString(CultureInfo.InvariantCulture);
+            actual = value.ToString("G", CultureInfo.InvariantCulture);
             Assert.AreEqual(gvalue, actual);
-            actual = value.ToString("D");
+            actual = value.ToString("D", null);
             Assert.AreEqual(value.Ticks.ToString("D"), actual);
 
             actual = string.Format("{0}", value);

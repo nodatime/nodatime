@@ -25,85 +25,13 @@ namespace NodaTime.Text.Patterns
     /// </summary>
     internal sealed class PatternBclSupport<T>
     {
-        private readonly string[] allFormats;
-        private readonly T failureValue;
         private readonly NodaFunc<NodaFormatInfo, FixedFormatInfoPatternParser<T>> patternParser;
         private readonly string defaultFormatPattern;
 
-        internal PatternBclSupport(string[] allFormats, string defaultFormatPattern, T failureValue,
-            NodaFunc<NodaFormatInfo, FixedFormatInfoPatternParser<T>> patternParser)
+        internal PatternBclSupport(string defaultFormatPattern, NodaFunc<NodaFormatInfo, FixedFormatInfoPatternParser<T>> patternParser)
         {
-            this.allFormats = allFormats;
-            this.failureValue = failureValue;
             this.patternParser = patternParser;
             this.defaultFormatPattern = defaultFormatPattern;
-        }
-
-        internal T Parse(string value, NodaFormatInfo formatInfo)
-        {
-            return ParseExact(value, allFormats, formatInfo);
-        }
-
-        internal T ParseExact(string value, string format, NodaFormatInfo formatInfo)
-        {
-            return ParseSingle(value, format, formatInfo).GetValueOrThrow();
-        }
-
-        internal T ParseExact(string value, string[] formats, NodaFormatInfo formatInfo)
-        {
-            return ParseMultiple(value, formats, formatInfo).GetValueOrThrow();
-        }
-
-        internal bool TryParse(string value, NodaFormatInfo formatInfo, out T result)
-        {
-            return TryParseExact(value, allFormats, formatInfo, out result);
-        }
-
-        internal bool TryParseExact(string value, string format, NodaFormatInfo formatInfo, out T result)
-        {
-            return ParseSingle(value, format, formatInfo).TryGetValue(failureValue, out result);
-        }
-
-        internal bool TryParseExact(string value, string[] formats, NodaFormatInfo formatInfo, out T result)
-        {
-            return ParseMultiple(value, formats, formatInfo).TryGetValue(failureValue, out result);
-        }
-
-        internal ParseResult<T> ParseMultiple(string value, string[] formats, NodaFormatInfo formatInfo)
-        {
-            if (formats == null)
-            {
-                return ParseResult<T>.ArgumentNull("formats");
-            }
-            if (formats.Length == 0)
-            {
-                return PatternParseResult<T>.EmptyFormatsArray.ToParseResult();
-            }
-
-            foreach (string format in formats)
-            {
-                ParseResult<T> result = ParseSingle(value, format, formatInfo);
-                if (result.Success || !result.ContinueAfterErrorWithMultipleFormats)
-                {
-                    return result;
-                }
-            }
-            return ParseResult<T>.NoMatchingFormat;
-        }
-
-        internal ParseResult<T> ParseSingle(string value, string patternText, NodaFormatInfo formatInfo)
-        {
-            if (patternText == null)
-            {
-                return ParseResult<T>.ArgumentNull("patternText");
-            }
-            PatternParseResult<T> patternResult = patternParser(formatInfo).ParsePattern(patternText);
-            if (!patternResult.Success)
-            {
-                return patternResult.ToParseResult();
-            }
-            IPattern<T> pattern = patternResult.GetResultOrThrow();
-            return pattern.Parse(value);
         }
 
         internal string Format(T value, string patternText, NodaFormatInfo formatInfo)

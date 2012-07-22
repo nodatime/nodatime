@@ -336,20 +336,6 @@ namespace NodaTime.Test.Text
         }
 
         [Test]
-        [TestCaseSource("DefaultPatternData")]
-        public void FormatDefaultPattern(Data data)
-        {
-            Assert.AreEqual(data.Text, data.Value.ToString(data.Culture));
-        }
-
-        [Test]
-        [TestCaseSource("DefaultPatternData")]
-        public void ParseDefaultPattern(Data data)
-        {
-            Assert.AreEqual(data.Value, LocalTime.Parse(data.Text, data.Culture));
-        }
-
-        [Test]
         public void TemplateValue_DefaultsToMidnight()
         {
             var pattern = LocalTimePattern.CreateWithInvariantInfo("HH");

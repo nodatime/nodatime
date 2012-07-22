@@ -48,10 +48,9 @@ namespace NodaTime.Text
         public static InstantPattern ExtendedIsoPattern { get { return Patterns.ExtendedIsoPatternImpl; } }
 
         // TODO: Possibly support an "f" standard pattern which is like "g" but down to ticks.
-        private static readonly string[] AllPatterns = { "g", "n" };
         private const string DefaultFormatPattern = "g";
 
-        internal static readonly PatternBclSupport<Instant> BclSupport = new PatternBclSupport<Instant>(AllPatterns, DefaultFormatPattern, Instant.MinValue, fi => fi.InstantPatternParser);
+        internal static readonly PatternBclSupport<Instant> BclSupport = new PatternBclSupport<Instant>(DefaultFormatPattern, fi => fi.InstantPatternParser);
 
         /// <summary>
         /// Class whose existence is solely to avoid type initialization order issues, most of which stem
