@@ -36,11 +36,10 @@ namespace NodaTime.Text
 
         internal static readonly LocalDateTime DefaultTemplateValue = new LocalDateTime(2000, 1, 1, 0, 0);
 
-        private static readonly string[] AllPatterns = { "F", "f", "G", "g", "o", "s" }; // Full (long time), full (short time), general (long), general (short time), round-trip, sortable
         private const string DefaultFormatPattern = "G"; // General (long time)
 
         internal static readonly PatternBclSupport<LocalDateTime> BclSupport =
-            new PatternBclSupport<LocalDateTime>(AllPatterns, DefaultFormatPattern, DefaultTemplateValue, fi => fi.LocalDateTimePatternParser);
+            new PatternBclSupport<LocalDateTime>(DefaultFormatPattern, fi => fi.LocalDateTimePatternParser);
 
         /// <summary>
         /// Returns an invariant local date/time pattern which is ISO-8601 compatible other than providing up to 7 decimal places

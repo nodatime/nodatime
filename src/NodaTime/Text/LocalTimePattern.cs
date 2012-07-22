@@ -41,11 +41,10 @@ namespace NodaTime.Text
         /// </summary>
         public static LocalTimePattern ExtendedIsoPattern { get { return Patterns.ExtendedIsoPatternImpl; } }
 
-        private static readonly string[] AllPatterns = { "T", "t", "r" }; // Long, short, round-trip
         private const string DefaultFormatPattern = "T"; // Long
 
         internal static readonly PatternBclSupport<LocalTime> BclSupport =
-            new PatternBclSupport<LocalTime>(AllPatterns, DefaultFormatPattern, LocalTime.Midnight, fi => fi.LocalTimePatternParser);
+            new PatternBclSupport<LocalTime>(DefaultFormatPattern, fi => fi.LocalTimePatternParser);
 
         /// <summary>
         /// Class whose existence is solely to avoid type initialization order issues, most of which stem

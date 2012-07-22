@@ -138,9 +138,6 @@
     <Compile Include="InstantTest.Format.cs">
       <DependentUpon>InstantTest.cs</DependentUpon>
     </Compile>
-    <Compile Include="InstantTest.Parse.cs">
-      <DependentUpon>InstantTest.cs</DependentUpon>
-    </Compile>
     <Compile Include="DateTimeZoneTest.cs" />
     <Compile Include="DateTimeZoneTest.Ids.cs">
       <DependentUpon>DateTimeZoneTest.cs</DependentUpon>

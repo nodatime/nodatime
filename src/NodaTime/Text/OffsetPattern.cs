@@ -39,10 +39,9 @@ namespace NodaTime.Text
         /// </summary>
         public static readonly OffsetPattern GeneralInvariantPattern = CreateWithInvariantInfo("g");
 
-        private static readonly string[] AllPatterns = { "g", "n", "d" };
         private const string DefaultFormatPattern = "g";
 
-        internal static readonly PatternBclSupport<Offset> BclSupport = new PatternBclSupport<Offset>(AllPatterns, DefaultFormatPattern, Offset.Zero, fi => fi.OffsetPatternParser);
+        internal static readonly PatternBclSupport<Offset> BclSupport = new PatternBclSupport<Offset>(DefaultFormatPattern, fi => fi.OffsetPatternParser);
 
         private readonly string patternText;
         private readonly NodaFormatInfo formatInfo;

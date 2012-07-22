@@ -37,34 +37,7 @@ namespace NodaTime.Benchmarks
             var parseResult = offsetPatternParser.ParsePattern("HH:mm", InvariantFormatInfo);
             offsetPattern = parseResult.GetResultOrThrow();
             longPattern = OffsetPattern.CreateWithInvariantInfo("HH:mm:ss.fff");
-        }
-        
-        [Benchmark]
-        public void TryParseExact_Valid()
-        {
-            Offset result;
-            Offset.TryParseExact("12:34", "HH:mm", InvariantFormatInfo, out result);
-        }
-
-        [Benchmark]
-        public void TryParseExact_ValidLong()
-        {
-            longPattern.Parse("12:34:56.789");
-        }
-        
-        [Benchmark]
-        public void TryParseExact_InvalidFormat()
-        {
-            Offset result;
-            Offset.TryParseExact("12:34", "hh:mm", InvariantFormatInfo, out result);
-        }
-
-        [Benchmark]
-        public void TryParseExact_InvalidValue()
-        {
-            Offset result;
-            Offset.TryParseExact("123:45", "HH:mm", InvariantFormatInfo, out result);
-        }
+        }        
 
         [Benchmark]
         public void ParseExactIncludingPreparse_Valid()

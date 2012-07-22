@@ -15,6 +15,7 @@
 // limitations under the License.
 #endregion
 
+using System.Globalization;
 using NUnit.Framework;
 
 namespace NodaTime.Demo
@@ -26,7 +27,7 @@ namespace NodaTime.Demo
         public void SimpleConstruction()
         {
             LocalDate date = new LocalDate(2010, 6, 16);
-            Assert.AreEqual("2010-06-16", date.ToString("yyyy-MM-dd"));
+            Assert.AreEqual("2010-06-16", date.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture));
         }
 
         [Test]
