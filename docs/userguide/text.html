@@ -8,15 +8,17 @@
   </head>
   <body onload="prettyPrint()">
     <h1>Handling text in Noda Time</h1>
-    <p>There are two primary options for text handling in Noda Time. You
-can either follow the "normal" approach from the .NET Base Class
-Library (BCL) or use the pattern-based approach which is specific to
-Noda Time. You are <em>encouraged</em> to use the pattern-based approach as
-we believe it is more robust, clearer, and performs better than the
-BCL approach - but the choice is yours. Ultimately the two APIs use
-the same implementation, so you can transition from on to the other
-without worrying about compatibility - or you can even mix and match
-the two, if you must.</p>
+    <p>There are two options for text handling in Noda Time. For some elements of
+formatting, you can follow the "normal" approach from the .NET Base Class
+Library (BCL) - in particular, most of the core Noda Time types implements
+<code>IFormattable</code>. However, no parsing support is provided in this way. (It used
+to be, but the whole approach is so convoluted that documenting it accurately
+proved too great an overhead.)</p>
+
+<p>The preferred approach is to use the "pattern" classes such as <code>LocalDatePattern</code>
+and so forth. This leads to clearer, more robust code, and performs better. The formatting
+support present in the BCL style is mostly present to work well with compound format strings,
+where you may wish to mix several values of different types in a single formatting call.</p>
 
 <p>All the types responsible for text in Noda Time are in the
 <a href="../api/html/N_NodaTime_Text.htm">NodaTime.Text</a> namespace.</p>
@@ -48,55 +50,16 @@ encapsulates both success and failure results.</p>
 
 <h2>The BCL-based API</h2>
 
-<p>Each of the core Noda Time types (<a href="../api/html/T_NodaTime_LocalDateTime.htm"><code>LocalDateTime</code></a>,
-<a href="../api/html/T_NodaTime_Instant.htm"><code>Instant</code></a> etc) provides methods with the
+<p>Most of the core Noda Time types (<a href="../api/html/T_NodaTime_LocalDateTime.htm"><code>LocalDateTime</code></a>,
+<a href="../api/html/T_NodaTime_Instant.htm"><code>Instant</code></a> etc) provide methods with the
 following signatures:</p>
-
-<p><strong>Formatting (instance methods):</strong></p>
 
 <ul>
 <li><code>ToString()</code>: Formats the value using the default pattern for the
 current thread's format provider.</li>
-<li><code>ToString(IFormatProvider)</code>: Formats the value using the default
-pattern for the specified format provider.</li>
-<li><code>ToString(string)</code>: Formats the value with the given pattern in
-the current thread's format provider.</li>
 <li><code>ToString(string, IFormatProvider)</code>: Formats the value with the
-given pattern and format provider.</li>
-</ul>
-
-<p><strong>Parsing (static methods):</strong></p>
-
-<ul>
-<li><code>Parse(string)</code>: Parses the given text in all default patterns for
-the current thread's format provider, throwing an exception if the
-text cannot be parsed.</li>
-<li><code>Parse(string, IFormatProvider)</code>: Parses the given text in all
-default patterns for the specified format provider, throwing an
-exception if the text cannot be parsed.</li>
-<li><code>ParseExact(string, string, IFormatProvider)</code>: Parses the given
-text in exactly the pattern and format provider specified, throwing
-an exception if the text cannot be parsed.</li>
-<li><code>TryParse(string, out ResultType)</code>: Attempts to parse the given
-text in all default patterns for the current thread's format
-provider, returning a <code>bool</code> value to indicate success or failure
-and using an <code>out</code> parameter to convey the parsed value (on success)
-or some default value (on failure).</li>
-<li><code>TryParse(string, IFormatProvider, out ResultType)</code>: Attempts to parse the given
-text in all default patterns for the given format
-provider, returning a <code>bool</code> value to indicate success or failure
-and using an <code>out</code> parameter to convey the parsed value (on success)
-or some default value (on failure).</li>
-<li><code>TryParseExact(string, string, IFormatProvider, out ResultType)</code>: Attempts to parse the given
-text in the exact pattern specified using the given format provider, 
-returning a <code>bool</code> value to indicate success or failure and using
-an <code>out</code> parameter to convey the parsed value (on success)
-or some default value (on failure).</li>
-<li><code>TryParseExact(string, string[], IFormatProvider, out ResultType)</code>: Attempts to parse the given
-text in any of the patterns specified using the given format provider,
-returning a <code>bool</code> value to indicate success or failure and using
-an <code>out</code> parameter to convey the parsed value (on success)
-or some default value (on failure).</li>
+given pattern and format provider. The pattern text for this call is
+exactly the same as when creating a pattern object with the preferred API.</li>
 </ul>
 
 <h2>Pattern text</h2>
