@@ -27,18 +27,11 @@ namespace NodaTime
     /// The properties are all nullable: the units of the period created are
     /// determined by the non-null properties at build time.
     /// </summary>
-    /// <remarks>
-    /// This type is not thread-safe without extra synchronization, but has no
-    /// thread affinity. Note that although this method implements
-    /// <see cref="IEquatable{T}"/> and overrides <see cref="GetHashCode"/>,
-    /// it should generally not be used as a key in a dictionary, as it is mutable. If you
-    /// mutate an instance after using it as a key, you may not be able to look it up
-    /// again, even using the same reference.
-    /// </remarks>
     /// <threadsafety>
-    /// This type is not thread-safe, but the periods it builds are.
+    /// This type is not thread-safe without extra synchronization, but has no
+    /// thread affinity.
     /// </threadsafety>
-    public sealed class PeriodBuilder : IEquatable<PeriodBuilder>
+    public sealed class PeriodBuilder
     {
         #region Properties
         /// <summary>
@@ -203,66 +196,6 @@ namespace NodaTime
                     Hours ?? 0L, Minutes ?? 0L, Seconds ?? 0L, Milliseconds ?? 0L, Ticks ?? 0L
                 });
             }
-        }
-
-        /// <summary>
-        /// Determines whether the specified <see cref="System.Object" /> is equal to this instance.
-        /// </summary>
-        /// <param name="obj">The <see cref="System.Object" /> to compare with this instance.</param>
-        /// <returns>
-        /// <c>true</c> if the specified <see cref="System.Object" /> is equal to this instance;
-        /// otherwise, <c>false</c>.
-        /// </returns>
-        public override bool Equals(object obj)
-        {
-            return Equals(obj as PeriodBuilder);
-        }
-
-        /// <summary>
-        /// Returns a hash code for this instance.
-        /// </summary>
-        /// <returns>
-        /// A hash code for this instance, suitable for use in hashing algorithms and data
-        /// structures like a hash table. 
-        /// </returns>
-        public override int GetHashCode()
-        {
-            var hash = HashCodeHelper.Initialize();
-            hash = HashCodeHelper.Hash(hash, Years);
-            hash = HashCodeHelper.Hash(hash, Months);
-            hash = HashCodeHelper.Hash(hash, Weeks);
-            hash = HashCodeHelper.Hash(hash, Days);
-            hash = HashCodeHelper.Hash(hash, Hours);
-            hash = HashCodeHelper.Hash(hash, Minutes);
-            hash = HashCodeHelper.Hash(hash, Seconds);
-            hash = HashCodeHelper.Hash(hash, Milliseconds);
-            hash = HashCodeHelper.Hash(hash, Ticks);
-            return hash;
-        }
-
-        /// <summary>
-        /// Indicates whether the value of this period builder is equal to the value of the specified one.
-        /// All properties are taken into account without normalization, and units are also considered -
-        /// so a builder with a null Hours property is not equal to one with a 0 Hours property,
-        /// for example.
-        /// </summary>
-        /// <param name="other">The value to compare with this instance.</param>
-        /// <returns>
-        /// true if the value of this period builder is equal to the value of the <paramref name="other" /> parameter;
-        /// otherwise, false.
-        /// </returns>
-        public bool Equals(PeriodBuilder other)
-        {
-            return other != null &&
-                this.Years == other.Years &&
-                this.Months == other.Months &&
-                this.Weeks == other.Weeks &&
-                this.Days == other.Days &&
-                this.Hours == other.Hours &&
-                this.Minutes == other.Minutes &&
-                this.Seconds == other.Seconds &&
-                this.Milliseconds == other.Milliseconds &&
-                this.Ticks == other.Ticks;
         }
     }
 }

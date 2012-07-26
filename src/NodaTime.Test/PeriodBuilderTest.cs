@@ -82,8 +82,8 @@ namespace NodaTime.Test
                 Seconds = 6,
                 Milliseconds = 7,
                 Ticks = 8
-            };
-            Assert.AreEqual(expected, builder);
+            }.Build();
+            Assert.AreEqual(expected, builder.Build());
         }
 
         [Test]
@@ -119,15 +119,6 @@ namespace NodaTime.Test
         public void Build_Empty()
         {
             Assert.AreEqual(Period.Empty, new PeriodBuilder().Build());
-        }
-
-        [Test]
-        public void Equality()
-        {
-            PeriodBuilder equal1 = new PeriodBuilder { Hours = 10, Minutes = 1 };
-            PeriodBuilder equal2 = new PeriodBuilder { Minutes = 1, Hours = 10, Ticks = null };
-            PeriodBuilder unequal = new PeriodBuilder { Minutes = 1 };
-            TestHelper.TestEqualsClass(equal1, equal2, unequal);
         }
     }
 }
