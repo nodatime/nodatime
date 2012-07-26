@@ -388,16 +388,16 @@ namespace NodaTime.Test
         public void ToBuilder_SingleUnit()
         {
             var builder = Period.FromHours(5).ToBuilder();
-            var expected = new PeriodBuilder { Hours = 5 };
-            Assert.AreEqual(expected, builder);
+            var expected = new PeriodBuilder { Hours = 5 }.Build();
+            Assert.AreEqual(expected, builder.Build());
         }
 
         [Test]
         public void ToBuilder_MultipleUnits()
         {
             var builder = (Period.FromHours(5) + Period.FromWeeks(2)).ToBuilder();
-            var expected = new PeriodBuilder { Hours = 5, Weeks = 2 };
-            Assert.AreEqual(expected, builder);
+            var expected = new PeriodBuilder { Hours = 5, Weeks = 2 }.Build();
+            Assert.AreEqual(expected, builder.Build());
         }
 
         [Test]
