@@ -24,9 +24,14 @@ namespace NodaTime
 {
     /// <summary>
     /// A <see cref="LocalDateTime"/> in a specific time zone and with a particular offset to distinguish between otherwise-ambiguous
-    /// instants. A ZonedDateTime is global, in that it maps to a single <see cref="Instant"/>.
+    /// instants. A <see cref="ZonedDateTime"/> is global, in that it maps to a single <see cref="Instant"/>.
     /// </summary>
     /// <remarks>
+    /// <para>Although <see cref="ZonedDateTime" /> includes both local and global concepts, it only supports
+    /// duration-based - and not calendar-based - arithmetic. This avoids ambiguities
+    /// and skipped date/time values becoming a problem within a series of calculations; instead,
+    /// these can be considered just once, at the point of conversion to a <see cref="ZonedDateTime"/>.
+    /// </para>
     /// <para>Comparisons of values can be handled in a way which is either calendar and zone sensitive or insensitive.
     /// Noda Time implements all the operators (and the <see cref="Equals(ZonedDateTime)"/> method) such that all operators other than <see cref="op_Inequality"/>
     /// will return false if asked to compare two values in different calendar systems and time zones.

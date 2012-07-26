@@ -191,9 +191,18 @@ namespace NodaTime
         }
 
         /// <summary>
-        /// Creates a <see cref="ZonedDateTime"/> in a time zone with a fixed offset (which is the same as the offset
-        /// for this value), and with the same local date and time.
+        /// Returns this value as a <see cref="ZonedDateTime"/>.
         /// </summary>
+        /// <remarks>
+        /// <para>
+        /// This method returns a <see cref="ZonedDateTime"/> with the same local date and time as this value, using a
+        /// fixed time zone with the same offset as the offset for this value.
+        /// </para>
+        /// <para>
+        /// Note that because the resulting <c>ZonedDateTime</c> has a fixed time zone, it is generally not useful to
+        /// use this result for arithmetic operations, as the zone will not adjust to account for daylight savings.
+        /// </para>
+        /// </remarks>
         /// <returns>A zoned date/time with the same local time and a fixed time zone using the offset from this value.</returns>
         public ZonedDateTime InFixedZone()
         {
