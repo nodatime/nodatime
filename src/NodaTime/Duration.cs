@@ -21,12 +21,14 @@ using NodaTime.Utility;
 namespace NodaTime
 {
     /// <summary>
-    /// Represents a fixed length of time, with no concept of calendars.
+    /// Represents a fixed (and calendar-independent) length of time.
     /// </summary>
     /// <remarks>
     /// <para>
     /// A duration is a length of time defined by an integral number of 'ticks', where a tick is equal to 100
     /// nanoseconds. There are 10,000 ticks in a millisecond.
+    /// Although durations are usually used with a positive number of ticks, negative durations are valid, and may occur
+    /// naturally when e.g. subtracting an earlier <see cref="Instant"/> from a later one.
     /// </para>
     /// <para>
     /// A duration represents a fixed length of elapsed time along the time line that occupies the same amount of

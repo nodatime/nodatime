@@ -42,63 +42,62 @@ namespace NodaTime
     {
         #region Properties
         /// <summary>
-        /// The number of years within the period, or null to
-        /// exclude the "years" unit.
+        /// Gets or sets the number of years within the period. Null means that
+        /// the "years" unit is absent.
         /// </summary>
         public long? Years { get; set; }
 
         /// <summary>
-        /// The number of months within the period, or null to
-        /// exclude the "months" unit.
+        /// Gets or sets the number of months within the period. Null means that
+        /// the "months" unit is absent.
         /// </summary>
         public long? Months { get; set; }
 
         /// <summary>
-        /// The number of weeks within the period, or null to
-        /// exclude the "weeks" unit.
+        /// Gets or sets the number of weeks within the period. Null means that
+        /// the "weeks" unit is absent.
         /// </summary>
         public long? Weeks { get; set; }
 
         /// <summary>
-        /// The number of days within the period, or null to
-        /// exclude the "days" unit.
+        /// Gets or sets the number of days within the period. Null means that
+        /// the "days" unit is absent.
         /// </summary>
         public long? Days { get; set; }
 
         /// <summary>
-        /// The number of hours within the period, or null to
-        /// exclude the "hours" unit.
+        /// Gets or sets the number of hours within the period. Null means that
+        /// the "hours" unit is absent.
         /// </summary>
         public long? Hours { get; set; }
 
         /// <summary>
-        /// The number of minutes within the period, or null to
-        /// exclude the "minutes" unit.
+        /// Gets or sets the number of minutes within the period. Null means that
+        /// the "minutes" unit is absent.
         /// </summary>
         public long? Minutes { get; set; }
 
         /// <summary>
-        /// The number of seconds within the period, or null to
-        /// exclude the "seconds" unit.
+        /// Gets or sets the number of seconds within the period. Null means that
+        /// the "seconds" unit is absent.
         /// </summary>
         public long? Seconds { get; set; }
         
         /// <summary>
-        /// The number of milliseconds within the period, or null to
-        /// exclude the "milliseconds" unit.
+        /// Gets or sets the number of milliseconds within the period. Null means that
+        /// the "milliseconds" unit is absent.
         /// </summary>
         public long? Milliseconds { get; set; }
 
         /// <summary>
-        /// The number of ticks within the period, or null to
-        /// exclude the "ticks" unit.
+        /// Gets or sets the number of ticks within the period. Null means that
+        /// the "ticks" unit is absent.
         /// </summary>
         public long? Ticks { get; set; }
         #endregion
 
         /// <summary>
-        /// Creates a new period builder with an initially empty period. At least one
-        /// property must be set to a non-null value before building.
+        /// Creates a new period builder with an initially empty period.
         /// </summary>
         public PeriodBuilder()
         {
@@ -243,7 +242,7 @@ namespace NodaTime
 
         /// <summary>
         /// Indicates whether the value of this period builder is equal to the value of the specified one.
-        /// All fields are taken into account without normalization, and units are also considered -
+        /// All properties are taken into account without normalization, and units are also considered -
         /// so a builder with a null Hours property is not equal to one with a 0 Hours property,
         /// for example.
         /// </summary>
