@@ -39,6 +39,13 @@ more details.</p>
 <li>Duration.ToString now returns more descriptive text</li>
 <li>Removed "component" properties from Offset, and renamed the "total" properties to just Ticks and Milliseconds.</li>
 <li>Removed Offset.Create methods (and moved them in slightly different form in a new internal TestObjects class in NodaTime.Test).</li>
+<li><code>PeriodBuilder</code> no longer implements <code>IEquatable&lt;PeriodBuilder&gt;</code> (or
+<code>GetHashCode()</code>)</li>
+<li><code>Period</code> and <code>PeriodBuilder</code> no longer differentiate between absent and zero
+components (to the extent that they did at all): <code>Units</code> has been removed from
+<code>Period</code>, period formatting now omits all zero values unconditionally, and the
+<code>Year</code> (etc) properties on <code>PeriodBuilder</code> are no longer nullable</li>
+<li><code>Period.Empty</code> renamed to <code>Period.Zero</code></li>
 </ul>
 
 <p><strong>1.0.0-beta1</strong></p>
