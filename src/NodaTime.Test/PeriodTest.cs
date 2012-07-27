@@ -243,31 +243,6 @@ namespace NodaTime.Test
         }
 
         [Test]
-        public void Addition_CombinesUnits()
-        {
-            Period p1 = Period.FromHours(3);
-            Period p2 = Period.FromDays(1);
-            Assert.AreEqual(PeriodUnits.Hours | PeriodUnits.Days, (p1 + p2).Units);
-        }
-
-        [Test]
-        public void Subtraction_CombinesUnits()
-        {
-            Period p1 = Period.FromHours(3);
-            Period p2 = Period.FromDays(1);
-            Assert.AreEqual(PeriodUnits.Hours | PeriodUnits.Days, (p1 - p2).Units);
-        }
-
-        [Test]
-        public void Equality_IgnoresUnits()
-        {
-            Period period1 = Period.FromHours(5);
-            Period period2 = period1 + Period.FromMinutes(0);
-            Assert.AreEqual(period1, period2);
-            Assert.AreNotEqual(period1.Units, period2.Units);
-        }
-
-        [Test]
         public void Equality_WhenEqual()
         {
             Assert.AreEqual(Period.FromHours(10), Period.FromHours(10));
@@ -279,11 +254,7 @@ namespace NodaTime.Test
         public void Equality_WithDifferentPeriodTypes_OnlyConsidersValues()
         {
             Period allFields = Period.FromMinutes(1) + Period.FromHours(1) - Period.FromMinutes(1);
-            Assert.AreEqual(PeriodUnits.Minutes | PeriodUnits.Hours, allFields.Units);
-            
             Period justHours = Period.FromHours(1);
-            Assert.AreEqual(PeriodUnits.Hours, justHours.Units);
-
             Assert.AreEqual(allFields, justHours);
         }
 
@@ -378,10 +349,9 @@ namespace NodaTime.Test
         }
 
         [Test]
-        public void ToString_CompoundZero()
+        public void ToString_Zero()
         {
-            Period period = Period.FromDays(0) + Period.FromHours(0);
-            Assert.AreEqual("P0DT0H", period.ToString());
+            Assert.AreEqual("P", Period.Zero.ToString());
         }
 
         [Test]
@@ -398,19 +368,6 @@ namespace NodaTime.Test
             var builder = (Period.FromHours(5) + Period.FromWeeks(2)).ToBuilder();
             var expected = new PeriodBuilder { Hours = 5, Weeks = 2 }.Build();
             Assert.AreEqual(expected, builder.Build());
-        }
-
-        [Test]
-        public void Normalize_ZeroUnitsRemoved()
-        {
-            var original = new PeriodBuilder { Hours = 0, Minutes = 5 }.Build();
-            Assert.AreEqual(PeriodUnits.Minutes | PeriodUnits.Hours, original.Units);
-
-            var normalized = original.Normalize();
-
-            // Equals doesn't check units, so check explicitly.
-            Assert.AreEqual(original, normalized);
-            Assert.AreEqual(PeriodUnits.Minutes, normalized.Units);
         }
 
         [Test]
@@ -512,10 +469,10 @@ namespace NodaTime.Test
         }
 
         [Test]
-        public void Normalize_EmptyResult()
+        public void Normalize_ZeroResult()
         {
             var original = new PeriodBuilder { Years = 0 }.Build();
-            Assert.AreEqual(Period.Empty, original.Normalize());
+            Assert.AreEqual(Period.Zero, original.Normalize());
         }
 
         [Test]
@@ -530,12 +487,6 @@ namespace NodaTime.Test
         {
             var period = new PeriodBuilder { Hours = 5, Minutes = 30 }.Build();
             Assert.AreEqual("PT5H30M", period.ToString());
-        }
-
-        [Test]
-        public void EmptyPeriodHasNoUnits()
-        {
-            Assert.AreEqual(PeriodUnits.None, Period.Empty.Units);
         }
 
         [Test]
@@ -580,7 +531,7 @@ namespace NodaTime.Test
         {
             Period period = Period.FromMonths(1) + Period.FromYears(1);
             period = period - period + Period.FromDays(1);
-            Assert.AreEqual(PeriodUnits.YearMonthDay, period.Units);
+            Assert.IsFalse(period.HasTimeComponent);
             Assert.AreEqual(Duration.OneStandardDay, period.ToDuration());
         }
 
@@ -657,14 +608,14 @@ namespace NodaTime.Test
         public void Comparer_NullWithNonNull()
         {
             var comparer = Period.CreateComparer(new LocalDateTime(2000, 1, 1, 0, 0));
-            Assert.That(comparer.Compare(null, Period.Empty), Is.LessThan(0));
+            Assert.That(comparer.Compare(null, Period.Zero), Is.LessThan(0));
         }
 
         [Test]
         public void Comparer_NonNullWithNull()
         {
             var comparer = Period.CreateComparer(new LocalDateTime(2000, 1, 1, 0, 0));
-            Assert.That(comparer.Compare(Period.Empty, null), Is.GreaterThan(0));
+            Assert.That(comparer.Compare(Period.Zero, null), Is.GreaterThan(0));
         }
 
         [Test]

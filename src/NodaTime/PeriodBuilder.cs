@@ -24,8 +24,6 @@ namespace NodaTime
     /// A mutable builder class for <see cref="Period"/> values. Each property can
     /// be set independently, and then a Period can be created from the result
     /// using the <see cref="Build"/> method.
-    /// The properties are all nullable: the units of the period created are
-    /// determined by the non-null properties at build time.
     /// </summary>
     /// <threadsafety>
     /// This type is not thread-safe without extra synchronization, but has no
@@ -35,69 +33,60 @@ namespace NodaTime
     {
         #region Properties
         /// <summary>
-        /// Gets or sets the number of years within the period. Null means that
-        /// the "years" unit is absent.
+        /// Gets or sets the number of years within the period.
         /// </summary>
-        public long? Years { get; set; }
+        public long Years { get; set; }
 
         /// <summary>
-        /// Gets or sets the number of months within the period. Null means that
-        /// the "months" unit is absent.
+        /// Gets or sets the number of months within the period.
         /// </summary>
-        public long? Months { get; set; }
+        public long Months { get; set; }
 
         /// <summary>
-        /// Gets or sets the number of weeks within the period. Null means that
-        /// the "weeks" unit is absent.
+        /// Gets or sets the number of weeks within the period.
         /// </summary>
-        public long? Weeks { get; set; }
+        public long Weeks { get; set; }
 
         /// <summary>
-        /// Gets or sets the number of days within the period. Null means that
-        /// the "days" unit is absent.
+        /// Gets or sets the number of days within the period.
         /// </summary>
-        public long? Days { get; set; }
+        public long Days { get; set; }
 
         /// <summary>
-        /// Gets or sets the number of hours within the period. Null means that
-        /// the "hours" unit is absent.
+        /// Gets or sets the number of hours within the period.
         /// </summary>
-        public long? Hours { get; set; }
+        public long Hours { get; set; }
 
         /// <summary>
-        /// Gets or sets the number of minutes within the period. Null means that
-        /// the "minutes" unit is absent.
+        /// Gets or sets the number of minutes within the period.
         /// </summary>
-        public long? Minutes { get; set; }
+        public long Minutes { get; set; }
 
         /// <summary>
-        /// Gets or sets the number of seconds within the period. Null means that
-        /// the "seconds" unit is absent.
+        /// Gets or sets the number of seconds within the period.
         /// </summary>
-        public long? Seconds { get; set; }
-        
-        /// <summary>
-        /// Gets or sets the number of milliseconds within the period. Null means that
-        /// the "milliseconds" unit is absent.
-        /// </summary>
-        public long? Milliseconds { get; set; }
+        public long Seconds { get; set; }
 
         /// <summary>
-        /// Gets or sets the number of ticks within the period. Null means that
-        /// the "ticks" unit is absent.
+        /// Gets or sets the number of milliseconds within the period.
         /// </summary>
-        public long? Ticks { get; set; }
+        public long Milliseconds { get; set; }
+
+        /// <summary>
+        /// Gets or sets the number of ticks within the period.
+        /// </summary>
+        public long Ticks { get; set; }
         #endregion
 
         /// <summary>
-        /// Creates a new period builder with an initially empty period.
+        /// Creates a new period builder with an initially zero period.
         /// </summary>
         public PeriodBuilder()
         {
         }
 
         /// <summary>
-        /// Creates a new period builder with the values (and units) from an existing
+        /// Creates a new period builder with the values from an existing
         /// period. Calling this constructor instead of <see cref="Period.ToBuilder"/>
         /// allows object initializers to be used.
         /// </summary>
@@ -106,25 +95,24 @@ namespace NodaTime
         public PeriodBuilder(Period period)
         {
             Preconditions.CheckNotNull(period, "period");
-            var units = period.Units;
-            Years = (units & PeriodUnits.Years) == 0 ? (long?)null : period.Years;
-            Months = (units & PeriodUnits.Months) == 0 ? (long?)null : period.Months;
-            Weeks = (units & PeriodUnits.Weeks) == 0 ? (long?)null : period.Weeks;
-            Days = (units & PeriodUnits.Days) == 0 ? (long?)null : period.Days;
-            Hours = (units & PeriodUnits.Hours) == 0 ? (long?)null : period.Hours;
-            Minutes = (units & PeriodUnits.Minutes) == 0 ? (long?)null : period.Minutes;
-            Seconds = (units & PeriodUnits.Seconds) == 0 ? (long?)null : period.Seconds;
-            Milliseconds = (units & PeriodUnits.Milliseconds) == 0 ? (long?)null : period.Milliseconds;
-            Ticks = (units & PeriodUnits.Milliseconds) == 0 ? (long?)null : period.Ticks;
+            Years = period.Years;
+            Months = period.Months;
+            Weeks = period.Weeks;
+            Days = period.Days;
+            Hours = period.Hours;
+            Minutes = period.Minutes;
+            Seconds = period.Seconds;
+            Milliseconds = period.Milliseconds;
+            Ticks = period.Ticks;
         }
 
         /// <summary>
-        /// Gets or sets the value of a single unit
+        /// Gets or sets the value of a single unit.
         /// </summary>
         /// <param name="unit">A single value within the <see cref="PeriodUnits"/> enumeration.</param>
-        /// <returns>The value of the given unit within this period builder, or null if the unit is unset.</returns>
+        /// <returns>The value of the given unit within this period builder, or zero if the unit is unset.</returns>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="unit"/> is not a single unit</exception>
-        public long? this[PeriodUnits unit]
+        public long this[PeriodUnits unit]
         {
             get
             {
@@ -163,39 +151,10 @@ namespace NodaTime
         /// <summary>
         /// Builds a period from the properties in this builder.
         /// </summary>
-        /// <remarks>
-        /// Any non-null property contributes the corresponding unit to the returned period (even if the value is 0).
-        /// </remarks>
         /// <returns>A period containing the values from this builder.</returns>
         public Period Build()
         {
-            PeriodUnits units = 
-                (Years == null ? 0 : PeriodUnits.Years) |
-                (Months == null ? 0 : PeriodUnits.Months) |
-                (Weeks == null ? 0 : PeriodUnits.Weeks) |
-                (Days == null ? 0 : PeriodUnits.Days) |
-                (Hours == null ? 0 : PeriodUnits.Hours) |
-                (Minutes == null ? 0 : PeriodUnits.Minutes) |
-                (Seconds == null ? 0 : PeriodUnits.Seconds) |
-                (Milliseconds == null ? 0 : PeriodUnits.Milliseconds) |
-                (Ticks == null ? 0 : PeriodUnits.Ticks);
-            switch (units)
-            {
-                case PeriodUnits.None: return Period.Empty;
-                case PeriodUnits.Years: return Period.FromYears(Years.Value);
-                case PeriodUnits.Months: return Period.FromMonths(Months.Value);
-                case PeriodUnits.Weeks: return Period.FromWeeks(Weeks.Value);
-                case PeriodUnits.Days: return Period.FromDays(Days.Value);
-                case PeriodUnits.Hours: return Period.FromHours(Hours.Value);
-                case PeriodUnits.Minutes: return Period.FromMinutes(Minutes.Value);
-                case PeriodUnits.Seconds: return Period.FromSeconds(Seconds.Value);
-                case PeriodUnits.Milliseconds: return Period.FromMillseconds(Milliseconds.Value);
-                case PeriodUnits.Ticks: return Period.FromTicks(Ticks.Value);
-                default: return Period.UnsafeCreate(units, new[] {
-                    Years ?? 0L, Months ?? 0L, Weeks ?? 0L, Days ?? 0L,
-                    Hours ?? 0L, Minutes ?? 0L, Seconds ?? 0L, Milliseconds ?? 0L, Ticks ?? 0L
-                });
-            }
+            return new Period(Years, Months, Weeks, Days, Hours, Minutes, Seconds, Milliseconds, Ticks);
         }
     }
 }

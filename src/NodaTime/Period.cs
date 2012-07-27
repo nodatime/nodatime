@@ -35,16 +35,13 @@ namespace NodaTime
     /// <see cref="Normalize"/> method will convert equivalent periods into a standard representation.
     /// </para>
     /// <para>
-    /// Periods can contain negative units as well as positive units ("+2 hours, -43 minutes, +10 seconds"), and also
-    /// differentiate between properties that are zero and those that are absent (i.e. "10 years" vs. "10 years, zero
-    /// months"). However, note that in that example, the <see cref="Months"/> property would return zero in both
-    /// cases, as absent properties return zero - the <see cref="Units"/> property identifies the units that the period
-    /// actually contains.
+    /// Periods can contain negative units as well as positive units ("+2 hours, -43 minutes, +10 seconds"), but do not
+    /// differentiate between properties that are zero and those that are absent (i.e. a period created as "10 years"
+    /// and one created as "10 years, zero months" are equal periods; the <see cref="Months"/> property returns zero in
+    /// both cases).
     /// </para>
     /// <para>
-    /// <see cref="Period"/> equality is defined solely in terms of the property values contained within the properties.
-    /// This means in particular that two periods that differ only in whether certain properties are present or zero
-    /// will compare as equal.
+    /// <see cref="Period"/> equality is implemented by comparing each property's values individually.
     /// </para>
     /// <para>
     /// Periods operate on calendar-related types such as
@@ -59,25 +56,12 @@ namespace NodaTime
         private static readonly int TypeInitializationChecking = NodaTime.Utility.TypeInitializationChecker.RecordInitializationStart();
 
         /// <summary>
-        /// The number of values in an array for a compound period. This is always the same, representing
-        /// all possible units.
+        /// In some cases, periods are represented as <c>long[]</c> arrays containing all possible units (years to
+        /// ticks). This is the size of those arrays.
         /// </summary>
         private const int ValuesArraySize = 9;
 
-        /// <summary>
-        /// An empty period with no units.
-        /// </summary>
-        public static readonly Period Empty = new Period(0, new long[ValuesArraySize]);
-
-        /// <summary>
-        /// Returns an equality comparer which compares periods by first normalizing them - so 24 hours is deemed equal to 1 day, and so on.
-        /// Note that as per the <see cref="Normalize"/> method, years and months are unchanged by normalization - so 12 months does not
-        /// equal 1 year.
-        /// </summary>
-        public static IEqualityComparer<Period> NormalizingEqualityComparer { get { return NormalizingPeriodEqualityComparer.Instance; } }
-
-        // Just to avoid magic numbers elsewhere. Not an enum as we normally want to use
-        // the value as an index immediately afterwards.
+        // The indexes into those arrays, for readability.
         // Note that these must match up with the single values in PeriodUnits, such
         // that 1<<index is the same as the equivalent value in PeriodUnits.
         private const int YearIndex = 0;
@@ -91,68 +75,81 @@ namespace NodaTime
         private const int TickIndex = 8;
 
         /// <summary>
-        /// The units contained within this period.
+        /// A period containing only zero-valued properties.
         /// </summary>
-        private readonly PeriodUnits units;
+        public static readonly Period Zero = new Period(new long[ValuesArraySize]);
 
         /// <summary>
-        /// The single value for single-valued periods. Ignored for compound periods.
+        /// Returns an equality comparer which compares periods by first normalizing them - so 24 hours is deemed equal to 1 day, and so on.
+        /// Note that as per the <see cref="Normalize"/> method, years and months are unchanged by normalization - so 12 months does not
+        /// equal 1 year.
         /// </summary>
-        private readonly long singleValue;
+        public static IEqualityComparer<Period> NormalizingEqualityComparer { get { return NormalizingPeriodEqualityComparer.Instance; } }
+
+        // The fields that make up this period.
+        private readonly long ticks;
+        private readonly long milliseconds;
+        private readonly long seconds;
+        private readonly long minutes;
+        private readonly long hours;
+        private readonly long days;
+        private readonly long weeks;
+        private readonly long months;
+        private readonly long years;
 
         /// <summary>
-        /// All values for compound periods, or null for single-valued periods.
+        /// Creates a new period from the given array.
         /// </summary>
-        private readonly long[] values;
-
-        /// <summary>
-        /// Creates a new period with the given array without copying it. The array contents must
-        /// not be changed after the value has been constructed - which is why this method is private.
-        /// </summary>
-        /// <param name="units">The units within this period, describing which properties are present</param>
         /// <param name="values">Values for each field</param>
-        private Period(PeriodUnits units, long[] values)
+        private Period(long[] values)
         {
-            this.values = values;
-            this.units = units;
-            this.singleValue = 0;
+            years = values[YearIndex];
+            months = values[MonthIndex];
+            weeks = values[WeekIndex];
+            days = values[DayIndex];
+            hours = values[HourIndex];
+            minutes = values[MinuteIndex];
+            seconds = values[SecondIndex];
+            milliseconds = values[MillisecondIndex];
+            ticks = values[TickIndex];
         }
 
         /// <summary>
-        /// Createds a new period with the given single value. The unit is assumed to be single.
+        /// Creates a new period from the given values.
+        /// </summary>
+        internal Period(long years, long months, long weeks, long days, long hours, long minutes, long seconds,
+            long milliseconds, long ticks)
+        {
+            this.years = years;
+            this.months = months;
+            this.weeks = weeks;
+            this.days = days;
+            this.hours = hours;
+            this.minutes = minutes;
+            this.seconds = seconds;
+            this.milliseconds = milliseconds;
+            this.ticks = ticks;
+        }
+
+        /// <summary>
+        /// Creates a new period with the given single value.
         /// </summary>
         private Period(PeriodUnits periodUnit, long value)
         {
-            this.values = null;
-            this.units = periodUnit;
-            this.singleValue = value;
+            switch (periodUnit)
+            {
+                case PeriodUnits.Years: years = value; break;
+                case PeriodUnits.Months: months = value; break;
+                case PeriodUnits.Weeks: weeks = value; break;
+                case PeriodUnits.Days: days = value; break;
+                case PeriodUnits.Hours: hours = value; break;
+                case PeriodUnits.Minutes: minutes = value; break;
+                case PeriodUnits.Seconds: seconds = value; break;
+                case PeriodUnits.Milliseconds: milliseconds = value; break;
+                case PeriodUnits.Ticks: ticks = value; break;
+                default: throw new ArgumentException("Unit must be singular", "periodUnit");
+            }
         }
-
-        /// <summary>
-        /// Internal method to create a new period with the given units and values. The unit is assumed to be
-        /// non-singular.
-        /// </summary>
-        /// <remarks>
-        /// This just delegates to the private constructor with the same parameters;
-        /// this method only exists (rather than the constructor being internal) for
-        /// clarity of naming. It must *only* be used where the array will never
-        /// be published.
-        /// </remarks>
-        internal static Period UnsafeCreate(PeriodUnits units, long[] values)
-        {
-            return new Period(units, values);
-        }
-
-        /// <summary>
-        /// Returns the units within this period, such as "year, month, day" or "hour".
-        /// </summary>
-        /// <remarks>
-        /// This returns the units that the period actually contains: for a period of "1 month", this will return
-        /// <see cref="PeriodUnits.Months"/>; for a period of "1 month and zero days", this will return the sum of
-        /// <see cref="PeriodUnits.Months"/> and <see cref="PeriodUnits.Days"/> (though note that the
-        /// <see cref="Days"/> property will return zero in both cases).
-        /// </remarks>
-        public PeriodUnits Units { get { return units; } }
 
         /// <summary>
         /// Creates a period representing the specified number of years.
@@ -255,10 +252,9 @@ namespace NodaTime
         {
             Preconditions.CheckNotNull(left, "left");
             Preconditions.CheckNotNull(right, "right");
-            long[] sum = new long[ValuesArraySize];
-            left.AddValuesTo(sum);
+            long[] sum = left.ToArray();
             right.AddValuesTo(sum);
-            return new Period(left.Units | right.Units, sum);
+            return new Period(sum);
         }
 
         /// <summary>
@@ -279,22 +275,55 @@ namespace NodaTime
         }
 
         /// <summary>
-        /// Adds all the values in this period to the given array of values (which is assumed to be of the right length).
+        /// Returns the property values in this period as an array.
         /// </summary>
-        private void AddValuesTo(long[] newValues)
+        private long[] ToArray()
         {
-            if (values == null)
-            {
-                int index = GetSingleFieldIndex(units);
-                newValues[index] += singleValue;
-            }
-            else
-            {
-                for (int i = 0; i < values.Length; i++)
-                {
-                    newValues[i] += values[i];
-                }
-            }
+            long[] values = new long[ValuesArraySize];
+            values[YearIndex] = years;
+            values[MonthIndex] = months;
+            values[WeekIndex] = weeks;
+            values[DayIndex] = days;
+            values[HourIndex] = hours;
+            values[MinuteIndex] = minutes;
+            values[SecondIndex] = seconds;
+            values[MillisecondIndex] = milliseconds;
+            values[TickIndex] = ticks;
+            return values;
+        }
+
+        /// <summary>
+        /// Adds all the values in this period to the given array of values (which is assumed to be of the right
+        /// length).
+        /// </summary>
+        private void AddValuesTo(long[] values)
+        {
+            values[YearIndex] += years;
+            values[MonthIndex] += months;
+            values[WeekIndex] += weeks;
+            values[DayIndex] += days;
+            values[HourIndex] += hours;
+            values[MinuteIndex] += minutes;
+            values[SecondIndex] += seconds;
+            values[MillisecondIndex] += milliseconds;
+            values[TickIndex] += ticks;
+        }
+
+        /// <summary>
+        /// Subtracts all the values in this period from the given array of values (which is assumed to be of the right
+        /// length).
+        /// </summary>
+        private void SubtractValuesFrom(long[] values)
+        {
+            values[YearIndex] -= years;
+            values[MonthIndex] -= months;
+            values[WeekIndex] -= weeks;
+            values[DayIndex] -= days;
+            values[HourIndex] -= hours;
+            values[MinuteIndex] -= minutes;
+            values[SecondIndex] -= seconds;
+            values[MillisecondIndex] -= milliseconds;
+            values[TickIndex] -= ticks;
         }
 
         /// <summary>
@@ -309,15 +338,9 @@ namespace NodaTime
         {
             Preconditions.CheckNotNull(minuend, "minuend");
             Preconditions.CheckNotNull(subtrahend, "subtrahend");
-            long[] sum = new long[ValuesArraySize];
-            subtrahend.AddValuesTo(sum);
-            // Not terribly efficient, but it's only 9 values...
-            for (int i = 0; i < sum.Length; i++)
-            {
-                sum[i] = -sum[i];
-            }
-            minuend.AddValuesTo(sum);
-            return new Period(minuend.Units | subtrahend.Units, sum);
+            long[] sum = minuend.ToArray();
+            subtrahend.SubtractValuesFrom(sum);
+            return new Period(sum);
         }
 
         /// <summary>
@@ -346,23 +369,23 @@ namespace NodaTime
             LocalInstant startLocalInstant = start.LocalInstant;
             LocalInstant endLocalInstant = end.LocalInstant;
 
-            FieldSet fieldSet = calendar.Fields;
+            if (startLocalInstant == endLocalInstant)
+            {
+                return Zero;
+            }
+
+            FieldSet fields = calendar.Fields;
 
             // Optimization for single field
-            int singleIndex = GetSingleFieldIndex(units);
-            if (singleIndex != -1)
+            var singleField = GetSingleField(fields, units);
+            if (singleField != null)
             {
-                long value = startLocalInstant == endLocalInstant ? 0 : GetFieldForIndex(fieldSet, singleIndex).GetInt64Difference(end.LocalInstant, start.LocalInstant);
+                long value = singleField.GetInt64Difference(end.LocalInstant, start.LocalInstant);
                 return new Period(units, value);
             }
 
             // Multiple fields
             long[] values = new long[ValuesArraySize];
-
-            if (startLocalInstant == endLocalInstant)
-            {
-                return new Period(units, values);
-            }
 
             LocalInstant remaining = startLocalInstant;
             int numericFields = (int) units;
@@ -370,12 +393,12 @@ namespace NodaTime
             {
                 if ((numericFields & (1 << i)) != 0)
                 {
-                    var field = GetFieldForIndex(fieldSet, i);
+                    var field = GetFieldForIndex(fields, i);
                     values[i] = field.GetInt64Difference(endLocalInstant, remaining);
                     remaining = field.Add(remaining, values[i]);
                 }
             }
-            return new Period(units, values);
+            return new Period(values);
         }
 
         /// <summary>
@@ -384,29 +407,20 @@ namespace NodaTime
         internal LocalInstant AddTo(LocalInstant localInstant, CalendarSystem calendar, int scalar)
         {
             Preconditions.CheckNotNull(calendar, "calendar");
-            if (scalar == 0)
-            {
-                return localInstant;
-            }
 
-            FieldSet fieldSet = calendar.Fields;
-            if (values == null)
-            {
-                int index = GetSingleFieldIndex(units);
-                PeriodField field = GetFieldForIndex(fieldSet, index);
-                return field.Add(localInstant, singleValue * scalar);
-            }
-
+            FieldSet fields = calendar.Fields;
             LocalInstant result = localInstant;
 
-            for (int i = 0; i < values.Length; i++)
-            {
-                long value = values[i];
-                if (value != 0)
-                {
-                    result = GetFieldForIndex(fieldSet, i).Add(result, value * scalar);
-                }
-            }
+            if (years != 0) result = fields.Years.Add(result, years * scalar);
+            if (months != 0) result = fields.Months.Add(result, months * scalar);
+            if (weeks != 0) result = fields.Weeks.Add(result, weeks * scalar);
+            if (days != 0) result = fields.Days.Add(result, days * scalar);
+            if (hours != 0) result = fields.Hours.Add(result, hours * scalar);
+            if (minutes != 0) result = fields.Minutes.Add(result, minutes * scalar);
+            if (seconds != 0) result = fields.Seconds.Add(result, seconds * scalar);
+            if (milliseconds != 0) result = fields.Milliseconds.Add(result, milliseconds * scalar);
+            if (ticks != 0) result = fields.Ticks.Add(result, ticks * scalar);
+
             return result;
         }
 
@@ -507,25 +521,7 @@ namespace NodaTime
         {
             get
             {
-                // Simple case: there are no time units anyway
-                if ((units & PeriodUnits.AllTimeUnits) == 0)
-                {
-                    return false;
-                }
-                // Single value case - no need to check unit type, as it must be a time one by now.
-                if (values == null)
-                {
-                    return singleValue != 0;
-                }
-                // Compound case: just check the time-related indexes
-                for (int i = HourIndex; i <= TickIndex; i++)
-                {
-                    if (values[i] != 0)
-                    {
-                        return true;
-                    }
-                }
-                return false;
+                return hours != 0 || minutes != 0 || seconds != 0 || milliseconds != 0 || ticks != 0;
             }
         }
 
@@ -536,32 +532,13 @@ namespace NodaTime
         {
             get
             {
-                // Simple case: there are no date units anyway
-                if ((units & PeriodUnits.AllDateUnits) == 0)
-                {
-                    return false;
-                }
-                // Single value case - no need to check unit type, as it must be a date one by now.
-                if (values == null)
-                {
-                    return singleValue != 0;
-                }
-                // Compound case: just check the date-related indexes
-                for (int i = YearIndex; i <= DayIndex; i++)
-                {
-                    if (values[i] != 0)
-                    {
-                        return true;
-                    }
-                }
-                return false;
+                return years != 0 || months != 0 || weeks != 0 || days != 0;
             }
         }
 
         /// <summary>
-        /// For periods that do not contain years or months, returns a duration for this period assuming a standard
-        /// 7-day week, 24-hour day, 60-minute hour etc. The period may contain year or month units, so long as the
-        /// values of those properties are zero.
+        /// For periods that do not contain a non-zero number of years or months, returns a duration for this period
+        /// assuming a standard 7-day week, 24-hour day, 60-minute hour etc.
         /// </summary>
         /// <exception cref="InvalidOperationException">The month or year property in the period is non-zero.</exception>
         /// <exception cref="OverflowException">The period doesn't have years or months, but the calculation
@@ -575,14 +552,25 @@ namespace NodaTime
             {
                 throw new InvalidOperationException("Cannot construct duration of period with non-zero months or years.");
             }
-            long totalTicks = Ticks +
-                Milliseconds * NodaConstants.TicksPerMillisecond +
-                Seconds * NodaConstants.TicksPerSecond +
-                Minutes * NodaConstants.TicksPerMinute +
-                Hours * NodaConstants.TicksPerHour +
-                Days * NodaConstants.TicksPerStandardDay +
-                Weeks * NodaConstants.TicksPerStandardWeek;
-            return Duration.FromTicks(totalTicks);
+            return Duration.FromTicks(TotalStandardTicks);
+        }
+
+        /// <summary>
+        /// Gets the total number of ticks duration for the 'standard' properties (all bar years and months).
+        /// </summary>
+        private long TotalStandardTicks
+        {
+            get
+            {
+                // This can overflow even when it wouldn't necessarily need to. See comments elsewhere.
+                return ticks +
+                    milliseconds * NodaConstants.TicksPerMillisecond +
+                    seconds * NodaConstants.TicksPerSecond +
+                    minutes * NodaConstants.TicksPerMinute +
+                    hours * NodaConstants.TicksPerHour +
+                    days * NodaConstants.TicksPerStandardDay +
+                    weeks * NodaConstants.TicksPerStandardWeek;
+            }
         }
 
         /// <summary>
@@ -606,10 +594,15 @@ namespace NodaTime
         /// Days property, and all time properties are normalized to their natural range
         /// (where ticks are "within a millisecond"), adding to the larger property where
         /// necessary. So for example, a period of 25 hours becomes a period of 1 day
-        /// and 1 hour. Units are also normalized - only non-zero values have their
-        /// units retained. Aside from months and years, either all the properties
+        /// and 1 hour. Aside from months and years, either all the properties
         /// end up positive, or they all end up negative.
         /// </remarks>
+        /// <exception cref="OverflowException">The period doesn't have years or months, but it contains more than
+        /// <see cref="Int64.MaxValue"/> ticks when the combined weeks/days/time portions are considered. Such a period
+        /// could never be useful anyway, however.
+        /// In some cases this may occur even though the theoretical result would be valid due to balancing positive and
+        /// negative values, but for simplicity there is no attempt to work around this - in realistic periods, it
+        /// shouldn't be a problem.</exception>
         /// <returns>The normalized period.</returns>
         /// <seealso cref="NormalizingEqualityComparer"/>
         public Period Normalize()
@@ -617,13 +610,7 @@ namespace NodaTime
             // TODO(Post-V1): Consider improving the efficiency of this: return "this" when it's already normalized.
             // Simplest way to normalize: grab all the fields up to "week" and
             // sum them.
-            long totalTicks = Ticks +
-                Milliseconds * NodaConstants.TicksPerMillisecond +
-                Seconds * NodaConstants.TicksPerSecond +
-                Minutes * NodaConstants.TicksPerMinute +
-                Hours * NodaConstants.TicksPerHour +
-                Days * NodaConstants.TicksPerStandardDay +
-                Weeks * NodaConstants.TicksPerStandardWeek;
+            long totalTicks = TotalStandardTicks;
             // TODO(Post-V1): Could use Duration for this...
             long days = totalTicks / NodaConstants.TicksPerStandardDay;
             long hours = (totalTicks / NodaConstants.TicksPerHour) % NodaConstants.HoursPerStandardDay;
@@ -631,55 +618,28 @@ namespace NodaTime
             long seconds = (totalTicks / NodaConstants.TicksPerSecond) % NodaConstants.SecondsPerMinute;
             long milliseconds = (totalTicks / NodaConstants.TicksPerMillisecond) % NodaConstants.MillisecondsPerSecond;
             long ticks = totalTicks % NodaConstants.TicksPerMillisecond;
-            return new PeriodBuilder
-            {
-                Years = this.Years == 0 ? (long?)null : this.Years,
-                Months = this.Months == 0 ? (long?)null : this.Months,
-                Days = days == 0 ? (long?)null : days,
-                Hours = hours == 0 ? (long?)null : hours,
-                Minutes = minutes == 0 ? (long?)null : minutes,
-                Seconds = seconds == 0 ? (long?)null : seconds,
-                Milliseconds = milliseconds == 0 ? (long?)null : milliseconds,
-                Ticks = ticks == 0 ? (long?)null : ticks,
-            }.Build();
+
+            return new Period(this.years, this.months, 0 /* weeks */, days, hours, minutes, seconds, milliseconds, ticks);
         }
 
         /// <summary>
-        /// Returns the value of the given unit within this period. If the period does not contain
-        /// the given unit, 0 is returned.
-        /// </summary>
-        /// <param name="index">The index to fetch the value of.</param>
-        /// <returns>The value of the given unit within this period, or 0 if this period does not contain the given unit.</returns>
-        private long this[int index]
-        {
-            get
-            {
-                if (values == null)
-                {
-                    return (int) units == (1 << index) ? singleValue : 0;
-                }
-                return values[index];
-            }
-        }
-
-        /// <summary>
-        /// Returns the index (0-8 inclusive) for the given unit value, or -1 if the value does
+        /// Returns the PeriodField for the given unit value, or null if the values does
         /// not represent a single unit.
         /// </summary>
-        private static int GetSingleFieldIndex(PeriodUnits units)
+        private static PeriodField GetSingleField(FieldSet fields, PeriodUnits units)
         {
             switch (units)
             {
-                case PeriodUnits.Years: return YearIndex;
-                case PeriodUnits.Months: return MonthIndex;
-                case PeriodUnits.Weeks: return WeekIndex;
-                case PeriodUnits.Days: return DayIndex;
-                case PeriodUnits.Hours: return HourIndex;
-                case PeriodUnits.Minutes: return MinuteIndex;
-                case PeriodUnits.Seconds: return SecondIndex;
-                case PeriodUnits.Milliseconds: return MillisecondIndex;
-                case PeriodUnits.Ticks: return TickIndex;
-                default: return -1;
+                case PeriodUnits.Years: return fields.Years;
+                case PeriodUnits.Months: return fields.Months;
+                case PeriodUnits.Weeks: return fields.Weeks;;
+                case PeriodUnits.Days: return fields.Days;
+                case PeriodUnits.Hours: return fields.Hours;
+                case PeriodUnits.Minutes: return fields.Minutes;
+                case PeriodUnits.Seconds: return fields.Seconds;
+                case PeriodUnits.Milliseconds: return fields.Milliseconds;
+                case PeriodUnits.Ticks: return fields.Ticks;
+                default: return null;
             }
         }
 
@@ -708,83 +668,74 @@ namespace NodaTime
         /// Gets the number of years within this period.
         /// </summary>
         /// <remarks>
-        /// This property returns zero both when the property is explicitly set to zero and when the period does not
-        /// contain this property. The <see cref="Units"/> property can be used to differentiate between the two cases
-        /// if needed.
+        /// This property returns zero both when the property has been explicitly set to zero and when the period does not
+        /// contain this property.
         /// </remarks>
-        public long Years { get { return this[YearIndex]; } }
+        public long Years { get { return years; } }
         /// <summary>
         /// Gets the number of months within this period.
         /// </summary>
         /// <remarks>
-        /// This property returns zero both when the property is explicitly set to zero and when the period does not
-        /// contain this property. The <see cref="Units"/> property can be used to differentiate between the two cases
-        /// if needed.
+        /// This property returns zero both when the property has been explicitly set to zero and when the period does not
+        /// contain this property.
         /// </remarks>
-        public long Months { get { return this[MonthIndex]; } }
+        public long Months { get { return months; } }
         /// <summary>
         /// Gets the number of weeks within this period.
         /// </summary>
         /// <remarks>
-        /// This property returns zero both when the property is explicitly set to zero and when the period does not
-        /// contain this property. The <see cref="Units"/> property can be used to differentiate between the two cases
-        /// if needed.
+        /// This property returns zero both when the property has been explicitly set to zero and when the period does not
+        /// contain this property.
         /// </remarks>
-        public long Weeks { get { return this[WeekIndex]; } }
+        public long Weeks { get { return weeks; } }
         /// <summary>
         /// Gets the number of days within this period.
         /// </summary>
         /// <remarks>
-        /// This property returns zero both when the property is explicitly set to zero and when the period does not
-        /// contain this property. The <see cref="Units"/> property can be used to differentiate between the two cases
-        /// if needed.
+        /// This property returns zero both when the property has been explicitly set to zero and when the period does not
+        /// contain this property.
         /// </remarks>
-        public long Days { get { return this[DayIndex]; } }
+        public long Days { get { return days; } }
         /// <summary>
         /// Gets the number of hours within this period.
         /// </summary>
         /// <remarks>
-        /// This property returns zero both when the property is explicitly set to zero and when the period does not
-        /// contain this property. The <see cref="Units"/> property can be used to differentiate between the two cases
-        /// if needed.
+        /// This property returns zero both when the property has been explicitly set to zero and when the period does not
+        /// contain this property.
         /// </remarks>
-        public long Hours { get { return this[HourIndex]; } }
+        public long Hours { get { return hours; } }
         /// <summary>
         /// Gets the number of minutes within this period.
         /// </summary>
         /// <remarks>
-        /// This property returns zero both when the property is explicitly set to zero and when the period does not
-        /// contain this property. The <see cref="Units"/> property can be used to differentiate between the two cases
-        /// if needed.
+        /// This property returns zero both when the property has been explicitly set to zero and when the period does not
+        /// contain this property.
         /// </remarks>
-        public long Minutes { get { return this[MinuteIndex]; } }
+        public long Minutes { get { return minutes; } }
         /// <summary>
         /// Gets the number of seconds within this period.
         /// </summary>
         /// <remarks>
-        /// This property returns zero both when the property is explicitly set to zero and when the period does not
-        /// contain this property. The <see cref="Units"/> property can be used to differentiate between the two cases
-        /// if needed.
+        /// This property returns zero both when the property has been explicitly set to zero and when the period does not
+        /// contain this property.
         /// </remarks>
-        public long Seconds { get { return this[SecondIndex]; } }
+        public long Seconds { get { return seconds; } }
         /// <summary>
         /// Gets the number of milliseconds within this period.
         /// </summary>
         /// <remarks>
-        /// This property returns zero both when the property is explicitly set to zero and when the period does not
-        /// contain this property. The <see cref="Units"/> property can be used to differentiate between the two cases
-        /// if needed.
+        /// This property returns zero both when the property has been explicitly set to zero and when the period does not
+        /// contain this property.
         /// </remarks>
-        public long Milliseconds { get { return this[MillisecondIndex]; } }
+        public long Milliseconds { get { return milliseconds; } }
         /// <summary>
         /// Gets the number of ticks within this period.
         /// </summary>
         /// <remarks>
-        /// This property returns zero both when the property is explicitly set to zero and when the period does not
-        /// contain this property. The <see cref="Units"/> property can be used to differentiate between the two cases
-        /// if needed.
+        /// This property returns zero both when the property has been explicitly set to zero and when the period does not
+        /// contain this property.
         /// </remarks>
-        public long Ticks { get { return this[TickIndex]; } }
+        public long Ticks { get { return ticks; } }
         #endregion
 
         #region Object overrides
@@ -815,10 +766,15 @@ namespace NodaTime
         public override int GetHashCode()
         {
             int hash = HashCodeHelper.Initialize();
-            for (int i = 0; i < ValuesArraySize; i++)
-            {
-                hash = HashCodeHelper.Hash(hash, this[i]);
-            }
+            hash = HashCodeHelper.Hash(hash, years);
+            hash = HashCodeHelper.Hash(hash, months);
+            hash = HashCodeHelper.Hash(hash, weeks);
+            hash = HashCodeHelper.Hash(hash, days);
+            hash = HashCodeHelper.Hash(hash, hours);
+            hash = HashCodeHelper.Hash(hash, minutes);
+            hash = HashCodeHelper.Hash(hash, seconds);
+            hash = HashCodeHelper.Hash(hash, milliseconds);
+            hash = HashCodeHelper.Hash(hash, ticks);
             return hash;
         }
 
@@ -826,9 +782,8 @@ namespace NodaTime
         /// Compares the given period for equality with this one.
         /// </summary>
         /// <remarks>
-        /// Periods are equal if they contain the same values for the same properties
-        /// - so a period of "one hour" is the same whether or not it's potentially got other properties with
-        /// a zero value. However, no normalization takes place, so "one hour" is not equal to "sixty minutes".
+        /// Periods are equal if they contain the same values for the same properties.
+        /// However, no normalization takes place, so "one hour" is not equal to "sixty minutes".
         /// </remarks>
         /// <param name="other">The period to compare this one with.</param>
         /// <returns>True if this period has the same values for the same properties as the one specified.</returns>
@@ -839,14 +794,15 @@ namespace NodaTime
                 return false;
             }
 
-            for (int i = 0; i < ValuesArraySize; i++)
-            {
-                if (this[i] != other[i])
-                {
-                    return false;
-                }
-            }
-            return true;
+            return years == other.years &&
+                months == other.months &&
+                weeks == other.weeks &&
+                days == other.days &&
+                hours == other.hours &&
+                minutes == other.minutes &&
+                seconds == other.seconds &&
+                milliseconds == other.milliseconds &&
+                ticks == other.ticks;
         }
         #endregion
 

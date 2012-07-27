@@ -84,10 +84,10 @@ namespace NodaTime.Text
             return pattern.Format(value);
         }
 
-        private static void AppendValue(StringBuilder builder, PeriodUnits unitToCheck, long value, string suffix)
+        private static void AppendValue(StringBuilder builder, long value, string suffix)
         {
             // Avoid having a load of conditions in the calling code by checking here
-            if (unitToCheck == 0)
+            if (value == 0)
             {
                 return;
             }
@@ -197,18 +197,18 @@ namespace NodaTime.Text
             {
                 Preconditions.CheckNotNull(value, "value");
                 StringBuilder builder = new StringBuilder("P");
-                AppendValue(builder, value.Units & PeriodUnits.Years, value.Years, "Y");
-                AppendValue(builder, value.Units & PeriodUnits.Months, value.Months, "M");
-                AppendValue(builder, value.Units & PeriodUnits.Weeks, value.Weeks, "W");
-                AppendValue(builder, value.Units & PeriodUnits.Days, value.Days, "D");
-                if ((value.Units & PeriodUnits.AllTimeUnits) != 0)
+                AppendValue(builder, value.Years, "Y");
+                AppendValue(builder, value.Months, "M");
+                AppendValue(builder, value.Weeks, "W");
+                AppendValue(builder, value.Days, "D");
+                if (value.HasTimeComponent)
                 {
                     builder.Append("T");
-                    AppendValue(builder, value.Units & PeriodUnits.Hours, value.Hours, "H");
-                    AppendValue(builder, value.Units & PeriodUnits.Minutes, value.Minutes, "M");
-                    AppendValue(builder, value.Units & PeriodUnits.Seconds, value.Seconds, "S");
-                    AppendValue(builder, value.Units & PeriodUnits.Milliseconds, value.Milliseconds, "s");
-                    AppendValue(builder, value.Units & PeriodUnits.Ticks, value.Ticks, "t");
+                    AppendValue(builder, value.Hours, "H");
+                    AppendValue(builder, value.Minutes, "M");
+                    AppendValue(builder, value.Seconds, "S");
+                    AppendValue(builder, value.Milliseconds, "s");
+                    AppendValue(builder, value.Ticks, "t");
                 }
                 return builder.ToString();
             }
@@ -303,8 +303,7 @@ namespace NodaTime.Text
                         {
                             return MisplacedUnit(valueCursor.Current);
                         }
-                        long seconds = unitValue;
-                        builder.Seconds = seconds == 0 ? (long?)null : seconds;
+                        builder.Seconds = unitValue;
 
                         if (!valueCursor.MoveNext())
                         {
@@ -322,10 +321,8 @@ namespace NodaTime.Text
                         {
                             totalTicks = -totalTicks;
                         }
-                        long milliseconds = (totalTicks / NodaConstants.TicksPerMillisecond) % NodaConstants.MillisecondsPerSecond;
-                        long ticks = totalTicks % NodaConstants.TicksPerMillisecond;
-                        builder.Milliseconds = milliseconds == 0 ? (long?)null : milliseconds;
-                        builder.Ticks = ticks == 0 ? (long?)null : ticks;
+                        builder.Milliseconds = (totalTicks / NodaConstants.TicksPerMillisecond) % NodaConstants.MillisecondsPerSecond;
+                        builder.Ticks = totalTicks % NodaConstants.TicksPerMillisecond;
 
                         if (valueCursor.Current != 'S')
                         {
@@ -338,11 +335,7 @@ namespace NodaTime.Text
                         return ParseResult<Period>.ForValue(builder.Build());
                     }
 
-                    // Normalize to the extend of excluding 0 values.
-                    if (unitValue != 0)
-                    {
-                        builder[unit] = unitValue;
-                    }
+                    builder[unit] = unitValue;
                     unitsSoFar |= unit;
                 }
                 if (unitsSoFar == 0)
@@ -357,20 +350,20 @@ namespace NodaTime.Text
                 Preconditions.CheckNotNull(value, "value");
                 value = value.Normalize();
                 // Always ensure we've got *some* unit; arbitrarily pick days.
-                if (value.Units == 0)
+                if (value.Equals(Period.Zero))
                 {
                     return "P0D";
                 }
                 StringBuilder builder = new StringBuilder("P");
-                AppendValue(builder, value.Units & PeriodUnits.Years, value.Years, "Y");
-                AppendValue(builder, value.Units & PeriodUnits.Months, value.Months, "M");
-                AppendValue(builder, value.Units & PeriodUnits.Weeks, value.Weeks, "W");
-                AppendValue(builder, value.Units & PeriodUnits.Days, value.Days, "D");
-                if ((value.Units & PeriodUnits.AllTimeUnits) != 0)
+                AppendValue(builder, value.Years, "Y");
+                AppendValue(builder, value.Months, "M");
+                AppendValue(builder, value.Weeks, "W");
+                AppendValue(builder, value.Days, "D");
+                if (value.HasTimeComponent)
                 {
                     builder.Append("T");
-                    AppendValue(builder, value.Units & PeriodUnits.Hours, value.Hours, "H");
-                    AppendValue(builder, value.Units & PeriodUnits.Minutes, value.Minutes, "M");
+                    AppendValue(builder, value.Hours, "H");
+                    AppendValue(builder, value.Minutes, "M");
                     long ticks = value.Milliseconds * NodaConstants.TicksPerMillisecond + value.Ticks;
                     long seconds = value.Seconds;
                     if (ticks != 0 || seconds != 0)
