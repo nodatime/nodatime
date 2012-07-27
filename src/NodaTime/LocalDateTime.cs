@@ -254,7 +254,7 @@ namespace NodaTime
         /// <summary>Gets the year of this local date and time within its era.</summary>
         public int YearOfEra { get { return calendar.Fields.YearOfEra.GetValue(localInstant); } }
 
-        /// <summary>Gets the era of this local date.</summary>
+        /// <summary>Gets the era of this local date and time.</summary>
         public Era Era { get { return calendar.Eras[calendar.Fields.Era.GetValue(localInstant)]; } }
 
         /// <summary>
