@@ -11,10 +11,10 @@ more details.
      sources
    - New interface `IDateTimeZoneProvider` aimed at *callers*, with caching
      assumed
-   - Removed various `DateTimeZone` static methods, in favour of always going
+   - New class `DateTimeZoneProviders` with static properties to access the
+     built-in providers: TZDB, BCL and default (currently TZDB)
+   - Removed various `DateTimeZone` static methods in favour of always going
      via an `IDateTimeZoneProvider` implementation
-   - `DateTimeZoneProviders` added with static properties to access TZDB, BCL
-     and default (currently TZDB) providers
    - `DateTimeZoneCache` now public and implements `IDateTimeZoneProvider`
 - `DateTimeZone` no longer has internal abstract methods, making third-party
   implementations possible ([issue 77][])
@@ -33,6 +33,9 @@ more details.
 - `Duration.ToString()` and `Interval.ToString()` now return more descriptive
   text
 
+- Removed `DateTimeZone.GetSystemDefaultOrNull()`; callers should use the
+  provider's `GetSystemDefault()` method and (if necessary) catch the
+  `TimeZoneNotFoundException` that it can throw ([issue 61][])
 - Removed most of the convenience static properties on `Duration` (e.g.
   `Duration.OneStandardDay`) in favour of the existing static methods; removed
   `MinValue` and `MaxValue`, and added `Epsilon` ([issue 70][])
@@ -76,6 +79,7 @@ more details.
 [issue 53]: http://code.google.com/p/noda-time/issues/detail?id=53
 [issue 55]: http://code.google.com/p/noda-time/issues/detail?id=55
 [issue 56]: http://code.google.com/p/noda-time/issues/detail?id=56
+[issue 61]: http://code.google.com/p/noda-time/issues/detail?id=61
 [issue 62]: http://code.google.com/p/noda-time/issues/detail?id=62
 [issue 64]: http://code.google.com/p/noda-time/issues/detail?id=64
 [issue 69]: http://code.google.com/p/noda-time/issues/detail?id=69
