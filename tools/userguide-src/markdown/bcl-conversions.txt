@@ -102,13 +102,13 @@ there are some options using [`BclDateTimeZone`](noda-type://NodaTime.TimeZones.
 - You can use `DateTimeZoneProviders.Bcl` everywhere you create time zones. (You may well want to inject this as an [`IDateTimeZoneProvider`](noda-type://NodaTime.IDateTimeZoneProvider)
   if you're using dependency injection). This is appropriate if you're going to work with various time zones,
   and you only ever care about the BCL versions.
-- To convert a single time zone, you can can `BclDateTimeZone.FromTimeZoneInfo`.
-- If you just need the system default time zone, you can call `BclDateTimeZone.ForSystemDefault`. There are some circumstances where
-  using `DateTimeZoneProviders.Tzdb.GetSystemDefault` may return null, indicating that there's no known mapping from the local BCL time zone
-  ID to TZDB. Using `BclDateTimeZone.ForSystemDefault()` *always* returns a converted version
-  of the BCL time zone. This can be used to provide a fallback mechanism:
-
-        DateTimeZone systemZone = DateTimeZoneProviders.Tzdb.GetSystemDefault() ?? BclDateTimeZone.ForSystemDefault();
+- To convert a single time zone, you can use `BclDateTimeZone.FromTimeZoneInfo`.
+- If you just need the system default time zone, you can call
+  `BclDateTimeZone.ForSystemDefault`. There are some (rare) circumstances where
+  using `DateTimeZoneProviders.Tzdb.GetSystemDefault` may throw an exception,
+  indicating that there's no known mapping from the local BCL time zone ID to
+  TZDB. Using `BclDateTimeZone.ForSystemDefault()` *always* returns a converted
+  version of the BCL local time zone.
 
 There are various pros and cons involved in using the zoneinfo time
 zones vs the BCL ones. In particular:

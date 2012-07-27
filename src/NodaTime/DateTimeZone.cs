@@ -61,17 +61,25 @@ namespace NodaTime
     /// <para>
     /// Noda Time has two built-in sources of time zone data available: a copy of the
     /// <see href="http://www.iana.org/time-zones">"zoneinfo"</see> (aka tz or Olson) database, and the ability to convert .NET's own
-    /// <see cref="TimeZoneInfo"/>  format into a "native" Noda Time zone. Which of these is most appropriate for you to use
+    /// <see cref="TimeZoneInfo"/> format into a "native" Noda Time zone. Which of these is most appropriate for you to use
     /// will very much depend on your exact needs. The zoneinfo database is widely used outside Windows, and has more historical data
     /// than the Windows-provided information, but if you need to interoperate with other Windows systems by specifying time zone IDs,
     /// you may wish to stick to the Windows time zones.
     /// </para>
-    /// <para>To get a Noda Time representation of the system default time zone using <see cref="DateTimeZoneCache.GetSystemDefault"/> or
-    /// <see cref="DateTimeZoneCache.GetSystemDefaultOrNull"/>, which will attempt to find an appropriate time zone.
-    /// This may fail, however (in which case the first method will throw an exception, and the second method will return null)
-    /// if no mapping is found. This could occur due to the system having a "custom" time zone installed, or there being no mapping for the BCL zone ID
-    /// to the provider's set of IDs. You can always use <see cref="BclDateTimeZone.ForSystemDefault"/> to convert
-    /// the local <see cref="TimeZoneInfo"/> to guarantee that a representation is available.</para>
+    /// <para>
+    /// To obtain a <see cref="DateTimeZone"/> for a given timezone ID, use one of the methods on
+    /// <see cref="IDateTimeZoneProvider"/> (and see <see cref="DateTimeZoneProviders"/> for access to the built-in
+    /// providers). The UTC timezone is also available via the <see cref="Utc"/> property on this class.
+    /// </para>
+    /// <para>
+    /// To obtain a <see cref="DateTimeZone"/> representing the system default time zone, you can either call
+    /// <see cref="IDateTimeZoneProvider.GetSystemDefault"/> on a provider to obtain the <see cref="DateTimeZone"/> that
+    /// the provider considers matches the system default time zone, or you can construct a
+    /// <see cref="BclDateTimeZone"/> via <see cref="BclDateTimeZone.ForSystemDefault"/>, which returns a
+    /// <see cref="DateTimeZone"/> that wraps the system local <see cref="TimeZoneInfo"/>. The latter will always
+    /// succeed, but has access only to that information available via the .NET time zone; the former may contain more
+    /// complete data, but may (in uncommon cases) fail to find a matching <see cref="DateTimeZone"/>.
+    /// </para>
     /// <para>Note that Noda Time does not require that <see cref="DateTimeZone"/> instances be singletons.
     /// As far as reasonably possible, implementations should implement <see cref="IEquatable{DateTimeZone}"/> in such a way
     /// that equivalent time zones compare as equal.</para>
