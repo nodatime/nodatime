@@ -28,7 +28,7 @@ namespace NodaTime
     /// This normally occurs for spring transitions, where the clock goes forward
     /// (usually by an hour). For example, suppose the time zone goes forward
     /// at 2am, so the second after 01:59:59 becomes 03:00:00. In that case,
-    /// times such as 02:30:00 never occur.
+    /// local times such as 02:30:00 never occur.
     /// </para>
     /// <para>
     /// This exception is used to indicate such problems, as they're usually
@@ -36,10 +36,9 @@ namespace NodaTime
     /// such as entering "15" for a month number.
     /// </para>
     /// <para>
-    /// In theory this isn't calendar-specific; the local instant won't exist in
-    /// this time zone regardless of the calendar used. However, this exception is
-    /// always created in conjunction with a specific calendar, which leads to a more
-    /// natural way of examining its information and constructing an error message.
+    /// Note that it is possible (though extremely rare) for a whole day to be skipped due to a time zone transition,
+    /// so this exception may also be thrown in cases where no local time is valid for a particular local date. (For
+    /// example, Samoa skipped December 30th 2011 entirely, transitioning from UTC-10 to UTC+14 at midnight.)
     /// </para>
     /// </remarks>
     /// <threadsafety>Any public static members of this type are thread safe. Any instance members are not guaranteed to be thread safe.
@@ -52,12 +51,12 @@ namespace NodaTime
         private readonly DateTimeZone zone;
 
         /// <summary>
-        /// The local instant which is invalid in the time zone
+        /// The local date/time which is invalid in the time zone
         /// </summary>
         public LocalDateTime LocalDateTime { get { return localDateTime; } }
 
         /// <summary>
-        /// The time zone in which the local instant is invalid
+        /// The time zone in which the local date/time is invalid
         /// </summary>
         public DateTimeZone Zone { get { return zone; } }
 
@@ -68,8 +67,8 @@ namespace NodaTime
         /// User code is unlikely to need to deliberately call this constructor except
         /// possibly for testing.
         /// </remarks>
-        /// <param name="localDateTime">The local date time which is skipped in the specified time zone.</param>
-        /// <param name="zone">The time zone in which the local date time does not exist.</param>
+        /// <param name="localDateTime">The local date/time which is skipped in the specified time zone.</param>
+        /// <param name="zone">The time zone in which the local date/time does not exist.</param>
         public SkippedTimeException(LocalDateTime localDateTime, DateTimeZone zone)
             : base("Local time " + localDateTime + " is invalid in time zone " + zone.Id)
         {
