@@ -69,16 +69,23 @@
                 fine-grained approach, which is the fiddliest to use but puts the caller in the most control.</li></ul></p><p>
             Noda Time has two built-in sources of time zone data available: a copy of the
             <a href="http://www.iana.org/time-zones" target="_blank">"zoneinfo"</a> (aka tz or Olson) database, and the ability to convert .NET's own
-            <a href="http://msdn2.microsoft.com/en-us/library/bb396389" target="_blank">TimeZoneInfo</a>  format into a "native" Noda Time zone. Which of these is most appropriate for you to use
+            <a href="http://msdn2.microsoft.com/en-us/library/bb396389" target="_blank">TimeZoneInfo</a> format into a "native" Noda Time zone. Which of these is most appropriate for you to use
             will very much depend on your exact needs. The zoneinfo database is widely used outside Windows, and has more historical data
             than the Windows-provided information, but if you need to interoperate with other Windows systems by specifying time zone IDs,
             you may wish to stick to the Windows time zones.
-            </p><p>To get a Noda Time representation of the system default time zone using <a href="M_NodaTime_TimeZones_DateTimeZoneCache_GetSystemDefault.htm">GetSystemDefault<span class="languageSpecificText"><span class="cs">()</span><span class="cpp">()</span><span class="nu">()</span><span class="fs">()</span></span></a> or
-            <a href="M_NodaTime_TimeZones_DateTimeZoneCache_GetSystemDefaultOrNull.htm">GetSystemDefaultOrNull<span class="languageSpecificText"><span class="cs">()</span><span class="cpp">()</span><span class="nu">()</span><span class="fs">()</span></span></a>, which will attempt to find an appropriate time zone.
-            This may fail, however (in which case the first method will throw an exception, and the second method will return null)
-            if no mapping is found. This could occur due to the system having a "custom" time zone installed, or there being no mapping for the BCL zone ID
-            to the provider's set of IDs. You can always use <a href="M_NodaTime_TimeZones_BclDateTimeZone_ForSystemDefault.htm">ForSystemDefault<span class="languageSpecificText"><span class="cs">()</span><span class="cpp">()</span><span class="nu">()</span><span class="fs">()</span></span></a> to convert
-            the local <a href="http://msdn2.microsoft.com/en-us/library/bb396389" target="_blank">TimeZoneInfo</a> to guarantee that a representation is available.</p><p>Note that Noda Time does not require that <span class="selflink">DateTimeZone</span> instances be singletons.
+            </p><p>
+            To obtain a <span class="selflink">DateTimeZone</span> for a given timezone ID, use one of the methods on
+            <a href="T_NodaTime_IDateTimeZoneProvider.htm">IDateTimeZoneProvider</a> (and see <a href="T_NodaTime_DateTimeZoneProviders.htm">DateTimeZoneProviders</a> for access to the built-in
+            providers). The UTC timezone is also available via the <a href="P_NodaTime_DateTimeZone_Utc.htm">Utc</a> property on this class.
+            </p><p>
+            To obtain a <span class="selflink">DateTimeZone</span> representing the system default time zone, you can either call
+            <a href="M_NodaTime_IDateTimeZoneProvider_GetSystemDefault.htm">GetSystemDefault<span class="languageSpecificText"><span class="cs">()</span><span class="cpp">()</span><span class="nu">()</span><span class="fs">()</span></span></a> on a provider to obtain the <span class="selflink">DateTimeZone</span> that
+            the provider considers matches the system default time zone, or you can construct a
+            <a href="T_NodaTime_TimeZones_BclDateTimeZone.htm">BclDateTimeZone</a> via <a href="M_NodaTime_TimeZones_BclDateTimeZone_ForSystemDefault.htm">ForSystemDefault<span class="languageSpecificText"><span class="cs">()</span><span class="cpp">()</span><span class="nu">()</span><span class="fs">()</span></span></a>, which returns a
+            <span class="selflink">DateTimeZone</span> that wraps the system local <a href="http://msdn2.microsoft.com/en-us/library/bb396389" target="_blank">TimeZoneInfo</a>. The latter will always
+            succeed, but has access only to that information available via the .NET time zone; the former may contain more
+            complete data, but may (in uncommon cases) fail to find a matching <span class="selflink">DateTimeZone</span>.
+            </p><p>Note that Noda Time does not require that <span class="selflink">DateTimeZone</span> instances be singletons.
             As far as reasonably possible, implementations should implement <a href="http://msdn2.microsoft.com/en-us/library/ms131187" target="_blank">IEquatable<span class="languageSpecificText"><span class="cs">&lt;</span><span class="vb">(Of </span><span class="cpp">&lt;</span><span class="nu">(</span><span class="fs">&lt;'</span></span>T<span class="languageSpecificText"><span class="cs">&gt;</span><span class="vb">)</span><span class="cpp">&gt;</span><span class="nu">)</span><span class="fs">&gt;</span></span></a> in such a way
             that equivalent time zones compare as equal.</p></div></div><div class="section"><div class="sectionTitle" onclick="toggleSection(this.parentNode)"><img src="../icons/collapse_all.gif" /> Thread Safety</div><div class="sectionContent">
             All time zone implementations within Noda Time are immutable and thread-safe. See the thread safety

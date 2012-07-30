@@ -17,7 +17,7 @@
             </div><br /></td></tr><tr data="class; public"><td><img src="../icons/pubclass.gif" /></td><td><b><a href="T_NodaTime_DateTimeZoneProviders.htm">DateTimeZoneProviders</a></b></td><td><div class="summary">
             Static access to date/time zone providers built into Noda Time. These are all thread-safe and caching.
             </div><br /></td></tr><tr data="structure; public"><td><img src="../icons/pubstructure.gif" /></td><td><b><a href="T_NodaTime_Duration.htm">Duration</a></b></td><td><div class="summary">
-            Represents a fixed length of time, with no concept of calendars.
+            Represents a fixed (and calendar-independent) length of time.
             </div><br /></td></tr><tr data="interface; public"><td><img src="../icons/pubinterface.gif" /></td><td><b><a href="T_NodaTime_IClock.htm">IClock</a></b></td><td><div class="summary">
             Represents a clock which can return the current time as an <a href="T_NodaTime_Instant.htm">Instant</a>.
             </div><br /></td></tr><tr data="interface; public"><td><img src="../icons/pubinterface.gif" /></td><td><b><a href="T_NodaTime_IDateTimeZoneProvider.htm">IDateTimeZoneProvider</a></b></td><td><div class="summary">
@@ -57,8 +57,6 @@
             A mutable builder class for <a href="T_NodaTime_Period.htm">Period</a> values. Each property can
             be set independently, and then a Period can be created from the result
             using the <a href="M_NodaTime_PeriodBuilder_Build.htm">Build<span class="languageSpecificText"><span class="cs">()</span><span class="cpp">()</span><span class="nu">()</span><span class="fs">()</span></span></a> method.
-            The properties are all nullable: the units of the period created are
-            determined by the non-null properties at build time.
             </div><br /></td></tr><tr data="enumeration; public"><td><img src="../icons/pubenum.gif" /></td><td><b><a href="T_NodaTime_PeriodUnits.htm">PeriodUnits</a></b></td><td><div class="summary">
             The units within a <a href="T_NodaTime_Period.htm">Period</a>. When a period is created to find the difference between two local values,
             the caller may specify which units are required - for example, you can ask for the difference between two dates
@@ -73,7 +71,7 @@
             your application, which should only depend on the interface.
             </div><br /></td></tr><tr data="structure; public"><td><img src="../icons/pubstructure.gif" /></td><td><b><a href="T_NodaTime_ZonedDateTime.htm">ZonedDateTime</a></b></td><td><div class="summary">
             A <a href="P_NodaTime_ZonedDateTime_LocalDateTime.htm">LocalDateTime</a> in a specific time zone and with a particular offset to distinguish between otherwise-ambiguous
-            instants. A ZonedDateTime is global, in that it maps to a single <a href="T_NodaTime_Instant.htm">Instant</a>.
+            instants. A <a href="T_NodaTime_ZonedDateTime.htm">ZonedDateTime</a> is global, in that it maps to a single <a href="T_NodaTime_Instant.htm">Instant</a>.
             </div><br /></td></tr></table></div></div></div><div id="footer"><p />Send comments on this topic to
         <a id="HT_MailLink" href="mailto:noda-time%40googlegroups.com?Subject=Noda-Time">Noda-Time Google Groups</a><script type="text/javascript">
         var HT_mailLink = document.getElementById("HT_MailLink");
