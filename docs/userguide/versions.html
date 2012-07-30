@@ -8,7 +8,7 @@
   </head>
   <body onload="prettyPrint()">
     <h1>Version history</h1>
-    <p>Public API changes from 1.0.0-beta-1 onwards. See the <a href="http://code.google.com/p/noda-time/source/list">project repository</a> for
+    <p>Public API changes from 1.0.0-beta1 onwards. See the <a href="http://code.google.com/p/noda-time/source/list">project repository</a> for
 more details.</p>
 
 <p><strong>(1.0.0-beta2 - assumed)</strong></p>
@@ -32,8 +32,8 @@ implementations possible (<a href="http://code.google.com/p/noda-time/issues/det
 <li><code>DateTimeZone</code> now implements <code>IEquatable&lt;DateTimeZone&gt;</code>, and documents what
 it means for time zones to be equal (<a href="http://code.google.com/p/noda-time/issues/detail?id=81">issue 81</a>)</li>
 <li>New core type: <code>OffsetDateTime</code> representing a local date/time and an offset
-from UTC, but not full time zone information
--<code>Period</code> and <code>PeriodBuilder</code> no longer differentiate between absent and zero
+from UTC, but not full time zone information</li>
+<li><code>Period</code> and <code>PeriodBuilder</code> no longer differentiate between absent and zero
 components (to the extent that they did at all): <code>Units</code> has been removed
 from <code>Period</code>, period formatting now omits all zero values unconditionally,
 and the <code>Year</code> (etc) properties on <code>PeriodBuilder</code> are no longer nullable

@@ -1,6 +1,6 @@
 Version history
 
-Public API changes from 1.0.0-beta-1 onwards. See the [project repository](http://code.google.com/p/noda-time/source/list) for
+Public API changes from 1.0.0-beta1 onwards. See the [project repository](http://code.google.com/p/noda-time/source/list) for
 more details.
 
 **(1.0.0-beta2 - assumed)**
@@ -22,7 +22,7 @@ more details.
   it means for time zones to be equal ([issue 81][])
 - New core type: `OffsetDateTime` representing a local date/time and an offset
   from UTC, but not full time zone information
--`Period` and `PeriodBuilder` no longer differentiate between absent and zero
+- `Period` and `PeriodBuilder` no longer differentiate between absent and zero
   components (to the extent that they did at all): `Units` has been removed
   from `Period`, period formatting now omits all zero values unconditionally,
   and the `Year` (etc) properties on `PeriodBuilder` are no longer nullable
