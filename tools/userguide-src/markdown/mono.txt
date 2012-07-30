@@ -16,11 +16,11 @@ Noda Time runs on Mono, but with some limitations:
   Mono release at the time of this writing (2.10.8) - while
   [`BclDateTimeZone`](noda-type://NodaTime.TimeZones.BclDateTimeZone) *may*
   do the right thing, it may disagree with the results of calling
-  methods directly on the time zone.
+  methods directly on the time zone ([issue 97][]).
 - Some cultures in Mono have standard date/time patterns including
   "z" for "offset from UTC". These will not display appropriately
   when used for text formatting in Noda Time, as the "z" is
-  meaningless for local dates and times.
+  meaningless for local dates and times ([issue 98][]).
 - Some cultures in Mono have standard date/time patterns which
   use the abbreviated am/pm designator, but have am/pm designators
   which are the same when abbreviated. In these cases, parsing
@@ -32,6 +32,9 @@ Noda Time runs on Mono, but with some limitations:
   which the Mono compiler happens to trigger. We would recommend that
   you use a binary built by the Microsoft C# compiler if you wish
   to run using this CLR.
+
+[issue 97]: https://code.google.com/p/noda-time/issues/detail?id=97
+[issue 98]: https://code.google.com/p/noda-time/issues/detail?id=98
 
 System requirements
 -------------------
