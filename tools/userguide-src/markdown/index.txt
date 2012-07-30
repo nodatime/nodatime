@@ -16,7 +16,7 @@ User guide contents
 - [Arithmetic](arithmetic.html)
 - [Text handling](text.html)
 - [BCL conversions](bcl-conversions.html)
-- [Serialization](serialization.html)
+- [Serialization](serialization.html) (experimental)
 - [Testing](testing.html)
 - [Threading](threading.html)
 - [Updating the time zone database](tzdb.html)

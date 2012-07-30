@@ -8,7 +8,8 @@ two packages:
 
 Alternatively, source and binary downloads are available on the [project download page](https://code.google.com/p/noda-time/downloads/list).
 
-An experimental assembly to support Json.NET is also available; see the [serialization guide](serialization.html) for more information.
+An experimental assembly to support Json.NET is also available (in source form
+only); see the [serialization guide](serialization.html) for more information.
 
 System requirements
 -------------------
