@@ -27,7 +27,8 @@ User guide contents
 Resources
 ---------
 
-- [Project home page][3]
+- [Project home page][home]
+- [Developer guide][] - a guide to developing Noda Time itself
 - [Online user guide][4] (the latest version of this page)
 - [Latest API documentation][5]
 - [Relative API documentation][6] (if you're viewing this page
@@ -37,7 +38,8 @@ offline, it's the offline API docs)
 
 [1]: http://noda-time.blogspot.com
 [2]: http://groups.google.com/group/noda-time
-[3]: http://noda-time.googlecode.com
+[home]: http://noda-time.googlecode.com
 [4]: http://noda-time.googlecode.com/hg/docs/userguide/index.html
 [5]: http://noda-time.googlecode.com/hg/docs/api/Index.html
 [6]: ../api/Index.html
+[Developer guide]: ../developer/index.html
