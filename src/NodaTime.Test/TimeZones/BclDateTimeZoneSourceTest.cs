@@ -48,13 +48,11 @@ namespace NodaTime.Test.TimeZones
             // Only a few fixed zones are advertised by Windows. We happen to know this one
             // is wherever we run tests :)
             // Unfortunately, it doesn't always exist on Mono (at least not on the Rasperry Pi...)
-            if (TestHelper.IsRunningOnMono)
-            {
-                return;
-            }
             string id = "UTC-02";
             var source = new BclDateTimeZoneSource();
-            Assert.Contains(id, source.GetIds().ToList());
+            if (!source.GetIds().Contains(id)) {
+                Assert.Ignore("Test assumes existence of BCL zone with ID: " + id);
+            }
             var zone = source.ForId(id);
             Assert.AreNotEqual(DateTimeZone.ForOffset(Offset.FromHours(-2)), zone);
             Assert.AreEqual(id, zone.Id);
