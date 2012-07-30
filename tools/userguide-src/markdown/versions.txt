@@ -22,6 +22,8 @@ more details.
   it means for time zones to be equal ([issue 81][])
 - New core type: `OffsetDateTime` representing a local date/time and an offset
   from UTC, but not full time zone information
+- Added a new standard offset pattern of `G`, which is like `g` but using
+  "Z" for zero; also available as `OffsetPattern.GeneralInvariantPatternWithZ`
 - `Period` and `PeriodBuilder` no longer differentiate between absent and zero
   components (to the extent that they did at all): `Units` has been removed
   from `Period`, period formatting now omits all zero values unconditionally,
