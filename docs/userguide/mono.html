@@ -25,88 +25,19 @@ as possible.</li>
 Mono release at the time of this writing (2.10.8) - while
 <a href="../api/html/T_NodaTime_TimeZones_BclDateTimeZone.htm"><code>BclDateTimeZone</code></a> <em>may</em>
 do the right thing, it may disagree with the results of calling
-methods directly on the time zone.</li>
+methods directly on the time zone (<a href="https://code.google.com/p/noda-time/issues/detail?id=97">issue 97</a>).</li>
 <li>Some cultures in Mono have standard date/time patterns including
 "z" for "offset from UTC". These will not display appropriately
 when used for text formatting in Noda Time, as the "z" is
-meaningless for local dates and times.</li>
+meaningless for local dates and times (<a href="https://code.google.com/p/noda-time/issues/detail?id=98">issue 98</a>).</li>
 <li>Some cultures in Mono have standard date/time patterns which
 use the abbreviated am/pm designator, but have am/pm designators
 which are the same when abbreviated. In these cases, parsing
 is ambiguous.</li>
-<li>If you build Noda Time under Mono but execute it under the
-Microsoft .NET 4 64-bit CLR, you may see exceptions around
-type initializers and <code>RuntimeHelpers.InitializeArray</code>. We believe
-this to be due to a <a href="http://connect.microsoft.com/VisualStudio/feedback/details/635365">bug in .NET</a>
-which the Mono compiler happens to trigger. We would recommend that
-you use a binary built by the Microsoft C# compiler if you wish
-to run using this CLR.</li>
 </ul>
 
-<h2>System requirements</h2>
-
-<p>We have tested Mono support using Mono 2.10.5 and 2.10.8.</p>
-
-<p>To build Noda Time under Linux, you typically need to install the following
-packages:</p>
-
-<ul>
-<li>mono-devel</li>
-<li>mono-xbuild</li>
-</ul>
-
-<p>(These will add the other dependencies you need.)</p>
-
-<p>Note that for Ubuntu specifically, you'll either need Ubuntu 11.10 (Oneiric) or
-later, or work out how to install an unofficial backport; earlier versions of
-Ubuntu <a href="http://www.mono-project.com/DistroPackages/Ubuntu">do not include a suitable version of Mono</a>.</p>
-
-<p>To build Noda Time under OS X, <a href="http://www.mono-project.com/Download">download</a> the latest stable
-release of Mono. Be sure to choose the developer package, not the smaller
-runtime-only package.  To use the provided <code>Makefile</code>, you'll either need to
-install <a href="https://developer.apple.com/xcode/">Xcode</a> or obtain <code>make</code> separately (for example, using
-<a href="https://github.com/kennethreitz/osx-gcc-installer#readme">osx-gcc-installer</a> to install just the open-source parts of Xcode).</p>
-
-<p>To fetch the source code from the main Google Code repository,
-you'll need a Mercurial client.</p>
-
-<p>To run the tests, you'll need
-<a href="http://nunit.org/index.php?p=download">NUnit</a> version 2.5.10 or
-higher. (The version that comes with stable builds of Mono at the
-time of this writing doesn't support everything used by the unit
-tests of Noda Time.)</p>
-
-<h2>Fetching and building</h2>
-
-<p>To fetch the source code, just clone the Google Code repository:</p>
-
-<pre class="prettyprint"><code>$ hg clone https://code.google.com/p/noda-time/
-</code></pre>
-
-<p>Building is performed with <code>make</code>, using the included Makefile. (If you don't
-have a working <code>make</code>, you can also run <code>xbuild</code> by hand; see <code>Makefile</code> for
-the commands you'll need to run.)</p>
-
-<pre class="prettyprint"><code>$ cd noda-time
-$ make
-</code></pre>
-
-<p>This will build all the Noda Time main projects. The main assembly will be
-written to <code>src/NodaTime/bin/Debug/NodaTime.dll</code>; this is all you need to use
-Noda Time itself.</p>
-
-<p>Other build targets are also available; again, see <code>Makefile</code> for documentation.
-In particular, to build and run the tests, run:</p>
-
-<pre class="prettyprint"><code>$ make check
-</code></pre>
-
-<p>to use the default (probably Mono-supplied) version of NUnit to run the tests,
-or something like the following to override the location of the NUnit test
-runner:</p>
-
-<pre class="prettyprint"><code>$ make check NUNIT='mono ../NUnit-2.6.0.12051/bin/nunit-console.exe'
-</code></pre>
+<p>The prebuilt binary packages can be used on Mono directly. To build from source,
+See the <a href="../developer/building.html">"Building and testing"</a> section in the developer guide.</p>
 
   </body>
 </html>
