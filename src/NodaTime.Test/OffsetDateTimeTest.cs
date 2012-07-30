@@ -136,5 +136,31 @@ namespace NodaTime.Test
             ZonedDateTime zoned = odt.InFixedZone();
             Assert.AreEqual(DateTimeZone.ForOffset(offset).AtStrictly(local), zoned);
         }
+
+        [Test]
+        public void ToString_WholeHourOffset()
+        {
+            LocalDateTime local = new LocalDateTime(2012, 10, 6, 1, 2, 3);
+            Offset offset = Offset.FromHours(1);
+            OffsetDateTime odt = new OffsetDateTime(local, offset);
+            Assert.AreEqual("2012-10-06T01:02:03+01", odt.ToString());
+        }
+
+        [Test]
+        public void ToString_PartHourOffset()
+        {
+            LocalDateTime local = new LocalDateTime(2012, 10, 6, 1, 2, 3);
+            Offset offset = Offset.FromHoursAndMinutes(1, 30);
+            OffsetDateTime odt = new OffsetDateTime(local, offset);
+            Assert.AreEqual("2012-10-06T01:02:03+01:30", odt.ToString());
+        }
+
+        [Test]
+        public void ToString_Utc()
+        {
+            LocalDateTime local = new LocalDateTime(2012, 10, 6, 1, 2, 3);
+            OffsetDateTime odt = new OffsetDateTime(local, Offset.Zero);
+            Assert.AreEqual("2012-10-06T01:02:03Z", odt.ToString());
+        }
     }
 }

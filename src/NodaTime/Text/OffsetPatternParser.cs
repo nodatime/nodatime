@@ -101,6 +101,11 @@ namespace NodaTime.Text
                 {
                     return CreateGeneralPattern(formatInfo);
                 }
+                if (patternCharacter == 'G')
+                {
+                    var result = CreateGeneralPattern(formatInfo);
+                    return result.Success ? PatternParseResult<Offset>.ForValue(new ZPrefixPattern(result.GetResultOrThrow())) : result;
+                }
                 patternText = ExpandStandardFormatPattern(patternCharacter, formatInfo);
                 if (patternText == null)
                 {
