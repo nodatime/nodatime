@@ -69,7 +69,12 @@ To run the tests, you'll need
 [NUnit](http://nunit.org/index.php?p=download) version 2.5.10 or
 higher. (The version that comes with stable builds of Mono at the
 time of this writing doesn't support everything used by the unit
-tests of Noda Time.)
+tests of Noda Time.) Version 2.6.1 is recommended on non-Windows platforms due
+to an [NUnit bug][nunit-993247] that causes tests to fail with a "Too many open
+files" exception when running some of the larger suites.
+
+[nunit-993247] https://bugs.launchpad.net/nunitv2/+bug/993247
+  "NUnit Bug #993247: Tests fail with IOException: Too many open files"
 
 Fetching and building
 ---------------------
