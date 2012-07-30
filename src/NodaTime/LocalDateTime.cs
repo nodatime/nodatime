@@ -254,7 +254,7 @@ namespace NodaTime
         /// <summary>Gets the year of this local date and time within its era.</summary>
         public int YearOfEra { get { return calendar.Fields.YearOfEra.GetValue(localInstant); } }
 
-        /// <summary>Gets the era of this local date.</summary>
+        /// <summary>Gets the era of this local date and time.</summary>
         public Era Era { get { return calendar.Eras[calendar.Fields.Era.GetValue(localInstant)]; } }
 
         /// <summary>
@@ -895,8 +895,7 @@ namespace NodaTime
 
         #region Formatting
         /// <summary>
-        /// Returns a <see cref="System.String" /> that represents this instance. Equivalent to
-        /// calling <c>ToString(null)</c>.
+        /// Returns a <see cref="System.String" /> that represents this instance.
         /// </summary>
         /// <returns>
         /// The value of the current instance in the standard format pattern, using the current thread's

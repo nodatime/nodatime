@@ -28,14 +28,17 @@ namespace NodaTime.Test.TimeZones
         [Test]
         public void ZoneMapping()
         {
-            // We don't know what the mapping will be like on Mono. (We could be on TZDB-based system time zones, for example.)
-            if (TestHelper.IsRunningOnMono)
-            {
-                return;
+            // This test assumes that if a system time zone exists with this BCL ID, it will map to this TZDB ID.
+            String bclId = "GMT Standard Time";
+            String tzdbId = "Europe/London";
+            try {
+                var source = new TzdbDateTimeZoneSource("NodaTime.TimeZones.Tzdb");
+                var bclZone = TimeZoneInfo.FindSystemTimeZoneById(bclId);
+                Assert.AreEqual(tzdbId, source.MapTimeZoneId(bclZone));
+            } catch (TimeZoneNotFoundException) {
+                // This may occur on Mono, for example.
+                Assert.Ignore("Test assumes existence of BCL zone with ID: " + bclId);
             }
-            var source = new TzdbDateTimeZoneSource("NodaTime.TimeZones.Tzdb");
-            var bclZone = TimeZoneInfo.FindSystemTimeZoneById("GMT Standard Time");
-            Assert.AreEqual("Europe/London", source.MapTimeZoneId(bclZone));
         }
 
         /// <summary>

@@ -1,0 +1,69 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+  <head>
+    <link href="prettify.css" type="text/css" rel="stylesheet" />
+    <link href="styles.css" type="text/css" rel="stylesheet" />
+    <script type="text/javascript" src="prettify.js"></script>
+    <title>Coding Conventions</title>
+  </head>
+  <body onload="prettyPrint()">
+    <h1>Coding Conventions</h1>
+    <h2>Code Layout</h2>
+
+<ul>
+<li>Use the Visual Studio <em>default</em> settings in Tools | Options | Text Editor |
+C# | Formatting.</li>
+<li>Use spaces not tabs
+(<a href="http://groups.google.com/group/noda-time/msg/54e7262a08d1ce38">discussion</a>).</li>
+</ul>
+
+<h2>File Layout</h2>
+
+<ul>
+<li>Place using statements at the top of the file (not in the namespace).</li>
+<li>A single namespace in any one file.</li>
+<li><em>Prefer</em> a single type in a file.</li>
+</ul>
+
+<h2>Example</h2>
+
+<pre class="prettyprint"><code>using System;
+
+namespace ConsoleApplication1
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            if (args.Length &gt; 1)
+            {
+                Console.WriteLine("Hello " + args[0]);
+            }
+            else
+            {
+                Console.WriteLine("Hello world!");
+            }
+        }
+    }
+}
+</code></pre>
+
+<h2>Working With Multiple C# Formatting Configurations</h2>
+
+<p>Using Tools | Import and Export Settings the C# formatting settings can be selectively saved and then reloading. All the C# formatting options fall under All Options | Options | Text Editor | C# Editor. (The "C#" option holds the non-formatting settings.)</p>
+
+<h2>Naming of tests</h2>
+
+<p>Follow a <code>Method_State_Result</code> pattern:</p>
+
+<ul>
+<li><code>Method</code> is the name of the method being tested, possibly with some more information for overload disambiguation</li>
+<li><code>State</code> describes the scenario that is being tested</li>
+<li><code>Result</code> describes what is the expected behavior</li>
+</ul>
+
+<p>When any of the last two is really redundant, it can be omitted, like when the
+<code>State</code> would be <code>ValidValues</code> or similar, or the <code>Result</code> would be <code>ItWorks</code>.</p>
+
+  </body>
+</html>

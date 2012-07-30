@@ -60,7 +60,7 @@ namespace NodaTime.Test.Text
             internal static Data[] FormatOnlyData = { };
 
             internal static readonly Data[] FormatAndParseData = {
-                new Data(Period.Empty) { Text = "P" },
+                new Data(Period.Zero) { Text = "P" },
 
                 // All single values                                                                
                 new Data(new PeriodBuilder { Years = 5 }) { Text = "P5Y" },
@@ -78,7 +78,7 @@ namespace NodaTime.Test.Text
 
                 // Compound, negative and zero tests
                 new Data(new PeriodBuilder { Years = 5, Months = 2 }) { Text = "P5Y2M" },
-                new Data(new PeriodBuilder { Months = 1, Hours = 0 }) { Text = "P1MT0H" },
+                new Data(new PeriodBuilder { Months = 1, Hours = 0 }) { Text = "P1M" },
                 new Data(new PeriodBuilder { Months = 1, Minutes = -1 }) { Text = "P1MT-1M" },
                 new Data(new PeriodBuilder { Hours = 1, Minutes = -1 }) { Text = "PT1H-1M" },
                 

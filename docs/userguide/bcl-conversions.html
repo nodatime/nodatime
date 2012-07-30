@@ -107,14 +107,13 @@ there are some options using <a href="../api/html/T_NodaTime_TimeZones_BclDateTi
 <li>You can use <code>DateTimeZoneProviders.Bcl</code> everywhere you create time zones. (You may well want to inject this as an <a href="../api/html/T_NodaTime_IDateTimeZoneProvider.htm"><code>IDateTimeZoneProvider</code></a>
 if you're using dependency injection). This is appropriate if you're going to work with various time zones,
 and you only ever care about the BCL versions.</li>
-<li>To convert a single time zone, you can can <code>BclDateTimeZone.FromTimeZoneInfo</code>.</li>
-<li><p>If you just need the system default time zone, you can call <code>BclDateTimeZone.ForSystemDefault</code>. There are some circumstances where
-using <code>DateTimeZoneProviders.Tzdb.GetSystemDefault</code> may return null, indicating that there's no known mapping from the local BCL time zone
-ID to TZDB. Using <code>BclDateTimeZone.ForSystemDefault()</code> <em>always</em> returns a converted version
-of the BCL time zone. This can be used to provide a fallback mechanism:</p>
-
-<pre class="prettyprint"><code>DateTimeZone systemZone = DateTimeZoneProviders.Tzdb.GetSystemDefault() ?? BclDateTimeZone.ForSystemDefault();
-</code></pre></li>
+<li>To convert a single time zone, you can use <code>BclDateTimeZone.FromTimeZoneInfo</code>.</li>
+<li>If you just need the system default time zone, you can call
+<code>BclDateTimeZone.ForSystemDefault</code>. There are some (rare) circumstances where
+using <code>DateTimeZoneProviders.Tzdb.GetSystemDefault</code> may throw an exception,
+indicating that there's no known mapping from the local BCL time zone ID to
+TZDB. Using <code>BclDateTimeZone.ForSystemDefault()</code> <em>always</em> returns a converted
+version of the BCL local time zone.</li>
 </ul>
 
 <p>There are various pros and cons involved in using the zoneinfo time

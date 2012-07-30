@@ -22,7 +22,7 @@ with ISO-8601, but it shouldn't be used in places where ISO compliance is requir
 <pre class="prettyprint"><code>P (date components) T (time components)
 </code></pre>
 
-<p>Where each component within the period is specified as its value followed by a unit specifier from this list:</p>
+<p>Where each non-zero component within the period is specified as its value followed by a unit specifier from this list:</p>
 
 <ul>
 <li><code>Y</code> (years)</li>
@@ -56,7 +56,7 @@ The result of the normalization is then serialized in a way which is <em>mostly<
 <p>The general format is as for the roundtrip pattern, but without the <code>s</code> and <code>t</code> units; weeks are currently never formatted
 due to normalization.</p>
 
-<p>Only non-zero components are formatted, even if they are present in the units. The exception to this is an empty
+<p>Only non-zero components are formatted. The exception to this is the zero
 period, which is formatted as "P0D".</p>
 
 <p>Any fractional seconds are formatted using a period as a decimal separator, with a leading 0 if necessary. So

@@ -16,86 +16,19 @@ Noda Time runs on Mono, but with some limitations:
   Mono release at the time of this writing (2.10.8) - while
   [`BclDateTimeZone`](noda-type://NodaTime.TimeZones.BclDateTimeZone) *may*
   do the right thing, it may disagree with the results of calling
-  methods directly on the time zone.
+  methods directly on the time zone ([issue 97][]).
 - Some cultures in Mono have standard date/time patterns including
   "z" for "offset from UTC". These will not display appropriately
   when used for text formatting in Noda Time, as the "z" is
-  meaningless for local dates and times.
+  meaningless for local dates and times ([issue 98][]).
 - Some cultures in Mono have standard date/time patterns which
   use the abbreviated am/pm designator, but have am/pm designators
   which are the same when abbreviated. In these cases, parsing
   is ambiguous.
-- If you build Noda Time under Mono but execute it under the
-  Microsoft .NET 4 64-bit CLR, you may see exceptions around
-  type initializers and `RuntimeHelpers.InitializeArray`. We believe
-  this to be due to a [bug in .NET](http://connect.microsoft.com/VisualStudio/feedback/details/635365)
-  which the Mono compiler happens to trigger. We would recommend that
-  you use a binary built by the Microsoft C# compiler if you wish
-  to run using this CLR.
 
-System requirements
--------------------
+The prebuilt binary packages can be used on Mono directly. To build from source,
+See the ["Building and testing"][building] section in the developer guide.
 
-We have tested Mono support using Mono 2.10.5 and 2.10.8.
-
-To build Noda Time under Linux, you typically need to install the following
-packages:
-
-- mono-devel
-- mono-xbuild
-
-(These will add the other dependencies you need.)
-
-Note that for Ubuntu specifically, you'll either need Ubuntu 11.10 (Oneiric) or
-later, or work out how to install an unofficial backport; earlier versions of
-Ubuntu [do not include a suitable version of Mono][MonoUbuntu].
-
-[MonoUbuntu]: http://www.mono-project.com/DistroPackages/Ubuntu
-
-To build Noda Time under OS X, [download][MonoDownload] the latest stable
-release of Mono. Be sure to choose the developer package, not the smaller
-runtime-only package.  To use the provided `Makefile`, you'll either need to
-install [Xcode][xcode] or obtain `make` separately (for example, using
-[osx-gcc-installer][] to install just the open-source parts of Xcode).
-
-[MonoDownload]: http://www.mono-project.com/Download
-[xcode]: https://developer.apple.com/xcode/
-[osx-gcc-installer]: https://github.com/kennethreitz/osx-gcc-installer#readme
-
-To fetch the source code from the main Google Code repository,
-you'll need a Mercurial client.
-
-To run the tests, you'll need
-[NUnit](http://nunit.org/index.php?p=download) version 2.5.10 or
-higher. (The version that comes with stable builds of Mono at the
-time of this writing doesn't support everything used by the unit
-tests of Noda Time.)
-
-Fetching and building
----------------------
-
-To fetch the source code, just clone the Google Code repository:
-
-    $ hg clone https://code.google.com/p/noda-time/
-
-Building is performed with `make`, using the included Makefile. (If you don't
-have a working `make`, you can also run `xbuild` by hand; see `Makefile` for
-the commands you'll need to run.)
-
-    $ cd noda-time
-    $ make
-
-This will build all the Noda Time main projects. The main assembly will be
-written to `src/NodaTime/bin/Debug/NodaTime.dll`; this is all you need to use
-Noda Time itself.
-
-Other build targets are also available; again, see `Makefile` for documentation.
-In particular, to build and run the tests, run:
-
-    $ make check
-
-to use the default (probably Mono-supplied) version of NUnit to run the tests,
-or something like the following to override the location of the NUnit test
-runner:
-
-    $ make check NUNIT='mono ../NUnit-2.6.0.12051/bin/nunit-console.exe'
+[issue 97]: https://code.google.com/p/noda-time/issues/detail?id=97
+[issue 98]: https://code.google.com/p/noda-time/issues/detail?id=98
+[building]: ../developer/building.html

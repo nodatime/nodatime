@@ -87,21 +87,9 @@ namespace NodaTime.TimeZones
             string id = source.MapTimeZoneId(bcl);
             if (id == null)
             {
-                throw new TimeZoneNotFoundException("TimeZoneInfo ID " + bcl.Id + " is unknown to source" + providerVersionId);
+                throw new TimeZoneNotFoundException("TimeZoneInfo ID " + bcl.Id + " is unknown to source " + providerVersionId);
             }
             return this[id];
-        }
-
-        /// <inheritdoc />
-        public DateTimeZone GetSystemDefaultOrNull()
-        {
-            TimeZoneInfo bcl = TimeZoneInfo.Local;
-            string id = source.MapTimeZoneId(bcl);
-            if (id == null)
-            {
-                return null;
-            }
-            return GetZoneOrNull(id);
         }
 
         /// <inheritdoc />

@@ -37,36 +37,24 @@ namespace NodaTime
         ReadOnlyCollection<string> Ids { get; }
 
         /// <summary>
-        /// Gets a representation of the system default time zone.
+        /// Gets the time zone from this provider that matches the system default time zone, if a matching time zone is
+        /// available.
         /// </summary>
         /// <remarks>
-        /// Callers should be aware that this method can throw <see cref="TimeZoneNotFoundException"/>,
-        /// even with standard Windows time zones.
-        /// This could be due to either the Unicode CLDR not being up-to-date with Windows time zone IDs,
-        /// or Noda Time not being up-to-date with CLDR - or a source-specific problem. To handle this case,
-        /// (for example, by providing a default), use <see cref="GetSystemDefaultOrNull"/> instead. 
+        /// Callers should be aware that this method will throw <see cref="TimeZoneNotFoundException"/> if no matching
+        /// time zone is found. For the built-in Noda Time providers, this is unlikely to occur in practice (assuming
+        /// the system is using a standard Windows time zone), but can occur even then, if no mapping is found.
+        /// If it is necessary to handle this case, callers can construct a
+        /// <see cref="BclDateTimeZone"/> via <see cref="BclDateTimeZone.ForSystemDefault"/>, which returns a
+        /// <see cref="DateTimeZone"/> that wraps the system local <see cref="TimeZoneInfo"/>, and which always
+        /// succeeds.
         /// </remarks>
         /// <exception cref="TimeZoneNotFoundException">The system default time zone is not mapped by
         /// this provider.</exception>
         /// <returns>
-        /// The source-specific representation of the system time zone.
+        /// The provider-specific representation of the system default time zone.
         /// </returns>
         DateTimeZone GetSystemDefault();
-
-        /// <summary>
-        /// Gets a representation of the system default time zone.
-        /// </summary>
-        /// <remarks>
-        /// Callers should be aware that this method can return null, even with standard Windows time zones.
-        /// This could be due to either the Unicode CLDR not being up-to-date with Windows time zone IDs,
-        /// or Noda Time not being up-to-date with CLDR - or a provider-specific problem. Callers can use
-        /// the null-coalescing operator to effectively provide a default.
-        /// </remarks>
-        /// <returns>
-        /// The provider-specific representation of the system time zone, or null if the time zone
-        /// could not be mapped.
-        /// </returns>
-        DateTimeZone GetSystemDefaultOrNull();
 
         /// <summary>
         /// Returns the time zone for the given ID, if it's available.

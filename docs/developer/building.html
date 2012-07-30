@@ -1,0 +1,115 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+  <head>
+    <link href="prettify.css" type="text/css" rel="stylesheet" />
+    <link href="styles.css" type="text/css" rel="stylesheet" />
+    <script type="text/javascript" src="prettify.js"></script>
+    <title>Building and Testing</title>
+  </head>
+  <body onload="prettyPrint()">
+    <h1>Building and Testing</h1>
+    <h2>Windows (Visual Studio)</h2>
+
+<p>We have tested Noda Time using Visual Studio 2008 and Visual Studio 2010.</p>
+
+<p>To build Noda Time with Visual Studio, you'll need to install (TODO more detail about what needs to be installed for Visual Studio proper).</p>
+
+<p>You'll also need the <a href="http://msdn.microsoft.com/en-us/netframework/aa569263.aspx">.NET Framework SDK</a>. This library supports
+version 2.0, 3.0, 3.5, and 4.0 of the Framework. Install the appropriate
+version or versions as defined by your needs.</p>
+
+<p>To fetch the source code from the main Google Code repository, you'll need a
+<a href="http://mercurial.selenic.com/">Mercurial</a> client. A good alternative for Microsoft Windows uses is
+<a href="http://tortoisehg.bitbucket.org/download/">TortoiseHg</a> which installs shell extensions so that Mercurial can be used
+from the Windows Explorer.</p>
+
+<p>To run the tests, you'll need <a href="http://nunit.org/index.php?p=download">NUnit</a> version 2.5.10 or higher.</p>
+
+<h3>Fetching and building</h3>
+
+<p>To fetch the source code, just clone the Google Code repository:</p>
+
+<pre class="prettyprint"><code>$ hg clone https://code.google.com/p/noda-time/
+</code></pre>
+
+<p>TODO: more detail about building :) I imagine we probably want to point to
+<code>buildnuget.bat</code> and <code>builddocs.bat</code>.</p>
+
+<h2>Mono</h2>
+
+<p><em>Note:</em> If you build Noda Time under Mono but execute it under the Microsoft
+.NET 4 64-bit CLR, you may see exceptions around type initializers and
+<code>RuntimeHelpers.InitializeArray</code>. We believe this to be due to a
+<a href="http://connect.microsoft.com/VisualStudio/feedback/details/635365">bug in .NET</a> which the Mono compiler happens to trigger. We
+would recommend that you use a binary built by the Microsoft C# compiler if you
+wish to run using this CLR.</p>
+
+<p>We have tested Mono support using Mono 2.10.5 and 2.10.8.</p>
+
+<p>To build Noda Time under Linux, you typically need to install the following
+packages:</p>
+
+<ul>
+<li>mono-devel</li>
+<li>mono-xbuild</li>
+</ul>
+
+<p>(These will add the other dependencies you need.)</p>
+
+<p>Note that for Ubuntu specifically, you'll either need Ubuntu 11.10 (Oneiric) or
+later, or work out how to install an unofficial backport; earlier versions of
+Ubuntu <a href="http://www.mono-project.com/DistroPackages/Ubuntu">do not include a suitable version of Mono</a>.</p>
+
+<p>To build Noda Time under OS X, <a href="http://www.mono-project.com/Download">download</a> the latest stable
+release of Mono. Be sure to choose the developer package, not the smaller
+runtime-only package.  To use the provided <code>Makefile</code>, you'll either need to
+install <a href="https://developer.apple.com/xcode/">Xcode</a> or obtain <code>make</code> separately (for example, using
+<a href="https://github.com/kennethreitz/osx-gcc-installer#readme">osx-gcc-installer</a> to install just the open-source parts of Xcode).</p>
+
+<p>To fetch the source code from the main Google Code repository,
+you'll need a <a href="http://mercurial.selenic.com/">Mercurial</a> client.</p>
+
+<p>To run the tests, you'll need <a href="http://nunit.org/index.php?p=download">NUnit</a> version 2.5.10 or higher. (The version
+that comes with stable builds of Mono at the time of this writing doesn't
+support everything used by the unit tests of Noda Time.) Version 2.6.1 is
+recommended on non-Windows platforms due to an [NUnit bug][nunit-993247] that
+causes tests to fail with a "Too many open files" exception when running some
+of the larger suites.</p>
+
+<p>[nunit-993247] https://bugs.launchpad.net/nunitv2/+bug/993247
+  "NUnit Bug #993247: Tests fail with IOException: Too many open files"</p>
+
+<h3>Fetching and building</h3>
+
+<p>To fetch the source code, just clone the Google Code repository:</p>
+
+<pre class="prettyprint"><code>$ hg clone https://code.google.com/p/noda-time/
+</code></pre>
+
+<p>Building is performed with <code>make</code>, using the included Makefile. (If you don't
+have a working <code>make</code>, you can also run <code>xbuild</code> by hand; see <code>Makefile</code> for
+the commands you'll need to run.)</p>
+
+<pre class="prettyprint"><code>$ cd noda-time
+$ make
+</code></pre>
+
+<p>This will build all the Noda Time main projects. The main assembly will be
+written to <code>src/NodaTime/bin/Debug/NodaTime.dll</code>; this is all you need to use
+Noda Time itself.</p>
+
+<p>Other build targets are also available; again, see <code>Makefile</code> for documentation.
+In particular, to build and run the tests, run:</p>
+
+<pre class="prettyprint"><code>$ make check
+</code></pre>
+
+<p>to use the default (probably Mono-supplied) version of NUnit to run the tests,
+or something like the following to override the location of the NUnit test
+runner:</p>
+
+<pre class="prettyprint"><code>$ make check NUNIT='mono ../NUnit-2.6.1/bin/nunit-console.exe'
+</code></pre>
+
+  </body>
+</html>
