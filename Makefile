@@ -1,5 +1,5 @@
 # Makefile for compiling Noda Time under mono.
-# See tools/userguide-src/markdown/mono.txt for requirements.
+# See tools/developer-src/markdown/building.txt for requirements.
 
 # Assumes that 'mono', 'xbuild' and 'nunit-console' point to appropriate
 # versions of the respective tools. If this is not true, override the
@@ -10,7 +10,7 @@ XBUILD := xbuild
 NUNIT := nunit-console
 # For example, to use a version of NUnit that has been unzipped somewhere else,
 # use something like the following instead.
-# NUNIT := mono ../NUnit-2.6.0.12051/bin/nunit-console.exe
+# NUNIT := mono ../NUnit-2.6.1/bin/nunit-console.exe
 
 # Targets:
 #   debug (default)
@@ -23,11 +23,11 @@ NUNIT := nunit-console
 #     runs the tests under NUnit.
 #   clean
 #     runs the Clean target for all projects, removing the immediate output
-#     from each.  Note that this does not remove _all_ generated files. 
+#     from each.  Note that this does not remove _all_ generated files.
 #
-#   userguide
+#   docs
 #     builds the Markdown-based documentation generator, and updates the
-#     userguide documentation (in docs/userguide).
+#     user and developer guides (in docs/{userguide,developer}).
 
 XBUILDFLAGS := /p:TargetFrameworkVersion='v3.5' /p:TargetFrameworkProfile=''
 XBUILDFLAGS_DEBUG := $(XBUILDFLAGS)
@@ -50,8 +50,9 @@ check: debug
 tools:
 	$(XBUILD) $(XBUILDFLAGS_RELEASE) $(TOOLS_SOLUTION)
 
-userguide: tools
+docs: tools
 	$(MONO) $(MARKDOWN_TOOL) tools/userguide-src docs/userguide
+	$(MONO) $(MARKDOWN_TOOL) tools/developer-src docs/developer
 
 clean:
 	$(XBUILD) $(XBUILDFLAGS_DEBUG) $(SOLUTION) /t:Clean
@@ -60,4 +61,4 @@ clean:
 	$(XBUILD) $(XBUILDFLAGS_RELEASE) $(TOOLS_SOLUTION) /t:Clean
 
 .SUFFIXES:
-.PHONY: debug release check tools userguide clean
+.PHONY: debug release check tools docs clean
