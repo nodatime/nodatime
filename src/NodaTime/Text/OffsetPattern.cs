@@ -38,6 +38,11 @@ namespace NodaTime.Text
         /// The "general" offset pattern (e.g. +HH, +HH:mm, +HH:mm:ss, +HH:mm:ss.fff) for the invariant culture.
         /// </summary>
         public static readonly OffsetPattern GeneralInvariantPattern = CreateWithInvariantInfo("g");
+        /// <summary>
+        /// The "general" offset pattern (e.g. +HH, +HH:mm, +HH:mm:ss, +HH:mm:ss.fff) for the invariant culture,
+        /// but producing (and allowing) Z as a value for a zero offset.
+        /// </summary>
+        public static readonly OffsetPattern GeneralInvariantPatternWithZ = CreateWithInvariantInfo("G");
 
         private const string DefaultFormatPattern = "g";
 

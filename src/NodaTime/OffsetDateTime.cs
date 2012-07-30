@@ -17,6 +17,7 @@
 
 using System;
 using NodaTime.Calendars;
+using NodaTime.Text;
 using NodaTime.Utility;
 
 namespace NodaTime
@@ -258,6 +259,28 @@ namespace NodaTime
         public bool Equals(OffsetDateTime other)
         {
             return this.localDateTime == other.localDateTime && this.offset == other.offset;
+        }
+
+        /// <summary>
+        /// Currently returns a string representation of this value according to ISO-8601,
+        /// extended where necessary to include fractional seconds, and using a colon within the offset
+        /// where hour/minute or minute/second sepraators are required.
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// An offset of 0 is represented by "Z", otherwise the offset is the number of hours
+        /// and optionally minutes, e.g. "01" or "01:30".
+        /// </para>
+        /// <para>
+        /// This representation is a temporary measure until full support for parsing and formatting
+        /// <see cref="OffsetDateTime" /> values is implemented. It is provided in order to make diagnostics
+        /// simpler, but is likely to be changed in future releases.
+        /// </para>
+        /// </remarks>
+        /// <returns>A string representation of this value.</returns>
+        public override string ToString()
+        {
+            return LocalDateTimePattern.ExtendedIsoPattern.Format(localDateTime) + OffsetPattern.GeneralInvariantPatternWithZ.Format(offset);
         }
 
         #region Operators
