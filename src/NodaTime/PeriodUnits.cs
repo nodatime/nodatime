@@ -24,12 +24,14 @@ namespace NodaTime
     /// the caller may specify which units are required - for example, you can ask for the difference between two dates
     /// in "years and weeks". Units are always applied largest-first in arithmetic.
     /// </summary>
-    /// <remarks>
-    /// For Noda Time developers: This enum should not be confused with NodaTime.Calendars.Fields.PeriodFieldType, although it's
-    /// clearly related. This enum is more restricted (there are no eras, centuries, week-years or half days) and it's deliberately
-    /// a "flags" enum as the values are combined to form the set of units for a <see cref="Period"/>. This type is roughly equivalent
-    /// to org.joda.time.PeriodType in Joda Time.
-    /// </remarks>
+    // For Noda Time developers:
+    // This enum should not be confused with NodaTime.Calendars.Fields.PeriodFieldType, although it's
+    // clearly related. This enum is more restricted (there are no eras, centuries, week-years or half days) and it's deliberately
+    // a "flags" enum as the values are combined to form the set of units for a Period. This type is roughly equivalent
+    // to org.joda.time.PeriodType in Joda Time.
+    //
+    // Note that the values of the single (non-compound) values must match up with the internal indexes used for
+    // Period's values array.
     [Flags]
     public enum PeriodUnits
     {

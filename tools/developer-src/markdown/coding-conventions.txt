@@ -1,0 +1,51 @@
+﻿Coding Conventions
+
+## Code Layout
+
+- Use the Visual Studio _default_ settings in Tools | Options | Text Editor |
+  C# | Formatting.
+- Use spaces not tabs
+  ([discussion](http://groups.google.com/group/noda-time/msg/54e7262a08d1ce38)).
+
+## File Layout
+
+- Place using statements at the top of the file (not in the namespace).
+-  A single namespace in any one file.
+- _Prefer_ a single type in a file.
+
+## Example
+
+	using System;
+    
+    namespace ConsoleApplication1
+    {
+        class Program
+        {
+            static void Main(string[] args)
+            {
+                if (args.Length > 1)
+                {
+                    Console.WriteLine("Hello " + args[0]);
+                }
+                else
+                {
+                    Console.WriteLine("Hello world!");
+                }
+            }
+        }
+    }
+
+## Working With Multiple C# Formatting Configurations
+
+Using Tools | Import and Export Settings the C# formatting settings can be selectively saved and then reloading. All the C# formatting options fall under All Options | Options | Text Editor | C# Editor. (The "C#" option holds the non-formatting settings.)
+
+## Naming of tests
+
+Follow a `Method_State_Result` pattern:
+
+- `Method` is the name of the method being tested, possibly with some more information for overload disambiguation
+- `State` describes the scenario that is being tested
+- `Result` describes what is the expected behavior
+
+When any of the last two is really redundant, it can be omitted, like when the
+`State` would be `ValidValues` or similar, or the `Result` would be `ItWorks`.

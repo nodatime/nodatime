@@ -28,7 +28,6 @@ namespace NodaTime.Test
         {
             var builder = new PeriodBuilder
             {
-                Years = null,
                 Months = 1,
                 Weeks = 2,
                 Days = 3,
@@ -38,7 +37,7 @@ namespace NodaTime.Test
                 Milliseconds = 7,
                 Ticks = 8
             };
-            Assert.IsFalse(builder[PeriodUnits.Years].HasValue);
+            Assert.AreEqual(0L, builder[PeriodUnits.Years]);
             Assert.AreEqual(1L, builder[PeriodUnits.Months]);
             Assert.AreEqual(2L, builder[PeriodUnits.Weeks]);
             Assert.AreEqual(3L, builder[PeriodUnits.Days]);
@@ -53,16 +52,15 @@ namespace NodaTime.Test
         public void Index_Getter_InvalidUnits()
         {
             var builder = new PeriodBuilder();
-            Assert.Throws<ArgumentOutOfRangeException>(() => builder[0].GetValueOrDefault());
-            Assert.Throws<ArgumentOutOfRangeException>(() => builder[(PeriodUnits) (-1)].GetValueOrDefault());
-            Assert.Throws<ArgumentOutOfRangeException>(() => builder[PeriodUnits.DateAndTime].GetValueOrDefault());
+            Assert.Throws<ArgumentOutOfRangeException>(() => Call(builder[0]));
+            Assert.Throws<ArgumentOutOfRangeException>(() => Call(builder[(PeriodUnits) (-1)]));
+            Assert.Throws<ArgumentOutOfRangeException>(() => Call(builder[PeriodUnits.DateAndTime]));
         }
 
         [Test]
         public void Indexer_Setter_ValidUnits()
         {
             var builder = new PeriodBuilder();
-            builder[PeriodUnits.Years] = null;
             builder[PeriodUnits.Months] = 1;
             builder[PeriodUnits.Weeks] = 2;
             builder[PeriodUnits.Days] = 3;
@@ -73,7 +71,7 @@ namespace NodaTime.Test
             builder[PeriodUnits.Ticks] = 8;
             var expected = new PeriodBuilder
             {
-                Years = null,
+                Years = 0,
                 Months = 1,
                 Weeks = 2,
                 Days = 3,
@@ -82,8 +80,8 @@ namespace NodaTime.Test
                 Seconds = 6,
                 Milliseconds = 7,
                 Ticks = 8
-            };
-            Assert.AreEqual(expected, builder);
+            }.Build();
+            Assert.AreEqual(expected, builder.Build());
         }
 
         [Test]
@@ -102,7 +100,6 @@ namespace NodaTime.Test
 
             Period expected = Period.FromHours(10);
             Assert.AreEqual(expected, period);
-            Assert.AreEqual(expected.Units, period.Units);
         }
 
         [Test]
@@ -112,22 +109,14 @@ namespace NodaTime.Test
 
             Period expected = Period.FromDays(5) + Period.FromMinutes(-10);
             Assert.AreEqual(expected, period);
-            Assert.AreEqual(expected.Units, period.Units);
         }
 
         [Test]
-        public void Build_Empty()
+        public void Build_Zero()
         {
-            Assert.AreEqual(Period.Empty, new PeriodBuilder().Build());
+            Assert.AreEqual(Period.Zero, new PeriodBuilder().Build());
         }
 
-        [Test]
-        public void Equality()
-        {
-            PeriodBuilder equal1 = new PeriodBuilder { Hours = 10, Minutes = 1 };
-            PeriodBuilder equal2 = new PeriodBuilder { Minutes = 1, Hours = 10, Ticks = null };
-            PeriodBuilder unequal = new PeriodBuilder { Minutes = 1 };
-            TestHelper.TestEqualsClass(equal1, equal2, unequal);
-        }
+        private void Call(object ignored) {}
     }
 }

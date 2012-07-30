@@ -6,9 +6,18 @@ two packages:
 - [NodaTime](http://nuget.org/packages/NodaTime)
 - [NodaTime.Testing](http://nuget.org/packages/NodaTime.Testing)
 
-Alternatively, source and binary downloads are available on the [project download page](https://code.google.com/p/noda-time/downloads/list).
+Alternatively, source and binary downloads are available on the
+[project download page][downloads].
 
-An experimental assembly to support Json.NET is also available; see the [serialization guide](serialization.html) for more information.
+[downloads]: https://code.google.com/p/noda-time/downloads/list
+
+An experimental assembly to support Json.NET is also available (in source form
+only); see the [serialization guide](serialization.html) for more information.
+
+See the ["Building and testing"][building] section in the developer guide for
+instructions on building Noda Time from source.
+
+[building]: ../developer/building.html
 
 System requirements
 -------------------

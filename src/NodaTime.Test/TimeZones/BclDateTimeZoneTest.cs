@@ -28,9 +28,7 @@ namespace NodaTime.Test.TimeZones
     {
 #pragma warning disable 0414 // Used by tests via reflection - do not remove!
         // This test is effectively disabled on Mono as its time zone support is broken in the current
-        // stable release - see http://bugzilla.xamarin.com/show_bug.cgi?id=326 for example: even asking
-        // for the offset from UTC *for a UTC DateTime* can fail. We can restore these tests when we either
-        // find something to fix in Noda Time, or Mono is fixed.
+        // stable release - see http://code.google.com/p/noda-time/issues/detail?id=97
         private static readonly ReadOnlyCollection<TimeZoneInfo> BclZonesOrEmptyOnMono = TestHelper.IsRunningOnMono
             ? new List<TimeZoneInfo>().AsReadOnly() : TimeZoneInfo.GetSystemTimeZones();
 #pragma warning restore 0414

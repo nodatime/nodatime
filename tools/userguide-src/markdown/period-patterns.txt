@@ -14,7 +14,7 @@ The format is:
 
     P (date components) T (time components)
 
-Where each component within the period is specified as its value followed by a unit specifier from this list:
+Where each non-zero component within the period is specified as its value followed by a unit specifier from this list:
 
 - `Y` (years)
 - `M` (months in the date portion)
@@ -45,7 +45,7 @@ The result of the normalization is then serialized in a way which is *mostly* co
 The general format is as for the roundtrip pattern, but without the `s` and `t` units; weeks are currently never formatted
 due to normalization.
 
-Only non-zero components are formatted, even if they are present in the units. The exception to this is an empty
+Only non-zero components are formatted. The exception to this is the zero
 period, which is formatted as "P0D".
 
 Any fractional seconds are formatted using a period as a decimal separator, with a leading 0 if necessary. So
