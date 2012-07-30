@@ -29,15 +29,13 @@ namespace NodaTime.Benchmarks
 
         private readonly IPattern<Offset> offsetPattern;
         private readonly OffsetPatternParser offsetPatternParser;
-        private readonly IPattern<Offset> longPattern;
 
         public OffsetBenchmarks()
         {
             offsetPatternParser = new OffsetPatternParser();
             var parseResult = offsetPatternParser.ParsePattern("HH:mm", InvariantFormatInfo);
             offsetPattern = parseResult.GetResultOrThrow();
-            longPattern = OffsetPattern.CreateWithInvariantInfo("HH:mm:ss.fff");
-        }        
+        }
 
         [Benchmark]
         public void ParseExactIncludingPreparse_Valid()
@@ -45,7 +43,7 @@ namespace NodaTime.Benchmarks
             var parsePatternResult = offsetPatternParser.ParsePattern("HH:mm", InvariantFormatInfo);
             var pattern = parsePatternResult.GetResultOrThrow();
             Offset result;
-            NodaTime.Text.ParseResult<Offset> parseResult = pattern.Parse("12:34");
+            ParseResult<Offset> parseResult = pattern.Parse("12:34");
             parseResult.TryGetValue(default(Offset), out result);
         }
 
@@ -53,7 +51,7 @@ namespace NodaTime.Benchmarks
         public void PreparsedParseExact_Valid()
         {
             Offset result;
-            NodaTime.Text.ParseResult<Offset> parseResult = offsetPattern.Parse("12:34");
+            ParseResult<Offset> parseResult = offsetPattern.Parse("12:34");
             parseResult.TryGetValue(default(Offset), out result);
         }
 
@@ -73,7 +71,7 @@ namespace NodaTime.Benchmarks
         public void PreparedParseExact_InvalidValue()
         {
             Offset result;
-            NodaTime.Text.ParseResult<Offset> parseResult = offsetPattern.Parse("123:45");
+            ParseResult<Offset> parseResult = offsetPattern.Parse("123:45");
             parseResult.TryGetValue(default(Offset), out result);
         }
 
