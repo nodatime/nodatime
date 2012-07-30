@@ -23,16 +23,15 @@ Typical pattern text: <code>+HH:mm:ss</code></li>
 Typical pattern text: <code>+HH:mm</code></li>
 <li><code>s</code>: Short format, displaying information down to the hour.<br />
 Typical pattern text: <code>+HH</code></li>
-<li><p><code>g</code>: General pattern. Formatting depends on the value passed in:</p>
-
+<li><code>g</code>: General pattern. Formatting depends on the value passed in:
 <ul>
 <li>If the offset has fractional seconds, the full format is used; otherwise</li>
 <li>If the offset has seconds, the long format is used; otherwise</li>
 <li>If the offset has minutes, the medium format is used; otherwise</li>
-<li>The short format is used</li>
-</ul>
-
-<p>When parsing, the other standard format patterns are tried one at a time.</p></li>
+<li>The short format is used
+When parsing, the other standard format patterns are tried one at a time.</li>
+</ul></li>
+<li><code>G</code>: As <code>g</code>, but using <code>Z</code> for an offset of 0, as if it were Z-prefixed. (See below.)</li>
 </ul>
 
 <h2>Custom Patterns</h2>
