@@ -33,6 +33,8 @@ implementations possible (<a href="http://code.google.com/p/noda-time/issues/det
 it means for time zones to be equal (<a href="http://code.google.com/p/noda-time/issues/detail?id=81">issue 81</a>)</li>
 <li>New core type: <code>OffsetDateTime</code> representing a local date/time and an offset
 from UTC, but not full time zone information</li>
+<li>Added a new standard offset pattern of <code>G</code>, which is like <code>g</code> but using
+"Z" for zero; also available as <code>OffsetPattern.GeneralInvariantPatternWithZ</code></li>
 <li><code>Period</code> and <code>PeriodBuilder</code> no longer differentiate between absent and zero
 components (to the extent that they did at all): <code>Units</code> has been removed
 from <code>Period</code>, period formatting now omits all zero values unconditionally,
