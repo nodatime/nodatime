@@ -33,9 +33,7 @@ Steps
    `europe`, `northamerica`, `pacificnew`, `southamerica`, `systemv`. (I suspect the `systemv` file isn't terribly useful in
    fact; but it's present at the time of this writing.)
 5. Find the Windows mapping file you want to use. Currently, I'd recommend using the version supplied with the Noda Time source
-   in ZoneInfoCompiler\Data\winmap in a file beginning "windowsZones". This file comes from [CLDR](http://cldr.unicode.org) -
-   but unfortunately at the time of this writing, Noda Time doesn't support the CLDR v2 mappings (which map some Windows time zone
-   IDs to multiple tzdb IDs, by region).
+   in ZoneInfoCompiler\Data\winmap in a file beginning "windowsZones". This file comes from [CLDR](http://cldr.unicode.org).
 
 5. Run ZoneInfoCompiler. I'd suggest leaving it in its build directory and running it like this:
 
@@ -43,7 +41,7 @@ Steps
 
  For example, rebuilding the 2012c data from NodaTime itself, starting in the ZoneInfoCompiler directory:
 
-    bin\Release\ZoneInfoCompiler -s Data\2012c -w Data\winmap\windowsZones-5311.xml -o tzdb-2012c.resources -t Resource
+    bin\Release\ZoneInfoCompiler -s Data\2012c -w Data\winmap\windowsZones-21.xml -o tzdb-2012c.resources -t Resource
 
 As an alternative, if there's enough demand, we may well provide pre-built resource files in the Noda Time project download section.
 It's worth knowing the above steps, however, in case you wish to use a cut-down set of time zones for resource-constrained environments.
