@@ -25,7 +25,7 @@ namespace NodaTime.Test
     /// </summary>
     public static class TestHelper
     {
-        public static readonly bool IsRunningOnMono = Type.GetType("Mono.Runtime") != null;
+        public static readonly bool IsRunningOnMono = Type.GetType("Mono.Runtime2") != null;
 
         /// <summary>
         ///   Tests the <see cref="IComparable{T}.CompareTo" /> method for reference objects.

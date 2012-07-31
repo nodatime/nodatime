@@ -188,11 +188,12 @@
   </data>
   <data name="Africa/Casablanca" type="System.Byte[], mscorlib">
     <value>
-        AAT080xNVPNXRVT0V0VTVPNDRVQO/wCD+OM/n5ZR+ZsBPz+fxv8UfwJBQZ/HWKxvAT8/n8fZ7X8CQUGf
+        AAT080xNVPNXRVT0V0VTVPNDRVQR/wCD+OM/n5ZR+ZsBPz+fxv8UfwJBQZ/HWKxvAT8/n8fZ7X8CQUGf
         0qEy7wE/P5/bNaP/AkFBn9vuJ+8BPz9LSm8CQUFN6mMBPz+gCGuEfwJBQaAIxm3vAT8/oAvoC/8CQUGg
         DGFH7wE/P6ANyT9/AkFBoA6O8m8BPz+gD9NRfwJBQaAQJ6NvAT8/oBq3pf8DQT+gHhhv7wE/P6BIQeZ/
         AkFBoEi7Im8BPz+gSiMZ/wJBQaBKjdVvAT8/oEvcwH8CQUGgTF3lbwE/P6BNl7h/AkFBoE40jO8BPz+g
-        T5ygnwJBQaBQZ6efAT/0V0VTVEHxAQ/+AEMA/4AAAAD/f/////NXRVQ/8QYP/gBFAP+AAAAA/3////8=
+        T5ygnwJBQaBQCLufAT8/oFAxmh8CQUGgUGennwE/P6BRfIKfAT/0V0VTVEHxAQ/+AEMA/4AAAAD/f///
+        //NXRVQ/8QYP/gBFAP+AAAAA/3////8=
 </value>
   </data>
   <data name="Africa/Ceuta" type="System.Byte[], mscorlib">
@@ -4218,7 +4219,7 @@
 </value>
   </data>
   <data name="Version_Id" xml:space="preserve">
-    <value>2012c</value>
+    <value>2012d</value>
   </data>
   <data name="Id_Map" type="System.Byte[], mscorlib">
     <value>
