@@ -85,10 +85,10 @@ namespace NodaTime.Testing.TimeZones
         /// <inheritdoc />
         public override int GetHashCode()
         {
-            int hash = HashCodeHelper.Initialize();
-            hash = HashCodeHelper.Hash(hash, Id);
-            hash = HashCodeHelper.Hash(hash, earlyInterval);
-            hash = HashCodeHelper.Hash(hash, lateInterval);
+            int hash = 17;
+            hash = hash * 31 + Id.GetHashCode();
+            hash = hash * 31 + earlyInterval.GetHashCode();
+            hash = hash * 31 + lateInterval.GetHashCode();
             return hash;
         }
     }
