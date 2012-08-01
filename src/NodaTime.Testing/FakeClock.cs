@@ -83,7 +83,7 @@ namespace NodaTime.Testing
         /// </summary>
         public void AdvanceTicks(long ticks)
         {
-            Advance(new Duration(ticks));
+            Advance(Duration.FromTicks(ticks));
         }
 
         /// <summary>
