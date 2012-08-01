@@ -1,0 +1,96 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+  <head>
+    <link href="prettify.css" type="text/css" rel="stylesheet" />
+    <link href="styles.css" type="text/css" rel="stylesheet" />
+    <script type="text/javascript" src="prettify.js"></script>
+    <title>Release Process</title>
+  </head>
+  <body onload="prettyPrint()">
+    <h1>Release Process</h1>
+    <p>This document describes how Noda Time is released. It is intended to be used as
+a checklist by the person doing a release.</p>
+
+<h2>When to release</h2>
+
+<p>When everybody's happy, there are no issues outstanding for the milestone, and
+all the tests pass.</p>
+
+<p>Search the issue tracker for open issues with the right label (e.g.
+<code>label:Milestone-1.0</code>).</p>
+
+<p>Update to the candidate revision (probably tip) and
+<a href="building.html">build and run all the tests</a> as normal.</p>
+
+<p>The build and test steps need to pass on:</p>
+
+<ul>
+<li>Visual Studio 2008</li>
+<li>Visual Studio 2010</li>
+<li>Mono 2.10.5</li>
+<li>Mono 2.10.8</li>
+</ul>
+
+<h2>Prerequisites</h2>
+
+<ul>
+<li>Visual Studio (TODO: 2008? 2010? See below.)</li>
+<li>TODO: anything else? Release keys? Logins to nuget.org?</li>
+</ul>
+
+<p>Note that we cannot build releases on Mono at present, since they trigger a bug
+in the .NET 4 64-bit CLR (see the <a href="building.html">building and testing</a> section
+in the developer guide).</p>
+
+<h2>Making the release</h2>
+
+<p>Update the current version number in the NuGet package specs:</p>
+
+<ul>
+<li><code>src/NodaTime/NodaTime.nuspec</code></li>
+<li><code>src/NodaTime.Testing/NodaTime.Testing.nuspec</code></li>
+</ul>
+
+<p>TODO: It's not yet clear what dependency NodaTime.Testing should declare; see
+issue 100.</p>
+
+<p>Add the current date to the version history in
+<code>tools/userguide-src/markdown/versions.txt</code> and regenerate all documentation.</p>
+
+<p>Commit the above, then tag it:</p>
+
+<pre class="prettyprint"><code>$ hg tag 1.0.0-beta1
+</code></pre>
+
+<h2>Building the release artifacts</h2>
+
+<p>It may be easier to use a clean clone for building the release; otherwise
+verify that you have no local changes.</p>
+
+<p>Update to the correct revision (you can skip this if you've just tagged it):</p>
+
+<pre class="prettyprint"><code>$ hg up -r 1.0.0-beta1
+</code></pre>
+
+<p>TODO: How do we actually want to build? Does it matter whether we use Visual
+Studio 2008 or 2010?
+TODO: How do you build the NuGet packages?</p>
+
+<p>Finally, export the source archive:</p>
+
+<pre class="prettyprint"><code>$ hg archive NodaTime-1.0.0-beta1-src.zip -p ''
+</code></pre>
+
+<h2>Publishing the artifacts</h2>
+
+<p>Upload the two NuGet packages and the source archive to the
+<a href="http://code.google.com/p/noda-time/downloads/list">Google Code project</a>.</p>
+
+<p>TODO: Do we want to upload a non-NuGet zipfile containing the DLLs too, for
+people not using NuGet?  (We say that we do in the user guide.) What should it
+contain - the .dll output, obviously, but also the .xml help output?</p>
+
+<p>Upload the two NuGet packages to nuget.org.  TODO: How?</p>
+
+  </body>
+</html>

@@ -11,7 +11,7 @@
     <p>Public API changes from 1.0.0-beta1 onwards. See the <a href="http://code.google.com/p/noda-time/source/list">project repository</a> for
 more details.</p>
 
-<p><strong>(1.0.0-beta2 - assumed)</strong></p>
+<h2>(1.0.0-beta2 - assumed)</h2>
 
 <ul>
 <li>Overhaul of how to get a <code>DateTimeZone</code> from an ID:
@@ -48,9 +48,12 @@ text</p></li>
 <li><p>Removed <code>DateTimeZone.GetSystemDefaultOrNull()</code>; callers should use the
 provider's <code>GetSystemDefault()</code> method and (if necessary) catch the
 <code>TimeZoneNotFoundException</code> that it can throw (<a href="http://code.google.com/p/noda-time/issues/detail?id=61">issue 61</a>)</p></li>
+<li>Removed <code>DateTimeZone.UtcId</code> and <code>DateTimeZone.IsFixed</code> (issues <a href="http://code.google.com/p/noda-time/issues/detail?id=64">64</a>
+and <a href="http://code.google.com/p/noda-time/issues/detail?id=62">62</a>)</li>
 <li>Removed most of the convenience static properties on <code>Duration</code> (e.g.
 <code>Duration.OneStandardDay</code>) in favour of the existing static methods; removed
 <code>MinValue</code> and <code>MaxValue</code>, and added <code>Epsilon</code> (<a href="http://code.google.com/p/noda-time/issues/detail?id=70">issue 70</a>)</li>
+<li>Removed <code>Instant.BeginningOfTimeLabel</code> and <code>Instant.EndOfTimeLabel</code></li>
 <li><code>Instant.InIsoUtc</code> renamed to <code>InUtc</code></li>
 <li><code>Instant.UnixEpoch</code> moved to <code>NodaConstants.UnixEpoch</code>;
 <code>NodaConstants.DateTimeEpochTicks</code> replaced by <code>BclEpoch</code></li>
@@ -60,7 +63,7 @@ provider's <code>GetSystemDefault()</code> method and (if necessary) catch the
 <li><code>LocalTime</code> now implements <code>IComparable&lt;LocalTime&gt;</code> (<a href="http://code.google.com/p/noda-time/issues/detail?id=51">issue 51</a>)</li>
 <li>Added a <code>LocalTime</code> constructor taking hours and minutes (<a href="http://code.google.com/p/noda-time/issues/detail?id=53">issue 53</a>)</li>
 <li>Removed "component" properties from <code>Offset</code>, and renamed the "total"
-properties to just <code>Ticks</code> and <code>Milliseconds</code>.</li>
+properties to just <code>Ticks</code> and <code>Milliseconds</code></li>
 <li>Removed <code>Offset.Create()</code> methods (and moved them in slightly different form
 in a new internal <code>TestObjects</code> class in <code>NodaTime.Test</code>)</li>
 <li>Added <code>Period.ToDuration()</code> (<a href="http://code.google.com/p/noda-time/issues/detail?id=55">issue 55</a>) and <code>Period.CreateComparer()</code>
@@ -72,21 +75,14 @@ in a new internal <code>TestObjects</code> class in <code>NodaTime.Test</code>)<
 if you really have to</li>
 <li>Added <code>ZonedDateTime.ToOffsetDateTime()</code>, which returns the <code>OffsetDateTime</code>
 equivalent to a <code>ZonedDateTime</code></li>
-<li>Removed the Buddhist <code>Era</code> (there is no Buddhist calendar implementation)</li>
-<li><p>Various properties made internal:</p>
-
-<ul>
-<li><code>Instant.BeginningOfTimeLabel</code> and <code>Instant.EndOfTimeLabel</code></li>
-<li><code>DateTimeZone.UtcId</code> (<a href="http://code.google.com/p/noda-time/issues/detail?id=64">issue 64</a>)</li>
-<li><code>DateTimeZone.IsFixed</code> (<a href="http://code.google.com/p/noda-time/issues/detail?id=62">issue 62</a>)</li>
-</ul></li>
+<li><p>Removed the Buddhist <code>Era</code> (as there is no Buddhist calendar implementation)</p></li>
 <li><p><code>NodaTime.Testing.StubClock</code> renamed to <code>FakeClock</code>, and gains an
 auto-advance option (issues <a href="http://code.google.com/p/noda-time/issues/detail?id=72">72</a> and <a href="http://code.google.com/p/noda-time/issues/detail?id=73">73</a>)</p></li>
 <li><code>NodaTime.Testing.TimeZones.SingleTransitionZone</code> renamed to
 <code>SingleTransitionDateTimeZone</code></li>
 </ul>
 
-<p><strong>1.0.0-beta1</strong></p>
+<h2>1.0.0-beta1, released 2012-04-12</h2>
 
 <ul>
 <li>Initial beta release</li>
