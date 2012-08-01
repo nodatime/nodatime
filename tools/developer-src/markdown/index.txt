@@ -8,6 +8,7 @@ Developer guide contents
 
 - [Building and testing](building.html)
 - [Coding conventions](coding-conventions.html)
+- [Release process](release-process.html)
 
 Resources
 ---------

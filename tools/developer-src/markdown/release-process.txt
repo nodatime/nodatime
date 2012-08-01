@@ -1,0 +1,76 @@
+Release Process
+
+This document describes how Noda Time is released. It is intended to be used as
+a checklist by the person doing a release.
+
+## When to release
+
+When everybody's happy, there are no issues outstanding for the milestone, and
+all the tests pass.
+
+Search the issue tracker for open issues with the right label (e.g.
+`label:Milestone-1.0`).
+
+Update to the candidate revision (probably tip) and
+[build and run all the tests](building.html) as normal.
+
+The build and test steps need to pass on:
+
+- Visual Studio 2008
+- Visual Studio 2010
+- Mono 2.10.5
+- Mono 2.10.8
+
+## Prerequisites
+
+- Visual Studio (TODO: 2008? 2010? See below.)
+- TODO: anything else? Release keys? Logins to nuget.org?
+
+Note that we cannot build releases on Mono at present, since they trigger a bug
+in the .NET 4 64-bit CLR (see the [building and testing](building.html) section
+in the developer guide).
+
+## Making the release
+
+Update the current version number in the NuGet package specs:
+
+- `src/NodaTime/NodaTime.nuspec`
+- `src/NodaTime.Testing/NodaTime.Testing.nuspec`
+
+TODO: It's not yet clear what dependency NodaTime.Testing should declare; see
+issue 100.
+
+Add the current date to the version history in
+`tools/userguide-src/markdown/versions.txt` and regenerate all documentation.
+
+Commit the above, then tag it:
+
+    $ hg tag 1.0.0-beta1
+
+## Building the release artifacts
+
+It may be easier to use a clean clone for building the release; otherwise
+verify that you have no local changes.
+
+Update to the correct revision (you can skip this if you've just tagged it):
+
+    $ hg up -r 1.0.0-beta1
+
+TODO: How do we actually want to build? Does it matter whether we use Visual
+Studio 2008 or 2010?
+TODO: How do you build the NuGet packages?
+
+Finally, export the source archive:
+
+    $ hg archive NodaTime-1.0.0-beta1-src.zip -p ''
+
+## Publishing the artifacts
+
+Upload the two NuGet packages and the source archive to the
+[Google Code project](http://code.google.com/p/noda-time/downloads/list).
+
+TODO: Do we want to upload a non-NuGet zipfile containing the DLLs too, for
+people not using NuGet?  (We say that we do in the user guide.) What should it
+contain - the .dll output, obviously, but also the .xml help output?
+
+Upload the two NuGet packages to nuget.org.  TODO: How?
