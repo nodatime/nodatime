@@ -1,6 +1,6 @@
 Building and Testing
 
-## Windows (Visual Studio)
+## Visual Studio (Windows)
 
 We have tested Noda Time using Visual Studio 2008 and Visual Studio 2010.
 

@@ -3,7 +3,7 @@ Version history
 Public API changes from 1.0.0-beta1 onwards. See the [project repository](http://code.google.com/p/noda-time/source/list) for
 more details.
 
-**(1.0.0-beta2 - assumed)**
+## (1.0.0-beta2 - assumed)
 
 - Overhaul of how to get a `DateTimeZone` from an ID:
    - `IDateTimeZoneProvider` (SPI for time zones) renamed to
@@ -38,9 +38,12 @@ more details.
 - Removed `DateTimeZone.GetSystemDefaultOrNull()`; callers should use the
   provider's `GetSystemDefault()` method and (if necessary) catch the
   `TimeZoneNotFoundException` that it can throw ([issue 61][])
+- Removed `DateTimeZone.UtcId` and `DateTimeZone.IsFixed` (issues [64][issue 64]
+  and [62][issue 62])
 - Removed most of the convenience static properties on `Duration` (e.g.
   `Duration.OneStandardDay`) in favour of the existing static methods; removed
   `MinValue` and `MaxValue`, and added `Epsilon` ([issue 70][])
+- Removed `Instant.BeginningOfTimeLabel` and `Instant.EndOfTimeLabel`
 - `Instant.InIsoUtc` renamed to `InUtc`
 - `Instant.UnixEpoch` moved to `NodaConstants.UnixEpoch`;
   `NodaConstants.DateTimeEpochTicks` replaced by `BclEpoch`
@@ -50,7 +53,7 @@ more details.
 - `LocalTime` now implements `IComparable<LocalTime>` ([issue 51][])
 - Added a `LocalTime` constructor taking hours and minutes ([issue 53][])
 - Removed "component" properties from `Offset`, and renamed the "total"
-  properties to just `Ticks` and `Milliseconds`.
+  properties to just `Ticks` and `Milliseconds`
 - Removed `Offset.Create()` methods (and moved them in slightly different form
   in a new internal `TestObjects` class in `NodaTime.Test`)
 - Added `Period.ToDuration()` ([issue 55][]) and `Period.CreateComparer()`
@@ -62,18 +65,14 @@ more details.
   if you really have to
 - Added `ZonedDateTime.ToOffsetDateTime()`, which returns the `OffsetDateTime`
   equivalent to a `ZonedDateTime`
-- Removed the Buddhist `Era` (there is no Buddhist calendar implementation)
-- Various properties made internal:
-   - `Instant.BeginningOfTimeLabel` and `Instant.EndOfTimeLabel`
-   - `DateTimeZone.UtcId` ([issue 64][])
-   - `DateTimeZone.IsFixed` ([issue 62][])
+- Removed the Buddhist `Era` (as there is no Buddhist calendar implementation)
 
 - `NodaTime.Testing.StubClock` renamed to `FakeClock`, and gains an
   auto-advance option (issues [72][issue 72] and [73][issue 73])
 - `NodaTime.Testing.TimeZones.SingleTransitionZone` renamed to
   `SingleTransitionDateTimeZone`
 
-**1.0.0-beta1**
+## 1.0.0-beta1, released 2012-04-12
 
 - Initial beta release
 
