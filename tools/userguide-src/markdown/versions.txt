@@ -72,7 +72,7 @@ more details.
 - `NodaTime.Testing.TimeZones.SingleTransitionZone` renamed to
   `SingleTransitionDateTimeZone`
 
-## 1.0.0-beta1, released 2012-04-12
+## 1.0.0-beta1, released 2012-04-12 with tzdb 2012c
 
 - Initial beta release
 

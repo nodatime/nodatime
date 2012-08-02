@@ -12,9 +12,8 @@ Search the issue tracker for open issues with the right label (e.g.
 `label:Milestone-1.0`).
 
 Update to the candidate revision (probably tip) and
-[build and run all the tests](building.html) as normal.
-
-The build and test steps need to pass on:
+[build and run all the tests](building.html) as normal. The build and test
+steps need to pass on:
 
 - Visual Studio 2008
 - Visual Studio 2010
@@ -23,7 +22,8 @@ The build and test steps need to pass on:
 
 ## Prerequisites
 
-- Visual Studio (TODO: 2008? 2010? See below.)
+- Visual Studio 2010
+- Sandcastle
 - TODO: anything else? Release keys? Logins to nuget.org?
 
 Note that we cannot build releases on Mono at present, since they trigger a bug
@@ -32,45 +32,120 @@ in the developer guide).
 
 ## Making the release
 
-Update the current version number in the NuGet package specs:
+If necessary, update the following AssemblyInfo files and NuGet package specs
+to include the version number you are building:
 
+- `src/NodaTime/Properties/AssemblyInfo.cs`
+- `src/NodaTime.Testing/Properties/AssemblyInfo.cs`
 - `src/NodaTime/NodaTime.nuspec`
 - `src/NodaTime.Testing/NodaTime.Testing.nuspec`
 
-TODO: It's not yet clear what dependency NodaTime.Testing should declare; see
-issue 100.
+The various versions should be set according to the following scheme. Suppose
+we were building version 1.2.3-beta4, then:
 
-Add the current date to the version history in
+- In the NuGet package specs, `<version>` should contain the version number
+  ('1.2.3-beta4'). The `<dependency>` element in `NodaTime.Testing.nuspec`
+  should reference the _initial release_ for the major/minor version
+  (i.e. '1.2.0').
+- In the AssemblyInfo files, `AssemblyVersion` should be set to just the
+  major/minor version ('1.2'). `AssemblyFileVersion` should be set to the
+  major, minor, and patch version ('1.2.3'), and `AssemblyInformationalVersion`
+  should be set to the version number ('1.2.3-beta4'). (See [this Stack
+  Overflow post][assemblyversion] for more information about how these are
+  used.)
+
+[assemblyversion]: http://stackoverflow.com/a/65062
+
+Add the current date and TZDB version to the version history in
 `tools/userguide-src/markdown/versions.txt` and regenerate all documentation.
 
-Commit the above, then tag it:
+Commit the above, then tag that commit:
 
-    $ hg tag 1.0.0-beta1
+    hg tag 1.0.0-beta1
 
 ## Building the release artifacts
 
-It may be easier to use a clean clone for building the release; otherwise
-verify that you have no local changes.
+First, create a new clone for building the release. (Doing this avoids the
+need to worry about ignored files and local changes.)
 
-Update to the correct revision (you can skip this if you've just tagged it):
+Update to the correct revision, if you didn't specify it when cloning the
+repository:
 
-    $ hg up -r 1.0.0-beta1
+    hg up -r 1.0.0-beta1
 
-TODO: How do we actually want to build? Does it matter whether we use Visual
-Studio 2008 or 2010?
-TODO: How do you build the NuGet packages?
+Export the clean source archive:
 
-Finally, export the source archive:
+    hg archive NodaTime-1.0.0-beta1-src.zip
 
-    $ hg archive NodaTime-1.0.0-beta1-src.zip -p ''
+Next, get ready to build the release zipfile. Create a directory called e.g.
+`NodaTime-1.0.0-beta1` containing the following files and directories:
+
+    docs/api/
+    docs/developer/
+    docs/userguide/
+    LICENSE.txt
+    NOTICE.txt
+    readme.txt
+
+Now build the release libaries, XML documentation, and NuGet packages:
+
+    buildnuget.bat
+
+This will create e.g. `nuget/NodaTime.1.0.0-beta1.nupkg` and
+`nuget/NodaTime.Testing.1.0.0-beta1.nupkg`.
+
+Copy the following build outputs into the _root_ of your zipfile directory:
+
+    docs/PublicApi/NodaTime.xml
+    docs/PublicApi/NodaTime.Testing.xml
+    src/NodaTime/bin/Release/NodaTime.dll
+    src/NodaTime.Testing/bin/Release/NodaTime.Testing.dll
+
+(These are the same files as are present in the NuGet packages.)
+
+Finally, create a zipfile from the zipfile directory (using the same name,
+e.g. NodaTime-1.0.0-beta1.zip).
+
+TODO: doing this by hand is a pain.
 
 ## Publishing the artifacts
 
-Upload the two NuGet packages and the source archive to the
+Upload the source and binary zipfiles to the
 [Google Code project](http://code.google.com/p/noda-time/downloads/list).
 
-TODO: Do we want to upload a non-NuGet zipfile containing the DLLs too, for
-people not using NuGet?  (We say that we do in the user guide.) What should it
-contain - the .dll output, obviously, but also the .xml help output?
+Upload the two NuGet packages to nuget.org. TODO: How?
 
-Upload the two NuGet packages to nuget.org.  TODO: How?
+## Announcing the release
+
+Post to the mailing list, blog, etc.
+
+## Post-release branching
+
+After building the first release with a given minor version number (i.e. 1.0.0,
+1.1.0), we'll need to branch before any new user-visible functionality is
+introduced (per the [Semantic versioning](http://semver.org) spec).
+
+The branching model used by Noda Time is the Mercurial '[standard branching][]'
+model. In brief:
+
+- feature development is carried out on the default branch
+- named branches (called '1.0.x', '1.1.x', etc) are used for release lines
+- fixes are typically applied to the oldest branch and forward-ported to
+  each later branch in turn (ending at 'default')
+
+[standard branching]: http://mercurial.selenic.com/wiki/StandardBranching
+
+Note the last point, which may be surprising: Mercurial has no built in support
+for the 'backport' or 'cherrypick' model (where fixes are applied to the
+mainline and then later applied to an older branch). Instead, the fixes are
+first applied to the _oldest_ branch, and then each branch is merged completely
+into the next (resolving conflicts as-needed).
+
+If a backport is necessary (for example, if it was not obvious that a fix
+applied to an older version), then it can be applied using `hg export` / `hg
+import` and then forward-ported as usual.
+
+Note also the difference between the format of names used for tags
+('1.0.0-beta2', '1.0.0') and those used for branches ('1.0.x'). Mercurial will
+allow both to be used as revision specifiers, so it is important that they do
+not collide.
