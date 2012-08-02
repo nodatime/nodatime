@@ -1,53 +1,45 @@
 syntax:glob
-JodaTime
-build/
-dist/
-*.g.cs
-#ignore thumbnails created by windows
-Thumbs.db
-#Ignore files build by Visual Studio
-*.obj
-*.exe
-*.pdb
-*.ReSharper
-*.resharper
-*.user
-*.aps
-*.pch
-*.vspscc
-*_i.c
-*_p.c
-*.ncb
-*.suo
-*.tlb
-*.tlh
+
+# Editor backups and temporary files
+*~
 *.bak
-*.[Cc]ache
-*.ilk
-*.log
-[Bb]in
-[Dd]ebug*/
-*.lib
-*.sbr
-obj/
-[Rr]elease*/
-_ReSharper*/
-[Tt]est[Rr]esult*
-[Tt]ests.[Vv]isual[Ss]tate*
-SandcastleOutput/
-glob:Help/
-syntax: glob
+*.swp
+
+# IDE-generated files
+*.suo
+*.user
+
+# IDE add-ins
 *.dotCover
-docs/api/fti/*
-docs/api/*.aspx
-docs/api/Web.Config
-docs/api/*.xml
-*.crunchproject.local.xml
-*.crunchsolution.local.xml
-NodaTime.shfbproj_Jon
-*.class
-*.jar
 *.ncrunchproject
 *.ncrunchsolution
-docs/PublicApi/*.xml
-nuget/*
+.resharper   # solution
+*.ReSharper  # project
+StyleCop.Cache
+
+# Auto-created thumbnails
+Thumbs.db
+
+# javac output
+*.class
+
+# Need to use regexp syntax for rooted patterns and directory matches.
+syntax:regexp
+
+# Build output directories (anywhere)
+/bin/
+/obj/
+
+# NUnit output
+^TestResult\.xml$
+
+# Sandcastle output that we're not interested in
+^docs/api/fti/
+^docs/api/Web\.Config$
+^docs/api/[^.]+\.(aspx|xml)$
+
+# Sandcastle public API output (consumed by buildnuget.bat)
+^docs/PublicApi/
+
+# NuGet temporary build area (see buildnuget.bat)
+^nuget/
