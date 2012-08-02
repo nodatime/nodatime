@@ -80,7 +80,7 @@ recommended on non-Windows platforms due to an [NUnit bug][nunit-993247] that
 causes tests to fail with a "Too many open files" exception when running some
 of the larger suites.
 
-[nunit-993247] https://bugs.launchpad.net/nunitv2/+bug/993247
+[nunit-993247]: https://bugs.launchpad.net/nunitv2/+bug/993247
   "NUnit Bug #993247: Tests fail with IOException: Too many open files"
 
 ### Fetching and building
