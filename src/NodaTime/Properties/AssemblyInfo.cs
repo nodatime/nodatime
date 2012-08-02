@@ -1,6 +1,6 @@
 #region Copyright and license information
 // Copyright 2001-2009 Stephen Colebourne
-// Copyright 2009-2011 Jon Skeet
+// Copyright 2009-2012 Jon Skeet
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -30,7 +30,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("NodaTime")]
-[assembly: AssemblyCopyright("Copyright ©  2009-2011 by Jon Skeet. All rights reserved.")]
+[assembly: AssemblyCopyright("Copyright © 2009-2012 by Jon Skeet. All rights reserved.")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

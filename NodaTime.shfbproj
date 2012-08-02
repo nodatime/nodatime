@@ -30,7 +30,7 @@ Joda Time is the industry standard date and time handling library for Java. Noda
 <DocumentationSource sourceFile="src\NodaTime\bin\Release\NodaTime.xml" /></DocumentationSources>
     <HelpFileFormat>Website</HelpFileFormat>
     <CopyrightHref>http://www.apache.org/licenses/LICENSE-2.0</CopyrightHref>
-    <CopyrightText>Copyright 2001-2009 Stephen Colebourne, 2009-2011 Jon Skeet, All rights reserved.</CopyrightText>
+    <CopyrightText>Copyright 2001-2009 Stephen Colebourne, 2009-2012 Jon Skeet, All rights reserved.</CopyrightText>
     <FeedbackEMailAddress>noda-time%40googlegroups.com</FeedbackEMailAddress>
     <FeedbackEMailLinkText>Noda-Time Google Groups</FeedbackEMailLinkText>
     <HelpTitle>Noda-Time</HelpTitle>
