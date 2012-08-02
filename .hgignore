@@ -13,8 +13,10 @@ syntax:glob
 *.dotCover
 *.ncrunchproject
 *.ncrunchsolution
+_NCrunch*    # cache directories
 .resharper   # solution
 *.ReSharper  # project
+_ReSharper*  # directories
 StyleCop.Cache
 
 # Auto-created thumbnails
@@ -22,6 +24,10 @@ Thumbs.db
 
 # javac output
 *.class
+
+# Joda Time jar files
+# (It's reasonably easy to end up with one in a working directory...)
+joda-time*.jar
 
 # Need to use regexp syntax for rooted patterns and directory matches.
 syntax:regexp
@@ -37,9 +43,13 @@ syntax:regexp
 ^docs/api/fti/
 ^docs/api/Web\.Config$
 ^docs/api/[^.]+\.(aspx|xml)$
+^docs/api/LastBuild.log$
 
 # Sandcastle public API output (consumed by buildnuget.bat)
 ^docs/PublicApi/
+
+# Sandcastle per-user settings
+^NodaTime.shfbproj_.+$
 
 # NuGet temporary build area (see buildnuget.bat)
 ^nuget/
