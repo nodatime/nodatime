@@ -4074,7 +4074,7 @@
     <value>AATy80xNVPRQSE9U9P8Ag1+bP59+N1VjASc/oBJWBL8BKT+gLwaLLwFZP/4D</value>
   </data>
   <data name="Pacific/Fakaofo" type="System.Byte[], mscorlib">
-    <value>AATy80xNVPNUS1Tz/wCDX3c/n343VYcBKz+gTv2LnwFbP/4D</value>
+    <value>AATy80xNVPNUS1Tz/wCDX3c/n343VYcBKT+gTv2ZrwFZP/4D</value>
   </data>
   <data name="Pacific/Fiji" type="System.Byte[], mscorlib">
     <value>
@@ -4219,7 +4219,7 @@
 </value>
   </data>
   <data name="Version_Id" xml:space="preserve">
-    <value>2012d</value>
+    <value>2012e</value>
   </data>
   <data name="Id_Map" type="System.Byte[], mscorlib">
     <value>
