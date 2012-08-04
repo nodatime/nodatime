@@ -39,7 +39,7 @@ namespace NodaTime.Calendars
         public static readonly Era BeforeCommon = new Era("BCE", "Eras_BeforeCommon"); // BCE
 
         /// <summary>
-        /// The 'Anno Martyrum' or 'Era of the Martyrs'. This is the sole era in the Coptic calendar.
+        /// The "Anno Martyrum" or "Era of the Martyrs". This is the sole era in the Coptic calendar.
         /// </summary>
         public static readonly Era AnnoMartyrm = new Era("AM", "Eras_AnnoMartyrum"); // AM
 
