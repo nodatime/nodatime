@@ -18,17 +18,22 @@
 namespace NodaTime.Calendars
 {
     /// <summary>
-    /// The Islamic or Hijri calendar is defined in either observational or tabular terms;
-    /// Noda Time implements a tabular calendar where a pattern of leap years repeats every 30
-    /// years, according to one of the patterns within this enum. See <see cref="CalendarSystem.GetIslamicCalendar"/>
-    /// for more detail.
+    /// The pattern of leap years to use when constructing an Islamic calendar.
     /// </summary>
     /// <remarks>
+    /// <para>
+    /// The Islamic, or Hijri, calendar is a lunar calendar of 12 months, each of 29 or 30 days.
+    /// The calendar can be defined in either observational or tabular terms; 
+    /// Noda Time implements a tabular calendar, where a pattern of leap years (in which the last month has
+    /// an extra day) repeats every 30 years, according to one of the patterns within this enum.
+    /// </para>
+    /// <para>
     /// While the patterns themselves are reasonably commonly documented (see e.g.
     /// <a href="http://en.wikipedia.org/wiki/Tabular_Islamic_calendar">Wikipedia</a>)
     /// there is little standardization in terms of naming the patterns. I hope the current names do not
     /// cause offence to anyone; suggestions for better names would be welcome.
-    /// </remarks>
+    /// </para>
+    /// <seealso cref="CalendarSystem.GetIslamicCalendar"/>
     public enum IslamicLeapYearPattern
     {
         /// <summary>
