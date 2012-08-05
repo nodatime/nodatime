@@ -28,7 +28,7 @@ namespace NodaTime.Calendars
     /// as a "year of era". That year (and 5 BCE, 9 BCE etc) are leap years.
     /// </summary>
     /// <remarks>
-    /// Although the Julian calendar did not exist before 45 BCE, this chronology
+    /// Although the Julian calendar did not exist before 45 BCE, this calendar
     /// assumes it did, thus it is proleptic. This implementation also fixes the
     /// start of the year at January 1.
     /// </remarks>

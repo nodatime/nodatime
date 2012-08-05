@@ -18,10 +18,14 @@
 namespace NodaTime.Calendars
 {
     /// <summary>
-    /// The epoch to use when constructing an Islamic calendar. The calendar can be based with year 1
-    /// starting on July 15th 622CE (in the Julian calendar) or the following day.
-    /// The former is the "astronomical" or "Thursday" epoch; the latter is the "civil" or "Friday" epoch.
+    /// The epoch to use when constructing an Islamic calendar.
     /// </summary>
+    /// <remarks>
+    /// The Islamic, or Hijri, calendar can either be constructed
+    /// starting on July 15th 622CE (in the Julian calendar) or on the following day.
+    /// The former is the "astronomical" or "Thursday" epoch; the latter is the "civil" or "Friday" epoch.
+    /// </remarks>
+    /// <seealso cref="CalendarSystem.GetIslamicCalendar"/>
     public enum IslamicEpoch
     {
         /// <summary>
