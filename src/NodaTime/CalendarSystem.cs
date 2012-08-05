@@ -42,12 +42,6 @@ namespace NodaTime
     /// immutable and thread-safe, aside from anything else. If you require a calendar system which is not
     /// currently supported, please file a feature request and we'll see what we can do.
     /// </para>
-    /// <para>
-    /// This class roughly corresponds to Chronology in Joda Time, although it includes
-    /// the functionality of Chronology, BaseChronology and AssembledChronology all mashed
-    /// together. Unlike Chronology, there's no time zone handling in CalendarSystem - that's
-    /// treated entirely separately to calendaring.
-    /// </para>
     /// </remarks>
     /// <threadsafety>
     /// All calendar implementations within Noda Time are immutable and thread-safe. See the thread safety
@@ -113,7 +107,7 @@ namespace NodaTime
         /// irregular.
         /// </summary>
         /// <remarks>
-        /// Although the Julian calendar did not exist before 45 BCE, this chronology
+        /// Although the Julian calendar did not exist before 45 BCE, this calendar
         /// assumes it did, thus it is proleptic. This implementation also fixes the
         /// start of the year at January 1.
         /// </remarks>
@@ -136,12 +130,12 @@ namespace NodaTime
         /// <remarks>
         /// <para>
         /// Year 1 in the Coptic calendar began on August 29, 284 CE (Julian), thus
-        /// Coptic years do not begin at the same time as Julian years. This chronology
+        /// Coptic years do not begin at the same time as Julian years. This calendar
         /// is not proleptic, as it does not allow dates before the first Coptic year.
         /// </para>
         /// <para>
         /// This implementation defines a day as midnight to midnight exactly as per
-        /// the ISO chronology. Some references indicate that a coptic day starts at
+        /// the ISO calendar. Some references indicate that a Coptic day starts at
         /// sunset on the previous ISO day, but this has not been confirmed and is not
         /// implemented.
         /// </para>
@@ -161,10 +155,13 @@ namespace NodaTime
         /// </summary>
         /// <remarks>
         /// <para>
-        /// This represents the civil Hijri calendar, rather than the religious one based
-        /// on lunar observation. This calendar is a lunar calendar with a shorter year than ISO.
+        /// This returns a tablular calendar, rather than one based on lunar observation. This calendar is a
+        /// lunar calendar with 12 months, each of 29 or 30 days, resulting in a year of 354 days (or 355 on a leap
+        /// year).
+        /// </para>
+        /// <para>
         /// Year 1 in the Islamic calendar began on July 15th or 16th, 622 CE (Julian), thus
-        /// Islamic years do not begin at the same time as Julian years. This chronology
+        /// Islamic years do not begin at the same time as Julian years. This calendar
         /// is not proleptic, as it does not allow dates before the first Islamic year.
         /// </para>
         /// <para>
@@ -193,7 +190,7 @@ namespace NodaTime
         /// </para>
         /// <para>
         /// This implementation defines a day as midnight to midnight exactly as per
-        /// the ISO chronology. This correct start of day is at sunset on the previous
+        /// the ISO calendar. This correct start of day is at sunset on the previous
         /// day, however this cannot readily be modelled and has been ignored.
         /// </para>
         /// </remarks>
