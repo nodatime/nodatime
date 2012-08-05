@@ -29,7 +29,7 @@ namespace NodaTime.Calendars
     /// <remarks>
     /// <para>
     /// Although the Gregorian calendar did not exist before 1582 CE, this
-    /// chronology assumes it did, thus it is proleptic. This implementation also
+    /// calendar assumes it did, thus it is proleptic. This implementation also
     /// fixes the start of the year at January 1, and defines the year zero.
     /// </para>
     /// <para>
