@@ -34,6 +34,7 @@ namespace NodaTime.Calendars
     /// cause offence to anyone; suggestions for better names would be welcome.
     /// </para>
     /// <seealso cref="CalendarSystem.GetIslamicCalendar"/>
+    /// </remarks>
     public enum IslamicLeapYearPattern
     {
         /// <summary>
