@@ -50,6 +50,36 @@ namespace NodaTime.Test.TimeZones
             }
         }
 
+        /// <summary>
+        /// This test catches situations where the Noda Time representation doesn't have all the
+        /// transitions it should; AllZoneTransitions may pass not spot times when we *should* have
+        /// a transition, because it only uses the transitions it knows about. Instead, here we
+        /// check each day between 1st January 1950 and 1st January 2050. We use midnight UTC, but
+        /// this is arbitrary.
+        /// </summary>
+        [Test]
+        [TestCaseSource("BclZonesOrEmptyOnMono")]
+        public void AllZonesEveryDay(TimeZoneInfo windowsZone)
+        {
+            // Remove this block to demonstrate bug 115. It's hard to just add it as an "ignore"
+            // due to the way we're testing.
+            if (windowsZone.Id == "Namibia Standard Time")
+            {
+                return;
+            }
+
+            var nodaZone = BclDateTimeZone.FromTimeZoneInfo(windowsZone);
+
+            Instant instant = Instant.FromUtc(1950, 1, 1, 0, 0);
+            Instant end = Instant.FromUtc(2050, 1, 1, 0, 0);
+
+            while (instant < end)
+            {
+                ValidateZoneEquality(instant, nodaZone, windowsZone);
+                instant += Duration.OneStandardDay;
+            }
+        }
+
         [Test]
         public void ForSystemDefault()
         {

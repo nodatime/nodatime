@@ -130,8 +130,10 @@ namespace NodaTime.TimeZones
 
                 // Find the last valid transition by working back from the end of time. It's safe to unconditionally
                 // take the value here, as there must *be* some recurrences.
-                var lastStandard = standard.PreviousOrFail(Instant.MaxValue, standardOffset, daylight.Savings);
-                var lastDaylight = daylight.PreviousOrFail(Instant.MaxValue, standardOffset, Offset.Zero);
+                // TODO(Post-V1): Tidy this up. We're basically fundamentally broken around the end of time :(
+                var oneDayBeforeTheEndOfTime = Instant.MaxValue - Duration.FromStandardDays(1);
+                var lastStandard = standard.PreviousOrFail(oneDayBeforeTheEndOfTime, standardOffset, daylight.Savings);
+                var lastDaylight = daylight.PreviousOrFail(oneDayBeforeTheEndOfTime, standardOffset, Offset.Zero);
                 bool standardIsLater = lastStandard.Instant > lastDaylight.Instant;
                 Transition lastTransition = standardIsLater ? lastStandard : lastDaylight;
                 Offset seamSavings = lastTransition.NewOffset - standardOffset;
@@ -190,7 +192,7 @@ namespace NodaTime.TimeZones
             out ZoneRecurrence standardRecurrence, out ZoneRecurrence daylightRecurrence)
         {
             int startYear = rule.DateStart.Year == 1 ? int.MinValue : rule.DateStart.Year;
-            int endYear = rule.DateStart.Year == 9999 ? int.MaxValue : rule.DateStart.Year;
+            int endYear = rule.DateEnd.Year == 9999 ? int.MaxValue : rule.DateEnd.Year;
             Offset daylightOffset = Offset.FromTimeSpan(rule.DaylightDelta);
             ZoneYearOffset daylightStart = ConvertTransition(rule.DaylightTransitionStart);
             ZoneYearOffset daylightEnd = ConvertTransition(rule.DaylightTransitionEnd);
