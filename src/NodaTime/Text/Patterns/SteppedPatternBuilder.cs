@@ -97,14 +97,18 @@ namespace NodaTime.Text.Patterns
             AddParseAction((cursor, bucket) =>
             {
                 int value;
+                bool negative = cursor.Match('-');
                 if (!cursor.ParseDigits(minimumDigits, maximumDigits, out value))
                 {
                     return ParseResult<TResult>.MismatchedNumber(new string(patternChar, minimumDigits));
                 }
+                if (negative)
+                    value = -value;
                 if (value < minimumValue || value > maximumValue)
                 {
                     return ParseResult<TResult>.FieldValueOutOfRange(value, patternChar);
                 }
+
                 valueSetter(bucket, value);
                 return null;
             });
