@@ -54,7 +54,7 @@ namespace NodaTime.Text.Patterns
                 {
                     case 1:
                     case 2:
-                        builder.AddParseValueAction(count, 2, 'y', 0, 99, setter);
+                        builder.AddParseValueAction(count, 2, 'y', -99, 99, setter);
                         builder.AddFormatAction((value, sb) => FormatHelper.LeftPad(centuryGetter(value), count, sb));
                         // Just remember that we've set this particular field. We can't set it twice as we've already got the Year flag set.
                         builder.AddField(PatternFields.YearTwoDigits, pattern.Current);
@@ -62,13 +62,13 @@ namespace NodaTime.Text.Patterns
                     case 3:
                         // Maximum value will be determined later.
                         // Three or more digits (ick).
-                        builder.AddParseValueAction(count, 5, 'y', 0, 99999, setter);
+                        builder.AddParseValueAction(count, 5, 'y', -99999, 99999, setter);
                         builder.AddFormatAction((value, sb) => FormatHelper.LeftPad(yearGetter(value), count, sb));
                         break;
                     default:
                         // Maximum value will be determined later.
                         // Note that the *exact* number of digits are required; not just "at least count".
-                        builder.AddParseValueAction(count, count, 'y', 0, 99999, setter);
+                        builder.AddParseValueAction(count, count, 'y', -99999, 99999, setter);
                         builder.AddFormatAction((value, sb) => FormatHelper.LeftPad(yearGetter(value), count, sb));
                         break;
                 }

@@ -156,6 +156,9 @@ namespace NodaTime.Test.Text
             // Year of era and two-digit year in the same format. Note that the year of era
             // gives the full year information, so we're not stuck in the 20th/21st century
             new Data(1825, 10, 9) { Pattern = "YYYY yy MM/dd", Text = "1825 25 10/09" },
+
+            // Negative years
+            new Data(-43, 3, 15) { Pattern = "yyyy MM dd", Text = "-0043 03 15"},
         };
 
         internal static IEnumerable<Data> ParseData = ParseOnlyData.Concat(FormatAndParseData);
