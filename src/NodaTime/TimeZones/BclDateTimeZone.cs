@@ -38,7 +38,11 @@ namespace NodaTime.TimeZones
 
         private readonly TimeZoneInfo bclZone;
         private readonly List<AdjustmentInterval> adjustmentIntervals;
+
+        // We may start and end with a long period of standard time.
+        // Either or both of these may be null.
         private readonly ZoneInterval headInterval;
+        private readonly ZoneInterval tailInterval;
 
         /// <summary>
         /// Returns the original <see cref="TimeZoneInfo"/> from which this was created.
@@ -50,12 +54,14 @@ namespace NodaTime.TimeZones
         /// </summary>
         public string DisplayName { get { return OriginalZone.DisplayName; } }
 
-        private BclDateTimeZone(TimeZoneInfo bclZone, Offset minOffset, Offset maxOffset, List<AdjustmentInterval> adjustmentIntervals, ZoneInterval headInterval)
+        private BclDateTimeZone(TimeZoneInfo bclZone, Offset minOffset, Offset maxOffset, List<AdjustmentInterval> adjustmentIntervals,
+            ZoneInterval headInterval, ZoneInterval tailInterval)
             : base(bclZone.Id, bclZone.SupportsDaylightSavingTime, minOffset, maxOffset)
         {
             this.bclZone = bclZone;
             this.adjustmentIntervals = adjustmentIntervals;
             this.headInterval = headInterval;
+            this.tailInterval = tailInterval;
         }
 
         /// <summary>
@@ -67,6 +73,11 @@ namespace NodaTime.TimeZones
             {
                 return headInterval;
             }
+            if (tailInterval != null && tailInterval.Contains(instant))
+            {
+                return tailInterval;
+            }
+
             // Avoid having to worry about Instant.MaxValue for the rest of the class.
             if (instant == Instant.MaxValue)
             {
@@ -114,7 +125,7 @@ namespace NodaTime.TimeZones
             if (!bclZone.SupportsDaylightSavingTime || rules.Length == 0)
             {
                 var fixedInterval = new ZoneInterval(bclZone.StandardName, Instant.MinValue, Instant.MaxValue, standardOffset, Offset.Zero);
-                return new BclDateTimeZone(bclZone, standardOffset, standardOffset, null, fixedInterval);
+                return new BclDateTimeZone(bclZone, standardOffset, standardOffset, null, fixedInterval, null);
             }
             var adjustmentIntervals = new List<AdjustmentInterval>();
             var headInterval = ComputeHeadInterval(bclZone, rules[0]);
@@ -143,7 +154,22 @@ namespace NodaTime.TimeZones
                 // Now work out the new "previous end" - i.e. where the next adjustment interval will start.
                 if (i == rules.Length - 1)
                 {
-                    nextStart = Instant.MaxValue;
+                    // If the final rule ends at the end of DateTime's range, we can just treat the rule
+                    // as going on forever.
+                    if (rule.DateEnd.Year == 9999)
+                    {
+                        nextStart = Instant.MaxValue;
+                    }
+                    else
+                    {
+                        // This is very odd. Suppose the rule notionally ends on "December 31st 2011". We
+                        // actually take that to mean the start of the next day (midnight January 1st 2012)
+                        // but in local daylight saving time - whether we actually *were* in daylight saving time or not...
+                        Offset daylightOffset = standardOffset + daylight.Savings;
+                        LocalDateTime ruleEndLocal = LocalDateTime.FromDateTime(rule.DateEnd).PlusDays(1);
+                        OffsetDateTime ruleEndOffset = new OffsetDateTime(ruleEndLocal, daylightOffset);
+                        nextStart = ruleEndOffset.ToInstant();
+                    }
                 }
                 else
                 {
@@ -164,8 +190,10 @@ namespace NodaTime.TimeZones
                 adjustmentIntervals.Add(new AdjustmentInterval(previousEnd, adjustmentZone, seam));
                 previousEnd = nextStart;
             }
+            ZoneInterval tailInterval = previousEnd == Instant.MaxValue ? null
+                : new ZoneInterval(bclZone.StandardName, previousEnd, Instant.MaxValue, standardOffset, Offset.Zero);
 
-            return new BclDateTimeZone(bclZone, standardOffset + minSavings, standardOffset + maxSavings, adjustmentIntervals, headInterval);
+            return new BclDateTimeZone(bclZone, standardOffset + minSavings, standardOffset + maxSavings, adjustmentIntervals, headInterval, tailInterval);
         }
 
         /// <summary>

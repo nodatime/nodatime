@@ -59,15 +59,22 @@ namespace NodaTime.Test.TimeZones
         /// </summary>
         [Test]
         [TestCaseSource("BclZonesOrEmptyOnMono")]
+        [Ignore("Takes a really long time")]
         public void AllZonesEveryDay(TimeZoneInfo windowsZone)
         {
-            // Remove this block to demonstrate bug 115. It's hard to just add it as an "ignore"
-            // due to the way we're testing.
-            if (windowsZone.Id == "Namibia Standard Time")
-            {
-                return;
-            }
+            ValidateZoneEveryDay(windowsZone);
+        }
 
+        // This demonstrates bug 115.
+        [Test]
+        [Ignore("Not fixed yet!")]
+        public void Namibia()
+        {
+            ValidateZoneEveryDay(TimeZoneInfo.FindSystemTimeZoneById("Namibia Standard Time"));
+        }
+
+        private void ValidateZoneEveryDay(TimeZoneInfo windowsZone)
+        {
             var nodaZone = BclDateTimeZone.FromTimeZoneInfo(windowsZone);
 
             Instant instant = Instant.FromUtc(1950, 1, 1, 0, 0);
@@ -96,7 +103,7 @@ namespace NodaTime.Test.TimeZones
         private void ValidateZoneEquality(Instant instant, DateTimeZone nodaZone, TimeZoneInfo windowsZone)
         {
             var interval = nodaZone.GetZoneInterval(instant);
-            var nodaOffset = nodaZone.GetOffsetFromUtc(instant);
+            var nodaOffset = interval.WallOffset;
             var windowsOffset = windowsZone.GetUtcOffset(instant.ToDateTimeUtc());
             Assert.AreEqual(windowsOffset, nodaOffset.ToTimeSpan(), "Incorrect offset at " + instant + " in interval " + interval);
         }
