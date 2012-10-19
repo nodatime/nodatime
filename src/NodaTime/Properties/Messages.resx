@@ -264,6 +264,9 @@
   <data name="Parse_UnexpectedEndOfString" xml:space="preserve">
     <value>More characters were expected in the parsable string [{0}].</value>
   </data>
+  <data name="Parse_UnexpectedNegative" xml:space="preserve">
+    <value>The value string includes a negative value where only a non-negative one is allowed.</value>
+  </data>
   <data name="Parse_UnknownFailure" xml:space="preserve">
     <value>Internal Error: The specified ParseFailureKind is unknown [{0}].</value>
   </data>
