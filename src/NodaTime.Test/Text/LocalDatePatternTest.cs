@@ -71,6 +71,8 @@ namespace NodaTime.Test.Text
             new Data { Pattern = "YYYY MM dd", Text = "0000 01 01", Message = Messages.Parse_YearOfEraOutOfRange, Parameters = { 0, "CE", "ISO" } },
             new Data { Pattern = "yyyy MM dd", Text = "2011 15 29", Message = Messages.Parse_MonthOutOfRange, Parameters = { 15, 2011 } },
             new Data { Pattern = "yyyy MM dd", Text = "2011 02 35", Message = Messages.Parse_DayOfMonthOutOfRange, Parameters = { 35, 2, 2011 } },
+            // Year of era can't be negative...
+            new Data { Pattern = "YYYY MM dd", Text = "-15 01 01", Message = Messages.Parse_UnexpectedNegative },
 
             // Invalid leap years
             new Data { Pattern = "yyyy MM dd", Text = "2011 02 29", Message = Messages.Parse_DayOfMonthOutOfRange, Parameters = { 29, 2, 2011 } },
