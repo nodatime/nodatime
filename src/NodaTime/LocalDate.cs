@@ -192,6 +192,23 @@ namespace NodaTime
         }
 
         /// <summary>
+        /// Returns the local date corresponding to the given "week year", "week of week year", and "day of week"
+        /// in the ISO calendar system.
+        /// </summary>
+        /// <param name="weekYear">ISO-8601 week year of value to return</param>
+        /// <param name="weekOfWeekYear">ISO-8601 week of week year of value to return</param>
+        /// <param name="dayOfWeek">ISO-8601 day of week to return</param>
+        /// <returns>The date corresponding to the given week year / week of week year / day of week.</returns>
+        public static LocalDate FromWeekYearWeekAndDay(int weekYear, int weekOfWeekYear, IsoDayOfWeek dayOfWeek)
+        {
+            LocalInstant localInstant = LocalInstant.LocalUnixEpoch;
+            localInstant = CalendarSystem.Iso.Fields.WeekYear.SetValue(localInstant, weekYear);
+            localInstant = CalendarSystem.Iso.Fields.WeekOfWeekYear.SetValue(localInstant, weekOfWeekYear);
+            localInstant = CalendarSystem.Iso.Fields.DayOfWeek.SetValue(localInstant, (int) dayOfWeek);
+            return new LocalDate(new LocalDateTime(localInstant));
+        }
+
+        /// <summary>
         /// Adds the specified period to the date.
         /// </summary>
         /// <param name="date">The date to add the period to</param>
