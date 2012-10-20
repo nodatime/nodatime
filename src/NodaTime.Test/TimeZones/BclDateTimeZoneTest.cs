@@ -103,6 +103,13 @@ namespace NodaTime.Test.TimeZones
         private void ValidateZoneEquality(Instant instant, DateTimeZone nodaZone, TimeZoneInfo windowsZone)
         {
             var interval = nodaZone.GetZoneInterval(instant);
+
+            // TODO(Post-V1): Make this much more efficient. We're doing a lot of duplicate work here.
+            // Check that the zone interval really represents a transition.
+            if (interval.Start != Instant.MinValue)
+            {
+                Assert.AreNotEqual(interval.WallOffset, nodaZone.GetOffsetFromUtc(interval.Start - Duration.Epsilon));
+            }
             var nodaOffset = interval.WallOffset;
             var windowsOffset = windowsZone.GetUtcOffset(instant.ToDateTimeUtc());
             Assert.AreEqual(windowsOffset, nodaOffset.ToTimeSpan(), "Incorrect offset at " + instant + " in interval " + interval);
