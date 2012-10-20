@@ -8,11 +8,10 @@
     <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
     <projectUrl>http://noda-time.googlecode.com</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <!-- Note: line breaks in the description element are preserved, hence
+         the long lines here. -->
     <description>
-      Noda Time is a date and time API acting as an alternative to the
-      built-in DateTime/DateTimeOffset etc types built into the .NET
-      framework. It's based on the "engine" of Joda Time, the popular Java
-      library - but with an API designed from the ground up.
+      Noda Time is a date and time API acting as an alternative to the built-in DateTime/DateTimeOffset etc types built into the .NET framework. It's based on the "engine" of Joda Time, the popular Java library - but with an API designed from the ground up.
     </description>
     <tags>date time timezone calendar</tags>
   </metadata>

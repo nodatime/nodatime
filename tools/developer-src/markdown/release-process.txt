@@ -112,6 +112,9 @@ TODO: doing this by hand is a pain.
 
 Upload the source and binary zipfiles to the
 [Google Code project](http://code.google.com/p/noda-time/downloads/list).
+Use the `Type-Source` label for the source zipfile, and the `Type-Archive` and
+`Featured` labels for the binary zipfile.  Remove `Featured` from the previous
+binary zipfile.
 
 Upload the two NuGet packages to nuget.org. TODO: How?
 
