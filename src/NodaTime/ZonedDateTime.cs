@@ -80,7 +80,7 @@ namespace NodaTime
         {
             Preconditions.CheckNotNull(zone, "zone");
             Preconditions.CheckNotNull(calendar, "calendar");
-            offset = zone.GetOffsetFromUtc(instant);
+            offset = zone.GetUtcOffset(instant);
             localDateTime = new LocalDateTime(instant.Plus(offset), calendar);
             this.zone = zone;
         }
@@ -111,7 +111,7 @@ namespace NodaTime
         {
             Preconditions.CheckNotNull(zone, "zone");
             Instant candidateInstant = localDateTime.LocalInstant.Minus(offset);
-            Offset correctOffset = zone.GetOffsetFromUtc(candidateInstant);
+            Offset correctOffset = zone.GetUtcOffset(candidateInstant);
             // Not using Preconditions, to avoid building the string unnecessarily.
             if (correctOffset != offset)
             {

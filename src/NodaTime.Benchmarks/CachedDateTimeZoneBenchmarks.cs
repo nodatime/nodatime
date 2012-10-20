@@ -75,9 +75,9 @@ namespace NodaTime.Benchmarks
         }
 
         [Benchmark]
-        public void GetOffsetFromUtc()
+        public void GetUtcOffset()
         {
-            paris.GetOffsetFromUtc(NodaConstants.UnixEpoch);
+            paris.GetUtcOffset(NodaConstants.UnixEpoch);
         }
     }
 }

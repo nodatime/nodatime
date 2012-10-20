@@ -214,7 +214,7 @@ namespace NodaTime
         /// <returns>
         /// The offset from UTC at the specified instant.
         /// </returns>
-        public virtual Offset GetOffsetFromUtc(Instant instant)
+        public virtual Offset GetUtcOffset(Instant instant)
         {
             return GetZoneInterval(instant).WallOffset;
         }

@@ -158,7 +158,7 @@ namespace NodaTime.TimeZones
         /// <returns>
         /// The offset from UTC at the specified instant.
         /// </returns>
-        public override Offset GetOffsetFromUtc(Instant instant)
+        public override Offset GetUtcOffset(Instant instant)
         {
             return FindMatchingRecurrence(instant).Savings + standardOffset;
         }
