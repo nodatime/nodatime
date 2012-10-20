@@ -64,11 +64,6 @@
             abstract methods, referring to internal types. This ensures that all calendar types are genuinely
             immutable and thread-safe, aside from anything else. If you require a calendar system which is not
             currently supported, please file a feature request and we'll see what we can do.
-            </p><p>
-            This class roughly corresponds to Chronology in Joda Time, although it includes
-            the functionality of Chronology, BaseChronology and AssembledChronology all mashed
-            together. Unlike Chronology, there's no time zone handling in CalendarSystem - that's
-            treated entirely separately to calendaring.
             </p></div></div><div class="section"><div class="sectionTitle" onclick="toggleSection(this.parentNode)"><img src="../icons/collapse_all.gif" /> Thread Safety</div><div class="sectionContent">
             All calendar implementations within Noda Time are immutable and thread-safe. See the thread safety
             section of the user guide for more information.

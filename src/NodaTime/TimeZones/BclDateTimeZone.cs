@@ -154,9 +154,9 @@ namespace NodaTime.TimeZones
                 // Now work out the new "previous end" - i.e. where the next adjustment interval will start.
                 if (i == rules.Length - 1)
                 {
-                    // If the final rule ends at the end of DateTime's range, we can just treat the rule
-                    // as going on forever.
-                    if (rule.DateEnd.Year == 9999)
+                    // If the final rule ends at the end of DateTime's range or the final transition was to standard time,
+                    // we can just treat the seam as going on forever.
+                    if (rule.DateEnd.Year == 9999 || lastTransition.NewOffset == standardOffset)
                     {
                         nextStart = Instant.MaxValue;
                     }
@@ -165,6 +165,8 @@ namespace NodaTime.TimeZones
                         // This is very odd. Suppose the rule notionally ends on "December 31st 2011". We
                         // actually take that to mean the start of the next day (midnight January 1st 2012)
                         // but in local daylight saving time - whether we actually *were* in daylight saving time or not...
+                        // Just asking the time zone to convert the local end point to UTC doesn't appear to give the right
+                        // results.
                         Offset daylightOffset = standardOffset + daylight.Savings;
                         LocalDateTime ruleEndLocal = LocalDateTime.FromDateTime(rule.DateEnd).PlusDays(1);
                         OffsetDateTime ruleEndOffset = new OffsetDateTime(ruleEndLocal, daylightOffset);
