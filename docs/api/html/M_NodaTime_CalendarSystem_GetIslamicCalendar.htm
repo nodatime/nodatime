@@ -15,10 +15,12 @@
 	<a href="T_NodaTime_Calendars_IslamicEpoch.htm">IslamicEpoch</a> <span class="parameter">epoch</span>
 )</pre></div></div></div></div></div><div id="parameters"><div class="section"><div class="sectionTitle" onclick="toggleSection(this.parentNode)"><img src="../icons/collapse_all.gif" /> Parameters</div><div class="sectionContent"><dl paramName="leapYearPattern"><dt><span class="parameter">leapYearPattern</span> (<a href="T_NodaTime_Calendars_IslamicLeapYearPattern.htm">IslamicLeapYearPattern</a>)</dt><dd>The pattern of years in the 30-year cycle to consider as leap years</dd></dl><dl paramName="epoch"><dt><span class="parameter">epoch</span> (<a href="T_NodaTime_Calendars_IslamicEpoch.htm">IslamicEpoch</a>)</dt><dd>The kind of epoch to use (astronomical or civil)</dd></dl></div></div></div><div class="section"><div class="sectionTitle" onclick="toggleSection(this.parentNode)"><img src="../icons/collapse_all.gif" /> Return Value</div><div class="sectionContent">A suitable Islamic calendar reference; the same reference may be returned by several
             calls as the object is immutable and thread-safe.</div></div><div class="section"><div class="sectionTitle" onclick="toggleSection(this.parentNode)"><img src="../icons/collapse_all.gif" /> Remarks</div><div class="sectionContent"><p>
-            This represents the civil Hijri calendar, rather than the religious one based
-            on lunar observation. This calendar is a lunar calendar with a shorter year than ISO.
+            This returns a tablular calendar, rather than one based on lunar observation. This calendar is a
+            lunar calendar with 12 months, each of 29 or 30 days, resulting in a year of 354 days (or 355 on a leap
+            year).
+            </p><p>
             Year 1 in the Islamic calendar began on July 15th or 16th, 622 CE (Julian), thus
-            Islamic years do not begin at the same time as Julian years. This chronology
+            Islamic years do not begin at the same time as Julian years. This calendar
             is not proleptic, as it does not allow dates before the first Islamic year.
             </p><p>
             There are two basic forms of the Islamic calendar, the tabular and the
@@ -36,7 +38,7 @@
             (July 15th 622CE) or the "civil" or "Friday" epoch (July 16th 622CE).
             </p><p>
             This implementation defines a day as midnight to midnight exactly as per
-            the ISO chronology. This correct start of day is at sunset on the previous
+            the ISO calendar. This correct start of day is at sunset on the previous
             day, however this cannot readily be modelled and has been ignored.
             </p></div></div><p><div id="footer"><p />Send comments on this topic to
         <a id="HT_MailLink" href="mailto:noda-time%40googlegroups.com?Subject=Noda-Time">Noda-Time Google Groups</a><script type="text/javascript">
