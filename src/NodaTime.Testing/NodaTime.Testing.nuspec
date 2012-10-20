@@ -8,11 +8,10 @@
     <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
     <projectUrl>http://noda-time.googlecode.com</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <!-- Note: line breaks in the description element are preserved, hence
+         the long lines here. -->
     <description>
-      Provides extra types which may be useful when testing code
-      which uses Noda Time, such as a fake programmable
-      implementation of IClock and a time zone which has a fixed
-      transition. These types are also used to test Noda Time itself.
+      Provides extra types which may be useful when testing code which uses Noda Time, such as a fake programmable implementation of IClock and a time zone which has a fixed transition. These types are also used to test Noda Time itself.
     </description>
     <tags>nodatime testing</tags>
     <dependencies>
