@@ -108,7 +108,7 @@ namespace NodaTime.Test.TimeZones
             // Check that the zone interval really represents a transition.
             if (interval.Start != Instant.MinValue)
             {
-                Assert.AreNotEqual(interval.WallOffset, nodaZone.GetOffsetFromUtc(interval.Start - Duration.Epsilon));
+                Assert.AreNotEqual(interval.WallOffset, nodaZone.GetUtcOffset(interval.Start - Duration.Epsilon));
             }
             var nodaOffset = interval.WallOffset;
             var windowsOffset = windowsZone.GetUtcOffset(instant.ToDateTimeUtc());

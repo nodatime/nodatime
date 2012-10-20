@@ -47,7 +47,7 @@ namespace NodaTime.Test.TimeZones
         {
             Assert.AreEqual("UTC-08", TestZone.Id, "TestZone.Id");
             Assert.AreEqual("UTC-08", TestZone.GetZoneInterval(NodaConstants.UnixEpoch).Name);
-            Assert.AreEqual(ZoneOffset, TestZone.GetOffsetFromUtc(NodaConstants.UnixEpoch), "TestZone.GetOffsetFromUtc()");
+            Assert.AreEqual(ZoneOffset, TestZone.GetUtcOffset(NodaConstants.UnixEpoch));
             Assert.AreEqual(ZoneOffset, TestZone.MinOffset);
             Assert.AreEqual(ZoneOffset, TestZone.MaxOffset);
         }
