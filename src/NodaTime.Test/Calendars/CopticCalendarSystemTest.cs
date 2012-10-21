@@ -76,7 +76,6 @@ namespace NodaTime.Test.Calendars
             Assert.AreEqual(0, coptic.Minute);
             Assert.AreEqual(0, coptic.Second);
             Assert.AreEqual(0, coptic.Millisecond);
-            Assert.AreEqual(0, coptic.Tick);
         }
     }
 }

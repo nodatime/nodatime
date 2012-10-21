@@ -335,24 +335,9 @@ namespace NodaTime
         public int Second { get { return calendar.Fields.SecondOfMinute.GetValue(localInstant); } }
 
         /// <summary>
-        /// Gets the second of this local date and time within the day, in the range 0 to 86,399 inclusive.
-        /// </summary>
-        public int SecondOfDay { get { return calendar.Fields.SecondOfDay.GetValue(localInstant); } }
-
-        /// <summary>
         /// Gets the millisecond of this local date and time within the second, in the range 0 to 999 inclusive.
         /// </summary>
         public int Millisecond { get { return calendar.Fields.MillisecondOfSecond.GetValue(localInstant); } }
-
-        /// <summary>
-        /// Gets the millisecond of this local date and time within the day, in the range 0 to 86,399,999 inclusive.
-        /// </summary>
-        public int MillisecondOfDay { get { return calendar.Fields.MillisecondOfDay.GetValue(localInstant); } }
-
-        /// <summary>
-        /// Gets the tick of this local date and time within the millisecond, in the range 0 to 9,999 inclusive.
-        /// </summary>
-        public int Tick { get { return calendar.Fields.TickOfMillisecond.GetValue(localInstant); } }
 
         /// <summary>
         /// Gets the tick of this local time within the second, in the range 0 to 9,999,999 inclusive.

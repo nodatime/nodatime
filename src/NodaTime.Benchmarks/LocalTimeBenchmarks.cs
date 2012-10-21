@@ -80,12 +80,6 @@ namespace NodaTime.Benchmarks
         }
 
         [Benchmark]
-        public void TickOfMillisecond()
-        {
-            sample.Tick.Consume();
-        }
-
-        [Benchmark]
         public void TickOfDay()
         {
             sample.TickOfDay.Consume();

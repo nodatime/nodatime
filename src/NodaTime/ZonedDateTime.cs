@@ -229,24 +229,9 @@ namespace NodaTime
         public int Second { get { return LocalDateTime.Second; } }
 
         /// <summary>
-        /// Gets the second of this zoned date and time within the day, in the range 0 to 86,399 inclusive.
-        /// </summary>
-        public int SecondOfDay { get { return LocalDateTime.SecondOfDay; } }
-
-        /// <summary>
         /// Gets the millisecond of this zoned date and time within the second, in the range 0 to 999 inclusive.
         /// </summary>
         public int Millisecond { get { return LocalDateTime.Millisecond; } }
-
-        /// <summary>
-        /// Gets the millisecond of this zoned date and time within the day, in the range 0 to 86,399,999 inclusive.
-        /// </summary>
-        public int MillisecondOfDay { get { return LocalDateTime.MillisecondOfDay; } }
-
-        /// <summary>
-        /// Gets the tick of this zoned date and time within the millisecond, in the range 0 to 9,999 inclusive.
-        /// </summary>
-        public int Tick { get { return LocalDateTime.Tick; } }
 
         /// <summary>
         /// Gets the tick of this zoned date and time within the second, in the range 0 to 9,999,999 inclusive.

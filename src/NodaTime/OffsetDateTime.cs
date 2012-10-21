@@ -143,24 +143,9 @@ namespace NodaTime
         public int Second { get { return localDateTime.Second; } }
 
         /// <summary>
-        /// Gets the second of this offset date and time within the day, in the range 0 to 86,399 inclusive.
-        /// </summary>
-        public int SecondOfDay { get { return localDateTime.SecondOfDay; } }
-
-        /// <summary>
         /// Gets the millisecond of this offset date and time within the second, in the range 0 to 999 inclusive.
         /// </summary>
         public int Millisecond { get { return localDateTime.Millisecond; } }
-
-        /// <summary>
-        /// Gets the millisecond of this offset date and time within the day, in the range 0 to 86,399,999 inclusive.
-        /// </summary>
-        public int MillisecondOfDay { get { return localDateTime.MillisecondOfDay; } }
-
-        /// <summary>
-        /// Gets the tick of this offset date and time within the millisecond, in the range 0 to 9,999 inclusive.
-        /// </summary>
-        public int Tick { get { return localDateTime.Tick; } }
 
         /// <summary>
         /// Gets the tick of this offset date and time within the second, in the range 0 to 9,999,999 inclusive.
