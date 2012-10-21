@@ -182,24 +182,9 @@ namespace NodaTime
         public int Second { get { return IsoFields.SecondOfMinute.GetValue(localInstant); } }
 
         /// <summary>
-        /// Gets the second of this local time within the day, in the range 0 to 86,399 inclusive.
-        /// </summary>
-        public int SecondOfDay { get { return IsoFields.SecondOfDay.GetValue(localInstant); } }
-
-        /// <summary>
         /// Gets the millisecond of this local time within the second, in the range 0 to 999 inclusive.
         /// </summary>
         public int Millisecond { get { return IsoFields.MillisecondOfSecond.GetValue(localInstant); } }
-
-        /// <summary>
-        /// Gets the millisecond of this local time within the day, in the range 0 to 86,399,999 inclusive.
-        /// </summary>
-        public int MillisecondOfDay { get { return IsoFields.MillisecondOfDay.GetValue(localInstant); } }
-
-        /// <summary>
-        /// Gets the tick of this local time within the millisecond, in the range 0 to 9,999 inclusive.
-        /// </summary>
-        public int Tick { get { return IsoFields.TickOfMillisecond.GetValue(localInstant); } }
 
         /// <summary>
         /// Gets the tick of this local time within the second, in the range 0 to 9,999,999 inclusive.
