@@ -67,7 +67,6 @@ namespace NodaTime.Test.TimeZones
 
         // This demonstrates bug 115.
         [Test]
-        [Ignore("Not fixed yet!")]
         public void Namibia()
         {
             ValidateZoneEveryDay(TimeZoneInfo.FindSystemTimeZoneById("Namibia Standard Time"));
