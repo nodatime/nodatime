@@ -130,6 +130,8 @@ namespace NodaTime.TimeZones
             var adjustmentIntervals = new List<AdjustmentInterval>();
             var headInterval = ComputeHeadInterval(bclZone, rules[0]);
             Instant previousEnd = headInterval != null ? headInterval.End : Instant.MinValue;
+
+            // TODO(Post-V1): Tidy this up. All of this is horrible.
             for (int i = 0; i < rules.Length; i++)
             {
                 var rule = rules[i];
@@ -151,51 +153,93 @@ namespace NodaTime.TimeZones
                 string seamName = standardIsLater ? bclZone.StandardName : bclZone.DaylightName;
 
                 Instant nextStart;
-                // Now work out the new "previous end" - i.e. where the next adjustment interval will start.
+
+                Instant ruleEnd = GetRuleEnd(rule, lastTransition);
+
+                // Handle the final rule, which may or may not to extend to the end of time. If it doesn't,
+                // we transition to standard time at the end of the rule.
                 if (i == rules.Length - 1)
                 {
-                    // If the final rule ends at the end of DateTime's range or the final transition was to standard time,
-                    // we can just treat the seam as going on forever.
-                    if (rule.DateEnd.Year == 9999 || lastTransition.NewOffset == standardOffset)
-                    {
-                        nextStart = Instant.MaxValue;
-                    }
-                    else
-                    {
-                        // This is very odd. Suppose the rule notionally ends on "December 31st 2011". We
-                        // actually take that to mean the start of the next day (midnight January 1st 2012)
-                        // but in local daylight saving time - whether we actually *were* in daylight saving time or not...
-                        // Just asking the time zone to convert the local end point to UTC doesn't appear to give the right
-                        // results.
-                        Offset daylightOffset = standardOffset + daylight.Savings;
-                        LocalDateTime ruleEndLocal = LocalDateTime.FromDateTime(rule.DateEnd).PlusDays(1);
-                        OffsetDateTime ruleEndOffset = new OffsetDateTime(ruleEndLocal, daylightOffset);
-                        nextStart = ruleEndOffset.ToInstant();
-                    }
+                    // If the final transition was to standard time, we can just treat the seam as going on forever.
+                    nextStart = standardIsLater ? Instant.MaxValue : ruleEnd;
+                    var seam = new ZoneInterval(seamName, lastTransition.Instant, nextStart, lastTransition.NewOffset, seamSavings);
+                    var adjustmentZone = new DaylightSavingsDateTimeZone("ignored", standardOffset, standard.ToInfinity(), daylight.ToInfinity());
+                    adjustmentIntervals.Add(new AdjustmentInterval(previousEnd, adjustmentZone, seam));
+                    previousEnd = nextStart;
                 }
                 else
                 {
+                    // Handle one rule going into another. This is the cause of much pain, as there are several options:
+                    // 1) Going into a "normal" rule with two transitions per year.
+                    // 2) Going into a "single transition" rule, signified by a transition "into" the current offset
+                    //    right at the start of the year. This is treated as if the on-the-edge transition doesn't exist.
+                    //
+                    // Additionally, there's the possibility that the offset at the start of the next rule (i.e. the
+                    // one before the first transition) isn't the same as the offset at the end of end of the current rule
+                    // (i.e. lastTransition.NewOffset). This only occurs for Namibia time as far as we've seen, but in that
+                    // case we create a seam which only goes until the end of this rule, then an extra zone interval for
+                    // the time between the start of the rule and the first transition, then we're as normal, starting at
+                    // the first transition. See bug 115 for a bit more information.
                     var nextRule = rules[i + 1];
-                    // TODO(Post-V1): Tidy this up (we do the same thing on the next iteration...)
                     ZoneRecurrence nextStandard, nextDaylight;
                     GetRecurrences(bclZone, nextRule, out nextStandard, out nextDaylight);
 
-                    // If the "start of seam" transition is a transition into standard time, we want to find the
-                    // first transition into daylight time in the new set of rules, and vice versa. Again, there
-                    // must *be* a transition, as otherwise the rules are invalid.
-                    var firstRecurrence = standardIsLater ? nextDaylight : nextStandard;
-                    nextStart = firstRecurrence.NextOrFail(lastTransition.Instant, standardOffset, seamSavings).Instant;
-                }
-                var seam = new ZoneInterval(seamName, lastTransition.Instant, nextStart, lastTransition.NewOffset, seamSavings);
-                var adjustmentZone = new DaylightSavingsDateTimeZone("ignored", standardOffset, standard.ToInfinity(), daylight.ToInfinity());
+                    // By using the seam's savings for *both* checks, we can detect "daylight to daylight" and
+                    // "standard to standard" transitions as happening at the very start of the rule.
+                    var firstStandard = nextStandard.NextOrFail(lastTransition.Instant, standardOffset, seamSavings);
+                    var firstDaylight = nextDaylight.NextOrFail(lastTransition.Instant, standardOffset, seamSavings);
 
-                adjustmentIntervals.Add(new AdjustmentInterval(previousEnd, adjustmentZone, seam));
-                previousEnd = nextStart;
+                    // Ignore any "right at the start of the rule"  transitions.
+                    var firstStandardInstant = firstStandard.Instant == ruleEnd ? Instant.MaxValue : firstStandard.Instant;
+                    var firstDaylightInstant = firstDaylight.Instant == ruleEnd ? Instant.MaxValue : firstDaylight.Instant;
+                    bool firstStandardIsEarlier = firstStandardInstant < firstDaylightInstant;
+                    var firstTransition = firstStandardIsEarlier ? firstStandard : firstDaylight;
+                    nextStart = firstTransition.Instant;
+                    var seamEnd = nextStart;
+
+                    AdjustmentInterval startOfRuleExtraSeam = null;
+
+                    Offset previousOffset = firstStandardIsEarlier ? firstDaylight.NewOffset : firstStandard.NewOffset;
+                    if (previousOffset != lastTransition.NewOffset)
+                    {
+                        seamEnd = ruleEnd;
+                        // Recalculate the *real* transition, as we're now going from a different wall offset...
+                        var firstRule = firstStandardIsEarlier ? nextStandard : nextDaylight;
+                        nextStart = firstRule.NextOrFail(ruleEnd, standardOffset, previousOffset - standardOffset).Instant;
+                        var extraSeam = new ZoneInterval(firstStandardIsEarlier ? bclZone.DaylightName : bclZone.StandardName,
+                            ruleEnd, nextStart, previousOffset, previousOffset - standardOffset);
+                        // The extra adjustment interval is really just a single zone interval; we'll never need the DaylightSavingsDateTimeZone part.
+                        startOfRuleExtraSeam = new AdjustmentInterval(extraSeam.Start, null, extraSeam);
+                    }
+
+                    var seam = new ZoneInterval(seamName, lastTransition.Instant, seamEnd, lastTransition.NewOffset, seamSavings);
+                    var adjustmentZone = new DaylightSavingsDateTimeZone("ignored", standardOffset, standard.ToInfinity(), daylight.ToInfinity());
+                    adjustmentIntervals.Add(new AdjustmentInterval(previousEnd, adjustmentZone, seam));
+
+                    if (startOfRuleExtraSeam != null)
+                    {
+                        adjustmentIntervals.Add(startOfRuleExtraSeam);
+                    }
+                    previousEnd = nextStart;
+                }
             }
             ZoneInterval tailInterval = previousEnd == Instant.MaxValue ? null
                 : new ZoneInterval(bclZone.StandardName, previousEnd, Instant.MaxValue, standardOffset, Offset.Zero);
 
             return new BclDateTimeZone(bclZone, standardOffset + minSavings, standardOffset + maxSavings, adjustmentIntervals, headInterval, tailInterval);
+        }
+
+        private static Instant GetRuleEnd(TimeZoneInfo.AdjustmentRule rule, Transition transition)
+        {
+            if (rule.DateEnd.Year == 9999)
+            {
+                return Instant.MaxValue;
+            }
+            // We work out the instant at which the *current* offset reaches the end of the given date.
+            Offset daylightOffset = transition.NewOffset;
+            LocalDateTime ruleEndLocal = LocalDateTime.FromDateTime(rule.DateEnd).PlusDays(1);
+            OffsetDateTime ruleEndOffset = new OffsetDateTime(ruleEndLocal, transition.NewOffset);
+            return ruleEndOffset.ToInstant();
         }
 
         /// <summary>
