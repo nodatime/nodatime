@@ -30,6 +30,14 @@ Note that we cannot build releases on Mono at present, since they trigger a bug
 in the .NET 4 64-bit CLR (see the [building and testing](building.html) section
 in the developer guide).
 
+## Update the embedded tzdb
+
+If necessary, update the version of tzdb to the latest current version,
+following the instructions in the ["Updating the time zone database"][tzdb]
+section in the user guide.
+
+[tzdb]: ../userguide/tzdb.html
+
 ## Making the release
 
 If necessary, update the following AssemblyInfo files and NuGet package specs
