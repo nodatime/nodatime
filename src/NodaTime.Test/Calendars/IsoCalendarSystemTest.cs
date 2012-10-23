@@ -83,6 +83,11 @@ namespace NodaTime.Test.Calendars
             Assert.AreEqual(25, now.Second);
             Assert.AreEqual(345, now.Millisecond);
             Assert.AreEqual(3458765, now.TickOfSecond);
+            Assert.AreEqual(18 * NodaConstants.TicksPerHour +
+                            38 * NodaConstants.TicksPerMinute +
+                            25 * NodaConstants.TicksPerSecond +
+                            3458765,
+                            now.TickOfDay);
         }
 
         [Test]
