@@ -10,12 +10,13 @@
     <h1>Building and Testing</h1>
     <h2>Visual Studio (Windows)</h2>
 
-<p>We have tested Noda Time using Visual Studio 2008 and Visual Studio 2010.</p>
-
-<p>To build Noda Time with Visual Studio, you'll need to install (TODO more detail about what needs to be installed for Visual Studio proper).</p>
+<p>Noda Time is mostly developed on Visual Studio 2010 and Visual Studio 2012.
+All versions of Visual Studio 2010 and 2012 which support C#, including Express editions,
+should be able to build Noda Time. (Please contact the mailing list if this turns out
+not to be the case.)</p>
 
 <p>You'll also need the <a href="http://msdn.microsoft.com/en-us/netframework/aa569263.aspx">.NET Framework SDK</a>. This library supports
-version 2.0, 3.0, 3.5, and 4.0 of the Framework. Install the appropriate
+version 2.0, 3.0, 3.5, 4 and 4.5 of the Framework. Install the appropriate
 version or versions as defined by your needs.</p>
 
 <p>To fetch the source code from the main Google Code repository, you'll need a
@@ -29,11 +30,21 @@ from the Windows Explorer.</p>
 
 <p>To fetch the source code, just clone the Google Code repository:</p>
 
-<pre class="prettyprint"><code>$ hg clone https://code.google.com/p/noda-time/
+<pre class="prettyprint"><code>&gt; hg clone https://code.google.com/p/noda-time/
 </code></pre>
 
-<p>TODO: more detail about building :) I imagine we probably want to point to
-<code>buildnuget.bat</code> and <code>builddocs.bat</code>.</p>
+<p>To build under Visual Studio, simply open the <code>src\NodaTime.sln</code> file.
+To build with just the SDK and msbuild, run</p>
+
+<pre class="prettyprint"><code>&gt; msbuild src\NodaTime.sln /property:Configuration=Debug
+</code></pre>
+
+<p>Execute the tests using your favourite NUnit test runner. For example:</p>
+
+<pre class="prettyprint"><code>&gt; nunit-console src\NodaTime.Test\bin\Debug\NodaTime.Test.dll
+</code></pre>
+
+<p>(Include the other test DLLs should you wish to, of course.)</p>
 
 <h2>Mono</h2>
 

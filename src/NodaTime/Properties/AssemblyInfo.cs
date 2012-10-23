@@ -59,8 +59,31 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyFileVersion("1.0.0")]
 [assembly: AssemblyInformationalVersion("1.0.0-beta2")]
 [assembly: CLSCompliant(true)]
-[assembly: InternalsVisibleTo("NodaTime.Test")]
-[assembly: InternalsVisibleTo("ZoneInfoCompiler")]
-[assembly: InternalsVisibleTo("ZoneInfoCompiler.Test")]
-[assembly: InternalsVisibleTo("NodaTime.Benchmarks")]
 [assembly: NeutralResourcesLanguage("en")]
+
+[assembly: InternalsVisibleTo("NodaTime.Test" + NodaTime.Properties.AssemblyInfo.PublicKeySuffix)]
+[assembly: InternalsVisibleTo("ZoneInfoCompiler" + NodaTime.Properties.AssemblyInfo.PublicKeySuffix)]
+[assembly: InternalsVisibleTo("ZoneInfoCompiler.Test" + NodaTime.Properties.AssemblyInfo.PublicKeySuffix)]
+[assembly: InternalsVisibleTo("NodaTime.Benchmarks" + NodaTime.Properties.AssemblyInfo.PublicKeySuffix)]
+
+namespace NodaTime.Properties
+{
+    /// <summary>
+    /// Just a static class to house the public key, which allows us to avoid repeating it all over the place.
+    /// </summary>
+    internal static class AssemblyInfo
+    {
+#if SIGNED
+        internal const string PublicKeySuffix =
+            ",PublicKey=0024000004800000940000000602000000240000525341310004000001000100d335797ef2bff7"
+            + "4db7c046f874523c553f88d3f8e0c2ba769820c54f0e64a11b47198b544c74abb487f8d3b64669"
+            + "08ae2ac6fced4738e46a75e5661d5ac03fb29c7e26b13a220400cb9df95134e85716203f83b96f"
+            + "ab661135c39b10f33e1c467a6750d8af331c602351b09a7bf5dd3a8943712d676481c5054c8031"
+            + "84f77ed5";
+#else
+        // If we're building an unsigned release, all the InternalsVisibleToAttribute arguments
+        // should have an empty suffix.
+        internal const string PublicKeySuffix = "";
+#endif
+    }
+}

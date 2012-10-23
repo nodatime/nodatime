@@ -16,7 +16,7 @@
     <tags>date time timezone calendar</tags>
   </metadata>
   <files>
-    <file src="bin\Release\NodaTime.dll" target="lib\net35-Client" />
-    <file src="bin\Release\NodaTime.xml" target="lib\net35-Client" />
+    <file src="bin\Signed Release\NodaTime.dll" target="lib\net35-Client" />
+    <file src="bin\Signed Release\NodaTime.xml" target="lib\net35-Client" />
   </files>
 </package>

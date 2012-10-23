@@ -28,16 +28,24 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         private static readonly HeadingInfo HeadingInfo = new HeadingInfo(AssemblyInfo.Product, AssemblyInfo.Version);
 
         [Option("o", "output", Required = true, HelpText = "The name of the output file.")]
-        public string OutputFileName = string.Empty;
+        public string OutputFileName { get; set; }
 
         [Option("s", "source", Required = true, HelpText = "Source directory containing the TZDB input files.")]
-        public string SourceDirectoryName = string.Empty;
+        public string SourceDirectoryName { get; set; }
 
         [Option("w", "windows", Required = true, HelpText = "Windows to TZDB time zone mapping file (windowsZones.xml")]
-        public string WindowsMappingFile = string.Empty;
+        public string WindowsMappingFile { get; set; }
 
         [Option("t", "type", HelpText = "The type of the output file { ResX, Resource }. Defaults to Resx.")]
-        public ResourceOutputType OutputType = ResourceOutputType.ResX;
+        public ResourceOutputType OutputType { get; set; }
+
+        public TzdbCompilerOptions()
+        {
+            OutputFileName = "";
+            SourceDirectoryName = "";
+            WindowsMappingFile = "";
+            OutputType = ResourceOutputType.ResX;
+        }
 
         [HelpOption(HelpText = "Display this help screen.")]
         public string GetUsage()

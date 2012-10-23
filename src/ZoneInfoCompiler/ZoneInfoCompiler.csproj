@@ -58,11 +58,18 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Signed Release|AnyCPU'">
+    <OutputPath>bin\Signed Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <AssemblyOriginatorKeyFile>..\..\NodaTime Release.snk</AssemblyOriginatorKeyFile>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CommandLine, Version=1.7.0.1, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\lib\commandline\CommandLine.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -78,6 +85,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\lib\commandline\CommandLine.cs">
+      <Link>CommandLine.cs</Link>
+    </Compile>
+    <Compile Include="..\..\lib\commandline\CommandLineText.cs">
+      <Link>CommandLineText.cs</Link>
+    </Compile>
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="ConsoleLog.cs" />
     <Compile Include="ILog.cs" />
