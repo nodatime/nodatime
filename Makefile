@@ -33,9 +33,10 @@ XBUILDFLAGS := /p:TargetFrameworkVersion='v3.5' /p:TargetFrameworkProfile=''
 XBUILDFLAGS_DEBUG := $(XBUILDFLAGS)
 XBUILDFLAGS_RELEASE := $(XBUILDFLAGS) /p:Configuration=Release
 
-SOLUTION := 'src/NodaTime Mono.sln'
-TOOLS_SOLUTION := 'tools/NodaTime.Tools.sln'
+SOLUTION := 'src/NodaTime VS2010.sln'
+TOOLS_SOLUTION := tools/NodaTime.Tools.sln
 DEBUG_TEST_DLL := src/NodaTime.Test/bin/Debug/NodaTime.Test.dll
+DEBUG_SERIALIZATION_TEST_DLL := src/NodaTime.Serialization.Test/bin/Debug/NodaTime.Serialization.Test.dll
 MARKDOWN_TOOL := tools/NodaTime.Tools.BuildMarkdownDocs/bin/Release/NodaTime.Tools.BuildMarkdownDocs.exe
 
 debug:
@@ -45,7 +46,7 @@ release:
 	$(XBUILD) $(XBUILDFLAGS_RELEASE) $(SOLUTION)
 
 check: debug
-	$(NUNIT) $(DEBUG_TEST_DLL)
+	$(NUNIT) $(DEBUG_TEST_DLL) $(DEBUG_SERIALIZATION_TEST_DLL)
 
 tools:
 	$(XBUILD) $(XBUILDFLAGS_RELEASE) $(TOOLS_SOLUTION)
