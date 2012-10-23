@@ -10,7 +10,7 @@ more details.
 - Added `LocalDate.FromWeekYearWeekAndDay` ([issue 120][])
 - Text formats can now parse negative values for absolute years ([issue 118][])
 - `Tick`, `SecondOfDay` and `MillisecondOfDay` properties removed from
-  time-based types ([issue 103][]).
+  time-based types ([issue 103][])
 
 ## 1.0.0-beta2, released 2012-08-04 with tzdb 2012e
 
