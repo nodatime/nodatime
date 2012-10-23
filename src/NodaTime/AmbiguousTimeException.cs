@@ -37,7 +37,7 @@ namespace NodaTime
     /// such as entering "15" for a month number.
     /// </para>
     /// <para>
-    /// In theory this isn't calendar-specific; the local instant will be ambiguous in
+    /// In theory this isn't calendar-specific; the local value will be ambiguous in
     /// this time zone regardless of the calendar used. However, this exception is
     /// always created in conjunction with a specific calendar, which leads to a more
     /// natural way of examining its information and constructing an error message.
