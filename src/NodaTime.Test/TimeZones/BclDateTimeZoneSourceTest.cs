@@ -47,7 +47,7 @@ namespace NodaTime.Test.TimeZones
         {
             // Only a few fixed zones are advertised by Windows. We happen to know this one
             // is wherever we run tests :)
-            // Unfortunately, it doesn't always exist on Mono (at least not on the Rasperry Pi...)
+            // Unfortunately, it doesn't always exist on Mono (at least not on the Raspberry Pi...)
             string id = "UTC-02";
             var source = new BclDateTimeZoneSource();
             if (!source.GetIds().Contains(id)) {
