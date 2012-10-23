@@ -69,7 +69,13 @@ namespace NodaTime.Test.TimeZones
         [Test]
         public void Namibia()
         {
-            ValidateZoneEveryDay(TimeZoneInfo.FindSystemTimeZoneById("Namibia Standard Time"));
+            String bclId = "Namibia Standard Time";
+            try {
+                ValidateZoneEveryDay(TimeZoneInfo.FindSystemTimeZoneById(bclId));
+            } catch (TimeZoneNotFoundException) {
+                // This may occur on Mono, for example.
+                Assert.Ignore("Test assumes existence of BCL zone with ID: " + bclId);
+            }
         }
 
         private void ValidateZoneEveryDay(TimeZoneInfo windowsZone)
