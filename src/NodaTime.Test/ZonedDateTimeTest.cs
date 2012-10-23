@@ -59,6 +59,12 @@ namespace NodaTime.Test
             Assert.AreEqual(10, value.Second);
             Assert.AreEqual(11, value.Millisecond);
             Assert.AreEqual(11 * 10000 + 12, value.TickOfSecond);
+            Assert.AreEqual(8 * NodaConstants.TicksPerHour +
+                            9 * NodaConstants.TicksPerMinute +
+                            10 * NodaConstants.TicksPerSecond +
+                            11 * NodaConstants.TicksPerMillisecond +
+                            12,
+                            value.TickOfDay);
         }
 
         [Test]
