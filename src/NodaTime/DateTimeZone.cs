@@ -24,7 +24,7 @@ using NodaTime.Utility;
 namespace NodaTime
 {
     /// <summary>
-    /// Represents a time zone - a mapping between UTC and local time. A time zone maps UTC instants to local instants
+    /// Represents a time zone - a mapping between UTC and local time. A time zone maps UTC instants to local times
     ///  - or, equivalently, to the offset from UTC at any particular instant.
     /// </summary>
     /// <remarks>
