@@ -33,7 +33,7 @@ XBUILDFLAGS := /p:TargetFrameworkVersion='v3.5' /p:TargetFrameworkProfile=''
 XBUILDFLAGS_DEBUG := $(XBUILDFLAGS)
 XBUILDFLAGS_RELEASE := $(XBUILDFLAGS) /p:Configuration=Release
 
-SOLUTION := 'src/NodaTime VS2010.sln'
+SOLUTION := src/NodaTime.sln'
 TOOLS_SOLUTION := tools/NodaTime.Tools.sln
 DEBUG_TEST_DLL := src/NodaTime.Test/bin/Debug/NodaTime.Test.dll
 DEBUG_SERIALIZATION_TEST_DLL := src/NodaTime.Serialization.Test/bin/Debug/NodaTime.Serialization.Test.dll
