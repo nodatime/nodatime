@@ -57,4 +57,4 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
 [assembly: CLSCompliant(true)]
-[assembly: InternalsVisibleTo("ZoneInfoCompiler.Test")]
+[assembly: InternalsVisibleTo("ZoneInfoCompiler.Test" + NodaTime.Properties.AssemblyInfo.PublicKeySuffix)]
