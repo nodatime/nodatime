@@ -29,6 +29,9 @@ Thumbs.db
 # (It's reasonably easy to end up with one in a working directory...)
 joda-time*.jar
 
+# Noda Time release (private) key
+NodaTime Release.snk
+
 # Need to use regexp syntax for rooted patterns and directory matches.
 syntax:regexp
 
@@ -53,5 +56,3 @@ syntax:regexp
 
 # NuGet temporary build area (see buildnuget.bat)
 ^nuget/
-syntax: glob
-NodaTime Release.snk
