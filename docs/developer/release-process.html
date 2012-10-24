@@ -24,7 +24,6 @@ all the tests pass.</p>
 steps need to pass on:</p>
 
 <ul>
-<li>Visual Studio 2008</li>
 <li>Visual Studio 2010</li>
 <li>Mono 2.10.5</li>
 <li>Mono 2.10.8</li>
@@ -35,7 +34,9 @@ steps need to pass on:</p>
 <ul>
 <li>Visual Studio 2010</li>
 <li>Sandcastle</li>
-<li>TODO: anything else? Release keys? Logins to nuget.org?</li>
+<li>Access to the Noda Time release private key (to produce a strong-named
+assembly)</li>
+<li>TODO: anything else? Logins to nuget.org?</li>
 </ul>
 
 <p>Note that we cannot build releases on Mono at present, since they trigger a bug
@@ -86,8 +87,9 @@ used.)</li>
 
 <h2>Building the release artifacts</h2>
 
-<p>First, create a new clone for building the release. (Doing this avoids the
-need to worry about ignored files and local changes.)</p>
+<p>First, <em>create a new clone for building the release</em>. Doing this avoids the
+need to worry about ignored files and local changes making their way into the
+source archive.</p>
 
 <p>Update to the correct revision, if you didn't specify it when cloning the
 repository:</p>
@@ -111,7 +113,9 @@ NOTICE.txt
 readme.txt
 </code></pre>
 
-<p>Now build the release libaries, XML documentation, and NuGet packages:</p>
+<p>Now copy the Noda Time release private key (<code>NodaTime Release.snk</code>) into the
+same directory as the public key (i.e. the root) and build the release
+libaries, XML documentation, and NuGet packages:</p>
 
 <pre class="prettyprint"><code>buildnuget.bat
 </code></pre>
