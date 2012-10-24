@@ -15,7 +15,6 @@ Update to the candidate revision (probably tip) and
 [build and run all the tests](building.html) as normal. The build and test
 steps need to pass on:
 
-- Visual Studio 2008
 - Visual Studio 2010
 - Mono 2.10.5
 - Mono 2.10.8
@@ -24,7 +23,9 @@ steps need to pass on:
 
 - Visual Studio 2010
 - Sandcastle
-- TODO: anything else? Release keys? Logins to nuget.org?
+- Access to the Noda Time release private key (to produce a strong-named
+  assembly)
+- TODO: anything else? Logins to nuget.org?
 
 Note that we cannot build releases on Mono at present, since they trigger a bug
 in the .NET 4 64-bit CLR (see the [building and testing](building.html) section
@@ -73,8 +74,9 @@ Commit the above, then tag that commit:
 
 ## Building the release artifacts
 
-First, create a new clone for building the release. (Doing this avoids the
-need to worry about ignored files and local changes.)
+First, *create a new clone for building the release*. Doing this avoids the
+need to worry about ignored files and local changes making their way into the
+source archive.
 
 Update to the correct revision, if you didn't specify it when cloning the
 repository:
@@ -95,7 +97,9 @@ Next, get ready to build the release zipfile. Create a directory called e.g.
     NOTICE.txt
     readme.txt
 
-Now build the release libaries, XML documentation, and NuGet packages:
+Now copy the Noda Time release private key (`NodaTime Release.snk`) into the
+same directory as the public key (i.e. the root) and build the release
+libaries, XML documentation, and NuGet packages:
 
     buildnuget.bat
 
