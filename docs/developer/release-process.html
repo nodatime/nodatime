@@ -11,6 +11,20 @@
     <p>This document describes how Noda Time is released. It is intended to be used as
 a checklist by the person doing a release.</p>
 
+<h2>Prerequisites</h2>
+
+<ul>
+<li>Visual Studio 2010</li>
+<li>Sandcastle</li>
+<li>Access to the Noda Time release private key (to produce a strong-named
+assembly)</li>
+<li>TODO: anything else? Logins to nuget.org?</li>
+</ul>
+
+<p>Note that we cannot build releases on Mono at present, since they trigger a bug
+in the .NET 4 64-bit CLR (see the <a href="building.html">building and testing</a> section
+in the developer guide).</p>
+
 <h2>When to release</h2>
 
 <p>When everybody's happy, there are no issues outstanding for the milestone, and
@@ -28,20 +42,6 @@ steps need to pass on:</p>
 <li>Mono 2.10.5</li>
 <li>Mono 2.10.8</li>
 </ul>
-
-<h2>Prerequisites</h2>
-
-<ul>
-<li>Visual Studio 2010</li>
-<li>Sandcastle</li>
-<li>Access to the Noda Time release private key (to produce a strong-named
-assembly)</li>
-<li>TODO: anything else? Logins to nuget.org?</li>
-</ul>
-
-<p>Note that we cannot build releases on Mono at present, since they trigger a bug
-in the .NET 4 64-bit CLR (see the <a href="building.html">building and testing</a> section
-in the developer guide).</p>
 
 <h2>Update the embedded tzdb</h2>
 
