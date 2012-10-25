@@ -32,8 +32,6 @@ namespace NodaTime.Text
     /// </threadsafety>
     public sealed class LocalTimePattern : IPattern<LocalTime>
     {
-        private static readonly int TypeInitializationChecking = TypeInitializationChecker.RecordInitializationStart();
-
         /// <summary>
         /// Returns an invariant local time pattern which is ISO-8601 compatible other than providing up to 7 decimal places
         /// of sub-second accuracy. (These digits are omitted when unnecessary.)
@@ -52,7 +50,6 @@ namespace NodaTime.Text
         /// </summary>
         private static class Patterns
         {
-            private static readonly int TypeInitializationChecking = TypeInitializationChecker.RecordInitializationStart();
             internal static readonly LocalTimePattern ExtendedIsoPatternImpl = CreateWithInvariantInfo("HH':'mm':'ss.FFFFFFF");
         }
 

@@ -52,8 +52,6 @@ namespace NodaTime
     /// <threadsafety>This type is an immutable value type. See the thread safety section of the user guide for more information.</threadsafety>
     public struct ZonedDateTime : IEquatable<ZonedDateTime>, IComparable<ZonedDateTime>
     {
-        private static readonly int TypeInitializationChecking = NodaTime.Utility.TypeInitializationChecker.RecordInitializationStart();
-
         private readonly LocalDateTime localDateTime;
         private readonly DateTimeZone zone;
         private readonly Offset offset;

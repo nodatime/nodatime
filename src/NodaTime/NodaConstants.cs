@@ -24,8 +24,6 @@ namespace NodaTime
     /// </summary>
     public static class NodaConstants
     {
-        private static readonly int TypeInitializationChecking = NodaTime.Utility.TypeInitializationChecker.RecordInitializationStart();
-
         /// <summary>
         /// A constant for the number of ticks in a millisecond. The value of this constant is 10,000.
         /// </summary>

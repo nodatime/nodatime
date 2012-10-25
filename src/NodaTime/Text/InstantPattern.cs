@@ -32,8 +32,6 @@ namespace NodaTime.Text
     /// </threadsafety>
     public sealed class InstantPattern : IPattern<Instant>
     {
-        private static readonly int TypeInitializationChecking = TypeInitializationChecker.RecordInitializationStart();
-
         /// <summary>
         /// Returns the general pattern, which always uses an invariant culture. The general pattern represents
         /// an instant as a UTC date/time in ISO-8601 style "yyyy-MM-ddTHH:mm:ssZ".
@@ -58,7 +56,6 @@ namespace NodaTime.Text
         /// </summary>
         private static class Patterns
         {
-            private static readonly int TypeInitializationChecking = TypeInitializationChecker.RecordInitializationStart();
             internal static readonly InstantPattern ExtendedIsoPatternImpl = CreateWithInvariantInfo("yyyy'-'MM'-'dd'T'HH':'mm':'ss.FFFFFFF'Z'");
             internal static readonly InstantPattern GeneralPatternImpl = CreateWithInvariantInfo("g");
         }

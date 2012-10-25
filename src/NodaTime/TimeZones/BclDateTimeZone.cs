@@ -27,8 +27,6 @@ namespace NodaTime.TimeZones
     /// <threadsafety>This type is immutable reference type. See the thread safety section of the user guide for more information.</threadsafety>
     public sealed class BclDateTimeZone : DateTimeZone
     {
-        private static readonly int TypeInitializationChecking = NodaTime.Utility.TypeInitializationChecker.RecordInitializationStart();
-
         /// <summary>
         /// This is used to cache the last result of a call to <see cref="ForSystemDefault"/>, but it doesn't
         /// matter if it's out of date - we'll just create another wrapper if necessary. It's not *that* expensive to make

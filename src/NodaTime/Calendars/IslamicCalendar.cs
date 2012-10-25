@@ -26,8 +26,6 @@ namespace NodaTime.Calendars
     /// </summary>
     internal sealed class IslamicCalendar : BasicCalendarSystem
     {
-        private static readonly int TypeInitializationChecking = NodaTime.Utility.TypeInitializationChecker.RecordInitializationStart();
-
         /// <summary>Singleton era field.</summary>
         private static readonly DateTimeField EraField = new BasicSingleEraDateTimeField(Era.AnnoHegirae);
 

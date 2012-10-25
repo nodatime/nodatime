@@ -32,8 +32,6 @@ namespace NodaTime.Text
     /// </threadsafety>
     public sealed class LocalDateTimePattern : IPattern<LocalDateTime>
     {
-        private static readonly int TypeInitializationChecking = TypeInitializationChecker.RecordInitializationStart();
-
         internal static readonly LocalDateTime DefaultTemplateValue = new LocalDateTime(2000, 1, 1, 0, 0);
 
         private const string DefaultFormatPattern = "G"; // General (long time)
@@ -54,8 +52,6 @@ namespace NodaTime.Text
         /// </summary>
         internal static class Patterns
         {
-            private static readonly int TypeInitializationChecking = TypeInitializationChecker.RecordInitializationStart();
-
             internal static readonly LocalDateTimePattern ExtendedIsoPatternImpl = CreateWithInvariantInfo("yyyy'-'MM'-'dd'T'HH':'mm':'ss.FFFFFFF");
 
             // TODO(Post-V1): Expose these through properties, possibly renaming them?

@@ -44,8 +44,6 @@ namespace NodaTime
     /// <threadsafety>This type is an immutable value type. See the thread safety section of the user guide for more information.</threadsafety>
     public struct Duration : IEquatable<Duration>, IComparable<Duration>, IComparable
     {
-        private static readonly int TypeInitializationChecking = NodaTime.Utility.TypeInitializationChecker.RecordInitializationStart();
-
         #region Readonly static fields
         /// <summary>
         /// Represents the zero <see cref="Duration"/> value. 

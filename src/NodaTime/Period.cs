@@ -53,8 +53,6 @@ namespace NodaTime
     /// <threadsafety>This type is immutable reference type. See the thread safety section of the user guide for more information.</threadsafety>
     public sealed class Period : IEquatable<Period>
     {
-        private static readonly int TypeInitializationChecking = NodaTime.Utility.TypeInitializationChecker.RecordInitializationStart();
-
         /// <summary>
         /// In some cases, periods are represented as <c>long[]</c> arrays containing all possible units (years to
         /// ticks). This is the size of those arrays.
