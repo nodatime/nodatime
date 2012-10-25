@@ -1,5 +1,9 @@
 Core concepts in Noda Time
 
+This is a companion page to the
+["core types quick reference"](core-types.html), and ["choosing between types"](type-choices.html)
+pages, describing the fundamental concepts in Noda Time.
+
 One of the benefits of Noda Time over the Base Class Library (BCL)
 time support is the representation of different concepts with
 different types. The downside of this is that there are more types
@@ -164,7 +168,7 @@ There are various different sources of time zone information available, and Noda
 handles two of them: it is able to map BCL `TimeZoneInfo` objects using `BclDateTimeZone`,
 and the [TZDB][TZDB] (aka Olson) database. A version of TZDB is embedded within the Noda Time
 distribution, and if you need a more recent one, there are [instructions on how to download and
-use new data](tzdb.txt). We generally recommend that you isolate yourself from the provider you're
+use new data](tzdb.html). We generally recommend that you isolate yourself from the provider you're
 using by only depending on [`IDateTimeZoneProvider`][IDateTimeZoneProvider], and injecting the appropriate
 provider in the normal way. "Stock" providers are available via the [`DateTimeZoneProviders`][DateTimeZoneProviders]
 class.
@@ -174,6 +178,23 @@ but have just a local time and an offset. For example, if you're parsing the str
 "2012-06-26T20:41:00+01:00" that gives the information that the local time is one hour
 ahead of UTC - but it doesn't give any indication of what the offset would be at any other
 time. In this situation, you should use [`OffsetDateTime`][OffsetDateTime].
+
+Periods and durations
+---------------------
+
+There are two similar types in Noda Time used to represent "lengths of time". The simplest is [`Duration`][Duration]
+which is equivalent to [`TimeSpan`] in the BCL. This is a fixed number of ticks - it's the same length of time
+wherever its applied. `Duration` is used for arithmetic on `Instant` and `DateTime` values.
+
+A more complex type is [`Period`], which is a set of values associated with different calendar-based periods: years,
+months, weeks, days, hours, minutes and so on. Some of these periods represent different lengths of time depending on
+what they're applied to - if you add "one month" to January 1st, that's going to be 31 days long. Adding the
+same period to February 1st will give a shorter length of time - which then depends on whether the year is a leap
+year or not. Periods based on smaller units (hours, minutes and so on) will always represent the same length of time,
+but they're still available within periods. [`Period`] is used for arithmetic on locally-based values (`LocalDateTime`,
+`LocalDate`, `LocalTime`).
+
+See the [arithemtic](arithmetic.html) page for more information.
 
 [api]: ../api/Index.html
 [2]: http://blogs.msdn.com/b/bclteam/archive/2007/06/18/a-brief-history-of-datetime-anthony-moore.aspx
@@ -185,6 +206,8 @@ time. In this situation, you should use [`OffsetDateTime`][OffsetDateTime].
 [UTC]: http://en.wikipedia.org/wiki/Coordinated_Universal_Time
 [DateTimeZone]: noda-type://NodaTime.DateTimeZone
 [Offset]: noda-type://NodaTime.Offset
+[Period]: noda-type://NodaTime.Period
+[Duration]: noda-type://NodaTime.Duration
 [OffsetDateTime]: noda-type://NodaTime.OffsetDateTime
 [ZonedDateTime]: noda-type://NodaTime.ZonedDateTime
 [TZDB]: http://www.iana.org/time-zones
