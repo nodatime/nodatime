@@ -5,7 +5,7 @@
 Noda Time targets .NET 3.5, and the code only uses features available in C# 3. While we normally build against a C# 4 or C# 5 compiler, most later features aren't useful:
 
 - Dynamic typing requires .NET 4
-- Generic variance relies on the appropriate attributes being applied to the types in question, and the most useful types (e.g. `IEnumerable<T>` don't have those attributes in .NET 3.5)
+- Generic variance relies on the appropriate attributes being applied to the types in question, and the most useful types (e.g. `IEnumerable<T>`) don't have those attributes in .NET 3.5
 - Async methods require .NET 4.5, or .NET 4 with the async targeting pack
 - The iteration variable capture rules for `foreach` would require *all* developers to use C# 5 compilers. **Please** do not rely on this.
 - Optional parameters wouldn't be useful to C# 3 users, so our API design assumes they're *not* available
