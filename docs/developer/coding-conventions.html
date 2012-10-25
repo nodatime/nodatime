@@ -8,7 +8,24 @@
   </head>
   <body onload="prettyPrint()">
     <h1>Coding Conventions</h1>
-    <h2>Code Layout</h2>
+    <h2>Use of C# and .NET features</h2>
+
+<p>Noda Time targets .NET 3.5, and the code only uses features available in C# 3. While we normally build against a C# 4 or C# 5 compiler, most later features aren't useful:</p>
+
+<ul>
+<li>Dynamic typing requires .NET 4</li>
+<li>Generic variance relies on the appropriate attributes being applied to the types in question, and the most useful types (e.g. <code>IEnumerable&lt;T&gt;</code> don't have those attributes in .NET 3.5)</li>
+<li>Async methods require .NET 4.5, or .NET 4 with the async targeting pack</li>
+<li>The iteration variable capture rules for <code>foreach</code> would require <em>all</em> developers to use C# 5 compilers. <strong>Please</strong> do not rely on this.</li>
+<li>Optional parameters wouldn't be useful to C# 3 users, so our API design assumes they're <em>not</em> available</li>
+<li>Caller member info attributes require .NET 4.5.</li>
+</ul>
+
+<p>Additionally, we're trying not to use framework features we don't need to gratuitously, in case we ever want to backport to .NET 2.0. That's unlikely given that it would mean
+dropping <code>TimeZoneInfo</code> support, but it's always a possibility. Additionally, we're very likely to want to create a Portable Class Library at some point, so where possible, stick
+to core features which won't make this harder than it needs to be. (Don't worry too much though - don't feel you need to look up every member.)</p>
+
+<h2>Code Layout</h2>
 
 <ul>
 <li>Use the Visual Studio <em>default</em> settings in Tools | Options | Text Editor |
