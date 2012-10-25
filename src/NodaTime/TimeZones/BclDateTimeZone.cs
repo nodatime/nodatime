@@ -234,7 +234,6 @@ namespace NodaTime.TimeZones
                 return Instant.MaxValue;
             }
             // We work out the instant at which the *current* offset reaches the end of the given date.
-            Offset daylightOffset = transition.NewOffset;
             LocalDateTime ruleEndLocal = LocalDateTime.FromDateTime(rule.DateEnd).PlusDays(1);
             OffsetDateTime ruleEndOffset = new OffsetDateTime(ruleEndLocal, transition.NewOffset);
             return ruleEndOffset.ToInstant();
