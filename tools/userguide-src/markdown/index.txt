@@ -12,6 +12,7 @@ User guide contents
 - [Installation](installation.html)
 - [Core concepts](concepts.html)
 - [Choosing (and converting) between types](type-choices.html)
+- [Core types quick reference](core-types.html)
 - [Design principles](design.html)
 - [Arithmetic](arithmetic.html)
 - [Text handling](text.html)

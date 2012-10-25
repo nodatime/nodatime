@@ -19,6 +19,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "markdown", "markdown", "{C7
 		userguide-src\markdown\arithmetic.txt = userguide-src\markdown\arithmetic.txt
 		userguide-src\markdown\bcl-conversions.txt = userguide-src\markdown\bcl-conversions.txt
 		userguide-src\markdown\concepts.txt = userguide-src\markdown\concepts.txt
+		userguide-src\markdown\core-types.txt = userguide-src\markdown\core-types.txt
 		userguide-src\markdown\design.txt = userguide-src\markdown\design.txt
 		userguide-src\markdown\index.txt = userguide-src\markdown\index.txt
 		userguide-src\markdown\installation.txt = userguide-src\markdown\installation.txt
