@@ -242,7 +242,6 @@
     <Compile Include="Utility\ReferenceEqualityComparer.cs" />
     <Compile Include="Utility\ResourceHelper.cs" />
     <Compile Include="Utility\Preconditions.cs" />
-    <Compile Include="Utility\TypeInitializationChecker.cs" />
     <Compile Include="ZonedDateTime.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -29,8 +29,6 @@ namespace NodaTime.Calendars
     /// </summary>
     internal abstract class BasicCalendarSystem : CalendarSystem
     {
-        private static readonly int TypeInitializationChecking = NodaTime.Utility.TypeInitializationChecker.RecordInitializationStart();
-
         private static readonly FieldSet FixedLengthFields = CreateFixedLengthFields();
 
         private const int YearCacheSize = 1 << 10;

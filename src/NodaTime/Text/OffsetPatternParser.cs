@@ -27,8 +27,6 @@ namespace NodaTime.Text
 {
     internal sealed class OffsetPatternParser : IPatternParser<Offset>
     {
-        private static readonly int TypeInitializationChecking = NodaTime.Utility.TypeInitializationChecker.RecordInitializationStart();
-
         private static readonly CharacterHandler<Offset, OffsetParseBucket> DefaultCharacterHandler = SteppedPatternBuilder<Offset, OffsetParseBucket>.HandleDefaultCharacter;
 
         private static readonly Dictionary<char, CharacterHandler<Offset, OffsetParseBucket>> PatternCharacterHandlers = 

@@ -35,8 +35,6 @@ namespace NodaTime.Globalization
     /// See the thread safety section of the user guide for more information.</threadsafety>
     public class NodaCultureInfo : CultureInfo, IFormatProvider, ICloneable
     {
-        private static readonly int TypeInitializationChecking = NodaTime.Utility.TypeInitializationChecker.RecordInitializationStart();
-
         private static NodaCultureInfo invariantCulture;
         private NodaFormatInfo formatInfo;
 

@@ -29,8 +29,6 @@ namespace NodaTime
     /// </summary>
     internal struct LocalInstant : IEquatable<LocalInstant>, IComparable<LocalInstant>, IComparable
     {
-        private static readonly int TypeInitializationChecking = NodaTime.Utility.TypeInitializationChecker.RecordInitializationStart();
-
         public static readonly LocalInstant LocalUnixEpoch = new LocalInstant(0);
         public static readonly LocalInstant MinValue = new LocalInstant(Int64.MinValue);
         public static readonly LocalInstant MaxValue = new LocalInstant(Int64.MaxValue);

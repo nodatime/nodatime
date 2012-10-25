@@ -45,8 +45,6 @@ namespace NodaTime
     /// <threadsafety>This type is an immutable value type. See the thread safety section of the user guide for more information.</threadsafety>
     public struct LocalDate : IEquatable<LocalDate>, IComparable<LocalDate>, IFormattable
     {
-        private static readonly int TypeInitializationChecking = NodaTime.Utility.TypeInitializationChecker.RecordInitializationStart();
-
         private readonly LocalDateTime localTime;
 
         /// <summary>

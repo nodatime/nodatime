@@ -32,8 +32,6 @@ namespace NodaTime.Text
     /// </threadsafety>
     public sealed class OffsetPattern : IPattern<Offset>
     {
-        private static readonly int TypeInitializationChecking = TypeInitializationChecker.RecordInitializationStart();
-
         /// <summary>
         /// The "general" offset pattern (e.g. +HH, +HH:mm, +HH:mm:ss, +HH:mm:ss.fff) for the invariant culture.
         /// </summary>

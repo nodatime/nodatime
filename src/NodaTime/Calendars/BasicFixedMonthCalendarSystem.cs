@@ -29,8 +29,6 @@ namespace NodaTime.Calendars
     /// </remarks>
     internal abstract class BasicFixedMonthCalendarSystem : BasicCalendarSystem
     {
-        private static readonly int TypeInitializationChecking = NodaTime.Utility.TypeInitializationChecker.RecordInitializationStart();
-
         private const int DaysInMonth = 30;
 
         private const long TicksPerMonth = DaysInMonth * NodaConstants.TicksPerStandardDay;

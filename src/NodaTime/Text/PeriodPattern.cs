@@ -28,8 +28,6 @@ namespace NodaTime.Text
     /// <threadsafety>This type is immutable reference type. See the thread safety section of the user guide for more information.</threadsafety>
     public class PeriodPattern : IPattern<Period>
     {
-        private static readonly int TypeInitializationChecking = NodaTime.Utility.TypeInitializationChecker.RecordInitializationStart();
-
         /// <summary>
         /// Pattern which uses the normal ISO format for all the supported ISO
         /// fields, but extends the time part with "s" for milliseconds and "t" for ticks.

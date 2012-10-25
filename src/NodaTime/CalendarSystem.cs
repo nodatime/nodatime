@@ -49,8 +49,6 @@ namespace NodaTime
     /// </threadsafety>
     public abstract class CalendarSystem
     {
-        private static readonly int TypeInitializationChecking = NodaTime.Utility.TypeInitializationChecker.RecordInitializationStart();
-
         /// <summary>
         /// Delegate used to construct fields. This is called within the base constructor, before the
         /// derived class constructor bodies have been run - so it's *somewhat* unsafe to pass "this"

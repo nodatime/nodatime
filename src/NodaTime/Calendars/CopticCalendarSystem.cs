@@ -25,8 +25,6 @@ namespace NodaTime.Calendars
     /// </summary>
     internal sealed class CopticCalendarSystem : BasicFixedMonthCalendarSystem
     {
-        private static readonly int TypeInitializationChecking = NodaTime.Utility.TypeInitializationChecker.RecordInitializationStart();
-
         private const string CopticName = "Coptic";
         private static readonly CopticCalendarSystem[] instances;
         private static readonly DateTimeField EraField = new BasicSingleEraDateTimeField(Era.AnnoMartyrm);

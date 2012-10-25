@@ -34,8 +34,6 @@ namespace NodaTime.Calendars
     /// </remarks>
     internal sealed class JulianCalendarSystem : BasicGJCalendarSystem
     {
-        private static readonly int TypeInitializationChecking = NodaTime.Utility.TypeInitializationChecker.RecordInitializationStart();
-
         private const string JulianName = "Julian";
 
         private static readonly JulianCalendarSystem[] instances;

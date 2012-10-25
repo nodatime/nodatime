@@ -30,8 +30,6 @@ namespace NodaTime
     /// <threadsafety>This type is an immutable value type. See the thread safety section of the user guide for more information.</threadsafety>
     public struct LocalTime : IEquatable<LocalTime>, IComparable<LocalTime>, IFormattable
     {
-        private static readonly int TypeInitializationChecking = NodaTime.Utility.TypeInitializationChecker.RecordInitializationStart();
-
         /// <summary>
         /// Local time at midnight, i.e. 0 hours, 0 minutes, 0 seconds.
         /// </summary>

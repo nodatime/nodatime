@@ -22,8 +22,6 @@ namespace NodaTime.Calendars
     /// </summary>
     internal abstract class BasicGJCalendarSystem : BasicCalendarSystem
     {
-        private static readonly int TypeInitializationChecking = NodaTime.Utility.TypeInitializationChecker.RecordInitializationStart();
-
         // These arrays are NOT public. We trust ourselves not to alter the array.
         // They use zero-based array indexes so the that valid range of months is
         // automatically checked.

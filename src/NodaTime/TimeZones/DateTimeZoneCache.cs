@@ -30,8 +30,6 @@ namespace NodaTime.TimeZones
     /// <threadsafety>All members of this type are thread-safe.</threadsafety>
     public class DateTimeZoneCache : IDateTimeZoneProvider
     {
-        private static readonly int TypeInitializationChecking = NodaTime.Utility.TypeInitializationChecker.RecordInitializationStart();
-
         private readonly object accessLock = new object();
         private readonly IDateTimeZoneSource source;
         private readonly ReadOnlyCollection<string> ids;

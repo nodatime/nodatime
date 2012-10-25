@@ -44,8 +44,6 @@ namespace NodaTime.Calendars
     /// </remarks>
     internal sealed class GregorianCalendarSystem : BasicGJCalendarSystem
     {
-        private static readonly int TypeInitializationChecking = TypeInitializationChecker.RecordInitializationStart();
-
         private const string GregorianName = "Gregorian";
         private const string IsoName = "ISO";
 
@@ -223,8 +221,6 @@ namespace NodaTime.Calendars
         /// </summary>
         internal static class IsoHelper
         {
-            private static readonly int TypeInitializationChecking = TypeInitializationChecker.RecordInitializationStart();
-
             internal static readonly GregorianCalendarSystem Instance = new GregorianCalendarSystem(IsoName, 4, AssembleIsoFields);
 
             /// <summary>

@@ -32,8 +32,6 @@ namespace NodaTime.Text
     /// </threadsafety>
     public sealed class LocalDatePattern : IPattern<LocalDate>
     {
-        private static readonly int TypeInitializationChecking = TypeInitializationChecker.RecordInitializationStart();
-
         internal static readonly LocalDate DefaultTemplateValue = new LocalDate(2000, 1, 1);
 
         private const string DefaultFormatPattern = "D"; // Long
@@ -53,7 +51,6 @@ namespace NodaTime.Text
         /// </summary>
         private static class Patterns
         {
-            private static readonly int TypeInitializationChecking = TypeInitializationChecker.RecordInitializationStart();
             internal static readonly LocalDatePattern IsoPatternImpl = CreateWithInvariantInfo("yyyy'-'MM'-'dd");
         }
 

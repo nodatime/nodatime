@@ -41,8 +41,6 @@ namespace NodaTime
     /// <threadsafety>This type is an immutable value type. See the thread safety section of the user guide for more information.</threadsafety>
     public struct Instant : IEquatable<Instant>, IComparable<Instant>, IFormattable, IComparable
     {
-        private static readonly int TypeInitializationChecking = NodaTime.Utility.TypeInitializationChecker.RecordInitializationStart();
-
         /// <summary>
         /// String used to represent "the beginning of time" (as far as Noda Time is concerned).
         /// </summary>
