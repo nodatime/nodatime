@@ -1,8 +1,8 @@
 Choosing between the core types
 
-This is the companion page to the
-["core concepts" page](concepts.html), describing when it's
-appropriate to use which type, and how to convert between them.
+This is a companion page to the
+["core concepts quick reference"](concepts.html), and ["core types"](core-types.html)
+pages, describing when it's appropriate to use which type, and how to convert between them.
 
 Ultimately, you should be thinking about what data you really have,
 and what it really represents. Although the guidelines here will
