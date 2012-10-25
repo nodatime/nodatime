@@ -10,7 +10,23 @@ Joda Time is the industry standard date and time handling library for Java. Noda
             </p></div><br /></td></tr><tr><td><b><a href="N_NodaTime_Globalization.htm">NodaTime.Globalization</a></b></td><td><div class="summary"><p>
             The NodaTime.Globalization namespace contains types related to culture-sensitive
             aspects of behaviour, principally for the sake of text formatting and parsing.
-            </p></div><br /></td></tr><tr><td><b><a href="N_NodaTime_Serialization_JsonNet.htm">NodaTime.Serialization.JsonNet</a></b></td><td><div class="summary" /><br /></td></tr><tr><td><b><a href="N_NodaTime_Testing.htm">NodaTime.Testing</a></b></td><td><div class="summary" /><br /></td></tr><tr><td><b><a href="N_NodaTime_Testing_TimeZones.htm">NodaTime.Testing.TimeZones</a></b></td><td><div class="summary" /><br /></td></tr><tr><td><b><a href="N_NodaTime_Text.htm">NodaTime.Text</a></b></td><td><div class="summary"><p>
+            </p></div><br /></td></tr><tr><td><b><a href="N_NodaTime_Serialization_JsonNet.htm">NodaTime.Serialization.JsonNet</a></b></td><td><div class="summary"><p>
+            The NodaTime.Serialization.JsonNet namespace contains support code to enable
+            JSON serialization for Noda Time types using <a href="http://json.net" target="_blank">Json.NET</a>.
+            </p><p>Code in this namespace is not currently included in Noda Time NuGet packages;
+            it is still deemed "experimental". To use these serializers, please download and build the Noda Time
+            source code from the <span class="nolink">project home page</span>.</p></div><br /></td></tr><tr><td><b><a href="N_NodaTime_Testing.htm">NodaTime.Testing</a></b></td><td><div class="summary"><p>
+            The NodaTime.Testing namespace contains types designed to help write tests against
+            code which uses Noda Time. "Child" namespaces are organized to reflect the same structure
+            as the main project.
+            </p><p>
+            This code is not included as part of the main NuGet package; it's in a separate NodaTime.Testing package.
+            </p></div><br /></td></tr><tr><td><b><a href="N_NodaTime_Testing_TimeZones.htm">NodaTime.Testing.TimeZones</a></b></td><td><div class="summary"><p>
+            Provides types to aid testing production code which uses time zones, to avoid hard-coding
+            knowledge of "real" time zones into tests.
+            </p><p>
+            This code is not included as part of the main NuGet package; it's in a separate NodaTime.Testing package.
+            </p></div><br /></td></tr><tr><td><b><a href="N_NodaTime_Text.htm">NodaTime.Text</a></b></td><td><div class="summary"><p>
             The NodaTime.Text namespace contains types related to formatting and parsing date and time
             values to and from text. Each core Noda Time type has its own "pattern" class to create a more
             object-oriented (and efficient) approach to text handling than the one taken to the BCL.

@@ -52,6 +52,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="NamespaceDoc.cs" />
     <Compile Include="NodaConverterBase.cs" />
     <Compile Include="NodaConverters.cs" />
     <Compile Include="NodaDateTimeZoneConverter.cs" />
