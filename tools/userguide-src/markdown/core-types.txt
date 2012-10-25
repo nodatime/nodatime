@@ -56,10 +56,11 @@ it's just an offset.
 DateTimeZone
 ------------
 
-A [`DateTimeZone`][DateTimeZone] (or just time zone) is a mapping between UTC and local times. Many time zones vary between two (or more) offsets,
-based on [daylight saving time][DST]. To obtain time zone in Noda Time, you have to choose where the information will come from,
-via an `IDateTimeZoneProvider`. Two providers are built into Noda Time - [TZDB](tzdb.html) (also known as zoneinfo or the Olson database) and the BCL's
-own `TimeZoneInfo`. These are both available through [`DateTimeZoneProviders`][DateTimeZoneProviders]
+A [`DateTimeZone`][DateTimeZone] (or just time zone) is a mapping between UTC and local times. Many time zones alternate between two offsets over the course of time,
+based on [daylight saving time][DST]. To obtain a time zone in Noda Time, you have to choose where the information will come from,
+via an `IDateTimeZoneProvider`. Two providers are built into Noda Time - one which uses TZDB (also known as zoneinfo or the Olson database) and one to wrap the 
+information provided by the BCL via `TimeZoneInfo`. Both providers are available through [`DateTimeZoneProviders`][DateTimeZoneProviders] as `DateTimeProviders.Tzdb` and
+`DateTimeProviders.Bcl`. Once you've chosen a provider, you can find the identifiers that provider publishes, and fetch any specific time zone by ID.
 
 ZonedDateTime
 -------------
@@ -86,7 +87,14 @@ IClock
 An [`IClock`][IClock] implementation provides information about the current instant. It knows nothing about time zones or calendar systems. For [testability](testing.html), this is defined
 as an interface; in a production deployment you're likely to use the [`SystemClock`][SystemClock] singleton implementation.
 
+Interval
+--------
+
+An [`Interval`][Interval] is simply two instants - a start and an end. The interval includes the start, and excludes the end, which means that if you have abutting intervals any instant will be in
+exactly one of those intervals.
+
 [DST]: http://en.wikipedia.org/wiki/Daylight_saving_time
+[Interval]: noda-type://NodaTime.Interval
 [LocalTime]: noda-type://NodaTime.LocalTime
 [LocalDate]: noda-type://NodaTime.LocalDate
 [LocalDateTime]: noda-type://NodaTime.LocalDateTime
