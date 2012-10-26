@@ -26,7 +26,7 @@ namespace NodaTime.Serialization.JsonNet
     /// </para>
     /// <para>Code in this namespace is not currently included in Noda Time NuGet packages;
     /// it is still deemed "experimental". To use these serializers, please download and build the Noda Time
-    /// source code from the <see cref="http://noda-time.googlecode.com">project home page</see>.</para>
+    /// source code from the <see href="http://noda-time.googlecode.com">project home page</see>.</para>
     /// </summary>
     [CompilerGenerated]
     internal class NamespaceDoc
