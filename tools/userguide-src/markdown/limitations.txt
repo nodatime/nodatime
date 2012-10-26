@@ -14,15 +14,6 @@ issue or post on the
 [mailing list](http://groups.google.com/group/noda-time).
 
 
-Versioning and strong naming
-============================
-
-We're using [NuGet](http://nuget.org) for distribution, which takes
-care of some of the versioning - but we should also use assembly
-versioning as appropriate, and quite possibly sign the assembly.
-We're aiming to follow the
-[SemVer (semantic versioning)](http://semver.org/) model.
-
 Fuller text support
 ===================
 
