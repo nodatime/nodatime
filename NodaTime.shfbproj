@@ -18,7 +18,7 @@
     <OutputPath>.\docs\api\</OutputPath>
     <HtmlHelpName>Help</HtmlHelpName>
     <Language>en-US</Language>
-    <ProjectSummary>Noda-Time, a .NET port of Joda-Time.
+    <ProjectSummary>Noda Time, a .NET port of Joda Time.
 
 Joda Time is the industry standard date and time handling library for Java. Noda Time is an idiomatic port to the .NET platform.</ProjectSummary>
     <DocumentationSources>
@@ -32,8 +32,8 @@ Joda Time is the industry standard date and time handling library for Java. Noda
     <CopyrightHref>http://www.apache.org/licenses/LICENSE-2.0</CopyrightHref>
     <CopyrightText>Copyright 2001-2009 Stephen Colebourne, 2009-2012 Jon Skeet, All rights reserved.</CopyrightText>
     <FeedbackEMailAddress>noda-time%40googlegroups.com</FeedbackEMailAddress>
-    <FeedbackEMailLinkText>Noda-Time Google Groups</FeedbackEMailLinkText>
-    <HelpTitle>Noda-Time</HelpTitle>
+    <FeedbackEMailLinkText>Noda Time Google Groups</FeedbackEMailLinkText>
+    <HelpTitle>Noda Time</HelpTitle>
     <NamingMethod>MemberName</NamingMethod>
     <Preliminary>True</Preliminary>
     <ComponentConfigurations>
