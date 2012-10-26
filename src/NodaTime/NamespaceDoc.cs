@@ -21,7 +21,7 @@ namespace NodaTime
 {
     /// <summary>
     /// <para>
-    /// The NodaTime namespace contains the core types for NodaTime, including the main public classes for time zone and calendar
+    /// The NodaTime namespace contains the core types for Noda Time, including the main public classes for time zone and calendar
     /// support which have implementations (and less frequently used types) in other namespaces. For formatting and parsing functionality, see the
     /// <see cref="NodaTime.Text" /> and <see cref="NodaTime.Globalization" /> namespaces.
     /// </para>
