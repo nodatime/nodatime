@@ -1,18 +1,34 @@
 Version history
 
-Public API changes from 1.0.0-beta1 onwards. See the [project repository](http://code.google.com/p/noda-time/source/list) for
-more details.
+User-visible changes from 1.0.0-beta1 onwards. See the
+[project repository](http://code.google.com/p/noda-time/source/list) for more
+details.
 
 ## 1.0.0-rc ##
 
-- Renamed `DateTimeZone.GetOffsetFromUtc` to `DateTimeZone.GetUtcOffset` to
+API changes:
+
+- Renamed `DateTimeZone.GetOffsetFromUtc()` to `DateTimeZone.GetUtcOffset()` to
   match the BCL ([issue 121][])
-- Added `LocalDate.FromWeekYearWeekAndDay` ([issue 120][])
+- Added `LocalDate.FromWeekYearWeekAndDay()` ([issue 120][])
 - Text formats can now parse negative values for absolute years ([issue 118][])
 - `Tick`, `SecondOfDay` and `MillisecondOfDay` properties removed from
   time-based types ([issue 103][])
 
+Bug fixes:
+
+- Various fixes to `BclDateTimeZone` not working the same way as a BCL
+  `TimeZoneInfo` (issues [114][issue 114], [115][issue 115], and
+  [122][issue 122])
+
+Other:
+
+- The NuGet packages are now signed ([issue 35][])
+- Removed support for building under Visual Studio 2008 ([issue 107][])
+
 ## 1.0.0-beta2, released 2012-08-04 with tzdb 2012e
+
+API changes:
 
 - Overhaul of how to get a `DateTimeZone` from an ID:
    - `IDateTimeZoneProvider` (SPI for time zones) renamed to
@@ -81,10 +97,15 @@ more details.
 - `NodaTime.Testing.TimeZones.SingleTransitionZone` renamed to
   `SingleTransitionDateTimeZone`
 
+Bug fixes:
+
+- Many.
+
 ## 1.0.0-beta1, released 2012-04-12 with tzdb 2012c
 
 - Initial beta release
 
+[issue 35]: http://code.google.com/p/noda-time/issues/detail?id=35
 [issue 51]: http://code.google.com/p/noda-time/issues/detail?id=51
 [issue 53]: http://code.google.com/p/noda-time/issues/detail?id=53
 [issue 55]: http://code.google.com/p/noda-time/issues/detail?id=55
@@ -102,6 +123,10 @@ more details.
 [issue 90]: http://code.google.com/p/noda-time/issues/detail?id=90
 [issue 91]: http://code.google.com/p/noda-time/issues/detail?id=91
 [issue 103]: http://code.google.com/p/noda-time/issues/detail?id=103
+[issue 107]: http://code.google.com/p/noda-time/issues/detail?id=107
+[issue 114]: http://code.google.com/p/noda-time/issues/detail?id=114
+[issue 115]: http://code.google.com/p/noda-time/issues/detail?id=115
 [issue 118]: http://code.google.com/p/noda-time/issues/detail?id=118
 [issue 120]: http://code.google.com/p/noda-time/issues/detail?id=120
+[issue 122]: http://code.google.com/p/noda-time/issues/detail?id=122
 [issue 121]: http://code.google.com/p/noda-time/issues/detail?id=121

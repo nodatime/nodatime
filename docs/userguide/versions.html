@@ -8,21 +8,41 @@
   </head>
   <body onload="prettyPrint()">
     <h1>Version history</h1>
-    <p>Public API changes from 1.0.0-beta1 onwards. See the <a href="http://code.google.com/p/noda-time/source/list">project repository</a> for
-more details.</p>
+    <p>User-visible changes from 1.0.0-beta1 onwards. See the
+<a href="http://code.google.com/p/noda-time/source/list">project repository</a> for more
+details.</p>
 
 <h2>1.0.0-rc</h2>
 
+<p>API changes:</p>
+
 <ul>
-<li>Renamed <code>DateTimeZone.GetOffsetFromUtc</code> to <code>DateTimeZone.GetUtcOffset</code> to
+<li>Renamed <code>DateTimeZone.GetOffsetFromUtc()</code> to <code>DateTimeZone.GetUtcOffset()</code> to
 match the BCL (<a href="http://code.google.com/p/noda-time/issues/detail?id=121">issue 121</a>)</li>
-<li>Added <code>LocalDate.FromWeekYearWeekAndDay</code> (<a href="http://code.google.com/p/noda-time/issues/detail?id=120">issue 120</a>)</li>
+<li>Added <code>LocalDate.FromWeekYearWeekAndDay()</code> (<a href="http://code.google.com/p/noda-time/issues/detail?id=120">issue 120</a>)</li>
 <li>Text formats can now parse negative values for absolute years (<a href="http://code.google.com/p/noda-time/issues/detail?id=118">issue 118</a>)</li>
 <li><code>Tick</code>, <code>SecondOfDay</code> and <code>MillisecondOfDay</code> properties removed from
 time-based types (<a href="http://code.google.com/p/noda-time/issues/detail?id=103">issue 103</a>)</li>
 </ul>
 
+<p>Bug fixes:</p>
+
+<ul>
+<li>Various fixes to <code>BclDateTimeZone</code> not working the same way as a BCL
+<code>TimeZoneInfo</code> (issues <a href="http://code.google.com/p/noda-time/issues/detail?id=114">114</a>, <a href="http://code.google.com/p/noda-time/issues/detail?id=115">115</a>, and
+<a href="http://code.google.com/p/noda-time/issues/detail?id=122">122</a>)</li>
+</ul>
+
+<p>Other:</p>
+
+<ul>
+<li>The NuGet packages are now signed (<a href="http://code.google.com/p/noda-time/issues/detail?id=35">issue 35</a>)</li>
+<li>Removed support for building under Visual Studio 2008 (<a href="http://code.google.com/p/noda-time/issues/detail?id=107">issue 107</a>)</li>
+</ul>
+
 <h2>1.0.0-beta2, released 2012-08-04 with tzdb 2012e</h2>
+
+<p>API changes:</p>
 
 <ul>
 <li>Overhaul of how to get a <code>DateTimeZone</code> from an ID:
@@ -91,6 +111,12 @@ equivalent to a <code>ZonedDateTime</code></li>
 auto-advance option (issues <a href="http://code.google.com/p/noda-time/issues/detail?id=72">72</a> and <a href="http://code.google.com/p/noda-time/issues/detail?id=73">73</a>)</p></li>
 <li><code>NodaTime.Testing.TimeZones.SingleTransitionZone</code> renamed to
 <code>SingleTransitionDateTimeZone</code></li>
+</ul>
+
+<p>Bug fixes:</p>
+
+<ul>
+<li>Many.</li>
 </ul>
 
 <h2>1.0.0-beta1, released 2012-04-12 with tzdb 2012c</h2>
