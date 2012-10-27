@@ -115,8 +115,7 @@ namespace NodaTime.Test.Text
             }
 
             // Some cultures use two-digit years, so let's put them in the right century.
-            var pattern = LocalDateTimePattern.Create(patternText, NodaFormatInfo.GetFormatInfo(culture))
-                .WithTemplateValue(new LocalDateTime(1400, 1, 1, 0, 0));
+            var pattern = LocalDateTimePattern.Create(patternText, culture, new LocalDateTime(1400, 1, 1, 0, 0));
 
             // If the culture doesn't have either AM or PM designators, we'll end up using the template value
             // AM/PM, so let's make sure that's right. (This happens on Mono for a few cultures.)
@@ -148,7 +147,7 @@ namespace NodaTime.Test.Text
                 return;
             }
 
-            var pattern = LocalDateTimePattern.Create(patternText, NodaFormatInfo.GetFormatInfo(culture));
+            var pattern = LocalDateTimePattern.Create(patternText, culture);
             // Create the BCL version in the culture's calendar, so that when formatted it really will have those
             // values, even though that may represent a completely different date/time to the Noda Time version...
             // we're only testing the formatting here.

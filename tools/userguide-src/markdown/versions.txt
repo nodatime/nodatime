@@ -14,6 +14,10 @@ API changes:
 - Text formats can now parse negative values for absolute years ([issue 118][])
 - `Tick`, `SecondOfDay` and `MillisecondOfDay` properties removed from
   time-based types ([issue 103][])
+- Removed the `NodaCultureInfo` and `NodaFormatInfo` types ([issue 131][] and
+  related issues), removed the `FormatInfo` property and `WithFormatInfo()`
+  method on pattern types, and changed the culture-specific pattern factory
+  methods to take a `CultureInfo` rather than a `NodaFormatInfo`.
 
 Bug fixes:
 
@@ -130,3 +134,4 @@ Bug fixes:
 [issue 120]: http://code.google.com/p/noda-time/issues/detail?id=120
 [issue 122]: http://code.google.com/p/noda-time/issues/detail?id=122
 [issue 121]: http://code.google.com/p/noda-time/issues/detail?id=121
+[issue 131]: http://code.google.com/p/noda-time/issues/detail?id=131

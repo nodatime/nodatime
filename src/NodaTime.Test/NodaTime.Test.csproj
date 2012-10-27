@@ -144,7 +144,6 @@
     <Compile Include="Text\LocalTimePatternTest.cs" />
     <Compile Include="Text\FormatHelperTest.cs" />
     <Compile Include="Globalization\FailingCultureInfo.cs" />
-    <Compile Include="Globalization\NodaCultureInfoTest.cs" />
     <Compile Include="Globalization\NodaFormatInfoTest.cs" />
     <Compile Include="InstantTest.Format.cs">
       <DependentUpon>InstantTest.cs</DependentUpon>

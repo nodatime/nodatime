@@ -361,7 +361,7 @@ namespace NodaTime.Test.Text
             {
                 return;
             }
-            var pattern = LocalTimePattern.Create(patternText, NodaFormatInfo.GetFormatInfo(culture));
+            var pattern = LocalTimePattern.Create(patternText, culture);
 
             Assert.AreEqual(SampleDateTime.ToString(patternText, culture), pattern.Format(SampleLocalTime));
         }
@@ -384,7 +384,7 @@ namespace NodaTime.Test.Text
                 }
             }
             // Check that the pattern parses
-            LocalTimePattern.Create(pattern, NodaFormatInfo.GetFormatInfo(culture));
+            LocalTimePattern.Create(pattern, culture);
         }
 
         /// <summary>
