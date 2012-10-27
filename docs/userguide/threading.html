@@ -55,22 +55,6 @@ These types are very obviously mutable, and should <em>not</em> be shared betwee
 in Noda Time has any specific thread affinity, so you shouldn't see any ill effects if you do use synchronization. Even so, we would
 generally recommend against doing this: the types are generally <em>designed</em> around making it easy to build a value within a single thread.</p>
 
-<h2>Semi-mutable reference types</h2>
-
-<p><a href="../api/html/T_NodaTime_Globalization_NodaFormatInfo.htm"><code>NodaFormatInfo</code></a> and <a href="../api/html/T_NodaTime_Globalization_NodaCultureInfo.htm"><code>NodaCultureInfo</code></a>
-both follow the same "sometimes mutable, sometimes not" model that .NET's own <a href="http://msdn.microsoft.com/en-us/library/system.globalization.datetimeformatinfo.aspx"><code>DateTimeFormatInfo</code></a>
-and <a href="http://msdn.microsoft.com/en-us/library/system.globalization.cultureinfo.aspx"><code>CultureInfo</code></a>. This is an ugly model which makes it very hard to reason
-about code using these types. In the future, I'd like to move towards a builder pattern approach.</p>
-
-<p>For the moment, I would <em>strongly recommend</em> against sharing a mutable instance of either of these types between threads - or frankly, using mutating these instances at all.
-If you change some value in a <code>NodaFormatInfo</code> in one thread while formatting or parsing in another, no guarantees are made about the results. You should <em>at least</em> synchronize
-in the same way as for other mutable reference types.</p>
-
-<p>If you use read-only instances (and in particular, make sure that a read-only instance of <code>NodaFormatInfo</code> only wraps a read-only instance of <code>CultureInfo</code>) then you should be
-able to use them across multiple threads as if they were any other immutable reference type.</p>
-
-<p>Note that all of this behaviour <em>also</em> applies to any types which use <code>NodaFormatInfo</code> or <code>NodaCultureInfo</code> internally, with <a href="text.html">text patterns</a> being the most obvious example.</p>
-
 <h2>Exceptions</h2>
 
 <p>The exceptions within Noda Time are documented in the same way as the .NET types, partly as we can't make any firmer guarantees around

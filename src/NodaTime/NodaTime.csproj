@@ -149,7 +149,6 @@
     <Compile Include="Text\Patterns\SteppedPatternBuilder.cs" />
     <Compile Include="Text\UnparsableValueException.cs" />
     <Compile Include="IClock.cs" />
-    <Compile Include="Globalization\NodaCultureInfo.cs" />
     <Compile Include="Globalization\NodaFormatInfo.cs" />
     <Compile Include="IsoDayOfWeek.cs" />
     <Compile Include="Fields\BasicDayOfMonthDateTimeField.cs" />

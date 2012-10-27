@@ -57,18 +57,6 @@ namespace NodaTime.Test.Globalization
         }
 
         [Test]
-        public void TestClone_WithNodaCultureInfo()
-        {
-            NodaCultureInfo culture = NodaCultureInfo.InvariantCulture;
-            NodaFormatInfo formatInfo = NodaFormatInfo.GetFormatInfo(culture);
-
-            NodaFormatInfo clone = formatInfo.Clone();
-            Assert.AreNotSame(clone, formatInfo);
-            Assert.AreNotSame(clone.CultureInfo, formatInfo.CultureInfo);
-            Assert.AreSame(((NodaCultureInfo)clone.CultureInfo).NodaFormatInfo, clone);
-        }
-
-        [Test]
         public void TestCloneClonesSubFormatInfo()
         {
             var clone1 = (NodaFormatInfo) NodaFormatInfo.InvariantInfo.Clone();
@@ -222,18 +210,6 @@ namespace NodaTime.Test.Globalization
                 var provider = new EmptyFormatProvider();
                 var actual = NodaFormatInfo.GetInstance(provider);
                 Assert.AreSame(enUs.Name, actual.Name);
-            }
-        }
-
-        [Test]
-        public void TestGetInstance_NodaCultureInfo()
-        {
-            NodaFormatInfo.ClearCache();
-            using (CultureSaver.SetCultures(enUs, FailingCultureInfo.Instance))
-            {
-                var info = new NodaCultureInfo("en-GB");
-                var actual = NodaFormatInfo.GetInstance(info);
-                Assert.AreSame(info.Name, actual.Name);
             }
         }
 

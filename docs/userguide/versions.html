@@ -23,6 +23,10 @@ match the BCL (<a href="http://code.google.com/p/noda-time/issues/detail?id=121"
 <li>Text formats can now parse negative values for absolute years (<a href="http://code.google.com/p/noda-time/issues/detail?id=118">issue 118</a>)</li>
 <li><code>Tick</code>, <code>SecondOfDay</code> and <code>MillisecondOfDay</code> properties removed from
 time-based types (<a href="http://code.google.com/p/noda-time/issues/detail?id=103">issue 103</a>)</li>
+<li>Removed the <code>NodaCultureInfo</code> and <code>NodaFormatInfo</code> types (<a href="http://code.google.com/p/noda-time/issues/detail?id=131">issue 131</a> and
+related issues), removed the <code>FormatInfo</code> property and <code>WithFormatInfo()</code>
+method on pattern types, and changed the culture-specific pattern factory
+methods to take a <code>CultureInfo</code> rather than a <code>NodaFormatInfo</code>.</li>
 </ul>
 
 <p>Bug fixes:</p>

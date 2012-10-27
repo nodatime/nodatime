@@ -50,23 +50,6 @@ These types are very obviously mutable, and should *not* be shared between threa
 in Noda Time has any specific thread affinity, so you shouldn't see any ill effects if you do use synchronization. Even so, we would
 generally recommend against doing this: the types are generally *designed* around making it easy to build a value within a single thread.
 
-Semi-mutable reference types
-----------------------------
-
-[`NodaFormatInfo`](noda-type://NodaTime.Globalization.NodaFormatInfo) and [`NodaCultureInfo`](noda-type://NodaTime.Globalization.NodaCultureInfo)
-both follow the same "sometimes mutable, sometimes not" model that .NET's own [`DateTimeFormatInfo`](http://msdn.microsoft.com/en-us/library/system.globalization.datetimeformatinfo.aspx)
-and [`CultureInfo`](http://msdn.microsoft.com/en-us/library/system.globalization.cultureinfo.aspx). This is an ugly model which makes it very hard to reason
-about code using these types. In the future, I'd like to move towards a builder pattern approach.
-
-For the moment, I would *strongly recommend* against sharing a mutable instance of either of these types between threads - or frankly, using mutating these instances at all.
-If you change some value in a `NodaFormatInfo` in one thread while formatting or parsing in another, no guarantees are made about the results. You should *at least* synchronize
-in the same way as for other mutable reference types.
-
-If you use read-only instances (and in particular, make sure that a read-only instance of `NodaFormatInfo` only wraps a read-only instance of `CultureInfo`) then you should be
-able to use them across multiple threads as if they were any other immutable reference type.
-
-Note that all of this behaviour *also* applies to any types which use `NodaFormatInfo` or `NodaCultureInfo` internally, with [text patterns](text.html) being the most obvious example.
-
 Exceptions
 ----------
 

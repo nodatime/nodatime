@@ -30,7 +30,8 @@ using NodaTime.Utility;
 namespace NodaTime.Globalization
 {
     /// <summary>
-    /// Defines how NodaTime values are formatted and displayed, depending on the culture.
+    /// A <see cref="IFormatProvider"/> for Noda Time types, initialised from a <see cref="CultureInfo"/>.
+    /// This provides a single place defining how NodaTime values are formatted and displayed, depending on the culture.
     /// </summary>
     /// <remarks>
     /// The mutability of this class is based on the mutability model of the similar BCL classes. This leads
@@ -39,8 +40,7 @@ namespace NodaTime.Globalization
     /// <threadsafety>Read-only instances which use read-only CultureInfo instances are immutable,
     /// and may be used freely between threads. Mutable instances should not be shared between threads without external synchronization.
     /// See the thread safety section of the user guide for more information.</threadsafety>
-    //[DebuggerStepThrough]
-    public class NodaFormatInfo : IFormatProvider, ICloneable
+    internal class NodaFormatInfo : IFormatProvider, ICloneable
     {
         // Names that we can use to check for broken Mono behaviour.
         // The cloning is *also* to work around a Mono bug, where even read-only cultures can change...
@@ -457,33 +457,9 @@ namespace NodaTime.Globalization
             var info = (NodaFormatInfo)MemberwiseClone();
             info.isReadOnly = false;
 
-            // Take care when cloning culture information - we want two end up with two objects referring to each other
-            var cultureInfo = CultureInfo;
-            var nodaCultureInfo = cultureInfo as NodaCultureInfo;
-            info.CultureInfo = nodaCultureInfo == null ? (CultureInfo) cultureInfo.Clone() : nodaCultureInfo.Clone(info);
+            info.CultureInfo = (CultureInfo) CultureInfo.Clone();
             info.NumberFormat = (NumberFormatInfo) NumberFormat.Clone();
             info.DateTimeFormat = (DateTimeFormatInfo) DateTimeFormat.Clone();
-            info.offsetPatternParser = FixedFormatInfoPatternParser<Offset>.CreateNonCachingParser(GeneralOffsetPatternParser, info);
-            info.instantPatternParser = FixedFormatInfoPatternParser<Instant>.CreateNonCachingParser(GeneralInstantPatternParser, info);
-            info.localTimePatternParser = FixedFormatInfoPatternParser<LocalTime>.CreateNonCachingParser(GeneralLocalTimePatternParser, info);
-            info.localDatePatternParser = FixedFormatInfoPatternParser<LocalDate>.CreateNonCachingParser(GeneralLocalDatePatternParser, info);
-            return info;
-        }
-
-        /// <summary>
-        /// Returns a clone with the specified NodaCultureInfo as the CultureInfo.
-        /// This is to avoid stack overflows when cloning a NodaFormatInfo with a NodaCultureInfo. This is slightly tricky,
-        /// as when you clone either a NodaCultureInfo or a NodaFormatInfo with a NodaCultureInfo as its culture, we need
-        /// to create two objects which refer to each other.
-        /// </summary>
-        internal NodaFormatInfo Clone(NodaCultureInfo clonedCultureInfo)
-        {
-            // TODO(Post-V1): Potentially extract common code with the parameterless Clone method above.
-            var info = (NodaFormatInfo)MemberwiseClone();
-            info.isReadOnly = false;
-            info.CultureInfo = clonedCultureInfo;
-            info.NumberFormat = (NumberFormatInfo)NumberFormat.Clone();
-            info.DateTimeFormat = (DateTimeFormatInfo)DateTimeFormat.Clone();
             info.offsetPatternParser = FixedFormatInfoPatternParser<Offset>.CreateNonCachingParser(GeneralOffsetPatternParser, info);
             info.instantPatternParser = FixedFormatInfoPatternParser<Instant>.CreateNonCachingParser(GeneralInstantPatternParser, info);
             info.localTimePatternParser = FixedFormatInfoPatternParser<LocalTime>.CreateNonCachingParser(GeneralLocalTimePatternParser, info);
@@ -539,11 +515,13 @@ namespace NodaTime.Globalization
         }
 
         /// <summary>
-        ///   Gets the <see cref="NodaFormatInfo" /> for the given <see cref="CultureInfo" />.
+        /// Gets the <see cref="NodaFormatInfo" /> for the given <see cref="CultureInfo" />.
         /// </summary>
+        /// <remarks>
+        /// This method maintains a cache of results for read-only cultures.
+        /// </remarks>
         /// <param name="cultureInfo">The culture info.</param>
         /// <returns>The <see cref="NodaFormatInfo" />. Will never be null.</returns>
-        // TODO(Post-V1): Consider making this private.
         internal static NodaFormatInfo GetFormatInfo(CultureInfo cultureInfo)
         {
             Preconditions.CheckNotNull(cultureInfo, "cultureInfo");
@@ -569,9 +547,9 @@ namespace NodaTime.Globalization
         }
 
         /// <summary>
-        ///   Gets the <see cref="NodaFormatInfo" /> for the given <see cref="IFormatProvider" />. If the
-        ///   format provider is null or if it does not provide a <see cref="NodaFormatInfo" />
-        ///   object then the format object for the current thread is returned.
+        /// Gets the <see cref="NodaFormatInfo" /> for the given <see cref="IFormatProvider" />. If the
+        /// format provider is null or if it does not provide a <see cref="NodaFormatInfo" />
+        /// object then the format object for the current thread is returned.
         /// </summary>
         /// <param name="provider">The <see cref="IFormatProvider" />.</param>
         /// <returns>The <see cref="NodaFormatInfo" />. Will never be null.</returns>

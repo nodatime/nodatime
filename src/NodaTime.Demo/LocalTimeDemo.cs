@@ -15,8 +15,8 @@
 // limitations under the License.
 #endregion
 
+using System.Globalization;
 using NUnit.Framework;
-using NodaTime.Globalization;
 
 namespace NodaTime.Demo
 {
@@ -27,7 +27,7 @@ namespace NodaTime.Demo
         public void Construction()
         {
             LocalTime time = new LocalTime(16, 20, 0);
-            Assert.AreEqual("16:20:00", time.ToString("HH:mm:ss", NodaFormatInfo.InvariantInfo));
+            Assert.AreEqual("16:20:00", time.ToString("HH:mm:ss", CultureInfo.InvariantCulture));
         }
     }
 }
