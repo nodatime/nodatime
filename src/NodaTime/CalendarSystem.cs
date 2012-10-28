@@ -170,7 +170,7 @@ namespace NodaTime
         /// </para>
         /// <para>You should choose an epoch based on which external system you wish
         /// to be compatible with. The epoch beginning on July 16th is the more common
-        /// one for the observed calendar, so using <see cref="IslamicEpoch.Civil" />
+        /// one for the tabular calendar, so using <see cref="IslamicEpoch.Civil" />
         /// would usually be a logical choice. However, Windows uses July 15th, so
         /// if you need to be compatible with other Windows systems, you may wish to use
         /// <see cref="IslamicEpoch.Astronomical" />. The fact that the Islamic calendar

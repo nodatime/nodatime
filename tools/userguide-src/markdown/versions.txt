@@ -27,7 +27,7 @@ Bug fixes:
 
 Other:
 
-- The NuGet packages are now signed ([issue 35][])
+- Noda Time assemblies are now signed ([issue 35][])
 - Removed support for building under Visual Studio 2008 ([issue 107][])
 
 ## 1.0.0-beta2, released 2012-08-04 with tzdb 2012e
