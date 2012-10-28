@@ -399,7 +399,7 @@ namespace CommandLine
             this.PostParsingState.Add(new ParsingError(option.ShortName, option.LongName, true));
         }
 
-        public static ArgumentParser Create(string argument, bool ignoreUnknownArguments = false)
+        public static ArgumentParser Create(string argument, bool ignoreUnknownArguments)
         {
             if (argument.Equals("-", StringComparison.InvariantCulture))
                 return null;
