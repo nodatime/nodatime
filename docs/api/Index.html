@@ -2,13 +2,13 @@
 <html>
 
 <head>
-<title>Noda-Time - Table of Content</title>
+<title>Noda Time - Table of Content</title>
 <link rel="stylesheet" href="TOC.css">
 <link rel="shortcut icon" href="favicon.ico"/>
 <script type="text/javascript" src="TOC.js"></script>
 </head>
 
-<body onload="javascript: Initialize();" onresize="javascript: ResizeTree();">
+<body onload="javascript: Initialize('.aspx');" onresize="javascript: ResizeTree();">
 <form id="IndexForm" runat="server">
 
 <div id="TOCDiv" class="TOCDiv">
@@ -36,6 +36,9 @@ Keyword Index
         src="ExpandAll.bmp" height="16" width="16" alt="Expand all "/>
     <img class="TOCLink" onclick="javascript: ExpandOrCollapseAll(false);"
         src="CollapseAll.bmp" height="16" width="16" alt="Collapse all" />
+    <a href="#" title="Click to obtain a direct link to the displayed topic"
+        style="margin-left: 10px; vertical-align: top;"
+        onclick="javascript: ShowDirectLink();">Direct Link</a>
 </div>
 
 <div class="Tree" id="divSearchResults" style="display: none;"
@@ -1754,157 +1757,6 @@ Keyword Index
 </div>
 </div>
 <div class="TreeNode">
-<img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="Collapsed.gif"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="html/N_NodaTime_Globalization.htm" target="TopicContent">NodaTime.Globalization Namespace</a>
-<div class="Hidden">
-<div class="TreeNode">
-<img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="Collapsed.gif"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="html/T_NodaTime_Globalization_NodaCultureInfo.htm" target="TopicContent">NodaCultureInfo Class</a>
-<div class="Hidden">
-<div class="TreeNode">
-<img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="Collapsed.gif"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="html/Overload_NodaTime_Globalization_NodaCultureInfo__ctor.htm" target="TopicContent">NodaCultureInfo Constructor </a>
-<div class="Hidden">
-<div class="TreeItem">
-<img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/M_NodaTime_Globalization_NodaCultureInfo__ctor.htm" target="TopicContent">NodaCultureInfo Constructor (culture)</a>
-</div>
-<div class="TreeItem">
-<img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/M_NodaTime_Globalization_NodaCultureInfo__ctor_1.htm" target="TopicContent">NodaCultureInfo Constructor (culture, useUserOverride)</a>
-</div>
-<div class="TreeItem">
-<img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/M_NodaTime_Globalization_NodaCultureInfo__ctor_2.htm" target="TopicContent">NodaCultureInfo Constructor (name)</a>
-</div>
-<div class="TreeItem">
-<img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/M_NodaTime_Globalization_NodaCultureInfo__ctor_3.htm" target="TopicContent">NodaCultureInfo Constructor (name, useUserOverride)</a>
-</div>
-</div>
-</div>
-<div class="TreeItem">
-<img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/M_NodaTime_Globalization_NodaCultureInfo_Clone.htm" target="TopicContent">Clone Method </a>
-</div>
-<div class="TreeNode">
-<img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="Collapsed.gif"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="html/Overload_NodaTime_Globalization_NodaCultureInfo_GetCultureInfo.htm" target="TopicContent">GetCultureInfo Method </a>
-<div class="Hidden">
-<div class="TreeItem">
-<img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/M_NodaTime_Globalization_NodaCultureInfo_GetCultureInfo.htm" target="TopicContent">GetCultureInfo Method (culture)</a>
-</div>
-<div class="TreeItem">
-<img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/M_NodaTime_Globalization_NodaCultureInfo_GetCultureInfo_1.htm" target="TopicContent">GetCultureInfo Method (name)</a>
-</div>
-</div>
-</div>
-<div class="TreeItem">
-<img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/M_NodaTime_Globalization_NodaCultureInfo_GetFormat.htm" target="TopicContent">GetFormat Method (formatType)</a>
-</div>
-<div class="TreeItem">
-<img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/P_NodaTime_Globalization_NodaCultureInfo_InvariantCulture.htm" target="TopicContent">InvariantCulture Property </a>
-</div>
-<div class="TreeItem">
-<img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/P_NodaTime_Globalization_NodaCultureInfo_NodaFormatInfo.htm" target="TopicContent">NodaFormatInfo Property </a>
-</div>
-<div class="TreeItem">
-<img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/P_NodaTime_Globalization_NodaCultureInfo_Parent.htm" target="TopicContent">Parent Property </a>
-</div>
-<div class="TreeItem">
-<img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/M_NodaTime_Globalization_NodaCultureInfo_ToString.htm" target="TopicContent">ToString Method </a>
-</div>
-</div>
-</div>
-<div class="TreeNode">
-<img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="Collapsed.gif"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="html/T_NodaTime_Globalization_NodaFormatInfo.htm" target="TopicContent">NodaFormatInfo Class</a>
-<div class="Hidden">
-<div class="TreeItem">
-<img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/P_NodaTime_Globalization_NodaFormatInfo_AMDesignator.htm" target="TopicContent">AMDesignator Property </a>
-</div>
-<div class="TreeItem">
-<img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/M_NodaTime_Globalization_NodaFormatInfo_Clone.htm" target="TopicContent">Clone Method </a>
-</div>
-<div class="TreeItem">
-<img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/P_NodaTime_Globalization_NodaFormatInfo_CultureInfo.htm" target="TopicContent">CultureInfo Property </a>
-</div>
-<div class="TreeItem">
-<img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/P_NodaTime_Globalization_NodaFormatInfo_CurrentInfo.htm" target="TopicContent">CurrentInfo Property </a>
-</div>
-<div class="TreeItem">
-<img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/P_NodaTime_Globalization_NodaFormatInfo_DateSeparator.htm" target="TopicContent">DateSeparator Property </a>
-</div>
-<div class="TreeItem">
-<img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/P_NodaTime_Globalization_NodaFormatInfo_DateTimeFormat.htm" target="TopicContent">DateTimeFormat Property </a>
-</div>
-<div class="TreeItem">
-<img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/P_NodaTime_Globalization_NodaFormatInfo_DecimalSeparator.htm" target="TopicContent">DecimalSeparator Property </a>
-</div>
-<div class="TreeItem">
-<img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/M_NodaTime_Globalization_NodaFormatInfo_GetEraNames.htm" target="TopicContent">GetEraNames Method (era)</a>
-</div>
-<div class="TreeItem">
-<img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/M_NodaTime_Globalization_NodaFormatInfo_GetEraPrimaryName.htm" target="TopicContent">GetEraPrimaryName Method (era)</a>
-</div>
-<div class="TreeItem">
-<img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/M_NodaTime_Globalization_NodaFormatInfo_GetFormat.htm" target="TopicContent">GetFormat Method (formatType)</a>
-</div>
-<div class="TreeItem">
-<img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/M_NodaTime_Globalization_NodaFormatInfo_GetInstance.htm" target="TopicContent">GetInstance Method (provider)</a>
-</div>
-<div class="TreeItem">
-<img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/F_NodaTime_Globalization_NodaFormatInfo_InvariantInfo.htm" target="TopicContent">InvariantInfo Field</a>
-</div>
-<div class="TreeItem">
-<img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/P_NodaTime_Globalization_NodaFormatInfo_IsReadOnly.htm" target="TopicContent">IsReadOnly Property </a>
-</div>
-<div class="TreeItem">
-<img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/P_NodaTime_Globalization_NodaFormatInfo_LongDayNames.htm" target="TopicContent">LongDayNames Property </a>
-</div>
-<div class="TreeItem">
-<img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/P_NodaTime_Globalization_NodaFormatInfo_LongMonthGenitiveNames.htm" target="TopicContent">LongMonthGenitiveNames Property </a>
-</div>
-<div class="TreeItem">
-<img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/P_NodaTime_Globalization_NodaFormatInfo_LongMonthNames.htm" target="TopicContent">LongMonthNames Property </a>
-</div>
-<div class="TreeItem">
-<img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/P_NodaTime_Globalization_NodaFormatInfo_Name.htm" target="TopicContent">Name Property </a>
-</div>
-<div class="TreeItem">
-<img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/P_NodaTime_Globalization_NodaFormatInfo_NegativeSign.htm" target="TopicContent">NegativeSign Property </a>
-</div>
-<div class="TreeItem">
-<img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/P_NodaTime_Globalization_NodaFormatInfo_NumberFormat.htm" target="TopicContent">NumberFormat Property </a>
-</div>
-<div class="TreeItem">
-<img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/P_NodaTime_Globalization_NodaFormatInfo_OffsetPatternFull.htm" target="TopicContent">OffsetPatternFull Property </a>
-</div>
-<div class="TreeItem">
-<img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/P_NodaTime_Globalization_NodaFormatInfo_OffsetPatternLong.htm" target="TopicContent">OffsetPatternLong Property </a>
-</div>
-<div class="TreeItem">
-<img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/P_NodaTime_Globalization_NodaFormatInfo_OffsetPatternMedium.htm" target="TopicContent">OffsetPatternMedium Property </a>
-</div>
-<div class="TreeItem">
-<img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/P_NodaTime_Globalization_NodaFormatInfo_OffsetPatternShort.htm" target="TopicContent">OffsetPatternShort Property </a>
-</div>
-<div class="TreeItem">
-<img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/P_NodaTime_Globalization_NodaFormatInfo_PMDesignator.htm" target="TopicContent">PMDesignator Property </a>
-</div>
-<div class="TreeItem">
-<img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/P_NodaTime_Globalization_NodaFormatInfo_PositiveSign.htm" target="TopicContent">PositiveSign Property </a>
-</div>
-<div class="TreeItem">
-<img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/P_NodaTime_Globalization_NodaFormatInfo_ShortDayNames.htm" target="TopicContent">ShortDayNames Property </a>
-</div>
-<div class="TreeItem">
-<img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/P_NodaTime_Globalization_NodaFormatInfo_ShortMonthGenitiveNames.htm" target="TopicContent">ShortMonthGenitiveNames Property </a>
-</div>
-<div class="TreeItem">
-<img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/P_NodaTime_Globalization_NodaFormatInfo_ShortMonthNames.htm" target="TopicContent">ShortMonthNames Property </a>
-</div>
-<div class="TreeItem">
-<img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/P_NodaTime_Globalization_NodaFormatInfo_TimeSeparator.htm" target="TopicContent">TimeSeparator Property </a>
-</div>
-<div class="TreeItem">
-<img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/M_NodaTime_Globalization_NodaFormatInfo_ToString.htm" target="TopicContent">ToString Method </a>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="TreeNode">
 <img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="Collapsed.gif"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="html/N_NodaTime_Serialization_JsonNet.htm" target="TopicContent">NodaTime.Serialization.JsonNet Namespace</a>
 <div class="Hidden">
 <div class="TreeNode">
@@ -2149,10 +2001,10 @@ Keyword Index
 <img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="Collapsed.gif"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="html/T_NodaTime_Text_InstantPattern.htm" target="TopicContent">InstantPattern Class</a>
 <div class="Hidden">
 <div class="TreeItem">
-<img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/M_NodaTime_Text_InstantPattern_Create.htm" target="TopicContent">Create Method (patternText, formatInfo)</a>
+<img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/M_NodaTime_Text_InstantPattern_Create.htm" target="TopicContent">Create Method (patternText, cultureInfo)</a>
 </div>
 <div class="TreeItem">
-<img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/M_NodaTime_Text_InstantPattern_CreateNumericPattern.htm" target="TopicContent">CreateNumericPattern Method (formatInfo, includeThousandsSeparators)</a>
+<img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/M_NodaTime_Text_InstantPattern_CreateNumericPattern.htm" target="TopicContent">CreateNumericPattern Method (cultureInfo, includeThousandsSeparators)</a>
 </div>
 <div class="TreeItem">
 <img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/M_NodaTime_Text_InstantPattern_CreateWithCurrentCulture.htm" target="TopicContent">CreateWithCurrentCulture Method (patternText)</a>
@@ -2167,9 +2019,6 @@ Keyword Index
 <img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/M_NodaTime_Text_InstantPattern_Format.htm" target="TopicContent">Format Method (value)</a>
 </div>
 <div class="TreeItem">
-<img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/P_NodaTime_Text_InstantPattern_FormatInfo.htm" target="TopicContent">FormatInfo Property </a>
-</div>
-<div class="TreeItem">
 <img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/P_NodaTime_Text_InstantPattern_GeneralPattern.htm" target="TopicContent">GeneralPattern Property </a>
 </div>
 <div class="TreeItem">
@@ -2180,9 +2029,6 @@ Keyword Index
 </div>
 <div class="TreeItem">
 <img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/M_NodaTime_Text_InstantPattern_WithCulture.htm" target="TopicContent">WithCulture Method (cultureInfo)</a>
-</div>
-<div class="TreeItem">
-<img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/M_NodaTime_Text_InstantPattern_WithFormatInfo.htm" target="TopicContent">WithFormatInfo Method (formatInfo)</a>
 </div>
 </div>
 </div>
@@ -2223,10 +2069,10 @@ Keyword Index
 <img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="Collapsed.gif"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="html/Overload_NodaTime_Text_LocalDatePattern_Create.htm" target="TopicContent">Create Method </a>
 <div class="Hidden">
 <div class="TreeItem">
-<img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/M_NodaTime_Text_LocalDatePattern_Create.htm" target="TopicContent">Create Method (patternText, formatInfo)</a>
+<img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/M_NodaTime_Text_LocalDatePattern_Create.htm" target="TopicContent">Create Method (patternText, cultureInfo)</a>
 </div>
 <div class="TreeItem">
-<img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/M_NodaTime_Text_LocalDatePattern_Create_1.htm" target="TopicContent">Create Method (patternText, formatInfo, templateValue)</a>
+<img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/M_NodaTime_Text_LocalDatePattern_Create_1.htm" target="TopicContent">Create Method (patternText, cultureInfo, templateValue)</a>
 </div>
 </div>
 </div>
@@ -2238,9 +2084,6 @@ Keyword Index
 </div>
 <div class="TreeItem">
 <img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/M_NodaTime_Text_LocalDatePattern_Format.htm" target="TopicContent">Format Method (value)</a>
-</div>
-<div class="TreeItem">
-<img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/P_NodaTime_Text_LocalDatePattern_FormatInfo.htm" target="TopicContent">FormatInfo Property </a>
 </div>
 <div class="TreeItem">
 <img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/P_NodaTime_Text_LocalDatePattern_IsoPattern.htm" target="TopicContent">IsoPattern Property </a>
@@ -2258,9 +2101,6 @@ Keyword Index
 <img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/M_NodaTime_Text_LocalDatePattern_WithCulture.htm" target="TopicContent">WithCulture Method (cultureInfo)</a>
 </div>
 <div class="TreeItem">
-<img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/M_NodaTime_Text_LocalDatePattern_WithFormatInfo.htm" target="TopicContent">WithFormatInfo Method (newFormatInfo)</a>
-</div>
-<div class="TreeItem">
 <img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/M_NodaTime_Text_LocalDatePattern_WithTemplateValue.htm" target="TopicContent">WithTemplateValue Method (newTemplateValue)</a>
 </div>
 </div>
@@ -2272,10 +2112,10 @@ Keyword Index
 <img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="Collapsed.gif"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="html/Overload_NodaTime_Text_LocalDateTimePattern_Create.htm" target="TopicContent">Create Method </a>
 <div class="Hidden">
 <div class="TreeItem">
-<img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/M_NodaTime_Text_LocalDateTimePattern_Create.htm" target="TopicContent">Create Method (patternText, formatInfo)</a>
+<img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/M_NodaTime_Text_LocalDateTimePattern_Create.htm" target="TopicContent">Create Method (patternText, cultureInfo)</a>
 </div>
 <div class="TreeItem">
-<img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/M_NodaTime_Text_LocalDateTimePattern_Create_1.htm" target="TopicContent">Create Method (patternText, formatInfo, templateValue)</a>
+<img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/M_NodaTime_Text_LocalDateTimePattern_Create_1.htm" target="TopicContent">Create Method (patternText, cultureInfo, templateValue)</a>
 </div>
 </div>
 </div>
@@ -2292,9 +2132,6 @@ Keyword Index
 <img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/M_NodaTime_Text_LocalDateTimePattern_Format.htm" target="TopicContent">Format Method (value)</a>
 </div>
 <div class="TreeItem">
-<img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/P_NodaTime_Text_LocalDateTimePattern_FormatInfo.htm" target="TopicContent">FormatInfo Property </a>
-</div>
-<div class="TreeItem">
 <img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/M_NodaTime_Text_LocalDateTimePattern_Parse.htm" target="TopicContent">Parse Method (text)</a>
 </div>
 <div class="TreeItem">
@@ -2305,9 +2142,6 @@ Keyword Index
 </div>
 <div class="TreeItem">
 <img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/M_NodaTime_Text_LocalDateTimePattern_WithCulture.htm" target="TopicContent">WithCulture Method (cultureInfo)</a>
-</div>
-<div class="TreeItem">
-<img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/M_NodaTime_Text_LocalDateTimePattern_WithFormatInfo.htm" target="TopicContent">WithFormatInfo Method (newFormatInfo)</a>
 </div>
 <div class="TreeItem">
 <img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/M_NodaTime_Text_LocalDateTimePattern_WithTemplateValue.htm" target="TopicContent">WithTemplateValue Method (newTemplateValue)</a>
@@ -2321,10 +2155,10 @@ Keyword Index
 <img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="Collapsed.gif"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="html/Overload_NodaTime_Text_LocalTimePattern_Create.htm" target="TopicContent">Create Method </a>
 <div class="Hidden">
 <div class="TreeItem">
-<img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/M_NodaTime_Text_LocalTimePattern_Create.htm" target="TopicContent">Create Method (patternText, formatInfo)</a>
+<img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/M_NodaTime_Text_LocalTimePattern_Create.htm" target="TopicContent">Create Method (patternText, cultureInfo)</a>
 </div>
 <div class="TreeItem">
-<img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/M_NodaTime_Text_LocalTimePattern_Create_1.htm" target="TopicContent">Create Method (patternText, formatInfo, templateValue)</a>
+<img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/M_NodaTime_Text_LocalTimePattern_Create_1.htm" target="TopicContent">Create Method (patternText, cultureInfo, templateValue)</a>
 </div>
 </div>
 </div>
@@ -2341,9 +2175,6 @@ Keyword Index
 <img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/M_NodaTime_Text_LocalTimePattern_Format.htm" target="TopicContent">Format Method (value)</a>
 </div>
 <div class="TreeItem">
-<img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/P_NodaTime_Text_LocalTimePattern_FormatInfo.htm" target="TopicContent">FormatInfo Property </a>
-</div>
-<div class="TreeItem">
 <img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/M_NodaTime_Text_LocalTimePattern_Parse.htm" target="TopicContent">Parse Method (text)</a>
 </div>
 <div class="TreeItem">
@@ -2356,9 +2187,6 @@ Keyword Index
 <img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/M_NodaTime_Text_LocalTimePattern_WithCulture.htm" target="TopicContent">WithCulture Method (cultureInfo)</a>
 </div>
 <div class="TreeItem">
-<img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/M_NodaTime_Text_LocalTimePattern_WithFormatInfo.htm" target="TopicContent">WithFormatInfo Method (newFormatInfo)</a>
-</div>
-<div class="TreeItem">
 <img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/M_NodaTime_Text_LocalTimePattern_WithTemplateValue.htm" target="TopicContent">WithTemplateValue Method (newTemplateValue)</a>
 </div>
 </div>
@@ -2367,7 +2195,7 @@ Keyword Index
 <img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="Collapsed.gif"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="html/T_NodaTime_Text_OffsetPattern.htm" target="TopicContent">OffsetPattern Class</a>
 <div class="Hidden">
 <div class="TreeItem">
-<img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/M_NodaTime_Text_OffsetPattern_Create.htm" target="TopicContent">Create Method (patternText, formatInfo)</a>
+<img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/M_NodaTime_Text_OffsetPattern_Create.htm" target="TopicContent">Create Method (patternText, cultureInfo)</a>
 </div>
 <div class="TreeItem">
 <img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/M_NodaTime_Text_OffsetPattern_CreateWithCurrentCulture.htm" target="TopicContent">CreateWithCurrentCulture Method (patternText)</a>
@@ -2377,9 +2205,6 @@ Keyword Index
 </div>
 <div class="TreeItem">
 <img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/M_NodaTime_Text_OffsetPattern_Format.htm" target="TopicContent">Format Method (value)</a>
-</div>
-<div class="TreeItem">
-<img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/P_NodaTime_Text_OffsetPattern_FormatInfo.htm" target="TopicContent">FormatInfo Property </a>
 </div>
 <div class="TreeItem">
 <img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/F_NodaTime_Text_OffsetPattern_GeneralInvariantPattern.htm" target="TopicContent">GeneralInvariantPattern Field</a>
@@ -2395,9 +2220,6 @@ Keyword Index
 </div>
 <div class="TreeItem">
 <img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/M_NodaTime_Text_OffsetPattern_WithCulture.htm" target="TopicContent">WithCulture Method (cultureInfo)</a>
-</div>
-<div class="TreeItem">
-<img src="Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="html/M_NodaTime_Text_OffsetPattern_WithFormatInfo.htm" target="TopicContent">WithFormatInfo Method (formatInfo)</a>
 </div>
 </div>
 </div>
@@ -2769,7 +2591,7 @@ Keyword Index
 
 <div id="TOCSizer" class="TOCSizer" onmousedown="OnMouseDown(event)" onselectstart="javascript: return false;"></div>
 
-<iframe id="TopicContent" name="TopicContent" class="TopicContent" src="html/R_Project.htm">
+<iframe id="TopicContent" name="TopicContent" class="TopicContent" src="html/R_Project_Help.htm">
 This page uses an IFRAME but your browser does not support it.
 </iframe>
 
