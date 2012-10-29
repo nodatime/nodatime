@@ -22,8 +22,7 @@ A *pattern* is an object capable of *parsing* from text to a specific
 type, and *formatting* a value to text. Parsing and formatting don't
 take any other options: the pattern knows everything about how to
 map between the value and text. In particular, internationalization
-is handled using a [`NodaFormatInfo`][2], which implements
-[`IFormatProvider`][1].
+is handled by having the pattern hold a [`CultureInfo`][2].
 
 Whereas using the BCL approach the format
 information has to be specified on every call, using the pattern
@@ -122,8 +121,7 @@ Additionally:
 - Where valid, `:` always refers to the culture-specific time separator (a colon in the invariant culture)
 - Where valid, `/` always refers to the culture-specific date separator (a forward slash in the invariant culture)
 
-  [1]: http://msdn.microsoft.com/en-us/library/system.iformatprovider.aspx
-  [2]: noda-type://NodaTime.Globalization.NodaFormatInfo
+  [2]: http://msdn.microsoft.com/en-us/library/system.globalization.cultureinfo.aspx
   [3]: noda-ns://NodaTime.Text
   [4]: noda-type://NodaTime.LocalDateTime
   [5]: noda-type://NodaTime.Instant
