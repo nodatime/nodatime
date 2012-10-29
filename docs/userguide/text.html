@@ -29,8 +29,7 @@ where you may wish to mix several values of different types in a single formatti
 type, and <em>formatting</em> a value to text. Parsing and formatting don't
 take any other options: the pattern knows everything about how to
 map between the value and text. In particular, internationalization
-is handled using a <a href="../api/html/T_NodaTime_Globalization_NodaFormatInfo.htm"><code>NodaFormatInfo</code></a>, which implements
-<a href="http://msdn.microsoft.com/en-us/library/system.iformatprovider.aspx"><code>IFormatProvider</code></a>.</p>
+is handled by having the pattern hold a <a href="http://msdn.microsoft.com/en-us/library/system.globalization.cultureinfo.aspx"><code>CultureInfo</code></a>.</p>
 
 <p>Whereas using the BCL approach the format
 information has to be specified on every call, using the pattern
