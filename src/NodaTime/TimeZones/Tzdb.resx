@@ -4218,10 +4218,10 @@
         V0VUP/AHD/4AQQD/gAAAAP9/////
 </value>
   </data>
-  <data name="Version_Id" xml:space="preserve">
+  <data name="--meta-VersionId" xml:space="preserve">
     <value>2012e</value>
   </data>
-  <data name="Id_Map" type="System.Byte[], mscorlib">
+  <data name="--meta-IdMap" type="System.Byte[], mscorlib">
     <value>
         gbD+QWZyaWNhL0FiaWRqYW7+QWZyaWNhL0FiaWRqYW78QWZyaWNhL0FjY3Jh/EFmcmljYS9BY2NyYQNB
         ZnJpY2EvQWRkaXNfQWJhYmEDQWZyaWNhL0FkZGlzX0FiYWJh/kFmcmljYS9BbGdpZXJz/kFmcmljYS9B
@@ -4523,7 +4523,7 @@
         Y2EvQ3VyYWNhbwNBbWVyaWNhL0tyYWxlbmRpamsAQW1lcmljYS9DdXJhY2Fv
 </value>
   </data>
-  <data name="Windows_To_Posix" type="System.Byte[], mscorlib">
+  <data name="--meta-WindowsToPosix" type="System.Byte[], mscorlib">
     <value>
         VAdEYXRlbGluZSBTdGFuZGFyZCBUaW1l+kV0Yy9HTVQrMTL2VVRDLTEx+kV0Yy9HTVQrMTEHSGF3YWlp
         YW4gU3RhbmRhcmQgVGltZQFQYWNpZmljL0hvbm9sdWx1BkFsYXNrYW4gU3RhbmRhcmQgVGltZQJBbWVy
@@ -4591,7 +4591,7 @@
         Yy9Ub25nYXRhcHUEU2Ftb2EgU3RhbmRhcmQgVGltZfxQYWNpZmljL0FwaWE=
 </value>
   </data>
-  <data name="Windows_To_Posix_Version" xml:space="preserve">
+  <data name="--meta-WindowsToPosixVersion" xml:space="preserve">
     <value>6356</value>
   </data>
 </root>
