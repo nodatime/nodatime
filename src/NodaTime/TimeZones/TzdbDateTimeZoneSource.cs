@@ -39,24 +39,24 @@ namespace NodaTime.TimeZones
         /// <summary>
         /// The key used to find the Windows to TZDB ID mappings.
         /// </summary>
-        internal const string WindowsToPosixMapKey = "Windows_To_Posix";
+        internal const string WindowsToPosixMapKey = "--meta-WindowsToPosix";
 
         /// <summary>
         /// The key used to find the Windows to TZDB ID version.
         /// </summary>
-        internal const string WindowsToPosixMapVersionKey = "Windows_To_Posix_Version";
+        internal const string WindowsToPosixMapVersionKey = "--meta-WindowsToPosixVersion";
 
         /// <summary>
         /// The key used to find ID mappings within the resource. Deliberately
         /// uses an unscore which would be normalized away if this were a time zone name.
         /// </summary>
-        internal const string IdMapKey = "Id_Map";
+        internal const string IdMapKey = "--meta-IdMap";
 
         /// <summary>
         /// The key used to find the TZDB version ID within the resource. Deliberately
         /// uses an unscore which would be normalized away if this were a time zone name.
         /// </summary>
-        internal const string VersionKey = "Version_Id";
+        internal const string VersionKey = "--meta-VersionId";
 
         private readonly ResourceSet source;
         private readonly IDictionary<string, string> timeZoneIdMap;
