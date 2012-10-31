@@ -24,7 +24,7 @@ namespace NodaTime.Text.Patterns
     /// <summary>
     /// Indicates the results of parsing a pattern, including failure.
     /// </summary>
-    internal class PatternParseResult<T>
+    internal sealed class PatternParseResult<T>
     {
         private readonly IPattern<T> value;
         private readonly NodaFunc<Exception> exceptionProvider;

@@ -32,7 +32,7 @@ namespace NodaTime.TimeZones
     /// Immutable, thread safe.
     /// </para>
     /// </remarks>
-    internal class ZoneTransition : IEquatable<ZoneTransition>, IComparable<ZoneTransition>
+    internal sealed class ZoneTransition : IEquatable<ZoneTransition>, IComparable<ZoneTransition>
     {
         private readonly Instant instant;
         private readonly string name;

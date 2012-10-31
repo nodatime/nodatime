@@ -19,6 +19,10 @@ API changes:
   method on pattern types, and changed the culture-specific pattern factory
   methods to take a `CultureInfo` rather than a `NodaFormatInfo`.
 - Removed `EmptyDateTimeZoneSource`.
+- Many classes are now `sealed`: `PeriodPattern`, `BclDateTimeZoneProvider`,
+  `BclDateTimeZoneSource`, `DateTimeZoneCache`, and `ZoneInterval`, along
+  with various exception types and
+  `NodaTime.Testing.SingleTransitionDateTimeZone`.
 
 Bug fixes:
 

@@ -152,7 +152,7 @@ namespace NodaTime.TimeZones
         /// If another call is made which maps to the same cache entry number but is for a different
         /// period, the existing hash entry is simply overridden.
         /// </remarks>
-        private class HashArrayCache : CachedDateTimeZone
+        private sealed class HashArrayCache : CachedDateTimeZone
         {
             // Currently we have no need or way to create hash cache zones with
             // different cache sizes. But the cache size should always be a power of 2 to get the
@@ -210,7 +210,7 @@ namespace NodaTime.TimeZones
             // Note: I (Jon) have tried optimizing this as a struct containing two ZoneIntervals
             // and a list of zone intervals (normally null) for the rare case where there are more
             // than two zone intervals in a period. It halved the performance...
-            private class HashCacheNode
+            private sealed class HashCacheNode
             {
                 private readonly ZoneInterval interval;
                 internal ZoneInterval Interval { get { return interval; } }

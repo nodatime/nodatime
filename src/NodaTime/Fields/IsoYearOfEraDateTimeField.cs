@@ -21,7 +21,7 @@ using NodaTime.Utility;
 
 namespace NodaTime.Fields
 {
-    internal class IsoYearOfEraDateTimeField : DecoratedDateTimeField
+    internal sealed class IsoYearOfEraDateTimeField : DecoratedDateTimeField
     {
         internal static readonly DateTimeField Instance = new IsoYearOfEraDateTimeField();
 

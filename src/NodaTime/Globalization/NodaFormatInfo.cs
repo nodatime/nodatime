@@ -40,7 +40,7 @@ namespace NodaTime.Globalization
     /// <threadsafety>Read-only instances which use read-only CultureInfo instances are immutable,
     /// and may be used freely between threads. Mutable instances should not be shared between threads without external synchronization.
     /// See the thread safety section of the user guide for more information.</threadsafety>
-    internal class NodaFormatInfo : IFormatProvider, ICloneable
+    internal sealed class NodaFormatInfo : IFormatProvider, ICloneable
     {
         // Names that we can use to check for broken Mono behaviour.
         // The cloning is *also* to work around a Mono bug, where even read-only cultures can change...
@@ -452,7 +452,7 @@ namespace NodaTime.Globalization
         /// number format and date/time format all cloned too.
         /// </remarks>
         /// <returns>A writable clone of this value.</returns>
-        public virtual NodaFormatInfo Clone()
+        public NodaFormatInfo Clone()
         {
             var info = (NodaFormatInfo)MemberwiseClone();
             info.isReadOnly = false;

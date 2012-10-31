@@ -27,7 +27,7 @@ namespace NodaTime.Text
     /// See the thread safety section of the user guide for more information.
     /// </threadsafety>
     [Serializable]
-    public class InvalidPatternException : FormatException
+    public sealed class InvalidPatternException : FormatException
     {
         /// <summary>
         /// Creates a new InvalidPatternException with no message.
@@ -50,7 +50,7 @@ namespace NodaTime.Text
         /// </summary>
         /// <param name="info">The <see cref="SerializationInfo"/> that holds the serialized object data about the exception being thrown.</param>
         /// <param name="context">The <see cref="StreamingContext"/> that contains contextual information about the source or destination.</param>
-        protected InvalidPatternException(SerializationInfo info, StreamingContext context)
+        private InvalidPatternException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
         }

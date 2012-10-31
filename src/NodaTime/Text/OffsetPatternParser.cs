@@ -235,7 +235,7 @@ namespace NodaTime.Text
         /// <summary>
         /// Pattern which optionally delegates to another, but both parses and formats Offset.Zero as "Z".
         /// </summary>
-        private class ZPrefixPattern : IPattern<Offset>
+        private sealed class ZPrefixPattern : IPattern<Offset>
         {
             private readonly IPattern<Offset> fullPattern;
 

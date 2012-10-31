@@ -47,7 +47,7 @@ namespace NodaTime
     /// See the thread safety section of the user guide for more information.
     /// </threadsafety>
     [Serializable]
-    public class AmbiguousTimeException : ArgumentOutOfRangeException
+    public sealed class AmbiguousTimeException : ArgumentOutOfRangeException
     {
         private readonly ZonedDateTime earlierMapping;
         private readonly ZonedDateTime laterMapping;

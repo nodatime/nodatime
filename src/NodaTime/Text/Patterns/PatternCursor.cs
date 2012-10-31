@@ -22,7 +22,7 @@ namespace NodaTime.Text.Patterns
     /// <summary>
     /// Extends <see cref="TextCursor"/> to simplify parsing patterns such as "yyyy-MM-dd".
     /// </summary>
-    internal class PatternCursor : TextCursor
+    internal sealed class PatternCursor : TextCursor
     {
         internal PatternCursor(string pattern)
             : base(pattern)

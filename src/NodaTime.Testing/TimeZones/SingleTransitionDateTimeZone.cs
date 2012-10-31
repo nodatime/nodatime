@@ -27,7 +27,7 @@ namespace NodaTime.Testing.TimeZones
     /// tail zone, but it's simpler to construct and can be used to test
     /// PrecalculatedDateTimeZone.
     /// </summary>
-    public class SingleTransitionDateTimeZone : DateTimeZone
+    public sealed class SingleTransitionDateTimeZone : DateTimeZone
     {
         private readonly ZoneInterval earlyInterval;
         /// <summary>

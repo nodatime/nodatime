@@ -25,7 +25,7 @@ namespace NodaTime.Fields
     /// Provides the era component of any calendar with only a single era.
     /// This always returns a value of 0, as it's always the sole entry in the list of eras.
     /// </summary>
-    internal class BasicSingleEraDateTimeField : DateTimeField
+    internal sealed class BasicSingleEraDateTimeField : DateTimeField
     {
         private readonly Era era;
 

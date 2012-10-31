@@ -28,7 +28,7 @@ namespace NodaTime.TimeZones
     /// See the thread safety section of the user guide for more information.
     /// </threadsafety>
     [Serializable]
-    public class InvalidDateTimeZoneSourceException : Exception
+    public sealed class InvalidDateTimeZoneSourceException : Exception
     {
         /// <summary>
         /// Creates a new instance.

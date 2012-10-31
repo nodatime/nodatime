@@ -163,7 +163,7 @@ namespace NodaTime.Fields
         /// <summary>
         /// Mutable set of fields which can be built into a full, immutable FieldSet.
         /// </summary>
-        internal class Builder
+        internal sealed class Builder
         {
             internal PeriodField Ticks { get; set; }
             internal PeriodField Milliseconds { get; set; }

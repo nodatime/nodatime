@@ -28,7 +28,7 @@ namespace NodaTime.TimeZones
     /// <remarks>The process of loading and creating time zones is potentially long (it could conceivably include 
     /// network requests) so caching them may be necessary.</remarks>
     /// <threadsafety>All members of this type are thread-safe.</threadsafety>
-    public class DateTimeZoneCache : IDateTimeZoneProvider
+    public sealed class DateTimeZoneCache : IDateTimeZoneProvider
     {
         private readonly object accessLock = new object();
         private readonly IDateTimeZoneSource source;

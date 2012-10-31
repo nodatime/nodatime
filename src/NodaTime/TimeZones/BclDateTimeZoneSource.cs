@@ -30,7 +30,7 @@ namespace NodaTime.TimeZones
     /// (i.e. "UTC" and "UTC+/-Offset").
     /// </remarks>
     /// <threadsafety>This type maintains no state, and all members are thread-safe. See the thread safety section of the user guide for more information.</threadsafety>
-    public class BclDateTimeZoneSource : IDateTimeZoneSource
+    public sealed class BclDateTimeZoneSource : IDateTimeZoneSource
     {
         /// <summary>
         /// Returns the IDs of all system time zones.

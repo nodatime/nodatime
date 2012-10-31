@@ -26,7 +26,7 @@ namespace NodaTime.TimeZones
     /// Represents a range of time for which a particular Offset applies.
     /// </summary>
     /// <threadsafety>This type is an immutable reference type. See the thread safety section of the user guide for more information.</threadsafety>
-    public class ZoneInterval : IEquatable<ZoneInterval>
+    public sealed class ZoneInterval : IEquatable<ZoneInterval>
     {
         private readonly Instant end;
         private readonly LocalInstant localEnd;

@@ -23,7 +23,7 @@ namespace NodaTime.Serialization.JsonNet
     /// <summary>
     /// Json.NET converter for <see cref="Interval"/>.
     /// </summary>   
-    public class NodaIntervalConverter : NodaConverterBase<Interval>
+    public sealed class NodaIntervalConverter : NodaConverterBase<Interval>
     {
         /// <summary>
         /// Reads Start and End properties for the start and end of an interval, converting them to instants

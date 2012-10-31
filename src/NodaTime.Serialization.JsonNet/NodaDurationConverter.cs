@@ -24,7 +24,7 @@ namespace NodaTime.Serialization.JsonNet
     /// <summary>
     /// Json.NET converter for <see cref="Duration"/>.
     /// </summary>
-    public class NodaDurationConverter : NodaConverterBase<Duration>
+    public sealed class NodaDurationConverter : NodaConverterBase<Duration>
     {
         /// <summary>
         /// Reads a string from the reader, and converts it to a duration.

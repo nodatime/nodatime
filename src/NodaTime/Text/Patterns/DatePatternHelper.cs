@@ -138,7 +138,7 @@ namespace NodaTime.Text.Patterns
 
         // Hacky way of building an action which depends on the final set of pattern fields to determine whether to format a month
         // using the genitive form or not.
-        internal class MonthFormatActionHolder<TResult, TBucket> : SteppedPatternBuilder<TResult, TBucket>.IPostPatternParseFormatAction
+        internal sealed class MonthFormatActionHolder<TResult, TBucket> : SteppedPatternBuilder<TResult, TBucket>.IPostPatternParseFormatAction
             where TBucket : ParseBucket<TResult>
         {
             private readonly int count;
