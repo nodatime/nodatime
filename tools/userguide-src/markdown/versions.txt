@@ -18,6 +18,7 @@ API changes:
   related issues), removed the `FormatInfo` property and `WithFormatInfo()`
   method on pattern types, and changed the culture-specific pattern factory
   methods to take a `CultureInfo` rather than a `NodaFormatInfo`.
+- Removed `EmptyDateTimeZoneSource`.
 
 Bug fixes:
 

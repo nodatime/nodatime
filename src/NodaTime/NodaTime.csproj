@@ -200,7 +200,6 @@
     <Compile Include="TimeZones\DateTimeZoneReader.cs" />
     <Compile Include="TimeZones\DateTimeZoneWriter.cs" />
     <Compile Include="TimeZones\Delegates.cs" />
-    <Compile Include="TimeZones\EmptyDateTimeZoneSource.cs" />
     <Compile Include="TimeZones\NamespaceDoc.cs" />
     <Compile Include="TimeZones\Resolvers.cs" />
     <Compile Include="TimeZones\InvalidDateTimeSourceException.cs" />
