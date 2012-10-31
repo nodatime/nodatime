@@ -23,6 +23,8 @@ API changes:
   `BclDateTimeZoneSource`, `DateTimeZoneCache`, and `ZoneInterval`, along
   with various exception types and
   `NodaTime.Testing.SingleTransitionDateTimeZone`.
+- The names of the special resources used by `TzdbDateTimeZoneSource`
+  (`VersionKey`, etc) are now internal.
 
 Bug fixes:
 
