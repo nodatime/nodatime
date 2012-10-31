@@ -31,7 +31,7 @@ namespace NodaTime.TimeZones
     /// only be used as part of a PrecalculatedDateTimeZone which will only ask it for
     /// values within the right portion of the timeline.
     /// </remarks>
-    internal class DaylightSavingsDateTimeZone : DateTimeZone
+    internal sealed class DaylightSavingsDateTimeZone : DateTimeZone
     {
         private readonly ZoneRecurrence standardRecurrence;
         private readonly Offset standardOffset;

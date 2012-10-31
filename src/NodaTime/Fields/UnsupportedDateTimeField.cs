@@ -24,7 +24,7 @@ namespace NodaTime.Fields
     /// All methods throw <see cref="NotSupportedException"/>, and the PeriodField is always
     /// the unsupported field of the appropriate duration type.
     /// </summary>
-    internal class UnsupportedDateTimeField : DateTimeField
+    internal sealed class UnsupportedDateTimeField : DateTimeField
     {
         // Convenience fields
         public static readonly UnsupportedDateTimeField Era = new UnsupportedDateTimeField(DateTimeFieldType.Era);

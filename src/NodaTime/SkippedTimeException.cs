@@ -45,7 +45,7 @@ namespace NodaTime
     /// See the thread safety section of the user guide for more information.
     /// </threadsafety>
     [Serializable]
-    public class SkippedTimeException : ArgumentOutOfRangeException
+    public sealed class SkippedTimeException : ArgumentOutOfRangeException
     {
         private readonly LocalDateTime localDateTime;
         private readonly DateTimeZone zone;

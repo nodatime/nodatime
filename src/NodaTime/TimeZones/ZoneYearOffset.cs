@@ -49,7 +49,7 @@ namespace NodaTime.TimeZones
     /// Immutable, thread safe
     /// </para>
     /// </remarks>
-    internal class ZoneYearOffset : IEquatable<ZoneYearOffset>
+    internal sealed class ZoneYearOffset : IEquatable<ZoneYearOffset>
     {
         /// <summary>
         /// An offset that specifies the beginning of the year.

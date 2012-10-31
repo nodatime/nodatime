@@ -26,7 +26,7 @@ namespace NodaTime.Text.Patterns
     /// Builder for a pattern which implements parsing and formatting as a sequence of steps applied
     /// in turn.
     /// </summary>
-    internal class SteppedPatternBuilder<TResult, TBucket> where TBucket : ParseBucket<TResult>
+    internal sealed class SteppedPatternBuilder<TResult, TBucket> where TBucket : ParseBucket<TResult>
     {
         internal delegate ParseResult<TResult> ParseAction(ValueCursor cursor, TBucket bucket);
 
@@ -370,7 +370,7 @@ namespace NodaTime.Text.Patterns
             NodaAction<TResult, StringBuilder> BuildFormatAction(PatternFields finalFields);
         }
 
-        private class SteppedPattern : IPattern<TResult>
+        private sealed class SteppedPattern : IPattern<TResult>
         {
             private readonly NodaAction<TResult, StringBuilder> formatActions;
             private readonly ParseAction[] parseActions;

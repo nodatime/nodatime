@@ -19,7 +19,7 @@ using NodaTime.Calendars;
 
 namespace NodaTime.Fields
 {
-    internal class BasicWeekYearPeriodField : VaryiableLengthPeriodField
+    internal sealed class BasicWeekYearPeriodField : VaryiableLengthPeriodField
     {
         private static readonly Duration Week53Ticks = Duration.FromStandardWeeks(52);
         private readonly BasicCalendarSystem calendarSystem;

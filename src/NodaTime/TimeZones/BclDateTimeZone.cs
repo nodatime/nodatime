@@ -307,7 +307,7 @@ namespace NodaTime.TimeZones
         /// first transition reported by this rule, and the seam covers the gap between
         /// two adjustment rules.
         /// </summary>
-        private class AdjustmentInterval
+        private sealed class AdjustmentInterval
         {
             private readonly Instant start;
             private readonly ZoneInterval seam;

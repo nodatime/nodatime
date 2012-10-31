@@ -23,7 +23,7 @@ namespace NodaTime.Fields
     /// <summary>
     /// Provides time calculations for the month of the year component of time.
     /// </summary>
-    internal class BasicMonthOfYearDateTimeField : DateTimeField
+    internal sealed class BasicMonthOfYearDateTimeField : DateTimeField
     {
         private const int MinimumValue = 1;
 

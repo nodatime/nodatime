@@ -23,7 +23,7 @@ namespace NodaTime.TimeZones
     /// <summary>
     /// Very specific compressing binary writer for time zones.
     /// </summary>
-    internal class DateTimeZoneCompressionWriter : DateTimeZoneWriter
+    internal sealed class DateTimeZoneCompressionWriter : DateTimeZoneWriter
     {
         internal const long HalfHoursMask = 0x3fL;
         internal const long MaxHalfHours = 0x1fL;

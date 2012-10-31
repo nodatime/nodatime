@@ -29,7 +29,7 @@ namespace NodaTime.Testing.TimeZones
     /// </para>
     /// </summary>
     [CompilerGenerated]
-    internal class NamespaceDoc
+    internal static class NamespaceDoc
     {
         // No actual code here - it's just for the sake of documenting the namespace.
     }

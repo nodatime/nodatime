@@ -24,7 +24,7 @@ namespace NodaTime.Serialization.JsonNet
     /// <summary>
     /// Json.NET converter for <see cref="DateTimeZone"/>.
     /// </summary>
-    public class NodaDateTimeZoneConverter : NodaConverterBase<DateTimeZone>
+    public sealed class NodaDateTimeZoneConverter : NodaConverterBase<DateTimeZone>
     {
         private readonly IDateTimeZoneProvider provider;
 

@@ -28,6 +28,10 @@ related issues), removed the <code>FormatInfo</code> property and <code>WithForm
 method on pattern types, and changed the culture-specific pattern factory
 methods to take a <code>CultureInfo</code> rather than a <code>NodaFormatInfo</code>.</li>
 <li>Removed <code>EmptyDateTimeZoneSource</code>.</li>
+<li>Many classes are now <code>sealed</code>: <code>PeriodPattern</code>, <code>BclDateTimeZoneProvider</code>,
+<code>BclDateTimeZoneSource</code>, <code>DateTimeZoneCache</code>, and <code>ZoneInterval</code>, along
+with various exception types and
+<code>NodaTime.Testing.SingleTransitionDateTimeZone</code>.</li>
 </ul>
 
 <p>Bug fixes:</p>

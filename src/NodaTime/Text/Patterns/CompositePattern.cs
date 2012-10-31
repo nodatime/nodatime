@@ -23,7 +23,7 @@ namespace NodaTime.Text.Patterns
     /// Composite pattern which parses by trying several parse patterns in turn, and formats
     /// by calling a delegate (which may have come from another <see cref="IPattern{T}"/> to start with).
     /// </summary>
-    internal class CompositePattern<T> : IPattern<T>
+    internal sealed class CompositePattern<T> : IPattern<T>
     {
         private List<IPattern<T>> parsePatterns;
         private NodaFunc<T, string> formatter;

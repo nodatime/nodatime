@@ -26,7 +26,7 @@ namespace NodaTime.Text
     /// Represents a pattern for parsing and formatting <see cref="Period"/> values.
     /// </summary>
     /// <threadsafety>This type is immutable reference type. See the thread safety section of the user guide for more information.</threadsafety>
-    public class PeriodPattern : IPattern<Period>
+    public sealed class PeriodPattern : IPattern<Period>
     {
         /// <summary>
         /// Pattern which uses the normal ISO format for all the supported ISO
@@ -108,7 +108,7 @@ namespace NodaTime.Text
             return ParseResult<Period>.ForInvalidValue(Messages.Parse_MisplacedUnitSpecifier, unitCharacter);
         }
 
-        private class RoundtripPatternImpl : IPattern<Period>
+        private sealed class RoundtripPatternImpl : IPattern<Period>
         {            
             public ParseResult<Period> Parse(string text)
             {
@@ -212,7 +212,7 @@ namespace NodaTime.Text
             }
         }
 
-        private class NormalizingIsoPatternImpl : IPattern<Period>
+        private sealed class NormalizingIsoPatternImpl : IPattern<Period>
         {
             // TODO: Tidy this up a *lot*.
             public ParseResult<Period> Parse(string text)
