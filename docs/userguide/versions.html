@@ -12,7 +12,7 @@
 <a href="http://code.google.com/p/noda-time/source/list">project repository</a> for more
 details.</p>
 
-<h2>1.0.0-rc</h2>
+<h2>1.0.0-rc1, released 2012-11-01 with tzdb 2012h</h2>
 
 <p>API changes:</p>
 
@@ -34,6 +34,8 @@ with various exception types and
 <code>NodaTime.Testing.SingleTransitionDateTimeZone</code>.</li>
 <li>The names of the special resources used by <code>TzdbDateTimeZoneSource</code>
 (<code>VersionKey</code>, etc) are now internal.</li>
+<li>Format of the special resource keys has changed; clients using
+custom-built TZDB resources will need to rebuild.</li>
 </ul>
 
 <p>Bug fixes:</p>
