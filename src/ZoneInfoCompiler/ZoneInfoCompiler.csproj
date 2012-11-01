@@ -198,6 +198,17 @@
     <None Include="Data\2012c\pacificnew" />
     <None Include="Data\2012c\southamerica" />
     <None Include="Data\2012c\systemv" />
+    <None Include="Data\2012h\africa" />
+    <None Include="Data\2012h\antarctica" />
+    <None Include="Data\2012h\asia" />
+    <None Include="Data\2012h\australasia" />
+    <None Include="Data\2012h\backward" />
+    <None Include="Data\2012h\etcetera" />
+    <None Include="Data\2012h\europe" />
+    <None Include="Data\2012h\northamerica" />
+    <None Include="Data\2012h\pacificnew" />
+    <None Include="Data\2012h\southamerica" />
+    <None Include="Data\2012h\systemv" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NodaTime\NodaTime.csproj">
@@ -210,6 +221,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Data\2012c\Readme.txt" />
+    <None Include="Data\2012h\Readme.txt" />
     <Content Include="Data\winmap\readme.txt" />
     <Content Include="Data\winmap\windowsZones-21.xml">
       <SubType>Designer</SubType>
