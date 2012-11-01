@@ -4,7 +4,7 @@ User-visible changes from 1.0.0-beta1 onwards. See the
 [project repository](http://code.google.com/p/noda-time/source/list) for more
 details.
 
-## 1.0.0-rc ##
+## 1.0.0-rc1, released 2012-11-01 with tzdb 2012h
 
 API changes:
 
@@ -25,6 +25,8 @@ API changes:
   `NodaTime.Testing.SingleTransitionDateTimeZone`.
 - The names of the special resources used by `TzdbDateTimeZoneSource`
   (`VersionKey`, etc) are now internal.
+- Format of the special resource keys has changed; clients using
+  custom-built TZDB resources will need to rebuild.
 
 Bug fixes:
 
