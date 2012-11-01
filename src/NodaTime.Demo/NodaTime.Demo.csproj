@@ -56,6 +56,7 @@
     <Compile Include="LocalDateTimeDemo.cs" />
     <Compile Include="LocalTimeDemo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StackOverflowExamples.cs" />
     <Compile Include="TimeZoneDemo.cs" />
     <Compile Include="ZonedDateTimeDemo.cs" />
   </ItemGroup>
