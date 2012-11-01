@@ -7,7 +7,7 @@ run it, although it doesn't matter which version of the time zone
 information it has - JodaDump reads it from the tzdb sources anyway.
 
 Compile:
-javac -cp joda-time-2.0.jar nodatime\jodadump\JodaDump.java
+javac -cp joda-time-2.1.jar nodatime\jodadump\JodaDump.java
 
 Run (for example)
-java -cp joda-time-2.0.jar;. nodatime.jodadump.JodaDump ..\ZoneCompiler\Data\2011n > jodadump.txt
+java -cp joda-time-2.1.jar;. nodatime.jodadump.JodaDump ..\ZoneInfoCompiler\Data\2012h > jodadump.txt
