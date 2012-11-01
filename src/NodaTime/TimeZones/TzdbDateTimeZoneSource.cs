@@ -37,24 +37,26 @@ namespace NodaTime.TimeZones
     public sealed class TzdbDateTimeZoneSource : IDateTimeZoneSource
     {
         /// <summary>
-        /// The key used to find the Windows to TZDB ID mappings.
+        /// The resource key for the Windows to TZDB ID mapping dictionary.
+        /// This resource key contains hyphens, so cannot conflict with a time zone name.
         /// </summary>
         internal const string WindowsToPosixMapKey = "--meta-WindowsToPosix";
 
         /// <summary>
-        /// The key used to find the Windows to TZDB ID version.
+        /// The resource key for the Windows to TZDB ID mapping version string.
+        /// This resource key contains hyphens, so cannot conflict with a time zone name.
         /// </summary>
         internal const string WindowsToPosixMapVersionKey = "--meta-WindowsToPosixVersion";
 
         /// <summary>
-        /// The key used to find ID mappings within the resource. Deliberately
-        /// uses an unscore which would be normalized away if this were a time zone name.
+        /// The resource key for the timezone ID alias dictionary.
+        /// This resource key contains hyphens, so cannot conflict with a time zone name.
         /// </summary>
         internal const string IdMapKey = "--meta-IdMap";
 
         /// <summary>
-        /// The key used to find the TZDB version ID within the resource. Deliberately
-        /// uses an unscore which would be normalized away if this were a time zone name.
+        /// The resource key for the TZDB version ID.
+        /// This resource key contains hyphens, so cannot conflict with a time zone name.
         /// </summary>
         internal const string VersionKey = "--meta-VersionId";
 
