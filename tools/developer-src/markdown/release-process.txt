@@ -167,7 +167,7 @@ Post to the mailing list, blog, etc.
 
 If this release required the creation of a new branch, then the following files
 on the *default* branch should be updated to bump (at least) the minor version
-number, per the scheme above:
+number (and `NodaTime.Testing` dependency version), per the scheme above:
 
 - `src/NodaTime/Properties/AssemblyInfo.cs`
 - `src/NodaTime.Testing/Properties/AssemblyInfo.cs`
