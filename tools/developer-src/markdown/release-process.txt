@@ -93,6 +93,8 @@ Commit the above, then tag that commit:
 
     hg tag 1.0.0-beta1
 
+Switch back to the default branch and update the version history in that branch to match the changes applied to the release branch.
+
 Push these changes to Google Code.
 
 ## Building the release artifacts
@@ -153,6 +155,9 @@ Upload the source and release zipfiles to the
 Use the `Type-Source` label for the source zipfile, and the `Type-Archive` and
 `Featured` labels for the release zipfile.  Remove `Featured` from the previous
 binary zipfile.
+
+Update the version number and the links on the front page to point to the new
+downloads.
 
 Upload the two NuGet packages to nuget.org:
 
