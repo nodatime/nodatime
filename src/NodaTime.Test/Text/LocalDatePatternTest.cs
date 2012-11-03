@@ -80,6 +80,9 @@ namespace NodaTime.Test.Text
 
             // Year of era and two-digit year, but they don't match
             new Data { Pattern = "YYYY yy", Text = "2011 10", Message = Messages.Parse_InconsistentValues2, Parameters = { 'y', 'Y', typeof(LocalDate) } },
+
+            // Invalid calendar name
+            new Data { Pattern = "c YYYY MM dd", Text = "2015 01 01", Message = Messages.Parse_NoMatchingCalenderSystem },
         };
 
         internal static Data[] ParseOnlyData = {
@@ -161,6 +164,12 @@ namespace NodaTime.Test.Text
 
             // Negative years
             new Data(-43, 3, 15) { Pattern = "yyyy MM dd", Text = "-0043 03 15"},
+
+            // Calendar handling
+	        new Data(2011, 10, 9) { Pattern = "c yyyy MM dd", Text = "ISO 2011 10 09" },
+	        new Data(2011, 10, 9) { Pattern = "yyyy MM dd c", Text = "2011 10 09 ISO" },
+	        new Data(2011, 10, 9, CalendarSystem.GetCopticCalendar(4)) { Pattern = "c yyyy MM dd", Text = "Coptic 4 2011 10 09" },
+	        new Data(2011, 10, 9, CalendarSystem.GetCopticCalendar(4)) { Pattern = "yyyy MM dd c", Text = "2011 10 09 Coptic 4" },
         };
 
         internal static IEnumerable<Data> ParseData = ParseOnlyData.Concat(FormatAndParseData);
@@ -255,6 +264,11 @@ namespace NodaTime.Test.Text
 
             public Data(int year, int month, int day)
                 : this(new LocalDate(year, month, day))
+            {
+            }
+
+            public Data(int year, int month, int day, CalendarSystem calendar)
+                : this(new LocalDate(year, month, day, calendar))
             {
             }
 

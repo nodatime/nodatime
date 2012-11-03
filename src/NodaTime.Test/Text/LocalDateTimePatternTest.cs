@@ -33,6 +33,8 @@ namespace NodaTime.Test.Text
         private static readonly LocalDateTime SampleLocalDateTimeNoTicks = new LocalDateTime(1376, 6, 19, 21, 13, 34, 123);
         private static readonly LocalDateTime SampleLocalDateTimeNoMillis = new LocalDateTime(1376, 6, 19, 21, 13, 34);
         private static readonly LocalDateTime SampleLocalDateTimeNoSeconds = new LocalDateTime(1376, 6, 19, 21, 13);
+        private static readonly LocalDateTime SampleLocalDateTimeCoptic = new LocalDateTime(1376, 6, 19, 21, 13, 34, 123, 4567, CalendarSystem.GetCopticCalendar(1));
+        
         private static readonly string[] AllStandardPatterns = { "f", "F", "g", "G", "o", "O", "s" };
 
 #pragma warning disable 0414 // Used by tests via reflection - do not remove!
@@ -52,7 +54,8 @@ namespace NodaTime.Test.Text
         };
 
         internal static Data[] ParseFailureData = {
-            new Data { Pattern = "dd MM yyyy HH:mm:ss", Text = "Complete mismatch", Message = Messages.Parse_MismatchedNumber, Parameters = { "dd" }}
+            new Data { Pattern = "dd MM yyyy HH:mm:ss", Text = "Complete mismatch", Message = Messages.Parse_MismatchedNumber, Parameters = { "dd" }},
+            new Data { Pattern = "(c)", Text = "(xxx)", Message = Messages.Parse_NoMatchingCalenderSystem },
         };
 
         internal static Data[] ParseOnlyData = {
@@ -90,6 +93,12 @@ namespace NodaTime.Test.Text
             new Data(MsdnStandardExample) { Pattern = "o", Text = "2009-06-15T13:45:30.0900000", Culture = Cultures.FrFr },
             new Data(MsdnStandardExample) { Pattern = "O", Text = "2009-06-15T13:45:30.0900000", Culture = Cultures.FrFr },
             new Data(MsdnStandardExampleNoMillis) { Pattern = "s", Text = "2009-06-15T13:45:30", Culture = Cultures.FrFr },
+
+            // Calendar patterns are invariant
+	        new Data(MsdnStandardExample) { Pattern = "(c) yyyy-MM-ddTHH:mm:ss.FFFFFFF", Text = "(ISO) 2009-06-15T13:45:30.09", Culture = Cultures.FrFr },
+	        new Data(MsdnStandardExample) { Pattern = "yyyy-MM-dd(c)THH:mm:ss.FFFFFFF", Text = "2009-06-15(ISO)T13:45:30.09", Culture = Cultures.EnUs },
+	        new Data(SampleLocalDateTimeCoptic) { Pattern = "(c) yyyy-MM-ddTHH:mm:ss.FFFFFFF", Text = "(Coptic 1) 1376-06-19T21:13:34.1234567", Culture = Cultures.FrFr },
+	        new Data(SampleLocalDateTimeCoptic) { Pattern = "yyyy-MM-dd'C'c'T'HH:mm:ss.FFFFFFF", Text = "1376-06-19CCoptic 1T21:13:34.1234567", Culture = Cultures.EnUs },
         };
 
         internal static IEnumerable<Data> ParseData = ParseOnlyData.Concat(FormatAndParseData);

@@ -257,5 +257,38 @@ namespace NodaTime.Text.Patterns
                 return null;
             };
         }
+
+        /// <summary>
+        /// Creates a character handler for the calendar specifier (c).
+        /// </summary>
+        internal static CharacterHandler<TResult, TBucket> CreateCalendarHandler<TResult, TBucket>
+            (NodaFunc<TResult, CalendarSystem> getter, NodaAction<TBucket, CalendarSystem> setter)
+            where TBucket : ParseBucket<TResult>
+        {
+            return (pattern, builder) =>
+            {
+                var failure = builder.AddField(PatternFields.Calendar, pattern.Current);
+                if (failure != null)
+                {
+                    return failure;
+                }
+
+                builder.AddParseAction((cursor, bucket) =>
+                {
+                    foreach (var id in CalendarSystem.Ids)
+                    {
+                        if (cursor.MatchCaseInsensitive(id, NodaFormatInfo.InvariantInfo.CultureInfo.CompareInfo))
+                        {
+                            setter(bucket, CalendarSystem.ForId(id));
+                            return null;
+                        }
+                    }
+                    return ParseResult<TResult>.NoMatchingCalenderSystem;
+                });
+                builder.AddFormatAction((value, sb) => sb.Append(getter(value).Id));
+                return null;
+            };
+        }
+    
     }
 }
