@@ -16,6 +16,7 @@
 #endregion
 
 using System;
+using System.Globalization;
 using NodaTime.Fields;
 
 namespace NodaTime.Calendars
@@ -26,6 +27,8 @@ namespace NodaTime.Calendars
     /// </summary>
     internal sealed class IslamicCalendar : BasicCalendarSystem
     {
+        private const string IslamicName = "Hijri";
+
         /// <summary>Singleton era field.</summary>
         private static readonly DateTimeField EraField = new BasicSingleEraDateTimeField(Era.AnnoHegirae);
 
@@ -95,11 +98,9 @@ namespace NodaTime.Calendars
             Calendars = new IslamicCalendar[(MaxLeapYearPatternNumber - MinLeapYearPatternNumber + 1), (MaxEpochNumber - MinEpochNumber + 1)];
             for (int i = MinLeapYearPatternNumber; i <= MaxLeapYearPatternNumber; i++)
             {
-                int patternBits = GetLeapYearPatternBits((IslamicLeapYearPattern) i);
                 for (int j = MinEpochNumber; j <= MaxEpochNumber; j++)
                 {
-                    long epochTicks = GetEpochTicks((IslamicEpoch) j);
-                    Calendars[i - MinLeapYearPatternNumber, j - MinEpochNumber] = new IslamicCalendar(patternBits, epochTicks);
+                    Calendars[i - MinLeapYearPatternNumber, j - MinEpochNumber] = new IslamicCalendar((IslamicLeapYearPattern) i, (IslamicEpoch) j);
                 }
             }
         }
@@ -120,10 +121,11 @@ namespace NodaTime.Calendars
         }
 
         // TODO(Post-V1): Validate highest year. It's possible that we *could* support some higher years.
-        private IslamicCalendar(int leapYearPatternBits, long epochTicks) : base("Hijri (Islamic)", 4, 1, 29226, AssembleFields, new[] { Era.AnnoHegirae })
+        private IslamicCalendar(IslamicLeapYearPattern leapYearPattern, IslamicEpoch epoch)
+            : base(string.Format(CultureInfo.InvariantCulture, "{0} {1}-{2}", IslamicName, epoch, leapYearPattern), IslamicName, 4, 1, 29226, AssembleFields, new[] { Era.AnnoHegirae })
         {
-            this.leapYearPatternBits = leapYearPatternBits;
-            this.epochTicks = epochTicks;
+            this.leapYearPatternBits = GetLeapYearPatternBits(leapYearPattern);
+            this.epochTicks = GetEpochTicks(epoch);
         }
 
         private static void AssembleFields(FieldSet.Builder builder, CalendarSystem @this)

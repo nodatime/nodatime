@@ -47,13 +47,8 @@ namespace NodaTime.Calendars
             }
         }
 
-        protected BasicGJCalendarSystem(string name, int minDaysInFirstWeek, int minYear, int maxYear)
-            : this(name, minDaysInFirstWeek, minYear, maxYear, null)
-        {
-        }
-
-        protected BasicGJCalendarSystem(string name, int minDaysInFirstWeek, int minYear, int maxYear, FieldAssembler fieldAssembler)
-            : base(name, minDaysInFirstWeek, minYear, maxYear, fieldAssembler, new[] { Era.BeforeCommon, Era.Common })
+        protected BasicGJCalendarSystem(string id, string name, int minDaysInFirstWeek, int minYear, int maxYear, FieldAssembler fieldAssembler)
+            : base(id, name, minDaysInFirstWeek, minYear, maxYear, fieldAssembler, new[] { Era.BeforeCommon, Era.Common })
         {
         }
 
