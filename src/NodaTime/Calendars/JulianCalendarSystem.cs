@@ -16,6 +16,7 @@
 #endregion
 
 using System;
+using System.Globalization;
 
 namespace NodaTime.Calendars
 {
@@ -62,7 +63,7 @@ namespace NodaTime.Calendars
         }
 
         private JulianCalendarSystem(int minDaysInFirstWeek)
-            : base(JulianName, minDaysInFirstWeek, -27256, 31196, null)
+            : base(CreateIdFromNameAndMinDaysInFirstWeek(JulianName, minDaysInFirstWeek), JulianName, minDaysInFirstWeek, -27256, 31196, null)
         {
         }
 

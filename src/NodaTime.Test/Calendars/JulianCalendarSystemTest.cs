@@ -57,6 +57,12 @@ namespace NodaTime.Test.Calendars
         }
 
         [Test]
+        public void GetInstance_UniqueIds()
+        {
+            Assert.AreEqual(7, Enumerable.Range(1, 7).Select(x => JulianCalendarSystem.GetInstance(x).Id).Distinct().Count());
+        }
+
+        [Test]
         public void GetInstance_InvalidMinDaysInFirstWeek()
         {
             Assert.Throws<ArgumentOutOfRangeException>(() => JulianCalendarSystem.GetInstance(0));
@@ -86,6 +92,5 @@ namespace NodaTime.Test.Calendars
             return Enumerable.Range(1, 13)
                              .Count(day => new LocalDate(year, 1, day, calendar).WeekOfWeekYear == 1);
         }
-
     }
 }

@@ -86,6 +86,9 @@
     <Compile Include="CalendarSystemTest.Era.cs">
       <DependentUpon>CalendarSystemTest.cs</DependentUpon>
     </Compile>
+    <Compile Include="CalendarSystemTest.Ids.cs">
+      <DependentUpon>CalendarSystemTest.cs</DependentUpon>
+    </Compile>
     <Compile Include="Calendars\CopticCalendarSystemTest.cs" />
     <Compile Include="Calendars\GregorianCalendarSystemTest.cs" />
     <Compile Include="Calendars\IslamicCalendarTest.cs" />

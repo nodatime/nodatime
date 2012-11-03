@@ -19,6 +19,7 @@ using System;
 using System.Collections.Generic;
 using NodaTime.Fields;
 using NodaTime.Utility;
+using System.Globalization;
 
 namespace NodaTime.Calendars
 {
@@ -51,6 +52,15 @@ namespace NodaTime.Calendars
         internal abstract int GetDaysInMonthMax(int month);
         internal abstract long GetYearDifference(LocalInstant minuendInstant, LocalInstant subtrahendInstant);
         internal abstract LocalInstant SetYear(LocalInstant localInstant, int year);
+
+        /// <summary>
+        /// Creates an ID for a calendar system which only needs to be distinguished by its name and
+        /// the minimum number of days in the first week of the week-year.
+        /// </summary>
+        protected static string CreateIdFromNameAndMinDaysInFirstWeek(string name, int minDaysInFirstWeek)
+        {
+            return string.Format(CultureInfo.InvariantCulture, "{0} {1}", name, minDaysInFirstWeek);
+        }
 
         private static FieldSet CreateFixedLengthFields()
         {
@@ -86,8 +96,8 @@ namespace NodaTime.Calendars
             return builder.Build();
         }
 
-        protected BasicCalendarSystem(string name, int minDaysInFirstWeek, int minYear, int maxYear, FieldAssembler assembler, IEnumerable<Era> eras)
-            : base(name, minYear, maxYear, AssembleFields + assembler, eras)
+        protected BasicCalendarSystem(string id, string name, int minDaysInFirstWeek, int minYear, int maxYear, FieldAssembler assembler, IEnumerable<Era> eras)
+            : base(id, name, minYear, maxYear, AssembleFields + assembler, eras)
         {
             if (minDaysInFirstWeek < 1 || minDaysInFirstWeek > 7)
             {

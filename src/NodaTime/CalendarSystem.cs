@@ -61,6 +61,103 @@ namespace NodaTime
 
         #region Public factory members for calendars
         /// <summary>
+        /// Fetches a calendar system by its unique identifier. This provides full round-tripping of a calendar
+        /// system. It is not guaranteed that calling this method twice with the same identifier will return
+        /// identical references, but the references objects will be equal.
+        /// </summary>
+        /// <param name="id">The ID of the calendar system. This is case-sensitive.</param>
+        /// <returns>The calendar system with the given ID.</returns>
+        /// <seealso cref="Id"/>
+        public static CalendarSystem ForId(string id)
+        {
+            return ForId(id, false);
+        }
+
+        /// <summary>
+        /// Fetches a calendar system by its unique identifier. This provides full round-tripping of a calendar
+        /// system. It is not guaranteed that calling this method twice with the same identifier will return
+        /// identical references, but the references objects will be equal.
+        /// </summary>
+        /// <param name="id">The ID of the calendar system.</param>
+        /// <param name="ignoreCase">True to make the look-up case-insensitive; false to make it case-sensitive.</param>
+        /// <returns>The calendar system with the given ID.</returns>
+        /// <seealso cref="Id"/>
+        /// <exception cref="KeyNotFoundException">No calendar system for the specified ID can be found.</exception>
+        public static CalendarSystem ForId(string id, bool ignoreCase)
+        {
+            CalendarSystem calendar = ForIdOrNull(id, ignoreCase);
+            if (calendar == null)
+            {
+                throw new KeyNotFoundException(string.Format("No calendar system for ID {0} exists", id));
+            }
+            return calendar;
+        }
+
+        /// <summary>
+        /// Fetches a calendar system by its unique identifier, returning null if no such ID is present.
+        /// </summary>
+        /// <remarks>
+        /// This is currently internal as it's required for parsing, but we may want to think more carefully 
+        /// </remarks>
+        /// <param name="id">The ID of the calendar system.</param>
+        /// <param name="ignoreCase">True to make the look-up case-insensitive; false to make it case-sensitive.</param>
+        /// <returns>The calendar system with the given ID.</returns>
+        /// <seealso cref="Id"/>
+        internal static CalendarSystem ForIdOrNull(string id, bool ignoreCase)
+        {
+            Func<CalendarSystem> factory;
+            if (!IdToFactoryMap.TryGetValue(id, out factory))
+            {
+                return null;
+            }
+            CalendarSystem calendar = factory();
+            if (!ignoreCase && calendar.Id != id)
+            {
+                return null;
+            }
+            return calendar;
+        }
+
+        /// <summary>
+        /// Returns the IDs of all calendar systems available within Noda Time. The order of the keys is not guaranteed.
+        /// </summary>
+        public static IEnumerable<string> Ids { get { return IdToFactoryMap.Keys; } }
+
+        private static readonly Dictionary<string, Func<CalendarSystem>> IdToFactoryMap = new Dictionary<string, Func<CalendarSystem>>(StringComparer.OrdinalIgnoreCase)
+        {
+            { "ISO", () => CalendarSystem.Iso },
+            { "Gregorian 1", () => CalendarSystem.GetGregorianCalendar(1) },
+            { "Gregorian 2", () => CalendarSystem.GetGregorianCalendar(2) },
+            { "Gregorian 3", () => CalendarSystem.GetGregorianCalendar(3) },
+            { "Gregorian 4", () => CalendarSystem.GetGregorianCalendar(4) }, 
+            { "Gregorian 5", () => CalendarSystem.GetGregorianCalendar(5) },
+            { "Gregorian 6", () => CalendarSystem.GetGregorianCalendar(6) },
+            { "Gregorian 7", () => CalendarSystem.GetGregorianCalendar(7) },
+            { "Coptic 1", () => CalendarSystem.GetCopticCalendar(1) },
+            { "Coptic 2", () => CalendarSystem.GetCopticCalendar(2) },
+            { "Coptic 3", () => CalendarSystem.GetCopticCalendar(3) },
+            { "Coptic 4", () => CalendarSystem.GetCopticCalendar(4) },
+            { "Coptic 5", () => CalendarSystem.GetCopticCalendar(5) },
+            { "Coptic 6", () => CalendarSystem.GetCopticCalendar(6) },
+            { "Coptic 7", () => CalendarSystem.GetCopticCalendar(7) },
+            { "Julian 1", () => CalendarSystem.GetJulianCalendar(1) },
+            { "Julian 2", () => CalendarSystem.GetJulianCalendar(2) },
+            { "Julian 3", () => CalendarSystem.GetJulianCalendar(3) },
+            { "Julian 4", () => CalendarSystem.GetJulianCalendar(4) },
+            { "Julian 5", () => CalendarSystem.GetJulianCalendar(5) },
+            { "Julian 6", () => CalendarSystem.GetJulianCalendar(6) },
+            { "Julian 7", () => CalendarSystem.GetJulianCalendar(7) },
+            { "Hijri Civil-Indian", () => CalendarSystem.GetIslamicCalendar(IslamicLeapYearPattern.Indian, IslamicEpoch.Civil) },
+            { "Hijri Civil-Base15", () => CalendarSystem.GetIslamicCalendar(IslamicLeapYearPattern.Base15, IslamicEpoch.Civil) },
+            { "Hijri Civil-Base16", () => CalendarSystem.GetIslamicCalendar(IslamicLeapYearPattern.Base16, IslamicEpoch.Civil) },
+            { "Hijri Civil-HabashAlHasib", () => CalendarSystem.GetIslamicCalendar(IslamicLeapYearPattern.HabashAlHasib, IslamicEpoch.Civil) },
+            { "Hijri Astronomical-Indian", () => CalendarSystem.GetIslamicCalendar(IslamicLeapYearPattern.Indian, IslamicEpoch.Astronomical) },
+            { "Hijri Astronomical-Base15", () => CalendarSystem.GetIslamicCalendar(IslamicLeapYearPattern.Base15, IslamicEpoch.Astronomical) },
+            { "Hijri Astronomical-Base16", () => CalendarSystem.GetIslamicCalendar(IslamicLeapYearPattern.Base16, IslamicEpoch.Astronomical) },
+            { "Hijri Astronomical-HabashAlHasib", () => CalendarSystem.GetIslamicCalendar(IslamicLeapYearPattern.HabashAlHasib, IslamicEpoch.Astronomical) },
+        };
+
+        /// <summary>
         /// Returns a calendar system that follows the rules of the ISO-8601 standard,
         /// which is compatible with Gregorian for all modern dates.
         /// </summary>
@@ -212,6 +309,7 @@ namespace NodaTime
         #endregion
 
         private readonly FieldSet fields;
+        private readonly string id;
         private readonly string name;
         private readonly IList<Era> eras;
         private readonly int minYear;
@@ -220,13 +318,15 @@ namespace NodaTime
         /// <summary>
         /// Initializes a new instance of the <see cref="CalendarSystem"/> class.
         /// </summary>
+        /// <param name="id">The unique ID of the calendar</param>
         /// <param name="name">The name of the calendar</param>
         /// <param name="minYear">Minimum year in the calendar</param>
         /// <param name="maxYear">Maximum year in the calendar</param>
         /// <param name="fieldAssembler">Delegate to invoke in order to assemble fields for this calendar.</param>
         /// <param name="eras">The eras within this calendar, which need not be unique to the calendar.</param>
-        internal CalendarSystem(string name, int minYear, int maxYear, FieldAssembler fieldAssembler, IEnumerable<Era> eras)
+        internal CalendarSystem(string id, string name, int minYear, int maxYear, FieldAssembler fieldAssembler, IEnumerable<Era> eras)
         {
+            this.id = id;
             this.name = name;
             this.minYear = minYear;
             this.maxYear = maxYear;
@@ -237,11 +337,61 @@ namespace NodaTime
         }
 
         /// <summary>
-        /// Gets the name of this calendar system. Each kind of calendar system has a unique name, although this
-        /// does not necessarily provide enough information for round-tripping. (For example, the name of an
-        /// Islamic calendar system does not indicate which kind of leap cycle it uses.)
+        /// Returns the unique identifier for this calendar system. This is provides full round-trip capability
+        /// using <see cref="ForId" /> to retrieve the calendar system from the identifier.
         /// </summary>
-        /// <value>The calendar system name.</value>
+        /// <remarks>
+        /// <para>
+        /// A unique ID for a calendar is required when serializing types which include a <see cref="CalendarSystem"/>.
+        /// As of 2 Nov 2012 (ISO calendar) there are no ISO or RFC standards for naming a calendar system. As such,
+        /// the identifiers provided here are specific to Noda Time, and are not guaranteed to interoperate with any other
+        /// date and time API.
+        /// </para>
+        /// <list type="table">
+        ///   <listheader>
+        ///     <term>Calendar ID</term>
+        ///     <description>Equivalent factory method</description>
+        ///   </listheader>
+        ///   <item><term>ISO</term><description><see cref="CalendarSystem.Iso"/></description></item>
+        ///   <item><term>Gregorian 1</term><description><see cref="CalendarSystem.GetGregorianCalendar"/>(1)</description></item>
+        ///   <item><term>Gregorian 2</term><description><see cref="CalendarSystem.GetGregorianCalendar"/>(2)</description></item>
+        ///   <item><term>Gregorian 3</term><description><see cref="CalendarSystem.GetGregorianCalendar"/>(3)</description></item>
+        ///   <item><term>Gregorian 3</term><description><see cref="CalendarSystem.GetGregorianCalendar"/>(4)</description></item>
+        ///   <item><term>Gregorian 5</term><description><see cref="CalendarSystem.GetGregorianCalendar"/>(5)</description></item>
+        ///   <item><term>Gregorian 6</term><description><see cref="CalendarSystem.GetGregorianCalendar"/>(6)</description></item>
+        ///   <item><term>Gregorian 7</term><description><see cref="CalendarSystem.GetGregorianCalendar"/>(7)</description></item>
+        ///   <item><term>Coptic 1</term><description><see cref="CalendarSystem.GetCopticCalendar"/>(1)</description></item>
+        ///   <item><term>Coptic 2</term><description><see cref="CalendarSystem.GetCopticCalendar"/>(2)</description></item>
+        ///   <item><term>Coptic 3</term><description><see cref="CalendarSystem.GetCopticCalendar"/>(3)</description></item>
+        ///   <item><term>Coptic 4</term><description><see cref="CalendarSystem.GetCopticCalendar"/>(4)</description></item>
+        ///   <item><term>Coptic 5</term><description><see cref="CalendarSystem.GetCopticCalendar"/>(5)</description></item>
+        ///   <item><term>Coptic 6</term><description><see cref="CalendarSystem.GetCopticCalendar"/>(6)</description></item>
+        ///   <item><term>Coptic 7</term><description><see cref="CalendarSystem.GetCopticCalendar"/>(7)</description></item>
+        ///   <item><term>Julian 1</term><description><see cref="CalendarSystem.GetJulianCalendar"/>(1)</description></item>
+        ///   <item><term>Julian 2</term><description><see cref="CalendarSystem.GetJulianCalendar"/>(2)</description></item>
+        ///   <item><term>Julian 3</term><description><see cref="CalendarSystem.GetJulianCalendar"/>(3)</description></item>
+        ///   <item><term>Julian 4</term><description><see cref="CalendarSystem.GetJulianCalendar"/>(4)</description></item>
+        ///   <item><term>Julian 5</term><description><see cref="CalendarSystem.GetJulianCalendar"/>(5)</description></item>
+        ///   <item><term>Julian 6</term><description><see cref="CalendarSystem.GetJulianCalendar"/>(6)</description></item>
+        ///   <item><term>Julian 7</term><description><see cref="CalendarSystem.GetJulianCalendar"/>(7)</description></item>
+        ///   <item><term>Hijri Civil-Indian</term><description><see cref="CalendarSystem.GetIslamicCalendar"/>(IslamicLeapYearPattern.Indian, IslamicEpoch.Civil)</description></item>
+        ///   <item><term>Hijri Civil-Base15</term><description><see cref="CalendarSystem.GetIslamicCalendar"/>(IslamicLeapYearPattern.Base15, IslamicEpoch.Civil)</description></item>
+        ///   <item><term>Hijri Civil-Base16</term><description><see cref="CalendarSystem.GetIslamicCalendar"/>(IslamicLeapYearPattern.Base16, IslamicEpoch.Civil)</description></item>
+        ///   <item><term>Hijri Civil-HabashAlHasib</term><description><see cref="CalendarSystem.GetIslamicCalendar"/>(IslamicLeapYearPattern.HabashAlHasib, IslamicEpoch.Civil)</description></item>
+        ///   <item><term>Hijri Astronomical-Indian</term><description><see cref="CalendarSystem.GetIslamicCalendar"/>(IslamicLeapYearPattern.Indian, IslamicEpoch.Astronomical)</description></item>
+        ///   <item><term>Hijri Astronomical-Base15</term><description><see cref="CalendarSystem.GetIslamicCalendar"/>(IslamicLeapYearPattern.Base15, IslamicEpoch.Astronomical)</description></item>
+        ///   <item><term>Hijri Astronomical-Base16</term><description><see cref="CalendarSystem.GetIslamicCalendar"/>(IslamicLeapYearPattern.Base16, IslamicEpoch.Astronomical)</description></item>
+        ///   <item><term>Hijri Astronomical-HabashAlHasib</term><description><see cref="CalendarSystem.GetIslamicCalendar"/>(IslamicLeapYearPattern.HabashAlHasib, IslamicEpoch.Astronomical)</description></item>
+        /// </list>
+        /// </remarks>
+        public string Id { get { return id; } }
+
+        /// <summary>
+        /// Returns the name of this calendar system. Each kind of calendar system has a unique name, but this
+        /// does not usually provide enough information for round-tripping. (For example, the name of an
+        /// Islamic calendar system does not indicate which kind of leap cycle it uses, and other calendars
+        /// specify the minimum number of days in the first week of a year.)
+        /// </summary>
         public string Name { get { return name; } }
 
         /// <summary>
@@ -507,12 +657,12 @@ namespace NodaTime
 
         #region object overrides
         /// <summary>
-        /// Converts this calendar system to text by simply returning its name.
+        /// Converts this calendar system to text by simply returning its unique ID.
         /// </summary>
-        /// <returns>The name of this calendar system.</returns>
+        /// <returns>The ID of this calendar system.</returns>
         public override string ToString()
         {
-            return Name;
+            return id;
         }
         #endregion
 
@@ -526,7 +676,7 @@ namespace NodaTime
         {
             if (!UsesIsoDayOfWeek)
             {
-                throw new InvalidOperationException("Calendar " + Name + " does not use ISO days of the week");
+                throw new InvalidOperationException("Calendar " + id + " does not use ISO days of the week");
             }
             return (IsoDayOfWeek)Fields.DayOfWeek.GetValue(localInstant);
         }
