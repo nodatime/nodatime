@@ -53,7 +53,7 @@ namespace NodaTime.Text
         /// </summary>
         internal static class Patterns
         {
-            internal static readonly LocalDateTimePattern ExtendedIsoPatternImpl = CreateWithInvariantInfo("yyyy'-'MM'-'dd'T'HH':'mm':'ss.FFFFFFF");
+            internal static readonly LocalDateTimePattern ExtendedIsoPatternImpl = CreateWithInvariantCulture("yyyy'-'MM'-'dd'T'HH':'mm':'ss.FFFFFFF");
 
             // TODO(Post-V1): Expose these through properties, possibly renaming them?
             internal static readonly IPattern<LocalDateTime> RoundTripPattern =
@@ -195,7 +195,7 @@ namespace NodaTime.Text
         /// <param name="patternText">Pattern text to create the pattern for</param>
         /// <returns>A pattern for parsing and formatting local times.</returns>
         /// <exception cref="InvalidPatternException">The pattern text was invalid.</exception>
-        public static LocalDateTimePattern CreateWithInvariantInfo(string patternText)
+        public static LocalDateTimePattern CreateWithInvariantCulture(string patternText)
         {
             return Create(patternText, NodaFormatInfo.InvariantInfo, DefaultTemplateValue);
         }

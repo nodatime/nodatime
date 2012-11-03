@@ -347,7 +347,7 @@ namespace NodaTime.Test.Text
 
             internal override IPattern<Offset> CreatePattern()
             {
-                return OffsetPattern.CreateWithInvariantInfo(Pattern)
+                return OffsetPattern.CreateWithInvariantCulture(Pattern)
                     .WithCulture(Culture);
             }
         }

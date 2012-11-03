@@ -25,7 +25,7 @@ namespace NodaTime.Benchmarks
     {
         private static readonly LocalDateTime SampleLocalDateTime = new LocalDateTime(2009, 12, 26, 10, 8, 30);
 
-        private static readonly LocalDateTimePattern Pattern = LocalDateTimePattern.CreateWithInvariantInfo("dd/MM/yyyy HH:mm:ss");
+        private static readonly LocalDateTimePattern Pattern = LocalDateTimePattern.CreateWithInvariantCulture("dd/MM/yyyy HH:mm:ss");
 
         [Benchmark]
         public void PatternFormat()

@@ -36,12 +36,12 @@ namespace NodaTime.Text
         /// <summary>
         /// The "general" offset pattern (e.g. +HH, +HH:mm, +HH:mm:ss, +HH:mm:ss.fff) for the invariant culture.
         /// </summary>
-        public static readonly OffsetPattern GeneralInvariantPattern = CreateWithInvariantInfo("g");
+        public static readonly OffsetPattern GeneralInvariantPattern = CreateWithInvariantCulture("g");
         /// <summary>
         /// The "general" offset pattern (e.g. +HH, +HH:mm, +HH:mm:ss, +HH:mm:ss.fff) for the invariant culture,
         /// but producing (and allowing) Z as a value for a zero offset.
         /// </summary>
-        public static readonly OffsetPattern GeneralInvariantPatternWithZ = CreateWithInvariantInfo("G");
+        public static readonly OffsetPattern GeneralInvariantPatternWithZ = CreateWithInvariantCulture("G");
 
         private const string DefaultFormatPattern = "g";
 
@@ -149,7 +149,7 @@ namespace NodaTime.Text
         /// <param name="patternText">Pattern text to create the pattern for</param>
         /// <returns>A pattern for parsing and formatting offsets.</returns>
         /// <exception cref="InvalidPatternException">The pattern text was invalid.</exception>
-        public static OffsetPattern CreateWithInvariantInfo(string patternText)
+        public static OffsetPattern CreateWithInvariantCulture(string patternText)
         {
             return Create(patternText, NodaFormatInfo.InvariantInfo);
         }
