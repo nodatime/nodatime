@@ -228,6 +228,9 @@
   <data name="Parse_MonthOutOfRange" xml:space="preserve">
     <value>The month {0} is out of range in year {1}.</value>
   </data>
+  <data name="Parse_NoMatchingCalenderSystem" xml:space="preserve">
+    <value>The calendar id is missing of unknown.</value>
+  </data>
   <data name="Parse_NoMatchingFormat" xml:space="preserve">
     <value>None of the specified formats matches the given value string.</value>
   </data>

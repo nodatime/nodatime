@@ -51,7 +51,7 @@ namespace NodaTime.Text
         /// This method is exactly equivalent to calling the <see cref="GetValueOrThrow"/> method, but is terser if the code is
         /// already clear that it will throw if the parse failed.
         /// </remarks>
-        /// <returns>The result of the parsing operation if it was successsful.</returns>
+        /// <returns>The result of the parsing operation if it was successful.</returns>
         public T Value { get { return GetValueOrThrow(); } }
 
         /// <summary>
@@ -62,7 +62,7 @@ namespace NodaTime.Text
         /// This method is exactly equivalent to fetching the <see cref="Value"/> property, but more explicit in terms of throwing
         /// an exception on failure.
         /// </remarks>
-        /// <returns>The result of the parsing operation if it was successsful.</returns>
+        /// <returns>The result of the parsing operation if it was successful.</returns>
         public T GetValueOrThrow()
         {
             if (exceptionProvider == null)
@@ -200,6 +200,7 @@ namespace NodaTime.Text
 
         internal static readonly ParseResult<T> MissingSign = ForInvalidValue(Messages.Parse_MissingSign);
         internal static readonly ParseResult<T> MissingAmPmDesignator = ForInvalidValue(Messages.Parse_MissingAmPmDesignator);
+        internal static readonly ParseResult<T> NoMatchingCalenderSystem = ForInvalidValue(Messages.Parse_NoMatchingCalenderSystem);
 
         internal static ParseResult<T> FieldValueOutOfRange(int value, char field)
         {
