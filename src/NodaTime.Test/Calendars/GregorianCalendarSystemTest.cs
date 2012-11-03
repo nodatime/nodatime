@@ -41,7 +41,7 @@ namespace NodaTime.Test.Calendars
         [Test]
         public void GetInstance_UniqueIds()
         {
-            Assert.AreEqual(7, Enumerable.Range(1, 7).Select(x => JulianCalendarSystem.GetInstance(x).Id).Distinct().Count());
+            Assert.AreEqual(7, Enumerable.Range(1, 7).Select(x => GregorianCalendarSystem.GetInstance(x).Id).Distinct().Count());
         }
 
         [Test]
