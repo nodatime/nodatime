@@ -39,10 +39,10 @@ namespace NodaTime.CheckTimeZones
         private static readonly Instant End = Instant.FromUtc(2050, 1, 1, 0, 0);
 
         private static readonly InstantPattern DateTimePattern
-            = InstantPattern.CreateWithInvariantInfo("yyyy-MM-dd HH:mm:ss");
+            = InstantPattern.CreateWithInvariantCulture("yyyy-MM-dd HH:mm:ss");
 
         private static readonly OffsetPattern OffsetPattern
-            = OffsetPattern.CreateWithInvariantInfo("+HH:mm:ss");
+            = OffsetPattern.CreateWithInvariantCulture("+HH:mm:ss");
 
         private static void Main()
         {

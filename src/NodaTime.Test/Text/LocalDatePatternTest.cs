@@ -265,7 +265,7 @@ namespace NodaTime.Test.Text
 
             internal override IPattern<LocalDate> CreatePattern()
             {
-                return LocalDatePattern.CreateWithInvariantInfo(Pattern)
+                return LocalDatePattern.CreateWithInvariantCulture(Pattern)
                     .WithTemplateValue(Template)
                     .WithCulture(Culture);
             }

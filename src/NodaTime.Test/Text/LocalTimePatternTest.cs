@@ -325,9 +325,9 @@ namespace NodaTime.Test.Text
         }
 
         [Test]
-        public void CreateWithInvariantInfo_NullPatternText()
+        public void CreateWithInvariantCulture_NullPatternText()
         {
-            Assert.Throws<ArgumentNullException>(() => LocalTimePattern.CreateWithInvariantInfo(null));
+            Assert.Throws<ArgumentNullException>(() => LocalTimePattern.CreateWithInvariantCulture(null));
         }
 
         [Test]
@@ -339,7 +339,7 @@ namespace NodaTime.Test.Text
         [Test]
         public void TemplateValue_DefaultsToMidnight()
         {
-            var pattern = LocalTimePattern.CreateWithInvariantInfo("HH");
+            var pattern = LocalTimePattern.CreateWithInvariantCulture("HH");
             Assert.AreEqual(LocalTime.Midnight, pattern.TemplateValue);
         }
 
@@ -347,7 +347,7 @@ namespace NodaTime.Test.Text
         public void WithTemplateValue_PropertyFetch()
         {
             LocalTime newValue = new LocalTime(1, 23, 45);
-            var pattern = LocalTimePattern.CreateWithInvariantInfo("HH").WithTemplateValue(newValue);
+            var pattern = LocalTimePattern.CreateWithInvariantCulture("HH").WithTemplateValue(newValue);
             Assert.AreEqual(newValue, pattern.TemplateValue);
         }
         
@@ -425,7 +425,7 @@ namespace NodaTime.Test.Text
 
             internal override IPattern<LocalTime> CreatePattern()
             {
-                return LocalTimePattern.CreateWithInvariantInfo(Pattern)
+                return LocalTimePattern.CreateWithInvariantCulture(Pattern)
                     .WithTemplateValue(Template)
                     .WithCulture(Culture);
             }

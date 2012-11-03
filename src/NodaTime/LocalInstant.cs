@@ -314,7 +314,7 @@ namespace NodaTime
         /// </returns>
         public override string ToString()
         {
-            var pattern = LocalDateTimePattern.CreateWithInvariantInfo("yyyy-MM-ddTHH:mm:ss LOC");
+            var pattern = LocalDateTimePattern.CreateWithInvariantCulture("yyyy-MM-ddTHH:mm:ss LOC");
             var utc = new LocalDateTime(new LocalInstant(Ticks));
             return pattern.Format(utc);
         }
