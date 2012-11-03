@@ -70,52 +70,12 @@ namespace NodaTime
         /// <seealso cref="Id"/>
         public static CalendarSystem ForId(string id)
         {
-            return ForId(id, false);
-        }
-
-        /// <summary>
-        /// Fetches a calendar system by its unique identifier. This provides full round-tripping of a calendar
-        /// system. It is not guaranteed that calling this method twice with the same identifier will return
-        /// identical references, but the references objects will be equal.
-        /// </summary>
-        /// <param name="id">The ID of the calendar system.</param>
-        /// <param name="ignoreCase">True to make the look-up case-insensitive; false to make it case-sensitive.</param>
-        /// <returns>The calendar system with the given ID.</returns>
-        /// <seealso cref="Id"/>
-        /// <exception cref="KeyNotFoundException">No calendar system for the specified ID can be found.</exception>
-        public static CalendarSystem ForId(string id, bool ignoreCase)
-        {
-            CalendarSystem calendar = ForIdOrNull(id, ignoreCase);
-            if (calendar == null)
-            {
-                throw new KeyNotFoundException(string.Format("No calendar system for ID {0} exists", id));
-            }
-            return calendar;
-        }
-
-        /// <summary>
-        /// Fetches a calendar system by its unique identifier, returning null if no such ID is present.
-        /// </summary>
-        /// <remarks>
-        /// This is currently internal as it's required for parsing, but we may want to think more carefully 
-        /// </remarks>
-        /// <param name="id">The ID of the calendar system.</param>
-        /// <param name="ignoreCase">True to make the look-up case-insensitive; false to make it case-sensitive.</param>
-        /// <returns>The calendar system with the given ID.</returns>
-        /// <seealso cref="Id"/>
-        internal static CalendarSystem ForIdOrNull(string id, bool ignoreCase)
-        {
             Func<CalendarSystem> factory;
             if (!IdToFactoryMap.TryGetValue(id, out factory))
             {
-                return null;
+                throw new KeyNotFoundException(string.Format("No calendar system for ID {0} exists", id));
             }
-            CalendarSystem calendar = factory();
-            if (!ignoreCase && calendar.Id != id)
-            {
-                return null;
-            }
-            return calendar;
+            return factory();
         }
 
         /// <summary>
@@ -123,38 +83,38 @@ namespace NodaTime
         /// </summary>
         public static IEnumerable<string> Ids { get { return IdToFactoryMap.Keys; } }
 
-        private static readonly Dictionary<string, Func<CalendarSystem>> IdToFactoryMap = new Dictionary<string, Func<CalendarSystem>>(StringComparer.OrdinalIgnoreCase)
+        private static readonly Dictionary<string, Func<CalendarSystem>> IdToFactoryMap = new Dictionary<string, Func<CalendarSystem>>
         {
-            { "ISO", () => CalendarSystem.Iso },
-            { "Gregorian 1", () => CalendarSystem.GetGregorianCalendar(1) },
-            { "Gregorian 2", () => CalendarSystem.GetGregorianCalendar(2) },
-            { "Gregorian 3", () => CalendarSystem.GetGregorianCalendar(3) },
-            { "Gregorian 4", () => CalendarSystem.GetGregorianCalendar(4) }, 
-            { "Gregorian 5", () => CalendarSystem.GetGregorianCalendar(5) },
-            { "Gregorian 6", () => CalendarSystem.GetGregorianCalendar(6) },
-            { "Gregorian 7", () => CalendarSystem.GetGregorianCalendar(7) },
-            { "Coptic 1", () => CalendarSystem.GetCopticCalendar(1) },
-            { "Coptic 2", () => CalendarSystem.GetCopticCalendar(2) },
-            { "Coptic 3", () => CalendarSystem.GetCopticCalendar(3) },
-            { "Coptic 4", () => CalendarSystem.GetCopticCalendar(4) },
-            { "Coptic 5", () => CalendarSystem.GetCopticCalendar(5) },
-            { "Coptic 6", () => CalendarSystem.GetCopticCalendar(6) },
-            { "Coptic 7", () => CalendarSystem.GetCopticCalendar(7) },
-            { "Julian 1", () => CalendarSystem.GetJulianCalendar(1) },
-            { "Julian 2", () => CalendarSystem.GetJulianCalendar(2) },
-            { "Julian 3", () => CalendarSystem.GetJulianCalendar(3) },
-            { "Julian 4", () => CalendarSystem.GetJulianCalendar(4) },
-            { "Julian 5", () => CalendarSystem.GetJulianCalendar(5) },
-            { "Julian 6", () => CalendarSystem.GetJulianCalendar(6) },
-            { "Julian 7", () => CalendarSystem.GetJulianCalendar(7) },
-            { "Hijri Civil-Indian", () => CalendarSystem.GetIslamicCalendar(IslamicLeapYearPattern.Indian, IslamicEpoch.Civil) },
-            { "Hijri Civil-Base15", () => CalendarSystem.GetIslamicCalendar(IslamicLeapYearPattern.Base15, IslamicEpoch.Civil) },
-            { "Hijri Civil-Base16", () => CalendarSystem.GetIslamicCalendar(IslamicLeapYearPattern.Base16, IslamicEpoch.Civil) },
-            { "Hijri Civil-HabashAlHasib", () => CalendarSystem.GetIslamicCalendar(IslamicLeapYearPattern.HabashAlHasib, IslamicEpoch.Civil) },
-            { "Hijri Astronomical-Indian", () => CalendarSystem.GetIslamicCalendar(IslamicLeapYearPattern.Indian, IslamicEpoch.Astronomical) },
-            { "Hijri Astronomical-Base15", () => CalendarSystem.GetIslamicCalendar(IslamicLeapYearPattern.Base15, IslamicEpoch.Astronomical) },
-            { "Hijri Astronomical-Base16", () => CalendarSystem.GetIslamicCalendar(IslamicLeapYearPattern.Base16, IslamicEpoch.Astronomical) },
-            { "Hijri Astronomical-HabashAlHasib", () => CalendarSystem.GetIslamicCalendar(IslamicLeapYearPattern.HabashAlHasib, IslamicEpoch.Astronomical) },
+            { "ISO", () => Iso },
+            { "Gregorian 1", () => GetGregorianCalendar(1) },
+            { "Gregorian 2", () => GetGregorianCalendar(2) },
+            { "Gregorian 3", () => GetGregorianCalendar(3) },
+            { "Gregorian 4", () => GetGregorianCalendar(4) }, 
+            { "Gregorian 5", () => GetGregorianCalendar(5) },
+            { "Gregorian 6", () => GetGregorianCalendar(6) },
+            { "Gregorian 7", () => GetGregorianCalendar(7) },
+            { "Coptic 1", () => GetCopticCalendar(1) },
+            { "Coptic 2", () => GetCopticCalendar(2) },
+            { "Coptic 3", () => GetCopticCalendar(3) },
+            { "Coptic 4", () => GetCopticCalendar(4) },
+            { "Coptic 5", () => GetCopticCalendar(5) },
+            { "Coptic 6", () => GetCopticCalendar(6) },
+            { "Coptic 7", () => GetCopticCalendar(7) },
+            { "Julian 1", () => GetJulianCalendar(1) },
+            { "Julian 2", () => GetJulianCalendar(2) },
+            { "Julian 3", () => GetJulianCalendar(3) },
+            { "Julian 4", () => GetJulianCalendar(4) },
+            { "Julian 5", () => GetJulianCalendar(5) },
+            { "Julian 6", () => GetJulianCalendar(6) },
+            { "Julian 7", () => GetJulianCalendar(7) },
+            { "Hijri Civil-Indian", () => GetIslamicCalendar(IslamicLeapYearPattern.Indian, IslamicEpoch.Civil) },
+            { "Hijri Civil-Base15", () => GetIslamicCalendar(IslamicLeapYearPattern.Base15, IslamicEpoch.Civil) },
+            { "Hijri Civil-Base16", () => GetIslamicCalendar(IslamicLeapYearPattern.Base16, IslamicEpoch.Civil) },
+            { "Hijri Civil-HabashAlHasib", () => GetIslamicCalendar(IslamicLeapYearPattern.HabashAlHasib, IslamicEpoch.Civil) },
+            { "Hijri Astronomical-Indian", () => GetIslamicCalendar(IslamicLeapYearPattern.Indian, IslamicEpoch.Astronomical) },
+            { "Hijri Astronomical-Base15", () => GetIslamicCalendar(IslamicLeapYearPattern.Base15, IslamicEpoch.Astronomical) },
+            { "Hijri Astronomical-Base16", () => GetIslamicCalendar(IslamicLeapYearPattern.Base16, IslamicEpoch.Astronomical) },
+            { "Hijri Astronomical-HabashAlHasib", () => GetIslamicCalendar(IslamicLeapYearPattern.HabashAlHasib, IslamicEpoch.Astronomical) },
         };
 
         /// <summary>
@@ -333,7 +293,7 @@ namespace NodaTime
             this.eras = new List<Era>(eras).AsReadOnly();
             FieldSet.Builder builder = new FieldSet.Builder();
             fieldAssembler(builder, this);
-            this.fields = builder.Build();
+            fields = builder.Build();
         }
 
         /// <summary>

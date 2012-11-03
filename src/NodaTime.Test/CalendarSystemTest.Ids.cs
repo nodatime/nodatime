@@ -17,6 +17,7 @@
 
 using NUnit.Framework;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 
 namespace NodaTime.Test
@@ -28,18 +29,14 @@ namespace NodaTime.Test
         [TestCaseSource(typeof(CalendarSystem), "Ids")]
         public void ValidId(string id)
         {
-            CalendarSystem calendar = CalendarSystem.ForIdOrNull(id, false);
-            Assert.AreEqual(id, calendar.Id);
-            Assert.IsNotNull(calendar);
+            CalendarSystem calendar = CalendarSystem.ForId(id);
+        }
 
-            Assert.AreSame(calendar, CalendarSystem.ForId(id));
-            Assert.AreSame(calendar, CalendarSystem.ForId(id, false));
-            Assert.AreSame(calendar, CalendarSystem.ForId(id, true));
-            Assert.AreSame(calendar, CalendarSystem.ForIdOrNull(id, true));
-            Assert.AreSame(calendar, CalendarSystem.ForIdOrNull(id.ToLowerInvariant(), true));
-            Assert.AreSame(calendar, CalendarSystem.ForId(id.ToLowerInvariant(), true));
-            Assert.IsNull(CalendarSystem.ForIdOrNull(id.ToLowerInvariant(), false));
-            Assert.Throws<KeyNotFoundException>(() => CalendarSystem.ForId(id.ToLowerInvariant(), false));
+        [Test]
+        [TestCaseSource(typeof(CalendarSystem), "Ids")]
+        public void IdsAreCaseSensitive(string id)
+        {
+            Assert.Throws<KeyNotFoundException>(() => CalendarSystem.ForId(id.ToLowerInvariant()));
         }
 
         [Test]
@@ -52,11 +49,26 @@ namespace NodaTime.Test
         [Test]
         public void BadId()
         {
-            Assert.IsNull(CalendarSystem.ForIdOrNull("bad", false));
-            Assert.IsNull(CalendarSystem.ForIdOrNull("bad", true));
-            Assert.Throws<KeyNotFoundException>(() => CalendarSystem.ForId("bad", false));
-            Assert.Throws<KeyNotFoundException>(() => CalendarSystem.ForId("bad", true));
             Assert.Throws<KeyNotFoundException>(() => CalendarSystem.ForId("bad"));
+        }
+
+        [Test]
+        public void NoSubstrings()
+        {
+            CompareInfo comparison = CultureInfo.InvariantCulture.CompareInfo;
+            foreach (var firstId in CalendarSystem.Ids)
+            {
+                foreach (var secondId in CalendarSystem.Ids)
+                {
+                    // We're looking for firstId being a substring of secondId, which can only
+                    // happen if firstId is shorter...
+                    if (firstId.Length >= secondId.Length)
+                    {
+                        continue;
+                    }
+                    Assert.AreNotEqual(0, comparison.Compare(firstId, 0, firstId.Length, secondId, 0, firstId.Length, CompareOptions.IgnoreCase));
+                }
+            }
         }
     }
 }
