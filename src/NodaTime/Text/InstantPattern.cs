@@ -57,8 +57,8 @@ namespace NodaTime.Text
         /// </summary>
         private static class Patterns
         {
-            internal static readonly InstantPattern ExtendedIsoPatternImpl = CreateWithInvariantInfo("yyyy'-'MM'-'dd'T'HH':'mm':'ss.FFFFFFF'Z'");
-            internal static readonly InstantPattern GeneralPatternImpl = CreateWithInvariantInfo("g");
+            internal static readonly InstantPattern ExtendedIsoPatternImpl = CreateWithInvariantCulture("yyyy'-'MM'-'dd'T'HH':'mm':'ss.FFFFFFF'Z'");
+            internal static readonly InstantPattern GeneralPatternImpl = CreateWithInvariantCulture("g");
         }
 
         private readonly string patternText;
@@ -163,7 +163,7 @@ namespace NodaTime.Text
         /// <param name="patternText">Pattern text to create the pattern for</param>
         /// <returns>A pattern for parsing and formatting offsets.</returns>
         /// <exception cref="InvalidPatternException">The pattern text was invalid.</exception>
-        public static InstantPattern CreateWithInvariantInfo(string patternText)
+        public static InstantPattern CreateWithInvariantCulture(string patternText)
         {
             return Create(patternText, NodaFormatInfo.InvariantInfo);
         }

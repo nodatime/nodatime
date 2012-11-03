@@ -75,7 +75,7 @@ namespace NodaTime.Text
         {
             private static readonly LocalDateTimePatternAdapter NonInfinitePattern =
                 new LocalDateTimePatternAdapter(
-                    LocalDateTimePattern.CreateWithInvariantInfo("yyyy'-'MM'-'dd'T'HH':'mm':'ss'Z'"));
+                    LocalDateTimePattern.CreateWithInvariantCulture("yyyy'-'MM'-'dd'T'HH':'mm':'ss'Z'"));
 
             internal GeneralPattern() : base(NodaFormatInfo.InvariantInfo)
             {

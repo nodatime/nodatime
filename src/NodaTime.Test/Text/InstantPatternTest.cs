@@ -88,7 +88,7 @@ namespace NodaTime.Test.Text
 
             internal override IPattern<Instant> CreatePattern()
             {
-                return InstantPattern.CreateWithInvariantInfo(Pattern)
+                return InstantPattern.CreateWithInvariantCulture(Pattern)
                     .WithCulture(Culture);
             }
         }
