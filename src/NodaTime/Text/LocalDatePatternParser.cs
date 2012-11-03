@@ -52,7 +52,7 @@ namespace NodaTime.Text
                         (value => value.Month, (bucket, value) => bucket.MonthOfYearText = value, (bucket, value) => bucket.MonthOfYearNumeric = value) },
             { 'd', DatePatternHelper.CreateDayHandler<LocalDate, LocalDateParseBucket>
                         (value => value.Day, value => value.DayOfWeek, (bucket, value) => bucket.DayOfMonth = value, (bucket, value) => bucket.DayOfWeek = value) },
-        };
+            { 'c', DatePatternHelper.CreateCalendarHandler<LocalDate, LocalDateParseBucket>(value => value.Calendar, (bucket, value) => bucket.Calendar = value) },        };
 
         internal LocalDatePatternParser(LocalDate templateValue)
         {
@@ -142,8 +142,8 @@ namespace NodaTime.Text
         internal sealed class LocalDateParseBucket : ParseBucket<LocalDate>
         {
             private readonly LocalDate templateValue;
-            private readonly CalendarSystem calendar;
 
+            internal CalendarSystem Calendar;
             internal int Year;
             internal int EraIndex;
             internal int YearOfEra;
@@ -156,7 +156,7 @@ namespace NodaTime.Text
             {
                 this.templateValue = templateValue;
                 // Only fetch this once.
-                this.calendar = templateValue.Calendar;
+                this.Calendar = templateValue.Calendar;
             }
 
             internal override ParseResult<LocalDate> CalculateValue(PatternFields usedFields)
@@ -175,12 +175,12 @@ namespace NodaTime.Text
                 }
 
                 int day = IsFieldUsed(usedFields, PatternFields.DayOfMonth) ? DayOfMonth : templateValue.Day;
-                if (day > calendar.GetDaysInMonth(Year, MonthOfYearNumeric))
+                if (day > Calendar.GetDaysInMonth(Year, MonthOfYearNumeric))
                 {
                     return ParseResult<LocalDate>.DayOfMonthOutOfRange(day, MonthOfYearNumeric, Year);
                 }
 
-                LocalDate value = new LocalDate(Year, MonthOfYearNumeric, day, calendar);
+                LocalDate value = new LocalDate(Year, MonthOfYearNumeric, day, Calendar);
 
                 if (IsFieldUsed(usedFields, PatternFields.DayOfWeek) && DayOfWeek != value.DayOfWeek)
                 {
@@ -198,15 +198,15 @@ namespace NodaTime.Text
                     // Odd to have a year-of-era without era, but it's valid...
                     if (!IsFieldUsed(usedFields, PatternFields.Era))
                     {
-                        EraIndex = calendar.Eras.IndexOf(templateValue.Era);
+                        EraIndex = Calendar.Eras.IndexOf(templateValue.Era);
                     }
                     // Find the absolute year from the year-of-era and era
-                    if (YearOfEra < calendar.GetMinYearOfEra(EraIndex) ||
-                        YearOfEra > calendar.GetMaxYearOfEra(EraIndex))
+                    if (YearOfEra < Calendar.GetMinYearOfEra(EraIndex) ||
+                        YearOfEra > Calendar.GetMaxYearOfEra(EraIndex))
                     {
-                        return ParseResult<LocalDate>.YearOfEraOutOfRange(YearOfEra, EraIndex, calendar);
+                        return ParseResult<LocalDate>.YearOfEraOutOfRange(YearOfEra, EraIndex, Calendar);
                     }
-                    yearFromEra = calendar.GetAbsoluteYear(YearOfEra, EraIndex);
+                    yearFromEra = Calendar.GetAbsoluteYear(YearOfEra, EraIndex);
                 }
 
                 // Note: we can't have YearTwoDigits without Year, hence there are only 6 options here rather than 8.
@@ -246,7 +246,7 @@ namespace NodaTime.Text
                 // TODO(Post-V1): Wrong field if we happen to have been given the year of era instead...
                 // Pretty insignificant problem, mind you...
                 // (The error is reported in the right circumstances - it's just that it will refer to 'y' regardless.)
-                if (Year > calendar.MaxYear || Year < calendar.MinYear)
+                if (Year > Calendar.MaxYear || Year < Calendar.MinYear)
                 {
                     return ParseResult<LocalDate>.FieldValueOutOfRange(Year, 'y');
                 }
@@ -289,7 +289,7 @@ namespace NodaTime.Text
                         MonthOfYearNumeric = templateValue.Month;
                         break;
                 }
-                if (MonthOfYearNumeric > calendar.GetMaxMonth(Year))
+                if (MonthOfYearNumeric > Calendar.GetMaxMonth(Year))
                 {
                     return ParseResult<LocalDate>.MonthOutOfRange(MonthOfYearNumeric, Year);
                 }
