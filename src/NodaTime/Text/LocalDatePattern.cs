@@ -52,7 +52,7 @@ namespace NodaTime.Text
         /// </summary>
         private static class Patterns
         {
-            internal static readonly LocalDatePattern IsoPatternImpl = CreateWithInvariantInfo("yyyy'-'MM'-'dd");
+            internal static readonly LocalDatePattern IsoPatternImpl = CreateWithInvariantCulture("yyyy'-'MM'-'dd");
         }
 
         private readonly string patternText;
@@ -187,7 +187,7 @@ namespace NodaTime.Text
         /// <param name="patternText">Pattern text to create the pattern for</param>
         /// <returns>A pattern for parsing and formatting local times.</returns>
         /// <exception cref="InvalidPatternException">The pattern text was invalid.</exception>
-        public static LocalDatePattern CreateWithInvariantInfo(string patternText)
+        public static LocalDatePattern CreateWithInvariantCulture(string patternText)
         {
             return Create(patternText, NodaFormatInfo.InvariantInfo, DefaultTemplateValue);
         }
