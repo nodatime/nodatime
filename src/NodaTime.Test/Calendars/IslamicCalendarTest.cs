@@ -338,6 +338,7 @@ namespace NodaTime.Test.Calendars
         {
             var queue = new Queue<CalendarSystem>();
             var set = new HashSet<CalendarSystem>();
+            var ids = new HashSet<string>();
 
             foreach (IslamicLeapYearPattern leapYearPattern in Enum.GetValues(typeof(IslamicLeapYearPattern)))
             {
@@ -346,6 +347,7 @@ namespace NodaTime.Test.Calendars
                     var calendar = CalendarSystem.GetIslamicCalendar(leapYearPattern, epoch);
                     queue.Enqueue(calendar);
                     Assert.IsTrue(set.Add(calendar)); // Check we haven't already seen it...
+                    Assert.IsTrue(ids.Add(calendar.Id));
                 }
             }
 

@@ -15,9 +15,8 @@
 // limitations under the License.
 #endregion
 
-using System;
 using NodaTime.Fields;
-using NodaTime.Utility;
+using System;
 
 namespace NodaTime.Calendars
 {
@@ -65,7 +64,7 @@ namespace NodaTime.Calendars
             GregorianCache = new GregorianCalendarSystem[7];
             for (int i = 0; i < 7; i++)
             {
-                GregorianCache[i] = new GregorianCalendarSystem(GregorianName, i + 1, null);
+                GregorianCache[i] = new GregorianCalendarSystem(CreateIdFromNameAndMinDaysInFirstWeek(GregorianName, i + 1), GregorianName, i + 1, null);
             }
 
             var sample = GregorianCache[0];            
@@ -95,8 +94,8 @@ namespace NodaTime.Calendars
             return GregorianCache[minDaysInFirstWeek - 1];
         }
 
-        private GregorianCalendarSystem(string name, int minDaysInFirstWeek, FieldAssembler fieldAssembler)
-            : base(name, minDaysInFirstWeek, -27256, 31196, fieldAssembler)
+        private GregorianCalendarSystem(string id, string name, int minDaysInFirstWeek, FieldAssembler fieldAssembler)
+            : base(id, name, minDaysInFirstWeek, -27256, 31196, fieldAssembler)
         {
         }
 
@@ -221,7 +220,7 @@ namespace NodaTime.Calendars
         /// </summary>
         internal static class IsoHelper
         {
-            internal static readonly GregorianCalendarSystem Instance = new GregorianCalendarSystem(IsoName, 4, AssembleIsoFields);
+            internal static readonly GregorianCalendarSystem Instance = new GregorianCalendarSystem(IsoName, IsoName, 4, AssembleIsoFields);
 
             /// <summary>
             /// Field assembly used solely for the ISO calendar variation.
