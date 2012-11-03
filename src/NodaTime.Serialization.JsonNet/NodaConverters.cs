@@ -83,8 +83,8 @@ namespace NodaTime.Serialization.JsonNet
         {
             return value => {
                 var calendar = calendarProjection(value);
-                // TODO(Post-V1): Implement equality on CalendarSystem...
-                if (calendar.Name != CalendarSystem.Iso.Name)
+                // We rely on CalendarSystem.Iso being a singleton here.
+                if (calendar != CalendarSystem.Iso)
                 {
                     throw new ArgumentException(
                         string.Format("Values of type {0} must (currently) use the ISO calendar in order to be serialized.",
