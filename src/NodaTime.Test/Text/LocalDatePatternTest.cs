@@ -82,7 +82,7 @@ namespace NodaTime.Test.Text
             new Data { Pattern = "YYYY yy", Text = "2011 10", Message = Messages.Parse_InconsistentValues2, Parameters = { 'y', 'Y', typeof(LocalDate) } },
 
             // Invalid calendar name
-            new Data { Pattern = "c YYYY MM dd", Text = "2015 01 01", Message = Messages.Parse_NoMatchingCalenderSystem },
+            new Data { Pattern = "c YYYY MM dd", Text = "2015 01 01", Message = Messages.Parse_NoMatchingCalendarSystem },
         };
 
         internal static Data[] ParseOnlyData = {
