@@ -95,10 +95,10 @@ namespace NodaTime.Test.Text
             new Data(MsdnStandardExampleNoMillis) { Pattern = "s", Text = "2009-06-15T13:45:30", Culture = Cultures.FrFr },
 
             // Calendar patterns are invariant
-	        new Data(MsdnStandardExample) { Pattern = "(c) yyyy-MM-ddTHH:mm:ss.FFFFFFF", Text = "(ISO) 2009-06-15T13:45:30.09", Culture = Cultures.FrFr },
-	        new Data(MsdnStandardExample) { Pattern = "yyyy-MM-dd(c)THH:mm:ss.FFFFFFF", Text = "2009-06-15(ISO)T13:45:30.09", Culture = Cultures.EnUs },
-	        new Data(SampleLocalDateTimeCoptic) { Pattern = "(c) yyyy-MM-ddTHH:mm:ss.FFFFFFF", Text = "(Coptic 1) 1376-06-19T21:13:34.1234567", Culture = Cultures.FrFr },
-	        new Data(SampleLocalDateTimeCoptic) { Pattern = "yyyy-MM-dd'C'c'T'HH:mm:ss.FFFFFFF", Text = "1376-06-19CCoptic 1T21:13:34.1234567", Culture = Cultures.EnUs },
+            new Data(MsdnStandardExample) { Pattern = "(c) yyyy-MM-ddTHH:mm:ss.FFFFFFF", Text = "(ISO) 2009-06-15T13:45:30.09", Culture = Cultures.FrFr },
+            new Data(MsdnStandardExample) { Pattern = "yyyy-MM-dd(c)THH:mm:ss.FFFFFFF", Text = "2009-06-15(ISO)T13:45:30.09", Culture = Cultures.EnUs },
+            new Data(SampleLocalDateTimeCoptic) { Pattern = "(c) yyyy-MM-ddTHH:mm:ss.FFFFFFF", Text = "(Coptic 1) 1376-06-19T21:13:34.1234567", Culture = Cultures.FrFr },
+            new Data(SampleLocalDateTimeCoptic) { Pattern = "yyyy-MM-dd'C'c'T'HH:mm:ss.FFFFFFF", Text = "1376-06-19CCoptic 1T21:13:34.1234567", Culture = Cultures.EnUs },
         };
 
         internal static IEnumerable<Data> ParseData = ParseOnlyData.Concat(FormatAndParseData);
