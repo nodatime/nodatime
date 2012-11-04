@@ -18,7 +18,8 @@ Fuller text support
 ===================
 
 Currently there's no way of parsing or formatting a
-[`ZonedDateTime`](noda-type://NodaTime.ZonedDateTime), partly due to
+[`ZonedDateTime`](noda-type://NodaTime.ZonedDateTime) or 
+[`OffsetDateTime`](noda-type://NodaTime.OffsetDateTime), partly due to
 the difficulty of representing time zones or offsets. While this is
 the primary deficiency of our current text support, it's not the
 only one. Some other types lack flexible formatting, and we may want
