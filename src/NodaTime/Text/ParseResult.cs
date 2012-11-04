@@ -200,7 +200,7 @@ namespace NodaTime.Text
 
         internal static readonly ParseResult<T> MissingSign = ForInvalidValue(Messages.Parse_MissingSign);
         internal static readonly ParseResult<T> MissingAmPmDesignator = ForInvalidValue(Messages.Parse_MissingAmPmDesignator);
-        internal static readonly ParseResult<T> NoMatchingCalenderSystem = ForInvalidValue(Messages.Parse_NoMatchingCalenderSystem);
+        internal static readonly ParseResult<T> NoMatchingCalendarSystem = ForInvalidValue(Messages.Parse_NoMatchingCalendarSystem);
 
         internal static ParseResult<T> FieldValueOutOfRange(int value, char field)
         {
