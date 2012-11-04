@@ -163,7 +163,7 @@ For the meanings of "absolute" years and text handling, see later details.
       <td><code>c</code></td>
       <td>
         The Noda-specific calendar system ID. This would rarely be appropriate
-		for user-visible text, but allows exact 
+		for user-visible text, but allows exact round-tripping when serializing values via text.
       </td>
       <td><code>ISO</code><br />
 	      <code>Coptic 3</code><br />
