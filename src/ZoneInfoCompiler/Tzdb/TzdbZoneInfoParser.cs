@@ -408,7 +408,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         ///   Parses a daylight savings rule and returns the Rule object.
         /// </summary>
         /// <remarks>
-        ///   # Rule	NAME	FROM	TO	TYPE	IN	ON	AT	SAVE	LETTER/S
+        ///   # Rule    NAME    FROM    TO    TYPE    IN    ON    AT    SAVE    LETTER/S
         /// </remarks>
         /// <param name="tokens">The tokens to parse.</param>
         /// <returns>The Rule object.</returns>
