@@ -80,6 +80,8 @@ namespace NodaTime.Test.Text
             // Round-trip (o and O - same effect)
             new Data(MsdnStandardExample) { Pattern = "o", Text = "2009-06-15T13:45:30.0900000", Culture = Cultures.EnUs },
             new Data(MsdnStandardExample) { Pattern = "O", Text = "2009-06-15T13:45:30.0900000", Culture = Cultures.EnUs },
+            new Data(MsdnStandardExample) { Pattern = "r", Text = "2009-06-15T13:45:30.0900000 (ISO)", Culture = Cultures.EnUs },
+            new Data(SampleLocalDateTimeCoptic) { Pattern = "r", Text = "1376-06-19T21:13:34.1234567 (Coptic 1)", Culture = Cultures.EnUs },
             // Note: No RFC1123, as that requires a time zone.
             // Sortable / ISO8601
             new Data(MsdnStandardExampleNoMillis) { Pattern = "s", Text = "2009-06-15T13:45:30", Culture = Cultures.EnUs },
@@ -92,6 +94,7 @@ namespace NodaTime.Test.Text
             // Culture has no impact on round-trip or sortable formats
             new Data(MsdnStandardExample) { Pattern = "o", Text = "2009-06-15T13:45:30.0900000", Culture = Cultures.FrFr },
             new Data(MsdnStandardExample) { Pattern = "O", Text = "2009-06-15T13:45:30.0900000", Culture = Cultures.FrFr },
+            new Data(MsdnStandardExample) { Pattern = "r", Text = "2009-06-15T13:45:30.0900000 (ISO)", Culture = Cultures.FrFr },
             new Data(MsdnStandardExampleNoMillis) { Pattern = "s", Text = "2009-06-15T13:45:30", Culture = Cultures.FrFr },
 
             // Calendar patterns are invariant

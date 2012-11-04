@@ -160,6 +160,16 @@ For the meanings of "absolute" years and text handling, see later details.
       </td>
     </tr>
     <tr>
+      <td><code>c</code></td>
+      <td>
+        The Noda-specific calendar system ID. This would rarely be appropriate
+		for user-visible text, but allows exact 
+      </td>
+      <td><code>ISO</code><br />
+	      <code>Coptic 3</code><br />
+		  <code>Hijri Astronomical-Base16</code></td>
+    </tr>
+    <tr>
       <td><code>/</code></td>
       <td>
         The date separator for the format provider; slash in the invariant culture.

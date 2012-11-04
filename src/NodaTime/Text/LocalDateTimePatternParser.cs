@@ -88,7 +88,11 @@ namespace NodaTime.Text
                 char patternCharacter = patternText[0];
                 if (patternCharacter == 'o' || patternCharacter == 'O')
                 {
-                    return PatternParseResult<LocalDateTime>.ForValue(LocalDateTimePattern.Patterns.RoundTripPattern);
+                    return PatternParseResult<LocalDateTime>.ForValue(LocalDateTimePattern.Patterns.BclRoundTripPattern);
+                }
+                if (patternCharacter == 'r')
+                {
+                    return PatternParseResult<LocalDateTime>.ForValue(LocalDateTimePattern.Patterns.FullRoundTripPattern);
                 }
                 if (patternCharacter == 's')
                 {
