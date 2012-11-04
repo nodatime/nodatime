@@ -283,7 +283,7 @@ namespace NodaTime.Text.Patterns
                             return null;
                         }
                     }
-                    return ParseResult<TResult>.NoMatchingCalenderSystem;
+                    return ParseResult<TResult>.NoMatchingCalendarSystem;
                 });
                 builder.AddFormatAction((value, sb) => sb.Append(getter(value).Id));
                 return null;

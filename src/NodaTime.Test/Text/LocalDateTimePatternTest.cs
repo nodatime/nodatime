@@ -55,7 +55,7 @@ namespace NodaTime.Test.Text
 
         internal static Data[] ParseFailureData = {
             new Data { Pattern = "dd MM yyyy HH:mm:ss", Text = "Complete mismatch", Message = Messages.Parse_MismatchedNumber, Parameters = { "dd" }},
-            new Data { Pattern = "(c)", Text = "(xxx)", Message = Messages.Parse_NoMatchingCalenderSystem },
+            new Data { Pattern = "(c)", Text = "(xxx)", Message = Messages.Parse_NoMatchingCalendarSystem },
         };
 
         internal static Data[] ParseOnlyData = {
