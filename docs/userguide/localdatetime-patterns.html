@@ -15,7 +15,9 @@
 <p>The following standard patterns are supported:</p>
 
 <ul>
-<li><p><code>o</code> or <code>O</code>: The round-trip pattern, which is always "yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fffffff" using the invariant culture.</p></li>
+<li><p><code>o</code> or <code>O</code>: The round-trip pattern, which is always "yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fffffff" using the invariant culture. The calendar
+system is not round-tripped in this pattern, but it's compatible with the BCL round-trip pattern.</p></li>
+<li><p><code>r</code>: The round-trip pattern including calendar system, which is always "yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fffffff '('c')'" using the invariant culture.</p></li>
 <li><p><code>s</code>: The sortable pattern, which is always "yyyy'-'MM'-'dd'T'HH':'mm':'ss" using the invariant culture.</p></li>
 <li><p><code>f</code>: The culture's <a href="http://msdn.microsoft.com/en-us/library/system.globalization.datetimeformatinfo.longdatepattern.aspx">long date pattern</a> followed by a space,
 followed by the <a href="http://msdn.microsoft.com/en-us/library/system.globalization.datetimeformatinfo.shorttimepattern.aspx">short time pattern</a>.</p></li>
