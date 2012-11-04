@@ -56,8 +56,11 @@ namespace NodaTime.Text
             internal static readonly LocalDateTimePattern ExtendedIsoPatternImpl = CreateWithInvariantCulture("yyyy'-'MM'-'dd'T'HH':'mm':'ss.FFFFFFF");
 
             // TODO(Post-V1): Expose these through properties, possibly renaming them?
-            internal static readonly IPattern<LocalDateTime> RoundTripPattern =
+            internal static readonly IPattern<LocalDateTime> BclRoundTripPattern =
                 new LocalDateTimePatternParser(DefaultTemplateValue).ParsePattern("yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fffffff", NodaFormatInfo.InvariantInfo).GetResultOrThrow();
+
+            internal static readonly IPattern<LocalDateTime> FullRoundTripPattern =
+                new LocalDateTimePatternParser(DefaultTemplateValue).ParsePattern("yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fffffff '('c')'", NodaFormatInfo.InvariantInfo).GetResultOrThrow();
 
             internal static readonly IPattern<LocalDateTime> SortablePattern =
                 new LocalDateTimePatternParser(DefaultTemplateValue).ParsePattern("yyyy'-'MM'-'dd'T'HH':'mm':'ss", NodaFormatInfo.InvariantInfo).GetResultOrThrow();
