@@ -166,10 +166,10 @@ namespace NodaTime.Test.Text
             new Data(-43, 3, 15) { Pattern = "yyyy MM dd", Text = "-0043 03 15"},
 
             // Calendar handling
-	        new Data(2011, 10, 9) { Pattern = "c yyyy MM dd", Text = "ISO 2011 10 09" },
-	        new Data(2011, 10, 9) { Pattern = "yyyy MM dd c", Text = "2011 10 09 ISO" },
-	        new Data(2011, 10, 9, CalendarSystem.GetCopticCalendar(4)) { Pattern = "c yyyy MM dd", Text = "Coptic 4 2011 10 09" },
-	        new Data(2011, 10, 9, CalendarSystem.GetCopticCalendar(4)) { Pattern = "yyyy MM dd c", Text = "2011 10 09 Coptic 4" },
+            new Data(2011, 10, 9) { Pattern = "c yyyy MM dd", Text = "ISO 2011 10 09" },
+            new Data(2011, 10, 9) { Pattern = "yyyy MM dd c", Text = "2011 10 09 ISO" },
+            new Data(2011, 10, 9, CalendarSystem.GetCopticCalendar(4)) { Pattern = "c yyyy MM dd", Text = "Coptic 4 2011 10 09" },
+            new Data(2011, 10, 9, CalendarSystem.GetCopticCalendar(4)) { Pattern = "yyyy MM dd c", Text = "2011 10 09 Coptic 4" },
         };
 
         internal static IEnumerable<Data> ParseData = ParseOnlyData.Concat(FormatAndParseData);
