@@ -7,7 +7,7 @@ details.
 ## 1.0.0 (expected) ##
 
 - Added support for the `;` custom format specifier to parse both comma
-  and period for fractions of a second
+  and period for fractions of a second ([issue 140][])
 - Added support for the `c` custom format specifier for local values
   which include a calendar system, to represent the calendar ID
 
@@ -124,30 +124,3 @@ Bug fixes:
 ## 1.0.0-beta1, released 2012-04-12 with tzdb 2012c
 
 - Initial beta release
-
-[issue 35]: http://code.google.com/p/noda-time/issues/detail?id=35
-[issue 51]: http://code.google.com/p/noda-time/issues/detail?id=51
-[issue 53]: http://code.google.com/p/noda-time/issues/detail?id=53
-[issue 55]: http://code.google.com/p/noda-time/issues/detail?id=55
-[issue 56]: http://code.google.com/p/noda-time/issues/detail?id=56
-[issue 61]: http://code.google.com/p/noda-time/issues/detail?id=61
-[issue 62]: http://code.google.com/p/noda-time/issues/detail?id=62
-[issue 64]: http://code.google.com/p/noda-time/issues/detail?id=64
-[issue 69]: http://code.google.com/p/noda-time/issues/detail?id=69
-[issue 70]: http://code.google.com/p/noda-time/issues/detail?id=70
-[issue 72]: http://code.google.com/p/noda-time/issues/detail?id=72
-[issue 73]: http://code.google.com/p/noda-time/issues/detail?id=73
-[issue 77]: http://code.google.com/p/noda-time/issues/detail?id=77
-[issue 81]: http://code.google.com/p/noda-time/issues/detail?id=81
-[issue 87]: http://code.google.com/p/noda-time/issues/detail?id=87
-[issue 90]: http://code.google.com/p/noda-time/issues/detail?id=90
-[issue 91]: http://code.google.com/p/noda-time/issues/detail?id=91
-[issue 103]: http://code.google.com/p/noda-time/issues/detail?id=103
-[issue 107]: http://code.google.com/p/noda-time/issues/detail?id=107
-[issue 114]: http://code.google.com/p/noda-time/issues/detail?id=114
-[issue 115]: http://code.google.com/p/noda-time/issues/detail?id=115
-[issue 118]: http://code.google.com/p/noda-time/issues/detail?id=118
-[issue 120]: http://code.google.com/p/noda-time/issues/detail?id=120
-[issue 122]: http://code.google.com/p/noda-time/issues/detail?id=122
-[issue 121]: http://code.google.com/p/noda-time/issues/detail?id=121
-[issue 131]: http://code.google.com/p/noda-time/issues/detail?id=131
