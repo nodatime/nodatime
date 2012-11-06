@@ -8,7 +8,7 @@ details.
 
 - Set specific files to be ignored in ZoneInfoCompiler, so we don't
   need to remove them manually each time.
-- Updated to tzdb 2011i
+- Updated to tzdb 2012i
 - Added support for the `;` custom format specifier to parse both comma
   and period for fractions of a second ([issue 140][])
 - Added support for the `c` custom format specifier for local values
