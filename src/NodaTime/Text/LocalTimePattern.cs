@@ -34,9 +34,9 @@ namespace NodaTime.Text
     public sealed class LocalTimePattern : IPattern<LocalTime>
     {
         /// <summary>
-        /// Returns an invariant local time pattern which is ISO-8601 compatible other than providing up to 7 decimal places
-        /// of sub-second accuracy. (These digits are omitted when unnecessary.)
-        /// This corresponds to the text pattern "HH':'mm':'ss.FFFFFFF".
+        /// Returns an invariant local time pattern which is ISO-8601 compatible, providing up to 7 decimal places.
+        /// (These digits are omitted when unnecessary.)
+        /// This corresponds to the text pattern "HH':'mm':'ss;FFFFFFF".
         /// </summary>
         public static LocalTimePattern ExtendedIsoPattern { get { return Patterns.ExtendedIsoPatternImpl; } }
 
@@ -51,7 +51,7 @@ namespace NodaTime.Text
         /// </summary>
         private static class Patterns
         {
-            internal static readonly LocalTimePattern ExtendedIsoPatternImpl = CreateWithInvariantCulture("HH':'mm':'ss.FFFFFFF");
+            internal static readonly LocalTimePattern ExtendedIsoPatternImpl = CreateWithInvariantCulture("HH':'mm':'ss;FFFFFFF");
         }
 
         private readonly string patternText;
