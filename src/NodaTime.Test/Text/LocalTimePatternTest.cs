@@ -101,6 +101,10 @@ namespace NodaTime.Test.Text
             // AM/PM designator is case-insensitive for both short and long forms
             new Data(17, 0, 0, 0) { Text = "5 p", Pattern = "h t" },
             new Data(17, 0, 0, 0) { Text = "5 pm", Pattern = "h tt" },
+
+            // Parsing using the semi-colon "comma dot" specifier
+            new Data(16, 05, 20, 352) { Pattern = "HH:mm:ss;fff", Text = "16:05:20,352" },
+            new Data(16, 05, 20, 352) { Pattern = "HH:mm:ss;FFF", Text = "16:05:20,352" },
         };
 
         internal static Data[] FormatOnlyData = {
@@ -282,6 +286,12 @@ namespace NodaTime.Test.Text
             new Data(15, 0, 0) { Culture = NoAmOrPmCulture, Text = "3 ", Pattern = "h tt", Template = new LocalTime(14, 0, 0) },
             new Data(5, 0, 0) { Culture = NoAmOrPmCulture, Text = "5 ", Pattern = "h t", Template = new LocalTime(2, 0, 0) },
             new Data(15, 0, 0) { Culture = NoAmOrPmCulture, Text = "3 ", Pattern = "h t", Template = new LocalTime(14, 0, 0) },
+
+            // Use of the semi-colon "comma dot" specifier
+            new Data(16, 05, 20, 352) { Pattern = "HH:mm:ss;fff", Text = "16:05:20.352" },
+            new Data(16, 05, 20, 352) { Pattern = "HH:mm:ss;FFF", Text = "16:05:20.352" },
+            new Data(16, 05, 20, 352) { Pattern = "HH:mm:ss;FFF 'end'", Text = "16:05:20.352 end" },
+            new Data(16, 05, 20) { Pattern = "HH:mm:ss;FFF 'end'", Text = "16:05:20 end" },
         };
 
         internal static IEnumerable<Data> ParseData = ParseOnlyData.Concat(FormatAndParseData);
