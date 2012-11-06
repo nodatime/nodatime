@@ -35,12 +35,8 @@ files for example, and I'd expect other zip tools to do so too. You should end u
 as "america", "africa", "etcetera".</li>
 <li>Ideally, rename the directory to match the version number, e.g. "2012c". The directory name will be used in the version ID
 reported by the time zone provider later.</li>
-<li>Remove unwanted files. Various extra files are provided for backward compatibility on Unix systems, but they're unlikely
-to be useful to you. The main Noda Time distribution uses <code>africa</code>, <code>antarctica</code>, <code>asia</code>, <code>australasia</code>, <code>backward</code>, <code>etcetera</code>, 
-<code>europe</code>, <code>northamerica</code>, <code>pacificnew</code>, <code>southamerica</code>, <code>systemv</code>. (I suspect the <code>systemv</code> file isn't terribly useful in
-fact; but it's present at the time of this writing.)</li>
-<li><p>Find the Windows mapping file you want to use. Currently, I'd recommend using the version supplied with the Noda Time source
-in ZoneInfoCompiler\Data\winmap in a file beginning "windowsZones". This file comes from <a href="http://cldr.unicode.org">CLDR</a>.</p></li>
+<li>Find the Windows mapping file you want to use. Currently, I'd recommend using the version supplied with the Noda Time source
+in ZoneInfoCompiler\Data\winmap in a file beginning "windowsZones". This file comes from <a href="http://cldr.unicode.org">CLDR</a>.</li>
 <li><p>Run ZoneInfoCompiler. I'd suggest leaving it in its build directory and running it like this:</p>
 
 <p>path\to\ZoneInfoCompiler.exe -s path\to\tzdb-files -w path\to\windowsMapping-file.xml -o path\to\output.resources -t Resource</p>
