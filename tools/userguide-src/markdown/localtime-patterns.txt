@@ -127,6 +127,19 @@ for general notes on custom patterns, including characters used for escaping and
       </td>
 	</tr>
     <tr>
+      <td><code>;</code></td>
+      <td>
+        This is always *formatted* as a period, but can *parse* either a period or a comma.
+        In all other respects it behaves as the period custom specifier. The purpose of
+        this specifier is to properly parse ISO-8601 times, where a comma is allowed as
+        the separator for subsecond values.
+      </td>
+      <td>
+        Pattern <code>ss;fff</code> parses <code>53,123</code> and <code>53.123</code>
+        identically.
+      </td>
+    </tr>
+    <tr>
       <td><code>:</code></td>
       <td>
         The time separator for the format provider; colon in the invariant colture.

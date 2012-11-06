@@ -61,6 +61,9 @@ namespace NodaTime.Test.Text
         internal static Data[] ParseOnlyData = {
             new Data(2011, 10, 19, 16, 05, 20) { Pattern = "dd MM yyyy", Text = "19 10 2011", Template = new LocalDateTime(2000, 1, 1, 16, 05, 20) },
             new Data(2011, 10, 19, 16, 05, 20) { Pattern = "HH:mm:ss", Text = "16:05:20", Template = new LocalDateTime(2011, 10, 19, 0, 0, 0) },
+            // Parsing using the semi-colon "comma dot" specifier
+            new Data(2011, 10, 19, 16, 05, 20, 352) { Pattern = "yyyy-MM-dd HH:mm:ss;fff", Text = "2011-10-19 16:05:20,352" },
+            new Data(2011, 10, 19, 16, 05, 20, 352) { Pattern = "yyyy-MM-dd HH:mm:ss;FFF", Text = "2011-10-19 16:05:20,352" },
         };
 
         internal static Data[] FormatOnlyData = {
@@ -102,6 +105,12 @@ namespace NodaTime.Test.Text
             new Data(MsdnStandardExample) { Pattern = "yyyy-MM-dd(c)THH:mm:ss.FFFFFFF", Text = "2009-06-15(ISO)T13:45:30.09", Culture = Cultures.EnUs },
             new Data(SampleLocalDateTimeCoptic) { Pattern = "(c) yyyy-MM-ddTHH:mm:ss.FFFFFFF", Text = "(Coptic 1) 1376-06-19T21:13:34.1234567", Culture = Cultures.FrFr },
             new Data(SampleLocalDateTimeCoptic) { Pattern = "yyyy-MM-dd'C'c'T'HH:mm:ss.FFFFFFF", Text = "1376-06-19CCoptic 1T21:13:34.1234567", Culture = Cultures.EnUs },
+            
+            // Use of the semi-colon "comma dot" specifier
+            new Data(2011, 10, 19, 16, 05, 20, 352) { Pattern = "yyyy-MM-dd HH:mm:ss;fff", Text = "2011-10-19 16:05:20.352" },
+            new Data(2011, 10, 19, 16, 05, 20, 352) { Pattern = "yyyy-MM-dd HH:mm:ss;FFF", Text = "2011-10-19 16:05:20.352" },
+            new Data(2011, 10, 19, 16, 05, 20, 352) { Pattern = "yyyy-MM-dd HH:mm:ss;FFF 'end'", Text = "2011-10-19 16:05:20.352 end" },
+            new Data(2011, 10, 19, 16, 05, 20) { Pattern = "yyyy-MM-dd HH:mm:ss;FFF 'end'", Text = "2011-10-19 16:05:20 end" },
         };
 
         internal static IEnumerable<Data> ParseData = ParseOnlyData.Concat(FormatAndParseData);
@@ -199,6 +208,11 @@ namespace NodaTime.Test.Text
 
             public Data(int year, int month, int day, int hour, int minute, int second)
                 : this(new LocalDateTime(year, month, day, hour, minute, second))
+            {
+            }
+
+            public Data(int year, int month, int day, int hour, int minute, int second, int millis)
+                : this(new LocalDateTime(year, month, day, hour, minute, second, millis))
             {
             }
 

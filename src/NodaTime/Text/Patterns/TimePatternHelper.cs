@@ -87,6 +87,72 @@ namespace NodaTime.Text.Patterns
         }
 
         /// <summary>
+        /// Creates a character handler for a dot (period) or comma, which have the same meaning.
+        /// Formatting always uses a dot, but parsing will allow a comma instead, to conform with
+        /// ISO-8601. This is *not* culture sensitive.
+        /// </summary>
+        internal static CharacterHandler<TResult, TBucket> CreateCommaDotHandler<TResult, TBucket>
+            (int maxCount, NodaFunc<TResult, int> getter, NodaAction<TBucket, int> setter)
+            where TBucket : ParseBucket<TResult>
+        {
+            return (pattern, builder) =>
+            {
+                // Note: Deliberately *not* using the decimal separator of the culture - see issue 21.
+
+                // If the next part of the pattern is an F, then this decimal separator is effectively optional.
+                // At parse time, we need to check whether we've matched the decimal separator. If we have, match the fractional
+                // seconds part as normal. Otherwise, we continue on to the next parsing token.
+                // At format time, we should always append the decimal separator, and then append using PadRightTruncate.
+                if (pattern.PeekNext() == 'F')
+                {
+                    PatternParseResult<TResult> failure = null;
+                    pattern.MoveNext();
+                    int count = pattern.GetRepeatCount(maxCount, ref failure);
+                    if (failure != null)
+                    {
+                        return failure;
+                    }
+                    failure = builder.AddField(PatternFields.FractionalSeconds, pattern.Current);
+                    if (failure != null)
+                    {
+                        return failure;
+                    }
+                    builder.AddParseAction((valueCursor, bucket) =>
+                    {
+                        // If the next token isn't a dot or comma, we assume
+                        // it's part of the next token in the pattern
+                        if (!valueCursor.Match('.') && !valueCursor.Match(','))
+                        {
+                            return null;
+                        }
+
+                        // If there *was* a decimal separator, we should definitely have a number.
+                        int fractionalSeconds;
+                        // Last argument is false because we don't need *all* the digits to be present
+                        if (!valueCursor.ParseFraction(count, maxCount, out fractionalSeconds, false))
+                        {
+                            return ParseResult<TResult>.MismatchedNumber(new string('F', count));
+                        }
+                        // No need to validate the value - we've got one to three digits, so the range 0-999 is guaranteed.
+                        setter(bucket, fractionalSeconds);
+                        return null;
+                    });
+                    builder.AddFormatAction((localTime, sb) => sb.Append('.'));
+                    builder.AddFormatRightPadTruncate(count, maxCount, getter);
+                    return null;
+                }
+                else
+                {
+                    builder.AddParseAction((str, bucket) => str.Match('.') || str.Match(',') 
+                                                            ? null 
+                                                            : ParseResult<TResult>.MismatchedCharacter(';'));
+                    builder.AddFormatAction((value, sb) => sb.Append('.'));
+                    return null;
+                }
+            };
+        }
+
+        /// <summary>
         /// Creates a character handler to handle the "fraction of a second" specifier (f or F).
         /// </summary>
         internal static CharacterHandler<TResult, TBucket> CreateFractionHandler<TResult, TBucket>
