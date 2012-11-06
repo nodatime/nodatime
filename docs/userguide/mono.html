@@ -25,11 +25,11 @@ as possible.</li>
 Mono release at the time of this writing (2.10.8) - while
 <a href="../api/html/T_NodaTime_TimeZones_BclDateTimeZone.htm"><code>BclDateTimeZone</code></a> <em>may</em>
 do the right thing, it may disagree with the results of calling
-methods directly on the time zone (<a href="https://code.google.com/p/noda-time/issues/detail?id=97">issue 97</a>).</li>
+methods directly on the time zone (<a href="http://code.google.com/p/noda-time/issues/detail?id=97">issue 97</a>).</li>
 <li>Some cultures in Mono have standard date/time patterns including
 "z" for "offset from UTC". These will not display appropriately
 when used for text formatting in Noda Time, as the "z" is
-meaningless for local dates and times (<a href="https://code.google.com/p/noda-time/issues/detail?id=98">issue 98</a>).</li>
+meaningless for local dates and times (<a href="http://code.google.com/p/noda-time/issues/detail?id=98">issue 98</a>).</li>
 <li>Some cultures in Mono have standard date/time patterns which
 use the abbreviated am/pm designator, but have am/pm designators
 which are the same when abbreviated. In these cases, parsing
