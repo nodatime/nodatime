@@ -131,5 +131,13 @@ any form of parsing or user-specified formatting.</p>
 <li>Where valid, <code>/</code> always refers to the culture-specific date separator (a forward slash in the invariant culture)</li>
 </ul>
 
+<p>Any characters within a custom format which <em>don't</em> have a specific
+meaning are treated as text literals (when parsing, they must be
+matched exactly; when formatting they are reproduced exactly). This
+is supported mostly for the sake of compatibility. We <strong>strongly
+recommend</strong> that you quote any text literals, to avoid nasty
+surprises if extra characters take on special meanings in later
+versions.</p>
+
   </body>
 </html>
