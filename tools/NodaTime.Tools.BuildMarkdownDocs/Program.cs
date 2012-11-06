@@ -37,6 +37,8 @@ namespace NodaTime.Tools.BuildMarkdownDocs
         private const string ApiUrlPrefix = "../api/html/";
         private static readonly Regex NamespacePattern = new Regex(@"noda-ns://([A-Za-z0-9_.]*)", RegexOptions.Multiline);
         private static readonly Regex TypePattern = new Regex(@"noda-type://([A-Za-z0-9_.]*)", RegexOptions.Multiline);
+        private static readonly Regex IssueUrlPattern = new Regex(@"(\[[^\]]*\])\[issue (\d+)\]", RegexOptions.Multiline);
+        private static readonly Regex IssueLinkPattern = new Regex(@"\[issue (\d+)\]\[\]", RegexOptions.Multiline);
 
         private static int Main(string[] args)
         {
@@ -125,7 +127,23 @@ namespace NodaTime.Tools.BuildMarkdownDocs
         {
             markdown = NamespacePattern.Replace(markdown, match => TranslateUrl(match, "N"));
             markdown = TypePattern.Replace(markdown, match => TranslateUrl(match, "T"));
+            markdown = IssueUrlPattern.Replace(markdown, TranslateIssueUrl);
+            markdown = IssueLinkPattern.Replace(markdown, TranslateIssueLink);
             return markdown;
+        }
+        
+        private static string TranslateIssueLink(Match match)
+        {
+            string issue = match.Groups[1].Value;
+            return "[issue " + issue + "](http://code.google.com/p/noda-time/issues/detail?id=" + issue + ")";
+        }
+        
+        // A link where only the URL part is specified as [issue xyz]
+        private static string TranslateIssueUrl(Match match)
+        {
+            string text = match.Groups[1].Value;
+            string issue = match.Groups[2].Value;
+            return text + "(http://code.google.com/p/noda-time/issues/detail?id=" + issue + ")";
         }
 
         private static string TranslateUrl(Match match, string memberTypePrefix)
