@@ -121,6 +121,14 @@ Additionally:
 - Where valid, `:` always refers to the culture-specific time separator (a colon in the invariant culture)
 - Where valid, `/` always refers to the culture-specific date separator (a forward slash in the invariant culture)
 
+Any characters within a custom format which *don't* have a specific
+meaning are treated as text literals (when parsing, they must be
+matched exactly; when formatting they are reproduced exactly). This
+is supported mostly for the sake of compatibility. We **strongly
+recommend** that you quote any text literals, to avoid nasty
+surprises if extra characters take on special meanings in later
+versions.
+
   [2]: http://msdn.microsoft.com/en-us/library/system.globalization.cultureinfo.aspx
   [3]: noda-ns://NodaTime.Text
   [4]: noda-type://NodaTime.LocalDateTime
