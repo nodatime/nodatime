@@ -1,12 +1,14 @@
 Noda Time User Guide
 
-In time, this will form the user documentation to complement the
-API documentation. At the moment it's a little sparse - if
-there's anything you would like to see here sooner rather than
-later, please drop a line to the mailing list.
+This guide provides documentation to complement the API reference.
+It is recommended that you read at least the first few pages before
+starting to develop using Noda Time. If you have suggestions or
+questions which are likely to be discussion-based, please post to
+the [mailing list][2]. For more specific "How do I solve problem X?"
+questions, please ask on [Stack Overflow](so) using the [nodatime tag](so-tag).
 
-User guide contents
--------------------
+Table of contents
+-----------------
 
 - [Why does this project exist?](rationale.html)
 - [Installation](installation.html)
@@ -44,3 +46,5 @@ offline, it's the offline API docs)
 [5]: http://noda-time.googlecode.com/hg/docs/api/Index.html
 [6]: ../api/Index.html
 [Developer guide]: ../developer/index.html
+[so]: http://stackoverflow.com
+[so-tag]: http://stackoverflow.com/questions/tagged/nodatime
