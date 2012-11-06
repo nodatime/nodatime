@@ -18,6 +18,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using NodaTime.TimeZones;
 
 namespace NodaTime.ZoneInfoCompiler.Tzdb
@@ -29,6 +30,22 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
     /// </summary>
     public class TzdbZoneInfoCompiler
     {
+        // Files that we don't want to build into the TZDB resources. Excluding them here saves the maintainer from having to
+        // remove them manually.
+        private static readonly HashSet<string> ExcludedFiles = new HashSet<string>
+        { 
+            "factory",
+            "iso3166.tab",
+            "leapseconds",
+            "Makefile",
+            "solar87",
+            "solar88",
+            "solar89",
+            "yearistype.sh",
+            "zone.tab",
+            "Readme.txt" // Just to handle old directories in Noda Time. Not part of tzdb.
+        };
+
         private readonly ILog log;
         private readonly TzdbZoneInfoParser tzdbParser;
 
@@ -122,7 +139,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         {
             log.Info("Starting compilation of directory {0}", sourceDirectoryName);
             var sourceDirectory = new DirectoryInfo(sourceDirectoryName);
-            var fileList = sourceDirectory.GetFiles();
+            var fileList = sourceDirectory.GetFiles().Where(file => !ExcludedFiles.Contains(file.Name));
             //// Using this conditional code makes debugging simpler in Visual Studio because exceptions will
             //// be caught by VS and shown with the exception visualizer.
 #if DEBUG
