@@ -40,9 +40,9 @@ namespace NodaTime.Text
         public static InstantPattern GeneralPattern { get { return Patterns.GeneralPatternImpl; } }
 
         /// <summary>
-        /// Returns an invariant instant pattern which is ISO-8601 compatible other than providing up to 7 decimal places
+        /// Returns an invariant instant pattern which is ISO-8601 compatible, providing up to 7 decimal places
         /// of sub-second accuracy. (These digits are omitted when unnecessary.)
-        /// This corresponds to the text pattern "yyyy'-'MM'-'dd'T'HH':'mm':'ss.FFFFFFF'Z'".
+        /// This corresponds to the text pattern "yyyy'-'MM'-'dd'T'HH':'mm':'ss.FFFFFFF;Z'".
         /// </summary>
         public static InstantPattern ExtendedIsoPattern { get { return Patterns.ExtendedIsoPatternImpl; } }
 
@@ -57,7 +57,7 @@ namespace NodaTime.Text
         /// </summary>
         private static class Patterns
         {
-            internal static readonly InstantPattern ExtendedIsoPatternImpl = CreateWithInvariantCulture("yyyy'-'MM'-'dd'T'HH':'mm':'ss.FFFFFFF'Z'");
+            internal static readonly InstantPattern ExtendedIsoPatternImpl = CreateWithInvariantCulture("yyyy'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFF'Z'");
             internal static readonly InstantPattern GeneralPatternImpl = CreateWithInvariantCulture("g");
         }
 
