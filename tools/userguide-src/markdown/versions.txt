@@ -6,14 +6,22 @@ details.
 
 ## 1.0.0, released 2012-11-07 with tzdb 2012i ##
 
+API changes:
+
+- Added the `CalendarSystem.Id` property that returns a unique ID for a
+  calendar system, along with the `ForId()` factory method and `Ids` static
+  property; `ToString()` now returns the calendar ID rather than the name
+- Added support for the `c` custom format specifier for local date values,
+  which includes the calendar ID, representing the calendar system
+- Added support for the `;` custom format specifier to parse both comma
+  and period for fractions of a second; `InstantPattern.ExtendedIsoPattern`,
+  `LocalTimePattern.ExtendedIsoPattern`, and
+  `LocalDateTimePattern.ExtendedIsoPattern` now accept both as separators
+  (issues [140][issue 140] and [141][issue 141])
+- Added support for the 'r' standard pattern for `LocalDateTime` that includes
+  the calendar system
 - Set specific files to be ignored in ZoneInfoCompiler, so we don't
   need to remove them manually each time.
-- Updated to tzdb 2012i
-- Added support for the `;` custom format specifier to parse both comma
-  and period for fractions of a second (issues [140][issue 140] and
-  [141][issue 141])
-- Added support for the `c` custom format specifier for local values
-  which include a calendar system, to represent the calendar ID
 
 ## 1.0.0-rc1, released 2012-11-01 with tzdb 2012h
 
