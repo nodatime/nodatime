@@ -22,7 +22,7 @@ API changes:
   `LocalTimePattern.ExtendedIsoPattern`, and
   `LocalDateTimePattern.ExtendedIsoPattern` now accept both as separators
   (issues [140][issue 140] and [141][issue 141])
-- Added support for the 'r' standard pattern for `LocalDateTime` that includes
+- Added support for the `r` standard pattern for `LocalDateTime` that includes
   the calendar system
 - Set specific files to be ignored in ZoneInfoCompiler, so we don't
   need to remove them manually each time.
