@@ -49,6 +49,14 @@ namespace NodaTime.Test.Text
         internal static Data[] FormatOnlyData = {
         };
 
+        [Test]
+        public void IsoHandlesCommas()
+        {
+            Instant expected = Instant.FromUtc(2012, 1, 1, 0, 0) + Duration.FromTicks(1);
+            Instant actual = InstantPattern.ExtendedIsoPattern.Parse("2012-01-01T00:00:00,0000001Z").Value;
+            Assert.AreEqual(actual, expected);
+        }
+
         /// <summary>
         /// Common test data for both formatting and parsing. A test should be placed here unless is truly
         /// cannot be run both ways. This ensures that as many round-trip type tests are performed as possible.
