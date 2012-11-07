@@ -4,7 +4,11 @@ User-visible changes from 1.0.0-beta1 onwards. See the
 [project repository](http://code.google.com/p/noda-time/source/list) for more
 details.
 
-## 1.0.0 (expected) ##
+## 1.1 (current default branch)
+
+- (No changes yet...)
+
+## 1.0.0, released 2012-11-07 with tzdb 2012i ##
 
 - Set specific files to be ignored in ZoneInfoCompiler, so we don't
   need to remove them manually each time.
