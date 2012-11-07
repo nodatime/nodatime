@@ -20,14 +20,23 @@ details.</p>
 
 <h2>1.0.0, released 2012-11-07 with tzdb 2012i</h2>
 
+<p>API changes:</p>
+
 <ul>
+<li>Added the <code>CalendarSystem.Id</code> property that returns a unique ID for a
+calendar system, along with the <code>ForId()</code> factory method and <code>Ids</code> static
+property; <code>ToString()</code> now returns the calendar ID rather than the name</li>
+<li>Added support for the <code>c</code> custom format specifier for local date values,
+which includes the calendar ID, representing the calendar system</li>
+<li>Added support for the <code>;</code> custom format specifier to parse both comma
+and period for fractions of a second; <code>InstantPattern.ExtendedIsoPattern</code>,
+<code>LocalTimePattern.ExtendedIsoPattern</code>, and
+<code>LocalDateTimePattern.ExtendedIsoPattern</code> now accept both as separators
+(issues <a href="http://code.google.com/p/noda-time/issues/detail?id=140">140</a> and <a href="http://code.google.com/p/noda-time/issues/detail?id=141">141</a>)</li>
+<li>Added support for the 'r' standard pattern for <code>LocalDateTime</code> that includes
+the calendar system</li>
 <li>Set specific files to be ignored in ZoneInfoCompiler, so we don't
 need to remove them manually each time.</li>
-<li>Updated to tzdb 2012i</li>
-<li>Added support for the <code>;</code> custom format specifier to parse both comma
-and period for fractions of a second (<a href="http://code.google.com/p/noda-time/issues/detail?id=140">issue 140</a>)</li>
-<li>Added support for the <code>c</code> custom format specifier for local values
-which include a calendar system, to represent the calendar ID</li>
 </ul>
 
 <h2>1.0.0-rc1, released 2012-11-01 with tzdb 2012h</h2>
