@@ -14,7 +14,8 @@ details.
   need to remove them manually each time.
 - Updated to tzdb 2012i
 - Added support for the `;` custom format specifier to parse both comma
-  and period for fractions of a second ([issue 140][])
+  and period for fractions of a second (issues [140][issue 140] and
+  [141][issue 141])
 - Added support for the `c` custom format specifier for local values
   which include a calendar system, to represent the calendar ID
 
