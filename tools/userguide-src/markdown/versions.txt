@@ -24,6 +24,9 @@ API changes:
   (issues [140][issue 140] and [141][issue 141])
 - Added support for the `r` standard pattern for `LocalDateTime` that includes
   the calendar system
+
+Other:
+
 - Set specific files to be ignored in ZoneInfoCompiler, so we don't
   need to remove them manually each time.
 
