@@ -195,6 +195,26 @@ namespace NodaTime.Test
         }
 
         [Test]
+        public void WithOffset()
+        {
+            var offset = Offset.FromHoursAndMinutes(5, 10);
+            var localDateTime = new LocalDateTime(2009, 12, 22, 21, 39, 30);
+            var offsetDateTime = localDateTime.WithOffset(offset);
+            Assert.AreEqual(localDateTime, offsetDateTime.LocalDateTime);
+            Assert.AreEqual(offset, offsetDateTime.Offset);
+        }
+
+        [Test]
+        public void InUtc()
+        {
+            var local = new LocalDateTime(2009, 12, 22, 21, 39, 30);
+            var zoned = local.InUtc();
+            Assert.AreEqual(local, zoned.LocalDateTime);
+            Assert.AreEqual(Offset.Zero, zoned.Offset);
+            Assert.AreSame(DateTimeZone.Utc, zoned.Zone);
+        }
+
+        [Test]
         public void InZoneStrictly_InWinter()
         {
             var local = new LocalDateTime(2009, 12, 22, 21, 39, 30);

@@ -100,6 +100,54 @@ namespace NodaTime.Test
         }
 
         [Test]
+        public void FromTicksSinceUnixEpoch()
+        {
+            Instant actual = Instant.FromTicksSinceUnixEpoch(12345L);
+            Instant expected = new Instant(12345L);
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void FromMillisecondsSinceUnixEpoch_Valid()
+        {
+            Instant actual = Instant.FromMillisecondsSinceUnixEpoch(12345L);
+            Instant expected = new Instant(12345L * NodaConstants.TicksPerMillisecond);
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void FromMillisecondsSinceUnixEpoch_TooLarge()
+        {
+            Assert.Throws<ArgumentOutOfRangeException>(() => Instant.FromMillisecondsSinceUnixEpoch(long.MaxValue / 100));
+        }
+
+        [Test]
+        public void FromMillisecondsSinceUnixEpoch_TooSmall()
+        {
+            Assert.Throws<ArgumentOutOfRangeException>(() => Instant.FromMillisecondsSinceUnixEpoch(long.MinValue / 100));
+        }
+
+        [Test]
+        public void FromSecondsSinceUnixEpoch_Valid()
+        {
+            Instant actual = Instant.FromSecondsSinceUnixEpoch(12345L);
+            Instant expected = new Instant(12345L * NodaConstants.TicksPerSecond);
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void FromSecondsSinceUnixEpoch_TooLarge()
+        {
+            Assert.Throws<ArgumentOutOfRangeException>(() => Instant.FromSecondsSinceUnixEpoch(long.MaxValue / 1000000));
+        }
+
+        [Test]
+        public void FromSecondsSinceUnixEpoch_TooSmall()
+        {
+            Assert.Throws<ArgumentOutOfRangeException>(() => Instant.FromSecondsSinceUnixEpoch(long.MinValue / 1000000));
+        }
+
+        [Test]
         public void InZoneWithCalendar()
         {
             CalendarSystem copticCalendar = CalendarSystem.GetCopticCalendar(4);
