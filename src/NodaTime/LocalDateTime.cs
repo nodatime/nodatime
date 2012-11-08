@@ -824,6 +824,28 @@ namespace NodaTime
         }
 
         /// <summary>
+        /// Returns an <see cref="OffsetDateTime"/> for this local date/time with the given offset.
+        /// </summary>
+        /// <remarks>This method is purely a convenient alternative to calling the <see cref="OffsetDateTime"/> constructor directly.</remarks>
+        /// <param name="offset">The offset to apply.</param>
+        /// <returns>The result of this local date/time offset by the given amount.</returns>
+        public OffsetDateTime WithOffset(Offset offset)
+        {
+            return new OffsetDateTime(this, offset);
+        }
+
+        /// <summary>
+        /// Returns the mapping of this local date/time within <see cref="DateTimeZone.Utc"/>.
+        /// </summary>
+        /// <remarks>As UTC is a fixed time zone, there is no chance that this local date/time is ambiguous or skipped.</remarks>
+        /// <returns>The result of mapping this local date/time in UTC.</returns>
+        public ZonedDateTime InUtc()
+        {
+            // Use the internal constructor to avoid validation. We know it will be fine.
+            return new ZonedDateTime(this, Offset.Zero, DateTimeZone.Utc);
+        }
+
+        /// <summary>
         /// Returns the mapping of this local date/time within the given <see cref="DateTimeZone" />,
         /// with "strict" rules applied such that an exception is thrown if either the mapping is
         /// ambiguous or the time is skipped.

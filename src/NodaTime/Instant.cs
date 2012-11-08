@@ -519,6 +519,47 @@ namespace NodaTime
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="Instant" /> struct based
+        /// on a number of seconds since the Unix epoch of (ISO) January 1st 1970, midnight, UTC.
+        /// </summary>
+        /// <param name="seconds">Number of seconds since the Unix epoch. May be negative (for instants before the epoch).</param>
+        /// <returns>An <see cref="Instant"/> at exactly the given number of seconds since the Unix epoch.</returns>
+        /// <exception cref="ArgumentOutOfRangeException">The constructed instant would be out of the range representable in Noda Time.</exception>
+        internal static Instant FromSecondsSinceUnixEpoch(long seconds)
+        {
+            Preconditions.CheckArgumentRange("seconds", seconds, long.MinValue / NodaConstants.TicksPerSecond,
+                long.MaxValue / NodaConstants.TicksPerSecond);
+            return new Instant(seconds * NodaConstants.TicksPerSecond);
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Instant" /> struct based
+        /// on a number of milliseconds since the Unix epoch of (ISO) January 1st 1970, midnight, UTC.
+        /// </summary>
+        /// <param name="milliseconds">Number of milliseconds since the Unix epoch. May be negative (for instants before the epoch).</param>
+        /// <returns>An <see cref="Instant"/> at exactly the given number of milliseconds since the Unix epoch.</returns>
+        /// <exception cref="ArgumentOutOfRangeException">The constructed instant would be out of the range representable in Noda Time.</exception>
+        internal static Instant FromMillisecondsSinceUnixEpoch(long milliseconds)
+        {
+            Preconditions.CheckArgumentRange("milliseconds", milliseconds, long.MinValue / NodaConstants.TicksPerMillisecond,
+                long.MaxValue / NodaConstants.TicksPerMillisecond);
+            return new Instant(milliseconds * NodaConstants.TicksPerMillisecond);
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Instant" /> struct based
+        /// on a number of ticks since the Unix epoch of (ISO) January 1st 1970, midnight, UTC.
+        /// </summary>
+        /// <remarks>This is equivalent to calling the constructor directly, but indicates
+        /// intent more explicitly.</remarks>
+        /// <returns>An <see cref="Instant"/> at exactly the given number of ticks since the Unix epoch.</returns>
+        /// <param name="ticks">Number of ticks since the Unix epoch. May be negative (for instants before the epoch).</param>
+        internal static Instant FromTicksSinceUnixEpoch(long ticks)
+        {
+            return new Instant(ticks);
+        }
+
+        /// <summary>
         /// Returns the <see cref="ZonedDateTime"/> representing the same point in time as this instant, in the UTC time
         /// zone and ISO-8601 calendar. This is a shortcut for calling <see cref="InZone(DateTimeZone)" /> with an
         /// argument of <see cref="DateTimeZone.Utc"/>.

@@ -6,8 +6,13 @@ details.
 
 ## 1.1 (current default branch)
 
-- (No changes yet...)
+API changes:
 
+- Added convenience factory methods to `Instant`:
+  `From(Ticks,Milliseconds,Seconds)SinceUnixEpoch` [issue 142]
+- Added convenience conversions from `LocalDateTime` to
+  `ZonedDateTime` and `OffsetDateTime` [issue 142]
+  
 ## 1.0.0, released 2012-11-07 with tzdb 2012i ##
 
 API changes:
