@@ -24,6 +24,8 @@ API changes:
   (issues [140][issue 140] and [141][issue 141])
 - Added support for the `r` standard pattern for `LocalDateTime` that includes
   the calendar system
+- Renamed the `CreateWithInvariantInfo()` method on the pattern types to
+  `CreateWithInvariantCulture()` ([issue 137][])
 
 Other:
 
