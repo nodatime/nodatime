@@ -18,10 +18,15 @@ API changes:
   `LocalTimePattern.ExtendedIsoPattern`, and
   `LocalDateTimePattern.ExtendedIsoPattern` now accept both as separators
   (issues [140][issue 140] and [141][issue 141])
-- Added support for the 'r' standard pattern for `LocalDateTime` that includes
+- Added support for the `r` standard pattern for `LocalDateTime` that includes
   the calendar system
+- Renamed the `CreateWithInvariantInfo()` method on the pattern types to
+  `CreateWithInvariantCulture()` ([issue 137][])
+
+Other:
+
 - Set specific files to be ignored in ZoneInfoCompiler, so we don't
-  need to remove them manually each time.
+  need to remove them manually each time
 
 ## 1.0.0-rc1, released 2012-11-01 with tzdb 2012h
 
@@ -36,16 +41,16 @@ API changes:
 - Removed the `NodaCultureInfo` and `NodaFormatInfo` types ([issue 131][] and
   related issues), removed the `FormatInfo` property and `WithFormatInfo()`
   method on pattern types, and changed the culture-specific pattern factory
-  methods to take a `CultureInfo` rather than a `NodaFormatInfo`.
-- Removed `EmptyDateTimeZoneSource`.
+  methods to take a `CultureInfo` rather than a `NodaFormatInfo`
+- Removed `EmptyDateTimeZoneSource`
 - Many classes are now `sealed`: `PeriodPattern`, `BclDateTimeZoneProvider`,
   `BclDateTimeZoneSource`, `DateTimeZoneCache`, and `ZoneInterval`, along
   with various exception types and
-  `NodaTime.Testing.SingleTransitionDateTimeZone`.
+  `NodaTime.Testing.SingleTransitionDateTimeZone`
 - The names of the special resources used by `TzdbDateTimeZoneSource`
-  (`VersionKey`, etc) are now internal.
+  (`VersionKey`, etc) are now internal
 - Format of the special resource keys has changed; clients using
-  custom-built TZDB resources will need to rebuild.
+  custom-built TZDB resources will need to rebuild
 
 Bug fixes:
 
@@ -131,7 +136,7 @@ API changes:
 
 Bug fixes:
 
-- Many.
+- Many
 
 ## 1.0.0-beta1, released 2012-04-12 with tzdb 2012c
 
