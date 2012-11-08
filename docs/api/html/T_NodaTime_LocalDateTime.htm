@@ -64,6 +64,8 @@
             Gets the hour of day of this local date and time, in the range 0 to 23 inclusive.
             </div><br /></td></tr><tr data="method; public; static; declared"><td><img src="../icons/puboperator.gif" /><img src="../icons/static.gif" title="static member" /></td><td><a href="M_NodaTime_LocalDateTime_op_Inequality.htm">Inequality(LocalDateTime, LocalDateTime)</a></td><td><div class="summary">
             Implements the operator != (inequality).
+            </div><br /></td></tr><tr data="method; public; instance; declared"><td><img src="../icons/pubmethod.gif" /></td><td><a href="M_NodaTime_LocalDateTime_InUtc.htm">InUtc<span class="languageSpecificText"><span class="cs">()</span><span class="cpp">()</span><span class="nu">()</span><span class="fs">()</span></span></a></td><td><div class="summary">
+            Returns the mapping of this local date/time within <a href="P_NodaTime_DateTimeZone_Utc.htm">Utc</a>.
             </div><br /></td></tr><tr data="method; public; instance; declared"><td><img src="../icons/pubmethod.gif" /></td><td><a href="M_NodaTime_LocalDateTime_InZone.htm">InZone(DateTimeZone, ZoneLocalMappingResolver)</a></td><td><div class="summary">
             Resolves this local date and time into a <a href="T_NodaTime_ZonedDateTime.htm">ZonedDateTime</a> in the given time zone, following
             the given <a href="T_NodaTime_TimeZones_ZoneLocalMappingResolver.htm">ZoneLocalMappingResolver</a> to handle ambiguity and skipped times.
@@ -152,6 +154,8 @@
             Creates a new LocalDateTime representing the same physical date and time, but in a different calendar.
             The returned LocalDateTime is likely to have different date field values to this one.
             For example, January 1st 1970 in the Gregorian calendar was December 19th 1969 in the Julian calendar.
+            </div><br /></td></tr><tr data="method; public; instance; declared"><td><img src="../icons/pubmethod.gif" /></td><td><a href="M_NodaTime_LocalDateTime_WithOffset.htm">WithOffset(Offset)</a></td><td><div class="summary">
+            Returns an <a href="T_NodaTime_OffsetDateTime.htm">OffsetDateTime</a> for this local date/time with the given offset.
             </div><br /></td></tr><tr data="property; public; instance; declared"><td><img src="../icons/pubproperty.gif" /></td><td><a href="P_NodaTime_LocalDateTime_Year.htm">Year</a></td><td><div class="summary">Gets the year of this local date and time.</div><br /></td></tr><tr data="property; public; instance; declared"><td><img src="../icons/pubproperty.gif" /></td><td><a href="P_NodaTime_LocalDateTime_YearOfCentury.htm">YearOfCentury</a></td><td><div class="summary">Gets the year of this local date and time within its century.</div><br /></td></tr><tr data="property; public; instance; declared"><td><img src="../icons/pubproperty.gif" /></td><td><a href="P_NodaTime_LocalDateTime_YearOfEra.htm">YearOfEra</a></td><td><div class="summary">Gets the year of this local date and time within its era.</div><br /></td></tr></table></div></div></div><div class="section"><div class="sectionTitle" onclick="toggleSection(this.parentNode)"><img src="../icons/collapse_all.gif" /> Remarks</div><div class="sectionContent"><p>
             This type defaults to using the IsoCalendarSystem unless a different calendar system is
             specified.
