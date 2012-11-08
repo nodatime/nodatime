@@ -33,10 +33,17 @@ and period for fractions of a second; <code>InstantPattern.ExtendedIsoPattern</c
 <code>LocalTimePattern.ExtendedIsoPattern</code>, and
 <code>LocalDateTimePattern.ExtendedIsoPattern</code> now accept both as separators
 (issues <a href="http://code.google.com/p/noda-time/issues/detail?id=140">140</a> and <a href="http://code.google.com/p/noda-time/issues/detail?id=141">141</a>)</li>
-<li>Added support for the 'r' standard pattern for <code>LocalDateTime</code> that includes
+<li>Added support for the <code>r</code> standard pattern for <code>LocalDateTime</code> that includes
 the calendar system</li>
+<li>Renamed the <code>CreateWithInvariantInfo()</code> method on the pattern types to
+<code>CreateWithInvariantCulture()</code> (<a href="http://code.google.com/p/noda-time/issues/detail?id=137">issue 137</a>)</li>
+</ul>
+
+<p>Other:</p>
+
+<ul>
 <li>Set specific files to be ignored in ZoneInfoCompiler, so we don't
-need to remove them manually each time.</li>
+need to remove them manually each time</li>
 </ul>
 
 <h2>1.0.0-rc1, released 2012-11-01 with tzdb 2012h</h2>
@@ -53,16 +60,16 @@ time-based types (<a href="http://code.google.com/p/noda-time/issues/detail?id=1
 <li>Removed the <code>NodaCultureInfo</code> and <code>NodaFormatInfo</code> types (<a href="http://code.google.com/p/noda-time/issues/detail?id=131">issue 131</a> and
 related issues), removed the <code>FormatInfo</code> property and <code>WithFormatInfo()</code>
 method on pattern types, and changed the culture-specific pattern factory
-methods to take a <code>CultureInfo</code> rather than a <code>NodaFormatInfo</code>.</li>
-<li>Removed <code>EmptyDateTimeZoneSource</code>.</li>
+methods to take a <code>CultureInfo</code> rather than a <code>NodaFormatInfo</code></li>
+<li>Removed <code>EmptyDateTimeZoneSource</code></li>
 <li>Many classes are now <code>sealed</code>: <code>PeriodPattern</code>, <code>BclDateTimeZoneProvider</code>,
 <code>BclDateTimeZoneSource</code>, <code>DateTimeZoneCache</code>, and <code>ZoneInterval</code>, along
 with various exception types and
-<code>NodaTime.Testing.SingleTransitionDateTimeZone</code>.</li>
+<code>NodaTime.Testing.SingleTransitionDateTimeZone</code></li>
 <li>The names of the special resources used by <code>TzdbDateTimeZoneSource</code>
-(<code>VersionKey</code>, etc) are now internal.</li>
+(<code>VersionKey</code>, etc) are now internal</li>
 <li>Format of the special resource keys has changed; clients using
-custom-built TZDB resources will need to rebuild.</li>
+custom-built TZDB resources will need to rebuild</li>
 </ul>
 
 <p>Bug fixes:</p>
@@ -156,7 +163,7 @@ auto-advance option (issues <a href="http://code.google.com/p/noda-time/issues/d
 <p>Bug fixes:</p>
 
 <ul>
-<li>Many.</li>
+<li>Many</li>
 </ul>
 
 <h2>1.0.0-beta1, released 2012-04-12 with tzdb 2012c</h2>
