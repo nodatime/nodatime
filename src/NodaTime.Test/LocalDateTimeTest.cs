@@ -290,5 +290,15 @@ namespace NodaTime.Test
             Assert.AreEqual(Pacific.AtLeniently(ambiguous), ambiguous.InZone(Pacific, Resolvers.LenientResolver));
             Assert.AreEqual(Pacific.AtLeniently(skipped), skipped.InZone(Pacific, Resolvers.LenientResolver));
         }
+
+        /// <summary>
+        ///   Using the default constructor is equivalent to January 1st 1970, midnight, UTC, ISO calendar
+        /// </summary>
+        [Test]
+        public void DefaultConstructor()
+        {
+            var actual = new LocalDateTime();
+            Assert.AreEqual(NodaConstants.UnixEpoch.InUtc().LocalDateTime, actual);
+        }
     }
 }

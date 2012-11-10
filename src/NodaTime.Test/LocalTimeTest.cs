@@ -31,5 +31,15 @@ namespace NodaTime.Test
             Assert.AreEqual(1, new LocalTime(13, 0).ClockHourOfHalfDay);
             Assert.AreEqual(11, new LocalTime(23, 0).ClockHourOfHalfDay);
         }
+
+        /// <summary>
+        ///   Using the default constructor is equivalent to midnight
+        /// </summary>
+        [Test]
+        public void DefaultConstructor()
+        {
+            var actual = new LocalTime();
+            Assert.AreEqual(LocalTime.Midnight, actual);
+        }
     }
 }

@@ -355,5 +355,18 @@ namespace NodaTime.Test
             LocalDateTime local = new LocalDateTime(2000, 1, 1, 0, 0, 0);
             Assert.Throws<ArgumentException>(() => new ZonedDateTime(local, zone, zone.LateInterval.WallOffset));
         }
+
+        /// <summary>
+        ///   Using the default constructor is equivalent to January 1st 1970, midnight, UTC, ISO calendar
+        /// </summary>
+        [Test]
+        public void DefaultConstructor()
+        {
+            var actual = new ZonedDateTime();
+            Assert.AreEqual(NodaConstants.UnixEpoch.InUtc().LocalDateTime, actual.LocalDateTime);
+            Assert.AreEqual(Offset.Zero, actual.Offset);
+            Assert.AreEqual(DateTimeZone.Utc, actual.Zone);
+        }
+
     }
 }

@@ -162,5 +162,16 @@ namespace NodaTime.Test
             OffsetDateTime odt = new OffsetDateTime(local, Offset.Zero);
             Assert.AreEqual("2012-10-06T01:02:03Z", odt.ToString());
         }
+
+        /// <summary>
+        ///   Using the default constructor is equivalent to January 1st 1970, midnight, UTC, ISO calendar
+        /// </summary>
+        [Test]
+        public void DefaultConstructor()
+        {
+            var actual = new OffsetDateTime();
+            Assert.AreEqual(NodaConstants.UnixEpoch.InUtc().LocalDateTime, actual.LocalDateTime);
+            Assert.AreEqual(Offset.Zero, actual.Offset);
+        }
     }
 }
