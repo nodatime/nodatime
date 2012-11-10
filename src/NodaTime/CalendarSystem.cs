@@ -37,8 +37,8 @@ namespace NodaTime
     /// If you need to obtain a <see cref="CalendarSystem" /> instance, use one of the static properties or methods in this
     /// class, such as the <see cref="Iso" /> property or the <see cref="GetGregorianCalendar(int)" /> method.
     /// </para>
-    /// <para>Although this class is abstract, other assemblies cannot introduce types which derive from it: it contains internal
-    /// abstract methods, referring to internal types. This ensures that all calendar types are genuinely
+    /// <para>Although this class is abstract, other assemblies cannot introduce types which derive from it, as the
+    /// constructor is internal, and makes use of internal types. This ensures that all calendar types are genuinely
     /// immutable and thread-safe, aside from anything else. If you require a calendar system which is not
     /// currently supported, please file a feature request and we'll see what we can do.
     /// </para>
