@@ -73,5 +73,16 @@ namespace NodaTime.Test
             var interval = new Interval(SampleStart, SampleEnd);
             Assert.AreEqual(new Duration(700), interval.Duration);
         }
+
+        /// <summary>
+        ///   Using the default constructor is equivalent to a zero duration.
+        /// </summary>
+        [Test]
+        public void DefaultConstructor()
+        {
+            var actual = new Interval();
+            Assert.AreEqual(NodaTime.Duration.Zero, actual.Duration);
+        }
+
     }
 }

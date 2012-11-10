@@ -80,5 +80,16 @@ namespace NodaTime.Test
             TimeSpan ts = TimeSpan.FromHours(2);
             Assert.AreEqual(Offset.FromHours(2), Offset.FromTimeSpan(ts));
         }
+
+        /// <summary>
+        ///   Using the default constructor is equivalent to Offset.Zero
+        /// </summary>
+        [Test]
+        public void DefaultConstructor()
+        {
+            var actual = new Offset();
+            Assert.AreEqual(Offset.Zero, actual);
+        }
+
     }
 }

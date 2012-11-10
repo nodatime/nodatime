@@ -125,7 +125,7 @@ namespace NodaTime
         public Offset Offset { get { return offset; } }
 
         /// <summary>Gets the time zone associated with this value.</summary>
-        public DateTimeZone Zone { get { return zone; } }
+        public DateTimeZone Zone { get { return zone ?? DateTimeZone.Utc; } }
 
         /// <summary>Gets the local instant associated with this value.</summary>
         internal LocalInstant LocalInstant { get { return localDateTime.LocalInstant; } }
@@ -354,7 +354,7 @@ namespace NodaTime
         /// <returns>true if the <paramref name="lhs"/> is strictly earlier than <paramref name="rhs"/>, false otherwise.</returns>
         public static bool operator <(ZonedDateTime lhs, ZonedDateTime rhs)
         {
-            return lhs.ToInstant() < rhs.ToInstant() && Equals(lhs.LocalDateTime.Calendar, rhs.LocalDateTime.Calendar) && Equals(lhs.zone, rhs.zone);
+            return lhs.ToInstant() < rhs.ToInstant() && Equals(lhs.LocalDateTime.Calendar, rhs.LocalDateTime.Calendar) && Equals(lhs.Zone, rhs.Zone);
         }
 
         /// <summary>
@@ -370,7 +370,7 @@ namespace NodaTime
         /// <returns>true if the <paramref name="lhs"/> is earlier than or equal to <paramref name="rhs"/>, false otherwise.</returns>
         public static bool operator <=(ZonedDateTime lhs, ZonedDateTime rhs)
         {
-            return lhs.ToInstant() <= rhs.ToInstant() && Equals(lhs.LocalDateTime.Calendar, rhs.LocalDateTime.Calendar) && Equals(lhs.zone, rhs.zone);
+            return lhs.ToInstant() <= rhs.ToInstant() && Equals(lhs.LocalDateTime.Calendar, rhs.LocalDateTime.Calendar) && Equals(lhs.Zone, rhs.Zone);
         }
 
         /// <summary>
@@ -386,7 +386,7 @@ namespace NodaTime
         /// <returns>true if the <paramref name="lhs"/> is strictly later than <paramref name="rhs"/>, false otherwise.</returns>
         public static bool operator >(ZonedDateTime lhs, ZonedDateTime rhs)
         {
-            return lhs.ToInstant() > rhs.ToInstant() && Equals(lhs.LocalDateTime.Calendar, rhs.LocalDateTime.Calendar) && Equals(lhs.zone, rhs.zone);
+            return lhs.ToInstant() > rhs.ToInstant() && Equals(lhs.LocalDateTime.Calendar, rhs.LocalDateTime.Calendar) && Equals(lhs.Zone, rhs.Zone);
         }
 
         /// <summary>
@@ -402,7 +402,7 @@ namespace NodaTime
         /// <returns>true if the <paramref name="lhs"/> is later than or equal to <paramref name="rhs"/>, false otherwise.</returns>
         public static bool operator >=(ZonedDateTime lhs, ZonedDateTime rhs)
         {
-            return lhs.ToInstant() >= rhs.ToInstant() && Equals(lhs.LocalDateTime.Calendar, rhs.LocalDateTime.Calendar) && Equals(lhs.zone, rhs.zone);
+            return lhs.ToInstant() >= rhs.ToInstant() && Equals(lhs.LocalDateTime.Calendar, rhs.LocalDateTime.Calendar) && Equals(lhs.Zone, rhs.Zone);
         }
 
         /// <summary>
@@ -501,7 +501,7 @@ namespace NodaTime
         // TODO(Post-V1): Proper formatting support.
         public override string ToString()
         {
-            return "Local: " + localDateTime + " Offset: " + offset + " Zone: " + zone;
+            return "Local: " + localDateTime + " Offset: " + offset + " Zone: " + Zone;
         }
 
         /// <summary>

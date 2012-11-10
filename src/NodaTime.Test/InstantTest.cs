@@ -228,5 +228,15 @@ namespace NodaTime.Test
             Instant expected = Instant.FromUtc(2011, 08, 18, 20, 53);
             Assert.AreEqual(expected, Instant.FromDateTimeUtc(x));
         }
+
+        /// <summary>
+        ///   Using the default constructor is equivalent to January 1st 1970, midnight, UTC, ISO Calendar
+        /// </summary>
+        [Test]
+        public void DefaultConstructor()
+        {
+            var actual = new Instant();
+            Assert.AreEqual(NodaConstants.UnixEpoch, actual);
+        }
     }
 }
