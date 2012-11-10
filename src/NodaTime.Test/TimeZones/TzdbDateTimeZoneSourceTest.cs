@@ -17,6 +17,7 @@
 
 using System;
 using System.Linq;
+using System.Reflection;
 using NUnit.Framework;
 using NodaTime.TimeZones;
 
@@ -61,6 +62,39 @@ namespace NodaTime.Test.TimeZones
         {
             var zone = new TzdbDateTimeZoneSource("NodaTime.TimeZones.Tzdb").ForId("UTC");
             Assert.AreEqual(DateTimeZone.Utc, zone);
+        }
+
+        /// <summary>
+        /// Tests that we can load (and exercise) the binary Tzdb resource file distributed with Noda Time 1.0.0.
+        /// This is effectively a black-box regression test that ensures that the resource format has not changed in a
+        /// way such that a custom resource file compiled with ZoneInfoCompiler from 1.0 would become unreadable.
+        /// </summary>
+        [Test]
+        public void CanLoadNodaTimeResourceFromOnePointZeroRelease()
+        {
+            var source = new TzdbDateTimeZoneSource("NodaTime.Test.TestData.Tzdb2012iFromNodaTime1.0",
+                Assembly.GetExecutingAssembly());
+            Assert.AreEqual("TZDB: 2012i (mapping: 6356)", source.VersionId);
+
+            var utc = Instant.FromUtc(2007, 8, 24, 9, 30, 0);
+
+            // Test a regular zone with rules.
+            var london = source.ForId("Europe/London");
+            var inLondon = new ZonedDateTime(utc, london);
+            var expectedLocal = new LocalDateTime(2007, 8, 24, 10, 30);
+            Assert.AreEqual(expectedLocal, inLondon.LocalDateTime);
+
+            // Test a fixed-offset zone.
+            var utcFixed = source.ForId("Etc/UTC");
+            var inUtcFixed = new ZonedDateTime(utc, utcFixed);
+            expectedLocal = new LocalDateTime(2007, 8, 24, 9, 30);
+            Assert.AreEqual(expectedLocal, inUtcFixed.LocalDateTime);
+
+            // Test an alias.
+            var jersey = source.ForId("Japan");  // Asia/Tokyo
+            var inJersey = new ZonedDateTime(utc, jersey);
+            expectedLocal = new LocalDateTime(2007, 8, 24, 18, 30);
+            Assert.AreEqual(expectedLocal, inJersey.LocalDateTime);
         }
     }
 }
