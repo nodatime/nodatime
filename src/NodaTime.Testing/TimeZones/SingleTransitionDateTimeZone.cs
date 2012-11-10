@@ -22,22 +22,19 @@ using NodaTime.Utility;
 namespace NodaTime.Testing.TimeZones
 {
     /// <summary>
-    /// Time zone with a single transition between two offsets. This is
-    /// similar to a precalculated zone with only two intervals and no
-    /// tail zone, but it's simpler to construct and can be used to test
-    /// PrecalculatedDateTimeZone.
+    /// Time zone with a single transition between two offsets. This provides a simple way to test behaviour across a transition.
     /// </summary>
     public sealed class SingleTransitionDateTimeZone : DateTimeZone
     {
         private readonly ZoneInterval earlyInterval;
         /// <summary>
-        /// The ZoneInterval for the period before the transition.
+        /// The <see cref="ZoneInterval"/> for the period before the transition, starting at the beginning of time.
         /// </summary>
         public ZoneInterval EarlyInterval { get { return earlyInterval; } }
 
         private readonly ZoneInterval lateInterval;
         /// <summary>
-        /// The ZoneInterval for the period after the transition.
+        /// The <see cref="ZoneInterval"/> for the period after the transition, ending at the end of time.
         /// </summary>
         public ZoneInterval LateInterval { get { return lateInterval; } }
 
@@ -67,9 +64,10 @@ namespace NodaTime.Testing.TimeZones
                 offsetAfter, Offset.Zero);
         }
 
-        /// <summary>
-        /// Returns the zone interval before or after the transition, based on the instant provided.
-        /// </summary>
+        /// <inheritdoc />
+        /// <remarks>
+        /// This returns either the zone interval before or after the transition, based on the instant provided.
+        /// </remarks>
         public override ZoneInterval GetZoneInterval(Instant instant)
         {
             return earlyInterval.Contains(instant) ? earlyInterval : lateInterval;
