@@ -68,6 +68,7 @@ namespace NodaTime
         /// <param name="id">The ID of the calendar system. This is case-sensitive.</param>
         /// <returns>The calendar system with the given ID.</returns>
         /// <seealso cref="Id"/>
+        /// <exception cref="KeyNotFoundException">No calendar system for the specified ID can be found.</exception>
         public static CalendarSystem ForId(string id)
         {
             Func<CalendarSystem> factory;
