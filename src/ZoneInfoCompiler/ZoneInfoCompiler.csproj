@@ -209,23 +209,39 @@
     <None Include="Data\2012h\pacificnew" />
     <None Include="Data\2012h\southamerica" />
     <None Include="Data\2012h\systemv" />
+    <None Include="Data\2012c\Readme.txt" />
+    <None Include="Data\2012h\Readme.txt" />
+    <None Include="Data\2012i\africa" />
+    <None Include="Data\2012i\antarctica" />
+    <None Include="Data\2012i\asia" />
+    <None Include="Data\2012i\australasia" />
+    <None Include="Data\2012i\backward" />
+    <None Include="Data\2012i\etcetera" />
+    <None Include="Data\2012i\europe" />
+    <None Include="Data\2012i\factory" />
+    <None Include="Data\2012i\iso3166.tab" />
+    <None Include="Data\2012i\leapseconds" />
+    <None Include="Data\2012i\Makefile" />
+    <None Include="Data\2012i\northamerica" />
+    <None Include="Data\2012i\pacificnew" />
+    <None Include="Data\2012i\solar87" />
+    <None Include="Data\2012i\solar88" />
+    <None Include="Data\2012i\solar89" />
+    <None Include="Data\2012i\southamerica" />
+    <None Include="Data\2012i\systemv" />
+    <None Include="Data\2012i\yearistype.sh" />
+    <None Include="Data\2012i\zone.tab" />
+    <None Include="Data\winmap\readme.txt" />
+    <None Include="Data\winmap\windowsZones-21.xml">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Data\winmap\windowsZones-22-1.xml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NodaTime\NodaTime.csproj">
       <Project>{42B687A6-0F76-4638-A372-161C922A998B}</Project>
       <Name>NodaTime</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="resources\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Data\2012c\Readme.txt" />
-    <None Include="Data\2012h\Readme.txt" />
-    <Content Include="Data\winmap\readme.txt" />
-    <Content Include="Data\winmap\windowsZones-21.xml">
-      <SubType>Designer</SubType>
-    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
