@@ -144,6 +144,9 @@
     <Compile Include="LocalTimeTest.Operators.cs">
       <DependentUpon>LocalTimeTest.cs</DependentUpon>
     </Compile>
+    <Compile Include="LocalTimeTest.Construction.cs">
+      <DependentUpon>LocalTimeTest.cs</DependentUpon>
+    </Compile>
     <Compile Include="Text\LocalTimePatternTest.cs" />
     <Compile Include="Text\FormatHelperTest.cs" />
     <Compile Include="Globalization\FailingCultureInfo.cs" />
