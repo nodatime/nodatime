@@ -14,6 +14,7 @@
 // limitations under the License.
 #endregion
 
+using System.Linq;
 using NodaTime.Calendars;
 using NodaTime.TimeZones;
 using NUnit.Framework;
@@ -97,5 +98,22 @@ namespace NodaTime.Demo
             instantAfter = localAfter.InZone(shanghai, resolver).ToInstant();
             Assert.AreEqual(Duration.FromSeconds(1), instantAfter - instantBefore);
         }
+
+        /// <summary>
+        /// How can I dedupe the IDs in TZDB? (There's more to the question, but this is one part of it...)
+        /// <see cref="http://stackoverflow.com/questions/13321716"/>
+        /// </summary>
+        [Test]
+        public void Aliases()
+        {
+            var source = TzdbDateTimeZoneSource.Default;
+            Console.WriteLine("TZDB has {0} entries; {1} are canonical.", source.GetIds().Count(), source.Aliases.Count());
+            Console.WriteLine("Aliases for Europe/London:");
+            foreach (var alias in source.Aliases["Europe/London"])
+            {
+                Console.WriteLine("  {0}", alias);
+            }
+        }
+
     }
 }
