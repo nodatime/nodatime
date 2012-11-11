@@ -19,6 +19,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Resources;
 using NodaTime.Utility;
@@ -66,8 +67,14 @@ namespace NodaTime.TimeZones
         internal const string VersionKey = "--meta-VersionId";
 
         private readonly ResourceSet source;
+
+        /// <summary>
+        /// Map from ID (possibly an alias) to canonical ID.
+        /// </summary>
         private readonly IDictionary<string, string> timeZoneIdMap;
+
         private readonly IDictionary<string, string> windowsIdMap;
+        private readonly ILookup<string, string> aliases;
         private readonly string version;
 
         /// <summary>
@@ -80,7 +87,8 @@ namespace NodaTime.TimeZones
         /// the NodaTime assembly.
         /// </summary>
         /// <param name="baseName">The root name of the resource file.</param>
-        public TzdbDateTimeZoneSource(string baseName) : this(baseName, Assembly.GetExecutingAssembly())
+        public TzdbDateTimeZoneSource(string baseName)
+            : this(baseName, Assembly.GetExecutingAssembly())
         {
         }
 
@@ -110,11 +118,16 @@ namespace NodaTime.TimeZones
         public TzdbDateTimeZoneSource(ResourceSet source)
         {
             this.source = source;
-            timeZoneIdMap = ResourceHelper.LoadDictionary(source, IdMapKey);
-            if (timeZoneIdMap == null)
+            var mutableIdMap = ResourceHelper.LoadDictionary(source, IdMapKey);
+            if (mutableIdMap == null)
             {
                 throw new InvalidDataException("No map with key " + IdMapKey + " in resource");
             }
+            timeZoneIdMap = new NodaReadOnlyDictionary<string, string>(mutableIdMap);
+            aliases = timeZoneIdMap
+                .Where(pair => pair.Key != pair.Value)
+                .OrderBy(pair => pair.Key, StringComparer.Ordinal)
+                .ToLookup(pair => pair.Value, pair => pair.Key);
             windowsIdMap = ResourceHelper.LoadDictionary(source, WindowsToPosixMapKey);
             // TODO(Post-V1): Consider forming inverse map too.
             if (windowsIdMap == null)
@@ -133,8 +146,12 @@ namespace NodaTime.TimeZones
         /// </returns>
         public DateTimeZone ForId(string id)
         {
-            var queryId = timeZoneIdMap.ContainsKey(id) ? timeZoneIdMap[id] : id;
-            return ResourceHelper.LoadTimeZone(source, queryId, id);
+            string canonicalId;
+            if (!timeZoneIdMap.TryGetValue(id, out canonicalId))
+            {
+                throw new ArgumentException("Time zone with ID " + id + " not found in source " + version, "id");
+            }
+            return ResourceHelper.LoadTimeZone(source, canonicalId, id);
         }
 
         /// <summary>
@@ -160,5 +177,30 @@ namespace NodaTime.TimeZones
             windowsIdMap.TryGetValue(zone.Id, out result);
             return result;
         }
+
+        /// <summary>
+        /// Returns a lookup from canonical ID (e.g. "Europe/London") to a group of aliases
+        /// (e.g. {"Europe/Belfast", "Europe/Guernsey", "Europe/Jersey", "Europe/Isle_of_Man", "GB", "GB-Eire"}).
+        /// </summary>
+        /// <remarks>
+        /// The group of values for a key never contains the canonical ID, only aliases. Any time zone
+        /// ID which is itself an alias or has no aliases linking to it will not be present in the lookup.
+        /// The aliases within a group are returned in alphabetical (ordinal) order.
+        /// </remarks>
+        /// <returns>A lookup from canonical ID to the aliases of that ID.</returns>
+        public ILookup<string, string> Aliases { get { return aliases; } }
+
+        /// <summary>
+        /// Returns a read-only map from time zone ID to the canonical ID. For example, the key "Europe/Jersey"
+        /// would be associated with the value "Europe/London".
+        /// </summary>
+        /// <remarks>
+        /// <para>This map contains an entry for every ID returned by <see cref="GetIds"/>, where
+        /// canonical IDs map to themselves.</para>
+        /// <para>The returned map is read-only; any attempts to call a mutating method will throw
+        /// <see cref="NotSupportedException" />.</para>
+        /// </remarks>
+        /// <returns>A map from time zone ID to the canonical ID.</returns>
+        public IDictionary<string, string> CanonicalIdMap { get { return timeZoneIdMap; } }
     }
 }

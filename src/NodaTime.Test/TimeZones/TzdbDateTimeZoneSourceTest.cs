@@ -96,5 +96,33 @@ namespace NodaTime.Test.TimeZones
             expectedLocal = new LocalDateTime(2007, 8, 24, 18, 30);
             Assert.AreEqual(expectedLocal, inJersey.LocalDateTime);
         }
+
+        // The following tests all make assumptions about the built-in TZDB data.
+        // This is simpler than constructing fake data, and validates that the creation
+        // mechanism matches the reading mechanism, too.
+        [Test]
+        public void Aliases()
+        {
+            var aliases = TzdbDateTimeZoneSource.Default.Aliases;
+            CollectionAssert.AreEqual(new[] { "Europe/Belfast", "Europe/Guernsey", "Europe/Isle_of_Man", "Europe/Jersey", "GB", "GB-Eire" },
+                                      aliases["Europe/London"].ToArray()); // ToArray call makes diagnostics more useful
+            CollectionAssert.IsOrdered(aliases["Europe/London"]);
+            CollectionAssert.IsEmpty(aliases["Europe/Jersey"]);
+        }
+
+        [Test]
+        public void CanonicalIdMap_Contents()
+        {
+            var map = TzdbDateTimeZoneSource.Default.CanonicalIdMap;
+            Assert.AreEqual("Europe/London", map["Europe/Jersey"]);
+            Assert.AreEqual("Europe/London", map["Europe/London"]);
+        }
+
+        [Test]
+        public void CanonicalIdMap_IsReadOnly()
+        {
+            var map = TzdbDateTimeZoneSource.Default.CanonicalIdMap;
+            Assert.Throws<NotSupportedException>(() => map.Add("Foo", "Bar"));
+        }
     }
 }
