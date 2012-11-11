@@ -28,7 +28,7 @@ namespace NodaTime.Text
     /// </summary>
     /// <threadsafety>
     /// When used with a read-only <see cref="CultureInfo" />, this type is immutable and instances
-    /// may be shared freely between threads. We recommend only using read-only formatting information for patterns, although this is
+    /// may be shared freely between threads. We recommend only using read-only cultures for patterns, although this is
     /// not currently enforced.
     /// </threadsafety>
     public sealed class LocalTimePattern : IPattern<LocalTime>
@@ -134,7 +134,7 @@ namespace NodaTime.Text
         /// See the user guide for the available pattern text options.
         /// </remarks>
         /// <param name="patternText">Pattern text to create the pattern for</param>
-        /// <param name="cultureInfo">The culture info to use in the pattern</param>
+        /// <param name="cultureInfo">The culture to use in the pattern</param>
         /// <param name="templateValue">Template value to use for unspecified fields</param>
         /// <returns>A pattern for parsing and formatting local times.</returns>
         /// <exception cref="InvalidPatternException">The pattern text was invalid.</exception>
@@ -150,7 +150,7 @@ namespace NodaTime.Text
         /// See the user guide for the available pattern text options.
         /// </remarks>
         /// <param name="patternText">Pattern text to create the pattern for</param>
-        /// <param name="cultureInfo">The culture info to use in the pattern</param>
+        /// <param name="cultureInfo">The culture to use in the pattern</param>
         /// <returns>A pattern for parsing and formatting local times.</returns>
         /// <exception cref="InvalidPatternException">The pattern text was invalid.</exception>
         public static LocalTimePattern Create(string patternText, CultureInfo cultureInfo)
@@ -206,7 +206,7 @@ namespace NodaTime.Text
         /// culture.
         /// </summary>
         /// <param name="cultureInfo">The culture to use in the new pattern.</param>
-        /// <returns>A new pattern with the given culture information.</returns>
+        /// <returns>A new pattern with the given culture.</returns>
         public LocalTimePattern WithCulture(CultureInfo cultureInfo)
         {
             return WithFormatInfo(NodaFormatInfo.GetFormatInfo(cultureInfo));

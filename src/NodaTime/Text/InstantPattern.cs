@@ -28,7 +28,7 @@ namespace NodaTime.Text
     /// </summary>
     /// <threadsafety>
     /// When used with a read-only <see cref="CultureInfo" />, this type is immutable and instances
-    /// may be shared freely between threads. We recommend only using read-only formatting information for patterns, although this is
+    /// may be shared freely between threads. We recommend only using read-only cultures for patterns, although this is
     /// not currently enforced.
     /// </threadsafety>
     public sealed class InstantPattern : IPattern<Instant>
@@ -99,7 +99,7 @@ namespace NodaTime.Text
         /// <summary>
         /// Formats the given instant as text according to the rules of this pattern.
         /// </summary>
-        /// <param name="value">The offset to format.</param>
+        /// <param name="value">The instant to format.</param>
         /// <returns>The instant formatted according to this pattern.</returns>
         public string Format(Instant value)
         {
@@ -111,7 +111,7 @@ namespace NodaTime.Text
         /// </summary>
         /// <param name="patternText">Pattern text to create the pattern for</param>
         /// <param name="formatInfo">The format info to use in the pattern</param>
-        /// <returns>A pattern for parsing and formatting offsets.</returns>
+        /// <returns>A pattern for parsing and formatting instants.</returns>
         /// <exception cref="InvalidPatternException">The pattern text was invalid.</exception>
         internal static InstantPattern Create(string patternText, NodaFormatInfo formatInfo)
         {
@@ -128,8 +128,8 @@ namespace NodaTime.Text
         /// See the user guide for the available pattern text options.
         /// </remarks>
         /// <param name="patternText">Pattern text to create the pattern for</param>
-        /// <param name="cultureInfo">The culture info to use in the pattern</param>
-        /// <returns>A pattern for parsing and formatting offsets.</returns>
+        /// <param name="cultureInfo">The culture to use in the pattern</param>
+        /// <returns>A pattern for parsing and formatting instants.</returns>
         /// <exception cref="InvalidPatternException">The pattern text was invalid.</exception>
         public static InstantPattern Create(string patternText, CultureInfo cultureInfo)
         {
@@ -145,7 +145,7 @@ namespace NodaTime.Text
         /// or formatting values.
         /// </remarks>
         /// <param name="patternText">Pattern text to create the pattern for</param>
-        /// <returns>A pattern for parsing and formatting offsets.</returns>
+        /// <returns>A pattern for parsing and formatting instants.</returns>
         /// <exception cref="InvalidPatternException">The pattern text was invalid.</exception>
         public static InstantPattern CreateWithCurrentCulture(string patternText)
         {
@@ -161,7 +161,7 @@ namespace NodaTime.Text
         /// or formatting values.
         /// </remarks>
         /// <param name="patternText">Pattern text to create the pattern for</param>
-        /// <returns>A pattern for parsing and formatting offsets.</returns>
+        /// <returns>A pattern for parsing and formatting instants.</returns>
         /// <exception cref="InvalidPatternException">The pattern text was invalid.</exception>
         public static InstantPattern CreateWithInvariantCulture(string patternText)
         {
@@ -172,7 +172,7 @@ namespace NodaTime.Text
         /// Creates a "numeric" pattern for the given culture. The numeric format gives the
         /// number of ticks in decimal format, with or without thousands separators.
         /// </summary>
-        /// <param name="cultureInfo">The culture info to use in the pattern</param>
+        /// <param name="cultureInfo">The culture to use in the pattern</param>
         /// <param name="includeThousandsSeparators">True to include thousands separators when parsing or formatting; false to omit them.</param>
         /// <returns>A numeric pattern for the configuration</returns>
         public static InstantPattern CreateNumericPattern(CultureInfo cultureInfo, bool includeThousandsSeparators)
@@ -196,7 +196,7 @@ namespace NodaTime.Text
         /// culture.
         /// </summary>
         /// <param name="cultureInfo">The culture to use in the new pattern.</param>
-        /// <returns>A new pattern with the given culture information.</returns>
+        /// <returns>A new pattern with the given culture.</returns>
         public InstantPattern WithCulture(CultureInfo cultureInfo)
         {
             return WithFormatInfo(NodaFormatInfo.GetFormatInfo(cultureInfo));
