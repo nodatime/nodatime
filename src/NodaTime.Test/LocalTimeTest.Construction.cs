@@ -40,7 +40,7 @@ namespace NodaTime.Test
         public void FromMillisecondsSinceMidnight_Valid()
         {
             Assert.AreEqual(LocalTime.Midnight, LocalTime.FromMillisecondsSinceMidnight(0));
-            Assert.AreEqual(LocalTime.Midnight - Period.FromMillseconds(1), LocalTime.FromMillisecondsSinceMidnight(NodaConstants.MillisecondsPerStandardDay - 1));
+            Assert.AreEqual(LocalTime.Midnight - Period.FromMilliseconds(1), LocalTime.FromMillisecondsSinceMidnight(NodaConstants.MillisecondsPerStandardDay - 1));
         }
 
         [Test]
