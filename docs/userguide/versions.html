@@ -18,9 +18,12 @@ details.</p>
 
 <ul>
 <li>Added convenience factory methods to <code>Instant</code>:
-<code>From(Ticks,Milliseconds,Seconds)SinceUnixEpoch</code> [issue 142]</li>
-<li>Added convenience conversions from <code>LocalDateTime</code> to
-<code>ZonedDateTime</code> and <code>OffsetDateTime</code> [issue 142]</li>
+<code>From(Ticks,Milliseconds,Seconds)SinceUnixEpoch</code> (<a href="http://code.google.com/p/noda-time/issues/detail?id=142">issue 142</a>)</li>
+<li>Added <code>LocalDateTime.InUtc()</code> and <code>WithOffset()</code>, convenience conversions
+from <code>LocalDateTime</code> to a (UTC) <code>ZonedDateTime</code> or <code>OffsetDateTime</code>
+(<a href="http://code.google.com/p/noda-time/issues/detail?id=142">issue 142</a>)</li>
+<li>Added <code>TzdbDateTimeZoneSource.Default</code>, which provides access to the
+underlying source of TZDB data distributed with Noda Time (<a href="http://code.google.com/p/noda-time/issues/detail?id=144">issue 144</a>)</li>
 </ul>
 
 <h2>1.0.0, released 2012-11-07 with tzdb 2012i</h2>
