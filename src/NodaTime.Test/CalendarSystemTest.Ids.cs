@@ -29,7 +29,7 @@ namespace NodaTime.Test
         [TestCaseSource(typeof(CalendarSystem), "Ids")]
         public void ValidId(string id)
         {
-            CalendarSystem calendar = CalendarSystem.ForId(id);
+            Assert.IsInstanceOf<CalendarSystem>(CalendarSystem.ForId(id));
         }
 
         [Test]
