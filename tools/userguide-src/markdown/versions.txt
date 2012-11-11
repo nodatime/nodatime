@@ -9,10 +9,13 @@ details.
 API changes:
 
 - Added convenience factory methods to `Instant`:
-  `From(Ticks,Milliseconds,Seconds)SinceUnixEpoch` [issue 142]
-- Added convenience conversions from `LocalDateTime` to
-  `ZonedDateTime` and `OffsetDateTime` [issue 142]
-  
+  `From(Ticks,Milliseconds,Seconds)SinceUnixEpoch` ([issue 142][])
+- Added `LocalDateTime.InUtc()` and `WithOffset()`, convenience conversions
+  from `LocalDateTime` to a (UTC) `ZonedDateTime` or `OffsetDateTime`
+  ([issue 142][])
+- Added `TzdbDateTimeZoneSource.Default`, which provides access to the
+  underlying source of TZDB data distributed with Noda Time ([issue 144][])
+
 ## 1.0.0, released 2012-11-07 with tzdb 2012i ##
 
 API changes:

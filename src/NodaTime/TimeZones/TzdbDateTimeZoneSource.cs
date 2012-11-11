@@ -37,6 +37,11 @@ namespace NodaTime.TimeZones
     public sealed class TzdbDateTimeZoneSource : IDateTimeZoneSource
     {
         /// <summary>
+        /// A source initialised with the built-in version of TZDB.
+        /// </summary>
+        private static readonly TzdbDateTimeZoneSource builtin = new TzdbDateTimeZoneSource("NodaTime.TimeZones.Tzdb");
+
+        /// <summary>
         /// The resource key for the Windows to TZDB ID mapping dictionary.
         /// This resource key contains hyphens, so cannot conflict with a time zone name.
         /// </summary>
@@ -66,9 +71,15 @@ namespace NodaTime.TimeZones
         private readonly string version;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="TzdbDateTimeZoneSource" /> class.
+        /// The <see cref="TzdbDateTimeZoneSource"/> initialised from resources within the NodaTime assembly.
         /// </summary>
-        /// <param name="baseName">GetName of the base.</param>
+        public static TzdbDateTimeZoneSource Default { get { return builtin; } }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TzdbDateTimeZoneSource" /> class from a resource within
+        /// the NodaTime assembly.
+        /// </summary>
+        /// <param name="baseName">The root name of the resource file.</param>
         public TzdbDateTimeZoneSource(string baseName) : this(baseName, Assembly.GetExecutingAssembly())
         {
         }
@@ -76,7 +87,7 @@ namespace NodaTime.TimeZones
         /// <summary>
         /// Initializes a new instance of the <see cref="TzdbDateTimeZoneSource" /> class.
         /// </summary>
-        /// <param name="baseName">GetName of the base.</param>
+        /// <param name="baseName">The root name of the resource file.</param>
         /// <param name="assembly">The assembly to search for the time zone resources.</param>
         public TzdbDateTimeZoneSource(string baseName, Assembly assembly)
             : this(new ResourceManager(baseName, assembly))

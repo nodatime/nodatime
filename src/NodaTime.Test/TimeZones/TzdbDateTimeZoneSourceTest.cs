@@ -33,7 +33,7 @@ namespace NodaTime.Test.TimeZones
             String bclId = "GMT Standard Time";
             String tzdbId = "Europe/London";
             try {
-                var source = new TzdbDateTimeZoneSource("NodaTime.TimeZones.Tzdb");
+                var source = TzdbDateTimeZoneSource.Default;
                 var bclZone = TimeZoneInfo.FindSystemTimeZoneById(bclId);
                 Assert.AreEqual(tzdbId, source.MapTimeZoneId(bclZone));
             } catch (TimeZoneNotFoundException) {
@@ -50,7 +50,7 @@ namespace NodaTime.Test.TimeZones
         [Test]
         public void ForId_AllIds()
         {
-            var source = new TzdbDateTimeZoneSource("NodaTime.TimeZones.Tzdb");
+            var source = TzdbDateTimeZoneSource.Default;
             foreach (string id in source.GetIds())
             {
                 Assert.IsNotNull(source.ForId(id));
@@ -60,7 +60,7 @@ namespace NodaTime.Test.TimeZones
         [Test]
         public void UtcEqualsBuiltIn()
         {
-            var zone = new TzdbDateTimeZoneSource("NodaTime.TimeZones.Tzdb").ForId("UTC");
+            var zone = TzdbDateTimeZoneSource.Default.ForId("UTC");
             Assert.AreEqual(DateTimeZone.Utc, zone);
         }
 
