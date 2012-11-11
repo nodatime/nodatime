@@ -152,6 +152,39 @@ namespace NodaTime
         }
 
         /// <summary>
+        /// Factory method for creating a local time from the number of ticks which have elapsed since midnight.
+        /// </summary>
+        /// <param name="ticks">The number of ticks, in the range [0, 863,999,999,999]</param>
+        /// <returns>The resulting time.</returns>
+        public static LocalTime FromTicksSinceMidnight(long ticks)
+        {
+            Preconditions.CheckArgumentRange("ticks", ticks, 0, NodaConstants.TicksPerStandardDay - 1);
+            return new LocalTime(new LocalInstant(ticks));
+        }
+
+        /// <summary>
+        /// Factory method for creating a local time from the number of milliseconds which have elapsed since midnight.
+        /// </summary>
+        /// <param name="milliseconds">The number of milliseconds, in the range [0, 86,399,999]</param>
+        /// <returns>The resulting time.</returns>
+        public static LocalTime FromMillisecondsSinceMidnight(int milliseconds)
+        {
+            Preconditions.CheckArgumentRange("milliseconds", milliseconds, 0, NodaConstants.MillisecondsPerStandardDay - 1);
+            return new LocalTime(new LocalInstant(milliseconds * NodaConstants.TicksPerMillisecond));
+        }
+
+        /// <summary>
+        /// Factory method for creating a local time from the number of milliseconds which have elapsed since midnight.
+        /// </summary>
+        /// <param name="seconds">The number of seconds, in the range [0, 86,399]</param>
+        /// <returns>The resulting time.</returns>
+        public static LocalTime FromSecondsSinceMidnight(int seconds)
+        {
+            Preconditions.CheckArgumentRange("seconds", seconds, 0, NodaConstants.SecondsPerStandardDay - 1);
+            return new LocalTime(new LocalInstant(seconds * NodaConstants.TicksPerSecond));
+        }
+
+        /// <summary>
         /// Constructor only called from other parts of Noda Time - trusted to be within January 1st 1970 UTC.
         /// </summary>
         internal LocalTime(LocalInstant localInstant)
