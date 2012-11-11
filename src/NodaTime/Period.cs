@@ -224,7 +224,18 @@ namespace NodaTime
         /// </summary>
         /// <param name="milliseconds">The number of milliseconds in the new period</param>
         /// <returns>A period consisting of the given number of milliseconds.</returns>
+        [Obsolete("Use FromMilliseconds instead. This method's name was a typo, and it will be removed in a future release.")]
         public static Period FromMillseconds(long milliseconds)
+        {
+            return FromMilliseconds(milliseconds);
+        }
+
+        /// <summary>
+        /// Creates a period representing the specified number of miliseconds.
+        /// </summary>
+        /// <param name="milliseconds">The number of milliseconds in the new period</param>
+        /// <returns>A period consisting of the given number of milliseconds.</returns>
+        public static Period FromMilliseconds(long milliseconds)
         {
             return new Period(PeriodUnits.Milliseconds, milliseconds);
         }
