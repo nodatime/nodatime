@@ -35,12 +35,7 @@ namespace NodaTime.TimeZones
         private static BclDateTimeZone systemDefault;
 
         private readonly TimeZoneInfo bclZone;
-        private readonly List<AdjustmentInterval> adjustmentIntervals;
-
-        // We may start and end with a long period of standard time.
-        // Either or both of these may be null.
-        private readonly ZoneInterval headInterval;
-        private readonly ZoneInterval tailInterval;
+        internal readonly IZoneIntervalMap map;
 
         /// <summary>
         /// Returns the original <see cref="TimeZoneInfo"/> from which this was created.
@@ -52,58 +47,17 @@ namespace NodaTime.TimeZones
         /// </summary>
         public string DisplayName { get { return OriginalZone.DisplayName; } }
 
-        private BclDateTimeZone(TimeZoneInfo bclZone, Offset minOffset, Offset maxOffset, List<AdjustmentInterval> adjustmentIntervals,
-            ZoneInterval headInterval, ZoneInterval tailInterval)
+        private BclDateTimeZone(TimeZoneInfo bclZone, Offset minOffset, Offset maxOffset, IZoneIntervalMap map)
             : base(bclZone.Id, bclZone.SupportsDaylightSavingTime, minOffset, maxOffset)
         {
             this.bclZone = bclZone;
-            this.adjustmentIntervals = adjustmentIntervals;
-            this.headInterval = headInterval;
-            this.tailInterval = tailInterval;
+            this.map = map;
         }
 
-        /// <summary>
-        /// Returns the zone interval for the given instant in time. See <see cref="ZonedDateTime"/> for more details.
-        /// </summary>
+        /// <inheritdoc />
         public override ZoneInterval GetZoneInterval(Instant instant)
         {
-            if (headInterval != null && headInterval.Contains(instant))
-            {
-                return headInterval;
-            }
-            if (tailInterval != null && tailInterval.Contains(instant))
-            {
-                return tailInterval;
-            }
-
-            // Avoid having to worry about Instant.MaxValue for the rest of the class.
-            if (instant == Instant.MaxValue)
-            {
-                return adjustmentIntervals[adjustmentIntervals.Count - 1].GetZoneInterval(instant);
-            }
-
-            int lower = 0; // Inclusive
-            int upper = adjustmentIntervals.Count; // Exclusive
-
-            while (lower < upper)
-            {
-                int current = (lower + upper) / 2;
-                var candidate = adjustmentIntervals[current];
-                if (candidate.Start > instant)
-                {
-                    upper = current;
-                }
-                else if (candidate.End <= instant)
-                {
-                    lower = current + 1;
-                }
-                else
-                {
-                    return candidate.GetZoneInterval(instant);
-                }
-            }
-            throw new InvalidOperationException
-                ("Instant " + instant + " did not exist in the range of adjustment intervals");
+            return map.GetZoneInterval(instant);
         }
 
         /// <summary>
@@ -123,7 +77,7 @@ namespace NodaTime.TimeZones
             if (!bclZone.SupportsDaylightSavingTime || rules.Length == 0)
             {
                 var fixedInterval = new ZoneInterval(bclZone.StandardName, Instant.MinValue, Instant.MaxValue, standardOffset, Offset.Zero);
-                return new BclDateTimeZone(bclZone, standardOffset, standardOffset, null, fixedInterval, null);
+                return new BclDateTimeZone(bclZone, standardOffset, standardOffset, new FixedZoneIntervalMap(fixedInterval));
             }
             var adjustmentIntervals = new List<AdjustmentInterval>();
             var headInterval = ComputeHeadInterval(bclZone, rules[0]);
@@ -224,7 +178,9 @@ namespace NodaTime.TimeZones
             ZoneInterval tailInterval = previousEnd == Instant.MaxValue ? null
                 : new ZoneInterval(bclZone.StandardName, previousEnd, Instant.MaxValue, standardOffset, Offset.Zero);
 
-            return new BclDateTimeZone(bclZone, standardOffset + minSavings, standardOffset + maxSavings, adjustmentIntervals, headInterval, tailInterval);
+            IZoneIntervalMap uncachedMap = new BclZoneIntervalMap(adjustmentIntervals, headInterval, tailInterval);
+            IZoneIntervalMap cachedMap = CachingZoneIntervalMap.CacheMap(uncachedMap, CachingZoneIntervalMap.CacheType.Hashtable);
+            return new BclDateTimeZone(bclZone, standardOffset + minSavings, standardOffset + maxSavings, cachedMap);
         }
 
         private static Instant GetRuleEnd(TimeZoneInfo.AdjustmentRule rule, Transition transition)
@@ -330,6 +286,85 @@ namespace NodaTime.TimeZones
                     return seam;
                 }
                 return adjustmentZone.GetZoneInterval(instant);
+            }
+        }
+
+        private sealed class FixedZoneIntervalMap : IZoneIntervalMap
+        {
+            private readonly ZoneInterval interval;
+
+            internal FixedZoneIntervalMap(ZoneInterval interval)
+            {
+                this.interval = interval;
+            }
+
+            public ZoneInterval GetZoneInterval(Instant instant)
+            {
+                return interval;
+            }
+        }
+
+        /// <summary>
+        /// The core part of working out zone intervals; separated into its own type to allow for caching.
+        /// </summary>
+        private sealed class BclZoneIntervalMap : IZoneIntervalMap
+        {
+            private readonly List<AdjustmentInterval> adjustmentIntervals;
+
+            // We may start and end with a long period of standard time.
+            // Either or both of these may be null.
+            private readonly ZoneInterval headInterval;
+            private readonly ZoneInterval tailInterval;
+
+            internal BclZoneIntervalMap(List<AdjustmentInterval> adjustmentIntervals, ZoneInterval headInterval, ZoneInterval tailInterval)
+            {
+                this.adjustmentIntervals = adjustmentIntervals;
+                this.headInterval = headInterval;
+                this.tailInterval = tailInterval;
+            }
+
+            /// <summary>
+            /// Returns the zone interval for the given instant in time. See <see cref="ZonedDateTime"/> for more details.
+            /// </summary>
+            public ZoneInterval GetZoneInterval(Instant instant)
+            {
+                if (headInterval != null && headInterval.Contains(instant))
+                {
+                    return headInterval;
+                }
+                if (tailInterval != null && tailInterval.Contains(instant))
+                {
+                    return tailInterval;
+                }
+
+                // Avoid having to worry about Instant.MaxValue for the rest of the class.
+                if (instant == Instant.MaxValue)
+                {
+                    return adjustmentIntervals[adjustmentIntervals.Count - 1].GetZoneInterval(instant);
+                }
+
+                int lower = 0; // Inclusive
+                int upper = adjustmentIntervals.Count; // Exclusive
+
+                while (lower < upper)
+                {
+                    int current = (lower + upper) / 2;
+                    var candidate = adjustmentIntervals[current];
+                    if (candidate.Start > instant)
+                    {
+                        upper = current;
+                    }
+                    else if (candidate.End <= instant)
+                    {
+                        lower = current + 1;
+                    }
+                    else
+                    {
+                        return candidate.GetZoneInterval(instant);
+                    }
+                }
+                throw new InvalidOperationException
+                    ("Instant " + instant + " did not exist in the range of adjustment intervals");
             }
         }
 
