@@ -88,7 +88,7 @@ namespace NodaTime
     /// All time zone implementations within Noda Time are immutable and thread-safe. See the thread safety
     /// section of the user guide for more information.
     /// </threadsafety>
-    public abstract class DateTimeZone : IEquatable<DateTimeZone>
+    public abstract class DateTimeZone : IEquatable<DateTimeZone>, IZoneIntervalMap
     {
         /// <summary>
         /// The ID of the UTC (Coordinated Universal Time) time zone. This ID is always valid, whatever provider is

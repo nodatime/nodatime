@@ -55,14 +55,14 @@ namespace NodaTime.Test.TimeZones
         /// transitions it should; AllZoneTransitions may pass not spot times when we *should* have
         /// a transition, because it only uses the transitions it knows about. Instead, here we
         /// check each day between 1st January 1950 and 1st January 2050. We use midnight UTC, but
-        /// this is arbitrary.
+        /// this is arbitrary. The choice of checking once a week is just practical - it's a relatively
+        /// slow test, mostly because TimeZoneInfo is slow.
         /// </summary>
         [Test]
         [TestCaseSource("BclZonesOrEmptyOnMono")]
-        [Ignore("Takes a really long time")]
-        public void AllZonesEveryDay(TimeZoneInfo windowsZone)
+        public void AllZonesEveryWeek(TimeZoneInfo windowsZone)
         {
-            ValidateZoneEveryDay(windowsZone);
+            ValidateZoneEveryWeek(windowsZone);
         }
 
         // This demonstrates bug 115.
@@ -71,14 +71,14 @@ namespace NodaTime.Test.TimeZones
         {
             String bclId = "Namibia Standard Time";
             try {
-                ValidateZoneEveryDay(TimeZoneInfo.FindSystemTimeZoneById(bclId));
+                ValidateZoneEveryWeek(TimeZoneInfo.FindSystemTimeZoneById(bclId));
             } catch (TimeZoneNotFoundException) {
                 // This may occur on Mono, for example.
                 Assert.Ignore("Test assumes existence of BCL zone with ID: " + bclId);
             }
         }
 
-        private void ValidateZoneEveryDay(TimeZoneInfo windowsZone)
+        private void ValidateZoneEveryWeek(TimeZoneInfo windowsZone)
         {
             var nodaZone = BclDateTimeZone.FromTimeZoneInfo(windowsZone);
 
@@ -88,7 +88,7 @@ namespace NodaTime.Test.TimeZones
             while (instant < end)
             {
                 ValidateZoneEquality(instant, nodaZone, windowsZone);
-                instant += Duration.OneStandardDay;
+                instant += Duration.OneStandardWeek;
             }
         }
 
@@ -109,7 +109,6 @@ namespace NodaTime.Test.TimeZones
         {
             var interval = nodaZone.GetZoneInterval(instant);
 
-            // TODO(Post-V1): Make this much more efficient. We're doing a lot of duplicate work here.
             // Check that the zone interval really represents a transition.
             if (interval.Start != Instant.MinValue)
             {
