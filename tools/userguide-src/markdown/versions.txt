@@ -16,6 +16,11 @@ API changes:
 - Added `TzdbDateTimeZoneSource.Default`, which provides access to the
   underlying source of TZDB data distributed with Noda Time ([issue 144][])
 
+## 1.0.1, released 2012-11-13 with tzdb 2012i ##
+
+No API changes; this release was purely to fix a problem
+with the NodaTime.Testing package.
+
 ## 1.0.0, released 2012-11-07 with tzdb 2012i ##
 
 API changes:
