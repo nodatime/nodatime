@@ -19,8 +19,8 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="bin\Release\NodaTime.Testing.dll" target="lib\net35-Client" />
-    <file src="bin\Release\NodaTime.Testing.xml" target="lib\net35-Client" />
+    <file src="bin\Signed Release\NodaTime.Testing.dll" target="lib\net35-Client" />
+    <file src="bin\Signed Release\NodaTime.Testing.xml" target="lib\net35-Client" />
   </files>
 </package>
     
