@@ -70,8 +70,8 @@
             </p><p>
             If you need to obtain a <span class="selflink">CalendarSystem</span> instance, use one of the static properties or methods in this
             class, such as the <a href="P_NodaTime_CalendarSystem_Iso.htm">Iso</a> property or the <a href="M_NodaTime_CalendarSystem_GetGregorianCalendar.htm">GetGregorianCalendar(Int32)</a> method.
-            </p><p>Although this class is abstract, other assemblies cannot introduce types which derive from it: it contains internal
-            abstract methods, referring to internal types. This ensures that all calendar types are genuinely
+            </p><p>Although this class is abstract, other assemblies cannot introduce types which derive from it, as the
+            constructor is internal, and makes use of internal types. This ensures that all calendar types are genuinely
             immutable and thread-safe, aside from anything else. If you require a calendar system which is not
             currently supported, please file a feature request and we'll see what we can do.
             </p></div></div><div class="section"><div class="sectionTitle" onclick="toggleSection(this.parentNode)"><img src="../icons/collapse_all.gif" /> Thread Safety</div><div class="sectionContent">
@@ -83,4 +83,4 @@
         var HT_mailLinkText = HT_mailLink.innerHTML;
         HT_mailLink.href += ": " + document.title;
         HT_mailLink.innerHTML = HT_mailLinkText;
-        </script><p /><a href="http://www.apache.org/licenses/LICENSE-2.0" target="_blank">Copyright 2001-2009 Stephen Colebourne, 2009-2012 Jon Skeet, All rights reserved.</a></div>Assembly: <span sdata="assembly">NodaTime</span> (Module: NodaTime) Version: 1.0.0.0 (1.0.0)</p></div></body></html>
+        </script><p /><a href="http://www.apache.org/licenses/LICENSE-2.0" target="_blank">Copyright 2001-2009 Stephen Colebourne, 2009-2012 Jon Skeet, All rights reserved.</a></div>Assembly: <span sdata="assembly">NodaTime</span> (Module: NodaTime) Version: 1.0.0.0 (1.0.1)</p></div></body></html>
