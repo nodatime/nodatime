@@ -4,6 +4,11 @@ User-visible changes from 1.0.0-beta1 onwards. See the
 [project repository](http://code.google.com/p/noda-time/source/list) for more
 details.
 
+## 1.0.1, released 2012-11-13 with tzdb 2012i ##
+
+No API changes; this release was purely to fix a problem
+with the NodaTime.Testing package.
+
 ## 1.0.0, released 2012-11-07 with tzdb 2012i ##
 
 API changes:
