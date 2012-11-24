@@ -304,6 +304,15 @@ namespace NodaTime.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 24 is only valid as an hour number when the units smaller than hours are all 0..
+        /// </summary>
+        internal static string Parse_InvalidHour24 {
+            get {
+                return ResourceManager.GetString("Parse_InvalidHour24", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The period unit specifier &apos;{0}&apos; is invalid..
         /// </summary>
         internal static string Parse_InvalidUnitSpecifier {
