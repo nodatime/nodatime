@@ -54,7 +54,7 @@ namespace NodaTime.Text
             { 'h', SteppedPatternBuilder<LocalDateTime, LocalDateTimeParseBucket>.HandlePaddedField
                        (2, PatternFields.Hours12, 1, 12, value => value.ClockHourOfHalfDay, (bucket, value) => bucket.Time.Hours12 = value) },
             { 'H', SteppedPatternBuilder<LocalDateTime, LocalDateTimeParseBucket>.HandlePaddedField
-                       (2, PatternFields.Hours24, 0, 23, value => value.Hour, (bucket, value) => bucket.Time.Hours24 = value) },
+                       (2, PatternFields.Hours24, 0, 24, value => value.Hour, (bucket, value) => bucket.Time.Hours24 = value) },
             { 'm', SteppedPatternBuilder<LocalDateTime, LocalDateTimeParseBucket>.HandlePaddedField
                        (2, PatternFields.Minutes, 0, 59, value => value.Minute, (bucket, value) => bucket.Time.Minutes = value) },
             { 's', SteppedPatternBuilder<LocalDateTime, LocalDateTimeParseBucket>.HandlePaddedField
@@ -177,6 +177,14 @@ namespace NodaTime.Text
 
             internal override ParseResult<LocalDateTime> CalculateValue(PatternFields usedFields)
             {
+                // Handle special case of hour = 24
+                bool hour24 = false;
+                if (Time.Hours24 == 24)
+                {
+                    Time.Hours24 = 0;
+                    hour24 = true;
+                }
+
                 ParseResult<LocalDate> dateResult = Date.CalculateValue(usedFields & PatternFields.AllDateFields);
                 if (!dateResult.Success)
                 {
@@ -187,7 +195,19 @@ namespace NodaTime.Text
                 {
                     return timeResult.ConvertError<LocalDateTime>();
                 }
-                return ParseResult<LocalDateTime>.ForValue(dateResult.Value + timeResult.Value);
+
+                LocalDate date = dateResult.Value;
+                LocalTime time = timeResult.Value;
+
+                if (hour24)
+                {
+                    if (time != LocalTime.Midnight)
+                    {
+                        return ParseResult<LocalDateTime>.InvalidHour24;
+                    }
+                    date = date.PlusDays(1);
+                }
+                return ParseResult<LocalDateTime>.ForValue(date + time);
             }
         }
     }

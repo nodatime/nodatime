@@ -198,6 +198,9 @@
   <data name="Parse_InconsistentValues2" xml:space="preserve">
     <value>The individual values for the fields '{0}' and '{1}' created an inconsistency in the {2} type.</value>
   </data>
+  <data name="Parse_InvalidHour24" xml:space="preserve">
+    <value>24 is only valid as an hour number when the units smaller than hours are all 0.</value>
+  </data>
   <data name="Parse_InvalidUnitSpecifier" xml:space="preserve">
     <value>The period unit specifier '{0}' is invalid.</value>
   </data>
