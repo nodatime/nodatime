@@ -43,6 +43,11 @@ for general notes on custom patterns, including characters used for escaping and
       <td><code>H</code> or <code>HH</code></td>
       <td>
         The hour of day in the 24-hour clock; a value 0-23.
+
+        <p>Note that when parsing local date/time values, a value of `24`
+        may be exceptionally permitted to allow
+        <a href="localdatetime-patterns.html">specification of a following day's
+        midnight</a>.
       </td>
       <td>
         7.30am: <code>H:mm</code> => <code>7:30</code> <br />

@@ -15,6 +15,8 @@ API changes:
   ([issue 142][])
 - Added `TzdbDateTimeZoneSource.Default`, which provides access to the
   underlying source of TZDB data distributed with Noda Time ([issue 144][])
+- `LocalDateTime` patterns can now parse times of the form 24:00:00,
+  indicating midnight of the following day ([issue 153][])
 
 ## 1.0.1, released 2012-11-13 with tzdb 2012i ##
 
