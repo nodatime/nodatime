@@ -17,6 +17,7 @@
 #region usings
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Threading;
 using NodaTime.Calendars;
@@ -40,7 +41,7 @@ namespace NodaTime.Globalization
     /// <threadsafety>Read-only instances which use read-only CultureInfo instances are immutable,
     /// and may be used freely between threads. Mutable instances should not be shared between threads without external synchronization.
     /// See the thread safety section of the user guide for more information.</threadsafety>
-    internal sealed class NodaFormatInfo : IFormatProvider, ICloneable
+    internal sealed class NodaFormatInfo : IFormatProvider
     {
         // Names that we can use to check for broken Mono behaviour.
         // The cloning is *also* to work around a Mono bug, where even read-only cultures can change...
@@ -80,6 +81,10 @@ namespace NodaTime.Globalization
         private string offsetPatternLong;
         private string offsetPatternMedium;
         private string offsetPatternShort;
+#if PCL
+        private readonly string dateSeparator;
+        private readonly string timeSeparator;
+#endif
         private readonly IList<string> longMonthNames;
         private readonly IList<string> longMonthGenitiveNames;
         private readonly IList<string> longDayNames;
@@ -124,6 +129,11 @@ namespace NodaTime.Globalization
             shortDayNames = ConvertDayArray(cultureInfo.DateTimeFormat.AbbreviatedDayNames);
             eraNamesCache = new Dictionary<Era, IList<string>>();
             eraPrimaryNameCache = new Dictionary<Era, string>();
+#if PCL
+            // Horrible, but it does the job...
+            dateSeparator = DateTime.MinValue.ToString("%/", cultureInfo);
+            timeSeparator = DateTime.MinValue.ToString("%:", cultureInfo);
+#endif
         }
 
         /// <summary>
@@ -133,7 +143,7 @@ namespace NodaTime.Globalization
         {
             List<string> list = new List<string>(monthNames);
             list.Insert(0, null);
-            return list.AsReadOnly();
+            return new ReadOnlyCollection<string>(list);
         }
 
         /// <summary>
@@ -144,8 +154,8 @@ namespace NodaTime.Globalization
         {
             List<string> list = new List<string>(dayNames);
             list.Add(dayNames[0]);
-            list[0] = null;            
-            return list.AsReadOnly();
+            list[0] = null;
+            return new ReadOnlyCollection<string>(list);
         }
 
         /// <summary>
@@ -274,6 +284,17 @@ namespace NodaTime.Globalization
         /// </summary>
         public string NegativeSign { get { return NumberFormat.NegativeSign; } }
 
+#if PCL
+        /// <summary>
+        /// Gets the time separator.
+        /// </summary>
+        public string TimeSeparator { get { return timeSeparator; } }
+
+        /// <summary>
+        /// Gets the date separator.
+        /// </summary>
+        public string DateSeparator { get { return dateSeparator; } }
+#else
         /// <summary>
         /// Gets the time separator.
         /// </summary>
@@ -283,7 +304,7 @@ namespace NodaTime.Globalization
         /// Gets the date separator.
         /// </summary>
         public string DateSeparator { get { return DateTimeFormat.DateSeparator; } }
-
+#endif
         /// <summary>
         /// Gets the AM designator.
         /// </summary>
@@ -319,11 +340,11 @@ namespace NodaTime.Globalization
                 }
                 else
                 {
-                    string[] unsorted = pipeDelimited.Split('|');
-                    eraPrimaryNameCache[era] = unsorted[0];
+                    string[] values = pipeDelimited.Split('|');
+                    eraPrimaryNameCache[era] = values[0];
                     // Order by length, descending to avoid early out (e.g. parsing BCE as BC and then having a spare E)
-                    Array.Sort(unsorted, (x, y) => y.Length.CompareTo(x.Length));
-                    names = new List<string>(unsorted).AsReadOnly();
+                    Array.Sort(values, (x, y) => y.Length.CompareTo(x.Length));
+                    names = new ReadOnlyCollection<string>(values);
                 }
                 eraNamesCache[era] = names;
                 return names;
@@ -430,43 +451,6 @@ namespace NodaTime.Globalization
             
             set { SetValue(value, ref offsetPatternShort); }
         }
-
-        #region ICloneable Members
-        /// <summary>
-        /// Creates a new object that is a copy of the current instance.
-        /// </summary>
-        /// <remarks>
-        /// This method is present to implement ICloneable, which has a return value of <see cref="System.Object"/>.
-        /// The implementation simply calls the public <see cref="Clone()"/> method.
-        /// </remarks>
-        object ICloneable.Clone()
-        {
-            return Clone();
-        }
-
-        /// <summary>
-        /// Creates a new object that is a copy of the current instance.
-        /// </summary>
-        /// <remarks>
-        /// The returned value is always writable and independent of the original object. The culture info,
-        /// number format and date/time format all cloned too.
-        /// </remarks>
-        /// <returns>A writable clone of this value.</returns>
-        public NodaFormatInfo Clone()
-        {
-            var info = (NodaFormatInfo)MemberwiseClone();
-            info.isReadOnly = false;
-
-            info.CultureInfo = (CultureInfo) CultureInfo.Clone();
-            info.NumberFormat = (NumberFormatInfo) NumberFormat.Clone();
-            info.DateTimeFormat = (DateTimeFormatInfo) DateTimeFormat.Clone();
-            info.offsetPatternParser = FixedFormatInfoPatternParser<Offset>.CreateNonCachingParser(GeneralOffsetPatternParser, info);
-            info.instantPatternParser = FixedFormatInfoPatternParser<Instant>.CreateNonCachingParser(GeneralInstantPatternParser, info);
-            info.localTimePatternParser = FixedFormatInfoPatternParser<LocalTime>.CreateNonCachingParser(GeneralLocalTimePatternParser, info);
-            info.localDatePatternParser = FixedFormatInfoPatternParser<LocalDate>.CreateNonCachingParser(GeneralLocalDatePatternParser, info);
-            return info;
-        }
-        #endregion
 
         #region IFormatProvider Members
         /// <summary>

@@ -15,6 +15,9 @@
 // limitations under the License.
 #endregion
 
+// We'll need to fix this eventually, of course... just not using ResourceSet.
+#if !PCL
+
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -129,7 +132,6 @@ namespace NodaTime.TimeZones
                 .OrderBy(pair => pair.Key, StringComparer.Ordinal)
                 .ToLookup(pair => pair.Value, pair => pair.Key);
             windowsIdMap = ResourceHelper.LoadDictionary(source, WindowsToPosixMapKey);
-            // TODO(Post-V1): Consider forming inverse map too.
             if (windowsIdMap == null)
             {
                 throw new InvalidDataException("No map with key " + WindowsToPosixMapKey + " in resource");
@@ -204,3 +206,5 @@ namespace NodaTime.TimeZones
         public IDictionary<string, string> CanonicalIdMap { get { return timeZoneIdMap; } }
     }
 }
+
+#endif

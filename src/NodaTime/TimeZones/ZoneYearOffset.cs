@@ -159,7 +159,11 @@ namespace NodaTime.TimeZones
             {
                 string range = allowNegated ? "[" + minimum + ", " + maximum + "] or [" + -maximum + ", " + -minimum + "]"
                     : "[" + minimum + ", " + maximum + "]";
+#if PCL
+                throw new ArgumentOutOfRangeException(name, name + " is not in the valid range: " + range);
+#else
                 throw new ArgumentOutOfRangeException(name, value, name + " is not in the valid range: " + range);
+#endif
             }
         }
 

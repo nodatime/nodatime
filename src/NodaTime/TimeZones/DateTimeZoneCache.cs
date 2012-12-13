@@ -63,7 +63,7 @@ namespace NodaTime.TimeZones
             var idList = new List<string>(providerIds);
             // TODO(Post-V1): Handle duplicates?
             idList.Sort(StringComparer.Ordinal);
-            ids = idList.AsReadOnly();
+            ids = new ReadOnlyCollection<string>(idList);
             // Populate the dictionary with null values meaning "the ID is valid, we haven't fetched the zone yet".
             foreach (string id in ids)
             {
@@ -81,6 +81,9 @@ namespace NodaTime.TimeZones
         /// <inheritdoc />
         public DateTimeZone GetSystemDefault()
         {
+#if PCL
+            throw new NotImplementedException();
+#else
             TimeZoneInfo bcl = TimeZoneInfo.Local;
             string id = source.MapTimeZoneId(bcl);
             if (id == null)
@@ -88,6 +91,7 @@ namespace NodaTime.TimeZones
                 throw new TimeZoneNotFoundException("TimeZoneInfo ID " + bcl.Id + " is unknown to source " + providerVersionId);
             }
             return this[id];
+#endif
         }
 
         /// <inheritdoc />
@@ -127,12 +131,16 @@ namespace NodaTime.TimeZones
         {
             get
             {
+#if PCL
+                throw new NotImplementedException();
+#else
                 var zone = GetZoneOrNull(id);
                 if (zone == null)
                 {
                     throw new TimeZoneNotFoundException("Time zone " + id + " is unknown to source " + providerVersionId);
                 }
                 return zone;
+#endif
             }
         }
     }
