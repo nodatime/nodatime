@@ -29,6 +29,13 @@ namespace NodaTime.ZoneInfoCompiler
     /// </summary>
     public sealed class ResourceOutput : IDisposable
     {
+        private static Dictionary<ResourceOutputType, string> Extensions = new Dictionary<ResourceOutputType, string>
+        {
+            { ResourceOutputType.Resource, "resources" },
+            { ResourceOutputType.ResX, "resx" },
+            { ResourceOutputType.NodaResource, "nodaresources" },
+        };
+
         private readonly IResourceWriter resourceWriter;
 
         /// <summary>
@@ -38,7 +45,7 @@ namespace NodaTime.ZoneInfoCompiler
         /// <param name="type">The resource type.</param>
         public ResourceOutput(string name, ResourceOutputType type)
         {
-            OutputFileName = ChangeExtension(name, type);
+            OutputFileName = Path.ChangeExtension(name, Extensions[type]);
             resourceWriter = GetResourceWriter(OutputFileName, type);
         }
 
@@ -56,18 +63,6 @@ namespace NodaTime.ZoneInfoCompiler
         #endregion
 
         /// <summary>
-        ///   Returns the given file name with the extension set based on the given resource output type.
-        /// </summary>
-        /// <param name="fileName">The file name to change.</param>
-        /// <param name="type">The <see cref="ResourceOutputType" />.</param>
-        /// <returns>The file extension to use.</returns>
-        public static string ChangeExtension(string fileName, ResourceOutputType type)
-        {
-            var extension = type == ResourceOutputType.Resource ? ".resources" : ".resx";
-            return Path.ChangeExtension(fileName, extension);
-        }
-
-        /// <summary>
         ///   Returns the appropriate implementation of <see cref="IResourceWriter" /> to use to
         ///   generate the output file as directed by the command line arguments.
         /// </summary>
@@ -76,16 +71,17 @@ namespace NodaTime.ZoneInfoCompiler
         /// <returns>The <see cref="IResourceWriter" /> to write to.</returns>
         private static IResourceWriter GetResourceWriter(string name, ResourceOutputType type)
         {
-            IResourceWriter result;
-            if (type == ResourceOutputType.Resource)
+            switch (type)
             {
-                result = new ResourceWriter(name);
+                case ResourceOutputType.NodaResource:
+                    return new NodaResourceWriter(name);
+                case ResourceOutputType.ResX:
+                    return new ResourceWriter(name);
+                case ResourceOutputType.Resource:
+                    return new ResXResourceWriter(name);
+                default:
+                    throw new ArgumentException("Invalid resource type", "type");
             }
-            else
-            {
-                result = new ResXResourceWriter(name);
-            }
-            return result;
         }
 
         /// <summary>
@@ -128,13 +124,11 @@ namespace NodaTime.ZoneInfoCompiler
     /// </summary>
     public enum ResourceOutputType
     {
-        /// <summary>
-        ///   Generates the output file in ResX format.
-        /// </summary>
+        /// <summary>Generates the output file in ResX format.</summary>
         ResX,
-        /// <summary>
-        ///   generates the output file in Resource format.
-        /// </summary>
-        Resource
+        /// <summary>Generates the output file in Resource format.</summary>
+        Resource,
+        /// <summary>Generates the output file in custom NodaTime resource format.</summary>
+        NodaResource
     }
 }

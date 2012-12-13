@@ -131,16 +131,17 @@ namespace NodaTime.TimeZones
         {
             get
             {
-#if PCL
-                throw new NotImplementedException();
-#else
                 var zone = GetZoneOrNull(id);
                 if (zone == null)
                 {
+#if PCL
+                    // TODO: Work out something better...
+                    throw new ArgumentException("Time zone " + id + " is unknown to source " + providerVersionId);
+#else
                     throw new TimeZoneNotFoundException("Time zone " + id + " is unknown to source " + providerVersionId);
+#endif
                 }
                 return zone;
-#endif
             }
         }
     }
