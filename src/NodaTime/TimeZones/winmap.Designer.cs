@@ -59,12 +59,5 @@ namespace NodaTime.TimeZones {
                 resourceCulture = value;
             }
         }
-        
-        internal static byte[] WindowsToPosix {
-            get {
-                object obj = ResourceManager.GetObject("WindowsToPosix", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
     }
 }

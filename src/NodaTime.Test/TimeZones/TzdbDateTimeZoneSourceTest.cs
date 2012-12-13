@@ -15,6 +15,8 @@
 // limitations under the License.
 #endregion
 
+#if !PCL
+
 using System;
 using System.Linq;
 using System.Reflection;
@@ -126,3 +128,4 @@ namespace NodaTime.Test.TimeZones
         }
     }
 }
+#endif

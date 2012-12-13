@@ -15,6 +15,8 @@
 // limitations under the License.
 #endregion
 
+#if !PCL
+
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -120,3 +122,5 @@ namespace NodaTime.Test.TimeZones
         }
     }
 }
+
+#endif

@@ -7,6 +7,11 @@ namespace NodaTime
     /// </summary>
     public static class DateTimeZoneProviders
     {
+// We'll want to expose at least TZDB of course...
+#if PCL
+        public static IDateTimeZoneProvider Tzdb { get { return null; } }
+        public static IDateTimeZoneProvider Default { get { return null; } }
+#else
         private static readonly DateTimeZoneCache tzdbFactory = new DateTimeZoneCache(TzdbDateTimeZoneSource.Default);
         private static readonly DateTimeZoneCache bclFactory = new DateTimeZoneCache(new BclDateTimeZoneSource());
 
@@ -29,5 +34,6 @@ namespace NodaTime
         /// Gets a time zone provider which uses a <see cref="BclDateTimeZoneSource"/>.
         /// </summary>
         public static IDateTimeZoneProvider Bcl { get { return bclFactory; } }
+#endif
     }
 }

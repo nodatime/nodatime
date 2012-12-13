@@ -134,8 +134,17 @@ namespace NodaTime.TimeZones
         {
             int length = ReadCount();
             var data = new byte[length];
-            Input.Read(data, 0, length);
-            return Encoding.UTF8.GetString(data);
+            int offset = 0;
+            while (offset < length)
+            {
+                int bytesRead = Input.Read(data, 0, length);
+                if (bytesRead <= 0)
+                {
+                    throw new EndOfStreamException("Unexpectedly reached end of data with " + (length - offset) + " bytes still to read");
+                }
+                offset += bytesRead;
+            }
+            return Encoding.UTF8.GetString(data, 0, length);
         }
 
         /// <summary>
@@ -173,7 +182,7 @@ namespace NodaTime.TimeZones
                 case DateTimeZoneWriter.FlagTimeZoneDst:
                     return DaylightSavingsDateTimeZone.Read(this, id);
                 default:
-                    throw new InvalidDataException("Unknown flag type " + flag);
+                    throw new IOException("Unknown flag type " + flag);
             }
         }
 
