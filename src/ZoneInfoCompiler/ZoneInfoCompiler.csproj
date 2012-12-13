@@ -95,6 +95,7 @@
     <Compile Include="ConsoleLog.cs" />
     <Compile Include="ILog.cs" />
     <Compile Include="LogBase.cs" />
+    <Compile Include="NodaResourceWriter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ResourceOutput.cs" />
     <Compile Include="Tokens.cs" />

@@ -239,11 +239,6 @@
     <Compile Include="TimeZones\DaylightSavingsDateTimeZone.cs" />
     <Compile Include="TimeZones\FixedDateTimeZone.cs" />
     <Compile Include="TimeZones\IDateTimeZoneSource.cs" />
-    <Compile Include="TimeZones\winmap.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>winmap.resx</DependentUpon>
-    </Compile>
     <Compile Include="TimeZones\ZoneInterval.cs" />
     <Compile Include="TimeZones\ZoneIntervalPair.cs" />
     <Compile Include="TimeZones\ZoneLocalMapping.cs" />
@@ -264,9 +259,12 @@
     <Compile Include="NodaConstants.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utility\BclConversions.cs" />
+    <Compile Include="Utility\BclResourceSet.cs" />
     <Compile Include="Utility\HashCodeHelper.cs" />
+    <Compile Include="Utility\IResourceSet.cs" />
     <Compile Include="Utility\NamespaceDoc.cs" />
     <Compile Include="Utility\NodaReadOnlyDictionary.cs" />
+    <Compile Include="Utility\NodaResourcesResourceSet.cs" />
     <Compile Include="Utility\ReferenceEqualityComparer.cs" />
     <Compile Include="Utility\ResourceHelper.cs" />
     <Compile Include="Utility\Preconditions.cs" />
@@ -308,12 +306,13 @@
       <LastGenOutput>Messages.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup Condition="'$(Portability)' == 'PCL'">
+    <EmbeddedResource Include="TimeZones\Tzdb.nodaresources" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(Portability)' == 'Desktop'">
     <EmbeddedResource Include="TimeZones\Tzdb.resx">
       <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="TimeZones\winmap.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>winmap.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />

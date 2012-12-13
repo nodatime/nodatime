@@ -15,9 +15,6 @@
 // limitations under the License.
 #endregion
 
-// We'll need to fix this eventually, of course... just not using ResourceSet.
-#if !PCL
-
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -69,7 +66,7 @@ namespace NodaTime.TimeZones
         /// </summary>
         internal const string VersionKey = "--meta-VersionId";
 
-        private readonly ResourceSet source;
+        private readonly IResourceSet source;
 
         /// <summary>
         /// Map from ID (possibly an alias) to canonical ID.
@@ -101,10 +98,11 @@ namespace NodaTime.TimeZones
         /// <param name="baseName">The root name of the resource file.</param>
         /// <param name="assembly">The assembly to search for the time zone resources.</param>
         public TzdbDateTimeZoneSource(string baseName, Assembly assembly)
-            : this(new ResourceManager(baseName, assembly))
+            : this(ResourceHelper.GetDefaultResourceSet(baseName, assembly))
         {
         }
 
+#if !PCL
         /// <summary>
         /// Initializes a new instance of the <see cref="TzdbDateTimeZoneSource" /> class.
         /// </summary>
@@ -118,13 +116,26 @@ namespace NodaTime.TimeZones
         /// Initializes a new instance of the <see cref="TzdbDateTimeZoneSource" /> class.
         /// </summary>
         /// <param name="source">The <see cref="ResourceSet"/> to search for the time zone resources.</param>
-        public TzdbDateTimeZoneSource(ResourceSet source)
+        public TzdbDateTimeZoneSource(ResourceSet source) : this(new BclResourceSet(Preconditions.CheckNotNull(source, "source")))
+        {
+        }
+#endif
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TzdbDateTimeZoneSource" /> class.
+        /// </summary>
+        /// <param name="source">The <see cref="IResourceSet"/> to search for the time zone resources.</param>
+        internal TzdbDateTimeZoneSource(IResourceSet source)
         {
             this.source = source;
             var mutableIdMap = ResourceHelper.LoadDictionary(source, IdMapKey);
             if (mutableIdMap == null)
             {
+#if PCL
+                throw new IOException("No map with key " + IdMapKey + " in resource");
+#else
                 throw new InvalidDataException("No map with key " + IdMapKey + " in resource");
+#endif
             }
             timeZoneIdMap = new NodaReadOnlyDictionary<string, string>(mutableIdMap);
             aliases = timeZoneIdMap
@@ -134,7 +145,11 @@ namespace NodaTime.TimeZones
             windowsIdMap = ResourceHelper.LoadDictionary(source, WindowsToPosixMapKey);
             if (windowsIdMap == null)
             {
+#if PCL
+                throw new IOException("No map with key " + WindowsToPosixMapKey + " in resource");
+#else
                 throw new InvalidDataException("No map with key " + WindowsToPosixMapKey + " in resource");
+#endif
             }
             this.version = source.GetString(VersionKey) + " (mapping: " + source.GetString(WindowsToPosixMapVersionKey) + ")";
         }
@@ -175,9 +190,13 @@ namespace NodaTime.TimeZones
         /// </summary>
         public string MapTimeZoneId(TimeZoneInfo zone)
         {
+#if PCL
+            throw new NotSupportedException();
+#else
             string result;
             windowsIdMap.TryGetValue(zone.Id, out result);
             return result;
+#endif
         }
 
         /// <summary>
@@ -206,5 +225,3 @@ namespace NodaTime.TimeZones
         public IDictionary<string, string> CanonicalIdMap { get { return timeZoneIdMap; } }
     }
 }
-
-#endif
