@@ -79,7 +79,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Signed Release|AnyCPU'">
     <OutputPath>bin\Signed Release\</OutputPath>
     <DefineConstants>TRACE;PCL</DefineConstants>
-    <DocumentationFile>bin\Release\NodaTime.Testing.xml</DocumentationFile>
+    <DocumentationFile>bin\Signed Release\NodaTime.Testing.xml</DocumentationFile>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -109,6 +109,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Signed Release Portable|AnyCPU'">
     <OutputPath>bin\Signed Release Portable\</OutputPath>
     <DefineConstants>TRACE;PCL</DefineConstants>
+    <DocumentationFile>bin\Signed Release Portable\NodaTime.Testing.xml</DocumentationFile>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
