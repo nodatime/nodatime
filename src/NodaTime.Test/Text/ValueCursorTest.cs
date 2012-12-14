@@ -68,12 +68,22 @@ namespace NodaTime.Test.Text
         }
 
         [Test]
-        public void TestMatchCaseInsensitive_string()
+        public void TestMatchCaseInsensitive_MatchAndMove()
         {
-            var value = new ValueCursor("abc");
+            var value = new ValueCursor("abcd");
             Assert.True(value.MoveNext(), "GetNext() 1");
-            Assert.True(value.MatchCaseInsensitive("AbC", CultureInfo.InvariantCulture.CompareInfo));
-            Assert.False(value.MoveNext(), "GetNext() end");
+            Assert.True(value.MatchCaseInsensitive("AbC", CultureInfo.InvariantCulture.CompareInfo, true));
+            ValidateCurrentCharacter(value, 3, 'd');
+        }
+
+        [Test]
+        public void TestMatchCaseInsensitive_MatchWithoutMoving()
+        {
+            var value = new ValueCursor("abcd");
+            Assert.True(value.MoveNext(), "GetNext() 1");
+            Assert.True(value.MatchCaseInsensitive("AbC", CultureInfo.InvariantCulture.CompareInfo, false));
+            // We're still looking at the start
+            ValidateCurrentCharacter(value, 0, 'a');
         }
 
         [Test]
@@ -81,7 +91,7 @@ namespace NodaTime.Test.Text
         {
             var value = new ValueCursor("xabcdef");
             Assert.True(value.MoveNext(), "GetNext() 1");
-            Assert.False(value.MatchCaseInsensitive("abc", CultureInfo.InvariantCulture.CompareInfo));
+            Assert.False(value.MatchCaseInsensitive("abc", CultureInfo.InvariantCulture.CompareInfo, true));
             ValidateCurrentCharacter(value, 0, 'x');
         }
 
@@ -90,11 +100,12 @@ namespace NodaTime.Test.Text
         {
             var value = new ValueCursor("x");
             Assert.True(value.MoveNext());
-            Assert.False(value.MatchCaseInsensitive("long string", CultureInfo.InvariantCulture.CompareInfo));
+            Assert.False(value.MatchCaseInsensitive("long string", CultureInfo.InvariantCulture.CompareInfo, true));
             ValidateCurrentCharacter(value, 0, 'x');
         }
+
         [Test]
-        public void TestMatch_stringPartial()
+        public void Match_stringPartial()
         {
             var value = new ValueCursor("abcdef");
             Assert.True(value.MoveNext(), "GetNext() 1");
