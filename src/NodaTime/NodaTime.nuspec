@@ -18,5 +18,7 @@
   <files>
     <file src="bin\Signed Release\NodaTime.dll" target="lib\net35-Client" />
     <file src="bin\Signed Release\NodaTime.xml" target="lib\net35-Client" />
+    <file src="bin\Signed Release Portable\NodaTime.dll" target="lib\pcl" />
+    <file src="bin\Signed Release Portable\NodaTime.xml" target="lib\pcl" />
   </files>
 </package>
