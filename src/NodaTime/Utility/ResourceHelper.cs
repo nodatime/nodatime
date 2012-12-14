@@ -127,7 +127,7 @@ namespace NodaTime.Utility
         /// <summary>
         /// Loads a dictionary of string to string with the given name from the given resource manager.
         /// </summary>
-        /// <param name="source">The <see cref="ResourceSet"/> to load from.</param>
+        /// <param name="source">The <see cref="IResourceSet"/> to load from.</param>
         /// <param name="name">The resource name.</param>
         /// <returns>The <see cref="IDictionary{TKey,TValue}"/> or null if there is no such resource.</returns>
         internal static IDictionary<string, string> LoadDictionary(IResourceSet source, string name)
@@ -148,7 +148,7 @@ namespace NodaTime.Utility
         /// <summary>
         /// Loads a time zone with the given name from the given resource manager.
         /// </summary>
-        /// <param name="source">The <see cref="ResourceSet"/> to load from.</param>
+        /// <param name="source">The <see cref="IResourceSet"/> to load from.</param>
         /// <param name="name">The resource name. (This will not be normalized.)</param>
         /// <param name="id">The time zone id for the loaded time zone.</param>
         /// <returns>The <see cref="DateTimeZone"/> parsed from the resources.</returns>

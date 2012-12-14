@@ -78,12 +78,10 @@ namespace NodaTime.TimeZones
         /// <inheritdoc />
         public string VersionId { get { return providerVersionId; } }
 
+#if !PCL
         /// <inheritdoc />
         public DateTimeZone GetSystemDefault()
         {
-#if PCL
-            throw new NotImplementedException();
-#else
             TimeZoneInfo bcl = TimeZoneInfo.Local;
             string id = source.MapTimeZoneId(bcl);
             if (id == null)
@@ -91,8 +89,8 @@ namespace NodaTime.TimeZones
                 throw new TimeZoneNotFoundException("TimeZoneInfo ID " + bcl.Id + " is unknown to source " + providerVersionId);
             }
             return this[id];
-#endif
         }
+#endif
 
         /// <inheritdoc />
         public ReadOnlyCollection<string> Ids { get { return ids; } }
