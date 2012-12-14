@@ -134,6 +134,7 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <AssemblyOriginatorKeyFile>..\..\NodaTime Release.snk</AssemblyOriginatorKeyFile>
+    <SignAssembly>True</SignAssembly>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
