@@ -29,9 +29,7 @@ namespace NodaTime.Test.Text
     [TestFixture]
     public class LocalDatePatternTest : PatternTestBase<LocalDate>
     {
-        private static readonly LocalDate SampleLocalDate = new LocalDate(1376, 6, 19);
-        internal static readonly CultureInfo GenitiveNameTestCulture = CreateGenitiveTestCulture();
-        internal static readonly CultureInfo GenitiveNameTestCultureWithLeadingNames = CreateGenitiveTestCultureWithLeadingNames();
+        private static readonly LocalDate SampleLocalDate = new LocalDate(1976, 6, 19);
 
         internal static readonly Data[] InvalidPatternData = {
             new Data { Pattern = "!", Message = Messages.Parse_UnknownStandardFormat, Parameters = {'!', typeof(LocalDate).FullName }},
@@ -101,10 +99,10 @@ namespace NodaTime.Test.Text
             new Data(2011, 10, 9) { Pattern = "yyyy MM dd dddd", Text = "2011 10 09 SuNDaY" },
 
             // Genitive name is an extension of the non-genitive name; parse longer first.
-            new Data(2011, 1, 10) { Pattern = "yyyy MMMM dd", Text = "2011 MonthName-Genitive 10", Culture = GenitiveNameTestCultureWithLeadingNames },
-            new Data(2011, 1, 10) { Pattern = "yyyy MMMM dd", Text = "2011 MonthName 10", Culture = GenitiveNameTestCultureWithLeadingNames },
-            new Data(2011, 1, 10) { Pattern = "yyyy MMM dd", Text = "2011 MN-Gen 10", Culture = GenitiveNameTestCultureWithLeadingNames },
-            new Data(2011, 1, 10) { Pattern = "yyyy MMM dd", Text = "2011 MN 10", Culture = GenitiveNameTestCultureWithLeadingNames },
+            new Data(2011, 1, 10) { Pattern = "yyyy MMMM dd", Text = "2011 MonthName-Genitive 10", Culture = Cultures.GenitiveNameTestCultureWithLeadingNames },
+            new Data(2011, 1, 10) { Pattern = "yyyy MMMM dd", Text = "2011 MonthName 10", Culture = Cultures.GenitiveNameTestCultureWithLeadingNames },
+            new Data(2011, 1, 10) { Pattern = "yyyy MMM dd", Text = "2011 MN-Gen 10", Culture = Cultures.GenitiveNameTestCultureWithLeadingNames },
+            new Data(2011, 1, 10) { Pattern = "yyyy MMM dd", Text = "2011 MN 10", Culture = Cultures.GenitiveNameTestCultureWithLeadingNames },
         };
 
         internal static Data[] FormatOnlyData = {
@@ -136,14 +134,14 @@ namespace NodaTime.Test.Text
             // When we parse in all of the below tests, we'll use the month and day-of-month if it's provided;
             // the template value is specified to allow simple roundtripping. (Day of week doesn't affect what value is parsed; it just validates.)
             // Non-genitive month name when there's no "day of month", even if there's a "day of week"
-            new Data(2011, 1, 3) { Pattern = "MMMM", Text = "FullNonGenName", Culture = GenitiveNameTestCulture, Template = new LocalDate(2011, 5, 3)},
-            new Data(2011, 1, 3) { Pattern = "MMMM dddd", Text = "FullNonGenName Monday", Culture = GenitiveNameTestCulture, Template = new LocalDate(2011, 5, 3) },
-            new Data(2011, 1, 3) { Pattern = "MMM", Text = "AbbrNonGenName", Culture = GenitiveNameTestCulture, Template = new LocalDate(2011, 5, 3) },
-            new Data(2011, 1, 3) { Pattern = "MMM ddd", Text = "AbbrNonGenName Mon", Culture = GenitiveNameTestCulture, Template = new LocalDate(2011, 5, 3) },
+            new Data(2011, 1, 3) { Pattern = "MMMM", Text = "FullNonGenName", Culture = Cultures.GenitiveNameTestCulture, Template = new LocalDate(2011, 5, 3)},
+            new Data(2011, 1, 3) { Pattern = "MMMM dddd", Text = "FullNonGenName Monday", Culture = Cultures.GenitiveNameTestCulture, Template = new LocalDate(2011, 5, 3) },
+            new Data(2011, 1, 3) { Pattern = "MMM", Text = "AbbrNonGenName", Culture = Cultures.GenitiveNameTestCulture, Template = new LocalDate(2011, 5, 3) },
+            new Data(2011, 1, 3) { Pattern = "MMM ddd", Text = "AbbrNonGenName Mon", Culture = Cultures.GenitiveNameTestCulture, Template = new LocalDate(2011, 5, 3) },
             // Genitive month name when the pattern includes "day of month"
-            new Data(2011, 1, 3) { Pattern = "MMMM dd", Text = "FullGenName 03", Culture = GenitiveNameTestCulture, Template = new LocalDate(2011, 5, 3) },
+            new Data(2011, 1, 3) { Pattern = "MMMM dd", Text = "FullGenName 03", Culture = Cultures.GenitiveNameTestCulture, Template = new LocalDate(2011, 5, 3) },
             // TODO(Post-V1): Check whether or not this is actually appropriate
-            new Data(2011, 1, 3) { Pattern = "MMM dd", Text = "AbbrGenName 03", Culture = GenitiveNameTestCulture, Template = new LocalDate(2011, 5, 3) },
+            new Data(2011, 1, 3) { Pattern = "MMM dd", Text = "AbbrGenName 03", Culture = Cultures.GenitiveNameTestCulture, Template = new LocalDate(2011, 5, 3) },
 
             // Era handling
             new Data(2011, 1, 3) { Pattern = "YYYY MM dd gg", Text = "2011 01 03 A.D." },
@@ -170,6 +168,14 @@ namespace NodaTime.Test.Text
             new Data(2011, 10, 9) { Pattern = "yyyy MM dd c", Text = "2011 10 09 ISO" },
             new Data(2011, 10, 9, CalendarSystem.GetCopticCalendar(4)) { Pattern = "c yyyy MM dd", Text = "Coptic 4 2011 10 09" },
             new Data(2011, 10, 9, CalendarSystem.GetCopticCalendar(4)) { Pattern = "yyyy MM dd c", Text = "2011 10 09 Coptic 4" },
+
+            // Awkward day-of-week handling
+            // December 14th 2012 was a Friday. Friday is "Foo" or "FooBar" in AwkwardDayOfWeekCulture.
+            new Data(2012, 12, 14) { Pattern = "ddd yyyy MM dd", Text = "Foo 2012 12 14", Culture = Cultures.AwkwardDayOfWeekCulture },
+            new Data(2012, 12, 14) { Pattern = "dddd yyyy MM dd", Text = "FooBar 2012 12 14", Culture = Cultures.AwkwardDayOfWeekCulture },
+            // December 13th 2012 was a Thursday. Friday is "FooBaz" or "FooBa" in AwkwardDayOfWeekCulture.
+            new Data(2012, 12, 13) { Pattern = "ddd yyyy MM dd", Text = "FooBaz 2012 12 13", Culture = Cultures.AwkwardDayOfWeekCulture },
+            new Data(2012, 12, 13) { Pattern = "dddd yyyy MM dd", Text = "FooBa 2012 12 13", Culture = Cultures.AwkwardDayOfWeekCulture },
         };
 
         internal static IEnumerable<Data> ParseData = ParseOnlyData.Concat(FormatAndParseData);
@@ -184,7 +190,7 @@ namespace NodaTime.Test.Text
 
         [Test]
         [TestCaseSource(typeof(Cultures), "AllCultures")]
-        public void BclShortTimePatternGivesSameResultsInNoda(CultureInfo culture)
+        public void BclShortDatePatternGivesSameResultsInNoda(CultureInfo culture)
         {
             AssertBclNodaEquality(culture, culture.DateTimeFormat.ShortDatePattern);
         }
@@ -192,57 +198,17 @@ namespace NodaTime.Test.Text
         private void AssertBclNodaEquality(CultureInfo culture, string patternText)
         {
             var pattern = LocalDatePattern.Create(patternText, culture);
-            // Create the BCL version in the culture's calendar, so that when formatted it really will have those
-            // values, even though that may represent a completely different date/time to the Noda Time version...
-            // we're only testing the formatting here.
-            // Note that we're using Jon's -600th birthday so as to be in the right year range for the Saudi calendar.
-            DateTime sampleDateTime = new DateTime(1376, 6, 19, 21, 13, 34, 123, culture.Calendar,
-                                                   DateTimeKind.Unspecified).AddTicks(4567);
-
-            Assert.AreEqual(sampleDateTime.ToString(patternText, culture), pattern.Format(SampleLocalDate));
-        }
-
-        /// <summary>
-        /// .NET 3.5 doesn't contain any cultures where the abbreviated month names differ
-        /// from the non-abbreviated month names. As we're testing under .NET 3.5, we'll need to create
-        /// our own. This is just a clone of the invarant culture, with month 1 changed.
-        /// </summary>
-        private static CultureInfo CreateGenitiveTestCulture()
-        {
-            CultureInfo clone = (CultureInfo)CultureInfo.InvariantCulture.Clone();
-            DateTimeFormatInfo format = clone.DateTimeFormat;
-            format.MonthNames = ReplaceFirstElement(format.MonthNames, "FullNonGenName");
-            format.MonthGenitiveNames = ReplaceFirstElement(format.MonthGenitiveNames, "FullGenName");
-            format.AbbreviatedMonthNames = ReplaceFirstElement(format.AbbreviatedMonthNames, "AbbrNonGenName");
-            format.AbbreviatedMonthGenitiveNames = ReplaceFirstElement(format.AbbreviatedMonthGenitiveNames, "AbbrGenName");
-            // Note: Do *not* use CultureInfo.ReadOnly here, as it's broken in .NET 3.5 and lower; the month names
-            // get reset to the original values, making the customization pointless :(
-            return clone;
-        }
-
-        /// <summary>
-        /// Some cultures may have genitive month names which are longer than th
-        /// On Windows, we could use dsb-DE for this - but that doesn't exist in Mono.
-        /// </summary>
-        private static CultureInfo CreateGenitiveTestCultureWithLeadingNames()
-        {
-            CultureInfo clone = (CultureInfo)CultureInfo.InvariantCulture.Clone();
-            DateTimeFormatInfo format = clone.DateTimeFormat;
-            format.MonthNames = ReplaceFirstElement(format.MonthNames, "MonthName");
-            format.MonthGenitiveNames = ReplaceFirstElement(format.MonthGenitiveNames, "MonthName-Genitive");
-            format.AbbreviatedMonthNames = ReplaceFirstElement(format.AbbreviatedMonthNames, "MN");
-            format.AbbreviatedMonthGenitiveNames = ReplaceFirstElement(format.AbbreviatedMonthGenitiveNames, "MN-Gen");
-            // Note: Do *not* use CultureInfo.ReadOnly here, as it's broken in .NET 3.5 and lower; the month names
-            // get reset to the original values, making the customization pointless :(
-            return clone;
-        }
-
-        private static string[] ReplaceFirstElement(string[] input, string newElement)
-        {
-            // Cloning so we don't accidentally *really* change any read-only cultures, to work around a bug in Mono.
-            string[] clone = (string[])input.Clone();
-            clone[0] = newElement;
-            return clone;
+            var calendarSystem = CalendarSystemForCalendar(culture.Calendar);
+            if (calendarSystem == null)
+            {
+                // We can't map this calendar system correctly yet; the test would be invalid.
+                return;
+            }
+            var sampleDateInCalendar = SampleLocalDate.WithCalendar(calendarSystem);
+            // To construct a DateTime, we need a time... let's give a non-midnight one to catch
+            // any unexpected uses of time within the date patterns.
+            DateTime sampleDateTime = (SampleLocalDate + new LocalTime(2, 3, 5)).ToDateTimeUnspecified();
+            Assert.AreEqual(sampleDateTime.ToString(patternText, culture), pattern.Format(sampleDateInCalendar));
         }
 
         public sealed class Data : PatternTestData<LocalDate>

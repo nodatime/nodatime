@@ -244,12 +244,13 @@ namespace NodaTime.Text.Patterns
                     string pmFirst = pmDesignator.Substring(0, 1);
                     builder.AddParseAction((str, bucket) =>
                     {
-                        if (str.MatchCaseInsensitive(amFirst, compareInfo))
+                        // TODO: Use AddParseLongestTextAction?
+                        if (str.MatchCaseInsensitive(amFirst, compareInfo, true))
                         {
                             amPmSetter(bucket, 0);
                             return null;
                         }
-                        if (str.MatchCaseInsensitive(pmFirst, compareInfo))
+                        if (str.MatchCaseInsensitive(pmFirst, compareInfo, true))
                         {
                             amPmSetter(bucket, 1);
                             return null;
@@ -262,12 +263,13 @@ namespace NodaTime.Text.Patterns
                 // Full designator
                 builder.AddParseAction((str, bucket) =>
                 {
-                    if (str.MatchCaseInsensitive(amDesignator, compareInfo))
+                    // TODO: Use AddParseLongestTextAction?
+                    if (str.MatchCaseInsensitive(amDesignator, compareInfo, true))
                     {
                         amPmSetter(bucket, 0);
                         return null;
                     }
-                    if (str.MatchCaseInsensitive(pmDesignator, compareInfo))
+                    if (str.MatchCaseInsensitive(pmDesignator, compareInfo, true))
                     {
                         amPmSetter(bucket, 1);
                         return null;
@@ -290,7 +292,7 @@ namespace NodaTime.Text.Patterns
                 string abbreviation = specifiedDesignator.Substring(0, 1);
                 builder.AddParseAction((str, bucket) =>
                 {
-                    int value = str.MatchCaseInsensitive(abbreviation, compareInfo) ? specifiedDesignatorValue : 1 - specifiedDesignatorValue;
+                    int value = str.MatchCaseInsensitive(abbreviation, compareInfo, true) ? specifiedDesignatorValue : 1 - specifiedDesignatorValue;
                     amPmSetter(bucket, value);
                     return null;
                 });
@@ -306,7 +308,7 @@ namespace NodaTime.Text.Patterns
             }
             builder.AddParseAction((str, bucket) =>
             {
-                int value = str.MatchCaseInsensitive(specifiedDesignator, compareInfo) ? specifiedDesignatorValue : 1 - specifiedDesignatorValue;
+                int value = str.MatchCaseInsensitive(specifiedDesignator, compareInfo, true) ? specifiedDesignatorValue : 1 - specifiedDesignatorValue;
                 amPmSetter(bucket, value);
                 return null;
             });

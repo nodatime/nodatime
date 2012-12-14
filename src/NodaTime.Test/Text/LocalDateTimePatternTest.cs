@@ -29,11 +29,11 @@ namespace NodaTime.Test.Text
     [TestFixture]
     public class LocalDateTimePatternTest : PatternTestBase<LocalDateTime>
     {
-        private static readonly LocalDateTime SampleLocalDateTime = new LocalDateTime(1376, 6, 19, 21, 13, 34, 123, 4567);
-        private static readonly LocalDateTime SampleLocalDateTimeNoTicks = new LocalDateTime(1376, 6, 19, 21, 13, 34, 123);
-        private static readonly LocalDateTime SampleLocalDateTimeNoMillis = new LocalDateTime(1376, 6, 19, 21, 13, 34);
-        private static readonly LocalDateTime SampleLocalDateTimeNoSeconds = new LocalDateTime(1376, 6, 19, 21, 13);
-        private static readonly LocalDateTime SampleLocalDateTimeCoptic = new LocalDateTime(1376, 6, 19, 21, 13, 34, 123, 4567, CalendarSystem.GetCopticCalendar(1));
+        private static readonly LocalDateTime SampleLocalDateTime = new LocalDateTime(1976, 6, 19, 21, 13, 34, 123, 4567);
+        private static readonly LocalDateTime SampleLocalDateTimeNoTicks = new LocalDateTime(1976, 6, 19, 21, 13, 34, 123);
+        private static readonly LocalDateTime SampleLocalDateTimeNoMillis = new LocalDateTime(1976, 6, 19, 21, 13, 34);
+        private static readonly LocalDateTime SampleLocalDateTimeNoSeconds = new LocalDateTime(1976, 6, 19, 21, 13);
+        private static readonly LocalDateTime SampleLocalDateTimeCoptic = new LocalDateTime(1976, 6, 19, 21, 13, 34, 123, 4567, CalendarSystem.GetCopticCalendar(1));
         
         private static readonly string[] AllStandardPatterns = { "f", "F", "g", "G", "o", "O", "s" };
 
@@ -96,7 +96,7 @@ namespace NodaTime.Test.Text
             new Data(MsdnStandardExample) { Pattern = "o", Text = "2009-06-15T13:45:30.0900000", Culture = Cultures.EnUs },
             new Data(MsdnStandardExample) { Pattern = "O", Text = "2009-06-15T13:45:30.0900000", Culture = Cultures.EnUs },
             new Data(MsdnStandardExample) { Pattern = "r", Text = "2009-06-15T13:45:30.0900000 (ISO)", Culture = Cultures.EnUs },
-            new Data(SampleLocalDateTimeCoptic) { Pattern = "r", Text = "1376-06-19T21:13:34.1234567 (Coptic 1)", Culture = Cultures.EnUs },
+            new Data(SampleLocalDateTimeCoptic) { Pattern = "r", Text = "1976-06-19T21:13:34.1234567 (Coptic 1)", Culture = Cultures.EnUs },
             // Note: No RFC1123, as that requires a time zone.
             // Sortable / ISO8601
             new Data(MsdnStandardExampleNoMillis) { Pattern = "s", Text = "2009-06-15T13:45:30", Culture = Cultures.EnUs },
@@ -115,8 +115,8 @@ namespace NodaTime.Test.Text
             // Calendar patterns are invariant
             new Data(MsdnStandardExample) { Pattern = "(c) yyyy-MM-ddTHH:mm:ss.FFFFFFF", Text = "(ISO) 2009-06-15T13:45:30.09", Culture = Cultures.FrFr },
             new Data(MsdnStandardExample) { Pattern = "yyyy-MM-dd(c)THH:mm:ss.FFFFFFF", Text = "2009-06-15(ISO)T13:45:30.09", Culture = Cultures.EnUs },
-            new Data(SampleLocalDateTimeCoptic) { Pattern = "(c) yyyy-MM-ddTHH:mm:ss.FFFFFFF", Text = "(Coptic 1) 1376-06-19T21:13:34.1234567", Culture = Cultures.FrFr },
-            new Data(SampleLocalDateTimeCoptic) { Pattern = "yyyy-MM-dd'C'c'T'HH:mm:ss.FFFFFFF", Text = "1376-06-19CCoptic 1T21:13:34.1234567", Culture = Cultures.EnUs },
+            new Data(SampleLocalDateTimeCoptic) { Pattern = "(c) yyyy-MM-ddTHH:mm:ss.FFFFFFF", Text = "(Coptic 1) 1976-06-19T21:13:34.1234567", Culture = Cultures.FrFr },
+            new Data(SampleLocalDateTimeCoptic) { Pattern = "yyyy-MM-dd'C'c'T'HH:mm:ss.FFFFFFF", Text = "1976-06-19CCoptic 1T21:13:34.1234567", Culture = Cultures.EnUs },
             
             // Use of the semi-colon "comma dot" specifier
             new Data(2011, 10, 19, 16, 05, 20, 352) { Pattern = "yyyy-MM-dd HH:mm:ss;fff", Text = "2011-10-19 16:05:20.352" },
@@ -148,14 +148,14 @@ namespace NodaTime.Test.Text
             }
 
             // Some cultures use two-digit years, so let's put them in the right century.
-            var pattern = LocalDateTimePattern.Create(patternText, culture, new LocalDateTime(1400, 1, 1, 0, 0));
+            var pattern = LocalDateTimePattern.Create(patternText, culture, new LocalDateTime(2000, 1, 1, 0, 0));
 
             // If the culture doesn't have either AM or PM designators, we'll end up using the template value
             // AM/PM, so let's make sure that's right. (This happens on Mono for a few cultures.)
             if (culture.DateTimeFormat.AMDesignator == "" &&
                 culture.DateTimeFormat.PMDesignator == "")
             {
-                pattern = pattern.WithTemplateValue(new LocalDateTime(1400, 1, 1, 12, 0));
+                pattern = pattern.WithTemplateValue(new LocalDateTime(2000, 1, 1, 12, 0));
             }
 
             string formatted = pattern.Format(SampleLocalDateTime);
@@ -181,19 +181,23 @@ namespace NodaTime.Test.Text
             }
 
             var pattern = LocalDateTimePattern.Create(patternText, culture);
-            // Create the BCL version in the culture's calendar, so that when formatted it really will have those
-            // values, even though that may represent a completely different date/time to the Noda Time version...
-            // we're only testing the formatting here.
-
             // Formatting a DateTime with an always-invariant pattern (round-trip, sortable) converts to the ISO
             // calendar in .NET (which is reasonable, as there's no associated calendar).
             // Use the Gregorian calendar for those tests.
             Calendar calendar = "Oos".Contains(patternText) ? CultureInfo.InvariantCulture.Calendar : culture.Calendar;
-            // Note that we're using Jon's -600th birthday so as to be in the right year range for the Saudi calendar.
-            DateTime sampleDateTime = new DateTime(1376, 6, 19, 21, 13, 34, 123, calendar,
-                                                   DateTimeKind.Unspecified).AddTicks(4567);
 
-            Assert.AreEqual(sampleDateTime.ToString(patternText, culture), pattern.Format(SampleLocalDateTime));
+            var calendarSystem = CalendarSystemForCalendar(calendar);
+            if (calendarSystem == null)
+            {
+                // We can't map this calendar system correctly yet; the test would be invalid.
+                return;
+            }
+
+            // Use the sample date/time, but in the target culture's calendar system, as near as we can get.
+            // We need to specify the right calendar system so that the days of week align properly.
+            var inputValue = SampleLocalDateTime.WithCalendar(calendarSystem);
+            Assert.AreEqual(inputValue.ToDateTimeUnspecified().ToString(patternText, culture),
+                pattern.Format(inputValue));
         }
 
         public sealed class Data : PatternTestData<LocalDateTime>
