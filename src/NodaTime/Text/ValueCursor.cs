@@ -68,9 +68,9 @@ namespace NodaTime.Text
 
         /// <summary>
         /// Attempts to match the specified string with the current point in the string in a case-insensitive
-        /// manner, according to the given comparison info.
+        /// manner, according to the given comparison info. The cursor is optionally updated to the end of the match.
         /// </summary>
-        internal bool MatchCaseInsensitive(string match, CompareInfo compareInfo)
+        internal bool MatchCaseInsensitive(string match, CompareInfo compareInfo, bool moveOnSuccess)
         {
             unchecked
             {
@@ -82,7 +82,10 @@ namespace NodaTime.Text
                 // match string for culture-specific reasons. It's not clear how to handle that...
                 if (compareInfo.Compare(Value, Index, match.Length, match, 0, match.Length, CompareOptions.IgnoreCase) == 0)
                 {
-                    Move(Index + match.Length);
+                    if (moveOnSuccess)
+                    {
+                        Move(Index + match.Length);
+                    }
                     return true;
                 }
                 return false;

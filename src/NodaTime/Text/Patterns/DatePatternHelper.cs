@@ -110,14 +110,11 @@ namespace NodaTime.Text.Patterns
                         IList<string> genitiveTextValues = count == 3 ? format.ShortMonthGenitiveNames : format.LongMonthGenitiveNames;
                         if (nonGenitiveTextValues == genitiveTextValues)
                         {
-                            builder.AddParseTextAction(pattern.Current, textSetter, format.CultureInfo.CompareInfo, nonGenitiveTextValues);
+                            builder.AddParseLongestTextAction(pattern.Current, textSetter, format.CultureInfo.CompareInfo, nonGenitiveTextValues);
                         }
                         else
                         {
-                            // TODO(Post-V1): Make this more robust. The genitive text values come first here because in some cultures they
-                            // are longer than the non-genitive forms - we want to match the longest substring. (We're not doing any backtracking...)
-                            // This will fail to do the right thing if we get into the opposite situation.
-                            builder.AddParseTextAction(pattern.Current, textSetter, format.CultureInfo.CompareInfo,
+                            builder.AddParseLongestTextAction(pattern.Current, textSetter, format.CultureInfo.CompareInfo,
                                                         genitiveTextValues, nonGenitiveTextValues);
                         }
 
@@ -198,7 +195,7 @@ namespace NodaTime.Text.Patterns
                         field = PatternFields.DayOfWeek;
                         var format = builder.FormatInfo;
                         IList<string> textValues = count == 3 ? format.ShortDayNames : format.LongDayNames;
-                        builder.AddParseTextAction(pattern.Current, dayOfWeekSetter, format.CultureInfo.CompareInfo, textValues);
+                        builder.AddParseLongestTextAction(pattern.Current, dayOfWeekSetter, format.CultureInfo.CompareInfo, textValues);
                         builder.AddFormatAction((value, sb) => sb.Append(textValues[dayOfWeekGetter(value)]));
                         break;
                     default:
@@ -244,7 +241,7 @@ namespace NodaTime.Text.Patterns
                     {
                         foreach (string eraName in formatInfo.GetEraNames(eras[i]))
                         {
-                            if (cursor.MatchCaseInsensitive(eraName, compareInfo))
+                            if (cursor.MatchCaseInsensitive(eraName, compareInfo, true))
                             {
                                 setter(bucket, i);
                                 return null;
@@ -277,7 +274,7 @@ namespace NodaTime.Text.Patterns
                 {
                     foreach (var id in CalendarSystem.Ids)
                     {
-                        if (cursor.MatchCaseInsensitive(id, NodaFormatInfo.InvariantInfo.CultureInfo.CompareInfo))
+                        if (cursor.MatchCaseInsensitive(id, NodaFormatInfo.InvariantInfo.CultureInfo.CompareInfo, true))
                         {
                             setter(bucket, CalendarSystem.ForId(id));
                             return null;
