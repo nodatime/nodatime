@@ -136,7 +136,7 @@ namespace NodaTime.TimeZones
                 {
 #if PCL
                     // TODO: Work out something better...
-                    throw new ArgumentException("Time zone " + id + " is unknown to source " + providerVersionId);
+                    throw new KeyNotFoundException("Time zone " + id + " is unknown to source " + providerVersionId);
 #else
                     throw new TimeZoneNotFoundException("Time zone " + id + " is unknown to source " + providerVersionId);
 #endif
