@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using NUnit.Framework;
+using NodaTime.Calendars;
 
 namespace NodaTime.Test.Text
 {
@@ -58,5 +59,35 @@ namespace NodaTime.Test.Text
             data.TestFormat();
         }
 
+        /// <summary>
+        /// Tries to work out a roughly-matching calendar system for the given BCL calendar.
+        /// This is needed where we're testing whether days of the week match - even if we can
+        /// get day/month/year values to match without getting the calendar right, the calendar
+        /// affects the day of week.
+        /// </summary>
+        internal static CalendarSystem CalendarSystemForCalendar(Calendar bcl)
+        {
+            if (bcl is GregorianCalendar)
+            {
+                return CalendarSystem.Iso;
+            }
+            if (bcl is HijriCalendar)
+            {
+                return CalendarSystem.GetIslamicCalendar(IslamicLeapYearPattern.Base16, IslamicEpoch.Astronomical);
+            }
+            // This is *not* a general rule. Noda Time simply doesn't support this calendar, which requires
+            // table-based data. However, using the Islamic calendar with the civil epoch gives the same date for
+            // our sample, which is good enough for now...
+            if (bcl is UmAlQuraCalendar)
+            {
+                return CalendarSystem.GetIslamicCalendar(IslamicLeapYearPattern.Base16, IslamicEpoch.Civil);
+            }
+            if (bcl is JulianCalendar)
+            {
+                return CalendarSystem.GetJulianCalendar(4);
+            }
+            // No idea - we can't test with this calendar...
+            return null;
+        }
     }
 }

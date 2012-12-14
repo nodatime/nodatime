@@ -234,20 +234,21 @@ namespace NodaTime.Text.Patterns
 
         /// <summary>
         /// Adds parse actions for a list of strings, such as days of the week or month names.
-        /// The parsing is performed case-insensitively.
+        /// The parsing is performed case-insensitively. All candidates are tested, and only the longest
+        /// match is used.
         /// TODO(Post-V1): Make this much more efficient in terms of capture...
         /// </summary>
-        internal void AddParseTextAction(char field, NodaAction<TBucket, int> setter, CompareInfo compareInfo, IList<string> textValues)
+        internal void AddParseLongestTextAction(char field, NodaAction<TBucket, int> setter, CompareInfo compareInfo, IList<string> textValues)
         {
             AddParseAction((str, bucket) => {
-                for (int i = 0; i < textValues.Count; i++)
+                int bestIndex = -1;
+                int longestMatch = 0;
+                FindLongestMatch(compareInfo, str, textValues, ref bestIndex, ref longestMatch);
+                if (bestIndex != -1)
                 {
-                    string candidate = textValues[i];
-                    if (!string.IsNullOrEmpty(candidate) && str.MatchCaseInsensitive(candidate, compareInfo))
-                    {
-                        setter(bucket, i);
-                        return null;
-                    }
+                    setter(bucket, bestIndex);
+                    str.Move(str.Index + longestMatch);
+                    return null;
                 }
                 return ParseResult<TResult>.MismatchedText(field);
             });
@@ -255,33 +256,47 @@ namespace NodaTime.Text.Patterns
 
         /// <summary>
         /// Adds parse actions for two list of strings, such as non-genitive and genitive month names.
-        /// The parsing is performed case-insensitively.
+        /// The parsing is performed case-insensitively. All candidates are tested, and only the longest
+        /// match is used.
         /// TODO(Post-V1): Make this much more efficient in terms of capture...
         /// </summary>
-        internal void AddParseTextAction(char field, NodaAction<TBucket, int> setter, CompareInfo compareInfo, IList<string> textValues1, IList<string> textValues2)
+        internal void AddParseLongestTextAction(char field, NodaAction<TBucket, int> setter, CompareInfo compareInfo, IList<string> textValues1, IList<string> textValues2)
         {
             AddParseAction((str, bucket) =>
             {
-                for (int i = 0; i < textValues1.Count; i++)
+                int bestIndex = -1;
+                int longestMatch = 0;
+                FindLongestMatch(compareInfo, str, textValues1, ref bestIndex, ref longestMatch);
+                FindLongestMatch(compareInfo, str, textValues2, ref bestIndex, ref longestMatch);
+                if (bestIndex != -1)
                 {
-                    string candidate = textValues1[i];
-                    if (!string.IsNullOrEmpty(candidate) && str.MatchCaseInsensitive(candidate, compareInfo))
-                    {
-                        setter(bucket, i);
-                        return null;
-                    }
-                }
-                for (int i = 0; i < textValues2.Count; i++)
-                {
-                    string candidate = textValues2[i];
-                    if (!string.IsNullOrEmpty(candidate) && str.Match(candidate))
-                    {
-                        setter(bucket, i);
-                        return null;
-                    }
+                    setter(bucket, bestIndex);
+                    str.Move(str.Index + longestMatch);
+                    return null;
                 }
                 return ParseResult<TResult>.MismatchedText(field);
             });
+        }
+
+        /// <summary>
+        /// Find the longest match from a given set of candidate strings, updating the index/length of the best value
+        /// accordingly.
+        /// </summary>
+        private static void FindLongestMatch(CompareInfo compareInfo, ValueCursor cursor, IList<string> values, ref int bestIndex, ref int longestMatch)
+        {
+            for (int i = 0; i < values.Count; i++)
+            {
+                string candidate = values[i];
+                if (candidate == null || candidate.Length <= longestMatch)
+                {
+                    continue;
+                }
+                if (cursor.MatchCaseInsensitive(candidate, compareInfo, false))
+                {
+                    bestIndex = i;
+                    longestMatch = candidate.Length;
+                }
+            }
         }
 
         /// <summary>
