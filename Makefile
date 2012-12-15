@@ -30,7 +30,7 @@ NUNIT := nunit-console
 #     user and developer guides (in docs/{userguide,developer}).
 
 XBUILDFLAGS := /p:TargetFrameworkVersion='v3.5' /p:TargetFrameworkProfile=''
-XBUILDFLAGS_DEBUG := $(XBUILDFLAGS)
+XBUILDFLAGS_DEBUG := $(XBUILDFLAGS) /p:Configuration=Debug
 XBUILDFLAGS_RELEASE := $(XBUILDFLAGS) /p:Configuration=Release
 
 SOLUTION := src/NodaTime.sln
