@@ -40,7 +40,7 @@ namespace NodaTime.Globalization
     /// <threadsafety>Read-only instances which use read-only CultureInfo instances are immutable,
     /// and may be used freely between threads. Mutable instances should not be shared between threads without external synchronization.
     /// See the thread safety section of the user guide for more information.</threadsafety>
-    internal sealed class NodaFormatInfo : IFormatProvider, ICloneable
+    internal sealed class NodaFormatInfo : IFormatProvider
     {
         // Names that we can use to check for broken Mono behaviour.
         // The cloning is *also* to work around a Mono bug, where even read-only cultures can change...
@@ -430,43 +430,6 @@ namespace NodaTime.Globalization
             
             set { SetValue(value, ref offsetPatternShort); }
         }
-
-        #region ICloneable Members
-        /// <summary>
-        /// Creates a new object that is a copy of the current instance.
-        /// </summary>
-        /// <remarks>
-        /// This method is present to implement ICloneable, which has a return value of <see cref="System.Object"/>.
-        /// The implementation simply calls the public <see cref="Clone()"/> method.
-        /// </remarks>
-        object ICloneable.Clone()
-        {
-            return Clone();
-        }
-
-        /// <summary>
-        /// Creates a new object that is a copy of the current instance.
-        /// </summary>
-        /// <remarks>
-        /// The returned value is always writable and independent of the original object. The culture info,
-        /// number format and date/time format all cloned too.
-        /// </remarks>
-        /// <returns>A writable clone of this value.</returns>
-        public NodaFormatInfo Clone()
-        {
-            var info = (NodaFormatInfo)MemberwiseClone();
-            info.isReadOnly = false;
-
-            info.CultureInfo = (CultureInfo) CultureInfo.Clone();
-            info.NumberFormat = (NumberFormatInfo) NumberFormat.Clone();
-            info.DateTimeFormat = (DateTimeFormatInfo) DateTimeFormat.Clone();
-            info.offsetPatternParser = FixedFormatInfoPatternParser<Offset>.CreateNonCachingParser(GeneralOffsetPatternParser, info);
-            info.instantPatternParser = FixedFormatInfoPatternParser<Instant>.CreateNonCachingParser(GeneralInstantPatternParser, info);
-            info.localTimePatternParser = FixedFormatInfoPatternParser<LocalTime>.CreateNonCachingParser(GeneralLocalTimePatternParser, info);
-            info.localDatePatternParser = FixedFormatInfoPatternParser<LocalDate>.CreateNonCachingParser(GeneralLocalDatePatternParser, info);
-            return info;
-        }
-        #endregion
 
         #region IFormatProvider Members
         /// <summary>
