@@ -16,6 +16,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using NUnit.Framework;
 using NodaTime.Globalization;
@@ -286,7 +287,8 @@ namespace NodaTime.Test.Text
         [Test]
         public void SingleCharacterStandardPattern()
         {
-            NodaFormatInfo formatInfo = NodaFormatInfo.InvariantInfo.Clone();
+            // This will (bizarrely) not be read-only by default...
+            NodaFormatInfo formatInfo = new NodaFormatInfo(CultureInfo.InvariantCulture);
             formatInfo.OffsetPatternLong = "H";
 
             Offset offset = Offset.FromHours(5);
@@ -298,7 +300,8 @@ namespace NodaTime.Test.Text
         [Test]
         public void SingleCharacterStandardPattern_CharacterIsAlsoNormallyStandard()
         {
-            NodaFormatInfo formatInfo = NodaFormatInfo.InvariantInfo.Clone();
+            // This will (bizarrely) not be read-only by default...
+            NodaFormatInfo formatInfo = new NodaFormatInfo(CultureInfo.InvariantCulture);
             // This means "minutes" not "use the medium pattern".
             formatInfo.OffsetPatternLong = "m";
 
