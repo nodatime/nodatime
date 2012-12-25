@@ -48,27 +48,6 @@ namespace NodaTime.Test.TimeZones
             }
         }
 
-        private static void RunTests_Milliseconds(Action<int> tester)
-        {
-            tester(Int32.MinValue);
-            tester(Int32.MaxValue);
-            tester(0);
-            tester(1);
-            tester(-1);
-            for (int i = DateTimeZoneCompressionWriter.MinMillisHalfHours; i <= DateTimeZoneCompressionWriter.MaxMillisHalfHours; i++)
-            {
-                int value = i * 30 * NodaConstants.MillisecondsPerMinute;
-                tester(value);
-            }
-
-            const int secondDelta = (DateTimeZoneCompressionWriter.MaxMillisSeconds - DateTimeZoneCompressionWriter.MinMillisSeconds) / 1000;
-            for (int i = DateTimeZoneCompressionWriter.MinMillisSeconds; i <= DateTimeZoneCompressionWriter.MaxMillisSeconds; i += secondDelta)
-            {
-                int value = i * NodaConstants.MillisecondsPerSecond;
-                tester(value);
-            }
-        }
-
         private static void RunTests_Ticks(Action<long> tester)
         {
             tester(Int64.MaxValue);
@@ -157,18 +136,6 @@ namespace NodaTime.Test.TimeZones
         public void Test_LocalInstant()
         {
             RunTests_Ticks(value => Dio.TestLocalInstant((new LocalInstant(value))));
-        }
-
-        [Test]
-        public void Test_Milliseconds()
-        {
-            RunTests_Milliseconds(Dio.TestMilliseconds);
-        }
-
-        [Test]
-        public void Test_Offset()
-        {
-            RunTests_Milliseconds(value => Dio.TestOffset(value));
         }
 
         public void Test_String()

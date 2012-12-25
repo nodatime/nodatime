@@ -112,14 +112,6 @@ namespace NodaTime.Test.TimeZones
             Assert.AreEqual(expected, actual, name + " LocalInstant ");
         }
 
-        public void TestMilliseconds(int expected)
-        {
-            Reset();
-            Writer.WriteMilliseconds(expected);
-            var actual = Reader.ReadMilliseconds();
-            Assert.AreEqual(expected, actual, name + " Milliseconds ");
-        }
-
         public void TestOffset(int testValue)
         {
             // Just ignore any invalid values we're asked to test
