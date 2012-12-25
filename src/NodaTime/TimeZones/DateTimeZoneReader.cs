@@ -189,8 +189,8 @@ namespace NodaTime.TimeZones
         {
             unchecked
             {
-                int high = ReadByte() & 0xff;
-                int low = ReadByte() & 0xff;
+                int high = ReadByte();
+                int low = ReadByte();
                 return (high << 8) | low;
             }
         }
