@@ -101,21 +101,12 @@ namespace NodaTime.TimeZones
         }
 
         /// <summary>
-        /// Writes the integer milliseconds value to the stream.
-        /// </summary>
-        /// <param name="value">The value to write.</param>
-        internal virtual void WriteMilliseconds(int value)
-        {
-            WriteInt32(value);
-        }
-
-        /// <summary>
         /// Writes the <see cref="Offset" /> value to the stream.
         /// </summary>
         /// <param name="value">The value to write.</param>
-        internal void WriteOffset(Offset value)
+        internal virtual void WriteOffset(Offset value)
         {
-            WriteMilliseconds(value.Milliseconds);
+            WriteInt32(value.Milliseconds);
         }
 
         /// <summary>

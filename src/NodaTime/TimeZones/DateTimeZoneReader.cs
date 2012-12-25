@@ -107,20 +107,15 @@ namespace NodaTime.TimeZones
         }
 
         /// <summary>
-        /// Reads an integer millisecond value from the stream.
+        /// Reads an offset value from the stream.
         /// </summary>
         /// <remarks>
-        /// The value must have been written by <see cref="DateTimeZoneWriter.WriteMilliseconds" />.
+        /// The value must have been written by <see cref="DateTimeZoneWriter.WriteOffset" />.
         /// </remarks>
         /// <returns>The integer millisecond value from the stream.</returns>
-        internal virtual int ReadMilliseconds()
+        internal virtual Offset ReadOffset()
         {
-            return ReadInt32();
-        }
-
-        internal Offset ReadOffset()
-        {
-            return Offset.FromMilliseconds(ReadMilliseconds());
+            return Offset.FromMilliseconds(ReadInt32());
         }
 
         /// <summary>

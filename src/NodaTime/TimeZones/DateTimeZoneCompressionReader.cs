@@ -84,13 +84,13 @@ namespace NodaTime.TimeZones
         }
 
         /// <summary>
-        /// Reads an integer millisecond value from the stream.
+        /// Reads an offset value from the stream.
         /// </summary>
         /// <remarks>
-        /// The value must have been written by <see cref="DateTimeZoneWriter.WriteMilliseconds" />.
+        /// The value must have been written by <see cref="DateTimeZoneWriter.WriteOffset" />.
         /// </remarks>
-        /// <returns>The integer millisecond value from the stream.</returns>
-        internal override int ReadMilliseconds()
+        /// <returns>The offset value from the stream.</returns>
+        internal override Offset ReadOffset()
         {
             /*
              * Milliseconds encoding formats:
@@ -100,27 +100,17 @@ namespace NodaTime.TimeZones
              * 0xxxxxxx        30 minutes  1 byte        +/- 24 hours
              * 10xxxxxx        seconds     3 bytes       +/- 24 hours
              * 11111101  0xfd  millis      5 byte        Full range
-             * 11111110  0xfe              1 byte        Int32.MaxValue
-             * 11111111  0xff              1 byte        Int32.MinValue
              *
              * Remaining bits in field form signed offset from 1970-01-01T00:00:00Z.
              */
             unchecked
             {
                 byte flag = ReadByte();
-                if (flag == DateTimeZoneCompressionWriter.FlagMinValue)
-                {
-                    return Int32.MinValue;
-                }
-                if (flag == DateTimeZoneCompressionWriter.FlagMaxValue)
-                {
-                    return Int32.MaxValue;
-                }
 
                 if ((flag & 0x80) == 0)
                 {
                     int units = flag - DateTimeZoneCompressionWriter.MaxMillisHalfHours;
-                    return units * (30 * NodaConstants.MillisecondsPerMinute);
+                    return Offset.FromMilliseconds(units * (30 * NodaConstants.MillisecondsPerMinute));
                 }
                 if ((flag & 0xc0) == DateTimeZoneCompressionWriter.FlagMillisSeconds)
                 {
@@ -130,9 +120,9 @@ namespace NodaTime.TimeZones
 
                     int units = (((first << 8) + second) << 8) + third;
                     units = units - DateTimeZoneCompressionWriter.MaxMillisSeconds;
-                    return units * NodaConstants.MillisecondsPerSecond;
+                    return Offset.FromMilliseconds(units * NodaConstants.MillisecondsPerSecond);
                 }
-                return ReadInt32();
+                return Offset.FromMilliseconds(ReadInt32());
             }
         }
 

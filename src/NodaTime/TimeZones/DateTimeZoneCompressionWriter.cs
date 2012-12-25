@@ -115,11 +115,12 @@ namespace NodaTime.TimeZones
         }
 
         /// <summary>
-        /// Writes the integer milliseconds value to the stream.
+        /// Writes the offset value to the stream.
         /// </summary>
-        /// <param name="value">The value to write.</param>
-        internal override void WriteMilliseconds(int value)
+        /// <param name="offset">The value to write.</param>
+        internal override void WriteOffset(Offset offset)
         {
+            int millis = offset.Milliseconds;
             /*
              * Milliseconds encoding formats:
              *
@@ -135,20 +136,20 @@ namespace NodaTime.TimeZones
              */
             unchecked
             {
-                if (value == Int32.MinValue)
+                if (millis == Int32.MinValue)
                 {
                     WriteByte(FlagMinValue);
                     return;
                 }
-                if (value == Int32.MaxValue)
+                if (millis == Int32.MaxValue)
                 {
                     WriteByte(FlagMaxValue);
                     return;
                 }
-                if (value % (30 * NodaConstants.MillisecondsPerMinute) == 0)
+                if (millis % (30 * NodaConstants.MillisecondsPerMinute) == 0)
                 {
                     // Try to write in 30 minute units.
-                    int units = value / (30 * NodaConstants.MillisecondsPerMinute);
+                    int units = millis / (30 * NodaConstants.MillisecondsPerMinute);
                     if (MinMillisHalfHours <= units && units <= MaxMillisHalfHours)
                     {
                         units = units + MaxMillisHalfHours;
@@ -157,10 +158,10 @@ namespace NodaTime.TimeZones
                     }
                 }
 
-                if (value % NodaConstants.MillisecondsPerSecond == 0)
+                if (millis % NodaConstants.MillisecondsPerSecond == 0)
                 {
                     // Try to write seconds.
-                    int seconds = value / NodaConstants.MillisecondsPerSecond;
+                    int seconds = millis / NodaConstants.MillisecondsPerSecond;
                     if (MinMillisSeconds <= seconds && seconds <= MaxMillisSeconds)
                     {
                         seconds = seconds + MaxMillisSeconds;
@@ -175,7 +176,7 @@ namespace NodaTime.TimeZones
 
                 // Form 11 (64 bits effective precision, but write as if 70 bits)
                 WriteByte(FlagMilliseconds);
-                WriteInt32(value);
+                WriteInt32(millis);
             }
         }
 
