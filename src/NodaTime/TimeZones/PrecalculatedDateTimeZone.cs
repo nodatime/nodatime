@@ -43,7 +43,7 @@ namespace NodaTime.TimeZones
         /// <param name="id">The id of the time zone.</param>
         /// <param name="transitions">The transitions.</param>
         /// <param name="tailZoneStart">The first instant which isn't covered by the given transitions.</param>
-        /// <param name="tailZone">The tail zone, for use beyond precalcedEnd.</param>
+        /// <param name="tailZone">The tail zone, for use beyond tailZoneStart.</param>
         internal PrecalculatedDateTimeZone(string id, IList<ZoneTransition> transitions, Instant tailZoneStart, DateTimeZone tailZone)
             : base(id, false,
                    ComputeOffset(transitions, t => t.WallOffset, tailZone, Offset.Min),
@@ -67,17 +67,6 @@ namespace NodaTime.TimeZones
                 periods[i] = period;
             }
             ValidatePeriods(periods, tailZone);
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PrecalculatedDateTimeZone"/> class with no tail zone.
-        /// </summary>
-        /// <param name="id">Time zone ID</param>
-        /// <param name="transitions">Transitions, which must span the whole of time</param>
-        internal PrecalculatedDateTimeZone(string id, IList<ZoneTransition> transitions)
-            : this(id, transitions, Instant.MaxValue, null)
-
-        {
         }
 
         /// <summary>
