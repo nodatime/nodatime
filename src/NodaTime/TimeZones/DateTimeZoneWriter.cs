@@ -64,6 +64,7 @@ namespace NodaTime.TimeZones
         /// <param name="value">The value to write.</param>
         internal virtual void WriteCount(int value)
         {
+            Preconditions.CheckArgumentRange("value", value, 0, int.MaxValue);
             WriteInt32(value);
         }
 
