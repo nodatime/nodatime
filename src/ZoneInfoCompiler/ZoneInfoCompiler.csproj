@@ -94,12 +94,14 @@
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="NodaResourceWriter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ResourceOutput.cs" />
+    <Compile Include="OutputType.cs" />
     <Compile Include="Tokens.cs" />
+    <Compile Include="Tzdb\ITzdbWriter.cs" />
     <Compile Include="Tzdb\MissingTokenException.cs" />
     <Compile Include="Tzdb\ParserHelper.cs" />
-    <Compile Include="Tzdb\TzdbCompilerOptions.cs" />
+    <Compile Include="CompilerOptions.cs" />
     <Compile Include="Tzdb\TzdbDatabase.cs" />
+    <Compile Include="Tzdb\TzdbResourceWriter.cs" />
     <Compile Include="Tzdb\TzdbZoneInfoCompiler.cs" />
     <Compile Include="Tzdb\TzdbZoneInfoParser.cs" />
     <Compile Include="Tzdb\WindowsMapping.cs" />
@@ -107,7 +109,6 @@
     <Compile Include="Tzdb\ZoneAlias.cs" />
     <Compile Include="Tzdb\ZoneList.cs" />
     <Compile Include="Tzdb\ZoneRule.cs" />
-    <Compile Include="winmap\WindowsMapperCompiler.cs" />
     <Compile Include="ZoneInfoCompiler.cs" />
   </ItemGroup>
   <ItemGroup>

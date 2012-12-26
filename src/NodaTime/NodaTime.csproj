@@ -342,9 +342,7 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="TimeZones\IO\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Condition="'$(Portability)' == 'Desktop'" Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Condition="'$(Portability)' == 'PCL'" Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

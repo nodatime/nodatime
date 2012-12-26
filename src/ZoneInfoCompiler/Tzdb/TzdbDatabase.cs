@@ -17,6 +17,7 @@
 
 using System;
 using System.Collections.Generic;
+using NodaTime.TimeZones;
 
 namespace NodaTime.ZoneInfoCompiler.Tzdb
 {
@@ -36,7 +37,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
             zoneLists = new SortedList<string, ZoneList>();
             Rules = new Dictionary<string, IList<ZoneRule>>();
             Aliases = new Dictionary<string, string>();
-            CurrentZoneList = null;
+            currentZoneList = null;
             this.version = version;
         }
 
@@ -53,7 +54,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         ///   definitions that appear coincident.
         /// </summary>
         /// <value>The current zone list.</value>
-        private ZoneList CurrentZoneList { get; set; }
+        private ZoneList currentZoneList;
 
         /// <summary>
         ///   Gets or sets the daylight savings rule sets.
@@ -65,7 +66,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         ///   Gets or sets the time zone definitions.
         /// </summary>
         /// <value>The time zone definitions.</value>
-        internal IList<ZoneList> Zones
+        internal IList<ZoneList> ZoneLists
         {
             get { return zoneLists.Values; }
         }
@@ -103,20 +104,92 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         internal void AddZone(Zone zone)
         {
             var name = zone.Name;
-            if (string.IsNullOrEmpty(name))
+            if (String.IsNullOrEmpty(name))
             {
-                if (CurrentZoneList == null)
+                if (currentZoneList == null)
                 {
                     throw new InvalidOperationException("A continuation zone must be preceeded by an initially named zone");
                 }
-                name = CurrentZoneList.Name;
+                name = currentZoneList.Name;
             }
-            if (CurrentZoneList == null || CurrentZoneList.Name != name)
+            if (currentZoneList == null || currentZoneList.Name != name)
             {
-                CurrentZoneList = new ZoneList();
-                zoneLists.Add(name, CurrentZoneList);
+                currentZoneList = new ZoneList();
+                zoneLists.Add(name, currentZoneList);
             }
-            CurrentZoneList.Add(zone);
+            currentZoneList.Add(zone);
+        }
+
+        /// <summary>
+        /// Converts each zone in the database into a DateTimeZone.
+        /// </summary>
+        internal IEnumerable<DateTimeZone> GenerateDateTimeZones()
+        {
+            foreach (var zoneList in ZoneLists)
+            {
+                yield return CreateTimeZone(zoneList);
+            }
+        }
+
+        /// <summary>
+        ///   Returns a newly created <see cref="DateTimeZone" /> built from the given time zone data.
+        /// </summary>
+        /// <param name="zoneList">The time zone definition parts to add.</param>
+        private DateTimeZone CreateTimeZone(ZoneList zoneList)
+        {
+            var builder = new DateTimeZoneBuilder();
+            foreach (Zone zone in zoneList)
+            {
+                builder.SetStandardOffset(zone.Offset);
+                if (zone.Rules == null)
+                {
+                    builder.SetFixedSavings(zone.Format, Offset.Zero);
+                }
+                else
+                {
+                    IList<ZoneRule> ruleSet;
+                    if (Rules.TryGetValue(zone.Rules, out ruleSet))
+                    {
+                        AddRecurring(builder, zone.Format, ruleSet);
+                    }
+                    else
+                    {
+                        try
+                        {
+                            // Check if Rules actually just refers to a savings.
+                            var savings = ParserHelper.ParseOffset(zone.Rules);
+                            builder.SetFixedSavings(zone.Format, savings);
+                        }
+                        catch (FormatException)
+                        {
+                            throw new ArgumentException(
+                                String.Format("Daylight savings rule name '{0}' for zone {1} is neither a known ruleset nor a fixed offset",
+                                    zone.Rules, zone.Name));
+                        }
+                    }
+                }
+                if (zone.UntilYear == Int32.MaxValue)
+                {
+                    break;
+                }
+                builder.AddCutover(zone.UntilYear, zone.UntilYearOffset);
+            }
+            return builder.ToDateTimeZone(zoneList.Name);
+        }
+
+        /// <summary>
+        /// Adds a recurring savings rule to the time zone builder.
+        /// </summary>
+        /// <param name="builder">The <see cref="DateTimeZoneBuilder" /> to add to.</param>
+        /// <param name="nameFormat">The name format pattern.</param>
+        /// <param name="ruleSet">The <see cref="ZoneRecurrenceCollection" /> describing the recurring savings.</param>
+        private static void AddRecurring(DateTimeZoneBuilder builder, String nameFormat, IEnumerable<ZoneRule> ruleSet)
+        {
+            foreach (var rule in ruleSet)
+            {
+                string name = rule.FormatName(nameFormat);
+                builder.AddRecurringSavings(rule.Recurrence.WithName(name));
+            }
         }
     }
 }

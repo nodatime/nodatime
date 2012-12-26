@@ -18,12 +18,12 @@
 using CommandLine;
 using CommandLine.Text;
 
-namespace NodaTime.ZoneInfoCompiler.Tzdb
+namespace NodaTime.ZoneInfoCompiler
 {
     /// <summary>
     /// Defines the command line options that are valid.
     /// </summary>
-    public class TzdbCompilerOptions
+    public class CompilerOptions
     {
         private static readonly HeadingInfo HeadingInfo = new HeadingInfo(AssemblyInfo.Product, AssemblyInfo.Version);
 
@@ -37,25 +37,26 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         public string WindowsMappingFile { get; set; }
 
         [Option("t", "type", HelpText = "The type of the output file { ResX, Resource, NodaResource }. Defaults to Resx.")]
-        public ResourceOutputType OutputType { get; set; }
+        public OutputType OutputType { get; set; }
 
-        public TzdbCompilerOptions()
+        public CompilerOptions()
         {
             OutputFileName = "";
             SourceDirectoryName = "";
             WindowsMappingFile = "";
-            OutputType = ResourceOutputType.ResX;
+            OutputType = OutputType.ResX;
         }
 
         [HelpOption(HelpText = "Display this help screen.")]
         public string GetUsage()
         {
-            var help = new HelpText(HeadingInfo);
-            help.AdditionalNewLineAfterOption = true;
-            help.Copyright = new CopyrightInfo("Jon Skeet", 2009, 2012);
+            var help = new HelpText(HeadingInfo)
+            {
+                AdditionalNewLineAfterOption = true,
+                Copyright = new CopyrightInfo("Jon Skeet", 2009, 2012)
+            };
             help.AddPreOptionsLine("Usage: ZoneInfoCompiler -s <tzdb directory> -w <windowsZone.xml file> -o <output file> [-t ResX/Resource/NodaResource]");
             help.AddOptions(this);
-
             return help;
         }
     }
