@@ -100,8 +100,6 @@ namespace NodaTime.Test.TimeZones
             Dio.TestCount(0x1fffff);
             Dio.TestCount(0x200000);
             Dio.TestCount(0x200001);
-            Dio.TestCount(-1);
-            Dio.TestCount(Int32.MinValue);
             Dio.TestCount(Int32.MaxValue);
         }
 

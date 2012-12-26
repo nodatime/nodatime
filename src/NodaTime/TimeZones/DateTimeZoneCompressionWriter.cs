@@ -17,6 +17,7 @@
 
 using System;
 using System.IO;
+using NodaTime.Utility;
 
 namespace NodaTime.TimeZones
 {
@@ -61,20 +62,12 @@ namespace NodaTime.TimeZones
         /// <summary>
         /// Writes the given non-negative integer value to the stream.
         /// </summary>
-        /// <remarks>
-        /// Negative values are handled but in an inefficient way (5 bytes).
-        /// </remarks>
         /// <param name="value">The value to write.</param>
         internal override void WriteCount(int value)
         {
+            Preconditions.CheckArgumentRange("value", value, 0, int.MaxValue);
             unchecked
             {
-                if (value < 0)
-                {
-                    WriteByte(0xff);
-                    WriteInt32(value);
-                    return;
-                }
                 if (value <= 0x0e)
                 {
                     WriteByte((byte)(0xf0 + value));
