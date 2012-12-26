@@ -47,6 +47,9 @@ namespace NodaTime.TimeZones
                 byte flag = ReadByte();
                 if (flag == 0xff)
                 {
+                    // Note that this will handle earlier versions of Noda Time which used negative
+                    // count values in zone recurrences for DaylightSavingsDateTimeZone. Those
+                    // values are now prohibited, but will be read appropriately here.
                     return ReadInt32();
                 }
                 if (0xf0 <= flag && flag <= 0xfe)
