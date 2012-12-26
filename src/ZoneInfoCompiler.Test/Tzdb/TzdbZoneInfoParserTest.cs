@@ -33,14 +33,12 @@ namespace ZoneInfoCompiler.Test.Tzdb
     {
         private static readonly string[] MonthNames = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
 
-        private BufferLog Log { get; set; }
         private TzdbZoneInfoParser Parser { get; set; }
 
         [TestFixtureSetUp]
         public void Setup()
         {
-            Log = new BufferLog();
-            Parser = new TzdbZoneInfoParser(Log);
+            Parser = new TzdbZoneInfoParser();
         }
 
         private static Offset ToOffset(int hours, int minutes, int seconds, int fractions)

@@ -15,6 +15,7 @@
 // limitations under the License.
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -26,33 +27,29 @@ namespace NodaTime.ZoneInfoCompiler.winmap
 {
     public class WindowsMapperCompiler
     {
-        private readonly ILog log;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="WindowsMapperCompiler" /> class.
         /// </summary>
-        /// <param name="log">The log to write message to.</param>
-        public WindowsMapperCompiler(ILog log)
+        public WindowsMapperCompiler()
         {
-            this.log = log;
         }
 
         public int Execute(string inputFileName, ResourceOutput output)
         {
-            log.Info("Starting compilation of {0}", inputFileName);
+            Console.WriteLine("Starting compilation of {0}", inputFileName);
             var inputFile = new FileInfo(inputFileName);
             if (!inputFile.Exists)
             {
-                log.Error("Source file {0} does not exist", inputFile.FullName);
+                Console.WriteLine("Source file {0} does not exist", inputFile.FullName);
                 return 2;
             }
             var document = LoadFile(inputFile);
             var mappings = MapZones(document);
-            log.Info("Mapped {0} zones in total.", mappings.Count);
+            Console.WriteLine("Mapped {0} zones in total.", mappings.Count);
             output.WriteDictionary(TzdbDateTimeZoneSource.WindowsToPosixMapKey, mappings);
             var version = FindVersion(document);
             output.WriteString(TzdbDateTimeZoneSource.WindowsToPosixMapVersionKey, version);
-            log.Info("Finished compiling.", inputFileName);
+            Console.WriteLine("Finished compiling.", inputFileName);
             return 0;
         }
 
