@@ -104,21 +104,6 @@ namespace NodaTime.Test.TimeZones
         }
 
         [Test]
-        public void Test_Dictionary()
-        {
-            var expected = new Dictionary<string, string>();
-            Dio.TestDictionary(expected);
-
-            expected.Add("Able", "able");
-            Dio.TestDictionary(expected);
-
-            expected.Add("Baker", "baker");
-            expected.Add("Charlie", "charlie");
-            expected.Add("Delta", "delta");
-            Dio.TestDictionary(expected);
-        }
-
-        [Test]
         public void Test_Instant()
         {
             RunTests_Ticks(value => Dio.TestInstant((new Instant(value))));

@@ -91,7 +91,17 @@ namespace NodaTime.ZoneInfoCompiler
         /// <param name="dictionary">The <see cref="IDictionary{TKey,TValue}" /> to write.</param>
         public void WriteDictionary(string name, IDictionary<string, string> dictionary)
         {
-            WriteResource(name, writer => writer.WriteDictionary(dictionary));
+            using (var stream = new MemoryStream())
+            {
+                var writer = new DateTimeZoneCompressionWriter(stream);
+                writer.WriteCount(dictionary.Count);
+                foreach (var entry in dictionary)
+                {
+                    writer.WriteString(entry.Key);
+                    writer.WriteString(entry.Value);
+                }
+                resourceWriter.AddResource(name, stream.ToArray());
+            }
         }
 
         public void WriteString(string name, string value)
