@@ -69,21 +69,6 @@ namespace NodaTime.TimeZones
         }
 
         /// <summary>
-        /// Writes the given dictionary of string to string to the stream.
-        /// </summary>
-        /// <param name="dictionary">The <see cref="IDictionary{TKey,TValue}" /> to write.</param>
-        internal void WriteDictionary(IDictionary<string, string> dictionary)
-        {
-            Preconditions.CheckNotNull(dictionary, "dictionary");
-            WriteCount(dictionary.Count);
-            foreach (var entry in dictionary)
-            {
-                WriteString(entry.Key);
-                WriteString(entry.Value);
-            }
-        }
-
-        /// <summary>
         /// Writes the <see cref="Instant" /> value to the stream.
         /// </summary>
         /// <param name="value">The value to write.</param>
