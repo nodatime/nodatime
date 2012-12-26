@@ -76,9 +76,9 @@ namespace NodaTime.ZoneInfoCompiler
                 case ResourceOutputType.NodaResource:
                     return new NodaResourceWriter(name);
                 case ResourceOutputType.ResX:
-                    return new ResourceWriter(name);
-                case ResourceOutputType.Resource:
                     return new ResXResourceWriter(name);
+                case ResourceOutputType.Resource:
+                    return new ResourceWriter(name);
                 default:
                     throw new ArgumentException("Invalid resource type", "type");
             }
