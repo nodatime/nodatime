@@ -92,9 +92,6 @@
       <Link>CommandLineText.cs</Link>
     </Compile>
     <Compile Include="AssemblyInfo.cs" />
-    <Compile Include="ConsoleLog.cs" />
-    <Compile Include="ILog.cs" />
-    <Compile Include="LogBase.cs" />
     <Compile Include="NodaResourceWriter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ResourceOutput.cs" />

@@ -46,17 +46,15 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
             "Readme.txt" // Just to handle old directories in Noda Time. Not part of tzdb.
         };
 
-        private readonly ILog log;
         private readonly TzdbZoneInfoParser tzdbParser;
 
         /// <summary>
         ///   Initializes a new instance of the <see cref="TzdbZoneInfoCompiler" /> class.
         /// </summary>
         /// <param name="log">The log to send all output messages to.</param>
-        public TzdbZoneInfoCompiler(ILog log)
+        public TzdbZoneInfoCompiler()
         {
-            this.log = log;
-            tzdbParser = new TzdbZoneInfoParser(this.log);
+            tzdbParser = new TzdbZoneInfoParser();
         }
 
         /// <summary>
@@ -137,7 +135,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
 
         public int Execute(string sourceDirectoryName, ResourceOutput output)
         {
-            log.Info("Starting compilation of directory {0}", sourceDirectoryName);
+            Console.WriteLine("Starting compilation of directory {0}", sourceDirectoryName);
             var sourceDirectory = new DirectoryInfo(sourceDirectoryName);
             var fileList = sourceDirectory.GetFiles().Where(file => !ExcludedFiles.Contains(file.Name));
             //// Using this conditional code makes debugging simpler in Visual Studio because exceptions will
@@ -155,7 +153,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
                 return 2;
             }
 #endif
-            log.Info("Done compiling time zones.");
+            Console.WriteLine("Done compiling time zones.");
             return 0;
         }
 
@@ -208,11 +206,11 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         /// <param name="database">The database to query for the counts.</param>
         private void LogCounts(TzdbDatabase database)
         {
-            log.Info("=======================================");
-            log.Info("Rule sets: {0:D}", database.Rules.Count);
-            log.Info("Zones:     {0:D}", database.Zones.Count);
-            log.Info("Aliases:   {0:D}", database.Aliases.Count);
-            log.Info("=======================================");
+            Console.WriteLine("=======================================");
+            Console.WriteLine("Rule sets: {0:D}", database.Rules.Count);
+            Console.WriteLine("Zones:     {0:D}", database.Zones.Count);
+            Console.WriteLine("Aliases:   {0:D}", database.Aliases.Count);
+            Console.WriteLine("=======================================");
         }
 
 
@@ -225,7 +223,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         {
             foreach (var file in files)
             {
-                log.Info("Parsing file {0} . . .", file.Name);
+                Console.WriteLine("Parsing file {0} . . .", file.Name);
                 ParseFile(file, database);
             }
         }
@@ -240,17 +238,9 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         /// <param name="database">The <see cref="TzdbDatabase" /> where the parsed data is placed.</param>
         internal void ParseFile(FileInfo file, TzdbDatabase database)
         {
-            log.FileName = file.Name;
-            try
+            using (FileStream stream = file.OpenRead())
             {
-                using (FileStream stream = file.OpenRead())
-                {
-                    tzdbParser.Parse(stream, database);
-                }
-            }
-            finally
-            {
-                log.FileName = null;
+                tzdbParser.Parse(stream, database);
             }
         }
     }

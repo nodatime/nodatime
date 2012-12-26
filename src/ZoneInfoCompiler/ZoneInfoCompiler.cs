@@ -48,16 +48,15 @@ namespace NodaTime.ZoneInfoCompiler
                 return 1;
             }
 
-            var log = new ConsoleLog();
             using (var output = new ResourceOutput(options.OutputFileName, options.OutputType))
             {
-                var tzdbCompiler = new TzdbZoneInfoCompiler(log);
+                var tzdbCompiler = new TzdbZoneInfoCompiler();
                 int ret = tzdbCompiler.Execute(options.SourceDirectoryName, output);
                 if (ret != 0)
                 {
                     return ret;
                 }
-                var mapperCompiler = new WindowsMapperCompiler(log);
+                var mapperCompiler = new WindowsMapperCompiler();
                 return mapperCompiler.Execute(options.WindowsMappingFile, output);
             }
         }
