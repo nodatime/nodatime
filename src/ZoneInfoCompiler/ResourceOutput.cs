@@ -115,17 +115,13 @@ namespace NodaTime.ZoneInfoCompiler
         /// <param name="timeZone">The <see cref="DateTimeZone" /> to write.</param>
         public void WriteTimeZone(DateTimeZone timeZone)
         {
-            WriteResource(ResourceHelper.NormalizeAsResourceName(timeZone.Id), writer => writer.WriteTimeZone(timeZone));
-        }
-
-        private void WriteResource(string name, Action<DateTimeZoneWriter> writerAction)
-        {
+            string normalizedId = ResourceHelper.NormalizeAsResourceName(timeZone.Id);
             using (var stream = new MemoryStream())
             {
                 var writer = new DateTimeZoneCompressionWriter(stream);
-                writerAction(writer);
-                resourceWriter.AddResource(name, stream.ToArray());
-            }
+                writer.WriteTimeZone(timeZone);
+                resourceWriter.AddResource(normalizedId, stream.ToArray());
+            }                
         }
     }
 
