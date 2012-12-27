@@ -70,7 +70,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         {
             using (var stream = new MemoryStream())
             {
-                var writer = new DateTimeZoneCompressionWriter(stream);
+                var writer = new DateTimeZoneWriter(stream);
                 writer.WriteCount(dictionary.Count);
                 foreach (var entry in dictionary)
                 {
@@ -90,7 +90,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
             string normalizedId = ResourceHelper.NormalizeAsResourceName(timeZone.Id);
             using (var stream = new MemoryStream())
             {
-                var writer = new DateTimeZoneCompressionWriter(stream);
+                var writer = new DateTimeZoneWriter(stream);
                 writer.WriteTimeZone(timeZone);
                 resourceWriter.AddResource(normalizedId, stream.ToArray());
             }
