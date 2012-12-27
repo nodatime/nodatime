@@ -15,6 +15,7 @@
 // limitations under the License.
 #endregion
 
+using System.Collections.Generic;
 using NodaTime.TimeZones;
 using NUnit.Framework;
 using System;
@@ -107,6 +108,21 @@ namespace NodaTime.Test.TimeZones
             Dio.TestCount(0x200000);
             Dio.TestCount(0x200001);
             Dio.TestCount(Int32.MaxValue);
+        }
+
+        [Test]
+        public void Test_Dictionary()
+        {
+            var expected = new Dictionary<string, string>();
+            Dio.TestDictionary(expected);
+
+            expected.Add("Able", "able");
+            Dio.TestDictionary(expected);
+
+            expected.Add("Baker", "baker");
+            expected.Add("Charlie", "charlie");
+            expected.Add("Delta", "delta");
+            Dio.TestDictionary(expected);
         }
 
         [Test]

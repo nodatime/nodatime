@@ -16,6 +16,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using NodaTime.Utility;
@@ -273,6 +274,21 @@ namespace NodaTime.TimeZones
         internal void WriteBoolean(bool value)
         {
             WriteByte((byte)(value ? 1 : 0));
+        }
+
+        /// <summary>
+        /// Writes the given dictionary of string to string to the stream.
+        /// </summary>
+        /// <param name="dictionary">The <see cref="IDictionary{TKey,TValue}" /> to write.</param>
+        internal void WriteDictionary(IDictionary<string, string> dictionary)
+        {
+            Preconditions.CheckNotNull(dictionary, "dictionary");
+            WriteCount(dictionary.Count);
+            foreach (var entry in dictionary)
+            {
+                WriteString(entry.Key);
+                WriteString(entry.Value);
+            }
         }
 
         /// <summary>

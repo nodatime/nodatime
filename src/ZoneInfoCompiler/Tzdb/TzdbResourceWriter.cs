@@ -71,12 +71,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
             using (var stream = new MemoryStream())
             {
                 var writer = new DateTimeZoneWriter(stream);
-                writer.WriteCount(dictionary.Count);
-                foreach (var entry in dictionary)
-                {
-                    writer.WriteString(entry.Key);
-                    writer.WriteString(entry.Value);
-                }
+                writer.WriteDictionary(dictionary);
                 resourceWriter.AddResource(name, stream.ToArray());
             }
         }
