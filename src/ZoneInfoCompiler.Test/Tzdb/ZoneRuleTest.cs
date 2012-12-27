@@ -15,12 +15,11 @@
 // limitations under the License.
 #endregion
 
-using NUnit.Framework;
-using NodaTime;
 using NodaTime.TimeZones;
 using NodaTime.ZoneInfoCompiler.Tzdb;
+using NUnit.Framework;
 
-namespace ZoneInfoCompiler.Test
+namespace NodaTime.ZoneInfoCompiler.Test.Tzdb
 {
     [TestFixture]
     public class ZoneRuleTest

@@ -15,6 +15,7 @@
 // limitations under the License.
 #endregion
 
+using System.Reflection;
 using CommandLine;
 using CommandLine.Text;
 
@@ -25,8 +26,6 @@ namespace NodaTime.ZoneInfoCompiler
     /// </summary>
     public class CompilerOptions
     {
-        private static readonly HeadingInfo HeadingInfo = new HeadingInfo(AssemblyInfo.Product, AssemblyInfo.Version);
-
         [Option("o", "output", Required = true, HelpText = "The name of the output file.")]
         public string OutputFileName { get; set; }
 
@@ -50,14 +49,29 @@ namespace NodaTime.ZoneInfoCompiler
         [HelpOption(HelpText = "Display this help screen.")]
         public string GetUsage()
         {
-            var help = new HelpText(HeadingInfo)
+            string productName = FetchProductName();
+            var help = new HelpText(new HeadingInfo(productName))
             {
                 AdditionalNewLineAfterOption = true,
-                Copyright = new CopyrightInfo("Jon Skeet", 2009, 2012)
+                Copyright = new CopyrightInfo("Jon Skeet", 2009, 2013)
             };
             help.AddPreOptionsLine("Usage: ZoneInfoCompiler -s <tzdb directory> -w <windowsZone.xml file> -o <output file> [-t ResX/Resource/NodaResource]");
             help.AddOptions(this);
             return help;
+        }
+
+        private static string FetchProductName()
+        {
+            var program = Assembly.GetEntryAssembly();
+            if (program != null)
+            {
+                var attributes = program.GetCustomAttributes(typeof(AssemblyProductAttribute), false);
+                if (attributes.Length > 0)
+                {
+                    return ((AssemblyProductAttribute)attributes[0]).Product;
+                }
+            }
+            return "Product";
         }
     }
 }

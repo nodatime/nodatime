@@ -15,12 +15,12 @@
 // limitations under the License.
 #endregion
 
+using CommandLine;
+using NodaTime.ZoneInfoCompiler.Tzdb;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Resources;
-using CommandLine;
-using NodaTime.ZoneInfoCompiler.Tzdb;
 
 namespace NodaTime.ZoneInfoCompiler
 {
@@ -34,7 +34,7 @@ namespace NodaTime.ZoneInfoCompiler
     /// <remarks>
     /// Original name: ZoneInfoCompiler (in org.joda.time.tz)
     /// </remarks>
-    internal sealed class ZoneInfoCompiler
+    internal sealed class Program
     {
         private static readonly Dictionary<OutputType, string> Extensions = new Dictionary<OutputType, string>
         {

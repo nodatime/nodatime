@@ -85,7 +85,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TokensTest.cs" />
     <Compile Include="Tzdb\TzdbZoneInfoParserTest.cs" />
-    <Compile Include="ZoneRuleTest.cs" />
+    <Compile Include="Tzdb\ZoneRuleTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NodaTime\NodaTime.csproj">

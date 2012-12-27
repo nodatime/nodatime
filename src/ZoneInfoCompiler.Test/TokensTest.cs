@@ -15,14 +15,12 @@
 // limitations under the License.
 #endregion
 
+using NodaTime.ZoneInfoCompiler.Tzdb;
+using NUnit.Framework;
 using System;
 using System.Collections.Generic;
-using NUnit.Framework;
-using NodaTime;
-using NodaTime.ZoneInfoCompiler;
-using NodaTime.ZoneInfoCompiler.Tzdb;
 
-namespace ZoneInfoCompiler.Test
+namespace NodaTime.ZoneInfoCompiler.Test
 {
     /// <summary>
     /// This is a test class for containing all of the ParserHelper unit tests.
