@@ -15,19 +15,25 @@
 // limitations under the License.
 #endregion
 
-using System;
-using System.Collections.Generic;
-using NUnit.Framework;
 using NodaTime.TimeZones;
+using NUnit.Framework;
+using System;
 
 namespace NodaTime.Test.TimeZones
 {
-    public abstract class ReadWriteTest
+    [TestFixture]
+    public class ReadWriteTest
     {
         /// <summary>
-        ///   Returns the <see cref="DtzIoHelper" /> to use for testing against.
+        /// Returns the <see cref="DtzIoHelper" /> to use for testing against.
         /// </summary>
-        internal DtzIoHelper Dio { get; set; }
+        private DtzIoHelper Dio { get; set; }
+
+        [SetUp]
+        public void SetUp()
+        {
+            Dio = new DtzIoHelper("standard", stream => new DateTimeZoneWriter(stream), stream => new DateTimeZoneReader(stream));
+        }
 
         private static void RunTests_Integers(Action<int> tester)
         {
@@ -57,19 +63,19 @@ namespace NodaTime.Test.TimeZones
             tester(Instant.MinValue.Ticks);
             tester(Instant.MaxValue.Ticks);
             tester(NodaConstants.UnixEpoch.Ticks);
-            for (long i = DateTimeZoneCompressionWriter.MinHalfHours; i <= DateTimeZoneCompressionWriter.MaxHalfHours; i++)
+            for (long i = DateTimeZoneWriter.MinHalfHours; i <= DateTimeZoneWriter.MaxHalfHours; i++)
             {
                 long value = i * 30 * NodaConstants.TicksPerMinute;
                 tester(value);
             }
-            const long minuteDiff = (DateTimeZoneCompressionWriter.MaxMinutes - DateTimeZoneCompressionWriter.MinMinutes) / 1000;
-            for (long i = DateTimeZoneCompressionWriter.MinMinutes; i <= DateTimeZoneCompressionWriter.MaxMinutes; i += minuteDiff)
+            const long minuteDiff = (DateTimeZoneWriter.MaxMinutes - DateTimeZoneWriter.MinMinutes) / 1000;
+            for (long i = DateTimeZoneWriter.MinMinutes; i <= DateTimeZoneWriter.MaxMinutes; i += minuteDiff)
             {
                 long value = i * NodaConstants.TicksPerMinute;
                 tester(value);
             }
-            const long secondDiff = (DateTimeZoneCompressionWriter.MaxSeconds - DateTimeZoneCompressionWriter.MinSeconds) / 1000;
-            for (long i = DateTimeZoneCompressionWriter.MinSeconds; i <= DateTimeZoneCompressionWriter.MinSeconds; i += secondDiff)
+            const long secondDiff = (DateTimeZoneWriter.MaxSeconds - DateTimeZoneWriter.MinSeconds) / 1000;
+            for (long i = DateTimeZoneWriter.MinSeconds; i <= DateTimeZoneWriter.MinSeconds; i += secondDiff)
             {
                 tester(i * NodaConstants.TicksPerSecond);
             }
