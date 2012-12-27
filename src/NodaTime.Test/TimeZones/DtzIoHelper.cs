@@ -80,6 +80,14 @@ namespace NodaTime.Test.TimeZones
             Assert.AreEqual(expected, actual, name + " Count ");
         }
 
+        public void TestDictionary(IDictionary<string, string> expected)
+        {
+            Reset();
+            Writer.WriteDictionary(expected);
+            var actual = Reader.ReadDictionary();
+            Assert.AreEqual(expected, actual, name + " Dictionary ");
+        }
+
         public void TestInstant(Instant expected)
         {
             Reset();
