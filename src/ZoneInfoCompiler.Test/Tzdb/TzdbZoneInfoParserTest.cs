@@ -15,15 +15,13 @@
 // limitations under the License.
 #endregion
 
+using NodaTime.TimeZones;
+using NodaTime.ZoneInfoCompiler.Tzdb;
+using NUnit.Framework;
 using System;
 using System.IO;
-using NUnit.Framework;
-using NodaTime;
-using NodaTime.TimeZones;
-using NodaTime.ZoneInfoCompiler;
-using NodaTime.ZoneInfoCompiler.Tzdb;
 
-namespace ZoneInfoCompiler.Test.Tzdb
+namespace NodaTime.ZoneInfoCompiler.Test.Tzdb
 {
     ///<summary>
     ///  This is a test class for containing all of the TzdbZoneInfoParser unit tests.
