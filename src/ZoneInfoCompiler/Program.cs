@@ -40,7 +40,7 @@ namespace NodaTime.ZoneInfoCompiler
         {
             { OutputType.Resource, "resources" },
             { OutputType.ResX, "resx" },
-            { OutputType.NodaResource, "nodaresources" },
+            { OutputType.NodaZoneData, "nzd" },
         };
 
         /// <summary>
@@ -75,8 +75,8 @@ namespace NodaTime.ZoneInfoCompiler
                 case OutputType.Resource:
                     return new TzdbResourceWriter(new ResourceWriter(file));
                 // TODO: Change this to a different ITzdbWriter implementation (not resources)
-                case OutputType.NodaResource:
-                    return new TzdbResourceWriter(new NodaResourceWriter(file));
+                case OutputType.NodaZoneData:
+                    return new TzdbStreamWriter(File.Create(file));
                 default:
                     throw new ArgumentException("Invalid output type: " + options.OutputType, "options");
             }
