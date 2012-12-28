@@ -37,48 +37,6 @@ namespace NodaTime.Utility
     {
         private static readonly Regex InvalidResourceNameCharacters = new Regex("[^A-Za-z0-9_/]", RegexOptions.Compiled | RegexOptions.CultureInvariant);
 
-        internal static CultureInfo GetCulture(IFormatProvider formatProvider)
-        {
-            return formatProvider as CultureInfo ?? Thread.CurrentThread.CurrentUICulture;
-        }
-
-        /// <summary>
-        /// Returns the message string from the package resources formatted with the given replacement parameters.
-        /// </summary>
-        /// <remarks>
-        /// <para>
-        /// If there is no resource string with the given id then the id is returned as the message. 
-        /// </para>
-        /// </remarks>
-        /// <param name="id">the message id to retrieve.</param>
-        /// <param name="replacements">The optional replacement parameters.</param>
-        /// <returns>The formatted string.</returns>
-        internal static string GetMessage(string id, params object[] replacements)
-        {
-            var message = Messages.ResourceManager.GetString(id) ?? id;
-            return String.Format(CultureInfo.CurrentCulture, message, replacements);
-        }
-
-        /// <summary>
-        /// Returns the message string from the package resources formatted with the given replacement parameters.
-        /// </summary>
-        /// <remarks>
-        /// <para>
-        /// If there is no resource string with the given id then the id is returned as the message. 
-        /// </para>
-        /// </remarks>
-        /// <param name="formatProvider"></param>
-        /// <param name="invariant"></param>
-        /// <param name="id">the message id to retrieve.</param>
-        /// <param name="replacements">The optional replacement parameters.</param>
-        /// <returns>The formatted string.</returns>
-        internal static string GetMessage(IFormatProvider formatProvider, string invariant, string id, params object[] replacements)
-        {
-            var culture = GetCulture(formatProvider);
-            string message = culture.Equals(CultureInfo.InvariantCulture) ? invariant : (Messages.ResourceManager.GetString(id) ?? id);
-            return replacements.Length == 0 ? message : String.Format(CultureInfo.CurrentCulture, message, replacements);
-        }
-
         /// <summary>
         /// Normalizes the given name into a valid resource name by replacing invalid
         /// characters with alternatives.
