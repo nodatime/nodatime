@@ -1,6 +1,6 @@
 ﻿#region Copyright and license information
 // Copyright 2001-2009 Stephen Colebourne
-// Copyright 2009-2011 Jon Skeet
+// Copyright 2009-2013 Jon Skeet
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,20 +15,10 @@
 // limitations under the License.
 #endregion
 
-using NUnit.Framework;
-using NodaTime.TimeZones;
-
-namespace NodaTime.Test.TimeZones
+namespace NodaTime.ZoneInfoCompiler.Tzdb
 {
-    [TestFixture]
-    public class ReadWriteStandardTest : ReadWriteTest
+    interface ITzdbWriter
     {
-        #region Setup/Teardown
-        [SetUp]
-        public void SetUp()
-        {
-            Dio = new DtzIoHelper("standard", stream => new DateTimeZoneWriter(stream), stream => new DateTimeZoneReader(stream));
-        }
-        #endregion
+        void Write(TzdbDatabase tzdb, WindowsMapping mapping);
     }
 }

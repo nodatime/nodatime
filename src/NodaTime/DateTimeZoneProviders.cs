@@ -8,8 +8,6 @@ namespace NodaTime
     public static class DateTimeZoneProviders
     {
         private static readonly DateTimeZoneCache tzdbFactory = new DateTimeZoneCache(TzdbDateTimeZoneSource.Default);
-        private static readonly DateTimeZoneCache bclFactory = new DateTimeZoneCache(new BclDateTimeZoneSource());
-
         /// <summary>
         /// Gets the default time zone provider, which is initialized from resources within the NodaTime assembly.
         /// </summary>
@@ -25,9 +23,13 @@ namespace NodaTime
         /// </summary>
         public static IDateTimeZoneProvider Tzdb { get { return tzdbFactory; } }
 
+#if !PCL
+        private static readonly DateTimeZoneCache bclFactory = new DateTimeZoneCache(new BclDateTimeZoneSource());
+
         /// <summary>
         /// Gets a time zone provider which uses a <see cref="BclDateTimeZoneSource"/>.
         /// </summary>
         public static IDateTimeZoneProvider Bcl { get { return bclFactory; } }
+#endif
     }
 }

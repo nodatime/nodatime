@@ -136,7 +136,7 @@ namespace NodaTime.Test.TimeZones
         [Test]
         public void TestSerialization()
         {
-            var dio = new DtzIoHelper("ZoneRecurrence");
+            var dio = DtzIoHelper.CreateNoStringPool();
             var yearOffset = new ZoneYearOffset(TransitionMode.Utc, 10, 31, (int)IsoDayOfWeek.Wednesday, true, Offset.Zero);
             var expected = new ZoneRecurrence("bob", Offset.Zero, yearOffset, 1971, 2009);
             dio.TestZoneRecurrence(expected);

@@ -55,7 +55,7 @@ namespace NodaTime.Test.TimeZones
         [Test]
         public void TestReadWrite()
         {
-            var dio = new DtzIoHelper("FixedDateTimeZone");
+            var dio = DtzIoHelper.CreateNoStringPool();
             dio.TestTimeZone(TestZone);
         }
 

@@ -249,7 +249,9 @@ namespace NodaTime.TimeZones
             writer.WriteString(Name);
             writer.WriteOffset(Savings);
             YearOffset.Write(writer);
-            writer.WriteCount(fromYear);
+            // We'll never have time zones with recurrences between the beginning of time and 0AD,
+            // so we can treat anything negative as 0, and go to the beginning of time when reading.
+            writer.WriteCount(Math.Max(fromYear, 0));
             writer.WriteCount(toYear);
         }
 
@@ -265,6 +267,10 @@ namespace NodaTime.TimeZones
             Offset savings = reader.ReadOffset();
             ZoneYearOffset yearOffset = ZoneYearOffset.Read(reader);
             int fromYear = reader.ReadCount();
+            if (fromYear == 0)
+            {
+                fromYear = int.MinValue;
+            }
             int toYear = reader.ReadCount();
             return new ZoneRecurrence(name, savings, yearOffset, fromYear, toYear);
         }

@@ -37,6 +37,7 @@ namespace NodaTime
         /// <value>The <see cref="IEnumerable{T}" /> of string ids.</value>
         ReadOnlyCollection<string> Ids { get; }
 
+#if !PCL
         /// <summary>
         /// Gets the time zone from this provider that matches the system default time zone, if a matching time zone is
         /// available.
@@ -56,6 +57,7 @@ namespace NodaTime
         /// The provider-specific representation of the system default time zone.
         /// </returns>
         DateTimeZone GetSystemDefault();
+#endif
 
         /// <summary>
         /// Returns the time zone for the given ID, if it's available.
@@ -81,13 +83,17 @@ namespace NodaTime
         /// <exception cref="ArgumentNullException"><paramref name="id"/> is null.</exception>
         DateTimeZone GetZoneOrNull(string id);
 
+#if PCL
         /// <summary>
         /// Returns the time zone for the given ID.
         /// </summary>
         /// <remarks>
         /// <para>
         /// Unlike <see cref="GetZoneOrNull"/>, this indexer will never return a null reference. If the ID is not
-        /// supported by this provider, it will throw <see cref="TimeZoneNotFoundException"/>.
+        /// supported by this provider, it will throw <c>TimeZoneNotFoundException</c> on the desktop implementation,
+        /// or <c>KeyNotFoundException</c> on the portable implementation. (The difference here is unfortunate but
+        /// somewhat inevitable; <c>TimeZoneNotFoundException</c> is clearly the most appropriate exception, but isn't available
+        /// for portable class libraries.)
         /// </para>
         /// <para>
         /// Note that this may return a <see cref="DateTimeZone"/> that has a different ID to that requested, if the ID
@@ -105,8 +111,40 @@ namespace NodaTime
         /// </remarks>
         /// <param name="id">The time zone id to find.</param>
         /// <returns>The <see cref="DateTimeZone" /> for the given ID.</returns>
-        /// <exception cref="TimeZoneNotFoundException">This provider does not support the given ID.</exception>
+        /// <exception cref="KeyNotFoundException">(Portable implementation) This provider does not support the given ID.</exception>
         /// <exception cref="ArgumentNullException"><paramref name="id"/> is null.</exception>
         DateTimeZone this[string id] { get; }
+#else
+        /// <summary>
+        /// Returns the time zone for the given ID.
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// Unlike <see cref="GetZoneOrNull"/>, this indexer will never return a null reference. If the ID is not
+        /// supported by this provider, it will throw <c>TimeZoneNotFoundException</c> on the desktop implementation,
+        /// or <c>KeyNotFoundException</c> on the portable implementation. (The difference here is unfortunate but
+        /// somewhat inevitable; <c>TimeZoneNotFoundException</c> is clearly the most appropriate exception, but isn't available
+        /// for portable class libraries.)
+        /// </para>
+        /// <para>
+        /// Note that this may return a <see cref="DateTimeZone"/> that has a different ID to that requested, if the ID
+        /// provided is an alias.
+        /// </para>
+        /// <para>
+        /// Note also that this method is not required to return the same <see cref="DateTimeZone"/> instance for
+        /// successive requests for the same ID; however, all instances returned for a given ID must compare
+        /// as equal.
+        /// </para>
+        /// <para>
+        /// The fixed-offset timezones with IDs "UTC" and "UTC+/-Offset" are always available. These must
+        /// return instances that are equal to those returned by <see cref="DateTimeZone.ForOffset"/>.
+        /// </para>
+        /// </remarks>
+        /// <param name="id">The time zone id to find.</param>
+        /// <returns>The <see cref="DateTimeZone" /> for the given ID.</returns>
+        /// <exception cref="TimeZoneNotFoundException">(Desktop implementation) This provider does not support the given ID.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="id"/> is null.</exception>
+        DateTimeZone this[string id] { get; }
+#endif
     }
 }

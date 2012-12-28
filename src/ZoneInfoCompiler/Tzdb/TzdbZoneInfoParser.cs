@@ -57,28 +57,13 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         public static readonly string[] Months = { "", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
 
         /// <summary>
-        ///   Initializes a new instance of the <see cref="TzdbZoneInfoParser" /> class.
-        /// </summary>
-        /// <param name="log">The log to use for logging messages.</param>
-        internal TzdbZoneInfoParser(ILog log)
-        {
-            Log = log;
-        }
-
-        /// <summary>
-        ///   Gets or sets the log to use for logging messages.
-        /// </summary>
-        /// <value>The log object.</value>
-        internal ILog Log { get; private set; }
-
-        /// <summary>
         ///   Logs the given error message and then throws a ParseException to return to the top level.
         /// </summary>
         /// <param name="format">The message format.</param>
         /// <param name="arguments">The optional arguments for the message.</param>
         private void Error(string format, params object[] arguments)
         {
-            Log.Error(format, arguments);
+            Console.WriteLine(format, arguments);
             throw new ParseException();
         }
 
@@ -164,40 +149,16 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         /// <param name="database">The database to fill.</param>
         public void Parse(TextReader reader, TzdbDatabase database)
         {
-            Log.LineNumber = 1;
-            try
+            bool firstLine = true;
+            for (var line = reader.ReadLine(); line != null; line = reader.ReadLine())
             {
-                for (var line = reader.ReadLine(); line != null; line = reader.ReadLine())
+                // Only bother with files which start with comments.
+                if (firstLine && !line.StartsWith("# ", StringComparison.Ordinal))
                 {
-                    try
-                    {
-                        if (Log.LineNumber == 1)
-                        {
-                            if (!line.StartsWith("# ", StringComparison.Ordinal))
-                            {
-                                return;
-                            }
-                        }
-                        else
-                        {
-                            ParseLine(line, database);
-                        }
-                    }
-                    catch (ParseException)
-                    {
-                        // Nothing to do
-                    }
-                    catch (Exception e)
-                    {
-                        Log.Error("Exception {0} occurred: {1}", e.GetType().Name, e.StackTrace);
-                        throw;
-                    }
-                    Log.LineNumber++;
+                    return;
                 }
-            }
-            finally
-            {
-                Log.LineNumber = -1;
+                firstLine = false;
+                ParseLine(line, database);
             }
         }
 

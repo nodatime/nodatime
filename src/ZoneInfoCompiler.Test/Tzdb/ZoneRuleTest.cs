@@ -1,4 +1,4 @@
-﻿#region Copyright and license information
+#region Copyright and license information
 // Copyright 2001-2009 Stephen Colebourne
 // Copyright 2009-2011 Jon Skeet
 // 
@@ -15,20 +15,23 @@
 // limitations under the License.
 #endregion
 
-using NUnit.Framework;
 using NodaTime.TimeZones;
+using NodaTime.ZoneInfoCompiler.Tzdb;
+using NUnit.Framework;
 
-namespace NodaTime.Test.TimeZones
+namespace NodaTime.ZoneInfoCompiler.Test.Tzdb
 {
     [TestFixture]
-    public class ReadWriteCompressTest : ReadWriteTest
+    public class ZoneRuleTest
     {
-        #region Setup/Teardown
-        [SetUp]
-        public void SetUp()
+        [Test]
+        public void WriteRead()
         {
-            Dio = new DtzIoHelper("compress", stream => new DateTimeZoneCompressionWriter(stream), stream => new DateTimeZoneCompressionReader(stream));
+            var yearOffset = new ZoneYearOffset(TransitionMode.Utc, 10, 31, (int)IsoDayOfWeek.Wednesday, true, Offset.Zero);
+            var recurrence = new ZoneRecurrence("bob", Offset.Zero, yearOffset, 1971, 2009);
+            var actual = new ZoneRule(recurrence, "D");
+            var expected = new ZoneRule(recurrence, "D");
+            Assert.AreEqual(expected, actual);
         }
-        #endregion
     }
 }

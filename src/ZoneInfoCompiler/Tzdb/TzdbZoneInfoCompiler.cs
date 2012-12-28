@@ -46,160 +46,29 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
             "Readme.txt" // Just to handle old directories in Noda Time. Not part of tzdb.
         };
 
-        private readonly ILog log;
         private readonly TzdbZoneInfoParser tzdbParser;
 
         /// <summary>
         ///   Initializes a new instance of the <see cref="TzdbZoneInfoCompiler" /> class.
         /// </summary>
         /// <param name="log">The log to send all output messages to.</param>
-        public TzdbZoneInfoCompiler(ILog log)
+        internal TzdbZoneInfoCompiler()
         {
-            this.log = log;
-            tzdbParser = new TzdbZoneInfoParser(this.log);
+            tzdbParser = new TzdbZoneInfoParser();
         }
 
-        /// <summary>
-        ///   Adds a recurring savings rule to the time zone builder.
-        /// </summary>
-        /// <param name="builder">The <see cref="DateTimeZoneBuilder" /> to add to.</param>
-        /// <param name="nameFormat">The name format pattern.</param>
-        /// <param name="ruleSet">The <see cref="ZoneRecurrenceCollection" /> describing the recurring savings.</param>
-        private static void AddRecurring(DateTimeZoneBuilder builder, String nameFormat, IEnumerable<ZoneRule> ruleSet)
+        internal TzdbDatabase Compile(string sourceDirectoryName)
         {
-            foreach (var rule in ruleSet)
-            {
-                string name = rule.FormatName(nameFormat);
-                builder.AddRecurringSavings(rule.Recurrence.WithName(name));
-            }
-        }
-
-        /// <summary>
-        ///   Compiles the specified files and generates the output resource file.
-        /// </summary>
-        /// <param name="fileList">The enumeration of <see cref="FileInfo" /> objects.</param>
-        /// <param name="output">The destination <see cref="DirectoryInfo" /> object.</param>
-        internal int Compile(string version, IEnumerable<FileInfo> fileList, ResourceOutput output)
-        {
-            var database = new TzdbDatabase(version);
-            ParseAllFiles(fileList, database);
-            GenerateDateTimeZones(database, output);
-            LogCounts(database);
-            return 0;
-        }
-
-        /// <summary>
-        ///   Returns a newly created <see cref="DateTimeZone" /> built from the given time zone data.
-        /// </summary>
-        /// <param name="zoneList">The time zone definition parts to add.</param>
-        /// <param name="ruleSets">The rule sets map to use in looking up rules for the time zones..</param>
-        private static DateTimeZone CreateTimeZone(ZoneList zoneList, IDictionary<string, IList<ZoneRule>> ruleSets)
-        {
-            var builder = new DateTimeZoneBuilder();
-            foreach (Zone zone in zoneList)
-            {
-                builder.SetStandardOffset(zone.Offset);
-                if (zone.Rules == null)
-                {
-                    builder.SetFixedSavings(zone.Format, Offset.Zero);
-                }
-                else
-                {
-                    IList<ZoneRule> ruleSet;
-                    if (ruleSets.TryGetValue(zone.Rules, out ruleSet))
-                    {
-                        AddRecurring(builder, zone.Format, ruleSet);
-                    }
-                    else
-                    {
-                        try
-                        {
-                            // Check if Rules actually just refers to a savings.
-                            var savings = ParserHelper.ParseOffset(zone.Rules);
-                            builder.SetFixedSavings(zone.Format, savings);
-                        }
-                        catch (FormatException)
-                        {
-                            throw new ArgumentException(
-                                string.Format("Daylight savings rule name '{0}' for zone {1} is neither a known ruleset nor a fixed offset", 
-                                    zone.Rules, zone.Name));
-                        }                        
-                    }
-                }
-                if (zone.UntilYear == Int32.MaxValue)
-                {
-                    break;
-                }
-                builder.AddCutover(zone.UntilYear, zone.UntilYearOffset);
-            }
-            return builder.ToDateTimeZone(zoneList.Name);
-        }
-
-        public int Execute(string sourceDirectoryName, ResourceOutput output)
-        {
-            log.Info("Starting compilation of directory {0}", sourceDirectoryName);
+            Console.WriteLine("Starting compilation of directory {0}", sourceDirectoryName);
             var sourceDirectory = new DirectoryInfo(sourceDirectoryName);
             var fileList = sourceDirectory.GetFiles().Where(file => !ExcludedFiles.Contains(file.Name));
-            //// Using this conditional code makes debugging simpler in Visual Studio because exceptions will
-            //// be caught by VS and shown with the exception visualizer.
-#if DEBUG
-            Compile(sourceDirectory.Name, fileList, output);
-#else
-            try
-            {
-                Compile(sourceDirectory.Name, fileList, output);
-            }
-            catch (Exception e)
-            {
-                log.Error("{0}", e);
-                return 2;
-            }
-#endif
-            log.Info("Done compiling time zones.");
-            return 0;
-        }
-
-        /// <summary>
-        ///   Generates the date time zones from the given parsed time zone information object.
-        /// </summary>
-        /// <remarks>
-        ///   <para>
-        ///     First we go through the list of time zones and generate an <see cref="DateTimeZone" />
-        ///     object for each one. We create a mapping between the time zone name and itself (for
-        ///     writing out later). Then we write out the time zone as a resource to the current writer.
-        ///   </para>
-        ///   <para>
-        ///     Second we go through all of the alias mappings and find the actual time zone that they
-        ///     map to. we do this by redirecting through aliases until there are no more aliases. This
-        ///     allows for on alias to refer to another. We add the alias mapping to the time zone
-        ///     mapping created in the first step. When done, we write out the entire mapping as a
-        ///     resource. The keys of the mapping can be used as the list of valid time zone ids
-        ///     supported by this resource file.
-        ///   </para>
-        /// </remarks>
-        /// <param name="database">The database of parsed zone info records.</param>
-        /// <param name="output">The output file <see cref="ResourceOutput" />.</param>
-        private static void GenerateDateTimeZones(TzdbDatabase database, ResourceOutput output)
-        {
-            var timeZoneMap = new Dictionary<string, string>();
-            foreach (var zoneList in database.Zones)
-            {
-                var timeZone = CreateTimeZone(zoneList, database.Rules);
-                timeZoneMap.Add(timeZone.Id, timeZone.Id);
-                output.WriteTimeZone(timeZone);
-            }
-
-            foreach (var key in database.Aliases.Keys)
-            {
-                var value = database.Aliases[key];
-                while (database.Aliases.ContainsKey(value))
-                {
-                    value = database.Aliases[value];
-                }
-                timeZoneMap.Add(key, value);
-            }
-            output.WriteString(TzdbDateTimeZoneSource.VersionKey, database.Version);
-            output.WriteDictionary(TzdbDateTimeZoneSource.IdMapKey, timeZoneMap);
+            string version = sourceDirectory.Name;
+            var database = new TzdbDatabase(version);
+            ParseAllFiles(fileList, database);
+            // TODO: Remove the method itself
+            // GenerateDateTimeZones(database, output);
+            LogCounts(database);
+            return database;
         }
 
         /// <summary>
@@ -208,13 +77,12 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         /// <param name="database">The database to query for the counts.</param>
         private void LogCounts(TzdbDatabase database)
         {
-            log.Info("=======================================");
-            log.Info("Rule sets: {0:D}", database.Rules.Count);
-            log.Info("Zones:     {0:D}", database.Zones.Count);
-            log.Info("Aliases:   {0:D}", database.Aliases.Count);
-            log.Info("=======================================");
+            Console.WriteLine("=======================================");
+            Console.WriteLine("Rule sets: {0:D}", database.Rules.Count);
+            Console.WriteLine("Zones:     {0:D}", database.ZoneLists.Count);
+            Console.WriteLine("Aliases:   {0:D}", database.Aliases.Count);
+            Console.WriteLine("=======================================");
         }
-
 
         /// <summary>
         ///   Parses all of the given files.
@@ -225,7 +93,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         {
             foreach (var file in files)
             {
-                log.Info("Parsing file {0} . . .", file.Name);
+                Console.WriteLine("Parsing file {0} . . .", file.Name);
                 ParseFile(file, database);
             }
         }
@@ -240,17 +108,9 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         /// <param name="database">The <see cref="TzdbDatabase" /> where the parsed data is placed.</param>
         internal void ParseFile(FileInfo file, TzdbDatabase database)
         {
-            log.FileName = file.Name;
-            try
+            using (FileStream stream = file.OpenRead())
             {
-                using (FileStream stream = file.OpenRead())
-                {
-                    tzdbParser.Parse(stream, database);
-                }
-            }
-            finally
-            {
-                log.FileName = null;
+                tzdbParser.Parse(stream, database);
             }
         }
     }

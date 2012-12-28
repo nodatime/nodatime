@@ -16,7 +16,9 @@
 #endregion
 
 using System;
+#if !PCL
 using System.Runtime.Serialization;
+#endif
 
 namespace NodaTime.Text
 {
@@ -26,7 +28,9 @@ namespace NodaTime.Text
     /// <threadsafety>Any public static members of this type are thread safe. Any instance members are not guaranteed to be thread safe.
     /// See the thread safety section of the user guide for more information.
     /// </threadsafety>
+#if !PCL
     [Serializable]
+#endif
     public sealed class UnparsableValueException : FormatException
     {
         /// <summary>
@@ -44,7 +48,7 @@ namespace NodaTime.Text
             : base(message)
         {
         }
-
+#if !PCL
         /// <summary>
         /// Creates a new UnparsableValueException from the given serialization information.
         /// </summary>
@@ -54,5 +58,6 @@ namespace NodaTime.Text
             : base(info, context)
         {
         }
+#endif
     }
 }

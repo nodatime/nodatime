@@ -81,9 +81,9 @@
             providers). The UTC timezone is also available via the <a href="P_NodaTime_DateTimeZone_Utc.htm">Utc</a> property on this class.
             </p><p>
             To obtain a <span class="selflink">DateTimeZone</span> representing the system default time zone, you can either call
-            <a href="M_NodaTime_IDateTimeZoneProvider_GetSystemDefault.htm">GetSystemDefault<span class="languageSpecificText"><span class="cs">()</span><span class="cpp">()</span><span class="nu">()</span><span class="fs">()</span></span></a> on a provider to obtain the <span class="selflink">DateTimeZone</span> that
+            <span class="code">IDateTimeZoneProvider.GetSystemDefault</span> on a provider to obtain the <span class="selflink">DateTimeZone</span> that
             the provider considers matches the system default time zone, or you can construct a
-            <a href="T_NodaTime_TimeZones_BclDateTimeZone.htm">BclDateTimeZone</a> via <a href="M_NodaTime_TimeZones_BclDateTimeZone_ForSystemDefault.htm">ForSystemDefault<span class="languageSpecificText"><span class="cs">()</span><span class="cpp">()</span><span class="nu">()</span><span class="fs">()</span></span></a>, which returns a
+            <span class="code">BclDateTimeZone</span> via <span class="code">BclDateTimeZone.ForSystemDefault</span>, which returns a
             <span class="selflink">DateTimeZone</span> that wraps the system local <a href="http://msdn2.microsoft.com/en-us/library/bb396389" target="_blank">TimeZoneInfo</a>. The latter will always
             succeed, but has access only to that information available via the .NET time zone; the former may contain more
             complete data, but may (in uncommon cases) fail to find a matching <span class="selflink">DateTimeZone</span>.

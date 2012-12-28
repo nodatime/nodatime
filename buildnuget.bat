@@ -6,6 +6,7 @@ if not exist "NodaTime Release.snk" (
 )
 
 msbuild "src\NodaTime.sln" /property:Configuration="Signed Release"
+msbuild "src\NodaTime.sln" /property:Configuration="Signed Release Portable"
 
 REM This will also build the unsigned release build. A bit wasteful,
 REM but that's okay...

@@ -15,10 +15,12 @@
 // limitations under the License.
 #endregion
 
-using System;
 using CommandLine;
 using NodaTime.ZoneInfoCompiler.Tzdb;
-using NodaTime.ZoneInfoCompiler.winmap;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Resources;
 
 namespace NodaTime.ZoneInfoCompiler
 {
@@ -32,8 +34,15 @@ namespace NodaTime.ZoneInfoCompiler
     /// <remarks>
     /// Original name: ZoneInfoCompiler (in org.joda.time.tz)
     /// </remarks>
-    internal sealed class ZoneInfoCompiler
+    internal sealed class Program
     {
+        private static readonly Dictionary<OutputType, string> Extensions = new Dictionary<OutputType, string>
+        {
+            { OutputType.Resource, "resources" },
+            { OutputType.ResX, "resx" },
+            { OutputType.NodaZoneData, "nzd" },
+        };
+
         /// <summary>
         /// Runs the compiler from the command line.
         /// </summary>
@@ -41,24 +50,35 @@ namespace NodaTime.ZoneInfoCompiler
         /// <returns>0 for success, non-0 for error.</returns>
         private static int Main(string[] arguments)
         {
-            TzdbCompilerOptions options = new TzdbCompilerOptions();
+            CompilerOptions options = new CompilerOptions();
             ICommandLineParser parser = new CommandLineParser(new CommandLineParserSettings(Console.Error));
             if (!parser.ParseArguments(arguments, options))
             {
                 return 1;
             }
 
-            var log = new ConsoleLog();
-            using (var output = new ResourceOutput(options.OutputFileName, options.OutputType))
+            var writer = CreateWriter(options);
+            var tzdbCompiler = new TzdbZoneInfoCompiler();
+            var tzdb = tzdbCompiler.Compile(options.SourceDirectoryName);
+            var windowsMapping = WindowsMapping.Parse(options.WindowsMappingFile);
+            writer.Write(tzdb, windowsMapping);
+            return 0;
+        }
+
+        private static ITzdbWriter CreateWriter(CompilerOptions options)
+        {
+            string file = Path.ChangeExtension(options.OutputFileName, Extensions[options.OutputType]);
+            switch (options.OutputType)
             {
-                var tzdbCompiler = new TzdbZoneInfoCompiler(log);
-                int ret = tzdbCompiler.Execute(options.SourceDirectoryName, output);
-                if (ret != 0)
-                {
-                    return ret;
-                }
-                var mapperCompiler = new WindowsMapperCompiler(log);
-                return mapperCompiler.Execute(options.WindowsMappingFile, output);
+                case OutputType.ResX:
+                    return new TzdbResourceWriter(new ResXResourceWriter(file));
+                case OutputType.Resource:
+                    return new TzdbResourceWriter(new ResourceWriter(file));
+                // TODO: Change this to a different ITzdbWriter implementation (not resources)
+                case OutputType.NodaZoneData:
+                    return new TzdbStreamWriter(File.Create(file));
+                default:
+                    throw new ArgumentException("Invalid output type: " + options.OutputType, "options");
             }
         }
     }

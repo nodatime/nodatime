@@ -343,11 +343,11 @@ namespace NodaTime.Test.TimeZones
         [Test]
         public void Test()
         {
-            var dio = new DtzIoHelper("ZoneYearOffset");
+            var dio = DtzIoHelper.CreateNoStringPool();
             var expected = new ZoneYearOffset(TransitionMode.Utc, 10, 31, (int)IsoDayOfWeek.Wednesday, true, Offset.Zero);
             dio.TestZoneYearOffset(expected);
 
-            dio = new DtzIoHelper("ZoneYearOffset");
+            dio.Reset();
             expected = new ZoneYearOffset(TransitionMode.Utc, 10, -31, (int)IsoDayOfWeek.Wednesday, true, Offset.Zero);
             dio.TestZoneYearOffset(expected);
         }

@@ -17,6 +17,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using NodaTime.Calendars;
 using NodaTime.Fields;
 using NodaTime.Utility;
@@ -291,7 +292,7 @@ namespace NodaTime
             this.name = name;
             this.minYear = minYear;
             this.maxYear = maxYear;
-            this.eras = new List<Era>(eras).AsReadOnly();
+            this.eras = new ReadOnlyCollection<Era>(new List<Era>(eras));
             FieldSet.Builder builder = new FieldSet.Builder();
             fieldAssembler(builder, this);
             fields = builder.Build();

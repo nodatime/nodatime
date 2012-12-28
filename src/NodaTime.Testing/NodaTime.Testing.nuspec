@@ -21,6 +21,8 @@
   <files>
     <file src="bin\Signed Release\NodaTime.Testing.dll" target="lib\net35-Client" />
     <file src="bin\Signed Release\NodaTime.Testing.xml" target="lib\net35-Client" />
+    <file src="bin\Signed Release Portable\NodaTime.Testing.dll" target="lib\portable-win+net40+sl4+wp7" />
+    <file src="bin\Signed Release Portable\NodaTime.Testing.xml" target="lib\portable-win+net40+sl4+wp7" />
   </files>
 </package>
     

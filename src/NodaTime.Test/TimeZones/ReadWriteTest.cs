@@ -15,19 +15,26 @@
 // limitations under the License.
 #endregion
 
-using System;
 using System.Collections.Generic;
-using NUnit.Framework;
 using NodaTime.TimeZones;
+using NUnit.Framework;
+using System;
 
 namespace NodaTime.Test.TimeZones
 {
-    public abstract class ReadWriteTest
+    [TestFixture]
+    public class ReadWriteTest
     {
         /// <summary>
-        ///   Returns the <see cref="DtzIoHelper" /> to use for testing against.
+        /// Returns the <see cref="DtzIoHelper" /> to use for testing against.
         /// </summary>
-        internal DtzIoHelper Dio { get; set; }
+        private DtzIoHelper Dio { get; set; }
+
+        [SetUp]
+        public void SetUp()
+        {
+            Dio = DtzIoHelper.CreateNoStringPool();
+        }
 
         private static void RunTests_Integers(Action<int> tester)
         {
@@ -48,27 +55,6 @@ namespace NodaTime.Test.TimeZones
             }
         }
 
-        private static void RunTests_Milliseconds(Action<int> tester)
-        {
-            tester(Int32.MinValue);
-            tester(Int32.MaxValue);
-            tester(0);
-            tester(1);
-            tester(-1);
-            for (int i = DateTimeZoneCompressionWriter.MinMillisHalfHours; i <= DateTimeZoneCompressionWriter.MaxMillisHalfHours; i++)
-            {
-                int value = i * 30 * NodaConstants.MillisecondsPerMinute;
-                tester(value);
-            }
-
-            const int secondDelta = (DateTimeZoneCompressionWriter.MaxMillisSeconds - DateTimeZoneCompressionWriter.MinMillisSeconds) / 1000;
-            for (int i = DateTimeZoneCompressionWriter.MinMillisSeconds; i <= DateTimeZoneCompressionWriter.MaxMillisSeconds; i += secondDelta)
-            {
-                int value = i * NodaConstants.MillisecondsPerSecond;
-                tester(value);
-            }
-        }
-
         private static void RunTests_Ticks(Action<long> tester)
         {
             tester(Int64.MaxValue);
@@ -78,19 +64,19 @@ namespace NodaTime.Test.TimeZones
             tester(Instant.MinValue.Ticks);
             tester(Instant.MaxValue.Ticks);
             tester(NodaConstants.UnixEpoch.Ticks);
-            for (long i = DateTimeZoneCompressionWriter.MinHalfHours; i <= DateTimeZoneCompressionWriter.MaxHalfHours; i++)
+            for (long i = DateTimeZoneWriter.MinHalfHours; i <= DateTimeZoneWriter.MaxHalfHours; i++)
             {
                 long value = i * 30 * NodaConstants.TicksPerMinute;
                 tester(value);
             }
-            const long minuteDiff = (DateTimeZoneCompressionWriter.MaxMinutes - DateTimeZoneCompressionWriter.MinMinutes) / 1000;
-            for (long i = DateTimeZoneCompressionWriter.MinMinutes; i <= DateTimeZoneCompressionWriter.MaxMinutes; i += minuteDiff)
+            const long minuteDiff = (DateTimeZoneWriter.MaxMinutes - DateTimeZoneWriter.MinMinutes) / 1000;
+            for (long i = DateTimeZoneWriter.MinMinutes; i <= DateTimeZoneWriter.MaxMinutes; i += minuteDiff)
             {
                 long value = i * NodaConstants.TicksPerMinute;
                 tester(value);
             }
-            const long secondDiff = (DateTimeZoneCompressionWriter.MaxSeconds - DateTimeZoneCompressionWriter.MinSeconds) / 1000;
-            for (long i = DateTimeZoneCompressionWriter.MinSeconds; i <= DateTimeZoneCompressionWriter.MinSeconds; i += secondDiff)
+            const long secondDiff = (DateTimeZoneWriter.MaxSeconds - DateTimeZoneWriter.MinSeconds) / 1000;
+            for (long i = DateTimeZoneWriter.MinSeconds; i <= DateTimeZoneWriter.MinSeconds; i += secondDiff)
             {
                 tester(i * NodaConstants.TicksPerSecond);
             }
@@ -121,8 +107,6 @@ namespace NodaTime.Test.TimeZones
             Dio.TestCount(0x1fffff);
             Dio.TestCount(0x200000);
             Dio.TestCount(0x200001);
-            Dio.TestCount(-1);
-            Dio.TestCount(Int32.MinValue);
             Dio.TestCount(Int32.MaxValue);
         }
 
@@ -160,20 +144,16 @@ namespace NodaTime.Test.TimeZones
         }
 
         [Test]
-        public void Test_Milliseconds()
+        public void Test_String_NoPool()
         {
-            RunTests_Milliseconds(Dio.TestMilliseconds);
+            Dio.TestString("");
+            Dio.TestString("This is a test string");
         }
 
         [Test]
-        public void Test_Offset()
+        public void Test_String_WithPool()
         {
-            RunTests_Milliseconds(value => Dio.TestOffset(value));
-        }
-
-        public void Test_String()
-        {
-            Dio.TestString(null);
+            Dio = DtzIoHelper.CreateWithStringPool();
             Dio.TestString("");
             Dio.TestString("This is a test string");
         }
