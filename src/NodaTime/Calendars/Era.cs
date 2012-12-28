@@ -18,7 +18,7 @@
 namespace NodaTime.Calendars
 {
     /// <summary>
-    /// Represents an era in a calendar.
+    /// Represents an era used in a calendar.
     /// </summary>
     /// <remarks>All the built-in calendars in Noda Time use the values specified by the static
     /// read-only fields in this class. These may be compared for reference equality to check for specific
@@ -37,12 +37,12 @@ namespace NodaTime.Calendars
         public static readonly Era BeforeCommon = new Era("BCE", "Eras_BeforeCommon"); // BCE
 
         /// <summary>
-        /// The "Anno Martyrum" or "Era of the Martyrs". This is the sole era in the Coptic calendar.
+        /// The "Anno Martyrum" or "Era of the Martyrs". This is the sole era used in the Coptic calendar.
         /// </summary>
         public static readonly Era AnnoMartyrm = new Era("AM", "Eras_AnnoMartyrum"); // AM
 
         /// <summary>
-        /// The "Anno Hegira" era. This is the sole era used by the Hijri (Islamic) calendar.
+        /// The "Anno Hegira" era. This is the sole era used in the Hijri (Islamic) calendar.
         /// </summary>
         public static readonly Era AnnoHegirae = new Era("EH", "Eras_AnnoHegirae"); // AH
 

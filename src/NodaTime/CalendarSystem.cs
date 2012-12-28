@@ -284,7 +284,7 @@ namespace NodaTime
         /// <param name="minYear">Minimum year in the calendar</param>
         /// <param name="maxYear">Maximum year in the calendar</param>
         /// <param name="fieldAssembler">Delegate to invoke in order to assemble fields for this calendar.</param>
-        /// <param name="eras">The eras within this calendar, which need not be unique to the calendar.</param>
+        /// <param name="eras">The eras used in this calendar, which need not be unique to the calendar.</param>
         internal CalendarSystem(string id, string name, int minYear, int maxYear, FieldAssembler fieldAssembler, IEnumerable<Era> eras)
         {
             this.id = id;
@@ -406,7 +406,7 @@ namespace NodaTime
 
         #region Era-based members
         /// <summary>
-        /// Returns a read-only list of eras supported by this calendar system.
+        /// Returns a read-only list of eras used in this calendar system.
         /// </summary>
         public IList<Era> Eras { get { return eras; } }
 
@@ -425,7 +425,7 @@ namespace NodaTime
         /// <returns>The absolute year represented by the specified year of era.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="era"/> is null</exception>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="yearOfEra"/> is out of the range of years for the given era</exception>
-        /// <exception cref="ArgumentException"><paramref name="era"/> is not an era of this calendar</exception>
+        /// <exception cref="ArgumentException"><paramref name="era"/> is not an era used in this calendar</exception>
         public int GetAbsoluteYear(int yearOfEra, Era era)
         {
             return GetAbsoluteYear(yearOfEra, GetEraIndex(era));
@@ -437,7 +437,7 @@ namespace NodaTime
         /// <param name="era">The era in which to find the greatest year</param>
         /// <returns>The maximum valid year in the given era.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="era"/> is null</exception>
-        /// <exception cref="ArgumentException"><paramref name="era"/> is not an era of this calendar</exception>
+        /// <exception cref="ArgumentException"><paramref name="era"/> is not an era used in this calendar</exception>
         public int GetMaxYearOfEra(Era era)
         {
             return GetMaxYearOfEra(GetEraIndex(era));
@@ -449,7 +449,7 @@ namespace NodaTime
         /// <param name="era">The era in which to find the greatest year</param>
         /// <returns>The minimum valid year in the given eraera.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="era"/> is null</exception>
-        /// <exception cref="ArgumentException"><paramref name="era"/> is not an era of this calendar</exception>
+        /// <exception cref="ArgumentException"><paramref name="era"/> is not an era used in this calendar</exception>
         public int GetMinYearOfEra(Era era)
         {
             return GetMinYearOfEra(GetEraIndex(era));
@@ -457,13 +457,13 @@ namespace NodaTime
 
         /// <summary>
         /// Convenience method to perform nullity and validity checking on the era, converting it to
-        /// the index within the list of eras supported by this calendar system.
+        /// the index within the list of eras used in this calendar system.
         /// </summary>
         private int GetEraIndex(Era era)
         {
             Preconditions.CheckNotNull(era, "era");
             int index = Eras.IndexOf(era);
-            Preconditions.CheckArgument(index != -1, "era", "Era does not belong to this calendar");
+            Preconditions.CheckArgument(index != -1, "era", "Era is not used in this calendar");
             return index;
         }
 
@@ -532,12 +532,12 @@ namespace NodaTime
         /// Returns a local instant, at the start of the day formed from the given year of era, month, day, and era arguments.
         /// The set of given values must refer to a valid datetime.
         /// </summary>
-        /// <param name="era">Era to use. This must be one of the eras within this calendar</param>
+        /// <param name="era">Era to use. This must be one of the eras used in this calendar</param>
         /// <param name="yearOfEra">Year of era to use</param>
         /// <param name="monthOfYear">Month to use</param>
         /// <param name="dayOfMonth">Day of month to use</param>
         /// <exception cref="ArgumentNullException"><paramref name="era" />is null.</exception>
-        /// <exception cref="ArgumentException"><paramref name="era" />is not a valid era in this calendar.</exception>
+        /// <exception cref="ArgumentException"><paramref name="era"/> is not an era used in this calendar</exception>
         /// <exception cref="ArgumentOutOfRangeException">The year of era, month of year and day of month values don't
         /// form a valid date.</exception>
         /// <returns>A <see cref="LocalInstant"/> with the given year, month, day and era.</returns>
