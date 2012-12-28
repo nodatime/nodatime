@@ -15,15 +15,13 @@
 // limitations under the License.
 #endregion
 
+using NodaTime.TimeZones;
+using NodaTime.ZoneInfoCompiler.Tzdb;
+using NUnit.Framework;
 using System;
 using System.IO;
-using NUnit.Framework;
-using NodaTime;
-using NodaTime.TimeZones;
-using NodaTime.ZoneInfoCompiler;
-using NodaTime.ZoneInfoCompiler.Tzdb;
 
-namespace ZoneInfoCompiler.Test.Tzdb
+namespace NodaTime.ZoneInfoCompiler.Test.Tzdb
 {
     ///<summary>
     ///  This is a test class for containing all of the TzdbZoneInfoParser unit tests.
@@ -33,14 +31,12 @@ namespace ZoneInfoCompiler.Test.Tzdb
     {
         private static readonly string[] MonthNames = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
 
-        private BufferLog Log { get; set; }
         private TzdbZoneInfoParser Parser { get; set; }
 
         [TestFixtureSetUp]
         public void Setup()
         {
-            Log = new BufferLog();
-            Parser = new TzdbZoneInfoParser(Log);
+            Parser = new TzdbZoneInfoParser();
         }
 
         private static Offset ToOffset(int hours, int minutes, int seconds, int fractions)
@@ -51,7 +47,7 @@ namespace ZoneInfoCompiler.Test.Tzdb
         private static void ValidateCounts(TzdbDatabase database, int ruleSets, int zoneLists, int links)
         {
             Assert.AreEqual(ruleSets, database.Rules.Count, "Rules");
-            Assert.AreEqual(zoneLists, database.Zones.Count, "Zones");
+            Assert.AreEqual(zoneLists, database.ZoneLists.Count, "Zones");
             Assert.AreEqual(links, database.Aliases.Count, "Links");
         }
 
@@ -183,7 +179,7 @@ namespace ZoneInfoCompiler.Test.Tzdb
             var database = new TzdbDatabase("version");
             Parser.ParseLine(line, database);
             ValidateCounts(database, 0, 1, 0);
-            Assert.AreEqual(1, database.Zones[0].Count, "Zones in set");
+            Assert.AreEqual(1, database.ZoneLists[0].Count, "Zones in set");
         }
 
         [Test]
@@ -196,7 +192,7 @@ namespace ZoneInfoCompiler.Test.Tzdb
             const string line2 = "  3:00 US P%sT";
             Parser.ParseLine(line2, database);
             ValidateCounts(database, 0, 1, 0);
-            Assert.AreEqual(2, database.Zones[0].Count, "Zones in set");
+            Assert.AreEqual(2, database.ZoneLists[0].Count, "Zones in set");
         }
 
         /* ############################################################################### */
@@ -357,7 +353,7 @@ namespace ZoneInfoCompiler.Test.Tzdb
             var database = new TzdbDatabase("version");
             Parser.Parse(reader, database);
             ValidateCounts(database, 0, 1, 0);
-            Assert.AreEqual(2, database.Zones[0].Count, "Zones in set");
+            Assert.AreEqual(2, database.ZoneLists[0].Count, "Zones in set");
         }
 
         [Test]
@@ -368,7 +364,7 @@ namespace ZoneInfoCompiler.Test.Tzdb
             var database = new TzdbDatabase("version");
             Parser.Parse(reader, database);
             ValidateCounts(database, 0, 1, 0);
-            Assert.AreEqual(2, database.Zones[0].Count, "Zones in set");
+            Assert.AreEqual(2, database.ZoneLists[0].Count, "Zones in set");
         }
 
         [Test]
@@ -379,7 +375,7 @@ namespace ZoneInfoCompiler.Test.Tzdb
             var database = new TzdbDatabase("version");
             Parser.Parse(reader, database);
             ValidateCounts(database, 0, 1, 0);
-            Assert.AreEqual(1, database.Zones[0].Count, "Zones in set");
+            Assert.AreEqual(1, database.ZoneLists[0].Count, "Zones in set");
         }
 
         [Test]
@@ -402,8 +398,8 @@ namespace ZoneInfoCompiler.Test.Tzdb
             var database = new TzdbDatabase("version");
             Parser.Parse(reader, database);
             ValidateCounts(database, 0, 2, 0);
-            Assert.AreEqual(2, database.Zones[0].Count, "Zones in set " + database.Zones[0].Name);
-            Assert.AreEqual(3, database.Zones[1].Count, "Zones in set " + database.Zones[1].Name);
+            Assert.AreEqual(2, database.ZoneLists[0].Count, "Zones in set " + database.ZoneLists[0].Name);
+            Assert.AreEqual(3, database.ZoneLists[1].Count, "Zones in set " + database.ZoneLists[1].Name);
         }
 
         [Test]
@@ -417,8 +413,8 @@ namespace ZoneInfoCompiler.Test.Tzdb
             var database = new TzdbDatabase("version");
             Parser.Parse(reader, database);
             ValidateCounts(database, 1, 2, 0);
-            Assert.AreEqual(2, database.Zones[0].Count, "Zones in set " + database.Zones[0].Name);
-            Assert.AreEqual(3, database.Zones[1].Count, "Zones in set " + database.Zones[1].Name);
+            Assert.AreEqual(2, database.ZoneLists[0].Count, "Zones in set " + database.ZoneLists[0].Name);
+            Assert.AreEqual(3, database.ZoneLists[1].Count, "Zones in set " + database.ZoneLists[1].Name);
         }
 
         /* ############################################################################### */
@@ -496,8 +492,8 @@ namespace ZoneInfoCompiler.Test.Tzdb
             Parser.Parse(reader, database);
 
             ValidateCounts(database, 0, 1, 0);
-            Assert.AreEqual(1, database.Zones[0].Count, "Zones in set");
-            var zone = database.Zones[0][0];
+            Assert.AreEqual(1, database.ZoneLists[0].Count, "Zones in set");
+            var zone = database.ZoneLists[0][0];
             Assert.AreEqual(Offset.FromHours(9), zone.Offset);
             Assert.IsNull(zone.Rules);
             Assert.AreEqual(int.MaxValue, zone.UntilYear);
@@ -512,8 +508,8 @@ namespace ZoneInfoCompiler.Test.Tzdb
             Parser.Parse(reader, database);
 
             ValidateCounts(database, 0, 1, 0);
-            Assert.AreEqual(1, database.Zones[0].Count, "Zones in set");
-            var zone = database.Zones[0][0];
+            Assert.AreEqual(1, database.ZoneLists[0].Count, "Zones in set");
+            var zone = database.ZoneLists[0][0];
             Assert.AreEqual(Offset.FromHours(-9), zone.Offset);
             Assert.IsNull(zone.Rules);
             Assert.AreEqual(int.MaxValue, zone.UntilYear);

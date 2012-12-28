@@ -15,10 +15,13 @@
 // limitations under the License.
 #endregion
 
+#if !PCL
+
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Reflection;
 using System.Resources;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -33,48 +36,6 @@ namespace NodaTime.Utility
     internal static class ResourceHelper
     {
         private static readonly Regex InvalidResourceNameCharacters = new Regex("[^A-Za-z0-9_/]", RegexOptions.Compiled | RegexOptions.CultureInvariant);
-
-        internal static CultureInfo GetCulture(IFormatProvider formatProvider)
-        {
-            return formatProvider as CultureInfo ?? Thread.CurrentThread.CurrentUICulture;
-        }
-
-        /// <summary>
-        /// Returns the message string from the package resources formatted with the given replacement parameters.
-        /// </summary>
-        /// <remarks>
-        /// <para>
-        /// If there is no resource string with the given id then the id is returned as the message. 
-        /// </para>
-        /// </remarks>
-        /// <param name="id">the message id to retrieve.</param>
-        /// <param name="replacements">The optional replacement parameters.</param>
-        /// <returns>The formatted string.</returns>
-        internal static string GetMessage(string id, params object[] replacements)
-        {
-            var message = Messages.ResourceManager.GetString(id) ?? id;
-            return String.Format(CultureInfo.CurrentCulture, message, replacements);
-        }
-
-        /// <summary>
-        /// Returns the message string from the package resources formatted with the given replacement parameters.
-        /// </summary>
-        /// <remarks>
-        /// <para>
-        /// If there is no resource string with the given id then the id is returned as the message. 
-        /// </para>
-        /// </remarks>
-        /// <param name="formatProvider"></param>
-        /// <param name="invariant"></param>
-        /// <param name="id">the message id to retrieve.</param>
-        /// <param name="replacements">The optional replacement parameters.</param>
-        /// <returns>The formatted string.</returns>
-        internal static string GetMessage(IFormatProvider formatProvider, string invariant, string id, params object[] replacements)
-        {
-            var culture = GetCulture(formatProvider);
-            string message = culture.Equals(CultureInfo.InvariantCulture) ? invariant : (Messages.ResourceManager.GetString(id) ?? id);
-            return replacements.Length == 0 ? message : String.Format(CultureInfo.CurrentCulture, message, replacements);
-        }
 
         /// <summary>
         /// Normalizes the given name into a valid resource name by replacing invalid
@@ -105,47 +66,10 @@ namespace NodaTime.Utility
             return manager.GetResourceSet(CultureInfo.CurrentUICulture, true, true);
         }
 
-        /// <summary>
-        /// Loads a dictionary of string to string with the given name from the given resource manager.
-        /// </summary>
-        /// <param name="source">The <see cref="ResourceSet"/> to load from.</param>
-        /// <param name="name">The resource name.</param>
-        /// <returns>The <see cref="IDictionary{TKey,TValue}"/> or null if there is no such resource.</returns>
-        internal static IDictionary<string, string> LoadDictionary(ResourceSet source, string name)
+        internal static ResourceSet GetDefaultResourceSet(string baseName, Assembly assembly)
         {
-            Preconditions.CheckNotNull(source, "source");
-            var bytes = source.GetObject(name) as byte[];
-            if (bytes != null)
-            {
-                using (var stream = new MemoryStream(bytes))
-                {
-                    var reader = new DateTimeZoneCompressionReader(stream);
-                    return reader.ReadDictionary();
-                }
-            }
-            return null;
-        }
-
-        /// <summary>
-        /// Loads a time zone with the given name from the given resource manager.
-        /// </summary>
-        /// <param name="source">The <see cref="ResourceSet"/> to load from.</param>
-        /// <param name="name">The resource name. (This will not be normalized.)</param>
-        /// <param name="id">The time zone id for the loaded time zone.</param>
-        /// <returns>The <see cref="DateTimeZone"/> parsed from the resources.</returns>
-        /// <exception cref="ArgumentException">The </exception>
-        internal static DateTimeZone LoadTimeZone(ResourceSet source, string name, string id)
-        {
-            Preconditions.CheckNotNull(source, "source");
-            object obj = source.GetObject(NormalizeAsResourceName(name));
-            // We should never be asked for time zones which don't exist.
-            Preconditions.CheckArgument(obj != null, "id", "ID is not one of the recognized time zone identifiers within this resource");
-            byte[] bytes = (byte[])obj;            
-            using (var stream = new MemoryStream(bytes))
-            {
-                var reader = new DateTimeZoneCompressionReader(stream);
-                return reader.ReadTimeZone(id);
-            }
+            return GetDefaultResourceSet(new ResourceManager(baseName, assembly));
         }
     }
 }
+#endif

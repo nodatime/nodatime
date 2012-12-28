@@ -73,9 +73,9 @@ namespace NodaTime
     /// </para>
     /// <para>
     /// To obtain a <see cref="DateTimeZone"/> representing the system default time zone, you can either call
-    /// <see cref="IDateTimeZoneProvider.GetSystemDefault"/> on a provider to obtain the <see cref="DateTimeZone"/> that
+    /// <c>IDateTimeZoneProvider.GetSystemDefault</c> on a provider to obtain the <see cref="DateTimeZone"/> that
     /// the provider considers matches the system default time zone, or you can construct a
-    /// <see cref="BclDateTimeZone"/> via <see cref="BclDateTimeZone.ForSystemDefault"/>, which returns a
+    /// <c>BclDateTimeZone</c> via <c>BclDateTimeZone.ForSystemDefault</c>, which returns a
     /// <see cref="DateTimeZone"/> that wraps the system local <see cref="TimeZoneInfo"/>. The latter will always
     /// succeed, but has access only to that information available via the .NET time zone; the former may contain more
     /// complete data, but may (in uncommon cases) fail to find a matching <see cref="DateTimeZone"/>.

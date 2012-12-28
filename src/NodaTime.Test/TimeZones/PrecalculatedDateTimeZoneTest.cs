@@ -16,6 +16,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 using NUnit.Framework;
 using NodaTime.Testing.TimeZones;
@@ -292,11 +293,11 @@ namespace NodaTime.Test.TimeZones
         public void Serialization()
         {
             MemoryStream firstPass = new MemoryStream();
-            new DateTimeZoneWriter(firstPass).WriteTimeZone(TestZone);
+            new DateTimeZoneWriter(firstPass, null).WriteTimeZone(TestZone);
             firstPass.Position = 0;
-            var readZone = new DateTimeZoneReader(firstPass).ReadTimeZone(TestZone.Id);
+            var readZone = new DateTimeZoneReader(firstPass, null).ReadTimeZone(TestZone.Id);
             MemoryStream secondPass = new MemoryStream();
-            new DateTimeZoneWriter(secondPass).WriteTimeZone(readZone);
+            new DateTimeZoneWriter(secondPass, null).WriteTimeZone(readZone);
 
             Assert.AreEqual(firstPass.ToArray(), secondPass.ToArray());
         }

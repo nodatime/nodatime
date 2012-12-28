@@ -29,7 +29,15 @@ NUNIT := nunit-console
 #     builds the Markdown-based documentation generator, and updates the
 #     user and developer guides (in docs/{userguide,developer}).
 
-XBUILDFLAGS := /p:TargetFrameworkVersion='v3.5' /p:TargetFrameworkProfile=''
+# Override the profile: Mono only supports the 'full' .NET framework profile,
+# not the Client profile selected in the project files for the desktop build
+# configurations.
+#
+# Note that while xbuild from Mono 3.0 'supports' Portable Library projects, it
+# actually builds them against the desktop .NET framework, so the fact that
+# we're overriding the profile here for those configurations is unimportant
+# (and the main reason there are no PCL targets defined here).
+XBUILDFLAGS := /p:TargetFrameworkProfile=''
 XBUILDFLAGS_DEBUG := $(XBUILDFLAGS) /p:Configuration=Debug
 XBUILDFLAGS_RELEASE := $(XBUILDFLAGS) /p:Configuration=Release
 

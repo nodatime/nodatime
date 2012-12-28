@@ -17,6 +17,7 @@
 #region usings
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Threading;
 using NodaTime.Calendars;
@@ -80,6 +81,10 @@ namespace NodaTime.Globalization
         private string offsetPatternLong;
         private string offsetPatternMedium;
         private string offsetPatternShort;
+#if PCL
+        private readonly string dateSeparator;
+        private readonly string timeSeparator;
+#endif
         private readonly IList<string> longMonthNames;
         private readonly IList<string> longMonthGenitiveNames;
         private readonly IList<string> longDayNames;
@@ -124,6 +129,11 @@ namespace NodaTime.Globalization
             shortDayNames = ConvertDayArray(cultureInfo.DateTimeFormat.AbbreviatedDayNames);
             eraNamesCache = new Dictionary<Era, IList<string>>();
             eraPrimaryNameCache = new Dictionary<Era, string>();
+#if PCL
+            // Horrible, but it does the job...
+            dateSeparator = DateTime.MinValue.ToString("%/", cultureInfo);
+            timeSeparator = DateTime.MinValue.ToString("%:", cultureInfo);
+#endif
         }
 
         /// <summary>
@@ -133,7 +143,7 @@ namespace NodaTime.Globalization
         {
             List<string> list = new List<string>(monthNames);
             list.Insert(0, null);
-            return list.AsReadOnly();
+            return new ReadOnlyCollection<string>(list);
         }
 
         /// <summary>
@@ -144,8 +154,8 @@ namespace NodaTime.Globalization
         {
             List<string> list = new List<string>(dayNames);
             list.Add(dayNames[0]);
-            list[0] = null;            
-            return list.AsReadOnly();
+            list[0] = null;
+            return new ReadOnlyCollection<string>(list);
         }
 
         /// <summary>
@@ -274,6 +284,17 @@ namespace NodaTime.Globalization
         /// </summary>
         public string NegativeSign { get { return NumberFormat.NegativeSign; } }
 
+#if PCL
+        /// <summary>
+        /// Gets the time separator.
+        /// </summary>
+        public string TimeSeparator { get { return timeSeparator; } }
+
+        /// <summary>
+        /// Gets the date separator.
+        /// </summary>
+        public string DateSeparator { get { return dateSeparator; } }
+#else
         /// <summary>
         /// Gets the time separator.
         /// </summary>
@@ -283,7 +304,7 @@ namespace NodaTime.Globalization
         /// Gets the date separator.
         /// </summary>
         public string DateSeparator { get { return DateTimeFormat.DateSeparator; } }
-
+#endif
         /// <summary>
         /// Gets the AM designator.
         /// </summary>
@@ -319,11 +340,11 @@ namespace NodaTime.Globalization
                 }
                 else
                 {
-                    string[] unsorted = pipeDelimited.Split('|');
-                    eraPrimaryNameCache[era] = unsorted[0];
+                    string[] values = pipeDelimited.Split('|');
+                    eraPrimaryNameCache[era] = values[0];
                     // Order by length, descending to avoid early out (e.g. parsing BCE as BC and then having a spare E)
-                    Array.Sort(unsorted, (x, y) => y.Length.CompareTo(x.Length));
-                    names = new List<string>(unsorted).AsReadOnly();
+                    Array.Sort(values, (x, y) => y.Length.CompareTo(x.Length));
+                    names = new ReadOnlyCollection<string>(values);
                 }
                 eraNamesCache[era] = names;
                 return names;

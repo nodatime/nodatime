@@ -27,8 +27,19 @@ namespace NodaTime.Fields
     /// </summary>
     internal sealed class UnsupportedPeriodField : PeriodField
     {
-        private static readonly UnsupportedPeriodField[] cache = Array.ConvertAll((PeriodFieldType[])Enum.GetValues(typeof(PeriodFieldType)),
-                                                                                    type => new UnsupportedPeriodField(type));
+        private static readonly UnsupportedPeriodField[] cache = CreateCache();
+
+        private static UnsupportedPeriodField[] CreateCache()
+        {
+            // PCL doesn't support Enum.GetValues, so we need to hard-code the knowledge here.
+            int maxElement = (int) PeriodFieldType.Ticks;
+            UnsupportedPeriodField[] cache = new UnsupportedPeriodField[maxElement + 1];
+            for (int i = 0; i <= maxElement; i++)
+            {
+                cache[i] = new UnsupportedPeriodField((PeriodFieldType) i);
+            }
+            return cache;
+        }
 
         // Convenience fields
         public static readonly UnsupportedPeriodField Eras = cache[(int)PeriodFieldType.Eras];

@@ -1,5 +1,26 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <!-- Set the custom Portability property based on configuration -->
+  <PropertyGroup>
+    <Portability Condition="'$(Configuration)' == 'Debug Portable'">PCL</Portability>
+    <Portability Condition="'$(Configuration)' == 'Release Portable'">PCL</Portability>
+    <Portability Condition="'$(Configuration)' == 'Signed Release Portable'">PCL</Portability>
+    <!-- Default to desktop if not explicitly set above -->
+    <Portability Condition="'$(Portability)' == ''">Desktop</Portability>
+  </PropertyGroup>
+  <!-- Desktop-specific properties -->
+  <PropertyGroup Condition="'$(Portability)' == 'Desktop'">
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+  </PropertyGroup>
+  <!-- PCL-specific properties -->
+  <PropertyGroup Condition="'$(Portability)' == 'PCL'">
+    <MinimumVisualStudioVersion>10.0</MinimumVisualStudioVersion>
+    <ProjectGuid>{c78f6992-28d7-45c9-a4c1-6eaa649f3247}</ProjectGuid>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Profile2</TargetFrameworkProfile>
+    <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+  </PropertyGroup>
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -10,9 +31,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>NodaTime</RootNamespace>
     <AssemblyName>NodaTime</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <OldToolsVersion>3.5</OldToolsVersion>
@@ -72,7 +91,7 @@
     <OutputPath>bin\Signed Release\</OutputPath>
     <DefineConstants>TRACE;SIGNED</DefineConstants>
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
-    <DocumentationFile>bin\Release\NodaTime.xml</DocumentationFile>
+    <DocumentationFile>bin\Signed Release\NodaTime.xml</DocumentationFile>
     <Optimize>true</Optimize>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <DebugType>pdbonly</DebugType>
@@ -81,6 +100,41 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <AssemblyOriginatorKeyFile>..\..\NodaTime Release.snk</AssemblyOriginatorKeyFile>
     <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug Portable|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Debug Portable\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;PCL</DefineConstants>
+    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release Portable|AnyCPU'">
+    <OutputPath>bin\Release Portable\</OutputPath>
+    <DefineConstants>TRACE;PCL</DefineConstants>
+    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+    <Optimize>true</Optimize>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Signed Release Portable|AnyCPU'">
+    <OutputPath>bin\Signed Release Portable\</OutputPath>
+    <DefineConstants>TRACE;SIGNED;PCL</DefineConstants>
+    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+    <DocumentationFile>bin\Signed Release Portable\NodaTime.xml</DocumentationFile>
+    <Optimize>true</Optimize>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <AssemblyOriginatorKeyFile>..\..\NodaTime Release.snk</AssemblyOriginatorKeyFile>
+    <SignAssembly>True</SignAssembly>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -201,22 +255,20 @@
     <Compile Include="TimeZones\DateTimeZoneReader.cs" />
     <Compile Include="TimeZones\DateTimeZoneWriter.cs" />
     <Compile Include="TimeZones\Delegates.cs" />
+    <Compile Include="TimeZones\IO\ITzdbDataSource.cs" />
+    <Compile Include="TimeZones\IO\TzdbResourceData.cs" />
+    <Compile Include="TimeZones\IO\TzdbStreamData.cs" />
+    <Compile Include="TimeZones\IO\TzdbStreamField.cs" />
+    <Compile Include="TimeZones\IO\TzdbStreamFieldId.cs" />
     <Compile Include="TimeZones\IZoneIntervalMap.cs" />
     <Compile Include="TimeZones\NamespaceDoc.cs" />
     <Compile Include="TimeZones\Resolvers.cs" />
     <Compile Include="TimeZones\InvalidDateTimeSourceException.cs" />
     <Compile Include="TimeZones\Transition.cs" />
-    <Compile Include="TimeZones\DateTimeZoneCompressionReader.cs" />
-    <Compile Include="TimeZones\DateTimeZoneCompressionWriter.cs" />
     <Compile Include="TimeZones\DateTimeZoneBuilder.cs" />
     <Compile Include="TimeZones\DaylightSavingsDateTimeZone.cs" />
     <Compile Include="TimeZones\FixedDateTimeZone.cs" />
     <Compile Include="TimeZones\IDateTimeZoneSource.cs" />
-    <Compile Include="TimeZones\winmap.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>winmap.resx</DependentUpon>
-    </Compile>
     <Compile Include="TimeZones\ZoneInterval.cs" />
     <Compile Include="TimeZones\ZoneIntervalPair.cs" />
     <Compile Include="TimeZones\ZoneLocalMapping.cs" />
@@ -281,16 +333,18 @@
       <LastGenOutput>Messages.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup Condition="'$(Portability)' == 'PCL'">
+    <EmbeddedResource Include="TimeZones\Tzdb.nzd" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(Portability)' == 'Desktop'">
     <EmbeddedResource Include="TimeZones\Tzdb.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="TimeZones\winmap.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>winmap.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Condition="'$(Portability)' == 'Desktop'" Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Condition="'$(Portability)' == 'PCL'" Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

@@ -18,25 +18,187 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Reflection;
 using System.Text;
 
 namespace NodaTime.TimeZones
 {
     /// <summary>
-    /// Provides an <see cref="DateTimeZone" /> reader that simply reads the values
-    /// without any compression. Can be used as a base for implementing specific 
-    /// compression readers by overriding the methods for the types to be compressed.
+    /// Provides mostly primitive data reading capabilities for use from time zone classes,
+    /// for reading data written by <see cref="DateTimeZoneWriter"/>.
     /// </summary>
     // TODO: Consider renaming to TzdbDateTimeZoneReader
-    internal class DateTimeZoneReader
+    internal sealed class DateTimeZoneReader
     {
-        internal DateTimeZoneReader(Stream input)
+        private readonly Stream input;
+        private readonly IList<string> stringPool; 
+
+        internal DateTimeZoneReader(Stream input, IList<string> stringPool)
         {
-            Input = input;
+            this.input = input;
+            this.stringPool = stringPool;
         }
 
-        protected Stream Input { get; private set; }
+        /// <summary>
+        /// Reads a non-negative integer value from the stream.
+        /// </summary>
+        /// <remarks>
+        /// The value must have been written by <see cref="DateTimeZoneWriter.WriteCount" />.
+        /// </remarks>
+        /// <returns>The integer value from the stream.</returns>
+        internal int ReadCount()
+        {
+            unchecked
+            {
+                byte flag = ReadByte();
+                if (flag == 0xff)
+                {
+                    // Note that this will handle earlier versions of Noda Time which used negative
+                    // count values in zone recurrences for DaylightSavingsDateTimeZone. Those
+                    // values are now prohibited, but will be read appropriately here.
+                    return ReadInt32();
+                }
+                if (0xf0 <= flag && flag <= 0xfe)
+                {
+                    return flag & 0x0f;
+                }
+                int adjustment = 0x0f;
+                if ((flag & 0x80) == 0)
+                {
+                    return flag + adjustment;
+                }
+                adjustment += 0x80;
+                if ((flag & 0xc0) == 0x80)
+                {
+                    int first = flag & 0x3f;
+                    int second = ReadByte();
+                    return ((first << 8) + second) + adjustment;
+                }
+                adjustment += 0x4000;
+                if ((flag & 0xe0) == 0xc0)
+                {
+                    int first = flag & 0x1f;
+                    int second = ReadInt16();
+                    return ((first << 16) + second) + adjustment;
+                }
+                else
+                {
+                    adjustment += 0x200000;
+                    int first = flag & 0x0f;
+                    int second = ReadByte();
+                    int third = ReadInt16();
+                    return (((first << 8) + second) << 16) + third + adjustment;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Reads an offset value from the stream.
+        /// </summary>
+        /// <remarks>
+        /// The value must have been written by <see cref="DateTimeZoneWriter.WriteOffset" />.
+        /// </remarks>
+        /// <returns>The offset value from the stream.</returns>
+        internal Offset ReadOffset()
+        {
+            /*
+             * Milliseconds encoding formats:
+             *
+             * upper bits      units       field length  approximate range
+             * ---------------------------------------------------------------
+             * 0xxxxxxx        30 minutes  1 byte        +/- 24 hours
+             * 10xxxxxx        seconds     3 bytes       +/- 24 hours
+             * 11111101  0xfd  millis      5 byte        Full range
+             *
+             * Remaining bits in field form signed offset from 1970-01-01T00:00:00Z.
+             */
+            unchecked
+            {
+                byte flag = ReadByte();
+
+                if ((flag & 0x80) == 0)
+                {
+                    int units = flag - DateTimeZoneWriter.MaxMillisHalfHours;
+                    return Offset.FromMilliseconds(units * (30 * NodaConstants.MillisecondsPerMinute));
+                }
+                if ((flag & 0xc0) == DateTimeZoneWriter.FlagMillisSeconds)
+                {
+                    int first = flag & ~0xc0;
+                    int second = ReadByte() & 0xff;
+                    int third = ReadByte() & 0xff;
+
+                    int units = (((first << 8) + second) << 8) + third;
+                    units = units - DateTimeZoneWriter.MaxMillisSeconds;
+                    return Offset.FromMilliseconds(units * NodaConstants.MillisecondsPerSecond);
+                }
+                return Offset.FromMilliseconds(ReadInt32());
+            }
+        }
+
+        /// <summary>
+        /// Reads a long ticks value from the stream.
+        /// </summary>
+        /// <remarks>
+        /// The value must have been written by <see cref="DateTimeZoneWriter.WriteTicks" />.
+        /// </remarks>
+        /// <returns>The long ticks value from the stream.</returns>
+        internal long ReadTicks()
+        {
+            /*
+             * Ticks encoding formats:
+             *
+             * upper two bits  units       field length  approximate range
+             * ---------------------------------------------------------------
+             * 00              30 minutes  1 byte        +/- 16 hours
+             * 01              minutes     3 bytes       +/- 1020 years
+             * 10              seconds     5 bytes       +/- 4355 years
+             * 11000000        ticks       9 bytes       +/- 292,000 years
+             * 11111100  0xfc              1 byte         Offset.MaxValue
+             * 11111101  0xfd              1 byte         Offset.MinValue
+             * 11111110  0xfe              1 byte         Instant, LocalInstant, Duration MaxValue
+             * 11111111  0xff              1 byte         Instant, LocalInstant, Duration MinValue
+             *
+             * Remaining bits in field form signed offset from 1970-01-01T00:00:00Z.
+             */
+            unchecked
+            {
+                byte flag = ReadByte();
+                if (flag == DateTimeZoneWriter.FlagMinValue)
+                {
+                    return Int64.MinValue;
+                }
+                if (flag == DateTimeZoneWriter.FlagMaxValue)
+                {
+                    return Int64.MaxValue;
+                }
+
+                if ((flag & 0xc0) == DateTimeZoneWriter.FlagHalfHour)
+                {
+                    long units = flag - DateTimeZoneWriter.MaxHalfHours;
+                    return units * (30 * NodaConstants.TicksPerMinute);
+                }
+                if ((flag & 0xc0) == DateTimeZoneWriter.FlagMinutes)
+                {
+                    int first = flag & ~0xc0;
+                    int second = ReadByte() & 0xff;
+                    int third = ReadByte() & 0xff;
+
+                    long units = (((first << 8) + second) << 8) + third;
+                    units = units - DateTimeZoneWriter.MaxMinutes;
+                    return units * NodaConstants.TicksPerMinute;
+                }
+                if ((flag & 0xc0) == DateTimeZoneWriter.FlagSeconds)
+                {
+                    long first = flag & ~0xc0;
+                    long second = ReadInt32() & 0xffffffffL;
+
+                    long units = (first << 32) + second;
+                    units = units - DateTimeZoneWriter.MaxSeconds;
+                    return units * NodaConstants.TicksPerSecond;
+                }
+
+                return ReadInt64();
+            }
+        }
 
         /// <summary>
         /// Reads a boolean value from the stream.
@@ -48,18 +210,6 @@ namespace NodaTime.TimeZones
         internal bool ReadBoolean()
         {
             return ReadByte() == 0 ? false : true;
-        }
-
-        /// <summary>
-        /// Reads a non-negative integer value from the stream.
-        /// </summary>
-        /// <remarks>
-        /// The value must have been written by <see cref="DateTimeZoneWriter.WriteCount" />.
-        /// </remarks>
-        /// <returns>The integer value from the stream.</returns>
-        internal virtual int ReadCount()
-        {
-            return ReadInt32();
         }
 
         /// <summary>
@@ -81,7 +231,7 @@ namespace NodaTime.TimeZones
             }
             return results;
         }
-
+        
         /// <summary>
         /// Reads an <see cref="Instant" /> value from the stream.
         /// </summary>
@@ -107,23 +257,6 @@ namespace NodaTime.TimeZones
         }
 
         /// <summary>
-        /// Reads an integer millisecond value from the stream.
-        /// </summary>
-        /// <remarks>
-        /// The value must have been written by <see cref="DateTimeZoneWriter.WriteMilliseconds" />.
-        /// </remarks>
-        /// <returns>The integer millisecond value from the stream.</returns>
-        internal virtual int ReadMilliseconds()
-        {
-            return ReadInt32();
-        }
-
-        internal Offset ReadOffset()
-        {
-            return Offset.FromMilliseconds(ReadMilliseconds());
-        }
-
-        /// <summary>
         /// Reads a string value from the stream.
         /// </summary>
         /// <remarks>
@@ -132,22 +265,27 @@ namespace NodaTime.TimeZones
         /// <returns>The string value from the stream.</returns>
         internal string ReadString()
         {
-            int length = ReadCount();
-            var data = new byte[length];
-            Input.Read(data, 0, length);
-            return Encoding.UTF8.GetString(data);
-        }
-
-        /// <summary>
-        /// Reads a long ticks value from the stream.
-        /// </summary>
-        /// <remarks>
-        /// The value must have been written by <see cref="DateTimeZoneWriter.WriteTicks" />.
-        /// </remarks>
-        /// <returns>The long ticks value from the stream.</returns>
-        internal virtual long ReadTicks()
-        {
-            return ReadInt64();
+            if (stringPool == null)
+            {
+                int length = ReadCount();
+                var data = new byte[length];
+                int offset = 0;
+                while (offset < length)
+                {
+                    int bytesRead = input.Read(data, 0, length);
+                    if (bytesRead <= 0)
+                    {
+                        throw new EndOfStreamException("Unexpectedly reached end of data with " + (length - offset) + " bytes still to read");
+                    }
+                    offset += bytesRead;
+                }
+                return Encoding.UTF8.GetString(data, 0, length);
+            }
+            else
+            {
+                int index = ReadCount();
+                return stringPool[index];
+            }
         }
 
         /// <summary>
@@ -173,7 +311,7 @@ namespace NodaTime.TimeZones
                 case DateTimeZoneWriter.FlagTimeZoneDst:
                     return DaylightSavingsDateTimeZone.Read(this, id);
                 default:
-                    throw new InvalidDataException("Unknown flag type " + flag);
+                    throw new IOException("Unknown flag type " + flag);
             }
         }
 
@@ -185,8 +323,8 @@ namespace NodaTime.TimeZones
         {
             unchecked
             {
-                int high = ReadByte() & 0xff;
-                int low = ReadByte() & 0xff;
+                int high = ReadByte();
+                int low = ReadByte();
                 return (high << 8) | low;
             }
         }
@@ -226,7 +364,7 @@ namespace NodaTime.TimeZones
         /// <exception cref="EndOfStreamException">The data in the stream has been exhausted</exception>
         internal byte ReadByte()
         {
-            int value = Input.ReadByte();
+            int value = input.ReadByte();
             if (value == -1)
             {
                 throw new EndOfStreamException();

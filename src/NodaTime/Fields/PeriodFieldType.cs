@@ -19,6 +19,9 @@ namespace NodaTime.Fields
     /// <summary>
     /// Indicates the type of a value represented by a period field.
     /// </summary>
+    /// <remarks>
+    /// If another type is added after Ticks, you must edit <see cref="UnsupportedPeriodField"/> appropriately.
+    /// </remarks>
     internal enum PeriodFieldType
     {
         /// <summary>
