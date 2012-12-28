@@ -15,6 +15,8 @@
 // limitations under the License.
 #endregion
 
+#if !PCL
+
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -33,11 +35,7 @@ namespace NodaTime.Utility
     /// </summary>
     internal static class ResourceHelper
     {
-#if PCL
-        private static readonly Regex InvalidResourceNameCharacters = new Regex("[^A-Za-z0-9_/]", RegexOptions.CultureInvariant);
-#else
         private static readonly Regex InvalidResourceNameCharacters = new Regex("[^A-Za-z0-9_/]", RegexOptions.Compiled | RegexOptions.CultureInvariant);
-#endif
 
         internal static CultureInfo GetCulture(IFormatProvider formatProvider)
         {
@@ -98,73 +96,22 @@ namespace NodaTime.Utility
             return InvalidResourceNameCharacters.Replace(name, "_");
         }
 
-#if !PCL
         /// <summary>
-        /// Gets the default <see cref="IResourceSet"/> from a <see cref="ResourceManager"/>.
+        /// Gets the default <see cref="ResourceSet"/> from a <see cref="ResourceManager"/>.
         /// </summary>
         /// <param name="manager">The <see cref="ResourceManager"/> to get resources from.</param>
-        /// <returns>The default <see cref="IResourceSet"/>.</returns>
-        /// <remarks>The default <see cref="IResourceSet"/> for a <see cref="ResourceManager"/> is
-        /// the <see cref="IResourceSet"/> that is used by <see cref="ResourceManager.GetObject(string)"/>.</remarks>
-        internal static IResourceSet GetDefaultResourceSet(ResourceManager manager)
+        /// <returns>The default <see cref="ResourceSet"/>.</returns>
+        /// <remarks>The default <see cref="ResourceSet"/> for a <see cref="ResourceManager"/> is
+        /// the <see cref="ResourceSet"/> that is used by <see cref="ResourceManager.GetObject(string)"/>.</remarks>
+        internal static ResourceSet GetDefaultResourceSet(ResourceManager manager)
         {
-            return new BclResourceSet(manager.GetResourceSet(CultureInfo.CurrentUICulture, true, true));
+            return manager.GetResourceSet(CultureInfo.CurrentUICulture, true, true);
         }
-#endif
 
-        internal static IResourceSet GetDefaultResourceSet(string baseName, Assembly assembly)
+        internal static ResourceSet GetDefaultResourceSet(string baseName, Assembly assembly)
         {
-#if PCL
-            using (Stream stream = assembly.GetManifestResourceStream(baseName + ".nodaresources"))
-            {
-                return NodaResourcesResourceSet.FromStream(stream);
-            }
-#else
             return GetDefaultResourceSet(new ResourceManager(baseName, assembly));
-#endif
-        }
-
-        /// <summary>
-        /// Loads a dictionary of string to string with the given name from the given resource manager.
-        /// </summary>
-        /// <param name="source">The <see cref="IResourceSet"/> to load from.</param>
-        /// <param name="name">The resource name.</param>
-        /// <returns>The <see cref="IDictionary{TKey,TValue}"/> or null if there is no such resource.</returns>
-        internal static IDictionary<string, string> LoadDictionary(IResourceSet source, string name)
-        {
-            Preconditions.CheckNotNull(source, "source");
-            var bytes = source.GetObject(name) as byte[];
-            if (bytes != null)
-            {
-                using (var stream = new MemoryStream(bytes))
-                {
-                    var reader = new DateTimeZoneReader(stream, null);
-                    return reader.ReadDictionary();
-                }
-            }
-            return null;
-        }
-
-        /// <summary>
-        /// Loads a time zone with the given name from the given resource manager.
-        /// </summary>
-        /// <param name="source">The <see cref="IResourceSet"/> to load from.</param>
-        /// <param name="name">The resource name. (This will not be normalized.)</param>
-        /// <param name="id">The time zone id for the loaded time zone.</param>
-        /// <returns>The <see cref="DateTimeZone"/> parsed from the resources.</returns>
-        /// <exception cref="ArgumentException">The </exception>
-        internal static DateTimeZone LoadTimeZone(IResourceSet source, string name, string id)
-        {
-            Preconditions.CheckNotNull(source, "source");
-            object obj = source.GetObject(NormalizeAsResourceName(name));
-            // We should never be asked for time zones which don't exist.
-            Preconditions.CheckArgument(obj != null, "id", "ID is not one of the recognized time zone identifiers within this resource");
-            byte[] bytes = (byte[])obj;
-            using (var stream = new MemoryStream(bytes))
-            {
-                var reader = new DateTimeZoneReader(stream, null);
-                return reader.ReadTimeZone(id);
-            }
         }
     }
 }
+#endif

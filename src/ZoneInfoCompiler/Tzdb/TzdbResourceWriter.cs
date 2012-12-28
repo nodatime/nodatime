@@ -20,6 +20,7 @@ using System.IO;
 using System.Resources;
 using NodaTime.TimeZones;
 using NodaTime.Utility;
+using NodaTime.TimeZones.IO;
 
 namespace NodaTime.ZoneInfoCompiler.Tzdb
 {
@@ -54,10 +55,10 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
                 }
                 timeZoneMap.Add(key, value);
             }
-            resourceWriter.AddResource(TzdbDateTimeZoneSource.VersionKey, database.Version);
-            WriteDictionary(TzdbDateTimeZoneSource.IdMapKey, timeZoneMap);
-            WriteDictionary(TzdbDateTimeZoneSource.WindowsToPosixMapKey, mapping.WindowsToTzdbIds);
-            resourceWriter.AddResource(TzdbDateTimeZoneSource.WindowsToPosixMapVersionKey, mapping.Version);
+            resourceWriter.AddResource(TzdbResourceData.VersionKey, database.Version);
+            WriteDictionary(TzdbResourceData.IdMapKey, timeZoneMap);
+            WriteDictionary(TzdbResourceData.WindowsToPosixMapKey, mapping.WindowsToTzdbIds);
+            resourceWriter.AddResource(TzdbResourceData.WindowsToPosixMapVersionKey, mapping.Version);
             resourceWriter.Close();
         }
 

@@ -9,7 +9,7 @@ namespace NodaTime.ZoneInfoCompiler
         ResX,
         /// <summary>Generates the output file in Resource format.</summary>
         Resource,
-        /// <summary>Generates the output file in custom NodaTime resource format.</summary>
-        NodaResource
+        /// <summary>Generates the output file in custom NodaTime data format.</summary>
+        NodaZoneData
     }
 }

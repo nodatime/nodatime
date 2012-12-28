@@ -255,6 +255,11 @@
     <Compile Include="TimeZones\DateTimeZoneReader.cs" />
     <Compile Include="TimeZones\DateTimeZoneWriter.cs" />
     <Compile Include="TimeZones\Delegates.cs" />
+    <Compile Include="TimeZones\IO\ITzdbDataSource.cs" />
+    <Compile Include="TimeZones\IO\TzdbResourceData.cs" />
+    <Compile Include="TimeZones\IO\TzdbStreamData.cs" />
+    <Compile Include="TimeZones\IO\TzdbStreamField.cs" />
+    <Compile Include="TimeZones\IO\TzdbStreamFieldId.cs" />
     <Compile Include="TimeZones\IZoneIntervalMap.cs" />
     <Compile Include="TimeZones\NamespaceDoc.cs" />
     <Compile Include="TimeZones\Resolvers.cs" />
@@ -284,12 +289,9 @@
     <Compile Include="NodaConstants.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utility\BclConversions.cs" />
-    <Compile Include="Utility\BclResourceSet.cs" />
     <Compile Include="Utility\HashCodeHelper.cs" />
-    <Compile Include="Utility\IResourceSet.cs" />
     <Compile Include="Utility\NamespaceDoc.cs" />
     <Compile Include="Utility\NodaReadOnlyDictionary.cs" />
-    <Compile Include="Utility\NodaResourcesResourceSet.cs" />
     <Compile Include="Utility\ReferenceEqualityComparer.cs" />
     <Compile Include="Utility\ResourceHelper.cs" />
     <Compile Include="Utility\Preconditions.cs" />
@@ -333,7 +335,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup Condition="'$(Portability)' == 'PCL'">
-    <EmbeddedResource Include="TimeZones\Tzdb.nodaresources" />
+    <EmbeddedResource Include="TimeZones\Tzdb.nzd" />
   </ItemGroup>
   <ItemGroup Condition="'$(Portability)' == 'Desktop'">
     <EmbeddedResource Include="TimeZones\Tzdb.resx">
