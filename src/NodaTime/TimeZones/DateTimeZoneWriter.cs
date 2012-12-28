@@ -62,14 +62,17 @@ namespace NodaTime.TimeZones
         internal const byte FlagMinValue = 0xff;
 
         private readonly Stream output;
+        private readonly IList<string> stringPool; 
 
         /// <summary>
         /// Constructs a DateTimeZoneWriter.
         /// </summary>
         /// <param name="output">Where to send the serialized output.</param>
-        internal DateTimeZoneWriter(Stream output)
+        /// <param name="stringPool">String pool to add strings to, or null for no pool</param>
+        internal DateTimeZoneWriter(Stream output, IList<string> stringPool)
         {
             this.output = output;
+            this.stringPool = stringPool;
         }
 
         /// <summary>
@@ -315,10 +318,23 @@ namespace NodaTime.TimeZones
         /// <param name="value">The value to write.</param>
         internal void WriteString(string value)
         {
-            byte[] data = Encoding.UTF8.GetBytes(value);
-            int length = data.Length;
-            WriteCount(length);
-            output.Write(data, 0, data.Length);
+            if (stringPool == null)
+            {
+                byte[] data = Encoding.UTF8.GetBytes(value);
+                int length = data.Length;
+                WriteCount(length);
+                output.Write(data, 0, data.Length);
+            }
+            else
+            {
+                int index = stringPool.IndexOf(value);
+                if (index == -1)
+                {
+                    index = stringPool.Count;
+                    stringPool.Add(value);
+                }
+                WriteCount(index);
+            }
         }
 
         /// <summary>

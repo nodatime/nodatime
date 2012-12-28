@@ -138,7 +138,7 @@ namespace NodaTime.Utility
             {
                 using (var stream = new MemoryStream(bytes))
                 {
-                    var reader = new DateTimeZoneReader(stream);
+                    var reader = new DateTimeZoneReader(stream, null);
                     return reader.ReadDictionary();
                 }
             }
@@ -162,7 +162,7 @@ namespace NodaTime.Utility
             byte[] bytes = (byte[])obj;
             using (var stream = new MemoryStream(bytes))
             {
-                var reader = new DateTimeZoneReader(stream);
+                var reader = new DateTimeZoneReader(stream, null);
                 return reader.ReadTimeZone(id);
             }
         }

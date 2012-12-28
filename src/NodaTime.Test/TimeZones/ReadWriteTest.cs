@@ -33,7 +33,7 @@ namespace NodaTime.Test.TimeZones
         [SetUp]
         public void SetUp()
         {
-            Dio = new DtzIoHelper("standard", stream => new DateTimeZoneWriter(stream), stream => new DateTimeZoneReader(stream));
+            Dio = DtzIoHelper.CreateNoStringPool();
         }
 
         private static void RunTests_Integers(Action<int> tester)
@@ -143,9 +143,17 @@ namespace NodaTime.Test.TimeZones
             RunTests_Ticks(value => Dio.TestLocalInstant((new LocalInstant(value))));
         }
 
-        public void Test_String()
+        [Test]
+        public void Test_String_NoPool()
         {
-            Dio.TestString(null);
+            Dio.TestString("");
+            Dio.TestString("This is a test string");
+        }
+
+        [Test]
+        public void Test_String_WithPool()
+        {
+            Dio = DtzIoHelper.CreateWithStringPool();
             Dio.TestString("");
             Dio.TestString("This is a test string");
         }
