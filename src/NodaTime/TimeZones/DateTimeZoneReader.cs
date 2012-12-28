@@ -30,10 +30,12 @@ namespace NodaTime.TimeZones
     internal sealed class DateTimeZoneReader
     {
         private readonly Stream input;
+        private readonly IList<string> stringPool; 
 
-        internal DateTimeZoneReader(Stream input)
+        internal DateTimeZoneReader(Stream input, IList<string> stringPool)
         {
             this.input = input;
+            this.stringPool = stringPool;
         }
 
         /// <summary>
@@ -263,19 +265,27 @@ namespace NodaTime.TimeZones
         /// <returns>The string value from the stream.</returns>
         internal string ReadString()
         {
-            int length = ReadCount();
-            var data = new byte[length];
-            int offset = 0;
-            while (offset < length)
+            if (stringPool == null)
             {
-                int bytesRead = input.Read(data, 0, length);
-                if (bytesRead <= 0)
+                int length = ReadCount();
+                var data = new byte[length];
+                int offset = 0;
+                while (offset < length)
                 {
-                    throw new EndOfStreamException("Unexpectedly reached end of data with " + (length - offset) + " bytes still to read");
+                    int bytesRead = input.Read(data, 0, length);
+                    if (bytesRead <= 0)
+                    {
+                        throw new EndOfStreamException("Unexpectedly reached end of data with " + (length - offset) + " bytes still to read");
+                    }
+                    offset += bytesRead;
                 }
-                offset += bytesRead;
+                return Encoding.UTF8.GetString(data, 0, length);
             }
-            return Encoding.UTF8.GetString(data, 0, length);
+            else
+            {
+                int index = ReadCount();
+                return stringPool[index];
+            }
         }
 
         /// <summary>
