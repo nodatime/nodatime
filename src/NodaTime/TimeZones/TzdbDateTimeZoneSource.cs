@@ -87,6 +87,7 @@ namespace NodaTime.TimeZones
         /// the NodaTime assembly.
         /// </summary>
         /// <param name="baseName">The root name of the resource file.</param>
+        [Obsolete("Use TzdbDateTimeZoneSource.Default to access the only TZDB resources within the NodaTime assembly")]
         public TzdbDateTimeZoneSource(string baseName)
             : this(baseName, Assembly.GetExecutingAssembly())
         {
@@ -97,6 +98,7 @@ namespace NodaTime.TimeZones
         /// </summary>
         /// <param name="baseName">The root name of the resource file.</param>
         /// <param name="assembly">The assembly to search for the time zone resources.</param>
+        [Obsolete("Use the TzdbDateTimeZoneSource.FromResource factory method instead.")]
         public TzdbDateTimeZoneSource(string baseName, Assembly assembly)
             : this(ResourceHelper.GetDefaultResourceSet(baseName, assembly))
         {
@@ -106,14 +108,57 @@ namespace NodaTime.TimeZones
         /// Initializes a new instance of the <see cref="TzdbDateTimeZoneSource" /> class.
         /// </summary>
         /// <param name="source">The <see cref="ResourceSet"/> to search for the time zone resources.</param>
-        public TzdbDateTimeZoneSource(ResourceSet source) : this(new TzdbResourceData(Preconditions.CheckNotNull(source, "source")))
+        [Obsolete("Use the TzdbDateTimeZoneSource.FromResource factory method instead.")]
+        public TzdbDateTimeZoneSource(ResourceSet source)
+            : this(new TzdbResourceData(Preconditions.CheckNotNull(source, "source")))
         {
+        }
+
+        /// <summary>
+        /// Creates an instance from a resource set.
+        /// </summary>
+        /// <param name="source">The resource set containing time zone data</param>
+        /// <returns>A TZDB source with information from the given resource.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/> is null</exception>
+        // TODO: Document other exceptions when we've worked out what they should be.
+        public static TzdbDateTimeZoneSource FromResource(ResourceSet source)
+        {
+            Preconditions.CheckNotNull(source, "source");
+            return new TzdbDateTimeZoneSource(new TzdbResourceData(Preconditions.CheckNotNull(source, "source")));
+        }
+
+        /// <summary>
+        /// Creates an instance from an assembly resource.
+        /// </summary>
+        /// <param name="baseName">The resource name within the given assembly</param>
+        /// <param name="assembly">The assembly to load the resource from</param>
+        /// <returns>A TZDB source with information from the given resource.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="baseName"/> or <paramref name="assembly"/> is null</exception>
+        // TODO: Document other exceptions when we've worked out what they should be.
+        public static TzdbDateTimeZoneSource FromResource(string baseName, Assembly assembly)
+        {
+            Preconditions.CheckNotNull(baseName, "baseName");
+            Preconditions.CheckNotNull(assembly, "assembly");
+            return FromResource(ResourceHelper.GetDefaultResourceSet(baseName, assembly));
         }
 #endif
 
-        // TODO: Add public static factory methods to build from a stream.
+        /// <summary>
+        /// Creates an instance from a stream in the custom Noda Time format.
+        /// </summary>
+        /// <remarks>The stream is not closed by this method, but will be read from
+        /// without rewinding. A successful call will read the stream to the end.</remarks>
+        /// <param name="stream">The stream containing time zone data</param>
+        /// <returns>A TZDB source with information from the given stream.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="stream"/> is null</exception>
+        // TODO: Document other exceptions when we've worked out what they should be.
+        public static TzdbDateTimeZoneSource FromStream(Stream stream)
+        {
+            Preconditions.CheckNotNull(stream, "stream");
+            return new TzdbDateTimeZoneSource(TzdbStreamData.FromStream(stream));
+        }
 
-        internal TzdbDateTimeZoneSource(ITzdbDataSource source)
+        private TzdbDateTimeZoneSource(ITzdbDataSource source)
         {
             Preconditions.CheckNotNull(source, "source");
             this.source = source;
