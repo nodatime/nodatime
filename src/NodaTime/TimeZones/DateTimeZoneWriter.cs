@@ -138,23 +138,11 @@ namespace NodaTime.TimeZones
              * 0xxxxxxx        30 minutes  1 byte        +/- 24 hours
              * 10xxxxxx        seconds     3 bytes       +/- 24 hours
              * 11111101  0xfd  millis      5 byte        Full range
-             * 11111110  0xfe              1 byte        Int32.MaxValue
-             * 11111111  0xff              1 byte        Int32.MinValue
              *
              * Remaining bits in field form signed offset from 1970-01-01T00:00:00Z.
              */
             unchecked
             {
-                if (millis == Int32.MinValue)
-                {
-                    WriteByte(FlagMinValue);
-                    return;
-                }
-                if (millis == Int32.MaxValue)
-                {
-                    WriteByte(FlagMaxValue);
-                    return;
-                }
                 if (millis % (30 * NodaConstants.MillisecondsPerMinute) == 0)
                 {
                     // Try to write in 30 minute units.
