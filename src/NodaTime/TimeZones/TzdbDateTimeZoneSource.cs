@@ -57,7 +57,7 @@ namespace NodaTime.TimeZones
                     return TzdbStreamData.FromStream(stream);
                 }
 #else
-                return new TzdbResourceData(ResourceHelper.GetDefaultResourceSet("NodaTime.TimeZones.Tzdb", assembly));
+                return TzdbResourceData.FromResource("NodaTime.TimeZones.Tzdb", assembly);
 #endif
             }
         }
@@ -100,7 +100,7 @@ namespace NodaTime.TimeZones
         /// <param name="assembly">The assembly to search for the time zone resources.</param>
         [Obsolete("Use the TzdbDateTimeZoneSource.FromResource factory method instead.")]
         public TzdbDateTimeZoneSource(string baseName, Assembly assembly)
-            : this(ResourceHelper.GetDefaultResourceSet(baseName, assembly))
+            : this(TzdbResourceData.FromResource(baseName, assembly))
         {
         }
 
@@ -110,7 +110,7 @@ namespace NodaTime.TimeZones
         /// <param name="source">The <see cref="ResourceSet"/> to search for the time zone resources.</param>
         [Obsolete("Use the TzdbDateTimeZoneSource.FromResource factory method instead.")]
         public TzdbDateTimeZoneSource(ResourceSet source)
-            : this(new TzdbResourceData(Preconditions.CheckNotNull(source, "source")))
+            : this(TzdbResourceData.FromResourceSet(source))
         {
         }
 
@@ -123,8 +123,7 @@ namespace NodaTime.TimeZones
         // TODO: Document other exceptions when we've worked out what they should be.
         public static TzdbDateTimeZoneSource FromResource(ResourceSet source)
         {
-            Preconditions.CheckNotNull(source, "source");
-            return new TzdbDateTimeZoneSource(new TzdbResourceData(Preconditions.CheckNotNull(source, "source")));
+            return new TzdbDateTimeZoneSource(TzdbResourceData.FromResourceSet(source));
         }
 
         /// <summary>
@@ -137,9 +136,7 @@ namespace NodaTime.TimeZones
         // TODO: Document other exceptions when we've worked out what they should be.
         public static TzdbDateTimeZoneSource FromResource(string baseName, Assembly assembly)
         {
-            Preconditions.CheckNotNull(baseName, "baseName");
-            Preconditions.CheckNotNull(assembly, "assembly");
-            return FromResource(ResourceHelper.GetDefaultResourceSet(baseName, assembly));
+            return new TzdbDateTimeZoneSource(TzdbResourceData.FromResource(baseName, assembly));
         }
 #endif
 

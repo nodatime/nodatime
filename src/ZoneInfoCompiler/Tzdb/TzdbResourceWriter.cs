@@ -83,7 +83,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         /// <param name="timeZone">The <see cref="DateTimeZone" /> to write.</param>
         private void WriteTimeZone(DateTimeZone timeZone)
         {
-            string normalizedId = ResourceHelper.NormalizeAsResourceName(timeZone.Id);
+            string normalizedId = TzdbResourceData.NormalizeAsResourceName(timeZone.Id);
             using (var stream = new MemoryStream())
             {
                 var writer = new DateTimeZoneWriter(stream, null);

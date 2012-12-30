@@ -17,6 +17,9 @@
 
 #if !PCL
 
+using System.Globalization;
+using System.Reflection;
+using System.Text.RegularExpressions;
 using NodaTime.Utility;
 using System.Collections.Generic;
 using System.IO;
@@ -30,6 +33,8 @@ namespace NodaTime.TimeZones.IO
     /// </summary>
     internal sealed class TzdbResourceData : ITzdbDataSource
     {
+        private static readonly Regex InvalidResourceNameCharacters = new Regex("[^A-Za-z0-9_/]", RegexOptions.Compiled | RegexOptions.CultureInvariant);
+
         /// <summary>
         /// The resource key for the Windows to TZDB ID mapping dictionary.
         /// This resource key contains hyphens, so cannot conflict with a time zone name.
@@ -60,7 +65,7 @@ namespace NodaTime.TimeZones.IO
         private readonly IDictionary<string, string> windowsMapping;
         private readonly ResourceSet source;
 
-        internal TzdbResourceData(ResourceSet source)
+        private TzdbResourceData(ResourceSet source)
         {
             this.source = source;
             tzdbIdMap = LoadDictionary(source, IdMapKey);
@@ -92,7 +97,7 @@ namespace NodaTime.TimeZones.IO
         /// <inheritdoc />
         public DateTimeZone CreateZone(string id, string canonicalId)
         {
-            object obj = source.GetObject(ResourceHelper.NormalizeAsResourceName(canonicalId));
+            object obj = source.GetObject(NormalizeAsResourceName(canonicalId));
             // We should never be asked for time zones which don't exist.
             Preconditions.CheckArgument(obj != null, "canonicalId", "ID is not one of the recognized time zone identifiers within this resource");
             byte[] bytes = (byte[])obj;
@@ -124,6 +129,41 @@ namespace NodaTime.TimeZones.IO
             return null;
         }
 
+        internal static TzdbResourceData FromResourceManager(ResourceManager manager)
+        {
+            return FromResourceSet(manager.GetResourceSet(CultureInfo.CurrentUICulture, true, true));
+        }
+
+        internal static TzdbResourceData FromResourceSet(ResourceSet source)
+        {
+            Preconditions.CheckNotNull(source, "source");
+            return new TzdbResourceData(source);
+        }
+
+        internal static TzdbResourceData FromResource(string baseName, Assembly assembly)
+        {
+            Preconditions.CheckNotNull(baseName, "baseName");
+            Preconditions.CheckNotNull(assembly, "assembly");
+            return FromResourceManager(new ResourceManager(baseName, assembly));
+        }
+
+        /// <summary>
+        /// Normalizes the given name into a valid resource name by replacing invalid
+        /// characters with alternatives. This is used to ensure a valid resource name is
+        /// used for each time zone resource.
+        /// </summary>
+        /// <param name="name">The name to normalize.</param>
+        /// <returns>The normalized name.</returns>
+        internal static string NormalizeAsResourceName(string name)
+        {
+            Preconditions.CheckNotNull(name, "name");
+            name = name.Replace("-", "_minus_");
+            name = name.Replace("+", "_plus_");
+            name = name.Replace("<", "_less_");
+            name = name.Replace(">", "_greater_");
+            name = name.Replace("&", "_and_");
+            return InvalidResourceNameCharacters.Replace(name, "_");
+        }        
     }
 }
 

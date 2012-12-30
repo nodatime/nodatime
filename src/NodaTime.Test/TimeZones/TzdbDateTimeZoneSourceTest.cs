@@ -74,8 +74,10 @@ namespace NodaTime.Test.TimeZones
         [Test]
         public void CanLoadNodaTimeResourceFromOnePointZeroRelease()
         {
+#pragma warning disable 0618
             var source = new TzdbDateTimeZoneSource("NodaTime.Test.TestData.Tzdb2012iFromNodaTime1.0",
                 Assembly.GetExecutingAssembly());
+#pragma warning restore 0618
             Assert.AreEqual("TZDB: 2012i (mapping: 6356)", source.VersionId);
 
             var utc = Instant.FromUtc(2007, 8, 24, 9, 30, 0);
