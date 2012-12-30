@@ -41,13 +41,13 @@ namespace NodaTime.TimeZones.IO
         /// </summary>
         TzdbIdMap = 3,
         /// <summary>
-        /// Single field giving the mapping of Windows system ID to TZDB canonical ID,
-        /// as written by DateTimeZoneWriter.WriteDictionary.
+        /// Single field giving the version of Windows Mapping source data from CLDR. A string value which does *not* use
+        /// the string pool.
         /// </summary>
         WindowsMappingVersion = 4,
         /// <summary>
-        /// Single field giving the version of Windows Mapping source data from CLDR. A string value which does *not* use
-        /// the string pool.
+        /// Single field giving the mapping of Windows system ID to TZDB canonical ID,
+        /// as written by DateTimeZoneWriter.WriteDictionary.
         /// </summary>
         WindowsMapping = 5
     }
