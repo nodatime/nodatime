@@ -65,8 +65,6 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
             string version = sourceDirectory.Name;
             var database = new TzdbDatabase(version);
             ParseAllFiles(fileList, database);
-            // TODO: Remove the method itself
-            // GenerateDateTimeZones(database, output);
             LogCounts(database);
             return database;
         }

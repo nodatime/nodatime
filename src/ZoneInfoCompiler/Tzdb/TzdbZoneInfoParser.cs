@@ -57,17 +57,6 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         public static readonly string[] Months = { "", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
 
         /// <summary>
-        ///   Logs the given error message and then throws a ParseException to return to the top level.
-        /// </summary>
-        /// <param name="format">The message format.</param>
-        /// <param name="arguments">The optional arguments for the message.</param>
-        private void Error(string format, params object[] arguments)
-        {
-            Console.WriteLine(format, arguments);
-            throw new ParseException();
-        }
-
-        /// <summary>
         ///   Nexts the month.
         /// </summary>
         /// <param name="tokens">The tokens.</param>
@@ -108,7 +97,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         {
             if (!tokens.HasNextToken)
             {
-                Error("Missing zone info token {0}", name);
+                throw new InvalidDataException("Missing zone info token: " + name);
             }
             return tokens.NextToken(name);
         }
@@ -257,6 +246,10 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         private static int ParseDayOfWeek(string text)
         {
             int index = Array.IndexOf(DaysOfWeek, text, 1);
+            if (index == -1)
+            {
+                throw new InvalidDataException("Invalid day of week: " + text);
+            }
             // TODO(Post-V1): This isn't really a bug, so probably shouldn't be an ArgumentException.
             Preconditions.CheckArgument(index > 0, "text", "The value is not a valid day of week: " + text);
             return index;
@@ -330,7 +323,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
                     }
                     else
                     {
-                        Error("Unexpected zone database keyword: {0}", keyword);
+                        throw new InvalidDataException("Unexpected zone database keyword: " + keyword);
                     }
                     break;
             }
@@ -415,15 +408,5 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
 
             return new Zone(name, offset, rules, format, year, ZoneYearOffset.StartOfYear);
         }
-
-        #region Nested type: ParseException
-        /// <summary>
-        ///   Private exception to use to end the parsing of a line and return to the top level.
-        ///   This should NEVER propagate out of this file. Must be internal so the tests can see it.
-        /// </summary>
-        internal class ParseException : Exception
-        {
-        }
-        #endregion
     }
 }

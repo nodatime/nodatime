@@ -74,7 +74,6 @@ namespace NodaTime.ZoneInfoCompiler
                     return new TzdbResourceWriter(new ResXResourceWriter(file));
                 case OutputType.Resource:
                     return new TzdbResourceWriter(new ResourceWriter(file));
-                // TODO: Change this to a different ITzdbWriter implementation (not resources)
                 case OutputType.NodaZoneData:
                     return new TzdbStreamWriter(File.Create(file));
                 default:
