@@ -65,21 +65,8 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
             string version = sourceDirectory.Name;
             var database = new TzdbDatabase(version);
             ParseAllFiles(fileList, database);
-            LogCounts(database);
+            database.LogCounts();
             return database;
-        }
-
-        /// <summary>
-        ///   Writes various informational counts to the log.
-        /// </summary>
-        /// <param name="database">The database to query for the counts.</param>
-        private void LogCounts(TzdbDatabase database)
-        {
-            Console.WriteLine("=======================================");
-            Console.WriteLine("Rule sets: {0:D}", database.Rules.Count);
-            Console.WriteLine("Zones:     {0:D}", database.ZoneLists.Count);
-            Console.WriteLine("Aliases:   {0:D}", database.Aliases.Count);
-            Console.WriteLine("=======================================");
         }
 
         /// <summary>
