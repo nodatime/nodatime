@@ -265,7 +265,6 @@
     <Compile Include="TimeZones\Resolvers.cs" />
     <Compile Include="TimeZones\InvalidDateTimeSourceException.cs" />
     <Compile Include="TimeZones\Transition.cs" />
-    <Compile Include="TimeZones\DateTimeZoneBuilder.cs" />
     <Compile Include="TimeZones\DaylightSavingsDateTimeZone.cs" />
     <Compile Include="TimeZones\FixedDateTimeZone.cs" />
     <Compile Include="TimeZones\IDateTimeZoneSource.cs" />
@@ -275,8 +274,6 @@
     <Compile Include="TimeZones\ZoneYearOffset.cs" />
     <Compile Include="TimeZones\PrecalculatedDateTimeZone.cs" />
     <Compile Include="TimeZones\ZoneRecurrence.cs" />
-    <Compile Include="TimeZones\ZoneRecurrenceCollection.cs" />
-    <Compile Include="TimeZones\ZoneTransition.cs" />
     <Compile Include="TimeZones\TransitionMode.cs" />
     <Compile Include="TimeZones\TzdbDateTimeZoneSource.cs" />
     <Compile Include="LocalDateTime.cs" />

@@ -17,9 +17,11 @@
 
 using System;
 using NUnit.Framework;
+using NodaTime;
 using NodaTime.TimeZones;
+using NodaTime.ZoneInfoCompiler.Tzdb;
 
-namespace NodaTime.Test.TimeZones
+namespace ZoneInfoCompiler.Test.Tzdb
 {
     [TestFixture]
     public class ZoneTransitionTest
@@ -39,17 +41,6 @@ namespace NodaTime.Test.TimeZones
             Assert.AreEqual(name, actual.Name, "GetName");
             Assert.AreEqual(Offset.Zero, actual.WallOffset, "WallOffset");
             Assert.AreEqual(Offset.Zero, actual.StandardOffset, "StandardOffset");
-        }
-
-        [Test]
-        public void IEquatableIComparable_Tests()
-        {
-            var value = new ZoneTransition(NodaConstants.UnixEpoch, "abc", Offset.Zero, Offset.Zero);
-            var equalValue = new ZoneTransition(NodaConstants.UnixEpoch, "abc", Offset.Zero, Offset.Zero);
-            var greaterValue = new ZoneTransition(Instant.MaxValue, "abc", Offset.Zero, Offset.Zero);
-
-            TestHelper.TestEqualsClass(value, equalValue, greaterValue);
-            TestHelper.TestCompareToClass(value, equalValue, greaterValue);
         }
 
         [Test]

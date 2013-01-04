@@ -214,7 +214,6 @@
     <Compile Include="TimeZones\BclDateTimeZoneSourceTest.cs" />
     <Compile Include="TimeZones\BclDateTimeZoneTest.cs" />
     <Compile Include="TimeZones\CachedDateTimeZoneTest.cs" />
-    <Compile Include="TimeZones\DateTimeZoneBuilderTest.cs" />
     <Compile Include="TimeZones\ResolversTest.cs" />
     <Compile Include="TimeZones\TzdbDateTimeZoneSourceTest.cs" />
     <Compile Include="TimeZones\DateTimeZoneCacheTest.cs" />
@@ -283,7 +282,6 @@
     <Compile Include="TimeZones\ZoneIntervalTest.cs" />
     <Compile Include="TimeZones\ZoneRecurrenceTest.cs" />
     <Compile Include="TimeZones\DtzIoHelper.cs" />
-    <Compile Include="TimeZones\ZoneTransitionTest.cs" />
     <Compile Include="TimeZones\ReadWriteTest.cs" />
     <Compile Include="TimeZones\ZoneYearOffsetTest.cs" />
     <Compile Include="Utility\BclConversionsTest.cs" />
