@@ -38,38 +38,6 @@ namespace NodaTime.TimeZones
         private readonly ZoneInterval firstTailZoneInterval;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PrecalculatedDateTimeZone"/> class which uses a tail zone.
-        /// </summary>
-        /// <param name="id">The id of the time zone.</param>
-        /// <param name="transitions">The transitions.</param>
-        /// <param name="tailZoneStart">The first instant which isn't covered by the given transitions.</param>
-        /// <param name="tailZone">The tail zone, for use beyond tailZoneStart.</param>
-        internal PrecalculatedDateTimeZone(string id, IList<ZoneTransition> transitions, Instant tailZoneStart, DateTimeZone tailZone)
-            : base(id, false,
-                   ComputeOffset(transitions, t => t.WallOffset, tailZone, Offset.Min),
-                   ComputeOffset(transitions, t => t.WallOffset, tailZone, Offset.Max))
-        {
-            Preconditions.CheckNotNull(transitions, "transitions");
-            this.tailZone = tailZone;
-            this.tailZoneStart = tailZoneStart;
-            if (tailZone != null)
-            {
-                // Cache a "clamped" zone interval for use at the start of the tail zone.
-                firstTailZoneInterval = tailZone.GetZoneInterval(tailZoneStart).WithStart(tailZoneStart);
-            }
-            int size = transitions.Count;
-            periods = new ZoneInterval[size];
-            for (int i = 0; i < size; i++)
-            {
-                var transition = transitions[i];
-                var endInstant = i == size - 1 ? tailZoneStart : transitions[i + 1].Instant;
-                var period = new ZoneInterval(transition.Name, transition.Instant, endInstant, transition.WallOffset, transition.Savings);
-                periods[i] = period;
-            }
-            ValidatePeriods(periods, tailZone);
-        }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="PrecalculatedDateTimeZone"/> class.
         /// This is only visible to make testing simpler.
         /// </summary>

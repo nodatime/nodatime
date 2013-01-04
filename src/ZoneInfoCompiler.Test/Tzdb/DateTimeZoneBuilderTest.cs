@@ -16,9 +16,11 @@
 #endregion
 
 using NUnit.Framework;
+using NodaTime;
 using NodaTime.TimeZones;
+using NodaTime.ZoneInfoCompiler.Tzdb;
 
-namespace NodaTime.Test.TimeZones
+namespace ZoneInfoCompiler.Test.Tzdb
 {
     /// <summary>
     /// Tests for DateTimeZoneBuilder; currently only scant coverage based on bugs which have

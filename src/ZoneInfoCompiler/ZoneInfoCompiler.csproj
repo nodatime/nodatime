@@ -94,6 +94,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="OutputType.cs" />
     <Compile Include="Tokens.cs" />
+    <Compile Include="Tzdb\DateTimeZoneBuilder.cs" />
     <Compile Include="Tzdb\ITzdbWriter.cs" />
     <Compile Include="Tzdb\MissingTokenException.cs" />
     <Compile Include="Tzdb\ParserHelper.cs" />
@@ -107,8 +108,10 @@
     <Compile Include="Tzdb\Zone.cs" />
     <Compile Include="Tzdb\ZoneAlias.cs" />
     <Compile Include="Tzdb\ZoneList.cs" />
+    <Compile Include="Tzdb\ZoneRecurrenceCollection.cs" />
     <Compile Include="Tzdb\ZoneRule.cs" />
     <Compile Include="Program.cs" />
+    <Compile Include="Tzdb\ZoneTransition.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">

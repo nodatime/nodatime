@@ -18,8 +18,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using NodaTime.TimeZones;
 
-namespace NodaTime.TimeZones
+namespace NodaTime.ZoneInfoCompiler.Tzdb
 {
     /// <summary>
     /// Used to create time zones.

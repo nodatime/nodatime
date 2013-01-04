@@ -19,7 +19,7 @@ using System;
 using System.Text;
 using NodaTime.Utility;
 
-namespace NodaTime.TimeZones
+namespace NodaTime.ZoneInfoCompiler.Tzdb
 {
     /// <summary>
     /// Represents a transition two different time references.
@@ -32,7 +32,7 @@ namespace NodaTime.TimeZones
     /// Immutable, thread safe.
     /// </para>
     /// </remarks>
-    internal sealed class ZoneTransition : IEquatable<ZoneTransition>, IComparable<ZoneTransition>
+    internal sealed class ZoneTransition
     {
         private readonly Instant instant;
         private readonly string name;
@@ -67,76 +67,6 @@ namespace NodaTime.TimeZones
 
         internal Offset WallOffset { get { return StandardOffset + Savings; } }
 
-        #region IComparable<ZoneTransition> Members
-        /// <summary>
-        /// Compares the current object with another object of the same type.
-        /// </summary>
-        /// <param name="other">An object to compare with this object.</param>
-        /// <returns>
-        /// A 32-bit signed integer that indicates the relative order of the objects being compared. 
-        /// The return value has the following meanings:
-        /// Value
-        /// Meaning
-        /// Less than zero
-        /// This object is less than the <paramref name="other"/> parameter.
-        /// Zero
-        /// This object is equal to <paramref name="other"/>.
-        /// Greater than zero
-        /// This object is greater than <paramref name="other"/>.
-        /// </returns>
-        public int CompareTo(ZoneTransition other)
-        {
-            return other == null ? 1 : Instant.CompareTo(other.Instant);
-        }
-        #endregion
-
-        #region Operator overloads
-        /// <summary>
-        /// Implements the operator ==.
-        /// </summary>
-        /// <param name="left">The left.</param>
-        /// <param name="right">The right.</param>
-        /// <returns>The result of the operator.</returns>
-        public static bool operator ==(ZoneTransition left, ZoneTransition right)
-        {
-            return ReferenceEquals(null, left) ? ReferenceEquals(null, right) : left.Equals(right);
-        }
-
-        /// <summary>
-        /// Implements the operator !=.
-        /// </summary>
-        /// <param name="left">The left.</param>
-        /// <param name="right">The right.</param>
-        /// <returns>The result of the operator.</returns>
-        public static bool operator !=(ZoneTransition left, ZoneTransition right)
-        {
-            return !(left == right);
-        }
-        #endregion
-
-        #region IEquatable<ZoneTransition> Members
-        /// <summary>
-        /// Indicates whether the current object is equal to another object of the same type.
-        /// </summary>
-        /// <param name="other">An object to compare with this object.</param>
-        /// <returns>
-        /// true if the current object is equal to the <paramref name="other"/> parameter;
-        /// otherwise, false.
-        /// </returns>
-        public bool Equals(ZoneTransition other)
-        {
-            if (ReferenceEquals(null, other))
-            {
-                return false;
-            }
-            if (ReferenceEquals(this, other))
-            {
-                return true;
-            }
-            return Instant == other.Instant;
-        }
-        #endregion
-
         /// <summary>
         /// Determines whether is a transition from the given transition.
         /// </summary>
@@ -160,31 +90,6 @@ namespace NodaTime.TimeZones
         }
 
         #region Object overrides
-        /// <summary>
-        /// Determines whether the specified <see cref="System.Object"/> is equal to this instance.
-        /// </summary>
-        /// <param name="obj">The <see cref="System.Object"/> to compare with this instance.</param>
-        /// <returns>
-        /// <c>true</c> if the specified <see cref="System.Object"/> is equal to this instance;
-        /// otherwise, <c>false</c>.
-        /// </returns>
-        public override bool Equals(object obj)
-        {
-            return Equals(obj as ZoneTransition);
-        }
-
-        /// <summary>
-        /// Returns a hash code for this instance.
-        /// </summary>
-        /// <returns>
-        /// A hash code for this instance, suitable for use in hashing algorithms and data
-        /// structures like a hash table. 
-        /// </returns>
-        public override int GetHashCode()
-        {
-            return Instant.GetHashCode();
-        }
-
         /// <summary>
         /// Returns a <see cref="System.String"/> that represents this instance.
         /// </summary>
