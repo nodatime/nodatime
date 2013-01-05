@@ -66,7 +66,6 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
                 var zoneField = fields.AddField(TzdbStreamFieldId.TimeZone, stringPool);
                 zoneField.Writer.WriteString(zone.Id);
                 zoneField.Writer.WriteTimeZone(zone);
-                Console.WriteLine("{0}: {1}", zone.Id, zoneField.stream.Length);
             }
 
             fields.AddField(TzdbStreamFieldId.TzdbVersion, null).Writer.WriteString(database.Version);
@@ -177,7 +176,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         /// </summary>
         private class FieldData
         {
-            internal readonly MemoryStream stream;
+            private readonly MemoryStream stream;
             private readonly TzdbStreamFieldId fieldId;
             private readonly IDateTimeZoneWriter writer;
 
