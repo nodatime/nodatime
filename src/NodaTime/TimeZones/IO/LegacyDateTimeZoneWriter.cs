@@ -63,7 +63,7 @@ namespace NodaTime.TimeZones.IO
         private readonly IList<string> stringPool; 
 
         /// <summary>
-        /// Constructs a DateTimeZoneWriter.
+        /// Constructs a LegacyDateTimeZoneWriter.
         /// </summary>
         /// <param name="output">Where to send the serialized output.</param>
         /// <param name="stringPool">String pool to add strings to, or null for no pool</param>
