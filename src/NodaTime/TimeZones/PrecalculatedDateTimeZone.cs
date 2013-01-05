@@ -142,7 +142,52 @@ namespace NodaTime.TimeZones
         /// Writes the time zone to the specified writer.
         /// </summary>
         /// <param name="writer">The writer to write to.</param>
-        internal void Write(DateTimeZoneWriter writer)
+        internal void Write(IDateTimeZoneWriter writer)
+        {
+            Preconditions.CheckNotNull(writer, "writer");
+
+            // Keep a pool of strings; we don't want to write the same strings out time and time again.
+            writer.WriteCount(periods.Length);
+            foreach (var period in periods)
+            {
+                writer.WriteInstant(period.Start);
+                writer.WriteString(period.Name);
+                writer.WriteOffset(period.WallOffset);
+                writer.WriteOffset(period.Savings);
+            }
+            writer.WriteInstant(tailZoneStart);
+            writer.WriteTimeZone(tailZone);
+        }
+
+        /// <summary>
+        /// Reads a time zone from the specified reader.
+        /// </summary>
+        /// <param name="reader">The reader.</param>
+        /// <param name="id">The id.</param>
+        /// <returns>The time zone.</returns>
+        public static DateTimeZone Read(IDateTimeZoneReader reader, string id)
+        {
+            int size = reader.ReadCount();
+            var periods = new ZoneInterval[size];
+            var start = reader.ReadInstant();
+            for (int i = 0; i < size; i++)
+            {
+                var name = reader.ReadString();
+                var offset = reader.ReadOffset();
+                var savings = reader.ReadOffset();
+                var nextStart = reader.ReadInstant();
+                periods[i] = new ZoneInterval(name, start, nextStart, offset, savings);
+                start = nextStart;
+            }
+            var tailZone = reader.ReadTimeZone(id + "-tail");
+            return new PrecalculatedDateTimeZone(id, periods, tailZone);
+        }
+
+        /// <summary>
+        /// Writes the time zone to the specified writer.
+        /// </summary>
+        /// <param name="writer">The writer to write to.</param>
+        internal void WriteLegacy(LegacyDateTimeZoneWriter writer)
         {
             Preconditions.CheckNotNull(writer, "writer");
 
@@ -188,7 +233,7 @@ namespace NodaTime.TimeZones
         /// <param name="reader">The reader.</param>
         /// <param name="id">The id.</param>
         /// <returns>The time zone.</returns>
-        public static DateTimeZone Read(DateTimeZoneReader reader, string id)
+        public static DateTimeZone ReadLegacy(LegacyDateTimeZoneReader reader, string id)
         {
             string[] stringPool = new string[reader.ReadCount()];
             for (int i = 0; i < stringPool.Length; i++)

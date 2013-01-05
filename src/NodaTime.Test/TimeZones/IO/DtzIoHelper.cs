@@ -56,13 +56,13 @@ namespace NodaTime.Test.TimeZones.IO
         ///   Gets the reader.
         /// </summary>
         /// <value>The reader.</value>
-        private DateTimeZoneReader Reader { get; set; }
+        private IDateTimeZoneReader Reader { get; set; }
 
         /// <summary>
         ///   Gets the writer.
         /// </summary>
         /// <value>The writer.</value>
-        private DateTimeZoneWriter Writer { get; set; }
+        private IDateTimeZoneWriter Writer { get; set; }
 
         public void Reset()
         {
@@ -71,14 +71,6 @@ namespace NodaTime.Test.TimeZones.IO
             {
                 stringPool.Clear();
             }
-        }
-
-        public void TestBoolean(bool expected)
-        {
-            Reset();
-            Writer.WriteBoolean(expected);
-            var actual = Reader.ReadBoolean();
-            Assert.AreEqual(expected, actual);
         }
 
         public void TestCount(int expected)
@@ -102,14 +94,6 @@ namespace NodaTime.Test.TimeZones.IO
             Reset();
             Writer.WriteInstant(expected);
             var actual = Reader.ReadInstant();
-            Assert.AreEqual(expected, actual);
-        }
-
-        public void TestInt32(int expected)
-        {
-            Reset();
-            Writer.WriteInt32(expected);
-            var actual = Reader.ReadInt32();
             Assert.AreEqual(expected, actual);
         }
 

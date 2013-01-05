@@ -68,6 +68,15 @@ namespace NodaTime.TimeZones.IO
         /// <returns>The dictionary read from the stream</returns>
         /// <exception cref="EndOfStreamException">The data didn't contain a complete value</exception>
         /// <exception cref="IOException">The stream could not be read</exception>
-        IDictionary<string, string> ReadDictionary(); 
+        IDictionary<string, string> ReadDictionary();
+
+        /// <summary>
+        /// Reads a time zone from the stream, assigning it the given ID.
+        /// </summary>
+        /// <returns>The zone read from the stream</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="id"/> is null</exception>
+        /// <exception cref="EndOfStreamException">The data didn't contain a complete value</exception>
+        /// <exception cref="IOException">The stream could not be read</exception>
+        DateTimeZone ReadTimeZone(string id);
     }
 }

@@ -24,11 +24,9 @@ using NodaTime.Utility;
 namespace NodaTime.TimeZones.IO
 {
     /// <summary>
-    /// Implementation of <see cref="IDateTimeZoneWriter"/> for the most recent version
-    /// of the "blob" format of time zone data. If the format changes, this class will be
-    /// renamed (e.g. to DateTimeZoneWriterV0) and the new implementation will replace it.
+    /// Implementation of <see cref="IDateTimeZoneWriter"/> which maintains the legacy "resource" format.
     /// </summary>
-    internal sealed class DateTimeZoneWriter : IDateTimeZoneWriter
+    internal sealed class LegacyDateTimeZoneWriter : IDateTimeZoneWriter
     {
         internal const byte FlagTimeZoneCached = 0;
         internal const byte FlagTimeZoneDst = 1;
@@ -69,7 +67,7 @@ namespace NodaTime.TimeZones.IO
         /// </summary>
         /// <param name="output">Where to send the serialized output.</param>
         /// <param name="stringPool">String pool to add strings to, or null for no pool</param>
-        internal DateTimeZoneWriter(Stream output, IList<string> stringPool)
+        internal LegacyDateTimeZoneWriter(Stream output, IList<string> stringPool)
         {
             this.output = output;
             this.stringPool = stringPool;
@@ -335,7 +333,7 @@ namespace NodaTime.TimeZones.IO
             else if (value is PrecalculatedDateTimeZone)
             {
                 WriteByte(FlagTimeZonePrecalculated);
-                ((PrecalculatedDateTimeZone)value).Write(this);
+                ((PrecalculatedDateTimeZone)value).WriteLegacy(this);
             }
             else if (value is CachedDateTimeZone)
             {
@@ -345,7 +343,7 @@ namespace NodaTime.TimeZones.IO
             else if (value is DaylightSavingsDateTimeZone)
             {
                 WriteByte(FlagTimeZoneDst);
-                ((DaylightSavingsDateTimeZone)value).Write(this);
+                ((DaylightSavingsDateTimeZone)value).WriteLegacy(this);
             }
             else
             {
@@ -370,7 +368,7 @@ namespace NodaTime.TimeZones.IO
         /// Writes the given 32 bit integer value to the stream.
         /// </summary>
         /// <param name="value">The value to write.</param>
-        private void WriteInt32(int value)
+        internal void WriteInt32(int value)
         {
             unchecked
             {
@@ -396,7 +394,7 @@ namespace NodaTime.TimeZones.IO
         /// Writes the given 8 bit integer value to the stream.
         /// </summary>
         /// <param name="value">The value to write.</param>
-        private void WriteByte(byte value)
+        public void WriteByte(byte value)
         {
             unchecked
             {
