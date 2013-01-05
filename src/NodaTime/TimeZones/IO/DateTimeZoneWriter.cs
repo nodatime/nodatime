@@ -41,17 +41,11 @@ namespace NodaTime.TimeZones.IO
         internal const long MaxHalfHours = 0x1fL;
         internal const long MinHalfHours = -MaxHalfHours;
 
-        internal const int MaxMillisHalfHours = 0x3f;
-        internal const int MinMillisHalfHours = -MaxMillisHalfHours;
-
         internal const long MaxMinutes = 0x1fffffL;
         internal const long MinMinutes = -MaxMinutes;
 
         internal const long MaxSeconds = 0x1fffffffffL;
         internal const long MinSeconds = -MaxSeconds;
-
-        internal const int MaxMillisSeconds = 0x3ffff;
-        internal const int MinMillisSeconds = -MaxMillisSeconds;
 
         internal const byte FlagHalfHour = 0x00;
         internal const byte FlagMinutes = 0x40;
@@ -103,54 +97,58 @@ namespace NodaTime.TimeZones.IO
         /// <summary>
         /// Writes the offset value to the stream.
         /// </summary>
+        /// <remarks>
+        /// <para>
+        /// First, 24 hours are added to the offset, to get a number of milliseconds in the range (0, 172800000).
+        /// Next, we write it out in one of 4 encoding forms:
+        /// </para>
+        /// <list type="bullet">
+        ///   <item></item>
+        /// </list>
+        /// </remarks>
         /// <param name="offset">The value to write.</param>
         public void WriteOffset(Offset offset)
         {
-            int millis = offset.Milliseconds;
             /*
-             * Milliseconds encoding formats:
-             *
-             * upper bits      units       field length  approximate range
-             * ---------------------------------------------------------------
-             * 0xxxxxxx        30 minutes  1 byte        +/- 24 hours
-             * 10xxxxxx        seconds     3 bytes       +/- 24 hours
-             * 11111101  0xfd  millis      5 byte        Full range
-             *
-             * Remaining bits in field form signed offset from 1970-01-01T00:00:00Z.
+             * First, add 24 hours to the number of milliseconds, to get a value in the range (0, 172800000).
+             * (It's exclusive at both ends, but that's insignificant.)
+             * Next, check whether it's an exact multiple of half-hours or minutes, and encode
+             * appropriately. In every case, if it's an exact multiple, we know that we'll be able to fit
+             * the value into the number of bits available.
+             * 
+             * first byte      units       max data value (+1)   field length
+             * --------------------------------------------------------------
+             * 0xxxxxxx        30 minutes  96                    1 byte  (7 data bits)
+             * 100xxxxx        minutes     2880                  2 bytes (14 data bits)
+             * 101xxxxx        seconds     172800                3 bytes (21 data bits)
+             * 110xxxxx        millis      172800000             4 bytes (29 data bits)
              */
+            int millis = offset.Milliseconds + NodaConstants.MillisecondsPerStandardDay;
             unchecked
             {
                 if (millis % (30 * NodaConstants.MillisecondsPerMinute) == 0)
                 {
-                    // Try to write in 30 minute units.
                     int units = millis / (30 * NodaConstants.MillisecondsPerMinute);
-                    if (MinMillisHalfHours <= units && units <= MaxMillisHalfHours)
-                    {
-                        units = units + MaxMillisHalfHours;
-                        WriteByte((byte)(units & 0x7f));
-                        return;
-                    }
+                    WriteByte((byte)units);
+                    return;
+                }
+
+                if (millis % NodaConstants.MillisecondsPerMinute == 0)
+                {
+                    int minutes = millis / NodaConstants.MillisecondsPerMinute;
+                    WriteByte((byte)(0x80 | (minutes >> 8)));
+                    WriteByte((byte)(minutes & 0xff));
                 }
 
                 if (millis % NodaConstants.MillisecondsPerSecond == 0)
                 {
-                    // Try to write seconds.
                     int seconds = millis / NodaConstants.MillisecondsPerSecond;
-                    if (MinMillisSeconds <= seconds && seconds <= MaxMillisSeconds)
-                    {
-                        seconds = seconds + MaxMillisSeconds;
-                        WriteByte((byte)(FlagMillisSeconds | (byte)((seconds >> 16) & 0x3f)));
-                        WriteInt16((short)(seconds & 0xffff));
-                        return;
-                    }
+                    WriteByte((byte)(0xa0 | (byte)((seconds >> 16))));
+                    WriteInt16((short)(seconds & 0xffff));
+                    return;
                 }
 
-                // Write milliseconds either because the additional precision is
-                // required or the minutes didn't fit in the field.
-
-                // Form 11 (64 bits effective precision, but write as if 70 bits)
-                WriteByte(FlagMilliseconds);
-                WriteInt32(millis);
+                WriteInt32((int) 0xc0000000 | millis);
             }
         }
 

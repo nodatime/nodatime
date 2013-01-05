@@ -74,37 +74,40 @@ namespace NodaTime.TimeZones.IO
         /// <returns>The offset value from the stream.</returns>
         public Offset ReadOffset()
         {
-            /*
-             * Milliseconds encoding formats:
-             *
-             * upper bits      units       field length  approximate range
-             * ---------------------------------------------------------------
-             * 0xxxxxxx        30 minutes  1 byte        +/- 24 hours
-             * 10xxxxxx        seconds     3 bytes       +/- 24 hours
-             * 11111101  0xfd  millis      5 byte        Full range
-             *
-             * Remaining bits in field form signed offset from 1970-01-01T00:00:00Z.
-             */
             unchecked
             {
-                byte flag = ReadByte();
+                byte firstByte = ReadByte();
 
-                if ((flag & 0x80) == 0)
-                {
-                    int units = flag - DateTimeZoneWriter.MaxMillisHalfHours;
-                    return Offset.FromMilliseconds(units * (30 * NodaConstants.MillisecondsPerMinute));
-                }
-                if ((flag & 0xc0) == DateTimeZoneWriter.FlagMillisSeconds)
-                {
-                    int first = flag & ~0xc0;
-                    int second = ReadByte() & 0xff;
-                    int third = ReadByte() & 0xff;
+                int millis;
 
-                    int units = (((first << 8) + second) << 8) + third;
-                    units = units - DateTimeZoneWriter.MaxMillisSeconds;
-                    return Offset.FromMilliseconds(units * NodaConstants.MillisecondsPerSecond);
+                if ((firstByte & 0x80) == 0)
+                {
+                    millis = firstByte * (30 * NodaConstants.MillisecondsPerMinute);
                 }
-                return Offset.FromMilliseconds(ReadInt32());
+                else
+                {
+                    int flag = firstByte & 0xe0;      // The flag parts of the first byte
+                    int firstData = firstByte & 0x1f; // The data parts of the first byte
+                    switch (firstByte & 0xe0)
+                    {
+                        case 0x80: // Minutes
+                            int minutes = (firstData << 8) + ReadByte();
+                            millis = minutes * NodaConstants.MillisecondsPerMinute;
+                            break;
+                        case 0xa0: // Seconds
+                            int seconds = (firstData << 16) + (ReadInt16() & 0xffff);
+                            millis = seconds * NodaConstants.MillisecondsPerSecond;
+                            break;
+                        case 0xc0: // Milliseconds
+                            millis = (firstData << 24) + (ReadByte() << 16) + (ReadInt16() & 0xffff);
+                            break;
+                        default:
+                            // TODO: Convert this to an appropriate "invalid data detected" exception.
+                            throw new IOException("Invalid data");
+                    }                    
+                }
+                millis -= NodaConstants.MillisecondsPerStandardDay;
+                return Offset.FromMilliseconds(millis);
             }
         }
 
