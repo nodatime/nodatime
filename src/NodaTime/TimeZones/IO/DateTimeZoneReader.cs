@@ -20,7 +20,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace NodaTime.TimeZones
+namespace NodaTime.TimeZones.IO
 {
     /// <summary>
     /// Provides mostly primitive data reading capabilities for use from time zone classes,

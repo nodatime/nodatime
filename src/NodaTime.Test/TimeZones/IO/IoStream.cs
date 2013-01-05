@@ -1,4 +1,4 @@
-﻿#region Copyright and license information
+#region Copyright and license information
 // Copyright 2001-2009 Stephen Colebourne
 // Copyright 2009-2011 Jon Skeet
 // 
@@ -18,7 +18,7 @@
 using System;
 using System.IO;
 
-namespace NodaTime.Test.TimeZones
+namespace NodaTime.Test.TimeZones.IO
 {
     /// <summary>
     ///   Provides a simple, fized-size, pipe-like stream that has a writer and a reader.
