@@ -138,12 +138,6 @@ namespace NodaTime.Test.TimeZones.IO
         }
 
         [Test]
-        public void Test_LocalInstant()
-        {
-            RunTests_Ticks(value => Dio.TestLocalInstant((new LocalInstant(value))));
-        }
-
-        [Test]
         public void Test_String_NoPool()
         {
             Dio.TestString("");
@@ -156,12 +150,6 @@ namespace NodaTime.Test.TimeZones.IO
             Dio = DtzIoHelper.CreateWithStringPool();
             Dio.TestString("");
             Dio.TestString("This is a test string");
-        }
-
-        [Test]
-        public void Test_Ticks()
-        {
-            RunTests_Ticks(Dio.TestTicks);
         }
     }
 }
