@@ -42,51 +42,25 @@ namespace NodaTime.TimeZones.IO
         /// Reads a non-negative integer value from the stream.
         /// </summary>
         /// <remarks>
-        /// The value must have been written by <see cref="DateTimeZoneWriter.WriteCount" />.
+        /// The value must have been written by <see cref="DateTimeZoneWriter.WriteCount" />, which
+        /// documents the format.
         /// </remarks>
         /// <returns>The integer value from the stream.</returns>
         public int ReadCount()
         {
             unchecked
             {
-                byte flag = ReadByte();
-                if (flag == 0xff)
+                int ret = 0;
+                int shift = 0;
+                while (true)
                 {
-                    // Note that this will handle earlier versions of Noda Time which used negative
-                    // count values in zone recurrences for DaylightSavingsDateTimeZone. Those
-                    // values are now prohibited, but will be read appropriately here.
-                    return ReadInt32();
-                }
-                if (0xf0 <= flag && flag <= 0xfe)
-                {
-                    return flag & 0x0f;
-                }
-                int adjustment = 0x0f;
-                if ((flag & 0x80) == 0)
-                {
-                    return flag + adjustment;
-                }
-                adjustment += 0x80;
-                if ((flag & 0xc0) == 0x80)
-                {
-                    int first = flag & 0x3f;
-                    int second = ReadByte();
-                    return ((first << 8) + second) + adjustment;
-                }
-                adjustment += 0x4000;
-                if ((flag & 0xe0) == 0xc0)
-                {
-                    int first = flag & 0x1f;
-                    int second = ReadInt16();
-                    return ((first << 16) + second) + adjustment;
-                }
-                else
-                {
-                    adjustment += 0x200000;
-                    int first = flag & 0x0f;
-                    int second = ReadByte();
-                    int third = ReadInt16();
-                    return (((first << 8) + second) << 16) + third + adjustment;
+                    int nextByte = ReadByte();
+                    ret += (nextByte & 0x7f) << shift;
+                    shift += 7;
+                    if (nextByte < 0x80)
+                    {
+                        return ret;
+                    }
                 }
             }
         }

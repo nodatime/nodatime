@@ -62,7 +62,8 @@ namespace NodaTime.TimeZones.IO
                     yield break;
                 }
                 TzdbStreamFieldId id = (TzdbStreamFieldId) (byte) fieldId;
-                int length = ReadLength(input);
+                // Read 7-bit-encoded length
+                int length = new DateTimeZoneReader(input, null).ReadCount();
                 byte[] data = new byte[length];
                 int offset = 0;
                 while (offset < data.Length)
@@ -75,26 +76,6 @@ namespace NodaTime.TimeZones.IO
                     offset += bytesRead;
                 }
                 yield return new TzdbStreamField(id, data);
-            }
-        }
-
-        private static int ReadLength(Stream input)
-        {
-            int ret = 0;
-            int shift = 0;
-            while (true)
-            {
-                int nextByte = input.ReadByte();
-                if (nextByte == -1)
-                {
-                    throw new EndOfStreamException("Stream ended while reading field length");
-                }
-                ret += (nextByte & 0x7f) << shift;
-                shift += 7;
-                if (nextByte < 0x80)
-                {
-                    return ret;
-                }
             }
         }
     }

@@ -194,13 +194,8 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
             {
                 output.WriteByte((byte)fieldId);
                 int length = (int) stream.Length;
-                // Write 7-bit-encoded integer
-                while (length > 0x7f)
-                {
-                    output.WriteByte((byte) (0x80 | (length & 0x7f)));
-                    length = length >> 7;
-                }
-                output.WriteByte((byte) (length & 0x7f));
+                // We've got a 7-bit-encoding routine... might as well use it.
+                new DateTimeZoneWriter(output, null).WriteCount(length);
                 stream.WriteTo(output);
             }
         }

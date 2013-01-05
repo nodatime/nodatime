@@ -79,48 +79,24 @@ namespace NodaTime.TimeZones.IO
         /// <summary>
         /// Writes the given non-negative integer value to the stream.
         /// </summary>
+        /// <remarks>
+        /// The format is a simple 7-bit encoding: while the value is greater than 127 (i.e.
+        /// has more than 7 significant bits) we repeatedly write the least-significant 7 bits
+        /// with the top bit of the byte set as a continuation bit, then shift the value right
+        /// 7 bits.
+        /// </remarks>
         /// <param name="value">The value to write.</param>
         public void WriteCount(int value)
         {
             Preconditions.CheckArgumentRange("value", value, 0, int.MaxValue);
             unchecked
             {
-                if (value <= 0x0e)
+                while (value > 0x7f)
                 {
-                    WriteByte((byte)(0xf0 + value));
-                    return;
+                    output.WriteByte((byte)(0x80 | (value & 0x7f)));
+                    value = value >> 7;
                 }
-                value -= 0x0f;
-                if (value <= 0x7f)
-                {
-                    WriteByte((byte)value);
-                    return;
-                }
-                value -= 0x80;
-                if (value <= 0x3fff)
-                {
-                    WriteByte((byte)(0x80 + (value >> 8)));
-                    WriteByte((byte)(value & 0xff));
-                    return;
-                }
-                value -= 0x4000;
-
-                if (value <= 0x1fffff)
-                {
-                    WriteByte((byte)(0xc0 + (value >> 16)));
-                    WriteInt16((short)(value & 0xffff));
-                    return;
-                }
-                value -= 0x200000;
-                if (value <= 0x0fffffff)
-                {
-                    WriteByte((byte)(0xe0 + (value >> 24)));
-                    WriteByte((byte)((value >> 16) & 0xff));
-                    WriteInt16((short)(value & 0xffff));
-                    return;
-                }
-                WriteByte(0xff);
-                WriteInt32(value + 0x200000 + 0x4000 + 0x80 + 0x0f);
+                output.WriteByte((byte)(value & 0x7f));
             }
         }
 
