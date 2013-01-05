@@ -103,7 +103,7 @@ namespace NodaTime.TimeZones.IO
             byte[] bytes = (byte[])obj;
             using (var stream = new MemoryStream(bytes))
             {
-                var reader = new DateTimeZoneReader(stream, null);
+                var reader = new LegacyDateTimeZoneReader(stream, null);
                 return reader.ReadTimeZone(id);
             }
         }
@@ -122,7 +122,7 @@ namespace NodaTime.TimeZones.IO
             {
                 using (var stream = new MemoryStream(bytes))
                 {
-                    var reader = new DateTimeZoneReader(stream, null);
+                    var reader = new LegacyDateTimeZoneReader(stream, null);
                     return reader.ReadDictionary();
                 }
             }

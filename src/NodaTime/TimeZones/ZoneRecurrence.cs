@@ -245,11 +245,22 @@ namespace NodaTime.TimeZones
         /// Writes this object to the given <see cref="DateTimeZoneWriter"/>.
         /// </summary>
         /// <param name="writer">Where to send the output.</param>
-        internal void Write(DateTimeZoneWriter writer)
+        internal void Write(IDateTimeZoneWriter writer)
         {
             writer.WriteString(Name);
             writer.WriteOffset(Savings);
             YearOffset.Write(writer);
+            // We'll never have time zones with recurrences between the beginning of time and 0AD,
+            // so we can treat anything negative as 0, and go to the beginning of time when reading.
+            writer.WriteCount(Math.Max(fromYear, 0));
+            writer.WriteCount(toYear);
+        }
+
+        internal void WriteLegacy(LegacyDateTimeZoneWriter writer)
+        {
+            writer.WriteString(Name);
+            writer.WriteOffset(Savings);
+            YearOffset.WriteLegacy(writer);
             // We'll never have time zones with recurrences between the beginning of time and 0AD,
             // so we can treat anything negative as 0, and go to the beginning of time when reading.
             writer.WriteCount(Math.Max(fromYear, 0));
@@ -261,12 +272,27 @@ namespace NodaTime.TimeZones
         /// </summary>
         /// <param name="reader">The reader.</param>
         /// <returns>The recurrence read from the reader.</returns>
-        public static ZoneRecurrence Read(DateTimeZoneReader reader)
+        public static ZoneRecurrence Read(IDateTimeZoneReader reader)
         {
             Preconditions.CheckNotNull(reader, "reader");
             string name = reader.ReadString();
             Offset savings = reader.ReadOffset();
             ZoneYearOffset yearOffset = ZoneYearOffset.Read(reader);
+            int fromYear = reader.ReadCount();
+            if (fromYear == 0)
+            {
+                fromYear = int.MinValue;
+            }
+            int toYear = reader.ReadCount();
+            return new ZoneRecurrence(name, savings, yearOffset, fromYear, toYear);
+        }
+
+        internal static ZoneRecurrence ReadLegacy(LegacyDateTimeZoneReader reader)
+        {
+            Preconditions.CheckNotNull(reader, "reader");
+            string name = reader.ReadString();
+            Offset savings = reader.ReadOffset();
+            ZoneYearOffset yearOffset = ZoneYearOffset.ReadLegacy(reader);
             int fromYear = reader.ReadCount();
             if (fromYear == 0)
             {

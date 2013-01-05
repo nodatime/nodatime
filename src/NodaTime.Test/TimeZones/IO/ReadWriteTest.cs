@@ -22,8 +22,11 @@ using NodaTime.TimeZones.IO;
 
 namespace NodaTime.Test.TimeZones.IO
 {
-    [TestFixture]
-    public class ReadWriteTest
+    [TestFixture(typeof(DateTimeZoneReader), typeof(DateTimeZoneWriter))]
+    [TestFixture(typeof(LegacyDateTimeZoneReader), typeof(LegacyDateTimeZoneWriter))]
+    internal class ReadWriteTest<TReader, TWriter>
+        where TReader : IDateTimeZoneReader
+        where TWriter : IDateTimeZoneWriter
     {
         /// <summary>
         /// Returns the <see cref="DtzIoHelper" /> to use for testing against.
@@ -83,13 +86,6 @@ namespace NodaTime.Test.TimeZones.IO
         }
 
         [Test]
-        public void Test_Boolean()
-        {
-            Dio.TestBoolean(true);
-            Dio.TestBoolean(false);
-        }
-
-        [Test]
         public void Test_Count()
         {
             for (int i = 0; i < 16; i++)
@@ -129,12 +125,6 @@ namespace NodaTime.Test.TimeZones.IO
         public void Test_Instant()
         {
             RunTests_Ticks(value => Dio.TestInstant((new Instant(value))));
-        }
-
-        [Test]
-        public void Test_Int32()
-        {
-            RunTests_Integers(Dio.TestInt32);
         }
 
         [Test]

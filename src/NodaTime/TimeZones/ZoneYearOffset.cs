@@ -312,10 +312,27 @@ namespace NodaTime.TimeZones
         }
 
         /// <summary>
-        /// Writes this object to the given <see cref="DateTimeZoneCompressionWriter"/>.
+        /// Writes this object to the given <see cref="IDateTimeZoneWriter"/>.
         /// </summary>
         /// <param name="writer">Where to send the output.</param>
-        internal void Write(DateTimeZoneWriter writer)
+        internal void Write(IDateTimeZoneWriter writer)
+        {
+            writer.WriteCount((int)Mode);
+            // Day or month can range from -(max value) to max value so we add a suitable
+            // amount to force it to be positive.
+            writer.WriteCount(MonthOfYear + 12);
+            writer.WriteCount(DayOfMonth + 31);
+            writer.WriteCount(DayOfWeek + 7);
+            writer.WriteOffset(TickOfDay);
+            int flags = (AdvanceDayOfWeek ? 2 : 0) + (addDay ? 1 : 0);
+            writer.WriteCount(flags);
+        }
+
+        /// <summary>
+        /// Writes this object to the given <see cref="LegacyDateTimeZoneWriter"/>.
+        /// </summary>
+        /// <param name="writer">Where to send the output.</param>
+        internal void WriteLegacy(LegacyDateTimeZoneWriter writer)
         {
             writer.WriteCount((int)Mode);
             // Day or month can range from -(max value) to max value so we add a suitable
@@ -328,7 +345,22 @@ namespace NodaTime.TimeZones
             writer.WriteBoolean(addDay);
         }
 
-        public static ZoneYearOffset Read(DateTimeZoneReader reader)
+        public static ZoneYearOffset Read(IDateTimeZoneReader reader)
+        {
+            Preconditions.CheckNotNull(reader, "reader");
+            var mode = (TransitionMode)reader.ReadCount();
+            // Remove the additions performed before
+            int monthOfYear = reader.ReadCount() - 12;
+            int dayOfMonth = reader.ReadCount() - 31;
+            int dayOfWeek = reader.ReadCount() - 7;
+            var ticksOfDay = reader.ReadOffset();
+            int flags = reader.ReadCount();
+            bool advance = (flags & 2) != 0;
+            bool addDay= (flags & 1) != 0;
+            return new ZoneYearOffset(mode, monthOfYear, dayOfMonth, dayOfWeek, advance, ticksOfDay, addDay);
+        }
+
+        public static ZoneYearOffset ReadLegacy(LegacyDateTimeZoneReader reader)
         {
             Preconditions.CheckNotNull(reader, "reader");
             var mode = (TransitionMode)reader.ReadCount();

@@ -48,7 +48,7 @@ namespace NodaTime.TimeZones.IO
         /// <param name="count">The integer to write to the stream.</param>
         /// <exception cref="IOException">The value couldn't be written to the stream.</exception>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="count"/> is negative.</exception>
-        int WriteCount(int count);
+        void WriteCount(int count);
 
         /// <summary>
         /// Writes a string to the stream.
@@ -81,5 +81,13 @@ namespace NodaTime.TimeZones.IO
         /// <exception cref="ArgumentNullException"><paramref name="dictionary"/> is null.</exception>
         /// <exception cref="IOException">The value couldn't be written to the stream.</exception>
         void WriteDictionary(IDictionary<string, string> dictionary);
+
+        /// <summary>
+        /// Writes the given time zone to the stream.
+        /// </summary>
+        /// <param name="zone">The zone to write.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="zone"/> is null.</exception>
+        /// <exception cref="IOException">The value couldn't be written to the stream.</exception>
+        void WriteTimeZone(DateTimeZone zone);
     }
 }

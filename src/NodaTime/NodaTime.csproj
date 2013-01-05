@@ -253,6 +253,8 @@
     <Compile Include="TimeZones\CachingZoneIntervalMap.cs" />
     <Compile Include="TimeZones\DateTimeZoneCache.cs" />
     <Compile Include="TimeZones\Delegates.cs" />
+    <Compile Include="TimeZones\IO\LegacyDateTimeZoneReader.cs" />
+    <Compile Include="TimeZones\IO\LegacyDateTimeZoneWriter.cs" />
     <Compile Include="TimeZones\IO\DateTimeZoneReader.cs" />
     <Compile Include="TimeZones\IO\DateTimeZoneWriter.cs" />
     <Compile Include="TimeZones\IO\IDateTimeZoneReader.cs" />

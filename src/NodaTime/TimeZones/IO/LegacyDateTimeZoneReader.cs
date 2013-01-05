@@ -23,16 +23,14 @@ using System.Text;
 namespace NodaTime.TimeZones.IO
 {
     /// <summary>
-    /// Implementation of <see cref="IDateTimeZoneReader"/> for the most recent version
-    /// of the "blob" format of time zone data. If the format changes, this class will be
-    /// renamed (e.g. to DateTimeZoneReaderV0) and the new implementation will replace it.
+    /// Implementation of <see cref="IDateTimeZoneReader"/> which maintains the legacy "resource" format.
     /// </summary>
-    internal sealed class DateTimeZoneReader : IDateTimeZoneReader
+    internal sealed class LegacyDateTimeZoneReader : IDateTimeZoneReader
     {
         private readonly Stream input;
         private readonly IList<string> stringPool; 
 
-        internal DateTimeZoneReader(Stream input, IList<string> stringPool)
+        internal LegacyDateTimeZoneReader(Stream input, IList<string> stringPool)
         {
             this.input = input;
             this.stringPool = stringPool;
@@ -291,13 +289,13 @@ namespace NodaTime.TimeZones.IO
                 case DateTimeZoneWriter.FlagTimeZoneFixed:
                     return FixedDateTimeZone.Read(this, id);
                 case DateTimeZoneWriter.FlagTimeZonePrecalculated:
-                    return PrecalculatedDateTimeZone.Read(this, id);
+                    return PrecalculatedDateTimeZone.ReadLegacy(this, id);
                 case DateTimeZoneWriter.FlagTimeZoneNull:
                     return null; // Only used when reading a tail zone
                 case DateTimeZoneWriter.FlagTimeZoneCached:
                     return CachedDateTimeZone.Read(this, id);
                 case DateTimeZoneWriter.FlagTimeZoneDst:
-                    return DaylightSavingsDateTimeZone.Read(this, id);
+                    return DaylightSavingsDateTimeZone.ReadLegacy(this, id);
                 default:
                     throw new IOException("Unknown flag type " + flag);
             }
@@ -307,7 +305,7 @@ namespace NodaTime.TimeZones.IO
         ///   Reads a signed 16 bit integer value from the stream and returns it as an int.
         /// </summary>
         /// <returns>The 16 bit int value.</returns>
-        private int ReadInt16()
+        internal int ReadInt16()
         {
             unchecked
             {
@@ -321,7 +319,7 @@ namespace NodaTime.TimeZones.IO
         /// Reads a signed 32 bit integer value from the stream and returns it as an int.
         /// </summary>
         /// <returns>The 32 bit int value.</returns>
-        private int ReadInt32()
+        internal int ReadInt32()
         {
             unchecked
             {
@@ -335,7 +333,7 @@ namespace NodaTime.TimeZones.IO
         /// Reads a signed 64 bit integer value from the stream and returns it as an long.
         /// </summary>
         /// <returns>The 64 bit long value.</returns>
-        private long ReadInt64()
+        internal long ReadInt64()
         {
             unchecked
             {
@@ -350,7 +348,7 @@ namespace NodaTime.TimeZones.IO
         /// </summary>
         /// <returns>The 8 bit int value.</returns>
         /// <exception cref="EndOfStreamException">The data in the stream has been exhausted</exception>
-        private byte ReadByte()
+        internal byte ReadByte()
         {
             int value = input.ReadByte();
             if (value == -1)

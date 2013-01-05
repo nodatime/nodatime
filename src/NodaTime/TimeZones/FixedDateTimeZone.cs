@@ -129,7 +129,7 @@ namespace NodaTime.TimeZones
         /// Writes the time zone to the specified writer.
         /// </summary>
         /// <param name="writer">The writer.</param>
-        internal void Write(DateTimeZoneWriter writer)
+        internal void Write(IDateTimeZoneWriter writer)
         {
             Preconditions.CheckNotNull(writer, "writer");
             writer.WriteOffset(offset);
@@ -141,9 +141,10 @@ namespace NodaTime.TimeZones
         /// <param name="reader">The reader.</param>
         /// <param name="id">The id.</param>
         /// <returns>The fixed time zone.</returns>
-        public static DateTimeZone Read(DateTimeZoneReader reader, string id)
+        public static DateTimeZone Read(IDateTimeZoneReader reader, string id)
         {
             Preconditions.CheckNotNull(reader, "reader");
+            Preconditions.CheckNotNull(reader, "id");
             var offset = reader.ReadOffset();
             return new FixedDateTimeZone(id, offset);
         }
