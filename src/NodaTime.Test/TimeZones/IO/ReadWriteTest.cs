@@ -128,6 +128,26 @@ namespace NodaTime.Test.TimeZones.IO
         }
 
         [Test]
+        public void Test_Offset()
+        {
+            Dio.TestOffset(Offset.MinValue);
+            Dio.TestOffset(Offset.MaxValue);
+            Dio.TestOffset(Offset.FromHours(0));
+            Dio.TestOffset(Offset.FromHours(5));
+            Dio.TestOffset(Offset.FromHours(-5));
+            Dio.TestOffset(Offset.FromHoursAndMinutes(5, 15));
+            Dio.TestOffset(Offset.FromHoursAndMinutes(5, 30));
+            Dio.TestOffset(Offset.FromHoursAndMinutes(5, 45));
+            Dio.TestOffset(Offset.FromHoursAndMinutes(-5, -15));
+            Dio.TestOffset(Offset.FromHoursAndMinutes(-5, -30));
+            Dio.TestOffset(Offset.FromHoursAndMinutes(-5, -45));
+            Dio.TestOffset(Offset.FromMilliseconds(1));
+            Dio.TestOffset(Offset.FromMilliseconds(-1));
+            Dio.TestOffset(Offset.FromMilliseconds(1000));
+            Dio.TestOffset(Offset.FromMilliseconds(-1000));
+        }
+
+        [Test]
         public void Test_String_NoPool()
         {
             Dio.TestString("");
