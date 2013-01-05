@@ -291,13 +291,11 @@ namespace NodaTime.TimeZones.IO
                 case DateTimeZoneWriter.FlagTimeZoneFixed:
                     return FixedDateTimeZone.Read(this, id);
                 case DateTimeZoneWriter.FlagTimeZonePrecalculated:
-                    return PrecalculatedDateTimeZone.Read(this, id);
+                    return CachedDateTimeZone.ForZone(PrecalculatedDateTimeZone.Read(this, id));
                 case DateTimeZoneWriter.FlagTimeZoneNull:
                     return null; // Only used when reading a tail zone
-                case DateTimeZoneWriter.FlagTimeZoneCached:
-                    return CachedDateTimeZone.Read(this, id);
                 case DateTimeZoneWriter.FlagTimeZoneDst:
-                    return DaylightSavingsDateTimeZone.Read(this, id);
+                    return CachedDateTimeZone.ForZone(DaylightSavingsDateTimeZone.Read(this, id));
                 default:
                     throw new IOException("Unknown flag type " + flag);
             }
