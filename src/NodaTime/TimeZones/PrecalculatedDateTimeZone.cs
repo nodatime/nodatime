@@ -146,7 +146,10 @@ namespace NodaTime.TimeZones
         {
             Preconditions.CheckNotNull(writer, "writer");
 
-            // Keep a pool of strings; we don't want to write the same strings out time and time again.
+            // We used to create a pool of strings just for this zone. This was more efficient
+            // for some zones, as it meant that each string would be written out with just a single
+            // byte after the pooling. Optimizing the string pool globally instead allows for
+            // roughly the same efficiency, and simpler code here.
             writer.WriteCount(periods.Length);
             foreach (var period in periods)
             {

@@ -30,11 +30,12 @@ namespace NodaTime.TimeZones.IO
     /// </summary>
     internal sealed class DateTimeZoneWriter : IDateTimeZoneWriter
     {
-        internal const byte FlagTimeZoneCached = 0;
-        internal const byte FlagTimeZoneDst = 1;
-        internal const byte FlagTimeZoneFixed = 2;
-        internal const byte FlagTimeZoneNull = 3;
-        internal const byte FlagTimeZonePrecalculated = 4;
+        // TODO: Work out where best to put these flags, and the code to read/respond to them.
+        // It's ugly at the moment.
+        internal const byte FlagTimeZoneNull = 0;
+        internal const byte FlagTimeZoneFixed = 1;
+        internal const byte FlagTimeZoneDst = 2;
+        internal const byte FlagTimeZonePrecalculated = 3;
 
         internal const long HalfHoursMask = 0x3fL;
         internal const long MaxHalfHours = 0x1fL;
@@ -339,7 +340,6 @@ namespace NodaTime.TimeZones.IO
             }
             else if (value is CachedDateTimeZone)
             {
-                WriteByte(FlagTimeZoneCached);
                 ((CachedDateTimeZone)value).Write(this);
             }
             else if (value is DaylightSavingsDateTimeZone)
