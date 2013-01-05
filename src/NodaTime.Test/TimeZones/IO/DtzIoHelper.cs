@@ -15,13 +15,12 @@
 // limitations under the License.
 #endregion
 
-using System;
 using System.Collections.Generic;
-using System.IO;
 using NUnit.Framework;
 using NodaTime.TimeZones;
+using NodaTime.TimeZones.IO;
 
-namespace NodaTime.Test.TimeZones
+namespace NodaTime.Test.TimeZones.IO
 {
     /// <summary>
     ///   Wrapper around a DateTimeZoneWriter/DateTimeZoneReader pair that reads whatever is

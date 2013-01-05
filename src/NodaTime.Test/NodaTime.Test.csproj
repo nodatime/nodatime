@@ -214,13 +214,15 @@
     <Compile Include="TimeZones\BclDateTimeZoneSourceTest.cs" />
     <Compile Include="TimeZones\BclDateTimeZoneTest.cs" />
     <Compile Include="TimeZones\CachedDateTimeZoneTest.cs" />
+    <Compile Include="TimeZones\IO\DtzIoHelper.cs" />
+    <Compile Include="TimeZones\IO\IoStream.cs" />
+    <Compile Include="TimeZones\IO\ReadWriteTest.cs" />
     <Compile Include="TimeZones\ResolversTest.cs" />
     <Compile Include="TimeZones\TzdbDateTimeZoneSourceTest.cs" />
     <Compile Include="TimeZones\DateTimeZoneCacheTest.cs" />
     <Compile Include="TimeZones\DaylightSavingDateTimeZoneTest.cs" />
     <Compile Include="TimeZones\EtcTest.cs" />
     <Compile Include="TimeZones\JordanTest.cs" />
-    <Compile Include="TimeZones\IoStream.cs" />
     <Compile Include="TimeZones\PrecalculatedDateTimeZoneTest.cs" />
     <Compile Include="DurationTest.cs" />
     <Compile Include="DurationTest.Operators.cs">
@@ -281,8 +283,6 @@
     <Compile Include="TimeZones\ZoneIntervalPairTest.cs" />
     <Compile Include="TimeZones\ZoneIntervalTest.cs" />
     <Compile Include="TimeZones\ZoneRecurrenceTest.cs" />
-    <Compile Include="TimeZones\DtzIoHelper.cs" />
-    <Compile Include="TimeZones\ReadWriteTest.cs" />
     <Compile Include="TimeZones\ZoneYearOffsetTest.cs" />
     <Compile Include="Utility\BclConversionsTest.cs" />
     <Compile Include="Utility\NodaReadOnlyDictionaryTest.cs" />

@@ -21,7 +21,7 @@ using System.IO;
 using System.Text;
 using NodaTime.Utility;
 
-namespace NodaTime.TimeZones
+namespace NodaTime.TimeZones.IO
 {
     /// <summary>
     /// Provides primitive writing operations tailored towards writing time zone

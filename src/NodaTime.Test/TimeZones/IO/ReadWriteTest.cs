@@ -15,12 +15,12 @@
 // limitations under the License.
 #endregion
 
-using System.Collections.Generic;
-using NodaTime.TimeZones;
-using NUnit.Framework;
 using System;
+using System.Collections.Generic;
+using NUnit.Framework;
+using NodaTime.TimeZones.IO;
 
-namespace NodaTime.Test.TimeZones
+namespace NodaTime.Test.TimeZones.IO
 {
     [TestFixture]
     public class ReadWriteTest

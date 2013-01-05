@@ -17,6 +17,7 @@
 
 using System;
 using NUnit.Framework;
+using NodaTime.Test.TimeZones.IO;
 using NodaTime.TimeZones;
 
 namespace NodaTime.Test.TimeZones
