@@ -141,7 +141,7 @@ namespace NodaTime.TimeZones.IO
         /// The value must have been written by <see cref="DateTimeZoneWriter.WriteTicks" />.
         /// </remarks>
         /// <returns>The long ticks value from the stream.</returns>
-        internal long ReadTicks()
+        private long ReadTicks()
         {
             /*
              * Ticks encoding formats:
@@ -242,18 +242,6 @@ namespace NodaTime.TimeZones.IO
         internal Instant ReadInstant()
         {
             return new Instant(ReadTicks());
-        }
-
-        /// <summary>
-        /// Reads an <see cref="LocalInstant" /> value from the stream.
-        /// </summary>
-        /// <remarks>
-        /// The value must have been written by <see cref="DateTimeZoneWriter.WriteLocalInstant" />.
-        /// </remarks>
-        /// <returns>The <see cref="LocalInstant" /> value from the stream.</returns>
-        internal LocalInstant ReadLocalInstant()
-        {
-            return new LocalInstant(ReadTicks());
         }
 
         /// <summary>

@@ -27,7 +27,6 @@ namespace NodaTime.TimeZones.IO
     /// Provides primitive writing operations tailored towards writing time zone
     /// data in an efficient way which can then be read by <see cref="DateTimeZoneReader"/>.
     /// </summary>
-    // TODO: Consider renaming to TzdbDateTimeZoneWriter
     internal sealed class DateTimeZoneWriter
     {
         internal const byte FlagTimeZoneCached = 0;
@@ -181,7 +180,7 @@ namespace NodaTime.TimeZones.IO
         /// Writes the long ticks value to the stream.
         /// </summary>
         /// <param name="value">The value to write.</param>
-        internal void WriteTicks(long value)
+        private void WriteTicks(long value)
         {
             /*
              * Ticks encoding formats:
@@ -287,15 +286,6 @@ namespace NodaTime.TimeZones.IO
         /// </summary>
         /// <param name="value">The value to write.</param>
         internal void WriteInstant(Instant value)
-        {
-            WriteTicks(value.Ticks);
-        }
-
-        /// <summary>
-        /// Writes the <see cref="LocalInstant" /> value to the stream.
-        /// </summary>
-        /// <param name="value">The value to write.</param>
-        internal void WriteLocalInstant(LocalInstant value)
         {
             WriteTicks(value.Ticks);
         }

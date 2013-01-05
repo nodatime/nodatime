@@ -113,14 +113,6 @@ namespace NodaTime.Test.TimeZones.IO
             Assert.AreEqual(expected, actual);
         }
 
-        public void TestLocalInstant(LocalInstant expected)
-        {
-            Reset();
-            Writer.WriteLocalInstant(expected);
-            var actual = Reader.ReadLocalInstant();
-            Assert.AreEqual(expected, actual);
-        }
-
         public void TestOffset(int testValue)
         {
             // Just ignore any invalid values we're asked to test
@@ -141,14 +133,6 @@ namespace NodaTime.Test.TimeZones.IO
             Reset();
             Writer.WriteString(expected);
             var actual = Reader.ReadString();
-            Assert.AreEqual(expected, actual);
-        }
-
-        public void TestTicks(long expected)
-        {
-            Reset();
-            Writer.WriteTicks(expected);
-            var actual = Reader.ReadTicks();
             Assert.AreEqual(expected, actual);
         }
 
