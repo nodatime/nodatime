@@ -130,25 +130,23 @@ namespace NodaTime.TimeZones.IO
                 {
                     int units = millis / (30 * NodaConstants.MillisecondsPerMinute);
                     WriteByte((byte)units);
-                    return;
                 }
-
-                if (millis % NodaConstants.MillisecondsPerMinute == 0)
+                else if (millis % NodaConstants.MillisecondsPerMinute == 0)
                 {
                     int minutes = millis / NodaConstants.MillisecondsPerMinute;
                     WriteByte((byte)(0x80 | (minutes >> 8)));
                     WriteByte((byte)(minutes & 0xff));
                 }
-
-                if (millis % NodaConstants.MillisecondsPerSecond == 0)
+                else if (millis%NodaConstants.MillisecondsPerSecond == 0)
                 {
-                    int seconds = millis / NodaConstants.MillisecondsPerSecond;
-                    WriteByte((byte)(0xa0 | (byte)((seconds >> 16))));
-                    WriteInt16((short)(seconds & 0xffff));
-                    return;
+                    int seconds = millis/NodaConstants.MillisecondsPerSecond;
+                    WriteByte((byte) (0xa0 | (byte) ((seconds >> 16))));
+                    WriteInt16((short) (seconds & 0xffff));
                 }
-
-                WriteInt32((int) 0xc0000000 | millis);
+                else
+                {
+                    WriteInt32((int) 0xc0000000 | millis);
+                }
             }
         }
 
