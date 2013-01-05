@@ -255,6 +255,8 @@
     <Compile Include="TimeZones\Delegates.cs" />
     <Compile Include="TimeZones\IO\DateTimeZoneReader.cs" />
     <Compile Include="TimeZones\IO\DateTimeZoneWriter.cs" />
+    <Compile Include="TimeZones\IO\IDateTimeZoneReader.cs" />
+    <Compile Include="TimeZones\IO\IDateTimeZoneWriter.cs" />
     <Compile Include="TimeZones\IO\ITzdbDataSource.cs" />
     <Compile Include="TimeZones\IO\TzdbResourceData.cs" />
     <Compile Include="TimeZones\IO\TzdbStreamData.cs" />
