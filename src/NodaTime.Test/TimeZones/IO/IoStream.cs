@@ -17,6 +17,7 @@
 
 using System;
 using System.IO;
+using NUnit.Framework;
 
 namespace NodaTime.Test.TimeZones.IO
 {
@@ -48,6 +49,11 @@ namespace NodaTime.Test.TimeZones.IO
                 throw new InternalBufferOverflowException("IoStream buffer empty in GetByte()");
             }
             return buffer[readIndex++];
+        }
+
+        public void AssertEndOfStream()
+        {
+            Assert.AreEqual(readIndex, writeIndex);
         }
 
         /// <summary>

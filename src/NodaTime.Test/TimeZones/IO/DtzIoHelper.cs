@@ -16,6 +16,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.IO;
 using NUnit.Framework;
 using NodaTime.TimeZones;
 using NodaTime.TimeZones.IO;
@@ -79,6 +80,7 @@ namespace NodaTime.Test.TimeZones.IO
             Writer.WriteCount(expected);
             var actual = Reader.ReadCount();
             Assert.AreEqual(expected, actual);
+            ioStream.AssertEndOfStream();
         }
 
         public void TestDictionary(IDictionary<string, string> expected)
@@ -87,6 +89,7 @@ namespace NodaTime.Test.TimeZones.IO
             Writer.WriteDictionary(expected);
             var actual = Reader.ReadDictionary();
             Assert.AreEqual(expected, actual);
+            ioStream.AssertEndOfStream();
         }
 
         public void TestInstant(Instant expected)
@@ -95,6 +98,7 @@ namespace NodaTime.Test.TimeZones.IO
             Writer.WriteInstant(expected);
             var actual = Reader.ReadInstant();
             Assert.AreEqual(expected, actual);
+            ioStream.AssertEndOfStream();
         }
 
         public void TestOffset(Offset offset)
@@ -103,6 +107,7 @@ namespace NodaTime.Test.TimeZones.IO
             Writer.WriteOffset(offset);
             var actual = Reader.ReadOffset();
             Assert.AreEqual(offset, actual);
+            ioStream.AssertEndOfStream();
         }
 
         public void TestString(string expected)
@@ -111,6 +116,7 @@ namespace NodaTime.Test.TimeZones.IO
             Writer.WriteString(expected);
             var actual = Reader.ReadString();
             Assert.AreEqual(expected, actual);
+            ioStream.AssertEndOfStream();
         }
 
         public void TestTimeZone(DateTimeZone expected)
@@ -119,6 +125,7 @@ namespace NodaTime.Test.TimeZones.IO
             Writer.WriteTimeZone(expected);
             var actual = Reader.ReadTimeZone(expected.Id);
             Assert.AreEqual(expected, actual);
+            ioStream.AssertEndOfStream();
         }
 
         public void TestZoneRecurrence(ZoneRecurrence expected)
@@ -127,6 +134,7 @@ namespace NodaTime.Test.TimeZones.IO
             expected.Write(Writer);
             var actual = ZoneRecurrence.Read(Reader);
             Assert.AreEqual(expected, actual);
+            ioStream.AssertEndOfStream();
         }
 
         public void TestZoneYearOffset(ZoneYearOffset expected)
@@ -135,6 +143,7 @@ namespace NodaTime.Test.TimeZones.IO
             expected.Write(Writer);
             var actual = ZoneYearOffset.Read(Reader);
             Assert.AreEqual(expected, actual);
+            ioStream.AssertEndOfStream();
         }
     }
 }

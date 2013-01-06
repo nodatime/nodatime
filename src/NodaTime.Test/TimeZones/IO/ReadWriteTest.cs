@@ -22,11 +22,8 @@ using NodaTime.TimeZones.IO;
 
 namespace NodaTime.Test.TimeZones.IO
 {
-    [TestFixture(typeof(DateTimeZoneReader), typeof(DateTimeZoneWriter))]
-    [TestFixture(typeof(LegacyDateTimeZoneReader), typeof(LegacyDateTimeZoneWriter))]
-    internal class ReadWriteTest<TReader, TWriter>
-        where TReader : IDateTimeZoneReader
-        where TWriter : IDateTimeZoneWriter
+    [TestFixture]
+    public class ReadWriteTest
     {
         /// <summary>
         /// Returns the <see cref="DtzIoHelper" /> to use for testing against.
@@ -55,33 +52,6 @@ namespace NodaTime.Test.TimeZones.IO
             {
                 tester(value);
                 value <<= 1;
-            }
-        }
-
-        private static void RunTests_Ticks(Action<long> tester)
-        {
-            tester(Int64.MaxValue);
-            tester(Int64.MinValue);
-            tester(3575232000000000L);
-            tester(3575231999999999L);
-            tester(Instant.MinValue.Ticks);
-            tester(Instant.MaxValue.Ticks);
-            tester(NodaConstants.UnixEpoch.Ticks);
-            for (long i = DateTimeZoneWriter.MinHalfHours; i <= DateTimeZoneWriter.MaxHalfHours; i++)
-            {
-                long value = i * 30 * NodaConstants.TicksPerMinute;
-                tester(value);
-            }
-            const long minuteDiff = (DateTimeZoneWriter.MaxMinutes - DateTimeZoneWriter.MinMinutes) / 1000;
-            for (long i = DateTimeZoneWriter.MinMinutes; i <= DateTimeZoneWriter.MaxMinutes; i += minuteDiff)
-            {
-                long value = i * NodaConstants.TicksPerMinute;
-                tester(value);
-            }
-            const long secondDiff = (DateTimeZoneWriter.MaxSeconds - DateTimeZoneWriter.MinSeconds) / 1000;
-            for (long i = DateTimeZoneWriter.MinSeconds; i <= DateTimeZoneWriter.MinSeconds; i += secondDiff)
-            {
-                tester(i * NodaConstants.TicksPerSecond);
             }
         }
 
@@ -124,7 +94,25 @@ namespace NodaTime.Test.TimeZones.IO
         [Test]
         public void Test_Instant()
         {
-            RunTests_Ticks(value => Dio.TestInstant((new Instant(value))));
+            Dio.TestInstant(Instant.MinValue);
+            Dio.TestInstant(Instant.MaxValue);
+            Dio.TestInstant(Instant.MinValue.PlusTicks(1));
+            Dio.TestInstant(Instant.MaxValue.PlusTicks(-1));
+            Instant epoch = DateTimeZoneWriter.InstantConstants.Epoch;
+            // Valid optimized cases
+            Dio.TestInstant(epoch);
+            Dio.TestInstant(epoch + Duration.FromHours(1));
+            Dio.TestInstant(epoch + Duration.FromMinutes(1));
+            Dio.TestInstant(epoch + Duration.FromSeconds(1));
+            // Example from Pacific/Auckland which failed, and a similar one with seconds.
+            Dio.TestInstant(Instant.FromUtc(1927, 11, 5, 14, 30));
+            Dio.TestInstant(Instant.FromUtc(1927, 11, 5, 14, 30, 5));
+            // Out of range cases, or not a multiple of hours, minutes or seconds
+            Dio.TestInstant(epoch + Duration.FromMilliseconds(1));
+            Dio.TestInstant(epoch - Duration.FromHours(1));
+            Dio.TestInstant(epoch + Duration.FromHours(DateTimeZoneWriter.InstantConstants.MaxHours + 1));
+            Dio.TestInstant(epoch + Duration.FromMinutes(DateTimeZoneWriter.InstantConstants.MaxMinutes + 1));
+            Dio.TestInstant(epoch + Duration.FromSeconds(DateTimeZoneWriter.InstantConstants.MaxSeconds + 1));
         }
 
         [Test]
