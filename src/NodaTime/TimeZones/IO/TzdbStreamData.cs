@@ -51,11 +51,25 @@ namespace NodaTime.TimeZones.IO
             windowsMapping = CheckNotNull(builder.windowsMapping, "Windows mapping");
             windowsMappingVersion = CheckNotNull(builder.windowsMappingVersion, "Windows mapping version");
             zoneFields = builder.zoneFields;
+            // Check that each alias has a canonical value.
             foreach (var id in tzdbIdMap.Values)
             {
                 if (!zoneFields.ContainsKey(id))
                 {
                     throw new IOException("Zone field for ID " + id + " is missing");
+                }
+            }
+            // Add in the canonical IDs as mappings to themselves.
+            foreach (var id in zoneFields.Keys)
+            {
+                tzdbIdMap[id] = id;
+            }
+            // Check that each Windows mapping has a known canonical ID.
+            foreach (var id in windowsMapping.Values)
+            {
+                if (!tzdbIdMap.ContainsKey(id))
+                {
+                    throw new IOException("Windows mapping uses canonical ID " + id + " which is missing");
                 }
             }
         }
