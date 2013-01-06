@@ -112,72 +112,6 @@ namespace NodaTime.TimeZones.IO
         }
 
         /// <summary>
-        /// Reads a long ticks value from the stream.
-        /// </summary>
-        /// <remarks>
-        /// The value must have been written by <see cref="DateTimeZoneWriter.WriteTicks" />.
-        /// </remarks>
-        /// <returns>The long ticks value from the stream.</returns>
-        private long ReadTicks()
-        {
-            /*
-             * Ticks encoding formats:
-             *
-             * upper two bits  units       field length  approximate range
-             * ---------------------------------------------------------------
-             * 00              30 minutes  1 byte        +/- 16 hours
-             * 01              minutes     3 bytes       +/- 1020 years
-             * 10              seconds     5 bytes       +/- 4355 years
-             * 11000000        ticks       9 bytes       +/- 292,000 years
-             * 11111100  0xfc              1 byte         Offset.MaxValue
-             * 11111101  0xfd              1 byte         Offset.MinValue
-             * 11111110  0xfe              1 byte         Instant, LocalInstant, Duration MaxValue
-             * 11111111  0xff              1 byte         Instant, LocalInstant, Duration MinValue
-             *
-             * Remaining bits in field form signed offset from 1970-01-01T00:00:00Z.
-             */
-            unchecked
-            {
-                byte flag = ReadByte();
-                if (flag == DateTimeZoneWriter.FlagMinValue)
-                {
-                    return Int64.MinValue;
-                }
-                if (flag == DateTimeZoneWriter.FlagMaxValue)
-                {
-                    return Int64.MaxValue;
-                }
-
-                if ((flag & 0xc0) == DateTimeZoneWriter.FlagHalfHour)
-                {
-                    long units = flag - DateTimeZoneWriter.MaxHalfHours;
-                    return units * (30 * NodaConstants.TicksPerMinute);
-                }
-                if ((flag & 0xc0) == DateTimeZoneWriter.FlagMinutes)
-                {
-                    int first = flag & ~0xc0;
-                    int second = ReadByte() & 0xff;
-                    int third = ReadByte() & 0xff;
-
-                    long units = (((first << 8) + second) << 8) + third;
-                    units = units - DateTimeZoneWriter.MaxMinutes;
-                    return units * NodaConstants.TicksPerMinute;
-                }
-                if ((flag & 0xc0) == DateTimeZoneWriter.FlagSeconds)
-                {
-                    long first = flag & ~0xc0;
-                    long second = ReadInt32() & 0xffffffffL;
-
-                    long units = (first << 32) + second;
-                    units = units - DateTimeZoneWriter.MaxSeconds;
-                    return units * NodaConstants.TicksPerSecond;
-                }
-
-                return ReadInt64();
-            }
-        }
-
-        /// <summary>
         /// Reads a boolean value from the stream.
         /// </summary>
         /// <remarks>
@@ -218,7 +152,35 @@ namespace NodaTime.TimeZones.IO
         /// <returns>The <see cref="Instant" /> value from the stream.</returns>
         public Instant ReadInstant()
         {
-            return new Instant(ReadTicks());
+            unchecked
+            {
+                byte firstByte = ReadByte();
+                if (firstByte == DateTimeZoneWriter.InstantConstants.MaxFormat)
+                {
+                    return Instant.MaxValue;
+                }
+                if (firstByte == DateTimeZoneWriter.InstantConstants.MinFormat)
+                {
+                    return Instant.MinValue;
+                }
+                long firstValue = firstByte & 0x3f;
+                switch (firstByte & 0xc0)
+                {
+                    case DateTimeZoneWriter.InstantConstants.HoursFormat:
+                        long hours = (firstValue << 16) | (ushort) ReadInt16();
+                        return DateTimeZoneWriter.InstantConstants.Epoch + Duration.FromHours(hours);
+                    case DateTimeZoneWriter.InstantConstants.MinutesFormat:
+                        long minutes = (firstValue << 24) | (uint) (ReadByte() << 16) | (ushort) ReadInt16();
+                        return DateTimeZoneWriter.InstantConstants.Epoch + Duration.FromMinutes(minutes);
+                    case DateTimeZoneWriter.InstantConstants.SecondsFormat:
+                        long seconds = (firstValue << 32) | (uint) ReadInt32();
+                        return DateTimeZoneWriter.InstantConstants.Epoch + Duration.FromSeconds(seconds);
+                    case DateTimeZoneWriter.InstantConstants.RawFormat:
+                        return new Instant(ReadInt64());
+                    default:
+                        throw new InvalidOperationException("Bug in noda time - invalid byte value!");
+                }
+            }
         }
 
         /// <summary>

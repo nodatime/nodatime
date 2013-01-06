@@ -30,31 +30,29 @@ namespace NodaTime.TimeZones.IO
     /// </summary>
     internal sealed class DateTimeZoneWriter : IDateTimeZoneWriter
     {
+        internal static class InstantConstants
+        {
+            // Special epoch for IO purposes
+            internal static readonly Instant Epoch = Instant.FromUtc(1800, 1, 1, 0, 0);
+            internal const long MaxHours = (1L << 22) - 1;
+            internal const long MaxMinutes = (1L << 30) - 1;
+            internal const long MaxSeconds = (1L << 38) - 1;
+            internal static readonly Instant MaxOptimizedInstant = Epoch + Duration.MaxValue;
+
+            internal const byte HoursFormat = 0 << 6;
+            internal const byte MinutesFormat = 1 << 6; 
+            internal const byte SecondsFormat = 2 << 6;
+            internal const byte RawFormat = 3 << 6;
+            internal const byte MinFormat = 0xe0;
+            internal const byte MaxFormat = 0xff;
+        }
+
         // TODO: Work out where best to put these flags, and the code to read/respond to them.
         // It's ugly at the moment.
         internal const byte FlagTimeZoneNull = 0;
         internal const byte FlagTimeZoneFixed = 1;
         internal const byte FlagTimeZoneDst = 2;
         internal const byte FlagTimeZonePrecalculated = 3;
-
-        internal const long HalfHoursMask = 0x3fL;
-        internal const long MaxHalfHours = 0x1fL;
-        internal const long MinHalfHours = -MaxHalfHours;
-
-        internal const long MaxMinutes = 0x1fffffL;
-        internal const long MinMinutes = -MaxMinutes;
-
-        internal const long MaxSeconds = 0x1fffffffffL;
-        internal const long MinSeconds = -MaxSeconds;
-
-        internal const byte FlagHalfHour = 0x00;
-        internal const byte FlagMinutes = 0x40;
-        internal const byte FlagSeconds = 0x80;
-        internal const byte FlagMillisSeconds = 0x80;
-        internal const byte FlagTicks = 0xc0;
-        internal const byte FlagMilliseconds = 0xfd;
-        internal const byte FlagMaxValue = 0xfe;
-        internal const byte FlagMinValue = 0xff;
 
         private readonly Stream output;
         private readonly IList<string> stringPool; 
@@ -97,15 +95,6 @@ namespace NodaTime.TimeZones.IO
         /// <summary>
         /// Writes the offset value to the stream.
         /// </summary>
-        /// <remarks>
-        /// <para>
-        /// First, 24 hours are added to the offset, to get a number of milliseconds in the range (0, 172800000).
-        /// Next, we write it out in one of 4 encoding forms:
-        /// </para>
-        /// <list type="bullet">
-        ///   <item></item>
-        /// </list>
-        /// </remarks>
         /// <param name="offset">The value to write.</param>
         public void WriteOffset(Offset offset)
         {
@@ -151,87 +140,6 @@ namespace NodaTime.TimeZones.IO
         }
 
         /// <summary>
-        /// Writes the long ticks value to the stream.
-        /// </summary>
-        /// <param name="value">The value to write.</param>
-        private void WriteTicks(long value)
-        {
-            /*
-             * Ticks encoding formats:
-             *
-             * upper two bits  units       field length  approximate range
-             * ---------------------------------------------------------------
-             * 00              30 minutes  1 byte        +/- 16 hours
-             * 01              minutes     4 bytes       +/- 1020 years
-             * 10              seconds     5 bytes       +/- 4355 years
-             * 11000000        ticks       9 bytes       +/- 292,000 years
-             * 11111100  0xfc              1 byte         Offset.MaxValue
-             * 11111101  0xfd              1 byte         Offset.MinValue
-             * 11111110  0xfe              1 byte         Instant, LocalInstant, Duration MaxValue
-             * 11111111  0xff              1 byte         Instant, LocalInstant, Duration MinValue
-             *
-             * Remaining bits in field form signed offset from 1970-01-01T00:00:00Z.
-             */
-            unchecked
-            {
-                if (value == Int64.MinValue)
-                {
-                    WriteByte(FlagMinValue);
-                    return;
-                }
-                if (value == Int64.MaxValue)
-                {
-                    WriteByte(FlagMaxValue);
-                    return;
-                }
-                if (value % (30 * NodaConstants.TicksPerMinute) == 0)
-                {
-                    // Try to write in 30 minute units.
-                    long units = value / (30 * NodaConstants.TicksPerMinute);
-                    if (MinHalfHours <= units && units <= MaxHalfHours)
-                    {
-                        units = units + MaxHalfHours;
-                        WriteByte((byte)(units & 0x3f));
-                        return;
-                    }
-                }
-
-                if (value % NodaConstants.TicksPerMinute == 0)
-                {
-                    // Try to write minutes.
-                    long minutes = value / NodaConstants.TicksPerMinute;
-                    if (MinMinutes <= minutes && minutes <= MaxMinutes)
-                    {
-                        minutes = minutes + MaxMinutes;
-                        WriteByte((byte)(FlagMinutes | (byte)((minutes >> 16) & 0x3f)));
-                        WriteInt16((short)(minutes & 0xffff));
-                        return;
-                    }
-                }
-
-                if (value % NodaConstants.TicksPerSecond == 0)
-                {
-                    // Try to write seconds.
-                    long seconds = value / NodaConstants.TicksPerSecond;
-                    if (MinSeconds <= seconds && seconds <= MaxSeconds)
-                    {
-                        seconds = seconds + MaxSeconds;
-                        WriteByte((byte)(FlagSeconds | (byte)((seconds >> 32) & 0x3f)));
-                        WriteInt32((int)(seconds & 0xffffffff));
-                        return;
-                    }
-                }
-
-                // Write milliseconds either because the additional precision is
-                // required or the minutes didn't fit in the field.
-
-                // Form 11 (64 bits effective precision, but write as if 70 bits)
-                WriteByte(FlagTicks);
-                WriteInt64(value);
-            }
-        }
-
-        /// <summary>
         /// Writes a boolean value to the stream.
         /// </summary>
         /// <param name="value">The value to write.</param>
@@ -261,7 +169,72 @@ namespace NodaTime.TimeZones.IO
         /// <param name="value">The value to write.</param>
         public void WriteInstant(Instant value)
         {
-            WriteTicks(value.Ticks);
+            /*
+             * Instant encoding form:
+             * - In the first byte, the first two bits indicate the format:
+             *   - 00: Hours since 1800, 3 bytes (max year ~2278)
+             *   - 01: Minutes since 1800, 4 bytes (max year ~3841)
+             *   - 10: Seconds since 1800, 5 bytes (max year ~10510)
+             *   - 11: Depends on remaining bits
+             *       - 000000 - following 8 bytes give raw bits
+             *       - 100000 - Instant.MinValue
+             *       - 111111 - Instant.MaxValue
+             */
+            unchecked
+            {
+                if (value == Instant.MinValue)
+                {
+                    WriteByte(InstantConstants.MinFormat);
+                    return;
+                }
+                if (value == Instant.MaxValue)
+                {
+                    WriteByte(InstantConstants.MaxFormat);
+                    return;
+                }
+                if (value >= InstantConstants.Epoch && value <= InstantConstants.MaxOptimizedInstant)
+                {
+                    long ticks = (value - InstantConstants.Epoch).Ticks;
+                    if (ticks % NodaConstants.TicksPerHour == 0)
+                    {
+                        long hours = ticks / NodaConstants.TicksPerHour;
+                        if (hours <= InstantConstants.MaxHours)
+                        {
+                            // Hours in 22 bits
+                            WriteByte((byte) (InstantConstants.HoursFormat | (hours >> 16)));
+                            WriteInt16((short) hours);
+                            return;
+                        }
+                    }
+                    if (ticks % NodaConstants.TicksPerMinute == 0)
+                    {
+                        long minutes = ticks / NodaConstants.TicksPerMinute;
+                        if (minutes <= InstantConstants.MaxMinutes)
+                        {
+                            // Minutes in 30 bits
+                            WriteByte((byte)(InstantConstants.MinutesFormat | (minutes >> 24)));
+                            WriteByte((byte)(minutes >> 16));
+                            WriteInt16((short)minutes);
+                            return;
+                        }
+                    }
+                    if (ticks % NodaConstants.TicksPerSecond == 0)
+                    {
+                        long seconds = ticks / NodaConstants.TicksPerSecond;
+                        if (seconds <= InstantConstants.MaxSeconds)
+                        {
+                            // Seconds in 38 bits
+                            WriteByte((byte)(InstantConstants.SecondsFormat | (seconds >> 32)));
+                            WriteInt32((int)seconds);
+                            return;
+                        }
+                    }
+                }
+                // Okay, this is unusual - we're writing out something which is either out of
+                // range, or doesn't have a nice round value.
+                WriteByte(InstantConstants.RawFormat);
+                WriteInt64(value.Ticks);
+            }
         }
 
         /// <summary>
