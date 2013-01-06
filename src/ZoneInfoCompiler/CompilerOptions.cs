@@ -35,7 +35,7 @@ namespace NodaTime.ZoneInfoCompiler
         [Option("w", "windows", Required = true, HelpText = "Windows to TZDB time zone mapping file (e.g. windowsZones.xml)")]
         public string WindowsMappingFile { get; set; }
 
-        [Option("t", "type", HelpText = "The type of the output file { ResX, Resource, NodaZoneData }. Defaults to Resx.")]
+        [Option("t", "type", HelpText = "The type of the output file { ResX, Resource, NodaZoneData }. Defaults to NodaZoneData.")]
         public OutputType OutputType { get; set; }
 
         public CompilerOptions()
@@ -43,7 +43,7 @@ namespace NodaTime.ZoneInfoCompiler
             OutputFileName = "";
             SourceDirectoryName = "";
             WindowsMappingFile = "";
-            OutputType = OutputType.ResX;
+            OutputType = OutputType.NodaZoneData;
         }
 
         [HelpOption(HelpText = "Display this help screen.")]

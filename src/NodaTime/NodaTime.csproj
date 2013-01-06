@@ -333,14 +333,7 @@
       <LastGenOutput>Messages.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup Condition="'$(Portability)' == 'PCL'">
     <EmbeddedResource Include="TimeZones\Tzdb.nzd" />
-  </ItemGroup>
-  <ItemGroup Condition="'$(Portability)' == 'Desktop'">
-    <EmbeddedResource Include="TimeZones\Tzdb.resx">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />
   <Import Condition="'$(Portability)' == 'Desktop'" Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

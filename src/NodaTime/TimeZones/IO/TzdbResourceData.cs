@@ -140,10 +140,19 @@ namespace NodaTime.TimeZones.IO
             return new TzdbResourceData(source);
         }
 
-        internal static TzdbResourceData FromResource(string baseName, Assembly assembly)
+        internal static ITzdbDataSource FromResource(string baseName, Assembly assembly)
         {
             Preconditions.CheckNotNull(baseName, "baseName");
             Preconditions.CheckNotNull(assembly, "assembly");
+            // Special-case the only situation which would ever have worked with the Noda Time assembly,
+            // and load the blob version instead.
+            if (assembly == typeof(TzdbResourceData).Assembly && baseName == "NodaTime.TimeZones.Tzdb")
+            {
+                using (Stream stream = assembly.GetManifestResourceStream("NodaTime.TimeZones.Tzdb.nzd"))
+                {
+                    return TzdbStreamData.FromStream(stream);
+                }
+            }
             return FromResourceManager(new ResourceManager(baseName, assembly));
         }
 
