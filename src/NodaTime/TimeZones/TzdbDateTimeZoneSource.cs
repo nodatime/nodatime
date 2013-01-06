@@ -51,14 +51,10 @@ namespace NodaTime.TimeZones
             private static ITzdbDataSource LoadDefaultDataSource()
             {
                 var assembly = typeof(DefaultHolder).Assembly;
-#if PCL
                 using (Stream stream = assembly.GetManifestResourceStream("NodaTime.TimeZones.Tzdb.nzd"))
                 {
                     return TzdbStreamData.FromStream(stream);
                 }
-#else
-                return TzdbResourceData.FromResource("NodaTime.TimeZones.Tzdb", assembly);
-#endif
             }
         }
 
@@ -86,6 +82,8 @@ namespace NodaTime.TimeZones
         /// Initializes a new instance of the <see cref="TzdbDateTimeZoneSource" /> class from a resource within
         /// the NodaTime assembly.
         /// </summary>
+        /// <remarks>For backwards compatibility, this will use the blob time zone data when given the same
+        /// base name which would previously have loaded the now-obsolete resource data.</remarks>
         /// <param name="baseName">The root name of the resource file.</param>
         [Obsolete("Use TzdbDateTimeZoneSource.Default to access the only TZDB resources within the NodaTime assembly")]
         public TzdbDateTimeZoneSource(string baseName)
@@ -96,9 +94,12 @@ namespace NodaTime.TimeZones
         /// <summary>
         /// Initializes a new instance of the <see cref="TzdbDateTimeZoneSource" /> class.
         /// </summary>
+        /// <remarks>For backwards compatibility, this will use the blob time zone data when given the same
+        /// base name which would previously have loaded the now-obsolete resource data from the Noda Time assembly
+        /// itself.</remarks>
         /// <param name="baseName">The root name of the resource file.</param>
         /// <param name="assembly">The assembly to search for the time zone resources.</param>
-        [Obsolete("Use the TzdbDateTimeZoneSource.FromResource factory method instead.")]
+        [Obsolete("The resource format for time zone data is deprecated; future versions will only support blob-based data")]
         public TzdbDateTimeZoneSource(string baseName, Assembly assembly)
             : this(TzdbResourceData.FromResource(baseName, assembly))
         {
@@ -108,35 +109,20 @@ namespace NodaTime.TimeZones
         /// Initializes a new instance of the <see cref="TzdbDateTimeZoneSource" /> class.
         /// </summary>
         /// <param name="source">The <see cref="ResourceSet"/> to search for the time zone resources.</param>
-        [Obsolete("Use the TzdbDateTimeZoneSource.FromResource factory method instead.")]
+        [Obsolete("The resource format for time zone data is deprecated; future versions will only support blob-based data")]
         public TzdbDateTimeZoneSource(ResourceSet source)
             : this(TzdbResourceData.FromResourceSet(source))
         {
         }
 
         /// <summary>
-        /// Creates an instance from a resource set.
+        /// Initializes a new instance of the <see cref="TzdbDateTimeZoneSource" /> class.
         /// </summary>
-        /// <param name="source">The resource set containing time zone data</param>
-        /// <returns>A TZDB source with information from the given resource.</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="source"/> is null</exception>
-        // TODO: Document other exceptions when we've worked out what they should be.
-        public static TzdbDateTimeZoneSource FromResource(ResourceSet source)
+        /// <param name="manager">The <see cref="ResourceManager"/> to search for the time zone resources.</param>
+        [Obsolete("The resource format for time zone data is deprecated; future versions will only support blob-based data")]
+        public TzdbDateTimeZoneSource(ResourceManager manager)
+            : this(TzdbResourceData.FromResourceManager(manager))
         {
-            return new TzdbDateTimeZoneSource(TzdbResourceData.FromResourceSet(source));
-        }
-
-        /// <summary>
-        /// Creates an instance from an assembly resource.
-        /// </summary>
-        /// <param name="baseName">The resource name within the given assembly</param>
-        /// <param name="assembly">The assembly to load the resource from</param>
-        /// <returns>A TZDB source with information from the given resource.</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="baseName"/> or <paramref name="assembly"/> is null</exception>
-        // TODO: Document other exceptions when we've worked out what they should be.
-        public static TzdbDateTimeZoneSource FromResource(string baseName, Assembly assembly)
-        {
-            return new TzdbDateTimeZoneSource(TzdbResourceData.FromResource(baseName, assembly));
         }
 #endif
 
