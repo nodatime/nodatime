@@ -59,10 +59,8 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
             var stringPool = CreateOptimizedStringPool(zones);
             
             // First assemble the fields (writing to the string pool as we go)
-            var timeZoneMap = new Dictionary<string, string>();
             foreach (var zone in zones)
             {
-                timeZoneMap.Add(zone.Id, zone.Id);
                 var zoneField = fields.AddField(TzdbStreamFieldId.TimeZone, stringPool);
                 zoneField.Writer.WriteString(zone.Id);
                 zoneField.Writer.WriteTimeZone(zone);
@@ -72,6 +70,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
             fields.AddField(TzdbStreamFieldId.WindowsMappingVersion, null).Writer.WriteString(mapping.Version);
 
             // Normalize the aliases
+            var timeZoneMap = new Dictionary<string, string>();
             foreach (var key in database.Aliases.Keys)
             {
                 var value = database.Aliases[key];
