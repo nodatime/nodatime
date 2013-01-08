@@ -26,8 +26,6 @@ namespace NodaTime.Text
     /// </summary>
     internal sealed class LocalTimePatternParser : IPatternParser<LocalTime>
     {
-        private static readonly CharacterHandler<LocalTime, LocalTimeParseBucket> DefaultCharacterHandler = SteppedPatternBuilder<LocalTime, LocalTimeParseBucket>.HandleDefaultCharacter;
-
         private readonly LocalTime templateValue;
 
         private static readonly Dictionary<char, CharacterHandler<LocalTime, LocalTimeParseBucket>> PatternCharacterHandlers = 
@@ -81,31 +79,10 @@ namespace NodaTime.Text
                 }
             }
 
-            var patternBuilder = new SteppedPatternBuilder<LocalTime, LocalTimeParseBucket>(formatInfo, () => new LocalTimeParseBucket(templateValue));
-            var patternCursor = new PatternCursor(patternText);
-
-            // Prime the pump...
-            // TODO(Post-V1): Add this to the builder?
-            patternBuilder.AddParseAction((str, bucket) =>
-            {
-                str.MoveNext();
-                return null;
-            });
-
-            while (patternCursor.MoveNext())
-            {
-                CharacterHandler<LocalTime, LocalTimeParseBucket> handler;
-                if (!PatternCharacterHandlers.TryGetValue(patternCursor.Current, out handler))
-                {
-                    handler = DefaultCharacterHandler;                    ;
-                }
-                PatternParseResult<LocalTime> possiblePatternParseFailure = handler(patternCursor, patternBuilder);
-                if (possiblePatternParseFailure != null)
-                {
-                    return possiblePatternParseFailure;
-                }
-            }
-            return patternBuilder.ValidateFieldsBuildPatternParseResult();
+            var patternBuilder = new SteppedPatternBuilder<LocalTime, LocalTimeParseBucket>(formatInfo,
+                () => new LocalTimeParseBucket(templateValue));
+            return patternBuilder.ParseCustomPattern(patternText, PatternCharacterHandlers)
+                ?? patternBuilder.ValidateFieldsBuildPatternParseResult();
         }
 
         private string ExpandStandardFormatPattern(char patternCharacter, NodaFormatInfo formatInfo)

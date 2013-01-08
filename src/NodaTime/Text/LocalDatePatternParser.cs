@@ -27,8 +27,6 @@ namespace NodaTime.Text
     /// </summary>
     internal sealed class LocalDatePatternParser : IPatternParser<LocalDate>
     {
-        private static readonly CharacterHandler<LocalDate, LocalDateParseBucket> DefaultCharacterHandler = SteppedPatternBuilder<LocalDate, LocalDateParseBucket>.HandleDefaultCharacter;
-
         private readonly LocalDate templateValue;
 
         /// <summary>
@@ -84,31 +82,10 @@ namespace NodaTime.Text
                 }
             }
 
-            var patternBuilder = new SteppedPatternBuilder<LocalDate, LocalDateParseBucket>(formatInfo, () => new LocalDateParseBucket(templateValue));
-            var patternCursor = new PatternCursor(patternText);
-
-            // Prime the pump...
-            // TODO(Post-V1): Add this to the builder?
-            patternBuilder.AddParseAction((str, bucket) =>
-            {
-                str.MoveNext();
-                return null;
-            });
-
-            while (patternCursor.MoveNext())
-            {
-                CharacterHandler<LocalDate, LocalDateParseBucket> handler;
-                if (!PatternCharacterHandlers.TryGetValue(patternCursor.Current, out handler))
-                {
-                    handler = DefaultCharacterHandler;
-                }                    
-                PatternParseResult<LocalDate> possiblePatternParseFailure = handler(patternCursor, patternBuilder);
-                if (possiblePatternParseFailure != null)
-                {
-                    return possiblePatternParseFailure;
-                }
-            }
-            return patternBuilder.ValidateFieldsBuildPatternParseResult();
+            var patternBuilder = new SteppedPatternBuilder<LocalDate, LocalDateParseBucket>(formatInfo,
+                () => new LocalDateParseBucket(templateValue));
+            return patternBuilder.ParseCustomPattern(patternText, PatternCharacterHandlers)
+                ?? patternBuilder.ValidateFieldsBuildPatternParseResult();
         }
 
         private string ExpandStandardFormatPattern(char patternCharacter, NodaFormatInfo formatInfo)
