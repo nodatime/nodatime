@@ -53,6 +53,7 @@ namespace NodaTime.Text
             { 'd', DatePatternHelper.CreateDayHandler<LocalDate, LocalDateParseBucket>
                         (value => value.Day, value => value.DayOfWeek, (bucket, value) => bucket.DayOfMonth = value, (bucket, value) => bucket.DayOfWeek = value) },
             { 'c', DatePatternHelper.CreateCalendarHandler<LocalDate, LocalDateParseBucket>(value => value.Calendar, (bucket, value) => bucket.Calendar = value) },
+            { 'g', DatePatternHelper.CreateEraHandler<LocalDate, LocalDateParseBucket>(date => date.Era, bucket => bucket) },
         };
 
         internal LocalDatePatternParser(LocalDate templateValue)
@@ -97,22 +98,10 @@ namespace NodaTime.Text
             while (patternCursor.MoveNext())
             {
                 CharacterHandler<LocalDate, LocalDateParseBucket> handler;
-                // The era parser needs access to the calendar, so we need a new handler each time.
-                // FIXME: This won't work if the calendar is overridden in the value. We should prohibit
-                // patterns that include an era specifier and a calendar specifier.
-                // We could also put the era handling code into the bucket instead, and use a static handler.
-                // Any changes here also need to be made in LocalDateTimePatternParser etc.
-                if (patternCursor.Current == 'g')
+                if (!PatternCharacterHandlers.TryGetValue(patternCursor.Current, out handler))
                 {
-                    handler = DatePatternHelper.CreateEraHandler<LocalDate, LocalDateParseBucket>(templateValue.Calendar, value => value.Era, (bucket, value) => bucket.EraIndex = value);
-                }
-                else
-                {
-                    if (!PatternCharacterHandlers.TryGetValue(patternCursor.Current, out handler))
-                    {
-                        handler = DefaultCharacterHandler;
-                    }                    
-                }
+                    handler = DefaultCharacterHandler;
+                }                    
                 PatternParseResult<LocalDate> possiblePatternParseFailure = handler(patternCursor, patternBuilder);
                 if (possiblePatternParseFailure != null)
                 {
@@ -158,6 +147,24 @@ namespace NodaTime.Text
                 this.templateValue = templateValue;
                 // Only fetch this once.
                 this.Calendar = templateValue.Calendar;
+            }
+
+            internal ParseResult<TResult> ParseEra<TResult>(NodaFormatInfo formatInfo, ValueCursor cursor)
+            {
+                var compareInfo = formatInfo.CultureInfo.CompareInfo;
+                var eras = Calendar.Eras;
+                for (int i = 0; i < eras.Count; i++)
+                {
+                    foreach (string eraName in formatInfo.GetEraNames(eras[i]))
+                    {
+                        if (cursor.MatchCaseInsensitive(eraName, compareInfo, true))
+                        {
+                            EraIndex = i;
+                            return null;
+                        }
+                    }
+                }
+                return ParseResult<TResult>.MismatchedText('g');
             }
 
             internal override ParseResult<LocalDate> CalculateValue(PatternFields usedFields)
