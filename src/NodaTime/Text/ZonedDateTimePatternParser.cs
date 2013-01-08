@@ -125,16 +125,7 @@ namespace NodaTime.Text
                     return possiblePatternParseFailure;
                 }
             }
-            if ((patternBuilder.UsedFields & (PatternFields.Era | PatternFields.YearOfEra)) == PatternFields.Era)
-            {
-                return PatternParseResult<ZonedDateTime>.EraDesignatorWithoutYearOfEra;
-            }
-            var calendarAndEra = PatternFields.Era | PatternFields.Calendar;
-            if ((patternBuilder.UsedFields & calendarAndEra) == calendarAndEra)
-            {
-                return PatternParseResult<ZonedDateTime>.CalendarAndEra;
-            }
-            return PatternParseResult<ZonedDateTime>.ForValue(patternBuilder.Build());
+            return patternBuilder.ValidateFieldsBuildPatternParseResult();
         }
 
         private static PatternParseResult<ZonedDateTime> HandleZone(PatternCursor pattern,

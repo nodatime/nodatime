@@ -119,16 +119,7 @@ namespace NodaTime.Text
                     return possiblePatternParseFailure;
                 }
             }
-            if ((patternBuilder.UsedFields & (PatternFields.Era | PatternFields.YearOfEra)) == PatternFields.Era)
-            {
-                return PatternParseResult<LocalDate>.EraDesignatorWithoutYearOfEra;
-            }
-            var calendarAndEra = PatternFields.Era | PatternFields.Calendar;
-            if ((patternBuilder.UsedFields & calendarAndEra) == calendarAndEra)
-            {
-                return PatternParseResult<LocalDate>.CalendarAndEra;
-            }
-            return PatternParseResult<LocalDate>.ForValue(patternBuilder.Build());
+            return patternBuilder.ValidateFieldsBuildPatternParseResult();
         }
 
         private string ExpandStandardFormatPattern(char patternCharacter, NodaFormatInfo formatInfo)
