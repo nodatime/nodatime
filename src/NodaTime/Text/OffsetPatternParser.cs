@@ -49,7 +49,7 @@ namespace NodaTime.Text
             { '-', HandleMinus },
             { 'f', TimePatternHelper.CreateFractionHandler<Offset, OffsetParseBucket>(3, GetPositiveMilliseconds, (bucket, value) => bucket.Milliseconds = value) },
             { 'F', TimePatternHelper.CreateFractionHandler<Offset, OffsetParseBucket>(3, GetPositiveMilliseconds, (bucket, value) => bucket.Milliseconds = value) },
-            { 'Z', (ignored1, ignored2) => PatternParseResult<Offset>.ForInvalidFormat(Messages.Parse_ZPrefixNotAtStartOfPattern) }
+            { 'Z', (ignored1, ignored2) => PatternParseResult<Offset>.ForInvalidPattern(Messages.Parse_ZPrefixNotAtStartOfPattern) }
         };
 
         // These are used to compute the individual (always-positive) components of an offset.
@@ -113,7 +113,7 @@ namespace NodaTime.Text
             // This is the only way we'd normally end up in custom parsing land for Z on its own.
             if (patternText == "%Z")
             {
-                return PatternParseResult<Offset>.ForInvalidFormat(Messages.Parse_EmptyZPrefixedOffsetPattern);
+                return PatternParseResult<Offset>.ForInvalidPattern(Messages.Parse_EmptyZPrefixedOffsetPattern);
             }
 
             // Handle Z-prefix by stripping it, parsing the rest as a normal pattern, then building a special pattern
