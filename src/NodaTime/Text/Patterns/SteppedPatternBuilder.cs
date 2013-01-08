@@ -45,8 +45,6 @@ namespace NodaTime.Text.Patterns
             this.bucketProvider = bucketProvider;
         }
 
-        public PatternFields UsedFields { get { return usedFields; } }
-
         public NodaFormatInfo FormatInfo { get { return formatInfo; } }
 
         /// <summary>
@@ -59,12 +57,12 @@ namespace NodaTime.Text.Patterns
             // the patterns are parsed ensures we never end up with any invalid individual fields
             // (e.g. time fields within a date pattern).
 
-            if ((UsedFields & (PatternFields.Era | PatternFields.YearOfEra)) == PatternFields.Era)
+            if ((usedFields & (PatternFields.Era | PatternFields.YearOfEra)) == PatternFields.Era)
             {
                 return PatternParseResult<TResult>.EraDesignatorWithoutYearOfEra;
             }
             var calendarAndEra = PatternFields.Era | PatternFields.Calendar;
-            if ((UsedFields & calendarAndEra) == calendarAndEra)
+            if ((usedFields & calendarAndEra) == calendarAndEra)
             {
                 return PatternParseResult<TResult>.CalendarAndEra;
             }
