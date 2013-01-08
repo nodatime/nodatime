@@ -214,7 +214,7 @@ namespace NodaTime.Text.Patterns
         /// Creates a character handler for the era specifier (g).
         /// </summary>
         internal static CharacterHandler<TResult, TBucket> CreateEraHandler<TResult, TBucket>
-            (CalendarSystem calendar, NodaFunc<TResult, Era> getter, NodaAction<TBucket, int> setter)
+            (NodaFunc<TResult, Era> eraFromValue, NodaFunc<TBucket, LocalDatePatternParser.LocalDateParseBucket> dateBucketFromBucket)
             where TBucket : ParseBucket<TResult>
         {
             return (pattern, builder) =>
@@ -232,25 +232,12 @@ namespace NodaTime.Text.Patterns
                 }
                 var formatInfo = builder.FormatInfo;
                 // Note: currently the count is ignored. More work needed to determine whether abbreviated era names should be used for just "g".
-
-                builder.AddParseAction((cursor, bucket) =>
+                builder.AddParseAction((cursor, bucket) => 
                 {
-                    var compareInfo = formatInfo.CultureInfo.CompareInfo;
-                    var eras = calendar.Eras;
-                    for (int i = 0; i < eras.Count; i++)
-                    {
-                        foreach (string eraName in formatInfo.GetEraNames(eras[i]))
-                        {
-                            if (cursor.MatchCaseInsensitive(eraName, compareInfo, true))
-                            {
-                                setter(bucket, i);
-                                return null;
-                            }
-                        }
-                    }
-                    return ParseResult<TResult>.MismatchedText('g');
+                    var dateBucket = dateBucketFromBucket(bucket);
+                    return dateBucket.ParseEra<TResult>(formatInfo, cursor);
                 });
-                builder.AddFormatAction((value, sb) => sb.Append(formatInfo.GetEraPrimaryName(getter(value))));
+                builder.AddFormatAction((value, sb) => sb.Append(formatInfo.GetEraPrimaryName(eraFromValue(value))));
                 return null;
             };
         }

@@ -64,6 +64,7 @@ namespace NodaTime.Text
             { 'F', TimePatternHelper.CreateFractionHandler<ZonedDateTime, ZonedDateTimeParseBucket>(7, value => value.TickOfSecond, (bucket, value) => bucket.Time.FractionalSeconds = value) },
             { 't', TimePatternHelper.CreateAmPmHandler<ZonedDateTime, ZonedDateTimeParseBucket>(time => time.Hour, (bucket, value) => bucket.Time.AmPm = value) },
             { 'c', DatePatternHelper.CreateCalendarHandler<ZonedDateTime, ZonedDateTimeParseBucket>(value => value.LocalDateTime.Calendar, (bucket, value) => bucket.Date.Calendar = value) },
+            { 'g', DatePatternHelper.CreateEraHandler<ZonedDateTime, ZonedDateTimeParseBucket>(value => value.Era, bucket => bucket.Date) },
             { 'z', HandleZone }
         };
 
@@ -106,18 +107,9 @@ namespace NodaTime.Text
             while (patternCursor.MoveNext())
             {
                 CharacterHandler<ZonedDateTime, ZonedDateTimeParseBucket> handler;
-                // The era parser needs access to the calendar, so we need a new handler each time.
-                if (patternCursor.Current == 'g')
+                if (!PatternCharacterHandlers.TryGetValue(patternCursor.Current, out handler))
                 {
-                    handler = DatePatternHelper.CreateEraHandler<ZonedDateTime, ZonedDateTimeParseBucket>
-                        (templateValueDate.Calendar, value => value.Era, (bucket, value) => bucket.Date.EraIndex = value);
-                }
-                else
-                {
-                    if (!PatternCharacterHandlers.TryGetValue(patternCursor.Current, out handler))
-                    {
-                        handler = DefaultCharacterHandler;
-                    }
+                    handler = DefaultCharacterHandler;
                 }
                 PatternParseResult<ZonedDateTime> possiblePatternParseFailure = handler(patternCursor, patternBuilder);
                 if (possiblePatternParseFailure != null)
