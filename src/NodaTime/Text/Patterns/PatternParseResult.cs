@@ -128,14 +128,11 @@ namespace NodaTime.Text.Patterns
         }
 
         internal static readonly PatternParseResult<T> EmptyFormatsArray = ForInvalidFormat(Messages.Parse_EmptyFormatsArray);
-
         internal static readonly PatternParseResult<T> FormatElementInvalid = ForInvalidFormat(Messages.Parse_FormatElementInvalid);
-
         internal static readonly PatternParseResult<T> PercentDoubled = ForInvalidFormat(Messages.Parse_PercentDoubled);
-
         internal static readonly PatternParseResult<T> PercentAtEndOfString = ForInvalidFormat(Messages.Parse_PercentAtEndOfString);
-
         internal static readonly PatternParseResult<T> QuotedStringMismatch = ForInvalidFormat(Messages.Parse_QuotedStringMismatch);
+        internal static readonly PatternParseResult<T> CalendarAndEra = ForInvalidFormat(Messages.Parse_CalendarAndEra);
 
         internal static PatternParseResult<T> UnknownStandardFormat(char patternCharacter)
         {

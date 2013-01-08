@@ -124,6 +124,15 @@ namespace NodaTime.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The era specifier cannot be specified in the same pattern as the calendar specifier..
+        /// </summary>
+        internal static string Parse_CalendarAndEra {
+            get {
+                return ResourceManager.GetString("Parse_CalendarAndEra", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The value &quot;{0}&quot; cannot be parsed into an instance of {1} using pattern &quot;{2}&quot;.
         /// </summary>
         internal static string Parse_CannotParseValue {
@@ -196,7 +205,7 @@ namespace NodaTime.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The &quot;era&quot; designator cannot be specificied without the &quot;year of era&quot; field..
+        ///   Looks up a localized string similar to The era specifier cannot be used without the &quot;year of era&quot; specifier..
         /// </summary>
         internal static string Parse_EraWithoutYearOfEra {
             get {
