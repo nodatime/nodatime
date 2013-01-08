@@ -16,9 +16,11 @@
 #endregion
 
 using NodaTime.Globalization;
+using NodaTime.Properties;
 using NodaTime.Text.Patterns;
 using NodaTime.TimeZones;
 using System.Collections.Generic;
+using NodaTime.Utility;
 
 namespace NodaTime.Text
 {
@@ -76,37 +78,29 @@ namespace NodaTime.Text
 
         // Note: public to implement the interface. It does no harm, and it's simpler than using explicit
         // interface implementation.
-        public PatternParseResult<ZonedDateTime> ParsePattern(string patternText, NodaFormatInfo formatInfo)
+        public IPattern<ZonedDateTime> ParsePattern(string patternText, NodaFormatInfo formatInfo)
         {
-            if (patternText == null)
-            {
-                return PatternParseResult<ZonedDateTime>.ArgumentNull("patternText");
-            }
+            Preconditions.CheckNotNull(patternText, "patternText");
             if (patternText.Length == 0)
             {
-                return PatternParseResult<ZonedDateTime>.FormatStringEmpty;
+                throw new InvalidPatternException(Messages.Parse_FormatStringEmpty);
             }
 
             // TODO: Standard patterns
 
             var patternBuilder = new SteppedPatternBuilder<ZonedDateTime, ZonedDateTimeParseBucket>(formatInfo,
                 () => new ZonedDateTimeParseBucket(templateValueDate, templateValueTime, templateValueZone, resolver, zoneProvider));
-            return patternBuilder.ParseCustomPattern(patternText, PatternCharacterHandlers)
-                ?? patternBuilder.ValidateFieldsBuildPatternParseResult();
-
+            patternBuilder.ParseCustomPattern(patternText, PatternCharacterHandlers);
+            patternBuilder.ValidateUsedFields();
+            return patternBuilder.Build();
         }
 
-        private static PatternParseResult<ZonedDateTime> HandleZone(PatternCursor pattern,
+        private static void HandleZone(PatternCursor pattern,
             SteppedPatternBuilder<ZonedDateTime, ZonedDateTimeParseBucket> builder)
         {
-            var failure = builder.AddField(PatternFields.Zone, pattern.Current);
-            if (failure != null)
-            {
-                return failure;
-            }
+            builder.AddField(PatternFields.Zone, pattern.Current);
             builder.AddParseAction(ParseZone);
             builder.AddFormatAction((value, sb) => sb.Append(value.Zone.Id));
-            return null;
         }
 
         private static ParseResult<ZonedDateTime> ParseZone(ValueCursor value, ZonedDateTimeParseBucket bucket)
