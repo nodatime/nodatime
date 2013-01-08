@@ -105,7 +105,7 @@ namespace NodaTime.Text
                     return possiblePatternParseFailure;
                 }
             }
-            return PatternParseResult<LocalTime>.ForValue(patternBuilder.Build());
+            return patternBuilder.ValidateFieldsBuildPatternParseResult();
         }
 
         private string ExpandStandardFormatPattern(char patternCharacter, NodaFormatInfo formatInfo)

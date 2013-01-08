@@ -50,6 +50,29 @@ namespace NodaTime.Text.Patterns
         public NodaFormatInfo FormatInfo { get { return formatInfo; } }
 
         /// <summary>
+        /// Validates the combination of fields used and converts them into a suitable
+        /// <see cref="PatternParseResult{T}"/>.
+        /// </summary>
+        internal PatternParseResult<TResult> ValidateFieldsBuildPatternParseResult()
+        {
+            // We assume invalid combinations are global across all parsers. The way that
+            // the patterns are parsed ensures we never end up with any invalid individual fields
+            // (e.g. time fields within a date pattern).
+
+            if ((UsedFields & (PatternFields.Era | PatternFields.YearOfEra)) == PatternFields.Era)
+            {
+                return PatternParseResult<TResult>.EraDesignatorWithoutYearOfEra;
+            }
+            var calendarAndEra = PatternFields.Era | PatternFields.Calendar;
+            if ((UsedFields & calendarAndEra) == calendarAndEra)
+            {
+                return PatternParseResult<TResult>.CalendarAndEra;
+            }
+
+            return PatternParseResult<TResult>.ForValue(Build());
+        }
+
+        /// <summary>
         /// Returns a built pattern. This is mostly to keep the API for the builder separate from that of the pattern,
         /// and for thread safety (publishing a new object, thus leading to a memory barrier).
         /// Note that this builder *must not* be used after the result has been built.

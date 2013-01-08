@@ -144,6 +144,8 @@ namespace NodaTime.Text
                     return possiblePatternParseFailure;
                 }
             }
+            // No need to validate field combinations here, but we do need to do something a bit special
+            // for Z-handling.
             IPattern<Offset> pattern = patternBuilder.Build();
             return PatternParseResult<Offset>.ForValue(zPrefix ? new ZPrefixPattern(pattern) : pattern);
         }
