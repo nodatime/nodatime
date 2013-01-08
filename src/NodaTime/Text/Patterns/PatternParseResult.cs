@@ -88,7 +88,7 @@ namespace NodaTime.Text.Patterns
         }
 
         #region Factory methods and readonly static fields
-        internal static PatternParseResult<T> ForInvalidFormat(string formatString, params object[] parameters)
+        internal static PatternParseResult<T> ForInvalidPattern(string formatString, params object[] parameters)
         {
             return ForInvalidFormat(() => new InvalidPatternException(string.Format(CultureInfo.CurrentCulture, formatString, parameters)));
         }
@@ -103,68 +103,68 @@ namespace NodaTime.Text.Patterns
             return new PatternParseResult<T>(() => new ArgumentNullException(parameter));
         }
 
-        internal static PatternParseResult<T> EscapeAtEndOfString = ForInvalidFormat(Messages.Parse_EscapeAtEndOfString);
+        internal static PatternParseResult<T> EscapeAtEndOfString = ForInvalidPattern(Messages.Parse_EscapeAtEndOfString);
 
         internal static PatternParseResult<T> MissingEndQuote(char closeQuote)
         {
-            return ForInvalidFormat(Messages.Parse_MissingEndQuote, closeQuote);
+            return ForInvalidPattern(Messages.Parse_MissingEndQuote, closeQuote);
         }
 
         internal static PatternParseResult<T> RepeatCountExceeded(char patternCharacter, int maximumCount)
         {
-            return ForInvalidFormat(Messages.Parse_RepeatCountExceeded, patternCharacter, maximumCount);
+            return ForInvalidPattern(Messages.Parse_RepeatCountExceeded, patternCharacter, maximumCount);
         }
 
         internal static PatternParseResult<T> DoubleAssigment(char patternCharacter)
         {
-            return ForInvalidFormat(Messages.Parse_DoubleAssignment, patternCharacter);
+            return ForInvalidPattern(Messages.Parse_DoubleAssignment, patternCharacter);
         }
 
-        internal static readonly PatternParseResult<T> FormatStringEmpty = ForInvalidFormat(Messages.Parse_FormatStringEmpty);
+        internal static readonly PatternParseResult<T> FormatStringEmpty = ForInvalidPattern(Messages.Parse_FormatStringEmpty);
 
         internal static PatternParseResult<T> FormatInvalid(string format)
         {
-            return ForInvalidFormat(Messages.Parse_FormatInvalid, format);
+            return ForInvalidPattern(Messages.Parse_FormatInvalid, format);
         }
 
-        internal static readonly PatternParseResult<T> EmptyFormatsArray = ForInvalidFormat(Messages.Parse_EmptyFormatsArray);
-        internal static readonly PatternParseResult<T> FormatElementInvalid = ForInvalidFormat(Messages.Parse_FormatElementInvalid);
-        internal static readonly PatternParseResult<T> PercentDoubled = ForInvalidFormat(Messages.Parse_PercentDoubled);
-        internal static readonly PatternParseResult<T> PercentAtEndOfString = ForInvalidFormat(Messages.Parse_PercentAtEndOfString);
-        internal static readonly PatternParseResult<T> QuotedStringMismatch = ForInvalidFormat(Messages.Parse_QuotedStringMismatch);
-        internal static readonly PatternParseResult<T> CalendarAndEra = ForInvalidFormat(Messages.Parse_CalendarAndEra);
+        internal static readonly PatternParseResult<T> EmptyFormatsArray = ForInvalidPattern(Messages.Parse_EmptyFormatsArray);
+        internal static readonly PatternParseResult<T> FormatElementInvalid = ForInvalidPattern(Messages.Parse_FormatElementInvalid);
+        internal static readonly PatternParseResult<T> PercentDoubled = ForInvalidPattern(Messages.Parse_PercentDoubled);
+        internal static readonly PatternParseResult<T> PercentAtEndOfString = ForInvalidPattern(Messages.Parse_PercentAtEndOfString);
+        internal static readonly PatternParseResult<T> QuotedStringMismatch = ForInvalidPattern(Messages.Parse_QuotedStringMismatch);
+        internal static readonly PatternParseResult<T> CalendarAndEra = ForInvalidPattern(Messages.Parse_CalendarAndEra);
 
         internal static PatternParseResult<T> UnknownStandardFormat(char patternCharacter)
         {
-            return ForInvalidFormat(Messages.Parse_UnknownStandardFormat, patternCharacter, typeof(T));
+            return ForInvalidPattern(Messages.Parse_UnknownStandardFormat, patternCharacter, typeof(T));
         }
 
         internal static PatternParseResult<T> PrecisionNotSupported(string pattern)
         {
-            return ForInvalidFormat(Messages.Parse_PrecisionNotSupported, pattern, typeof(T));
+            return ForInvalidPattern(Messages.Parse_PrecisionNotSupported, pattern, typeof(T));
         }
 
         internal static PatternParseResult<T> StandardFormatWhitespace(string pattern)
         {
-            return ForInvalidFormat(Messages.Parse_StandardFormatWhitespace, pattern, typeof(T));
+            return ForInvalidPattern(Messages.Parse_StandardFormatWhitespace, pattern, typeof(T));
         }
 
-        internal static readonly PatternParseResult<T> Hour12PatternNotSupported = ForInvalidFormat(Messages.Parse_Hour12PatternNotSupported, typeof(T).FullName);
+        internal static readonly PatternParseResult<T> Hour12PatternNotSupported = ForInvalidPattern(Messages.Parse_Hour12PatternNotSupported, typeof(T).FullName);
 
-        internal static readonly PatternParseResult<T> NoMatchingFormat = ForInvalidFormat(Messages.Parse_NoMatchingFormat);
+        internal static readonly PatternParseResult<T> NoMatchingFormat = ForInvalidPattern(Messages.Parse_NoMatchingFormat);
 
-        internal static readonly PatternParseResult<T> MissingSign = ForInvalidFormat(Messages.Parse_MissingSign);
+        internal static readonly PatternParseResult<T> MissingSign = ForInvalidPattern(Messages.Parse_MissingSign);
 
-        internal static readonly PatternParseResult<T> EraDesignatorWithoutYearOfEra = ForInvalidFormat(Messages.Parse_EraWithoutYearOfEra);
+        internal static readonly PatternParseResult<T> EraDesignatorWithoutYearOfEra = ForInvalidPattern(Messages.Parse_EraWithoutYearOfEra);
 
         internal static PatternParseResult<T> UnexpectedEndOfString(string pattern)
         {
-            return ForInvalidFormat(Messages.Parse_UnexpectedEndOfString, pattern);
+            return ForInvalidPattern(Messages.Parse_UnexpectedEndOfString, pattern);
         }
 
         internal static PatternParseResult<T> RepeatedFieldInPattern(char field)
         {
-            return ForInvalidFormat(Messages.Parse_RepeatedFieldInPattern, field);
+            return ForInvalidPattern(Messages.Parse_RepeatedFieldInPattern, field);
         }
         #endregion
     }
