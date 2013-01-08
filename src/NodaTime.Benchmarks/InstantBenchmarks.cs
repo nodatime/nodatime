@@ -26,9 +26,9 @@ namespace NodaTime.Benchmarks
         private static readonly NodaFormatInfo InvariantFormatInfo = NodaFormatInfo.InvariantInfo;
         private static readonly Instant Sample = Instant.FromUtc(2011, 8, 24, 12, 29, 30);
         private static readonly IPattern<Instant> GeneralPattern =
-            NodaFormatInfo.InvariantInfo.InstantPatternParser.ParsePattern("g").GetResultOrThrow();
+            NodaFormatInfo.InvariantInfo.InstantPatternParser.ParsePattern("g");
         private static readonly IPattern<Instant> NumberPattern =
-            NodaFormatInfo.InvariantInfo.InstantPatternParser.ParsePattern("n").GetResultOrThrow();
+            NodaFormatInfo.InvariantInfo.InstantPatternParser.ParsePattern("n");
 
         [Benchmark]
         public void FormatN()

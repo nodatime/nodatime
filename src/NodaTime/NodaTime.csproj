@@ -191,7 +191,6 @@
     <Compile Include="Text\Patterns\IPatternParser.cs" />
     <Compile Include="Text\Patterns\PatternCursor.cs" />
     <Compile Include="Text\Patterns\PatternFields.cs" />
-    <Compile Include="Text\Patterns\PatternParseResult.cs" />
     <Compile Include="Text\Patterns\PatternBclSupport.cs" />
     <Compile Include="Text\Patterns\TimePatternHelper.cs" />
     <Compile Include="Text\PeriodPattern.cs" />

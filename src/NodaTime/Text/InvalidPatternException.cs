@@ -17,6 +17,7 @@
 
 using System;
 #if !PCL
+using System.Globalization;
 using System.Runtime.Serialization;
 #endif
 
@@ -48,6 +49,12 @@ namespace NodaTime.Text
             : base(message)
         {
         }
+
+        public InvalidPatternException(string formatString, params object[] parameters)
+            : this(string.Format(CultureInfo.CurrentCulture, formatString, parameters))
+        {            
+        }
+
 
 #if !PCL
         /// <summary>

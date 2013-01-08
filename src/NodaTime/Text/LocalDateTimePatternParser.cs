@@ -17,7 +17,9 @@
 
 using System.Collections.Generic;
 using NodaTime.Globalization;
+using NodaTime.Properties;
 using NodaTime.Text.Patterns;
+using NodaTime.Utility;
 
 namespace NodaTime.Text
 {
@@ -71,15 +73,12 @@ namespace NodaTime.Text
 
         // Note: public to implement the interface. It does no harm, and it's simpler than using explicit
         // interface implementation.
-        public PatternParseResult<LocalDateTime> ParsePattern(string patternText, NodaFormatInfo formatInfo)
+        public IPattern<LocalDateTime> ParsePattern(string patternText, NodaFormatInfo formatInfo)
         {
-            if (patternText == null)
-            {
-                return PatternParseResult<LocalDateTime>.ArgumentNull("patternText");
-            }
+            Preconditions.CheckNotNull(patternText, "patternText");
             if (patternText.Length == 0)
             {
-                return PatternParseResult<LocalDateTime>.FormatStringEmpty;
+                throw new InvalidPatternException(Messages.Parse_FormatStringEmpty);
             }
 
             if (patternText.Length == 1)
@@ -87,27 +86,28 @@ namespace NodaTime.Text
                 char patternCharacter = patternText[0];
                 if (patternCharacter == 'o' || patternCharacter == 'O')
                 {
-                    return PatternParseResult<LocalDateTime>.ForValue(LocalDateTimePattern.Patterns.BclRoundTripPattern);
+                    return LocalDateTimePattern.Patterns.BclRoundTripPattern;
                 }
                 if (patternCharacter == 'r')
                 {
-                    return PatternParseResult<LocalDateTime>.ForValue(LocalDateTimePattern.Patterns.FullRoundTripPattern);
+                    return LocalDateTimePattern.Patterns.FullRoundTripPattern;
                 }
                 if (patternCharacter == 's')
                 {
-                    return PatternParseResult<LocalDateTime>.ForValue(LocalDateTimePattern.Patterns.SortablePattern);
+                    return LocalDateTimePattern.Patterns.SortablePattern;
                 }
                 patternText = ExpandStandardFormatPattern(patternCharacter, formatInfo);
                 if (patternText == null)
                 {
-                    return PatternParseResult<LocalDateTime>.UnknownStandardFormat(patternCharacter);
+                    throw new InvalidPatternException(Messages.Parse_UnknownStandardFormat, patternCharacter, typeof(LocalDateTime));
                 }
             }
 
             var patternBuilder = new SteppedPatternBuilder<LocalDateTime, LocalDateTimeParseBucket>(formatInfo,
                 () => new LocalDateTimeParseBucket(templateValueDate, templateValueTime));
-            return patternBuilder.ParseCustomPattern(patternText, PatternCharacterHandlers)
-                ?? patternBuilder.ValidateFieldsBuildPatternParseResult();
+            patternBuilder.ParseCustomPattern(patternText, PatternCharacterHandlers);
+            patternBuilder.ValidateUsedFields();
+            return patternBuilder.Build();
         }
 
         private string ExpandStandardFormatPattern(char patternCharacter, NodaFormatInfo formatInfo)

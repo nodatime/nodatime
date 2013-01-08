@@ -44,18 +44,9 @@ namespace NodaTime.Text.Patterns
                 // At format time, we should always append the decimal separator, and then append using PadRightTruncate.
                 if (pattern.PeekNext() == 'F')
                 {
-                    PatternParseResult<TResult> failure = null;
                     pattern.MoveNext();
-                    int count = pattern.GetRepeatCount(maxCount, ref failure);
-                    if (failure != null)
-                    {
-                        return failure;
-                    }
-                    failure = builder.AddField(PatternFields.FractionalSeconds, pattern.Current);
-                    if (failure != null)
-                    {
-                        return failure;
-                    }
+                    int count = pattern.GetRepeatCount(maxCount);
+                    builder.AddField(PatternFields.FractionalSeconds, pattern.Current);
                     builder.AddParseAction((valueCursor, bucket) =>
                     {
                         // If the next token isn't the decimal separator, we assume it's part of the next token in the pattern
@@ -77,11 +68,10 @@ namespace NodaTime.Text.Patterns
                     });
                     builder.AddFormatAction((localTime, sb) => sb.Append('.'));
                     builder.AddFormatRightPadTruncate(count, maxCount, getter);
-                    return null;
                 }
                 else
                 {
-                    return builder.AddLiteral('.', ParseResult<TResult>.MismatchedCharacter);
+                    builder.AddLiteral('.', ParseResult<TResult>.MismatchedCharacter);
                 }
             };
         }
@@ -105,18 +95,9 @@ namespace NodaTime.Text.Patterns
                 // At format time, we should always append the decimal separator, and then append using PadRightTruncate.
                 if (pattern.PeekNext() == 'F')
                 {
-                    PatternParseResult<TResult> failure = null;
                     pattern.MoveNext();
-                    int count = pattern.GetRepeatCount(maxCount, ref failure);
-                    if (failure != null)
-                    {
-                        return failure;
-                    }
-                    failure = builder.AddField(PatternFields.FractionalSeconds, pattern.Current);
-                    if (failure != null)
-                    {
-                        return failure;
-                    }
+                    int count = pattern.GetRepeatCount(maxCount);
+                    builder.AddField(PatternFields.FractionalSeconds, pattern.Current);
                     builder.AddParseAction((valueCursor, bucket) =>
                     {
                         // If the next token isn't a dot or comma, we assume
@@ -139,7 +120,6 @@ namespace NodaTime.Text.Patterns
                     });
                     builder.AddFormatAction((localTime, sb) => sb.Append('.'));
                     builder.AddFormatRightPadTruncate(count, maxCount, getter);
-                    return null;
                 }
                 else
                 {
@@ -147,7 +127,6 @@ namespace NodaTime.Text.Patterns
                                                             ? null 
                                                             : ParseResult<TResult>.MismatchedCharacter(';'));
                     builder.AddFormatAction((value, sb) => sb.Append('.'));
-                    return null;
                 }
             };
         }
@@ -161,19 +140,10 @@ namespace NodaTime.Text.Patterns
         {
             return (pattern, builder) =>
             {
-                PatternParseResult<TResult> failure = null;
                 char patternCharacter = pattern.Current;
-                int count = pattern.GetRepeatCount(maxCount, ref failure);
-                if (failure != null)
-                {
-                    return failure;
-                }
-                failure = builder.AddField(PatternFields.FractionalSeconds, pattern.Current);
-                if (failure != null)
-                {
-                    return failure;
-                }
-
+                int count = pattern.GetRepeatCount(maxCount);
+                builder.AddField(PatternFields.FractionalSeconds, pattern.Current);
+                
                 builder.AddParseAction((str, bucket) =>
                 {
                     int fractionalSeconds;
@@ -187,9 +157,14 @@ namespace NodaTime.Text.Patterns
                     setter(bucket, fractionalSeconds);
                     return null;
                 });
-                return patternCharacter == 'f'
-                            ? builder.AddFormatRightPad(count, maxCount, getter)
-                            : builder.AddFormatRightPadTruncate(count, maxCount, getter);
+                if (patternCharacter == 'f')
+                {
+                    builder.AddFormatRightPad(count, maxCount, getter);
+                }
+                else
+                {
+                    builder.AddFormatRightPadTruncate(count, maxCount, getter);
+                }
             };
         }
 
@@ -199,17 +174,8 @@ namespace NodaTime.Text.Patterns
         {
             return (pattern, builder) =>
             {
-                PatternParseResult<TResult> failure = null;
-                int count = pattern.GetRepeatCount(2, ref failure);
-                if (failure != null)
-                {
-                    return failure;
-                }
-                failure = builder.AddField(PatternFields.AmPm, pattern.Current);
-                if (failure != null)
-                {
-                    return failure;
-                }
+                int count = pattern.GetRepeatCount(2);
+                builder.AddField(PatternFields.AmPm, pattern.Current);
 
                 string amDesignator = builder.FormatInfo.AMDesignator;
                 string pmDesignator = builder.FormatInfo.PMDesignator;
@@ -223,7 +189,7 @@ namespace NodaTime.Text.Patterns
                         amPmSetter(bucket, 2);
                         return null;
                     });
-                    return null;
+                    return;
                 }
                 // Odd scenario (but present in af-ZA for .NET 2) - exactly one of the AM/PM designator is valid.
                 // Delegate to a separate method to keep this clearer...
@@ -232,7 +198,7 @@ namespace NodaTime.Text.Patterns
                     int specifiedDesignatorValue = amDesignator == "" ? 1 : 0;
                     string specifiedDesignator = specifiedDesignatorValue == 1 ? pmDesignator : amDesignator;
                     HandleHalfAmPmDesignator(count, specifiedDesignator, specifiedDesignatorValue, hourOfDayGetter, amPmSetter, builder);
-                    return null;
+                    return;
                 }
                 CompareInfo compareInfo = builder.FormatInfo.CultureInfo.CompareInfo;
                 // Single character designator
@@ -258,7 +224,7 @@ namespace NodaTime.Text.Patterns
                         return ParseResult<TResult>.MissingAmPmDesignator;
                     });
                     builder.AddFormatAction((value, sb) => sb.Append(hourOfDayGetter(value) > 11 ? pmDesignator[0] : amDesignator[0]));
-                    return null;
+                    return;
                 }
                 // Full designator
                 builder.AddParseAction((str, bucket) =>
@@ -277,7 +243,6 @@ namespace NodaTime.Text.Patterns
                     return ParseResult<TResult>.MissingAmPmDesignator;
                 });
                 builder.AddFormatAction((value, sb) => sb.Append(hourOfDayGetter(value) > 11 ? pmDesignator : amDesignator));
-                return null;
             };
         }
 
