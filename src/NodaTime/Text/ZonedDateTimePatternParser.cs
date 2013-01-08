@@ -24,9 +24,6 @@ namespace NodaTime.Text
 {
     internal sealed class ZonedDateTimePatternParser
     {
-        private static readonly CharacterHandler<ZonedDateTime, ZonedDateTimeParseBucket> DefaultCharacterHandler =
-            SteppedPatternBuilder<ZonedDateTime, ZonedDateTimeParseBucket>.HandleDefaultCharacter;
-
         // Split the template value once, to avoid doing it every time we parse.
         private readonly LocalDate templateValueDate;
         private readonly LocalTime templateValueTime;
@@ -94,30 +91,9 @@ namespace NodaTime.Text
 
             var patternBuilder = new SteppedPatternBuilder<ZonedDateTime, ZonedDateTimeParseBucket>(formatInfo,
                 () => new ZonedDateTimeParseBucket(templateValueDate, templateValueTime, templateValueZone, resolver, zoneProvider));
-            var patternCursor = new PatternCursor(patternText);
+            return patternBuilder.ParseCustomPattern(patternText, PatternCharacterHandlers)
+                ?? patternBuilder.ValidateFieldsBuildPatternParseResult();
 
-            // Prime the pump...
-            // TODO(Post-V1): Add this to the builder?
-            patternBuilder.AddParseAction((str, bucket) =>
-            {
-                str.MoveNext();
-                return null;
-            });
-
-            while (patternCursor.MoveNext())
-            {
-                CharacterHandler<ZonedDateTime, ZonedDateTimeParseBucket> handler;
-                if (!PatternCharacterHandlers.TryGetValue(patternCursor.Current, out handler))
-                {
-                    handler = DefaultCharacterHandler;
-                }
-                PatternParseResult<ZonedDateTime> possiblePatternParseFailure = handler(patternCursor, patternBuilder);
-                if (possiblePatternParseFailure != null)
-                {
-                    return possiblePatternParseFailure;
-                }
-            }
-            return patternBuilder.ValidateFieldsBuildPatternParseResult();
         }
 
         private static PatternParseResult<ZonedDateTime> HandleZone(PatternCursor pattern,

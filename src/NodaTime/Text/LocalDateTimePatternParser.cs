@@ -26,9 +26,6 @@ namespace NodaTime.Text
     /// </summary>
     internal sealed class LocalDateTimePatternParser : IPatternParser<LocalDateTime>
     {
-        private static readonly CharacterHandler<LocalDateTime, LocalDateTimeParseBucket> DefaultCharacterHandler =
-            SteppedPatternBuilder<LocalDateTime, LocalDateTimeParseBucket>.HandleDefaultCharacter;
-
         // Split the template value into date and time once, to avoid doing it every time we parse.
         private readonly LocalDate templateValueDate;
         private readonly LocalTime templateValueTime;       
@@ -107,31 +104,10 @@ namespace NodaTime.Text
                 }
             }
 
-            var patternBuilder = new SteppedPatternBuilder<LocalDateTime, LocalDateTimeParseBucket>(formatInfo, () => new LocalDateTimeParseBucket(templateValueDate, templateValueTime));
-            var patternCursor = new PatternCursor(patternText);
-
-            // Prime the pump...
-            // TODO(Post-V1): Add this to the builder?
-            patternBuilder.AddParseAction((str, bucket) =>
-            {
-                str.MoveNext();
-                return null;
-            });
-
-            while (patternCursor.MoveNext())
-            {
-                CharacterHandler<LocalDateTime, LocalDateTimeParseBucket> handler;
-                if (!PatternCharacterHandlers.TryGetValue(patternCursor.Current, out handler))
-                {
-                    handler = DefaultCharacterHandler;
-                }                    
-                PatternParseResult<LocalDateTime> possiblePatternParseFailure = handler(patternCursor, patternBuilder);
-                if (possiblePatternParseFailure != null)
-                {
-                    return possiblePatternParseFailure;
-                }
-            }
-            return patternBuilder.ValidateFieldsBuildPatternParseResult();
+            var patternBuilder = new SteppedPatternBuilder<LocalDateTime, LocalDateTimeParseBucket>(formatInfo,
+                () => new LocalDateTimeParseBucket(templateValueDate, templateValueTime));
+            return patternBuilder.ParseCustomPattern(patternText, PatternCharacterHandlers)
+                ?? patternBuilder.ValidateFieldsBuildPatternParseResult();
         }
 
         private string ExpandStandardFormatPattern(char patternCharacter, NodaFormatInfo formatInfo)

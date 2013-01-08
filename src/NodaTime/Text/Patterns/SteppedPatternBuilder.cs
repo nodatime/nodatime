@@ -45,7 +45,46 @@ namespace NodaTime.Text.Patterns
             this.bucketProvider = bucketProvider;
         }
 
-        public NodaFormatInfo FormatInfo { get { return formatInfo; } }
+        internal NodaFormatInfo FormatInfo { get { return formatInfo; } }
+
+        /// <summary>
+        /// Performs common parsing operations: start with a parse action to move the
+        /// value cursor onto the first character, then call a character handler for each
+        /// character in the pattern to build up the steps. If any handler fails,
+        /// that failure is returned - otherwise the return value is null.
+        /// </summary>
+        internal PatternParseResult<TResult> ParseCustomPattern(string patternText,
+            Dictionary<char, CharacterHandler<TResult, TBucket>> characterHandlers)
+        {
+            var patternCursor = new PatternCursor(patternText);
+
+            // Prime the pump...
+            AddParseAction((str, bucket) =>
+            {
+                str.MoveNext();
+                return null;
+            });
+
+            // Now iterate over the pattern.
+            while (patternCursor.MoveNext())
+            {
+                CharacterHandler<TResult, TBucket> handler;
+                if (characterHandlers.TryGetValue(patternCursor.Current, out handler))
+                {
+                    var possiblePatternParseFailure = handler(patternCursor, this);
+                    if (possiblePatternParseFailure != null)
+                    {
+                        return possiblePatternParseFailure;
+                    }
+                }
+                else
+                {
+                    // This can't fail (at the moment; in the future we may make it *always* fail).
+                    AddLiteral(patternCursor.Current, ParseResult<TResult>.MismatchedCharacter);
+                }
+            }
+            return null;
+        }
 
         /// <summary>
         /// Validates the combination of fields used and converts them into a suitable
@@ -161,14 +200,6 @@ namespace NodaTime.Text.Patterns
             AddParseAction((str, bucket) => str.Match(expectedText) ? null : failure);
             AddFormatAction((value, builder) => builder.Append(expectedText));
             return null;
-        }
-
-        /// <summary>
-        /// Handler for pattern characters which aren't understood as anything special by the pattern itself.
-        /// </summary>
-        internal static PatternParseResult<TResult> HandleDefaultCharacter(PatternCursor pattern, SteppedPatternBuilder<TResult, TBucket> builder)
-        {
-            return builder.AddLiteral(pattern.Current, ParseResult<TResult>.MismatchedCharacter);
         }
 
         internal static PatternParseResult<TResult> HandleQuote(PatternCursor pattern, SteppedPatternBuilder<TResult, TBucket> builder)

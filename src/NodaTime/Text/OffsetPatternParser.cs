@@ -27,8 +27,6 @@ namespace NodaTime.Text
 {
     internal sealed class OffsetPatternParser : IPatternParser<Offset>
     {
-        private static readonly CharacterHandler<Offset, OffsetParseBucket> DefaultCharacterHandler = SteppedPatternBuilder<Offset, OffsetParseBucket>.HandleDefaultCharacter;
-
         private static readonly Dictionary<char, CharacterHandler<Offset, OffsetParseBucket>> PatternCharacterHandlers = 
             new Dictionary<char, CharacterHandler<Offset, OffsetParseBucket>>
         {
@@ -121,28 +119,10 @@ namespace NodaTime.Text
             bool zPrefix = patternText.StartsWith("Z");
 
             var patternBuilder = new SteppedPatternBuilder<Offset, OffsetParseBucket>(formatInfo, () => new OffsetParseBucket());
-            var patternCursor = new PatternCursor(zPrefix ? patternText.Substring(1) : patternText);
-
-            // Prime the pump...
-            // TODO(Post-V1): Add this to the builder?
-            patternBuilder.AddParseAction((str, bucket) =>
+            var possiblePatternFailure = patternBuilder.ParseCustomPattern(zPrefix ? patternText.Substring(1) : patternText, PatternCharacterHandlers);
+            if (possiblePatternFailure != null)
             {
-                str.MoveNext();
-                return null;
-            });
-
-            while (patternCursor.MoveNext())
-            {
-                CharacterHandler<Offset, OffsetParseBucket> handler;
-                if (!PatternCharacterHandlers.TryGetValue(patternCursor.Current, out handler))
-                {
-                    handler = DefaultCharacterHandler;
-                }
-                PatternParseResult<Offset> possiblePatternParseFailure = handler(patternCursor, patternBuilder);
-                if (possiblePatternParseFailure != null)
-                {
-                    return possiblePatternParseFailure;
-                }
+                return possiblePatternFailure;
             }
             // No need to validate field combinations here, but we do need to do something a bit special
             // for Z-handling.
