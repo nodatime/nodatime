@@ -161,6 +161,7 @@ namespace NodaTime.Text
                 Time = new LocalTimePatternParser.LocalTimeParseBucket(templateTime);
                 Zone = templateZone;
                 this.resolver = resolver;
+                this.zoneProvider = zoneProvider;
             }
 
             internal ParseResult<ZonedDateTime> ParseZone(ValueCursor value)
