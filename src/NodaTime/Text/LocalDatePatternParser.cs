@@ -98,6 +98,10 @@ namespace NodaTime.Text
             {
                 CharacterHandler<LocalDate, LocalDateParseBucket> handler;
                 // The era parser needs access to the calendar, so we need a new handler each time.
+                // FIXME: This won't work if the calendar is overridden in the value. We should prohibit
+                // patterns that include an era specifier and a calendar specifier.
+                // We could also put the era handling code into the bucket instead, and use a static handler.
+                // Any changes here also need to be made in LocalDateTimePatternParser etc.
                 if (patternCursor.Current == 'g')
                 {
                     handler = DatePatternHelper.CreateEraHandler<LocalDate, LocalDateParseBucket>(templateValue.Calendar, value => value.Era, (bucket, value) => bucket.EraIndex = value);

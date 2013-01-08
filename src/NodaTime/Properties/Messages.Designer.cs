@@ -115,6 +115,15 @@ namespace NodaTime.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The local date/time is ambiguous in the target time zone..
+        /// </summary>
+        internal static string Parse_AmbiguousLocalTime {
+            get {
+                return ResourceManager.GetString("Parse_AmbiguousLocalTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The value &quot;{0}&quot; cannot be parsed into an instance of {1} using pattern &quot;{2}&quot;.
         /// </summary>
         internal static string Parse_CannotParseValue {
@@ -421,6 +430,15 @@ namespace NodaTime.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The specified time zone identifier is not recognized..
+        /// </summary>
+        internal static string Parse_NoMatchingZoneId {
+            get {
+                return ResourceManager.GetString("Parse_NoMatchingZoneId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to A percent sign (%) appears at the end of the format string..
         /// </summary>
         internal static string Parse_PercentAtEndOfString {
@@ -489,6 +507,15 @@ namespace NodaTime.Properties {
         internal static string Parse_RepeatedUnitSpecifier {
             get {
                 return ResourceManager.GetString("Parse_RepeatedUnitSpecifier", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The local date/time is skipped in the target time zone..
+        /// </summary>
+        internal static string Parse_SkippedLocalTime {
+            get {
+                return ResourceManager.GetString("Parse_SkippedLocalTime", resourceCulture);
             }
         }
         

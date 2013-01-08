@@ -45,6 +45,7 @@ namespace NodaTime.Text.Patterns
         DayOfWeek = 1 << 13,
         Era = 1 << 14,
         Calendar = 1 << 15,
+        Zone = 1 << 16,
 
         AllTimeFields = Hours12 | Hours24 | Minutes | Seconds | FractionalSeconds | AmPm,
         AllDateFields = Year | YearTwoDigits | YearOfEra | MonthOfYearNumeric | MonthOfYearText | DayOfMonth | DayOfWeek | Era | Calendar
