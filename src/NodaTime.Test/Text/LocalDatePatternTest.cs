@@ -48,6 +48,8 @@ namespace NodaTime.Test.Text
             new Data { Pattern = "'qwe\\'", Message = Messages.Parse_MissingEndQuote, Parameters = { '\'' } },
             // Note incorrect use of "y" (year) instead of "Y" (year of era)
             new Data { Pattern = "dd MM yyyy gg", Message = Messages.Parse_EraWithoutYearOfEra },
+            // Era specifier and calendar specifier in the same pattern.
+            new Data { Pattern = "dd MM YYYY gg c", Message = Messages.Parse_CalendarAndEra },
         };
 
         internal static Data[] ParseFailureData = {
@@ -80,7 +82,7 @@ namespace NodaTime.Test.Text
             new Data { Pattern = "YYYY yy", Text = "2011 10", Message = Messages.Parse_InconsistentValues2, Parameters = { 'y', 'Y', typeof(LocalDate) } },
 
             // Invalid calendar name
-            new Data { Pattern = "c YYYY MM dd", Text = "2015 01 01", Message = Messages.Parse_NoMatchingCalendarSystem },
+            new Data { Pattern = "c yyyy MM dd", Text = "2015 01 01", Message = Messages.Parse_NoMatchingCalendarSystem },
         };
 
         internal static Data[] ParseOnlyData = {

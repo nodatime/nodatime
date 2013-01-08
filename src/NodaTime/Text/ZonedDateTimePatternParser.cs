@@ -129,6 +129,11 @@ namespace NodaTime.Text
             {
                 return PatternParseResult<ZonedDateTime>.EraDesignatorWithoutYearOfEra;
             }
+            var calendarAndEra = PatternFields.Era | PatternFields.Calendar;
+            if ((patternBuilder.UsedFields & calendarAndEra) == calendarAndEra)
+            {
+                return PatternParseResult<ZonedDateTime>.CalendarAndEra;
+            }
             return PatternParseResult<ZonedDateTime>.ForValue(patternBuilder.Build());
         }
 
