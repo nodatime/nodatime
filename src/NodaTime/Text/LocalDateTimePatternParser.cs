@@ -164,7 +164,7 @@ namespace NodaTime.Text
             }
         }
         
-        private sealed class LocalDateTimeParseBucket : ParseBucket<LocalDateTime>
+        internal sealed class LocalDateTimeParseBucket : ParseBucket<LocalDateTime>
         {
             internal readonly LocalDatePatternParser.LocalDateParseBucket Date;
             internal readonly LocalTimePatternParser.LocalTimeParseBucket Time;
@@ -175,22 +175,33 @@ namespace NodaTime.Text
                 Time = new LocalTimePatternParser.LocalTimeParseBucket(templateValueTime);
             }
 
-            internal override ParseResult<LocalDateTime> CalculateValue(PatternFields usedFields)
+            /// <summary>
+            /// Combines the values in a date bucket with the values in a time bucket.
+            /// </summary>
+            /// <remarks>
+            /// This would normally be the <see cref="CalculateValue"/> method, but we want
+            /// to be able to use the same logic when parsing an <see cref="OffsetDateTime"/>
+            /// and <see cref="ZonedDateTime"/>.
+            /// </remarks>
+            internal static ParseResult<LocalDateTime> CombineBuckets(
+                PatternFields usedFields,
+                LocalDatePatternParser.LocalDateParseBucket dateBucket,
+                LocalTimePatternParser.LocalTimeParseBucket timeBucket)
             {
                 // Handle special case of hour = 24
                 bool hour24 = false;
-                if (Time.Hours24 == 24)
+                if (timeBucket.Hours24 == 24)
                 {
-                    Time.Hours24 = 0;
+                    timeBucket.Hours24 = 0;
                     hour24 = true;
                 }
 
-                ParseResult<LocalDate> dateResult = Date.CalculateValue(usedFields & PatternFields.AllDateFields);
+                ParseResult<LocalDate> dateResult = dateBucket.CalculateValue(usedFields & PatternFields.AllDateFields);
                 if (!dateResult.Success)
                 {
                     return dateResult.ConvertError<LocalDateTime>();
                 }
-                ParseResult<LocalTime> timeResult = Time.CalculateValue(usedFields & PatternFields.AllTimeFields);
+                ParseResult<LocalTime> timeResult = timeBucket.CalculateValue(usedFields & PatternFields.AllTimeFields);
                 if (!timeResult.Success)
                 {
                     return timeResult.ConvertError<LocalDateTime>();
@@ -208,6 +219,11 @@ namespace NodaTime.Text
                     date = date.PlusDays(1);
                 }
                 return ParseResult<LocalDateTime>.ForValue(date + time);
+            }
+
+            internal override ParseResult<LocalDateTime> CalculateValue(PatternFields usedFields)
+            {
+                return CombineBuckets(usedFields, Date, Time);
             }
         }
     }

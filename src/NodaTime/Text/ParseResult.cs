@@ -22,7 +22,7 @@ using NodaTime.Properties;
 namespace NodaTime.Text
 {
     /// <summary>
-    /// The result of a parse operation. 
+    /// The result of a parse operation.
     /// </summary>
     /// <typeparam name="T">The type which was parsed, such as a <see cref="LocalDateTime"/>.</typeparam>
     /// <threadsafety>This type is immutable reference type. See the thread safety section of the user guide for more information.</threadsafety>
@@ -201,6 +201,7 @@ namespace NodaTime.Text
         internal static readonly ParseResult<T> MissingSign = ForInvalidValue(Messages.Parse_MissingSign);
         internal static readonly ParseResult<T> MissingAmPmDesignator = ForInvalidValue(Messages.Parse_MissingAmPmDesignator);
         internal static readonly ParseResult<T> NoMatchingCalendarSystem = ForInvalidValue(Messages.Parse_NoMatchingCalendarSystem);
+        internal static readonly ParseResult<T> NoMatchingZoneId = ForInvalidValue(Messages.Parse_NoMatchingZoneId);
         internal static readonly ParseResult<T> InvalidHour24 = ForInvalidValue(Messages.Parse_InvalidHour24);
 
         internal static ParseResult<T> FieldValueOutOfRange(int value, char field)
@@ -247,6 +248,9 @@ namespace NodaTime.Text
         {
             return ForInvalidValue(Messages.Parse_DayOfMonthOutOfRange, day, month, year);
         }
+
+        internal static ParseResult<T> SkippedLocalTime = ForInvalidValue(Messages.Parse_SkippedLocalTime);
+        internal static ParseResult<T> AmbiguousLocalTime = ForInvalidValue(Messages.Parse_AmbiguousLocalTime);
         #endregion
     }
 }
