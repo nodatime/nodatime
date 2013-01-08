@@ -143,6 +143,11 @@ namespace NodaTime.Text
             {
                 return PatternParseResult<LocalDateTime>.EraDesignatorWithoutYearOfEra;
             }
+            var calendarAndEra = PatternFields.Era | PatternFields.Calendar;
+            if ((patternBuilder.UsedFields & calendarAndEra) == calendarAndEra)
+            {
+                return PatternParseResult<LocalDateTime>.CalendarAndEra;
+            }
             return PatternParseResult<LocalDateTime>.ForValue(patternBuilder.Build());
         }
 
