@@ -55,7 +55,7 @@ namespace NodaTime.ZoneInfoCompiler
                 AdditionalNewLineAfterOption = true,
                 Copyright = new CopyrightInfo("Jon Skeet", 2009, 2013)
             };
-            help.AddPreOptionsLine("Usage: ZoneInfoCompiler -s <tzdb directory> -w <windowsZone.xml file> -o <output file> [-t ResX/Resource/NodaResource]");
+            help.AddPreOptionsLine("Usage: ZoneInfoCompiler -s <tzdb directory> -w <windowsZone.xml file> -o <output file> [-t ResX/Resource/NodaZoneData]");
             help.AddOptions(this);
             return help;
         }
