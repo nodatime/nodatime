@@ -180,7 +180,8 @@ namespace NodaTime.TimeZones
         public int MonthOfYear { get { return monthOfYear; } }
 
         /// <summary>
-        /// Gets the day of month this rule starts; -1 for "last by day of week".
+        /// Gets the day of month this rule starts; negative values count from the end of the month, so -1 means "last
+        /// day of the month".
         /// </summary>
         public int DayOfMonth { get { return dayOfMonth; } }
 
@@ -318,11 +319,10 @@ namespace NodaTime.TimeZones
         internal void Write(IDateTimeZoneWriter writer)
         {
             writer.WriteCount((int)Mode);
-            // Day or month can range from -(max value) to max value so we add a suitable
-            // amount to force it to be positive.
-            writer.WriteCount(MonthOfYear + 12);
+            writer.WriteCount(MonthOfYear);
+            // Day of month can range from -31 to 31, so we add a suitable amount to force it to be positive.
             writer.WriteCount(DayOfMonth + 31);
-            writer.WriteCount(DayOfWeek + 7);
+            writer.WriteCount(DayOfWeek);
             writer.WriteOffset(TickOfDay);
             int flags = (AdvanceDayOfWeek ? 2 : 0) + (addDay ? 1 : 0);
             writer.WriteCount(flags);
@@ -335,8 +335,8 @@ namespace NodaTime.TimeZones
         internal void WriteLegacy(LegacyDateTimeZoneWriter writer)
         {
             writer.WriteCount((int)Mode);
-            // Day or month can range from -(max value) to max value so we add a suitable
-            // amount to force it to be positive.
+            // Day of month can range from -31 to 31, so we add a suitable amount to force it to be positive.
+            // The other values cannot, but we offset them for legacy reasons.
             writer.WriteCount(MonthOfYear + 12);
             writer.WriteCount(DayOfMonth + 31);
             writer.WriteCount(DayOfWeek + 7);
@@ -349,10 +349,10 @@ namespace NodaTime.TimeZones
         {
             Preconditions.CheckNotNull(reader, "reader");
             var mode = (TransitionMode)reader.ReadCount();
-            // Remove the additions performed before
-            int monthOfYear = reader.ReadCount() - 12;
+            int monthOfYear = reader.ReadCount();
+            // Remove the addition performed before
             int dayOfMonth = reader.ReadCount() - 31;
-            int dayOfWeek = reader.ReadCount() - 7;
+            int dayOfWeek = reader.ReadCount();
             var ticksOfDay = reader.ReadOffset();
             int flags = reader.ReadCount();
             bool advance = (flags & 2) != 0;
