@@ -24,15 +24,6 @@ namespace NodaTime.Test.Text.Patterns
     [TestFixture, Category("Formatting"), Category("Format"), Category("Parse")]
     public class PatternTest : TextCursorTestBase
     {
-        // Used all over the place... might as well have a single declaration
-        private PatternParseResult<int> failure;
-
-        [SetUp]
-        public void SetUp()
-        {
-            failure = null;
-        }
-
         internal override TextCursor MakeCursor(string value)
         {
             return new PatternCursor(value);
@@ -42,9 +33,8 @@ namespace NodaTime.Test.Text.Patterns
         public void TestGetQuotedString_EscapeAtEnd()
         {
             var cursor = new PatternCursor("'abc\\");
-            Assert.AreEqual('\'', GetNextCharacter(cursor));
-            cursor.GetQuotedString('\'', ref failure);
-            Assert.Throws<InvalidPatternException>(() => failure.GetResultOrThrow());
+            Assert.AreEqual('\'', GetNextCharacter(cursor));            
+            Assert.Throws<InvalidPatternException>(() => cursor.GetQuotedString('\''));
         }
 
         [Test]
@@ -52,8 +42,7 @@ namespace NodaTime.Test.Text.Patterns
         {
             var cursor = new PatternCursor("'abc'");
             Assert.AreEqual('\'', GetNextCharacter(cursor));
-            string actual = cursor.GetQuotedString(ref failure);
-            AssertNoFailure();
+            string actual = cursor.GetQuotedString();
             Assert.AreEqual("abc", actual);
             Assert.IsFalse(cursor.MoveNext());
         }
@@ -63,9 +52,8 @@ namespace NodaTime.Test.Text.Patterns
         {
             var cursor = new PatternCursor("''");
             char openQuote = GetNextCharacter(cursor);
-            string actual = cursor.GetQuotedString(openQuote, ref failure);
+            string actual = cursor.GetQuotedString(openQuote);
             Assert.AreEqual(string.Empty, actual);
-            AssertNoFailure();
             Assert.IsFalse(cursor.MoveNext());
         }
 
@@ -74,7 +62,7 @@ namespace NodaTime.Test.Text.Patterns
         {
             var cursor = new PatternCursor("\"abc\"");
             char openQuote = GetNextCharacter(cursor);
-            string actual = cursor.GetQuotedString(openQuote, ref failure);
+            string actual = cursor.GetQuotedString(openQuote);
             Assert.AreEqual("abc", actual);
             Assert.IsFalse(cursor.MoveNext());
         }
@@ -84,9 +72,8 @@ namespace NodaTime.Test.Text.Patterns
         {
             var cursor = new PatternCursor("'ab\\c'");
             char openQuote = GetNextCharacter(cursor);
-            string actual = cursor.GetQuotedString(openQuote, ref failure);
+            string actual = cursor.GetQuotedString(openQuote);
             Assert.AreEqual("abc", actual);
-            AssertNoFailure();
             Assert.IsFalse(cursor.MoveNext());
         }
 
@@ -95,9 +82,8 @@ namespace NodaTime.Test.Text.Patterns
         {
             var cursor = new PatternCursor("'ab\\'c'");
             char openQuote = GetNextCharacter(cursor);
-            string actual = cursor.GetQuotedString(openQuote, ref failure);
+            string actual = cursor.GetQuotedString(openQuote);
             Assert.AreEqual("ab'c", actual);
-            AssertNoFailure();
             Assert.IsFalse(cursor.MoveNext());
         }
 
@@ -106,8 +92,7 @@ namespace NodaTime.Test.Text.Patterns
         {
             var cursor = new PatternCursor("[abc]");
             GetNextCharacter(cursor);
-            string actual = cursor.GetQuotedString(']', ref failure);
-            AssertNoFailure();
+            string actual = cursor.GetQuotedString(']');
             Assert.AreEqual("abc", actual);
             Assert.IsFalse(cursor.MoveNext());
         }
@@ -117,8 +102,7 @@ namespace NodaTime.Test.Text.Patterns
         {
             var cursor = new PatternCursor("'abc");
             char openQuote = GetNextCharacter(cursor);
-            cursor.GetQuotedString(openQuote, ref failure);
-            Assert.Throws<InvalidPatternException>(() => failure.GetResultOrThrow());
+            Assert.Throws<InvalidPatternException>(() => cursor.GetQuotedString(openQuote));
         }
 
         [Test]
@@ -126,8 +110,7 @@ namespace NodaTime.Test.Text.Patterns
         {
             var cursor = new PatternCursor("'abc'more");
             char openQuote = GetNextCharacter(cursor);
-            string actual = cursor.GetQuotedString(openQuote, ref failure);
-            AssertNoFailure();
+            string actual = cursor.GetQuotedString(openQuote);
             Assert.AreEqual("abc", actual);
             ValidateCurrentCharacter(cursor, 4, '\'');
 
@@ -139,8 +122,7 @@ namespace NodaTime.Test.Text.Patterns
         {
             var cursor = new PatternCursor("'abc'");
             char openQuote = GetNextCharacter(cursor);
-            string actual = cursor.GetQuotedString(openQuote, ref failure);
-            AssertNoFailure();
+            string actual = cursor.GetQuotedString(openQuote);
             Assert.AreEqual("abc", actual);
             Assert.IsFalse(cursor.MoveNext());
         }
@@ -150,8 +132,7 @@ namespace NodaTime.Test.Text.Patterns
         {
             var cursor = new PatternCursor("aaa");
             GetNextCharacter(cursor);
-            int actual = cursor.GetRepeatCount(10, ref failure);
-            AssertNoFailure();
+            int actual = cursor.GetRepeatCount(10);
             Assert.AreEqual(3, actual);
             ValidateCurrentCharacter(cursor, 2, 'a');
         }
@@ -161,8 +142,7 @@ namespace NodaTime.Test.Text.Patterns
         {
             var cursor = new PatternCursor("aaa");
             char ch = GetNextCharacter(cursor);
-            cursor.GetRepeatCount(2, ch, ref failure);
-            AssertInvalidPatternFailure();
+            Assert.Throws<InvalidPatternException>(() => cursor.GetRepeatCount(2, ch));
         }
 
         [Test]
@@ -170,8 +150,7 @@ namespace NodaTime.Test.Text.Patterns
         {
             var cursor = new PatternCursor("a");
             char ch = GetNextCharacter(cursor);
-            int actual = cursor.GetRepeatCount(10, ch, ref failure);
-            AssertNoFailure();
+            int actual = cursor.GetRepeatCount(10, ch);
             Assert.AreEqual(1, actual);
             ValidateCurrentCharacter(cursor, 0, 'a');
         }
@@ -181,8 +160,7 @@ namespace NodaTime.Test.Text.Patterns
         {
             var cursor = new PatternCursor("aaadaa");
             char ch = GetNextCharacter(cursor);
-            int actual = cursor.GetRepeatCount(10, ch, ref failure);
-            AssertNoFailure();
+            int actual = cursor.GetRepeatCount(10, ch);
             Assert.AreEqual(3, actual);
             ValidateCurrentCharacter(cursor, 2, 'a');
         }
@@ -192,21 +170,9 @@ namespace NodaTime.Test.Text.Patterns
         {
             var cursor = new PatternCursor("aaa");
             char ch = GetNextCharacter(cursor);
-            int actual = cursor.GetRepeatCount(10, ch, ref failure);
-            AssertNoFailure();
+            int actual = cursor.GetRepeatCount(10, ch);
             Assert.AreEqual(3, actual);
             ValidateCurrentCharacter(cursor, 2, 'a');
         }
-
-        private void AssertInvalidPatternFailure()
-        {
-            Assert.Throws<InvalidPatternException>(() => failure.GetResultOrThrow());
-        }
-
-        private void AssertNoFailure()
-        {
-            Assert.IsNull(failure);
-        }
-
     }
 }

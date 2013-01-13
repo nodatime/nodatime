@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
 using NodaTime.Globalization;
+using NodaTime.Properties;
 
 namespace NodaTime.Text.Patterns
 {
@@ -45,9 +46,60 @@ namespace NodaTime.Text.Patterns
             this.bucketProvider = bucketProvider;
         }
 
-        public PatternFields UsedFields { get { return usedFields; } }
+        internal NodaFormatInfo FormatInfo { get { return formatInfo; } }
 
-        public NodaFormatInfo FormatInfo { get { return formatInfo; } }
+        /// <summary>
+        /// Performs common parsing operations: start with a parse action to move the
+        /// value cursor onto the first character, then call a character handler for each
+        /// character in the pattern to build up the steps. If any handler fails,
+        /// that failure is returned - otherwise the return value is null.
+        /// </summary>
+        internal void ParseCustomPattern(string patternText,
+            Dictionary<char, CharacterHandler<TResult, TBucket>> characterHandlers)
+        {
+            var patternCursor = new PatternCursor(patternText);
+
+            // Prime the pump...
+            AddParseAction((str, bucket) =>
+            {
+                str.MoveNext();
+                return null;
+            });
+
+            // Now iterate over the pattern.
+            while (patternCursor.MoveNext())
+            {
+                CharacterHandler<TResult, TBucket> handler;
+                if (characterHandlers.TryGetValue(patternCursor.Current, out handler))
+                {
+                    handler(patternCursor, this);
+                }
+                else
+                {
+                    AddLiteral(patternCursor.Current, ParseResult<TResult>.MismatchedCharacter);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Validates the combination of fields used.
+        /// </summary>
+        internal void ValidateUsedFields()
+        {
+            // We assume invalid combinations are global across all parsers. The way that
+            // the patterns are parsed ensures we never end up with any invalid individual fields
+            // (e.g. time fields within a date pattern).
+
+            if ((usedFields & (PatternFields.Era | PatternFields.YearOfEra)) == PatternFields.Era)
+            {
+                throw new InvalidPatternException(Messages.Parse_EraWithoutYearOfEra);
+            }
+            var calendarAndEra = PatternFields.Era | PatternFields.Calendar;
+            if ((usedFields & calendarAndEra) == calendarAndEra)
+            {
+                throw new InvalidPatternException(Messages.Parse_CalendarAndEra);
+            }
+        }
 
         /// <summary>
         /// Returns a built pattern. This is mostly to keep the API for the builder separate from that of the pattern,
@@ -69,15 +121,14 @@ namespace NodaTime.Text.Patterns
         /// Registers that a pattern field has been used in this pattern, and returns a suitable error
         /// result if it's already been used.
         /// </summary>
-        internal PatternParseResult<TResult> AddField(PatternFields field, char characterInPattern)
+        internal void AddField(PatternFields field, char characterInPattern)
         {
             PatternFields newUsedFields = usedFields | field;
             if (newUsedFields == usedFields)
             {
-                return PatternParseResult<TResult>.RepeatedFieldInPattern(characterInPattern);
+                throw new InvalidPatternException(Messages.Parse_RepeatedFieldInPattern, characterInPattern);
             }
             usedFields = newUsedFields;
-            return null;
         }
 
         internal void AddParseAction(ParseAction parseAction)
@@ -124,7 +175,7 @@ namespace NodaTime.Text.Patterns
         /// Adds text which must be matched exactly when parsing, and appended directly when formatting.
         /// This overload uses the same failure result for all text values.
         /// </summary>
-        internal PatternParseResult<TResult> AddLiteral(string expectedText, ParseResult<TResult> failure)
+        internal void AddLiteral(string expectedText, ParseResult<TResult> failure)
         {
             // Common case - single character literal, often a date or time separator.
             if (expectedText.Length == 1)
@@ -132,61 +183,46 @@ namespace NodaTime.Text.Patterns
                 char expectedChar = expectedText[0];
                 AddParseAction((str, bucket) => str.Match(expectedChar) ? null : failure);
                 AddFormatAction((value, builder) => builder.Append(expectedChar));
-                return null;
+                return;
             }
             // TODO(Post-V1): These are ludicrously slow... see
             // http://msmvps.com/blogs/jon_skeet/archive/2011/08/23/optimization-and-generics-part-2-lambda-expressions-and-reference-types.aspx
             // for a description of the problem. I need to find a solution though...
             AddParseAction((str, bucket) => str.Match(expectedText) ? null : failure);
             AddFormatAction((value, builder) => builder.Append(expectedText));
-            return null;
         }
 
-        /// <summary>
-        /// Handler for pattern characters which aren't understood as anything special by the pattern itself.
-        /// </summary>
-        internal static PatternParseResult<TResult> HandleDefaultCharacter(PatternCursor pattern, SteppedPatternBuilder<TResult, TBucket> builder)
+        internal static void HandleQuote(PatternCursor pattern, SteppedPatternBuilder<TResult, TBucket> builder)
         {
-            return builder.AddLiteral(pattern.Current, ParseResult<TResult>.MismatchedCharacter);
+            string quoted = pattern.GetQuotedString(pattern.Current);
+            builder.AddLiteral(quoted, ParseResult<TResult>.QuotedStringMismatch);
         }
 
-        internal static PatternParseResult<TResult> HandleQuote(PatternCursor pattern, SteppedPatternBuilder<TResult, TBucket> builder)
-        {
-            PatternParseResult<TResult> failure = null;
-            string quoted = pattern.GetQuotedString(pattern.Current, ref failure);
-            if (failure != null)
-            {
-                return failure;
-            }
-            return builder.AddLiteral(quoted, ParseResult<TResult>.QuotedStringMismatch);
-        }
-
-        internal static PatternParseResult<TResult> HandleBackslash(PatternCursor pattern, SteppedPatternBuilder<TResult, TBucket> builder)
+        internal static void HandleBackslash(PatternCursor pattern, SteppedPatternBuilder<TResult, TBucket> builder)
         {
             if (!pattern.MoveNext())
             {
-                return PatternParseResult<TResult>.EscapeAtEndOfString;
+                throw new InvalidPatternException(Messages.Parse_EscapeAtEndOfString);
             }
             builder.AddLiteral(pattern.Current, ParseResult<TResult>.EscapedCharacterMismatch);
-            return null;
         }
 
         /// <summary>
         /// Handle a leading "%" which acts as a pseudo-escape - it's mostly used to allow format strings such as "%H" to mean
         /// "use a custom format string consisting of H instead of a standard pattern H".
         /// </summary>
-        internal static PatternParseResult<TResult> HandlePercent(PatternCursor pattern, SteppedPatternBuilder<TResult, TBucket> builder)
+        internal static void HandlePercent(PatternCursor pattern, SteppedPatternBuilder<TResult, TBucket> builder)
         {
             if (pattern.HasMoreCharacters)
             {
                 if (pattern.PeekNext() != '%')
                 {
                     // Handle the next character as normal
-                    return null;
+                    return;
                 }
-                return PatternParseResult<TResult>.PercentDoubled;
+                throw new InvalidPatternException(Messages.Parse_PercentDoubled);
             }
-            return PatternParseResult<TResult>.PercentAtEndOfString;
+            throw new InvalidPatternException(Messages.Parse_PercentAtEndOfString);
         }
 
         /// <summary>
@@ -204,32 +240,20 @@ namespace NodaTime.Text.Patterns
         {
             return (pattern, builder) =>
             {
-                PatternParseResult<TResult> failure = null;
-                int count = pattern.GetRepeatCount(maxCount, ref failure);
-                if (failure != null)
-                {
-                    return failure;
-                }
-                failure = builder.AddField(field, pattern.Current);
-                if (failure != null)
-                {
-                    return failure;
-                }
-
+                int count = pattern.GetRepeatCount(maxCount);
+                builder.AddField(field, pattern.Current);
                 builder.AddParseValueAction(count, maxCount, pattern.Current, minValue, maxValue, setter);
                 builder.AddFormatLeftPad(count, getter);
-                return null;
             };
         }
 
         /// <summary>
         /// Adds a character which must be matched exactly when parsing, and appended directly when formatting.
         /// </summary>
-        internal PatternParseResult<TResult> AddLiteral(char expectedChar, NodaFunc<char, ParseResult<TResult>> failureSelector)
+        internal void AddLiteral(char expectedChar, NodaFunc<char, ParseResult<TResult>> failureSelector)
         {
             AddParseAction((str, bucket) => str.Match(expectedChar) ? null : failureSelector(expectedChar));
             AddFormatAction((value, builder) => builder.Append(expectedChar));
-            return null;
         }
 
         /// <summary>
@@ -304,7 +328,7 @@ namespace NodaTime.Text.Patterns
         /// </summary>
         /// <param name="signSetter">Action to take when to set the given sign within the bucket</param>
         /// <param name="nonNegativePredicate">Predicate to detect whether the value being formatted is non-negative</param>
-        public PatternParseResult<TResult> AddRequiredSign(NodaAction<TBucket, bool> signSetter, NodaFunc<TResult, bool> nonNegativePredicate)
+        public void AddRequiredSign(NodaAction<TBucket, bool> signSetter, NodaFunc<TResult, bool> nonNegativePredicate)
         {
             string negativeSign = formatInfo.NegativeSign;
             string positiveSign = formatInfo.PositiveSign;
@@ -323,7 +347,6 @@ namespace NodaTime.Text.Patterns
                 return ParseResult<TResult>.MissingSign;
             });
             AddFormatAction((value, sb) => sb.Append(nonNegativePredicate(value) ? positiveSign : negativeSign));
-            return null;
         }
 
         /// <summary>
@@ -331,7 +354,7 @@ namespace NodaTime.Text.Patterns
         /// </summary>
         /// <param name="signSetter">Action to take when to set the given sign within the bucket</param>
         /// <param name="nonNegativePredicate">Predicate to detect whether the value being formatted is non-negative</param>
-        public PatternParseResult<TResult> AddNegativeOnlySign(NodaAction<TBucket, bool> signSetter, NodaFunc<TResult, bool> nonNegativePredicate)
+        public void AddNegativeOnlySign(NodaAction<TBucket, bool> signSetter, NodaFunc<TResult, bool> nonNegativePredicate)
         {
             string negativeSign = formatInfo.NegativeSign;
             string positiveSign = formatInfo.PositiveSign;
@@ -356,25 +379,21 @@ namespace NodaTime.Text.Patterns
                     builder.Append(negativeSign);
                 }
             });
-            return null;
         }
 
-        internal PatternParseResult<TResult> AddFormatLeftPad(int count, NodaFunc<TResult, int> selector)
+        internal void AddFormatLeftPad(int count, NodaFunc<TResult, int> selector)
         {
             AddFormatAction((value, sb) => FormatHelper.LeftPad(selector(value), count, sb));
-            return null;
         }
 
-        internal PatternParseResult<TResult> AddFormatRightPad(int width, int scale, NodaFunc<TResult, int> selector)
+        internal void AddFormatRightPad(int width, int scale, NodaFunc<TResult, int> selector)
         {
             AddFormatAction((value, sb) => FormatHelper.RightPad(selector(value), width, scale, sb));
-            return null;
         }
 
-        internal PatternParseResult<TResult> AddFormatRightPadTruncate(int width, int scale, NodaFunc<TResult, int> selector)
+        internal void AddFormatRightPadTruncate(int width, int scale, NodaFunc<TResult, int> selector)
         {
             AddFormatAction((value, sb) => FormatHelper.RightPadTruncate(selector(value), width, scale, formatInfo.DecimalSeparator, sb));
-            return null;
         }
 
         /// <summary>

@@ -170,6 +170,7 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="Text\ZonedDateTimePattern.cs" />
     <Compile Include="Text\LocalDateTimePatternParser.cs" />
     <Compile Include="Text\Delegates.cs" />
     <Compile Include="Text\FixedFormatInfoPatternParser.cs" />
@@ -191,7 +192,6 @@
     <Compile Include="Text\Patterns\IPatternParser.cs" />
     <Compile Include="Text\Patterns\PatternCursor.cs" />
     <Compile Include="Text\Patterns\PatternFields.cs" />
-    <Compile Include="Text\Patterns\PatternParseResult.cs" />
     <Compile Include="Text\Patterns\PatternBclSupport.cs" />
     <Compile Include="Text\Patterns\TimePatternHelper.cs" />
     <Compile Include="Text\PeriodPattern.cs" />
@@ -247,6 +247,7 @@
     <Compile Include="SkippedTimeException.cs" />
     <Compile Include="SystemClock.cs" />
     <Compile Include="Text\ValueCursor.cs" />
+    <Compile Include="Text\ZonedDateTimePatternParser.cs" />
     <Compile Include="TimeZones\BclDateTimeZone.cs" />
     <Compile Include="TimeZones\BclDateTimeZoneSource.cs" />
     <Compile Include="TimeZones\CachedDateTimeZone.cs" />

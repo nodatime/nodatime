@@ -39,11 +39,14 @@ namespace NodaTime.TimeZones
     public interface IDateTimeZoneSource
     {
         /// <summary>
-        /// Returns an enumeration of the available ids from this source.
+        /// Returns an unordered enumeration of the available ids from this source.
         /// </summary>
         /// <remarks>
         /// <para>
         /// Every value in this enumeration must return a valid time zone from <see cref="ForId"/> for the life of the source.
+        /// </para>
+        /// <para>
+        /// The source is not required to provide the IDs in any particular order, although they should be distinct.
         /// </para>
         /// <para>
         /// Note that this list may optionally contain any of the fixed-offset timezones (with IDs "UTC" and

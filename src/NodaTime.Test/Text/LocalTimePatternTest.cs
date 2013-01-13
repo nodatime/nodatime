@@ -383,9 +383,7 @@ namespace NodaTime.Test.Text
             {
                 if (cursor.Current == '\'')
                 {
-                    PatternParseResult<LocalTime> parseResult = null;
-                    cursor.GetQuotedString(ref parseResult);
-                    Assert.IsTrue(parseResult == null, "Pattern '" + pattern + "' is misquoted");
+                    cursor.GetQuotedString();
                 }
                 else
                 {

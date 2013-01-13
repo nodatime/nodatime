@@ -103,8 +103,8 @@ namespace NodaTime.Text
         {
             Preconditions.CheckNotNull(patternText, "patternText");
             Preconditions.CheckNotNull(formatInfo, "formatInfo");
-            var patternParseResult = formatInfo.OffsetPatternParser.ParsePattern(patternText);
-            return new OffsetPattern(patternText, formatInfo, patternParseResult.GetResultOrThrow());
+            var pattern = formatInfo.OffsetPatternParser.ParsePattern(patternText);
+            return new OffsetPattern(patternText, formatInfo, pattern);
         }
 
         /// <summary>
