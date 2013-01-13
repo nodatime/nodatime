@@ -56,11 +56,23 @@ namespace NodaTime.Testing.TimeZones
         /// <param name="offsetBefore">The offset of local time from UTC before the transition.</param>
         /// <param name="offsetAfter">The offset of local time from UTC before the transition.</param>
         public SingleTransitionDateTimeZone(Instant transitionPoint, Offset offsetBefore, Offset offsetAfter)
-            : base("Single", false, Offset.Min(offsetBefore, offsetAfter), Offset.Max(offsetBefore, offsetAfter))
+            : this(transitionPoint, offsetBefore, offsetAfter, "Single")
         {
-            earlyInterval = new ZoneInterval("Single-Early", Instant.MinValue, transitionPoint,
+        }
+
+        /// <summary>
+        /// Creates a zone with a single transition between two offsets.
+        /// </summary>
+        /// <param name="transitionPoint">The transition point as an <see cref="Instant"/>.</param>
+        /// <param name="offsetBefore">The offset of local time from UTC before the transition.</param>
+        /// <param name="offsetAfter">The offset of local time from UTC before the transition.</param>
+        /// <param name="id">ID for the newly created time zone.</param>
+        public SingleTransitionDateTimeZone(Instant transitionPoint, Offset offsetBefore, Offset offsetAfter, string id)
+            : base(id, false, Offset.Min(offsetBefore, offsetAfter), Offset.Max(offsetBefore, offsetAfter))
+        {
+            earlyInterval = new ZoneInterval(id + "-Early", Instant.MinValue, transitionPoint,
                 offsetBefore, Offset.Zero);
-            lateInterval = new ZoneInterval("Single-Late", transitionPoint, Instant.MaxValue,
+            lateInterval = new ZoneInterval(id + "-Late", transitionPoint, Instant.MaxValue,
                 offsetAfter, Offset.Zero);
         }
 
