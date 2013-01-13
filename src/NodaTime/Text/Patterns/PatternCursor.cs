@@ -16,6 +16,7 @@
 #endregion
 
 using System.Text;
+using NodaTime.Properties;
 
 namespace NodaTime.Text.Patterns
 {
@@ -32,13 +33,10 @@ namespace NodaTime.Text.Patterns
         /// <summary>
         /// Gets the quoted string using the current character as the close quote character.
         /// </summary>
-        /// <param name="failure">A ref parameter to accept an early failure result of the current parsing operation.
-        /// It is expected that this will be null before the call, and this method will set it to a non-null value
-        /// if this method could not complete successfully.</param>
         /// <returns>The quoted string sans open and close quotes. This can be an empty string but will not be null.</returns>
-        internal string GetQuotedString<T>(ref PatternParseResult<T> failure)
+        internal string GetQuotedString()
         {
-            return GetQuotedString(Current, ref failure);
+            return GetQuotedString(Current);
         }
 
         /// <summary>
@@ -46,11 +44,8 @@ namespace NodaTime.Text.Patterns
         /// </summary>
         /// <remarks>The cursor is left positioned at the end of the quoted region.</remarks>
         /// <param name="closeQuote">The close quote character to match for the end of the quoted string.</param>
-        /// <param name="failure">A ref parameter to accept an early failure result of the current parsing operation.
-        /// It is expected that this will be null before the call, and this method will set it to a non-null value
-        /// if this method could not complete successfully.</param>
         /// <returns>The quoted string sans open and close quotes. This can be an empty string but will not be null.</returns>
-        internal string GetQuotedString<T>(char closeQuote, ref PatternParseResult<T> failure)
+        internal string GetQuotedString(char closeQuote)
         {
             var builder = new StringBuilder(Length - Index);
             bool endQuoteFound = false;
@@ -66,16 +61,14 @@ namespace NodaTime.Text.Patterns
                 {
                     if (!MoveNext())
                     {
-                        failure = PatternParseResult<T>.EscapeAtEndOfString;
-                        return null;
+                        throw new InvalidPatternException(Messages.Parse_EscapeAtEndOfString);
                     }
                 }
                 builder.Append(Current);
             }
             if (!endQuoteFound)
             {
-                failure = PatternParseResult<T>.MissingEndQuote(closeQuote);
-                return null;
+                throw new InvalidPatternException(Messages.Parse_MissingEndQuote, closeQuote);
             }
             MovePrevious();
             return builder.ToString();
@@ -85,13 +78,10 @@ namespace NodaTime.Text.Patterns
         /// Gets the pattern repeat count.
         /// </summary>
         /// <param name="maximumCount">The maximum number of repetitions allowed.</param>
-        /// <param name="failure">A ref parameter to accept an early failure result of the current parsing operation.
-        /// It is expected that this will be null before the call, and this method will set it to a non-null value
-        /// if this method could not complete successfully.</param>
         /// <returns>The repetition count which is alway at least <c>1</c>.</returns>
-        internal int GetRepeatCount<T>(int maximumCount, ref PatternParseResult<T> failure)
+        internal int GetRepeatCount(int maximumCount)
         {
-            return GetRepeatCount(maximumCount, Current, ref failure);
+            return GetRepeatCount(maximumCount, Current);
         }
 
         /// <summary>
@@ -99,11 +89,8 @@ namespace NodaTime.Text.Patterns
         /// </summary>
         /// <param name="maximumCount">The maximum number of repetitions allowed.</param>
         /// <param name="patternCharacter">The pattern character to count.</param>
-        /// <param name="failure">A ref parameter to accept an early failure result of the current parsing operation.
-        /// It is expected that this will be null before the call, and this method will set it to a non-null value
-        /// if this method could not complete successfully.</param>
         /// <returns>The repetition count which is alway at least <c>1</c>.</returns>
-        internal int GetRepeatCount<T>(int maximumCount, char patternCharacter, ref PatternParseResult<T> failure)
+        internal int GetRepeatCount(int maximumCount, char patternCharacter)
         {
             int startPos = Index;
             while (MoveNext() && Current == patternCharacter)
@@ -114,8 +101,7 @@ namespace NodaTime.Text.Patterns
             MovePrevious();
             if (repeatLength > maximumCount)
             {
-                failure = PatternParseResult<T>.RepeatCountExceeded(patternCharacter, maximumCount);
-                return 0;
+                throw new InvalidPatternException(Messages.Parse_RepeatCountExceeded, patternCharacter, maximumCount);
             }
             return repeatLength;
         }

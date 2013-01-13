@@ -121,10 +121,10 @@ namespace NodaTime.Text
             Preconditions.CheckNotNull(patternText, "patternText");
             Preconditions.CheckNotNull(formatInfo, "formatInfo");
             // Use the "fixed" parser for the common case of the default template value.
-            var patternParseResult = templateValue == LocalTime.Midnight 
+            var pattern = templateValue == LocalTime.Midnight 
                 ? formatInfo.LocalTimePatternParser.ParsePattern(patternText)
                 : new LocalTimePatternParser(templateValue).ParsePattern(patternText, formatInfo);
-            return new LocalTimePattern(patternText, formatInfo, templateValue, patternParseResult.GetResultOrThrow());
+            return new LocalTimePattern(patternText, formatInfo, templateValue, pattern);
         }
 
         /// <summary>

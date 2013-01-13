@@ -117,8 +117,8 @@ namespace NodaTime.Text
         {
             Preconditions.CheckNotNull(patternText, "patternText");
             Preconditions.CheckNotNull(formatInfo, "formatInfo");
-            var patternParseResult = formatInfo.InstantPatternParser.ParsePattern(patternText);
-            return new InstantPattern(patternText, formatInfo, patternParseResult.GetResultOrThrow());
+            var pattern = formatInfo.InstantPatternParser.ParsePattern(patternText);
+            return new InstantPattern(patternText, formatInfo, pattern);
         }
 
         /// <summary>

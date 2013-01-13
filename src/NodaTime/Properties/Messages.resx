@@ -135,6 +135,12 @@
   <data name="Noda_StringEmptyOrWhitespace" xml:space="preserve">
     <value>The string cannot be empty or only contain white space.</value>
   </data>
+  <data name="Parse_AmbiguousLocalTime" xml:space="preserve">
+    <value>The local date/time is ambiguous in the target time zone.</value>
+  </data>
+  <data name="Parse_CalendarAndEra" xml:space="preserve">
+    <value>The era specifier cannot be specified in the same pattern as the calendar specifier.</value>
+  </data>
   <data name="Parse_CannotParseValue" xml:space="preserve">
     <value>The value "{0}" cannot be parsed into an instance of {1} using pattern "{2}"</value>
   </data>
@@ -160,7 +166,7 @@
     <value>Input string ended unexpectedly early.</value>
   </data>
   <data name="Parse_EraWithoutYearOfEra" xml:space="preserve">
-    <value>The "era" designator cannot be specificied without the "year of era" field.</value>
+    <value>The era specifier cannot be used without the "year of era" specifier.</value>
   </data>
   <data name="Parse_EscapeAtEndOfString" xml:space="preserve">
     <value>The format string has an escape character (backslash '\') at the end of the string.</value>
@@ -237,6 +243,9 @@
   <data name="Parse_NoMatchingFormat" xml:space="preserve">
     <value>None of the specified formats matches the given value string.</value>
   </data>
+  <data name="Parse_NoMatchingZoneId" xml:space="preserve">
+    <value>The specified time zone identifier is not recognized.</value>
+  </data>
   <data name="Parse_PercentAtEndOfString" xml:space="preserve">
     <value>A percent sign (%) appears at the end of the format string.</value>
   </data>
@@ -260,6 +269,9 @@
   </data>
   <data name="Parse_RepeatedUnitSpecifier" xml:space="preserve">
     <value>The period unit specifier '{0}' appears multiple times in the input string.</value>
+  </data>
+  <data name="Parse_SkippedLocalTime" xml:space="preserve">
+    <value>The local date/time is skipped in the target time zone.</value>
   </data>
   <data name="Parse_StandardFormatWhitespace" xml:space="preserve">
     <value>The standard format "{0}" for type {1} cannot contain white space.</value>

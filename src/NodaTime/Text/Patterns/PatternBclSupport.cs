@@ -40,8 +40,7 @@ namespace NodaTime.Text.Patterns
             {
                 patternText = defaultFormatPattern;
             }
-            PatternParseResult<T> patternResult = patternParser(formatInfo).ParsePattern(patternText);
-            IPattern<T> pattern = patternResult.GetResultOrThrow();
+            IPattern<T> pattern = patternParser(formatInfo).ParsePattern(patternText);
             return pattern.Format(value);
         }
     }

@@ -30,7 +30,7 @@ namespace NodaTime.Text
         private readonly IPatternParser<T> patternParser;
         private readonly NodaFormatInfo formatInfo;
 
-        internal abstract PatternParseResult<T> ParsePattern(string pattern);
+        internal abstract IPattern<T> ParsePattern(string pattern);
 
         private FixedFormatInfoPatternParser(IPatternParser<T> patternParser, NodaFormatInfo formatInfo)
         {
@@ -51,21 +51,21 @@ namespace NodaTime.Text
         private sealed class CachingFixedFormatInfoPatternParser: FixedFormatInfoPatternParser<T>
         {
             // TODO(Post-V1): Replace this with a real LRU cache or something similar.
-            private readonly Dictionary<string, PatternParseResult<T>> cache;
+            private readonly Dictionary<string, IPattern<T>> cache;
 
             internal CachingFixedFormatInfoPatternParser(IPatternParser<T> patternParser, NodaFormatInfo formatInfo)
                 : base(patternParser, formatInfo)
             {                
-                cache = new Dictionary<string, PatternParseResult<T>>();
+                cache = new Dictionary<string, IPattern<T>>();
             }
 
-            internal override PatternParseResult<T> ParsePattern(string pattern)
+            internal override IPattern<T> ParsePattern(string pattern)
             {
                 // I don't normally like locking on anything other than object, but I trust
                 // Dictionary not to lock on itself.
                 lock (cache)
                 {
-                    PatternParseResult<T> cached;
+                    IPattern<T> cached;
                     if (cache.TryGetValue(pattern, out cached))
                     {
                         return cached;
@@ -75,12 +75,9 @@ namespace NodaTime.Text
                 // Unlock, create the parser and then update the cache if necessary. We don't want to lock
                 // for longer than we need to.
                 var result = patternParser.ParsePattern(pattern, formatInfo);
-                if (result.Success)
+                lock (cache)
                 {
-                    lock (cache)
-                    {
-                        cache[pattern] = result;
-                    }
+                    cache[pattern] = result;
                 }
                 return result;
             }
@@ -93,7 +90,7 @@ namespace NodaTime.Text
             {                
             }
 
-            internal override PatternParseResult<T>  ParsePattern(string pattern)
+            internal override IPattern<T>  ParsePattern(string pattern)
             {
                 return patternParser.ParsePattern(pattern, formatInfo);
             }

@@ -38,18 +38,8 @@ namespace NodaTime.Text.Patterns
         {
             return (pattern, builder) =>
             {
-                // TODO(Post-V1): Handle parsing and formatting negative years.
-                PatternParseResult<TResult> failure = null;
-                int count = pattern.GetRepeatCount(5, ref failure);
-                if (failure != null)
-                {
-                    return failure;
-                }
-                failure = builder.AddField(PatternFields.Year, pattern.Current);
-                if (failure != null)
-                {
-                    return failure;
-                }
+                int count = pattern.GetRepeatCount(5);
+                builder.AddField(PatternFields.Year, pattern.Current);
                 switch (count)
                 {
                     case 1:
@@ -72,8 +62,6 @@ namespace NodaTime.Text.Patterns
                         builder.AddFormatAction((value, sb) => FormatHelper.LeftPad(yearGetter(value), count, sb));
                         break;
                 }
-                return null;
-
             };
         }
 
@@ -86,12 +74,7 @@ namespace NodaTime.Text.Patterns
         {
             return (pattern, builder) =>
             {
-                PatternParseResult<TResult> failure = null;
-                int count = pattern.GetRepeatCount(4, ref failure);
-                if (failure != null)
-                {
-                    return failure;
-                }
+                int count = pattern.GetRepeatCount(4);
                 PatternFields field;
                 switch (count)
                 {
@@ -124,12 +107,7 @@ namespace NodaTime.Text.Patterns
                     default:
                         throw new InvalidOperationException("Invalid count!");
                 }
-                failure = builder.AddField(field, pattern.Current);
-                if (failure != null)
-                {
-                    return failure;
-                }
-                return null;
+                builder.AddField(field, pattern.Current);
             };
         }
 
@@ -174,12 +152,7 @@ namespace NodaTime.Text.Patterns
         {
             return (pattern, builder) =>
             {
-                PatternParseResult<TResult> failure = null;
-                int count = pattern.GetRepeatCount(4, ref failure);
-                if (failure != null)
-                {
-                    return failure;
-                }
+                int count = pattern.GetRepeatCount(4);
                 PatternFields field;
                 switch (count)
                 {
@@ -201,12 +174,7 @@ namespace NodaTime.Text.Patterns
                     default:
                         throw new InvalidOperationException("Invalid count!");
                 }
-                failure = builder.AddField(field, pattern.Current);
-                if (failure != null)
-                {
-                    return failure;
-                }
-                return null;
+                builder.AddField(field, pattern.Current);
             };
         }
 
@@ -214,44 +182,21 @@ namespace NodaTime.Text.Patterns
         /// Creates a character handler for the era specifier (g).
         /// </summary>
         internal static CharacterHandler<TResult, TBucket> CreateEraHandler<TResult, TBucket>
-            (CalendarSystem calendar, NodaFunc<TResult, Era> getter, NodaAction<TBucket, int> setter)
+            (NodaFunc<TResult, Era> eraFromValue, NodaFunc<TBucket, LocalDatePatternParser.LocalDateParseBucket> dateBucketFromBucket)
             where TBucket : ParseBucket<TResult>
         {
             return (pattern, builder) =>
             {
-                PatternParseResult<TResult> failure = null;
-                pattern.GetRepeatCount(2, ref failure);
-                if (failure != null)
-                {
-                    return failure;
-                }
-                failure = builder.AddField(PatternFields.Era, pattern.Current);
-                if (failure != null)
-                {
-                    return failure;
-                }
+                pattern.GetRepeatCount(2);
+                builder.AddField(PatternFields.Era, pattern.Current);
                 var formatInfo = builder.FormatInfo;
                 // Note: currently the count is ignored. More work needed to determine whether abbreviated era names should be used for just "g".
-
-                builder.AddParseAction((cursor, bucket) =>
+                builder.AddParseAction((cursor, bucket) => 
                 {
-                    var compareInfo = formatInfo.CultureInfo.CompareInfo;
-                    var eras = calendar.Eras;
-                    for (int i = 0; i < eras.Count; i++)
-                    {
-                        foreach (string eraName in formatInfo.GetEraNames(eras[i]))
-                        {
-                            if (cursor.MatchCaseInsensitive(eraName, compareInfo, true))
-                            {
-                                setter(bucket, i);
-                                return null;
-                            }
-                        }
-                    }
-                    return ParseResult<TResult>.MismatchedText('g');
+                    var dateBucket = dateBucketFromBucket(bucket);
+                    return dateBucket.ParseEra<TResult>(formatInfo, cursor);
                 });
-                builder.AddFormatAction((value, sb) => sb.Append(formatInfo.GetEraPrimaryName(getter(value))));
-                return null;
+                builder.AddFormatAction((value, sb) => sb.Append(formatInfo.GetEraPrimaryName(eraFromValue(value))));
             };
         }
 
@@ -264,14 +209,11 @@ namespace NodaTime.Text.Patterns
         {
             return (pattern, builder) =>
             {
-                var failure = builder.AddField(PatternFields.Calendar, pattern.Current);
-                if (failure != null)
-                {
-                    return failure;
-                }
+                builder.AddField(PatternFields.Calendar, pattern.Current);
 
                 builder.AddParseAction((cursor, bucket) =>
                 {
+                    // TODO: Do we really want this to be case-insensitive? It's really an ID, not a culture-specific value.
                     foreach (var id in CalendarSystem.Ids)
                     {
                         if (cursor.MatchCaseInsensitive(id, NodaFormatInfo.InvariantInfo.CultureInfo.CompareInfo, true))
@@ -283,9 +225,7 @@ namespace NodaTime.Text.Patterns
                     return ParseResult<TResult>.NoMatchingCalendarSystem;
                 });
                 builder.AddFormatAction((value, sb) => sb.Append(getter(value).Id));
-                return null;
             };
-        }
-    
+        }    
     }
 }

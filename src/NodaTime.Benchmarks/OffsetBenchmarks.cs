@@ -33,15 +33,13 @@ namespace NodaTime.Benchmarks
         public OffsetBenchmarks()
         {
             offsetPatternParser = new OffsetPatternParser();
-            var parseResult = offsetPatternParser.ParsePattern("HH:mm", InvariantFormatInfo);
-            offsetPattern = parseResult.GetResultOrThrow();
+            offsetPattern = offsetPatternParser.ParsePattern("HH:mm", InvariantFormatInfo);
         }
 
         [Benchmark]
         public void ParseExactIncludingPreparse_Valid()
         {
-            var parsePatternResult = offsetPatternParser.ParsePattern("HH:mm", InvariantFormatInfo);
-            var pattern = parsePatternResult.GetResultOrThrow();
+            var pattern = offsetPatternParser.ParsePattern("HH:mm", InvariantFormatInfo);
             Offset result;
             ParseResult<Offset> parseResult = pattern.Parse("12:34");
             parseResult.TryGetValue(default(Offset), out result);

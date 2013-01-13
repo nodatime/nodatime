@@ -33,7 +33,7 @@ namespace NodaTime.Test.Text
         private static readonly LocalDateTime SampleLocalDateTimeNoTicks = new LocalDateTime(1976, 6, 19, 21, 13, 34, 123);
         private static readonly LocalDateTime SampleLocalDateTimeNoMillis = new LocalDateTime(1976, 6, 19, 21, 13, 34);
         private static readonly LocalDateTime SampleLocalDateTimeNoSeconds = new LocalDateTime(1976, 6, 19, 21, 13);
-        private static readonly LocalDateTime SampleLocalDateTimeCoptic = new LocalDateTime(1976, 6, 19, 21, 13, 34, 123, 4567, CalendarSystem.GetCopticCalendar(1));
+        internal static readonly LocalDateTime SampleLocalDateTimeCoptic = new LocalDateTime(1976, 6, 19, 21, 13, 34, 123, 4567, CalendarSystem.GetCopticCalendar(1));
         
         private static readonly string[] AllStandardPatterns = { "f", "F", "g", "G", "o", "O", "s" };
 
@@ -45,12 +45,16 @@ namespace NodaTime.Test.Text
 
         // The standard example date/time used in all the MSDN samples, which means we can just cut and paste
         // the expected results of the standard patterns.
-        private static readonly LocalDateTime MsdnStandardExample = new LocalDateTime(2009, 06, 15, 13, 45, 30, 90);
+        internal static readonly LocalDateTime MsdnStandardExample = new LocalDateTime(2009, 06, 15, 13, 45, 30, 90);
         private static readonly LocalDateTime MsdnStandardExampleNoMillis = new LocalDateTime(2009, 06, 15, 13, 45, 30);
         private static readonly LocalDateTime MsdnStandardExampleNoSeconds = new LocalDateTime(2009, 06, 15, 13, 45);
 
         internal static readonly Data[] InvalidPatternData = {
-            new Data { Pattern = "dd MM yyyy HH:MM:SS", Message = Messages.Parse_RepeatedFieldInPattern, Parameters = { 'M' } }
+            new Data { Pattern = "dd MM yyyy HH:MM:SS", Message = Messages.Parse_RepeatedFieldInPattern, Parameters = { 'M' } },
+            // Note incorrect use of "y" (year) instead of "Y" (year of era)
+            new Data { Pattern = "dd MM yyyy HH:mm:ss gg", Message = Messages.Parse_EraWithoutYearOfEra },
+            // Era specifier and calendar specifier in the same pattern.
+            new Data { Pattern = "dd MM YYYY HH:mm:ss gg c", Message = Messages.Parse_CalendarAndEra },
         };
 
         internal static Data[] ParseFailureData = {
