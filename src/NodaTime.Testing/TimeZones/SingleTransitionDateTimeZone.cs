@@ -39,6 +39,11 @@ namespace NodaTime.Testing.TimeZones
         public ZoneInterval LateInterval { get { return lateInterval; } }
 
         /// <summary>
+        /// The transition instant of the zone.
+        /// </summary>
+        public Instant Transition { get { return earlyInterval.End; } }
+
+        /// <summary>
         /// Creates a zone with a single transition between two offsets.
         /// </summary>
         /// <param name="transitionPoint">The transition point as an <see cref="Instant"/>.</param>

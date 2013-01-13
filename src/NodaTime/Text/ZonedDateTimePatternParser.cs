@@ -116,6 +116,13 @@ namespace NodaTime.Text
             private readonly ZoneLocalMappingResolver resolver;
             private readonly IDateTimeZoneProvider zoneProvider;
 
+            // TODO: Find a better way of handling this than hard-coding... this avoids type initialization concerns though.
+            private static readonly int FullPatternLength = "UTC+HH:mm:ss.fff".Length;
+            private static readonly int LongPatternLength = "UTC+HH:mm:ss".Length;
+            private static readonly int MediumPatternLength = "UTC+HH:mm".Length;
+            private static readonly int ShortPatternLength = "UTC+HH".Length;
+            private static readonly int NoOffsetLength = "UTC".Length;
+
             internal ZonedDateTimeParseBucket(LocalDate templateDate, LocalTime templateTime,
                 DateTimeZone templateZone, ZoneLocalMappingResolver resolver, IDateTimeZoneProvider zoneProvider)
             {
@@ -128,16 +135,96 @@ namespace NodaTime.Text
 
             internal ParseResult<ZonedDateTime> ParseZone(ValueCursor value)
             {
-                // TODO: Make this *much* faster, match longest, and match fixed offsets.
-                // (Binary search should help on the first two...)
-                foreach (string id in zoneProvider.Ids)
+                DateTimeZone zone = TryParseFixedZone(value) ?? TryParseProviderZone(value);
+
+                if (zone == null)
                 {
-                    if (value.Match(id))
+                    return ParseResult<ZonedDateTime>.NoMatchingZoneId;
+                }
+                Zone = zone;
+                return null;
+            }
+
+            /// <summary>
+            /// Attempts to parse a fixed time zone from "UTC" with an optional
+            /// offset, expressed as +HH, +HH:mm, +HH:mm:ss or +HH:mm:ss.fff - i.e. the
+            /// general format. If it manages, it will move the cursor and return the
+            /// zone. Otherwise, it will return null and the cursor will remain where
+            /// it was.
+            /// </summary>
+            private DateTimeZone TryParseFixedZone(ValueCursor value)
+            {
+                if (value.CompareOrdinal("UTC") != 0)
+                {
+                    return null;
+                }
+                // This will never return null, given that we know it starts with UTC.
+                return TryParseFixedZone(value, FullPatternLength)
+                    ?? TryParseFixedZone(value, LongPatternLength)
+                    ?? TryParseFixedZone(value, MediumPatternLength)
+                    ?? TryParseFixedZone(value, ShortPatternLength)
+                    ?? TryParseFixedZone(value, NoOffsetLength);
+            }
+
+            /// <summary>
+            /// Attempts to parse the first "length" characters of value as a complete
+            /// fixed time zone ID.
+            /// </summary>
+            private DateTimeZone TryParseFixedZone(ValueCursor value, int length)
+            {
+                if (value.Length - value.Index < length)
+                {
+                    return null;
+                }
+                string maybeFullText = value.Value.Substring(value.Index, length);
+                DateTimeZone zone = FixedDateTimeZone.GetFixedZoneOrNull(maybeFullText);
+                if (zone != null)
+                {
+                    value.Move(value.Index + length);
+                }
+                return zone;
+            }
+                
+            /// <summary>
+            /// Tries to parse a time zone ID from the provider. Returns the zone
+            /// on success (after moving the cursor to the end of the ID) or null on failure
+            /// (leaving the cursor where it was).
+            /// </summary>
+            private DateTimeZone TryParseProviderZone(ValueCursor value)
+            {
+                // The IDs from the provider are guaranteed to be in order (using ordinal comparisons).
+                // Use a binary search to find a match, then make sure it's the longest possible match.
+                var ids = zoneProvider.Ids;
+                int lowerBound = 0;         // Inclusive
+                int upperBound = ids.Count; // Exclusive
+                while (lowerBound < upperBound)
+                {
+                    int guess = (lowerBound + upperBound) / 2;
+                    int result = value.CompareOrdinal(ids[guess]);
+                    if (result < 0)
                     {
-                        Zone = zoneProvider[id];
+                        // Guess is later than our text: lower the upper bound
+                        upperBound = guess;
+                    }
+                    else if (result > 0)
+                    {
+                        // Guess is earlier than our text: raise the lower bound
+                        lowerBound = guess + 1;
+                    }
+                    else
+                    {
+                        // We've found a match! But it may not be as long as it
+                        // could be. Keep looking until we find a value which isn't a match...
+                        while (guess + 1 < upperBound && value.CompareOrdinal(ids[guess + 1]) == 0)
+                        {
+                            guess++;
+                        }
+                        string id = ids[guess];
+                        value.Move(value.Index + id.Length);
+                        return zoneProvider[id];
                     }
                 }
-                return ParseResult<ZonedDateTime>.NoMatchingZoneId;
+                return null;
             }
 
             internal override ParseResult<ZonedDateTime> CalculateValue(PatternFields usedFields)

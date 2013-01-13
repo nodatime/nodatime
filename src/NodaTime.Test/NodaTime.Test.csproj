@@ -137,6 +137,7 @@
     <Compile Include="PeriodBuilderTest.cs" />
     <Compile Include="Testing\TimeZones\TestDateTimeZoneSourceTest.cs" />
     <Compile Include="TestObjects.cs" />
+    <Compile Include="Text\ZonedDateTimePatternTest.cs" />
     <Compile Include="Text\Cultures.cs" />
     <Compile Include="Text\InstantPatternTest.cs" />
     <Compile Include="Text\LocalDateTimePatternTest.cs" />
