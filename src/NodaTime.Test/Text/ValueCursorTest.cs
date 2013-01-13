@@ -318,5 +318,68 @@ namespace NodaTime.Test.Text
             Assert.IsNull(value.ParseInt64<string>(out result));
             Assert.AreEqual(long.MinValue, result);
         }
+
+        [Test]
+        public void CompareOrdinal_ExactMatchToEndOfValue()
+        {
+            var value = new ValueCursor("xabc");
+            value.Move(1);
+            Assert.AreEqual(0, value.CompareOrdinal("abc"));
+            Assert.AreEqual(1, value.Index); // Cursor hasn't moved
+        }
+
+        [Test]
+        public void CompareOrdinal_ExactMatchValueContinues()
+        {
+            var value = new ValueCursor("xabc");
+            value.Move(1);
+            Assert.AreEqual(0, value.CompareOrdinal("ab"));
+            Assert.AreEqual(1, value.Index); // Cursor hasn't moved
+        }
+
+        [Test]
+        public void CompareOrdinal_ValueIsEarlier()
+        {
+            var value = new ValueCursor("xabc");
+            value.Move(1);
+            Assert.Less(value.CompareOrdinal("mm"), 0);
+            Assert.AreEqual(1, value.Index); // Cursor hasn't moved
+        }
+
+        [Test]
+        public void CompareOrdinal_ValueIsLater()
+        {
+            var value = new ValueCursor("xabc");
+            value.Move(1);
+            Assert.Greater(value.CompareOrdinal("aa"), 0);
+            Assert.AreEqual(1, value.Index); // Cursor hasn't moved
+        }
+
+        [Test]
+        public void CompareOrdinal_LongMatch_EqualToEnd()
+        {
+            var value = new ValueCursor("xabc");
+            value.Move(1);
+            Assert.Less(value.CompareOrdinal("abcd"), 0);
+            Assert.AreEqual(1, value.Index); // Cursor hasn't moved
+        }
+
+        [Test]
+        public void CompareOrdinal_LongMatch_ValueIsEarlier()
+        {
+            var value = new ValueCursor("xabc");
+            value.Move(1);
+            Assert.Less(value.CompareOrdinal("cccc"), 0);
+            Assert.AreEqual(1, value.Index); // Cursor hasn't moved
+        }
+
+        [Test]
+        public void CompareOrdinal_LongMatch_ValueIsLater()
+        {
+            var value = new ValueCursor("xabc");
+            value.Move(1);
+            Assert.Greater(value.CompareOrdinal("aaaa"), 0);
+            Assert.AreEqual(1, value.Index); // Cursor hasn't moved
+        }
     }
 }
