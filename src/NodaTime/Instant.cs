@@ -14,13 +14,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
-#region usings
+
 using System;
 using NodaTime.Globalization;
 using NodaTime.Text;
 using NodaTime.Utility;
-
-#endregion
 
 namespace NodaTime
 {

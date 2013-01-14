@@ -14,7 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
-#region usings
+
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -25,8 +25,6 @@ using NodaTime.Properties;
 using NodaTime.Text;
 using NodaTime.Text.Patterns;
 using NodaTime.Utility;
-
-#endregion
 
 namespace NodaTime.Globalization
 {
