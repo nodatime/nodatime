@@ -305,6 +305,84 @@ namespace NodaTime.Test
         }
 
         [Test]
+        public void IComparableCompareTo_SameCalendarAndZone()
+        {
+            ZonedDateTime value1 = SampleZone.AtStrictly(new LocalDateTime(2011, 1, 2, 10, 30, 0));
+            ZonedDateTime value2 = SampleZone.AtStrictly(new LocalDateTime(2011, 1, 2, 10, 30, 0));
+            ZonedDateTime value3 = SampleZone.AtStrictly(new LocalDateTime(2011, 1, 2, 10, 45, 0));
+
+            IComparable i_value1 = (IComparable)value1;
+            IComparable i_value3 = (IComparable)value3;
+
+            Assert.That(i_value1.CompareTo(value2), Is.EqualTo(0));
+            Assert.That(i_value1.CompareTo(value3), Is.LessThan(0));
+            Assert.That(i_value3.CompareTo(value2), Is.GreaterThan(0));
+        }
+
+        [Test]
+        public void IComparableCompareTo_DifferentCalendars_OnlyInstantMatters()
+        {
+            CalendarSystem islamic = CalendarSystem.GetIslamicCalendar(IslamicLeapYearPattern.Base15, IslamicEpoch.Astronomical);
+            ZonedDateTime value1 = SampleZone.AtStrictly(new LocalDateTime(2011, 1, 2, 10, 30));
+            ZonedDateTime value2 = SampleZone.AtStrictly(new LocalDateTime(1500, 1, 1, 10, 30, islamic));
+            ZonedDateTime value3 = SampleZone.AtStrictly(value1.LocalDateTime.WithCalendar(islamic));
+
+            IComparable i_value1 = (IComparable)value1;
+            IComparable i_value2 = (IComparable)value2;
+
+            Assert.That(i_value1.CompareTo(value2), Is.LessThan(0));
+            Assert.That(i_value2.CompareTo(value1), Is.GreaterThan(0));
+            Assert.That(i_value1.CompareTo(value3), Is.EqualTo(0));
+        }
+
+        [Test]
+        public void IComparableCompareTo_DifferentZones_OnlyInstantMatters()
+        {
+            var otherZone = new FixedDateTimeZone(Offset.FromHours(-20));
+
+            ZonedDateTime value1 = SampleZone.AtStrictly(new LocalDateTime(2011, 1, 2, 10, 30));
+            // Earlier local time, but later instant
+            ZonedDateTime value2 = otherZone.AtStrictly(new LocalDateTime(2011, 1, 2, 5, 30));
+            ZonedDateTime value3 = value1.WithZone(otherZone);
+
+            IComparable i_value1 = (IComparable)value1;
+            IComparable i_value2 = (IComparable)value2;
+
+            Assert.That(i_value1.CompareTo(value2), Is.LessThan(0));
+            Assert.That(i_value2.CompareTo(value1), Is.GreaterThan(0));
+            Assert.That(i_value1.CompareTo(value3), Is.EqualTo(0));
+        }
+
+        /// <summary>
+        /// IComparable.CompareTo returns a positive number for a null input.
+        /// </summary>
+        [Test]
+        public void IComparableCompareTo_Null_Positive()
+        {
+            var instance = SampleZone.AtStrictly(new LocalDateTime(2011, 1, 2, 10, 30));
+            var i_instance = (IComparable)instance;
+            object arg = null;
+            var result = i_instance.CompareTo(arg);
+            Assert.That(result, Is.GreaterThan(0));
+        }
+
+        /// <summary>
+        /// IComparable.CompareTo throws an ArgumentException for non-null arguments 
+        /// that are not a ZonedDateTime.
+        /// </summary>
+        [Test]
+        public void IComparableCompareTo_WrongType_ArgumentException()
+        {
+            var instance = SampleZone.AtStrictly(new LocalDateTime(2011, 1, 2, 10, 30));
+            var i_instance = (IComparable)instance;
+            var arg = new LocalDate(2012, 3, 6);
+            Assert.Throws<ArgumentException>(() =>
+            {
+                var result = i_instance.CompareTo(arg);
+            });
+        }
+
+        [Test]
         public void Constructor_ArgumentValidation()
         {
             Assert.Throws<ArgumentNullException>(() => new ZonedDateTime(new Instant(1000), null));

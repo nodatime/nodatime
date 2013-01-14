@@ -17,6 +17,7 @@
 
 using NUnit.Framework;
 using NodaTime.Calendars;
+using System;
 
 namespace NodaTime.Test
 {
@@ -139,6 +140,72 @@ namespace NodaTime.Test
             Assert.That(date1.CompareTo(date2), Is.LessThan(0));
             Assert.That(date2.CompareTo(date1), Is.GreaterThan(0));
             Assert.That(date1.CompareTo(date3), Is.EqualTo(0));
+        }
+
+        /// <summary>
+        /// IComparable.CompareTo works properly with LocalDate inputs with same calendar.
+        /// </summary>
+        [Test]
+        public void IComparableCompareTo_SameCalendar()
+        {
+            var instance = new LocalDate(2012, 3, 5);
+            var i_instance = (IComparable)instance;
+            
+            var later = new LocalDate(2012, 6, 4);
+            var earlier = new LocalDate(2012, 1, 4);
+            var same = new LocalDate(2012, 3, 5);
+
+            Assert.That(i_instance.CompareTo(later), Is.LessThan(0));
+            Assert.That(i_instance.CompareTo(earlier), Is.GreaterThan(0));
+            Assert.That(i_instance.CompareTo(same), Is.EqualTo(0));
+        }
+
+        /// <summary>
+        /// IComparable.CompareTo works properly with LocalDate inputs with different calendars.
+        /// </summary>
+        [Test]
+        public void IComparableCompareTo_DifferentCalendars_OnlyLocalInstantMatters()
+        {
+            CalendarSystem islamic = CalendarSystem.GetIslamicCalendar(IslamicLeapYearPattern.Base15, IslamicEpoch.Astronomical);
+            LocalDate date1 = new LocalDate(2011, 1, 2);
+            LocalDate date2 = new LocalDate(1500, 1, 1, islamic);
+            LocalDate date3 = date1.WithCalendar(islamic);
+
+            IComparable i_date1 = (IComparable)date1;
+            IComparable i_date2 = (IComparable)date2;
+
+            Assert.That(i_date1.CompareTo(date2), Is.LessThan(0));
+            Assert.That(i_date2.CompareTo(date1), Is.GreaterThan(0));
+            Assert.That(i_date1.CompareTo(date3), Is.EqualTo(0));
+        }
+
+        /// <summary>
+        /// IComparable.CompareTo returns a positive number for a null input.
+        /// </summary>
+        [Test]
+        public void IComparableCompareTo_Null_Positive()
+        {
+            var instance = new LocalDate(2012, 3, 5);
+            var i_instance = (IComparable)instance;
+            object arg = null;
+            var result = i_instance.CompareTo(arg);
+            Assert.Greater(result, 0);
+        }
+
+        /// <summary>
+        /// IComparable.CompareTo throws an ArgumentException for non-null arguments 
+        /// that are not a LocalDate.
+        /// </summary>
+        [Test]
+        public void IComparableCompareTo_WrongType_ArgumentException()
+        {
+            var instance = new LocalDate(2012, 3, 5);
+            var i_instance = (IComparable)instance;
+            var arg = new LocalDateTime(2012, 3, 6, 15, 42);
+            Assert.Throws<ArgumentException>(() =>
+            {
+                var result = i_instance.CompareTo(arg);
+            });
         }
     }
 }

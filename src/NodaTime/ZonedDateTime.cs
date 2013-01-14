@@ -50,7 +50,7 @@ namespace NodaTime
     /// </para>
     /// </remarks>
     /// <threadsafety>This type is an immutable value type. See the thread safety section of the user guide for more information.</threadsafety>
-    public struct ZonedDateTime : IEquatable<ZonedDateTime>, IComparable<ZonedDateTime>
+    public struct ZonedDateTime : IEquatable<ZonedDateTime>, IComparable<ZonedDateTime>, IComparable
     {
         private readonly LocalDateTime localDateTime;
         private readonly DateTimeZone zone;
@@ -418,6 +418,27 @@ namespace NodaTime
         public int CompareTo(ZonedDateTime other)
         {
             return ToInstant().CompareTo(other.ToInstant());
+        }
+
+        /// <summary>
+        /// Implementation of <see cref="IComparable.CompareTo"/> to compare two ZonedDateTimes.
+        /// </summary>
+        /// <remarks>
+        /// This uses explicit interface implementation to avoid it being called accidentally. The generic implementation should usually be preferred.
+        /// </remarks>
+        /// <exception cref="ArgumentException"><paramref name="obj"/> is non-null but does not refer to an instance of <see cref="ZonedDateTime"/>.</exception>
+        /// <param name="obj">The object to compare this value with.</param>
+        /// <returns>The result of comparing this ZonedDateTime with another one; see <see cref="CompareTo(NodaTime.ZonedDateTime)"/> for general details.
+        /// If <paramref name="obj"/> is null, this method returns a value greater than 0.
+        /// </returns>
+        int IComparable.CompareTo(object obj)
+        {
+            if (obj == null)
+            {
+                return 1;
+            }
+            Preconditions.CheckArgument(obj is ZonedDateTime, "obj", "Object must be of type NodaTime.ZonedDateTime.");
+            return CompareTo((ZonedDateTime)obj);
         }
 
         /// <summary>

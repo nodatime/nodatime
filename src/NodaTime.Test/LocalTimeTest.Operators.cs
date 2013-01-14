@@ -165,5 +165,52 @@ namespace NodaTime.Test
             Assert.That(time1.CompareTo(time3), Is.LessThan(0));
             Assert.That(time3.CompareTo(time2), Is.GreaterThan(0));
         }
+
+        /// <summary>
+        /// IComparable.CompareTo works properly for LocalTime inputs.
+        /// </summary>
+        [Test]
+        public void IComparableCompareTo()
+        {
+            LocalTime time1 = new LocalTime(10, 30, 45);
+            LocalTime time2 = new LocalTime(10, 30, 45);
+            LocalTime time3 = new LocalTime(10, 30, 50);
+
+            var i_time1 = (IComparable)time1;
+            var i_time3 = (IComparable)time3;
+
+            Assert.That(i_time1.CompareTo(time2), Is.EqualTo(0));
+            Assert.That(i_time1.CompareTo(time3), Is.LessThan(0));
+            Assert.That(i_time3.CompareTo(time2), Is.GreaterThan(0));
+        }
+
+        /// <summary>
+        /// IComparable.CompareTo returns a positive number for a null input.
+        /// </summary>
+        [Test]
+        public void IComparableCompareTo_Null_Positive()
+        {
+            var instance = new LocalTime(10, 30, 45);
+            var i_instance = (IComparable)instance;
+            object arg = null;
+            var result = i_instance.CompareTo(arg);
+            Assert.That(result, Is.GreaterThan(0));
+        }
+
+        /// <summary>
+        /// IComparable.CompareTo throws an ArgumentException for non-null arguments 
+        /// that are not a LocalTime.
+        /// </summary>
+        [Test]
+        public void IComparableCompareTo_WrongType_ArgumentException()
+        {
+            var instance = new LocalTime(10, 30, 45);
+            var i_instance = (IComparable)instance;
+            var arg = new LocalDate(2012, 3, 6);
+            Assert.Throws<ArgumentException>(() =>
+            {
+                var result = i_instance.CompareTo(arg);
+            });
+        }
     }
 }

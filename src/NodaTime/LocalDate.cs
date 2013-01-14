@@ -43,7 +43,7 @@ namespace NodaTime
     /// </para>
     /// </remarks>
     /// <threadsafety>This type is an immutable value type. See the thread safety section of the user guide for more information.</threadsafety>
-    public struct LocalDate : IEquatable<LocalDate>, IComparable<LocalDate>, IFormattable
+    public struct LocalDate : IEquatable<LocalDate>, IComparable<LocalDate>, IComparable, IFormattable
     {
         private readonly LocalDateTime localTime;
 
@@ -392,6 +392,27 @@ namespace NodaTime
         public int CompareTo(LocalDate other)
         {
             return localTime.CompareTo(other.localTime);
+        }
+
+        /// <summary>
+        /// Implementation of <see cref="IComparable.CompareTo"/> to compare two LocalDates.
+        /// </summary>
+        /// <remarks>
+        /// This uses explicit interface implementation to avoid it being called accidentally. The generic implementation should usually be preferred.
+        /// </remarks>
+        /// <exception cref="ArgumentException"><paramref name="obj"/> is non-null but does not refer to an instance of <see cref="LocalDate"/>.</exception>
+        /// <param name="obj">The object to compare this value with.</param>
+        /// <returns>The result of comparing this LocalDate with another one; see <see cref="CompareTo(NodaTime.LocalDate)"/> for general details.
+        /// If <paramref name="obj"/> is null, this method returns a value greater than 0.
+        /// </returns>
+        int IComparable.CompareTo(object obj)
+        {
+            if (obj == null)
+            {
+                return 1;
+            }
+            Preconditions.CheckArgument(obj is LocalDate, "obj", "Object must be of type NodaTime.LocalDate.");
+            return CompareTo((LocalDate)obj);
         }
 
         /// <summary>
