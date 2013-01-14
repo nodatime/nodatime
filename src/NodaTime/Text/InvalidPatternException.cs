@@ -51,7 +51,13 @@ namespace NodaTime.Text
         {
         }
 
-        public InvalidPatternException(string formatString, params object[] parameters)
+        /// <summary>
+        /// Creates a new InvalidPatternException by formatting the given format string with
+        /// the specified parameters, in the current culture.
+        /// </summary>
+        /// <param name="formatString">Format string to use in order to create the final message</param>
+        /// <param name="parameters">Format string parameters</param>
+        internal InvalidPatternException(string formatString, params object[] parameters)
             : this(string.Format(CultureInfo.CurrentCulture, formatString, parameters))
         {            
         }
