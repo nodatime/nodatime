@@ -28,7 +28,7 @@ namespace NodaTime
     /// to a particular calendar, time zone or date.
     /// </summary>
     /// <threadsafety>This type is an immutable value type. See the thread safety section of the user guide for more information.</threadsafety>
-    public struct LocalTime : IEquatable<LocalTime>, IComparable<LocalTime>, IFormattable
+    public struct LocalTime : IEquatable<LocalTime>, IComparable<LocalTime>, IFormattable, IComparable
     {
         /// <summary>
         /// Local time at midnight, i.e. 0 hours, 0 minutes, 0 seconds.
@@ -385,6 +385,27 @@ namespace NodaTime
         public int CompareTo(LocalTime other)
         {
             return localInstant.CompareTo(other.localInstant);
+        }
+
+        /// <summary>
+        /// Implementation of <see cref="IComparable.CompareTo"/> to compare two LocalTimes.
+        /// </summary>
+        /// <remarks>
+        /// This uses explicit interface implementation to avoid it being called accidentally. The generic implementation should usually be preferred.
+        /// </remarks>
+        /// <exception cref="ArgumentException"><paramref name="obj"/> is non-null but does not refer to an instance of <see cref="LocalTime"/>.</exception>
+        /// <param name="obj">The object to compare this value with.</param>
+        /// <returns>The result of comparing this LocalTime with another one; see <see cref="CompareTo(NodaTime.LocalTime)"/> for general details.
+        /// If <paramref name="obj"/> is null, this method returns a value greater than 0.
+        /// </returns>
+        int IComparable.CompareTo(object obj)
+        {
+            if (obj == null)
+            {
+                return 1;
+            }
+            Preconditions.CheckArgument(obj is LocalTime, "obj", "Object must be of type NodaTime.LocalTime.");
+            return CompareTo((LocalTime)obj);
         }
 
         /// <summary>
