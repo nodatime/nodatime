@@ -16,8 +16,9 @@
 #endregion
 
 using System;
-#if !PCL
 using System.Globalization;
+
+#if !PCL
 using System.Runtime.Serialization;
 #endif
 
