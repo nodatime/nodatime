@@ -76,12 +76,16 @@ namespace NodaTime.Testing.TimeZones
         /// <inheritdoc />
         public string MapTimeZoneId(TimeZoneInfo timeZone)
         {
+#if PCL
+            throw new NotSupportedException();
+#else
             Preconditions.CheckNotNull(timeZone, "timeZone");
             string canonicalId;
             // We don't care about the return value of TryGetValue - if it's false,
             // canonicalId will be null, which is what we want.
             bclToZoneIds.TryGetValue(timeZone.Id, out canonicalId);
             return canonicalId;
+#endif
         }
 
         /// <summary>
