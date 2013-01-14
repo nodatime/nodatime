@@ -8,6 +8,9 @@ details.
 
 API changes:
 
+- `LocalDate`, `LocalTime`, `LocalDateTime`, and `ZonedDateTime` now
+  implement the non-generic `IComparable` interface (explicitly, to
+  avoid accidental use)
 - Added `TzdbDateTimeZoneSource.Default`, which provides access to the
   underlying source of TZDB data distributed with Noda Time ([issue 144][])
 - `LocalDateTime` patterns can now parse times of the form 24:00:00,
