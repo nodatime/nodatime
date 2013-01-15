@@ -86,7 +86,7 @@ namespace NodaTime.TimeZones
             string id = source.MapTimeZoneId(bcl);
             if (id == null)
             {
-                throw new TimeZoneNotFoundException("TimeZoneInfo ID " + bcl.Id + " is unknown to source " + providerVersionId);
+                throw new DateTimeZoneNotFoundException("TimeZoneInfo ID " + bcl.Id + " is unknown to source " + providerVersionId);
             }
             return this[id];
         }
@@ -132,12 +132,7 @@ namespace NodaTime.TimeZones
                 var zone = GetZoneOrNull(id);
                 if (zone == null)
                 {
-#if PCL
-                    // TODO: Work out something better...
-                    throw new KeyNotFoundException("Time zone " + id + " is unknown to source " + providerVersionId);
-#else
-                    throw new TimeZoneNotFoundException("Time zone " + id + " is unknown to source " + providerVersionId);
-#endif
+                    throw new DateTimeZoneNotFoundException("Time zone " + id + " is unknown to source " + providerVersionId);
                 }
                 return zone;
             }

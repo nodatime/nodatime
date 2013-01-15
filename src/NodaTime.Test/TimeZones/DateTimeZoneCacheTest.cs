@@ -110,11 +110,7 @@ namespace NodaTime.Test.TimeZones
         {
             var source = new TestDateTimeZoneSource("Test1", "Test2");
             var provider = new DateTimeZoneCache(source);
-#if PCL
-            Assert.Throws<KeyNotFoundException>(() => { var ignored = provider["Unknown"]; });
-#else
-            Assert.Throws<TimeZoneNotFoundException>(() => { var ignored = provider["Unknown"]; });
-#endif
+            Assert.Throws<DateTimeZoneNotFoundException>(() => { var ignored = provider["Unknown"]; });
             Assert.IsNull(source.LastRequestedId);
         }
 
@@ -184,11 +180,7 @@ namespace NodaTime.Test.TimeZones
         [Test]
         public void Tzdb_Indexer_InvalidFixedOffset()
         {
-#if PCL
-            Assert.Throws<KeyNotFoundException>(() => { var ignored = DateTimeZoneProviders.Tzdb["UTC+5Months"]; });
-#else
-            Assert.Throws<TimeZoneNotFoundException>(() => { var ignored = DateTimeZoneProviders.Tzdb["UTC+5Months"]; });
-#endif
+            Assert.Throws<DateTimeZoneNotFoundException>(() => { var ignored = DateTimeZoneProviders.Tzdb["UTC+5Months"]; });
         }
 
         [Test]
@@ -203,11 +195,7 @@ namespace NodaTime.Test.TimeZones
         public void EmptyIdAccepted()
         {
             var provider = new DateTimeZoneCache(new TestDateTimeZoneSource("Test1", "Test2"));
-#if PCL
-            Assert.Throws<KeyNotFoundException>(() => { var ignored = provider[""]; });
-#else
-            Assert.Throws<TimeZoneNotFoundException>(() => { var ignored = provider[""]; });
-#endif
+            Assert.Throws<DateTimeZoneNotFoundException>(() => { var ignored = provider[""]; });
         }
 
         [Test]

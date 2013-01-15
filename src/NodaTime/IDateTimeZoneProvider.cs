@@ -1,3 +1,20 @@
+#region Copyright and license information
+// Copyright 2001-2009 Stephen Colebourne
+// Copyright 2009-2013 Jon Skeet
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+#endregion
+
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -43,7 +60,7 @@ namespace NodaTime
         /// available.
         /// </summary>
         /// <remarks>
-        /// Callers should be aware that this method will throw <see cref="TimeZoneNotFoundException"/> if no matching
+        /// Callers should be aware that this method will throw <see cref="DateTimeZoneNotFoundException"/> if no matching
         /// time zone is found. For the built-in Noda Time providers, this is unlikely to occur in practice (assuming
         /// the system is using a standard Windows time zone), but can occur even then, if no mapping is found.
         /// If it is necessary to handle this case, callers can construct a
@@ -51,7 +68,7 @@ namespace NodaTime
         /// <see cref="DateTimeZone"/> that wraps the system local <see cref="TimeZoneInfo"/>, and which always
         /// succeeds.
         /// </remarks>
-        /// <exception cref="TimeZoneNotFoundException">The system default time zone is not mapped by
+        /// <exception cref="DateTimeZoneNotFoundException">The system default time zone is not mapped by
         /// this provider.</exception>
         /// <returns>
         /// The provider-specific representation of the system default time zone.
@@ -83,17 +100,13 @@ namespace NodaTime
         /// <exception cref="ArgumentNullException"><paramref name="id"/> is null.</exception>
         DateTimeZone GetZoneOrNull(string id);
 
-#if PCL
         /// <summary>
         /// Returns the time zone for the given ID.
         /// </summary>
         /// <remarks>
         /// <para>
         /// Unlike <see cref="GetZoneOrNull"/>, this indexer will never return a null reference. If the ID is not
-        /// supported by this provider, it will throw <c>TimeZoneNotFoundException</c> on the desktop implementation,
-        /// or <c>KeyNotFoundException</c> on the portable implementation. (The difference here is unfortunate but
-        /// somewhat inevitable; <c>TimeZoneNotFoundException</c> is clearly the most appropriate exception, but isn't available
-        /// for portable class libraries.)
+        /// supported by this provider, it will throw <see cref="DateTimeZoneNotFoundException" />.
         /// </para>
         /// <para>
         /// Note that this may return a <see cref="DateTimeZone"/> that has a different ID to that requested, if the ID
@@ -111,40 +124,8 @@ namespace NodaTime
         /// </remarks>
         /// <param name="id">The time zone id to find.</param>
         /// <returns>The <see cref="DateTimeZone" /> for the given ID.</returns>
-        /// <exception cref="KeyNotFoundException">(Portable implementation) This provider does not support the given ID.</exception>
+        /// <exception cref="DateTimeZoneNotFoundException">This provider does not support the given ID.</exception>
         /// <exception cref="ArgumentNullException"><paramref name="id"/> is null.</exception>
         DateTimeZone this[string id] { get; }
-#else
-        /// <summary>
-        /// Returns the time zone for the given ID.
-        /// </summary>
-        /// <remarks>
-        /// <para>
-        /// Unlike <see cref="GetZoneOrNull"/>, this indexer will never return a null reference. If the ID is not
-        /// supported by this provider, it will throw <c>TimeZoneNotFoundException</c> on the desktop implementation,
-        /// or <c>KeyNotFoundException</c> on the portable implementation. (The difference here is unfortunate but
-        /// somewhat inevitable; <c>TimeZoneNotFoundException</c> is clearly the most appropriate exception, but isn't available
-        /// for portable class libraries.)
-        /// </para>
-        /// <para>
-        /// Note that this may return a <see cref="DateTimeZone"/> that has a different ID to that requested, if the ID
-        /// provided is an alias.
-        /// </para>
-        /// <para>
-        /// Note also that this method is not required to return the same <see cref="DateTimeZone"/> instance for
-        /// successive requests for the same ID; however, all instances returned for a given ID must compare
-        /// as equal.
-        /// </para>
-        /// <para>
-        /// The fixed-offset timezones with IDs "UTC" and "UTC+/-Offset" are always available. These must
-        /// return instances that are equal to those returned by <see cref="DateTimeZone.ForOffset"/>.
-        /// </para>
-        /// </remarks>
-        /// <param name="id">The time zone id to find.</param>
-        /// <returns>The <see cref="DateTimeZone" /> for the given ID.</returns>
-        /// <exception cref="TimeZoneNotFoundException">(Desktop implementation) This provider does not support the given ID.</exception>
-        /// <exception cref="ArgumentNullException"><paramref name="id"/> is null.</exception>
-        DateTimeZone this[string id] { get; }
-#endif
     }
 }

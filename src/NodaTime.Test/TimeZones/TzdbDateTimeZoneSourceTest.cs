@@ -34,11 +34,14 @@ namespace NodaTime.Test.TimeZones
             // This test assumes that if a system time zone exists with this BCL ID, it will map to this TZDB ID.
             String bclId = "GMT Standard Time";
             String tzdbId = "Europe/London";
-            try {
+            try
+            {
                 var source = TzdbDateTimeZoneSource.Default;
                 var bclZone = TimeZoneInfo.FindSystemTimeZoneById(bclId);
                 Assert.AreEqual(tzdbId, source.MapTimeZoneId(bclZone));
-            } catch (TimeZoneNotFoundException) {
+            }
+            catch (TimeZoneNotFoundException)
+            {
                 // This may occur on Mono, for example.
                 Assert.Ignore("Test assumes existence of BCL zone with ID: " + bclId);
             }

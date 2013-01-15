@@ -19,6 +19,7 @@ using System;
 using NUnit.Framework;
 using Newtonsoft.Json;
 using NodaTime.Serialization.JsonNet;
+using NodaTime.TimeZones;
 
 namespace NodaTime.Serialization.Test.JsonNet
 {
@@ -49,7 +50,7 @@ namespace NodaTime.Serialization.Test.JsonNet
         public void Deserialize_TimeZoneNotFound()
         {
             string json = "\"America/DOES_NOT_EXIST\"";
-            Assert.Throws<TimeZoneNotFoundException>(() => JsonConvert.DeserializeObject<DateTimeZone>(json, converter));
+            Assert.Throws<DateTimeZoneNotFoundException>(() => JsonConvert.DeserializeObject<DateTimeZone>(json, converter));
         }
     }
 }
