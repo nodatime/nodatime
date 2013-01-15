@@ -18,6 +18,7 @@
 using System;
 using System.IO;
 using Newtonsoft.Json;
+using NodaTime.TimeZones;
 
 namespace NodaTime.Serialization.JsonNet
 {
@@ -39,7 +40,7 @@ namespace NodaTime.Serialization.JsonNet
         /// </summary>
         /// <param name="reader">The JSON reader to fetch data from.</param>
         /// <param name="serializer">The serializer for embedded serialization.</param>
-        /// <exception cref="TimeZoneNotFoundException">The provider does not support a time zone with the given ID.</exception>
+        /// <exception cref="DateTimeZoneNotFoundException">The provider does not support a time zone with the given ID.</exception>
         /// <returns>The <see cref="DateTimeZone"/> identified in the JSON, or null.</returns>
         protected override DateTimeZone ReadJsonImpl(JsonReader reader, JsonSerializer serializer)
         {
