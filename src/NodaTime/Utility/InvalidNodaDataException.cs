@@ -1,6 +1,6 @@
 ﻿#region Copyright and license information
 // Copyright 2001-2009 Stephen Colebourne
-// Copyright 2009-2011 Jon Skeet
+// Copyright 2009-2013 Jon Skeet
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,28 +17,29 @@
 
 using System;
 
-namespace NodaTime.TimeZones
+namespace NodaTime.Utility
 {
     /// <summary>
-    /// Exception thrown to indicate that a time zone source has violated the conditions of <see cref="IDateTimeZoneSource"/>.
-    /// This exception is primarily intended to be thrown from <see cref="DateTimeZoneCache"/>, and only in the face of a buggy
-    /// source; user code should not usually need to be aware of this or catch it.
+    /// Exception thrown when data read by Noda Time (such as serialized time zone data) is invalid.
     /// </summary>
+    /// <remarks>
+    /// This type only exists as <c>InvalidDataException</c> doesn't exist in the Portable Class Library.
+    /// Unfortunately, <c>InvalidDataException itself is sealed, so we can't derive from it for the sake
+    /// of backward compatibility.</c>
+    /// </remarks>
     /// <threadsafety>Any public static members of this type are thread safe. Any instance members are not guaranteed to be thread safe.
     /// See the thread safety section of the user guide for more information.
     /// </threadsafety>
 #if !PCL
     [Serializable]
 #endif
-    public sealed class InvalidDateTimeZoneSourceException : Exception
+    // TODO: Derive from IOException instead, like EndOfStreamException does?
+    public class InvalidNodaDataException : Exception
     {
         /// <summary>
-        /// Creates a new instance.
+        /// Creates an instance with the given message.
         /// </summary>
-        /// <param name="message">The local date time which is skipped in the specified time zone.</param>
-        public InvalidDateTimeZoneSourceException(string message)
-            : base(message)
-        {
-        }
+        /// <param name="message">The message for the exception.</param>
+        public InvalidNodaDataException(string message) : base(message) { }
     }
 }

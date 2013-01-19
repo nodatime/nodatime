@@ -19,6 +19,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using NodaTime.Utility;
 
 namespace NodaTime.TimeZones.IO
 {
@@ -88,7 +89,7 @@ namespace NodaTime.TimeZones.IO
                 {
                     int flag = firstByte & 0xe0;      // The flag parts of the first byte
                     int firstData = firstByte & 0x1f; // The data parts of the first byte
-                    switch (firstByte & 0xe0)
+                    switch (flag)
                     {
                         case 0x80: // Minutes
                             int minutes = (firstData << 8) + ReadByte();
@@ -102,9 +103,8 @@ namespace NodaTime.TimeZones.IO
                             millis = (firstData << 24) + (ReadByte() << 16) + (ReadInt16() & 0xffff);
                             break;
                         default:
-                            // TODO: Convert this to an appropriate "invalid data detected" exception.
-                            throw new IOException("Invalid data");
-                    }                    
+                            throw new InvalidNodaDataException("Invalid flag in offset: " + flag.ToString("x2"));
+                    }
                 }
                 millis -= NodaConstants.MillisecondsPerStandardDay;
                 return Offset.FromMilliseconds(millis);
@@ -236,7 +236,7 @@ namespace NodaTime.TimeZones.IO
                 case DateTimeZoneWriter.FlagTimeZoneDst:
                     return CachedDateTimeZone.ForZone(DaylightSavingsDateTimeZone.Read(this, id));
                 default:
-                    throw new IOException("Unknown flag type " + flag);
+                    throw new InvalidNodaDataException("Unknown time zone flag type " + flag);
             }
         }
 

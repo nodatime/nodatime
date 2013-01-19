@@ -85,6 +85,9 @@ namespace NodaTime.TimeZones
         /// <remarks>For backwards compatibility, this will use the blob time zone data when given the same
         /// base name which would previously have loaded the now-obsolete resource data.</remarks>
         /// <param name="baseName">The root name of the resource file.</param>
+        /// <exception cref="InvalidNodaDataException">The data within the resource is invalid.</exception>
+        /// <exception cref="EndOfStreamException">Part of the data within the resource is truncated.</exception>
+        /// <exception cref="MissingManifestResourceException">The resource set cannot be found.</exception>
         [Obsolete("Use TzdbDateTimeZoneSource.Default to access the only TZDB resources within the NodaTime assembly")]
         public TzdbDateTimeZoneSource(string baseName)
             : this(baseName, Assembly.GetExecutingAssembly())
@@ -99,6 +102,9 @@ namespace NodaTime.TimeZones
         /// itself.</remarks>
         /// <param name="baseName">The root name of the resource file.</param>
         /// <param name="assembly">The assembly to search for the time zone resources.</param>
+        /// <exception cref="InvalidNodaDataException">The data within the resource is invalid.</exception>
+        /// <exception cref="EndOfStreamException">Part of the data within the resource is truncated.</exception>
+        /// <exception cref="MissingManifestResourceException">The resource set cannot be found.</exception>
         [Obsolete("The resource format for time zone data is deprecated; future versions will only support blob-based data")]
         public TzdbDateTimeZoneSource(string baseName, Assembly assembly)
             : this(TzdbResourceData.FromResource(baseName, assembly))
@@ -109,6 +115,8 @@ namespace NodaTime.TimeZones
         /// Initializes a new instance of the <see cref="TzdbDateTimeZoneSource" /> class.
         /// </summary>
         /// <param name="source">The <see cref="ResourceSet"/> to search for the time zone resources.</param>
+        /// <exception cref="InvalidNodaDataException">The data within the resource set is invalid.</exception>
+        /// <exception cref="EndOfStreamException">Part of the data within the resource set is truncated.</exception>
         [Obsolete("The resource format for time zone data is deprecated; future versions will only support blob-based data")]
         public TzdbDateTimeZoneSource(ResourceSet source)
             : this(TzdbResourceData.FromResourceSet(source))
@@ -119,6 +127,8 @@ namespace NodaTime.TimeZones
         /// Initializes a new instance of the <see cref="TzdbDateTimeZoneSource" /> class.
         /// </summary>
         /// <param name="manager">The <see cref="ResourceManager"/> to search for the time zone resources.</param>
+        /// <exception cref="InvalidNodaDataException">The data within the resource manager is invalid.</exception>
+        /// <exception cref="EndOfStreamException">Part of the data within the resource manager is truncated.</exception>
         [Obsolete("The resource format for time zone data is deprecated; future versions will only support blob-based data")]
         public TzdbDateTimeZoneSource(ResourceManager manager)
             : this(TzdbResourceData.FromResourceManager(manager))
@@ -127,14 +137,18 @@ namespace NodaTime.TimeZones
 #endif
 
         /// <summary>
-        /// Creates an instance from a stream in the custom Noda Time format.
+        /// Creates an instance from a stream in the custom Noda Time format. The stream must be readable.
         /// </summary>
         /// <remarks>The stream is not closed by this method, but will be read from
         /// without rewinding. A successful call will read the stream to the end.</remarks>
         /// <param name="stream">The stream containing time zone data</param>
         /// <returns>A TZDB source with information from the given stream.</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="stream"/> is null</exception>
-        // TODO: Document other exceptions when we've worked out what they should be.
+        /// <exception cref="ArgumentNullException"><paramref name="stream"/> is null.</exception>
+        /// <exception cref="EndOfStreamException">Either the stream or one of the embedded sections ends prematurely.</exception>
+        /// <exception cref="InvalidNodaDataException">The stream contains invalid time zone data, or data which cannot
+        /// be read by this version of Noda Time.</exception>
+        /// <exception cref="IOException">Reading from the stream failed.</exception>
+        /// <exception cref="InvalidOperationException">The supplied stream doesn't support reading.</exception>
         public static TzdbDateTimeZoneSource FromStream(Stream stream)
         {
             Preconditions.CheckNotNull(stream, "stream");
