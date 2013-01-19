@@ -19,6 +19,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using NodaTime.Utility;
 
 namespace NodaTime.TimeZones.IO
 {
@@ -297,7 +298,7 @@ namespace NodaTime.TimeZones.IO
                 case LegacyDateTimeZoneWriter.FlagTimeZoneDst:
                     return DaylightSavingsDateTimeZone.ReadLegacy(this, id);
                 default:
-                    throw new IOException("Unknown flag type " + flag);
+                    throw new InvalidNodaDataException("Unknown time zone flag type: " + flag);
             }
         }
 

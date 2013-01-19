@@ -55,6 +55,7 @@ namespace NodaTime.TimeZones.IO
         /// </summary>
         /// <param name="id">ID for the returned zone, which may be an alias.</param>
         /// <param name="canonicalId">Canonical ID for zone data</param>
+        // TODO: Document an exception to be thrown if the zone can't be created.
         DateTimeZone CreateZone(string id, string canonicalId);
     }
 }

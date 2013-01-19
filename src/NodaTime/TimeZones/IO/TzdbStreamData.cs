@@ -56,7 +56,7 @@ namespace NodaTime.TimeZones.IO
             {
                 if (!zoneFields.ContainsKey(id))
                 {
-                    throw new IOException("Zone field for ID " + id + " is missing");
+                    throw new InvalidNodaDataException("Zone field for ID " + id + " is missing");
                 }
             }
             // Add in the canonical IDs as mappings to themselves.
@@ -69,7 +69,7 @@ namespace NodaTime.TimeZones.IO
             {
                 if (!tzdbIdMap.ContainsKey(id))
                 {
-                    throw new IOException("Windows mapping uses canonical ID " + id + " which is missing");
+                    throw new InvalidNodaDataException("Windows mapping uses canonical ID " + id + " which is missing");
                 }
             }
         }
@@ -103,7 +103,7 @@ namespace NodaTime.TimeZones.IO
         {
             if (input == null)
             {
-                throw new IOException("Incomplete TZDB data. Missing field: " + name);
+                throw new InvalidNodaDataException("Incomplete TZDB data. Missing field: " + name);
             }
             return input;
         }
@@ -114,7 +114,7 @@ namespace NodaTime.TimeZones.IO
             int version = new BinaryReader(stream).ReadInt32();
             if (version != AcceptedVersion)
             {
-                throw new IOException("Unable to read stream with version " + version);
+                throw new InvalidNodaDataException("Unable to read stream with version " + version);
             }
             Builder builder = new Builder();
             foreach (var field in TzdbStreamField.ReadFields(stream))
@@ -167,7 +167,7 @@ namespace NodaTime.TimeZones.IO
                     string id = reader.ReadString();
                     if (zoneFields.ContainsKey(id))
                     {
-                        throw new IOException("Multiple definitions for zone " + id);
+                        throw new InvalidNodaDataException("Multiple definitions for zone " + id);
                     }
                     zoneFields[id] = field;
                 }
@@ -201,7 +201,7 @@ namespace NodaTime.TimeZones.IO
             {
                 if (expectedNullField != null)
                 {
-                    throw new IOException("Multiple fields of ID " + field.Id);
+                    throw new InvalidNodaDataException("Multiple fields of ID " + field.Id);
                 }
             }
 
@@ -209,7 +209,7 @@ namespace NodaTime.TimeZones.IO
             {
                 if (stringPool == null)
                 {
-                    throw new IOException("String pool must be present before field " + field.Id);
+                    throw new InvalidNodaDataException("String pool must be present before field " + field.Id);
                 }
             }
         }

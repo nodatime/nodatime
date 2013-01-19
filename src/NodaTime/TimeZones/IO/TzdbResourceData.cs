@@ -68,18 +68,19 @@ namespace NodaTime.TimeZones.IO
         private TzdbResourceData(ResourceSet source)
         {
             this.source = source;
-            tzdbIdMap = LoadDictionary(source, IdMapKey);
-            if (tzdbIdMap == null)
+            tzdbIdMap = CheckKey(LoadDictionary(source, IdMapKey), IdMapKey);
+            windowsMapping = CheckKey(LoadDictionary(source, WindowsToPosixMapKey), WindowsToPosixMapKey);
+            tzdbVersion = CheckKey(source.GetString(VersionKey), VersionKey);
+            windowsMappingVersion = CheckKey(source.GetString(WindowsToPosixMapVersionKey), WindowsToPosixMapVersionKey);
+        }
+
+        private static T CheckKey<T>(T value, string key) where T : class
+        {
+            if (value == null)
             {
-                throw new InvalidDataException("No map with key " + IdMapKey + " in resource");
+                throw new InvalidNodaDataException("Missing or invalid data for resource key " + key);
             }
-            windowsMapping = LoadDictionary(source, WindowsToPosixMapKey);
-            if (windowsMapping == null)
-            {
-                throw new InvalidDataException("No map with key " + WindowsToPosixMapKey + " in resource");
-            }
-            tzdbVersion = source.GetString(VersionKey);
-            windowsMappingVersion = source.GetString(WindowsToPosixMapVersionKey);
+            return value;
         }
 
         /// <inheritdoc />
@@ -100,6 +101,10 @@ namespace NodaTime.TimeZones.IO
             object obj = source.GetObject(NormalizeAsResourceName(canonicalId));
             // We should never be asked for time zones which don't exist.
             Preconditions.CheckArgument(obj != null, "canonicalId", "ID is not one of the recognized time zone identifiers within this resource");
+            if (!(obj is byte[]))
+            {
+                throw new InvalidNodaDataException("Resource key for time zone for ID " + canonicalId + " is not a byte array");
+            }
             byte[] bytes = (byte[])obj;
             using (var stream = new MemoryStream(bytes))
             {
