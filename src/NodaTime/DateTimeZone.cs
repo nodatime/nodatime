@@ -600,5 +600,36 @@ namespace NodaTime
         /// </returns>
         public abstract override int GetHashCode();
         #endregion
+
+        /// <summary>
+        /// Returns all the zone intervals which are contained in the interval [<paramref name="from"/>, <paramref name="to"/>).
+        /// </summary>
+        /// <remarks>
+        /// <para>The intervals are returned in chronological order.</para>
+        /// </remarks>
+        /// <param name="start">Inclusive start point of the interval for which to retrieve zone intervals.</param>
+        /// <param name="end">Exclusive end point of the interval for which to retrieve zone intervals.</param>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="end"/> is earlier than <paramref name="start"/></exception>
+        /// <returns>A sequence of zone intervals covering the given instants.</returns>
+        public IEnumerable<ZoneInterval> GetAllZoneIntervals(Instant start, Instant end)
+        {
+            if (end < start)
+            {
+                throw new ArgumentOutOfRangeException("end", "The end parameter must be equal to or later than the start parameter");
+            }
+            return GetAllZoneIntervalsImpl(start, end);
+        }
+
+        // Actual implementation, split from the public method to get eager argument validation.
+        private IEnumerable<ZoneInterval> GetAllZoneIntervalsImpl(Instant from, Instant to)
+        {
+            var current = from;
+            while (current < to)
+            {
+                var interval = GetZoneInterval(current);
+                yield return interval;
+                current = interval.End;
+            }
+        }
     }
 }
