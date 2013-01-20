@@ -126,6 +126,7 @@
     <Compile Include="NamespaceDoc.cs" />
     <Compile Include="Preconditions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TimeZones\MultiTransitionDateTimeZone.cs" />
     <Compile Include="TimeZones\TestDateTimeZoneSource.cs" />
     <Compile Include="TimeZones\NamespaceDoc.cs" />
     <Compile Include="TimeZones\SingleTransitionDateTimeZone.cs" />
