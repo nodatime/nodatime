@@ -68,6 +68,14 @@ namespace NodaTime.TimeZones
             return new ZoneInterval(name, newStart, end, wallOffset, savings);
         }
 
+        /// <summary>
+        /// Returns a copy of this zone interval, but with the given end instant.
+        /// </summary>
+        internal ZoneInterval WithEnd(Instant newEnd)
+        {
+            return new ZoneInterval(name, start, newEnd, wallOffset, savings);
+        }
+
         #region Properties
         /// <summary>
         ///   Gets the standard offset for this period. This is the offset without any daylight savings

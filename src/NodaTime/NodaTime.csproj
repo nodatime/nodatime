@@ -274,6 +274,7 @@
     <Compile Include="TimeZones\DaylightSavingsDateTimeZone.cs" />
     <Compile Include="TimeZones\FixedDateTimeZone.cs" />
     <Compile Include="TimeZones\IDateTimeZoneSource.cs" />
+    <Compile Include="TimeZones\ZoneEqualityComparer.cs" />
     <Compile Include="TimeZones\ZoneInterval.cs" />
     <Compile Include="TimeZones\ZoneIntervalPair.cs" />
     <Compile Include="TimeZones\ZoneLocalMapping.cs" />

@@ -15,13 +15,10 @@
 // limitations under the License.
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using NUnit.Framework;
 using NodaTime.Testing.TimeZones;
 using NodaTime.TimeZones;
+using NUnit.Framework;
+using System.Linq;
 
 namespace NodaTime.Test.Testing.TimeZones
 {
