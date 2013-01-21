@@ -602,7 +602,7 @@ namespace NodaTime
         #endregion
 
         /// <summary>
-        /// Returns all the zone intervals which are contained in the interval [<paramref name="from"/>, <paramref name="to"/>).
+        /// Returns all the zone intervals which are contained in the interval [<paramref name="start"/>, <paramref name="end"/>).
         /// </summary>
         /// <remarks>
         /// <para>The intervals are returned in chronological order.</para>
