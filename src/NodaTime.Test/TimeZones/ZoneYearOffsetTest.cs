@@ -341,7 +341,7 @@ namespace NodaTime.Test.TimeZones
         }
 
         [Test]
-        public void Test()
+        public void Serialization()
         {
             var dio = new DtzIoHelper("ZoneYearOffset");
             var expected = new ZoneYearOffset(TransitionMode.Utc, 10, 31, (int)IsoDayOfWeek.Wednesday, true, Offset.Zero);
@@ -361,6 +361,30 @@ namespace NodaTime.Test.TimeZones
 
             TestHelper.TestEqualsClass(value, equalValue, unequalValue);
             TestHelper.TestOperatorEquality(value, equalValue, unequalValue);
+        }
+
+        [Test]
+        public void Next_WithAddDay()
+        {
+            // Last Thursday in October, then add 24 hours. The last Thursday in October 2013 is the 31st, so
+            // we should get the start of November 1st.
+            var offset = new ZoneYearOffset(TransitionMode.Utc, 10, -1, (int) IsoDayOfWeek.Thursday, false, Offset.FromHours(0), true);
+            var instant = Instant.FromUtc(2013, 10, 31, 12, 0);
+            var expectedNext = Instant.FromUtc(2013, 11, 1, 0, 0);
+            var actualNext = offset.Next(instant, Offset.Zero, Offset.Zero);
+            Assert.AreEqual(expectedNext, actualNext);
+        }
+
+        [Test]
+        public void Previous_WithAddDay()
+        {
+            // Last Thursday in October, then add 24 hours. The last Thursday in October 2013 is the 31st, so
+            // the previous transition is the start of Friday October 26th 2012.
+            var offset = new ZoneYearOffset(TransitionMode.Utc, 10, -1, (int)IsoDayOfWeek.Thursday, false, Offset.FromHours(0), true);
+            var instant = Instant.FromUtc(2013, 10, 31, 12, 0);
+            var expectedPrevious = Instant.FromUtc(2012, 10, 26, 0, 0);
+            var actualPrevious = offset.Previous(instant, Offset.Zero, Offset.Zero);
+            Assert.AreEqual(expectedPrevious, actualPrevious);
         }
     }
 }
