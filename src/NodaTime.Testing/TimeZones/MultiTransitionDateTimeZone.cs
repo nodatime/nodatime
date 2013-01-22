@@ -16,7 +16,14 @@ namespace NodaTime.Testing.TimeZones
         private readonly ReadOnlyCollection<ZoneInterval> intervals;
         private readonly ReadOnlyCollection<Instant> transitions;
 
+        /// <summary>
+        /// Zone intervals within this time zone, in chronological order, spanning the whole time line.
+        /// </summary>
         public ReadOnlyCollection<ZoneInterval> Intervals { get { return intervals; } }
+
+        /// <summary>
+        /// Transition points between intervals.
+        /// </summary>
         public ReadOnlyCollection<Instant> Transitions { get { return transitions; } }
 
         private MultiTransitionDateTimeZone(string id, IList<ZoneInterval> intervals)
@@ -26,6 +33,7 @@ namespace NodaTime.Testing.TimeZones
             transitions = intervals.Skip(1).Select(x => x.Start).ToList().AsReadOnly();
         }
 
+        /// <inheritdoc />
         public override ZoneInterval GetZoneInterval(Instant instant)
         {
             // TODO: We've got this binary search in at least three places now.
@@ -55,12 +63,14 @@ namespace NodaTime.Testing.TimeZones
             throw new InvalidOperationException(string.Format("Instant {0} did not exist in time zone {1}", instant, Id));
         }
 
+        /// <inheritdoc />
         protected override bool EqualsImpl(DateTimeZone zone)
         {
             // Just use reference equality...
             return ReferenceEquals(this, zone);
         }
 
+        /// <inheritdoc />
         public override int GetHashCode()
         {
             return RuntimeHelpers.GetHashCode(this);
@@ -78,6 +88,9 @@ namespace NodaTime.Testing.TimeZones
             private string currentName;
             private bool built = false;
 
+            /// <summary>
+            /// ID of the time zone which will be built.
+            /// </summary>
             public string Id { get; set; }
 
             /// <summary>
@@ -147,6 +160,14 @@ namespace NodaTime.Testing.TimeZones
                 Add(transition, newStandardOffsetHours, newSavingOffsetHours, "Interval from " + transition);
             }
 
+            /// <summary>
+            /// Adds a transition at the given instant, to the specified new standard offset,
+            /// with the new specified daylight saving. The name is generated from the transition.
+            /// </summary>
+            /// <param name="transition">Instant at which the zone changes.</param>
+            /// <param name="newStandardOffsetHours">The new standard offset, in hours.</param>
+            /// <param name="newSavingOffsetHours">The new daylight saving offset, in hours.</param>
+            /// <param name="newName">The new zone interval name.</param>
             public void Add(Instant transition, int newStandardOffsetHours, int newSavingOffsetHours, string newName)
             {
                 EnsureNotBuilt();
@@ -158,6 +179,10 @@ namespace NodaTime.Testing.TimeZones
                 currentSavings = Offset.FromHours(newSavingOffsetHours);
             }
 
+            /// <summary>
+            /// Builds a <see cref="MultiTransitionDateTimeZone"/> from this builder, invalidating it in the process.
+            /// </summary>
+            /// <returns>The newly-built zone.</returns>
             public MultiTransitionDateTimeZone Build()
             {
                 EnsureNotBuilt();
