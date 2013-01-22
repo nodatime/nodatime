@@ -16,7 +16,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("ZoneInfoCompiler")]
-[assembly: AssemblyCopyright("Copyright © 2009-2010 Jon Skeet")]
+[assembly: AssemblyCopyright("Copyright 2013 The Noda Time Authors. All rights reserved.")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

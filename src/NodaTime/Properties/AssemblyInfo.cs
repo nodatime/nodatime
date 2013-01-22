@@ -17,7 +17,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("NodaTime")]
-[assembly: AssemblyCopyright("Copyright © 2009-2012 by Jon Skeet. All rights reserved.")]
+[assembly: AssemblyCopyright("Copyright 2013 The Noda Time Authors. All rights reserved.")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
