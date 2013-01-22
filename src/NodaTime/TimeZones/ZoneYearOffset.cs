@@ -1,20 +1,3 @@
-#region Copyright and license information
-// Copyright 2001-2009 Stephen Colebourne
-// Copyright 2009-2011 Jon Skeet
-// 
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-// 
-//     http://www.apache.org/licenses/LICENSE-2.0
-// 
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-#endregion
-
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
@@ -296,7 +279,11 @@ namespace NodaTime.TimeZones
         /// <returns>The adjusted <see cref="LocalInstant"/>.</returns>
         internal Instant Next(Instant instant, Offset standardOffset, Offset savings)
         {
-            return AdjustInstant(instant, standardOffset, savings, 1);
+            Offset offset = GetOffset(standardOffset, savings);
+            LocalInstant local = instant.Plus(offset);
+            int year = GetEligibleYear(CalendarSystem.Iso.Fields.Year.GetValue(local), 1);
+            Instant transitionSameYear = MakeInstant(year, standardOffset, savings);
+            return transitionSameYear > instant ? transitionSameYear : MakeInstant(GetEligibleYear(year + 1, 1), standardOffset, savings);
         }
 
         /// <summary>
@@ -309,7 +296,28 @@ namespace NodaTime.TimeZones
         /// <returns>The adjusted <see cref="LocalInstant"/>.</returns>
         internal Instant Previous(Instant instant, Offset standardOffset, Offset savings)
         {
-            return AdjustInstant(instant, standardOffset, savings, -1);
+            Offset offset = GetOffset(standardOffset, savings);
+            LocalInstant local = instant.Plus(offset);
+            int year = GetEligibleYear(CalendarSystem.Iso.Fields.Year.GetValue(local), -1);
+            Instant transitionSameYear = MakeInstant(year, standardOffset, savings);
+            return transitionSameYear < instant ? transitionSameYear : MakeInstant(GetEligibleYear(year - 1, -1), standardOffset, savings);
+        }
+
+        // For transitions on Feb 29th, we can't necessarily just go from one year to another.
+        // Instead, we need to find the next or previous leap year.
+        private int GetEligibleYear(int year, int direction)
+        {
+            // Not looking for February 29th? We're fine.
+            if (dayOfMonth != 29 || monthOfYear != 2)
+            {
+                return year;
+            }
+            // Iterate until we find a leap year.
+            while (!CalendarSystem.Iso.IsLeapYear(year))
+            {
+                year += direction;
+            }
+            return year;
         }
 
         /// <summary>
@@ -372,96 +380,6 @@ namespace NodaTime.TimeZones
             var ticksOfDay = reader.ReadOffset();
             var addDay = reader.ReadBoolean();
             return new ZoneYearOffset(mode, monthOfYear, dayOfMonth, dayOfWeek, advance, ticksOfDay, addDay);
-        }
-
-        /// <summary>
-        /// Adjusts the instant one year in the given direction.
-        /// </summary>
-        /// <remarks>
-        /// If there is an overflow/underflow in any operation performed in this method then <see
-        /// cref="Instant.MinValue"/> or <see cref="Instant.MaxValue"/> will be returned depending
-        /// on <paramref name="direction"/>.
-        /// </remarks>
-        /// <param name="instant">The instant to adjust.</param>
-        /// <param name="standardOffset">The standard offset.</param>
-        /// <param name="savings">The daylight savings adjustment.</param>
-        /// <param name="direction">The direction to adjust. 1 for forward, -1 for backward.</param>
-        /// <returns>The adjusted <see cref="Instant"/>.</returns>
-        private Instant AdjustInstant(Instant instant, Offset standardOffset, Offset savings, int direction)
-        {
-            try
-            {
-                Offset offset = GetOffset(standardOffset, savings);
-
-                // Convert from UTC to local time.
-                LocalInstant localInstant = instant.Plus(offset);
-
-                CalendarSystem calendar = CalendarSystem.Iso;
-                LocalInstant newInstant = calendar.Fields.MonthOfYear.SetValue(localInstant, monthOfYear);
-                // Be lenient with tick of day.
-                newInstant = calendar.Fields.TickOfDay.SetValue(newInstant, tickOfDay.Ticks);
-                newInstant = SetDayOfMonthWithLeap(calendar, newInstant, direction);
-
-                int signDirection = Math.Sign(direction);
-                if (dayOfWeek == 0)
-                {
-                    int signDifference = Math.Sign((localInstant - newInstant).Ticks);
-                    if (signDifference == 0 || signDirection == signDifference)
-                    {
-                        newInstant = calendar.Fields.Years.Add(newInstant, direction);
-                        newInstant = SetDayOfMonthWithLeap(calendar, newInstant, direction);
-                    }
-                }
-                else
-                {
-                    newInstant = SetDayOfWeek(calendar, newInstant);
-                    int signDifference = Math.Sign((localInstant - newInstant).Ticks);
-                    if (signDifference == 0 || signDirection == signDifference)
-                    {
-                        newInstant = calendar.Fields.Years.Add(newInstant, direction);
-                        newInstant = calendar.Fields.MonthOfYear.SetValue(newInstant, monthOfYear);
-                        newInstant = SetDayOfMonthWithLeap(calendar, newInstant, direction);
-                        newInstant = SetDayOfWeek(calendar, newInstant);
-                    }
-                }
-                if (addDay)
-                {
-                    newInstant += Duration.OneStandardDay;
-                }
-                // Convert from local time to UTC.
-                return newInstant.Minus(offset);
-            }
-            catch (OverflowException)
-            {
-                // TODO(Post-V1): Determine why we really want this behaviour, rather than just letting it throw?
-                // Would need explicit handling for MinValue and MaxValue probably...
-                return direction < 0 ? Instant.MinValue : Instant.MaxValue;
-            }
-        }
-
-        /// <summary>
-        /// Sets the day of month handling leap years.
-        /// </summary>
-        /// <remarks>
-        /// If the day of the month is February 29 then the starting year is a leap year and we have
-        /// to go forward or back to the next or previous leap year or February 29 will be an
-        /// invalid date.
-        /// </remarks>
-        /// <param name="calendar">The calendar to use to set the values.</param>
-        /// <param name="instant">The instant to adjust.</param>
-        /// <param name="direction"></param>
-        /// <returns>The adjusted <see cref="LocalInstant"/>.</returns>
-        private LocalInstant SetDayOfMonthWithLeap(CalendarSystem calendar, LocalInstant instant, int direction)
-        {
-            if (monthOfYear == 2 && dayOfMonth == 29)
-            {
-                while (calendar.Fields.Year.IsLeap(instant) == false)
-                {
-                    instant = calendar.Fields.Years.Add(instant, direction);
-                }
-            }
-            instant = SetDayOfMonth(calendar, instant);
-            return instant;
         }
 
         /// <summary>
