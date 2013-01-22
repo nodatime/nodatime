@@ -1,4 +1,8 @@
-﻿namespace NodaTime.Text.Patterns
+// Copyright 2011 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0,
+// as found in the LICENSE.txt file.
+
+namespace NodaTime.Text.Patterns
 {
     /// <summary>
     /// Simple implementation of <see cref="IPattern{T}"/> which simply calls delegates for

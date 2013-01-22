@@ -1,4 +1,8 @@
-﻿namespace NodaTime.Calendars
+// Copyright 2011 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0,
+// as found in the LICENSE.txt file.
+
+namespace NodaTime.Calendars
 {
     /// <summary>
     /// The pattern of leap years to use when constructing an Islamic calendar.

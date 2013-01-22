@@ -1,4 +1,8 @@
-﻿namespace NodaTime.Testing
+// Copyright 2011 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0,
+// as found in the LICENSE.txt file.
+
+namespace NodaTime.Testing
 {
     /// <summary>
     /// Clock which can be constructed with an initial instant, and then advanced programmatically (and optionally,
