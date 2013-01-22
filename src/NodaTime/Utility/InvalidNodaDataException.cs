@@ -11,8 +11,8 @@ namespace NodaTime.Utility
     /// </summary>
     /// <remarks>
     /// This type only exists as <c>InvalidDataException</c> doesn't exist in the Portable Class Library.
-    /// Unfortunately, <c>InvalidDataException itself is sealed, so we can't derive from it for the sake
-    /// of backward compatibility.</c>
+    /// Unfortunately, <c>InvalidDataException</c> itself is sealed, so we can't derive from it for the sake
+    /// of backward compatibility.
     /// </remarks>
     /// <threadsafety>Any public static members of this type are thread safe. Any instance members are not guaranteed to be thread safe.
     /// See the thread safety section of the user guide for more information.
