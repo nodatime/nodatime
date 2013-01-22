@@ -3,3 +3,6 @@
 =============================================================================
 This product includes ports of software developed by
 Joda.org (http://www.joda.org/).
+
+(Portions of Noda Time were derived from Joda Time 1.6.0; Joda Time
+1.6.0 is copyright 2001-2009 Stephen Colebourne.)
