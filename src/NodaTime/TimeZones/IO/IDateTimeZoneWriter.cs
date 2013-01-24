@@ -39,6 +39,14 @@ namespace NodaTime.TimeZones.IO
         void WriteCount(int count);
 
         /// <summary>
+        /// Writes a possibly-negative integer to the stream. This is optimized for
+        /// values of small magnitudes.
+        /// </summary>
+        /// <param name="count">The integer to write to the stream.</param>
+        /// <exception cref="IOException">The value couldn't be written to the stream.</exception>
+        void WriteSignedCount(int count);
+
+        /// <summary>
         /// Writes a string to the stream.
         /// </summary>
         /// <remarks>Other than the legacy resource writer, callers can reasonably expect that

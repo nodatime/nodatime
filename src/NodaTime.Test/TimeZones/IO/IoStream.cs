@@ -43,6 +43,15 @@ namespace NodaTime.Test.TimeZones.IO
             Assert.AreEqual(readIndex, writeIndex);
         }
 
+        public void AssertUnreadContents(byte[] expected)
+        {
+            Assert.AreEqual(expected.Length, writeIndex - readIndex);
+            var actual = new byte[expected.Length];
+            Array.Copy(buffer, readIndex, actual, 0, writeIndex - readIndex);
+            Assert.AreEqual(expected, actual);
+            readIndex = writeIndex;
+        }
+
         /// <summary>
         ///   Returns a <see cref="Stream" /> that can be used to read from the buffer.
         /// </summary>
