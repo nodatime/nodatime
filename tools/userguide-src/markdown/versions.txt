@@ -28,6 +28,10 @@ Bug fixes:
 - Day-of-week and month names are now parsed by choosing the longest possible
   match, allowing dates to be parsed in cultures where one string is a prefix
   of another ([issue 159][])
+- Fixed a minor bug that made the "Asia/Amman" time zone (Jordan) give
+  incorrect values or a `NullReferenceException` when asked for a value in 2040
+  (and possibly other times). Other time zones should not be affected
+  ([issue 174][])
 
 ## 1.0.1, released 2012-11-13 with tzdb 2012i ##
 
