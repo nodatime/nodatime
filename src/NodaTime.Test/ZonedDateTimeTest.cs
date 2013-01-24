@@ -365,7 +365,7 @@ namespace NodaTime.Test
             var arg = new LocalDate(2012, 3, 6);
             Assert.Throws<ArgumentException>(() =>
             {
-                var result = i_instance.CompareTo(arg);
+                i_instance.CompareTo(arg);
             });
         }
 
