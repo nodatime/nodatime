@@ -18,7 +18,7 @@ namespace NodaTime
     /// assembly (or your own implementation).
     /// </remarks>
     /// <seealso cref="SystemClock"/>
-    /// <seealso cref="T:NodaTime.Testing.StubClock"/>
+    /// <seealso cref="T:NodaTime.Testing.FakeClock"/>
     /// <threadsafety>All implementations in Noda Time are thread-safe; custom implementations
     /// should be thread-safe too. See the thread safety section of the user guide for more information.
     /// </threadsafety>
