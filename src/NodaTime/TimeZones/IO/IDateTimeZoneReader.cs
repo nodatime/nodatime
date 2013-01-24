@@ -27,6 +27,15 @@ namespace NodaTime.TimeZones.IO
         int ReadCount();
 
         /// <summary>
+        /// Reads a non-negative integer from the stream, which must have been written
+        /// by a call to <see cref="IDateTimeZoneWriter.WriteSignedCount"/>.
+        /// </summary>
+        /// <returns>The integer read from the stream</returns>
+        /// <exception cref="EndOfStreamException">The data didn't contain a complete value</exception>
+        /// <exception cref="IOException">The stream could not be read</exception>
+        int ReadSignedCount();
+
+        /// <summary>
         /// Reads a string from the stream.
         /// </summary>
         /// <returns>The string read from the stream; will not be null</returns>

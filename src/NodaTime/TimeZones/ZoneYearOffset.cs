@@ -332,8 +332,7 @@ namespace NodaTime.TimeZones
         {
             writer.WriteCount((int)Mode);
             writer.WriteCount(MonthOfYear);
-            // Day of month can range from -31 to 31, so we add a suitable amount to force it to be positive.
-            writer.WriteCount(DayOfMonth + 31);
+            writer.WriteSignedCount(DayOfMonth);
             writer.WriteCount(DayOfWeek);
             writer.WriteOffset(TickOfDay);
             int flags = (AdvanceDayOfWeek ? 2 : 0) + (addDay ? 1 : 0);
@@ -362,8 +361,7 @@ namespace NodaTime.TimeZones
             Preconditions.CheckNotNull(reader, "reader");
             var mode = (TransitionMode)reader.ReadCount();
             int monthOfYear = reader.ReadCount();
-            // Remove the addition performed before
-            int dayOfMonth = reader.ReadCount() - 31;
+            int dayOfMonth = reader.ReadSignedCount();
             int dayOfWeek = reader.ReadCount();
             var ticksOfDay = reader.ReadOffset();
             int flags = reader.ReadCount();

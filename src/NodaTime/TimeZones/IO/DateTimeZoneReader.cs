@@ -30,20 +30,45 @@ namespace NodaTime.TimeZones.IO
         /// Reads a non-negative integer value from the stream.
         /// </summary>
         /// <remarks>
-        /// The value must have been written by <see cref="DateTimeZoneWriter.WriteCount" />, which
-        /// documents the format.
+        /// The value must have been written by <see cref="DateTimeZoneWriter.WriteCount" />.
         /// </remarks>
         /// <returns>The integer value from the stream.</returns>
         public int ReadCount()
         {
+            return (int) ReadVarint();  // TODO: check the value is in range?
+        }
+
+        /// <summary>
+        /// Reads a (possibly-negative) integer value from the stream.
+        /// </summary>
+        /// <remarks>
+        /// The value must have been written by <see cref="DateTimeZoneWriter.WriteSignedCount" />.
+        /// </remarks>
+        /// <returns>The integer value from the stream.</returns>
+        public int ReadSignedCount()
+        {
+            uint value = ReadVarint();
+            return (int) (value >> 1) ^ -(int) (value & 1);  // zigzag encoding
+        }
+
+        /// <summary>
+        /// Reads a base-128 varint value from the stream.
+        /// </summary>
+        /// <remarks>
+        /// The value must have been written by <see cref="DateTimeZoneWriter.WriteVarint" />, which
+        /// documents the format.
+        /// </remarks>
+        /// <returns>The integer value from the stream.</returns>
+        private uint ReadVarint()
+        {
             unchecked
             {
-                int ret = 0;
+                uint ret = 0;
                 int shift = 0;
                 while (true)
                 {
-                    int nextByte = ReadByte();
-                    ret += (nextByte & 0x7f) << shift;
+                    byte nextByte = ReadByte();
+                    ret += (uint) (nextByte & 0x7f) << shift;
                     shift += 7;
                     if (nextByte < 0x80)
                     {

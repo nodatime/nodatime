@@ -58,6 +58,31 @@ namespace NodaTime.TimeZones.IO
         /// <summary>
         /// Writes the given non-negative integer value to the stream.
         /// </summary>
+        /// <param name="value">The value to write.</param>
+        public void WriteCount(int value)
+        {
+            Preconditions.CheckArgumentRange("value", value, 0, int.MaxValue);
+            WriteVarint((uint) value);
+        }
+
+        /// <summary>
+        /// Writes the given (possibly-negative) integer value to the stream.
+        /// </summary>
+        /// <remarks>
+        /// Unlike <see cref="WriteCount"/>, this can encode negative numbers. It does, however, use a slightly less
+        /// efficient encoding for positive numbers.
+        /// <param name="value">The value to write.</param>
+        public void WriteSignedCount(int value)
+        {
+            unchecked
+            {
+                WriteVarint((uint) ((value >> 31) ^ (value << 1)));  // zigzag encoding
+            }
+        }
+
+        /// <summary>
+        /// Writes the given integer value to the stream as a base-128 varint.
+        /// </summary>
         /// <remarks>
         /// The format is a simple 7-bit encoding: while the value is greater than 127 (i.e.
         /// has more than 7 significant bits) we repeatedly write the least-significant 7 bits
@@ -65,9 +90,8 @@ namespace NodaTime.TimeZones.IO
         /// 7 bits.
         /// </remarks>
         /// <param name="value">The value to write.</param>
-        public void WriteCount(int value)
+        private void WriteVarint(uint value)
         {
-            Preconditions.CheckArgumentRange("value", value, 0, int.MaxValue);
             unchecked
             {
                 while (value > 0x7f)

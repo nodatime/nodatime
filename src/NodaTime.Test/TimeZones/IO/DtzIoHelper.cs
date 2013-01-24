@@ -70,6 +70,31 @@ namespace NodaTime.Test.TimeZones.IO
             ioStream.AssertEndOfStream();
         }
 
+        public void TestCount(int value, byte[] expected)
+        {
+            Reset();
+            Writer.WriteCount(value);
+            ioStream.AssertUnreadContents(expected);
+            ioStream.AssertEndOfStream();
+        }
+
+        public void TestSignedCount(int expected)
+        {
+            Reset();
+            Writer.WriteSignedCount(expected);
+            var actual = Reader.ReadSignedCount();
+            Assert.AreEqual(expected, actual);
+            ioStream.AssertEndOfStream();
+        }
+
+        public void TestSignedCount(int value, byte[] expected)
+        {
+            Reset();
+            Writer.WriteSignedCount(value);
+            ioStream.AssertUnreadContents(expected);
+            ioStream.AssertEndOfStream();
+        }
+
         public void TestDictionary(IDictionary<string, string> expected)
         {
             Reset();

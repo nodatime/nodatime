@@ -61,6 +61,33 @@ namespace NodaTime.Test.TimeZones.IO
             Dio.TestCount(0x200000);
             Dio.TestCount(0x200001);
             Dio.TestCount(Int32.MaxValue);
+            Dio.TestCount(0, new byte[] { 0x00 });
+            Dio.TestCount(1, new byte[] { 0x01 });
+            Dio.TestCount(127, new byte[] { 0x7f });
+            Dio.TestCount(128, new byte[] { 0x80, 0x01 });
+            Dio.TestCount(300, new byte[] { 0xac, 0x02 });
+        }
+
+        [Test]
+        public void Test_SignedCount()
+        {
+            for (int i = -16; i < 16; i++)
+            {
+                Dio.TestSignedCount(i);
+            }
+            Dio.TestSignedCount(0x4000000);
+            Dio.TestSignedCount(-0x4000000);
+            Dio.TestSignedCount(Int32.MinValue);
+            Dio.TestSignedCount(Int32.MinValue + 1);
+            Dio.TestSignedCount(Int32.MaxValue - 1);
+            Dio.TestSignedCount(Int32.MaxValue);
+            Dio.TestSignedCount(0, new byte[] { 0x00 });
+            Dio.TestSignedCount(-1, new byte[] { 0x01 });
+            Dio.TestSignedCount(1, new byte[] { 0x02 });
+            Dio.TestSignedCount(-2, new byte[] { 0x03 });
+            Dio.TestSignedCount(64, new byte[] { 0x80, 0x01 });
+            Dio.TestSignedCount(-65, new byte[] { 0x81, 0x01 });
+            Dio.TestSignedCount(128, new byte[] { 0x80, 0x02 });
         }
 
         [Test]

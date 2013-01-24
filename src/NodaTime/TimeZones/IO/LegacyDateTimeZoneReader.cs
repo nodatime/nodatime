@@ -78,6 +78,15 @@ namespace NodaTime.TimeZones.IO
         }
 
         /// <summary>
+        /// Always throws NotSupportedException
+        /// </summary>
+        /// <returns>The integer read from the stream</returns>
+        public int ReadSignedCount()
+        {
+            throw new NotSupportedException();
+        }
+
+        /// <summary>
         /// Reads an offset value from the stream.
         /// </summary>
         /// <remarks>

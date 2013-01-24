@@ -124,6 +124,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
 
             public void WriteOffset(Offset offset) {}
             public void WriteCount(int count) { }
+            public void WriteSignedCount(int count) { }
             public void WriteInstant(Instant instant) {}
 
             public void WriteDictionary(IDictionary<string, string> dictionary)
