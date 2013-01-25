@@ -33,8 +33,8 @@ namespace NodaTime.Testing.TimeZones
         private MultiTransitionDateTimeZone(string id, IList<ZoneInterval> intervals)
             : base(id, intervals.Count == 1, intervals.Min(x => x.WallOffset), intervals.Max(x => x.WallOffset))
         {
-            this.intervals = intervals.ToList().AsReadOnly();
-            transitions = intervals.Skip(1).Select(x => x.Start).ToList().AsReadOnly();
+            this.intervals = new ReadOnlyCollection<ZoneInterval>(intervals.ToList());
+            transitions = new ReadOnlyCollection<Instant>(intervals.Skip(1).Select(x => x.Start).ToList());
         }
 
         /// <inheritdoc />
