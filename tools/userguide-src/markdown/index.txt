@@ -25,6 +25,7 @@ Table of contents
 - [Updating the time zone database](tzdb.html)
 - [Mono support](mono.html)
 - [Limitations](limitations.html)
+- [Current Roadmap](roadmap.html)
 - [Version history](versions.html)
 
 Resources

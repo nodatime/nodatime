@@ -1,0 +1,52 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+  <head>
+    <link href="prettify.css" type="text/css" rel="stylesheet" />
+    <link href="styles.css" type="text/css" rel="stylesheet" />
+    <script type="text/javascript" src="prettify.js"></script>
+    <title>Current Roadmap</title>
+  </head>
+  <body onload="prettyPrint()">
+    <h1>Current Roadmap</h1>
+    <p>The following is an <em>approximate</em> roadmap for the major features that
+we hope to support in Noda Time.  Some of this roadmap is inspired by
+Noda Time's <a href="limitations.html">current limitations</a>.</p>
+
+<p>If there's something not mentioned here that you feel should be on this
+roadmap, then <em>please</em> either raise an issue or post on the
+<a href="http://groups.google.com/group/noda-time">mailing list</a>.</p>
+
+<p>This roadmap was last updated on <strong>2013-01-08</strong>.</p>
+
+<ul>
+<li>1.1 (planned for release in Q1 2013)
+<ul>
+<li>PCL support</li>
+<li>New time zone data format by default</li>
+</ul></li>
+<li>1.2
+<ul>
+<li>Better serialization: add native support for XML serialization,
+complete the Json.NET serialization (and release as a package)</li>
+<li>Better parsing/formatting: custom parsing and formatting for
+<code>ZonedDateTime</code> and <code>OffsetDateTime</code>; <em>possibly</em> likewise for
+<code>Period</code>, and more consistency around access to standard
+patterns</li>
+</ul></li>
+<li>1.3
+<ul>
+<li>Provide more information from CLDR for time zone information
+(e.g. sample cities to display to users)</li>
+<li>Possibly, use CLDR for other l10n resources</li>
+</ul></li>
+</ul>
+
+<p>Features currently scheduled for removal in 2.0:</p>
+
+<ul>
+<li>all obsolete API members</li>
+<li>support for the legacy resource-based time zone data format</li>
+</ul>
+
+  </body>
+</html>
