@@ -1,19 +1,6 @@
-﻿#region Copyright and license information
-// Copyright 2001-2009 Stephen Colebourne
-// Copyright 2009-2011 Jon Skeet
-// 
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-// 
-//     http://www.apache.org/licenses/LICENSE-2.0
-// 
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-#endregion
+// Copyright 2011 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0,
+// as found in the LICENSE.txt file.
 
 using System;
 using NodaTime.TimeZones;
@@ -39,6 +26,11 @@ namespace NodaTime.Testing.TimeZones
         public ZoneInterval LateInterval { get { return lateInterval; } }
 
         /// <summary>
+        /// The transition instant of the zone.
+        /// </summary>
+        public Instant Transition { get { return earlyInterval.End; } }
+
+        /// <summary>
         /// Creates a zone with a single transition between two offsets.
         /// </summary>
         /// <param name="transitionPoint">The transition point as an <see cref="Instant"/>.</param>
@@ -56,11 +48,23 @@ namespace NodaTime.Testing.TimeZones
         /// <param name="offsetBefore">The offset of local time from UTC before the transition.</param>
         /// <param name="offsetAfter">The offset of local time from UTC before the transition.</param>
         public SingleTransitionDateTimeZone(Instant transitionPoint, Offset offsetBefore, Offset offsetAfter)
-            : base("Single", false, Offset.Min(offsetBefore, offsetAfter), Offset.Max(offsetBefore, offsetAfter))
+            : this(transitionPoint, offsetBefore, offsetAfter, "Single")
         {
-            earlyInterval = new ZoneInterval("Single-Early", Instant.MinValue, transitionPoint,
+        }
+
+        /// <summary>
+        /// Creates a zone with a single transition between two offsets.
+        /// </summary>
+        /// <param name="transitionPoint">The transition point as an <see cref="Instant"/>.</param>
+        /// <param name="offsetBefore">The offset of local time from UTC before the transition.</param>
+        /// <param name="offsetAfter">The offset of local time from UTC before the transition.</param>
+        /// <param name="id">ID for the newly created time zone.</param>
+        public SingleTransitionDateTimeZone(Instant transitionPoint, Offset offsetBefore, Offset offsetAfter, string id)
+            : base(id, false, Offset.Min(offsetBefore, offsetAfter), Offset.Max(offsetBefore, offsetAfter))
+        {
+            earlyInterval = new ZoneInterval(id + "-Early", Instant.MinValue, transitionPoint,
                 offsetBefore, Offset.Zero);
-            lateInterval = new ZoneInterval("Single-Late", transitionPoint, Instant.MaxValue,
+            lateInterval = new ZoneInterval(id + "-Late", transitionPoint, Instant.MaxValue,
                 offsetAfter, Offset.Zero);
         }
 

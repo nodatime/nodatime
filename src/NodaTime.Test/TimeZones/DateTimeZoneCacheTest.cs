@@ -1,19 +1,6 @@
-﻿#region Copyright and license information
-// Copyright 2001-2009 Stephen Colebourne
-// Copyright 2009-2011 Jon Skeet
-// 
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-// 
-//     http://www.apache.org/licenses/LICENSE-2.0
-// 
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-#endregion
+// Copyright 2012 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0,
+// as found in the LICENSE.txt file.
 
 using System;
 using System.Collections.Generic;
@@ -110,11 +97,7 @@ namespace NodaTime.Test.TimeZones
         {
             var source = new TestDateTimeZoneSource("Test1", "Test2");
             var provider = new DateTimeZoneCache(source);
-#if PCL
-            Assert.Throws<KeyNotFoundException>(() => { var ignored = provider["Unknown"]; });
-#else
-            Assert.Throws<TimeZoneNotFoundException>(() => { var ignored = provider["Unknown"]; });
-#endif
+            Assert.Throws<DateTimeZoneNotFoundException>(() => { var ignored = provider["Unknown"]; });
             Assert.IsNull(source.LastRequestedId);
         }
 
@@ -184,11 +167,7 @@ namespace NodaTime.Test.TimeZones
         [Test]
         public void Tzdb_Indexer_InvalidFixedOffset()
         {
-#if PCL
-            Assert.Throws<KeyNotFoundException>(() => { var ignored = DateTimeZoneProviders.Tzdb["UTC+5Months"]; });
-#else
-            Assert.Throws<TimeZoneNotFoundException>(() => { var ignored = DateTimeZoneProviders.Tzdb["UTC+5Months"]; });
-#endif
+            Assert.Throws<DateTimeZoneNotFoundException>(() => { var ignored = DateTimeZoneProviders.Tzdb["UTC+5Months"]; });
         }
 
         [Test]
@@ -203,11 +182,7 @@ namespace NodaTime.Test.TimeZones
         public void EmptyIdAccepted()
         {
             var provider = new DateTimeZoneCache(new TestDateTimeZoneSource("Test1", "Test2"));
-#if PCL
-            Assert.Throws<KeyNotFoundException>(() => { var ignored = provider[""]; });
-#else
-            Assert.Throws<TimeZoneNotFoundException>(() => { var ignored = provider[""]; });
-#endif
+            Assert.Throws<DateTimeZoneNotFoundException>(() => { var ignored = provider[""]; });
         }
 
         [Test]

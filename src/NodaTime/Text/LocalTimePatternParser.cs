@@ -1,23 +1,12 @@
-﻿#region Copyright and license information
-// Copyright 2001-2009 Stephen Colebourne
-// Copyright 2009-2011 Jon Skeet
-// 
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-// 
-//     http://www.apache.org/licenses/LICENSE-2.0
-// 
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-#endregion
+// Copyright 2011 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0,
+// as found in the LICENSE.txt file.
 
 using System.Collections.Generic;
 using NodaTime.Globalization;
+using NodaTime.Properties;
 using NodaTime.Text.Patterns;
+using NodaTime.Utility;
 
 namespace NodaTime.Text
 {
@@ -26,8 +15,6 @@ namespace NodaTime.Text
     /// </summary>
     internal sealed class LocalTimePatternParser : IPatternParser<LocalTime>
     {
-        private static readonly CharacterHandler<LocalTime, LocalTimeParseBucket> DefaultCharacterHandler = SteppedPatternBuilder<LocalTime, LocalTimeParseBucket>.HandleDefaultCharacter;
-
         private readonly LocalTime templateValue;
 
         private static readonly Dictionary<char, CharacterHandler<LocalTime, LocalTimeParseBucket>> PatternCharacterHandlers = 
@@ -60,15 +47,12 @@ namespace NodaTime.Text
 
         // Note: public to implement the interface. It does no harm, and it's simpler than using explicit
         // interface implementation.
-        public PatternParseResult<LocalTime> ParsePattern(string patternText, NodaFormatInfo formatInfo)
+        public IPattern<LocalTime> ParsePattern(string patternText, NodaFormatInfo formatInfo)
         {
-            if (patternText == null)
-            {
-                return PatternParseResult<LocalTime>.ArgumentNull("patternText");
-            }
+            Preconditions.CheckNotNull(patternText, "patternText");
             if (patternText.Length == 0)
             {
-                return PatternParseResult<LocalTime>.FormatStringEmpty;
+                throw new InvalidPatternException(Messages.Parse_FormatStringEmpty);
             }
 
             if (patternText.Length == 1)
@@ -77,35 +61,15 @@ namespace NodaTime.Text
                 patternText = ExpandStandardFormatPattern(patternCharacter, formatInfo);
                 if (patternText == null)
                 {
-                    return PatternParseResult<LocalTime>.UnknownStandardFormat(patternCharacter);
+                    throw new InvalidPatternException(Messages.Parse_UnknownStandardFormat, patternCharacter, typeof(LocalTime));
                 }
             }
 
-            var patternBuilder = new SteppedPatternBuilder<LocalTime, LocalTimeParseBucket>(formatInfo, () => new LocalTimeParseBucket(templateValue));
-            var patternCursor = new PatternCursor(patternText);
-
-            // Prime the pump...
-            // TODO(Post-V1): Add this to the builder?
-            patternBuilder.AddParseAction((str, bucket) =>
-            {
-                str.MoveNext();
-                return null;
-            });
-
-            while (patternCursor.MoveNext())
-            {
-                CharacterHandler<LocalTime, LocalTimeParseBucket> handler;
-                if (!PatternCharacterHandlers.TryGetValue(patternCursor.Current, out handler))
-                {
-                    handler = DefaultCharacterHandler;                    ;
-                }
-                PatternParseResult<LocalTime> possiblePatternParseFailure = handler(patternCursor, patternBuilder);
-                if (possiblePatternParseFailure != null)
-                {
-                    return possiblePatternParseFailure;
-                }
-            }
-            return PatternParseResult<LocalTime>.ForValue(patternBuilder.Build());
+            var patternBuilder = new SteppedPatternBuilder<LocalTime, LocalTimeParseBucket>(formatInfo,
+                () => new LocalTimeParseBucket(templateValue));
+            patternBuilder.ParseCustomPattern(patternText, PatternCharacterHandlers);
+            patternBuilder.ValidateUsedFields();
+            return patternBuilder.Build();
         }
 
         private string ExpandStandardFormatPattern(char patternCharacter, NodaFormatInfo formatInfo)

@@ -135,7 +135,10 @@
     <Compile Include="IntervalTest.cs" />
     <Compile Include="OffsetDateTimeTest.cs" />
     <Compile Include="PeriodBuilderTest.cs" />
+    <Compile Include="Testing\TimeZones\MultiTransitionDateTimeZoneTest.cs" />
+    <Compile Include="Testing\TimeZones\TestDateTimeZoneSourceTest.cs" />
     <Compile Include="TestObjects.cs" />
+    <Compile Include="Text\ZonedDateTimePatternTest.cs" />
     <Compile Include="Text\Cultures.cs" />
     <Compile Include="Text\InstantPatternTest.cs" />
     <Compile Include="Text\LocalDateTimePatternTest.cs" />
@@ -189,6 +192,9 @@
     <Compile Include="DateTimeZoneTest.Ids.cs">
       <DependentUpon>DateTimeZoneTest.cs</DependentUpon>
     </Compile>
+    <Compile Include="DateTimeZoneTest.GetAllZoneIntervals.cs">
+      <DependentUpon>DateTimeZoneTest.cs</DependentUpon>
+    </Compile>
     <Compile Include="DateTimeZoneTest.GetZoneIntervals.cs">
       <DependentUpon>DateTimeZoneTest.cs</DependentUpon>
     </Compile>
@@ -207,21 +213,21 @@
     <Compile Include="Text\ParseBucketTest.cs" />
     <Compile Include="Text\ParseResultTest.cs" />
     <Compile Include="Text\Patterns\PatternCursorTest.cs" />
-    <Compile Include="Text\Patterns\PatternParseResultTest.cs" />
     <Compile Include="Text\TextCursorTestBase.cs" />
     <Compile Include="Text\ValueCursorTest.cs" />
     <Compile Include="TimeZones\AlgiersTest.cs" />
     <Compile Include="TimeZones\BclDateTimeZoneSourceTest.cs" />
     <Compile Include="TimeZones\BclDateTimeZoneTest.cs" />
     <Compile Include="TimeZones\CachedDateTimeZoneTest.cs" />
-    <Compile Include="TimeZones\DateTimeZoneBuilderTest.cs" />
+    <Compile Include="TimeZones\IO\DtzIoHelper.cs" />
+    <Compile Include="TimeZones\IO\IoStream.cs" />
+    <Compile Include="TimeZones\IO\ReadWriteTest.cs" />
     <Compile Include="TimeZones\ResolversTest.cs" />
     <Compile Include="TimeZones\TzdbDateTimeZoneSourceTest.cs" />
     <Compile Include="TimeZones\DateTimeZoneCacheTest.cs" />
     <Compile Include="TimeZones\DaylightSavingDateTimeZoneTest.cs" />
     <Compile Include="TimeZones\EtcTest.cs" />
     <Compile Include="TimeZones\JordanTest.cs" />
-    <Compile Include="TimeZones\IoStream.cs" />
     <Compile Include="TimeZones\PrecalculatedDateTimeZoneTest.cs" />
     <Compile Include="DurationTest.cs" />
     <Compile Include="DurationTest.Operators.cs">
@@ -279,12 +285,10 @@
     <Compile Include="TimeZones\MiscellaneousBugReports.cs" />
     <Compile Include="TimeZones\ParisTest.cs" />
     <Compile Include="TimeZones\TzTestHelper.cs" />
+    <Compile Include="TimeZones\ZoneEqualityComparerTest.cs" />
     <Compile Include="TimeZones\ZoneIntervalPairTest.cs" />
     <Compile Include="TimeZones\ZoneIntervalTest.cs" />
     <Compile Include="TimeZones\ZoneRecurrenceTest.cs" />
-    <Compile Include="TimeZones\DtzIoHelper.cs" />
-    <Compile Include="TimeZones\ZoneTransitionTest.cs" />
-    <Compile Include="TimeZones\ReadWriteTest.cs" />
     <Compile Include="TimeZones\ZoneYearOffsetTest.cs" />
     <Compile Include="Utility\BclConversionsTest.cs" />
     <Compile Include="Utility\NodaReadOnlyDictionaryTest.cs" />

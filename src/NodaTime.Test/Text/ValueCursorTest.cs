@@ -1,19 +1,6 @@
-﻿#region Copyright and license information
-// Copyright 2001-2009 Stephen Colebourne
-// Copyright 2009-2011 Jon Skeet
-// 
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-// 
-//     http://www.apache.org/licenses/LICENSE-2.0
-// 
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-#endregion
+// Copyright 2011 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0,
+// as found in the LICENSE.txt file.
 
 using System.Globalization;
 using NUnit.Framework;
@@ -30,7 +17,7 @@ namespace NodaTime.Test.Text
         }
 
         [Test]
-        public void TestMatch_char()
+        public void Match_Char()
         {
             var value = new ValueCursor("abc");
             Assert.True(value.MoveNext(), "GetNext() 1");
@@ -41,7 +28,7 @@ namespace NodaTime.Test.Text
         }
 
         [Test]
-        public void TestMatch_string()
+        public void Match_String()
         {
             var value = new ValueCursor("abc");
             Assert.True(value.MoveNext(), "GetNext() 1");
@@ -50,7 +37,7 @@ namespace NodaTime.Test.Text
         }
 
         [Test]
-        public void TestMatch_stringNotMatched()
+        public void Match_StringNotMatched()
         {
             var value = new ValueCursor("xabcdef");
             Assert.True(value.MoveNext(), "GetNext() 1");
@@ -59,7 +46,7 @@ namespace NodaTime.Test.Text
         }
 
         [Test]
-        public void Match_stringOverLongStringToMatch()
+        public void Match_StringOverLongStringToMatch()
         {
             var value = new ValueCursor("x");
             Assert.True(value.MoveNext());
@@ -68,7 +55,7 @@ namespace NodaTime.Test.Text
         }
 
         [Test]
-        public void TestMatchCaseInsensitive_MatchAndMove()
+        public void MatchCaseInsensitive_MatchAndMove()
         {
             var value = new ValueCursor("abcd");
             Assert.True(value.MoveNext(), "GetNext() 1");
@@ -77,7 +64,7 @@ namespace NodaTime.Test.Text
         }
 
         [Test]
-        public void TestMatchCaseInsensitive_MatchWithoutMoving()
+        public void MatchCaseInsensitive_MatchWithoutMoving()
         {
             var value = new ValueCursor("abcd");
             Assert.True(value.MoveNext(), "GetNext() 1");
@@ -87,7 +74,7 @@ namespace NodaTime.Test.Text
         }
 
         [Test]
-        public void TestMatchCaseInsensitive_stringNotMatched()
+        public void MatchCaseInsensitive_StringNotMatched()
         {
             var value = new ValueCursor("xabcdef");
             Assert.True(value.MoveNext(), "GetNext() 1");
@@ -96,7 +83,7 @@ namespace NodaTime.Test.Text
         }
 
         [Test]
-        public void MatchCaseInsensitive_stringOverLongStringToMatch()
+        public void MatchCaseInsensitive_StringOverLongStringToMatch()
         {
             var value = new ValueCursor("x");
             Assert.True(value.MoveNext());
@@ -105,7 +92,7 @@ namespace NodaTime.Test.Text
         }
 
         [Test]
-        public void Match_stringPartial()
+        public void Match_StringPartial()
         {
             var value = new ValueCursor("abcdef");
             Assert.True(value.MoveNext(), "GetNext() 1");
@@ -114,7 +101,7 @@ namespace NodaTime.Test.Text
         }
 
         [Test]
-        public void TestParseDigit_failureTooFewDigits()
+        public void ParseDigits_TooFewDigits()
         {
             var value = new ValueCursor("a12b");
             Assert.True(value.MoveNext());
@@ -126,7 +113,7 @@ namespace NodaTime.Test.Text
         }
 
         [Test]
-        public void TestParseDigit_noNumber()
+        public void ParseDigits_NoNumber()
         {
             var value = new ValueCursor("abc");
             Assert.True(value.MoveNext());
@@ -136,7 +123,7 @@ namespace NodaTime.Test.Text
         }
 
         [Test]
-        public void TestParseDigit_successMaximum()
+        public void ParseDigits_Maximum()
         {
             var value = new ValueCursor("12");
             Assert.True(value.MoveNext());
@@ -146,7 +133,7 @@ namespace NodaTime.Test.Text
         }
 
         [Test]
-        public void TestParseDigit_successMaximumMoreDigits()
+        public void ParseDigits_MaximumMoreDigits()
         {
             var value = new ValueCursor("1234");
             Assert.True(value.MoveNext());
@@ -157,7 +144,7 @@ namespace NodaTime.Test.Text
         }
 
         [Test]
-        public void TestParseDigit_successMinimum()
+        public void ParseDigits_Minimum()
         {
             var value = new ValueCursor("1");
             value.MoveNext();
@@ -168,7 +155,7 @@ namespace NodaTime.Test.Text
         }
 
         [Test]
-        public void TestParseDigit_successMinimumNonDigits()
+        public void ParseDigits_MinimumNonDigits()
         {
             var value = new ValueCursor("1abc");
             Assert.True(value.MoveNext());
@@ -179,7 +166,7 @@ namespace NodaTime.Test.Text
         }
 
         [Test]
-        public void TestParseDigit_nonASCII_NeverMatches()
+        public void ParseDigits_NonAscii_NeverMatches()
         {
             // Arabic-Indic digits 0 and 1. See
             // http://www.unicode.org/charts/PDF/U0600.pdf
@@ -190,7 +177,7 @@ namespace NodaTime.Test.Text
         }
 
         [Test]
-        public void TestParseFraction_nonASCII_NeverMatches()
+        public void ParseFraction_NonAscii_NeverMatches()
         {
             // Arabic-Indic digits 0 and 1. See
             // http://www.unicode.org/charts/PDF/U0600.pdf
@@ -317,6 +304,69 @@ namespace NodaTime.Test.Text
             long result;
             Assert.IsNull(value.ParseInt64<string>(out result));
             Assert.AreEqual(long.MinValue, result);
+        }
+
+        [Test]
+        public void CompareOrdinal_ExactMatchToEndOfValue()
+        {
+            var value = new ValueCursor("xabc");
+            value.Move(1);
+            Assert.AreEqual(0, value.CompareOrdinal("abc"));
+            Assert.AreEqual(1, value.Index); // Cursor hasn't moved
+        }
+
+        [Test]
+        public void CompareOrdinal_ExactMatchValueContinues()
+        {
+            var value = new ValueCursor("xabc");
+            value.Move(1);
+            Assert.AreEqual(0, value.CompareOrdinal("ab"));
+            Assert.AreEqual(1, value.Index); // Cursor hasn't moved
+        }
+
+        [Test]
+        public void CompareOrdinal_ValueIsEarlier()
+        {
+            var value = new ValueCursor("xabc");
+            value.Move(1);
+            Assert.Less(value.CompareOrdinal("mm"), 0);
+            Assert.AreEqual(1, value.Index); // Cursor hasn't moved
+        }
+
+        [Test]
+        public void CompareOrdinal_ValueIsLater()
+        {
+            var value = new ValueCursor("xabc");
+            value.Move(1);
+            Assert.Greater(value.CompareOrdinal("aa"), 0);
+            Assert.AreEqual(1, value.Index); // Cursor hasn't moved
+        }
+
+        [Test]
+        public void CompareOrdinal_LongMatch_EqualToEnd()
+        {
+            var value = new ValueCursor("xabc");
+            value.Move(1);
+            Assert.Less(value.CompareOrdinal("abcd"), 0);
+            Assert.AreEqual(1, value.Index); // Cursor hasn't moved
+        }
+
+        [Test]
+        public void CompareOrdinal_LongMatch_ValueIsEarlier()
+        {
+            var value = new ValueCursor("xabc");
+            value.Move(1);
+            Assert.Less(value.CompareOrdinal("cccc"), 0);
+            Assert.AreEqual(1, value.Index); // Cursor hasn't moved
+        }
+
+        [Test]
+        public void CompareOrdinal_LongMatch_ValueIsLater()
+        {
+            var value = new ValueCursor("xabc");
+            value.Move(1);
+            Assert.Greater(value.CompareOrdinal("aaaa"), 0);
+            Assert.AreEqual(1, value.Index); // Cursor hasn't moved
         }
     }
 }

@@ -1,19 +1,6 @@
-﻿#region Copyright and license information
-// Copyright 2001-2009 Stephen Colebourne
-// Copyright 2009-2011 Jon Skeet
-// 
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-// 
-//     http://www.apache.org/licenses/LICENSE-2.0
-// 
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-#endregion
+// Copyright 2011 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0,
+// as found in the LICENSE.txt file.
 
 using System;
 using System.Globalization;
@@ -192,6 +179,72 @@ namespace NodaTime.Test
             Assert.That(value1.CompareTo(value2), Is.LessThan(0));
             Assert.That(value2.CompareTo(value1), Is.GreaterThan(0));
             Assert.That(value1.CompareTo(value3), Is.EqualTo(0));
+        }
+
+        /// <summary>
+        /// IComparable.CompareTo works properly for LocalDateTime inputs with different calendars.
+        /// </summary>
+        [Test]
+        public void IComparableCompareTo_SameCalendar()
+        {
+            LocalDateTime value1 = new LocalDateTime(2011, 1, 2, 10, 30);
+            LocalDateTime value2 = new LocalDateTime(2011, 1, 2, 10, 30);
+            LocalDateTime value3 = new LocalDateTime(2011, 1, 2, 10, 45);
+
+            IComparable i_value1 = (IComparable)value1;
+            IComparable i_value3 = (IComparable)value3;
+
+            Assert.That(i_value1.CompareTo(value2), Is.EqualTo(0));
+            Assert.That(i_value1.CompareTo(value3), Is.LessThan(0));
+            Assert.That(i_value3.CompareTo(value2), Is.GreaterThan(0));
+        }
+
+        /// <summary>
+        /// IComparable.CompareTo works properly for LocalDateTime inputs with different calendars.
+        /// </summary>
+        [Test]
+        public void IComparableCompareTo_DifferentCalendars_OnlyLocalInstantMatters()
+        {
+            CalendarSystem islamic = CalendarSystem.GetIslamicCalendar(IslamicLeapYearPattern.Base15, IslamicEpoch.Astronomical);
+            LocalDateTime value1 = new LocalDateTime(2011, 1, 2, 10, 30);
+            LocalDateTime value2 = new LocalDateTime(1500, 1, 1, 10, 30, islamic);
+            LocalDateTime value3 = value1.WithCalendar(islamic);
+
+            IComparable i_value1 = (IComparable)value1;
+            IComparable i_value2 = (IComparable)value2;
+
+            Assert.That(i_value1.CompareTo(value2), Is.LessThan(0));
+            Assert.That(i_value2.CompareTo(value1), Is.GreaterThan(0));
+            Assert.That(i_value1.CompareTo(value3), Is.EqualTo(0));
+        }
+
+        /// <summary>
+        /// IComparable.CompareTo returns a positive number for a null input.
+        /// </summary>
+        [Test]
+        public void IComparableCompareTo_Null_Positive()
+        {
+            var instance = new LocalDateTime(2012, 3, 5, 10, 45);
+            var i_instance = (IComparable)instance;
+            object arg = null;
+            var result = i_instance.CompareTo(arg);
+            Assert.That(result, Is.GreaterThan(0));
+        }
+
+        /// <summary>
+        /// IComparable.CompareTo throws an ArgumentException for non-null arguments 
+        /// that are not a LocalDateTime.
+        /// </summary>
+        [Test]
+        public void IComparableCompareTo_WrongType_ArgumentException()
+        {
+            var instance = new LocalDateTime(2012, 3, 5, 10, 45);
+            var i_instance = (IComparable)instance;
+            var arg = new LocalDate(2012, 3, 6);
+            Assert.Throws<ArgumentException>(() =>
+            {
+                i_instance.CompareTo(arg);
+            });
         }
 
         [Test]

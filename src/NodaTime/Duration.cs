@@ -1,19 +1,6 @@
-#region Copyright and license information
-// Copyright 2001-2009 Stephen Colebourne
-// Copyright 2009-2011 Jon Skeet
-// 
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-// 
-//     http://www.apache.org/licenses/LICENSE-2.0
-// 
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-#endregion
+// Copyright 2009 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0,
+// as found in the LICENSE.txt file.
 
 using System;
 using NodaTime.Utility;
@@ -56,6 +43,18 @@ namespace NodaTime
         /// This field is read-only.
         /// </summary>
         public static readonly Duration Epsilon = new Duration(1L);
+
+        /// <summary>
+        /// The maximum <see cref="Duration"/> which can be represented. Overflow will occur if this is
+        /// added to any value later than the Unix epoch.
+        /// </summary>
+        public static readonly Duration MaxValue = new Duration(long.MaxValue);
+
+        /// <summary>
+        /// The minimum <see cref="Duration"/> which can be represented. Overflow will occur if this is
+        /// added to any value earlier than the Unix epoch.
+        /// </summary>
+        public static readonly Duration MinValue = new Duration(long.MaxValue);
 
         /// <summary>
         /// Represents the <see cref="Duration"/> value equals to number of ticks in 1 standard week (7 days).

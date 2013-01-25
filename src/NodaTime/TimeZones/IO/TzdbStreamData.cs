@@ -1,19 +1,6 @@
-﻿#region Copyright and license information
-// Copyright 2001-2009 Stephen Colebourne
-// Copyright 2009-2013 Jon Skeet
-// 
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-// 
-//     http://www.apache.org/licenses/LICENSE-2.0
-// 
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-#endregion
+// Copyright 2012 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0,
+// as found in the LICENSE.txt file.
 
 using System.Collections.Generic;
 using System.IO;
@@ -51,11 +38,25 @@ namespace NodaTime.TimeZones.IO
             windowsMapping = CheckNotNull(builder.windowsMapping, "Windows mapping");
             windowsMappingVersion = CheckNotNull(builder.windowsMappingVersion, "Windows mapping version");
             zoneFields = builder.zoneFields;
+            // Check that each alias has a canonical value.
             foreach (var id in tzdbIdMap.Values)
             {
                 if (!zoneFields.ContainsKey(id))
                 {
-                    throw new IOException("Zone field for ID " + id + " is missing");
+                    throw new InvalidNodaDataException("Zone field for ID " + id + " is missing");
+                }
+            }
+            // Add in the canonical IDs as mappings to themselves.
+            foreach (var id in zoneFields.Keys)
+            {
+                tzdbIdMap[id] = id;
+            }
+            // Check that each Windows mapping has a known canonical ID.
+            foreach (var id in windowsMapping.Values)
+            {
+                if (!tzdbIdMap.ContainsKey(id))
+                {
+                    throw new InvalidNodaDataException("Windows mapping uses canonical ID " + id + " which is missing");
                 }
             }
         }
@@ -89,7 +90,7 @@ namespace NodaTime.TimeZones.IO
         {
             if (input == null)
             {
-                throw new IOException("Incomplete TZDB data. Missing field: " + name);
+                throw new InvalidNodaDataException("Incomplete TZDB data. Missing field: " + name);
             }
             return input;
         }
@@ -100,7 +101,7 @@ namespace NodaTime.TimeZones.IO
             int version = new BinaryReader(stream).ReadInt32();
             if (version != AcceptedVersion)
             {
-                throw new IOException("Unable to read stream with version " + version);
+                throw new InvalidNodaDataException("Unable to read stream with version " + version);
             }
             Builder builder = new Builder();
             foreach (var field in TzdbStreamField.ReadFields(stream))
@@ -153,7 +154,7 @@ namespace NodaTime.TimeZones.IO
                     string id = reader.ReadString();
                     if (zoneFields.ContainsKey(id))
                     {
-                        throw new IOException("Multiple definitions for zone " + id);
+                        throw new InvalidNodaDataException("Multiple definitions for zone " + id);
                     }
                     zoneFields[id] = field;
                 }
@@ -187,7 +188,7 @@ namespace NodaTime.TimeZones.IO
             {
                 if (expectedNullField != null)
                 {
-                    throw new IOException("Multiple fields of ID " + field.Id);
+                    throw new InvalidNodaDataException("Multiple fields of ID " + field.Id);
                 }
             }
 
@@ -195,7 +196,7 @@ namespace NodaTime.TimeZones.IO
             {
                 if (stringPool == null)
                 {
-                    throw new IOException("String pool must be present before field " + field.Id);
+                    throw new InvalidNodaDataException("String pool must be present before field " + field.Id);
                 }
             }
         }

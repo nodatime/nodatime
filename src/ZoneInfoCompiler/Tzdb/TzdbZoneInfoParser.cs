@@ -1,19 +1,6 @@
-#region Copyright and license information
-// Copyright 2001-2009 Stephen Colebourne
-// Copyright 2009-2011 Jon Skeet
-// 
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-// 
-//     http://www.apache.org/licenses/LICENSE-2.0
-// 
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-#endregion
+// Copyright 2009 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0,
+// as found in the LICENSE.txt file.
 
 using System;
 using System.Globalization;
@@ -57,17 +44,6 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         public static readonly string[] Months = { "", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
 
         /// <summary>
-        ///   Logs the given error message and then throws a ParseException to return to the top level.
-        /// </summary>
-        /// <param name="format">The message format.</param>
-        /// <param name="arguments">The optional arguments for the message.</param>
-        private void Error(string format, params object[] arguments)
-        {
-            Console.WriteLine(format, arguments);
-            throw new ParseException();
-        }
-
-        /// <summary>
         ///   Nexts the month.
         /// </summary>
         /// <param name="tokens">The tokens.</param>
@@ -108,7 +84,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         {
             if (!tokens.HasNextToken)
             {
-                Error("Missing zone info token {0}", name);
+                throw new InvalidDataException("Missing zone info token: " + name);
             }
             return tokens.NextToken(name);
         }
@@ -257,6 +233,10 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         private static int ParseDayOfWeek(string text)
         {
             int index = Array.IndexOf(DaysOfWeek, text, 1);
+            if (index == -1)
+            {
+                throw new InvalidDataException("Invalid day of week: " + text);
+            }
             // TODO(Post-V1): This isn't really a bug, so probably shouldn't be an ArgumentException.
             Preconditions.CheckArgument(index > 0, "text", "The value is not a valid day of week: " + text);
             return index;
@@ -330,7 +310,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
                     }
                     else
                     {
-                        Error("Unexpected zone database keyword: {0}", keyword);
+                        throw new InvalidDataException("Unexpected zone database keyword: " + keyword);
                     }
                     break;
             }
@@ -415,15 +395,5 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
 
             return new Zone(name, offset, rules, format, year, ZoneYearOffset.StartOfYear);
         }
-
-        #region Nested type: ParseException
-        /// <summary>
-        ///   Private exception to use to end the parsing of a line and return to the top level.
-        ///   This should NEVER propagate out of this file. Must be internal so the tests can see it.
-        /// </summary>
-        internal class ParseException : Exception
-        {
-        }
-        #endregion
     }
 }

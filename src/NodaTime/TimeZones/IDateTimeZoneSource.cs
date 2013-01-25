@@ -1,19 +1,6 @@
-﻿#region Copyright and license information
-// Copyright 2001-2009 Stephen Colebourne
-// Copyright 2009-2011 Jon Skeet
-// 
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-// 
-//     http://www.apache.org/licenses/LICENSE-2.0
-// 
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-#endregion
+// Copyright 2009 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0,
+// as found in the LICENSE.txt file.
 
 using System;
 using System.Collections.Generic;
@@ -39,11 +26,14 @@ namespace NodaTime.TimeZones
     public interface IDateTimeZoneSource
     {
         /// <summary>
-        /// Returns an enumeration of the available ids from this source.
+        /// Returns an unordered enumeration of the available ids from this source.
         /// </summary>
         /// <remarks>
         /// <para>
         /// Every value in this enumeration must return a valid time zone from <see cref="ForId"/> for the life of the source.
+        /// </para>
+        /// <para>
+        /// The source is not required to provide the IDs in any particular order, although they should be distinct.
         /// </para>
         /// <para>
         /// Note that this list may optionally contain any of the fixed-offset timezones (with IDs "UTC" and

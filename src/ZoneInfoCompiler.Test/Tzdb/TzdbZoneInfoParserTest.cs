@@ -1,19 +1,6 @@
-#region Copyright and license information
-// Copyright 2001-2009 Stephen Colebourne
-// Copyright 2009-2011 Jon Skeet
-// 
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-// 
-//     http://www.apache.org/licenses/LICENSE-2.0
-// 
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-#endregion
+// Copyright 2009 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0,
+// as found in the LICENSE.txt file.
 
 using NodaTime.TimeZones;
 using NodaTime.ZoneInfoCompiler.Tzdb;
@@ -57,7 +44,7 @@ namespace NodaTime.ZoneInfoCompiler.Test.Tzdb
         public void ParseDateTimeOfYear_emptyString()
         {
             var tokens = Tokens.Tokenize(string.Empty);
-            Assert.Throws(typeof(TzdbZoneInfoParser.ParseException), () => Parser.ParseDateTimeOfYear(tokens, true));
+            Assert.Throws(typeof(InvalidDataException), () => Parser.ParseDateTimeOfYear(tokens, true));
         }
 
         [Test]
@@ -65,7 +52,7 @@ namespace NodaTime.ZoneInfoCompiler.Test.Tzdb
         {
             const string text = "Mar lastSun";
             var tokens = Tokens.Tokenize(text);
-            Assert.Throws(typeof(TzdbZoneInfoParser.ParseException), () => Parser.ParseDateTimeOfYear(tokens, true));
+            Assert.Throws(typeof(InvalidDataException), () => Parser.ParseDateTimeOfYear(tokens, true));
         }
 
         [Test]
@@ -73,7 +60,7 @@ namespace NodaTime.ZoneInfoCompiler.Test.Tzdb
         {
             const string text = "Mar";
             var tokens = Tokens.Tokenize(text);
-            Assert.Throws(typeof(TzdbZoneInfoParser.ParseException), () => Parser.ParseDateTimeOfYear(tokens, true));
+            Assert.Throws(typeof(InvalidDataException), () => Parser.ParseDateTimeOfYear(tokens, true));
         }
 
         [Test]
@@ -201,7 +188,7 @@ namespace NodaTime.ZoneInfoCompiler.Test.Tzdb
         public void ParseLink_emptyString_exception()
         {
             var tokens = Tokens.Tokenize(string.Empty);
-            Assert.Throws(typeof(TzdbZoneInfoParser.ParseException), () => Parser.ParseLink(tokens));
+            Assert.Throws(typeof(InvalidDataException), () => Parser.ParseLink(tokens));
         }
 
         [Test]
@@ -217,7 +204,7 @@ namespace NodaTime.ZoneInfoCompiler.Test.Tzdb
         public void ParseLink_tooFewWords_exception()
         {
             var tokens = Tokens.Tokenize("from");
-            Assert.Throws(typeof(TzdbZoneInfoParser.ParseException), () => Parser.ParseLink(tokens));
+            Assert.Throws(typeof(InvalidDataException), () => Parser.ParseLink(tokens));
         }
 
         [Test]
@@ -263,7 +250,7 @@ namespace NodaTime.ZoneInfoCompiler.Test.Tzdb
         public void ParseZone_emptyString_exception()
         {
             var tokens = Tokens.Tokenize(string.Empty);
-            Assert.Throws(typeof(TzdbZoneInfoParser.ParseException), () => Parser.ParseZone(string.Empty, tokens));
+            Assert.Throws(typeof(InvalidDataException), () => Parser.ParseZone(string.Empty, tokens));
         }
 
         [Test]
@@ -286,14 +273,14 @@ namespace NodaTime.ZoneInfoCompiler.Test.Tzdb
         public void ParseZone_tooFewWords1_exception()
         {
             var tokens = Tokens.Tokenize("2:00 US");
-            Assert.Throws(typeof(TzdbZoneInfoParser.ParseException), () => Parser.ParseZone(string.Empty, tokens));
+            Assert.Throws(typeof(InvalidDataException), () => Parser.ParseZone(string.Empty, tokens));
         }
 
         [Test]
         public void ParseZone_tooFewWords2_exception()
         {
             var tokens = Tokens.Tokenize("2:00");
-            Assert.Throws(typeof(TzdbZoneInfoParser.ParseException), () => Parser.ParseZone(string.Empty, tokens));
+            Assert.Throws(typeof(InvalidDataException), () => Parser.ParseZone(string.Empty, tokens));
         }
 
         [Test]

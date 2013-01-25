@@ -1,19 +1,6 @@
-#region Copyright and license information
-// Copyright 2001-2009 Stephen Colebourne
-// Copyright 2009-2011 Jon Skeet
-// 
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-// 
-//     http://www.apache.org/licenses/LICENSE-2.0
-// 
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-#endregion
+// Copyright 2009 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0,
+// as found in the LICENSE.txt file.
 
 using System;
 using System.Collections.Generic;
@@ -26,8 +13,35 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
     /// </summary>
     internal class TzdbDatabase
     {
-        private readonly string version;
         private readonly SortedList<string, ZoneList> zoneLists;
+        /// <summary>
+        /// Returns the zone lists. This is only available for the sake of testing.
+        /// </summary>
+        internal IList<ZoneList> ZoneLists { get { return zoneLists.Values; } } 
+
+        private readonly string version;
+        /// <summary>
+        /// Returns the version of the TZDB data represented.
+        /// </summary>
+        internal string Version { get { return version; } }
+
+        private readonly IDictionary<string, string> aliases;
+        /// <summary>
+        /// Returns the (mutable) map of links from alias to canonical ID.
+        /// </summary>
+        internal IDictionary<string, string> Aliases { get { return aliases; } }
+
+        private readonly IDictionary<string, IList<ZoneRule>> rules;
+        /// <summary>
+        /// Mapping from rule name to the zone rules for that name. This is only available for the sake of testing.
+        /// </summary>
+        internal IDictionary<string, IList<ZoneRule>> Rules { get { return rules; } }
+
+        /// <summary>
+        /// The zone list which is currently being defined. This is used to gather all of the time zone
+        /// definitions that appear coincident.
+        /// </summary>
+        private ZoneList currentZoneList;
 
         /// <summary>
         ///   Initializes a new instance of the <see cref="TzdbDatabase" /> class.
@@ -35,40 +49,10 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         internal TzdbDatabase(string version)
         {
             zoneLists = new SortedList<string, ZoneList>();
-            Rules = new Dictionary<string, IList<ZoneRule>>();
-            Aliases = new Dictionary<string, string>();
+            rules = new Dictionary<string, IList<ZoneRule>>();
+            aliases = new Dictionary<string, string>();
             currentZoneList = null;
             this.version = version;
-        }
-
-        internal string Version { get { return version; } }
-
-        /// <summary>
-        ///   Gets or sets the time zone alias links.
-        /// </summary>
-        /// <value>The alias links.</value>
-        internal IDictionary<string, string> Aliases { get; private set; }
-
-        /// <summary>
-        ///   Gets or sets the current zone list. This is used to gather all of the time zone
-        ///   definitions that appear coincident.
-        /// </summary>
-        /// <value>The current zone list.</value>
-        private ZoneList currentZoneList;
-
-        /// <summary>
-        ///   Gets or sets the daylight savings rule sets.
-        /// </summary>
-        /// <value>The rule sets.</value>
-        internal IDictionary<string, IList<ZoneRule>> Rules { get; private set; }
-
-        /// <summary>
-        ///   Gets or sets the time zone definitions.
-        /// </summary>
-        /// <value>The time zone definitions.</value>
-        internal IList<ZoneList> ZoneLists
-        {
-            get { return zoneLists.Values; }
         }
 
         /// <summary>
@@ -77,7 +61,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         /// <param name="alias">The zone alias to add.</param>
         internal void AddAlias(ZoneAlias alias)
         {
-            Aliases.Add(alias.Alias, alias.Existing);
+            aliases.Add(alias.Alias, alias.Existing);
         }
 
         /// <summary>
@@ -88,10 +72,10 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         internal void AddRule(ZoneRule rule)
         {
             IList<ZoneRule> ruleSet;
-            if (!Rules.TryGetValue(rule.Name, out ruleSet))
+            if (!rules.TryGetValue(rule.Name, out ruleSet))
             {
                 ruleSet = new List<ZoneRule>();
-                Rules[rule.Name] = ruleSet;
+                rules[rule.Name] = ruleSet;
             }
             ruleSet.Add(rule);
         }
@@ -125,7 +109,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         /// </summary>
         internal IEnumerable<DateTimeZone> GenerateDateTimeZones()
         {
-            foreach (var zoneList in ZoneLists)
+            foreach (var zoneList in zoneLists.Values)
             {
                 yield return CreateTimeZone(zoneList);
             }
@@ -148,7 +132,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
                 else
                 {
                     IList<ZoneRule> ruleSet;
-                    if (Rules.TryGetValue(zone.Rules, out ruleSet))
+                    if (rules.TryGetValue(zone.Rules, out ruleSet))
                     {
                         AddRecurring(builder, zone.Format, ruleSet);
                     }
@@ -190,6 +174,18 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
                 string name = rule.FormatName(nameFormat);
                 builder.AddRecurringSavings(rule.Recurrence.WithName(name));
             }
+        }
+
+        /// <summary>
+        /// Writes various informational counts to the log.
+        /// </summary>
+        internal void LogCounts()
+        {
+            Console.WriteLine("=======================================");
+            Console.WriteLine("Rule sets: {0:D}", rules.Count);
+            Console.WriteLine("Zones:     {0:D}", zoneLists.Count);
+            Console.WriteLine("Aliases:   {0:D}", aliases.Count);
+            Console.WriteLine("=======================================");
         }
     }
 }

@@ -1,19 +1,6 @@
-﻿#region Copyright and license information
-// Copyright 2001-2009 Stephen Colebourne
-// Copyright 2009-2011 Jon Skeet
-// 
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-// 
-//     http://www.apache.org/licenses/LICENSE-2.0
-// 
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-#endregion
+// Copyright 2011 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0,
+// as found in the LICENSE.txt file.
 
 using System;
 using System.Globalization;
@@ -57,13 +44,13 @@ namespace NodaTime.Text
 
             // TODO(Post-V1): Expose these through properties, possibly renaming them?
             internal static readonly IPattern<LocalDateTime> BclRoundTripPattern =
-                new LocalDateTimePatternParser(DefaultTemplateValue).ParsePattern("yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fffffff", NodaFormatInfo.InvariantInfo).GetResultOrThrow();
+                new LocalDateTimePatternParser(DefaultTemplateValue).ParsePattern("yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fffffff", NodaFormatInfo.InvariantInfo);
 
             internal static readonly IPattern<LocalDateTime> FullRoundTripPattern =
-                new LocalDateTimePatternParser(DefaultTemplateValue).ParsePattern("yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fffffff '('c')'", NodaFormatInfo.InvariantInfo).GetResultOrThrow();
+                new LocalDateTimePatternParser(DefaultTemplateValue).ParsePattern("yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fffffff '('c')'", NodaFormatInfo.InvariantInfo);
 
             internal static readonly IPattern<LocalDateTime> SortablePattern =
-                new LocalDateTimePatternParser(DefaultTemplateValue).ParsePattern("yyyy'-'MM'-'dd'T'HH':'mm':'ss", NodaFormatInfo.InvariantInfo).GetResultOrThrow();
+                new LocalDateTimePatternParser(DefaultTemplateValue).ParsePattern("yyyy'-'MM'-'dd'T'HH':'mm':'ss", NodaFormatInfo.InvariantInfo);
         }
 
         private readonly string patternText;
@@ -134,10 +121,10 @@ namespace NodaTime.Text
             Preconditions.CheckNotNull(patternText, "patternText");
             Preconditions.CheckNotNull(formatInfo, "formatInfo");
             // Use the "fixed" parser for the common case of the default template value.
-            var patternParseResult = templateValue == DefaultTemplateValue
+            var pattern = templateValue == DefaultTemplateValue
                 ? formatInfo.LocalDateTimePatternParser.ParsePattern(patternText)
                 : new LocalDateTimePatternParser(templateValue).ParsePattern(patternText, formatInfo);
-            return new LocalDateTimePattern(patternText, formatInfo, templateValue, patternParseResult.GetResultOrThrow());
+            return new LocalDateTimePattern(patternText, formatInfo, templateValue, pattern);
         }
 
         /// <summary>

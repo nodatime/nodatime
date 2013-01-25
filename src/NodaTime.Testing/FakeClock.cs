@@ -1,23 +1,12 @@
-﻿#region Copyright and license information
-// Copyright 2001-2009 Stephen Colebourne
-// Copyright 2009-2011 Jon Skeet
-// 
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-// 
-//     http://www.apache.org/licenses/LICENSE-2.0
-// 
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-#endregion
+// Copyright 2011 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0,
+// as found in the LICENSE.txt file.
+
 namespace NodaTime.Testing
 {
     /// <summary>
-    /// Clock which can be constructed with an initial instant, and then advanced programmatically.
+    /// Clock which can be constructed with an initial instant, and then advanced programmatically (and optionally,
+    /// automatically advanced on each read).
     /// This class is designed to be used when testing classes which take an <see cref="IClock"/> as a dependency.
     /// </summary>
     /// <remarks>
@@ -38,13 +27,18 @@ namespace NodaTime.Testing
         /// <summary>
         /// Creates a fake clock initially set to the given instant, with no auto-advance.
         /// </summary>
+        /// <param name="initial">The initial instant.</param>
         public FakeClock(Instant initial) : this(initial, Duration.Zero)
         {            
         }
 
         /// <summary>
-        /// Creates a fake clock initially set to the given instant, with a given level of auto-advance.
+        /// Creates a fake clock initially set to the given instant. The clock will advance by the given duration on
+        /// each read.
         /// </summary>
+        /// <param name="initial">The initial instant.</param>
+        /// <param name="autoAdvance">The duration to advance the clock on each read.</param>
+        /// <seealso cref="AutoAdvance"/>
         public FakeClock(Instant initial, Duration autoAdvance)
         {
             now = initial;
@@ -53,23 +47,40 @@ namespace NodaTime.Testing
 
         /// <summary>
         /// Returns a fake clock initially set to midnight of the given year/month/day in UTC in the ISO calendar.
+        /// The value of the <see cref="AutoAdvance"/> property will be initialised to zero.
         /// </summary>
-        public static FakeClock FromUtc(int year, int month, int dayOfMonth)
+        /// <param name="year">The year. This is the "absolute year",
+        /// so a value of 0 means 1 BC, for example.</param>
+        /// <param name="monthOfYear">The month of year.</param>
+        /// <param name="dayOfMonth">The day of month.</param>
+        /// <returns>A <see cref="FakeClock"/> initialised to the given instant, with no auto-advance.</returns>
+        public static FakeClock FromUtc(int year, int monthOfYear, int dayOfMonth)
         {
-            return new FakeClock(Instant.FromUtc(year, month, dayOfMonth, 0, 0));
+            return new FakeClock(Instant.FromUtc(year, monthOfYear, dayOfMonth, 0, 0));
         }
 
         /// <summary>
         /// Returns a fake clock initially set to the given year/month/day/time in UTC in the ISO calendar.
+        /// The value of the <see cref="AutoAdvance"/> property will be initialised to zero.
         /// </summary>
-        public static FakeClock FromUtc(int year, int month, int dayOfMonth, int hour, int minute, int second)
+        /// <param name="year">The year. This is the "absolute year",
+        /// so a value of 0 means 1 BC, for example.</param>
+        /// <param name="monthOfYear">The month of year.</param>
+        /// <param name="dayOfMonth">The day of month.</param>
+        /// <param name="hourOfDay">The hour.</param>
+        /// <param name="minuteOfHour">The minute.</param>
+        /// <param name="secondOfMinute">The second.</param>
+        /// <returns>A <see cref="FakeClock"/> initialised to the given instant, with no auto-advance.</returns>
+        public static FakeClock FromUtc(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour, int secondOfMinute)
         {
-            return new FakeClock(Instant.FromUtc(year, month, dayOfMonth, hour, minute, second));
+            return new FakeClock(Instant.FromUtc(year, monthOfYear, dayOfMonth, hourOfDay, minuteOfHour, secondOfMinute));
         }
 
         /// <summary>
         /// Advances the clock by the given duration.
         /// </summary>
+        /// <param name="duration">The duration to advance the clock by (or if negative, the duration to move it back
+        /// by).</param>
         public void Advance(Duration duration)
         {
             lock (mutex)
@@ -81,6 +92,8 @@ namespace NodaTime.Testing
         /// <summary>
         /// Advances the clock by the given number of ticks.
         /// </summary>
+        /// <param name="ticks">The number of ticks to advance the clock by (or if negative, the number to move it back
+        /// by).</param>
         public void AdvanceTicks(long ticks)
         {
             Advance(Duration.FromTicks(ticks));
@@ -89,6 +102,8 @@ namespace NodaTime.Testing
         /// <summary>
         /// Advances the clock by the given number of milliseconds.
         /// </summary>
+        /// <param name="milliseconds">The number of milliseconds to advance the clock by (or if negative, the number
+        /// to move it back by).</param>
         public void AdvanceMilliseconds(long milliseconds)
         {
             Advance(Duration.FromMilliseconds(milliseconds));
@@ -97,6 +112,8 @@ namespace NodaTime.Testing
         /// <summary>
         /// Advances the clock by the given number of seconds.
         /// </summary>
+        /// <param name="seconds">The number of seconds to advance the clock by (or if negative, the number to move it
+        /// back by).</param>
         public void AdvanceSeconds(long seconds)
         {
             Advance(Duration.FromSeconds(seconds));
@@ -105,6 +122,8 @@ namespace NodaTime.Testing
         /// <summary>
         /// Advances the clock by the given number of minutes.
         /// </summary>
+        /// <param name="minutes">The number of minutes to advance the clock by (or if negative, the number to move it
+        /// back by).</param>
         public void AdvanceMinutes(long minutes)
         {
             Advance(Duration.FromMinutes(minutes));
@@ -113,6 +132,8 @@ namespace NodaTime.Testing
         /// <summary>
         /// Advances the clock by the given number of hours.
         /// </summary>
+        /// <param name="hours">The number of hours to advance the clock by (or if negative, the number to move it
+        /// back by).</param>
         public void AdvanceHours(long hours)
         {
             Advance(Duration.FromHours(hours));
@@ -121,6 +142,8 @@ namespace NodaTime.Testing
         /// <summary>
         /// Advances the clock by the given number of standard (24-hour) days.
         /// </summary>
+        /// <param name="days">The number of days to advance the clock by (or if negative, the number to move it
+        /// back by).</param>
         public void AdvanceDays(long days)
         {
             Advance(Duration.FromStandardDays(days));
@@ -128,7 +151,9 @@ namespace NodaTime.Testing
 
         /// <summary>
         /// Resets the clock to the given instant.
+        /// The value of the <see cref="AutoAdvance"/> property will be unchanged.
         /// </summary>
+        /// <param name="instant">The instant to set the clock to.</param>
         public void Reset(Instant instant)
         {
             lock (mutex)
@@ -139,9 +164,13 @@ namespace NodaTime.Testing
 
         /// <summary>
         /// Returns the "current time" for this clock. Unlike a normal clock, this
-        /// property will return the same value from repeated calls until one of the methods
+        /// property may return the same value from repeated calls until one of the methods
         /// to change the time is called.
         /// </summary>
+        /// <remarks>
+        /// If the value of the <see cref="AutoAdvance"/> property is non-zero, then every
+        /// call to this method will advance the current time by that value.
+        /// </remarks>
         public Instant Now
         {
             get
@@ -156,13 +185,19 @@ namespace NodaTime.Testing
         }
 
         /// <summary>
-        /// Amount of time to advance the clock by each time <see cref="Now"/> is fetched.
+        /// Amount of time to advance the clock by on each call to read the current time.
         /// </summary>
         /// <remarks>
-        /// This defaults to zero, in which case the clock doesn't change other than by calls
-        /// to <see cref="Reset"/>. The value may be negative, to simulate particularly odd
-        /// system clock effects.
+        /// <para>
+        /// This defaults to zero, with the exception of the <see cref="FakeClock(Instant, Duration)"/> constructor,
+        /// which takes the initial value directly.  If this is zero, the current time as reported by this clock will
+        /// not change other than by calls to <see cref="Reset"/> or to one of the <see cref="Advance"/> methods.
+        /// </para>
+        /// <para>
+        /// The value could even be negative, to simulate particularly odd system clock effects.
+        /// </para>
         /// </remarks>
+        /// <seealso cref="Now"/>
         public Duration AutoAdvance
         {
             get

@@ -1,19 +1,6 @@
-#region Copyright and license information
-// Copyright 2001-2009 Stephen Colebourne
-// Copyright 2009-2011 Jon Skeet
-// 
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-// 
-//     http://www.apache.org/licenses/LICENSE-2.0
-// 
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-#endregion
+// Copyright 2013 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0,
+// as found in the LICENSE.txt file.
 
 using System;
 using System.Collections.Generic;
@@ -21,14 +8,12 @@ using System.IO;
 using System.Text;
 using NodaTime.Utility;
 
-namespace NodaTime.TimeZones
+namespace NodaTime.TimeZones.IO
 {
     /// <summary>
-    /// Provides primitive writing operations tailored towards writing time zone
-    /// data in an efficient way which can then be read by <see cref="DateTimeZoneReader"/>.
+    /// Implementation of <see cref="IDateTimeZoneWriter"/> which maintains the legacy "resource" format.
     /// </summary>
-    // TODO: Consider renaming to TzdbDateTimeZoneWriter
-    internal sealed class DateTimeZoneWriter
+    internal sealed class LegacyDateTimeZoneWriter : IDateTimeZoneWriter
     {
         internal const byte FlagTimeZoneCached = 0;
         internal const byte FlagTimeZoneDst = 1;
@@ -65,11 +50,11 @@ namespace NodaTime.TimeZones
         private readonly IList<string> stringPool; 
 
         /// <summary>
-        /// Constructs a DateTimeZoneWriter.
+        /// Constructs a LegacyDateTimeZoneWriter.
         /// </summary>
         /// <param name="output">Where to send the serialized output.</param>
         /// <param name="stringPool">String pool to add strings to, or null for no pool</param>
-        internal DateTimeZoneWriter(Stream output, IList<string> stringPool)
+        internal LegacyDateTimeZoneWriter(Stream output, IList<string> stringPool)
         {
             this.output = output;
             this.stringPool = stringPool;
@@ -79,7 +64,7 @@ namespace NodaTime.TimeZones
         /// Writes the given non-negative integer value to the stream.
         /// </summary>
         /// <param name="value">The value to write.</param>
-        internal void WriteCount(int value)
+        public void WriteCount(int value)
         {
             Preconditions.CheckArgumentRange("value", value, 0, int.MaxValue);
             unchecked
@@ -124,10 +109,19 @@ namespace NodaTime.TimeZones
         }
 
         /// <summary>
+        /// Always throws NotSupportedException
+        /// </summary>
+        /// <param name="value">The string to write to the stream.</param>
+        public void WriteSignedCount(int count)
+        {
+            throw new NotSupportedException();
+        }
+
+        /// <summary>
         /// Writes the offset value to the stream.
         /// </summary>
         /// <param name="offset">The value to write.</param>
-        internal void WriteOffset(Offset offset)
+        public void WriteOffset(Offset offset)
         {
             int millis = offset.Milliseconds;
             /*
@@ -138,23 +132,11 @@ namespace NodaTime.TimeZones
              * 0xxxxxxx        30 minutes  1 byte        +/- 24 hours
              * 10xxxxxx        seconds     3 bytes       +/- 24 hours
              * 11111101  0xfd  millis      5 byte        Full range
-             * 11111110  0xfe              1 byte        Int32.MaxValue
-             * 11111111  0xff              1 byte        Int32.MinValue
              *
              * Remaining bits in field form signed offset from 1970-01-01T00:00:00Z.
              */
             unchecked
             {
-                if (millis == Int32.MinValue)
-                {
-                    WriteByte(FlagMinValue);
-                    return;
-                }
-                if (millis == Int32.MaxValue)
-                {
-                    WriteByte(FlagMaxValue);
-                    return;
-                }
                 if (millis % (30 * NodaConstants.MillisecondsPerMinute) == 0)
                 {
                     // Try to write in 30 minute units.
@@ -193,7 +175,7 @@ namespace NodaTime.TimeZones
         /// Writes the long ticks value to the stream.
         /// </summary>
         /// <param name="value">The value to write.</param>
-        internal void WriteTicks(long value)
+        private void WriteTicks(long value)
         {
             /*
              * Ticks encoding formats:
@@ -283,7 +265,7 @@ namespace NodaTime.TimeZones
         /// Writes the given dictionary of string to string to the stream.
         /// </summary>
         /// <param name="dictionary">The <see cref="IDictionary{TKey,TValue}" /> to write.</param>
-        internal void WriteDictionary(IDictionary<string, string> dictionary)
+        public void WriteDictionary(IDictionary<string, string> dictionary)
         {
             Preconditions.CheckNotNull(dictionary, "dictionary");
             WriteCount(dictionary.Count);
@@ -298,16 +280,7 @@ namespace NodaTime.TimeZones
         /// Writes the <see cref="Instant" /> value to the stream.
         /// </summary>
         /// <param name="value">The value to write.</param>
-        internal void WriteInstant(Instant value)
-        {
-            WriteTicks(value.Ticks);
-        }
-
-        /// <summary>
-        /// Writes the <see cref="LocalInstant" /> value to the stream.
-        /// </summary>
-        /// <param name="value">The value to write.</param>
-        internal void WriteLocalInstant(LocalInstant value)
+        public void WriteInstant(Instant value)
         {
             WriteTicks(value.Ticks);
         }
@@ -316,7 +289,7 @@ namespace NodaTime.TimeZones
         /// Writes the string value to the stream.
         /// </summary>
         /// <param name="value">The value to write.</param>
-        internal void WriteString(string value)
+        public void WriteString(string value)
         {
             if (stringPool == null)
             {
@@ -341,7 +314,7 @@ namespace NodaTime.TimeZones
         /// Writes the <see cref="DateTimeZone" /> value to the stream.
         /// </summary>
         /// <param name="value">The value to write.</param>
-        internal void WriteTimeZone(DateTimeZone value)
+        public void WriteTimeZone(DateTimeZone value)
         {
             if (value == null)
             {
@@ -356,7 +329,7 @@ namespace NodaTime.TimeZones
             else if (value is PrecalculatedDateTimeZone)
             {
                 WriteByte(FlagTimeZonePrecalculated);
-                ((PrecalculatedDateTimeZone)value).Write(this);
+                ((PrecalculatedDateTimeZone)value).WriteLegacy(this);
             }
             else if (value is CachedDateTimeZone)
             {
@@ -366,7 +339,7 @@ namespace NodaTime.TimeZones
             else if (value is DaylightSavingsDateTimeZone)
             {
                 WriteByte(FlagTimeZoneDst);
-                ((DaylightSavingsDateTimeZone)value).Write(this);
+                ((DaylightSavingsDateTimeZone)value).WriteLegacy(this);
             }
             else
             {
@@ -404,7 +377,7 @@ namespace NodaTime.TimeZones
         /// Writes the given 64 bit integer value to the stream.
         /// </summary>
         /// <param name="value">The value to write.</param>
-        internal void WriteInt64(long value)
+        private void WriteInt64(long value)
         {
             unchecked
             {
@@ -417,7 +390,7 @@ namespace NodaTime.TimeZones
         /// Writes the given 8 bit integer value to the stream.
         /// </summary>
         /// <param name="value">The value to write.</param>
-        internal void WriteByte(byte value)
+        public void WriteByte(byte value)
         {
             unchecked
             {

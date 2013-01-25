@@ -1,21 +1,10 @@
-#region Copyright and license information
-// Copyright 2001-2009 Stephen Colebourne
-// Copyright 2009-2011 Jon Skeet
-// 
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-// 
-//     http://www.apache.org/licenses/LICENSE-2.0
-// 
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-#endregion
+// Copyright 2011 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0,
+// as found in the LICENSE.txt file.
 
 using System;
+using System.Globalization;
+
 #if !PCL
 using System.Runtime.Serialization;
 #endif
@@ -48,6 +37,18 @@ namespace NodaTime.Text
             : base(message)
         {
         }
+
+        /// <summary>
+        /// Creates a new InvalidPatternException by formatting the given format string with
+        /// the specified parameters, in the current culture.
+        /// </summary>
+        /// <param name="formatString">Format string to use in order to create the final message</param>
+        /// <param name="parameters">Format string parameters</param>
+        internal InvalidPatternException(string formatString, params object[] parameters)
+            : this(string.Format(CultureInfo.CurrentCulture, formatString, parameters))
+        {            
+        }
+
 
 #if !PCL
         /// <summary>

@@ -1,19 +1,6 @@
-﻿#region Copyright and license information
-// Copyright 2001-2009 Stephen Colebourne
-// Copyright 2009-2010 Jon Skeet
-// 
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-// 
-//     http://www.apache.org/licenses/LICENSE-2.0
-// 
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-#endregion
+// Copyright 2011 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0,
+// as found in the LICENSE.txt file.
 
 using System;
 using NUnit.Framework;
@@ -164,6 +151,53 @@ namespace NodaTime.Test
             Assert.That(time1.CompareTo(time2), Is.EqualTo(0));
             Assert.That(time1.CompareTo(time3), Is.LessThan(0));
             Assert.That(time3.CompareTo(time2), Is.GreaterThan(0));
+        }
+
+        /// <summary>
+        /// IComparable.CompareTo works properly for LocalTime inputs.
+        /// </summary>
+        [Test]
+        public void IComparableCompareTo()
+        {
+            LocalTime time1 = new LocalTime(10, 30, 45);
+            LocalTime time2 = new LocalTime(10, 30, 45);
+            LocalTime time3 = new LocalTime(10, 30, 50);
+
+            var i_time1 = (IComparable)time1;
+            var i_time3 = (IComparable)time3;
+
+            Assert.That(i_time1.CompareTo(time2), Is.EqualTo(0));
+            Assert.That(i_time1.CompareTo(time3), Is.LessThan(0));
+            Assert.That(i_time3.CompareTo(time2), Is.GreaterThan(0));
+        }
+
+        /// <summary>
+        /// IComparable.CompareTo returns a positive number for a null input.
+        /// </summary>
+        [Test]
+        public void IComparableCompareTo_Null_Positive()
+        {
+            var instance = new LocalTime(10, 30, 45);
+            var i_instance = (IComparable)instance;
+            object arg = null;
+            var result = i_instance.CompareTo(arg);
+            Assert.That(result, Is.GreaterThan(0));
+        }
+
+        /// <summary>
+        /// IComparable.CompareTo throws an ArgumentException for non-null arguments 
+        /// that are not a LocalTime.
+        /// </summary>
+        [Test]
+        public void IComparableCompareTo_WrongType_ArgumentException()
+        {
+            var instance = new LocalTime(10, 30, 45);
+            var i_instance = (IComparable)instance;
+            var arg = new LocalDate(2012, 3, 6);
+            Assert.Throws<ArgumentException>(() =>
+            {
+                i_instance.CompareTo(arg);
+            });
         }
     }
 }

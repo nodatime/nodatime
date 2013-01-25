@@ -1,22 +1,10 @@
-﻿#region Copyright and license information
-// Copyright 2001-2009 Stephen Colebourne
-// Copyright 2009-2010 Jon Skeet
-// 
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-// 
-//     http://www.apache.org/licenses/LICENSE-2.0
-// 
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-#endregion
+// Copyright 2011 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0,
+// as found in the LICENSE.txt file.
 
 using NUnit.Framework;
 using NodaTime.Calendars;
+using System;
 
 namespace NodaTime.Test
 {
@@ -139,6 +127,72 @@ namespace NodaTime.Test
             Assert.That(date1.CompareTo(date2), Is.LessThan(0));
             Assert.That(date2.CompareTo(date1), Is.GreaterThan(0));
             Assert.That(date1.CompareTo(date3), Is.EqualTo(0));
+        }
+
+        /// <summary>
+        /// IComparable.CompareTo works properly with LocalDate inputs with same calendar.
+        /// </summary>
+        [Test]
+        public void IComparableCompareTo_SameCalendar()
+        {
+            var instance = new LocalDate(2012, 3, 5);
+            var i_instance = (IComparable)instance;
+            
+            var later = new LocalDate(2012, 6, 4);
+            var earlier = new LocalDate(2012, 1, 4);
+            var same = new LocalDate(2012, 3, 5);
+
+            Assert.That(i_instance.CompareTo(later), Is.LessThan(0));
+            Assert.That(i_instance.CompareTo(earlier), Is.GreaterThan(0));
+            Assert.That(i_instance.CompareTo(same), Is.EqualTo(0));
+        }
+
+        /// <summary>
+        /// IComparable.CompareTo works properly with LocalDate inputs with different calendars.
+        /// </summary>
+        [Test]
+        public void IComparableCompareTo_DifferentCalendars_OnlyLocalInstantMatters()
+        {
+            CalendarSystem islamic = CalendarSystem.GetIslamicCalendar(IslamicLeapYearPattern.Base15, IslamicEpoch.Astronomical);
+            LocalDate date1 = new LocalDate(2011, 1, 2);
+            LocalDate date2 = new LocalDate(1500, 1, 1, islamic);
+            LocalDate date3 = date1.WithCalendar(islamic);
+
+            IComparable i_date1 = (IComparable)date1;
+            IComparable i_date2 = (IComparable)date2;
+
+            Assert.That(i_date1.CompareTo(date2), Is.LessThan(0));
+            Assert.That(i_date2.CompareTo(date1), Is.GreaterThan(0));
+            Assert.That(i_date1.CompareTo(date3), Is.EqualTo(0));
+        }
+
+        /// <summary>
+        /// IComparable.CompareTo returns a positive number for a null input.
+        /// </summary>
+        [Test]
+        public void IComparableCompareTo_Null_Positive()
+        {
+            var instance = new LocalDate(2012, 3, 5);
+            var i_instance = (IComparable)instance;
+            object arg = null;
+            var result = i_instance.CompareTo(arg);
+            Assert.Greater(result, 0);
+        }
+
+        /// <summary>
+        /// IComparable.CompareTo throws an ArgumentException for non-null arguments 
+        /// that are not a LocalDate.
+        /// </summary>
+        [Test]
+        public void IComparableCompareTo_WrongType_ArgumentException()
+        {
+            var instance = new LocalDate(2012, 3, 5);
+            var i_instance = (IComparable)instance;
+            var arg = new LocalDateTime(2012, 3, 6, 15, 42);
+            Assert.Throws<ArgumentException>(() =>
+            {
+                i_instance.CompareTo(arg);
+            });
         }
     }
 }

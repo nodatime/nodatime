@@ -1,20 +1,8 @@
-﻿#region Copyright and license information
-// Copyright 2001-2009 Stephen Colebourne
-// Copyright 2009-2013 Jon Skeet
-// 
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-// 
-//     http://www.apache.org/licenses/LICENSE-2.0
-// 
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-#endregion
+// Copyright 2012 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0,
+// as found in the LICENSE.txt file.
 
+using System;
 using NodaTime.TimeZones;
 using System.Collections.Generic;
 using System.IO;
@@ -54,13 +42,12 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         {
             FieldCollection fields = new FieldCollection();
 
-            var stringPool = new List<string>();
+            var zones = database.GenerateDateTimeZones().ToList();
+            var stringPool = CreateOptimizedStringPool(zones);
             
             // First assemble the fields (writing to the string pool as we go)
-            var timeZoneMap = new Dictionary<string, string>();
-            foreach (var zone in database.GenerateDateTimeZones())
+            foreach (var zone in zones)
             {
-                timeZoneMap.Add(zone.Id, zone.Id);
                 var zoneField = fields.AddField(TzdbStreamFieldId.TimeZone, stringPool);
                 zoneField.Writer.WriteString(zone.Id);
                 zoneField.Writer.WriteTimeZone(zone);
@@ -70,6 +57,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
             fields.AddField(TzdbStreamFieldId.WindowsMappingVersion, null).Writer.WriteString(mapping.Version);
 
             // Normalize the aliases
+            var timeZoneMap = new Dictionary<string, string>();
             foreach (var key in database.Aliases.Keys)
             {
                 var value = database.Aliases[key];
@@ -98,13 +86,86 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         }
 
         /// <summary>
+        /// Creates a string pool which contains the most commonly-used strings within the given set
+        /// of zones first. This will allow them to be more efficiently represented when we write them out for real.
+        /// </summary>
+        private static List<string> CreateOptimizedStringPool(IEnumerable<DateTimeZone> zones)
+        {
+            var optimizingWriter = new StringPoolOptimizingFakeWriter();
+            foreach (var zone in zones)
+            {
+                optimizingWriter.WriteString(zone.Id);
+                optimizingWriter.WriteTimeZone(zone);
+            }
+            return optimizingWriter.CreatePool();
+        }
+
+        /// <summary>
+        /// Writer which only cares about strings. It builds a complete list of all strings written for the given
+        /// zones, then creates a distinct list in most-prevalent-first order. This allows the most frequently-written
+        /// strings to be the ones which are cheapest to write.
+        /// </summary>
+        private class StringPoolOptimizingFakeWriter : IDateTimeZoneWriter 
+        {
+            private List<string> allStrings = new List<string>();
+
+            public List<string> CreatePool()
+            {
+                return allStrings.GroupBy(x => x)
+                                 .OrderByDescending(g => g.Count())
+                                 .Select(g => g.Key)
+                                 .ToList();
+            }
+
+            public void WriteString(string value)
+            {
+                allStrings.Add(value);
+            }
+
+            public void WriteOffset(Offset offset) {}
+            public void WriteCount(int count) { }
+            public void WriteSignedCount(int count) { }
+            public void WriteInstant(Instant instant) {}
+
+            public void WriteDictionary(IDictionary<string, string> dictionary)
+            {
+                foreach (var entry in dictionary)
+                {
+                    WriteString(entry.Key);
+                    WriteString(entry.Value);
+                }
+            }
+
+            // TODO: Either refactor, or perhaps use dynamic typing
+            public void WriteTimeZone(DateTimeZone zone)
+            {
+                if (zone is FixedDateTimeZone)
+                {
+                    ((FixedDateTimeZone)zone).Write(this);
+                }
+                else if (zone is PrecalculatedDateTimeZone)
+                {
+                    ((PrecalculatedDateTimeZone)zone).Write(this);
+                }
+                else if (zone is CachedDateTimeZone)
+                {
+                    ((CachedDateTimeZone) zone).Write(this);
+                }
+                else if (zone is DaylightSavingsDateTimeZone)
+                {
+                    ((DaylightSavingsDateTimeZone)zone).Write(this);
+                }
+            }
+        }
+
+        /// <summary>
         /// The data for a field, including the field number itself.
         /// </summary>
         private class FieldData
         {
-            internal readonly MemoryStream stream;
+            private readonly MemoryStream stream;
             private readonly TzdbStreamFieldId fieldId;
-            private readonly DateTimeZoneWriter writer;
+            private readonly IDateTimeZoneWriter writer;
 
             internal FieldData(TzdbStreamFieldId fieldId, IList<string> stringPool)
             {
@@ -113,20 +174,15 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
                 this.writer = new DateTimeZoneWriter(stream, stringPool);
             }
 
-            internal DateTimeZoneWriter Writer { get { return writer; } }
+            internal IDateTimeZoneWriter Writer { get { return writer; } }
             internal TzdbStreamFieldId FieldId { get { return fieldId; } }
 
             internal void WriteTo(Stream output)
             {
                 output.WriteByte((byte)fieldId);
                 int length = (int) stream.Length;
-                // Write 7-bit-encoded integer
-                while (length > 0x7f)
-                {
-                    output.WriteByte((byte) (0x80 | (length & 0x7f)));
-                    length = length >> 7;
-                }
-                output.WriteByte((byte) (length & 0x7f));
+                // We've got a 7-bit-encoding routine... might as well use it.
+                new DateTimeZoneWriter(output, null).WriteCount(length);
                 stream.WriteTo(output);
             }
         }

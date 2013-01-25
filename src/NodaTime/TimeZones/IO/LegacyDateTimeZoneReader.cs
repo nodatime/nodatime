@@ -1,38 +1,24 @@
-#region Copyright and license information
-// Copyright 2001-2009 Stephen Colebourne
-// Copyright 2009-2011 Jon Skeet
-// 
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-// 
-//     http://www.apache.org/licenses/LICENSE-2.0
-// 
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-#endregion
+// Copyright 2013 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0,
+// as found in the LICENSE.txt file.
 
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using NodaTime.Utility;
 
-namespace NodaTime.TimeZones
+namespace NodaTime.TimeZones.IO
 {
     /// <summary>
-    /// Provides mostly primitive data reading capabilities for use from time zone classes,
-    /// for reading data written by <see cref="DateTimeZoneWriter"/>.
+    /// Implementation of <see cref="IDateTimeZoneReader"/> which maintains the legacy "resource" format.
     /// </summary>
-    // TODO: Consider renaming to TzdbDateTimeZoneReader
-    internal sealed class DateTimeZoneReader
+    internal sealed class LegacyDateTimeZoneReader : IDateTimeZoneReader
     {
         private readonly Stream input;
         private readonly IList<string> stringPool; 
 
-        internal DateTimeZoneReader(Stream input, IList<string> stringPool)
+        internal LegacyDateTimeZoneReader(Stream input, IList<string> stringPool)
         {
             this.input = input;
             this.stringPool = stringPool;
@@ -42,10 +28,10 @@ namespace NodaTime.TimeZones
         /// Reads a non-negative integer value from the stream.
         /// </summary>
         /// <remarks>
-        /// The value must have been written by <see cref="DateTimeZoneWriter.WriteCount" />.
+        /// The value must have been written by <see cref="LegacyDateTimeZoneWriter.WriteCount" />.
         /// </remarks>
         /// <returns>The integer value from the stream.</returns>
-        internal int ReadCount()
+        public int ReadCount()
         {
             unchecked
             {
@@ -92,13 +78,22 @@ namespace NodaTime.TimeZones
         }
 
         /// <summary>
+        /// Always throws NotSupportedException
+        /// </summary>
+        /// <returns>The integer read from the stream</returns>
+        public int ReadSignedCount()
+        {
+            throw new NotSupportedException();
+        }
+
+        /// <summary>
         /// Reads an offset value from the stream.
         /// </summary>
         /// <remarks>
-        /// The value must have been written by <see cref="DateTimeZoneWriter.WriteOffset" />.
+        /// The value must have been written by <see cref="LegacyDateTimeZoneWriter.WriteOffset" />.
         /// </remarks>
         /// <returns>The offset value from the stream.</returns>
-        internal Offset ReadOffset()
+        public Offset ReadOffset()
         {
             /*
              * Milliseconds encoding formats:
@@ -117,17 +112,17 @@ namespace NodaTime.TimeZones
 
                 if ((flag & 0x80) == 0)
                 {
-                    int units = flag - DateTimeZoneWriter.MaxMillisHalfHours;
+                    int units = flag - LegacyDateTimeZoneWriter.MaxMillisHalfHours;
                     return Offset.FromMilliseconds(units * (30 * NodaConstants.MillisecondsPerMinute));
                 }
-                if ((flag & 0xc0) == DateTimeZoneWriter.FlagMillisSeconds)
+                if ((flag & 0xc0) == LegacyDateTimeZoneWriter.FlagMillisSeconds)
                 {
                     int first = flag & ~0xc0;
                     int second = ReadByte() & 0xff;
                     int third = ReadByte() & 0xff;
 
                     int units = (((first << 8) + second) << 8) + third;
-                    units = units - DateTimeZoneWriter.MaxMillisSeconds;
+                    units = units - LegacyDateTimeZoneWriter.MaxMillisSeconds;
                     return Offset.FromMilliseconds(units * NodaConstants.MillisecondsPerSecond);
                 }
                 return Offset.FromMilliseconds(ReadInt32());
@@ -138,10 +133,10 @@ namespace NodaTime.TimeZones
         /// Reads a long ticks value from the stream.
         /// </summary>
         /// <remarks>
-        /// The value must have been written by <see cref="DateTimeZoneWriter.WriteTicks" />.
+        /// The value must have been written by <see cref="LegacyDateTimeZoneWriter.WriteTicks" />.
         /// </remarks>
         /// <returns>The long ticks value from the stream.</returns>
-        internal long ReadTicks()
+        private long ReadTicks()
         {
             /*
              * Ticks encoding formats:
@@ -162,37 +157,37 @@ namespace NodaTime.TimeZones
             unchecked
             {
                 byte flag = ReadByte();
-                if (flag == DateTimeZoneWriter.FlagMinValue)
+                if (flag == LegacyDateTimeZoneWriter.FlagMinValue)
                 {
                     return Int64.MinValue;
                 }
-                if (flag == DateTimeZoneWriter.FlagMaxValue)
+                if (flag == LegacyDateTimeZoneWriter.FlagMaxValue)
                 {
                     return Int64.MaxValue;
                 }
 
-                if ((flag & 0xc0) == DateTimeZoneWriter.FlagHalfHour)
+                if ((flag & 0xc0) == LegacyDateTimeZoneWriter.FlagHalfHour)
                 {
-                    long units = flag - DateTimeZoneWriter.MaxHalfHours;
+                    long units = flag - LegacyDateTimeZoneWriter.MaxHalfHours;
                     return units * (30 * NodaConstants.TicksPerMinute);
                 }
-                if ((flag & 0xc0) == DateTimeZoneWriter.FlagMinutes)
+                if ((flag & 0xc0) == LegacyDateTimeZoneWriter.FlagMinutes)
                 {
                     int first = flag & ~0xc0;
                     int second = ReadByte() & 0xff;
                     int third = ReadByte() & 0xff;
 
                     long units = (((first << 8) + second) << 8) + third;
-                    units = units - DateTimeZoneWriter.MaxMinutes;
+                    units = units - LegacyDateTimeZoneWriter.MaxMinutes;
                     return units * NodaConstants.TicksPerMinute;
                 }
-                if ((flag & 0xc0) == DateTimeZoneWriter.FlagSeconds)
+                if ((flag & 0xc0) == LegacyDateTimeZoneWriter.FlagSeconds)
                 {
                     long first = flag & ~0xc0;
                     long second = ReadInt32() & 0xffffffffL;
 
                     long units = (first << 32) + second;
-                    units = units - DateTimeZoneWriter.MaxSeconds;
+                    units = units - LegacyDateTimeZoneWriter.MaxSeconds;
                     return units * NodaConstants.TicksPerSecond;
                 }
 
@@ -204,7 +199,7 @@ namespace NodaTime.TimeZones
         /// Reads a boolean value from the stream.
         /// </summary>
         /// <remarks>
-        /// The value must have been written by <see cref="DateTimeZoneWriter.WriteBoolean" />.
+        /// The value must have been written by <see cref="LegacyDateTimeZoneWriter.WriteBoolean" />.
         /// </remarks>
         /// <returns>The boolean value.</returns>
         internal bool ReadBoolean()
@@ -216,10 +211,10 @@ namespace NodaTime.TimeZones
         /// Reads a string to string dictionary value from the stream.
         /// </summary>
         /// <remarks>
-        /// The value must have been written by <see cref="DateTimeZoneWriter.WriteDictionary" />.
+        /// The value must have been written by <see cref="LegacyDateTimeZoneWriter.WriteDictionary" />.
         /// </remarks>
         /// <returns>The <see cref="IDictionary{TKey,TValue}" /> value from the stream.</returns>
-        internal IDictionary<string, string> ReadDictionary()
+        public IDictionary<string, string> ReadDictionary()
         {
             IDictionary<string, string> results = new Dictionary<string, string>();
             int count = ReadCount();
@@ -236,34 +231,22 @@ namespace NodaTime.TimeZones
         /// Reads an <see cref="Instant" /> value from the stream.
         /// </summary>
         /// <remarks>
-        /// The value must have been written by <see cref="DateTimeZoneWriter.WriteInstant" />.
+        /// The value must have been written by <see cref="LegacyDateTimeZoneWriter.WriteInstant" />.
         /// </remarks>
         /// <returns>The <see cref="Instant" /> value from the stream.</returns>
-        internal Instant ReadInstant()
+        public Instant ReadInstant()
         {
             return new Instant(ReadTicks());
-        }
-
-        /// <summary>
-        /// Reads an <see cref="LocalInstant" /> value from the stream.
-        /// </summary>
-        /// <remarks>
-        /// The value must have been written by <see cref="DateTimeZoneWriter.WriteLocalInstant" />.
-        /// </remarks>
-        /// <returns>The <see cref="LocalInstant" /> value from the stream.</returns>
-        internal LocalInstant ReadLocalInstant()
-        {
-            return new LocalInstant(ReadTicks());
         }
 
         /// <summary>
         /// Reads a string value from the stream.
         /// </summary>
         /// <remarks>
-        /// The value must have been written by <see cref="DateTimeZoneWriter.WriteString" />.
+        /// The value must have been written by <see cref="LegacyDateTimeZoneWriter.WriteString" />.
         /// </remarks>
         /// <returns>The string value from the stream.</returns>
-        internal string ReadString()
+        public string ReadString()
         {
             if (stringPool == null)
             {
@@ -292,26 +275,26 @@ namespace NodaTime.TimeZones
         /// Reads an <see cref="DateTimeZone" /> value from the stream.
         /// </summary>
         /// <remarks>
-        /// The value must have been written by <see cref="DateTimeZoneWriter.WriteTimeZone" />.
+        /// The value must have been written by <see cref="LegacyDateTimeZoneWriter.WriteTimeZone" />.
         /// </remarks>
         /// <returns>The <see cref="DateTimeZone" /> value from the stream.</returns>
-        internal DateTimeZone ReadTimeZone(string id)
+        public DateTimeZone ReadTimeZone(string id)
         {
             int flag = ReadByte();
             switch (flag)
             {
-                case DateTimeZoneWriter.FlagTimeZoneFixed:
+                case LegacyDateTimeZoneWriter.FlagTimeZoneFixed:
                     return FixedDateTimeZone.Read(this, id);
-                case DateTimeZoneWriter.FlagTimeZonePrecalculated:
-                    return PrecalculatedDateTimeZone.Read(this, id);
-                case DateTimeZoneWriter.FlagTimeZoneNull:
+                case LegacyDateTimeZoneWriter.FlagTimeZonePrecalculated:
+                    return PrecalculatedDateTimeZone.ReadLegacy(this, id);
+                case LegacyDateTimeZoneWriter.FlagTimeZoneNull:
                     return null; // Only used when reading a tail zone
-                case DateTimeZoneWriter.FlagTimeZoneCached:
+                case LegacyDateTimeZoneWriter.FlagTimeZoneCached:
                     return CachedDateTimeZone.Read(this, id);
-                case DateTimeZoneWriter.FlagTimeZoneDst:
-                    return DaylightSavingsDateTimeZone.Read(this, id);
+                case LegacyDateTimeZoneWriter.FlagTimeZoneDst:
+                    return DaylightSavingsDateTimeZone.ReadLegacy(this, id);
                 default:
-                    throw new IOException("Unknown flag type " + flag);
+                    throw new InvalidNodaDataException("Unknown time zone flag type: " + flag);
             }
         }
 

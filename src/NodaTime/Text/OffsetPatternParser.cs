@@ -1,19 +1,6 @@
-﻿#region Copyright and license information
-// Copyright 2001-2009 Stephen Colebourne
-// Copyright 2009-2011 Jon Skeet
-// 
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-// 
-//     http://www.apache.org/licenses/LICENSE-2.0
-// 
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-#endregion
+// Copyright 2011 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0,
+// as found in the LICENSE.txt file.
 
 using System;
 using System.Collections.Generic;
@@ -22,13 +9,12 @@ using System.Globalization;
 using NodaTime.Globalization;
 using NodaTime.Properties;
 using NodaTime.Text.Patterns;
+using NodaTime.Utility;
 
 namespace NodaTime.Text
 {
     internal sealed class OffsetPatternParser : IPatternParser<Offset>
     {
-        private static readonly CharacterHandler<Offset, OffsetParseBucket> DefaultCharacterHandler = SteppedPatternBuilder<Offset, OffsetParseBucket>.HandleDefaultCharacter;
-
         private static readonly Dictionary<char, CharacterHandler<Offset, OffsetParseBucket>> PatternCharacterHandlers = 
             new Dictionary<char, CharacterHandler<Offset, OffsetParseBucket>>
         {
@@ -38,7 +24,7 @@ namespace NodaTime.Text
             { '\\', SteppedPatternBuilder<Offset, OffsetParseBucket>.HandleBackslash },
             { '.', TimePatternHelper.CreatePeriodHandler<Offset, OffsetParseBucket>(3, GetPositiveMilliseconds, (bucket, value) => bucket.Milliseconds = value) },
             { ':', (pattern, builder) => builder.AddLiteral(builder.FormatInfo.TimeSeparator, ParseResult<Offset>.TimeSeparatorMismatch) },
-            { 'h', (pattern, builder) => PatternParseResult<Offset>.Hour12PatternNotSupported },
+            { 'h', (pattern, builder) => { throw new InvalidPatternException(Messages.Parse_Hour12PatternNotSupported, typeof(Offset)); } },
             { 'H', SteppedPatternBuilder<Offset, OffsetParseBucket>.HandlePaddedField
                        (2, PatternFields.Hours24, 0, 23, GetPositiveHours, (bucket, value) => bucket.Hours = value) },
             { 'm', SteppedPatternBuilder<Offset, OffsetParseBucket>.HandlePaddedField
@@ -49,7 +35,7 @@ namespace NodaTime.Text
             { '-', HandleMinus },
             { 'f', TimePatternHelper.CreateFractionHandler<Offset, OffsetParseBucket>(3, GetPositiveMilliseconds, (bucket, value) => bucket.Milliseconds = value) },
             { 'F', TimePatternHelper.CreateFractionHandler<Offset, OffsetParseBucket>(3, GetPositiveMilliseconds, (bucket, value) => bucket.Milliseconds = value) },
-            { 'Z', (ignored1, ignored2) => PatternParseResult<Offset>.ForInvalidFormat(Messages.Parse_ZPrefixNotAtStartOfPattern) }
+            { 'Z', (ignored1, ignored2) => { throw new InvalidPatternException(Messages.Parse_ZPrefixNotAtStartOfPattern); } }
         };
 
         // These are used to compute the individual (always-positive) components of an offset.
@@ -77,15 +63,12 @@ namespace NodaTime.Text
 
         // Note: public to implement the interface. It does no harm, and it's simpler than using explicit
         // interface implementation.
-        public PatternParseResult<Offset> ParsePattern(string patternText, NodaFormatInfo formatInfo)
+        public IPattern<Offset> ParsePattern(string patternText, NodaFormatInfo formatInfo)
         {
-            if (patternText == null)
-            {
-                return PatternParseResult<Offset>.ArgumentNull("patternText");
-            }
+            Preconditions.CheckNotNull(patternText, "patternText");
             if (patternText.Length == 0)
             {
-                return PatternParseResult<Offset>.FormatStringEmpty;
+                throw new InvalidPatternException(Messages.Parse_FormatStringEmpty);
             }
 
             if (patternText.Length == 1)
@@ -93,7 +76,7 @@ namespace NodaTime.Text
                 char patternCharacter = patternText[0];
                 if (patternCharacter == 'n')
                 {
-                    return PatternParseResult<Offset>.ForValue(CreateNumberPattern(formatInfo));
+                    return CreateNumberPattern(formatInfo);
                 }
                 if (patternCharacter == 'g')
                 {
@@ -101,19 +84,18 @@ namespace NodaTime.Text
                 }
                 if (patternCharacter == 'G')
                 {
-                    var result = CreateGeneralPattern(formatInfo);
-                    return result.Success ? PatternParseResult<Offset>.ForValue(new ZPrefixPattern(result.GetResultOrThrow())) : result;
+                    return new ZPrefixPattern(CreateGeneralPattern(formatInfo));
                 }
                 patternText = ExpandStandardFormatPattern(patternCharacter, formatInfo);
                 if (patternText == null)
                 {
-                    return PatternParseResult<Offset>.UnknownStandardFormat(patternCharacter);
+                    throw new InvalidPatternException(Messages.Parse_UnknownStandardFormat, patternCharacter, typeof(Offset));
                 }
             }
             // This is the only way we'd normally end up in custom parsing land for Z on its own.
             if (patternText == "%Z")
             {
-                return PatternParseResult<Offset>.ForInvalidFormat(Messages.Parse_EmptyZPrefixedOffsetPattern);
+                throw new InvalidPatternException(Messages.Parse_EmptyZPrefixedOffsetPattern);
             }
 
             // Handle Z-prefix by stripping it, parsing the rest as a normal pattern, then building a special pattern
@@ -121,31 +103,11 @@ namespace NodaTime.Text
             bool zPrefix = patternText.StartsWith("Z");
 
             var patternBuilder = new SteppedPatternBuilder<Offset, OffsetParseBucket>(formatInfo, () => new OffsetParseBucket());
-            var patternCursor = new PatternCursor(zPrefix ? patternText.Substring(1) : patternText);
-
-            // Prime the pump...
-            // TODO(Post-V1): Add this to the builder?
-            patternBuilder.AddParseAction((str, bucket) =>
-            {
-                str.MoveNext();
-                return null;
-            });
-
-            while (patternCursor.MoveNext())
-            {
-                CharacterHandler<Offset, OffsetParseBucket> handler;
-                if (!PatternCharacterHandlers.TryGetValue(patternCursor.Current, out handler))
-                {
-                    handler = DefaultCharacterHandler;
-                }
-                PatternParseResult<Offset> possiblePatternParseFailure = handler(patternCursor, patternBuilder);
-                if (possiblePatternParseFailure != null)
-                {
-                    return possiblePatternParseFailure;
-                }
-            }
+            patternBuilder.ParseCustomPattern(zPrefix ? patternText.Substring(1) : patternText, PatternCharacterHandlers);
+            // No need to validate field combinations here, but we do need to do something a bit special
+            // for Z-handling.
             IPattern<Offset> pattern = patternBuilder.Build();
-            return PatternParseResult<Offset>.ForValue(zPrefix ? new ZPrefixPattern(pattern) : pattern);
+            return zPrefix ? new ZPrefixPattern(pattern) : pattern;
         }
 
         #region Standard patterns
@@ -167,22 +129,15 @@ namespace NodaTime.Text
             }
         }
 
-        private PatternParseResult<Offset> CreateGeneralPattern(NodaFormatInfo formatInfo)
+        private IPattern<Offset> CreateGeneralPattern(NodaFormatInfo formatInfo)
         {
             var patterns = new List<IPattern<Offset>>();
             foreach (char c in "flms")
             {
-                // Each of the parsers could fail
-                var individual = ParsePattern(c.ToString(), formatInfo);
-                if (!individual.Success)
-                {
-                    return individual;
-                }
-                // We know this is safe now.
-                patterns.Add(individual.GetResultOrThrow());
+                patterns.Add(ParsePattern(c.ToString(), formatInfo));
             }
             NodaFunc<Offset, string> formatter = value => FormatGeneral(value, patterns);
-            return PatternParseResult<Offset>.ForValue(new CompositePattern<Offset>(patterns, formatter));
+            return new CompositePattern<Offset>(patterns, formatter);
         }
 
         private string FormatGeneral(Offset value, List<IPattern<Offset>> patterns)
@@ -256,28 +211,16 @@ namespace NodaTime.Text
         }
 
         #region Character handlers
-        private static PatternParseResult<Offset> HandlePlus(PatternCursor pattern, SteppedPatternBuilder<Offset, OffsetParseBucket> builder)
+        private static void HandlePlus(PatternCursor pattern, SteppedPatternBuilder<Offset, OffsetParseBucket> builder)
         {
-            PatternParseResult<Offset> failure = builder.AddField(PatternFields.Sign, pattern.Current);
-            if (failure != null)
-            {
-                return failure;
-            }
-
+            builder.AddField(PatternFields.Sign, pattern.Current);
             builder.AddRequiredSign((bucket, positive) => bucket.IsNegative = !positive, offset => offset.Milliseconds >= 0);
-            return null;
         }
 
-        private static PatternParseResult<Offset> HandleMinus(PatternCursor pattern, SteppedPatternBuilder<Offset, OffsetParseBucket> builder)
+        private static void HandleMinus(PatternCursor pattern, SteppedPatternBuilder<Offset, OffsetParseBucket> builder)
         {
-            PatternParseResult<Offset> failure = builder.AddField(PatternFields.Sign, pattern.Current);
-            if (failure != null)
-            {
-                return failure;
-            }
-
+            builder.AddField(PatternFields.Sign, pattern.Current);
             builder.AddNegativeOnlySign((bucket, positive) => bucket.IsNegative = !positive, offset => offset.Milliseconds >= 0);
-            return null;
         }
         #endregion
 

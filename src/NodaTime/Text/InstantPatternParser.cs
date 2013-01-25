@@ -1,24 +1,13 @@
-﻿#region Copyright and license information
-// Copyright 2001-2009 Stephen Colebourne
-// Copyright 2009-2011 Jon Skeet
-// 
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-// 
-//     http://www.apache.org/licenses/LICENSE-2.0
-// 
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-#endregion
+// Copyright 2011 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0,
+// as found in the LICENSE.txt file.
 
 using System;
 using System.Globalization;
 using NodaTime.Globalization;
+using NodaTime.Properties;
 using NodaTime.Text.Patterns;
+using NodaTime.Utility;
 
 namespace NodaTime.Text
 {
@@ -35,39 +24,30 @@ namespace NodaTime.Text
     /// </remarks>
     internal sealed class InstantPatternParser : IPatternParser<Instant>
     {
-        public PatternParseResult<Instant> ParsePattern(string patternText, NodaFormatInfo formatInfo)
+        public IPattern<Instant> ParsePattern(string patternText, NodaFormatInfo formatInfo)
         {
-            if (patternText == null)
-            {
-                return PatternParseResult<Instant>.ArgumentNull("patternText");
-            }
+            Preconditions.CheckNotNull(patternText, "patternText");
             if (patternText.Length == 0)
             {
-                return PatternParseResult<Instant>.FormatStringEmpty;
+                throw new InvalidPatternException(Messages.Parse_FormatStringEmpty);
             }
             patternText = patternText.Trim();
             if (patternText.Length > 1)
             {
-                PatternParseResult<LocalDateTime> localResult =
-                    formatInfo.LocalDateTimePatternParser.ParsePattern(patternText);
-                if (localResult.Success)
-                {
-                    var parser = new LocalDateTimePatternAdapter(localResult.GetResultOrThrow());
-                    return PatternParseResult<Instant>.ForValue(parser);
-                }
-                return localResult.WithResultType<Instant>();
+                IPattern<LocalDateTime> localResult = formatInfo.LocalDateTimePatternParser.ParsePattern(patternText);
+                return new LocalDateTimePatternAdapter(localResult);
             }
             char patternChar = char.ToLowerInvariant(patternText[0]);
             switch (patternChar)
             {
                 case 'g':
-                    return PatternParseResult<Instant>.ForValue(new GeneralPattern());
+                    return new GeneralPattern();
                 case 'n':
-                    return PatternParseResult<Instant>.ForValue(new NumberPattern(formatInfo, patternText, "N0"));
+                    return new NumberPattern(formatInfo, patternText, "N0");
                 case 'd':
-                    return PatternParseResult<Instant>.ForValue(new NumberPattern(formatInfo, patternText, "D"));
+                    return new NumberPattern(formatInfo, patternText, "D");
                 default:
-                    return PatternParseResult<Instant>.UnknownStandardFormat(patternChar);
+                    throw new InvalidPatternException(Messages.Parse_UnknownStandardFormat, patternChar, typeof(Instant));
             }
         }
 

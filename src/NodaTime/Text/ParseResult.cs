@@ -1,19 +1,6 @@
-﻿#region Copyright and license information
-// Copyright 2001-2009 Stephen Colebourne
-// Copyright 2009-2011 Jon Skeet
-// 
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-// 
-//     http://www.apache.org/licenses/LICENSE-2.0
-// 
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-#endregion
+// Copyright 2011 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0,
+// as found in the LICENSE.txt file.
 
 using System;
 using System.Globalization;
@@ -22,7 +9,7 @@ using NodaTime.Properties;
 namespace NodaTime.Text
 {
     /// <summary>
-    /// The result of a parse operation. 
+    /// The result of a parse operation.
     /// </summary>
     /// <typeparam name="T">The type which was parsed, such as a <see cref="LocalDateTime"/>.</typeparam>
     /// <threadsafety>This type is immutable reference type. See the thread safety section of the user guide for more information.</threadsafety>
@@ -201,6 +188,7 @@ namespace NodaTime.Text
         internal static readonly ParseResult<T> MissingSign = ForInvalidValue(Messages.Parse_MissingSign);
         internal static readonly ParseResult<T> MissingAmPmDesignator = ForInvalidValue(Messages.Parse_MissingAmPmDesignator);
         internal static readonly ParseResult<T> NoMatchingCalendarSystem = ForInvalidValue(Messages.Parse_NoMatchingCalendarSystem);
+        internal static readonly ParseResult<T> NoMatchingZoneId = ForInvalidValue(Messages.Parse_NoMatchingZoneId);
         internal static readonly ParseResult<T> InvalidHour24 = ForInvalidValue(Messages.Parse_InvalidHour24);
 
         internal static ParseResult<T> FieldValueOutOfRange(int value, char field)
@@ -247,6 +235,9 @@ namespace NodaTime.Text
         {
             return ForInvalidValue(Messages.Parse_DayOfMonthOutOfRange, day, month, year);
         }
+
+        internal static ParseResult<T> SkippedLocalTime = ForInvalidValue(Messages.Parse_SkippedLocalTime);
+        internal static ParseResult<T> AmbiguousLocalTime = ForInvalidValue(Messages.Parse_AmbiguousLocalTime);
         #endregion
     }
 }

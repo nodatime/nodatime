@@ -1,22 +1,10 @@
-#region Copyright and license information
-// Copyright 2001-2009 Stephen Colebourne
-// Copyright 2009-2011 Jon Skeet
-// 
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-// 
-//     http://www.apache.org/licenses/LICENSE-2.0
-// 
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-#endregion
+// Copyright 2009 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0,
+// as found in the LICENSE.txt file.
 
 using System;
 using System.Collections.Generic;
+using NodaTime.TimeZones.IO;
 using NodaTime.Utility;
 
 namespace NodaTime.TimeZones
@@ -36,38 +24,6 @@ namespace NodaTime.TimeZones
         /// </summary>
         private readonly Instant tailZoneStart;
         private readonly ZoneInterval firstTailZoneInterval;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PrecalculatedDateTimeZone"/> class which uses a tail zone.
-        /// </summary>
-        /// <param name="id">The id of the time zone.</param>
-        /// <param name="transitions">The transitions.</param>
-        /// <param name="tailZoneStart">The first instant which isn't covered by the given transitions.</param>
-        /// <param name="tailZone">The tail zone, for use beyond tailZoneStart.</param>
-        internal PrecalculatedDateTimeZone(string id, IList<ZoneTransition> transitions, Instant tailZoneStart, DateTimeZone tailZone)
-            : base(id, false,
-                   ComputeOffset(transitions, t => t.WallOffset, tailZone, Offset.Min),
-                   ComputeOffset(transitions, t => t.WallOffset, tailZone, Offset.Max))
-        {
-            Preconditions.CheckNotNull(transitions, "transitions");
-            this.tailZone = tailZone;
-            this.tailZoneStart = tailZoneStart;
-            if (tailZone != null)
-            {
-                // Cache a "clamped" zone interval for use at the start of the tail zone.
-                firstTailZoneInterval = tailZone.GetZoneInterval(tailZoneStart).WithStart(tailZoneStart);
-            }
-            int size = transitions.Count;
-            periods = new ZoneInterval[size];
-            for (int i = 0; i < size; i++)
-            {
-                var transition = transitions[i];
-                var endInstant = i == size - 1 ? tailZoneStart : transitions[i + 1].Instant;
-                var period = new ZoneInterval(transition.Name, transition.Instant, endInstant, transition.WallOffset, transition.Savings);
-                periods[i] = period;
-            }
-            ValidatePeriods(periods, tailZone);
-        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PrecalculatedDateTimeZone"/> class.
@@ -173,7 +129,55 @@ namespace NodaTime.TimeZones
         /// Writes the time zone to the specified writer.
         /// </summary>
         /// <param name="writer">The writer to write to.</param>
-        internal void Write(DateTimeZoneWriter writer)
+        internal void Write(IDateTimeZoneWriter writer)
+        {
+            Preconditions.CheckNotNull(writer, "writer");
+
+            // We used to create a pool of strings just for this zone. This was more efficient
+            // for some zones, as it meant that each string would be written out with just a single
+            // byte after the pooling. Optimizing the string pool globally instead allows for
+            // roughly the same efficiency, and simpler code here.
+            writer.WriteCount(periods.Length);
+            foreach (var period in periods)
+            {
+                writer.WriteInstant(period.Start);
+                writer.WriteString(period.Name);
+                writer.WriteOffset(period.WallOffset);
+                writer.WriteOffset(period.Savings);
+            }
+            writer.WriteInstant(tailZoneStart);
+            writer.WriteTimeZone(tailZone);
+        }
+
+        /// <summary>
+        /// Reads a time zone from the specified reader.
+        /// </summary>
+        /// <param name="reader">The reader.</param>
+        /// <param name="id">The id.</param>
+        /// <returns>The time zone.</returns>
+        public static DateTimeZone Read(IDateTimeZoneReader reader, string id)
+        {
+            int size = reader.ReadCount();
+            var periods = new ZoneInterval[size];
+            var start = reader.ReadInstant();
+            for (int i = 0; i < size; i++)
+            {
+                var name = reader.ReadString();
+                var offset = reader.ReadOffset();
+                var savings = reader.ReadOffset();
+                var nextStart = reader.ReadInstant();
+                periods[i] = new ZoneInterval(name, start, nextStart, offset, savings);
+                start = nextStart;
+            }
+            var tailZone = reader.ReadTimeZone(id + "-tail");
+            return new PrecalculatedDateTimeZone(id, periods, tailZone);
+        }
+
+        /// <summary>
+        /// Writes the time zone to the specified writer.
+        /// </summary>
+        /// <param name="writer">The writer to write to.</param>
+        internal void WriteLegacy(LegacyDateTimeZoneWriter writer)
         {
             Preconditions.CheckNotNull(writer, "writer");
 
@@ -219,7 +223,7 @@ namespace NodaTime.TimeZones
         /// <param name="reader">The reader.</param>
         /// <param name="id">The id.</param>
         /// <returns>The time zone.</returns>
-        public static DateTimeZone Read(DateTimeZoneReader reader, string id)
+        public static DateTimeZone ReadLegacy(LegacyDateTimeZoneReader reader, string id)
         {
             string[] stringPool = new string[reader.ReadCount()];
             for (int i = 0; i < stringPool.Length; i++)

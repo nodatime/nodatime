@@ -1,19 +1,6 @@
-﻿#region Copyright and license information
-// Copyright 2001-2009 Stephen Colebourne
-// Copyright 2009-2011 Jon Skeet
-// 
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-// 
-//     http://www.apache.org/licenses/LICENSE-2.0
-// 
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-#endregion
+// Copyright 2011 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0,
+// as found in the LICENSE.txt file.
 
 using System;
 using System.Globalization;
@@ -90,6 +77,29 @@ namespace NodaTime.Text
                 }
                 return false;
             }
+        }
+
+        /// <summary>
+        /// Compares the value from the current cursor position with the given match. If the
+        /// given match string is longer than the remaining length, the comparison still goes
+        /// ahead but the result is never 0: if the result of comparing to the end of the
+        /// value returns 0, the result is -1 to indicate that the value is earlier than the given match.
+        /// Conversely, if the remaining value is longer than the match string, the comparison only
+        /// goes as far as the end of the match. So "xabcd" with the cursor at "a" will return 0 when
+        /// matched with "abc".
+        /// </summary>
+        /// <returns>A negative number if the value (from the current cursor position) is lexicographically
+        /// earlier than the given match string; 0 if they are equal (as far as the end of the match) and
+        /// a positive number if the value is lexicographically later than the given match string.</returns>
+        internal int CompareOrdinal(string match)
+        {
+            int remaining = Value.Length - Index;
+            if (match.Length > remaining)
+            {
+                int ret = string.CompareOrdinal(Value, Index, match, 0, remaining);
+                return ret == 0 ? -1 : ret;
+            }
+            return string.CompareOrdinal(Value, Index, match, 0, match.Length);
         }
 
         /// <summary>

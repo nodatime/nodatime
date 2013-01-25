@@ -1,27 +1,14 @@
-#region Copyright and license information
-// Copyright 2001-2009 Stephen Colebourne
-// Copyright 2009-2011 Jon Skeet
-// 
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-// 
-//     http://www.apache.org/licenses/LICENSE-2.0
-// 
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-#endregion
+// Copyright 2009 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0,
+// as found in the LICENSE.txt file.
 
-using System;
 using System.Collections.Generic;
 using System.IO;
 using NUnit.Framework;
 using NodaTime.TimeZones;
+using NodaTime.TimeZones.IO;
 
-namespace NodaTime.Test.TimeZones
+namespace NodaTime.Test.TimeZones.IO
 {
     /// <summary>
     ///   Wrapper around a DateTimeZoneWriter/DateTimeZoneReader pair that reads whatever is
@@ -57,13 +44,13 @@ namespace NodaTime.Test.TimeZones
         ///   Gets the reader.
         /// </summary>
         /// <value>The reader.</value>
-        private DateTimeZoneReader Reader { get; set; }
+        private IDateTimeZoneReader Reader { get; set; }
 
         /// <summary>
         ///   Gets the writer.
         /// </summary>
         /// <value>The writer.</value>
-        private DateTimeZoneWriter Writer { get; set; }
+        private IDateTimeZoneWriter Writer { get; set; }
 
         public void Reset()
         {
@@ -74,20 +61,38 @@ namespace NodaTime.Test.TimeZones
             }
         }
 
-        public void TestBoolean(bool expected)
-        {
-            Reset();
-            Writer.WriteBoolean(expected);
-            var actual = Reader.ReadBoolean();
-            Assert.AreEqual(expected, actual);
-        }
-
         public void TestCount(int expected)
         {
             Reset();
             Writer.WriteCount(expected);
             var actual = Reader.ReadCount();
             Assert.AreEqual(expected, actual);
+            ioStream.AssertEndOfStream();
+        }
+
+        public void TestCount(int value, byte[] expected)
+        {
+            Reset();
+            Writer.WriteCount(value);
+            ioStream.AssertUnreadContents(expected);
+            ioStream.AssertEndOfStream();
+        }
+
+        public void TestSignedCount(int expected)
+        {
+            Reset();
+            Writer.WriteSignedCount(expected);
+            var actual = Reader.ReadSignedCount();
+            Assert.AreEqual(expected, actual);
+            ioStream.AssertEndOfStream();
+        }
+
+        public void TestSignedCount(int value, byte[] expected)
+        {
+            Reset();
+            Writer.WriteSignedCount(value);
+            ioStream.AssertUnreadContents(expected);
+            ioStream.AssertEndOfStream();
         }
 
         public void TestDictionary(IDictionary<string, string> expected)
@@ -96,6 +101,7 @@ namespace NodaTime.Test.TimeZones
             Writer.WriteDictionary(expected);
             var actual = Reader.ReadDictionary();
             Assert.AreEqual(expected, actual);
+            ioStream.AssertEndOfStream();
         }
 
         public void TestInstant(Instant expected)
@@ -104,37 +110,16 @@ namespace NodaTime.Test.TimeZones
             Writer.WriteInstant(expected);
             var actual = Reader.ReadInstant();
             Assert.AreEqual(expected, actual);
+            ioStream.AssertEndOfStream();
         }
 
-        public void TestInt32(int expected)
+        public void TestOffset(Offset offset)
         {
             Reset();
-            Writer.WriteInt32(expected);
-            var actual = Reader.ReadInt32();
-            Assert.AreEqual(expected, actual);
-        }
-
-        public void TestLocalInstant(LocalInstant expected)
-        {
-            Reset();
-            Writer.WriteLocalInstant(expected);
-            var actual = Reader.ReadLocalInstant();
-            Assert.AreEqual(expected, actual);
-        }
-
-        public void TestOffset(int testValue)
-        {
-            // Just ignore any invalid values we're asked to test
-            if (testValue < Offset.MinValue.Milliseconds ||
-                testValue > Offset.MaxValue.Milliseconds)
-            {
-                return;
-            }
-            Offset expected = Offset.FromMilliseconds(testValue);
-            Reset();
-            Writer.WriteOffset(expected);
+            Writer.WriteOffset(offset);
             var actual = Reader.ReadOffset();
-            Assert.AreEqual(expected, actual);
+            Assert.AreEqual(offset, actual);
+            ioStream.AssertEndOfStream();
         }
 
         public void TestString(string expected)
@@ -143,14 +128,7 @@ namespace NodaTime.Test.TimeZones
             Writer.WriteString(expected);
             var actual = Reader.ReadString();
             Assert.AreEqual(expected, actual);
-        }
-
-        public void TestTicks(long expected)
-        {
-            Reset();
-            Writer.WriteTicks(expected);
-            var actual = Reader.ReadTicks();
-            Assert.AreEqual(expected, actual);
+            ioStream.AssertEndOfStream();
         }
 
         public void TestTimeZone(DateTimeZone expected)
@@ -159,6 +137,7 @@ namespace NodaTime.Test.TimeZones
             Writer.WriteTimeZone(expected);
             var actual = Reader.ReadTimeZone(expected.Id);
             Assert.AreEqual(expected, actual);
+            ioStream.AssertEndOfStream();
         }
 
         public void TestZoneRecurrence(ZoneRecurrence expected)
@@ -167,6 +146,7 @@ namespace NodaTime.Test.TimeZones
             expected.Write(Writer);
             var actual = ZoneRecurrence.Read(Reader);
             Assert.AreEqual(expected, actual);
+            ioStream.AssertEndOfStream();
         }
 
         public void TestZoneYearOffset(ZoneYearOffset expected)
@@ -175,6 +155,7 @@ namespace NodaTime.Test.TimeZones
             expected.Write(Writer);
             var actual = ZoneYearOffset.Read(Reader);
             Assert.AreEqual(expected, actual);
+            ioStream.AssertEndOfStream();
         }
     }
 }

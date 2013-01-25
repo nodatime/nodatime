@@ -1,25 +1,13 @@
-#region Copyright and license information
-// Copyright 2001-2009 Stephen Colebourne
-// Copyright 2009-2011 Jon Skeet
-// 
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-// 
-//     http://www.apache.org/licenses/LICENSE-2.0
-// 
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-#endregion
+// Copyright 2009 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0,
+// as found in the LICENSE.txt file.
 
 using System;
 using System.Collections.Generic;
+using NodaTime.TimeZones;
 using NodaTime.Utility;
 
-namespace NodaTime.TimeZones
+namespace NodaTime.ZoneInfoCompiler.Tzdb
 {
     /// <summary>
     /// Provides a means of programatically creating complex time zones. Currently internal, but we
@@ -214,7 +202,7 @@ namespace NodaTime.TimeZones
                     case 1:
                         return new FixedDateTimeZone(zoneId, transitions[0].WallOffset);
                     default:
-                        var ret = new PrecalculatedDateTimeZone(zoneId, transitions, Instant.MaxValue, null);
+                        var ret = CreatePrecalculatedDateTimeZone(zoneId, transitions, Instant.MaxValue, null);
                         return ret.IsCachable() ? CachedDateTimeZone.ForZone(ret) : ret;
                 }
             }
@@ -240,8 +228,23 @@ namespace NodaTime.TimeZones
             }
 
             transitions.RemoveAt(transitions.Count - 1);
-            var zone = new PrecalculatedDateTimeZone(zoneId, transitions, lastTransition.Instant, tailZone);
+            var zone = CreatePrecalculatedDateTimeZone(zoneId, transitions, lastTransition.Instant, tailZone);
             return zone.IsCachable() ? CachedDateTimeZone.ForZone(zone) : zone;
+        }
+
+        private static PrecalculatedDateTimeZone CreatePrecalculatedDateTimeZone(string id, IList<ZoneTransition> transitions,
+            Instant tailZoneStart, DateTimeZone tailZone)
+        {
+            // Convert the transitions to intervals
+            int size = transitions.Count;
+            var intervals = new ZoneInterval[size];
+            for (int i = 0; i < size; i++)
+            {
+                var transition = transitions[i];
+                var endInstant = i == size - 1 ? tailZoneStart : transitions[i + 1].Instant;
+                intervals[i] = new ZoneInterval(transition.Name, transition.Instant, endInstant, transition.WallOffset, transition.Savings);
+            }
+            return new PrecalculatedDateTimeZone(id, intervals, tailZone);
         }
 
         /// <summary>

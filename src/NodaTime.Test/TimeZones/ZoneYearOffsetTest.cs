@@ -1,22 +1,10 @@
-#region Copyright and license information
-// Copyright 2001-2009 Stephen Colebourne
-// Copyright 2009-2011 Jon Skeet
-// 
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-// 
-//     http://www.apache.org/licenses/LICENSE-2.0
-// 
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-#endregion
+// Copyright 2009 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0,
+// as found in the LICENSE.txt file.
 
 using System;
 using NUnit.Framework;
+using NodaTime.Test.TimeZones.IO;
 using NodaTime.TimeZones;
 
 namespace NodaTime.Test.TimeZones
@@ -341,7 +329,7 @@ namespace NodaTime.Test.TimeZones
         }
 
         [Test]
-        public void Test()
+        public void Serialization()
         {
             var dio = DtzIoHelper.CreateNoStringPool();
             var expected = new ZoneYearOffset(TransitionMode.Utc, 10, 31, (int)IsoDayOfWeek.Wednesday, true, Offset.Zero);
@@ -361,6 +349,30 @@ namespace NodaTime.Test.TimeZones
 
             TestHelper.TestEqualsClass(value, equalValue, unequalValue);
             TestHelper.TestOperatorEquality(value, equalValue, unequalValue);
+        }
+
+        [Test]
+        public void Next_WithAddDay()
+        {
+            // Last Thursday in October, then add 24 hours. The last Thursday in October 2013 is the 31st, so
+            // we should get the start of November 1st.
+            var offset = new ZoneYearOffset(TransitionMode.Utc, 10, -1, (int) IsoDayOfWeek.Thursday, false, Offset.FromHours(0), true);
+            var instant = Instant.FromUtc(2013, 10, 31, 12, 0);
+            var expectedNext = Instant.FromUtc(2013, 11, 1, 0, 0);
+            var actualNext = offset.Next(instant, Offset.Zero, Offset.Zero);
+            Assert.AreEqual(expectedNext, actualNext);
+        }
+
+        [Test]
+        public void Previous_WithAddDay()
+        {
+            // Last Thursday in October, then add 24 hours. The last Thursday in October 2013 is the 31st, so
+            // the previous transition is the start of Friday October 26th 2012.
+            var offset = new ZoneYearOffset(TransitionMode.Utc, 10, -1, (int)IsoDayOfWeek.Thursday, false, Offset.FromHours(0), true);
+            var instant = Instant.FromUtc(2013, 10, 31, 12, 0);
+            var expectedPrevious = Instant.FromUtc(2012, 10, 26, 0, 0);
+            var actualPrevious = offset.Previous(instant, Offset.Zero, Offset.Zero);
+            Assert.AreEqual(expectedPrevious, actualPrevious);
         }
     }
 }

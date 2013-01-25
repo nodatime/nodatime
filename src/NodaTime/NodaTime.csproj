@@ -170,6 +170,7 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="Text\ZonedDateTimePattern.cs" />
     <Compile Include="Text\LocalDateTimePatternParser.cs" />
     <Compile Include="Text\Delegates.cs" />
     <Compile Include="Text\FixedFormatInfoPatternParser.cs" />
@@ -191,7 +192,6 @@
     <Compile Include="Text\Patterns\IPatternParser.cs" />
     <Compile Include="Text\Patterns\PatternCursor.cs" />
     <Compile Include="Text\Patterns\PatternFields.cs" />
-    <Compile Include="Text\Patterns\PatternParseResult.cs" />
     <Compile Include="Text\Patterns\PatternBclSupport.cs" />
     <Compile Include="Text\Patterns\TimePatternHelper.cs" />
     <Compile Include="Text\PeriodPattern.cs" />
@@ -247,14 +247,20 @@
     <Compile Include="SkippedTimeException.cs" />
     <Compile Include="SystemClock.cs" />
     <Compile Include="Text\ValueCursor.cs" />
+    <Compile Include="Text\ZonedDateTimePatternParser.cs" />
     <Compile Include="TimeZones\BclDateTimeZone.cs" />
     <Compile Include="TimeZones\BclDateTimeZoneSource.cs" />
     <Compile Include="TimeZones\CachedDateTimeZone.cs" />
     <Compile Include="TimeZones\CachingZoneIntervalMap.cs" />
     <Compile Include="TimeZones\DateTimeZoneCache.cs" />
-    <Compile Include="TimeZones\DateTimeZoneReader.cs" />
-    <Compile Include="TimeZones\DateTimeZoneWriter.cs" />
+    <Compile Include="TimeZones\DateTimeZoneNotFoundException.cs" />
     <Compile Include="TimeZones\Delegates.cs" />
+    <Compile Include="TimeZones\IO\LegacyDateTimeZoneReader.cs" />
+    <Compile Include="TimeZones\IO\LegacyDateTimeZoneWriter.cs" />
+    <Compile Include="TimeZones\IO\DateTimeZoneReader.cs" />
+    <Compile Include="TimeZones\IO\DateTimeZoneWriter.cs" />
+    <Compile Include="TimeZones\IO\IDateTimeZoneReader.cs" />
+    <Compile Include="TimeZones\IO\IDateTimeZoneWriter.cs" />
     <Compile Include="TimeZones\IO\ITzdbDataSource.cs" />
     <Compile Include="TimeZones\IO\TzdbResourceData.cs" />
     <Compile Include="TimeZones\IO\TzdbStreamData.cs" />
@@ -265,18 +271,16 @@
     <Compile Include="TimeZones\Resolvers.cs" />
     <Compile Include="TimeZones\InvalidDateTimeSourceException.cs" />
     <Compile Include="TimeZones\Transition.cs" />
-    <Compile Include="TimeZones\DateTimeZoneBuilder.cs" />
     <Compile Include="TimeZones\DaylightSavingsDateTimeZone.cs" />
     <Compile Include="TimeZones\FixedDateTimeZone.cs" />
     <Compile Include="TimeZones\IDateTimeZoneSource.cs" />
+    <Compile Include="TimeZones\ZoneEqualityComparer.cs" />
     <Compile Include="TimeZones\ZoneInterval.cs" />
     <Compile Include="TimeZones\ZoneIntervalPair.cs" />
     <Compile Include="TimeZones\ZoneLocalMapping.cs" />
     <Compile Include="TimeZones\ZoneYearOffset.cs" />
     <Compile Include="TimeZones\PrecalculatedDateTimeZone.cs" />
     <Compile Include="TimeZones\ZoneRecurrence.cs" />
-    <Compile Include="TimeZones\ZoneRecurrenceCollection.cs" />
-    <Compile Include="TimeZones\ZoneTransition.cs" />
     <Compile Include="TimeZones\TransitionMode.cs" />
     <Compile Include="TimeZones\TzdbDateTimeZoneSource.cs" />
     <Compile Include="LocalDateTime.cs" />
@@ -290,10 +294,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utility\BclConversions.cs" />
     <Compile Include="Utility\HashCodeHelper.cs" />
+    <Compile Include="Utility\InvalidNodaDataException.cs" />
     <Compile Include="Utility\NamespaceDoc.cs" />
     <Compile Include="Utility\NodaReadOnlyDictionary.cs" />
     <Compile Include="Utility\ReferenceEqualityComparer.cs" />
-    <Compile Include="Utility\ResourceHelper.cs" />
     <Compile Include="Utility\Preconditions.cs" />
     <Compile Include="ZonedDateTime.cs" />
   </ItemGroup>
@@ -333,14 +337,7 @@
       <LastGenOutput>Messages.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup Condition="'$(Portability)' == 'PCL'">
     <EmbeddedResource Include="TimeZones\Tzdb.nzd" />
-  </ItemGroup>
-  <ItemGroup Condition="'$(Portability)' == 'Desktop'">
-    <EmbeddedResource Include="TimeZones\Tzdb.resx">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />
   <Import Condition="'$(Portability)' == 'Desktop'" Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
