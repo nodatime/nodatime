@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using NodaTime.Utility;
 
 namespace NodaTime.TimeZones.IO
 {
@@ -22,7 +23,7 @@ namespace NodaTime.TimeZones.IO
         /// by a call to <see cref="IDateTimeZoneWriter.WriteCount"/>.
         /// </summary>
         /// <returns>The integer read from the stream</returns>
-        /// <exception cref="EndOfStreamException">The data didn't contain a complete value</exception>
+        /// <exception cref="InvalidNodaDataException">The data was invalid</exception>
         /// <exception cref="IOException">The stream could not be read</exception>
         int ReadCount();
 
@@ -31,7 +32,7 @@ namespace NodaTime.TimeZones.IO
         /// by a call to <see cref="IDateTimeZoneWriter.WriteSignedCount"/>.
         /// </summary>
         /// <returns>The integer read from the stream</returns>
-        /// <exception cref="EndOfStreamException">The data didn't contain a complete value</exception>
+        /// <exception cref="InvalidNodaDataException">The data was invalid</exception>
         /// <exception cref="IOException">The stream could not be read</exception>
         int ReadSignedCount();
 
@@ -39,7 +40,7 @@ namespace NodaTime.TimeZones.IO
         /// Reads a string from the stream.
         /// </summary>
         /// <returns>The string read from the stream; will not be null</returns>
-        /// <exception cref="EndOfStreamException">The data didn't contain a complete value</exception>
+        /// <exception cref="InvalidNodaDataException">The data was invalid</exception>
         /// <exception cref="IOException">The stream could not be read</exception>
         string ReadString();
 
@@ -47,7 +48,7 @@ namespace NodaTime.TimeZones.IO
         /// Reads an offset from the stream.
         /// </summary>
         /// <returns>The offset read from the stream</returns>
-        /// <exception cref="EndOfStreamException">The data didn't contain a complete value</exception>
+        /// <exception cref="InvalidNodaDataException">The data was invalid</exception>
         /// <exception cref="IOException">The stream could not be read</exception>
         Offset ReadOffset();
 
@@ -55,7 +56,7 @@ namespace NodaTime.TimeZones.IO
         /// Reads an instant from the stream.
         /// </summary>
         /// <returns>The instant read from the stream</returns>
-        /// <exception cref="EndOfStreamException">The data didn't contain a complete value</exception>
+        /// <exception cref="InvalidNodaDataException">The data was invalid</exception>
         /// <exception cref="IOException">The stream could not be read</exception>
         Instant ReadInstant();
 
@@ -63,7 +64,7 @@ namespace NodaTime.TimeZones.IO
         /// Reads a string-to-string dictionary from the stream.
         /// </summary>
         /// <returns>The dictionary read from the stream</returns>
-        /// <exception cref="EndOfStreamException">The data didn't contain a complete value</exception>
+        /// <exception cref="InvalidNodaDataException">The data was invalid</exception>
         /// <exception cref="IOException">The stream could not be read</exception>
         IDictionary<string, string> ReadDictionary();
 
@@ -72,7 +73,7 @@ namespace NodaTime.TimeZones.IO
         /// </summary>
         /// <returns>The zone read from the stream</returns>
         /// <exception cref="ArgumentNullException"><paramref name="id"/> is null</exception>
-        /// <exception cref="EndOfStreamException">The data didn't contain a complete value</exception>
+        /// <exception cref="InvalidNodaDataException">The data was invalid</exception>
         /// <exception cref="IOException">The stream could not be read</exception>
         DateTimeZone ReadTimeZone(string id);
     }
