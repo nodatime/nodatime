@@ -343,7 +343,7 @@ namespace NodaTime.TimeZones.IO
             }
             else
             {
-                throw new ArgumentException("Time zone type unknown to DateTimeZoneWriter");                
+                throw new ArgumentException("Unknown DateTimeZone type " + value.GetType());
             }
         }
 

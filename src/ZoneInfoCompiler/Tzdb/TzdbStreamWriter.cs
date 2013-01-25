@@ -155,6 +155,10 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
                 {
                     ((DaylightSavingsDateTimeZone)zone).Write(this);
                 }
+                else
+                {
+                    throw new ArgumentException("Unknown DateTimeZone type " + zone.GetType());
+                }
             }
         }
 
