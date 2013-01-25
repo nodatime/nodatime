@@ -59,6 +59,7 @@ namespace NodaTime.Test.Testing.TimeZones
             AssertBuildFails(builder);
         }
 
+#if !PCL
         [Test]
         public void ValidWindowsMapping()
         {
@@ -69,6 +70,7 @@ namespace NodaTime.Test.Testing.TimeZones
             }.Build();
             Assert.AreEqual("x", source.MapTimeZoneId(TimeZoneInfo.Local));
         }
+#endif
 
         [Test]
         public void NullZoneViaCollectionInitializer()
