@@ -73,7 +73,6 @@ namespace NodaTime.TimeZones
         /// base name which would previously have loaded the now-obsolete resource data.</remarks>
         /// <param name="baseName">The root name of the resource file.</param>
         /// <exception cref="InvalidNodaDataException">The data within the resource is invalid.</exception>
-        /// <exception cref="EndOfStreamException">Part of the data within the resource is truncated.</exception>
         /// <exception cref="MissingManifestResourceException">The resource set cannot be found.</exception>
         [Obsolete("Use TzdbDateTimeZoneSource.Default to access the only TZDB resources within the NodaTime assembly")]
         public TzdbDateTimeZoneSource(string baseName)
@@ -90,7 +89,6 @@ namespace NodaTime.TimeZones
         /// <param name="baseName">The root name of the resource file.</param>
         /// <param name="assembly">The assembly to search for the time zone resources.</param>
         /// <exception cref="InvalidNodaDataException">The data within the resource is invalid.</exception>
-        /// <exception cref="EndOfStreamException">Part of the data within the resource is truncated.</exception>
         /// <exception cref="MissingManifestResourceException">The resource set cannot be found.</exception>
         [Obsolete("The resource format for time zone data is deprecated; future versions will only support blob-based data")]
         public TzdbDateTimeZoneSource(string baseName, Assembly assembly)
@@ -103,7 +101,6 @@ namespace NodaTime.TimeZones
         /// </summary>
         /// <param name="source">The <see cref="ResourceSet"/> to search for the time zone resources.</param>
         /// <exception cref="InvalidNodaDataException">The data within the resource set is invalid.</exception>
-        /// <exception cref="EndOfStreamException">Part of the data within the resource set is truncated.</exception>
         [Obsolete("The resource format for time zone data is deprecated; future versions will only support blob-based data")]
         public TzdbDateTimeZoneSource(ResourceSet source)
             : this(TzdbResourceData.FromResourceSet(source))
@@ -115,7 +112,6 @@ namespace NodaTime.TimeZones
         /// </summary>
         /// <param name="manager">The <see cref="ResourceManager"/> to search for the time zone resources.</param>
         /// <exception cref="InvalidNodaDataException">The data within the resource manager is invalid.</exception>
-        /// <exception cref="EndOfStreamException">Part of the data within the resource manager is truncated.</exception>
         [Obsolete("The resource format for time zone data is deprecated; future versions will only support blob-based data")]
         public TzdbDateTimeZoneSource(ResourceManager manager)
             : this(TzdbResourceData.FromResourceManager(manager))
@@ -131,7 +127,6 @@ namespace NodaTime.TimeZones
         /// <param name="stream">The stream containing time zone data</param>
         /// <returns>A TZDB source with information from the given stream.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="stream"/> is null.</exception>
-        /// <exception cref="EndOfStreamException">Either the stream or one of the embedded sections ends prematurely.</exception>
         /// <exception cref="InvalidNodaDataException">The stream contains invalid time zone data, or data which cannot
         /// be read by this version of Noda Time.</exception>
         /// <exception cref="IOException">Reading from the stream failed.</exception>

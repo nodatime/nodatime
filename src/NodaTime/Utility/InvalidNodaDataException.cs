@@ -7,7 +7,8 @@ using System;
 namespace NodaTime.Utility
 {
     /// <summary>
-    /// Exception thrown when data read by Noda Time (such as serialized time zone data) is invalid.
+    /// Exception thrown when data read by Noda Time (such as serialized time zone data) is invalid. This includes
+    /// data which is truncated, i.e. we expect more data than we can read.
     /// </summary>
     /// <remarks>
     /// This type only exists as <c>InvalidDataException</c> doesn't exist in the Portable Class Library.
@@ -20,7 +21,6 @@ namespace NodaTime.Utility
 #if !PCL
     [Serializable]
 #endif
-    // TODO: Derive from IOException instead, like EndOfStreamException does?
     public class InvalidNodaDataException : Exception
     {
         /// <summary>

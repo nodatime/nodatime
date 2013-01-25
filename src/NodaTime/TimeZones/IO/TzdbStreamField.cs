@@ -4,6 +4,7 @@
 
 using System.Collections.Generic;
 using System.IO;
+using NodaTime.Utility;
 
 namespace NodaTime.TimeZones.IO
 {
@@ -58,7 +59,7 @@ namespace NodaTime.TimeZones.IO
                     int bytesRead = input.Read(data, offset, data.Length - offset);
                     if (bytesRead == 0)
                     {
-                        throw new EndOfStreamException("Stream ended after reading " + offset + " bytes out of " + data.Length);
+                        throw new InvalidNodaDataException("Stream ended after reading " + offset + " bytes out of " + data.Length);
                     }
                     offset += bytesRead;
                 }

@@ -258,7 +258,7 @@ namespace NodaTime.TimeZones.IO
                     int bytesRead = input.Read(data, 0, length);
                     if (bytesRead <= 0)
                     {
-                        throw new EndOfStreamException("Unexpectedly reached end of data with " + (length - offset) + " bytes still to read");
+                        throw new InvalidNodaDataException("Unexpectedly reached end of data with " + (length - offset) + " bytes still to read");
                     }
                     offset += bytesRead;
                 }
@@ -344,13 +344,13 @@ namespace NodaTime.TimeZones.IO
         /// Reads a signed 8 bit integer value from the stream and returns it as an int.
         /// </summary>
         /// <returns>The 8 bit int value.</returns>
-        /// <exception cref="EndOfStreamException">The data in the stream has been exhausted</exception>
+        /// <exception cref="InvalidNodaDataException">The data in the stream has been exhausted</exception>
         internal byte ReadByte()
         {
             int value = input.ReadByte();
             if (value == -1)
             {
-                throw new EndOfStreamException();
+                throw new InvalidNodaDataException("Unexpected end of data stream");
             }
             return (byte)value;
         }
