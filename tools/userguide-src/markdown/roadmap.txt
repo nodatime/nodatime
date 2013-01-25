@@ -20,6 +20,7 @@ This roadmap was last updated on **2013-01-08**.
         `ZonedDateTime` and `OffsetDateTime`; _possibly_ likewise for
         `Period`, and more consistency around access to standard
         patterns
+      - Revisit `NodaFormatInfo`
    * 1.3
       - Provide more information from CLDR for time zone information
         (e.g. sample cities to display to users)
