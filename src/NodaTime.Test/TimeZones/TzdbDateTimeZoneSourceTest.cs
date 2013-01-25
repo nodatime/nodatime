@@ -2,8 +2,6 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-#if !PCL
-
 using System;
 using System.Linq;
 using System.Reflection;
@@ -15,6 +13,8 @@ namespace NodaTime.Test.TimeZones
     [TestFixture]
     public class TzdbDateTimeZoneSourceTest
     {
+
+#if !PCL
         [Test]
         public void ZoneMapping()
         {
@@ -32,28 +32,6 @@ namespace NodaTime.Test.TimeZones
                 // This may occur on Mono, for example.
                 Assert.Ignore("Test assumes existence of BCL zone with ID: " + bclId);
             }
-        }
-
-        /// <summary>
-        /// Simply tests that every ID in the built-in database can be fetched. This is also
-        /// helpful for diagnostic debugging when we want to check that some potential
-        /// invariant holds for all time zones...
-        /// </summary>
-        [Test]
-        public void ForId_AllIds()
-        {
-            var source = TzdbDateTimeZoneSource.Default;
-            foreach (string id in source.GetIds())
-            {
-                Assert.IsNotNull(source.ForId(id));
-            }
-        }
-
-        [Test]
-        public void UtcEqualsBuiltIn()
-        {
-            var zone = TzdbDateTimeZoneSource.Default.ForId("UTC");
-            Assert.AreEqual(DateTimeZone.Utc, zone);
         }
 
         /// <summary>
@@ -90,6 +68,29 @@ namespace NodaTime.Test.TimeZones
             expectedLocal = new LocalDateTime(2007, 8, 24, 18, 30);
             Assert.AreEqual(expectedLocal, inJersey.LocalDateTime);
         }
+#endif
+
+        /// <summary>
+        /// Simply tests that every ID in the built-in database can be fetched. This is also
+        /// helpful for diagnostic debugging when we want to check that some potential
+        /// invariant holds for all time zones...
+        /// </summary>
+        [Test]
+        public void ForId_AllIds()
+        {
+            var source = TzdbDateTimeZoneSource.Default;
+            foreach (string id in source.GetIds())
+            {
+                Assert.IsNotNull(source.ForId(id));
+            }
+        }
+
+        [Test]
+        public void UtcEqualsBuiltIn()
+        {
+            var zone = TzdbDateTimeZoneSource.Default.ForId("UTC");
+            Assert.AreEqual(DateTimeZone.Utc, zone);
+        }
 
         // The following tests all make assumptions about the built-in TZDB data.
         // This is simpler than constructing fake data, and validates that the creation
@@ -120,4 +121,3 @@ namespace NodaTime.Test.TimeZones
         }
     }
 }
-#endif
