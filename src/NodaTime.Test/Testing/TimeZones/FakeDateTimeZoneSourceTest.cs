@@ -2,17 +2,14 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using NUnit.Framework;
 using NodaTime.Testing.TimeZones;
+using NUnit.Framework;
+using System;
 
 namespace NodaTime.Test.Testing.TimeZones
 {
     [TestFixture]
-    public class TestDateTimeZoneSourceTest
+    public class FakeDateTimeZoneSourceTest
     {
         // We don't care about the details of the time zones, just the IDs
         private static DateTimeZone CreateZone(string id)
@@ -23,7 +20,7 @@ namespace NodaTime.Test.Testing.TimeZones
         [Test]
         public void Ids()
         {
-            var source = new TestDateTimeZoneSource.Builder
+            var source = new FakeDateTimeZoneSource.Builder
             {
                 CreateZone("x"), CreateZone("y"), CreateZone("a"), CreateZone("b")
             }.Build();
@@ -34,7 +31,7 @@ namespace NodaTime.Test.Testing.TimeZones
         public void ForId_Present()
         {
             var zone = CreateZone("x");
-            var source = new TestDateTimeZoneSource.Builder
+            var source = new FakeDateTimeZoneSource.Builder
             {
                 // The "right" one and some others
                 zone, CreateZone("y"), CreateZone("a"), CreateZone("b")
@@ -45,7 +42,7 @@ namespace NodaTime.Test.Testing.TimeZones
         [Test]
         public void ForId_Missing()
         {
-            var source = new TestDateTimeZoneSource.Builder
+            var source = new FakeDateTimeZoneSource.Builder
             {
                 CreateZone("x"), CreateZone("y")
             }.Build();
@@ -55,7 +52,7 @@ namespace NodaTime.Test.Testing.TimeZones
         [Test]
         public void DuplicateIds()
         {
-            var builder = new TestDateTimeZoneSource.Builder
+            var builder = new FakeDateTimeZoneSource.Builder
             {
                 CreateZone("x"), CreateZone("y"), CreateZone("x")
             };
@@ -65,7 +62,7 @@ namespace NodaTime.Test.Testing.TimeZones
         [Test]
         public void ValidWindowsMapping()
         {
-            var source = new TestDateTimeZoneSource.Builder
+            var source = new FakeDateTimeZoneSource.Builder
             {
                 BclIdsToZoneIds = { { TimeZoneInfo.Local.Id, "x"} },
                 Zones = { CreateZone("x"), CreateZone("y") }
@@ -76,13 +73,13 @@ namespace NodaTime.Test.Testing.TimeZones
         [Test]
         public void NullZoneViaCollectionInitializer()
         {
-            Assert.Throws<ArgumentNullException>(() => new TestDateTimeZoneSource.Builder { null });
+            Assert.Throws<ArgumentNullException>(() => new FakeDateTimeZoneSource.Builder { null });
         }
 
         [Test]
         public void NullZoneViaProperty()
         {
-            var source = new TestDateTimeZoneSource.Builder
+            var source = new FakeDateTimeZoneSource.Builder
             {
                 Zones = { null }
             };
@@ -92,7 +89,7 @@ namespace NodaTime.Test.Testing.TimeZones
         [Test]
         public void InvalidWindowsMapping_NullCanonicalId()
         {
-            var source = new TestDateTimeZoneSource.Builder
+            var source = new FakeDateTimeZoneSource.Builder
             {
                 BclIdsToZoneIds = { { "x", null } },
                 Zones = { CreateZone("z") }
@@ -103,7 +100,7 @@ namespace NodaTime.Test.Testing.TimeZones
         [Test]
         public void InvalidWindowsMapping_MissingZone()
         {
-            var source = new TestDateTimeZoneSource.Builder
+            var source = new FakeDateTimeZoneSource.Builder
             {
                 BclIdsToZoneIds = { { TimeZoneInfo.Local.Id, "z" } },
                 Zones = { CreateZone("x"), CreateZone("y") }
@@ -113,7 +110,7 @@ namespace NodaTime.Test.Testing.TimeZones
 
         // We don't really care how it fails - just that an exception is thrown.
         // Unfortuntely NUnit requires the exact exception type :(
-        private static void AssertBuildFails(TestDateTimeZoneSource.Builder builder)
+        private static void AssertBuildFails(FakeDateTimeZoneSource.Builder builder)
         {
             try
             {

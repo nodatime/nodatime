@@ -13,15 +13,15 @@ namespace NodaTime.Testing.TimeZones
 {
     /// <summary>
     /// A time zone source for test purposes.
-    /// Create instances via <see cref="TestDateTimeZoneSource.Builder"/>.
+    /// Create instances via <see cref="FakeDateTimeZoneSource.Builder"/>.
     /// </summary>
-    public sealed class TestDateTimeZoneSource : IDateTimeZoneSource
+    public sealed class FakeDateTimeZoneSource : IDateTimeZoneSource
     {
         private readonly Dictionary<string, DateTimeZone> zones;
         private readonly Dictionary<string, string> bclToZoneIds;
         private readonly string versionId;
 
-        private TestDateTimeZoneSource(string versionId,
+        private FakeDateTimeZoneSource(string versionId,
             Dictionary<string, DateTimeZone> zones,
             Dictionary<string, string> bclToZoneIds)
         {
@@ -76,7 +76,7 @@ namespace NodaTime.Testing.TimeZones
         }
 
         /// <summary>
-        /// Builder for <see cref="TestDateTimeZoneSource"/>, allowing the built object to
+        /// Builder for <see cref="FakeDateTimeZoneSource"/>, allowing the built object to
         /// be immutable, but constructed via object/collection initializers.
         /// </summary>
         public sealed class Builder : IEnumerable<DateTimeZone>
@@ -146,7 +146,7 @@ namespace NodaTime.Testing.TimeZones
             /// they're violated. Those exceptions are not documented here, and you
             /// shouldn't be catching them anyway. (This is aimed at testing...)
             /// </remarks>
-            public TestDateTimeZoneSource Build()
+            public FakeDateTimeZoneSource Build()
             {
                 var zoneMap = zones.ToDictionary(zone => zone.Id);
                 foreach (var entry in bclIdsToZoneIds)
@@ -154,7 +154,7 @@ namespace NodaTime.Testing.TimeZones
                     Preconditions.CheckNotNull(entry.Value, "value");
                 }
                 var bclIdMapClone = new Dictionary<string, string>(bclIdsToZoneIds);
-                return new TestDateTimeZoneSource(VersionId, zoneMap, bclIdMapClone);
+                return new FakeDateTimeZoneSource(VersionId, zoneMap, bclIdMapClone);
             }
         }
     }
