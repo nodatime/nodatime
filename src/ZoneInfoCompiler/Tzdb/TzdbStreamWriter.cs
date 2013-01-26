@@ -139,7 +139,11 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
             // TODO: Either refactor, or perhaps use dynamic typing
             public void WriteTimeZone(DateTimeZone zone)
             {
-                if (zone is FixedDateTimeZone)
+                if (zone == null)
+                {
+                    // Do nothing
+                }
+                else if (zone is FixedDateTimeZone)
                 {
                     ((FixedDateTimeZone)zone).Write(this);
                 }
