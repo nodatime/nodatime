@@ -12,10 +12,14 @@ namespace NodaTime
     /// <summary>
     /// Provides stable, performant time zone data.
     /// </summary>
-    /// <remarks>Consumers should be able to treat an <see cref="IDateTimeZoneProvider"/> like a cache: 
+    /// <remarks>
+    /// <para>Consumers should be able to treat an <see cref="IDateTimeZoneProvider"/> like a cache: 
     /// lookups should be quick (after at most one lookup of a given ID), and the data for a given ID should always be
     /// the same (even if the specific instance returned is not).
-    /// Consumers should not feel the need to cache data accessed through this interface.
+    /// Consumers should not feel the need to cache data accessed through this interface.</para>
+    /// <para>Implementations designed to work with any <see cref="IDateTimeZoneSource"/> implementation (such as
+    /// <see cref="DateTimeZoneCache"/>) should not attempt to handle exceptions thrown by the source. A source-specific
+    /// provider may do so, as it has more detailed knowledge of what can go wrong and how it can best be handled.</para>
     /// </remarks>
     public interface IDateTimeZoneProvider
     {
