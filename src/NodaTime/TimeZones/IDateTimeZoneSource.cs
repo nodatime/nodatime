@@ -21,6 +21,14 @@ namespace NodaTime.TimeZones
     /// Caching is provided by <see cref="DateTimeZoneCache"/>, which most consumers should use instead of 
     /// consuming <see cref="IDateTimeZoneSource"/> directly in order to get better performance.
     /// </para>
+    /// <para>
+    /// It is expected that any exceptions thrown are implementation-specific; nothing is explicitly
+    /// specified in the interface. Typically this would be unusual to the point that callers would not
+    /// try to catch them; any implementation which may break in ways that are sensible to catch should advertise
+    /// this clearly, so that clients will know to handle the exceptions appropriately. No wrapper exception
+    /// type is provided by Noda Time to handle this situation, and code in Noda Time does not try to catch
+    /// such exceptions.
+    /// </para>
     /// </remarks>
     /// <threadsafety>Implementations are not required to be thread-safe.</threadsafety>
     public interface IDateTimeZoneSource
