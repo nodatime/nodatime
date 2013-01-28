@@ -71,12 +71,13 @@ namespace NodaTime.TimeZones.IO
         /// <remarks>
         /// Unlike <see cref="WriteCount"/>, this can encode negative numbers. It does, however, use a slightly less
         /// efficient encoding for positive numbers.
-        /// <param name="value">The value to write.</param>
-        public void WriteSignedCount(int value)
+        /// </remarks>
+        /// <param name="count">The value to write.</param>
+        public void WriteSignedCount(int count)
         {
             unchecked
             {
-                WriteVarint((uint) ((value >> 31) ^ (value << 1)));  // zigzag encoding
+                WriteVarint((uint) ((count >> 31) ^ (count << 1)));  // zigzag encoding
             }
         }
 
