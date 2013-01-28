@@ -111,7 +111,7 @@ namespace NodaTime.TimeZones.IO
         /// <summary>
         /// Always throws NotSupportedException
         /// </summary>
-        /// <param name="value">The string to write to the stream.</param>
+        /// <param name="count">The string to write to the stream.</param>
         public void WriteSignedCount(int count)
         {
             throw new NotSupportedException();
