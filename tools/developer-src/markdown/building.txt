@@ -5,7 +5,7 @@ Building and Testing
 Noda Time is mostly developed on Visual Studio 2010 and Visual Studio 2012.
 All versions of Visual Studio 2010 and 2012 which support C#, including Express editions,
 *should* be able to build Noda Time. In practice, currently Express fails to open
-the solution due to a lack of PCL support; see [issue 167][]. We're working to rectift this.
+the solution due to a lack of PCL support; see [issue 167][]. We're working to rectify this.
 (Please contact the mailing list if you have problems not covered here.) 
 
 You'll also need the [.NET Framework SDK][dotnetsdk]. This library supports
