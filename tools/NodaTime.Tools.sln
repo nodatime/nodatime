@@ -7,7 +7,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "userguide-src", "userguide-
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "raw", "raw", "{5663A352-33C4-4C9D-9F67-1CCF9D0A0698}"
 	ProjectSection(SolutionItems) = preProject
-		userguide-src\raw\index.html = userguide-src\raw\index.html
 		userguide-src\raw\prettify-COPYING = userguide-src\raw\prettify-COPYING
 		userguide-src\raw\prettify.css = userguide-src\raw\prettify.css
 		userguide-src\raw\prettify.js = userguide-src\raw\prettify.js
