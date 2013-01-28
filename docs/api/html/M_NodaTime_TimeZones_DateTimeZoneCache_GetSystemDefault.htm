@@ -8,14 +8,14 @@
 <span class="keyword">virtual</span> <a href="T_NodaTime_DateTimeZone.htm">DateTimeZone</a>^ <span class="identifier">GetSystemDefault</span>() <span class="keyword">sealed</span></pre></div></div></div></div></div><div class="section"><div class="sectionTitle" onclick="toggleSection(this.parentNode)"><img src="../icons/collapse_all.gif" /> Return Value</div><div class="sectionContent">
             The provider-specific representation of the system default time zone.
             </div></div><div class="section"><div class="sectionTitle" onclick="toggleSection(this.parentNode)"><img src="../icons/collapse_all.gif" /> Remarks</div><div class="sectionContent">
-            Callers should be aware that this method will throw <a href="http://msdn2.microsoft.com/en-us/library/bb504484" target="_blank">TimeZoneNotFoundException</a> if no matching
+            Callers should be aware that this method will throw <a href="T_NodaTime_TimeZones_DateTimeZoneNotFoundException.htm">DateTimeZoneNotFoundException</a> if no matching
             time zone is found. For the built-in Noda Time providers, this is unlikely to occur in practice (assuming
             the system is using a standard Windows time zone), but can occur even then, if no mapping is found.
             If it is necessary to handle this case, callers can construct a
             <a href="T_NodaTime_TimeZones_BclDateTimeZone.htm">BclDateTimeZone</a> via <a href="M_NodaTime_TimeZones_BclDateTimeZone_ForSystemDefault.htm">ForSystemDefault<span class="languageSpecificText"><span class="cs">()</span><span class="cpp">()</span><span class="nu">()</span><span class="fs">()</span></span></a>, which returns a
             <a href="T_NodaTime_DateTimeZone.htm">DateTimeZone</a> that wraps the system local <a href="http://msdn2.microsoft.com/en-us/library/bb396389" target="_blank">TimeZoneInfo</a>, and which always
             succeeds.
-            </div></div><div class="section"><div class="sectionTitle" onclick="toggleSection(this.parentNode)"><img src="../icons/collapse_all.gif" /> Exceptions</div><div class="sectionContent"><table class="exceptions"><tr><th class="exceptionNameColumn">Exception</th><th class="exceptionConditionColumn">Condition</th></tr><tr><td><a href="http://msdn2.microsoft.com/en-us/library/bb504484" target="_blank">TimeZoneNotFoundException</a></td><td>The system default time zone is not mapped by
+            </div></div><div class="section"><div class="sectionTitle" onclick="toggleSection(this.parentNode)"><img src="../icons/collapse_all.gif" /> Exceptions</div><div class="sectionContent"><table class="exceptions"><tr><th class="exceptionNameColumn">Exception</th><th class="exceptionConditionColumn">Condition</th></tr><tr><td><a href="T_NodaTime_TimeZones_DateTimeZoneNotFoundException.htm">DateTimeZoneNotFoundException</a></td><td>The system default time zone is not mapped by
             this provider.<br /></td></tr></table></div></div><p><div id="footer"><p />Send comments on this topic to
         <a id="HT_MailLink" href="mailto:noda-time%40googlegroups.com?Subject=Noda Time">Noda Time Google Groups</a><script type="text/javascript">
         var HT_mailLink = document.getElementById("HT_MailLink");
