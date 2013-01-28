@@ -16,12 +16,15 @@
             .NET 3.5 and later.
             </div><br /></td></tr><tr data="class; public"><td><img src="../icons/pubclass.gif" /></td><td><b><a href="T_NodaTime_TimeZones_DateTimeZoneCache.htm">DateTimeZoneCache</a></b></td><td><div class="summary">
             Provides a stable cache for time zone sources.
+            </div><br /></td></tr><tr data="class; public"><td><img src="../icons/pubclass.gif" /></td><td><b><a href="T_NodaTime_TimeZones_DateTimeZoneNotFoundException.htm">DateTimeZoneNotFoundException</a></b></td><td><div class="summary">
+            Exception thrown when time zone is requested from an <a href="T_NodaTime_IDateTimeZoneProvider.htm">IDateTimeZoneProvider</a>,
+            but the specified ID is invalid for that provider.
             </div><br /></td></tr><tr data="interface; public"><td><img src="../icons/pubinterface.gif" /></td><td><b><a href="T_NodaTime_TimeZones_IDateTimeZoneSource.htm">IDateTimeZoneSource</a></b></td><td><div class="summary">
             Provides the interface for objects that can retrieve time zone definitions given an ID.
             </div><br /></td></tr><tr data="class; public"><td><img src="../icons/pubclass.gif" /></td><td><b><a href="T_NodaTime_TimeZones_InvalidDateTimeZoneSourceException.htm">InvalidDateTimeZoneSourceException</a></b></td><td><div class="summary">
             Exception thrown to indicate that a time zone source has violated the conditions of <a href="T_NodaTime_TimeZones_IDateTimeZoneSource.htm">IDateTimeZoneSource</a>.
             This exception is primarily intended to be thrown from <a href="T_NodaTime_TimeZones_DateTimeZoneCache.htm">DateTimeZoneCache</a>, and only in the face of a buggy
-            source; user code should not 
+            source; user code should not usually need to be aware of this or catch it.
             </div><br /></td></tr><tr data="class; public"><td><img src="../icons/pubclass.gif" /></td><td><b><a href="T_NodaTime_TimeZones_Resolvers.htm">Resolvers</a></b></td><td><div class="summary">
             "Constant" fields representing commonly-used implementations of the resolver delegates,
             and a method to combine two "partial" resolvers into a full one.
