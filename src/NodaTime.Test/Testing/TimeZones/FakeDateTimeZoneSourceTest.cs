@@ -59,18 +59,21 @@ namespace NodaTime.Test.Testing.TimeZones
             AssertBuildFails(builder);
         }
 
-#if !PCL
         [Test]
         public void ValidWindowsMapping()
         {
+#if PCL
+            string localId = TimeZoneInfo.Local.StandardName;
+#else
+            string localId = TimeZoneInfo.Local.Id;
+#endif
             var source = new FakeDateTimeZoneSource.Builder
             {
-                BclIdsToZoneIds = { { TimeZoneInfo.Local.Id, "x"} },
+                BclIdsToZoneIds = { { localId, "x"} },
                 Zones = { CreateZone("x"), CreateZone("y") }
             }.Build();
             Assert.AreEqual("x", source.MapTimeZoneId(TimeZoneInfo.Local));
         }
-#endif
 
         [Test]
         public void NullZoneViaCollectionInitializer()
