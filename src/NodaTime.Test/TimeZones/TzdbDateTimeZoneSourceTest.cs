@@ -14,13 +14,13 @@ namespace NodaTime.Test.TimeZones
     public class TzdbDateTimeZoneSourceTest
     {
 
-#if !PCL
         [Test]
-        public void ZoneMapping()
+        [TestCase("UTC", "Etc/GMT")]
+        [TestCase("GMT Standard Time", "Europe/London")]
+        // Standard name differs from ID under Windows
+        [TestCase("Israel Standard Time", "Asia/Jerusalem")]
+        public void ZoneMapping(string bclId, string tzdbId)
         {
-            // This test assumes that if a system time zone exists with this BCL ID, it will map to this TZDB ID.
-            String bclId = "GMT Standard Time";
-            String tzdbId = "Europe/London";
             try
             {
                 var source = TzdbDateTimeZoneSource.Default;
@@ -34,6 +34,7 @@ namespace NodaTime.Test.TimeZones
             }
         }
 
+#if !PCL
         /// <summary>
         /// Tests that we can load (and exercise) the binary Tzdb resource file distributed with Noda Time 1.0.0.
         /// This is effectively a black-box regression test that ensures that the resource format has not changed in a

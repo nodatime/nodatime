@@ -186,12 +186,14 @@ namespace NodaTime.TimeZones
         public string MapTimeZoneId(TimeZoneInfo zone)
         {
 #if PCL
-            throw new NotSupportedException();
+            // Our in-memory mapping is effectively from standard name to TZDB ID.
+            string id = zone.StandardName;
 #else
-            string result;
-            source.WindowsMapping.TryGetValue(zone.Id, out result);
-            return result;
+            string id = zone.Id;
 #endif
+            string result;
+            source.WindowsMapping.TryGetValue(id, out result);
+            return result;
         }
 
         /// <summary>
