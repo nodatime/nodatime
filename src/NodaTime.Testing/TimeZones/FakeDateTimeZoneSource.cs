@@ -2,12 +2,11 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
+using NodaTime.TimeZones;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using NodaTime.TimeZones;
 
 namespace NodaTime.Testing.TimeZones
 {
@@ -15,6 +14,10 @@ namespace NodaTime.Testing.TimeZones
     /// A time zone source for test purposes.
     /// Create instances via <see cref="FakeDateTimeZoneSource.Builder"/>.
     /// </summary>
+    /// <remarks>Under the PCL, the mapping from TimeZoneInfo is performed
+    /// using the StandardName property instead of the Id property, as the Id
+    /// property isn't available. The standard name is almost always the same
+    /// anyway, known exceptions including Jerusalem and the Malay Peninsula.</remarks>
     public sealed class FakeDateTimeZoneSource : IDateTimeZoneSource
     {
         private readonly Dictionary<string, DateTimeZone> zones;
@@ -63,16 +66,17 @@ namespace NodaTime.Testing.TimeZones
         /// <inheritdoc />
         public string MapTimeZoneId(TimeZoneInfo timeZone)
         {
-#if PCL
-            throw new NotSupportedException();
-#else
             Preconditions.CheckNotNull(timeZone, "timeZone");
+#if PCL
+            string id = timeZone.StandardName;
+#else
+            string id = timeZone.Id;
+#endif
             string canonicalId;
             // We don't care about the return value of TryGetValue - if it's false,
             // canonicalId will be null, which is what we want.
-            bclToZoneIds.TryGetValue(timeZone.Id, out canonicalId);
+            bclToZoneIds.TryGetValue(id, out canonicalId);
             return canonicalId;
-#endif
         }
 
         /// <summary>
