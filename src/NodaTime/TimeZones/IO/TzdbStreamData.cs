@@ -4,6 +4,7 @@
 
 using System.Collections.Generic;
 using System.IO;
+using NodaTime.Fields;
 using NodaTime.Utility;
 
 namespace NodaTime.TimeZones.IO
@@ -19,6 +20,7 @@ namespace NodaTime.TimeZones.IO
             { TzdbStreamFieldId.TzdbVersion, (builder, field) => builder.HandleTzdbVersionField(field) },
             { TzdbStreamFieldId.WindowsMapping, (builder, field) => builder.HandleWindowsMappingField(field) },
             { TzdbStreamFieldId.WindowsMappingVersion, (builder, field) => builder.HandleWindowsMappingVersionField(field) },
+            { TzdbStreamFieldId.WindowsAdditionalStandardNameToIdMapping, (builder, field) => builder.HandleWindowsAdditionalStandardNameToIdMapping(field) },
         };
 
         private const int AcceptedVersion = 0;
@@ -182,6 +184,23 @@ namespace NodaTime.TimeZones.IO
             {
                 CheckSingleField(field, windowsMapping);
                 windowsMapping = field.ExtractSingleValue(reader => reader.ReadDictionary(), stringPool);
+            }
+
+            internal void HandleWindowsAdditionalStandardNameToIdMapping(TzdbStreamField field)
+            {
+// If we're not on the PCL, we don't need to do anything. This is just to support zones where the StandardName
+// isn't the same as the Id.
+#if PCL
+                if (windowsMapping == null)
+                {
+                    throw new InvalidNodaDataException("Field " + field.Id + " without earlier Windows mapping field");
+                }
+                var extra = field.ExtractSingleValue(reader => reader.ReadDictionary(), stringPool);
+                foreach (var entry in extra)
+                {
+                    windowsMapping[entry.Key] = entry.Value;
+                }
+#endif         
             }
 
             private void CheckSingleField(TzdbStreamField field, object expectedNullField)

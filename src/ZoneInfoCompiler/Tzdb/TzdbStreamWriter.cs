@@ -69,7 +69,12 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
             }
 
             fields.AddField(TzdbStreamFieldId.TzdbIdMap, stringPool).Writer.WriteDictionary(timeZoneMap);
+
+            // Windows mappings
             fields.AddField(TzdbStreamFieldId.WindowsMapping, stringPool).Writer.WriteDictionary(mapping.WindowsToTzdbIds);
+            // Map from StandardName to TZDB ID (rather than just to BCL ID). This will go bang if any IDs are mismatched.
+            fields.AddField(TzdbStreamFieldId.WindowsAdditionalStandardNameToIdMapping, stringPool).Writer.WriteDictionary
+                (PclSupport.StandardNameToIdMap.ToDictionary(pair => pair.Key, pair => mapping.WindowsToTzdbIds[pair.Value]));
 
             var stringPoolField = fields.AddField(TzdbStreamFieldId.StringPool, null);
             stringPoolField.Writer.WriteCount(stringPool.Count);

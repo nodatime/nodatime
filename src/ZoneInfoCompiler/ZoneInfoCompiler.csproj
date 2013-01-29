@@ -99,6 +99,7 @@
     <Compile Include="Tzdb\MissingTokenException.cs" />
     <Compile Include="Tzdb\ParserHelper.cs" />
     <Compile Include="CompilerOptions.cs" />
+    <Compile Include="Tzdb\PclSupport.cs" />
     <Compile Include="Tzdb\TzdbDatabase.cs" />
     <Compile Include="Tzdb\TzdbResourceWriter.cs" />
     <Compile Include="Tzdb\TzdbStreamWriter.cs" />

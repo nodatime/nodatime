@@ -36,6 +36,12 @@ namespace NodaTime.TimeZones.IO
         /// Single field giving the mapping of Windows system ID to TZDB canonical ID,
         /// as written by DateTimeZoneWriter.WriteDictionary.
         /// </summary>
-        WindowsMapping = 5
+        WindowsMapping = 5,
+        /// <summary>
+        /// Single field giving the mapping of Windows StandardName to TZDB canonical ID,
+        /// for time zones where TimeZoneInfo.Id != TimeZoneInfo.StandardName,
+        /// as written by DateTimeZoneWriter.WriteDictionary.
+        /// </summary>
+        WindowsAdditionalStandardNameToIdMapping = 6
     }
 }
