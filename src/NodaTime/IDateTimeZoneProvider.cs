@@ -45,7 +45,23 @@ namespace NodaTime
         /// <value>The <see cref="IEnumerable{T}" /> of string ids.</value>
         ReadOnlyCollection<string> Ids { get; }
 
-#if !PCL
+#if PCL
+        /// <summary>
+        /// Gets the time zone from this provider that matches the system default time zone, if a matching time zone is
+        /// available.
+        /// </summary>
+        /// <remarks>
+        /// Callers should be aware that this method will throw <see cref="DateTimeZoneNotFoundException"/> if no matching
+        /// time zone is found. For the built-in Noda Time providers, this is unlikely to occur in practice (assuming
+        /// the system is using a standard Windows time zone), but can occur even then, if no mapping is found.
+        /// </remarks>
+        /// <exception cref="DateTimeZoneNotFoundException">The system default time zone is not mapped by
+        /// this provider.</exception>
+        /// <returns>
+        /// The provider-specific representation of the system default time zone.
+        /// </returns>
+        DateTimeZone GetSystemDefault();
+#else
         /// <summary>
         /// Gets the time zone from this provider that matches the system default time zone, if a matching time zone is
         /// available.
@@ -57,7 +73,8 @@ namespace NodaTime
         /// If it is necessary to handle this case, callers can construct a
         /// <see cref="BclDateTimeZone"/> via <see cref="BclDateTimeZone.ForSystemDefault"/>, which returns a
         /// <see cref="DateTimeZone"/> that wraps the system local <see cref="TimeZoneInfo"/>, and which always
-        /// succeeds.
+        /// succeeds. Note that <c>BclDateTimeZone</c> is not available on the PCL build of Noda Time, so
+        /// this fallback strategy can only be used with the desktop version.
         /// </remarks>
         /// <exception cref="DateTimeZoneNotFoundException">The system default time zone is not mapped by
         /// this provider.</exception>
