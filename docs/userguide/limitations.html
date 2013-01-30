@@ -14,12 +14,27 @@ aspects we'd like to improve; see the
 <a href="http://code.google.com/p/noda-time/issues/list">issues list</a> for
 others.</p>
 
-<p>Without <em>your</em> help, we won't know which of these features to work
-on first - or whether there are other limitations we hadn't even
-considered. If there's something that should be within Noda Time's
+<p>We also have a <a href="roadmap.html">roadmap</a> of intended releases. This is
+always tentative, of course, but it helps to give some clarity to our
+decisions in terms of what to work on next.</p>
+
+<p>If there's something that should be within Noda Time's
 scope, but we don't support it yet, then <em>please</em> either raise an
 issue or post on the
 <a href="http://groups.google.com/group/noda-time">mailing list</a>.</p>
+
+<h1>Portable Class Library (PCL) differences</h1>
+
+<p>The .NET API provided for portable class libraries is more limited than the
+full desktop version. Currently this provides relatively few challenges for
+Noda Time, with one significant exception: <code>TimeZoneInfo</code>. While we are able
+to detect the local time zone's TZDB equivalent through <code>TimeZoneInfo.StandardName</code>
+instead of its ID (as we would do normally), we can't fetch arbitrary time zones
+by ID, nor can we ask for the adjustment rules for a particular time zone.</p>
+
+<p>The upshot of this is that we can't currently support
+<a href="../api/html/T_NodaTime_TimeZones_BclDateTimeZone.htm"><code>BclDateTimeZone</code></a>
+on the PCL version of Noda Time.</p>
 
 <h1>Fuller text support</h1>
 

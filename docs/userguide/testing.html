@@ -17,11 +17,11 @@ which <em>uses</em> Noda Time.</p>
 small, but it will no doubt grow - and it will make your life much easier. The purpose of the assembly is to provide
 easy-to-use test doubles which can be used instead of the real implementations.</p>
 
-<h2>Dependencies</h2>
-
 <p>While you <em>can</em> use Noda Time without dependency injection, it will make your code harder to test. Noda Time has
 no particular support for any specific dependency injection framework, but should be easy to configure with any
 reasonably-powerful implementation. (If it's not, please file a bug report.)</p>
+
+<h1>Clocks</h1>
 
 <p>The most obvious dependency is a clock - an implementation of <a href="../api/html/T_NodaTime_IClock.htm"><code>NodaTime.IClock</code></a>,
 which simply provides "the current date and time" (as an <code>Instant</code>, given that the concept of "now" isn't
@@ -30,14 +30,75 @@ be set to any given instant, advanced manually, or set to advance a given amount
 environment should normally inject the singleton <a href="../api/html/T_NodaTime_SystemClock.htm"><code>SystemClock</code></a> instance which simply
 uses <code>DateTime.UtcNow</code> behind the scenes.</p>
 
+<h1>Time zone providers and sources</h1>
+
 <p>For code which is sensitive to time zone fetching, an <a href="../api/html/T_NodaTime_IDateTimeZoneProvider.htm"><code>IDateTimeZoneProvider</code></a> can
-be injected. There are currently no test doubles for this interface - please contact the mailing list with requirements
-if to give us feedback on exactly what you'd like provided here. The production environment should usually be
+be injected. There are currently no test doubles for this interface, but usually
+<a href="../api/html/T_NodaTime_TimeZones_DateTimeZoneCache.htm"><code>DateTimeZoneCache</code></a> works perfectly well.</p>
+
+<p>The cache uses another interface
+- <a href="../api/html/T_NodaTime_TimeZones_IDateTimeZoneSource.htm"><code>IDateTimeZoneSource</code></a> to retrieve time zones under the hood, and there
+we <em>do</em> have a test double: <a href="../api/html/T_NodaTime_Testing_TimeZones_FakeDateTimeZoneSource.htm"><code>FakeDateTimeZoneSource</code></a>. This source
+is constructed (via a builder) with any <code>DateTimeZone</code> instances you want, and you can also specify custom Windows <code>TimeZoneInfo</code> ID mappings.</p>
+
+<p>If you only need to specify the time zones, it's simplest to just use a collection initializer with the builder, like this:</p>
+
+<pre class="prettyprint"><code>var source = new FakeDateTimeZoneSource.Builder
+{
+    // Where CreateZone is just a method returning a DateTimeZone...
+    CreateZone("x"),
+    CreateZone("y"),
+    CreateZone("a"),
+    CreateZone("b")
+}.Build();
+</code></pre>
+
+<p>If you need to set other properties on the builder, the zones have to be specified through the <code>Zones</code> property:</p>
+
+<pre class="prettyprint"><code> var source = new FakeDateTimeZoneSource.Builder
+ {
+     VersionId = "CustomVersionId",
+     Zones = { CreateZone("x"), CreateZone("y") }
+ }.Build();
+</code></pre>
+
+<p>The production environment should usually be
 configured with one of the providers in <a href="../api/html/T_NodaTime_DateTimeZoneProviders.htm"><code>DateTimeZoneProviders</code></a>.</p>
 
-<p>For time zones themselves, a fake implementation representing a time zone with a single transition between different offsets
-is available as <a href="../api/html/T_NodaTime_Testing_TimeZones_SingleTransitionDateTimeZone.htm"><code>SingleTransitionDateTimeZone</code></a>. Creating
-a time zone with no transitions at all is simple via <code>DateTimeZone.ForOffset</code>.</p>
+<h1>Time zones</h1>
+
+<p>For time zones themselves, there are two fake implementations.
+<a href="../api/html/T_NodaTime_Testing_TimeZones_SingleTransitionDateTimeZone.htm"><code>SingleTransitionDateTimeZone</code></a> represents a time zone
+with a single transition between different offsets, and is suitable for most test purposes.</p>
+
+<pre class="prettyprint"><code>var transition = new Instant(100000L); // Or use Instant.FromUtc
+var zone = new SingleTransitionDateTimeZone(transition, 3, 5);
+</code></pre>
+
+<p>This will create a zone which moves from UTC+3 to UTC+5 at the transition point. The ID of the zone can also be specified,
+and the names of the early/late zone intervals are based on the ID. The zone intervals within the time zone do not have a
+daylight saving aspect; they just have the specified standard offsets.</p>
+
+<p>For more complex scenarios, <a href="../api/html/T_NodaTime_Testing_TimeZones_SingleTransitionDateTimeZone.htm"><code>MultiTransitionDateTimeZone</code></a>
+allows you to create a time zone from a collection of transitions, using a builder type. The standard and saving offsets for
+each part of the time zone can be specified separately. For example:</p>
+
+<pre class="prettyprint"><code>var transition1 = new Instant(0L);
+var transition2 = new Instant(100000L);
+var zone = new MultiTransitionDateTimeZone.Builder(2, 1, "X")
+{
+    { transition1, 2, 0, "Y" },
+    { transition2, 1, 1, "Z" }
+}.Build();
+</code></pre>
+
+<p>The offsets and ID provided to the constructor are used for the beginning of time up until the first specified transition,
+at which point the offsets and ID provided with that transition are used until the next transition, etc.</p>
+
+<p>(With both <code>SingleTransitionDateTimeZone</code> and <code>MultiTransitionDateTimeZone</code>, the offsets can also be specified with
+<code>Offset</code> values, but in many tests it's simplest just to give the number of hours, as in the code above.)</p>
+
+<p>Creating a time zone with no transitions at all is simple via <code>DateTimeZone.ForOffset</code>.</p>
 
   </body>
 </html>
