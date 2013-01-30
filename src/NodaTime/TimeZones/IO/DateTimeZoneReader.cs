@@ -185,7 +185,8 @@ namespace NodaTime.TimeZones.IO
                 }
                 if (value < DateTimeZoneWriter.ZoneIntervalConstants.MinValueForMinutesSinceEpoch)
                 {
-                    if (previous == null) {
+                    if (previous == null)
+                    {
                         throw new InvalidNodaDataException(
                             "No previous value, so can't interpret value encoded as delta-since-previous: " + value);
                     }

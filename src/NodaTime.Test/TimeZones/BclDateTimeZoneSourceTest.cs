@@ -39,7 +39,8 @@ namespace NodaTime.Test.TimeZones
             // Unfortunately, it doesn't always exist on Mono (at least not on the Raspberry Pi...)
             string id = "UTC-02";
             var source = new BclDateTimeZoneSource();
-            if (!source.GetIds().Contains(id)) {
+            if (!source.GetIds().Contains(id))
+            {
                 Assert.Ignore("Test assumes existence of BCL zone with ID: " + id);
             }
             var zone = source.ForId(id);

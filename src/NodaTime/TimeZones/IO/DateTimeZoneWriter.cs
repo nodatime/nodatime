@@ -182,7 +182,8 @@ namespace NodaTime.TimeZones.IO
 
         public void WriteZoneIntervalTransition(Instant? previous, Instant value)
         {
-            if (previous != null) {
+            if (previous != null)
+            {
                 Preconditions.CheckArgumentRange("value", value.Ticks, previous.Value.Ticks, long.MaxValue);
             }
 
