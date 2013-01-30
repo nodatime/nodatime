@@ -45,18 +45,6 @@ namespace NodaTime
         public static readonly Duration Epsilon = new Duration(1L);
 
         /// <summary>
-        /// The maximum <see cref="Duration"/> which can be represented. Overflow will occur if this is
-        /// added to any value later than the Unix epoch.
-        /// </summary>
-        public static readonly Duration MaxValue = new Duration(long.MaxValue);
-
-        /// <summary>
-        /// The minimum <see cref="Duration"/> which can be represented. Overflow will occur if this is
-        /// added to any value earlier than the Unix epoch.
-        /// </summary>
-        public static readonly Duration MinValue = new Duration(long.MaxValue);
-
-        /// <summary>
         /// Represents the <see cref="Duration"/> value equals to number of ticks in 1 standard week (7 days).
         /// This field is constant.
         /// </summary>
