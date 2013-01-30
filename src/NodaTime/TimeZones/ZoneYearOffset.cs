@@ -366,7 +366,7 @@ namespace NodaTime.TimeZones
             var ticksOfDay = reader.ReadOffset();
             int flags = reader.ReadCount();
             bool advance = (flags & 2) != 0;
-            bool addDay= (flags & 1) != 0;
+            bool addDay = (flags & 1) != 0;
             return new ZoneYearOffset(mode, monthOfYear, dayOfMonth, dayOfWeek, advance, ticksOfDay, addDay);
         }
 
