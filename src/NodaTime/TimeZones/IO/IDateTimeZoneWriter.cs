@@ -64,11 +64,18 @@ namespace NodaTime.TimeZones.IO
         void WriteOffset(Offset offset);
 
         /// <summary>
-        /// Writes an instant to the stream.
+        /// Writes an instant representing a zone interval transition to the stream.
         /// </summary>
-        /// <param name="instant">The offset to write to the stream.</param>
+        /// <remarks>
+        /// This method takes a previously-written transition. Depending on the implementation, this value may be
+        /// required by the reader in order to reconstruct the next transition, so it should be deterministic for any
+        /// given value.
+        /// </remarks>
+        /// <param name="previous">The previous transition written (usually for a given timezone), or null if there is
+        /// no previous transition.</param>
+        /// <param name="value">The transition to write to the stream.</param>
         /// <exception cref="IOException">The value couldn't be written to the stream.</exception>
-        void WriteInstant(Instant instant);
+        void WriteZoneIntervalTransition(Instant? previous, Instant value);
 
         /// <summary>
         /// Writes a string-to-string dictionary to the stream.

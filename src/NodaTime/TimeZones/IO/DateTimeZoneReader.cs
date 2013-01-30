@@ -156,42 +156,42 @@ namespace NodaTime.TimeZones.IO
         }
         
         /// <summary>
-        /// Reads an <see cref="Instant" /> value from the stream.
+        /// Reads an instant representing a zone interval transition from the stream.
         /// </summary>
         /// <remarks>
-        /// The value must have been written by <see cref="DateTimeZoneWriter.WriteInstant" />.
+        /// The value must have been written by <see cref="DateTimeZoneWriter.WriteZoneIntervalTransition" />.
         /// </remarks>
-        /// <returns>The <see cref="Instant" /> value from the stream.</returns>
-        public Instant ReadInstant()
+        /// <param name="previous">The previous transition written (usually for a given timezone), or null if there is
+        /// no previous transition.</param>
+        /// <returns>The instant read from the stream</returns>
+        public Instant ReadZoneIntervalTransition(Instant? previous)
         {
             unchecked
             {
-                byte firstByte = ReadByte();
-                if (firstByte == DateTimeZoneWriter.InstantConstants.MaxFormat)
+                int value = ReadCount();
+                if (value < DateTimeZoneWriter.ZoneIntervalConstants.MinValueForHoursSincePrevious)
                 {
-                    return Instant.MaxValue;
+                    switch (value)
+                    {
+                        case DateTimeZoneWriter.ZoneIntervalConstants.MarkerMinValue:
+                            return Instant.MinValue;
+                        case DateTimeZoneWriter.ZoneIntervalConstants.MarkerMaxValue:
+                            return Instant.MaxValue;
+                        case DateTimeZoneWriter.ZoneIntervalConstants.MarkerRaw:
+                            return new Instant(ReadInt64());
+                        default: 
+                            throw new InvalidNodaDataException("Unrecognised marker value: " + value);
+                    }
                 }
-                if (firstByte == DateTimeZoneWriter.InstantConstants.MinFormat)
+                if (value < DateTimeZoneWriter.ZoneIntervalConstants.MinValueForMinutesSinceEpoch)
                 {
-                    return Instant.MinValue;
+                    if (previous == null) {
+                        throw new InvalidNodaDataException(
+                            "No previous value, so can't interpret value encoded as delta-since-previous: " + value);
+                    }
+                    return (Instant) previous + Duration.FromHours(value);
                 }
-                long firstValue = firstByte & 0x3f;
-                switch (firstByte & 0xc0)
-                {
-                    case DateTimeZoneWriter.InstantConstants.HoursFormat:
-                        long hours = (firstValue << 16) | (ushort) ReadInt16();
-                        return DateTimeZoneWriter.InstantConstants.Epoch + Duration.FromHours(hours);
-                    case DateTimeZoneWriter.InstantConstants.MinutesFormat:
-                        long minutes = (firstValue << 24) | (uint) (ReadByte() << 16) | (ushort) ReadInt16();
-                        return DateTimeZoneWriter.InstantConstants.Epoch + Duration.FromMinutes(minutes);
-                    case DateTimeZoneWriter.InstantConstants.SecondsFormat:
-                        long seconds = (firstValue << 32) | (uint) ReadInt32();
-                        return DateTimeZoneWriter.InstantConstants.Epoch + Duration.FromSeconds(seconds);
-                    case DateTimeZoneWriter.InstantConstants.RawFormat:
-                        return new Instant(ReadInt64());
-                    default:
-                        throw new InvalidOperationException("Bug in noda time - invalid byte value!");
-                }
+                return DateTimeZoneWriter.ZoneIntervalConstants.EpochForMinutesSinceEpoch + Duration.FromMinutes(value);
             }
         }
 

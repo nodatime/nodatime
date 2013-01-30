@@ -53,12 +53,14 @@ namespace NodaTime.TimeZones.IO
         Offset ReadOffset();
 
         /// <summary>
-        /// Reads an instant from the stream.
+        /// Reads an instant representing a zone interval transition from the stream.
         /// </summary>
+        /// <param name="previous">The previous transition written (usually for a given timezone), or null if there is
+        /// no previous transition.</param>
         /// <returns>The instant read from the stream</returns>
         /// <exception cref="InvalidNodaDataException">The data was invalid</exception>
         /// <exception cref="IOException">The stream could not be read</exception>
-        Instant ReadInstant();
+        Instant ReadZoneIntervalTransition(Instant? previous);
 
         /// <summary>
         /// Reads a string-to-string dictionary from the stream.

@@ -231,10 +231,11 @@ namespace NodaTime.TimeZones.IO
         /// Reads an <see cref="Instant" /> value from the stream.
         /// </summary>
         /// <remarks>
-        /// The value must have been written by <see cref="LegacyDateTimeZoneWriter.WriteInstant" />.
+        /// The value must have been written by <see cref="LegacyDateTimeZoneWriter.WriteZoneIntervalTransition" />.
+        /// The <paramref name="previous"/> parameter is ignored by this implementation.
         /// </remarks>
         /// <returns>The <see cref="Instant" /> value from the stream.</returns>
-        public Instant ReadInstant()
+        public Instant ReadZoneIntervalTransition(Instant? previous)
         {
             return new Instant(ReadTicks());
         }
