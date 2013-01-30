@@ -138,14 +138,15 @@ namespace NodaTime.TimeZones
             // byte after the pooling. Optimizing the string pool globally instead allows for
             // roughly the same efficiency, and simpler code here.
             writer.WriteCount(periods.Length);
+            Instant? previous;
             foreach (var period in periods)
             {
-                writer.WriteInstant(period.Start);
+                writer.WriteZoneIntervalTransition(previous, (Instant) (previous = period.Start));
                 writer.WriteString(period.Name);
                 writer.WriteOffset(period.WallOffset);
                 writer.WriteOffset(period.Savings);
             }
-            writer.WriteInstant(tailZoneStart);
+            writer.WriteZoneIntervalTransition(previous, tailZoneStart);
             writer.WriteTimeZone(tailZone);
         }
 
@@ -159,13 +160,13 @@ namespace NodaTime.TimeZones
         {
             int size = reader.ReadCount();
             var periods = new ZoneInterval[size];
-            var start = reader.ReadInstant();
+            var start = reader.ReadZoneIntervalTransition(null);
             for (int i = 0; i < size; i++)
             {
                 var name = reader.ReadString();
                 var offset = reader.ReadOffset();
                 var savings = reader.ReadOffset();
-                var nextStart = reader.ReadInstant();
+                var nextStart = reader.ReadZoneIntervalTransition(start);
                 periods[i] = new ZoneInterval(name, start, nextStart, offset, savings);
                 start = nextStart;
             }
@@ -198,9 +199,10 @@ namespace NodaTime.TimeZones
             }
 
             writer.WriteCount(periods.Length);
+            Instant? previous;
             foreach (var period in periods)
             {
-                writer.WriteInstant(period.Start);
+                writer.WriteZoneIntervalTransition(previous, (Instant) (previous = period.Start));
                 int nameIndex = stringPool.IndexOf(period.Name);
                 if (stringPool.Count < 256)
                 {
@@ -213,7 +215,7 @@ namespace NodaTime.TimeZones
                 writer.WriteOffset(period.WallOffset);
                 writer.WriteOffset(period.Savings);
             }
-            writer.WriteInstant(tailZoneStart);
+            writer.WriteZoneIntervalTransition(previous, tailZoneStart);
             writer.WriteTimeZone(tailZone);
         }
 
@@ -233,14 +235,14 @@ namespace NodaTime.TimeZones
 
             int size = reader.ReadCount();
             var periods = new ZoneInterval[size];
-            var start = reader.ReadInstant();
+            var start = reader.ReadZoneIntervalTransition(null);
             for (int i = 0; i < size; i++)
             {
                 int nameIndex = stringPool.Length < 256 ? reader.ReadByte() : reader.ReadInt32();
                 var name = stringPool[nameIndex];
                 var offset = reader.ReadOffset();
                 var savings = reader.ReadOffset();
-                var nextStart = reader.ReadInstant();
+                var nextStart = reader.ReadZoneIntervalTransition(start);
                 periods[i] = new ZoneInterval(name, start, nextStart, offset, savings);
                 start = nextStart;
             }

@@ -111,7 +111,7 @@ namespace NodaTime.TimeZones.IO
         /// <summary>
         /// Always throws NotSupportedException
         /// </summary>
-        /// <param name="count">The string to write to the stream.</param>
+        /// <param name="count">The value to write.</param>
         public void WriteSignedCount(int count)
         {
             throw new NotSupportedException();
@@ -279,8 +279,11 @@ namespace NodaTime.TimeZones.IO
         /// <summary>
         /// Writes the <see cref="Instant" /> value to the stream.
         /// </summary>
+        /// <remarks>
+        /// The <paramref name="previous"/> parameter is ignored by this implementation.
+        /// </remarks>
         /// <param name="value">The value to write.</param>
-        public void WriteInstant(Instant value)
+        public void WriteZoneIntervalTransition(Instant? previous, Instant value)
         {
             WriteTicks(value.Ticks);
         }

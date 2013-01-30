@@ -106,27 +106,46 @@ namespace NodaTime.Test.TimeZones.IO
         }
 
         [Test]
-        public void Test_Instant()
+        public void Test_ZoneIntervalTransition()
         {
-            Dio.TestInstant(Instant.MinValue);
-            Dio.TestInstant(Instant.MaxValue);
-            Dio.TestInstant(Instant.MinValue.PlusTicks(1));
-            Dio.TestInstant(Instant.MaxValue.PlusTicks(-1));
-            Instant epoch = DateTimeZoneWriter.InstantConstants.Epoch;
-            // Valid optimized cases
-            Dio.TestInstant(epoch);
-            Dio.TestInstant(epoch + Duration.FromHours(1));
-            Dio.TestInstant(epoch + Duration.FromMinutes(1));
-            Dio.TestInstant(epoch + Duration.FromSeconds(1));
-            // Example from Pacific/Auckland which failed, and a similar one with seconds.
-            Dio.TestInstant(Instant.FromUtc(1927, 11, 5, 14, 30));
-            Dio.TestInstant(Instant.FromUtc(1927, 11, 5, 14, 30, 5));
-            // Out of range cases, or not a multiple of hours, minutes or seconds
-            Dio.TestInstant(epoch + Duration.FromMilliseconds(1));
-            Dio.TestInstant(epoch - Duration.FromHours(1));
-            Dio.TestInstant(epoch + Duration.FromHours(DateTimeZoneWriter.InstantConstants.MaxHours + 1));
-            Dio.TestInstant(epoch + Duration.FromMinutes(DateTimeZoneWriter.InstantConstants.MaxMinutes + 1));
-            Dio.TestInstant(epoch + Duration.FromSeconds(DateTimeZoneWriter.InstantConstants.MaxSeconds + 1));
+            Dio.TestZoneIntervalTransition(null, Instant.MinValue);
+            Dio.TestZoneIntervalTransition(null, Instant.MaxValue);
+            Dio.TestZoneIntervalTransition(null, Instant.MinValue.PlusTicks(1));
+            Dio.TestZoneIntervalTransition(null, Instant.MaxValue.PlusTicks(-1));
+
+            // Encoding as hours-since-previous.
+            Instant previous = Instant.FromUtc(1990, 1, 1, 11, 30);  // arbitrary
+            Dio.TestZoneIntervalTransition(previous, previous);
+            Dio.TestZoneIntervalTransition(previous, previous + Duration.FromHours(
+                DateTimeZoneWriter.ZoneIntervalConstants.MinValueForHoursSincePrevious));
+            Dio.TestZoneIntervalTransition(previous, previous + Duration.FromHours(
+                DateTimeZoneWriter.ZoneIntervalConstants.MinValueForHoursSincePrevious - 1));  // too soon
+            Dio.TestZoneIntervalTransition(previous, previous + Duration.FromHours(1));  // too soon
+            Dio.TestZoneIntervalTransition(previous, previous + Duration.FromHours(
+                DateTimeZoneWriter.ZoneIntervalConstants.MinValueForMinutesSinceEpoch - 1));  // maximum hours
+            Dio.TestZoneIntervalTransition(previous, previous + Duration.FromHours(
+                DateTimeZoneWriter.ZoneIntervalConstants.MinValueForMinutesSinceEpoch));  // out of range
+            // A large difference from the previous transition.
+            Dio.TestZoneIntervalTransition(Instant.MinValue.PlusTicks(1), Instant.MaxValue.PlusTicks(-1));
+
+            // Encoding as minutes-since-epoch.
+            Instant epoch = DateTimeZoneWriter.ZoneIntervalConstants.EpochForMinutesSinceEpoch;
+            Dio.TestZoneIntervalTransition(null, epoch);
+            Dio.TestZoneIntervalTransition(null, epoch +
+                Duration.FromMinutes(DateTimeZoneWriter.ZoneIntervalConstants.MinValueForMinutesSinceEpoch));
+            Dio.TestZoneIntervalTransition(null, epoch + Duration.FromMinutes(int.MaxValue));  // maximum minutes
+
+            // Out of range cases, or not a multiple of minutes since the epoch.
+            Dio.TestZoneIntervalTransition(null, epoch + Duration.FromHours(1));  // too soon
+            Dio.TestZoneIntervalTransition(null, epoch + Duration.FromMinutes(1));  // too soon
+            Dio.TestZoneIntervalTransition(null, epoch + Duration.FromSeconds(1));
+            Dio.TestZoneIntervalTransition(null, epoch + Duration.FromMilliseconds(1));
+            Dio.TestZoneIntervalTransition(null, epoch - Duration.FromHours(1));
+            Dio.TestZoneIntervalTransition(null, epoch + Duration.FromMinutes((long) int.MaxValue + 1));
+
+            // Example from Pacific/Auckland which failed at one time, and a similar one with seconds.
+            Dio.TestZoneIntervalTransition(null, Instant.FromUtc(1927, 11, 5, 14, 30));
+            Dio.TestZoneIntervalTransition(null, Instant.FromUtc(1927, 11, 5, 14, 30, 5));
         }
 
         [Test]

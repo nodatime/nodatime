@@ -17,21 +17,26 @@ namespace NodaTime.TimeZones.IO
     /// </summary>
     internal sealed class DateTimeZoneWriter : IDateTimeZoneWriter
     {
-        internal static class InstantConstants
+        internal static class ZoneIntervalConstants
         {
-            // Special epoch for IO purposes
-            internal static readonly Instant Epoch = Instant.FromUtc(1800, 1, 1, 0, 0);
-            internal const long MaxHours = (1L << 22) - 1;
-            internal const long MaxMinutes = (1L << 30) - 1;
-            internal const long MaxSeconds = (1L << 38) - 1;
-            internal static readonly Instant MaxOptimizedInstant = Epoch + Duration.MaxValue;
+            /// <summary>The instant to use as an 'epoch' when writing out a number of minutes-since-epoch.</summary>
+            internal static readonly Instant EpochForMinutesSinceEpoch = Instant.FromUtc(1800, 1, 1, 0, 0);
 
-            internal const byte HoursFormat = 0 << 6;
-            internal const byte MinutesFormat = 1 << 6; 
-            internal const byte SecondsFormat = 2 << 6;
-            internal const byte RawFormat = 3 << 6;
-            internal const byte MinFormat = 0xe0;
-            internal const byte MaxFormat = 0xff;
+            /// <summary>The marker value representing the beginning of time.</summary>
+            internal const int MarkerMinValue = 0;
+            /// <summary>The marker value representing the end of time.</summary>
+            internal const int MarkerMaxValue = 1;
+            /// <summary>The marker value representing an instant as a fixed 64-bit number of ticks.</summary>
+            internal const int MarkerRaw = 2;
+            /// <summary>The minimum varint value that represents an number of hours-since-previous.</summary>
+            /// <remarks>Values below value are reserved for markers.</remarks>
+            internal const int MinValueForHoursSincePrevious = 1 << 7;
+            /// <summary>The minimum varint value that represents an number of minutes since an epoch.</summary>
+            /// <remarks>Values below this are interpreted as hours-since-previous (for a range of about 240 years),
+            /// rather than minutes-since-epoch (for a range of about 4000 years)
+            /// This choice is somewhat arbitrary, though it results in hour values always taking 2 (or
+            /// occasionally 3) bytes when encoded as a varint, while minute values take 4 (or conceivably 5).</remarks>
+            internal const int MinValueForMinutesSinceEpoch = 1 << 21;
         }
 
         // TODO: Work out where best to put these flags, and the code to read/respond to them.
@@ -175,76 +180,68 @@ namespace NodaTime.TimeZones.IO
             }
         }
 
-        /// <summary>
-        /// Writes the <see cref="Instant" /> value to the stream.
-        /// </summary>
-        /// <param name="value">The value to write.</param>
-        public void WriteInstant(Instant value)
+        public void WriteZoneIntervalTransition(Instant? previous, Instant value)
         {
-            /*
-             * Instant encoding form:
-             * - In the first byte, the first two bits indicate the format:
-             *   - 00: Hours since 1800, 3 bytes (max year ~2278)
-             *   - 01: Minutes since 1800, 4 bytes (max year ~3841)
-             *   - 10: Seconds since 1800, 5 bytes (max year ~10510)
-             *   - 11: Depends on remaining bits
-             *       - 000000 - following 8 bytes give raw bits
-             *       - 100000 - Instant.MinValue
-             *       - 111111 - Instant.MaxValue
-             */
+            if (previous != null) {
+                Preconditions.CheckArgumentRange("value", value.Ticks, previous.Value.Ticks, long.MaxValue);
+            }
+
             unchecked
             {
                 if (value == Instant.MinValue)
                 {
-                    WriteByte(InstantConstants.MinFormat);
+                    WriteCount(ZoneIntervalConstants.MarkerMinValue);
                     return;
                 }
                 if (value == Instant.MaxValue)
                 {
-                    WriteByte(InstantConstants.MaxFormat);
+                    WriteCount(ZoneIntervalConstants.MarkerMaxValue);
                     return;
                 }
-                if (value >= InstantConstants.Epoch && value <= InstantConstants.MaxOptimizedInstant)
+
+                // In practice, most zone interval transitions will occur within 4000-6000 hours of the previous one
+                // (i.e. about 5-8 months), and at an integral number of hours difference. We therefore gain a
+                // significant reduction in output size by encoding transitions as the whole number of hours since the
+                // previous, if possible.
+
+                if (previous != null)
                 {
-                    long ticks = (value - InstantConstants.Epoch).Ticks;
+                    // Note that the difference might exceed the range of a long, so we can't use a Duration here.
+                    ulong ticks = (ulong) (value.Ticks - previous.Value.Ticks);
                     if (ticks % NodaConstants.TicksPerHour == 0)
                     {
-                        long hours = ticks / NodaConstants.TicksPerHour;
-                        if (hours <= InstantConstants.MaxHours)
+                        ulong hours = ticks / NodaConstants.TicksPerHour;
+                        // As noted above, this will generally fall within the 4000-6000 range, although values up to
+                        // ~700,000 exist in TZDB.
+                        if (ZoneIntervalConstants.MinValueForHoursSincePrevious <= hours &&
+                            hours < ZoneIntervalConstants.MinValueForMinutesSinceEpoch)
                         {
-                            // Hours in 22 bits
-                            WriteByte((byte) (InstantConstants.HoursFormat | (hours >> 16)));
-                            WriteInt16((short) hours);
-                            return;
-                        }
-                    }
-                    if (ticks % NodaConstants.TicksPerMinute == 0)
-                    {
-                        long minutes = ticks / NodaConstants.TicksPerMinute;
-                        if (minutes <= InstantConstants.MaxMinutes)
-                        {
-                            // Minutes in 30 bits
-                            WriteByte((byte)(InstantConstants.MinutesFormat | (minutes >> 24)));
-                            WriteByte((byte)(minutes >> 16));
-                            WriteInt16((short)minutes);
-                            return;
-                        }
-                    }
-                    if (ticks % NodaConstants.TicksPerSecond == 0)
-                    {
-                        long seconds = ticks / NodaConstants.TicksPerSecond;
-                        if (seconds <= InstantConstants.MaxSeconds)
-                        {
-                            // Seconds in 38 bits
-                            WriteByte((byte)(InstantConstants.SecondsFormat | (seconds >> 32)));
-                            WriteInt32((int)seconds);
+                            WriteCount((int) hours);
                             return;
                         }
                     }
                 }
-                // Okay, this is unusual - we're writing out something which is either out of
-                // range, or doesn't have a nice round value.
-                WriteByte(InstantConstants.RawFormat);
+
+                // We can't write the transition out relative to the previous transition, so let's next try writing it
+                // out as a whole number of minutes since an (arbitrary, known) epoch.
+                if (value >= ZoneIntervalConstants.EpochForMinutesSinceEpoch)
+                {
+                    ulong ticks = (ulong) (value.Ticks - ZoneIntervalConstants.EpochForMinutesSinceEpoch.Ticks);
+                    if (ticks % NodaConstants.TicksPerMinute == 0)
+                    {
+                        ulong minutes = ticks / NodaConstants.TicksPerMinute;
+                        // We typically have a count on the order of 80M here.
+                        if (ZoneIntervalConstants.MinValueForMinutesSinceEpoch < minutes && minutes <= int.MaxValue)
+                        {
+                            WriteCount((int) minutes);
+                            return;
+                        }
+                    }
+                }
+                // Otherwise, just write out a marker followed by the instant as a 64-bit number of ticks.  Note that
+                // while most of the values we write here are actually whole numbers of _seconds_, optimising for that
+                // case will save around 2KB (with tzdb 2012j), so doesn't seem worthwhile.
+                WriteCount(ZoneIntervalConstants.MarkerRaw);
                 WriteInt64(value.Ticks);
             }
         }

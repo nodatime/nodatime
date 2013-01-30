@@ -104,11 +104,11 @@ namespace NodaTime.Test.TimeZones.IO
             ioStream.AssertEndOfStream();
         }
 
-        public void TestInstant(Instant expected)
+        public void TestZoneIntervalTransition(Instant? previous, Instant expected)
         {
             Reset();
-            Writer.WriteInstant(expected);
-            var actual = Reader.ReadInstant();
+            Writer.WriteZoneIntervalTransition(previous, expected);
+            var actual = Reader.ReadZoneIntervalTransition(previous);
             Assert.AreEqual(expected, actual);
             ioStream.AssertEndOfStream();
         }
