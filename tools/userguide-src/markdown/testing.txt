@@ -73,7 +73,7 @@ This will create a zone which moves from UTC+3 to UTC+5 at the transition point.
 and the names of the early/late zone intervals are based on the ID. The zone intervals within the time zone do not have a
 daylight saving aspect; they just have the specified standard offsets.
 
-For more complex scenarios, [`MultiTransitionDateTimeZone`](noda-type://NodaTime.Testing.TimeZones.SingleTransitionDateTimeZone)
+For more complex scenarios, [`MultiTransitionDateTimeZone`](noda-type://NodaTime.Testing.TimeZones.MultiTransitionDateTimeZone)
 allows you to create a time zone from a collection of transitions, using a builder type. The standard and saving offsets for
 each part of the time zone can be specified separately. For example:
 
