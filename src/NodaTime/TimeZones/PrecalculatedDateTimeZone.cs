@@ -138,7 +138,7 @@ namespace NodaTime.TimeZones
             // byte after the pooling. Optimizing the string pool globally instead allows for
             // roughly the same efficiency, and simpler code here.
             writer.WriteCount(periods.Length);
-            Instant? previous;
+            Instant? previous = null;
             foreach (var period in periods)
             {
                 writer.WriteZoneIntervalTransition(previous, (Instant) (previous = period.Start));
@@ -199,7 +199,7 @@ namespace NodaTime.TimeZones
             }
 
             writer.WriteCount(periods.Length);
-            Instant? previous;
+            Instant? previous = null;
             foreach (var period in periods)
             {
                 writer.WriteZoneIntervalTransition(previous, (Instant) (previous = period.Start));
