@@ -102,8 +102,7 @@ namespace NodaTime
         /// <summary>
         /// Gets the UTC (Coordinated Universal Time) time zone. This is a single instance which is not
         /// provider-specific; it is guaranteed to have the ID "UTC", but may or may not be the instance returned by
-        /// <c>DateTimeZoneProviders.Default["UTC"]</c>; that depends on whether the default provider has its own
-        /// mapping for that ID.
+        /// e.g. <c>DateTimeZoneProviders.Tzdb["UTC"]</c>.
         /// </summary>
         /// <value>A UTC <see cref="T:NodaTime.DateTimeZone" />.</value>
         public static DateTimeZone Utc { get { return UtcZone; } }
