@@ -37,7 +37,7 @@ be injected. There are currently no test doubles for this interface, but usually
 <a href="../api/html/T_NodaTime_TimeZones_DateTimeZoneCache.htm"><code>DateTimeZoneCache</code></a> works perfectly well.</p>
 
 <p>The cache uses another interface
-- <a href="../api/html/T_NodaTime_TimeZones_IDateTimeZoneSource.htm"><code>IDateTimeZoneSource</code></a> to retrieve time zones under the hood, and there
+- <a href="../api/html/T_NodaTime_TimeZones_IDateTimeZoneSource.htm"><code>IDateTimeZoneSource</code></a> - to retrieve time zones under the hood, and there
 we <em>do</em> have a test double: <a href="../api/html/T_NodaTime_Testing_TimeZones_FakeDateTimeZoneSource.htm"><code>FakeDateTimeZoneSource</code></a>. This source
 is constructed (via a builder) with any <code>DateTimeZone</code> instances you want, and you can also specify custom Windows <code>TimeZoneInfo</code> ID mappings.</p>
 
