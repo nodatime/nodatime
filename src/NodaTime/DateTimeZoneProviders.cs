@@ -33,6 +33,7 @@ namespace NodaTime
 
         /// <summary>
         /// Gets a time zone provider which uses a <see cref="BclDateTimeZoneSource"/>.
+        /// This property is not available on the PCL build of Noda Time.
         /// </summary>
         public static IDateTimeZoneProvider Bcl { get { return bclFactory; } }
 #endif
