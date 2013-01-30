@@ -31,6 +31,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "markdown", "markdown", "{C7
 		userguide-src\markdown\offset-patterns.txt = userguide-src\markdown\offset-patterns.txt
 		userguide-src\markdown\period-patterns.txt = userguide-src\markdown\period-patterns.txt
 		userguide-src\markdown\rationale.txt = userguide-src\markdown\rationale.txt
+		userguide-src\markdown\roadmap.txt = userguide-src\markdown\roadmap.txt
 		userguide-src\markdown\serialization.txt = userguide-src\markdown\serialization.txt
 		userguide-src\markdown\template.html = userguide-src\markdown\template.html
 		userguide-src\markdown\testing.txt = userguide-src\markdown\testing.txt
