@@ -20,7 +20,9 @@ namespace NodaTime.Test.TimeZones
         [Test]
         public void DefaultProviderIsTzdb()
         {
+#pragma warning disable 0618
             Assert.IsTrue(DateTimeZoneProviders.Default.VersionId.StartsWith("TZDB: "));
+#pragma warning restore 0618
         }
 
         [Test]
