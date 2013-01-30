@@ -32,7 +32,7 @@ be injected. There are currently no test doubles for this interface, but usually
 [`DateTimeZoneCache`](noda-type://NodaTime.TimeZones.DateTimeZoneCache) works perfectly well.
 
 The cache uses another interface
-- [`IDateTimeZoneSource`](noda-type://NodaTime.TimeZones.IDateTimeZoneSource) to retrieve time zones under the hood, and there
+- [`IDateTimeZoneSource`](noda-type://NodaTime.TimeZones.IDateTimeZoneSource) - to retrieve time zones under the hood, and there
 we *do* have a test double: [`FakeDateTimeZoneSource`](noda-type://NodaTime.Testing.TimeZones.FakeDateTimeZoneSource). This source
 is constructed (via a builder) with any `DateTimeZone` instances you want, and you can also specify custom Windows `TimeZoneInfo` ID mappings.
 
