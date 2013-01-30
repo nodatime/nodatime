@@ -2,6 +2,7 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
+using System;
 using NodaTime.TimeZones;
 
 namespace NodaTime
@@ -13,11 +14,11 @@ namespace NodaTime
     {
         private static readonly DateTimeZoneCache tzdbFactory = new DateTimeZoneCache(TzdbDateTimeZoneSource.Default);
         /// <summary>
-        /// Gets the default time zone provider, which is initialized from resources within the NodaTime assembly.
+        /// Gets the TZDB time zone provider.
+        /// This always returns the same value as the <see cref="Tzdb"/> property.
         /// </summary>
-        /// <remarks>
-        /// Currently this returns the same value as the <see cref="Tzdb"/> property.
-        /// </remarks>
+        /// <seealso cref="Tzdb"/>
+        [Obsolete("Use DateTimeZoneProviders.Tzdb instead")]
         public static IDateTimeZoneProvider Default { get { return Tzdb; } }
 
         /// <summary>
