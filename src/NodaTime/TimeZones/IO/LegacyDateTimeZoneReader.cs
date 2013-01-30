@@ -234,6 +234,8 @@ namespace NodaTime.TimeZones.IO
         /// The value must have been written by <see cref="LegacyDateTimeZoneWriter.WriteZoneIntervalTransition" />.
         /// The <paramref name="previous"/> parameter is ignored by this implementation.
         /// </remarks>
+        /// <param name="previous">The previous transition written (usually for a given timezone), or null if there is
+        /// no previous transition.</param>
         /// <returns>The <see cref="Instant" /> value from the stream.</returns>
         public Instant ReadZoneIntervalTransition(Instant? previous)
         {

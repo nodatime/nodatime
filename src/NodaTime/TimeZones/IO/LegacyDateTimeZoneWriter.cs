@@ -282,6 +282,8 @@ namespace NodaTime.TimeZones.IO
         /// <remarks>
         /// The <paramref name="previous"/> parameter is ignored by this implementation.
         /// </remarks>
+        /// <param name="previous">The previous transition written (usually for a given timezone), or null if there is
+        /// no previous transition.</param>
         /// <param name="value">The value to write.</param>
         public void WriteZoneIntervalTransition(Instant? previous, Instant value)
         {
