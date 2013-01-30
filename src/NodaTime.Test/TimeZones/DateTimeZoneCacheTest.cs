@@ -18,14 +18,6 @@ namespace NodaTime.Test.TimeZones
     public class DateTimeZoneCacheTest
     {
         [Test]
-        public void DefaultProviderIsTzdb()
-        {
-#pragma warning disable 0618
-            Assert.IsTrue(DateTimeZoneProviders.Default.VersionId.StartsWith("TZDB: "));
-#pragma warning restore 0618
-        }
-
-        [Test]
         public void Construction_NullProvider()
         {
             Assert.Throws<ArgumentNullException>(() => new DateTimeZoneCache(null));
