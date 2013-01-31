@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>NodaTime.Testing</id>
-    <version>1.1.0-dev</version>
+    <version>1.1.0-dev-2013-31-01</version>
     <authors>Jon Skeet</authors>
     <owners>Jon Skeet</owners>
     <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
@@ -20,9 +20,12 @@
   </metadata>
   <files>
     <file src="bin\Signed Release\NodaTime.Testing.dll" target="lib\net35-Client" />
+    <file src="bin\Signed Release\NodaTime.Testing.pdb" target="lib\net35-Client" />
     <file src="bin\Signed Release\NodaTime.Testing.xml" target="lib\net35-Client" />
     <file src="bin\Signed Release Portable\NodaTime.Testing.dll" target="lib\portable-win+net40+sl4+wp7" />
+    <file src="bin\Signed Release Portable\NodaTime.Testing.pdb" target="lib\portable-win+net40+sl4+wp7" />
     <file src="bin\Signed Release Portable\NodaTime.Testing.xml" target="lib\portable-win+net40+sl4+wp7" />
+    <file src="**\*.cs" target="src" />
   </files>
 </package>
     
