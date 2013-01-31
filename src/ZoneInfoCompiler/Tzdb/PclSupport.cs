@@ -23,6 +23,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
             new NodaReadOnlyDictionary<string, string>(new Dictionary<string, string>
             {
                 { "Coordinated Universal Time", "UTC" },
+                { "Co-ordinated Universal Time", "UTC" },
                 { "Jerusalem Standard Time", "Israel Standard Time" },
                 { "Malay Peninsula Standard Time" , "Singapore Standard Time" },
             });
