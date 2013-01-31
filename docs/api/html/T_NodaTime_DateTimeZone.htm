@@ -26,7 +26,7 @@
             Determines whether the specified <span class="selflink">DateTimeZone</span> is equal to this instance.
             </div><br /></td></tr><tr data="method; protected; instance; declared"><td><img src="../icons/protmethod.gif" /></td><td><a href="M_NodaTime_DateTimeZone_EqualsImpl.htm">EqualsImpl(DateTimeZone)</a></td><td><div class="summary">
             Implements equality in derived classes.
-            </div><br /></td></tr><tr data="method; protected; instance; inherited"><td><img src="../icons/protmethod.gif" /></td><td><a href="http://msdn2.microsoft.com/en-us/library/4k87zsw7" target="_blank">Finalize<span class="languageSpecificText"><span class="cs">()</span><span class="cpp">()</span><span class="nu">()</span><span class="fs">()</span></span></a></td><td><div class="summary">Allows an object to try to free resources and perform other cleanup operations before it is reclaimed by garbage collection.</div> (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/e5kfa45b" target="_blank">Object</a>.)<br /></td></tr><tr data="method; public; static; declared"><td><img src="../icons/pubmethod.gif" /><img src="../icons/static.gif" title="static member" /></td><td><a href="M_NodaTime_DateTimeZone_ForOffset.htm">ForOffset(Offset)</a></td><td><div class="summary">
+            </div><br /></td></tr><tr data="method; protected; instance; inherited"><td><img src="../icons/protmethod.gif" /></td><td><a href="http://msdn2.microsoft.com/en-us/library/4k87zsw7" target="_blank">Finalize<span class="languageSpecificText"><span class="cs">()</span><span class="cpp">()</span><span class="nu">()</span><span class="fs">()</span></span></a></td><td><div class="summary">Allows an <a href="http://msdn2.microsoft.com/en-us/library/e5kfa45b" target="_blank">Object</a> to attempt to free resources and perform other cleanup operations before the <a href="http://msdn2.microsoft.com/en-us/library/e5kfa45b" target="_blank">Object</a> is reclaimed by garbage collection.</div> (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/e5kfa45b" target="_blank">Object</a>.)<br /></td></tr><tr data="method; public; static; declared"><td><img src="../icons/pubmethod.gif" /><img src="../icons/static.gif" title="static member" /></td><td><a href="M_NodaTime_DateTimeZone_ForOffset.htm">ForOffset(Offset)</a></td><td><div class="summary">
             Returns a fixed time zone with the given offset.
             </div><br /></td></tr><tr data="method; public; instance; declared"><td><img src="../icons/pubmethod.gif" /></td><td><a href="M_NodaTime_DateTimeZone_GetAllZoneIntervals.htm">GetAllZoneIntervals(Instant, Instant)</a></td><td><div class="summary">
             Returns all the zone intervals which are contained in the interval [<span class="parameter">start</span>, <span class="parameter">end</span>).
@@ -54,8 +54,7 @@
             </div> (Overrides <a href="http://msdn2.microsoft.com/en-us/library/e5kfa45b" target="_blank">Object</a>.<a href="http://msdn2.microsoft.com/en-us/library/7bxwbwt2" target="_blank">ToString<span class="languageSpecificText"><span class="cs">()</span><span class="cpp">()</span><span class="nu">()</span><span class="fs">()</span></span></a>.)<br /></td></tr><tr data="property; public; static; declared"><td><img src="../icons/pubproperty.gif" /><img src="../icons/static.gif" title="static member" /></td><td><a href="P_NodaTime_DateTimeZone_Utc.htm">Utc</a></td><td><div class="summary">
             Gets the UTC (Coordinated Universal Time) time zone. This is a single instance which is not
             provider-specific; it is guaranteed to have the ID "UTC", but may or may not be the instance returned by
-            <span class="code">DateTimeZoneProviders.Default["UTC"]</span>; that depends on whether the default provider has its own
-            mapping for that ID.
+            e.g. <span class="code">DateTimeZoneProviders.Tzdb["UTC"]</span>.
             </div><br /></td></tr></table></div></div></div><div class="section"><div class="sectionTitle" onclick="toggleSection(this.parentNode)"><img src="../icons/collapse_all.gif" /> Remarks</div><div class="sectionContent"><p>
             The mapping is unambiguous in the "UTC to local" direction, but
             the reverse is not true: when the offset changes, usually due to a Daylight Saving transition,
@@ -83,12 +82,14 @@
             providers). The UTC timezone is also available via the <a href="P_NodaTime_DateTimeZone_Utc.htm">Utc</a> property on this class.
             </p><p>
             To obtain a <span class="selflink">DateTimeZone</span> representing the system default time zone, you can either call
-            <span class="code">IDateTimeZoneProvider.GetSystemDefault</span> on a provider to obtain the <span class="selflink">DateTimeZone</span> that
+            <a href="M_NodaTime_IDateTimeZoneProvider_GetSystemDefault.htm">GetSystemDefault<span class="languageSpecificText"><span class="cs">()</span><span class="cpp">()</span><span class="nu">()</span><span class="fs">()</span></span></a> on a provider to obtain the <span class="selflink">DateTimeZone</span> that
             the provider considers matches the system default time zone, or you can construct a
             <span class="code">BclDateTimeZone</span> via <span class="code">BclDateTimeZone.ForSystemDefault</span>, which returns a
             <span class="selflink">DateTimeZone</span> that wraps the system local <a href="http://msdn2.microsoft.com/en-us/library/bb396389" target="_blank">TimeZoneInfo</a>. The latter will always
             succeed, but has access only to that information available via the .NET time zone; the former may contain more
             complete data, but may (in uncommon cases) fail to find a matching <span class="selflink">DateTimeZone</span>.
+            Note that <span class="code">BclDateTimeZone</span> is not available on the PCL build of Noda Time, so this fallback strategy can
+            only be used with the desktop version.
             </p><p>Note that Noda Time does not require that <span class="selflink">DateTimeZone</span> instances be singletons.
             As far as reasonably possible, implementations should implement <a href="http://msdn2.microsoft.com/en-us/library/ms131187" target="_blank">IEquatable<span class="languageSpecificText"><span class="cs">&lt;</span><span class="vb">(Of </span><span class="cpp">&lt;</span><span class="nu">(</span><span class="fs">&lt;'</span></span>T<span class="languageSpecificText"><span class="cs">&gt;</span><span class="vb">)</span><span class="cpp">&gt;</span><span class="nu">)</span><span class="fs">&gt;</span></span></a> in such a way
             that equivalent time zones compare as equal.</p></div></div><div class="section"><div class="sectionTitle" onclick="toggleSection(this.parentNode)"><img src="../icons/collapse_all.gif" /> Thread Safety</div><div class="sectionContent">
@@ -100,4 +101,4 @@
         var HT_mailLinkText = HT_mailLink.innerHTML;
         HT_mailLink.href += ": " + document.title;
         HT_mailLink.innerHTML = HT_mailLinkText;
-        </script><p /><a href="http://www.apache.org/licenses/LICENSE-2.0" target="_blank">Copyright 2001-2009 Stephen Colebourne, 2009-2012 Jon Skeet, All rights reserved.</a></div>Assembly: <span sdata="assembly">NodaTime</span> (Module: NodaTime) Version: 1.1.0.0 (1.1.0)</p></div></body></html>
+        </script><p /><a href="http://www.apache.org/licenses/LICENSE-2.0" target="_blank">Copyright 2013 The Noda Time Authors. All rights reserved.</a></div>Assembly: <span sdata="assembly">NodaTime</span> (Module: NodaTime) Version: 1.1.0.0 (1.1.0)</p></div></body></html>
