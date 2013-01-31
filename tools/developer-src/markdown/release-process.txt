@@ -55,6 +55,12 @@ Note the difference between the format of names used for tags ('1.0.0-beta2',
 '1.0.0') and those used for branches ('1.0.x'). Mercurial will allow both to be
 used as revision specifiers, so it is important that they do not collide.
 
+### Branch-specific changes
+
+The only change that needs to be made to the branch after creation is to
+remove the `<Preliminary/>` tag from the Sandcastle project file; see e.g.
+[issue 102][].
+
 ## Making the release
 
 Switch to the correct branch (e.g. `1.0.x`).

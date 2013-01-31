@@ -14,6 +14,16 @@ details.</p>
 
 <h2>1.1 (current default branch)</h2>
 
+<p>Major features:</p>
+
+<ul>
+<li>Noda Time assemblies are now also available in Portable Class Library
+versions (see the <a href="installation.html">installation instructions</a> for details)</li>
+<li>Noda Time now uses a self-contained (and more compact) format for storing
+TZDB data that is not directly tied to .NET resources; the old format was
+not supportable in the PCL build</li>
+</ul>
+
 <p>API changes:</p>
 
 <ul>
@@ -22,15 +32,58 @@ implement the non-generic <code>IComparable</code> interface (explicitly, to
 avoid accidental use)</li>
 <li>Added <code>TzdbDateTimeZoneSource.Default</code>, which provides access to the
 underlying source of TZDB data distributed with Noda Time (<a href="http://code.google.com/p/noda-time/issues/detail?id=144">issue 144</a>)</li>
+<li>Added <code>Aliases</code> and <code>CanonicalId</code> properties to <code>TzdbDateTimeZoneSource</code>,
+which together provide bidirectional mappings between a canonical TZDB ID
+and its aliases (<a href="http://code.google.com/p/noda-time/issues/detail?id=32">issue 32</a>)</li>
+<li>Added <code>TzdbDateTimeZoneSource.FromStream()</code>, which can be used to create
+a source using data in the new format produced by <code>ZoneInfoCompiler</code></li>
 <li><code>LocalDateTime</code> patterns can now parse times of the form 24:00:00,
 indicating midnight of the following day (<a href="http://code.google.com/p/noda-time/issues/detail?id=153">issue 153</a>)</li>
 <li>Added convenience factory methods to <code>Instant</code>:
 <code>From(Ticks,Milliseconds,Seconds)SinceUnixEpoch</code> (<a href="http://code.google.com/p/noda-time/issues/detail?id=142">issue 142</a>)</li>
+<li>Added convenience factory methods to <code>LocalTime</code>:
+<code>From(Ticks,Milliseconds,Seconds)SinceMidnight</code> (<a href="http://code.google.com/p/noda-time/issues/detail?id=148">issue 148</a>)</li>
 <li>Added <code>LocalDateTime.InUtc()</code> and <code>WithOffset()</code>, convenience conversions
 from <code>LocalDateTime</code> to a (UTC) <code>ZonedDateTime</code> or <code>OffsetDateTime</code>
 (<a href="http://code.google.com/p/noda-time/issues/detail?id=142">issue 142</a>)</li>
 <li>Added <code>Period.FromMilliseconds()</code>, obsoleting the misnamed
 <code>FromMillseconds()</code> (<a href="http://code.google.com/p/noda-time/issues/detail?id=149">issue 149</a>)</li>
+<li>Added <code>DateTimeZone.GetAllZoneIntervals()</code>, which returns each
+<code>ZoneInterval</code> that overlaps with a given interval (<a href="http://code.google.com/p/noda-time/issues/detail?id=172">issue 172</a>)</li>
+<li>Added <code>DateTimeZoneNotFoundException</code>, which is used in place of the
+.NET <code>TimeZoneNotFoundException</code> (which does not exist in the PCL);
+on desktop builds, the new type extends the latter for compatibility</li>
+<li>Added <code>InvalidNodaDataException</code>, which is now used to consistently
+report problems reading time zone data; this replaces (inconsistent) use
+of the .NET <code>InvalidDataException</code> type, which is also not available in
+the PCL</li>
+</ul>
+
+<p>Newly-obsolete members:</p>
+
+<ul>
+<li><code>DateTimeZoneProviders.Default</code>, which use should be replaced by
+existing equivalent property <code>DateTimeZoneProviders.Tzdb</code></li>
+<li><code>Period.FromMillseconds()</code>, which was a typo for the newly-introduced
+<code>Period.FromMilliseconds()</code></li>
+<li>All <code>TzdbDateTimeZoneSource</code> constructors, which construct a source using
+TZDB data in the older resource-based format; the newer format should be
+provided to the new <code>TzdbDateTimeZoneSource.FromStream()</code> method instead
+(or, for the embedded resources, the new <code>TzdbDateTimeZoneSource.Default</code>
+property should be used directly)</li>
+</ul>
+
+<p>API changes for NodaTime.Testing:</p>
+
+<ul>
+<li>Added <code>FakeDateTimeZoneSource</code>, which is exactly what it sounds like
+(<a href="http://code.google.com/p/noda-time/issues/detail?id=83">issue 83</a>)</li>
+<li>Added <code>MultiTransitionDateTimeZone</code>, a time zone with multiple
+transitions, complementing the existing <code>SingleTransitionDateTimeZone</code></li>
+<li>Added the <code>SingleTransitionDateTimeZone.Transition</code> property that returns
+the transition point of the fake zone</li>
+<li>Added an additional constructor to <code>SingleTransitionDateTimeZone</code> 
+that allows the time zone ID to be specified</li>
 </ul>
 
 <p>Bug fixes:</p>
@@ -43,6 +96,8 @@ of another (<a href="http://code.google.com/p/noda-time/issues/detail?id=159">is
 incorrect values or a <code>NullReferenceException</code> when asked for a value in 2040
 (and possibly other times). Other time zones should not be affected
 (<a href="http://code.google.com/p/noda-time/issues/detail?id=174">issue 174</a>)</li>
+<li><code>LocalDateTime</code> and <code>ZonedDateTime</code> now have non-crashing behaviour when
+initialised via default (parameterless) constructors (<a href="http://code.google.com/p/noda-time/issues/detail?id=116">issue 116</a>)</li>
 </ul>
 
 <h2>1.0.1, released 2012-11-13 with tzdb 2012i</h2>
