@@ -46,6 +46,9 @@ indicating midnight of the following day (<a href="http://code.google.com/p/noda
 <li>Added <code>LocalDateTime.InUtc()</code> and <code>WithOffset()</code>, convenience conversions
 from <code>LocalDateTime</code> to a (UTC) <code>ZonedDateTime</code> or <code>OffsetDateTime</code>
 (<a href="http://code.google.com/p/noda-time/issues/detail?id=142">issue 142</a>)</li>
+<li>Added <code>Date</code> and <code>TimeOfDay</code> properties to <code>ZonedDateTime</code> and
+<code>OffsetDateTime</code>, which provide a <code>LocalDate</code> and <code>LocalTime</code> directly,
+rather than needing to go via the <code>LocalDateTime</code> property (<a href="http://code.google.com/p/noda-time/issues/detail?id=186">issue 186</a>)</li>
 <li>Added <code>Period.FromMilliseconds()</code>, obsoleting the misnamed
 <code>FromMillseconds()</code> (<a href="http://code.google.com/p/noda-time/issues/detail?id=149">issue 149</a>)</li>
 <li>Added <code>DateTimeZone.GetAllZoneIntervals()</code>, which returns each
