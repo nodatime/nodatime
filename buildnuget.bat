@@ -18,8 +18,8 @@ copy /y docs\PublicApi\NodaTime.Testing.xml src\NodaTime.Testing\bin\Release
 rmdir /s /q nuget
 mkdir nuget
 pushd nuget
-nuget pack ..\src\NodaTime\NodaTime.nuspec
-nuget pack ..\src\NodaTime.Testing\NodaTime.Testing.nuspec
+nuget pack ..\src\NodaTime\NodaTime.nuspec -Symbols
+nuget pack ..\src\NodaTime.Testing\NodaTime.Testing.nuspec -Symbols
 popd
 
 :end
