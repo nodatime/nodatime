@@ -35,6 +35,9 @@ API changes:
 - Added `LocalDateTime.InUtc()` and `WithOffset()`, convenience conversions
   from `LocalDateTime` to a (UTC) `ZonedDateTime` or `OffsetDateTime`
   ([issue 142][])
+- Added `Date` and `TimeOfDay` properties to `ZonedDateTime` and
+  `OffsetDateTime`, which provide a `LocalDate` and `LocalTime` directly,
+  rather than needing to go via the `LocalDateTime` property ([issue 186][])
 - Added `Period.FromMilliseconds()`, obsoleting the misnamed
   `FromMillseconds()` ([issue 149][])
 - Added `DateTimeZone.GetAllZoneIntervals()`, which returns each
