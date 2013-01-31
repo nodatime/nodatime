@@ -28,6 +28,8 @@ namespace NodaTime.Test
         public void SimpleProperties()
         {
             var value = SampleZone.AtStrictly(new LocalDateTime(2012, 2, 10, 8, 9, 10, 11, 12));
+            Assert.AreEqual(new LocalDate(2012, 2, 10), value.Date);
+            Assert.AreEqual(new LocalTime(8, 9, 10, 11, 12), value.TimeOfDay);
             Assert.AreEqual(Era.Common, value.Era);
             Assert.AreEqual(20, value.CenturyOfEra);
             Assert.AreEqual(12, value.YearOfCentury);

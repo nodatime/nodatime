@@ -150,6 +150,20 @@ namespace NodaTime
         public LocalDateTime LocalDateTime { get { return localDateTime; } }
 
         /// <summary>
+        /// Gets the local date represented by this offset date and time. The returned <see cref="LocalDate"/>
+        /// will have the same calendar system and return the same values for each of the date-based calendar
+        /// properties (Year, MonthOfYear and so on), but will not have any offset information.
+        /// </summary>
+        public LocalDate Date { get { return localDateTime.Date; } }
+
+        /// <summary>
+        /// Gets the time portion of this offset date and time. The returned <see cref="LocalTime"/> will
+        /// return the same values for each of the time-based properties (Hour, Minute an so on), but
+        /// will not have any offset information.
+        /// </summary>
+        public LocalTime TimeOfDay { get { return localDateTime.TimeOfDay; } }
+
+        /// <summary>
         /// Returns the offset from UTC.
         /// </summary>
         public Offset Offset { get { return offset; } }
