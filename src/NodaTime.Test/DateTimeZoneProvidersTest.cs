@@ -13,6 +13,13 @@ namespace NodaTime.Test
     public class DateTimeZoneProvidersTest
     {
         [Test]
+        public void TzdbProviderUsesTzdbSource()
+        {
+            Assert.IsTrue(DateTimeZoneProviders.Tzdb.VersionId.StartsWith("TZDB: "));
+        }
+
+#if !PCL
+        [Test]
         public void DefaultProviderIsTzdb()
         {
 #pragma warning disable 0618
@@ -20,13 +27,6 @@ namespace NodaTime.Test
 #pragma warning restore 0618
         }
 
-        [Test]
-        public void TzdbProviderUsesTzdbSource()
-        {
-            Assert.IsTrue(DateTimeZoneProviders.Tzdb.VersionId.StartsWith("TZDB: "));
-        }
-
-#if !PCL
         [Test]
         public void BclProviderUsesTimeZoneInfoSource()
         {
