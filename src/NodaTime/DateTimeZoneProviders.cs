@@ -14,14 +14,6 @@ namespace NodaTime
     {
         private static readonly DateTimeZoneCache tzdbFactory = new DateTimeZoneCache(TzdbDateTimeZoneSource.Default);
         /// <summary>
-        /// Gets the TZDB time zone provider.
-        /// This always returns the same value as the <see cref="Tzdb"/> property.
-        /// </summary>
-        /// <seealso cref="Tzdb"/>
-        [Obsolete("Use DateTimeZoneProviders.Tzdb instead")]
-        public static IDateTimeZoneProvider Default { get { return Tzdb; } }
-
-        /// <summary>
         /// Gets a time zone provider which uses a <see cref="TzdbDateTimeZoneSource"/>.
         /// The underlying source is <see cref="TzdbDateTimeZoneSource.Default"/>, which is initialized from
         /// resources within the NodaTime assembly.
@@ -29,6 +21,15 @@ namespace NodaTime
         public static IDateTimeZoneProvider Tzdb { get { return tzdbFactory; } }
 
 #if !PCL
+        /// <summary>
+        /// Gets the TZDB time zone provider.
+        /// This always returns the same value as the <see cref="Tzdb"/> property.
+        /// </summary>
+        /// <remarks>This method is not available in the PCL version, as it was made obsolete in Noda Time 1.1.</remarks>
+        /// <seealso cref="Tzdb"/>
+        [Obsolete("Use DateTimeZoneProviders.Tzdb instead")]
+        public static IDateTimeZoneProvider Default { get { return Tzdb; } }
+
         private static readonly DateTimeZoneCache bclFactory = new DateTimeZoneCache(new BclDateTimeZoneSource());
 
         /// <summary>
