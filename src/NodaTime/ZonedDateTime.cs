@@ -124,6 +124,20 @@ namespace NodaTime
         /// </summary>
         public LocalDateTime LocalDateTime { get { return localDateTime; } }
 
+        /// <summary>
+        /// Gets the local date represented by this zoned date and time. The returned <see cref="LocalDate"/>
+        /// will have the same calendar system and return the same values for each of the date-based calendar
+        /// properties (Year, MonthOfYear and so on), but will not be associated with any particular time zone.
+        /// </summary>
+        public LocalDate Date { get { return localDateTime.Date; } }
+
+        /// <summary>
+        /// Gets the time portion of this zoned date and time. The returned <see cref="LocalTime"/> will
+        /// return the same values for each of the time-based properties (Hour, Minute an so on), but
+        /// will not be associated with any particular time zone.
+        /// </summary>
+        public LocalTime TimeOfDay { get { return localDateTime.TimeOfDay; } }
+
         /// <summary>Gets the era for this zoned date and time.</summary>
         public Era Era { get { return LocalDateTime.Era; } }
 
