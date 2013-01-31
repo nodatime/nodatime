@@ -32,6 +32,6 @@ namespace NodaTime.Test
         {
             Assert.IsTrue(DateTimeZoneProviders.Bcl.VersionId.StartsWith("TimeZoneInfo: "));
         }
-    }
 #endif
+    }
 }
