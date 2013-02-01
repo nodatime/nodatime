@@ -29,6 +29,14 @@ To run the tests, you'll need [NUnit][] version 2.5.10 or higher.
 
 [NUnit]: http://nunit.org/index.php?p=download
 
+Unfortunately though we target .NET 3.5 for *running* Noda Time on the desktop, the unit test
+library targets .NET 4. This is mostly so that we can easily run the tests against the PCL
+build. We would like to run the desktop build tests against .NET 3.5 and the PCL build tests
+against .NET 4, but that sort of subtlety seems to cause problems with the ability of
+test runners to autodetect which version they should load. We don't use any .NET 4 features
+in our tests though; if you hack at the project file to make it only target .NET 3.5, you should
+be able to test the desktop build that way, if you really need to.
+
 ### Fetching and building
 
 To fetch the source code, just clone the Google Code repository:
