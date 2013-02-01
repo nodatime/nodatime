@@ -41,10 +41,23 @@ XBUILDFLAGS := /p:TargetFrameworkProfile=''
 XBUILDFLAGS_DEBUG := $(XBUILDFLAGS) /p:Configuration=Debug
 XBUILDFLAGS_RELEASE := $(XBUILDFLAGS) /p:Configuration=Release
 
+DEBUG_OUTPUTPATH := bin/Debug
+FAKEPCL_OUTPUTPATH := bin/DebugFakePCL
+
+XBUILDFLAGS_FAKEPCL := $(XBUILDFLAGS_DEBUG) \
+	/property:DefineConstants=PCL \
+	/property:OutputPath=${FAKEPCL_OUTPUTPATH}
+
 SOLUTION := src/NodaTime.sln
 TOOLS_SOLUTION := tools/NodaTime.Tools.sln
-DEBUG_TEST_DLL := src/NodaTime.Test/bin/Debug/NodaTime.Test.dll
-DEBUG_SERIALIZATION_TEST_DLL := src/NodaTime.Serialization.Test/bin/Debug/NodaTime.Serialization.Test.dll
+DEBUG_TEST_DLL := \
+	src/NodaTime.Test/${DEBUG_OUTPUTPATH}/NodaTime.Test.dll
+DEBUG_SERIALIZATION_TEST_DLL := \
+	src/NodaTime.Serialization.Test/${DEBUG_OUTPUTPATH}/NodaTime.Serialization.Test.dll
+FAKEPCL_TEST_DLL := \
+	src/NodaTime.Test/${FAKEPCL_OUTPUTPATH}/NodaTime.Test.dll
+FAKEPCL_SERIALIZATION_TEST_DLL := \
+	src/NodaTime.Serialization.Test/${FAKEPCL_OUTPUTPATH}/NodaTime.Serialization.Test.dll
 MARKDOWN_TOOL := tools/NodaTime.Tools.BuildMarkdownDocs/bin/Release/NodaTime.Tools.BuildMarkdownDocs.exe
 
 debug:
@@ -53,8 +66,24 @@ debug:
 release:
 	$(XBUILD) $(XBUILDFLAGS_RELEASE) $(SOLUTION)
 
+# Mono cannot build a Portable Class Library assembly at all (see above), but
+# it is useful to be able to build and test the PCL subset (#if PCL) of Noda
+# Time against the desktop .NET framework; this target (and checkfakepcl)
+# allow that to be done. Note that we do not build the whole solution: for
+# example, we do not expect ZoneInfoCompiler to build against the PCL version.
+fakepcl:
+	$(XBUILD) $(XBUILDFLAGS_FAKEPCL) src/NodaTime/NodaTime.csproj
+	$(XBUILD) $(XBUILDFLAGS_FAKEPCL) src/NodaTime.Test/NodaTime.Test.csproj
+	$(XBUILD) $(XBUILDFLAGS_FAKEPCL) \
+		src/NodaTime.Serialization.JsonNet/NodaTime.Serialization.JsonNet.csproj
+	$(XBUILD) $(XBUILDFLAGS_FAKEPCL) \
+		src/NodaTime.Serialization.Test/NodaTime.Serialization.Test.csproj
+
 check: debug
 	$(NUNIT) $(DEBUG_TEST_DLL) $(DEBUG_SERIALIZATION_TEST_DLL)
+
+checkfakepcl: fakepcl
+	$(NUNIT) $(FAKEPCL_TEST_DLL) $(FAKEPCL_SERIALIZATION_TEST_DLL)
 
 tools:
 	$(XBUILD) $(XBUILDFLAGS_RELEASE) $(TOOLS_SOLUTION)
@@ -68,6 +97,7 @@ clean:
 	$(XBUILD) $(XBUILDFLAGS_DEBUG) $(TOOLS_SOLUTION) /t:Clean
 	$(XBUILD) $(XBUILDFLAGS_RELEASE) $(SOLUTION) /t:Clean
 	$(XBUILD) $(XBUILDFLAGS_RELEASE) $(TOOLS_SOLUTION) /t:Clean
+	$(XBUILD) $(XBUILDFLAGS_FAKEPCL) $(SOLUTION) /t:Clean
 
 .SUFFIXES:
-.PHONY: debug release check tools docs clean
+.PHONY: debug release fakepcl check checkfakepcl tools docs clean
