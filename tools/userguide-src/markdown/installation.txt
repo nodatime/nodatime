@@ -48,3 +48,16 @@ This assembly includes the [TZDB database](tzdb.html) as an embedded resource.
 Everything within the NodaTime assembly is in the NodaTime namespace or a "child" namespace. After adding a reference to
 the main assembly (either directly via the file system or with NuGet) and including an appropriate `using` directive, you should
 be able to start using Noda Time immediately, with no further effort.
+
+Debugging
+---------
+
+As of version 1.1, the source code of Noda Time is published to [SymbolSource](http://www.symbolsource.org). You can configure
+Visual Studio to automatically fetch the source code if you need to step into it when debugging your application. It takes a little
+bit of setup, but there are [full instructions](http://www.symbolsource.org/Public/Home/VisualStudio) on the SymbolSource web site.
+(The instructions aren't specific to Noda Time, so if you're
+already using SymbolSource as one of your symbol servers, you just need to make sure you're not excluding Noda Time from the list of
+modules to fetch.)
+
+If you believe you've found a bug in Noda Time, using the SymbolSource version is likely to prove painful after a while - it's
+much better to just fetch the [source code](https://code.google.com/p/noda-time/source/checkout) and build your own copy locally.
