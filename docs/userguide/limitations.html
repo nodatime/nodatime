@@ -36,6 +36,12 @@ by ID, nor can we ask for the adjustment rules for a particular time zone.</p>
 <a href="../api/html/T_NodaTime_TimeZones_BclDateTimeZone.htm"><code>BclDateTimeZone</code></a>
 on the PCL version of Noda Time.</p>
 
+<p>Additionally, the PCL doesn't support .NET resource files as fully as the desktop
+framework; in particular, it doesn't allow you to retrieve non-string resources. This
+has provoked a change from the previous resource-based format used for TZDB, to a
+stream-based format, which is now the default. For most users this will be a no-op
+change, but it does affect how you <a href="tzdb.html">build and use a custom version of TZDB</a>.</p>
+
 <h1>Fuller text support</h1>
 
 <p>Currently there's no way of parsing or formatting a
