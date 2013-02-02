@@ -14,19 +14,21 @@ As new versions of Noda Time are released, the version of tzdb will be updated. 
 a new version of tzdb <em>without</em> changing which version of Noda Time you're using. This documentation tells you how
 to do so.</p>
 
-<h2>"Compiling" the database to a resource file</h2>
-
 <p>Noda Time's main library doesn't read tzdb text files directly - it uses a binary form which is the output of <code>ZoneInfoCompiler</code> - another
-part of the Noda Time project. This saves both space (the 2012c version takes about 189K when compiled, or about 598K in text form) and
-time, as the binary form contains various precomputed transitions. The resource file also contains a mapping from Windows time zone names
+part of the Noda Time project. This saves both space (the 2012j version takes about 110K when compiled, or about 690K in text form) and
+time, as the binary form contains various precomputed transitions. The file also contains a mapping from Windows time zone names
 to tzdb time zone IDs, primarily so that Noda Time can map the local time zone reported by <code>TimeZoneInfo</code> to a tzdb time zone.</p>
 
-<p><code>ZoneInfoCompiler</code> is not currently provided in binary form in Nuget packages (although this decision can easily be revisited if there's
-enough demand). You'll need to build it yourself - which should be as simple as getting hold of a Noda Time source distribution (the latest
-for your binary's major version number should be good enough; we won't change the format of the resource file without bumping the version
-number) and building the whole solution. You'll end up with binaries in ZoneInfoCompiler/bin/Debug (or Release).</p>
+<p>In Noda Time 1.0, the data was stored in .NET resources. This became awkward in a number of ways, not least because of
+the lack of full resource support in Portable Class Libraries. In 1.1, a new file format was introduced, along with methods
+to read this format from any stream. If you're not using 1.0, we strongly advise you to use the new format; support for the resource
+format will be removed in Noda Time 2.0.</p>
 
-<h1>Steps</h1>
+<h1>Creating and using a "NodaZoneData" file (1.1+ format)</h1>
+
+<p>(TODO: Link to the documentation on the file format.)</p>
+
+<h2>Building a NodaZoneData file</h2>
 
 <ol>
 <li>Download the <a href="http://www.iana.org/time-zones">latest tzdb release</a></li>
@@ -39,11 +41,85 @@ reported by the time zone provider later.</li>
 in ZoneInfoCompiler\Data\winmap in a file beginning "windowsZones". This file comes from <a href="http://cldr.unicode.org">CLDR</a>.</li>
 <li><p>Run ZoneInfoCompiler. I'd suggest leaving it in its build directory and running it like this:</p>
 
-<p>path\to\ZoneInfoCompiler.exe -s path\to\tzdb-files -w path\to\windowsMapping-file.xml -o path\to\output.resources -t Resource</p>
+<pre class="prettyprint"><code>path\to\ZoneInfoCompiler.exe -s path\to\tzdb-files -w path\to\windowsMapping-file.xml -o path\to\output.nzd -t NodaZoneData
+</code></pre>
 
 <p>For example, rebuilding the 2012c data from Noda Time itself, starting in the ZoneInfoCompiler directory:</p>
 
-<p>bin\Release\ZoneInfoCompiler -s Data\2012c -w Data\winmap\windowsZones-21.xml -o tzdb-2012c.resources -t Resource</p></li>
+<pre class="prettyprint"><code>bin\Release\ZoneInfoCompiler -s Data\2012c -w Data\winmap\windowsZones-21.xml -o tzdb-2012j.nzd -t NodaZoneData
+</code></pre></li>
+</ol>
+
+<p>The NodaZoneData format is the default output format, so you can omit the final <code>-t NodaZoneData</code> if you wish; you may prefer
+to be explicit for clarity.</p>
+
+<p>As an alternative, if there's enough demand, we may well provide pre-built files in the Noda Time project download section.
+It's worth knowing the above steps, however, in case you wish to use a cut-down set of time zones for resource-constrained environments.</p>
+
+<h2>Using a NodaZoneData file</h2>
+
+<p>Typically you'll want to use the newly-created resource file as the default time zone provider, across your whole application.
+While it's possible to have multiple time zone providers in play at a time, that's a very rare scenario. Using a resource
+file is relatively straightforward:</p>
+
+<ul>
+<li>Open a stream to the file</li>
+<li>Create a <a href="../api/html/T_NodaTime_TimeZones_TzdbDateTimeZoneSource.htm"><code>TzdbDateTimeZoneSource</code></a> with the stream, using the static <code>FromStream</code> method</li>
+<li>Create <a href="../api/html/T_NodaTime_TimeZones_DateTimeZoneCache.htm"><code>DateTimeZoneCache</code></a> with the source </li>
+<li>Use that cache (usually by way of dependency injection as an <code>IDateTimeZoneProvider</code>) wherever you need time zone information</li>
+</ul>
+
+<p>Here's some sample code for the first three steps above:</p>
+
+<pre class="prettyprint"><code>using NodaTime;
+using NodaTime.TimeZones;
+using System;
+using System.IO;
+
+public class CustomTzdb
+{
+    static void Main()
+    {
+        IDateTimeZoneProvider provider;
+        using (var stream = File.OpenRead("tzdb-2012j.nzd"))
+        {
+            var source = TzdbDateTimeZoneSource.FromStream(stream);
+            provider = new DateTimeZoneCache(source);
+        }
+        Console.WriteLine(provider.SourceVersionId);
+    }
+}
+</code></pre>
+
+<p>The stream is fully read in the call to <code>TzdbDateTimeZoneSource.FromStream</code>, so disposing of it afterwards (as shown above) doesn't
+affect the source you've created. The stream can come from anywhere - typically it would either be a standalone file in the file
+system, or an embedded resource file within one of your assemblies. You certainly <em>could</em> fetch it across a network, if you wanted.
+(It is read sequentially from start to end - no seeking is required.)</p>
+
+<h1>Creating and using a resource file (legacy format)</h1>
+
+<p>(TODO: Link to the documentation on the file format.)</p>
+
+<h2>Building the resource file</h2>
+
+<ol>
+<li>Download the <a href="http://www.iana.org/time-zones">latest tzdb release</a></li>
+<li>Unpack the tar.gz file - you may need to download extra tools for this; <a href="http://www.7-zip.org/">7-Zip</a> can cope with .tar.gz
+files for example, and I'd expect other zip tools to do so too. You should end up with a directory containing files such
+as "america", "africa", "etcetera".</li>
+<li>Ideally, rename the directory to match the version number, e.g. "2012c". The directory name will be used in the version ID
+reported by the time zone provider later.</li>
+<li>Find the Windows mapping file you want to use. Currently, I'd recommend using the version supplied with the Noda Time source
+in ZoneInfoCompiler\Data\winmap in a file beginning "windowsZones". This file comes from <a href="http://cldr.unicode.org">CLDR</a>.</li>
+<li><p>Run ZoneInfoCompiler. I'd suggest leaving it in its build directory and running it like this:</p>
+
+<pre class="prettyprint"><code>path\to\ZoneInfoCompiler.exe -s path\to\tzdb-files -w path\to\windowsMapping-file.xml -o path\to\output.resources -t Resource
+</code></pre>
+
+<p>For example, rebuilding the 2012c data from Noda Time itself, starting in the ZoneInfoCompiler directory:</p>
+
+<pre class="prettyprint"><code>bin\Release\ZoneInfoCompiler -s Data\2012c -w Data\winmap\windowsZones-21.xml -o tzdb-2012c.resources -t Resource
+</code></pre></li>
 </ol>
 
 <p>As an alternative, if there's enough demand, we may well provide pre-built resource files in the Noda Time project download section.
