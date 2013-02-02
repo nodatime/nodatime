@@ -81,6 +81,7 @@ public class CustomTzdb
     static void Main()
     {
         IDateTimeZoneProvider provider;
+        // Or use Assembly.GetManifestResourceStream for an embedded file
         using (var stream = File.OpenRead("tzdb-2012j.nzd"))
         {
             var source = TzdbDateTimeZoneSource.FromStream(stream);

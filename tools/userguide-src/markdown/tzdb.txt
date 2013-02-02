@@ -60,24 +60,25 @@ file is relatively straightforward:
 
 Here's some sample code for the first three steps above:
 
-	using NodaTime;
-	using NodaTime.TimeZones;
-	using System;
-	using System.IO;
+    using NodaTime;
+    using NodaTime.TimeZones;
+    using System;
+    using System.IO;
 
-	public class CustomTzdb
-	{
-		static void Main()
-		{
-			IDateTimeZoneProvider provider;
-			using (var stream = File.OpenRead("tzdb-2012j.nzd"))
-			{
-			    var source = TzdbDateTimeZoneSource.FromStream(stream);
-			    provider = new DateTimeZoneCache(source);
-	        }
-			Console.WriteLine(provider.SourceVersionId);
-		}
-	}
+    public class CustomTzdb
+    {
+        static void Main()
+        {
+            IDateTimeZoneProvider provider;
+            // Or use Assembly.GetManifestResourceStream for an embedded file
+            using (var stream = File.OpenRead("tzdb-2012j.nzd"))
+            {
+                var source = TzdbDateTimeZoneSource.FromStream(stream);
+                provider = new DateTimeZoneCache(source);
+            }
+            Console.WriteLine(provider.SourceVersionId);
+        }
+    }
 
 The stream is fully read in the call to `TzdbDateTimeZoneSource.FromStream`, so disposing of it afterwards (as shown above) doesn't
 affect the source you've created. The stream can come from anywhere - typically it would either be a standalone file in the file
@@ -125,21 +126,21 @@ file is relatively straightforward:
 
 Here's some sample code for the first three steps above:
 
-	using NodaTime;
-	using NodaTime.TimeZones;
-	using System;
-	using System.Resources;
+    using NodaTime;
+    using NodaTime.TimeZones;
+    using System;
+    using System.Resources;
 
-	public class CustomTzdb
-	{
-		static void Main()
-		{
-			var resourceSet = new ResourceSet("tzdb-2012j.resources");
-			var source = new TzdbDateTimeZoneSource(resourceSet);
-			IDateTimeZoneProvider provider = new DateTimeZoneCache(source);
-			Console.WriteLine(provider.SourceVersionId);
-		}
-	}
+    public class CustomTzdb
+    {
+        static void Main()
+        {
+            var resourceSet = new ResourceSet("tzdb-2012j.resources");
+            var source = new TzdbDateTimeZoneSource(resourceSet);
+            IDateTimeZoneProvider provider = new DateTimeZoneCache(source);
+            Console.WriteLine(provider.SourceVersionId);
+        }
+    }
 
 You may be surprised that `TzdbDateTimeZoneSource` doesn't implement `IDisposable` even though `ResourceSet` does. `TzdbDateTimeZoneSource`
 will never close or dispose the resource set it's given - it doesn't assume ownership of it. However, it will fail if you dispose the
