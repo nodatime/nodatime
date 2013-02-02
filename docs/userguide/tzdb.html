@@ -35,7 +35,7 @@ format will be removed in Noda Time 2.0.</p>
 <li>Unpack the tar.gz file - you may need to download extra tools for this; <a href="http://www.7-zip.org/">7-Zip</a> can cope with .tar.gz
 files for example, and I'd expect other zip tools to do so too. You should end up with a directory containing files such
 as "america", "africa", "etcetera".</li>
-<li>Ideally, rename the directory to match the version number, e.g. "2012c". The directory name will be used in the version ID
+<li>Ideally, rename the directory to match the version number, e.g. "2012j". The directory name will be used in the version ID
 reported by the time zone provider later.</li>
 <li>Find the Windows mapping file you want to use. Currently, I'd recommend using the version supplied with the Noda Time source
 in ZoneInfoCompiler\Data\winmap in a file beginning "windowsZones". This file comes from <a href="http://cldr.unicode.org">CLDR</a>.</li>
@@ -44,9 +44,9 @@ in ZoneInfoCompiler\Data\winmap in a file beginning "windowsZones". This file co
 <pre class="prettyprint"><code>path\to\ZoneInfoCompiler.exe -s path\to\tzdb-files -w path\to\windowsMapping-file.xml -o path\to\output.nzd -t NodaZoneData
 </code></pre>
 
-<p>For example, rebuilding the 2012c data from Noda Time itself, starting in the ZoneInfoCompiler directory:</p>
+<p>For example, rebuilding the 2012j data from Noda Time itself, starting in the ZoneInfoCompiler directory:</p>
 
-<pre class="prettyprint"><code>bin\Release\ZoneInfoCompiler -s Data\2012c -w Data\winmap\windowsZones-21.xml -o tzdb-2012j.nzd -t NodaZoneData
+<pre class="prettyprint"><code>bin\Release\ZoneInfoCompiler -s Data\2012j -w Data\winmap\windowsZones-21.xml -o tzdb-2012j.nzd -t NodaZoneData
 </code></pre></li>
 </ol>
 
@@ -107,7 +107,7 @@ system, or an embedded resource file within one of your assemblies. You certainl
 <li>Unpack the tar.gz file - you may need to download extra tools for this; <a href="http://www.7-zip.org/">7-Zip</a> can cope with .tar.gz
 files for example, and I'd expect other zip tools to do so too. You should end up with a directory containing files such
 as "america", "africa", "etcetera".</li>
-<li>Ideally, rename the directory to match the version number, e.g. "2012c". The directory name will be used in the version ID
+<li>Ideally, rename the directory to match the version number, e.g. "2012j". The directory name will be used in the version ID
 reported by the time zone provider later.</li>
 <li>Find the Windows mapping file you want to use. Currently, I'd recommend using the version supplied with the Noda Time source
 in ZoneInfoCompiler\Data\winmap in a file beginning "windowsZones". This file comes from <a href="http://cldr.unicode.org">CLDR</a>.</li>
@@ -116,9 +116,9 @@ in ZoneInfoCompiler\Data\winmap in a file beginning "windowsZones". This file co
 <pre class="prettyprint"><code>path\to\ZoneInfoCompiler.exe -s path\to\tzdb-files -w path\to\windowsMapping-file.xml -o path\to\output.resources -t Resource
 </code></pre>
 
-<p>For example, rebuilding the 2012c data from Noda Time itself, starting in the ZoneInfoCompiler directory:</p>
+<p>For example, rebuilding the 2012j data from Noda Time itself, starting in the ZoneInfoCompiler directory:</p>
 
-<pre class="prettyprint"><code>bin\Release\ZoneInfoCompiler -s Data\2012c -w Data\winmap\windowsZones-21.xml -o tzdb-2012c.resources -t Resource
+<pre class="prettyprint"><code>bin\Release\ZoneInfoCompiler -s Data\2012j -w Data\winmap\windowsZones-21.xml -o tzdb-2012j.resources -t Resource
 </code></pre></li>
 </ol>
 
@@ -149,7 +149,7 @@ public class CustomTzdb
 {
     static void Main()
     {
-        var resourceSet = new ResourceSet("tzdb-2012c.resources");
+        var resourceSet = new ResourceSet("tzdb-2012j.resources");
         var source = new TzdbDateTimeZoneSource(resourceSet);
         IDateTimeZoneProvider provider = new DateTimeZoneCache(source);
         Console.WriteLine(provider.SourceVersionId);
