@@ -119,18 +119,17 @@ fields should already have been set correctly.)</p>
 <h2>Building the release artifacts</h2>
 
 <p>First, <em>create a new clone for building the release</em>. Doing this avoids the
-need to worry about ignored files and local changes making their way into the
-source archive.</p>
+need to worry about ignored files and local changes making their way into
+the archives.</p>
 
-<p>Update to the correct revision, if you didn't specify it when cloning the
-repository:</p>
+<p>Next, update to the correct revision:</p>
 
 <pre class="prettyprint"><code>hg up -r 1.0.0-beta1
 </code></pre>
 
-<p>Export the clean source archive:</p>
+<p>Export a clean source archive:</p>
 
-<pre class="prettyprint"><code>hg archive NodaTime-1.0.0-beta1-src.zip
+<pre class="prettyprint"><code>hg archive -r 1.0.0-beta1 NodaTime-1.0.0-beta1-src.zip
 </code></pre>
 
 <p>Next, get ready to build the release zipfile. Create a directory in the root of
@@ -140,6 +139,7 @@ following files and directories (from the working copy):</p>
 <pre class="prettyprint"><code>docs/api/
 docs/developer/
 docs/userguide/
+AUTHORS.txt
 LICENSE.txt
 NOTICE.txt
 NodaTime Release Public Key.snk
@@ -153,8 +153,9 @@ NuGet packages:</p>
 <pre class="prettyprint"><code>buildnuget.bat
 </code></pre>
 
-<p>This will create e.g. <code>nuget/NodaTime.1.0.0-beta1.nupkg</code> and
-<code>nuget/NodaTime.Testing.1.0.0-beta1.nupkg</code>.</p>
+<p>This will create packages for <code>NodaTime</code> and <code>NodaTime.Testing</code>, e.g.
+<code>nuget/NodaTime.1.0.0-beta1.nupkg</code> and
+<code>nuget/NodaTime.Testing.1.0.0-beta1.nupkg</code>, with symbols packages alongside.</p>
 
 <p>Copy the following build outputs into the <em>root</em> of your zipfile directory:</p>
 
@@ -162,6 +163,12 @@ NuGet packages:</p>
 docs/PublicApi/NodaTime.Testing.xml
 src/NodaTime/bin/Signed Release/NodaTime.dll
 src/NodaTime.Testing/bin/Signed Release/NodaTime.Testing.dll
+</code></pre>
+
+<p>Copy the following into a <code>portable</code> subdirectory of the zipfile directory:</p>
+
+<pre class="prettyprint"><code>src/NodaTime/bin/Signed Release Portable/NodaTime.dll
+src/NodaTime.Testing/bin/Signed Release Portable/NodaTime.Testing.dll
 </code></pre>
 
 <p>(These are the same files as are present in the NuGet packages.)</p>
