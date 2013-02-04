@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="utf-8"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>NodaTime.Testing</id>
@@ -15,7 +15,7 @@
     </description>
     <tags>nodatime testing</tags>
     <dependencies>
-      <dependency id="NodaTime" version="1.1.0-dev" />
+      <dependency id="NodaTime" version="1.1.0-dev-2013-31-01" />
     </dependencies>
   </metadata>
   <files>
