@@ -44,7 +44,18 @@ namespace NodaTime.Tools.SetVersion
             FullText = text;
             MajorMinor = match.Groups[1].Value;
             MajorMinorPatch = MajorMinor + "." + match.Groups[2];
-            Dependency = FullText == MajorMinorPatch ? MajorMinor + ".0" : FullText;
+            // For the first pre-release of any minor version, the dependency is just
+            // the full version number; we have nothing else to depend on. For later
+            // pre-releases and for stable versions, we can depend on Major.Minor.0.
+            string patchBase = MajorMinor + ".0";
+            if (FullText != MajorMinorPatch && patchBase == MajorMinorPatch)
+            {
+                Dependency = FullText;
+            }
+            else
+            {
+                Dependency = patchBase;
+            }
         }
     }
 }
