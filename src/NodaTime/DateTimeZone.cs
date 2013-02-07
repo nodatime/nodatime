@@ -296,7 +296,7 @@ namespace NodaTime
                 case 0:
                     var interval = GetIntervalAfterGap(localInstant);
                     var localDateTime = new LocalDateTime(interval.LocalStart, date.Calendar);
-                    // It's possible that the entire day is skipped. Known case: Samoa skipped December 30th 2011.
+                    // It's possible that the entire day is skipped. For example, Samoa skipped December 30th 2011.
                     if (localDateTime.Date != date)
                     {
                         throw new SkippedTimeException(date + LocalTime.Midnight, this);

@@ -5,6 +5,7 @@
 using NUnit.Framework;
 using NodaTime.Testing.TimeZones;
 using NodaTime.TimeZones;
+using NodaTime.Text;
 
 namespace NodaTime.Test
 {
@@ -250,16 +251,20 @@ namespace NodaTime.Test
             Assert.AreEqual(0, mapping.Count);
         }
 
-        // Samoa (Pacific/Apia) skipped December 30th 2011, going from
-        // 23:59:59 December 29th local time UTC-10
-        // 00:00:00 December 31st local time UTC+14
+        // Some zones skipped dates by changing from UTC-lots to UTC+lots. For example, Samoa (Pacific/Apia)
+        // skipped December 30th 2011, going from  23:59:59 December 29th local time UTC-10
+        // to 00:00:00 December 31st local time UTC+14
         [Test]
-        public void AtStartOfDay_DayDoesntExist()
+        [TestCase("Pacific/Apia", "2011-12-30")]
+        [TestCase("Pacific/Enderbury", "1995-01-01")]
+        [TestCase("Pacific/Kiritimati", "1995-01-01")]
+        [TestCase("Pacific/Kwajalein", "1993-08-20")]
+        public void AtStartOfDay_DayDoesntExist(string zoneId, string localDate)
         {
-            LocalDate badDate = new LocalDate(2011, 12, 30);
-            DateTimeZone samoa = DateTimeZoneProviders.Tzdb["Pacific/Apia"];
-            var exception = Assert.Throws<SkippedTimeException>(() => samoa.AtStartOfDay(badDate));
-            Assert.AreEqual(new LocalDateTime(2011, 12, 30, 0, 0), exception.LocalDateTime);
+            LocalDate badDate = LocalDatePattern.IsoPattern.Parse(localDate).Value;
+            DateTimeZone zone = DateTimeZoneProviders.Tzdb[zoneId];
+            var exception = Assert.Throws<SkippedTimeException>(() => zone.AtStartOfDay(badDate));
+            Assert.AreEqual(badDate + LocalTime.Midnight, exception.LocalDateTime);
         }
 
         [Test]
