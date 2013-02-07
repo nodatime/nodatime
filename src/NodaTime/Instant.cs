@@ -510,7 +510,7 @@ namespace NodaTime
         /// <param name="seconds">Number of seconds since the Unix epoch. May be negative (for instants before the epoch).</param>
         /// <returns>An <see cref="Instant"/> at exactly the given number of seconds since the Unix epoch.</returns>
         /// <exception cref="ArgumentOutOfRangeException">The constructed instant would be out of the range representable in Noda Time.</exception>
-        internal static Instant FromSecondsSinceUnixEpoch(long seconds)
+        public static Instant FromSecondsSinceUnixEpoch(long seconds)
         {
             Preconditions.CheckArgumentRange("seconds", seconds, long.MinValue / NodaConstants.TicksPerSecond,
                 long.MaxValue / NodaConstants.TicksPerSecond);
@@ -524,7 +524,7 @@ namespace NodaTime
         /// <param name="milliseconds">Number of milliseconds since the Unix epoch. May be negative (for instants before the epoch).</param>
         /// <returns>An <see cref="Instant"/> at exactly the given number of milliseconds since the Unix epoch.</returns>
         /// <exception cref="ArgumentOutOfRangeException">The constructed instant would be out of the range representable in Noda Time.</exception>
-        internal static Instant FromMillisecondsSinceUnixEpoch(long milliseconds)
+        public static Instant FromMillisecondsSinceUnixEpoch(long milliseconds)
         {
             Preconditions.CheckArgumentRange("milliseconds", milliseconds, long.MinValue / NodaConstants.TicksPerMillisecond,
                 long.MaxValue / NodaConstants.TicksPerMillisecond);
@@ -539,7 +539,7 @@ namespace NodaTime
         /// intent more explicitly.</remarks>
         /// <returns>An <see cref="Instant"/> at exactly the given number of ticks since the Unix epoch.</returns>
         /// <param name="ticks">Number of ticks since the Unix epoch. May be negative (for instants before the epoch).</param>
-        internal static Instant FromTicksSinceUnixEpoch(long ticks)
+        public static Instant FromTicksSinceUnixEpoch(long ticks)
         {
             return new Instant(ticks);
         }
