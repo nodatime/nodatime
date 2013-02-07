@@ -117,8 +117,10 @@ namespace NodaTime
 
         /// <summary>
         /// Factory method for creating a local time from the hour of day, minute of hour, second of minute, and tick of second.
-        /// This is not a constructor overload as it would have the same signature as the one taking millisecond of second.
         /// </summary>
+        /// <remarks>
+        /// This is not a constructor overload as it would have the same signature as the one taking millisecond of second.
+        /// </remarks>
         /// <param name="hour">The hour of day in the desired time, in the range [0, 23].</param>
         /// <param name="minute">The minute of hour in the desired time, in the range [0, 59].</param>
         /// <param name="second">The second of minute in the desired time, in the range [0, 59].</param>
