@@ -163,7 +163,7 @@ namespace NodaTime
         }
 
         /// <summary>
-        /// Factory method for creating a local time from the number of milliseconds which have elapsed since midnight.
+        /// Factory method for creating a local time from the number of seconds which have elapsed since midnight.
         /// </summary>
         /// <param name="seconds">The number of seconds, in the range [0, 86,399]</param>
         /// <returns>The resulting time.</returns>
