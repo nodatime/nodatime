@@ -517,10 +517,19 @@ namespace NodaTime
         #endregion
 
         /// <summary>
-        /// Converts this date and time to text according to the default formatting for the culture.
+        /// Currently returns a string representation of this value indicating the local time,
+        /// offset and time zone separately. The default <code>ToString</code> method of each component is used,
+        /// which will render the local time and offset in the "general" pattern for the current thread's culture,
+        /// and simply include the ID for most time zone implementations.
         /// </summary>
-        /// <returns>A text representation of this value.</returns>
-        // TODO(Post-V1): Proper formatting support.
+        /// <remarks>
+        /// <para>
+        /// This representation is a temporary measure until full support for parsing and formatting
+        /// <see cref="ZonedDateTime" /> values is implemented. It is provided in order to make diagnostics
+        /// simpler, but is likely to be changed in future releases.
+        /// </para>
+        /// </remarks>
+        /// <returns>A string representation of this value.</returns>
         public override string ToString()
         {
             return "Local: " + localDateTime + " Offset: " + offset + " Zone: " + Zone;
