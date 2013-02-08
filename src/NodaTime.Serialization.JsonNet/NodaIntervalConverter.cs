@@ -28,7 +28,7 @@ namespace NodaTime.Serialization.JsonNet
             while (reader.Read())
             {
                 if (reader.TokenType != JsonToken.PropertyName)
-                    continue;
+                    break;
 
                 var propertyName = (string)reader.Value;
                 if (!reader.Read())
