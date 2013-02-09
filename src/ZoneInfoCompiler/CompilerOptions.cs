@@ -40,7 +40,7 @@ namespace NodaTime.ZoneInfoCompiler
             var help = new HelpText(new HeadingInfo(productName))
             {
                 AdditionalNewLineAfterOption = true,
-                Copyright = new CopyrightInfo("Jon Skeet", 2009, 2013)
+                Copyright = new CopyrightInfo("The Noda Time Authors", 2009)
             };
             help.AddPreOptionsLine("Usage: ZoneInfoCompiler -s <tzdb directory> -w <windowsZone.xml file> -o <output file> [-t ResX/Resource/NodaZoneData]");
             help.AddOptions(this);
