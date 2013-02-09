@@ -1,8 +1,9 @@
-tzdb binary file format
+Time zone database file format
 
 This document describes the Noda Time-specific binary file format that
-`ZoneInfoCompiler` produces. `ZoneInfoCompiler` takes the tzdb text files and
-some CLDR data as input; it produces one of two different output formats:
+`ZoneInfoCompiler` produces. `ZoneInfoCompiler` reads the text files from
+[tzdb](http://www.iana.org/time-zones) (aka zoneinfo) and some additional
+input from CLDR; it produces one of two different output formats:
 
    1. a .NET resource file containing a number of different resources
       (including, for example, one for each time zone), serialised as either
@@ -24,14 +25,14 @@ Most users will just use the version of the database embedded in the Noda
 Time assembly (which is typically produced with the same version of
 `ZoneInfoCompiler` as the Noda Time assembly itself), and so do not need to
 worry about these details, but as we provide the ability to use a custom
-compiled tzdb database, we document here the compatibility rules between
-the output produced by different versions of `ZoneInfoCompiler` and the Noda
-Time assembly.
+compiled time zone database, we document here the compatibility rules
+between the output produced by different versions of `ZoneInfoCompiler` and
+the Noda Time assembly.
 
 In general, these are probably as you would expect: any version of Noda Time
-must be able to read a compiled tzdb database consumed by an earlier version
-of Noda Time with the same major version number; the reverse, however, is
-not true.
+must be able to read a compiled time zone database consumed by an earlier
+version of Noda Time with the same major version number; the reverse,
+however, is not true.
 
 For example, Noda Time 1.1.x should be able to read the compiled output used
 by Noda Time 1.0.x and 1.1.x, but would not necessarily be able to read the
@@ -51,10 +52,10 @@ version may require a database compiled by at least that version.
 
 The former is true because semantic versioning requires that we be able to
 drop a later version of the Noda Time assembly into a running environment
-without recompiling (or without replacing the compiled tzdb database, which
-might e.g. be embedded in the main executable); the latter statement is true
-because it is unreasonable to expect that new functionality should work
-without the new data it may require.
+without recompiling (or without replacing the compiled time zone database,
+which might e.g. be embedded in the main executable); the latter statement
+is true because it is unreasonable to expect that new functionality should
+work without the new data it may require.
 
 As a consequence, it is reasonable to act as if any functionality introduced
 in a given version of Noda Time comes with an implicit caveat that it
@@ -62,13 +63,17 @@ requires a database compiled against at least that version to work.
 
 # NodaZoneData format
 
+Compiling the input data using the (default) `NodaZoneData` option produces
+a compiled database in the "NodaZoneData" format.
+
 TODO
 
 # Resource file format
 
-A compiled database in the .NET resource file format native to Noda Time
-1.0.x is a .NET resource file containing many resources: one per time zone,
-and four additional meta-information resources.
+Compiling the input data using the `Resource` or `ResX` option produces a
+compiled database in the resource file format native to Noda Time 1.0.x.
+This is represented as a .NET resource file containing many resources: one
+resource for each time zone, and four additional meta-information resources.
 
 The four meta-information resources, and their resource keys, are:
 
@@ -100,31 +105,38 @@ reached when all the data they know how to read has been consumed.
 
 The resource file format uses the following serialisation primitives:
 
+   * `byte`, a general 8-bit unsigned integer
    * `fixed16`, `fixed32`, and `fixed64`, general 16-bit, 32-bit, and 64-bit
      signed integers
    * `count`, a non-negative (typically small) `int32` value
    * `offset`, an `int32` value representing a millisecond offset from UTC
    * `string`, a UTF-8 encoded text string
    * `dictionary`, a dictionary with string keys and values
-   * `timezone`, a serialised time zone (with several variants)
+   * `timezone`, a serialised time zone (with several variants and subtypes,
+     documented below)
 
 Of these, only `dictionary` and `timezone` are used directly; the others are
 used as part of the definitions of these types, below.
 
-### Fixed16, Fixed32, Fixed64
+### byte
+
+A `byte` is simply serialised as a single byte representing a value in the
+range 0..255.
+
+### fixed16, fixed32, fixed64
 
 `fixed16`, `fixed32`, and `fixed64` are simply serialised as 2-, 4-, or
 8-byte twos-complement values of the appropriate length, in MSB-first order.
 For example, `0x1234` would be serialised as the bytes `[0x12 0x34]` using
 the `fixed16` serialisation, while -1 would be serialised as `[0xff 0xff]`.
 
-### Count
+### count
 
 A `count` encodes a non-negative (typically small) `int32` value; it is
 serialised as a variable number of bytes according to the following
 scheme:
 
-   * Values `0x00`..`0x8e` are serialised as a single byte; values to `0x0e`
+   * values `0x00`..`0x8e` are serialised as a single byte; values to `0x0e`
      are serialised as `0xf0`..`0xfe`, while `0x0f`..`0x8e` is serialised as
      `0x00`..`0x7f`
    * `0x8f`..`0x408e` is serialised as two bytes, by subtracting `0x8f` and
@@ -138,56 +150,59 @@ scheme:
      `0x20408f` (giving `0`&ndash;`0x0fffffff`), adding `0xe0000000`,
      and then encoding the resulting (`0xe0000000`&ndash;`0xefffffff`) value
      as a `fixed32`
-   * Larger values are serialised as five bytes, as the leader `0xff`
+   * larger values are serialised as five bytes, as the leader `0xff`
      followed by the value as a `fixed32`
 
-### Offset
+### offset
 
 An `offset` encodes an `int32` value representing an offset in milliseconds
 from UTC. While the encoding below can in theory represent any `int32`
-value, it is in practice used for values in the range (-24 hours, +24
-hours), and typically for 'round' values.
+value, the use in Noda Time is solely for values in the range (-24 hours,
++24 hours); commonly for 'round' numbers of minutes, etc.
 
 An `offset` is serialised as a variable-length field as follows:
 
-   * Offsets that are a multiple of 30 minutes are serialised as the single
-     byte `0x10`..`0x6e`, with a bias such that `0x10` represents an offset
-     of -23:30, `0x11` represents -23:00, `0x3f` represents a zero offset,
-     and `0x6e` represents the offset +23:30.
-   * Offsets that are a whole number of seconds are serialised as three
+   * offsets that are a multiple of 30 minutes are serialised as the single
+     byte `0x10`..`0x6e` counting the number of 30 minute periods, with a
+     bias such that `0x10` represents an offset of -23:30, `0x11` represents
+     -23:00, `0x3f` represents a zero offset, and `0x6e` represents the
+     offset +23:30
+   * offsets that are a whole number of seconds are serialised as three
      bytes, the first of which is in the range `0x82`..`0x85`, by adding
-     `0x83ffff` to the value, and writing three bytes in MSB-first order, so
-     that `[0x82 0xae 0x80]` represents -23:59:59, `[0x84 0x00 0x00]`
-     represents +00:00:01, and `[0x85 0x51 0x7e]` represents +23:59:59.
-   * Any other offset is serialised as the leader `0xfd` followed by the number
+     `0x83ffff` to the number of seconds, and writing three bytes in
+     MSB-first order, so that `[0x82 0xae 0x80]` represents -23:59:59,
+     `[0x84 0x00 0x00]` represents +00:00:01, and `[0x85 0x51 0x7e]`
+     represents +23:59:59
+   * any other offset is serialised as the leader `0xfd` followed by the number
      of milliseconds as a `fixed32`
 
-(The serialisation method used actually defines an encoding for
+(The serialisation method used additionally defines an encoding for
 'out-of-range' offsets, but these cannot occur in practice, as the
 underlying C# data type restricts the range of the offset to that described
 above.)
 
-### String
+### string
 
 A `string` is serialised as a `count` of the number of UTF-8 bytes in the
 string followed by those bytes.
 
-### Dictionary
+### dictionary
 
 A `dictionary` is serialised as a `count` number of entries in the
 dictionary, followed by that number of pairs of `string` key and `string`
 value.
 
-### Timezone
+### timezone
 
-A `timezone` encodes a time zone, represented in one of a few different
-forms. The serialised format may be any of the following:
+A `timezone` encodes a time zone's contents sans ID, represented in one of a
+few different forms depending on the type of the time zone. The serialised
+format may be any of the following:
 
-   * `0x00` followed by another `timezone`, indicating that the following time
-     zone (in practice, always one of type `0x04`) should have information
-     about zone transitions cached if possible
+   * `0x00` followed by another `timezone`, indicating that the following
+     time zone (in practice, always one of type `0x04`) should have
+     information about zone transitions cached at runtime if possible
    * `0x01` followed by a `daylightsavingstimezone`, representing a time
-     zone with a 'standard' and 'dst' offset and simple recurrence rules for
+     zone with a standard and DST offset, and simple recurrence rules for
      each transition
    * `0x02` followed by an `offset`, representing a time zone with a fixed
      offset (and no DST); this is used natively when encoding time zones
@@ -196,8 +211,8 @@ forms. The serialised format may be any of the following:
    * `0x03`, representing 'no time zone' (only used when encoding an absent
      tailzone for a pre-calculated zone)
    * `0x04` followed by a `precalculatedtimezone`, representing a zone that
-     expands all known transitions explicitly, with an optional 'tail zone'
-     representing a final DST-using stable state
+     expands all known transitions explicitly, up to an optional 'tail zone'
+     representing a final (possibly DST-using) stable state
 
 #### daylightsavingstimezone
 
@@ -212,21 +227,93 @@ guaranteed to have a zero offset.
 
 A `zonerecurrence` is serialised as the `string` name of the recurrence
 (e.g. "PST"), the `offset` containing the offset of this recurrence, a
-description of when the recurrence occurs (the 'year offset'), followed by a
-`count` of the year the recurrence starts (zero if it starts at the
-beginning of time) and a `count` of the year that the recurrence ends.
+description of when the recurrence occurs (the 'year offset'), followed by
+two `count` values indicating the (inclusive) years the recurrence covers,
+with a zero start year indicating a recurrence that starts at the beginning
+of time.
 
 (Note that 1.0 versions of NodaTime serialised the 'beginning of time' as
-`int32.MinValue` instead of zero. The two should be treated equally.)
+the year `int32.MinValue` instead of zero. The two should be treated
+equally.)
 
-The description of the recurrence is:
+The 'year offset' is:
 
    * a `count` indicating whether transitions are relative to UTC (0), the
      'wall' (daylight savings) offset (1), or the standard offset (2)
-   * 
+   * a `count` of the month-of-year in which this recurrence starts, with a
+     bias such that 13 represents January and 24 represents December
+   * a `count` of the day-of-month in which this recurrence starts; values
+     from 0..30 indicate a number of days [-31..-1] counted from the end of
+     a (31 day) month (in practice, only 30 is used, to represent 'last
+     [weekday] of the month'), while values from 32..62 represent the number
+     of days [1..31] counted from the start of the month
+   * a `count` of the day of week in which this recurrence start, with a
+     bias such that 7 represents 'no day', and 8..13 represent
+     Monday..Sunday
+   * a `byte` indicating whether the day of month represents an upper bound
+     (0) or lower bound (1); this is only relevant if a day of week is also
+     specified, where the rule might be described as e.g. "first Tuesday on
+     or after the 15th"
+   * an `offset` representing the (non-negative) time of day that the
+     recurrence starts
+   * a `byte` indicating whether an additional day should be added to the
+     calculation (1) or not (0), to cope with transitions documented as
+     occurring at 24:00 - these may potentially spill into a following month
 
 #### precalculatedtimezone
 
-tailzone is always either of type `0x03` (no time zone) or `0x01`
-(`daylightsavingstimezone`)
+A `precalculatedtimezone` is serialised as a string pool, a sequence of
+`zoneinterval` periods representing an expansion of all known transitions,
+and an optional 'tail zone' representing a final (possibly DST-using) stable
+state.
 
+Specifically:
+
+   * a per-time-zone string pool containing all the names of the intervals
+     (e.g. "PST") used in this zone, as a `count` of the number of entries
+     in the pool, followed by that number of `string` values
+   * a `count` of the number of zoneinterval` periods, followed by that
+     number of `zoneinterval` values
+   * a `zoneintervaltransition` for the tail zone (as the end of time if
+     there is no tail zone)
+   * a `timezone` representing the tail zone, in practice always either of
+     type `0x03` (no tail zone) or `0x01` (`daylightsavingstimezone`)
+
+##### zoneinterval
+
+A `zoneinterval` is serialised as the `zoneintervaltransition` representing
+the start of the transition (the beginning of time for the first one), an
+index into the interval name string pool as either `byte` or `fixed32`
+(based on the number of entries in the pool), an `offset` representing the
+wall-time offset from UTC (including any daylight savings time) and a second
+`offset` representing the daylight savings contribution (or zero if the
+period is not a daylight savings period).
+
+The periods serialised as part of a `precalculatedtimezone` cover the whole of
+time, so each `zoneinterval` finishes at the start time of the next (or of
+the tail zone).
+
+##### zoneintervaltransition
+
+A `zoneintervaltransition` represents an instant at which a transition
+begins. It is serialised as a variable number of bytes according to the
+following scheme, based on the (signed) number of ticks from the Unix epoch:
+
+   * the beginning of time and end of time as serialised as `0xfe` and
+     `0xff` respectively
+   * numbers of ticks that are a multiple of 30 minutes are serialised as
+     the single byte `0x00`..`0x3e` counting the number of 30 minute
+     periods, with a bias such that `0x00` represents -15:30, `0x01`
+     represents -15:00, `0x1f` represents a zero offset, and `0x3e`
+     represents the +15:30.
+
+TODO minutes and seconds:
+   * offsets that are a whole number of seconds are serialised as three
+     bytes, the first of which is in the range `0x82`..`0x85`, by adding
+     `0x83ffff` to the number of seconds, and writing three bytes in
+     MSB-first order, so that `[0x82 0xae 0x80]` represents -23:59:59,
+     `[0x84 0x00 0x00]` represents +00:00:01, and `[0x85 0x51 0x7e]`
+     represents +23:59:59.
+
+   * any other value is serialised as the leader `0xa0` followed by the
+     number of ticks as a `fixed64`
