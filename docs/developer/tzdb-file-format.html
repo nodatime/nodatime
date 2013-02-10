@@ -8,10 +8,11 @@
   </head>
   <body onload="prettyPrint()">
     <h1>Time zone database file format</h1>
-    <p>This document describes the Noda Time-specific binary file format that
-<code>ZoneInfoCompiler</code> produces. <code>ZoneInfoCompiler</code> reads the text files from
-<a href="http://www.iana.org/time-zones">tzdb</a> (aka zoneinfo) and some additional
-input from CLDR; it produces one of two different output formats:</p>
+    <p>This document describes the Noda Time-specific binary file format that is
+produced by Noda Time's <code>ZoneInfoCompiler</code> tool. <code>ZoneInfoCompiler</code> reads
+the text files from <a href="http://www.iana.org/time-zones">tzdb</a> (aka zoneinfo)
+along with some additional input from CLDR; it produces output in one of two
+different formats:</p>
 
 <ol>
 <li><p>a .NET resource file containing a number of different resources
@@ -79,7 +80,7 @@ a compiled database in the "NodaZoneData" format.</p>
 
 <h1>Resource file format</h1>
 
-<p>Compiling the input data using the <code>Resource</code> or <code>ResX</code> option produces a
+<p>Compiling the input data using the <code>Resource</code> or <code>ResX</code> options produces a
 compiled database in the resource file format native to Noda Time 1.0.x.
 This is represented as a .NET resource file containing many resources: one
 resource for each time zone, and four additional meta-information resources.</p>
@@ -211,9 +212,9 @@ value.</p>
 
 <h3>timezone</h3>
 
-<p>A <code>timezone</code> encodes a time zone's contents sans ID, represented in one of a
-few different forms depending on the type of the time zone. The serialised
-format may be any of the following:</p>
+<p>A <code>timezone</code> encodes a complete definition for a single time zone, excluding
+the ID; it is represented in one of a few different forms depending on the
+type of the time zone. The serialised format may be any of the following:</p>
 
 <ul>
 <li><code>0x00</code> followed by another <code>timezone</code>, indicating that the following
@@ -227,7 +228,7 @@ format may be any of the following:</p>
  with no DST (such as "Etc/UTC") and as part of the composite
  "pre-calculated" time zone</li>
 <li><code>0x03</code>, representing 'no time zone' (only used when encoding an absent
- tailzone for a pre-calculated zone)</li>
+ 'tail zone' for a pre-calculated zone)</li>
 <li><code>0x04</code> followed by a <code>precalculatedtimezone</code>, representing a zone that
  expands all known transitions explicitly, up to an optional 'tail zone'
  representing a final (possibly DST-using) stable state</li>
@@ -246,9 +247,9 @@ guaranteed to have a zero offset.</p>
 
 <p>A <code>zonerecurrence</code> is serialised as the <code>string</code> name of the recurrence
 (e.g. "PST"), the <code>offset</code> containing the offset of this recurrence, a
-description of when the recurrence occurs (the 'year offset'), followed by
+description of when the recurrence occurs (the 'year offset'), and finally
 two <code>count</code> values indicating the (inclusive) years the recurrence covers,
-with a zero start year indicating a recurrence that starts at the beginning
+where a zero start year indicates a recurrence that starts at the beginning
 of time.</p>
 
 <p>(Note that 1.0 versions of NodaTime serialised the 'beginning of time' as
@@ -265,8 +266,8 @@ equally.)</p>
 <li>a <code>count</code> of the day-of-month in which this recurrence starts; values
  from 0..30 indicate a number of days [-31..-1] counted from the end of
  a (31 day) month (in practice, only 30 is used, to represent 'last
- [weekday] of the month'), while values from 32..62 represent the number
- of days [1..31] counted from the start of the month</li>
+ [day-of-week] of the month'), while values from 32..62 represent the
+ number of days [1..31] counted from the start of the month</li>
 <li>a <code>count</code> of the day of week in which this recurrence start, with a
  bias such that 7 represents 'no day', and 8..13 represent
  Monday..Sunday</li>
@@ -294,27 +295,30 @@ state.</p>
 <li>a per-time-zone string pool containing all the names of the intervals
  (e.g. "PST") used in this zone, as a <code>count</code> of the number of entries
  in the pool, followed by that number of <code>string</code> values</li>
-<li>a <code>count</code> of the number of zoneinterval<code>periods, followed by that
- number of</code>zoneinterval` values</li>
+<li>a <code>count</code> of the number of precalculated periods, followed by that
+ number of <code>zoneinterval</code> values</li>
 <li>a <code>zoneintervaltransition</code> for the tail zone (as the end of time if
  there is no tail zone)</li>
 <li>a <code>timezone</code> representing the tail zone, in practice always either of
  type <code>0x03</code> (no tail zone) or <code>0x01</code> (<code>daylightsavingstimezone</code>)</li>
 </ul>
 
+<p>TODO: is the last true? Above we say that we can use a fixed time zone as a
+tailzone.</p>
+
 <h5>zoneinterval</h5>
 
 <p>A <code>zoneinterval</code> is serialised as the <code>zoneintervaltransition</code> representing
 the start of the transition (the beginning of time for the first one), an
-index into the interval name string pool as either <code>byte</code> or <code>fixed32</code>
-(based on the number of entries in the pool), an <code>offset</code> representing the
-wall-time offset from UTC (including any daylight savings time) and a second
-<code>offset</code> representing the daylight savings contribution (or zero if the
-period is not a daylight savings period).</p>
+index into the zone's interval name string pool, as either <code>byte</code> or
+<code>fixed32</code> depending on the total number of entries in the pool, an <code>offset</code>
+representing the wall-time offset from UTC (including any daylight savings
+time) and a second <code>offset</code> representing the daylight savings contribution
+(or zero if the period is not a daylight savings period).</p>
 
 <p>The periods serialised as part of a <code>precalculatedtimezone</code> cover the whole of
-time, so each <code>zoneinterval</code> finishes at the start time of the next (or of
-the tail zone).</p>
+time, so each <code>zoneinterval</code> finishes as the next one starts (or as the tail
+zone starts).</p>
 
 <h5>zoneintervaltransition</h5>
 
@@ -323,7 +327,7 @@ begins. It is serialised as a variable number of bytes according to the
 following scheme, based on the (signed) number of ticks from the Unix epoch:</p>
 
 <ul>
-<li>the beginning of time and end of time as serialised as <code>0xfe</code> and
+<li>the beginning of time and end of time are serialised as <code>0xfe</code> and
  <code>0xff</code> respectively</li>
 <li>numbers of ticks that are a multiple of 30 minutes are serialised as
  the single byte <code>0x00</code>..<code>0x3e</code> counting the number of 30 minute
