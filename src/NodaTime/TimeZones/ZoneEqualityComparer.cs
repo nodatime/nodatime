@@ -10,17 +10,6 @@ using System.Linq;
 namespace NodaTime.TimeZones
 {
     /// <summary>
-    /// Extension method to make it easier to handle options.
-    /// </summary>
-    internal static class ZoneEqualityComparerOptionsExtensions
-    {
-        internal static bool Includes(this ZoneEqualityComparer.Options options, ZoneEqualityComparer.Options candidate)
-        {
-            return (options & candidate) != 0;
-        }
-    }
-
-    /// <summary>
     /// Equality comparer for time zones, comparing specific aspects of the zone intervals within
     /// a time zone for a specific interval of the time line.
     /// </summary>
@@ -75,6 +64,15 @@ namespace NodaTime.TimeZones
             /// The combination of all available match options.
             /// </summary>
             PreciseMatch = MatchNames | MatchOffsetComponents | MatchAllTransitions | MatchStartAndEndTransitions
+        }
+
+        /// <summary>
+        /// Checks whether the given set of options includes the candidate one. This would be an extension method, but
+        /// that causes problems on Mono at the moment.
+        /// </summary>
+        private static bool CheckOption(Options options, Options candidate)
+        {
+            return (options & candidate) != 0;
         }
 
         private readonly Interval interval;
@@ -159,7 +157,7 @@ namespace NodaTime.TimeZones
         private IEnumerable<ZoneInterval> GetIntervals(DateTimeZone zone)
         {
             var unelided = zone.GetAllZoneIntervals(interval.Start, interval.End);
-            return options.Includes(Options.MatchAllTransitions) ? unelided : ElideIntervals(unelided);
+            return CheckOption(options, Options.MatchAllTransitions) ? unelided : ElideIntervals(unelided);
         }
 
         private IEnumerable<ZoneInterval> ElideIntervals(IEnumerable<ZoneInterval> zoneIntervals)
@@ -213,7 +211,7 @@ namespace NodaTime.TimeZones
             public int GetHashCode(ZoneInterval obj)
             {
                 int hash = HashCodeHelper.Initialize();
-                if (options.Includes(Options.MatchOffsetComponents))
+                if (CheckOption(options, Options.MatchOffsetComponents))
                 {
                     hash = HashCodeHelper.Hash(hash, obj.StandardOffset);
                     hash = HashCodeHelper.Hash(hash, obj.Savings);
@@ -222,7 +220,7 @@ namespace NodaTime.TimeZones
                 {
                     hash = HashCodeHelper.Hash(hash, obj.WallOffset);
                 }
-                if (options.Includes(Options.MatchNames))
+                if (CheckOption(options, Options.MatchNames))
                 {
                     hash = HashCodeHelper.Hash(hash, obj.Name);
                 }
@@ -233,13 +231,13 @@ namespace NodaTime.TimeZones
 
             private Instant GetEffectiveStart(ZoneInterval zoneInterval)
             {
-                return options.Includes(Options.MatchStartAndEndTransitions)
+                return CheckOption(options, Options.MatchStartAndEndTransitions)
                     ? zoneInterval.Start : Instant.Max(zoneInterval.Start, interval.Start);                
             }
 
             private Instant GetEffectiveEnd(ZoneInterval zoneInterval)
             {
-                return options.Includes(Options.MatchStartAndEndTransitions)
+                return CheckOption(options, Options.MatchStartAndEndTransitions)
                     ? zoneInterval.End : Instant.Min(zoneInterval.End, interval.End);
             }
 
@@ -256,11 +254,11 @@ namespace NodaTime.TimeZones
                 }
                 // As we've already compared wall offsets, we only need to compare savings...
                 // If the savings are equal, the standard offset will be too.
-                if (options.Includes(Options.MatchOffsetComponents) && x.Savings != y.Savings)
+                if (CheckOption(options, Options.MatchOffsetComponents) && x.Savings != y.Savings)
                 {
                     return false;
                 }
-                if (options.Includes(Options.MatchNames) && x.Name != y.Name)
+                if (CheckOption(options, Options.MatchNames) && x.Name != y.Name)
                 {
                     return false;
                 }
