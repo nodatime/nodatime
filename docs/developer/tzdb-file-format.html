@@ -4,13 +4,15 @@
     <link href="prettify.css" type="text/css" rel="stylesheet" />
     <link href="styles.css" type="text/css" rel="stylesheet" />
     <script type="text/javascript" src="prettify.js"></script>
-    <title>tzdb binary file format</title>
+    <title>Time zone database file format</title>
   </head>
   <body onload="prettyPrint()">
-    <h1>tzdb binary file format</h1>
-    <p>This document describes the Noda Time-specific binary file format that
-<code>ZoneInfoCompiler</code> produces. <code>ZoneInfoCompiler</code> takes the tzdb text files and
-some CLDR data as input; it produces one of two different output formats:</p>
+    <h1>Time zone database file format</h1>
+    <p>This document describes the Noda Time-specific binary file format that is
+produced by Noda Time's <code>ZoneInfoCompiler</code> tool. <code>ZoneInfoCompiler</code> reads
+the text files from <a href="http://www.iana.org/time-zones">tzdb</a> (aka zoneinfo)
+along with some additional input from CLDR; it produces output in one of two
+different formats:</p>
 
 <ol>
 <li><p>a .NET resource file containing a number of different resources
@@ -33,14 +35,14 @@ frozen, while the NodaZoneData format will evolve as more data is required.</p>
 Time assembly (which is typically produced with the same version of
 <code>ZoneInfoCompiler</code> as the Noda Time assembly itself), and so do not need to
 worry about these details, but as we provide the ability to use a custom
-compiled tzdb database, we document here the compatibility rules between
-the output produced by different versions of <code>ZoneInfoCompiler</code> and the Noda
-Time assembly.</p>
+compiled time zone database, we document here the compatibility rules
+between the output produced by different versions of <code>ZoneInfoCompiler</code> and
+the Noda Time assembly.</p>
 
 <p>In general, these are probably as you would expect: any version of Noda Time
-must be able to read a compiled tzdb database consumed by an earlier version
-of Noda Time with the same major version number; the reverse, however, is
-not true.</p>
+must be able to read a compiled time zone database consumed by an earlier
+version of Noda Time with the same major version number; the reverse,
+however, is not true.</p>
 
 <p>For example, Noda Time 1.1.x should be able to read the compiled output used
 by Noda Time 1.0.x and 1.1.x, but would not necessarily be able to read the
@@ -60,10 +62,10 @@ version may require a database compiled by at least that version.</p>
 
 <p>The former is true because semantic versioning requires that we be able to
 drop a later version of the Noda Time assembly into a running environment
-without recompiling (or without replacing the compiled tzdb database, which
-might e.g. be embedded in the main executable); the latter statement is true
-because it is unreasonable to expect that new functionality should work
-without the new data it may require.</p>
+without recompiling (or without replacing the compiled time zone database,
+which might e.g. be embedded in the main executable); the latter statement
+is true because it is unreasonable to expect that new functionality should
+work without the new data it may require.</p>
 
 <p>As a consequence, it is reasonable to act as if any functionality introduced
 in a given version of Noda Time comes with an implicit caveat that it
@@ -71,13 +73,17 @@ requires a database compiled against at least that version to work.</p>
 
 <h1>NodaZoneData format</h1>
 
+<p>Compiling the input data using the (default) <code>NodaZoneData</code> option produces
+a compiled database in the "NodaZoneData" format.</p>
+
 <p>TODO</p>
 
 <h1>Resource file format</h1>
 
-<p>A compiled database in the .NET resource file format native to Noda Time
-1.0.x is a .NET resource file containing many resources: one per time zone,
-and four additional meta-information resources.</p>
+<p>Compiling the input data using the <code>Resource</code> or <code>ResX</code> options produces a
+compiled database in the resource file format native to Noda Time 1.0.x.
+This is represented as a .NET resource file containing many resources: one
+resource for each time zone, and four additional meta-information resources.</p>
 
 <p>The four meta-information resources, and their resource keys, are:</p>
 
@@ -112,33 +118,40 @@ reached when all the data they know how to read has been consumed.</p>
 <p>The resource file format uses the following serialisation primitives:</p>
 
 <ul>
+<li><code>byte</code>, a general 8-bit unsigned integer</li>
 <li><code>fixed16</code>, <code>fixed32</code>, and <code>fixed64</code>, general 16-bit, 32-bit, and 64-bit
  signed integers</li>
 <li><code>count</code>, a non-negative (typically small) <code>int32</code> value</li>
 <li><code>offset</code>, an <code>int32</code> value representing a millisecond offset from UTC</li>
 <li><code>string</code>, a UTF-8 encoded text string</li>
 <li><code>dictionary</code>, a dictionary with string keys and values</li>
-<li><code>timezone</code>, a serialised time zone (with several variants)</li>
+<li><code>timezone</code>, a serialised time zone (with several variants and subtypes,
+ documented below)</li>
 </ul>
 
 <p>Of these, only <code>dictionary</code> and <code>timezone</code> are used directly; the others are
 used as part of the definitions of these types, below.</p>
 
-<h3>Fixed16, Fixed32, Fixed64</h3>
+<h3>byte</h3>
+
+<p>A <code>byte</code> is simply serialised as a single byte representing a value in the
+range 0..255.</p>
+
+<h3>fixed16, fixed32, fixed64</h3>
 
 <p><code>fixed16</code>, <code>fixed32</code>, and <code>fixed64</code> are simply serialised as 2-, 4-, or
 8-byte twos-complement values of the appropriate length, in MSB-first order.
 For example, <code>0x1234</code> would be serialised as the bytes <code>[0x12 0x34]</code> using
 the <code>fixed16</code> serialisation, while -1 would be serialised as <code>[0xff 0xff]</code>.</p>
 
-<h3>Count</h3>
+<h3>count</h3>
 
 <p>A <code>count</code> encodes a non-negative (typically small) <code>int32</code> value; it is
 serialised as a variable number of bytes according to the following
 scheme:</p>
 
 <ul>
-<li>Values <code>0x00</code>..<code>0x8e</code> are serialised as a single byte; values to <code>0x0e</code>
+<li>values <code>0x00</code>..<code>0x8e</code> are serialised as a single byte; values to <code>0x0e</code>
  are serialised as <code>0xf0</code>..<code>0xfe</code>, while <code>0x0f</code>..<code>0x8e</code> is serialised as
  <code>0x00</code>..<code>0x7f</code></li>
 <li><code>0x8f</code>..<code>0x408e</code> is serialised as two bytes, by subtracting <code>0x8f</code> and
@@ -152,70 +165,73 @@ scheme:</p>
  <code>0x20408f</code> (giving <code>0</code>&ndash;<code>0x0fffffff</code>), adding <code>0xe0000000</code>,
  and then encoding the resulting (<code>0xe0000000</code>&ndash;<code>0xefffffff</code>) value
  as a <code>fixed32</code></li>
-<li>Larger values are serialised as five bytes, as the leader <code>0xff</code>
+<li>larger values are serialised as five bytes, as the leader <code>0xff</code>
  followed by the value as a <code>fixed32</code></li>
 </ul>
 
-<h3>Offset</h3>
+<h3>offset</h3>
 
 <p>An <code>offset</code> encodes an <code>int32</code> value representing an offset in milliseconds
 from UTC. While the encoding below can in theory represent any <code>int32</code>
-value, it is in practice used for values in the range (-24 hours, +24
-hours), and typically for 'round' values.</p>
+value, the use in Noda Time is solely for values in the range (-24 hours,
++24 hours); commonly for 'round' numbers of minutes, etc.</p>
 
 <p>An <code>offset</code> is serialised as a variable-length field as follows:</p>
 
 <ul>
-<li>Offsets that are a multiple of 30 minutes are serialised as the single
- byte <code>0x10</code>..<code>0x6e</code>, with a bias such that <code>0x10</code> represents an offset
- of -23:30, <code>0x11</code> represents -23:00, <code>0x3f</code> represents a zero offset,
- and <code>0x6e</code> represents the offset +23:30.</li>
-<li>Offsets that are a whole number of seconds are serialised as three
+<li>offsets that are a multiple of 30 minutes are serialised as the single
+ byte <code>0x10</code>..<code>0x6e</code> counting the number of 30 minute periods, with a
+ bias such that <code>0x10</code> represents an offset of -23:30, <code>0x11</code> represents
+ -23:00, <code>0x3f</code> represents a zero offset, and <code>0x6e</code> represents the
+ offset +23:30</li>
+<li>offsets that are a whole number of seconds are serialised as three
  bytes, the first of which is in the range <code>0x82</code>..<code>0x85</code>, by adding
- <code>0x83ffff</code> to the value, and writing three bytes in MSB-first order, so
- that <code>[0x82 0xae 0x80]</code> represents -23:59:59, <code>[0x84 0x00 0x00]</code>
- represents +00:00:01, and <code>[0x85 0x51 0x7e]</code> represents +23:59:59.</li>
-<li>Any other offset is serialised as the leader <code>0xfd</code> followed by the number
+ <code>0x83ffff</code> to the number of seconds, and writing three bytes in
+ MSB-first order, so that <code>[0x82 0xae 0x80]</code> represents -23:59:59,
+ <code>[0x84 0x00 0x00]</code> represents +00:00:01, and <code>[0x85 0x51 0x7e]</code>
+ represents +23:59:59</li>
+<li>any other offset is serialised as the leader <code>0xfd</code> followed by the number
  of milliseconds as a <code>fixed32</code></li>
 </ul>
 
-<p>(The serialisation method used actually defines an encoding for
+<p>(The serialisation method used additionally defines an encoding for
 'out-of-range' offsets, but these cannot occur in practice, as the
 underlying C# data type restricts the range of the offset to that described
 above.)</p>
 
-<h3>String</h3>
+<h3>string</h3>
 
 <p>A <code>string</code> is serialised as a <code>count</code> of the number of UTF-8 bytes in the
 string followed by those bytes.</p>
 
-<h3>Dictionary</h3>
+<h3>dictionary</h3>
 
 <p>A <code>dictionary</code> is serialised as a <code>count</code> number of entries in the
 dictionary, followed by that number of pairs of <code>string</code> key and <code>string</code>
 value.</p>
 
-<h3>Timezone</h3>
+<h3>timezone</h3>
 
-<p>A <code>timezone</code> encodes a time zone, represented in one of a few different
-forms. The serialised format may be any of the following:</p>
+<p>A <code>timezone</code> encodes a complete definition for a single time zone, excluding
+the ID; it is represented in one of a few different forms depending on the
+type of the time zone. The serialised format may be any of the following:</p>
 
 <ul>
-<li><code>0x00</code> followed by another <code>timezone</code>, indicating that the following time
- zone (in practice, always one of type <code>0x04</code>) should have information
- about zone transitions cached if possible</li>
+<li><code>0x00</code> followed by another <code>timezone</code>, indicating that the following
+ time zone (in practice, always one of type <code>0x04</code>) should have
+ information about zone transitions cached at runtime if possible</li>
 <li><code>0x01</code> followed by a <code>daylightsavingstimezone</code>, representing a time
- zone with a 'standard' and 'dst' offset and simple recurrence rules for
+ zone with a standard and DST offset, and simple recurrence rules for
  each transition</li>
 <li><code>0x02</code> followed by an <code>offset</code>, representing a time zone with a fixed
  offset (and no DST); this is used natively when encoding time zones
  with no DST (such as "Etc/UTC") and as part of the composite
  "pre-calculated" time zone</li>
 <li><code>0x03</code>, representing 'no time zone' (only used when encoding an absent
- tailzone for a pre-calculated zone)</li>
+ 'tail zone' for a pre-calculated zone)</li>
 <li><code>0x04</code> followed by a <code>precalculatedtimezone</code>, representing a zone that
- expands all known transitions explicitly, with an optional 'tail zone'
- representing a final DST-using stable state</li>
+ expands all known transitions explicitly, up to an optional 'tail zone'
+ representing a final (possibly DST-using) stable state</li>
 </ul>
 
 <h4>daylightsavingstimezone</h4>
@@ -231,25 +247,107 @@ guaranteed to have a zero offset.</p>
 
 <p>A <code>zonerecurrence</code> is serialised as the <code>string</code> name of the recurrence
 (e.g. "PST"), the <code>offset</code> containing the offset of this recurrence, a
-description of when the recurrence occurs (the 'year offset'), followed by a
-<code>count</code> of the year the recurrence starts (zero if it starts at the
-beginning of time) and a <code>count</code> of the year that the recurrence ends.</p>
+description of when the recurrence occurs (the 'year offset'), and finally
+two <code>count</code> values indicating the (inclusive) years the recurrence covers,
+where a zero start year indicates a recurrence that starts at the beginning
+of time.</p>
 
 <p>(Note that 1.0 versions of NodaTime serialised the 'beginning of time' as
-<code>int32.MinValue</code> instead of zero. The two should be treated equally.)</p>
+the year <code>int32.MinValue</code> instead of zero. The two should be treated
+equally.)</p>
 
-<p>The description of the recurrence is:</p>
+<p>The 'year offset' is:</p>
 
 <ul>
 <li>a <code>count</code> indicating whether transitions are relative to UTC (0), the
  'wall' (daylight savings) offset (1), or the standard offset (2)</li>
-   * 
+<li>a <code>count</code> of the month-of-year in which this recurrence starts, with a
+ bias such that 13 represents January and 24 represents December</li>
+<li>a <code>count</code> of the day-of-month in which this recurrence starts; values
+ from 0..30 indicate a number of days [-31..-1] counted from the end of
+ a (31 day) month (in practice, only 30 is used, to represent 'last
+ [day-of-week] of the month'), while values from 32..62 represent the
+ number of days [1..31] counted from the start of the month</li>
+<li>a <code>count</code> of the day of week in which this recurrence start, with a
+ bias such that 7 represents 'no day', and 8..13 represent
+ Monday..Sunday</li>
+<li>a <code>byte</code> indicating whether the day of month represents an upper bound
+ (0) or lower bound (1); this is only relevant if a day of week is also
+ specified, where the rule might be described as e.g. "first Tuesday on
+ or after the 15th"</li>
+<li>an <code>offset</code> representing the (non-negative) time of day that the
+ recurrence starts</li>
+<li>a <code>byte</code> indicating whether an additional day should be added to the
+ calculation (1) or not (0), to cope with transitions documented as
+ occurring at 24:00 - these may potentially spill into a following month</li>
 </ul>
 
 <h4>precalculatedtimezone</h4>
 
-<p>tailzone is always either of type <code>0x03</code> (no time zone) or <code>0x01</code>
-(<code>daylightsavingstimezone</code>)</p>
+<p>A <code>precalculatedtimezone</code> is serialised as a string pool, a sequence of
+<code>zoneinterval</code> periods representing an expansion of all known transitions,
+and an optional 'tail zone' representing a final (possibly DST-using) stable
+state.</p>
+
+<p>Specifically:</p>
+
+<ul>
+<li>a per-time-zone string pool containing all the names of the intervals
+ (e.g. "PST") used in this zone, as a <code>count</code> of the number of entries
+ in the pool, followed by that number of <code>string</code> values</li>
+<li>a <code>count</code> of the number of precalculated periods, followed by that
+ number of <code>zoneinterval</code> values</li>
+<li>a <code>zoneintervaltransition</code> for the tail zone (as the end of time if
+ there is no tail zone)</li>
+<li>a <code>timezone</code> representing the tail zone, in practice always either of
+ type <code>0x03</code> (no tail zone) or <code>0x01</code> (<code>daylightsavingstimezone</code>)</li>
+</ul>
+
+<p>TODO: is the last true? Above we say that we can use a fixed time zone as a
+tailzone.</p>
+
+<h5>zoneinterval</h5>
+
+<p>A <code>zoneinterval</code> is serialised as the <code>zoneintervaltransition</code> representing
+the start of the transition (the beginning of time for the first one), an
+index into the zone's interval name string pool, as either <code>byte</code> or
+<code>fixed32</code> depending on the total number of entries in the pool, an <code>offset</code>
+representing the wall-time offset from UTC (including any daylight savings
+time) and a second <code>offset</code> representing the daylight savings contribution
+(or zero if the period is not a daylight savings period).</p>
+
+<p>The periods serialised as part of a <code>precalculatedtimezone</code> cover the whole of
+time, so each <code>zoneinterval</code> finishes as the next one starts (or as the tail
+zone starts).</p>
+
+<h5>zoneintervaltransition</h5>
+
+<p>A <code>zoneintervaltransition</code> represents an instant at which a transition
+begins. It is serialised as a variable number of bytes according to the
+following scheme, based on the (signed) number of ticks from the Unix epoch:</p>
+
+<ul>
+<li>the beginning of time and end of time are serialised as <code>0xfe</code> and
+ <code>0xff</code> respectively</li>
+<li>numbers of ticks that are a multiple of 30 minutes are serialised as
+ the single byte <code>0x00</code>..<code>0x3e</code> counting the number of 30 minute
+ periods, with a bias such that <code>0x00</code> represents -15:30, <code>0x01</code>
+ represents -15:00, <code>0x1f</code> represents a zero offset, and <code>0x3e</code>
+ represents the +15:30.</li>
+</ul>
+
+<p>TODO minutes and seconds:
+   * offsets that are a whole number of seconds are serialised as three
+     bytes, the first of which is in the range <code>0x82</code>..<code>0x85</code>, by adding
+     <code>0x83ffff</code> to the number of seconds, and writing three bytes in
+     MSB-first order, so that <code>[0x82 0xae 0x80]</code> represents -23:59:59,
+     <code>[0x84 0x00 0x00]</code> represents +00:00:01, and <code>[0x85 0x51 0x7e]</code>
+     represents +23:59:59.</p>
+
+<ul>
+<li>any other value is serialised as the leader <code>0xa0</code> followed by the
+ number of ticks as a <code>fixed64</code></li>
+</ul>
 
   </body>
 </html>

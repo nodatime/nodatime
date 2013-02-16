@@ -55,5 +55,40 @@ namespace NodaTime.Serialization.Test.JsonNet
 
             Assert.Throws<InvalidDataException>(() => JsonConvert.DeserializeObject<Interval>(json, converters));
         }
+
+        [Test]
+        public void Serialize_InObject()
+        {
+            var startInstant = Instant.FromUtc(2012, 1, 2, 3, 4, 5);
+            var endInstant = Instant.FromUtc(2013, 6, 7, 8, 9, 10);
+            var interval = new Interval(startInstant, endInstant);
+
+            var testObject = new TestObject { Interval = interval };
+
+            var json = JsonConvert.SerializeObject(testObject, Formatting.None, converters);
+
+            string expectedJson = "{\"Interval\":{\"Start\":\"2012-01-02T03:04:05Z\",\"End\":\"2013-06-07T08:09:10Z\"}}";
+            Assert.AreEqual(expectedJson, json);
+        }
+
+        [Test]
+        public void Deserialize_InObject()
+        {
+            string json = "{\"Interval\":{\"Start\":\"2012-01-02T03:04:05Z\",\"End\":\"2013-06-07T08:09:10Z\"}}";
+
+            var testObject = JsonConvert.DeserializeObject<TestObject>(json, converters);
+
+            var interval = testObject.Interval;
+
+            var startInstant = Instant.FromUtc(2012, 1, 2, 3, 4, 5);
+            var endInstant = Instant.FromUtc(2013, 6, 7, 8, 9, 10);
+            var expectedInterval = new Interval(startInstant, endInstant);
+            Assert.AreEqual(expectedInterval, interval);
+        }
+
+        public class TestObject
+        {
+            public Interval Interval { get; set; }
+        }
     }
 }

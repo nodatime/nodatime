@@ -28,11 +28,17 @@ namespace NodaTime.Serialization.JsonNet
             while (reader.Read())
             {
                 if (reader.TokenType != JsonToken.PropertyName)
-                    continue;
+                {
+                    break;
+                }
 
                 var propertyName = (string)reader.Value;
+                // If we haven't got a property value, that's pretty weird. Break out of the loop,
+                // and let JSON.NET fail appropriately...
                 if (!reader.Read())
-                    continue;
+                {
+                    break;
+                }
 
                 if (propertyName == "Start")
                 {

@@ -186,8 +186,6 @@ namespace NodaTime.TimeZones.IO
              * 01              minutes     4 bytes       +/- 1020 years
              * 10              seconds     5 bytes       +/- 4355 years
              * 11000000        ticks       9 bytes       +/- 292,000 years
-             * 11111100  0xfc              1 byte         Offset.MaxValue
-             * 11111101  0xfd              1 byte         Offset.MinValue
              * 11111110  0xfe              1 byte         Instant, LocalInstant, Duration MaxValue
              * 11111111  0xff              1 byte         Instant, LocalInstant, Duration MinValue
              *
