@@ -65,22 +65,28 @@ remove the `<Preliminary/>` tag from the Sandcastle project file; see e.g.
 
 Switch to the correct branch (e.g. `1.0.x`).
 
-Update the following AssemblyInfo files and NuGet package specs to include the
+Update the version number by building the tools solution and then running the `SetVersion` tool:
+
+    msbuild tools\NodaTime.Tools.sln
+	src\NodaTime.Tools.SetVersion\bin\debug\SetVersion 1.2.3-beta4
+
+> This will the following AssemblyInfo files and NuGet package specs to include the
 version number you are building:
 
-- `src/NodaTime/Properties/AssemblyInfo.cs`
-- `src/NodaTime.Testing/Properties/AssemblyInfo.cs`
-- `src/NodaTime/NodaTime.nuspec`
-- `src/NodaTime.Testing/NodaTime.Testing.nuspec`
+> - `src/NodaTime/Properties/AssemblyInfo.cs`
+> - `src/NodaTime.Testing/Properties/AssemblyInfo.cs`
+> - `src/NodaTime/NodaTime.nuspec`
+> - `src/NodaTime.Testing/NodaTime.Testing.nuspec`
 
-The various versions should be set according to the following scheme. Suppose
+> The various versions will be set according to the following scheme. Suppose
 we were building version 1.2.3-beta4, then:
 
-- In the NuGet package specs, `<version>` should contain the version number
+> - In the NuGet package specs, `<version>` should contain the version number
   ('1.2.3-beta4'). The `<dependency>` element in `NodaTime.Testing.nuspec`
   should reference the _initial release_ for the major/minor version
-  (i.e. '1.2.0').
-- In the AssemblyInfo files, `AssemblyVersion` should be set to just the
+  (i.e. '1.2.0') for stable versions, or the full version for
+  pre-release versions.
+> - In the AssemblyInfo files, `AssemblyVersion` should be set to just the
   major/minor version ('1.2'). `AssemblyFileVersion` should be set to the
   major, minor, and patch version ('1.2.3'), and `AssemblyInformationalVersion`
   should be set to the version number ('1.2.3-beta4'). (See [this Stack
@@ -88,9 +94,6 @@ we were building version 1.2.3-beta4, then:
   used.)
 
 [assemblyversion]: http://stackoverflow.com/a/65062
-
-(Typically, only the version number itself should need to change, as the other
-fields should already have been set correctly.)
 
 Add the current date and TZDB version to the version history in
 `tools/userguide-src/markdown/versions.txt` and regenerate all documentation.
