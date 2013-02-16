@@ -109,56 +109,17 @@ First, *create a new clone for building the release*. Doing this avoids the
 need to worry about ignored files and local changes making their way into
 the archives.
 
-Next, update to the correct revision:
+Use the `buildrelease` batch file to build all the release artifacts:
 
-    hg up -r 1.0.0-beta1
+    buildrelease 1.0.0-beta1
 
-Export a clean source archive:
+This will create:
 
-    hg archive -r 1.0.0-beta1 NodaTime-1.0.0-beta1-src.zip
+- A zip file of pristine sources (e.g. `NodaTime-1.0.0-beta1-src.zip`)
+- A zip file for binary distribution (e.g. `NodaTime-1.0.0-beta1.zip`)
+- NuGet packages (in the `nuget` directory)
 
-Next, get ready to build the release zipfile. Create a directory in the root of
-the working copy called e.g. `NodaTime-1.0.0-beta1` containing a copy of the
-following files and directories (from the working copy):
-
-    docs/api/
-    docs/developer/
-    docs/userguide/
-    AUTHORS.txt
-    LICENSE.txt
-    NOTICE.txt
-    NodaTime Release Public Key.snk
-    readme.txt
-
-Now copy the Noda Time release private key (`NodaTime Release.snk`) into the
-root of the working copy and build the release libaries, XML documentation, and
-NuGet packages:
-
-    buildnuget.bat
-
-This will create packages for `NodaTime` and `NodaTime.Testing`, e.g.
-`nuget/NodaTime.1.0.0-beta1.nupkg` and
-`nuget/NodaTime.Testing.1.0.0-beta1.nupkg`, with symbols packages alongside.
-
-Copy the following build outputs into the _root_ of your zipfile directory:
-
-    docs/PublicApi/NodaTime.xml
-    docs/PublicApi/NodaTime.Testing.xml
-    src/NodaTime/bin/Signed Release/NodaTime.dll
-    src/NodaTime.Testing/bin/Signed Release/NodaTime.Testing.dll
-
-Copy the following into a `portable` subdirectory of the zipfile directory:
-
-    src/NodaTime/bin/Signed Release Portable/NodaTime.dll
-    src/NodaTime.Testing/bin/Signed Release Portable/NodaTime.Testing.dll
-
-(These are the same files as are present in the NuGet packages.)
-
-Finally, create a zipfile. In the working copy root, run e.g.
-
-    zip -r -9 NodaTime-1.0.0-beta1.zip NodaTime-1.0.0-beta1
-
-TODO: doing this by hand is a pain.
+(See `buildrelease.bat` for details.)
 
 ## Publishing the artifacts
 
