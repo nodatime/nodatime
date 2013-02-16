@@ -75,34 +75,40 @@ remove the <code>&lt;Preliminary/&gt;</code> tag from the Sandcastle project fil
 
 <p>Switch to the correct branch (e.g. <code>1.0.x</code>).</p>
 
-<p>Update the following AssemblyInfo files and NuGet package specs to include the
-version number you are building:</p>
+<p>Update the version number by building the tools solution and then running the <code>SetVersion</code> tool:</p>
 
-<ul>
-<li><code>src/NodaTime/Properties/AssemblyInfo.cs</code></li>
-<li><code>src/NodaTime.Testing/Properties/AssemblyInfo.cs</code></li>
-<li><code>src/NodaTime/NodaTime.nuspec</code></li>
-<li><code>src/NodaTime.Testing/NodaTime.Testing.nuspec</code></li>
-</ul>
+<pre class="prettyprint"><code>msbuild tools\NodaTime.Tools.sln
+src\NodaTime.Tools.SetVersion\bin\debug\SetVersion 1.2.3-beta4
+</code></pre>
 
-<p>The various versions should be set according to the following scheme. Suppose
-we were building version 1.2.3-beta4, then:</p>
-
-<ul>
-<li>In the NuGet package specs, <code>&lt;version&gt;</code> should contain the version number
-('1.2.3-beta4'). The <code>&lt;dependency&gt;</code> element in <code>NodaTime.Testing.nuspec</code>
-should reference the <em>initial release</em> for the major/minor version
-(i.e. '1.2.0').</li>
-<li>In the AssemblyInfo files, <code>AssemblyVersion</code> should be set to just the
-major/minor version ('1.2'). <code>AssemblyFileVersion</code> should be set to the
-major, minor, and patch version ('1.2.3'), and <code>AssemblyInformationalVersion</code>
-should be set to the version number ('1.2.3-beta4'). (See <a href="http://stackoverflow.com/a/65062">this Stack
-Overflow post</a> for more information about how these are
-used.)</li>
-</ul>
-
-<p>(Typically, only the version number itself should need to change, as the other
-fields should already have been set correctly.)</p>
+<blockquote>
+  <p>This will the following AssemblyInfo files and NuGet package specs to include the
+  version number you are building:</p>
+  
+  <ul>
+  <li><code>src/NodaTime/Properties/AssemblyInfo.cs</code></li>
+  <li><code>src/NodaTime.Testing/Properties/AssemblyInfo.cs</code></li>
+  <li><code>src/NodaTime/NodaTime.nuspec</code></li>
+  <li><code>src/NodaTime.Testing/NodaTime.Testing.nuspec</code></li>
+  </ul>
+  
+  <p>The various versions will be set according to the following scheme. Suppose
+  we were building version 1.2.3-beta4, then:</p>
+  
+  <ul>
+  <li>In the NuGet package specs, <code>&lt;version&gt;</code> should contain the version number
+  ('1.2.3-beta4'). The <code>&lt;dependency&gt;</code> element in <code>NodaTime.Testing.nuspec</code>
+  should reference the <em>initial release</em> for the major/minor version
+  (i.e. '1.2.0') for stable versions, or the full version for
+  pre-release versions.</li>
+  <li>In the AssemblyInfo files, <code>AssemblyVersion</code> should be set to just the
+  major/minor version ('1.2'). <code>AssemblyFileVersion</code> should be set to the
+  major, minor, and patch version ('1.2.3'), and <code>AssemblyInformationalVersion</code>
+  should be set to the version number ('1.2.3-beta4'). (See <a href="http://stackoverflow.com/a/65062">this Stack
+  Overflow post</a> for more information about how these are
+  used.)</li>
+  </ul>
+</blockquote>
 
 <p>Add the current date and TZDB version to the version history in
 <code>tools/userguide-src/markdown/versions.txt</code> and regenerate all documentation.</p>
