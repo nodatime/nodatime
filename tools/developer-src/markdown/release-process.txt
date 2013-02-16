@@ -70,7 +70,7 @@ Update the version number by building the tools solution and then running the `S
     msbuild tools\NodaTime.Tools.sln
 	src\NodaTime.Tools.SetVersion\bin\debug\SetVersion 1.2.3-beta4
 
-> This will the following AssemblyInfo files and NuGet package specs to include the
+> This will update the following AssemblyInfo files and NuGet package specs to include the
 version number you are building:
 
 > - `src/NodaTime/Properties/AssemblyInfo.cs`
