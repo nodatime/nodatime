@@ -28,5 +28,12 @@ namespace NodaTime.Utility
         /// </summary>
         /// <param name="message">The message for the exception.</param>
         public InvalidNodaDataException(string message) : base(message) { }
+
+        /// <summary>
+        /// Creates an instance with the given message.
+        /// </summary>
+        /// <param name="message">The message for the exception.</param>
+        /// <param name="innerException">Underlying cause of the error.</param>
+        public InvalidNodaDataException(string message, Exception innerException) : base(message, innerException) { }
     }
 }

@@ -60,10 +60,23 @@ namespace NodaTime.TimeZones.IO
             {
                 if (!tzdbIdMap.ContainsKey(id))
                 {
-                    throw new InvalidNodaDataException("Windows mapping uses canonical ID " + id + " which is missing");
+                    throw new InvalidNodaDataException("Windows mapping uses zone ID " + id + " which is missing");
                 }
             }
-            this.geoLocations = builder.geoLocations;
+            geoLocations = builder.geoLocations;
+
+            // Check that each geolocation has a valid zone ID
+            if (geoLocations != null)
+            {
+                foreach (var location in geoLocations)
+                {
+                    if (!tzdbIdMap.ContainsKey(location.ZoneId))
+                    {
+                        throw new InvalidNodaDataException("Geolocation " + location.CountryName
+                            + " uses zone ID " + location.ZoneId + " which is missing");
+                    }
+                }
+            }
         }
 
         /// <inheritdoc />
