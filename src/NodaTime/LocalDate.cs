@@ -139,7 +139,7 @@ namespace NodaTime
         /// In the standard ISO8601 week algorithm, the first week of the year
         /// is that in which at least 4 days are in the year. As a result of this
         /// definition, day 1 of the first week may be in the previous year.
-        /// The WeekYear allows you to query the effective year for that day
+        /// The WeekYear allows you to query the effective year for that day.
         /// </para>
         /// <para>
         /// For example, January 1st 2011 was a Saturday, so only two days of that week
