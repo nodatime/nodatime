@@ -278,6 +278,7 @@
     <Compile Include="TimeZones\FixedDateTimeZoneTest.cs" />
     <Compile Include="TimeZones\MiscellaneousBugReports.cs" />
     <Compile Include="TimeZones\ParisTest.cs" />
+    <Compile Include="TimeZones\TzdbGeoLocationTest.cs" />
     <Compile Include="TimeZones\TzTestHelper.cs" />
     <Compile Include="TimeZones\ZoneEqualityComparerTest.cs" />
     <Compile Include="TimeZones\ZoneIntervalPairTest.cs" />
