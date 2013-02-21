@@ -54,7 +54,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
             string version = sourceDirectory.Name;
             var database = new TzdbDatabase(version);
             ParseAllFiles(fileList, database);
-            ParseGeoLocations(sourceDirectory, database);
+            database.GeoLocations = TzdbGeoLocationParser.ParseFiles(sourceDirectory);
             database.LogCounts();
             return database;
         }
@@ -71,80 +71,6 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
                 Console.WriteLine("Parsing file {0} . . .", file.Name);
                 ParseFile(file, database);
             }
-        }
-
-        /// <summary>
-        /// Attempts to parse geolocations from zone.tab and iso3166.tab, storing the results in the database.
-        /// If the files are not both present, the database's geolocation list will be cleared.
-        /// </summary>
-        private static void ParseGeoLocations(DirectoryInfo sourceDirectory, TzdbDatabase database)
-        {
-            var iso3166File = Path.Combine(sourceDirectory.FullName, "iso3166.tab");
-            var zoneFile = Path.Combine(sourceDirectory.FullName, "zone.tab");
-            if (!File.Exists(iso3166File) || !File.Exists(zoneFile))
-            {
-                Console.WriteLine("Geo-location files missing; skipping");
-                database.GeoLocations = null;
-                return;
-            }
-            var iso3166 = File.ReadAllLines(iso3166File)
-                              .Where(line => line != "" && !line.StartsWith("#"))
-                              .Select(line => line.Split('\t'))
-                              .ToDictionary(bits => bits[0], bits => bits[1]);
-            database.GeoLocations = File.ReadAllLines(zoneFile)
-                                        .Where(line => line != "" && !line.StartsWith("#"))
-                                        .Select(line => ConvertGeoLocation(line.Split('\t'), iso3166))
-                                        .ToList();
-        }
-
-        // Internal for testing
-        internal static TzdbGeoLocation ConvertGeoLocation(string[] bits, Dictionary<string, string> countryMapping)
-        {
-            Preconditions.CheckArgument(bits.Length == 3 || bits.Length == 4, "bits", "Line must have 3 or 4 values");
-            string countryCode = bits[0];
-            string countryName = countryMapping[countryCode];
-            int[] latLong = ConvertLatLong(bits[1]);
-            string zoneId = bits[2];
-            string comment = bits.Length == 4 ? bits[3] : "";
-            return new TzdbGeoLocation(latLong[0], latLong[1], countryName, countryCode, zoneId, comment);
-        }
-
-        private static int[] ConvertLatLong(string coordinates)
-        {
-            Preconditions.CheckArgument(coordinates.Length == 11 || coordinates.Length == 15, "point", "Invalid coordinates");
-            int latDegrees;
-            int latMinutes;
-            int latSeconds = 0;
-            int latSign;
-            int longDegrees;
-            int longMinutes;
-            int longSeconds = 0;
-            int longSign;
-
-            if (coordinates.Length == 11 /* +-DDMM+-DDDMM */)
-            {
-                latSign = coordinates[0] == '-' ? -1 : 1;
-                latDegrees = int.Parse(coordinates.Substring(1, 2));
-                latMinutes = int.Parse(coordinates.Substring(3, 2));
-                longSign = coordinates[5] == '-' ? -1 : 1;
-                longDegrees = int.Parse(coordinates.Substring(6, 3));
-                longMinutes = int.Parse(coordinates.Substring(9, 2));
-            }
-            else /* +-DDMMSS+-DDDMMSS */
-            {
-                latSign = coordinates[0] == '-' ? -1 : 1;
-                latDegrees = int.Parse(coordinates.Substring(1, 2));
-                latMinutes = int.Parse(coordinates.Substring(3, 2));
-                latSeconds = int.Parse(coordinates.Substring(5, 2));
-                longSign = coordinates[7] == '-' ? -1 : 1;
-                longDegrees = int.Parse(coordinates.Substring(8, 3));
-                longMinutes = int.Parse(coordinates.Substring(11, 2));
-                longSeconds = int.Parse(coordinates.Substring(13, 2));
-            }
-            return new[] {
-                latSign * (latDegrees * 3600 + latMinutes * 60 + latSeconds),
-                longSign * (longDegrees * 3600 + longMinutes * 60 + longSeconds)
-            };
         }
 
         /// <summary>
