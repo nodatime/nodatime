@@ -107,7 +107,16 @@ namespace NodaTime.TimeZones
             string countryCode = reader.ReadString();
             string zoneId = reader.ReadString();
             string comment = reader.ReadString();
-            return new TzdbGeoLocation(latitudeSeconds, longitudeSeconds, countryName, countryCode, zoneId, comment);
+            // We could duplicate the validation, but there's no good reason to. It's odd
+            // to catch ArgumentException, but we're in pretty tight control of what's going on here.
+            try
+            {
+                return new TzdbGeoLocation(latitudeSeconds, longitudeSeconds, countryName, countryCode, zoneId, comment);
+            }
+            catch (ArgumentException e)
+            {
+                throw new InvalidNodaDataException("Invalid geolocation data in stream", e);
+            }
         }
     }
 }
