@@ -42,7 +42,7 @@ namespace ZoneInfoCompiler.Test.Tzdb
             string line = "GB\t+4000+03000\tEurope/London";
             var location = TzdbGeoLocationParser.ParseLocation(line, SampleCountryMapping);
             Assert.AreEqual("GB", location.CountryCode);
-            Assert.AreEqual("Great Britain (UK)", location.CountryName);
+            Assert.AreEqual("Britain (UK)", location.CountryName);
             Assert.AreEqual(40, location.Latitude);
             Assert.AreEqual(30, location.Longitude);
             Assert.AreEqual("Europe/London", location.ZoneId);
@@ -55,7 +55,7 @@ namespace ZoneInfoCompiler.Test.Tzdb
             string line = "GB\t+4000+03000\tEurope/London\tSome comment";
             var location = TzdbGeoLocationParser.ParseLocation(line, SampleCountryMapping);
             Assert.AreEqual("GB", location.CountryCode);
-            Assert.AreEqual("Great Britain (UK)", location.CountryName);
+            Assert.AreEqual("Britain (UK)", location.CountryName);
             Assert.AreEqual(40, location.Latitude);
             Assert.AreEqual(30, location.Longitude);
             Assert.AreEqual("Europe/London", location.ZoneId);
