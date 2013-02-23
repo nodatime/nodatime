@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using NodaTime.TimeZones.IO;
+using NodaTime.TimeZones.Cldr;
 
 namespace NodaTime.ZoneInfoCompiler.Tzdb
 {
@@ -38,12 +39,12 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
             this.stream = stream;
         }
 
-        public void Write(TzdbDatabase database, WindowsMapping mapping)
+        public void Write(TzdbDatabase database, WindowsZones cldrWindowsZones)
         {
             FieldCollection fields = new FieldCollection();
 
             var zones = database.GenerateDateTimeZones().ToList();
-            var stringPool = CreateOptimizedStringPool(zones);
+            var stringPool = CreateOptimizedStringPool(zones, cldrWindowsZones);
             
             // First assemble the fields (writing to the string pool as we go)
             foreach (var zone in zones)
@@ -54,7 +55,6 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
             }
 
             fields.AddField(TzdbStreamFieldId.TzdbVersion, null).Writer.WriteString(database.Version);
-            fields.AddField(TzdbStreamFieldId.WindowsMappingVersion, null).Writer.WriteString(mapping.Version);
 
             // Normalize the aliases
             var timeZoneMap = new Dictionary<string, string>();
@@ -71,10 +71,11 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
             fields.AddField(TzdbStreamFieldId.TzdbIdMap, stringPool).Writer.WriteDictionary(timeZoneMap);
 
             // Windows mappings
-            fields.AddField(TzdbStreamFieldId.WindowsMapping, stringPool).Writer.WriteDictionary(mapping.WindowsToTzdbIds);
+            // TODO: Validate the TZDB IDs all exist, and that there's a primary territory for each Windows ID.
+            cldrWindowsZones.Write(fields.AddField(TzdbStreamFieldId.CldrSupplementalWindowsZones, stringPool).Writer);
             // Map from StandardName to TZDB ID (rather than just to BCL ID). This will go bang if any IDs are mismatched.
             fields.AddField(TzdbStreamFieldId.WindowsAdditionalStandardNameToIdMapping, stringPool).Writer.WriteDictionary
-                (PclSupport.StandardNameToIdMap.ToDictionary(pair => pair.Key, pair => mapping.WindowsToTzdbIds[pair.Value]));
+                (PclSupport.StandardNameToIdMap.ToDictionary(pair => pair.Key, pair => cldrWindowsZones.PrimaryMapping[pair.Value]));
 
             var stringPoolField = fields.AddField(TzdbStreamFieldId.StringPool, null);
             stringPoolField.Writer.WriteCount(stringPool.Count);
@@ -94,7 +95,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         /// Creates a string pool which contains the most commonly-used strings within the given set
         /// of zones first. This will allow them to be more efficiently represented when we write them out for real.
         /// </summary>
-        private static List<string> CreateOptimizedStringPool(IEnumerable<DateTimeZone> zones)
+        private static List<string> CreateOptimizedStringPool(IEnumerable<DateTimeZone> zones, WindowsZones cldrWindowsZones)
         {
             var optimizingWriter = new StringPoolOptimizingFakeWriter();
             foreach (var zone in zones)
@@ -102,6 +103,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
                 optimizingWriter.WriteString(zone.Id);
                 optimizingWriter.WriteTimeZone(zone);
             }
+            cldrWindowsZones.Write(optimizingWriter);
             return optimizingWriter.CreatePool();
         }
 

@@ -105,7 +105,7 @@
     <Compile Include="Tzdb\TzdbStreamWriter.cs" />
     <Compile Include="Tzdb\TzdbZoneInfoCompiler.cs" />
     <Compile Include="Tzdb\TzdbZoneInfoParser.cs" />
-    <Compile Include="Tzdb\WindowsMapping.cs" />
+    <Compile Include="Tzdb\CldrWindowsZonesParser.cs" />
     <Compile Include="Tzdb\Zone.cs" />
     <Compile Include="Tzdb\ZoneAlias.cs" />
     <Compile Include="Tzdb\ZoneList.cs" />
@@ -238,7 +238,9 @@
     <None Include="Data\winmap\windowsZones-21.xml">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Data\winmap\windowsZones-22-1.xml" />
+    <None Include="Data\winmap\windowsZones-22-1.xml">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NodaTime\NodaTime.csproj">

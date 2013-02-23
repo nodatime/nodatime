@@ -3,6 +3,7 @@
 // as found in the LICENSE.txt file.
 
 using CommandLine;
+using NodaTime.TimeZones.Cldr;
 using NodaTime.ZoneInfoCompiler.Tzdb;
 using System;
 using System.Collections.Generic;
@@ -47,8 +48,8 @@ namespace NodaTime.ZoneInfoCompiler
             var writer = CreateWriter(options);
             var tzdbCompiler = new TzdbZoneInfoCompiler();
             var tzdb = tzdbCompiler.Compile(options.SourceDirectoryName);
-            var windowsMapping = WindowsMapping.Parse(options.WindowsMappingFile);
-            writer.Write(tzdb, windowsMapping);
+            var windowsZones = CldrWindowsZonesParser.Parse(options.WindowsMappingFile);
+            writer.Write(tzdb, windowsZones);
             return 0;
         }
 
