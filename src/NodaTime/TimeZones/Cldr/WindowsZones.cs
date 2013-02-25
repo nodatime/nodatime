@@ -13,15 +13,36 @@ namespace NodaTime.TimeZones.Cldr
     /// <summary>
     /// Representation of the windowsZones part of CLDR supplemental data.
     /// </summary>
+    /// <threadsafety>This type is immutable reference type. See the thread safety section of the user guide for more information.</threadsafety>
     internal sealed class WindowsZones
     {        
         private readonly string version;
+        /// <summary>
+        /// Gets the version of the Windows zones mapping data read from the original file.
+        /// </summary>
         public string Version { get { return version; } }
 
         private readonly ReadOnlyCollection<MapZone> mapZones;
+        /// <summary>
+        /// Gets an immutable collection of mappings from Windows system time zones to
+        /// TZDB time zones.
+        /// </summary>
+        /// <remarks>
+        /// Mappings for a single Windows system time zone can appear multiple times
+        /// in this list, in different territories. For example, "Central Standard Time"
+        /// maps to different TZDB zones in different countries (the US, Canada, Mexico) and
+        /// even within a single territory there can be multiple zones. Every Windows system
+        /// time zone has a "primary" entry with a territory code of "001" and a single
+        /// corresponding TZDB zone.
+        /// </remarks>
         public IList<MapZone> MapZones { get { return mapZones; } }
 
         private readonly NodaReadOnlyDictionary<string, string> primaryMapping;
+        /// <summary>
+        /// Gets an immutable dictionary of primary mappings, from Windows system time zone ID
+        /// to TZDB zone ID. This corresponds to the "001" territory which is present for every zone
+        /// within the mapping file.
+        /// </summary>
         public IDictionary<string, string> PrimaryMapping { get { return primaryMapping; } }
 
         internal WindowsZones(string version, IList<MapZone> mapZones)

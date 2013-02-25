@@ -12,6 +12,7 @@ namespace NodaTime.TimeZones.Cldr
     /// <summary>
     /// Represents a single entry in the CLDR Windows zone mapping file.
     /// </summary>
+    /// <threadsafety>This type is immutable reference type. See the thread safety section of the user guide for more information.</threadsafety>
     internal sealed class MapZone
     {
         /// <summary>
@@ -30,12 +31,12 @@ namespace NodaTime.TimeZones.Cldr
         private readonly IList<string> tzdbIds;
 
         /// <summary>
-        /// Windows system time zone identifier.
+        /// Gets the Windows system time zone identifier for this mapping.
         /// </summary>
         public string WindowsId { get { return windowsId; } }
 
         /// <summary>
-        /// Territory code.
+        /// Gets the territory code for this mapping.
         /// </summary>
         /// <remarks>
         /// This is typically either "001" to indicate that it's the primary territory for this ID, or
@@ -45,7 +46,7 @@ namespace NodaTime.TimeZones.Cldr
         public string Territory { get { return territory; } }
 
         /// <summary>
-        /// A read-only collection of TZDB zone identifiers for this mapping.
+        /// Gets a read-only collection of TZDB zone identifiers for this mapping.
         /// </summary>
         /// <remarks>
         /// For the primary and fixed-offset territory IDs ("001" and "ZZ") this is always
