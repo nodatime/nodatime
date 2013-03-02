@@ -52,7 +52,6 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
             string version = sourceDirectory.Name;
             var database = new TzdbDatabase(version);
             ParseAllFiles(fileList, database);
-            database.LogCounts();
             return database;
         }
 

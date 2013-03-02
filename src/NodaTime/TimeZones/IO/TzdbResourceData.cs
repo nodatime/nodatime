@@ -60,11 +60,7 @@ namespace NodaTime.TimeZones.IO
             tzdbVersion = CheckKey(source.GetString(VersionKey), VersionKey);
             var windowsMappingVersion = CheckKey(source.GetString(WindowsToPosixMapVersionKey), WindowsToPosixMapVersionKey);
             var windowsMapping = CheckKey(LoadDictionary(source, WindowsToPosixMapKey), WindowsToPosixMapKey);
-            // It's inefficient to convert this way and then let TzdbDateTimeZoneSource recreate the dictionary...
-            // ... but we're not expecting many uses of TzdbResourceData anyway, and it's moving the WindowsZones
-            // in the right direction.
-            windowsZones = new WindowsZones(windowsMappingVersion,
-                windowsMapping.Select(entry => new MapZone(entry.Key, "001", new[] { entry.Value })).ToList());
+            windowsZones = WindowsZones.FromPrimaryMapping(windowsMappingVersion, windowsMapping);
         }
 
         private static T CheckKey<T>(T value, string key) where T : class

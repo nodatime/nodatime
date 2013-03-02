@@ -22,6 +22,28 @@ namespace NodaTime.TimeZones.Cldr
         /// </summary>
         public string Version { get { return version; } }
 
+        private readonly string tzdbVersion;
+        /// <summary>
+        /// Gets the TZDB version this Windows zone mapping data was created from.
+        /// </summary>
+        /// <remarks>
+        /// This property will never return a null value, but will be "Unknown" if the data
+        /// is loaded from the legacy resource format.
+        /// </remarks>
+        public string TzdbVersion { get { return tzdbVersion; } }
+
+        private readonly string windowsVersion;
+        /// <summary>
+        /// Gets the Windows time zone database version this Windows zone mapping data was created from.
+        /// </summary>
+        /// <remarks>
+        /// At the time of this writing, this is populated (by CLDR) from the registry key
+        /// HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Time Zones\TzVersion.
+        /// This property will never return a null value, but will be "Unknown" if the data
+        /// is loaded from the legacy resource format.
+        /// </remarks>
+        public string WindowsVersion { get { return windowsVersion; } }
+
         private readonly ReadOnlyCollection<MapZone> mapZones;
         /// <summary>
         /// Gets an immutable collection of mappings from Windows system time zones to
@@ -45,15 +67,19 @@ namespace NodaTime.TimeZones.Cldr
         /// </summary>
         public IDictionary<string, string> PrimaryMapping { get { return primaryMapping; } }
 
-        internal WindowsZones(string version, IList<MapZone> mapZones)
+        internal WindowsZones(string version, string tzdbVersion, string windowsVersion, IList<MapZone> mapZones)
             : this(Preconditions.CheckNotNull(version, "version"),
+                   Preconditions.CheckNotNull(tzdbVersion, "tzdbVersion"),
+                   Preconditions.CheckNotNull(windowsVersion, "windowsVersion"),
                    new ReadOnlyCollection<MapZone>(new List<MapZone>(Preconditions.CheckNotNull(mapZones, "mapZones"))))
         {
         }
 
-        private WindowsZones(string version, ReadOnlyCollection<MapZone> mapZones)
+        private WindowsZones(string version, string tzdbVersion, string windowsVersion, ReadOnlyCollection<MapZone> mapZones)
         {
             this.version = version;
+            this.tzdbVersion = tzdbVersion;
+            this.windowsVersion = windowsVersion;
             this.mapZones = mapZones;
             this.primaryMapping = new NodaReadOnlyDictionary<string, string>(
                 mapZones.Where(z => z.Territory == MapZone.PrimaryTerritory)
@@ -63,6 +89,8 @@ namespace NodaTime.TimeZones.Cldr
         private WindowsZones(string version, NodaReadOnlyDictionary<string, string> primaryMapping)
         {
             this.version = version;
+            this.windowsVersion = "Unknown";
+            this.tzdbVersion = "Unknown";
             this.primaryMapping = primaryMapping;
             var mapZoneList = new List<MapZone>(primaryMapping.Count);
             foreach (var entry in primaryMapping)
@@ -81,18 +109,23 @@ namespace NodaTime.TimeZones.Cldr
         internal static WindowsZones Read(IDateTimeZoneReader reader)
         {
             string version = reader.ReadString();
+            string tzdbVersion = reader.ReadString();
+            string windowsVersion = reader.ReadString();
             int count = reader.ReadCount();
             var mapZones = new MapZone[count];
             for (int i = 0; i < count; i++)
             {
                 mapZones[i] = MapZone.Read(reader);
             }
-            return new WindowsZones(version, new ReadOnlyCollection<MapZone>(mapZones));
+            return new WindowsZones(version, tzdbVersion, windowsVersion, 
+                new ReadOnlyCollection<MapZone>(mapZones));
         }
 
         internal void Write(IDateTimeZoneWriter writer)
         {
             writer.WriteString(version);
+            writer.WriteString(tzdbVersion);
+            writer.WriteString(windowsVersion);
             writer.WriteCount(mapZones.Count);
             foreach (var mapZone in mapZones)
             {
