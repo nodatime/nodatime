@@ -21,11 +21,10 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         {
             var document = LoadFile(file);
             var mapZones = MapZones(document);
-            var version = FindVersion(document);
-            var windowsZones = new WindowsZones(version, mapZones);
-            Console.WriteLine("Loaded {0} Windows map zones, for {1} ids",
-                mapZones.Count, windowsZones.PrimaryMapping.Count);
-            return windowsZones;
+            var windowsZonesVersion = FindVersion(document);
+            var tzdbVersion = document.Root.Element("windowsZones").Element("mapTimezones").Attribute("typeVersion").Value;
+            var windowsVersion = document.Root.Element("windowsZones").Element("mapTimezones").Attribute("otherVersion").Value;
+            return new WindowsZones(windowsZonesVersion, tzdbVersion, windowsVersion, mapZones);
         }
 
         private static XDocument LoadFile(string file)

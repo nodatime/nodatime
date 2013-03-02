@@ -48,9 +48,21 @@ namespace NodaTime.ZoneInfoCompiler
             var writer = CreateWriter(options);
             var tzdbCompiler = new TzdbZoneInfoCompiler();
             var tzdb = tzdbCompiler.Compile(options.SourceDirectoryName);
+            tzdb.LogCounts();
             var windowsZones = CldrWindowsZonesParser.Parse(options.WindowsMappingFile);
+            LogWindowsZonesSummary(windowsZones);
             writer.Write(tzdb, windowsZones);
             return 0;
+        }
+
+        private static void LogWindowsZonesSummary(WindowsZones windowsZones)
+        {
+            Console.WriteLine("Windows Zones:");
+            Console.WriteLine("  Version: {0}", windowsZones.Version);
+            Console.WriteLine("  TZDB version: {0}", windowsZones.TzdbVersion);
+            Console.WriteLine("  Windows version: {0}", windowsZones.WindowsVersion);
+            Console.WriteLine("  {0} MapZones", windowsZones.MapZones.Count);
+            Console.WriteLine("  {0} primary mappings", windowsZones.PrimaryMapping.Count);
         }
 
         private static ITzdbWriter CreateWriter(CompilerOptions options)
