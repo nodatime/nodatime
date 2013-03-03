@@ -27,8 +27,8 @@ namespace NodaTime.TimeZones.IO
         IDictionary<string, string> TzdbIdMap { get; }
 
         /// <summary>
-        /// Returns the Windows mapping dictionary. This needn't be read-only; it won't
-        /// be exposed directly.
+        /// Returns the Windows mapping dictionary. (As the type is immutable, it can be exposed directly
+        /// to callers.)
         /// </summary>
         WindowsZones WindowsZones { get; }
 

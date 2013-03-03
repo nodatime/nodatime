@@ -10,6 +10,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Resources;
+using NodaTime.TimeZones.Cldr;
 using NodaTime.TimeZones.IO;
 using NodaTime.Utility;
 
@@ -249,6 +250,12 @@ namespace NodaTime.TimeZones
         /// Returns just the TZDB version (e.g. "2013a") of the source data.
         /// </summary>
         public string TzdbVersion { get { return source.TzdbVersion; } }
+
+        /// <summary>
+        /// Gets the CLDR supplemental Windows zone information, mapping Windows system
+        /// time zone IDs to TZDB IDs (and vice versa).
+        /// </summary>
+        public WindowsZones WindowsZones { get { return source.WindowsZones; } }
 
         /// <summary>
         /// Validates that the data within this source is consistent with itself.
