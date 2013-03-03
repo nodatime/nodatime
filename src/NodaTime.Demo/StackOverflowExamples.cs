@@ -73,12 +73,12 @@ namespace NodaTime.Demo
         public void CuriousSubtraction()
         {
             var shanghai = DateTimeZoneProviders.Tzdb["Asia/Shanghai"];
-            var localBefore = new LocalDateTime(1927, 12, 31, 23, 54, 07);
+            var localBefore = new LocalDateTime(1927, 12, 31, 23, 54, 02);
             var localAfter = localBefore.PlusSeconds(1);
             var instantBefore = localBefore.InZoneLeniently(shanghai).ToInstant();
             var instantAfter = localAfter.InZoneLeniently(shanghai).ToInstant();
 
-            Assert.AreEqual(Duration.FromSeconds(353), instantAfter - instantBefore);
+            Assert.AreEqual(Duration.FromSeconds(358), instantAfter - instantBefore);
 
             // Now let's resolve them differently...
             var resolver = Resolvers.CreateMappingResolver(Resolvers.ReturnEarlier, Resolvers.ThrowWhenSkipped);
