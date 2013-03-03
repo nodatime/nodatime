@@ -235,6 +235,26 @@
     <None Include="Data\2012i\systemv" />
     <None Include="Data\2012i\yearistype.sh" />
     <None Include="Data\2012i\zone.tab" />
+    <None Include="Data\2013a\africa" />
+    <None Include="Data\2013a\antarctica" />
+    <None Include="Data\2013a\asia" />
+    <None Include="Data\2013a\australasia" />
+    <None Include="Data\2013a\backward" />
+    <None Include="Data\2013a\etcetera" />
+    <None Include="Data\2013a\europe" />
+    <None Include="Data\2013a\factory" />
+    <None Include="Data\2013a\iso3166.tab" />
+    <None Include="Data\2013a\leapseconds" />
+    <None Include="Data\2013a\Makefile" />
+    <None Include="Data\2013a\northamerica" />
+    <None Include="Data\2013a\pacificnew" />
+    <None Include="Data\2013a\solar87" />
+    <None Include="Data\2013a\solar88" />
+    <None Include="Data\2013a\solar89" />
+    <None Include="Data\2013a\southamerica" />
+    <None Include="Data\2013a\systemv" />
+    <None Include="Data\2013a\yearistype.sh" />
+    <None Include="Data\2013a\zone.tab" />
     <None Include="Data\winmap\readme.txt" />
     <None Include="Data\winmap\windowsZones-21.xml">
       <SubType>Designer</SubType>
