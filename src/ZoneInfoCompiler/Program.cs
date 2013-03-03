@@ -3,6 +3,7 @@
 // as found in the LICENSE.txt file.
 
 using CommandLine;
+using NodaTime.TimeZones;
 using NodaTime.TimeZones.Cldr;
 using NodaTime.ZoneInfoCompiler.Tzdb;
 using System;
@@ -52,6 +53,10 @@ namespace NodaTime.ZoneInfoCompiler
             var windowsZones = CldrWindowsZonesParser.Parse(options.WindowsMappingFile);
             LogWindowsZonesSummary(windowsZones);
             writer.Write(tzdb, windowsZones);
+
+            Console.WriteLine("Reading generated data and validating...");
+            var source = Read(options);
+            source.Validate();
             return 0;
         }
 
@@ -79,6 +84,27 @@ namespace NodaTime.ZoneInfoCompiler
                 default:
                     throw new ArgumentException("Invalid output type: " + options.OutputType, "options");
             }
+        }
+
+        private static TzdbDateTimeZoneSource Read(CompilerOptions options)
+        {
+#pragma warning disable 0618
+            string file = Path.ChangeExtension(options.OutputFileName, Extensions[options.OutputType]);
+            switch (options.OutputType)
+            {
+                case OutputType.ResX:
+                    return new TzdbDateTimeZoneSource(new ResourceSet(new ResXResourceReader(file)));
+                case OutputType.Resource:
+                    return new TzdbDateTimeZoneSource(new ResourceSet(new ResourceReader(file)));
+                case OutputType.NodaZoneData:
+                    using (var stream = File.OpenRead(file))
+                    {
+                        return TzdbDateTimeZoneSource.FromStream(stream);
+                    }
+                default:
+                    throw new ArgumentException("Invalid output type: " + options.OutputType, "options");
+            }
+#pragma warning restore 0618
         }
     }
 }

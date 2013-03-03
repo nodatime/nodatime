@@ -172,6 +172,14 @@ namespace NodaTime.TimeZones.IO
         {
             get { return null; }
         }
+
+        /// <summary>
+        /// Always returns null - the resource data does not include geolocations.
+        /// </summary>
+        IDictionary<string, string> ITzdbDataSource.WindowsAdditionalStandardNameToIdMapping
+        {
+            get { return null; }
+        }
     }
 }
 

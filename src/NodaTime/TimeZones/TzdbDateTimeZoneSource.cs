@@ -244,5 +244,72 @@ namespace NodaTime.TimeZones
         /// data is unaware of locations.
         /// </remarks>
         public IList<TzdbGeoLocation> GeoLocations { get { return geoLocations; } }
+
+        /// <summary>
+        /// Validates that the data within this source is consistent with itself.
+        /// </summary>
+        /// <remarks>
+        /// Source data is not validated automatically when it's loaded, but any source
+        /// loaded from data produced by ZoneInfoCompiler (including the data shipped with Noda Time)
+        /// will already have been validated when it was originally produced. This method should
+        /// only normally be used if you have data from a source you're unsure of.
+        /// </remarks>
+        /// <exception cref="InvalidNodaDataException">The source is invalid.</exception>
+        public void Validate()
+        {
+            // Check that each entry has a canonical value. (Every mapping x to y
+            // should be such that y maps to itself.)
+            foreach (var entry in this.CanonicalIdMap)
+            {
+                string canonical;
+                if (!CanonicalIdMap.TryGetValue(entry.Value, out canonical))
+                {
+                    throw new InvalidNodaDataException("Mapping for entry " + entry.Key + " (" + entry.Value + ") is missing");
+                }
+                if (entry.Value != canonical)
+                {
+                    throw new InvalidNodaDataException("Mapping for entry " + entry.Key + " (" + entry.Value + ") is not canonical ("
+                        + entry.Value + " maps to " + canonical);
+                }
+            }
+
+            // Check that each Windows mapping has a known canonical ID.
+            foreach (var mapZone in source.WindowsZones.MapZones)
+            {
+                foreach (var id in mapZone.TzdbIds)
+                {
+                    if (!CanonicalIdMap.ContainsKey(id))
+                    {
+                        throw new InvalidNodaDataException("Windows mapping uses canonical ID " + id + " which is missing");
+                    }
+                }
+            }
+
+            // Check that each additional Windows standard name mapping has a known canonical ID.
+            var additionalMappings = source.WindowsAdditionalStandardNameToIdMapping;
+            if (additionalMappings != null)
+            {
+                foreach (var id in additionalMappings.Values)
+                {
+                    if (!CanonicalIdMap.ContainsKey(id))
+                    {
+                        throw new InvalidNodaDataException("Windows additional standard name mapping uses canonical ID " + id + " which is missing");
+                    }
+                }
+            }
+
+            // Check that each geolocation has a valid zone ID
+            if (geoLocations != null)
+            {
+                foreach (var location in geoLocations)
+                {
+                    if (!CanonicalIdMap.ContainsKey(location.ZoneId))
+                    {
+                        throw new InvalidNodaDataException("Geolocation " + location.CountryName
+                            + " uses zone ID " + location.ZoneId + " which is missing");
+                    }
+                }
+            }
+        }
     }
 }
