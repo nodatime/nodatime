@@ -36,6 +36,11 @@ namespace NodaTime.TimeZones.IO
         /// for time zones where TimeZoneInfo.Id != TimeZoneInfo.StandardName,
         /// as written by DateTimeZoneWriter.WriteDictionary.
         /// </summary>
-        WindowsAdditionalStandardNameToIdMapping = 5
+        WindowsAdditionalStandardNameToIdMapping = 5,
+        /// <summary>
+        /// Single field providing all geolocations. The format is simply a count, and then that many copies of
+        /// TzdbGeoLocation data.
+        /// </summary>
+        GeoLocations = 6
     }
 }

@@ -163,7 +163,15 @@ namespace NodaTime.TimeZones.IO
             name = name.Replace(">", "_greater_");
             name = name.Replace("&", "_and_");
             return InvalidResourceNameCharacters.Replace(name, "_");
-        }        
+        }
+
+        /// <summary>
+        /// Always returns null - the resource data does not include geolocations.
+        /// </summary>
+        public IList<TzdbGeoLocation> GeoLocations
+        {
+            get { return null; }
+        }
     }
 }
 

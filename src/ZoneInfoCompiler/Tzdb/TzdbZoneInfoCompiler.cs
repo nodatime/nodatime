@@ -6,7 +6,9 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using NodaTime.TimeZones;
+using NodaTime.Utility;
 
 namespace NodaTime.ZoneInfoCompiler.Tzdb
 {
@@ -52,11 +54,12 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
             string version = sourceDirectory.Name;
             var database = new TzdbDatabase(version);
             ParseAllFiles(fileList, database);
+            database.GeoLocations = TzdbGeoLocationParser.ParseFiles(sourceDirectory);
             return database;
         }
 
         /// <summary>
-        ///   Parses all of the given files.
+        /// Parses all of the given files.
         /// </summary>
         /// <param name="files">The <see cref="IEnumerable{T}" /> of <see cref="FileInfo" /> objects.</param>
         /// <param name="database">The <see cref="TzdbDatabase" /> where the parsed data is placed.</param>

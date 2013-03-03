@@ -4,6 +4,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -63,6 +64,12 @@ namespace NodaTime.TimeZones
         /// Composite version ID including TZDB and Windows mapping version strings.
         /// </summary>
         private readonly string version;
+        /// <summary>
+        /// List of geolocations, if any. This is a read-only wrapper, and can be
+        /// returned directly to clients. It may be null, if the underlying data source
+        /// has no location data.
+        /// </summary>
+        private readonly IList<TzdbGeoLocation> geoLocations;
 #if !PCL
         /// <summary>
         /// Initializes a new instance of the <see cref="TzdbDateTimeZoneSource" /> class from a resource within
@@ -146,6 +153,8 @@ namespace NodaTime.TimeZones
                 .OrderBy(pair => pair.Key, StringComparer.Ordinal)
                 .ToLookup(pair => pair.Value, pair => pair.Key);
             version = source.TzdbVersion + " (mapping: " + source.WindowsZones.Version + ")";
+            var originalGeoLocations = source.GeoLocations;
+            geoLocations = originalGeoLocations == null ? null : new ReadOnlyCollection<TzdbGeoLocation>(originalGeoLocations);
         }
 
         /// <summary>
@@ -225,5 +234,15 @@ namespace NodaTime.TimeZones
         /// </remarks>
         /// <returns>A map from time zone ID to the canonical ID.</returns>
         public IDictionary<string, string> CanonicalIdMap { get { return timeZoneIdMap; } }
+
+        /// <summary>
+        /// Returns a read-only list of locations known to this source.
+        /// </summary>
+        /// <remarks>
+        /// Every location's ID is guaranteed to be valid within this source, but the presence
+        /// of this information is not guaranteed. This property will return null if the underlying
+        /// data is unaware of locations.
+        /// </remarks>
+        public IList<TzdbGeoLocation> GeoLocations { get { return geoLocations; } }
     }
 }

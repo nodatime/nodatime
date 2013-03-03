@@ -120,5 +120,34 @@ namespace NodaTime.Test.TimeZones
             var map = TzdbDateTimeZoneSource.Default.CanonicalIdMap;
             Assert.Throws<NotSupportedException>(() => map.Add("Foo", "Bar"));
         }
+
+        // Sample geolocation checks to ensure we've serialized and deserialized correctly
+        // Input line: FR	+4852+00220	Europe/Paris
+        [Test]
+        public void GeoLocations_ContainsFrance()
+        {
+            var geoLocations = TzdbDateTimeZoneSource.Default.GeoLocations;
+            var france = geoLocations.Single(g => g.CountryName == "France");
+            // Tolerance of about 2 seconds
+            Assert.AreEqual(48.86666, france.Latitude, 0.00055);
+            Assert.AreEqual(2.3333, france.Longitude, 0.00055);
+            Assert.AreEqual("Europe/Paris", france.ZoneId);
+            Assert.AreEqual("FR", france.CountryCode);
+            Assert.AreEqual("", france.Comment);
+        }
+
+        // Input line: CA	+744144-0944945	America/Resolute	Central Standard Time - Resolute, Nunavut
+        [Test]
+        public void GeoLocations_ContainsResolute()
+        {
+            var geoLocations = TzdbDateTimeZoneSource.Default.GeoLocations;
+            var resolute = geoLocations.Single(g => g.ZoneId == "America/Resolute");
+            // Tolerance of about 2 seconds
+            Assert.AreEqual(74.69555, resolute.Latitude, 0.00055);
+            Assert.AreEqual(-94.82916, resolute.Longitude, 0.00055);
+            Assert.AreEqual("Canada", resolute.CountryName);
+            Assert.AreEqual("CA", resolute.CountryCode);
+            Assert.AreEqual("Central Standard Time - Resolute, Nunavut", resolute.Comment);
+        }
     }
 }

@@ -44,7 +44,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
             FieldCollection fields = new FieldCollection();
 
             var zones = database.GenerateDateTimeZones().ToList();
-            var stringPool = CreateOptimizedStringPool(zones, cldrWindowsZones);
+            var stringPool = CreateOptimizedStringPool(zones, database.GeoLocations, cldrWindowsZones);
             
             // First assemble the fields (writing to the string pool as we go)
             foreach (var zone in zones)
@@ -77,6 +77,24 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
             fields.AddField(TzdbStreamFieldId.WindowsAdditionalStandardNameToIdMapping, stringPool).Writer.WriteDictionary
                 (PclSupport.StandardNameToIdMap.ToDictionary(pair => pair.Key, pair => cldrWindowsZones.PrimaryMapping[pair.Value]));
 
+            // Geolocations, if any. This will validate the mapping as we go.
+            var geoLocations = database.GeoLocations;
+            if (geoLocations != null)
+            {
+                var allZoneIds = new HashSet<string>(zones.Select(zone => zone.Id).Concat(timeZoneMap.Keys));
+                var field = fields.AddField(TzdbStreamFieldId.GeoLocations, stringPool);
+                field.Writer.WriteCount(geoLocations.Count);
+                foreach (var geoLocation in geoLocations)
+                {
+                    if (!allZoneIds.Contains(geoLocation.ZoneId))
+                    {
+                        throw new ArgumentException("The database contains a geolocation with zone ID " +
+                            geoLocation.ZoneId + " but no such zone");
+                    }
+                    geoLocation.Write(field.Writer);
+                }
+            }
+
             var stringPoolField = fields.AddField(TzdbStreamFieldId.StringPool, null);
             stringPoolField.Writer.WriteCount(stringPool.Count);
             foreach (string value in stringPool)
@@ -95,13 +113,21 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         /// Creates a string pool which contains the most commonly-used strings within the given set
         /// of zones first. This will allow them to be more efficiently represented when we write them out for real.
         /// </summary>
-        private static List<string> CreateOptimizedStringPool(IEnumerable<DateTimeZone> zones, WindowsZones cldrWindowsZones)
+        private static List<string> CreateOptimizedStringPool(IEnumerable<DateTimeZone> zones,
+            IEnumerable<TzdbGeoLocation> geoLocations, WindowsZones cldrWindowsZones)
         {
             var optimizingWriter = new StringPoolOptimizingFakeWriter();
             foreach (var zone in zones)
             {
                 optimizingWriter.WriteString(zone.Id);
                 optimizingWriter.WriteTimeZone(zone);
+            }
+            if (geoLocations != null)
+            {
+                foreach (var location in geoLocations)
+                {
+                    location.Write(optimizingWriter);
+                }
             }
             cldrWindowsZones.Write(optimizingWriter);
             return optimizingWriter.CreatePool();
@@ -114,7 +140,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         /// </summary>
         private class StringPoolOptimizingFakeWriter : IDateTimeZoneWriter 
         {
-            private List<string> allStrings = new List<string>();
+            private readonly List<string> allStrings = new List<string>();
 
             public List<string> CreatePool()
             {
