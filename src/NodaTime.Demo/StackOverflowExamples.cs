@@ -69,6 +69,9 @@ namespace NodaTime.Demo
         /// Why does "1927-12-31 23:54:08" minus "1927-12-31 23:54:07" give a difference of nearly 6 minutes?
         /// <see cref="http://stackoverflow.com/questions/6841333" />
         /// </summary>
+        /// <remarks>Note that the TZDB data changed in version 2013a, so the transition is now deemed to be
+        /// at 23:54:03 instead of 23:54:08.
+        /// </remarks>
         [Test]
         public void CuriousSubtraction()
         {
