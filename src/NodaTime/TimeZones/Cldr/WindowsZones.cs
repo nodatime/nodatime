@@ -14,7 +14,7 @@ namespace NodaTime.TimeZones.Cldr
     /// Representation of the windowsZones part of CLDR supplemental data.
     /// </summary>
     /// <threadsafety>This type is immutable reference type. See the thread safety section of the user guide for more information.</threadsafety>
-    internal sealed class WindowsZones
+    public sealed class WindowsZones
     {        
         private readonly string version;
         /// <summary>
