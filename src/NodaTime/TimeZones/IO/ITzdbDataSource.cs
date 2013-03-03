@@ -37,6 +37,12 @@ namespace NodaTime.TimeZones.IO
         IDictionary<string, string> WindowsMapping { get; }
 
         /// <summary>
+        /// Returns the geolocations for the source, or null if no geolocation data is available.
+        /// This needn't be read-only; it won't be exposed directly.
+        /// </summary>
+        IList<TzdbGeoLocation> GeoLocations { get; }
+
+        /// <summary>
         /// Creates the <see cref="DateTimeZone"/> for the given canonical ID, which will definitely
         /// be one of the values of the TzdbAliases dictionary.
         /// </summary>

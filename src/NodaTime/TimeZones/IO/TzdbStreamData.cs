@@ -20,7 +20,8 @@ namespace NodaTime.TimeZones.IO
             { TzdbStreamFieldId.TzdbVersion, (builder, field) => builder.HandleTzdbVersionField(field) },
             { TzdbStreamFieldId.WindowsMapping, (builder, field) => builder.HandleWindowsMappingField(field) },
             { TzdbStreamFieldId.WindowsMappingVersion, (builder, field) => builder.HandleWindowsMappingVersionField(field) },
-            { TzdbStreamFieldId.WindowsAdditionalStandardNameToIdMapping, (builder, field) => builder.HandleWindowsAdditionalStandardNameToIdMapping(field) },
+            { TzdbStreamFieldId.WindowsAdditionalStandardNameToIdMapping, (builder, field) => builder.HandleWindowsAdditionalStandardNameToIdMappingField(field) },
+            { TzdbStreamFieldId.GeoLocations, (builder, field) => builder.HandleGeoLocationsField(field) }
         };
 
         private const int AcceptedVersion = 0;
@@ -31,6 +32,7 @@ namespace NodaTime.TimeZones.IO
         private readonly IDictionary<string, string> tzdbIdMap;
         private readonly IDictionary<string, string> windowsMapping;
         private readonly IDictionary<string, TzdbStreamField> zoneFields;
+        private readonly IList<TzdbGeoLocation> geoLocations;
 
         private TzdbStreamData(Builder builder)
         {
@@ -58,7 +60,21 @@ namespace NodaTime.TimeZones.IO
             {
                 if (!tzdbIdMap.ContainsKey(id))
                 {
-                    throw new InvalidNodaDataException("Windows mapping uses canonical ID " + id + " which is missing");
+                    throw new InvalidNodaDataException("Windows mapping uses zone ID " + id + " which is missing");
+                }
+            }
+            geoLocations = builder.geoLocations;
+
+            // Check that each geolocation has a valid zone ID
+            if (geoLocations != null)
+            {
+                foreach (var location in geoLocations)
+                {
+                    if (!tzdbIdMap.ContainsKey(location.ZoneId))
+                    {
+                        throw new InvalidNodaDataException("Geolocation " + location.CountryName
+                            + " uses zone ID " + location.ZoneId + " which is missing");
+                    }
                 }
             }
         }
@@ -74,6 +90,9 @@ namespace NodaTime.TimeZones.IO
 
         /// <inheritdoc />
         public IDictionary<string, string> WindowsMapping { get { return windowsMapping; } }
+
+        /// <inheritdoc />
+        public IList<TzdbGeoLocation> GeoLocations { get { return geoLocations; } }
 
         /// <inheritdoc />
         public DateTimeZone CreateZone(string id, string canonicalId)
@@ -129,6 +148,7 @@ namespace NodaTime.TimeZones.IO
             internal IDictionary<string, string> tzdbIdMap;
             internal IDictionary<string, string> windowsMapping;
             internal IDictionary<string, TzdbStreamField> zoneFields = new Dictionary<string, TzdbStreamField>();
+            internal IList<TzdbGeoLocation> geoLocations = null;
 
             internal void HandleStringPoolField(TzdbStreamField field)
             {
@@ -186,7 +206,7 @@ namespace NodaTime.TimeZones.IO
                 windowsMapping = field.ExtractSingleValue(reader => reader.ReadDictionary(), stringPool);
             }
 
-            internal void HandleWindowsAdditionalStandardNameToIdMapping(TzdbStreamField field)
+            internal void HandleWindowsAdditionalStandardNameToIdMappingField(TzdbStreamField field)
             {
 // If we're not on the PCL, we don't need to do anything. This is just to support zones where the StandardName
 // isn't the same as the Id.
@@ -201,6 +221,23 @@ namespace NodaTime.TimeZones.IO
                     windowsMapping[entry.Key] = entry.Value;
                 }
 #endif         
+            }
+
+            internal void HandleGeoLocationsField(TzdbStreamField field)
+            {
+                CheckSingleField(field, geoLocations);
+                CheckStringPoolPresence(field);
+                using (var stream = field.CreateStream())
+                {
+                    var reader = new DateTimeZoneReader(stream, stringPool);
+                    var count = reader.ReadCount();
+                    var array = new TzdbGeoLocation[count];
+                    for (int i = 0; i < count; i++)
+                    {
+                        array[i] = TzdbGeoLocation.Read(reader);
+                    }
+                    geoLocations = array;
+                }
             }
 
             private void CheckSingleField(TzdbStreamField field, object expectedNullField)
