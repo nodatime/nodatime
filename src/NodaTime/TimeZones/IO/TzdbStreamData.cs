@@ -31,9 +31,7 @@ namespace NodaTime.TimeZones.IO
         private readonly WindowsZones windowsZones;
         private readonly IDictionary<string, TzdbStreamField> zoneFields;
         private readonly IList<TzdbGeoLocation> geoLocations;
-#if PCL
         private readonly IDictionary<string, string> windowsAdditionalStandardNameToIdMapping;
-#endif
 
         private TzdbStreamData(Builder builder)
         {
@@ -42,57 +40,16 @@ namespace NodaTime.TimeZones.IO
             tzdbVersion = CheckNotNull(builder.tzdbVersion, "TZDB version");
             windowsZones = CheckNotNull(builder.windowsZones, "CLDR Supplemental Windows Zones");
             zoneFields = builder.zoneFields;
-            // Check that each alias has a canonical value.
-            foreach (var id in tzdbIdMap.Values)
-            {
-                if (!zoneFields.ContainsKey(id))
-                {
-                    throw new InvalidNodaDataException("Zone field for ID " + id + " is missing");
-                }
-            }
+            geoLocations = builder.geoLocations;
+
             // Add in the canonical IDs as mappings to themselves.
             foreach (var id in zoneFields.Keys)
             {
                 tzdbIdMap[id] = id;
             }
 
-            // Check that each Windows mapping has a known canonical ID.
-            foreach (var mapZone in windowsZones.MapZones)
-            {
-                foreach (var id in mapZone.TzdbIds)
-                {
-                    if (!tzdbIdMap.ContainsKey(id))
-                    {
-                        throw new InvalidNodaDataException("Windows mapping uses canonical ID " + id + " which is missing");
-                    }
-                }
-            }
-#if PCL
             windowsAdditionalStandardNameToIdMapping = CheckNotNull(builder.windowsAdditionalStandardNameToIdMapping,
                 "Windows additional standard name to ID mapping");
-            // Check that each additional Windows standard name mapping has a known canonical ID.
-            foreach (var id in windowsAdditionalStandardNameToIdMapping.Values)
-            {
-                if (!tzdbIdMap.ContainsKey(id))
-                {
-                    throw new InvalidNodaDataException("Windows additional standard name mapping uses canonical ID " + id + " which is missing");
-                }
-            }
-#endif
-            geoLocations = builder.geoLocations;
-
-            // Check that each geolocation has a valid zone ID
-            if (geoLocations != null)
-            {
-                foreach (var location in geoLocations)
-                {
-                    if (!tzdbIdMap.ContainsKey(location.ZoneId))
-                    {
-                        throw new InvalidNodaDataException("Geolocation " + location.CountryName
-                            + " uses zone ID " + location.ZoneId + " which is missing");
-                    }
-                }
-            }
         }
 
         /// <inheritdoc />
@@ -119,10 +76,8 @@ namespace NodaTime.TimeZones.IO
             }
         }
 
-#if PCL
         /// <inheritdoc />
         public IDictionary<string, string> WindowsAdditionalStandardNameToIdMapping { get { return windowsAdditionalStandardNameToIdMapping; } }
-#endif
 
         // Like Preconditions.CheckNotNull, but specifically for incomplete data.
         private static T CheckNotNull<T>(T input, string name) where T : class
@@ -166,9 +121,7 @@ namespace NodaTime.TimeZones.IO
             internal IList<TzdbGeoLocation> geoLocations = null;
             internal WindowsZones windowsZones;
             internal readonly IDictionary<string, TzdbStreamField> zoneFields = new Dictionary<string, TzdbStreamField>();
-#if PCL
             internal IDictionary<string, string> windowsAdditionalStandardNameToIdMapping;
-#endif
 
             internal void HandleStringPoolField(TzdbStreamField field)
             {
@@ -222,15 +175,13 @@ namespace NodaTime.TimeZones.IO
 
             internal void HandleWindowsAdditionalStandardNameToIdMappingField(TzdbStreamField field)
             {
-// If we're not on the PCL, we don't need to do anything. This is just to support zones where the StandardName
-// isn't the same as the Id.
-#if PCL
+                // Even on the non-portable build, we still read the data: the cost is minimal, and it makes
+                // it much simpler to validate.
                 if (windowsZones == null)
                 {
                     throw new InvalidNodaDataException("Field " + field.Id + " without earlier Windows mapping field");
                 }
                 windowsAdditionalStandardNameToIdMapping = field.ExtractSingleValue(reader => reader.ReadDictionary(), stringPool);
-#endif         
             }
 
             internal void HandleGeoLocationsField(TzdbStreamField field)

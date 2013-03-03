@@ -47,12 +47,11 @@ namespace NodaTime.TimeZones.IO
         // TODO: Document an exception to be thrown if the zone can't be created.
         DateTimeZone CreateZone(string id, string canonicalId);
 
-#if PCL
         /// <summary>
-        /// Additional mappings from Windows standard name to TZDB ID. Only part of the PCL build,
-        /// where we can't get at the system ID.
+        /// Additional mappings from Windows standard name to TZDB ID. Primarily used in
+        /// the PCL build, where we can't get at the system ID. Returns null when no data
+        /// is available (legacy resource format).
         /// </summary>
         IDictionary<string, string> WindowsAdditionalStandardNameToIdMapping { get; }
-#endif
     }
 }
