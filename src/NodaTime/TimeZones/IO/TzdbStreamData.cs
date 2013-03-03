@@ -2,10 +2,10 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
+using NodaTime.TimeZones.Cldr;
+using NodaTime.Utility;
 using System.Collections.Generic;
 using System.IO;
-using NodaTime.Fields;
-using NodaTime.Utility;
 
 namespace NodaTime.TimeZones.IO
 {
@@ -18,8 +18,7 @@ namespace NodaTime.TimeZones.IO
             { TzdbStreamFieldId.TimeZone, (builder, field) => builder.HandleZoneField(field) },
             { TzdbStreamFieldId.TzdbIdMap, (builder, field) => builder.HandleTzdbIdMapField(field) },
             { TzdbStreamFieldId.TzdbVersion, (builder, field) => builder.HandleTzdbVersionField(field) },
-            { TzdbStreamFieldId.WindowsMapping, (builder, field) => builder.HandleWindowsMappingField(field) },
-            { TzdbStreamFieldId.WindowsMappingVersion, (builder, field) => builder.HandleWindowsMappingVersionField(field) },
+            { TzdbStreamFieldId.CldrSupplementalWindowsZones, (builder, field) => builder.HandleSupplementalWindowsZonesField(field) },
             { TzdbStreamFieldId.WindowsAdditionalStandardNameToIdMapping, (builder, field) => builder.HandleWindowsAdditionalStandardNameToIdMappingField(field) },
             { TzdbStreamFieldId.GeoLocations, (builder, field) => builder.HandleGeoLocationsField(field) }
         };
@@ -28,19 +27,20 @@ namespace NodaTime.TimeZones.IO
 
         private readonly IList<string> stringPool;
         private readonly string tzdbVersion;
-        private readonly string windowsMappingVersion;
         private readonly IDictionary<string, string> tzdbIdMap;
-        private readonly IDictionary<string, string> windowsMapping;
+        private readonly WindowsZones windowsZones;
         private readonly IDictionary<string, TzdbStreamField> zoneFields;
         private readonly IList<TzdbGeoLocation> geoLocations;
+#if PCL
+        private readonly IDictionary<string, string> windowsAdditionalStandardNameToIdMapping;
+#endif
 
         private TzdbStreamData(Builder builder)
         {
             stringPool = CheckNotNull(builder.stringPool, "string pool");
             tzdbIdMap = CheckNotNull(builder.tzdbIdMap, "TZDB alias map");
             tzdbVersion = CheckNotNull(builder.tzdbVersion, "TZDB version");
-            windowsMapping = CheckNotNull(builder.windowsMapping, "Windows mapping");
-            windowsMappingVersion = CheckNotNull(builder.windowsMappingVersion, "Windows mapping version");
+            windowsZones = CheckNotNull(builder.windowsZones, "CLDR Supplemental Windows Zones");
             zoneFields = builder.zoneFields;
             // Check that each alias has a canonical value.
             foreach (var id in tzdbIdMap.Values)
@@ -55,14 +55,30 @@ namespace NodaTime.TimeZones.IO
             {
                 tzdbIdMap[id] = id;
             }
+
             // Check that each Windows mapping has a known canonical ID.
-            foreach (var id in windowsMapping.Values)
+            foreach (var mapZone in windowsZones.MapZones)
+            {
+                foreach (var id in mapZone.TzdbIds)
+                {
+                    if (!tzdbIdMap.ContainsKey(id))
+                    {
+                        throw new InvalidNodaDataException("Windows mapping uses canonical ID " + id + " which is missing");
+                    }
+                }
+            }
+#if PCL
+            windowsAdditionalStandardNameToIdMapping = CheckNotNull(builder.windowsAdditionalStandardNameToIdMapping,
+                "Windows additional standard name to ID mapping");
+            // Check that each additional Windows standard name mapping has a known canonical ID.
+            foreach (var id in windowsAdditionalStandardNameToIdMapping.Values)
             {
                 if (!tzdbIdMap.ContainsKey(id))
                 {
-                    throw new InvalidNodaDataException("Windows mapping uses zone ID " + id + " which is missing");
+                    throw new InvalidNodaDataException("Windows additional standard name mapping uses canonical ID " + id + " which is missing");
                 }
             }
+#endif
             geoLocations = builder.geoLocations;
 
             // Check that each geolocation has a valid zone ID
@@ -83,13 +99,10 @@ namespace NodaTime.TimeZones.IO
         public string TzdbVersion { get { return tzdbVersion; } }
 
         /// <inheritdoc />
-        public string WindowsMappingVersion { get { return windowsMappingVersion; } }
-
-        /// <inheritdoc />
         public IDictionary<string, string> TzdbIdMap { get { return tzdbIdMap; } }
 
         /// <inheritdoc />
-        public IDictionary<string, string> WindowsMapping { get { return windowsMapping; } }
+        public WindowsZones WindowsZones { get { return windowsZones; } }
 
         /// <inheritdoc />
         public IList<TzdbGeoLocation> GeoLocations { get { return geoLocations; } }
@@ -105,6 +118,11 @@ namespace NodaTime.TimeZones.IO
                 return reader.ReadTimeZone(id);
             }
         }
+
+#if PCL
+        /// <inheritdoc />
+        public IDictionary<string, string> WindowsAdditionalStandardNameToIdMapping { get { return windowsAdditionalStandardNameToIdMapping; } }
+#endif
 
         // Like Preconditions.CheckNotNull, but specifically for incomplete data.
         private static T CheckNotNull<T>(T input, string name) where T : class
@@ -144,11 +162,13 @@ namespace NodaTime.TimeZones.IO
         {
             internal IList<string> stringPool;
             internal string tzdbVersion;
-            internal string windowsMappingVersion;
             internal IDictionary<string, string> tzdbIdMap;
-            internal IDictionary<string, string> windowsMapping;
-            internal IDictionary<string, TzdbStreamField> zoneFields = new Dictionary<string, TzdbStreamField>();
             internal IList<TzdbGeoLocation> geoLocations = null;
+            internal WindowsZones windowsZones;
+            internal readonly IDictionary<string, TzdbStreamField> zoneFields = new Dictionary<string, TzdbStreamField>();
+#if PCL
+            internal IDictionary<string, string> windowsAdditionalStandardNameToIdMapping;
+#endif
 
             internal void HandleStringPoolField(TzdbStreamField field)
             {
@@ -188,22 +208,16 @@ namespace NodaTime.TimeZones.IO
                 tzdbVersion = field.ExtractSingleValue(reader => reader.ReadString(), null);
             }
 
-            internal void HandleWindowsMappingVersionField(TzdbStreamField field)
-            {
-                CheckSingleField(field, windowsMappingVersion);
-                windowsMappingVersion = field.ExtractSingleValue(reader => reader.ReadString(), null);
-            }
-
             internal void HandleTzdbIdMapField(TzdbStreamField field)
             {
                 CheckSingleField(field, tzdbIdMap);
                 tzdbIdMap = field.ExtractSingleValue(reader => reader.ReadDictionary(), stringPool);
             }
 
-            internal void HandleWindowsMappingField(TzdbStreamField field)
+            internal void HandleSupplementalWindowsZonesField(TzdbStreamField field)
             {
-                CheckSingleField(field, windowsMapping);
-                windowsMapping = field.ExtractSingleValue(reader => reader.ReadDictionary(), stringPool);
+                CheckSingleField(field, windowsZones);
+                windowsZones = field.ExtractSingleValue(WindowsZones.Read, stringPool);
             }
 
             internal void HandleWindowsAdditionalStandardNameToIdMappingField(TzdbStreamField field)
@@ -211,15 +225,11 @@ namespace NodaTime.TimeZones.IO
 // If we're not on the PCL, we don't need to do anything. This is just to support zones where the StandardName
 // isn't the same as the Id.
 #if PCL
-                if (windowsMapping == null)
+                if (windowsZones == null)
                 {
                     throw new InvalidNodaDataException("Field " + field.Id + " without earlier Windows mapping field");
                 }
-                var extra = field.ExtractSingleValue(reader => reader.ReadDictionary(), stringPool);
-                foreach (var entry in extra)
-                {
-                    windowsMapping[entry.Key] = entry.Value;
-                }
+                windowsAdditionalStandardNameToIdMapping = field.ExtractSingleValue(reader => reader.ReadDictionary(), stringPool);
 #endif         
             }
 

@@ -2,12 +2,11 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
+using NodaTime.TimeZones.Cldr;
+using NodaTime.TimeZones.IO;
 using System.Collections.Generic;
 using System.IO;
 using System.Resources;
-using NodaTime.TimeZones;
-using NodaTime.Utility;
-using NodaTime.TimeZones.IO;
 
 namespace NodaTime.ZoneInfoCompiler.Tzdb
 {
@@ -23,7 +22,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
             this.resourceWriter = resourceWriter;
         }
 
-        public void Write(TzdbDatabase database, WindowsMapping mapping)
+        public void Write(TzdbDatabase database, WindowsZones cldrWindowsZones)
         {
             var timeZoneMap = new Dictionary<string, string>();
             foreach (var zone in database.GenerateDateTimeZones())
@@ -44,8 +43,8 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
             }
             resourceWriter.AddResource(TzdbResourceData.VersionKey, database.Version);
             WriteDictionary(TzdbResourceData.IdMapKey, timeZoneMap);
-            WriteDictionary(TzdbResourceData.WindowsToPosixMapKey, mapping.WindowsToTzdbIds);
-            resourceWriter.AddResource(TzdbResourceData.WindowsToPosixMapVersionKey, mapping.Version);
+            WriteDictionary(TzdbResourceData.WindowsToPosixMapKey, cldrWindowsZones.PrimaryMapping);
+            resourceWriter.AddResource(TzdbResourceData.WindowsToPosixMapVersionKey, cldrWindowsZones.Version);
             resourceWriter.Close();
         }
 

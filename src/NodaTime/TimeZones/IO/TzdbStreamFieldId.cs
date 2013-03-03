@@ -28,25 +28,19 @@ namespace NodaTime.TimeZones.IO
         /// </summary>
         TzdbIdMap = 3,
         /// <summary>
-        /// Single field giving the version of Windows Mapping source data from CLDR. A string value which does *not* use
-        /// the string pool.
+        /// Single field containing mapping data as written by WindowsZones.Write.
         /// </summary>
-        WindowsMappingVersion = 4,
-        /// <summary>
-        /// Single field giving the mapping of Windows system ID to TZDB canonical ID,
-        /// as written by DateTimeZoneWriter.WriteDictionary.
-        /// </summary>
-        WindowsMapping = 5,
+        CldrSupplementalWindowsZones = 4,
         /// <summary>
         /// Single field giving the mapping of Windows StandardName to TZDB canonical ID,
         /// for time zones where TimeZoneInfo.Id != TimeZoneInfo.StandardName,
         /// as written by DateTimeZoneWriter.WriteDictionary.
         /// </summary>
-        WindowsAdditionalStandardNameToIdMapping = 6,
+        WindowsAdditionalStandardNameToIdMapping = 5,
         /// <summary>
         /// Single field providing all geolocations. The format is simply a count, and then that many copies of
         /// TzdbGeoLocation data.
         /// </summary>
-        GeoLocations = 7
+        GeoLocations = 6
     }
 }

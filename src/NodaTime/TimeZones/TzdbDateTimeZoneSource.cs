@@ -70,7 +70,6 @@ namespace NodaTime.TimeZones
         /// has no location data.
         /// </summary>
         private readonly IList<TzdbGeoLocation> geoLocations;
-
 #if !PCL
         /// <summary>
         /// Initializes a new instance of the <see cref="TzdbDateTimeZoneSource" /> class from a resource within
@@ -153,7 +152,7 @@ namespace NodaTime.TimeZones
                 .Where(pair => pair.Key != pair.Value)
                 .OrderBy(pair => pair.Key, StringComparer.Ordinal)
                 .ToLookup(pair => pair.Value, pair => pair.Key);
-            version = source.TzdbVersion + " (mapping: " + source.WindowsMappingVersion + ")";
+            version = source.TzdbVersion + " (mapping: " + source.WindowsZones.Version + ")";
             var originalGeoLocations = source.GeoLocations;
             geoLocations = originalGeoLocations == null ? null : new ReadOnlyCollection<TzdbGeoLocation>(originalGeoLocations);
         }
@@ -201,7 +200,13 @@ namespace NodaTime.TimeZones
             string id = zone.Id;
 #endif
             string result;
-            source.WindowsMapping.TryGetValue(id, out result);
+            source.WindowsZones.PrimaryMapping.TryGetValue(id, out result);
+#if PCL
+            if (result == null)
+            {
+                source.WindowsAdditionalStandardNameToIdMapping.TryGetValue(id, out result);
+            }
+#endif
             return result;
         }
 

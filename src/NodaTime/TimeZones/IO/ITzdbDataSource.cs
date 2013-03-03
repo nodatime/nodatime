@@ -3,6 +3,7 @@
 // as found in the LICENSE.txt file.
 
 using System.Collections.Generic;
+using NodaTime.TimeZones.Cldr;
 
 namespace NodaTime.TimeZones.IO
 {
@@ -18,14 +19,9 @@ namespace NodaTime.TimeZones.IO
         /// Returns the TZDB version string.
         /// </summary>
         string TzdbVersion { get; }
-
+        
         /// <summary>
-        /// Returns the Windows mapping version string.
-        /// </summary>
-        string WindowsMappingVersion { get; }
-
-        /// <summary>
-        /// Returns the TZDB ID dictionary. This needn't be read-only; it won't be
+        /// Returns the TZDB ID dictionary (alias to canonical ID). This needn't be read-only; it won't be
         /// exposed directly.
         /// </summary>
         IDictionary<string, string> TzdbIdMap { get; }
@@ -34,7 +30,7 @@ namespace NodaTime.TimeZones.IO
         /// Returns the Windows mapping dictionary. This needn't be read-only; it won't
         /// be exposed directly.
         /// </summary>
-        IDictionary<string, string> WindowsMapping { get; }
+        WindowsZones WindowsZones { get; }
 
         /// <summary>
         /// Returns the geolocations for the source, or null if no geolocation data is available.
@@ -50,5 +46,13 @@ namespace NodaTime.TimeZones.IO
         /// <param name="canonicalId">Canonical ID for zone data</param>
         // TODO: Document an exception to be thrown if the zone can't be created.
         DateTimeZone CreateZone(string id, string canonicalId);
+
+#if PCL
+        /// <summary>
+        /// Additional mappings from Windows standard name to TZDB ID. Only part of the PCL build,
+        /// where we can't get at the system ID.
+        /// </summary>
+        IDictionary<string, string> WindowsAdditionalStandardNameToIdMapping { get; }
+#endif
     }
 }

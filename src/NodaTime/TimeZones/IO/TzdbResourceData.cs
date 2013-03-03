@@ -5,8 +5,10 @@
 #if !PCL
 
 using System.Globalization;
+using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
+using NodaTime.TimeZones.Cldr;
 using NodaTime.Utility;
 using System.Collections.Generic;
 using System.IO;
@@ -47,18 +49,18 @@ namespace NodaTime.TimeZones.IO
         internal const string VersionKey = "--meta-VersionId";
 
         private readonly string tzdbVersion;
-        private readonly string windowsMappingVersion;
+        private readonly WindowsZones windowsZones;
         private readonly IDictionary<string, string> tzdbIdMap;
-        private readonly IDictionary<string, string> windowsMapping;
         private readonly ResourceSet source;
 
         private TzdbResourceData(ResourceSet source)
         {
             this.source = source;
             tzdbIdMap = CheckKey(LoadDictionary(source, IdMapKey), IdMapKey);
-            windowsMapping = CheckKey(LoadDictionary(source, WindowsToPosixMapKey), WindowsToPosixMapKey);
             tzdbVersion = CheckKey(source.GetString(VersionKey), VersionKey);
-            windowsMappingVersion = CheckKey(source.GetString(WindowsToPosixMapVersionKey), WindowsToPosixMapVersionKey);
+            var windowsMappingVersion = CheckKey(source.GetString(WindowsToPosixMapVersionKey), WindowsToPosixMapVersionKey);
+            var windowsMapping = CheckKey(LoadDictionary(source, WindowsToPosixMapKey), WindowsToPosixMapKey);
+            windowsZones = WindowsZones.FromPrimaryMapping(windowsMappingVersion, windowsMapping);
         }
 
         private static T CheckKey<T>(T value, string key) where T : class
@@ -74,13 +76,10 @@ namespace NodaTime.TimeZones.IO
         public string TzdbVersion { get { return tzdbVersion; } }
 
         /// <inheritdoc />
-        public string WindowsMappingVersion { get { return windowsMappingVersion; } }
-
-        /// <inheritdoc />
         public IDictionary<string, string> TzdbIdMap { get { return tzdbIdMap; } }
 
         /// <inheritdoc />
-        public IDictionary<string, string> WindowsMapping { get { return windowsMapping; } }
+        public WindowsZones WindowsZones { get { return windowsZones; } }
 
         /// <inheritdoc />
         public DateTimeZone CreateZone(string id, string canonicalId)
