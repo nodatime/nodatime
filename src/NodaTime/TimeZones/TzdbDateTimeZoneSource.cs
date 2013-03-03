@@ -246,6 +246,11 @@ namespace NodaTime.TimeZones
         public IList<TzdbGeoLocation> GeoLocations { get { return geoLocations; } }
 
         /// <summary>
+        /// Returns just the TZDB version (e.g. "2013a") of the source data.
+        /// </summary>
+        public string TzdbVersion { get { return source.TzdbVersion; } }
+
+        /// <summary>
         /// Validates that the data within this source is consistent with itself.
         /// </summary>
         /// <remarks>

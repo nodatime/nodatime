@@ -13,7 +13,6 @@ namespace NodaTime.Test.TimeZones
     [TestFixture]
     public class TzdbDateTimeZoneSourceTest
     {
-
         [Test]
         [TestCase("UTC", "Etc/GMT")]
         [TestCase("GMT Standard Time", "Europe/London")]
@@ -148,6 +147,20 @@ namespace NodaTime.Test.TimeZones
             Assert.AreEqual("Canada", resolute.CountryName);
             Assert.AreEqual("CA", resolute.CountryCode);
             Assert.AreEqual("Central Standard Time - Resolute, Nunavut", resolute.Comment);
+        }
+
+        [Test]
+        public void TzdbVersion()
+        {
+            var source = TzdbDateTimeZoneSource.Default;
+            StringAssert.StartsWith("201", source.TzdbVersion);
+        }
+
+        [Test]
+        public void VersionId()
+        {
+            var source = TzdbDateTimeZoneSource.Default;
+            StringAssert.StartsWith("TZDB: " + source.TzdbVersion, source.VersionId);
         }
     }
 }
