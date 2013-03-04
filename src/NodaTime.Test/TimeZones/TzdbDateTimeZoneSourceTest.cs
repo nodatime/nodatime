@@ -67,6 +67,9 @@ namespace NodaTime.Test.TimeZones
             var inJersey = new ZonedDateTime(utc, jersey);
             expectedLocal = new LocalDateTime(2007, 8, 24, 18, 30);
             Assert.AreEqual(expectedLocal, inJersey.LocalDateTime);
+
+            // Can't ask for GeoLocations
+            Assert.Throws<InvalidOperationException>(() => source.GeoLocations.GetHashCode());
         }
 #endif
 
