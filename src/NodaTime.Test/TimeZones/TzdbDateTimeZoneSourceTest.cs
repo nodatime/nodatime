@@ -71,6 +71,33 @@ namespace NodaTime.Test.TimeZones
             // Can't ask for GeoLocations
             Assert.Throws<InvalidOperationException>(() => source.GeoLocations.GetHashCode());
         }
+
+        /// <summary>
+        /// Make sure we can still load the latest version of TZDB as a resource file, and
+        /// that the zones are equivalent to the stream version. (This requires that we
+        /// replace both files each time we rebuild, of course.)
+        /// </summary>
+        [Test]
+        public void ResourceZoneEquivalence()
+        {
+            var streamSource = TzdbDateTimeZoneSource.Default;
+#pragma warning disable 0618
+            var resourceSource = new TzdbDateTimeZoneSource("NodaTime.Test.TestData.Tzdb",
+                Assembly.GetExecutingAssembly());
+#pragma warning restore 0618
+            Assert.AreEqual(streamSource.VersionId, resourceSource.VersionId);
+            CollectionAssert.AreEquivalent(streamSource.GetIds(), resourceSource.GetIds());
+
+            var comparer = new ZoneEqualityComparer(
+                Instant.FromUtc(1850, 1, 1, 0, 0),
+                Instant.FromUtc(2050, 1, 1, 0, 0),
+                ZoneEqualityComparer.Options.PreciseMatch);
+            foreach (var id in streamSource.GetIds())
+            {
+                Assert.IsTrue(comparer.Equals(streamSource.ForId(id), resourceSource.ForId(id)),
+                    "Zone {0} is equal under stream and resource formats", id);
+            }
+        }
 #endif
 
         /// <summary>
