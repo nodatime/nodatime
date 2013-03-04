@@ -51,6 +51,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "markdown", "markdown", "{A7
 		developer-src\markdown\index.txt = developer-src\markdown\index.txt
 		developer-src\markdown\release-process.txt = developer-src\markdown\release-process.txt
 		developer-src\markdown\template.html = developer-src\markdown\template.html
+		developer-src\markdown\tzdb-file-format.txt = developer-src\markdown\tzdb-file-format.txt
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "raw", "raw", "{CAF11EE2-7333-48F4-8355-6C13072AC075}"
