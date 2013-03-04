@@ -240,11 +240,25 @@ namespace NodaTime.TimeZones
         /// Returns a read-only list of locations known to this source.
         /// </summary>
         /// <remarks>
-        /// Every location's ID is guaranteed to be valid within this source, but the presence
-        /// of this information is not guaranteed. This property will return null if the underlying
-        /// data is unaware of locations.
+        /// Every location's ID is guaranteed to be valid within this source (assuming the source
+        /// has been validated). The legacy resource format does not include location information,
+        /// and this property will throw an exception if the information is requested. It is expected
+        /// that callers who wish to use newer features will not be attempting to use legacy formats
+        /// for time zone data.
         /// </remarks>
-        public IList<TzdbGeoLocation> GeoLocations { get { return geoLocations; } }
+        /// <exception cref="InvalidOperationException">This is a legacy resource-based data source which does
+        /// not include location information.</exception>
+        public IList<TzdbGeoLocation> GeoLocations
+        {
+            get
+            {
+                if (geoLocations == null)
+                {
+                    throw new InvalidOperationException("GeoLocation information is not available in the legacy resource format");
+                }
+                return geoLocations;
+            }
+        }
 
         /// <summary>
         /// Returns just the TZDB version (e.g. "2013a") of the source data.
