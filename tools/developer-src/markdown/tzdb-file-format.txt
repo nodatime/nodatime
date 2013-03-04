@@ -101,43 +101,8 @@ Field data often makes use of the
    * `offset`, an `int32` value representing a millisecond offset from UTC
    * `string`, a UTF-8 encoded text string
    * `dictionary`, a dictionary with string keys and values
-   * `timezone`, a serialized time zone (with several variants and subtypes,
-     documented below)
 
-The `timezone` primitive is only treated as a primitive 
-
-PLAN:
-
-- Preserve DaylightSavingTimeZone for resource compatibility
-- Create DaylightSavingRules implementing IZoneIntervalMap containing:
-  - Standard offset
-  - Standard recurrence
-  - Daylight recurrence
-
-Serialization format:
-  - Savings
-  - Standard YearOffset
-  - Daylight YearOffset
-  - Standard name
-  - Daylight name
-
-- Change PrecalculatedDateTimeZone.TailZone to be an IZoneIntervalMap
-- Create a DaylightSavingTimeZone.ToDaylightSavingRules
-- When serializing with the new code, validate it's always a DaylightSavingTimeZone or a DaylightSavingRules, and write that.
-- Consider creating a caching IZoneIntervalMap just for the the tail zone; we don't need it for the rest. (Validate with benchmarks.)
-- Move ReadTimeZone and WriteTimeZone logic to TimeZoneStreamData.
-
-
-
-
-
-
-
-
-
-
-
-
+TODO - complete this...
 
 
 # Resource file format
