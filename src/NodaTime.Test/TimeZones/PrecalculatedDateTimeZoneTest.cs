@@ -280,23 +280,6 @@ namespace NodaTime.Test.TimeZones
             PrecalculatedDateTimeZone.ValidatePeriods(intervals, null);
         }
 
-        /// <summary>
-        /// We don't currently implement equality, but we can at least test that
-        /// Write -> Read -> Write gives the same results.
-        /// </summary>
-        [Test]
-        public void Serialization()
-        {
-            MemoryStream firstPass = new MemoryStream();
-            new DateTimeZoneWriter(firstPass, null).WriteTimeZone(TestZone);
-            firstPass.Position = 0;
-            var readZone = new DateTimeZoneReader(firstPass, null).ReadTimeZone(TestZone.Id);
-            MemoryStream secondPass = new MemoryStream();
-            new DateTimeZoneWriter(secondPass, null).WriteTimeZone(readZone);
-
-            Assert.AreEqual(firstPass.ToArray(), secondPass.ToArray());
-        }
-
         [Test]
         public void Equals()
         {

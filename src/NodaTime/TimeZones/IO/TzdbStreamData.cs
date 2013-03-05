@@ -72,7 +72,16 @@ namespace NodaTime.TimeZones.IO
                 var reader = new DateTimeZoneReader(stream, stringPool);
                 // Skip over the ID before the zone data itself
                 reader.ReadString();
-                return reader.ReadTimeZone(id);
+                var type = (DateTimeZoneWriter.DateTimeZoneType)reader.ReadByte();
+                switch (type)
+                {
+                    case DateTimeZoneWriter.DateTimeZoneType.Fixed:
+                        return FixedDateTimeZone.Read(reader, id);
+                    case DateTimeZoneWriter.DateTimeZoneType.Precalculated:
+                        return CachedDateTimeZone.ForZone(PrecalculatedDateTimeZone.Read(reader, id));
+                    default:
+                            throw new InvalidNodaDataException("Unknown time zone type " + type);
+                }
             }
         }
 

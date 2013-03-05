@@ -45,6 +45,13 @@ namespace NodaTime.TimeZones.IO
         string ReadString();
 
         /// <summary>
+        /// Reads a signed 8 bit integer value from the stream and returns it as an int.
+        /// </summary>
+        /// <returns>The 8 bit int value.</returns>
+        /// <exception cref="InvalidNodaDataException">The data in the stream has been exhausted</exception>
+        byte ReadByte();
+
+        /// <summary>
         /// Reads an offset from the stream.
         /// </summary>
         /// <returns>The offset read from the stream</returns>
@@ -69,14 +76,5 @@ namespace NodaTime.TimeZones.IO
         /// <exception cref="InvalidNodaDataException">The data was invalid</exception>
         /// <exception cref="IOException">The stream could not be read</exception>
         IDictionary<string, string> ReadDictionary();
-
-        /// <summary>
-        /// Reads a time zone from the stream, assigning it the given ID.
-        /// </summary>
-        /// <returns>The zone read from the stream</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="id"/> is null</exception>
-        /// <exception cref="InvalidNodaDataException">The data was invalid</exception>
-        /// <exception cref="IOException">The stream could not be read</exception>
-        DateTimeZone ReadTimeZone(string id);
     }
 }

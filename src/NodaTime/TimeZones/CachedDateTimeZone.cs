@@ -78,7 +78,7 @@ namespace NodaTime.TimeZones
         /// Writes the time zone to the specified writer.
         /// </summary>
         /// <param name="writer">The writer to write to.</param>
-        internal void Write(IDateTimeZoneWriter writer)
+        internal void WriteLegacy(LegacyDateTimeZoneWriter writer)
         {
             Preconditions.CheckNotNull(writer, "writer");
             writer.WriteTimeZone(timeZone);
@@ -90,7 +90,7 @@ namespace NodaTime.TimeZones
         /// <param name="reader">The reader.</param>
         /// <param name="id">The id.</param>
         /// <returns></returns>
-        internal static DateTimeZone Read(IDateTimeZoneReader reader, string id)
+        internal static DateTimeZone ReadLegacy(LegacyDateTimeZoneReader reader, string id)
         {
             Preconditions.CheckNotNull(reader, "reader");
             var timeZone = reader.ReadTimeZone(id);

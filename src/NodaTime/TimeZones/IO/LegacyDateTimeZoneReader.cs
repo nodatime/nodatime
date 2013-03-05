@@ -291,7 +291,7 @@ namespace NodaTime.TimeZones.IO
                 case LegacyDateTimeZoneWriter.FlagTimeZoneNull:
                     return null; // Only used when reading a tail zone
                 case LegacyDateTimeZoneWriter.FlagTimeZoneCached:
-                    return CachedDateTimeZone.Read(this, id);
+                    return CachedDateTimeZone.ReadLegacy(this, id);
                 case LegacyDateTimeZoneWriter.FlagTimeZoneDst:
                     return DaylightSavingsDateTimeZone.ReadLegacy(this, id);
                 default:
@@ -341,12 +341,8 @@ namespace NodaTime.TimeZones.IO
             }
         }
 
-        /// <summary>
-        /// Reads a signed 8 bit integer value from the stream and returns it as an int.
-        /// </summary>
-        /// <returns>The 8 bit int value.</returns>
-        /// <exception cref="InvalidNodaDataException">The data in the stream has been exhausted</exception>
-        internal byte ReadByte()
+        /// <inheritdoc />
+        public byte ReadByte()
         {
             int value = input.ReadByte();
             if (value == -1)
