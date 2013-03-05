@@ -23,13 +23,20 @@ namespace NodaTime.Test.TimeZones
             new ZoneInterval("Second", FirstInterval.End, Instant.FromUtc(2000, 9, 15, 5, 0), Offset.FromHours(4), Offset.FromHours(1));
 
         private static readonly ZoneInterval ThirdInterval =
-            new ZoneInterval("Third", SecondInterval.End, Instant.FromUtc(2005, 6, 20, 8, 0), Offset.FromHours(-5), Offset.Zero);
+            new ZoneInterval("Third", SecondInterval.End, Instant.FromUtc(2005, 1, 20, 8, 0), Offset.FromHours(-5), Offset.Zero);
 
-        private static readonly FixedDateTimeZone TailZone = new FixedDateTimeZone("TestFixed", Offset.FromHours(-6));
+        private static readonly ZoneRecurrence Winter = new ZoneRecurrence("Winter", Offset.Zero,
+            new ZoneYearOffset(TransitionMode.Wall, 10, 5, 0, false, Offset.FromHours(2)), 1960, int.MaxValue);
+
+        private static readonly ZoneRecurrence Summer = new ZoneRecurrence("Summer", Offset.FromHours(1),
+            new ZoneYearOffset(TransitionMode.Wall, 3, 10, 0, false, Offset.FromHours(1)), 1960, int.MaxValue);
+
+        private static readonly DaylightSavingsDateTimeZone TailZone = new DaylightSavingsDateTimeZone(
+            "TestTail", Offset.FromHours(-6), Winter, Summer);
 
         // We don't actually want an interval from the beginning of time when we ask our composite time zone for an interval
         // - because that could give the wrong idea. So we clamp it at the end of the precalculated interval.
-        private static readonly ZoneInterval ClampedTailZoneInterval = TailZone.GetZoneInterval(NodaConstants.UnixEpoch).WithStart(ThirdInterval.End);
+        private static readonly ZoneInterval ClampedTailZoneInterval = TailZone.GetZoneInterval(ThirdInterval.End).WithStart(ThirdInterval.End);
 
         private static readonly PrecalculatedDateTimeZone TestZone =
             new PrecalculatedDateTimeZone("Test", new[] { FirstInterval, SecondInterval, ThirdInterval }, TailZone);
@@ -102,7 +109,7 @@ namespace NodaTime.Test.TimeZones
         [Test]
         public void GetZoneIntervals_UnambiguousInTailZone()
         {
-            var pair = TestZone.GetZoneIntervals(new LocalInstant(2015, 1, 1, 0, 0));
+            var pair = TestZone.GetZoneIntervals(new LocalInstant(2005, 2, 1, 0, 0));
             Assert.AreEqual(ClampedTailZoneInterval, pair.EarlyInterval);
             Assert.IsNull(pair.LateInterval);
         }

@@ -21,8 +21,8 @@ namespace NodaTime.TimeZones
     /// </remarks>
     internal sealed class DaylightSavingsDateTimeZone : DateTimeZone
     {
-        private readonly ZoneRecurrence standardRecurrence;
         private readonly Offset standardOffset;
+        private readonly ZoneRecurrence standardRecurrence;
         private readonly ZoneRecurrence dstRecurrence;
 
         /// <summary>
@@ -157,10 +157,15 @@ namespace NodaTime.TimeZones
         /// <param name="writer">The writer to write to.</param>
         internal void Write(IDateTimeZoneWriter writer)
         {
+            // We don't need everything a recurrence can supply: we know that both recurrences should be
+            // infinite, and that only the DST recurrence should have savings.
             Preconditions.CheckNotNull(writer, "writer");
             writer.WriteOffset(standardOffset);
-            dstRecurrence.Write(writer);
-            standardRecurrence.Write(writer);
+            writer.WriteString(standardRecurrence.Name);
+            standardRecurrence.YearOffset.Write(writer);
+            writer.WriteString(dstRecurrence.Name);
+            dstRecurrence.YearOffset.Write(writer);
+            writer.WriteOffset(dstRecurrence.Savings);
         }
 
         /// <summary>
@@ -175,13 +180,18 @@ namespace NodaTime.TimeZones
             standardRecurrence.WriteLegacy(writer);
         }
 
-        internal static DateTimeZone Read(IDateTimeZoneReader reader, string id)
+        internal static DaylightSavingsDateTimeZone Read(IDateTimeZoneReader reader, string id)
         {
             Preconditions.CheckNotNull(reader, "reader");
-            Offset offset = reader.ReadOffset();
-            ZoneRecurrence start = ZoneRecurrence.Read(reader);
-            ZoneRecurrence end = ZoneRecurrence.Read(reader);
-            return new DaylightSavingsDateTimeZone(id, offset, start, end);
+            Offset standardOffset = reader.ReadOffset();
+            string standardName = reader.ReadString();
+            ZoneYearOffset standardYearOffset = ZoneYearOffset.Read(reader);
+            string daylightName = reader.ReadString();
+            ZoneYearOffset daylightYearOffset = ZoneYearOffset.Read(reader);
+            Offset savings = reader.ReadOffset();
+            ZoneRecurrence standardRecurrence = new ZoneRecurrence(standardName, Offset.Zero, standardYearOffset, int.MinValue, int.MaxValue);
+            ZoneRecurrence dstRecurrence = new ZoneRecurrence(daylightName, savings, daylightYearOffset, int.MinValue, int.MaxValue);
+            return new DaylightSavingsDateTimeZone(id, standardOffset, standardRecurrence, dstRecurrence);
         }
 
         internal static DateTimeZone ReadLegacy(LegacyDateTimeZoneReader reader, string id)
