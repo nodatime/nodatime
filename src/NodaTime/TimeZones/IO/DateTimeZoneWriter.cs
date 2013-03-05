@@ -17,6 +17,12 @@ namespace NodaTime.TimeZones.IO
     /// </summary>
     internal sealed class DateTimeZoneWriter : IDateTimeZoneWriter
     {
+        internal enum DateTimeZoneType : byte
+        {
+            Fixed = 1,
+            Precalculated = 2
+        }
+
         internal static class ZoneIntervalConstants
         {
             /// <summary>The instant to use as an 'epoch' when writing out a number of minutes-since-epoch.</summary>
@@ -38,13 +44,6 @@ namespace NodaTime.TimeZones.IO
             /// occasionally 3) bytes when encoded as a varint, while minute values take 4 (or conceivably 5).</remarks>
             internal const int MinValueForMinutesSinceEpoch = 1 << 21;
         }
-
-        // TODO: Work out where best to put these flags, and the code to read/respond to them.
-        // It's ugly at the moment.
-        internal const byte FlagTimeZoneNull = 0;
-        internal const byte FlagTimeZoneFixed = 1;
-        internal const byte FlagTimeZoneDst = 2;
-        internal const byte FlagTimeZonePrecalculated = 3;
 
         private readonly Stream output;
         private readonly IList<string> stringPool; 
@@ -273,42 +272,6 @@ namespace NodaTime.TimeZones.IO
         }
 
         /// <summary>
-        /// Writes the <see cref="DateTimeZone" /> value to the stream.
-        /// </summary>
-        /// <param name="value">The value to write.</param>
-        public void WriteTimeZone(DateTimeZone value)
-        {
-            if (value == null)
-            {
-                WriteByte(FlagTimeZoneNull);
-                return;
-            }
-            if (value is FixedDateTimeZone)
-            {
-                WriteByte(FlagTimeZoneFixed);
-                ((FixedDateTimeZone)value).Write(this);
-            }
-            else if (value is PrecalculatedDateTimeZone)
-            {
-                WriteByte(FlagTimeZonePrecalculated);
-                ((PrecalculatedDateTimeZone)value).Write(this);
-            }
-            else if (value is CachedDateTimeZone)
-            {
-                ((CachedDateTimeZone)value).Write(this);
-            }
-            else if (value is DaylightSavingsDateTimeZone)
-            {
-                WriteByte(FlagTimeZoneDst);
-                ((DaylightSavingsDateTimeZone)value).Write(this);
-            }
-            else
-            {
-                throw new ArgumentException("Unknown DateTimeZone type " + value.GetType());
-            }
-        }
-
-        /// <summary>
         /// Writes the given 16 bit integer value to the stream.
         /// </summary>
         /// <param name="value">The value to write.</param>
@@ -347,11 +310,8 @@ namespace NodaTime.TimeZones.IO
             }
         }
 
-        /// <summary>
-        /// Writes the given 8 bit integer value to the stream.
-        /// </summary>
-        /// <param name="value">The value to write.</param>
-        private void WriteByte(byte value)
+        /// <inheritdoc />
+        public void WriteByte(byte value)
         {
             unchecked
             {

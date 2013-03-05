@@ -229,32 +229,7 @@ namespace NodaTime.TimeZones.IO
         }
 
         /// <summary>
-        /// Reads an <see cref="DateTimeZone" /> value from the stream.
-        /// </summary>
-        /// <remarks>
-        /// The value must have been written by <see cref="DateTimeZoneWriter.WriteTimeZone" />.
-        /// </remarks>
-        /// <returns>The <see cref="DateTimeZone" /> value from the stream.</returns>
-        public DateTimeZone ReadTimeZone(string id)
-        {
-            int flag = ReadByte();
-            switch (flag)
-            {
-                case DateTimeZoneWriter.FlagTimeZoneFixed:
-                    return FixedDateTimeZone.Read(this, id);
-                case DateTimeZoneWriter.FlagTimeZonePrecalculated:
-                    return CachedDateTimeZone.ForZone(PrecalculatedDateTimeZone.Read(this, id));
-                case DateTimeZoneWriter.FlagTimeZoneNull:
-                    return null; // Only used when reading a tail zone
-                case DateTimeZoneWriter.FlagTimeZoneDst:
-                    return CachedDateTimeZone.ForZone(DaylightSavingsDateTimeZone.Read(this, id));
-                default:
-                    throw new InvalidNodaDataException("Unknown time zone flag type " + flag);
-            }
-        }
-
-        /// <summary>
-        ///   Reads a signed 16 bit integer value from the stream and returns it as an int.
+        /// Reads a signed 16 bit integer value from the stream and returns it as an int.
         /// </summary>
         /// <returns>The 16 bit int value.</returns>
         private int ReadInt16()
@@ -300,7 +275,8 @@ namespace NodaTime.TimeZones.IO
         /// </summary>
         /// <returns>The 8 bit int value.</returns>
         /// <exception cref="InvalidNodaDataException">The data in the stream has been exhausted</exception>
-        private byte ReadByte()
+        /// <inheritdoc />
+        public byte ReadByte()
         {
             int value = input.ReadByte();
             if (value == -1)

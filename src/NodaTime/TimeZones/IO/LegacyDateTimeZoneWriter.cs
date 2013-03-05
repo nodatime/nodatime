@@ -337,7 +337,7 @@ namespace NodaTime.TimeZones.IO
             else if (value is CachedDateTimeZone)
             {
                 WriteByte(FlagTimeZoneCached);
-                ((CachedDateTimeZone)value).Write(this);
+                ((CachedDateTimeZone)value).WriteLegacy(this);
             }
             else if (value is DaylightSavingsDateTimeZone)
             {
@@ -389,10 +389,7 @@ namespace NodaTime.TimeZones.IO
             }
         }
 
-        /// <summary>
-        /// Writes the given 8 bit integer value to the stream.
-        /// </summary>
-        /// <param name="value">The value to write.</param>
+        /// <inheritdoc />
         public void WriteByte(byte value)
         {
             unchecked

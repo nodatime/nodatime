@@ -41,13 +41,6 @@ namespace NodaTime.Test.TimeZones
         }
 
         [Test]
-        public void TestReadWrite()
-        {
-            var dio = DtzIoHelper.CreateNoStringPool();
-            dio.TestTimeZone(TestZone);
-        }
-
-        [Test]
         public void GetZoneIntervals_ReturnsSingleInterval()
         {
             var intervals = TestZone.GetZoneIntervals(new LocalDateTime(2001, 7, 1, 1, 0, 0).LocalInstant);

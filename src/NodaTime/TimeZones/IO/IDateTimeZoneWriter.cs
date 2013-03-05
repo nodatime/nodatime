@@ -86,11 +86,9 @@ namespace NodaTime.TimeZones.IO
         void WriteDictionary(IDictionary<string, string> dictionary);
 
         /// <summary>
-        /// Writes the given time zone to the stream.
+        /// Writes the given 8 bit integer value to the stream.
         /// </summary>
-        /// <param name="zone">The zone to write.</param>
-        /// <exception cref="ArgumentNullException"><paramref name="zone"/> is null.</exception>
-        /// <exception cref="IOException">The value couldn't be written to the stream.</exception>
-        void WriteTimeZone(DateTimeZone zone);
+        /// <param name="value">The value to write.</param>
+        void WriteByte(byte value);
     }
 }

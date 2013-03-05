@@ -50,8 +50,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
             foreach (var zone in zones)
             {
                 var zoneField = fields.AddField(TzdbStreamFieldId.TimeZone, stringPool);
-                zoneField.Writer.WriteString(zone.Id);
-                zoneField.Writer.WriteTimeZone(zone);
+                WriteZone(zone, zoneField.Writer);
             }
 
             fields.AddField(TzdbStreamFieldId.TzdbVersion, null).Writer.WriteString(database.Version);
@@ -109,6 +108,36 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
             stream.Close();
         }
 
+        private static void WriteZone(DateTimeZone zone, IDateTimeZoneWriter writer)
+        {
+            writer.WriteString(zone.Id);
+            // For cached zones, simply uncache first.
+            var cachedZone = zone as CachedDateTimeZone;
+            if (cachedZone != null)
+            {
+                zone = cachedZone.TimeZone;
+            }
+            var fixedZone = zone as FixedDateTimeZone;
+            if (fixedZone != null)
+            {
+                writer.WriteByte((byte) DateTimeZoneWriter.DateTimeZoneType.Fixed);
+                fixedZone.Write(writer);
+            }
+            else
+            {
+                var precalculatedZone = zone as PrecalculatedDateTimeZone;
+                if (precalculatedZone != null)
+                {
+                    writer.WriteByte((byte) DateTimeZoneWriter.DateTimeZoneType.Precalculated);
+                    precalculatedZone.Write(writer);
+                }
+                else
+                {
+                    throw new ArgumentException("Unserializable DateTimeZone type " + zone.GetType());
+                }
+            }
+        }
+
         /// <summary>
         /// Creates a string pool which contains the most commonly-used strings within the given set
         /// of zones first. This will allow them to be more efficiently represented when we write them out for real.
@@ -120,7 +149,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
             foreach (var zone in zones)
             {
                 optimizingWriter.WriteString(zone.Id);
-                optimizingWriter.WriteTimeZone(zone);
+                WriteZone(zone, optimizingWriter);
             }
             if (geoLocations != null)
             {
@@ -157,6 +186,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
 
             public void WriteOffset(Offset offset) {}
             public void WriteCount(int count) { }
+            public void WriteByte(byte value) { }
             public void WriteSignedCount(int count) { }
             public void WriteZoneIntervalTransition(Instant? previous, Instant value) {}
 
@@ -166,35 +196,6 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
                 {
                     WriteString(entry.Key);
                     WriteString(entry.Value);
-                }
-            }
-
-            // TODO: Either refactor, or perhaps use dynamic typing
-            public void WriteTimeZone(DateTimeZone zone)
-            {
-                if (zone == null)
-                {
-                    // Do nothing
-                }
-                else if (zone is FixedDateTimeZone)
-                {
-                    ((FixedDateTimeZone)zone).Write(this);
-                }
-                else if (zone is PrecalculatedDateTimeZone)
-                {
-                    ((PrecalculatedDateTimeZone)zone).Write(this);
-                }
-                else if (zone is CachedDateTimeZone)
-                {
-                    ((CachedDateTimeZone) zone).Write(this);
-                }
-                else if (zone is DaylightSavingsDateTimeZone)
-                {
-                    ((DaylightSavingsDateTimeZone)zone).Write(this);
-                }
-                else
-                {
-                    throw new ArgumentException("Unknown DateTimeZone type " + zone.GetType());
                 }
             }
         }

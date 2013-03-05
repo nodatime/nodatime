@@ -149,7 +149,7 @@ namespace NodaTime.TimeZones
             writer.WriteZoneIntervalTransition(previous, tailZoneStart);
             // We could just check whether we've got to the end of the stream, but this
             // feels slightly safer.
-            writer.WriteCount(tailZone == null ? 0 : 1);
+            writer.WriteByte((byte) (tailZone == null ? 0 : 1));
             if (tailZone != null)
             {
                 // This is the only kind of zone we support in the new format. Enforce that...
@@ -178,7 +178,7 @@ namespace NodaTime.TimeZones
                 periods[i] = new ZoneInterval(name, start, nextStart, offset, savings);
                 start = nextStart;
             }
-            var tailZone = reader.ReadCount() == 1 ? DaylightSavingsDateTimeZone.Read(reader, id + "-tail") : null;
+            var tailZone = reader.ReadByte() == 1 ? DaylightSavingsDateTimeZone.Read(reader, id + "-tail") : null;
             return new PrecalculatedDateTimeZone(id, periods, tailZone);
         }
 

@@ -131,15 +131,6 @@ namespace NodaTime.Test.TimeZones.IO
             ioStream.AssertEndOfStream();
         }
 
-        public void TestTimeZone(DateTimeZone expected)
-        {
-            Reset();
-            Writer.WriteTimeZone(expected);
-            var actual = Reader.ReadTimeZone(expected.Id);
-            Assert.AreEqual(expected, actual);
-            ioStream.AssertEndOfStream();
-        }
-
         public void TestZoneRecurrence(ZoneRecurrence expected)
         {
             Reset();
