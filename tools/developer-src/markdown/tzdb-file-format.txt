@@ -91,18 +91,49 @@ The expected data within each field is governed by its ID.
 
 ## Serialization primitives
 
-Field data often makes use of the 
+Field data often makes use of the following serialization primitives:
 
-   * `byte`, a general 8-bit unsigned integer
-   * `fixed16`, `fixed32`, and `fixed64`, general 16-bit, 32-bit, and 64-bit
-     signed integers
-   * `count`, a non-negative (typically small) `int32` value
-   * `signed-count`, 
-   * `offset`, an `int32` value representing a millisecond offset from UTC
-   * `string`, a UTF-8 encoded text string
-   * `dictionary`, a dictionary with string keys and values
+- `byte`, a general 8-bit unsigned integer, simply serialized as a single byte.
+- `fixed16`, `fixed32`, and `fixed64`, general 16-bit, 32-bit, and 64-bit signed integers,
+  ssimply serialized as 2-, 4-, or 8-byte twos-complement values of the appropriate length,
+  in MSB-first order. For example, `0x1234` would be serialized as the bytes `[0x12 0x34]` using
+  the `fixed16` serialization, while -1 would be serialized as `[0xff 0xff]`
+- `count`, a non-negative (typically small) `int32` value, stored as a 7-bit-encoded integer:
+  the value is written 7 bits at a time (least significant first), with the highest bit of each
+  byte set if this is not the final byte of the value. For example, the value `0x16a` would be
+  serialized as the bytes `[0xea 0x02]`.
+- `signed-count`, a potentially-negative (typically small in magnitude) `int32` value, stored
+  in a "ZigZag" encoding: first mapping the signed number to an unsigned number, alternating
+  between signed and unsigned values: 0 maps to 0, -1 maps to 1, 1 maps 2, -2 maps to 3, 2 maps
+  to 4 etc. The result is then written in the same 7-bit encoding as `count`.
+- `string`, a UTF-8 encoded text string or entry into a string pool. Each field either has a
+  string pool associated with it or it doesn't. In a field with a string pool, strings are simply
+  stored using the `count` encoding to specify which entry in the string pool is used. In a field
+  without a string pool, the UTF-8-encoded size of the string is written using the `count` encoding,
+  then the UTF-8 encoded bytes themselves are written.
+- `offset`, an `int32` value representing a millisecond offset from UTC, with maximum and minimum
+  values of +/-24 hours (exclusive on both sides). The offset is first made positive by simply adding
+  24 hours, and then the resulting integer is represented in one of four ways, based on how neatly
+  the offset divides into a whole number of larger units. In each case where the representation is
+  more than one byte, the data is written with the most significant bits first. The representations are:
+  - A single byte with a top bit of 0, indicating the number of half hours of the offset. (This is
+    by far the most common form.)
+  - Two bytes with the top three bits of the first byte set to "100" and the remaining 13 bits
+    indicating the number of minutes in the offset.
+  - Three bytes with the top three bits of the first byte set to "101" and the remaining 21 bits
+    indicating the number of seconds in the offset.
+  - Four bytes with the top three bits of the first byte set to "110" and the remaining 29 bits
+    indicating the number of milliseconds in the offset.
+- `zoneintervaltransition`, an encoding for an instant possibly relative to an earlier or equal one. This
+  is used when writing transitions between zone intervals, where the additional context of a previous value
+  helps to reduce the data required. TODO: Full description.
+- `dictionary`, a string-to-string dictionary where no keys or values can be null. This is simply a
+  count (the number of entries) followed by each key/value pair written as first the key then the value
+  in the normal way of writing strings.
 
-TODO - complete this...
+## Fields
+
+TODO
 
 
 # Resource file format
