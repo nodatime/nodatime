@@ -16,9 +16,10 @@ different formats:</p>
 
 <ol>
 <li><p>a .NET resource file containing a number of different resources
-  (including, for example, one for each time zone), serialised as either
+  (including, for example, one for each time zone), serialized as either
   an XML (<code>.resx</code>) or compiled (<code>.resources</code>) file. This is the only
-  format accepted by Noda Time 1.0.x.</p></li>
+  format accepted by Noda Time 1.0.x. The intention is to remove support
+  for this format in Noda Time 2.0.</p></li>
 <li><p>a binary file format (the "NodaZoneData" format) that does not depend
   upon a .NET resource file acting as a container. This is the default
   format in Noda Time 1.1 and later, and is the only format supported by
@@ -74,7 +75,78 @@ requires a database compiled against at least that version to work.</p>
 <h1>NodaZoneData format</h1>
 
 <p>Compiling the input data using the (default) <code>NodaZoneData</code> option produces
-a compiled database in the "NodaZoneData" format.</p>
+a compiled database in the "NodaZoneData" format, with an extension of ".nzd".
+This is intended as the long-term format, and is designed with more extensibility
+in mind than the resource file format.</p>
+
+<h2>Overall structure</h2>
+
+<p>The first four bytes of the file contain the format version number. At the time of
+this writing, the only supported version number is 0. Not all changes in the future
+will require a change in version number (as even within a version the format is extensible)
+but this provides flexibility in the future, where as a single binary may be able to read a
+range of versions. At that point, this document will be extended to give details for each version
+separately. Each version may be completely independent of previous versions, so may redefine
+the meaning of particular field IDs, or even contain a different field structure.</p>
+
+<p>After that, the file is simply a sequence of fields. Each field consists of:</p>
+
+<ul>
+<li>A field ID (1 byte)</li>
+<li>The size of the field data, as a <code>count</code> (see pim details below)</li>
+<li>The field data</li>
+</ul>
+
+<p>Fields are always stored in ascending order of ID (so later fields may depend on earlier ones).
+The expected data within each field is governed by its ID.</p>
+
+<h2>Serialization primitives</h2>
+
+<p>Field data often makes use of the following serialization primitives:</p>
+
+<ul>
+<li><code>byte</code>, a general 8-bit unsigned integer, simply serialized as a single byte.</li>
+<li><code>fixed16</code>, <code>fixed32</code>, and <code>fixed64</code>, general 16-bit, 32-bit, and 64-bit signed integers,
+ssimply serialized as 2-, 4-, or 8-byte twos-complement values of the appropriate length,
+in MSB-first order. For example, <code>0x1234</code> would be serialized as the bytes <code>[0x12 0x34]</code> using
+the <code>fixed16</code> serialization, while -1 would be serialized as <code>[0xff 0xff]</code></li>
+<li><code>count</code>, a non-negative (typically small) <code>int32</code> value, stored as a 7-bit-encoded integer:
+the value is written 7 bits at a time (least significant first), with the highest bit of each
+byte set if this is not the final byte of the value. For example, the value <code>0x16a</code> would be
+serialized as the bytes <code>[0xea 0x02]</code>.</li>
+<li><code>signed-count</code>, a potentially-negative (typically small in magnitude) <code>int32</code> value, stored
+in a "ZigZag" encoding: first mapping the signed number to an unsigned number, alternating
+between signed and unsigned values: 0 maps to 0, -1 maps to 1, 1 maps 2, -2 maps to 3, 2 maps
+to 4 etc. The result is then written in the same 7-bit encoding as <code>count</code>.</li>
+<li><code>string</code>, a UTF-8 encoded text string or entry into a string pool. Each field either has a
+string pool associated with it or it doesn't. In a field with a string pool, strings are simply
+stored using the <code>count</code> encoding to specify which entry in the string pool is used. In a field
+without a string pool, the UTF-8-encoded size of the string is written using the <code>count</code> encoding,
+then the UTF-8 encoded bytes themselves are written.</li>
+<li><code>offset</code>, an <code>int32</code> value representing a millisecond offset from UTC, with maximum and minimum
+values of +/-24 hours (exclusive on both sides). The offset is first made positive by simply adding
+24 hours, and then the resulting integer is represented in one of four ways, based on how neatly
+the offset divides into a whole number of larger units. In each case where the representation is
+more than one byte, the data is written with the most significant bits first. The representations are:
+<ul>
+<li>A single byte with a top bit of 0, indicating the number of half hours of the offset. (This is
+by far the most common form.)</li>
+<li>Two bytes with the top three bits of the first byte set to "100" and the remaining 13 bits
+indicating the number of minutes in the offset.</li>
+<li>Three bytes with the top three bits of the first byte set to "101" and the remaining 21 bits
+indicating the number of seconds in the offset.</li>
+<li>Four bytes with the top three bits of the first byte set to "110" and the remaining 29 bits
+indicating the number of milliseconds in the offset.</li>
+</ul></li>
+<li><code>zoneintervaltransition</code>, an encoding for an instant possibly relative to an earlier or equal one. This
+is used when writing transitions between zone intervals, where the additional context of a previous value
+helps to reduce the data required. TODO: Full description.</li>
+<li><code>dictionary</code>, a string-to-string dictionary where no keys or values can be null. This is simply a
+count (the number of entries) followed by each key/value pair written as first the key then the value
+in the normal way of writing strings.</li>
+</ul>
+
+<h2>Fields</h2>
 
 <p>TODO</p>
 
@@ -90,11 +162,11 @@ resource for each time zone, and four additional meta-information resources.</p>
 <ul>
 <li><code>--meta-VersionId</code>, a <code>String</code> resource containing the tzdb version ID
  (e.g. "2012i")</li>
-<li><code>--meta-IdMap</code>, a <code>byte[]</code> resource containing a serialised
+<li><code>--meta-IdMap</code>, a <code>byte[]</code> resource containing a serialized
  <code>dictionary</code> (see below for the definition of these types), mapping all
  known time zone IDs (aliases and non-aliases) to a non-alias time zone
  ID</li>
-<li><code>--meta-WindowsToPosix</code>, a <code>byte[]</code> resource containing a serialised
+<li><code>--meta-WindowsToPosix</code>, a <code>byte[]</code> resource containing a serialized
  <code>dictionary</code>, mapping Windows time zone names to the corresponding tzdb
  time zone ID</li>
 <li><code>--meta-WindowsToPosixVersion</code>, a <code>String</code> resource containing the
@@ -102,7 +174,7 @@ resource for each time zone, and four additional meta-information resources.</p>
 </ul>
 
 <p>Each non-alias time zone is represented by a <code>byte[]</code> resource containing a
-serialised <code>timezone</code>. The name of the resource is derived from the time zone
+serialized <code>timezone</code>. The name of the resource is derived from the time zone
 ID, with (theoretically) some substitutions for invalid characters.  (The
 substitutions are not documented here, since they do not actually appear to be
 used in practice; for example, the name of the Europe/London resource is simply
@@ -113,9 +185,9 @@ the 2012i tzdb). </p>
 mentioned below; readers do not confirm that the end of the resource was
 reached when all the data they know how to read has been consumed.</p>
 
-<h2>Serialisation primitives</h2>
+<h2>Serialization primitives</h2>
 
-<p>The resource file format uses the following serialisation primitives:</p>
+<p>The resource file format uses the following serialization primitives:</p>
 
 <ul>
 <li><code>byte</code>, a general 8-bit unsigned integer</li>
@@ -125,7 +197,7 @@ reached when all the data they know how to read has been consumed.</p>
 <li><code>offset</code>, an <code>int32</code> value representing a millisecond offset from UTC</li>
 <li><code>string</code>, a UTF-8 encoded text string</li>
 <li><code>dictionary</code>, a dictionary with string keys and values</li>
-<li><code>timezone</code>, a serialised time zone (with several variants and subtypes,
+<li><code>timezone</code>, a serialized time zone (with several variants and subtypes,
  documented below)</li>
 </ul>
 
@@ -134,38 +206,38 @@ used as part of the definitions of these types, below.</p>
 
 <h3>byte</h3>
 
-<p>A <code>byte</code> is simply serialised as a single byte representing a value in the
+<p>A <code>byte</code> is simply serialized as a single byte representing a value in the
 range 0..255.</p>
 
 <h3>fixed16, fixed32, fixed64</h3>
 
-<p><code>fixed16</code>, <code>fixed32</code>, and <code>fixed64</code> are simply serialised as 2-, 4-, or
+<p><code>fixed16</code>, <code>fixed32</code>, and <code>fixed64</code> are simply serialized as 2-, 4-, or
 8-byte twos-complement values of the appropriate length, in MSB-first order.
-For example, <code>0x1234</code> would be serialised as the bytes <code>[0x12 0x34]</code> using
-the <code>fixed16</code> serialisation, while -1 would be serialised as <code>[0xff 0xff]</code>.</p>
+For example, <code>0x1234</code> would be serialized as the bytes <code>[0x12 0x34]</code> using
+the <code>fixed16</code> serialization, while -1 would be serialized as <code>[0xff 0xff]</code>.</p>
 
 <h3>count</h3>
 
 <p>A <code>count</code> encodes a non-negative (typically small) <code>int32</code> value; it is
-serialised as a variable number of bytes according to the following
+serialized as a variable number of bytes according to the following
 scheme:</p>
 
 <ul>
-<li>values <code>0x00</code>..<code>0x8e</code> are serialised as a single byte; values to <code>0x0e</code>
- are serialised as <code>0xf0</code>..<code>0xfe</code>, while <code>0x0f</code>..<code>0x8e</code> is serialised as
+<li>values <code>0x00</code>..<code>0x8e</code> are serialized as a single byte; values to <code>0x0e</code>
+ are serialized as <code>0xf0</code>..<code>0xfe</code>, while <code>0x0f</code>..<code>0x8e</code> is serialized as
  <code>0x00</code>..<code>0x7f</code></li>
-<li><code>0x8f</code>..<code>0x408e</code> is serialised as two bytes, by subtracting <code>0x8f</code> and
+<li><code>0x8f</code>..<code>0x408e</code> is serialized as two bytes, by subtracting <code>0x8f</code> and
  then encoding the resulting (<code>0</code>&ndash;<code>0x3fff</code>) value using the byte
  <code>0x80</code>..<code>0xbf</code> for the MSB, followed by the LSB</li>
-<li><code>0x408f</code>..<code>0x20408e</code> is serialised as three bytes, by subtracting
+<li><code>0x408f</code>..<code>0x20408e</code> is serialized as three bytes, by subtracting
  <code>0x408f</code> and then encoding the resulting (<code>0</code>&ndash;<code>0x1fffff</code>) value
  as the byte <code>0xc0</code>..<code>0xdf</code> for the MSB, followed by the next two bytes
  in MSB-first order (i.e. as a <code>fixed16</code>)</li>
-<li><code>0x20408f</code>..<code>0x1020408e</code> is serialised as four bytes, by subtracting
+<li><code>0x20408f</code>..<code>0x1020408e</code> is serialized as four bytes, by subtracting
  <code>0x20408f</code> (giving <code>0</code>&ndash;<code>0x0fffffff</code>), adding <code>0xe0000000</code>,
  and then encoding the resulting (<code>0xe0000000</code>&ndash;<code>0xefffffff</code>) value
  as a <code>fixed32</code></li>
-<li>larger values are serialised as five bytes, as the leader <code>0xff</code>
+<li>larger values are serialized as five bytes, as the leader <code>0xff</code>
  followed by the value as a <code>fixed32</code></li>
 </ul>
 
@@ -176,37 +248,37 @@ from UTC. While the encoding below can in theory represent any <code>int32</code
 value, the use in Noda Time is solely for values in the range (-24 hours,
 +24 hours); commonly for 'round' numbers of minutes, etc.</p>
 
-<p>An <code>offset</code> is serialised as a variable-length field as follows:</p>
+<p>An <code>offset</code> is serialized as a variable-length field as follows:</p>
 
 <ul>
-<li>offsets that are a multiple of 30 minutes are serialised as the single
+<li>offsets that are a multiple of 30 minutes are serialized as the single
  byte <code>0x10</code>..<code>0x6e</code> counting the number of 30 minute periods, with a
  bias such that <code>0x10</code> represents an offset of -23:30, <code>0x11</code> represents
  -23:00, <code>0x3f</code> represents a zero offset, and <code>0x6e</code> represents the
  offset +23:30</li>
-<li>offsets that are a whole number of seconds are serialised as three
+<li>offsets that are a whole number of seconds are serialized as three
  bytes, the first of which is in the range <code>0x82</code>..<code>0x85</code>, by adding
  <code>0x83ffff</code> to the number of seconds, and writing three bytes in
  MSB-first order, so that <code>[0x82 0xae 0x80]</code> represents -23:59:59,
  <code>[0x84 0x00 0x00]</code> represents +00:00:01, and <code>[0x85 0x51 0x7e]</code>
  represents +23:59:59</li>
-<li>any other offset is serialised as the leader <code>0xfd</code> followed by the number
+<li>any other offset is serialized as the leader <code>0xfd</code> followed by the number
  of milliseconds as a <code>fixed32</code></li>
 </ul>
 
-<p>(The serialisation method used additionally defines an encoding for
+<p>(The serialization method used additionally defines an encoding for
 'out-of-range' offsets, but these cannot occur in practice, as the
 underlying C# data type restricts the range of the offset to that described
 above.)</p>
 
 <h3>string</h3>
 
-<p>A <code>string</code> is serialised as a <code>count</code> of the number of UTF-8 bytes in the
+<p>A <code>string</code> is serialized as a <code>count</code> of the number of UTF-8 bytes in the
 string followed by those bytes.</p>
 
 <h3>dictionary</h3>
 
-<p>A <code>dictionary</code> is serialised as a <code>count</code> number of entries in the
+<p>A <code>dictionary</code> is serialized as a <code>count</code> number of entries in the
 dictionary, followed by that number of pairs of <code>string</code> key and <code>string</code>
 value.</p>
 
@@ -214,7 +286,7 @@ value.</p>
 
 <p>A <code>timezone</code> encodes a complete definition for a single time zone, excluding
 the ID; it is represented in one of a few different forms depending on the
-type of the time zone. The serialised format may be any of the following:</p>
+type of the time zone. The serialized format may be any of the following:</p>
 
 <ul>
 <li><code>0x00</code> followed by another <code>timezone</code>, indicating that the following
@@ -236,7 +308,7 @@ type of the time zone. The serialised format may be any of the following:</p>
 
 <h4>daylightsavingstimezone</h4>
 
-<p>A <code>daylightsavingstimezone</code> is serialised as an <code>offset</code> containing the
+<p>A <code>daylightsavingstimezone</code> is serialized as an <code>offset</code> containing the
 standard offset followed by the DST <code>zonerecurrence</code> and the standard time
 (non-DST) <code>zonerecurrence</code>.  The DST recurrence contains an offset that is
 the additional delta from the standard offset for daylight savings time
@@ -245,14 +317,14 @@ guaranteed to have a zero offset.</p>
 
 <h5>zonerecurrence</h5>
 
-<p>A <code>zonerecurrence</code> is serialised as the <code>string</code> name of the recurrence
+<p>A <code>zonerecurrence</code> is serialized as the <code>string</code> name of the recurrence
 (e.g. "PST"), the <code>offset</code> containing the offset of this recurrence, a
 description of when the recurrence occurs (the 'year offset'), and finally
 two <code>count</code> values indicating the (inclusive) years the recurrence covers,
 where a zero start year indicates a recurrence that starts at the beginning
 of time.</p>
 
-<p>(Note that 1.0 versions of NodaTime serialised the 'beginning of time' as
+<p>(Note that 1.0 versions of NodaTime serialized the 'beginning of time' as
 the year <code>int32.MinValue</code> instead of zero. The two should be treated
 equally.)</p>
 
@@ -284,10 +356,12 @@ equally.)</p>
 
 <h4>precalculatedtimezone</h4>
 
-<p>A <code>precalculatedtimezone</code> is serialised as a string pool, a sequence of
-<code>zoneinterval</code> periods representing an expansion of all known transitions,
-and an optional 'tail zone' representing a final (possibly DST-using) stable
-state.</p>
+<p>A <code>precalculatedtimezone</code> is serialized as a string pool, a sequence of
+<code>zoneinterval</code> periods representing an expansion of all known transitions
+before the rules stabilize, and an optional 'tail zone' representing a final stable
+state. There is no tail zone if the final state is fixed (if the overall zone has
+stopped observing DST); otherwise, it's a <code>daylightsavingstimezone</code> with a pair of
+rules which extend to the end of time.</p>
 
 <p>Specifically:</p>
 
@@ -300,15 +374,12 @@ state.</p>
 <li>a <code>zoneintervaltransition</code> for the tail zone (as the end of time if
  there is no tail zone)</li>
 <li>a <code>timezone</code> representing the tail zone, in practice always either of
- type <code>0x03</code> (no tail zone) or <code>0x01</code> (<code>daylightsavingstimezone</code>)</li>
+ type <code>0x03</code> (no tail zone) or <code>0x01</code> (<code>daylightsavingstimezone</code>).</li>
 </ul>
-
-<p>TODO: is the last true? Above we say that we can use a fixed time zone as a
-tailzone.</p>
 
 <h5>zoneinterval</h5>
 
-<p>A <code>zoneinterval</code> is serialised as the <code>zoneintervaltransition</code> representing
+<p>A <code>zoneinterval</code> is serialized as the <code>zoneintervaltransition</code> representing
 the start of the transition (the beginning of time for the first one), an
 index into the zone's interval name string pool, as either <code>byte</code> or
 <code>fixed32</code> depending on the total number of entries in the pool, an <code>offset</code>
@@ -316,20 +387,20 @@ representing the wall-time offset from UTC (including any daylight savings
 time) and a second <code>offset</code> representing the daylight savings contribution
 (or zero if the period is not a daylight savings period).</p>
 
-<p>The periods serialised as part of a <code>precalculatedtimezone</code> cover the whole of
+<p>The periods serialized as part of a <code>precalculatedtimezone</code> cover the whole of
 time, so each <code>zoneinterval</code> finishes as the next one starts (or as the tail
 zone starts).</p>
 
 <h5>zoneintervaltransition</h5>
 
 <p>A <code>zoneintervaltransition</code> represents an instant at which a transition
-begins. It is serialised as a variable number of bytes according to the
+begins. It is serialized as a variable number of bytes according to the
 following scheme, based on the (signed) number of ticks from the Unix epoch:</p>
 
 <ul>
-<li>the beginning of time and end of time are serialised as <code>0xfe</code> and
+<li>the beginning of time and end of time are serialized as <code>0xfe</code> and
  <code>0xff</code> respectively</li>
-<li>numbers of ticks that are a multiple of 30 minutes are serialised as
+<li>numbers of ticks that are a multiple of 30 minutes are serialized as
  the single byte <code>0x00</code>..<code>0x3e</code> counting the number of 30 minute
  periods, with a bias such that <code>0x00</code> represents -15:30, <code>0x01</code>
  represents -15:00, <code>0x1f</code> represents a zero offset, and <code>0x3e</code>
@@ -337,7 +408,7 @@ following scheme, based on the (signed) number of ticks from the Unix epoch:</p>
 </ul>
 
 <p>TODO minutes and seconds:
-   * offsets that are a whole number of seconds are serialised as three
+   * offsets that are a whole number of seconds are serialized as three
      bytes, the first of which is in the range <code>0x82</code>..<code>0x85</code>, by adding
      <code>0x83ffff</code> to the number of seconds, and writing three bytes in
      MSB-first order, so that <code>[0x82 0xae 0x80]</code> represents -23:59:59,
@@ -345,7 +416,7 @@ following scheme, based on the (signed) number of ticks from the Unix epoch:</p>
      represents +23:59:59.</p>
 
 <ul>
-<li>any other value is serialised as the leader <code>0xa0</code> followed by the
+<li>any other value is serialized as the leader <code>0xa0</code> followed by the
  number of ticks as a <code>fixed64</code></li>
 </ul>
 
