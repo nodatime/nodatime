@@ -330,13 +330,20 @@ namespace NodaTime.TimeZones
         /// <param name="writer">Where to send the output.</param>
         internal void Write(IDateTimeZoneWriter writer)
         {
-            writer.WriteCount((int)Mode);
+            // Flags contains four pieces of information in a single byte:
+            // 0MMDDDAP:
+            // - MM is the mode (0-2)
+            // - DDD is the day of week (0-7)
+            // - A is the AdvanceDayOfWeek
+            // - P is the "addDay" (24:00) flag
+            int flags = ((int)Mode << 5) |
+                        (DayOfWeek << 2) |
+                        (AdvanceDayOfWeek ? 2 : 0) |
+                        (addDay ? 1 : 0);
+            writer.WriteByte((byte)flags);
             writer.WriteCount(MonthOfYear);
             writer.WriteSignedCount(DayOfMonth);
-            writer.WriteCount(DayOfWeek);
             writer.WriteOffset(TickOfDay);
-            int flags = (AdvanceDayOfWeek ? 2 : 0) + (addDay ? 1 : 0);
-            writer.WriteCount(flags);
         }
 
         /// <summary>
@@ -359,14 +366,14 @@ namespace NodaTime.TimeZones
         public static ZoneYearOffset Read(IDateTimeZoneReader reader)
         {
             Preconditions.CheckNotNull(reader, "reader");
-            var mode = (TransitionMode)reader.ReadCount();
+            int flags = reader.ReadByte();
+            var mode = (TransitionMode) (flags >> 5);
+            var dayOfWeek = (flags >> 2) & 7;
+            var advance = (flags & 2) != 0;
+            var addDay = (flags & 1) != 0;
             int monthOfYear = reader.ReadCount();
             int dayOfMonth = reader.ReadSignedCount();
-            int dayOfWeek = reader.ReadCount();
             var ticksOfDay = reader.ReadOffset();
-            int flags = reader.ReadCount();
-            bool advance = (flags & 2) != 0;
-            bool addDay = (flags & 1) != 0;
             return new ZoneYearOffset(mode, monthOfYear, dayOfMonth, dayOfWeek, advance, ticksOfDay, addDay);
         }
 

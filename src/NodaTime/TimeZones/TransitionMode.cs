@@ -13,16 +13,16 @@ namespace NodaTime.TimeZones
         /// <summary>
         /// Calculate transitions against UTC.
         /// </summary>
-        Utc,
+        Utc = 0,
 
         /// <summary>
         /// Calculate transitions against wall offset.
         /// </summary>
-        Wall,
+        Wall = 1,
 
         /// <summary>
         /// Calculate transitions against standard offset.
         /// </summary>
-        Standard
+        Standard = 2
     }
 }
