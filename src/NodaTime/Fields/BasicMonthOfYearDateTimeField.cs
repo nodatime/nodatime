@@ -16,14 +16,12 @@ namespace NodaTime.Fields
 
         private readonly BasicCalendarSystem calendarSystem;
         private readonly int max;
-        private readonly int leapMonth;
 
-        internal BasicMonthOfYearDateTimeField(BasicCalendarSystem calendarSystem, int leapMonth)
+        internal BasicMonthOfYearDateTimeField(BasicCalendarSystem calendarSystem)
             : base(DateTimeFieldType.MonthOfYear, new BasicMonthPeriodField(calendarSystem))
         {
             this.calendarSystem = calendarSystem;
             max = calendarSystem.GetMaxMonth();
-            this.leapMonth = leapMonth;
         }
 
         #region Values
@@ -63,11 +61,7 @@ namespace NodaTime.Fields
             return new LocalInstant(calendarSystem.GetYearMonthDayTicks(thisYear, month, thisDom) + calendarSystem.GetTickOfDay(localInstant));
         }
         #endregion
-
-        #region Leap
-
-        #endregion
-
+        
         #region Ranges
         internal override long GetMinimumValue()
         {
