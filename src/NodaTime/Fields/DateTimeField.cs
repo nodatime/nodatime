@@ -120,14 +120,6 @@ namespace NodaTime.Fields
             return false;
         }
 
-        /// <summary>
-        /// Defaults to 0.
-        /// </summary>
-        internal virtual int GetLeapAmount(LocalInstant localInstant)
-        {
-            return 0;
-        }
-
         #endregion
 
         #region Ranges

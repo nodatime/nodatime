@@ -64,11 +64,6 @@ namespace NodaTime.Fields
             return WrappedField.IsLeap(localInstant);
         }
 
-        internal override int GetLeapAmount(LocalInstant localInstant)
-        {
-            return WrappedField.GetLeapAmount(localInstant);
-        }
-
         #endregion
 
         #region Ranges

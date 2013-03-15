@@ -112,14 +112,8 @@ namespace NodaTime.Fields
         #region Leap
         internal override bool IsLeap(LocalInstant localInstant)
         {
-            return GetLeapAmount(localInstant) > 0;
+            return calendarSystem.GetWeeksInYear(calendarSystem.GetWeekYear(localInstant)) - 52 > 0;
         }
-
-        internal override int GetLeapAmount(LocalInstant localInstant)
-        {
-            return calendarSystem.GetWeeksInYear(calendarSystem.GetWeekYear(localInstant)) - 52;
-        }
-
         #endregion
 
         #region Ranges

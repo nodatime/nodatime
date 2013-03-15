@@ -87,20 +87,6 @@ namespace NodaTime.Test.Fields
         }
 
         [Test]
-        public void GetLeapAmount_DefaultsTo0()
-        {
-            DateTimeField field = CreateMinuteOfHourField();
-            Assert.AreEqual(0L, field.GetLeapAmount(new LocalInstant(0L)));
-        }
-
-        [Test]
-        public void GetMinimumValue_DefaultsTo0()
-        {
-            DateTimeField field = CreateMinuteOfHourField();
-            Assert.AreEqual(0L, field.GetMinimumValue());
-        }
-
-        [Test]
         public void RoundFloor()
         {
             DateTimeField field = CreateMinuteOfHourField();

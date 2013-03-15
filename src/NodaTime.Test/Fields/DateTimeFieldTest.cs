@@ -71,13 +71,6 @@ namespace NodaTime.Test.Fields
             var field = new StubDateTimeField();
             Assert.IsFalse(field.IsLeap(new LocalInstant(0)));
         }
-
-        [Test]
-        public void GetLeapAmount_DefaultsTo0()
-        {
-            var field = new StubDateTimeField();
-            Assert.AreEqual(0, field.GetLeapAmount(new LocalInstant(0)));
-        }
         #endregion
 
         #region Ranges

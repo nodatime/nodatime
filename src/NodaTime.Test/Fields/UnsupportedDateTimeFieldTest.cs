@@ -16,7 +16,6 @@ namespace NodaTime.Test.Fields
         {
             LocalInstant when = new LocalInstant();
             AssertUnsupported(x => x.GetInt64Value(when));
-            AssertUnsupported(x => x.GetLeapAmount(when));
             AssertUnsupported(x => x.GetMaximumValue());
             AssertUnsupported(x => x.GetMaximumValue(when));
             AssertUnsupported(x => x.GetMinimumValue());
