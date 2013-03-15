@@ -23,7 +23,7 @@ namespace NodaTime.Fields
         {
         }
 
-        protected DateTimeField(DateTimeFieldType fieldType, PeriodField periodField, bool isSupported)
+        protected DateTimeField(DateTimeFieldType fieldType, PeriodField periodField,bool isSupported)
         {
             this.fieldType = Preconditions.CheckNotNull(fieldType, "fieldType");
             this.periodField = Preconditions.CheckNotNull(periodField, "PeriodField");
@@ -34,17 +34,6 @@ namespace NodaTime.Fields
         /// Get the type of the field.
         /// </summary>
         internal DateTimeFieldType FieldType { get { return fieldType; } }
-
-        /// <summary>
-        /// Get the name of the field.
-        /// </summary>
-        /// <remarks>
-        /// By convention, names follow a pattern of "dddOfRrr", where "ddd" represents
-        /// the (singular) duration unit field name and "Rrr" represents the (singular)
-        /// duration range field name. If the range field is not applicable, then
-        /// the name of the field is simply the (singular) period field name.
-        /// </remarks>
-        internal virtual string Name { get { return FieldType.ToString(); } }
 
         /// <summary>
         /// Gets the duration per unit value of this field, or UnsupportedPeriodField if field has no duration.

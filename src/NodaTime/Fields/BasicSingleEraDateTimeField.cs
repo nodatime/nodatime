@@ -22,8 +22,6 @@ namespace NodaTime.Fields
             this.era = era;
         }
 
-        internal override string Name { get { return era.Name; } }
-
         internal override int GetValue(LocalInstant localInstant)
         {
             return 0;
