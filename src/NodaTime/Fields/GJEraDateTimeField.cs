@@ -8,8 +8,7 @@ using NodaTime.Utility;
 namespace NodaTime.Fields
 {
     /// <summary>
-    /// Porting status: needs text
-    /// TODO(Post-V1): Rename to "GregulianEraDateTimeField" or something similar?
+    /// Era field for Gregorian and Julian calendars, representing the BC and CE eras.
     /// </summary>
     internal sealed class GJEraDateTimeField : DateTimeField
     {
