@@ -20,7 +20,6 @@ namespace NodaTime.Test.Fields
             Assert.IsFalse(field.IsLenient);
             Assert.IsFalse(field.IsLeap(new LocalInstant(0)));
             Assert.AreEqual(0, field.GetLeapAmount(new LocalInstant(0)));
-            Assert.IsNull(field.LeapPeriodField);
         }
 
         [Test]

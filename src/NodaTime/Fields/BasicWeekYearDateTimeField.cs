@@ -120,7 +120,6 @@ namespace NodaTime.Fields
             return calendarSystem.GetWeeksInYear(calendarSystem.GetWeekYear(localInstant)) - 52;
         }
 
-        internal override PeriodField LeapPeriodField { get { return calendarSystem.Fields.Weeks; } }
         #endregion
 
         #region Ranges

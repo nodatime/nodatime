@@ -128,10 +128,6 @@ namespace NodaTime.Fields
             return 0;
         }
 
-        /// <summary>
-        /// Defaults to null, i.e. no leap period field.
-        /// </summary>
-        internal virtual PeriodField LeapPeriodField { get { return null; } }
         #endregion
 
         #region Ranges

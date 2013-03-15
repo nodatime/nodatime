@@ -59,7 +59,6 @@ namespace NodaTime.Fields
             return IsLeap(localInstant) ? 1 : 0;
         }
 
-        internal override PeriodField LeapPeriodField { get { return calendarSystem.Fields.Days; } }
         #endregion
 
         #region Ranges
