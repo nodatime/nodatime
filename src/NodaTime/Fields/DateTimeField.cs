@@ -57,12 +57,6 @@ namespace NodaTime.Fields
         internal PeriodField PeriodField { get { return periodField; } }
 
         /// <summary>
-        /// Returns the range duration of this field. For example, if this field
-        /// represents "hour of day", then the range duration is a day.
-        /// </summary>
-        internal abstract PeriodField RangePeriodField { get; }
-
-        /// <summary>
         /// Whether or not this is a supported field.
         /// </summary>
         internal bool IsSupported { get { return isSupported; } }

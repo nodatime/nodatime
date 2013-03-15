@@ -16,7 +16,6 @@ namespace NodaTime.Fields
     /// </remarks>
     internal sealed class FixedLengthDateTimeField : FixedLengthPeriodDateTimeField
     {
-        private readonly PeriodField rangeField;
         private readonly long effectiveRange;
 
         internal FixedLengthDateTimeField(DateTimeFieldType type, PeriodField unit, PeriodField rangeField) : base(type, unit)
@@ -25,7 +24,6 @@ namespace NodaTime.Fields
             Preconditions.CheckArgument(rangeField.IsFixedLength, "rangeField", "Range period field must have a fixed length");
             effectiveRange = rangeField.UnitTicks / unit.UnitTicks;
             Preconditions.CheckArgument(effectiveRange >= 2, "rangeField", "The effective range must be at least 2");
-            this.rangeField = rangeField;
         }
 
         internal override long GetInt64Value(LocalInstant localInstant)
@@ -40,8 +38,6 @@ namespace NodaTime.Fields
             long ticks = localInstant.Ticks;
             return new LocalInstant(ticks + (value - GetInt64Value(localInstant)) * UnitTicks);
         }
-
-        internal override PeriodField RangePeriodField { get { return rangeField; } }
 
         internal override long GetMaximumValue()
         {

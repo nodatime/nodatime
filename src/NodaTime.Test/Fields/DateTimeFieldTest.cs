@@ -219,8 +219,6 @@ namespace NodaTime.Test.Fields
                 return localInstant;
             }
 
-            internal override PeriodField RangePeriodField { get { return new MockCountingPeriodField(PeriodFieldType.Minutes); } }
-
             public bool GetMaxWasCalled;
 
             internal override long GetMaximumValue()

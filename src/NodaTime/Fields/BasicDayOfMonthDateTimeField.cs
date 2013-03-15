@@ -29,8 +29,6 @@ namespace NodaTime.Fields
             return calendarSystem.GetDayOfMonth(localInstant);
         }
 
-        internal override PeriodField RangePeriodField { get { return calendarSystem.Fields.Months; } }
-
         internal override long GetMaximumValue()
         {
             return calendarSystem.GetMaxDaysInMonth();

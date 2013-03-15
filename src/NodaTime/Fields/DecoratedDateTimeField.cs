@@ -47,8 +47,6 @@ namespace NodaTime.Fields
         /// </summary>
         public DateTimeField WrappedField { get { return wrappedField; } }
 
-        internal override PeriodField RangePeriodField { get { return wrappedField.RangePeriodField; } }
-
         internal override long GetInt64Value(LocalInstant localInstant)
         {
             return wrappedField.GetInt64Value(localInstant);

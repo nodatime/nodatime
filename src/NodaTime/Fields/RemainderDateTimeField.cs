@@ -51,8 +51,6 @@ namespace NodaTime.Fields
             return WrappedField.SetValue(localInstant, divided * divisor + value);
         }
 
-        internal override PeriodField RangePeriodField { get { return remainderRangeField; } }
-
         internal override long GetMinimumValue()
         {
             return 0;

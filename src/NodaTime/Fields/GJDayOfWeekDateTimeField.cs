@@ -28,8 +28,6 @@ namespace NodaTime.Fields
             return calendarSystem.GetDayOfWeek(localInstant);
         }
 
-        internal override PeriodField RangePeriodField { get { return calendarSystem.Fields.Weeks; } }
-
         internal override long GetMaximumValue()
         {
             return (long)IsoDayOfWeek.Sunday;
