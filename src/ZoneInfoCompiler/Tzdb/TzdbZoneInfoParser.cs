@@ -232,13 +232,12 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         /// <param name="text">The text.</param>
         private static int ParseDayOfWeek(string text)
         {
+            Preconditions.CheckArgument(!string.IsNullOrEmpty(text), "text", "Value must not be empty or null");
             int index = Array.IndexOf(DaysOfWeek, text, 1);
             if (index == -1)
             {
                 throw new InvalidDataException("Invalid day of week: " + text);
             }
-            // TODO(Post-V1): This isn't really a bug, so probably shouldn't be an ArgumentException.
-            Preconditions.CheckArgument(index > 0, "text", "The value is not a valid day of week: " + text);
             return index;
         }
 
