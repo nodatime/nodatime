@@ -93,12 +93,6 @@ namespace NodaTime.Test.Fields
             Assert.AreEqual(0L, field.GetLeapAmount(new LocalInstant(0L)));
         }
 
-        public void LeapPeriodField_DefaultsToNull()
-        {
-            DateTimeField field = CreateMinuteOfHourField();
-            Assert.IsNull(field.LeapPeriodField);
-        }
-
         [Test]
         public void GetMinimumValue_DefaultsTo0()
         {
