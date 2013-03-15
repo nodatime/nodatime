@@ -49,7 +49,9 @@ namespace NodaTime.TimeZones
         /// </para>
         /// </remarks>
         /// <returns>The <see cref="IEnumerable{T}"/> of ids. It may be empty, but must not be null, 
-        /// and must not contain any elements which are null.</returns>
+        /// and must not contain any elements which are null. It should not contain duplicates: this is not
+        /// enforced, and may not have a significant impact on clients in some cases, but is generally unfriendly.
+        /// The built-in implementations never return duplicates.</returns>
         IEnumerable<string> GetIds();
 
         /// <summary>
