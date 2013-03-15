@@ -41,7 +41,7 @@ namespace NodaTime.Fields
         public static readonly UnsupportedDateTimeField TickOfDay = new UnsupportedDateTimeField(DateTimeFieldType.TickOfDay);
         public static readonly UnsupportedDateTimeField TickOfSecond = new UnsupportedDateTimeField(DateTimeFieldType.TickOfSecond);
 
-        private UnsupportedDateTimeField(DateTimeFieldType fieldType) : base(fieldType, UnsupportedPeriodField.ForFieldType(fieldType.PeriodFieldType), false, false)
+        private UnsupportedDateTimeField(DateTimeFieldType fieldType) : base(fieldType, UnsupportedPeriodField.ForFieldType(fieldType.PeriodFieldType), false)
         {
         }
 

@@ -17,7 +17,6 @@ namespace NodaTime.Test.Fields
             OffsetDateTimeField field = new OffsetDateTimeField(CalendarSystem.Iso.Fields.SecondOfMinute, 3);
             Assert.AreEqual(DateTimeFieldType.SecondOfMinute, field.FieldType);
             Assert.IsTrue(field.IsSupported);
-            Assert.IsFalse(field.IsLenient);
             Assert.IsFalse(field.IsLeap(new LocalInstant(0)));
         }
 

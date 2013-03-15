@@ -35,7 +35,6 @@ namespace NodaTime.Test.Fields
         public void ConstantProperties_ReturnExpectedValues()
         {
             DateTimeField field = UnsupportedDateTimeField.MonthOfYear;
-            Assert.IsFalse(field.IsLenient);
             Assert.IsFalse(field.IsSupported);
         }
 
