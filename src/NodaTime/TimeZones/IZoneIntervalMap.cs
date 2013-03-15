@@ -8,7 +8,11 @@ namespace NodaTime.TimeZones
     /// The core part of a DateTimeZone: mapping an Instant to an Interval.
     /// Separating this out into an interface allows for flexible caching.
     /// </summary>
-    // TODO: Investigate whether a delegate would be faster.
+    /// <remarks>
+    /// Benchmarking shows that a delegate may be slightly faster here, but the difference
+    /// isn't very significant even for very fast calls (cache hits). The interface ends up
+    /// feeling slightly cleaner elsewhere in the code.
+    /// </remarks>
     internal interface IZoneIntervalMap
     {
         ZoneInterval GetZoneInterval(Instant instant);

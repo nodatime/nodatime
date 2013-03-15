@@ -35,27 +35,29 @@ namespace NodaTime.Benchmarks
         }
 
         [Benchmark]
-        public void GetPeriodInstant()
+        public void GetZoneInterval_UnixEpoch()
         {
             paris.GetZoneInterval(NodaConstants.UnixEpoch);
         }
 
+        // Instants across 500 years, which breaks the caching
         [Benchmark]
-        public void GetPeriodInstant_NoCache()
+        public void GetZoneInterval_CacheBustingInstants()
         {
             paris.GetZoneInterval(noCacheInstants[noCacheIndex]);
             noCacheIndex = (noCacheIndex + 1) % noCacheInstants.Length;
         }
 
+        // Instants across 100 years, so we'll always hit the cache.
         [Benchmark]
-        public void GetPeriodInstant_Cache()
+        public void GetZoneInterval_CachedInstants()
         {
             paris.GetZoneInterval(cacheInstants[cacheIndex]);
             cacheIndex = (cacheIndex + 1) % cacheInstants.Length;
         }
 
         [Benchmark]
-        public void GetPeriodInstant_TwoYears()
+        public void GetZoneInterval_TwoYears()
         {
             paris.GetZoneInterval(twoYearsCacheInstants[twoYearsCacheIndex]);
             twoYearsCacheIndex = (twoYearsCacheIndex + 1) % twoYearsCacheInstants.Length;
