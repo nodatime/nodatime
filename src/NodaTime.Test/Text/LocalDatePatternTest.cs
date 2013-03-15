@@ -70,6 +70,10 @@ namespace NodaTime.Test.Text
 
             // Invalid calendar name
             new Data { Pattern = "c yyyy MM dd", Text = "2015 01 01", Message = Messages.Parse_NoMatchingCalendarSystem },
+
+            // Invald year
+            new Data { Pattern = "yyyyy", Text = "55555", Message = Messages.Parse_FieldValueOutOfRange, Parameters = { 55555, 'y', typeof(LocalDate) } },
+            new Data { Pattern = "YYYYY", Text = "55555", Message = Messages.Parse_YearOfEraOutOfRange, Parameters = { 55555, "CE", "ISO" } },
         };
 
         internal static Data[] ParseOnlyData = {

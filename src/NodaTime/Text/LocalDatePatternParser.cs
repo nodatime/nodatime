@@ -215,11 +215,9 @@ namespace NodaTime.Text
                         break;
                     // No default: it would be impossible.
                 }
-                // TODO(Post-V1): Wrong field if we happen to have been given the year of era instead...
-                // Pretty insignificant problem, mind you...
-                // (The error is reported in the right circumstances - it's just that it will refer to 'y' regardless.)
                 if (Year > Calendar.MaxYear || Year < Calendar.MinYear)
                 {
+                    // The field can't be YearOfEra, as we've already validated that earlier.
                     return ParseResult<LocalDate>.FieldValueOutOfRange(Year, 'y');
                 }
                 return null;
