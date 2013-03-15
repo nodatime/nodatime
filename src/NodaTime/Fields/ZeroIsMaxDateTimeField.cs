@@ -39,10 +39,6 @@ namespace NodaTime.Fields
         }
         #endregion
 
-        #region Leap
-
-        #endregion
-
         #region Ranges
         internal override long GetMinimumValue()
         {

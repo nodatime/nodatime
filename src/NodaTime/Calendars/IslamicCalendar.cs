@@ -118,7 +118,7 @@ namespace NodaTime.Calendars
         private static void AssembleFields(FieldSet.Builder builder, CalendarSystem @this)
         {
             builder.Era = EraField;
-            builder.MonthOfYear = new BasicMonthOfYearDateTimeField((BasicCalendarSystem) @this, 12);
+            builder.MonthOfYear = new BasicMonthOfYearDateTimeField((BasicCalendarSystem) @this);
             builder.Months = builder.MonthOfYear.PeriodField;
         }
 
