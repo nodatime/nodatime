@@ -48,7 +48,6 @@ namespace NodaTime.TimeZones
                 throw new InvalidDateTimeZoneSourceException("Source-returned ID sequence was null");
             }
             var idList = new List<string>(providerIds);
-            // TODO(Post-V1): Handle duplicates?
             idList.Sort(StringComparer.Ordinal);
             ids = new ReadOnlyCollection<string>(idList);
             // Populate the dictionary with null values meaning "the ID is valid, we haven't fetched the zone yet".
