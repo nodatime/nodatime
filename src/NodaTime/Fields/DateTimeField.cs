@@ -17,19 +17,16 @@ namespace NodaTime.Fields
         private readonly DateTimeFieldType fieldType;
         private readonly PeriodField periodField;
         private readonly bool isSupported;
-        private readonly bool isLenient;
 
         protected DateTimeField(DateTimeFieldType fieldType, PeriodField periodField)
-            : this(fieldType, periodField, false, true)
+            : this(fieldType, periodField, true)
         {
         }
 
-        protected DateTimeField(DateTimeFieldType fieldType, PeriodField periodField,
-            bool isLenient, bool isSupported)
+        protected DateTimeField(DateTimeFieldType fieldType, PeriodField periodField, bool isSupported)
         {
             this.fieldType = Preconditions.CheckNotNull(fieldType, "fieldType");
             this.periodField = Preconditions.CheckNotNull(periodField, "PeriodField");
-            this.isLenient = isLenient;
             this.isSupported = isSupported;
         }
 
@@ -60,13 +57,6 @@ namespace NodaTime.Fields
         /// Whether or not this is a supported field.
         /// </summary>
         internal bool IsSupported { get { return isSupported; } }
-
-        /// <summary>
-        /// Returns true if the set method is lenient. If so, it accepts values that
-        /// are out of bounds. For example, a lenient day of month field accepts 32
-        /// for January, converting it to February 1.
-        /// </summary>
-        internal bool IsLenient { get { return isLenient; } }
 
         #region Values
         /// <summary>

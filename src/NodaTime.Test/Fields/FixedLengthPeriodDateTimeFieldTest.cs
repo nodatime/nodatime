@@ -38,13 +38,6 @@ namespace NodaTime.Test.Fields
         }
 
         [Test]
-        public void IsLenient_ReturnsFalse()
-        {
-            DateTimeField field = new StubFixedLengthPeriodDateTimeField();
-            Assert.IsFalse(field.IsLenient);
-        }
-
-        [Test]
         public void SetValue()
         {
             DateTimeField field = new StubFixedLengthPeriodDateTimeField();

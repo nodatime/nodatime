@@ -30,11 +30,10 @@ namespace NodaTime.Fields
         private readonly DateTimeField wrappedField;
 
         protected DecoratedDateTimeField(DateTimeField wrappedField, DateTimeFieldType fieldType, PeriodField periodField)
-            : base(fieldType, periodField, Preconditions.CheckNotNull(wrappedField, "wrappedField").IsLenient, true)
+            : base(fieldType, periodField, true)
         {
-            // Already checked for nullity by now
+            this.wrappedField = Preconditions.CheckNotNull(wrappedField, "wrappedField");
             Preconditions.CheckArgument(wrappedField.IsSupported, "wrappedField", "The wrapped field must be supported");
-            this.wrappedField = wrappedField;
         }
 
         protected DecoratedDateTimeField(DateTimeField wrappedField, DateTimeFieldType fieldType)
