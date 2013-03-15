@@ -45,8 +45,6 @@ namespace NodaTime.Fields
         {
         }
 
-        internal override PeriodField RangePeriodField { get { return null; } }
-
         internal override PeriodField LeapPeriodField { get { return null; } }
 
         internal override int GetValue(LocalInstant localInstant)

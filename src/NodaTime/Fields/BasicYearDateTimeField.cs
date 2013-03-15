@@ -20,11 +20,6 @@ namespace NodaTime.Fields
             this.calendarSystem = calendarSystem;
         }
 
-        /// <summary>
-        /// Always returns null (not supported)
-        /// </summary>
-        internal override PeriodField RangePeriodField { get { return null; } }
-
         #region Values
         /// <summary>
         /// Get the Year component of the specified local instant.

@@ -22,8 +22,6 @@ namespace NodaTime.Fields
             this.calendarSystem = calendarSystem;
         }
 
-        internal override PeriodField RangePeriodField { get { return null; } }
-
         #region Values
         internal override long GetInt64Value(LocalInstant localInstant)
         {

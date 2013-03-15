@@ -30,8 +30,6 @@ namespace NodaTime.Fields
             return calendarSystem.GetWeekOfWeekYear(localInstant);
         }
 
-        internal override PeriodField RangePeriodField { get { return calendarSystem.Fields.WeekYears; } }
-
         internal override LocalInstant RoundFloor(LocalInstant localInstant)
         {
             return base.RoundFloor(localInstant + ThreeDays) - ThreeDays;

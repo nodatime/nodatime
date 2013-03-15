@@ -26,8 +26,6 @@ namespace NodaTime.Fields
             this.leapMonth = leapMonth;
         }
 
-        internal override PeriodField RangePeriodField { get { return calendarSystem.Fields.Years; } }
-
         #region Values
         /// <summary>
         /// Get the Month component of the specified local instant.

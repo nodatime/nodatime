@@ -39,7 +39,6 @@ namespace NodaTime.Test.Fields
             Assert.IsFalse(field.IsLenient);
             Assert.IsFalse(field.IsSupported);
             Assert.IsNull(field.LeapPeriodField);
-            Assert.IsNull(field.RangePeriodField);
         }
 
         private static void AssertUnsupported(Action<DateTimeField> action)
