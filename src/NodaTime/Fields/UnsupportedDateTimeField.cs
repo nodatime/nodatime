@@ -60,11 +60,6 @@ namespace NodaTime.Fields
             throw new NotSupportedException();
         }
 
-        internal override bool IsLeap(LocalInstant localInstant)
-        {
-            throw new NotSupportedException();
-        }
-
         internal override long GetMaximumValue()
         {
             throw new NotSupportedException();

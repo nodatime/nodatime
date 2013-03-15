@@ -49,10 +49,6 @@ namespace NodaTime.Fields
         #endregion
 
         #region Leap
-        internal override bool IsLeap(LocalInstant localInstant)
-        {
-            return calendarSystem.IsLeapYear(GetValue(localInstant));
-        }
 
         #endregion
 
