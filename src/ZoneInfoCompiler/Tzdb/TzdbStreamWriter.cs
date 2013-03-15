@@ -70,26 +70,18 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
             fields.AddField(TzdbStreamFieldId.TzdbIdMap, stringPool).Writer.WriteDictionary(timeZoneMap);
 
             // Windows mappings
-            // TODO: Validate the TZDB IDs all exist, and that there's a primary territory for each Windows ID.
             cldrWindowsZones.Write(fields.AddField(TzdbStreamFieldId.CldrSupplementalWindowsZones, stringPool).Writer);
-            // Map from StandardName to TZDB ID (rather than just to BCL ID). This will go bang if any IDs are mismatched.
             fields.AddField(TzdbStreamFieldId.WindowsAdditionalStandardNameToIdMapping, stringPool).Writer.WriteDictionary
                 (PclSupport.StandardNameToIdMap.ToDictionary(pair => pair.Key, pair => cldrWindowsZones.PrimaryMapping[pair.Value]));
 
-            // Geolocations, if any. This will validate the mapping as we go.
+            // Geolocations, if any.
             var geoLocations = database.GeoLocations;
             if (geoLocations != null)
             {
-                var allZoneIds = new HashSet<string>(zones.Select(zone => zone.Id).Concat(timeZoneMap.Keys));
                 var field = fields.AddField(TzdbStreamFieldId.GeoLocations, stringPool);
                 field.Writer.WriteCount(geoLocations.Count);
                 foreach (var geoLocation in geoLocations)
                 {
-                    if (!allZoneIds.Contains(geoLocation.ZoneId))
-                    {
-                        throw new ArgumentException("The database contains a geolocation with zone ID " +
-                            geoLocation.ZoneId + " but no such zone");
-                    }
                     geoLocation.Write(field.Writer);
                 }
             }

@@ -299,6 +299,16 @@ namespace NodaTime.TimeZones
                 }
             }
 
+            // Check that every Windows mapping has a primary territory
+            foreach (var mapZone in source.WindowsZones.MapZones)
+            {
+                // Simplest way of checking is to find the primary mapping...
+                if (!source.WindowsZones.PrimaryMapping.ContainsKey(mapZone.WindowsId))
+                {
+                    throw new InvalidNodaDataException("Windows mapping for standard ID " + mapZone.WindowsId + " has no primary territory");
+                }
+            }
+
             // Check that each Windows mapping has a known canonical ID.
             foreach (var mapZone in source.WindowsZones.MapZones)
             {
