@@ -147,7 +147,7 @@ namespace NodaTime.Fields
         internal abstract Duration GetDuration(long value, LocalInstant localInstant);
         #endregion
 
-        #region Add, subtract, difference
+        #region Add, difference
         /// <summary>
         /// Adds a duration value (which may be negative) to the instant.
         /// </summary>
@@ -163,36 +163,6 @@ namespace NodaTime.Fields
         /// <param name="value">The value to add, in the units of the field</param>
         /// <returns>The updated local instant</returns>
         internal abstract LocalInstant Add(LocalInstant localInstant, long value);
-
-        /// <summary>
-        /// Subtracts a duration value (which may be negative) from the instant.
-        /// </summary>
-        /// <param name="localInstant">The local instant to subtract from</param>
-        /// <param name="value">The value to subtract, in the units of the field</param>
-        /// <returns>The updated local instant</returns>
-        internal LocalInstant Subtract(LocalInstant localInstant, int value)
-        {
-            if (value == int.MinValue)
-            {
-                return Subtract(localInstant, (long)value);
-            }
-            return Add(localInstant, -value);
-        }
-
-        /// <summary>
-        /// Subtracts a duration value (which may be negative) from the instant.
-        /// </summary>
-        /// <param name="localInstant">The local instant to subtract from</param>
-        /// <param name="value">The value to subtract, in the units of the field</param>
-        /// <returns>The updated local instant</returns>
-        internal LocalInstant Subtract(LocalInstant localInstant, long value)
-        {
-            if (value == long.MinValue)
-            {
-                throw new ArithmeticException("Int64.MinValue cannot be negated");
-            }
-            return Add(localInstant, -value);
-        }
 
         /// <summary>
         /// Computes the difference between two local instants, as measured in the units

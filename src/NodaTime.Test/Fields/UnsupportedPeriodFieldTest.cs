@@ -47,8 +47,6 @@ namespace NodaTime.Test.Fields
             AssertUnsupported(x => x.GetInt64Value(duration, when));
             AssertUnsupported(x => x.GetValue(duration));
             AssertUnsupported(x => x.GetValue(duration, when));
-            AssertUnsupported(x => x.Subtract(when, 0));
-            AssertUnsupported(x => x.Subtract(when, 0L));
         }
 
         private static void AssertUnsupported(Action<UnsupportedPeriodField> action)
