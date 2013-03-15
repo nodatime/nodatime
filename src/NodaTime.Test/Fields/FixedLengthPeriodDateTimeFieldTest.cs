@@ -46,13 +46,6 @@ namespace NodaTime.Test.Fields
         }
 
         [Test]
-        public void IsLeap_DefaultsToFalse()
-        {
-            DateTimeField field = new StubFixedLengthPeriodDateTimeField();
-            Assert.IsFalse(field.IsLeap(new LocalInstant(0L)));
-        }
-
-        [Test]
         public void GetMinimumValue_DefaultsTo0()
         {
             DateTimeField field = new StubFixedLengthPeriodDateTimeField();

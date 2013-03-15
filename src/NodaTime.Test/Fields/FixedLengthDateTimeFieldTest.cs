@@ -80,13 +80,6 @@ namespace NodaTime.Test.Fields
         }
 
         [Test]
-        public void IsLeap_DefaultsToFalse()
-        {
-            DateTimeField field = CreateMinuteOfHourField();
-            Assert.IsFalse(field.IsLeap(new LocalInstant(0L)));
-        }
-
-        [Test]
         public void RoundFloor()
         {
             DateTimeField field = CreateMinuteOfHourField();

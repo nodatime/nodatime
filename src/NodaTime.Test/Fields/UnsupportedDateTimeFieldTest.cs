@@ -21,7 +21,6 @@ namespace NodaTime.Test.Fields
             AssertUnsupported(x => x.GetMinimumValue());
             AssertUnsupported(x => x.GetMinimumValue(when));
             AssertUnsupported(x => x.GetValue(when));
-            AssertUnsupported(x => x.IsLeap(when));
             AssertUnsupported(x => x.Remainder(when));
             AssertUnsupported(x => x.RoundCeiling(when));
             AssertUnsupported(x => x.RoundFloor(when));

@@ -90,17 +90,6 @@ namespace NodaTime.Fields
         internal abstract LocalInstant SetValue(LocalInstant localInstant, long value);
         #endregion
 
-        #region Leap
-        /// <summary>
-        /// Defaults to non-leap.
-        /// </summary>
-        internal virtual bool IsLeap(LocalInstant localInstant)
-        {
-            return false;
-        }
-
-        #endregion
-
         #region Ranges
         /// <summary>
         /// Defaults to the absolute maximum for the field.

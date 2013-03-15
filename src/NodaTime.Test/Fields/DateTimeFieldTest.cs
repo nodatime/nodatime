@@ -64,15 +64,6 @@ namespace NodaTime.Test.Fields
         }
         #endregion
 
-        #region Leap
-        [Test]
-        public void IsLeap_DefaultsToFalse()
-        {
-            var field = new StubDateTimeField();
-            Assert.IsFalse(field.IsLeap(new LocalInstant(0)));
-        }
-        #endregion
-
         #region Ranges
         [Test]
         public void GetMinimumValue_OnStub_DefaultsTo0()
