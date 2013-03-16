@@ -59,8 +59,8 @@ namespace NodaTime.Fields
             int thisDow = calendarSystem.GetDayOfWeek(localInstant);
 
             // Calculate the maximum weeks in the target year
-            int weeksInFromYear = calendarSystem.GetWeeksInYear(thisWeekYear);
-            int weeksInToYear = calendarSystem.GetWeeksInYear(year);
+            int weeksInFromYear = calendarSystem.GetWeeksInWeekYear(thisWeekYear);
+            int weeksInToYear = calendarSystem.GetWeeksInWeekYear(year);
             // TODO(Post-V1): Check this. Doesn't look right, but mirrors the Java code
             int maxOutWeeks = Math.Min(weeksInToYear, weeksInFromYear);
 

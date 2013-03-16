@@ -53,7 +53,7 @@ namespace NodaTime.Fields
         internal override long GetMaximumValue(LocalInstant localInstant)
         {
             int weekyear = calendarSystem.GetWeekYear(localInstant);
-            return calendarSystem.GetWeeksInYear(weekyear);
+            return calendarSystem.GetWeeksInWeekYear(weekyear);
         }
     }
 }

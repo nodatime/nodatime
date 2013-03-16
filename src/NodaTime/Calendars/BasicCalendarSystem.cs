@@ -354,31 +354,47 @@ namespace NodaTime.Calendars
             return GetWeekOfWeekYear(localInstant, GetYear(localInstant));
         }
 
-        internal int GetWeekOfWeekYear(LocalInstant localInstant, int year)
+        /// <summary>
+        /// Given a local instant and the calendar year (not week-year) it's in,
+        /// find out the week of the *actual* week year.
+        /// </summary>
+        private int GetWeekOfWeekYear(LocalInstant localInstant, int year)
         {
-            long firstWeekTicks1 = GetFirstWeekOfYearTicks(year);
+            // Let's guess that it's in the same week year as calendar year, and check that.
+            long firstWeekTicks1 = GetWeekYearTicks(year);
             if (localInstant.Ticks < firstWeekTicks1)
             {
-                return GetWeeksInYear(year - 1);
+                // No, the week-year hadn't started yet. For example, we've been given January 1st 2011...
+                // and the first week of week-year 2011 starts on January 3rd 2011. Therefore the local instant
+                // must belong to the last week of the previous week-year.
+                return GetWeeksInWeekYear(year - 1);
             }
-            long firstWeekTicks2 = GetFirstWeekOfYearTicks(year + 1);
+
+            // It's possible that the next week-year starts within this calendar year. For example,
+            // we've been given December 31st 2012, which is part of week-year 2013. 
+            long firstWeekTicks2 = GetWeekYearTicks(year + 1);
             if (localInstant.Ticks >= firstWeekTicks2)
             {
+                // Yes, the week-year ("year + 1") starts before or at the instant we've been given,
+                // so this local instant must be part of the first week of that week-year.
                 return 1;
             }
             return (int)((localInstant.Ticks - firstWeekTicks1) / NodaConstants.TicksPerStandardWeek) + 1;
         }
 
-        internal int GetWeeksInYear(int year)
+        internal int GetWeeksInWeekYear(int weekYear)
         {
-            long firstWeekTicks1 = GetFirstWeekOfYearTicks(year);
-            long firstWeekTicks2 = GetFirstWeekOfYearTicks(year + 1);
+            long firstWeekTicks1 = GetWeekYearTicks(weekYear);
+            long firstWeekTicks2 = GetWeekYearTicks(weekYear + 1);
             return (int)((firstWeekTicks2 - firstWeekTicks1) / NodaConstants.TicksPerStandardWeek);
         }
 
-        private long GetFirstWeekOfYearTicks(int year)
+        /// <summary>
+        /// Returns the ticks at the start of the given week-year.
+        /// </summary>
+        private long GetWeekYearTicks(int weekYear)
         {
-            long jan1Millis = GetYearTicks(year);
+            long jan1Millis = GetYearTicks(weekYear);
             int jan1DayOfWeek = GetDayOfWeek(new LocalInstant(jan1Millis));
 
             if (jan1DayOfWeek > (8 - minDaysInFirstWeek))
