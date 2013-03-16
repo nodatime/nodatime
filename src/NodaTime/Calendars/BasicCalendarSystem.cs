@@ -331,55 +331,49 @@ namespace NodaTime.Calendars
             internal long StartOfYearTicks { get { return startOfYear; } }
         }
 
+        /// <summary>
+        /// Finds the week-year containing the given local instant.
+        /// </summary>
         internal int GetWeekYear(LocalInstant localInstant)
         {
-            int year = GetYear(localInstant);
-            int week = GetWeekOfWeekYear(localInstant, year);
-            if (week == 1)
-            {
-                return GetYear(localInstant + Duration.OneStandardWeek);
-            }
-            else if (week > 51)
-            {
-                return GetYear(localInstant - Duration.FromStandardWeeks(2));
-            }
-            else
-            {
-                return year;
-            }
-        }
-
-        internal int GetWeekOfWeekYear(LocalInstant localInstant)
-        {
-            return GetWeekOfWeekYear(localInstant, GetYear(localInstant));
-        }
-
-        /// <summary>
-        /// Given a local instant and the calendar year (not week-year) it's in,
-        /// find out the week of the *actual* week year.
-        /// </summary>
-        private int GetWeekOfWeekYear(LocalInstant localInstant, int year)
-        {
             // Let's guess that it's in the same week year as calendar year, and check that.
-            long firstWeekTicks1 = GetWeekYearTicks(year);
+            int calendarYear = GetYear(localInstant);
+            long firstWeekTicks1 = GetWeekYearTicks(calendarYear);
             if (localInstant.Ticks < firstWeekTicks1)
             {
                 // No, the week-year hadn't started yet. For example, we've been given January 1st 2011...
                 // and the first week of week-year 2011 starts on January 3rd 2011. Therefore the local instant
                 // must belong to the last week of the previous week-year.
-                return GetWeeksInWeekYear(year - 1);
+                return calendarYear - 1;
             }
 
             // It's possible that the next week-year starts within this calendar year. For example,
-            // we've been given December 31st 2012, which is part of week-year 2013. 
-            long firstWeekTicks2 = GetWeekYearTicks(year + 1);
+            // we've been given December 31st 2012, which is part of week-year 2013. Note that we could potentially
+            // optimize by only checking this is we know that we're "near" the end of the week-year we've already found,
+            // but this is unlikely to be a bottleneck.
+            long firstWeekTicks2 = GetWeekYearTicks(calendarYear + 1);
             if (localInstant.Ticks >= firstWeekTicks2)
             {
                 // Yes, the week-year ("year + 1") starts before or at the instant we've been given,
                 // so this local instant must be part of the first week of that week-year.
-                return 1;
+                return calendarYear + 1;
             }
-            return (int)((localInstant.Ticks - firstWeekTicks1) / NodaConstants.TicksPerStandardWeek) + 1;
+
+            // We were right first time.
+            return calendarYear;
+        }
+
+        /// <summary>
+        /// Finds the week-of-week year containing the given local instant, by finding out when the week year
+        /// started, and then simply dividing "how far we are through the year" by "the number of ticks in a week".
+        /// </summary>
+        internal int GetWeekOfWeekYear(LocalInstant localInstant)
+        {
+            int weekYear = GetWeekYear(localInstant);
+            long startOfWeekYear = GetWeekYearTicks(weekYear);
+            long ticksIntoYear = localInstant.Ticks - startOfWeekYear;
+            int zeroBasedWeek = (int)(ticksIntoYear / NodaConstants.TicksPerStandardWeek);
+            return zeroBasedWeek + 1;
         }
 
         internal int GetWeeksInWeekYear(int weekYear)
