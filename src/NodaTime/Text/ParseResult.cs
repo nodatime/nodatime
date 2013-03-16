@@ -107,7 +107,7 @@ namespace NodaTime.Text
         }
 
         #region Factory methods and readonly static fields
-        // TODO(Post-V1): Expose this and following method? What about continueOnMultiple?
+        // TODO(V1.2): Expose this and following method? What about continueOnMultiple?
         internal static ParseResult<T> ForValue(T value)
         {
             return new ParseResult<T>(value);

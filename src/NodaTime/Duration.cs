@@ -149,7 +149,7 @@ namespace NodaTime
             return Ticks.GetHashCode();
         }
 
-        // TODO(Post-V1): We should *consider* representing this as in the same way as a period.
+        // TODO(V1.2): We should *consider* representing this as in the same way as a period.
         /// <summary>
         /// Gets the value as a <see cref="String"/> including the number of ticks represented by this duration.
         /// </summary>

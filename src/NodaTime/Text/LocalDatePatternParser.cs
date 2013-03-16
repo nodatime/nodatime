@@ -20,7 +20,7 @@ namespace NodaTime.Text
 
         /// <summary>
         /// Maximum two-digit-year in the template to treat as the current century.
-        /// TODO(Post-V1): Make this configurable, and define its meaning for negative absolute years.
+        /// TODO(V1.2): Make this configurable, and define its meaning for negative absolute years.
         /// </summary>
         private const int TwoDigitYearMax = 30;
 
@@ -225,7 +225,7 @@ namespace NodaTime.Text
 
             private static int GetAbsoluteYearFromTwoDigits(int absoluteBase, int twoDigits)
             {
-                // TODO(Post-V1): Sanity check this. It's one way of defining it...
+                // TODO(V1.2): Sanity check this. It's one way of defining it...
                 if (absoluteBase < 0)
                 {
                     return -GetAbsoluteYearFromTwoDigits(Math.Abs(absoluteBase), twoDigits);

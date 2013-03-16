@@ -73,7 +73,7 @@ namespace NodaTime.Text
                 throw new InvalidPatternException(Messages.Parse_FormatStringEmpty);
             }
 
-            // TODO: Standard patterns
+            // TODO(V1.2): Standard patterns
 
             var patternBuilder = new SteppedPatternBuilder<ZonedDateTime, ZonedDateTimeParseBucket>(formatInfo,
                 () => new ZonedDateTimeParseBucket(templateValueDate, templateValueTime, templateValueZone, resolver, zoneProvider));
@@ -103,7 +103,7 @@ namespace NodaTime.Text
             private readonly ZoneLocalMappingResolver resolver;
             private readonly IDateTimeZoneProvider zoneProvider;
 
-            // TODO: Find a better way of handling this than hard-coding... this avoids type initialization concerns though.
+            // TODO(V1.2): Find a better way of handling this than hard-coding... this avoids type initialization concerns though.
             private static readonly int FullPatternLength = "UTC+HH:mm:ss.fff".Length;
             private static readonly int LongPatternLength = "UTC+HH:mm:ss".Length;
             private static readonly int MediumPatternLength = "UTC+HH:mm".Length;

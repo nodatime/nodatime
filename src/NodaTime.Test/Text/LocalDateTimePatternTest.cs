@@ -162,7 +162,7 @@ namespace NodaTime.Test.Text
         private void AssertBclNodaEquality(CultureInfo culture, string patternText)
         {
             // On Mono, some general patterns include an offset at the end. For the moment, ignore them.
-            // TODO(Post-V1): Work out what to do in such cases...
+            // TODO(V1.2): Work out what to do in such cases...
             if ((patternText == "f" && culture.DateTimeFormat.ShortTimePattern.EndsWith("z")) ||
                 (patternText == "F" && culture.DateTimeFormat.FullDateTimePattern.EndsWith("z")) ||
                 (patternText == "g" && culture.DateTimeFormat.ShortTimePattern.EndsWith("z")) ||
