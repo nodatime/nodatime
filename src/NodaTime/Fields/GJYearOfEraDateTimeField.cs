@@ -51,10 +51,5 @@ namespace NodaTime.Fields
         {
             return WrappedField.RoundCeiling(localInstant);
         }
-
-        internal override Duration Remainder(LocalInstant localInstant)
-        {
-            return WrappedField.Remainder(localInstant);
-        }
     }
 }

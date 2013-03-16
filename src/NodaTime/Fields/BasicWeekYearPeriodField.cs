@@ -38,8 +38,8 @@ namespace NodaTime.Fields
             int minuendWeekYear = field.GetValue(minuendInstant);
             int subtrahendWeekYear = field.GetValue(subtrahendInstant);
 
-            Duration minuendRemainder = field.Remainder(minuendInstant);
-            Duration subtrahendRemainder = field.Remainder(subtrahendInstant);
+            Duration minuendRemainder = field.RoundFloor(minuendInstant) - minuendInstant;
+            Duration subtrahendRemainder = field.RoundFloor(subtrahendInstant) - subtrahendInstant;
 
             // Balance leap weekyear differences on remainders.
             if (subtrahendRemainder >= Week53Ticks && calendarSystem.GetWeeksInYear(minuendWeekYear) <= 52)

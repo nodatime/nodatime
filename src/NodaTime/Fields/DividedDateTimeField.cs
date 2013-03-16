@@ -10,7 +10,8 @@ namespace NodaTime.Fields
     /// <summary>
     /// Divides a DateTimeField such that the retrieved values are reduced by a
     /// fixed divisor. The field's unit duration is scaled accordingly, but the
-    /// range duration is unchanged.
+    /// range duration is unchanged. For example, the "century of era" field
+    /// is the "year of era" field divided by 100 (sometimes offset such that the year 2000 is in century 21).
     /// </summary>
     internal sealed class DividedDateTimeField : DecoratedDateTimeField
     {
@@ -71,13 +72,6 @@ namespace NodaTime.Fields
         {
             DateTimeField field = WrappedField;
             return field.RoundFloor(field.SetValue(localInstant, GetInt64Value(localInstant) * divisor));
-        }
-
-        internal override Duration Remainder(LocalInstant localInstant)
-        {
-            // TODO(Post-V1): Check this - it looks very odd to me.
-            Duration wrappedRemainder = WrappedField.Remainder(localInstant);
-            return new Duration(SetValue(localInstant, GetValue(new LocalInstant(wrappedRemainder.Ticks))).Ticks);
         }
     }
 }
