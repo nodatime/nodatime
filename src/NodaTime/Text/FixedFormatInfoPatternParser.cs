@@ -11,7 +11,7 @@ namespace NodaTime.Text
     /// <summary>
     /// A pattern parser for a single format info, which caches patterns by text/style.
     /// </summary>
-    // TODO(Post-V1): Consider making this an interface. It was a sealed class before we needed a non-caching implementation.
+    // TODO(V1.2): Consider making this an interface. It was a sealed class before we needed a non-caching implementation.
     internal abstract class FixedFormatInfoPatternParser<T>
     {
         private readonly IPatternParser<T> patternParser;
@@ -37,7 +37,7 @@ namespace NodaTime.Text
 
         private sealed class CachingFixedFormatInfoPatternParser: FixedFormatInfoPatternParser<T>
         {
-            // TODO(Post-V1): Replace this with a real LRU cache or something similar.
+            // TODO(V1.2): Replace this with a real LRU cache or something similar.
             private readonly Dictionary<string, IPattern<T>> cache;
 
             internal CachingFixedFormatInfoPatternParser(IPatternParser<T> patternParser, NodaFormatInfo formatInfo)

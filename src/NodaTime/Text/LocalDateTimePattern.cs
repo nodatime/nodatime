@@ -42,7 +42,7 @@ namespace NodaTime.Text
         {
             internal static readonly LocalDateTimePattern ExtendedIsoPatternImpl = CreateWithInvariantCulture("yyyy'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFF");
 
-            // TODO(Post-V1): Expose these through properties, possibly renaming them?
+            // TODO(V1.2): Expose these through properties, possibly renaming them?
             internal static readonly IPattern<LocalDateTime> BclRoundTripPattern =
                 new LocalDateTimePatternParser(DefaultTemplateValue).ParsePattern("yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fffffff", NodaFormatInfo.InvariantInfo);
 
@@ -117,7 +117,7 @@ namespace NodaTime.Text
         /// <exception cref="InvalidPatternException">The pattern text was invalid.</exception>
         internal static LocalDateTimePattern Create(string patternText, NodaFormatInfo formatInfo, LocalDateTime templateValue)
         {
-            // TODO(Post-V1): Work out the best place to do this test. Currently it's also done in LocalDateTimePatternParser.
+            // TODO(V1.2): Work out the best place to do this test. Currently it's also done in LocalDateTimePatternParser.
             Preconditions.CheckNotNull(patternText, "patternText");
             Preconditions.CheckNotNull(formatInfo, "formatInfo");
             // Use the "fixed" parser for the common case of the default template value.

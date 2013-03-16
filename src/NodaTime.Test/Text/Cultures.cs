@@ -23,7 +23,7 @@ namespace NodaTime.Test.Text
             .Select(culture => CultureInfo.ReadOnly(culture)).ToList();
         // Some tests don't run nicely on Mono, e.g. as they have characters we don't expect in their long/short patterns.
         // Pretend we have no cultures, for the sake of these tests.
-        // TODO(Post-V1): Make the tests pass instead?
+        // TODO(V1.2): Make the tests pass instead?
         internal static readonly IEnumerable<CultureInfo> AllCulturesOrEmptyOnMono = TestHelper.IsRunningOnMono ? new CultureInfo[0] : Cultures.AllCultures;
 #pragma warning restore 0414
 

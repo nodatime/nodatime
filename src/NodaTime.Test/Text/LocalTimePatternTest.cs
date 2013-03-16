@@ -353,7 +353,7 @@ namespace NodaTime.Test.Text
             // On Mono, some general patterns include an offset at the end.
             // https://code.google.com/p/noda-time/issues/detail?id=98
             // For the moment, ignore them.
-            // TODO(Post-V1): Work out what to do in such cases...
+            // TODO(V1.2): Work out what to do in such cases...
             if (patternText.EndsWith("z"))
             {
                 return;

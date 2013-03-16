@@ -172,7 +172,7 @@ namespace NodaTime.Text.Patterns
                 AddFormatAction((value, builder) => builder.Append(expectedChar));
                 return;
             }
-            // TODO(Post-V1): These are ludicrously slow... see
+            // TODO(V1.2): These are ludicrously slow... see
             // http://msmvps.com/blogs/jon_skeet/archive/2011/08/23/optimization-and-generics-part-2-lambda-expressions-and-reference-types.aspx
             // for a description of the problem. I need to find a solution though...
             AddParseAction((str, bucket) => str.Match(expectedText) ? null : failure);
@@ -247,7 +247,7 @@ namespace NodaTime.Text.Patterns
         /// Adds parse actions for a list of strings, such as days of the week or month names.
         /// The parsing is performed case-insensitively. All candidates are tested, and only the longest
         /// match is used.
-        /// TODO(Post-V1): Make this much more efficient in terms of capture...
+        /// TODO(V1.2): Make this much more efficient in terms of capture...
         /// </summary>
         internal void AddParseLongestTextAction(char field, NodaAction<TBucket, int> setter, CompareInfo compareInfo, IList<string> textValues)
         {

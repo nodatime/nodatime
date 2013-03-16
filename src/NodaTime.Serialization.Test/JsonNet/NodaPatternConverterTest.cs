@@ -9,6 +9,6 @@ namespace NodaTime.Serialization.Test.JsonNet
     [TestFixture]
     public class NodaPatternConverterTest
     {
-        // TODO: Add some tests!
+        // TODO(V1.2): Add some tests!
     }
 }

@@ -22,7 +22,7 @@ namespace NodaTime.Serialization.JsonNet
         /// <summary>
         /// Converter for local dates, using the ISO-8601 date pattern.
         /// </summary>
-        // TODO(Post-V1): Consider improving the behaviour with non-ISO calendars. We probably want a pattern which "knows" about a particular calendar, and restricts itself to that calendar.
+        // TODO(V1.2): Consider improving the behaviour with non-ISO calendars. We probably want a pattern which "knows" about a particular calendar, and restricts itself to that calendar.
         public static readonly JsonConverter LocalDateConverter = new NodaPatternConverter<LocalDate>(
             LocalDatePattern.IsoPattern, CreateIsoValidator<LocalDate>(x => x.Calendar));
 

@@ -23,7 +23,7 @@ namespace NodaTime.Text
     {
         internal static readonly ZonedDateTime DefaultTemplateValue = new LocalDateTime(2000, 1, 1, 0, 0).InUtc();
 
-        // TODO: Use "G" instead when we've got standard patterns
+        // TODO(V1.2): Use "G" instead when we've got standard patterns (and actually use this constant!)
         private const string DefaultFormatPattern = "yyyy-MM-dd'T'HH:mm:ss z"; // General (long time)
 
         private readonly string patternText;
@@ -69,7 +69,7 @@ namespace NodaTime.Text
             this.templateValue = templateValue;
             this.resolver = resolver;
             this.zoneProvider = zoneProvider;
-            // TODO: Consider exposing all of the above on ZonedDateTimeZonePatternParser instead, and using that.
+            // TODO(V1.2): Consider exposing all of the above on ZonedDateTimeZonePatternParser instead, and using that.
             this.pattern = pattern;
         }
 
@@ -110,12 +110,12 @@ namespace NodaTime.Text
         internal static ZonedDateTimePattern Create(string patternText, NodaFormatInfo formatInfo,
             ZoneLocalMappingResolver resolver, IDateTimeZoneProvider zoneProvider, ZonedDateTime templateValue)
         {
-            // TODO(Post-V1): Work out the best place to do this test. Currently it's also done in LocalDateTimePatternParser.
+            // TODO(V1.2): Work out the best place to do this test. Currently it's also done in LocalDateTimePatternParser.
             Preconditions.CheckNotNull(patternText, "patternText");
             Preconditions.CheckNotNull(formatInfo, "formatInfo");
             Preconditions.CheckNotNull(resolver, "resolver");
             Preconditions.CheckNotNull(zoneProvider, "zoneProvider");
-            // TODO: Work out whether there should be a "fixed" pattern parser at all. We only need to format from the
+            // TODO(V1.2): Work out whether there should be a "fixed" pattern parser at all. We only need to format from the
             // BCL support, so that doesn't need a provider.
             var pattern = new ZonedDateTimePatternParser(templateValue, resolver, zoneProvider).ParsePattern(patternText, formatInfo);
             return new ZonedDateTimePattern(patternText, formatInfo, templateValue, resolver, zoneProvider, pattern);
