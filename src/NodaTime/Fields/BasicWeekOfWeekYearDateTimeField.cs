@@ -40,11 +40,6 @@ namespace NodaTime.Fields
             return base.RoundCeiling(localInstant + ThreeDays) - ThreeDays;
         }
 
-        internal override Duration Remainder(LocalInstant localInstant)
-        {
-            return base.Remainder(localInstant + ThreeDays);
-        }
-
         internal override long GetMinimumValue()
         {
             return 1;

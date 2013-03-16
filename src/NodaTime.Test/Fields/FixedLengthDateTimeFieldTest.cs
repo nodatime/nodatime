@@ -147,17 +147,6 @@ namespace NodaTime.Test.Fields
             Assert.AreEqual(120L, field.RoundHalfEven(new LocalInstant(91L)).Ticks);
         }
 
-        [Test]
-        public void Remainder()
-        {
-            DateTimeField field = CreateMinuteOfHourField();
-            Assert.AreEqual(0L, field.Remainder(new LocalInstant(0L)).Ticks);
-            Assert.AreEqual(29L, field.Remainder(new LocalInstant(29L)).Ticks);
-            Assert.AreEqual(30L, field.Remainder(new LocalInstant(30L)).Ticks);
-            Assert.AreEqual(31L, field.Remainder(new LocalInstant(31L)).Ticks);
-            Assert.AreEqual(0L, field.Remainder(new LocalInstant(60L)).Ticks);
-        }
-
         private static FixedLengthDateTimeField CreateMinuteOfHourField()
         {
             return new FixedLengthDateTimeField(DateTimeFieldType.MinuteOfHour,

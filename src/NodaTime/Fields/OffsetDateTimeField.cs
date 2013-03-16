@@ -93,10 +93,6 @@ namespace NodaTime.Fields
             return WrappedField.RoundHalfEven(localInstant);
         }
 
-        internal override Duration Remainder(LocalInstant localInstant)
-        {
-            return WrappedField.Remainder(localInstant);
-        }
         #endregion
     }
 }

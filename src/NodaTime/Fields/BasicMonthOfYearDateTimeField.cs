@@ -81,11 +81,6 @@ namespace NodaTime.Fields
             int month = calendarSystem.GetMonthOfYear(localInstant, year);
             return new LocalInstant(calendarSystem.GetYearMonthTicks(year, month));
         }
-
-        internal override Duration Remainder(LocalInstant localInstant)
-        {
-            return localInstant - RoundFloor(localInstant);
-        }
         #endregion
     }
 }

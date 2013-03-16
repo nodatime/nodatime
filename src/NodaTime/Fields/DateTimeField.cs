@@ -230,21 +230,6 @@ namespace NodaTime.Fields
                 return (GetInt64Value(ceiling) & 1) == 0 ? ceiling : floor;
             }
         }
-
-        /// <summary>
-        /// Returns the fractional duration of this field. In other words, 
-        /// calling Remainder returns the duration that RoundFloor would subtract.
-        /// <para>
-        /// For example, on a datetime of 2002-11-02T23:34:56.789, the remainder by
-        /// hour is 34 minutes and 56.789 seconds.
-        /// </para>
-        /// </summary>
-        /// <param name="localInstant">The local instant to get the remainder</param>
-        /// <returns>Remainder duration</returns>
-        internal virtual Duration Remainder(LocalInstant localInstant)
-        {
-            return localInstant - RoundFloor(localInstant);
-        }
         #endregion
 
         public override string ToString()

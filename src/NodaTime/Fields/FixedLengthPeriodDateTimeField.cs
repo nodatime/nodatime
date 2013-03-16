@@ -98,11 +98,6 @@ namespace NodaTime.Fields
             }
         }
 
-        internal override Duration Remainder(LocalInstant localInstant)
-        {
-            long ticks = localInstant.Ticks;
-            return new Duration(ticks >= 0 ? ticks % unitTicks : ((ticks + 1) % unitTicks) + unitTicks - 1);
-        }
         #endregion
     }
 }

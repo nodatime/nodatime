@@ -104,10 +104,5 @@ namespace NodaTime.Fields
         {
             throw new NotSupportedException();
         }
-
-        internal override Duration Remainder(LocalInstant localInstant)
-        {
-            throw new NotSupportedException();
-        }
     }
 }
