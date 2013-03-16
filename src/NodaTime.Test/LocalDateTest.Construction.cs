@@ -98,45 +98,45 @@ namespace NodaTime.Test
         {
             // January 1st 1960 was a Friday. Therefore the first week of week year started
             // on Monday January 4th.
-            var expected = new LocalDate(1960, 1, 19);
-            var actual = LocalDate.FromWeekYearWeekAndDay(1960, 3, IsoDayOfWeek.Tuesday);
-            Assert.AreEqual(expected, actual);
+            AssertFromWeekYearWeekAndDay(new LocalDate(1960, 1, 19), 1960, 3, IsoDayOfWeek.Tuesday);
         }
 
         [Test]
         public void FromWeekYearWeekAndDay_AfterEpoch()
         {
             // According to http://whatweekisit.com anyway...
-            var expected = new LocalDate(2012, 10, 19);
-            var actual = LocalDate.FromWeekYearWeekAndDay(2012, 42, IsoDayOfWeek.Friday);
-            Assert.AreEqual(expected, actual);
+            AssertFromWeekYearWeekAndDay(new LocalDate(2012, 10, 19), 2012, 42, IsoDayOfWeek.Friday);
         }
 
         [Test]
         public void FromWeekYearWeekAndDay_EarlierWeekYearThanNormalYear()
         {
             // Saturday January 1st of 2011 is part of week 52 of week-year 2010.
-            var expected = new LocalDate(2011, 1, 1);
-            var actual = LocalDate.FromWeekYearWeekAndDay(2010, 52, IsoDayOfWeek.Saturday);
-            Assert.AreEqual(expected, actual);
+            AssertFromWeekYearWeekAndDay(new LocalDate(2011, 1, 1), 2010, 52, IsoDayOfWeek.Saturday);
         }
 
         [Test]
         public void FromWeekYearWeekAndDay_LaterWeekYearThanNormalYear()
         {
             // Monday December 31st of 2012 is part of week 1 of week-year 2013.
-            var expected = new LocalDate(2012, 12, 31);
-            var actual = LocalDate.FromWeekYearWeekAndDay(2013, 1, IsoDayOfWeek.Monday);
-            Assert.AreEqual(expected, actual);
+            AssertFromWeekYearWeekAndDay(new LocalDate(2012, 12, 31), 2013, 1, IsoDayOfWeek.Monday);
         }
 
         [Test]
         public void FromWeekYearWeekAndDay_ValidWeek53()
         {
             // Sunday 2nd January 2005 is part of week 53 of week year 2004
-            var expected = new LocalDate(2005, 1, 2);
-            var actual = LocalDate.FromWeekYearWeekAndDay(2004, 53, IsoDayOfWeek.Sunday);
+            AssertFromWeekYearWeekAndDay(new LocalDate(2005, 1, 2), 2004, 53, IsoDayOfWeek.Sunday);
+        }
+
+        private void AssertFromWeekYearWeekAndDay(LocalDate expected, int weekYear, int weekOfWeekYear, IsoDayOfWeek dayOfWeek)
+        {
+            var actual = LocalDate.FromWeekYearWeekAndDay(weekYear, weekOfWeekYear, dayOfWeek);
             Assert.AreEqual(expected, actual);
+            // Check that reading the properties works too...
+            Assert.AreEqual(weekYear, actual.WeekYear);
+            Assert.AreEqual(weekOfWeekYear, actual.WeekOfWeekYear);
+            Assert.AreEqual(dayOfWeek, actual.IsoDayOfWeek);
         }
 
         [Test]
