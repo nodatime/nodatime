@@ -124,6 +124,7 @@
       <DependentUpon>JulianCalendarSystemTest.cs</DependentUpon>
     </Compile>
     <Compile Include="Calendars\PeriodAdditionTest.cs" />
+    <Compile Include="Fields\BasicWeekYearDateTimeFieldTest.cs" />
     <Compile Include="Fields\GJEraDateTimeFieldTest.cs" />
     <Compile Include="IntervalTest.cs" />
     <Compile Include="OffsetDateTimeTest.cs" />
