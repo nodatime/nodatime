@@ -253,7 +253,7 @@ namespace NodaTime
         /// calls as the object is immutable and thread-safe.</returns>
         public static CalendarSystem GetIslamicCalendar(IslamicLeapYearPattern leapYearPattern, IslamicEpoch epoch)
         {
-            return IslamicCalendar.GetInstance(leapYearPattern, epoch);
+            return IslamicCalendarSystem.GetInstance(leapYearPattern, epoch);
         }
         #endregion
 
