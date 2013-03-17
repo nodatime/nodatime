@@ -5,6 +5,7 @@
 using System;
 using System.Globalization;
 using NodaTime.Fields;
+using NodaTime.Utility;
 
 namespace NodaTime.Calendars
 {
@@ -20,11 +21,11 @@ namespace NodaTime.Calendars
         private static readonly DateTimeField EraField = new BasicSingleEraDateTimeField(Era.AnnoHegirae);
 
         // These are ugly, but we have unit tests which will spot if they get out of sync...
-        private static readonly int MinEpochNumber = 1;
-        private static readonly int MaxEpochNumber = 2;
+        private const int MinEpochNumber = 1;
+        private const int MaxEpochNumber = 2;
 
-        private static readonly int MinLeapYearPatternNumber = 1;
-        private static readonly int MaxLeapYearPatternNumber = 4;
+        private const int MinLeapYearPatternNumber = 1;
+        private const int MaxLeapYearPatternNumber = 4;
 
         /// <summary>Days in a pair of months, in days.</summary>
         private const int MonthPairLength = 59;
@@ -129,12 +130,12 @@ namespace NodaTime.Calendars
             long cycleRemainder = ticksIslamic % TicksPerLeapCycle;
 
             int year = (int)((cycles * LeapYearCycleLength) + 1L);
-            long yearTicks = IsLeapYear(year) ? TicksPerLeapYear : TicksPerNonLeapYear;
+            long yearTicks = GetTicksInYear(year);
             while (cycleRemainder >= yearTicks)
             {
                 cycleRemainder -= yearTicks;
                 year++;
-                yearTicks = IsLeapYear(year) ? TicksPerLeapYear : TicksPerNonLeapYear;
+                yearTicks = GetTicksInYear(year);
             }
             return year;
         }
@@ -154,7 +155,7 @@ namespace NodaTime.Calendars
             int minuendYear = GetYear(minuendInstant);
             int subtrahendYear = GetYear(subtrahendInstant);
 
-            // Inlined remainder to avoi duplicate calls to Get.
+            // Inlined remainder to avoid duplicate calls to Get.
             long minuendRem = minuendInstant.Ticks - GetYearTicks(minuendYear);
             long subtrahendRem = subtrahendInstant.Ticks - GetYearTicks(subtrahendYear);
 
@@ -183,9 +184,14 @@ namespace NodaTime.Calendars
             return (dayOfYear % MonthPairLength) % LongMonthLength + 1; 
         }
 
+        private long GetTicksInYear(int year)
+        {
+            return IsLeapYear(year) ? TicksPerLeapYear : TicksPerNonLeapYear;
+        }
+
         public override bool IsLeapYear(int year)
         {
-            int key = 1 << (year % 30);
+            int key = 1 << (year % LeapYearCycleLength);
             return (leapYearPatternBits & key) > 0;
         }
 
@@ -242,45 +248,44 @@ namespace NodaTime.Calendars
 
         protected override LocalInstant CalculateStartOfYear(int year)
         {
-            if (year > MaxYear)
-            {
-                throw new ArgumentOutOfRangeException("year");
-            }
-            if (year < MinYear)
-            {
-                throw new ArgumentOutOfRangeException("year");
-            }
-            // TODO(Post-V1): Clarify this comment, which is incorrect as far as I can tell...
-            // Unix epoch is 1970-01-01 Gregorian which is 0622-07-16 Islamic.
-            // 0001-01-01 Islamic is -42520809600000L
-            // would prefer to calculate against year zero, but leap year
-            // can be in that year so it doesn't work
-            year--;
-            long cycle = year / LeapYearCycleLength;
+            Preconditions.CheckArgumentRange("year", year, MinYear, MaxYear);
+
+            // The first cycle starts in year 1, not year 0.
+            int cycle = (year - 1) / LeapYearCycleLength;
+            int yearAtStartOfCycle = (cycle * LeapYearCycleLength) + 1;
             long ticks = epochTicks + cycle * TicksPerLeapCycle;
-            int cycleRemainder = (year % LeapYearCycleLength) + 1;
 
-            for (int i = 1; i < cycleRemainder; i++)
+            // We've got the ticks at the start of the cycle (e.g. at the start of year 1, 31, 61 etc).
+            // Now go from that year to (but not including) the year we're looking for, adding the right
+            // number of ticks in each year. So if we're trying to find the start of year 34, we would
+            // find the ticks at the start of year 31, then add the ticks *in* year 31, the ticks in year 32,
+            // and the ticks in year 33.
+            // If this ever proves to be a bottleneck, we could create an array for each IslamicLeapYearPattern
+            // with "the number of ticks for the first n years in a cycle".
+            for (int i = yearAtStartOfCycle; i < year; i++)
             {
-                ticks += (IsLeapYear(i) ? TicksPerLeapYear : TicksPerNonLeapYear);
+                ticks += GetTicksInYear(i);
             }
-
             return new LocalInstant(ticks);
         }
 
-        // Epoch 1970-01-01 ISO = 1389-10-22 Islamic
+        // Epoch 1970-01-01 ISO = 1389-10-22 Islamic (civil) or 1389-10-23 Islamic (astronomical)
         internal override long ApproxTicksAtEpochDividedByTwo { get { return -epochTicks / 2; } }
 
         /// <summary>
         /// Returns the pattern of leap years within a cycle, one bit per year, for the specified pattern.
+        /// Note that although cycle years are usually numbered 1-30, the bit pattern is for 0-29; cycle year
+        /// 30 is represented by bit 0.
         /// </summary>
-        private static int GetLeapYearPatternBits(IslamicLeapYearPattern leapYearPattern){
+        private static int GetLeapYearPatternBits(IslamicLeapYearPattern leapYearPattern)
+        {
             switch (leapYearPattern)
             {
-                case IslamicLeapYearPattern.Base15:        return 623158436;
-                case IslamicLeapYearPattern.Base16:        return 623191204;
-                case IslamicLeapYearPattern.Indian:        return 690562340;
-                case IslamicLeapYearPattern.HabashAlHasib: return 153692453;
+                // When reading bit patterns, don't forget to read right to left...
+                case IslamicLeapYearPattern.Base15:        return 623158436; // 0b100101001001001010010010100100
+                case IslamicLeapYearPattern.Base16:        return 623191204; // 0b100101001001010010010010100100
+                case IslamicLeapYearPattern.Indian:        return 690562340; // 0b101001001010010010010100100100
+                case IslamicLeapYearPattern.HabashAlHasib: return 153692453; // 0b001001001010010010100100100101
                 default: throw new ArgumentOutOfRangeException("leapYearPattern");
             }
         }
