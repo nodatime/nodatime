@@ -16,11 +16,11 @@ namespace NodaTime.Calendars
     public enum IslamicEpoch
     {
         /// <summary>
-        /// Epoch beginning on July 15th 622CE (Julian).
+        /// Epoch beginning on July 15th 622CE (Julian), which is July 18th 622 CE in the Gregorian calendar.
         /// </summary>
         Astronomical = 1,
         /// <summary>
-        /// Epoch beginning on July 16th 622CE (Julian).
+        /// Epoch beginning on July 16th 622CE (Julian), which is July 19th 622 CE in the Gregorian calendar.
         /// </summary>
         Civil = 2
     }
