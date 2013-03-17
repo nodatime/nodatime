@@ -13,7 +13,7 @@ namespace NodaTime.Calendars
     /// Islamic (Hijri) calendar. See documentation for <see cref="CalendarSystem.GetIslamicCalendar"/> for
     /// more details.
     /// </summary>
-    internal sealed class IslamicCalendar : BasicCalendarSystem
+    internal sealed class IslamicCalendarSystem : BasicCalendarSystem
     {
         private const string IslamicName = "Hijri";
 
@@ -67,9 +67,9 @@ namespace NodaTime.Calendars
 
         private static readonly long[] TotalTicksByMonth;
 
-        private static IslamicCalendar[,] Calendars;
+        private static IslamicCalendarSystem[,] Calendars;
 
-        static IslamicCalendar()
+        static IslamicCalendarSystem()
         {
             long ticks = 0;
             TotalTicksByMonth = new long[12];
@@ -83,12 +83,12 @@ namespace NodaTime.Calendars
                 // in the Islamic calendar.
                 ticks += days * NodaConstants.TicksPerStandardDay;
             }
-            Calendars = new IslamicCalendar[(MaxLeapYearPatternNumber - MinLeapYearPatternNumber + 1), (MaxEpochNumber - MinEpochNumber + 1)];
+            Calendars = new IslamicCalendarSystem[(MaxLeapYearPatternNumber - MinLeapYearPatternNumber + 1), (MaxEpochNumber - MinEpochNumber + 1)];
             for (int i = MinLeapYearPatternNumber; i <= MaxLeapYearPatternNumber; i++)
             {
                 for (int j = MinEpochNumber; j <= MaxEpochNumber; j++)
                 {
-                    Calendars[i - MinLeapYearPatternNumber, j - MinEpochNumber] = new IslamicCalendar((IslamicLeapYearPattern) i, (IslamicEpoch) j);
+                    Calendars[i - MinLeapYearPatternNumber, j - MinEpochNumber] = new IslamicCalendarSystem((IslamicLeapYearPattern) i, (IslamicEpoch) j);
                 }
             }
         }
@@ -109,7 +109,7 @@ namespace NodaTime.Calendars
         }
 
         // TODO(Post-V1): Validate highest year. It's possible that we *could* support some higher years.
-        private IslamicCalendar(IslamicLeapYearPattern leapYearPattern, IslamicEpoch epoch)
+        private IslamicCalendarSystem(IslamicLeapYearPattern leapYearPattern, IslamicEpoch epoch)
             : base(string.Format(CultureInfo.InvariantCulture, "{0} {1}-{2}", IslamicName, epoch, leapYearPattern), IslamicName, 4, 1, 29226, AssembleFields, new[] { Era.AnnoHegirae })
         {
             this.leapYearPatternBits = GetLeapYearPatternBits(leapYearPattern);

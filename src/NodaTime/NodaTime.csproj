@@ -145,7 +145,7 @@
     <Compile Include="Calendars\BasicFixedMonthCalendarSystem.cs" />
     <Compile Include="Calendars\CopticCalendarSystem.cs" />
     <Compile Include="Calendars\Era.cs" />
-    <Compile Include="Calendars\IslamicCalendar.cs" />
+    <Compile Include="Calendars\IslamicCalendarSystem.cs" />
     <Compile Include="Calendars\IslamicEpoch.cs" />
     <Compile Include="Calendars\IslamicLeapYearPattern.cs" />
     <Compile Include="Calendars\JulianCalendarSystem.cs" />
