@@ -108,9 +108,8 @@ namespace NodaTime.Calendars
             return Calendars[leapYearPatternNumber - MinLeapYearPatternNumber, epochNumber - MinEpochNumber];
         }
 
-        // TODO(Post-V1): Validate highest year. It's possible that we *could* support some higher years.
         private IslamicCalendarSystem(IslamicLeapYearPattern leapYearPattern, IslamicEpoch epoch)
-            : base(string.Format(CultureInfo.InvariantCulture, "{0} {1}-{2}", IslamicName, epoch, leapYearPattern), IslamicName, 4, 1, 29226, AssembleFields, new[] { Era.AnnoHegirae })
+            : base(string.Format(CultureInfo.InvariantCulture, "{0} {1}-{2}", IslamicName, epoch, leapYearPattern), IslamicName, 4, 1, 31513, AssembleFields, new[] { Era.AnnoHegirae })
         {
             this.leapYearPatternBits = GetLeapYearPatternBits(leapYearPattern);
             this.epochTicks = GetEpochTicks(epoch);
@@ -125,17 +124,19 @@ namespace NodaTime.Calendars
 
         internal override int GetYear(LocalInstant localInstant)
         {
-            long ticksIslamic = localInstant.Ticks - epochTicks;
-            long cycles = ticksIslamic / TicksPerLeapCycle;
-            long cycleRemainder = ticksIslamic % TicksPerLeapCycle;
+            // This may overflow the bounds of long, but it will always be positive.
+            // It's the number of ticks from the start of the epoch of this calendar.
+            ulong ticksIslamic = unchecked((ulong)(localInstant.Ticks - epochTicks));            
+            ulong cycles = ticksIslamic / TicksPerLeapCycle;
+            ulong cycleRemainder = ticksIslamic % TicksPerLeapCycle;
 
             int year = (int)((cycles * LeapYearCycleLength) + 1L);
-            long yearTicks = GetTicksInYear(year);
+            ulong yearTicks = (ulong) GetTicksInYear(year);
             while (cycleRemainder >= yearTicks)
             {
                 cycleRemainder -= yearTicks;
                 year++;
-                yearTicks = GetTicksInYear(year);
+                yearTicks = (ulong) GetTicksInYear(year);
             }
             return year;
         }
@@ -249,11 +250,13 @@ namespace NodaTime.Calendars
         protected override LocalInstant CalculateStartOfYear(int year)
         {
             Preconditions.CheckArgumentRange("year", year, MinYear, MaxYear);
-
             // The first cycle starts in year 1, not year 0.
             int cycle = (year - 1) / LeapYearCycleLength;
             int yearAtStartOfCycle = (cycle * LeapYearCycleLength) + 1;
-            long ticks = epochTicks + cycle * TicksPerLeapCycle;
+
+            // The cycle * TicksPerLeapCycle may overflow (near the end of representable time), but then
+            // adding the epoch ticks will bring it back to a sensible range.
+            long ticks = unchecked (epochTicks + cycle * TicksPerLeapCycle);
 
             // We've got the ticks at the start of the cycle (e.g. at the start of year 1, 31, 61 etc).
             // Now go from that year to (but not including) the year we're looking for, adding the right
