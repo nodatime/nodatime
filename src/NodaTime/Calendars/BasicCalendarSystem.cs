@@ -386,7 +386,7 @@ namespace NodaTime.Calendars
         /// <summary>
         /// Returns the ticks at the start of the given week-year.
         /// </summary>
-        private long GetWeekYearTicks(int weekYear)
+        internal long GetWeekYearTicks(int weekYear)
         {
             long jan1Millis = GetYearTicks(weekYear);
             int jan1DayOfWeek = GetDayOfWeek(new LocalInstant(jan1Millis));
