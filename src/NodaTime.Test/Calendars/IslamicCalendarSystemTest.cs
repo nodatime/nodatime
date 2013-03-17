@@ -12,7 +12,7 @@ using NodaTime.Calendars;
 namespace NodaTime.Test.Calendars
 {
     [TestFixture]
-    public class IslamicCalendarTest
+    public class IslamicCalendarSystemTest
     {
         private static readonly CalendarSystem SampleCalendar = CalendarSystem.GetIslamicCalendar(IslamicLeapYearPattern.Base16, IslamicEpoch.Civil);
 
