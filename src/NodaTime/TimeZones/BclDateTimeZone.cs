@@ -22,6 +22,13 @@ namespace NodaTime.TimeZones
         /// </summary>
         private static BclDateTimeZone systemDefault;
 
+        /// <summary>
+        /// This is the last valid tick where we would be able to construct a LocalDateTime.
+        /// </summary>
+        private static readonly Instant LastValidTick =
+            new LocalDateTime(CalendarSystem.Iso.MaxYear, 12, 31, 23, 59, 59, 999, 9999).InUtc().ToInstant();
+
+
         private readonly TimeZoneInfo bclZone;
         internal readonly IZoneIntervalMap map;
 
@@ -83,10 +90,8 @@ namespace NodaTime.TimeZones
 
                 // Find the last valid transition by working back from the end of time. It's safe to unconditionally
                 // take the value here, as there must *be* some recurrences.
-                // TODO(Post-V1): Tidy this up. We're basically fundamentally broken around the end of time :(
-                Instant lastValidTick = new LocalDateTime(CalendarSystem.Iso.MaxYear, 12, 31, 23, 59, 59, 999, 9999).InUtc().ToInstant();
-                var lastStandard = standard.PreviousOrFail(lastValidTick, standardOffset, daylight.Savings);
-                var lastDaylight = daylight.PreviousOrFail(lastValidTick, standardOffset, Offset.Zero);
+                var lastStandard = standard.PreviousOrFail(LastValidTick, standardOffset, daylight.Savings);
+                var lastDaylight = daylight.PreviousOrFail(LastValidTick, standardOffset, Offset.Zero);
                 bool standardIsLater = lastStandard.Instant > lastDaylight.Instant;
                 Transition lastTransition = standardIsLater ? lastStandard : lastDaylight;
                 Offset seamSavings = lastTransition.NewOffset - standardOffset;
