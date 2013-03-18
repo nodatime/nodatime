@@ -34,7 +34,14 @@ namespace NodaTime.Calendars
         internal abstract long AverageTicksPerYear { get; }
         internal abstract long AverageTicksPerYearDividedByTwo { get; }
         internal abstract long ApproxTicksAtEpochDividedByTwo { get; }
-        protected abstract LocalInstant CalculateStartOfYear(int year);
+
+        /// <summary>
+        /// Compute the start of the given year in ticks. The year may be outside
+        /// the bounds advertised by the calendar, but only by a single year - this is
+        /// used for internal calls which sometimes need to compare a valid value with
+        /// an invalid one, for estimates etc.
+        /// </summary>
+        protected abstract long CalculateYearTicks(int year);
         protected internal abstract int GetMonthOfYear(LocalInstant localInstant, int year);
         internal abstract int GetDaysInMonthMax(int month);
         internal abstract long GetYearDifference(LocalInstant minuendInstant, LocalInstant subtrahendInstant);
@@ -149,7 +156,7 @@ namespace NodaTime.Calendars
                 YearInfo info = yearCache[year & YearCacheMask];
                 if (info.Year != year)
                 {
-                    info = new YearInfo(year, CalculateStartOfYear(year).Ticks);
+                    info = new YearInfo(year, CalculateYearTicks(year));
                     yearCache[year & YearCacheMask] = info;
                 }
                 return info.StartOfYearTicks;
@@ -163,7 +170,7 @@ namespace NodaTime.Calendars
         /// </summary>
         internal long GetYearTicksSafe(int year)
         {
-            return year >= MinYear && year <= MaxYear ? GetYearTicks(year) : CalculateStartOfYear(year).Ticks;
+            return year >= MinYear && year <= MaxYear ? GetYearTicks(year) : CalculateYearTicks(year);
         }
 
         internal int GetDayOfWeek(LocalInstant localInstant)

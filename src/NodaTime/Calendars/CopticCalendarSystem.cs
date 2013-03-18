@@ -52,7 +52,7 @@ namespace NodaTime.Calendars
             builder.Months = builder.MonthOfYear.PeriodField;
         }
 
-        protected override LocalInstant CalculateStartOfYear(int year)
+        protected override long CalculateYearTicks(int year)
         {
             // Unix epoch is 1970-01-01 Gregorian which is 1686-04-23 Coptic.
             // Calculate relative to the nearest leap year and account for the
@@ -79,7 +79,7 @@ namespace NodaTime.Calendars
             long ticks = (relativeYear * 365L + leapYears) * NodaConstants.TicksPerStandardDay;
 
             // Adjust to account for difference between 1687-01-01 and 1686-04-23.
-            return new LocalInstant(ticks + (365L - 112) * NodaConstants.TicksPerStandardDay);
+            return ticks + (365L - 112) * NodaConstants.TicksPerStandardDay;
         }
 
         internal override long ApproxTicksAtEpochDividedByTwo

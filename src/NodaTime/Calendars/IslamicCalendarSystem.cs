@@ -247,7 +247,7 @@ namespace NodaTime.Calendars
 
         internal override long AverageTicksPerMonth { get { return TicksPerMonth; } }
 
-        protected override LocalInstant CalculateStartOfYear(int year)
+        protected override long CalculateYearTicks(int year)
         {
             // The first cycle starts in year 1, not year 0.
             int cycle = (year - 1) / LeapYearCycleLength;
@@ -268,7 +268,7 @@ namespace NodaTime.Calendars
             {
                 ticks += GetTicksInYear(i);
             }
-            return new LocalInstant(ticks);
+            return ticks;
         }
 
         // Epoch 1970-01-01 ISO = 1389-10-22 Islamic (civil) or 1389-10-23 Islamic (astronomical)

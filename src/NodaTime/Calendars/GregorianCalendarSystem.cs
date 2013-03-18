@@ -57,7 +57,7 @@ namespace NodaTime.Calendars
             var sample = GregorianCache[0];            
             for (int year = FirstOptimizedYear; year <= LastOptimizedYear; year++)
             {
-                YearStartTicks[year - FirstOptimizedYear] = sample.CalculateStartOfYear(year).Ticks;
+                YearStartTicks[year - FirstOptimizedYear] = sample.CalculateYearTicks(year);
                 for (int month = 1; month <= 12; month++)
                 {
                     int yearMonthIndex = (year - FirstOptimizedYear) * 12 + month;
@@ -162,7 +162,7 @@ namespace NodaTime.Calendars
             return new LocalInstant(unchecked(MonthStartTicks[yearMonthIndex] + (dayOfMonth - 1) * NodaConstants.TicksPerStandardDay + tickOfDay));
         }
 
-        protected override LocalInstant CalculateStartOfYear(int year)
+        protected override long CalculateYearTicks(int year)
         {
             // Initial value is just temporary.
             int leapYears = year / 100;
@@ -184,7 +184,7 @@ namespace NodaTime.Calendars
                 }
             }
 
-            return new LocalInstant((year * 365L + (leapYears - DaysFrom0000To1970)) * NodaConstants.TicksPerStandardDay);
+            return (year * 365L + (leapYears - DaysFrom0000To1970)) * NodaConstants.TicksPerStandardDay;
         }
 
         public override bool IsLeapYear(int year)
