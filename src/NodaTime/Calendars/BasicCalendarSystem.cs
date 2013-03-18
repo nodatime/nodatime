@@ -143,6 +143,7 @@ namespace NodaTime.Calendars
         /// </summary>
         internal virtual long GetYearTicks(int year)
         {
+            Preconditions.CheckArgumentRange("year", year, MinYear, MaxYear);
             lock (yearCache)
             {
                 YearInfo info = yearCache[year & YearCacheMask];
@@ -153,6 +154,16 @@ namespace NodaTime.Calendars
                 }
                 return info.StartOfYearTicks;
             }
+        }
+
+        /// <summary>
+        /// Safer version of GetYearTicks which can cope with a years outside the normal range, so long as they
+        /// don't actually overflow. This is useful for values which first involve estimates which might be out
+        /// by a year either way.
+        /// </summary>
+        internal long GetYearTicksSafe(int year)
+        {
+            return year >= MinYear && year <= MaxYear ? GetYearTicks(year) : CalculateStartOfYear(year).Ticks;
         }
 
         internal int GetDayOfWeek(LocalInstant localInstant)
@@ -229,7 +240,7 @@ namespace NodaTime.Calendars
             }
             int year = (int)(i2 / unitTicks);
 
-            long yearStart = GetYearTicks(year);
+            long yearStart = GetYearTicksSafe(year);
             long diff = ticks - yearStart;
             if (diff < 0)
             {
@@ -338,8 +349,8 @@ namespace NodaTime.Calendars
         {
             // Let's guess that it's in the same week year as calendar year, and check that.
             int calendarYear = GetYear(localInstant);
-            long firstWeekTicks1 = GetWeekYearTicks(calendarYear);
-            if (localInstant.Ticks < firstWeekTicks1)
+            long startOfWeekYear = GetWeekYearTicks(calendarYear);
+            if (localInstant.Ticks < startOfWeekYear)
             {
                 // No, the week-year hadn't started yet. For example, we've been given January 1st 2011...
                 // and the first week of week-year 2011 starts on January 3rd 2011. Therefore the local instant
@@ -347,20 +358,15 @@ namespace NodaTime.Calendars
                 return calendarYear - 1;
             }
 
-            // It's possible that the next week-year starts within this calendar year. For example,
-            // we've been given December 31st 2012, which is part of week-year 2013. Note that we could potentially
-            // optimize by only checking this is we know that we're "near" the end of the week-year we've already found,
-            // but this is unlikely to be a bottleneck.
-            long firstWeekTicks2 = GetWeekYearTicks(calendarYear + 1);
-            if (localInstant.Ticks >= firstWeekTicks2)
-            {
-                // Yes, the week-year ("year + 1") starts before or at the instant we've been given,
-                // so this local instant must be part of the first week of that week-year.
-                return calendarYear + 1;
-            }
+            // By now, we know it's either calendarYear or calendarYear + 1. Check using the number of
+            // weeks in the year. Note that this will fetch the start of the calendar year and the week year
+            // again, so could be optimized by copying some logic here - but only when we find we need to.
+            int weeksInWeekYear = GetWeeksInWeekYear(calendarYear);
 
-            // We were right first time.
-            return calendarYear;
+            // We assume that even for the maximum year, we've got just about enough leeway to get to the
+            // start of the week year. (If not, we should adjust the maximum.)
+            long startOfNextCalendarYear = startOfWeekYear + weeksInWeekYear * NodaConstants.TicksPerStandardWeek;
+            return localInstant.Ticks < startOfNextCalendarYear ? calendarYear : calendarYear + 1;
         }
 
         /// <summary>
@@ -378,9 +384,17 @@ namespace NodaTime.Calendars
 
         internal int GetWeeksInWeekYear(int weekYear)
         {
-            long firstWeekTicks1 = GetWeekYearTicks(weekYear);
-            long firstWeekTicks2 = GetWeekYearTicks(weekYear + 1);
-            return (int)((firstWeekTicks2 - firstWeekTicks1) / NodaConstants.TicksPerStandardWeek);
+            long startOfWeekYear = GetWeekYearTicks(weekYear);
+            long startOfCalendarYear = GetYearTicks(weekYear);
+            // The number of days gained or lost in the week year compared with the calendar year.
+            // So if the week year starts on December 31st of the previous calendar year, this will be +1.
+            // If the week year starts on January 2nd of this calendar year, this will be -1.
+
+            int extraDays = (int)((startOfCalendarYear - startOfWeekYear) / NodaConstants.TicksPerStandardDay);
+            int daysInThisYear = GetDaysInYear(weekYear);
+
+            // We can have up to "minDaysInFirstWeek - 1" days of the next year, too.
+            return (daysInThisYear + extraDays + (minDaysInFirstWeek - 1)) / 7;
         }
 
         /// <summary>
@@ -388,7 +402,8 @@ namespace NodaTime.Calendars
         /// </summary>
         internal long GetWeekYearTicks(int weekYear)
         {
-            long jan1Millis = GetYearTicks(weekYear);
+            // Need to be slightly careful here, as the week-year can reasonably be outside the calendar year range.
+            long jan1Millis = GetYearTicksSafe(weekYear);
             int jan1DayOfWeek = GetDayOfWeek(new LocalInstant(jan1Millis));
 
             if (jan1DayOfWeek > (8 - minDaysInFirstWeek))

@@ -360,25 +360,5 @@ namespace NodaTime.Test.Calendars
             Assert.Throws<ArgumentOutOfRangeException>(() => CalendarSystem.GetIslamicCalendar(leapYearPatterns.Max() + 1, epochs.Min()));
             Assert.Throws<ArgumentOutOfRangeException>(() => CalendarSystem.GetIslamicCalendar(leapYearPatterns.Min(), epochs.Max() + 1));
         }
-
-        [Test]
-        public void PropertiesInMaxYear()
-        {
-            // Construct the largest LocalDate we can, and validate that all the properties can be fetched without
-            // issues.
-            int year = SampleCalendar.MaxYear;
-            int month = SampleCalendar.GetMaxMonth(year);
-            int day = SampleCalendar.GetDaysInMonth(year, month);
-            var localDate = new LocalDate(year, month, day, SampleCalendar);
-            Assert.AreEqual(year, localDate.Year);
-            Assert.AreEqual(month, localDate.Month);
-            Assert.AreEqual(day, localDate.Day);
-
-            foreach (var property in typeof(LocalDate).GetProperties()
-                .Where(p => p.Name != "WeekYear" && p.Name != "WeekOfWeekYear"))
-            {
-                property.GetValue(localDate, null);
-            }
-        }
     }
 }
