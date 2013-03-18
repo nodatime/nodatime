@@ -82,7 +82,7 @@ namespace NodaTime.Calendars
         }
 
         private GregorianCalendarSystem(string id, string name, int minDaysInFirstWeek, FieldAssembler fieldAssembler)
-            : base(id, name, minDaysInFirstWeek, -27256, 31196, fieldAssembler)
+            : base(id, name, minDaysInFirstWeek, -27255, 31195, fieldAssembler)
         {
         }
 
@@ -164,15 +164,6 @@ namespace NodaTime.Calendars
 
         protected override LocalInstant CalculateStartOfYear(int year)
         {
-            if (year < MinYear)
-            {
-                return LocalInstant.MinValue;
-            }
-            if (year > MaxYear)
-            {
-                return LocalInstant.MaxValue;
-            }
-
             // Initial value is just temporary.
             int leapYears = year / 100;
             if (year < 0)

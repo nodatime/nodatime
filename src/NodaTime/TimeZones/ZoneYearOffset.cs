@@ -257,6 +257,14 @@ namespace NodaTime.TimeZones
         internal Instant MakeInstant(int year, Offset standardOffset, Offset savings)
         {
             CalendarSystem calendar = CalendarSystem.Iso;
+            if (year > calendar.MaxYear)
+            {
+                return Instant.MaxValue;
+            }
+            if (year < calendar.MinYear)
+            {
+                return Instant.MinValue;
+            }
             LocalInstant instant = calendar.Fields.Year.SetValue(LocalInstant.LocalUnixEpoch, year);
             instant = calendar.Fields.MonthOfYear.SetValue(instant, monthOfYear);
             instant = calendar.Fields.TickOfDay.SetValue(instant, tickOfDay.Ticks);

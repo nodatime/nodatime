@@ -249,7 +249,6 @@ namespace NodaTime.Calendars
 
         protected override LocalInstant CalculateStartOfYear(int year)
         {
-            Preconditions.CheckArgumentRange("year", year, MinYear, MaxYear);
             // The first cycle starts in year 1, not year 0.
             int cycle = (year - 1) / LeapYearCycleLength;
             int yearAtStartOfCycle = (cycle * LeapYearCycleLength) + 1;

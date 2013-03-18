@@ -84,9 +84,9 @@ namespace NodaTime.TimeZones
                 // Find the last valid transition by working back from the end of time. It's safe to unconditionally
                 // take the value here, as there must *be* some recurrences.
                 // TODO(Post-V1): Tidy this up. We're basically fundamentally broken around the end of time :(
-                var oneDayBeforeTheEndOfTime = Instant.MaxValue - Duration.FromStandardDays(1);
-                var lastStandard = standard.PreviousOrFail(oneDayBeforeTheEndOfTime, standardOffset, daylight.Savings);
-                var lastDaylight = daylight.PreviousOrFail(oneDayBeforeTheEndOfTime, standardOffset, Offset.Zero);
+                Instant lastValidTick = new LocalDateTime(CalendarSystem.Iso.MaxYear, 12, 31, 23, 59, 59, 999, 9999).InUtc().ToInstant();
+                var lastStandard = standard.PreviousOrFail(lastValidTick, standardOffset, daylight.Savings);
+                var lastDaylight = daylight.PreviousOrFail(lastValidTick, standardOffset, Offset.Zero);
                 bool standardIsLater = lastStandard.Instant > lastDaylight.Instant;
                 Transition lastTransition = standardIsLater ? lastStandard : lastDaylight;
                 Offset seamSavings = lastTransition.NewOffset - standardOffset;
