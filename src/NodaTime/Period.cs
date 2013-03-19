@@ -610,7 +610,6 @@ namespace NodaTime
             // Simplest way to normalize: grab all the fields up to "week" and
             // sum them.
             long totalTicks = TotalStandardTicks;
-            // TODO(Post-V1): Could use Duration for this...
             long days = totalTicks / NodaConstants.TicksPerStandardDay;
             long hours = (totalTicks / NodaConstants.TicksPerHour) % NodaConstants.HoursPerStandardDay;
             long minutes = (totalTicks / NodaConstants.TicksPerMinute) % NodaConstants.MinutesPerHour;

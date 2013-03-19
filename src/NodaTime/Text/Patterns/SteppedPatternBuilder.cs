@@ -269,7 +269,7 @@ namespace NodaTime.Text.Patterns
         /// Adds parse actions for two list of strings, such as non-genitive and genitive month names.
         /// The parsing is performed case-insensitively. All candidates are tested, and only the longest
         /// match is used.
-        /// TODO(Post-V1): Make this much more efficient in terms of capture...
+        /// TODO(V1.2): Make this much more efficient in terms of capture...
         /// </summary>
         internal void AddParseLongestTextAction(char field, NodaAction<TBucket, int> setter, CompareInfo compareInfo, IList<string> textValues1, IList<string> textValues2)
         {
