@@ -348,7 +348,6 @@ namespace NodaTime.Test.TimeZones
             var unequalValue = new ZoneYearOffset(TransitionMode.Utc, 9, 31, (int)IsoDayOfWeek.Wednesday, true, Offset.Zero);
 
             TestHelper.TestEqualsClass(value, equalValue, unequalValue);
-            TestHelper.TestOperatorEquality(value, equalValue, unequalValue);
         }
 
         [Test]
