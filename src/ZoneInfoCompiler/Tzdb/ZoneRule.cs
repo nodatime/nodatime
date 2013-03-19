@@ -61,7 +61,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
             {
                 return false;
             }
-            return recurrence == other.recurrence && Equals(LetterS, other.LetterS);
+            return Equals(recurrence, other.recurrence) && Equals(LetterS, other.LetterS);
         }
         #endregion
 

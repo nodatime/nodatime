@@ -8,7 +8,7 @@ namespace NodaTime.Test.Fields
 {
     internal class MockCountingPeriodField : PeriodField
     {
-        // TODO(Post-V1): Use a proper mock?
+        // TODO(V1.2): Use a proper mock? (This will probably die in the great refactoring.)
         private readonly long unitTicks;
 
         internal MockCountingPeriodField(PeriodFieldType fieldType) : this(fieldType, 60)

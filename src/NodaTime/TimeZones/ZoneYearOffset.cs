@@ -42,23 +42,7 @@ namespace NodaTime.TimeZones
         /// <summary>
         /// An offset that specifies the beginning of the year.
         /// </summary>
-        [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "ZoneYearOffset is immutable")]
-        public static readonly ZoneYearOffset StartOfYear = new ZoneYearOffset(TransitionMode.Wall, 1, 1, 0, false, Offset.Zero);
-
-        // TODO(Post-V1): find a better home for these two arrays
-
-        /// <summary>
-        /// The months of the year names as they appear in the TZDB zone files. They are
-        /// always the short name in US English. Extra blank name at the beginning helps
-        /// to make the indexes to come out right.
-        /// </summary>
-        private static readonly string[] Months = { "", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
-
-        /// <summary>
-        /// The days of the week names as they appear in the TZDB zone files. They are
-        /// always the short name in US English.
-        /// </summary>
-        private static readonly string[] DaysOfWeek = { "", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun" };
+        [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "ZoneYearOffset is immutable")] public static readonly ZoneYearOffset StartOfYear = new ZoneYearOffset(TransitionMode.Wall, 1, 1, 0, false, Offset.Zero);
 
         private readonly bool advance;
         private readonly int dayOfMonth;
@@ -146,7 +130,7 @@ namespace NodaTime.TimeZones
             if (failed)
             {
                 string range = allowNegated ? "[" + minimum + ", " + maximum + "] or [" + -maximum + ", " + -minimum + "]"
-                    : "[" + minimum + ", " + maximum + "]";
+                                   : "[" + minimum + ", " + maximum + "]";
 #if PCL
                 throw new ArgumentOutOfRangeException(name, name + " is not in the valid range: " + range);
 #else
@@ -194,6 +178,7 @@ namespace NodaTime.TimeZones
         public bool AddDay { get { return addDay; } }
 
         #region IEquatable<ZoneYearOffset> Members
+
         /// <summary>
         /// Indicates whether the current object is equal to another object of the same type.
         /// </summary>
@@ -211,14 +196,15 @@ namespace NodaTime.TimeZones
             {
                 return true;
             }
-            return mode == other.mode && 
-                monthOfYear == other.monthOfYear && 
-                dayOfMonth == other.dayOfMonth && 
-                dayOfWeek == other.dayOfWeek &&
-                advance == other.advance && 
-                tickOfDay == other.tickOfDay &&
-                addDay == other.addDay;
+            return mode == other.mode &&
+                   monthOfYear == other.monthOfYear &&
+                   dayOfMonth == other.dayOfMonth &&
+                   dayOfWeek == other.dayOfWeek &&
+                   advance == other.advance &&
+                   tickOfDay == other.tickOfDay &&
+                   addDay == other.addDay;
         }
+
         #endregion
 
         /// <summary>
@@ -344,11 +330,11 @@ namespace NodaTime.TimeZones
             // - DDD is the day of week (0-7)
             // - A is the AdvanceDayOfWeek
             // - P is the "addDay" (24:00) flag
-            int flags = ((int)Mode << 5) |
+            int flags = ((int) Mode << 5) |
                         (DayOfWeek << 2) |
                         (AdvanceDayOfWeek ? 2 : 0) |
                         (addDay ? 1 : 0);
-            writer.WriteByte((byte)flags);
+            writer.WriteByte((byte) flags);
             writer.WriteCount(MonthOfYear);
             writer.WriteSignedCount(DayOfMonth);
             writer.WriteOffset(TickOfDay);
@@ -360,7 +346,7 @@ namespace NodaTime.TimeZones
         /// <param name="writer">Where to send the output.</param>
         internal void WriteLegacy(LegacyDateTimeZoneWriter writer)
         {
-            writer.WriteCount((int)Mode);
+            writer.WriteCount((int) Mode);
             // Day of month can range from -31 to 31, so we add a suitable amount to force it to be positive.
             // The other values cannot, but we offset them for legacy reasons.
             writer.WriteCount(MonthOfYear + 12);
@@ -388,7 +374,7 @@ namespace NodaTime.TimeZones
         public static ZoneYearOffset ReadLegacy(LegacyDateTimeZoneReader reader)
         {
             Preconditions.CheckNotNull(reader, "reader");
-            var mode = (TransitionMode)reader.ReadCount();
+            var mode = (TransitionMode) reader.ReadCount();
             // Remove the additions performed before
             int monthOfYear = reader.ReadCount() - 12;
             int dayOfMonth = reader.ReadCount() - 31;
@@ -479,29 +465,8 @@ namespace NodaTime.TimeZones
             }
         }
 
-        /// <summary>
-        /// Implements the operator ==.
-        /// </summary>
-        /// <param name="left">The left.</param>
-        /// <param name="right">The right.</param>
-        /// <returns>The result of the operator.</returns>
-        public static bool operator ==(ZoneYearOffset left, ZoneYearOffset right)
-        {
-            return ReferenceEquals(null, left) ? ReferenceEquals(null, right) : left.Equals(right);
-        }
-
-        /// <summary>
-        /// Implements the operator !=.
-        /// </summary>
-        /// <param name="left">The left.</param>
-        /// <param name="right">The right.</param>
-        /// <returns>The result of the operator.</returns>
-        public static bool operator !=(ZoneYearOffset left, ZoneYearOffset right)
-        {
-            return !(left == right);
-        }
-
         #region Object overrides
+
         /// <summary>
         /// Determines whether the specified <see cref="System.Object"/> is equal to this instance.
         /// </summary>
@@ -534,56 +499,6 @@ namespace NodaTime.TimeZones
             hash = HashCodeHelper.Hash(hash, addDay);
             return hash;
         }
-
-        /// <summary>
-        /// Returns a <see cref="System.String"/> that represents this instance.
-        /// </summary>
-        /// <returns>
-        /// A <see cref="System.String"/> that represents this instance.
-        /// </returns>
-        public override string ToString()
-        {
-            var builder = new StringBuilder();
-            builder.Append(Months[MonthOfYear]).Append(" ");
-            if (DayOfMonth == -1)
-            {
-                builder.Append("last").Append(DaysOfWeek[DayOfWeek]).Append(" ");
-            }
-            else if (DayOfWeek == 0)
-            {
-                builder.Append(DayOfMonth).Append(" ");
-            }
-            else
-            {
-                builder.Append(DaysOfWeek[DayOfWeek]);
-                builder.Append(AdvanceDayOfWeek ? ">=" : "<=");
-                builder.Append(DayOfMonth).Append(" ");
-            }
-            if (!addDay)
-            {
-                builder.Append(TickOfDay);
-            }
-            else
-            {
-                builder.Append("24:00");
-            }
-            switch (Mode)
-            {
-                case TransitionMode.Standard:
-                    builder.Append("s");
-                    break;
-                case TransitionMode.Utc:
-                    builder.Append("u");
-                    break;
-                case TransitionMode.Wall:
-                    break;
-            }
-            if (advance)
-            {
-                builder.Append(" (advance)");
-            }
-            return builder.ToString();
-        }
-        #endregion // Object overrides
+        #endregion
     }
 }

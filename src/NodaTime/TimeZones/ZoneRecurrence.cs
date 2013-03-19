@@ -89,31 +89,7 @@ namespace NodaTime.TimeZones
             {
                 return true;
             }
-            return savings == other.savings && fromYear == other.fromYear && toYear == other.toYear && name == other.name && yearOffset == other.yearOffset;
-        }
-        #endregion
-
-        #region Operator overloads
-        /// <summary>
-        /// Implements the operator ==.
-        /// </summary>
-        /// <param name="left">The left.</param>
-        /// <param name="right">The right.</param>
-        /// <returns>The result of the operator.</returns>
-        public static bool operator ==(ZoneRecurrence left, ZoneRecurrence right)
-        {
-            return ReferenceEquals(null, left) ? ReferenceEquals(null, right) : left.Equals(right);
-        }
-
-        /// <summary>
-        /// Implements the operator !=.
-        /// </summary>
-        /// <param name="left">The left.</param>
-        /// <param name="right">The right.</param>
-        /// <returns>The result of the operator.</returns>
-        public static bool operator !=(ZoneRecurrence left, ZoneRecurrence right)
-        {
-            return !(left == right);
+            return savings == other.savings && fromYear == other.fromYear && toYear == other.toYear && name == other.name && yearOffset.Equals(other.yearOffset);
         }
         #endregion
 

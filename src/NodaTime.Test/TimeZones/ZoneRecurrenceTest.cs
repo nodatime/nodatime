@@ -140,7 +140,6 @@ namespace NodaTime.Test.TimeZones
             var unequalValue = new ZoneRecurrence("foo", Offset.Zero, yearOffset, 1971, 2009);
 
             TestHelper.TestEqualsClass(value, equalValue, unequalValue);
-            TestHelper.TestOperatorEquality(value, equalValue, unequalValue);
         }
     }
 }
