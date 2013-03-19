@@ -2,7 +2,6 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
@@ -35,7 +34,12 @@ namespace NodaTime.TimeZones.IO
         /// <returns>The integer value from the stream.</returns>
         public int ReadCount()
         {
-            return (int) ReadVarint();  // TODO: check the value is in range?
+            uint unsigned = ReadVarint();
+            if (unsigned > int.MaxValue)
+            {
+                throw new InvalidNodaDataException("Count value greater than Int32.MaxValue");
+            }
+            return (int) unsigned;
         }
 
         /// <summary>

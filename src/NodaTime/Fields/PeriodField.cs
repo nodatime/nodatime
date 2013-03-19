@@ -31,7 +31,8 @@ namespace NodaTime.Fields
             {
                 throw new ArgumentOutOfRangeException("fieldType");
             }
-            // TODO(Post-V1): Take another look at unsupported fields. Do we really want them?
+            // TODO(V1.2): Take another look at unsupported fields. Do we really want them?
+            // (Hopefully fields will die completely when the Great CalendarSystem Refactoring takes place.)
             if (supported)
             {
                 Preconditions.CheckArgumentRange("unitTicks", unitTicks, 1L, long.MaxValue);

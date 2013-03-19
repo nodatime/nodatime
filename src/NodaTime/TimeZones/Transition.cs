@@ -7,12 +7,11 @@ using System;
 namespace NodaTime.TimeZones
 {
     /// <summary>
-    /// A transition between two offsets, usually for daylight saving reasons.
+    /// A transition between two offsets, usually for daylight saving reasons. This type only knows about
+    /// the old offset, the new offset, and the transition point.
     /// </summary>
     /// 
     /// <threadsafety>This type is an immutable value type. See the thread safety section of the user guide for more information.</threadsafety>
-    // TODO(Post-V1): Potentially rename this to ZoneTransition after doing something
-    // else with the current ZoneTransition class :)
     internal struct Transition : IEquatable<Transition>
     {
         private readonly Instant instant;

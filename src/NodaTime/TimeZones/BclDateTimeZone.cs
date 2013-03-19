@@ -28,9 +28,8 @@ namespace NodaTime.TimeZones
         private static readonly Instant LastValidTick =
             new LocalDateTime(CalendarSystem.Iso.MaxYear, 12, 31, 23, 59, 59, 999, 9999).InUtc().ToInstant();
 
-
         private readonly TimeZoneInfo bclZone;
-        internal readonly IZoneIntervalMap map;
+        private readonly IZoneIntervalMap map;
 
         /// <summary>
         /// Returns the original <see cref="TimeZoneInfo"/> from which this was created.
