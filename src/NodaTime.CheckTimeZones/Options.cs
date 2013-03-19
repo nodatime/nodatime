@@ -9,7 +9,7 @@ namespace NodaTime.CheckTimeZones
 {
     internal class Options
     {
-        [Option("f", "file", Required = false, HelpText = "File to load zone database from, e.g. tzdb.nzd. If unspecifed, built-in zones are used.")]
+        [Option("f", "file", HelpText = "File to load zone database from, e.g. tzdb.nzd. If unspecifed, built-in zones are used.")]
         public string File { get; set; }
 
         [Option(null, "from", HelpText = "'From' year: the first year to show transitions from.", DefaultValue = 1950)]

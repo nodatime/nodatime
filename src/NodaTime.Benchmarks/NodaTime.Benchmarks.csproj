@@ -54,6 +54,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\lib\commandline\CommandLine.cs">
+      <Link>Timing\CommandLine.cs</Link>
+    </Compile>
+    <Compile Include="..\..\lib\commandline\CommandLineText.cs">
+      <Link>Timing\CommandLineText.cs</Link>
+    </Compile>
     <Compile Include="CachedDateTimeZoneBenchmarks.cs" />
     <Compile Include="BclDateTimeZoneBenchmarks.cs" />
     <Compile Include="FrameworkComparisons\TimeZoneInfoBenchmarks.cs" />

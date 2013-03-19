@@ -2,7 +2,10 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
+using System;
 using System.Linq;
+using CommandLine;
+using CommandLine.Text;
 
 namespace NodaTime.Benchmarks.Timing
 {
@@ -24,18 +27,53 @@ namespace NodaTime.Benchmarks.Timing
         internal string MethodFilter { get; private set; }
         internal bool DisplayRawData { get; private set; }
 
+        private class MutableOptions
+        {
+            [Option("w", "warmup", HelpText = "Duration of warm-up time per test, in seconds. Default=1")]
+            public int WarmUpTimeSeconds { get; set; }
+            [Option("d", "duration", HelpText = "Targeted per-test duration, in seconds. Default=10")]
+            public int TestTimeSeconds { get; set; }
+            [Option("t", "type", HelpText = "Type filter")]
+            public string TypeFilter { get; set; }
+            [Option("m", "method", HelpText = "Method filter")]
+            public string MethodFilter { get; set; }
+            [Option("r", "raw", HelpText = "Whether or not to display the raw data.")]
+            public bool DisplayRawData { get; set; }
+
+            [HelpOption("?", "help", HelpText = "Display this help screen.")]
+            public string GetUsage()
+            {
+                var help = new HelpText(new HeadingInfo("NodaTime.Benchmarks"))
+                {
+                    AdditionalNewLineAfterOption = true,
+                };
+                help.AddOptions(this);
+                return help;
+            }
+        }
+
         internal static BenchmarkOptions FromCommandLine(string[] args)
         {
-            // TODO(Post-V1): Use command line:)
+            MutableOptions options = new MutableOptions()
+            {
+                WarmUpTimeSeconds = 1,
+                TestTimeSeconds = 10
+            };
+            ICommandLineParser parser = new CommandLineParser(new CommandLineParserSettings(Console.Error));
+            if (!parser.ParseArguments(args, options))
+            {
+                return null;
+            }
+
             return new BenchmarkOptions
-                   {
-                       TypeFilter = args.FirstOrDefault(),
-                       MethodFilter = args.Skip(1).FirstOrDefault(),
-                       WarmUpTime = Duration.FromSeconds(1),
-                       TestTime = Duration.FromSeconds(10),
-                       Timer = new WallTimer(),
-                       DisplayRawData = args.Contains("-rawData")
-                   };
+            {
+                TypeFilter = options.TypeFilter,
+                MethodFilter = options.MethodFilter,
+                WarmUpTime = Duration.FromSeconds(options.WarmUpTimeSeconds),
+                TestTime = Duration.FromSeconds(options.TestTimeSeconds),
+                Timer = new WallTimer(),
+                DisplayRawData = options.DisplayRawData
+            };
         }
     }
 }
