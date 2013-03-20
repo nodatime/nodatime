@@ -112,17 +112,17 @@ namespace NodaTime.TimeZones.IO
 
                 if ((flag & 0x80) == 0)
                 {
-                    int units = flag - LegacyDateTimeZoneWriter.MaxMillisHalfHours;
+                    int units = flag - LegacyDateTimeZoneWriter.MaxOffsetHalfHours;
                     return Offset.FromMilliseconds(units * (30 * NodaConstants.MillisecondsPerMinute));
                 }
-                if ((flag & 0xc0) == LegacyDateTimeZoneWriter.FlagMillisSeconds)
+                if ((flag & 0xc0) == LegacyDateTimeZoneWriter.FlagOffsetSeconds)
                 {
                     int first = flag & ~0xc0;
                     int second = ReadByte() & 0xff;
                     int third = ReadByte() & 0xff;
 
                     int units = (((first << 8) + second) << 8) + third;
-                    units = units - LegacyDateTimeZoneWriter.MaxMillisSeconds;
+                    units = units - LegacyDateTimeZoneWriter.MaxOffsetSeconds;
                     return Offset.FromMilliseconds(units * NodaConstants.MillisecondsPerSecond);
                 }
                 return Offset.FromMilliseconds(ReadInt32());
@@ -144,7 +144,7 @@ namespace NodaTime.TimeZones.IO
              * upper two bits  units       field length  approximate range
              * ---------------------------------------------------------------
              * 00              30 minutes  1 byte        +/- 16 hours
-             * 01              minutes     3 bytes       +/- 1020 years
+             * 01              minutes     3 bytes       +/- 4 years
              * 10              seconds     5 bytes       +/- 4355 years
              * 11000000        ticks       9 bytes       +/- 292,000 years
              * 11111110  0xfe              1 byte         Instant, LocalInstant, Duration MaxValue

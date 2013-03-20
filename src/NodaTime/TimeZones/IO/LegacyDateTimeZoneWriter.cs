@@ -22,29 +22,30 @@ namespace NodaTime.TimeZones.IO
         internal const byte FlagTimeZonePrecalculated = 4;
 
         internal const long HalfHoursMask = 0x3fL;
-        internal const long MaxHalfHours = 0x1fL;
-        internal const long MinHalfHours = -MaxHalfHours;
 
-        internal const int MaxMillisHalfHours = 0x3f;
-        internal const int MinMillisHalfHours = -MaxMillisHalfHours;
-
-        internal const long MaxMinutes = 0x1fffffL;
-        internal const long MinMinutes = -MaxMinutes;
-
-        internal const long MaxSeconds = 0x1fffffffffL;
-        internal const long MinSeconds = -MaxSeconds;
-
-        internal const int MaxMillisSeconds = 0x3ffff;
-        internal const int MinMillisSeconds = -MaxMillisSeconds;
-
+        // Flags and limits used for Instant
+        internal const byte FlagMaxValue = 0xfe;
+        internal const byte FlagMinValue = 0xff;
         internal const byte FlagHalfHour = 0x00;
         internal const byte FlagMinutes = 0x40;
         internal const byte FlagSeconds = 0x80;
-        internal const byte FlagMillisSeconds = 0x80;
         internal const byte FlagTicks = 0xc0;
-        internal const byte FlagMilliseconds = 0xfd;
-        internal const byte FlagMaxValue = 0xfe;
-        internal const byte FlagMinValue = 0xff;
+
+        internal const long MaxHalfHours = 0x1fL;
+        internal const long MinHalfHours = -MaxHalfHours;
+        internal const long MaxMinutes = 0x1fffffL;
+        internal const long MinMinutes = -MaxMinutes;
+        internal const long MaxSeconds = 0x1fffffffffL;
+        internal const long MinSeconds = -MaxSeconds;
+
+        // Flags and limits used for Offset
+        internal const byte FlagOffsetSeconds = 0x80;
+        internal const byte FlagOffsetMilliseconds = 0xfd;
+
+        internal const int MaxOffsetHalfHours = 0x3f;
+        internal const int MinOffsetHalfHours = -MaxOffsetHalfHours;
+        internal const int MaxOffsetSeconds = 0x3ffff;
+        internal const int MinOffsetSeconds = -MaxOffsetSeconds;
 
         private readonly Stream output;
         private readonly IList<string> stringPool; 
@@ -141,9 +142,9 @@ namespace NodaTime.TimeZones.IO
                 {
                     // Try to write in 30 minute units.
                     int units = millis / (30 * NodaConstants.MillisecondsPerMinute);
-                    if (MinMillisHalfHours <= units && units <= MaxMillisHalfHours)
+                    if (MinOffsetHalfHours <= units && units <= MaxOffsetHalfHours)
                     {
-                        units = units + MaxMillisHalfHours;
+                        units = units + MaxOffsetHalfHours;
                         WriteByte((byte)(units & 0x7f));
                         return;
                     }
@@ -153,10 +154,10 @@ namespace NodaTime.TimeZones.IO
                 {
                     // Try to write seconds.
                     int seconds = millis / NodaConstants.MillisecondsPerSecond;
-                    if (MinMillisSeconds <= seconds && seconds <= MaxMillisSeconds)
+                    if (MinOffsetSeconds <= seconds && seconds <= MaxOffsetSeconds)
                     {
-                        seconds = seconds + MaxMillisSeconds;
-                        WriteByte((byte)(FlagMillisSeconds | (byte)((seconds >> 16) & 0x3f)));
+                        seconds = seconds + MaxOffsetSeconds;
+                        WriteByte((byte)(FlagOffsetSeconds | (byte)((seconds >> 16) & 0x3f)));
                         WriteInt16((short)(seconds & 0xffff));
                         return;
                     }
@@ -166,7 +167,7 @@ namespace NodaTime.TimeZones.IO
                 // required or the minutes didn't fit in the field.
 
                 // Form 11 (64 bits effective precision, but write as if 70 bits)
-                WriteByte(FlagMilliseconds);
+                WriteByte(FlagOffsetMilliseconds);
                 WriteInt32(millis);
             }
         }
@@ -183,7 +184,7 @@ namespace NodaTime.TimeZones.IO
              * upper two bits  units       field length  approximate range
              * ---------------------------------------------------------------
              * 00              30 minutes  1 byte        +/- 16 hours
-             * 01              minutes     4 bytes       +/- 1020 years
+             * 01              minutes     4 bytes       +/- 4 years
              * 10              seconds     5 bytes       +/- 4355 years
              * 11000000        ticks       9 bytes       +/- 292,000 years
              * 11111110  0xfe              1 byte         Instant, LocalInstant, Duration MaxValue
