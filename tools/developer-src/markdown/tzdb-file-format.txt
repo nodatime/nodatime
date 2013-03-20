@@ -126,7 +126,14 @@ Field data often makes use of the following serialization primitives:
     indicating the number of milliseconds in the offset.
 - `zoneintervaltransition`, an encoding for an instant possibly relative to an earlier or equal one. This
   is used when writing transitions between zone intervals, where the additional context of a previous value
-  helps to reduce the data required. TODO: Full description.
+  helps to reduce the data required. The format is (in order of preference):
+  - For `Instant.MinValue`, a single byte `0`.
+  - For `Instant.MaxValue`, a single byte `1`.
+  - For an instant which is a whole number of hours since the "previous" instant, where that
+    whole number is in the range [128, 1048576), the format is that whole number of hours written as a `count`.
+  - For an instant which is a whole number of minutes since 1800-01-01T00:00:00Z, and that number of
+    minutes is in the range (1048576, Int32.MaxValue], the format is that number of minutes written as a `count`.
+  - For any other instant, a single byte `2` followed by a `fixed64` value for the number of ticks since the Unix epoch.
 - `dictionary`, a string-to-string dictionary where no keys or values can be null. This is simply a
   count (the number of entries) followed by each key/value pair written as first the key then the value
   in the normal way of writing strings.
@@ -489,21 +496,26 @@ A `zoneintervaltransition` represents an instant at which a transition
 begins. It is serialized as a variable number of bytes according to the
 following scheme, based on the (signed) number of ticks from the Unix epoch:
 
-   * the beginning of time and end of time are serialized as `0xfe` and
-     `0xff` respectively
-   * numbers of ticks that are a multiple of 30 minutes are serialized as
+   * The beginning of time and end of time are serialized as `0xfe` and
+     `0xff` respectively.
+   * Numbers of ticks that are a multiple of 30 minutes are serialized as
      the single byte `0x00`..`0x3e` counting the number of 30 minute
      periods, with a bias such that `0x00` represents -15:30, `0x01`
      represents -15:00, `0x1f` represents a zero offset, and `0x3e`
-     represents the +15:30.
-
-TODO minutes and seconds:
-   * offsets that are a whole number of seconds are serialized as three
-     bytes, the first of which is in the range `0x82`..`0x85`, by adding
-     `0x83ffff` to the number of seconds, and writing three bytes in
-     MSB-first order, so that `[0x82 0xae 0x80]` represents -23:59:59,
-     `[0x84 0x00 0x00]` represents +00:00:01, and `[0x85 0x51 0x7e]`
-     represents +23:59:59.
-
-   * any other value is serialized as the leader `0xa0` followed by the
-     number of ticks as a `fixed64`
+     represents the +15:30. Values outside this range are serialized
+	 as one of the forms below.
+   * Numbers of ticks that are a whole number of minutes are serialized as
+     a `fixed32` representing a 30 bit value with the top two bits of the `fixed32` set to `01`.
+	 The 30 bit value is the number of minutes, with a bias such that `0x00000000`
+	 represents `-0x1fffff` minutes. (This is about 4 years. Note that this is shorter
+	 than the *intended* span of about 1000 years, due to a bug; the bug cannot
+	 now be fixed due to compatibility issues.) Values outside the +/-4 year range are
+	 serialized as one of the forms below.
+   * Numbers of ticks that are a whole number of seconds are serialized as
+     a `byte` followed by a `fixed32`, combined to represent a 40 bit value with the 
+	 top two bits of the first byte set to `10`. The 40 bit value is the number of
+	 seconds, with a bias such that `0x0000000000` represents `0x1fffffffffL` seconds.
+	 This is about 4355 years. Values outside the +/-4355 year range are
+	 serialized as one of the forms below.
+   * Any other value is written as a single byte `0xc0` followed by a `fixed64` with
+     the number of ticks.
