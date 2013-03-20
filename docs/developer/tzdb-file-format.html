@@ -148,7 +148,138 @@ in the normal way of writing strings.</li>
 
 <h2>Fields</h2>
 
-<p>TODO</p>
+<h2>Field 0: String pool</h2>
+
+<p>The string pool field is built <em>without</em> reference to a string pool (as otherwise it would be pointless).
+It is simply a <code>count</code> followed by that many strings. The ordering of the strings is optimized (by running through
+a lot of the serialization twice) so that the most commonly used strings come earliest. This allows those strings
+to be represented very efficiently by later fields which use the string pool.</p>
+
+<p>There must be exactly one string pool field.</p>
+
+<h2>Field 1: Time zone</h2>
+
+<p>The time zone field provides full details of one of the "canonical" time zones in TZDB. (Time zone aliases always
+eventually refer to a canonical time zone for their data.)</p>
+
+<p>The format depends on the type of time zone. At the time of this writing, there are only two options, described below.
+In both cases, the format starts with the zone ID (as a string) and then a 1-byte flag to indicate the type.</p>
+
+<p>Fixed time zones (which have a single <a href="../api/html/T_NodaTime_TimeZones_ZoneInterval.htm"><code>ZoneInterval</code></a> covering
+  the whole of time). The flag value for a fixed zone is 1, and the remaining data is simply the offset. (The name
+  of the zone interval is always just the ID of the time zone.)</p>
+
+<p>Everything else, represented as a <code>PrecalculatedDateTimeZone</code> - a number of abutting <code>ZoneIntervals</code> from the start of
+time until either the end of time, or some stable period where a pair of rules governing when daylight saving time starts
+and stops continues until the end of time. This final stable period is the "tail zone" - and is optional, as a zone which
+ends in a fixed offset can simply represent that as a final zone interval to the end of time.</p>
+
+<p>The flag value for a precalculated zone is 2, and the remaining data is:
+- The number of precalculated zone intervals as a <code>count</code>
+- The zone intervals themselves, each of which has a format of:
+  - A zone interval transition from the start of the previous interval (except for the first interval, which has no "previous")
+    to the start of the current one.
+  - The name of the interval
+  - The wall offset (i.e. standard + daylight savings)
+  - The daylight savings offset
+  - A zone interval transition from the start of the final interval to the end of the final interval (which is the start of the
+    tail zone, if there is one).
+  - A byte to indicate the presence (1) or absence (0) of a tail zone
+  - The tail zone, if any:
+    - The standard offset
+    - The name used for intervals in "standard time"
+    - The standard recurrence rule (see below)
+    - The name used for intervals in "daylight saving time"
+    - The daylight savings recurrence rule
+    - The daylight savings offset (to be added to the standard offset)</p>
+
+<p>A recurrence rule provides data about when a transition occurs. For example, "The first Sunday in October at 1am local time." The format
+is:</p>
+
+<ul>
+<li>A single byte representing four flags:
+<ul>
+<li>Bits 5-6: the "mode" of the rule, indicating whether transitions are specified relative to:</li>
+<li>0: UTC</li>
+<li>1: Wall time (local time)</li>
+<li>2: Standard time</li>
+<li>Bits 2-4: the day of the week in which the recurrence starts,
+where 0 means "not set", and 1 to 7 mean Monday to Sunday respectively.</li>
+<li>Bit 1: whether the day of month represents an upper bound (0) or lower bound (1);
+this is only relevant if a day of week is also specified, where the rule might be
+described as e.g. "first Tuesday on or after the 15th"</li>
+<li>Bit 0: whether an extra day should be added to the calculation (1) or not (0), to
+cope with transitions documented as occurring at 24:00 - these may potentially
+spill into a following month</li>
+</ul></li>
+<li>A count (single byte) for the month-of-year in which the rule starts</li>
+<li>A signed count (single byte) for the day-of-month in which the rule starts, where a negative
+value indicates the number of days counted from the end of a month. (-1 is the last day of the
+month, for example.)</li>
+<li>An offset used (somewhat unconventionally) to indicate the time of day at which the recurrence starts.</li>
+</ul>
+
+<p>This field may occur multiple times, and it always uses the string pool.</p>
+
+<h2>Field 2: TZDB version</h2>
+
+<p>This is simply a single string representing the version of TZDB being serialized, such as "2013a".</p>
+
+<p>This field must occur exactly once, and it does not use the string pool.</p>
+
+<h2>Field 3: ID map</h2>
+
+<p>This is a map from alias to canonical ID. So for example, "Europe/Guernsey" maps to "Europe/London". The
+representation is a single dictionary. This field uses the string pool.</p>
+
+<p>This field must occur exactly once, and it uses the string pool.</p>
+
+<h2>Field 4: CLDR mapping between Windows system time zone IDs and TZDB IDs</h2>
+
+<p>This field contains the data from the windowsZones.xml file in <a href="http://cldr.unicode.org">CLDR</a>. The format is:</p>
+
+<ul>
+<li>A string for the mapping version number (currently a string representation of the revision number)</li>
+<li>A string for the TZDB version the mapping was generated against</li>
+<li>A string for the Windows time zone version the mapping was generated against</li>
+<li>A count for the number of "map zones" to follow</li>
+<li>The map zone data, each of which is:
+<ul>
+<li>A string for the Windows system time zone ID</li>
+<li>A string for the territory ID</li>
+<li>A count for the number of TZDB IDs in this mapping</li>
+<li>The TZDB IDs, each as a string</li>
+</ul></li>
+</ul>
+
+<p>This field must occur exactly once, and it uses the string pool.</p>
+
+<h2>Field 5: Additional information for Windows mapping</h2>
+
+<p>This field is only present for the sake of the PCL version, but is loaded in both builds anyway.
+It contains a mapping from Windows <code>TimeZoneInfo</code> standard name to TZDB ID for those time zones
+where the two differ. (There are only a few.) This is required as the PCL doesn't expose the 
+<code>TimeZoneInfo.Id</code> property.</p>
+
+<p>The field data is a single dictionary. It must occur exactly once, and it uses the string pool.</p>
+
+<h2>Field 6: Geo-location information</h2>
+
+<p>This field provides the information in the <code>iso3166.tab</code> and <code>zone.tab</code> files within TZDB, which
+contain geographical information about time zones. Applications can use this to offer users a choice
+of time zones in a friendlier way than using the TZDB ID... although the information is only provided
+in English.</p>
+
+<p>The field data consists of a count of elements, then the elements themselves. Each element consists of:</p>
+
+<ul>
+<li>A signed count for the latitude of the sample location, as an integer number of seconds.</li>
+<li>A signed count for the longitude of the sample location, as an integer number of seconds.</li>
+<li>A string for the name of the country.</li>
+<li>A string for the ISO-3166 two-letter country code.</li>
+<li>A (possibly empty) string for the comment associated with the location (usually used to disambiguate between
+locations in the same country).</li>
+</ul>
 
 <h1>Resource file format</h1>
 
