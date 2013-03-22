@@ -67,6 +67,13 @@ namespace NodaTime.Test.Text
             // our sample, which is good enough for now...
             if (bcl is UmAlQuraCalendar)
             {
+                // ... On Mono, this actually might not be good enough. So let's just punt on it - the Mono
+                // implementation of UmAlQuraCalendar currently differs from the Windows one, but may get fixed
+                // at some point. Let's just abort the test.
+                if (TestHelper.IsRunningOnMono)
+                {
+                    return null;
+                }
                 return CalendarSystem.GetIslamicCalendar(IslamicLeapYearPattern.Base16, IslamicEpoch.Civil);
             }
             if (bcl is JulianCalendar)
