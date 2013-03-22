@@ -9,6 +9,7 @@ using System.Threading;
 using NUnit.Framework;
 using NodaTime.Calendars;
 using NodaTime.Globalization;
+using NodaTime.Test.Text;
 
 namespace NodaTime.Test.Globalization
 {
@@ -26,6 +27,15 @@ namespace NodaTime.Test.Globalization
                 return null;
             }
             #endregion
+        }
+
+        // Just check we can actually build a NodaFormatInfo for every culture, outside
+        // text-specific tests.
+        [Test]
+        [TestCaseSource(typeof(Cultures), "AllCultures")]
+        public void ConvertCulture(CultureInfo culture)
+        {
+            NodaFormatInfo.GetFormatInfo(culture);
         }
 
         [Test]
