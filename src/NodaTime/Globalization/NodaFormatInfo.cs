@@ -148,13 +148,25 @@ namespace NodaTime.Globalization
         /// either a reference to the non-genitive names or a converted list as per ConvertMonthArray.
         /// </summary>
         /// <remarks>
+        /// <para>
         /// Mono uses the invariant month names for the genitive month names by default, so we'll assume that
         /// if we see an invariant name, that *isn't* deliberately a genitive month name. A non-invariant culture
         /// which decided to have genitive month names exactly matching the invariant ones would be distinctly odd.
         /// See http://bugzilla.xamarin.com/show_bug.cgi?id=3278 for more details and progress.
+        /// </para>
+        /// <para>
+        /// Mono 3.0.6 has an exciting and different bug, where all the abbreviated genitive month names are just numbers ("1" etc).
+        /// So again, if we detect that, we'll go back to the non-genitive version.
+        /// See http://bugzilla.xamarin.com/show_bug.cgi?id=11361 for more details and progress.
+        /// </para>
         /// </remarks>
         private IList<string> ConvertGenitiveMonthArray(IList<string> nonGenitiveNames, string[] bclNames, string[] invariantNames)
         {
+            int ignored;
+            if (int.TryParse(bclNames[0], out ignored))
+            {
+                return nonGenitiveNames;
+            }
             for (int i = 0; i < bclNames.Length; i++)
             {
                 if (bclNames[i] != nonGenitiveNames[i + 1] && bclNames[i] != invariantNames[i])
