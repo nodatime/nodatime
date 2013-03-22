@@ -178,6 +178,11 @@ namespace NodaTime.Test.Text
         [TestCaseSource(typeof(Cultures), "AllCultures")]
         public void BclLongDatePatternGivesSameResultsInNoda(CultureInfo culture)
         {
+            // See https://bugzilla.xamarin.com/show_bug.cgi?id=11363
+            if (TestHelper.IsRunningOnMono && culture.IetfLanguageTag == "mt-MT")
+            {
+                return;
+            }
             AssertBclNodaEquality(culture, culture.DateTimeFormat.LongDatePattern);
         }
 
