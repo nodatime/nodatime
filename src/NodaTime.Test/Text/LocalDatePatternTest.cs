@@ -196,12 +196,13 @@ namespace NodaTime.Test.Text
         private void AssertBclNodaEquality(CultureInfo culture, string patternText)
         {
             var pattern = LocalDatePattern.Create(patternText, culture);
-            var calendarSystem = CalendarSystemForCalendar(culture.Calendar);
+            var calendarSystem = CalendarSystemForCalendar(culture.Calendar, patternText);
             if (calendarSystem == null)
             {
                 // We can't map this calendar system correctly yet; the test would be invalid.
                 return;
             }
+
             var sampleDateInCalendar = SampleLocalDate.WithCalendar(calendarSystem);
             // To construct a DateTime, we need a time... let's give a non-midnight one to catch
             // any unexpected uses of time within the date patterns.

@@ -177,7 +177,7 @@ namespace NodaTime.Test.Text
             // Use the Gregorian calendar for those tests.
             Calendar calendar = "Oos".Contains(patternText) ? CultureInfo.InvariantCulture.Calendar : culture.Calendar;
 
-            var calendarSystem = CalendarSystemForCalendar(calendar);
+            var calendarSystem = CalendarSystemForCalendar(calendar, patternText);
             if (calendarSystem == null)
             {
                 // We can't map this calendar system correctly yet; the test would be invalid.
