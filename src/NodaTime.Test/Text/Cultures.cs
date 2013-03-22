@@ -24,7 +24,7 @@ namespace NodaTime.Test.Text
         // Note: R# suggests using a method group conversion for the Select call here, which is fine with the C# 4 compiler,
         // but doesn't work with the C# 3 compiler (which doesn't have quite as good type inference).
         internal static readonly IEnumerable<CultureInfo> AllCultures = CultureInfo.GetCultures(CultureTypes.SpecificCultures)
-            .Where(culture => ExcludedCultures.Contains(culture.IetfLanguageTag))
+            .Where(culture => !ExcludedCultures.Contains(culture.IetfLanguageTag))
             .Select(culture => CultureInfo.ReadOnly(culture)).ToList();
         // Some tests don't run nicely on Mono, e.g. as they have characters we don't expect in their long/short patterns.
         // Pretend we have no cultures, for the sake of these tests.
