@@ -196,7 +196,7 @@ namespace NodaTime.Test.Text
         private void AssertBclNodaEquality(CultureInfo culture, string patternText)
         {
             var pattern = LocalDatePattern.Create(patternText, culture);
-            var calendarSystem = CalendarSystemForCalendar(culture.Calendar, patternText);
+            var calendarSystem = CalendarSystemForCalendar(culture.Calendar);
             if (calendarSystem == null)
             {
                 // We can't map this calendar system correctly yet; the test would be invalid.

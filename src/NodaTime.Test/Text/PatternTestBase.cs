@@ -52,22 +52,12 @@ namespace NodaTime.Test.Text
         /// get day/month/year values to match without getting the calendar right, the calendar
         /// affects the day of week.
         /// </summary>
-        internal static CalendarSystem CalendarSystemForCalendar(Calendar bcl, string pattern)
+        internal static CalendarSystem CalendarSystemForCalendar(Calendar bcl)
         {
             if (bcl is GregorianCalendar)
             {
                 return CalendarSystem.Iso;
             }
-
-            // On Mono (at least some versions) the round-trip format (o and O) is broken - it uses
-            // the calendar of the culture instead of the ISO-8601 calendar. So for those cultures,
-            // we'll skip round-trip format tests.
-            // See https://bugzilla.xamarin.com/show_bug.cgi?id=11364
-            if (pattern == "o" || pattern == "O")
-            {
-                return null;
-            }
-
             if (bcl is HijriCalendar)
             {
                 return CalendarSystem.GetIslamicCalendar(IslamicLeapYearPattern.Base16, IslamicEpoch.Astronomical);
