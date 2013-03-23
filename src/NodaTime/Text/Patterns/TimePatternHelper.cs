@@ -216,15 +216,19 @@ namespace NodaTime.Text.Patterns
                 // Full designator
                 builder.AddParseAction((str, bucket) =>
                 {
-                    // TODO(V1.2): Use AddParseLongestTextAction?
-                    if (str.MatchCaseInsensitive(amDesignator, compareInfo, true))
+                    // Could use the "match longest" approach, but with only two it feels a bit silly to build a list...
+                    bool pmLongerThanAm = pmDesignator.Length > amDesignator.Length;
+                    string longerDesignator = pmLongerThanAm ? pmDesignator : amDesignator;
+                    string shorterDesignator = pmLongerThanAm ? amDesignator : pmDesignator;
+                    int longerValue = pmLongerThanAm ? 1 : 0;
+                    if (str.MatchCaseInsensitive(longerDesignator, compareInfo, true))
                     {
-                        amPmSetter(bucket, 0);
+                        amPmSetter(bucket, longerValue);
                         return null;
                     }
-                    if (str.MatchCaseInsensitive(pmDesignator, compareInfo, true))
+                    if (str.MatchCaseInsensitive(shorterDesignator, compareInfo, true))
                     {
-                        amPmSetter(bucket, 1);
+                        amPmSetter(bucket, 1 - longerValue);
                         return null;
                     }
                     return ParseResult<TResult>.MissingAmPmDesignator;
