@@ -93,7 +93,7 @@ the meaning of particular field IDs, or even contain a different field structure
 
 <ul>
 <li>A field ID (1 byte)</li>
-<li>The size of the field data, as a <code>count</code> (see pim details below)</li>
+<li>The size of the field data, as a <code>count</code> (see details below)</li>
 <li>The field data</li>
 </ul>
 
@@ -102,7 +102,7 @@ The expected data within each field is governed by its ID.</p>
 
 <h2>Serialization primitives</h2>
 
-<p>Field data often makes use of the following serialization primitives:</p>
+<p>The "NodaZoneData" format makes use of the following serialization primitives:</p>
 
 <ul>
 <li><code>byte</code>, a general 8-bit unsigned integer, simply serialized as a single byte.</li>
@@ -114,7 +114,7 @@ the <code>fixed16</code> serialization, while -1 would be serialized as <code>[0
 the value is written 7 bits at a time (least significant first), with the highest bit of each
 byte set if this is not the final byte of the value. For example, the value <code>0x16a</code> would be
 serialized as the bytes <code>[0xea 0x02]</code>.</li>
-<li><code>signed-count</code>, a potentially-negative (typically small in magnitude) <code>int32</code> value, stored
+<li><code>signed count</code>, a potentially-negative (typically small in magnitude) <code>int32</code> value, stored
 in a "ZigZag" encoding: first mapping the signed number to an unsigned number, alternating
 between signed and unsigned values: 0 maps to 0, -1 maps to 1, 1 maps 2, -2 maps to 3, 2 maps
 to 4 etc. The result is then written in the same 7-bit encoding as <code>count</code>.</li>
@@ -151,8 +151,7 @@ minutes is in the range (1048576, Int32.MaxValue], the format is that number of 
 <li>For any other instant, a single byte <code>2</code> followed by a <code>fixed64</code> value for the number of ticks since the Unix epoch.</li>
 </ul></li>
 <li><code>dictionary</code>, a string-to-string dictionary where no keys or values can be null. This is simply a
-count (the number of entries) followed by each key/value pair written as first the key then the value
-in the normal way of writing strings.</li>
+<code>count</code> number of entries followed by each key/value pair as a <code>string</code> key and <code>string</code> value.</li>
 </ul>
 
 <h2>Fields</h2>
@@ -183,24 +182,31 @@ time until either the end of time, or some stable period where a pair of rules g
 and stops continues until the end of time. This final stable period is the "tail zone" - and is optional, as a zone which
 ends in a fixed offset can simply represent that as a final zone interval to the end of time.</p>
 
-<p>The flag value for a precalculated zone is 2, and the remaining data is:
-- The number of precalculated zone intervals as a <code>count</code>
-- The zone intervals themselves, each of which has a format of:
-  - A zone interval transition from the start of the previous interval (except for the first interval, which has no "previous")
-    to the start of the current one.
-  - The name of the interval
-  - The wall offset (i.e. standard + daylight savings)
-  - The daylight savings offset
-  - A zone interval transition from the start of the final interval to the end of the final interval (which is the start of the
-    tail zone, if there is one).
-  - A byte to indicate the presence (1) or absence (0) of a tail zone
-  - The tail zone, if any:
-    - The standard offset
-    - The name used for intervals in "standard time"
-    - The standard recurrence rule (see below)
-    - The name used for intervals in "daylight saving time"
-    - The daylight savings recurrence rule
-    - The daylight savings offset (to be added to the standard offset)</p>
+<p>The flag value for a precalculated zone is 2, and the remaining data is:</p>
+
+<ul>
+<li>The number of precalculated zone intervals as a <code>count</code></li>
+<li>The zone intervals themselves, each of which has a format of:
+<ul>
+<li>A <code>zoneintervaltransition</code> from the start of the previous interval (except for the first interval, which has no "previous")
+to the start of the current one.</li>
+<li>The <code>string</code> name of the interval</li>
+<li>The wall <code>offset</code> (i.e. standard + daylight savings)</li>
+<li>The daylight savings <code>offset</code></li>
+<li>A <code>zoneintervaltransition</code> from the start of the final interval to the end of the final interval (which is the start of the
+tail zone, if there is one).</li>
+<li>A <code>byte</code> to indicate the presence (1) or absence (0) of a tail zone</li>
+<li>The tail zone, if the previous flag indicated that one was present, as:
+<ul>
+<li>The standard <code>offset</code></li>
+<li>The <code>string</code> name used for intervals in "standard time"</li>
+<li>The standard recurrence rule (see below)</li>
+<li>The <code>string</code> name used for intervals in "daylight saving time"</li>
+<li>The daylight savings recurrence rule</li>
+<li>The daylight savings <code>offset</code> (to be added to the standard offset)</li>
+</ul></li>
+</ul></li>
+</ul>
 
 <p>A recurrence rule provides data about when a transition occurs. For example, "The first Sunday in October at 1am local time." The format
 is:</p>
@@ -208,10 +214,12 @@ is:</p>
 <ul>
 <li>A single byte representing four flags:
 <ul>
-<li>Bits 5-6: the "mode" of the rule, indicating whether transitions are specified relative to:</li>
+<li>Bits 5-6: the "mode" of the rule, indicating whether transitions are specified relative to:
+<ul>
 <li>0: UTC</li>
 <li>1: Wall time (local time)</li>
 <li>2: Standard time</li>
+</ul></li>
 <li>Bits 2-4: the day of the week in which the recurrence starts,
 where 0 means "not set", and 1 to 7 mean Monday to Sunday respectively.</li>
 <li>Bit 1: whether the day of month represents an upper bound (0) or lower bound (1);
@@ -221,25 +229,25 @@ described as e.g. "first Tuesday on or after the 15th"</li>
 cope with transitions documented as occurring at 24:00 - these may potentially
 spill into a following month</li>
 </ul></li>
-<li>A count (single byte) for the month-of-year in which the rule starts</li>
-<li>A signed count (single byte) for the day-of-month in which the rule starts, where a negative
+<li>A <code>count</code> (single byte) for the month-of-year in which the rule starts</li>
+<li>A <code>signed count</code> (single byte) for the day-of-month in which the rule starts, where a negative
 value indicates the number of days counted from the end of a month. (-1 is the last day of the
 month, for example.)</li>
-<li>An offset used (somewhat unconventionally) to indicate the time of day at which the recurrence starts.</li>
+<li>An <code>offset</code> used (somewhat unconventionally) to indicate the time of day at which the recurrence starts.</li>
 </ul>
 
 <p>This field may occur multiple times, and it always uses the string pool.</p>
 
 <h2>Field 2: TZDB version</h2>
 
-<p>This is simply a single string representing the version of TZDB being serialized, such as "2013a".</p>
+<p>This is simply a single <code>string</code> representing the version of TZDB being serialized, such as "2013a".</p>
 
 <p>This field must occur exactly once, and it does not use the string pool.</p>
 
 <h2>Field 3: ID map</h2>
 
 <p>This is a map from alias to canonical ID. So for example, "Europe/Guernsey" maps to "Europe/London". The
-representation is a single dictionary. This field uses the string pool.</p>
+representation is a single <code>dictionary</code>.</p>
 
 <p>This field must occur exactly once, and it uses the string pool.</p>
 
@@ -248,16 +256,16 @@ representation is a single dictionary. This field uses the string pool.</p>
 <p>This field contains the data from the windowsZones.xml file in <a href="http://cldr.unicode.org">CLDR</a>. The format is:</p>
 
 <ul>
-<li>A string for the mapping version number (currently a string representation of the revision number)</li>
-<li>A string for the TZDB version the mapping was generated against</li>
-<li>A string for the Windows time zone version the mapping was generated against</li>
-<li>A count for the number of "map zones" to follow</li>
+<li>A <code>string</code> for the mapping version number (currently a string representation of the revision number)</li>
+<li>A <code>string</code> for the TZDB version the mapping was generated against</li>
+<li>A <code>string</code> for the Windows time zone version the mapping was generated against</li>
+<li>A <code>count</code> for the number of "map zones" to follow</li>
 <li>The map zone data, each of which is:
 <ul>
-<li>A string for the Windows system time zone ID</li>
-<li>A string for the territory ID</li>
-<li>A count for the number of TZDB IDs in this mapping</li>
-<li>The TZDB IDs, each as a string</li>
+<li>A <code>string</code> for the Windows system time zone ID</li>
+<li>A <code>string</code> for the territory ID</li>
+<li>A <code>count</code> for the number of TZDB IDs in this mapping</li>
+<li>The TZDB IDs, each as a <code>string</code></li>
 </ul></li>
 </ul>
 
@@ -270,7 +278,7 @@ It contains a mapping from Windows <code>TimeZoneInfo</code> standard name to TZ
 where the two differ. (There are only a few.) This is required as the PCL doesn't expose the 
 <code>TimeZoneInfo.Id</code> property.</p>
 
-<p>The field data is a single dictionary. It must occur exactly once, and it uses the string pool.</p>
+<p>The field data is a single <code>dictionary</code>. It must occur exactly once, and it uses the string pool.</p>
 
 <h2>Field 6: Geo-location information</h2>
 
@@ -279,14 +287,14 @@ contain geographical information about time zones. Applications can use this to 
 of time zones in a friendlier way than using the TZDB ID... although the information is only provided
 in English.</p>
 
-<p>The field data consists of a count of elements, then the elements themselves. Each element consists of:</p>
+<p>The field data consists of a <code>count</code> of elements, then the elements themselves. Each element consists of:</p>
 
 <ul>
-<li>A signed count for the latitude of the sample location, as an integer number of seconds.</li>
-<li>A signed count for the longitude of the sample location, as an integer number of seconds.</li>
-<li>A string for the name of the country.</li>
-<li>A string for the ISO-3166 two-letter country code.</li>
-<li>A (possibly empty) string for the comment associated with the location (usually used to disambiguate between
+<li>A <code>signed count</code> for the latitude of the sample location, as an integer number of seconds.</li>
+<li>A <code>signed count</code> for the longitude of the sample location, as an integer number of seconds.</li>
+<li>A <code>string</code> for the name of the country.</li>
+<li>A <code>string</code> for the ISO-3166 two-letter country code.</li>
+<li>A (possibly empty) <code>string</code> for the comment associated with the location (usually used to disambiguate between
 locations in the same country).</li>
 </ul>
 
