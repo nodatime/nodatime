@@ -16,20 +16,22 @@ Major features:
 
 API changes:
 
-- Added `TzdbDateTimeZoneSource.WindowsZones` to expose more details of the CLDR mapping between 
-  TZDB and Windows time zone IDs ([issue 82][])
-- Added `TzdbDateTimeZoneSource.GeoLocations` to expose the location data from `zone.tab` and
-  `iso3166.tab` ([issue 194][])
 - `LocalDate`, `LocalTime`, `LocalDateTime`, and `ZonedDateTime` now
   implement the non-generic `IComparable` interface (explicitly, to
   avoid accidental use)
-- Added `TzdbDateTimeZoneSource.Default`, which provides access to the
-  underlying source of TZDB data distributed with Noda Time ([issue 144][])
-- Added `Aliases` and `CanonicalId` properties to `TzdbDateTimeZoneSource`,
-  which together provide bidirectional mappings between a canonical TZDB ID
-  and its aliases ([issue 32][])
-- Added `TzdbDateTimeZoneSource.FromStream()`, which can be used to create
-  a source using data in the new format produced by `ZoneInfoCompiler`
+- Much more information is now exposed via `TzdbDateTimeZoneSource`:
+   - Added `Aliases` and `CanonicalId` properties, which together provide
+     bidirectional mappings between a canonical TZDB ID and its aliases
+     ([issue 32][])
+   - Added a `WindowsZones` property, which exposes details of the CLDR mapping
+     between TZDB and Windows time zone IDs ([issue 82][])
+   - Added a `GeoLocations` property, which exposes the location data from
+     `zone.tab` and `iso3166.tab` ([issue 194][])
+- Changed the means of constructing a `TzdbDateTimeZoneSource`:
+   - Added a `Default` property, which provides access to the underlying source
+     of TZDB data distributed with Noda Time ([issue 144][])
+   - Added `FromStream()`, which can be used to create a source using data in
+     the new format produced by `ZoneInfoCompiler`
 - `LocalDateTime` patterns can now parse times of the form 24:00:00,
   indicating midnight of the following day ([issue 153][])
 - Added convenience factory methods to `Instant`:
@@ -79,10 +81,10 @@ API changes for NodaTime.Testing:
 
 Bug fixes:
 
-- Not part of the main release, but `NodaIntervalConverter` now handles values embedded
-  in a larger object being deserialized ([issue 191][])
-- Behaviour at extremes of time is now improved ([issue 197][]). There's more
-  work to come here in 1.2, but this is at least an improvement.
+- Not part of the main release, but `NodaIntervalConverter` now handles values
+  embedded in a larger object being deserialized ([issue 191][])
+- Behaviour at extremes of time is now improved ([issue 197][]); there's more
+  work to come here in 1.2, but this is at least an improvement
 - Day-of-week and month names are now parsed by choosing the longest possible
   match, allowing dates to be parsed in cultures where one string is a prefix
   of another ([issue 159][])
@@ -93,13 +95,14 @@ Bug fixes:
 - `LocalDateTime` and `ZonedDateTime` now have non-crashing behaviour when
   initialised via default (parameterless) constructors ([issue 116][])
 
-Other changes:
+Other:
 
-- Symbols for the release are now published to SymbolSource. See the [installation guide](installation.html)
-  for details of how to debug into Noda Time using this.
-- The version of SHFB used to generate the documentation has changed, along with some
-  settings around which members to generate documentation for. (Members simply inherited from the BCL
-  aren't documented.)
+- Symbols for the release are now published to SymbolSource. See the
+  [installation guide](installation.html) for details of how to debug into Noda
+  Time using this
+- The version of SHFB used to generate the documentation has changed, along
+  with some settings around which members to generate documentation for.
+  (Members simply inherited from the BCL aren't documented.)
 
 ## 1.0.1, released 2012-11-13 with tzdb 2012i ##
 
