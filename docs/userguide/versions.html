@@ -27,6 +27,10 @@ not supportable in the PCL build</li>
 <p>API changes:</p>
 
 <ul>
+<li>Added <code>TzdbDateTimeZoneSource.WindowsZones</code> to expose more details of the CLDR mapping between 
+TZDB and Windows time zone IDs (<a href="http://code.google.com/p/noda-time/issues/detail?id=82">issue 82</a>)</li>
+<li>Added <code>TzdbDateTimeZoneSource.GeoLocations</code> to expose the location data from <code>zone.tab</code> and
+<code>iso3166.tab</code> (<a href="http://code.google.com/p/noda-time/issues/detail?id=194">issue 194</a>)</li>
 <li><code>LocalDate</code>, <code>LocalTime</code>, <code>LocalDateTime</code>, and <code>ZonedDateTime</code> now
 implement the non-generic <code>IComparable</code> interface (explicitly, to
 avoid accidental use)</li>
@@ -92,6 +96,10 @@ that allows the time zone ID to be specified</li>
 <p>Bug fixes:</p>
 
 <ul>
+<li>Not part of the main release, but <code>NodaIntervalConverter</code> now handles values embedded
+in a larger object being deserialized (<a href="http://code.google.com/p/noda-time/issues/detail?id=191">issue 191</a>)</li>
+<li>Behaviour at extremes of time is now improved (<a href="http://code.google.com/p/noda-time/issues/detail?id=197">issue 197</a>). There's more
+work to come here in 1.2, but this is at least an improvement.</li>
 <li>Day-of-week and month names are now parsed by choosing the longest possible
 match, allowing dates to be parsed in cultures where one string is a prefix
 of another (<a href="http://code.google.com/p/noda-time/issues/detail?id=159">issue 159</a>)</li>
@@ -101,6 +109,16 @@ incorrect values or a <code>NullReferenceException</code> when asked for a value
 (<a href="http://code.google.com/p/noda-time/issues/detail?id=174">issue 174</a>)</li>
 <li><code>LocalDateTime</code> and <code>ZonedDateTime</code> now have non-crashing behaviour when
 initialised via default (parameterless) constructors (<a href="http://code.google.com/p/noda-time/issues/detail?id=116">issue 116</a>)</li>
+</ul>
+
+<p>Other changes:</p>
+
+<ul>
+<li>Symbols for the release are now published to SymbolSource. See the <a href="installation.html">installation guide</a>
+for details of how to debug into Noda Time using this.</li>
+<li>The version of SHFB used to generate the documentation has changed, along with some
+settings around which members to generate documentation for. (Members simply inherited from the BCL
+aren't documented.)</li>
 </ul>
 
 <h2>1.0.1, released 2012-11-13 with tzdb 2012i</h2>
