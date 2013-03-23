@@ -2,12 +2,10 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using NUnit.Framework;
-using NodaTime.Globalization;
 using NodaTime.Properties;
 using NodaTime.Text;
 
@@ -114,6 +112,10 @@ namespace NodaTime.Test.Text
             new Data(2011, 10, 19, 16, 05, 20, 352) { Pattern = "yyyy-MM-dd HH:mm:ss;FFF", Text = "2011-10-19 16:05:20.352" },
             new Data(2011, 10, 19, 16, 05, 20, 352) { Pattern = "yyyy-MM-dd HH:mm:ss;FFF 'end'", Text = "2011-10-19 16:05:20.352 end" },
             new Data(2011, 10, 19, 16, 05, 20) { Pattern = "yyyy-MM-dd HH:mm:ss;FFF 'end'", Text = "2011-10-19 16:05:20 end" },
+
+            // When the AM designator is a leading substring of the PM designator...
+            new Data(2011, 10, 19, 16, 05, 20) { Pattern = "yyyy-MM-dd h:mm:ss tt", Text = "2011-10-19 4:05:20 FooBar", Culture = Cultures.AwkwardAmPmDesignatorCulture },
+            new Data(2011, 10, 19, 4, 05, 20) { Pattern = "yyyy-MM-dd h:mm:ss tt", Text = "2011-10-19 4:05:20 Foo", Culture = Cultures.AwkwardAmPmDesignatorCulture },
         };
 
         internal static IEnumerable<Data> ParseData = ParseOnlyData.Concat(FormatAndParseData);

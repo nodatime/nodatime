@@ -47,6 +47,7 @@ namespace NodaTime.Test.Text
         internal static readonly CultureInfo GenitiveNameTestCulture = CreateGenitiveTestCulture();
         internal static readonly CultureInfo GenitiveNameTestCultureWithLeadingNames = CreateGenitiveTestCultureWithLeadingNames();
         internal static readonly CultureInfo AwkwardDayOfWeekCulture = CreateAwkwardDayOfWeekCulture();
+        internal static readonly CultureInfo AwkwardAmPmDesignatorCulture = CreateAwkwardAmPmCulture();
 
         /// <summary>
         /// .NET 3.5 doesn't contain any cultures where the abbreviated month names differ
@@ -100,6 +101,18 @@ namespace NodaTime.Test.Text
             shortDayNames[(int)DayOfWeek.Friday] = "Foo";
             format.DayNames = longDayNames;
             format.AbbreviatedDayNames = shortDayNames;
+            return clone;
+        }
+
+        /// <summary>
+        /// Creates a culture where the AM designator is a substring of the PM designator.
+        /// </summary>
+        private static CultureInfo CreateAwkwardAmPmCulture()
+        {
+            CultureInfo clone = (CultureInfo)CultureInfo.InvariantCulture.Clone();
+            DateTimeFormatInfo format = clone.DateTimeFormat;
+            format.AMDesignator = "Foo";
+            format.PMDesignator = "FooBar";
             return clone;
         }
 
