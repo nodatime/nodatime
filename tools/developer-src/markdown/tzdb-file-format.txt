@@ -83,7 +83,7 @@ the meaning of particular field IDs, or even contain a different field structure
 After that, the file is simply a sequence of fields. Each field consists of:
 
 - A field ID (1 byte)
-- The size of the field data, as a `count` (see pim details below)
+- The size of the field data, as a `count` (see details below)
 - The field data
 
 Fields are always stored in ascending order of ID (so later fields may depend on earlier ones).
@@ -91,7 +91,7 @@ The expected data within each field is governed by its ID.
 
 ## Serialization primitives
 
-Field data often makes use of the following serialization primitives:
+The "NodaZoneData" format makes use of the following serialization primitives:
 
 - `byte`, a general 8-bit unsigned integer, simply serialized as a single byte.
 - `fixed16`, `fixed32`, and `fixed64`, general 16-bit, 32-bit, and 64-bit signed integers,
@@ -102,7 +102,7 @@ Field data often makes use of the following serialization primitives:
   the value is written 7 bits at a time (least significant first), with the highest bit of each
   byte set if this is not the final byte of the value. For example, the value `0x16a` would be
   serialized as the bytes `[0xea 0x02]`.
-- `signed-count`, a potentially-negative (typically small in magnitude) `int32` value, stored
+- `signed count`, a potentially-negative (typically small in magnitude) `int32` value, stored
   in a "ZigZag" encoding: first mapping the signed number to an unsigned number, alternating
   between signed and unsigned values: 0 maps to 0, -1 maps to 1, 1 maps 2, -2 maps to 3, 2 maps
   to 4 etc. The result is then written in the same 7-bit encoding as `count`.
@@ -135,8 +135,7 @@ Field data often makes use of the following serialization primitives:
     minutes is in the range (1048576, Int32.MaxValue], the format is that number of minutes written as a `count`.
   - For any other instant, a single byte `2` followed by a `fixed64` value for the number of ticks since the Unix epoch.
 - `dictionary`, a string-to-string dictionary where no keys or values can be null. This is simply a
-  count (the number of entries) followed by each key/value pair written as first the key then the value
-  in the normal way of writing strings.
+  `count` number of entries followed by each key/value pair as a `string` key and `string` value.
 
 ## Fields
 
@@ -167,32 +166,33 @@ and stops continues until the end of time. This final stable period is the "tail
 ends in a fixed offset can simply represent that as a final zone interval to the end of time.
   
 The flag value for a precalculated zone is 2, and the remaining data is:
+
 - The number of precalculated zone intervals as a `count`
 - The zone intervals themselves, each of which has a format of:
-  - A zone interval transition from the start of the previous interval (except for the first interval, which has no "previous")
+  - A `zoneintervaltransition` from the start of the previous interval (except for the first interval, which has no "previous")
     to the start of the current one.
-  - The name of the interval
-  - The wall offset (i.e. standard + daylight savings)
-  - The daylight savings offset
-  - A zone interval transition from the start of the final interval to the end of the final interval (which is the start of the
+  - The `string` name of the interval
+  - The wall `offset` (i.e. standard + daylight savings)
+  - The daylight savings `offset`
+  - A `zoneintervaltransition` from the start of the final interval to the end of the final interval (which is the start of the
     tail zone, if there is one).
-  - A byte to indicate the presence (1) or absence (0) of a tail zone
-  - The tail zone, if any:
-    - The standard offset
-	- The name used for intervals in "standard time"
-	- The standard recurrence rule (see below)
-	- The name used for intervals in "daylight saving time"
-	- The daylight savings recurrence rule
-	- The daylight savings offset (to be added to the standard offset)
+  - A `byte` to indicate the presence (1) or absence (0) of a tail zone
+  - The tail zone, if the previous flag indicated that one was present, as:
+     - The standard `offset`
+     - The `string` name used for intervals in "standard time"
+     - The standard recurrence rule (see below)
+     - The `string` name used for intervals in "daylight saving time"
+     - The daylight savings recurrence rule
+     - The daylight savings `offset` (to be added to the standard offset)
 
 A recurrence rule provides data about when a transition occurs. For example, "The first Sunday in October at 1am local time." The format
 is:
 
 - A single byte representing four flags:
   - Bits 5-6: the "mode" of the rule, indicating whether transitions are specified relative to:
-    - 0: UTC
-    - 1: Wall time (local time)
-    - 2: Standard time
+     - 0: UTC
+     - 1: Wall time (local time)
+     - 2: Standard time
   - Bits 2-4: the day of the week in which the recurrence starts,
     where 0 means "not set", and 1 to 7 mean Monday to Sunday respectively.
   - Bit 1: whether the day of month represents an upper bound (0) or lower bound (1);
@@ -201,24 +201,24 @@ is:
   - Bit 0: whether an extra day should be added to the calculation (1) or not (0), to
     cope with transitions documented as occurring at 24:00 - these may potentially
 	spill into a following month
-- A count (single byte) for the month-of-year in which the rule starts
-- A signed count (single byte) for the day-of-month in which the rule starts, where a negative
+- A `count` (single byte) for the month-of-year in which the rule starts
+- A `signed count` (single byte) for the day-of-month in which the rule starts, where a negative
   value indicates the number of days counted from the end of a month. (-1 is the last day of the
   month, for example.)
-- An offset used (somewhat unconventionally) to indicate the time of day at which the recurrence starts.
+- An `offset` used (somewhat unconventionally) to indicate the time of day at which the recurrence starts.
 
 This field may occur multiple times, and it always uses the string pool.
 
 ## Field 2: TZDB version
 
-This is simply a single string representing the version of TZDB being serialized, such as "2013a".
+This is simply a single `string` representing the version of TZDB being serialized, such as "2013a".
 
 This field must occur exactly once, and it does not use the string pool.
 
 ## Field 3: ID map
 
 This is a map from alias to canonical ID. So for example, "Europe/Guernsey" maps to "Europe/London". The
-representation is a single dictionary. This field uses the string pool.
+representation is a single `dictionary`.
 
 This field must occur exactly once, and it uses the string pool.
 
@@ -226,15 +226,15 @@ This field must occur exactly once, and it uses the string pool.
 
 This field contains the data from the windowsZones.xml file in [CLDR](http://cldr.unicode.org). The format is:
 
-- A string for the mapping version number (currently a string representation of the revision number)
-- A string for the TZDB version the mapping was generated against
-- A string for the Windows time zone version the mapping was generated against
-- A count for the number of "map zones" to follow
+- A `string` for the mapping version number (currently a string representation of the revision number)
+- A `string` for the TZDB version the mapping was generated against
+- A `string` for the Windows time zone version the mapping was generated against
+- A `count` for the number of "map zones" to follow
 - The map zone data, each of which is:
-  - A string for the Windows system time zone ID
-  - A string for the territory ID
-  - A count for the number of TZDB IDs in this mapping
-  - The TZDB IDs, each as a string
+  - A `string` for the Windows system time zone ID
+  - A `string` for the territory ID
+  - A `count` for the number of TZDB IDs in this mapping
+  - The TZDB IDs, each as a `string`
 
 This field must occur exactly once, and it uses the string pool.
 
@@ -245,7 +245,7 @@ It contains a mapping from Windows `TimeZoneInfo` standard name to TZDB ID for t
 where the two differ. (There are only a few.) This is required as the PCL doesn't expose the 
 `TimeZoneInfo.Id` property.
 
-The field data is a single dictionary. It must occur exactly once, and it uses the string pool.
+The field data is a single `dictionary`. It must occur exactly once, and it uses the string pool.
 
 ## Field 6: Geo-location information
 
@@ -254,13 +254,13 @@ contain geographical information about time zones. Applications can use this to 
 of time zones in a friendlier way than using the TZDB ID... although the information is only provided
 in English.
 
-The field data consists of a count of elements, then the elements themselves. Each element consists of:
+The field data consists of a `count` of elements, then the elements themselves. Each element consists of:
 
-- A signed count for the latitude of the sample location, as an integer number of seconds.
-- A signed count for the longitude of the sample location, as an integer number of seconds.
-- A string for the name of the country.
-- A string for the ISO-3166 two-letter country code.
-- A (possibly empty) string for the comment associated with the location (usually used to disambiguate between
+- A `signed count` for the latitude of the sample location, as an integer number of seconds.
+- A `signed count` for the longitude of the sample location, as an integer number of seconds.
+- A `string` for the name of the country.
+- A `string` for the ISO-3166 two-letter country code.
+- A (possibly empty) `string` for the comment associated with the location (usually used to disambiguate between
   locations in the same country).
 
 # Resource file format
