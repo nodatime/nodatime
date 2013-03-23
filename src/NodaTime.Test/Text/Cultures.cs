@@ -22,7 +22,9 @@ namespace NodaTime.Test.Text
         // but doesn't work with the C# 3 compiler (which doesn't have quite as good type inference).
         internal static readonly IEnumerable<CultureInfo> AllCultures = CultureInfo.GetCultures(CultureTypes.SpecificCultures)
             .Where(culture => !RuntimeFailsToLookupResourcesForCulture(culture))
-            .Select(culture => CultureInfo.ReadOnly(culture)).ToList();
+            .Where(culture => !MonthNamesCompareEqual(culture))
+            .Select(culture => CultureInfo.ReadOnly(culture))
+            .ToList();
         // Some tests don't run nicely on Mono, e.g. as they have characters we don't expect in their long/short patterns.
         // Pretend we have no cultures, for the sake of these tests.
         // TODO(V1.2): Make the tests pass instead?
@@ -119,6 +121,29 @@ namespace NodaTime.Test.Text
             string[] clone = (string[])input.Clone();
             clone[0] = newElement;
             return clone;
+        }
+
+        /// <summary>
+        /// Tests whether it's feasible to tell the difference between all the months in the year,
+        /// using the culture's compare info. On Mono, text comparison is broken for some cultures.
+        /// In those cultures, it simply doesn't make sense to run the tests.
+        /// See https://bugzilla.xamarin.com/show_bug.cgi?id=11366 for more info.
+        /// </summary>
+        private static bool MonthNamesCompareEqual(CultureInfo culture)
+        {
+            var months = culture.DateTimeFormat.MonthNames;
+            var compareInfo = culture.CompareInfo;
+            for (int i = 0; i < months.Length - 1; i++)
+            {
+                for (int j = i + 1; j < months.Length; j++)
+                {
+                    if (compareInfo.Compare(months[i], months[j], CompareOptions.IgnoreCase) == 0)
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
         }
 
         /// <summary>
