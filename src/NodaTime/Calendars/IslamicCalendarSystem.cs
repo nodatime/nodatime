@@ -18,7 +18,7 @@ namespace NodaTime.Calendars
         private const string IslamicName = "Hijri";
 
         /// <summary>Singleton era field.</summary>
-        private static readonly DateTimeField EraField = new BasicSingleEraDateTimeField(Era.AnnoHegirae);
+        private static readonly DateTimeField EraField = new BasicSingleEraDateTimeField();
 
         // These are ugly, but we have unit tests which will spot if they get out of sync...
         private const int MinEpochNumber = 1;
