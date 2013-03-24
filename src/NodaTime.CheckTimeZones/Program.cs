@@ -80,7 +80,7 @@ namespace NodaTime.CheckTimeZones
             // Exclusive upper bound
             var end = Instant.FromUtc(toYear + 1, 1, 1, 0, 0);
             
-            foreach (var interval in zone.GetAllZoneIntervals(start, end))
+            foreach (var interval in zone.GetZoneIntervals(start, end))
             {
                output.WriteLine("{0}  {1}  {2}",
                     DateTimePattern.Format(Instant.Max(start, interval.Start)),

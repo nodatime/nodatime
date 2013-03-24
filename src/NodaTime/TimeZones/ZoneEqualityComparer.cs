@@ -156,7 +156,7 @@ namespace NodaTime.TimeZones
 
         private IEnumerable<ZoneInterval> GetIntervals(DateTimeZone zone)
         {
-            var unelided = zone.GetAllZoneIntervals(interval.Start, interval.End);
+            var unelided = zone.GetZoneIntervals(interval.Start, interval.End);
             return CheckOption(options, Options.MatchAllTransitions) ? unelided : ElideIntervals(unelided);
         }
 

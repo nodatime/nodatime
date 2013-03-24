@@ -23,7 +23,7 @@ namespace NodaTime.Test.Testing.TimeZones
                 { transition1, 5 },
                 { transition2, 3 }
             }.Build();
-            var intervals = zone.GetAllZoneIntervals(transition1 - Duration.Epsilon, transition2 + Duration.Epsilon).ToList();
+            var intervals = zone.GetZoneIntervals(transition1 - Duration.Epsilon, transition2 + Duration.Epsilon).ToList();
             Assert.AreEqual(3, intervals.Count);
             Assert.AreEqual(Offset.Zero, intervals[0].WallOffset);
             Assert.AreEqual(Instant.MinValue, intervals[0].Start);
@@ -48,7 +48,7 @@ namespace NodaTime.Test.Testing.TimeZones
                 { transition1, 2, 0, "Y" },
                 { transition2, 1, 1, "Z" }
             }.Build();
-            var actual = zone.GetAllZoneIntervals(transition1 - Duration.Epsilon, transition2 + Duration.Epsilon).ToList();
+            var actual = zone.GetZoneIntervals(transition1 - Duration.Epsilon, transition2 + Duration.Epsilon).ToList();
             // ZoneInterval uses wall offset and savings...
             var expected = new[]
             {
