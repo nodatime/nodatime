@@ -133,16 +133,15 @@ namespace NodaTime.Test.Text
         [TestCaseSource("AllCulturesStandardPatterns")]
         public void ParseFormattedStandardPattern(CultureInfo culture, string patternText)
         {
-            // If the pattern really can't distinguish between AM and PM (e.g. it's 12 hour with an
-            // abbreviated AM/PM designator) then let's let it go.
-            if (SampleLocalDateTime.ToString(patternText, culture) ==
-                SampleLocalDateTime.PlusHours(-12).ToString(patternText, culture))
+            var pattern = CreatePatternOrNull(patternText, culture, new LocalDateTime(2000, 1, 1, 0, 0));
+            if (pattern == null)
             {
                 return;
             }
 
-            var pattern = CreatePatternOrNull(patternText, culture, new LocalDateTime(2000, 1, 1, 0, 0));
-            if (pattern == null)
+            // If the pattern really can't distinguish between AM and PM (e.g. it's 12 hour with an
+            // abbreviated AM/PM designator) then let's let it go.
+            if (pattern.Format(SampleLocalDateTime) == pattern.Format(SampleLocalDateTime.PlusHours(-12)))
             {
                 return;
             }
