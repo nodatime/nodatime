@@ -141,8 +141,11 @@ namespace NodaTime.Test.Text
                 return;
             }
 
-            // Some cultures use two-digit years, so let's put them in the right century.
-            var pattern = LocalDateTimePattern.Create(patternText, culture, new LocalDateTime(2000, 1, 1, 0, 0));
+            var pattern = CreatePatternOrNull(patternText, culture, new LocalDateTime(2000, 1, 1, 0, 0));
+            if (pattern == null)
+            {
+                return;
+            }
 
             // If the culture doesn't have either AM or PM designators, we'll end up using the template value
             // AM/PM, so let's make sure that's right. (This happens on Mono for a few cultures.)
@@ -174,18 +177,12 @@ namespace NodaTime.Test.Text
                 return;
             }
 
-            LocalDateTimePattern pattern;
-            try
+            var pattern = CreatePatternOrNull(patternText, culture, LocalDateTimePattern.DefaultTemplateValue);
+            if (pattern == null)
             {
-                pattern = LocalDateTimePattern.Create(patternText, culture);
-            }
-            catch (InvalidPatternException)
-            {
-                // The Malta long date/time pattern in Mono 3.0 is invalid (not just wrong; invalid due to the wrong number of quotes).
-                // Skip it :(
-                // See https://bugzilla.xamarin.com/show_bug.cgi?id=11363
                 return;
             }
+
             // Formatting a DateTime with an always-invariant pattern (round-trip, sortable) converts to the ISO
             // calendar in .NET (which is reasonable, as there's no associated calendar).
             // We should use the Gregorian calendar for those tests.
@@ -212,6 +209,22 @@ namespace NodaTime.Test.Text
             var inputValue = SampleLocalDateTime.WithCalendar(calendarSystem);
             Assert.AreEqual(inputValue.ToDateTimeUnspecified().ToString(patternText, culture),
                 pattern.Format(inputValue));
+        }
+
+        // Helper method to make it slightly easier for tests to skip "bad" cultures.
+        private LocalDateTimePattern CreatePatternOrNull(string patternText, CultureInfo culture, LocalDateTime templateValue)
+        {
+            try
+            {
+                return LocalDateTimePattern.Create(patternText, culture);
+            }
+            catch (InvalidPatternException)
+            {
+                // The Malta long date/time pattern in Mono 3.0 is invalid (not just wrong; invalid due to the wrong number of quotes).
+                // Skip it :(
+                // See https://bugzilla.xamarin.com/show_bug.cgi?id=11363
+                return null;
+            }
         }
 
         public sealed class Data : PatternTestData<LocalDateTime>
