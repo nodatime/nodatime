@@ -14,12 +14,9 @@ namespace NodaTime.Fields
     /// </summary>
     internal sealed class BasicSingleEraDateTimeField : DateTimeField
     {
-        private readonly Era era;
-
-        internal BasicSingleEraDateTimeField(Era era)
+        internal BasicSingleEraDateTimeField()
             : base(DateTimeFieldType.Era, UnsupportedPeriodField.Eras)
         {
-            this.era = era;
         }
 
         internal override int GetValue(LocalInstant localInstant)

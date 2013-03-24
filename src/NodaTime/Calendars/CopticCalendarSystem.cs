@@ -15,7 +15,7 @@ namespace NodaTime.Calendars
     {
         private const string CopticName = "Coptic";
         private static readonly CopticCalendarSystem[] instances;
-        private static readonly DateTimeField EraField = new BasicSingleEraDateTimeField(Era.AnnoMartyrm);
+        private static readonly DateTimeField EraField = new BasicSingleEraDateTimeField();
 
         static CopticCalendarSystem()
         {
