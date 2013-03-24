@@ -52,7 +52,7 @@ namespace NodaTime.TimeZones
 
             /// <summary>
             /// By default, the transition instants at the start of the first zone interval and the end of the last
-            /// zone interval are not considered relevant. For example, a comparison Europe/London with UTC for just
+            /// zone interval are not considered relevant. For example, a comparison between Europe/London and UTC for just
             /// an interval of "1st January to 1st February 2000" would consider the two equal, as the offsets would
             /// be equal for each instant in the interval. With this option, they would not be considered equal as
             /// UTC's zone interval would have a start/end of the beginning/end of time, whereas the zone interval in
