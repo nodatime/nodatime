@@ -593,34 +593,40 @@ namespace NodaTime
         /// Returns all the zone intervals which occur for any instant in the interval [<paramref name="start"/>, <paramref name="end"/>).
         /// </summary>
         /// <remarks>
-        /// <para>The intervals are returned in chronological order. This method is equivalent to calling <see cref="GetZoneInterval"/> for every
-        /// instant in the range [start, end) and then collapsing to a set of distinct zone intervals.
-        /// The first and last zone intervals are likely to also cover instants outside the given interval; the zone intervals returned are not
-        /// truncated to match the start and end points.
+        /// <para>This method is simply a convenience method for calling <see cref="GetZoneIntervals(Interval)"/> without
+        /// explicitly constructing the interval beforehand.
         /// </para>
         /// </remarks>
         /// <param name="start">Inclusive start point of the interval for which to retrieve zone intervals.</param>
         /// <param name="end">Exclusive end point of the interval for which to retrieve zone intervals.</param>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="end"/> is earlier than <paramref name="start"/></exception>
-        /// <returns>A sequence of zone intervals covering the given instants.</returns>
+        /// <returns>A sequence of zone intervals covering the given interval.</returns>
         public IEnumerable<ZoneInterval> GetZoneIntervals(Instant start, Instant end)
         {
-            if (end < start)
-            {
-                throw new ArgumentOutOfRangeException("end", "The end parameter must be equal to or later than the start parameter");
-            }
-            return GetZoneIntervalsImpl(start, end);
+            // The constructor performs all the validation we need.
+            return GetZoneIntervals(new Interval(start, end));
         }
 
-        // Actual implementation, split from the public method to get eager argument validation.
-        private IEnumerable<ZoneInterval> GetZoneIntervalsImpl(Instant from, Instant to)
+        /// <summary>
+        /// Returns all the zone intervals which occur for any instant in the given interval.
+        /// </summary>
+        /// <remarks>
+        /// <para>The zone intervals are returned in chronological order. This method is equivalent to calling <see cref="GetZoneInterval"/> for every
+        /// instant in the interval and then collapsing to a set of distinct zone intervals.
+        /// The first and last zone intervals are likely to also cover instants outside the given interval;
+        /// the zone intervals returned are not truncated to match the start and end points.
+        /// </para>
+        /// </remarks>
+        /// <param name="interval">Interval to find zone intervals for.</param>
+        /// <returns>A sequence of zone intervals covering the given interval.</returns>
+        private IEnumerable<ZoneInterval> GetZoneIntervals(Interval interval)
         {
-            var current = from;
-            while (current < to)
+            var current = interval.Start;
+            while (current < interval.End)
             {
-                var interval = GetZoneInterval(current);
-                yield return interval;
-                current = interval.End;
+                var zoneInterval = GetZoneInterval(current);
+                yield return zoneInterval;
+                current = zoneInterval.End;
             }
         }
     }
