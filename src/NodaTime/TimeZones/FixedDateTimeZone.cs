@@ -94,7 +94,7 @@ namespace NodaTime.TimeZones
         /// <summary>
         /// Gets the zone interval pair for the given instant. This implementation always returns the same unambiguous interval pair.
         /// </summary>
-        internal override ZoneIntervalPair GetZoneIntervals(LocalInstant localInstant)
+        internal override ZoneIntervalPair GetZoneIntervalPair(LocalInstant localInstant)
         {
             return intervalPair;
         }

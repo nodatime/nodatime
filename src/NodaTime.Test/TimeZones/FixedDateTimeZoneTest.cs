@@ -43,7 +43,7 @@ namespace NodaTime.Test.TimeZones
         [Test]
         public void GetZoneIntervals_ReturnsSingleInterval()
         {
-            var intervals = TestZone.GetZoneIntervals(new LocalDateTime(2001, 7, 1, 1, 0, 0).LocalInstant);
+            var intervals = TestZone.GetZoneIntervalPair(new LocalDateTime(2001, 7, 1, 1, 0, 0).LocalInstant);
             Assert.AreEqual(FixedPeriod, intervals.EarlyInterval);
             Assert.IsNull(intervals.LateInterval);
         }

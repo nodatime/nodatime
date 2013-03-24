@@ -8,7 +8,7 @@ using NodaTime.TimeZones;
 
 namespace NodaTime.Test
 {
-    // Tests for GetZoneIntervals within DateTimeZone.
+    // Tests for GetZoneIntervalPair within DateTimeZone.
     // We have two zones, each with a single transition at midnight January 1st 2000.
     // One goes from -5 to +10, i.e. skips from 7pm Dec 31st to 10am Jan 1st
     // The other goes from +10 to -5, i.e. goes from 10am Jan 1st back to 7pm Dec 31st.
@@ -49,7 +49,7 @@ namespace NodaTime.Test
         [Test]
         public void ZoneWithAmbiguity_StartOfTime()
         {
-            var actual = ZoneWithAmbiguity.GetZoneIntervals(LocalInstant.MinValue);
+            var actual = ZoneWithAmbiguity.GetZoneIntervalPair(LocalInstant.MinValue);
             var expected = ZoneIntervalPair.Unambiguous(IntervalBeforeAmbiguity);
             Assert.AreEqual(expected, actual);
         }
@@ -57,7 +57,7 @@ namespace NodaTime.Test
         [Test]
         public void ZoneWithAmbiguity_EndOfTime()
         {
-            var actual = ZoneWithAmbiguity.GetZoneIntervals(LocalInstant.MaxValue);
+            var actual = ZoneWithAmbiguity.GetZoneIntervalPair(LocalInstant.MaxValue);
             var expected = ZoneIntervalPair.Unambiguous(IntervalAfterAmbiguity);
             Assert.AreEqual(expected, actual);
         }
@@ -65,7 +65,7 @@ namespace NodaTime.Test
         [Test]
         public void ZoneWithAmbiguity_WellBeforeTransition()
         {
-            var actual = ZoneWithAmbiguity.GetZoneIntervals(YearBeforeTransition);
+            var actual = ZoneWithAmbiguity.GetZoneIntervalPair(YearBeforeTransition);
             var expected = ZoneIntervalPair.Unambiguous(IntervalBeforeAmbiguity);
             Assert.AreEqual(expected, actual);
         }
@@ -73,7 +73,7 @@ namespace NodaTime.Test
         [Test]
         public void ZoneWithAmbiguity_WellAfterTransition()
         {
-            var actual = ZoneWithAmbiguity.GetZoneIntervals(YearAfterTransition);
+            var actual = ZoneWithAmbiguity.GetZoneIntervalPair(YearAfterTransition);
             var expected = ZoneIntervalPair.Unambiguous(IntervalAfterAmbiguity);
             Assert.AreEqual(expected, actual);
         }
@@ -81,7 +81,7 @@ namespace NodaTime.Test
         [Test]
         public void ZoneWithAmbiguity_JustBeforeAmbiguity()
         {
-            var actual = ZoneWithAmbiguity.GetZoneIntervals(TransitionMinus5 - Duration.Epsilon);
+            var actual = ZoneWithAmbiguity.GetZoneIntervalPair(TransitionMinus5 - Duration.Epsilon);
             var expected = ZoneIntervalPair.Unambiguous(IntervalBeforeAmbiguity);
             Assert.AreEqual(expected, actual);
         }
@@ -89,7 +89,7 @@ namespace NodaTime.Test
         [Test]
         public void ZoneWithAmbiguity_JustAfterTransition()
         {
-            var actual = ZoneWithAmbiguity.GetZoneIntervals(TransitionPlus10 + Duration.Epsilon);
+            var actual = ZoneWithAmbiguity.GetZoneIntervalPair(TransitionPlus10 + Duration.Epsilon);
             var expected = ZoneIntervalPair.Unambiguous(IntervalAfterAmbiguity);
             Assert.AreEqual(expected, actual);
         }
@@ -97,7 +97,7 @@ namespace NodaTime.Test
         [Test]
         public void ZoneWithAmbiguity_StartOfTransition()
         {
-            var actual = ZoneWithAmbiguity.GetZoneIntervals(TransitionMinus5);
+            var actual = ZoneWithAmbiguity.GetZoneIntervalPair(TransitionMinus5);
             var expected = ZoneIntervalPair.Ambiguous(IntervalBeforeAmbiguity, IntervalAfterAmbiguity);
             Assert.AreEqual(expected, actual);
         }
@@ -105,7 +105,7 @@ namespace NodaTime.Test
         [Test]
         public void ZoneWithAmbiguity_MidTransition()
         {
-            var actual = ZoneWithAmbiguity.GetZoneIntervals(MidTransition);
+            var actual = ZoneWithAmbiguity.GetZoneIntervalPair(MidTransition);
             var expected = ZoneIntervalPair.Ambiguous(IntervalBeforeAmbiguity, IntervalAfterAmbiguity);
             Assert.AreEqual(expected, actual);
         }
@@ -113,7 +113,7 @@ namespace NodaTime.Test
         [Test]
         public void ZoneWithAmbiguity_LastTickOfTransition()
         {
-            var actual = ZoneWithAmbiguity.GetZoneIntervals(TransitionPlus10 - Duration.Epsilon);
+            var actual = ZoneWithAmbiguity.GetZoneIntervalPair(TransitionPlus10 - Duration.Epsilon);
             var expected = ZoneIntervalPair.Ambiguous(IntervalBeforeAmbiguity, IntervalAfterAmbiguity);
             Assert.AreEqual(expected, actual);
         }
@@ -121,7 +121,7 @@ namespace NodaTime.Test
         [Test]
         public void ZoneWithAmbiguity_FirstTickAfterTransition()
         {
-            var actual = ZoneWithAmbiguity.GetZoneIntervals(TransitionPlus10);
+            var actual = ZoneWithAmbiguity.GetZoneIntervalPair(TransitionPlus10);
             var expected = ZoneIntervalPair.Unambiguous(IntervalAfterAmbiguity);
             Assert.AreEqual(expected, actual);
         }
@@ -130,7 +130,7 @@ namespace NodaTime.Test
         [Test]
         public void ZoneWithGap_StartOfTime()
         {
-            var actual = ZoneWithGap.GetZoneIntervals(LocalInstant.MinValue);
+            var actual = ZoneWithGap.GetZoneIntervalPair(LocalInstant.MinValue);
             var expected = ZoneIntervalPair.Unambiguous(IntervalBeforeGap);
             Assert.AreEqual(expected, actual);
         }
@@ -138,7 +138,7 @@ namespace NodaTime.Test
         [Test]
         public void ZoneWithGap_EndOfTime()
         {
-            var actual = ZoneWithGap.GetZoneIntervals(LocalInstant.MaxValue);
+            var actual = ZoneWithGap.GetZoneIntervalPair(LocalInstant.MaxValue);
             var expected = ZoneIntervalPair.Unambiguous(IntervalAfterGap);
             Assert.AreEqual(expected, actual);
         }
@@ -146,7 +146,7 @@ namespace NodaTime.Test
         [Test]
         public void ZoneWithGap_WellBeforeTransition()
         {
-            var actual = ZoneWithGap.GetZoneIntervals(YearBeforeTransition);
+            var actual = ZoneWithGap.GetZoneIntervalPair(YearBeforeTransition);
             var expected = ZoneIntervalPair.Unambiguous(IntervalBeforeGap);
             Assert.AreEqual(expected, actual);
         }
@@ -154,7 +154,7 @@ namespace NodaTime.Test
         [Test]
         public void ZoneWithGap_WellAfterTransition()
         {
-            var actual = ZoneWithGap.GetZoneIntervals(YearAfterTransition);
+            var actual = ZoneWithGap.GetZoneIntervalPair(YearAfterTransition);
             var expected = ZoneIntervalPair.Unambiguous(IntervalAfterGap);
             Assert.AreEqual(expected, actual);
         }
@@ -162,7 +162,7 @@ namespace NodaTime.Test
         [Test]
         public void ZoneWithGap_JustBeforeGap()
         {
-            var actual = ZoneWithGap.GetZoneIntervals(TransitionMinus5 - Duration.Epsilon);
+            var actual = ZoneWithGap.GetZoneIntervalPair(TransitionMinus5 - Duration.Epsilon);
             var expected = ZoneIntervalPair.Unambiguous(IntervalBeforeGap);
             Assert.AreEqual(expected, actual);
         }
@@ -170,7 +170,7 @@ namespace NodaTime.Test
         [Test]
         public void ZoneWithGap_JustAfterTransition()
         {
-            var actual = ZoneWithGap.GetZoneIntervals(TransitionPlus10 + Duration.Epsilon);
+            var actual = ZoneWithGap.GetZoneIntervalPair(TransitionPlus10 + Duration.Epsilon);
             var expected = ZoneIntervalPair.Unambiguous(IntervalAfterGap);
             Assert.AreEqual(expected, actual);
         }
@@ -178,7 +178,7 @@ namespace NodaTime.Test
         [Test]
         public void ZoneWithGap_StartOfTransition()
         {
-            var actual = ZoneWithGap.GetZoneIntervals(TransitionMinus5);
+            var actual = ZoneWithGap.GetZoneIntervalPair(TransitionMinus5);
             var expected = ZoneIntervalPair.NoMatch;
             Assert.AreEqual(expected, actual);
         }
@@ -186,7 +186,7 @@ namespace NodaTime.Test
         [Test]
         public void ZoneWithGap_MidTransition()
         {
-            var actual = ZoneWithGap.GetZoneIntervals(MidTransition);
+            var actual = ZoneWithGap.GetZoneIntervalPair(MidTransition);
             var expected = ZoneIntervalPair.NoMatch;
             Assert.AreEqual(expected, actual);
         }
@@ -194,7 +194,7 @@ namespace NodaTime.Test
         [Test]
         public void ZoneWithGap_LastTickOfTransition()
         {
-            var actual = ZoneWithGap.GetZoneIntervals(TransitionPlus10 - Duration.Epsilon);
+            var actual = ZoneWithGap.GetZoneIntervalPair(TransitionPlus10 - Duration.Epsilon);
             var expected = ZoneIntervalPair.NoMatch;
             Assert.AreEqual(expected, actual);
         }
@@ -202,7 +202,7 @@ namespace NodaTime.Test
         [Test]
         public void ZoneWithGap_FirstTickAfterTransition()
         {
-            var actual = ZoneWithGap.GetZoneIntervals(TransitionPlus10);
+            var actual = ZoneWithGap.GetZoneIntervalPair(TransitionPlus10);
             var expected = ZoneIntervalPair.Unambiguous(IntervalAfterGap);
             Assert.AreEqual(expected, actual);
         }
@@ -218,7 +218,7 @@ namespace NodaTime.Test
         {
             // 1am occurs unambiguously in the early zone.
             var zone = new SingleTransitionDateTimeZone(Transition, Offset.FromHours(3), Offset.FromHours(5));
-            var actual = zone.GetZoneIntervals(new LocalInstant(2000, 1, 1, 1, 0));
+            var actual = zone.GetZoneIntervalPair(new LocalInstant(2000, 1, 1, 1, 0));
             var expected = ZoneIntervalPair.Unambiguous(zone.EarlyInterval);
             Assert.AreEqual(expected, actual);
         }

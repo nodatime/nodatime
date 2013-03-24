@@ -190,7 +190,7 @@
     <Compile Include="DateTimeZoneTest.GetAllZoneIntervals.cs">
       <DependentUpon>DateTimeZoneTest.cs</DependentUpon>
     </Compile>
-    <Compile Include="DateTimeZoneTest.GetZoneIntervals.cs">
+    <Compile Include="DateTimeZoneTest.GetZoneIntervalPair.cs">
       <DependentUpon>DateTimeZoneTest.cs</DependentUpon>
     </Compile>
     <Compile Include="DateTimeZoneTest.LocalConversions.cs">
