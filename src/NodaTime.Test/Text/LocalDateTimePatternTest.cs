@@ -2,6 +2,7 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -173,7 +174,18 @@ namespace NodaTime.Test.Text
                 return;
             }
 
-            var pattern = LocalDateTimePattern.Create(patternText, culture);
+            LocalDateTimePattern pattern;
+            try
+            {
+                pattern = LocalDateTimePattern.Create(patternText, culture);
+            }
+            catch (InvalidPatternException)
+            {
+                // The Malta long date/time pattern in Mono 3.0 is invalid (not just wrong; invalid due to the wrong number of quotes).
+                // Skip it :(
+                // See https://bugzilla.xamarin.com/show_bug.cgi?id=11363
+                return;
+            }
             // Formatting a DateTime with an always-invariant pattern (round-trip, sortable) converts to the ISO
             // calendar in .NET (which is reasonable, as there's no associated calendar).
             // We should use the Gregorian calendar for those tests.
