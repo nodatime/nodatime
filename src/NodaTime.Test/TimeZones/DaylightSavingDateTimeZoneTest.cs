@@ -71,7 +71,7 @@ namespace NodaTime.Test.TimeZones
         public void GetZoneIntervals_WithinFirstSummer()
         {
             var early = new LocalInstant(2000, 6, 1, 0, 0);
-            var pair = TestZone.GetZoneIntervals(early);
+            var pair = TestZone.GetZoneIntervalPair(early);
             Assert.AreEqual("Summer", pair.EarlyInterval.Name);
             Assert.IsNull(pair.LateInterval);
         }
@@ -80,7 +80,7 @@ namespace NodaTime.Test.TimeZones
         public void GetZoneIntervals_WithinFirstWinter()
         {
             var winter = new LocalInstant(2000, 12, 1, 0, 0);
-            var pair = TestZone.GetZoneIntervals(winter);
+            var pair = TestZone.GetZoneIntervalPair(winter);
             Assert.AreEqual("Winter", pair.EarlyInterval.Name);
             Assert.IsNull(pair.LateInterval);
         }
@@ -89,7 +89,7 @@ namespace NodaTime.Test.TimeZones
         public void GetZoneIntervals_AtFirstGapStart()
         {
             var startOfFirstGap = new LocalInstant(2000, 3, 10, 1, 0);
-            var actual = TestZone.GetZoneIntervals(startOfFirstGap);
+            var actual = TestZone.GetZoneIntervalPair(startOfFirstGap);
             var expected = ZoneIntervalPair.NoMatch;
             Assert.AreEqual(expected, actual);
         }
@@ -98,7 +98,7 @@ namespace NodaTime.Test.TimeZones
         public void GetZoneIntervals_WithinFirstGap()
         {
             var middleOfFirstGap = new LocalInstant(2000, 3, 10, 1, 30);
-            var pair = TestZone.GetZoneIntervals(middleOfFirstGap);
+            var pair = TestZone.GetZoneIntervalPair(middleOfFirstGap);
             Assert.AreEqual(0, pair.MatchingIntervals);
         }
 
@@ -106,7 +106,7 @@ namespace NodaTime.Test.TimeZones
         public void GetZoneIntervals_EndOfFirstGap()
         {
             var endOfFirstGap = new LocalInstant(2000, 3, 10, 2, 0);
-            var pair = TestZone.GetZoneIntervals(endOfFirstGap);
+            var pair = TestZone.GetZoneIntervalPair(endOfFirstGap);
             Assert.AreEqual("Summer", pair.EarlyInterval.Name);
             Assert.IsNull(pair.LateInterval);
         }
@@ -115,7 +115,7 @@ namespace NodaTime.Test.TimeZones
         public void GetZoneIntervals_StartOfFirstAmbiguity()
         {
             var firstAmbiguity = new LocalInstant(2000, 10, 5, 1, 0);
-            var pair = TestZone.GetZoneIntervals(firstAmbiguity);
+            var pair = TestZone.GetZoneIntervalPair(firstAmbiguity);
             Assert.AreEqual("Summer", pair.EarlyInterval.Name);
             Assert.AreEqual("Winter", pair.LateInterval.Name);
         }
@@ -124,7 +124,7 @@ namespace NodaTime.Test.TimeZones
         public void GetZoneIntervals_MiddleOfFirstAmbiguity()
         {
             var firstAmbiguity = new LocalInstant(2000, 10, 5, 1, 30);
-            var pair = TestZone.GetZoneIntervals(firstAmbiguity);
+            var pair = TestZone.GetZoneIntervalPair(firstAmbiguity);
             Assert.AreEqual("Summer", pair.EarlyInterval.Name);
             Assert.AreEqual("Winter", pair.LateInterval.Name);
         }
@@ -133,7 +133,7 @@ namespace NodaTime.Test.TimeZones
         public void GetZoneIntervals_AfterFirstAmbiguity()
         {
             var unambiguousWinter = new LocalInstant(2000, 10, 5, 2, 0);
-            var pair = TestZone.GetZoneIntervals(unambiguousWinter);
+            var pair = TestZone.GetZoneIntervalPair(unambiguousWinter);
             Assert.AreEqual("Winter", pair.EarlyInterval.Name);
             Assert.IsNull(pair.LateInterval);
         }
@@ -142,7 +142,7 @@ namespace NodaTime.Test.TimeZones
         public void GetZoneIntervals_WithinArbitrarySummer()
         {
             var summer = new LocalInstant(2010, 6, 1, 0, 0);
-            var pair = TestZone.GetZoneIntervals(summer);
+            var pair = TestZone.GetZoneIntervalPair(summer);
             Assert.AreEqual("Summer", pair.EarlyInterval.Name);
             Assert.IsNull(pair.LateInterval);
         }
@@ -151,7 +151,7 @@ namespace NodaTime.Test.TimeZones
         public void GetZoneIntervals_WithinArbitraryWinter()
         {
             var winter = new LocalInstant(2010, 12, 1, 0, 0);
-            var pair = TestZone.GetZoneIntervals(winter);
+            var pair = TestZone.GetZoneIntervalPair(winter);
             Assert.AreEqual("Winter", pair.EarlyInterval.Name);
             Assert.IsNull(pair.LateInterval);
         }
@@ -160,7 +160,7 @@ namespace NodaTime.Test.TimeZones
         public void GetZoneIntervals_AtArbitraryGapStart()
         {
             var startOfGap = new LocalInstant(2010, 3, 10, 1, 0);
-            var pair = TestZone.GetZoneIntervals(startOfGap);
+            var pair = TestZone.GetZoneIntervalPair(startOfGap);
             Assert.AreEqual(0, pair.MatchingIntervals);
         }
 
@@ -168,7 +168,7 @@ namespace NodaTime.Test.TimeZones
         public void GetZoneIntervals_WithinArbitraryGap()
         {
             var middleOfGap = new LocalInstant(2010, 3, 10, 1, 30);
-            var pair = TestZone.GetZoneIntervals(middleOfGap);
+            var pair = TestZone.GetZoneIntervalPair(middleOfGap);
             Assert.AreEqual(0, pair.MatchingIntervals);
         }
 
@@ -176,7 +176,7 @@ namespace NodaTime.Test.TimeZones
         public void GetZoneIntervals_EndOfArbitraryGap()
         {
             var endOfGap = new LocalInstant(2010, 3, 10, 2, 0);
-            var pair = TestZone.GetZoneIntervals(endOfGap);
+            var pair = TestZone.GetZoneIntervalPair(endOfGap);
             Assert.AreEqual("Summer", pair.EarlyInterval.Name);
             Assert.IsNull(pair.LateInterval);
         }
@@ -185,7 +185,7 @@ namespace NodaTime.Test.TimeZones
         public void GetZoneIntervals_StartOfArbitraryAmbiguity()
         {
             var ambiguity = new LocalInstant(2010, 10, 5, 1, 0);
-            var pair = TestZone.GetZoneIntervals(ambiguity);
+            var pair = TestZone.GetZoneIntervalPair(ambiguity);
             Assert.AreEqual("Summer", pair.EarlyInterval.Name);
             Assert.AreEqual("Winter", pair.LateInterval.Name);
         }
@@ -194,7 +194,7 @@ namespace NodaTime.Test.TimeZones
         public void GetZoneIntervals_MiddleOfArbitraryAmbiguity()
         {
             var ambiguity = new LocalInstant(2010, 10, 5, 1, 30);
-            var pair = TestZone.GetZoneIntervals(ambiguity);
+            var pair = TestZone.GetZoneIntervalPair(ambiguity);
             Assert.AreEqual("Summer", pair.EarlyInterval.Name);
             Assert.AreEqual("Winter", pair.LateInterval.Name);
         }
@@ -203,7 +203,7 @@ namespace NodaTime.Test.TimeZones
         public void GetZoneIntervals_AfterArbitraryAmbiguity()
         {
             var unambiguousWinter = new LocalInstant(2010, 10, 5, 2, 0);
-            var pair = TestZone.GetZoneIntervals(unambiguousWinter);
+            var pair = TestZone.GetZoneIntervalPair(unambiguousWinter);
             Assert.AreEqual("Winter", pair.EarlyInterval.Name);
             Assert.IsNull(pair.LateInterval);
         }

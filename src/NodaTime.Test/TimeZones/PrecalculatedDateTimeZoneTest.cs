@@ -101,7 +101,7 @@ namespace NodaTime.Test.TimeZones
         [Test]
         public void GetZoneIntervals_UnambiguousInPrecalculated()
         {
-            var pair = TestZone.GetZoneIntervals(new LocalInstant(2000, 6, 1, 0, 0));
+            var pair = TestZone.GetZoneIntervalPair(new LocalInstant(2000, 6, 1, 0, 0));
             Assert.AreEqual(SecondInterval, pair.EarlyInterval);
             Assert.IsNull(pair.LateInterval);
         }
@@ -109,7 +109,7 @@ namespace NodaTime.Test.TimeZones
         [Test]
         public void GetZoneIntervals_UnambiguousInTailZone()
         {
-            var pair = TestZone.GetZoneIntervals(new LocalInstant(2005, 2, 1, 0, 0));
+            var pair = TestZone.GetZoneIntervalPair(new LocalInstant(2005, 2, 1, 0, 0));
             Assert.AreEqual(ClampedTailZoneInterval, pair.EarlyInterval);
             Assert.IsNull(pair.LateInterval);
         }
@@ -118,7 +118,7 @@ namespace NodaTime.Test.TimeZones
         public void GetZoneIntervals_AmbiguousWithinPrecalculated()
         {
             // Transition from +4 to -5 has a 9 hour ambiguity
-            var pair = TestZone.GetZoneIntervals(ThirdInterval.LocalStart);
+            var pair = TestZone.GetZoneIntervalPair(ThirdInterval.LocalStart);
             Assert.AreEqual(SecondInterval, pair.EarlyInterval);
             Assert.AreEqual(ThirdInterval, pair.LateInterval);
         }
@@ -127,7 +127,7 @@ namespace NodaTime.Test.TimeZones
         public void GetZoneIntervals_AmbiguousAroundTailZoneTransition()
         {
             // Transition from -5 to -6 has a 1 hour ambiguity
-            var pair = TestZone.GetZoneIntervals(ThirdInterval.LocalEnd - Duration.Epsilon);
+            var pair = TestZone.GetZoneIntervalPair(ThirdInterval.LocalEnd - Duration.Epsilon);
             Assert.AreEqual(ThirdInterval, pair.EarlyInterval);
             Assert.AreEqual(ClampedTailZoneInterval, pair.LateInterval);
         }
@@ -143,7 +143,7 @@ namespace NodaTime.Test.TimeZones
             var tailZone = new SingleTransitionDateTimeZone(ThirdInterval.End + Duration.FromHours(1), 10, 8);
             var gapZone = new PrecalculatedDateTimeZone("Test",
                 new[] { FirstInterval, SecondInterval, ThirdInterval }, tailZone);
-            var pair = gapZone.GetZoneIntervals(ThirdInterval.LocalEnd - Duration.FromHours(1));
+            var pair = gapZone.GetZoneIntervalPair(ThirdInterval.LocalEnd - Duration.FromHours(1));
             Assert.AreEqual(ThirdInterval, pair.EarlyInterval);
             Assert.IsNull(pair.LateInterval);
         }
@@ -153,7 +153,7 @@ namespace NodaTime.Test.TimeZones
         {
             // Transition from +3 to +4 has a 1 hour gap
             Assert.IsTrue(FirstInterval.LocalEnd < SecondInterval.LocalStart);
-            var pair = TestZone.GetZoneIntervals(FirstInterval.LocalEnd);
+            var pair = TestZone.GetZoneIntervalPair(FirstInterval.LocalEnd);
             Assert.IsNull(pair.EarlyInterval);
             Assert.IsNull(pair.LateInterval);
         }
@@ -168,7 +168,7 @@ namespace NodaTime.Test.TimeZones
             var tailZone = new FixedDateTimeZone(Offset.FromHours(5));
             var gapZone = new PrecalculatedDateTimeZone("Test",
                 new[] { FirstInterval, SecondInterval, ThirdInterval }, tailZone);
-            var pair = gapZone.GetZoneIntervals(ThirdInterval.LocalEnd - Duration.FromHours(1));
+            var pair = gapZone.GetZoneIntervalPair(ThirdInterval.LocalEnd - Duration.FromHours(1));
             Assert.AreEqual(ThirdInterval, pair.EarlyInterval);
             Assert.IsNull(pair.LateInterval);
         }
@@ -183,7 +183,7 @@ namespace NodaTime.Test.TimeZones
             var tailZone = new FixedDateTimeZone(Offset.FromHours(5));
             var gapZone = new PrecalculatedDateTimeZone("Test", 
                 new[] { FirstInterval, SecondInterval, ThirdInterval }, tailZone);
-            var actual = gapZone.GetZoneIntervals(ThirdInterval.LocalEnd);
+            var actual = gapZone.GetZoneIntervalPair(ThirdInterval.LocalEnd);
             var expected = ZoneIntervalPair.NoMatch;
             Assert.AreEqual(expected, actual);
         }
@@ -199,7 +199,7 @@ namespace NodaTime.Test.TimeZones
             var tailZone = new SingleTransitionDateTimeZone(ThirdInterval.End + Duration.FromHours(1), -10, +5);
             var gapZone = new PrecalculatedDateTimeZone("Test",
                 new[] { FirstInterval, SecondInterval, ThirdInterval }, tailZone);
-            var pair = gapZone.GetZoneIntervals(ThirdInterval.LocalEnd + Duration.FromHours(1));
+            var pair = gapZone.GetZoneIntervalPair(ThirdInterval.LocalEnd + Duration.FromHours(1));
             Assert.IsNull(pair.EarlyInterval);
             Assert.IsNull(pair.LateInterval);
         }

@@ -231,7 +231,7 @@ namespace NodaTime
         /// </remarks>
         /// <param name="localInstant">The local instant to find matching zone intervals for</param>
         /// <returns>The struct containing up to two ZoneInterval references.</returns>
-        internal virtual ZoneIntervalPair GetZoneIntervals(LocalInstant localInstant)
+        internal virtual ZoneIntervalPair GetZoneIntervalPair(LocalInstant localInstant)
         {
             Instant firstGuess = new Instant(localInstant.Ticks);
             ZoneInterval interval = GetZoneInterval(firstGuess);
@@ -290,7 +290,7 @@ namespace NodaTime
         public ZonedDateTime AtStartOfDay(LocalDate date)
         {
             LocalInstant localInstant = date.AtMidnight().LocalInstant;
-            ZoneIntervalPair pair = GetZoneIntervals(localInstant);
+            ZoneIntervalPair pair = GetZoneIntervalPair(localInstant);
             switch (pair.MatchingIntervals)
             {
                 case 0:

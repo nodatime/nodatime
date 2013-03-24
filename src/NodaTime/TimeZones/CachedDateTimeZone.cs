@@ -20,7 +20,7 @@ namespace NodaTime.TimeZones
     /// </para>
     /// <para>
     /// In fact, only one cache type is currently implemented: an MRU cache existed before
-    /// the GetZoneIntervals call was created in DateTimeZone, but as it wasn't being used, it
+    /// the GetZoneIntervalPair call was created in DateTimeZone, but as it wasn't being used, it
     /// was more effort than it was worth to update. The mechanism is still available for future
     /// expansion though.
     /// </para>
