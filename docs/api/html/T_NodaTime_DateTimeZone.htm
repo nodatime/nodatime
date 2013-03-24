@@ -28,8 +28,6 @@
             Implements equality in derived classes.
             </div><br /></td></tr><tr data="method; public; static; declared"><td><img src="../icons/pubmethod.gif" /><img src="../icons/static.gif" title="static member" /></td><td><a href="M_NodaTime_DateTimeZone_ForOffset.htm">ForOffset(Offset)</a></td><td><div class="summary">
             Returns a fixed time zone with the given offset.
-            </div><br /></td></tr><tr data="method; public; instance; declared"><td><img src="../icons/pubmethod.gif" /></td><td><a href="M_NodaTime_DateTimeZone_GetAllZoneIntervals.htm">GetAllZoneIntervals(Instant, Instant)</a></td><td><div class="summary">
-            Returns all the zone intervals which are contained in the interval [<span class="parameter">start</span>, <span class="parameter">end</span>).
             </div><br /></td></tr><tr data="method; public; instance; declared"><td><img src="../icons/pubmethod.gif" /></td><td><a href="M_NodaTime_DateTimeZone_GetHashCode.htm">GetHashCode<span class="languageSpecificText"><span class="cs">()</span><span class="cpp">()</span><span class="nu">()</span><span class="fs">()</span></span></a></td><td><div class="summary">
             Returns a hash code for this instance.
             </div> (Overrides <a href="http://msdn2.microsoft.com/en-us/library/e5kfa45b" target="_blank">Object</a>.<a href="http://msdn2.microsoft.com/en-us/library/zdee4b3y" target="_blank">GetHashCode<span class="languageSpecificText"><span class="cs">()</span><span class="cpp">()</span><span class="nu">()</span><span class="fs">()</span></span></a>.)<br /></td></tr><tr data="method; public; instance; declared"><td><img src="../icons/pubmethod.gif" /></td><td><a href="M_NodaTime_DateTimeZone_GetUtcOffset.htm">GetUtcOffset(Instant)</a></td><td><div class="summary">
@@ -37,7 +35,9 @@
             later than UTC. In other words, local time = UTC + offset.
             </div><br /></td></tr><tr data="method; public; instance; declared"><td><img src="../icons/pubmethod.gif" /></td><td><a href="M_NodaTime_DateTimeZone_GetZoneInterval.htm">GetZoneInterval(Instant)</a></td><td><div class="summary">
             Gets the zone interval for the given instant; the range of time around the instant in which the same Offset
-            applies.
+            applies (with the same split between standard time and daylight saving time, and with the same offset).
+            </div><br /></td></tr><tr data="method; public; instance; declared"><td><img src="../icons/pubmethod.gif" /></td><td><a href="M_NodaTime_DateTimeZone_GetZoneIntervals.htm">GetZoneIntervals(Instant, Instant)</a></td><td><div class="summary">
+            Returns all the zone intervals which occur for any instant in the interval [<span class="parameter">start</span>, <span class="parameter">end</span>).
             </div><br /></td></tr><tr data="property; public; instance; declared"><td><img src="../icons/pubproperty.gif" /></td><td><a href="P_NodaTime_DateTimeZone_Id.htm">Id</a></td><td><div class="summary">
             The provider's ID for the time zone.
             </div><br /></td></tr><tr data="method; public; instance; declared"><td><img src="../icons/pubmethod.gif" /></td><td><a href="M_NodaTime_DateTimeZone_MapLocal.htm">MapLocal(LocalDateTime)</a></td><td><div class="summary">
