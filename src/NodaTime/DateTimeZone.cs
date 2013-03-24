@@ -207,7 +207,7 @@ namespace NodaTime
 
         /// <summary>
         /// Gets the zone interval for the given instant; the range of time around the instant in which the same Offset
-        /// applies.
+        /// applies (with the same split between standard time and daylight saving time, and with the same offset).
         /// </summary>
         /// <remarks>
         /// This will always return a valid zone interval, as time zones cover the whole of time.
@@ -590,26 +590,30 @@ namespace NodaTime
         #endregion
 
         /// <summary>
-        /// Returns all the zone intervals which are contained in the interval [<paramref name="start"/>, <paramref name="end"/>).
+        /// Returns all the zone intervals which occur for any instant in the interval [<paramref name="start"/>, <paramref name="end"/>).
         /// </summary>
         /// <remarks>
-        /// <para>The intervals are returned in chronological order.</para>
+        /// <para>The intervals are returned in chronological order. This method is equivalent to calling <see cref="GetZoneInterval"/> for every
+        /// instant in the range [start, end) and then collapsing to a set of distinct zone intervals.
+        /// The first and last zone intervals are likely to also cover instants outside the given interval; the zone intervals returned are not
+        /// truncated to match the start and end points.
+        /// </para>
         /// </remarks>
         /// <param name="start">Inclusive start point of the interval for which to retrieve zone intervals.</param>
         /// <param name="end">Exclusive end point of the interval for which to retrieve zone intervals.</param>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="end"/> is earlier than <paramref name="start"/></exception>
         /// <returns>A sequence of zone intervals covering the given instants.</returns>
-        public IEnumerable<ZoneInterval> GetAllZoneIntervals(Instant start, Instant end)
+        public IEnumerable<ZoneInterval> GetZoneIntervals(Instant start, Instant end)
         {
             if (end < start)
             {
                 throw new ArgumentOutOfRangeException("end", "The end parameter must be equal to or later than the start parameter");
             }
-            return GetAllZoneIntervalsImpl(start, end);
+            return GetZoneIntervalsImpl(start, end);
         }
 
         // Actual implementation, split from the public method to get eager argument validation.
-        private IEnumerable<ZoneInterval> GetAllZoneIntervalsImpl(Instant from, Instant to)
+        private IEnumerable<ZoneInterval> GetZoneIntervalsImpl(Instant from, Instant to)
         {
             var current = from;
             while (current < to)
