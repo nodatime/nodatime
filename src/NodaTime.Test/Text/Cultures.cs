@@ -149,7 +149,7 @@ namespace NodaTime.Test.Text
         /// <summary>
         /// Tests whether the runtime will be able to look up resources for the given culture. Mono 3.0 appears to have
         /// some problems with fallback for zh-CN and zh-SG, so we suppress tests against those cultures.
-        /// See https://code.google.com/p/noda-time/issues/detail?id=200
+        /// See https://bugzilla.xamarin.com/show_bug.cgi?id=11375
         /// </summary>
         private static bool RuntimeFailsToLookupResourcesForCulture(CultureInfo culture)
         {
