@@ -16,6 +16,10 @@ Major features:
 
 API changes:
 
+- The new `DateTimeZone.GetZoneIntervals` method returns a sequence of zone
+  intervals which cover a particular interval ([issue 172][])
+- A new `ZoneEqualityComparer` allows time zones to be compared for equality
+  with varying degrees of strictness, over a given interval
 - `LocalDate`, `LocalTime`, `LocalDateTime`, and `ZonedDateTime` now
   implement the non-generic `IComparable` interface (explicitly, to
   avoid accidental use)
@@ -81,6 +85,10 @@ API changes for NodaTime.Testing:
 
 Bug fixes:
 
+- Workaround for a Mono bug where abbreviated genitive month names are provided
+  as "1", "2" etc ([issue 202][])
+- Fixed parsing issue for cultures where the AM designator is a leading
+  substring of the PM designator ([issue 201][])
 - Not part of the main release, but `NodaIntervalConverter` now handles values
   embedded in a larger object being deserialized ([issue 191][])
 - Behaviour at extremes of time is now improved ([issue 197][]); there's more
