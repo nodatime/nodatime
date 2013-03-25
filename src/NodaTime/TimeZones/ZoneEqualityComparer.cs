@@ -13,7 +13,7 @@ namespace NodaTime.TimeZones
     /// Equality comparer for time zones, comparing specific aspects of the zone intervals within
     /// a time zone for a specific interval of the time line.
     /// </summary>
-    internal sealed class ZoneEqualityComparer : IEqualityComparer<DateTimeZone>
+    public sealed class ZoneEqualityComparer : IEqualityComparer<DateTimeZone>
     {
         /// <summary>
         /// Options to use when comparing time zones for equality. Each option makes the comparison more restrictive.
