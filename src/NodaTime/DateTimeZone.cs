@@ -214,6 +214,7 @@ namespace NodaTime
         /// </remarks>
         /// <param name="instant">The <see cref="T:NodaTime.Instant" /> to query.</param>
         /// <returns>The defined <see cref="T:NodaTime.TimeZones.ZoneInterval" />.</returns>
+        /// <seealso cref="GetZoneIntervals(Interval)"/>
         public abstract ZoneInterval GetZoneInterval(Instant instant);
 
         /// <summary>
@@ -601,6 +602,7 @@ namespace NodaTime
         /// <param name="end">Exclusive end point of the interval for which to retrieve zone intervals.</param>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="end"/> is earlier than <paramref name="start"/></exception>
         /// <returns>A sequence of zone intervals covering the given interval.</returns>
+        /// <seealso cref="GetZoneInterval"/>
         public IEnumerable<ZoneInterval> GetZoneIntervals(Instant start, Instant end)
         {
             // The constructor performs all the validation we need.
@@ -619,6 +621,7 @@ namespace NodaTime
         /// </remarks>
         /// <param name="interval">Interval to find zone intervals for.</param>
         /// <returns>A sequence of zone intervals covering the given interval.</returns>
+        /// <seealso cref="GetZoneInterval"/>
         private IEnumerable<ZoneInterval> GetZoneIntervals(Interval interval)
         {
             var current = interval.Start;
