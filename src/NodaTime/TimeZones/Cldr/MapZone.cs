@@ -10,7 +10,7 @@ using System.Collections.ObjectModel;
 namespace NodaTime.TimeZones.Cldr
 {
     /// <summary>
-    /// Represents a single entry in the CLDR Windows zone mapping file.
+    /// Represents a single <c>&lt;mapZone&gt;</c> element in the CLDR Windows zone mapping file. 
     /// </summary>
     /// <threadsafety>This type is immutable reference type. See the thread safety section of the user guide for more information.</threadsafety>
     public sealed class MapZone
@@ -31,8 +31,15 @@ namespace NodaTime.TimeZones.Cldr
         private readonly IList<string> tzdbIds;
 
         /// <summary>
-        /// Gets the Windows system time zone identifier for this mapping.
+        /// Gets the Windows system time zone identifier for this mapping, such as "Central Standard Time".
         /// </summary>
+        /// <remarks>
+        /// <para>
+        /// Most Windows system time zone identifiers use the name for the "standard" part of the zone as
+        /// the overall identifier. Don't be fooled: just because a time zone includes "standard" in its identifier
+        /// doesn't mean that it doesn't observe daylight saving time.
+        /// </para>
+        /// </remarks>
         public string WindowsId { get { return windowsId; } }
 
         /// <summary>
@@ -46,7 +53,9 @@ namespace NodaTime.TimeZones.Cldr
         public string Territory { get { return territory; } }
 
         /// <summary>
-        /// Gets a read-only collection of TZDB zone identifiers for this mapping.
+        /// Gets a read-only collection of TZDB zone identifiers for this mapping, such as
+        /// "America/Chicago" and "America/Matamoros" (both of which are TZDB zones associated with the "Central Standard Time"
+        /// Windows system time zone).
         /// </summary>
         /// <remarks>
         /// For the primary and fixed-offset territory IDs ("001" and "ZZ") this is always
