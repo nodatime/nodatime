@@ -619,7 +619,7 @@ namespace NodaTime
         /// </remarks>
         /// <param name="interval">Interval to find zone intervals for.</param>
         /// <returns>A sequence of zone intervals covering the given interval.</returns>
-        private IEnumerable<ZoneInterval> GetZoneIntervals(Interval interval)
+        public IEnumerable<ZoneInterval> GetZoneIntervals(Interval interval)
         {
             var current = interval.Start;
             while (current < interval.End)
