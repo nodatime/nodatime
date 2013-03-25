@@ -27,6 +27,10 @@ not supportable in the PCL build</li>
 <p>API changes:</p>
 
 <ul>
+<li>The new <code>DateTimeZone.GetZoneIntervals</code> method returns a sequence of zone
+intervals which cover a particular interval (<a href="http://code.google.com/p/noda-time/issues/detail?id=172">issue 172</a>)</li>
+<li>A new <code>ZoneEqualityComparer</code> allows time zones to be compared for equality
+with varying degrees of strictness, over a given interval</li>
 <li><code>LocalDate</code>, <code>LocalTime</code>, <code>LocalDateTime</code>, and <code>ZonedDateTime</code> now
 implement the non-generic <code>IComparable</code> interface (explicitly, to
 avoid accidental use)</li>
@@ -102,6 +106,10 @@ that allows the time zone ID to be specified</li>
 <p>Bug fixes:</p>
 
 <ul>
+<li>Workaround for a Mono bug where abbreviated genitive month names are provided
+as "1", "2" etc (<a href="http://code.google.com/p/noda-time/issues/detail?id=202">issue 202</a>)</li>
+<li>Fixed parsing issue for cultures where the AM designator is a leading
+substring of the PM designator (<a href="http://code.google.com/p/noda-time/issues/detail?id=201">issue 201</a>)</li>
 <li>Not part of the main release, but <code>NodaIntervalConverter</code> now handles values
 embedded in a larger object being deserialized (<a href="http://code.google.com/p/noda-time/issues/detail?id=191">issue 191</a>)</li>
 <li>Behaviour at extremes of time is now improved (<a href="http://code.google.com/p/noda-time/issues/detail?id=197">issue 197</a>); there's more
