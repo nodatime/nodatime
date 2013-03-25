@@ -251,6 +251,7 @@
     <Compile Include="TimeZones\CachedDateTimeZone.cs" />
     <Compile Include="TimeZones\CachingZoneIntervalMap.cs" />
     <Compile Include="TimeZones\Cldr\MapZone.cs" />
+    <Compile Include="TimeZones\Cldr\NamespaceDoc.cs" />
     <Compile Include="TimeZones\Cldr\WindowsZones.cs" />
     <Compile Include="TimeZones\DateTimeZoneCache.cs" />
     <Compile Include="TimeZones\DateTimeZoneNotFoundException.cs" />

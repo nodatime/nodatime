@@ -11,8 +11,12 @@ using NodaTime.Utility;
 namespace NodaTime.TimeZones.Cldr
 {
     /// <summary>
-    /// Representation of the windowsZones part of CLDR supplemental data.
+    /// Representation of the <c>&lt;windowsZones&gt;</c> element of CLDR supplemental data.
     /// </summary>
+    /// <remarks>
+    /// See <a href="http://cldr.unicode.org/development/development-process/design-proposals/extended-windows-olson-zid-mapping">the CLDR design proposal</a>
+    /// for more details of the structure of the file from which data is taken.
+    /// </remarks>
     /// <threadsafety>This type is immutable reference type. See the thread safety section of the user guide for more information.</threadsafety>
     public sealed class WindowsZones
     {        
@@ -20,6 +24,14 @@ namespace NodaTime.TimeZones.Cldr
         /// <summary>
         /// Gets the version of the Windows zones mapping data read from the original file.
         /// </summary>
+        /// <remarks>
+        /// <para>
+        /// As with other IDs, this should largely be treated as an opaque string, but the current method for
+        /// generating this from the mapping file extracts a number from an element such as <c>&lt;version number="$Revision: 7825 $"/&gt;</c>.
+        /// This is a Subversion revision number, but that association should only be used for diagnostic curiosity, and never
+        /// assumed in code.
+        /// </para>
+        /// </remarks>
         public string Version { get { return version; } }
 
         private readonly string tzdbVersion;
@@ -27,8 +39,16 @@ namespace NodaTime.TimeZones.Cldr
         /// Gets the TZDB version this Windows zone mapping data was created from.
         /// </summary>
         /// <remarks>
+        /// <para>
+        /// The CLDR mapping file usually lags behind the TZDB file somewhat - partly because the
+        /// mappings themselves don't always change when the time zone data does. For example, it's entirely
+        /// reasonable for a <see cref="TzdbDateTimeZoneSource"/> with a <see cref="TzdbDateTimeZoneSource.TzdbVersion">TzdbVersion</see> of
+        /// "2013b" to be supply a <c>WindowsZones</c> object with a <c>TzdbVersion</c> of "2012f".
+        /// </para>
+        /// <para>
         /// This property will never return a null value, but will be "Unknown" if the data
         /// is loaded from the legacy resource format.
+        /// </para>
         /// </remarks>
         public string TzdbVersion { get { return tzdbVersion; } }
 
@@ -37,10 +57,15 @@ namespace NodaTime.TimeZones.Cldr
         /// Gets the Windows time zone database version this Windows zone mapping data was created from.
         /// </summary>
         /// <remarks>
+        /// <para>
         /// At the time of this writing, this is populated (by CLDR) from the registry key
-        /// HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Time Zones\TzVersion.
+        /// HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Time Zones\TzVersion,
+        /// so "7dc0101" for example.
+        /// </para>
+        /// <para>
         /// This property will never return a null value, but will be "Unknown" if the data
         /// is loaded from the legacy resource format.
+        /// </para>
         /// </remarks>
         public string WindowsVersion { get { return windowsVersion; } }
 
