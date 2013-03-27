@@ -68,8 +68,8 @@ namespace NodaTime.Test.TimeZones
             expectedLocal = new LocalDateTime(2007, 8, 24, 18, 30);
             Assert.AreEqual(expectedLocal, inJersey.LocalDateTime);
 
-            // Can't ask for GeoLocations
-            Assert.Throws<InvalidOperationException>(() => source.GeoLocations.GetHashCode());
+            // Can't ask for ZoneLocations
+            Assert.Throws<InvalidOperationException>(() => source.ZoneLocations.GetHashCode());
         }
 
         /// <summary>
@@ -150,13 +150,13 @@ namespace NodaTime.Test.TimeZones
             Assert.Throws<NotSupportedException>(() => map.Add("Foo", "Bar"));
         }
 
-        // Sample geolocation checks to ensure we've serialized and deserialized correctly
+        // Sample zone location checks to ensure we've serialized and deserialized correctly
         // Input line: FR	+4852+00220	Europe/Paris
         [Test]
-        public void GeoLocations_ContainsFrance()
+        public void ZoneLocations_ContainsFrance()
         {
-            var geoLocations = TzdbDateTimeZoneSource.Default.GeoLocations;
-            var france = geoLocations.Single(g => g.CountryName == "France");
+            var zoneLocations = TzdbDateTimeZoneSource.Default.ZoneLocations;
+            var france = zoneLocations.Single(g => g.CountryName == "France");
             // Tolerance of about 2 seconds
             Assert.AreEqual(48.86666, france.Latitude, 0.00055);
             Assert.AreEqual(2.3333, france.Longitude, 0.00055);
@@ -167,10 +167,10 @@ namespace NodaTime.Test.TimeZones
 
         // Input line: CA	+744144-0944945	America/Resolute	Central Standard Time - Resolute, Nunavut
         [Test]
-        public void GeoLocations_ContainsResolute()
+        public void ZoneLocations_ContainsResolute()
         {
-            var geoLocations = TzdbDateTimeZoneSource.Default.GeoLocations;
-            var resolute = geoLocations.Single(g => g.ZoneId == "America/Resolute");
+            var zoneLocations = TzdbDateTimeZoneSource.Default.ZoneLocations;
+            var resolute = zoneLocations.Single(g => g.ZoneId == "America/Resolute");
             // Tolerance of about 2 seconds
             Assert.AreEqual(74.69555, resolute.Latitude, 0.00055);
             Assert.AreEqual(-94.82916, resolute.Longitude, 0.00055);

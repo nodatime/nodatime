@@ -38,9 +38,9 @@ namespace NodaTime.TimeZones.IO
         /// </summary>
         WindowsAdditionalStandardNameToIdMapping = 5,
         /// <summary>
-        /// Single field providing all geolocations. The format is simply a count, and then that many copies of
-        /// TzdbGeoLocation data.
+        /// Single field providing all zone locations. The format is simply a count, and then that many copies of
+        /// TzdbZoneLocation data.
         /// </summary>
-        GeoLocations = 6
+        ZoneLocations = 6
     }
 }

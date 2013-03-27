@@ -54,7 +54,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
             string version = sourceDirectory.Name;
             var database = new TzdbDatabase(version);
             ParseAllFiles(fileList, database);
-            database.GeoLocations = TzdbGeoLocationParser.ParseFiles(sourceDirectory);
+            database.ZoneLocations = TzdbZoneLocationParser.ParseFiles(sourceDirectory);
             return database;
         }
 

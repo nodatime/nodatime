@@ -66,11 +66,11 @@ namespace NodaTime.TimeZones
         /// </summary>
         private readonly string version;
         /// <summary>
-        /// List of geolocations, if any. This is a read-only wrapper, and can be
+        /// List of zone locations, if any. This is a read-only wrapper, and can be
         /// returned directly to clients. It may be null, if the underlying data source
         /// has no location data.
         /// </summary>
-        private readonly IList<TzdbGeoLocation> geoLocations;
+        private readonly IList<TzdbZoneLocation> zoneLocations;
 #if !PCL
         /// <summary>
         /// Initializes a new instance of the <see cref="TzdbDateTimeZoneSource" /> class from a resource within
@@ -154,8 +154,8 @@ namespace NodaTime.TimeZones
                 .OrderBy(pair => pair.Key, StringComparer.Ordinal)
                 .ToLookup(pair => pair.Value, pair => pair.Key);
             version = source.TzdbVersion + " (mapping: " + source.WindowsZones.Version + ")";
-            var originalGeoLocations = source.GeoLocations;
-            geoLocations = originalGeoLocations == null ? null : new ReadOnlyCollection<TzdbGeoLocation>(originalGeoLocations);
+            var originalZoneLocations = source.ZoneLocations;
+            zoneLocations = originalZoneLocations == null ? null : new ReadOnlyCollection<TzdbZoneLocation>(originalZoneLocations);
         }
 
         /// <summary>
@@ -248,15 +248,15 @@ namespace NodaTime.TimeZones
         /// </remarks>
         /// <exception cref="InvalidOperationException">This is a legacy resource-based data source which does
         /// not include location information.</exception>
-        public IList<TzdbGeoLocation> GeoLocations
+        public IList<TzdbZoneLocation> ZoneLocations
         {
             get
             {
-                if (geoLocations == null)
+                if (zoneLocations == null)
                 {
-                    throw new InvalidOperationException("GeoLocation information is not available in the legacy resource format");
+                    throw new InvalidOperationException("Zone location information is not available in the legacy resource format");
                 }
-                return geoLocations;
+                return zoneLocations;
             }
         }
 
@@ -334,14 +334,14 @@ namespace NodaTime.TimeZones
                 }
             }
 
-            // Check that each geolocation has a valid zone ID
-            if (geoLocations != null)
+            // Check that each zone location has a valid zone ID
+            if (zoneLocations != null)
             {
-                foreach (var location in geoLocations)
+                foreach (var location in zoneLocations)
                 {
                     if (!CanonicalIdMap.ContainsKey(location.ZoneId))
                     {
-                        throw new InvalidNodaDataException("Geolocation " + location.CountryName
+                        throw new InvalidNodaDataException("Zone location " + location.CountryName
                             + " uses zone ID " + location.ZoneId + " which is missing");
                     }
                 }

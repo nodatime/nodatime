@@ -2,12 +2,9 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using NodaTime.Utility;
 using NodaTime.TimeZones.IO;
+using NodaTime.Utility;
+using System;
 
 namespace NodaTime.TimeZones
 {
@@ -15,7 +12,7 @@ namespace NodaTime.TimeZones
     /// A location entry generated from the "zone.tab" file in a TZDB release. This can be used to provide
     /// users with a choice of time zone, although it is not internationalized.
     /// </summary>
-    public sealed class TzdbGeoLocation
+    public sealed class TzdbZoneLocation
     {
         private readonly int latitudeSeconds, longitudeSeconds;
         private readonly string countryName, countryCode;
@@ -76,7 +73,7 @@ namespace NodaTime.TimeZones
         /// <param name="zoneId">Time zone identifier of the location. Must not be null.</param>
         /// <param name="comment">Optional comment. Must not be null, but may be empty.</param>
         /// <exception cref="ArgumentOutOfRangeException">The latitude or longitude is invalid.</exception>
-        public TzdbGeoLocation(int latitudeSeconds, int longitudeSeconds, string countryName, string countryCode,
+        public TzdbZoneLocation(int latitudeSeconds, int longitudeSeconds, string countryName, string countryCode,
             string zoneId, string comment)
         {
             Preconditions.CheckArgumentRange("latitude", latitudeSeconds, -90 * 3600, 90 * 3600);
@@ -99,7 +96,7 @@ namespace NodaTime.TimeZones
             writer.WriteString(comment);
         }
 
-        internal static TzdbGeoLocation Read(IDateTimeZoneReader reader)
+        internal static TzdbZoneLocation Read(IDateTimeZoneReader reader)
         {
             int latitudeSeconds = reader.ReadSignedCount();
             int longitudeSeconds = reader.ReadSignedCount();
@@ -111,11 +108,11 @@ namespace NodaTime.TimeZones
             // to catch ArgumentException, but we're in pretty tight control of what's going on here.
             try
             {
-                return new TzdbGeoLocation(latitudeSeconds, longitudeSeconds, countryName, countryCode, zoneId, comment);
+                return new TzdbZoneLocation(latitudeSeconds, longitudeSeconds, countryName, countryCode, zoneId, comment);
             }
             catch (ArgumentException e)
             {
-                throw new InvalidNodaDataException("Invalid geolocation data in stream", e);
+                throw new InvalidNodaDataException("Invalid zone location data in stream", e);
             }
         }
     }

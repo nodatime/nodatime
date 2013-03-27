@@ -2,17 +2,15 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
+using NodaTime.ZoneInfoCompiler.Tzdb;
+using NUnit.Framework;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using NUnit.Framework;
-using NodaTime.ZoneInfoCompiler.Tzdb;
 
 namespace ZoneInfoCompiler.Test.Tzdb
 {
     [TestFixture]
-    public class TzdbGeoLocationParserTest
+    public class TzdbZoneLocationParserTest
     {
         private static readonly Dictionary<string, string> SampleCountryMapping = new Dictionary<string, string>
         {
@@ -25,7 +23,7 @@ namespace ZoneInfoCompiler.Test.Tzdb
         [TestCase("0\t1\t2\t3\t4", Description = "Too many values")]
         public void ParseLocation_InvalidLength(string line)
         {
-            Assert.Throws<ArgumentException>(() => TzdbGeoLocationParser.ParseLocation(line, SampleCountryMapping));
+            Assert.Throws<ArgumentException>(() => TzdbZoneLocationParser.ParseLocation(line, SampleCountryMapping));
         }
 
         [Test]
@@ -33,14 +31,14 @@ namespace ZoneInfoCompiler.Test.Tzdb
         {
             // Valid line, but not with our country code mapping...
             string line = "FK\t-5142-05751\tAtlantic/Stanley";
-            Assert.Throws<KeyNotFoundException>(() => TzdbGeoLocationParser.ParseLocation(line, SampleCountryMapping));
+            Assert.Throws<KeyNotFoundException>(() => TzdbZoneLocationParser.ParseLocation(line, SampleCountryMapping));
         }
 
         [Test]
         public void ParseLocation_Valid_NoComment()
         {
             string line = "GB\t+4000+03000\tEurope/London";
-            var location = TzdbGeoLocationParser.ParseLocation(line, SampleCountryMapping);
+            var location = TzdbZoneLocationParser.ParseLocation(line, SampleCountryMapping);
             Assert.AreEqual("GB", location.CountryCode);
             Assert.AreEqual("Britain (UK)", location.CountryName);
             Assert.AreEqual(40, location.Latitude);
@@ -53,7 +51,7 @@ namespace ZoneInfoCompiler.Test.Tzdb
         public void ParseLocation_Valid_WithComment()
         {
             string line = "GB\t+4000+03000\tEurope/London\tSome comment";
-            var location = TzdbGeoLocationParser.ParseLocation(line, SampleCountryMapping);
+            var location = TzdbZoneLocationParser.ParseLocation(line, SampleCountryMapping);
             Assert.AreEqual("GB", location.CountryCode);
             Assert.AreEqual("Britain (UK)", location.CountryName);
             Assert.AreEqual(40, location.Latitude);
@@ -65,7 +63,7 @@ namespace ZoneInfoCompiler.Test.Tzdb
         [Test]
         public void ParseCoordinates_InvalidLength()
         {
-            Assert.Throws<ArgumentException>(() => TzdbGeoLocationParser.ParseCoordinates("-77+166"));
+            Assert.Throws<ArgumentException>(() => TzdbZoneLocationParser.ParseCoordinates("-77+166"));
         }
 
         [Test]
@@ -77,7 +75,7 @@ namespace ZoneInfoCompiler.Test.Tzdb
         [TestCase("+000005-0000102", 5, -1 * 60 - 2)]
         public void ParseCoordinates_Valid(string text, int expectedLatitude, int expectedLongitude)
         {
-            int[] actual = TzdbGeoLocationParser.ParseCoordinates(text);
+            int[] actual = TzdbZoneLocationParser.ParseCoordinates(text);
             Assert.AreEqual(expectedLatitude, actual[0]);
             Assert.AreEqual(expectedLongitude, actual[1]);
         }

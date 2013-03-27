@@ -33,10 +33,10 @@ namespace NodaTime.TimeZones.IO
         WindowsZones WindowsZones { get; }
 
         /// <summary>
-        /// Returns the geolocations for the source, or null if no geolocation data is available.
+        /// Returns the zone locations for the source, or null if no location data is available.
         /// This needn't be read-only; it won't be exposed directly.
         /// </summary>
-        IList<TzdbGeoLocation> GeoLocations { get; }
+        IList<TzdbZoneLocation> ZoneLocations { get; }
 
         /// <summary>
         /// Creates the <see cref="DateTimeZone"/> for the given canonical ID, which will definitely

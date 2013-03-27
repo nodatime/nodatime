@@ -166,15 +166,15 @@ namespace NodaTime.TimeZones.IO
         }
 
         /// <summary>
-        /// Always returns null - the resource data does not include geolocations.
+        /// Always returns null - the resource data does not include zone locations.
         /// </summary>
-        public IList<TzdbGeoLocation> GeoLocations
+        public IList<TzdbZoneLocation> ZoneLocations
         {
             get { return null; }
         }
 
         /// <summary>
-        /// Always returns null - the resource data does not include geolocations.
+        /// Always returns null - the resource data does not include any additional mappings.
         /// </summary>
         IDictionary<string, string> ITzdbDataSource.WindowsAdditionalStandardNameToIdMapping
         {
