@@ -38,9 +38,9 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         internal IDictionary<string, IList<ZoneRule>> Rules { get { return rules; } }
 
         /// <summary>
-        /// A list of the geolocations known to this database.
+        /// A list of the zone locations known to this database.
         /// </summary>
-        internal IList<TzdbGeoLocation> GeoLocations { get; set; }
+        internal IList<TzdbZoneLocation> ZoneLocations { get; set; }
 
         /// <summary>
         /// The zone list which is currently being defined. This is used to gather all of the time zone
@@ -190,7 +190,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
             Console.WriteLine("Rule sets:    {0:D}", rules.Count);
             Console.WriteLine("Zones:        {0:D}", zoneLists.Count);
             Console.WriteLine("Aliases:      {0:D}", aliases.Count);
-            Console.WriteLine("Geolocations: {0:D}", GeoLocations == null ? 0 : GeoLocations.Count);
+            Console.WriteLine("Zone locations: {0:D}", ZoneLocations == null ? 0 : ZoneLocations.Count);
             Console.WriteLine("=======================================");
         }
     }

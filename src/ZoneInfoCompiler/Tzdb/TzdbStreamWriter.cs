@@ -44,7 +44,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
             FieldCollection fields = new FieldCollection();
 
             var zones = database.GenerateDateTimeZones().ToList();
-            var stringPool = CreateOptimizedStringPool(zones, database.GeoLocations, cldrWindowsZones);
+            var stringPool = CreateOptimizedStringPool(zones, database.ZoneLocations, cldrWindowsZones);
             
             // First assemble the fields (writing to the string pool as we go)
             foreach (var zone in zones)
@@ -74,15 +74,15 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
             fields.AddField(TzdbStreamFieldId.WindowsAdditionalStandardNameToIdMapping, stringPool).Writer.WriteDictionary
                 (PclSupport.StandardNameToIdMap.ToDictionary(pair => pair.Key, pair => cldrWindowsZones.PrimaryMapping[pair.Value]));
 
-            // Geolocations, if any.
-            var geoLocations = database.GeoLocations;
-            if (geoLocations != null)
+            // Zone locations, if any.
+            var zoneLocations = database.ZoneLocations;
+            if (zoneLocations != null)
             {
-                var field = fields.AddField(TzdbStreamFieldId.GeoLocations, stringPool);
-                field.Writer.WriteCount(geoLocations.Count);
-                foreach (var geoLocation in geoLocations)
+                var field = fields.AddField(TzdbStreamFieldId.ZoneLocations, stringPool);
+                field.Writer.WriteCount(zoneLocations.Count);
+                foreach (var zoneLocation in zoneLocations)
                 {
-                    geoLocation.Write(field.Writer);
+                    zoneLocation.Write(field.Writer);
                 }
             }
 
@@ -135,7 +135,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         /// of zones first. This will allow them to be more efficiently represented when we write them out for real.
         /// </summary>
         private static List<string> CreateOptimizedStringPool(IEnumerable<DateTimeZone> zones,
-            IEnumerable<TzdbGeoLocation> geoLocations, WindowsZones cldrWindowsZones)
+            IEnumerable<TzdbZoneLocation> zoneLocations, WindowsZones cldrWindowsZones)
         {
             var optimizingWriter = new StringPoolOptimizingFakeWriter();
             foreach (var zone in zones)
@@ -143,9 +143,9 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
                 optimizingWriter.WriteString(zone.Id);
                 WriteZone(zone, optimizingWriter);
             }
-            if (geoLocations != null)
+            if (zoneLocations != null)
             {
-                foreach (var location in geoLocations)
+                foreach (var location in zoneLocations)
                 {
                     location.Write(optimizingWriter);
                 }

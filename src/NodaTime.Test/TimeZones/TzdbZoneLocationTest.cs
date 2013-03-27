@@ -9,12 +9,12 @@ using NUnit.Framework;
 namespace NodaTime.Test.TimeZones
 {
     [TestFixture]
-    public class TzdbGeoLocationTest
+    public class TzdbZoneLocationTest
     {
         [Test]
         public void Valid()
         {
-            var location = new TzdbGeoLocation(
+            var location = new TzdbZoneLocation(
                 60 * 3600 + 15 * 60 + 5,
                 100 * 3600 + 30 * 60 + 10,
                 "Country name",
@@ -32,30 +32,30 @@ namespace NodaTime.Test.TimeZones
         [Test]
         public void LatitudeRange()
         {
-            Assert.Throws<ArgumentOutOfRangeException>(() => new TzdbGeoLocation(90 * 3600 + 1, 0, "Name", "CO", "Zone", ""));
-            Assert.Throws<ArgumentOutOfRangeException>(() => new TzdbGeoLocation(-90 * 3600 - 1, 0, "Name", "CO", "Zone", ""));
+            Assert.Throws<ArgumentOutOfRangeException>(() => new TzdbZoneLocation(90 * 3600 + 1, 0, "Name", "CO", "Zone", ""));
+            Assert.Throws<ArgumentOutOfRangeException>(() => new TzdbZoneLocation(-90 * 3600 - 1, 0, "Name", "CO", "Zone", ""));
             // We'll assume these are built correctly: we're just checking the constructor doesn't throw.
-            new TzdbGeoLocation(90 * 3600, 0, "Name", "CO", "Zone", "");
-            new TzdbGeoLocation(-90 * 3600, 0, "Name", "CO", "Zone", "");
+            new TzdbZoneLocation(90 * 3600, 0, "Name", "CO", "Zone", "");
+            new TzdbZoneLocation(-90 * 3600, 0, "Name", "CO", "Zone", "");
         }
 
         [Test]
         public void LongitudeRange()
         {
-            Assert.Throws<ArgumentOutOfRangeException>(() => new TzdbGeoLocation(0, 180 * 3600 + 1, "Name", "CO", "Zone", ""));
-            Assert.Throws<ArgumentOutOfRangeException>(() => new TzdbGeoLocation(0, -180 * 3600 - 1, "Name", "CO", "Zone", ""));
+            Assert.Throws<ArgumentOutOfRangeException>(() => new TzdbZoneLocation(0, 180 * 3600 + 1, "Name", "CO", "Zone", ""));
+            Assert.Throws<ArgumentOutOfRangeException>(() => new TzdbZoneLocation(0, -180 * 3600 - 1, "Name", "CO", "Zone", ""));
             // We'll assume these are built correctly: we're just checking the constructor doesn't throw.
-            new TzdbGeoLocation(0, 180 * 3600, "Name", "CO", "Zone", "");
-            new TzdbGeoLocation(0, -180 * 3600, "Name", "CO", "Zone", "");
+            new TzdbZoneLocation(0, 180 * 3600, "Name", "CO", "Zone", "");
+            new TzdbZoneLocation(0, -180 * 3600, "Name", "CO", "Zone", "");
         }
 
         [Test]
         public void NullStrings()
         {
-            Assert.Throws<ArgumentNullException>(() => new TzdbGeoLocation(0, 0, null, "CO", "Zone", ""));
-            Assert.Throws<ArgumentNullException>(() => new TzdbGeoLocation(0, 0, "Name", null, "Zone", ""));
-            Assert.Throws<ArgumentNullException>(() => new TzdbGeoLocation(0, 0, "Name", "CO", null, ""));
-            Assert.Throws<ArgumentNullException>(() => new TzdbGeoLocation(0, 0, "Name", "CO", "Zone", null));
+            Assert.Throws<ArgumentNullException>(() => new TzdbZoneLocation(0, 0, null, "CO", "Zone", ""));
+            Assert.Throws<ArgumentNullException>(() => new TzdbZoneLocation(0, 0, "Name", null, "Zone", ""));
+            Assert.Throws<ArgumentNullException>(() => new TzdbZoneLocation(0, 0, "Name", "CO", null, ""));
+            Assert.Throws<ArgumentNullException>(() => new TzdbZoneLocation(0, 0, "Name", "CO", "Zone", null));
         }
     }
 }

@@ -2,34 +2,33 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
+using NodaTime.TimeZones;
+using NodaTime.Utility;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using NodaTime.TimeZones;
-using NodaTime.Utility;
 
 namespace NodaTime.ZoneInfoCompiler.Tzdb
 {
     /// <summary>
-    /// Separate class for parsing geolocation data from zone.tab and iso3166.tab.
+    /// Separate class for parsing zone location data from zone.tab and iso3166.tab.
     /// Stateless, simply static methods - only separated from TzdbZoneInfoCompiler to make the
     /// organization a little cleaner.
     /// </summary>
-    internal static class TzdbGeoLocationParser
+    internal static class TzdbZoneLocationParser
     {
         /// <summary>
-        /// Attempts to parse geolocations from zone.tab and iso3166.tab, storing the results in the database.
-        /// If the files are not both present, the database's geolocation list will be cleared.
+        /// Attempts to parse zone locations from zone.tab and iso3166.tab, storing the results in the database.
+        /// If the files are not both present, the database's zone location list will be cleared.
         /// </summary>
-        internal static IList<TzdbGeoLocation> ParseFiles(DirectoryInfo sourceDirectory)
+        internal static IList<TzdbZoneLocation> ParseFiles(DirectoryInfo sourceDirectory)
         {
             var iso3166File = Path.Combine(sourceDirectory.FullName, "iso3166.tab");
             var zoneFile = Path.Combine(sourceDirectory.FullName, "zone.tab");
             if (!File.Exists(iso3166File) || !File.Exists(zoneFile))
             {
-                Console.WriteLine("Geo-location files missing; skipping");
+                Console.WriteLine("Zone location files missing; skipping");
                 return null;
             }
             var iso3166 = File.ReadAllLines(iso3166File)
@@ -43,7 +42,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
         }
 
         // Internal for testing
-        internal static TzdbGeoLocation ParseLocation(string line, Dictionary<string, string> countryMapping)
+        internal static TzdbZoneLocation ParseLocation(string line, Dictionary<string, string> countryMapping)
         {
             string[] bits = line.Split('\t');
             Preconditions.CheckArgument(bits.Length == 3 || bits.Length == 4, "line", "Line must have 3 or 4 tab-separated values");
@@ -52,7 +51,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
             int[] latLong = ParseCoordinates(bits[1]);
             string zoneId = bits[2];
             string comment = bits.Length == 4 ? bits[3] : "";
-            return new TzdbGeoLocation(latLong[0], latLong[1], countryName, countryCode, zoneId, comment);
+            return new TzdbZoneLocation(latLong[0], latLong[1], countryName, countryCode, zoneId, comment);
         }
 
         // Internal for testing

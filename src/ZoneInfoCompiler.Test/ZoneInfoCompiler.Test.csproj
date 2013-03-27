@@ -86,7 +86,7 @@
     <Compile Include="TokensTest.cs" />
     <Compile Include="Tzdb\DateTimeZoneBuilderTest.cs" />
     <Compile Include="Tzdb\PclSupportTest.cs" />
-    <Compile Include="Tzdb\TzdbGeoLocationParserTest.cs" />
+    <Compile Include="Tzdb\TzdbZoneLocationParserTest.cs" />
     <Compile Include="Tzdb\TzdbZoneInfoParserTest.cs" />
     <Compile Include="Tzdb\ZoneRuleTest.cs" />
     <Compile Include="Tzdb\ZoneTransitionTest.cs" />
