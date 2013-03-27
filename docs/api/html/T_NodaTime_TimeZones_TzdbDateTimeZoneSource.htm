@@ -26,8 +26,6 @@
             Returns the time zone definition associated with the given id.
             </div><br /></td></tr><tr data="method; public; static; declared"><td><img src="../icons/pubmethod.gif" /><img src="../icons/static.gif" title="static member" /></td><td><a href="M_NodaTime_TimeZones_TzdbDateTimeZoneSource_FromStream.htm">FromStream(Stream)</a></td><td><div class="summary">
             Creates an instance from a stream in the custom Noda Time format. The stream must be readable.
-            </div><br /></td></tr><tr data="property; public; instance; declared"><td><img src="../icons/pubproperty.gif" /></td><td><a href="P_NodaTime_TimeZones_TzdbDateTimeZoneSource_GeoLocations.htm">GeoLocations</a></td><td><div class="summary">
-            Returns a read-only list of locations known to this source.
             </div><br /></td></tr><tr data="method; public; instance; declared"><td><img src="../icons/pubmethod.gif" /></td><td><a href="M_NodaTime_TimeZones_TzdbDateTimeZoneSource_GetIds.htm">GetIds<span class="languageSpecificText"><span class="cs">()</span><span class="cpp">()</span><span class="nu">()</span><span class="fs">()</span></span></a></td><td><div class="summary">
             Returns a sequence of the available IDs from this source.
             </div><br /></td></tr><tr data="method; public; instance; declared"><td><img src="../icons/pubmethod.gif" /></td><td><a href="M_NodaTime_TimeZones_TzdbDateTimeZoneSource_MapTimeZoneId.htm">MapTimeZoneId(TimeZoneInfo)</a></td><td><div class="summary">
@@ -41,6 +39,8 @@
             </div><br /></td></tr><tr data="property; public; instance; declared"><td><img src="../icons/pubproperty.gif" /></td><td><a href="P_NodaTime_TimeZones_TzdbDateTimeZoneSource_WindowsZones.htm">WindowsZones</a></td><td><div class="summary">
             Gets the CLDR supplemental Windows zone information, mapping Windows system
             time zone IDs to TZDB IDs (and vice versa).
+            </div><br /></td></tr><tr data="property; public; instance; declared"><td><img src="../icons/pubproperty.gif" /></td><td><a href="P_NodaTime_TimeZones_TzdbDateTimeZoneSource_ZoneLocations.htm">ZoneLocations</a></td><td><div class="summary">
+            Returns a read-only list of locations known to this source.
             </div><br /></td></tr></table></div></div></div><div class="section"><div class="sectionTitle" onclick="toggleSection(this.parentNode)"><img src="../icons/collapse_all.gif" /> Remarks</div><div class="sectionContent">
             All calls to <a href="M_NodaTime_TimeZones_TzdbDateTimeZoneSource_ForId.htm">ForId(String)</a> for fixed-offset IDs advertised by the source (i.e. "UTC" and "UTC+/-Offset")
             will return zones equal to those returned by <a href="M_NodaTime_DateTimeZone_ForOffset.htm">ForOffset(Offset)</a>.
