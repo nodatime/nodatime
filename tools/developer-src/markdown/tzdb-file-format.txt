@@ -247,7 +247,7 @@ where the two differ. (There are only a few.) This is required as the PCL doesn'
 
 The field data is a single `dictionary`. It must occur exactly once, and it uses the string pool.
 
-## Field 6: Geo-location information
+## Field 6: Zone location information
 
 This field provides the information in the `iso3166.tab` and `zone.tab` files within TZDB, which
 contain geographical information about time zones. Applications can use this to offer users a choice
