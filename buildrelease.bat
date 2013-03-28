@@ -12,10 +12,10 @@ if NOT EXIST "NodaTime Release.snk" (
 
 set VERSION=%1
 
-hg up -r %VERSION%
+hg up -r '%VERSION%'
 IF ERRORLEVEL 1 EXIT /B 1
 
-hg archive -r %VERSION% NodaTime-%VERSION%-src.zip
+hg archive -r '%VERSION%' NodaTime-%VERSION%-src.zip
 IF ERRORLEVEL 1 EXIT /B 1
 
 set STAGING=NodaTime-%VERSION%
