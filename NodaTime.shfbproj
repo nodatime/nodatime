@@ -36,7 +36,7 @@ Joda Time is the industry standard date and time handling library for Java. Noda
     <FeedbackEMailLinkText>Noda Time Google Groups</FeedbackEMailLinkText>
     <HelpTitle>Noda Time</HelpTitle>
     <NamingMethod>MemberName</NamingMethod>
-    <Preliminary>True</Preliminary>
+    <Preliminary>False</Preliminary>
     <ComponentConfigurations>
       <ComponentConfig id="Cached Framework Comments Index Data" enabled="True">
         <component id="Cached Framework Comments Index Data" type="SandcastleBuilder.Components.CachedCopyFromIndexComponent" assembly="{@SHFBFolder}SandcastleBuilder.Components.dll">
