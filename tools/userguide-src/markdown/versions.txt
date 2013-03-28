@@ -29,7 +29,7 @@ API changes:
      ([issue 32][])
    - Added a `WindowsZones` property, which exposes details of the CLDR mapping
      between TZDB and Windows time zone IDs ([issue 82][])
-   - Added a `GeoLocations` property, which exposes the location data from
+   - Added a `ZoneLocations` property, which exposes the location data from
      `zone.tab` and `iso3166.tab` ([issue 194][])
 - Changed the means of constructing a `TzdbDateTimeZoneSource`:
    - Added a `Default` property, which provides access to the underlying source
