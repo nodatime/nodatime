@@ -80,12 +80,12 @@ namespace NodaTime.Text.Patterns
                         IList<string> genitiveTextValues = count == 3 ? format.ShortMonthGenitiveNames : format.LongMonthGenitiveNames;
                         if (nonGenitiveTextValues == genitiveTextValues)
                         {
-                            builder.AddParseLongestTextAction(pattern.Current, textSetter, format.CultureInfo.CompareInfo, nonGenitiveTextValues);
+                            builder.AddParseLongestTextAction(pattern.Current, textSetter, format.CompareInfo, nonGenitiveTextValues);
                         }
                         else
                         {
-                            builder.AddParseLongestTextAction(pattern.Current, textSetter, format.CultureInfo.CompareInfo,
-                                                        genitiveTextValues, nonGenitiveTextValues);
+                            builder.AddParseLongestTextAction(pattern.Current, textSetter, format.CompareInfo,
+                                                              genitiveTextValues, nonGenitiveTextValues);
                         }
 
                         // Hack: see below
@@ -155,7 +155,7 @@ namespace NodaTime.Text.Patterns
                         field = PatternFields.DayOfWeek;
                         var format = builder.FormatInfo;
                         IList<string> textValues = count == 3 ? format.ShortDayNames : format.LongDayNames;
-                        builder.AddParseLongestTextAction(pattern.Current, dayOfWeekSetter, format.CultureInfo.CompareInfo, textValues);
+                        builder.AddParseLongestTextAction(pattern.Current, dayOfWeekSetter, format.CompareInfo, textValues);
                         builder.AddFormatAction((value, sb) => sb.Append(textValues[dayOfWeekGetter(value)]));
                         break;
                     default:
@@ -203,7 +203,7 @@ namespace NodaTime.Text.Patterns
                     // TODO(V1.2): Do we really want this to be case-insensitive? It's really an ID, not a culture-specific value.
                     foreach (var id in CalendarSystem.Ids)
                     {
-                        if (cursor.MatchCaseInsensitive(id, NodaFormatInfo.InvariantInfo.CultureInfo.CompareInfo, true))
+                        if (cursor.MatchCaseInsensitive(id, NodaFormatInfo.InvariantInfo.CompareInfo, true))
                         {
                             setter(bucket, CalendarSystem.ForId(id));
                             return null;
