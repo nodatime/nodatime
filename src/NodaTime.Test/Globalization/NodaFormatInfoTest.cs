@@ -80,7 +80,6 @@ namespace NodaTime.Test.Globalization
             Assert.AreEqual("-", info.NegativeSign);
             Assert.AreEqual(":", info.TimeSeparator);
             Assert.AreEqual("/", info.DateSeparator);
-            Assert.IsFalse(info.IsReadOnly);
             Assert.IsInstanceOf<string>(info.OffsetPatternFull);
             Assert.IsInstanceOf<string>(info.OffsetPatternLong);
             Assert.IsInstanceOf<string>(info.OffsetPatternMedium);
@@ -100,11 +99,6 @@ namespace NodaTime.Test.Globalization
             var format = DateTimeFormatInfo.InvariantInfo;
             var info = new NodaFormatInfo(enUs);
             Assert.AreNotEqual(format, info.DateTimeFormat);
-            info.DateTimeFormat = format;
-            Assert.AreEqual(format, info.DateTimeFormat);
-            Assert.Throws<ArgumentNullException>(() => info.DateTimeFormat = null);
-            info.IsReadOnly = true;
-            Assert.Throws<InvalidOperationException>(() => info.DateTimeFormat = format);
         }
 
         [Test]
@@ -131,7 +125,6 @@ namespace NodaTime.Test.Globalization
             NodaFormatInfo.ClearCache();
             var info1 = NodaFormatInfo.GetFormatInfo(enUs);
             Assert.NotNull(info1);
-            Assert.IsTrue(info1.IsReadOnly);
 
             var info2 = NodaFormatInfo.GetFormatInfo(enUs);
             Assert.AreSame(info1, info2);
@@ -199,32 +192,11 @@ namespace NodaTime.Test.Globalization
         }
 
         [Test]
-        public void TestIsReadOnly()
-        {
-            var info = new NodaFormatInfo(enUs);
-            Assert.IsFalse(info.IsReadOnly);
-            info.IsReadOnly = false;
-            Assert.IsFalse(info.IsReadOnly);
-            info.IsReadOnly = false;
-            Assert.IsFalse(info.IsReadOnly);
-            info.IsReadOnly = true;
-            Assert.IsTrue(info.IsReadOnly);
-            info.IsReadOnly = true;
-            Assert.IsTrue(info.IsReadOnly);
-            Assert.Throws<InvalidOperationException>(() => info.IsReadOnly = false);
-        }
-
-        [Test]
         public void TestNumberFormat()
         {
             var format = NumberFormatInfo.InvariantInfo;
             var info = new NodaFormatInfo(enUs);
             Assert.AreNotEqual(format, info.NumberFormat);
-            info.NumberFormat = format;
-            Assert.AreEqual(format, info.NumberFormat);
-            Assert.Throws<ArgumentNullException>(() => info.NumberFormat = null);
-            info.IsReadOnly = true;
-            Assert.Throws<InvalidOperationException>(() => info.NumberFormat = format);
         }
 
         [Test]
@@ -233,11 +205,6 @@ namespace NodaTime.Test.Globalization
             const string pattern = "This is a test";
             var info = new NodaFormatInfo(enUs);
             Assert.AreNotEqual(pattern, info.OffsetPatternFull);
-            info.OffsetPatternFull = pattern;
-            Assert.AreEqual(pattern, info.OffsetPatternFull);
-            Assert.Throws<ArgumentNullException>(() => info.OffsetPatternFull = null);
-            info.IsReadOnly = true;
-            Assert.Throws<InvalidOperationException>(() => info.OffsetPatternFull = "abc");
         }
 
         [Test]
@@ -246,11 +213,6 @@ namespace NodaTime.Test.Globalization
             const string pattern = "This is a test";
             var info = new NodaFormatInfo(enUs);
             Assert.AreNotEqual(pattern, info.OffsetPatternLong);
-            info.OffsetPatternLong = pattern;
-            Assert.AreEqual(pattern, info.OffsetPatternLong);
-            Assert.Throws<ArgumentNullException>(() => info.OffsetPatternLong = null);
-            info.IsReadOnly = true;
-            Assert.Throws<InvalidOperationException>(() => info.OffsetPatternLong = "abc");
         }
 
         [Test]
@@ -259,11 +221,6 @@ namespace NodaTime.Test.Globalization
             const string pattern = "This is a test";
             var info = new NodaFormatInfo(enUs);
             Assert.AreNotEqual(pattern, info.OffsetPatternMedium);
-            info.OffsetPatternMedium = pattern;
-            Assert.AreEqual(pattern, info.OffsetPatternMedium);
-            Assert.Throws<ArgumentNullException>(() => info.OffsetPatternMedium = null);
-            info.IsReadOnly = true;
-            Assert.Throws<InvalidOperationException>(() => info.OffsetPatternMedium = "abc");
         }
 
         [Test]
@@ -272,11 +229,6 @@ namespace NodaTime.Test.Globalization
             const string pattern = "This is a test";
             var info = new NodaFormatInfo(enUs);
             Assert.AreNotEqual(pattern, info.OffsetPatternShort);
-            info.OffsetPatternShort = pattern;
-            Assert.AreEqual(pattern, info.OffsetPatternShort);
-            Assert.Throws<ArgumentNullException>(() => info.OffsetPatternShort = null);
-            info.IsReadOnly = true;
-            Assert.Throws<InvalidOperationException>(() => info.OffsetPatternShort = "abc");
         }
 
         [Test]

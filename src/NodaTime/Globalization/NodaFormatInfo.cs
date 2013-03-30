@@ -20,11 +20,12 @@ namespace NodaTime.Globalization
     /// This provides a single place defining how NodaTime values are formatted and displayed, depending on the culture.
     /// </summary>
     /// <remarks>
-    /// The mutability of this class is based on the mutability model of the similar BCL classes. This leads
-    /// to various extra complexities, and may be changed in a future version.
+    /// Currently this is "shallow-immutable" - although none of these properties can be changed, the
+    /// CultureInfo itself may be mutable. In the future we will make this fully immutable.
     /// </remarks>
-    /// <threadsafety>Read-only instances which use read-only CultureInfo instances are immutable,
-    /// and may be used freely between threads. Mutable instances should not be shared between threads without external synchronization.
+    /// <threadsafety>Instances which use read-only CultureInfo instances are immutable,
+    /// and may be used freely between threads. Instances with mutable cultures should not be shared between threads
+    /// without external synchronization.
     /// See the thread safety section of the user guide for more information.</threadsafety>
     internal sealed class NodaFormatInfo : IFormatProvider
     {
@@ -59,13 +60,13 @@ namespace NodaTime.Globalization
         private static readonly IDictionary<CultureInfo, NodaFormatInfo> Cache = new Dictionary<CultureInfo, NodaFormatInfo>(new ReferenceEqualityComparer<CultureInfo>());
 
         private readonly string description;
-        private DateTimeFormatInfo dateTimeFormat;
-        private bool isReadOnly;
-        private NumberFormatInfo numberFormat;
-        private string offsetPatternFull;
-        private string offsetPatternLong;
-        private string offsetPatternMedium;
-        private string offsetPatternShort;
+        private readonly DateTimeFormatInfo dateTimeFormat;
+        private readonly NumberFormatInfo numberFormat;
+        private readonly CultureInfo cultureInfo;
+        private readonly string offsetPatternFull;
+        private readonly string offsetPatternLong;
+        private readonly string offsetPatternMedium;
+        private readonly string offsetPatternShort;
 #if PCL
         private readonly string dateSeparator;
         private readonly string timeSeparator;
@@ -88,14 +89,14 @@ namespace NodaTime.Globalization
         internal NodaFormatInfo(CultureInfo cultureInfo)
         {
             Preconditions.CheckNotNull(cultureInfo, "cultureInfo");
-            CultureInfo = cultureInfo;
-            NumberFormat = cultureInfo.NumberFormat;
-            DateTimeFormat = cultureInfo.DateTimeFormat;
+            this.cultureInfo = cultureInfo;
+            numberFormat = cultureInfo.NumberFormat;
+            dateTimeFormat = cultureInfo.DateTimeFormat;
             Name = cultureInfo.Name;
             description = "NodaFormatInfo[" + cultureInfo.Name + "]";
             var manager = PatternResources.ResourceManager;
             offsetPatternFull = manager.GetString("OffsetPatternFull", cultureInfo);
-            OffsetPatternLong = manager.GetString("OffsetPatternLong", cultureInfo);
+            offsetPatternLong = manager.GetString("OffsetPatternLong", cultureInfo);
             offsetPatternMedium = manager.GetString("OffsetPatternMedium", cultureInfo);
             offsetPatternShort = manager.GetString("OffsetPatternShort", cultureInfo);
 
@@ -180,7 +181,7 @@ namespace NodaTime.Globalization
         /// <summary>
         /// Gets the culture info associated with this format provider.
         /// </summary>
-        public CultureInfo CultureInfo { get; private set; }
+        public CultureInfo CultureInfo { get { return cultureInfo; } }
 
         internal FixedFormatInfoPatternParser<Offset> OffsetPatternParser { get { return offsetPatternParser; } }
         internal FixedFormatInfoPatternParser<Instant> InstantPatternParser { get { return instantPatternParser; } }
@@ -235,31 +236,14 @@ namespace NodaTime.Globalization
         public IList<string> ShortDayNames { get { return shortDayNames; } }
 
         /// <summary>
-        /// Gets or sets the number format. This is usually initialized from the <see cref="CultureInfo"/>, but may be
-        /// changed indepedently.
+        /// Gets the number format associated with this formatting information.
         /// </summary>
-        /// <value>
-        /// The <see cref="NumberFormatInfo" />.
-        /// </value>
-        /// <exception cref="ArgumentNullException"><paramref name="value"/> is null.</exception>
-        public NumberFormatInfo NumberFormat
-        {            
-            get { return numberFormat; }
-            set { SetValue(value, ref numberFormat); }
-        }
+        public NumberFormatInfo NumberFormat { get { return numberFormat; } }
 
         /// <summary>
-        /// Gets or sets the date time format.
+        /// Gets the BCL date time format associated with this formatting information.
         /// </summary>
-        /// <value>
-        /// The <see cref="DateTimeFormatInfo" />.
-        /// </value>
-        /// <exception cref="ArgumentNullException"><paramref name="value"/> is null.</exception>
-        public DateTimeFormatInfo DateTimeFormat
-        {
-            get { return dateTimeFormat; }            
-            set { SetValue(value, ref dateTimeFormat); }
-        }
+        public DateTimeFormatInfo DateTimeFormat { get { return dateTimeFormat; } }
 
         /// <summary>
         /// Gets the decimal separator from the number format associated with this provider.
@@ -381,73 +365,24 @@ namespace NodaTime.Globalization
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether this instance is read only.
+        /// Gets the <see cref="Offset" /> "F" pattern.
         /// </summary>
-        /// <value>
-        /// <c>true</c> if this instance is read only; otherwise, <c>false</c>.
-        /// </value>
-        public bool IsReadOnly
-        {
-            get { return isReadOnly; }
-            set
-            {
-                if (isReadOnly && value != true)
-                {
-                    throw new InvalidOperationException("Cannot make a read-only object writable.");
-                }
-                isReadOnly = value;
-            }
-        }
+        public string OffsetPatternFull { get { return offsetPatternFull; } }
 
         /// <summary>
-        /// Gets or sets the <see cref="Offset" /> "F" pattern.
+        /// Gets the <see cref="Offset" /> "L" pattern.
         /// </summary>
-        /// <value>
-        /// The full standard offset pattern.
-        /// </value>
-        public string OffsetPatternFull
-        {
-            get { return offsetPatternFull; }
-            set { SetValue(value, ref offsetPatternFull); }
-        }
+        public string OffsetPatternLong { get { return offsetPatternLong; } }
 
         /// <summary>
-        /// Gets or sets the <see cref="Offset" /> "L" pattern.
+        /// Gets the <see cref="Offset" /> "M" pattern.
         /// </summary>
-        /// <value>
-        /// The long standard offset pattern.
-        /// </value>
-        public string OffsetPatternLong
-        {            
-            get { return offsetPatternLong; }
-            set { SetValue(value, ref offsetPatternLong); }
-        }
+        public string OffsetPatternMedium { get { return offsetPatternMedium; } }
 
         /// <summary>
-        /// Gets or sets the <see cref="Offset" /> "M" pattern.
+        /// Gets the <see cref="Offset" /> "S" pattern.
         /// </summary>
-        /// <value>
-        /// The medium standard offset pattern.
-        /// </value>
-        public string OffsetPatternMedium
-        {
-            get { return offsetPatternMedium; }
-            set { SetValue(value, ref offsetPatternMedium); }
-        }
-
-        /// <summary>
-        ///   Gets or sets the <see cref="Offset" /> "S" pattern.
-        /// </summary>
-        /// <value>
-        ///   The offset pattern short.
-        /// </value>
-        public string OffsetPatternShort
-        {
-            
-            get { return offsetPatternShort; }
-            
-            set { SetValue(value, ref offsetPatternShort); }
-        }
+        public string OffsetPatternShort { get { return offsetPatternShort; } }
 
         #region IFormatProvider Members
         /// <summary>
@@ -457,8 +392,7 @@ namespace NodaTime.Globalization
         /// <returns>
         ///   An instance of the object specified by <paramref name = "formatType" />, if the <see cref="T:System.IFormatProvider" />
         ///   implementation can supply that type of object; otherwise, null.
-        /// </returns>
-        
+        /// </returns>      
         public object GetFormat(Type formatType)
         {
             if (formatType == typeof(NodaFormatInfo))
@@ -478,21 +412,11 @@ namespace NodaTime.Globalization
         #endregion
 
         /// <summary>
-        ///   Clears the cache.
+        /// Clears the cache. Only used for test purposes.
         /// </summary>
         internal static void ClearCache()
         {
             lock (Cache) Cache.Clear();
-        }
-
-        private void SetValue<T>(T value, ref T property) where T : class
-        {
-            if (IsReadOnly)
-            {
-                throw new InvalidOperationException(Messages.Noda_CannotChangeReadOnly);
-            }
-            Preconditions.CheckNotNull(value, "value");
-            property = value;
         }
 
         /// <summary>
@@ -520,7 +444,7 @@ namespace NodaTime.Globalization
             {
                 if (!Cache.TryGetValue(cultureInfo, out result))
                 {
-                    result = new NodaFormatInfo(cultureInfo) { IsReadOnly = true };
+                    result = new NodaFormatInfo(cultureInfo);
                     Cache.Add(cultureInfo, result);
                 }
             }
@@ -558,12 +482,8 @@ namespace NodaTime.Globalization
         }
 
         /// <summary>
-        ///   Returns a <see cref="System.String" /> that represents this instance.
+        /// Returns a <see cref="System.String" /> that represents this instance.
         /// </summary>
-        /// <returns>
-        ///   A <see cref="System.String" /> that represents this instance.
-        /// </returns>
-        
         public override string ToString()
         {
             return description;
