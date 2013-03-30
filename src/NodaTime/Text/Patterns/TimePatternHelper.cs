@@ -187,7 +187,7 @@ namespace NodaTime.Text.Patterns
                     HandleHalfAmPmDesignator(count, specifiedDesignator, specifiedDesignatorValue, hourOfDayGetter, amPmSetter, builder);
                     return;
                 }
-                CompareInfo compareInfo = builder.FormatInfo.CultureInfo.CompareInfo;
+                CompareInfo compareInfo = builder.FormatInfo.CompareInfo;
                 // Single character designator
                 if (count == 1)
                 {
@@ -242,7 +242,7 @@ namespace NodaTime.Text.Patterns
              SteppedPatternBuilder<TResult, TBucket> builder)
             where TBucket : ParseBucket<TResult>
         {
-            CompareInfo compareInfo = builder.FormatInfo.CultureInfo.CompareInfo;
+            CompareInfo compareInfo = builder.FormatInfo.CompareInfo;
             if (count == 1)
             {
                 string abbreviation = specifiedDesignator.Substring(0, 1);

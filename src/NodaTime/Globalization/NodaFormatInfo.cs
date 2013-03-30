@@ -183,6 +183,11 @@ namespace NodaTime.Globalization
         /// </summary>
         public CultureInfo CultureInfo { get { return cultureInfo; } }
 
+        /// <summary>
+        /// Gets the text comparison information associated with this format provider.
+        /// </summary>
+        public CompareInfo CompareInfo { get { return cultureInfo.CompareInfo; } }
+
         internal FixedFormatInfoPatternParser<Offset> OffsetPatternParser { get { return offsetPatternParser; } }
         internal FixedFormatInfoPatternParser<Instant> InstantPatternParser { get { return instantPatternParser; } }
         internal FixedFormatInfoPatternParser<LocalTime> LocalTimePatternParser { get { return localTimePatternParser; } }
@@ -313,7 +318,7 @@ namespace NodaTime.Globalization
                 {
                     return names;
                 }
-                string pipeDelimited = PatternResources.ResourceManager.GetString(era.ResourceIdentifier, CultureInfo);
+                string pipeDelimited = PatternResources.ResourceManager.GetString(era.ResourceIdentifier, cultureInfo);
                 if (pipeDelimited == null)
                 {
                     names = new string[0];

@@ -115,7 +115,7 @@ namespace NodaTime.Text
 
             internal ParseResult<TResult> ParseEra<TResult>(NodaFormatInfo formatInfo, ValueCursor cursor)
             {
-                var compareInfo = formatInfo.CultureInfo.CompareInfo;
+                var compareInfo = formatInfo.CompareInfo;
                 var eras = Calendar.Eras;
                 for (int i = 0; i < eras.Count; i++)
                 {
