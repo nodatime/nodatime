@@ -4,7 +4,7 @@
 
 using System;
 
-namespace NodaTime.Benchmarks.Timing
+namespace NodaTime.Benchmarks.Framework
 {
     /// <summary>
     /// Attribute applied to any method which should be benchmarked.

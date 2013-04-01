@@ -1,4 +1,4 @@
-// Copyright 2009 The Noda Time Authors. All rights reserved.
+﻿// Copyright 2013 The Noda Time Authors. All rights reserved.
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
@@ -7,29 +7,32 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-namespace NodaTime.Benchmarks.Timing
+namespace NodaTime.Benchmarks.Framework
 {
-    /// <summary>
-    /// Entry point for benchmarking.
-    /// </summary>
-    internal class Program
+    internal sealed class BenchmarkRunner
     {
         private const BindingFlags AllInstance = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
 
-        private static void Main(string[] args)
+        // Most of the options are relevant for the runner, so it's not worth splitting them out
+        // into *just* the bits the runner is interested in.
+        private readonly BenchmarkOptions options;
+        private readonly BenchmarkResultHandler resultHandler;
+
+        internal BenchmarkRunner(BenchmarkOptions options, BenchmarkResultHandler resultHandler)
         {
-            BenchmarkOptions options = BenchmarkOptions.FromCommandLine(args);
-            // Help screen / error
-            if (options == null)
-            {
-                return;
-            }
+            this.options = options;
+            this.resultHandler = resultHandler;
+        }
 
-            Console.WriteLine("Environment: CLR {0} on {1}", Environment.Version, Environment.OSVersion);
-            var types =
-                typeof(Program).Assembly.GetTypes().OrderBy<Type, string>(GetTypeDisplayName).Where(type => type.GetMethods(AllInstance).Any(IsBenchmark));
+        internal void RunTests()
+        {
+            resultHandler.HandleStartRun(options);
+            var types = typeof(Program).Assembly
+                                       .GetTypes()
+                                       .OrderBy(type => type.FullName)
+                                       .Where(type => type.GetMethods(AllInstance)
+                                       .Any(IsBenchmark));
 
-            var results = new List<BenchmarkResult>();
             foreach (Type type in types)
             {
                 if (options.TypeFilter != null && type.Name != options.TypeFilter)
@@ -40,10 +43,10 @@ namespace NodaTime.Benchmarks.Timing
                 var ctor = type.GetConstructor(Type.EmptyTypes);
                 if (ctor == null)
                 {
-                    Console.WriteLine("Ignoring {0}: no public parameterless constructor", type.Name);
+                    resultHandler.HandleWarning(string.Format("Ignoring {0}: no public parameterless constructor", type.Name));
                     continue;
                 }
-                Console.WriteLine("Running benchmarks in {0}", GetTypeDisplayName(type));
+                resultHandler.HandleStartType(type);
                 object instance = ctor.Invoke(null);
                 foreach (var method in type.GetMethods(AllInstance).Where(IsBenchmark))
                 {
@@ -54,19 +57,19 @@ namespace NodaTime.Benchmarks.Timing
 
                     if (method.GetParameters().Length != 0)
                     {
-                        Console.WriteLine("Ignoring {0}: method has parameters", method.Name);
+                        resultHandler.HandleWarning(string.Format("Ignoring {0}: method has parameters", method.Name));
                         continue;
                     }
                     BenchmarkResult result = RunBenchmark(method, instance, options);
-                    Console.WriteLine("  " + result.ToString(options));
-                    results.Add(result);
+                    if (result.Duration == Duration.Zero)
+                    {
+                        resultHandler.HandleWarning(string.Format("Test {0} had zero duration; no useful result.", result.Method.Name));
+                    }
+                    resultHandler.HandleResult(result);
                 }
+                resultHandler.HandleEndType();
             }
-        }
-
-        private static string GetTypeDisplayName(Type type)
-        {
-            return type.FullName.Replace("NodaTime.Benchmarks.", "");
+            resultHandler.HandleEndRun();
         }
 
         private static BenchmarkResult RunBenchmark(MethodInfo method, object instance, BenchmarkOptions options)

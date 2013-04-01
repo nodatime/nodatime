@@ -4,7 +4,7 @@
 
 using System.Diagnostics;
 
-namespace NodaTime.Benchmarks.Timing
+namespace NodaTime.Benchmarks.Framework
 {
     /// <summary>
     /// Timer using the built-in stopwatch class; measures wall-clock time.

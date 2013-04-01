@@ -2,9 +2,9 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-using NodaTime.Benchmarks.Timing;
+using NodaTime.Benchmarks.Framework;
 
-namespace NodaTime.Benchmarks
+namespace NodaTime.Benchmarks.NodaTimeTests
 {
     internal class CachedDateTimeZoneBenchmarks
     {

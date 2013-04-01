@@ -55,30 +55,33 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\lib\commandline\CommandLine.cs">
-      <Link>Timing\CommandLine.cs</Link>
+      <Link>CommandLine.cs</Link>
     </Compile>
     <Compile Include="..\..\lib\commandline\CommandLineText.cs">
-      <Link>Timing\CommandLineText.cs</Link>
+      <Link>CommandLineText.cs</Link>
     </Compile>
-    <Compile Include="CachedDateTimeZoneBenchmarks.cs" />
-    <Compile Include="BclDateTimeZoneBenchmarks.cs" />
-    <Compile Include="FrameworkComparisons\TimeZoneInfoBenchmarks.cs" />
-    <Compile Include="InstantBenchmarks.cs" />
-    <Compile Include="LocalTimeBenchmarks.cs" />
-    <Compile Include="OffsetBenchmarks.cs" />
-    <Compile Include="PacificZonedDateTimeBenchmarks.cs" />
-    <Compile Include="FrameworkComparisons\UtcDateTimeBenchmarks.cs" />
-    <Compile Include="UtcZonedDateTimeBenchmarks.cs" />
-    <Compile Include="LocalDateTimeBenchmarks.cs" />
-    <Compile Include="FrameworkComparisons\DateTimeBenchmarks.cs" />
-    <Compile Include="Timing\BenchmarkAttribute.cs" />
-    <Compile Include="Timing\BenchmarkOptions.cs" />
-    <Compile Include="Timing\BenchmarkResult.cs" />
-    <Compile Include="Extensions\Extensions.cs" />
-    <Compile Include="Timing\IBenchTimer.cs" />
-    <Compile Include="Timing\Program.cs" />
+    <Compile Include="Framework\ConsoleResultHandler.cs" />
+    <Compile Include="NodaTimeTests\CachedDateTimeZoneBenchmarks.cs" />
+    <Compile Include="NodaTimeTests\BclDateTimeZoneBenchmarks.cs" />
+    <Compile Include="BclTests\TimeZoneInfoBenchmarks.cs" />
+    <Compile Include="NodaTimeTests\InstantBenchmarks.cs" />
+    <Compile Include="NodaTimeTests\LocalTimeBenchmarks.cs" />
+    <Compile Include="NodaTimeTests\OffsetBenchmarks.cs" />
+    <Compile Include="NodaTimeTests\PacificZonedDateTimeBenchmarks.cs" />
+    <Compile Include="BclTests\UtcDateTimeBenchmarks.cs" />
+    <Compile Include="Framework\BenchmarkResultHandler.cs" />
+    <Compile Include="Framework\BenchmarkRunner.cs" />
+    <Compile Include="NodaTimeTests\UtcZonedDateTimeBenchmarks.cs" />
+    <Compile Include="NodaTimeTests\LocalDateTimeBenchmarks.cs" />
+    <Compile Include="BclTests\DateTimeBenchmarks.cs" />
+    <Compile Include="Framework\BenchmarkAttribute.cs" />
+    <Compile Include="Framework\BenchmarkOptions.cs" />
+    <Compile Include="Framework\BenchmarkResult.cs" />
+    <Compile Include="Framework\Extensions.cs" />
+    <Compile Include="Framework\IBenchTimer.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Timing\WallTimer.cs" />
+    <Compile Include="Framework\WallTimer.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NodaTime\NodaTime.csproj">
