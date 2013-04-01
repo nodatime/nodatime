@@ -26,6 +26,7 @@ namespace NodaTime.Benchmarks.Framework
         internal string MethodFilter { get; private set; }
         internal bool DisplayRawData { get; private set; }
         internal bool WriteToXml { get; private set; }
+        internal bool DryRunOnly { get; private set; }
 
         private class MutableOptions
         {
@@ -37,10 +38,12 @@ namespace NodaTime.Benchmarks.Framework
             public string TypeFilter { get; set; }
             [Option("m", "method", HelpText = "Method filter")]
             public string MethodFilter { get; set; }
-            [Option("r", "raw", HelpText = "Whether or not to display the raw data.")]
+            [Option("r", "raw", HelpText = "Display the raw data")]
             public bool DisplayRawData { get; set; }
-            [Option("x", "xml", HelpText = "Whether or not to write to an XML file as well as the console.")]
+            [Option("x", "xml", HelpText = "Write to an XML file as well as the console")]
             public bool WriteToXml { get; set; }
+            [Option("!", "dry", HelpText = "Dry run mode: run tests once each, with no timing, just to validate")]
+            public bool DryRunOnly { get; set; }
 
             [HelpOption("?", "help", HelpText = "Display this help screen.")]
             public string GetUsage()
@@ -69,6 +72,7 @@ namespace NodaTime.Benchmarks.Framework
 
             return new BenchmarkOptions
             {
+                DryRunOnly = options.DryRunOnly,
                 TypeFilter = options.TypeFilter,
                 MethodFilter = options.MethodFilter,
                 WarmUpTime = Duration.FromSeconds(options.WarmUpTimeSeconds),

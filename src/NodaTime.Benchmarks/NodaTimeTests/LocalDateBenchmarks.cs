@@ -7,11 +7,11 @@ using NodaTime.Text;
 
 namespace NodaTime.Benchmarks.NodaTimeTests
 {
-    internal class LocalDateTimeBenchmarks
+    internal class LocalDateBenchmarks
     {
-        private static readonly LocalDateTime Sample = new LocalDateTime(2009, 12, 26, 10, 8, 30);
+        private static readonly LocalDate Sample = new LocalDate(2009, 12, 26);
 
-        private static readonly LocalDateTimePattern Pattern = LocalDateTimePattern.CreateWithInvariantCulture("dd/MM/yyyy HH:mm:ss");
+        private static readonly LocalDatePattern Pattern = LocalDatePattern.CreateWithInvariantCulture("dd/MM/yyyy");
 
         [Benchmark]
         public void PatternFormat()
@@ -22,26 +22,20 @@ namespace NodaTime.Benchmarks.NodaTimeTests
         [Benchmark]
         public void PatternParse()
         {
-            var parseResult = Pattern.Parse("26/12/2009 10:08:30");
+            var parseResult = Pattern.Parse("26/12/2009");
             parseResult.Value.Consume();
         }
 
         [Benchmark]
-        public void ConstructionToMinute()
+        public void Construction()
         {
-            new LocalDateTime(2009, 12, 26, 10, 8).Consume();
+            new LocalDate(2009, 12, 26).Consume();
         }
 
         [Benchmark]
-        public void ConstructionToSecond()
+        public void FromWeekYearWeekAndDay()
         {
-            new LocalDateTime(2009, 12, 26, 10, 8, 30).Consume();
-        }
-
-        [Benchmark]
-        public void ConstructionToTick()
-        {
-            new LocalDateTime(2009, 12, 26, 10, 8, 30, 0, 0).Consume();
+            LocalDate.FromWeekYearWeekAndDay(2009, 1, NodaTime.IsoDayOfWeek.Thursday).Consume();
         }
 
         [Benchmark]
@@ -75,54 +69,6 @@ namespace NodaTime.Benchmarks.NodaTimeTests
         }
 
         [Benchmark]
-        public void Hour()
-        {
-            Sample.Hour.Consume();
-        }
-
-        [Benchmark]
-        public void Minute()
-        {
-            Sample.Minute.Consume();
-        }
-
-        [Benchmark]
-        public void Second()
-        {
-            Sample.Second.Consume();
-        }
-
-        [Benchmark]
-        public void Millisecond()
-        {
-            Sample.Millisecond.Consume();
-        }
-
-        [Benchmark]
-        public void Date()
-        {
-            Sample.Date.Consume();
-        }
-
-        [Benchmark]
-        public void TimeOfDay()
-        {
-            Sample.TimeOfDay.Consume();
-        }
-
-        [Benchmark]
-        public void TickOfDay()
-        {
-            Sample.TickOfDay.Consume();
-        }
-
-        [Benchmark]
-        public void TickOfSecond()
-        {
-            Sample.TickOfSecond.Consume();
-        }
-
-        [Benchmark]
         public void WeekOfWeekYear()
         {
             Sample.WeekOfWeekYear.Consume();
@@ -132,12 +78,6 @@ namespace NodaTime.Benchmarks.NodaTimeTests
         public void WeekYear()
         {
             Sample.WeekYear.Consume();
-        }
-
-        [Benchmark]
-        public void ClockHourOfHalfDay()
-        {
-            Sample.ClockHourOfHalfDay.Consume();
         }
 
         [Benchmark]

@@ -74,6 +74,13 @@ namespace NodaTime.Benchmarks.Framework
         private static BenchmarkResult RunBenchmark(MethodInfo method, object instance, BenchmarkOptions options)
         {
             var action = (Action)Delegate.CreateDelegate(typeof(Action), instance, method);
+
+            if (options.DryRunOnly)
+            {
+                action();
+                return new BenchmarkResult(method, 1, Duration.FromTicks(1));
+            }
+
             // Start small, double until we've hit our warm-up time
             int iterations = 100;
             while (true)
