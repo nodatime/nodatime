@@ -3,10 +3,9 @@
 // as found in the LICENSE.txt file.
 
 using System;
-using NodaTime.Benchmarks.Extensions;
-using NodaTime.Benchmarks.Timing;
+using NodaTime.Benchmarks.Framework;
 
-namespace NodaTime.Benchmarks.FrameworkComparisons
+namespace NodaTime.Benchmarks.BclTests
 {
     internal class UtcDateTimeBenchmarks
     {

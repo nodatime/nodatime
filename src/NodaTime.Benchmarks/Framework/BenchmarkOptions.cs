@@ -2,12 +2,11 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-using System;
-using System.Linq;
 using CommandLine;
 using CommandLine.Text;
+using System;
 
-namespace NodaTime.Benchmarks.Timing
+namespace NodaTime.Benchmarks.Framework
 {
     /// <summary>
     /// Encapsulates all the options for benchmarking, such as

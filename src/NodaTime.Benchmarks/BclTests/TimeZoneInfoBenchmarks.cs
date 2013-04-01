@@ -3,9 +3,9 @@
 // as found in the LICENSE.txt file.
 
 using System;
-using NodaTime.Benchmarks.Timing;
+using NodaTime.Benchmarks.Framework;
 
-namespace NodaTime.Benchmarks.FrameworkComparisons
+namespace NodaTime.Benchmarks.BclTests
 {
     internal sealed class TimeZoneInfoBenchmarks
     {

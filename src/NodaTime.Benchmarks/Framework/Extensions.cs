@@ -2,7 +2,7 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-namespace NodaTime.Benchmarks.Extensions
+namespace NodaTime.Benchmarks.Framework
 {
     internal static class BenchmarkingExtensions
     {
