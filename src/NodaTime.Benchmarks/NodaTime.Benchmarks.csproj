@@ -67,6 +67,8 @@
     <Compile Include="NodaTimeTests\CachedDateTimeZoneBenchmarks.cs" />
     <Compile Include="NodaTimeTests\BclDateTimeZoneBenchmarks.cs" />
     <Compile Include="BclTests\TimeZoneInfoBenchmarks.cs" />
+    <Compile Include="NodaTimeTests\OffsetDateTimeBenchmarks.cs" />
+    <Compile Include="NodaTimeTests\LocalDateBenchmarks.cs" />
     <Compile Include="NodaTimeTests\InstantBenchmarks.cs" />
     <Compile Include="NodaTimeTests\LocalTimeBenchmarks.cs" />
     <Compile Include="NodaTimeTests\OffsetBenchmarks.cs" />

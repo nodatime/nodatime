@@ -6,69 +6,16 @@ using NodaTime.Benchmarks.Framework;
 
 namespace NodaTime.Benchmarks.NodaTimeTests
 {
-    internal class UtcZonedDateTimeBenchmarks
+    internal class OffsetDateTimeBenchmarks
     {
+        private static readonly Offset OneHourOffset = Offset.FromHours(1);
         private static readonly LocalDateTime SampleLocal = new LocalDateTime(2009, 12, 26, 10, 8, 30);
-        private static readonly ZonedDateTime Sample = DateTimeZone.Utc.AtStrictly(SampleLocal);
+        private static readonly OffsetDateTime Sample = new OffsetDateTime(SampleLocal, OneHourOffset);
 
         [Benchmark]
         public void Construction()
         {
-            DateTimeZone.Utc.AtStrictly(SampleLocal);
-        }
-
-        [Benchmark]
-        public void Year()
-        {
-            Sample.Year.Consume();
-        }
-
-        [Benchmark]
-        public void Month()
-        {
-            Sample.Month.Consume();
-        }
-
-        [Benchmark]
-        public void DayOfMonth()
-        {
-            Sample.Day.Consume();
-        }
-
-        [Benchmark]
-        public void IsoDayOfWeek()
-        {
-            Sample.IsoDayOfWeek.Consume();
-        }
-
-        [Benchmark]
-        public void DayOfYear()
-        {
-            Sample.DayOfYear.Consume();
-        }
-
-        [Benchmark]
-        public void Hour()
-        {
-            Sample.Hour.Consume();
-        }
-
-        [Benchmark]
-        public void Minute()
-        {
-            Sample.Minute.Consume();
-        }
-
-        [Benchmark]
-        public void Second()
-        {
-            Sample.Second.Consume();
-        }
-
-        [Benchmark]
-        public void Millisecond()
-        {
-            Sample.Millisecond.Consume();
+            new OffsetDateTime(SampleLocal, OneHourOffset).Consume();
         }
 
         [Benchmark]
