@@ -25,6 +25,7 @@ namespace NodaTime.Benchmarks.Framework
         internal string TypeFilter { get; private set; }
         internal string MethodFilter { get; private set; }
         internal bool DisplayRawData { get; private set; }
+        internal bool WriteToXml { get; private set; }
 
         private class MutableOptions
         {
@@ -38,6 +39,8 @@ namespace NodaTime.Benchmarks.Framework
             public string MethodFilter { get; set; }
             [Option("r", "raw", HelpText = "Whether or not to display the raw data.")]
             public bool DisplayRawData { get; set; }
+            [Option("x", "xml", HelpText = "Whether or not to write to an XML file as well as the console.")]
+            public bool WriteToXml { get; set; }
 
             [HelpOption("?", "help", HelpText = "Display this help screen.")]
             public string GetUsage()
@@ -71,7 +74,8 @@ namespace NodaTime.Benchmarks.Framework
                 WarmUpTime = Duration.FromSeconds(options.WarmUpTimeSeconds),
                 TestTime = Duration.FromSeconds(options.TestTimeSeconds),
                 Timer = new WallTimer(),
-                DisplayRawData = options.DisplayRawData
+                DisplayRawData = options.DisplayRawData,
+                WriteToXml = options.WriteToXml
             };
         }
     }

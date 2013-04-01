@@ -4,9 +4,11 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using NodaTime.Benchmarks.Framework;
+using NodaTime.Text;
 
 namespace NodaTime.Benchmarks
 {
@@ -30,7 +32,16 @@ namespace NodaTime.Benchmarks
 
         private static BenchmarkResultHandler CreateResultHandler(BenchmarkOptions options)
         {
-            return new ConsoleResultHandler(options.DisplayRawData);
+            BenchmarkResultHandler handler = new ConsoleResultHandler(options.DisplayRawData);
+            if (options.WriteToXml)
+            {
+                string folder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "NodaTime.Benchmarks");
+                Directory.CreateDirectory(folder);
+                string path = Path.Combine(folder, string.Format("benchmarks-{0:yyyyMMdd-HHmm}.xml", SystemClock.Instance.Now));
+                var xmlHandler = new XmlResultHandler(path);
+                handler = new CompositeResultHandler(new[] { handler, xmlHandler });
+            }
+            return handler;
         }
     }
 }

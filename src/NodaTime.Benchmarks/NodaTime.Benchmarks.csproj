@@ -10,8 +10,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>NodaTime.Benchmarks</RootNamespace>
     <AssemblyName>NodaTime.Benchmarks</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -60,7 +61,9 @@
     <Compile Include="..\..\lib\commandline\CommandLineText.cs">
       <Link>CommandLineText.cs</Link>
     </Compile>
+    <Compile Include="Framework\CompositeResultHandler.cs" />
     <Compile Include="Framework\ConsoleResultHandler.cs" />
+    <Compile Include="Framework\XmlResultHandler.cs" />
     <Compile Include="NodaTimeTests\CachedDateTimeZoneBenchmarks.cs" />
     <Compile Include="NodaTimeTests\BclDateTimeZoneBenchmarks.cs" />
     <Compile Include="BclTests\TimeZoneInfoBenchmarks.cs" />
