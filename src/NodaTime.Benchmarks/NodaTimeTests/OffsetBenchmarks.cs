@@ -2,6 +2,7 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
+using System;
 using NodaTime.Benchmarks.Framework;
 using NodaTime.Globalization;
 using NodaTime.Text;
@@ -38,12 +39,6 @@ namespace NodaTime.Benchmarks.NodaTimeTests
             Offset result;
             ParseResult<Offset> parseResult = offsetPattern.Parse("12:34");
             parseResult.TryGetValue(default(Offset), out result);
-        }
-
-        [Benchmark]
-        public void ParsePattern_Invalid()
-        {
-            offsetPatternParser.ParsePattern("hh:mm", InvariantFormatInfo);
         }
 
         [Benchmark]
