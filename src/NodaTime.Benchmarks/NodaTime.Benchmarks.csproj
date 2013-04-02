@@ -61,6 +61,7 @@
     <Compile Include="..\..\lib\commandline\CommandLineText.cs">
       <Link>CommandLineText.cs</Link>
     </Compile>
+    <Compile Include="BclTests\DateTimeOffsetBenchmarks.cs" />
     <Compile Include="Framework\CompositeResultHandler.cs" />
     <Compile Include="Framework\ConsoleResultHandler.cs" />
     <Compile Include="Framework\XmlResultHandler.cs" />
