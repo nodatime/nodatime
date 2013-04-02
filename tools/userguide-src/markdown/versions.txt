@@ -4,6 +4,32 @@ User-visible changes from 1.0.0-beta1 onwards. See the
 [project repository](http://code.google.com/p/noda-time/source/list) for more
 details.
 
+## 1.2 (current default branch)
+
+Major features:
+
+- ...
+
+API changes:
+
+- ...
+
+Newly-obsolete members:
+
+- ...
+
+API changes for NodaTime.Testing:
+
+- ...
+
+Bug fixes:
+
+- ...
+
+Other:
+
+- ...
+
 ## 1.1.0-rc1, released 2013-03-28 with tzdb 2013b
 
 Major features:
