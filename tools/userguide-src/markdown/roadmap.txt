@@ -10,9 +10,6 @@ roadmap, then *please* either raise an issue or post on the
 
 This roadmap was last updated on **2013-01-08**.
 
-   * 1.1 (planned for release in Q1 2013)
-      - PCL support
-      - New time zone data format by default
    * 1.2
       - Better serialization: add native support for XML serialization,
         complete the Json.NET serialization (and release as a package)
