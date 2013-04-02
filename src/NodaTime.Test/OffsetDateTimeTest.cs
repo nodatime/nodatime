@@ -151,8 +151,66 @@ namespace NodaTime.Test
             Assert.AreEqual("2012-10-06T01:02:03Z", odt.ToString());
         }
 
+        [Test]
+        public void LocalComparer()
+        {
+            var localControl = new LocalDateTime(2013, 4, 2, 19, 54);
+            var control = new OffsetDateTime(localControl, Offset.Zero);
+            var negativeOffset = control.LocalDateTime.WithOffset(Offset.FromHours(-1));
+            var positiveOffset = control.LocalDateTime.WithOffset(Offset.FromHours(1));
+            var differentCalendar = control.LocalDateTime.WithCalendar(CalendarSystem.GetCopticCalendar(4)).WithOffset(Offset.FromHours(5));
+            // Later instant, earlier local
+            var earlierLocal = control.LocalDateTime.PlusHours(-2).WithOffset(Offset.FromHours(-10));
+            // Earlier instant, later local
+            var laterLocal = control.LocalDateTime.PlusHours(2).WithOffset(Offset.FromHours(10));
+
+            var comparer = OffsetDateTime.LocalComparer;
+
+            Assert.AreEqual(0, comparer.Compare(control, negativeOffset));
+            Assert.AreEqual(0, comparer.Compare(control, positiveOffset));
+            Assert.AreEqual(0, comparer.Compare(control, differentCalendar));
+            Assert.AreEqual(1, Math.Sign(comparer.Compare(control, earlierLocal)));
+            Assert.AreEqual(-1, Math.Sign(comparer.Compare(earlierLocal, control)));
+            Assert.AreEqual(-1, Math.Sign(comparer.Compare(control, laterLocal)));
+            Assert.AreEqual(1, Math.Sign(comparer.Compare(laterLocal, control)));
+        }
+
+        [Test]
+        public void InstantComparer()
+        {
+            var localControl = new LocalDateTime(2013, 4, 2, 19, 54);
+            var control = new OffsetDateTime(localControl, Offset.Zero);
+            var equalAndOppositeChanges = control.LocalDateTime.PlusHours(1).WithOffset(Offset.FromHours(1));
+            var differentCalendar = control.LocalDateTime.WithCalendar(CalendarSystem.GetCopticCalendar(4)).WithOffset(Offset.Zero);
+
+            // Negative offset means later instant
+            var negativeOffset = control.LocalDateTime.WithOffset(Offset.FromHours(-1));
+            // Positive offset means earlier instant
+            var positiveOffset = control.LocalDateTime.WithOffset(Offset.FromHours(1));
+
+            // Later instant, earlier local
+            var earlierLocal = control.LocalDateTime.PlusHours(-2).WithOffset(Offset.FromHours(-10));
+            // Earlier instant, later local
+            var laterLocal = control.LocalDateTime.PlusHours(2).WithOffset(Offset.FromHours(10));
+
+            var comparer = OffsetDateTime.InstantComparer;
+
+            Assert.AreEqual(0, comparer.Compare(control, differentCalendar));
+            Assert.AreEqual(0, comparer.Compare(control, equalAndOppositeChanges));
+
+            Assert.AreEqual(-1, Math.Sign(comparer.Compare(control, negativeOffset)));
+            Assert.AreEqual(1, Math.Sign(comparer.Compare(negativeOffset, control)));
+            Assert.AreEqual(1, comparer.Compare(control, positiveOffset));
+            Assert.AreEqual(-1, Math.Sign(comparer.Compare(positiveOffset, control)));
+
+            Assert.AreEqual(-1, Math.Sign(comparer.Compare(control, earlierLocal)));
+            Assert.AreEqual(1, Math.Sign(comparer.Compare(earlierLocal, control)));
+            Assert.AreEqual(1, Math.Sign(comparer.Compare(control, laterLocal)));
+            Assert.AreEqual(-1, Math.Sign(comparer.Compare(laterLocal, control)));
+        }
+
         /// <summary>
-        ///   Using the default constructor is equivalent to January 1st 1970, midnight, UTC, ISO calendar
+        /// Using the default constructor is equivalent to January 1st 1970, midnight, UTC, ISO calendar
         /// </summary>
         [Test]
         public void DefaultConstructor()
