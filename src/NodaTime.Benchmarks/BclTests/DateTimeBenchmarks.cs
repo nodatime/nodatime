@@ -10,7 +10,7 @@ namespace NodaTime.Benchmarks.BclTests
 {
     internal class DateTimeBenchmarks
     {
-        private readonly DateTime sample = new DateTime(2009, 12, 26, 10, 8, 30, 234, DateTimeKind.Local);
+        private static readonly DateTime Sample = new DateTime(2009, 12, 26, 10, 8, 30, 234, DateTimeKind.Local);
 
         [Benchmark]
         public void Construction()
@@ -21,67 +21,67 @@ namespace NodaTime.Benchmarks.BclTests
         [Benchmark]
         public void Year()
         {
-            sample.Year.Consume();
+            Sample.Year.Consume();
         }
 
         [Benchmark]
         public void Month()
         {
-            sample.Month.Consume();
+            Sample.Month.Consume();
         }
 
         [Benchmark]
         public void DayOfMonth()
         {
-            sample.Day.Consume();
+            Sample.Day.Consume();
         }
 
         [Benchmark]
         public void DayOfWeek()
         {
-            sample.DayOfWeek.Consume();
+            Sample.DayOfWeek.Consume();
         }
 
         [Benchmark]
         public void DayOfYear()
         {
-            sample.DayOfYear.Consume();
+            Sample.DayOfYear.Consume();
         }
 
         [Benchmark]
         public void Hour()
         {
-            sample.Hour.Consume();
+            Sample.Hour.Consume();
         }
 
         [Benchmark]
         public void Minute()
         {
-            sample.Minute.Consume();
+            Sample.Minute.Consume();
         }
 
         [Benchmark]
         public void Second()
         {
-            sample.Second.Consume();
+            Sample.Second.Consume();
         }
 
         [Benchmark]
         public void Millisecond()
         {
-            sample.Millisecond.Consume();
+            Sample.Millisecond.Consume();
         }
 
         [Benchmark]
         public void ToUtc()
         {
-            sample.ToUniversalTime();
+            Sample.ToUniversalTime();
         }
 
         [Benchmark]
         public void Format()
         {
-            sample.ToString("dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
+            Sample.ToString("dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
         }
         
         [Benchmark]

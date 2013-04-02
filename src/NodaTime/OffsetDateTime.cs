@@ -26,7 +26,6 @@ namespace NodaTime
     /// </para>
     /// </remarks>
     /// <threadsafety>This type is an immutable value type. See the thread safety section of the user guide for more information.</threadsafety>
-    // TODO(Post-V1): Introduce CompareByLocal and CompareByInstant properties returning IComparer<OffsetDateTime>.
     public struct OffsetDateTime : IEquatable<OffsetDateTime>
     {
         private readonly LocalDateTime localDateTime;
