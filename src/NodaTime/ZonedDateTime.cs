@@ -3,6 +3,7 @@
 // as found in the LICENSE.txt file.
 
 using System;
+using System.Collections.Generic;
 using NodaTime.Calendars;
 using NodaTime.TimeZones;
 using NodaTime.Utility;
@@ -42,6 +43,26 @@ namespace NodaTime
         private readonly LocalDateTime localDateTime;
         private readonly DateTimeZone zone;
         private readonly Offset offset;
+
+        /// <summary>
+        /// Returns a comparer which always compares <see cref="ZonedDateTime"/> values by their local date/time, without reference to
+        /// the time zone, offset or the calendar system.
+        /// </summary>
+        /// <remarks>
+        /// This property will return a reference to the same instance every time it is called.
+        /// </remarks>
+        public static IComparer<ZonedDateTime> LocalComparer { get { return LocalComparerImpl.Instance; } }
+
+        /// <summary>
+        /// Returns a comparer which always compares <see cref="ZonedDateTime"/> values by the instants obtained by applying the offset to
+        /// the local date/time, ignoring the calendar system.
+        /// </summary>
+        /// <remarks>
+        /// This property will return a reference to the same instance every time it is called.
+        /// This comparer behaves the same way as the <see cref="CompareTo"/> method; it is provided for symmetry with <see cref="LocalComparer"/>.
+        /// </remarks>
+        public static IComparer<ZonedDateTime> InstantComparer { get { return InstantComparerImpl.Instance; } }
+
 
         /// <summary>
         /// Internal constructor used by other code that has already validated and 
@@ -601,5 +622,44 @@ namespace NodaTime
         {
             return new OffsetDateTime(localDateTime, offset);
         }
+
+        #region Comparers
+        /// <summary>
+        /// Implementation for <see cref="ZonedDateTime.LocalComparer"/>.
+        /// </summary>
+        private sealed class LocalComparerImpl : IComparer<ZonedDateTime>
+        {
+            internal static readonly IComparer<ZonedDateTime> Instance = new LocalComparerImpl();
+
+            private LocalComparerImpl()
+            {
+            }
+
+            /// <inheritdoc />
+            public int Compare(ZonedDateTime x, ZonedDateTime y)
+            {
+                return x.localDateTime.LocalInstant.CompareTo(y.localDateTime.LocalInstant);
+            }
+        }
+
+        /// <summary>
+        /// Implementation for <see cref="ZonedDateTime.InstantComparer"/>.
+        /// </summary>
+        private sealed class InstantComparerImpl : IComparer<ZonedDateTime>
+        {
+            internal static readonly IComparer<ZonedDateTime> Instance = new InstantComparerImpl();
+
+            private InstantComparerImpl()
+            {
+            }
+
+            /// <inheritdoc />
+            public int Compare(ZonedDateTime x, ZonedDateTime y)
+            {
+
+                return x.ToInstant().CompareTo(y.ToInstant());
+            }
+        }
+        #endregion
     }
 }
