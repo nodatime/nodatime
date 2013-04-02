@@ -28,6 +28,7 @@ xcopy /q /s /i docs\developer %STAGING%\docs\developer
 xcopy /q /s /i docs\userguide %STAGING%\docs\userguide
 copy AUTHORS.txt %STAGING%
 copy LICENSE.txt %STAGING%
+copy NOTICE.txt %STAGING%
 copy "NodaTime Release Public Key.snk" %STAGING%
 copy readme.txt %STAGING%
 
