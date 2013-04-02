@@ -42,26 +42,30 @@ Major features:
 
 API changes:
 
-- The new `DateTimeZone.GetZoneIntervals` method returns a sequence of zone
+- The new `DateTimeZone.GetZoneIntervals` methods return a sequence of zone
   intervals which cover a particular interval ([issue 172][])
-- A new `ZoneEqualityComparer` allows time zones to be compared for equality
-  with varying degrees of strictness, over a given interval
+- A new `ZoneEqualityComparer` class allows time zones to be compared for
+  equality with varying degrees of strictness, over a given interval
 - `LocalDate`, `LocalTime`, `LocalDateTime`, and `ZonedDateTime` now
   implement the non-generic `IComparable` interface (explicitly, to
   avoid accidental use)
 - Much more information is now exposed via `TzdbDateTimeZoneSource`:
-   - Added `Aliases` and `CanonicalId` properties, which together provide
+   - Added `Aliases` and `CanonicalIdMap` properties, which together provide
      bidirectional mappings between a canonical TZDB ID and its aliases
      ([issue 32][])
    - Added a `WindowsZones` property, which exposes details of the CLDR mapping
      between TZDB and Windows time zone IDs ([issue 82][])
    - Added a `ZoneLocations` property, which exposes the location data from
      `zone.tab` and `iso3166.tab` ([issue 194][])
+   - Added a `TzdbVersion` property, which returns the TZDB version string
+     (e.g. "2013a")
 - Changed the means of constructing a `TzdbDateTimeZoneSource`:
    - Added a `Default` property, which provides access to the underlying source
      of TZDB data distributed with Noda Time ([issue 144][])
    - Added `FromStream()`, which can be used to create a source using data in
      the new format produced by `ZoneInfoCompiler`
+   - Added a `Validate()` method, which allows for optional validation of
+     source data (previously, this was performed on every load)
 - `LocalDateTime` patterns can now parse times of the form 24:00:00,
   indicating midnight of the following day ([issue 153][])
 - Added convenience factory methods to `Instant`:
@@ -76,8 +80,6 @@ API changes:
   rather than needing to go via the `LocalDateTime` property ([issue 186][])
 - Added `Period.FromMilliseconds()`, obsoleting the misnamed
   `FromMillseconds()` ([issue 149][])
-- Added `DateTimeZone.GetAllZoneIntervals()`, which returns each
-  `ZoneInterval` that overlaps with a given interval ([issue 172][])
 - Added `DateTimeZoneNotFoundException`, which is used in place of the
   .NET `TimeZoneNotFoundException` (which does not exist in the PCL);
   on desktop builds, the new type extends the latter for compatibility
