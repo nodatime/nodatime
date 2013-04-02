@@ -12,6 +12,44 @@
 <a href="http://code.google.com/p/noda-time/source/list">project repository</a> for more
 details.</p>
 
+<h2>1.2 (current default branch)</h2>
+
+<p>Major features:</p>
+
+<ul>
+<li>...</li>
+</ul>
+
+<p>API changes:</p>
+
+<ul>
+<li>...</li>
+</ul>
+
+<p>Newly-obsolete members:</p>
+
+<ul>
+<li>...</li>
+</ul>
+
+<p>API changes for NodaTime.Testing:</p>
+
+<ul>
+<li>...</li>
+</ul>
+
+<p>Bug fixes:</p>
+
+<ul>
+<li>...</li>
+</ul>
+
+<p>Other:</p>
+
+<ul>
+<li>...</li>
+</ul>
+
 <h2>1.1.0-rc1, released 2013-03-28 with tzdb 2013b</h2>
 
 <p>Major features:</p>
@@ -27,22 +65,24 @@ not supportable in the PCL build</li>
 <p>API changes:</p>
 
 <ul>
-<li>The new <code>DateTimeZone.GetZoneIntervals</code> method returns a sequence of zone
+<li>The new <code>DateTimeZone.GetZoneIntervals</code> methods return a sequence of zone
 intervals which cover a particular interval (<a href="http://code.google.com/p/noda-time/issues/detail?id=172">issue 172</a>)</li>
-<li>A new <code>ZoneEqualityComparer</code> allows time zones to be compared for equality
-with varying degrees of strictness, over a given interval</li>
+<li>A new <code>ZoneEqualityComparer</code> class allows time zones to be compared for
+equality with varying degrees of strictness, over a given interval</li>
 <li><code>LocalDate</code>, <code>LocalTime</code>, <code>LocalDateTime</code>, and <code>ZonedDateTime</code> now
 implement the non-generic <code>IComparable</code> interface (explicitly, to
 avoid accidental use)</li>
 <li>Much more information is now exposed via <code>TzdbDateTimeZoneSource</code>:
 <ul>
-<li>Added <code>Aliases</code> and <code>CanonicalId</code> properties, which together provide
+<li>Added <code>Aliases</code> and <code>CanonicalIdMap</code> properties, which together provide
 bidirectional mappings between a canonical TZDB ID and its aliases
 (<a href="http://code.google.com/p/noda-time/issues/detail?id=32">issue 32</a>)</li>
 <li>Added a <code>WindowsZones</code> property, which exposes details of the CLDR mapping
 between TZDB and Windows time zone IDs (<a href="http://code.google.com/p/noda-time/issues/detail?id=82">issue 82</a>)</li>
 <li>Added a <code>ZoneLocations</code> property, which exposes the location data from
 <code>zone.tab</code> and <code>iso3166.tab</code> (<a href="http://code.google.com/p/noda-time/issues/detail?id=194">issue 194</a>)</li>
+<li>Added a <code>TzdbVersion</code> property, which returns the TZDB version string
+(e.g. "2013a")</li>
 </ul></li>
 <li>Changed the means of constructing a <code>TzdbDateTimeZoneSource</code>:
 <ul>
@@ -50,6 +90,8 @@ between TZDB and Windows time zone IDs (<a href="http://code.google.com/p/noda-t
 of TZDB data distributed with Noda Time (<a href="http://code.google.com/p/noda-time/issues/detail?id=144">issue 144</a>)</li>
 <li>Added <code>FromStream()</code>, which can be used to create a source using data in
 the new format produced by <code>ZoneInfoCompiler</code></li>
+<li>Added a <code>Validate()</code> method, which allows for optional validation of
+source data (previously, this was performed on every load)</li>
 </ul></li>
 <li><code>LocalDateTime</code> patterns can now parse times of the form 24:00:00,
 indicating midnight of the following day (<a href="http://code.google.com/p/noda-time/issues/detail?id=153">issue 153</a>)</li>
@@ -65,8 +107,6 @@ from <code>LocalDateTime</code> to a (UTC) <code>ZonedDateTime</code> or <code>O
 rather than needing to go via the <code>LocalDateTime</code> property (<a href="http://code.google.com/p/noda-time/issues/detail?id=186">issue 186</a>)</li>
 <li>Added <code>Period.FromMilliseconds()</code>, obsoleting the misnamed
 <code>FromMillseconds()</code> (<a href="http://code.google.com/p/noda-time/issues/detail?id=149">issue 149</a>)</li>
-<li>Added <code>DateTimeZone.GetAllZoneIntervals()</code>, which returns each
-<code>ZoneInterval</code> that overlaps with a given interval (<a href="http://code.google.com/p/noda-time/issues/detail?id=172">issue 172</a>)</li>
 <li>Added <code>DateTimeZoneNotFoundException</code>, which is used in place of the
 .NET <code>TimeZoneNotFoundException</code> (which does not exist in the PCL);
 on desktop builds, the new type extends the latter for compatibility</li>
