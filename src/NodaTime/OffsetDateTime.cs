@@ -41,8 +41,8 @@ namespace NodaTime
         public static IComparer<OffsetDateTime> LocalComparer { get { return LocalComparerImpl.Instance; } }
 
         /// <summary>
-        /// Returns a comparer which always compares <see cref="OffsetDateTime"/> values by the instants obtained by applying the offset to
-        /// the local date/time (to obtain an instant, effectively), ignoring the calendar system.
+        /// Returns a comparer which always compares <see cref="OffsetDateTime"/> values by the instant values obtained by applying the offset to
+        /// the local date/time, ignoring the calendar system.
         /// </summary>
         /// <remarks>
         /// This property will return a reference to the same instance every time it is called.
