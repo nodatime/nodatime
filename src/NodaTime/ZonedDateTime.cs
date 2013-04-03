@@ -518,7 +518,7 @@ namespace NodaTime
 
         /// <summary>
         /// Currently returns a string representation of this value indicating the local time,
-        /// offset and time zone separately. The default <code>ToString</code> method of each component is used,
+        /// offset and time zone separately. The default <c>ToString</c> method of each component is used,
         /// which will render the local time and offset in the "general" pattern for the current thread's culture,
         /// and simply include the ID for most time zone implementations.
         /// </summary>
