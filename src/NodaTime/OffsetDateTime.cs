@@ -259,7 +259,7 @@ namespace NodaTime
         /// <summary>
         /// Currently returns a string representation of this value according to ISO-8601,
         /// extended where necessary to include fractional seconds, and using a colon within the offset
-        /// where hour/minute or minute/second sepraators are required.
+        /// where hour/minute or minute/second separators are required.
         /// </summary>
         /// <remarks>
         /// <para>
