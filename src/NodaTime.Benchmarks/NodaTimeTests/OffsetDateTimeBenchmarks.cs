@@ -15,9 +15,9 @@ namespace NodaTime.Benchmarks.NodaTimeTests
         private static readonly OffsetDateTime Sample = new OffsetDateTime(SampleLocal, Offset.Zero);
         private static readonly OffsetDateTime SampleLater = new OffsetDateTime(SampleLocal, OneHourOffset);
 
-        private static readonly IComparer<OffsetDateTime> LocalComparer = OffsetDateTime.LocalComparer;
-        private static readonly IComparer<OffsetDateTime> InstantComparer = OffsetDateTime.InstantComparer;
-
+        private static readonly IComparer<OffsetDateTime> LocalComparer = OffsetDateTime.Comparer.Local;
+        private static readonly IComparer<OffsetDateTime> InstantComparer = OffsetDateTime.Comparer.Instant;
+        
         [Benchmark]
         public void Construction()
         {
