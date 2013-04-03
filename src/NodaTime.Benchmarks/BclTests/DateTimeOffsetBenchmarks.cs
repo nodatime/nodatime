@@ -38,7 +38,9 @@ namespace NodaTime.Benchmarks.BclTests
         public void Comparison_Operators()
         {
             (sample < earlier).Consume();
+#pragma warning disable 1718
             (sample < sample).Consume();
+#pragma warning restore 1718
             (sample < later).Consume();
         }
     }
