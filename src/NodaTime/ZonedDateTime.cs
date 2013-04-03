@@ -608,28 +608,34 @@ namespace NodaTime
         /// Base class for <see cref="ZonedDateTime"/> comparers.
         /// </summary>
         /// <remarks>
-        /// Use the static properties of this class to obtain instances.
-        /// In the future, it is likely that this class will also implement <see cref="IEqualityComparer{T}"/>,
-        /// which is the reason for it being exposed publicly.
+        /// <para>Use the static properties of this class to obtain instances.</para>
+        /// <para>For the curious: this class only exists so that in the future, it can expose more functionality - probably
+        /// implementing <see cref="IEqualityComparer{T}"/>. If we simply provided properties on ZonedDateTime of type
+        /// <see cref="IComparer{T}"/> we'd have no backward-compatible way of adding to the set of implemented interfaces.</para>
         /// </remarks>
         public abstract class Comparer : IComparer<ZonedDateTime>
         {
             /// <summary>
-            /// Returns a comparer which always compares <see cref="ZonedDateTime"/> values by their local date/time, without reference to
+            /// Returns a comparer which compares <see cref="ZonedDateTime"/> values by their local date/time, without reference to
             /// the time zone, offset or the calendar system.
             /// </summary>
             /// <remarks>
-            /// This property will return a reference to the same instance every time it is called.
+            /// <para>For example, this comparer considers 2013-03-04T20:21:00 (Europe/London) to be later than
+            /// 2013-03-04T19:21:00 (America/Los_Angeles) even though the second value represents a later instant in time.</para>
+            /// <para>This property will return a reference to the same instance every time it is called.</para>
             /// </remarks>
             public static Comparer Local { get { return LocalComparer.Instance; } }
 
             /// <summary>
-            /// Returns a comparer which always compares <see cref="ZonedDateTime"/> values by the instants obtained by applying the offset to
+            /// Returns a comparer which compares <see cref="ZonedDateTime"/> values by the instants obtained by applying the offset to
             /// the local date/time, ignoring the calendar system.
             /// </summary>
             /// <remarks>
-            /// This property will return a reference to the same instance every time it is called.
-            /// This comparer behaves the same way as the <see cref="CompareTo"/> method; it is provided for symmetry with <see cref="LocalComparer"/>.
+            /// <para>For example, this comparer considers 2013-03-04T20:21:00 (Europe/London) to be earlier than
+            /// 2013-03-04T19:21:00 (America/Los_Angeles) even though the second value has a local time which is earlier; the time zones
+            /// mean that the first value occurred earlier in the universal time line.</para>
+            /// <para>This comparer behaves the same way as the <see cref="CompareTo"/> method; it is provided for symmetry with <see cref="LocalComparer"/>.</para>
+            /// <para>This property will return a reference to the same instance every time it is called.</para>
             /// </remarks>
             public static Comparer Instant { get { return InstantComparer.Instance; } }
 
