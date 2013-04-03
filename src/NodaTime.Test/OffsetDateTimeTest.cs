@@ -164,7 +164,7 @@ namespace NodaTime.Test
             // Earlier instant, later local
             var laterLocal = control.LocalDateTime.PlusHours(2).WithOffset(Offset.FromHours(10));
 
-            var comparer = OffsetDateTime.LocalComparer;
+            var comparer = OffsetDateTime.Comparer.Local;
 
             Assert.AreEqual(0, comparer.Compare(control, negativeOffset));
             Assert.AreEqual(0, comparer.Compare(control, positiveOffset));
@@ -193,7 +193,7 @@ namespace NodaTime.Test
             // Earlier instant, later local
             var laterLocal = control.LocalDateTime.PlusHours(2).WithOffset(Offset.FromHours(10));
 
-            var comparer = OffsetDateTime.InstantComparer;
+            var comparer = OffsetDateTime.Comparer.Instant;
 
             Assert.AreEqual(0, comparer.Compare(control, differentCalendar));
             Assert.AreEqual(0, comparer.Compare(control, equalAndOppositeChanges));

@@ -33,24 +33,6 @@ namespace NodaTime
         private readonly Offset offset;
 
         /// <summary>
-        /// Returns a comparer which always compares <see cref="OffsetDateTime"/> values by their local date/time, without reference to
-        /// either the offset or the calendar system.
-        /// </summary>
-        /// <remarks>
-        /// This property will return a reference to the same instance every time it is called.
-        /// </remarks>
-        public static IComparer<OffsetDateTime> LocalComparer { get { return LocalComparerImpl.Instance; } }
-
-        /// <summary>
-        /// Returns a comparer which always compares <see cref="OffsetDateTime"/> values by the instant values obtained by applying the offset to
-        /// the local date/time, ignoring the calendar system.
-        /// </summary>
-        /// <remarks>
-        /// This property will return a reference to the same instance every time it is called.
-        /// </remarks>
-        public static IComparer<OffsetDateTime> InstantComparer { get { return InstantComparerImpl.Instance; } }
-
-        /// <summary>
         /// Constructs a new offset date/time with the given local date and time, and the given offset from UTC.
         /// </summary>
         /// <param name="localDateTime">Local date and time to represent</param>
@@ -323,36 +305,76 @@ namespace NodaTime
 
         #region Comparers
         /// <summary>
-        /// Implementation for <see cref="OffsetDateTime.LocalComparer"/>.
+        /// Base class for <see cref="OffsetDateTime"/> comparers.
         /// </summary>
-        private sealed class LocalComparerImpl : IComparer<OffsetDateTime>
+        /// <remarks>
+        /// Use the static properties of this class to obtain instances.
+        /// In the future, it is likely that this class will also implement <see cref="IEqualityComparer{T}"/>,
+        /// which is the reason for it being exposed publicly.
+        /// </remarks>
+        public abstract class Comparer : IComparer<OffsetDateTime>
         {
-            internal static readonly IComparer<OffsetDateTime> Instance = new LocalComparerImpl();
+            /// <summary>
+            /// Returns a comparer which always compares <see cref="OffsetDateTime"/> values by their local date/time, without reference to
+            /// either the offset or the calendar system.
+            /// </summary>
+            /// <remarks>
+            /// This property will return a reference to the same instance every time it is called.
+            /// </remarks>
+            public static Comparer Local { get { return LocalComparer.Instance; } }
 
-            private LocalComparerImpl()
+            /// <summary>
+            /// Returns a comparer which always compares <see cref="OffsetDateTime"/> values by the instant values obtained by applying the offset to
+            /// the local date/time, ignoring the calendar system.
+            /// </summary>
+            /// <remarks>
+            /// This property will return a reference to the same instance every time it is called.
+            /// </remarks>
+            public static Comparer Instant { get { return InstantComparer.Instance; } }
+
+            /// <summary>
+            /// Internal constructor to prevent external classes from deriving from this.
+            /// (That means we can add more abstract members in the future.)
+            /// </summary>
+            internal Comparer()
             {
             }
 
             /// <inheritdoc />
-            public int Compare(OffsetDateTime x, OffsetDateTime y)
+            public abstract int Compare(OffsetDateTime x, OffsetDateTime y);
+        }
+
+        /// <summary>
+        /// Implementation for <see cref="Comparer.Local"/>
+        /// </summary>
+        private sealed class LocalComparer : Comparer
+        {
+            internal static readonly Comparer Instance = new LocalComparer();
+
+            private LocalComparer()
+            {
+            }
+
+            /// <inheritdoc />
+            public override int Compare(OffsetDateTime x, OffsetDateTime y)
             {
                 return x.localDateTime.LocalInstant.CompareTo(y.localDateTime.LocalInstant);
             }
         }
 
         /// <summary>
-        /// Implementation for <see cref="OffsetDateTime.InstantComparer"/>.
+        /// Implementation for <see cref="Comparer.Instant"/>.
         /// </summary>
-        private sealed class InstantComparerImpl : IComparer<OffsetDateTime>
+        private sealed class InstantComparer : Comparer
         {
-            internal static readonly IComparer<OffsetDateTime> Instance = new InstantComparerImpl();
+            internal static readonly Comparer Instance = new InstantComparer();
 
-            private InstantComparerImpl()
+            private InstantComparer()
             {
             }
 
             /// <inheritdoc />
-            public int Compare(OffsetDateTime x, OffsetDateTime y)
+            public override int Compare(OffsetDateTime x, OffsetDateTime y)
             {
 
                 return x.ToInstant().CompareTo(y.ToInstant());
