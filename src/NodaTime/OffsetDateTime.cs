@@ -307,27 +307,32 @@ namespace NodaTime
         /// Base class for <see cref="OffsetDateTime"/> comparers.
         /// </summary>
         /// <remarks>
-        /// Use the static properties of this class to obtain instances.
-        /// In the future, it is likely that this class will also implement <see cref="IEqualityComparer{T}"/>,
-        /// which is the reason for it being exposed publicly.
+        /// <para>Use the static properties of this class to obtain instances.</para>
+        /// <para>For the curious: this class only exists so that in the future, it can expose more functionality - probably
+        /// implementing <see cref="IEqualityComparer{T}"/>. If we simply provided properties on OffsetDateTime of type
+        /// <see cref="IComparer{T}"/> we'd have no backward-compatible way of adding to the set of implemented interfaces.</para>
         /// </remarks>
         public abstract class Comparer : IComparer<OffsetDateTime>
         {
             /// <summary>
-            /// Returns a comparer which always compares <see cref="OffsetDateTime"/> values by their local date/time, without reference to
+            /// Returns a comparer which compares <see cref="OffsetDateTime"/> values by their local date/time, without reference to
             /// either the offset or the calendar system.
             /// </summary>
             /// <remarks>
-            /// This property will return a reference to the same instance every time it is called.
+            /// <para>For example, this comparer considers 2013-03-04T20:21:00+0100 to be later than 2013-03-04T19:21:00-0700 even though
+            /// the second value represents a later instant in time.</para>
+            /// <para>This property will return a reference to the same instance every time it is called.</para>
             /// </remarks>
             public static Comparer Local { get { return LocalComparer.Instance; } }
 
             /// <summary>
-            /// Returns a comparer which always compares <see cref="OffsetDateTime"/> values by the instant values obtained by applying the offset to
+            /// Returns a comparer which compares <see cref="OffsetDateTime"/> values by the instant values obtained by applying the offset to
             /// the local date/time, ignoring the calendar system.
             /// </summary>
             /// <remarks>
-            /// This property will return a reference to the same instance every time it is called.
+            /// <para>For example, this comparer considers 2013-03-04T20:21:00+0100 to be earlier than 2013-03-04T19:21:00-0700 even though
+            /// the second value has a local time which is earlier.</para>
+            /// <para>This property will return a reference to the same instance every time it is called.</para>
             /// </remarks>
             public static Comparer Instant { get { return InstantComparer.Instance; } }
 
