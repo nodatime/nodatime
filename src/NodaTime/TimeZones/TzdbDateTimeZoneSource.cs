@@ -153,7 +153,7 @@ namespace NodaTime.TimeZones
                 .Where(pair => pair.Key != pair.Value)
                 .OrderBy(pair => pair.Key, StringComparer.Ordinal)
                 .ToLookup(pair => pair.Value, pair => pair.Key);
-            version = source.TzdbVersion + " (mapping: " + source.WindowsZones.Version + ")";
+            version = source.TzdbVersion + " (mapping: " + source.WindowsMapping.Version + ")";
             var originalZoneLocations = source.ZoneLocations;
             zoneLocations = originalZoneLocations == null ? null : new ReadOnlyCollection<TzdbZoneLocation>(originalZoneLocations);
         }
@@ -201,7 +201,7 @@ namespace NodaTime.TimeZones
             string id = zone.Id;
 #endif
             string result;
-            source.WindowsZones.PrimaryMapping.TryGetValue(id, out result);
+            source.WindowsMapping.PrimaryMapping.TryGetValue(id, out result);
 #if PCL
             if (result == null)
             {
@@ -266,10 +266,10 @@ namespace NodaTime.TimeZones
         public string TzdbVersion { get { return source.TzdbVersion; } }
 
         /// <summary>
-        /// Gets the CLDR supplemental Windows zone information, mapping Windows system
-        /// time zone IDs to TZDB IDs (and vice versa).
+        /// Gets the Windows time zone mapping information provided in the CLDR
+        /// supplemental windowsZones.xml file.
         /// </summary>
-        public WindowsZones WindowsZones { get { return source.WindowsZones; } }
+        public WindowsZones WindowsMapping { get { return source.WindowsMapping; } }
 
         /// <summary>
         /// Validates that the data within this source is consistent with itself.
@@ -300,17 +300,17 @@ namespace NodaTime.TimeZones
             }
 
             // Check that every Windows mapping has a primary territory
-            foreach (var mapZone in source.WindowsZones.MapZones)
+            foreach (var mapZone in source.WindowsMapping.MapZones)
             {
                 // Simplest way of checking is to find the primary mapping...
-                if (!source.WindowsZones.PrimaryMapping.ContainsKey(mapZone.WindowsId))
+                if (!source.WindowsMapping.PrimaryMapping.ContainsKey(mapZone.WindowsId))
                 {
                     throw new InvalidNodaDataException("Windows mapping for standard ID " + mapZone.WindowsId + " has no primary territory");
                 }
             }
 
             // Check that each Windows mapping has a known canonical ID.
-            foreach (var mapZone in source.WindowsZones.MapZones)
+            foreach (var mapZone in source.WindowsMapping.MapZones)
             {
                 foreach (var id in mapZone.TzdbIds)
                 {
