@@ -88,10 +88,8 @@ namespace NodaTime.Test.TimeZones
             Assert.AreEqual(streamSource.VersionId, resourceSource.VersionId);
             CollectionAssert.AreEquivalent(streamSource.GetIds(), resourceSource.GetIds());
 
-            var comparer = new ZoneEqualityComparer(
-                Instant.FromUtc(1850, 1, 1, 0, 0),
-                Instant.FromUtc(2050, 1, 1, 0, 0),
-                ZoneEqualityComparer.Options.PreciseMatch);
+            var interval = new Interval(Instant.FromUtc(1850, 1, 1, 0, 0), Instant.FromUtc(2050, 1, 1, 0, 0));
+            var comparer = ZoneEqualityComparer.ForInterval(interval).WithOptions(ZoneEqualityComparer.Options.StrictestMatch);
             foreach (var id in streamSource.GetIds())
             {
                 Assert.IsTrue(comparer.Equals(streamSource.ForId(id), resourceSource.ForId(id)),

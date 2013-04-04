@@ -42,9 +42,9 @@ namespace NodaTime.Test.TimeZones
             }.Build();
             // Even though the first transition point is different, by default that's fine if
             // the start point is "inside" both.
-            AssertEqual(zone1, zone2, Instants[1], Instants[5], Options.Default);
+            AssertEqual(zone1, zone2, Instants[1], Instants[5], Options.OnlyMatchWallOffset);
             // When we extend backwards a bit, we can see the difference between the two.
-            AssertNotEqual(zone1, zone2, Instants[1] - Duration.Epsilon, Instants[5], Options.Default);
+            AssertNotEqual(zone1, zone2, Instants[1] - Duration.Epsilon, Instants[5], Options.OnlyMatchWallOffset);
             // Or if we force the start and end transitions to be exact...
             AssertNotEqual(zone1, zone2, Instants[1], Instants[5], Options.MatchStartAndEndTransitions);
             
@@ -81,7 +81,7 @@ namespace NodaTime.Test.TimeZones
                 { Instants[8], 0, 0, "x" },
             }.Build();
 
-            AssertEqual(zone1, zone2, Instant.MinValue, Instant.MaxValue, Options.Default);
+            AssertEqual(zone1, zone2, Instant.MinValue, Instant.MaxValue, Options.OnlyMatchWallOffset);
             // BOT-Instants[6] will elide transitions when ignoring components, even if we match names
             AssertEqual(zone1, zone2, Instant.MinValue, Instants[6], Options.MatchNames);
             AssertNotEqual(zone1, zone2, Instant.MinValue, Instants[6], Options.MatchOffsetComponents);
@@ -92,6 +92,30 @@ namespace NodaTime.Test.TimeZones
             // But if we require the exact transitions, both fail
             AssertNotEqual(zone1, zone2, Instant.MinValue, Instants[6], Options.MatchAllTransitions);
             AssertNotEqual(zone1, zone2, Instants[6], Instant.MaxValue, Options.MatchAllTransitions);
+        }
+
+        [Test]
+        public void ForInterval()
+        {
+            var interval = new Interval(Instants[3], Instants[5]);
+            var comparer = ZoneEqualityComparer.ForInterval(interval);
+            Assert.AreEqual(Options.OnlyMatchWallOffset, comparer.OptionsForTest);
+            Assert.AreEqual(interval, comparer.IntervalForTest);
+        }
+
+        [Test]
+        public void WithOptions()
+        {
+            var interval = new Interval(Instants[3], Instants[5]);
+            var firstComparer = ZoneEqualityComparer.ForInterval(interval);
+            var secondComparer = firstComparer.WithOptions(Options.MatchNames);
+
+            Assert.AreEqual(Options.MatchNames, secondComparer.OptionsForTest);
+            Assert.AreEqual(interval, secondComparer.IntervalForTest);
+
+            // Validate that the first comparer hasn't changed
+            Assert.AreEqual(Options.OnlyMatchWallOffset, firstComparer.OptionsForTest);
+            Assert.AreEqual(interval, firstComparer.IntervalForTest);
         }
 
         [Test]
@@ -122,7 +146,7 @@ namespace NodaTime.Test.TimeZones
         private void AssertEqual(DateTimeZone first, DateTimeZone second, 
             Instant start, Instant end, Options options)
         {
-            var comparer = new ZoneEqualityComparer(start, end, options);
+            var comparer = ZoneEqualityComparer.ForInterval(new Interval(start, end)).WithOptions(options);
             Assert.IsTrue(comparer.Equals(first, second));
             Assert.AreEqual(comparer.GetHashCode(first), comparer.GetHashCode(second));
         }
@@ -130,7 +154,7 @@ namespace NodaTime.Test.TimeZones
         private void AssertNotEqual(DateTimeZone first, DateTimeZone second, 
             Instant start, Instant end, Options options)
         {
-            var comparer = new ZoneEqualityComparer(start, end, options);
+            var comparer = ZoneEqualityComparer.ForInterval(new Interval(start, end)).WithOptions(options);
             Assert.IsFalse(comparer.Equals(first, second));
             // If this fails, the code *could* still be correct - but it's unlikely...
             Assert.AreNotEqual(comparer.GetHashCode(first), comparer.GetHashCode(second));
