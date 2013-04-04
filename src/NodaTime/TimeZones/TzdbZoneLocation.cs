@@ -52,7 +52,7 @@ namespace NodaTime.TimeZones
         public string ZoneId { get { return zoneId; } }
 
         /// <summary>
-        /// The comment for(in English) the mapping, if any.
+        /// The comment (in English) for the mapping, if any.
         /// </summary>
         /// <remarks>
         /// This is usually used to differentiate between locations in the same country.

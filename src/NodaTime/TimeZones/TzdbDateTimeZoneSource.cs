@@ -237,14 +237,19 @@ namespace NodaTime.TimeZones
         public IDictionary<string, string> CanonicalIdMap { get { return timeZoneIdMap; } }
 
         /// <summary>
-        /// Returns a read-only list of locations known to this source.
+        /// Returns a read-only list of zone locations known to this source.
         /// </summary>
         /// <remarks>
-        /// Every location's ID is guaranteed to be valid within this source (assuming the source
-        /// has been validated). The legacy resource format does not include location information,
+        /// <para>
+        /// Every zone location's time zone ID is guaranteed to be valid within this source (assuming the source
+        /// has been validated).
+        /// </para>
+        /// <para>
+        /// The legacy resource format does not include location information,
         /// and this property will throw an exception if the information is requested. It is expected
         /// that callers who wish to use newer features will not be attempting to use legacy formats
         /// for time zone data.
+        /// </para>
         /// </remarks>
         /// <exception cref="InvalidOperationException">This is a legacy resource-based data source which does
         /// not include location information.</exception>

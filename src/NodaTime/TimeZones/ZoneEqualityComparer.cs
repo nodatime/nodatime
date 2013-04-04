@@ -13,6 +13,12 @@ namespace NodaTime.TimeZones
     /// Equality comparer for time zones, comparing specific aspects of the zone intervals within
     /// a time zone for a specific interval of the time line.
     /// </summary>
+    /// <remarks>
+    /// The default behaviour of this comparator is to consider two time zones to be equal if they share the same wall
+    /// offsets at all points within a given time interval, regardless of other aspects of each
+    /// <see cref="ZoneInterval"/> within the two time zones. This behaviour can be changed using the
+    /// <see cref="WithOptions"/> method.
+    /// </remarks>
     public sealed class ZoneEqualityComparer : IEqualityComparer<DateTimeZone>
     {
         /// <summary>
@@ -37,7 +43,7 @@ namespace NodaTime.TimeZones
             MatchOffsetComponents = 1 << 0,
 
             /// <summary>
-            /// Compare the names of intervals as well as offsets.
+            /// Compare the names of zone intervals as well as offsets.
             /// </summary>
             MatchNames = 1 << 1,
 
@@ -115,7 +121,10 @@ namespace NodaTime.TimeZones
         /// <summary>
         /// Returns a <see cref="ZoneEqualityComparer"/> for the given interval with the default options.
         /// </summary>
-        /// <remarks>To specify non-default options, call the <see cref="WithOptions"/> method on the result
+        /// <remarks>
+        /// The default behaviour of this comparator is to consider two time zones to be equal if they share the same wall
+        /// offsets at all points within a given interval.
+        /// To specify non-default options, call the <see cref="WithOptions"/> method on the result
         /// of this method.</remarks>
         /// <param name="interval">The interval over which to compare time zones.</param>
         /// <returns>A ZoneEqualityComparer for the given interval with the default options.</returns>
