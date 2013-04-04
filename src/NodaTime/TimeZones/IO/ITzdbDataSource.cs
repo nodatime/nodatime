@@ -30,7 +30,7 @@ namespace NodaTime.TimeZones.IO
         /// Returns the Windows mapping dictionary. (As the type is immutable, it can be exposed directly
         /// to callers.)
         /// </summary>
-        WindowsZones WindowsZones { get; }
+        WindowsZones WindowsMapping { get; }
 
         /// <summary>
         /// Returns the zone locations for the source, or null if no location data is available.
