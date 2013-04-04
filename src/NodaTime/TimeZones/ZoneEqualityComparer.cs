@@ -57,19 +57,17 @@ namespace NodaTime.TimeZones
             MatchAllTransitions = 1 << 2,
 
             /// <summary>
-            /// By default, the transition instants at the start of the first zone interval and the end of the last
+            /// <para>By default, the transition instants at the start of the first zone interval and the end of the last
             /// zone interval are not considered relevant. It is as if all zone intervals are clipped to bring them
             /// within the interval over which the comparer operates.
-            /// </summary>
-            /// <remarks>
+            /// </para>
             /// <para>As an example, a comparison between Europe/London and UTC for just
             /// an interval of "1st January to 1st February 2000" would consider the two equal, as the offsets would
             /// be equal for each instant in the interval. With this option, they would not be considered equal as
             /// UTC's zone interval would have a start/end of the beginning/end of time, whereas the zone interval in
             /// Europe/London would start in the previous autumn and end in the spring.
             /// </para>
-            /// 
-            /// </remarks>
+            /// </summary>
             MatchStartAndEndTransitions = 1 << 3,
 
             /// <summary>
@@ -140,7 +138,9 @@ namespace NodaTime.TimeZones
         /// <remarks>
         /// This method does not modify the comparer on which it's called.
         /// </remarks>
+        /// <param name="options">New set of options, which must consist of flags defined within the <see cref="Options"/> enum.</param>
         /// <exception cref="ArgumentOutOfRangeException">The specified options are invalid.</exception>
+        /// <returns>A comparer operating over the same interval as this one, but with the given set of options.</returns>
         public ZoneEqualityComparer WithOptions(Options options)
         {
             return this.options == options ? this : new ZoneEqualityComparer(this.interval, options);
