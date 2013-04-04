@@ -17,12 +17,12 @@ namespace NodaTime.TimeZones.Cldr
     {
         /// <summary>
         /// Identifier used for the primary territory of each Windows time zone. A zone mapping with
-        /// this territory will always have a single entry.
+        /// this territory will always have a single entry. The value of this constant is "001".
         /// </summary>
         public const string PrimaryTerritory = "001";
         /// <summary>
         /// Identifier used for the "fixed offset" territory. A zone mapping with
-        /// this territory will always have a single entry.
+        /// this territory will always have a single entry. The value of this constant is "ZZ".
         /// </summary>
         public const string FixedOffsetTerritory = "ZZ";
 

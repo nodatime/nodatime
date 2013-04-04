@@ -78,12 +78,27 @@ namespace NodaTime.TimeZones.Cldr
         /// TZDB time zones.
         /// </summary>
         /// <remarks>
+        /// <para>
+        /// Each mapping consists of a single Windows time zone ID and a single
+        /// territory to potentially multiple TZDB IDs that are broadly equivalent to that Windows zone/territory
+        /// pair.
+        /// </para>
+        /// <para>
         /// Mappings for a single Windows system time zone can appear multiple times
         /// in this list, in different territories. For example, "Central Standard Time"
         /// maps to different TZDB zones in different countries (the US, Canada, Mexico) and
-        /// even within a single territory there can be multiple zones. Every Windows system
-        /// time zone has a "primary" entry with a territory code of "001" and a single
-        /// corresponding TZDB zone.
+        /// even within a single territory there can be multiple zones. Every Windows system time zone covered within
+        /// this collection has a "primary" entry with a territory code of "001" (which is the value of
+        /// <see cref="MapZone.PrimaryTerritory"/>) and a single corresponding TZDB zone. 
+        /// </para>
+        /// <para>This collection is not guaranteed to cover every Windows time zone. Some zones may be unmappable
+        /// (such as "Mid-Atlantic Standard Time") and there can be a delay between a new Windows time zone being introduced
+        /// and it appearing in CLDR, ready to be used by Noda Time. (There's also bound to be a delay between it appearing
+        /// in CLDR and being used in your production system.) In practice however, you're unlikely to wish to use a time zone
+        /// which isn't covered here.</para>
+        /// <para>
+        /// If the data is loaded from the legacy resource format, this will only include the primary mappings.
+        /// </para>
         /// </remarks>
         public IList<MapZone> MapZones { get { return mapZones; } }
 
