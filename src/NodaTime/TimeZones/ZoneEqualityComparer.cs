@@ -26,7 +26,7 @@ namespace NodaTime.TimeZones
             /// instant, within the interval of the comparer. In other words, if <see cref="DateTimeZone.GetUtcOffset"/>
             /// returns the same value for all instants in the interval, the comparer will consider the zones to be equal.
             /// </summary>
-            Default = 0,
+            OnlyMatchWallOffset = 0,
 
             /// <summary>
             /// Instead of only comparing wall offsets, the standard/savings split is also considered. So when this
@@ -52,18 +52,24 @@ namespace NodaTime.TimeZones
 
             /// <summary>
             /// By default, the transition instants at the start of the first zone interval and the end of the last
-            /// zone interval are not considered relevant. For example, a comparison between Europe/London and UTC for just
+            /// zone interval are not considered relevant. It is as if all zone intervals are clipped to bring them
+            /// within the interval over which the comparer operates.
+            /// </summary>
+            /// <remarks>
+            /// <para>As an example, a comparison between Europe/London and UTC for just
             /// an interval of "1st January to 1st February 2000" would consider the two equal, as the offsets would
             /// be equal for each instant in the interval. With this option, they would not be considered equal as
             /// UTC's zone interval would have a start/end of the beginning/end of time, whereas the zone interval in
             /// Europe/London would start in the previous autumn and end in the spring.
-            /// </summary>
+            /// </para>
+            /// 
+            /// </remarks>
             MatchStartAndEndTransitions = 1 << 3,
 
             /// <summary>
             /// The combination of all available match options.
             /// </summary>
-            PreciseMatch = MatchNames | MatchOffsetComponents | MatchAllTransitions | MatchStartAndEndTransitions
+            StrictestMatch = MatchNames | MatchOffsetComponents | MatchAllTransitions | MatchStartAndEndTransitions
         }
 
         /// <summary>
@@ -77,53 +83,58 @@ namespace NodaTime.TimeZones
 
         private readonly Interval interval;
         private readonly Options options;
+
+        /// <summary>
+        /// Returns the interval over which this comparer operates; visible for testing.
+        /// </summary>
+        internal Interval IntervalForTest { get { return interval; } }
+        /// <summary>
+        /// Returns the options used by this comparer; visible for testing.
+        /// </summary>
+        internal Options OptionsForTest { get { return options; } }
+
         private readonly ZoneIntervalEqualityComparer zoneIntervalComparer;
         
-        /// <summary>
-        /// Creates a new comparer for the given start/end interval, with the default comparison options.
-        /// </summary>
-        /// <param name="start">The start instant (inclusive) to use for comparisons.</param>
-        /// <param name="end">The end instant (exclusive) to use for comparisons.</param>
-        /// <exception cref="ArgumentOutOfRangeException"><paramref name="end"/> is earlier than <paramref name="start"/>.</exception>
-        public ZoneEqualityComparer(Instant start, Instant end) : this(start, end, Options.Default)
-        {
-        }
-
-        /// <summary>
-        /// Creates a new comparer for the given interval, with the default comparison options.
-        /// </summary>
-        /// <param name="interval">The interval within the time line to use for comparisons.</param>
-        public ZoneEqualityComparer(Interval interval) : this(interval, Options.Default)
-        {
-        }
-
-        /// <summary>
-        /// Creates a new comparer for the given start/end interval, with the given comparison options.
-        /// </summary>
-        /// <param name="start">The start instant (inclusive) to use for comparisons.</param>
-        /// <param name="end">The end instant (exclusive) to use for comparisons.</param>
-        /// <param name="options">The options to use when comparing time zones.</param>
-        /// <exception cref="ArgumentOutOfRangeException"><paramref name="end"/> is earlier than <paramref name="start"/>,
-        /// or the specified options are invalid.</exception>
-        public ZoneEqualityComparer(Instant start, Instant end, Options options) : this(new Interval(start, end), options)
-        {
-        }
-
         /// <summary>
         /// Creates a new comparer for the given interval, with the given comparison options.
         /// </summary>
         /// <param name="interval">The interval within the time line to use for comparisons.</param>
         /// <param name="options">The options to use when comparing time zones.</param>
         /// <exception cref="ArgumentOutOfRangeException">The specified options are invalid.</exception>
-        public ZoneEqualityComparer(Interval interval, Options options)
+        private ZoneEqualityComparer(Interval interval, Options options)
         {
             this.interval = interval;
             this.options = options;
-            if ((options & ~Options.PreciseMatch) != 0)
+            if ((options & ~Options.StrictestMatch) != 0)
             {
                 throw new ArgumentOutOfRangeException("The value " + options + " is not defined within ZoneEqualityComparer.Options");
             }
             zoneIntervalComparer = new ZoneIntervalEqualityComparer(options, interval);
+        }
+
+        /// <summary>
+        /// Returns a <see cref="ZoneEqualityComparer"/> for the given interval with the default options.
+        /// </summary>
+        /// <remarks>To specify non-default options, call the <see cref="WithOptions"/> method on the result
+        /// of this method.</remarks>
+        /// <param name="interval">The interval over which to compare time zones.</param>
+        /// <returns>A ZoneEqualityComparer for the given interval with the default options.</returns>
+        public static ZoneEqualityComparer ForInterval(Interval interval)
+        {
+            return new ZoneEqualityComparer(interval, Options.OnlyMatchWallOffset);
+        }
+
+        /// <summary>
+        /// Returns a comparer operating over the same interval as this one, but with the given
+        /// set of options.
+        /// </summary>
+        /// <remarks>
+        /// This method does not modify the comparer on which it's called.
+        /// </remarks>
+        /// <exception cref="ArgumentOutOfRangeException">The specified options are invalid.</exception>
+        public ZoneEqualityComparer WithOptions(Options options)
+        {
+            return this.options == options ? this : new ZoneEqualityComparer(this.interval, options);
         }
 
         /// <summary>
