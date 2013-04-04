@@ -31,6 +31,9 @@ namespace NodaTime.TimeZones.Cldr
         /// This is a Subversion revision number, but that association should only be used for diagnostic curiosity, and never
         /// assumed in code.
         /// </para>
+        /// <para>
+        /// This property will never return a null value.
+        /// </para>
         /// </remarks>
         public string Version { get { return version; } }
 
