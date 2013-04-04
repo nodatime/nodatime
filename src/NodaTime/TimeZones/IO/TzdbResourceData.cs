@@ -49,7 +49,7 @@ namespace NodaTime.TimeZones.IO
         internal const string VersionKey = "--meta-VersionId";
 
         private readonly string tzdbVersion;
-        private readonly WindowsZones windowsZones;
+        private readonly WindowsZones windowsMapping;
         private readonly IDictionary<string, string> tzdbIdMap;
         private readonly ResourceSet source;
 
@@ -60,7 +60,7 @@ namespace NodaTime.TimeZones.IO
             tzdbVersion = CheckKey(source.GetString(VersionKey), VersionKey);
             var windowsMappingVersion = CheckKey(source.GetString(WindowsToPosixMapVersionKey), WindowsToPosixMapVersionKey);
             var windowsMapping = CheckKey(LoadDictionary(source, WindowsToPosixMapKey), WindowsToPosixMapKey);
-            windowsZones = WindowsZones.FromPrimaryMapping(windowsMappingVersion, windowsMapping);
+            this.windowsMapping = WindowsZones.FromPrimaryMapping(windowsMappingVersion, windowsMapping);
         }
 
         private static T CheckKey<T>(T value, string key) where T : class
@@ -79,7 +79,7 @@ namespace NodaTime.TimeZones.IO
         public IDictionary<string, string> TzdbIdMap { get { return tzdbIdMap; } }
 
         /// <inheritdoc />
-        public WindowsZones WindowsZones { get { return windowsZones; } }
+        public WindowsZones WindowsMapping { get { return windowsMapping; } }
 
         /// <inheritdoc />
         public DateTimeZone CreateZone(string id, string canonicalId)
