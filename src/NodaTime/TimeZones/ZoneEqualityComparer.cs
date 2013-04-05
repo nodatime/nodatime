@@ -24,6 +24,36 @@ namespace NodaTime.TimeZones
         /// <summary>
         /// Options to use when comparing time zones for equality. Each option makes the comparison more restrictive.
         /// </summary>
+        /// <remarks>
+        /// <para>
+        /// By default, the comparer only compares the wall offset (total of standard offset and any daylight saving offset)
+        /// at every instant within the interval over which the comparer operates. In practice, this is done by comparing each
+        /// <see cref="ZoneInterval"/> which includes an instant within the interval (using <see cref="DateTimeZone.GetZoneIntervals(Interval)"/>).
+        /// For most purposes, this is all that's required: from the simple perspective of a time zone being just a function from instants to local time,
+        /// the default option of <see cref="OnlyMatchWallOffset"/> effectively checks that the function gives the same result across the two time
+        /// zones being compared, for any given instant within the interval.
+        /// </para>
+        /// <para>
+        /// It's possible for a time zone to have a transition from one ZoneInterval to another which doesn't adjust the offset: it
+        /// might just change the name, or the balance between standard offset to daylight saving offset. (As an example, at midnight local
+        /// time on October 27th 1968, the Europe/London time zone went from a standard offset of 0 and a daylight saving offset of 1 hour
+        /// to a standard offset of 1 and a daylight saving offset of 0... which left the clocks unchanged.) This transition is irrelevant
+        /// to the default options, so the two zone intervals involved are effectively elided.
+        /// </para>
+        /// <para>
+        /// The options available change what sort of comparison is performed - which can also change which zone intervals can be elided. For
+        /// example, with the <see cref="MatchAllTransitions"/> option, you can specify that even if you don't care about the name within a zone
+        /// interval or how the wall offset is calculated, you do care about the fact that there was a transition at all, and when it occurred.
+        /// With that option enabled, zone intervals are never elided and the transition points within the operating interval are checked.
+        /// </para>
+        /// <para>Similarly, the <see cref="MatchStartAndEndTransitions"/> option is the only one where instants outside the operating interval are
+        /// relevant. For example, consider a comparer which operates over the interval [2000-01-01T00:00:00Z, 2011-01-01T00:00:00Z). Normally,
+        /// anything that happens before the year 2000 (UTC) would be irrelevant - but with this option enabled, the transitions of the first and last zone
+        /// intervals are part of the comparison... so if one time zone has a zone interval 1999-09-01T00:00:00Z to 2000-03-01T00:00:00Z and the other has
+        /// a zone interval 1999-10-15T00:00:00Z to 2000-03-01T00:00:Z, the two zones would be considered unequal, despite the fact that the only instants observing
+        /// the difference occur outside the operating interval.
+        /// </para>
+        /// </remarks>
         [Flags]
         public enum Options
         {
@@ -48,25 +78,16 @@ namespace NodaTime.TimeZones
             MatchNames = 1 << 1,
 
             /// <summary>
-            /// By default, if two or more consecutive zone intervals have the same values when considered
-            /// according to the other options, they can be elided. (So if only wall offsets are considered in the
-            /// comparison, and two consecutive zone intervals have the same wall offset, they can be treated
-            /// as a single zone interval.) When this option is specified, all transitions within the zone are
-            /// used, suppressing any possible elision.
+            /// This option prevents adjacent zone intervals from being elided, even if they are otherwise considered
+            /// equivalent according to other options. This makes the transition point between 
             /// </summary>
             MatchAllTransitions = 1 << 2,
 
             /// <summary>
-            /// <para>By default, the transition instants at the start of the first zone interval and the end of the last
-            /// zone interval are not considered relevant. It is as if all zone intervals are clipped to bring them
-            /// within the interval over which the comparer operates.
-            /// </para>
-            /// <para>As an example, a comparison between Europe/London and UTC for just
-            /// an interval of "1st January to 1st February 2000" would consider the two equal, as the offsets would
-            /// be equal for each instant in the interval. With this option, they would not be considered equal as
-            /// UTC's zone interval would have a start/end of the beginning/end of time, whereas the zone interval in
-            /// Europe/London would start in the previous autumn and end in the spring.
-            /// </para>
+            /// By default, the transition instants at the start of the first zone interval and the end of the last
+            /// zone interval are not considered relevant. The comparer acts as if all zone intervals are clipped to bring them
+            /// within the operating interval. When this option is specified, the transitions into the first zone interval and out of the
+            /// last zone interval are compared too, even if they do not affect the offset or name for any instant within the operating interval.
             /// </summary>
             MatchStartAndEndTransitions = 1 << 3,
 
