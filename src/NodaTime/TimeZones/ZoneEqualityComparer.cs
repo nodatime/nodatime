@@ -34,17 +34,17 @@ namespace NodaTime.TimeZones
         /// zones being compared, for any given instant within the interval.
         /// </para>
         /// <para>
-        /// It's possible for a time zone to have a transition from one ZoneInterval to another which doesn't adjust the offset: it
+        /// It's possible for a time zone to have a transition from one <c>ZoneInterval</c> to another which doesn't adjust the offset: it
         /// might just change the name, or the balance between standard offset to daylight saving offset. (As an example, at midnight local
         /// time on October 27th 1968, the Europe/London time zone went from a standard offset of 0 and a daylight saving offset of 1 hour
         /// to a standard offset of 1 and a daylight saving offset of 0... which left the clocks unchanged.) This transition is irrelevant
-        /// to the default options, so the two zone intervals involved are effectively elided.
+        /// to the default options, so the two zone intervals involved are effectively coalesced.
         /// </para>
         /// <para>
-        /// The options available change what sort of comparison is performed - which can also change which zone intervals can be elided. For
-        /// example, with the <see cref="MatchAllTransitions"/> option, you can specify that even if you don't care about the name within a zone
+        /// The options available change what sort of comparison is performed - which can also change which zone intervals can be coalesced. For
+        /// example, by specifying just the <see cref="MatchAllTransitions"/> option, you would indicate that even though you don't care about the name within a zone
         /// interval or how the wall offset is calculated, you do care about the fact that there was a transition at all, and when it occurred.
-        /// With that option enabled, zone intervals are never elided and the transition points within the operating interval are checked.
+        /// With that option enabled, zone intervals are never coalesced and the transition points within the operating interval are checked.
         /// </para>
         /// <para>Similarly, the <see cref="MatchStartAndEndTransitions"/> option is the only one where instants outside the operating interval are
         /// relevant. For example, consider a comparer which operates over the interval [2000-01-01T00:00:00Z, 2011-01-01T00:00:00Z). Normally,
@@ -78,16 +78,15 @@ namespace NodaTime.TimeZones
             MatchNames = 1 << 1,
 
             /// <summary>
-            /// This option prevents adjacent zone intervals from being elided, even if they are otherwise considered
-            /// equivalent according to other options. This makes the transition point between 
+            /// This option prevents adjacent zone intervals from being coalesced, even if they are otherwise considered
+            /// equivalent according to other options.
             /// </summary>
             MatchAllTransitions = 1 << 2,
 
             /// <summary>
-            /// By default, the transition instants at the start of the first zone interval and the end of the last
-            /// zone interval are not considered relevant. The comparer acts as if all zone intervals are clipped to bring them
-            /// within the operating interval. When this option is specified, the transitions into the first zone interval and out of the
-            /// last zone interval are compared too, even if they do not affect the offset or name for any instant within the operating interval.
+            /// Includes the transitions into the first zone interval and out of the
+            /// last zone interval as part of the comparison, even if they do not affect
+            /// the offset or name for any instant within the operating interval.
             /// </summary>
             MatchStartAndEndTransitions = 1 << 3,
 
@@ -215,11 +214,11 @@ namespace NodaTime.TimeZones
 
         private IEnumerable<ZoneInterval> GetIntervals(DateTimeZone zone)
         {
-            var unelided = zone.GetZoneIntervals(interval.Start, interval.End);
-            return CheckOption(options, Options.MatchAllTransitions) ? unelided : ElideIntervals(unelided);
+            var allIntervals = zone.GetZoneIntervals(interval.Start, interval.End);
+            return CheckOption(options, Options.MatchAllTransitions) ? allIntervals : CoalesceIntervals(allIntervals);
         }
 
-        private IEnumerable<ZoneInterval> ElideIntervals(IEnumerable<ZoneInterval> zoneIntervals)
+        private IEnumerable<ZoneInterval> CoalesceIntervals(IEnumerable<ZoneInterval> zoneIntervals)
         {
             ZoneInterval current = null;
             foreach (var zoneInterval in zoneIntervals)
