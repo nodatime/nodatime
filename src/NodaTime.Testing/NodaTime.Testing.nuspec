@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>NodaTime.Testing</id>
-    <version>1.1.0-rc1</version>
+    <version>1.1.0</version>
     <authors>Jon Skeet</authors>
     <owners>Jon Skeet</owners>
     <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
@@ -15,7 +15,7 @@
     </description>
     <tags>nodatime testing</tags>
     <dependencies>
-      <dependency id="NodaTime" version="1.1.0-rc1" />
+      <dependency id="NodaTime" version="1.1.0" />
     </dependencies>
   </metadata>
   <files>
