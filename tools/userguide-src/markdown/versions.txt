@@ -28,7 +28,7 @@ Bug fixes:
 
 Other:
 
-## 1.1
+## 1.1.0, released 2013-04-06 with tzdb 2013b
 
 API changes:
 
