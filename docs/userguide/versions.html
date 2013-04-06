@@ -12,6 +12,19 @@
 <a href="http://code.google.com/p/noda-time/source/list">project repository</a> for more
 details.</p>
 
+<h2>1.1</h2>
+
+<p>API changes:</p>
+
+<ul>
+<li>Added <code>OffsetDateTime.Comparer</code> and <code>ZonedDateTime.Comparer</code>,
+<code>IComparer&lt;T&gt;</code> implementations that compare values by either the local
+date/time or the underlying instant</li>
+<li><code>TzdbDateTimeZoneSource.WindowsZones</code> renamed to <code>WindowsMapping</code></li>
+<li><code>ZoneEqualityComparer</code> converted to use factory methods rather than
+multiple constructors; some options' names changed</li>
+</ul>
+
 <h2>1.1.0-rc1, released 2013-03-28 with tzdb 2013b</h2>
 
 <p>Major features:</p>
@@ -39,8 +52,9 @@ avoid accidental use)</li>
 <li>Added <code>Aliases</code> and <code>CanonicalIdMap</code> properties, which together provide
 bidirectional mappings between a canonical TZDB ID and its aliases
 (<a href="http://code.google.com/p/noda-time/issues/detail?id=32">issue 32</a>)</li>
-<li>Added a <code>WindowsZones</code> property, which exposes details of the CLDR mapping
-between TZDB and Windows time zone IDs (<a href="http://code.google.com/p/noda-time/issues/detail?id=82">issue 82</a>)</li>
+<li>Added a <code>WindowsMapping</code> property (was <code>WindowsZones</code> in -rc1), which
+exposes details of the CLDR mapping between TZDB and Windows time zone
+IDs (<a href="http://code.google.com/p/noda-time/issues/detail?id=82">issue 82</a>)</li>
 <li>Added a <code>ZoneLocations</code> property, which exposes the location data from
 <code>zone.tab</code> and <code>iso3166.tab</code> (<a href="http://code.google.com/p/noda-time/issues/detail?id=194">issue 194</a>)</li>
 <li>Added a <code>TzdbVersion</code> property, which returns the TZDB version string
