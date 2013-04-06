@@ -28,7 +28,16 @@ Bug fixes:
 
 Other:
 
-- ...
+## 1.1
+
+API changes:
+
+- Added `OffsetDateTime.Comparer` and `ZonedDateTime.Comparer`,
+  `IComparer<T>` implementations that compare values by either the local
+  date/time or the underlying instant
+- `TzdbDateTimeZoneSource.WindowsZones` renamed to `WindowsMapping`
+- `ZoneEqualityComparer` converted to use factory methods rather than
+  multiple constructors; some options' names changed
 
 ## 1.1.0-rc1, released 2013-03-28 with tzdb 2013b
 
@@ -53,8 +62,9 @@ API changes:
    - Added `Aliases` and `CanonicalIdMap` properties, which together provide
      bidirectional mappings between a canonical TZDB ID and its aliases
      ([issue 32][])
-   - Added a `WindowsZones` property, which exposes details of the CLDR mapping
-     between TZDB and Windows time zone IDs ([issue 82][])
+   - Added a `WindowsMapping` property (was `WindowsZones` in -rc1), which
+     exposes details of the CLDR mapping between TZDB and Windows time zone
+     IDs ([issue 82][])
    - Added a `ZoneLocations` property, which exposes the location data from
      `zone.tab` and `iso3166.tab` ([issue 194][])
    - Added a `TzdbVersion` property, which returns the TZDB version string
