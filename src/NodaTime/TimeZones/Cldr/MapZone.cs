@@ -53,20 +53,22 @@ namespace NodaTime.TimeZones.Cldr
         public string Territory { get { return territory; } }
 
         /// <summary>
-        /// Gets a read-only collection of TZDB zone identifiers for this mapping, such as
+        /// Gets a read-only non-empty collection of TZDB zone identifiers for this mapping, such as
         /// "America/Chicago" and "America/Matamoros" (both of which are TZDB zones associated with the "Central Standard Time"
         /// Windows system time zone).
         /// </summary>
         /// <remarks>
-        /// For the primary and fixed-offset territory IDs ("001" and "ZZ") this is always
-        /// a single zone ID.
+        /// For the primary and fixed-offset territory IDs ("001" and "ZZ") this always
+        /// contains exactly one time zone ID.
         /// </remarks>
         public IList<string> TzdbIds { get { return tzdbIds; } }
 
         /// <summary>
-        /// Creates a new mapping entry. This constructor is public mostly to allow code which needs
-        /// to use this class to create 
+        /// Creates a new mapping entry.
         /// </summary>
+        /// <remarks>
+        /// This constructor is only public for the sake of testability.
+        /// </remarks>
         /// <param name="windowsId">Windows system time zone identifier. Must not be null.</param>
         /// <param name="territory">Territory code. Must not be null.</param>
         /// <param name="tzdbIds">List of territory codes. Must not be null, and must not
