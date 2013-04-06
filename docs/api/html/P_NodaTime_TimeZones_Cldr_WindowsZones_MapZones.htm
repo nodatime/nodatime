@@ -8,14 +8,24 @@
 <span class="keyword">public</span>:
 <span class="keyword">property</span> <a href="http://msdn2.microsoft.com/en-us/library/5y536ey6" target="_blank">IList</a>&lt;<a href="T_NodaTime_TimeZones_Cldr_MapZone.htm">MapZone</a>^&gt;^ <span class="identifier">MapZones</span> {
 	<a href="http://msdn2.microsoft.com/en-us/library/5y536ey6" target="_blank">IList</a>&lt;<a href="T_NodaTime_TimeZones_Cldr_MapZone.htm">MapZone</a>^&gt;^ <span class="keyword">get</span> ();
-}</pre></div></div></div></div></div><div class="section"><div class="sectionTitle" onclick="toggleSection(this.parentNode)"><img src="../icons/collapse_all.gif" /> Remarks</div><div class="sectionContent">
+}</pre></div></div></div></div></div><div class="section"><div class="sectionTitle" onclick="toggleSection(this.parentNode)"><img src="../icons/collapse_all.gif" /> Remarks</div><div class="sectionContent"><p>
+            Each mapping consists of a single Windows time zone ID and a single
+            territory to potentially multiple TZDB IDs that are broadly equivalent to that Windows zone/territory
+            pair.
+            </p><p>
             Mappings for a single Windows system time zone can appear multiple times
             in this list, in different territories. For example, "Central Standard Time"
             maps to different TZDB zones in different countries (the US, Canada, Mexico) and
-            even within a single territory there can be multiple zones. Every Windows system
-            time zone has a "primary" entry with a territory code of "001" and a single
-            corresponding TZDB zone.
-            </div></div><div id="footer"><p />Send comments on this topic to
+            even within a single territory there can be multiple zones. Every Windows system time zone covered within
+            this collection has a "primary" entry with a territory code of "001" (which is the value of
+            <a href="F_NodaTime_TimeZones_Cldr_MapZone_PrimaryTerritory.htm">PrimaryTerritory</a>) and a single corresponding TZDB zone. 
+            </p><p>This collection is not guaranteed to cover every Windows time zone. Some zones may be unmappable
+            (such as "Mid-Atlantic Standard Time") and there can be a delay between a new Windows time zone being introduced
+            and it appearing in CLDR, ready to be used by Noda Time. (There's also bound to be a delay between it appearing
+            in CLDR and being used in your production system.) In practice however, you're unlikely to wish to use a time zone
+            which isn't covered here.</p><p>
+            If the data is loaded from the legacy resource format, this will only include the primary mappings.
+            </p></div></div><div id="footer"><p />Send comments on this topic to
         <a id="HT_MailLink" href="mailto:noda-time%40googlegroups.com?Subject=Noda Time">Noda Time Google Groups</a><script type="text/javascript">
         var HT_mailLink = document.getElementById("HT_MailLink");
         var HT_mailLinkText = HT_mailLink.innerHTML;
