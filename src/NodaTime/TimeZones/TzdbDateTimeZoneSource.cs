@@ -17,8 +17,8 @@ using NodaTime.Utility;
 namespace NodaTime.TimeZones
 {
     /// <summary>
-    /// Provides an implementation of a <see cref="IDateTimeZoneSource" /> that looks
-    /// for its time zone definitions from a named resource in an assembly.
+    /// Provides an implementation of a <see cref="IDateTimeZoneSource" /> that loads data originating from the
+    /// <a href="http://www.iana.org/time-zones">TZDB (also known as IANA, Olson, or zoneinfo)</a> time zone database.
     /// </summary>
     /// <remarks>
     /// All calls to <see cref="ForId"/> for fixed-offset IDs advertised by the source (i.e. "UTC" and "UTC+/-Offset")
