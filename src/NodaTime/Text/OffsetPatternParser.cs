@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
+using System.Text;
 using NodaTime.Globalization;
 using NodaTime.Properties;
 using NodaTime.Text.Patterns;
@@ -65,6 +66,11 @@ namespace NodaTime.Text
         // interface implementation.
         public IPattern<Offset> ParsePattern(string patternText, NodaFormatInfo formatInfo)
         {
+            return ParsePartialPattern(patternText, formatInfo);
+        }
+
+        internal IPartialPattern<Offset> ParsePartialPattern(string patternText, NodaFormatInfo formatInfo)
+        {
             Preconditions.CheckNotNull(patternText, "patternText");
             if (patternText.Length == 0)
             {
@@ -76,7 +82,7 @@ namespace NodaTime.Text
                 char patternCharacter = patternText[0];
                 if (patternCharacter == 'n')
                 {
-                    return CreateNumberPattern(formatInfo);
+                    return new NumberPattern(formatInfo);
                 }
                 if (patternCharacter == 'g')
                 {
@@ -106,7 +112,7 @@ namespace NodaTime.Text
             patternBuilder.ParseCustomPattern(zPrefix ? patternText.Substring(1) : patternText, PatternCharacterHandlers);
             // No need to validate field combinations here, but we do need to do something a bit special
             // for Z-handling.
-            IPattern<Offset> pattern = patternBuilder.Build();
+            IPartialPattern<Offset> pattern = patternBuilder.Build();
             return zPrefix ? new ZPrefixPattern(pattern) : pattern;
         }
 
@@ -129,18 +135,18 @@ namespace NodaTime.Text
             }
         }
 
-        private IPattern<Offset> CreateGeneralPattern(NodaFormatInfo formatInfo)
+        private IPartialPattern<Offset> CreateGeneralPattern(NodaFormatInfo formatInfo)
         {
-            var patterns = new List<IPattern<Offset>>();
+            var patterns = new List<IPartialPattern<Offset>>();
             foreach (char c in "flms")
             {
-                patterns.Add(ParsePattern(c.ToString(), formatInfo));
+                patterns.Add(ParsePartialPattern(c.ToString(), formatInfo));
             }
             NodaFunc<Offset, string> formatter = value => FormatGeneral(value, patterns);
             return new CompositePattern<Offset>(patterns, formatter);
         }
 
-        private string FormatGeneral(Offset value, List<IPattern<Offset>> patterns)
+        private string FormatGeneral(Offset value, List<IPartialPattern<Offset>> patterns)
         {
             // Note: this relies on the order in ExpandStandardFormatPattern
             int index;
@@ -164,37 +170,16 @@ namespace NodaTime.Text
             }
             return patterns[index].Format(value);
         }
-
-        private static IPattern<Offset> CreateNumberPattern(NodaFormatInfo formatInfo)
-        {
-            NodaFunc<string, ParseResult<Offset>> parser = value =>
-            {
-                int milliseconds;
-                if (Int32.TryParse(value, NumberStyles.Integer | NumberStyles.AllowThousands,
-                                    formatInfo.NumberFormat, out milliseconds))
-                {
-                    if (milliseconds < -NodaConstants.MillisecondsPerStandardDay ||
-                        NodaConstants.MillisecondsPerStandardDay < milliseconds)
-                    {
-                        return ParseResult<Offset>.ValueOutOfRange(milliseconds);
-                    }
-                    return ParseResult<Offset>.ForValue(Offset.FromMilliseconds(milliseconds));
-                }
-                return ParseResult<Offset>.CannotParseValue(value, "n");
-            };
-            NodaFunc<Offset, string> formatter = value => value.Milliseconds.ToString("N0", formatInfo);
-            return new SimplePattern<Offset>(parser, formatter);
-        }
         #endregion
 
         /// <summary>
         /// Pattern which optionally delegates to another, but both parses and formats Offset.Zero as "Z".
         /// </summary>
-        private sealed class ZPrefixPattern : IPattern<Offset>
+        private sealed class ZPrefixPattern : IPartialPattern<Offset>
         {
-            private readonly IPattern<Offset> fullPattern;
+            private readonly IPartialPattern<Offset> fullPattern;
 
-            internal ZPrefixPattern(IPattern<Offset> fullPattern)
+            internal ZPrefixPattern(IPartialPattern<Offset> fullPattern)
             {
                 this.fullPattern = fullPattern;
             }
@@ -207,6 +192,90 @@ namespace NodaTime.Text
             public string Format(Offset value)
             {
                 return value == Offset.Zero ? "Z" : fullPattern.Format(value);
+            }
+
+            public ParseResult<Offset> ParsePartial(ValueCursor cursor)
+            {
+                if (cursor.Current == 'Z')
+                {
+                    cursor.MoveNext();
+                    return ParseResult<Offset>.ForValue(Offset.Zero);
+                }
+                return fullPattern.ParsePartial(cursor);
+            }
+
+            public void FormatPartial(Offset value, StringBuilder builder)
+            {
+                if (value == Offset.Zero)
+                {
+                    builder.Append("Z");
+                }
+                else
+                {
+                    fullPattern.FormatPartial(value, builder);
+                }
+            }
+        }
+
+        private sealed class NumberPattern : IPartialPattern<Offset>
+        {
+            private readonly NodaFormatInfo formatInfo;
+            private readonly int maxLength;
+
+            internal NumberPattern(NodaFormatInfo formatInfo)
+            {
+                this.formatInfo = formatInfo;
+                this.maxLength = Offset.MinValue.Milliseconds.ToString("N0", formatInfo.NumberFormat).Length;
+            }
+
+            public ParseResult<Offset> ParsePartial(ValueCursor cursor)
+            {
+                // TODO(V1.2): Do better than this. It's horrible, and may well be invalid
+                // for some cultures.
+                int longestPossible = Math.Min(maxLength, cursor.Length - cursor.Index);
+                for (int length = longestPossible; length >= 0; length--)
+                {
+                    string candidate = cursor.Value.Substring(cursor.Index, length);
+                    int milliseconds;
+                    if (Int32.TryParse(candidate, NumberStyles.Integer | NumberStyles.AllowThousands,
+                                        formatInfo.NumberFormat, out milliseconds))
+                    {
+                        if (milliseconds < -NodaConstants.MillisecondsPerStandardDay ||
+                            NodaConstants.MillisecondsPerStandardDay < milliseconds)
+                        {
+                            return ParseResult<Offset>.ValueOutOfRange(milliseconds);
+                        }
+                        cursor.Move(cursor.Index + length);
+                        return ParseResult<Offset>.ForValue(Offset.FromMilliseconds(milliseconds));
+                    }
+                }
+                return ParseResult<Offset>.CannotParseValue(cursor.Value, "n");
+            }
+
+            public void FormatPartial(Offset value, StringBuilder builder)
+            {
+                builder.Append(Format(value));
+            }
+
+            public ParseResult<Offset> Parse(string text)
+            {
+                int milliseconds;
+                if (Int32.TryParse(text, NumberStyles.Integer | NumberStyles.AllowThousands,
+                                    formatInfo.NumberFormat, out milliseconds))
+                {
+                    if (milliseconds < -NodaConstants.MillisecondsPerStandardDay ||
+                        NodaConstants.MillisecondsPerStandardDay < milliseconds)
+                    {
+                        return ParseResult<Offset>.ValueOutOfRange(milliseconds);
+                    }
+                    return ParseResult<Offset>.ForValue(Offset.FromMilliseconds(milliseconds));
+                }
+                return ParseResult<Offset>.CannotParseValue(text, "n");
+            }
+
+            public string Format(Offset value)
+            {
+                return value.Milliseconds.ToString("N0", formatInfo.NumberFormat);
             }
         }
 

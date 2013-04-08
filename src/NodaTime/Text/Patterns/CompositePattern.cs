@@ -3,6 +3,7 @@
 // as found in the LICENSE.txt file.
 
 using System.Collections.Generic;
+using System.Text;
 
 namespace NodaTime.Text.Patterns
 {
@@ -10,20 +11,14 @@ namespace NodaTime.Text.Patterns
     /// Composite pattern which parses by trying several parse patterns in turn, and formats
     /// by calling a delegate (which may have come from another <see cref="IPattern{T}"/> to start with).
     /// </summary>
-    internal sealed class CompositePattern<T> : IPattern<T>
+    internal sealed class CompositePattern<T> : IPartialPattern<T>
     {
-        private List<IPattern<T>> parsePatterns;
-        private NodaFunc<T, string> formatter;
+        private readonly List<IPartialPattern<T>> parsePatterns;
+        private readonly NodaFunc<T, string> formatter;
 
-        internal CompositePattern(IEnumerable<IPattern<T>> parsePatterns, IPattern<T> formatPattern)
+        internal CompositePattern(IEnumerable<IPartialPattern<T>> parsePatterns, NodaFunc<T, string> formatter)
         {
-            this.parsePatterns = new List<IPattern<T>>(parsePatterns);
-            this.formatter = formatPattern.Format;
-        }
-
-        internal CompositePattern(IEnumerable<IPattern<T>> parsePatterns, NodaFunc<T, string> formatter)
-        {
-            this.parsePatterns = new List<IPattern<T>>(parsePatterns);
+            this.parsePatterns = new List<IPartialPattern<T>>(parsePatterns);
             this.formatter = formatter;
         }
 
@@ -43,6 +38,27 @@ namespace NodaTime.Text.Patterns
         public string Format(T value)
         {
             return formatter(value);
+        }
+
+        public ParseResult<T> ParsePartial(ValueCursor cursor)
+        {
+            int index = cursor.Index;
+            foreach (IPartialPattern<T> pattern in parsePatterns)
+            {
+                cursor.Move(index);
+                ParseResult<T> result = pattern.ParsePartial(cursor);
+                if (result.Success || !result.ContinueAfterErrorWithMultipleFormats)
+                {
+                    return result;
+                }
+            }
+            return ParseResult<T>.NoMatchingFormat;
+        }
+
+        public void FormatPartial(T value, StringBuilder builder)
+        {
+            // TODO(V1.2): Maybe make this more efficient
+            builder.Append(formatter(value));
         }
     }
 
