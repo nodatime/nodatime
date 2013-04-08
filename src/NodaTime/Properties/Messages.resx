@@ -225,6 +225,12 @@
   <data name="Parse_MissingAmPmDesignator" xml:space="preserve">
     <value>The value string does not match the AM or PM designator for the culture at the required place.</value>
   </data>
+  <data name="Parse_MissingEmbeddedPatternEnd" xml:space="preserve">
+    <value>The pattern has an embedded pattern which is missing its closing character ('{0}').</value>
+  </data>
+  <data name="Parse_MissingEmbeddedPatternStart" xml:space="preserve">
+    <value>The pattern has an embedded pattern which is missing its opening character ('{0}').</value>
+  </data>
   <data name="Parse_MissingEndQuote" xml:space="preserve">
     <value>The format string is missing the end quote character "{0}".</value>
   </data>
