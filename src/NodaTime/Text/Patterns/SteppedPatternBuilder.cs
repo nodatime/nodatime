@@ -46,13 +46,6 @@ namespace NodaTime.Text.Patterns
         {
             var patternCursor = new PatternCursor(patternText);
 
-            // Prime the pump...
-            AddParseAction((str, bucket) =>
-            {
-                str.MoveNext();
-                return null;
-            });
-
             // Now iterate over the pattern.
             while (patternCursor.MoveNext())
             {
@@ -391,7 +384,7 @@ namespace NodaTime.Text.Patterns
             NodaAction<TResult, StringBuilder> BuildFormatAction(PatternFields finalFields);
         }
 
-        private sealed class SteppedPattern : IPattern<TResult>
+        private sealed class SteppedPattern : IPattern<TResult>, IPartialPattern<TResult>
         {
             private readonly NodaAction<TResult, StringBuilder> formatActions;
             private readonly ParseAction[] parseActions;
@@ -419,23 +412,21 @@ namespace NodaTime.Text.Patterns
                     return ParseResult<TResult>.ValueStringEmpty;
                 }
 
-                ValueCursor valueCursor = new ValueCursor(text);
-                TBucket bucket = bucketProvider();
-
-                foreach (var action in parseActions)
+                var valueCursor = new ValueCursor(text);
+                // Prime the pump... the value cursor ends up *before* the first character, but
+                // our steps always assume it's *on* the right character.
+                valueCursor.MoveNext();
+                var result = ParsePartial(valueCursor);
+                if (!result.Success)
                 {
-                    ParseResult<TResult> failure = action(valueCursor, bucket);
-                    if (failure != null)
-                    {
-                        return failure;
-                    }
+                    return result;
                 }
+                // Check that we've used up all the text
                 if (valueCursor.Current != TextCursor.Nul)
                 {
                     return ParseResult<TResult>.ExtraValueCharacters(valueCursor.Remainder);
                 }
-
-                return bucket.CalculateValue(usedFields);
+                return result;
             }
 
             public string Format(TResult value)
@@ -444,6 +435,26 @@ namespace NodaTime.Text.Patterns
                 // This will call all the actions in the multicast delegate.
                 formatActions(value, builder);
                 return builder.ToString();
+            }
+
+            public ParseResult<TResult> ParsePartial(ValueCursor cursor)
+            {
+                TBucket bucket = bucketProvider();
+
+                foreach (var action in parseActions)
+                {
+                    ParseResult<TResult> failure = action(cursor, bucket);
+                    if (failure != null)
+                    {
+                        return failure;
+                    }
+                }
+                return bucket.CalculateValue(usedFields);
+            }
+
+            public void FormatPartial(TResult value, StringBuilder builder)
+            {
+                formatActions(value, builder);
             }
         }
     }
