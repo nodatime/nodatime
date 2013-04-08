@@ -25,11 +25,11 @@ namespace NodaTime.Test.Text.Patterns
         }
 
         [Test]
-        public void TestGetQuotedString_current()
+        public void TestGetQuotedString()
         {
             var cursor = new PatternCursor("'abc'");
             Assert.AreEqual('\'', GetNextCharacter(cursor));
-            string actual = cursor.GetQuotedString();
+            string actual = cursor.GetQuotedString('\'');
             Assert.AreEqual("abc", actual);
             Assert.IsFalse(cursor.MoveNext());
         }
