@@ -134,7 +134,7 @@ namespace NodaTime
 
         /// <summary>
         /// Gets the time portion of this zoned date and time. The returned <see cref="LocalTime"/> will
-        /// return the same values for each of the time-based properties (Hour, Minute an so on), but
+        /// return the same values for each of the time-based properties (Hour, Minute and so on), but
         /// will not be associated with any particular time zone.
         /// </summary>
         public LocalTime TimeOfDay { get { return localDateTime.TimeOfDay; } }
