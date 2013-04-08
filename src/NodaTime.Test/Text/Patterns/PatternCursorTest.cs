@@ -35,7 +35,7 @@ namespace NodaTime.Test.Text.Patterns
         }
 
         [Test]
-        public void TestGetQuotedString_empty()
+        public void TestGetQuotedString_Empty()
         {
             var cursor = new PatternCursor("''");
             char openQuote = GetNextCharacter(cursor);
@@ -45,7 +45,7 @@ namespace NodaTime.Test.Text.Patterns
         }
 
         [Test]
-        public void TestGetQuotedString_handlesDoubleQuote()
+        public void TestGetQuotedString_HandlesDoubleQuote()
         {
             var cursor = new PatternCursor("\"abc\"");
             char openQuote = GetNextCharacter(cursor);
@@ -55,7 +55,7 @@ namespace NodaTime.Test.Text.Patterns
         }
 
         [Test]
-        public void TestGetQuotedString_handlesEscape()
+        public void TestGetQuotedString_HandlesEscape()
         {
             var cursor = new PatternCursor("'ab\\c'");
             char openQuote = GetNextCharacter(cursor);
@@ -65,7 +65,7 @@ namespace NodaTime.Test.Text.Patterns
         }
 
         [Test]
-        public void TestGetQuotedString_handlesEscapedCloseQuote()
+        public void TestGetQuotedString_HandlesEscapedCloseQuote()
         {
             var cursor = new PatternCursor("'ab\\'c'");
             char openQuote = GetNextCharacter(cursor);
@@ -75,7 +75,7 @@ namespace NodaTime.Test.Text.Patterns
         }
 
         [Test]
-        public void TestGetQuotedString_handlesOtherQuote()
+        public void TestGetQuotedString_HandlesOtherQuote()
         {
             var cursor = new PatternCursor("[abc]");
             GetNextCharacter(cursor);
@@ -85,7 +85,7 @@ namespace NodaTime.Test.Text.Patterns
         }
 
         [Test]
-        public void TestGetQuotedString_missingCloseQuote()
+        public void TestGetQuotedString_MissingCloseQuote()
         {
             var cursor = new PatternCursor("'abc");
             char openQuote = GetNextCharacter(cursor);
@@ -93,7 +93,7 @@ namespace NodaTime.Test.Text.Patterns
         }
 
         [Test]
-        public void TestGetQuotedString_notAtEnd()
+        public void TestGetQuotedString_NotAtEnd()
         {
             var cursor = new PatternCursor("'abc'more");
             char openQuote = GetNextCharacter(cursor);
@@ -105,7 +105,7 @@ namespace NodaTime.Test.Text.Patterns
         }
 
         [Test]
-        public void TestGetQuotedString_simple()
+        public void TestGetQuotedString_Simple()
         {
             var cursor = new PatternCursor("'abc'");
             char openQuote = GetNextCharacter(cursor);
@@ -115,7 +115,7 @@ namespace NodaTime.Test.Text.Patterns
         }
 
         [Test]
-        public void TestGetRepeatCount_current()
+        public void TestGetRepeatCount_Current()
         {
             var cursor = new PatternCursor("aaa");
             GetNextCharacter(cursor);
@@ -125,7 +125,7 @@ namespace NodaTime.Test.Text.Patterns
         }
 
         [Test]
-        public void TestGetRepeatCount_exceedsMax()
+        public void TestGetRepeatCount_ExceedsMax()
         {
             var cursor = new PatternCursor("aaa");
             char ch = GetNextCharacter(cursor);
@@ -133,7 +133,7 @@ namespace NodaTime.Test.Text.Patterns
         }
 
         [Test]
-        public void TestGetRepeatCount_one()
+        public void TestGetRepeatCount_One()
         {
             var cursor = new PatternCursor("a");
             char ch = GetNextCharacter(cursor);
@@ -143,7 +143,7 @@ namespace NodaTime.Test.Text.Patterns
         }
 
         [Test]
-        public void TestGetRepeatCount_stopsOnNonMatch()
+        public void TestGetRepeatCount_StopsOnNonMatch()
         {
             var cursor = new PatternCursor("aaadaa");
             char ch = GetNextCharacter(cursor);
@@ -153,13 +153,75 @@ namespace NodaTime.Test.Text.Patterns
         }
 
         [Test]
-        public void TestGetRepeatCount_three()
+        public void TestGetRepeatCount_Three()
         {
             var cursor = new PatternCursor("aaa");
             char ch = GetNextCharacter(cursor);
             int actual = cursor.GetRepeatCount(10, ch);
             Assert.AreEqual(3, actual);
             ValidateCurrentCharacter(cursor, 2, 'a');
+        }
+
+        [Test]
+        public void TestGetEmbeddedPattern_Valid()
+        {
+            var cursor = new PatternCursor("x<HH:mm>y");
+            cursor.MoveNext();
+            string embedded = cursor.GetEmbeddedPattern('<', '>');
+            Assert.AreEqual("HH:mm", embedded);
+            ValidateCurrentCharacter(cursor, 7, '>');
+        }
+
+        [Test]
+        public void TestGetEmbeddedPattern_Valid_WithQuoting()
+        {
+            var cursor = new PatternCursor("x<HH:'T'mm>y");
+            cursor.MoveNext();
+            string embedded = cursor.GetEmbeddedPattern('<', '>');
+            Assert.AreEqual("HH:'T'mm", embedded);
+            Assert.AreEqual('>', cursor.Current);
+        }
+
+        [Test]
+        public void TestGetEmbeddedPattern_Valid_WithEscaping()
+        {
+            var cursor = new PatternCursor(@"x<HH:\Tmm>y");
+            cursor.MoveNext();
+            string embedded = cursor.GetEmbeddedPattern('<', '>');
+            Assert.AreEqual(@"HH:\Tmm", embedded);
+            Assert.AreEqual('>', cursor.Current);
+        }
+
+        [Test]
+        public void TestGetEmbeddedPattern_WrongOpenCharacter()
+        {
+            var cursor = new PatternCursor("x(oops)");
+            cursor.MoveNext();
+            Assert.Throws<InvalidPatternException>(() => cursor.GetEmbeddedPattern('<', '>'));
+        }
+
+        [Test]
+        public void TestGetEmbeddedPattern_NoCloseCharacter()
+        {
+            var cursor = new PatternCursor("x<oops)");
+            cursor.MoveNext();
+            Assert.Throws<InvalidPatternException>(() => cursor.GetEmbeddedPattern('<', '>'));
+        }
+
+        [Test]
+        public void TestGetEmbeddedPattern_EscapedCloseCharacter()
+        {
+            var cursor = new PatternCursor(@"x<oops\>");
+            cursor.MoveNext();
+            Assert.Throws<InvalidPatternException>(() => cursor.GetEmbeddedPattern('<', '>'));
+        }
+
+        [Test]
+        public void TestGetEmbeddedPattern_QuotedCloseCharacter()
+        {
+            var cursor = new PatternCursor("x<oops'>'");
+            cursor.MoveNext();
+            Assert.Throws<InvalidPatternException>(() => cursor.GetEmbeddedPattern('<', '>'));
         }
     }
 }
