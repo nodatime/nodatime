@@ -103,13 +103,6 @@ namespace NodaTime.Text
             private readonly ZoneLocalMappingResolver resolver;
             private readonly IDateTimeZoneProvider zoneProvider;
 
-            // TODO(V1.2): Find a better way of handling this than hard-coding... this avoids type initialization concerns though.
-            private static readonly int FullPatternLength = "UTC+HH:mm:ss.fff".Length;
-            private static readonly int LongPatternLength = "UTC+HH:mm:ss".Length;
-            private static readonly int MediumPatternLength = "UTC+HH:mm".Length;
-            private static readonly int ShortPatternLength = "UTC+HH".Length;
-            private static readonly int NoOffsetLength = "UTC".Length;
-
             internal ZonedDateTimeParseBucket(LocalDate templateDate, LocalTime templateTime,
                 DateTimeZone templateZone, ZoneLocalMappingResolver resolver, IDateTimeZoneProvider zoneProvider)
             {
@@ -141,35 +134,14 @@ namespace NodaTime.Text
             /// </summary>
             private DateTimeZone TryParseFixedZone(ValueCursor value)
             {
-                if (value.CompareOrdinal("UTC") != 0)
+                if (value.CompareOrdinal(DateTimeZone.UtcId) != 0)
                 {
                     return null;
                 }
-                // This will never return null, given that we know it starts with UTC.
-                return TryParseFixedZone(value, FullPatternLength)
-                    ?? TryParseFixedZone(value, LongPatternLength)
-                    ?? TryParseFixedZone(value, MediumPatternLength)
-                    ?? TryParseFixedZone(value, ShortPatternLength)
-                    ?? TryParseFixedZone(value, NoOffsetLength);
-            }
-
-            /// <summary>
-            /// Attempts to parse the first "length" characters of value as a complete
-            /// fixed time zone ID.
-            /// </summary>
-            private DateTimeZone TryParseFixedZone(ValueCursor value, int length)
-            {
-                if (value.Length - value.Index < length)
-                {
-                    return null;
-                }
-                string maybeFullText = value.Value.Substring(value.Index, length);
-                DateTimeZone zone = FixedDateTimeZone.GetFixedZoneOrNull(maybeFullText);
-                if (zone != null)
-                {
-                    value.Move(value.Index + length);
-                }
-                return zone;
+                value.Move(value.Index + 3);
+                IPartialPattern<Offset> pattern = OffsetPattern.GeneralInvariantPattern;
+                var parseResult = pattern.ParsePartial(value);
+                return parseResult.Success ? DateTimeZone.ForOffset(parseResult.Value) : DateTimeZone.Utc;
             }
                 
             /// <summary>
