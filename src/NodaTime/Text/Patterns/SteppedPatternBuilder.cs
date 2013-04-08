@@ -86,7 +86,7 @@ namespace NodaTime.Text.Patterns
         /// and for thread safety (publishing a new object, thus leading to a memory barrier).
         /// Note that this builder *must not* be used after the result has been built.
         /// </summary>
-        internal IPattern<TResult> Build()
+        internal IPartialPattern<TResult> Build()
         {
             NodaAction<TResult, StringBuilder> formatDelegate = null;
             foreach (NodaAction<TResult, StringBuilder> formatAction in formatActions)

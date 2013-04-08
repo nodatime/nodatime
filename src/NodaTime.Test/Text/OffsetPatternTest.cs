@@ -271,6 +271,20 @@ namespace NodaTime.Test.Text
         internal static IEnumerable<Data> ParseData = ParseOnlyData.Concat(FormatAndParseData);
         internal static IEnumerable<Data> FormatData = FormatOnlyData.Concat(FormatAndParseData);
 
+        [Test]
+        [TestCaseSource("ParseData")]
+        public void ParsePartial(PatternTestData<Offset> data)
+        {
+            data.TestParsePartial();
+        }
+
+        [Test]
+        [TestCaseSource("FormatData")]
+        public void FormatPartial(PatternTestData<Offset> data)
+        {
+            data.TestFormatPartial();
+        }
+
         // TODO(1.2): Work out how to reimplement these tests now that NodaFormatInfo is immutable.
         /*
         [Test]

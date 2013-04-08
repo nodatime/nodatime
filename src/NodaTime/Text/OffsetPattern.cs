@@ -7,6 +7,7 @@ using System.Globalization;
 using NodaTime.Globalization;
 using NodaTime.Text.Patterns;
 using NodaTime.Utility;
+using System.Text;
 
 namespace NodaTime.Text
 {
@@ -18,7 +19,7 @@ namespace NodaTime.Text
     /// may be shared freely between threads. We recommend only using read-only cultures for patterns, although this is
     /// not currently enforced.
     /// </threadsafety>
-    public sealed class OffsetPattern : IPattern<Offset>
+    public sealed class OffsetPattern : IPartialPattern<Offset>
     {
         /// <summary>
         /// The "general" offset pattern (e.g. +HH, +HH:mm, +HH:mm:ss, +HH:mm:ss.fff) for the invariant culture.
@@ -36,7 +37,7 @@ namespace NodaTime.Text
 
         private readonly string patternText;
         private readonly NodaFormatInfo formatInfo;
-        private readonly IPattern<Offset> pattern;
+        private readonly IPartialPattern<Offset> pattern;
 
         /// <summary>
         /// Returns the pattern text for this pattern, as supplied on creation.
@@ -48,7 +49,7 @@ namespace NodaTime.Text
         /// </summary>
         internal NodaFormatInfo FormatInfo { get { return formatInfo; } }
 
-        private OffsetPattern(string patternText, NodaFormatInfo formatInfo, IPattern<Offset> pattern)
+        private OffsetPattern(string patternText, NodaFormatInfo formatInfo, IPartialPattern<Offset> pattern)
         {
             this.patternText = patternText;
             this.formatInfo = formatInfo;
@@ -90,7 +91,7 @@ namespace NodaTime.Text
         {
             Preconditions.CheckNotNull(patternText, "patternText");
             Preconditions.CheckNotNull(formatInfo, "formatInfo");
-            var pattern = formatInfo.OffsetPatternParser.ParsePattern(patternText);
+            var pattern = (IPartialPattern<Offset>) formatInfo.OffsetPatternParser.ParsePattern(patternText);
             return new OffsetPattern(patternText, formatInfo, pattern);
         }
 
@@ -161,6 +162,18 @@ namespace NodaTime.Text
         public OffsetPattern WithCulture(CultureInfo cultureInfo)
         {
             return WithFormatInfo(NodaFormatInfo.GetFormatInfo(cultureInfo));
+        }
+
+        /// <inheritdoc />
+        ParseResult<Offset> IPartialPattern<Offset>.ParsePartial(ValueCursor cursor)
+        {
+            return pattern.ParsePartial(cursor);
+        }
+
+        /// <inheritdoc />
+        void IPartialPattern<Offset>.FormatPartial(Offset value, StringBuilder builder)
+        {
+            pattern.FormatPartial(value, builder);
         }
     }
 }
