@@ -198,7 +198,6 @@
     <Compile Include="Text\ParseBucket.cs" />
     <Compile Include="Text\ParseResult.cs" />
     <Compile Include="Text\Patterns\CompositePattern.cs" />
-    <Compile Include="Text\Patterns\SimplePattern.cs" />
     <Compile Include="Text\Patterns\SteppedPatternBuilder.cs" />
     <Compile Include="Text\UnparsableValueException.cs" />
     <Compile Include="IClock.cs" />
