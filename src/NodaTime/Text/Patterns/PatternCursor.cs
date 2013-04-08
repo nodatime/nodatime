@@ -18,15 +18,6 @@ namespace NodaTime.Text.Patterns
         }
 
         /// <summary>
-        /// Gets the quoted string using the current character as the close quote character.
-        /// </summary>
-        /// <returns>The quoted string sans open and close quotes. This can be an empty string but will not be null.</returns>
-        internal string GetQuotedString()
-        {
-            return GetQuotedString(Current);
-        }
-
-        /// <summary>
         /// Gets the quoted string.
         /// </summary>
         /// <remarks>The cursor is left positioned at the end of the quoted region.</remarks>
