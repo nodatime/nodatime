@@ -236,8 +236,9 @@ namespace NodaTime.Text
             return ForInvalidValue(Messages.Parse_DayOfMonthOutOfRange, day, month, year);
         }
 
-        internal static ParseResult<T> SkippedLocalTime = ForInvalidValue(Messages.Parse_SkippedLocalTime);
-        internal static ParseResult<T> AmbiguousLocalTime = ForInvalidValue(Messages.Parse_AmbiguousLocalTime);
+        internal static readonly ParseResult<T> InvalidOffset = ForInvalidValue(Messages.Parse_InvalidOffset);
+        internal static readonly ParseResult<T> SkippedLocalTime = ForInvalidValue(Messages.Parse_SkippedLocalTime);
+        internal static readonly ParseResult<T> AmbiguousLocalTime = ForInvalidValue(Messages.Parse_AmbiguousLocalTime);
         #endregion
     }
 }

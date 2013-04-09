@@ -331,6 +331,15 @@ namespace NodaTime.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The specified offset is invalid for the given date/time..
+        /// </summary>
+        internal static string Parse_InvalidOffset {
+            get {
+                return ResourceManager.GetString("Parse_InvalidOffset", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The period unit specifier &apos;{0}&apos; is invalid..
         /// </summary>
         internal static string Parse_InvalidUnitSpecifier {
