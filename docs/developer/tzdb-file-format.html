@@ -107,7 +107,7 @@ The expected data within each field is governed by its ID.</p>
 <ul>
 <li><code>byte</code>, a general 8-bit unsigned integer, simply serialized as a single byte.</li>
 <li><code>fixed16</code>, <code>fixed32</code>, and <code>fixed64</code>, general 16-bit, 32-bit, and 64-bit signed integers,
-ssimply serialized as 2-, 4-, or 8-byte twos-complement values of the appropriate length,
+simply serialized as 2-, 4-, or 8-byte twos-complement values of the appropriate length,
 in MSB-first order. For example, <code>0x1234</code> would be serialized as the bytes <code>[0x12 0x34]</code> using
 the <code>fixed16</code> serialization, while -1 would be serialized as <code>[0xff 0xff]</code></li>
 <li><code>count</code>, a non-negative (typically small) <code>int32</code> value, stored as a 7-bit-encoded integer:
