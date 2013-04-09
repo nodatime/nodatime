@@ -168,6 +168,8 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="Text\OffsetDateTimePattern.cs" />
+    <Compile Include="Text\OffsetDateTimePatternParser.cs" />
     <Compile Include="Text\IPartialPattern.cs" />
     <Compile Include="Text\ZonedDateTimePattern.cs" />
     <Compile Include="Text\LocalDateTimePatternParser.cs" />
