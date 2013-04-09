@@ -5,7 +5,6 @@
 using NodaTime.Globalization;
 using NodaTime.Properties;
 using NodaTime.Text.Patterns;
-using NodaTime.TimeZones;
 using NodaTime.Utility;
 using System.Collections.Generic;
 

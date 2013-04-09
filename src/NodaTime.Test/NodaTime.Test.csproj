@@ -132,6 +132,7 @@
     <Compile Include="Testing\TimeZones\MultiTransitionDateTimeZoneTest.cs" />
     <Compile Include="Testing\TimeZones\FakeDateTimeZoneSourceTest.cs" />
     <Compile Include="TestObjects.cs" />
+    <Compile Include="Text\OffsetDateTimePatternTest.cs" />
     <Compile Include="Text\Patterns\SteppedPatternBuilderTest.cs" />
     <Compile Include="Text\ZonedDateTimePatternTest.cs" />
     <Compile Include="Text\Cultures.cs" />
