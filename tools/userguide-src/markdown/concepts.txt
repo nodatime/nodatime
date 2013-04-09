@@ -194,7 +194,7 @@ year or not. Periods based on smaller units (hours, minutes and so on) will alwa
 but they're still available within periods. [`Period`] is used for arithmetic on locally-based values (`LocalDateTime`,
 `LocalDate`, `LocalTime`).
 
-See the [arithemtic](arithmetic.html) page for more information.
+See the [arithmetic](arithmetic.html) page for more information.
 
 [api]: ../api/Index.html
 [2]: http://blogs.msdn.com/b/bclteam/archive/2007/06/18/a-brief-history-of-datetime-anthony-moore.aspx

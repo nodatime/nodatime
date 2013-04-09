@@ -59,8 +59,8 @@ DateTimeZone
 A [`DateTimeZone`][DateTimeZone] (or just time zone) is a mapping between UTC and local times. Many time zones alternate between two offsets over the course of time,
 based on [daylight saving time][DST]. To obtain a time zone in Noda Time, you have to choose where the information will come from,
 via an `IDateTimeZoneProvider`. Two providers are built into Noda Time - one which uses TZDB (also known as zoneinfo or the Olson database) and one to wrap the 
-information provided by the BCL via `TimeZoneInfo`. Both providers are available through [`DateTimeZoneProviders`][DateTimeZoneProviders] as `DateTimeProviders.Tzdb` and
-`DateTimeProviders.Bcl`. Once you've chosen a provider, you can find the identifiers that provider publishes, and fetch any specific time zone by ID.
+information provided by the BCL via `TimeZoneInfo`. Both providers are available through [`DateTimeZoneProviders`][DateTimeZoneProviders] as `DateTimeZoneProviders.Tzdb` and
+`DateTimeZoneProviders.Bcl`. Once you've chosen a provider, you can find the identifiers that provider publishes, and fetch any specific time zone by ID.
 
 ZonedDateTime
 -------------

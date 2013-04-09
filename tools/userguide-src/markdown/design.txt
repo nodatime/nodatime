@@ -33,7 +33,7 @@ much harder.
 
 - **We don't want to be your performance bottleneck.**  
 We regard Noda Time as a system-level library: we don't know exactly
-how you'll use it, or how performance-criticial that use will be.
+how you'll use it, or how performance-critical that use will be.
 We're willing to do more work (occasionally at the expense of
 *internal* complexity) to get out of your way, but we're not going
 to sacrifice *public* elegance for this.

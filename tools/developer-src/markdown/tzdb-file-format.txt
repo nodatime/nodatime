@@ -95,7 +95,7 @@ The "NodaZoneData" format makes use of the following serialization primitives:
 
 - `byte`, a general 8-bit unsigned integer, simply serialized as a single byte.
 - `fixed16`, `fixed32`, and `fixed64`, general 16-bit, 32-bit, and 64-bit signed integers,
-  ssimply serialized as 2-, 4-, or 8-byte twos-complement values of the appropriate length,
+  simply serialized as 2-, 4-, or 8-byte twos-complement values of the appropriate length,
   in MSB-first order. For example, `0x1234` would be serialized as the bytes `[0x12 0x34]` using
   the `fixed16` serialization, while -1 would be serialized as `[0xff 0xff]`
 - `count`, a non-negative (typically small) `int32` value, stored as a 7-bit-encoded integer:
