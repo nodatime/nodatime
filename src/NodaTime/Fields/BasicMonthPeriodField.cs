@@ -47,7 +47,7 @@ namespace NodaTime.Fields
                 return localInstant;
             }
             // Save the time part first
-            long timePart = calendarSystem.GetTickOfDay(localInstant);
+            long timePart = BasicCalendarSystem.GetTickOfDay(localInstant);
             // Get the year and month
             int thisYear = calendarSystem.GetYear(localInstant);
             int thisMonth = calendarSystem.GetMonthOfYear(localInstant, thisYear);
@@ -104,7 +104,7 @@ namespace NodaTime.Fields
 
             // Copied from Add(LocalInstant, int) and changed slightly
             // Save the time part first
-            long timePart = calendarSystem.GetTickOfDay(localInstant);
+            long timePart = BasicCalendarSystem.GetTickOfDay(localInstant);
             // Get the year and month
             int thisYear = calendarSystem.GetYear(localInstant);
             int thisMonth = calendarSystem.GetMonthOfYear(localInstant, thisYear);
