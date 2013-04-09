@@ -11,21 +11,18 @@ namespace NodaTime.Fields
     /// </summary>
     internal sealed class GJDayOfWeekDateTimeField : FixedLengthPeriodDateTimeField
     {
-        private readonly BasicCalendarSystem calendarSystem;
-
-        internal GJDayOfWeekDateTimeField(BasicCalendarSystem calendarSystem, PeriodField days) : base(DateTimeFieldType.DayOfWeek, days)
+        internal GJDayOfWeekDateTimeField(PeriodField days) : base(DateTimeFieldType.DayOfWeek, days)
         {
-            this.calendarSystem = calendarSystem;
         }
 
         internal override int GetValue(LocalInstant localInstant)
         {
-            return calendarSystem.GetDayOfWeek(localInstant);
+            return BasicCalendarSystem.GetDayOfWeek(localInstant);
         }
 
         internal override long GetInt64Value(LocalInstant localInstant)
         {
-            return calendarSystem.GetDayOfWeek(localInstant);
+            return BasicCalendarSystem.GetDayOfWeek(localInstant);
         }
 
         internal override long GetMaximumValue()

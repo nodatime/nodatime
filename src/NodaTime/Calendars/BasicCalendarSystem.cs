@@ -126,7 +126,7 @@ namespace NodaTime.Calendars
             builder.YearOfCentury = new OffsetDateTimeField(field, DateTimeFieldType.YearOfCentury, 1);
 
             builder.Era = new GJEraDateTimeField(thisCalendar);
-            builder.DayOfWeek = new GJDayOfWeekDateTimeField(thisCalendar, builder.Days);
+            builder.DayOfWeek = new GJDayOfWeekDateTimeField(builder.Days);
             builder.DayOfMonth = new BasicDayOfMonthDateTimeField(thisCalendar, builder.Days);
             builder.DayOfYear = new BasicDayOfYearDateTimeField(thisCalendar, builder.Days);
             builder.MonthOfYear = new BasicMonthOfYearDateTimeField(thisCalendar);
@@ -173,7 +173,7 @@ namespace NodaTime.Calendars
             return year >= MinYear && year <= MaxYear ? GetYearTicks(year) : CalculateYearTicks(year);
         }
 
-        internal int GetDayOfWeek(LocalInstant localInstant)
+        internal static int GetDayOfWeek(LocalInstant localInstant)
         {
             // 1970-01-01 is day of week 4, Thursday.
 
@@ -304,7 +304,7 @@ namespace NodaTime.Calendars
             return 12;
         }
 
-        internal long GetTickOfDay(LocalInstant localInstant)
+        internal static long GetTickOfDay(LocalInstant localInstant)
         {
             long ticks = localInstant.Ticks;
             return ticks >= 0 ? ticks % NodaConstants.TicksPerStandardDay : (NodaConstants.TicksPerStandardDay - 1) + ((ticks + 1) % NodaConstants.TicksPerStandardDay);

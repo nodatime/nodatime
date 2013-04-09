@@ -58,7 +58,7 @@ namespace NodaTime.Fields
                 // Quietly force DOM to nearest sane value.
                 thisDom = maxDom;
             }
-            return new LocalInstant(calendarSystem.GetYearMonthDayTicks(thisYear, month, thisDom) + calendarSystem.GetTickOfDay(localInstant));
+            return new LocalInstant(calendarSystem.GetYearMonthDayTicks(thisYear, month, thisDom) + BasicCalendarSystem.GetTickOfDay(localInstant));
         }
         #endregion
         
