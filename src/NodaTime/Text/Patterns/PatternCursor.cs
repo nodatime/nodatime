@@ -18,15 +18,6 @@ namespace NodaTime.Text.Patterns
         }
 
         /// <summary>
-        /// Gets the quoted string using the current character as the close quote character.
-        /// </summary>
-        /// <returns>The quoted string sans open and close quotes. This can be an empty string but will not be null.</returns>
-        internal string GetQuotedString()
-        {
-            return GetQuotedString(Current);
-        }
-
-        /// <summary>
         /// Gets the quoted string.
         /// </summary>
         /// <remarks>The cursor is left positioned at the end of the quoted region.</remarks>
@@ -62,7 +53,8 @@ namespace NodaTime.Text.Patterns
         }
 
         /// <summary>
-        /// Gets the pattern repeat count.
+        /// Gets the pattern repeat count. The cursor is left on the final character of the
+        /// repeated sequence.
         /// </summary>
         /// <param name="maximumCount">The maximum number of repetitions allowed.</param>
         /// <returns>The repetition count which is alway at least <c>1</c>.</returns>
@@ -72,7 +64,8 @@ namespace NodaTime.Text.Patterns
         }
 
         /// <summary>
-        /// Gets the pattern repeat count.
+        /// Gets the pattern repeat count. The cursor is left on the final character of the
+        /// repeated sequence.
         /// </summary>
         /// <param name="maximumCount">The maximum number of repetitions allowed.</param>
         /// <param name="patternCharacter">The pattern character to count.</param>
@@ -91,6 +84,52 @@ namespace NodaTime.Text.Patterns
                 throw new InvalidPatternException(Messages.Parse_RepeatCountExceeded, patternCharacter, maximumCount);
             }
             return repeatLength;
+        }
+
+        /// <summary>
+        /// Returns a string containing the embedded pattern within this one.
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// The cursor is expected to be positioned before the <paramref name="startPattern"/> character,
+        /// and onsuccess the cursor will be positioned on the <paramref name="endPattern"/> character.
+        /// </para>
+        /// <para>Quote characters (' and ") and escaped characters (escaped with a backslash) are handled
+        /// but not unescaped: the resulting pattern should be ready for parsing as normal.</para>
+        /// </remarks>
+        /// <param name="startPattern">The character expected to start the pattern.</param>
+        /// <param name="endPattern">The character expected to end the pattern.</param>
+        /// <returns>The embedded pattern, not including the start/end pattern characters.</returns>
+        internal string GetEmbeddedPattern(char startPattern, char endPattern)
+        {
+            if (!MoveNext() || Current != startPattern)
+            {
+                throw new InvalidPatternException(string.Format(Messages.Parse_MissingEmbeddedPatternStart, startPattern));
+            }
+            int startIndex = Index + 1;
+            while (MoveNext())
+            {
+                char current = Current;
+                if (current == endPattern)
+                {
+                    return Value.Substring(startIndex, Index - startIndex);
+                }
+                if (current == '\\')
+                {
+                    if (!MoveNext())
+                    {
+                        throw new InvalidPatternException(Messages.Parse_EscapeAtEndOfString);
+                    }
+                }
+                else if (current == '\'' || current == '\"')
+                {
+                    // We really don't care about the value here. It's slightly inefficient to
+                    // create the substring and then ignore it, but it's unlikely to be significant.
+                    GetQuotedString(current);
+                }
+            }
+            // We've reached the end of the enclosing pattern without reaching the end of the embedded pattern. Oops.
+            throw new InvalidPatternException(string.Format(Messages.Parse_MissingEmbeddedPatternEnd, endPattern));
         }
     }
 }

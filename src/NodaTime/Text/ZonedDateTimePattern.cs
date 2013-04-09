@@ -2,12 +2,10 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-using System;
-using System.Globalization;
 using NodaTime.Globalization;
-using NodaTime.Text.Patterns;
 using NodaTime.TimeZones;
 using NodaTime.Utility;
+using System.Globalization;
 
 namespace NodaTime.Text
 {
@@ -110,7 +108,7 @@ namespace NodaTime.Text
         internal static ZonedDateTimePattern Create(string patternText, NodaFormatInfo formatInfo,
             ZoneLocalMappingResolver resolver, IDateTimeZoneProvider zoneProvider, ZonedDateTime templateValue)
         {
-            // TODO(V1.2): Work out the best place to do this test. Currently it's also done in LocalDateTimePatternParser.
+            // TODO(V1.2): Work out the best place to do this test. Currently it's also done in ZonedDateTimePatternParser.
             Preconditions.CheckNotNull(patternText, "patternText");
             Preconditions.CheckNotNull(formatInfo, "formatInfo");
             Preconditions.CheckNotNull(resolver, "resolver");
