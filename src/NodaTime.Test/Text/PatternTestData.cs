@@ -70,7 +70,7 @@ namespace NodaTime.Test.Text
 
         internal abstract IPattern<T> CreatePattern();
 
-        public void TestParse()
+        internal void TestParse()
         {
             Assert.IsNull(Message);
             IPattern<T> pattern = CreatePattern();
@@ -79,14 +79,38 @@ namespace NodaTime.Test.Text
             Assert.AreEqual(Value, actualValue);
         }
 
-        public void TestFormat()
+        internal void TestFormat()
         {
             Assert.IsNull(Message);
             IPattern<T> pattern = CreatePattern();
             Assert.AreEqual(Text, pattern.Format(Value));
         }
 
-        public void TestInvalidPattern()
+        internal void TestParsePartial()
+        {
+            var pattern = (IPartialPattern<T>) CreatePattern();
+            Assert.IsNull(Message);
+            var cursor = new ValueCursor("^" + Text + "#");
+            // Move to the ^
+            cursor.MoveNext();
+            // Move to the start of the text
+            cursor.MoveNext();
+            var result = pattern.ParsePartial(cursor);
+            var actualValue = result.Value;
+            Assert.AreEqual(Value, actualValue);
+            Assert.AreEqual('#', cursor.Current);
+        }
+
+        internal void TestFormatPartial()
+        {
+            var pattern = (IPartialPattern<T>)CreatePattern();
+            Assert.IsNull(Message);
+            var builder = new StringBuilder("x");
+            pattern.FormatPartial(Value, builder);
+            Assert.AreEqual("x" + Text, builder.ToString());
+        }
+
+        internal void TestInvalidPattern()
         {
             string expectedMessage = FormatMessage(Message, parameters.ToArray());
             try

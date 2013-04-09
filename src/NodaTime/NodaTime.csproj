@@ -168,6 +168,9 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="Text\OffsetDateTimePattern.cs" />
+    <Compile Include="Text\OffsetDateTimePatternParser.cs" />
+    <Compile Include="Text\IPartialPattern.cs" />
     <Compile Include="Text\ZonedDateTimePattern.cs" />
     <Compile Include="Text\LocalDateTimePatternParser.cs" />
     <Compile Include="Text\Delegates.cs" />
@@ -197,7 +200,6 @@
     <Compile Include="Text\ParseBucket.cs" />
     <Compile Include="Text\ParseResult.cs" />
     <Compile Include="Text\Patterns\CompositePattern.cs" />
-    <Compile Include="Text\Patterns\SimplePattern.cs" />
     <Compile Include="Text\Patterns\SteppedPatternBuilder.cs" />
     <Compile Include="Text\UnparsableValueException.cs" />
     <Compile Include="IClock.cs" />

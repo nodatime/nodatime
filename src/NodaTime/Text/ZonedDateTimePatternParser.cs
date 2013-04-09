@@ -2,6 +2,7 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
+using System;
 using NodaTime.Globalization;
 using NodaTime.Properties;
 using NodaTime.Text.Patterns;
@@ -11,7 +12,7 @@ using NodaTime.Utility;
 
 namespace NodaTime.Text
 {
-    internal sealed class ZonedDateTimePatternParser
+    internal sealed class ZonedDateTimePatternParser : IPatternParser<ZonedDateTime>
     {
         // Split the template value once, to avoid doing it every time we parse.
         private readonly LocalDate templateValueDate;
@@ -51,13 +52,14 @@ namespace NodaTime.Text
             { 't', TimePatternHelper.CreateAmPmHandler<ZonedDateTime, ZonedDateTimeParseBucket>(time => time.Hour, (bucket, value) => bucket.Time.AmPm = value) },
             { 'c', DatePatternHelper.CreateCalendarHandler<ZonedDateTime, ZonedDateTimeParseBucket>(value => value.LocalDateTime.Calendar, (bucket, value) => bucket.Date.Calendar = value) },
             { 'g', DatePatternHelper.CreateEraHandler<ZonedDateTime, ZonedDateTimeParseBucket>(value => value.Era, bucket => bucket.Date) },
-            { 'z', HandleZone }
+            { 'z', HandleZone },
+            { 'o', HandleOffset },
         };
 
         internal ZonedDateTimePatternParser(ZonedDateTime templateValue, ZoneLocalMappingResolver resolver, IDateTimeZoneProvider zoneProvider)
         {
-            templateValueDate = templateValue.LocalDateTime.Date;
-            templateValueTime = templateValue.LocalDateTime.TimeOfDay;
+            templateValueDate = templateValue.Date;
+            templateValueTime = templateValue.TimeOfDay;
             templateValueZone = templateValue.Zone;
             this.resolver = resolver;
             this.zoneProvider = zoneProvider;
@@ -90,6 +92,25 @@ namespace NodaTime.Text
             builder.AddFormatAction((value, sb) => sb.Append(value.Zone.Id));
         }
 
+        private static void HandleOffset(PatternCursor pattern,
+            SteppedPatternBuilder<ZonedDateTime, ZonedDateTimeParseBucket> builder)
+        {
+            builder.AddField(PatternFields.EmbeddedOffset, pattern.Current);
+            string embeddedPattern = pattern.GetEmbeddedPattern('<', '>');
+            IPartialPattern<Offset> offsetPattern = OffsetPattern.Create(embeddedPattern, builder.FormatInfo);
+            builder.AddParseAction((value, bucket) =>
+                {
+                    var result = offsetPattern.ParsePartial(value);
+                    if (!result.Success)
+                    {
+                        return result.ConvertError<ZonedDateTime>();
+                    }
+                    bucket.Offset = result.Value;
+                    return null;
+                });
+            builder.AddFormatAction((value, sb) => offsetPattern.FormatPartial(value.Offset, sb));
+        }
+
         private static ParseResult<ZonedDateTime> ParseZone(ValueCursor value, ZonedDateTimeParseBucket bucket)
         {
             return bucket.ParseZone(value);
@@ -100,15 +121,9 @@ namespace NodaTime.Text
             internal readonly LocalDatePatternParser.LocalDateParseBucket Date;
             internal readonly LocalTimePatternParser.LocalTimeParseBucket Time;
             internal DateTimeZone Zone;
+            internal Offset Offset;
             private readonly ZoneLocalMappingResolver resolver;
             private readonly IDateTimeZoneProvider zoneProvider;
-
-            // TODO(V1.2): Find a better way of handling this than hard-coding... this avoids type initialization concerns though.
-            private static readonly int FullPatternLength = "UTC+HH:mm:ss.fff".Length;
-            private static readonly int LongPatternLength = "UTC+HH:mm:ss".Length;
-            private static readonly int MediumPatternLength = "UTC+HH:mm".Length;
-            private static readonly int ShortPatternLength = "UTC+HH".Length;
-            private static readonly int NoOffsetLength = "UTC".Length;
 
             internal ZonedDateTimeParseBucket(LocalDate templateDate, LocalTime templateTime,
                 DateTimeZone templateZone, ZoneLocalMappingResolver resolver, IDateTimeZoneProvider zoneProvider)
@@ -141,35 +156,14 @@ namespace NodaTime.Text
             /// </summary>
             private DateTimeZone TryParseFixedZone(ValueCursor value)
             {
-                if (value.CompareOrdinal("UTC") != 0)
+                if (value.CompareOrdinal(DateTimeZone.UtcId) != 0)
                 {
                     return null;
                 }
-                // This will never return null, given that we know it starts with UTC.
-                return TryParseFixedZone(value, FullPatternLength)
-                    ?? TryParseFixedZone(value, LongPatternLength)
-                    ?? TryParseFixedZone(value, MediumPatternLength)
-                    ?? TryParseFixedZone(value, ShortPatternLength)
-                    ?? TryParseFixedZone(value, NoOffsetLength);
-            }
-
-            /// <summary>
-            /// Attempts to parse the first "length" characters of value as a complete
-            /// fixed time zone ID.
-            /// </summary>
-            private DateTimeZone TryParseFixedZone(ValueCursor value, int length)
-            {
-                if (value.Length - value.Index < length)
-                {
-                    return null;
-                }
-                string maybeFullText = value.Value.Substring(value.Index, length);
-                DateTimeZone zone = FixedDateTimeZone.GetFixedZoneOrNull(maybeFullText);
-                if (zone != null)
-                {
-                    value.Move(value.Index + length);
-                }
-                return zone;
+                value.Move(value.Index + 3);
+                IPartialPattern<Offset> pattern = OffsetPattern.GeneralInvariantPattern;
+                var parseResult = pattern.ParsePartial(value);
+                return parseResult.Success ? DateTimeZone.ForOffset(parseResult.Value) : DateTimeZone.Utc;
             }
                 
             /// <summary>
@@ -224,18 +218,45 @@ namespace NodaTime.Text
 
                 var localDateTime = localResult.Value;
 
-                try
+                // No offset - so just use the resolver
+                if ((usedFields & PatternFields.EmbeddedOffset) == 0)
                 {
-                    return ParseResult<ZonedDateTime>.ForValue(Zone.ResolveLocal(localDateTime, resolver));
+                    try
+                    {
+                        return ParseResult<ZonedDateTime>.ForValue(Zone.ResolveLocal(localDateTime, resolver));
+                    }
+                    catch (SkippedTimeException)
+                    {
+                        return ParseResult<ZonedDateTime>.SkippedLocalTime;
+                    }
+                    catch (AmbiguousTimeException)
+                    {
+                        return ParseResult<ZonedDateTime>.AmbiguousLocalTime;
+                    }
                 }
-                catch (SkippedTimeException)
+                
+                // We were given an offset, so we can resolve and validate using that
+                var mapping = Zone.MapLocal(localDateTime);
+                ZonedDateTime result;
+                switch (mapping.Count)
                 {
-                    return ParseResult<ZonedDateTime>.SkippedLocalTime;
+                    // If the local time was skipped, the offset has to be invalid.
+                    case 0:
+                        return ParseResult<ZonedDateTime>.InvalidOffset;
+                    case 1:
+                        result = mapping.First(); // We'll validate in a minute
+                        break;
+                    case 2:
+                        result = mapping.First().Offset == Offset ? mapping.First() : mapping.Last();
+                        break;
+                    default:
+                        throw new InvalidOperationException("Mapping has count outside range 0-2; should not happen.");
                 }
-                catch (AmbiguousTimeException)
+                if (result.Offset != Offset)
                 {
-                    return ParseResult<ZonedDateTime>.AmbiguousLocalTime;
+                    return ParseResult<ZonedDateTime>.InvalidOffset;
                 }
+                return ParseResult<ZonedDateTime>.ForValue(result);
             }
         }
     }

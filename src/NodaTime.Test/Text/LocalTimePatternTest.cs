@@ -370,7 +370,7 @@ namespace NodaTime.Test.Text
             {
                 if (cursor.Current == '\'')
                 {
-                    cursor.GetQuotedString();
+                    cursor.GetQuotedString('\'');
                 }
                 else
                 {
