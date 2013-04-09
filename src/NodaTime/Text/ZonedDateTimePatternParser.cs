@@ -12,7 +12,7 @@ using NodaTime.Utility;
 
 namespace NodaTime.Text
 {
-    internal sealed class ZonedDateTimePatternParser
+    internal sealed class ZonedDateTimePatternParser : IPatternParser<ZonedDateTime>
     {
         // Split the template value once, to avoid doing it every time we parse.
         private readonly LocalDate templateValueDate;
@@ -58,8 +58,8 @@ namespace NodaTime.Text
 
         internal ZonedDateTimePatternParser(ZonedDateTime templateValue, ZoneLocalMappingResolver resolver, IDateTimeZoneProvider zoneProvider)
         {
-            templateValueDate = templateValue.LocalDateTime.Date;
-            templateValueTime = templateValue.LocalDateTime.TimeOfDay;
+            templateValueDate = templateValue.Date;
+            templateValueTime = templateValue.TimeOfDay;
             templateValueZone = templateValue.Zone;
             this.resolver = resolver;
             this.zoneProvider = zoneProvider;
