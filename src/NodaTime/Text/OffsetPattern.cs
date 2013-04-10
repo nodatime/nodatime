@@ -2,12 +2,10 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-using System;
-using System.Globalization;
 using NodaTime.Globalization;
 using NodaTime.Text.Patterns;
 using NodaTime.Utility;
-using System.Text;
+using System.Globalization;
 
 namespace NodaTime.Text
 {
@@ -19,7 +17,7 @@ namespace NodaTime.Text
     /// may be shared freely between threads. We recommend only using read-only cultures for patterns, although this is
     /// not currently enforced.
     /// </threadsafety>
-    public sealed class OffsetPattern : IPartialPattern<Offset>
+    public sealed class OffsetPattern : IPattern<Offset>
     {
         /// <summary>
         /// The "general" offset pattern (e.g. +HH, +HH:mm, +HH:mm:ss, +HH:mm:ss.fff) for the invariant culture.
@@ -55,6 +53,12 @@ namespace NodaTime.Text
             this.formatInfo = formatInfo;
             this.pattern = pattern;
         }
+
+        /// <summary>
+        /// Returns the pattern that this object delegates to. Mostly useful to avoid this public class
+        /// implementing an internal interface.
+        /// </summary>
+        internal IPartialPattern<Offset> UnderlyingPattern { get { return pattern; } }
 
         /// <summary>
         /// Parses the given text value according to the rules of this pattern.
@@ -162,18 +166,6 @@ namespace NodaTime.Text
         public OffsetPattern WithCulture(CultureInfo cultureInfo)
         {
             return WithFormatInfo(NodaFormatInfo.GetFormatInfo(cultureInfo));
-        }
-
-        /// <inheritdoc />
-        ParseResult<Offset> IPartialPattern<Offset>.ParsePartial(ValueCursor cursor)
-        {
-            return pattern.ParsePartial(cursor);
-        }
-
-        /// <inheritdoc />
-        void IPartialPattern<Offset>.FormatPartial(Offset value, StringBuilder builder)
-        {
-            pattern.FormatPartial(value, builder);
         }
     }
 }
