@@ -82,7 +82,7 @@ namespace NodaTime.Text
         {
             builder.AddField(PatternFields.EmbeddedOffset, pattern.Current);
             string embeddedPattern = pattern.GetEmbeddedPattern('<', '>');
-            IPartialPattern<Offset> offsetPattern = OffsetPattern.Create(embeddedPattern, builder.FormatInfo);
+            var offsetPattern = OffsetPattern.Create(embeddedPattern, builder.FormatInfo).UnderlyingPattern;
             builder.AddParseAction((value, bucket) =>
                 {
                     var result = offsetPattern.ParsePartial(value);

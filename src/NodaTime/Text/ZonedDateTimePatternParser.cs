@@ -97,7 +97,7 @@ namespace NodaTime.Text
         {
             builder.AddField(PatternFields.EmbeddedOffset, pattern.Current);
             string embeddedPattern = pattern.GetEmbeddedPattern('<', '>');
-            IPartialPattern<Offset> offsetPattern = OffsetPattern.Create(embeddedPattern, builder.FormatInfo);
+            var offsetPattern = OffsetPattern.Create(embeddedPattern, builder.FormatInfo).UnderlyingPattern;
             builder.AddParseAction((value, bucket) =>
                 {
                     var result = offsetPattern.ParsePartial(value);
@@ -161,7 +161,7 @@ namespace NodaTime.Text
                     return null;
                 }
                 value.Move(value.Index + 3);
-                IPartialPattern<Offset> pattern = OffsetPattern.GeneralInvariantPattern;
+                var pattern = OffsetPattern.GeneralInvariantPattern.UnderlyingPattern;
                 var parseResult = pattern.ParsePartial(value);
                 return parseResult.Success ? DateTimeZone.ForOffset(parseResult.Value) : DateTimeZone.Utc;
             }
