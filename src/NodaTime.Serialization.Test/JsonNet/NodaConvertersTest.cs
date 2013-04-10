@@ -17,45 +17,19 @@ namespace NodaTime.Serialization.Test.JsonNet
     public class NodaConvertersTest
     {
         [Test]
-        public void OffsetConverter_Serialize()
+        public void OffsetConverter()
         {
-            var offset = Offset.FromHoursAndMinutes(5, 30);
-
-            var json = JsonConvert.SerializeObject(offset, Formatting.None, NodaConverters.OffsetConverter);
-
-            string expectedJson = "\"+05:30\"";
-            Assert.AreEqual(expectedJson, json);
-        }
-
-        [Test]
-        public void OffsetConverter_Deserialize()
-        {
+            var value = Offset.FromHoursAndMinutes(5, 30);
             string json = "\"+05:30\"";
-
-            var offset = JsonConvert.DeserializeObject<Offset>(json, NodaConverters.OffsetConverter);
-
-            var expectedOffset = Offset.FromHoursAndMinutes(5, 30);
-            Assert.AreEqual(expectedOffset, offset);
+            AssertConversions(value, json, NodaConverters.OffsetConverter);
         }
 
         [Test]
-        public void InstantConverter_Serialize()
+        public void InstantConverter()
         {
-            var instant = Instant.FromUtc(2012, 1, 2, 3, 4, 5);
-            var json = JsonConvert.SerializeObject(instant, Formatting.None, NodaConverters.InstantConverter);
-            string expectedJson = "\"2012-01-02T03:04:05Z\"";
-            Assert.AreEqual(expectedJson, json);
-        }
-
-        [Test]
-        public void InstantConverter_Deserialize()
-        {
+            var value = Instant.FromUtc(2012, 1, 2, 3, 4, 5);
             string json = "\"2012-01-02T03:04:05Z\"";
-
-            var instant = JsonConvert.DeserializeObject<Instant>(json, NodaConverters.InstantConverter);
-
-            var expectedInstant = Instant.FromUtc(2012, 1, 2, 3, 4, 5);
-            Assert.AreEqual(expectedInstant, instant);
+            AssertConversions(value, json, NodaConverters.InstantConverter);
         }
 
         [Test]
@@ -69,25 +43,11 @@ namespace NodaTime.Serialization.Test.JsonNet
         }
 
         [Test]
-        public void LocalDateConverter_Serialize()
+        public void LocalDateConverter()
         {
-            var localDate = new LocalDate(2012, 1, 2, CalendarSystem.Iso);
-
-            var json = JsonConvert.SerializeObject(localDate, Formatting.None, NodaConverters.LocalDateConverter);
-
-            string expectedJson = "\"2012-01-02\"";
-            Assert.AreEqual(expectedJson, json);
-        }
-
-        [Test]
-        public void LocalDateConverter_Deserialize()
-        {
+            var value = new LocalDate(2012, 1, 2, CalendarSystem.Iso);
             string json = "\"2012-01-02\"";
-
-            var localDate = JsonConvert.DeserializeObject<LocalDate>(json, NodaConverters.LocalDateConverter);
-
-            var expectedLocalDate = new LocalDate(2012, 1, 2, CalendarSystem.Iso);
-            Assert.AreEqual(expectedLocalDate, localDate);
+            AssertConversions(value, json, NodaConverters.LocalDateConverter);
         }
 
         [Test]
@@ -99,25 +59,11 @@ namespace NodaTime.Serialization.Test.JsonNet
         }
 
         [Test]
-        public void LocalDateTimeConverter_Serialize()
+        public void LocalDateTimeConverter()
         {
-            var localDateTime = new LocalDateTime(2012, 1, 2, 3, 4, 5, 6, 7, CalendarSystem.Iso);
-
-            var json = JsonConvert.SerializeObject(localDateTime, Formatting.None, NodaConverters.LocalDateTimeConverter);
-
-            string expectedJson = "\"2012-01-02T03:04:05.0060007\"";
-            Assert.AreEqual(expectedJson, json);
-        }
-
-        [Test]
-        public void LocalDateTimeConverter_Deserialize()
-        {
-            string json = "\"2012-01-02T03:04:05.0060007\"";
-
-            var localDateTime = JsonConvert.DeserializeObject<LocalDateTime>(json, NodaConverters.LocalDateTimeConverter);
-
-            var expectedLocalDateTime = new LocalDateTime(2012, 1, 2, 3, 4, 5, 6, 7, CalendarSystem.Iso);
-            Assert.AreEqual(expectedLocalDateTime, localDateTime);
+            var value = new LocalDateTime(2012, 1, 2, 3, 4, 5, 6, 7, CalendarSystem.Iso);
+            var json = "\"2012-01-02T03:04:05.0060007\"";
+            AssertConversions(value, json, NodaConverters.LocalDateTimeConverter);
         }
 
         [Test]
@@ -141,44 +87,25 @@ namespace NodaTime.Serialization.Test.JsonNet
         }
 
         [Test]
-        public void LocalTimeConverter_Serialize()
+        public void LocalTimeConverter()
         {
-            var localTime = new LocalTime(1, 2, 3, 4, 5);
-            var json = JsonConvert.SerializeObject(localTime, Formatting.None, NodaConverters.LocalTimeConverter);
-            string expectedJson = "\"01:02:03.0040005\"";
-            Assert.AreEqual(expectedJson, json);
+            var value = new LocalTime(1, 2, 3, 4, 5);
+            var json = "\"01:02:03.0040005\"";
+            AssertConversions(value, json, NodaConverters.LocalTimeConverter);
         }
 
         [Test]
-        public void LocalTimeConverter_Deserialize()
+        public void RoundtripPeriodConverter()
         {
-            string json = "\"01:02:03.0040005\"";
-            var localTime = JsonConvert.DeserializeObject<LocalTime>(json, NodaConverters.LocalTimeConverter);
-            var expectedLocalTime = new LocalTime(1, 2, 3, 4, 5);
-            Assert.AreEqual(expectedLocalTime, localTime);
-        }
-
-        [Test]
-        public void RoundtripPeriodConverter_Serialize()
-        {
-            var period = Period.FromDays(2) + Period.FromHours(3) + Period.FromMinutes(90);
-            var json = JsonConvert.SerializeObject(period, Formatting.None, NodaConverters.RoundtripPeriodConverter);
-            string expectedJson = "\"P2DT3H90M\"";
-            Assert.AreEqual(expectedJson, json);
-        }
-
-        [Test]
-        public void PeriodConverter_Deserialize()
-        {
+            var value = Period.FromDays(2) + Period.FromHours(3) + Period.FromMinutes(90);
             string json = "\"P2DT3H90M\"";
-            var period = JsonConvert.DeserializeObject<Period>(json, NodaConverters.RoundtripPeriodConverter);
-            var expectedPeriod = Period.FromDays(2) + Period.FromHours(3) + Period.FromMinutes(90);
-            Assert.AreEqual(expectedPeriod, period);
+            AssertConversions(value, json, NodaConverters.RoundtripPeriodConverter);
         }
 
         [Test]
-        public void NormalizingIsoPeriodConverter_Serialize()
+        public void NormalizingIsoPeriodConverter_RequiresNormalization()
         {
+            // Can't use AssertConversions here, as it doesn't round-trip
             var period = Period.FromDays(2) + Period.FromHours(3) + Period.FromMinutes(90);
             var json = JsonConvert.SerializeObject(period, Formatting.None, NodaConverters.NormalizingIsoPeriodConverter);
             string expectedJson = "\"P2DT4H30M\"";
@@ -186,12 +113,43 @@ namespace NodaTime.Serialization.Test.JsonNet
         }
 
         [Test]
-        public void NormalizingIsoPeriodConverter_Deserialize()
+        public void NormalizingIsoPeriodConverter_AlreadyNormalized()
         {
+            // This time we're okay as it's already a normalized value.
+            var value = Period.FromDays(2) + Period.FromHours(4) + Period.FromMinutes(30);
             string json = "\"P2DT4H30M\"";
-            var period = JsonConvert.DeserializeObject<Period>(json, NodaConverters.NormalizingIsoPeriodConverter);
-            var expectedPeriod = Period.FromDays(2) + Period.FromHours(4) + Period.FromMinutes(30);
-            Assert.AreEqual(expectedPeriod, period);
+            AssertConversions(value, json, NodaConverters.NormalizingIsoPeriodConverter);
+        }
+
+        [Test]
+        public void ZonedDateTimeConverter()
+        {
+            // Deliberately give it an ambiguous local time, in both ways.
+            var zone = DateTimeZoneProviders.Tzdb["Europe/London"];
+            var earlierValue = new ZonedDateTime(new LocalDateTime(2012, 10, 28, 1, 30), zone, Offset.FromHours(1));
+            var laterValue = new ZonedDateTime(new LocalDateTime(2012, 10, 28, 1, 30), zone, Offset.FromHours(0));
+            string earlierJson = "\"2012-10-28T01:30:00 Europe/London +01\"";
+            string laterJson = "\"2012-10-28T01:30:00 Europe/London +00\"";
+
+            AssertConversions(earlierValue, earlierJson, NodaConverters.ZonedDateTimeConverter);
+            AssertConversions(laterValue, laterJson, NodaConverters.ZonedDateTimeConverter);
+        }
+
+        [Test]
+        public void OffsetDateTimeConverter_Serialize()
+        {
+            var value = new LocalDateTime(2012, 1, 2, 3, 4, 5, 6, 7).WithOffset(Offset.FromHoursAndMinutes(-1, -30) + Offset.FromMilliseconds(-1234));
+            string json = "\"2012-01-02T03:04:05.0060007 -01:30:01.234\"";
+            AssertConversions(value, json, NodaConverters.OffsetDateTimeConverter);
+        }
+
+        private static void AssertConversions<T>(T value, string expectedJson, JsonConverter converter)
+        {
+            var actualJson = JsonConvert.SerializeObject(value, Formatting.None, converter);
+            Assert.AreEqual(expectedJson, actualJson);
+
+            var deserializedValue = JsonConvert.DeserializeObject<T>(expectedJson, converter);
+            Assert.AreEqual(value, deserializedValue);
         }
     }
 }

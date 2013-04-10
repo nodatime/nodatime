@@ -16,12 +16,36 @@ namespace NodaTime.Text
     /// may be shared freely between threads. We recommend only using read-only cultures for patterns, although this is
     /// not currently enforced.
     /// </threadsafety>
-    internal sealed class OffsetDateTimePattern : IPattern<OffsetDateTime>
+    public sealed class OffsetDateTimePattern : IPattern<OffsetDateTime>
     {
         internal static readonly OffsetDateTime DefaultTemplateValue = new LocalDateTime(2000, 1, 1, 0, 0).WithOffset(Offset.Zero);
 
         // TODO(V1.2): Use "G" instead when we've got standard patterns (and actually use this constant!)
         private const string DefaultFormatPattern = "yyyy-MM-dd'T'HH:mm:ss z"; // General (long time)
+
+        // TODO(V1.2): Quite possibly change this..
+        /// <summary>
+        /// Returns an invariant local date/time pattern based on ISO-8601 but with the offset at the end. The calendar
+        /// system is not parsed or formatted as part of this pattern.
+        /// </summary>
+        public static OffsetDateTimePattern RoundtripWithoutCalendarPattern { get { return Patterns.RoundtripWithoutCalendarPatternImpl; } }
+
+        // TODO(V1.2): Quite possibly change this..
+        /// <summary>
+        /// Returns an invariant local date/time pattern based on ISO-8601 but with the offset and calendar ID at the end.
+        /// </summary>
+        public static OffsetDateTimePattern RoundtripWithCalendarPattern { get { return Patterns.RoundtripWithCalendarPatternImpl; } }
+
+        /// <summary>
+        /// Class whose existence is solely to avoid type initialization order issues, most of which stem
+        /// from needing NodaFormatInfo.InvariantInfo...
+        /// </summary>
+        internal static class Patterns
+        {
+            internal static readonly OffsetDateTimePattern RoundtripWithoutCalendarPatternImpl = Create("yyyy'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFF o<g>", NodaFormatInfo.InvariantInfo, DefaultTemplateValue);
+
+            internal static readonly OffsetDateTimePattern RoundtripWithCalendarPatternImpl = Create("yyyy'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFF o<g> c", NodaFormatInfo.InvariantInfo, DefaultTemplateValue);
+        }
 
         private readonly string patternText;
         private readonly NodaFormatInfo formatInfo;
