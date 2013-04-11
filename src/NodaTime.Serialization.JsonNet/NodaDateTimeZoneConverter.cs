@@ -12,7 +12,7 @@ namespace NodaTime.Serialization.JsonNet
     /// <summary>
     /// Json.NET converter for <see cref="DateTimeZone"/>.
     /// </summary>
-    public sealed class NodaDateTimeZoneConverter : NodaConverterBase<DateTimeZone>
+    internal sealed class NodaDateTimeZoneConverter : NodaConverterBase<DateTimeZone>
     {
         private readonly IDateTimeZoneProvider provider;
 

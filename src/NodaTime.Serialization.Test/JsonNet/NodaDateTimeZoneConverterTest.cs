@@ -13,7 +13,7 @@ namespace NodaTime.Serialization.Test.JsonNet
     [TestFixture]
     public class NodaDateTimeZoneConverterTest
     {
-        private readonly JsonConverter converter = new NodaDateTimeZoneConverter(DateTimeZoneProviders.Tzdb);
+        private readonly JsonConverter converter = NodaConverters.CreateDateTimeZoneConverter(DateTimeZoneProviders.Tzdb);
 
         [Test]
         public void Serialize()

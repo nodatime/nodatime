@@ -128,18 +128,19 @@ namespace NodaTime.Serialization.Test.JsonNet
             var zone = DateTimeZoneProviders.Tzdb["Europe/London"];
             var earlierValue = new ZonedDateTime(new LocalDateTime(2012, 10, 28, 1, 30), zone, Offset.FromHours(1));
             var laterValue = new ZonedDateTime(new LocalDateTime(2012, 10, 28, 1, 30), zone, Offset.FromHours(0));
-            string earlierJson = "\"2012-10-28T01:30:00 Europe/London +01\"";
-            string laterJson = "\"2012-10-28T01:30:00 Europe/London +00\"";
+            string earlierJson = "\"2012-10-28T01:30:00+01 Europe/London\"";
+            string laterJson = "\"2012-10-28T01:30:00Z Europe/London\"";
+            var converter = NodaConverters.CreateZonedDateTimeConverter(DateTimeZoneProviders.Tzdb);
 
-            AssertConversions(earlierValue, earlierJson, NodaConverters.ZonedDateTimeConverter);
-            AssertConversions(laterValue, laterJson, NodaConverters.ZonedDateTimeConverter);
+            AssertConversions(earlierValue, earlierJson, converter);
+            AssertConversions(laterValue, laterJson, converter);
         }
 
         [Test]
-        public void OffsetDateTimeConverter_Serialize()
+        public void OffsetDateTimeConverter()
         {
             var value = new LocalDateTime(2012, 1, 2, 3, 4, 5, 6, 7).WithOffset(Offset.FromHoursAndMinutes(-1, -30) + Offset.FromMilliseconds(-1234));
-            string json = "\"2012-01-02T03:04:05.0060007 -01:30:01.234\"";
+            string json = "\"2012-01-02T03:04:05.0060007-01:30:01.234\"";
             AssertConversions(value, json, NodaConverters.OffsetDateTimeConverter);
         }
 

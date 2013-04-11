@@ -25,14 +25,15 @@ namespace NodaTime.Text
 
         // TODO(V1.2): Quite possibly change this..
         /// <summary>
-        /// Returns an invariant local date/time pattern based on ISO-8601 but with the offset at the end. The calendar
-        /// system is not parsed or formatted as part of this pattern.
+        /// Returns an invariant local date/time pattern based on ISO-8601 including offset from UTC.
+        /// The calendar system is not parsed or formatted as part of this pattern.
         /// </summary>
-        public static OffsetDateTimePattern RoundtripWithoutCalendarPattern { get { return Patterns.RoundtripWithoutCalendarPatternImpl; } }
+        public static OffsetDateTimePattern ExtendedIsoPattern { get { return Patterns.ExtendedIsoPatternImpl; } }
 
         // TODO(V1.2): Quite possibly change this..
         /// <summary>
-        /// Returns an invariant local date/time pattern based on ISO-8601 but with the offset and calendar ID at the end.
+        /// Returns an invariant local date/time pattern based on ISO-8601 including offset from UTC and
+        /// calendar ID.
         /// </summary>
         public static OffsetDateTimePattern RoundtripWithCalendarPattern { get { return Patterns.RoundtripWithCalendarPatternImpl; } }
 
@@ -42,9 +43,9 @@ namespace NodaTime.Text
         /// </summary>
         internal static class Patterns
         {
-            internal static readonly OffsetDateTimePattern RoundtripWithoutCalendarPatternImpl = Create("yyyy'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFF o<g>", NodaFormatInfo.InvariantInfo, DefaultTemplateValue);
+            internal static readonly OffsetDateTimePattern ExtendedIsoPatternImpl = Create("yyyy'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFFo<G>", NodaFormatInfo.InvariantInfo, DefaultTemplateValue);
 
-            internal static readonly OffsetDateTimePattern RoundtripWithCalendarPatternImpl = Create("yyyy'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFF o<g> c", NodaFormatInfo.InvariantInfo, DefaultTemplateValue);
+            internal static readonly OffsetDateTimePattern RoundtripWithCalendarPatternImpl = Create("yyyy'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFFo<G> c", NodaFormatInfo.InvariantInfo, DefaultTemplateValue);
         }
 
         private readonly string patternText;

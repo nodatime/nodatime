@@ -23,9 +23,11 @@ namespace NodaTime.Serialization.JsonNet
             settings.Converters.Add(NodaConverters.LocalDateTimeConverter);
             settings.Converters.Add(NodaConverters.LocalTimeConverter);
             settings.Converters.Add(NodaConverters.OffsetConverter);
-            settings.Converters.Add(new NodaDateTimeZoneConverter(provider));
+            settings.Converters.Add(NodaConverters.CreateDateTimeZoneConverter(provider));
             settings.Converters.Add(NodaConverters.DurationConverter);
             settings.Converters.Add(NodaConverters.RoundtripPeriodConverter);
+            settings.Converters.Add(NodaConverters.OffsetDateTimeConverter);
+            settings.Converters.Add(NodaConverters.CreateZonedDateTimeConverter(provider));
 
             // return to allow fluent chaining if desired
             return settings;
@@ -43,9 +45,11 @@ namespace NodaTime.Serialization.JsonNet
             serializer.Converters.Add(NodaConverters.LocalDateTimeConverter);
             serializer.Converters.Add(NodaConverters.LocalTimeConverter);
             serializer.Converters.Add(NodaConverters.OffsetConverter);
-            serializer.Converters.Add(new NodaDateTimeZoneConverter(provider));
+            serializer.Converters.Add(NodaConverters.CreateDateTimeZoneConverter(provider));
             serializer.Converters.Add(NodaConverters.DurationConverter);
             serializer.Converters.Add(NodaConverters.RoundtripPeriodConverter);
+            serializer.Converters.Add(NodaConverters.OffsetDateTimeConverter);
+            serializer.Converters.Add(NodaConverters.CreateZonedDateTimeConverter(provider));
 
             // return to allow fluent chaining if desired
             return serializer;
