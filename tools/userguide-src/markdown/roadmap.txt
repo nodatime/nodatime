@@ -8,7 +8,7 @@ If there's something not mentioned here that you feel should be on this
 roadmap, then *please* either raise an issue or post on the
 [mailing list](http://groups.google.com/group/noda-time).
 
-This roadmap was last updated on **2013-03-04**.
+This roadmap was last updated on **2013-04-03**.
 
    * 1.2
       - Better serialization: add native support for XML serialization,
