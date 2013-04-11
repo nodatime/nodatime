@@ -20,9 +20,10 @@ namespace NodaTime
         public static IDateTimeZoneProvider Tzdb { get { return TzdbHolder.TzdbImpl; } }
 
         // This class exists to force TZDB initialization to be lazy. We don't want using
-        // DateTimeZoneProviders.Bcl to 
-        internal static class TzdbHolder
+        // DateTimeZoneProviders.Bcl to force a read/parse.
+        private static class TzdbHolder
         {
+            // See http://csharpindepth.com/Articles/General/BeforeFieldInit.aspx
             static TzdbHolder() {}
             internal static readonly DateTimeZoneCache TzdbImpl = new DateTimeZoneCache(TzdbDateTimeZoneSource.Default);
         }
