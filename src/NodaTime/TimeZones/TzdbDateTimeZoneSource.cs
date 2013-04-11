@@ -35,6 +35,8 @@ namespace NodaTime.TimeZones
         // Class to enable lazy initialization of the default instance.
         private static class DefaultHolder
         {
+            static DefaultHolder() {}
+
             internal static readonly TzdbDateTimeZoneSource builtin = new TzdbDateTimeZoneSource(LoadDefaultDataSource());
 
             private static ITzdbDataSource LoadDefaultDataSource()
