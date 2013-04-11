@@ -3,6 +3,7 @@
 // as found in the LICENSE.txt file.
 
 using System;
+using System.Globalization;
 using Newtonsoft.Json;
 using NodaTime.Text;
 
@@ -49,6 +50,19 @@ namespace NodaTime.Serialization.JsonNet
         public static readonly JsonConverter OffsetConverter = new NodaPatternConverter<Offset>(OffsetPattern.GeneralInvariantPattern);
 
         /// <summary>
+        /// Converter for offset date/times.
+        /// </summary>
+        public static readonly JsonConverter OffsetDateTimeConverter = new NodaPatternConverter<OffsetDateTime>(
+            OffsetDateTimePattern.RoundtripWithoutCalendarPattern, CreateIsoValidator<OffsetDateTime>(x => x.Calendar));
+
+        /// <summary>
+        /// Converter for zoned date/times, using TZDB.
+        /// </summary>
+        public static readonly JsonConverter ZonedDateTimeConverter = new NodaPatternConverter<ZonedDateTime>(
+            ZonedDateTimePattern.CreateWithInvariantCulture("yyyy'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFF z o<g>", DateTimeZoneProviders.Tzdb),
+            CreateIsoValidator<ZonedDateTime>(x => x.Calendar));
+
+            /// <summary>
         /// Converter for durations.
         /// </summary>
         public static readonly JsonConverter DurationConverter = new NodaDurationConverter();

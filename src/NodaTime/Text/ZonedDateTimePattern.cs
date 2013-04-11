@@ -17,7 +17,7 @@ namespace NodaTime.Text
     /// may be shared freely between threads. We recommend only using read-only cultures for patterns, although this is
     /// not currently enforced.
     /// </threadsafety>
-    internal sealed class ZonedDateTimePattern : IPattern<ZonedDateTime>
+    public sealed class ZonedDateTimePattern : IPattern<ZonedDateTime>
     {
         internal static readonly ZonedDateTime DefaultTemplateValue = new LocalDateTime(2000, 1, 1, 0, 0).InUtc();
 
@@ -49,7 +49,7 @@ namespace NodaTime.Text
 
         /// <summary>
         /// Returns the resolver which is used to map local date/times to zoned date/times,
-        /// handling skipped and ambiguous times appropriately.
+        /// handling skipped and ambiguous times appropriately (where the offset isn't specified in the pattern).
         /// </summary>
         public ZoneLocalMappingResolver Resolver { get { return resolver; } }
 
@@ -130,12 +130,27 @@ namespace NodaTime.Text
         /// <param name="resolver">Resolver to apply when mapping local date/time values into the zone.</param>
         /// <param name="zoneProvider">Time zone provider, used when parsing text which contains a time zone identifier.</param>
         /// <param name="templateValue">Template value to use for unspecified fields</param>
-        /// <returns>A pattern for parsing and formatting local date/times.</returns>
+        /// <returns>A pattern for parsing and formatting zoned date/times.</returns>
         /// <exception cref="InvalidPatternException">The pattern text was invalid.</exception>
         public static ZonedDateTimePattern Create(string patternText, CultureInfo cultureInfo,
             ZoneLocalMappingResolver resolver, IDateTimeZoneProvider zoneProvider, ZonedDateTime templateValue)
         {
             return Create(patternText, NodaFormatInfo.GetFormatInfo(cultureInfo), resolver, zoneProvider, templateValue);
+        }
+
+        /// <summary>
+        /// Creates a pattern for the given pattern text and time zone provider, using a strict resolver, the invariant
+        /// culture, and a default template value of midnight January 1st 2000 UTC.
+        /// </summary>
+        /// <remarks>
+        /// The resolver is only used if the pattern text doesn't include an offset.
+        /// </remarks>
+        /// <param name="patternText">Pattern text to create the pattern for</param>
+        /// <param name="zoneProvider">Time zone provider, used when parsing text which contains a time zone identifier.</param>
+        /// <returns>A pattern for parsing and formatting zoned date/times.</returns>
+        public static ZonedDateTimePattern CreateWithInvariantCulture(string patternText, IDateTimeZoneProvider zoneProvider)
+        {
+            return Create(patternText, NodaFormatInfo.InvariantInfo, Resolvers.StrictResolver, zoneProvider, DefaultTemplateValue);
         }
 
         public ZonedDateTimePattern WithPatternText(string newPatternText)

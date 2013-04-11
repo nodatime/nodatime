@@ -125,6 +125,12 @@ namespace NodaTime
         /// </summary>
         public LocalDateTime LocalDateTime { get { return localDateTime; } }
 
+        /// <summary>Gets the calendar system associated with this zoned date and time.</summary>
+        public CalendarSystem Calendar
+        {
+            get { return localDateTime.Calendar; }
+        }
+
         /// <summary>
         /// Gets the local date represented by this zoned date and time. The returned <see cref="LocalDate"/>
         /// will have the same calendar system and return the same values for each of the date-based calendar
