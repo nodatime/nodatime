@@ -10,7 +10,8 @@ using NodaTime.Text;
 namespace NodaTime.Serialization.JsonNet
 {
     /// <summary>
-    /// Convenience class to expose preconfigured converters for Noda Time types.
+    /// Convenience class to expose preconfigured converters for Noda Time types, and factory methods
+    /// for creating those which require parameters.
     /// </summary>
     public static class NodaConverters
     {
@@ -53,16 +54,31 @@ namespace NodaTime.Serialization.JsonNet
         /// Converter for offset date/times.
         /// </summary>
         public static readonly JsonConverter OffsetDateTimeConverter = new NodaPatternConverter<OffsetDateTime>(
-            OffsetDateTimePattern.RoundtripWithoutCalendarPattern, CreateIsoValidator<OffsetDateTime>(x => x.Calendar));
+            OffsetDateTimePattern.ExtendedIsoPattern, CreateIsoValidator<OffsetDateTime>(x => x.Calendar));
 
         /// <summary>
-        /// Converter for zoned date/times, using TZDB.
+        /// Creates a converter for zoned date/times, using the given time zone provider.
         /// </summary>
-        public static readonly JsonConverter ZonedDateTimeConverter = new NodaPatternConverter<ZonedDateTime>(
-            ZonedDateTimePattern.CreateWithInvariantCulture("yyyy'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFF z o<g>", DateTimeZoneProviders.Tzdb),
-            CreateIsoValidator<ZonedDateTime>(x => x.Calendar));
+        /// <param name="provider">The time zone provider to use when parsing.</param>
+        /// <returns>A converter to handle <see cref="ZonedDateTime"/>.</returns>
+        public static JsonConverter CreateZonedDateTimeConverter(IDateTimeZoneProvider provider)
+        {
+            return new NodaPatternConverter<ZonedDateTime>(
+                ZonedDateTimePattern.CreateWithInvariantCulture("yyyy'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFFo<G> z", provider),
+                CreateIsoValidator<ZonedDateTime>(x => x.Calendar));
+        }
 
-            /// <summary>
+        /// <summary>
+        /// Creates a converter for time zones, using the given provider.
+        /// </summary>
+        /// <param name="provider">The time zone provider to use when parsing.</param>
+        /// <returns>A converter to handle <see cref="DateTimeZone"/>.</returns>
+        public static JsonConverter CreateDateTimeZoneConverter(IDateTimeZoneProvider provider)
+        {
+            return new NodaDateTimeZoneConverter(provider);
+        }
+
+        /// <summary>
         /// Converter for durations.
         /// </summary>
         public static readonly JsonConverter DurationConverter = new NodaDurationConverter();
