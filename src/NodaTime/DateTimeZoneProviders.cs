@@ -12,13 +12,20 @@ namespace NodaTime
     /// </summary>
     public static class DateTimeZoneProviders
     {
-        private static readonly DateTimeZoneCache tzdbFactory = new DateTimeZoneCache(TzdbDateTimeZoneSource.Default);
         /// <summary>
         /// Gets a time zone provider which uses a <see cref="TzdbDateTimeZoneSource"/>.
         /// The underlying source is <see cref="TzdbDateTimeZoneSource.Default"/>, which is initialized from
         /// resources within the NodaTime assembly.
         /// </summary>
-        public static IDateTimeZoneProvider Tzdb { get { return tzdbFactory; } }
+        public static IDateTimeZoneProvider Tzdb { get { return TzdbHolder.TzdbImpl; } }
+
+        // This class exists to force TZDB initialization to be lazy. We don't want using
+        // DateTimeZoneProviders.Bcl to 
+        internal static class TzdbHolder
+        {
+            static TzdbHolder() {}
+            internal static readonly DateTimeZoneCache TzdbImpl = new DateTimeZoneCache(TzdbDateTimeZoneSource.Default);
+        }
 
 #if !PCL
         /// <summary>
