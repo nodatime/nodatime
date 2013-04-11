@@ -88,7 +88,7 @@ namespace NodaTime.Test.Text
 
         internal void TestParsePartial()
         {
-            var pattern = (IPartialPattern<T>) CreatePattern();
+            var pattern = CreatePartialPattern();
             Assert.IsNull(Message);
             var cursor = new ValueCursor("^" + Text + "#");
             // Move to the ^
@@ -101,9 +101,14 @@ namespace NodaTime.Test.Text
             Assert.AreEqual('#', cursor.Current);
         }
 
+        internal virtual IPartialPattern<T> CreatePartialPattern()
+        {
+            throw new NotImplementedException();
+        }
+
         internal void TestFormatPartial()
         {
-            var pattern = (IPartialPattern<T>)CreatePattern();
+            var pattern = CreatePartialPattern();
             Assert.IsNull(Message);
             var builder = new StringBuilder("x");
             pattern.FormatPartial(Value, builder);
