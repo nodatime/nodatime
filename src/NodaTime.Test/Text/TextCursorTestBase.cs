@@ -78,7 +78,7 @@ namespace NodaTime.Test.Text
 
         internal static void ValidateCurrentCharacter(TextCursor cursor, int expectedCurrentIndex, char expectedCurrentCharacter)
         {
-            TestHelper.AssertCharEqual(expectedCurrentCharacter, cursor.Current);
+            Assert.AreEqual(expectedCurrentCharacter, cursor.Current);
             Assert.AreEqual(expectedCurrentIndex, cursor.Index);
         }
 
