@@ -254,49 +254,7 @@ namespace NodaTime.Test
                 Assert.True((bool)inequality.Invoke(null, new object[] { value, unEqualValue }), "value != unEqualValue");
             }
         }
-
-        /// <summary>
-        /// Asserts that the given character is equal to the expected value.
-        /// </summary>
-        /// <remarks>
-        /// The NUnit <c>Assert.AreEqual()</c> method compares characters as integers and displays the
-        /// mismatches as integers. This displays the differences as characters making the interpretation
-        /// of the error message much easier.
-        /// </remarks>
-        /// <param name="expected">The expected character value.</param>
-        /// <param name="actual">The actual character value.</param>
-        internal static void AssertCharEqual(char expected, char actual)
-        {
-            AssertCharEqual(expected, actual, null);
-        }
-
-        /// <summary>
-        /// Asserts that the given character is equal to the expected value.
-        /// </summary>
-        /// <remarks>
-        /// The NUnit <c>Assert.AreEqual()</c> method compares characters as integers and displays the
-        /// mismatches as integers. This displays the differences as characters making the interpretation
-        /// of the error message much easier.
-        /// </remarks>
-        /// <param name="expected">The expected character value.</param>
-        /// <param name="actual">The actual character value.</param>
-        /// <param name="message">The message to display.</param>
-        internal static void AssertCharEqual(char expected, char actual, string message)
-        {
-            if (expected != actual)
-            {
-                if (message == null)
-                {
-                    message = "";
-                }
-                else
-                {
-                    message = message + "\n";
-                }
-                Assert.Fail("{0}  Expected: '{1}'\n  But was:  '{2}'", message, expected, actual);
-            }
-        }
-
+        
         /// <summary>
         ///   Validates that the input parameters to the test methods are valid.
         /// </summary>
