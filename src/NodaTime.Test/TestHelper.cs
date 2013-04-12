@@ -3,10 +3,6 @@
 // as found in the LICENSE.txt file.
 
 using System;
-using System.IO;
-using System.Text;
-using System.Xml.Linq;
-using System.Xml.Serialization;
 using NUnit.Framework;
 
 namespace NodaTime.Test
@@ -257,28 +253,6 @@ namespace NodaTime.Test
                 Assert.False((bool)inequality.Invoke(null, new object[] { equalValue, value }), "equalValue != value");
                 Assert.True((bool)inequality.Invoke(null, new object[] { value, unEqualValue }), "value != unEqualValue");
             }
-        }
-
-        public static void AssertXmlRoundtrip<T>(T value, string expectedXml)
-        {
-            XmlSerializer serializer = new XmlSerializer(typeof(SerializationHelper<T>));
-            var helper = new SerializationHelper<T> { Value = value };
-            using (var stream = new MemoryStream())
-            {
-                serializer.Serialize(stream, helper);
-                stream.Position = 0;
-                var result = (SerializationHelper<T>) serializer.Deserialize(stream);
-                Assert.AreEqual(result.Value, value);
-                stream.Position = 0;
-                var element = XElement.Load(stream).Element("value");
-                Assert.AreEqual(element.ToString(), expectedXml);
-            }
-        }
-
-        public class SerializationHelper<T>
-        {
-            [XmlElement("value")]
-            public T Value { get; set; }
         }
         
         /// <summary>
