@@ -162,5 +162,16 @@ namespace NodaTime.Text
         {
             return WithFormatInfo(NodaFormatInfo.GetFormatInfo(cultureInfo));
         }
+
+        /// <summary>
+        /// Creates a pattern for the same original pattern text and culture as this pattern, but with
+        /// the specified template value.
+        /// </summary>
+        /// <param name="newTemplateValue">The template value to use in the new pattern.</param>
+        /// <returns>A new pattern with the given template value.</returns>
+        public OffsetDateTimePattern WithTemplateValue(OffsetDateTime newTemplateValue)
+        {
+            return Create(patternText, formatInfo, newTemplateValue);
+        }
     }
 }
