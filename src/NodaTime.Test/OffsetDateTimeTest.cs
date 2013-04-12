@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Xml.Linq;
 using NUnit.Framework;
 
 namespace NodaTime.Test
@@ -218,6 +219,21 @@ namespace NodaTime.Test
             var actual = new OffsetDateTime();
             Assert.AreEqual(NodaConstants.UnixEpoch.InUtc().LocalDateTime, actual.LocalDateTime);
             Assert.AreEqual(Offset.Zero, actual.Offset);
+        }
+
+        [Test]
+        public void XmlSerialization_Iso()
+        {
+            var value = new OffsetDateTime(new LocalDateTime(2013, 4, 12, 17, 53, 23), Offset.FromHours(1));
+            TestHelper.AssertXmlRoundtrip(value, "<value>2013-04-12T17:53:23+01</value>");
+        }
+
+        [Test]
+        public void XmlSerialization_NonIso()
+        {
+            var value = new OffsetDateTime(new LocalDateTime(2013, 4, 12, 17, 53, 23, CalendarSystem.GetJulianCalendar(3)),
+                Offset.FromHours(1));
+            TestHelper.AssertXmlRoundtrip(value, "<value calendar=\"Julian 3\">2013-04-12T17:53:23+01</value>");
         }
     }
 }
