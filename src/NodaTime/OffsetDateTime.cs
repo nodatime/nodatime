@@ -4,9 +4,12 @@
 
 using System;
 using System.Collections.Generic;
+using System.Xml;
 using NodaTime.Calendars;
 using NodaTime.Text;
 using NodaTime.Utility;
+using System.Xml.Serialization;
+using System.Xml.Schema;
 
 namespace NodaTime
 {
@@ -26,7 +29,7 @@ namespace NodaTime
     /// </para>
     /// </remarks>
     /// <threadsafety>This type is an immutable value type. See the thread safety section of the user guide for more information.</threadsafety>
-    public struct OffsetDateTime : IEquatable<OffsetDateTime>
+    public struct OffsetDateTime : IEquatable<OffsetDateTime>, IXmlSerializable
     {
         private readonly LocalDateTime localDateTime;
         private readonly Offset offset;
@@ -219,6 +222,19 @@ namespace NodaTime
         }
 
         /// <summary>
+        /// Creates a new OffsetDateTime representing the same physical date, time and offset, but in a different calendar.
+        /// The returned OffsetDateTime is likely to have different date field values to this one.
+        /// For example, January 1st 1970 in the Gregorian calendar was December 19th 1969 in the Julian calendar.
+        /// </summary>
+        /// <param name="calendarSystem">The calendar system to convert this local date to.</param>
+        /// <returns>The converted OffsetDateTime.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="calendarSystem"/> is null.</exception>
+        public OffsetDateTime WithCalendar(CalendarSystem calendarSystem)
+        {
+            return new OffsetDateTime(localDateTime.WithCalendar(calendarSystem), offset);
+        }
+
+        /// <summary>
         /// Returns a hash code for this local date.
         /// </summary>
         /// <returns>A hash code for this local date.</returns>
@@ -383,6 +399,37 @@ namespace NodaTime
 
                 return x.ToInstant().CompareTo(y.ToInstant());
             }
+        }
+        #endregion
+
+        #region XML serialization
+        XmlSchema IXmlSerializable.GetSchema()
+        {
+            return null;
+        }
+
+        void IXmlSerializable.ReadXml(XmlReader reader)
+        {
+            var pattern = OffsetDateTimePattern.ExtendedIsoPattern;
+            if (reader.MoveToAttribute("calendar"))
+            {
+                string newCalendarId = reader.Value;
+                CalendarSystem newCalendar = CalendarSystem.ForId(newCalendarId);
+                var newTemplateValue = pattern.TemplateValue.WithCalendar(newCalendar);
+                pattern = pattern.WithTemplateValue(newTemplateValue);
+                reader.MoveToElement();
+            }
+            string text = reader.ReadString();
+            this = pattern.Parse(text).Value;
+        }
+
+        void IXmlSerializable.WriteXml(XmlWriter writer)
+        {
+            if (Calendar != CalendarSystem.Iso)
+            {
+                writer.WriteAttributeString("calendar", Calendar.Id);
+            }
+            writer.WriteString(OffsetDateTimePattern.ExtendedIsoPattern.Format(this));
         }
         #endregion
     }
