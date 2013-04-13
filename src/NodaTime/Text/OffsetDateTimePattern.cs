@@ -136,6 +136,12 @@ namespace NodaTime.Text
             return Create(patternText, NodaFormatInfo.GetFormatInfo(cultureInfo), templateValue);
         }
 
+        /// <summary>
+        /// Creates a pattern for the same original localization information as this pattern, but with the specified
+        /// pattern text.
+        /// </summary>
+        /// <param name="newPatternText">The pattern text to use in the new pattern.</param>
+        /// <returns>A new pattern with the given pattern text.</returns>
         public OffsetDateTimePattern WithPatternText(string newPatternText)
         {
             return Create(newPatternText, formatInfo, templateValue);
