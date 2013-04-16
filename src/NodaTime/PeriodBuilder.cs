@@ -3,6 +3,10 @@
 // as found in the LICENSE.txt file.
 
 using System;
+using System.Xml;
+using System.Xml.Schema;
+using System.Xml.Serialization;
+using NodaTime.Text;
 using NodaTime.Utility;
 
 namespace NodaTime
@@ -16,7 +20,7 @@ namespace NodaTime
     /// This type is not thread-safe without extra synchronization, but has no
     /// thread affinity.
     /// </threadsafety>
-    public sealed class PeriodBuilder
+    public sealed class PeriodBuilder : IXmlSerializable
     {
         #region Properties
         /// <summary>
@@ -142,6 +146,34 @@ namespace NodaTime
         public Period Build()
         {
             return new Period(Years, Months, Weeks, Days, Hours, Minutes, Seconds, Milliseconds, Ticks);
+        }
+        
+        /// <inheritdoc />
+        XmlSchema IXmlSerializable.GetSchema()
+        {
+            return null;
+        }
+
+        /// <inheritdoc />
+        void IXmlSerializable.ReadXml(XmlReader reader)
+        {
+            string text = reader.ReadString();
+            Period period = PeriodPattern.RoundtripPattern.Parse(text).Value;
+            Years = period.Years;
+            Months = period.Months;
+            Weeks = period.Weeks;
+            Days = period.Days;
+            Hours = period.Hours;
+            Minutes = period.Minutes;
+            Seconds = period.Seconds;
+            Milliseconds = period.Milliseconds;
+            Ticks = period.Ticks;
+        }
+
+        /// <inheritdoc />
+        void IXmlSerializable.WriteXml(XmlWriter writer)
+        {
+            writer.WriteString(PeriodPattern.RoundtripPattern.Format(Build()));
         }
     }
 }
