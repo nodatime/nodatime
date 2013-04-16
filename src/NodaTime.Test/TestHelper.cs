@@ -3,6 +3,7 @@
 // as found in the LICENSE.txt file.
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Xml.Linq;
@@ -261,6 +262,11 @@ namespace NodaTime.Test
 
         public static void AssertXmlRoundtrip<T>(T value, string expectedXml)
         {
+            AssertXmlRoundtrip(value, expectedXml, EqualityComparer<T>.Default);
+        }
+
+        public static void AssertXmlRoundtrip<T>(T value, string expectedXml, IEqualityComparer<T> comparer)
+        {
             XmlSerializer serializer = new XmlSerializer(typeof(SerializationHelper<T>));
             var helper = new SerializationHelper<T> { Value = value };
             using (var stream = new MemoryStream())
@@ -268,7 +274,7 @@ namespace NodaTime.Test
                 serializer.Serialize(stream, helper);
                 stream.Position = 0;
                 var result = (SerializationHelper<T>) serializer.Deserialize(stream);
-                Assert.AreEqual(result.Value, value);
+                Assert.IsTrue(comparer.Equals(result.Value, value), "Expected " + value + "; was " + result);
                 stream.Position = 0;
                 var element = XElement.Load(stream).Element("value");
                 Assert.AreEqual(element.ToString(), expectedXml);

@@ -403,11 +403,13 @@ namespace NodaTime
         #endregion
 
         #region XML serialization
+        /// <inheritdoc />
         XmlSchema IXmlSerializable.GetSchema()
         {
             return null;
         }
 
+        /// <inheritdoc />
         void IXmlSerializable.ReadXml(XmlReader reader)
         {
             var pattern = OffsetDateTimePattern.ExtendedIsoPattern;
@@ -423,6 +425,7 @@ namespace NodaTime
             this = pattern.Parse(text).Value;
         }
 
+        /// <inheritdoc />
         void IXmlSerializable.WriteXml(XmlWriter writer)
         {
             if (Calendar != CalendarSystem.Iso)
