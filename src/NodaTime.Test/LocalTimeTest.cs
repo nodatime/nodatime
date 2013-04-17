@@ -2,7 +2,9 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
+using System;
 using NUnit.Framework;
+using NodaTime.Text;
 
 namespace NodaTime.Test
 {
@@ -27,6 +29,20 @@ namespace NodaTime.Test
         {
             var actual = new LocalTime();
             Assert.AreEqual(LocalTime.Midnight, actual);
+        }
+
+        [Test]
+        public void XmlSerialization()
+        {
+            var value = new LocalTime(17, 53, 23, 123, 4567);
+            TestHelper.AssertXmlRoundtrip(value, "<value>17:53:23.1234567</value>");
+        }
+
+        [Test]
+        [TestCase("<value>25:53:23</value>", typeof(UnparsableValueException), Description = "Invalid hour")]
+        public void XmlSerialization_Invalid(string xml, Type expectedExceptionType)
+        {
+            TestHelper.AssertXmlInvalid<LocalDateTime>(xml, expectedExceptionType);
         }
     }
 }
