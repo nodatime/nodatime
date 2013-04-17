@@ -375,7 +375,7 @@ namespace NodaTime.Test
         [TestCase("<value>2013-15-12T17:53:23</value>", typeof(UnparsableValueException), Description = "Invalid month")]
         public void XmlSerialization_Invalid(string xml, Type expectedExceptionType)
         {
-            TestHelper.AssertXmlInvalid<OffsetDateTime>(xml, expectedExceptionType);
+            TestHelper.AssertXmlInvalid<LocalDateTime>(xml, expectedExceptionType);
         }
     }
 }
