@@ -3,6 +3,9 @@
 // as found in the LICENSE.txt file.
 
 using System;
+using System.Xml;
+using System.Xml.Schema;
+using System.Xml.Serialization;
 using NodaTime.Fields;
 using NodaTime.Globalization;
 using NodaTime.Text;
@@ -15,7 +18,7 @@ namespace NodaTime
     /// to a particular calendar, time zone or date.
     /// </summary>
     /// <threadsafety>This type is an immutable value type. See the thread safety section of the user guide for more information.</threadsafety>
-    public struct LocalTime : IEquatable<LocalTime>, IComparable<LocalTime>, IFormattable, IComparable
+    public struct LocalTime : IEquatable<LocalTime>, IComparable<LocalTime>, IFormattable, IComparable, IXmlSerializable
     {
         /// <summary>
         /// Local time at midnight, i.e. 0 hours, 0 minutes, 0 seconds.
@@ -524,5 +527,28 @@ namespace NodaTime
         }
         #endregion Formatting
 
+        #region XML serialization
+        /// <inheritdoc />
+        XmlSchema IXmlSerializable.GetSchema()
+        {
+            return null;
+        }
+
+        /// <inheritdoc />
+        void IXmlSerializable.ReadXml(XmlReader reader)
+        {
+            Preconditions.CheckNotNull(reader, "reader");
+            var pattern = LocalTimePattern.ExtendedIsoPattern;
+            string text = reader.ReadElementContentAsString();
+            this = pattern.Parse(text).Value;
+        }
+
+        /// <inheritdoc />
+        void IXmlSerializable.WriteXml(XmlWriter writer)
+        {
+            Preconditions.CheckNotNull(writer, "writer");
+            writer.WriteString(LocalTimePattern.ExtendedIsoPattern.Format(this));
+        }
+        #endregion
     }
 }
