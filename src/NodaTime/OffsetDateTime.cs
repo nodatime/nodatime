@@ -412,6 +412,7 @@ namespace NodaTime
         /// <inheritdoc />
         void IXmlSerializable.ReadXml(XmlReader reader)
         {
+            Preconditions.CheckNotNull(reader, "reader");
             var pattern = OffsetDateTimePattern.ExtendedIsoPattern;
             if (reader.MoveToAttribute("calendar"))
             {
@@ -421,13 +422,14 @@ namespace NodaTime
                 pattern = pattern.WithTemplateValue(newTemplateValue);
                 reader.MoveToElement();
             }
-            string text = reader.ReadString();
+            string text = reader.ReadElementContentAsString();
             this = pattern.Parse(text).Value;
         }
 
         /// <inheritdoc />
         void IXmlSerializable.WriteXml(XmlWriter writer)
         {
+            Preconditions.CheckNotNull(writer, "writer"); 
             if (Calendar != CalendarSystem.Iso)
             {
                 writer.WriteAttributeString("calendar", Calendar.Id);
