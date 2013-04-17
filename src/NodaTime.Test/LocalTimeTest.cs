@@ -42,7 +42,7 @@ namespace NodaTime.Test
         [TestCase("<value>25:53:23</value>", typeof(UnparsableValueException), Description = "Invalid hour")]
         public void XmlSerialization_Invalid(string xml, Type expectedExceptionType)
         {
-            TestHelper.AssertXmlInvalid<LocalDateTime>(xml, expectedExceptionType);
+            TestHelper.AssertXmlInvalid<LocalTime>(xml, expectedExceptionType);
         }
     }
 }
