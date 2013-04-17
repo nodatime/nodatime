@@ -157,7 +157,7 @@ namespace NodaTime
         /// <inheritdoc />
         void IXmlSerializable.ReadXml(XmlReader reader)
         {
-            string text = reader.ReadString();
+            string text = reader.ReadElementContentAsString();
             Period period = PeriodPattern.RoundtripPattern.Parse(text).Value;
             Years = period.Years;
             Months = period.Months;

@@ -4,7 +4,11 @@
 
 using System;
 using System.Collections.Generic;
+using System.Xml;
+using System.Xml.Schema;
+using System.Xml.Serialization;
 using NodaTime.Calendars;
+using NodaTime.Text;
 using NodaTime.TimeZones;
 using NodaTime.Utility;
 
@@ -38,7 +42,7 @@ namespace NodaTime
     /// </para>
     /// </remarks>
     /// <threadsafety>This type is an immutable value type. See the thread safety section of the user guide for more information.</threadsafety>
-    public struct ZonedDateTime : IEquatable<ZonedDateTime>, IComparable<ZonedDateTime>, IComparable
+    public struct ZonedDateTime : IEquatable<ZonedDateTime>, IComparable<ZonedDateTime>, IComparable, IXmlSerializable
     {
         private readonly LocalDateTime localDateTime;
         private readonly DateTimeZone zone;
@@ -691,6 +695,88 @@ namespace NodaTime
             public override int Compare(ZonedDateTime x, ZonedDateTime y)
             {
                 return x.ToInstant().CompareTo(y.ToInstant());
+            }
+        }
+        #endregion
+
+        #region XML serialization
+        /// <inheritdoc />
+        XmlSchema IXmlSerializable.GetSchema()
+        {
+            return null;
+        }
+
+        /// <inheritdoc />
+        void IXmlSerializable.ReadXml(XmlReader reader)
+        {
+            Preconditions.CheckNotNull(reader, "reader");
+            var pattern = OffsetDateTimePattern.ExtendedIsoPattern;
+            if (!reader.MoveToAttribute("zone"))
+            {
+                // TODO(1.2): Work out if this is actually a reasonable exception. Maybe we
+                // should use UTC instead.
+                throw new ArgumentException("No zone specified in XML for ZonedDateTime");
+            }
+            DateTimeZone newZone = XmlZoneProvider[reader.Value];
+            if (reader.MoveToAttribute("calendar"))
+            {
+                string newCalendarId = reader.Value;
+                CalendarSystem newCalendar = CalendarSystem.ForId(newCalendarId);
+                var newTemplateValue = pattern.TemplateValue.WithCalendar(newCalendar);
+                pattern = pattern.WithTemplateValue(newTemplateValue);
+            }
+            reader.MoveToElement();
+            string text = reader.ReadElementContentAsString();
+            OffsetDateTime offsetDateTime = pattern.Parse(text).Value;
+            if (newZone.GetUtcOffset(offsetDateTime.ToInstant()) != offsetDateTime.Offset)
+            {
+                // Might as well use the exception we've already got...
+                ParseResult<ZonedDateTime>.InvalidOffset.GetValueOrThrow();
+            }
+            // Use the constructor which doesn't validate the offset, as we've already done that.
+            this = new ZonedDateTime(offsetDateTime.LocalDateTime, offsetDateTime.Offset, newZone);
+        }
+
+        /// <inheritdoc />
+        void IXmlSerializable.WriteXml(XmlWriter writer)
+        {
+            Preconditions.CheckNotNull(writer, "writer");
+            writer.WriteAttributeString("zone", Zone.Id);
+            if (Calendar != CalendarSystem.Iso)
+            {
+                writer.WriteAttributeString("calendar", Calendar.Id);
+            }
+            writer.WriteString(OffsetDateTimePattern.ExtendedIsoPattern.Format(ToOffsetDateTime()));
+        }
+
+        private static readonly object XmlZoneProviderLock = new object();
+        private static IDateTimeZoneProvider xmlZoneProvider;
+
+        /// <summary>
+        /// The <see cref="IDateTimeZoneProvider"/> to use to interpret a time zone ID read as part of
+        /// XML serialization.
+        /// </summary>
+        /// <remarks>
+        /// This property defaults to <see cref="DateTimeZoneProviders.Tzdb"/>. The mere existence of
+        /// this property is unfortunate, but XML serialization in .NET provides no way of configuring
+        /// appropriate context. It is expected that any single application is unlikely to want to serialize
+        /// <c>ZonedDateTime</c> values using different time zone providers.
+        /// </remarks>
+        public static IDateTimeZoneProvider XmlZoneProvider
+        {
+            get
+            {
+                lock (XmlZoneProviderLock)
+                {
+                    return xmlZoneProvider ?? (xmlZoneProvider = DateTimeZoneProviders.Tzdb);
+                }
+            }
+            set
+            {
+                lock (XmlZoneProviderLock)
+                {
+                    xmlZoneProvider = Preconditions.CheckNotNull(value, "value");
+                }
             }
         }
         #endregion

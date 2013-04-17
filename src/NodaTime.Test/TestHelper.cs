@@ -281,6 +281,22 @@ namespace NodaTime.Test
             }
         }
 
+        internal static void AssertXmlInvalid<T>(string invalidXml, Type expectedExceptionType)
+        {
+            XmlSerializer serializer = new XmlSerializer(typeof(SerializationHelper<T>));
+            // Serialize any value, just so we can replace the <value> element.
+            var helper = new SerializationHelper<T> { Value = default(T) };
+            using (var stream = new MemoryStream())
+            {
+                serializer.Serialize(stream, helper);
+                stream.Position = 0;
+                var doc = XElement.Load(stream);
+                doc.Element("value").ReplaceWith(XElement.Parse(invalidXml));
+                var exception = Assert.Throws<InvalidOperationException>(() => serializer.Deserialize(doc.CreateReader()));
+                Assert.IsInstanceOf(expectedExceptionType, exception.InnerException);
+            }
+        }
+
         public class SerializationHelper<T>
         {
             [XmlElement("value")]

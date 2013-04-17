@@ -3,9 +3,11 @@
 // as found in the LICENSE.txt file.
 
 using System;
+using System.Collections.Generic;
 using NUnit.Framework;
 using NodaTime.Calendars;
 using NodaTime.Testing.TimeZones;
+using NodaTime.Text;
 using NodaTime.TimeZones;
 
 namespace NodaTime.Test
@@ -435,5 +437,46 @@ namespace NodaTime.Test
             Assert.AreEqual(DateTimeZone.Utc, actual.Zone);
         }
 
+        [Test]
+        public void XmlSerialization_Iso()
+        {
+            ZonedDateTime.XmlZoneProvider = DateTimeZoneProviders.Tzdb;
+            var zone = DateTimeZoneProviders.Tzdb["America/New_York"];
+            var value = new ZonedDateTime(new LocalDateTime(2013, 4, 12, 17, 53, 23), Offset.FromHours(-4), zone);
+            TestHelper.AssertXmlRoundtrip(value, "<value zone=\"America/New_York\">2013-04-12T17:53:23-04</value>");
+        }
+
+#if !PCL
+        [Test]
+        public void XmlSerialization_Bcl()
+        {
+            ZonedDateTime.XmlZoneProvider = DateTimeZoneProviders.Bcl;
+            var zone = DateTimeZoneProviders.Bcl["Eastern Standard Time"];
+            var value = new ZonedDateTime(new LocalDateTime(2013, 4, 12, 17, 53, 23), Offset.FromHours(-4), zone);
+            TestHelper.AssertXmlRoundtrip(value, "<value zone=\"Eastern Standard Time\">2013-04-12T17:53:23-04</value>");
+        }
+#endif
+
+        [Test]
+        public void XmlSerialization_NonIso()
+        {
+            ZonedDateTime.XmlZoneProvider = DateTimeZoneProviders.Tzdb;
+            var zone = DateTimeZoneProviders.Tzdb["America/New_York"];
+            var value = new ZonedDateTime(new LocalDateTime(2013, 6, 12, 17, 53, 23, CalendarSystem.GetJulianCalendar(3)),
+                Offset.FromHours(-4), zone);
+            TestHelper.AssertXmlRoundtrip(value,
+                "<value zone=\"America/New_York\" calendar=\"Julian 3\">2013-06-12T17:53:23-04</value>");
+        }
+
+        [Test]
+        [TestCase("<value zone=\"America/New_York\" calendar=\"Rubbish\">2013-06-12T17:53:23-04</value>", typeof(KeyNotFoundException), Description = "Unknown calendar system")]
+        [TestCase("<value>2013-04-12T17:53:23-04</value>", typeof(ArgumentException), Description = "No zone")]
+        [TestCase("<value zone=\"Unknown\">2013-04-12T17:53:23-04</value>", typeof(DateTimeZoneNotFoundException), Description = "Unknown zone")]
+        [TestCase("<value zone=\"Europe/London\">2013-04-12T17:53:23-04</value>", typeof(UnparsableValueException), Description = "Incorrect offset")]
+        public void XmlSerialization_Invalid(string xml, Type expectedExceptionType)
+        {
+            ZonedDateTime.XmlZoneProvider = DateTimeZoneProviders.Tzdb;
+            TestHelper.AssertXmlInvalid<ZonedDateTime>(xml, expectedExceptionType);
+        }
     }
 }
