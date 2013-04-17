@@ -239,7 +239,7 @@ namespace NodaTime.Test
 
         [Test]
         [TestCase("<value calendar=\"Rubbish\">2013-06-12T17:53:23-04</value>", typeof(KeyNotFoundException), Description = "Unknown calendar system")]
-        [TestCase("<value >2013-15-12T17:53:23-04</value>", typeof(UnparsableValueException), Description = "Invalid month")]
+        [TestCase("<value>2013-15-12T17:53:23-04</value>", typeof(UnparsableValueException), Description = "Invalid month")]
         public void XmlSerialization_Invalid(string xml, Type expectedExceptionType)
         {
             TestHelper.AssertXmlInvalid<OffsetDateTime>(xml, expectedExceptionType);

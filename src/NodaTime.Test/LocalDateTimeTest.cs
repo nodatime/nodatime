@@ -3,9 +3,11 @@
 // as found in the LICENSE.txt file.
 
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using NUnit.Framework;
 using NodaTime.Calendars;
+using NodaTime.Text;
 using NodaTime.TimeZones;
 
 namespace NodaTime.Test
@@ -352,6 +354,28 @@ namespace NodaTime.Test
         {
             var actual = new LocalDateTime();
             Assert.AreEqual(NodaConstants.UnixEpoch.InUtc().LocalDateTime, actual);
+        }
+
+        [Test]
+        public void XmlSerialization_Iso()
+        {
+            var value = new LocalDateTime(2013, 4, 12, 17, 53, 23, 123, 4567);
+            TestHelper.AssertXmlRoundtrip(value, "<value>2013-04-12T17:53:23.1234567</value>");
+        }
+
+        [Test]
+        public void XmlSerialization_NonIso()
+        {
+            var value = new LocalDateTime(2013, 4, 12, 17, 53, 23, CalendarSystem.GetJulianCalendar(3));
+            TestHelper.AssertXmlRoundtrip(value, "<value calendar=\"Julian 3\">2013-04-12T17:53:23</value>");
+        }
+
+        [Test]
+        [TestCase("<value calendar=\"Rubbish\">2013-06-12T17:53:23</value>", typeof(KeyNotFoundException), Description = "Unknown calendar system")]
+        [TestCase("<value>2013-15-12T17:53:23</value>", typeof(UnparsableValueException), Description = "Invalid month")]
+        public void XmlSerialization_Invalid(string xml, Type expectedExceptionType)
+        {
+            TestHelper.AssertXmlInvalid<OffsetDateTime>(xml, expectedExceptionType);
         }
     }
 }

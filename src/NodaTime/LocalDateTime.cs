@@ -3,6 +3,9 @@
 // as found in the LICENSE.txt file.
 
 using System;
+using System.Xml;
+using System.Xml.Schema;
+using System.Xml.Serialization;
 using NodaTime.Calendars;
 using NodaTime.Globalization;
 using NodaTime.Text;
@@ -36,7 +39,7 @@ namespace NodaTime
     /// </para>
     /// </remarks>
     /// <threadsafety>This type is an immutable value type. See the thread safety section of the user guide for more information.</threadsafety>
-    public struct LocalDateTime : IEquatable<LocalDateTime>, IComparable<LocalDateTime>, IComparable, IFormattable
+    public struct LocalDateTime : IEquatable<LocalDateTime>, IComparable<LocalDateTime>, IComparable, IFormattable, IXmlSerializable
     {
         private readonly CalendarSystem calendar;
         private readonly LocalInstant localInstant;
@@ -940,5 +943,41 @@ namespace NodaTime
             return LocalDateTimePattern.BclSupport.Format(this, patternText, NodaFormatInfo.GetInstance(formatProvider));
         }
         #endregion Formatting
+
+        #region XML serialization
+        /// <inheritdoc />
+        XmlSchema IXmlSerializable.GetSchema()
+        {
+            return null;
+        }
+
+        /// <inheritdoc />
+        void IXmlSerializable.ReadXml(XmlReader reader)
+        {
+            Preconditions.CheckNotNull(reader, "reader");
+            var pattern = LocalDateTimePattern.ExtendedIsoPattern;
+            if (reader.MoveToAttribute("calendar"))
+            {
+                string newCalendarId = reader.Value;
+                CalendarSystem newCalendar = CalendarSystem.ForId(newCalendarId);
+                var newTemplateValue = pattern.TemplateValue.WithCalendar(newCalendar);
+                pattern = pattern.WithTemplateValue(newTemplateValue);
+                reader.MoveToElement();
+            }
+            string text = reader.ReadElementContentAsString();
+            this = pattern.Parse(text).Value;
+        }
+
+        /// <inheritdoc />
+        void IXmlSerializable.WriteXml(XmlWriter writer)
+        {
+            Preconditions.CheckNotNull(writer, "writer");
+            if (Calendar != CalendarSystem.Iso)
+            {
+                writer.WriteAttributeString("calendar", Calendar.Id);
+            }
+            writer.WriteString(LocalDateTimePattern.ExtendedIsoPattern.Format(this));
+        }
+        #endregion
     }
 }
