@@ -26,6 +26,20 @@ namespace NodaTime.Test.Text
         }
 
         [Test]
+        public void Exception_Success()
+        {
+            ParseResult<int> result = ParseResult<int>.ForValue(5);
+            Assert.Throws<InvalidOperationException>(() => result.Exception.GetHashCode());
+        }
+
+        [Test]
+        public void Exception_Failure()
+        {
+            ParseResult<int> result = ParseResult<int>.ForInvalidValue("text");
+            Assert.IsInstanceOf<UnparsableValueException>(result.Exception);
+        }
+
+        [Test]
         public void GetValueOrThrow_Success()
         {
             ParseResult<int> result = ParseResult<int>.ForValue(5);
