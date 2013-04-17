@@ -4,6 +4,7 @@
 
 using System;
 using NUnit.Framework;
+using NodaTime.Text;
 
 namespace NodaTime.Test
 {
@@ -217,13 +218,27 @@ namespace NodaTime.Test
         }
 
         /// <summary>
-        ///   Using the default constructor is equivalent to January 1st 1970, midnight, UTC, ISO Calendar
+        /// Using the default constructor is equivalent to January 1st 1970, midnight, UTC, ISO Calendar
         /// </summary>
         [Test]
         public void DefaultConstructor()
         {
             var actual = new Instant();
             Assert.AreEqual(NodaConstants.UnixEpoch, actual);
+        }
+
+        [Test]
+        public void XmlSerialization()
+        {
+            var value = new LocalDateTime(2013, 4, 12, 17, 53, 23, 123, 4567).InUtc().ToInstant();
+            TestHelper.AssertXmlRoundtrip(value, "<value>2013-04-12T17:53:23.1234567Z</value>");
+        }
+
+        [Test]
+        [TestCase("<value>2013-15-12T17:53:23Z</value>", typeof(UnparsableValueException), Description = "Invalid month")]
+        public void XmlSerialization_Invalid(string xml, Type expectedExceptionType)
+        {
+            TestHelper.AssertXmlInvalid<Instant>(xml, expectedExceptionType);
         }
     }
 }

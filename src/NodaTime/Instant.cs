@@ -3,9 +3,12 @@
 // as found in the LICENSE.txt file.
 
 using System;
+using System.Xml;
+using System.Xml.Schema;
 using NodaTime.Globalization;
 using NodaTime.Text;
 using NodaTime.Utility;
+using System.Xml.Serialization;
 
 namespace NodaTime
 {
@@ -24,7 +27,7 @@ namespace NodaTime
     /// </para>
     /// </remarks>
     /// <threadsafety>This type is an immutable value type. See the thread safety section of the user guide for more information.</threadsafety>
-    public struct Instant : IEquatable<Instant>, IComparable<Instant>, IFormattable, IComparable
+    public struct Instant : IEquatable<Instant>, IComparable<Instant>, IFormattable, IComparable, IXmlSerializable
     {
         /// <summary>
         /// String used to represent "the beginning of time" (as far as Noda Time is concerned).
@@ -585,5 +588,29 @@ namespace NodaTime
             Preconditions.CheckNotNull(calendar, "calendar");
             return new ZonedDateTime(this, zone, calendar);
         }
+
+        #region XML serialization
+        /// <inheritdoc />
+        XmlSchema IXmlSerializable.GetSchema()
+        {
+            return null;
+        }
+
+        /// <inheritdoc />
+        void IXmlSerializable.ReadXml(XmlReader reader)
+        {
+            Preconditions.CheckNotNull(reader, "reader");
+            var pattern = InstantPattern.ExtendedIsoPattern;
+            string text = reader.ReadElementContentAsString();
+            this = pattern.Parse(text).Value;
+        }
+
+        /// <inheritdoc />
+        void IXmlSerializable.WriteXml(XmlWriter writer)
+        {
+            Preconditions.CheckNotNull(writer, "writer");
+            writer.WriteString(InstantPattern.ExtendedIsoPattern.Format(this));
+        }
+        #endregion
     }
 }
