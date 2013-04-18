@@ -11,6 +11,7 @@ namespace NodaTime.Serialization.JsonNet
     /// <summary>
     /// Json.NET converter for <see cref="Duration"/>.
     /// </summary>
+    // TODO(V1.2): Revisit this. Use the normalized period format?
     internal sealed class NodaDurationConverter : NodaConverterBase<Duration>
     {
         /// <summary>

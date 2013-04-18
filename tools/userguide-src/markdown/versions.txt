@@ -8,7 +8,7 @@ details.
 
 Major features:
 
-- ...
+- XML serialization
 
 API changes:
 
