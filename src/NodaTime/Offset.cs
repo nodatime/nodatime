@@ -3,9 +3,12 @@
 // as found in the LICENSE.txt file.
 
 using System;
+using System.Xml;
+using System.Xml.Schema;
 using NodaTime.Globalization;
 using NodaTime.Text;
 using NodaTime.Utility;
+using System.Xml.Serialization;
 
 namespace NodaTime
 {
@@ -18,7 +21,7 @@ namespace NodaTime
     /// Offsets are always strictly less than 24 hours (as either a positive or negative offset).
     /// </remarks>
     /// <threadsafety>This type is an immutable value type. See the thread safety section of the user guide for more information.</threadsafety>
-    public struct Offset : IEquatable<Offset>, IComparable<Offset>, IFormattable, IComparable
+    public struct Offset : IEquatable<Offset>, IComparable<Offset>, IFormattable, IComparable, IXmlSerializable
     {
         /// <summary>
         /// An offset of zero ticks - effectively the permanent offset for UTC.
@@ -483,5 +486,28 @@ namespace NodaTime
         }
         #endregion
 
+        #region XML serialization
+        /// <inheritdoc />
+        XmlSchema IXmlSerializable.GetSchema()
+        {
+            return null;
+        }
+
+        /// <inheritdoc />
+        void IXmlSerializable.ReadXml(XmlReader reader)
+        {
+            Preconditions.CheckNotNull(reader, "reader");
+            var pattern = OffsetPattern.GeneralInvariantPattern;
+            string text = reader.ReadElementContentAsString();
+            this = pattern.Parse(text).Value;
+        }
+
+        /// <inheritdoc />
+        void IXmlSerializable.WriteXml(XmlWriter writer)
+        {
+            Preconditions.CheckNotNull(writer, "writer");
+            writer.WriteString(OffsetPattern.GeneralInvariantPattern.Format(this));
+        }
+        #endregion
     }
 }
