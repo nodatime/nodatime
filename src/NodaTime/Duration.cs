@@ -3,7 +3,11 @@
 // as found in the LICENSE.txt file.
 
 using System;
+using System.Xml;
+using System.Xml.Schema;
+using NodaTime.Text;
 using NodaTime.Utility;
+using System.Xml.Serialization;
 
 namespace NodaTime
 {
@@ -29,7 +33,7 @@ namespace NodaTime
     /// </para>
     /// </remarks>
     /// <threadsafety>This type is an immutable value type. See the thread safety section of the user guide for more information.</threadsafety>
-    public struct Duration : IEquatable<Duration>, IComparable<Duration>, IComparable
+    public struct Duration : IEquatable<Duration>, IComparable<Duration>, IComparable, IXmlSerializable
     {
         #region Readonly static fields
         /// <summary>
@@ -543,5 +547,31 @@ namespace NodaTime
         {
             return new TimeSpan(ticks);
         }
+
+        #region XML serialization
+        /// <inheritdoc />
+        XmlSchema IXmlSerializable.GetSchema()
+        {
+            return null;
+        }
+
+        /// <inheritdoc />
+        void IXmlSerializable.ReadXml(XmlReader reader)
+        {
+            Preconditions.CheckNotNull(reader, "reader");
+            var pattern = PeriodPattern.RoundtripPattern;
+            string text = reader.ReadElementContentAsString();
+            Period period = pattern.Parse(text).Value;
+            this = period.ToDuration();
+        }
+
+        /// <inheritdoc />
+        void IXmlSerializable.WriteXml(XmlWriter writer)
+        {
+            Preconditions.CheckNotNull(writer, "writer");
+            Period period = Period.FromTicks(ticks).Normalize();
+            writer.WriteString(PeriodPattern.RoundtripPattern.Format(period));
+        }
+        #endregion
     }
 }

@@ -4,6 +4,7 @@
 
 using System;
 using NUnit.Framework;
+using NodaTime.Text;
 
 namespace NodaTime.Test
 {
@@ -78,5 +79,18 @@ namespace NodaTime.Test
             Assert.AreEqual(Offset.Zero, actual);
         }
 
+        [Test]
+        public void XmlSerialization()
+        {
+            var value = Offset.FromHoursAndMinutes(5, 30);
+            TestHelper.AssertXmlRoundtrip(value, "<value>+05:30</value>");
+        }
+
+        [Test]
+        [TestCase("<value>+30</value>", typeof(UnparsableValueException), Description = "Offset too large")]
+        public void XmlSerialization_Invalid(string xml, Type expectedExceptionType)
+        {
+            TestHelper.AssertXmlInvalid<Offset>(xml, expectedExceptionType);
+        }
     }
 }

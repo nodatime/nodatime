@@ -3,6 +3,10 @@
 // as found in the LICENSE.txt file.
 
 using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.IO;
+using System.Xml.Serialization;
 using NUnit.Framework;
 
 namespace NodaTime.Test
@@ -104,6 +108,64 @@ namespace NodaTime.Test
             Assert.AreEqual(Period.Zero, new PeriodBuilder().Build());
         }
 
-        private void Call(object ignored) {}
+        [Test]
+        public void XmlSerialization()
+        {
+            var value = new PeriodBuilder { Years = 10, Days = 5, Hours = 3, Seconds = 20 };
+            TestHelper.AssertXmlRoundtrip(value, "<value>P10Y5DT3H20S</value>", new BuilderEqualityComparer());
+        }
+
+        [Test]
+        public void XmlSerialization_ExpectedUse()
+        {
+            var demo = new XmlSerializationDemo { Period = Period.FromMinutes(5) };
+            var serializer = new XmlSerializer(typeof(XmlSerializationDemo));
+            using (var stream = new MemoryStream())
+            {
+                serializer.Serialize(stream, demo);
+                stream.Position = 0;
+                var deserialized = (XmlSerializationDemo) serializer.Deserialize(stream);
+                Assert.AreEqual(demo.Period, deserialized.Period);
+            }
+        }
+
+        /// <summary>
+        /// Sample class to show how to serialize classes which have Period properties.
+        /// </summary>
+        public class XmlSerializationDemo
+        {
+            /// <summary>
+            /// Use this property!
+            /// </summary>
+            [XmlIgnore]
+            public Period Period { get; set; }
+
+            /// <summary>
+            /// Don't use this property! It's only present for the purposes of XML serialization.
+            /// We'd mark it as obsolete, but then the XML serializer would ignore it...
+            /// </summary>
+            [XmlElement("period")]
+            [EditorBrowsable(EditorBrowsableState.Never)]
+            public PeriodBuilder PeriodBuilder
+            {
+                get { return Period == null ? null : Period.ToBuilder(); }
+                set { Period = value == null ? null : value.Build(); }
+            }
+        }
+
+        private class BuilderEqualityComparer : IEqualityComparer<PeriodBuilder>
+        {
+            public bool Equals(PeriodBuilder x, PeriodBuilder y)
+            {
+                return x.Build().Equals(y.Build());
+            }
+
+            public int GetHashCode(PeriodBuilder obj)
+            {
+                return obj.Build().GetHashCode();
+            }
+        }
+
+        private static void Call(object ignored) {}
     }
 }

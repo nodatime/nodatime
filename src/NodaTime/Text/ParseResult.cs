@@ -42,6 +42,24 @@ namespace NodaTime.Text
         public T Value { get { return GetValueOrThrow(); } }
 
         /// <summary>
+        /// Returns an exception indicating the cause of the parse failure.
+        /// </summary>
+        /// <remarks>This property is typically used to wrap parse failures in higher level exceptions.</remarks>
+        /// <returns>The exception indicating the cause of the parse failure.</returns>
+        /// <exception cref="InvalidOperationException">The parse operation succeeded.</exception>
+        public Exception Exception
+        {
+            get
+            {
+                if (exceptionProvider == null)
+                {
+                    throw new InvalidOperationException("Parse operation succeeded, so no exception is available");
+                }
+                return exceptionProvider();
+            }
+        }
+
+        /// <summary>
         /// Returns the value from the parse operation if it was successful, or throws an exception indicating the parse failure
         /// otherwise.
         /// </summary>

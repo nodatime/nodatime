@@ -3,7 +3,11 @@
 // as found in the LICENSE.txt file.
 
 using System;
+using System.Xml;
+using System.Xml.Schema;
+using NodaTime.Text;
 using NodaTime.Utility;
+using System.Xml.Serialization;
 
 namespace NodaTime
 {
@@ -12,7 +16,7 @@ namespace NodaTime
     /// the end instant. The end may equal the start (resulting in an empty interval), but will not be before the start.
     /// </summary>
     /// <threadsafety>This type is an immutable value type. See the thread safety section of the user guide for more information.</threadsafety>
-    public struct Interval : IEquatable<Interval>
+    public struct Interval : IEquatable<Interval>, IXmlSerializable
     {
         /// <summary>The start of the interval.</summary>
         private readonly Instant start;
@@ -146,6 +150,43 @@ namespace NodaTime
         public static bool operator !=(Interval left, Interval right)
         {
             return !(left == right);
+        }
+        #endregion
+
+        #region XML serialization
+        /// <inheritdoc />
+        XmlSchema IXmlSerializable.GetSchema()
+        {
+            return null;
+        }
+
+        /// <inheritdoc />
+        void IXmlSerializable.ReadXml(XmlReader reader)
+        {
+            Preconditions.CheckNotNull(reader, "reader");
+            var pattern = InstantPattern.ExtendedIsoPattern;
+            if (!reader.MoveToAttribute("start"))
+            {
+                throw new ArgumentException("No start specified in XML for Interval");
+            }
+            Instant newStart = pattern.Parse(reader.Value).Value;
+            if (!reader.MoveToAttribute("end"))
+            {
+                throw new ArgumentException("No end specified in XML for Interval");
+            }
+            Instant newEnd = pattern.Parse(reader.Value).Value;
+            this = new Interval(newStart, newEnd);
+            // Consume the rest of this element, as per IXmlSerializable.ReadXml contract.
+            reader.Skip();
+        }
+
+        /// <inheritdoc />
+        void IXmlSerializable.WriteXml(XmlWriter writer)
+        {
+            Preconditions.CheckNotNull(writer, "writer");
+            var pattern = InstantPattern.ExtendedIsoPattern;
+            writer.WriteAttributeString("start", pattern.Format(start));
+            writer.WriteAttributeString("end", pattern.Format(end));
         }
         #endregion
     }

@@ -2,7 +2,9 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
+using System;
 using NUnit.Framework;
+using NodaTime.Text;
 
 namespace NodaTime.Test
 {
@@ -14,7 +16,7 @@ namespace NodaTime.Test
         private readonly Duration negativeEpsilon = new Duration(-1L);
 
         /// <summary>
-        ///   Using the default constructor is equivalent to Duration.Zero.
+        /// Using the default constructor is equivalent to Duration.Zero.
         /// </summary>
         [Test]
         public void DefaultConstructor()
@@ -23,5 +25,19 @@ namespace NodaTime.Test
             Assert.AreEqual(Duration.Zero, actual);
         }
 
+        [Test]
+        public void XmlSerialization()
+        {
+            Duration value = new PeriodBuilder { Days = 5, Hours = 3, Seconds = 20 }.Build().ToDuration();
+            TestHelper.AssertXmlRoundtrip(value, "<value>P5DT3H20S</value>");
+        }
+
+        [Test]
+        [TestCase("<value>P10MT1S</value>", typeof(InvalidOperationException), Description = "Can't contain month/year")]
+        [TestCase("<value>XYZ</value>", typeof(UnparsableValueException), Description = "Completely unparsable")]
+        public void XmlSerialization_Invalid(string xml, Type expectedExceptionType)
+        {
+            TestHelper.AssertXmlInvalid<Duration>(xml, expectedExceptionType);
+        }
     }
 }
