@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Serialization;
 using NUnit.Framework;
@@ -260,32 +261,81 @@ namespace NodaTime.Test
             }
         }
 
-        public static void AssertXmlRoundtrip<T>(T value, string expectedXml)
+        internal static void AssertXmlRoundtrip<T>(T value, string expectedXml) where T : IXmlSerializable, new()
         {
             AssertXmlRoundtrip(value, expectedXml, EqualityComparer<T>.Default);
         }
 
-        public static void AssertXmlRoundtrip<T>(T value, string expectedXml, IEqualityComparer<T> comparer)
+        /// <summary>
+        /// Validates that a value can be serialized to the expected XML, deserialized to an equal
+        /// value, and that a direct call of ReadXml on a value with an XmlReader initially positioned
+        /// at an element will read to the end of that element.
+        /// </summary>
+        internal static void AssertXmlRoundtrip<T>(T value, string expectedXml, IEqualityComparer<T> comparer)
+            where T : IXmlSerializable, new()
         {
             XmlSerializer serializer = new XmlSerializer(typeof(SerializationHelper<T>));
-            var helper = new SerializationHelper<T> { Value = value };
+            var helper = new SerializationHelper<T> { Value = value, Before = 100, After = 200 };
             using (var stream = new MemoryStream())
             {
                 serializer.Serialize(stream, helper);
                 stream.Position = 0;
                 var result = (SerializationHelper<T>) serializer.Deserialize(stream);
-                Assert.IsTrue(comparer.Equals(result.Value, value), "Expected " + value + "; was " + result);
+                Assert.IsTrue(comparer.Equals(result.Value, value), "Expected " + value + "; was " + result.Value);
+                // Validate the rest of the object deserialization is still okay.
+                Assert.AreEqual(100, result.Before);
+                Assert.AreEqual(200, result.After);
+                
                 stream.Position = 0;
                 var element = XElement.Load(stream).Element("value");
                 Assert.AreEqual(element.ToString(), expectedXml);
             }
+            AssertReadXmlConsumesElement<T>(expectedXml);
         }
 
-        internal static void AssertXmlInvalid<T>(string invalidXml, Type expectedExceptionType)
+        internal static void AssertParsableXml<T>(T expectedValue, string validXml)  where T : IXmlSerializable, new()
+        {
+            AssertParsableXml(expectedValue, validXml, EqualityComparer<T>.Default);
+        }
+
+        internal static void AssertParsableXml<T>(T expectedValue, string validXml, IEqualityComparer<T> comparer)
+            where T : IXmlSerializable, new()
         {
             XmlSerializer serializer = new XmlSerializer(typeof(SerializationHelper<T>));
             // Serialize any value, just so we can replace the <value> element.
-            var helper = new SerializationHelper<T> { Value = default(T) };
+            var helper = new SerializationHelper<T> { Value = new T(), Before = 100, After = 200 };
+            using (var stream = new MemoryStream())
+            {
+                serializer.Serialize(stream, helper);
+                stream.Position = 0;
+                var doc = XElement.Load(stream);
+                doc.Element("value").ReplaceWith(XElement.Parse(validXml));
+                var result = (SerializationHelper<T>) serializer.Deserialize(doc.CreateReader());
+                Assert.IsTrue(comparer.Equals(result.Value, expectedValue), "Expected " + expectedValue + "; was " + result.Value);
+                // Validate the rest of the object deserialization is still okay.
+                Assert.AreEqual(100, result.Before);
+                Assert.AreEqual(200, result.After);
+            }
+            AssertReadXmlConsumesElement<T>(validXml);
+        }
+
+        private static void AssertReadXmlConsumesElement<T>(string validXml) where T : IXmlSerializable, new()
+        {
+            XElement element = XElement.Parse(validXml);
+            var root = new XElement("root", element, new XElement("after"));
+            var reader = root.CreateReader();
+            reader.ReadToDescendant(element.Name.LocalName);
+            var value = new T();
+            value.ReadXml(reader);
+            Assert.AreEqual(XmlNodeType.Element, reader.NodeType);
+            Assert.AreEqual("after", reader.Name);
+        }
+
+        internal static void AssertXmlInvalid<T>(string invalidXml, Type expectedExceptionType) where T : new()
+        {
+            XmlSerializer serializer = new XmlSerializer(typeof(SerializationHelper<T>));
+            // Serialize any value, just so we can replace the <value> element.
+            var helper = new SerializationHelper<T> { Value = new T() };
             using (var stream = new MemoryStream())
             {
                 serializer.Serialize(stream, helper);
@@ -299,8 +349,14 @@ namespace NodaTime.Test
 
         public class SerializationHelper<T>
         {
+            [XmlElement("before")]
+            public int Before { get; set; }
+
             [XmlElement("value")]
             public T Value { get; set; }
+
+            [XmlElement("after")]
+            public int After { get; set; }
         }
         
         /// <summary>
