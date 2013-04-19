@@ -35,6 +35,10 @@ namespace NodaTime.Benchmarks.Framework
                 new XAttribute("method-filter", options.MethodFilter ?? ""),
                 new XAttribute("test-time", options.TestTime.ToTimeSpan()),
                 new XAttribute("warmup-time", options.WarmUpTime.ToTimeSpan())));
+            if (options.Identifier != null)
+            {
+                document.Root.Add(new XAttribute("run-id", options.Identifier));
+            }
         }
 
         internal override void HandleStartType(Type type)
