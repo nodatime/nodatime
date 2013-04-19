@@ -450,10 +450,15 @@ namespace NodaTime.Test
         [Test]
         public void XmlSerialization_Bcl()
         {
-            ZonedDateTime.XmlZoneProvider = DateTimeZoneProviders.Bcl;
-            var zone = DateTimeZoneProviders.Bcl["Eastern Standard Time"];
-            var value = new ZonedDateTime(new LocalDateTime(2013, 4, 12, 17, 53, 23), Offset.FromHours(-4), zone);
-            TestHelper.AssertXmlRoundtrip(value, "<value zone=\"Eastern Standard Time\">2013-04-12T17:53:23-04</value>");
+            // Skip this on Mono, which will have different BCL time zones. We can't easily
+            // guess which will be available :(
+            if (!TestHelper.IsRunningOnMono)
+            {
+                ZonedDateTime.XmlZoneProvider = DateTimeZoneProviders.Bcl;
+                var zone = DateTimeZoneProviders.Bcl["Eastern Standard Time"];
+                var value = new ZonedDateTime(new LocalDateTime(2013, 4, 12, 17, 53, 23), Offset.FromHours(-4), zone);
+                TestHelper.AssertXmlRoundtrip(value, "<value zone=\"Eastern Standard Time\">2013-04-12T17:53:23-04</value>");
+            }
         }
 #endif
 
