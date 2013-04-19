@@ -528,6 +528,21 @@ namespace NodaTime
         #endregion
 
         /// <summary>
+        /// Returns the <see cref="ZoneInterval"/> containing this value, in the time zone this
+        /// value refers to.
+        /// </summary>
+        /// <remarks>
+        /// This is simply a convenience method - it is logically equivalent to converting this
+        /// value to an <see cref="Instant"/> and then asking the appropriate <see cref="DateTimeZone"/>
+        /// for the <c>ZoneInterval</c> containing that instant.
+        /// </remarks>
+        /// <returns>The <c>ZoneInterval</c> containing this value.</returns>
+        public ZoneInterval GetZoneInterval()
+        {
+            return Zone.GetZoneInterval(ToInstant());
+        }
+
+        /// <summary>
         /// Currently returns a string representation of this value indicating the local time,
         /// offset and time zone separately. The default <c>ToString</c> method of each component is used,
         /// which will render the local time and offset in the "general" pattern for the current thread's culture,
