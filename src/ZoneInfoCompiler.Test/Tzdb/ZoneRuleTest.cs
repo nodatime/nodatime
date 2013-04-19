@@ -3,10 +3,10 @@
 // as found in the LICENSE.txt file.
 
 using NodaTime.TimeZones;
-using NodaTime.ZoneInfoCompiler.Tzdb;
+using NodaTime.TzdbCompiler.Tzdb;
 using NUnit.Framework;
 
-namespace NodaTime.ZoneInfoCompiler.Test.Tzdb
+namespace NodaTime.TzdbCompiler.Test.Tzdb
 {
     [TestFixture]
     public class ZoneRuleTest

@@ -5,17 +5,18 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{F51A7DF5-1559-45C3-A606-494DAD63A892}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <ProjectGuid>{0A4C2376-D366-43DB-92E1-306FFCC81553}</ProjectGuid>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NodaTime.ZoneInfoCompiler</RootNamespace>
-    <AssemblyName>ZoneInfoCompiler</AssemblyName>
+    <RootNamespace>NodaTime.TzdbCompiler.Test</RootNamespace>
+    <AssemblyName>NodaTime.TzdbCompiler.Test</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
     <OldToolsVersion>3.5</OldToolsVersion>
-    <UpgradeBackupLocation />
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -31,21 +32,13 @@
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <SccProjectName>
-    </SccProjectName>
-    <SccLocalPath>
-    </SccLocalPath>
-    <SccAuxPath>
-    </SccAuxPath>
-    <SccProvider>
-    </SccProvider>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;CODE_ANALYSIS</DefineConstants>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
@@ -57,6 +50,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Signed Release|AnyCPU'">
     <OutputPath>bin\Signed Release\</OutputPath>
@@ -65,16 +59,19 @@
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <AssemblyOriginatorKeyFile>..\..\NodaTime Release.snk</AssemblyOriginatorKeyFile>
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="nunit.framework, Version=2.5.2.9222, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\nunit\nunit.framework.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
-    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -85,35 +82,24 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\lib\commandline\CommandLine.cs">
-      <Link>CommandLine.cs</Link>
-    </Compile>
-    <Compile Include="..\..\lib\commandline\CommandLineText.cs">
-      <Link>CommandLineText.cs</Link>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="OutputType.cs" />
-    <Compile Include="Tokens.cs" />
-    <Compile Include="Tzdb\DateTimeZoneBuilder.cs" />
-    <Compile Include="Tzdb\ITzdbWriter.cs" />
-    <Compile Include="Tzdb\MissingTokenException.cs" />
-    <Compile Include="Tzdb\ParserHelper.cs" />
-    <Compile Include="CompilerOptions.cs" />
-    <Compile Include="Tzdb\PclSupport.cs" />
-    <Compile Include="Tzdb\TzdbDatabase.cs" />
-    <Compile Include="Tzdb\TzdbZoneLocationParser.cs" />
-    <Compile Include="Tzdb\TzdbResourceWriter.cs" />
-    <Compile Include="Tzdb\TzdbStreamWriter.cs" />
-    <Compile Include="Tzdb\TzdbZoneInfoCompiler.cs" />
-    <Compile Include="Tzdb\TzdbZoneInfoParser.cs" />
-    <Compile Include="Tzdb\CldrWindowsZonesParser.cs" />
-    <Compile Include="Tzdb\Zone.cs" />
-    <Compile Include="Tzdb\ZoneAlias.cs" />
-    <Compile Include="Tzdb\ZoneList.cs" />
-    <Compile Include="Tzdb\ZoneRecurrenceCollection.cs" />
-    <Compile Include="Tzdb\ZoneRule.cs" />
-    <Compile Include="Program.cs" />
-    <Compile Include="Tzdb\ZoneTransition.cs" />
+    <Compile Include="TokensTest.cs" />
+    <Compile Include="Tzdb\DateTimeZoneBuilderTest.cs" />
+    <Compile Include="Tzdb\PclSupportTest.cs" />
+    <Compile Include="Tzdb\TzdbZoneLocationParserTest.cs" />
+    <Compile Include="Tzdb\TzdbZoneInfoParserTest.cs" />
+    <Compile Include="Tzdb\ZoneRuleTest.cs" />
+    <Compile Include="Tzdb\ZoneTransitionTest.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\NodaTime\NodaTime.csproj">
+      <Project>{42B687A6-0F76-4638-A372-161C922A998B}</Project>
+      <Name>NodaTime</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ZoneInfoCompiler\NodaTime.TzdbCompiler.csproj">
+      <Project>{F51A7DF5-1559-45C3-A606-494DAD63A892}</Project>
+      <Name>NodaTime.TzdbCompiler</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
@@ -136,64 +122,6 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Data\2013a\africa" />
-    <None Include="Data\2013a\antarctica" />
-    <None Include="Data\2013a\asia" />
-    <None Include="Data\2013a\australasia" />
-    <None Include="Data\2013a\backward" />
-    <None Include="Data\2013a\etcetera" />
-    <None Include="Data\2013a\europe" />
-    <None Include="Data\2013a\factory" />
-    <None Include="Data\2013a\iso3166.tab" />
-    <None Include="Data\2013a\leapseconds" />
-    <None Include="Data\2013a\Makefile" />
-    <None Include="Data\2013a\northamerica" />
-    <None Include="Data\2013a\pacificnew" />
-    <None Include="Data\2013a\solar87" />
-    <None Include="Data\2013a\solar88" />
-    <None Include="Data\2013a\solar89" />
-    <None Include="Data\2013a\southamerica" />
-    <None Include="Data\2013a\systemv" />
-    <None Include="Data\2013a\yearistype.sh" />
-    <None Include="Data\2013a\zone.tab" />
-    <None Include="Data\2013b\africa" />
-    <None Include="Data\2013b\antarctica" />
-    <None Include="Data\2013b\asia" />
-    <None Include="Data\2013b\australasia" />
-    <None Include="Data\2013b\backward" />
-    <None Include="Data\2013b\etcetera" />
-    <None Include="Data\2013b\europe" />
-    <None Include="Data\2013b\factory" />
-    <None Include="Data\2013b\iso3166.tab" />
-    <None Include="Data\2013b\leapseconds" />
-    <None Include="Data\2013b\Makefile" />
-    <None Include="Data\2013b\northamerica" />
-    <None Include="Data\2013b\pacificnew" />
-    <None Include="Data\2013b\solar87" />
-    <None Include="Data\2013b\solar88" />
-    <None Include="Data\2013b\solar89" />
-    <None Include="Data\2013b\southamerica" />
-    <None Include="Data\2013b\systemv" />
-    <None Include="Data\2013b\yearistype.sh" />
-    <None Include="Data\2013b\zone.tab" />
-    <None Include="Data\winmap\readme.txt" />
-    <None Include="Data\winmap\windowsZones-21.xml">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Data\winmap\windowsZones-22-1.xml">
-      <SubType>Designer</SubType>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\NodaTime\NodaTime.csproj">
-      <Project>{42B687A6-0F76-4638-A372-161C922A998B}</Project>
-      <Name>NodaTime</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Data\winmap\windowsZones-23.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

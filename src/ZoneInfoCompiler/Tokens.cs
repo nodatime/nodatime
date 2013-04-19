@@ -5,10 +5,10 @@
 using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using NodaTime.TzdbCompiler.Tzdb;
 using NodaTime.Utility;
-using NodaTime.ZoneInfoCompiler.Tzdb;
 
-namespace NodaTime.ZoneInfoCompiler
+namespace NodaTime.TzdbCompiler
 {
     /// <summary>
     ///   Provides a simple string tokenizer that breaks the string into words that are separated by

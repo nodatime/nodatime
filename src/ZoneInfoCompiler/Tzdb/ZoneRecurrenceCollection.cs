@@ -7,7 +7,7 @@ using System.Collections;
 using System.Collections.Generic;
 using NodaTime.TimeZones;
 
-namespace NodaTime.ZoneInfoCompiler.Tzdb
+namespace NodaTime.TzdbCompiler.Tzdb
 {
     /// <summary>
     /// Used to create time zones.

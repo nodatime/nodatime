@@ -10,7 +10,7 @@ using System.Linq;
 using System.Xml;
 using System.Xml.Linq;
 
-namespace NodaTime.ZoneInfoCompiler.Tzdb
+namespace NodaTime.TzdbCompiler.Tzdb
 {
     /// <summary>
     /// Parses the mappings between Windows time zone IDs and TZDB IDs.

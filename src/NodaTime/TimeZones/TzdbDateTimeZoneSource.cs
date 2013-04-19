@@ -283,7 +283,7 @@ namespace NodaTime.TimeZones
         /// </summary>
         /// <remarks>
         /// Source data is not validated automatically when it's loaded, but any source
-        /// loaded from data produced by ZoneInfoCompiler (including the data shipped with Noda Time)
+        /// loaded from data produced by NodaTime.TzdbCompiler (including the data shipped with Noda Time)
         /// will already have been validated when it was originally produced. This method should
         /// only normally be used if you have data from a source you're unsure of.
         /// </remarks>

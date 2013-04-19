@@ -51,8 +51,8 @@ using System.Runtime.InteropServices;
 [assembly: NeutralResourcesLanguage("en")]
 
 [assembly: InternalsVisibleTo("NodaTime.Test" + NodaTime.Properties.AssemblyInfo.PublicKeySuffix)]
-[assembly: InternalsVisibleTo("ZoneInfoCompiler" + NodaTime.Properties.AssemblyInfo.PublicKeySuffix)]
-[assembly: InternalsVisibleTo("ZoneInfoCompiler.Test" + NodaTime.Properties.AssemblyInfo.PublicKeySuffix)]
+[assembly: InternalsVisibleTo("NodaTime.TzdbCompiler" + NodaTime.Properties.AssemblyInfo.PublicKeySuffix)]
+[assembly: InternalsVisibleTo("NodaTime.TzdbCompiler.Test" + NodaTime.Properties.AssemblyInfo.PublicKeySuffix)]
 [assembly: InternalsVisibleTo("NodaTime.Benchmarks" + NodaTime.Properties.AssemblyInfo.PublicKeySuffix)]
 
 namespace NodaTime.Properties

@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 using NodaTime.TimeZones;
 
-namespace NodaTime.ZoneInfoCompiler.Tzdb
+namespace NodaTime.TzdbCompiler.Tzdb
 {
     /// <summary>
     ///   Provides an container for the definitions parsed from the TZDB zone info files.

@@ -2,12 +2,12 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-using NodaTime.ZoneInfoCompiler.Tzdb;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using NodaTime.TzdbCompiler.Tzdb;
 
-namespace NodaTime.ZoneInfoCompiler.Test
+namespace NodaTime.TzdbCompiler.Test
 {
     /// <summary>
     /// This is a test class for containing all of the ParserHelper unit tests.

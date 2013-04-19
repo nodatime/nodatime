@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using NodaTime.TimeZones;
 using NodaTime.Utility;
 
-namespace NodaTime.ZoneInfoCompiler.Tzdb
+namespace NodaTime.TzdbCompiler.Tzdb
 {
     /// <summary>
     /// Provides a means of programatically creating complex time zones. Currently internal, but we
@@ -24,7 +24,7 @@ namespace NodaTime.ZoneInfoCompiler.Tzdb
     /// it builds are thread-safe and immutable.
     /// </para>
     /// <para>
-    /// It is intended that {@link ZoneInfoCompiler} be used to read time zone data files,
+    /// It is intended that {@link NodaTime.TzdbCompiler} be used to read time zone data files,
     /// indirectly calling DateTimeZoneBuilder. The following complex example defines the
     /// America/Los_Angeles time zone, with all historical transitions:
     /// </para>

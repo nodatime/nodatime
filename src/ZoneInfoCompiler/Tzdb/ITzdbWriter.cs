@@ -3,7 +3,7 @@
 // as found in the LICENSE.txt file.
 
 using NodaTime.TimeZones.Cldr;
-namespace NodaTime.ZoneInfoCompiler.Tzdb
+namespace NodaTime.TzdbCompiler.Tzdb
 {
     interface ITzdbWriter
     {

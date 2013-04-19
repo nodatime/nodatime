@@ -11,11 +11,11 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 
-[assembly: AssemblyTitle("ZoneInfoCompiler")]
+[assembly: AssemblyTitle("NodaTime.TzdbCompiler")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("ZoneInfoCompiler")]
+[assembly: AssemblyProduct("NodaTime.TzdbCompiler")]
 [assembly: AssemblyCopyright("Copyright 2013 The Noda Time Authors. All rights reserved.")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -44,4 +44,4 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
 [assembly: CLSCompliant(true)]
-[assembly: InternalsVisibleTo("ZoneInfoCompiler.Test" + NodaTime.Properties.AssemblyInfo.PublicKeySuffix)]
+[assembly: InternalsVisibleTo("NodaTime.TzdbCompiler.Test" + NodaTime.Properties.AssemblyInfo.PublicKeySuffix)]

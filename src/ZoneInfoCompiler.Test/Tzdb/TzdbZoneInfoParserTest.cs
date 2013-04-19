@@ -3,12 +3,12 @@
 // as found in the LICENSE.txt file.
 
 using NodaTime.TimeZones;
-using NodaTime.ZoneInfoCompiler.Tzdb;
+using NodaTime.TzdbCompiler.Tzdb;
 using NUnit.Framework;
 using System;
 using System.IO;
 
-namespace NodaTime.ZoneInfoCompiler.Test.Tzdb
+namespace NodaTime.TzdbCompiler.Test.Tzdb
 {
     ///<summary>
     ///  This is a test class for containing all of the TzdbZoneInfoParser unit tests.
