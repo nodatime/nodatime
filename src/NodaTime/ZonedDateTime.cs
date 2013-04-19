@@ -528,6 +528,21 @@ namespace NodaTime
         #endregion
 
         /// <summary>
+        /// Returns the <see cref="ZoneInterval"/> containing this value, in the time zone this
+        /// value refers to.
+        /// </summary>
+        /// <remarks>
+        /// This is simply a convenience method - it is logically equivalent to converting this
+        /// value to an <see cref="Instant"/> and then asking the appropriate <see cref="DateTimeZone"/>
+        /// for the <c>ZoneInterval</c> containing that instant.
+        /// </remarks>
+        /// <returns>The <c>ZoneInterval</c> containing this value.</returns>
+        public ZoneInterval GetZoneInterval()
+        {
+            return Zone.GetZoneInterval(ToInstant());
+        }
+
+        /// <summary>
         /// Currently returns a string representation of this value indicating the local time,
         /// offset and time zone separately. The default <c>ToString</c> method of each component is used,
         /// which will render the local time and offset in the "general" pattern for the current thread's culture,
@@ -717,7 +732,7 @@ namespace NodaTime
                 // should use UTC instead.
                 throw new ArgumentException("No zone specified in XML for ZonedDateTime");
             }
-            DateTimeZone newZone = XmlZoneProvider[reader.Value];
+            DateTimeZone newZone = DateTimeZoneProviders.XmlSerialization[reader.Value];
             if (reader.MoveToAttribute("calendar"))
             {
                 string newCalendarId = reader.Value;
@@ -747,37 +762,6 @@ namespace NodaTime
                 writer.WriteAttributeString("calendar", Calendar.Id);
             }
             writer.WriteString(OffsetDateTimePattern.ExtendedIsoPattern.Format(ToOffsetDateTime()));
-        }
-
-        private static readonly object XmlZoneProviderLock = new object();
-        private static IDateTimeZoneProvider xmlZoneProvider;
-
-        /// <summary>
-        /// The <see cref="IDateTimeZoneProvider"/> to use to interpret a time zone ID read as part of
-        /// XML serialization.
-        /// </summary>
-        /// <remarks>
-        /// This property defaults to <see cref="DateTimeZoneProviders.Tzdb"/>. The mere existence of
-        /// this property is unfortunate, but XML serialization in .NET provides no way of configuring
-        /// appropriate context. It is expected that any single application is unlikely to want to serialize
-        /// <c>ZonedDateTime</c> values using different time zone providers.
-        /// </remarks>
-        public static IDateTimeZoneProvider XmlZoneProvider
-        {
-            get
-            {
-                lock (XmlZoneProviderLock)
-                {
-                    return xmlZoneProvider ?? (xmlZoneProvider = DateTimeZoneProviders.Tzdb);
-                }
-            }
-            set
-            {
-                lock (XmlZoneProviderLock)
-                {
-                    xmlZoneProvider = Preconditions.CheckNotNull(value, "value");
-                }
-            }
         }
         #endregion
     }
