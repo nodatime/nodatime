@@ -5,10 +5,10 @@ if not exist "NodaTime Release.snk" (
     goto :end
 )
 
-msbuild "src\NodaTime.sln" /property:Configuration="Signed Release"
+msbuild "src\NodaTime-All.sln" /property:Configuration="Signed Release"
 IF ERRORLEVEL 1 EXIT /B 1
 
-msbuild "src\NodaTime.sln" /property:Configuration="Signed Release Portable"
+msbuild "src\NodaTime-All.sln" /property:Configuration="Signed Release Portable"
 IF ERRORLEVEL 1 EXIT /B 1
 
 REM This will also build the unsigned release build. A bit wasteful,
