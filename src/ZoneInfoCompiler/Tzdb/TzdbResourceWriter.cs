@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Resources;
 
-namespace NodaTime.ZoneInfoCompiler.Tzdb
+namespace NodaTime.TzdbCompiler.Tzdb
 {
     /// <summary>
     /// ITzdbWriter implementation which writes to a BCL resource file (e.g. resx).

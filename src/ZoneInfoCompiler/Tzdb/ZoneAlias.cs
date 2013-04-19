@@ -5,7 +5,7 @@
 using System;
 using NodaTime.Utility;
 
-namespace NodaTime.ZoneInfoCompiler.Tzdb
+namespace NodaTime.TzdbCompiler.Tzdb
 {
     /// <summary>
     ///   Represents an alias link between a target (existing item) and a source (the alias) time

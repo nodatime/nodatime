@@ -4,7 +4,7 @@
 
 using System;
 
-namespace NodaTime.ZoneInfoCompiler.Tzdb
+namespace NodaTime.TzdbCompiler.Tzdb
 {
     /// <summary>
     ///   Thrown when an expected token is missing from the token stream.

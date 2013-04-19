@@ -9,11 +9,11 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 
-[assembly: AssemblyTitle("ZoneInfoCompiler.Test")]
+[assembly: AssemblyTitle("NodaTime.TzdbCompiler.Test")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("ZoneInfoCompiler.Test")]
+[assembly: AssemblyProduct("NodaTime.TzdbCompiler.Test")]
 [assembly: AssemblyCopyright("Copyright 2013 The Noda Time Authors. All rights reserved.")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

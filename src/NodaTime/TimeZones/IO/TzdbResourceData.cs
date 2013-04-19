@@ -17,7 +17,7 @@ using System.Resources;
 namespace NodaTime.TimeZones.IO
 {
     /// <summary>
-    /// Matching class for TzdbResourceWriter in the ZoneInfoCompiler project. This
+    /// Matching class for TzdbResourceWriter in the NodaTime.TzdbCompiler project. This
     /// knows how to read TZDB information from a .NET resource file.
     /// </summary>
     internal sealed class TzdbResourceData : ITzdbDataSource

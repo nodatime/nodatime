@@ -3,11 +3,10 @@
 // as found in the LICENSE.txt file.
 
 using NUnit.Framework;
-using NodaTime;
 using NodaTime.TimeZones;
-using NodaTime.ZoneInfoCompiler.Tzdb;
+using NodaTime.TzdbCompiler.Tzdb;
 
-namespace ZoneInfoCompiler.Test.Tzdb
+namespace NodaTime.TzdbCompiler.Test.Tzdb
 {
     /// <summary>
     /// Tests for DateTimeZoneBuilder; currently only scant coverage based on bugs which have

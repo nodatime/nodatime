@@ -6,7 +6,7 @@ using System.Reflection;
 using CommandLine;
 using CommandLine.Text;
 
-namespace NodaTime.ZoneInfoCompiler
+namespace NodaTime.TzdbCompiler
 {
     /// <summary>
     /// Defines the command line options that are valid.
@@ -42,7 +42,7 @@ namespace NodaTime.ZoneInfoCompiler
                 AdditionalNewLineAfterOption = true,
                 Copyright = new CopyrightInfo("The Noda Time Authors", 2009)
             };
-            help.AddPreOptionsLine("Usage: ZoneInfoCompiler -s <tzdb directory> -w <windowsZone.xml file> -o <output file> [-t ResX/Resource/NodaZoneData]");
+            help.AddPreOptionsLine("Usage: NodaTime.TzdbCompiler -s <tzdb directory> -w <windowsZone.xml file> -o <output file> [-t ResX/Resource/NodaZoneData]");
             help.AddOptions(this);
             return help;
         }

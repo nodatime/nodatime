@@ -4,7 +4,7 @@
 
 using System.Collections.Generic;
 
-namespace NodaTime.ZoneInfoCompiler.Tzdb
+namespace NodaTime.TzdbCompiler.Tzdb
 {
     /// <summary>
     ///   Provides for a list of Zone objects. All of the Zone objects will have the same

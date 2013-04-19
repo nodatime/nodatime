@@ -10,7 +10,7 @@ using System.Linq;
 using NodaTime.TimeZones.IO;
 using NodaTime.TimeZones.Cldr;
 
-namespace NodaTime.ZoneInfoCompiler.Tzdb
+namespace NodaTime.TzdbCompiler.Tzdb
 {
     /// <summary>
     /// Implementation of ITzdbWriter which writes in a custom format directly

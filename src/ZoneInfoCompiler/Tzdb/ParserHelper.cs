@@ -8,7 +8,7 @@ using System.Globalization;
 using System.Text.RegularExpressions;
 using NodaTime.Utility;
 
-namespace NodaTime.ZoneInfoCompiler.Tzdb
+namespace NodaTime.TzdbCompiler.Tzdb
 {
     /// <summary>
     ///   Contains helper methods for parsing the TZFB files.

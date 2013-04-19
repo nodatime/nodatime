@@ -5,13 +5,13 @@
 using CommandLine;
 using NodaTime.TimeZones;
 using NodaTime.TimeZones.Cldr;
-using NodaTime.ZoneInfoCompiler.Tzdb;
+using NodaTime.TzdbCompiler.Tzdb;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Resources;
 
-namespace NodaTime.ZoneInfoCompiler
+namespace NodaTime.TzdbCompiler
 {
     /// <summary>
     /// Main entry point for the time zone information compiler. In theory we could support
@@ -20,9 +20,6 @@ namespace NodaTime.ZoneInfoCompiler
     /// This also requires a windowsZone.xml file from the Unicode CLDR repository, to
     /// map Windows time zone names to TZDB IDs.
     /// </summary>
-    /// <remarks>
-    /// Original name: ZoneInfoCompiler (in org.joda.time.tz)
-    /// </remarks>
     internal sealed class Program
     {
         private static readonly Dictionary<OutputType, string> Extensions = new Dictionary<OutputType, string>

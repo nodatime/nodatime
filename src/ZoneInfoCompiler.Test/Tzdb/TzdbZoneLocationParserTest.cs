@@ -2,10 +2,10 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-using NodaTime.ZoneInfoCompiler.Tzdb;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using NodaTime.TzdbCompiler.Tzdb;
 
 namespace ZoneInfoCompiler.Test.Tzdb
 {

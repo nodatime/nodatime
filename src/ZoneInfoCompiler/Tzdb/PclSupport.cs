@@ -5,7 +5,7 @@
 using NodaTime.Utility;
 using System.Collections.Generic;
 
-namespace NodaTime.ZoneInfoCompiler.Tzdb
+namespace NodaTime.TzdbCompiler.Tzdb
 {
     /// <summary>
     /// Extra support required for the PCL, which has a somewhat anaemic

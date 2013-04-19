@@ -8,7 +8,7 @@ using System.Text;
 using NodaTime.TimeZones;
 using NodaTime.Utility;
 
-namespace NodaTime.ZoneInfoCompiler.Tzdb
+namespace NodaTime.TzdbCompiler.Tzdb
 {
     /// <summary>
     ///   Contains the parsed information from one zone line of the TZDB zone database.

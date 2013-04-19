@@ -6,7 +6,7 @@ using System;
 using System.Text;
 using NodaTime.Utility;
 
-namespace NodaTime.ZoneInfoCompiler.Tzdb
+namespace NodaTime.TzdbCompiler.Tzdb
 {
     /// <summary>
     /// Represents a transition two different time references.
