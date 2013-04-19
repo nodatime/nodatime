@@ -345,7 +345,7 @@ namespace NodaTime.Test
                 // .NET wraps any exceptions in InvalidOperationException; Mono doesn't.
                 if (IsRunningOnMono)
                 {
-                    Assert.Throws(expectedExceptionType, () => serializer.Deserialize(doc.CreateReader()))
+                    Assert.Throws(expectedExceptionType, () => serializer.Deserialize(doc.CreateReader()));
                 }
                 else
                 {
