@@ -1,7 +1,7 @@
 Time zone database file format
 
 This document describes the Noda Time-specific binary file format that is
-produced by Noda Time's `ZoneInfoCompiler` tool. `ZoneInfoCompiler` reads
+produced by Noda Time's `NodaTime.TzdbCompiler` tool. This tool reads
 the text files from [tzdb](http://www.iana.org/time-zones) (aka zoneinfo)
 along with some additional input from CLDR; it produces output in one of two
 different formats:
@@ -25,10 +25,10 @@ frozen, while the NodaZoneData format will evolve as more data is required.
 
 Most users will just use the version of the database embedded in the Noda
 Time assembly (which is typically produced with the same version of
-`ZoneInfoCompiler` as the Noda Time assembly itself), and so do not need to
+`NodaTime.TzdbCompiler` as the Noda Time assembly itself), and so do not need to
 worry about these details, but as we provide the ability to use a custom
 compiled time zone database, we document here the compatibility rules
-between the output produced by different versions of `ZoneInfoCompiler` and
+between the output produced by different versions of `ZoneInfoCompiler`/`NodaTime.TzdbCompiler` and
 the Noda Time assembly.
 
 In general, these are probably as you would expect: any version of Noda Time
