@@ -342,8 +342,16 @@ namespace NodaTime.Test
                 stream.Position = 0;
                 var doc = XElement.Load(stream);
                 doc.Element("value").ReplaceWith(XElement.Parse(invalidXml));
-                var exception = Assert.Throws<InvalidOperationException>(() => serializer.Deserialize(doc.CreateReader()));
-                Assert.IsInstanceOf(expectedExceptionType, exception.InnerException);
+                // .NET wraps any exceptions in InvalidOperationException; Mono doesn't.
+                if (IsRunningOnMono)
+                {
+                    Assert.Throws(expectedExceptionType, () => serializer.Deserialize(doc.CreateReader()))
+                }
+                else
+                {
+                    var exception = Assert.Throws<InvalidOperationException>(() => serializer.Deserialize(doc.CreateReader()));
+                    Assert.IsInstanceOf(expectedExceptionType, exception.InnerException);                    
+                }
             }
         }
 
