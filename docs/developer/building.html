@@ -45,10 +45,10 @@ be able to test the desktop build that way, if you really need to.</p>
 <pre class="prettyprint"><code>&gt; hg clone https://code.google.com/p/noda-time/
 </code></pre>
 
-<p>To build under Visual Studio, simply open the <code>src\NodaTime.sln</code> file.
+<p>To build everything under Visual Studio, simply open the <code>src\NodaTime-All.sln</code> file.
 To build with just the SDK and msbuild, run</p>
 
-<pre class="prettyprint"><code>&gt; msbuild src\NodaTime.sln /property:Configuration=Debug
+<pre class="prettyprint"><code>&gt; msbuild src\NodaTime-All.sln /property:Configuration=Debug
 </code></pre>
 
 <p>Execute the tests using your favourite NUnit test runner. For example:</p>
@@ -130,6 +130,40 @@ runner:</p>
 
 <pre class="prettyprint"><code>$ make check NUNIT='mono ../NUnit-2.6.1/bin/nunit-console.exe'
 </code></pre>
+
+<h3>Source layout</h3>
+
+<p>All the source code and user/developer guide source is under the <code>src</code> directory. There are multiple projects:</p>
+
+<ul>
+<li>NodaTime: The main library to be distributed</li>
+<li>NodaTime.Benchmarks: Benchmarks run regularly to check the performance</li>
+<li>NodaTime.CheckTimeZones: Tool to verify that Joda Time and Noda Time interpret TZDB data in the same way</li>
+<li>NodaTime.Demo: Demonstration code written as unit tests. Interesting <a href="http://stackoverflow.com">Stack Overflow</a> questions can lead to code in this project, for example.</li>
+<li>NodaTime.Serialization.JsonNet: Library to enable <a href="http://json.net">Json.NET</a> serialization of NodaTime types.</li>
+<li>NodaTime.Serialization.Test: Tests for all serialization assemblies, under the assumption that at some point we'll support more than just Json.NET.</li>
+<li>NodaTime.Test: Tests for the main library</li>
+<li>NodaTime.Testing: Library to help users test code which depends on Noda Time. Also used within our own tests.</li>
+<li>NodaTime.Tools.BuildMarkdownDocs: Tool to build the user and developer guides</li>
+<li>NodaTime.Tools.SetVersion: Tool to set version numbers on appropriate assemblies as part of the release process</li>
+<li>NodaTime.TzdbCompiler: Tool to take a TZDB database and convert it into the NodaTime internal format</li>
+<li>NodaTime.TzdbCompiler.Test: Tests for NodaTime.TzdbCompiler</li>
+</ul>
+
+<p>Additionally the <code>docs</code> directory contains the source for the documentation, and <code>JodaDump</code> contains Java code to be used with NodaTime.CheckTimeZones.</p>
+
+<p>There are four solutions, containing a variety of projects depending on the task at hand. The aim is to have everything you immediately need in one
+place, without too many distractions.</p>
+
+<ul>
+<li>NodaTime-All.sln: Contains all .NET projects, but not the documentation source. Useful for continuous integration and refactoring.</li>
+<li>NodaTime-Core.sln: Contains NodaTime, NodaTime.Benchmarks, NodaTime.Serialization.JsonNet and NodaTime.Serialization.Test, NodaTime.Test, NodaTime.Testing.
+This is the "day to day development" solution, containing everything that's shipped and the primary tests for those projects. When we're updating NodaTime.TzdbCompiler,
+that project and its tests may temporarily live in this solution.</li>
+<li>NodaTime-Documentation.sln: Contains the documentation sources, NodaTime, NodaTime.Testing.SerializationJsonNet and NodaTime.Testing. Useful when writing documentation.</li>
+<li>NodaTime-Tools.sln: Contains NodaTime (so that project references work), NodaTime.CheckTimeZones, NodaTime.Tools.BuildMarkdownDocs, NodaTime.Tools.SetVersion, NodaTime.TzdbCompiler
+and NodaTime.TzdbCompiler.Test. Aimed at times when we need to change our supporting toolset.</li>
+</ul>
 
   </body>
 </html>

@@ -19,7 +19,8 @@
             Represents a time zone - a mapping between UTC and local time. A time zone maps UTC instants to local times
              - or, equivalently, to the offset from UTC at any particular instant.
             </div><br /></td></tr><tr data="class; public"><td><img src="../icons/pubclass.gif" /></td><td><b><a href="T_NodaTime_DateTimeZoneProviders.htm">DateTimeZoneProviders</a></b></td><td><div class="summary">
-            Static access to date/time zone providers built into Noda Time. These are all thread-safe and caching.
+            Static access to date/time zone providers built into Noda Time and for global configuration where this is unavoidable.
+            All properties are thread-safe, and the providers returned by the read-only properties cache their results.
             </div><br /></td></tr><tr data="structure; public"><td><img src="../icons/pubstructure.gif" /></td><td><b><a href="T_NodaTime_Duration.htm">Duration</a></b></td><td><div class="summary">
             Represents a fixed (and calendar-independent) length of time.
             </div><br /></td></tr><tr data="interface; public"><td><img src="../icons/pubinterface.gif" /></td><td><b><a href="T_NodaTime_IClock.htm">IClock</a></b></td><td><div class="summary">
@@ -29,8 +30,7 @@
             </div><br /></td></tr><tr data="structure; public"><td><img src="../icons/pubstructure.gif" /></td><td><b><a href="T_NodaTime_Instant.htm">Instant</a></b></td><td><div class="summary">
             Represents an instant on the global timeline.
             </div><br /></td></tr><tr data="structure; public"><td><img src="../icons/pubstructure.gif" /></td><td><b><a href="T_NodaTime_Interval.htm">Interval</a></b></td><td><div class="summary">
-            An interval between two instants in time (start and end). The interval include the start instant and excludes
-            the end instant. The end may equal the start (resulting in an empty interval), but will not be before the start.
+            An interval between two instants in time (start and end).
             </div><br /></td></tr><tr data="enumeration; public"><td><img src="../icons/pubenum.gif" /></td><td><b><a href="T_NodaTime_IsoDayOfWeek.htm">IsoDayOfWeek</a></b></td><td><div class="summary">
             Equates the days of the week with their numerical value according to
             ISO-8601. This corresponds with System.DayOfWeek except for Sunday, which

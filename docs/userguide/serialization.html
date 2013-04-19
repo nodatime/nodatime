@@ -8,7 +8,81 @@
   </head>
   <body onload="prettyPrint()">
     <h1>Serialization</h1>
-    <p>Currently serialization is experimental. We will have one serialization assembly for each type of
+    <h2>XML serialization</h2>
+
+<p>As of Noda Time 1.2, the following types implement <code>IXmlSerializable</code> and can therefore be serialized:</p>
+
+<ul>
+<li><code>Instant</code></li>
+<li><code>OffsetDateTime</code></li>
+<li><code>ZonedDateTime</code></li>
+<li><code>LocalDateTime</code></li>
+<li><code>LocalDate</code></li>
+<li><code>LocalTime</code></li>
+<li><code>Offset</code></li>
+<li><code>Interval</code></li>
+<li><code>Duration</code></li>
+<li><code>PeriodBuilder</code> (see note below)</li>
+</ul>
+
+<p>XML serialization raises a few ugly issues which users should be aware of. Most importantly, it's designed for
+mutable types with a parameterless constructor - which is somewhat problematic for a library composed primarily
+of immutable types. However, as all structs implicitly have a parameterless constructor, and the <code>this</code> expression
+is effectively a <code>ref</code> parameter in methods in structs, all the value types listed above have <code>ReadXml</code> methods which effectively end with:</p>
+
+<pre class="prettyprint"><code>this = valueParsedFromXml;
+</code></pre>
+
+<p>This looks somewhat alarming, but is effectively sensible. It doesn't mutate the existing value so much as replace it with a completely new
+value. XML serialization has been performed using explicit interface implementation in all types, so it's very unlikely that you'll end up
+accidentally changing the value of a variable when you didn't expect to.</p>
+
+<p><code>Period</code> presents a rather greater challenge - as a reference type, we don't have the luxury of reassigning <code>this</code>, and we don't have a parameterless
+constructor (nor do we want one). <code>PeriodBuilder</code> is a mutable type with a parameterless constructor, however, making it ideal for serialization. Typically
+other classes wouldn't contain a <code>PeriodBuilder</code> property or field of course - but by exposing a "proxy" property solely for XML serialization purposes,
+an appropriate effect can be achieved. The class might look something like this:</p>
+
+<pre class="prettyprint"><code>/// &lt;summary&gt;
+/// Sample class to show how to serialize classes which have Period properties.
+/// &lt;/summary&gt;
+public class XmlSerializationDemo
+{
+    /// &lt;summary&gt;
+    /// Use this property!
+    /// &lt;/summary&gt;
+    [XmlIgnore]
+    public Period Period { get; set; }
+
+    /// &lt;summary&gt;
+    /// Don't use this property! It's only present for the purposes of XML serialization.
+    /// &lt;/summary&gt;
+    [XmlElement("period")]
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public PeriodBuilder PeriodBuilder
+    {
+        get { return Period == null ? null : Period.ToBuilder(); }
+        set { Period = value == null ? null : value.Build(); }
+    }
+}
+</code></pre>
+
+<p>When serializing, the <code>XmlSerializer</code> will fetch the value from the <code>PeriodBuilder</code> property, which will in turn fetch the period from the <code>Period</code> property and convert it into a builder.
+When deserializing, the <code>XmlSerializer</code> will set the value of <code>PeriodBuilder</code> from the XML - and the property will in turn build the builder and set the <code>Period</code> property.</p>
+
+<p>In an ideal world we'd also decorate the <code>PeriodBuilder</code> property with <code>[Obsolete("Only present for serialization", true)]</code> but unfortunately the XML serializer ignores obsolete
+properties, which would entirely defeat the point of the exercise.</p>
+
+<p>Finally, serialization of <code>ZonedDateTime</code> comes with the tricky question of which <code>IDateTimeZoneProvider</code> to use in order to convert a time zone ID specified in the XML into a <code>DateTimeZone</code>.
+Noda Time has no concept of a "time zone provider registry" nor does a time zone "know" which provider it came from. Likewise XML serialization doesn't allow any particular local context to be
+specified as part of the deserialization process. As a horrible workaround, a static (thread-safe) <code>DateTimeZoneProviders.XmlSerialization</code> property is used. This would normally be set on application start-up,
+and will be consulted when deserializing <code>ZonedDateTime</code> values. It defaults (lazily) to using <code>DateTimeZoneProviders.Tzdb</code>.</p>
+
+<p>While these details are undoubtedly unpleasant, it is hoped that they strike a pragmatic balance, providing a significant benefit to those who require XML serialization support, while staying
+out of the way of those who don't.</p>
+
+<h2>Third-party serialization</h2>
+
+<p>Currently third-party serialization is experimental. We will have one serialization assembly for each type of
 serialization we support which requires separate dependencies; if and when "stock" binary and XML
 serialization are supported, they will be included within the main Noda Time assembly.</p>
 
@@ -36,7 +110,8 @@ for individual converters. (All converters are immutable.)</p>
 <li><code>Interval</code>: A compound object of the form <code>{ Start: xxx, End: yyy }</code> where <code>xxx</code> and <code>yyy</code> are represented however the serializer sees fit. (Typically using the default representation above.)</li>
 <li><code>Period</code>: The round-trip period pattern; <code>NodaConverters.NormalizingIsoPeriodConverter</code> provides a converter using the normalizing ISO-like pattern</li>
 <li><code>Duration</code>: TBD</li>
-<li><code>ZonedDateTime</code>: TBD</li>
+<li><code>OffsetDateTime</code>: ISO-8601 date/time with offset pattern: <code>yyyy'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFFo&lt;G&gt;</code></li>
+<li><code>ZonedDateTime</code>: As <code>OffsetDateTime</code>, but with a time zone ID at the end: <code>yyyy'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFFo&lt;G&gt; z</code></li>
 <li><code>DateTimeZone</code>: The ID is written as a string.</li>
 </ul>
 
