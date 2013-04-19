@@ -85,10 +85,11 @@ check: debug
 checkfakepcl: fakepcl
 	$(NUNIT) $(FAKEPCL_TEST_DLL) $(FAKEPCL_SERIALIZATION_TEST_DLL)
 
-tools:
-	$(XBUILD) $(XBUILDFLAGS_RELEASE) $(TOOLS_SOLUTION)
+buildmarkdowndocs:
+	$(XBUILD) $(XBUILDFLAGS_RELEASE) \
+		tools/NodaTime.Tools.BuildMarkdownDocs/NodaTime.Tools.BuildMarkdownDocs.csproj
 
-docs: tools
+docs: buildmarkdowndocs
 	$(MONO) $(MARKDOWN_TOOL) tools/userguide-src docs/userguide
 	$(MONO) $(MARKDOWN_TOOL) tools/developer-src docs/developer
 
@@ -100,4 +101,4 @@ clean:
 	$(XBUILD) $(XBUILDFLAGS_FAKEPCL) $(SOLUTION) /t:Clean
 
 .SUFFIXES:
-.PHONY: debug release fakepcl check checkfakepcl tools docs clean
+.PHONY: debug release fakepcl check checkfakepcl buildmarkdowndocs docs clean
