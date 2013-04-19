@@ -5,9 +5,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NodaTime", "NodaTime\NodaTi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NodaTime.Test", "NodaTime.Test\NodaTime.Test.csproj", "{F870636C-1018-4392-8C74-76AD498EDD66}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NodaTime.TzdbCompiler", "ZoneInfoCompiler\NodaTime.TzdbCompiler.csproj", "{F51A7DF5-1559-45C3-A606-494DAD63A892}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NodaTime.TzdbCompiler", "NodaTime.TzdbCompiler\NodaTime.TzdbCompiler.csproj", "{F51A7DF5-1559-45C3-A606-494DAD63A892}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NodaTime.TzdbCompiler.Test", "ZoneInfoCompiler.Test\NodaTime.TzdbCompiler.Test.csproj", "{0A4C2376-D366-43DB-92E1-306FFCC81553}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NodaTime.TzdbCompiler.Test", "NodaTime.TzdbCompiler.Test\NodaTime.TzdbCompiler.Test.csproj", "{0A4C2376-D366-43DB-92E1-306FFCC81553}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NodaTime.Benchmarks", "NodaTime.Benchmarks\NodaTime.Benchmarks.csproj", "{8123BB5D-1DEB-478A-A1B3-9CA8940CA4C9}"
 EndProject
