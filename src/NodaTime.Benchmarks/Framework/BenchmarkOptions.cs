@@ -27,6 +27,8 @@ namespace NodaTime.Benchmarks.Framework
         internal bool DisplayRawData { get; private set; }
         internal bool WriteToXml { get; private set; }
         internal bool DryRunOnly { get; private set; }
+        internal string OutputFile { get; private set; }
+        internal string Identifier { get; private set; }
 
         private class MutableOptions
         {
@@ -42,8 +44,12 @@ namespace NodaTime.Benchmarks.Framework
             public bool DisplayRawData { get; set; }
             [Option("x", "xml", HelpText = "Write to an XML file as well as the console")]
             public bool WriteToXml { get; set; }
+            [Option("o", "out", HelpText = "Output file to override the default output location")]
+            public string OutputFile { get; set; }
             [Option("!", "dry", HelpText = "Dry run mode: run tests once each, with no timing, just to validate")]
             public bool DryRunOnly { get; set; }
+            [Option("i", "id", HelpText = "Test run identifier")]
+            public string Identifier { get; set; }
 
             [HelpOption("?", "help", HelpText = "Display this help screen.")]
             public string GetUsage()
@@ -79,7 +85,9 @@ namespace NodaTime.Benchmarks.Framework
                 TestTime = Duration.FromSeconds(options.TestTimeSeconds),
                 Timer = new WallTimer(),
                 DisplayRawData = options.DisplayRawData,
-                WriteToXml = options.WriteToXml
+                WriteToXml = options.WriteToXml,
+                OutputFile = options.OutputFile,
+                Identifier = options.Identifier,
             };
         }
     }

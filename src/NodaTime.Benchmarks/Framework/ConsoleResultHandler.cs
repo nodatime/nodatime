@@ -21,6 +21,10 @@ namespace NodaTime.Benchmarks.Framework
         internal override void HandleStartRun(BenchmarkOptions options)
         {
             Console.WriteLine("Environment: CLR {0} on {1}", Environment.Version, Environment.OSVersion);
+            if (options.Identifier != null)
+            {
+                Console.WriteLine("Run identifier: {0}", options.Identifier);
+            }
         }
 
         internal override void HandleStartType(Type type)

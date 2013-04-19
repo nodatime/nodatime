@@ -35,9 +35,13 @@ namespace NodaTime.Benchmarks
             BenchmarkResultHandler handler = new ConsoleResultHandler(options.DisplayRawData);
             if (options.WriteToXml)
             {
-                string folder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "NodaTime.Benchmarks");
-                Directory.CreateDirectory(folder);
-                string path = Path.Combine(folder, string.Format("benchmarks-{0:yyyyMMdd-HHmm}.xml", SystemClock.Instance.Now));
+                string path = options.OutputFile;
+                if (path == null)
+                {
+                    string folder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "NodaTime.Benchmarks");
+                    Directory.CreateDirectory(folder);
+                    path = Path.Combine(folder, string.Format("benchmarks-{0:yyyyMMdd-HHmm}.xml", SystemClock.Instance.Now));
+                }
                 var xmlHandler = new XmlResultHandler(path);
                 handler = new CompositeResultHandler(new[] { handler, xmlHandler });
             }
