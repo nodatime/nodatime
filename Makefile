@@ -1,5 +1,5 @@
 # Makefile for compiling Noda Time under mono.
-# See tools/developer-src/markdown/building.txt for requirements.
+# See src/docs/developer/markdown/building.txt for requirements.
 
 # Assumes that 'mono', 'xbuild' and 'nunit-console' point to appropriate
 # versions of the respective tools. If this is not true, override the
@@ -48,8 +48,7 @@ XBUILDFLAGS_FAKEPCL := $(XBUILDFLAGS_DEBUG) \
 	/property:DefineConstants=PCL \
 	/property:OutputPath=${FAKEPCL_OUTPUTPATH}
 
-SOLUTION := src/NodaTime.sln
-TOOLS_SOLUTION := tools/NodaTime.Tools.sln
+SOLUTION := src/NodaTime-All.sln
 DEBUG_TEST_DLL := \
 	src/NodaTime.Test/${DEBUG_OUTPUTPATH}/NodaTime.Test.dll
 DEBUG_SERIALIZATION_TEST_DLL := \
@@ -58,7 +57,7 @@ FAKEPCL_TEST_DLL := \
 	src/NodaTime.Test/${FAKEPCL_OUTPUTPATH}/NodaTime.Test.dll
 FAKEPCL_SERIALIZATION_TEST_DLL := \
 	src/NodaTime.Serialization.Test/${FAKEPCL_OUTPUTPATH}/NodaTime.Serialization.Test.dll
-MARKDOWN_TOOL := tools/NodaTime.Tools.BuildMarkdownDocs/bin/Release/NodaTime.Tools.BuildMarkdownDocs.exe
+MARKDOWN_TOOL := src/NodaTime.Tools.BuildMarkdownDocs/bin/Release/NodaTime.Tools.BuildMarkdownDocs.exe
 
 debug:
 	$(XBUILD) $(XBUILDFLAGS_DEBUG) $(SOLUTION)
@@ -87,17 +86,15 @@ checkfakepcl: fakepcl
 
 buildmarkdowndocs:
 	$(XBUILD) $(XBUILDFLAGS_RELEASE) \
-		tools/NodaTime.Tools.BuildMarkdownDocs/NodaTime.Tools.BuildMarkdownDocs.csproj
+		src/NodaTime.Tools.BuildMarkdownDocs/NodaTime.Tools.BuildMarkdownDocs.csproj
 
 docs: buildmarkdowndocs
-	$(MONO) $(MARKDOWN_TOOL) tools/userguide-src docs/userguide
-	$(MONO) $(MARKDOWN_TOOL) tools/developer-src docs/developer
+	$(MONO) $(MARKDOWN_TOOL) src/docs/userguide docs/userguide
+	$(MONO) $(MARKDOWN_TOOL) src/docs/developer docs/developer
 
 clean:
 	$(XBUILD) $(XBUILDFLAGS_DEBUG) $(SOLUTION) /t:Clean
-	$(XBUILD) $(XBUILDFLAGS_DEBUG) $(TOOLS_SOLUTION) /t:Clean
 	$(XBUILD) $(XBUILDFLAGS_RELEASE) $(SOLUTION) /t:Clean
-	$(XBUILD) $(XBUILDFLAGS_RELEASE) $(TOOLS_SOLUTION) /t:Clean
 	$(XBUILD) $(XBUILDFLAGS_FAKEPCL) $(SOLUTION) /t:Clean
 
 .SUFFIXES:
