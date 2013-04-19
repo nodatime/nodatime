@@ -347,18 +347,6 @@ namespace NodaTime.Test
             }
         }
 
-        public class SerializationHelper<T>
-        {
-            [XmlElement("before")]
-            public int Before { get; set; }
-
-            [XmlElement("value")]
-            public T Value { get; set; }
-
-            [XmlElement("after")]
-            public int After { get; set; }
-        }
-        
         /// <summary>
         ///   Validates that the input parameters to the test methods are valid.
         /// </summary>
@@ -374,5 +362,22 @@ namespace NodaTime.Test
             Assert.AreNotSame(value, equalValue, "value and equalValue MUST be different objects");
             Assert.AreNotSame(value, unEqualValue, unEqualName + " and value MUST be different objects");
         }
+    }
+
+    /// <summary>
+    /// Class used in XML serialization tests. This would be nested within TestHelper,
+    /// but some environments don't like serializing nested types within static types.
+    /// </summary>
+    /// <typeparam name="T">Type of value to serialize</typeparam>
+    public class SerializationHelper<T>
+    {
+        [XmlElement("before")]
+        public int Before { get; set; }
+
+        [XmlElement("value")]
+        public T Value { get; set; }
+
+        [XmlElement("after")]
+        public int After { get; set; }
     }
 }
