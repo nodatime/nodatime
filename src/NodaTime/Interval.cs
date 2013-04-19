@@ -12,9 +12,18 @@ using System.Xml.Serialization;
 namespace NodaTime
 {
     /// <summary>
-    /// An interval between two instants in time (start and end). The interval include the start instant and excludes
-    /// the end instant. The end may equal the start (resulting in an empty interval), but will not be before the start.
+    /// An interval between two instants in time (start and end).
     /// </summary>
+    /// <remarks>
+    /// <para>
+    /// The interval includes the start instant and excludes the end instant, unless the end instant
+    /// is <see cref="Instant.MaxValue"/> in which case it's deemed to be inclusive.
+    /// (An interval stretching to infinity includes the end of time.)
+    /// </para>
+    /// <para>
+    /// The end may equal the start (resulting in an empty interval), but will not be before the start.
+    /// </para>
+    /// </remarks>
     /// <threadsafety>This type is an immutable value type. See the thread safety section of the user guide for more information.</threadsafety>
     public struct Interval : IEquatable<Interval>, IXmlSerializable
     {
@@ -43,7 +52,7 @@ namespace NodaTime
         }
 
         /// <summary>
-        /// Gets the start instant.
+        /// Gets the start instant - the inclusive lower bound of the interval.
         /// </summary>
         /// <remarks>
         /// This will never be later than <see cref="End"/>, though it may be equal to it.
@@ -52,10 +61,12 @@ namespace NodaTime
         public Instant Start { get { return start; } }
 
         /// <summary>
-        /// Gets the end instant.
+        /// Gets the end instant - the exclusive upper bound of the interval.
         /// </summary>
         /// <remarks>
         /// This will never be earlier than <see cref="Start"/>, though it may be equal to it.
+        /// If this value is <see cref="Instant.MaxValue"/>, it is treated as an inclusive
+        /// upper bound: an interval stretching to infinity includes the end of time.
         /// </remarks>
         /// <value>The end <see cref="Instant"/>.</value>
         public Instant End { get { return end; } }
@@ -68,6 +79,21 @@ namespace NodaTime
         /// </remarks>
         /// <value>The duration of the interval.</value>
         public Duration Duration { get { return end - start; } }
+
+        /// <summary>
+        /// Returns whether or not this interval contains the given instant.
+        /// </summary>
+        /// <remarks>
+        /// The interval is considered to include the <see cref="Start"/> instant but
+        /// not the <see cref="End"/> instant - unless the end is <see cref="Instant.MaxValue"/>, in
+        /// which case it's considered to be infinite from the start point onwards.
+        /// </remarks>
+        /// <param name="instant">Instant to test.</param>
+        /// <returns>True if this interval contains the given instant; false otherwise.</returns>
+        public bool Contains(Instant instant)
+        {
+            return instant >= start && (instant < end || end == Instant.MaxValue);
+        }
 
         #region Implementation of IEquatable<Interval>
         /// <summary>
