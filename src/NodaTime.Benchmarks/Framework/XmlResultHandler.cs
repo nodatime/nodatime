@@ -35,9 +35,9 @@ namespace NodaTime.Benchmarks.Framework
                 new XAttribute("method-filter", options.MethodFilter ?? ""),
                 new XAttribute("test-time", options.TestTime.ToTimeSpan()),
                 new XAttribute("warmup-time", options.WarmUpTime.ToTimeSpan())));
-            if (options.Identifier != null)
+            if (options.Label != null)
             {
-                document.Root.Add(new XAttribute("run-id", options.Identifier));
+                document.Root.Add(new XAttribute("label", options.Label));
             }
         }
 
@@ -52,10 +52,7 @@ namespace NodaTime.Benchmarks.Framework
             currentType.Add(new XElement("test",
                 new XAttribute("method", result.Method.Name),
                 new XAttribute("iterations", result.Iterations),
-                new XAttribute("duration", result.Duration.Ticks),
-                // These two can be inferred, but just for readability let's include them here too
-                new XAttribute("ticks-per-call", result.TicksPerCall),
-                new XAttribute("calls-per-second", result.CallsPerSecond)));
+                new XAttribute("duration", result.Duration.Ticks)));
         }
 
         internal override void HandleWarning(string text)
