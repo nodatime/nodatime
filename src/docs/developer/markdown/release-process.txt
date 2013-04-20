@@ -67,7 +67,7 @@ Switch to the correct branch (e.g. `1.0.x`).
 
 Update the version number by building the tools solution and then running the `SetVersion` tool:
 
-    msbuild tools\NodaTime.Tools.sln
+    msbuild src\NodaTime-Tools.sln
 	src\NodaTime.Tools.SetVersion\bin\debug\SetVersion 1.2.3-beta4
 
 > This will update the following AssemblyInfo files and NuGet package specs to include the
@@ -96,7 +96,7 @@ we were building version 1.2.3-beta4, then:
 [assemblyversion]: http://stackoverflow.com/a/65062
 
 Add the current date and TZDB version to the version history in
-`tools/userguide-src/markdown/versions.txt` and regenerate all documentation.
+`src/docs/userguide/markdown/versions.txt` and regenerate all documentation.
 
 Commit the above, then tag that commit:
 

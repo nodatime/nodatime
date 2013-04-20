@@ -4,6 +4,6 @@ http://noda-time.blogspot.com/2010/04/documentation-with-sandcastle-notebook.htm
 for a starting point.
 
 The user and developer guides (userguide/ and devloper/) are generated from
-source in tools/userguide-src/ and tools/developer-src/ using BuildMarkdownDocs
-(also in tools/). To regenerate the documentation, run builddocs.bat from the
-root of the project (or 'make docs' under Mono).
+source in src/docs/userguide/ and src/docs/developer/ using BuildMarkdownDocs
+To regenerate the documentation, run builddocs.bat from the root of the project
+(or 'make docs' under Mono).
