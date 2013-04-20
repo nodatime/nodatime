@@ -2,13 +2,7 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Reflection;
 using NodaTime.Benchmarks.Framework;
-using NodaTime.Text;
 
 namespace NodaTime.Benchmarks
 {
@@ -17,17 +11,18 @@ namespace NodaTime.Benchmarks
     /// </summary>
     internal class Program
     {
-        private static void Main(string[] args)
+        private static int Main(string[] args)
         {
             var options = BenchmarkOptions.FromCommandLine(args);
             // Help screen / error
             if (options == null)
             {
-                return;
+                return 1;
             }
             var handler = CreateResultHandler(options);
             var runner = new BenchmarkRunner(options, handler);
             runner.RunTests();
+            return 0;
         }
 
         private static BenchmarkResultHandler CreateResultHandler(BenchmarkOptions options)
