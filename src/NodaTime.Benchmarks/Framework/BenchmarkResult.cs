@@ -11,6 +11,9 @@ namespace NodaTime.Benchmarks.Framework
     /// </summary>
     internal class BenchmarkResult
     {
+        private const long TicksPerPicosecond = 100 * 1000L;
+        private const long TicksPerNanosecond = 100;
+
         private readonly MethodInfo method;
         private readonly int iterations;
         private readonly Duration duration;
@@ -27,5 +30,7 @@ namespace NodaTime.Benchmarks.Framework
         internal Duration Duration { get { return duration; } }
         internal long CallsPerSecond { get { return iterations * NodaConstants.TicksPerSecond / duration.Ticks; } }
         internal long TicksPerCall { get { return Duration.Ticks / iterations; } }
+        internal long PicosecondsPerCall { get { return (Duration.Ticks * TicksPerPicosecond) / iterations; } }
+        internal long NanosecondsPerCall { get { return (Duration.Ticks * TicksPerNanosecond) / iterations; } }
     }
 }

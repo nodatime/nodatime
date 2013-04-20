@@ -25,10 +25,9 @@ namespace NodaTime.Benchmarks.Framework
         internal string TypeFilter { get; private set; }
         internal string MethodFilter { get; private set; }
         internal bool DisplayRawData { get; private set; }
-        internal bool WriteToXml { get; private set; }
+        internal string XmlFile { get; private set; }
         internal bool DryRunOnly { get; private set; }
-        internal string OutputFile { get; private set; }
-        internal string Identifier { get; private set; }
+        internal string Label { get; private set; }
 
         private class MutableOptions
         {
@@ -42,14 +41,12 @@ namespace NodaTime.Benchmarks.Framework
             public string MethodFilter { get; set; }
             [Option("r", "raw", HelpText = "Display the raw data")]
             public bool DisplayRawData { get; set; }
-            [Option("x", "xml", HelpText = "Write to an XML file as well as the console")]
-            public bool WriteToXml { get; set; }
-            [Option("o", "out", HelpText = "Output file to override the default output location")]
-            public string OutputFile { get; set; }
+            [Option("x", "xml", HelpText = "Write to the given XML file as well as the console")]
+            public string XmlFile { get; set; }
             [Option("!", "dry", HelpText = "Dry run mode: run tests once each, with no timing, just to validate")]
             public bool DryRunOnly { get; set; }
-            [Option("i", "id", HelpText = "Test run identifier")]
-            public string Identifier { get; set; }
+            [Option("l", "label", HelpText = "Test run label")]
+            public string Label { get; set; }
 
             [HelpOption("?", "help", HelpText = "Display this help screen.")]
             public string GetUsage()
@@ -85,9 +82,8 @@ namespace NodaTime.Benchmarks.Framework
                 TestTime = Duration.FromSeconds(options.TestTimeSeconds),
                 Timer = new WallTimer(),
                 DisplayRawData = options.DisplayRawData,
-                WriteToXml = options.WriteToXml,
-                OutputFile = options.OutputFile,
-                Identifier = options.Identifier,
+                XmlFile = options.XmlFile,
+                Label = options.Label,
             };
         }
     }

@@ -33,16 +33,9 @@ namespace NodaTime.Benchmarks
         private static BenchmarkResultHandler CreateResultHandler(BenchmarkOptions options)
         {
             BenchmarkResultHandler handler = new ConsoleResultHandler(options.DisplayRawData);
-            if (options.WriteToXml)
+            if (options.XmlFile != null)
             {
-                string path = options.OutputFile;
-                if (path == null)
-                {
-                    string folder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "NodaTime.Benchmarks");
-                    Directory.CreateDirectory(folder);
-                    path = Path.Combine(folder, string.Format("benchmarks-{0:yyyyMMdd-HHmm}.xml", SystemClock.Instance.Now));
-                }
-                var xmlHandler = new XmlResultHandler(path);
+                var xmlHandler = new XmlResultHandler(options.XmlFile);
                 handler = new CompositeResultHandler(new[] { handler, xmlHandler });
             }
             return handler;
