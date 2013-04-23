@@ -43,7 +43,10 @@ namespace NodaTime.Benchmarks.Framework
 
         internal override void HandleStartType(Type type)
         {
-            currentType = new XElement("type", new XAttribute("name", type.FullName));
+            currentType = new XElement("type",
+                new XAttribute("name", type.Name),
+                new XAttribute("full-name", type.FullName),
+                new XAttribute("namespace", type.Namespace));
             document.Root.Add(currentType);
         }
 
