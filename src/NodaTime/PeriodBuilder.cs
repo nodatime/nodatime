@@ -82,7 +82,7 @@ namespace NodaTime
         /// allows object initializers to be used.
         /// </summary>
         /// <param name="period">An existing period to copy values from.</param>
-        /// <exception cref="ArgumentNullException"><paramref name="period"/> is null</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="period"/> is null.</exception>
         public PeriodBuilder(Period period)
         {
             Preconditions.CheckNotNull(period, "period");
@@ -102,7 +102,7 @@ namespace NodaTime
         /// </summary>
         /// <param name="unit">A single value within the <see cref="PeriodUnits"/> enumeration.</param>
         /// <returns>The value of the given unit within this period builder, or zero if the unit is unset.</returns>
-        /// <exception cref="ArgumentOutOfRangeException"><paramref name="unit"/> is not a single unit</exception>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="unit"/> is not a single unit.</exception>
         public long this[PeriodUnits unit]
         {
             get

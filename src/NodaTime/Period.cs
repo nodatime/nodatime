@@ -355,8 +355,8 @@ namespace NodaTime
         /// <param name="start">Start date/time</param>
         /// <param name="end">End date/time</param>
         /// <param name="units">Units to use for calculations</param>
-        /// <exception cref="ArgumentException"><paramref name="units"/> is empty or contained unknown values</exception>
-        /// <exception cref="ArgumentException"><paramref name="start"/> and <paramref name="end"/> use different calendars</exception>
+        /// <exception cref="ArgumentException"><paramref name="units"/> is empty or contained unknown values.</exception>
+        /// <exception cref="ArgumentException"><paramref name="start"/> and <paramref name="end"/> use different calendars.</exception>
         /// <returns>The period between the given date/times, using the given units.</returns>
         public static Period Between(LocalDateTime start, LocalDateTime end, PeriodUnits units)
         {
@@ -452,8 +452,8 @@ namespace NodaTime
         /// <param name="start">Start date</param>
         /// <param name="end">End date</param>
         /// <param name="units">Units to use for calculations</param>
-        /// <exception cref="ArgumentException"><paramref name="units"/> contains time units, is empty or contains unknown values</exception>
-        /// <exception cref="ArgumentException"><paramref name="start"/> and <paramref name="end"/> use different calendars</exception>
+        /// <exception cref="ArgumentException"><paramref name="units"/> contains time units, is empty or contains unknown values.</exception>
+        /// <exception cref="ArgumentException"><paramref name="start"/> and <paramref name="end"/> use different calendars.</exception>
         /// <returns>The period between the given dates, using the given units.</returns>
         public static Period Between(LocalDate start, LocalDate end, PeriodUnits units)
         {
@@ -489,8 +489,8 @@ namespace NodaTime
         /// <param name="start">Start time</param>
         /// <param name="end">End time</param>
         /// <param name="units">Units to use for calculations</param>
-        /// <exception cref="ArgumentException"><paramref name="units"/> contains date units, is empty or contains unknown values</exception>
-        /// <exception cref="ArgumentException"><paramref name="start"/> and <paramref name="end"/> use different calendars</exception>
+        /// <exception cref="ArgumentException"><paramref name="units"/> contains date units, is empty or contains unknown values.</exception>
+        /// <exception cref="ArgumentException"><paramref name="start"/> and <paramref name="end"/> use different calendars.</exception>
         /// <returns>The period between the given times, using the given units.</returns>
         public static Period Between(LocalTime start, LocalTime end, PeriodUnits units)
         {

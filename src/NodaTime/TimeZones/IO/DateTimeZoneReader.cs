@@ -278,7 +278,7 @@ namespace NodaTime.TimeZones.IO
         /// Reads a signed 8 bit integer value from the stream and returns it as an int.
         /// </summary>
         /// <returns>The 8 bit int value.</returns>
-        /// <exception cref="InvalidNodaDataException">The data in the stream has been exhausted</exception>
+        /// <exception cref="InvalidNodaDataException">The data in the stream has been exhausted.</exception>
         /// <inheritdoc />
         public byte ReadByte()
         {

@@ -85,7 +85,7 @@ namespace NodaTime.Fields
         /// </summary>
         /// <param name="localInstant">The local instant to set in</param>
         /// <param name="value">The value to set, in the units of the field</param>
-        /// <exception cref="ArgumentOutOfRangeException">The field value is invalid in terms of the "larger" existing fields</exception>
+        /// <exception cref="ArgumentOutOfRangeException">The field value is invalid in terms of the "larger" existing fields.</exception>
         /// <returns>The updated local instant</returns>
         internal abstract LocalInstant SetValue(LocalInstant localInstant, long value);
         #endregion
