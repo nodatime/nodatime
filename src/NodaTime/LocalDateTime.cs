@@ -78,7 +78,7 @@ namespace NodaTime
         /// <param name="hour">The hour.</param>
         /// <param name="minute">The minute.</param>
         /// <returns>The resulting date/time.</returns>
-        /// <exception cref="ArgumentOutOfRangeException">The parameters do not form a valid date/time</exception>
+        /// <exception cref="ArgumentOutOfRangeException">The parameters do not form a valid date/time.</exception>
         public LocalDateTime(int year, int month, int day, int hour, int minute)
             : this(year, month, day, hour, minute, CalendarSystem.Iso)
         {
@@ -96,7 +96,7 @@ namespace NodaTime
         /// <param name="calendar">The calendar.</param>
         /// <returns>The resulting date/time.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="calendar"/> is null.</exception>
-        /// <exception cref="ArgumentOutOfRangeException">The parameters do not form a valid date/time</exception>
+        /// <exception cref="ArgumentOutOfRangeException">The parameters do not form a valid date/time.</exception>
         public LocalDateTime(int year, int month, int day, int hour, int minute, CalendarSystem calendar)
         {
             Preconditions.CheckNotNull(calendar, "calendar");
@@ -115,7 +115,7 @@ namespace NodaTime
         /// <param name="minute">The minute.</param>
         /// <param name="second">The second.</param>
         /// <returns>The resulting date/time.</returns>
-        /// <exception cref="ArgumentOutOfRangeException">The parameters do not form a valid date/time</exception>
+        /// <exception cref="ArgumentOutOfRangeException">The parameters do not form a valid date/time.</exception>
         public LocalDateTime(int year, int month, int day, int hour, int minute, int second)
             : this(year, month, day, hour, minute, second, CalendarSystem.Iso)
         {
@@ -134,7 +134,7 @@ namespace NodaTime
         /// <param name="calendar">The calendar.</param>
         /// <returns>The resulting date/time.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="calendar"/> is null.</exception>
-        /// <exception cref="ArgumentOutOfRangeException">The parameters do not form a valid date/time</exception>
+        /// <exception cref="ArgumentOutOfRangeException">The parameters do not form a valid date/time.</exception>
         public LocalDateTime(int year, int month, int day, int hour, int minute, int second, CalendarSystem calendar)
         {
             Preconditions.CheckNotNull(calendar, "calendar");
@@ -154,7 +154,7 @@ namespace NodaTime
         /// <param name="second">The second.</param>
         /// <param name="millisecond">The millisecond.</param>
         /// <returns>The resulting date/time.</returns>
-        /// <exception cref="ArgumentOutOfRangeException">The parameters do not form a valid date/time</exception>
+        /// <exception cref="ArgumentOutOfRangeException">The parameters do not form a valid date/time.</exception>
         public LocalDateTime(int year, int month, int day, int hour, int minute, int second, int millisecond)
             : this(year, month, day, hour, minute, second, millisecond, 0, CalendarSystem.Iso)
         {
@@ -174,7 +174,7 @@ namespace NodaTime
         /// <param name="calendar">The calendar.</param>
         /// <returns>The resulting date/time.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="calendar"/> is null.</exception>
-        /// <exception cref="ArgumentOutOfRangeException">The parameters do not form a valid date/time</exception>
+        /// <exception cref="ArgumentOutOfRangeException">The parameters do not form a valid date/time.</exception>
         public LocalDateTime(int year, int month, int day, int hour, int minute, int second, int millisecond, CalendarSystem calendar)
             : this(year, month, day, hour, minute, second, millisecond, 0, calendar)
         {
@@ -193,7 +193,7 @@ namespace NodaTime
         /// <param name="millisecond">The millisecond.</param>
         /// <param name="tickWithinMillisecond">The tick within millisecond.</param>
         /// <returns>The resulting date/time.</returns>
-        /// <exception cref="ArgumentOutOfRangeException">The parameters do not form a valid date/time</exception>
+        /// <exception cref="ArgumentOutOfRangeException">The parameters do not form a valid date/time.</exception>
         public LocalDateTime(int year, int month, int day, int hour, int minute, int second, int millisecond, int tickWithinMillisecond)
             : this(year, month, day, hour, minute, second, millisecond, tickWithinMillisecond, CalendarSystem.Iso)
         {
@@ -214,7 +214,7 @@ namespace NodaTime
         /// <param name="calendar">The calendar.</param>
         /// <returns>The resulting date/time.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="calendar"/> is null.</exception>
-        /// <exception cref="ArgumentOutOfRangeException">The parameters do not form a valid date/time</exception>
+        /// <exception cref="ArgumentOutOfRangeException">The parameters do not form a valid date/time.</exception>
         public LocalDateTime(int year, int month, int day, int hour, int minute, int second, int millisecond, int tickWithinMillisecond, CalendarSystem calendar)
         {
             Preconditions.CheckNotNull(calendar, "calendar");
@@ -869,7 +869,7 @@ namespace NodaTime
         /// </remarks>
         /// <param name="zone">The time zone in which to map this local date/time.</param>
         /// <returns>The result of mapping this local date/time in the given time zone.</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="zone"/> is null</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="zone"/> is null.</exception>
         public ZonedDateTime InZoneStrictly(DateTimeZone zone)
         {
             Preconditions.CheckNotNull(zone, "zone");
@@ -887,7 +887,7 @@ namespace NodaTime
         /// </remarks>
         /// <param name="zone">The time zone in which to map this local date/time.</param>
         /// <returns>The result of mapping this local date/time in the given time zone.</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="zone"/> is null</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="zone"/> is null.</exception>
         public ZonedDateTime InZoneLeniently(DateTimeZone zone)
         {
             Preconditions.CheckNotNull(zone, "zone");
@@ -904,7 +904,7 @@ namespace NodaTime
         /// <param name="zone">The time zone to map this local date and time into</param>
         /// <param name="resolver">The resolver to apply to the mapping.</param>
         /// <returns>The result of resolving the mapping.</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="zone"/> or <paramref name="resolver"/> is null</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="zone"/> or <paramref name="resolver"/> is null.</exception>
         public ZonedDateTime InZone(DateTimeZone zone, ZoneLocalMappingResolver resolver)
         {
             Preconditions.CheckNotNull(zone, "zone");

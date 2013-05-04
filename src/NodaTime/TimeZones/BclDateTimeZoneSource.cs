@@ -57,7 +57,7 @@ namespace NodaTime.TimeZones
         /// ID. The ID must be a known system time zone ID.
         /// </summary>
         /// <param name="id">The ID of the system time zone to convert</param>
-        /// <exception cref="ArgumentException">The given zone doesn't exist</exception>
+        /// <exception cref="ArgumentException">The given zone doesn't exist.</exception>
         /// <returns>The Noda Time representation of the given Windows system time zone</returns>
         public BclDateTimeZone ForId(string id)
         {

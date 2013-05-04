@@ -377,7 +377,7 @@ namespace NodaTime
         /// </remarks>
         /// <param name="localDateTime"></param>
         /// <param name="resolver">The resolver to apply to the mapping.</param>
-        /// <exception cref="ArgumentNullException"><paramref name="resolver"/> is null</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="resolver"/> is null.</exception>
         /// <returns>The result of resolving the mapping.</returns>
         public ZonedDateTime ResolveLocal(LocalDateTime localDateTime, ZoneLocalMappingResolver resolver)
         {
@@ -600,7 +600,7 @@ namespace NodaTime
         /// </remarks>
         /// <param name="start">Inclusive start point of the interval for which to retrieve zone intervals.</param>
         /// <param name="end">Exclusive end point of the interval for which to retrieve zone intervals.</param>
-        /// <exception cref="ArgumentOutOfRangeException"><paramref name="end"/> is earlier than <paramref name="start"/></exception>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="end"/> is earlier than <paramref name="start"/>.</exception>
         /// <returns>A sequence of zone intervals covering the given interval.</returns>
         /// <seealso cref="GetZoneInterval"/>
         public IEnumerable<ZoneInterval> GetZoneIntervals(Instant start, Instant end)

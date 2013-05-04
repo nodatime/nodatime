@@ -54,7 +54,7 @@ namespace NodaTime.TimeZones
         /// and then have adjoining periods. This is only called in the constructors.
         /// </summary>
         /// <remarks>This is only called from the constructors, but is internal to make it easier to test.</remarks>
-        /// <exception cref="ArgumentException">The periods specified are invalid</exception>
+        /// <exception cref="ArgumentException">The periods specified are invalid.</exception>
         internal static void ValidatePeriods(ZoneInterval[] periods, DateTimeZone tailZone)
         {
             Preconditions.CheckArgument(periods.Length > 0, "periods", "No periods specified in precalculated time zone");
