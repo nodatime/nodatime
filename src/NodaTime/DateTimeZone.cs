@@ -315,9 +315,15 @@ namespace NodaTime
         /// Returns complete information about how the given <see cref="LocalDateTime" /> is mapped in this time zone.
         /// </summary>
         /// <remarks>
+        /// <para>
         /// Mapping a local date/time to a time zone can give an unambiguous, ambiguous or impossible result, depending on
         /// time zone transitions. Use the return value of this method to handle these cases in an appropriate way for
         /// your use case.
+        /// </para>
+        /// <para>
+        /// An an alternative, consider <see cref="ResolveLocal"/>, which uses a caller-provided strategy to
+        /// convert the <see cref="ZoneLocalMapping"/> returned here to a <see cref="ZonedDateTime"/>.
+        /// </para>
         /// </remarks>
         /// <param name="localDateTime">The local date and time to map in this time zone.</param>
         /// <returns>A mapping of the given local date and time to zero, one or two zoned date/time values.</returns>
@@ -375,7 +381,7 @@ namespace NodaTime
         /// specific instant.
         /// </para>
         /// </remarks>
-        /// <param name="localDateTime"></param>
+        /// <param name="localDateTime">The local date and time to map in this time zone.</param>
         /// <param name="resolver">The resolver to apply to the mapping.</param>
         /// <exception cref="ArgumentNullException"><paramref name="resolver"/> is null.</exception>
         /// <returns>The result of resolving the mapping.</returns>
