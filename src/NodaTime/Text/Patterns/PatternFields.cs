@@ -33,7 +33,8 @@ namespace NodaTime.Text.Patterns
         Era = 1 << 14,
         Calendar = 1 << 15,
         Zone = 1 << 16,
-        EmbeddedOffset = 1 << 17,
+        ZoneAbbreviation = 1 << 17,
+        EmbeddedOffset = 1 << 18,
 
         AllTimeFields = Hours12 | Hours24 | Minutes | Seconds | FractionalSeconds | AmPm,
         AllDateFields = Year | YearTwoDigits | YearOfEra | MonthOfYearNumeric | MonthOfYearText | DayOfMonth | DayOfWeek | Era | Calendar

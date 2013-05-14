@@ -75,6 +75,9 @@ namespace NodaTime.Test.Text
 
             // Redundant specification of fixed zone but not enough digits - we'll parse UTC+01:00:00 and unexpectedly be left with 00
             new Data { Pattern = "yyyy-MM-dd HH:mm z", Text = "2013-01-13 15:44 UTC+01:00:00.00", Message = Messages.Parse_ExtraValueCharacters, Parameters = { ".00" }},
+
+            // Can't parse a pattern with a time zone abbreviation.
+            new Data { Pattern = "yyyy-MM-dd HH:mm x", Text = "ignored", Message = Messages.Parse_FormatOnlyPattern }
         };
 
         internal static Data[] ParseOnlyData = {
@@ -114,7 +117,12 @@ namespace NodaTime.Test.Text
             new Data(2013, 1, 13, 16, 2, France) { Pattern = "yyyy-MM-dd HH:mm z", Text = "2013-01-13 16:02 Europe/Paris" },
 
             // Ambiguous value - would be invalid if parsed with a strict parser.
-            new Data(TestZone2.Transition.Plus(Duration.FromMinutes(30)).InZone(TestZone2)) { Pattern = "yyyy-MM-dd HH:mm", Text = "2010-01-01 01:30" }
+            new Data(TestZone2.Transition.Plus(Duration.FromMinutes(30)).InZone(TestZone2)) { Pattern = "yyyy-MM-dd HH:mm", Text = "2010-01-01 01:30" },
+
+            // Winter
+            new Data(2013, 1, 13, 16, 2, France) { Pattern = "yyyy-MM-dd HH:mm x", Text = "2013-01-13 16:02 CET" },
+            // Summer
+            new Data(2013, 6, 13, 16, 2, France) { Pattern = "yyyy-MM-dd HH:mm x", Text = "2013-06-13 16:02 CEST" },
         };
 
         internal static Data[] FormatAndParseData = {
