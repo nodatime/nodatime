@@ -277,6 +277,15 @@ namespace NodaTime.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to This pattern is only capable of formatting, not parsing..
+        /// </summary>
+        internal static string Parse_FormatOnlyPattern {
+            get {
+                return ResourceManager.GetString("Parse_FormatOnlyPattern", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The format string is empty..
         /// </summary>
         internal static string Parse_FormatStringEmpty {
