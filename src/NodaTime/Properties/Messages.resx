@@ -189,6 +189,9 @@
   <data name="Parse_FormatInvalid" xml:space="preserve">
     <value>The format string is invalid: "{0}"</value>
   </data>
+  <data name="Parse_FormatOnlyPattern" xml:space="preserve">
+    <value>This pattern is only capable of formatting, not parsing.</value>
+  </data>
   <data name="Parse_FormatStringEmpty" xml:space="preserve">
     <value>The format string is empty.</value>
   </data>

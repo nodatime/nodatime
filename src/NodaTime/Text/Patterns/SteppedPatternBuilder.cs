@@ -24,6 +24,7 @@ namespace NodaTime.Text.Patterns
         private readonly List<ParseAction> parseActions;
         private readonly NodaFunc<TBucket> bucketProvider;
         private PatternFields usedFields;
+        private bool formatOnly = false;
 
         internal SteppedPatternBuilder(NodaFormatInfo formatInfo, NodaFunc<TBucket> bucketProvider)
         {
@@ -34,6 +35,15 @@ namespace NodaTime.Text.Patterns
         }
 
         internal NodaFormatInfo FormatInfo { get { return formatInfo; } }
+
+        /// <summary>
+        /// Sets this pattern to only be capable of formatting; any attempt to parse using the
+        /// built pattern will fail immediately.
+        /// </summary>
+        internal void SetFormatOnly()
+        {
+            formatOnly = true;
+        }
 
         /// <summary>
         /// Performs common parsing operations: start with a parse action to move the
@@ -94,7 +104,7 @@ namespace NodaTime.Text.Patterns
                 IPostPatternParseFormatAction postAction = formatAction.Target as IPostPatternParseFormatAction;
                 formatDelegate += postAction == null ? formatAction : postAction.BuildFormatAction(usedFields);
             }
-            return new SteppedPattern(formatDelegate, parseActions.ToArray(), bucketProvider, usedFields);
+            return new SteppedPattern(formatDelegate, formatOnly ? null : parseActions.ToArray(), bucketProvider, usedFields);
         }
 
         /// <summary>
@@ -384,9 +394,10 @@ namespace NodaTime.Text.Patterns
             NodaAction<TResult, StringBuilder> BuildFormatAction(PatternFields finalFields);
         }
 
-        private sealed class SteppedPattern : IPattern<TResult>, IPartialPattern<TResult>
+        private sealed class SteppedPattern : IPartialPattern<TResult>
         {
             private readonly NodaAction<TResult, StringBuilder> formatActions;
+            // This will be null if the pattern is only capable of formatting.
             private readonly ParseAction[] parseActions;
             private readonly NodaFunc<TBucket> bucketProvider;
             private readonly PatternFields usedFields;
@@ -403,6 +414,10 @@ namespace NodaTime.Text.Patterns
 
             public ParseResult<TResult> Parse(string text)
             {
+                if (parseActions == null)
+                {
+                    return ParseResult<TResult>.FormatOnlyPattern;
+                }
                 if (text == null)
                 {
                     return ParseResult<TResult>.ArgumentNull("text");

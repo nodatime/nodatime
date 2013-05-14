@@ -53,6 +53,7 @@ namespace NodaTime.Text
             { 'c', DatePatternHelper.CreateCalendarHandler<ZonedDateTime, ZonedDateTimeParseBucket>(value => value.LocalDateTime.Calendar, (bucket, value) => bucket.Date.Calendar = value) },
             { 'g', DatePatternHelper.CreateEraHandler<ZonedDateTime, ZonedDateTimeParseBucket>(value => value.Era, bucket => bucket.Date) },
             { 'z', HandleZone },
+            { 'x', HandleZoneAbbreviation },
             { 'o', HandleOffset },
         };
 
@@ -90,6 +91,14 @@ namespace NodaTime.Text
             builder.AddField(PatternFields.Zone, pattern.Current);
             builder.AddParseAction(ParseZone);
             builder.AddFormatAction((value, sb) => sb.Append(value.Zone.Id));
+        }
+
+        private static void HandleZoneAbbreviation(PatternCursor pattern,
+            SteppedPatternBuilder<ZonedDateTime, ZonedDateTimeParseBucket> builder)
+        {
+            builder.AddField(PatternFields.ZoneAbbreviation, pattern.Current);
+            builder.SetFormatOnly();
+            builder.AddFormatAction((value, sb) => sb.Append(value.GetZoneInterval().Name));
         }
 
         private static void HandleOffset(PatternCursor pattern,
