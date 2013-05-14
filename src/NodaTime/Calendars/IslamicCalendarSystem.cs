@@ -67,7 +67,7 @@ namespace NodaTime.Calendars
 
         private static readonly long[] TotalTicksByMonth;
 
-        private static IslamicCalendarSystem[,] Calendars;
+        private static readonly IslamicCalendarSystem[,] Calendars;
 
         static IslamicCalendarSystem()
         {

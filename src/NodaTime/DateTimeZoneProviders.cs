@@ -22,7 +22,7 @@ namespace NodaTime
         public static IDateTimeZoneProvider Tzdb { get { return TzdbHolder.TzdbImpl; } }
 
         // This class exists to force TZDB initialization to be lazy. We don't want using
-        // DateTimeZoneProviders.Bcl to force a read/parse.
+        // DateTimeZoneProviders.Bcl to force a read/parse of TZDB data.
         private static class TzdbHolder
         {
             // See http://csharpindepth.com/Articles/General/BeforeFieldInit.aspx
@@ -40,13 +40,20 @@ namespace NodaTime
         [Obsolete("Use DateTimeZoneProviders.Tzdb instead")]
         public static IDateTimeZoneProvider Default { get { return Tzdb; } }
 
-        private static readonly DateTimeZoneCache bclFactory = new DateTimeZoneCache(new BclDateTimeZoneSource());
+        // As per TzDbHolder above, this exists to defer construction of a BCL provider until needed.
+        // While BclDateTimeZoneSource itself is lightweight, DateTimeZoneCache still does a non-trivial amount of work
+        // on initialisation.
+        private static class BclHolder
+        {
+            static BclHolder() {}
+            internal static readonly DateTimeZoneCache BclImpl = new DateTimeZoneCache(new BclDateTimeZoneSource());
+        }
 
         /// <summary>
         /// Gets a time zone provider which uses a <see cref="BclDateTimeZoneSource"/>.
         /// This property is not available on the PCL build of Noda Time.
         /// </summary>
-        public static IDateTimeZoneProvider Bcl { get { return bclFactory; } }
+        public static IDateTimeZoneProvider Bcl { get { return BclHolder.BclImpl; } }
 #endif
 
         private static readonly object XmlSerializationProviderLock = new object();

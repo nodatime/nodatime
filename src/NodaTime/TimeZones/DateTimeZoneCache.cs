@@ -33,7 +33,7 @@ namespace NodaTime.TimeZones
         /// </remarks>
         /// <param name="source">The <see cref="IDateTimeZoneSource"/> for this provider.</param>
         /// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
-        /// <exception cref="InvalidDateTimeZoneSourceException"><paramref name="source"/> violates its contract</exception>
+        /// <exception cref="InvalidDateTimeZoneSourceException"><paramref name="source"/> violates its contract.</exception>
         public DateTimeZoneCache(IDateTimeZoneSource source)
         {
             this.source = Preconditions.CheckNotNull(source, "source");

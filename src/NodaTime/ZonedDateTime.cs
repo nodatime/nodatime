@@ -94,9 +94,9 @@ namespace NodaTime
         /// <param name="localDateTime">The local date and time.</param>
         /// <param name="zone">The time zone.</param>
         /// <param name="offset">The offset between UTC and local time at the desired instant.</param>
-        /// <exception cref="ArgumentNullException"><paramref name="zone"/> is null</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="zone"/> is null.</exception>
         /// <exception cref="ArgumentException"><paramref name="offset"/> is not a valid offset at the given
-        /// local date and time</exception>
+        /// local date and time.</exception>
         public ZonedDateTime(LocalDateTime localDateTime, DateTimeZone zone, Offset offset)
         {
             Preconditions.CheckNotNull(zone, "zone");
