@@ -3,48 +3,55 @@
 // as found in the LICENSE.txt file.
 
 using NodaTime.Benchmarks.Framework;
-using NodaTime.Globalization;
-using NodaTime.Text;
+using System.Globalization;
 
 namespace NodaTime.Benchmarks.NodaTimeTests
 {
     internal class InstantBenchmarks
     {
-        private static readonly NodaFormatInfo InvariantFormatInfo = NodaFormatInfo.InvariantInfo;
         private static readonly Instant Sample = Instant.FromUtc(2011, 8, 24, 12, 29, 30);
-        private static readonly IPattern<Instant> GeneralPattern =
-            NodaFormatInfo.InvariantInfo.InstantPatternParser.ParsePattern("g");
-        private static readonly IPattern<Instant> NumberPattern =
-            NodaFormatInfo.InvariantInfo.InstantPatternParser.ParsePattern("n");
+        private static readonly DateTimeZone London = DateTimeZoneProviders.Tzdb["Europe/London"];
 
         [Benchmark]
-        public void FormatN()
+        public void ToStringIso()
         {
-            Sample.ToString("n", InvariantFormatInfo);
+            Sample.ToString("g", CultureInfo.InvariantCulture);
         }
 
         [Benchmark]
-        public void FormatN_WithParsedPattern()
+        public void ToStringNumericWithThousandsSeparator()
         {
-            NumberPattern.Format(Sample);
+            Sample.ToString("n", CultureInfo.InvariantCulture);
         }
 
         [Benchmark]
-        public void FormatG()
+        public void ToStringNumericWithoutThousandsSeparator()
         {
-            Sample.ToString("g", InvariantFormatInfo);
+            Sample.ToString("d", CultureInfo.InvariantCulture);
         }
 
         [Benchmark]
-        public void FormatD()
+        public void PlusDuration()
         {
-            Sample.ToString("d", InvariantFormatInfo);
+            Sample.Plus(Duration.Epsilon);
         }
 
         [Benchmark]
-        public void FormatG_WithParsedPattern()
+        public void PlusOffset()
         {
-            GeneralPattern.Format(Sample);
+            Sample.Plus(Offset.Zero);
+        }
+
+        [Benchmark]
+        public void InUtc()
+        {
+            Sample.InUtc();
+        }
+
+        [Benchmark]
+        public void InZoneLondon()
+        {
+            Sample.InZone(London);
         }
     }
 }
