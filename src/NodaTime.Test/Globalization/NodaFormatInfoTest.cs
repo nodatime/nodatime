@@ -147,7 +147,7 @@ namespace NodaTime.Test.Globalization
             using (CultureSaver.SetCultures(enUs, FailingCultureInfo.Instance))
             {
                 var actual = NodaFormatInfo.GetInstance(enGb);
-                Assert.AreSame(enGb.Name, actual.Name);
+                Assert.AreSame(enGb, actual.CultureInfo);
             }
         }
 
@@ -159,7 +159,7 @@ namespace NodaTime.Test.Globalization
             {
                 var provider = new EmptyFormatProvider();
                 var actual = NodaFormatInfo.GetInstance(provider);
-                Assert.AreSame(enUs.Name, actual.Name);
+                Assert.AreSame(enUs, actual.CultureInfo);
             }
         }
 

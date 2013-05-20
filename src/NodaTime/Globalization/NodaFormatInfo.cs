@@ -42,12 +42,11 @@ namespace NodaTime.Globalization
         private static readonly IPatternParser<LocalDate> GeneralLocalDatePatternParser = new LocalDatePatternParser(LocalDatePattern.DefaultTemplateValue);
         private static readonly IPatternParser<LocalDateTime> GeneralLocalDateTimePatternParser = new LocalDateTimePatternParser(LocalDateTimePattern.DefaultTemplateValue);
 
-        // Not read-only as they need to be changed after cloning.
-        private FixedFormatInfoPatternParser<Offset> offsetPatternParser;
-        private FixedFormatInfoPatternParser<Instant> instantPatternParser;
-        private FixedFormatInfoPatternParser<LocalTime> localTimePatternParser;
-        private FixedFormatInfoPatternParser<LocalDate> localDatePatternParser;
-        private FixedFormatInfoPatternParser<LocalDateTime> localDateTimePatternParser;
+        private readonly FixedFormatInfoPatternParser<Offset> offsetPatternParser;
+        private readonly FixedFormatInfoPatternParser<Instant> instantPatternParser;
+        private readonly FixedFormatInfoPatternParser<LocalTime> localTimePatternParser;
+        private readonly FixedFormatInfoPatternParser<LocalDate> localDatePatternParser;
+        private readonly FixedFormatInfoPatternParser<LocalDateTime> localDateTimePatternParser;
         #endregion
 
         /// <summary>
@@ -59,7 +58,6 @@ namespace NodaTime.Globalization
         // TODO(Post-V1): Reconsider everything about caching, cloning etc.
         private static readonly IDictionary<CultureInfo, NodaFormatInfo> Cache = new Dictionary<CultureInfo, NodaFormatInfo>(new ReferenceEqualityComparer<CultureInfo>());
 
-        private readonly string description;
         private readonly DateTimeFormatInfo dateTimeFormat;
         private readonly NumberFormatInfo numberFormat;
         private readonly CultureInfo cultureInfo;
@@ -92,8 +90,6 @@ namespace NodaTime.Globalization
             this.cultureInfo = cultureInfo;
             numberFormat = cultureInfo.NumberFormat;
             dateTimeFormat = cultureInfo.DateTimeFormat;
-            Name = cultureInfo.Name;
-            description = "NodaFormatInfo[" + cultureInfo.Name + "]";
             var manager = PatternResources.ResourceManager;
             offsetPatternFull = manager.GetString("OffsetPatternFull", cultureInfo);
             offsetPatternLong = manager.GetString("OffsetPatternLong", cultureInfo);
@@ -254,11 +250,6 @@ namespace NodaTime.Globalization
         /// Gets the decimal separator from the number format associated with this provider.
         /// </summary>
         public string DecimalSeparator { get { return NumberFormat.NumberDecimalSeparator; } }
-
-        /// <summary>
-        /// Name of the culture providing this formatting information.
-        /// </summary>
-        public string Name { get; private set; }
 
         /// <summary>
         ///   Gets the positive sign.
@@ -491,7 +482,7 @@ namespace NodaTime.Globalization
         /// </summary>
         public override string ToString()
         {
-            return description;
+            return "NodaFormatInfo[" + cultureInfo.Name + "]";
         }
     }
 }
