@@ -58,7 +58,7 @@ namespace NodaTime.Benchmarks.NodaTimeTests
         [Benchmark]
         public void ToString_ExplicitFormat()
         {
-            SampleOffset.ToString("HH:mm", InvariantFormatInfo);
+            SampleOffset.ToString("HH:mm", CultureInfo.InvariantCulture);
         }
 
         [Benchmark]

@@ -114,7 +114,7 @@ namespace NodaTime.Text
 
             public override string Format(Instant value)
             {
-                return value.Ticks.ToString(systemFormatString, FormatInfo);
+                return value.Ticks.ToString(systemFormatString, FormatInfo.NumberFormat);
             }
         }
 
