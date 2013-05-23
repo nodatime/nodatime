@@ -99,6 +99,13 @@ namespace NodaTime.Test.TimeZones
 
         private void ValidateZoneEquality(Instant instant, DateTimeZone nodaZone, TimeZoneInfo windowsZone)
         {
+            // Skip just the first transition in Libya. It's broken in Windows.
+            // See issue 220 for the background.
+            if (windowsZone.Id == "Libya Standard Time" && instant.InUtc().Year == 2011)
+            {
+                return;
+            }
+
             var interval = nodaZone.GetZoneInterval(instant);
 
             // Check that the zone interval really represents a transition.
