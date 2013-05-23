@@ -274,18 +274,7 @@ namespace NodaTime.TimeZones
         /// </returns>
         public override string ToString()
         {
-            var buffer = new StringBuilder();
-            buffer.Append(Name);
-            buffer.Append(":[");
-            buffer.Append(Start);
-            buffer.Append(", ");
-            buffer.Append(End);
-            buffer.Append(") ");
-            buffer.Append(WallOffset);
-            buffer.Append(" (");
-            buffer.Append(Savings);
-            buffer.Append(")");
-            return buffer.ToString();
+            return string.Format("{0}: [{1}, {2}) {3} ({4})", Name, Start, End, WallOffset, Savings);
         }
         #endregion // object Overrides
     }
