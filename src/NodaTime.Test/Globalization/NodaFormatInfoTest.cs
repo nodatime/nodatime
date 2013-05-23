@@ -102,24 +102,6 @@ namespace NodaTime.Test.Globalization
         }
 
         [Test]
-        public void TestGetFormat()
-        {
-            using (CultureSaver.SetCultures(enGb, FailingCultureInfo.Instance))
-            {
-                var info = new NodaFormatInfo(enUs);
-                Assert.AreSame(info, info.GetFormat(typeof(NodaFormatInfo)));
-
-                var actualNfi = info.GetFormat(typeof(NumberFormatInfo));
-                Assert.AreSame(enUs.NumberFormat, actualNfi);
-                Assert.AreNotSame(Thread.CurrentThread.CurrentCulture.NumberFormat, actualNfi);
-
-                var actualDtfi = info.GetFormat(typeof(DateTimeFormatInfo));
-                Assert.AreSame(enUs.DateTimeFormat, actualDtfi);
-                Assert.AreNotSame(Thread.CurrentThread.CurrentCulture.DateTimeFormat, actualDtfi);
-            }
-        }
-
-        [Test]
         public void TestGetFormatInfo()
         {
             NodaFormatInfo.ClearCache();
@@ -160,18 +142,6 @@ namespace NodaTime.Test.Globalization
                 var provider = new EmptyFormatProvider();
                 var actual = NodaFormatInfo.GetInstance(provider);
                 Assert.AreSame(enUs, actual.CultureInfo);
-            }
-        }
-
-        [Test]
-        public void TestGetInstance_NodaFormatInfo()
-        {
-            NodaFormatInfo.ClearCache();
-            using (CultureSaver.SetCultures(enUs, FailingCultureInfo.Instance))
-            {
-                var info = new NodaFormatInfo(enGb);
-                var actual = NodaFormatInfo.GetInstance(info);
-                Assert.AreSame(info, actual);
             }
         }
 

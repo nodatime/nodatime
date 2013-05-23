@@ -27,7 +27,7 @@ namespace NodaTime.Globalization
     /// and may be used freely between threads. Instances with mutable cultures should not be shared between threads
     /// without external synchronization.
     /// See the thread safety section of the user guide for more information.</threadsafety>
-    internal sealed class NodaFormatInfo : IFormatProvider
+    internal sealed class NodaFormatInfo
     {
         // Names that we can use to check for broken Mono behaviour.
         // The cloning is *also* to work around a Mono bug, where even read-only cultures can change...
@@ -380,33 +380,6 @@ namespace NodaTime.Globalization
         /// </summary>
         public string OffsetPatternShort { get { return offsetPatternShort; } }
 
-        #region IFormatProvider Members
-        /// <summary>
-        ///   Returns an object that provides formatting services for the specified type.
-        /// </summary>
-        /// <param name="formatType">An object that specifies the type of format object to return.</param>
-        /// <returns>
-        ///   An instance of the object specified by <paramref name = "formatType" />, if the <see cref="T:System.IFormatProvider" />
-        ///   implementation can supply that type of object; otherwise, null.
-        /// </returns>      
-        public object GetFormat(Type formatType)
-        {
-            if (formatType == typeof(NodaFormatInfo))
-            {
-                return this;
-            }
-            if (formatType == typeof(NumberFormatInfo))
-            {
-                return NumberFormat;
-            }
-            if (formatType == typeof(DateTimeFormatInfo))
-            {
-                return DateTimeFormat;
-            }
-            return null;
-        }
-        #endregion
-
         /// <summary>
         /// Clears the cache. Only used for test purposes.
         /// </summary>
@@ -458,16 +431,6 @@ namespace NodaTime.Globalization
         {
             if (provider != null)
             {
-                var format = provider as NodaFormatInfo;
-                if (format != null)
-                {
-                    return format;
-                }
-                format = provider.GetFormat(typeof(NodaFormatInfo)) as NodaFormatInfo;
-                if (format != null)
-                {
-                    return format;
-                }
                 var cultureInfo = provider as CultureInfo;
                 if (cultureInfo != null)
                 {
