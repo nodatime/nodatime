@@ -8,24 +8,32 @@ using NodaTime.Utility;
 namespace NodaTime.TimeZones
 {
     /// <summary>
-    /// "Constant" fields representing commonly-used implementations of the resolver delegates,
-    /// and a method to combine two "partial" resolvers into a full one.
+    /// Commonly-used implementations of the delegates used in resolving a <see cref="LocalDateTime"/> to a
+    /// <see cref="ZonedDateTime"/>, and a method to combine two "partial" resolvers into a full one.
     /// </summary>
+    /// <remarks>
+    /// <para>
+    /// This class contains predefined implementations of <see cref="ZoneLocalMappingResolver"/>,
+    /// <see cref="AmbiguousTimeResolver"/>, and <see cref="SkippedTimeResolver/">, along with
+    /// <see cref="CreateMappingResolver"/>, which produces a <c>ZoneLocalMappingResolver</c> from instances of the
+    /// other two.
+    /// </para>
+    /// </remarks>
     /// <threadsafety>All members of this class are thread-safe, as are the values returned by them.</threadsafety>
     public static class Resolvers
     {
         /// <summary>
-        /// <see cref="AmbiguousTimeResolver"/> which returns the earlier of the two matching times.
+        /// An <see cref="AmbiguousTimeResolver"/> which returns the earlier of the two matching times.
         /// </summary>
         public static readonly AmbiguousTimeResolver ReturnEarlier = (earlier, later) => earlier;
 
         /// <summary>
-        /// <see cref="AmbiguousTimeResolver"/> which returns the later of the two matching times.
+        /// An <see cref="AmbiguousTimeResolver"/> which returns the later of the two matching times.
         /// </summary>
         public static readonly AmbiguousTimeResolver ReturnLater = (earlier, later) => later;
 
         /// <summary>
-        /// <see cref="AmbiguousTimeResolver"/> which simply throws an <see cref="AmbiguousTimeException"/>.
+        /// An <see cref="AmbiguousTimeResolver"/> which simply throws an <see cref="AmbiguousTimeException"/>.
         /// </summary>
         public static readonly AmbiguousTimeResolver ThrowWhenAmbiguous = (earlier, later) =>
         {
@@ -33,7 +41,7 @@ namespace NodaTime.TimeZones
         };
 
         /// <summary>
-        /// <see cref="SkippedTimeResolver"/> which returns the final tick of the time zone interval
+        /// A <see cref="SkippedTimeResolver"/> which returns the final tick of the time zone interval
         /// before the "gap".
         /// </summary>
         public static readonly SkippedTimeResolver ReturnEndOfIntervalBefore = (local, zone, before, after) =>
@@ -43,7 +51,7 @@ namespace NodaTime.TimeZones
         };
 
         /// <summary>
-        /// <see cref="SkippedTimeResolver"/> which returns the first tick of the time zone interval
+        /// A <see cref="SkippedTimeResolver"/> which returns the first tick of the time zone interval
         /// after the "gap".
         /// </summary>
         public static readonly SkippedTimeResolver ReturnStartOfIntervalAfter = (local, zone, before, after) =>
@@ -56,8 +64,7 @@ namespace NodaTime.TimeZones
         };
 
         /// <summary>
-        /// <see cref="SkippedTimeResolver"/> which simply throws a <see cref="SkippedTimeException"/> (assuming
-        /// the arguments are all non-null).
+        /// A <see cref="SkippedTimeResolver"/> which simply throws a <see cref="SkippedTimeException"/>.
         /// </summary>
         public static readonly SkippedTimeResolver ThrowWhenSkipped = (local, zone, before, after) =>
         {
@@ -68,28 +75,40 @@ namespace NodaTime.TimeZones
         };
 
         /// <summary>
-        /// <see cref="ZoneLocalMappingResolver"/> which only ever succeeds in the (usual) case where the result
-        /// of the mapping is unambiguous. Otherwise, it throws <see cref="SkippedTimeException"/> or
-        /// <see cref="AmbiguousTimeException"/>. This resolver combines <see cref="ThrowWhenAmbiguous"/> and
-        /// <see cref="ThrowWhenSkipped"/>.
+        /// A <see cref="ZoneLocalMappingResolver"/> which only ever succeeds in the (usual) case where the result
+        /// of the mapping is unambiguous.
         /// </summary>
+        /// <remarks>
+        /// If the mapping is ambiguous or skipped, this throws <see cref="SkippedTimeException"/> or
+        /// <see cref="AmbiguousTimeException"/>, as appropriate. This resolver combines
+        /// <see cref="ThrowWhenAmbiguous"/> and <see cref="ThrowWhenSkipped"/>.
+        /// </remarks>
+        /// <seealso cref="DateTimeZone.AtStrictly"/>
         public static readonly ZoneLocalMappingResolver StrictResolver = CreateMappingResolver(ThrowWhenAmbiguous, ThrowWhenSkipped);
 
         /// <summary>
-        /// <see cref="ZoneLocalMappingResolver"/> which never throws an exception due to ambiguity or skipped time.
+        /// A <see cref="ZoneLocalMappingResolver"/> which never throws an exception due to ambiguity or skipped time.
+        /// </summary>
+        /// <remarks>
         /// Ambiguity is handled by returning the later occurrence, and skipped times are mapped to the start of the zone interval
         /// after the gap. This resolver combines <see cref="ReturnLater"/> and <see cref="ReturnStartOfIntervalAfter"/>.
-        /// </summary>
+        /// </remarks>
+        /// <seealso cref="DateTimeZone.AtLeniently"/>
         public static readonly ZoneLocalMappingResolver LenientResolver = CreateMappingResolver(ReturnLater, ReturnStartOfIntervalAfter);
 
         /// <summary>
-        /// Combines an <see cref="AmbiguousTimeResolver"/> and a <see cref="SkippedTimeResolver"/> into a <see cref="ZoneLocalMappingResolver"/>
-        /// in the obvious way: unambiguous mappings are returned directly, ambiguous mappings are delegated to the given
-        /// AmbiguousTimeResolver, and "skipped" mappings are delegated to the given SkippedTimeResolver.
+        /// Combines an <see cref="AmbiguousTimeResolver"/> and a <see cref="SkippedTimeResolver"/> to create a
+        /// <see cref="ZoneLocalMappingResolver"/>.
         /// </summary>
+        /// <remarks>
+        /// The <c>ZoneLocalMappingResolver</c> created by this method operates in the obvious way: unambiguous mappings
+        /// are returned directly, ambiguous mappings are delegated to the given <c>AmbiguousTimeResolver</c>, and
+        /// "skipped" mappings are delegated to the given <c>SkippedTimeResolver</c>.
+        /// </remarks>
         /// <param name="ambiguousTimeResolver">Resolver to use for ambiguous mappings.</param>
         /// <param name="skippedTimeResolver">Resolver to use for "skipped" mappings.</param>
-        /// <exception name="ArgumentNullException">Either of the arguments is null.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="ambiguousTimeResolver"/> or
+        /// <paramref name="skippedTimeResolver"/> is null.</exception>
         /// <returns>The logical combination of the two resolvers.</returns>
         public static ZoneLocalMappingResolver CreateMappingResolver(AmbiguousTimeResolver ambiguousTimeResolver, SkippedTimeResolver skippedTimeResolver)
         {
