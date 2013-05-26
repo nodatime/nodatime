@@ -223,7 +223,8 @@ namespace NodaTime
         public long TickOfDay { get { return localInstant.Ticks; } }
 
         /// <summary>
-        /// Returns a LocalDateTime with this local time, on January 1st 1970 in the ISO calendar.
+        /// Returns a <see cref="T:NodaTime.LocalDateTime"/> with this local time, on January 1st 1970 in the ISO
+        /// calendar.
         /// </summary>
         public LocalDateTime LocalDateTime { get { return new LocalDateTime(localInstant); } }
 

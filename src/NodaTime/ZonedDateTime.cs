@@ -123,9 +123,10 @@ namespace NodaTime
         internal LocalInstant LocalInstant { get { return localDateTime.LocalInstant; } }
 
         /// <summary>
-        /// Gets the local date and time represented by this zoned date and time. The returned <see cref="LocalDateTime"/>
-        /// will have the same calendar system and return the same values for each of the calendar properties
-        /// (Year, MonthOfYear and so on), but will not be associated with any particular time zone.
+        /// Gets the local date and time represented by this zoned date and time. The returned
+        /// <see cref="T:NodaTime.LocalDateTime"/> will have the same calendar system and return the same values for
+        /// each of the calendar properties (Year, MonthOfYear and so on), but will not be associated with any
+        /// particular time zone.
         /// </summary>
         public LocalDateTime LocalDateTime { get { return localDateTime; } }
 
