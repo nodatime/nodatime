@@ -106,8 +106,8 @@ namespace NodaTime.TimeZones
                 case 0: throw new SkippedTimeException(localDateTime, zone);
                 case 1: return BuildZonedDateTime(earlyInterval);
                 case 2: throw new AmbiguousTimeException(
-                            new ZonedDateTime(localDateTime, earlyInterval.WallOffset, zone),
-                            new ZonedDateTime(localDateTime, lateInterval.WallOffset, zone));
+                            BuildZonedDateTime(earlyInterval),
+                            BuildZonedDateTime(lateInterval));
                 default: throw new InvalidOperationException("Can't happen");
             }
         }
