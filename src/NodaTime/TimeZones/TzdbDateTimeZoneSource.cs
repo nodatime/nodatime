@@ -17,7 +17,7 @@ using NodaTime.Utility;
 namespace NodaTime.TimeZones
 {
     /// <summary>
-    /// Provides an implementation of a <see cref="IDateTimeZoneSource" /> that loads data originating from the
+    /// Provides an implementation of <see cref="IDateTimeZoneSource" /> that loads data originating from the
     /// <a href="http://www.iana.org/time-zones">TZDB (also known as IANA, Olson, or zoneinfo)</a> time zone database.
     /// </summary>
     /// <remarks>
@@ -186,14 +186,10 @@ namespace NodaTime.TimeZones
             return timeZoneIdMap.Keys;
         }
 
-        /// <summary>
-        /// Returns a version identifier for this source.
-        /// </summary>
+        /// <inheritdoc />
         public string VersionId { get { return "TZDB: " + version; } }
 
-        /// <summary>
-        /// Attempts to map the system time zone to a zoneinfo ID, and return that ID.
-        /// </summary>
+        /// <inheritdoc />
         public string MapTimeZoneId(TimeZoneInfo zone)
         {
 #if PCL
