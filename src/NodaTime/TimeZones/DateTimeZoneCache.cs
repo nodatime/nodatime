@@ -10,11 +10,17 @@ using NodaTime.Utility;
 namespace NodaTime.TimeZones
 {
     /// <summary>
-    /// Provides a stable cache for time zone sources.
+    /// Provides an implementation of <see cref="IDateTimeZoneProvider"/> that caches results from an
+    /// <see cref="IDateTimeZoneSource"/>.
     /// </summary>
-    /// <remarks>The process of loading and creating time zones is potentially long (it could conceivably include 
-    /// network requests) so caching them may be necessary.</remarks>
-    /// <threadsafety>All members of this type are thread-safe.</threadsafety>
+    /// <remarks>
+    /// The process of loading or creating time zones may be an expensive operation. This class implements an
+    /// unlimited-size non-expiring cache over a time zone source, and adapts an implementation of the
+    /// <c>IDateTimeZoneSource</c> interface to an <c>IDateTimeZoneProvider</c>.
+    /// </remarks>
+    /// <seealso cref="DateTimeZoneProviders"/>
+    /// <threadsafety>All members of this type are thread-safe as long as the underlying <c>IDateTimeZoneSource</c>
+    /// implementation is thread-safe.</threadsafety>
     public sealed class DateTimeZoneCache : IDateTimeZoneProvider
     {
         private readonly object accessLock = new object();
@@ -61,7 +67,10 @@ namespace NodaTime.TimeZones
             }
         }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// The version ID of this provider. This is simply the <see cref="IDateTimeZoneSource.VersionId"/> returned by
+        /// the underlying source.
+        /// </summary>
         public string VersionId { get { return providerVersionId; } }
 
         /// <inheritdoc />

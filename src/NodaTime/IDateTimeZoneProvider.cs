@@ -71,7 +71,9 @@ namespace NodaTime
         /// <remarks>
         /// Callers should be aware that this method will throw <see cref="DateTimeZoneNotFoundException"/> if no matching
         /// time zone is found. For the built-in Noda Time providers, this is unlikely to occur in practice (assuming
-        /// the system is using a standard Windows time zone), but can occur even then, if no mapping is found.
+        /// the system is using a standard Windows time zone), but can occur even then, if no mapping is found. The TZDB
+        /// source contains mappings for almost all Windows system time zones, but a few (such as "Mid-Atlantic Standard Time")
+        /// are unmappable.
         /// If it is necessary to handle this case, callers can construct a
         /// <see cref="BclDateTimeZone"/> via <see cref="BclDateTimeZone.ForSystemDefault"/>, which returns a
         /// <see cref="DateTimeZone"/> that wraps the system local <see cref="TimeZoneInfo"/>, and which always
