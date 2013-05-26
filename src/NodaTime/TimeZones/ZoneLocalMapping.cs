@@ -72,7 +72,7 @@ namespace NodaTime.TimeZones
         public DateTimeZone Zone { get { return zone; } }
 
         /// <summary>
-        /// Returns the <see cref="LocalDateTime" /> which was mapped with in the time zone.
+        /// Returns the <see cref="T:NodaTime.LocalDateTime"/> which was mapped with in the time zone.
         /// </summary>
         public LocalDateTime LocalDateTime { get { return localDateTime; } }
 
