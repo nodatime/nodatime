@@ -321,7 +321,7 @@ namespace NodaTime
         /// your use case.
         /// </para>
         /// <para>
-        /// An an alternative, consider <see cref="ResolveLocal"/>, which uses a caller-provided strategy to
+        /// As an alternative, consider <see cref="ResolveLocal"/>, which uses a caller-provided strategy to
         /// convert the <see cref="ZoneLocalMapping"/> returned here to a <see cref="ZonedDateTime"/>.
         /// </para>
         /// </remarks>
