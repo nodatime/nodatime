@@ -22,7 +22,7 @@ namespace NodaTime.TimeZones
 #if !PCL
     [Serializable]
 #endif
-    public class DateTimeZoneNotFoundException
+    public sealed class DateTimeZoneNotFoundException
 #if PCL
         : Exception
 #else
