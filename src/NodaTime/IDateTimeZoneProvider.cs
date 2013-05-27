@@ -51,11 +51,13 @@ namespace NodaTime
         /// available.
         /// </summary>
         /// <remarks>
+        /// <para>
         /// Callers should be aware that this method will throw <see cref="DateTimeZoneNotFoundException"/> if no matching
         /// time zone is found. For the built-in Noda Time providers, this is unlikely to occur in practice (assuming
         /// the system is using a standard Windows time zone), but can occur even then, if no mapping is found. The TZDB
         /// source contains mappings for almost all Windows system time zones, but a few (such as "Mid-Atlantic Standard Time")
         /// are unmappable.
+        /// </para>
         /// </remarks>
         /// <exception cref="DateTimeZoneNotFoundException">The system default time zone is not mapped by
         /// this provider.</exception>
@@ -69,16 +71,20 @@ namespace NodaTime
         /// available.
         /// </summary>
         /// <remarks>
+        /// <para>
         /// Callers should be aware that this method will throw <see cref="DateTimeZoneNotFoundException"/> if no matching
         /// time zone is found. For the built-in Noda Time providers, this is unlikely to occur in practice (assuming
         /// the system is using a standard Windows time zone), but can occur even then, if no mapping is found. The TZDB
         /// source contains mappings for almost all Windows system time zones, but a few (such as "Mid-Atlantic Standard Time")
         /// are unmappable.
+        /// </para>
+        /// <para>
         /// If it is necessary to handle this case, callers can construct a
         /// <see cref="BclDateTimeZone"/> via <see cref="BclDateTimeZone.ForSystemDefault"/>, which returns a
         /// <see cref="DateTimeZone"/> that wraps the system local <see cref="TimeZoneInfo"/>, and which always
         /// succeeds. Note that <c>BclDateTimeZone</c> is not available on the PCL build of Noda Time, so
         /// this fallback strategy can only be used with the desktop version.
+        /// </para>
         /// </remarks>
         /// <exception cref="DateTimeZoneNotFoundException">The system default time zone is not mapped by
         /// this provider.</exception>
