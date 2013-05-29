@@ -56,11 +56,18 @@ it's just an offset.</p>
 
 <h2>DateTimeZone</h2>
 
-<p>A <a href="../api/html/T_NodaTime_DateTimeZone.htm"><code>DateTimeZone</code></a> (or just time zone) is a mapping between UTC and local times. Many time zones alternate between two offsets over the course of time,
-based on <a href="http://en.wikipedia.org/wiki/Daylight_saving_time">daylight saving time</a>. To obtain a time zone in Noda Time, you have to choose where the information will come from,
-via an <code>IDateTimeZoneProvider</code>. Two providers are built into Noda Time - one which uses TZDB (also known as zoneinfo or the Olson database) and one to wrap the 
-information provided by the BCL via <code>TimeZoneInfo</code>. Both providers are available through <a href="../api/html/T_NodaTime_DateTimeZoneProviders.htm"><code>DateTimeZoneProviders</code></a> as <code>DateTimeZoneProviders.Tzdb</code> and
-<code>DateTimeZoneProviders.Bcl</code>. Once you've chosen a provider, you can find the identifiers that provider publishes, and fetch any specific time zone by ID.</p>
+<p>A <a href="../api/html/T_NodaTime_DateTimeZone.htm"><code>DateTimeZone</code></a> (or just time zone) is a mapping between UTC
+and local times. Many time zones alternate between two offsets over the course
+of time, based on <a href="http://en.wikipedia.org/wiki/Daylight_saving_time">daylight saving time</a>. To obtain a time zone in Noda
+Time, you have to choose where the information will come from, via an
+<code>IDateTimeZoneProvider</code>. Two providers are built into Noda Time - one which
+uses the tz database (also known as the IANA Time Zone database, or zoneinfo or
+Olson database) and one to wrap the information provided by the BCL via
+<code>TimeZoneInfo</code>. Both providers are available through
+<a href="../api/html/T_NodaTime_DateTimeZoneProviders.htm"><code>DateTimeZoneProviders</code></a> as
+<code>DateTimeZoneProviders.Tzdb</code> and <code>DateTimeZoneProviders.Bcl</code>. Once you've
+chosen a provider, you can find the identifiers that provider publishes, and
+fetch any specific time zone by ID.</p>
 
 <h2>ZonedDateTime</h2>
 

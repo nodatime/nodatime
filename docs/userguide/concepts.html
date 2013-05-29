@@ -170,14 +170,16 @@ forward in the spring. If the clocks go forward at 1am local time to
 you need to work out what you want to happen. See the <a href="../api/html/T_NodaTime_DateTimeZone.htm"><code>DateTimeZone</code>
 documentation</a> for more details and options.</p>
 
-<p>There are various different sources of time zone information available, and Noda Time
-handles two of them: it is able to map BCL <code>TimeZoneInfo</code> objects using <code>BclDateTimeZone</code>,
-and the <a href="http://www.iana.org/time-zones">TZDB</a> (aka Olson) database. A version of TZDB is embedded within the Noda Time
-distribution, and if you need a more recent one, there are <a href="tzdb.html">instructions on how to download and
-use new data</a>. We generally recommend that you isolate yourself from the provider you're
-using by only depending on <a href="../api/html/T_NodaTime_IDateTimeZoneProvider.htm"><code>IDateTimeZoneProvider</code></a>, and injecting the appropriate
-provider in the normal way. "Stock" providers are available via the <a href="../api/html/T_NodaTime_DateTimeZoneProviders.htm"><code>DateTimeZoneProviders</code></a>
-class.</p>
+<p>There are various different sources of time zone information available, and
+Noda Time handles two of them: it is able to map BCL <code>TimeZoneInfo</code> objects
+using <code>BclDateTimeZone</code>, or it can use the <a href="http://www.iana.org/time-zones">tz database</a> (also known as
+the IANA Time Zone database, or zoneinfo or Olson database). A version of TZDB
+is embedded within the Noda Time distribution, and if you need a more recent
+one, there are <a href="tzdb.html">instructions on how to download and use new data</a>.
+We generally recommend that you isolate yourself from the provider you're using
+by only depending on <a href="../api/html/T_NodaTime_IDateTimeZoneProvider.htm"><code>IDateTimeZoneProvider</code></a>, and
+injecting the appropriate provider in the normal way. "Stock" providers are
+available via the <a href="../api/html/T_NodaTime_DateTimeZoneProviders.htm"><code>DateTimeZoneProviders</code></a> class.</p>
 
 <p>Also note that in some cases, you may not have full time zone information,
 but have just a local time and an offset. For example, if you're parsing the string
