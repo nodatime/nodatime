@@ -273,7 +273,7 @@
     <Compile Include="TimeZones\IZoneIntervalMap.cs" />
     <Compile Include="TimeZones\NamespaceDoc.cs" />
     <Compile Include="TimeZones\Resolvers.cs" />
-    <Compile Include="TimeZones\InvalidDateTimeSourceException.cs" />
+    <Compile Include="TimeZones\InvalidDateTimeZoneSourceException.cs" />
     <Compile Include="TimeZones\Transition.cs" />
     <Compile Include="TimeZones\DaylightSavingsDateTimeZone.cs" />
     <Compile Include="TimeZones\FixedDateTimeZone.cs" />

@@ -8,9 +8,9 @@ namespace NodaTime.Fields
     /// Base class for variable length period fields - i.e. where the duration of a single value depends on when the value occurs.
     /// (For example, months and years.) Derived classes need only override Add and GetInt64Difference.
     /// </summary>
-    internal abstract class VaryiableLengthPeriodField : PeriodField
+    internal abstract class VariableLengthPeriodField : PeriodField
     {
-        internal VaryiableLengthPeriodField(PeriodFieldType fieldType, long averageUnitTicks)
+        internal VariableLengthPeriodField(PeriodFieldType fieldType, long averageUnitTicks)
             : base(fieldType, averageUnitTicks, false, true)
         {
         }
