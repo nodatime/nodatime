@@ -161,6 +161,18 @@ namespace NodaTime.Test.TimeZones
         }
 
         [Test]
+        public void ForId_Null()
+        {
+            Assert.Throws<ArgumentNullException>(() => TzdbDateTimeZoneSource.Default.ForId(null));
+        }
+
+        [Test]
+        public void ForId_Unknown()
+        {
+            Assert.Throws<ArgumentException>(() => TzdbDateTimeZoneSource.Default.ForId("unknown"));
+        }
+
+        [Test]
         public void UtcEqualsBuiltIn()
         {
             var zone = TzdbDateTimeZoneSource.Default.ForId("UTC");
