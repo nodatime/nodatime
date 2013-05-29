@@ -171,7 +171,7 @@ namespace NodaTime.TimeZones
         public DateTimeZone ForId(string id)
         {
             string canonicalId;
-            if (!timeZoneIdMap.TryGetValue(id, out canonicalId))
+            if (!timeZoneIdMap.TryGetValue(Preconditions.CheckNotNull(id, "id"), out canonicalId))
             {
                 throw new ArgumentException("Time zone with ID " + id + " not found in source " + version, "id");
             }
