@@ -57,9 +57,8 @@ namespace NodaTime.TimeZones
         /// <summary>
         /// Returns an appropriate version ID for diagnostic purposes, which must not be null.
         /// This doesn't have any specific format; it's solely for diagnostic purposes.
-        /// For example, the TZDB source returns a string such as
-        /// "TZDB: 2011n" indicating where the information comes from and which version of that information
-        /// it's loaded.
+        /// The included sources return strings of the format "source identifier: source version" indicating where the
+        /// information comes from and which version of the source information has been loaded.
         /// </summary>
         string VersionId { get; }
 

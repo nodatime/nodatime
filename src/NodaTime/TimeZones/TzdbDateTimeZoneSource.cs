@@ -161,13 +161,7 @@ namespace NodaTime.TimeZones
             zoneLocations = originalZoneLocations == null ? null : new ReadOnlyCollection<TzdbZoneLocation>(originalZoneLocations);
         }
 
-        /// <summary>
-        /// Returns the time zone definition associated with the given id.
-        /// </summary>
-        /// <param name="id">The id of the time zone to return.</param>
-        /// <returns>
-        /// The <see cref="DateTimeZone"/> or null if there is no time zone with the given id.
-        /// </returns>
+        /// <inheritdoc />
         public DateTimeZone ForId(string id)
         {
             string canonicalId;
@@ -178,9 +172,7 @@ namespace NodaTime.TimeZones
             return source.CreateZone(id, canonicalId);
         }
 
-        /// <summary>
-        /// Returns a sequence of the available IDs from this source.
-        /// </summary>
+        /// <inheritdoc />
         [DebuggerStepThrough]
         public IEnumerable<string> GetIds()
         {
@@ -188,6 +180,16 @@ namespace NodaTime.TimeZones
         }
 
         /// <inheritdoc />
+        /// <remarks>
+        /// <para>
+        /// This source returns a string such as "TZDB: 2013b (mapping: 8274)" corresponding to the versions of the tz
+        /// database and the CLDR Windows zones mapping file.
+        /// </para>
+        /// <para>
+        /// Note that there is no need to parse this string to extract any of the above information, as it is available
+        /// directly from the <see cref="TzdbVersion"/> and <see cref="WindowsZones.Version"/> properties.
+        /// </para>
+        /// </remarks>
         public string VersionId { get { return "TZDB: " + version; } }
 
         /// <inheritdoc />
