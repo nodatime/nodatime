@@ -77,7 +77,7 @@ remove the <code>&lt;Preliminary/&gt;</code> tag from the Sandcastle project fil
 
 <p>Update the version number by building the tools solution and then running the <code>SetVersion</code> tool:</p>
 
-<pre class="prettyprint"><code>msbuild tools\NodaTime.Tools.sln
+<pre class="prettyprint"><code>msbuild src\NodaTime-Tools.sln
 src\NodaTime.Tools.SetVersion\bin\debug\SetVersion 1.2.3-beta4
 </code></pre>
 
@@ -111,7 +111,7 @@ src\NodaTime.Tools.SetVersion\bin\debug\SetVersion 1.2.3-beta4
 </blockquote>
 
 <p>Add the current date and TZDB version to the version history in
-<code>tools/userguide-src/markdown/versions.txt</code> and regenerate all documentation.</p>
+<code>src/docs/userguide/markdown/versions.txt</code> and regenerate all documentation.</p>
 
 <p>Commit the above, then tag that commit:</p>
 
