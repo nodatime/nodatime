@@ -1,10 +1,13 @@
 Updating the time zone database in Noda Time
 
-Noda Time comes with a version of the [tzdb](http://www.iana.org/time-zones) (aka zoneinfo) database, which is
-now hosted by IANA. This database changes over time, as countries decide to change their time zone rules.
-As new versions of Noda Time are released, the version of tzdb will be updated. However, you may wish to use
-a new version of tzdb *without* changing which version of Noda Time you're using. This documentation tells you how
-to do so.
+Noda Time comes with a version of the
+[tz database](http://www.iana.org/time-zones) (also known as the IANA Time Zone
+database, or zoneinfo or Olson database), which is now hosted by IANA. This
+database changes over time, as countries decide to change their time zone
+rules.  As new versions of Noda Time are released, the version of tzdb will be
+updated. However, you may wish to use a new version of tzdb *without* changing
+which version of Noda Time you're using. This documentation tells you how to do
+so.
 
 Noda Time's main library doesn't read tzdb text files directly - it uses a binary form which is the output of `NodaTime.TzdbCompiler` - another
 part of the Noda Time project. This saves both space (the 2012j version takes about 110K when compiled, or about 690K in text form) and
