@@ -3,6 +3,7 @@
 // as found in the LICENSE.txt file.
 
 using System;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using NUnit.Framework;
@@ -31,6 +32,52 @@ namespace NodaTime.Test.TimeZones
                 // This may occur on Mono, for example.
                 Assert.Ignore("Test assumes existence of BCL zone with ID: " + bclId);
             }
+        }
+
+        /// <summary>
+        /// Tests that we can load (and exercise) the binary Tzdb resource file distributed with Noda Time 1.1.0.
+        /// This is effectively a black-box regression test that ensures that the stream format has not changed in a
+        /// way such that a custom tzdb compiled with ZoneInfoCompiler from 1.1 would become unreadable.
+        /// </summary>
+        [Test]
+        public void CanLoadNodaTimeResourceFromOnePointOneRelease()
+        {
+            var assembly = typeof(TzdbDateTimeZoneSourceTest).Assembly;
+            TzdbDateTimeZoneSource source;
+            using (Stream stream = assembly.GetManifestResourceStream("NodaTime.Test.TestData.Tzdb2013bFromNodaTime1.1.nzd"))
+            {
+                source = TzdbDateTimeZoneSource.FromStream(stream);
+            }
+            Assert.AreEqual("TZDB: 2013b (mapping: 8274)", source.VersionId);
+
+            var utc = Instant.FromUtc(2007, 8, 24, 9, 30, 0);
+
+            // Test a regular zone with rules.
+            var london = source.ForId("Europe/London");
+            var inLondon = new ZonedDateTime(utc, london);
+            var expectedLocal = new LocalDateTime(2007, 8, 24, 10, 30);
+            Assert.AreEqual(expectedLocal, inLondon.LocalDateTime);
+
+            // Test a fixed-offset zone.
+            var utcFixed = source.ForId("Etc/UTC");
+            var inUtcFixed = new ZonedDateTime(utc, utcFixed);
+            expectedLocal = new LocalDateTime(2007, 8, 24, 9, 30);
+            Assert.AreEqual(expectedLocal, inUtcFixed.LocalDateTime);
+
+            // Test an alias.
+            var jersey = source.ForId("Japan");  // Asia/Tokyo
+            var inJersey = new ZonedDateTime(utc, jersey);
+            expectedLocal = new LocalDateTime(2007, 8, 24, 18, 30);
+            Assert.AreEqual(expectedLocal, inJersey.LocalDateTime);
+
+            // Test ZoneLocations.
+            var france = source.ZoneLocations.Single(g => g.CountryName == "France");
+            // Tolerance of about 2 seconds
+            Assert.AreEqual(48.86666, france.Latitude, 0.00055);
+            Assert.AreEqual(2.3333, france.Longitude, 0.00055);
+            Assert.AreEqual("Europe/Paris", france.ZoneId);
+            Assert.AreEqual("FR", france.CountryCode);
+            Assert.AreEqual("", france.Comment);
         }
 
 #if !PCL
