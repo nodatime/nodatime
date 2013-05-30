@@ -38,13 +38,11 @@ change, but it does affect how you [build and use a custom version of TZDB](tzdb
 Fuller text support
 ===================
 
-Currently there's no way of parsing or formatting a
-[`ZonedDateTime`](noda-type://NodaTime.ZonedDateTime) or 
-[`OffsetDateTime`](noda-type://NodaTime.OffsetDateTime), partly due to
-the difficulty of representing time zones or offsets. While this is
-the primary deficiency of our current text support, it's not the
-only one. Some other types lack flexible formatting, and we may want
-to optimize further at some point too.
+While it is now possible (as of 1.2.0) to parse and format
+[`ZonedDateTime`](noda-type://NodaTime.ZonedDateTime) and
+[`OffsetDateTime`](noda-type://NodaTime.OffsetDateTime), our text support is
+still lacking in some areas: some other types lack flexible formatting, and
+we may want to optimize further at some point too.
 
 Better resource handling
 ========================
