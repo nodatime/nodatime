@@ -41,9 +41,6 @@ namespace NodaTime
     /// it would be a good idea for users to avoid comparing dates in different calendar systems, and indeed most users are unlikely to ever explicitly
     /// consider which calendar system they're working in anyway.
     /// </para>
-    /// <para>
-    /// Currently there is no real text handling support for this type.
-    /// </para>
     /// </remarks>
     /// <threadsafety>This type is an immutable value type. See the thread safety section of the user guide for more information.</threadsafety>
     public struct ZonedDateTime : IEquatable<ZonedDateTime>, IComparable<ZonedDateTime>, IComparable, IXmlSerializable
