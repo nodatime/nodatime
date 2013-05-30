@@ -7,8 +7,11 @@ using NodaTime.Utility;
 
 namespace NodaTime.TimeZones
 {
+    // Note: documentation that refers to the LocalDateTime type within this class must use the fully-qualified
+    // reference to avoid being resolved to the LocalDateTime property instead.
+
     /// <summary>
-    /// The result of mapping a <see cref="LocalDateTime" /> within a time zone, i.e. finding out
+    /// The result of mapping a <see cref="T:NodaTime.LocalDateTime" /> within a time zone, i.e. finding out
     /// at what "global" time the "local" time occurred.
     /// </summary>
     /// <remarks>
@@ -62,7 +65,7 @@ namespace NodaTime.TimeZones
 
         /// <summary>
         /// Returns the number of results within this mapping: the number of distinct
-        /// <see cref="ZonedDateTime" /> values which map to the original <see cref="LocalDateTime" />.
+        /// <see cref="ZonedDateTime" /> values which map to the original <see cref="T:NodaTime.LocalDateTime" />.
         /// </summary>
         public int Count { get { return count; } }
 
@@ -72,7 +75,7 @@ namespace NodaTime.TimeZones
         public DateTimeZone Zone { get { return zone; } }
 
         /// <summary>
-        /// Returns the <see cref="T:NodaTime.LocalDateTime"/> which was mapped with in the time zone.
+        /// Returns the <see cref="T:NodaTime.LocalDateTime" /> which was mapped with in the time zone.
         /// </summary>
         public LocalDateTime LocalDateTime { get { return localDateTime; } }
 
@@ -93,8 +96,8 @@ namespace NodaTime.TimeZones
         public ZoneInterval LateInterval { get { return lateInterval; } }
 
         /// <summary>
-        /// Returns the single <see cref="ZonedDateTime"/> which maps to the original <see cref="LocalDateTime"/>
-        /// in the mapped <see cref="DateTimeZone" />.
+        /// Returns the single <see cref="ZonedDateTime"/> which maps to the original
+        /// <see cref="T:NodaTime.LocalDateTime" /> in the mapped <see cref="DateTimeZone" />.
         /// </summary>
         /// <exception cref="SkippedTimeException">The local date/time was skipped in the time zone.</exception>
         /// <exception cref="AmbiguousTimeException">The local date/time was ambiguous in the time zone.</exception>
@@ -113,7 +116,7 @@ namespace NodaTime.TimeZones
         }
 
         /// <summary>
-        /// Returns a <see cref="ZonedDateTime"/> which maps to the original <see cref="LocalDateTime"/>
+        /// Returns a <see cref="ZonedDateTime"/> which maps to the original <see cref="T:NodaTime.LocalDateTime" />
         /// in the mapped <see cref="DateTimeZone" />: either the single result if the mapping is unambiguous,
         /// or the earlier result if the local date/time occurs twice in the time zone due to a time zone
         /// offset change such as an autumnal daylight saving transition.
@@ -132,7 +135,7 @@ namespace NodaTime.TimeZones
         }
 
         /// <summary>
-        /// Returns a <see cref="ZonedDateTime"/> which maps to the original <see cref="LocalDateTime"/>
+        /// Returns a <see cref="ZonedDateTime"/> which maps to the original <see cref="T:NodaTime.LocalDateTime" />
         /// in the mapped <see cref="DateTimeZone" />: either the single result if the mapping is unambiguous,
         /// or the later result if the local date/time occurs twice in the time zone due to a time zone
         /// offset change such as an autumnal daylight saving transition.
