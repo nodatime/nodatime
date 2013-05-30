@@ -14,9 +14,13 @@ using NodaTime.Utility;
 
 namespace NodaTime
 {
+    // Note: documentation that refers to the LocalDateTime type within this class must use the fully-qualified
+    // reference to avoid being resolved to the LocalDateTime property instead.
+
     /// <summary>
-    /// A <see cref="LocalDateTime"/> in a specific time zone and with a particular offset to distinguish between otherwise-ambiguous
-    /// instants. A <see cref="ZonedDateTime"/> is global, in that it maps to a single <see cref="Instant"/>.
+    /// A <see cref="T:NodaTime.LocalDateTime" /> in a specific time zone and with a particular offset to distinguish
+    /// between otherwise-ambiguous instants. A <see cref="ZonedDateTime"/> is global, in that it maps to a single
+    /// <see cref="Instant"/>.
     /// </summary>
     /// <remarks>
     /// <para>Although <see cref="ZonedDateTime" /> includes both local and global concepts, it only supports
@@ -259,9 +263,9 @@ namespace NodaTime
         /// </summary>
         /// <remarks>
         /// This is always an unambiguous conversion. Any difficulties due to daylight saving
-        /// transitions or other changes in time zone are handled when converting from a <see cref="LocalDateTime"/>
-        /// to a <see cref="ZonedDateTime"/>; the <c>ZonedDateTime</c> remembers the actual offset from UTC to local time,
-        /// so it always knows the exact instant represented.
+        /// transitions or other changes in time zone are handled when converting from a
+        /// <see cref="T:NodaTime.LocalDateTime" /> to a <see cref="ZonedDateTime"/>; the <c>ZonedDateTime</c> remembers
+        /// the actual offset from UTC to local time, so it always knows the exact instant represented.
         /// </remarks>
         /// <returns>The instant corresponding to this value.</returns>
         public Instant ToInstant()

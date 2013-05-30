@@ -13,6 +13,9 @@ using NodaTime.Utility;
 
 namespace NodaTime
 {
+    // Note: documentation that refers to the LocalDateTime type within this class must use the fully-qualified
+    // reference to avoid being resolved to the LocalDateTime property instead.
+
     /// <summary>
     /// LocalTime is an immutable struct representing a time of day, with no reference
     /// to a particular calendar, time zone or date.
