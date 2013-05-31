@@ -89,7 +89,7 @@ namespace NodaTime.Test
         {
             var calendar = CalendarSystem.GetCopticCalendar(4);
             LocalDate absolute = new LocalDate(50, 6, 19, calendar);
-            LocalDate withEra = new LocalDate(Era.AnnoMartyrm, 50, 6, 19, calendar);
+            LocalDate withEra = new LocalDate(Era.AnnoMartyrum, 50, 6, 19, calendar);
             Assert.AreEqual(absolute, withEra);
         }
 
