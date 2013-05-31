@@ -29,24 +29,24 @@ namespace NodaTime.Test
         [Test]
         public void GetAbsoluteYear_Valid()
         {
-            Assert.AreEqual(5, CopticCalendar.GetAbsoluteYear(5, Era.AnnoMartyrm));
+            Assert.AreEqual(5, CopticCalendar.GetAbsoluteYear(5, Era.AnnoMartyrum));
             // Prove it's right...
             LocalDate localDate = new LocalDate(5, 1, 1, CopticCalendar);
             Assert.AreEqual(5, localDate.Year);
             Assert.AreEqual(5, localDate.YearOfEra);
-            Assert.AreEqual(Era.AnnoMartyrm, localDate.Era);
+            Assert.AreEqual(Era.AnnoMartyrum, localDate.Era);
         }
 
         [Test]
         public void GetAbsoluteYear_YearTooBig()
         {
-            Assert.Throws<ArgumentOutOfRangeException>(() => CopticCalendar.GetAbsoluteYear(CopticCalendar.MaxYear + 1, Era.AnnoMartyrm));
+            Assert.Throws<ArgumentOutOfRangeException>(() => CopticCalendar.GetAbsoluteYear(CopticCalendar.MaxYear + 1, Era.AnnoMartyrum));
         }
 
         [Test]
         public void GetAbsoluteYear_YearTooSmall()
         {
-            Assert.Throws<ArgumentOutOfRangeException>(() => CopticCalendar.GetAbsoluteYear(0, Era.AnnoMartyrm));
+            Assert.Throws<ArgumentOutOfRangeException>(() => CopticCalendar.GetAbsoluteYear(0, Era.AnnoMartyrum));
         }
 
         [Test]
@@ -65,7 +65,7 @@ namespace NodaTime.Test
         [Test]
         public void GetMinYearOfEra_Valid()
         {
-            Assert.AreEqual(1, CopticCalendar.GetMinYearOfEra(Era.AnnoMartyrm));
+            Assert.AreEqual(1, CopticCalendar.GetMinYearOfEra(Era.AnnoMartyrum));
         }
 
         [Test]
@@ -84,7 +84,7 @@ namespace NodaTime.Test
         [Test]
         public void GetMaxYearOfEra_Valid()
         {
-            Assert.AreEqual(CopticCalendar.MaxYear, CopticCalendar.GetMaxYearOfEra(Era.AnnoMartyrm));
+            Assert.AreEqual(CopticCalendar.MaxYear, CopticCalendar.GetMaxYearOfEra(Era.AnnoMartyrum));
         }
     }
 }

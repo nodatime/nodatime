@@ -41,7 +41,7 @@ namespace NodaTime.Calendars
         }
 
         private CopticCalendarSystem(int minDaysInFirstWeek)
-            : base(CreateIdFromNameAndMinDaysInFirstWeek(CopticName, minDaysInFirstWeek), CopticName, minDaysInFirstWeek, 1, 29227, AssembleCopticFields, new[] { Era.AnnoMartyrm })
+            : base(CreateIdFromNameAndMinDaysInFirstWeek(CopticName, minDaysInFirstWeek), CopticName, minDaysInFirstWeek, 1, 29227, AssembleCopticFields, new[] { Era.AnnoMartyrum })
         {
         }
 
