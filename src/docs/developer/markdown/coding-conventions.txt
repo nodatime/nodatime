@@ -1,4 +1,4 @@
-﻿Coding Conventions
+﻿Coding conventions
 
 ## Use of C# and .NET features ##
 

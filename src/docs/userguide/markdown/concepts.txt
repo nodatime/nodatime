@@ -1,4 +1,4 @@
-Core concepts in Noda Time
+Core concepts
 
 This is a companion page to the
 ["core types quick reference"](core-types.html), and ["choosing between types"](type-choices.html)

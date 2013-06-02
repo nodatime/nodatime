@@ -6,10 +6,7 @@ _with_ Noda Time, see the [User Guide][] instead.
 Developer guide contents
 ------------------------
 
-- [Building and testing](building.html)
-- [Coding conventions](coding-conventions.html)
-- [Release process](release-process.html)
-- [Time zone database file format](tzdb-file-format.html)
+%TOC%
 
 Resources
 ---------

@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<project>
+  <title>Noda Time User Guide</title>
+  <footer>Version 1.2.0-dev</footer>
+  <template src="markdown/template.html"/>
+  <include directory="raw"/>
+  <contents src="markdown/index.txt">
+    <section src="markdown/rationale.txt"/>
+    <section src="markdown/installation.txt"/>
+    <section src="markdown/concepts.txt"/>
+    <section src="markdown/type-choices.txt"/>
+    <section src="markdown/core-types.txt"/>
+    <section src="markdown/design.txt"/>
+    <section src="markdown/arithmetic.txt"/>
+    <section src="markdown/text.txt">
+      <section src="markdown/offset-patterns.txt"/>
+      <section src="markdown/instant-patterns.txt"/>
+      <section src="markdown/localtime-patterns.txt"/>
+      <section src="markdown/localdate-patterns.txt"/>
+      <section src="markdown/localdatetime-patterns.txt"/>
+      <section src="markdown/period-patterns.txt"/>
+    </section>
+    <section src="markdown/bcl-conversions.txt"/>
+    <section src="markdown/serialization.txt"/>
+    <section src="markdown/testing.txt"/>
+    <section src="markdown/threading.txt"/>
+    <section src="markdown/tzdb.txt"/>
+    <section src="markdown/mono.txt"/>
+    <section src="markdown/limitations.txt"/>
+    <section src="markdown/roadmap.txt"/>
+    <section src="markdown/versions.txt"/>
+  </contents>
+</project>

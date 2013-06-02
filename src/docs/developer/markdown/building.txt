@@ -1,4 +1,4 @@
-Building and Testing
+Building and testing
 
 ## Visual Studio (Windows)
 

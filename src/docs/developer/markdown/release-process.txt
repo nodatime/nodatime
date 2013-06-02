@@ -1,4 +1,4 @@
-Release Process
+Release process
 
 This document describes how Noda Time is released. It is intended to be used as
 a checklist by the person doing a release.
