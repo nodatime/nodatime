@@ -1,4 +1,4 @@
-Choosing between the core types
+Choosing (and converting) between types
 
 This is a companion page to the
 ["core concepts quick reference"](concepts.html), and ["core types"](core-types.html)
