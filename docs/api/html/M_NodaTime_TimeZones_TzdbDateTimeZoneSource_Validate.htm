@@ -6,10 +6,11 @@
 <span class="keyword">public</span>:
 <span class="keyword">void</span> <span class="identifier">Validate</span>()</pre></div></div></div></div></div><div class="section"><div class="sectionTitle" onclick="toggleSection(this.parentNode)"><img src="../icons/collapse_all.gif" /> Remarks</div><div class="sectionContent">
             Source data is not validated automatically when it's loaded, but any source
-            loaded from data produced by NodaTime.TzdbCompiler (including the data shipped with Noda Time)
-            will already have been validated when it was originally produced. This method should
-            only normally be used if you have data from a source you're unsure of.
-            </div></div><div class="section"><div class="sectionTitle" onclick="toggleSection(this.parentNode)"><img src="../icons/collapse_all.gif" /> Exceptions</div><div class="sectionContent"><table class="exceptions"><tr><th class="exceptionNameColumn">Exception</th><th class="exceptionConditionColumn">Condition</th></tr><tr><td><a href="T_NodaTime_Utility_InvalidNodaDataException.htm">InvalidNodaDataException</a></td><td>The source is invalid.<br /></td></tr></table></div></div><div id="footer"><p />Send comments on this topic to
+            loaded from data produced by <span class="code">NodaTime.TzdbCompiler</span> (including the data shipped with Noda Time)
+            will already have been validated via this method when it was originally produced. This method should
+            only normally be called explicitly if you have data from a source you're unsure of.
+            </div></div><div class="section"><div class="sectionTitle" onclick="toggleSection(this.parentNode)"><img src="../icons/collapse_all.gif" /> Exceptions</div><div class="sectionContent"><table class="exceptions"><tr><th class="exceptionNameColumn">Exception</th><th class="exceptionConditionColumn">Condition</th></tr><tr><td><a href="T_NodaTime_Utility_InvalidNodaDataException.htm">InvalidNodaDataException</a></td><td>The source data is invalid. The source may not function
+            correctly.<br /></td></tr></table></div></div><div id="footer"><p />Send comments on this topic to
         <a id="HT_MailLink" href="mailto:noda-time%40googlegroups.com?Subject=Noda Time">Noda Time Google Groups</a><script type="text/javascript">
         var HT_mailLink = document.getElementById("HT_MailLink");
         var HT_mailLinkText = HT_mailLink.innerHTML;
