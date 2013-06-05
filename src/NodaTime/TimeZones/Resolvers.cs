@@ -14,7 +14,7 @@ namespace NodaTime.TimeZones
     /// <remarks>
     /// <para>
     /// This class contains predefined implementations of <see cref="ZoneLocalMappingResolver"/>,
-    /// <see cref="AmbiguousTimeResolver"/>, and <see cref="SkippedTimeResolver/">, along with
+    /// <see cref="AmbiguousTimeResolver"/>, and <see cref="SkippedTimeResolver"/>, along with
     /// <see cref="CreateMappingResolver"/>, which produces a <c>ZoneLocalMappingResolver</c> from instances of the
     /// other two.
     /// </para>

@@ -380,7 +380,7 @@ namespace NodaTime.TimeZones
         /// <para>
         /// This method will retain a reference to the returned <c>BclDateTimeZone</c>, and will attempt to return it if
         /// called repeatedly (assuming that the local time zone has not changed) rather than creating a new instance,
-        /// though this behaviour is not guaranteed.</para>
+        /// though this behaviour is not guaranteed.
         /// </para>
         /// </remarks>
         /// <returns>A <see cref="BclDateTimeZone"/> wrapping the "local" (system) time zone as returned by
