@@ -1,0 +1,7 @@
+name: Noda Time
+pygments: true
+
+markdown:      redcarpet
+markdown_ext:  markdown,mkd,mkdn,md
+
+userguide: 'userguide/1.1.0'

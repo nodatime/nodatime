@@ -1,0 +1,274 @@
+@font-face {
+  font-family: "Calluna Sans Regular";
+  src: url("/fonts/CallunaSansRegular.otf");
+}
+
+code {
+  color: #B17250;
+}
+
+a, a code {
+  color: #5C72DB;
+}
+
+a:hover, a:hover code {
+  color: #AAB9FF;
+}
+
+a:visited, a:visited code {
+  font-style: italic;
+}
+
+strong {
+  color: #000;
+  text-decoration: underline;
+}
+
+section.body {
+  min-height: 300px;
+}
+
+.top-bar-section ul li a.active {
+  color: #B17250;
+}
+
+section h1, 
+section h2, 
+section h3, 
+section h4, 
+section h5, 
+section h6,
+section p {
+  font-family: "Calluna Sans Regular"
+}
+
+.top-bar {
+  margin-bottom: 0px;
+}
+
+.section {
+  max-width: inherit;
+  margin: auto;
+  height: 400px;
+  padding-top: 50px; 
+}
+
+.section h1,
+.section h2 {
+  color: #fff;
+  text-align: center; 
+}
+
+.introduction {
+  background-color: #5C72DB;
+}
+
+.introduction i {
+  color: #fff;
+  font-size: 90px;
+}
+
+.introduction h1 {
+  font-size: 100px;
+  margin-bottom: 1px;
+}
+
+.points {
+  background-color: #FFFFFF;
+  height: 300px;
+  max-height: 300px;
+}
+
+.points h1,
+.points h2 {
+  color: #000;
+}
+
+.usage {
+  background-color: #FFFFFF;
+  height: 300px;
+  max-height: 300px;
+}
+
+.usage .columns {
+  margin: 0 auto;
+}
+
+.usage .unit {
+  float: left;
+}
+
+.usage p {
+  color: #000;
+  text-align: center;
+  font-size: 250%;
+  margin: 0 10px;
+  font-style: italic;
+}
+
+.installation {
+  background-color: #FFE76B;
+  height: inherit;
+  min-height: 400px;
+}
+
+.installation h1,
+.installation h2 {
+  color: #000;
+}
+
+.installation i {
+  font-size: 20px;
+}
+
+.installation .install {
+  margin-top: 50px; 
+}
+
+.installation .install h4 {
+  padding-bottom: 0px;
+}
+
+.installation .nuget-button-commandWrapper {
+  margin-top: 10px;
+}
+
+.usage .comment,
+.usage .example {
+  width: 50%;
+}
+
+.usage .example {
+  margin: -95px 0;
+  float: right;
+  display: block;
+  padding: 0;
+  font-family: Menlo, Consolas, "Courier New", Courier, "Liberation Mono", monospace;
+  text-align: left;
+}
+
+.example p.title {  
+  display: block;
+  text-align: center;
+  margin: 0 20px;
+  padding: 5px 0;
+  border-radius: 5px 5px 0 0;
+  box-shadow: 0 3px 10px rgba(0,0,0,.5);
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  font-weight: normal;
+  color: #444;
+  text-shadow: 0 1px 0 rgba(255,255,255,.5);
+  background: #f7f7f7;
+  background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2Y3ZjdmNyIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjclIiBzdG9wLWNvbG9yPSIjY2ZjZmNmIiBzdG9wLW9wYWNpdHk9IjEiLz4KICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iI2FhYWFhYSIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgPC9saW5lYXJHcmFkaWVudD4KICA8cmVjdCB4PSIwIiB5PSIwIiB3aWR0aD0iMSIgaGVpZ2h0PSIxIiBmaWxsPSJ1cmwoI2dyYWQtdWNnZy1nZW5lcmF0ZWQpIiAvPgo8L3N2Zz4=);
+  background: -moz-linear-gradient(top,  #f7f7f7 0%, #cfcfcf 7%, #aaaaaa 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#f7f7f7), color-stop(7%,#cfcfcf), color-stop(100%,#aaaaaa));
+  background: -webkit-linear-gradient(top,  #f7f7f7 0%,#cfcfcf 7%,#aaaaaa 100%);
+  background: -o-linear-gradient(top,  #f7f7f7 0%,#cfcfcf 7%,#aaaaaa 100%);
+  background: -ms-linear-gradient(top,  #f7f7f7 0%,#cfcfcf 7%,#aaaaaa 100%);
+  background: linear-gradient(top,  #f7f7f7 0%,#cfcfcf 7%,#aaaaaa 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f7f7f7', endColorstr='#aaaaaa',GradientType=0 );
+  border-bottom: 1px solid #111;
+}
+
+.usage .example .code {
+  height: 350px;
+  border-radius: 0 0 5px 5px;
+  font-size: 15px;
+  /*margin-bottom: 0px;*/
+  margin: 0 20px;
+}
+
+.example .code {
+  padding: 20px;
+  text-shadow: none;
+  margin: 0 20px 0 0;
+  background: #3d3d3d;
+  border-radius: 5px;
+  box-shadow: 0 5px 30px rgba(0,0,0,.3);
+  
+  text-align: left;
+  /*font-size: 15px;*/
+  overflow: hidden;
+  margin-bottom: 1.25em;
+
+  color: #fff;
+}
+
+footer {
+  background-color: #3d3d3d;
+  color: #888;
+  padding: 20px;
+}
+
+footer .row {
+  padding: 10px 0;
+}
+
+footer .copy {
+  text-align: right;
+}
+
+.section-container footer {
+  background-color: #fff;
+  padding: 10px 16px;
+  font-size: 12px;
+  border: 0px none;
+}
+
+.section-container > section > .title
+{
+  background-color: #FFE76B;
+  padding: 10px;
+}
+
+.section-container > section .content
+{
+  display: inherit;
+  background-color: #B17250;
+}
+
+.section-container > section .content a,
+.section-container > section .content a:visited
+{
+  color: #FFF;
+} 
+
+
+/* Pretty Print */
+/* desert scheme ported from vim to google prettify */
+pre.prettyprint { display: block; background-color: #333 }
+pre .nocode { background-color: none; color: #000 }
+pre .str { color: #ffa0a0 } /* string  - pink */
+pre .kwd { color: #f0e68c; font-weight: bold }
+pre .com { color: #87ceeb } /* comment - skyblue */
+pre .typ { color: #98fb98 } /* type    - lightgreen */
+pre .lit { color: #cd5c5c } /* literal - darkred */
+pre .pun { color: #fff }    /* punctuation */
+pre .pln { color: #fff }    /* plaintext */
+pre .tag { color: #f0e68c; font-weight: bold } /* html/xml tag    - lightyellow */
+pre .atn { color: #bdb76b; font-weight: bold } /* attribute name  - khaki */
+pre .atv { color: #ffa0a0 } /* attribute value - pink */
+pre .dec { color: #98fb98 } /* decimal         - lightgreen */
+
+/* Specify class=linenums on a pre to get line numbering */
+ol.linenums { margin-top: 0; margin-bottom: 0; color: #AEAEAE } /* IE indents via margin-left */
+li.L0,li.L1,li.L2,li.L3,li.L5,li.L6,li.L7,li.L8 { list-style-type: none }
+/* Alternate shading for lines */
+li.L1,li.L3,li.L5,li.L7,li.L9 { }
+
+@media print {
+  pre.prettyprint { background-color: none }
+  pre .str, code .str { color: #060 }
+  pre .kwd, code .kwd { color: #006; font-weight: bold }
+  pre .com, code .com { color: #600; font-style: italic }
+  pre .typ, code .typ { color: #404; font-weight: bold }
+  pre .lit, code .lit { color: #044 }
+  pre .pun, code .pun { color: #440 }
+  pre .pln, code .pln { color: #000 }
+  pre .tag, code .tag { color: #006; font-weight: bold }
+  pre .atn, code .atn { color: #404 }
+  pre .atv, code .atv { color: #060 }
+}
+
+.usage pre.prettyprint { padding: 0px; border: none; background-color: inherit; }
