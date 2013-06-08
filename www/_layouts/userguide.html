@@ -1,0 +1,59 @@
+---
+layout: foundation
+navigation: userguide
+---
+{% assign parts = page.url | split: '/' %}
+{% capture lvl %}{{ page.url | append:'index.html' | split:'/' | size }}{% endcapture %}
+{% capture relative %}{% for i in (3..lvl) %}../{% endfor %}{% endcapture %}
+<div class="row">
+	<div class="large-9 columns">
+		<h1>{{ page.title }}</h1>
+		{{ content }}
+	</div>
+
+	<div class="large-3 columns">
+		<div class="section-container accordian">
+			<section>
+				<p class="title" data-section-title>Introduction</p>
+				<div class="content" data-section-content>
+					<ul class="side-nav">
+						{% userguide_for doc in site.pages sort_by:weight category:intro %}
+							<li><a href="{{ relative }}{{ doc.url | remove_first: '/' }}" {% if doc.url == page.url %}class="active"{% endif %}>{{ doc.title }}</a></li>
+						{% enduserguide_for %}
+					</ul>
+				</div>
+			</section>
+			<section>
+				<p class="title" data-section-title>Core</p>
+				<div class="content" data-section-content>
+					<ul class="side-nav">
+						{% userguide_for doc in site.pages sort_by:weight category:core %}
+							<li><a href="{{ relative }}{{ doc.url | remove_first: '/' }}" {% if doc.url == page.url %}class="active"{% endif %}>{{ doc.title }}</a></li>
+						{% enduserguide_for %}
+					</ul>
+				</div>
+			</section>
+			<section>
+				<p class="title" data-section-title>Advanced</p>
+				<div class="content" data-section-content>
+					<ul class="side-nav">
+						{% userguide_for doc in site.pages sort_by:weight category:advanced %}
+							<li><a href="{{ relative }}{{ doc.url | remove_first: '/' }}" {% if doc.url == page.url %}class="active"{% endif %}>{{ doc.title }}</a></li>
+						{% enduserguide_for %}
+					</ul>
+				</div>
+			</section>
+			<section>
+				<p class="title" data-section-title>Library</p>
+				<div class="content" data-section-content>
+					<ul class="side-nav">
+						{% userguide_for doc in site.pages sort_by:weight category:library %}
+							<li><a href="{{ relative }}{{ doc.url | remove_first: '/' }}" {% if doc.url == page.url %}class="active"{% endif %}>{{ doc.title }}</a></li>
+						{% enduserguide_for %}
+					</ul>
+				</div>
+			</section>
+			<footer>Version {{ parts[2] }}</footer>
+		</div>
+	</div>
+</div>
