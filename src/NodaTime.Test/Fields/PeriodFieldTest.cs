@@ -73,11 +73,6 @@ namespace NodaTime.Test.Fields
             {
             }
 
-            internal override long GetInt64Value(Duration duration, LocalInstant localInstant)
-            {
-                throw new NotImplementedException();
-            }
-
             internal override Duration GetDuration(long value, LocalInstant localInstant)
             {
                 throw new NotImplementedException();

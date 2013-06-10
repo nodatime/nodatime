@@ -34,16 +34,6 @@ namespace NodaTime.Test.Fields
         }
 
         [Test]
-        public void GetInt64Value_WithLocalInstant()
-        {
-            LocalInstant when = new LocalInstant(56789L);
-            Assert.AreEqual(0L, TicksPeriodField.Instance.GetInt64Value(new Duration(0L), when));
-            Assert.AreEqual(1234L, TicksPeriodField.Instance.GetInt64Value(new Duration(1234L), when));
-            Assert.AreEqual(-1234L, TicksPeriodField.Instance.GetInt64Value(new Duration(-1234L), when));
-            Assert.AreEqual(int.MaxValue + 1L, TicksPeriodField.Instance.GetInt64Value(new Duration(int.MaxValue + 1L), when));
-        }
-
-        [Test]
         public void GetDuration()
         {
             Assert.AreEqual(0L, TicksPeriodField.Instance.GetDuration(0).Ticks);

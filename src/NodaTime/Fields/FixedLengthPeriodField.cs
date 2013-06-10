@@ -21,11 +21,6 @@ namespace NodaTime.Fields
         {
         }
 
-        internal override long GetInt64Value(Duration duration, LocalInstant localInstant)
-        {
-            return duration.Ticks / UnitTicks;
-        }
-
         internal override Duration GetDuration(long value, LocalInstant localInstant)
         {
             return new Duration(value * UnitTicks);
