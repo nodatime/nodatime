@@ -34,11 +34,6 @@ namespace NodaTime.Fields
             return wrappedField.GetValue(duration, localInstant) / scale;
         }
 
-        internal override long GetInt64Value(Duration duration)
-        {
-            return wrappedField.GetInt64Value(duration) / scale;
-        }
-
         internal override long GetInt64Value(Duration duration, LocalInstant localInstant)
         {
             return wrappedField.GetInt64Value(duration, localInstant) / scale;
