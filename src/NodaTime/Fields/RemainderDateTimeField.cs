@@ -12,17 +12,6 @@ namespace NodaTime.Fields
         private readonly int divisor;
         private readonly PeriodField remainderRangeField;
 
-        internal RemainderDateTimeField(DateTimeField field, DateTimeFieldType fieldType, int divisor) : base(field, fieldType)
-        {
-            if (divisor < 2)
-            {
-                throw new ArgumentOutOfRangeException("divisor", "The divisor must be at least 2");
-            }
-
-            remainderRangeField = new ScaledPeriodField(field.PeriodField, fieldType.RangePeriodFieldType.Value, divisor);
-            this.divisor = divisor;
-        }
-
         internal RemainderDateTimeField(DividedDateTimeField dividedField) : this(dividedField, dividedField.FieldType)
         {
         }
