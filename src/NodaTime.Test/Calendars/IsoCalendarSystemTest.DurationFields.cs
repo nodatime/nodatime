@@ -9,25 +9,6 @@ namespace NodaTime.Test.Calendars
     public partial class IsoCalendarSystemTest
     {
         [Test]
-        public void PeriodFields_Eras()
-        {
-            var sut = isoFields.Eras;
-
-            Assert.That(sut.ToString(), Is.EqualTo("Eras"));
-            Assert.That(sut.IsSupported, Is.False);
-        }
-
-        [Test]
-        public void PeriodFields_Centuries()
-        {
-            var sut = isoFields.Centuries;
-
-            Assert.That(sut.ToString(), Is.EqualTo("Centuries"));
-            Assert.That(sut.IsSupported, Is.True);
-            Assert.That(sut.IsFixedLength, Is.False);
-        }
-
-        [Test]
         public void PeriodFields_Years()
         {
             var sut = isoFields.Years;

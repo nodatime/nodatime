@@ -210,7 +210,6 @@ namespace NodaTime.Calendars
                 builder.CenturyOfEra = centuryOfEra;
                 builder.YearOfCentury = new RemainderDateTimeField(centuryOfEra, DateTimeFieldType.YearOfCentury);
                 builder.WeekYearOfCentury = new RemainderDateTimeField(centuryOfEra, DateTimeFieldType.WeekYearOfCentury);
-                builder.Centuries = centuryOfEra.PeriodField;
             }
         }
     }

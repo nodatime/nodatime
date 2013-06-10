@@ -139,7 +139,6 @@ namespace NodaTime.Calendars
             // created date/time fields.
 
             builder.Years = builder.Year.PeriodField;
-            builder.Centuries = builder.CenturyOfEra.PeriodField;
             builder.Months = builder.MonthOfYear.PeriodField;
             builder.WeekYears = builder.WeekYear.PeriodField;
         }
