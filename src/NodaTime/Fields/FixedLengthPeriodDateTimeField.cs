@@ -47,7 +47,9 @@ namespace NodaTime.Fields
         /// <returns>The updated local instant</returns>
         internal override LocalInstant SetValue(LocalInstant localInstant, long value)
         {
-            Preconditions.CheckArgumentRange("value", value, GetMinimumValue(), GetMaximumValueForSet(localInstant, value));
+            // TODO: There's no need to fetch the actual maximum value, in cases where we know we're trying to set a value
+            // which is always in range (e.g. 28 for day-of-year). Consider optimizing this.
+            Preconditions.CheckArgumentRange("value", value, GetMinimumValue(), GetMaximumValue(localInstant));
             return new LocalInstant(localInstant.Ticks + (value - GetInt64Value(localInstant)) * unitTicks);
         }
         #endregion
@@ -56,16 +58,6 @@ namespace NodaTime.Fields
         internal override long GetMinimumValue()
         {
             return 0;
-        }
-
-        /// <summary>
-        /// Called by <see cref="DateTimeField.SetValue(NodaTime.LocalInstant,long)" /> (and related overloads)
-        /// to get the maximum allowed value. By default, returns GetMaximumValue(localInstant). Override to provide
-        /// a faster implementation.
-        /// </summary>
-        protected long GetMaximumValueForSet(LocalInstant localInstant, long value)
-        {
-            return GetMaximumValue(localInstant);
         }
         #endregion
 
