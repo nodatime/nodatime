@@ -34,15 +34,6 @@ namespace NodaTime.Test.Fields
         }
 
         [Test]
-        public void GetDuration_WithLocalInstant()
-        {
-            LocalInstant when = new LocalInstant(56789L);
-            Assert.AreEqual(0L, TicksPeriodField.Instance.GetDuration(0, when).Ticks);
-            Assert.AreEqual(1234L, TicksPeriodField.Instance.GetDuration(1234, when).Ticks);
-            Assert.AreEqual(-1234L, TicksPeriodField.Instance.GetDuration(-1234, when).Ticks);
-        }
-
-        [Test]
         public void Add_Int32Value()
         {
             Assert.AreEqual(567L, TicksPeriodField.Instance.Add(new LocalInstant(567L), 0).Ticks);

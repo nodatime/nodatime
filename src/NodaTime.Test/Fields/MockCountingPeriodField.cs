@@ -20,11 +20,6 @@ namespace NodaTime.Test.Fields
             this.unitTicks = unitTicks;
         }
 
-        internal override Duration GetDuration(long value, LocalInstant localInstant)
-        {
-            return new Duration(0);
-        }
-
         internal static int int32Additions;
         internal static LocalInstant AddInstantArg;
         internal static int AddValueArg;

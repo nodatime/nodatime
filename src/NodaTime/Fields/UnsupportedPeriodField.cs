@@ -65,17 +65,6 @@ namespace NodaTime.Fields
         /// <summary>
         /// Always throws NotSupportedException
         /// </summary>
-        /// <param name="value">The value of the field, which may be negative</param>
-        /// <param name="localInstant">The instant to calculate relative to</param>
-        /// <returns>The duration that the field represents, which may be negative</returns>
-        internal override Duration GetDuration(long value, LocalInstant localInstant)
-        {
-            throw new NotSupportedException();
-        }
-
-        /// <summary>
-        /// Always throws NotSupportedException
-        /// </summary>
         /// <param name="localInstant">The local instant to add to</param>
         /// <param name="value">The value to add, in the units of the field</param>
         /// <returns>The updated local instant</returns>
