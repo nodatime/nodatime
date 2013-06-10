@@ -41,7 +41,6 @@ namespace NodaTime.Fields
         private readonly DateTimeField dayOfYear;
         private readonly DateTimeField weekOfWeekYear;
         private readonly DateTimeField weekYear;
-        private readonly DateTimeField weekYearOfCentury;
         private readonly DateTimeField monthOfYear;
         private readonly DateTimeField year;
         private readonly DateTimeField yearOfCentury;
@@ -79,7 +78,6 @@ namespace NodaTime.Fields
         internal DateTimeField DayOfYear { get { return dayOfYear; } }
         internal DateTimeField WeekOfWeekYear { get { return weekOfWeekYear; } }
         internal DateTimeField WeekYear { get { return weekYear; } }
-        internal DateTimeField WeekYearOfCentury { get { return weekYearOfCentury; } }
         internal DateTimeField MonthOfYear { get { return monthOfYear; } }
         internal DateTimeField Year { get { return year; } }
         internal DateTimeField YearOfCentury { get { return yearOfCentury; } }
@@ -119,7 +117,6 @@ namespace NodaTime.Fields
             dayOfYear = builder.DayOfYear ?? UnsupportedDateTimeField.DayOfYear;
             weekOfWeekYear = builder.WeekOfWeekYear ?? UnsupportedDateTimeField.WeekOfWeekYear;
             weekYear = builder.WeekYear ?? UnsupportedDateTimeField.WeekYear;
-            weekYearOfCentury = builder.WeekYearOfCentury ?? UnsupportedDateTimeField.WeekYearOfCentury;
             monthOfYear = builder.MonthOfYear ?? UnsupportedDateTimeField.MonthOfYear;
             year = builder.Year ?? UnsupportedDateTimeField.Year;
             yearOfCentury = builder.YearOfCentury ?? UnsupportedDateTimeField.YearOfCentury;
@@ -173,7 +170,6 @@ namespace NodaTime.Fields
             internal DateTimeField DayOfYear { get; set; }
             internal DateTimeField WeekOfWeekYear { get; set; }
             internal DateTimeField WeekYear { get; set; }
-            internal DateTimeField WeekYearOfCentury { get; set; }
             internal DateTimeField MonthOfYear { get; set; }
             internal DateTimeField Year { get; set; }
             internal DateTimeField YearOfCentury { get; set; }
@@ -218,7 +214,6 @@ namespace NodaTime.Fields
                 DayOfYear = baseSet.DayOfYear;
                 WeekOfWeekYear = baseSet.WeekOfWeekYear;
                 WeekYear = baseSet.WeekYear;
-                WeekYearOfCentury = baseSet.WeekYearOfCentury;
                 MonthOfYear = baseSet.MonthOfYear;
                 Year = baseSet.Year;
                 YearOfCentury = baseSet.YearOfCentury;
@@ -265,7 +260,6 @@ namespace NodaTime.Fields
                 DayOfYear = other.DayOfYear.IsSupported ? other.DayOfYear : DayOfYear;
                 WeekOfWeekYear = other.WeekOfWeekYear.IsSupported ? other.WeekOfWeekYear : WeekOfWeekYear;
                 WeekYear = other.WeekYear.IsSupported ? other.WeekYear : WeekYear;
-                WeekYearOfCentury = other.WeekYearOfCentury.IsSupported ? other.WeekYearOfCentury : WeekYearOfCentury;
                 MonthOfYear = other.MonthOfYear.IsSupported ? other.MonthOfYear : MonthOfYear;
                 Year = other.Year.IsSupported ? other.Year : Year;
                 YearOfCentury = other.YearOfCentury.IsSupported ? other.YearOfCentury : YearOfCentury;
