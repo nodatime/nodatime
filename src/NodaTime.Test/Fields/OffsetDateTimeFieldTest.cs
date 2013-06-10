@@ -133,22 +133,6 @@ namespace NodaTime.Test.Fields
             Assert.AreEqual(1 * NodaConstants.TicksPerSecond, field.RoundFloor(new LocalInstant(1000 * NodaConstants.TicksPerMillisecond)).Ticks);
         }
 
-        [Test]
-        public void RoundCeiling_DelegatesToWrappedField()
-        {
-            OffsetDateTimeField field = GetSampleField();
-            Assert.AreEqual(-1 * NodaConstants.TicksPerSecond, field.RoundCeiling(new LocalInstant(-1001 * NodaConstants.TicksPerMillisecond)).Ticks);
-            Assert.AreEqual(-1 * NodaConstants.TicksPerSecond, field.RoundCeiling(new LocalInstant(-1000 * NodaConstants.TicksPerMillisecond)).Ticks);
-            Assert.AreEqual(0, field.RoundCeiling(new LocalInstant(-999 * NodaConstants.TicksPerMillisecond)).Ticks);
-            Assert.AreEqual(0, field.RoundCeiling(new LocalInstant(-1 * NodaConstants.TicksPerMillisecond)).Ticks);
-            Assert.AreEqual(0, field.RoundCeiling(new LocalInstant(0)).Ticks);
-            Assert.AreEqual(1 * NodaConstants.TicksPerSecond, field.RoundCeiling(new LocalInstant(1 * NodaConstants.TicksPerMillisecond)).Ticks);
-            Assert.AreEqual(1 * NodaConstants.TicksPerSecond, field.RoundCeiling(new LocalInstant(499 * NodaConstants.TicksPerMillisecond)).Ticks);
-            Assert.AreEqual(1 * NodaConstants.TicksPerSecond, field.RoundCeiling(new LocalInstant(500 * NodaConstants.TicksPerMillisecond)).Ticks);
-            Assert.AreEqual(1 * NodaConstants.TicksPerSecond, field.RoundCeiling(new LocalInstant(501 * NodaConstants.TicksPerMillisecond)).Ticks);
-            Assert.AreEqual(1 * NodaConstants.TicksPerSecond, field.RoundCeiling(new LocalInstant(1000 * NodaConstants.TicksPerMillisecond)).Ticks);
-        }
-
         /// <summary>
         /// Helper method to avoid having to repeat all of this every time
         /// </summary>

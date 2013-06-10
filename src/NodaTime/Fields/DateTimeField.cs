@@ -135,28 +135,6 @@ namespace NodaTime.Fields
         /// <returns>Rounded local instant</returns>
         internal abstract LocalInstant RoundFloor(LocalInstant localInstant);
 
-        /// <summary>
-        /// Round to the highest whole unit of this field. The value of this field
-        /// and all fields of a higher magnitude may be incremented in order to
-        /// achieve this result. The fractional ticks that cannot be expressed in
-        /// whole increments of this field are set to minimum.
-        /// <para>
-        /// For example, a datetime of 2002-11-02T23:34:56.789, rounded to the
-        /// highest whole hour is 2002-11-03T00:00:00.000.
-        /// </para>
-        /// </summary>
-        /// <param name="localInstant">The local instant to round</param>
-        /// <returns>Rounded local instant</returns>
-        internal virtual LocalInstant RoundCeiling(LocalInstant localInstant)
-        {
-            LocalInstant newInstant = RoundFloor(localInstant);
-            if (newInstant != localInstant)
-            {
-                newInstant = PeriodField.Add(newInstant, 1);
-            }
-            return newInstant;
-        }
-
         #endregion
 
         public override string ToString()

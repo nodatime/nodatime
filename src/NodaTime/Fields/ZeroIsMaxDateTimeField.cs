@@ -62,10 +62,6 @@ namespace NodaTime.Fields
         #endregion
 
         #region Rounding
-        internal override LocalInstant RoundCeiling(LocalInstant localInstant)
-        {
-            return WrappedField.RoundCeiling(localInstant);
-        }
 
         internal override LocalInstant RoundFloor(LocalInstant localInstant)
         {

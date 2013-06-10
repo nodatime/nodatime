@@ -62,13 +62,6 @@ namespace NodaTime.Fields
             return GetValue(localInstant) == CommonEraIndex ? calendarSystem.SetYear(LocalInstant.LocalUnixEpoch, 1) : new LocalInstant(long.MinValue);
         }
 
-        internal override LocalInstant RoundCeiling(LocalInstant localInstant)
-        {
-            return GetValue(localInstant) == BeforeCommonEraIndex
-                       ? calendarSystem.SetYear(LocalInstant.LocalUnixEpoch, 1)
-                       : new LocalInstant(long.MaxValue);
-        }
-
         #endregion
     }
 }

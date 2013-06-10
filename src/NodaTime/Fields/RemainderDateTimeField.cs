@@ -48,9 +48,5 @@ namespace NodaTime.Fields
         }
 
         // No need to override RoundFloor - it already delegates
-        internal override LocalInstant RoundCeiling(LocalInstant localInstant)
-        {
-            return WrappedField.RoundCeiling(localInstant);
-        }
     }
 }

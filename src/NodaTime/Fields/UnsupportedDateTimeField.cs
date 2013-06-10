@@ -84,10 +84,5 @@ namespace NodaTime.Fields
         {
             throw new NotSupportedException();
         }
-
-        internal override LocalInstant RoundCeiling(LocalInstant localInstant)
-        {
-            throw new NotSupportedException();
-        }
     }
 }
