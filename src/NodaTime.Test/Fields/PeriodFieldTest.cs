@@ -47,13 +47,6 @@ namespace NodaTime.Test.Fields
         }
 
         [Test]
-        public void GetInt64ValueWithoutLocalInstant_UsesUnitTicks()
-        {
-            PeriodField field = new StubPeriodField();
-            Assert.AreEqual(long.MaxValue / 123, field.GetInt64Value(new Duration(long.MaxValue)));
-        }
-
-        [Test]
         public void IsTypeValid_AllEnumValues_AreValid()
         {
             foreach (PeriodFieldType type in Enum.GetValues(typeof(PeriodFieldType)))

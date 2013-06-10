@@ -58,16 +58,6 @@ namespace NodaTime.Test.Fields
             Assert.AreEqual(90, sample.UnitTicks);
         }
 
-        [Test]
-        public void GetInt64Value()
-        {
-            Assert.AreEqual(0L, sample.GetInt64Value(new Duration(0L)));
-            Assert.AreEqual(12345678L / 90, sample.GetInt64Value(new Duration(12345678L)));
-            Assert.AreEqual(-1234L / 90, sample.GetInt64Value(new Duration(-1234L)));
-            Assert.AreEqual(int.MaxValue / 90L, sample.GetInt64Value(new Duration(int.MaxValue)));
-            Assert.AreEqual(int.MaxValue + 1L, sample.GetInt64Value(new Duration(int.MaxValue * 90L + 90L)));
-        }
-
         public void GetValue_WithLocalInstant()
         {
             Assert.AreEqual(0, sample.GetValue(new Duration(0L), localInstant));
