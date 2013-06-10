@@ -27,11 +27,6 @@ namespace NodaTime.Fields
             return new LocalInstant(localInstant.Ticks + value);
         }
 
-        internal override int GetDifference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
-        {
-            return (int)(minuendInstant.Ticks - subtrahendInstant.Ticks);
-        }
-
         internal override long GetInt64Difference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
         {
             return minuendInstant.Ticks - subtrahendInstant.Ticks;

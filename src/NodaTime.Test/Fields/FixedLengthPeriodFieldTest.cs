@@ -75,22 +75,6 @@ namespace NodaTime.Test.Fields
         }
 
         [Test]
-        public void GetDifference()
-        {
-            Assert.AreEqual(0, field.GetDifference(new LocalInstant(1), new LocalInstant(0)));
-            Assert.AreEqual(567, field.GetDifference(new LocalInstant(5670000L), new LocalInstant(0)));
-            Assert.AreEqual(567 - 1234, field.GetDifference(new LocalInstant(5670000L), new LocalInstant(12340000L)));
-            Assert.AreEqual(567 + 1234, field.GetDifference(new LocalInstant(5670000L), new LocalInstant(-12340000L)));
-        }
-
-        [Test]
-        public void GetDifference_ThrowsOnOverflow()
-        {
-            Assert.Throws<OverflowException>(() => field.GetDifference(new LocalInstant(long.MaxValue), new LocalInstant(-1L)));
-            Assert.Throws<OverflowException>(() => field.GetDifference(new LocalInstant(int.MaxValue * 10000L), new LocalInstant(-10000L)));
-        }
-
-        [Test]
         public void GetInt64Difference()
         {
             Assert.AreEqual(0L, field.GetInt64Difference(new LocalInstant(1), new LocalInstant(0)));

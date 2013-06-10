@@ -39,11 +39,6 @@ namespace NodaTime.Fields
             return wrappedField.Add(localInstant, value * scale);
         }
 
-        internal override int GetDifference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
-        {
-            return wrappedField.GetDifference(minuendInstant, subtrahendInstant) / scale;
-        }
-
         internal override long GetInt64Difference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
         {
             return wrappedField.GetInt64Difference(minuendInstant, subtrahendInstant) / scale;
