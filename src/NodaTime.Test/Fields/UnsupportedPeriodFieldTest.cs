@@ -35,12 +35,10 @@ namespace NodaTime.Test.Fields
         public void UnsupportedOperations_ThrowNotSupportedException()
         {
             LocalInstant when = new LocalInstant();
-            Duration duration = new Duration();
 
             AssertUnsupported(x => x.Add(when, 0));
             AssertUnsupported(x => x.Add(when, 0L));
             AssertUnsupported(x => x.GetDifference(when, when));
-            AssertUnsupported(x => x.GetDuration(10));
             AssertUnsupported(x => x.GetDuration(10, when));
             AssertUnsupported(x => x.GetInt64Difference(when, when));
         }

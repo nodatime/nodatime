@@ -33,20 +33,6 @@ namespace NodaTime.Test.Fields
         }
 
         [Test]
-        public void GetDurationWithoutLocalInstant_UsesUnitTicks()
-        {
-            PeriodField field = new StubPeriodField();
-            Assert.AreEqual(1230L, field.GetDuration(10).Ticks);
-        }
-
-        [Test]
-        public void GetDurationWithoutLocalInstant_ThrowsOnOverflow()
-        {
-            PeriodField field = new StubPeriodField();
-            Assert.Throws<OverflowException>(() => field.GetDuration(long.MaxValue));
-        }
-
-        [Test]
         public void IsTypeValid_AllEnumValues_AreValid()
         {
             foreach (PeriodFieldType type in Enum.GetValues(typeof(PeriodFieldType)))

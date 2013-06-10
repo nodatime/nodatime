@@ -67,16 +67,6 @@ namespace NodaTime.Fields
         internal long UnitTicks { get { return unitTicks; } }
 
         #region Create a duration from a field value
-        /// <summary>
-        /// Get the duration of this field from its value, which is
-        /// approximate if this field has a variable length
-        /// </summary>
-        /// <param name="value">The value of the field, which may be negative</param>
-        /// <returns>The duration that the field represents, which may be negative</returns>
-        internal virtual Duration GetDuration(long value)
-        {
-            return new Duration(value * UnitTicks);
-        }
 
         /// <summary>
         /// Get the duration of this field from its value relative to an instant.
