@@ -67,7 +67,6 @@ namespace NodaTime.Calendars
                                            Seconds = FixedLengthPeriodField.Seconds,
                                            Minutes = FixedLengthPeriodField.Minutes,
                                            Hours = FixedLengthPeriodField.Hours,
-                                           HalfDays = FixedLengthPeriodField.HalfDays,
                                            Days = FixedLengthPeriodField.Days,
                                            Weeks = FixedLengthPeriodField.Weeks
                                        };
@@ -81,12 +80,8 @@ namespace NodaTime.Calendars
             builder.MinuteOfHour = new FixedLengthDateTimeField(DateTimeFieldType.MinuteOfHour, builder.Minutes, builder.Hours);
             builder.MinuteOfDay = new FixedLengthDateTimeField(DateTimeFieldType.MinuteOfDay, builder.Minutes, builder.Days);
             builder.HourOfDay = new FixedLengthDateTimeField(DateTimeFieldType.HourOfDay, builder.Hours, builder.Days);
-            builder.HourOfHalfDay = new FixedLengthDateTimeField(DateTimeFieldType.HourOfHalfDay, builder.Hours, builder.HalfDays);
             builder.ClockHourOfDay = new ZeroIsMaxDateTimeField(builder.HourOfDay, DateTimeFieldType.ClockHourOfDay);
             builder.ClockHourOfHalfDay = new ZeroIsMaxDateTimeField(builder.HourOfHalfDay, DateTimeFieldType.ClockHourOfHalfDay);
-            // This was a separate subclass in Joda, for i18n purposes
-            // Our calendar systems don't have their own i18n support.
-            builder.HalfDayOfDay = new FixedLengthDateTimeField(DateTimeFieldType.HalfDayOfDay, builder.HalfDays, builder.Days);
             return builder.Build();
         }
 
