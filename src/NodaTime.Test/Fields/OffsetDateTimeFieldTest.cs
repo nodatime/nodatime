@@ -149,17 +149,6 @@ namespace NodaTime.Test.Fields
             Assert.AreEqual(1 * NodaConstants.TicksPerSecond, field.RoundCeiling(new LocalInstant(1000 * NodaConstants.TicksPerMillisecond)).Ticks);
         }
 
-        [Test]
-        public void RoundHalfFloor_DelegatesToWrappedField()
-        {
-            OffsetDateTimeField field = GetSampleField();
-            Assert.AreEqual(0, field.RoundHalfFloor(new LocalInstant(0)).Ticks);
-            Assert.AreEqual(0, field.RoundHalfFloor(new LocalInstant(499 * NodaConstants.TicksPerMillisecond)).Ticks);
-            Assert.AreEqual(0, field.RoundHalfFloor(new LocalInstant(500 * NodaConstants.TicksPerMillisecond)).Ticks);
-            Assert.AreEqual(1 * NodaConstants.TicksPerSecond, field.RoundHalfFloor(new LocalInstant(501 * NodaConstants.TicksPerMillisecond)).Ticks);
-            Assert.AreEqual(1 * NodaConstants.TicksPerSecond, field.RoundHalfFloor(new LocalInstant(1000 * NodaConstants.TicksPerMillisecond)).Ticks);
-        }
-
         /// <summary>
         /// Helper method to avoid having to repeat all of this every time
         /// </summary>
