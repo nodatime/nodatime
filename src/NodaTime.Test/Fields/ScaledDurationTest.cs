@@ -58,19 +58,6 @@ namespace NodaTime.Test.Fields
             Assert.AreEqual(90, sample.UnitTicks);
         }
 
-        public void GetValue_WithLocalInstant()
-        {
-            Assert.AreEqual(0, sample.GetValue(new Duration(0L), localInstant));
-            Assert.AreEqual(12345678 / 90, sample.GetValue(new Duration(12345678L), localInstant));
-            Assert.AreEqual(-1234 / 90, sample.GetValue(new Duration(-1234L), localInstant));
-            Assert.AreEqual(int.MaxValue / 90, sample.GetValue(new Duration(int.MaxValue), localInstant));
-        }
-
-        public void GetValue_WithLocalInstantButNonInt32Value_Overflows()
-        {
-            Assert.Throws<OverflowException>(() => sample.GetValue(new Duration(int.MaxValue + 1L), localInstant));
-        }
-
         [Test]
         public void GetInt64Value_WithLocalInstant()
         {
