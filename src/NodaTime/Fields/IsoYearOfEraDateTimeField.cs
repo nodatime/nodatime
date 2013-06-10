@@ -8,6 +8,10 @@ using NodaTime.Utility;
 
 namespace NodaTime.Fields
 {
+    /// <summary>
+    /// Field which is never used directly, but only as the basis for the "year of century" and
+    /// "century of era" fields in the ISO calendar.
+    /// </summary>
     internal sealed class IsoYearOfEraDateTimeField : DecoratedDateTimeField
     {
         internal static readonly DateTimeField Instance = new IsoYearOfEraDateTimeField();
@@ -48,7 +52,7 @@ namespace NodaTime.Fields
 
         internal override LocalInstant RoundFloor(LocalInstant localInstant)
         {
-            return WrappedField.RoundCeiling(localInstant);
+            return WrappedField.RoundFloor(localInstant);
         }
 
         internal override LocalInstant RoundCeiling(LocalInstant localInstant)
