@@ -12,11 +12,8 @@ namespace NodaTime.Fields
         private readonly int divisor;
         private readonly PeriodField remainderRangeField;
 
-        internal RemainderDateTimeField(DividedDateTimeField dividedField) : this(dividedField, dividedField.FieldType)
-        {
-        }
-
-        internal RemainderDateTimeField(DividedDateTimeField dividedField, DateTimeFieldType fieldType) : base(dividedField.WrappedField, fieldType)
+        internal RemainderDateTimeField(DividedDateTimeField dividedField)
+             : base(dividedField.WrappedField, dividedField.FieldType)
         {
             divisor = dividedField.Divisor;
             remainderRangeField = dividedField.PeriodField;
