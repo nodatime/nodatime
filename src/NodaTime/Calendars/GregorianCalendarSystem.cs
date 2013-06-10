@@ -208,7 +208,7 @@ namespace NodaTime.Calendars
                 // Use zero based century and year of century.
                 DividedDateTimeField centuryOfEra = new DividedDateTimeField(IsoYearOfEraDateTimeField.Instance, DateTimeFieldType.CenturyOfEra, 100);
                 builder.CenturyOfEra = centuryOfEra;
-                builder.YearOfCentury = new RemainderDateTimeField(centuryOfEra);
+                builder.YearOfCentury = new RemainderDateTimeField(centuryOfEra, DateTimeFieldType.YearOfCentury);
             }
         }
     }
