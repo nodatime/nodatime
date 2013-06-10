@@ -22,8 +22,6 @@ namespace NodaTime.Fields
         private readonly PeriodField weekYears;
         private readonly PeriodField months;
         private readonly PeriodField years;
-        private readonly PeriodField centuries;
-        private readonly PeriodField eras;
 
         private readonly DateTimeField tickOfSecond;
         private readonly DateTimeField tickOfMillisecond;
@@ -63,8 +61,6 @@ namespace NodaTime.Fields
         internal PeriodField WeekYears { get { return weekYears; } }
         internal PeriodField Months { get { return months; } }
         internal PeriodField Years { get { return years; } }
-        internal PeriodField Centuries { get { return centuries; } }
-        internal PeriodField Eras { get { return eras; } }
 
         internal DateTimeField TickOfSecond { get { return tickOfSecond; } }
         internal DateTimeField TickOfMillisecond { get { return tickOfMillisecond; } }
@@ -106,8 +102,6 @@ namespace NodaTime.Fields
             weekYears = builder.WeekYears ?? UnsupportedPeriodField.WeekYears;
             months = builder.Months ?? UnsupportedPeriodField.Months;
             years = builder.Years ?? UnsupportedPeriodField.Years;
-            centuries = builder.Centuries ?? UnsupportedPeriodField.Centuries;
-            eras = builder.Eras ?? UnsupportedPeriodField.Eras;
 
             tickOfSecond = builder.TickOfSecond ?? UnsupportedDateTimeField.TickOfSecond;
             tickOfMillisecond = builder.TickOfMillisecond ?? UnsupportedDateTimeField.TickOfMillisecond;
@@ -163,8 +157,6 @@ namespace NodaTime.Fields
             internal PeriodField WeekYears { get; set; }
             internal PeriodField Months { get; set; }
             internal PeriodField Years { get; set; }
-            internal PeriodField Centuries { get; set; }
-            internal PeriodField Eras { get; set; }
 
             internal DateTimeField TickOfSecond { get; set; }
             internal DateTimeField TickOfMillisecond { get; set; }
@@ -211,8 +203,6 @@ namespace NodaTime.Fields
                 WeekYears = baseSet.WeekYears;
                 Months = baseSet.Months;
                 Years = baseSet.Years;
-                Centuries = baseSet.Centuries;
-                Eras = baseSet.Eras;
 
                 TickOfSecond = baseSet.TickOfSecond;
                 TickOfMillisecond = baseSet.TickOfMillisecond;
@@ -261,8 +251,6 @@ namespace NodaTime.Fields
                 WeekYears = other.WeekYears.IsSupported ? other.WeekYears : WeekYears;
                 Months = other.Months.IsSupported ? other.Months : Months;
                 Years = other.Years.IsSupported ? other.Years : Years;
-                Centuries = other.Centuries.IsSupported ? other.Centuries : Centuries;
-                Eras = other.Eras.IsSupported ? other.Eras : Eras;
 
                 TickOfSecond = other.TickOfSecond.IsSupported ? other.TickOfSecond : TickOfSecond;
                 TickOfMillisecond = other.TickOfMillisecond.IsSupported ? other.TickOfMillisecond : TickOfMillisecond;
