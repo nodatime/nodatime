@@ -17,11 +17,6 @@ namespace NodaTime.Fields
         {
         }
 
-        internal override int GetValue(Duration duration)
-        {
-            return (int)duration.Ticks;
-        }
-
         internal override long GetInt64Value(Duration duration)
         {
             return duration.Ticks;

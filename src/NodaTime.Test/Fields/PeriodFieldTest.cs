@@ -47,20 +47,6 @@ namespace NodaTime.Test.Fields
         }
 
         [Test]
-        public void GetValueWithoutLocalInstant_UsesUnitTicks()
-        {
-            PeriodField field = new StubPeriodField();
-            Assert.AreEqual(9, field.GetValue(new Duration(1200L)));
-        }
-
-        [Test]
-        public void GetValueWithoutLocalInstant_ThrowsOnOverflow()
-        {
-            PeriodField field = new StubPeriodField();
-            Assert.Throws<OverflowException>(() => field.GetValue(new Duration(long.MaxValue)));
-        }
-
-        [Test]
         public void GetInt64ValueWithoutLocalInstant_UsesUnitTicks()
         {
             PeriodField field = new StubPeriodField();

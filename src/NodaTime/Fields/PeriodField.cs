@@ -67,16 +67,6 @@ namespace NodaTime.Fields
         internal long UnitTicks { get { return unitTicks; } }
 
         #region Extract field value from a duration
-        /// <summary>
-        /// Get the value of this field from the ticks, which is approximate
-        /// if this field has a variable length.
-        /// </summary>
-        /// <param name="duration">The duration to query, which may be negative</param>
-        /// <returns>The value of the field, in the units of the field, which may be negative</returns>
-        internal virtual int GetValue(Duration duration)
-        {
-            return (int)GetInt64Value(duration);
-        }
 
         /// <summary>
         /// Get the value of this field from the ticks, which is approximate

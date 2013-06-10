@@ -59,20 +59,6 @@ namespace NodaTime.Test.Fields
         }
 
         [Test]
-        public void GetValue()
-        {
-            Assert.AreEqual(0, sample.GetValue(new Duration(0L)));
-            Assert.AreEqual(12345678 / 90, sample.GetValue(new Duration(12345678L)));
-            Assert.AreEqual(-1234 / 90, sample.GetValue(new Duration(-1234L)));
-            Assert.AreEqual(int.MaxValue / 90, sample.GetValue(new Duration(int.MaxValue)));
-        }
-
-        public void GetValue_WithNonInt32Value_Overflows()
-        {
-            Assert.Throws<OverflowException>(() => sample.GetValue(new Duration(int.MaxValue + 1L)));
-        }
-
-        [Test]
         public void GetInt64Value()
         {
             Assert.AreEqual(0L, sample.GetInt64Value(new Duration(0L)));
