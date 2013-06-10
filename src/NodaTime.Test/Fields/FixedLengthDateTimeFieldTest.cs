@@ -123,17 +123,6 @@ namespace NodaTime.Test.Fields
         }
 
         [Test]
-        public void RoundHalfCeiling()
-        {
-            DateTimeField field = CreateMinuteOfHourField();
-            Assert.AreEqual(0L, field.RoundHalfCeiling(new LocalInstant(0L)).Ticks);
-            Assert.AreEqual(0L, field.RoundHalfCeiling(new LocalInstant(29L)).Ticks);
-            Assert.AreEqual(60L, field.RoundHalfCeiling(new LocalInstant(30L)).Ticks);
-            Assert.AreEqual(60L, field.RoundHalfCeiling(new LocalInstant(31L)).Ticks);
-            Assert.AreEqual(60L, field.RoundHalfCeiling(new LocalInstant(60L)).Ticks);
-        }
-
-        [Test]
         public void RoundHalfEven()
         {
             DateTimeField field = CreateMinuteOfHourField();
