@@ -17,8 +17,9 @@ using NodaTime.Utility;
 namespace NodaTime.TimeZones
 {
     /// <summary>
-    /// Provides an implementation of a <see cref="IDateTimeZoneSource" /> that loads data originating from the
-    /// <a href="http://www.iana.org/time-zones">TZDB (also known as IANA, Olson, or zoneinfo)</a> time zone database.
+    /// Provides an implementation of <see cref="IDateTimeZoneSource" /> that loads data originating from the
+    /// <a href="http://www.iana.org/time-zones">tz database</a> (also known as the IANA Time Zone database, or zoneinfo
+    /// or Olson database).
     /// </summary>
     /// <remarks>
     /// All calls to <see cref="ForId"/> for fixed-offset IDs advertised by the source (i.e. "UTC" and "UTC+/-Offset")
@@ -131,10 +132,18 @@ namespace NodaTime.TimeZones
         /// <summary>
         /// Creates an instance from a stream in the custom Noda Time format. The stream must be readable.
         /// </summary>
-        /// <remarks>The stream is not closed by this method, but will be read from
-        /// without rewinding. A successful call will read the stream to the end.</remarks>
+        /// <remarks>
+        /// <para>
+        /// The stream is not closed by this method, but will be read from
+        /// without rewinding. A successful call will read the stream to the end.
+        /// </para>
+        /// <para>
+        /// See the user guide for instructions on how to generate an updated time zone database file from a copy of the
+        /// (textual) tz database.
+        /// </para>
+        /// </remarks>
         /// <param name="stream">The stream containing time zone data</param>
-        /// <returns>A TZDB source with information from the given stream.</returns>
+        /// <returns>A <c>TzdbDateTimeZoneSource</c> providing information from the given stream.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="stream"/> is null.</exception>
         /// <exception cref="InvalidNodaDataException">The stream contains invalid time zone data, or data which cannot
         /// be read by this version of Noda Time.</exception>
@@ -160,40 +169,38 @@ namespace NodaTime.TimeZones
             zoneLocations = originalZoneLocations == null ? null : new ReadOnlyCollection<TzdbZoneLocation>(originalZoneLocations);
         }
 
-        /// <summary>
-        /// Returns the time zone definition associated with the given id.
-        /// </summary>
-        /// <param name="id">The id of the time zone to return.</param>
-        /// <returns>
-        /// The <see cref="DateTimeZone"/> or null if there is no time zone with the given id.
-        /// </returns>
+        /// <inheritdoc />
         public DateTimeZone ForId(string id)
         {
             string canonicalId;
-            if (!timeZoneIdMap.TryGetValue(id, out canonicalId))
+            if (!timeZoneIdMap.TryGetValue(Preconditions.CheckNotNull(id, "id"), out canonicalId))
             {
                 throw new ArgumentException("Time zone with ID " + id + " not found in source " + version, "id");
             }
             return source.CreateZone(id, canonicalId);
         }
 
-        /// <summary>
-        /// Returns a sequence of the available IDs from this source.
-        /// </summary>
+        /// <inheritdoc />
         [DebuggerStepThrough]
         public IEnumerable<string> GetIds()
         {
             return timeZoneIdMap.Keys;
         }
 
-        /// <summary>
-        /// Returns a version identifier for this source.
-        /// </summary>
+        /// <inheritdoc />
+        /// <remarks>
+        /// <para>
+        /// This source returns a string such as "TZDB: 2013b (mapping: 8274)" corresponding to the versions of the tz
+        /// database and the CLDR Windows zones mapping file.
+        /// </para>
+        /// <para>
+        /// Note that there is no need to parse this string to extract any of the above information, as it is available
+        /// directly from the <see cref="TzdbVersion"/> and <see cref="WindowsZones.Version"/> properties.
+        /// </para>
+        /// </remarks>
         public string VersionId { get { return "TZDB: " + version; } }
 
-        /// <summary>
-        /// Attempts to map the system time zone to a zoneinfo ID, and return that ID.
-        /// </summary>
+        /// <inheritdoc />
         public string MapTimeZoneId(TimeZoneInfo zone)
         {
 #if PCL
@@ -214,7 +221,7 @@ namespace NodaTime.TimeZones
         }
 
         /// <summary>
-        /// Returns a lookup from canonical ID (e.g. "Europe/London") to a group of aliases
+        /// Returns a lookup from canonical time zone ID (e.g. "Europe/London") to a group of aliases for that time zone
         /// (e.g. {"Europe/Belfast", "Europe/Guernsey", "Europe/Jersey", "Europe/Isle_of_Man", "GB", "GB-Eire"}).
         /// </summary>
         /// <remarks>
@@ -274,7 +281,7 @@ namespace NodaTime.TimeZones
 
         /// <summary>
         /// Gets the Windows time zone mapping information provided in the CLDR
-        /// supplemental windowsZones.xml file.
+        /// supplemental "windowsZones.xml" file.
         /// </summary>
         public WindowsZones WindowsMapping { get { return source.WindowsMapping; } }
 
@@ -283,11 +290,12 @@ namespace NodaTime.TimeZones
         /// </summary>
         /// <remarks>
         /// Source data is not validated automatically when it's loaded, but any source
-        /// loaded from data produced by NodaTime.TzdbCompiler (including the data shipped with Noda Time)
-        /// will already have been validated when it was originally produced. This method should
-        /// only normally be used if you have data from a source you're unsure of.
+        /// loaded from data produced by <c>NodaTime.TzdbCompiler</c> (including the data shipped with Noda Time)
+        /// will already have been validated via this method when it was originally produced. This method should
+        /// only normally be called explicitly if you have data from a source you're unsure of.
         /// </remarks>
-        /// <exception cref="InvalidNodaDataException">The source is invalid.</exception>
+        /// <exception cref="InvalidNodaDataException">The source data is invalid. The source may not function
+        /// correctly.</exception>
         public void Validate()
         {
             // Check that each entry has a canonical value. (Every mapping x to y

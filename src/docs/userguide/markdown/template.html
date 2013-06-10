@@ -4,10 +4,24 @@
     <link href="prettify.css" type="text/css" rel="stylesheet" />
     <link href="styles.css" type="text/css" rel="stylesheet" />
     <script type="text/javascript" src="prettify.js"></script>
-    <title>%TITLE%</title>
+    <title>%HTML_TITLE%</title>
   </head>
   <body onload="prettyPrint()">
+    <div class="header navigation">
+      <p class="prev">%PREV_ANCHOR%&nbsp;</p>
+      <p class="next">&nbsp;%NEXT_ANCHOR%</p>
+      <p class="navtitle">%PROJECT_TITLE%</p>
+      <div style="clear:both;"></div>
+    </div>
+
     <h1>%TITLE%</h1>
     %BODY%
+
+    <div class="footer navigation">
+      <p class="prev">%PREV_ANCHOR%&nbsp;</p>
+      <p class="next">&nbsp;%NEXT_ANCHOR%</p>
+      <p class="navtitle">%FOOTER%</p>
+      <div style="clear:both;"></div>
+    </div>
   </body>
 </html>

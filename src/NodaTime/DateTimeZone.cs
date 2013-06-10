@@ -47,11 +47,12 @@ namespace NodaTime
     /// </para>
     /// <para>
     /// Noda Time has two built-in sources of time zone data available: a copy of the
-    /// <see href="http://www.iana.org/time-zones">"zoneinfo"</see> (aka tz or Olson) database, and the ability to convert .NET's own
-    /// <see cref="TimeZoneInfo"/> format into a "native" Noda Time zone. Which of these is most appropriate for you to use
-    /// will very much depend on your exact needs. The zoneinfo database is widely used outside Windows, and has more historical data
-    /// than the Windows-provided information, but if you need to interoperate with other Windows systems by specifying time zone IDs,
-    /// you may wish to stick to the Windows time zones.
+    /// <a href="http://www.iana.org/time-zones">tz database</a> (also known as the IANA Time Zone database, or zoneinfo
+    /// or Olson database), and the ability to convert .NET's own <see cref="TimeZoneInfo"/> format into a "native" Noda
+    /// Time zone. Which of these is most appropriate for you to use will very much depend on your exact needs. The
+    /// zoneinfo database is widely used outside Windows, and has more historical data than the Windows-provided
+    /// information, but if you need to interoperate with other Windows systems by specifying time zone IDs, you may
+    /// wish to stick to the Windows time zones.
     /// </para>
     /// <para>
     /// To obtain a <see cref="DateTimeZone"/> for a given timezone ID, use one of the methods on
@@ -321,7 +322,7 @@ namespace NodaTime
         /// your use case.
         /// </para>
         /// <para>
-        /// An an alternative, consider <see cref="ResolveLocal"/>, which uses a caller-provided strategy to
+        /// As an alternative, consider <see cref="ResolveLocal"/>, which uses a caller-provided strategy to
         /// convert the <see cref="ZoneLocalMapping"/> returned here to a <see cref="ZonedDateTime"/>.
         /// </para>
         /// </remarks>

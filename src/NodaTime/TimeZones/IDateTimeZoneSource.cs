@@ -18,7 +18,7 @@ namespace NodaTime.TimeZones
     /// </para>
     /// <para>
     /// Implementations need not cache time zones or the available time zone IDs. 
-    /// Caching is provided by <see cref="DateTimeZoneCache"/>, which most consumers should use instead of 
+    /// Caching is typically provided by <see cref="DateTimeZoneCache"/>, which most consumers should use instead of
     /// consuming <see cref="IDateTimeZoneSource"/> directly in order to get better performance.
     /// </para>
     /// <para>
@@ -34,11 +34,14 @@ namespace NodaTime.TimeZones
     public interface IDateTimeZoneSource
     {
         /// <summary>
-        /// Returns an unordered enumeration of the available ids from this source.
+        /// Returns an unordered enumeration of the IDs available from this source.
         /// </summary>
         /// <remarks>
         /// <para>
         /// Every value in this enumeration must return a valid time zone from <see cref="ForId"/> for the life of the source.
+        /// The enumeration may be empty, but must not be null, and must not contain any elements which are null.  It
+        /// should not contain duplicates: this is not enforced, and while it may not have a significant impact on
+        /// clients in some cases, it is generally unfriendly.  The built-in implementations never return duplicates.
         /// </para>
         /// <para>
         /// The source is not required to provide the IDs in any particular order, although they should be distinct.
@@ -48,28 +51,21 @@ namespace NodaTime.TimeZones
         /// "UTC+/-Offset"), but there is no requirement they be included.
         /// </para>
         /// </remarks>
-        /// <returns>The <see cref="IEnumerable{T}"/> of ids. It may be empty, but must not be null, 
-        /// and must not contain any elements which are null. It should not contain duplicates: this is not
-        /// enforced, and may not have a significant impact on clients in some cases, but is generally unfriendly.
-        /// The built-in implementations never return duplicates.</returns>
+        /// <returns>The IDs available from this source.</returns>
         IEnumerable<string> GetIds();
 
         /// <summary>
         /// Returns an appropriate version ID for diagnostic purposes, which must not be null.
         /// This doesn't have any specific format; it's solely for diagnostic purposes.
-        /// For example, the default source returns a string such as
-        /// "TZDB: 2011n" indicating where the information comes from and which version of that information
-        /// it's loaded.
+        /// The included sources return strings of the format "source identifier: source version" indicating where the
+        /// information comes from and which version of the source information has been loaded.
         /// </summary>
         string VersionId { get; }
 
         /// <summary>
-        /// Returns the time zone definition associated with the given id.
+        /// Returns the time zone definition associated with the given ID.
         /// </summary>
         /// <remarks>
-        /// <para>
-        /// The source should not attempt to cache time zones; caching is provided by <see cref="DateTimeZoneCache"/>.
-        /// </para>
         /// <para>
         /// Note that this is permitted to return a <see cref="DateTimeZone"/> that has a different ID to that
         /// requested, if the ID provided is an alias.
@@ -81,8 +77,12 @@ namespace NodaTime.TimeZones
         /// <para>
         /// It is advised that sources should document their behaviour regarding any fixed-offset timezones
         /// (i.e. "UTC" and "UTC+/-Offset") that are included in the list returned by <see cref="GetIds"/>.
-        /// (These IDs will not be requested by <see cref="DateTimeZoneCache"/> anyway, but any users calling
+        /// (These IDs will not be requested by <see cref="DateTimeZoneCache"/>, but any users calling
         /// into the source directly may care.)
+        /// </para>
+        /// <para>
+        /// The source need not attempt to cache time zones; caching is typically provided by
+        /// <see cref="DateTimeZoneCache"/>.
         /// </para>
         /// </remarks>
         /// <param name="id">The ID of the time zone to return. This must be one of the IDs
@@ -95,6 +95,7 @@ namespace NodaTime.TimeZones
         /// <summary>
         /// Returns this source's corresponding ID for the given BCL time zone.
         /// </summary>
+        /// <param name="timeZone">The BCL time zone, which must be a known system time zone.</param>
         /// <returns>
         /// The ID for the given system time zone for this source, or null if the system time
         /// zone has no mapping in this source.

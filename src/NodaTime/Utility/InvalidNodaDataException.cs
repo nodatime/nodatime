@@ -21,7 +21,7 @@ namespace NodaTime.Utility
 #if !PCL
     [Serializable]
 #endif
-    public class InvalidNodaDataException : Exception
+    public sealed class InvalidNodaDataException : Exception
     {
         /// <summary>
         /// Creates an instance with the given message.

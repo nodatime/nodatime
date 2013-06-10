@@ -14,9 +14,13 @@ using NodaTime.Utility;
 
 namespace NodaTime
 {
+    // Note: documentation that refers to the LocalDateTime type within this class must use the fully-qualified
+    // reference to avoid being resolved to the LocalDateTime property instead.
+
     /// <summary>
-    /// A <see cref="LocalDateTime"/> in a specific time zone and with a particular offset to distinguish between otherwise-ambiguous
-    /// instants. A <see cref="ZonedDateTime"/> is global, in that it maps to a single <see cref="Instant"/>.
+    /// A <see cref="T:NodaTime.LocalDateTime" /> in a specific time zone and with a particular offset to distinguish
+    /// between otherwise-ambiguous instants. A <see cref="ZonedDateTime"/> is global, in that it maps to a single
+    /// <see cref="Instant"/>.
     /// </summary>
     /// <remarks>
     /// <para>Although <see cref="ZonedDateTime" /> includes both local and global concepts, it only supports
@@ -36,9 +40,6 @@ namespace NodaTime
     /// It's unclear at the time of this writing whether this is the most appropriate approach, and it may change in future versions. In general,
     /// it would be a good idea for users to avoid comparing dates in different calendar systems, and indeed most users are unlikely to ever explicitly
     /// consider which calendar system they're working in anyway.
-    /// </para>
-    /// <para>
-    /// Currently there is no real text handling support for this type.
     /// </para>
     /// </remarks>
     /// <threadsafety>This type is an immutable value type. See the thread safety section of the user guide for more information.</threadsafety>
@@ -123,9 +124,10 @@ namespace NodaTime
         internal LocalInstant LocalInstant { get { return localDateTime.LocalInstant; } }
 
         /// <summary>
-        /// Gets the local date and time represented by this zoned date and time. The returned <see cref="LocalDateTime"/>
-        /// will have the same calendar system and return the same values for each of the calendar properties
-        /// (Year, MonthOfYear and so on), but will not be associated with any particular time zone.
+        /// Gets the local date and time represented by this zoned date and time. The returned
+        /// <see cref="T:NodaTime.LocalDateTime"/> will have the same calendar system and return the same values for
+        /// each of the calendar properties (Year, MonthOfYear and so on), but will not be associated with any
+        /// particular time zone.
         /// </summary>
         public LocalDateTime LocalDateTime { get { return localDateTime; } }
 
@@ -258,9 +260,9 @@ namespace NodaTime
         /// </summary>
         /// <remarks>
         /// This is always an unambiguous conversion. Any difficulties due to daylight saving
-        /// transitions or other changes in time zone are handled when converting from a <see cref="LocalDateTime"/>
-        /// to a <see cref="ZonedDateTime"/>; the <c>ZonedDateTime</c> remembers the actual offset from UTC to local time,
-        /// so it always knows the exact instant represented.
+        /// transitions or other changes in time zone are handled when converting from a
+        /// <see cref="T:NodaTime.LocalDateTime" /> to a <see cref="ZonedDateTime"/>; the <c>ZonedDateTime</c> remembers
+        /// the actual offset from UTC to local time, so it always knows the exact instant represented.
         /// </remarks>
         /// <returns>The instant corresponding to this value.</returns>
         public Instant ToInstant()

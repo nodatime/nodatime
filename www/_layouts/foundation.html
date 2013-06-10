@@ -1,0 +1,129 @@
+{% assign parts     = site.userguide | split: '/' %}
+{% capture lvl %}{{ page.url | append:'index.html' | split:'/' | size }}{% endcapture %}
+{% capture relative %}{% for i in (3..lvl) %}../{% endfor %}{% endcapture %}
+<!DOCTYPE html>
+<!--[if IE 8]> 				 <html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width" />
+	<title>{{ page.title }}</title>
+  
+	<!-- foundation default -->
+  	<link rel="stylesheet" href="{{relative}}css/foundation.css" />
+
+    <!-- syntax highlighting CSS -->
+    <link rel="stylesheet" href="{{relative}}css/syntax.css">
+
+    <!-- Foundicons -->
+    <link rel="stylesheet" href="{{relative}}css/general_enclosed_foundicons.css">
+
+    <!-- Prettify -->
+    <script src="{{relative}}js/prettify/run_prettify.js"></script>
+
+	<script src="{{relative}}js/vendor/custom.modernizr.js"></script>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{relative}}css/main.css">
+</head>
+<body>
+
+	<div class="fixed">
+		<nav class="top-bar">
+			<ul class="title-area">
+				<li class="name"><h1><a href="{{ relative }}">Noda Time</a></h1></li>
+				<!-- Remove the class "menu-icon" to get rid of menu icon. Take out "Menu" to just have icon alone -->
+    			<li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
+			</ul>
+
+			<section class="top-bar-section">
+				<!-- Right Nav Section -->
+			    <ul class="right">
+                  <!-- Disable the API link for the moment...
+			      <li class="divider hide-for-small"></li>
+			      <li><a href="{{relative}}api" {% if page.navigation == "api" %}class="active"{% endif %}>API</a></li>
+                  -->
+			      <li class="divider hide-for-small"></li>
+			      <li><a href="{{relative}}developer" {% if page.navigation == "developer" %}class="active"{% endif %}>Developer Guide</a></li>
+			      <li class="divider hide-for-small"></li>
+			      <li><a href="{{relative}}{{site.userguide}}" {% if page.navigation == "userguide" %}class="active"{% endif %}>User Guide</a></li>
+			      <li class="divider hide-for-small"></li>
+			      <li><a href="{{relative}}#info">More Info</a></li>
+			      <li class="divider show-for-small"></li>
+			      <li class="has-form">
+			        <a class="button" href="{{relative}}#install">Install</a>
+			      </li>
+			    </ul>
+			</section>
+
+		</nav>
+	</div>
+
+
+	<section class="body">
+	{{ content }}
+	</section>
+
+	<footer>
+		<div class="row">
+			<div class="small-6 columns">
+				<span>The latest version is {{ parts[1] }}, released April 6th 2013</span>
+			</div>
+			<div class="small-6 columns copy">
+				&copy; Jon Skeet and Contributors
+			</div>
+		</div>
+		<div class="row">
+			<div class="small-6 columns">
+				<span>Released April 6th 2013</span>
+			</div>
+			<div class="small-6 columns copy">
+				Design by <a href="http://nathanpalmer.com">Nathan Palmer</a>
+			</div>
+		</div>
+	</footer>
+	
+	<script>
+	document.write('<script src=' +
+	('__proto__' in {} ? '{{relative}}js/vendor/zepto' : '{{relative}}js/vendor/jquery') +
+	'.js><\/script>')
+	</script>
+  
+  	<script src="{{relative}}js/foundation.min.js"></script>
+  	{% for script in page.scripts %}
+  	<script src="{{script}}"></script>
+  	{% endfor %}
+
+  <!--
+  <script src="js/foundation/foundation.js"></script>  
+  <script src="js/foundation/foundation.alerts.js"></script>
+  <script src="js/foundation/foundation.clearing.js"></script>  
+  <script src="js/foundation/foundation.cookie.js"></script>
+  <script src="js/foundation/foundation.dropdown.js"></script>
+  <script src="js/foundation/foundation.forms.js"></script>
+  <script src="js/foundation/foundation.joyride.js"></script>
+  <script src="js/foundation/foundation.magellan.js"></script>
+  <script src="js/foundation/foundation.orbit.js"></script>
+  <script src="js/foundation/foundation.placeholder.js"></script>
+  <script src="js/foundation/foundation.reveal.js"></script>
+  <script src="js/foundation/foundation.section.js"></script>
+  <script src="js/foundation/foundation.tooltips.js"></script>
+  <script src="js/foundation/foundation.topbar.js"></script>
+  <script src="js/foundation/foundation.interchange.js"></script>
+  -->
+  
+  <script>
+    $(document).foundation();
+  </script>
+
+  <!-- Nuget Button -->
+  <script type="text/javascript">
+  (function () {
+      var nb = document.createElement('script'); nb.type = 'text/javascript'; nb.async = true;
+      nb.src = 'http://s.prabir.me/nuget-button/0.2.1/nuget-button.min.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(nb, s);
+  })();
+  </script>
+</body>
+</html>

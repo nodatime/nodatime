@@ -4,15 +4,25 @@
     <link href="prettify.css" type="text/css" rel="stylesheet" />
     <link href="styles.css" type="text/css" rel="stylesheet" />
     <script type="text/javascript" src="prettify.js"></script>
-    <title>Updating the time zone database in Noda Time</title>
+    <title>Updating the time zone database - Noda Time User Guide</title>
   </head>
   <body onload="prettyPrint()">
-    <h1>Updating the time zone database in Noda Time</h1>
-    <p>Noda Time comes with a version of the <a href="http://www.iana.org/time-zones">tzdb</a> (aka zoneinfo) database, which is
-now hosted by IANA. This database changes over time, as countries decide to change their time zone rules.
-As new versions of Noda Time are released, the version of tzdb will be updated. However, you may wish to use
-a new version of tzdb <em>without</em> changing which version of Noda Time you're using. This documentation tells you how
-to do so.</p>
+    <div class="header navigation">
+      <p class="prev"><a href="threading.html">Threading</a>&nbsp;</p>
+      <p class="next">&nbsp;<a href="mono.html">Mono support</a></p>
+      <p class="navtitle">Noda Time User Guide</p>
+      <div style="clear:both;"></div>
+    </div>
+
+    <h1>Updating the time zone database</h1>
+    <p>Noda Time comes with a version of the
+<a href="http://www.iana.org/time-zones">tz database</a> (also known as the IANA Time Zone
+database, or zoneinfo or Olson database), which is now hosted by IANA. This
+database changes over time, as countries decide to change their time zone
+rules.  As new versions of Noda Time are released, the version of tzdb will be
+updated. However, you may wish to use a new version of tzdb <em>without</em> changing
+which version of Noda Time you're using. This documentation tells you how to do
+so.</p>
 
 <p>Noda Time's main library doesn't read tzdb text files directly - it uses a binary form which is the output of <code>NodaTime.TzdbCompiler</code> - another
 part of the Noda Time project. This saves both space (the 2012j version takes about 110K when compiled, or about 690K in text form) and
@@ -162,5 +172,12 @@ resource set and then ask for a time zone which hasn't yet been loaded. If you w
 I'd recommend loading the contents of the file into a <code>MemoryStream</code> and passing <em>that</em> to the <code>ResourceSet</code> constructor. Otherwise, in
 most cases it probably isn't a big deal to have the handle to the resource file open throughout the lifetime of the application.</p>
 
+
+    <div class="footer navigation">
+      <p class="prev"><a href="threading.html">Threading</a>&nbsp;</p>
+      <p class="next">&nbsp;<a href="mono.html">Mono support</a></p>
+      <p class="navtitle">Version 1.2.0-dev</p>
+      <div style="clear:both;"></div>
+    </div>
   </body>
 </html>

@@ -1,4 +1,4 @@
-Building and Testing
+Building and testing
 
 ## Visual Studio (Windows)
 
@@ -18,7 +18,7 @@ version or versions as defined by your needs.
 [dotnetsdk]: http://msdn.microsoft.com/en-us/netframework/aa569263.aspx
 
 To fetch the source code from the main Google Code repository, you'll need a
-[Mercurial][] client. A good alternative for Microsoft Windows uses is
+[Mercurial][] client. A good alternative for Microsoft Windows users is
 [TortoiseHg][] which installs shell extensions so that Mercurial can be used
 from the Windows Explorer.
 

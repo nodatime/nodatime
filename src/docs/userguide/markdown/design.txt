@@ -1,4 +1,4 @@
-Design philosophy and conventions in Noda Time
+Design philosophy and conventions
 
 (I should note that the "we" below is mostly the royal "we",
 expressed by the author, Jon Skeet. Hopefully most of the

@@ -10,12 +10,17 @@ using System.Linq;
 namespace NodaTime.TimeZones
 {
     /// <summary>
-    /// An <see cref="IDateTimeZoneSource" /> implementation which uses <see cref="TimeZoneInfo"/> from
-    /// .NET 3.5 and later.
+    /// Provides an implementation of <see cref="IDateTimeZoneSource" /> that loads data from the BCL
+    /// <see cref="TimeZoneInfo"/> class.
     /// </summary>
     /// <remarks>
+    /// <para>
     /// All calls to <see cref="ForId"/> return instances of <see cref="BclDateTimeZone"/>, including for fixed-offset IDs
     /// (i.e. "UTC" and "UTC+/-Offset").
+    /// </para>
+    /// <para>
+    /// This class is not available in the PCL version.
+    /// </para>
     /// </remarks>
     /// <threadsafety>This type maintains no state, and all members are thread-safe. See the thread safety section of the user guide for more information.</threadsafety>
     public sealed class BclDateTimeZoneSource : IDateTimeZoneSource
@@ -23,15 +28,17 @@ namespace NodaTime.TimeZones
         /// <summary>
         /// Returns the IDs of all system time zones.
         /// </summary>
+        /// <returns>The IDs available from this source.</returns>
         public IEnumerable<string> GetIds()
         {
             return TimeZoneInfo.GetSystemTimeZones().Select(zone => zone.Id);
         }
 
-        /// <summary>
-        /// Returns version information corresponding to the version of the assembly
+        /// <inheritdoc />
+        /// <remarks>
+        /// This source returns a string such as "TimeZoneInfo: 3.5.0.0" corresponding to the version of the assembly
         /// containing <see cref="TimeZoneInfo"/>.
-        /// </summary>
+        /// </remarks>
         public string VersionId
         {
             get { return "TimeZoneInfo: " + typeof(TimeZoneInfo).Assembly.GetName().Version; }
@@ -58,7 +65,7 @@ namespace NodaTime.TimeZones
         /// </summary>
         /// <param name="id">The ID of the system time zone to convert</param>
         /// <exception cref="ArgumentException">The given zone doesn't exist.</exception>
-        /// <returns>The Noda Time representation of the given Windows system time zone</returns>
+        /// <returns>The Noda Time representation of the given BCL time zone</returns>
         public BclDateTimeZone ForId(string id)
         {
             try
@@ -75,6 +82,11 @@ namespace NodaTime.TimeZones
         /// <summary>
         /// Maps the BCL ID to "our" ID as an identity projection.
         /// </summary>
+        /// <param name="timeZone">The BCL time zone, which must be a known system time zone.</param>
+        /// <returns>
+        /// The ID for the given BCL time zone for this source; that is, the value of the <c>Id</c> property of the
+        /// passed-in <see cref="TimeZoneInfo"/>.
+        /// </returns>
         public string MapTimeZoneId(TimeZoneInfo timeZone)
         {
             return timeZone.Id;

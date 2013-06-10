@@ -73,11 +73,12 @@
                 with complete information about whether the given local time occurs zero times, once or twice. This is the most
                 fine-grained approach, which is the fiddliest to use but puts the caller in the most control.</li></ul></p><p>
             Noda Time has two built-in sources of time zone data available: a copy of the
-            <a href="http://www.iana.org/time-zones" target="_blank">"zoneinfo"</a> (aka tz or Olson) database, and the ability to convert .NET's own
-            <a href="http://msdn2.microsoft.com/en-us/library/bb396389" target="_blank">TimeZoneInfo</a> format into a "native" Noda Time zone. Which of these is most appropriate for you to use
-            will very much depend on your exact needs. The zoneinfo database is widely used outside Windows, and has more historical data
-            than the Windows-provided information, but if you need to interoperate with other Windows systems by specifying time zone IDs,
-            you may wish to stick to the Windows time zones.
+            <a href="http://www.iana.org/time-zones">tz database</a> (also known as the IANA Time Zone database, or zoneinfo
+            or Olson database), and the ability to convert .NET's own <a href="http://msdn2.microsoft.com/en-us/library/bb396389" target="_blank">TimeZoneInfo</a> format into a "native" Noda
+            Time zone. Which of these is most appropriate for you to use will very much depend on your exact needs. The
+            zoneinfo database is widely used outside Windows, and has more historical data than the Windows-provided
+            information, but if you need to interoperate with other Windows systems by specifying time zone IDs, you may
+            wish to stick to the Windows time zones.
             </p><p>
             To obtain a <span class="selflink">DateTimeZone</span> for a given timezone ID, use one of the methods on
             <a href="T_NodaTime_IDateTimeZoneProvider.htm">IDateTimeZoneProvider</a> (and see <a href="T_NodaTime_DateTimeZoneProviders.htm">DateTimeZoneProviders</a> for access to the built-in

@@ -12,6 +12,11 @@ namespace NodaTime.TimeZones
     /// <summary>
     /// Representation of a time zone converted from a <see cref="TimeZoneInfo"/> from the Base Class Library.
     /// </summary>
+    /// <remarks>
+    /// Note that although this class implements <see cref="IEquatable{DateTimeZone}"/> by virtue of extending
+    /// <see cref="DateTimeZone"/>, the implementation here will always throw <c>NotImplementedException</c> when asked
+    /// to compare two different <c>BclDateTimeZone</c> instances.
+    /// </remarks>
     /// <threadsafety>This type is immutable reference type. See the thread safety section of the user guide for more information.</threadsafety>
     public sealed class BclDateTimeZone : DateTimeZone
     {
@@ -58,7 +63,7 @@ namespace NodaTime.TimeZones
         /// Creates a new <see cref="BclDateTimeZone" /> from a <see cref="TimeZoneInfo"/> from the Base Class Library.
         /// </summary>
         /// <param name="bclZone">The original time zone to take information from.</param>
-        /// <returns>A Noda Time representation of the given time zone.</returns>
+        /// <returns>A <see cref="BclDateTimeZone"/> wrapping the given <c>TimeZoneInfo</c>.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="bclZone"/> is null.</exception>
         public static BclDateTimeZone FromTimeZoneInfo(TimeZoneInfo bclZone)
         {
@@ -362,15 +367,21 @@ namespace NodaTime.TimeZones
 
         /// <summary>
         /// Returns a time zone converted from the BCL representation of the system local time zone.
-        /// If this method is called more than once, it may return the same reference multiple times if
-        /// the local time zone has not changed.
         /// </summary>
         /// <remarks>
-        /// When the source of a <see cref="DateTimeZoneCache"/> is set to an instance of <see cref="BclDateTimeZoneSource"/> it
-        /// is highly likely that <see cref="DateTimeZoneCache.GetSystemDefault"/> will succeed - but in
-        /// rare cases (such as the set of system time zones changing after the source is installed, or the local zone
-        /// not being a normal "system" one) it is possible that it wouldn't be mapped. By contrast, this method will
-        /// always succeed.
+        /// <para>
+        /// This method is approximately equivalent to calling <see cref="IDateTimeZoneProvider.GetSystemDefault"/> with
+        /// an implementation that wraps <see cref="BclDateTimeZoneSource"/> (e.g.
+        /// <see cref="DateTimeZoneProviders.Bcl"/>), with the exception that it will succeed even if the current local
+        /// time zone was not one of the set of system time zones captured when the source was created (which, while
+        /// highly unlikely, might occur either because the local time zone is not a system time zone, or because the
+        /// system time zones have themselves changed).
+        /// </para>
+        /// <para>
+        /// This method will retain a reference to the returned <c>BclDateTimeZone</c>, and will attempt to return it if
+        /// called repeatedly (assuming that the local time zone has not changed) rather than creating a new instance,
+        /// though this behaviour is not guaranteed.
+        /// </para>
         /// </remarks>
         /// <returns>A <see cref="BclDateTimeZone"/> wrapping the "local" (system) time zone as returned by
         /// <see cref="TimeZoneInfo.Local"/>.</returns>
@@ -390,6 +401,10 @@ namespace NodaTime.TimeZones
         }
 
         /// <inheritdoc />
+        /// <remarks>
+        /// This implementation always throws <c>NotImplementedException</c>.
+        /// </remarks>
+        /// <exception cref="NotImplementedException">Always.</exception>
         protected override bool EqualsImpl(DateTimeZone zone)
         {
             throw new NotImplementedException();
