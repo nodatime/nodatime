@@ -161,17 +161,6 @@ namespace NodaTime.Test.Fields
         }
 
         [Test]
-        public void RoundHalfCeiling_DelegatesToWrappedField()
-        {
-            OffsetDateTimeField field = GetSampleField();
-            Assert.AreEqual(0, field.RoundHalfCeiling(new LocalInstant(0)).Ticks);
-            Assert.AreEqual(0, field.RoundHalfCeiling(new LocalInstant(499 * NodaConstants.TicksPerMillisecond)).Ticks);
-            Assert.AreEqual(1 * NodaConstants.TicksPerSecond, field.RoundHalfCeiling(new LocalInstant(500 * NodaConstants.TicksPerMillisecond)).Ticks);
-            Assert.AreEqual(1 * NodaConstants.TicksPerSecond, field.RoundHalfCeiling(new LocalInstant(501 * NodaConstants.TicksPerMillisecond)).Ticks);
-            Assert.AreEqual(1 * NodaConstants.TicksPerSecond, field.RoundHalfCeiling(new LocalInstant(1000 * NodaConstants.TicksPerMillisecond)).Ticks);
-        }
-
-        [Test]
         public void RoundHalfEven_DelegatesToWrappedField()
         {
             OffsetDateTimeField field = GetSampleField();

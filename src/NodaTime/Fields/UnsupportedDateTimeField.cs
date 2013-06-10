@@ -95,11 +95,6 @@ namespace NodaTime.Fields
             throw new NotSupportedException();
         }
 
-        internal override LocalInstant RoundHalfCeiling(LocalInstant localInstant)
-        {
-            throw new NotSupportedException();
-        }
-
         internal override LocalInstant RoundHalfEven(LocalInstant localInstant)
         {
             throw new NotSupportedException();

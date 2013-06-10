@@ -23,7 +23,6 @@ namespace NodaTime.Test.Fields
             AssertUnsupported(x => x.GetValue(when));
             AssertUnsupported(x => x.RoundCeiling(when));
             AssertUnsupported(x => x.RoundFloor(when));
-            AssertUnsupported(x => x.RoundHalfCeiling(when));
             AssertUnsupported(x => x.RoundHalfEven(when));
             AssertUnsupported(x => x.RoundHalfFloor(when));
             AssertUnsupported(x => x.SetValue(when, 0L));

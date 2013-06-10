@@ -75,12 +75,6 @@ namespace NodaTime.Fields
             return RoundFloor(localInstant);
         }
 
-        internal override LocalInstant RoundHalfCeiling(LocalInstant localInstant)
-        {
-            // In reality, the era is infinite, so there is no halfway point.
-            return RoundFloor(localInstant);
-        }
-
         internal override LocalInstant RoundHalfEven(LocalInstant localInstant)
         {
             // In reality, the era is infinite, so there is no halfway point.

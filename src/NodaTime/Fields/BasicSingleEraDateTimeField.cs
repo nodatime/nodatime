@@ -50,11 +50,6 @@ namespace NodaTime.Fields
             return LocalInstant.MinValue;
         }
 
-        internal override LocalInstant RoundHalfCeiling(LocalInstant localInstant)
-        {
-            return LocalInstant.MinValue;
-        }
-
         internal override LocalInstant RoundHalfEven(LocalInstant localInstant)
         {
             return LocalInstant.MinValue;
