@@ -57,10 +57,5 @@ namespace NodaTime.Fields
         {
             return WrappedField.RoundHalfFloor(localInstant);
         }
-
-        internal override LocalInstant RoundHalfEven(LocalInstant localInstant)
-        {
-            return WrappedField.RoundHalfEven(localInstant);
-        }
     }
 }
