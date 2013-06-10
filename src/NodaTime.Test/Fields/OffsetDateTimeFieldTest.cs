@@ -160,20 +160,6 @@ namespace NodaTime.Test.Fields
             Assert.AreEqual(1 * NodaConstants.TicksPerSecond, field.RoundHalfFloor(new LocalInstant(1000 * NodaConstants.TicksPerMillisecond)).Ticks);
         }
 
-        [Test]
-        public void RoundHalfEven_DelegatesToWrappedField()
-        {
-            OffsetDateTimeField field = GetSampleField();
-            Assert.AreEqual(0, field.RoundHalfEven(new LocalInstant(0)).Ticks);
-            Assert.AreEqual(0, field.RoundHalfEven(new LocalInstant(499 * NodaConstants.TicksPerMillisecond)).Ticks);
-            Assert.AreEqual(0, field.RoundHalfEven(new LocalInstant(500 * NodaConstants.TicksPerMillisecond)).Ticks);
-            Assert.AreEqual(1 * NodaConstants.TicksPerSecond, field.RoundHalfEven(new LocalInstant(501 * NodaConstants.TicksPerMillisecond)).Ticks);
-            Assert.AreEqual(1 * NodaConstants.TicksPerSecond, field.RoundHalfEven(new LocalInstant(1000 * NodaConstants.TicksPerMillisecond)).Ticks);
-            Assert.AreEqual(1 * NodaConstants.TicksPerSecond, field.RoundHalfEven(new LocalInstant(1499 * NodaConstants.TicksPerMillisecond)).Ticks);
-            Assert.AreEqual(2 * NodaConstants.TicksPerSecond, field.RoundHalfEven(new LocalInstant(1500 * NodaConstants.TicksPerMillisecond)).Ticks);
-            Assert.AreEqual(2 * NodaConstants.TicksPerSecond, field.RoundHalfEven(new LocalInstant(1501 * NodaConstants.TicksPerMillisecond)).Ticks);
-        }
-
         /// <summary>
         /// Helper method to avoid having to repeat all of this every time
         /// </summary>
