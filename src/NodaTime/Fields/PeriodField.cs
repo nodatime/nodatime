@@ -67,22 +67,6 @@ namespace NodaTime.Fields
         internal long UnitTicks { get { return unitTicks; } }
 
         #region Extract field value from a duration
-        /// <summary>
-        /// Get the value of this field from the duration relative to an
-        /// instant. For fixed length fields this method produces the same result as for
-        /// the single argument get method.
-        /// <para>
-        /// If the duration is positive, then the instant is treated as a "start instant". 
-        /// If negative, the instant is treated as an "end instant".
-        /// </para>
-        /// </summary>
-        /// <param name="duration">The duration to query, which may be negative</param>
-        /// <param name="localInstant">The start instant to calculate relative to</param>
-        /// <returns>The value of the field, in the units of the field, which may be negative</returns>
-        internal virtual int GetValue(Duration duration, LocalInstant localInstant)
-        {
-            return (int)GetInt64Value(duration, localInstant);
-        }
 
         /// <summary>
         /// Get the value of this field from the duration relative to an

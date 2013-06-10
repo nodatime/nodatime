@@ -44,22 +44,6 @@ namespace NodaTime.Test.Fields
         }
 
         [Test]
-        public void GetValue_WithLocalInstant()
-        {
-            LocalInstant when = new LocalInstant(987654321L);
-            Assert.AreEqual(0, field.GetValue(new Duration(0L), when));
-            Assert.AreEqual(12345, field.GetValue(new Duration(123456789L), when));
-            Assert.AreEqual(-1, field.GetValue(new Duration(-12345L), when));
-        }
-
-        [Test]
-        public void GetValue_WithLocalInstant_ThrowsOnOverflow()
-        {
-            LocalInstant when = new LocalInstant(987654321L);
-            Assert.Throws<OverflowException>(() => field.GetValue(new Duration(int.MaxValue * 10000L + 10000L), when));
-        }
-
-        [Test]
         public void GetInt64Value_WithLocalInstant()
         {
             LocalInstant when = new LocalInstant(987654321L);
