@@ -1,4 +1,4 @@
-Core concepts in Noda Time
+Core concepts
 
 This is a companion page to the
 ["core types quick reference"](core-types.html), and ["choosing between types"](type-choices.html)
@@ -164,14 +164,16 @@ Noda Time makes it *reasonably* easy to handle these situations, but
 you need to work out what you want to happen. See the [`DateTimeZone`
 documentation][DateTimeZone] for more details and options.
 
-There are various different sources of time zone information available, and Noda Time
-handles two of them: it is able to map BCL `TimeZoneInfo` objects using `BclDateTimeZone`,
-and the [TZDB][TZDB] (aka Olson) database. A version of TZDB is embedded within the Noda Time
-distribution, and if you need a more recent one, there are [instructions on how to download and
-use new data](tzdb.html). We generally recommend that you isolate yourself from the provider you're
-using by only depending on [`IDateTimeZoneProvider`][IDateTimeZoneProvider], and injecting the appropriate
-provider in the normal way. "Stock" providers are available via the [`DateTimeZoneProviders`][DateTimeZoneProviders]
-class.
+There are various different sources of time zone information available, and
+Noda Time handles two of them: it is able to map BCL `TimeZoneInfo` objects
+using `BclDateTimeZone`, or it can use the [tz database][TZDB] (also known as
+the IANA Time Zone database, or zoneinfo or Olson database). A version of TZDB
+is embedded within the Noda Time distribution, and if you need a more recent
+one, there are [instructions on how to download and use new data](tzdb.html).
+We generally recommend that you isolate yourself from the provider you're using
+by only depending on [`IDateTimeZoneProvider`][IDateTimeZoneProvider], and
+injecting the appropriate provider in the normal way. "Stock" providers are
+available via the [`DateTimeZoneProviders`][DateTimeZoneProviders] class.
 
 Also note that in some cases, you may not have full time zone information,
 but have just a local time and an offset. For example, if you're parsing the string

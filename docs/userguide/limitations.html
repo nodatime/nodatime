@@ -4,9 +4,16 @@
     <link href="prettify.css" type="text/css" rel="stylesheet" />
     <link href="styles.css" type="text/css" rel="stylesheet" />
     <script type="text/javascript" src="prettify.js"></script>
-    <title>Limitations of Noda Time</title>
+    <title>Limitations of Noda Time - Noda Time User Guide</title>
   </head>
   <body onload="prettyPrint()">
+    <div class="header navigation">
+      <p class="prev"><a href="mono.html">Mono support</a>&nbsp;</p>
+      <p class="next">&nbsp;<a href="roadmap.html">Current roadmap</a></p>
+      <p class="navtitle">Noda Time User Guide</p>
+      <div style="clear:both;"></div>
+    </div>
+
     <h1>Limitations of Noda Time</h1>
     <p>Noda Time is a work in progress. It has various limitations, some of
 which we'd obviously like to remove over time. Here's a list of some
@@ -44,13 +51,11 @@ change, but it does affect how you <a href="tzdb.html">build and use a custom ve
 
 <h1>Fuller text support</h1>
 
-<p>Currently there's no way of parsing or formatting a
-<a href="../api/html/T_NodaTime_ZonedDateTime.htm"><code>ZonedDateTime</code></a> or 
-<a href="../api/html/T_NodaTime_OffsetDateTime.htm"><code>OffsetDateTime</code></a>, partly due to
-the difficulty of representing time zones or offsets. While this is
-the primary deficiency of our current text support, it's not the
-only one. Some other types lack flexible formatting, and we may want
-to optimize further at some point too.</p>
+<p>While it is now possible (as of 1.2.0) to parse and format
+<a href="../api/html/T_NodaTime_ZonedDateTime.htm"><code>ZonedDateTime</code></a> and
+<a href="../api/html/T_NodaTime_OffsetDateTime.htm"><code>OffsetDateTime</code></a>, our text support is
+still lacking in some areas: some other types lack flexible formatting, and
+we may want to optimize further at some point too.</p>
 
 <h1>Better resource handling</h1>
 
@@ -81,5 +86,12 @@ want something smarter, probably to go alongside the "dumb but
 predictable" existing logic. This will definitely be driven by real
 user requirements though - it would be far too easy to speculate.</p>
 
+
+    <div class="footer navigation">
+      <p class="prev"><a href="mono.html">Mono support</a>&nbsp;</p>
+      <p class="next">&nbsp;<a href="roadmap.html">Current roadmap</a></p>
+      <p class="navtitle">Version 1.2.0-dev</p>
+      <div style="clear:both;"></div>
+    </div>
   </body>
 </html>

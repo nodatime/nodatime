@@ -9,7 +9,7 @@ using NodaTime.Text.Patterns;
 namespace NodaTime.Test.Text.Patterns
 {
     [TestFixture, Category("Formatting"), Category("Format"), Category("Parse")]
-    public class PatternTest : TextCursorTestBase
+    public class PatternCursorTest : TextCursorTestBase
     {
         internal override TextCursor MakeCursor(string value)
         {

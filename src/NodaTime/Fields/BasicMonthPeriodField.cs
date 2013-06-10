@@ -10,7 +10,7 @@ namespace NodaTime.Fields
     /// <summary>
     /// Period field for months in a basic calendar system with a fixed number of months of varying lengths.
     /// </summary>
-    internal sealed class BasicMonthPeriodField : VaryiableLengthPeriodField
+    internal sealed class BasicMonthPeriodField : VariableLengthPeriodField
     {
         private readonly BasicCalendarSystem calendarSystem;
         private readonly int monthsPerYear;

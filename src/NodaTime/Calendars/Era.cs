@@ -2,6 +2,8 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
+using System;
+
 namespace NodaTime.Calendars
 {
     /// <summary>
@@ -26,7 +28,13 @@ namespace NodaTime.Calendars
         /// <summary>
         /// The "Anno Martyrum" or "Era of the Martyrs". This is the sole era used in the Coptic calendar.
         /// </summary>
-        public static readonly Era AnnoMartyrm = new Era("AM", "Eras_AnnoMartyrum"); // AM
+        public static readonly Era AnnoMartyrum = new Era("AM", "Eras_AnnoMartyrum"); // AM
+
+        /// <summary>
+        /// The "Anno Martyrum" or "Era of the Martyrs". This is the sole era used in the Coptic calendar.
+        /// </summary>
+        [Obsolete("Use AnnoMartyrum instead. This field's name was a typo, and it will be removed in a future release.")]
+        public static readonly Era AnnoMartyrm = AnnoMartyrum;
 
         /// <summary>
         /// The "Anno Hegira" era. This is the sole era used in the Hijri (Islamic) calendar.

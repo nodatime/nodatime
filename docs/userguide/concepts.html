@@ -4,10 +4,17 @@
     <link href="prettify.css" type="text/css" rel="stylesheet" />
     <link href="styles.css" type="text/css" rel="stylesheet" />
     <script type="text/javascript" src="prettify.js"></script>
-    <title>Core concepts in Noda Time</title>
+    <title>Core concepts - Noda Time User Guide</title>
   </head>
   <body onload="prettyPrint()">
-    <h1>Core concepts in Noda Time</h1>
+    <div class="header navigation">
+      <p class="prev"><a href="installation.html">Installation</a>&nbsp;</p>
+      <p class="next">&nbsp;<a href="type-choices.html">Choosing (and converting) between types</a></p>
+      <p class="navtitle">Noda Time User Guide</p>
+      <div style="clear:both;"></div>
+    </div>
+
+    <h1>Core concepts</h1>
     <p>This is a companion page to the
 <a href="core-types.html">"core types quick reference"</a>, and <a href="type-choices.html">"choosing between types"</a>
 pages, describing the fundamental concepts in Noda Time.</p>
@@ -170,14 +177,16 @@ forward in the spring. If the clocks go forward at 1am local time to
 you need to work out what you want to happen. See the <a href="../api/html/T_NodaTime_DateTimeZone.htm"><code>DateTimeZone</code>
 documentation</a> for more details and options.</p>
 
-<p>There are various different sources of time zone information available, and Noda Time
-handles two of them: it is able to map BCL <code>TimeZoneInfo</code> objects using <code>BclDateTimeZone</code>,
-and the <a href="http://www.iana.org/time-zones">TZDB</a> (aka Olson) database. A version of TZDB is embedded within the Noda Time
-distribution, and if you need a more recent one, there are <a href="tzdb.html">instructions on how to download and
-use new data</a>. We generally recommend that you isolate yourself from the provider you're
-using by only depending on <a href="../api/html/T_NodaTime_IDateTimeZoneProvider.htm"><code>IDateTimeZoneProvider</code></a>, and injecting the appropriate
-provider in the normal way. "Stock" providers are available via the <a href="../api/html/T_NodaTime_DateTimeZoneProviders.htm"><code>DateTimeZoneProviders</code></a>
-class.</p>
+<p>There are various different sources of time zone information available, and
+Noda Time handles two of them: it is able to map BCL <code>TimeZoneInfo</code> objects
+using <code>BclDateTimeZone</code>, or it can use the <a href="http://www.iana.org/time-zones">tz database</a> (also known as
+the IANA Time Zone database, or zoneinfo or Olson database). A version of TZDB
+is embedded within the Noda Time distribution, and if you need a more recent
+one, there are <a href="tzdb.html">instructions on how to download and use new data</a>.
+We generally recommend that you isolate yourself from the provider you're using
+by only depending on <a href="../api/html/T_NodaTime_IDateTimeZoneProvider.htm"><code>IDateTimeZoneProvider</code></a>, and
+injecting the appropriate provider in the normal way. "Stock" providers are
+available via the <a href="../api/html/T_NodaTime_DateTimeZoneProviders.htm"><code>DateTimeZoneProviders</code></a> class.</p>
 
 <p>Also note that in some cases, you may not have full time zone information,
 but have just a local time and an offset. For example, if you're parsing the string
@@ -201,5 +210,12 @@ but they're still available within periods. [<code>Period</code>] is used for ar
 
 <p>See the <a href="arithmetic.html">arithmetic</a> page for more information.</p>
 
+
+    <div class="footer navigation">
+      <p class="prev"><a href="installation.html">Installation</a>&nbsp;</p>
+      <p class="next">&nbsp;<a href="type-choices.html">Choosing (and converting) between types</a></p>
+      <p class="navtitle">Version 1.2.0-dev</p>
+      <div style="clear:both;"></div>
+    </div>
   </body>
 </html>

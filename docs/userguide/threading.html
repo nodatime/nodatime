@@ -4,10 +4,17 @@
     <link href="prettify.css" type="text/css" rel="stylesheet" />
     <link href="styles.css" type="text/css" rel="stylesheet" />
     <script type="text/javascript" src="prettify.js"></script>
-    <title>Threading in Noda Time</title>
+    <title>Threading - Noda Time User Guide</title>
   </head>
   <body onload="prettyPrint()">
-    <h1>Threading in Noda Time</h1>
+    <div class="header navigation">
+      <p class="prev"><a href="testing.html">Unit testing with Noda Time</a>&nbsp;</p>
+      <p class="next">&nbsp;<a href="tzdb.html">Updating the time zone database</a></p>
+      <p class="navtitle">Noda Time User Guide</p>
+      <div style="clear:both;"></div>
+    </div>
+
+    <h1>Threading</h1>
     <p>Each type in the public API has its thread safety documented briefly, but that documentation usually
 refers to this entry in the user guide, too. Readers are advised to read Eric Lippert's blog post,
 <a href="http://blogs.msdn.com/b/ericlippert/archive/2009/10/19/what-is-this-thing-you-call-thread-safe.aspx">"What is this thing you call thread safe?"</a> in addition to this guide. This page aims for
@@ -65,5 +72,12 @@ safety than the base class provides. That said, none of the exceptions within No
 <p>Enums should generally be treated as immutable value types. Accessing the enum values directly can <em>never</em> have any nasty effects,
 but be careful around using a writable field of an enum type, for the same reasons as given in the earlier discussion.</p>
 
+
+    <div class="footer navigation">
+      <p class="prev"><a href="testing.html">Unit testing with Noda Time</a>&nbsp;</p>
+      <p class="next">&nbsp;<a href="tzdb.html">Updating the time zone database</a></p>
+      <p class="navtitle">Version 1.2.0-dev</p>
+      <div style="clear:both;"></div>
+    </div>
   </body>
 </html>

@@ -24,9 +24,6 @@ namespace NodaTime
     /// time would be five minutes later, for example. While this doesn't sound terribly useful, it's very common
     /// in text representations.
     /// </para>
-    /// <para>
-    /// Currently there is no real text handling support for this type.
-    /// </para>
     /// </remarks>
     /// <threadsafety>This type is an immutable value type. See the thread safety section of the user guide for more information.</threadsafety>
     public struct OffsetDateTime : IEquatable<OffsetDateTime>, IXmlSerializable

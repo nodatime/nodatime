@@ -89,8 +89,8 @@ buildmarkdowndocs:
 		src/NodaTime.Tools.BuildMarkdownDocs/NodaTime.Tools.BuildMarkdownDocs.csproj
 
 docs: buildmarkdowndocs
-	$(MONO) $(MARKDOWN_TOOL) src/docs/userguide docs/userguide
-	$(MONO) $(MARKDOWN_TOOL) src/docs/developer docs/developer
+	$(MONO) $(MARKDOWN_TOOL) src/docs/userguide/project.xml docs/userguide
+	$(MONO) $(MARKDOWN_TOOL) src/docs/developer/project.xml docs/developer
 
 clean:
 	$(XBUILD) $(XBUILDFLAGS_DEBUG) $(SOLUTION) /t:Clean

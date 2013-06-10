@@ -1,4 +1,4 @@
-Choosing between the core types
+Choosing (and converting) between types
 
 This is a companion page to the
 ["core concepts quick reference"](concepts.html), and ["core types"](core-types.html)
@@ -21,7 +21,7 @@ clocks, and the brains of users.
 I'm using "clock" here as anything which is used to represent the
 current time, in whatever form it does so. You may receive the 
 value as part of a web service request, you may request it from an
-[`IClock`](noda-time://NodaTime.IClock), it may be the "last
+[`IClock`](noda-type://NodaTime.IClock), it may be the "last
 modified" part of a file-system entry, it may be a database
 timestamp: all of these are trying to represent *the current point in
 time* in some fashion.
