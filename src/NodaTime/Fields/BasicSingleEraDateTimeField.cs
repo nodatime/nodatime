@@ -45,11 +45,6 @@ namespace NodaTime.Fields
             return LocalInstant.MaxValue;
         }
 
-        internal override LocalInstant RoundHalfFloor(LocalInstant localInstant)
-        {
-            return LocalInstant.MinValue;
-        }
-
         internal override long GetMinimumValue()
         {
             return 0;

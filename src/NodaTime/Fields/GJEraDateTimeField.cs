@@ -69,12 +69,6 @@ namespace NodaTime.Fields
                        : new LocalInstant(long.MaxValue);
         }
 
-        internal override LocalInstant RoundHalfFloor(LocalInstant localInstant)
-        {
-            // In reality, the era is infinite, so there is no halfway point.
-            return RoundFloor(localInstant);
-        }
-
         #endregion
     }
 }

@@ -157,26 +157,6 @@ namespace NodaTime.Fields
             return newInstant;
         }
 
-        /// <summary>
-        /// Round to the nearest whole unit of this field. If the given local instant
-        /// is closer to the floor or is exactly halfway, this function
-        /// behaves like RoundFloor. If the local instant is closer to the
-        /// ceiling, this function behaves like RoundCeiling.
-        /// </summary>
-        /// <param name="localInstant">The local instant to round</param>
-        /// <returns>Rounded local instant</returns>
-        internal virtual LocalInstant RoundHalfFloor(LocalInstant localInstant)
-        {
-            LocalInstant floor = RoundFloor(localInstant);
-            LocalInstant ceiling = RoundCeiling(localInstant);
-
-            Duration diffFromFloor = localInstant - floor;
-            Duration diffToCeiling = ceiling - localInstant;
-
-            // Closer to the floor, or halfway - round floor
-            return diffFromFloor <= diffToCeiling ? floor : ceiling;
-        }
-
         #endregion
 
         public override string ToString()
