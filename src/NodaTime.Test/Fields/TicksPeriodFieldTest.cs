@@ -62,20 +62,6 @@ namespace NodaTime.Test.Fields
         }
 
         [Test]
-        public void GetInt32Difference()
-        {
-            Assert.AreEqual(567, TicksPeriodField.Instance.GetDifference(new LocalInstant(567L), new LocalInstant(0L)));
-            Assert.AreEqual(567 - 1234, TicksPeriodField.Instance.GetDifference(new LocalInstant(567L), new LocalInstant(1234L)));
-            Assert.AreEqual(567 + 1234, TicksPeriodField.Instance.GetDifference(new LocalInstant(567L), new LocalInstant(-1234L)));
-        }
-
-        [Test]
-        public void GetInt32Difference_Overflows()
-        {
-            Assert.Throws<OverflowException>(() => TicksPeriodField.Instance.GetDifference(new LocalInstant(long.MaxValue), new LocalInstant(1L)));
-        }
-
-        [Test]
         public void GetInt64Difference()
         {
             Assert.AreEqual(567L, TicksPeriodField.Instance.GetInt64Difference(new LocalInstant(567L), new LocalInstant(0L)));

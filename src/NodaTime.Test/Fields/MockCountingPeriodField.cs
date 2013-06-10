@@ -45,18 +45,6 @@ namespace NodaTime.Test.Fields
             return new LocalInstant(localInstant.Ticks + value * unitTicks);
         }
 
-        internal static int differences;
-        internal static LocalInstant DiffFirstArg;
-        internal static LocalInstant DiffSecondArg;
-
-        internal override int GetDifference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
-        {
-            differences++;
-            DiffFirstArg = minuendInstant;
-            DiffSecondArg = subtrahendInstant;
-            return 30;
-        }
-
         internal static int differences64;
         internal static LocalInstant Diff64FirstArg;
         internal static LocalInstant Diff64SecondArg;

@@ -90,17 +90,6 @@ namespace NodaTime.Fields
         /// <param name="minuendInstant">The local instant to subtract from</param>
         /// <param name="subtrahendInstant">The local instant to subtract from minuendInstant</param>
         /// <returns>The difference in the units of this field</returns>
-        internal override int GetDifference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
-        {
-            throw new NotSupportedException();
-        }
-
-        /// <summary>
-        /// Always throws NotSupportedException
-        /// </summary>
-        /// <param name="minuendInstant">The local instant to subtract from</param>
-        /// <param name="subtrahendInstant">The local instant to subtract from minuendInstant</param>
-        /// <returns>The difference in the units of this field</returns>
         internal override long GetInt64Difference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
         {
             throw new NotSupportedException();
