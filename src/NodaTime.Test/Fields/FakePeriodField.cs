@@ -15,11 +15,6 @@ namespace NodaTime.Test.Fields
         {
         }
 
-        internal override Duration GetDuration(long value, LocalInstant localInstant)
-        {
-            return new Duration(0);
-        }
-
         internal override LocalInstant Add(LocalInstant localInstant, int value)
         {
             return new LocalInstant();

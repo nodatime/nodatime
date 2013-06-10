@@ -14,10 +14,5 @@ namespace NodaTime.Fields
             : base(fieldType, averageUnitTicks, false, true)
         {
         }
-
-        internal override Duration GetDuration(long value, LocalInstant localInstant)
-        {
-            return Add(localInstant, value) - localInstant;
-        }
     }
 }

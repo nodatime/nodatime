@@ -39,7 +39,6 @@ namespace NodaTime.Test.Fields
             AssertUnsupported(x => x.Add(when, 0));
             AssertUnsupported(x => x.Add(when, 0L));
             AssertUnsupported(x => x.GetDifference(when, when));
-            AssertUnsupported(x => x.GetDuration(10, when));
             AssertUnsupported(x => x.GetInt64Difference(when, when));
         }
 
