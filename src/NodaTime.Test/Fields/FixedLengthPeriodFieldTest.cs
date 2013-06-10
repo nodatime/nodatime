@@ -44,21 +44,6 @@ namespace NodaTime.Test.Fields
         }
 
         [Test]
-        public void GetDuration()
-        {
-            Assert.AreEqual(0L, field.GetDuration(0).Ticks);
-            Assert.AreEqual(12340000L, field.GetDuration(1234).Ticks);
-            Assert.AreEqual(-12340000L, field.GetDuration(-1234).Ticks);
-            Assert.AreEqual(int.MaxValue * 10000L, field.GetDuration(int.MaxValue).Ticks);
-        }
-
-        [Test]
-        public void GetDuration_ThrowsOnOverflow()
-        {
-            Assert.Throws<OverflowException>(() => field.GetDuration(long.MaxValue));
-        }
-
-        [Test]
         public void GetDuration_WithLocalInstant()
         {
             LocalInstant when = new LocalInstant(987654321L);

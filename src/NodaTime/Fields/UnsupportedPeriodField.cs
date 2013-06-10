@@ -66,16 +66,6 @@ namespace NodaTime.Fields
         /// Always throws NotSupportedException
         /// </summary>
         /// <param name="value">The value of the field, which may be negative</param>
-        /// <returns>The duration that the field represents, which may be negative</returns>
-        internal override Duration GetDuration(long value)
-        {
-            throw new NotSupportedException();
-        }
-
-        /// <summary>
-        /// Always throws NotSupportedException
-        /// </summary>
-        /// <param name="value">The value of the field, which may be negative</param>
         /// <param name="localInstant">The instant to calculate relative to</param>
         /// <returns>The duration that the field represents, which may be negative</returns>
         internal override Duration GetDuration(long value, LocalInstant localInstant)

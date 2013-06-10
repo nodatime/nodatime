@@ -29,11 +29,6 @@ namespace NodaTime.Fields
             return wrappedField;
         }
 
-        internal override Duration GetDuration(long value)
-        {
-            return wrappedField.GetDuration(value * scale);
-        }
-
         internal override Duration GetDuration(long value, LocalInstant localInstant)
         {
             return wrappedField.GetDuration(value * scale, localInstant);
