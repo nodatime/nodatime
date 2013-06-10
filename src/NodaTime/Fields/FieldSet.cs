@@ -16,7 +16,6 @@ namespace NodaTime.Fields
         private readonly PeriodField seconds;
         private readonly PeriodField minutes;
         private readonly PeriodField hours;
-        private readonly PeriodField halfDays;
         private readonly PeriodField days;
         private readonly PeriodField weeks;
         private readonly PeriodField weekYears;
@@ -55,7 +54,6 @@ namespace NodaTime.Fields
         internal PeriodField Seconds { get { return seconds; } }
         internal PeriodField Minutes { get { return minutes; } }
         internal PeriodField Hours { get { return hours; } }
-        internal PeriodField HalfDays { get { return halfDays; } }
         internal PeriodField Days { get { return days; } }
         internal PeriodField Weeks { get { return weeks; } }
         internal PeriodField WeekYears { get { return weekYears; } }
@@ -96,7 +94,6 @@ namespace NodaTime.Fields
             seconds = builder.Seconds ?? UnsupportedPeriodField.Seconds;
             minutes = builder.Minutes ?? UnsupportedPeriodField.Minutes;
             hours = builder.Hours ?? UnsupportedPeriodField.Hours;
-            halfDays = builder.HalfDays ?? UnsupportedPeriodField.HalfDays;
             days = builder.Days ?? UnsupportedPeriodField.Days;
             weeks = builder.Weeks ?? UnsupportedPeriodField.Weeks;
             weekYears = builder.WeekYears ?? UnsupportedPeriodField.WeekYears;
@@ -151,7 +148,6 @@ namespace NodaTime.Fields
             internal PeriodField Seconds { get; set; }
             internal PeriodField Minutes { get; set; }
             internal PeriodField Hours { get; set; }
-            internal PeriodField HalfDays { get; set; }
             internal PeriodField Days { get; set; }
             internal PeriodField Weeks { get; set; }
             internal PeriodField WeekYears { get; set; }
@@ -197,7 +193,6 @@ namespace NodaTime.Fields
                 Seconds = baseSet.Seconds;
                 Minutes = baseSet.Minutes;
                 Hours = baseSet.Hours;
-                HalfDays = baseSet.HalfDays;
                 Days = baseSet.Days;
                 Weeks = baseSet.Weeks;
                 WeekYears = baseSet.WeekYears;
@@ -245,7 +240,6 @@ namespace NodaTime.Fields
                 Seconds = other.Seconds.IsSupported ? other.Seconds : Seconds;
                 Minutes = other.Minutes.IsSupported ? other.Minutes : Minutes;
                 Hours = other.Hours.IsSupported ? other.Hours : Hours;
-                HalfDays = other.HalfDays.IsSupported ? other.HalfDays : HalfDays;
                 Days = other.Days.IsSupported ? other.Days : Days;
                 Weeks = other.Weeks.IsSupported ? other.Weeks : Weeks;
                 WeekYears = other.WeekYears.IsSupported ? other.WeekYears : WeekYears;
