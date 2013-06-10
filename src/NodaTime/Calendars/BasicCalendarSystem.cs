@@ -129,7 +129,6 @@ namespace NodaTime.Calendars
             builder.WeekOfWeekYear = new BasicWeekOfWeekYearDateTimeField(thisCalendar, builder.Weeks);
 
             field = new RemainderDateTimeField(builder.WeekYear, DateTimeFieldType.WeekYearOfCentury, 100);
-            builder.WeekYearOfCentury = new OffsetDateTimeField(field, DateTimeFieldType.WeekYearOfCentury, 1);
             // The remaining (variable length) periods are available from the newly
             // created date/time fields.
 

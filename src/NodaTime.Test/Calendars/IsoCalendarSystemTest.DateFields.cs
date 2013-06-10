@@ -63,15 +63,6 @@ namespace NodaTime.Test.Calendars
         }
 
         [Test]
-        public void DateFields_WeekYearOfCentury()
-        {
-            var sut = isoFields.WeekYearOfCentury;
-
-            Assert.That(sut.ToString(), Is.EqualTo("WeekYearOfCentury"));
-            Assert.That(sut.IsSupported, Is.True);
-        }
-
-        [Test]
         public void DateFields_WeekYear()
         {
             var sut = isoFields.WeekYear;
