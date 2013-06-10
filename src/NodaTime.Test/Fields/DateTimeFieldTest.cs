@@ -109,17 +109,6 @@ namespace NodaTime.Test.Fields
             Assert.AreEqual(0L, field.RoundFloor(new LocalInstant(31L)).Ticks);
             Assert.AreEqual(60L, field.RoundFloor(new LocalInstant(60L)).Ticks);
         }
-
-        [Test]
-        public void RoundCeiling()
-        {
-            DateTimeField field = new StubDateTimeField();
-            Assert.AreEqual(0L, field.RoundCeiling(new LocalInstant(0L)).Ticks);
-            Assert.AreEqual(60L, field.RoundCeiling(new LocalInstant(29L)).Ticks);
-            Assert.AreEqual(60L, field.RoundCeiling(new LocalInstant(30L)).Ticks);
-            Assert.AreEqual(60L, field.RoundCeiling(new LocalInstant(31L)).Ticks);
-            Assert.AreEqual(60L, field.RoundCeiling(new LocalInstant(60L)).Ticks);
-        }
         #endregion
 
         private class StubDateTimeField : DateTimeField

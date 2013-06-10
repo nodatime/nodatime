@@ -40,11 +40,6 @@ namespace NodaTime.Fields
             return LocalInstant.MinValue;
         }
 
-        internal override LocalInstant RoundCeiling(LocalInstant localInstant)
-        {
-            return LocalInstant.MaxValue;
-        }
-
         internal override long GetMinimumValue()
         {
             return 0;

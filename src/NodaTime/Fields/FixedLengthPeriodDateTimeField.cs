@@ -84,20 +84,6 @@ namespace NodaTime.Fields
             }
         }
 
-        internal override LocalInstant RoundCeiling(LocalInstant localInstant)
-        {
-            long ticks = localInstant.Ticks;
-            if (ticks > 0)
-            {
-                ticks--;
-                return new LocalInstant(ticks - (ticks % unitTicks) + unitTicks);
-            }
-            else
-            {
-                return new LocalInstant(ticks - ticks % unitTicks);
-            }
-        }
-
         #endregion
     }
 }

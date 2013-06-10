@@ -66,12 +66,6 @@ namespace NodaTime.Fields
             return new LocalInstant(calendarSystem.GetYearTicks(GetValue(localInstant)));
         }
 
-        internal override LocalInstant RoundCeiling(LocalInstant localInstant)
-        {
-            int year = GetValue(localInstant);
-            long yearStartTicks = calendarSystem.GetYearTicks(year);
-            return localInstant.Ticks == yearStartTicks ? localInstant : new LocalInstant(calendarSystem.GetYearTicks(year + 1));
-        }
         #endregion
     }
 }
