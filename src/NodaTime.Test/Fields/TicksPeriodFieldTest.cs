@@ -43,14 +43,6 @@ namespace NodaTime.Test.Fields
         }
 
         [Test]
-        public void GetInt32Value()
-        {
-            Assert.AreEqual(0, TicksPeriodField.Instance.GetValue(new Duration(0L)));
-            Assert.AreEqual(1234, TicksPeriodField.Instance.GetValue(new Duration(1234L)));
-            Assert.AreEqual(-1234, TicksPeriodField.Instance.GetValue(new Duration(-1234L)));
-        }
-
-        [Test]
         public void GetInt64Value_WithLocalInstant()
         {
             LocalInstant when = new LocalInstant(56789L);
@@ -58,12 +50,6 @@ namespace NodaTime.Test.Fields
             Assert.AreEqual(1234L, TicksPeriodField.Instance.GetInt64Value(new Duration(1234L), when));
             Assert.AreEqual(-1234L, TicksPeriodField.Instance.GetInt64Value(new Duration(-1234L), when));
             Assert.AreEqual(int.MaxValue + 1L, TicksPeriodField.Instance.GetInt64Value(new Duration(int.MaxValue + 1L), when));
-        }
-
-        [Test]
-        public void GetInt32Value_Overflows()
-        {
-            Assert.Throws<OverflowException>(() => TicksPeriodField.Instance.GetValue(new Duration(int.MaxValue + 1L)));
         }
 
         [Test]
