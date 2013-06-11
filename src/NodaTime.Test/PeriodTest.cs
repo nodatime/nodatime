@@ -191,16 +191,16 @@ namespace NodaTime.Test
             LocalDateTime dt2 = new LocalDateTime(2, 12, 30, 4, 0, calendar);
             LocalDateTime dt3 = new LocalDateTime(3, 12, 29, 3, 0, calendar);
 
-            LocalDateTime foo = dt2.PlusMonths(11);
-
             // Adding a year truncates to 0003-12-28T02:00:00, then add an hour.
             Assert.AreEqual(Parse("P1YT1H"), Period.Between(dt1, dt3));
             // Adding a year would overshoot. Adding 11 months takes us to month 03-11-30T04:00.
             // Adding another 28 days takes us to 03-12-28T04:00, then add another 23 hours to finish.
             Assert.AreEqual(Parse("P11M28DT23H"), Period.Between(dt2, dt3));
 
-            Assert.AreEqual(Parse("P-11M-30DT-1H"), Period.Between(dt3, dt1));
-            Assert.AreEqual(Parse("P-11M-29DT-23H"), Period.Between(dt3, dt2));            
+            // Subtracting 11 months takes us to 03-01-29T03:00. Subtracting another 29 days
+            // takes us to 02-12-30T03:00, and another hour to get to the target.
+            Assert.AreEqual(Parse("P-11M-29DT-1H"), Period.Between(dt3, dt1));
+            Assert.AreEqual(Parse("P-11M-28DT-23H"), Period.Between(dt3, dt2));            
         }
 
         [Test]
