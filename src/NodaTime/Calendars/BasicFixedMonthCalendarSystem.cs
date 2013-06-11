@@ -47,24 +47,6 @@ namespace NodaTime.Calendars
             return new LocalInstant(GetYearMonthDayTicks(year, 1, dayOfYear) + tickOfDay);
         }
 
-        internal override long GetYearDifference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
-        {
-            // Optimized implementation due to fixed months
-            int minuendYear = GetYear(minuendInstant);
-            int subtrahendYear = GetYear(subtrahendInstant);
-
-            // Inlined remainder method to avoid duplicate calls to get.
-            long minuendRem = minuendInstant.Ticks - GetYearTicks(minuendYear);
-            long subtrahendRem = subtrahendInstant.Ticks - GetYearTicks(subtrahendYear);
-
-            int difference = minuendYear - subtrahendYear;
-            if (minuendRem < subtrahendRem)
-            {
-                difference--;
-            }
-            return difference;
-        }
-
         protected override long GetTicksFromStartOfYearToStartOfMonth(int year, int month)
         {
             return (month - 1) * TicksPerMonth;
