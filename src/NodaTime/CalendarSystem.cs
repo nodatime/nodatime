@@ -508,13 +508,7 @@ namespace NodaTime
         /// <exception cref="ArgumentOutOfRangeException">The year of era, month of year and day of month values don't
         /// form a valid date.</exception>
         /// <returns>A <see cref="LocalInstant"/> with the given year, month, day and tick-of-day.</returns>
-        internal virtual LocalInstant GetLocalInstant(int year, int monthOfYear, int dayOfMonth, long tickOfDay)
-        {
-            LocalInstant instant = Fields.Year.SetValue(LocalInstant.LocalUnixEpoch, year);
-            instant = Fields.MonthOfYear.SetValue(instant, monthOfYear);
-            instant = Fields.DayOfMonth.SetValue(instant, dayOfMonth);
-            return Fields.TickOfDay.SetValue(instant, tickOfDay);
-        }
+        internal abstract LocalInstant GetLocalInstant(int year, int monthOfYear, int dayOfMonth, long tickOfDay);
 
         /// <summary>
         /// Returns the local date corresponding to the given "week year", "week of week year", and "day of week"
