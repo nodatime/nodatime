@@ -16,7 +16,7 @@ namespace NodaTime.Fields
         private readonly BasicCalendarSystem calendarSystem;
 
         internal BasicWeekYearDateTimeField(BasicCalendarSystem calendarSystem)
-            : base(DateTimeFieldType.WeekYear, new BasicWeekYearPeriodField(calendarSystem))
+            : base(DateTimeFieldType.WeekYear, UnsupportedPeriodField.WeekYears)
         {
             this.calendarSystem = calendarSystem;
         }
@@ -77,10 +77,6 @@ namespace NodaTime.Fields
         {
             return calendarSystem.MaxYear;
         }
-        #endregion
-
-        #region Rounding
-
         #endregion
     }
 }

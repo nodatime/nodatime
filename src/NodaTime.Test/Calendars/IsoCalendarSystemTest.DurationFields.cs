@@ -19,16 +19,6 @@ namespace NodaTime.Test.Calendars
         }
 
         [Test]
-        public void PeriodFields_WeekYears()
-        {
-            var sut = isoFields.WeekYears;
-
-            Assert.That(sut.ToString(), Is.EqualTo("WeekYears"));
-            Assert.That(sut.IsSupported, Is.True);
-            Assert.That(sut.IsFixedLength, Is.False);
-        }
-
-        [Test]
         public void PeriodFields_Months()
         {
             var sut = isoFields.Months;

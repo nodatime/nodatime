@@ -19,7 +19,6 @@ namespace NodaTime.Fields
         private readonly PeriodField halfDays;
         private readonly PeriodField days;
         private readonly PeriodField weeks;
-        private readonly PeriodField weekYears;
         private readonly PeriodField months;
         private readonly PeriodField years;
 
@@ -57,7 +56,6 @@ namespace NodaTime.Fields
         internal PeriodField HalfDays { get { return halfDays; } }
         internal PeriodField Days { get { return days; } }
         internal PeriodField Weeks { get { return weeks; } }
-        internal PeriodField WeekYears { get { return weekYears; } }
         internal PeriodField Months { get { return months; } }
         internal PeriodField Years { get { return years; } }
 
@@ -97,7 +95,6 @@ namespace NodaTime.Fields
             halfDays = builder.HalfDays ?? UnsupportedPeriodField.HalfDays;
             days = builder.Days ?? UnsupportedPeriodField.Days;
             weeks = builder.Weeks ?? UnsupportedPeriodField.Weeks;
-            weekYears = builder.WeekYears ?? UnsupportedPeriodField.WeekYears;
             months = builder.Months ?? UnsupportedPeriodField.Months;
             years = builder.Years ?? UnsupportedPeriodField.Years;
 
@@ -151,7 +148,6 @@ namespace NodaTime.Fields
             internal PeriodField HalfDays { get; set; }
             internal PeriodField Days { get; set; }
             internal PeriodField Weeks { get; set; }
-            internal PeriodField WeekYears { get; set; }
             internal PeriodField Months { get; set; }
             internal PeriodField Years { get; set; }
 
@@ -196,7 +192,6 @@ namespace NodaTime.Fields
                 HalfDays = baseSet.HalfDays;
                 Days = baseSet.Days;
                 Weeks = baseSet.Weeks;
-                WeekYears = baseSet.WeekYears;
                 Months = baseSet.Months;
                 Years = baseSet.Years;
 
@@ -243,7 +238,6 @@ namespace NodaTime.Fields
                 HalfDays = other.HalfDays.IsSupported ? other.HalfDays : HalfDays;
                 Days = other.Days.IsSupported ? other.Days : Days;
                 Weeks = other.Weeks.IsSupported ? other.Weeks : Weeks;
-                WeekYears = other.WeekYears.IsSupported ? other.WeekYears : WeekYears;
                 Months = other.Months.IsSupported ? other.Months : Months;
                 Years = other.Years.IsSupported ? other.Years : Years;
 
