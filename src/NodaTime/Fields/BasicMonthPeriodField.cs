@@ -158,54 +158,29 @@ namespace NodaTime.Fields
 
         internal override long GetInt64Difference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
         {
-            return minuendInstant >= subtrahendInstant
-                ? GetInt64DifferenceImpl(minuendInstant, subtrahendInstant, true)
-                : -GetInt64DifferenceImpl(subtrahendInstant, minuendInstant, false);
-        }
-
-        private long GetInt64DifferenceImpl(LocalInstant minuendInstant, LocalInstant subtrahendInstant, bool allowTruncation)
-        {
-            if (minuendInstant < subtrahendInstant)
-            {
-                return -GetInt64Difference(subtrahendInstant, minuendInstant);
-            }
             int minuendYear = calendarSystem.GetYear(minuendInstant);
-            int minuendMonth = calendarSystem.GetMonthOfYear(minuendInstant, minuendYear);
             int subtrahendYear = calendarSystem.GetYear(subtrahendInstant);
-            int subtrahendMonth = calendarSystem.GetMonthOfYear(subtrahendInstant, subtrahendYear);
+            int minuendMonth = calendarSystem.GetMonthOfYear(minuendInstant);
+            int subtrahendMonth = calendarSystem.GetMonthOfYear(subtrahendInstant);
 
-            long difference = (minuendYear - subtrahendYear) * ((long)monthsPerYear) + minuendMonth - subtrahendMonth;
+            int diff = (minuendYear - subtrahendYear) * monthsPerYear + minuendMonth - subtrahendMonth;
 
-            // Before adjusting for remainder, account for special case of add
-            // where the day-of-month is forced to the nearest sane value... but only if we were originally
-            // going forward.
-            // For example, April 30th - March 31st is still one month, because if we add one month
-            // to March 31st we'll truncate the value to April 30th. However, March 31st - April 30th is 0 months,
-            // as if we add -1 month to April 30th we'd get March 30th (i.e. we'd overshoot).
-            int minuendDom = calendarSystem.GetDayOfMonth(minuendInstant, minuendYear, minuendMonth);
-            if (allowTruncation && minuendDom == calendarSystem.GetDaysInMonth(minuendYear, minuendMonth))
+            // If we just add the difference in months to subtrahendInstant, what do we get?
+            LocalInstant simpleAddition = Add(subtrahendInstant, diff);
+
+            if (subtrahendInstant <= minuendInstant)
             {
-                // Last day of the minuend month...
-                int subtrahendDom = calendarSystem.GetDayOfMonth(subtrahendInstant, subtrahendYear, subtrahendMonth);
-                if (subtrahendDom > minuendDom)
-                {
-                    // ...and day of subtrahend month is larger. Adjust day of month to that of the minuend,
-                    // to mimic the truncation if we added the relevant number of months to the subtrahend.
-                    long subtrahendTickOfDay = BasicCalendarSystem.GetTickOfDay(subtrahendInstant);
-                    subtrahendInstant = calendarSystem.GetLocalInstant(subtrahendYear, subtrahendMonth, minuendDom, subtrahendTickOfDay);
-                }
+                // Moving forward: if the result of the simple addition is before or equal to the minuend,
+                // we're done. Otherwise, rewind a month because we've overshot.
+                return simpleAddition <= minuendInstant ? diff : diff - 1;
             }
-
-            // Inlined remainder method to avoid duplicate calls.
-            long minuendRem = minuendInstant.Ticks - calendarSystem.GetYearMonthTicks(minuendYear, minuendMonth);
-            long subtrahendRem = subtrahendInstant.Ticks - calendarSystem.GetYearMonthTicks(subtrahendYear, subtrahendMonth);
-
-            if (minuendRem < subtrahendRem)
+            else
             {
-                difference--;
+                // Moving backward: if the result of the simple addition (of a non-positive number)
+                // is after or equal to the minuend, we're done. Otherwise, increment by a month because
+                // we've overshot backwards.
+                return simpleAddition >= minuendInstant ? diff : diff + 1;
             }
-
-            return difference;
         }
     }
 }
