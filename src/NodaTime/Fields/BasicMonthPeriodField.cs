@@ -160,7 +160,7 @@ namespace NodaTime.Fields
         {
             return minuendInstant >= subtrahendInstant
                 ? GetInt64DifferenceImpl(minuendInstant, subtrahendInstant, true)
-                : GetInt64DifferenceImpl(subtrahendInstant, minuendInstant, false);
+                : -GetInt64DifferenceImpl(subtrahendInstant, minuendInstant, false);
         }
 
         private long GetInt64DifferenceImpl(LocalInstant minuendInstant, LocalInstant subtrahendInstant, bool allowTruncation)
