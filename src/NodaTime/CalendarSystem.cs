@@ -447,7 +447,7 @@ namespace NodaTime
         /// Convenience method to perform nullity and validity checking on the era, converting it to
         /// the index within the list of eras used in this calendar system.
         /// </summary>
-        private int GetEraIndex(Era era)
+        protected int GetEraIndex(Era era)
         {
             Preconditions.CheckNotNull(era, "era");
             int index = Eras.IndexOf(era);
@@ -539,14 +539,7 @@ namespace NodaTime
         /// <exception cref="ArgumentOutOfRangeException">The year of era, month of year and day of month values don't
         /// form a valid date.</exception>
         /// <returns>A <see cref="LocalInstant"/> with the given year, month, day and era.</returns>
-        internal virtual LocalInstant GetLocalInstant(Era era, int yearOfEra, int monthOfYear, int dayOfMonth)
-        {
-            int eraIndex = GetEraIndex(era);
-            LocalInstant instant = Fields.Era.SetValue(LocalInstant.LocalUnixEpoch, eraIndex);
-            instant = Fields.YearOfEra.SetValue(instant, yearOfEra);
-            instant = Fields.MonthOfYear.SetValue(instant, monthOfYear);
-            return Fields.DayOfMonth.SetValue(instant, dayOfMonth);
-        }
+        internal abstract LocalInstant GetLocalInstant(Era era, int yearOfEra, int monthOfYear, int dayOfMonth);
 
         /// <summary>
         /// Returns a local instant, formed from the given year, month, day, 
