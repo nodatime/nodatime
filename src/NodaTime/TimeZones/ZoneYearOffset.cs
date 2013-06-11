@@ -251,20 +251,28 @@ namespace NodaTime.TimeZones
             {
                 return Instant.MinValue;
             }
-            LocalInstant instant = calendar.Fields.Year.SetValue(LocalInstant.LocalUnixEpoch, year);
-            instant = calendar.Fields.MonthOfYear.SetValue(instant, monthOfYear);
-            instant = calendar.Fields.TickOfDay.SetValue(instant, tickOfDay.Ticks);
-            instant = SetDayOfMonth(calendar, instant);
-            instant = SetDayOfWeek(calendar, instant);
-
-            Offset offset = GetOffset(standardOffset, savings);
+            LocalDate date = new LocalDate(year, monthOfYear, dayOfMonth > 0 ? dayOfMonth : 1);
+            if (dayOfMonth < 0)
+            {
+                date = date.PlusMonths(1).PlusDays(dayOfMonth);
+            }
+            if (dayOfWeek != 0 && dayOfWeek != date.DayOfWeek)
+            {
+                IsoDayOfWeek isoDayOfWeek = (IsoDayOfWeek) dayOfWeek;
+                date = advance ? date.Next(isoDayOfWeek) : date.Previous(isoDayOfWeek);
+            }
             if (addDay)
             {
-                instant += Duration.OneStandardDay;
+                date = date.PlusDays(1);
             }
 
+            LocalTime time = new LocalTime(new LocalInstant(tickOfDay.Ticks));
+            LocalInstant localInstant = (date + time).LocalInstant;
+
+            Offset offset = GetOffset(standardOffset, savings);
+
             // Convert from local time to UTC.
-            return instant.Minus(offset);
+            return localInstant.Minus(offset);
         }
 
         /// <summary>
@@ -383,67 +391,6 @@ namespace NodaTime.TimeZones
             var ticksOfDay = reader.ReadOffset();
             var addDay = reader.ReadBoolean();
             return new ZoneYearOffset(mode, monthOfYear, dayOfMonth, dayOfWeek, advance, ticksOfDay, addDay);
-        }
-
-        /// <summary>
-        /// Sets the day of month of the given instant. If the day of the month is negative then sets the
-        /// day from the end of the month.
-        /// </summary>
-        /// <param name="calendar">The calendar to use to set the values.</param>
-        /// <param name="instant">The instant to adjust.</param>
-        /// <returns>The adjusted <see cref="LocalInstant"/>.</returns>
-        private LocalInstant SetDayOfMonth(CalendarSystem calendar, LocalInstant instant)
-        {
-            if (dayOfMonth > 0)
-            {
-                instant = calendar.Fields.DayOfMonth.SetValue(instant, dayOfMonth);
-            }
-            else if (dayOfMonth < 0)
-            {
-                instant = calendar.Fields.DayOfMonth.SetValue(instant, 1);
-                instant = calendar.Fields.Months.Add(instant, 1);
-                instant = calendar.Fields.Days.Add(instant, dayOfMonth);
-            }
-            return instant;
-        }
-
-        /// <summary>
-        /// Sets the day of week of the given instant.
-        /// </summary>
-        /// <remarks>
-        /// This will move the current day of the week either forward or backward by up to one week.
-        /// If the day of the week is already correct then nothing changes.
-        /// </remarks>
-        /// <param name="calendar">The calendar to use to set the values.</param>
-        /// <param name="instant">The instant to adjust.</param>
-        /// <returns>The adjusted <see cref="LocalInstant"/>.</returns>
-        private LocalInstant SetDayOfWeek(CalendarSystem calendar, LocalInstant instant)
-        {
-            if (dayOfWeek == 0)
-            {
-                return instant;
-            }
-            int dayOfWeekOfInstant = calendar.Fields.DayOfWeek.GetValue(instant);
-            int daysToAdd = dayOfWeek - dayOfWeekOfInstant;
-            if (daysToAdd != 0)
-            {
-                if (advance)
-                {
-                    if (daysToAdd < 0)
-                    {
-                        daysToAdd += 7;
-                    }
-                }
-                else
-                {
-                    if (daysToAdd > 0)
-                    {
-                        daysToAdd -= 7;
-                    }
-                }
-                instant = calendar.Fields.Days.Add(instant, daysToAdd);
-            }
-            return instant;
         }
 
         /// <summary>
