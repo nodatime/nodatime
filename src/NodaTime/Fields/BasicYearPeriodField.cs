@@ -3,6 +3,7 @@
 // as found in the LICENSE.txt file.
 
 using NodaTime.Calendars;
+using NodaTime.Utility;
 
 namespace NodaTime.Fields
 {
@@ -20,7 +21,10 @@ namespace NodaTime.Fields
 
         internal override LocalInstant Add(LocalInstant localInstant, int value)
         {
-           return calendarSystem.Fields.Year.SetValue(localInstant, calendarSystem.GetYear(localInstant) + value);
+            int currentYear = calendarSystem.GetYear(localInstant);
+            // Adjust argument range based on current year
+            Preconditions.CheckArgumentRange("value", value, calendarSystem.MinYear - currentYear, calendarSystem.MaxYear - currentYear);
+            return calendarSystem.SetYear(localInstant, value + currentYear);
         }
 
         internal override LocalInstant Add(LocalInstant localInstant, long value)
