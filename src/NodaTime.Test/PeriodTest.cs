@@ -138,6 +138,15 @@ namespace NodaTime.Test
         }
 
         [Test]
+        public void BetweenLocalDates_EndOfMonth()
+        {
+            LocalDate d1 = new LocalDate(2013, 3, 31);
+            LocalDate d2 = new LocalDate(2013, 4, 30);
+            Assert.AreEqual(Period.FromMonths(1), Period.Between(d1, d2));
+            Assert.AreEqual(Period.FromDays(-30), Period.Between(d2, d1));
+        }
+
+        [Test]
         public void BetweenLocalDateTimes_InvalidUnits()
         {
             Assert.Throws<ArgumentException>(() => Period.Between(TestDate1, TestDate2, 0));

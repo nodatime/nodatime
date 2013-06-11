@@ -158,6 +158,13 @@ namespace NodaTime.Fields
 
         internal override long GetInt64Difference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
         {
+            return minuendInstant >= subtrahendInstant
+                ? GetInt64DifferenceImpl(minuendInstant, subtrahendInstant, true)
+                : GetInt64DifferenceImpl(subtrahendInstant, minuendInstant, false);
+        }
+
+        private long GetInt64DifferenceImpl(LocalInstant minuendInstant, LocalInstant subtrahendInstant, bool allowTruncation)
+        {
             if (minuendInstant < subtrahendInstant)
             {
                 return -GetInt64Difference(subtrahendInstant, minuendInstant);
@@ -170,9 +177,13 @@ namespace NodaTime.Fields
             long difference = (minuendYear - subtrahendYear) * ((long)monthsPerYear) + minuendMonth - subtrahendMonth;
 
             // Before adjusting for remainder, account for special case of add
-            // where the day-of-month is forced to the nearest sane value.
+            // where the day-of-month is forced to the nearest sane value... but only if we were originally
+            // going forward.
+            // For example, April 30th - March 31st is still one month, because if we add one month
+            // to March 31st we'll truncate the value to April 30th. However, March 31st - April 30th is 0 months,
+            // as if we add -1 month to April 30th we'd get March 30th (i.e. we'd overshoot).
             int minuendDom = calendarSystem.GetDayOfMonth(minuendInstant, minuendYear, minuendMonth);
-            if (minuendDom == calendarSystem.GetDaysInMonth(minuendYear, minuendMonth))
+            if (allowTruncation && minuendDom == calendarSystem.GetDaysInMonth(minuendYear, minuendMonth))
             {
                 // Last day of the minuend month...
                 int subtrahendDom = calendarSystem.GetDayOfMonth(subtrahendInstant, subtrahendYear, subtrahendMonth);
