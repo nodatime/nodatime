@@ -189,10 +189,10 @@ namespace NodaTime.Fields
                 int subtrahendDom = calendarSystem.GetDayOfMonth(subtrahendInstant, subtrahendYear, subtrahendMonth);
                 if (subtrahendDom > minuendDom)
                 {
-                    // ...and day of subtrahend month is larger.
-                    // Note: This works fine, but it ideally shouldn't invoke other
-                    // fields from within a field.
-                    subtrahendInstant = calendarSystem.Fields.DayOfMonth.SetValue(subtrahendInstant, minuendDom);
+                    // ...and day of subtrahend month is larger. Adjust day of month to that of the minuend,
+                    // to mimic the truncation if we added the relevant number of months to the subtrahend.
+                    long subtrahendTickOfDay = BasicCalendarSystem.GetTickOfDay(subtrahendInstant);
+                    subtrahendInstant = calendarSystem.GetLocalInstant(subtrahendYear, subtrahendMonth, minuendDom, subtrahendTickOfDay);
                 }
             }
 
