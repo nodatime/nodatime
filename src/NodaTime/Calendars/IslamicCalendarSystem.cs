@@ -83,7 +83,7 @@ namespace NodaTime.Calendars
             {
                 TotalTicksByMonth[i] = ticks;
                 // Here, the month number is 0-based, so even months are long
-                int days = (i & 2) == 0 ? LongMonthLength : ShortMonthLength;
+                int days = (i & 1) == 0 ? LongMonthLength : ShortMonthLength;
                 // This doesn't take account of leap years, but that doesn't matter - because
                 // it's not used on the last iteration, and leap years only affect the final month
                 // in the Islamic calendar.
@@ -188,6 +188,7 @@ namespace NodaTime.Calendars
 
         internal override int GetDayOfMonth(LocalInstant localInstant)
         {
+            // Note: this is zero-based
             int dayOfYear = GetDayOfYear(localInstant) - 1;
             if (dayOfYear == 354)
             {
