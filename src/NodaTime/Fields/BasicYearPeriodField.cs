@@ -22,18 +22,11 @@ namespace NodaTime.Fields
 
         internal override LocalInstant Add(LocalInstant localInstant, long value)
         {
-            // We don't try to work out the actual bounds, but we can easily tell
-            // that we're out of range. Anything not in the range of an int is definitely broken.
-            if (value < int.MinValue || value > int.MaxValue)
-            {
-                throw new ArgumentOutOfRangeException("value");
-            }
-
-            int intValue = (int)value;
-
             int currentYear = calendarSystem.GetYear(localInstant);
             // Adjust argument range based on current year
-            Preconditions.CheckArgumentRange("value", intValue, calendarSystem.MinYear - currentYear, calendarSystem.MaxYear - currentYear);
+            Preconditions.CheckArgumentRange("value", value, calendarSystem.MinYear - currentYear, calendarSystem.MaxYear - currentYear);
+            // If we got this far, the conversion to int must be fine.
+            int intValue = (int)value;
             return calendarSystem.SetYear(localInstant, intValue + currentYear);
         }
 
