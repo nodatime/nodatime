@@ -45,11 +45,6 @@ namespace NodaTime.Fields
             return 1;
         }
 
-        internal override long GetMinimumValue(LocalInstant localInstant)
-        {
-            return 1;
-        }
-
         internal override long GetMaximumValue(LocalInstant localInstant)
         {
             return WrappedField.GetMaximumValue(localInstant) + 1;

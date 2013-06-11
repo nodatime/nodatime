@@ -18,7 +18,6 @@ namespace NodaTime.Test.Fields
         public void GetMinimum_AlwaysReturns1()
         {
             Assert.AreEqual(1, field.GetMinimumValue());
-            Assert.AreEqual(1, field.GetMinimumValue(new LocalInstant(0)));
         }
 
         [Test]

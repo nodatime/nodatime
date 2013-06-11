@@ -97,13 +97,6 @@ namespace NodaTime.Test.Fields
         }
 
         [Test]
-        public void GetMinimumValue_WithLocalInstant_UsesOffset()
-        {
-            OffsetDateTimeField field = GetSampleField();
-            Assert.AreEqual(3, field.GetMinimumValue(new LocalInstant(0)));
-        }
-
-        [Test]
         public void GetMaximumValue_UsesOffset()
         {
             OffsetDateTimeField field = GetSampleField();

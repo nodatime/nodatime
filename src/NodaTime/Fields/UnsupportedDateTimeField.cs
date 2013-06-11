@@ -74,10 +74,5 @@ namespace NodaTime.Fields
         {
             throw new NotSupportedException();
         }
-
-        internal override long GetMinimumValue(LocalInstant localInstant)
-        {
-            throw new NotSupportedException();
-        }
     }
 }
