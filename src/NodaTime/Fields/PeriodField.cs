@@ -73,14 +73,6 @@ namespace NodaTime.Fields
         /// <param name="localInstant">The local instant to add to</param>
         /// <param name="value">The value to add, in the units of the field</param>
         /// <returns>The updated local instant</returns>
-        internal abstract LocalInstant Add(LocalInstant localInstant, int value);
-
-        /// <summary>
-        /// Adds a duration value (which may be negative) to the instant.
-        /// </summary>
-        /// <param name="localInstant">The local instant to add to</param>
-        /// <param name="value">The value to add, in the units of the field</param>
-        /// <returns>The updated local instant</returns>
         internal abstract LocalInstant Add(LocalInstant localInstant, long value);
 
         /// <summary>

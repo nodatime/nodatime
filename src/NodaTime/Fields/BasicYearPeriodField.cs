@@ -2,6 +2,7 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
+using System;
 using NodaTime.Calendars;
 using NodaTime.Utility;
 
@@ -19,17 +20,21 @@ namespace NodaTime.Fields
             this.calendarSystem = calendarSystem;
         }
 
-        internal override LocalInstant Add(LocalInstant localInstant, int value)
-        {
-            int currentYear = calendarSystem.GetYear(localInstant);
-            // Adjust argument range based on current year
-            Preconditions.CheckArgumentRange("value", value, calendarSystem.MinYear - currentYear, calendarSystem.MaxYear - currentYear);
-            return calendarSystem.SetYear(localInstant, value + currentYear);
-        }
-
         internal override LocalInstant Add(LocalInstant localInstant, long value)
         {
-            return Add(localInstant, (int) value);
+            // We don't try to work out the actual bounds, but we can easily tell
+            // that we're out of range. Anything not in the range of an int is definitely broken.
+            if (value < int.MinValue || value > int.MaxValue)
+            {
+                throw new ArgumentOutOfRangeException("value");
+            }
+
+            int intValue = (int)value;
+
+            int currentYear = calendarSystem.GetYear(localInstant);
+            // Adjust argument range based on current year
+            Preconditions.CheckArgumentRange("value", intValue, calendarSystem.MinYear - currentYear, calendarSystem.MaxYear - currentYear);
+            return calendarSystem.SetYear(localInstant, intValue + currentYear);
         }
 
         internal override long GetInt64Difference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)

@@ -17,11 +17,6 @@ namespace NodaTime.Fields
         {
         }
 
-        internal override LocalInstant Add(LocalInstant localInstant, int value)
-        {
-            return new LocalInstant(localInstant.Ticks + value);
-        }
-
         internal override LocalInstant Add(LocalInstant localInstant, long value)
         {
             return new LocalInstant(localInstant.Ticks + value);
