@@ -79,6 +79,27 @@ namespace NodaTime.Test.Calendars
         }
 
         [Test]
+        public void InternalConsistency()
+        {
+            var calendar = CalendarSystem.GetIslamicCalendar(IslamicLeapYearPattern.Base15, IslamicEpoch.Civil);
+            // Check construction and then deconstruction for every day of every year in one 30-year cycle.
+            for (int year = 1; year <= 30; year++)
+            {
+                for (int month = 1; month <= 12; month++)
+                {
+                    int monthLength = calendar.GetDaysInMonth(year, month);
+                    for (int day = 1; day < monthLength; day++)
+                    {
+                        LocalDate date = new LocalDate(year, month, day, calendar);
+                        Assert.AreEqual(year, date.Year, "Year of {0}-{1}-{2}", year, month, day);
+                        Assert.AreEqual(month, date.Month, "Month of {0}-{1}-{2}", year, month, day);
+                        Assert.AreEqual(day, date.Day, "Day of {0}-{1}-{2}", year, month, day);
+                    }
+                }
+            }
+        }
+
+        [Test]
         public void Base15LeapYear()
         {
             CalendarSystem calendar = CalendarSystem.GetIslamicCalendar(IslamicLeapYearPattern.Base15, IslamicEpoch.Civil);
@@ -362,7 +383,7 @@ namespace NodaTime.Test.Calendars
         }
 
         [Test]
-        public void AddYear_Simple()
+        public void PlusYears_Simple()
         {
             var calendar = CalendarSystem.GetIslamicCalendar(IslamicLeapYearPattern.Base15, IslamicEpoch.Civil);
             LocalDateTime start = new LocalDateTime(5, 8, 20, 2, 0, calendar);
@@ -371,7 +392,7 @@ namespace NodaTime.Test.Calendars
         }
 
         [Test]
-        public void Add_TruncatesAtLeapYear()
+        public void PlusYears_TruncatesAtLeapYear()
         {
             var calendar = CalendarSystem.GetIslamicCalendar(IslamicLeapYearPattern.Base15, IslamicEpoch.Civil);
             Assert.IsTrue(calendar.IsLeapYear(2));
@@ -384,7 +405,7 @@ namespace NodaTime.Test.Calendars
         }
 
         [Test]
-        public void Add_DoesNotTruncateFromOneLeapYearToAnother()
+        public void PlusYears_DoesNotTruncateFromOneLeapYearToAnother()
         {
             var calendar = CalendarSystem.GetIslamicCalendar(IslamicLeapYearPattern.Base15, IslamicEpoch.Civil);
             Assert.IsTrue(calendar.IsLeapYear(2));
@@ -394,6 +415,19 @@ namespace NodaTime.Test.Calendars
             LocalDateTime expectedEnd = new LocalDateTime(5, 12, 30, 2, 0, calendar);
 
             Assert.AreEqual(expectedEnd, start.PlusYears(3));
+        }
+
+        [Test]
+        public void PlusMonths_Simple()
+        {
+            var calendar = CalendarSystem.GetIslamicCalendar(IslamicLeapYearPattern.Base15, IslamicEpoch.Civil);
+            Assert.IsTrue(calendar.IsLeapYear(2));
+
+            LocalDateTime start = new LocalDateTime(2, 12, 30, 2, 0, calendar);
+            LocalDateTime expectedEnd = new LocalDateTime(3, 11, 30, 2, 0, calendar);
+            Assert.AreEqual(11, expectedEnd.Month);
+            Assert.AreEqual(30, expectedEnd.Day);
+            Assert.AreEqual(expectedEnd, start.PlusMonths(11));
         }
     }
 }
