@@ -542,11 +542,6 @@ namespace NodaTime
         /// Returns a local instant, formed from the given year, month, day, 
         /// hour, minute, second, millisecond and ticks values.
         /// </summary>
-        /// <para>
-        /// The default implementation calls upon separate DateTimeFields to
-        /// determine the result. Subclasses are encouraged to provide a more
-        /// efficient implementation.
-        /// </para>        
         /// <param name="year">Absolute year (not year within era; may be negative)</param>
         /// <param name="monthOfYear">Month of year</param>
         /// <param name="dayOfMonth">Day of month</param>
@@ -556,43 +551,8 @@ namespace NodaTime
         /// <param name="millisecondOfSecond">Millisecond within the second</param>
         /// <param name="tickOfMillisecond">Tick within the millisecond</param>
         /// <returns>A <see cref="LocalInstant"/> with the given values.</returns>
-        internal virtual LocalInstant GetLocalInstant(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour, int secondOfMinute,
-                                                      int millisecondOfSecond, int tickOfMillisecond)
-        {
-            LocalInstant instant = Fields.Year.SetValue(LocalInstant.LocalUnixEpoch, year);
-            instant = Fields.MonthOfYear.SetValue(instant, monthOfYear);
-            instant = Fields.DayOfMonth.SetValue(instant, dayOfMonth);
-            instant = Fields.HourOfDay.SetValue(instant, hourOfDay);
-            instant = Fields.MinuteOfHour.SetValue(instant, minuteOfHour);
-            instant = Fields.SecondOfMinute.SetValue(instant, secondOfMinute);
-            instant = Fields.MillisecondOfSecond.SetValue(instant, millisecondOfSecond);
-            return Fields.TickOfMillisecond.SetValue(instant, tickOfMillisecond);
-        }
-
-        /// <summary>
-        /// Returns a local instant, formed from the given instant, hour, minute, second, millisecond and ticks values.
-        /// <para>
-        /// The default implementation calls upon separate DateTimeFields to
-        /// determine the result. Subclasses are encouraged to provide a more
-        /// efficient implementation.
-        /// </para>       
-        /// </summary>
-        /// <param name="localInstant">Instant to start from</param>
-        /// <param name="hourOfDay">Hour to use</param>
-        /// <param name="minuteOfHour">Minute to use</param>
-        /// <param name="secondOfMinute">Second to use</param>
-        /// <param name="millisecondOfSecond">Milliscond to use</param>
-        /// <param name="tickOfMillisecond">Tick to use</param>
-        /// <returns>A <see cref="LocalInstant"/> value with the given values.</returns>
-        internal virtual LocalInstant GetLocalInstant(LocalInstant localInstant, int hourOfDay, int minuteOfHour, int secondOfMinute, int millisecondOfSecond,
-                                                      int tickOfMillisecond)
-        {
-            localInstant = Fields.HourOfDay.SetValue(localInstant, hourOfDay);
-            localInstant = Fields.MinuteOfHour.SetValue(localInstant, minuteOfHour);
-            localInstant = Fields.SecondOfMinute.SetValue(localInstant, secondOfMinute);
-            localInstant = Fields.MillisecondOfSecond.SetValue(localInstant, millisecondOfSecond);
-            return Fields.TickOfMillisecond.SetValue(localInstant, tickOfMillisecond);
-        }
+        internal abstract LocalInstant GetLocalInstant(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour, int secondOfMinute,
+                                                       int millisecondOfSecond, int tickOfMillisecond);
 
         internal virtual LocalInstant GetLocalInstant(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour, int secondOfMinute)
         {
