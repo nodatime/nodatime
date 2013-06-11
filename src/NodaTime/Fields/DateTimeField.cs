@@ -120,23 +120,6 @@ namespace NodaTime.Fields
         internal abstract long GetMinimumValue();
         #endregion
 
-        #region Rounding
-        /// <summary>
-        /// Round to the lowest whole unit of this field. After rounding, the value
-        /// of this field and all fields of a higher magnitude are retained. The
-        /// fractional ticks that cannot be expressed in whole increments of this
-        /// field are set to minimum.
-        /// <para>
-        /// For example, a datetime of 2002-11-02T23:34:56.789, rounded to the
-        /// lowest whole hour is 2002-11-02T23:00:00.000.
-        /// </para>
-        /// </summary>
-        /// <param name="localInstant">The local instant to round</param>
-        /// <returns>Rounded local instant</returns>
-        internal abstract LocalInstant RoundFloor(LocalInstant localInstant);
-
-        #endregion
-
         public override string ToString()
         {
             return fieldType.ToString();

@@ -30,11 +30,6 @@ namespace NodaTime.Fields
             return calendarSystem.GetWeekOfWeekYear(localInstant);
         }
 
-        internal override LocalInstant RoundFloor(LocalInstant localInstant)
-        {
-            return base.RoundFloor(localInstant + ThreeDays) - ThreeDays;
-        }
-
         internal override long GetMinimumValue()
         {
             return 1;

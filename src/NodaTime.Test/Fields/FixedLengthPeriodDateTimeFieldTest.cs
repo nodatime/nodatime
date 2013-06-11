@@ -52,22 +52,6 @@ namespace NodaTime.Test.Fields
             Assert.AreEqual(0L, field.GetMinimumValue());
         }
 
-        [Test]
-        public void RoundFloor()
-        {
-            DateTimeField field = new StubFixedLengthPeriodDateTimeField();
-            Assert.AreEqual(-120L, field.RoundFloor(new LocalInstant(-61L)).Ticks);
-            Assert.AreEqual(-60L, field.RoundFloor(new LocalInstant(-60L)).Ticks);
-            Assert.AreEqual(-60L, field.RoundFloor(new LocalInstant(-59L)).Ticks);
-            Assert.AreEqual(-60L, field.RoundFloor(new LocalInstant(-1L)).Ticks);
-            Assert.AreEqual(0L, field.RoundFloor(new LocalInstant(0L)).Ticks);
-            Assert.AreEqual(0L, field.RoundFloor(new LocalInstant(1L)).Ticks);
-            Assert.AreEqual(0L, field.RoundFloor(new LocalInstant(29L)).Ticks);
-            Assert.AreEqual(0L, field.RoundFloor(new LocalInstant(30L)).Ticks);
-            Assert.AreEqual(0L, field.RoundFloor(new LocalInstant(31L)).Ticks);
-            Assert.AreEqual(60L, field.RoundFloor(new LocalInstant(60L)).Ticks);
-        }
-
         private class StubFixedLengthPeriodDateTimeField : FixedLengthPeriodDateTimeField
         {
             internal StubFixedLengthPeriodDateTimeField(PeriodField unit) : base(DateTimeFieldType.SecondOfMinute, unit)

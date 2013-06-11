@@ -41,10 +41,5 @@ namespace NodaTime.Fields
         {
             return WrappedField.GetMaximumValue();
         }
-
-        internal override LocalInstant RoundFloor(LocalInstant localInstant)
-        {
-            return WrappedField.RoundFloor(localInstant);
-        }
     }
 }
