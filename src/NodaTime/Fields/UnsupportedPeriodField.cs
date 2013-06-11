@@ -68,17 +68,6 @@ namespace NodaTime.Fields
         /// <param name="localInstant">The local instant to add to</param>
         /// <param name="value">The value to add, in the units of the field</param>
         /// <returns>The updated local instant</returns>
-        internal override LocalInstant Add(LocalInstant localInstant, int value)
-        {
-            throw new NotSupportedException();
-        }
-
-        /// <summary>
-        /// Always throws NotSupportedException
-        /// </summary>
-        /// <param name="localInstant">The local instant to add to</param>
-        /// <param name="value">The value to add, in the units of the field</param>
-        /// <returns>The updated local instant</returns>
         internal override LocalInstant Add(LocalInstant localInstant, long value)
         {
             throw new NotSupportedException();

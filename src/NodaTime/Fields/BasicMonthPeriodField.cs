@@ -37,11 +37,18 @@ namespace NodaTime.Fields
         /// 07-31 - (1 month) = 06-30
         /// 03-31 - (1 month) = 02-28 or 02-29 depending
         /// </remarks>
-        internal override LocalInstant Add(LocalInstant localInstant, int value)
+        internal override LocalInstant Add(LocalInstant localInstant, long value)
         {
+            // We don't try to work out the actual bounds, but we can easily tell
+            // that we're out of range. Anything not in the range of an int is definitely broken.
+            if (value < int.MinValue || value > int.MaxValue)
+            {
+                throw new ArgumentOutOfRangeException("value");
+            }
+
             // Keep the parameter name the same as the original declaration, but
-            // use a more meaningful name in the method
-            int months = value;
+            // use a more meaningful name in the method.
+            int months = (int) value;
             if (months == 0)
             {
                 return localInstant;
@@ -88,71 +95,6 @@ namespace NodaTime.Fields
             dayToUse = Math.Min(dayToUse, maxDay);
             // Get proper date part, and return result
             long datePart = calendarSystem.GetYearMonthDayTicks(yearToUse, monthToUse, dayToUse);
-            return new LocalInstant(datePart + timePart);
-        }
-
-        internal override LocalInstant Add(LocalInstant localInstant, long value)
-        {
-            // Keep the parameter name the same as the original declaration, but
-            // use a more meaningful name in the method
-            long months = value;
-            int intMonths = unchecked((int)months);
-            if (intMonths == months)
-            {
-                return Add(localInstant, intMonths);
-            }
-
-            // Copied from Add(LocalInstant, int) and changed slightly
-            // Save the time part first
-            long timePart = BasicCalendarSystem.GetTickOfDay(localInstant);
-            // Get the year and month
-            int thisYear = calendarSystem.GetYear(localInstant);
-            int thisMonth = calendarSystem.GetMonthOfYear(localInstant, thisYear);
-            // Do not refactor without careful consideration.
-            // Order of calculation is important.
-
-            long yearToUse;
-
-            // Initially, monthToUse is zero-based
-            long monthToUse = thisMonth - 1 + months;
-            if (monthToUse >= 0)
-            {
-                yearToUse = thisYear + (monthToUse / monthsPerYear);
-                monthToUse = (monthToUse % monthsPerYear) + 1;
-            }
-            else
-            {
-                yearToUse = thisYear + (monthToUse / monthsPerYear) - 1;
-                monthToUse = Math.Abs(monthToUse);
-                int remMonthToUse = (int)(monthToUse % monthsPerYear);
-                // Take care of the boundary condition
-                if (remMonthToUse == 0)
-                {
-                    remMonthToUse = monthsPerYear;
-                }
-                monthToUse = monthsPerYear - remMonthToUse + 1;
-                // Take care of the boundary condition
-                if (monthToUse == 1)
-                {
-                    yearToUse++;
-                }
-            }
-            // End of do not refactor.
-
-            if (yearToUse < calendarSystem.MinYear || yearToUse > calendarSystem.MaxYear)
-            {
-                throw new ArgumentOutOfRangeException("value", "Magnitude of add amount is too large: " + months);
-            }
-
-            int intYearToUse = (int)yearToUse;
-            int intMonthToUse = (int)monthToUse;
-
-            // Quietly force DOM to nearest sane value.
-            int dayToUse = calendarSystem.GetDayOfMonth(localInstant, thisYear, thisMonth);
-            int maxDay = calendarSystem.GetDaysInMonth(intYearToUse, intMonthToUse);
-            dayToUse = Math.Min(dayToUse, maxDay);
-            // Get proper date part, and return result
-            long datePart = calendarSystem.GetYearMonthDayTicks(intYearToUse, intMonthToUse, dayToUse);
             return new LocalInstant(datePart + timePart);
         }
 

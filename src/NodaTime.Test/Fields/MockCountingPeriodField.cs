@@ -20,18 +20,6 @@ namespace NodaTime.Test.Fields
             this.unitTicks = unitTicks;
         }
 
-        internal static int int32Additions;
-        internal static LocalInstant AddInstantArg;
-        internal static int AddValueArg;
-
-        internal override LocalInstant Add(LocalInstant localInstant, int value)
-        {
-            int32Additions++;
-            AddInstantArg = localInstant;
-            AddValueArg = value;
-            return new LocalInstant(localInstant.Ticks + value * unitTicks);
-        }
-
         internal static int int64Additions;
         internal static LocalInstant Add64InstantArg;
         internal static long Add64ValueArg;
