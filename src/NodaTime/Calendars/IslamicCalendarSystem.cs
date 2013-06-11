@@ -42,11 +42,17 @@ namespace NodaTime.Calendars
         /// <summary>The typical number of ticks in a year.</summary>
         private const long TicksPerYear = (long) (354.36667 * NodaConstants.TicksPerStandardDay);
 
+        /// <summary>The number of days in a non-leap year.</summary>
+        private const long DaysPerNonLeapYear = 354;
+
+        /// <summary>The number of days in a leap year.</summary>
+        private const long DaysPerLeapYear = 355;
+
         /// <summary>The number of ticks in a non-leap year.</summary>
-        private const long TicksPerNonLeapYear = 354 * NodaConstants.TicksPerStandardDay;
+        private const long TicksPerNonLeapYear = DaysPerNonLeapYear * NodaConstants.TicksPerStandardDay;
 
         /// <summary>The number of ticks in a leap year.</summary>
-        private const long TicksPerLeapYear = 355 * NodaConstants.TicksPerStandardDay;
+        private const long TicksPerLeapYear = DaysPerLeapYear * NodaConstants.TicksPerStandardDay;
 
         /// <summary>The ticks for the civil (Friday) epoch of July 16th 622CE.</summary>
         private const long TicksAtCivilEpoch = -425215872000000000L;
@@ -146,12 +152,17 @@ namespace NodaTime.Calendars
             // Optimized implementation of SetYear, due to fixed months.
             int thisYear = GetYear(localInstant);
             int dayOfYear = GetDayOfYear(localInstant, thisYear);
+            // Truncate final day of leap year.
+            if (dayOfYear == DaysPerLeapYear && !IsLeapYear(year))
+            {
+                dayOfYear--;
+            }
             long tickOfDay = GetTickOfDay(localInstant);
 
-            return new LocalInstant(GetYearTicks(year) + (dayOfYear * NodaConstants.TicksPerStandardDay) + tickOfDay);
+            return new LocalInstant(GetYearTicks(year) + ((dayOfYear - 1) * NodaConstants.TicksPerStandardDay) + tickOfDay);
         }
 
-        internal override long GetYearDifference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
+        internal override long GetYearDifference(LocalInstant minuendInstant, LocalInstant subtrahendInstant, bool allowLeapYearAdjustment)
         {
             int minuendYear = GetYear(minuendInstant);
             int subtrahendYear = GetYear(subtrahendInstant);
