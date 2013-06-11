@@ -360,5 +360,40 @@ namespace NodaTime.Test.Calendars
             Assert.Throws<ArgumentOutOfRangeException>(() => CalendarSystem.GetIslamicCalendar(leapYearPatterns.Max() + 1, epochs.Min()));
             Assert.Throws<ArgumentOutOfRangeException>(() => CalendarSystem.GetIslamicCalendar(leapYearPatterns.Min(), epochs.Max() + 1));
         }
+
+        [Test]
+        public void AddYear_Simple()
+        {
+            var calendar = CalendarSystem.GetIslamicCalendar(IslamicLeapYearPattern.Base15, IslamicEpoch.Civil);
+            LocalDateTime start = new LocalDateTime(5, 8, 20, 2, 0, calendar);
+            LocalDateTime expectedEnd = new LocalDateTime(10, 8, 20, 2, 0, calendar);
+            Assert.AreEqual(expectedEnd, start.PlusYears(5));
+        }
+
+        [Test]
+        public void Add_TruncatesAtLeapYear()
+        {
+            var calendar = CalendarSystem.GetIslamicCalendar(IslamicLeapYearPattern.Base15, IslamicEpoch.Civil);
+            Assert.IsTrue(calendar.IsLeapYear(2));
+            Assert.IsFalse(calendar.IsLeapYear(3));
+
+            LocalDateTime start = new LocalDateTime(2, 12, 30, 2, 0, calendar);
+            LocalDateTime expectedEnd = new LocalDateTime(3, 12, 29, 2, 0, calendar);
+
+            Assert.AreEqual(expectedEnd, start.PlusYears(1));
+        }
+
+        [Test]
+        public void Add_DoesNotTruncateFromOneLeapYearToAnother()
+        {
+            var calendar = CalendarSystem.GetIslamicCalendar(IslamicLeapYearPattern.Base15, IslamicEpoch.Civil);
+            Assert.IsTrue(calendar.IsLeapYear(2));
+            Assert.IsTrue(calendar.IsLeapYear(5));
+
+            LocalDateTime start = new LocalDateTime(2, 12, 30, 2, 0, calendar);
+            LocalDateTime expectedEnd = new LocalDateTime(5, 12, 30, 2, 0, calendar);
+
+            Assert.AreEqual(expectedEnd, start.PlusYears(3));
+        }
     }
 }
