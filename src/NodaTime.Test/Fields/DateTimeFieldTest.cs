@@ -74,14 +74,6 @@ namespace NodaTime.Test.Fields
         }
 
         [Test]
-        public void GetMinimumValueForInstant_DelegatesToAbsolute()
-        {
-            var field = new StubDateTimeField();
-            Assert.AreEqual(0L, field.GetMinimumValue(new LocalInstant(0)));
-            Assert.That(field.GetMinWasCalled, Is.True);
-        }
-
-        [Test]
         public void GetMaximumValue_OnStub_DefaultsTo59()
         {
             var field = new StubDateTimeField();

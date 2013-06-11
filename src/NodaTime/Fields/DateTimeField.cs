@@ -106,14 +106,6 @@ namespace NodaTime.Fields
         internal abstract long GetMaximumValue();
 
         /// <summary>
-        /// Defaults to the absolute minimum for the field.
-        /// </summary>
-        internal virtual long GetMinimumValue(LocalInstant localInstant)
-        {
-            return GetMinimumValue();
-        }
-
-        /// <summary>
         /// Get the minimum allowable value for this field.
         /// </summary>
         /// <returns>The minimum valid value for this field, in the units of the field</returns>
