@@ -432,9 +432,9 @@ namespace NodaTime.Calendars
         internal override LocalInstant GetLocalInstantFromWeekYearWeekAndDayOfWeek(int weekYear, int weekOfWeekYear, IsoDayOfWeek dayOfWeek)
         {
             LocalInstant localInstant = LocalInstant.LocalUnixEpoch;
-            localInstant = CalendarSystem.Iso.Fields.WeekYear.SetValue(localInstant, weekYear);
-            localInstant = CalendarSystem.Iso.Fields.WeekOfWeekYear.SetValue(localInstant, weekOfWeekYear);
-            localInstant = CalendarSystem.Iso.Fields.DayOfWeek.SetValue(localInstant, (int) dayOfWeek);
+            localInstant = Fields.WeekYear.SetValue(localInstant, weekYear);
+            localInstant = Fields.WeekOfWeekYear.SetValue(localInstant, weekOfWeekYear);
+            localInstant = Fields.DayOfWeek.SetValue(localInstant, (int) dayOfWeek);
             return localInstant;
         }
 
