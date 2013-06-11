@@ -429,6 +429,15 @@ namespace NodaTime.Calendars
             return GetYearMonthDayTicks(year, monthOfYear, dayOfMonth);
         }
 
+        internal override LocalInstant GetLocalInstantFromWeekYearWeekAndDayOfWeek(int weekYear, int weekOfWeekYear, IsoDayOfWeek dayOfWeek)
+        {
+            LocalInstant localInstant = LocalInstant.LocalUnixEpoch;
+            localInstant = CalendarSystem.Iso.Fields.WeekYear.SetValue(localInstant, weekYear);
+            localInstant = CalendarSystem.Iso.Fields.WeekOfWeekYear.SetValue(localInstant, weekOfWeekYear);
+            localInstant = CalendarSystem.Iso.Fields.DayOfWeek.SetValue(localInstant, (int) dayOfWeek);
+            return localInstant;
+        }
+
         internal override LocalInstant GetLocalInstant(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour)
         {
             Preconditions.CheckArgumentRange("hourOfDay", hourOfDay, 0, 23);

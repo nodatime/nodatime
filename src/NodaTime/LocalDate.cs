@@ -189,10 +189,7 @@ namespace NodaTime
         /// <returns>The date corresponding to the given week year / week of week year / day of week.</returns>
         public static LocalDate FromWeekYearWeekAndDay(int weekYear, int weekOfWeekYear, IsoDayOfWeek dayOfWeek)
         {
-            LocalInstant localInstant = LocalInstant.LocalUnixEpoch;
-            localInstant = CalendarSystem.Iso.Fields.WeekYear.SetValue(localInstant, weekYear);
-            localInstant = CalendarSystem.Iso.Fields.WeekOfWeekYear.SetValue(localInstant, weekOfWeekYear);
-            localInstant = CalendarSystem.Iso.Fields.DayOfWeek.SetValue(localInstant, (int) dayOfWeek);
+            LocalInstant localInstant = CalendarSystem.Iso.GetLocalInstantFromWeekYearWeekAndDayOfWeek(weekYear, weekOfWeekYear, dayOfWeek);
             return new LocalDate(new LocalDateTime(localInstant));
         }
 

@@ -517,6 +517,16 @@ namespace NodaTime
         }
 
         /// <summary>
+        /// Returns the local date corresponding to the given "week year", "week of week year", and "day of week"
+        /// in this calendar system.
+        /// </summary>
+        /// <param name="weekYear">ISO-8601 week year of value to return</param>
+        /// <param name="weekOfWeekYear">ISO-8601 week of week year of value to return</param>
+        /// <param name="dayOfWeek">ISO-8601 day of week to return</param>
+        /// <returns>The date corresponding to the given week year / week of week year / day of week.</returns>
+        internal abstract LocalInstant GetLocalInstantFromWeekYearWeekAndDayOfWeek(int weekYear, int weekOfWeekYear, IsoDayOfWeek dayOfWeek);
+
+        /// <summary>
         /// Returns a local instant, at the start of the day formed from the given year of era, month, day, and era arguments.
         /// The set of given values must refer to a valid datetime.
         /// </summary>
