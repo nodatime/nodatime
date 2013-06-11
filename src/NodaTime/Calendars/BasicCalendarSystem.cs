@@ -138,7 +138,6 @@ namespace NodaTime.Calendars
 
             builder.Years = builder.Year.PeriodField;
             builder.Months = builder.MonthOfYear.PeriodField;
-            builder.WeekYears = builder.WeekYear.PeriodField;
         }
 
         /// <summary>
