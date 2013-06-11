@@ -50,7 +50,6 @@ namespace NodaTime.Test.Fields
             AssertDelegated(x => x.GetMaximumValue(when));
             AssertDelegated(x => x.GetMaximumValue());
             AssertDelegated(x => x.SetValue(when, 100));
-            AssertDelegated(x => x.RoundFloor(when));
         }
 
         private static void AssertDelegated<T>(Func<DateTimeField, T> func)

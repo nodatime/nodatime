@@ -67,11 +67,5 @@ namespace NodaTime.Fields
         {
             return max;
         }
-
-        internal override LocalInstant RoundFloor(LocalInstant localInstant)
-        {
-            DateTimeField field = WrappedField;
-            return field.RoundFloor(field.SetValue(localInstant, GetInt64Value(localInstant) * divisor));
-        }
     }
 }

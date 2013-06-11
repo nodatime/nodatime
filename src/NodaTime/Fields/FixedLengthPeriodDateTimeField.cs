@@ -62,19 +62,6 @@ namespace NodaTime.Fields
         #endregion
 
         #region Rounding
-        internal override LocalInstant RoundFloor(LocalInstant localInstant)
-        {
-            long ticks = localInstant.Ticks;
-            if (ticks >= 0)
-            {
-                return new LocalInstant(ticks - (ticks % unitTicks));
-            }
-            else
-            {
-                ticks++;
-                return new LocalInstant(ticks - (ticks % unitTicks) - unitTicks);
-            }
-        }
 
         #endregion
     }

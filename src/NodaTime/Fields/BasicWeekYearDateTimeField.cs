@@ -80,18 +80,7 @@ namespace NodaTime.Fields
         #endregion
 
         #region Rounding
-        internal override LocalInstant RoundFloor(LocalInstant localInstant)
-        {
-            // Note: This works fine, but it ideally shouldn't invoke other
-            // fields from within a field.
-            localInstant = calendarSystem.Fields.WeekOfWeekYear.RoundFloor(localInstant);
-            int wow = calendarSystem.GetWeekOfWeekYear(localInstant);
-            if (wow > 1)
-            {
-                localInstant -= Duration.FromStandardWeeks(wow - 1);
-            }
-            return localInstant;
-        }
+
         #endregion
     }
 }

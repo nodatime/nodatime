@@ -117,22 +117,6 @@ namespace NodaTime.Test.Fields
             Assert.AreEqual(62, field.GetMaximumValue(new LocalInstant(0)));
         }
 
-        [Test]
-        public void RoundFloor()
-        {
-            OffsetDateTimeField field = GetSampleField();
-            Assert.AreEqual(-2 * NodaConstants.TicksPerSecond, field.RoundFloor(new LocalInstant(-1001 * NodaConstants.TicksPerMillisecond)).Ticks);
-            Assert.AreEqual(-1 * NodaConstants.TicksPerSecond, field.RoundFloor(new LocalInstant(-1000 * NodaConstants.TicksPerMillisecond)).Ticks);
-            Assert.AreEqual(-1 * NodaConstants.TicksPerSecond, field.RoundFloor(new LocalInstant(-999 * NodaConstants.TicksPerMillisecond)).Ticks);
-            Assert.AreEqual(-1 * NodaConstants.TicksPerSecond, field.RoundFloor(new LocalInstant(-1 * NodaConstants.TicksPerMillisecond)).Ticks);
-            Assert.AreEqual(0, field.RoundFloor(new LocalInstant(0)).Ticks);
-            Assert.AreEqual(0, field.RoundFloor(new LocalInstant(1 * NodaConstants.TicksPerMillisecond)).Ticks);
-            Assert.AreEqual(0, field.RoundFloor(new LocalInstant(499 * NodaConstants.TicksPerMillisecond)).Ticks);
-            Assert.AreEqual(0, field.RoundFloor(new LocalInstant(500 * NodaConstants.TicksPerMillisecond)).Ticks);
-            Assert.AreEqual(0, field.RoundFloor(new LocalInstant(501 * NodaConstants.TicksPerMillisecond)).Ticks);
-            Assert.AreEqual(1 * NodaConstants.TicksPerSecond, field.RoundFloor(new LocalInstant(1000 * NodaConstants.TicksPerMillisecond)).Ticks);
-        }
-
         /// <summary>
         /// Helper method to avoid having to repeat all of this every time
         /// </summary>

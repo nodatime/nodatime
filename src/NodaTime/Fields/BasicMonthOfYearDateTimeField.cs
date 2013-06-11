@@ -75,12 +75,7 @@ namespace NodaTime.Fields
         #endregion
 
         #region Rounding
-        internal override LocalInstant RoundFloor(LocalInstant localInstant)
-        {
-            int year = calendarSystem.GetYear(localInstant);
-            int month = calendarSystem.GetMonthOfYear(localInstant, year);
-            return new LocalInstant(calendarSystem.GetYearMonthTicks(year, month));
-        }
+
         #endregion
     }
 }

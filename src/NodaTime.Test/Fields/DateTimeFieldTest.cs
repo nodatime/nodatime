@@ -98,19 +98,6 @@ namespace NodaTime.Test.Fields
         }
         #endregion
 
-        #region Rounding
-        [Test]
-        public void RoundFloor_OnStub_RoundsTo60()
-        {
-            DateTimeField field = new StubDateTimeField();
-            Assert.AreEqual(0L, field.RoundFloor(new LocalInstant(0L)).Ticks);
-            Assert.AreEqual(0L, field.RoundFloor(new LocalInstant(29L)).Ticks);
-            Assert.AreEqual(0L, field.RoundFloor(new LocalInstant(30L)).Ticks);
-            Assert.AreEqual(0L, field.RoundFloor(new LocalInstant(31L)).Ticks);
-            Assert.AreEqual(60L, field.RoundFloor(new LocalInstant(60L)).Ticks);
-        }
-        #endregion
-
         private class StubDateTimeField : DateTimeField
         {
             internal StubDateTimeField(DateTimeFieldType type) : base(type, new MockCountingPeriodField(PeriodFieldType.Seconds))
@@ -152,11 +139,6 @@ namespace NodaTime.Test.Fields
             {
                 GetMinWasCalled = true;
                 return 0;
-            }
-
-            internal override LocalInstant RoundFloor(LocalInstant localInstant)
-            {
-                return new LocalInstant((localInstant.Ticks / 60L) * 60L);
             }
         }
     }

@@ -57,10 +57,6 @@ namespace NodaTime.Fields
         #endregion
 
         #region Rounding
-        internal override LocalInstant RoundFloor(LocalInstant localInstant)
-        {
-            return GetValue(localInstant) == CommonEraIndex ? calendarSystem.SetYear(LocalInstant.LocalUnixEpoch, 1) : new LocalInstant(long.MinValue);
-        }
 
         #endregion
     }

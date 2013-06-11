@@ -65,10 +65,5 @@ namespace NodaTime.Fields
         {
             return wrappedField.GetMinimumValue();
         }
-
-        internal override LocalInstant RoundFloor(LocalInstant localInstant)
-        {
-            return wrappedField.RoundFloor(localInstant);
-        }
     }
 }

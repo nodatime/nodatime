@@ -2,6 +2,7 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
+using System;
 using NodaTime.Calendars;
 
 namespace NodaTime.Fields
@@ -29,30 +30,7 @@ namespace NodaTime.Fields
 
         internal override long GetInt64Difference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
         {
-            DateTimeField field = calendarSystem.Fields.WeekYear;
-
-            if (minuendInstant < subtrahendInstant)
-            {
-                return -GetInt64Difference(subtrahendInstant, minuendInstant);
-            }
-            int minuendWeekYear = field.GetValue(minuendInstant);
-            int subtrahendWeekYear = field.GetValue(subtrahendInstant);
-
-            Duration minuendRemainder = field.RoundFloor(minuendInstant) - minuendInstant;
-            Duration subtrahendRemainder = field.RoundFloor(subtrahendInstant) - subtrahendInstant;
-
-            // Balance leap weekyear differences on remainders.
-            if (subtrahendRemainder >= Week53Ticks && calendarSystem.GetWeeksInWeekYear(minuendWeekYear) <= 52)
-            {
-                subtrahendRemainder -= Duration.OneStandardWeek;
-            }
-
-            int difference = minuendWeekYear - subtrahendWeekYear;
-            if (minuendRemainder < subtrahendRemainder)
-            {
-                difference--;
-            }
-            return difference;
+            throw new InvalidOperationException("GetInt64Difference unsupported for WeekYear");
         }
     }
 }
