@@ -79,39 +79,6 @@ namespace NodaTime.Calendars
             return IsLeapYear(year) ? MaxTotalTicksByMonth[month - 1] : MinTotalTicksByMonth[month - 1];
         }
 
-        internal override long GetYearDifference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
-        {
-            int minuendYear = GetYear(minuendInstant);
-            int subtrahendYear = GetYear(subtrahendInstant);
-
-            // Inlined remainder method to avoid duplicate calls to get.
-            long minuendRem = minuendInstant.Ticks - GetYearTicks(minuendYear);
-            long subtrahendRem = subtrahendInstant.Ticks - GetYearTicks(subtrahendYear);
-
-            // Balance leap year differences on remainders.
-            if (subtrahendRem >= Feb29thTicks)
-            {
-                if (IsLeapYear(subtrahendYear))
-                {
-                    if (!IsLeapYear(minuendYear))
-                    {
-                        subtrahendRem -= NodaConstants.TicksPerStandardDay;
-                    }
-                }
-                else if (minuendRem >= Feb29thTicks && IsLeapYear(minuendYear))
-                {
-                    minuendRem -= NodaConstants.TicksPerStandardDay;
-                }
-            }
-
-            int difference = minuendYear - subtrahendYear;
-            if (minuendRem < subtrahendRem)
-            {
-                difference--;
-            }
-            return difference;
-        }
-
         internal override LocalInstant SetYear(LocalInstant localInstant, int year)
         {
             int thisYear = GetYear(localInstant);

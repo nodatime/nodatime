@@ -4,6 +4,8 @@
 
 using System;
 using NUnit.Framework;
+using NodaTime.Calendars;
+using NodaTime.Text;
 
 namespace NodaTime.Test
 {
@@ -144,6 +146,61 @@ namespace NodaTime.Test
             LocalDate d2 = new LocalDate(2013, 4, 30);
             Assert.AreEqual(Period.FromMonths(1), Period.Between(d1, d2));
             Assert.AreEqual(Period.FromDays(-30), Period.Between(d2, d1));
+        }
+
+        [Test]
+        public void BetweenLocalDates_OnLeapYear()
+        {
+            LocalDate d1 = new LocalDate(2012, 2, 29);
+            LocalDate d2 = new LocalDate(2013, 2, 28);
+            Assert.AreEqual(Period.FromYears(1), Period.Between(d1, d2));
+            // Go back from February 28th 2013 to March 28th 2012, then back 28 days to February 29th 2012
+            Assert.AreEqual(Period.FromMonths(-11) + Period.FromDays(-28), Period.Between(d2, d1));
+        }
+
+        [Test]
+        public void BetweenLocalDates_AfterLeapYear()
+        {
+            LocalDate d1 = new LocalDate(2012, 3, 5);
+            LocalDate d2 = new LocalDate(2013, 3, 5);
+            Assert.AreEqual(Period.FromYears(1), Period.Between(d1, d2));
+            Assert.AreEqual(Period.FromYears(-1), Period.Between(d2, d1));
+        }
+
+        [Test]
+        public void BetweenLocalDateTimes_OnLeapYear()
+        {
+            LocalDateTime dt1 = new LocalDateTime(2012, 2, 29, 2, 0);
+            LocalDateTime dt2 = new LocalDateTime(2012, 2, 29, 4, 0);
+            LocalDateTime dt3 = new LocalDateTime(2013, 2, 28, 3, 0);
+            Assert.AreEqual(Parse("P1YT1H"), Period.Between(dt1, dt3));
+            Assert.AreEqual(Parse("P11M29DT23H"), Period.Between(dt2, dt3));
+
+            Assert.AreEqual(Parse("P-11M-28DT-1H"), Period.Between(dt3, dt1));
+            Assert.AreEqual(Parse("P-11M-27DT-23H"), Period.Between(dt3, dt2));
+        }
+
+        [Test]
+        public void BetweenLocalDateTimes_OnLeapYearIslamic()
+        {
+            var calendar = CalendarSystem.GetIslamicCalendar(IslamicLeapYearPattern.Base15, IslamicEpoch.Civil);
+            Assert.IsTrue(calendar.IsLeapYear(2));
+            Assert.IsFalse(calendar.IsLeapYear(3));
+
+            LocalDateTime dt1 = new LocalDateTime(2, 12, 30, 2, 0, calendar);
+            LocalDateTime dt2 = new LocalDateTime(2, 12, 30, 4, 0, calendar);
+            LocalDateTime dt3 = new LocalDateTime(3, 12, 29, 3, 0, calendar);
+
+            LocalDateTime foo = dt2.PlusMonths(11);
+
+            // Adding a year truncates to 0003-12-28T02:00:00, then add an hour.
+            Assert.AreEqual(Parse("P1YT1H"), Period.Between(dt1, dt3));
+            // Adding a year would overshoot. Adding 11 months takes us to month 03-11-30T04:00.
+            // Adding another 28 days takes us to 03-12-28T04:00, then add another 23 hours to finish.
+            Assert.AreEqual(Parse("P11M28DT23H"), Period.Between(dt2, dt3));
+
+            Assert.AreEqual(Parse("P-11M-30DT-1H"), Period.Between(dt3, dt1));
+            Assert.AreEqual(Parse("P-11M-29DT-23H"), Period.Between(dt3, dt2));            
         }
 
         [Test]
@@ -641,6 +698,14 @@ namespace NodaTime.Test
             Assert.That(februaryComparer.Compare(month, days), Is.LessThan(0));
             Assert.That(februaryComparer.Compare(days, month), Is.GreaterThan(0));
             Assert.AreEqual(0, februaryComparer.Compare(month, month));
+        }
+
+        /// <summary>
+        /// Just a simple way of parsing a period string. It's a more compact period representation.
+        /// </summary>
+        private static Period Parse(string text)
+        {
+            return PeriodPattern.RoundtripPattern.Parse(text).Value;
         }
     }
 }

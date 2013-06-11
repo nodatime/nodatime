@@ -44,7 +44,6 @@ namespace NodaTime.Calendars
         protected abstract long CalculateYearTicks(int year);
         protected internal abstract int GetMonthOfYear(LocalInstant localInstant, int year);
         internal abstract int GetDaysInMonthMax(int month);
-        internal abstract long GetYearDifference(LocalInstant minuendInstant, LocalInstant subtrahendInstant);
         internal abstract LocalInstant SetYear(LocalInstant localInstant, int year);
 
         /// <summary>
