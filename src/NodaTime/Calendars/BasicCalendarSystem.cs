@@ -438,6 +438,15 @@ namespace NodaTime.Calendars
             return localInstant;
         }
 
+        internal override LocalInstant GetLocalInstant(Era era, int yearOfEra, int monthOfYear, int dayOfMonth)
+        {
+            int eraIndex = GetEraIndex(era);
+            LocalInstant instant = Fields.Era.SetValue(LocalInstant.LocalUnixEpoch, eraIndex);
+            instant = Fields.YearOfEra.SetValue(instant, yearOfEra);
+            instant = Fields.MonthOfYear.SetValue(instant, monthOfYear);
+            return Fields.DayOfMonth.SetValue(instant, dayOfMonth);
+        }
+
         internal override LocalInstant GetLocalInstant(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour)
         {
             Preconditions.CheckArgumentRange("hourOfDay", hourOfDay, 0, 23);
