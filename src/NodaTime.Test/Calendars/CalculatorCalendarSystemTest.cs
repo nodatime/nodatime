@@ -1,45 +1,43 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using NUnit.Framework;
+﻿// Copyright 2013 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0,
+// as found in the LICENSE.txt file.
+
 using NodaTime.Calendars;
 using NodaTime.Fields;
 using NodaTime.Text;
+using NUnit.Framework;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 
 namespace NodaTime.Test.Calendars
 {
     [TestFixture]
     public class CalculatorCalendarSystemTest
     {
-#pragma warning disable 0414 // Used by tests via reflection - do not remove!
-
         private static readonly CalendarSystem[] GregorianLikeOldCalendarSystems = 
-        {
-            GregorianCalendarSystem.GetInstance(1),
-            GregorianCalendarSystem.GetInstance(2),
-            GregorianCalendarSystem.GetInstance(3),
-            GregorianCalendarSystem.GetInstance(4),
-            GregorianCalendarSystem.GetInstance(5),
-            GregorianCalendarSystem.GetInstance(6),
-            GregorianCalendarSystem.GetInstance(7),
-            GregorianCalendarSystem.IsoHelper.Instance
-        };
+            Enumerable.Range(1, 7)
+                      .Select(x => GregorianCalendarSystem.GetInstance(x))
+                      .Concat(new[] { GregorianCalendarSystem.IsoHelper.Instance })
+                      .ToArray();
 
-        private static readonly CalendarSystem[] GregorianLikeNewCalendarSystems = 
-        {
-            new CalculatorCalendarSystem("new greg 1", "ignored", GregorianYearMonthDayCalculator.Instance, 1),
-            new CalculatorCalendarSystem("new greg 2", "ignored", GregorianYearMonthDayCalculator.Instance, 2),
-            new CalculatorCalendarSystem("new greg 3", "ignored", GregorianYearMonthDayCalculator.Instance, 3),
-            new CalculatorCalendarSystem("new greg 4", "ignored", GregorianYearMonthDayCalculator.Instance, 4),
-            new CalculatorCalendarSystem("new greg 5", "ignored", GregorianYearMonthDayCalculator.Instance, 5),
-            new CalculatorCalendarSystem("new greg 6", "ignored", GregorianYearMonthDayCalculator.Instance, 6),
-            new CalculatorCalendarSystem("new greg 7", "ignored", GregorianYearMonthDayCalculator.Instance, 7),
-            new CalculatorCalendarSystem("new iso", "ignored", IsoYearMonthDayCalculator.IsoInstance, 4),
-        };
+        private static readonly CalendarSystem[] GregorianLikeNewCalendarSystems =
+            Enumerable.Range(1, 7)
+                      .Select(x => new CalculatorCalendarSystem("greg " + x, "ignored", GregorianYearMonthDayCalculator.Instance, x))
+                      .Concat(new[] { new CalculatorCalendarSystem("ignored", "ignored", IsoYearMonthDayCalculator.IsoInstance, 4), })
+                      .ToArray();
 
-        private static readonly string[] GregorionLikeTestValues =
+        private static readonly CalendarSystem[] CopticOldCalendarSystems =
+            Enumerable.Range(1, 7)
+                      .Select(x => CopticCalendarSystem.GetInstance(x))
+                      .ToArray();
+
+        private static readonly CalendarSystem[] CopticNewCalendarSystems =
+            Enumerable.Range(1, 7)
+                      .Select(x => new CalculatorCalendarSystem("coptic " + x, "ignored", CopticYearMonthDayCalculator.CopticInstance, x))
+                      .ToArray();
+
+        private static readonly string[] GregorianLikeTestValues =
         {
             "2013-06-12T15:17:08.1234567",
             "-0500-06-12T00:52:59.1234567",
@@ -48,20 +46,47 @@ namespace NodaTime.Test.Calendars
             "1972-02-29T12:52:59.1234567",
         };
 
+        private static readonly string[] CopticTestValues =
+        {
+            "2013-06-12T15:17:08.1234567",
+            "1000-06-12T00:52:59.1234567",
+            "1972-02-29T12:52:59.1234567",
+        };
+
+#pragma warning disable 0414 // Used by tests via reflection - do not remove!
         private static readonly TestCaseData[] GregorianLikeCalendarDateTimeFieldTestData = 
-            (from calendarPair in GregorianLikeOldCalendarSystems.Zip(GregorianLikeNewCalendarSystems, (Old, New) => new { Old, New })
-             from property in GetSupportedProperties(calendarPair.New.Fields).Where(p => p.PropertyType == typeof(DateTimeField))
-             from text in GregorionLikeTestValues
-             select new TestCaseData(text, calendarPair.Old, calendarPair.New, property)
-                           .SetName(text + ": " + calendarPair.Old.Id + " - " + property.Name)).ToArray();
+            CreateTestCaseData<DateTimeField>(GregorianLikeOldCalendarSystems, GregorianLikeNewCalendarSystems, GregorianLikeTestValues);
 
         private static readonly TestCaseData[] GregorianLikeCalendarPeriodFieldTestData =
-            (from calendarPair in GregorianLikeOldCalendarSystems.Zip(GregorianLikeNewCalendarSystems, (Old, New) => new { Old, New })
-             from property in GetSupportedProperties(calendarPair.New.Fields).Where(p => p.PropertyType == typeof(PeriodField))
-             from text in GregorionLikeTestValues
-             select new TestCaseData(text, calendarPair.Old, calendarPair.New, property)
-                           .SetName(text + ": " + calendarPair.Old.Id + " - " + property.Name)).ToArray();
+            CreateTestCaseData<PeriodField>(GregorianLikeOldCalendarSystems, GregorianLikeNewCalendarSystems, GregorianLikeTestValues);
+
+        private static readonly TestCaseData[] GregorianLikeCalendarConstructionTestData =
+            (from calendar in GregorianLikeNewCalendarSystems
+             from text in GregorianLikeTestValues
+             select new TestCaseData(text, calendar).SetName(text + ": " + calendar.Id)).ToArray();
+
+        private static readonly TestCaseData[] CopticCalendarDateTimeFieldTestData =
+            CreateTestCaseData<DateTimeField>(CopticOldCalendarSystems, CopticNewCalendarSystems, CopticTestValues);
+
+        private static readonly TestCaseData[] CopticCalendarPeriodFieldTestData =
+            CreateTestCaseData<PeriodField>(CopticOldCalendarSystems, CopticNewCalendarSystems, CopticTestValues);
+
+        private static readonly TestCaseData[] CopticCalendarConstructionTestData =
+            (from calendar in CopticNewCalendarSystems
+             from text in CopticTestValues
+             select new TestCaseData(text, calendar).SetName(text + ": " + calendar.Id)).ToArray();
+
 #pragma warning restore 0414
+
+        private static TestCaseData[] CreateTestCaseData<T>(CalendarSystem[] oldCalendarSystems,
+            CalendarSystem[] newCalendarSystems, string[] testValues)
+        {
+            return (from calendarPair in oldCalendarSystems.Zip(newCalendarSystems, (Old, New) => new { Old, New })
+                    from property in GetSupportedProperties(calendarPair.New.Fields).Where(p => p.PropertyType == typeof(T))
+                    from text in testValues
+                    select new TestCaseData(text, calendarPair.Old, calendarPair.New, property)
+                                 .SetName(text + ": " + calendarPair.Old.Id + " - " + property.Name)).ToArray();
+        }
 
         private static IEnumerable<PropertyInfo> GetSupportedProperties(FieldSet fields)
         {
@@ -73,7 +98,8 @@ namespace NodaTime.Test.Calendars
 
         [Test]
         [TestCaseSource("GregorianLikeCalendarDateTimeFieldTestData")]
-        public void GregorianLikeDateTimeFields(string text, CalendarSystem oldSystem, CalendarSystem newSystem, PropertyInfo property)
+        [TestCaseSource("CopticCalendarDateTimeFieldTestData")]
+        public void DateTimeFields(string text, CalendarSystem oldSystem, CalendarSystem newSystem, PropertyInfo property)
         {
             LocalInstant localInstant = LocalDateTimePattern.ExtendedIsoPattern.Parse(text).Value.LocalInstant;
 
@@ -93,7 +119,8 @@ namespace NodaTime.Test.Calendars
 
         [Test]
         [TestCaseSource("GregorianLikeCalendarPeriodFieldTestData")]
-        public void GregorianLikePeriodFields(string text, CalendarSystem oldSystem, CalendarSystem newSystem, PropertyInfo property)
+        [TestCaseSource("CopticCalendarPeriodFieldTestData")]
+        public void PeriodFields(string text, CalendarSystem oldSystem, CalendarSystem newSystem, PropertyInfo property)
         {
             LocalInstant localInstant = LocalDateTimePattern.ExtendedIsoPattern.Parse(text).Value.LocalInstant;
 
@@ -118,6 +145,27 @@ namespace NodaTime.Test.Calendars
                 Assert.AreEqual(expectedDiff, actualDiff, "Error diffing after adding {0}", i);
             }
         }
-    }
 
+        [Test]
+        [TestCaseSource("GregorianLikeCalendarConstructionTestData")]
+        [TestCaseSource("CopticCalendarConstructionTestData")]
+        public void Construction(string text, CalendarSystem calendar)
+        {
+            LocalInstant localInstant = LocalDateTimePattern.ExtendedIsoPattern.Parse(text).Value.LocalInstant;
+            LocalDateTime localDateTime = new LocalDateTime(localInstant, calendar);
+            LocalInstant localDateInstant = (localDateTime.Date + LocalTime.Midnight).LocalInstant;
+
+            Assert.AreEqual(localDateInstant,
+                calendar.GetLocalInstant(localDateTime.Era, localDateTime.YearOfEra, localDateTime.Month, localDateTime.Day));
+            Assert.AreEqual(localInstant,
+                calendar.GetLocalInstant(localDateTime.Year, localDateTime.Month, localDateTime.Day,
+                                         localDateTime.Hour, localDateTime.Minute, localDateTime.Second,
+                                         localDateTime.Millisecond, (int) (localDateTime.TickOfSecond % NodaConstants.TicksPerMillisecond)));
+            Assert.AreEqual(localInstant,
+                calendar.GetLocalInstant(localDateTime.Year, localDateTime.Month, localDateTime.Day, localDateTime.TickOfDay));
+
+            Assert.AreEqual(localDateInstant, calendar.GetLocalInstantFromWeekYearWeekAndDayOfWeek(
+                localDateTime.WeekYear, localDateTime.WeekOfWeekYear, localDateTime.IsoDayOfWeek));
+        }
+    }
 }
