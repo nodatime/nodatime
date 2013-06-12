@@ -48,9 +48,16 @@ namespace NodaTime.Test.Calendars
             "1972-02-29T12:52:59.1234567",
         };
 
-        private static readonly TestCaseData[] GregorianLikeCalendarTestData = 
+        private static readonly TestCaseData[] GregorianLikeCalendarDateTimeFieldTestData = 
             (from calendarPair in GregorianLikeOldCalendarSystems.Zip(GregorianLikeNewCalendarSystems, (Old, New) => new { Old, New })
              from property in GetSupportedProperties(calendarPair.New.Fields).Where(p => p.PropertyType == typeof(DateTimeField))
+             from text in GregorionLikeTestValues
+             select new TestCaseData(text, calendarPair.Old, calendarPair.New, property)
+                           .SetName(text + ": " + calendarPair.Old.Id + " - " + property.Name)).ToArray();
+
+        private static readonly TestCaseData[] GregorianLikeCalendarPeriodFieldTestData =
+            (from calendarPair in GregorianLikeOldCalendarSystems.Zip(GregorianLikeNewCalendarSystems, (Old, New) => new { Old, New })
+             from property in GetSupportedProperties(calendarPair.New.Fields).Where(p => p.PropertyType == typeof(PeriodField))
              from text in GregorionLikeTestValues
              select new TestCaseData(text, calendarPair.Old, calendarPair.New, property)
                            .SetName(text + ": " + calendarPair.Old.Id + " - " + property.Name)).ToArray();
@@ -65,22 +72,50 @@ namespace NodaTime.Test.Calendars
         }
 
         [Test]
-        [TestCaseSource("GregorianLikeCalendarTestData")]
-        public void GregorianDateTimeFields(string text, CalendarSystem oldSystem, CalendarSystem newSystem, PropertyInfo property)
+        [TestCaseSource("GregorianLikeCalendarDateTimeFieldTestData")]
+        public void GregorianLikeDateTimeFields(string text, CalendarSystem oldSystem, CalendarSystem newSystem, PropertyInfo property)
         {
             LocalInstant localInstant = LocalDateTimePattern.ExtendedIsoPattern.Parse(text).Value.LocalInstant;
 
             FieldSet originalFields = oldSystem.Fields;
             FieldSet newFields = newSystem.Fields;
 
-            var isoField = (DateTimeField)property.GetValue(originalFields, null);
-            var testField = (DateTimeField)property.GetValue(newFields, null);
-            long expectedValue = isoField.GetInt64Value(localInstant);
-            long actualValue = testField.GetInt64Value(localInstant);
-            Assert.AreEqual(expectedValue, actualValue, "Error for property {0}", property.Name);
+            var oldField = (DateTimeField)property.GetValue(originalFields, null);
+            var newField = (DateTimeField)property.GetValue(newFields, null);
+            long expectedValue = oldField.GetInt64Value(localInstant);
+            long actualValue = newField.GetInt64Value(localInstant);
+            Assert.AreEqual(expectedValue, actualValue);
             if (expectedValue >= int.MinValue && expectedValue <= int.MaxValue)
             {
-                Assert.AreEqual(isoField.GetInt64Value(localInstant), testField.GetInt64Value(localInstant));
+                Assert.AreEqual(oldField.GetInt64Value(localInstant), oldField.GetInt64Value(localInstant));
+            }
+        }
+
+        [Test]
+        [TestCaseSource("GregorianLikeCalendarPeriodFieldTestData")]
+        public void GregorianLikePeriodFields(string text, CalendarSystem oldSystem, CalendarSystem newSystem, PropertyInfo property)
+        {
+            LocalInstant localInstant = LocalDateTimePattern.ExtendedIsoPattern.Parse(text).Value.LocalInstant;
+
+            FieldSet originalFields = oldSystem.Fields;
+            FieldSet newFields = newSystem.Fields;
+
+            var oldField = (PeriodField)property.GetValue(originalFields, null);
+            var newField = (PeriodField)property.GetValue(newFields, null);
+
+            // 81 values which will cover various boundaries
+            for (int i = -40; i <= 40; i++)
+            {
+                LocalInstant expectedValue = oldField.Add(localInstant, i);
+                LocalInstant actualValue = newField.Add(localInstant, i);
+
+                Assert.AreEqual(expectedValue, actualValue, "Error adding {0}", i);
+
+                // The diff won't necessarily by equal to i as arithmetic isn't invertible,
+                // but it should be the same as the old field.
+                long expectedDiff = oldField.GetInt64Difference(actualValue, localInstant);
+                long actualDiff = newField.GetInt64Difference(actualValue, localInstant);
+                Assert.AreEqual(expectedDiff, actualDiff, "Error diffing after adding {0}", i);
             }
         }
     }
