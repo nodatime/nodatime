@@ -209,6 +209,15 @@ namespace NodaTime
         }
         #endregion // Operators
 
+        /// <summary>
+        /// Convenience method to add the given number of ticks. Useful
+        /// for assembling date and time parts.
+        /// </summary>
+        internal LocalInstant PlusTicks(long ticksToAdd)
+        {
+            return new LocalInstant(Ticks + ticksToAdd);
+        }
+
         #region IComparable<LocalInstant> Members
         /// <summary>
         /// Compares the current object with another object of the same type.

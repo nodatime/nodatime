@@ -30,6 +30,14 @@ namespace NodaTime.Fields
             this.isSupported = isSupported;
         }
 
+        // TODO: This bypasses normal logic to ensure validity for
+        // field type etc. It's only valid for use in calendar systems
+        // that will only call GetValue / GetInt64Value.
+        protected DateTimeField()
+        {
+            isSupported = true;
+        }
+
         /// <summary>
         /// Get the type of the field.
         /// </summary>
