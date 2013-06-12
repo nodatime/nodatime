@@ -10,13 +10,14 @@ namespace NodaTime.Fields
     /// <summary>
     /// Period field for months in a basic calendar system with a fixed number of months of varying lengths.
     /// </summary>
-    internal sealed class BasicMonthPeriodField : VariableLengthPeriodField
+    internal sealed class BasicMonthPeriodField : PeriodField
     {
         private readonly BasicCalendarSystem calendarSystem;
         private readonly int monthsPerYear;
 
         internal BasicMonthPeriodField(BasicCalendarSystem calendarSystem)
-            : base(PeriodFieldType.Months, calendarSystem.AverageTicksPerMonth)
+            : base(PeriodFieldType.Months, calendarSystem.AverageTicksPerMonth,
+                   false, true)
         {
             this.calendarSystem = calendarSystem;
             // Assumes 1-based value, and fixed number of months.

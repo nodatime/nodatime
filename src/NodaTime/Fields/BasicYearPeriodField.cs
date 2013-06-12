@@ -2,7 +2,6 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-using System;
 using NodaTime.Calendars;
 using NodaTime.Utility;
 
@@ -11,11 +10,13 @@ namespace NodaTime.Fields
     /// <summary>
     /// Period field for years in a basic calendar system with a fixed number of months of varying lengths.
     /// </summary>
-    internal sealed class BasicYearPeriodField : VariableLengthPeriodField
+    internal sealed class BasicYearPeriodField : PeriodField
     {
         private readonly BasicCalendarSystem calendarSystem;
 
-        internal BasicYearPeriodField(BasicCalendarSystem calendarSystem) : base(PeriodFieldType.Years, calendarSystem.AverageTicksPerYear)
+        internal BasicYearPeriodField(BasicCalendarSystem calendarSystem)
+            : base(PeriodFieldType.Years, calendarSystem.AverageTicksPerYear,
+                   false, true)
         {
             this.calendarSystem = calendarSystem;
         }
