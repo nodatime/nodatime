@@ -113,6 +113,7 @@
     <Compile Include="CalendarSystemTest.Ids.cs">
       <DependentUpon>CalendarSystemTest.cs</DependentUpon>
     </Compile>
+    <Compile Include="Calendars\CalculatorCalendarSystemTest.cs" />
     <Compile Include="Calendars\CopticCalendarSystemTest.cs" />
     <Compile Include="Calendars\GregorianCalendarSystemTest.cs" />
     <Compile Include="Calendars\IslamicCalendarSystemTest.cs" />
@@ -124,7 +125,6 @@
       <DependentUpon>JulianCalendarSystemTest.cs</DependentUpon>
     </Compile>
     <Compile Include="Calendars\PeriodAdditionTest.cs" />
-    <Compile Include="Calendars\TimeOfDayCalculatorTest.cs" />
     <Compile Include="Fields\BasicWeekYearDateTimeFieldTest.cs" />
     <Compile Include="Fields\GJEraDateTimeFieldTest.cs" />
     <Compile Include="IntervalTest.cs" />
