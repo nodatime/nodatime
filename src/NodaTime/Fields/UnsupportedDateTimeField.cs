@@ -26,7 +26,6 @@ namespace NodaTime.Fields
         public static readonly UnsupportedDateTimeField WeekYear = new UnsupportedDateTimeField(DateTimeFieldType.WeekYear);
         public static readonly UnsupportedDateTimeField WeekOfWeekYear = new UnsupportedDateTimeField(DateTimeFieldType.WeekOfWeekYear);
         public static readonly UnsupportedDateTimeField DayOfWeek = new UnsupportedDateTimeField(DateTimeFieldType.DayOfWeek);
-        public static readonly UnsupportedDateTimeField HalfDayOfDay = new UnsupportedDateTimeField(DateTimeFieldType.HalfDayOfDay);
         public static readonly UnsupportedDateTimeField HourOfHalfDay = new UnsupportedDateTimeField(DateTimeFieldType.HourOfHalfDay);
         public static readonly UnsupportedDateTimeField ClockHourOfHalfDay = new UnsupportedDateTimeField(DateTimeFieldType.ClockHourOfHalfDay);
         public static readonly UnsupportedDateTimeField ClockHourOfDay = new UnsupportedDateTimeField(DateTimeFieldType.ClockHourOfDay);

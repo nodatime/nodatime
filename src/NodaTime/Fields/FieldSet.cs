@@ -34,7 +34,6 @@ namespace NodaTime.Fields
         private readonly DateTimeField hourOfDay;
         private readonly DateTimeField hourOfHalfDay;
         private readonly DateTimeField clockHourOfHalfDay;
-        private readonly DateTimeField halfDayOfDay;
         private readonly DateTimeField dayOfWeek;
         private readonly DateTimeField dayOfMonth;
         private readonly DateTimeField dayOfYear;
@@ -70,7 +69,6 @@ namespace NodaTime.Fields
         internal DateTimeField HourOfDay { get { return hourOfDay; } }
         internal DateTimeField HourOfHalfDay { get { return hourOfHalfDay; } }
         internal DateTimeField ClockHourOfHalfDay { get { return clockHourOfHalfDay; } }
-        internal DateTimeField HalfDayOfDay { get { return halfDayOfDay; } }
         internal DateTimeField DayOfWeek { get { return dayOfWeek; } }
         internal DateTimeField DayOfMonth { get { return dayOfMonth; } }
         internal DateTimeField DayOfYear { get { return dayOfYear; } }
@@ -108,7 +106,6 @@ namespace NodaTime.Fields
             hourOfDay = builder.HourOfDay ?? UnsupportedDateTimeField.HourOfDay;
             hourOfHalfDay = builder.HourOfHalfDay ?? UnsupportedDateTimeField.HourOfHalfDay;
             clockHourOfHalfDay = builder.ClockHourOfHalfDay ?? UnsupportedDateTimeField.ClockHourOfHalfDay;
-            halfDayOfDay = builder.HalfDayOfDay ?? UnsupportedDateTimeField.HalfDayOfDay;
             dayOfWeek = builder.DayOfWeek ?? UnsupportedDateTimeField.DayOfWeek;
             dayOfMonth = builder.DayOfMonth ?? UnsupportedDateTimeField.DayOfMonth;
             dayOfYear = builder.DayOfYear ?? UnsupportedDateTimeField.DayOfYear;
@@ -160,7 +157,6 @@ namespace NodaTime.Fields
             internal DateTimeField HourOfDay { get; set; }
             internal DateTimeField HourOfHalfDay { get; set; }
             internal DateTimeField ClockHourOfHalfDay { get; set; }
-            internal DateTimeField HalfDayOfDay { get; set; }
             internal DateTimeField DayOfWeek { get; set; }
             internal DateTimeField DayOfMonth { get; set; }
             internal DateTimeField DayOfYear { get; set; }
@@ -203,7 +199,6 @@ namespace NodaTime.Fields
                 HourOfDay = baseSet.HourOfDay;
                 HourOfHalfDay = baseSet.HourOfHalfDay;
                 ClockHourOfHalfDay = baseSet.ClockHourOfHalfDay;
-                HalfDayOfDay = baseSet.HalfDayOfDay;
                 DayOfWeek = baseSet.DayOfWeek;
                 DayOfMonth = baseSet.DayOfMonth;
                 DayOfYear = baseSet.DayOfYear;
@@ -248,7 +243,6 @@ namespace NodaTime.Fields
                 HourOfDay = other.HourOfDay.IsSupported ? other.HourOfDay : HourOfDay;
                 HourOfHalfDay = other.HourOfHalfDay.IsSupported ? other.HourOfHalfDay : HourOfHalfDay;
                 ClockHourOfHalfDay = other.ClockHourOfHalfDay.IsSupported ? other.ClockHourOfHalfDay : ClockHourOfHalfDay;
-                HalfDayOfDay = other.HalfDayOfDay.IsSupported ? other.HalfDayOfDay : HalfDayOfDay;
                 DayOfWeek = other.DayOfWeek.IsSupported ? other.DayOfWeek : DayOfWeek;
                 DayOfMonth = other.DayOfMonth.IsSupported ? other.DayOfMonth : DayOfMonth;
                 DayOfYear = other.DayOfYear.IsSupported ? other.DayOfYear : DayOfYear;
