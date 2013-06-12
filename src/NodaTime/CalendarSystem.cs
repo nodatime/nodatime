@@ -191,7 +191,7 @@ namespace NodaTime
         /// calls as the object is immutable and thread-safe.</returns>
         public static CalendarSystem GetCopticCalendar(int minDaysInFirstWeek)
         {
-            return CopticCalendarSystem.GetInstance(minDaysInFirstWeek);
+            return CalculatorCalendarSystem.NewCopticCalendarSystems[minDaysInFirstWeek - 1];
         }
 
         /// <summary>

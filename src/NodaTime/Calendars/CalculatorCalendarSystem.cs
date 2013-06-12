@@ -17,17 +17,23 @@ namespace NodaTime.Calendars
         private readonly WeekYearCalculator weekYearCalculator;
 
         internal static readonly CalendarSystem[] NewGregorianCalendarSystems;
+        internal static readonly CalendarSystem[] NewCopticCalendarSystems;
         internal static readonly CalendarSystem NewIsoCalendarSystem;
 
         static CalculatorCalendarSystem()
         {
             NewGregorianCalendarSystems = new CalendarSystem[7];
+            NewCopticCalendarSystems = new CalendarSystem[7];
             for (int i = 1; i <= 7; i++)
             {
-                var old = GregorianCalendarSystem.GetInstance(i);
+                CalendarSystem old = GregorianCalendarSystem.GetInstance(i);
                 NewGregorianCalendarSystems[i - 1] = new CalculatorCalendarSystem(
                     old.Id, old.Name,
                     GregorianYearMonthDayCalculator.Instance, i);
+                old = CopticCalendarSystem.GetInstance(i);
+                NewCopticCalendarSystems[i - 1] = new CalculatorCalendarSystem(
+                    old.Id, old.Name,
+                    CopticYearMonthDayCalculator.CopticInstance, i);
             }
             var oldIso = GregorianCalendarSystem.IsoHelper.Instance;
             NewIsoCalendarSystem = new CalculatorCalendarSystem(oldIso.Id, oldIso.Name, IsoYearMonthDayCalculator.IsoInstance, 4);
