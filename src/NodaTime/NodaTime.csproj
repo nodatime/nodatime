@@ -146,9 +146,12 @@
     <Compile Include="Calendars\CalculatorCalendarSystem.cs" />
     <Compile Include="Calendars\CopticCalendarSystem.cs" />
     <Compile Include="Calendars\Era.cs" />
+    <Compile Include="Calendars\GJYearMonthDayCalculator.cs" />
+    <Compile Include="Calendars\GregorianYearMonthDayCalculator.cs" />
     <Compile Include="Calendars\IslamicCalendarSystem.cs" />
     <Compile Include="Calendars\IslamicEpoch.cs" />
     <Compile Include="Calendars\IslamicLeapYearPattern.cs" />
+    <Compile Include="Calendars\IsoYearMonthDayCalculator.cs" />
     <Compile Include="Calendars\JulianCalendarSystem.cs" />
     <Compile Include="Calendars\NamespaceDoc.cs" />
     <Compile Include="Calendars\TimeOfDayCalculator.cs" />
@@ -159,6 +162,7 @@
     <Compile Include="Fields\BasicMonthPeriodField.cs" />
     <Compile Include="Fields\BasicSingleEraDateTimeField.cs" />
     <Compile Include="Fields\BasicYearPeriodField.cs" />
+    <Compile Include="Fields\Int32DateTimeField.cs" />
     <Compile Include="Fields\Int64DateTimeField.cs" />
     <Compile Include="Fields\NamespaceDoc.cs" />
     <Compile Include="Globalization\NamespaceDoc.cs" />

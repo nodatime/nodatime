@@ -21,6 +21,13 @@ namespace NodaTime.Calendars
         {
             var builder = new FieldSet.Builder
             {
+                Ticks = TicksPeriodField.Instance,
+                Milliseconds = FixedLengthPeriodField.Milliseconds,
+                Seconds = FixedLengthPeriodField.Seconds,
+                Minutes = FixedLengthPeriodField.Minutes,
+                Hours = FixedLengthPeriodField.Hours,
+                // Deliberately no half-days; they need to die.
+
                 HourOfDay = CreateDivRemField(NodaConstants.TicksPerHour, NodaConstants.HoursPerStandardDay),
                 HourOfHalfDay = CreateDivRemField(NodaConstants.TicksPerHour, NodaConstants.HoursPerStandardDay / 2),
                 MinuteOfHour = CreateDivRemField(NodaConstants.TicksPerMinute, NodaConstants.MinutesPerHour),
@@ -66,6 +73,12 @@ namespace NodaTime.Calendars
                  minuteOfHour * NodaConstants.TicksPerMinute +
                  secondOfMinute * NodaConstants.TicksPerSecond +
                  millisecondOfSecond * NodaConstants.TicksPerMillisecond);
+        }
+
+        internal static long GetTickOfDay(LocalInstant localInstant)
+        {
+            long ticks = localInstant.Ticks;
+            return ticks >= 0 ? ticks % NodaConstants.TicksPerStandardDay : (NodaConstants.TicksPerStandardDay - 1) + ((ticks + 1) % NodaConstants.TicksPerStandardDay);
         }
     }
 }
