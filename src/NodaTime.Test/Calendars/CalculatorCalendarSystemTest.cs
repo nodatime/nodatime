@@ -17,14 +17,14 @@ namespace NodaTime.Test.Calendars
 
         private static readonly CalendarSystem[] GregorianLikeOldCalendarSystems = 
         {
-            CalendarSystem.GetGregorianCalendar(1),
-            CalendarSystem.GetGregorianCalendar(2),
-            CalendarSystem.GetGregorianCalendar(3),
-            CalendarSystem.GetGregorianCalendar(4),
-            CalendarSystem.GetGregorianCalendar(5),
-            CalendarSystem.GetGregorianCalendar(6),
-            CalendarSystem.GetGregorianCalendar(7),
-            CalendarSystem.Iso
+            GregorianCalendarSystem.GetInstance(1),
+            GregorianCalendarSystem.GetInstance(2),
+            GregorianCalendarSystem.GetInstance(3),
+            GregorianCalendarSystem.GetInstance(4),
+            GregorianCalendarSystem.GetInstance(5),
+            GregorianCalendarSystem.GetInstance(6),
+            GregorianCalendarSystem.GetInstance(7),
+            GregorianCalendarSystem.IsoHelper.Instance
         };
 
         private static readonly CalendarSystem[] GregorianLikeNewCalendarSystems = 
@@ -36,7 +36,7 @@ namespace NodaTime.Test.Calendars
             new CalculatorCalendarSystem("new greg 5", "ignored", GregorianYearMonthDayCalculator.Instance, 5),
             new CalculatorCalendarSystem("new greg 6", "ignored", GregorianYearMonthDayCalculator.Instance, 6),
             new CalculatorCalendarSystem("new greg 7", "ignored", GregorianYearMonthDayCalculator.Instance, 7),
-            new CalculatorCalendarSystem("new iso", "ignored", IsoYearMonthDayCalculator.Instance, 4),
+            new CalculatorCalendarSystem("new iso", "ignored", IsoYearMonthDayCalculator.IsoInstance, 4),
         };
 
         private static readonly string[] GregorionLikeTestValues =

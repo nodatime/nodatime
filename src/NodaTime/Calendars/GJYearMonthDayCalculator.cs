@@ -2,6 +2,8 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
+using NodaTime.Utility;
+
 namespace NodaTime.Calendars
 {
     internal abstract class GJYearMonthDayCalculator : YearMonthDayCalculator
@@ -72,6 +74,13 @@ namespace NodaTime.Calendars
         protected override long GetTicksFromStartOfYearToStartOfMonth(int year, int month)
         {
             return IsLeapYear(year) ? MaxTotalTicksByMonth[month - 1] : MinTotalTicksByMonth[month - 1];
+        }
+
+        internal override LocalInstant GetLocalInstant(Era era, int yearOfEra, int monthOfYear, int dayOfMonth)
+        {
+            int eraIndex = GetEraIndex(era);
+            Preconditions.CheckArgumentRange("yearOfEra", yearOfEra, 1, GetMaxYearOfEra(eraIndex));
+            return GetLocalInstant(GetAbsoluteYear(yearOfEra, eraIndex), monthOfYear, dayOfMonth);
         }
 
         internal override LocalInstant SetYear(LocalInstant localInstant, int year)

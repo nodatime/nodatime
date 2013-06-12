@@ -2,6 +2,7 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
+using NodaTime.Calendars;
 using NodaTime.Fields;
 using NUnit.Framework;
 
@@ -10,7 +11,7 @@ namespace NodaTime.Test.Fields
     [TestFixture]
     public class BasicWeekYearDateTimeFieldTest
     {
-        private static readonly BasicWeekYearDateTimeField Field = (BasicWeekYearDateTimeField)CalendarSystem.Iso.Fields.WeekYear;
+        private static readonly BasicWeekYearDateTimeField Field = (BasicWeekYearDateTimeField)GregorianCalendarSystem.IsoHelper.Instance.Fields.WeekYear;
 
         [Test]
         public void SetValue_Simple()

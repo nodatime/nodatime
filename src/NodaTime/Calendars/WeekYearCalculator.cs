@@ -3,6 +3,7 @@
 // as found in the LICENSE.txt file.
 
 using System;
+using NodaTime.Utility;
 
 namespace NodaTime.Calendars
 {
@@ -22,7 +23,14 @@ namespace NodaTime.Calendars
 
         internal LocalInstant GetLocalInstant(int weekYear, int weekOfWeekYear, IsoDayOfWeek dayOfWeek)
         {
-            throw new NotImplementedException();
+            Preconditions.CheckArgumentRange("weekYear", weekYear, yearMonthDayCalculator.MinYear, yearMonthDayCalculator.MaxYear);
+            Preconditions.CheckArgumentRange("weekOfWeekYear", weekOfWeekYear, 1, GetWeeksInWeekYear(weekYear));
+            // TODO: Work out what argument validation we actually want here.
+            Preconditions.CheckArgumentRange("dayOfWeek", (int)dayOfWeek, 1, 7);
+            long ticks = GetWeekYearTicks(weekYear)
+                + (weekOfWeekYear - 1) * NodaConstants.TicksPerStandardWeek
+                + ((int) dayOfWeek - 1) * NodaConstants.TicksPerStandardDay;
+            return new LocalInstant(ticks);
         }
 
         internal static int GetDayOfWeek(LocalInstant localInstant)

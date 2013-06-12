@@ -1,11 +1,9 @@
-﻿// Copyright 2013 The Noda Time Authors. All rights reserved.
+﻿using NodaTime.Utility;
+// Copyright 2013 The Noda Time Authors. All rights reserved.
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using NodaTime.Utility;
 
 namespace NodaTime.Calendars
 {
@@ -40,6 +38,10 @@ namespace NodaTime.Calendars
             this.eras = eras;
             this.averageTicksPerYear = averageTicksPerYear;
             this.approxTicksAtEpochDividedByTwo = approxTicksAtEpoch >> 1;
+            // Effectively invalidate the first cache entry.
+            // Every other cache entry will automatically be invalid,
+            // by having year 0.
+            yearCache[0] = new YearInfo(1, LocalInstant.LocalUnixEpoch.Ticks);
         }
 
         /// <summary>
@@ -154,10 +156,12 @@ namespace NodaTime.Calendars
 
         /// <summary>
         /// Era-based year/month/day: this implementation ignores the era, which is valid for single-era
-        /// calendars. We assume that the 
+        /// calendars, although it does validate the era first.
         /// </summary>
-        internal LocalInstant GetLocalInstant(Era era, int yearOfEra, int monthOfYear, int dayOfMonth)
+        internal virtual LocalInstant GetLocalInstant(Era era, int yearOfEra, int monthOfYear, int dayOfMonth)
         {
+            // Just validation
+            GetEraIndex(era);
             return GetLocalInstant(yearOfEra, monthOfYear, dayOfMonth);
         }
 

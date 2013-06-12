@@ -80,13 +80,13 @@ namespace NodaTime.TimeZones
         /// <param name="addDay">Whether to add an extra day (for 24:00 handling).</param>
         internal ZoneYearOffset(TransitionMode mode, int monthOfYear, int dayOfMonth, int dayOfWeek, bool advance, Offset tickOfDay, bool addDay)
         {
-            VerifyFieldValue(CalendarSystem.Iso.Fields.MonthOfYear, "monthOfYear", monthOfYear, false);
-            VerifyFieldValue(CalendarSystem.Iso.Fields.DayOfMonth, "dayOfMonth", dayOfMonth, true);
+            VerifyFieldValue(1, 12, "monthOfYear", monthOfYear, false);
+            VerifyFieldValue(1, 31, "dayOfMonth", dayOfMonth, true);
             if (dayOfWeek != 0)
             {
-                VerifyFieldValue(CalendarSystem.Iso.Fields.DayOfWeek, "dayOfWeek", dayOfWeek, false);
+                VerifyFieldValue(1, 7, "dayOfWeek", dayOfWeek, false);
             }
-            VerifyFieldValue(CalendarSystem.Iso.Fields.TickOfDay, "tickOfDay", tickOfDay.Ticks, false);
+            VerifyFieldValue(0, NodaConstants.TicksPerStandardDay - 1L, "tickOfDay", tickOfDay.Ticks, false);
 
             this.mode = mode;
             this.monthOfYear = monthOfYear;
@@ -103,16 +103,15 @@ namespace NodaTime.TimeZones
         /// <remarks>
         /// If this becomes more widely required, move to Preconditions.
         /// </remarks>
-        /// <param name="field">The calendar field definition.</param>
+        /// <param name="minimum">The minimum valid value.</param>
+        /// <param name="maximum">The maximum valid value (inclusive).</param>
         /// <param name="name">The name of the field for the error message.</param>
         /// <param name="value">The value to check.</param>
         /// <param name="allowNegated">if set to <c>true</c> all the range of value to be the negative as well.</param>
         /// <exception cref="ArgumentOutOfRangeException">If the given value is not in the valid range of the given calendar field.</exception>
-        private static void VerifyFieldValue(DateTimeField field, string name, long value, bool allowNegated)
+        private static void VerifyFieldValue(long minimum, long maximum, string name, long value, bool allowNegated)
         {
             bool failed = false;
-            long minimum = field.GetMinimumValue();
-            long maximum = field.GetMaximumValue();
             if (allowNegated && value < 0)
             {
                 if (value < -maximum || -minimum < value)

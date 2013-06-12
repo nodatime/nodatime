@@ -122,7 +122,7 @@ namespace NodaTime.Fields
 
         public override string ToString()
         {
-            return fieldType.ToString();
+            return fieldType == null ? "Unknown!" : fieldType.ToString();
         }
     }
 }
