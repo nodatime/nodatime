@@ -14,7 +14,7 @@ namespace NodaTime.Calendars
     /// </summary>
     internal sealed class IsoYearMonthDayCalculator : GregorianYearMonthDayCalculator
     {
-        internal static readonly IsoYearMonthDayCalculator Instance = new IsoYearMonthDayCalculator();
+        internal static readonly IsoYearMonthDayCalculator IsoInstance = new IsoYearMonthDayCalculator();
 
         private IsoYearMonthDayCalculator()
         {

@@ -14,9 +14,9 @@ namespace NodaTime.Test.Fields
         public void YearOfEraPreserved()
         {
             var start = new LocalDate(Era.Common, 1980, 6, 19).AtMidnight().LocalInstant;
-            var bc = CalendarSystem.Iso.Fields.Era.SetValue(start, 0);
-            Assert.AreEqual(1980, CalendarSystem.Iso.Fields.YearOfEra.GetValue(bc));
-            var backAgain = CalendarSystem.Iso.Fields.Era.SetValue(bc, 1);
+            var bc = GregorianCalendarSystem.IsoHelper.Instance.Fields.Era.SetValue(start, 0);
+            Assert.AreEqual(1980, GregorianCalendarSystem.IsoHelper.Instance.Fields.YearOfEra.GetValue(bc));
+            var backAgain = GregorianCalendarSystem.IsoHelper.Instance.Fields.Era.SetValue(bc, 1);
             Assert.AreEqual(start, backAgain);
         }
     }

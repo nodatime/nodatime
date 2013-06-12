@@ -4,6 +4,7 @@
 
 using System;
 using NUnit.Framework;
+using NodaTime.Calendars;
 using NodaTime.Fields;
 
 namespace NodaTime.Test.Fields
@@ -50,7 +51,7 @@ namespace NodaTime.Test.Fields
         {
             // Field will adjust *smaller* units to make things valid
             LocalInstant jan30th = new LocalDate(2001, 1, 30).AtMidnight().LocalInstant;
-            LocalInstant actual = CalendarSystem.Iso.Fields.MonthOfYear.SetValue(jan30th, 2);
+            LocalInstant actual = GregorianCalendarSystem.IsoHelper.Instance.Fields.MonthOfYear.SetValue(jan30th, 2);
             LocalInstant expected = new LocalDate(2001, 2, 28).AtMidnight().LocalInstant;
             Assert.AreEqual(expected, actual);
         }
@@ -60,7 +61,7 @@ namespace NodaTime.Test.Fields
         {
             // Field cannot adjust *larger* units
             LocalInstant feb20th = new LocalDate(2001, 2, 20).AtMidnight().LocalInstant;
-            Assert.Throws<ArgumentOutOfRangeException>(() => CalendarSystem.Iso.Fields.DayOfMonth.SetValue(feb20th, 30));
+            Assert.Throws<ArgumentOutOfRangeException>(() => GregorianCalendarSystem.IsoHelper.Instance.Fields.DayOfMonth.SetValue(feb20th, 30));
         }
         #endregion
 

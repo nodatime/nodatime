@@ -122,7 +122,7 @@ namespace NodaTime
         /// is the value of the last two year digits.
         /// </para>
         /// </remarks>
-        public static CalendarSystem Iso { get { return GregorianCalendarSystem.IsoHelper.Instance; } }
+        public static CalendarSystem Iso { get { return CalculatorCalendarSystem.NewIsoCalendarSystem; } }
 
         /// <summary>
         /// Returns a pure proleptic Gregorian calendar system, which defines every
@@ -141,7 +141,7 @@ namespace NodaTime
         /// calls as the object is immutable and thread-safe.</returns>
         public static CalendarSystem GetGregorianCalendar(int minDaysInFirstWeek)
         {
-            return GregorianCalendarSystem.GetInstance(minDaysInFirstWeek);
+            return CalculatorCalendarSystem.NewGregorianCalendarSystems[minDaysInFirstWeek - 1];
         }
 
         /// <summary>

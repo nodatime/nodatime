@@ -16,6 +16,23 @@ namespace NodaTime.Calendars
         private readonly YearMonthDayCalculator yearMonthDayCalculator;
         private readonly WeekYearCalculator weekYearCalculator;
 
+        internal static readonly CalendarSystem[] NewGregorianCalendarSystems;
+        internal static readonly CalendarSystem NewIsoCalendarSystem;
+
+        static CalculatorCalendarSystem()
+        {
+            NewGregorianCalendarSystems = new CalendarSystem[7];
+            for (int i = 1; i <= 7; i++)
+            {
+                var old = GregorianCalendarSystem.GetInstance(i);
+                NewGregorianCalendarSystems[i - 1] = new CalculatorCalendarSystem(
+                    old.Id, old.Name,
+                    GregorianYearMonthDayCalculator.Instance, i);
+            }
+            var oldIso = GregorianCalendarSystem.IsoHelper.Instance;
+            NewIsoCalendarSystem = new CalculatorCalendarSystem(oldIso.Id, oldIso.Name, IsoYearMonthDayCalculator.IsoInstance, 4);
+        }
+
         internal CalculatorCalendarSystem(
             string id,
             string name,
@@ -88,6 +105,7 @@ namespace NodaTime.Calendars
         internal override LocalInstant GetLocalInstant(int year, int monthOfYear, int dayOfMonth,
                                                        long tickOfDay)
         {
+            Preconditions.CheckArgumentRange("tickOfDay", tickOfDay, 0, NodaConstants.TicksPerStandardDay - 1);
             return yearMonthDayCalculator.GetLocalInstant(year, monthOfYear, dayOfMonth).PlusTicks(tickOfDay);
         }
 
@@ -104,7 +122,7 @@ namespace NodaTime.Calendars
         internal override LocalInstant GetLocalInstant(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour, int secondOfMinute, int millisecondOfSecond, int tickOfMillisecond)
         {
             LocalInstant date = yearMonthDayCalculator.GetLocalInstant(year, monthOfYear, dayOfMonth);
-            long timeTicks = TimeOfDayCalculator.GetTicks(hourOfDay, minuteOfHour, secondOfMinute, millisecondOfSecond);
+            long timeTicks = TimeOfDayCalculator.GetTicks(hourOfDay, minuteOfHour, secondOfMinute, millisecondOfSecond, tickOfMillisecond);
             return date.PlusTicks(timeTicks);
         }
 
@@ -128,7 +146,7 @@ namespace NodaTime.Calendars
             private readonly YearMonthDayCalculator calculator;
 
             // TODO: Remove superconstructor
-            internal MonthsPeriodField(YearMonthDayCalculator calculator) : base(PeriodFieldType.Years, 1, false, true)
+            internal MonthsPeriodField(YearMonthDayCalculator calculator) : base(PeriodFieldType.Months, 1, false, true)
             {
                 this.calculator = calculator;
             }

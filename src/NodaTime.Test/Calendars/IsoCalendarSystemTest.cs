@@ -19,7 +19,8 @@ namespace NodaTime.Test.Calendars
 
         private static readonly CalendarSystem Iso = CalendarSystem.Iso;
 
-        private static readonly FieldSet isoFields = CalendarSystem.Iso.Fields;
+        // These are deliberately the old ISO fields, to preserve the tests (which should die later).
+        private static readonly FieldSet isoFields = GregorianCalendarSystem.IsoHelper.Instance.Fields;
 
         [Test]
         public void FieldsOf_UnixEpoch()
@@ -148,6 +149,16 @@ namespace NodaTime.Test.Calendars
         {
             // Year -1 in absolute terms is 2BCE
             LocalDate localDate = new LocalDate(-1, 1, 1);
+            Assert.AreEqual(Era.BeforeCommon, localDate.Era);
+            Assert.AreEqual(-1, localDate.Year);
+            Assert.AreEqual(2, localDate.YearOfEra);
+        }
+
+        [Test]
+        public void BeforeCommonEra_BySpecifyingEra()
+        {
+            // Year -1 in absolute terms is 2BCE
+            LocalDate localDate = new LocalDate(Era.BeforeCommon, 2, 1, 1);
             Assert.AreEqual(Era.BeforeCommon, localDate.Era);
             Assert.AreEqual(-1, localDate.Year);
             Assert.AreEqual(2, localDate.YearOfEra);

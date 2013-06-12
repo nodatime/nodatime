@@ -63,16 +63,19 @@ namespace NodaTime.Calendars
             });
         }
 
-        internal static long GetTicks(int hourOfDay, int minuteOfHour, int secondOfMinute, int millisecondOfSecond)
+        internal static long GetTicks(int hourOfDay, int minuteOfHour, int secondOfMinute, int millisecondOfSecond,
+                                      int tickOfMillisecond)
         {
             Preconditions.CheckArgumentRange("hourOfDay", hourOfDay, 0, NodaConstants.HoursPerStandardDay - 1);
             Preconditions.CheckArgumentRange("minuteOfHour", minuteOfHour, 0, NodaConstants.MinutesPerHour - 1);
             Preconditions.CheckArgumentRange("secondOfMinute", secondOfMinute, 0, NodaConstants.SecondsPerMinute - 1);
             Preconditions.CheckArgumentRange("millisecondOfSecond", millisecondOfSecond, 0, NodaConstants.MillisecondsPerSecond - 1);
+            Preconditions.CheckArgumentRange("tickOfMillisecond", tickOfMillisecond, 0, NodaConstants.TicksPerMillisecond - 1);
             return unchecked(hourOfDay * NodaConstants.TicksPerHour +
                  minuteOfHour * NodaConstants.TicksPerMinute +
                  secondOfMinute * NodaConstants.TicksPerSecond +
-                 millisecondOfSecond * NodaConstants.TicksPerMillisecond);
+                 millisecondOfSecond * NodaConstants.TicksPerMillisecond +
+                 tickOfMillisecond);
         }
 
         internal static long GetTickOfDay(LocalInstant localInstant)
