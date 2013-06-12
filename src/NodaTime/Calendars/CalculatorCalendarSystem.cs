@@ -61,8 +61,8 @@ namespace NodaTime.Calendars
 
             builder.Days = FixedLengthPeriodField.Days;
             builder.Weeks = FixedLengthPeriodField.Weeks;
-            builder.Months = new YearsPeriodField(yearMonthDayCalculator);
-            builder.Years = new MonthsPeriodField(yearMonthDayCalculator);
+            builder.Months = new MonthsPeriodField(yearMonthDayCalculator);
+            builder.Years = new YearsPeriodField(yearMonthDayCalculator);
 
             // Week-year fields
             builder.DayOfWeek = new Int32DateTimeField(WeekYearCalculator.GetDayOfWeek);
