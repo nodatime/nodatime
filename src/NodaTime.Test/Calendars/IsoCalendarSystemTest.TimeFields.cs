@@ -9,15 +9,6 @@ namespace NodaTime.Test.Calendars
     public partial class IsoCalendarSystemTest
     {
         [Test]
-        public void TimeFields_HalfDayOfDay()
-        {
-            var sut = isoFields.HalfDayOfDay;
-
-            Assert.That(sut.ToString(), Is.EqualTo("HalfDayOfDay"));
-            Assert.That(sut.IsSupported, Is.True);
-        }
-
-        [Test]
         public void TimeFields_ClockHourOfHalfDay()
         {
             var sut = isoFields.ClockHourOfHalfDay;

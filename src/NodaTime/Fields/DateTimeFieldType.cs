@@ -21,7 +21,6 @@ namespace NodaTime.Fields
         public static readonly DateTimeFieldType WeekYear = new DateTimeFieldType("WeekYear", PeriodFieldType.WeekYears, null);
         public static readonly DateTimeFieldType WeekOfWeekYear = new DateTimeFieldType("WeekOfWeekYear", PeriodFieldType.Weeks, PeriodFieldType.WeekYears);
         public static readonly DateTimeFieldType DayOfWeek = new DateTimeFieldType("DayOfWeek", PeriodFieldType.Days, PeriodFieldType.Weeks);
-        public static readonly DateTimeFieldType HalfDayOfDay = new DateTimeFieldType("HalfDayOfDay", PeriodFieldType.HalfDays, PeriodFieldType.Days);
         public static readonly DateTimeFieldType HourOfHalfDay = new DateTimeFieldType("HourOfHalfDay", PeriodFieldType.Hours, PeriodFieldType.HalfDays);
         public static readonly DateTimeFieldType ClockHourOfHalfDay = new DateTimeFieldType("ClockHourOfHalfDay", PeriodFieldType.Hours, PeriodFieldType.Days);
         public static readonly DateTimeFieldType ClockHourOfDay = new DateTimeFieldType("ClockHourOfDay", PeriodFieldType.Hours, PeriodFieldType.HalfDays);

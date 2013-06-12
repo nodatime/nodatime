@@ -82,9 +82,6 @@ namespace NodaTime.Calendars
             builder.HourOfDay = new FixedLengthDateTimeField(DateTimeFieldType.HourOfDay, builder.Hours, builder.Days);
             builder.HourOfHalfDay = new FixedLengthDateTimeField(DateTimeFieldType.HourOfHalfDay, builder.Hours, builder.HalfDays);
             builder.ClockHourOfHalfDay = new ZeroIsMaxDateTimeField(builder.HourOfHalfDay, DateTimeFieldType.ClockHourOfHalfDay);
-            // This was a separate subclass in Joda, for i18n purposes
-            // Our calendar systems don't have their own i18n support.
-            builder.HalfDayOfDay = new FixedLengthDateTimeField(DateTimeFieldType.HalfDayOfDay, builder.HalfDays, builder.Days);
             return builder.Build();
         }
 
