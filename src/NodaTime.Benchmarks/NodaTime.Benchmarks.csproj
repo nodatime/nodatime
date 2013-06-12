@@ -77,6 +77,7 @@
     <Compile Include="BclTests\UtcDateTimeBenchmarks.cs" />
     <Compile Include="Framework\BenchmarkResultHandler.cs" />
     <Compile Include="Framework\BenchmarkRunner.cs" />
+    <Compile Include="NodaTimeTests\PeriodBenchmarks.cs" />
     <Compile Include="NodaTimeTests\Text\InstantPatternBenchmarks.cs" />
     <Compile Include="NodaTimeTests\Text\LocalDateTimePatternBenchmarks.cs" />
     <Compile Include="NodaTimeTests\UtcZonedDateTimeBenchmarks.cs" />
