@@ -36,15 +36,6 @@ namespace NodaTime.Test.Calendars
         }
 
         [Test]
-        public void TimeFields_ClockHourOfDay()
-        {
-            var sut = isoFields.ClockHourOfDay;
-
-            Assert.That(sut.ToString(), Is.EqualTo("ClockHourOfDay"));
-            Assert.That(sut.IsSupported, Is.True);
-        }
-
-        [Test]
         public void TimeFields_HourOfDay()
         {
             var sut = isoFields.HourOfDay;
