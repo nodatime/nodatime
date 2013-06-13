@@ -373,7 +373,7 @@ namespace NodaTime
                 return Zero;
             }
 
-            FieldSet fields = calendar.Fields;
+            PeriodFieldSet fields = calendar.PeriodFields;
 
             // Optimization for single field
             var singleField = GetSingleField(fields, units);
@@ -407,7 +407,7 @@ namespace NodaTime
         {
             Preconditions.CheckNotNull(calendar, "calendar");
 
-            FieldSet fields = calendar.Fields;
+            PeriodFieldSet fields = calendar.PeriodFields;
             LocalInstant result = localInstant;
 
             if (years != 0) result = fields.Years.Add(result, years * scalar);
@@ -624,7 +624,7 @@ namespace NodaTime
         /// Returns the PeriodField for the given unit value, or null if the values does
         /// not represent a single unit.
         /// </summary>
-        private static IPeriodField GetSingleField(FieldSet fields, PeriodUnits units)
+        private static IPeriodField GetSingleField(PeriodFieldSet fields, PeriodUnits units)
         {
             switch (units)
             {
@@ -644,7 +644,7 @@ namespace NodaTime
         /// <summary>
         /// Returns the PeriodField for the given index, in the range 0-8 inclusive.
         /// </summary>
-        private static IPeriodField GetFieldForIndex(FieldSet fields, int index)
+        private static IPeriodField GetFieldForIndex(PeriodFieldSet fields, int index)
         {
             switch (index)
             {

@@ -15,7 +15,7 @@ namespace NodaTime.Calendars
     /// </summary>
     internal static class TimeOfDayCalculator
     {
-        internal static readonly FieldSet TimeFields = new FieldSet.Builder
+        internal static readonly PeriodFieldSet TimeFields = new PeriodFieldSet.Builder
         {
             Ticks = FixedDurationPeriodField.Ticks,
             Milliseconds = FixedDurationPeriodField.Milliseconds,

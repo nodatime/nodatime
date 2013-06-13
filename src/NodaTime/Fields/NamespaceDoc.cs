@@ -8,9 +8,8 @@ namespace NodaTime.Fields
 {
     /// <summary>
     /// <para>
-    /// The NodaTime.Fields namespace contains types related to individual fields within
-    /// date and time types. Most types within this namespace are internal; most users will not
-    /// need to use the public types here.
+    /// The NodaTime.Fields namespace contains types related to individual period fields.
+    /// All types within this namespace are internal.
     /// </para>
     /// </summary>
     [CompilerGenerated]

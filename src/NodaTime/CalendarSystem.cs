@@ -304,7 +304,7 @@ namespace NodaTime
 
         private readonly YearMonthDayCalculator yearMonthDayCalculator;
         private readonly WeekYearCalculator weekYearCalculator;
-        private readonly FieldSet fields;
+        private readonly PeriodFieldSet periodFields;
         private readonly string id;
         private readonly string name;
         private readonly IList<Era> eras;
@@ -334,7 +334,7 @@ namespace NodaTime
             this.minYear = yearMonthDayCalculator.MinYear;                   
             this.maxYear = yearMonthDayCalculator.MaxYear;
             this.eras = new ReadOnlyCollection<Era>(new List<Era>(yearMonthDayCalculator.Eras));
-            this.fields = new FieldSet.Builder(TimeOfDayCalculator.TimeFields)
+            this.periodFields = new PeriodFieldSet.Builder(TimeOfDayCalculator.TimeFields)
             {
                 Days = FixedDurationPeriodField.Days,
                 Weeks = FixedDurationPeriodField.Weeks,
@@ -482,7 +482,7 @@ namespace NodaTime
         }
         #endregion
 
-        internal FieldSet Fields { get { return fields; } }
+        internal PeriodFieldSet PeriodFields { get { return periodFields; } }
 
         #region Factory methods for creating a LocalInstant from components
         internal LocalInstant GetLocalInstant(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour, int secondOfMinute)
