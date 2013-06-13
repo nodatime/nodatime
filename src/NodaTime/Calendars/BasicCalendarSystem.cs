@@ -46,15 +46,6 @@ namespace NodaTime.Calendars
         internal abstract int GetDaysInMonthMax(int month);
         internal abstract LocalInstant SetYear(LocalInstant localInstant, int year);
 
-        /// <summary>
-        /// Creates an ID for a calendar system which only needs to be distinguished by its name and
-        /// the minimum number of days in the first week of the week-year.
-        /// </summary>
-        protected static string CreateIdFromNameAndMinDaysInFirstWeek(string name, int minDaysInFirstWeek)
-        {
-            return string.Format(CultureInfo.InvariantCulture, "{0} {1}", name, minDaysInFirstWeek);
-        }
-
         private static FieldSet CreateFixedLengthFields()
         {
             // First create the simple durations, then fill in date/time fields,
