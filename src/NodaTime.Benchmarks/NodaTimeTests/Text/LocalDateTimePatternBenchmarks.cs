@@ -9,6 +9,7 @@ namespace NodaTime.Benchmarks.NodaTimeTests.Text
     internal class LocalDateTimePatternBenchmarks
     {
         private static readonly LocalDateTimePattern PatternWithLongMonthAndDay = LocalDateTimePattern.CreateWithInvariantCulture("dddd MMMM dd yyyy HH:mm:ss");
+        private static readonly LocalDateTimePattern PatternWithNumbersToSecond = LocalDateTimePattern.CreateWithInvariantCulture("dd/MM/yyyy HH:mm:ss");
 
         /// <summary>
         /// This includes both text and numeric parsing to avoid a test which is just a worst case for text.
@@ -17,6 +18,13 @@ namespace NodaTime.Benchmarks.NodaTimeTests.Text
         public void ParseLongMonthAndDay()
         {
             PatternWithLongMonthAndDay.Parse("Friday April 12 2013 20:28:42").GetValueOrThrow();
+        }
+
+        // Equivalent to DateTimeBenchmarks.TryParseExact
+        [Benchmark]
+        public void ParseWithNumbersToSecond()
+        {
+            PatternWithNumbersToSecond.Parse("26/12/2009 10:08:30").GetValueOrThrow();
         }
     }
 }
