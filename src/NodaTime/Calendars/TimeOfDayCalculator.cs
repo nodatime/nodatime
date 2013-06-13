@@ -22,10 +22,10 @@ namespace NodaTime.Calendars
             var builder = new FieldSet.Builder
             {
                 Ticks = TicksPeriodField.Instance,
-                Milliseconds = FixedLengthPeriodField.Milliseconds,
-                Seconds = FixedLengthPeriodField.Seconds,
-                Minutes = FixedLengthPeriodField.Minutes,
-                Hours = FixedLengthPeriodField.Hours,
+                Milliseconds = SimplePeriodField.Milliseconds,
+                Seconds = SimplePeriodField.Seconds,
+                Minutes = SimplePeriodField.Minutes,
+                Hours = SimplePeriodField.Hours,
                 // Deliberately no half-days; they need to die.
 
                 HourOfDay = CreateDivRemField(NodaConstants.TicksPerHour, NodaConstants.HoursPerStandardDay),

@@ -13,7 +13,7 @@ namespace NodaTime.Fields
     /// with regards to a single field, such as months or seconds. This class is
     /// threadsafe, and all subclasses must be too.
     /// </summary>
-    internal abstract class PeriodField
+    internal abstract class PeriodField : IPeriodField
     {
         internal static bool IsTypeValid(PeriodFieldType type)
         {
@@ -95,6 +95,16 @@ namespace NodaTime.Fields
         public override string ToString()
         {
             return FieldType.ToString();
+        }
+
+        LocalInstant IPeriodField.Add(LocalInstant localInstant, long value)
+        {
+            return Add(localInstant, value);
+        }
+
+        public long Subtract(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
+        {
+            return GetInt64Difference(minuendInstant, subtrahendInstant);
         }
     }
 }
