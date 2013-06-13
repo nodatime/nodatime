@@ -10,6 +10,10 @@ using NodaTime.Calendars;
 using NodaTime.Fields;
 using NodaTime.Utility;
 
+namespace NodaTime.Fields
+{
+}
+
 namespace NodaTime
 {
     /// <summary>
@@ -760,100 +764,5 @@ namespace NodaTime
             return yearMonthDayCalculator.GetEra(localInstant);
         }
         #endregion
-
-        private sealed class MonthsPeriodField : IPeriodField
-        {
-            private readonly YearMonthDayCalculator calculator;
-
-            internal MonthsPeriodField(YearMonthDayCalculator calculator)
-            {
-                this.calculator = calculator;
-            }
-
-            public LocalInstant Add(LocalInstant localInstant, long value)
-            {
-                // We don't try to work out the actual bounds, but we can easily tell
-                // that we're out of range. Anything not in the range of an int is definitely broken.
-                if (value < int.MinValue || value > int.MaxValue)
-                {
-                    throw new ArgumentOutOfRangeException("value");
-                }
-
-                return calculator.AddMonths(localInstant, (int)value);
-            }
-
-            public long Subtract(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
-            {
-                int minuendYear = calculator.GetYear(minuendInstant);
-                int subtrahendYear = calculator.GetYear(subtrahendInstant);
-                int minuendMonth = calculator.GetMonthOfYear(minuendInstant);
-                int subtrahendMonth = calculator.GetMonthOfYear(subtrahendInstant);
-
-                int diff = (minuendYear - subtrahendYear) * calculator.MonthsInYear + minuendMonth - subtrahendMonth;
-
-                // If we just add the difference in months to subtrahendInstant, what do we get?
-                LocalInstant simpleAddition = Add(subtrahendInstant, diff);
-
-                if (subtrahendInstant <= minuendInstant)
-                {
-                    // Moving forward: if the result of the simple addition is before or equal to the minuend,
-                    // we're done. Otherwise, rewind a month because we've overshot.
-                    return simpleAddition <= minuendInstant ? diff : diff - 1;
-                }
-                else
-                {
-                    // Moving backward: if the result of the simple addition (of a non-positive number)
-                    // is after or equal to the minuend, we're done. Otherwise, increment by a month because
-                    // we've overshot backwards.
-                    return simpleAddition >= minuendInstant ? diff : diff + 1;
-                }
-            }
-        }
-
-        // TODO: Remove duplication in Int64Difference
-        private sealed class YearsPeriodField : IPeriodField
-        {
-            private readonly YearMonthDayCalculator calculator;
-
-            internal YearsPeriodField(YearMonthDayCalculator calculator)
-            {
-                this.calculator = calculator;
-            }
-
-            public LocalInstant Add(LocalInstant localInstant, long value)
-            {
-                int currentYear = calculator.GetYear(localInstant);
-                // Adjust argument range based on current year
-                Preconditions.CheckArgumentRange("value", value, calculator.MinYear - currentYear, calculator.MaxYear - currentYear);
-                // If we got this far, the conversion to int must be fine.
-                int intValue = (int)value;
-                return calculator.SetYear(localInstant, intValue + currentYear);
-            }
-
-            public long Subtract(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
-            {
-                int minuendYear = calculator.GetYear(minuendInstant);
-                int subtrahendYear = calculator.GetYear(subtrahendInstant);
-
-                int diff = minuendYear - subtrahendYear;
-
-                // If we just add the difference in years to subtrahendInstant, what do we get?
-                LocalInstant simpleAddition = Add(subtrahendInstant, diff);
-
-                if (subtrahendInstant <= minuendInstant)
-                {
-                    // Moving forward: if the result of the simple addition is before or equal to the minuend,
-                    // we're done. Otherwise, rewind a year because we've overshot.
-                    return simpleAddition <= minuendInstant ? diff : diff - 1;
-                }
-                else
-                {
-                    // Moving backward: if the result of the simple addition (of a non-positive number)
-                    // is after or equal to the minuend, we're done. Otherwise, increment by a year because
-                    // we've overshot backwards.
-                    return simpleAddition >= minuendInstant ? diff : diff + 1;
-                }
-            }
-        }
     }
 }
