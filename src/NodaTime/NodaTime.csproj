@@ -166,8 +166,10 @@
     <Compile Include="Fields\BasicMonthPeriodField.cs" />
     <Compile Include="Fields\BasicSingleEraDateTimeField.cs" />
     <Compile Include="Fields\BasicYearPeriodField.cs" />
+    <Compile Include="Fields\SimplePeriodField.cs" />
     <Compile Include="Fields\Int32DateTimeField.cs" />
     <Compile Include="Fields\Int64DateTimeField.cs" />
+    <Compile Include="Fields\IPeriodField.cs" />
     <Compile Include="Fields\NamespaceDoc.cs" />
     <Compile Include="Globalization\NamespaceDoc.cs" />
     <Compile Include="OffsetDateTime.cs" />

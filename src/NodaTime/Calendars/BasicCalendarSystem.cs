@@ -70,17 +70,17 @@ namespace NodaTime.Calendars
                                            Days = FixedLengthPeriodField.Days,
                                            Weeks = FixedLengthPeriodField.Weeks
                                        };
-            builder.TickOfSecond = new FixedLengthDateTimeField(DateTimeFieldType.TickOfSecond, builder.Ticks, builder.Seconds);
-            builder.TickOfMillisecond = new FixedLengthDateTimeField(DateTimeFieldType.TickOfMillisecond, builder.Ticks, builder.Milliseconds);
-            builder.TickOfDay = new FixedLengthDateTimeField(DateTimeFieldType.TickOfDay, builder.Ticks, builder.Days);
-            builder.MillisecondOfSecond = new FixedLengthDateTimeField(DateTimeFieldType.MillisecondOfSecond, builder.Milliseconds, builder.Seconds);
-            builder.MillisecondOfDay = new FixedLengthDateTimeField(DateTimeFieldType.MillisecondOfDay, builder.Milliseconds, builder.Days);
-            builder.SecondOfMinute = new FixedLengthDateTimeField(DateTimeFieldType.SecondOfMinute, builder.Seconds, builder.Minutes);
-            builder.SecondOfDay = new FixedLengthDateTimeField(DateTimeFieldType.SecondOfDay, builder.Seconds, builder.Days);
-            builder.MinuteOfHour = new FixedLengthDateTimeField(DateTimeFieldType.MinuteOfHour, builder.Minutes, builder.Hours);
-            builder.MinuteOfDay = new FixedLengthDateTimeField(DateTimeFieldType.MinuteOfDay, builder.Minutes, builder.Days);
-            builder.HourOfDay = new FixedLengthDateTimeField(DateTimeFieldType.HourOfDay, builder.Hours, builder.Days);
-            builder.HourOfHalfDay = new FixedLengthDateTimeField(DateTimeFieldType.HourOfHalfDay, builder.Hours, builder.HalfDays);
+            builder.TickOfSecond = new FixedLengthDateTimeField(DateTimeFieldType.TickOfSecond, (PeriodField)builder.Ticks, (PeriodField)builder.Seconds);
+            builder.TickOfMillisecond = new FixedLengthDateTimeField(DateTimeFieldType.TickOfMillisecond, (PeriodField)builder.Ticks, (PeriodField)builder.Milliseconds);
+            builder.TickOfDay = new FixedLengthDateTimeField(DateTimeFieldType.TickOfDay, (PeriodField)builder.Ticks, (PeriodField)builder.Days);
+            builder.MillisecondOfSecond = new FixedLengthDateTimeField(DateTimeFieldType.MillisecondOfSecond, (PeriodField)builder.Milliseconds, (PeriodField)builder.Seconds);
+            builder.MillisecondOfDay = new FixedLengthDateTimeField(DateTimeFieldType.MillisecondOfDay, (PeriodField)builder.Milliseconds, (PeriodField)builder.Days);
+            builder.SecondOfMinute = new FixedLengthDateTimeField(DateTimeFieldType.SecondOfMinute, (PeriodField)builder.Seconds, (PeriodField)builder.Minutes);
+            builder.SecondOfDay = new FixedLengthDateTimeField(DateTimeFieldType.SecondOfDay, (PeriodField)builder.Seconds, (PeriodField)builder.Days);
+            builder.MinuteOfHour = new FixedLengthDateTimeField(DateTimeFieldType.MinuteOfHour, (PeriodField)builder.Minutes, (PeriodField)builder.Hours);
+            builder.MinuteOfDay = new FixedLengthDateTimeField(DateTimeFieldType.MinuteOfDay, (PeriodField)builder.Minutes, (PeriodField)builder.Days);
+            builder.HourOfDay = new FixedLengthDateTimeField(DateTimeFieldType.HourOfDay, (PeriodField)builder.Hours, (PeriodField)builder.Days);
+            builder.HourOfHalfDay = new FixedLengthDateTimeField(DateTimeFieldType.HourOfHalfDay, (PeriodField)builder.Hours, (PeriodField)builder.HalfDays);
             builder.ClockHourOfHalfDay = new ZeroIsMaxDateTimeField(builder.HourOfHalfDay, DateTimeFieldType.ClockHourOfHalfDay);
             return builder.Build();
         }
@@ -121,12 +121,12 @@ namespace NodaTime.Calendars
             builder.YearOfCentury = new OffsetDateTimeField(field, DateTimeFieldType.YearOfCentury, 1);
 
             builder.Era = new GJEraDateTimeField(thisCalendar);
-            builder.DayOfWeek = new GJDayOfWeekDateTimeField(builder.Days);
-            builder.DayOfMonth = new BasicDayOfMonthDateTimeField(thisCalendar, builder.Days);
-            builder.DayOfYear = new BasicDayOfYearDateTimeField(thisCalendar, builder.Days);
+            builder.DayOfWeek = new GJDayOfWeekDateTimeField((PeriodField) builder.Days);
+            builder.DayOfMonth = new BasicDayOfMonthDateTimeField(thisCalendar, (PeriodField)builder.Days);
+            builder.DayOfYear = new BasicDayOfYearDateTimeField(thisCalendar, (PeriodField)builder.Days);
             builder.MonthOfYear = new BasicMonthOfYearDateTimeField(thisCalendar);
             builder.WeekYear = new BasicWeekYearDateTimeField(thisCalendar);
-            builder.WeekOfWeekYear = new BasicWeekOfWeekYearDateTimeField(thisCalendar, builder.Weeks);
+            builder.WeekOfWeekYear = new BasicWeekOfWeekYearDateTimeField(thisCalendar, (PeriodField)builder.Weeks);
 
             // The remaining (variable length) periods are available from the newly
             // created date/time fields.

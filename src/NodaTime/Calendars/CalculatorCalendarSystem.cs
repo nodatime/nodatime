@@ -94,8 +94,8 @@ namespace NodaTime.Calendars
             builder.CenturyOfEra = new Int32DateTimeField(yearMonthDayCalculator.GetCenturyOfEra);
             builder.Era = new Int32DateTimeField(yearMonthDayCalculator.GetEra);
 
-            builder.Days = FixedLengthPeriodField.Days;
-            builder.Weeks = FixedLengthPeriodField.Weeks;
+            builder.Days = SimplePeriodField.Days;
+            builder.Weeks = SimplePeriodField.Weeks;
             builder.Months = new MonthsPeriodField(yearMonthDayCalculator);
             builder.Years = new YearsPeriodField(yearMonthDayCalculator);
 
@@ -159,17 +159,16 @@ namespace NodaTime.Calendars
             return yearMonthDayCalculator.GetAbsoluteYear(yearOfEra, eraIndex);
         }
 
-        private class MonthsPeriodField : PeriodField
+        private sealed class MonthsPeriodField : IPeriodField
         {
             private readonly YearMonthDayCalculator calculator;
 
-            // TODO: Remove superconstructor
-            internal MonthsPeriodField(YearMonthDayCalculator calculator) : base(PeriodFieldType.Months, 1, false, true)
+            internal MonthsPeriodField(YearMonthDayCalculator calculator)
             {
                 this.calculator = calculator;
             }
 
-            internal override LocalInstant Add(LocalInstant localInstant, long value)
+            public LocalInstant Add(LocalInstant localInstant, long value)
             {
                 // We don't try to work out the actual bounds, but we can easily tell
                 // that we're out of range. Anything not in the range of an int is definitely broken.
@@ -181,7 +180,7 @@ namespace NodaTime.Calendars
                 return calculator.AddMonths(localInstant, (int) value);
             }
 
-            internal override long GetInt64Difference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
+            public long Subtract(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
             {
                 int minuendYear = calculator.GetYear(minuendInstant);
                 int subtrahendYear = calculator.GetYear(subtrahendInstant);
@@ -210,17 +209,16 @@ namespace NodaTime.Calendars
         }
 
         // TODO: Remove duplication in Int64Difference
-        private class YearsPeriodField : PeriodField
+        private sealed class YearsPeriodField : IPeriodField
         {
             private readonly YearMonthDayCalculator calculator;
 
-            // TODO: Remove superconstructor
-            internal YearsPeriodField(YearMonthDayCalculator calculator) : base(PeriodFieldType.Years, 1, false, true)
+            internal YearsPeriodField(YearMonthDayCalculator calculator)
             {
                 this.calculator = calculator;
             }
 
-            internal override LocalInstant Add(LocalInstant localInstant, long value)
+            public LocalInstant Add(LocalInstant localInstant, long value)
             {
                 int currentYear = calculator.GetYear(localInstant);
                 // Adjust argument range based on current year
@@ -230,7 +228,7 @@ namespace NodaTime.Calendars
                 return calculator.SetYear(localInstant, intValue + currentYear);
             }
 
-            internal override long GetInt64Difference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
+            public long Subtract(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
             {
                 int minuendYear = calculator.GetYear(minuendInstant);
                 int subtrahendYear = calculator.GetYear(subtrahendInstant);

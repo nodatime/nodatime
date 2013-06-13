@@ -379,7 +379,7 @@ namespace NodaTime
             var singleField = GetSingleField(fields, units);
             if (singleField != null)
             {
-                long value = singleField.GetInt64Difference(end.LocalInstant, start.LocalInstant);
+                long value = singleField.Subtract(end.LocalInstant, start.LocalInstant);
                 return new Period(units, value);
             }
 
@@ -393,7 +393,7 @@ namespace NodaTime
                 if ((numericFields & (1 << i)) != 0)
                 {
                     var field = GetFieldForIndex(fields, i);
-                    values[i] = field.GetInt64Difference(endLocalInstant, remaining);
+                    values[i] = field.Subtract(endLocalInstant, remaining);
                     remaining = field.Add(remaining, values[i]);
                 }
             }
@@ -624,7 +624,7 @@ namespace NodaTime
         /// Returns the PeriodField for the given unit value, or null if the values does
         /// not represent a single unit.
         /// </summary>
-        private static PeriodField GetSingleField(FieldSet fields, PeriodUnits units)
+        private static IPeriodField GetSingleField(FieldSet fields, PeriodUnits units)
         {
             switch (units)
             {
@@ -644,7 +644,7 @@ namespace NodaTime
         /// <summary>
         /// Returns the PeriodField for the given index, in the range 0-8 inclusive.
         /// </summary>
-        private static PeriodField GetFieldForIndex(FieldSet fields, int index)
+        private static IPeriodField GetFieldForIndex(FieldSet fields, int index)
         {
             switch (index)
             {

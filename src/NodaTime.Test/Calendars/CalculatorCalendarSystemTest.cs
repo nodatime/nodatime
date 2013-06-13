@@ -134,10 +134,16 @@ namespace NodaTime.Test.Calendars
 
         private static IEnumerable<PropertyInfo> GetSupportedProperties(FieldSet fields)
         {
-            // This is horrible, but should return all supported fields of either type
-            return typeof(FieldSet).GetProperties(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public)
-                                   .Where(p => (bool)p.PropertyType.GetProperty("IsSupported", BindingFlags.Instance | BindingFlags.NonPublic)
-                                                                    .GetValue(p.GetValue(fields, null), null));
+            foreach (var property in typeof(FieldSet).GetProperties(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public))
+            {
+                object field = property.GetValue(fields, null);
+                PeriodField legacyField = field as PeriodField;
+                // Non-legacy fields are always supported.
+                if (legacyField == null || legacyField.IsSupported)
+                {
+                    yield return property;
+                }
+            }
         }
 
         [Test]

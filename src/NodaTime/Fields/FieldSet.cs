@@ -11,16 +11,16 @@ namespace NodaTime.Fields
     /// </summary>
     internal sealed class FieldSet
     {
-        private readonly PeriodField ticks;
-        private readonly PeriodField milliseconds;
-        private readonly PeriodField seconds;
-        private readonly PeriodField minutes;
-        private readonly PeriodField hours;
-        private readonly PeriodField halfDays;
-        private readonly PeriodField days;
-        private readonly PeriodField weeks;
-        private readonly PeriodField months;
-        private readonly PeriodField years;
+        private readonly IPeriodField ticks;
+        private readonly IPeriodField milliseconds;
+        private readonly IPeriodField seconds;
+        private readonly IPeriodField minutes;
+        private readonly IPeriodField hours;
+        private readonly IPeriodField halfDays;
+        private readonly IPeriodField days;
+        private readonly IPeriodField weeks;
+        private readonly IPeriodField months;
+        private readonly IPeriodField years;
 
         private readonly DateTimeField tickOfSecond;
         private readonly DateTimeField tickOfMillisecond;
@@ -46,16 +46,16 @@ namespace NodaTime.Fields
         private readonly DateTimeField centruryOfEra;
         private readonly DateTimeField era;
 
-        internal PeriodField Ticks { get { return ticks; } }
-        internal PeriodField Milliseconds { get { return milliseconds; } }
-        internal PeriodField Seconds { get { return seconds; } }
-        internal PeriodField Minutes { get { return minutes; } }
-        internal PeriodField Hours { get { return hours; } }
-        internal PeriodField HalfDays { get { return halfDays; } }
-        internal PeriodField Days { get { return days; } }
-        internal PeriodField Weeks { get { return weeks; } }
-        internal PeriodField Months { get { return months; } }
-        internal PeriodField Years { get { return years; } }
+        internal IPeriodField Ticks { get { return ticks; } }
+        internal IPeriodField Milliseconds { get { return milliseconds; } }
+        internal IPeriodField Seconds { get { return seconds; } }
+        internal IPeriodField Minutes { get { return minutes; } }
+        internal IPeriodField Hours { get { return hours; } }
+        internal IPeriodField HalfDays { get { return halfDays; } }
+        internal IPeriodField Days { get { return days; } }
+        internal IPeriodField Weeks { get { return weeks; } }
+        internal IPeriodField Months { get { return months; } }
+        internal IPeriodField Years { get { return years; } }
 
         internal DateTimeField TickOfSecond { get { return tickOfSecond; } }
         internal DateTimeField TickOfMillisecond { get { return tickOfMillisecond; } }
@@ -134,16 +134,16 @@ namespace NodaTime.Fields
         /// </summary>
         internal sealed class Builder
         {
-            internal PeriodField Ticks { get; set; }
-            internal PeriodField Milliseconds { get; set; }
-            internal PeriodField Seconds { get; set; }
-            internal PeriodField Minutes { get; set; }
-            internal PeriodField Hours { get; set; }
-            internal PeriodField HalfDays { get; set; }
-            internal PeriodField Days { get; set; }
-            internal PeriodField Weeks { get; set; }
-            internal PeriodField Months { get; set; }
-            internal PeriodField Years { get; set; }
+            internal IPeriodField Ticks { get; set; }
+            internal IPeriodField Milliseconds { get; set; }
+            internal IPeriodField Seconds { get; set; }
+            internal IPeriodField Minutes { get; set; }
+            internal IPeriodField Hours { get; set; }
+            internal IPeriodField HalfDays { get; set; }
+            internal IPeriodField Days { get; set; }
+            internal IPeriodField Weeks { get; set; }
+            internal IPeriodField Months { get; set; }
+            internal IPeriodField Years { get; set; }
 
             internal DateTimeField TickOfSecond { get; set; }
             internal DateTimeField TickOfMillisecond { get; set; }
@@ -220,16 +220,16 @@ namespace NodaTime.Fields
             internal Builder WithSupportedFieldsFrom(FieldSet other)
             {
                 Preconditions.CheckNotNull(other, "other");
-                Ticks = other.Ticks.IsSupported ? other.Ticks : Ticks;
-                Milliseconds = other.Milliseconds.IsSupported ? other.Milliseconds : Milliseconds;
-                Seconds = other.Seconds.IsSupported ? other.Seconds : Seconds;
-                Minutes = other.Minutes.IsSupported ? other.Minutes : Minutes;
-                Hours = other.Hours.IsSupported ? other.Hours : Hours;
-                HalfDays = other.HalfDays.IsSupported ? other.HalfDays : HalfDays;
-                Days = other.Days.IsSupported ? other.Days : Days;
-                Weeks = other.Weeks.IsSupported ? other.Weeks : Weeks;
-                Months = other.Months.IsSupported ? other.Months : Months;
-                Years = other.Years.IsSupported ? other.Years : Years;
+                Ticks = FirstSupported(other.Ticks, Ticks);
+                Milliseconds = FirstSupported(other.Milliseconds, Milliseconds);
+                Seconds = FirstSupported(other.Seconds, Seconds);
+                Minutes = FirstSupported(other.Minutes, Minutes);
+                Hours = FirstSupported(other.Hours, Hours);
+                HalfDays = FirstSupported(other.HalfDays, HalfDays);
+                Days = FirstSupported(other.Days, Days);
+                Weeks = FirstSupported(other.Weeks, Weeks);
+                Months = FirstSupported(other.Months, Months);
+                Years = FirstSupported(other.Years, Years);
 
                 TickOfSecond = other.TickOfSecond.IsSupported ? other.TickOfSecond : TickOfSecond;
                 TickOfMillisecond = other.TickOfMillisecond.IsSupported ? other.TickOfMillisecond : TickOfMillisecond;
@@ -255,6 +255,13 @@ namespace NodaTime.Fields
                 CenturyOfEra = other.CenturyOfEra.IsSupported ? other.CenturyOfEra : CenturyOfEra;
                 Era = other.Era.IsSupported ? other.Era : Era;
                 return this;
+            }
+
+            // TODO: This needs to go away...
+            private static IPeriodField FirstSupported(IPeriodField first, IPeriodField second)
+            {
+                // We treat any non-PeriodField value as supported.
+                return (first is PeriodField && !((PeriodField)first).IsSupported) ? second : first;
             }
 
             internal FieldSet Build()
