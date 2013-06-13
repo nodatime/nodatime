@@ -142,20 +142,16 @@
   <ItemGroup>
     <Compile Include="CalendarSystem.cs" />
     <Compile Include="AmbiguousTimeException.cs" />
-    <Compile Include="Calendars\BasicFixedMonthCalendarSystem.cs" />
     <Compile Include="Calendars\CalculatorCalendarSystem.cs" />
-    <Compile Include="Calendars\CopticCalendarSystem.cs" />
     <Compile Include="Calendars\CopticYearMonthDayCalculator.cs" />
     <Compile Include="Calendars\Era.cs" />
     <Compile Include="Calendars\FixedMonthYearMonthDayCalculator.cs" />
     <Compile Include="Calendars\GJYearMonthDayCalculator.cs" />
     <Compile Include="Calendars\GregorianYearMonthDayCalculator.cs" />
-    <Compile Include="Calendars\IslamicCalendarSystem.cs" />
     <Compile Include="Calendars\IslamicEpoch.cs" />
     <Compile Include="Calendars\IslamicLeapYearPattern.cs" />
     <Compile Include="Calendars\IslamicYearMonthDayCalculator.cs" />
     <Compile Include="Calendars\IsoYearMonthDayCalculator.cs" />
-    <Compile Include="Calendars\JulianCalendarSystem.cs" />
     <Compile Include="Calendars\JulianYearMonthDayCalculator.cs" />
     <Compile Include="Calendars\NamespaceDoc.cs" />
     <Compile Include="Calendars\TimeOfDayCalculator.cs" />
@@ -163,9 +159,6 @@
     <Compile Include="Calendars\YearMonthDayCalculator.cs" />
     <Compile Include="DateTimeZoneProviders.cs" />
     <Compile Include="Delegates.cs" />
-    <Compile Include="Fields\BasicMonthPeriodField.cs" />
-    <Compile Include="Fields\BasicSingleEraDateTimeField.cs" />
-    <Compile Include="Fields\BasicYearPeriodField.cs" />
     <Compile Include="Fields\SimplePeriodField.cs" />
     <Compile Include="Fields\Int32DateTimeField.cs" />
     <Compile Include="Fields\Int64DateTimeField.cs" />
@@ -218,25 +211,15 @@
     <Compile Include="IClock.cs" />
     <Compile Include="Globalization\NodaFormatInfo.cs" />
     <Compile Include="IsoDayOfWeek.cs" />
-    <Compile Include="Fields\BasicDayOfMonthDateTimeField.cs" />
-    <Compile Include="Fields\BasicDayOfYearDateTimeField.cs" />
     <Compile Include="LocalDate.cs" />
     <Compile Include="LocalTime.cs" />
     <Compile Include="NamespaceDoc.cs" />
     <Compile Include="Offset.cs" />
-    <Compile Include="Fields\BasicMonthOfYearDateTimeField.cs" />
-    <Compile Include="Fields\BasicWeekOfWeekYearDateTimeField.cs" />
-    <Compile Include="Fields\BasicWeekYearDateTimeField.cs" />
-    <Compile Include="Fields\BasicYearDateTimeField.cs" />
     <Compile Include="Fields\DateTimeField.cs" />
     <Compile Include="Fields\DecoratedDateTimeField.cs" />
     <Compile Include="Fields\DividedDateTimeField.cs" />
     <Compile Include="Fields\FieldSet.cs" />
     <Compile Include="Fields\PeriodField.cs" />
-    <Compile Include="Fields\GJDayOfWeekDateTimeField.cs" />
-    <Compile Include="Fields\GJEraDateTimeField.cs" />
-    <Compile Include="Fields\GJYearOfEraDateTimeField.cs" />
-    <Compile Include="Fields\IsoYearOfEraDateTimeField.cs" />
     <Compile Include="Fields\OffsetDateTimeField.cs" />
     <Compile Include="Fields\FixedLengthDateTimeField.cs" />
     <Compile Include="Fields\FixedLengthPeriodField.cs" />
@@ -248,9 +231,6 @@
     <Compile Include="Fields\UnsupportedPeriodField.cs" />
     <Compile Include="Fields\ZeroIsMaxDateTimeField.cs" />
     <Compile Include="LocalInstant.cs" />
-    <Compile Include="Calendars\BasicCalendarSystem.cs" />
-    <Compile Include="Calendars\BasicGJCalendarSystem.cs" />
-    <Compile Include="Calendars\GregorianCalendarSystem.cs" />
     <Compile Include="Period.cs" />
     <Compile Include="Properties\Messages.Designer.cs">
       <AutoGen>True</AutoGen>

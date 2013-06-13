@@ -28,14 +28,14 @@ namespace NodaTime.Test.Calendars
         [Test]
         public void GetInstance_UniqueIds()
         {
-            Assert.AreEqual(7, Enumerable.Range(1, 7).Select(x => GregorianCalendarSystem.GetInstance(x).Id).Distinct().Count());
+            Assert.AreEqual(7, Enumerable.Range(1, 7).Select(x => CalendarSystem.GetGregorianCalendar(x).Id).Distinct().Count());
         }
 
         [Test]
         public void GetInstance_InvalidMinDaysInFirstWeek()
         {
-            Assert.Throws<ArgumentOutOfRangeException>(() => GregorianCalendarSystem.GetInstance(0));
-            Assert.Throws<ArgumentOutOfRangeException>(() => GregorianCalendarSystem.GetInstance(8));
+            Assert.Throws<ArgumentOutOfRangeException>(() => CalendarSystem.GetGregorianCalendar(0));
+            Assert.Throws<ArgumentOutOfRangeException>(() => CalendarSystem.GetGregorianCalendar(8));
         }
 
         [Test]
@@ -44,7 +44,7 @@ namespace NodaTime.Test.Calendars
             // Seems the simplest way to test this... yes, it seems somewhat wasteful, but hey...
             for (int i = 1; i < 7; i++)
             {
-                GregorianCalendarSystem calendar = GregorianCalendarSystem.GetInstance(i);
+                CalendarSystem calendar = CalendarSystem.GetGregorianCalendar(i);
 
                 int actualMin = Enumerable.Range(1900, 400)
                                           .Select(year => GetDaysInFirstWeek(year, calendar))
@@ -53,7 +53,7 @@ namespace NodaTime.Test.Calendars
             }
         }
 
-        private int GetDaysInFirstWeek(int year, GregorianCalendarSystem calendar)
+        private int GetDaysInFirstWeek(int year, CalendarSystem calendar)
         {
             // Some of the first few days of the week year may be in the previous week year.
             // However, the whole of the first week of the week year definitely occurs

@@ -19,7 +19,7 @@ namespace NodaTime.Test.Calendars
             CalendarSystem coptic = CalendarSystem.GetCopticCalendar(4);
             LocalDateTime copticEpoch = new LocalDateTime(1, 1, 1, 0, 0, coptic);
 
-            CalendarSystem julian = JulianCalendarSystem.GetInstance(4);
+            CalendarSystem julian = CalendarSystem.GetJulianCalendar(4);
             LocalDateTime converted = new LocalDateTime(copticEpoch.LocalInstant, julian);
 
             LocalDateTime expected = new LocalDateTime(284, 8, 29, 0, 0, julian);

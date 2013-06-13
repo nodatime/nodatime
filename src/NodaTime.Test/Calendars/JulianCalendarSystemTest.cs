@@ -10,12 +10,12 @@ using NodaTime.Calendars;
 namespace NodaTime.Test.Calendars
 {
     /// <summary>
-    /// Tests for <see cref="JulianCalendarSystem"/>.
+    /// Tests for the Julian calendar system via JulianYearMonthDayCalculator.
     /// </summary>
     [TestFixture]
     public partial class JulianCalendarSystemTest
     {
-        private static readonly CalendarSystem Julian = JulianCalendarSystem.GetInstance(4);
+        private static readonly CalendarSystem Julian = CalendarSystem.GetJulianCalendar(4);
 
         /// <summary>
         /// The Unix epoch is equivalent to December 19th 1969 in the Julian calendar.
@@ -46,14 +46,14 @@ namespace NodaTime.Test.Calendars
         [Test]
         public void GetInstance_UniqueIds()
         {
-            Assert.AreEqual(7, Enumerable.Range(1, 7).Select(x => JulianCalendarSystem.GetInstance(x).Id).Distinct().Count());
+            Assert.AreEqual(7, Enumerable.Range(1, 7).Select(x => CalendarSystem.GetJulianCalendar(x).Id).Distinct().Count());
         }
 
         [Test]
         public void GetInstance_InvalidMinDaysInFirstWeek()
         {
-            Assert.Throws<ArgumentOutOfRangeException>(() => JulianCalendarSystem.GetInstance(0));
-            Assert.Throws<ArgumentOutOfRangeException>(() => JulianCalendarSystem.GetInstance(8));
+            Assert.Throws<ArgumentOutOfRangeException>(() => CalendarSystem.GetJulianCalendar(0));
+            Assert.Throws<ArgumentOutOfRangeException>(() => CalendarSystem.GetJulianCalendar(8));
         }
 
         [Test]
@@ -62,7 +62,7 @@ namespace NodaTime.Test.Calendars
             // Seems the simplest way to test this... yes, it seems somewhat wasteful, but hey...
             for (int i = 1; i < 7; i++)
             {
-                JulianCalendarSystem calendar = JulianCalendarSystem.GetInstance(i);
+                CalendarSystem calendar = CalendarSystem.GetJulianCalendar(i);
 
                 int actualMin = Enumerable.Range(1900, 400)
                                           .Select(year => GetDaysInFirstWeek(year, calendar))
@@ -71,7 +71,7 @@ namespace NodaTime.Test.Calendars
             }
         }
 
-        private int GetDaysInFirstWeek(int year, JulianCalendarSystem calendar)
+        private int GetDaysInFirstWeek(int year, CalendarSystem calendar)
         {
             // Some of the first few days of the week year may be in the previous week year.
             // However, the whole of the first week of the week year definitely occurs
