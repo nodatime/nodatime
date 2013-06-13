@@ -231,16 +231,8 @@
     <Compile Include="DurationTest.Construction.cs">
       <DependentUpon>DurationTest.cs</DependentUpon>
     </Compile>
-    <Compile Include="Fields\PeriodFieldTest.cs" />
-    <Compile Include="Fields\FakePeriodField.cs" />
-    <Compile Include="Fields\MockCountingPeriodField.cs" />
-    <Compile Include="Fields\FixedLengthDateTimeFieldTest.cs" />
-    <Compile Include="Fields\FixedLengthPeriodDateTimeFieldTest.cs" />
-    <Compile Include="Fields\FixedLengthPeriodFieldTest.cs" />
+    <Compile Include="Fields\SimplePeriodFieldTest.cs" />
     <Compile Include="Fields\TicksPeriodFieldTest.cs" />
-    <Compile Include="Fields\UnsupportedDateTimeFieldTest.cs" />
-    <Compile Include="Fields\UnsupportedPeriodFieldTest.cs" />
-    <Compile Include="Fields\ZeroIsMaxDateTimeFieldTest.cs" />
     <Compile Include="Calendars\IsoCalendarSystemTest.cs" />
     <Compile Include="Calendars\IsoCalendarSystemTest.FieldValidation.cs">
       <DependentUpon>IsoCalendarSystemTest.cs</DependentUpon>

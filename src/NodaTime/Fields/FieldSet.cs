@@ -33,15 +33,15 @@ namespace NodaTime.Fields
 
         private FieldSet(Builder builder)
         {
-            ticks = builder.Ticks ?? UnsupportedPeriodField.Ticks;
-            milliseconds = builder.Milliseconds ?? UnsupportedPeriodField.Milliseconds;
-            seconds = builder.Seconds ?? UnsupportedPeriodField.Seconds;
-            minutes = builder.Minutes ?? UnsupportedPeriodField.Minutes;
-            hours = builder.Hours ?? UnsupportedPeriodField.Hours;
-            days = builder.Days ?? UnsupportedPeriodField.Days;
-            weeks = builder.Weeks ?? UnsupportedPeriodField.Weeks;
-            months = builder.Months ?? UnsupportedPeriodField.Months;
-            years = builder.Years ?? UnsupportedPeriodField.Years;
+            ticks = builder.Ticks;
+            milliseconds = builder.Milliseconds;
+            seconds = builder.Seconds;
+            minutes = builder.Minutes;
+            hours = builder.Hours;
+            days = builder.Days;
+            weeks = builder.Weeks;
+            months = builder.Months;
+            years = builder.Years;
         }
         
         /// <summary>
