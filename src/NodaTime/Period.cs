@@ -361,7 +361,7 @@ namespace NodaTime
         public static Period Between(LocalDateTime start, LocalDateTime end, PeriodUnits units)
         {
             Preconditions.CheckArgument(units != 0, "units", "Units must not be empty");
-            Preconditions.CheckArgument((units & ~PeriodUnits.AllUnits) == 0, "units", "Units contains an unknown value: " + units);
+            Preconditions.CheckArgument((units & ~PeriodUnits.AllUnits) == 0, "units", "Units contains an unknown value");
             CalendarSystem calendar = start.Calendar;
             Preconditions.CheckArgument(calendar.Equals(end.Calendar), "end", "start and end must use the same calendar system");
 
@@ -457,7 +457,7 @@ namespace NodaTime
         /// <returns>The period between the given dates, using the given units.</returns>
         public static Period Between(LocalDate start, LocalDate end, PeriodUnits units)
         {
-            Preconditions.CheckArgument((units & PeriodUnits.AllTimeUnits) == 0, "units", "Units contains time units: " + units);
+            Preconditions.CheckArgument((units & PeriodUnits.AllTimeUnits) == 0, "units", "Units contains time units");
             return Between(start.AtMidnight(), end.AtMidnight(), units);
         }
 
@@ -494,7 +494,7 @@ namespace NodaTime
         /// <returns>The period between the given times, using the given units.</returns>
         public static Period Between(LocalTime start, LocalTime end, PeriodUnits units)
         {
-            Preconditions.CheckArgument((units & PeriodUnits.AllDateUnits) == 0, "units", "Units contains date units: " + units);
+            Preconditions.CheckArgument((units & PeriodUnits.AllDateUnits) == 0, "units", "Units contains date units");
             return Between(start.LocalDateTime, end.LocalDateTime, units);
         }
 
