@@ -18,6 +18,7 @@ namespace NodaTime.Calendars
 
         internal static readonly CalendarSystem[] NewGregorianCalendarSystems;
         internal static readonly CalendarSystem[] NewCopticCalendarSystems;
+        internal static readonly CalendarSystem[,] NewIslamicCalendarSystems;
         internal static readonly CalendarSystem NewIsoCalendarSystem;
 
         static CalculatorCalendarSystem()
@@ -37,6 +38,17 @@ namespace NodaTime.Calendars
             }
             var oldIso = GregorianCalendarSystem.IsoHelper.Instance;
             NewIsoCalendarSystem = new CalculatorCalendarSystem(oldIso.Id, oldIso.Name, IsoYearMonthDayCalculator.IsoInstance, 4);
+
+            NewIslamicCalendarSystems = new CalendarSystem[4, 2];
+            for (int i = 1; i <= 4; i++)
+            {
+                for (int j = 1; j <= 2; j++)
+                {
+                    var old = IslamicCalendarSystem.GetInstance((IslamicLeapYearPattern)i, (IslamicEpoch)j);
+                    var calculator = IslamicYearMonthDayCalculator.GetInstance((IslamicLeapYearPattern)i, (IslamicEpoch)j);
+                    NewIslamicCalendarSystems[i - 1, j - 1] = new CalculatorCalendarSystem(old.Id, old.Name, calculator, 4);
+                }
+            }
         }
 
         internal CalculatorCalendarSystem(

@@ -8,12 +8,12 @@ namespace NodaTime.Calendars
 {
     internal sealed class IslamicYearMonthDayCalculator : YearMonthDayCalculator
     {
-                // These are ugly, but we have unit tests which will spot if they get out of sync...
-        private const int MinEpochNumber = 1;
-        private const int MaxEpochNumber = 2;
+        // These are ugly, but we have unit tests which will spot if they get out of sync...
+        internal const int MinEpochNumber = 1;
+        internal const int MaxEpochNumber = 2;
 
-        private const int MinLeapYearPatternNumber = 1;
-        private const int MaxLeapYearPatternNumber = 4;
+        internal const int MinLeapYearPatternNumber = 1;
+        internal const int MaxLeapYearPatternNumber = 4;
 
         /// <summary>Days in a pair of months, in days.</summary>
         private const int MonthPairLength = 59;
@@ -23,9 +23,6 @@ namespace NodaTime.Calendars
 
         /// <summary>The length of a short month, in days.</summary>
         private const int ShortMonthLength = 29;
-
-        /// <summary>The ticks in a typical month.</summary>
-        private const long TicksPerMonth = (long) (29.53056 * NodaConstants.TicksPerStandardDay);
 
         /// <summary>The typical number of ticks in a year.</summary>
         private const long TicksPerYear = (long) (354.36667 * NodaConstants.TicksPerStandardDay);

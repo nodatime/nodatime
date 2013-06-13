@@ -141,6 +141,7 @@ namespace NodaTime
         /// calls as the object is immutable and thread-safe.</returns>
         public static CalendarSystem GetGregorianCalendar(int minDaysInFirstWeek)
         {
+            Preconditions.CheckArgumentRange("minDaysInFirstWeek", minDaysInFirstWeek, 1, 7);
             return CalculatorCalendarSystem.NewGregorianCalendarSystems[minDaysInFirstWeek - 1];
         }
 
@@ -162,6 +163,7 @@ namespace NodaTime
         /// calls as the object is immutable and thread-safe.</returns>
         public static CalendarSystem GetJulianCalendar(int minDaysInFirstWeek)
         {
+            Preconditions.CheckArgumentRange("minDaysInFirstWeek", minDaysInFirstWeek, 1, 7); 
             return JulianCalendarSystem.GetInstance(minDaysInFirstWeek);
         }
 
@@ -191,6 +193,7 @@ namespace NodaTime
         /// calls as the object is immutable and thread-safe.</returns>
         public static CalendarSystem GetCopticCalendar(int minDaysInFirstWeek)
         {
+            Preconditions.CheckArgumentRange("minDaysInFirstWeek", minDaysInFirstWeek, 1, 7);
             return CalculatorCalendarSystem.NewCopticCalendarSystems[minDaysInFirstWeek - 1];
         }
 
@@ -253,7 +256,9 @@ namespace NodaTime
         /// calls as the object is immutable and thread-safe.</returns>
         public static CalendarSystem GetIslamicCalendar(IslamicLeapYearPattern leapYearPattern, IslamicEpoch epoch)
         {
-            return IslamicCalendarSystem.GetInstance(leapYearPattern, epoch);
+            Preconditions.CheckArgumentRange("leapYearPattern", (int) leapYearPattern, 1, 4);
+            Preconditions.CheckArgumentRange("epoch", (int) epoch, 1, 2);
+            return CalculatorCalendarSystem.NewIslamicCalendarSystems[(int) leapYearPattern - 1, (int) epoch - 1];
         }
         #endregion
 
