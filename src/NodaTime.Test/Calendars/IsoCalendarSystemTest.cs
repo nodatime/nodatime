@@ -83,21 +83,6 @@ namespace NodaTime.Test.Calendars
         }
 
         [Test]
-        public void GetLocalInstant_WithValidTickOfDay()
-        {
-            LocalInstant expected = new LocalInstant(2009, 11, 27, 3, 0);
-            LocalInstant actual = CalendarSystem.Iso.GetLocalInstant(2009, 11, 27, NodaConstants.TicksPerHour * 3);
-            Assert.AreEqual(expected, actual);
-        }
-
-        [Test]
-        public void GetLocalInstant_WithInvalidTickOfDay()
-        {
-            Assert.Throws<ArgumentOutOfRangeException>(() => CalendarSystem.Iso.GetLocalInstant(2009, 11, 27, -1));
-            Assert.Throws<ArgumentOutOfRangeException>(() => CalendarSystem.Iso.GetLocalInstant(2009, 11, 27, NodaConstants.TicksPerStandardDay));
-        }
-
-        [Test]
         public void IsoCalendarUsesIsoDayOfWeek()
         {
             Assert.IsTrue(CalendarSystem.Iso.UsesIsoDayOfWeek);

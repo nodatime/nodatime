@@ -57,6 +57,10 @@ namespace NodaTime
         static CalendarSystem()
         {
             IsoCalendarSystem = new CalendarSystem(IsoName, IsoName, new IsoYearMonthDayCalculator(), 4);
+
+            // Variations for the calendar systems which have different objects for different "minimum first day of week"
+            // values. We create a new year/month/day calculator for each instance, but there's no actual state - it's
+            // unimportant. Later we could save a whole 18 objects by avoiding that...
             GregorianCalendarSystems = new CalendarSystem[7];
             CopticCalendarSystems = new CalendarSystem[7];
             JulianCalendarSystems = new CalendarSystem[7];
@@ -79,11 +83,6 @@ namespace NodaTime
                 }
             }
         }
-
-        private static CalendarSystem CreateCalendarSystemWithId(
-        var julianCalculator = new JulianYearMonthDayCalculator();
-                JulianCalendarSystems[i - 1] = new CalendarSystem(
-                    CreateIdFromNameAndMinDaysInFirstWeek(JulianName, i), JulianName, julianCalculator, i);
 
         /// <summary>
         /// Fetches a calendar system by its unique identifier. This provides full round-tripping of a calendar
@@ -108,15 +107,6 @@ namespace NodaTime
         /// Returns the IDs of all calendar systems available within Noda Time. The order of the keys is not guaranteed.
         /// </summary>
         public static IEnumerable<string> Ids { get { return IdToFactoryMap.Keys; } }
-
-        /// <summary>
-        /// Creates an ID for a calendar system which only needs to be distinguished by its name and
-        /// the minimum number of days in the first week of the week-year.
-        /// </summary>
-        private static string CreateIdFromNameAndMinDaysInFirstWeek(string name, int minDaysInFirstWeek)
-        {
-            return string.Format(CultureInfo.InvariantCulture, "{0} {1}", name, minDaysInFirstWeek);
-        }
 
         private static readonly Dictionary<string, Func<CalendarSystem>> IdToFactoryMap = new Dictionary<string, Func<CalendarSystem>>
         {
@@ -322,6 +312,15 @@ namespace NodaTime
         {
         }
 
+        /// <summary>
+        /// Creates an ID for a calendar system which only needs to be distinguished by its name and
+        /// the minimum number of days in the first week of the week-year.
+        /// </summary>
+        private static string CreateIdFromNameAndMinDaysInFirstWeek(string name, int minDaysInFirstWeek)
+        {
+            return string.Format(CultureInfo.InvariantCulture, "{0} {1}", name, minDaysInFirstWeek);
+        }
+
         private CalendarSystem(string id, string name, YearMonthDayCalculator yearMonthDayCalculator, int minDaysInFirstWeek)
         {
             this.id = id;
@@ -491,29 +490,7 @@ namespace NodaTime
         {
             return GetLocalInstant(year, monthOfYear, dayOfMonth, hourOfDay, minuteOfHour, 0, 0, 0);
         }
-
-        /// <summary>
-        /// Returns a local instant, formed from the given year, month, day, and ticks values.
-        /// The set of given values must refer to a valid datetime.
-        /// <para>
-        /// The default implementation calls upon separate DateTimeFields to
-        /// determine the result. Subclasses are encouraged to provide a more
-        /// efficient implementation.
-        /// </para>
-        /// </summary>
-        /// <param name="year">Year to use</param>
-        /// <param name="monthOfYear">Month to use</param>
-        /// <param name="dayOfMonth">Day of month to use</param>
-        /// <param name="tickOfDay">Tick of day to use</param>
-        /// <exception cref="ArgumentOutOfRangeException">The year of era, month of year and day of month values don't
-        /// form a valid date.</exception>
-        /// <returns>A <see cref="LocalInstant"/> with the given year, month, day and tick-of-day.</returns>
-        internal LocalInstant GetLocalInstant(int year, int monthOfYear, int dayOfMonth, long tickOfDay)
-        {
-            Preconditions.CheckArgumentRange("tickOfDay", tickOfDay, 0, NodaConstants.TicksPerStandardDay - 1);
-            return yearMonthDayCalculator.GetLocalInstant(year, monthOfYear, dayOfMonth).PlusTicks(tickOfDay);
-        }
-
+        
         /// <summary>
         /// Returns the local date corresponding to the given "week year", "week of week year", and "day of week"
         /// in this calendar system.
