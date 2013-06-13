@@ -162,7 +162,6 @@
     <Compile Include="Fields\FixedDurationPeriodField.cs" />
     <Compile Include="Fields\IPeriodField.cs" />
     <Compile Include="Fields\NamespaceDoc.cs" />
-    <Compile Include="Fields\TicksPeriodField.cs" />
     <Compile Include="Fields\YearsPeriodField.cs" />
     <Compile Include="Globalization\NamespaceDoc.cs" />
     <Compile Include="OffsetDateTime.cs" />
