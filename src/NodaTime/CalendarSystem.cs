@@ -67,7 +67,7 @@ namespace NodaTime
             for (int i = 1; i <= 7; i++)
             {
                 GregorianCalendarSystems[i - 1] = new CalendarSystem(GregorianName, new GregorianYearMonthDayCalculator(), i);
-                CopticCalendarSystems[i - 1] = new CalendarSystem(CopticName, new GregorianYearMonthDayCalculator(), i);
+                CopticCalendarSystems[i - 1] = new CalendarSystem(CopticName, new CopticYearMonthDayCalculator(), i);
                 JulianCalendarSystems[i - 1] = new CalendarSystem(JulianName, new JulianYearMonthDayCalculator(), i);
             }
             IslamicCalendarSystems = new CalendarSystem[4, 2];
@@ -308,7 +308,7 @@ namespace NodaTime
         private readonly int maxYear;
       
         private CalendarSystem(string name, YearMonthDayCalculator yearMonthDayCalculator, int minDaysInFirstWeek)
-            : this(name, CreateIdFromNameAndMinDaysInFirstWeek(name, minDaysInFirstWeek), yearMonthDayCalculator, minDaysInFirstWeek)
+            : this(CreateIdFromNameAndMinDaysInFirstWeek(name, minDaysInFirstWeek), name, yearMonthDayCalculator, minDaysInFirstWeek)
         {
         }
 
