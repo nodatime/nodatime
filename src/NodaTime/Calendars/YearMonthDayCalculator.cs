@@ -37,7 +37,7 @@ namespace NodaTime.Calendars
             this.monthsInYear = monthsInYear;
             this.eras = eras;
             this.averageTicksPerYear = averageTicksPerYear;
-            this.approxTicksAtEpochDividedByTwo = approxTicksAtEpoch >> 1;
+            this.approxTicksAtEpochDividedByTwo = approxTicksAtEpoch / 2;
             // Effectively invalidate the first cache entry.
             // Every other cache entry will automatically be invalid,
             // by having year 0.
