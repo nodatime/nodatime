@@ -113,7 +113,6 @@
     <Compile Include="CalendarSystemTest.Ids.cs">
       <DependentUpon>CalendarSystemTest.cs</DependentUpon>
     </Compile>
-    <Compile Include="Calendars\CalculatorCalendarSystemTest.cs" />
     <Compile Include="Calendars\CopticCalendarSystemTest.cs" />
     <Compile Include="Calendars\GregorianCalendarSystemTest.cs" />
     <Compile Include="Calendars\IslamicCalendarSystemTest.cs" />
@@ -125,8 +124,6 @@
       <DependentUpon>JulianCalendarSystemTest.cs</DependentUpon>
     </Compile>
     <Compile Include="Calendars\PeriodAdditionTest.cs" />
-    <Compile Include="Fields\BasicWeekYearDateTimeFieldTest.cs" />
-    <Compile Include="Fields\GJEraDateTimeFieldTest.cs" />
     <Compile Include="IntervalTest.cs" />
     <Compile Include="OffsetDateTimeTest.cs" />
     <Compile Include="PeriodBuilderTest.cs" />
@@ -234,13 +231,11 @@
     <Compile Include="DurationTest.Construction.cs">
       <DependentUpon>DurationTest.cs</DependentUpon>
     </Compile>
-    <Compile Include="Fields\DateTimeFieldTest.cs" />
     <Compile Include="Fields\DecoratedDateTimeFieldTest.cs" />
     <Compile Include="Fields\PeriodFieldTest.cs" />
     <Compile Include="Fields\FakePeriodField.cs" />
     <Compile Include="Fields\FieldSetTest.cs" />
     <Compile Include="Fields\MockCountingPeriodField.cs" />
-    <Compile Include="Fields\OffsetDateTimeFieldTest.cs" />
     <Compile Include="Fields\FixedLengthDateTimeFieldTest.cs" />
     <Compile Include="Fields\FixedLengthPeriodDateTimeFieldTest.cs" />
     <Compile Include="Fields\FixedLengthPeriodFieldTest.cs" />
@@ -250,15 +245,6 @@
     <Compile Include="Fields\UnsupportedPeriodFieldTest.cs" />
     <Compile Include="Fields\ZeroIsMaxDateTimeFieldTest.cs" />
     <Compile Include="Calendars\IsoCalendarSystemTest.cs" />
-    <Compile Include="Calendars\IsoCalendarSystemTest.DateFields.cs">
-      <DependentUpon>IsoCalendarSystemTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Calendars\IsoCalendarSystemTest.DurationFields.cs">
-      <DependentUpon>IsoCalendarSystemTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Calendars\IsoCalendarSystemTest.TimeFields.cs">
-      <DependentUpon>IsoCalendarSystemTest.cs</DependentUpon>
-    </Compile>
     <Compile Include="Calendars\IsoCalendarSystemTest.FieldValidation.cs">
       <DependentUpon>IsoCalendarSystemTest.cs</DependentUpon>
     </Compile>

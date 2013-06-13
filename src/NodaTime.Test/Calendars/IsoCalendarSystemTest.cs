@@ -19,9 +19,6 @@ namespace NodaTime.Test.Calendars
 
         private static readonly CalendarSystem Iso = CalendarSystem.Iso;
 
-        // These are deliberately the old ISO fields, to preserve the tests (which should die later).
-        private static readonly FieldSet isoFields = GregorianCalendarSystem.IsoHelper.Instance.Fields;
-
         [Test]
         public void FieldsOf_UnixEpoch()
         {
