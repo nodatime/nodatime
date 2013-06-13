@@ -5,6 +5,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using NodaTime.Calendars;
 using NodaTime.Fields;
 using NodaTime.Utility;
@@ -71,6 +72,15 @@ namespace NodaTime
         /// Returns the IDs of all calendar systems available within Noda Time. The order of the keys is not guaranteed.
         /// </summary>
         public static IEnumerable<string> Ids { get { return IdToFactoryMap.Keys; } }
+
+        /// <summary>
+        /// Creates an ID for a calendar system which only needs to be distinguished by its name and
+        /// the minimum number of days in the first week of the week-year.
+        /// </summary>
+        protected static string CreateIdFromNameAndMinDaysInFirstWeek(string name, int minDaysInFirstWeek)
+        {
+            return string.Format(CultureInfo.InvariantCulture, "{0} {1}", name, minDaysInFirstWeek);
+        }
 
         private static readonly Dictionary<string, Func<CalendarSystem>> IdToFactoryMap = new Dictionary<string, Func<CalendarSystem>>
         {

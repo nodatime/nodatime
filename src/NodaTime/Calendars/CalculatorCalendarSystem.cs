@@ -5,6 +5,7 @@
 using NodaTime.Fields;
 using NodaTime.Utility;
 using System;
+using System.Globalization;
 
 namespace NodaTime.Calendars
 {
@@ -13,6 +14,12 @@ namespace NodaTime.Calendars
     /// </summary>
     internal sealed class CalculatorCalendarSystem : CalendarSystem
     {
+        private const string GregorianName = "Gregorian";
+        private const string IsoName = "ISO";
+        private const string CopticName = "Coptic";
+        private const string JulianName = "Julian";
+        private const string IslamicName = "Hijri";
+
         private readonly YearMonthDayCalculator yearMonthDayCalculator;
         private readonly WeekYearCalculator weekYearCalculator;
 
@@ -29,30 +36,28 @@ namespace NodaTime.Calendars
             NewJulianCalendarSystems = new CalendarSystem[7];
             for (int i = 1; i <= 7; i++)
             {
-                CalendarSystem old = GregorianCalendarSystem.GetInstance(i);
                 var gregorianCalculator = new GregorianYearMonthDayCalculator();
                 NewGregorianCalendarSystems[i - 1] = new CalculatorCalendarSystem(
-                    old.Id, old.Name, gregorianCalculator, i);
-                old = CopticCalendarSystem.GetInstance(i);
+                    CreateIdFromNameAndMinDaysInFirstWeek(GregorianName, i), GregorianName, gregorianCalculator, i);
                 var copticCalculator = new CopticYearMonthDayCalculator();
                 NewCopticCalendarSystems[i - 1] = new CalculatorCalendarSystem(
-                    old.Id, old.Name, copticCalculator, i);
-                old = JulianCalendarSystem.GetInstance(i);
+                    CreateIdFromNameAndMinDaysInFirstWeek(CopticName, i), CopticName, copticCalculator, i);
                 var julianCalculator = new JulianYearMonthDayCalculator();
                 NewJulianCalendarSystems[i - 1] = new CalculatorCalendarSystem(
-                    old.Id, old.Name, julianCalculator, i);
+                    CreateIdFromNameAndMinDaysInFirstWeek(JulianName, i), JulianName, julianCalculator, i);
             }
-            var oldIso = GregorianCalendarSystem.IsoHelper.Instance;
-            NewIsoCalendarSystem = new CalculatorCalendarSystem(oldIso.Id, oldIso.Name, new IsoYearMonthDayCalculator(), 4);
+            NewIsoCalendarSystem = new CalculatorCalendarSystem(IsoName, IsoName, new IsoYearMonthDayCalculator(), 4);
 
             NewIslamicCalendarSystems = new CalendarSystem[4, 2];
             for (int i = 1; i <= 4; i++)
             {
                 for (int j = 1; j <= 2; j++)
                 {
-                    var old = IslamicCalendarSystem.GetInstance((IslamicLeapYearPattern)i, (IslamicEpoch)j);
+                    var leapYearPattern = (IslamicLeapYearPattern)i;
+                    var epoch = (IslamicEpoch)j;
                     var calculator = new IslamicYearMonthDayCalculator((IslamicLeapYearPattern)i, (IslamicEpoch)j);
-                    NewIslamicCalendarSystems[i - 1, j - 1] = new CalculatorCalendarSystem(old.Id, old.Name, calculator, 4);
+                    string id = string.Format(CultureInfo.InvariantCulture, "{0} {1}-{2}", IslamicName, epoch, leapYearPattern);
+                    NewIslamicCalendarSystems[i - 1, j - 1] = new CalculatorCalendarSystem(id, IslamicName, calculator, 4);
                 }
             }
         }
