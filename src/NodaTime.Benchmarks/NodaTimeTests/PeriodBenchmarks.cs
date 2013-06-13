@@ -51,6 +51,12 @@ namespace NodaTime.Benchmarks.NodaTimeTests
         }
 
         [Benchmark]
+        public void Between_LocalDateTime_Ticks()
+        {
+            Period.Between(SampleStartDateTime, SampleEndDateTime, PeriodUnits.Ticks);
+        }
+
+        [Benchmark]
         public void PlusYears()
         {
             SampleStartDate.PlusYears(3);

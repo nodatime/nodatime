@@ -17,7 +17,7 @@ namespace NodaTime.Calendars
     {
         internal static readonly FieldSet TimeFields = new FieldSet.Builder
         {
-            Ticks = new TicksPeriodField(),
+            Ticks = FixedDurationPeriodField.Ticks,
             Milliseconds = FixedDurationPeriodField.Milliseconds,
             Seconds = FixedDurationPeriodField.Seconds,
             Minutes = FixedDurationPeriodField.Minutes,

@@ -9,6 +9,7 @@ namespace NodaTime.Fields
     /// </summary>
     internal sealed class FixedDurationPeriodField : IPeriodField
     {
+        internal static readonly IPeriodField Ticks = new FixedDurationPeriodField(1);
         internal static readonly IPeriodField Milliseconds = new FixedDurationPeriodField(NodaConstants.TicksPerMillisecond);
         internal static readonly IPeriodField Seconds = new FixedDurationPeriodField(NodaConstants.TicksPerSecond);
         internal static readonly IPeriodField Minutes = new FixedDurationPeriodField(NodaConstants.TicksPerMinute);
