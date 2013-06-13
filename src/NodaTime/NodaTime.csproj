@@ -142,7 +142,6 @@
   <ItemGroup>
     <Compile Include="CalendarSystem.cs" />
     <Compile Include="AmbiguousTimeException.cs" />
-    <Compile Include="Calendars\CalculatorCalendarSystem.cs" />
     <Compile Include="Calendars\CopticYearMonthDayCalculator.cs" />
     <Compile Include="Calendars\Era.cs" />
     <Compile Include="Calendars\FixedMonthYearMonthDayCalculator.cs" />
