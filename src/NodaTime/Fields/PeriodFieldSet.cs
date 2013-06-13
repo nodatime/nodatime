@@ -9,7 +9,7 @@ namespace NodaTime.Fields
     /// <summary>
     /// An immutable collection of date/time and period fields.
     /// </summary>
-    internal sealed class FieldSet
+    internal sealed class PeriodFieldSet
     {
         private readonly IPeriodField ticks;
         private readonly IPeriodField milliseconds;
@@ -31,7 +31,7 @@ namespace NodaTime.Fields
         internal IPeriodField Months { get { return months; } }
         internal IPeriodField Years { get { return years; } }
 
-        private FieldSet(Builder builder)
+        private PeriodFieldSet(Builder builder)
         {
             ticks = builder.Ticks;
             milliseconds = builder.Milliseconds;
@@ -64,7 +64,7 @@ namespace NodaTime.Fields
             {
             }
 
-            internal Builder(FieldSet baseSet)
+            internal Builder(PeriodFieldSet baseSet)
             {
                 Preconditions.CheckNotNull(baseSet, "baseSet");
                 Ticks = baseSet.Ticks;
@@ -78,9 +78,9 @@ namespace NodaTime.Fields
                 Years = baseSet.Years;
             }
 
-            internal FieldSet Build()
+            internal PeriodFieldSet Build()
             {
-                return new FieldSet(this);
+                return new PeriodFieldSet(this);
             }
         }
     }

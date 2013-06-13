@@ -672,7 +672,7 @@ namespace NodaTime
         /// <returns>The current value plus the given number of years.</returns>
         public LocalDateTime PlusYears(int years)
         {
-            LocalInstant newLocalInstant = Calendar.Fields.Years.Add(localInstant, years);
+            LocalInstant newLocalInstant = Calendar.PeriodFields.Years.Add(localInstant, years);
             return new LocalDateTime(newLocalInstant, Calendar);
         }
 
@@ -694,7 +694,7 @@ namespace NodaTime
         /// <returns>The current value plus the given number of months.</returns>
         public LocalDateTime PlusMonths(int months)
         {
-            LocalInstant newLocalInstant = Calendar.Fields.Months.Add(localInstant, months);
+            LocalInstant newLocalInstant = Calendar.PeriodFields.Months.Add(localInstant, months);
             return new LocalDateTime(newLocalInstant, Calendar);
         }
 
@@ -711,7 +711,7 @@ namespace NodaTime
         /// <returns>The current value plus the given number of days.</returns>
         public LocalDateTime PlusDays(int days)
         {
-            LocalInstant newLocalInstant = Calendar.Fields.Days.Add(localInstant, days);
+            LocalInstant newLocalInstant = Calendar.PeriodFields.Days.Add(localInstant, days);
             return new LocalDateTime(newLocalInstant, Calendar);
         }
 
@@ -722,7 +722,7 @@ namespace NodaTime
         /// <returns>The current value plus the given number of weeks.</returns>
         public LocalDateTime PlusWeeks(int weeks)
         {
-            LocalInstant newLocalInstant = Calendar.Fields.Weeks.Add(localInstant, weeks);
+            LocalInstant newLocalInstant = Calendar.PeriodFields.Weeks.Add(localInstant, weeks);
             return new LocalDateTime(newLocalInstant, Calendar);
         }
 
@@ -733,7 +733,7 @@ namespace NodaTime
         /// <returns>The current value plus the given number of hours.</returns>
         public LocalDateTime PlusHours(long hours)
         {
-            LocalInstant newLocalInstant = Calendar.Fields.Hours.Add(localInstant, hours);
+            LocalInstant newLocalInstant = Calendar.PeriodFields.Hours.Add(localInstant, hours);
             return new LocalDateTime(newLocalInstant, Calendar);
         }
 
@@ -744,7 +744,7 @@ namespace NodaTime
         /// <returns>The current value plus the given number of minutes.</returns>
         public LocalDateTime PlusMinutes(long minutes)
         {
-            LocalInstant newLocalInstant = Calendar.Fields.Minutes.Add(localInstant, minutes);
+            LocalInstant newLocalInstant = Calendar.PeriodFields.Minutes.Add(localInstant, minutes);
             return new LocalDateTime(newLocalInstant, Calendar);
         }
 
@@ -755,7 +755,7 @@ namespace NodaTime
         /// <returns>The current value plus the given number of seconds.</returns>
         public LocalDateTime PlusSeconds(long seconds)
         {
-            LocalInstant newLocalInstant = Calendar.Fields.Seconds.Add(localInstant, seconds);
+            LocalInstant newLocalInstant = Calendar.PeriodFields.Seconds.Add(localInstant, seconds);
             return new LocalDateTime(newLocalInstant, Calendar);
         }
 
@@ -766,7 +766,7 @@ namespace NodaTime
         /// <returns>The current value plus the given number of milliseconds.</returns>
         public LocalDateTime PlusMilliseconds(long milliseconds)
         {
-            LocalInstant newLocalInstant = Calendar.Fields.Milliseconds.Add(localInstant, milliseconds);
+            LocalInstant newLocalInstant = Calendar.PeriodFields.Milliseconds.Add(localInstant, milliseconds);
             return new LocalDateTime(newLocalInstant, Calendar);
         }
 
@@ -777,7 +777,7 @@ namespace NodaTime
         /// <returns>The current value plus the given number of ticks.</returns>
         public LocalDateTime PlusTicks(long ticks)
         {
-            LocalInstant newLocalInstant = Calendar.Fields.Ticks.Add(localInstant, ticks);
+            LocalInstant newLocalInstant = Calendar.PeriodFields.Ticks.Add(localInstant, ticks);
             return new LocalDateTime(newLocalInstant, Calendar);
         }
 
