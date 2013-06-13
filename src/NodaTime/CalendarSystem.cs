@@ -163,8 +163,8 @@ namespace NodaTime
         /// calls as the object is immutable and thread-safe.</returns>
         public static CalendarSystem GetJulianCalendar(int minDaysInFirstWeek)
         {
-            Preconditions.CheckArgumentRange("minDaysInFirstWeek", minDaysInFirstWeek, 1, 7); 
-            return JulianCalendarSystem.GetInstance(minDaysInFirstWeek);
+            Preconditions.CheckArgumentRange("minDaysInFirstWeek", minDaysInFirstWeek, 1, 7);
+            return CalculatorCalendarSystem.NewJulianCalendarSystems[minDaysInFirstWeek - 1];
         }
 
         /// <summary>

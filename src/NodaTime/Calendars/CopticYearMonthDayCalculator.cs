@@ -6,9 +6,7 @@ namespace NodaTime.Calendars
 {
     internal sealed class CopticYearMonthDayCalculator : FixedMonthYearMonthDayCalculator
     {
-        internal static readonly YearMonthDayCalculator CopticInstance = new CopticYearMonthDayCalculator();
-
-        private CopticYearMonthDayCalculator()
+        internal CopticYearMonthDayCalculator()
             : base(1, 29227, 1686L * AverageTicksPerYear + 112L * NodaConstants.TicksPerStandardDay, new[] { Era.AnnoMartyrum })
         {            
         }

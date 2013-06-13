@@ -17,23 +17,24 @@ namespace NodaTime.Calendars
         private const int DaysFrom0000To1970 = 719527;
         private const long AverageTicksPerGregorianYear = (long)(365.2425m * NodaConstants.TicksPerStandardDay);
 
-        internal static readonly GregorianYearMonthDayCalculator Instance = new GregorianYearMonthDayCalculator();
-
         static GregorianYearMonthDayCalculator()
         {
+            // It's generally a really bad idea to create an instance before the static initializer
+            // has completed, but we know its safe because we're only using a very restricted set of methods.
+            var instance = new GregorianYearMonthDayCalculator();
             for (int year = FirstOptimizedYear; year <= LastOptimizedYear; year++)
             {
-                YearStartTicks[year - FirstOptimizedYear] = Instance.CalculateYearTicks(year);
+                YearStartTicks[year - FirstOptimizedYear] = instance.CalculateYearTicks(year);
                 for (int month = 1; month <= 12; month++)
                 {
                     int yearMonthIndex = (year - FirstOptimizedYear) * 12 + month;
-                    MonthStartTicks[yearMonthIndex] = Instance.GetYearMonthTicks(year, month);
-                    MonthLengths[yearMonthIndex] = Instance.GetDaysInMonth(year, month);
+                    MonthStartTicks[yearMonthIndex] = instance.GetYearMonthTicks(year, month);
+                    MonthLengths[yearMonthIndex] = instance.GetDaysInMonth(year, month);
                 }
             }
         }
 
-        protected GregorianYearMonthDayCalculator()
+        internal GregorianYearMonthDayCalculator()
             : base(-27255, 31195,  AverageTicksPerGregorianYear, 1970 * AverageTicksPerGregorianYear)
         {
         }
