@@ -26,9 +26,9 @@ namespace NodaTime
     /// If you need to obtain a <see cref="CalendarSystem" /> instance, use one of the static properties or methods in this
     /// class, such as the <see cref="Iso" /> property or the <see cref="GetGregorianCalendar(int)" /> method.
     /// </para>
-    /// <para>Although this class is abstract, other assemblies cannot introduce types which derive from it, as the
-    /// constructor is internal, and makes use of internal types. This ensures that all calendar types are genuinely
-    /// immutable and thread-safe, aside from anything else. If you require a calendar system which is not
+    /// <para>Although this class is currently sealed (as of Noda Time 1.2), in the future this decision may
+    /// be reversed. In any case, there is no current intention for third-party developers to be able to implement
+    /// their own calendar systems (for various reasons). If you require a calendar system which is not
     /// currently supported, please file a feature request and we'll see what we can do.
     /// </para>
     /// </remarks>
@@ -36,19 +36,55 @@ namespace NodaTime
     /// All calendar implementations within Noda Time are immutable and thread-safe. See the thread safety
     /// section of the user guide for more information.
     /// </threadsafety>
-    public abstract class CalendarSystem
+    public sealed class CalendarSystem
     {
-        /// <summary>
-        /// Delegate used to construct fields. This is called within the base constructor, before the
-        /// derived class constructor bodies have been run - so it's *somewhat* unsafe to pass "this"
-        /// reference, but derived classes will just need to be careful.
-        /// </summary>
-        internal delegate void FieldAssembler(FieldSet.Builder builder, CalendarSystem @this);
-
         // TODO(2.0): Consider moving the static accessors into a separate class. As we get more calendars,
         // this approach will become unwieldy.
 
         #region Public factory members for calendars
+        private const string GregorianName = "Gregorian";
+        private const string IsoName = "ISO";
+        private const string CopticName = "Coptic";
+        private const string JulianName = "Julian";
+        private const string IslamicName = "Hijri";
+
+        private static readonly CalendarSystem[] GregorianCalendarSystems;
+        private static readonly CalendarSystem[] CopticCalendarSystems;
+        private static readonly CalendarSystem[] JulianCalendarSystems;
+        private static readonly CalendarSystem[,] IslamicCalendarSystems;
+        private static readonly CalendarSystem IsoCalendarSystem;
+
+        static CalendarSystem()
+        {
+            IsoCalendarSystem = new CalendarSystem(IsoName, IsoName, new IsoYearMonthDayCalculator(), 4);
+            GregorianCalendarSystems = new CalendarSystem[7];
+            CopticCalendarSystems = new CalendarSystem[7];
+            JulianCalendarSystems = new CalendarSystem[7];
+            for (int i = 1; i <= 7; i++)
+            {
+                GregorianCalendarSystems[i - 1] = new CalendarSystem(GregorianName, new GregorianYearMonthDayCalculator(), i);
+                CopticCalendarSystems[i - 1] = new CalendarSystem(CopticName, new GregorianYearMonthDayCalculator(), i);
+                JulianCalendarSystems[i - 1] = new CalendarSystem(JulianName, new JulianYearMonthDayCalculator(), i);
+            }
+            IslamicCalendarSystems = new CalendarSystem[4, 2];
+            for (int i = 1; i <= 4; i++)
+            {
+                for (int j = 1; j <= 2; j++)
+                {
+                    var leapYearPattern = (IslamicLeapYearPattern)i;
+                    var epoch = (IslamicEpoch)j;
+                    var calculator = new IslamicYearMonthDayCalculator((IslamicLeapYearPattern)i, (IslamicEpoch)j);
+                    string id = string.Format(CultureInfo.InvariantCulture, "{0} {1}-{2}", IslamicName, epoch, leapYearPattern);
+                    IslamicCalendarSystems[i - 1, j - 1] = new CalendarSystem(id, IslamicName, calculator, 4);
+                }
+            }
+        }
+
+        private static CalendarSystem CreateCalendarSystemWithId(
+        var julianCalculator = new JulianYearMonthDayCalculator();
+                JulianCalendarSystems[i - 1] = new CalendarSystem(
+                    CreateIdFromNameAndMinDaysInFirstWeek(JulianName, i), JulianName, julianCalculator, i);
+
         /// <summary>
         /// Fetches a calendar system by its unique identifier. This provides full round-tripping of a calendar
         /// system. It is not guaranteed that calling this method twice with the same identifier will return
@@ -77,7 +113,7 @@ namespace NodaTime
         /// Creates an ID for a calendar system which only needs to be distinguished by its name and
         /// the minimum number of days in the first week of the week-year.
         /// </summary>
-        protected static string CreateIdFromNameAndMinDaysInFirstWeek(string name, int minDaysInFirstWeek)
+        private static string CreateIdFromNameAndMinDaysInFirstWeek(string name, int minDaysInFirstWeek)
         {
             return string.Format(CultureInfo.InvariantCulture, "{0} {1}", name, minDaysInFirstWeek);
         }
@@ -132,7 +168,7 @@ namespace NodaTime
         /// is the value of the last two year digits.
         /// </para>
         /// </remarks>
-        public static CalendarSystem Iso { get { return CalculatorCalendarSystem.NewIsoCalendarSystem; } }
+        public static CalendarSystem Iso { get { return IsoCalendarSystem; } }
 
         /// <summary>
         /// Returns a pure proleptic Gregorian calendar system, which defines every
@@ -152,7 +188,7 @@ namespace NodaTime
         public static CalendarSystem GetGregorianCalendar(int minDaysInFirstWeek)
         {
             Preconditions.CheckArgumentRange("minDaysInFirstWeek", minDaysInFirstWeek, 1, 7);
-            return CalculatorCalendarSystem.NewGregorianCalendarSystems[minDaysInFirstWeek - 1];
+            return GregorianCalendarSystems[minDaysInFirstWeek - 1];
         }
 
         /// <summary>
@@ -174,7 +210,7 @@ namespace NodaTime
         public static CalendarSystem GetJulianCalendar(int minDaysInFirstWeek)
         {
             Preconditions.CheckArgumentRange("minDaysInFirstWeek", minDaysInFirstWeek, 1, 7);
-            return CalculatorCalendarSystem.NewJulianCalendarSystems[minDaysInFirstWeek - 1];
+            return JulianCalendarSystems[minDaysInFirstWeek - 1];
         }
 
         /// <summary>
@@ -204,7 +240,7 @@ namespace NodaTime
         public static CalendarSystem GetCopticCalendar(int minDaysInFirstWeek)
         {
             Preconditions.CheckArgumentRange("minDaysInFirstWeek", minDaysInFirstWeek, 1, 7);
-            return CalculatorCalendarSystem.NewCopticCalendarSystems[minDaysInFirstWeek - 1];
+            return CopticCalendarSystems[minDaysInFirstWeek - 1];
         }
 
         /// <summary>
@@ -268,34 +304,40 @@ namespace NodaTime
         {
             Preconditions.CheckArgumentRange("leapYearPattern", (int) leapYearPattern, 1, 4);
             Preconditions.CheckArgumentRange("epoch", (int) epoch, 1, 2);
-            return CalculatorCalendarSystem.NewIslamicCalendarSystems[(int) leapYearPattern - 1, (int) epoch - 1];
+            return IslamicCalendarSystems[(int) leapYearPattern - 1, (int) epoch - 1];
         }
         #endregion
 
+        private readonly YearMonthDayCalculator yearMonthDayCalculator;
+        private readonly WeekYearCalculator weekYearCalculator;
         private readonly FieldSet fields;
         private readonly string id;
         private readonly string name;
         private readonly IList<Era> eras;
         private readonly int minYear;
         private readonly int maxYear;
+      
+        private CalendarSystem(string name, YearMonthDayCalculator yearMonthDayCalculator, int minDaysInFirstWeek)
+            : this(name, CreateIdFromNameAndMinDaysInFirstWeek(name, minDaysInFirstWeek), yearMonthDayCalculator, minDaysInFirstWeek)
+        {
+        }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="CalendarSystem"/> class.
-        /// </summary>
-        /// <param name="id">The unique ID of the calendar</param>
-        /// <param name="name">The name of the calendar</param>
-        /// <param name="minYear">Minimum year in the calendar</param>
-        /// <param name="maxYear">Maximum year in the calendar</param>
-        /// <param name="fields">Period fields for this calendar.</param>
-        /// <param name="eras">The eras used in this calendar, which need not be unique to the calendar.</param>
-        internal CalendarSystem(string id, string name, int minYear, int maxYear, FieldSet fields, IEnumerable<Era> eras)
+        private CalendarSystem(string id, string name, YearMonthDayCalculator yearMonthDayCalculator, int minDaysInFirstWeek)
         {
             this.id = id;
             this.name = name;
-            this.minYear = minYear;
-            this.maxYear = maxYear;
-            this.eras = new ReadOnlyCollection<Era>(new List<Era>(eras));
-            this.fields = fields;
+            this.yearMonthDayCalculator = yearMonthDayCalculator;
+            this.weekYearCalculator = new WeekYearCalculator(yearMonthDayCalculator, minDaysInFirstWeek);
+            this.minYear = yearMonthDayCalculator.MinYear;                   
+            this.maxYear = yearMonthDayCalculator.MaxYear;
+            this.eras = new ReadOnlyCollection<Era>(new List<Era>(yearMonthDayCalculator.Eras));
+            this.fields = new FieldSet.Builder(TimeOfDayCalculator.TimeFields)
+            {
+                Days = SimplePeriodField.Days,
+                Weeks = SimplePeriodField.Weeks,
+                Months = new MonthsPeriodField(yearMonthDayCalculator),
+                Years = new YearsPeriodField(yearMonthDayCalculator)
+            }.Build();
         }
 
         /// <summary>
@@ -361,27 +403,7 @@ namespace NodaTime
         /// can use the <see cref="IsoDayOfWeek" /> property to avoid using magic numbers.
         /// This defaults to true, but can be overridden by specific calendars.
         /// </summary>
-        public virtual bool UsesIsoDayOfWeek { get { return true; } }
-
-        /// <summary>
-        /// Returns the number of days in the given month within the given year.
-        /// </summary>
-        /// <param name="year">The year in which to consider the month</param>
-        /// <param name="month">The month to determine the number of days in</param>
-        /// <exception cref="ArgumentOutOfRangeException">The given year / month combination
-        /// is invalid for this calendar.</exception>
-        /// <returns>The number of days in the given month and year.</returns>
-        public abstract int GetDaysInMonth(int year, int month);
-
-        /// <summary>
-        /// Returns whether or not the given year is a leap year in this calendar.
-        /// </summary>
-        /// <param name="year">The year to consider.</param>
-        /// <exception cref="ArgumentOutOfRangeException">The given year is invalid for this calendar.
-        /// Note that some implementations may return a value rather than throw this exception. Failure to throw an
-        /// exception should not be treated as an indication that the year is valid.</exception>
-        /// <returns>True if the given year is a leap year; false otherwise.</returns>
-        public abstract bool IsLeapYear(int year);
+        public bool UsesIsoDayOfWeek { get { return true; } }
 
         /// <summary>
         /// The minimum valid year (inclusive) within this calendar.
@@ -392,18 +414,6 @@ namespace NodaTime
         /// The maximum valid year (inclusive) within this calendar.
         /// </summary>
         public int MaxYear { get { return maxYear; } }
-
-        /// <summary>
-        /// The maximum valid month (inclusive) within this calendar in the given year. It is assumed that
-        /// all calendars start with month 1 and go up to this month number in any valid year.
-        /// </summary>
-        /// <param name="year">The year to consider.</param>
-        /// <exception cref="ArgumentOutOfRangeException">The given year is invalid for this calendar.
-        /// Note that some implementations may return a month rather than throw this exception (for example, if all
-        /// years have the same number of months in this calendar system). Failure to throw an exception should not be
-        /// treated as an indication that the year is valid.</exception>
-        /// <returns>The maximum month number within the given year.</returns>
-        public abstract int GetMaxMonth(int year);
 
         #region Era-based members
         /// <summary>
@@ -460,50 +470,27 @@ namespace NodaTime
         /// Convenience method to perform nullity and validity checking on the era, converting it to
         /// the index within the list of eras used in this calendar system.
         /// </summary>
-        protected int GetEraIndex(Era era)
+        private int GetEraIndex(Era era)
         {
             Preconditions.CheckNotNull(era, "era");
             int index = Eras.IndexOf(era);
             Preconditions.CheckArgument(index != -1, "era", "Era is not used in this calendar");
             return index;
         }
-
-        /// <summary>
-        /// See <see cref="GetMinYearOfEra(NodaTime.Calendars.Era)" /> - but this uses a pre-validated index.
-        /// This default implementation returns 1, but can be overridden by derived classes.
-        /// </summary>
-        internal virtual int GetMinYearOfEra(int eraIndex)
-        {
-            return 1;
-        }
-
-        /// <summary>
-        /// See <see cref="GetMaxYearOfEra(Era)"/> - but this uses a pre-validated index.
-        /// This default implementation returns the maximum year for this calendar, which is
-        /// a valid implementation for single-era calendars.
-        /// </summary>
-        internal virtual int GetMaxYearOfEra(int eraIndex)
-        {
-            return MaxYear;
-        }
-
-        /// <summary>
-        /// See <see cref="GetAbsoluteYear(int, Era)"/> - but this uses a pre-validated index.
-        /// This default implementation validates that the year is between 1 and MaxYear inclusive,
-        /// but then returns it as-is, expecting that there's no further work to be
-        /// done. This is valid for single-era calendars; the method should be overridden for multi-era calendars.
-        /// </summary>
-        internal virtual int GetAbsoluteYear(int yearOfEra, int eraIndex)
-        {
-            if (yearOfEra < 1 || yearOfEra > MaxYear)
-            {
-                throw new ArgumentOutOfRangeException("yearOfEra");
-            }
-            return yearOfEra;
-        }
         #endregion
 
         internal FieldSet Fields { get { return fields; } }
+
+        #region Factory methods for creating a LocalInstant from components
+        internal LocalInstant GetLocalInstant(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour, int secondOfMinute)
+        {
+            return GetLocalInstant(year, monthOfYear, dayOfMonth, hourOfDay, minuteOfHour, secondOfMinute, 0, 0);
+        }
+
+        internal LocalInstant GetLocalInstant(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour)
+        {
+            return GetLocalInstant(year, monthOfYear, dayOfMonth, hourOfDay, minuteOfHour, 0, 0, 0);
+        }
 
         /// <summary>
         /// Returns a local instant, formed from the given year, month, day, and ticks values.
@@ -521,7 +508,11 @@ namespace NodaTime
         /// <exception cref="ArgumentOutOfRangeException">The year of era, month of year and day of month values don't
         /// form a valid date.</exception>
         /// <returns>A <see cref="LocalInstant"/> with the given year, month, day and tick-of-day.</returns>
-        internal abstract LocalInstant GetLocalInstant(int year, int monthOfYear, int dayOfMonth, long tickOfDay);
+        internal LocalInstant GetLocalInstant(int year, int monthOfYear, int dayOfMonth, long tickOfDay)
+        {
+            Preconditions.CheckArgumentRange("tickOfDay", tickOfDay, 0, NodaConstants.TicksPerStandardDay - 1);
+            return yearMonthDayCalculator.GetLocalInstant(year, monthOfYear, dayOfMonth).PlusTicks(tickOfDay);
+        }
 
         /// <summary>
         /// Returns the local date corresponding to the given "week year", "week of week year", and "day of week"
@@ -531,7 +522,10 @@ namespace NodaTime
         /// <param name="weekOfWeekYear">ISO-8601 week of week year of value to return</param>
         /// <param name="dayOfWeek">ISO-8601 day of week to return</param>
         /// <returns>The date corresponding to the given week year / week of week year / day of week.</returns>
-        internal abstract LocalInstant GetLocalInstantFromWeekYearWeekAndDayOfWeek(int weekYear, int weekOfWeekYear, IsoDayOfWeek dayOfWeek);
+        internal LocalInstant GetLocalInstantFromWeekYearWeekAndDayOfWeek(int weekYear, int weekOfWeekYear, IsoDayOfWeek dayOfWeek)
+        {
+            return weekYearCalculator.GetLocalInstant(weekYear, weekOfWeekYear, dayOfWeek);
+        }
 
         /// <summary>
         /// Returns a local instant, at the start of the day formed from the given year of era, month, day, and era arguments.
@@ -546,7 +540,10 @@ namespace NodaTime
         /// <exception cref="ArgumentOutOfRangeException">The year of era, month of year and day of month values don't
         /// form a valid date.</exception>
         /// <returns>A <see cref="LocalInstant"/> with the given year, month, day and era.</returns>
-        internal abstract LocalInstant GetLocalInstant(Era era, int yearOfEra, int monthOfYear, int dayOfMonth);
+        internal LocalInstant GetLocalInstant(Era era, int yearOfEra, int monthOfYear, int dayOfMonth)
+        {
+            return yearMonthDayCalculator.GetLocalInstant(era, yearOfEra, monthOfYear, dayOfMonth);
+        }
 
         /// <summary>
         /// Returns a local instant, formed from the given year, month, day, 
@@ -561,18 +558,13 @@ namespace NodaTime
         /// <param name="millisecondOfSecond">Millisecond within the second</param>
         /// <param name="tickOfMillisecond">Tick within the millisecond</param>
         /// <returns>A <see cref="LocalInstant"/> with the given values.</returns>
-        internal abstract LocalInstant GetLocalInstant(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour, int secondOfMinute,
-                                                       int millisecondOfSecond, int tickOfMillisecond);
-
-        internal virtual LocalInstant GetLocalInstant(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour, int secondOfMinute)
+        internal LocalInstant GetLocalInstant(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour, int secondOfMinute, int millisecondOfSecond, int tickOfMillisecond)
         {
-            return GetLocalInstant(year, monthOfYear, dayOfMonth, hourOfDay, minuteOfHour, secondOfMinute, 0, 0);
+            LocalInstant date = yearMonthDayCalculator.GetLocalInstant(year, monthOfYear, dayOfMonth);
+            long timeTicks = TimeOfDayCalculator.GetTicks(hourOfDay, minuteOfHour, secondOfMinute, millisecondOfSecond, tickOfMillisecond);
+            return date.PlusTicks(timeTicks);
         }
-
-        internal virtual LocalInstant GetLocalInstant(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour)
-        {
-            return GetLocalInstant(year, monthOfYear, dayOfMonth, hourOfDay, minuteOfHour, 0, 0, 0);
-        }
+        #endregion
 
         #region object overrides
         /// <summary>
@@ -600,30 +592,287 @@ namespace NodaTime
             return (IsoDayOfWeek) GetDayOfWeek(localInstant);
         }
 
-        // Methods which were previously fields. Consult documentation for
-        // LocalDateTime for details.
-        internal abstract int GetTickOfSecond(LocalInstant localInstant);
-        internal abstract int GetTickOfMillisecond(LocalInstant localInstant);
-        internal abstract long GetTickOfDay(LocalInstant localInstant);
-        internal abstract int GetMillisecondOfSecond(LocalInstant localInstant);
-        internal abstract int GetMillisecondOfDay(LocalInstant localInstant);
-        internal abstract int GetSecondOfMinute(LocalInstant localInstant);
-        internal abstract int GetSecondOfDay(LocalInstant localInstant);
-        internal abstract int GetMinuteOfHour(LocalInstant localInstant);
-        internal abstract int GetMinuteOfDay(LocalInstant localInstant);
-        internal abstract int GetHourOfDay(LocalInstant localInstant);
-        internal abstract int GetHourOfHalfDay(LocalInstant localInstant);
-        internal abstract int GetClockHourOfHalfDay(LocalInstant localInstant);
-        internal abstract int GetDayOfWeek(LocalInstant localInstant);
-        internal abstract int GetDayOfMonth(LocalInstant localInstant);
-        internal abstract int GetDayOfYear(LocalInstant localInstant);
-        internal abstract int GetWeekOfWeekYear(LocalInstant localInstant);
-        internal abstract int GetWeekYear(LocalInstant localInstant);
-        internal abstract int GetMonthOfYear(LocalInstant localInstant);
-        internal abstract int GetYear(LocalInstant localInstant);
-        internal abstract int GetYearOfCentury(LocalInstant localInstant);
-        internal abstract int GetYearOfEra(LocalInstant localInstant);
-        internal abstract int GetCenturyOfEra(LocalInstant localInstant);
-        internal abstract int GetEra(LocalInstant localInstant);
+        /// <summary>
+        /// Returns the number of days in the given month within the given year.
+        /// </summary>
+        /// <param name="year">The year in which to consider the month</param>
+        /// <param name="month">The month to determine the number of days in</param>
+        /// <exception cref="ArgumentOutOfRangeException">The given year / month combination
+        /// is invalid for this calendar.</exception>
+        /// <returns>The number of days in the given month and year.</returns>
+        public int GetDaysInMonth(int year, int month)
+        {
+            return yearMonthDayCalculator.GetDaysInMonth(year, month);
+        }
+
+        /// <summary>
+        /// Returns whether or not the given year is a leap year in this calendar.
+        /// </summary>
+        /// <param name="year">The year to consider.</param>
+        /// <exception cref="ArgumentOutOfRangeException">The given year is invalid for this calendar.
+        /// Note that some implementations may return a value rather than throw this exception. Failure to throw an
+        /// exception should not be treated as an indication that the year is valid.</exception>
+        /// <returns>True if the given year is a leap year; false otherwise.</returns>
+        public bool IsLeapYear(int year)
+        {
+            return yearMonthDayCalculator.IsLeapYear(year);
+        }
+
+        /// <summary>
+        /// The maximum valid month (inclusive) within this calendar in the given year. It is assumed that
+        /// all calendars start with month 1 and go up to this month number in any valid year.
+        /// </summary>
+        /// <param name="year">The year to consider.</param>
+        /// <exception cref="ArgumentOutOfRangeException">The given year is invalid for this calendar.
+        /// Note that some implementations may return a month rather than throw this exception (for example, if all
+        /// years have the same number of months in this calendar system). Failure to throw an exception should not be
+        /// treated as an indication that the year is valid.</exception>
+        /// <returns>The maximum month number within the given year.</returns>
+        public int GetMaxMonth(int year)
+        {
+            return yearMonthDayCalculator.MonthsInYear;
+        }
+
+        /// <summary>
+        /// See <see cref="GetMaxYearOfEra(Era)"/> - but this uses a pre-validated index.
+        /// This default implementation returns the maximum year for this calendar, which is
+        /// a valid implementation for single-era calendars.
+        /// </summary>
+        internal int GetMaxYearOfEra(int eraIndex)
+        {
+            return yearMonthDayCalculator.GetMaxYearOfEra(eraIndex);
+        }
+
+        /// <summary>
+        /// See <see cref="GetMinYearOfEra(NodaTime.Calendars.Era)" /> - but this uses a pre-validated index.
+        /// This default implementation returns 1, but can be overridden by derived classes.
+        /// </summary>
+        internal int GetMinYearOfEra(int eraIndex)
+        {
+            return yearMonthDayCalculator.GetMinYearOfEra(eraIndex);
+        }
+
+        /// <summary>
+        /// See <see cref="GetAbsoluteYear(int, Era)"/> - but this uses a pre-validated index.
+        /// This default implementation validates that the year is between 1 and MaxYear inclusive,
+        /// but then returns it as-is, expecting that there's no further work to be
+        /// done. This is valid for single-era calendars; the method should be overridden for multi-era calendars.
+        /// </summary>
+        internal int GetAbsoluteYear(int yearOfEra, int eraIndex)
+        {
+            return yearMonthDayCalculator.GetAbsoluteYear(yearOfEra, eraIndex);
+        }
+
+        #region "Getter" methods which used to be DateTimeField
+        internal int GetTickOfSecond(LocalInstant localInstant)
+        {
+            return TimeOfDayCalculator.GetTickOfSecond(localInstant);
+        }
+
+        internal int GetTickOfMillisecond(LocalInstant localInstant)
+        {
+            return TimeOfDayCalculator.GetTickOfMillisecond(localInstant);
+        }
+
+        internal long GetTickOfDay(LocalInstant localInstant)
+        {
+            return TimeOfDayCalculator.GetTickOfDay(localInstant);
+        }
+
+        internal int GetMillisecondOfSecond(LocalInstant localInstant)
+        {
+            return TimeOfDayCalculator.GetMillisecondOfSecond(localInstant);
+        }
+
+        internal int GetMillisecondOfDay(LocalInstant localInstant)
+        {
+            return TimeOfDayCalculator.GetMillisecondOfDay(localInstant);
+        }
+
+        internal int GetSecondOfMinute(LocalInstant localInstant)
+        {
+            return TimeOfDayCalculator.GetSecondOfMinute(localInstant);
+        }
+
+        internal int GetSecondOfDay(LocalInstant localInstant)
+        {
+            return TimeOfDayCalculator.GetSecondOfDay(localInstant);
+        }
+
+        internal int GetMinuteOfHour(LocalInstant localInstant)
+        {
+            return TimeOfDayCalculator.GetMinuteOfHour(localInstant);
+        }
+
+        internal int GetMinuteOfDay(LocalInstant localInstant)
+        {
+            return TimeOfDayCalculator.GetMinuteOfDay(localInstant);
+        }
+
+        internal int GetHourOfDay(LocalInstant localInstant)
+        {
+            return TimeOfDayCalculator.GetHourOfDay(localInstant);
+        }
+
+        internal int GetHourOfHalfDay(LocalInstant localInstant)
+        {
+            return TimeOfDayCalculator.GetHourOfHalfDay(localInstant);
+        }
+
+        internal int GetClockHourOfHalfDay(LocalInstant localInstant)
+        {
+            return TimeOfDayCalculator.GetClockHourOfHalfDay(localInstant);
+        }
+
+        internal int GetDayOfWeek(LocalInstant localInstant)
+        {
+            return WeekYearCalculator.GetDayOfWeek(localInstant);
+        }
+
+        internal int GetDayOfMonth(LocalInstant localInstant)
+        {
+            return yearMonthDayCalculator.GetDayOfMonth(localInstant);
+        }
+
+        internal int GetDayOfYear(LocalInstant localInstant)
+        {
+            return yearMonthDayCalculator.GetDayOfYear(localInstant);
+        }
+
+        internal int GetWeekOfWeekYear(LocalInstant localInstant)
+        {
+            return weekYearCalculator.GetWeekOfWeekYear(localInstant);
+        }
+
+        internal int GetWeekYear(LocalInstant localInstant)
+        {
+            return weekYearCalculator.GetWeekYear(localInstant);
+        }
+
+        internal int GetMonthOfYear(LocalInstant localInstant)
+        {
+            return yearMonthDayCalculator.GetMonthOfYear(localInstant);
+        }
+
+        internal int GetYear(LocalInstant localInstant)
+        {
+            return yearMonthDayCalculator.GetYear(localInstant);
+        }
+
+        internal int GetYearOfCentury(LocalInstant localInstant)
+        {
+            return yearMonthDayCalculator.GetYearOfCentury(localInstant);
+        }
+
+        internal int GetYearOfEra(LocalInstant localInstant)
+        {
+            return yearMonthDayCalculator.GetYearOfEra(localInstant);
+        }
+
+        internal int GetCenturyOfEra(LocalInstant localInstant)
+        {
+            return yearMonthDayCalculator.GetCenturyOfEra(localInstant);
+        }
+
+        internal int GetEra(LocalInstant localInstant)
+        {
+            return yearMonthDayCalculator.GetEra(localInstant);
+        }
+        #endregion
+
+        private sealed class MonthsPeriodField : IPeriodField
+        {
+            private readonly YearMonthDayCalculator calculator;
+
+            internal MonthsPeriodField(YearMonthDayCalculator calculator)
+            {
+                this.calculator = calculator;
+            }
+
+            public LocalInstant Add(LocalInstant localInstant, long value)
+            {
+                // We don't try to work out the actual bounds, but we can easily tell
+                // that we're out of range. Anything not in the range of an int is definitely broken.
+                if (value < int.MinValue || value > int.MaxValue)
+                {
+                    throw new ArgumentOutOfRangeException("value");
+                }
+
+                return calculator.AddMonths(localInstant, (int)value);
+            }
+
+            public long Subtract(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
+            {
+                int minuendYear = calculator.GetYear(minuendInstant);
+                int subtrahendYear = calculator.GetYear(subtrahendInstant);
+                int minuendMonth = calculator.GetMonthOfYear(minuendInstant);
+                int subtrahendMonth = calculator.GetMonthOfYear(subtrahendInstant);
+
+                int diff = (minuendYear - subtrahendYear) * calculator.MonthsInYear + minuendMonth - subtrahendMonth;
+
+                // If we just add the difference in months to subtrahendInstant, what do we get?
+                LocalInstant simpleAddition = Add(subtrahendInstant, diff);
+
+                if (subtrahendInstant <= minuendInstant)
+                {
+                    // Moving forward: if the result of the simple addition is before or equal to the minuend,
+                    // we're done. Otherwise, rewind a month because we've overshot.
+                    return simpleAddition <= minuendInstant ? diff : diff - 1;
+                }
+                else
+                {
+                    // Moving backward: if the result of the simple addition (of a non-positive number)
+                    // is after or equal to the minuend, we're done. Otherwise, increment by a month because
+                    // we've overshot backwards.
+                    return simpleAddition >= minuendInstant ? diff : diff + 1;
+                }
+            }
+        }
+
+        // TODO: Remove duplication in Int64Difference
+        private sealed class YearsPeriodField : IPeriodField
+        {
+            private readonly YearMonthDayCalculator calculator;
+
+            internal YearsPeriodField(YearMonthDayCalculator calculator)
+            {
+                this.calculator = calculator;
+            }
+
+            public LocalInstant Add(LocalInstant localInstant, long value)
+            {
+                int currentYear = calculator.GetYear(localInstant);
+                // Adjust argument range based on current year
+                Preconditions.CheckArgumentRange("value", value, calculator.MinYear - currentYear, calculator.MaxYear - currentYear);
+                // If we got this far, the conversion to int must be fine.
+                int intValue = (int)value;
+                return calculator.SetYear(localInstant, intValue + currentYear);
+            }
+
+            public long Subtract(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
+            {
+                int minuendYear = calculator.GetYear(minuendInstant);
+                int subtrahendYear = calculator.GetYear(subtrahendInstant);
+
+                int diff = minuendYear - subtrahendYear;
+
+                // If we just add the difference in years to subtrahendInstant, what do we get?
+                LocalInstant simpleAddition = Add(subtrahendInstant, diff);
+
+                if (subtrahendInstant <= minuendInstant)
+                {
+                    // Moving forward: if the result of the simple addition is before or equal to the minuend,
+                    // we're done. Otherwise, rewind a year because we've overshot.
+                    return simpleAddition <= minuendInstant ? diff : diff - 1;
+                }
+                else
+                {
+                    // Moving backward: if the result of the simple addition (of a non-positive number)
+                    // is after or equal to the minuend, we're done. Otherwise, increment by a year because
+                    // we've overshot backwards.
+                    return simpleAddition >= minuendInstant ? diff : diff + 1;
+                }
+            }
+        }
     }
 }
