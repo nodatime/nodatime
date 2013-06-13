@@ -336,8 +336,8 @@ namespace NodaTime
             this.eras = new ReadOnlyCollection<Era>(new List<Era>(yearMonthDayCalculator.Eras));
             this.fields = new FieldSet.Builder(TimeOfDayCalculator.TimeFields)
             {
-                Days = SimplePeriodField.Days,
-                Weeks = SimplePeriodField.Weeks,
+                Days = FixedDurationPeriodField.Days,
+                Weeks = FixedDurationPeriodField.Weeks,
                 Months = new MonthsPeriodField(yearMonthDayCalculator),
                 Years = new YearsPeriodField(yearMonthDayCalculator)
             }.Build();

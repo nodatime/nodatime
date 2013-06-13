@@ -5,7 +5,8 @@
 namespace NodaTime.Fields
 {
     /// <summary>
-    /// Singleton period field for a fixed duration of 1 tick.
+    /// Singleton period field for a fixed duration of 1 tick. This is marginally more efficient than using
+    /// FixedDurationPeriodField.
     /// </summary>
     internal sealed class TicksPeriodField : IPeriodField
     {

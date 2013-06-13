@@ -7,6 +7,9 @@ using NodaTime.Utility;
 
 namespace NodaTime.Fields
 {
+    /// <summary>
+    /// Period field which uses a <see cref="YearMonthDayCalculator" /> to add/subtract years.
+    /// </summary>
     internal sealed class YearsPeriodField : IPeriodField
     {
         private readonly YearMonthDayCalculator calculator;

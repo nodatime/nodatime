@@ -9,10 +9,10 @@ using NodaTime.Fields;
 namespace NodaTime.Test.Fields
 {
     [TestFixture]
-    public class SimplePeriodFieldTest
+    public class FixedDurationPeriodFieldTest
     {
         // Just a sample really.
-        private static readonly IPeriodField SampleField = SimplePeriodField.Milliseconds;
+        private static readonly IPeriodField SampleField = FixedDurationPeriodField.Milliseconds;
 
         [Test]
         public void Add()
