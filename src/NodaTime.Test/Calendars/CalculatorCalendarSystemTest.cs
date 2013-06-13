@@ -2,6 +2,7 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
+using System;
 using NodaTime.Calendars;
 using NodaTime.Fields;
 using NodaTime.Text;
@@ -37,6 +38,27 @@ namespace NodaTime.Test.Calendars
                       .Select(x => new CalculatorCalendarSystem("coptic " + x, "ignored", CopticYearMonthDayCalculator.CopticInstance, x))
                       .ToArray();
 
+        private static readonly CalendarSystem[] JulianOldCalendarSystems =
+            Enumerable.Range(1, 7)
+                      .Select(x => JulianCalendarSystem.GetInstance(x))
+                      .ToArray();
+
+        private static readonly CalendarSystem[] JulianNewCalendarSystems =
+            Enumerable.Range(1, 7)
+                      .Select(x => new CalculatorCalendarSystem("julian " + x, "ignored", JulianYearMonthDayCalculator.JulianInstance, x))
+                      .ToArray();
+
+        private static readonly CalendarSystem[] IslamicOldCalendarSystems =
+            (from epoch in Enum.GetValues(typeof(IslamicEpoch)).Cast<IslamicEpoch>()
+             from leapYearPattern in Enum.GetValues(typeof(IslamicLeapYearPattern)).Cast<IslamicLeapYearPattern>()
+             select IslamicCalendarSystem.GetInstance(leapYearPattern, epoch)).ToArray();
+
+        private static readonly CalendarSystem[] IslamicNewCalendarSystems =
+            (from epoch in Enum.GetValues(typeof(IslamicEpoch)).Cast<IslamicEpoch>()
+             from leapYearPattern in Enum.GetValues(typeof(IslamicLeapYearPattern)).Cast<IslamicLeapYearPattern>()
+             select new CalculatorCalendarSystem("islamic " + epoch + " " + leapYearPattern, "ignored",
+                 IslamicYearMonthDayCalculator.GetInstance(leapYearPattern, epoch), 4)).ToArray();
+
         private static readonly string[] GregorianLikeTestValues =
         {
             "2013-06-12T15:17:08.1234567",
@@ -46,7 +68,8 @@ namespace NodaTime.Test.Calendars
             "1972-02-29T12:52:59.1234567",
         };
 
-        private static readonly string[] CopticTestValues =
+        // Not all calendar systems handle old dates. These values should be in range for everything.
+        private static readonly string[] ModernEraTestValues =
         {
             "2013-06-12T15:17:08.1234567",
             "1000-06-12T00:52:59.1234567",
@@ -66,16 +89,37 @@ namespace NodaTime.Test.Calendars
              select new TestCaseData(text, calendar).SetName(text + ": " + calendar.Id)).ToArray();
 
         private static readonly TestCaseData[] CopticCalendarDateTimeFieldTestData =
-            CreateTestCaseData<DateTimeField>(CopticOldCalendarSystems, CopticNewCalendarSystems, CopticTestValues);
+            CreateTestCaseData<DateTimeField>(CopticOldCalendarSystems, CopticNewCalendarSystems, ModernEraTestValues);
 
         private static readonly TestCaseData[] CopticCalendarPeriodFieldTestData =
-            CreateTestCaseData<PeriodField>(CopticOldCalendarSystems, CopticNewCalendarSystems, CopticTestValues);
+            CreateTestCaseData<PeriodField>(CopticOldCalendarSystems, CopticNewCalendarSystems, ModernEraTestValues);
 
         private static readonly TestCaseData[] CopticCalendarConstructionTestData =
             (from calendar in CopticNewCalendarSystems
-             from text in CopticTestValues
+             from text in ModernEraTestValues
              select new TestCaseData(text, calendar).SetName(text + ": " + calendar.Id)).ToArray();
 
+        private static readonly TestCaseData[] JulianCalendarDateTimeFieldTestData =
+            CreateTestCaseData<DateTimeField>(JulianOldCalendarSystems, JulianNewCalendarSystems, ModernEraTestValues);
+
+        private static readonly TestCaseData[] JulianCalendarPeriodFieldTestData =
+            CreateTestCaseData<PeriodField>(JulianOldCalendarSystems, JulianNewCalendarSystems, ModernEraTestValues);
+
+        private static readonly TestCaseData[] JulianCalendarConstructionTestData =
+            (from calendar in JulianNewCalendarSystems
+             from text in ModernEraTestValues
+             select new TestCaseData(text, calendar).SetName(text + ": " + calendar.Id)).ToArray();
+
+        private static readonly TestCaseData[] IslamicCalendarDateTimeFieldTestData =
+            CreateTestCaseData<DateTimeField>(IslamicOldCalendarSystems, IslamicNewCalendarSystems, ModernEraTestValues);
+
+        private static readonly TestCaseData[] IslamicCalendarPeriodFieldTestData =
+            CreateTestCaseData<PeriodField>(IslamicOldCalendarSystems, IslamicNewCalendarSystems, ModernEraTestValues);
+
+        private static readonly TestCaseData[] IslamicCalendarConstructionTestData =
+            (from calendar in IslamicNewCalendarSystems
+             from text in ModernEraTestValues
+             select new TestCaseData(text, calendar).SetName(text + ": " + calendar.Id)).ToArray();
 #pragma warning restore 0414
 
         private static TestCaseData[] CreateTestCaseData<T>(CalendarSystem[] oldCalendarSystems,
@@ -99,6 +143,8 @@ namespace NodaTime.Test.Calendars
         [Test]
         [TestCaseSource("GregorianLikeCalendarDateTimeFieldTestData")]
         [TestCaseSource("CopticCalendarDateTimeFieldTestData")]
+        [TestCaseSource("JulianCalendarDateTimeFieldTestData")]
+        [TestCaseSource("IslamicCalendarDateTimeFieldTestData")]
         public void DateTimeFields(string text, CalendarSystem oldSystem, CalendarSystem newSystem, PropertyInfo property)
         {
             LocalInstant localInstant = LocalDateTimePattern.ExtendedIsoPattern.Parse(text).Value.LocalInstant;
@@ -120,6 +166,8 @@ namespace NodaTime.Test.Calendars
         [Test]
         [TestCaseSource("GregorianLikeCalendarPeriodFieldTestData")]
         [TestCaseSource("CopticCalendarPeriodFieldTestData")]
+        [TestCaseSource("JulianCalendarPeriodFieldTestData")]
+        [TestCaseSource("IslamicCalendarPeriodFieldTestData")]
         public void PeriodFields(string text, CalendarSystem oldSystem, CalendarSystem newSystem, PropertyInfo property)
         {
             LocalInstant localInstant = LocalDateTimePattern.ExtendedIsoPattern.Parse(text).Value.LocalInstant;
@@ -149,6 +197,8 @@ namespace NodaTime.Test.Calendars
         [Test]
         [TestCaseSource("GregorianLikeCalendarConstructionTestData")]
         [TestCaseSource("CopticCalendarConstructionTestData")]
+        [TestCaseSource("JulianCalendarConstructionTestData")]
+        [TestCaseSource("IslamicCalendarConstructionTestData")]
         public void Construction(string text, CalendarSystem calendar)
         {
             LocalInstant localInstant = LocalDateTimePattern.ExtendedIsoPattern.Parse(text).Value.LocalInstant;

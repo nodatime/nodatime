@@ -129,7 +129,17 @@ namespace NodaTime.Calendars
             return eraIndex == 0 ? 1 - MinYear : MaxYear;
         }
 
-        // No need to override GetMinYearOfEra; 1 is fine.
+        internal override int GetYearOfEra(LocalInstant localInstant)
+        {
+            int year = GetYear(localInstant);
+            return year <= 0 ? -year + 1 : year;
+        }
+
+        internal override int GetEra(LocalInstant localInstant)
+        {
+            // TODO: Just check the ticks against a constant.
+            return GetYear(localInstant) <= 0 ? 0 : 1;
+        }
         #endregion
     }
 }

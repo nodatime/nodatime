@@ -88,17 +88,5 @@ namespace NodaTime.Calendars
         {
             return ((year & 3) == 0) && ((year % 100) != 0 || (year % 400) == 0);
         }
-
-        internal override int GetYearOfEra(LocalInstant localInstant)
-        {
-            int year = GetYear(localInstant);
-            return year <= 0 ? -year + 1 : year;
-        }
-
-        internal override int GetEra(LocalInstant localInstant)
-        {
-            // TODO: Just check the ticks against a constant.
-            return GetYear(localInstant) <= 0 ? 0 : 1;
-        }
     }
 }

@@ -153,8 +153,10 @@
     <Compile Include="Calendars\IslamicCalendarSystem.cs" />
     <Compile Include="Calendars\IslamicEpoch.cs" />
     <Compile Include="Calendars\IslamicLeapYearPattern.cs" />
+    <Compile Include="Calendars\IslamicYearMonthDayCalculator.cs" />
     <Compile Include="Calendars\IsoYearMonthDayCalculator.cs" />
     <Compile Include="Calendars\JulianCalendarSystem.cs" />
+    <Compile Include="Calendars\JulianYearMonthDayCalculator.cs" />
     <Compile Include="Calendars\NamespaceDoc.cs" />
     <Compile Include="Calendars\TimeOfDayCalculator.cs" />
     <Compile Include="Calendars\WeekYearCalculator.cs" />
