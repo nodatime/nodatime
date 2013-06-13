@@ -58,8 +58,6 @@ namespace NodaTime.Calendars
 
         private static readonly long[] TotalTicksByMonth;
 
-        private static readonly YearMonthDayCalculator[,] Calculators;
-
         static IslamicYearMonthDayCalculator()
         {
             long ticks = 0;
@@ -74,32 +72,9 @@ namespace NodaTime.Calendars
                 // in the Islamic calendar.
                 ticks += days * NodaConstants.TicksPerStandardDay;
             }
-            Calculators = new YearMonthDayCalculator[(MaxLeapYearPatternNumber - MinLeapYearPatternNumber + 1), (MaxEpochNumber - MinEpochNumber + 1)];
-            for (int i = MinLeapYearPatternNumber; i <= MaxLeapYearPatternNumber; i++)
-            {
-                for (int j = MinEpochNumber; j <= MaxEpochNumber; j++)
-                {
-                    Calculators[i - MinLeapYearPatternNumber, j - MinEpochNumber] = new IslamicYearMonthDayCalculator((IslamicLeapYearPattern) i, (IslamicEpoch) j);
-                }
-            }
         }
 
-        internal static YearMonthDayCalculator GetInstance(IslamicLeapYearPattern leapYearPattern, IslamicEpoch epoch)
-        {
-            int leapYearPatternNumber = (int)leapYearPattern;
-            int epochNumber = (int)epoch;
-            if (leapYearPatternNumber < MinLeapYearPatternNumber || leapYearPatternNumber > MaxLeapYearPatternNumber)
-            {
-                throw new ArgumentOutOfRangeException("leapYearPattern");
-            }
-            if (epochNumber < MinEpochNumber || epochNumber > MaxEpochNumber)
-            {
-                throw new ArgumentOutOfRangeException("epoch");
-            }
-            return Calculators[leapYearPatternNumber - MinLeapYearPatternNumber, epochNumber - MinEpochNumber];
-        }
-
-        private IslamicYearMonthDayCalculator(IslamicLeapYearPattern leapYearPattern, IslamicEpoch epoch)
+        internal IslamicYearMonthDayCalculator(IslamicLeapYearPattern leapYearPattern, IslamicEpoch epoch)
             : base(1, 31513, 12, TicksPerYear, -GetEpochTicks(epoch), new[] { Era.AnnoHegirae })
         {
             this.leapYearPatternBits = GetLeapYearPatternBits(leapYearPattern);

@@ -24,8 +24,8 @@ namespace NodaTime.Test.Calendars
 
         private static readonly CalendarSystem[] GregorianLikeNewCalendarSystems =
             Enumerable.Range(1, 7)
-                      .Select(x => new CalculatorCalendarSystem("greg " + x, "ignored", GregorianYearMonthDayCalculator.Instance, x))
-                      .Concat(new[] { new CalculatorCalendarSystem("ignored", "ignored", IsoYearMonthDayCalculator.IsoInstance, 4), })
+                      .Select(x => new CalculatorCalendarSystem("greg " + x, "ignored", new GregorianYearMonthDayCalculator(), x))
+                      .Concat(new[] { new CalculatorCalendarSystem("ignored", "ignored", new IsoYearMonthDayCalculator(), 4), })
                       .ToArray();
 
         private static readonly CalendarSystem[] CopticOldCalendarSystems =
@@ -35,7 +35,7 @@ namespace NodaTime.Test.Calendars
 
         private static readonly CalendarSystem[] CopticNewCalendarSystems =
             Enumerable.Range(1, 7)
-                      .Select(x => new CalculatorCalendarSystem("coptic " + x, "ignored", CopticYearMonthDayCalculator.CopticInstance, x))
+                      .Select(x => new CalculatorCalendarSystem("coptic " + x, "ignored", new CopticYearMonthDayCalculator(), x))
                       .ToArray();
 
         private static readonly CalendarSystem[] JulianOldCalendarSystems =
@@ -45,7 +45,7 @@ namespace NodaTime.Test.Calendars
 
         private static readonly CalendarSystem[] JulianNewCalendarSystems =
             Enumerable.Range(1, 7)
-                      .Select(x => new CalculatorCalendarSystem("julian " + x, "ignored", JulianYearMonthDayCalculator.JulianInstance, x))
+                      .Select(x => new CalculatorCalendarSystem("julian " + x, "ignored", new JulianYearMonthDayCalculator(), x))
                       .ToArray();
 
         private static readonly CalendarSystem[] IslamicOldCalendarSystems =
@@ -57,7 +57,7 @@ namespace NodaTime.Test.Calendars
             (from epoch in Enum.GetValues(typeof(IslamicEpoch)).Cast<IslamicEpoch>()
              from leapYearPattern in Enum.GetValues(typeof(IslamicLeapYearPattern)).Cast<IslamicLeapYearPattern>()
              select new CalculatorCalendarSystem("islamic " + epoch + " " + leapYearPattern, "ignored",
-                 IslamicYearMonthDayCalculator.GetInstance(leapYearPattern, epoch), 4)).ToArray();
+                 new IslamicYearMonthDayCalculator(leapYearPattern, epoch), 4)).ToArray();
 
         private static readonly string[] GregorianLikeTestValues =
         {
