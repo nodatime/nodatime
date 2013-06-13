@@ -66,6 +66,18 @@ namespace NodaTime.Benchmarks.NodaTimeTests
         }
 
         [Benchmark]
+        public void ClockHourOfHalfDay()
+        {
+            sample.ClockHourOfHalfDay.Consume();
+        }
+
+        [Benchmark]
+        public void TickOfSecond()
+        {
+            sample.TickOfSecond.Consume();
+        }
+
+        [Benchmark]
         public void TickOfDay()
         {
             sample.TickOfDay.Consume();
