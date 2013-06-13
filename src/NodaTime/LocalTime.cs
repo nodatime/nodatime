@@ -31,9 +31,7 @@ namespace NodaTime
         /// Local time at noon, i.e. 12 hours, 0 minutes, 0 seconds.
         /// </summary>
         public static readonly LocalTime Noon = new LocalTime(12, 0, 0);
-
-        private static readonly FieldSet IsoFields = CalendarSystem.Iso.Fields;
-
+        
         private readonly LocalInstant localInstant;
 
         /// <summary>
@@ -190,32 +188,32 @@ namespace NodaTime
         /// <summary>
         /// Gets the hour of day of this local time, in the range 0 to 23 inclusive.
         /// </summary>
-        public int Hour { get { return IsoFields.HourOfDay.GetValue(localInstant); } }
+        public int Hour { get { return CalendarSystem.Iso.GetHourOfDay(localInstant); } }
 
         /// <summary>
         /// Gets the hour of the half-day of this local time, in the range 1 to 12 inclusive.
         /// </summary>
-        public int ClockHourOfHalfDay { get { return IsoFields.ClockHourOfHalfDay.GetValue(localInstant); } }
+        public int ClockHourOfHalfDay { get { return CalendarSystem.Iso.GetClockHourOfHalfDay(localInstant); } }
 
         /// <summary>
         /// Gets the minute of this local time, in the range 0 to 59 inclusive.
         /// </summary>
-        public int Minute { get { return IsoFields.MinuteOfHour.GetValue(localInstant); ; } }
+        public int Minute { get { return CalendarSystem.Iso.GetMinuteOfHour(localInstant); ; } }
 
         /// <summary>
         /// Gets the second of this local time within the minute, in the range 0 to 59 inclusive.
         /// </summary>
-        public int Second { get { return IsoFields.SecondOfMinute.GetValue(localInstant); } }
+        public int Second { get { return CalendarSystem.Iso.GetSecondOfMinute(localInstant); } }
 
         /// <summary>
         /// Gets the millisecond of this local time within the second, in the range 0 to 999 inclusive.
         /// </summary>
-        public int Millisecond { get { return IsoFields.MillisecondOfSecond.GetValue(localInstant); } }
+        public int Millisecond { get { return CalendarSystem.Iso.GetMillisecondOfSecond(localInstant); } }
 
         /// <summary>
         /// Gets the tick of this local time within the second, in the range 0 to 9,999,999 inclusive.
         /// </summary>
-        public int TickOfSecond { get { return IsoFields.TickOfSecond.GetValue(localInstant); } }
+        public int TickOfSecond { get { return CalendarSystem.Iso.GetTickOfSecond(localInstant); } }
 
         /// <summary>
         /// Gets the tick of this local time within the day, in the range 0 to 863,999,999,999 inclusive.

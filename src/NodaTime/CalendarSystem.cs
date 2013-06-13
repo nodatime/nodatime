@@ -286,18 +286,16 @@ namespace NodaTime
         /// <param name="name">The name of the calendar</param>
         /// <param name="minYear">Minimum year in the calendar</param>
         /// <param name="maxYear">Maximum year in the calendar</param>
-        /// <param name="fieldAssembler">Delegate to invoke in order to assemble fields for this calendar.</param>
+        /// <param name="fields">Period fields for this calendar.</param>
         /// <param name="eras">The eras used in this calendar, which need not be unique to the calendar.</param>
-        internal CalendarSystem(string id, string name, int minYear, int maxYear, FieldAssembler fieldAssembler, IEnumerable<Era> eras)
+        internal CalendarSystem(string id, string name, int minYear, int maxYear, FieldSet fields, IEnumerable<Era> eras)
         {
             this.id = id;
             this.name = name;
             this.minYear = minYear;
             this.maxYear = maxYear;
             this.eras = new ReadOnlyCollection<Era>(new List<Era>(eras));
-            FieldSet.Builder builder = new FieldSet.Builder();
-            fieldAssembler(builder, this);
-            fields = builder.Build();
+            this.fields = fields;
         }
 
         /// <summary>
@@ -599,7 +597,33 @@ namespace NodaTime
             {
                 throw new InvalidOperationException("Calendar " + id + " does not use ISO days of the week");
             }
-            return (IsoDayOfWeek)Fields.DayOfWeek.GetValue(localInstant);
+            return (IsoDayOfWeek) GetDayOfWeek(localInstant);
         }
+
+        // Methods which were previously fields. Consult documentation for
+        // LocalDateTime for details.
+        internal abstract int GetTickOfSecond(LocalInstant localInstant);
+        internal abstract int GetTickOfMillisecond(LocalInstant localInstant);
+        internal abstract long GetTickOfDay(LocalInstant localInstant);
+        internal abstract int GetMillisecondOfSecond(LocalInstant localInstant);
+        internal abstract int GetMillisecondOfDay(LocalInstant localInstant);
+        internal abstract int GetSecondOfMinute(LocalInstant localInstant);
+        internal abstract int GetSecondOfDay(LocalInstant localInstant);
+        internal abstract int GetMinuteOfHour(LocalInstant localInstant);
+        internal abstract int GetMinuteOfDay(LocalInstant localInstant);
+        internal abstract int GetHourOfDay(LocalInstant localInstant);
+        internal abstract int GetHourOfHalfDay(LocalInstant localInstant);
+        internal abstract int GetClockHourOfHalfDay(LocalInstant localInstant);
+        internal abstract int GetDayOfWeek(LocalInstant localInstant);
+        internal abstract int GetDayOfMonth(LocalInstant localInstant);
+        internal abstract int GetDayOfYear(LocalInstant localInstant);
+        internal abstract int GetWeekOfWeekYear(LocalInstant localInstant);
+        internal abstract int GetWeekYear(LocalInstant localInstant);
+        internal abstract int GetMonthOfYear(LocalInstant localInstant);
+        internal abstract int GetYear(LocalInstant localInstant);
+        internal abstract int GetYearOfCentury(LocalInstant localInstant);
+        internal abstract int GetYearOfEra(LocalInstant localInstant);
+        internal abstract int GetCenturyOfEra(LocalInstant localInstant);
+        internal abstract int GetEra(LocalInstant localInstant);
     }
 }

@@ -231,15 +231,12 @@
     <Compile Include="DurationTest.Construction.cs">
       <DependentUpon>DurationTest.cs</DependentUpon>
     </Compile>
-    <Compile Include="Fields\DecoratedDateTimeFieldTest.cs" />
     <Compile Include="Fields\PeriodFieldTest.cs" />
     <Compile Include="Fields\FakePeriodField.cs" />
-    <Compile Include="Fields\FieldSetTest.cs" />
     <Compile Include="Fields\MockCountingPeriodField.cs" />
     <Compile Include="Fields\FixedLengthDateTimeFieldTest.cs" />
     <Compile Include="Fields\FixedLengthPeriodDateTimeFieldTest.cs" />
     <Compile Include="Fields\FixedLengthPeriodFieldTest.cs" />
-    <Compile Include="Fields\ScaledDurationTest.cs" />
     <Compile Include="Fields\TicksPeriodFieldTest.cs" />
     <Compile Include="Fields\UnsupportedDateTimeFieldTest.cs" />
     <Compile Include="Fields\UnsupportedPeriodFieldTest.cs" />

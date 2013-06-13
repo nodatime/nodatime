@@ -79,41 +79,22 @@ namespace NodaTime.Calendars
         : base(id, name,
                    yearMonthDayCalculator.MinYear,
                    yearMonthDayCalculator.MaxYear,
-                   (builder, @this) => AssembleFields(builder,
-                                                      yearMonthDayCalculator,
-                                                      weekYearCalculator),
+                   CreateFields(yearMonthDayCalculator),
                    yearMonthDayCalculator.Eras)
         {
             this.yearMonthDayCalculator = yearMonthDayCalculator;
             this.weekYearCalculator = weekYearCalculator;
         }
 
-        private static void AssembleFields(FieldSet.Builder builder,
-            YearMonthDayCalculator yearMonthDayCalculator,
-            WeekYearCalculator weekYearCalculator)
+        private static FieldSet CreateFields(YearMonthDayCalculator yearMonthDayCalculator)
         {
-            // Time fields
-            builder.WithSupportedFieldsFrom(TimeOfDayCalculator.TimeFields);
-
-            // Era/year/month/day fields
-            builder.DayOfMonth = new Int32DateTimeField(yearMonthDayCalculator.GetDayOfMonth);
-            builder.DayOfYear = new Int32DateTimeField(yearMonthDayCalculator.GetDayOfYear);
-            builder.MonthOfYear = new Int32DateTimeField(yearMonthDayCalculator.GetMonthOfYear);
-            builder.Year = new Int32DateTimeField(yearMonthDayCalculator.GetYear);
-            builder.YearOfEra = new Int32DateTimeField(yearMonthDayCalculator.GetYearOfEra);
-            builder.YearOfCentury = new Int32DateTimeField(yearMonthDayCalculator.GetYearOfCentury);
-            builder.CenturyOfEra = new Int32DateTimeField(yearMonthDayCalculator.GetCenturyOfEra);
-            builder.Era = new Int32DateTimeField(yearMonthDayCalculator.GetEra);
-
-            builder.Days = SimplePeriodField.Days;
-            builder.Weeks = SimplePeriodField.Weeks;
-            builder.Months = new MonthsPeriodField(yearMonthDayCalculator);
-            builder.Years = new YearsPeriodField(yearMonthDayCalculator);
-
-            // Week-year fields
-            builder.DayOfWeek = new Int32DateTimeField(WeekYearCalculator.GetDayOfWeek);
-            builder.WeekOfWeekYear = new Int32DateTimeField(weekYearCalculator.GetWeekOfWeekYear);
-            builder.WeekYear = new Int32DateTimeField(weekYearCalculator.GetWeekYear);
+            return new FieldSet.Builder(TimeOfDayCalculator.TimeFields)
+            {
+                Days = SimplePeriodField.Days,
+                Weeks = SimplePeriodField.Weeks,
+                Months = new MonthsPeriodField(yearMonthDayCalculator),
+                Years = new YearsPeriodField(yearMonthDayCalculator)
+            }.Build();
         }
 
         public override int GetDaysInMonth(int year, int month)
@@ -170,6 +151,121 @@ namespace NodaTime.Calendars
             return yearMonthDayCalculator.GetAbsoluteYear(yearOfEra, eraIndex);
         }
 
+        internal override int GetTickOfSecond(LocalInstant localInstant)
+        {
+            return TimeOfDayCalculator.GetTickOfSecond(localInstant);
+        }
+
+        internal override int GetTickOfMillisecond(LocalInstant localInstant)
+        {
+            return TimeOfDayCalculator.GetTickOfMillisecond(localInstant);
+        }
+
+        internal override long GetTickOfDay(LocalInstant localInstant)
+        {
+            return TimeOfDayCalculator.GetTickOfDay(localInstant);
+        }
+
+        internal override int GetMillisecondOfSecond(LocalInstant localInstant)
+        {
+            return TimeOfDayCalculator.GetMillisecondOfSecond(localInstant);
+        }
+
+        internal override int GetMillisecondOfDay(LocalInstant localInstant)
+        {
+            return TimeOfDayCalculator.GetMillisecondOfDay(localInstant);
+        }
+
+        internal override int GetSecondOfMinute(LocalInstant localInstant)
+        {
+            return TimeOfDayCalculator.GetSecondOfMinute(localInstant);
+        }
+
+        internal override int GetSecondOfDay(LocalInstant localInstant)
+        {
+            return TimeOfDayCalculator.GetSecondOfDay(localInstant);
+        }
+
+        internal override int GetMinuteOfHour(LocalInstant localInstant)
+        {
+            return TimeOfDayCalculator.GetMinuteOfHour(localInstant);
+        }
+
+        internal override int GetMinuteOfDay(LocalInstant localInstant)
+        {
+            return TimeOfDayCalculator.GetMinuteOfDay(localInstant);
+        }
+
+        internal override int GetHourOfDay(LocalInstant localInstant)
+        {
+            return TimeOfDayCalculator.GetHourOfDay(localInstant);
+        }
+
+        internal override int GetHourOfHalfDay(LocalInstant localInstant)
+        {
+            return TimeOfDayCalculator.GetHourOfHalfDay(localInstant);
+        }
+
+        internal override int GetClockHourOfHalfDay(LocalInstant localInstant)
+        {
+            return TimeOfDayCalculator.GetClockHourOfHalfDay(localInstant);
+        }
+
+        internal override int GetDayOfWeek(LocalInstant localInstant)
+        {
+            return WeekYearCalculator.GetDayOfWeek(localInstant);
+        }
+
+        internal override int GetDayOfMonth(LocalInstant localInstant)
+        {
+            return yearMonthDayCalculator.GetDayOfMonth(localInstant);
+        }
+
+        internal override int GetDayOfYear(LocalInstant localInstant)
+        {
+            return yearMonthDayCalculator.GetDayOfYear(localInstant);
+        }
+
+        internal override int GetWeekOfWeekYear(LocalInstant localInstant)
+        {
+            return weekYearCalculator.GetWeekOfWeekYear(localInstant);
+        }
+
+        internal override int GetWeekYear(LocalInstant localInstant)
+        {
+            return weekYearCalculator.GetWeekYear(localInstant);
+        }
+
+        internal override int GetMonthOfYear(LocalInstant localInstant)
+        {
+            return yearMonthDayCalculator.GetMonthOfYear(localInstant);
+        }
+
+        internal override int GetYear(LocalInstant localInstant)
+        {
+            return yearMonthDayCalculator.GetYear(localInstant);
+        }
+
+        internal override int GetYearOfCentury(LocalInstant localInstant)
+        {
+            return yearMonthDayCalculator.GetYearOfCentury(localInstant);
+        }
+
+        internal override int GetYearOfEra(LocalInstant localInstant)
+        {
+            return yearMonthDayCalculator.GetYearOfEra(localInstant);
+        }
+
+        internal override int GetCenturyOfEra(LocalInstant localInstant)
+        {
+            return yearMonthDayCalculator.GetCenturyOfEra(localInstant);
+        }
+
+        internal override int GetEra(LocalInstant localInstant)
+        {
+            return yearMonthDayCalculator.GetEra(localInstant);
+        }
+
         private sealed class MonthsPeriodField : IPeriodField
         {
             private readonly YearMonthDayCalculator calculator;
@@ -188,7 +284,7 @@ namespace NodaTime.Calendars
                     throw new ArgumentOutOfRangeException("value");
                 }
 
-                return calculator.AddMonths(localInstant, (int) value);
+                return calculator.AddMonths(localInstant, (int)value);
             }
 
             public long Subtract(LocalInstant minuendInstant, LocalInstant subtrahendInstant)

@@ -7,22 +7,14 @@ namespace NodaTime.Fields
     /// <summary>
     /// Singleton period field for a fixed duration of 1 tick.
     /// </summary>
-    internal sealed class TicksPeriodField : PeriodField
+    internal sealed class TicksPeriodField : IPeriodField
     {
-        private static readonly TicksPeriodField instance = new TicksPeriodField();
-
-        public static TicksPeriodField Instance { get { return instance; } }
-
-        private TicksPeriodField() : base(PeriodFieldType.Ticks, 1, true, true)
-        {
-        }
-
-        internal override LocalInstant Add(LocalInstant localInstant, long value)
+        public LocalInstant Add(LocalInstant localInstant, long value)
         {
             return new LocalInstant(localInstant.Ticks + value);
         }
 
-        internal override long GetInt64Difference(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
+        public long Subtract(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
         {
             return minuendInstant.Ticks - subtrahendInstant.Ticks;
         }

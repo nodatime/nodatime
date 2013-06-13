@@ -286,7 +286,7 @@ namespace NodaTime.TimeZones
         {
             Offset offset = GetOffset(standardOffset, savings);
             LocalInstant local = instant.Plus(offset);
-            int year = GetEligibleYear(CalendarSystem.Iso.Fields.Year.GetValue(local), 1);
+            int year = GetEligibleYear(CalendarSystem.Iso.GetYear(local), 1);
             Instant transitionSameYear = MakeInstant(year, standardOffset, savings);
             return transitionSameYear > instant ? transitionSameYear : MakeInstant(GetEligibleYear(year + 1, 1), standardOffset, savings);
         }
@@ -303,7 +303,7 @@ namespace NodaTime.TimeZones
         {
             Offset offset = GetOffset(standardOffset, savings);
             LocalInstant local = instant.Plus(offset);
-            int year = GetEligibleYear(CalendarSystem.Iso.Fields.Year.GetValue(local), -1);
+            int year = GetEligibleYear(CalendarSystem.Iso.GetYear(local), -1);
             Instant transitionSameYear = MakeInstant(year, standardOffset, savings);
             return transitionSameYear < instant ? transitionSameYear : MakeInstant(GetEligibleYear(year - 1, -1), standardOffset, savings);
         }

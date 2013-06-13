@@ -231,22 +231,22 @@ namespace NodaTime
         }
 
         /// <summary>Gets the century within the era of this local date and time.</summary>
-        public int CenturyOfEra { get { return Calendar.Fields.CenturyOfEra.GetValue(localInstant); } }
+        public int CenturyOfEra { get { return Calendar.GetCenturyOfEra(localInstant); } }
 
         /// <summary>Gets the year of this local date and time.</summary>
         /// <remarks>This returns the "absolute year", so, for the ISO calendar,
         /// a value of 0 means 1 BC, for example.</remarks>
-        public int Year { get { return Calendar.Fields.Year.GetValue(localInstant); } }
+        public int Year { get { return Calendar.GetYear(localInstant); } }
 
         /// <summary>Gets the year of this local date and time within its century.</summary>
         /// <remarks>This always returns a value in the range 0 to 99 inclusive.</remarks>
-        public int YearOfCentury { get { return Calendar.Fields.YearOfCentury.GetValue(localInstant); } }
+        public int YearOfCentury { get { return Calendar.GetYearOfCentury(localInstant); } }
 
         /// <summary>Gets the year of this local date and time within its era.</summary>
-        public int YearOfEra { get { return Calendar.Fields.YearOfEra.GetValue(localInstant); } }
+        public int YearOfEra { get { return Calendar.GetYearOfEra(localInstant); } }
 
         /// <summary>Gets the era of this local date and time.</summary>
-        public Era Era { get { return Calendar.Eras[Calendar.Fields.Era.GetValue(localInstant)]; } }
+        public Era Era { get { return Calendar.Eras[Calendar.GetEra(localInstant)]; } }
 
         /// <summary>
         /// Gets the "week year" of this local date and time.
@@ -266,27 +266,27 @@ namespace NodaTime
         /// so is part of week 1 of WeekYear 2013.
         /// </para>
         /// </remarks>
-        public int WeekYear { get { return Calendar.Fields.WeekYear.GetValue(localInstant); } }
+        public int WeekYear { get { return Calendar.GetWeekYear(localInstant); } }
 
         /// <summary>
         /// Gets the month of this local date and time within the year.
         /// </summary>
-        public int Month { get { return Calendar.Fields.MonthOfYear.GetValue(localInstant); } }
+        public int Month { get { return Calendar.GetMonthOfYear(localInstant); } }
 
         /// <summary>
         /// Gets the week within the WeekYear. See <see cref="WeekYear"/> for more details.
         /// </summary>
-        public int WeekOfWeekYear { get { return Calendar.Fields.WeekOfWeekYear.GetValue(localInstant); } }
+        public int WeekOfWeekYear { get { return Calendar.GetWeekOfWeekYear(localInstant); } }
 
         /// <summary>
         /// Gets the day of this local date and time within the year.
         /// </summary>
-        public int DayOfYear { get { return Calendar.Fields.DayOfYear.GetValue(localInstant); } }
+        public int DayOfYear { get { return Calendar.GetDayOfYear(localInstant); } }
 
         /// <summary>
         /// Gets the day of this local date and time within the month.
         /// </summary>
-        public int Day { get { return Calendar.Fields.DayOfMonth.GetValue(localInstant); } }
+        public int Day { get { return Calendar.GetDayOfMonth(localInstant); } }
 
         /// <summary>
         /// Gets the week day of this local date and time expressed as an <see cref="NodaTime.IsoDayOfWeek"/> value,
@@ -303,42 +303,42 @@ namespace NodaTime
         /// For calendars using ISO week days, this gives 1 for Monday to 7 for Sunday.
         /// </remarks>
         /// <seealso cref="IsoDayOfWeek"/>
-        public int DayOfWeek { get { return Calendar.Fields.DayOfWeek.GetValue(localInstant); } }
+        public int DayOfWeek { get { return Calendar.GetDayOfWeek(localInstant); } }
 
         /// <summary>
         /// Gets the hour of day of this local date and time, in the range 0 to 23 inclusive.
         /// </summary>
-        public int Hour { get { return Calendar.Fields.HourOfDay.GetValue(localInstant); } }
+        public int Hour { get { return Calendar.GetHourOfDay(localInstant); } }
 
         /// <summary>
         /// Gets the hour of the half-day of this local date and time, in the range 1 to 12 inclusive.
         /// </summary>
-        public int ClockHourOfHalfDay { get { return Calendar.Fields.ClockHourOfHalfDay.GetValue(localInstant); } }
+        public int ClockHourOfHalfDay { get { return Calendar.GetClockHourOfHalfDay(localInstant); } }
 
         /// <summary>
         /// Gets the minute of this local date and time, in the range 0 to 59 inclusive.
         /// </summary>
-        public int Minute { get { return Calendar.Fields.MinuteOfHour.GetValue(localInstant); } }
+        public int Minute { get { return Calendar.GetMinuteOfHour(localInstant); } }
 
         /// <summary>
         /// Gets the second of this local date and time within the minute, in the range 0 to 59 inclusive.
         /// </summary>
-        public int Second { get { return Calendar.Fields.SecondOfMinute.GetValue(localInstant); } }
+        public int Second { get { return Calendar.GetSecondOfMinute(localInstant); } }
 
         /// <summary>
         /// Gets the millisecond of this local date and time within the second, in the range 0 to 999 inclusive.
         /// </summary>
-        public int Millisecond { get { return Calendar.Fields.MillisecondOfSecond.GetValue(localInstant); } }
+        public int Millisecond { get { return Calendar.GetMillisecondOfSecond(localInstant); } }
 
         /// <summary>
         /// Gets the tick of this local time within the second, in the range 0 to 9,999,999 inclusive.
         /// </summary>
-        public int TickOfSecond { get { return Calendar.Fields.TickOfSecond.GetValue(localInstant); } }
+        public int TickOfSecond { get { return Calendar.GetTickOfSecond(localInstant); } }
 
         /// <summary>
         /// Gets the tick of this local date and time within the day, in the range 0 to 863,999,999,999 inclusive.
         /// </summary>
-        public long TickOfDay { get { return Calendar.Fields.TickOfDay.GetInt64Value(localInstant); } }
+        public long TickOfDay { get { return Calendar.GetTickOfDay(localInstant); } }
 
         /// <summary>
         /// Gets the time portion of this local date and time as a <see cref="LocalTime"/>.
