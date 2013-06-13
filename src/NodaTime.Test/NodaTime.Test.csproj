@@ -230,7 +230,7 @@
     <Compile Include="DurationTest.Construction.cs">
       <DependentUpon>DurationTest.cs</DependentUpon>
     </Compile>
-    <Compile Include="Fields\SimplePeriodFieldTest.cs" />
+    <Compile Include="Fields\FixedDurationPeriodFieldTest.cs" />
     <Compile Include="Fields\TicksPeriodFieldTest.cs" />
     <Compile Include="Calendars\IsoCalendarSystemTest.cs" />
     <Compile Include="Calendars\IsoCalendarSystemTest.FieldValidation.cs">

@@ -18,10 +18,10 @@ namespace NodaTime.Calendars
         internal static readonly FieldSet TimeFields = new FieldSet.Builder
         {
             Ticks = new TicksPeriodField(),
-            Milliseconds = SimplePeriodField.Milliseconds,
-            Seconds = SimplePeriodField.Seconds,
-            Minutes = SimplePeriodField.Minutes,
-            Hours = SimplePeriodField.Hours,
+            Milliseconds = FixedDurationPeriodField.Milliseconds,
+            Seconds = FixedDurationPeriodField.Seconds,
+            Minutes = FixedDurationPeriodField.Minutes,
+            Hours = FixedDurationPeriodField.Hours,
         }.Build();
 
         internal static long GetTicks(int hourOfDay, int minuteOfHour)

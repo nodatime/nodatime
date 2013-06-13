@@ -159,7 +159,7 @@
     <Compile Include="DateTimeZoneProviders.cs" />
     <Compile Include="Delegates.cs" />
     <Compile Include="Fields\MonthsPeriodField.cs" />
-    <Compile Include="Fields\SimplePeriodField.cs" />
+    <Compile Include="Fields\FixedDurationPeriodField.cs" />
     <Compile Include="Fields\IPeriodField.cs" />
     <Compile Include="Fields\NamespaceDoc.cs" />
     <Compile Include="Fields\TicksPeriodField.cs" />
