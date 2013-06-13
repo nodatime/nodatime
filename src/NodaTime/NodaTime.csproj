@@ -268,7 +268,6 @@
     <Compile Include="LocalDateTime.cs" />
     <Compile Include="DateTimeZone.cs" />
     <Compile Include="Duration.cs" />
-    <Compile Include="Fields\PeriodFieldType.cs" />
     <Compile Include="Instant.cs" />
     <Compile Include="Interval.cs" />
     <Compile Include="NodaConstants.cs" />
