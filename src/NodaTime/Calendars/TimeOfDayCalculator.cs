@@ -24,6 +24,24 @@ namespace NodaTime.Calendars
             Hours = SimplePeriodField.Hours,
         }.Build();
 
+        internal static long GetTicks(int hourOfDay, int minuteOfHour)
+        {
+            Preconditions.CheckArgumentRange("hourOfDay", hourOfDay, 0, NodaConstants.HoursPerStandardDay - 1);
+            Preconditions.CheckArgumentRange("minuteOfHour", minuteOfHour, 0, NodaConstants.MinutesPerHour - 1);
+            return unchecked(hourOfDay * NodaConstants.TicksPerHour +
+                 minuteOfHour * NodaConstants.TicksPerMinute);
+        }
+
+        internal static long GetTicks(int hourOfDay, int minuteOfHour, int secondOfMinute)
+        {
+            Preconditions.CheckArgumentRange("hourOfDay", hourOfDay, 0, NodaConstants.HoursPerStandardDay - 1);
+            Preconditions.CheckArgumentRange("minuteOfHour", minuteOfHour, 0, NodaConstants.MinutesPerHour - 1);
+            Preconditions.CheckArgumentRange("secondOfMinute", secondOfMinute, 0, NodaConstants.SecondsPerMinute - 1);
+            return unchecked(hourOfDay * NodaConstants.TicksPerHour +
+                 minuteOfHour * NodaConstants.TicksPerMinute +
+                 secondOfMinute * NodaConstants.TicksPerSecond);
+        }
+
         internal static long GetTicks(int hourOfDay, int minuteOfHour, int secondOfMinute, int millisecondOfSecond,
                                       int tickOfMillisecond)
         {
@@ -116,6 +134,5 @@ namespace NodaTime.Calendars
                 return (int)longResult;                
             }
         }
-
     }
 }
