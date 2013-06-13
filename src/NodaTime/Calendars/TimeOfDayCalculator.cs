@@ -15,53 +15,14 @@ namespace NodaTime.Calendars
     /// </summary>
     internal static class TimeOfDayCalculator
     {
-        internal static readonly FieldSet TimeFields;
-        
-        static TimeOfDayCalculator()
+        internal static readonly FieldSet TimeFields = new FieldSet.Builder
         {
-            var builder = new FieldSet.Builder
-            {
-                Ticks = TicksPeriodField.Instance,
-                Milliseconds = SimplePeriodField.Milliseconds,
-                Seconds = SimplePeriodField.Seconds,
-                Minutes = SimplePeriodField.Minutes,
-                Hours = SimplePeriodField.Hours,
-                // Deliberately no half-days; they need to die.
-
-                HourOfDay = CreateDivRemField(NodaConstants.TicksPerHour, NodaConstants.HoursPerStandardDay),
-                HourOfHalfDay = CreateDivRemField(NodaConstants.TicksPerHour, NodaConstants.HoursPerStandardDay / 2),
-                MinuteOfHour = CreateDivRemField(NodaConstants.TicksPerMinute, NodaConstants.MinutesPerHour),
-                MinuteOfDay = CreateDivRemField(NodaConstants.TicksPerMinute, NodaConstants.MinutesPerStandardDay),
-                SecondOfMinute = CreateDivRemField(NodaConstants.TicksPerSecond, NodaConstants.SecondsPerMinute),
-                SecondOfDay = CreateDivRemField(NodaConstants.TicksPerSecond, NodaConstants.SecondsPerStandardDay),
-                MillisecondOfSecond = CreateDivRemField(NodaConstants.TicksPerMillisecond, NodaConstants.MillisecondsPerSecond),
-                MillisecondOfDay = CreateDivRemField(NodaConstants.TicksPerMillisecond, NodaConstants.MillisecondsPerStandardDay),
-                TickOfMillisecond = CreateDivRemField(1, NodaConstants.TicksPerMillisecond),
-                TickOfSecond = CreateDivRemField(1, NodaConstants.TicksPerSecond),
-                TickOfDay = CreateDivRemField(1, NodaConstants.TicksPerStandardDay),
-            };
-            builder.ClockHourOfHalfDay = CreateZeroIsMaxField(builder.HourOfHalfDay, 12);
-            TimeFields = builder.Build();
-        }
-
-        private static DateTimeField CreateDivRemField(long unitTicks, long upperBound)
-        {
-            return new Int64DateTimeField(localInstant =>
-            {
-                long ticks = localInstant.Ticks;
-                return ticks >= 0 ? (ticks / unitTicks) % upperBound : upperBound - 1 + (((ticks + 1) / unitTicks) % upperBound);
-            });
-        }
-
-        // Note: this is inefficient for GetValue.
-        private static DateTimeField CreateZeroIsMaxField(DateTimeField field, long max)
-        {
-            return new Int64DateTimeField(localInstant =>
-            {
-                long value = field.GetInt64Value(localInstant);
-                return value == 0 ? max : value;
-            });
-        }
+            Ticks = new TicksPeriodField(),
+            Milliseconds = SimplePeriodField.Milliseconds,
+            Seconds = SimplePeriodField.Seconds,
+            Minutes = SimplePeriodField.Minutes,
+            Hours = SimplePeriodField.Hours,
+        }.Build();
 
         internal static long GetTicks(int hourOfDay, int minuteOfHour, int secondOfMinute, int millisecondOfSecond,
                                       int tickOfMillisecond)
@@ -83,5 +44,70 @@ namespace NodaTime.Calendars
             long ticks = localInstant.Ticks;
             return ticks >= 0 ? ticks % NodaConstants.TicksPerStandardDay : (NodaConstants.TicksPerStandardDay - 1) + ((ticks + 1) % NodaConstants.TicksPerStandardDay);
         }
+
+        internal static int GetTickOfSecond(LocalInstant localInstant)
+        {
+            return DivRem(localInstant, 1, NodaConstants.TicksPerSecond);
+        }
+
+        internal static int GetTickOfMillisecond(LocalInstant localInstant)
+        {
+            return DivRem(localInstant, 1, NodaConstants.TicksPerMillisecond);
+        }
+
+        internal static int GetMillisecondOfSecond(LocalInstant localInstant)
+        {
+            return DivRem(localInstant, NodaConstants.TicksPerMillisecond, NodaConstants.MillisecondsPerSecond);
+        }
+
+        internal static int GetMillisecondOfDay(LocalInstant localInstant)
+        {
+            return DivRem(localInstant, NodaConstants.TicksPerMillisecond, NodaConstants.MillisecondsPerStandardDay);
+        }
+
+        internal static int GetSecondOfMinute(LocalInstant localInstant)
+        {
+            return DivRem(localInstant, NodaConstants.TicksPerSecond, NodaConstants.SecondsPerMinute);
+        }
+
+        internal static int GetSecondOfDay(LocalInstant localInstant)
+        {
+            return DivRem(localInstant, NodaConstants.TicksPerSecond, NodaConstants.SecondsPerStandardDay);
+        }
+
+        internal static int GetMinuteOfHour(LocalInstant localInstant)
+        {
+            return DivRem(localInstant, NodaConstants.TicksPerMinute, NodaConstants.MinutesPerHour);
+        }
+
+        internal static int GetMinuteOfDay(LocalInstant localInstant)
+        {
+            return DivRem(localInstant, NodaConstants.TicksPerMinute, NodaConstants.MinutesPerStandardDay);
+        }
+
+        internal static int GetHourOfDay(LocalInstant localInstant)
+        {
+            return DivRem(localInstant, NodaConstants.TicksPerHour, NodaConstants.HoursPerStandardDay);
+        }
+
+        internal static int GetHourOfHalfDay(LocalInstant localInstant)
+        {
+            return DivRem(localInstant, NodaConstants.TicksPerHour, NodaConstants.HoursPerStandardDay / 2);
+        }
+
+        internal static int GetClockHourOfHalfDay(LocalInstant localInstant)
+        {
+            int hourOfHalfDay = GetHourOfHalfDay(localInstant);
+            return hourOfHalfDay == 0 ? 12 : hourOfHalfDay;
+        }
+
+        private static int DivRem(LocalInstant localInstant, long unitTicks, long upperBound)
+        {
+            long ticks = localInstant.Ticks;
+            // TODO: Investigate performance of making both of these lines unchecked.
+            long longResult = ticks >= 0 ? (ticks / unitTicks) % upperBound : upperBound - 1 + (((ticks + 1) / unitTicks) % upperBound);
+            return (int)longResult;
+        }
+
     }
 }
