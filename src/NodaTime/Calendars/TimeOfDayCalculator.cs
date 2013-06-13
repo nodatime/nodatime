@@ -41,58 +41,62 @@ namespace NodaTime.Calendars
 
         internal static long GetTickOfDay(LocalInstant localInstant)
         {
-            long ticks = localInstant.Ticks;
-            return ticks >= 0 ? ticks % NodaConstants.TicksPerStandardDay : (NodaConstants.TicksPerStandardDay - 1) + ((ticks + 1) % NodaConstants.TicksPerStandardDay);
+            // This is guaranteed not to overflow based on the operations we'll be performing.
+            unchecked
+            {
+                long ticks = localInstant.Ticks;
+                return ticks >= 0 ? ticks % NodaConstants.TicksPerStandardDay : (NodaConstants.TicksPerStandardDay - 1) + ((ticks + 1) % NodaConstants.TicksPerStandardDay);                
+            }
         }
 
         internal static int GetTickOfSecond(LocalInstant localInstant)
         {
-            return DivRem(localInstant, 1, NodaConstants.TicksPerSecond);
+            return ComputeDividedValue(localInstant, 1, NodaConstants.TicksPerSecond);
         }
 
         internal static int GetTickOfMillisecond(LocalInstant localInstant)
         {
-            return DivRem(localInstant, 1, NodaConstants.TicksPerMillisecond);
+            return ComputeDividedValue(localInstant, 1, NodaConstants.TicksPerMillisecond);
         }
 
         internal static int GetMillisecondOfSecond(LocalInstant localInstant)
         {
-            return DivRem(localInstant, NodaConstants.TicksPerMillisecond, NodaConstants.MillisecondsPerSecond);
+            return ComputeDividedValue(localInstant, NodaConstants.TicksPerMillisecond, NodaConstants.MillisecondsPerSecond);
         }
 
         internal static int GetMillisecondOfDay(LocalInstant localInstant)
         {
-            return DivRem(localInstant, NodaConstants.TicksPerMillisecond, NodaConstants.MillisecondsPerStandardDay);
+            return ComputeDividedValue(localInstant, NodaConstants.TicksPerMillisecond, NodaConstants.MillisecondsPerStandardDay);
         }
 
         internal static int GetSecondOfMinute(LocalInstant localInstant)
         {
-            return DivRem(localInstant, NodaConstants.TicksPerSecond, NodaConstants.SecondsPerMinute);
+            return ComputeDividedValue(localInstant, NodaConstants.TicksPerSecond, NodaConstants.SecondsPerMinute);
         }
 
         internal static int GetSecondOfDay(LocalInstant localInstant)
         {
-            return DivRem(localInstant, NodaConstants.TicksPerSecond, NodaConstants.SecondsPerStandardDay);
+            return ComputeDividedValue(localInstant, NodaConstants.TicksPerSecond, NodaConstants.SecondsPerStandardDay);
         }
 
         internal static int GetMinuteOfHour(LocalInstant localInstant)
         {
-            return DivRem(localInstant, NodaConstants.TicksPerMinute, NodaConstants.MinutesPerHour);
+            return ComputeDividedValue(localInstant, NodaConstants.TicksPerMinute, NodaConstants.MinutesPerHour);
         }
 
         internal static int GetMinuteOfDay(LocalInstant localInstant)
         {
-            return DivRem(localInstant, NodaConstants.TicksPerMinute, NodaConstants.MinutesPerStandardDay);
+            return ComputeDividedValue(localInstant, NodaConstants.TicksPerMinute, NodaConstants.MinutesPerStandardDay);
         }
 
         internal static int GetHourOfDay(LocalInstant localInstant)
         {
-            return DivRem(localInstant, NodaConstants.TicksPerHour, NodaConstants.HoursPerStandardDay);
+            return ComputeDividedValue(localInstant, NodaConstants.TicksPerHour, NodaConstants.HoursPerStandardDay);
         }
 
         internal static int GetHourOfHalfDay(LocalInstant localInstant)
         {
-            return DivRem(localInstant, NodaConstants.TicksPerHour, NodaConstants.HoursPerStandardDay / 2);
+            return ComputeDividedValue(localInstant, NodaConstants.TicksPerHour, NodaConstants.HoursPerStandardDay / 2);
         }
 
         internal static int GetClockHourOfHalfDay(LocalInstant localInstant)
@@ -101,12 +105,16 @@ namespace NodaTime.Calendars
             return hourOfHalfDay == 0 ? 12 : hourOfHalfDay;
         }
 
-        private static int DivRem(LocalInstant localInstant, long unitTicks, long upperBound)
+        private static int ComputeDividedValue(LocalInstant localInstant, long unitTicks, long upperBound)
         {
-            long ticks = localInstant.Ticks;
-            // TODO: Investigate performance of making both of these lines unchecked.
-            long longResult = ticks >= 0 ? (ticks / unitTicks) % upperBound : upperBound - 1 + (((ticks + 1) / unitTicks) % upperBound);
-            return (int)longResult;
+            // This is guaranteed not to overflow based on the operations we'll be performing.
+            unchecked
+            {
+                long ticks = localInstant.Ticks;
+                long longResult = ticks >= 0 ? (ticks / unitTicks) % upperBound
+                                             : upperBound - 1 + (((ticks + 1) / unitTicks) % upperBound);
+                return (int)longResult;                
+            }
         }
 
     }
