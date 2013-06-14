@@ -1,4 +1,8 @@
-Core types quick reference
+---
+layout: userguide
+title: Core types quick reference
+category: core
+---
 
 This is a companion page to the
 ["core concepts"](concepts.html), and ["choosing between types"](type-choices.html)

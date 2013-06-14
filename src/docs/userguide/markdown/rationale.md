@@ -1,4 +1,8 @@
-Why does Noda Time exist?
+---
+layout: userguide
+title: Why does Noda Time exist?
+category: intro
+---
 
 Noda Time exists for .NET for the same reason that [Joda Time][1]
 exists for Java: the built-in libraries for handling dates and times are inadequate.

@@ -1,4 +1,8 @@
-Choosing (and converting) between types
+---
+layout: userguide
+title: Choosing (and converting) between types
+category: core
+---
 
 This is a companion page to the
 ["core concepts quick reference"](concepts.html), and ["core types"](core-types.html)

@@ -1,4 +1,8 @@
-Serialization
+---
+layout: userguide
+title: Serialization
+category: advanced
+---
 
 XML serialization
 -----------------
@@ -32,6 +36,7 @@ constructor (nor do we want one). `PeriodBuilder` is a mutable type with a param
 other classes wouldn't contain a `PeriodBuilder` property or field of course - but by exposing a "proxy" property solely for XML serialization purposes,
 an appropriate effect can be achieved. The class might look something like this:
 
+
     /// <summary>
     /// Sample class to show how to serialize classes which have Period properties.
     /// </summary>
@@ -55,6 +60,7 @@ an appropriate effect can be achieved. The class might look something like this:
         }
     }
 
+  
 When serializing, the `XmlSerializer` will fetch the value from the `PeriodBuilder` property, which will in turn fetch the period from the `Period` property and convert it into a builder.
 When deserializing, the `XmlSerializer` will set the value of `PeriodBuilder` from the XML - and the property will in turn build the builder and set the `Period` property.
 
