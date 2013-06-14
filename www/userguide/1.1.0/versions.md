@@ -1,4 +1,9 @@
-Version history
+---
+layout: userguide
+title: Version history
+category: library
+weight: 170
+---
 
 User-visible changes from 1.0.0-beta1 onwards. See the
 [project repository](http://code.google.com/p/noda-time/source/list) for more

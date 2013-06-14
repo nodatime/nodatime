@@ -1,6 +1,8 @@
 ---
 layout: userguide
 title: Patterns for LocalTime values
+category: text
+weight: 83
 ---
 
 The [`LocalTime`](noda-type://NodaTime.LocalTime) type supports the following patterns:

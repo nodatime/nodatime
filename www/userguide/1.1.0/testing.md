@@ -1,4 +1,9 @@
-Unit testing with Noda Time
+---
+layout: userguide
+title: Unit testing with Noda Time
+category: library
+weight: 110
+---
 
 This page is not about how Noda Time itself is tested - it's about how you to test code
 which *uses* Noda Time.

@@ -1,4 +1,9 @@
-Design philosophy and conventions in Noda Time
+---
+layout: userguide
+title: Design philosophy and conventions
+category: core
+weight: 60
+---
 
 (I should note that the "we" below is mostly the royal "we",
 expressed by the author, Jon Skeet. Hopefully most of the
