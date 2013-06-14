@@ -1,4 +1,9 @@
-Choosing between the core types
+---
+layout: userguide
+title: Choosing between the core types
+category: core
+weight: 40
+---
 
 This is a companion page to the
 ["core concepts quick reference"](concepts.html), and ["core types"](core-types.html)

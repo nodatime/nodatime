@@ -2,6 +2,7 @@
 layout: userguide
 title: Date and time arithmetic
 category: advanced
+weight: 70
 ---
 
 There are two types of arithmetic in Noda Time: arithmetic on the

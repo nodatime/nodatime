@@ -1,6 +1,8 @@
 ---
 layout: userguide
 title: Patterns for Offset values
+category: text
+weight: 81
 ---
 
 The [`Offset`](noda-type://NodaTime.Offset) type supports the following patterns:

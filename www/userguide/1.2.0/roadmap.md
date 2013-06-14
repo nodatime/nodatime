@@ -2,6 +2,7 @@
 layout: userguide
 title: Current roadmap
 category: library
+weight: 160
 ---
 
 The following is an _approximate_ roadmap for the major features that

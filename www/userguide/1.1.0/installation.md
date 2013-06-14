@@ -1,4 +1,9 @@
-Installation
+---
+layout: userguide
+title: Installation
+category: intro
+weight: 20
+---
 
 Our primary distribution channel is [NuGet](http://nuget.org) with
 two packages:

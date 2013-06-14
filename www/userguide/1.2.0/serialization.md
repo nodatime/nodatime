@@ -2,6 +2,7 @@
 layout: userguide
 title: Serialization
 category: advanced
+weight: 100
 ---
 
 XML serialization

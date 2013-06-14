@@ -2,6 +2,7 @@
 layout: userguide
 title: Text handling
 category: advanced
+weight: 80
 ---
 
 There are two options for text handling in Noda Time. For some elements of

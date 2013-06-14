@@ -1,6 +1,8 @@
 ---
 layout: userguide
 title: Patterns for Instant values
+category: text
+weight: 82
 ---
 
 The [`Instant`](noda-type://NodaTime.Instant) type supports the following patterns:

@@ -1,4 +1,9 @@
-BCL Conversions
+---
+layout: userguide
+title: BCL conversions
+category: advanced
+weight: 90
+---
 
 Various Noda Time types have "broadly similar" types in the .NET
 framework's Base Class Library (BCL). Where appropriate,

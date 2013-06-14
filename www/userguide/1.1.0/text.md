@@ -1,4 +1,9 @@
-Handling text in Noda Time
+---
+layout: userguide
+title: Handling text in Noda Time
+category: advanced
+weight: 80
+---
 
 There are two options for text handling in Noda Time. For some elements of
 formatting, you can follow the "normal" approach from the .NET Base Class
