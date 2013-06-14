@@ -9,6 +9,17 @@ navigation: userguide
 	<div class="large-9 columns">
 		<h1>{{ page.title }}</h1>
 		{{ content }}
+		<ul class="pagination">
+		{% userguide_for doc in site.pages sort_by:weight %}
+			{% if last == page.weight %}
+			<li><a href="{{ relative }}{{ doc.url | remove_first: '/' }}"><strong>Next</strong>: {{ doc.title }}</a></li>
+			{% endif %}
+			{% if doc.weight == page.weight %}
+			<li class="current"><a href>{{ doc.title }}</a></li>
+			{% endif %}
+			{% assign last = doc.weight %}
+		{% enduserguide_for %}
+		</ul>
 	</div>
 
 	<div class="large-3 columns">
@@ -28,6 +39,16 @@ navigation: userguide
 				<div class="content" data-section-content>
 					<ul class="side-nav">
 						{% userguide_for doc in site.pages sort_by:weight category:core %}
+							<li><a href="{{ relative }}{{ doc.url | remove_first: '/' }}" {% if doc.url == page.url %}class="active"{% endif %}>{{ doc.title }}</a></li>
+						{% enduserguide_for %}
+					</ul>
+				</div>
+			</section>
+			<section>
+				<p class="title" data-section-title>Text</p>
+				<div class="content" data-section-content>
+					<ul class="side-nav">
+						{% userguide_for doc in site.pages sort_by:weight category:text %}
 							<li><a href="{{ relative }}{{ doc.url | remove_first: '/' }}" {% if doc.url == page.url %}class="active"{% endif %}>{{ doc.title }}</a></li>
 						{% enduserguide_for %}
 					</ul>
