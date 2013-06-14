@@ -1,7 +1,7 @@
 ---
 layout: userguide
 title: Text handling
-category: advanced
+category: text
 weight: 80
 ---
 

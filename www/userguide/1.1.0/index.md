@@ -1,4 +1,7 @@
-Noda Time User Guide
+---
+layout: userguide
+title: Noda Time User Guide
+---
 
 This guide provides documentation to complement the API reference.
 It is recommended that you read at least the first few pages before
