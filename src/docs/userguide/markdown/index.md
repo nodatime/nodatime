@@ -1,4 +1,7 @@
-Noda Time User Guide
+---
+layout: userguide
+title: Noda Time User Guide
+---
 
 This guide provides documentation to complement the API reference.
 It is recommended that you read at least the first few pages before
@@ -6,11 +9,6 @@ starting to develop using Noda Time. If you have suggestions or
 questions which are likely to be discussion-based, please post to
 the [mailing list][2]. For more specific "How do I solve problem X?"
 questions, please ask on [Stack Overflow][so] using the [nodatime tag][so-tag].
-
-Table of contents
------------------
-
-%TOC%
 
 Resources
 ---------

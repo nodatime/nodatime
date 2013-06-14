@@ -1,4 +1,8 @@
-Date and time arithmetic
+---
+layout: userguide
+title: Date and time arithmetic
+category: advanced
+---
 
 There are two types of arithmetic in Noda Time: arithmetic on the
 time line (in some sense "absolute" arithmetic), and calendrical arithmetic.

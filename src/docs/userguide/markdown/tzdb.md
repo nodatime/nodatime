@@ -1,4 +1,8 @@
-Updating the time zone database
+---
+layout: userguide
+title: Updating the time zone database
+category: library
+---
 
 Noda Time comes with a version of the
 [tz database](http://www.iana.org/time-zones) (also known as the IANA Time Zone

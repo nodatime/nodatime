@@ -1,4 +1,7 @@
-Patterns for Period values
+---
+layout: userguide
+title: Patterns for Period values
+---
 
 Currently, the [`Period`](noda-type://NodaTime.Period) type doesn't support custom patterns, but two predefined patterns
 which are exposed in [`PeriodPattern`](noda-type://NodaTime.Text.PeriodPattern):

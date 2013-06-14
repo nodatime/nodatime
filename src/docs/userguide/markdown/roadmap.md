@@ -1,4 +1,8 @@
-Current roadmap
+---
+layout: userguide
+title: Current roadmap
+category: library
+---
 
 The following is an _approximate_ roadmap for the major features that
 we hope to support in Noda Time.  Some of this roadmap is inspired by

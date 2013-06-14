@@ -1,4 +1,7 @@
-Patterns for Instant values
+---
+layout: userguide
+title: Patterns for Instant values
+---
 
 The [`Instant`](noda-type://NodaTime.Instant) type supports the following patterns:
 

@@ -1,4 +1,8 @@
-Design philosophy and conventions
+---
+layout: userguide
+title: Design philosophy and conventions
+category: core
+---
 
 (I should note that the "we" below is mostly the royal "we",
 expressed by the author, Jon Skeet. Hopefully most of the

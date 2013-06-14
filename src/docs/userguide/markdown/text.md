@@ -1,4 +1,8 @@
-Text handling
+---
+layout: userguide
+title: Text handling
+category: advanced
+---
 
 There are two options for text handling in Noda Time. For some elements of
 formatting, you can follow the "normal" approach from the .NET Base Class
