@@ -62,5 +62,32 @@ namespace NodaTime.Utility
                 throw new ArgumentException(message, parameter);
             }
         }
+
+        internal static void CheckArgument<T>(bool expression, string parameter, string messageFormat, T messageArg)
+        {
+            if (!expression)
+            {
+                string message = string.Format(messageFormat, messageArg);
+                throw new ArgumentException(message, parameter);
+            }
+        }
+
+        internal static void CheckArgument<T1, T2>(bool expression, string parameter, string messageFormat, T1 messageArg1, T2 messageArg2)
+        {
+            if (!expression)
+            {
+                string message = string.Format(messageFormat, messageArg1, messageArg2);
+                throw new ArgumentException(message, parameter);
+            }
+        }
+
+        internal static void CheckArgument(bool expression, string parameter, string messageFormat, params object[] messageArgs)
+        {
+            if (!expression)
+            {
+                string message = string.Format(messageFormat, messageArgs);
+                throw new ArgumentException(message, parameter);
+            }
+        }
     }
 }
