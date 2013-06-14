@@ -9,7 +9,7 @@ namespace NodaTime.Calendars
         private const long AverageTicksPerJulianYear = (long)(365.25m * NodaConstants.TicksPerStandardDay);
 
         internal JulianYearMonthDayCalculator()
-            : base(-27256, 31196, AverageTicksPerJulianYear, (1969L * AverageTicksPerJulianYear + 352L * NodaConstants.TicksPerStandardDay))
+            : base(-27256, 31196, AverageTicksPerJulianYear, -621357696000000000L)
         {
         }
 

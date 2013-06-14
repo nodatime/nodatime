@@ -35,7 +35,7 @@ namespace NodaTime.Calendars
         }
 
         internal GregorianYearMonthDayCalculator()
-            : base(-27255, 31195,  AverageTicksPerGregorianYear, 1970 * AverageTicksPerGregorianYear)
+            : base(-27255, 31195, AverageTicksPerGregorianYear, -621355968000000000)
         {
         }
 

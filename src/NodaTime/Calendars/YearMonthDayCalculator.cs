@@ -26,18 +26,26 @@ namespace NodaTime.Calendars
         internal int MonthsInYear { get { return monthsInYear; } }
 
         private readonly long averageTicksPerYear;
-        // TODO: Really need to explain what we mean by this.
-        private readonly long approxTicksAtEpochDividedByTwo;
+        private readonly long ticksInNonLeapYear;
+        private readonly long ticksInLeapYear;
+        
+        private readonly long ticksAtStartOfYear1;
+        /// <summary>
+        /// Only exposed outside the calculator for validation by tests.
+        /// </summary>
+        internal long TicksAtStartOfYear1 { get { return ticksAtStartOfYear1; } }
 
         protected YearMonthDayCalculator(int minYear, int maxYear, int monthsInYear,
-            long averageTicksPerYear, long approxTicksAtEpoch, IList<Era> eras)
+            long ticksInNonLeapYear, long averageTicksPerYear, long ticksAtStartOfYear1, IList<Era> eras)
         {
             this.minYear = minYear;
             this.maxYear = maxYear;
             this.monthsInYear = monthsInYear;
             this.eras = eras;
             this.averageTicksPerYear = averageTicksPerYear;
-            this.approxTicksAtEpochDividedByTwo = approxTicksAtEpoch / 2;
+            this.ticksAtStartOfYear1 = ticksAtStartOfYear1;
+            this.ticksInNonLeapYear = ticksInNonLeapYear;
+            this.ticksInLeapYear = ticksInNonLeapYear + NodaConstants.TicksPerStandardDay;
             // Effectively invalidate the first cache entry.
             // Every other cache entry will automatically be invalid,
             // by having year 0.
@@ -89,6 +97,14 @@ namespace NodaTime.Calendars
         internal long GetYearTicksSafe(int year)
         {
             return year >= MinYear && year <= MaxYear ? GetYearTicks(year) : CalculateYearTicks(year);
+        }
+
+        /// <summary>
+        /// Returns the number of ticks in the given year, based on whether or not it's a leap year.
+        /// </summary>
+        protected long GetTicksInYear(int year)
+        {
+            return IsLeapYear(year) ? ticksInLeapYear : ticksInNonLeapYear;
         }
 
         internal virtual int GetDayOfMonth(LocalInstant localInstant)
@@ -196,43 +212,46 @@ namespace NodaTime.Calendars
             internal long StartOfYearTicks { get { return startOfYear; } }
         }
 
-        // TODO: Understand this code!
-        internal virtual int GetYear(LocalInstant localInstant)
+        internal int GetYear(LocalInstant localInstant)
         {
-            long ticks = localInstant.Ticks;
-            // Get an initial estimate of the year, and the millis value that
+            long targetTicks = localInstant.Ticks;
+            // Get an initial estimate of the year, and the ticks value that
             // represents the start of that year. Then verify estimate and fix if
             // necessary.
 
             // Initial estimate uses values divided by two to avoid overflow.
-            long unitTicks = averageTicksPerYear >> 1;
-            long i2 = (ticks >> 1) + approxTicksAtEpochDividedByTwo;
-            if (i2 < 0)
-            {
-                i2 = i2 - unitTicks + 1;
-            }
-            int year = (int)(i2 / unitTicks);
+            long halfTicksPerYear = averageTicksPerYear >> 1;
+            long halfTicksSinceStartOfYear1 = (targetTicks >> 1) - (ticksAtStartOfYear1 >> 1);
 
-            long yearStart = GetYearTicksSafe(year);
-            long diff = ticks - yearStart;
-            if (diff < 0)
+            if (halfTicksSinceStartOfYear1 < 0)
             {
-                year--;
+                // When we divide, we want to round down, not towards 0.
+                halfTicksSinceStartOfYear1 += 1 - halfTicksPerYear;
             }
-            else if (diff >= NodaConstants.TicksPerStandardDay * 365L)
-            {
-                // One year may need to be added to fix estimate.
-                long oneYear = NodaConstants.TicksPerStandardDay * (IsLeapYear(year) ? 366L : 365L);
-                yearStart += oneYear;
+            int candidate = (int)(halfTicksSinceStartOfYear1 / halfTicksPerYear) + 1;
 
-                if (yearStart <= localInstant.Ticks)
+            // Most of the time we'll get the right year straight away, and we'll almost
+            // always get it after one adjustment - but it's safer (and easier to think about)
+            // if we just keep going until we know we're right.
+            while (true)
+            {
+                long candidateStart = GetYearTicksSafe(candidate);
+                long ticksFromCandidateStartToTarget = targetTicks - candidateStart;
+                if (ticksFromCandidateStartToTarget < 0)
                 {
-                    // Didn't go too far, so actually add one year.
-                    year++;
+                    // Our candidate year is later than we want.
+                    candidate--;
+                    continue;
                 }
+                long candidateLength = GetTicksInYear(candidate);
+                if (ticksFromCandidateStartToTarget >= candidateLength)
+                {
+                    // Out candidate year is earlier than we want.
+                    candidate++;
+                    continue;
+                }
+                return candidate;
             }
-
-            return year;
         }
 
         /// <summary>
