@@ -10,6 +10,7 @@ navigation: userguide
 		<h1>{{ page.title }}</h1>
 		{{ content }}
 		<ul class="pagination">
+		{% if page.weight > 0 %}
 		{% userguide_for doc in site.pages sort_by:weight %}
 			{% if last == page.weight %}
 			<li><a href="{{ relative }}{{ doc.url | remove_first: '/' }}"><strong>Next</strong>: {{ doc.title }}</a></li>
@@ -19,6 +20,7 @@ navigation: userguide
 			{% endif %}
 			{% assign last = doc.weight %}
 		{% enduserguide_for %}
+		{% endif %}
 		</ul>
 	</div>
 
