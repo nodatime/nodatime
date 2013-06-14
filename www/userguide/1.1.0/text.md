@@ -1,7 +1,7 @@
 ---
 layout: userguide
 title: Handling text in Noda Time
-category: advanced
+category: text
 weight: 80
 ---
 
