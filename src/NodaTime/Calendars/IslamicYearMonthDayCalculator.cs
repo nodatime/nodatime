@@ -25,13 +25,13 @@ namespace NodaTime.Calendars
         private const int ShortMonthLength = 29;
 
         /// <summary>The typical number of ticks in a year.</summary>
-        private const long TicksPerYear = (long) (354.36667 * NodaConstants.TicksPerStandardDay);
+        private const long AverageTicksPerYear = (long) (354.36667 * NodaConstants.TicksPerStandardDay);
 
         /// <summary>The number of days in a non-leap year.</summary>
-        private const long DaysPerNonLeapYear = 354;
+        private const int DaysPerNonLeapYear = 354;
 
         /// <summary>The number of days in a leap year.</summary>
-        private const long DaysPerLeapYear = 355;
+        private const int DaysPerLeapYear = 355;
 
         /// <summary>The number of ticks in a non-leap year.</summary>
         private const long TicksPerNonLeapYear = DaysPerNonLeapYear * NodaConstants.TicksPerStandardDay;
@@ -53,8 +53,6 @@ namespace NodaTime.Calendars
 
         /// <summary>The pattern of leap years within a cycle, one bit per year, for this calendar.</summary>
         private readonly int leapYearPatternBits;
-        /// <summary>The ticks at the start of the epoch for this calendar.</summary>
-        private readonly long epochTicks;
 
         private static readonly long[] TotalTicksByMonth;
 
@@ -75,29 +73,9 @@ namespace NodaTime.Calendars
         }
 
         internal IslamicYearMonthDayCalculator(IslamicLeapYearPattern leapYearPattern, IslamicEpoch epoch)
-            : base(1, 31513, 12, TicksPerYear, -GetEpochTicks(epoch), new[] { Era.AnnoHegirae })
+            : base(1, 31513, 12, TicksPerNonLeapYear, AverageTicksPerYear, GetYear1Ticks(epoch), new[] { Era.AnnoHegirae })
         {
             this.leapYearPatternBits = GetLeapYearPatternBits(leapYearPattern);
-            this.epochTicks = GetEpochTicks(epoch);
-        }
-
-        internal override int GetYear(LocalInstant localInstant)
-        {
-            // This may overflow the bounds of long, but it will always be positive.
-            // It's the number of ticks from the start of the epoch of this calendar.
-            ulong ticksIslamic = unchecked((ulong)(localInstant.Ticks - epochTicks));            
-            ulong cycles = ticksIslamic / TicksPerLeapCycle;
-            ulong cycleRemainder = ticksIslamic % TicksPerLeapCycle;
-
-            int year = (int)((cycles * LeapYearCycleLength) + 1L);
-            ulong yearTicks = (ulong) GetTicksInYear(year);
-            while (cycleRemainder >= yearTicks)
-            {
-                cycleRemainder -= yearTicks;
-                year++;
-                yearTicks = (ulong) GetTicksInYear(year);
-            }
-            return year;
         }
 
         internal override LocalInstant SetYear(LocalInstant localInstant, int year)
@@ -124,29 +102,26 @@ namespace NodaTime.Calendars
 
         internal override int GetDayOfMonth(LocalInstant localInstant)
         {
-            // Note: this is zero-based
-            int dayOfYear = GetDayOfYear(localInstant) - 1;
-            if (dayOfYear == 354)
+            int dayOfYear = GetDayOfYear(localInstant);
+            if (dayOfYear == DaysPerLeapYear)
             {
                 return 30;
             }
-            return (dayOfYear % MonthPairLength) % LongMonthLength + 1; 
-        }
-
-        private long GetTicksInYear(int year)
-        {
-            return IsLeapYear(year) ? TicksPerLeapYear : TicksPerNonLeapYear;
+            return ((dayOfYear - 1) % MonthPairLength) % LongMonthLength + 1; 
         }
 
         internal override bool IsLeapYear(int year)
         {
-            int key = 1 << (year % LeapYearCycleLength);
+            // Handle negative years in order to make calculations near the start of the calendar work cleanly.
+            int yearOfCycle = year >= 0 ? year % LeapYearCycleLength
+                                        : (year % LeapYearCycleLength) + LeapYearCycleLength;
+            int key = 1 << yearOfCycle;
             return (leapYearPatternBits & key) > 0;
         }
 
         internal override int GetDaysInYear(int year)
         {
-            return IsLeapYear(year) ? 355 : 354;
+            return IsLeapYear(year) ? DaysPerLeapYear : DaysPerNonLeapYear;
         }
 
         internal override int GetDaysInMonth(int year, int month)
@@ -172,7 +147,7 @@ namespace NodaTime.Calendars
         protected internal override int GetMonthOfYear(LocalInstant localInstant, int year)
         {
             int dayOfYearZeroBased = (int)((localInstant.Ticks - GetYearTicks(year)) / NodaConstants.TicksPerStandardDay);
-            if (dayOfYearZeroBased == 354)
+            if (dayOfYearZeroBased == DaysPerLeapYear - 1)
             {
                 return 12;
             }
@@ -182,12 +157,14 @@ namespace NodaTime.Calendars
         protected override long CalculateYearTicks(int year)
         {
             // The first cycle starts in year 1, not year 0.
-            int cycle = (year - 1) / LeapYearCycleLength;
+            // We try to cope with years outside the normal range, in order to allow arithmetic at the boundaries.
+            int cycle = year > 0 ? (year - 1) / LeapYearCycleLength
+                                 : (year - LeapYearCycleLength) / LeapYearCycleLength;
             int yearAtStartOfCycle = (cycle * LeapYearCycleLength) + 1;
 
             // The cycle * TicksPerLeapCycle may overflow (near the end of representable time), but then
             // adding the epoch ticks will bring it back to a sensible range.
-            long ticks = unchecked (epochTicks + cycle * TicksPerLeapCycle);
+            long ticks = unchecked (TicksAtStartOfYear1 + cycle * TicksPerLeapCycle);
 
             // We've got the ticks at the start of the cycle (e.g. at the start of year 1, 31, 61 etc).
             // Now go from that year to (but not including) the year we're looking for, adding the right
@@ -224,7 +201,7 @@ namespace NodaTime.Calendars
         /// <summary>
         /// Returns the LocalInstant ticks at the specified epoch.
         /// </summary>
-        private static long GetEpochTicks(IslamicEpoch epoch)
+        private static long GetYear1Ticks(IslamicEpoch epoch)
         {
             switch (epoch)
             {
