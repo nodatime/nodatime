@@ -16,7 +16,7 @@ navigation: userguide
 			<li><a href="{{ relative }}{{ doc.url | remove_first: '/' }}"><strong>Next</strong>: {{ doc.title }}</a></li>
 			{% endif %}
 			{% if doc.weight == page.weight %}
-			<li class="current"><a href>{{ doc.title }}</a></li>
+			<li class="current hide-for-small"><a href>{{ doc.title }}</a></li>
 			{% endif %}
 			{% assign last = doc.weight %}
 		{% enduserguide_for %}
