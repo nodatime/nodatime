@@ -1,0 +1,101 @@
+@media only screen and (min-device-width : 320px) and (max-device-width : 480px) {
+  .section {
+    height: inherit;
+    padding: 20px 0;
+  }
+
+  .introduction h1 {
+    font-size: 2.825em;
+  }
+
+  .introduction i {
+    font-size: .7em;
+  }
+
+  .introduction h2 {
+    font-size: 1em
+  }
+
+  .usage h1 {
+    font-size: 1.70em;
+    height: 200px;
+  }
+
+  .usage {
+    height: 200px;
+    max-height: inherit;
+  }
+
+  .example .code {
+    margin: 0 -15px 1.25em -15px;
+    border-radius: 0;
+    box-shadow: 0;
+    border: 0;
+    overflow: auto;
+  }
+}
+
+@media only screen and (min-width: 481px) {
+  .section {
+    height: 300px;
+    padding-top: 30px;
+  }
+
+  .section.installation {
+    height: inherit;
+    min-height: 300px;
+  }
+
+  .usage {
+    height: 200px;
+    max-height: 200px;
+  }
+
+  .usage h1 {
+    height: 200px;
+  }
+}
+
+@media only screen and (min-width: 768px) {
+  .section {
+    height: 400px;
+    padding-top: 50px;
+  }
+
+  .section.installation {
+    height: inherit;
+    min-height: 400px;
+  }
+
+  .usage {
+    height: 300px;
+    max-height: 300px;
+  }
+
+  .usage h1 {
+    height: 300px;
+    font-size: 2.20em;
+  }
+
+  .installation h3 {
+    font-size: 1.2em;
+  }
+
+  .installation h3 i {
+    font-size: 0.7em;
+  }
+}
+
+@media only screen and (min-width: 1280px) {
+  .usage h1 {
+    font-size: 2.75em;
+  }
+
+  .installation h3 {
+    font-size: 1.375em;
+  }
+}
+
+@media only screen and (min-width: 1440px) {
+}
+

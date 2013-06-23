@@ -48,9 +48,9 @@ section p {
 
 .section {
   max-width: inherit;
-  margin: auto;
   height: 400px;
-  padding-top: 50px; 
+  margin: auto;
+  padding-top: 50px;
 }
 
 .section h1,
@@ -63,14 +63,14 @@ section p {
   background-color: #5C72DB;
 }
 
-.introduction i {
-  color: #fff;
-  font-size: 90px;
+.introduction h1 {
+  font-size: 6.225em;
+  margin-bottom: 1px;
 }
 
-.introduction h1 {
-  font-size: 100px;
-  margin-bottom: 1px;
+.introduction i {
+  color: #fff;
+  font-size: .9em;
 }
 
 .points {
@@ -86,24 +86,25 @@ section p {
 
 .usage {
   background-color: #FFFFFF;
-  height: 300px;
-  max-height: 300px;
 }
 
 .usage .columns {
   margin: 0 auto;
 }
 
-.usage .unit {
-  float: left;
+.usage .quote {
+  display: table;
 }
 
-.usage p {
+.usage h1 {
   color: #000;
-  text-align: center;
-  font-size: 250%;
-  margin: 0 10px;
   font-style: italic;
+  display: table-cell;
+  vertical-align: middle;
+}
+
+.section.usage {
+  padding-top: inherit;
 }
 
 .installation {
@@ -133,14 +134,8 @@ section p {
   margin-top: 10px;
 }
 
-.usage .comment,
 .usage .example {
-  width: 50%;
-}
-
-.usage .example {
-  margin: -95px 0;
-  float: right;
+  margin: -47px 0;
   display: block;
   padding: 0;
   font-family: Menlo, Consolas, "Courier New", Courier, "Liberation Mono", monospace;
@@ -182,16 +177,12 @@ section p {
 .example .code {
   padding: 20px;
   text-shadow: none;
-  margin: 0 20px 0 0;
+  margin: 0 20px 1.25em 0;
   background: #3d3d3d;
   border-radius: 5px;
-  box-shadow: 0 5px 30px rgba(0,0,0,.3);
-  
+  box-shadow: 0 5px 30px rgba(0,0,0,.3);  
   text-align: left;
-  /*font-size: 15px;*/
   overflow: hidden;
-  margin-bottom: 1.25em;
-
   color: #fff;
 }
 
