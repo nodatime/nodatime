@@ -39,10 +39,10 @@ Duration duration = Duration.FromMinutes(3);
 // Add it to our ZonedDateTime
 ZonedDateTime thenInIsoUtc = nowInIsoUtc + duration;
 
-// Timezone support (multiple providers)
+// Time zone support (multiple providers)
 var london = DateTimeZoneProviders.Tzdb["Europe/London"];
 
-// Timezone conversions
+// Time zone conversions
 var localDate = new LocalDateTime(2012, 3, 27, 0, 45, 00);
 var before = london.AtStrictly(localDate);
 
