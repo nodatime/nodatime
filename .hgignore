@@ -57,3 +57,6 @@ syntax:regexp
 
 # NuGet temporary build area (see buildnuget.bat)
 ^nuget/
+
+# Generated web site
+^www/_site/
