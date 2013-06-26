@@ -2,14 +2,14 @@
             Initializes a new instance of the <a href="T_NodaTime_Instant.htm">Instant</a> struct.
             </div><div class="section"><div class="sectionTitle" onclick="toggleSection(this.parentNode)"><img src="../icons/collapse_all.gif" /> Declaration Syntax</div><div class="sectionContent"><div id="syntaxSection"><table class="filter"><tr class="tabs" id="syntaxTabs"><td class="tab" x-lang="CSharp" onclick="toggleClass('syntaxTabs','x-lang','CSharp','activeTab','tab'); toggleStyle('syntaxBlocks','x-lang','CSharp','display','block','none');">C#</td><td class="tab" x-lang="VisualBasic" onclick="toggleClass('syntaxTabs','x-lang','VisualBasic','activeTab','tab'); toggleStyle('syntaxBlocks','x-lang','VisualBasic','display','block','none');">Visual Basic</td><td class="tab" x-lang="ManagedCPlusPlus" onclick="toggleClass('syntaxTabs','x-lang','ManagedCPlusPlus','activeTab','tab'); toggleStyle('syntaxBlocks','x-lang','ManagedCPlusPlus','display','block','none');">Visual C++</td></tr></table><div id="syntaxBlocks"><div class="code" x-lang="CSharp"><pre xml:space="preserve">
 <span class="keyword">public</span> <span class="identifier">Instant</span>(
-	<a href="http://msdn2.microsoft.com/en-us/library/6yy583ek" target="_blank">long</a> <span class="parameter">ticks</span>
+	<span class="identifier">long</span> <span class="parameter">ticks</span>
 )</pre></div><div class="code" x-lang="VisualBasic"><pre xml:space="preserve">
-<span class="keyword">Public</span> <span class="keyword">Sub</span> <span class="identifier">New</span> ( _
-	<span class="parameter">ticks</span> <span class="keyword">As</span> <a href="http://msdn2.microsoft.com/en-us/library/6yy583ek" target="_blank">Long</a> _
+<span class="keyword">Public</span> <span class="keyword">Sub</span> <span class="identifier">New</span> ( 
+	<span class="parameter">ticks</span> <span class="keyword">As</span> <span class="identifier">Long</span>
 )</pre></div><div class="code" x-lang="ManagedCPlusPlus"><pre xml:space="preserve">
 <span class="keyword">public</span>:
 <span class="identifier">Instant</span>(
-	<a href="http://msdn2.microsoft.com/en-us/library/6yy583ek" target="_blank">long long</a> <span class="parameter">ticks</span>
+	<span class="identifier">long long</span> <span class="parameter">ticks</span>
 )</pre></div></div></div></div></div><div id="parameters"><div class="section"><div class="sectionTitle" onclick="toggleSection(this.parentNode)"><img src="../icons/collapse_all.gif" /> Parameters</div><div class="sectionContent"><dl paramName="ticks"><dt><span class="parameter">ticks</span> (<a href="http://msdn2.microsoft.com/en-us/library/6yy583ek" target="_blank">Int64</a>)</dt><dd>The number of ticks since the Unix epoch. Negative values represent instants before the
             Unix epoch.</dd></dl></div></div></div><div class="section"><div class="sectionTitle" onclick="toggleSection(this.parentNode)"><img src="../icons/collapse_all.gif" /> Remarks</div><div class="sectionContent">
             Note that while the Noda Time <a href="T_NodaTime_Instant.htm">Instant</a> type and BCL <a href="http://msdn2.microsoft.com/en-us/library/03ybds8y" target="_blank">DateTime</a> and

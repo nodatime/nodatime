@@ -2,16 +2,16 @@
             Returns the offset from UTC, where a positive duration indicates that local time is
             later than UTC. In other words, local time = UTC + offset.
             </div><div class="section"><div class="sectionTitle" onclick="toggleSection(this.parentNode)"><img src="../icons/collapse_all.gif" /> Declaration Syntax</div><div class="sectionContent"><div id="syntaxSection"><table class="filter"><tr class="tabs" id="syntaxTabs"><td class="tab" x-lang="CSharp" onclick="toggleClass('syntaxTabs','x-lang','CSharp','activeTab','tab'); toggleStyle('syntaxBlocks','x-lang','CSharp','display','block','none');">C#</td><td class="tab" x-lang="VisualBasic" onclick="toggleClass('syntaxTabs','x-lang','VisualBasic','activeTab','tab'); toggleStyle('syntaxBlocks','x-lang','VisualBasic','display','block','none');">Visual Basic</td><td class="tab" x-lang="ManagedCPlusPlus" onclick="toggleClass('syntaxTabs','x-lang','ManagedCPlusPlus','activeTab','tab'); toggleStyle('syntaxBlocks','x-lang','ManagedCPlusPlus','display','block','none');">Visual C++</td></tr></table><div id="syntaxBlocks"><div class="code" x-lang="CSharp"><pre xml:space="preserve">
-<span class="keyword">public</span> <span class="keyword">virtual</span> <a href="T_NodaTime_Offset.htm">Offset</a> <span class="identifier">GetUtcOffset</span>(
-	<a href="T_NodaTime_Instant.htm">Instant</a> <span class="parameter">instant</span>
+<span class="keyword">public</span> <span class="keyword">virtual</span> <span class="identifier">Offset</span> <span class="identifier">GetUtcOffset</span>(
+	<span class="identifier">Instant</span> <span class="parameter">instant</span>
 )</pre></div><div class="code" x-lang="VisualBasic"><pre xml:space="preserve">
-<span class="keyword">Public</span> <span class="keyword">Overridable</span> <span class="keyword">Function</span> <span class="identifier">GetUtcOffset</span> ( _
-	<span class="parameter">instant</span> <span class="keyword">As</span> <a href="T_NodaTime_Instant.htm">Instant</a> _
-) <span class="keyword">As</span> <a href="T_NodaTime_Offset.htm">Offset</a></pre></div><div class="code" x-lang="ManagedCPlusPlus"><pre xml:space="preserve">
+<span class="keyword">Public</span> <span class="keyword">Overridable</span> <span class="keyword">Function</span> <span class="identifier">GetUtcOffset</span> ( 
+	<span class="parameter">instant</span> <span class="keyword">As</span> <span class="identifier">Instant</span>
+) <span class="keyword">As</span> <span class="identifier">Offset</span></pre></div><div class="code" x-lang="ManagedCPlusPlus"><pre xml:space="preserve">
 <span class="keyword">public</span>:
-<span class="keyword">virtual</span> <a href="T_NodaTime_Offset.htm">Offset</a> <span class="identifier">GetUtcOffset</span>(
-	<a href="T_NodaTime_Instant.htm">Instant</a> <span class="parameter">instant</span>
-)</pre></div></div></div></div></div><div id="parameters"><div class="section"><div class="sectionTitle" onclick="toggleSection(this.parentNode)"><img src="../icons/collapse_all.gif" /> Parameters</div><div class="sectionContent"><dl paramName="instant"><dt><span class="parameter">instant</span> (<a href="T_NodaTime_Instant.htm">Instant</a>)</dt><dd>The instant for which to calculate the offset.</dd></dl></div></div></div><div class="section"><div class="sectionTitle" onclick="toggleSection(this.parentNode)"><img src="../icons/collapse_all.gif" /> Return Value</div><div class="sectionContent">
+<span class="keyword">virtual</span> <span class="identifier">Offset</span> <span class="identifier">GetUtcOffset</span>(
+	<span class="identifier">Instant</span> <span class="parameter">instant</span>
+)</pre></div></div></div></div></div><div id="parameters"><div class="section"><div class="sectionTitle" onclick="toggleSection(this.parentNode)"><img src="../icons/collapse_all.gif" /> Parameters</div><div class="sectionContent"><dl paramName="instant"><dt><span class="parameter">instant</span> (<a href="T_NodaTime_Instant.htm">Instant</a>)</dt><dd>The instant for which to calculate the offset.</dd></dl></div></div></div><div class="section"><div class="sectionTitle" onclick="toggleSection(this.parentNode)"><img src="../icons/collapse_all.gif" /> Return Value</div><div class="sectionContent"><a href="T_NodaTime_Offset.htm">Offset</a><br />
             The offset from UTC at the specified instant.
             </div></div><div class="section"><div class="sectionTitle" onclick="toggleSection(this.parentNode)"><img src="../icons/collapse_all.gif" /> Remarks</div><div class="sectionContent">
             This is mostly a convenience method for calling <span class="code">GetZoneInterval(instant).WallOffset</span>,

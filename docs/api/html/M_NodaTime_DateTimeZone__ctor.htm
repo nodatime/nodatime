@@ -2,23 +2,23 @@
             Initializes a new instance of the <a href="T_NodaTime_DateTimeZone.htm">DateTimeZone</a> class.
             </div><div class="section"><div class="sectionTitle" onclick="toggleSection(this.parentNode)"><img src="../icons/collapse_all.gif" /> Declaration Syntax</div><div class="sectionContent"><div id="syntaxSection"><table class="filter"><tr class="tabs" id="syntaxTabs"><td class="tab" x-lang="CSharp" onclick="toggleClass('syntaxTabs','x-lang','CSharp','activeTab','tab'); toggleStyle('syntaxBlocks','x-lang','CSharp','display','block','none');">C#</td><td class="tab" x-lang="VisualBasic" onclick="toggleClass('syntaxTabs','x-lang','VisualBasic','activeTab','tab'); toggleStyle('syntaxBlocks','x-lang','VisualBasic','display','block','none');">Visual Basic</td><td class="tab" x-lang="ManagedCPlusPlus" onclick="toggleClass('syntaxTabs','x-lang','ManagedCPlusPlus','activeTab','tab'); toggleStyle('syntaxBlocks','x-lang','ManagedCPlusPlus','display','block','none');">Visual C++</td></tr></table><div id="syntaxBlocks"><div class="code" x-lang="CSharp"><pre xml:space="preserve">
 <span class="keyword">protected</span> <span class="identifier">DateTimeZone</span>(
-	<a href="http://msdn2.microsoft.com/en-us/library/s1wwdcbf" target="_blank">string</a> <span class="parameter">id</span>,
-	<a href="http://msdn2.microsoft.com/en-us/library/a28wyd50" target="_blank">bool</a> <span class="parameter">isFixed</span>,
-	<a href="T_NodaTime_Offset.htm">Offset</a> <span class="parameter">minOffset</span>,
-	<a href="T_NodaTime_Offset.htm">Offset</a> <span class="parameter">maxOffset</span>
+	<span class="identifier">string</span> <span class="parameter">id</span>,
+	<span class="identifier">bool</span> <span class="parameter">isFixed</span>,
+	<span class="identifier">Offset</span> <span class="parameter">minOffset</span>,
+	<span class="identifier">Offset</span> <span class="parameter">maxOffset</span>
 )</pre></div><div class="code" x-lang="VisualBasic"><pre xml:space="preserve">
-<span class="keyword">Protected</span> <span class="keyword">Sub</span> <span class="identifier">New</span> ( _
-	<span class="parameter">id</span> <span class="keyword">As</span> <a href="http://msdn2.microsoft.com/en-us/library/s1wwdcbf" target="_blank">String</a>, _
-	<span class="parameter">isFixed</span> <span class="keyword">As</span> <a href="http://msdn2.microsoft.com/en-us/library/a28wyd50" target="_blank">Boolean</a>, _
-	<span class="parameter">minOffset</span> <span class="keyword">As</span> <a href="T_NodaTime_Offset.htm">Offset</a>, _
-	<span class="parameter">maxOffset</span> <span class="keyword">As</span> <a href="T_NodaTime_Offset.htm">Offset</a> _
+<span class="keyword">Protected</span> <span class="keyword">Sub</span> <span class="identifier">New</span> ( 
+	<span class="parameter">id</span> <span class="keyword">As</span> <span class="identifier">String</span>,
+	<span class="parameter">isFixed</span> <span class="keyword">As</span> <span class="identifier">Boolean</span>,
+	<span class="parameter">minOffset</span> <span class="keyword">As</span> <span class="identifier">Offset</span>,
+	<span class="parameter">maxOffset</span> <span class="keyword">As</span> <span class="identifier">Offset</span>
 )</pre></div><div class="code" x-lang="ManagedCPlusPlus"><pre xml:space="preserve">
 <span class="keyword">protected</span>:
 <span class="identifier">DateTimeZone</span>(
-	<a href="http://msdn2.microsoft.com/en-us/library/s1wwdcbf" target="_blank">String</a>^ <span class="parameter">id</span>, 
-	<a href="http://msdn2.microsoft.com/en-us/library/a28wyd50" target="_blank">bool</a> <span class="parameter">isFixed</span>, 
-	<a href="T_NodaTime_Offset.htm">Offset</a> <span class="parameter">minOffset</span>, 
-	<a href="T_NodaTime_Offset.htm">Offset</a> <span class="parameter">maxOffset</span>
+	<span class="identifier">String</span>^ <span class="parameter">id</span>, 
+	<span class="identifier">bool</span> <span class="parameter">isFixed</span>, 
+	<span class="identifier">Offset</span> <span class="parameter">minOffset</span>, 
+	<span class="identifier">Offset</span> <span class="parameter">maxOffset</span>
 )</pre></div></div></div></div></div><div id="parameters"><div class="section"><div class="sectionTitle" onclick="toggleSection(this.parentNode)"><img src="../icons/collapse_all.gif" /> Parameters</div><div class="sectionContent"><dl paramName="id"><dt><span class="parameter">id</span> (<a href="http://msdn2.microsoft.com/en-us/library/s1wwdcbf" target="_blank">String</a>)</dt><dd>The unique id of this time zone.</dd></dl><dl paramName="isFixed"><dt><span class="parameter">isFixed</span> (<a href="http://msdn2.microsoft.com/en-us/library/a28wyd50" target="_blank">Boolean</a>)</dt><dd>Set to <span class="code">true</span> if this time zone has no transitions.</dd></dl><dl paramName="minOffset"><dt><span class="parameter">minOffset</span> (<a href="T_NodaTime_Offset.htm">Offset</a>)</dt><dd>Minimum offset applied within this zone</dd></dl><dl paramName="maxOffset"><dt><span class="parameter">maxOffset</span> (<a href="T_NodaTime_Offset.htm">Offset</a>)</dt><dd>Maximum offset applied within this zone</dd></dl></div></div></div><div id="footer"><p />Send comments on this topic to
         <a id="HT_MailLink" href="mailto:noda-time%40googlegroups.com?Subject=Noda Time">Noda Time Google Groups</a><script type="text/javascript">
         var HT_mailLink = document.getElementById("HT_MailLink");
