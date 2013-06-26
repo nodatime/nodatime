@@ -357,7 +357,31 @@ namespace NodaTime
             {
             }
 
-            /// <inheritdoc />
+            /// <summary>
+            /// Compares two <see cref="OffsetDateTime"/> values and returns a value indicating whether one is less than, equal to, or greater than the other.
+            /// </summary>
+            /// <param name="x">The first value to compare.</param>
+            /// <param name="y">The second value to compare.</param>
+            /// <returns>A signed integer that indicates the relative values of <paramref name="x"/> and <paramref name="y"/>, as shown in the following table.
+            ///   <list type = "table">
+            ///     <listheader>
+            ///       <term>Value</term>
+            ///       <description>Meaning</description>
+            ///     </listheader>
+            ///     <item>
+            ///       <term>Less than zero</term>
+            ///       <description><paramref name="x"/> is less than <paramref name="y"/>.</description>
+            ///     </item>
+            ///     <item>
+            ///       <term>Zero</term>
+            ///       <description><paramref name="x"/> is equals to <paramref name="y"/>.</description>
+            ///     </item>
+            ///     <item>
+            ///       <term>Greater than zero</term>
+            ///       <description><paramref name="x"/> is greater than <paramref name="y"/>.</description>
+            ///     </item>
+            ///   </list>
+            /// </returns>
             public abstract int Compare(OffsetDateTime x, OffsetDateTime y);
         }
 
