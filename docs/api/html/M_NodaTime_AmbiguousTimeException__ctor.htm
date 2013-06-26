@@ -2,17 +2,17 @@
             Constructs an instance from the given information.
             </div><div class="section"><div class="sectionTitle" onclick="toggleSection(this.parentNode)"><img src="../icons/collapse_all.gif" /> Declaration Syntax</div><div class="sectionContent"><div id="syntaxSection"><table class="filter"><tr class="tabs" id="syntaxTabs"><td class="tab" x-lang="CSharp" onclick="toggleClass('syntaxTabs','x-lang','CSharp','activeTab','tab'); toggleStyle('syntaxBlocks','x-lang','CSharp','display','block','none');">C#</td><td class="tab" x-lang="VisualBasic" onclick="toggleClass('syntaxTabs','x-lang','VisualBasic','activeTab','tab'); toggleStyle('syntaxBlocks','x-lang','VisualBasic','display','block','none');">Visual Basic</td><td class="tab" x-lang="ManagedCPlusPlus" onclick="toggleClass('syntaxTabs','x-lang','ManagedCPlusPlus','activeTab','tab'); toggleStyle('syntaxBlocks','x-lang','ManagedCPlusPlus','display','block','none');">Visual C++</td></tr></table><div id="syntaxBlocks"><div class="code" x-lang="CSharp"><pre xml:space="preserve">
 <span class="keyword">public</span> <span class="identifier">AmbiguousTimeException</span>(
-	<a href="T_NodaTime_ZonedDateTime.htm">ZonedDateTime</a> <span class="parameter">earlierMapping</span>,
-	<a href="T_NodaTime_ZonedDateTime.htm">ZonedDateTime</a> <span class="parameter">laterMapping</span>
+	<span class="identifier">ZonedDateTime</span> <span class="parameter">earlierMapping</span>,
+	<span class="identifier">ZonedDateTime</span> <span class="parameter">laterMapping</span>
 )</pre></div><div class="code" x-lang="VisualBasic"><pre xml:space="preserve">
-<span class="keyword">Public</span> <span class="keyword">Sub</span> <span class="identifier">New</span> ( _
-	<span class="parameter">earlierMapping</span> <span class="keyword">As</span> <a href="T_NodaTime_ZonedDateTime.htm">ZonedDateTime</a>, _
-	<span class="parameter">laterMapping</span> <span class="keyword">As</span> <a href="T_NodaTime_ZonedDateTime.htm">ZonedDateTime</a> _
+<span class="keyword">Public</span> <span class="keyword">Sub</span> <span class="identifier">New</span> ( 
+	<span class="parameter">earlierMapping</span> <span class="keyword">As</span> <span class="identifier">ZonedDateTime</span>,
+	<span class="parameter">laterMapping</span> <span class="keyword">As</span> <span class="identifier">ZonedDateTime</span>
 )</pre></div><div class="code" x-lang="ManagedCPlusPlus"><pre xml:space="preserve">
 <span class="keyword">public</span>:
 <span class="identifier">AmbiguousTimeException</span>(
-	<a href="T_NodaTime_ZonedDateTime.htm">ZonedDateTime</a> <span class="parameter">earlierMapping</span>, 
-	<a href="T_NodaTime_ZonedDateTime.htm">ZonedDateTime</a> <span class="parameter">laterMapping</span>
+	<span class="identifier">ZonedDateTime</span> <span class="parameter">earlierMapping</span>, 
+	<span class="identifier">ZonedDateTime</span> <span class="parameter">laterMapping</span>
 )</pre></div></div></div></div></div><div id="parameters"><div class="section"><div class="sectionTitle" onclick="toggleSection(this.parentNode)"><img src="../icons/collapse_all.gif" /> Parameters</div><div class="sectionContent"><dl paramName="earlierMapping"><dt><span class="parameter">earlierMapping</span> (<a href="T_NodaTime_ZonedDateTime.htm">ZonedDateTime</a>)</dt><dd>The earlier possible mapping</dd></dl><dl paramName="laterMapping"><dt><span class="parameter">laterMapping</span> (<a href="T_NodaTime_ZonedDateTime.htm">ZonedDateTime</a>)</dt><dd>The later possible mapping</dd></dl></div></div></div><div class="section"><div class="sectionTitle" onclick="toggleSection(this.parentNode)"><img src="../icons/collapse_all.gif" /> Remarks</div><div class="sectionContent"><p>
             User code is unlikely to need to deliberately call this constructor except
             possibly for testing.

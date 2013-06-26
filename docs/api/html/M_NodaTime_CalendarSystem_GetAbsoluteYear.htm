@@ -2,19 +2,19 @@
             Returns the "absolute year" (the one used throughout most of the API, without respect to eras)
             from a year-of-era and an era.
             </div><div class="section"><div class="sectionTitle" onclick="toggleSection(this.parentNode)"><img src="../icons/collapse_all.gif" /> Declaration Syntax</div><div class="sectionContent"><div id="syntaxSection"><table class="filter"><tr class="tabs" id="syntaxTabs"><td class="tab" x-lang="CSharp" onclick="toggleClass('syntaxTabs','x-lang','CSharp','activeTab','tab'); toggleStyle('syntaxBlocks','x-lang','CSharp','display','block','none');">C#</td><td class="tab" x-lang="VisualBasic" onclick="toggleClass('syntaxTabs','x-lang','VisualBasic','activeTab','tab'); toggleStyle('syntaxBlocks','x-lang','VisualBasic','display','block','none');">Visual Basic</td><td class="tab" x-lang="ManagedCPlusPlus" onclick="toggleClass('syntaxTabs','x-lang','ManagedCPlusPlus','activeTab','tab'); toggleStyle('syntaxBlocks','x-lang','ManagedCPlusPlus','display','block','none');">Visual C++</td></tr></table><div id="syntaxBlocks"><div class="code" x-lang="CSharp"><pre xml:space="preserve">
-<span class="keyword">public</span> <a href="http://msdn2.microsoft.com/en-us/library/td2s409d" target="_blank">int</a> <span class="identifier">GetAbsoluteYear</span>(
-	<a href="http://msdn2.microsoft.com/en-us/library/td2s409d" target="_blank">int</a> <span class="parameter">yearOfEra</span>,
-	<a href="T_NodaTime_Calendars_Era.htm">Era</a> <span class="parameter">era</span>
+<span class="keyword">public</span> <span class="identifier">int</span> <span class="identifier">GetAbsoluteYear</span>(
+	<span class="identifier">int</span> <span class="parameter">yearOfEra</span>,
+	<span class="identifier">Era</span> <span class="parameter">era</span>
 )</pre></div><div class="code" x-lang="VisualBasic"><pre xml:space="preserve">
-<span class="keyword">Public</span> <span class="keyword">Function</span> <span class="identifier">GetAbsoluteYear</span> ( _
-	<span class="parameter">yearOfEra</span> <span class="keyword">As</span> <a href="http://msdn2.microsoft.com/en-us/library/td2s409d" target="_blank">Integer</a>, _
-	<span class="parameter">era</span> <span class="keyword">As</span> <a href="T_NodaTime_Calendars_Era.htm">Era</a> _
-) <span class="keyword">As</span> <a href="http://msdn2.microsoft.com/en-us/library/td2s409d" target="_blank">Integer</a></pre></div><div class="code" x-lang="ManagedCPlusPlus"><pre xml:space="preserve">
+<span class="keyword">Public</span> <span class="keyword">Function</span> <span class="identifier">GetAbsoluteYear</span> ( 
+	<span class="parameter">yearOfEra</span> <span class="keyword">As</span> <span class="identifier">Integer</span>,
+	<span class="parameter">era</span> <span class="keyword">As</span> <span class="identifier">Era</span>
+) <span class="keyword">As</span> <span class="identifier">Integer</span></pre></div><div class="code" x-lang="ManagedCPlusPlus"><pre xml:space="preserve">
 <span class="keyword">public</span>:
-<a href="http://msdn2.microsoft.com/en-us/library/td2s409d" target="_blank">int</a> <span class="identifier">GetAbsoluteYear</span>(
-	<a href="http://msdn2.microsoft.com/en-us/library/td2s409d" target="_blank">int</a> <span class="parameter">yearOfEra</span>, 
-	<a href="T_NodaTime_Calendars_Era.htm">Era</a>^ <span class="parameter">era</span>
-)</pre></div></div></div></div></div><div id="parameters"><div class="section"><div class="sectionTitle" onclick="toggleSection(this.parentNode)"><img src="../icons/collapse_all.gif" /> Parameters</div><div class="sectionContent"><dl paramName="yearOfEra"><dt><span class="parameter">yearOfEra</span> (<a href="http://msdn2.microsoft.com/en-us/library/td2s409d" target="_blank">Int32</a>)</dt><dd>The year within the era.</dd></dl><dl paramName="era"><dt><span class="parameter">era</span> (<a href="T_NodaTime_Calendars_Era.htm">Era</a>)</dt><dd>The era in which to consider the year</dd></dl></div></div></div><div class="section"><div class="sectionTitle" onclick="toggleSection(this.parentNode)"><img src="../icons/collapse_all.gif" /> Return Value</div><div class="sectionContent">The absolute year represented by the specified year of era.</div></div><div class="section"><div class="sectionTitle" onclick="toggleSection(this.parentNode)"><img src="../icons/collapse_all.gif" /> Remarks</div><div class="sectionContent">
+<span class="identifier">int</span> <span class="identifier">GetAbsoluteYear</span>(
+	<span class="identifier">int</span> <span class="parameter">yearOfEra</span>, 
+	<span class="identifier">Era</span>^ <span class="parameter">era</span>
+)</pre></div></div></div></div></div><div id="parameters"><div class="section"><div class="sectionTitle" onclick="toggleSection(this.parentNode)"><img src="../icons/collapse_all.gif" /> Parameters</div><div class="sectionContent"><dl paramName="yearOfEra"><dt><span class="parameter">yearOfEra</span> (<a href="http://msdn2.microsoft.com/en-us/library/td2s409d" target="_blank">Int32</a>)</dt><dd>The year within the era.</dd></dl><dl paramName="era"><dt><span class="parameter">era</span> (<a href="T_NodaTime_Calendars_Era.htm">Era</a>)</dt><dd>The era in which to consider the year</dd></dl></div></div></div><div class="section"><div class="sectionTitle" onclick="toggleSection(this.parentNode)"><img src="../icons/collapse_all.gif" /> Return Value</div><div class="sectionContent"><a href="http://msdn2.microsoft.com/en-us/library/td2s409d" target="_blank">Int32</a><br />The absolute year represented by the specified year of era.</div></div><div class="section"><div class="sectionTitle" onclick="toggleSection(this.parentNode)"><img src="../icons/collapse_all.gif" /> Remarks</div><div class="sectionContent">
             For example, in the Gregorian and Julian calendar systems, the BCE era starts at year 1, which is
             equivalent to an "absolute year" of 0 (then BCE year 2 has an absolute year of -1, and so on).  The absolute
             year is the year that is used throughout the API; year-of-era is typically used primarily when formatting

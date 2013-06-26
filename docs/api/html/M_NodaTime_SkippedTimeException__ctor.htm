@@ -2,17 +2,17 @@
             Creates a new instance for the given local date/time and time zone.
             </div><div class="section"><div class="sectionTitle" onclick="toggleSection(this.parentNode)"><img src="../icons/collapse_all.gif" /> Declaration Syntax</div><div class="sectionContent"><div id="syntaxSection"><table class="filter"><tr class="tabs" id="syntaxTabs"><td class="tab" x-lang="CSharp" onclick="toggleClass('syntaxTabs','x-lang','CSharp','activeTab','tab'); toggleStyle('syntaxBlocks','x-lang','CSharp','display','block','none');">C#</td><td class="tab" x-lang="VisualBasic" onclick="toggleClass('syntaxTabs','x-lang','VisualBasic','activeTab','tab'); toggleStyle('syntaxBlocks','x-lang','VisualBasic','display','block','none');">Visual Basic</td><td class="tab" x-lang="ManagedCPlusPlus" onclick="toggleClass('syntaxTabs','x-lang','ManagedCPlusPlus','activeTab','tab'); toggleStyle('syntaxBlocks','x-lang','ManagedCPlusPlus','display','block','none');">Visual C++</td></tr></table><div id="syntaxBlocks"><div class="code" x-lang="CSharp"><pre xml:space="preserve">
 <span class="keyword">public</span> <span class="identifier">SkippedTimeException</span>(
-	<a href="T_NodaTime_LocalDateTime.htm">LocalDateTime</a> <span class="parameter">localDateTime</span>,
-	<a href="T_NodaTime_DateTimeZone.htm">DateTimeZone</a> <span class="parameter">zone</span>
+	<span class="identifier">LocalDateTime</span> <span class="parameter">localDateTime</span>,
+	<span class="identifier">DateTimeZone</span> <span class="parameter">zone</span>
 )</pre></div><div class="code" x-lang="VisualBasic"><pre xml:space="preserve">
-<span class="keyword">Public</span> <span class="keyword">Sub</span> <span class="identifier">New</span> ( _
-	<span class="parameter">localDateTime</span> <span class="keyword">As</span> <a href="T_NodaTime_LocalDateTime.htm">LocalDateTime</a>, _
-	<span class="parameter">zone</span> <span class="keyword">As</span> <a href="T_NodaTime_DateTimeZone.htm">DateTimeZone</a> _
+<span class="keyword">Public</span> <span class="keyword">Sub</span> <span class="identifier">New</span> ( 
+	<span class="parameter">localDateTime</span> <span class="keyword">As</span> <span class="identifier">LocalDateTime</span>,
+	<span class="parameter">zone</span> <span class="keyword">As</span> <span class="identifier">DateTimeZone</span>
 )</pre></div><div class="code" x-lang="ManagedCPlusPlus"><pre xml:space="preserve">
 <span class="keyword">public</span>:
 <span class="identifier">SkippedTimeException</span>(
-	<a href="T_NodaTime_LocalDateTime.htm">LocalDateTime</a> <span class="parameter">localDateTime</span>, 
-	<a href="T_NodaTime_DateTimeZone.htm">DateTimeZone</a>^ <span class="parameter">zone</span>
+	<span class="identifier">LocalDateTime</span> <span class="parameter">localDateTime</span>, 
+	<span class="identifier">DateTimeZone</span>^ <span class="parameter">zone</span>
 )</pre></div></div></div></div></div><div id="parameters"><div class="section"><div class="sectionTitle" onclick="toggleSection(this.parentNode)"><img src="../icons/collapse_all.gif" /> Parameters</div><div class="sectionContent"><dl paramName="localDateTime"><dt><span class="parameter">localDateTime</span> (<a href="T_NodaTime_LocalDateTime.htm">LocalDateTime</a>)</dt><dd>The local date/time which is skipped in the specified time zone.</dd></dl><dl paramName="zone"><dt><span class="parameter">zone</span> (<a href="T_NodaTime_DateTimeZone.htm">DateTimeZone</a>)</dt><dd>The time zone in which the local date/time does not exist.</dd></dl></div></div></div><div class="section"><div class="sectionTitle" onclick="toggleSection(this.parentNode)"><img src="../icons/collapse_all.gif" /> Remarks</div><div class="sectionContent">
             User code is unlikely to need to deliberately call this constructor except
             possibly for testing.

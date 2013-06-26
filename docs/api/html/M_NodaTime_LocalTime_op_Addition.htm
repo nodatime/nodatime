@@ -2,19 +2,19 @@
             Creates a new local time by adding a period to an existing time. The period must not contain
             any date-related units (days etc) with non-zero values.
             </div><div class="section"><div class="sectionTitle" onclick="toggleSection(this.parentNode)"><img src="../icons/collapse_all.gif" /> Declaration Syntax</div><div class="sectionContent"><div id="syntaxSection"><table class="filter"><tr class="tabs" id="syntaxTabs"><td class="tab" x-lang="CSharp" onclick="toggleClass('syntaxTabs','x-lang','CSharp','activeTab','tab'); toggleStyle('syntaxBlocks','x-lang','CSharp','display','block','none');">C#</td><td class="tab" x-lang="VisualBasic" onclick="toggleClass('syntaxTabs','x-lang','VisualBasic','activeTab','tab'); toggleStyle('syntaxBlocks','x-lang','VisualBasic','display','block','none');">Visual Basic</td><td class="tab" x-lang="ManagedCPlusPlus" onclick="toggleClass('syntaxTabs','x-lang','ManagedCPlusPlus','activeTab','tab'); toggleStyle('syntaxBlocks','x-lang','ManagedCPlusPlus','display','block','none');">Visual C++</td></tr></table><div id="syntaxBlocks"><div class="code" x-lang="CSharp"><pre xml:space="preserve">
-<span class="keyword">public</span> <span class="keyword">static</span> <a href="T_NodaTime_LocalTime.htm">LocalTime</a> <span class="keyword">operator</span> <span class="identifier">+</span>(
-	<a href="T_NodaTime_LocalTime.htm">LocalTime</a> <span class="parameter">time</span>,
-	<a href="T_NodaTime_Period.htm">Period</a> <span class="parameter">period</span>
+<span class="keyword">public</span> <span class="keyword">static</span> <span class="identifier">LocalTime</span> <span class="keyword">operator</span> <span class="identifier">+</span>(
+	<span class="identifier">LocalTime</span> <span class="parameter">time</span>,
+	<span class="identifier">Period</span> <span class="parameter">period</span>
 )</pre></div><div class="code" x-lang="VisualBasic"><pre xml:space="preserve">
-<span class="keyword">Public</span> <span class="keyword">Shared</span> <span class="keyword">Operator</span> <span class="identifier">+</span> ( _
-	<span class="parameter">time</span> <span class="keyword">As</span> <a href="T_NodaTime_LocalTime.htm">LocalTime</a>, _
-	<span class="parameter">period</span> <span class="keyword">As</span> <a href="T_NodaTime_Period.htm">Period</a> _
-) <span class="keyword">As</span> <a href="T_NodaTime_LocalTime.htm">LocalTime</a></pre></div><div class="code" x-lang="ManagedCPlusPlus"><pre xml:space="preserve">
+<span class="keyword">Public</span> <span class="keyword">Shared</span> <span class="keyword">Operator</span> <span class="identifier">+</span> ( 
+	<span class="parameter">time</span> <span class="keyword">As</span> <span class="identifier">LocalTime</span>,
+	<span class="parameter">period</span> <span class="keyword">As</span> <span class="identifier">Period</span>
+) <span class="keyword">As</span> <span class="identifier">LocalTime</span></pre></div><div class="code" x-lang="ManagedCPlusPlus"><pre xml:space="preserve">
 <span class="keyword">public</span>:
-<span class="keyword">static</span> <a href="T_NodaTime_LocalTime.htm">LocalTime</a> <span class="keyword">operator</span> <span class="identifier">+</span>(
-	<a href="T_NodaTime_LocalTime.htm">LocalTime</a> <span class="parameter">time</span>, 
-	<a href="T_NodaTime_Period.htm">Period</a>^ <span class="parameter">period</span>
-)</pre></div></div></div></div></div><div id="parameters"><div class="section"><div class="sectionTitle" onclick="toggleSection(this.parentNode)"><img src="../icons/collapse_all.gif" /> Parameters</div><div class="sectionContent"><dl paramName="time"><dt><span class="parameter">time</span> (<a href="T_NodaTime_LocalTime.htm">LocalTime</a>)</dt><dd>The time to add the period to</dd></dl><dl paramName="period"><dt><span class="parameter">period</span> (<a href="T_NodaTime_Period.htm">Period</a>)</dt><dd>The period to add</dd></dl></div></div></div><div class="section"><div class="sectionTitle" onclick="toggleSection(this.parentNode)"><img src="../icons/collapse_all.gif" /> Return Value</div><div class="sectionContent">The result of adding the period to the time, wrapping via midnight if necessary</div></div><div id="footer"><p />Send comments on this topic to
+<span class="keyword">static</span> <span class="identifier">LocalTime</span> <span class="keyword">operator</span> <span class="identifier">+</span>(
+	<span class="identifier">LocalTime</span> <span class="parameter">time</span>, 
+	<span class="identifier">Period</span>^ <span class="parameter">period</span>
+)</pre></div></div></div></div></div><div id="parameters"><div class="section"><div class="sectionTitle" onclick="toggleSection(this.parentNode)"><img src="../icons/collapse_all.gif" /> Parameters</div><div class="sectionContent"><dl paramName="time"><dt><span class="parameter">time</span> (<a href="T_NodaTime_LocalTime.htm">LocalTime</a>)</dt><dd>The time to add the period to</dd></dl><dl paramName="period"><dt><span class="parameter">period</span> (<a href="T_NodaTime_Period.htm">Period</a>)</dt><dd>The period to add</dd></dl></div></div></div><div class="section"><div class="sectionTitle" onclick="toggleSection(this.parentNode)"><img src="../icons/collapse_all.gif" /> Return Value</div><div class="sectionContent"><a href="T_NodaTime_LocalTime.htm">LocalTime</a><br />The result of adding the period to the time, wrapping via midnight if necessary</div></div><div id="footer"><p />Send comments on this topic to
         <a id="HT_MailLink" href="mailto:noda-time%40googlegroups.com?Subject=Noda Time">Noda Time Google Groups</a><script type="text/javascript">
         var HT_mailLink = document.getElementById("HT_MailLink");
         var HT_mailLinkText = HT_mailLink.innerHTML;
