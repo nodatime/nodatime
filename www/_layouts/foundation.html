@@ -1,4 +1,4 @@
-{% assign parts     = site.userguide | split: '/' %}
+{% assign parts     = site.latest | split: '/' %}
 {% capture lvl %}{{ page.url | append:'index.html' | split:'/' | size }}{% endcapture %}
 {% capture relative %}{% for i in (3..lvl) %}../{% endfor %}{% endcapture %}
 <!DOCTYPE html>
@@ -46,9 +46,9 @@
 			      <li><a href="{{relative}}api" {% if page.navigation == "api" %}class="active"{% endif %}>API</a></li>
                   -->
 			      <li class="divider hide-for-small"></li>
-			      <li><a href="{{relative}}developer" {% if page.navigation == "developer" %}class="active"{% endif %}>Developer Guide</a></li>
+			      <li><a href="../developer" {% if page.navigation == "developer" %}class="active"{% endif %}>Developer Guide</a></li>
 			      <li class="divider hide-for-small"></li>
-			      <li><a href="{{relative}}{{site.userguide}}" {% if page.navigation == "userguide" %}class="active"{% endif %}>User Guide</a></li>
+			      <li><a href="../userguide" {% if page.navigation == "userguide" %}class="active"{% endif %}>User Guide</a></li>
 			      <li class="divider hide-for-small"></li>
 			      <li><a href="{{relative}}#info">More Info</a></li>
 			      <li class="divider show-for-small"></li>
