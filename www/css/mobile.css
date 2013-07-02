@@ -1,4 +1,4 @@
-@media only screen and (min-device-width : 320px) and (max-device-width : 480px) {
+@media only screen and (min-width : 320px) and (max-width : 480px) {
   .section {
     height: inherit;
     padding: 20px 0;
@@ -17,7 +17,7 @@
   }
 
   .usage h1 {
-    font-size: 1.70em;
+    font-size: 1.20em;
     height: 200px;
   }
 
@@ -32,6 +32,12 @@
     box-shadow: 0;
     border: 0;
     overflow: auto;
+  }
+
+  footer {
+    padding: 10px;
+    font-size: 11px;
+    line-height: 11px;
   }
 }
 
@@ -53,6 +59,7 @@
 
   .usage h1 {
     height: 200px;
+    font-size: 1.5em;
   }
 }
 
