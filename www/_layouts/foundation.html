@@ -46,13 +46,29 @@
 			      <li><a href="{{relative}}api" {% if page.navigation == "api" %}class="active"{% endif %}>API</a></li>
                   -->
 			      <li class="divider hide-for-small"></li>
-			      <li><a href="../developer" {% if page.navigation == "developer" %}class="active"{% endif %}>Developer Guide</a></li>
-			      <li class="divider hide-for-small"></li>
-			      <li><a href="../userguide" {% if page.navigation == "userguide" %}class="active"{% endif %}>User Guide</a></li>
+			      <li class="has-dropdown">
+			      	<a href="{{relative}}1.1.x/developer" {% if page.navigation == "developer" %}class="active"{% endif %}>Developer Guide</a>
+			      	<ul class="dropdown">
+			      		<li><a href="{{relative}}1.0.x/developer">1.0.x</a></li>
+			      		<li><a href="{{relative}}1.1.x/developer">1.1.x</a></li>
+			      		<li class="divider hide-for-small"></li>
+			      		<li><a href="{{relative}}unstable/developer">Unstable</a></li>
+			      	</ul>
+			      </li>
+			      <li class="divider"></li>
+			      <li class="has-dropdown">
+			      	<a href="{{relative}}1.1.x/userguide" {% if page.navigation == "userguide" %}class="active"{% endif %}>User Guide</a>
+			      	<ul class="dropdown hide-for-small">
+			      		<li><a href="{{relative}}1.0.x/userguide">1.0.x</a></li>
+			      		<li><a href="{{relative}}1.1.x/userguide">1.1.x</a></li>
+			      		<li class="divider hide-for-small"></li>
+			      		<li><a href="{{relative}}unstable/userguide">Unstable</a></li>
+			      	</ul>
+			      </li>
 			      <li class="divider hide-for-small"></li>
 			      <li><a href="{{relative}}#info">More Info</a></li>
 			      <li class="divider show-for-small"></li>
-			      <li class="has-form">
+			      <li class="has-form hide-for-small">
 			        <a class="button" href="{{relative}}#install">Install</a>
 			      </li>
 			    </ul>
