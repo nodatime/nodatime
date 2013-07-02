@@ -204,6 +204,10 @@ footer .copy {
   text-align: right;
 }
 
+footer .design {
+  font-style: italic;
+}
+
 .section-container footer {
   background-color: #fff;
   padding: 10px 16px;
