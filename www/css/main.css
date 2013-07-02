@@ -3,6 +3,10 @@
   src: url("/fonts/CallunaSansRegular.otf");
 }
 
+nav.top-bar .top-bar-section ul.dropdown li.hover a {
+  background: black;
+}
+
 code {
   color: #B17250;
 }
