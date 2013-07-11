@@ -3,6 +3,7 @@
 // as found in the LICENSE.txt file.
 
 using System;
+using System.Globalization;
 using System.Xml;
 using System.Xml.Schema;
 using NodaTime.Calendars;
@@ -554,7 +555,7 @@ namespace NodaTime
         /// </returns>
         public override string ToString()
         {
-            return LocalDatePattern.BclSupport.Format(this, null, NodaFormatInfo.CurrentInfo);
+            return LocalDatePattern.BclSupport.Format(this, null, CultureInfo.CurrentCulture);
         }
 
         /// <summary>
@@ -572,7 +573,7 @@ namespace NodaTime
         /// <filterpriority>2</filterpriority>
         public string ToString(string patternText, IFormatProvider formatProvider)
         {
-            return LocalDatePattern.BclSupport.Format(this, patternText, NodaFormatInfo.GetInstance(formatProvider));
+            return LocalDatePattern.BclSupport.Format(this, patternText, formatProvider);
         }
         #endregion Formatting
 

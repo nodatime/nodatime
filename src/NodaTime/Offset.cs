@@ -9,6 +9,7 @@ using NodaTime.Globalization;
 using NodaTime.Text;
 using NodaTime.Utility;
 using System.Xml.Serialization;
+using System.Globalization;
 
 namespace NodaTime
 {
@@ -376,7 +377,7 @@ namespace NodaTime
         /// </returns>
         public override string ToString()
         {
-            return OffsetPattern.BclSupport.Format(this, null, NodaFormatInfo.CurrentInfo);
+            return OffsetPattern.BclSupport.Format(this, null, CultureInfo.CurrentCulture);
         }
 
         /// <summary>
@@ -396,7 +397,7 @@ namespace NodaTime
         /// <filterpriority>2</filterpriority>
         public string ToString(string patternText, IFormatProvider formatProvider)
         {
-            return OffsetPattern.BclSupport.Format(this, patternText, NodaFormatInfo.GetInstance(formatProvider));
+            return OffsetPattern.BclSupport.Format(this, patternText, formatProvider);
         }
         #endregion Formatting
 
