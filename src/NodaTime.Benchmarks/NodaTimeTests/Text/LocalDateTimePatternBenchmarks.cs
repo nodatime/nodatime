@@ -8,6 +8,7 @@ namespace NodaTime.Benchmarks.NodaTimeTests.Text
 {
     internal class LocalDateTimePatternBenchmarks
     {
+        private static readonly LocalDateTime SampleLocalDateTime = new LocalDateTime(2009, 12, 26, 10, 8, 30);
         private static readonly LocalDateTimePattern PatternWithLongMonthAndDay = LocalDateTimePattern.CreateWithInvariantCulture("dddd MMMM dd yyyy HH:mm:ss");
         private static readonly LocalDateTimePattern PatternWithNumbersToSecond = LocalDateTimePattern.CreateWithInvariantCulture("dd/MM/yyyy HH:mm:ss");
 
@@ -25,6 +26,12 @@ namespace NodaTime.Benchmarks.NodaTimeTests.Text
         public void ParseWithNumbersToSecond()
         {
             PatternWithNumbersToSecond.Parse("26/12/2009 10:08:30").GetValueOrThrow();
+        }
+
+        [Benchmark]
+        public void FormatWithNumbersToSecond()
+        {
+            PatternWithNumbersToSecond.Format(SampleLocalDateTime);
         }
     }
 }
