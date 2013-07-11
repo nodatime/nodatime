@@ -10,6 +10,7 @@ namespace NodaTime.Benchmarks.NodaTimeTests
     internal class LocalDateTimeBenchmarks
     {
         private static readonly LocalDateTime Sample = new LocalDateTime(2009, 12, 26, 10, 8, 30);
+        private static readonly CultureInfo MutableCulture = (CultureInfo) CultureInfo.InvariantCulture.Clone();
 
         [Benchmark]
         public void ConstructionToMinute()
@@ -159,6 +160,15 @@ namespace NodaTime.Benchmarks.NodaTimeTests
         public void ToString_ExplicitPattern_Invariant()
         {
             Sample.ToString("dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
+        }
+
+        /// <summary>
+        /// This test will involve creating a new NodaFormatInfo for each iteration.
+        /// </summary>
+        [Benchmark]
+        public void ToString_ExplicitPattern_MutableCulture()
+        {
+            Sample.ToString("dd/MM/yyyy HH:mm:ss", MutableCulture);
         }
     }
 }
