@@ -2,12 +2,10 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-using System;
-using System.Diagnostics.CodeAnalysis;
-using System.Text;
-using NodaTime.Fields;
 using NodaTime.TimeZones.IO;
 using NodaTime.Utility;
+using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace NodaTime.TimeZones
 {
@@ -30,7 +28,7 @@ namespace NodaTime.TimeZones
     /// offset is moved is determined by the <see cref="AdvanceDayOfWeek"/> property.
     /// </para>
     /// <para>
-    /// Finally the <see cref="Mode"/> property deterines whether the <see cref="TickOfDay"/> value
+    /// Finally the <see cref="Mode"/> property deterines whether the <see cref="TimeOfDay"/> value
     /// is added to the calculated offset to generate an offset within the day.
     /// </para>
     /// <para>
@@ -51,8 +49,7 @@ namespace NodaTime.TimeZones
         private readonly int monthOfYear;
         private readonly bool addDay;
 
-        // TODO(Post-V1): Consider using LocalTime instead, as that's what we really mean.
-        private readonly Offset tickOfDay;
+        private readonly LocalTime timeOfDay;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ZoneYearOffset"/> class.
@@ -93,7 +90,7 @@ namespace NodaTime.TimeZones
             this.dayOfMonth = dayOfMonth;
             this.dayOfWeek = dayOfWeek;
             this.advance = advance;
-            this.tickOfDay = tickOfDay;
+            this.timeOfDay = new LocalTime(new LocalInstant(tickOfDay.Ticks));
             this.addDay = addDay;
         }
 
@@ -167,9 +164,9 @@ namespace NodaTime.TimeZones
         public bool AdvanceDayOfWeek { get { return advance; } }
 
         /// <summary>
-        /// Gets the tick of day when the rule takes effect.
+        /// Gets the time of day when the rule takes effect.
         /// </summary>
-        public Offset TickOfDay { get { return tickOfDay; } }
+        public LocalTime TimeOfDay { get { return timeOfDay; } }
 
         /// <summary>
         /// Determines whether or not to add an extra day, for "24:00" offsets.
@@ -200,7 +197,7 @@ namespace NodaTime.TimeZones
                    dayOfMonth == other.dayOfMonth &&
                    dayOfWeek == other.dayOfWeek &&
                    advance == other.advance &&
-                   tickOfDay == other.tickOfDay &&
+                   timeOfDay == other.timeOfDay &&
                    addDay == other.addDay;
         }
 
@@ -265,8 +262,7 @@ namespace NodaTime.TimeZones
                 date = date.PlusDays(1);
             }
 
-            LocalTime time = new LocalTime(new LocalInstant(tickOfDay.Ticks));
-            LocalInstant localInstant = (date + time).LocalInstant;
+            LocalInstant localInstant = (date + timeOfDay).LocalInstant;
 
             Offset offset = GetOffset(standardOffset, savings);
 
@@ -344,7 +340,7 @@ namespace NodaTime.TimeZones
             writer.WriteByte((byte) flags);
             writer.WriteCount(MonthOfYear);
             writer.WriteSignedCount(DayOfMonth);
-            writer.WriteOffset(TickOfDay);
+            writer.WriteOffset(Offset.FromTicks(timeOfDay.LocalDateTime.LocalInstant.Ticks));
         }
 
         /// <summary>
@@ -360,7 +356,7 @@ namespace NodaTime.TimeZones
             writer.WriteCount(DayOfMonth + 31);
             writer.WriteCount(DayOfWeek + 7);
             writer.WriteBoolean(AdvanceDayOfWeek);
-            writer.WriteOffset(TickOfDay);
+            writer.WriteOffset(Offset.FromTicks(timeOfDay.LocalDateTime.LocalInstant.Ticks));
             writer.WriteBoolean(addDay);
         }
 
@@ -441,7 +437,7 @@ namespace NodaTime.TimeZones
             hash = HashCodeHelper.Hash(hash, dayOfMonth);
             hash = HashCodeHelper.Hash(hash, dayOfWeek);
             hash = HashCodeHelper.Hash(hash, advance);
-            hash = HashCodeHelper.Hash(hash, tickOfDay);
+            hash = HashCodeHelper.Hash(hash, timeOfDay);
             hash = HashCodeHelper.Hash(hash, addDay);
             return hash;
         }
