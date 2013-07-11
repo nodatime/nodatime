@@ -60,8 +60,6 @@ namespace NodaTime.Globalization
         private static readonly Cache<CultureInfo, NodaFormatInfo> Cache = new Cache<CultureInfo, NodaFormatInfo>
             (500, culture => new NodaFormatInfo(culture), new ReferenceEqualityComparer<CultureInfo>());
 
-        private readonly DateTimeFormatInfo dateTimeFormat;
-        private readonly NumberFormatInfo numberFormat;
         private readonly CultureInfo cultureInfo;
         private readonly string offsetPatternFull;
         private readonly string offsetPatternLong;
@@ -90,8 +88,6 @@ namespace NodaTime.Globalization
         {
             Preconditions.CheckNotNull(cultureInfo, "cultureInfo");
             this.cultureInfo = cultureInfo;
-            numberFormat = cultureInfo.NumberFormat;
-            dateTimeFormat = cultureInfo.DateTimeFormat;
             var manager = PatternResources.ResourceManager;
             offsetPatternFull = manager.GetString("OffsetPatternFull", cultureInfo);
             offsetPatternLong = manager.GetString("OffsetPatternLong", cultureInfo);
@@ -240,12 +236,12 @@ namespace NodaTime.Globalization
         /// <summary>
         /// Gets the number format associated with this formatting information.
         /// </summary>
-        public NumberFormatInfo NumberFormat { get { return numberFormat; } }
+        public NumberFormatInfo NumberFormat { get { return cultureInfo.NumberFormat; } }
 
         /// <summary>
         /// Gets the BCL date time format associated with this formatting information.
         /// </summary>
-        public DateTimeFormatInfo DateTimeFormat { get { return dateTimeFormat; } }
+        public DateTimeFormatInfo DateTimeFormat { get { return cultureInfo.DateTimeFormat; } }
 
         /// <summary>
         /// Gets the decimal separator from the number format associated with this provider.
@@ -386,7 +382,7 @@ namespace NodaTime.Globalization
         /// </summary>
         internal static void ClearCache()
         {
-            lock (Cache) Cache.Clear();
+            Cache.Clear();
         }
 
         /// <summary>
