@@ -3,28 +3,13 @@
 // as found in the LICENSE.txt file.
 
 using NodaTime.Benchmarks.Framework;
-using NodaTime.Text;
+using System.Globalization;
 
 namespace NodaTime.Benchmarks.NodaTimeTests
 {
     internal class LocalDateTimeBenchmarks
     {
         private static readonly LocalDateTime Sample = new LocalDateTime(2009, 12, 26, 10, 8, 30);
-
-        private static readonly LocalDateTimePattern Pattern = LocalDateTimePattern.CreateWithInvariantCulture("dd/MM/yyyy HH:mm:ss");
-
-        [Benchmark]
-        public void PatternFormat()
-        {
-            Pattern.Format(Sample);
-        }
-
-        [Benchmark]
-        public void PatternParse()
-        {
-            var parseResult = Pattern.Parse("26/12/2009 10:08:30");
-            parseResult.Value.Consume();
-        }
 
         [Benchmark]
         public void ConstructionToMinute()
@@ -162,6 +147,18 @@ namespace NodaTime.Benchmarks.NodaTimeTests
         public void YearOfEra()
         {
             Sample.YearOfEra.Consume();
+        }
+
+        [Benchmark]
+        public void ToString_Parameterless()
+        {
+            Sample.ToString();
+        }
+
+        [Benchmark]
+        public void ToString_ExplicitPattern_Invariant()
+        {
+            Sample.ToString("dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
         }
     }
 }
