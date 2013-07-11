@@ -55,8 +55,10 @@ namespace NodaTime.Globalization
         // Note: this must occur below the pattern parsers, to make type initialization work...
         public static readonly NodaFormatInfo InvariantInfo = new NodaFormatInfo(CultureInfo.InvariantCulture);
 
-        // TODO(Post-V1): Reconsider everything about caching, cloning etc.
-        private static readonly IDictionary<CultureInfo, NodaFormatInfo> Cache = new Dictionary<CultureInfo, NodaFormatInfo>(new ReferenceEqualityComparer<CultureInfo>());
+        // Justification for max size: CultureInfo.GetCultures(CultureTypes.AllCultures) returns 378 cultures
+        // on Windows 8 in mid-2013. 500 should be ample, without being enormous.
+        private static readonly Cache<CultureInfo, NodaFormatInfo> Cache = new Cache<CultureInfo, NodaFormatInfo>
+            (500, culture => new NodaFormatInfo(culture), new ReferenceEqualityComparer<CultureInfo>());
 
         private readonly DateTimeFormatInfo dateTimeFormat;
         private readonly NumberFormatInfo numberFormat;
@@ -96,11 +98,11 @@ namespace NodaTime.Globalization
             offsetPatternMedium = manager.GetString("OffsetPatternMedium", cultureInfo);
             offsetPatternShort = manager.GetString("OffsetPatternShort", cultureInfo);
 
-            offsetPatternParser = FixedFormatInfoPatternParser<Offset>.CreateCachingParser(GeneralOffsetPatternParser, this);
-            instantPatternParser = FixedFormatInfoPatternParser<Instant>.CreateCachingParser(GeneralInstantPatternParser, this);
-            localTimePatternParser = FixedFormatInfoPatternParser<LocalTime>.CreateCachingParser(GeneralLocalTimePatternParser, this);
-            localDatePatternParser = FixedFormatInfoPatternParser<LocalDate>.CreateCachingParser(GeneralLocalDatePatternParser, this);
-            localDateTimePatternParser = FixedFormatInfoPatternParser<LocalDateTime>.CreateCachingParser(GeneralLocalDateTimePatternParser, this);
+            offsetPatternParser = new FixedFormatInfoPatternParser<Offset>(GeneralOffsetPatternParser, this);
+            instantPatternParser = new FixedFormatInfoPatternParser<Instant>(GeneralInstantPatternParser, this);
+            localTimePatternParser = new FixedFormatInfoPatternParser<LocalTime>(GeneralLocalTimePatternParser, this);
+            localDatePatternParser = new FixedFormatInfoPatternParser<LocalDate>(GeneralLocalDatePatternParser, this);
+            localDateTimePatternParser = new FixedFormatInfoPatternParser<LocalDateTime>(GeneralLocalDateTimePatternParser, this);
 
             // Turn month names into 1-based read-only lists
             longMonthNames = ConvertMonthArray(cultureInfo.DateTimeFormat.MonthNames);
@@ -407,16 +409,7 @@ namespace NodaTime.Globalization
             {
                 return new NodaFormatInfo(cultureInfo);
             }
-            NodaFormatInfo result;
-            lock (Cache)
-            {
-                if (!Cache.TryGetValue(cultureInfo, out result))
-                {
-                    result = new NodaFormatInfo(cultureInfo);
-                    Cache.Add(cultureInfo, result);
-                }
-            }
-            return result;
+            return Cache.GetOrAdd(cultureInfo);
         }
 
         /// <summary>
