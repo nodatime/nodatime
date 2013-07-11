@@ -2,6 +2,8 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
+using System;
+using System.Globalization;
 using NodaTime.Globalization;
 
 namespace NodaTime.Text.Patterns
@@ -21,12 +23,13 @@ namespace NodaTime.Text.Patterns
             this.defaultFormatPattern = defaultFormatPattern;
         }
 
-        internal string Format(T value, string patternText, NodaFormatInfo formatInfo)
+        internal string Format(T value, string patternText, IFormatProvider formatProvider)
         {
             if (string.IsNullOrEmpty(patternText))
             {
                 patternText = defaultFormatPattern;
             }
+            NodaFormatInfo formatInfo = NodaFormatInfo.GetInstance(formatProvider);
             IPattern<T> pattern = patternParser(formatInfo).ParsePattern(patternText);
             return pattern.Format(value);
         }

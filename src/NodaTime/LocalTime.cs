@@ -2,6 +2,7 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
+using System.Globalization;
 using NodaTime.Globalization;
 using NodaTime.Text;
 using NodaTime.Utility;
@@ -506,7 +507,7 @@ namespace NodaTime
         /// </returns>
         public override string ToString()
         {
-            return LocalTimePattern.BclSupport.Format(this, null, NodaFormatInfo.CurrentInfo);
+            return LocalTimePattern.BclSupport.Format(this, null, CultureInfo.CurrentCulture);
         }
 
         /// <summary>
@@ -524,7 +525,7 @@ namespace NodaTime
         /// <filterpriority>2</filterpriority>
         public string ToString(string patternText, IFormatProvider formatProvider)
         {
-            return LocalTimePattern.BclSupport.Format(this, patternText, NodaFormatInfo.GetInstance(formatProvider));
+            return LocalTimePattern.BclSupport.Format(this, patternText, formatProvider);
         }
         #endregion Formatting
 
