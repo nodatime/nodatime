@@ -11,10 +11,10 @@ namespace NodaTime.Test.TimeZones
     public class DaylightSavingDateTimeZoneTest
     {
         private static readonly ZoneRecurrence Winter = new ZoneRecurrence("Winter", Offset.Zero,
-            new ZoneYearOffset(TransitionMode.Wall, 10, 5, 0, false, Offset.FromHours(2)), 2000, int.MaxValue);
+            new ZoneYearOffset(TransitionMode.Wall, 10, 5, 0, false, new LocalTime(2, 0)), 2000, int.MaxValue);
 
         private static readonly ZoneRecurrence Summer = new ZoneRecurrence("Summer", Offset.FromHours(1),
-            new ZoneYearOffset(TransitionMode.Wall, 3, 10, 0, false, Offset.FromHours(1)), 2000, int.MaxValue);
+            new ZoneYearOffset(TransitionMode.Wall, 3, 10, 0, false, new LocalTime(1, 0)), 2000, int.MaxValue);
 
         /// <summary>
         /// Time zone with the following characteristics:

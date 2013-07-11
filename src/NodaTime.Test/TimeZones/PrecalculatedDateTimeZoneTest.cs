@@ -26,10 +26,10 @@ namespace NodaTime.Test.TimeZones
             new ZoneInterval("Third", SecondInterval.End, Instant.FromUtc(2005, 1, 20, 8, 0), Offset.FromHours(-5), Offset.Zero);
 
         private static readonly ZoneRecurrence Winter = new ZoneRecurrence("Winter", Offset.Zero,
-            new ZoneYearOffset(TransitionMode.Wall, 10, 5, 0, false, Offset.FromHours(2)), 1960, int.MaxValue);
+            new ZoneYearOffset(TransitionMode.Wall, 10, 5, 0, false, new LocalTime(2, 0)), 1960, int.MaxValue);
 
         private static readonly ZoneRecurrence Summer = new ZoneRecurrence("Summer", Offset.FromHours(1),
-            new ZoneYearOffset(TransitionMode.Wall, 3, 10, 0, false, Offset.FromHours(1)), 1960, int.MaxValue);
+            new ZoneYearOffset(TransitionMode.Wall, 3, 10, 0, false, new LocalTime(1, 0)), 1960, int.MaxValue);
 
         private static readonly DaylightSavingsDateTimeZone TailZone = new DaylightSavingsDateTimeZone(
             "TestTail", Offset.FromHours(-6), Winter, Summer);

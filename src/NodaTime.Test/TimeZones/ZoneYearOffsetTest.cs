@@ -22,40 +22,31 @@ namespace NodaTime.Test.TimeZones
         [Test]
         public void Construct_InvalidMonth_Exception()
         {
-            Assert.Throws(typeof(ArgumentOutOfRangeException), () => new ZoneYearOffset(TransitionMode.Standard, 0, 1, 1, true, Offset.Zero), "Month 0");
-            Assert.Throws(typeof(ArgumentOutOfRangeException), () => new ZoneYearOffset(TransitionMode.Standard, 34, 1, 1, true, Offset.Zero), "Month 34");
-            Assert.Throws(typeof(ArgumentOutOfRangeException), () => new ZoneYearOffset(TransitionMode.Standard, -3, 1, 1, true, Offset.Zero), "Month -3");
+            Assert.Throws(typeof(ArgumentOutOfRangeException), () => new ZoneYearOffset(TransitionMode.Standard, 0, 1, 1, true, LocalTime.Midnight), "Month 0");
+            Assert.Throws(typeof(ArgumentOutOfRangeException), () => new ZoneYearOffset(TransitionMode.Standard, 34, 1, 1, true, LocalTime.Midnight), "Month 34");
+            Assert.Throws(typeof(ArgumentOutOfRangeException), () => new ZoneYearOffset(TransitionMode.Standard, -3, 1, 1, true, LocalTime.Midnight), "Month -3");
         }
 
         [Test]
         public void Construct_InvalidDayOfMonth_Exception()
         {
-            Assert.Throws(typeof(ArgumentOutOfRangeException), () => new ZoneYearOffset(TransitionMode.Standard, 2, 0, 1, true, Offset.Zero), "Day of Month 0");
-            Assert.Throws(typeof(ArgumentOutOfRangeException), () => new ZoneYearOffset(TransitionMode.Standard, 2, 32, 1, true, Offset.Zero), "Day of Month 32");
-            Assert.Throws(typeof(ArgumentOutOfRangeException), () => new ZoneYearOffset(TransitionMode.Standard, 2, 475, 1, true, Offset.Zero),
+            Assert.Throws(typeof(ArgumentOutOfRangeException), () => new ZoneYearOffset(TransitionMode.Standard, 2, 0, 1, true, LocalTime.Midnight), "Day of Month 0");
+            Assert.Throws(typeof(ArgumentOutOfRangeException), () => new ZoneYearOffset(TransitionMode.Standard, 2, 32, 1, true, LocalTime.Midnight), "Day of Month 32");
+            Assert.Throws(typeof(ArgumentOutOfRangeException), () => new ZoneYearOffset(TransitionMode.Standard, 2, 475, 1, true, LocalTime.Midnight),
                           "Day of Month 475");
-            Assert.Throws(typeof(ArgumentOutOfRangeException), () => new ZoneYearOffset(TransitionMode.Standard, 2, -32, 1, true, Offset.Zero),
+            Assert.Throws(typeof(ArgumentOutOfRangeException), () => new ZoneYearOffset(TransitionMode.Standard, 2, -32, 1, true, LocalTime.Midnight),
                           "Day of Month -32");
         }
 
         [Test]
         public void Construct_InvalidDayOfWeek_Exception()
         {
-            Assert.Throws(typeof(ArgumentOutOfRangeException), () => new ZoneYearOffset(TransitionMode.Standard, 2, 3, -1, true, Offset.Zero), "Day of Week -1");
-            Assert.Throws(typeof(ArgumentOutOfRangeException), () => new ZoneYearOffset(TransitionMode.Standard, 2, 3, 8, true, Offset.Zero), "Day of Week 8");
-            Assert.Throws(typeof(ArgumentOutOfRangeException), () => new ZoneYearOffset(TransitionMode.Standard, 2, 3, 5756, true, Offset.Zero),
+            Assert.Throws(typeof(ArgumentOutOfRangeException), () => new ZoneYearOffset(TransitionMode.Standard, 2, 3, -1, true, LocalTime.Midnight), "Day of Week -1");
+            Assert.Throws(typeof(ArgumentOutOfRangeException), () => new ZoneYearOffset(TransitionMode.Standard, 2, 3, 8, true, LocalTime.Midnight), "Day of Week 8");
+            Assert.Throws(typeof(ArgumentOutOfRangeException), () => new ZoneYearOffset(TransitionMode.Standard, 2, 3, 5756, true, LocalTime.Midnight),
                           "Day of Week 5856");
-            Assert.Throws(typeof(ArgumentOutOfRangeException), () => new ZoneYearOffset(TransitionMode.Standard, 2, 3, -347, true, Offset.Zero),
+            Assert.Throws(typeof(ArgumentOutOfRangeException), () => new ZoneYearOffset(TransitionMode.Standard, 2, 3, -347, true, LocalTime.Midnight),
                           "Day of Week -347");
-        }
-
-        [Test]
-        public void Construct_InvalidTickOfDay_Exception()
-        {
-            Assert.Throws(typeof(ArgumentOutOfRangeException), () => new ZoneYearOffset(TransitionMode.Standard, 2, 3, -1, true, Offset.MinValue),
-                          "Tick of day MinValue");
-            Assert.Throws(typeof(ArgumentOutOfRangeException), () => new ZoneYearOffset(TransitionMode.Standard, 2, 3, 8, true, Offset.FromMilliseconds(-1)),
-                          "Tick of day MinValue -1");
         }
 
         [Test]
@@ -63,7 +54,7 @@ namespace NodaTime.Test.TimeZones
         {
             for (int month = 1; month <= 12; month++)
             {
-                Assert.NotNull(new ZoneYearOffset(TransitionMode.Standard, month, 1, 1, true, Offset.Zero), "Month " + month);
+                Assert.NotNull(new ZoneYearOffset(TransitionMode.Standard, month, 1, 1, true, LocalTime.Midnight), "Month " + month);
             }
         }
 
@@ -72,11 +63,11 @@ namespace NodaTime.Test.TimeZones
         {
             for (int day = 1; day <= 31; day++)
             {
-                Assert.NotNull(new ZoneYearOffset(TransitionMode.Standard, 1, day, 1, true, Offset.Zero), "Day " + day);
+                Assert.NotNull(new ZoneYearOffset(TransitionMode.Standard, 1, day, 1, true, LocalTime.Midnight), "Day " + day);
             }
             for (int day = -1; day >= -31; day--)
             {
-                Assert.NotNull(new ZoneYearOffset(TransitionMode.Standard, 1, day, 1, true, Offset.Zero), "Day " + day);
+                Assert.NotNull(new ZoneYearOffset(TransitionMode.Standard, 1, day, 1, true, LocalTime.Midnight), "Day " + day);
             }
         }
 
@@ -85,25 +76,14 @@ namespace NodaTime.Test.TimeZones
         {
             for (int dayOfWeek = 0; dayOfWeek <= 7; dayOfWeek++)
             {
-                Assert.NotNull(new ZoneYearOffset(TransitionMode.Standard, 1, 1, dayOfWeek, true, Offset.Zero), "Day of week " + dayOfWeek);
-            }
-        }
-
-        [Test]
-        public void Construct_ValidTickOfDay()
-        {
-            int delta = (Offset.MaxValue.Milliseconds / 100);
-            for (int millisecond = 0; millisecond < Offset.MaxValue.Milliseconds; millisecond += delta)
-            {
-                var tickOfDay = Offset.FromMilliseconds(millisecond);
-                Assert.NotNull(new ZoneYearOffset(TransitionMode.Standard, 1, 1, 0, true, tickOfDay), "Tick of Day " + tickOfDay);
+                Assert.NotNull(new ZoneYearOffset(TransitionMode.Standard, 1, 1, dayOfWeek, true, LocalTime.Midnight), "Day of week " + dayOfWeek);
             }
         }
 
         [Test]
         public void MakeInstant_Defaults_Epoch()
         {
-            var offset = new ZoneYearOffset(TransitionMode.Utc, 1, 1, 0, true, Offset.Zero);
+            var offset = new ZoneYearOffset(TransitionMode.Utc, 1, 1, 0, true, LocalTime.Midnight);
             var actual = offset.MakeInstant(1970, Offset.Zero, Offset.Zero);
             var expected = NodaConstants.UnixEpoch;
             Assert.AreEqual(expected, actual);
@@ -112,7 +92,7 @@ namespace NodaTime.Test.TimeZones
         [Test]
         public void MakeInstant_Year_1971()
         {
-            var offset = new ZoneYearOffset(TransitionMode.Utc, 1, 1, 0, true, Offset.Zero);
+            var offset = new ZoneYearOffset(TransitionMode.Utc, 1, 1, 0, true, LocalTime.Midnight);
             var actual = offset.MakeInstant(1971, Offset.Zero, Offset.Zero);
             var expected = new Instant(365L * NodaConstants.TicksPerStandardDay);
             Assert.AreEqual(expected, actual);
@@ -121,7 +101,7 @@ namespace NodaTime.Test.TimeZones
         [Test]
         public void MakeInstant_SavingOffsetIgnored_Epoch()
         {
-            var offset = new ZoneYearOffset(TransitionMode.Utc, 1, 1, 0, true, Offset.Zero);
+            var offset = new ZoneYearOffset(TransitionMode.Utc, 1, 1, 0, true, LocalTime.Midnight);
             var actual = offset.MakeInstant(1970, twoHours, oneHour);
             var expected = NodaConstants.UnixEpoch;
             Assert.AreEqual(expected, actual);
@@ -130,7 +110,7 @@ namespace NodaTime.Test.TimeZones
         [Test]
         public void MakeInstant_SavingIgnored()
         {
-            var offset = new ZoneYearOffset(TransitionMode.Standard, 1, 1, 0, true, Offset.Zero);
+            var offset = new ZoneYearOffset(TransitionMode.Standard, 1, 1, 0, true, LocalTime.Midnight);
             var actual = offset.MakeInstant(1970, twoHours, oneHour);
             var expected = new Instant((1L - 1) * NodaConstants.TicksPerStandardDay - twoHours.Ticks);
             Assert.AreEqual(expected, actual);
@@ -139,7 +119,7 @@ namespace NodaTime.Test.TimeZones
         [Test]
         public void MakeInstant_SavingAndOffset()
         {
-            var offset = new ZoneYearOffset(TransitionMode.Wall, 1, 1, 0, true, Offset.Zero);
+            var offset = new ZoneYearOffset(TransitionMode.Wall, 1, 1, 0, true, LocalTime.Midnight);
             var actual = offset.MakeInstant(1970, twoHours, oneHour);
             var expected = new Instant((1L - 1) * NodaConstants.TicksPerStandardDay - (twoHours.Ticks + oneHour.Ticks));
             Assert.AreEqual(expected, actual);
@@ -148,7 +128,7 @@ namespace NodaTime.Test.TimeZones
         [Test]
         public void MakeInstant_Milliseconds()
         {
-            var offset = new ZoneYearOffset(TransitionMode.Utc, 1, 1, 0, true, TestObjects.CreatePositiveOffset(0, 0, 0, 1));
+            var offset = new ZoneYearOffset(TransitionMode.Utc, 1, 1, 0, true, new LocalTime(0, 0, 0, 1));
             var actual = offset.MakeInstant(1970, Offset.Zero, Offset.Zero);
             var expected = new Instant((1L - 1) * NodaConstants.TicksPerStandardDay + NodaConstants.TicksPerMillisecond);
             Assert.AreEqual(expected, actual);
@@ -157,7 +137,7 @@ namespace NodaTime.Test.TimeZones
         [Test]
         public void MakeInstant_WednesdayForward()
         {
-            var offset = new ZoneYearOffset(TransitionMode.Utc, 1, 1, (int)DayOfWeek.Wednesday, true, Offset.Zero);
+            var offset = new ZoneYearOffset(TransitionMode.Utc, 1, 1, (int)DayOfWeek.Wednesday, true, LocalTime.Midnight);
             var actual = offset.MakeInstant(1970, Offset.Zero, Offset.Zero);
             var expected = new Instant((7L - 1) * NodaConstants.TicksPerStandardDay);
             Assert.AreEqual(expected, actual);
@@ -166,7 +146,7 @@ namespace NodaTime.Test.TimeZones
         [Test]
         public void MakeInstant_WednesdayBackward()
         {
-            var offset = new ZoneYearOffset(TransitionMode.Utc, 1, 15, (int)DayOfWeek.Wednesday, false, Offset.Zero);
+            var offset = new ZoneYearOffset(TransitionMode.Utc, 1, 15, (int)DayOfWeek.Wednesday, false, LocalTime.Midnight);
             var actual = offset.MakeInstant(1970, Offset.Zero, Offset.Zero);
             var expected = new Instant((14L - 1) * NodaConstants.TicksPerStandardDay);
             Assert.AreEqual(expected, actual);
@@ -175,7 +155,7 @@ namespace NodaTime.Test.TimeZones
         [Test]
         public void MakeInstant_JanOne()
         {
-            var offset = new ZoneYearOffset(TransitionMode.Utc, 1, 1, 0, true, Offset.Zero);
+            var offset = new ZoneYearOffset(TransitionMode.Utc, 1, 1, 0, true, LocalTime.Midnight);
             var actual = offset.MakeInstant(1970, Offset.Zero, Offset.Zero);
             var expected = new Instant((1L - 1) * NodaConstants.TicksPerStandardDay);
             Assert.AreEqual(expected, actual);
@@ -184,7 +164,7 @@ namespace NodaTime.Test.TimeZones
         [Test]
         public void MakeInstant_JanMinusTwo()
         {
-            var offset = new ZoneYearOffset(TransitionMode.Utc, 1, -2, 0, true, Offset.Zero);
+            var offset = new ZoneYearOffset(TransitionMode.Utc, 1, -2, 0, true, LocalTime.Midnight);
             var actual = offset.MakeInstant(1970, Offset.Zero, Offset.Zero);
             var expected = new Instant((30L - 1) * NodaConstants.TicksPerStandardDay);
             Assert.AreEqual(expected, actual);
@@ -193,7 +173,7 @@ namespace NodaTime.Test.TimeZones
         [Test]
         public void MakeInstant_JanFive()
         {
-            var offset = new ZoneYearOffset(TransitionMode.Utc, 1, 5, 0, true, Offset.Zero);
+            var offset = new ZoneYearOffset(TransitionMode.Utc, 1, 5, 0, true, LocalTime.Midnight);
             var actual = offset.MakeInstant(1970, Offset.Zero, Offset.Zero);
             var expected = new Instant((5L - 1) * NodaConstants.TicksPerStandardDay);
             Assert.AreEqual(expected, actual);
@@ -202,7 +182,7 @@ namespace NodaTime.Test.TimeZones
         [Test]
         public void MakeInstant_Feb()
         {
-            var offset = new ZoneYearOffset(TransitionMode.Utc, 2, 1, 0, true, Offset.Zero);
+            var offset = new ZoneYearOffset(TransitionMode.Utc, 2, 1, 0, true, LocalTime.Midnight);
             var actual = offset.MakeInstant(1970, Offset.Zero, Offset.Zero);
             var expected = new Instant((32L - 1) * NodaConstants.TicksPerStandardDay);
             Assert.AreEqual(expected, actual);
@@ -211,7 +191,7 @@ namespace NodaTime.Test.TimeZones
         [Test]
         public void Next_JanOne()
         {
-            var offset = new ZoneYearOffset(TransitionMode.Utc, 1, 1, 0, true, Offset.Zero);
+            var offset = new ZoneYearOffset(TransitionMode.Utc, 1, 1, 0, true, LocalTime.Midnight);
             var actual = offset.MakeInstant(1970, Offset.Zero, Offset.Zero);
             long baseTicks = actual.Ticks;
             actual = offset.Next(actual, Offset.Zero, Offset.Zero);
@@ -222,7 +202,7 @@ namespace NodaTime.Test.TimeZones
         [Test]
         public void Next_OneSecondBeforeJanOne()
         {
-            var offset = new ZoneYearOffset(TransitionMode.Utc, 1, 1, 0, true, Offset.Zero);
+            var offset = new ZoneYearOffset(TransitionMode.Utc, 1, 1, 0, true, LocalTime.Midnight);
             var actual = offset.MakeInstant(1970, Offset.Zero, Offset.Zero) - Duration.Epsilon;
             actual = offset.Next(actual, Offset.Zero, Offset.Zero);
             var expected = NodaConstants.UnixEpoch;
@@ -232,7 +212,7 @@ namespace NodaTime.Test.TimeZones
         [Test]
         public void NextTwice_JanOne()
         {
-            var offset = new ZoneYearOffset(TransitionMode.Utc, 1, 1, 0, true, Offset.Zero);
+            var offset = new ZoneYearOffset(TransitionMode.Utc, 1, 1, 0, true, LocalTime.Midnight);
             var actual = offset.MakeInstant(1970, Offset.Zero, Offset.Zero);
             long baseTicks = actual.Ticks;
             actual = offset.Next(actual, Offset.Zero, Offset.Zero);
@@ -244,7 +224,7 @@ namespace NodaTime.Test.TimeZones
         [Test]
         public void Next_Feb29_FourYears()
         {
-            var offset = new ZoneYearOffset(TransitionMode.Utc, 2, 29, 0, true, Offset.Zero);
+            var offset = new ZoneYearOffset(TransitionMode.Utc, 2, 29, 0, true, LocalTime.Midnight);
             var actual = offset.MakeInstant(1972, Offset.Zero, Offset.Zero);
             long baseTicks = actual.Ticks;
             actual = offset.Next(actual, Offset.Zero, Offset.Zero);
@@ -255,7 +235,7 @@ namespace NodaTime.Test.TimeZones
         [Test]
         public void NextTwice_Feb29_FourYears()
         {
-            var offset = new ZoneYearOffset(TransitionMode.Utc, 2, 29, 0, true, Offset.Zero);
+            var offset = new ZoneYearOffset(TransitionMode.Utc, 2, 29, 0, true, LocalTime.Midnight);
             var actual = offset.MakeInstant(1972, Offset.Zero, Offset.Zero);
             long baseTicks = actual.Ticks;
             actual = offset.Next(actual, Offset.Zero, Offset.Zero);
@@ -267,7 +247,7 @@ namespace NodaTime.Test.TimeZones
         [Test]
         public void Previous_JanOne()
         {
-            var offset = new ZoneYearOffset(TransitionMode.Utc, 1, 1, 0, true, Offset.Zero);
+            var offset = new ZoneYearOffset(TransitionMode.Utc, 1, 1, 0, true, LocalTime.Midnight);
             var actual = offset.MakeInstant(1970, Offset.Zero, Offset.Zero);
             long baseTicks = actual.Ticks;
             actual = offset.Previous(actual, Offset.Zero, Offset.Zero);
@@ -278,7 +258,7 @@ namespace NodaTime.Test.TimeZones
         [Test]
         public void Previous_OneSecondAfterJanOne()
         {
-            var offset = new ZoneYearOffset(TransitionMode.Utc, 1, 1, 0, true, Offset.Zero);
+            var offset = new ZoneYearOffset(TransitionMode.Utc, 1, 1, 0, true, LocalTime.Midnight);
             var actual = offset.MakeInstant(1970, Offset.Zero, Offset.Zero) + Duration.Epsilon;
             actual = offset.Previous(actual, Offset.Zero, Offset.Zero);
             var expected = NodaConstants.UnixEpoch;
@@ -288,7 +268,7 @@ namespace NodaTime.Test.TimeZones
         [Test]
         public void PreviousTwice_JanOne()
         {
-            var offset = new ZoneYearOffset(TransitionMode.Utc, 1, 1, 0, true, Offset.Zero);
+            var offset = new ZoneYearOffset(TransitionMode.Utc, 1, 1, 0, true, LocalTime.Midnight);
             var actual = offset.MakeInstant(1970, Offset.Zero, Offset.Zero);
             long baseTicks = actual.Ticks;
             actual = offset.Previous(actual, Offset.Zero, Offset.Zero);
@@ -300,7 +280,7 @@ namespace NodaTime.Test.TimeZones
         [Test]
         public void Next_WednesdayForward()
         {
-            ZoneYearOffset offset = new ZoneYearOffset(TransitionMode.Utc, 10, 31, (int)IsoDayOfWeek.Wednesday, true, Offset.Zero);
+            ZoneYearOffset offset = new ZoneYearOffset(TransitionMode.Utc, 10, 31, (int)IsoDayOfWeek.Wednesday, true, LocalTime.Midnight);
             var actual = offset.MakeInstant(2006, Offset.Zero, Offset.Zero); // Nov 1 2006
             long baseTicks = actual.Ticks;
             actual = offset.Next(actual, Offset.Zero, Offset.Zero); // Oct 31 2007
@@ -311,7 +291,7 @@ namespace NodaTime.Test.TimeZones
         [Test]
         public void NextTwice_WednesdayForward()
         {
-            ZoneYearOffset offset = new ZoneYearOffset(TransitionMode.Utc, 10, 31, (int)IsoDayOfWeek.Wednesday, true, Offset.Zero);
+            ZoneYearOffset offset = new ZoneYearOffset(TransitionMode.Utc, 10, 31, (int)IsoDayOfWeek.Wednesday, true, LocalTime.Midnight);
             var actual = offset.MakeInstant(2006, Offset.Zero, Offset.Zero); // Nov 1 2006
             long baseTicks = actual.Ticks;
             actual = offset.Next(actual, Offset.Zero, Offset.Zero); // Oct 31 2007
@@ -323,7 +303,7 @@ namespace NodaTime.Test.TimeZones
         [Test]
         public void MakeInstant_LastSundayInOctober()
         {
-            ZoneYearOffset offset = new ZoneYearOffset(TransitionMode.Utc, 10, -1, (int)IsoDayOfWeek.Sunday, false, Offset.Zero);
+            ZoneYearOffset offset = new ZoneYearOffset(TransitionMode.Utc, 10, -1, (int)IsoDayOfWeek.Sunday, false, LocalTime.Midnight);
             var actual = offset.MakeInstant(1996, Offset.Zero, Offset.Zero);
             Assert.AreEqual(Instant.FromUtc(1996, 10, 27, 0, 0), actual);
         }
@@ -332,20 +312,20 @@ namespace NodaTime.Test.TimeZones
         public void Serialization()
         {
             var dio = DtzIoHelper.CreateNoStringPool();
-            var expected = new ZoneYearOffset(TransitionMode.Utc, 10, 31, (int)IsoDayOfWeek.Wednesday, true, Offset.Zero);
+            var expected = new ZoneYearOffset(TransitionMode.Utc, 10, 31, (int)IsoDayOfWeek.Wednesday, true, LocalTime.Midnight);
             dio.TestZoneYearOffset(expected);
 
             dio.Reset();
-            expected = new ZoneYearOffset(TransitionMode.Utc, 10, -31, (int)IsoDayOfWeek.Wednesday, true, Offset.Zero);
+            expected = new ZoneYearOffset(TransitionMode.Utc, 10, -31, (int)IsoDayOfWeek.Wednesday, true, LocalTime.Midnight);
             dio.TestZoneYearOffset(expected);
         }
 
         [Test]
         public void IEquatable_Tests()
         {
-            var value = new ZoneYearOffset(TransitionMode.Utc, 10, 31, (int)IsoDayOfWeek.Wednesday, true, Offset.Zero);
-            var equalValue = new ZoneYearOffset(TransitionMode.Utc, 10, 31, (int)IsoDayOfWeek.Wednesday, true, Offset.Zero);
-            var unequalValue = new ZoneYearOffset(TransitionMode.Utc, 9, 31, (int)IsoDayOfWeek.Wednesday, true, Offset.Zero);
+            var value = new ZoneYearOffset(TransitionMode.Utc, 10, 31, (int)IsoDayOfWeek.Wednesday, true, LocalTime.Midnight);
+            var equalValue = new ZoneYearOffset(TransitionMode.Utc, 10, 31, (int)IsoDayOfWeek.Wednesday, true, LocalTime.Midnight);
+            var unequalValue = new ZoneYearOffset(TransitionMode.Utc, 9, 31, (int)IsoDayOfWeek.Wednesday, true, LocalTime.Midnight);
 
             TestHelper.TestEqualsClass(value, equalValue, unequalValue);
         }
@@ -355,7 +335,7 @@ namespace NodaTime.Test.TimeZones
         {
             // Last Thursday in October, then add 24 hours. The last Thursday in October 2013 is the 31st, so
             // we should get the start of November 1st.
-            var offset = new ZoneYearOffset(TransitionMode.Utc, 10, -1, (int) IsoDayOfWeek.Thursday, false, Offset.FromHours(0), true);
+            var offset = new ZoneYearOffset(TransitionMode.Utc, 10, -1, (int) IsoDayOfWeek.Thursday, false, LocalTime.Midnight, true);
             var instant = Instant.FromUtc(2013, 10, 31, 12, 0);
             var expectedNext = Instant.FromUtc(2013, 11, 1, 0, 0);
             var actualNext = offset.Next(instant, Offset.Zero, Offset.Zero);
@@ -367,7 +347,7 @@ namespace NodaTime.Test.TimeZones
         {
             // Last Thursday in October, then add 24 hours. The last Thursday in October 2013 is the 31st, so
             // the previous transition is the start of Friday October 26th 2012.
-            var offset = new ZoneYearOffset(TransitionMode.Utc, 10, -1, (int)IsoDayOfWeek.Thursday, false, Offset.FromHours(0), true);
+            var offset = new ZoneYearOffset(TransitionMode.Utc, 10, -1, (int)IsoDayOfWeek.Thursday, false, LocalTime.Midnight, true);
             var instant = Instant.FromUtc(2013, 10, 31, 12, 0);
             var expectedPrevious = Instant.FromUtc(2012, 10, 26, 0, 0);
             var actualPrevious = offset.Previous(instant, Offset.Zero, Offset.Zero);

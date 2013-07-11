@@ -231,7 +231,7 @@ namespace NodaTime.TimeZones
             if (transitionTime.IsFixedDateRule)
             {
                 return new ZoneYearOffset(TransitionMode.Wall, transitionTime.Month, transitionTime.Day,
-                    0, false, Offset.FromTimeSpan(transitionTime.TimeOfDay.TimeOfDay));
+                    0, false, LocalDateTime.FromDateTime(transitionTime.TimeOfDay).TimeOfDay);
             }
 
             // Floating: 1st Sunday in March etc.
@@ -252,7 +252,7 @@ namespace NodaTime.TimeZones
                 dayOfMonth = (transitionTime.Week * 7) - 6;
             }
             return new ZoneYearOffset(TransitionMode.Wall, transitionTime.Month, dayOfMonth,
-                dayOfWeek, advance, Offset.FromTimeSpan(transitionTime.TimeOfDay.TimeOfDay));
+                dayOfWeek, advance, LocalDateTime.FromDateTime(transitionTime.TimeOfDay).TimeOfDay);
         }
 
         /// <summary>
