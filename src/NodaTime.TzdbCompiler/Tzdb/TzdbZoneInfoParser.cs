@@ -151,7 +151,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
         internal ZoneYearOffset ParseDateTimeOfYear(Tokens tokens, bool forRule)
         {
             var mode = ZoneYearOffset.StartOfYear.Mode;
-            var tickOfDay = ZoneYearOffset.StartOfYear.TickOfDay;
+            var timeOfDay = ZoneYearOffset.StartOfYear.TimeOfDay;
 
             int monthOfYear = NextMonth(tokens, "MonthOfYear");
 
@@ -213,17 +213,19 @@ namespace NodaTime.TzdbCompiler.Tzdb
                         }
                         if (atTime == "24:00")
                         {
-                            tickOfDay = Offset.Zero;
+                            timeOfDay = LocalTime.Midnight;
                             addDay = true;
                         }
                         else
                         {
-                            tickOfDay = ParserHelper.ParseOffset(atTime);
+                            // We happen to parse the time as if it's an offset...
+                            Offset tickOfDay = ParserHelper.ParseOffset(atTime);
+                            timeOfDay = new LocalTime(new LocalInstant(tickOfDay.Ticks));
                         }
                     }
                 }
             }
-            return new ZoneYearOffset(mode, monthOfYear, dayOfMonth, dayOfWeek, advanceDayOfWeek, tickOfDay, addDay);
+            return new ZoneYearOffset(mode, monthOfYear, dayOfMonth, dayOfWeek, advanceDayOfWeek, timeOfDay, addDay);
         }
 
         /// <summary>

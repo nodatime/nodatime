@@ -40,7 +40,8 @@ namespace NodaTime.TimeZones
         /// <summary>
         /// An offset that specifies the beginning of the year.
         /// </summary>
-        [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "ZoneYearOffset is immutable")] public static readonly ZoneYearOffset StartOfYear = new ZoneYearOffset(TransitionMode.Wall, 1, 1, 0, false, Offset.Zero);
+        [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "ZoneYearOffset is immutable")]
+        public static readonly ZoneYearOffset StartOfYear = new ZoneYearOffset(TransitionMode.Wall, 1, 1, 0, false, LocalTime.Midnight);
 
         private readonly bool advance;
         private readonly int dayOfMonth;
@@ -59,9 +60,9 @@ namespace NodaTime.TimeZones
         /// <param name="dayOfMonth">The day of month. Negatives count from end of month.</param>
         /// <param name="dayOfWeek">The day of week. 0 means not set.</param>
         /// <param name="advance">if set to <c>true</c> [advance].</param>
-        /// <param name="tickOfDay">The tick within the day.</param>
-        internal ZoneYearOffset(TransitionMode mode, int monthOfYear, int dayOfMonth, int dayOfWeek, bool advance, Offset tickOfDay)
-            : this(mode, monthOfYear, dayOfMonth, dayOfWeek, advance, tickOfDay, false)
+        /// <param name="timeOfDay">The tick within the day.</param>
+        internal ZoneYearOffset(TransitionMode mode, int monthOfYear, int dayOfMonth, int dayOfWeek, bool advance, LocalTime timeOfDay)
+            : this(mode, monthOfYear, dayOfMonth, dayOfWeek, advance, timeOfDay, false)
         {
         }
 
@@ -73,9 +74,9 @@ namespace NodaTime.TimeZones
         /// <param name="dayOfMonth">The day of month. Negatives count from end of month.</param>
         /// <param name="dayOfWeek">The day of week. 0 means not set.</param>
         /// <param name="advance">if set to <c>true</c> [advance].</param>
-        /// <param name="tickOfDay">The tick within the day.</param>
+        /// <param name="timeOfDay">The time of day at which the transition occurs.</param>
         /// <param name="addDay">Whether to add an extra day (for 24:00 handling).</param>
-        internal ZoneYearOffset(TransitionMode mode, int monthOfYear, int dayOfMonth, int dayOfWeek, bool advance, Offset tickOfDay, bool addDay)
+        internal ZoneYearOffset(TransitionMode mode, int monthOfYear, int dayOfMonth, int dayOfWeek, bool advance, LocalTime timeOfDay, bool addDay)
         {
             VerifyFieldValue(1, 12, "monthOfYear", monthOfYear, false);
             VerifyFieldValue(1, 31, "dayOfMonth", dayOfMonth, true);
@@ -83,14 +84,13 @@ namespace NodaTime.TimeZones
             {
                 VerifyFieldValue(1, 7, "dayOfWeek", dayOfWeek, false);
             }
-            VerifyFieldValue(0, NodaConstants.TicksPerStandardDay - 1L, "tickOfDay", tickOfDay.Ticks, false);
 
             this.mode = mode;
             this.monthOfYear = monthOfYear;
             this.dayOfMonth = dayOfMonth;
             this.dayOfWeek = dayOfWeek;
             this.advance = advance;
-            this.timeOfDay = new LocalTime(new LocalInstant(tickOfDay.Ticks));
+            this.timeOfDay = timeOfDay;
             this.addDay = addDay;
         }
 
@@ -340,6 +340,7 @@ namespace NodaTime.TimeZones
             writer.WriteByte((byte) flags);
             writer.WriteCount(MonthOfYear);
             writer.WriteSignedCount(DayOfMonth);
+            // The time of day is written as an offset for historical reasons.
             writer.WriteOffset(Offset.FromTicks(timeOfDay.LocalDateTime.LocalInstant.Ticks));
         }
 
@@ -356,6 +357,7 @@ namespace NodaTime.TimeZones
             writer.WriteCount(DayOfMonth + 31);
             writer.WriteCount(DayOfWeek + 7);
             writer.WriteBoolean(AdvanceDayOfWeek);
+            // The time of day is written as an offset for historical reasons.
             writer.WriteOffset(Offset.FromTicks(timeOfDay.LocalDateTime.LocalInstant.Ticks));
             writer.WriteBoolean(addDay);
         }
@@ -370,8 +372,10 @@ namespace NodaTime.TimeZones
             var addDay = (flags & 1) != 0;
             int monthOfYear = reader.ReadCount();
             int dayOfMonth = reader.ReadSignedCount();
+            // The time of day is written as an offset for historical reasons.
             var ticksOfDay = reader.ReadOffset();
-            return new ZoneYearOffset(mode, monthOfYear, dayOfMonth, dayOfWeek, advance, ticksOfDay, addDay);
+            return new ZoneYearOffset(mode, monthOfYear, dayOfMonth, dayOfWeek, advance, 
+                new LocalTime(new LocalInstant(ticksOfDay.Ticks)), addDay);
         }
 
         public static ZoneYearOffset ReadLegacy(LegacyDateTimeZoneReader reader)
@@ -383,9 +387,11 @@ namespace NodaTime.TimeZones
             int dayOfMonth = reader.ReadCount() - 31;
             int dayOfWeek = reader.ReadCount() - 7;
             bool advance = reader.ReadBoolean();
+            // The time of day is written as an offset for historical reasons.
             var ticksOfDay = reader.ReadOffset();
             var addDay = reader.ReadBoolean();
-            return new ZoneYearOffset(mode, monthOfYear, dayOfMonth, dayOfWeek, advance, ticksOfDay, addDay);
+            return new ZoneYearOffset(mode, monthOfYear, dayOfMonth, dayOfWeek, advance,
+                new LocalTime(new LocalInstant(ticksOfDay.Ticks)), addDay);
         }
 
         /// <summary>
