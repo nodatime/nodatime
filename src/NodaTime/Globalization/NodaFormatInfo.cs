@@ -190,7 +190,6 @@ namespace NodaTime.Globalization
         internal FixedFormatInfoPatternParser<LocalDate> LocalDatePatternParser { get { return localDatePatternParser; } }
         internal FixedFormatInfoPatternParser<LocalDateTime> LocalDateTimePatternParser { get { return localDateTimePatternParser; } }
 
-        // TODO(Post-V1): Make these writable?
         /// <summary>
         /// Returns a read-only list of the names of the months for the default calendar for this culture.
         /// See the usage guide for caveats around the use of these names for other calendars.
