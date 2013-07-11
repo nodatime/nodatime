@@ -264,6 +264,7 @@
     <Compile Include="TimeZones\ZoneRecurrenceTest.cs" />
     <Compile Include="TimeZones\ZoneYearOffsetTest.cs" />
     <Compile Include="Utility\BclConversionsTest.cs" />
+    <Compile Include="Utility\CacheTest.cs" />
     <Compile Include="Utility\NodaReadOnlyDictionaryTest.cs" />
     <Compile Include="ZonedDateTimeTest.cs" />
     <None Include="Tests.nunit" />
