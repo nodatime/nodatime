@@ -76,9 +76,7 @@ namespace NodaTime.Globalization
         private readonly IList<string> shortMonthGenitiveNames;
         private readonly IList<string> shortDayNames;
 
-        // TODO(Post-V1): Have a single EraDescription class and one dictionary?
-        private readonly Dictionary<Era, IList<string>> eraNamesCache;
-        private readonly Dictionary<Era, string> eraPrimaryNameCache;
+        private readonly Dictionary<Era, EraDescription> eraDescriptions;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="NodaFormatInfo" /> class.
@@ -107,8 +105,7 @@ namespace NodaTime.Globalization
             shortMonthGenitiveNames = ConvertGenitiveMonthArray(shortMonthNames, cultureInfo.DateTimeFormat.AbbreviatedMonthGenitiveNames, ShortInvariantMonthNames);
             longDayNames = ConvertDayArray(cultureInfo.DateTimeFormat.DayNames);
             shortDayNames = ConvertDayArray(cultureInfo.DateTimeFormat.AbbreviatedDayNames);
-            eraNamesCache = new Dictionary<Era, IList<string>>();
-            eraPrimaryNameCache = new Dictionary<Era, string>();
+            eraDescriptions = new Dictionary<Era, EraDescription>();
 #if PCL
             // Horrible, but it does the job...
             dateSeparator = DateTime.MinValue.ToString("%/", cultureInfo);
@@ -299,30 +296,7 @@ namespace NodaTime.Globalization
         public IList<string> GetEraNames(Era era)
         {
             Preconditions.CheckNotNull(era, "era");
-            lock (eraNamesCache)
-            {
-                IList<string> names;
-                if (eraNamesCache.TryGetValue(era, out names))
-                {
-                    return names;
-                }
-                string pipeDelimited = PatternResources.ResourceManager.GetString(era.ResourceIdentifier, cultureInfo);
-                if (pipeDelimited == null)
-                {
-                    names = new string[0];
-                    eraPrimaryNameCache[era] = "";
-                }
-                else
-                {
-                    string[] values = pipeDelimited.Split('|');
-                    eraPrimaryNameCache[era] = values[0];
-                    // Order by length, descending to avoid early out (e.g. parsing BCE as BC and then having a spare E)
-                    Array.Sort(values, (x, y) => y.Length.CompareTo(x.Length));
-                    names = new ReadOnlyCollection<string>(values);
-                }
-                eraNamesCache[era] = names;
-                return names;
-            }
+            return GetEraDescription(era).AllNames;
         }
 
         /// <summary>
@@ -334,18 +308,20 @@ namespace NodaTime.Globalization
         public string GetEraPrimaryName(Era era)
         {
             Preconditions.CheckNotNull(era, "era");
+            return GetEraDescription(era).PrimaryName;
+        }
 
-            // The era names (plural) cache is used as the lock for both this and the primary name.
-            lock (eraNamesCache)
+        private EraDescription GetEraDescription(Era era)
+        {
+            lock (eraDescriptions)
             {
-                string name;
-                if (eraPrimaryNameCache.TryGetValue(era, out name))
+                EraDescription ret;
+                if (!eraDescriptions.TryGetValue(era, out ret))
                 {
-                    return name;
+                    ret = EraDescription.ForEra(era, cultureInfo);
+                    eraDescriptions[era] = ret;
                 }
-                // This will force the primary name cache to be populated
-                GetEraNames(era);
-                return eraPrimaryNameCache[era];
+                return ret;
             }
         }
 
@@ -434,6 +410,44 @@ namespace NodaTime.Globalization
         public override string ToString()
         {
             return "NodaFormatInfo[" + cultureInfo.Name + "]";
+        }
+
+        /// <summary>
+        /// The description for an era: the primary name and all possible names.
+        /// </summary>
+        private class EraDescription
+        {
+            private readonly string primaryName;
+            private readonly ReadOnlyCollection<string> allNames;
+
+            internal string PrimaryName { get { return primaryName; } }
+            internal ReadOnlyCollection<string> AllNames { get { return allNames; } }
+
+            private EraDescription(string primaryName, ReadOnlyCollection<string> allNames)
+            {
+                this.primaryName = primaryName;
+                this.allNames = allNames;
+            }
+
+            internal static EraDescription ForEra(Era era, CultureInfo cultureInfo)
+            {
+                string pipeDelimited = PatternResources.ResourceManager.GetString(era.ResourceIdentifier, cultureInfo);
+                string primaryName;
+                string[] allNames;
+                if (pipeDelimited == null)
+                {
+                    allNames = new string[0];
+                    primaryName = "";
+                }
+                else
+                {
+                    allNames = pipeDelimited.Split('|');
+                    primaryName = allNames[0];
+                    // Order by length, descending to avoid early out (e.g. parsing BCE as BC and then having a spare E)
+                    Array.Sort(allNames, (x, y) => y.Length.CompareTo(x.Length));
+                }
+                return new EraDescription(primaryName, new ReadOnlyCollection<string>(allNames));
+            }
         }
     }
 }
