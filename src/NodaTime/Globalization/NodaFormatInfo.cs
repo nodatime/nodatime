@@ -42,7 +42,7 @@ namespace NodaTime.Globalization
         private static readonly IPatternParser<LocalDate> GeneralLocalDatePatternParser = new LocalDatePatternParser(LocalDatePattern.DefaultTemplateValue);
         private static readonly IPatternParser<LocalDateTime> GeneralLocalDateTimePatternParser = new LocalDateTimePatternParser(LocalDateTimePattern.DefaultTemplateValue);
 
-        private readonly object fixedFormatLock = new object();
+        private readonly object fieldLock = new object();
         private FixedFormatInfoPatternParser<Offset> offsetPatternParser;
         private FixedFormatInfoPatternParser<Instant> instantPatternParser;
         private FixedFormatInfoPatternParser<LocalTime> localTimePatternParser;
@@ -66,12 +66,12 @@ namespace NodaTime.Globalization
         private readonly string dateSeparator;
         private readonly string timeSeparator;
 #endif
-        private readonly IList<string> longMonthNames;
-        private readonly IList<string> longMonthGenitiveNames;
-        private readonly IList<string> longDayNames;
-        private readonly IList<string> shortMonthNames;
-        private readonly IList<string> shortMonthGenitiveNames;
-        private readonly IList<string> shortDayNames;
+        private IList<string> longMonthNames;
+        private IList<string> longMonthGenitiveNames;
+        private IList<string> longDayNames;
+        private IList<string> shortMonthNames;
+        private IList<string> shortMonthGenitiveNames;
+        private IList<string> shortDayNames;
 
         private readonly Dictionary<Era, EraDescription> eraDescriptions;
 
@@ -83,26 +83,28 @@ namespace NodaTime.Globalization
         {
             Preconditions.CheckNotNull(cultureInfo, "cultureInfo");
             this.cultureInfo = cultureInfo;
-
-            offsetPatternParser = new FixedFormatInfoPatternParser<Offset>(GeneralOffsetPatternParser, this);
-            instantPatternParser = new FixedFormatInfoPatternParser<Instant>(GeneralInstantPatternParser, this);
-            localTimePatternParser = new FixedFormatInfoPatternParser<LocalTime>(GeneralLocalTimePatternParser, this);
-            localDatePatternParser = new FixedFormatInfoPatternParser<LocalDate>(GeneralLocalDatePatternParser, this);
-            localDateTimePatternParser = new FixedFormatInfoPatternParser<LocalDateTime>(GeneralLocalDateTimePatternParser, this);
-
-            // Turn month names into 1-based read-only lists
-            longMonthNames = ConvertMonthArray(cultureInfo.DateTimeFormat.MonthNames);
-            shortMonthNames = ConvertMonthArray(cultureInfo.DateTimeFormat.AbbreviatedMonthNames);
-            longMonthGenitiveNames = ConvertGenitiveMonthArray(longMonthNames, cultureInfo.DateTimeFormat.MonthGenitiveNames, LongInvariantMonthNames);
-            shortMonthGenitiveNames = ConvertGenitiveMonthArray(shortMonthNames, cultureInfo.DateTimeFormat.AbbreviatedMonthGenitiveNames, ShortInvariantMonthNames);
-            longDayNames = ConvertDayArray(cultureInfo.DateTimeFormat.DayNames);
-            shortDayNames = ConvertDayArray(cultureInfo.DateTimeFormat.AbbreviatedDayNames);
             eraDescriptions = new Dictionary<Era, EraDescription>();
 #if PCL
             // Horrible, but it does the job...
             dateSeparator = DateTime.MinValue.ToString("%/", cultureInfo);
             timeSeparator = DateTime.MinValue.ToString("%:", cultureInfo);
 #endif
+        }
+
+        private void EnsureMonthsInitialized()
+        {
+            lock (fieldLock)
+            {
+                if (longMonthNames != null)
+                {
+                    return;
+                }
+                // Turn month names into 1-based read-only lists
+                longMonthNames = ConvertMonthArray(cultureInfo.DateTimeFormat.MonthNames);
+                shortMonthNames = ConvertMonthArray(cultureInfo.DateTimeFormat.AbbreviatedMonthNames);
+                longMonthGenitiveNames = ConvertGenitiveMonthArray(longMonthNames, cultureInfo.DateTimeFormat.MonthGenitiveNames, LongInvariantMonthNames);
+                shortMonthGenitiveNames = ConvertGenitiveMonthArray(shortMonthNames, cultureInfo.DateTimeFormat.AbbreviatedMonthGenitiveNames, ShortInvariantMonthNames);
+            }
         }
 
         /// <summary>
@@ -113,6 +115,19 @@ namespace NodaTime.Globalization
             List<string> list = new List<string>(monthNames);
             list.Insert(0, null);
             return new ReadOnlyCollection<string>(list);
+        }
+
+        private void EnsureDaysInitialized()
+        {
+            lock (fieldLock)
+            {
+                if (longDayNames != null)
+                {
+                    return;
+                }
+                longDayNames = ConvertDayArray(cultureInfo.DateTimeFormat.DayNames);
+                shortDayNames = ConvertDayArray(cultureInfo.DateTimeFormat.AbbreviatedDayNames);
+            }
         }
 
         /// <summary>
@@ -180,9 +195,9 @@ namespace NodaTime.Globalization
         private FixedFormatInfoPatternParser<T> EnsureFixedFormatInitialized<T>(ref FixedFormatInfoPatternParser<T> field,
             IPatternParser<T> patternParser)
         {
-            lock (fixedFormatLock)
+            lock (fieldLock)
             {
-                if (field != null)
+                if (field == null)
                 {
                     field = new FixedFormatInfoPatternParser<T>(patternParser, this);
                 }
@@ -195,13 +210,13 @@ namespace NodaTime.Globalization
         /// See the usage guide for caveats around the use of these names for other calendars.
         /// Element 0 of the list is null, to allow a more natural mapping from (say) 1 to the string "January".
         /// </summary>
-        public IList<string> LongMonthNames { get { return longMonthNames; } }
+        public IList<string> LongMonthNames { get { EnsureMonthsInitialized();  return longMonthNames; } }
         /// <summary>
         /// Returns a read-only list of the abbreviated names of the months for the default calendar for this culture.
         /// See the usage guide for caveats around the use of these names for other calendars.
         /// Element 0 of the list is null, to allow a more natural mapping from (say) 1 to the string "Jan".
         /// </summary>
-        public IList<string> ShortMonthNames { get { return shortMonthNames; } }
+        public IList<string> ShortMonthNames { get { EnsureMonthsInitialized(); return shortMonthNames; } }
         /// <summary>
         /// Returns a read-only list of the names of the months for the default calendar for this culture.
         /// See the usage guide for caveats around the use of these names for other calendars.
@@ -210,7 +225,7 @@ namespace NodaTime.Globalization
         /// If the culture does not use genitive month names, this property will return the same reference as
         /// <see cref="LongMonthNames"/>.
         /// </summary>
-        public IList<string> LongMonthGenitiveNames { get { return longMonthGenitiveNames; } }
+        public IList<string> LongMonthGenitiveNames { get { EnsureMonthsInitialized(); return longMonthGenitiveNames; } }
         /// <summary>
         /// Returns a read-only list of the abbreviated names of the months for the default calendar for this culture.
         /// See the usage guide for caveats around the use of these names for other calendars.
@@ -219,21 +234,21 @@ namespace NodaTime.Globalization
         /// If the culture does not use genitive month names, this property will return the same reference as
         /// <see cref="ShortMonthNames"/>.
         /// </summary>
-        public IList<string> ShortMonthGenitiveNames { get { return shortMonthGenitiveNames; } }
+        public IList<string> ShortMonthGenitiveNames { get { EnsureMonthsInitialized(); return shortMonthGenitiveNames; } }
         /// <summary>
         /// Returns a read-only list of the names of the days of the week for the default calendar for this culture.
         /// See the usage guide for caveats around the use of these names for other calendars.
         /// Element 0 of the list is null, and the other elements correspond with the index values returned from
         /// <see cref="LocalDateTime.DayOfWeek"/> and similar properties.
         /// </summary>
-        public IList<string> LongDayNames { get { return longDayNames; } }
+        public IList<string> LongDayNames { get { EnsureDaysInitialized(); return longDayNames; } }
         /// <summary>
         /// Returns a read-only list of the abbreviated names of the days of the week for the default calendar for this culture.
         /// See the usage guide for caveats around the use of these names for other calendars.
         /// Element 0 of the list is null, and the other elements correspond with the index values returned from
         /// <see cref="LocalDateTime.DayOfWeek"/> and similar properties.
         /// </summary>
-        public IList<string> ShortDayNames { get { return shortDayNames; } }
+        public IList<string> ShortDayNames { get { EnsureDaysInitialized(); return shortDayNames; } }
 
         /// <summary>
         /// Gets the number format associated with this formatting information.
