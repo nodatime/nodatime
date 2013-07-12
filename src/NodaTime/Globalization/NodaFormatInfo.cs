@@ -61,10 +61,6 @@ namespace NodaTime.Globalization
             (500, culture => new NodaFormatInfo(culture), new ReferenceEqualityComparer<CultureInfo>());
 
         private readonly CultureInfo cultureInfo;
-        private readonly string offsetPatternFull;
-        private readonly string offsetPatternLong;
-        private readonly string offsetPatternMedium;
-        private readonly string offsetPatternShort;
 #if PCL
         private readonly string dateSeparator;
         private readonly string timeSeparator;
@@ -86,11 +82,6 @@ namespace NodaTime.Globalization
         {
             Preconditions.CheckNotNull(cultureInfo, "cultureInfo");
             this.cultureInfo = cultureInfo;
-            var manager = PatternResources.ResourceManager;
-            offsetPatternFull = manager.GetString("OffsetPatternFull", cultureInfo);
-            offsetPatternLong = manager.GetString("OffsetPatternLong", cultureInfo);
-            offsetPatternMedium = manager.GetString("OffsetPatternMedium", cultureInfo);
-            offsetPatternShort = manager.GetString("OffsetPatternShort", cultureInfo);
 
             offsetPatternParser = new FixedFormatInfoPatternParser<Offset>(GeneralOffsetPatternParser, this);
             instantPatternParser = new FixedFormatInfoPatternParser<Instant>(GeneralInstantPatternParser, this);
@@ -336,22 +327,22 @@ namespace NodaTime.Globalization
         /// <summary>
         /// Gets the <see cref="Offset" /> "F" pattern.
         /// </summary>
-        public string OffsetPatternFull { get { return offsetPatternFull; } }
+        public string OffsetPatternFull { get { return PatternResources.ResourceManager.GetString("OffsetPatternFull", cultureInfo); } }
 
         /// <summary>
         /// Gets the <see cref="Offset" /> "L" pattern.
         /// </summary>
-        public string OffsetPatternLong { get { return offsetPatternLong; } }
+        public string OffsetPatternLong { get { return PatternResources.ResourceManager.GetString("OffsetPatternLong", cultureInfo); } }
 
         /// <summary>
         /// Gets the <see cref="Offset" /> "M" pattern.
         /// </summary>
-        public string OffsetPatternMedium { get { return offsetPatternMedium; } }
+        public string OffsetPatternMedium { get { return PatternResources.ResourceManager.GetString("OffsetPatternMedium", cultureInfo); } }
 
         /// <summary>
         /// Gets the <see cref="Offset" /> "S" pattern.
         /// </summary>
-        public string OffsetPatternShort { get { return offsetPatternShort; } }
+        public string OffsetPatternShort { get { return PatternResources.ResourceManager.GetString("OffsetPatternShort", cultureInfo); ; } }
 
         /// <summary>
         /// Clears the cache. Only used for test purposes.
