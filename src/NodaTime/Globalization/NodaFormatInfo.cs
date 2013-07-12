@@ -42,11 +42,12 @@ namespace NodaTime.Globalization
         private static readonly IPatternParser<LocalDate> GeneralLocalDatePatternParser = new LocalDatePatternParser(LocalDatePattern.DefaultTemplateValue);
         private static readonly IPatternParser<LocalDateTime> GeneralLocalDateTimePatternParser = new LocalDateTimePatternParser(LocalDateTimePattern.DefaultTemplateValue);
 
-        private readonly FixedFormatInfoPatternParser<Offset> offsetPatternParser;
-        private readonly FixedFormatInfoPatternParser<Instant> instantPatternParser;
-        private readonly FixedFormatInfoPatternParser<LocalTime> localTimePatternParser;
-        private readonly FixedFormatInfoPatternParser<LocalDate> localDatePatternParser;
-        private readonly FixedFormatInfoPatternParser<LocalDateTime> localDateTimePatternParser;
+        private readonly object fixedFormatLock = new object();
+        private FixedFormatInfoPatternParser<Offset> offsetPatternParser;
+        private FixedFormatInfoPatternParser<Instant> instantPatternParser;
+        private FixedFormatInfoPatternParser<LocalTime> localTimePatternParser;
+        private FixedFormatInfoPatternParser<LocalDate> localDatePatternParser;
+        private FixedFormatInfoPatternParser<LocalDateTime> localDateTimePatternParser;
         #endregion
 
         /// <summary>
@@ -170,11 +171,24 @@ namespace NodaTime.Globalization
         /// </summary>
         public CompareInfo CompareInfo { get { return cultureInfo.CompareInfo; } }
 
-        internal FixedFormatInfoPatternParser<Offset> OffsetPatternParser { get { return offsetPatternParser; } }
-        internal FixedFormatInfoPatternParser<Instant> InstantPatternParser { get { return instantPatternParser; } }
-        internal FixedFormatInfoPatternParser<LocalTime> LocalTimePatternParser { get { return localTimePatternParser; } }
-        internal FixedFormatInfoPatternParser<LocalDate> LocalDatePatternParser { get { return localDatePatternParser; } }
-        internal FixedFormatInfoPatternParser<LocalDateTime> LocalDateTimePatternParser { get { return localDateTimePatternParser; } }
+        internal FixedFormatInfoPatternParser<Offset> OffsetPatternParser { get { return EnsureFixedFormatInitialized(ref offsetPatternParser, GeneralOffsetPatternParser); } }
+        internal FixedFormatInfoPatternParser<Instant> InstantPatternParser { get { return EnsureFixedFormatInitialized(ref instantPatternParser, GeneralInstantPatternParser); } }
+        internal FixedFormatInfoPatternParser<LocalTime> LocalTimePatternParser { get { return EnsureFixedFormatInitialized(ref localTimePatternParser, GeneralLocalTimePatternParser); } }
+        internal FixedFormatInfoPatternParser<LocalDate> LocalDatePatternParser { get { return EnsureFixedFormatInitialized(ref localDatePatternParser, GeneralLocalDatePatternParser); } }
+        internal FixedFormatInfoPatternParser<LocalDateTime> LocalDateTimePatternParser { get { return EnsureFixedFormatInitialized(ref localDateTimePatternParser, GeneralLocalDateTimePatternParser); } }
+
+        private FixedFormatInfoPatternParser<T> EnsureFixedFormatInitialized<T>(ref FixedFormatInfoPatternParser<T> field,
+            IPatternParser<T> patternParser)
+        {
+            lock (fixedFormatLock)
+            {
+                if (field != null)
+                {
+                    field = new FixedFormatInfoPatternParser<T>(patternParser, this);
+                }
+                return field;
+            }
+        }
 
         /// <summary>
         /// Returns a read-only list of the names of the months for the default calendar for this culture.
