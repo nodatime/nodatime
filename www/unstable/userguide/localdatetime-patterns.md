@@ -13,7 +13,7 @@ Standard Patterns
 The following standard patterns are supported:
 
 - `o` or `O`: The round-trip pattern, which is always "yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fffffff" using the invariant culture. The calendar
-  system is not round-tripped in this pattern, but it's compatible with the BCL round-trip pattern.
+  system is not round-tripped in this pattern, but it's compatible with the BCL round-trip pattern (for `DateTime` values with a `Kind` of `Unspecified`, which is closest in meaning to `LocalDateTime`).
 
 - `r`: The full round-trip pattern including calendar system, which is always "yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fffffff '('c')'" using the invariant culture.
 
@@ -34,7 +34,7 @@ The following standard patterns are supported:
 Custom Patterns
 ---------------
 
-The custom format patterns for local date and time are provided by combining the [custom patterns for `LocalDate`](localdate-patterns.html) with
+The custom format patterns for local date and time values are provided by combining the [custom patterns for `LocalDate`](localdate-patterns.html) with
 the [custom patterns for `LocalTime`](localtime-patterns.html). The result is simply the combination of the date and the time.
 
 There is one exception to this: when parsing a `LocalDateTime`, an 24-hour (`HH`) specifier is allowed to have the value 24,
