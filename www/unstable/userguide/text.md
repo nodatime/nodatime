@@ -71,9 +71,11 @@ specifiers being available for some types but not others.
 - [LocalTime patterns](localtime-patterns.html)
 - [LocalDate patterns](localdate-patterns.html)
 - [LocalDateTime patterns](localdatetime-patterns.html)
+- [OffsetDateTime patterns](offsetdatetime-patterns.html)
+- [ZonedDateTime patterns](zoneddatetime-patterns.html)
 - [Period patterns](period-patterns.html)
 
-Note that at present, `ZonedDateTime`, `OffsetDateTime` and `Duration` do not support
+Note that at present, `Duration` does not support
 any form of parsing or user-specified formatting.
 
 <a name="custom-patterns">Custom patterns</a>
