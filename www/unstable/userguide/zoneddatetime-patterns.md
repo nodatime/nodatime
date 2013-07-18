@@ -2,7 +2,7 @@
 layout: userguide
 title: Patterns for ZonedDateTime values
 category: text
-weight: 85
+weight: 95
 ---
 
 The [`ZonedDateTime`](noda-type://NodaTime.ZonedDateTime) type supports the following patterns:
