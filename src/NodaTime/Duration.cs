@@ -8,6 +8,7 @@ using System.Xml.Schema;
 using NodaTime.Text;
 using NodaTime.Utility;
 using System.Xml.Serialization;
+using System.Runtime.Serialization;
 
 namespace NodaTime
 {
@@ -33,7 +34,13 @@ namespace NodaTime
     /// </para>
     /// </remarks>
     /// <threadsafety>This type is an immutable value type. See the thread safety section of the user guide for more information.</threadsafety>
+#if !PCL
+    [Serializable]
+#endif
     public struct Duration : IEquatable<Duration>, IComparable<Duration>, IComparable, IXmlSerializable
+#if !PCL
+        , ISerializable
+#endif
     {
         #region Readonly static fields
         /// <summary>
@@ -573,5 +580,31 @@ namespace NodaTime
             writer.WriteString(PeriodPattern.RoundtripPattern.Format(period));
         }
         #endregion
+
+#if !PCL
+        #region Binary serialization
+        private const string TicksSerializationName = "ticks";
+
+        /// <summary>
+        /// Private constructor only present for serialization.
+        /// </summary>
+        /// <param name="info">The <see cref="SerializationInfo"/> to fetch data from.</param>
+        /// <param name="context">The source for this deserialization.</param>
+        private Duration(SerializationInfo info, StreamingContext context)
+            : this(info.GetInt64(TicksSerializationName))
+        {
+        }
+
+        /// <summary>
+        /// Implementation of <see cref="ISerializable.GetObjectData"/>.
+        /// </summary>
+        /// <param name="info">The <see cref="SerializationInfo"/> to populate with data.</param>
+        /// <param name="context">The destination for this serialization.</param>
+        void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            info.AddValue(TicksSerializationName, ticks);
+        }
+        #endregion
+#endif
     }
 }

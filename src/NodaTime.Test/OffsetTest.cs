@@ -80,6 +80,13 @@ namespace NodaTime.Test
         }
 
         [Test]
+        public void BinarySerialization()
+        {
+            TestHelper.AssertBinaryRoundtrip(Offset.FromMilliseconds(1234567));
+            TestHelper.AssertBinaryRoundtrip(Offset.FromMilliseconds(-1234567));
+        }
+
+        [Test]
         public void XmlSerialization()
         {
             var value = Offset.FromHoursAndMinutes(5, 30);

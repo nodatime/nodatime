@@ -32,6 +32,12 @@ namespace NodaTime.Test
         }
 
         [Test]
+        public void BinarySerialization()
+        {
+            TestHelper.AssertBinaryRoundtrip(new LocalTime(12, 34, 56, 123, 4567));
+        }
+
+        [Test]
         public void XmlSerialization()
         {
             var value = new LocalTime(17, 53, 23, 123, 4567);

@@ -3,7 +3,7 @@
 // as found in the LICENSE.txt file.
 
 using System.Globalization;
-using NodaTime.Globalization;
+using System.Runtime.Serialization;
 using NodaTime.Text;
 using NodaTime.Utility;
 using System;
@@ -21,7 +21,13 @@ namespace NodaTime
     /// to a particular calendar, time zone or date.
     /// </summary>
     /// <threadsafety>This type is an immutable value type. See the thread safety section of the user guide for more information.</threadsafety>
+#if !PCL
+    [Serializable]
+#endif
     public struct LocalTime : IEquatable<LocalTime>, IComparable<LocalTime>, IFormattable, IComparable, IXmlSerializable
+#if !PCL
+        , ISerializable
+#endif
     {
         /// <summary>
         /// Local time at midnight, i.e. 0 hours, 0 minutes, 0 seconds.
@@ -552,5 +558,31 @@ namespace NodaTime
             writer.WriteString(LocalTimePattern.ExtendedIsoPattern.Format(this));
         }
         #endregion
+
+#if !PCL
+        #region Binary serialization
+        private const string TickOfDaySerializationName = "ticks";
+
+        /// <summary>
+        /// Private constructor only present for serialization.
+        /// </summary>
+        /// <param name="info">The <see cref="SerializationInfo"/> to fetch data from.</param>
+        /// <param name="context">The source for this deserialization.</param>
+        private LocalTime(SerializationInfo info, StreamingContext context)
+            : this(new LocalInstant(info.GetInt64(TickOfDaySerializationName)))
+        {
+        }
+
+        /// <summary>
+        /// Implementation of <see cref="ISerializable.GetObjectData"/>.
+        /// </summary>
+        /// <param name="info">The <see cref="SerializationInfo"/> to populate with data.</param>
+        /// <param name="context">The destination for this serialization.</param>
+        void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            info.AddValue(TickOfDaySerializationName, localInstant.Ticks);
+        }
+        #endregion
+#endif
     }
 }

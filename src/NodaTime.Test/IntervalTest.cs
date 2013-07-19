@@ -73,6 +73,12 @@ namespace NodaTime.Test
         }
 
         [Test]
+        public void BinarySerialization()
+        {
+            TestHelper.AssertBinaryRoundtrip(new Interval(SampleStart, SampleEnd));
+        }
+
+        [Test]
         public void XmlSerialization()
         {
             var start = new LocalDateTime(2013, 4, 12, 17, 53, 23, 123, 4567).InUtc().ToInstant();

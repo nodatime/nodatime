@@ -4,6 +4,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 using NodaTime.Fields;
 using NodaTime.Text;
 using NodaTime.Utility;
@@ -38,7 +39,13 @@ namespace NodaTime
     /// </para>
     /// </remarks>
     /// <threadsafety>This type is immutable reference type. See the thread safety section of the user guide for more information.</threadsafety>
+#if !PCL
+    [Serializable]
+#endif
     public sealed class Period : IEquatable<Period>
+#if !PCL
+        , ISerializable
+#endif
     {
         /// <summary>
         /// In some cases, periods are represented as <c>long[]</c> arrays containing all possible units (years to
@@ -803,6 +810,57 @@ namespace NodaTime
                 ticks == other.ticks;
         }
         #endregion
+
+        #if !PCL
+        #region Binary serialization
+        private const string YearsSerializationName = "years";
+        private const string MonthsSerializationName = "months";
+        private const string WeeksSerializationName = "weeks";
+        private const string DaysSerializationName = "days";
+        private const string HoursSerializationName = "hours";
+        private const string MinutesSerializationName = "minutes";
+        private const string SecondsSerializationName = "seconds";
+        private const string MillisecondsSerializationName = "milliseconds";
+        private const string TicksSerializationName = "ticks";
+
+        /// <summary>
+        /// Private constructor only present for serialization.
+        /// </summary>
+        /// <param name="info">The <see cref="SerializationInfo"/> to fetch data from.</param>
+        /// <param name="context">The source for this deserialization.</param>
+        private Period(SerializationInfo info, StreamingContext context)
+            : this(info.GetInt64(YearsSerializationName),
+                   info.GetInt64(MonthsSerializationName),
+                   info.GetInt64(WeeksSerializationName),
+                   info.GetInt64(DaysSerializationName),
+                   info.GetInt64(HoursSerializationName),
+                   info.GetInt64(MinutesSerializationName),
+                   info.GetInt64(SecondsSerializationName),
+                   info.GetInt64(MillisecondsSerializationName),
+                   info.GetInt64(TicksSerializationName))
+        {
+        }
+
+        /// <summary>
+        /// Implementation of <see cref="ISerializable.GetObjectData"/>.
+        /// </summary>
+        /// <param name="info">The <see cref="SerializationInfo"/> to populate with data.</param>
+        /// <param name="context">The destination for this serialization.</param>
+        void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            info.AddValue(YearsSerializationName, years);
+            info.AddValue(MonthsSerializationName, months);
+            info.AddValue(WeeksSerializationName, weeks);
+            info.AddValue(DaysSerializationName, days);
+            info.AddValue(HoursSerializationName, hours);
+            info.AddValue(MinutesSerializationName, minutes);
+            info.AddValue(SecondsSerializationName, seconds);
+            info.AddValue(MillisecondsSerializationName, milliseconds);
+            info.AddValue(TicksSerializationName, ticks);
+        }
+        #endregion
+#endif
+
 
         /// <summary>
         /// Equality comparer which simply normalizes periods before comparing them.

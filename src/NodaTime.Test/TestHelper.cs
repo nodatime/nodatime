@@ -4,12 +4,15 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Text;
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Serialization;
 using NUnit.Framework;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace NodaTime.Test
 {
@@ -264,6 +267,28 @@ namespace NodaTime.Test
         internal static void AssertXmlRoundtrip<T>(T value, string expectedXml) where T : IXmlSerializable, new()
         {
             AssertXmlRoundtrip(value, expectedXml, EqualityComparer<T>.Default);
+        }
+
+        /// <summary>
+        /// Validates that the given value can be serialized, and that deserializing the same data
+        /// returns an equal value.
+        /// </summary>
+        /// <remarks>
+        /// This method is effectively ignored in the PCL tests - that means all the binary serialization tests 
+        /// do nothing on the PCL, but it's simpler than conditionalizing each one of them.
+        /// </remarks>
+        internal static void AssertBinaryRoundtrip<T>(T value)
+        {
+            // Can't use [Conditional("!PCL")] as ConditionalAttribute is only positive.
+            // This approach seems to confuse the build system less, too.
+#if !PCL
+            var stream = new MemoryStream();
+            new BinaryFormatter().Serialize(stream, value);
+
+            stream.Position = 0;
+            var rehydrated = (T)new BinaryFormatter().Deserialize(stream);
+            Assert.AreEqual(value, rehydrated);
+#endif
         }
 
         /// <summary>
