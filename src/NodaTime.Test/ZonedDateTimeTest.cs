@@ -438,9 +438,18 @@ namespace NodaTime.Test
         }
 
         [Test]
+        public void BinarySerialization_Iso()
+        {
+            DateTimeZoneProviders.Serialization = DateTimeZoneProviders.Tzdb;
+            var zone = DateTimeZoneProviders.Tzdb["America/New_York"];
+            var value = new ZonedDateTime(new LocalDateTime(2013, 4, 12, 17, 53, 23), Offset.FromHours(-4), zone);
+            TestHelper.AssertBinaryRoundtrip(value);
+        }
+
+        [Test]
         public void XmlSerialization_Iso()
         {
-            DateTimeZoneProviders.XmlSerialization = DateTimeZoneProviders.Tzdb;
+            DateTimeZoneProviders.Serialization = DateTimeZoneProviders.Tzdb;
             var zone = DateTimeZoneProviders.Tzdb["America/New_York"];
             var value = new ZonedDateTime(new LocalDateTime(2013, 4, 12, 17, 53, 23), Offset.FromHours(-4), zone);
             TestHelper.AssertXmlRoundtrip(value, "<value zone=\"America/New_York\">2013-04-12T17:53:23-04</value>");
@@ -454,10 +463,24 @@ namespace NodaTime.Test
             // guess which will be available :(
             if (!TestHelper.IsRunningOnMono)
             {
-                DateTimeZoneProviders.XmlSerialization = DateTimeZoneProviders.Bcl;
+                DateTimeZoneProviders.Serialization = DateTimeZoneProviders.Bcl;
                 var zone = DateTimeZoneProviders.Bcl["Eastern Standard Time"];
                 var value = new ZonedDateTime(new LocalDateTime(2013, 4, 12, 17, 53, 23), Offset.FromHours(-4), zone);
                 TestHelper.AssertXmlRoundtrip(value, "<value zone=\"Eastern Standard Time\">2013-04-12T17:53:23-04</value>");
+            }
+        }
+
+        [Test]
+        public void BinarySerialization_Bcl()
+        {
+            // Skip this on Mono, which will have different BCL time zones. We can't easily
+            // guess which will be available :(
+            if (!TestHelper.IsRunningOnMono)
+            {
+                DateTimeZoneProviders.Serialization = DateTimeZoneProviders.Bcl;
+                var zone = DateTimeZoneProviders.Bcl["Eastern Standard Time"];
+                var value = new ZonedDateTime(new LocalDateTime(2013, 4, 12, 17, 53, 23), Offset.FromHours(-4), zone);
+                TestHelper.AssertBinaryRoundtrip(value);
             }
         }
 #endif
@@ -465,12 +488,22 @@ namespace NodaTime.Test
         [Test]
         public void XmlSerialization_NonIso()
         {
-            DateTimeZoneProviders.XmlSerialization = DateTimeZoneProviders.Tzdb;
+            DateTimeZoneProviders.Serialization = DateTimeZoneProviders.Tzdb;
             var zone = DateTimeZoneProviders.Tzdb["America/New_York"];
             var value = new ZonedDateTime(new LocalDateTime(2013, 6, 12, 17, 53, 23, CalendarSystem.GetJulianCalendar(3)),
                 Offset.FromHours(-4), zone);
             TestHelper.AssertXmlRoundtrip(value,
                 "<value zone=\"America/New_York\" calendar=\"Julian 3\">2013-06-12T17:53:23-04</value>");
+        }
+
+        [Test]
+        public void BinarySerialization_NonIso()
+        {
+            DateTimeZoneProviders.Serialization = DateTimeZoneProviders.Tzdb;
+            var zone = DateTimeZoneProviders.Tzdb["America/New_York"];
+            var value = new ZonedDateTime(new LocalDateTime(2013, 6, 12, 17, 53, 23, CalendarSystem.GetJulianCalendar(3)),
+                Offset.FromHours(-4), zone);
+            TestHelper.AssertBinaryRoundtrip(value);
         }
 
         [Test]
@@ -480,7 +513,7 @@ namespace NodaTime.Test
         [TestCase("<value zone=\"Europe/London\">2013-04-12T17:53:23-04</value>", typeof(UnparsableValueException), Description = "Incorrect offset")]
         public void XmlSerialization_Invalid(string xml, Type expectedExceptionType)
         {
-            DateTimeZoneProviders.XmlSerialization = DateTimeZoneProviders.Tzdb;
+            DateTimeZoneProviders.Serialization = DateTimeZoneProviders.Tzdb;
             TestHelper.AssertXmlInvalid<ZonedDateTime>(xml, expectedExceptionType);
         }
     }
