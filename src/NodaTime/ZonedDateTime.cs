@@ -4,6 +4,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
@@ -43,7 +44,13 @@ namespace NodaTime
     /// </para>
     /// </remarks>
     /// <threadsafety>This type is an immutable value type. See the thread safety section of the user guide for more information.</threadsafety>
+#if !PCL
+    [Serializable]
+#endif
     public struct ZonedDateTime : IEquatable<ZonedDateTime>, IComparable<ZonedDateTime>, IComparable, IXmlSerializable
+#if !PCL
+        , ISerializable
+#endif
     {
         private readonly LocalDateTime localDateTime;
         private readonly DateTimeZone zone;
@@ -758,7 +765,7 @@ namespace NodaTime
                 // should use UTC instead.
                 throw new ArgumentException("No zone specified in XML for ZonedDateTime");
             }
-            DateTimeZone newZone = DateTimeZoneProviders.XmlSerialization[reader.Value];
+            DateTimeZone newZone = DateTimeZoneProviders.Serialization[reader.Value];
             if (reader.MoveToAttribute("calendar"))
             {
                 string newCalendarId = reader.Value;
@@ -790,5 +797,41 @@ namespace NodaTime
             writer.WriteString(OffsetDateTimePattern.ExtendedIsoPattern.Format(ToOffsetDateTime()));
         }
         #endregion
+
+#if !PCL
+        #region Binary serialization
+        private const string LocalTicksSerializationName = "ticks";
+        private const string CalendarIdSerializationName = "calendar";
+        private const string OffsetMillisecondsSerializationName = "offsetMilliseconds";
+        private const string ZoneIdSerializationName = "zone";
+
+        /// <summary>
+        /// Private constructor only present for serialization.
+        /// </summary>
+        /// <param name="info">The <see cref="SerializationInfo"/> to fetch data from.</param>
+        /// <param name="context">The source for this deserialization.</param>
+        private ZonedDateTime(SerializationInfo info, StreamingContext context)
+            // Note: this uses the constructor which explicitly validates that the offset is reasonable.
+            : this(new LocalDateTime(new LocalInstant(info.GetInt64(LocalTicksSerializationName)),
+                       CalendarSystem.ForId(info.GetString(CalendarIdSerializationName))),
+                   DateTimeZoneProviders.Serialization[info.GetString(ZoneIdSerializationName)],
+                   Offset.FromMilliseconds(info.GetInt32(OffsetMillisecondsSerializationName)))
+        {
+        }
+
+        /// <summary>
+        /// Implementation of <see cref="ISerializable.GetObjectData"/>.
+        /// </summary>
+        /// <param name="info">The <see cref="SerializationInfo"/> to populate with data.</param>
+        /// <param name="context">The destination for this serialization.</param>
+        void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            info.AddValue(LocalTicksSerializationName, localDateTime.LocalInstant.Ticks);
+            info.AddValue(CalendarIdSerializationName, Calendar.Id);
+            info.AddValue(OffsetMillisecondsSerializationName, Offset.Milliseconds);
+            info.AddValue(ZoneIdSerializationName, Zone.Id);
+        }
+        #endregion
+#endif
     }
 }
