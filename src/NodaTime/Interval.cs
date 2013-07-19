@@ -3,6 +3,7 @@
 // as found in the LICENSE.txt file.
 
 using System;
+using System.Runtime.Serialization;
 using System.Xml;
 using System.Xml.Schema;
 using NodaTime.Text;
@@ -25,7 +26,13 @@ namespace NodaTime
     /// </para>
     /// </remarks>
     /// <threadsafety>This type is an immutable value type. See the thread safety section of the user guide for more information.</threadsafety>
+#if !PCL
+    [Serializable]
+#endif
     public struct Interval : IEquatable<Interval>, IXmlSerializable
+#if !PCL
+        , ISerializable
+#endif
     {
         /// <summary>The start of the interval.</summary>
         private readonly Instant start;
@@ -215,5 +222,34 @@ namespace NodaTime
             writer.WriteAttributeString("end", pattern.Format(end));
         }
         #endregion
+
+#if !PCL
+        #region Binary serialization
+        private const string StartTicksSerializationName = "start";
+        private const string EndTicksSerializationName = "end";
+
+        /// <summary>
+        /// Private constructor only present for serialization.
+        /// </summary>
+        /// <param name="info">The <see cref="SerializationInfo"/> to fetch data from.</param>
+        /// <param name="context">The source for this deserialization.</param>
+        private Interval(SerializationInfo info, StreamingContext context)
+            : this(new Instant(info.GetInt64(StartTicksSerializationName)),
+                   new Instant(info.GetInt64(EndTicksSerializationName)))
+        {
+        }
+
+        /// <summary>
+        /// Implementation of <see cref="ISerializable.GetObjectData"/>.
+        /// </summary>
+        /// <param name="info">The <see cref="SerializationInfo"/> to populate with data.</param>
+        /// <param name="context">The destination for this serialization.</param>
+        void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            info.AddValue(StartTicksSerializationName, start.Ticks);
+            info.AddValue(EndTicksSerializationName, end.Ticks);
+        }
+        #endregion
+#endif
     }
 }

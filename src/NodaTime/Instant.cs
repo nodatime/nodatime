@@ -2,13 +2,13 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-using System;
-using System.Globalization;
-using System.Xml;
-using System.Xml.Schema;
-using NodaTime.Globalization;
 using NodaTime.Text;
 using NodaTime.Utility;
+using System;
+using System.Globalization;
+using System.Runtime.Serialization;
+using System.Xml;
+using System.Xml.Schema;
 using System.Xml.Serialization;
 
 namespace NodaTime
@@ -28,7 +28,13 @@ namespace NodaTime
     /// </para>
     /// </remarks>
     /// <threadsafety>This type is an immutable value type. See the thread safety section of the user guide for more information.</threadsafety>
+#if !PCL
+    [Serializable]
+#endif
     public struct Instant : IEquatable<Instant>, IComparable<Instant>, IFormattable, IComparable, IXmlSerializable
+#if !PCL
+        , ISerializable
+#endif
     {
         /// <summary>
         /// String used to represent "the beginning of time" (as far as Noda Time is concerned).
@@ -613,5 +619,31 @@ namespace NodaTime
             writer.WriteString(InstantPattern.ExtendedIsoPattern.Format(this));
         }
         #endregion
+
+#if !PCL
+        #region Binary serialization
+        private const string TicksSerializationName = "ticks";
+
+        /// <summary>
+        /// Private constructor only present for serialization.
+        /// </summary>
+        /// <param name="info">The <see cref="SerializationInfo"/> to fetch data from.</param>
+        /// <param name="context">The source for this deserialization.</param>
+        private Instant(SerializationInfo info, StreamingContext context)
+            : this(info.GetInt64(TicksSerializationName))
+        {
+        }
+
+        /// <summary>
+        /// Implementation of <see cref="ISerializable.GetObjectData"/>.
+        /// </summary>
+        /// <param name="info">The <see cref="SerializationInfo"/> to populate with data.</param>
+        /// <param name="context">The destination for this serialization.</param>
+        void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            info.AddValue(TicksSerializationName, ticks);
+        }
+        #endregion
+#endif
     }
 }

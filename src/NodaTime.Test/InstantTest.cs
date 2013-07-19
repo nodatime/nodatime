@@ -242,6 +242,14 @@ namespace NodaTime.Test
         }
 
         [Test]
+        public void BinarySerialization()
+        {
+            TestHelper.AssertBinaryRoundtrip(new Instant(12345L));
+            TestHelper.AssertBinaryRoundtrip(Instant.MinValue);
+            TestHelper.AssertBinaryRoundtrip(Instant.MaxValue);
+        }
+
+        [Test]
         [TestCase("1990-01-01T00:00:00Z", false, Description = "Before interval")]
         [TestCase("2000-01-01T00:00:00Z", true, Description = "Start of interval")]
         [TestCase("2010-01-01T00:00:00Z", true, Description = "Within interval")]

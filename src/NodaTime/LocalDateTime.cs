@@ -2,16 +2,16 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-using System;
-using System.Globalization;
-using System.Xml;
-using System.Xml.Schema;
-using System.Xml.Serialization;
 using NodaTime.Calendars;
-using NodaTime.Globalization;
 using NodaTime.Text;
 using NodaTime.TimeZones;
 using NodaTime.Utility;
+using System;
+using System.Globalization;
+using System.Runtime.Serialization;
+using System.Xml;
+using System.Xml.Schema;
+using System.Xml.Serialization;
 
 namespace NodaTime
 {
@@ -40,7 +40,13 @@ namespace NodaTime
     /// </para>
     /// </remarks>
     /// <threadsafety>This type is an immutable value type. See the thread safety section of the user guide for more information.</threadsafety>
+#if !PCL
+    [Serializable]
+#endif
     public struct LocalDateTime : IEquatable<LocalDateTime>, IComparable<LocalDateTime>, IComparable, IFormattable, IXmlSerializable
+#if !PCL
+        , ISerializable
+#endif
     {
         private readonly CalendarSystem calendar;
         private readonly LocalInstant localInstant;
@@ -980,5 +986,34 @@ namespace NodaTime
             writer.WriteString(LocalDateTimePattern.ExtendedIsoPattern.Format(this));
         }
         #endregion
+
+#if !PCL
+        #region Binary serialization
+        private const string LocalTicksSerializationName = "ticks";
+        private const string CalendarIdSerializationName = "calendar";
+
+        /// <summary>
+        /// Private constructor only present for serialization.
+        /// </summary>
+        /// <param name="info">The <see cref="SerializationInfo"/> to fetch data from.</param>
+        /// <param name="context">The source for this deserialization.</param>
+        private LocalDateTime(SerializationInfo info, StreamingContext context)
+            : this(new LocalInstant(info.GetInt64(LocalTicksSerializationName)),
+                   CalendarSystem.ForId(info.GetString(CalendarIdSerializationName)))
+        {
+        }
+
+        /// <summary>
+        /// Implementation of <see cref="ISerializable.GetObjectData"/>.
+        /// </summary>
+        /// <param name="info">The <see cref="SerializationInfo"/> to populate with data.</param>
+        /// <param name="context">The destination for this serialization.</param>
+        void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            info.AddValue(LocalTicksSerializationName, localInstant.Ticks);
+            info.AddValue(CalendarIdSerializationName, Calendar.Id);
+        }
+        #endregion
+#endif
     }
 }

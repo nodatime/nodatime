@@ -7,10 +7,10 @@ using System.Globalization;
 using System.Xml;
 using System.Xml.Schema;
 using NodaTime.Calendars;
-using NodaTime.Globalization;
 using NodaTime.Text;
 using NodaTime.Utility;
 using System.Xml.Serialization;
+using System.Runtime.Serialization;
 
 namespace NodaTime
 {
@@ -34,7 +34,13 @@ namespace NodaTime
     /// </para>
     /// </remarks>
     /// <threadsafety>This type is an immutable value type. See the thread safety section of the user guide for more information.</threadsafety>
+#if !PCL
+    [Serializable]
+#endif
     public struct LocalDate : IEquatable<LocalDate>, IComparable<LocalDate>, IComparable, IFormattable, IXmlSerializable
+#if !PCL
+        , ISerializable
+#endif
     {
         private readonly LocalDateTime localTime;
 
@@ -612,5 +618,34 @@ namespace NodaTime
             writer.WriteString(LocalDatePattern.IsoPattern.Format(this));
         }
         #endregion
+
+#if !PCL
+        #region Binary serialization
+        private const string LocalTicksSerializationName = "ticks";
+        private const string CalendarIdSerializationName = "calendar";
+
+        /// <summary>
+        /// Private constructor only present for serialization.
+        /// </summary>
+        /// <param name="info">The <see cref="SerializationInfo"/> to fetch data from.</param>
+        /// <param name="context">The source for this deserialization.</param>
+        private LocalDate(SerializationInfo info, StreamingContext context)
+            : this(new LocalDateTime(new LocalInstant(info.GetInt64(LocalTicksSerializationName)),
+                                     CalendarSystem.ForId(info.GetString(CalendarIdSerializationName))))
+        {
+        }
+
+        /// <summary>
+        /// Implementation of <see cref="ISerializable.GetObjectData"/>.
+        /// </summary>
+        /// <param name="info">The <see cref="SerializationInfo"/> to populate with data.</param>
+        /// <param name="context">The destination for this serialization.</param>
+        void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            info.AddValue(LocalTicksSerializationName, localTime.LocalInstant.Ticks);
+            info.AddValue(CalendarIdSerializationName, Calendar.Id);
+        }
+        #endregion
+#endif
     }
 }

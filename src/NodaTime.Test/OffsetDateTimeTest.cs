@@ -223,6 +223,15 @@ namespace NodaTime.Test
         }
 
         [Test]
+        public void BinarySerialization()
+        {
+            TestHelper.AssertBinaryRoundtrip(
+                new OffsetDateTime(new LocalDateTime(2013, 4, 12, 17, 53, 23), Offset.FromHours(1)));
+            TestHelper.AssertBinaryRoundtrip(
+                new OffsetDateTime(new LocalDateTime(2013, 4, 12, 17, 53, 23, CalendarSystem.GetJulianCalendar(3)), Offset.FromHours(1)));
+        }
+
+        [Test]
         public void XmlSerialization_Iso()
         {
             var value = new OffsetDateTime(new LocalDateTime(2013, 4, 12, 17, 53, 23), Offset.FromHours(1));
