@@ -31,7 +31,6 @@ namespace NodaTime.Text
             {
                 throw new InvalidPatternException(Messages.Parse_FormatStringEmpty);
             }
-            patternText = patternText.Trim();
             if (patternText.Length > 1)
             {
                 IPattern<LocalDateTime> localResult = formatInfo.LocalDateTimePatternParser.ParsePattern(patternText);
