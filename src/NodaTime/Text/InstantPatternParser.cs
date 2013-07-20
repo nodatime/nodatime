@@ -24,6 +24,16 @@ namespace NodaTime.Text
     /// </remarks>
     internal sealed class InstantPatternParser : IPatternParser<Instant>
     {
+        private readonly string minLabel;
+        private readonly string maxLabel;
+        private const string GeneralPatternText = "yyyy'-'MM'-'dd'T'HH':'mm':'ss'Z'";
+
+        internal InstantPatternParser(string minLabel, string maxLabel)
+        {
+            this.minLabel = minLabel;
+            this.maxLabel = maxLabel;
+        }
+
         public IPattern<Instant> ParsePattern(string patternText, NodaFormatInfo formatInfo)
         {
             Preconditions.CheckNotNull(patternText, "patternText");
@@ -31,60 +41,26 @@ namespace NodaTime.Text
             {
                 throw new InvalidPatternException(Messages.Parse_FormatStringEmpty);
             }
+            // Simplest way of handling the general pattern...
+            if (patternText == "g")
+            {
+                patternText = GeneralPatternText;
+            }
+
             if (patternText.Length > 1)
             {
                 IPattern<LocalDateTime> localResult = formatInfo.LocalDateTimePatternParser.ParsePattern(patternText);
-                return new LocalDateTimePatternAdapter(localResult);
+                return new LocalDateTimePatternAdapter(localResult, minLabel, maxLabel);
             }
             char patternChar = char.ToLowerInvariant(patternText[0]);
             switch (patternChar)
             {
-                case 'g':
-                    return new GeneralPattern();
                 case 'n':
                     return new NumberPattern(formatInfo, patternText, "N0");
                 case 'd':
                     return new NumberPattern(formatInfo, patternText, "D");
                 default:
                     throw new InvalidPatternException(Messages.Parse_UnknownStandardFormat, patternChar, typeof(Instant));
-            }
-        }
-
-        private sealed class GeneralPattern : AbstractPattern<Instant>
-        {
-            private static readonly LocalDateTimePatternAdapter NonInfinitePattern =
-                new LocalDateTimePatternAdapter(
-                    LocalDateTimePattern.CreateWithInvariantCulture("yyyy'-'MM'-'dd'T'HH':'mm':'ss'Z'"));
-
-            internal GeneralPattern() : base(NodaFormatInfo.InvariantInfo)
-            {
-            }
-
-            protected override ParseResult<Instant> ParseImpl(string value)
-            {
-                if (value.Equals(Instant.BeginningOfTimeLabel, StringComparison.OrdinalIgnoreCase))
-                {
-                    return ParseResult<Instant>.ForValue(Instant.MinValue);
-                }
-                if (value.Equals(Instant.EndOfTimeLabel, StringComparison.OrdinalIgnoreCase))
-                {
-                    return ParseResult<Instant>.ForValue(Instant.MaxValue);
-                }
-
-                return NonInfinitePattern.Parse(value);
-            }
-
-            public override string Format(Instant value)
-            {
-                if (value == Instant.MinValue)
-                {
-                    return Instant.BeginningOfTimeLabel;
-                }
-                if (value == Instant.MaxValue)
-                {
-                    return Instant.EndOfTimeLabel;
-                }
-                return NonInfinitePattern.Format(value);
             }
         }
 
@@ -117,22 +93,43 @@ namespace NodaTime.Text
             }
         }
 
+        // This not only converts between LocalDateTime and Instant; it also handles infinity.
         private sealed class LocalDateTimePatternAdapter : IPattern<Instant>
         {
             private readonly IPattern<LocalDateTime> pattern;
+            private readonly string minLabel;
+            private readonly string maxLabel;
 
-            internal LocalDateTimePatternAdapter(IPattern<LocalDateTime> pattern)
+            internal LocalDateTimePatternAdapter(IPattern<LocalDateTime> pattern, string minLabel, string maxLabel)
             {
                 this.pattern = pattern;
+                this.minLabel = minLabel;
+                this.maxLabel = maxLabel;
             }
 
             public string Format(Instant value)
             {
+                if (value == Instant.MinValue)
+                {
+                    return minLabel;
+                }
+                if (value == Instant.MaxValue)
+                {
+                    return maxLabel;
+                }
                 return pattern.Format(new LocalDateTime(new LocalInstant(value.Ticks)));
             }
 
             public ParseResult<Instant> Parse(string text)
             {
+                if (text == minLabel)
+                {
+                    return ParseResult<Instant>.ForValue(Instant.MinValue);
+                }
+                if (text == maxLabel)
+                {
+                    return ParseResult<Instant>.ForValue(Instant.MaxValue);
+                }
                 return pattern.Parse(text).Convert(local => new Instant(local.LocalInstant.Ticks));
             }
         }

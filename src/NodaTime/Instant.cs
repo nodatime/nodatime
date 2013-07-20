@@ -37,15 +37,6 @@ namespace NodaTime
 #endif
     {
         /// <summary>
-        /// String used to represent "the beginning of time" (as far as Noda Time is concerned).
-        /// </summary>
-        internal const string BeginningOfTimeLabel = "BOT";
-        /// <summary>
-        /// String used to represent "the end of time" (as far as Noda Time is concerned).
-        /// </summary>
-        internal const string EndOfTimeLabel = "EOT";
-
-        /// <summary>
         /// Represents the smallest possible <see cref="Instant"/>.
         /// </summary>
         /// <remarks>
