@@ -29,7 +29,7 @@ namespace NodaTime.Text
         /// <summary>
         /// Returns an invariant instant pattern which is ISO-8601 compatible, providing up to 7 decimal places
         /// of sub-second accuracy. (These digits are omitted when unnecessary.)
-        /// This corresponds to the text pattern "yyyy'-'MM'-'dd'T'HH':'mm':'ss.FFFFFFF;Z'".
+        /// This corresponds to the text pattern "yyyy'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFF'Z'".
         /// </summary>
         public static InstantPattern ExtendedIsoPattern { get { return Patterns.ExtendedIsoPatternImpl; } }
 
