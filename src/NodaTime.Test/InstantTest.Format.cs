@@ -20,13 +20,13 @@ namespace NodaTime.Test
         [Test, Category("Formatting"), Category("Format")]
         public void TestToString_MinValue()
         {
-            TestToStringBase(Instant.MinValue, Instant.BeginningOfTimeLabel);
+            TestToStringBase(Instant.MinValue, InstantPattern.DefaultMinLabel);
         }
 
         [Test, Category("Formatting"), Category("Format")]
         public void TestToString_MaxValue()
         {
-            TestToStringBase(Instant.MaxValue, Instant.EndOfTimeLabel);
+            TestToStringBase(Instant.MaxValue, InstantPattern.DefaultMaxLabel);
         }
 
         [Test, Category("Formatting"), Category("Format")]
@@ -45,24 +45,24 @@ namespace NodaTime.Test
         {
             string actual = value.ToString();
             Assert.AreEqual(gvalue, actual);
-            actual = value.ToString("G", null);
+            actual = value.ToString("g", null);
             Assert.AreEqual(gvalue, actual);
-            actual = value.ToString("N", null);
+            actual = value.ToString("n", null);
             Assert.AreEqual(value.Ticks.ToString("N0"), actual);
-            actual = value.ToString("N", CultureInfo.InvariantCulture);
+            actual = value.ToString("n", CultureInfo.InvariantCulture);
             Assert.AreEqual(value.Ticks.ToString("N0", CultureInfo.InvariantCulture), actual);
-            actual = value.ToString("G", CultureInfo.InvariantCulture);
+            actual = value.ToString("g", CultureInfo.InvariantCulture);
             Assert.AreEqual(gvalue, actual);
-            actual = value.ToString("D", null);
+            actual = value.ToString("d", null);
             Assert.AreEqual(value.Ticks.ToString("D"), actual);
 
             actual = string.Format("{0}", value);
             Assert.AreEqual(gvalue, actual);
-            actual = string.Format("{0:G}", value);
+            actual = string.Format("{0:g}", value);
             Assert.AreEqual(gvalue, actual);
-            actual = string.Format("{0:N}", value);
+            actual = string.Format("{0:n}", value);
             Assert.AreEqual(value.Ticks.ToString("N0"), actual);
-            actual = string.Format("{0:D}", value);
+            actual = string.Format("{0:d}", value);
             Assert.AreEqual(value.Ticks.ToString("D"), actual);
         }
     }

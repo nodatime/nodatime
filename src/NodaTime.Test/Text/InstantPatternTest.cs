@@ -2,6 +2,7 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
@@ -42,6 +43,41 @@ namespace NodaTime.Test.Text
             Instant expected = Instant.FromUtc(2012, 1, 1, 0, 0) + Duration.FromTicks(1);
             Instant actual = InstantPattern.ExtendedIsoPattern.Parse("2012-01-01T00:00:00,0000001Z").Value;
             Assert.AreEqual(actual, expected);
+        }
+
+        [Test]
+        public void NullLabels()
+        {
+            Assert.Throws<ArgumentNullException>(() => InstantPattern.GeneralPattern.WithMinMaxLabels(null, "x"));
+            Assert.Throws<ArgumentNullException>(() => InstantPattern.GeneralPattern.WithMinMaxLabels("x", null));
+        }
+
+        [TestCase("", "x")]
+        [TestCase("x", "")]
+        [TestCase("same", "same")]
+        public void BadLabels(string min, string max)
+        {
+            Assert.Throws<ArgumentException>(() => InstantPattern.GeneralPattern.WithMinMaxLabels(min, max));
+        }
+
+        [Test]
+        public void Format_CustomLabels()
+        {
+            var pattern = InstantPattern.GeneralPattern.WithMinMaxLabels("min", "max");
+            Assert.AreEqual("min", pattern.Format(Instant.MinValue));
+            Assert.AreEqual("max", pattern.Format(Instant.MaxValue));
+            Assert.AreEqual(InstantPattern.GeneralPattern.Format(NodaConstants.UnixEpoch),
+                pattern.Format(NodaConstants.UnixEpoch));
+        }
+
+        [Test]
+        public void Parse_CustomLabels()
+        {
+            var pattern = InstantPattern.GeneralPattern.WithMinMaxLabels("min", "max");
+            Assert.AreEqual(Instant.MinValue, pattern.Parse("min").Value);
+            Assert.AreEqual(Instant.MaxValue, pattern.Parse("max").Value);
+            Assert.AreEqual(NodaConstants.UnixEpoch,
+                pattern.Parse(InstantPattern.GeneralPattern.Format(NodaConstants.UnixEpoch)).Value);
         }
 
         /// <summary>
