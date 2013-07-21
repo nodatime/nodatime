@@ -13,7 +13,8 @@ questions, please ask on [Stack Overflow][so] using the [nodatime tag][so-tag].
 Resources
 ---------
 
-- [Project home page][home]
+- [Project source and issue site][home]
+- [Project web site][web]
 - [Developer guide][] - a guide to developing Noda Time itself
 - [Online user guide][4] (the latest version of this page)
 - [Latest API documentation][5]
@@ -25,9 +26,10 @@ offline, it's the offline API docs)
 [1]: http://noda-time.blogspot.com
 [2]: http://groups.google.com/group/noda-time
 [home]: http://noda-time.googlecode.com
-[4]: http://noda-time.googlecode.com/hg/docs/userguide/index.html
-[5]: http://noda-time.googlecode.com/hg/docs/api/Index.html
+[web]: http://nodatime.org
+[4]: http://nodatime.org/unstable/userguide/index.html
+[5]: http://nodatime.org/unstable/api/Index.aspx
 [6]: ../api/Index.html
-[Developer guide]: ../developer/index.html
+[Developer guide]: http://nodatime.org/unstable/developer/index.html
 [so]: http://stackoverflow.com
 [so-tag]: http://stackoverflow.com/questions/tagged/nodatime
