@@ -216,7 +216,7 @@ namespace NodaTime.TimeZones
         }
 
 #if PCL
-        internal readonly Dictionary<string, string> guesses = new Dictionary<string, string>();
+        private readonly Dictionary<string, string> guesses = new Dictionary<string, string>();
 
         // Cache around GuessZoneIdByTransitionsUncached
         private string GuessZoneIdByTransitions(TimeZoneInfo zone)
