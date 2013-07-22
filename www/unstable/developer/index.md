@@ -13,6 +13,6 @@ Resources
 - [Project home page][home]
 - [Current API documentation][api]
 
-[User Guide]: ../userguide/1.1.0/index.html
+[User Guide]: ../userguide/
 [home]: http://noda-time.googlecode.com
 [api]: ../api/Index.html
