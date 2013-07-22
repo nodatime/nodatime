@@ -216,8 +216,74 @@ namespace NodaTime.TimeZones
             {
                 source.WindowsAdditionalStandardNameToIdMapping.TryGetValue(id, out result);
             }
+            if (result == null)
+            {
+                result = GuessZoneIdByTransitions(zone);
+            }
 #endif
             return result;
+        }
+
+#if PCL
+        private readonly Dictionary<string, string> guesses = new Dictionary<string, string>();
+
+        // Cache around GuessZoneIdByTransitionsUncached
+        private string GuessZoneIdByTransitions(TimeZoneInfo zone)
+        {
+            lock (guesses)
+            {
+                string cached;
+                if (guesses.TryGetValue(zone.StandardName, out cached))
+                {
+                    return cached;
+                }
+                string guess = GuessZoneIdByTransitionsUncached(zone);
+                guesses[zone.StandardName] = guess;
+                return guess;
+            }
+        }
+#endif
+
+        /// <summary>
+        /// In cases where we can't get a zone mapping, either because we haven't kept
+        /// up to date with the standard names or because the system language isn't English,
+        /// try to work out the TZDB mapping by the transitions within the next few years.
+        /// We only do this for the PCL, where we can't ask a TimeZoneInfo for its ID. Unfortunately
+        /// this means we may sometimes return a mapping for zones which shouldn't be mapped at all, but that's
+        /// probably okay and we return null if we don't get a 70% hit rate anyway. We look at all
+        /// transitions in all primary mappings for the next year.
+        /// Heuristically, this seems to be good enough to get the right results in most cases.
+        /// </summary>
+        /// <remarks>This method is not PCL-only as we would like to test it frequently. It will
+        /// never actually be called in the non-PCL release though.</remarks>
+        /// <param name="zone">Zone to resolve in a best-effort fashion.</param>
+        internal string GuessZoneIdByTransitionsUncached(TimeZoneInfo zone)
+        {
+            // Very rare use of the system clock! Windows time zone updated sometimes sacrifice past
+            // accuracy for future accuracy, so let's use the current year's transitions.
+            int thisYear = SystemClock.Instance.Now.InUtc().Year;
+            Instant startOfThisYear = Instant.FromUtc(thisYear, 1, 1, 0, 0);
+            Instant startOfNextYear = Instant.FromUtc(thisYear + 1, 1, 1, 0, 0);
+            var candidates = WindowsMapping.PrimaryMapping.Values.Select(id => ForId(id)).ToList();
+            // Would create a HashSet directly, but it appears not to be present on all versions of the PCL...
+            var instants = candidates.SelectMany(z => z.GetZoneIntervals(startOfThisYear, startOfNextYear))
+                                     .Select(zi => Instant.Max(zi.Start, startOfThisYear)) // Clamp to start of interval
+                                     .Distinct()
+                                     .ToList();
+
+            int bestScore = -1;
+            DateTimeZone bestZone = null;
+            foreach (var candidate in candidates)
+            {
+                int score = instants.Count(instant => Offset.FromTimeSpan(zone.GetUtcOffset(instant.ToDateTimeOffset())) == candidate.GetUtcOffset(instant));
+                if (score > bestScore)
+                {
+                    bestScore = score;
+                    bestZone = candidate;
+                }
+            }
+            // If we haven't hit at least 70%, it's effectively unmappable
+            return bestScore * 100 / instants.Count > 70 ? bestZone.Id : null;
         }
 
         /// <summary>
