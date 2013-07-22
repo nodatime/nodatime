@@ -275,7 +275,7 @@ namespace NodaTime.TimeZones
             DateTimeZone bestZone = null;
             foreach (var candidate in candidates)
             {
-                int score = instants.Count(instant => Offset.FromTimeSpan(zone.GetUtcOffset(instant.ToDateTimeOffset())) == candidate.GetUtcOffset(instant));
+                int score = instants.Count(instant => Offset.FromTimeSpan(zone.GetUtcOffset(instant.ToDateTimeUtc())) == candidate.GetUtcOffset(instant));
                 if (score > bestScore)
                 {
                     bestScore = score;
