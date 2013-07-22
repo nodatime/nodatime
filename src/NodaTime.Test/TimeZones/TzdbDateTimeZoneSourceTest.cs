@@ -249,5 +249,43 @@ namespace NodaTime.Test.TimeZones
             var source = TzdbDateTimeZoneSource.Default;
             StringAssert.StartsWith("TZDB: " + source.TzdbVersion, source.VersionId);
         }
+
+        [Test]
+        [TestCaseSource(typeof(TimeZoneInfo), "GetSystemTimeZones")]
+        public void GuessZoneIdByTransitionsUncached(TimeZoneInfo bclZone)
+        {
+            string id = TzdbDateTimeZoneSource.Default.GuessZoneIdByTransitionsUncached(bclZone);
+
+            // Unmappable zones may not be mapped, or may be mapped to something reasonably accurate.
+            // We don't mind either way.
+            if (!TzdbDateTimeZoneSource.Default.WindowsMapping.PrimaryMapping.ContainsKey(bclZone.Id))
+            {
+                return;
+            }
+
+            Assert.IsNotNull(id);
+            var tzdbZone = TzdbDateTimeZoneSource.Default.ForId(id);
+
+            var thisYear = SystemClock.Instance.Now.InUtc().Year;
+
+            int total = 0;
+            int correct = 0;
+            // From the start of this year to the end of next year, we should have an 80% hit rate or better.
+            // That's stronger than the 70% we limit to in the code, because if it starts going between 70% and 80% we
+            // should have another look at the algorithm. (And this is dealing with 80% of days, not 80% of transitions,
+            // so it's not quite equivalent anyway.)
+            for (var date = new LocalDate(thisYear, 1, 1); date.Year < thisYear + 2; date = date.PlusDays(1))
+            {
+                Instant startOfUtcDay = date.AtMidnight().InUtc().ToInstant();
+                Offset tzdbOffset = tzdbZone.GetUtcOffset(startOfUtcDay);
+                Offset bclOffset = Offset.FromTimeSpan(bclZone.GetUtcOffset(startOfUtcDay.ToDateTimeOffset()));
+                if (tzdbOffset == bclOffset)
+                {
+                    correct++;
+                }
+                total++;
+            }
+            Assert.That(correct * 100.0 / total, Is.GreaterThanOrEqualTo(80.0));
+        }
     }
 }

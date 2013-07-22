@@ -20,9 +20,15 @@ namespace NodaTime.Text
     /// </threadsafety>
     public sealed class InstantPattern : IPattern<Instant>
     {
+        /// <summary>
+        /// Default label for <see cref="Instant.MinValue"/> when formatting.
+        /// </summary>
+        internal const string DefaultMinLabel = "MinInstant";
 
-        public static readonly string DefaultMinLabel = "MinInstant";
-        public static readonly string DefaultMaxLabel = "MaxInstant";
+        /// <summary>
+        /// Default label for <see cref="Instant.MaxValue"/> when formatting.
+        /// </summary>
+        internal const string DefaultMaxLabel = "MaxInstant";
 
         /// <summary>
         /// Returns the general pattern, which always uses an invariant culture. The general pattern represents
