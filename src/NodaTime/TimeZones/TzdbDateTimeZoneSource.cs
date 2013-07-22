@@ -242,6 +242,7 @@ namespace NodaTime.TimeZones
                 return guess;
             }
         }
+#endif
 
         /// <summary>
         /// In cases where we can't get a zone mapping, either because we haven't kept
@@ -253,6 +254,8 @@ namespace NodaTime.TimeZones
         /// transitions in all primary mappings for the next year.
         /// Heuristically, this seems to be good enough to get the right results in most cases.
         /// </summary>
+        /// <remarks>This method is not PCL-only as we would like to test it frequently. It will
+        /// never actually be called in the non-PCL release though.</remarks>
         /// <param name="zone">Zone to resolve in a best-effort fashion.</param>
         internal string GuessZoneIdByTransitionsUncached(TimeZoneInfo zone)
         {
@@ -282,7 +285,6 @@ namespace NodaTime.TimeZones
             // If we haven't hit at least 70%, it's effectively unmappable
             return bestScore * 100 / instants.Count > 70 ? bestZone.Id : null;
         }
-#endif
 
         /// <summary>
         /// Returns a lookup from canonical time zone ID (e.g. "Europe/London") to a group of aliases for that time zone
