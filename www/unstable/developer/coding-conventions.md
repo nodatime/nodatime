@@ -1,4 +1,4 @@
-﻿---
+---
 layout: developer
 title: Coding conventions
 ---
