@@ -81,6 +81,10 @@ namespace NodaTime.Text
 
             var patternBuilder = new SteppedPatternBuilder<ZonedDateTime, ZonedDateTimeParseBucket>(formatInfo,
                 () => new ZonedDateTimeParseBucket(templateValueDate, templateValueTime, templateValueZone, resolver, zoneProvider));
+            if (zoneProvider == null)
+            {
+                patternBuilder.SetFormatOnly();
+            }
             patternBuilder.ParseCustomPattern(patternText, PatternCharacterHandlers);
             patternBuilder.ValidateUsedFields();
             return patternBuilder.Build();

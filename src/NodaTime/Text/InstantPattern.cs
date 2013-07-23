@@ -37,7 +37,7 @@ namespace NodaTime.Text
 
         /// <summary>
         /// Returns the general pattern, which always uses an invariant culture. The general pattern represents
-        /// an instant as a UTC date/time in ISO-8601 style "rrrr-MM-ddTHH:mm:ssZ".
+        /// an instant as a UTC date/time in ISO-8601 style "rrrr-MM-ddTHH:mm:ss'Z'".
         /// </summary>
         public static InstantPattern GeneralPattern { get { return Patterns.GeneralPatternImpl; } }
 
@@ -60,7 +60,7 @@ namespace NodaTime.Text
         private static class Patterns
         {
             internal static readonly InstantPattern ExtendedIsoPatternImpl = CreateWithInvariantCulture("rrrr'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFF'Z'");
-            internal static readonly InstantPattern GeneralPatternImpl = CreateWithInvariantCulture("g");
+            internal static readonly InstantPattern GeneralPatternImpl = CreateWithInvariantCulture("rrrr-MM-ddTHH:mm:ss'Z'");
         }
 
         private readonly string minLabel;

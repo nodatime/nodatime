@@ -24,7 +24,7 @@ namespace NodaTime.Test
         /// <summary>
         /// Changes from UTC+3 to UTC+4 at 1am local time on June 13th 2011.
         /// </summary>
-        private static SingleTransitionDateTimeZone SampleZone = new SingleTransitionDateTimeZone(Instant.FromUtc(2011, 6, 12, 22, 0), 3, 4);
+        private static readonly SingleTransitionDateTimeZone SampleZone = new SingleTransitionDateTimeZone(Instant.FromUtc(2011, 6, 12, 22, 0), 3, 4);
 
         [Test]
         public void SimpleProperties()
@@ -515,6 +515,14 @@ namespace NodaTime.Test
         {
             DateTimeZoneProviders.Serialization = DateTimeZoneProviders.Tzdb;
             TestHelper.AssertXmlInvalid<ZonedDateTime>(xml, expectedExceptionType);
+        }
+
+        [Test]
+        public void ZonedDateTime_ToString()
+        {
+            var local = new LocalDateTime(2013, 7, 23, 13, 05, 20);
+            ZonedDateTime zoned = local.InZoneStrictly(SampleZone);
+            Assert.AreEqual("2013-07-23T13:05:20 Single (+04)", zoned.ToString());
         }
     }
 }

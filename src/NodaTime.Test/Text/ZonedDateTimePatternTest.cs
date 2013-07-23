@@ -77,7 +77,10 @@ namespace NodaTime.Test.Text
             new Data { Pattern = "yyyy-MM-dd HH:mm z", Text = "2013-01-13 15:44 UTC+01:00:00.00", Message = Messages.Parse_ExtraValueCharacters, Parameters = { ".00" }},
 
             // Can't parse a pattern with a time zone abbreviation.
-            new Data { Pattern = "yyyy-MM-dd HH:mm x", Text = "ignored", Message = Messages.Parse_FormatOnlyPattern }
+            new Data { Pattern = "yyyy-MM-dd HH:mm x", Text = "ignored", Message = Messages.Parse_FormatOnlyPattern },
+
+            // Can't parse using a pattern that has no provider
+            new Data { ZoneProvider = null, Pattern = "yyyy-MM-dd z", Text = "ignored", Message = Messages.Parse_FormatOnlyPattern },
         };
 
         internal static Data[] ParseOnlyData = {
@@ -123,6 +126,9 @@ namespace NodaTime.Test.Text
             new Data(2013, 1, 13, 16, 2, France) { Pattern = "yyyy-MM-dd HH:mm x", Text = "2013-01-13 16:02 CET" },
             // Summer
             new Data(2013, 6, 13, 16, 2, France) { Pattern = "yyyy-MM-dd HH:mm x", Text = "2013-06-13 16:02 CEST" },
+
+            new Data(2013, 6, 13, 16, 2, France) { ZoneProvider = null, Pattern = "yyyy-MM-dd HH:mm z", Text = "2013-06-13 16:02 Europe/Paris" },
+
         };
 
         internal static Data[] FormatAndParseData = {
