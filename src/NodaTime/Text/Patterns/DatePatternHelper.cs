@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Text;
 using NodaTime.Calendars;
 using NodaTime.Globalization;
+using NodaTime.Properties;
 using NodaTime.Utility;
 
 namespace NodaTime.Text.Patterns
@@ -17,6 +18,26 @@ namespace NodaTime.Text.Patterns
     /// </summary>
     internal static class DatePatternHelper
     {
+        /// <summary>
+        /// Creates a character handler for the 4-or-5 digit year specifier.
+        /// </summary>
+        internal static CharacterHandler<TResult, TBucket> Create4Or5DigitYearHandler<TResult, TBucket>
+            (NodaFunc<TResult, int> centuryGetter, NodaFunc<TResult, int> yearGetter, NodaAction<TBucket, int> setter)
+            where TBucket : ParseBucket<TResult>
+        {
+            return (pattern, builder) =>
+            {
+                int count = pattern.GetRepeatCount(4);
+                if (count < 4)
+                {
+                    throw new InvalidPatternException(Messages.Parse_RepeatCountUnderMinimum, 'r', 4);
+                }
+                builder.AddField(PatternFields.Year, pattern.Current);
+                builder.AddParseValueAction(4, 5, 'y', -99999, 99999, setter);
+                builder.AddFormatAction((value, sb) => FormatHelper.LeftPad(yearGetter(value), 4, sb));
+            };
+        }
+
         /// <summary>
         /// Creates a character handler for the year specifier (y).
         /// </summary>
@@ -60,7 +81,7 @@ namespace NodaTime.Text.Patterns
                             FormatHelper.LeftPad(yearGetter(value), count, sb);
                         });
                         break;
-                    default:
+                     case 5:
                         // Maximum value will be determined later.
                         // Note that the *exact* number of digits are required; not just "at least count".
                         builder.AddParseValueAction(count, count, 'y', -99999, 99999, setter);

@@ -37,6 +37,11 @@ namespace NodaTime.Test.Text
             new Data { Pattern = "dd MM yyyy gg", Message = Messages.Parse_EraWithoutYearOfEra },
             // Era specifier and calendar specifier in the same pattern.
             new Data { Pattern = "dd MM YYYY gg c", Message = Messages.Parse_CalendarAndEra },
+            // Invalid number of 'r' s
+            new Data { Pattern = "r MM yyyy", Message = Messages.Parse_RepeatCountUnderMinimum, Parameters = { 'r', 4 } },
+            new Data { Pattern = "rr MM yyyy", Message = Messages.Parse_RepeatCountUnderMinimum, Parameters = { 'r', 4 } },
+            new Data { Pattern = "rrr MM yyyy", Message = Messages.Parse_RepeatCountUnderMinimum, Parameters = { 'r', 4 } },
+            new Data { Pattern = "rrrrr MM yyyy", Message = Messages.Parse_RepeatCountUnderMinimum, Parameters = { 'r', 4 } },
         };
 
         internal static Data[] ParseFailureData = {
@@ -175,6 +180,14 @@ namespace NodaTime.Test.Text
             new Data(-19999, 1, 1) { Pattern = "yyyyy MM dd", Text = "-19999 01 01" },
             new Data(9999, 1, 1) { Pattern = "yyyyy MM dd", Text = "09999 01 01" },
             new Data(-9999, 1, 1) { Pattern = "yyyyy MM dd", Text = "-09999 01 01" },
+
+            // 4-or-5 digit year handling
+            new Data(19999, 1, 1) { Pattern = "rrrr MM dd", Text = "19999 01 01" },
+            new Data(-19999, 1, 1) { Pattern = "rrrr MM dd", Text = "-19999 01 01" },
+            new Data(9999, 1, 1) { Pattern = "rrrr MM dd", Text = "9999 01 01" },
+            new Data(-9999, 1, 1) { Pattern = "rrrr MM dd", Text = "-9999 01 01" },
+            new Data(999, 1, 1) { Pattern = "rrrr MM dd", Text = "0999 01 01" },
+            new Data(-999, 1, 1) { Pattern = "rrrr MM dd", Text = "-0999 01 01" },
         };
 
         internal static IEnumerable<Data> ParseData = ParseOnlyData.Concat(FormatAndParseData);

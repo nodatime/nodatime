@@ -310,6 +310,8 @@ namespace NodaTime
         private readonly IList<Era> eras;
         private readonly int minYear;
         private readonly int maxYear;
+        private readonly long minTicks;
+        private readonly long maxTicks;
       
         private CalendarSystem(string name, YearMonthDayCalculator yearMonthDayCalculator, int minDaysInFirstWeek)
             : this(CreateIdFromNameAndMinDaysInFirstWeek(name, minDaysInFirstWeek), name, yearMonthDayCalculator, minDaysInFirstWeek)
@@ -333,6 +335,8 @@ namespace NodaTime
             this.weekYearCalculator = new WeekYearCalculator(yearMonthDayCalculator, minDaysInFirstWeek);
             this.minYear = yearMonthDayCalculator.MinYear;                   
             this.maxYear = yearMonthDayCalculator.MaxYear;
+            this.minTicks = yearMonthDayCalculator.GetYearTicks(minYear);
+            this.maxTicks = yearMonthDayCalculator.GetYearTicksSafe(maxYear + 1) - 1;
             this.eras = new ReadOnlyCollection<Era>(new List<Era>(yearMonthDayCalculator.Eras));
             this.periodFields = new PeriodFieldSet.Builder(TimeOfDayCalculator.TimeFields)
             {
@@ -417,6 +421,16 @@ namespace NodaTime
         /// The maximum valid year (inclusive) within this calendar.
         /// </summary>
         public int MaxYear { get { return maxYear; } }
+
+        /// <summary>
+        /// Returns the minimum tick number this calendar can handle.
+        /// </summary>
+        internal long MinTicks { get { return minTicks; } }
+
+        /// <summary>
+        /// Returns the maximum tick number this calendar can handle.
+        /// </summary>
+        internal long MaxTicks { get { return maxTicks; } }
 
         #region Era-based members
         /// <summary>

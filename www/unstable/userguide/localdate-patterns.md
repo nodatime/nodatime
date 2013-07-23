@@ -38,6 +38,16 @@ For the meanings of "absolute" years and text handling, see later details.
   </thead>
   <tbody>
     <tr>
+      <td><code>rrrr</code></td>
+      <td>Four or five digit year, with an optional leading `-` sign.
+        This is equivalent to yyyy for values in the range [-9999, 9999] but
+        allows 5-digit years to be parsed as well. As this consumes 5 digits
+        where they are available, this should not be followed by another numeric
+        field. (For example, a pattern of "rrrr-MM-dd" is sensible; a pattern of
+        "rrrrMMdd" is not.) Only "rrrr" is valid; other repeat counts are rejected.
+      </td>
+    </tr>
+    <tr>
       <td><code>y</code> or <code>yy</code></td>
       <td>
         Two digit absolute year with an optional leading `-` sign; a single <code>y</code> allows up to two digits to be parsed,

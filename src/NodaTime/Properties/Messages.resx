@@ -276,6 +276,9 @@
   <data name="Parse_RepeatCountExceeded" xml:space="preserve">
     <value>There were more consecutive copies of the pattern character "{0}" than the maximum allowed ({1}) in the format string.</value>
   </data>
+  <data name="Parse_RepeatCountUnderMinimum" xml:space="preserve">
+    <value>There were fewer consecutive copies of the pattern character "{0}" than the minimum allowed ({1}) in the format string.</value>
+  </data>
   <data name="Parse_RepeatedFieldInPattern" xml:space="preserve">
     <value>The field "{0}" is specified multiple times in the pattern.</value>
   </data>
