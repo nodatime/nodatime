@@ -169,11 +169,29 @@ namespace NodaTime.Test.Text
             // December 13th 2012 was a Thursday. Friday is "FooBaz" or "FooBa" in AwkwardDayOfWeekCulture.
             new Data(2012, 12, 13) { Pattern = "ddd yyyy MM dd", Text = "FooBaz 2012 12 13", Culture = Cultures.AwkwardDayOfWeekCulture },
             new Data(2012, 12, 13) { Pattern = "dddd yyyy MM dd", Text = "FooBa 2012 12 13", Culture = Cultures.AwkwardDayOfWeekCulture },
+
+            // 5 digit year handling
+            new Data(19999, 1, 1) { Pattern = "yyyyy MM dd", Text = "19999 01 01" },
+            new Data(-19999, 1, 1) { Pattern = "yyyyy MM dd", Text = "-19999 01 01" },
+            new Data(9999, 1, 1) { Pattern = "yyyyy MM dd", Text = "09999 01 01" },
+            new Data(-9999, 1, 1) { Pattern = "yyyyy MM dd", Text = "-09999 01 01" },
         };
 
         internal static IEnumerable<Data> ParseData = ParseOnlyData.Concat(FormatAndParseData);
         internal static IEnumerable<Data> FormatData = FormatOnlyData.Concat(FormatAndParseData);
 
+        [Test]
+        public void FourDigitYearOutOfRange()
+        {
+            var pattern = LocalDatePattern.CreateWithInvariantCulture("yyyy-MM-dd");
+            Assert.Throws<ArgumentOutOfRangeException>(() => pattern.Format(new LocalDate(10000, 1, 1)));
+            Assert.Throws<ArgumentOutOfRangeException>(() => pattern.Format(new LocalDate(-10000, 1, 1)));
+
+            // Just to prove it doesn't throw with 9999...
+            pattern.Format(new LocalDate(9999, 1, 1));
+            pattern.Format(new LocalDate(-9999, 1, 1));
+        }
+        
         [Test]
         [TestCaseSource(typeof(Cultures), "AllCultures")]
         public void BclLongDatePatternGivesSameResultsInNoda(CultureInfo culture)
