@@ -44,7 +44,6 @@ namespace NodaTime.Text
         internal static class Patterns
         {
             internal static readonly OffsetDateTimePattern ExtendedIsoPatternImpl = Create("yyyy'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFFo<G>", NodaFormatInfo.InvariantInfo, DefaultTemplateValue);
-
             internal static readonly OffsetDateTimePattern RoundtripWithCalendarPatternImpl = Create("yyyy'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFFo<G> c", NodaFormatInfo.InvariantInfo, DefaultTemplateValue);
         }
 
