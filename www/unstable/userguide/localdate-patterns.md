@@ -40,10 +40,13 @@ For the meanings of "absolute" years and text handling, see later details.
     <tr>
       <td><code>y</code> or <code>yy</code></td>
       <td>
-        Two digit absolute year; a single <code>y</code> allows up to two digits to be parsed,
-		but formats only one digit where possible. The "base century" is chosen from the template
+        Two digit absolute year with an optional leading `-` sign; a single <code>y</code> allows up to two digits to be parsed,
+		but formats only one digit where possible. When parsing, the "base century" is chosen from the template
 		value; if the two-digit year is greater than 30, the corresponding year in the previous
-		century is used.
+		century is used. Note that when formatting, no checking
+        is performed to ensure that the year will be parsed to
+        the same value. (For example, 1725 would be formatted
+        as 25 but parsed as 2025.) 
       </td>
       <td>
 	    Assuming a template value of 2000 (the default):
@@ -54,9 +57,10 @@ For the meanings of "absolute" years and text handling, see later details.
       </td>
     </tr>
     <tr>
-      <td><code>yyyy</code></td>
+      <td><code>yyy</code></td>
       <td>
-        Three digit absolute year. This will parse up to five digits, but only format to as many as are
+        Three digit absolute year with optional leading `-`
+        sign. This will parse up to five digits, but only format to as many as are
 		required, with a minimum of three.
       </td>
       <td>
@@ -65,9 +69,13 @@ For the meanings of "absolute" years and text handling, see later details.
       </td>
     </tr>
     <tr>
-      <td><code>yyyy</code> or <code>yyyyy</code></td>
+      <td><code>yyyy</code> or <code>yyyyy</code>/td>
       <td>
-        The absolute year as either always-four or always-five digits.
+        The absolute year as an exact number of digits with
+        an optional leading `-` sign.
+        If the absolute year cannot be represented with the
+        given number of digits, an 
+        <code>ArgumentOutOfRangeException</code> is thrown.
       </td>
       <td>
         2012: <code>yyyy</code> => <code>2012</code> <br />
