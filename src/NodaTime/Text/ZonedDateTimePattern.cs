@@ -31,6 +31,19 @@ namespace NodaTime.Text
         private readonly ZoneLocalMappingResolver resolver;
         private readonly IDateTimeZoneProvider zoneProvider;
 
+        public static ZonedDateTimePattern ExtendedFormatOnlyInvariantPattern { get { return Patterns.ExtendedFormatOnlyPatternImpl; } }
+        public static ZonedDateTimePattern GeneralFormatOnlyInvariantPattern { get { return Patterns.GeneralFormatOnlyPatternImpl; } }
+
+        /// <summary>
+        /// Class whose existence is solely to avoid type initialization order issues, most of which stem
+        /// from needing NodaFormatInfo.InvariantInfo...
+        /// </summary>
+        private static class Patterns
+        {
+            internal static readonly ZonedDateTimePattern ExtendedFormatOnlyPatternImpl = CreateWithInvariantCulture("rrrr'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFF z (o<g>)", null);
+            internal static readonly ZonedDateTimePattern GeneralFormatOnlyPatternImpl = CreateWithInvariantCulture("rrrr'-'MM'-'dd'T'HH':'mm':'ss z (o<g>)", null);
+        }
+
         /// <summary>
         /// Returns the pattern text for this pattern, as supplied on creation.
         /// </summary>
@@ -55,7 +68,8 @@ namespace NodaTime.Text
 
         /// <summary>
         /// Returns the provider which is used to look up time zones when parsing a pattern
-        /// which contains a time zone identifier.
+        /// which contains a time zone identifier. This may be null, in which case the pattern can
+        /// only be used for formatting (not parsing).
         /// </summary>
         public IDateTimeZoneProvider ZoneProvider { get { return zoneProvider; } }
 
@@ -112,7 +126,6 @@ namespace NodaTime.Text
             Preconditions.CheckNotNull(patternText, "patternText");
             Preconditions.CheckNotNull(formatInfo, "formatInfo");
             Preconditions.CheckNotNull(resolver, "resolver");
-            Preconditions.CheckNotNull(zoneProvider, "zoneProvider");
             // TODO(V1.2): Work out whether there should be a "fixed" pattern parser at all. We only need to format from the
             // BCL support, so that doesn't need a provider.
             var pattern = new ZonedDateTimePatternParser(templateValue, resolver, zoneProvider).ParsePattern(patternText, formatInfo);
@@ -124,6 +137,8 @@ namespace NodaTime.Text
         /// </summary>
         /// <remarks>
         /// See the user guide for the available pattern text options.
+        /// If <paramref name="zoneProvider"/> is null, the resulting pattern can be used for formatting
+        /// but not parsing.
         /// </remarks>
         /// <param name="patternText">Pattern text to create the pattern for</param>
         /// <param name="cultureInfo">The culture to use in the pattern</param>
@@ -144,6 +159,8 @@ namespace NodaTime.Text
         /// </summary>
         /// <remarks>
         /// The resolver is only used if the pattern text doesn't include an offset.
+        /// If <paramref name="zoneProvider"/> is null, the resulting pattern can be used for formatting
+        /// but not parsing.
         /// </remarks>
         /// <param name="patternText">Pattern text to create the pattern for</param>
         /// <param name="zoneProvider">Time zone provider, used when parsing text which contains a time zone identifier.</param>
@@ -201,6 +218,10 @@ namespace NodaTime.Text
         /// Creates a pattern for the same original pattern text as this pattern, but with the specified
         /// time zone provider.
         /// </summary>
+        /// <remarks>
+        /// If <paramref name="newZoneProvider"/> is null, the resulting pattern can be used for formatting
+        /// but not parsing.
+        /// </remarks>
         /// <param name="newZoneProvider">The new time zone provider to use.</param>
         /// <returns>A new pattern with the given time zone provider.</returns>
         public ZonedDateTimePattern WithZoneProvider(IDateTimeZoneProvider newZoneProvider)
