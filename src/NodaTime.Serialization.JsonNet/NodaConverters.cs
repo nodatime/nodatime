@@ -64,7 +64,7 @@ namespace NodaTime.Serialization.JsonNet
         public static JsonConverter CreateZonedDateTimeConverter(IDateTimeZoneProvider provider)
         {
             return new NodaPatternConverter<ZonedDateTime>(
-                ZonedDateTimePattern.CreateWithInvariantCulture("rrrr'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFFo<G> z", provider),
+                ZonedDateTimePattern.CreateWithInvariantCulture("yyyy'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFFo<G> z", provider),
                 CreateIsoValidator<ZonedDateTime>(x => x.Calendar));
         }
 

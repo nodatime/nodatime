@@ -22,7 +22,7 @@ namespace NodaTime.Text
         internal static readonly ZonedDateTime DefaultTemplateValue = new LocalDateTime(2000, 1, 1, 0, 0).InUtc();
 
         // TODO(V1.2): Use "G" instead when we've got standard patterns (and actually use this constant!)
-        private const string DefaultFormatPattern = "rrrr-MM-dd'T'HH:mm:ss z"; // General (long time)
+        private const string DefaultFormatPattern = "yyyy-MM-dd'T'HH:mm:ss z"; // General (long time)
 
         private readonly string patternText;
         private readonly NodaFormatInfo formatInfo;
@@ -40,8 +40,8 @@ namespace NodaTime.Text
         /// </summary>
         private static class Patterns
         {
-            internal static readonly ZonedDateTimePattern ExtendedFormatOnlyPatternImpl = CreateWithInvariantCulture("rrrr'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFF z (o<g>)", null);
-            internal static readonly ZonedDateTimePattern GeneralFormatOnlyPatternImpl = CreateWithInvariantCulture("rrrr'-'MM'-'dd'T'HH':'mm':'ss z (o<g>)", null);
+            internal static readonly ZonedDateTimePattern ExtendedFormatOnlyPatternImpl = CreateWithInvariantCulture("yyyy'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFF z (o<g>)", null);
+            internal static readonly ZonedDateTimePattern GeneralFormatOnlyPatternImpl = CreateWithInvariantCulture("yyyy'-'MM'-'dd'T'HH':'mm':'ss z (o<g>)", null);
         }
 
         /// <summary>

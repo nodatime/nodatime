@@ -32,7 +32,6 @@ namespace NodaTime.Text
             { '\"', SteppedPatternBuilder<LocalDate, LocalDateParseBucket>.HandleQuote },
             { '\\', SteppedPatternBuilder<LocalDate, LocalDateParseBucket>.HandleBackslash },
             { '/', (pattern, builder) => builder.AddLiteral(builder.FormatInfo.DateSeparator, ParseResult<LocalDate>.DateSeparatorMismatch) },
-            { 'r', DatePatternHelper.Create4Or5DigitYearHandler<LocalDate, LocalDateParseBucket>(value => value.YearOfCentury, value => value.Year, (bucket, value) => bucket.Year = value) },
             { 'y', DatePatternHelper.CreateYearHandler<LocalDate, LocalDateParseBucket>(value => value.YearOfCentury, value => value.Year, (bucket, value) => bucket.Year = value) },
             { 'Y', SteppedPatternBuilder<LocalDate, LocalDateParseBucket>.HandlePaddedField
                        (5, PatternFields.YearOfEra, 0, 99999, value => value.YearOfEra, (bucket, value) => bucket.YearOfEra = value) },
