@@ -7,7 +7,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using NUnit.Framework;
-using NodaTime.Globalization;
 using NodaTime.Properties;
 using NodaTime.Text;
 
@@ -37,11 +36,6 @@ namespace NodaTime.Test.Text
             new Data { Pattern = "dd MM yyyy gg", Message = Messages.Parse_EraWithoutYearOfEra },
             // Era specifier and calendar specifier in the same pattern.
             new Data { Pattern = "dd MM YYYY gg c", Message = Messages.Parse_CalendarAndEra },
-            // Invalid number of 'r' s
-            new Data { Pattern = "r MM yyyy", Message = Messages.Parse_RepeatCountUnderMinimum, Parameters = { 'r', 4 } },
-            new Data { Pattern = "rr MM yyyy", Message = Messages.Parse_RepeatCountUnderMinimum, Parameters = { 'r', 4 } },
-            new Data { Pattern = "rrr MM yyyy", Message = Messages.Parse_RepeatCountUnderMinimum, Parameters = { 'r', 4 } },
-            new Data { Pattern = "rrrrr MM yyyy", Message = Messages.Parse_RepeatCountExceeded, Parameters = { 'r', 4 } },
         };
 
         internal static Data[] ParseFailureData = {
@@ -79,6 +73,15 @@ namespace NodaTime.Test.Text
             // Invald year
             new Data { Pattern = "yyyyy", Text = "55555", Message = Messages.Parse_FieldValueOutOfRange, Parameters = { 55555, 'y', typeof(LocalDate) } },
             new Data { Pattern = "YYYYY", Text = "55555", Message = Messages.Parse_YearOfEraOutOfRange, Parameters = { 55555, "CE", "ISO" } },
+
+            // Conservative yyyy parsing.
+            new Data(12345, 1, 1) { Pattern = "yyyyMMdd", Text = "123450101", Message = Messages.Parse_MonthOutOfRange, Parameters = { 50, 1234 }},
+            new Data(-12345, 1, 1) { Pattern = "yyyyMMdd", Text = "-123450101", Message = Messages.Parse_MonthOutOfRange, Parameters = { 50, -1234 }},
+            new Data(19999, 1, 1) { Pattern = "yyyyVMM dd", Text = "19999V01 01", Message = Messages.Parse_MismatchedCharacter, Parameters = { 'V' }},
+            new Data(19999, 1, 1) { Pattern = "yyyy%VMM dd", Text = "19999V01 01", Message = Messages.Parse_MismatchedCharacter, Parameters = { 'V' } },
+            new Data(19999, 1, 1) { Pattern = "yyyy'0'MM dd", Text = "19999001 01", Message = Messages.Parse_QuotedStringMismatch, Parameters = { '0' }},
+            new Data(19999, 1, 1) { Pattern = "yyyy''0MM dd", Text = "19999001 01", Message = Messages.Parse_MismatchedCharacter, Parameters = { '0' }},
+            new Data(19999, 1, 1) { Pattern = @"yyyy\0MM dd", Text = "19999001 01", Message = Messages.Parse_EscapedCharacterMismatch, Parameters = { '0' }},
         };
 
         internal static Data[] ParseOnlyData = {
@@ -107,9 +110,14 @@ namespace NodaTime.Test.Text
             // Would parse back to 2011
             new Data(1811, 7, 3) { Pattern = "yy M d", Text = "11 7 3" },
 
-            // We can't round-trip this data, but at least we don't break.
-            new Data(12345, 1, 1) { Pattern = "yyyy-MM-dd", Text = "12345-01-01" },
-            new Data(-12345, 1, 1) { Pattern = "yyyy-MM-dd", Text = "-12345-01-01" },
+            // We can't round-trip this data, but at least we don't break when formatting.
+            new Data(12345, 1, 1) { Pattern = "yyyyMMdd", Text = "123450101" },
+            new Data(-12345, 1, 1) { Pattern = "yyyyMMdd", Text = "-123450101" },
+            new Data(19999, 1, 1) { Pattern = "yyyyVMM dd", Text = "19999V01 01" },
+            new Data(19999, 1, 1) { Pattern = "yyyy%VMM dd", Text = "19999V01 01" },
+            new Data(19999, 1, 1) { Pattern = "yyyy'0'MM dd", Text = "19999001 01" },
+            new Data(19999, 1, 1) { Pattern = "yyyy''0MM dd", Text = "19999001 01" },
+            new Data(19999, 1, 1) { Pattern = @"yyyy\0MM dd", Text = "19999001 01" },
         };
 
         internal static Data[] FormatAndParseData = {
@@ -185,13 +193,23 @@ namespace NodaTime.Test.Text
             new Data(9999, 1, 1) { Pattern = "yyyyy MM dd", Text = "09999 01 01" },
             new Data(-9999, 1, 1) { Pattern = "yyyyy MM dd", Text = "-09999 01 01" },
 
-            // 4-or-5 digit year handling
-            new Data(19999, 1, 1) { Pattern = "rrrr MM dd", Text = "19999 01 01" },
-            new Data(-19999, 1, 1) { Pattern = "rrrr MM dd", Text = "-19999 01 01" },
-            new Data(9999, 1, 1) { Pattern = "rrrr MM dd", Text = "9999 01 01" },
-            new Data(-9999, 1, 1) { Pattern = "rrrr MM dd", Text = "-9999 01 01" },
-            new Data(999, 1, 1) { Pattern = "rrrr MM dd", Text = "0999 01 01" },
-            new Data(-999, 1, 1) { Pattern = "rrrr MM dd", Text = "-0999 01 01" },
+            // 4-or-5 digit year handling. The number of digits to parse years up to is
+            // set to 5 because the following character is a space.
+            new Data(19999, 1, 1) { Pattern = "yyyy MM dd", Text = "19999 01 01" },
+            new Data(-19999, 1, 1) { Pattern = "yyyy MM dd", Text = "-19999 01 01" },
+            new Data(9999, 1, 1) { Pattern = "yyyy MM dd", Text = "9999 01 01" },
+            new Data(-9999, 1, 1) { Pattern = "yyyy MM dd", Text = "-9999 01 01" },
+            new Data(999, 1, 1) { Pattern = "yyyy MM dd", Text = "0999 01 01" },
+            new Data(-999, 1, 1) { Pattern = "yyyy MM dd", Text = "-0999 01 01" },
+
+            // Year at end of pattern: can't be ambiguous.
+            new Data(19999, 1, 1) { Pattern = "ddMMyyyy", Text = "010119999" },
+
+            // Quoted non-digit after year: can't be ambiguous.
+            new Data(19999, 1, 1) { Pattern = "yyyy'Y'MM dd", Text = "19999Y01 01" },
+            new Data(19999, 1, 1) { Pattern = "yyyy'V'MM dd", Text = "19999V01 01" },
+            new Data(19999, 1, 1) { Pattern = "yyyy'V0'MM dd", Text = "19999V001 01" },
+            new Data(19999, 1, 1) { Pattern = @"yyyy\VMM dd", Text = "19999V01 01" },
         };
 
         internal static IEnumerable<Data> ParseData = ParseOnlyData.Concat(FormatAndParseData);

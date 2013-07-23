@@ -8,7 +8,7 @@ using NodaTime.Properties;
 namespace NodaTime.Text.Patterns
 {
     /// <summary>
-    /// Extends <see cref="TextCursor"/> to simplify parsing patterns such as "rrrr-MM-dd".
+    /// Extends <see cref="TextCursor"/> to simplify parsing patterns such as "yyyy-MM-dd".
     /// </summary>
     internal sealed class PatternCursor : TextCursor
     {

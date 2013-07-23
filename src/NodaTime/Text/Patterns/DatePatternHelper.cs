@@ -19,26 +19,6 @@ namespace NodaTime.Text.Patterns
     internal static class DatePatternHelper
     {
         /// <summary>
-        /// Creates a character handler for the 4-or-5 digit year specifier.
-        /// </summary>
-        internal static CharacterHandler<TResult, TBucket> Create4Or5DigitYearHandler<TResult, TBucket>
-            (NodaFunc<TResult, int> centuryGetter, NodaFunc<TResult, int> yearGetter, NodaAction<TBucket, int> setter)
-            where TBucket : ParseBucket<TResult>
-        {
-            return (pattern, builder) =>
-            {
-                int count = pattern.GetRepeatCount(4);
-                if (count < 4)
-                {
-                    throw new InvalidPatternException(Messages.Parse_RepeatCountUnderMinimum, 'r', 4);
-                }
-                builder.AddField(PatternFields.Year, pattern.Current);
-                builder.AddParseValueAction(4, 5, 'y', -99999, 99999, setter);
-                builder.AddFormatAction((value, sb) => FormatHelper.LeftPad(yearGetter(value), 4, sb));
-            };
-        }
-
-        /// <summary>
         /// Creates a character handler for the year specifier (y).
         /// </summary>
         internal static CharacterHandler<TResult, TBucket> CreateYearHandler<TResult, TBucket>
@@ -61,17 +41,93 @@ namespace NodaTime.Text.Patterns
                     case 3:
                         // Maximum value will be determined later.
                         // Three or more digits (ick).
-                        builder.AddParseValueAction(count, 5, 'y', -99999, 99999, setter);
-                        builder.AddFormatAction((value, sb) => FormatHelper.LeftPad(yearGetter(value), count, sb));
+                        builder.AddParseValueAction(3, 5, 'y', -99999, 99999, setter);
+                        builder.AddFormatAction((value, sb) => FormatHelper.LeftPad(yearGetter(value), 3, sb));
                         break;
-                     default:
+                    case 4:
+                        // Left-pad to 4 digits when formatting. Parse either exactly 4 or up to 5 digits depending
+                        // on the *next* character of the padding.
+                        bool parseExactly4 = CheckIfNextCharacterMightBeDigit(pattern);
+                        builder.AddParseValueAction(4, parseExactly4 ? 4 : 5, 'y', -99999, 99999, setter);
+                        builder.AddFormatAction((value, sb) => FormatHelper.LeftPad(yearGetter(value), 4, sb));
+                        break;
+                    case 5:
                         // Maximum value will be determined later.
                         // Note that the *exact* number of digits are required; not just "at least count".
                         builder.AddParseValueAction(count, count, 'y', -99999, 99999, setter);
-                        builder.AddFormatAction((value, sb) => FormatHelper.LeftPad(yearGetter(value), count, sb));
+                        builder.AddFormatAction((value, sb) => FormatHelper.LeftPad(yearGetter(value), 5, sb));
                         break;
+                    default:
+                        throw new InvalidOperationException("Bug in Noda Time; invalid count for year went undetected.");
                 }
             };
+        }
+
+        /// <summary>
+        /// Returns true if the next character in the pattern might represent a digit from another value (e.g. a different
+        /// field). Returns false otherwise, e.g. if we've reached the end of the pattern, or the next character is a literal
+        /// non-digit. 
+        /// </summary>
+        private static bool CheckIfNextCharacterMightBeDigit(PatternCursor pattern)
+        {
+            int originalIndex = pattern.Index;
+            try
+            {
+                if (!pattern.MoveNext())
+                {
+                    return false;
+                }
+                char next = pattern.Current;
+                // If we've got an unescaped letter, assume it could be a field.
+                // If we've got an unescaped digit, it's a no-brainer.
+                if ((next >= '0' && next <= '9') || (next >= 'a' && next <= 'z') || (next >= 'A' && next <= 'Z'))
+                {
+                    return true;
+                }
+                // A % is tricky - could be any number of things. Act conservatively.
+                if (next == '%')
+                {
+                    return true;
+                }
+                // Quoting: find the unquoted text, and see whether it starts with a non-digit.
+                if (next == '\'' || next == '\"')
+                {
+                    // If this throws, catch it and let it get thrown later, in the right context.
+                    try
+                    {
+                        string quoted = pattern.GetQuotedString(next);
+                        // Empty quotes - could be trying to disguise a digit afterwards...
+                        if (quoted.Length == 0)
+                        {
+                            return true;
+                        }
+                        char firstQuoted = quoted[0];
+                        // Check if the quoted string starts with a digit, basically.
+                        return firstQuoted >= '0' && firstQuoted <= '9';
+                    }
+                    catch (InvalidPatternException)
+                    {
+                        // Doesn't really matter...
+                        return true;
+                    }
+                }
+                if (next == '\\')
+                {
+                    if (!pattern.MoveNext())
+                    {
+                        return true; // Doesn't really matter; we'll throw an exception soon anyway.
+                    }
+                    char quoted = pattern.Current;
+                    return quoted >= '0' && quoted <= '9';
+                }
+                // Could be a date/time separator, but otherwise it's just something that we'll include
+                // as a literal and won't be a digit.
+                return false;
+            }
+            finally
+            {
+                pattern.Move(originalIndex);
+            }
         }
 
         /// <summary>

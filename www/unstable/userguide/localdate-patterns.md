@@ -38,16 +38,6 @@ For the meanings of "absolute" years and text handling, see later details.
   </thead>
   <tbody>
     <tr>
-      <td><code>rrrr</code></td>
-      <td>Four or five digit year, with an optional leading `-` sign.
-        This is equivalent to yyyy for values in the range [-9999, 9999] but
-        allows 5-digit years to be parsed as well. As this consumes 5 digits
-        where they are available, this should not be followed by another numeric
-        field. (For example, a pattern of "rrrr-MM-dd" is sensible; a pattern of
-        "rrrrMMdd" is not.) Only "rrrr" is valid; other repeat counts are rejected.
-      </td>
-    </tr>
-    <tr>
       <td><code>y</code> or <code>yy</code></td>
       <td>
         Two digit absolute year with an optional leading `-` sign; a single <code>y</code> allows up to two digits to be parsed,
@@ -79,19 +69,22 @@ For the meanings of "absolute" years and text handling, see later details.
       </td>
     </tr>
     <tr>
-      <td><code>yyyy</code> or <code>yyyyy</code>/td>
+      <td><code>yyyy</code></td>
       <td>
-        The absolute year as 4 digits with an optional leading `-` sign.
+        The absolute year as 4 or 5 digits with an optional leading `-` sign.
         If the absolute year is outside the range [-9999, 9999] the
         value will be formatted (with the excess digit), but
-        the result cannot be parsed back to the original value.
-        In practice, years outside this range are rare.
-        Use the "rrrr" or "yyyyy" pattern to round-trip all values.
-      </td>
-      <td>
-        915: => <code>0915</code> <br />
-        2012: => <code>2012</code> <br />
-        12345: => <code>12345</code> <br />
+        the result may not be parsed back to the original value.
+        If the next character in the pattern represents a literal
+        non-digit, or a non-alphanumeric character, or this appears
+        at the end of the pattern, then up to five digits will be
+        parsed. Otherwise, only exactly 4 digits will be parsed. This is
+        to avoid a pattern such as "yyyyMMdd" from becoming ambiguous or
+        hard to parse, while allowing "yyyy-MM-dd" to handle 5-digit years
+        in a convenient fashion. (The detection of "5 digits would be okay"
+        is quite conservative; "yyyyVMMdd" wouldn't handle 5-digit years,
+        but "yyyy'V'MMdd" would, even though the two patterns are otherwise
+        equivalent. This algorithm may change over time.)
       </td>
     </tr>
     <tr>
