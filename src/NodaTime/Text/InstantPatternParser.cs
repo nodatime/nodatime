@@ -117,6 +117,16 @@ namespace NodaTime.Text
                 {
                     return maxLabel;
                 }
+                if (value.Ticks < CalendarSystem.Iso.MinTicks)
+                {
+                    return string.Format("{0} {1} ticks is earlier than the earliest supported ISO calendar value.",
+                        InstantPattern.OutOfRangeLabel, value.Ticks);
+                }
+                if (value.Ticks > CalendarSystem.Iso.MaxTicks)
+                {
+                    return string.Format("{0} {1} ticks is later than the latest supported ISO calendar value.",
+                        InstantPattern.OutOfRangeLabel, value.Ticks);
+                }
                 return pattern.Format(new LocalDateTime(new LocalInstant(value.Ticks)));
             }
 

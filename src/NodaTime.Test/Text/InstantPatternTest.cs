@@ -80,6 +80,29 @@ namespace NodaTime.Test.Text
                 pattern.Parse(InstantPattern.GeneralPattern.Format(NodaConstants.UnixEpoch)).Value);
         }
 
+        [Test]
+        public void OutOfRange_Low()
+        {
+            var ticks = CalendarSystem.Iso.MinTicks - 1;
+            var formatted = InstantPattern.ExtendedIsoPattern.Format(new Instant(ticks));
+            StringAssert.StartsWith(InstantPattern.OutOfRangeLabel, formatted);
+        }
+
+        [Test]
+        public void OutOfRange_High()
+        {
+            var ticks = CalendarSystem.Iso.MaxTicks + 1;
+            var formatted = InstantPattern.ExtendedIsoPattern.Format(new Instant(ticks));
+            StringAssert.StartsWith(InstantPattern.OutOfRangeLabel, formatted);
+        }
+
+        [Test]
+        public void Extremities()
+        {
+            AssertRoundTrip(new Instant(CalendarSystem.Iso.MinTicks), InstantPattern.ExtendedIsoPattern);
+            AssertRoundTrip(new Instant(CalendarSystem.Iso.MaxTicks), InstantPattern.ExtendedIsoPattern);
+        }
+
         /// <summary>
         /// Common test data for both formatting and parsing. A test should be placed here unless is truly
         /// cannot be run both ways. This ensures that as many round-trip type tests are performed as possible.
