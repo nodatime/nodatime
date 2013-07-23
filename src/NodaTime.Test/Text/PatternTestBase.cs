@@ -7,6 +7,7 @@ using System.Globalization;
 using System.Linq;
 using NUnit.Framework;
 using NodaTime.Calendars;
+using NodaTime.Text;
 
 namespace NodaTime.Test.Text
 {
@@ -44,6 +45,13 @@ namespace NodaTime.Test.Text
         public void Format(PatternTestData<T> data)
         {
             data.TestFormat();
+        }
+
+        protected void AssertRoundTrip(T value, IPattern<T> pattern)
+        {
+            string text = pattern.Format(value);
+            var parseResult = pattern.Parse(text);
+            Assert.AreEqual(value, parseResult.Value);            
         }
 
         /// <summary>
