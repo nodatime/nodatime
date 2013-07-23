@@ -64,24 +64,7 @@ namespace NodaTime.Text.Patterns
                         builder.AddParseValueAction(count, 5, 'y', -99999, 99999, setter);
                         builder.AddFormatAction((value, sb) => FormatHelper.LeftPad(yearGetter(value), count, sb));
                         break;
-                    case 4:
-                        // Exactly four digits, with validation when formatting.
-                        // Note that the *exact* number of digits are required; not just "at least count".
-                        builder.AddParseValueAction(count, count, 'y', -99999, 99999, setter);
-                        builder.AddFormatAction((value, sb) => {
-                            int year = yearGetter(value);
-                            if (year < -9999)
-                            {
-                                throw new ArgumentOutOfRangeException("Unable to format value; year is earlier than -9999");
-                            }
-                            if (year > 9999)
-                            {
-                                throw new ArgumentOutOfRangeException("Unable to format value; year is later than 9999");
-                            }
-                            FormatHelper.LeftPad(yearGetter(value), count, sb);
-                        });
-                        break;
-                     case 5:
+                     default:
                         // Maximum value will be determined later.
                         // Note that the *exact* number of digits are required; not just "at least count".
                         builder.AddParseValueAction(count, count, 'y', -99999, 99999, setter);

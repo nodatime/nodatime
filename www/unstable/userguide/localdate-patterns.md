@@ -81,15 +81,27 @@ For the meanings of "absolute" years and text handling, see later details.
     <tr>
       <td><code>yyyy</code> or <code>yyyyy</code>/td>
       <td>
-        The absolute year as an exact number of digits with
-        an optional leading `-` sign.
-        If the absolute year cannot be represented with the
-        given number of digits, an 
-        <code>ArgumentOutOfRangeException</code> is thrown.
+        The absolute year as 4 digits with an optional leading `-` sign.
+        If the absolute year is outside the range [-9999, 9999] the
+        value will be formatted (with the excess digit), but
+        the result cannot be parsed back to the original value.
+        In practice, years outside this range are rare.
+        Use the "rrrr" or "yyyyy" pattern to round-trip all values.
       </td>
       <td>
-        2012: <code>yyyy</code> => <code>2012</code> <br />
-        2012: <code>yyyyy</code> => <code>02012</code> <br />
+        915: => <code>0915</code> <br />
+        2012: => <code>2012</code> <br />
+        12345: => <code>12345</code> <br />
+      </td>
+    </tr>
+    <tr>
+      <td><code>yyyyy</code>/td>
+      <td>
+        The absolute year as exactly 5 digits with an optional leading `-` sign.
+      </td>
+      <td>
+        2012: => <code>02012</code> <br />
+        12345: => <code>12345</code> <br />
       </td>
     </tr>
 	<tr>

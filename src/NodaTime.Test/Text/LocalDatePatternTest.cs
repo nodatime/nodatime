@@ -41,7 +41,7 @@ namespace NodaTime.Test.Text
             new Data { Pattern = "r MM yyyy", Message = Messages.Parse_RepeatCountUnderMinimum, Parameters = { 'r', 4 } },
             new Data { Pattern = "rr MM yyyy", Message = Messages.Parse_RepeatCountUnderMinimum, Parameters = { 'r', 4 } },
             new Data { Pattern = "rrr MM yyyy", Message = Messages.Parse_RepeatCountUnderMinimum, Parameters = { 'r', 4 } },
-            new Data { Pattern = "rrrrr MM yyyy", Message = Messages.Parse_RepeatCountUnderMinimum, Parameters = { 'r', 4 } },
+            new Data { Pattern = "rrrrr MM yyyy", Message = Messages.Parse_RepeatCountExceeded, Parameters = { 'r', 4 } },
         };
 
         internal static Data[] ParseFailureData = {
@@ -106,6 +106,10 @@ namespace NodaTime.Test.Text
         internal static Data[] FormatOnlyData = {
             // Would parse back to 2011
             new Data(1811, 7, 3) { Pattern = "yy M d", Text = "11 7 3" },
+
+            // We can't round-trip this data, but at least we don't break.
+            new Data(12345, 1, 1) { Pattern = "yyyy-MM-dd", Text = "12345-01-01" },
+            new Data(-12345, 1, 1) { Pattern = "yyyy-MM-dd", Text = "-12345-01-01" },
         };
 
         internal static Data[] FormatAndParseData = {
@@ -192,18 +196,6 @@ namespace NodaTime.Test.Text
 
         internal static IEnumerable<Data> ParseData = ParseOnlyData.Concat(FormatAndParseData);
         internal static IEnumerable<Data> FormatData = FormatOnlyData.Concat(FormatAndParseData);
-
-        [Test]
-        public void FourDigitYearOutOfRange()
-        {
-            var pattern = LocalDatePattern.CreateWithInvariantCulture("yyyy-MM-dd");
-            Assert.Throws<ArgumentOutOfRangeException>(() => pattern.Format(new LocalDate(10000, 1, 1)));
-            Assert.Throws<ArgumentOutOfRangeException>(() => pattern.Format(new LocalDate(-10000, 1, 1)));
-
-            // Just to prove it doesn't throw with 9999...
-            pattern.Format(new LocalDate(9999, 1, 1));
-            pattern.Format(new LocalDate(-9999, 1, 1));
-        }
         
         [Test]
         [TestCaseSource(typeof(Cultures), "AllCultures")]
