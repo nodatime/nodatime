@@ -31,7 +31,15 @@ namespace NodaTime.Text
         private readonly ZoneLocalMappingResolver resolver;
         private readonly IDateTimeZoneProvider zoneProvider;
 
+        /// <summary>
+        /// Returns an invariant local date/time pattern based on ISO-8601 (down to the tick) including offset from UTC and zone ID.
+        /// The calendar system is not formatted as part of this pattern, and it cannot be used for parsing.
+        /// </summary>
         public static ZonedDateTimePattern ExtendedFormatOnlyInvariantPattern { get { return Patterns.ExtendedFormatOnlyPatternImpl; } }
+        /// <summary>
+        /// Returns an invariant local date/time pattern based on ISO-8601 (down to the second) including offset from UTC and zone ID.
+        /// The calendar system is not formatted as part of this pattern, and it cannot be used for parsing.
+        /// </summary>
         public static ZonedDateTimePattern GeneralFormatOnlyInvariantPattern { get { return Patterns.GeneralFormatOnlyPatternImpl; } }
 
         /// <summary>
