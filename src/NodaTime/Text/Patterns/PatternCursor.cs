@@ -8,7 +8,7 @@ using NodaTime.Properties;
 namespace NodaTime.Text.Patterns
 {
     /// <summary>
-    /// Extends <see cref="TextCursor"/> to simplify parsing patterns such as "yyyy-MM-dd".
+    /// Extends <see cref="TextCursor"/> to simplify parsing patterns such as "rrrr-MM-dd".
     /// </summary>
     internal sealed class PatternCursor : TextCursor
     {
@@ -60,18 +60,7 @@ namespace NodaTime.Text.Patterns
         /// <returns>The repetition count which is alway at least <c>1</c>.</returns>
         internal int GetRepeatCount(int maximumCount)
         {
-            return GetRepeatCount(maximumCount, Current);
-        }
-
-        /// <summary>
-        /// Gets the pattern repeat count. The cursor is left on the final character of the
-        /// repeated sequence.
-        /// </summary>
-        /// <param name="maximumCount">The maximum number of repetitions allowed.</param>
-        /// <param name="patternCharacter">The pattern character to count.</param>
-        /// <returns>The repetition count which is alway at least <c>1</c>.</returns>
-        internal int GetRepeatCount(int maximumCount, char patternCharacter)
-        {
+            char patternCharacter = Current;
             int startPos = Index;
             while (MoveNext() && Current == patternCharacter)
             {

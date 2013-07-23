@@ -17,7 +17,7 @@ namespace NodaTime.Text
     /// <remarks>
     /// Supported patterns:
     /// <list type="bullet">
-    ///   <item><description>g: general; the UTC ISO-8601 instant in the style yyyy-MM-ddTHH:mm:ssZ</description></item>
+    ///   <item><description>g: general; the UTC ISO-8601 instant in the style rrrr-MM-ddTHH:mm:ssZ</description></item>
     ///   <item><description>n: numeric; the number of ticks since the epoch using thousands separators</description></item>
     ///   <item><description>d: numeric; the number of ticks since the epoch without thousands separators</description></item>
     /// </list>
@@ -26,7 +26,7 @@ namespace NodaTime.Text
     {
         private readonly string minLabel;
         private readonly string maxLabel;
-        private const string GeneralPatternText = "yyyy'-'MM'-'dd'T'HH':'mm':'ss'Z'";
+        private const string GeneralPatternText = "rrrr'-'MM'-'dd'T'HH':'mm':'ss'Z'";
 
         internal InstantPatternParser(string minLabel, string maxLabel)
         {

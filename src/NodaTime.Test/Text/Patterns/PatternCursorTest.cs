@@ -128,16 +128,16 @@ namespace NodaTime.Test.Text.Patterns
         public void TestGetRepeatCount_ExceedsMax()
         {
             var cursor = new PatternCursor("aaa");
-            char ch = GetNextCharacter(cursor);
-            Assert.Throws<InvalidPatternException>(() => cursor.GetRepeatCount(2, ch));
+            Assert.IsTrue(cursor.MoveNext());
+            Assert.Throws<InvalidPatternException>(() => cursor.GetRepeatCount(2));
         }
 
         [Test]
         public void TestGetRepeatCount_One()
         {
             var cursor = new PatternCursor("a");
-            char ch = GetNextCharacter(cursor);
-            int actual = cursor.GetRepeatCount(10, ch);
+            Assert.IsTrue(cursor.MoveNext());
+            int actual = cursor.GetRepeatCount(10);
             Assert.AreEqual(1, actual);
             ValidateCurrentCharacter(cursor, 0, 'a');
         }
@@ -146,8 +146,8 @@ namespace NodaTime.Test.Text.Patterns
         public void TestGetRepeatCount_StopsOnNonMatch()
         {
             var cursor = new PatternCursor("aaadaa");
-            char ch = GetNextCharacter(cursor);
-            int actual = cursor.GetRepeatCount(10, ch);
+            Assert.IsTrue(cursor.MoveNext());
+            int actual = cursor.GetRepeatCount(10);
             Assert.AreEqual(3, actual);
             ValidateCurrentCharacter(cursor, 2, 'a');
         }
@@ -156,8 +156,8 @@ namespace NodaTime.Test.Text.Patterns
         public void TestGetRepeatCount_Three()
         {
             var cursor = new PatternCursor("aaa");
-            char ch = GetNextCharacter(cursor);
-            int actual = cursor.GetRepeatCount(10, ch);
+            Assert.IsTrue(cursor.MoveNext());
+            int actual = cursor.GetRepeatCount(10);
             Assert.AreEqual(3, actual);
             ValidateCurrentCharacter(cursor, 2, 'a');
         }
