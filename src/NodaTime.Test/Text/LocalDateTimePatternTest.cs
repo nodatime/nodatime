@@ -32,7 +32,7 @@ namespace NodaTime.Test.Text
         // The standard example date/time used in all the MSDN samples, which means we can just cut and paste
         // the expected results of the standard patterns.
         internal static readonly LocalDateTime MsdnStandardExample = new LocalDateTime(2009, 06, 15, 13, 45, 30, 90);
-        private static readonly LocalDateTime MsdnStandardExampleNoMillis = new LocalDateTime(2009, 06, 15, 13, 45, 30);
+        internal static readonly LocalDateTime MsdnStandardExampleNoMillis = new LocalDateTime(2009, 06, 15, 13, 45, 30);
         private static readonly LocalDateTime MsdnStandardExampleNoSeconds = new LocalDateTime(2009, 06, 15, 13, 45);
 
         internal static readonly Data[] InvalidPatternData = {
