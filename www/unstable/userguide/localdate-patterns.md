@@ -72,13 +72,14 @@ For the meanings of "absolute" years and text handling, see later details.
       <td><code>yyyy</code></td>
       <td>
         The absolute year as 4 or 5 digits with an optional leading `-` sign.
+        <p>
         If the absolute year is outside the range [-9999, 9999] the
         value will be formatted (with the excess digit), but
         the result may not be parsed back to the original value.
         If the next character in the pattern represents a literal
         non-digit, or a non-alphanumeric character, or this appears
         at the end of the pattern, then up to five digits will be
-        parsed. Otherwise, only exactly 4 digits will be parsed. This is
+        parsed. Otherwise, only exactly 4 digits will be parsed.<p>This is
         to avoid a pattern such as "yyyyMMdd" from becoming ambiguous or
         hard to parse, while allowing "yyyy-MM-dd" to handle 5-digit years
         in a convenient fashion. (The detection of "5 digits would be okay"
@@ -88,7 +89,7 @@ For the meanings of "absolute" years and text handling, see later details.
       </td>
     </tr>
     <tr>
-      <td><code>yyyyy</code>/td>
+      <td><code>yyyyy</code></td>
       <td>
         The absolute year as exactly 5 digits with an optional leading `-` sign.
       </td>
