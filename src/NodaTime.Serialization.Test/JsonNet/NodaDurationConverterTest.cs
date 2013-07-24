@@ -32,14 +32,25 @@ namespace NodaTime.Serialization.Test.JsonNet
         {
             AssertRoundTrip(Duration.FromHours(48) + Duration.FromSeconds(3) + Duration.FromTicks(1234567), "\"48:00:03.1234567\"");
             AssertRoundTrip(Duration.FromHours(48) + Duration.FromSeconds(3) + Duration.FromTicks(1230000), "\"48:00:03.123\"");
-            AssertRoundTrip(Duration.FromHours(48) + Duration.FromSeconds(3) + Duration.FromTicks(1234000), "\"48:00:03.1234000\"");
+            AssertRoundTrip(Duration.FromHours(48) + Duration.FromSeconds(3) + Duration.FromTicks(1234000), "\"48:00:03.1234\"");
             AssertRoundTrip(Duration.FromHours(48) + Duration.FromSeconds(3) + Duration.FromTicks(12345), "\"48:00:03.0012345\"");
         }
 
         [Test]
-        public void ParsePartialFractionalSeconds()
+        public void MinAndMaxValues()
         {
-            var parsed = JsonConvert.DeserializeObject<Duration>("\"25:10:00.1234\"", Converter);
+            AssertRoundTrip(Duration.FromTicks(long.MaxValue), "\"256204778:48:05.4775807\"");
+            AssertRoundTrip(Duration.FromTicks(long.MinValue), "\"-256204778:48:05.4775808\"");
+        }
+
+        /// <summary>
+        /// The pre-release converter used either 3 or 7 decimal places for fractions of a second; never less.
+        /// This test checks that the "new" converter (using DurationPattern) can still parse the old output.
+        /// </summary>
+        [Test]
+        public void ParsePartialFractionalSecondsWithTrailingZeroes()
+        {
+            var parsed = JsonConvert.DeserializeObject<Duration>("\"25:10:00.1234000\"", Converter);
             Assert.AreEqual(Duration.FromHours(25) + Duration.FromMinutes(10) + Duration.FromTicks(1234000), parsed);
         }
     }
