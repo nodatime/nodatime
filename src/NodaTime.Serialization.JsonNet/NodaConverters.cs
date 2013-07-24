@@ -81,7 +81,7 @@ namespace NodaTime.Serialization.JsonNet
         /// <summary>
         /// Converter for durations.
         /// </summary>
-        public static readonly JsonConverter DurationConverter = new NodaDurationConverter();
+        public static readonly JsonConverter DurationConverter = new NodaPatternConverter<Duration>(DurationPattern.CreateWithInvariantCulture("-HH:mm:ss.FFFFFFF"));
 
         /// <summary>
         /// Round-tripping converter for periods. Use this when you really want to preserve information,
