@@ -11,24 +11,36 @@ namespace NodaTime.Serialization.Test.JsonNet
     [TestFixture]
     public class NodaDurationConverterTest
     {
-        private readonly JsonConverter converter = NodaConverters.DurationConverter;
+        private static readonly JsonConverter Converter = NodaConverters.DurationConverter;
 
-        [Test]
-        public void Serialize()
+        private static void AssertRoundTrip(Duration value, string expectedJson)
         {
-            var duration = Duration.FromHours(48);
-            var json = JsonConvert.SerializeObject(duration, Formatting.None, converter);
-            string expectedJson = "\"48:00:00\"";
+            var json = JsonConvert.SerializeObject(value, Formatting.None, Converter);
             Assert.AreEqual(expectedJson, json);
+            var parsed = JsonConvert.DeserializeObject<Duration>(json, Converter);
+            Assert.AreEqual(value, parsed);
         }
 
         [Test]
-        public void Deserialize()
+        public void WholeSeconds()
         {
-            string json = "\"48:00:00\"";
-            var duration = JsonConvert.DeserializeObject<Duration>(json, converter);
-            var expectedDuration = Duration.FromHours(48);
-            Assert.AreEqual(expectedDuration, duration);
+            AssertRoundTrip(Duration.FromHours(48), "\"48:00:00\"");
+        }
+
+        [Test]
+        public void FractionalSeconds()
+        {
+            AssertRoundTrip(Duration.FromHours(48) + Duration.FromSeconds(3) + Duration.FromTicks(1234567), "\"48:00:03.1234567\"");
+            AssertRoundTrip(Duration.FromHours(48) + Duration.FromSeconds(3) + Duration.FromTicks(1230000), "\"48:00:03.123\"");
+            AssertRoundTrip(Duration.FromHours(48) + Duration.FromSeconds(3) + Duration.FromTicks(1234000), "\"48:00:03.1234000\"");
+            AssertRoundTrip(Duration.FromHours(48) + Duration.FromSeconds(3) + Duration.FromTicks(12345), "\"48:00:03.0012345\"");
+        }
+
+        [Test]
+        public void ParsePartialFractionalSeconds()
+        {
+            var parsed = JsonConvert.DeserializeObject<Duration>("\"25:10:00.1234\"", Converter);
+            Assert.AreEqual(Duration.FromHours(25) + Duration.FromMinutes(10) + Duration.FromTicks(1234000), parsed);
         }
     }
 }
