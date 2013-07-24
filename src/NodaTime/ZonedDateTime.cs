@@ -560,7 +560,7 @@ namespace NodaTime
         /// <returns>A string representation of this value.</returns>
         public override string ToString()
         {
-            return ZonedDateTimePattern.GeneralFormatOnlyInvariantPattern.Format(this);
+            return ZonedDateTimePattern.GeneralFormatOnlyIsoPattern.Format(this);
         }
 
         /// <summary>

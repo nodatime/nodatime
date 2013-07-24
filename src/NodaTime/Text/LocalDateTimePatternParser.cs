@@ -73,15 +73,15 @@ namespace NodaTime.Text
                 char patternCharacter = patternText[0];
                 if (patternCharacter == 'o' || patternCharacter == 'O')
                 {
-                    return LocalDateTimePattern.Patterns.BclRoundTripPattern;
+                    return LocalDateTimePattern.Patterns.BclRoundtripPatternImpl;
                 }
                 if (patternCharacter == 'r')
                 {
-                    return LocalDateTimePattern.Patterns.FullRoundTripPattern;
+                    return LocalDateTimePattern.Patterns.FullRoundtripPatternImpl;
                 }
                 if (patternCharacter == 's')
                 {
-                    return LocalDateTimePattern.Patterns.SortablePattern;
+                    return LocalDateTimePattern.Patterns.GeneralIsoPatternImpl;
                 }
                 patternText = ExpandStandardFormatPattern(patternCharacter, formatInfo);
                 if (patternText == null)
