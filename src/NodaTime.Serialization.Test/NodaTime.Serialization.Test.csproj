@@ -54,7 +54,6 @@
   <ItemGroup>
     <Compile Include="JsonNet\NodaConverterBaseTest.cs" />
     <Compile Include="JsonNet\NodaDateTimeZoneConverterTest.cs" />
-    <Compile Include="JsonNet\NodaDurationConverterTest.cs" />
     <Compile Include="JsonNet\NodaInstantConverterTest.cs" />
     <Compile Include="JsonNet\NodaIntervalConverterTest.cs" />
     <Compile Include="JsonNet\NodaPatternConverterTest.cs" />
