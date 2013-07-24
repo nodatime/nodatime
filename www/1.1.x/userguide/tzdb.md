@@ -21,7 +21,7 @@ the lack of full resource support in Portable Class Libraries. In 1.1, a new fil
 to read this format from any stream. If you're not using 1.0, we strongly advise you to use the new format; support for the resource
 format will be removed in Noda Time 2.0.
 
-For more details on the exact formats, please see the [documentation in the developer guide](http://noda-time.googlecode.com/hg/docs/developer/tzdb-file-format.html)
+For more details on the exact formats, please see the [documentation in the developer guide](http://nodatime.org/developer/tzdb-file-format.html)
 
 Creating and using a "NodaZoneData" file (1.1+ format)
 ======================================================

@@ -10,9 +10,11 @@ _with_ Noda Time, see the [User Guide][] instead.
 Resources
 ---------
 
-- [Project home page][home]
+- [Project source and issue site][home]
+- [Project web site][web]
 - [Current API documentation][api]
 
-[User Guide]: ../userguide/
+[User Guide]: /{{ site.userguide }}
 [home]: http://noda-time.googlecode.com
-[api]: ../api/Index.html
+[web]: http://nodatime.org
+[api]: /unstable/api/Index.html
