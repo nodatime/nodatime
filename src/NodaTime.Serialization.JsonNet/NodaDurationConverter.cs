@@ -25,14 +25,9 @@ namespace NodaTime.Serialization.JsonNet
             var durationText = (string)reader.Value;
 
             var parts = durationText.Split(':');
-            if (parts.Length < 2)
+            if (parts.Length != 3)
             {
-                throw new InvalidDataException("A Duration must have at least hours and minutes in hh:mm format.");
-            }
-
-            if (parts.Length > 3)
-            {
-                throw new InvalidDataException("Too many components provided for a duration.  Should be in hh:mm:ss.fffffff format.");
+                throw new InvalidDataException("Invalid number of components provided for a duration.  Should be in hh:mm:ss.fffffff format.");
             }
 
             var duration = Duration.Zero;
