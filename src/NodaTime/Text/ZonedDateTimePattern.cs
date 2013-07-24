@@ -21,8 +21,17 @@ namespace NodaTime.Text
     {
         internal static readonly ZonedDateTime DefaultTemplateValue = new LocalDateTime(2000, 1, 1, 0, 0).InUtc();
 
-        // TODO(V1.2): Use "G" instead when we've got standard patterns (and actually use this constant!)
-        private const string DefaultFormatPattern = "yyyy-MM-dd'T'HH:mm:ss z"; // General (long time)
+        /// <summary>
+        /// Returns an zoned local date/time pattern based on ISO-8601 (down to the second) including offset from UTC and zone ID.
+        /// The calendar system is not formatted as part of this pattern, and it cannot be used for parsing.
+        /// </summary>
+        public static ZonedDateTimePattern GeneralFormatOnlyIsoPattern { get { return Patterns.GeneralFormatOnlyPatternImpl; } }
+
+        /// <summary>
+        /// Returns an invariant zoned date/time pattern based on ISO-8601 (down to the tick) including offset from UTC and zone ID.
+        /// The calendar system is not formatted as part of this pattern, and it cannot be used for parsing.
+        /// </summary>
+        public static ZonedDateTimePattern ExtendedFormatOnlyIsoPattern { get { return Patterns.ExtendedFormatOnlyPatternImpl; } }
 
         private readonly string patternText;
         private readonly NodaFormatInfo formatInfo;
@@ -30,17 +39,6 @@ namespace NodaTime.Text
         private readonly ZonedDateTime templateValue;
         private readonly ZoneLocalMappingResolver resolver;
         private readonly IDateTimeZoneProvider zoneProvider;
-
-        /// <summary>
-        /// Returns an invariant local date/time pattern based on ISO-8601 (down to the tick) including offset from UTC and zone ID.
-        /// The calendar system is not formatted as part of this pattern, and it cannot be used for parsing.
-        /// </summary>
-        public static ZonedDateTimePattern ExtendedFormatOnlyInvariantPattern { get { return Patterns.ExtendedFormatOnlyPatternImpl; } }
-        /// <summary>
-        /// Returns an invariant local date/time pattern based on ISO-8601 (down to the second) including offset from UTC and zone ID.
-        /// The calendar system is not formatted as part of this pattern, and it cannot be used for parsing.
-        /// </summary>
-        public static ZonedDateTimePattern GeneralFormatOnlyInvariantPattern { get { return Patterns.GeneralFormatOnlyPatternImpl; } }
 
         /// <summary>
         /// Class whose existence is solely to avoid type initialization order issues, most of which stem

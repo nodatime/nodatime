@@ -20,22 +20,22 @@ namespace NodaTime.Text
     {
         internal static readonly OffsetDateTime DefaultTemplateValue = new LocalDateTime(2000, 1, 1, 0, 0).WithOffset(Offset.Zero);
 
-        // TODO(V1.2): Use "G" instead when we've got standard patterns (and actually use this constant!)
-        private const string DefaultFormatPattern = "yyyy-MM-dd'T'HH:mm:ss z"; // General (long time)
-
-        // TODO(V1.2): Quite possibly change this..
         /// <summary>
-        /// Returns an invariant local date/time pattern based on ISO-8601 including offset from UTC.
+        /// Returns an invariant offset date/time pattern based on ISO-8601 (down to the second), including offset from UTC.
+        /// The calendar system is not parsed or formatted as part of this pattern.
+        /// </summary>
+        public static OffsetDateTimePattern GeneralIsoPattern { get { return Patterns.GeneralIsoPatternImpl; } }
+
+        /// <summary>
+        /// Returns an invariant offset date/time pattern based on ISO-8601 (down to the tick), including offset from UTC.
         /// The calendar system is not parsed or formatted as part of this pattern.
         /// </summary>
         public static OffsetDateTimePattern ExtendedIsoPattern { get { return Patterns.ExtendedIsoPatternImpl; } }
 
-        // TODO(V1.2): Quite possibly change this..
         /// <summary>
-        /// Returns an invariant local date/time pattern based on ISO-8601 including offset from UTC and
-        /// calendar ID.
+        /// Returns an invariant offset date/time pattern based on ISO-8601 (down to the tick) including offset from UTC and calendar ID.
         /// </summary>
-        public static OffsetDateTimePattern RoundtripWithCalendarPattern { get { return Patterns.RoundtripWithCalendarPatternImpl; } }
+        public static OffsetDateTimePattern FullRoundtripPattern { get { return Patterns.FullRoundtripPatternImpl; } }
 
         /// <summary>
         /// Class whose existence is solely to avoid type initialization order issues, most of which stem
@@ -43,8 +43,9 @@ namespace NodaTime.Text
         /// </summary>
         internal static class Patterns
         {
+            internal static readonly OffsetDateTimePattern GeneralIsoPatternImpl = Create("yyyy'-'MM'-'dd'T'HH':'mm':'sso<G>", NodaFormatInfo.InvariantInfo, DefaultTemplateValue);
             internal static readonly OffsetDateTimePattern ExtendedIsoPatternImpl = Create("yyyy'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFFo<G>", NodaFormatInfo.InvariantInfo, DefaultTemplateValue);
-            internal static readonly OffsetDateTimePattern RoundtripWithCalendarPatternImpl = Create("yyyy'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFFo<G> c", NodaFormatInfo.InvariantInfo, DefaultTemplateValue);
+            internal static readonly OffsetDateTimePattern FullRoundtripPatternImpl = Create("yyyy'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFFo<G> c", NodaFormatInfo.InvariantInfo, DefaultTemplateValue);
         }
 
         private readonly string patternText;
