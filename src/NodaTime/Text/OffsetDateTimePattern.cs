@@ -22,18 +22,25 @@ namespace NodaTime.Text
 
         /// <summary>
         /// Returns an invariant offset date/time pattern based on ISO-8601 (down to the second), including offset from UTC.
-        /// The calendar system is not parsed or formatted as part of this pattern.
+        /// The calendar system is not parsed or formatted as part of this pattern. It corresponds to a custom pattern of
+        /// "yyyy'-'MM'-'dd'T'HH':'mm':'sso&lt;G&gt;". This pattern is available as the "G"
+        /// standard pattern (even though it is invariant).
         /// </summary>
         public static OffsetDateTimePattern GeneralIsoPattern { get { return Patterns.GeneralIsoPatternImpl; } }
 
         /// <summary>
         /// Returns an invariant offset date/time pattern based on ISO-8601 (down to the tick), including offset from UTC.
-        /// The calendar system is not parsed or formatted as part of this pattern.
+        /// The calendar system is not parsed or formatted as part of this pattern. It corresponds to a custom pattern of
+        /// "yyyy'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFFo&lt;G&gt;". This will round-trip any values
+        /// in the ISO calendar, and is available as the "o" standard pattern.
         /// </summary>
         public static OffsetDateTimePattern ExtendedIsoPattern { get { return Patterns.ExtendedIsoPatternImpl; } }
 
         /// <summary>
-        /// Returns an invariant offset date/time pattern based on ISO-8601 (down to the tick) including offset from UTC and calendar ID.
+        /// Returns an invariant offset date/time pattern based on ISO-8601 (down to the tick)
+        /// including offset from UTC and calendar ID. It corresponds to a custom pattern of
+        /// "yyyy'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFFo&lt;G&gt; '('c')'". This will round-trip any value in any calendar,
+        /// and is available as the "r" standard pattern.
         /// </summary>
         public static OffsetDateTimePattern FullRoundtripPattern { get { return Patterns.FullRoundtripPatternImpl; } }
 
@@ -45,7 +52,7 @@ namespace NodaTime.Text
         {
             internal static readonly OffsetDateTimePattern GeneralIsoPatternImpl = Create("yyyy'-'MM'-'dd'T'HH':'mm':'sso<G>", NodaFormatInfo.InvariantInfo, DefaultTemplateValue);
             internal static readonly OffsetDateTimePattern ExtendedIsoPatternImpl = Create("yyyy'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFFo<G>", NodaFormatInfo.InvariantInfo, DefaultTemplateValue);
-            internal static readonly OffsetDateTimePattern FullRoundtripPatternImpl = Create("yyyy'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFFo<G> c", NodaFormatInfo.InvariantInfo, DefaultTemplateValue);
+            internal static readonly OffsetDateTimePattern FullRoundtripPatternImpl = Create("yyyy'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFFo<G> '('c')'", NodaFormatInfo.InvariantInfo, DefaultTemplateValue);
         }
 
         private readonly string patternText;
