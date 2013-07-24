@@ -36,6 +36,7 @@ namespace NodaTime.Globalization
         private static readonly string[] LongInvariantMonthNames = (string[]) CultureInfo.InvariantCulture.DateTimeFormat.MonthNames.Clone();
 
         #region Patterns and pattern parsers
+        private static readonly IPatternParser<Duration> GeneralDurationPatternParser = new DurationPatternParser();
         private static readonly IPatternParser<Offset> GeneralOffsetPatternParser = new OffsetPatternParser();
         private static readonly IPatternParser<Instant> GeneralInstantPatternParser = new InstantPatternParser(InstantPattern.DefaultMinLabel, InstantPattern.DefaultMaxLabel);
         private static readonly IPatternParser<LocalTime> GeneralLocalTimePatternParser = new LocalTimePatternParser(LocalTime.Midnight);
@@ -43,6 +44,7 @@ namespace NodaTime.Globalization
         private static readonly IPatternParser<LocalDateTime> GeneralLocalDateTimePatternParser = new LocalDateTimePatternParser(LocalDateTimePattern.DefaultTemplateValue);
 
         private readonly object fieldLock = new object();
+        private FixedFormatInfoPatternParser<Duration> durationPatternParser;
         private FixedFormatInfoPatternParser<Offset> offsetPatternParser;
         private FixedFormatInfoPatternParser<Instant> instantPatternParser;
         private FixedFormatInfoPatternParser<LocalTime> localTimePatternParser;
@@ -186,6 +188,7 @@ namespace NodaTime.Globalization
         /// </summary>
         public CompareInfo CompareInfo { get { return cultureInfo.CompareInfo; } }
 
+        internal FixedFormatInfoPatternParser<Duration> DurationPatternParser { get { return EnsureFixedFormatInitialized(ref durationPatternParser, GeneralDurationPatternParser); } }
         internal FixedFormatInfoPatternParser<Offset> OffsetPatternParser { get { return EnsureFixedFormatInitialized(ref offsetPatternParser, GeneralOffsetPatternParser); } }
         internal FixedFormatInfoPatternParser<Instant> InstantPatternParser { get { return EnsureFixedFormatInitialized(ref instantPatternParser, GeneralInstantPatternParser); } }
         internal FixedFormatInfoPatternParser<LocalTime> LocalTimePatternParser { get { return EnsureFixedFormatInitialized(ref localTimePatternParser, GeneralLocalTimePatternParser); } }

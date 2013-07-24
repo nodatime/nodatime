@@ -181,7 +181,7 @@
     <value>The format matches a prefix of the value string but not the entire string. Part not matching: "{0}".</value>
   </data>
   <data name="Parse_FieldValueOutOfRange" xml:space="preserve">
-    <value>The value {0} is out range for the field '{1}' in the {2} type.</value>
+    <value>The value {0} is out of range for the field '{1}' in the {2} type.</value>
   </data>
   <data name="Parse_FormatElementInvalid" xml:space="preserve">
     <value>The items of the format string array cannot be null or empty.</value>
@@ -248,6 +248,9 @@
   </data>
   <data name="Parse_MonthOutOfRange" xml:space="preserve">
     <value>The month {0} is out of range in year {1}.</value>
+  </data>
+  <data name="Parse_MultipleCapitalDurationFields" xml:space="preserve">
+    <value>Only one of "D", "H", "M" or "S" can occur in a duration format string.</value>
   </data>
   <data name="Parse_NoMatchingCalendarSystem" xml:space="preserve">
     <value>The specified calendar id is not recognized.</value>
