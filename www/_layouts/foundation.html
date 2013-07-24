@@ -56,15 +56,8 @@
 			      	</ul>
 			      </li>
 			      <li class="divider"></li>
-			      <li class="has-dropdown">
-			      	<a href="#" {% if page.navigation == "developer" %}class="active"{% endif %}>Developer Guide</a>
-			      	<ul class="dropdown">
-			      		<li><label>Versions</label></li>
-			      		<li><a href="{{relative}}1.0.x/developer">1.0.x</a></li>
-			      		<li><a href="{{relative}}1.1.x/developer">1.1.x</a></li>
-			      		<li class="divider hide-for-small"></li>
-			      		<li><a href="{{relative}}unstable/developer">Unstable</a></li>
-			      	</ul>
+			      <li>
+                                <a href="{{relative}}developer" {% if page.navigation == "developer" %}class="active"{% endif %}>Developer Guide</a>
 			      </li>
 			      <li class="divider"></li>
 			      <li class="has-dropdown">
