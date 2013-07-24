@@ -36,6 +36,11 @@ namespace NodaTime.Test.Text
             new Data { Pattern = "dd MM yyyy gg", Message = Messages.Parse_EraWithoutYearOfEra },
             // Era specifier and calendar specifier in the same pattern.
             new Data { Pattern = "dd MM YYYY gg c", Message = Messages.Parse_CalendarAndEra },
+
+            // Invalid patterns directly after the yyyy specifier. This will detect the issue early, but then
+            // continue and reject it in the normal path.
+            new Data { Pattern = "yyyy'", Message = Messages.Parse_MissingEndQuote, Parameters = { '\'' } },
+            new Data { Pattern = "yyyy\\", Message = Messages.Parse_EscapeAtEndOfString },
         };
 
         internal static Data[] ParseFailureData = {
