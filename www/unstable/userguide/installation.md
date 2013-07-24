@@ -22,7 +22,7 @@ only); see the [serialization guide](serialization.html) for more information.
 See the ["Building and testing"][building] section in the developer guide for
 instructions on building Noda Time from source.
 
-[building]: ../developer/building.html
+[building]: http://nodatime.org/developer/building.html
 
 System requirements
 -------------------

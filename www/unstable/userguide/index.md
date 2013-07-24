@@ -30,6 +30,6 @@ offline, it's the offline API docs)
 [4]: http://nodatime.org/unstable/userguide/
 [5]: http://nodatime.org/unstable/api/Index.aspx
 [6]: ../api/Index.html
-[Developer guide]: http://nodatime.org/unstable/developer/
+[Developer guide]: http://nodatime.org/developer/
 [so]: http://stackoverflow.com
 [so-tag]: http://stackoverflow.com/questions/tagged/nodatime
