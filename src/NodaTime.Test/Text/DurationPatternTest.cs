@@ -37,6 +37,7 @@ namespace NodaTime.Test.Text
         internal static readonly Data[] InvalidPatternData = {
             new Data { Pattern = "HH:MM", Message = Messages.Parse_MultipleCapitalDurationFields },
             new Data { Pattern = "MM mm", Message = Messages.Parse_RepeatedFieldInPattern, Parameters = { 'm' } },
+            new Data { Pattern = "G", Message = Messages.Parse_UnknownStandardFormat, Parameters = { 'G', typeof(Duration) } },
         };
 
         /// <summary>
