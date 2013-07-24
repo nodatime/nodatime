@@ -583,15 +583,6 @@ namespace NodaTime.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The standard format &quot;{0}&quot; for type {1} cannot contain white space..
-        /// </summary>
-        internal static string Parse_StandardFormatWhitespace {
-            get {
-                return ResourceManager.GetString("Parse_StandardFormatWhitespace", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to The value string does not match a time separator in the format string..
         /// </summary>
         internal static string Parse_TimeSeparatorMismatch {
