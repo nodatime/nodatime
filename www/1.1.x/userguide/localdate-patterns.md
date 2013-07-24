@@ -54,7 +54,7 @@ For the meanings of "absolute" years and text handling, see later details.
       </td>
     </tr>
     <tr>
-      <td><code>yyyy</code></td>
+      <td><code>yyy</code></td>
       <td>
         Three digit absolute year. This will parse up to five digits, but only format to as many as are
 		required, with a minimum of three.
