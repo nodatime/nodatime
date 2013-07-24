@@ -7,5 +7,6 @@ markdown_ext:  markdown,mkd,mkdn,md
 # The latest released version number and date of release.
 latest: 1.1.0
 latest_released_on: April 6th 2013
-# The path to the latest released user guide.
+# The path to the latest released user guide and API documentation.
 userguide: 1.1.x/userguide/
+api: 1.1.x/api/
