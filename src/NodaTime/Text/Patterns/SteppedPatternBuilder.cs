@@ -36,6 +36,8 @@ namespace NodaTime.Text.Patterns
 
         internal NodaFormatInfo FormatInfo { get { return formatInfo; } }
 
+        internal PatternFields UsedFields { get { return usedFields; } }
+
         /// <summary>
         /// Sets this pattern to only be capable of formatting; any attempt to parse using the
         /// built pattern will fail immediately.
@@ -108,7 +110,7 @@ namespace NodaTime.Text.Patterns
         }
 
         /// <summary>
-        /// Registers that a pattern field has been used in this pattern, and returns a suitable error
+        /// Registers that a pattern field has been used in this pattern, and throws a suitable error
         /// result if it's already been used.
         /// </summary>
         internal void AddField(PatternFields field, char characterInPattern)

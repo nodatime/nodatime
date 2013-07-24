@@ -35,6 +35,7 @@ namespace NodaTime.Text.Patterns
         Zone = 1 << 16,
         ZoneAbbreviation = 1 << 17,
         EmbeddedOffset = 1 << 18,
+        TotalDuration = 1 << 19, // D, H, M, or S in a DurationPattern.
 
         AllTimeFields = Hours12 | Hours24 | Minutes | Seconds | FractionalSeconds | AmPm,
         AllDateFields = Year | YearTwoDigits | YearOfEra | MonthOfYearNumeric | MonthOfYearText | DayOfMonth | DayOfWeek | Era | Calendar

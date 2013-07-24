@@ -3,6 +3,7 @@
 // as found in the LICENSE.txt file.
 
 using System;
+using System.Globalization;
 using System.Xml;
 using System.Xml.Schema;
 using NodaTime.Text;
@@ -37,7 +38,7 @@ namespace NodaTime
 #if !PCL
     [Serializable]
 #endif
-    public struct Duration : IEquatable<Duration>, IComparable<Duration>, IComparable, IXmlSerializable
+    public struct Duration : IEquatable<Duration>, IComparable<Duration>, IComparable, IXmlSerializable, IFormattable
 #if !PCL
         , ISerializable
 #endif
@@ -159,17 +160,40 @@ namespace NodaTime
         {
             return Ticks.GetHashCode();
         }
+        #endregion
 
-        // TODO(V1.2): We should *consider* representing this as in the same way as a period.
+        #region Formatting
         /// <summary>
-        /// Gets the value as a <see cref="String"/> including the number of ticks represented by this duration.
+        ///   Returns a <see cref="System.String" /> that represents this instance.
         /// </summary>
-        /// <returns>A string representation of this duration.</returns>
+        /// <returns>
+        ///   A <see cref="System.String" /> that represents this instance.
+        /// </returns>
         public override string ToString()
         {
-            return string.Format("Duration: {0} ticks", Ticks);
+            return DurationPattern.BclSupport.Format(this, null, CultureInfo.CurrentCulture);
         }
-        #endregion  // Object overrides
+
+        /// <summary>
+        ///   Formats the value of the current instance using the specified format.
+        /// </summary>
+        /// <returns>
+        ///   A <see cref="T:System.String" /> containing the value of the current instance in the specified format.
+        /// </returns>
+        /// <param name="patternText">The <see cref="T:System.String" /> specifying the pattern to use.
+        ///   -or- 
+        ///   null to use the default pattern defined for the type of the <see cref="T:System.IFormattable" /> implementation. 
+        /// </param>
+        /// <param name="formatProvider">The <see cref="T:System.IFormatProvider" /> to use to format the value.
+        ///   -or- 
+        ///   null to obtain the numeric format information from the current locale setting of the operating system. 
+        /// </param>
+        /// <filterpriority>2</filterpriority>
+        public string ToString(string patternText, IFormatProvider formatProvider)
+        {
+            return DurationPattern.BclSupport.Format(this, patternText, formatProvider);
+        }
+        #endregion Formatting
 
         #region Operators
         /// <summary>
@@ -566,18 +590,16 @@ namespace NodaTime
         void IXmlSerializable.ReadXml(XmlReader reader)
         {
             Preconditions.CheckNotNull(reader, "reader");
-            var pattern = PeriodPattern.RoundtripPattern;
+            var pattern = DurationPattern.RoundtripPattern;
             string text = reader.ReadElementContentAsString();
-            Period period = pattern.Parse(text).Value;
-            this = period.ToDuration();
+            this = pattern.Parse(text).Value;
         }
 
         /// <inheritdoc />
         void IXmlSerializable.WriteXml(XmlWriter writer)
         {
             Preconditions.CheckNotNull(writer, "writer");
-            Period period = Period.FromTicks(ticks).Normalize();
-            writer.WriteString(PeriodPattern.RoundtripPattern.Format(period));
+            writer.WriteString(DurationPattern.RoundtripPattern.Format(this));
         }
         #endregion
 

@@ -315,7 +315,7 @@ namespace NodaTime.Test.Text
         }*/
 
         /// <summary>
-        /// A container for test data for formatting and parsing <see cref="LocalTime" /> objects.
+        /// A container for test data for formatting and parsing <see cref="Offset" /> objects.
         /// </summary>
         public sealed class Data : PatternTestData<Offset>
         {
