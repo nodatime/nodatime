@@ -76,7 +76,19 @@ namespace NodaTime.Text
                 throw new InvalidPatternException(Messages.Parse_FormatStringEmpty);
             }
 
-            // TODO(V1.2): Standard patterns
+            // Handle standard patterns
+            if (patternText.Length == 1)
+            {
+                switch (patternText[0])
+                {
+                    case 'G':
+                        return ZonedDateTimePattern.Patterns.GeneralFormatOnlyPatternImpl;
+                    case 'F':
+                        return ZonedDateTimePattern.Patterns.ExtendedFormatOnlyPatternImpl;
+                    default:
+                        throw new InvalidPatternException(Messages.Parse_UnknownStandardFormat, patternText[0], typeof(ZonedDateTime));
+                }
+            }
 
             var patternBuilder = new SteppedPatternBuilder<ZonedDateTime, ZonedDateTimeParseBucket>(formatInfo,
                 () => new ZonedDateTimeParseBucket(templateValueDate, templateValueTime, templateValueZone, resolver, zoneProvider));

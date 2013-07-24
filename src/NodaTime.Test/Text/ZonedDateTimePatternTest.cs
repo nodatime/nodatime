@@ -41,6 +41,7 @@ namespace NodaTime.Test.Text
         // The standard example date/time used in all the MSDN samples, which means we can just cut and paste
         // the expected results of the standard patterns.
         private static readonly ZonedDateTime MsdnStandardExample = LocalDateTimePatternTest.MsdnStandardExample.InUtc();
+        private static readonly ZonedDateTime MsdnStandardExampleNoMillis = LocalDateTimePatternTest.MsdnStandardExampleNoMillis.InUtc();
 
         internal static readonly Data[] InvalidPatternData = {
             new Data { Pattern = "dd MM yyyy HH:MM:SS", Message = Messages.Parse_RepeatedFieldInPattern, Parameters = { 'M' } },
@@ -48,6 +49,7 @@ namespace NodaTime.Test.Text
             new Data { Pattern = "dd MM yyyy HH:mm:ss gg", Message = Messages.Parse_EraWithoutYearOfEra },
             // Era specifier and calendar specifier in the same pattern.
             new Data { Pattern = "dd MM YYYY HH:mm:ss gg c", Message = Messages.Parse_CalendarAndEra },
+            new Data { Pattern = "g", Message = Messages.Parse_UnknownStandardFormat, Parameters = { 'g', typeof(ZonedDateTime) } },
         };
 
         internal static Data[] ParseFailureData = {
@@ -129,6 +131,9 @@ namespace NodaTime.Test.Text
 
             new Data(2013, 6, 13, 16, 2, France) { ZoneProvider = null, Pattern = "yyyy-MM-dd HH:mm z", Text = "2013-06-13 16:02 Europe/Paris" },
 
+            // Standard patterns (can't parse because there's no DateTimeZoneProvider)
+            new Data(MsdnStandardExampleNoMillis) { Pattern = "G", Text = "2009-06-15T13:45:30 UTC (+00)", Culture = Cultures.FrFr },
+            new Data(MsdnStandardExample) { Pattern = "F", Text = "2009-06-15T13:45:30.09 UTC (+00)", Culture = Cultures.FrFr },
         };
 
         internal static Data[] FormatAndParseData = {

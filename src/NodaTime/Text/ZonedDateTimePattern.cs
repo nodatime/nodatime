@@ -24,12 +24,16 @@ namespace NodaTime.Text
         /// <summary>
         /// Returns an zoned local date/time pattern based on ISO-8601 (down to the second) including offset from UTC and zone ID.
         /// The calendar system is not formatted as part of this pattern, and it cannot be used for parsing.
+        /// It corresponds to a custom pattern of "yyyy'-'MM'-'dd'T'HH':'mm':'ss z '('o&lt;g&gt;')'" and is available
+        /// as the 'G' standard pattern.
         /// </summary>
         public static ZonedDateTimePattern GeneralFormatOnlyIsoPattern { get { return Patterns.GeneralFormatOnlyPatternImpl; } }
 
         /// <summary>
         /// Returns an invariant zoned date/time pattern based on ISO-8601 (down to the tick) including offset from UTC and zone ID.
         /// The calendar system is not formatted as part of this pattern, and it cannot be used for parsing.
+        /// It corresponds to a custom pattern of "yyyy'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFF z '('o&lt;g&gt;')'" and is available
+        /// as the 'F' standard pattern.
         /// </summary>
         public static ZonedDateTimePattern ExtendedFormatOnlyIsoPattern { get { return Patterns.ExtendedFormatOnlyPatternImpl; } }
 
@@ -44,10 +48,10 @@ namespace NodaTime.Text
         /// Class whose existence is solely to avoid type initialization order issues, most of which stem
         /// from needing NodaFormatInfo.InvariantInfo...
         /// </summary>
-        private static class Patterns
+        internal static class Patterns
         {
-            internal static readonly ZonedDateTimePattern ExtendedFormatOnlyPatternImpl = CreateWithInvariantCulture("yyyy'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFF z (o<g>)", null);
-            internal static readonly ZonedDateTimePattern GeneralFormatOnlyPatternImpl = CreateWithInvariantCulture("yyyy'-'MM'-'dd'T'HH':'mm':'ss z (o<g>)", null);
+            internal static readonly ZonedDateTimePattern GeneralFormatOnlyPatternImpl = CreateWithInvariantCulture("yyyy'-'MM'-'dd'T'HH':'mm':'ss z '('o<g>')'", null);
+            internal static readonly ZonedDateTimePattern ExtendedFormatOnlyPatternImpl = CreateWithInvariantCulture("yyyy'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFF z '('o<g>')'", null);
         }
 
         /// <summary>
