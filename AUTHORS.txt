@@ -11,5 +11,6 @@ Malcolm Rowe <malcolm.rowe@gmail.com> (Google)
 Martinho Fernandes <martinho.fernandes@gmail.com>
 Matt Johnson <mj1856@hotmail.com>
 Matthew Scharley <matt.scharley@gmail.com>
+Nathan Palmer <snowpalmer@gmail.com>
 Richard Schneider <makaretu@gmail.com>
 Scott Stephens <stephens.js@gmail.com>
