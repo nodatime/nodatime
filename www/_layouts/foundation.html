@@ -1,4 +1,3 @@
-{% assign parts     = site.latest | split: '/' %}
 {% capture lvl %}{{ page.url | append:'index.html' | split:'/' | size }}{% endcapture %}
 {% capture relative %}{% for i in (3..lvl) %}../{% endfor %}{% endcapture %}
 <!DOCTYPE html>
@@ -47,7 +46,7 @@
                   -->
 			      <li class="divider hide-for-small"></li>
 			      <li class="has-dropdown">
-			      	<a href="#">Api</a>
+			      	<a href="#">API</a>
 			      	<ul class="dropdown">
 			      		<li><label>Versions</label></li>
 			      		<li><a href="{{relative}}1.0.x/api">1.0.x</a></li>
@@ -57,15 +56,8 @@
 			      	</ul>
 			      </li>
 			      <li class="divider"></li>
-			      <li class="has-dropdown">
-			      	<a href="#" {% if page.navigation == "developer" %}class="active"{% endif %}>Developer Guide</a>
-			      	<ul class="dropdown">
-			      		<li><label>Versions</label></li>
-			      		<li><a href="{{relative}}1.0.x/developer">1.0.x</a></li>
-			      		<li><a href="{{relative}}1.1.x/developer">1.1.x</a></li>
-			      		<li class="divider hide-for-small"></li>
-			      		<li><a href="{{relative}}unstable/developer">Unstable</a></li>
-			      	</ul>
+			      <li>
+                                <a href="{{relative}}developer" {% if page.navigation == "developer" %}class="active"{% endif %}>Developer Guide</a>
 			      </li>
 			      <li class="divider"></li>
 			      <li class="has-dropdown">
@@ -98,10 +90,11 @@
 	<footer>
 		<div class="row">
 			<div class="small-6 columns">
-				<span>The latest version is {{ parts[1] }}, released April 6th 2013</span>
+                                <span>The latest version is {{ site.latest }}, released {{ site.latest_released_on }}</span>
 			</div>
 			<div class="small-6 columns copy">
-				&copy; The Noda Time Authors, <span class="design">Web Design by <a href="http://nathanpalmer.com">Nathan Palmer</a></span>
+                                &copy; <a href="http://noda-time.googlecode.com/hg/AUTHORS.txt">The Noda Time Authors</a>,
+                                <span class="design">Web Design by <a href="http://nathanpalmer.com">Nathan Palmer</a></span>
 			</div>
 		</div>
 	</footer>
