@@ -250,7 +250,7 @@ namespace NodaTime.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The value {0} is out range for the field &apos;{1}&apos; in the {2} type..
+        ///   Looks up a localized string similar to The value {0} is out of range for the field &apos;{1}&apos; in the {2} type..
         /// </summary>
         internal static string Parse_FieldValueOutOfRange {
             get {
@@ -457,6 +457,15 @@ namespace NodaTime.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Only one of &quot;D&quot;, &quot;H&quot;, &quot;M&quot; or &quot;S&quot; can occur in a duration format string..
+        /// </summary>
+        internal static string Parse_MultipleCapitalDurationFields {
+            get {
+                return ResourceManager.GetString("Parse_MultipleCapitalDurationFields", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The specified calendar id is not recognized..
         /// </summary>
         internal static string Parse_NoMatchingCalendarSystem {
@@ -570,15 +579,6 @@ namespace NodaTime.Properties {
         internal static string Parse_SkippedLocalTime {
             get {
                 return ResourceManager.GetString("Parse_SkippedLocalTime", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The standard format &quot;{0}&quot; for type {1} cannot contain white space..
-        /// </summary>
-        internal static string Parse_StandardFormatWhitespace {
-            get {
-                return ResourceManager.GetString("Parse_StandardFormatWhitespace", resourceCulture);
             }
         }
         

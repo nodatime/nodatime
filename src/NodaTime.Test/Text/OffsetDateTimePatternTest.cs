@@ -16,6 +16,7 @@ namespace NodaTime.Test.Text
         // The standard example date/time used in all the MSDN samples, which means we can just cut and paste
         // the expected results of the standard patterns. We've got an offset of 1 hour though.
         private static readonly OffsetDateTime MsdnStandardExample = LocalDateTimePatternTest.MsdnStandardExample.WithOffset(Offset.FromHours(1));
+        private static readonly OffsetDateTime MsdnStandardExampleNoMillis = LocalDateTimePatternTest.MsdnStandardExampleNoMillis.WithOffset(Offset.FromHours(1));
         private static readonly OffsetDateTime SampleOffsetDateTimeCoptic = LocalDateTimePatternTest.SampleLocalDateTimeCoptic.WithOffset(Offset.Zero);
 
         internal static readonly Data[] InvalidPatternData = {
@@ -24,6 +25,7 @@ namespace NodaTime.Test.Text
             new Data { Pattern = "dd MM yyyy HH:mm:ss gg", Message = Messages.Parse_EraWithoutYearOfEra },
             // Era specifier and calendar specifier in the same pattern.
             new Data { Pattern = "dd MM YYYY HH:mm:ss gg c", Message = Messages.Parse_CalendarAndEra },
+            new Data { Pattern = "g", Message = Messages.Parse_UnknownStandardFormat, Parameters = { 'g', typeof(OffsetDateTime) } },
         };
 
         internal static Data[] ParseFailureData = {
@@ -70,6 +72,11 @@ namespace NodaTime.Test.Text
             new Data(MsdnStandardExample) { Pattern = "yyyy-MM-dd(c';'o<g>)THH:mm:ss.FFFFFFF", Text = "2009-06-15(ISO;+01)T13:45:30.09", Culture = Cultures.EnUs },
             new Data(SampleOffsetDateTimeCoptic) { Pattern = "(c) yyyy-MM-ddTHH:mm:ss.FFFFFFF o<G>", Text = "(Coptic 1) 1976-06-19T21:13:34.1234567 Z", Culture = Cultures.FrFr },
             new Data(SampleOffsetDateTimeCoptic) { Pattern = "yyyy-MM-dd'C'c'T'HH:mm:ss.FFFFFFF o<g>", Text = "1976-06-19CCoptic 1T21:13:34.1234567 +00", Culture = Cultures.EnUs },
+
+            // Standard patterns (all invariant)
+            new Data(MsdnStandardExampleNoMillis) { Pattern = "G", Text = "2009-06-15T13:45:30+01", Culture = Cultures.FrFr },
+            new Data(MsdnStandardExample) { Pattern = "o", Text = "2009-06-15T13:45:30.09+01", Culture = Cultures.FrFr },
+            new Data(MsdnStandardExample) { Pattern = "r", Text = "2009-06-15T13:45:30.09+01 (ISO)", Culture = Cultures.FrFr },
         };
 
         internal static IEnumerable<Data> ParseData = ParseOnlyData.Concat(FormatAndParseData);

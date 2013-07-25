@@ -68,7 +68,22 @@ namespace NodaTime.Text
                 throw new InvalidPatternException(Messages.Parse_FormatStringEmpty);
             }
 
-            // TODO(V1.2): Standard patterns
+            // Handle standard patterns
+            if (patternText.Length == 1)
+            {
+                switch (patternText[0])
+                {
+                    case 'G':
+                        return OffsetDateTimePattern.Patterns.GeneralIsoPatternImpl;
+                    case 'o':
+                        return OffsetDateTimePattern.Patterns.ExtendedIsoPatternImpl;
+                    case 'r':
+                        return OffsetDateTimePattern.Patterns.FullRoundtripPatternImpl;
+                    default:
+                        throw new InvalidPatternException(Messages.Parse_UnknownStandardFormat, patternText[0], typeof(OffsetDateTime));
+                }
+            }
+
 
             var patternBuilder = new SteppedPatternBuilder<OffsetDateTime, OffsetDateTimeParseBucket>(formatInfo,
                 () => new OffsetDateTimeParseBucket(templateValueDate, templateValueTime, templateValueOffset));
