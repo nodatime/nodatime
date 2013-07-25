@@ -10,6 +10,10 @@ questions which are likely to be discussion-based, please post to
 the [mailing list][2]. For more specific "How do I solve problem X?"
 questions, please ask on [Stack Overflow][so] using the [nodatime tag][so-tag].
 
+<ul class="pagination">
+  <li><a href="rationale.html"><strong>Next</strong>: Why does Noda Time exist?</a></li>
+</ul>
+
 Resources
 ---------
 
