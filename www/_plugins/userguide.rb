@@ -45,9 +45,7 @@ module Jekyll
       @@TypePattern      = /noda-type:\/\/([A-Za-z0-9_.]*)/
       @@IssueUrlPattern  = /(\[[^\]]*\])\[issue (\d+)\]/
       @@IssueLinkPattern = /\[issue (\d+)\]\[\]/
-      # Reinstate this when we're hosting the APIs locally again
-      # @@ApiUrlPrefix     = "../../api/html/"
-      @@ApiUrlPrefix     = "http://noda-time.googlecode.com/hg-history/1.1.x/docs/api/html/"
+      @@ApiUrlPrefix     = "../api/html/"
 
       def preprocess(text)
         text.gsub!(@@NamespacePattern) { |match| translateurl(match, 'N') }
