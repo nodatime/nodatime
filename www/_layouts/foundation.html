@@ -40,6 +40,17 @@
 			<section class="top-bar-section">
 				<!-- Right Nav Section -->
 			    <ul class="right">
+			      <li class="divider"></li>
+			      <li class="has-dropdown">
+			      	<a href="#" {% if page.navigation == "userguide" %}class="active"{% endif %}>User Guide</a>
+			      	<ul class="dropdown">
+			      		<li><label>Versions</label></li>
+			      		<li><a href="{{relative}}1.0.x/userguide">1.0.x</a></li>
+			      		<li><a href="{{relative}}1.1.x/userguide">1.1.x</a></li>
+			      		<li class="divider hide-for-small"></li>
+			      		<li><a href="{{relative}}unstable/userguide">Unstable</a></li>
+			      	</ul>
+			      </li>
                   <!-- Disable the API link for the moment...
 			      <li class="divider hide-for-small"></li>
 			      <li><a href="{{relative}}api" {% if page.navigation == "api" %}class="active"{% endif %}>API</a></li>
@@ -58,17 +69,6 @@
 			      <li class="divider"></li>
 			      <li>
                                 <a href="{{relative}}developer" {% if page.navigation == "developer" %}class="active"{% endif %}>Developer Guide</a>
-			      </li>
-			      <li class="divider"></li>
-			      <li class="has-dropdown">
-			      	<a href="#" {% if page.navigation == "userguide" %}class="active"{% endif %}>User Guide</a>
-			      	<ul class="dropdown">
-			      		<li><label>Versions</label></li>
-			      		<li><a href="{{relative}}1.0.x/userguide">1.0.x</a></li>
-			      		<li><a href="{{relative}}1.1.x/userguide">1.1.x</a></li>
-			      		<li class="divider hide-for-small"></li>
-			      		<li><a href="{{relative}}unstable/userguide">Unstable</a></li>
-			      	</ul>
 			      </li>
 			      <li class="divider"></li>
 			      <li><a href="{{relative}}#info">More Info</a></li>
