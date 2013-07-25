@@ -10,7 +10,11 @@ The [`ZonedDateTime`](noda-type://NodaTime.ZonedDateTime) type supports the foll
 Standard Patterns
 -----------------
 
-TBD.
+The following standard patterns are supported:
+
+- `G`: General invariant format-only pattern, based on ISO-8601 down to the second, but including the time zone ID and offset. This does not include the calendar ID, and cannot be used for parsing. It corresponds to the custom pattern of `yyyy'-'MM'-'dd'T'HH':'mm':'ss z '('o<g>')`.
+
+- `F`: Extended invariant format-only pattern, based on ISO-8601 down to the tick, but including the time zone ID and offset. This does not include the calendar ID, and cannot be used for parsing. It corresponds to the custom pattern of `yyyy'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFF z '('o<g>')`.
 
 Custom Patterns
 ---------------
