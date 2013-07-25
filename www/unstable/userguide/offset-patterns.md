@@ -31,7 +31,7 @@ The following standard patterns are supported:
 Custom Patterns
 ---------------
 
-The following custom offset pattern characters are supported for local times. See [custom pattern notes](text.html#custom-patterns)
+The following custom pattern characters are supported for offsets. See [custom pattern notes](text.html#custom-patterns)
 for general notes on custom patterns, including characters used for escaping and text literals.
 
 <table>
@@ -152,6 +152,7 @@ for general notes on custom patterns, including characters used for escaping and
 	    12 seconds, 500 milliseconds (en-US): <code>ss.FFF</code> => <code>12.5</code> <br />
 	    12 seconds, 500 milliseconds (fr-FR): <code>ss.FFF</code> => <code>12.5</code>
       </td>
+    </tr>
     <tr>
       <td><code>:</code></td>
       <td>

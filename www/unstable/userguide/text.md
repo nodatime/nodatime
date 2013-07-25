@@ -2,7 +2,7 @@
 layout: userguide
 title: Text handling
 category: text
-weight: 80
+weight: 75
 ---
 
 There are two options for text handling in Noda Time. For some elements of
@@ -66,6 +66,7 @@ available patterns are as consistent as possible within reason, but
 documenting each separately avoids confusion with some field
 specifiers being available for some types but not others.
 
+- [Duration patterns](duration-patterns.html)
 - [Offset patterns](offset-patterns.html)
 - [Instant patterns](instant-patterns.html)
 - [LocalTime patterns](localtime-patterns.html)
@@ -74,9 +75,6 @@ specifiers being available for some types but not others.
 - [OffsetDateTime patterns](offsetdatetime-patterns.html)
 - [ZonedDateTime patterns](zoneddatetime-patterns.html)
 - [Period patterns](period-patterns.html)
-
-Note that at present, `Duration` does not support
-any form of parsing or user-specified formatting.
 
 <a name="custom-patterns">Custom patterns</a>
 ---------------
