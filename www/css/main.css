@@ -3,6 +3,14 @@
   src: url("/fonts/CallunaSansRegular.otf");
 }
 
+html {
+  font-family: "Calluna Sans Regular", 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+/* Override the font defined in foundation.css to pick up the above. */
+body, h1, h2, h3, h4, h5, h6 {
+  font-family: inherit
+}
+
 nav.top-bar .top-bar-section ul.dropdown li.hover a {
   background: black;
 }
@@ -34,16 +42,6 @@ section.body {
 
 .top-bar-section ul li a.active {
   color: #B17250;
-}
-
-section h1, 
-section h2, 
-section h3, 
-section h4, 
-section h5, 
-section h6,
-section p {
-  font-family: "Calluna Sans Regular"
 }
 
 .top-bar {
