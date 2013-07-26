@@ -9,7 +9,20 @@ namespace NodaTime.Benchmarks.BclTests
 {
     internal sealed class TimeZoneInfoBenchmarks
     {
-        internal static readonly TimeZoneInfo PacificZone = TimeZoneInfo.FindSystemTimeZoneById("Pacific Standard Time");
+        internal static readonly TimeZoneInfo PacificZone = GetPacificTime();
+
+        private static TimeZoneInfo GetPacificTime()
+        {
+            try
+            {
+                return TimeZoneInfo.FindSystemTimeZoneById("Pacific Standard Time");
+            }
+            catch (TimeZoneNotFoundException)
+            {
+                // Maybe we're running on Mono on a system that uses TZDB natively.
+                return TimeZoneInfo.FindSystemTimeZoneById("America/Los_Angeles");
+            }
+        }
 
         internal static readonly DateTime SummerUtc = new DateTime(1976, 6, 19, 0, 0, 0, DateTimeKind.Utc);
         internal static readonly DateTime WinterUtc = new DateTime(2003, 12, 1, 0, 0, 0, DateTimeKind.Utc);
