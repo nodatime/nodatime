@@ -120,7 +120,7 @@ Most serialized forms just consist of element text using the corresponding text 
     <tr>
       <td><code>ZonedDateTime</code></td>
       <td>Extended ISO pattern, optional calendar</td>
-      <td><code>&lt;value calendar="Gregorian 3" zoned="Europe/London"&gt;16:45:20.1234567+01&lt;/value&gt;</td>
+      <td><code>&lt;value calendar="Gregorian 3" zone="Europe/London"&gt;16:45:20.1234567+01&lt;/value&gt;</td>
     </tr>
     <tr>
       <td><code>Interval</code></td>
