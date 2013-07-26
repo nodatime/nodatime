@@ -92,9 +92,9 @@ namespace NodaTime.Text
         {
             return (pattern, builder) =>
             {
-                int count = pattern.GetRepeatCount(10);
+                int count = pattern.GetRepeatCount(2);
                 builder.AddField(field, pattern.Current);
-                builder.AddParseValueAction(count, 10, pattern.Current, 0, unitsPerContainer - 1,
+                builder.AddParseValueAction(count, 2, pattern.Current, 0, unitsPerContainer - 1,
                     (bucket, value) => bucket.NegativeTicks -= value * ticksPerUnit);
                 builder.AddFormatLeftPad(count, duration => (int)((GetPositiveTicks(duration) / (ulong)ticksPerUnit) % (uint)unitsPerContainer));
             };
