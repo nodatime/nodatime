@@ -88,6 +88,13 @@ namespace NodaTime.Test
         }
 
         [Test]
+        public void XmlSerialization_Extremes()
+        {
+            var value = new Interval(Instant.MinValue, Instant.MaxValue);
+            TestHelper.AssertXmlRoundtrip(value, "<value start=\"MinInstant\" end=\"MaxInstant\" />");
+        }
+
+        [Test]
         public void XmlSerialization_ExtraContent()
         {
             var start = new LocalDateTime(2013, 4, 12, 17, 53, 23, 123, 4567).InUtc().ToInstant();

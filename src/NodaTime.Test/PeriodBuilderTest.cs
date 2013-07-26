@@ -113,6 +113,12 @@ namespace NodaTime.Test
         {
             var value = new PeriodBuilder { Years = 10, Days = 5, Hours = 3, Seconds = 20 };
             TestHelper.AssertXmlRoundtrip(value, "<value>P10Y5DT3H20S</value>", new BuilderEqualityComparer());
+
+            var dateOnly = new PeriodBuilder { Years = 10, Days = 5 };
+            TestHelper.AssertXmlRoundtrip(dateOnly, "<value>P10Y5D</value>", new BuilderEqualityComparer());
+
+            var timeOnly = new PeriodBuilder { Hours = 5, Minutes = 1 };
+            TestHelper.AssertXmlRoundtrip(timeOnly, "<value>PT5H1M</value>", new BuilderEqualityComparer());
         }
 
         [Test]
