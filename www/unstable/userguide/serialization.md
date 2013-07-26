@@ -76,6 +76,75 @@ and will be consulted when deserializing `ZonedDateTime` values. It defaults (la
 While these details are undoubtedly unpleasant, it is hoped that they strike a pragmatic balance, providing a significant benefit to those who require XML serialization support, while staying
 out of the way of those who don't.
 
+Serialized representation
+=========================
+
+Most serialized forms just consist of element text using the corresponding text handling pattern. Types which support multiple calendar systems use the `calendar` attribute for the calendar system ID, but only when the calendar system of the value isn't the ISO calendar, and `ZonedDateTime` uses the `zone` attribute for the time zone ID (in all cases).
+
+`PeriodBuilder` uses the round-trip text representation of the `Period` that would be built by it, and `Interval` just has `start` and `end` attributes, each of which has an `Instant` converted using the extended ISO pattern.
+
+<table>
+  <thead>
+    <tr>
+      <td>Type</td>
+      <td>Description or pattern</td>
+      <td>Example</td>
+    </tr>
+  </thead>
+  <tbody>    
+    <tr>
+      <td><code>Instant</code></td>
+      <td>Extended ISO pattern</td>
+      <td><code>&lt;value&gt;2013-07-26T16:45:20.1234567Z&lt;/value&gt;</td>
+    </tr>
+    <tr>
+      <td><code>LocalDate</code></td>
+      <td>ISO pattern, optional calendar</td>
+      <td><code>&lt;value calendar="Gregorian 3"&gt;2013-07-26&lt;/value&gt;</td>
+    </tr>
+    <tr>
+      <td><code>LocalTime</code></td>
+      <td>Extended ISO pattern</td>
+      <td><code>&lt;value&gt;16:45:20.1234567&lt;/value&gt;</td>
+    </tr>
+    <tr>
+      <td><code>LocalDateTime</code></td>
+      <td>Extended ISO pattern, optional calendar</td>
+      <td><code>&lt;value calendar="Gregorian 3"&gt;16:45:20.1234567&lt;/value&gt;</td>
+    </tr>
+    <tr>
+      <td><code>OffsetDateTime</code></td>
+      <td>Extended ISO pattern, optional calendar</td>
+      <td><code>&lt;value calendar="Gregorian 3"&gt;16:45:20.1234567+01&lt;/value&gt;</td>
+    </tr>
+    <tr>
+      <td><code>ZonedDateTime</code></td>
+      <td>Extended ISO pattern, optional calendar</td>
+      <td><code>&lt;value calendar="Gregorian 3" zoned="Europe/London"&gt;16:45:20.1234567+01&lt;/value&gt;</td>
+    </tr>
+    <tr>
+      <td><code>Interval</code></td>
+      <td>Extended ISO pattern, optional calendar</td>
+      <td><code>&lt;value start="2013-07-26T16:45:20.1234567Z" end="2013-07-26T17:45:20.1234567Z" /&gt;</td>
+    </tr>
+    <tr>
+      <td><code>Offset</code></td>
+      <td>General pattern</td>
+      <td><code>&lt;value&gt;+01&lt;/value&gt;</td>
+    </tr>
+    <tr>
+      <td><code>PeriodBuilder</code></td>
+      <td>Round-trip pattern</td>
+      <td><code>&lt;value&gt;P10Y5DT3H20S&lt;/value&gt;</td>
+    </tr>
+    <tr>
+      <td><code>Duration</code></td>
+      <td>Round-trip pattern</td>
+      <td><code>&lt;value&gt;1:12:34:56.1234567&lt;/value&gt;</td>
+    </tr>
+  </tbody>
+</table> 
+
 Binary serialization
 --------------------
 
@@ -96,6 +165,7 @@ Binary serialization is simpler than XML serialization in terms of not interferi
 
 The PCL itself does not support binary serialization, so the interface and attribute are not applied to the above types in the PCL Noda Time build.
 
+The serialized form is not documented here as it is not expected to be consumed other than by the `BinaryFormatter`; the relevant code is easily discovered in each serialized type, however.
 
 Third-party serialization
 -------------------------
@@ -120,21 +190,21 @@ Supported types and default representations
 
 All default patterns use the invariant culture.
 
-- `Offset`: general pattern, e.g. `+05` or `-03:30`
+- `Instant`: an ISO-8601 pattern extended to handle fractional seconds: `yyyy'-'MM'-'dd'T'HH':'mm':'ss.FFFFFFF'Z'`
 - `LocalDate`: ISO-8601 date pattern: `yyyy'-'MM'-'dd`
 - `LocalTime`: ISO-8601 time pattern, extended to handle fractional seconds: `HH':'mm':'ss.FFFFFFF`
 - `LocalDateTime`: ISO-8601 date/time pattern with no time zone specifier, extended to handle fractional seconds: `yyyy'-'MM'-'dd'T'HH':'mm':'ss.FFFFFFF`
-- `Instant`: an ISO-8601 pattern extended to handle fractional seconds: `yyyy'-'MM'-'dd'T'HH':'mm':'ss.FFFFFFF'Z'`
-- `Interval`: A compound object of the form `{ Start: xxx, End: yyy }` where `xxx` and `yyy` are represented however the serializer sees fit. (Typically using the default representation above.)
-- `Period`: The round-trip period pattern; `NodaConverters.NormalizingIsoPeriodConverter` provides a converter using the normalizing ISO-like pattern
-- `Duration`: TBD
 - `OffsetDateTime`: ISO-8601 date/time with offset pattern: `yyyy'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFFo<G>`
 - `ZonedDateTime`: As `OffsetDateTime`, but with a time zone ID at the end: `yyyy'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFFo<G> z`
+- `Interval`: A compound object of the form `{ Start: xxx, End: yyy }` where `xxx` and `yyy` are represented however the serializer sees fit. (Typically using the default representation above.)
+- `Offset`: general pattern, e.g. `+05` or `-03:30`
+- `Period`: The round-trip period pattern; `NodaConverters.NormalizingIsoPeriodConverter` provides a converter using the normalizing ISO-like pattern
+- `Duration`: A duration pattern of `-H:mm:ss.FFFFFFF` (like the standard round-trip pattern, but starting with hours instead of days).
 - `DateTimeZone`: The ID is written as a string.
 
 Limitations
 ===========
 
-- Currently only ISO calendars are supported, and handling for negative and non-four-digit years will depend on the appropriate underlying pattern implementation.
+- Currently only ISO calendars are supported, and handling for negative and non-four-digit years will depend on the appropriate underlying pattern implementation. (Non-ISO converters are now possible, but the results would be very specific to Noda Time.)
 - There's no indication of the time zone provider or its version in the `DateTimeZone` representation.
 
