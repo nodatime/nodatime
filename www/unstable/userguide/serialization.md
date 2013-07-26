@@ -76,12 +76,11 @@ and will be consulted when deserializing `ZonedDateTime` values. It defaults (la
 While these details are undoubtedly unpleasant, it is hoped that they strike a pragmatic balance, providing a significant benefit to those who require XML serialization support, while staying
 out of the way of those who don't.
 
-Serialized representation
-=========================
+### Serialized representation
 
-Most serialized forms just consist of element text using the corresponding text handling pattern. Types which support multiple calendar systems use the `calendar` attribute for the calendar system ID, but only when the calendar system of the value isn't the ISO calendar, and `ZonedDateTime` uses the `zone` attribute for the time zone ID (in all cases).
+Most serialized forms just consist of element text using a specified text handling pattern, as described below. Types which support multiple calendar systems additionally use the `calendar` attribute for the calendar system ID (but only when the calendar system of the value isn't the ISO calendar), while `ZonedDateTime` always uses an extra `zone` attribute for the time zone ID.
 
-`PeriodBuilder` uses the round-trip text representation of the `Period` that would be built by it, and `Interval` just has `start` and `end` attributes, each of which has an `Instant` converted using the extended ISO pattern.
+`PeriodBuilder` and `Interval` are somewhat different: `PeriodBuilder` uses the round-trip text representation of the `Period` that would be built by it, while `Interval` has only `start` and `end` attributes, each of which is represented as the respective `Instant` converted using the extended ISO pattern.
 
 <table>
   <thead>
@@ -185,8 +184,7 @@ for individual converters. (All converters are immutable.)
 
 Custom converters can be created easily from patterns using [`NodaPatternConverter`](noda-type://NodaTime.Serialization.JsonNet.NodaPatternConverter_1).
 
-Supported types and default representations
-===========================================
+### Supported types and default representations
 
 All default patterns use the invariant culture.
 
@@ -199,11 +197,10 @@ All default patterns use the invariant culture.
 - `Interval`: A compound object of the form `{ Start: xxx, End: yyy }` where `xxx` and `yyy` are represented however the serializer sees fit. (Typically using the default representation above.)
 - `Offset`: general pattern, e.g. `+05` or `-03:30`
 - `Period`: The round-trip period pattern; `NodaConverters.NormalizingIsoPeriodConverter` provides a converter using the normalizing ISO-like pattern
-- `Duration`: A duration pattern of `-H:mm:ss.FFFFFFF` (like the standard round-trip pattern, but starting with hours instead of days).
-- `DateTimeZone`: The ID is written as a string.
+- `Duration`: A duration pattern of `-H:mm:ss.FFFFFFF` (like the standard round-trip pattern, but starting with hours instead of days)
+- `DateTimeZone`: The ID, as a string
 
-Limitations
-===========
+### Limitations
 
 - Currently only ISO calendars are supported, and handling for negative and non-four-digit years will depend on the appropriate underlying pattern implementation. (Non-ISO converters are now possible, but the results would be very specific to Noda Time.)
 - There's no indication of the time zone provider or its version in the `DateTimeZone` representation.
