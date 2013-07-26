@@ -43,7 +43,30 @@ namespace NodaTime.Test.Fields
         [Test]
         public void Subtract_ThrowsOnOverflow()
         {
-            Assert.Throws<OverflowException>(() => SampleField.Subtract(new LocalInstant(long.MaxValue), new LocalInstant(-1L)));
+            Assert.Throws<OverflowException>(() => FixedDurationPeriodField.Ticks.Subtract(new LocalInstant(long.MaxValue), new LocalInstant(-1L)));
+        }
+
+        [Test]
+        [TestCase(int.MaxValue)]
+        [TestCase(int.MinValue)]
+        public void Add_OverflowOnMultiplyOnDays(int days)
+        {
+            Assert.Throws<OverflowException>(() => FixedDurationPeriodField.Days.Add(new LocalInstant(0L), days));
+        }
+
+        [Test]
+        public void Add_OverflowOnAddOrSubtract(int days)
+        {
+            Assert.Throws<OverflowException>(() => FixedDurationPeriodField.Ticks.Add(new LocalInstant(long.MaxValue), 1L));
+            Assert.Throws<OverflowException>(() => FixedDurationPeriodField.Ticks.Add(new LocalInstant(long.MinValue), -1L));
+        }
+
+        [Test]
+        public void Add_MinLongTicks()
+        {
+            // Without a bit of care, this would fail.
+            long minTicks = FixedDurationPeriodField.Ticks.Add(new LocalInstant(0), long.MinValue).Ticks;
+            Assert.AreEqual(long.MinValue, minTicks);
         }
     }
 }

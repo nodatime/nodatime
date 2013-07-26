@@ -25,6 +25,10 @@ namespace NodaTime.Test
 
         private const PeriodUnits HoursMinutesPeriodType = PeriodUnits.Hours | PeriodUnits.Minutes;
 
+#pragma warning disable 0414 // Used by tests via reflection - do not remove!
+        private static readonly PeriodUnits[] AllPeriodUnits = (PeriodUnits[])Enum.GetValues(typeof(PeriodUnits));
+#pragma warning restore 0414
+
         [Test]
         public void BetweenLocalDateTimes_WithoutSpecifyingUnits_OmitsWeeks()
         {
@@ -739,6 +743,20 @@ namespace NodaTime.Test
             Assert.That(februaryComparer.Compare(month, days), Is.LessThan(0));
             Assert.That(februaryComparer.Compare(days, month), Is.GreaterThan(0));
             Assert.AreEqual(0, februaryComparer.Compare(month, month));
+        }
+
+        [Test]
+        [TestCaseSource("AllPeriodUnits")]
+        public void Between_ExtremeValues(PeriodUnits units)
+        {
+            // We can't use None, and Ticks will *correctly* overflow.
+            if (units == PeriodUnits.None || units == PeriodUnits.Ticks)
+            {
+                return;
+            }
+            var minValue = new LocalDateTime(new LocalInstant(CalendarSystem.Iso.MinTicks));
+            var maxValue = new LocalDateTime(new LocalInstant(CalendarSystem.Iso.MaxTicks));
+            Period.Between(minValue, maxValue, units);
         }
 
         [Test]
