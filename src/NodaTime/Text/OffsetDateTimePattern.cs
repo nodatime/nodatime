@@ -84,7 +84,6 @@ namespace NodaTime.Text
             this.patternText = patternText;
             this.formatInfo = formatInfo;
             this.templateValue = templateValue;
-            // TODO(V1.2): Consider exposing all of the above on OffsetDateTimeZonePatternParser instead, and using that.
             this.pattern = pattern;
         }
 
