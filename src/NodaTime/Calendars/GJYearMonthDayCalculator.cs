@@ -137,8 +137,7 @@ namespace NodaTime.Calendars
 
         internal override int GetEra(LocalInstant localInstant)
         {
-            // TODO: Just check the ticks against a constant.
-            return GetYear(localInstant) <= 0 ? 0 : 1;
+            return localInstant.Ticks < TicksAtStartOfYear1 ? 0 : 1;
         }
         #endregion
     }
