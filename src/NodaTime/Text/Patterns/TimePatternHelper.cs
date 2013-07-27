@@ -197,7 +197,6 @@ namespace NodaTime.Text.Patterns
                     string pmFirst = pmDesignator.Substring(0, 1);
                     builder.AddParseAction((str, bucket) =>
                     {
-                        // TODO(V1.2): Use AddParseLongestTextAction?
                         if (str.MatchCaseInsensitive(amFirst, compareInfo, true))
                         {
                             amPmSetter(bucket, 0);
