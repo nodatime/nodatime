@@ -89,7 +89,8 @@ namespace NodaTime.TimeZones
         /// </summary>
         /// <param name="ambiguousTimeResolver">Resolver to use for ambiguous mappings.</param>
         /// <param name="skippedTimeResolver">Resolver to use for "skipped" mappings.</param>
-        /// <exception name="ArgumentNullException">Either of the arguments is null.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="ambiguousTimeResolver"/> or
+        /// <paramref name="skippedTimeResolver"/> is null.</exception>
         /// <returns>The logical combination of the two resolvers.</returns>
         public static ZoneLocalMappingResolver CreateMappingResolver(AmbiguousTimeResolver ambiguousTimeResolver, SkippedTimeResolver skippedTimeResolver)
         {
