@@ -4,6 +4,15 @@ User-visible changes from 1.0.0-beta1 onwards. See the
 [project repository](http://code.google.com/p/noda-time/source/list) for more
 details.
 
+## 1.1.1, released 2013-?? with tzdb 2013d
+
+No API changes; this release is purely to fix a bug ([issue 221][]) which affected
+the PCL build. Under the PCL, we can't get the ID of a
+`TimeZoneInfo`, so we were relying on the `StandardName` - but that
+varies by system locale. The fix will attempt to determine which
+TZDB time zone best fits the given `TimeZoneInfo` by looking at
+transitions of all zones in the current year.
+
 ## 1.1.0, released 2013-04-06 with tzdb 2013b
 
 API changes:
