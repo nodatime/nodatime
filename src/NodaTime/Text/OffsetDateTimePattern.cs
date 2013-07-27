@@ -3,6 +3,7 @@
 // as found in the LICENSE.txt file.
 
 using NodaTime.Globalization;
+using NodaTime.Text.Patterns;
 using NodaTime.Utility;
 using System.Globalization;
 
@@ -53,13 +54,14 @@ namespace NodaTime.Text
             internal static readonly OffsetDateTimePattern GeneralIsoPatternImpl = Create("yyyy'-'MM'-'dd'T'HH':'mm':'sso<G>", NodaFormatInfo.InvariantInfo, DefaultTemplateValue);
             internal static readonly OffsetDateTimePattern ExtendedIsoPatternImpl = Create("yyyy'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFFo<G>", NodaFormatInfo.InvariantInfo, DefaultTemplateValue);
             internal static readonly OffsetDateTimePattern FullRoundtripPatternImpl = Create("yyyy'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFFo<G> '('c')'", NodaFormatInfo.InvariantInfo, DefaultTemplateValue);
+            internal static readonly PatternBclSupport<OffsetDateTime> BclSupport = new PatternBclSupport<OffsetDateTime>("G", fi => fi.OffsetDateTimePatternParser);
         }
 
         private readonly string patternText;
         private readonly NodaFormatInfo formatInfo;
         private readonly IPattern<OffsetDateTime> pattern;
         private readonly OffsetDateTime templateValue;
-        
+
         /// <summary>
         /// Returns the pattern text for this pattern, as supplied on creation.
         /// </summary>
