@@ -2,19 +2,19 @@
             Reads Start and End properties for the start and end of an interval, converting them to instants
             using the given serializer.
             </div><div class="section"><div class="sectionTitle" onclick="toggleSection(this.parentNode)"><img src="../icons/collapse_all.gif" /> Declaration Syntax</div><div class="sectionContent"><div id="syntaxSection"><table class="filter"><tr class="tabs" id="syntaxTabs"><td class="tab" x-lang="CSharp" onclick="toggleClass('syntaxTabs','x-lang','CSharp','activeTab','tab'); toggleStyle('syntaxBlocks','x-lang','CSharp','display','block','none');">C#</td><td class="tab" x-lang="VisualBasic" onclick="toggleClass('syntaxTabs','x-lang','VisualBasic','activeTab','tab'); toggleStyle('syntaxBlocks','x-lang','VisualBasic','display','block','none');">Visual Basic</td><td class="tab" x-lang="ManagedCPlusPlus" onclick="toggleClass('syntaxTabs','x-lang','ManagedCPlusPlus','activeTab','tab'); toggleStyle('syntaxBlocks','x-lang','ManagedCPlusPlus','display','block','none');">Visual C++</td></tr></table><div id="syntaxBlocks"><div class="code" x-lang="CSharp"><pre xml:space="preserve">
-<span class="keyword">protected</span> <span class="keyword">override</span> <a href="T_NodaTime_Interval.htm">Interval</a> <span class="identifier">ReadJsonImpl</span>(
-	<span class="nolink">JsonReader</span> <span class="parameter">reader</span>,
-	<span class="nolink">JsonSerializer</span> <span class="parameter">serializer</span>
+<span class="keyword">protected</span> <span class="keyword">override</span> <span class="identifier">Interval</span> <span class="identifier">ReadJsonImpl</span>(
+	<span class="identifier">JsonReader</span> <span class="parameter">reader</span>,
+	<span class="identifier">JsonSerializer</span> <span class="parameter">serializer</span>
 )</pre></div><div class="code" x-lang="VisualBasic"><pre xml:space="preserve">
-<span class="keyword">Protected</span> <span class="keyword">Overrides</span> <span class="keyword">Function</span> <span class="identifier">ReadJsonImpl</span> ( _
-	<span class="parameter">reader</span> <span class="keyword">As</span> <span class="nolink">JsonReader</span>, _
-	<span class="parameter">serializer</span> <span class="keyword">As</span> <span class="nolink">JsonSerializer</span> _
-) <span class="keyword">As</span> <a href="T_NodaTime_Interval.htm">Interval</a></pre></div><div class="code" x-lang="ManagedCPlusPlus"><pre xml:space="preserve">
+<span class="keyword">Protected</span> <span class="keyword">Overrides</span> <span class="keyword">Function</span> <span class="identifier">ReadJsonImpl</span> ( 
+	<span class="parameter">reader</span> <span class="keyword">As</span> <span class="identifier">JsonReader</span>,
+	<span class="parameter">serializer</span> <span class="keyword">As</span> <span class="identifier">JsonSerializer</span>
+) <span class="keyword">As</span> <span class="identifier">Interval</span></pre></div><div class="code" x-lang="ManagedCPlusPlus"><pre xml:space="preserve">
 <span class="keyword">protected</span>:
-<span class="keyword">virtual</span> <a href="T_NodaTime_Interval.htm">Interval</a> <span class="identifier">ReadJsonImpl</span>(
-	<span class="nolink">JsonReader</span>^ <span class="parameter">reader</span>, 
-	<span class="nolink">JsonSerializer</span>^ <span class="parameter">serializer</span>
-) <span class="keyword">override</span></pre></div></div></div></div></div><div id="parameters"><div class="section"><div class="sectionTitle" onclick="toggleSection(this.parentNode)"><img src="../icons/collapse_all.gif" /> Parameters</div><div class="sectionContent"><dl paramName="reader"><dt><span class="parameter">reader</span> (<span class="nolink">JsonReader</span>)</dt><dd>The JSON reader to fetch data from.</dd></dl><dl paramName="serializer"><dt><span class="parameter">serializer</span> (<span class="nolink">JsonSerializer</span>)</dt><dd>The serializer for embedded serialization.</dd></dl></div></div></div><div class="section"><div class="sectionTitle" onclick="toggleSection(this.parentNode)"><img src="../icons/collapse_all.gif" /> Return Value</div><div class="sectionContent">The <a href="T_NodaTime_DateTimeZone.htm">DateTimeZone</a> identified in the JSON, or null.</div></div><div id="footer"><p />Send comments on this topic to
+<span class="keyword">virtual</span> <span class="identifier">Interval</span> <span class="identifier">ReadJsonImpl</span>(
+	<span class="identifier">JsonReader</span>^ <span class="parameter">reader</span>, 
+	<span class="identifier">JsonSerializer</span>^ <span class="parameter">serializer</span>
+) <span class="keyword">override</span></pre></div></div></div></div></div><div id="parameters"><div class="section"><div class="sectionTitle" onclick="toggleSection(this.parentNode)"><img src="../icons/collapse_all.gif" /> Parameters</div><div class="sectionContent"><dl paramName="reader"><dt><span class="parameter">reader</span> (<span class="nolink">JsonReader</span>)</dt><dd>The JSON reader to fetch data from.</dd></dl><dl paramName="serializer"><dt><span class="parameter">serializer</span> (<span class="nolink">JsonSerializer</span>)</dt><dd>The serializer for embedded serialization.</dd></dl></div></div></div><div class="section"><div class="sectionTitle" onclick="toggleSection(this.parentNode)"><img src="../icons/collapse_all.gif" /> Return Value</div><div class="sectionContent"><a href="T_NodaTime_Interval.htm">Interval</a><br />The <a href="T_NodaTime_DateTimeZone.htm">DateTimeZone</a> identified in the JSON, or null.</div></div><div id="footer"><p />Send comments on this topic to
         <a id="HT_MailLink" href="mailto:noda-time%40googlegroups.com?Subject=Noda Time">Noda Time Google Groups</a><script type="text/javascript">
         var HT_mailLink = document.getElementById("HT_MailLink");
         var HT_mailLinkText = HT_mailLink.innerHTML;

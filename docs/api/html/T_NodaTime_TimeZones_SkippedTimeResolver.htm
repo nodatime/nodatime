@@ -3,24 +3,24 @@
             where the requested local time does not exist, due to clocks moving forward in a time zone transition
             (usually due to a spring daylight saving transition).
             </div><div class="section"><div class="sectionTitle" onclick="toggleSection(this.parentNode)"><img src="../icons/collapse_all.gif" /> Declaration Syntax</div><div class="sectionContent"><div id="syntaxSection"><table class="filter"><tr class="tabs" id="syntaxTabs"><td class="tab" x-lang="CSharp" onclick="toggleClass('syntaxTabs','x-lang','CSharp','activeTab','tab'); toggleStyle('syntaxBlocks','x-lang','CSharp','display','block','none');">C#</td><td class="tab" x-lang="VisualBasic" onclick="toggleClass('syntaxTabs','x-lang','VisualBasic','activeTab','tab'); toggleStyle('syntaxBlocks','x-lang','VisualBasic','display','block','none');">Visual Basic</td><td class="tab" x-lang="ManagedCPlusPlus" onclick="toggleClass('syntaxTabs','x-lang','ManagedCPlusPlus','activeTab','tab'); toggleStyle('syntaxBlocks','x-lang','ManagedCPlusPlus','display','block','none');">Visual C++</td></tr></table><div id="syntaxBlocks"><div class="code" x-lang="CSharp"><pre xml:space="preserve">
-<span class="keyword">public</span> <span class="keyword">delegate</span> <a href="T_NodaTime_ZonedDateTime.htm">ZonedDateTime</a> <span class="identifier">SkippedTimeResolver</span>(
-	<a href="T_NodaTime_LocalDateTime.htm">LocalDateTime</a> <span class="parameter">localDateTime</span>,
-	<a href="T_NodaTime_DateTimeZone.htm">DateTimeZone</a> <span class="parameter">zone</span>,
-	<a href="T_NodaTime_TimeZones_ZoneInterval.htm">ZoneInterval</a> <span class="parameter">intervalBefore</span>,
-	<a href="T_NodaTime_TimeZones_ZoneInterval.htm">ZoneInterval</a> <span class="parameter">intervalAfter</span>
+<span class="keyword">public</span> <span class="keyword">delegate</span> <span class="identifier">ZonedDateTime</span> <span class="identifier">SkippedTimeResolver</span>(
+	<span class="identifier">LocalDateTime</span> <span class="parameter">localDateTime</span>,
+	<span class="identifier">DateTimeZone</span> <span class="parameter">zone</span>,
+	<span class="identifier">ZoneInterval</span> <span class="parameter">intervalBefore</span>,
+	<span class="identifier">ZoneInterval</span> <span class="parameter">intervalAfter</span>
 )</pre></div><div class="code" x-lang="VisualBasic"><pre xml:space="preserve">
-<span class="keyword">Public</span> <span class="keyword">Delegate</span> <span class="keyword">Function</span> <span class="identifier">SkippedTimeResolver</span> ( _
-	<span class="parameter">localDateTime</span> <span class="keyword">As</span> <a href="T_NodaTime_LocalDateTime.htm">LocalDateTime</a>, _
-	<span class="parameter">zone</span> <span class="keyword">As</span> <a href="T_NodaTime_DateTimeZone.htm">DateTimeZone</a>, _
-	<span class="parameter">intervalBefore</span> <span class="keyword">As</span> <a href="T_NodaTime_TimeZones_ZoneInterval.htm">ZoneInterval</a>, _
-	<span class="parameter">intervalAfter</span> <span class="keyword">As</span> <a href="T_NodaTime_TimeZones_ZoneInterval.htm">ZoneInterval</a> _
-) <span class="keyword">As</span> <a href="T_NodaTime_ZonedDateTime.htm">ZonedDateTime</a></pre></div><div class="code" x-lang="ManagedCPlusPlus"><pre xml:space="preserve">
-<span class="keyword">public</span> <span class="keyword">delegate</span> <a href="T_NodaTime_ZonedDateTime.htm">ZonedDateTime</a> <span class="identifier">SkippedTimeResolver</span>(
-	<a href="T_NodaTime_LocalDateTime.htm">LocalDateTime</a> <span class="parameter">localDateTime</span>, 
-	<a href="T_NodaTime_DateTimeZone.htm">DateTimeZone</a>^ <span class="parameter">zone</span>, 
-	<a href="T_NodaTime_TimeZones_ZoneInterval.htm">ZoneInterval</a>^ <span class="parameter">intervalBefore</span>, 
-	<a href="T_NodaTime_TimeZones_ZoneInterval.htm">ZoneInterval</a>^ <span class="parameter">intervalAfter</span>
-)</pre></div></div></div></div></div><div id="parameters"><div class="section"><div class="sectionTitle" onclick="toggleSection(this.parentNode)"><img src="../icons/collapse_all.gif" /> Parameters</div><div class="sectionContent"><dl paramName="localDateTime"><dt><span class="parameter">localDateTime</span> (<a href="T_NodaTime_LocalDateTime.htm">LocalDateTime</a>)</dt><dd>The local date and time to map to the given time zone</dd></dl><dl paramName="zone"><dt><span class="parameter">zone</span> (<a href="T_NodaTime_DateTimeZone.htm">DateTimeZone</a>)</dt><dd>The target time zone</dd></dl><dl paramName="intervalBefore"><dt><span class="parameter">intervalBefore</span> (<a href="T_NodaTime_TimeZones_ZoneInterval.htm">ZoneInterval</a>)</dt><dd>The zone interval directly before the target local date and time would have occurred</dd></dl><dl paramName="intervalAfter"><dt><span class="parameter">intervalAfter</span> (<a href="T_NodaTime_TimeZones_ZoneInterval.htm">ZoneInterval</a>)</dt><dd>The zone interval directly after the target local date and time would have occurred</dd></dl></div></div></div><div class="section"><div class="sectionTitle" onclick="toggleSection(this.parentNode)"><img src="../icons/collapse_all.gif" /> Return Value</div><div class="sectionContent">A <a href="T_NodaTime_ZonedDateTime.htm">ZonedDateTime</a> in the target time zone, </div></div><div class="section"><div class="sectionTitle" onclick="toggleSection(this.parentNode)"><img src="../icons/collapse_all.gif" /> Remarks</div><div class="sectionContent"><p>
+<span class="keyword">Public</span> <span class="keyword">Delegate</span> <span class="keyword">Function</span> <span class="identifier">SkippedTimeResolver</span> ( 
+	<span class="parameter">localDateTime</span> <span class="keyword">As</span> <span class="identifier">LocalDateTime</span>,
+	<span class="parameter">zone</span> <span class="keyword">As</span> <span class="identifier">DateTimeZone</span>,
+	<span class="parameter">intervalBefore</span> <span class="keyword">As</span> <span class="identifier">ZoneInterval</span>,
+	<span class="parameter">intervalAfter</span> <span class="keyword">As</span> <span class="identifier">ZoneInterval</span>
+) <span class="keyword">As</span> <span class="identifier">ZonedDateTime</span></pre></div><div class="code" x-lang="ManagedCPlusPlus"><pre xml:space="preserve">
+<span class="keyword">public</span> <span class="keyword">delegate</span> <span class="identifier">ZonedDateTime</span> <span class="identifier">SkippedTimeResolver</span>(
+	<span class="identifier">LocalDateTime</span> <span class="parameter">localDateTime</span>, 
+	<span class="identifier">DateTimeZone</span>^ <span class="parameter">zone</span>, 
+	<span class="identifier">ZoneInterval</span>^ <span class="parameter">intervalBefore</span>, 
+	<span class="identifier">ZoneInterval</span>^ <span class="parameter">intervalAfter</span>
+)</pre></div></div></div></div></div><div id="parameters"><div class="section"><div class="sectionTitle" onclick="toggleSection(this.parentNode)"><img src="../icons/collapse_all.gif" /> Parameters</div><div class="sectionContent"><dl paramName="localDateTime"><dt><span class="parameter">localDateTime</span> (<a href="T_NodaTime_LocalDateTime.htm">LocalDateTime</a>)</dt><dd>The local date and time to map to the given time zone</dd></dl><dl paramName="zone"><dt><span class="parameter">zone</span> (<a href="T_NodaTime_DateTimeZone.htm">DateTimeZone</a>)</dt><dd>The target time zone</dd></dl><dl paramName="intervalBefore"><dt><span class="parameter">intervalBefore</span> (<a href="T_NodaTime_TimeZones_ZoneInterval.htm">ZoneInterval</a>)</dt><dd>The zone interval directly before the target local date and time would have occurred</dd></dl><dl paramName="intervalAfter"><dt><span class="parameter">intervalAfter</span> (<a href="T_NodaTime_TimeZones_ZoneInterval.htm">ZoneInterval</a>)</dt><dd>The zone interval directly after the target local date and time would have occurred</dd></dl></div></div></div><div class="section"><div class="sectionTitle" onclick="toggleSection(this.parentNode)"><img src="../icons/collapse_all.gif" /> Return Value</div><div class="sectionContent"><a href="T_NodaTime_ZonedDateTime.htm">ZonedDateTime</a><br />A <a href="T_NodaTime_ZonedDateTime.htm">ZonedDateTime</a> in the target time zone, </div></div><div class="section"><div class="sectionTitle" onclick="toggleSection(this.parentNode)"><img src="../icons/collapse_all.gif" /> Remarks</div><div class="sectionContent"><p>
             The returned value will necessarily represent a different local date and time to the target one, but
             the exact form of mapping is up to the delegate implementation. For example, it could return a value
             as close to the target local date and time as possible, or the time immediately after the transition.
@@ -36,4 +36,4 @@
         var HT_mailLinkText = HT_mailLink.innerHTML;
         HT_mailLink.href += ": " + document.title;
         HT_mailLink.innerHTML = HT_mailLinkText;
-        </script><p /><a href="http://www.apache.org/licenses/LICENSE-2.0" target="_blank">Copyright 2013 The Noda Time Authors. All rights reserved.</a></div><p>Assembly: <span sdata="assembly">NodaTime</span> (Module: NodaTime.dll) Version: 1.1.0.0 (1.1.0)</p></div></body></html>
+        </script><p /><a href="http://www.apache.org/licenses/LICENSE-2.0" target="_blank">Copyright 2013 The Noda Time Authors. All rights reserved.</a></div><p>Assembly: <span sdata="assembly">NodaTime</span> (Module: NodaTime.dll) Version: 1.1.0.0 (1.1.1)</p></div></body></html>
