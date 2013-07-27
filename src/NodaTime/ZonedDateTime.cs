@@ -683,7 +683,7 @@ namespace NodaTime
             /// <para>For example, this comparer considers 2013-03-04T20:21:00 (Europe/London) to be earlier than
             /// 2013-03-04T19:21:00 (America/Los_Angeles) even though the second value has a local time which is earlier; the time zones
             /// mean that the first value occurred earlier in the universal time line.</para>
-            /// <para>This comparer behaves the same way as the <see cref="CompareTo"/> method; it is provided for symmetry with <see cref="LocalComparer"/>.</para>
+            /// <para>This comparer behaves the same way as the <see cref="CompareTo"/> method; it is provided for symmetry with <see cref="Local"/>.</para>
             /// <para>This property will return a reference to the same instance every time it is called.</para>
             /// </remarks>
             public static Comparer Instant { get { return InstantComparer.Instance; } }

@@ -201,6 +201,7 @@ namespace NodaTime.TimeZones
         public string VersionId { get { return "TZDB: " + version; } }
 
         /// <inheritdoc />
+        /// <param name="zone">The BCL time zone, which must be a known system time zone.</param>
         public string MapTimeZoneId(TimeZoneInfo zone)
         {
 #if PCL

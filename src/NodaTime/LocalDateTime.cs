@@ -520,6 +520,7 @@ namespace NodaTime
         /// this can lead to surprising results. For example, 1945 in the ISO calendar corresponds to around 1364
         /// in the Islamic calendar, so an Islamic date in year 1400 is "after" a date in 1945 in the ISO calendar.
         /// </remarks>
+        /// <param name="other">The other local date/time to compare with this value.</param>
         /// <returns>A value less than zero if this date/time is earlier than <paramref name="other"/>;
         /// zero if this date/time is the same as <paramref name="other"/>; a value greater than zero if this date/time is
         /// later than <paramref name="other"/>.</returns>
