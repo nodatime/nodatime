@@ -55,7 +55,7 @@ namespace NodaTime.Test.Fields
         }
 
         [Test]
-        public void Add_OverflowOnAddOrSubtract(int days)
+        public void Add_OverflowOnAddOrSubtract()
         {
             Assert.Throws<OverflowException>(() => FixedDurationPeriodField.Ticks.Add(new LocalInstant(long.MaxValue), 1L));
             Assert.Throws<OverflowException>(() => FixedDurationPeriodField.Ticks.Add(new LocalInstant(long.MinValue), -1L));
