@@ -3,6 +3,7 @@
 // as found in the LICENSE.txt file.
 
 using NodaTime.Globalization;
+using NodaTime.Text.Patterns;
 using NodaTime.TimeZones;
 using NodaTime.Utility;
 using System.Globalization;
@@ -52,6 +53,7 @@ namespace NodaTime.Text
         {
             internal static readonly ZonedDateTimePattern GeneralFormatOnlyPatternImpl = CreateWithInvariantCulture("yyyy'-'MM'-'dd'T'HH':'mm':'ss z '('o<g>')'", null);
             internal static readonly ZonedDateTimePattern ExtendedFormatOnlyPatternImpl = CreateWithInvariantCulture("yyyy'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFF z '('o<g>')'", null);
+            internal static readonly PatternBclSupport<ZonedDateTime> BclSupport = new PatternBclSupport<ZonedDateTime>("G", fi => fi.ZonedDateTimePatternParser);
         }
 
         /// <summary>
@@ -135,8 +137,6 @@ namespace NodaTime.Text
             Preconditions.CheckNotNull(patternText, "patternText");
             Preconditions.CheckNotNull(formatInfo, "formatInfo");
             Preconditions.CheckNotNull(resolver, "resolver");
-            // TODO(V1.2): Work out whether there should be a "fixed" pattern parser at all. We only need to format from the
-            // BCL support, so that doesn't need a provider.
             var pattern = new ZonedDateTimePatternParser(templateValue, resolver, zoneProvider).ParsePattern(patternText, formatInfo);
             return new ZonedDateTimePattern(patternText, formatInfo, templateValue, resolver, zoneProvider, pattern);
         }

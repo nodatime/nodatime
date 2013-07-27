@@ -4,6 +4,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Xml.Linq;
@@ -153,6 +154,15 @@ namespace NodaTime.Test
             Assert.AreEqual("2012-10-06T01:02:03Z", odt.ToString());
         }
 
+        [Test]
+        public void ToString_WithFormat()
+        {
+            LocalDateTime local = new LocalDateTime(2012, 10, 6, 1, 2, 3);
+            Offset offset = Offset.FromHours(1);
+            OffsetDateTime odt = new OffsetDateTime(local, offset);
+            Assert.AreEqual("2012/10/06 01:02:03 01", odt.ToString("yyyy/MM/dd HH:mm:ss o<-HH>", CultureInfo.InvariantCulture));
+        }
+        
         [Test]
         public void LocalComparer()
         {

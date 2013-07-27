@@ -4,6 +4,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Runtime.Serialization;
 using System.Xml;
 using System.Xml.Schema;
@@ -47,7 +48,7 @@ namespace NodaTime
 #if !PCL
     [Serializable]
 #endif
-    public struct ZonedDateTime : IEquatable<ZonedDateTime>, IComparable<ZonedDateTime>, IComparable, IXmlSerializable
+    public struct ZonedDateTime : IEquatable<ZonedDateTime>, IComparable<ZonedDateTime>, IComparable, IFormattable, IXmlSerializable
 #if !PCL
         , ISerializable
 #endif
@@ -551,17 +552,38 @@ namespace NodaTime
             return Zone.GetZoneInterval(ToInstant());
         }
 
+        #region Formatting
         /// <summary>
-        /// Currently returns a string representation of this value indicating the local time,
-        /// offset and time zone.
+        ///   Returns a <see cref="System.String" /> that represents this instance.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// <returns>A string representation of this value.</returns>
+        /// <returns>
+        ///   A <see cref="System.String" /> that represents this instance.
+        /// </returns>
         public override string ToString()
         {
-            return ZonedDateTimePattern.GeneralFormatOnlyIsoPattern.Format(this);
+            return ZonedDateTimePattern.Patterns.BclSupport.Format(this, null, CultureInfo.CurrentCulture);
         }
+
+        /// <summary>
+        ///   Formats the value of the current instance using the specified format.
+        /// </summary>
+        /// <returns>
+        ///   A <see cref="T:System.String" /> containing the value of the current instance in the specified format.
+        /// </returns>
+        /// <param name="patternText">The <see cref="T:System.String" /> specifying the pattern to use.
+        ///   -or- 
+        ///   null to use the default pattern defined for the type of the <see cref="T:System.IFormattable" /> implementation. 
+        /// </param>
+        /// <param name="formatProvider">The <see cref="T:System.IFormatProvider" /> to use to format the value.
+        ///   -or- 
+        ///   null to obtain the numeric format information from the current locale setting of the operating system. 
+        /// </param>
+        /// <filterpriority>2</filterpriority>
+        public string ToString(string patternText, IFormatProvider formatProvider)
+        {
+            return ZonedDateTimePattern.Patterns.BclSupport.Format(this, patternText, formatProvider);
+        }
+        #endregion Formatting
 
         /// <summary>
         /// Constructs a <see cref="DateTimeOffset"/> value with the same local time and offset from

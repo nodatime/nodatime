@@ -4,6 +4,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using NUnit.Framework;
 using NodaTime.Calendars;
 using NodaTime.Testing.TimeZones;
@@ -523,6 +524,14 @@ namespace NodaTime.Test
             var local = new LocalDateTime(2013, 7, 23, 13, 05, 20);
             ZonedDateTime zoned = local.InZoneStrictly(SampleZone);
             Assert.AreEqual("2013-07-23T13:05:20 Single (+04)", zoned.ToString());
+        }
+
+        [Test]
+        public void ZonedDateTime_ToString_WithFormat()
+        {
+            var local = new LocalDateTime(2013, 7, 23, 13, 05, 20);
+            ZonedDateTime zoned = local.InZoneStrictly(SampleZone);
+            Assert.AreEqual("2013/07/23 13:05:20 Single", zoned.ToString("yyyy/MM/dd HH:mm:ss z", CultureInfo.InvariantCulture));
         }
     }
 }
