@@ -49,7 +49,7 @@ namespace NodaTime.Text
         // interface implementation.
         public IPattern<LocalTime> ParsePattern(string patternText, NodaFormatInfo formatInfo)
         {
-            Preconditions.CheckNotNull(patternText, "patternText");
+            // Nullity check is performed in LocalTimePattern.
             if (patternText.Length == 0)
             {
                 throw new InvalidPatternException(Messages.Parse_FormatStringEmpty);

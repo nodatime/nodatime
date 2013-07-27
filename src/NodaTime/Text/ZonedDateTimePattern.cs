@@ -132,7 +132,6 @@ namespace NodaTime.Text
         internal static ZonedDateTimePattern Create(string patternText, NodaFormatInfo formatInfo,
             ZoneLocalMappingResolver resolver, IDateTimeZoneProvider zoneProvider, ZonedDateTime templateValue)
         {
-            // TODO(V1.2): Work out the best place to do this test. Currently it's also done in ZonedDateTimePatternParser.
             Preconditions.CheckNotNull(patternText, "patternText");
             Preconditions.CheckNotNull(formatInfo, "formatInfo");
             Preconditions.CheckNotNull(resolver, "resolver");

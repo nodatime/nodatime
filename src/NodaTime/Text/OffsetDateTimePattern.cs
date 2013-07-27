@@ -120,7 +120,6 @@ namespace NodaTime.Text
         /// <exception cref="InvalidPatternException">The pattern text was invalid.</exception>
         internal static OffsetDateTimePattern Create(string patternText, NodaFormatInfo formatInfo, OffsetDateTime templateValue)
         {
-            // TODO(V1.2): Work out the best place to do this test. Currently it's also done in OffsetDateTimePatternParser.
             Preconditions.CheckNotNull(patternText, "patternText");
             Preconditions.CheckNotNull(formatInfo, "formatInfo");
             var pattern = new OffsetDateTimePatternParser(templateValue).ParsePattern(patternText, formatInfo);

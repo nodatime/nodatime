@@ -224,9 +224,6 @@ namespace NodaTime
         /// <summary>
         /// Gets the tick of this local time within the day, in the range 0 to 863,999,999,999 inclusive.
         /// </summary>
-        // TODO(V1.2): Consider making the same optimization for the fields above - but this is the one which will
-        // benefit most. It's safe because we know the local instant will be on January 1st 1970.
-        // We may find it just drops out in the great refactoring anyway.
         public long TickOfDay { get { return localInstant.Ticks; } }
 
         /// <summary>

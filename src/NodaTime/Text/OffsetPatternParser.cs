@@ -71,7 +71,7 @@ namespace NodaTime.Text
 
         internal IPartialPattern<Offset> ParsePartialPattern(string patternText, NodaFormatInfo formatInfo)
         {
-            Preconditions.CheckNotNull(patternText, "patternText");
+            // Nullity check is performed in OffsetPattern.
             if (patternText.Length == 0)
             {
                 throw new InvalidPatternException(Messages.Parse_FormatStringEmpty);

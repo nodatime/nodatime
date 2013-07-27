@@ -104,7 +104,6 @@ namespace NodaTime.Text
         /// <exception cref="InvalidPatternException">The pattern text was invalid.</exception>
         internal static LocalTimePattern Create(string patternText, NodaFormatInfo formatInfo, LocalTime templateValue)
         {
-            // TODO(V1.2): Work out the best place to do this test. Currently it's also done in LocalTimePatternParser.
             Preconditions.CheckNotNull(patternText, "patternText");
             Preconditions.CheckNotNull(formatInfo, "formatInfo");
             // Use the "fixed" parser for the common case of the default template value.
