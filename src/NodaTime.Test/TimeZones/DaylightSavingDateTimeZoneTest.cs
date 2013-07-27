@@ -33,7 +33,6 @@ namespace NodaTime.Test.TimeZones
             Assert.AreEqual(Offset.FromHours(5), TestZone.MinOffset);
         }
 
-        // TODO(Post-V1): Consider removing all of these tests, as they only use DateTimeZone now...
         [Test]
         public void GetZoneInterval_Instant_Summer()
         {

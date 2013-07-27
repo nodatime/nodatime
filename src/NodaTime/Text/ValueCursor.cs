@@ -65,8 +65,9 @@ namespace NodaTime.Text
                 {
                     return false;
                 }
-                // TODO(V1.2): This will fail if the length in the input string is different to the length in the
+                // Note: This will fail if the length in the input string is different to the length in the
                 // match string for culture-specific reasons. It's not clear how to handle that...
+                // See issue 210 for details - we're not intending to fix this, but it's annoying.
                 if (compareInfo.Compare(Value, Index, match.Length, match, 0, match.Length, CompareOptions.IgnoreCase) == 0)
                 {
                     if (moveOnSuccess)

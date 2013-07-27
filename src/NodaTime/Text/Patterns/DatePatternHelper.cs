@@ -278,7 +278,8 @@ namespace NodaTime.Text.Patterns
 
                 builder.AddParseAction((cursor, bucket) =>
                 {
-                    // TODO(V1.2): Do we really want this to be case-insensitive? It's really an ID, not a culture-specific value.
+                    // TODO(V2.0): (Breaking change, although undocumented.) Potentially make this case-sensitive
+                    // as we're parsing IDs.
                     foreach (var id in CalendarSystem.Ids)
                     {
                         if (cursor.MatchCaseInsensitive(id, NodaFormatInfo.InvariantInfo.CompareInfo, true))

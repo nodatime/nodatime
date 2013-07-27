@@ -93,7 +93,6 @@ namespace NodaTime.Text
             this.templateValue = templateValue;
             this.resolver = resolver;
             this.zoneProvider = zoneProvider;
-            // TODO(V1.2): Consider exposing all of the above on ZonedDateTimeZonePatternParser instead, and using that.
             this.pattern = pattern;
         }
 
