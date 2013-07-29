@@ -776,8 +776,6 @@ namespace NodaTime
             var pattern = OffsetDateTimePattern.ExtendedIsoPattern;
             if (!reader.MoveToAttribute("zone"))
             {
-                // TODO(1.2): Work out if this is actually a reasonable exception. Maybe we
-                // should use UTC instead.
                 throw new ArgumentException("No zone specified in XML for ZonedDateTime");
             }
             DateTimeZone newZone = DateTimeZoneProviders.Serialization[reader.Value];
