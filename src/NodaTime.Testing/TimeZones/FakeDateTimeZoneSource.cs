@@ -116,7 +116,7 @@ namespace NodaTime.Testing.TimeZones
             /// <summary>
             /// Adds a time zone to the builder.
             /// </summary>
-            /// <paramref name="zone">The zone to add.</paramref>
+            /// <param name="zone">The zone to add.</param>
             public void Add(DateTimeZone zone)
             {
                 Preconditions.CheckNotNull(zone, "zone");
@@ -127,6 +127,7 @@ namespace NodaTime.Testing.TimeZones
             /// Returns the zones within the builder. This mostly exists
             /// to enable collection initializers.
             /// </summary>
+            /// <returns>An iterator over the zones in this builder.</returns>
             public IEnumerator<DateTimeZone> GetEnumerator()
             {
                 return zones.GetEnumerator();
@@ -135,6 +136,7 @@ namespace NodaTime.Testing.TimeZones
             /// <summary>
             /// Explicit interface implementation of <see cref="IEnumerator"/>.
             /// </summary>
+            /// <returns>An iterator over the zones in this builder.</returns>
             IEnumerator IEnumerable.GetEnumerator()
             {
                 return GetEnumerator();
@@ -150,6 +152,7 @@ namespace NodaTime.Testing.TimeZones
             /// they're violated. Those exceptions are not documented here, and you
             /// shouldn't be catching them anyway. (This is aimed at testing...)
             /// </remarks>
+            /// <returns>The newly-built time zone source.</returns>
             public FakeDateTimeZoneSource Build()
             {
                 var zoneMap = zones.ToDictionary(zone => zone.Id);

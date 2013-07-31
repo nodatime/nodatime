@@ -14,12 +14,12 @@ namespace NodaTime.Text.Patterns
     internal sealed class CompositePattern<T> : IPartialPattern<T>
     {
         private readonly List<IPartialPattern<T>> parsePatterns;
-        private readonly NodaFunc<T, string> formatter;
+        private readonly NodaFunc<T, IPartialPattern<T>> formatPatternPicker;
 
-        internal CompositePattern(IEnumerable<IPartialPattern<T>> parsePatterns, NodaFunc<T, string> formatter)
+        internal CompositePattern(IEnumerable<IPartialPattern<T>> parsePatterns, NodaFunc<T, IPartialPattern<T>> formatPatternPicker)
         {
             this.parsePatterns = new List<IPartialPattern<T>>(parsePatterns);
-            this.formatter = formatter;
+            this.formatPatternPicker = formatPatternPicker;
         }
 
         public ParseResult<T> Parse(string text)
@@ -37,7 +37,7 @@ namespace NodaTime.Text.Patterns
 
         public string Format(T value)
         {
-            return formatter(value);
+            return formatPatternPicker(value).Format(value);
         }
 
         public ParseResult<T> ParsePartial(ValueCursor cursor)
@@ -57,8 +57,7 @@ namespace NodaTime.Text.Patterns
 
         public void FormatPartial(T value, StringBuilder builder)
         {
-            // TODO(V1.2): Maybe make this more efficient
-            builder.Append(formatter(value));
+            formatPatternPicker(value).FormatPartial(value, builder);
         }
     }
 

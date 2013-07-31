@@ -71,7 +71,7 @@ namespace NodaTime.Text
 
         internal IPartialPattern<Offset> ParsePartialPattern(string patternText, NodaFormatInfo formatInfo)
         {
-            Preconditions.CheckNotNull(patternText, "patternText");
+            // Nullity check is performed in OffsetPattern.
             if (patternText.Length == 0)
             {
                 throw new InvalidPatternException(Messages.Parse_FormatStringEmpty);
@@ -142,11 +142,11 @@ namespace NodaTime.Text
             {
                 patterns.Add(ParsePartialPattern(c.ToString(), formatInfo));
             }
-            NodaFunc<Offset, string> formatter = value => FormatGeneral(value, patterns);
+            NodaFunc<Offset, IPartialPattern<Offset>> formatter = value => PickGeneralFormatter(value, patterns);
             return new CompositePattern<Offset>(patterns, formatter);
         }
 
-        private string FormatGeneral(Offset value, List<IPartialPattern<Offset>> patterns)
+        private static IPartialPattern<Offset> PickGeneralFormatter(Offset value, List<IPartialPattern<Offset>> patterns)
         {
             // Note: this relies on the order in ExpandStandardFormatPattern
             int index;
@@ -168,7 +168,7 @@ namespace NodaTime.Text
             {
                 index = 3;
             }
-            return patterns[index].Format(value);
+            return patterns[index];
         }
         #endregion
 
@@ -230,8 +230,8 @@ namespace NodaTime.Text
 
             public ParseResult<Offset> ParsePartial(ValueCursor cursor)
             {
-                // TODO(V1.2): Do better than this. It's horrible, and may well be invalid
-                // for some cultures.
+                // TODO: Do better than this. It's horrible, and may well be invalid
+                // for some cultures. Or just remove the NumberPattern from 2.0...
                 int longestPossible = Math.Min(maxLength, cursor.Length - cursor.Index);
                 for (int length = longestPossible; length >= 0; length--)
                 {

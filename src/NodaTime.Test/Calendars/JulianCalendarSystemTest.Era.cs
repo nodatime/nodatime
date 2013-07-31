@@ -41,5 +41,14 @@ namespace NodaTime.Test.Calendars
             Assert.AreEqual(Julian.MaxYear, Julian.GetAbsoluteYear(Julian.GetMaxYearOfEra(Era.Common), Era.Common));
             Assert.AreEqual(Julian.MinYear, Julian.GetAbsoluteYear(Julian.GetMaxYearOfEra(Era.BeforeCommon), Era.BeforeCommon));
         }
+
+        [Test]
+        public void EraProperty()
+        {
+            CalendarSystem calendar = CalendarSystem.GetJulianCalendar(4);
+            LocalDateTime startOfEra = new LocalDateTime(1, 1, 1, 0, 0, 0, calendar);
+            Assert.AreEqual(Era.Common, startOfEra.Era);
+            Assert.AreEqual(Era.BeforeCommon, startOfEra.PlusTicks(-1).Era);
+        }
     }
 }

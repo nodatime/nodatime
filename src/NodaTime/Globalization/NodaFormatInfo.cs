@@ -11,6 +11,7 @@ using NodaTime.Calendars;
 using NodaTime.Properties;
 using NodaTime.Text;
 using NodaTime.Text.Patterns;
+using NodaTime.TimeZones;
 using NodaTime.Utility;
 
 namespace NodaTime.Globalization
@@ -35,14 +36,7 @@ namespace NodaTime.Globalization
         private static readonly string[] ShortInvariantMonthNames = (string[]) CultureInfo.InvariantCulture.DateTimeFormat.AbbreviatedMonthNames.Clone();
         private static readonly string[] LongInvariantMonthNames = (string[]) CultureInfo.InvariantCulture.DateTimeFormat.MonthNames.Clone();
 
-        #region Patterns and pattern parsers
-        private static readonly IPatternParser<Duration> GeneralDurationPatternParser = new DurationPatternParser();
-        private static readonly IPatternParser<Offset> GeneralOffsetPatternParser = new OffsetPatternParser();
-        private static readonly IPatternParser<Instant> GeneralInstantPatternParser = new InstantPatternParser(InstantPattern.DefaultMinLabel, InstantPattern.DefaultMaxLabel);
-        private static readonly IPatternParser<LocalTime> GeneralLocalTimePatternParser = new LocalTimePatternParser(LocalTime.Midnight);
-        private static readonly IPatternParser<LocalDate> GeneralLocalDatePatternParser = new LocalDatePatternParser(LocalDatePattern.DefaultTemplateValue);
-        private static readonly IPatternParser<LocalDateTime> GeneralLocalDateTimePatternParser = new LocalDateTimePatternParser(LocalDateTimePattern.DefaultTemplateValue);
-
+        #region Patterns
         private readonly object fieldLock = new object();
         private FixedFormatInfoPatternParser<Duration> durationPatternParser;
         private FixedFormatInfoPatternParser<Offset> offsetPatternParser;
@@ -50,6 +44,8 @@ namespace NodaTime.Globalization
         private FixedFormatInfoPatternParser<LocalTime> localTimePatternParser;
         private FixedFormatInfoPatternParser<LocalDate> localDatePatternParser;
         private FixedFormatInfoPatternParser<LocalDateTime> localDateTimePatternParser;
+        private FixedFormatInfoPatternParser<OffsetDateTime> offsetDateTimePatternParser;
+        private FixedFormatInfoPatternParser<ZonedDateTime> zonedDateTimePatternParser;
         #endregion
 
         /// <summary>
@@ -188,21 +184,23 @@ namespace NodaTime.Globalization
         /// </summary>
         public CompareInfo CompareInfo { get { return cultureInfo.CompareInfo; } }
 
-        internal FixedFormatInfoPatternParser<Duration> DurationPatternParser { get { return EnsureFixedFormatInitialized(ref durationPatternParser, GeneralDurationPatternParser); } }
-        internal FixedFormatInfoPatternParser<Offset> OffsetPatternParser { get { return EnsureFixedFormatInitialized(ref offsetPatternParser, GeneralOffsetPatternParser); } }
-        internal FixedFormatInfoPatternParser<Instant> InstantPatternParser { get { return EnsureFixedFormatInitialized(ref instantPatternParser, GeneralInstantPatternParser); } }
-        internal FixedFormatInfoPatternParser<LocalTime> LocalTimePatternParser { get { return EnsureFixedFormatInitialized(ref localTimePatternParser, GeneralLocalTimePatternParser); } }
-        internal FixedFormatInfoPatternParser<LocalDate> LocalDatePatternParser { get { return EnsureFixedFormatInitialized(ref localDatePatternParser, GeneralLocalDatePatternParser); } }
-        internal FixedFormatInfoPatternParser<LocalDateTime> LocalDateTimePatternParser { get { return EnsureFixedFormatInitialized(ref localDateTimePatternParser, GeneralLocalDateTimePatternParser); } }
+        internal FixedFormatInfoPatternParser<Duration> DurationPatternParser { get { return EnsureFixedFormatInitialized(ref durationPatternParser, () => new DurationPatternParser()); } }
+        internal FixedFormatInfoPatternParser<Offset> OffsetPatternParser { get { return EnsureFixedFormatInitialized(ref offsetPatternParser, () => new OffsetPatternParser()); } }
+        internal FixedFormatInfoPatternParser<Instant> InstantPatternParser { get { return EnsureFixedFormatInitialized(ref instantPatternParser, () => new InstantPatternParser(InstantPattern.DefaultMinLabel, InstantPattern.DefaultMaxLabel)); } }
+        internal FixedFormatInfoPatternParser<LocalTime> LocalTimePatternParser { get { return EnsureFixedFormatInitialized(ref localTimePatternParser, () => new LocalTimePatternParser(LocalTime.Midnight)); } }
+        internal FixedFormatInfoPatternParser<LocalDate> LocalDatePatternParser { get { return EnsureFixedFormatInitialized(ref localDatePatternParser, () => new LocalDatePatternParser(LocalDatePattern.DefaultTemplateValue)); } }
+        internal FixedFormatInfoPatternParser<LocalDateTime> LocalDateTimePatternParser { get { return EnsureFixedFormatInitialized(ref localDateTimePatternParser, () => new LocalDateTimePatternParser(LocalDateTimePattern.DefaultTemplateValue)); } }
+        internal FixedFormatInfoPatternParser<OffsetDateTime> OffsetDateTimePatternParser { get { return EnsureFixedFormatInitialized(ref offsetDateTimePatternParser, () => new OffsetDateTimePatternParser(OffsetDateTimePattern.DefaultTemplateValue)); } }
+        internal FixedFormatInfoPatternParser<ZonedDateTime> ZonedDateTimePatternParser { get { return EnsureFixedFormatInitialized(ref zonedDateTimePatternParser, () => new ZonedDateTimePatternParser(ZonedDateTimePattern.DefaultTemplateValue, Resolvers.StrictResolver, null)); } }
 
         private FixedFormatInfoPatternParser<T> EnsureFixedFormatInitialized<T>(ref FixedFormatInfoPatternParser<T> field,
-            IPatternParser<T> patternParser)
+            NodaFunc<IPatternParser<T>> patternParserFactory)
         {
             lock (fieldLock)
             {
                 if (field == null)
                 {
-                    field = new FixedFormatInfoPatternParser<T>(patternParser, this);
+                    field = new FixedFormatInfoPatternParser<T>(patternParserFactory(), this);
                 }
                 return field;
             }

@@ -1,5 +1,5 @@
 # Makefile for compiling Noda Time under mono.
-# See src/docs/developer/markdown/building.txt for requirements.
+# See www/developer/building.md for requirements.
 
 # Assumes that 'mono', 'xbuild' and 'nunit-console' point to appropriate
 # versions of the respective tools. If this is not true, override the
@@ -26,8 +26,7 @@ NUNIT := nunit-console
 #     from each.  Note that this does not remove _all_ generated files.
 #
 #   docs
-#     builds the Markdown-based documentation generator, and updates the
-#     user and developer guides (in docs/{userguide,developer}).
+#     builds the contents www/ directory using Jekyll.
 
 # Override the profile: Mono only supports the 'full' .NET framework profile,
 # not the Client profile selected in the project files for the desktop build
@@ -57,7 +56,6 @@ FAKEPCL_TEST_DLL := \
 	src/NodaTime.Test/${FAKEPCL_OUTPUTPATH}/NodaTime.Test.dll
 FAKEPCL_SERIALIZATION_TEST_DLL := \
 	src/NodaTime.Serialization.Test/${FAKEPCL_OUTPUTPATH}/NodaTime.Serialization.Test.dll
-MARKDOWN_TOOL := src/NodaTime.Tools.BuildMarkdownDocs/bin/Release/NodaTime.Tools.BuildMarkdownDocs.exe
 
 debug:
 	$(XBUILD) $(XBUILDFLAGS_DEBUG) $(SOLUTION)
@@ -84,13 +82,8 @@ check: debug
 checkfakepcl: fakepcl
 	$(NUNIT) $(FAKEPCL_TEST_DLL) $(FAKEPCL_SERIALIZATION_TEST_DLL)
 
-buildmarkdowndocs:
-	$(XBUILD) $(XBUILDFLAGS_RELEASE) \
-		src/NodaTime.Tools.BuildMarkdownDocs/NodaTime.Tools.BuildMarkdownDocs.csproj
-
-docs: buildmarkdowndocs
-	$(MONO) $(MARKDOWN_TOOL) src/docs/userguide/project.xml docs/userguide
-	$(MONO) $(MARKDOWN_TOOL) src/docs/developer/project.xml docs/developer
+docs:
+	echo TODO
 
 clean:
 	$(XBUILD) $(XBUILDFLAGS_DEBUG) $(SOLUTION) /t:Clean
@@ -98,4 +91,4 @@ clean:
 	$(XBUILD) $(XBUILDFLAGS_FAKEPCL) $(SOLUTION) /t:Clean
 
 .SUFFIXES:
-.PHONY: debug release fakepcl check checkfakepcl buildmarkdowndocs docs clean
+.PHONY: debug release fakepcl check checkfakepcl docs clean

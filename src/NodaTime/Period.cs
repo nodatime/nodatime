@@ -613,7 +613,6 @@ namespace NodaTime
         /// <seealso cref="NormalizingEqualityComparer"/>
         public Period Normalize()
         {
-            // TODO(Post-V1): Consider improving the efficiency of this: return "this" when it's already normalized.
             // Simplest way to normalize: grab all the fields up to "week" and
             // sum them.
             long totalTicks = TotalStandardTicks;

@@ -4,6 +4,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Runtime.Serialization;
 using System.Xml;
 using NodaTime.Calendars;
@@ -30,7 +31,7 @@ namespace NodaTime
 #if !PCL
     [Serializable]
 #endif
-    public struct OffsetDateTime : IEquatable<OffsetDateTime>, IXmlSerializable
+    public struct OffsetDateTime : IEquatable<OffsetDateTime>, IFormattable, IXmlSerializable
 #if !PCL
         , ISerializable
 #endif
@@ -276,27 +277,38 @@ namespace NodaTime
             return this.localDateTime == other.localDateTime && this.offset == other.offset;
         }
 
+        #region Formatting
         /// <summary>
-        /// Currently returns a string representation of this value according to ISO-8601,
-        /// extended where necessary to include fractional seconds, and using a colon within the offset
-        /// where hour/minute or minute/second separators are required.
+        ///   Returns a <see cref="System.String" /> that represents this instance.
         /// </summary>
-        /// <remarks>
-        /// <para>
-        /// An offset of 0 is represented by "Z", otherwise the offset is the number of hours
-        /// and optionally minutes, e.g. "01" or "01:30".
-        /// </para>
-        /// <para>
-        /// This representation is a temporary measure until full support for parsing and formatting
-        /// <see cref="OffsetDateTime" /> values is implemented. It is provided in order to make diagnostics
-        /// simpler, but is likely to be changed in future releases.
-        /// </para>
-        /// </remarks>
-        /// <returns>A string representation of this value.</returns>
+        /// <returns>
+        ///   A <see cref="System.String" /> that represents this instance.
+        /// </returns>
         public override string ToString()
         {
-            return LocalDateTimePattern.ExtendedIsoPattern.Format(localDateTime) + OffsetPattern.GeneralInvariantPatternWithZ.Format(offset);
+            return OffsetDateTimePattern.Patterns.BclSupport.Format(this, null, CultureInfo.CurrentCulture);
         }
+
+        /// <summary>
+        ///   Formats the value of the current instance using the specified format.
+        /// </summary>
+        /// <returns>
+        ///   A <see cref="T:System.String" /> containing the value of the current instance in the specified format.
+        /// </returns>
+        /// <param name="patternText">The <see cref="T:System.String" /> specifying the pattern to use.
+        ///   -or- 
+        ///   null to use the default pattern defined for the type of the <see cref="T:System.IFormattable" /> implementation. 
+        /// </param>
+        /// <param name="formatProvider">The <see cref="T:System.IFormatProvider" /> to use to format the value.
+        ///   -or- 
+        ///   null to obtain the numeric format information from the current locale setting of the operating system. 
+        /// </param>
+        /// <filterpriority>2</filterpriority>
+        public string ToString(string patternText, IFormatProvider formatProvider)
+        {
+            return OffsetDateTimePattern.Patterns.BclSupport.Format(this, patternText, formatProvider);
+        }
+        #endregion Formatting
 
         #region Operators
         /// <summary>
