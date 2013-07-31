@@ -134,6 +134,37 @@ recommend** that you quote any text literals, to avoid nasty
 surprises if extra characters take on special meanings in later
 versions.
 
+### Related fields
+
+In general, a field may only occur once in a pattern in any form. For example, a pattern of "dd MM '('MMM')' yyyy" is invalid as it specifies the month twice, even though it specifies it in different forms. This restriction *may* be relaxed in the future, but it would always be invalid to have a value with inconsistencies.
+
+In some cases, fields may be related without being the same. The most obvious example here is day-of-week and the other date fields. When parsing, the day-of-week field is only used for validation: in itself, it doesn't provide enough information to specify a date. (The week-year/week-of-week-year/day-of-week scheme is not currently supported in text handling.) If the day-of-week is present but does not concur with the other values, parsing will fail.
+
+In other cases, there can be multiple fields specifying the same information - such as "year-of-era" and "absolute-year". In these cases either field is actually enough to determine the information, but when parsing the field values are validated for consistency.
+
+Template values
+---------------
+
+Many patterns allow a *template value* to be specified - for date/time values this is typically midnight on January 1st 2000. This value is used to provide and fields which aren't specified elsewhere. For example, if you create a `LocalDateTimePattern` with a custom pattern of "dd HH:mm:ss" then that doesn't specify the year or month - those will be picked from the template value. Template values can be specified for both standard and custom patterns, although standard patterns will rarely use them.
+
+The century in the template value is also used when a pattern specifies a two-digit year ("yy"), although such patterns are generally discouraged anyway.
+
+Advice on choosing text patterns
+--------------------------------
+
+Often you don't have much choice about how to parse or format text: if you're interoperating with another system which provides or expects the data in a particular format, you just have to go with their decision. However, often you *do* have a choice. A few points of guidance:
+
+- You need to decide whether this text is going to be parsed by *humans* or *computers* primarily. For humans, you probably want to use their culture - for computers, you should almost always use the invariant culture.
+- Custom patterns are rarely appropriate for arbitrary cultures. They generally useful for either the invariant culture or for specific cultures that you have knowledge of. (If you're writing an app which is only used in one country, for example, you have a lot more freedom than if you'll be dealing with cultures you don't have experience of, where the standard patterns are generally a better bet.)
+- If you're logging timestamps, think very carefully before you decide to log them in *any* time zone other than UTC. It's the one time zone that everyone else can work with, and you never need to worry about daylight saving time.
+- When designing a custom pattern:
+  - Consider sortability. A pattern such as `yyyy-MM-dd` is naturally sortable in the text form (assuming you never need years outside the range [0-9999]), whereas neither `dd-MM-yyyy` or `MM-dd-yyyy` is sortable.
+  - Avoid two-digit years. Aside from anything else, the meaning of "2009-10-11" is a lot more obvious than "09-10-11".
+  - Think about what precision you need to go down to.
+  - Think about whether a fixed-width pattern would be useful or whether you want to save space by removing sub-second insignficant zeroes.
+  - Try to use a pattern which is ISO-friendly where possible; it'll make it easier to interoperate with other systems in the future.
+  - Quote all non-field values other than spaces.
+
   [2]: http://msdn.microsoft.com/en-us/library/system.globalization.cultureinfo.aspx
   [3]: noda-ns://NodaTime.Text
   [4]: noda-type://NodaTime.LocalDateTime

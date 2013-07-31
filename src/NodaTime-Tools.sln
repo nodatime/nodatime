@@ -9,8 +9,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NodaTime.TzdbCompiler.Test"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NodaTime.CheckTimeZones", "NodaTime.CheckTimeZones\NodaTime.CheckTimeZones.csproj", "{1002B6E1-294B-4475-8E8A-8D51B0A2E332}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NodaTime.Tools.BuildMarkdownDocs", "NodaTime.Tools.BuildMarkdownDocs\NodaTime.Tools.BuildMarkdownDocs.csproj", "{420792C8-51C7-4129-9663-5EF765557CCF}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NodaTime.Tools.SetVersion", "NodaTime.Tools.SetVersion\NodaTime.Tools.SetVersion.csproj", "{6E80DFB9-0FF9-4F17-AC2B-014B44133B9A}"
 EndProject
 Global

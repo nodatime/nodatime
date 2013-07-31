@@ -3,6 +3,7 @@
 // as found in the LICENSE.txt file.
 
 using NodaTime.Globalization;
+using NodaTime.Text.Patterns;
 using NodaTime.Utility;
 using System.Globalization;
 
@@ -53,13 +54,14 @@ namespace NodaTime.Text
             internal static readonly OffsetDateTimePattern GeneralIsoPatternImpl = Create("yyyy'-'MM'-'dd'T'HH':'mm':'sso<G>", NodaFormatInfo.InvariantInfo, DefaultTemplateValue);
             internal static readonly OffsetDateTimePattern ExtendedIsoPatternImpl = Create("yyyy'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFFo<G>", NodaFormatInfo.InvariantInfo, DefaultTemplateValue);
             internal static readonly OffsetDateTimePattern FullRoundtripPatternImpl = Create("yyyy'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFFo<G> '('c')'", NodaFormatInfo.InvariantInfo, DefaultTemplateValue);
+            internal static readonly PatternBclSupport<OffsetDateTime> BclSupport = new PatternBclSupport<OffsetDateTime>("G", fi => fi.OffsetDateTimePatternParser);
         }
 
         private readonly string patternText;
         private readonly NodaFormatInfo formatInfo;
         private readonly IPattern<OffsetDateTime> pattern;
         private readonly OffsetDateTime templateValue;
-        
+
         /// <summary>
         /// Returns the pattern text for this pattern, as supplied on creation.
         /// </summary>
@@ -82,7 +84,6 @@ namespace NodaTime.Text
             this.patternText = patternText;
             this.formatInfo = formatInfo;
             this.templateValue = templateValue;
-            // TODO(V1.2): Consider exposing all of the above on OffsetDateTimeZonePatternParser instead, and using that.
             this.pattern = pattern;
         }
 
@@ -120,7 +121,6 @@ namespace NodaTime.Text
         /// <exception cref="InvalidPatternException">The pattern text was invalid.</exception>
         internal static OffsetDateTimePattern Create(string patternText, NodaFormatInfo formatInfo, OffsetDateTime templateValue)
         {
-            // TODO(V1.2): Work out the best place to do this test. Currently it's also done in OffsetDateTimePatternParser.
             Preconditions.CheckNotNull(patternText, "patternText");
             Preconditions.CheckNotNull(formatInfo, "formatInfo");
             var pattern = new OffsetDateTimePatternParser(templateValue).ParsePattern(patternText, formatInfo);

@@ -2,6 +2,7 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
+using System;
 using Newtonsoft.Json;
 
 namespace NodaTime.Serialization.JsonNet
@@ -12,11 +13,22 @@ namespace NodaTime.Serialization.JsonNet
     public static class Extensions
     {
         /// <summary>
-        /// Configures json.net with everything required to properly serialize and deserialize NodaTime data types.
+        /// Configures Json.NET with everything required to properly serialize and deserialize NodaTime data types.
         /// </summary>
+        /// <param name="settings">The existing settings to add Noda Time converters to.</param>
+        /// <param name="provider">The time zone provider to use when parsing time zones and zoned date/times.</param>
+        /// <returns>The original <paramref name="settings"/> value, for further chaining.</returns>
         public static JsonSerializerSettings ConfigureForNodaTime(this JsonSerializerSettings settings, IDateTimeZoneProvider provider)
         {
-            // add our converters
+            if (settings == null)
+            {
+                throw new ArgumentNullException("settings");
+            }
+            if (provider == null)
+            {
+                throw new ArgumentNullException("provider");
+            }
+            // Add our converters
             settings.Converters.Add(NodaConverters.InstantConverter);
             settings.Converters.Add(NodaConverters.IntervalConverter);
             settings.Converters.Add(NodaConverters.LocalDateConverter);
@@ -34,11 +46,22 @@ namespace NodaTime.Serialization.JsonNet
         }
 
         /// <summary>
-        /// Configures json.net with everything required to properly serialize and deserialize NodaTime data types.
+        /// Configures Json.NET with everything required to properly serialize and deserialize NodaTime data types.
         /// </summary>
+        /// <param name="serializer">The existing serializer to add Noda Time converters to.</param>
+        /// <param name="provider">The time zone provider to use when parsing time zones and zoned date/times.</param>
+        /// <returns>The original <paramref name="serializer"/> value, for further chaining.</returns>
         public static JsonSerializer ConfigureForNodaTime(this JsonSerializer serializer, IDateTimeZoneProvider provider)
         {
-            // add our converters
+            if (serializer == null)
+            {
+                throw new ArgumentNullException("serializer");
+            }
+            if (provider == null)
+            {
+                throw new ArgumentNullException("provider");
+            }
+            // Add our converters
             serializer.Converters.Add(NodaConverters.InstantConverter);
             serializer.Converters.Add(NodaConverters.IntervalConverter);
             serializer.Converters.Add(NodaConverters.LocalDateConverter);

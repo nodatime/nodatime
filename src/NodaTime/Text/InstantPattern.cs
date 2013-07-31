@@ -48,7 +48,6 @@ namespace NodaTime.Text
         /// </summary>
         public static InstantPattern ExtendedIsoPattern { get { return Patterns.ExtendedIsoPatternImpl; } }
 
-        // TODO(V1.2): Possibly support an "f" standard pattern which is like "g" but down to ticks.
         private const string DefaultFormatPattern = "g";
 
         internal static readonly PatternBclSupport<Instant> BclSupport = new PatternBclSupport<Instant>(DefaultFormatPattern, fi => fi.InstantPatternParser);

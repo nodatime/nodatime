@@ -62,7 +62,7 @@ namespace NodaTime.Text
         // interface implementation.
         public IPattern<OffsetDateTime> ParsePattern(string patternText, NodaFormatInfo formatInfo)
         {
-            Preconditions.CheckNotNull(patternText, "patternText");
+            // Nullity check is performed in OffsetDateTimePattern.
             if (patternText.Length == 0)
             {
                 throw new InvalidPatternException(Messages.Parse_FormatStringEmpty);

@@ -285,35 +285,6 @@ namespace NodaTime.Test.Text
             data.TestFormatPartial();
         }
 
-        // TODO(1.2): Work out how to reimplement these tests now that NodaFormatInfo is immutable.
-        /*
-        [Test]
-        public void SingleCharacterStandardPattern()
-        {
-            // This will (bizarrely) not be read-only by default...
-            NodaFormatInfo formatInfo = new NodaFormatInfo(CultureInfo.InvariantCulture);
-            formatInfo.OffsetPatternLong = "H";
-
-            Offset offset = Offset.FromHours(5);
-            // Long pattern: we need a better way of expressing "the long pattern"...
-            IPattern<Offset> pattern = OffsetPattern.Create("l", formatInfo);
-            Assert.AreEqual("5", pattern.Format(offset));
-        }
-
-        [Test]
-        public void SingleCharacterStandardPattern_CharacterIsAlsoNormallyStandard()
-        {
-            // This will (bizarrely) not be read-only by default...
-            NodaFormatInfo formatInfo = new NodaFormatInfo(CultureInfo.InvariantCulture);
-            // This means "minutes" not "use the medium pattern".
-            formatInfo.OffsetPatternLong = "m";
-
-            Offset offset = TestObjects.CreatePositiveOffset(5, 9, 0, 0);
-            // Long pattern: we need a better way of expressing "the long pattern"...
-            var pattern = OffsetPattern.Create("l", formatInfo);
-            Assert.AreEqual("9", pattern.Format(offset));
-        }*/
-
         /// <summary>
         /// A container for test data for formatting and parsing <see cref="Offset" /> objects.
         /// </summary>

@@ -11,9 +11,7 @@ namespace NodaTime.Serialization.JsonNet
     /// The NodaTime.Serialization.JsonNet namespace contains support code to enable
     /// JSON serialization for Noda Time types using <see href="http://json.net">Json.NET</see>.
     /// </para>
-    /// <para>Code in this namespace is not currently included in Noda Time NuGet packages;
-    /// it is still deemed "experimental". To use these serializers, please download and build the Noda Time
-    /// source code from the <see href="http://noda-time.googlecode.com">project home page</see>.</para>
+    /// <para>Code in this namespace is included in the NodaTime.Serialization.JsonNet NuGet package.</para>
     /// </summary>
     [CompilerGenerated]
     internal static class NamespaceDoc

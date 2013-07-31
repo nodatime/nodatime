@@ -53,6 +53,15 @@ namespace NodaTime.Test.Calendars
             }
         }
 
+        [Test]
+        public void EraProperty()
+        {
+            CalendarSystem calendar = CalendarSystem.GetGregorianCalendar(4);
+            LocalDateTime startOfEra = new LocalDateTime(1, 1, 1, 0, 0, 0, calendar);
+            Assert.AreEqual(Era.Common, startOfEra.Era);
+            Assert.AreEqual(Era.BeforeCommon, startOfEra.PlusTicks(-1).Era);
+        }
+
         private int GetDaysInFirstWeek(int year, CalendarSystem calendar)
         {
             // Some of the first few days of the week year may be in the previous week year.

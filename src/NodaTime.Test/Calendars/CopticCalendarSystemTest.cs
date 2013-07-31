@@ -57,8 +57,7 @@ namespace NodaTime.Test.Calendars
             Assert.AreEqual(10, coptic.Month);
             Assert.AreEqual(2, coptic.Day);
             
-            // TODO(Post-V1): Determine whether we should consider the Coptic calendar to use ISO
-            // days of the week.
+            // TODO: Determine whether we should consider the Coptic calendar to use ISO days of the week.
             Assert.AreEqual(IsoDayOfWeek.Wednesday, coptic.IsoDayOfWeek);
 
             Assert.AreEqual(9 * 30 + 2, coptic.DayOfYear);

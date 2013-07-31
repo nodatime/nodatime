@@ -99,7 +99,7 @@ we were building version 1.2.3-beta4, then:
 [assemblyversion]: http://stackoverflow.com/a/65062
 
 Add the current date and TZDB version to the version history in
-`src/docs/userguide/markdown/versions.txt` and regenerate all documentation.
+`www/docs/userguide/unstable/versions.md` and regenerate all documentation.
 
 Commit the above, then tag that commit:
 
@@ -159,3 +159,10 @@ number (and `NodaTime.Testing` dependency version), per the scheme above:
 - `src/NodaTime.Testing/NodaTime.Testing.nuspec`
 
 The version number string should be of the form `1.1.0-dev`.
+
+Additionally, the user guide source in `www/unstable/userguide` should be
+copied to `www/$BRANCH/userguide`, the Jekyll/Liquid templates should be
+adjusted to add the new branch for the "API" and "User Guide" links (and to
+point to the latest released guide; see `www/_config.yml`), and the scripts on
+the continuous build machine should be changed to copy the generated API
+documentation for the new branch.

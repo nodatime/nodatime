@@ -76,6 +76,7 @@ namespace NodaTime.Serialization.JsonNet
         /// </summary>
         /// <param name="reader">The JSON reader to pull data from</param>
         /// <param name="serializer">The serializer to use for nested serialization</param>
+        /// <returns>The deserialized value of type T.</returns>
         protected abstract T ReadJsonImpl(JsonReader reader, JsonSerializer serializer);
 
         /// <summary>

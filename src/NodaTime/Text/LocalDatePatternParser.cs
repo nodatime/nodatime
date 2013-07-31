@@ -20,7 +20,8 @@ namespace NodaTime.Text
 
         /// <summary>
         /// Maximum two-digit-year in the template to treat as the current century.
-        /// TODO(V1.2): Make this configurable, and define its meaning for negative absolute years.
+        /// (One day we may want to make this configurable, but it feels very low
+        /// priority.)
         /// </summary>
         private const int TwoDigitYearMax = 30;
 
@@ -52,7 +53,7 @@ namespace NodaTime.Text
         // interface implementation.
         public IPattern<LocalDate> ParsePattern(string patternText, NodaFormatInfo formatInfo)
         {
-            Preconditions.CheckNotNull(patternText, "patternText");
+            // Nullity check is performed in LocalDatePattern.
             if (patternText.Length == 0)
             {
                 throw new InvalidPatternException(Messages.Parse_FormatStringEmpty);
@@ -225,7 +226,8 @@ namespace NodaTime.Text
 
             private static int GetAbsoluteYearFromTwoDigits(int absoluteBase, int twoDigits)
             {
-                // TODO(V1.2): Sanity check this. It's one way of defining it...
+                // There's no particularly obvious meaning for two-digit years when given a
+                // negative value. This is as good as any...
                 if (absoluteBase < 0)
                 {
                     return -GetAbsoluteYearFromTwoDigits(Math.Abs(absoluteBase), twoDigits);
