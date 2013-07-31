@@ -48,6 +48,43 @@ namespace NodaTime.Test.TimeZones
             Assert.AreEqual(id, zone.Id);
             Assert.AreEqual(Offset.FromHours(-2), zone.GetZoneInterval(NodaConstants.UnixEpoch).WallOffset);
         }
+
+        [Test]
+        public void CanLookupLocalTimeZoneById()
+        {
+            // Note that this test can fail legitimately, as there are valid situations where TimeZoneInfo.Local returns
+            // a time zone that is not one of the system time zones.  These are unlikely to be cases that we encounter
+            // in practice, though.
+
+            // However, there _are_ cases where we can't fetch the local timezone at all (sigh, Mono), so we'll have to
+            // skip this test then.
+            TimeZoneInfo local = null;
+            try
+            {
+                local = TimeZoneInfo.Local;
+            }
+            catch (TimeZoneNotFoundException)
+            {
+                // See https://bugzilla.xamarin.com/show_bug.cgi?id=11817
+                Assert.Ignore("Test requires ability to fetch BCL local time zone");
+            }
+            if (local == null)
+            {
+                // https://code.google.com/p/noda-time/issues/detail?id=235#c8
+                Assert.Ignore("Test requires ability to fetch BCL local time zone (was null)");
+            }
+
+            // Now that we have our BCL local time zone, we should be able to look it up in the source.
+
+            var source = new BclDateTimeZoneSource();
+            string id = source.MapTimeZoneId(local);  // in this case, just returns the Id, but required in general.
+
+            // These lines replicate how DateTimeZoneCache implements GetSystemDefault().
+            Assert.Contains(id, source.GetIds().ToList(), "BCL local time zone ID should be included in the source ID list");
+            var zone = source.ForId(id);
+
+            Assert.IsNotNull(zone);  // though really we only need to test that the call above didn't throw.
+        }
     }
 }
 #endif
