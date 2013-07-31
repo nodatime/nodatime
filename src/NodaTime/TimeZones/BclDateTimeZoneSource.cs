@@ -25,7 +25,41 @@ namespace NodaTime.TimeZones
         /// </summary>
         public IEnumerable<string> GetIds()
         {
-            return TimeZoneInfo.GetSystemTimeZones().Select(zone => zone.Id);
+            // Always include the local time zone, since Mono may not include it in the list of system time zones, even
+            // though it allows the Id to be passed to FindSystemTimeZoneById().
+            // See https://code.google.com/p/noda-time/issues/detail?id=235.
+            return TimeZoneInfo.GetSystemTimeZones()
+                .Union(GetTimeZoneInfoLocalOrEmpty())
+                .Select(zone => zone.Id);
+        }
+
+        /// <summary>
+        /// Returns an enumerable containing a singleton element of the local time zone (<c>TimeZoneInfo.Local</c>),
+        /// unless the local time zone is not available, or not a system time zone, in which case returns an empty
+        /// enumerable.
+        /// </summary>
+        private static IEnumerable<TimeZoneInfo> GetTimeZoneInfoLocalOrEmpty()
+        {
+            // This complexity is entirely to handle Mono, which fails quite badly at this in some cases.
+            try
+            {
+                // May throw TimeZoneNotFoundException, particularly on Mono/Windows.
+                // See https://bugzilla.xamarin.com/show_bug.cgi?id=11817
+                var local = TimeZoneInfo.Local;
+
+                if (local != null)  // https://code.google.com/p/noda-time/issues/detail?id=235#c8
+                {
+                    // Make sure we can look it up again, as there are legitimate cases where the local time zone is not
+                    // a system time zone.  If not, this also throws TimeZoneNotFoundException.
+                    TimeZoneInfo.FindSystemTimeZoneById(local.Id);
+
+                    return new TimeZoneInfo[] { local };
+                }
+            }
+            catch (TimeZoneNotFoundException)
+            {
+            }
+            return Enumerable.Empty<TimeZoneInfo>();
         }
 
         /// <summary>
