@@ -53,7 +53,7 @@ namespace NodaTime.TimeZones
                     // a system time zone.  If not, this also throws TimeZoneNotFoundException.
                     TimeZoneInfo.FindSystemTimeZoneById(local.Id);
 
-                    return new TimeZoneInfo[] { local.Id };
+                    return new string[] { local.Id };
                 }
             }
             catch (TimeZoneNotFoundException)
