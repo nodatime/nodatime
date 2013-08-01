@@ -29,16 +29,16 @@ namespace NodaTime.TimeZones
             // though it allows the Id to be passed to FindSystemTimeZoneById().
             // See https://code.google.com/p/noda-time/issues/detail?id=235.
             return TimeZoneInfo.GetSystemTimeZones()
-                .Union(GetTimeZoneInfoLocalOrEmpty())
-                .Select(zone => zone.Id);
+                .Select(zone => zone.Id)
+                .Union(GetTimeZoneInfoLocalIdOrEmpty());
         }
 
         /// <summary>
-        /// Returns an enumerable containing a singleton element of the local time zone (<c>TimeZoneInfo.Local</c>),
-        /// unless the local time zone is not available, or not a system time zone, in which case returns an empty
-        /// enumerable.
+        /// Returns an enumerable containing a singleton element of the Id of the local time zone
+        /// (<c>TimeZoneInfo.Local.Id</c>), unless the local time zone is not available, or not a system time zone, in
+        /// which case returns an empty enumerable.
         /// </summary>
-        private static IEnumerable<TimeZoneInfo> GetTimeZoneInfoLocalOrEmpty()
+        private static IEnumerable<string> GetTimeZoneInfoLocalIdOrEmpty()
         {
             // This complexity is entirely to handle Mono, which fails quite badly at this in some cases.
             try
@@ -53,13 +53,13 @@ namespace NodaTime.TimeZones
                     // a system time zone.  If not, this also throws TimeZoneNotFoundException.
                     TimeZoneInfo.FindSystemTimeZoneById(local.Id);
 
-                    return new TimeZoneInfo[] { local };
+                    return new TimeZoneInfo[] { local.Id };
                 }
             }
             catch (TimeZoneNotFoundException)
             {
             }
-            return Enumerable.Empty<TimeZoneInfo>();
+            return Enumerable.Empty<string>();
         }
 
         /// <summary>
