@@ -20,10 +20,13 @@ to core features which won't make this harder than it needs to be. (Don't worry 
 
 ## PCL support ##
 
-See the [user guide](../userguide/installation.html) for which versions of the PCL are currently
+See the [Installation][] section of the user guide for which versions of the
+PCL are currently
 supported. Supporting Silverlight restricts us more than the other targets; in particular the
 `System.IO.Compression` namespace is entirely absent from Silverlight, whereas it's present
 in the other PCL targets we're supporting.
+
+[Installation]: /{{ site.userguide }}installation.html
 
 The PCL build is a separate project configuration, hand-crafted into the existing project files. These configurations
 define the `PCL` conditional compilation symbol, which is used for areas where the code needs to differ between builds.
