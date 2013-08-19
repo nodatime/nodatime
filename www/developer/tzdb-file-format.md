@@ -78,7 +78,7 @@ in mind than the resource file format.
 The first four bytes of the file contain the format version number. At the time of
 this writing, the only supported version number is 0. Not all changes in the future
 will require a change in version number (as even within a version the format is extensible)
-but this provides flexibility in the future, where as a single binary may be able to read a
+but this provides flexibility in the future, where a single binary may be able to read a
 range of versions. At that point, this document will be extended to give details for each version
 separately. Each version may be completely independent of previous versions, so may redefine
 the meaning of particular field IDs, or even contain a different field structure.
@@ -101,7 +101,7 @@ The "NodaZoneData" format makes use of the following serialization primitives:
   simply serialized as 2-, 4-, or 8-byte twos-complement values of the appropriate length,
   in MSB-first order. For example, `0x1234` would be serialized as the bytes `[0x12 0x34]` using
   the `fixed16` serialization, while -1 would be serialized as `[0xff 0xff]`
-- `count`, a non-negative (typically small) `int32` value, stored as a 7-bit-encoded integer:
+- `count`, a non-negative (typically small) `int32` value, serialized as a variably-sized integer:
   the value is written 7 bits at a time (least significant first), with the highest bit of each
   byte set if this is not the final byte of the value. For example, the value `0x16a` would be
   serialized as the bytes `[0xea 0x02]`.
@@ -132,10 +132,10 @@ The "NodaZoneData" format makes use of the following serialization primitives:
   helps to reduce the data required. The format is (in order of preference):
   - For `Instant.MinValue`, a single byte `0`.
   - For `Instant.MaxValue`, a single byte `1`.
-  - For an instant which is a whole number of hours since the "previous" instant, where that
-    whole number is in the range [128, 1048576), the format is that whole number of hours written as a `count`.
+  - For an instant which is a whole number of hours since the "previous" instant, and
+    that number of hours is in the range [128, 1048576), the format is that number of hours written as a `count`.
   - For an instant which is a whole number of minutes since 1800-01-01T00:00:00Z, and that number of
-    minutes is in the range (1048576, Int32.MaxValue], the format is that number of minutes written as a `count`.
+    minutes is in the range [1048576, Int32.MaxValue], the format is that number of minutes written as a `count`.
   - For any other instant, a single byte `2` followed by a `fixed64` value for the number of ticks since the Unix epoch.
 - `dictionary`, a string-to-string dictionary where no keys or values can be null. This is simply a
   `count` number of entries followed by each key/value pair as a `string` key and `string` value.
@@ -160,15 +160,15 @@ The format depends on the type of time zone. At the time of this writing, there 
 In both cases, the format starts with the zone ID (as a string) and then a 1-byte flag to indicate the type.
 
 Fixed time zones (which have a single [`ZoneInterval`](noda-type://NodaTime.TimeZones.ZoneInterval) covering
-  the whole of time). The flag value for a fixed zone is 1, and the remaining data is simply the offset. (The name
+  the whole of time). The flag value for a fixed zone is `1`, and the remaining data is simply the offset. (The name
   of the zone interval is always just the ID of the time zone.)
 
-Everything else, represented as a `PrecalculatedDateTimeZone` - a number of abutting `ZoneIntervals` from the start of
+Everything else is represented as a `PrecalculatedDateTimeZone` - a number of abutting `ZoneIntervals` from the start of
 time until either the end of time, or some stable period where a pair of rules governing when daylight saving time starts
 and stops continues until the end of time. This final stable period is the "tail zone" - and is optional, as a zone which
 ends in a fixed offset can simply represent that as a final zone interval to the end of time.
   
-The flag value for a precalculated zone is 2, and the remaining data is:
+The flag value for a precalculated zone is `2`, and the remaining data is:
 
 - The number of precalculated zone intervals as a `count`
 - The zone intervals themselves, each of which has a format of:
@@ -177,16 +177,17 @@ The flag value for a precalculated zone is 2, and the remaining data is:
   - The `string` name of the interval
   - The wall `offset` (i.e. standard + daylight savings)
   - The daylight savings `offset`
-  - A `zoneintervaltransition` from the start of the final interval to the end of the final interval (which is the start of the
-    tail zone, if there is one).
-  - A `byte` to indicate the presence (1) or absence (0) of a tail zone
-  - The tail zone, if the previous flag indicated that one was present, as:
-     - The standard `offset`
-     - The `string` name used for intervals in "standard time"
-     - The standard recurrence rule (see below)
-     - The `string` name used for intervals in "daylight saving time"
-     - The daylight savings recurrence rule
-     - The daylight savings `offset` (to be added to the standard offset)
+- A `zoneintervaltransition` from the start of the final zone interval above to
+  the end of the final interval (which is the start of the tail zone, if there
+  is one, or `Instant.MaxValue` otherwise).
+- A `byte` to indicate the presence (1) or absence (0) of a tail zone
+- The tail zone, if the previous flag indicated that one was present, as:
+  - The standard `offset`
+  - The `string` name used for intervals in "standard time"
+  - The standard recurrence rule (see below)
+  - The `string` name used for intervals in "daylight saving time"
+  - The daylight savings recurrence rule
+  - The daylight savings `offset` (to be added to the standard offset)
 
 A recurrence rule provides data about when a transition occurs. For example, "The first Sunday in October at 1am local time." The format
 is:
@@ -244,7 +245,8 @@ This field must occur exactly once, and it uses the string pool.
 ## Field 5: Additional information for Windows mapping
 
 This field is only present for the sake of the PCL version, but is loaded in both builds anyway.
-It contains a mapping from Windows `TimeZoneInfo` standard name to TZDB ID for those time zones
+It contains a mapping from Windows `TimeZoneInfo` standard name (in the en-US
+locale) to TZDB ID for those time zones
 where the two differ. (There are only a few.) This is required as the PCL doesn't expose the 
 `TimeZoneInfo.Id` property.
 
