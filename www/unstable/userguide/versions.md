@@ -33,6 +33,23 @@ Bug fixes:
 
 Other:
 
+## 1.1.1, released 2013-08-30 with tzdb 2013d
+
+Bug fixes:
+
+- Workaround for a Mono bug where `BclDateTimeZoneSource.GetIds()` would not
+  return the local time zone ID, which caused
+  `DateTimeZoneProviders.Bcl.GetSystemDefault()` to fail ([issue 235][])
+- Fixed a shortcoming in the PCL implementation of
+  `TzdbDateTimeZoneSource.MapTimeZoneId()` that caused
+  `DateTimeZoneProviders.Tzdb.GetSystemDefault()` to fail when the system
+  culture was set to something other than English ([issue 221][]).  Under the
+  PCL, we can't get the ID of a `TimeZoneInfo`, so we were relying on the
+  `StandardName` property - but that (unexpectedly) varies by system locale.
+  The fix adds a fallback that attempts to determine which TZDB time zone best
+  fits the given `TimeZoneInfo`, by looking at transitions of all zones in the
+  current year.
+
 ## 1.1.0, released 2013-04-06 with tzdb 2013b
 
 API changes:
