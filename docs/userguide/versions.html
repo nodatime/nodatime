@@ -12,14 +12,24 @@
 <a href="http://code.google.com/p/noda-time/source/list">project repository</a> for more
 details.</p>
 
-<h2>1.1.1, released 2013-?? with tzdb 2013d</h2>
+<h2>1.1.1, released 2013-08-30 with tzdb 2013d</h2>
 
-<p>No API changes; this release is purely to fix a bug (<a href="http://code.google.com/p/noda-time/issues/detail?id=221">issue 221</a>) which affected
-the PCL build. Under the PCL, we can't get the ID of a
-<code>TimeZoneInfo</code>, so we were relying on the <code>StandardName</code> - but that
-varies by system locale. The fix will attempt to determine which
-TZDB time zone best fits the given <code>TimeZoneInfo</code> by looking at
-transitions of all zones in the current year.</p>
+<p>Bug fixes:</p>
+
+<ul>
+<li>Workaround for a Mono bug where <code>BclDateTimeZoneSource.GetIds()</code> would not
+return the local time zone ID, which caused
+<code>DateTimeZoneProviders.Bcl.GetSystemDefault()</code> to fail (<a href="http://code.google.com/p/noda-time/issues/detail?id=235">issue 235</a>)</li>
+<li>Fixed a shortcoming in the PCL implementation of
+<code>TzdbDateTimeZoneSource.MapTimeZoneId()</code> that caused
+<code>DateTimeZoneProviders.Tzdb.GetSystemDefault()</code> to fail when the system
+culture was set to something other than English (<a href="http://code.google.com/p/noda-time/issues/detail?id=221">issue 221</a>).  Under the
+PCL, we can't get the ID of a <code>TimeZoneInfo</code>, so we were relying on the
+<code>StandardName</code> property - but that (unexpectedly) varies by system locale.
+The fix adds a fallback that attempts to determine which TZDB time zone best
+fits the given <code>TimeZoneInfo</code>, by looking at transitions of all zones in the
+current year.</li>
+</ul>
 
 <h2>1.1.0, released 2013-04-06 with tzdb 2013b</h2>
 
