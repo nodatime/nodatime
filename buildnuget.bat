@@ -13,7 +13,7 @@ IF ERRORLEVEL 1 EXIT /B 1
 
 REM This will also build the unsigned release build. A bit wasteful,
 REM but that's okay...
-call builddocs.bat
+call buildapidocs.bat
 IF ERRORLEVEL 1 EXIT /B 1
 
 copy /y docs\PublicApi\NodaTime.xml src\NodaTime\bin\Release

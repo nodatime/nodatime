@@ -12,6 +12,11 @@ module Jekyll
       parts = context['page']['url'].split('/')
       page_url = parts[0..parts.length-2].join('/')
 
+      # Handle the root directory, where join will return an empty string
+      if page_url == ''
+        page_url = '/'
+      end
+
       new_collection = []
       sorted_collection.each do |item|
         next if item.data['hidden']
@@ -23,7 +28,6 @@ module Jekyll
               new_collection.push(item)
             end
           end
-        else  
         end
       end
 
@@ -80,9 +84,4 @@ module Jekyll
 end
  
 Liquid::Template.register_tag('userguide_for', Jekyll::UserGuideFor)
-
-
-
-
-
 

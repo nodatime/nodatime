@@ -60,3 +60,6 @@ syntax:regexp
 
 # Generated web site
 ^www/_site/
+
+# Generated offline userguide
+^tmpdocs

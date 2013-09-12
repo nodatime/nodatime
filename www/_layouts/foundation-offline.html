@@ -1,0 +1,69 @@
+{% capture lvl %}{{ page.url | append:'index.html' | split:'/' | size }}{% endcapture %}
+{% capture relative %}{% for i in (3..lvl) %}../{% endfor %}{% endcapture %}
+<!DOCTYPE html>
+<!--[if IE 8]> 				 <html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width" />
+	<title>{{ page.title }}</title>
+  
+	<!-- foundation default -->
+  	<link rel="stylesheet" href="{{relative}}css/foundation.css" />
+
+    <!-- syntax highlighting CSS -->
+    <link rel="stylesheet" href="{{relative}}css/syntax.css">
+
+    <!-- Foundicons -->
+    <link rel="stylesheet" href="{{relative}}css/general_enclosed_foundicons.css">
+
+    <!-- Prettify -->
+    <script src="{{relative}}js/prettify/run_prettify.js"></script>
+
+	<script src="{{relative}}js/vendor/custom.modernizr.js"></script>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{relative}}css/main.css">
+    <link rel="stylesheet" href="{{relative}}css/mobile.css">
+</head>
+<body>
+
+	<section class="body">
+	{{ content }}
+	</section>
+	
+	<script>
+	document.write('<script src=' +
+	('__proto__' in {} ? '{{relative}}js/vendor/zepto' : '{{relative}}js/vendor/jquery') +
+	'.js><\/script>')
+	</script>
+  
+  	<script src="{{relative}}js/foundation.min.js"></script>
+  	{% for script in page.scripts %}
+  	<script src="{{script}}"></script>
+  	{% endfor %}
+
+  <!--
+  <script src="js/foundation/foundation.js"></script>  
+  <script src="js/foundation/foundation.alerts.js"></script>
+  <script src="js/foundation/foundation.clearing.js"></script>  
+  <script src="js/foundation/foundation.cookie.js"></script>
+  <script src="js/foundation/foundation.dropdown.js"></script>
+  <script src="js/foundation/foundation.forms.js"></script>
+  <script src="js/foundation/foundation.joyride.js"></script>
+  <script src="js/foundation/foundation.magellan.js"></script>
+  <script src="js/foundation/foundation.orbit.js"></script>
+  <script src="js/foundation/foundation.placeholder.js"></script>
+  <script src="js/foundation/foundation.reveal.js"></script>
+  <script src="js/foundation/foundation.section.js"></script>
+  <script src="js/foundation/foundation.tooltips.js"></script>
+  <script src="js/foundation/foundation.topbar.js"></script>
+  <script src="js/foundation/foundation.interchange.js"></script>
+  -->
+  
+  <script>
+    $(document).foundation();
+  </script>
+</body>
+</html>
