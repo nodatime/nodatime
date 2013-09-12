@@ -23,9 +23,10 @@ IF EXIST %STAGING% rmdir /s /q %STAGING%
 mkdir %STAGING%
 mkdir %STAGING%\docs
 
+call buildofflineguide.bat %1
+
 xcopy /q /s /i docs\api %STAGING%\docs\api
-xcopy /q /s /i docs\developer %STAGING%\docs\developer
-xcopy /q /s /i docs\userguide %STAGING%\docs\userguide
+xcopy /q /s /i tmpdocs\_site %STAGING%\docs\userguide
 copy AUTHORS.txt %STAGING%
 copy LICENSE.txt %STAGING%
 copy NOTICE.txt %STAGING%

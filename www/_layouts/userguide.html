@@ -3,6 +3,7 @@ layout: foundation
 navigation: userguide
 ---
 {% assign parts = page.url | split: '/' %}
+{% capture version %}{% if site.ug_version %} {{ site.ug_version }} {% else %} {{ parts[1] }} {% endif %} {% endcapture %}
 {% capture lvl %}{{ page.url | append:'index.html' | split:'/' | size }}{% endcapture %}
 {% capture relative %}{% for i in (3..lvl) %}../{% endfor %}{% endcapture %}
 <div class="row">
@@ -76,7 +77,7 @@ navigation: userguide
 					</ul>
 				</div>
 			</section>
-			<footer>Version {{ parts[1] }}</footer>
+			<footer>Version {{ version }}</footer>
 		</div>
 	</div>
 </div>
