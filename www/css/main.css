@@ -1,6 +1,6 @@
 @font-face {
   font-family: "Calluna Sans Regular";
-  src: url("/fonts/CallunaSansRegular.otf");
+  src: url("../fonts/CallunaSansRegular.otf");
 }
 
 html {

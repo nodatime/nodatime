@@ -32,7 +32,8 @@ navigation: userguide
 				<div class="content" data-section-content>
 					<ul class="side-nav">
 						{% userguide_for doc in site.pages sort_by:weight category:intro %}
-							<li><a href="{{ relative }}{{ doc.url | remove_first: '/' }}" {% if doc.url == page.url %}class="active"{% endif %}>{{ doc.title }}</a></li>
+                            {% capture linktitle %}{% if doc.linktitle %}{{ doc.linktitle }}{% else %}{{ doc.title }}{% endif %}{% endcapture %}
+							<li><a href="{{ relative }}{{ doc.url | remove_first: '/' }}" {% if doc.url == page.url %}class="active"{% endif %}>{{ linktitle }}</a></li>
 						{% enduserguide_for %}
 					</ul>
 				</div>
@@ -42,7 +43,8 @@ navigation: userguide
 				<div class="content" data-section-content>
 					<ul class="side-nav">
 						{% userguide_for doc in site.pages sort_by:weight category:core %}
-							<li><a href="{{ relative }}{{ doc.url | remove_first: '/' }}" {% if doc.url == page.url %}class="active"{% endif %}>{{ doc.title }}</a></li>
+                            {% capture linktitle %}{% if doc.linktitle %}{{ doc.linktitle }}{% else %}{{ doc.title }}{% endif %}{% endcapture %}
+							<li><a href="{{ relative }}{{ doc.url | remove_first: '/' }}" {% if doc.url == page.url %}class="active"{% endif %}>{{ linktitle }}</a></li>
 						{% enduserguide_for %}
 					</ul>
 				</div>
@@ -52,7 +54,8 @@ navigation: userguide
 				<div class="content" data-section-content>
 					<ul class="side-nav">
 						{% userguide_for doc in site.pages sort_by:weight category:text %}
-							<li><a href="{{ relative }}{{ doc.url | remove_first: '/' }}" {% if doc.url == page.url %}class="active"{% endif %}>{{ doc.title }}</a></li>
+                            {% capture linktitle %}{% if doc.linktitle %}{{ doc.linktitle }}{% else %}{{ doc.title }}{% endif %}{% endcapture %}
+							<li><a href="{{ relative }}{{ doc.url | remove_first: '/' }}" {% if doc.url == page.url %}class="active"{% endif %}>{{ linktitle }}</a></li>
 						{% enduserguide_for %}
 					</ul>
 				</div>
@@ -62,7 +65,8 @@ navigation: userguide
 				<div class="content" data-section-content>
 					<ul class="side-nav">
 						{% userguide_for doc in site.pages sort_by:weight category:advanced %}
-							<li><a href="{{ relative }}{{ doc.url | remove_first: '/' }}" {% if doc.url == page.url %}class="active"{% endif %}>{{ doc.title }}</a></li>
+                            {% capture linktitle %}{% if doc.linktitle %}{{ doc.linktitle }}{% else %}{{ doc.title }}{% endif %}{% endcapture %}
+							<li><a href="{{ relative }}{{ doc.url | remove_first: '/' }}" {% if doc.url == page.url %}class="active"{% endif %}>{{ linktitle }}</a></li>
 						{% enduserguide_for %}
 					</ul>
 				</div>
@@ -72,7 +76,8 @@ navigation: userguide
 				<div class="content" data-section-content>
 					<ul class="side-nav">
 						{% userguide_for doc in site.pages sort_by:weight category:library %}
-							<li><a href="{{ relative }}{{ doc.url | remove_first: '/' }}" {% if doc.url == page.url %}class="active"{% endif %}>{{ doc.title }}</a></li>
+                            {% capture linktitle %}{% if doc.linktitle %}{{ doc.linktitle }}{% else %}{{ doc.title }}{% endif %}{% endcapture %}
+							<li><a href="{{ relative }}{{ doc.url | remove_first: '/' }}" {% if doc.url == page.url %}class="active"{% endif %}>{{ linktitle }}</a></li>
 						{% enduserguide_for %}
 					</ul>
 				</div>
