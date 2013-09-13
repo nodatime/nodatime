@@ -10,6 +10,7 @@ xcopy /q /s /i www\unstable\userguide tmpdocs
 xcopy /q /s /i www\_layouts tmpdocs\_layouts
 xcopy /q /s /i www\_plugins tmpdocs\_plugins
 xcopy /q /s /i www\css tmpdocs\css
+xcopy /q /s /i www\js tmpdocs\js
 xcopy /q /s /i www\fonts tmpdocs\fonts
 copy www\_config.yml tmpdocs
 echo ug_version: %1 >> tmpdocs\_config.yml
