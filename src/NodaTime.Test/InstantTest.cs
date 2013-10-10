@@ -4,6 +4,7 @@
 
 using System;
 using NUnit.Framework;
+using NodaTime.Calendars;
 using NodaTime.Text;
 
 namespace NodaTime.Test
@@ -85,6 +86,29 @@ namespace NodaTime.Test
             ZonedDateTime expected = london.AtStrictly(local);
 
             Assert.AreEqual(expected, viaInstant);
+        }
+
+        [Test]
+        public void WithOffset()
+        {
+            // Jon talks about Noda Time at Leetspeak in Sweden on October 12th 2013, at 13:15 UTC+2
+            Instant instant = Instant.FromUtc(2013, 10, 12, 11, 15);
+            Offset offset = Offset.FromHours(2);
+            OffsetDateTime actual = instant.WithOffset(offset);
+            OffsetDateTime expected = new OffsetDateTime(new LocalDateTime(2013, 10, 12, 13, 15), offset);
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void WithOffset_NonIsoCalendar()
+        {
+            // October 12th 2013 ISO is 1434-12-07 Islamic
+            CalendarSystem calendar = CalendarSystem.GetIslamicCalendar(IslamicLeapYearPattern.Base15, IslamicEpoch.Civil);
+            Instant instant = Instant.FromUtc(2013, 10, 12, 11, 15);
+            Offset offset = Offset.FromHours(2);
+            OffsetDateTime actual = instant.WithOffset(offset, calendar);
+            OffsetDateTime expected = new OffsetDateTime(new LocalDateTime(1434, 12, 7, 13, 15, calendar), offset);
+            Assert.AreEqual(expected, actual);
         }
 
         [Test]

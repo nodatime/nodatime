@@ -587,6 +587,33 @@ namespace NodaTime
             return new ZonedDateTime(this, zone, calendar);
         }
 
+        /// <summary>
+        /// Returns the <see cref="OffsetDateTime"/> representing the same point in time as this instant, with
+        /// the specified UTC offset in the ISO calendar system.
+        /// </summary>
+        /// <param name="offset">The offset from UTC with which to represent this instant.</param>
+        /// <returns>An <see cref="OffsetDateTime"/> for the same instant, with the given offset
+        /// in the ISO calendar system</returns>
+        public OffsetDateTime WithOffset(Offset offset)
+        {
+            return new OffsetDateTime(new LocalDateTime(this.Plus(offset)), offset);
+        }
+
+        /// <summary>
+        /// Returns the <see cref="OffsetDateTime"/> representing the same point in time as this instant, with
+        /// the specified UTC offset and calendar system.
+        /// </summary>
+        /// <param name="offset">The offset from UTC with which to represent this instant.</param>
+        /// <param name="calendar">The calendar system in which to represent this instant.</param>
+        /// <returns>An <see cref="OffsetDateTime"/> for the same instant, with the given offset
+        /// and calendar</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="calendar"/> is null.</exception>
+        public OffsetDateTime WithOffset(Offset offset, CalendarSystem calendar)
+        {
+            Preconditions.CheckNotNull(calendar, "calendar");
+            return new OffsetDateTime(new LocalDateTime(this.Plus(offset), calendar), offset);
+        }
+
         #region XML serialization
         /// <inheritdoc />
         XmlSchema IXmlSerializable.GetSchema()
