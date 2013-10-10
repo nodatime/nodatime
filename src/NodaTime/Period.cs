@@ -215,7 +215,7 @@ namespace NodaTime
 
 #if !PCL
         /// <summary>
-        /// Creates a period representing the specified number of miliseconds.
+        /// Creates a period representing the specified number of milliseconds.
         /// </summary>
         /// <remarks>This method is not available in the PCL version, as it was made obsolete in Noda Time 1.1.</remarks>
         /// <param name="milliseconds">The number of milliseconds in the new period</param>
@@ -228,7 +228,7 @@ namespace NodaTime
 #endif
 
         /// <summary>
-        /// Creates a period representing the specified number of miliseconds.
+        /// Creates a period representing the specified number of milliseconds.
         /// </summary>
         /// <param name="milliseconds">The number of milliseconds in the new period</param>
         /// <returns>A period consisting of the given number of milliseconds.</returns>
