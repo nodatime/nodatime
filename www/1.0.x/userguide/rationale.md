@@ -33,5 +33,5 @@ a new date/time API, the Noda Time team would happily go into
 retirement (other than for the sake of those forced to stick with
 earlier versions of .NET, of course).
 
-[1]: http://joda-time.sf.net
+[1]: http://www.joda.org/joda-time
 [2]: http://noda-time.blogspot.com/2011/08/what-wrong-with-datetime-anyway.html

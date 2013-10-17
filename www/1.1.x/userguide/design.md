@@ -110,6 +110,6 @@ trying to solve your problem within Noda Time itself.
 
 [1]: concepts.html
 [2]: http://semver.org/
-[3]: http://joda-time.sf.net
+[3]: http://www.joda.org/joda-time
 [4]: http://groups.google.com/group/noda-time
 [5]: text.html
