@@ -260,7 +260,7 @@ namespace NodaTime.TimeZones
         /// <param name="zone">Zone to resolve in a best-effort fashion.</param>
         internal string GuessZoneIdByTransitionsUncached(TimeZoneInfo zone)
         {
-            // Very rare use of the system clock! Windows time zone updated sometimes sacrifice past
+            // Very rare use of the system clock! Windows time zone updates sometimes sacrifice past
             // accuracy for future accuracy, so let's use the current year's transitions.
             int thisYear = SystemClock.Instance.Now.InUtc().Year;
             Instant startOfThisYear = Instant.FromUtc(thisYear, 1, 1, 0, 0);
