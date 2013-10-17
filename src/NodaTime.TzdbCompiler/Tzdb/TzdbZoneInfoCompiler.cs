@@ -24,13 +24,16 @@ namespace NodaTime.TzdbCompiler.Tzdb
             "factory",
             "iso3166.tab",
             "leapseconds",
+            "leapseconds.awk",
+            "leap-seconds.list",
             "Makefile",
             "solar87",
             "solar88",
             "solar89",
             "yearistype.sh",
             "zone.tab",
-            "Readme.txt" // Just to handle old directories in Noda Time. Not part of tzdb.
+            "Readme.txt", // Just to handle old directories in Noda Time. Not part of tzdb.
+            "README"
         };
 
         private readonly TzdbZoneInfoParser tzdbParser;
