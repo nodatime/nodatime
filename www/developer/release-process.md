@@ -10,9 +10,14 @@ a checklist by the person doing a release.
 
 - Visual Studio 2012
 - Sandcastle and Sandcastle Help File Builder
+- [Jekyll][] and [redcarpet][] (following the Jekyll Windows installation instructions)
 - NuGet command-line tool
 - Access to the Noda Time release private key (to produce a strong-named
   assembly) and the nuget.org API key
+- Access to the (git) repository for the nodatime.org web site
+
+[Jekyll]: http://jekyllrb.com/docs/installation/
+[redcarpet]: http://rubygems.org/gems/redcarpet
 
 Note that we should not build releases on Mono at present, since the resulting
 IL triggers a bug in the .NET 4 64-bit CLR (see the
@@ -99,13 +104,20 @@ we were building version 1.2.3-beta4, then:
 [assemblyversion]: http://stackoverflow.com/a/65062
 
 Add the current date and TZDB version to the version history in
-`www/docs/userguide/unstable/versions.md` and regenerate all documentation.
+`www/unstable/userguide/versions.md` and regenerate all documentation.
+(The branch version of the `www/` directory is only used for the offline
+user guide; we leave the documentation in `unstable/` for branches.)
 
 Commit the above, then tag that commit:
 
     hg tag 1.0.0-beta1
 
-Switch back to the default branch and update the version history in that branch to match the changes applied to the release branch.
+Switch back to the default branch and update the version history in that branch
+to match the changes applied to the release branch, then (if this release
+changes the latest stable release), update the date and version number of the
+latest stable version in `www/_config.yml`, and (if that new stable release is
+not a patch release), also update the `/api` and `/userguide` redirects in
+`www/web.config`.
 
 Push these changes to Google Code.
 
@@ -143,11 +155,16 @@ Upload the two NuGet packages to nuget.org:
     nuget push NodaTime.1.0.0-beta1.nupkg
     nuget push NodaTime.Testing.1.0.0-beta1.nupkg
 
+## Updating the generated API documentation
+
+Copy the generated API documentation from `docs/api` to the nodatime.org git
+repository (in `/$BRANCH/api/`) to update the version shown on the web site.
+
 ## Announcing the release
 
 Post to the mailing list, blog, etc.
 
-## Post-release branch updates
+## Post-release updates on the default branch
 
 If this release required the creation of a new branch, then the following files
 on the *default* branch should be updated to bump (at least) the minor version
@@ -160,9 +177,10 @@ number (and `NodaTime.Testing` dependency version), per the scheme above:
 
 The version number string should be of the form `1.1.0-dev`.
 
-Additionally, the user guide source in `www/unstable/userguide` should be
-copied to `www/$BRANCH/userguide`, the Jekyll/Liquid templates should be
-adjusted to add the new branch for the "API" and "User Guide" links (and to
-point to the latest released guide; see `www/_config.yml`), and the scripts on
-the continuous build machine should be changed to copy the generated API
-documentation for the new branch.
+Additionally:
+
+- the user guide source in `www/unstable/userguide` should be copied to
+  `www/$BRANCH/userguide` (except for `versions.md`, which should come from the
+  branch copy)
+- the Jekyll/Liquid templates (`www/_layouts/foundation.html`) should be
+  adjusted to add the new branch for the "API" and "User Guide" dropdowns
