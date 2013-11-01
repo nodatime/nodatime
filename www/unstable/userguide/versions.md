@@ -9,11 +9,12 @@ User-visible changes from 1.0.0-beta1 onwards. See the
 [project repository](http://code.google.com/p/noda-time/source/list) for more
 details.
 
-## 1.2 (current default branch)
+## 1.2.0-rc1, released 2013-11-01 with tzdb 2013h
 
 Major features:
 
 - XML serialization
+- (More to be documented)
 
 API changes:
 
