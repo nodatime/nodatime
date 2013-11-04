@@ -8,13 +8,6 @@ namespace NodaTime.Calendars
 {
     internal sealed class IslamicYearMonthDayCalculator : YearMonthDayCalculator
     {
-        // These are ugly, but we have unit tests which will spot if they get out of sync...
-        internal const int MinEpochNumber = 1;
-        internal const int MaxEpochNumber = 2;
-
-        internal const int MinLeapYearPatternNumber = 1;
-        internal const int MaxLeapYearPatternNumber = 4;
-
         /// <summary>Days in a pair of months, in days.</summary>
         private const int MonthPairLength = 59;
 

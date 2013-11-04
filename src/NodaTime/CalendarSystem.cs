@@ -10,10 +10,6 @@ using NodaTime.Calendars;
 using NodaTime.Fields;
 using NodaTime.Utility;
 
-namespace NodaTime.Fields
-{
-}
-
 namespace NodaTime
 {
     /// <summary>
