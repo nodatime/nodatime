@@ -164,6 +164,7 @@
     <Compile Include="Fields\NamespaceDoc.cs" />
     <Compile Include="Fields\YearsPeriodField.cs" />
     <Compile Include="Globalization\NamespaceDoc.cs" />
+    <Compile Include="JetBrainsAnnotations.cs" />
     <Compile Include="OffsetDateTime.cs" />
     <Compile Include="IDateTimeZoneProvider.cs" />
     <Compile Include="PeriodBuilder.cs" />
