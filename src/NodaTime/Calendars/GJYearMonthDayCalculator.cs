@@ -37,7 +37,7 @@ namespace NodaTime.Calendars
         {
         }
 
-        protected internal override int GetMonthOfYear(LocalInstant localInstant, int year)
+        protected override int GetMonthOfYear(LocalInstant localInstant, int year)
         {
             // Perform a binary search to get the month. To make it go even faster,
             // compare using ints instead of longs. The number of ticks per

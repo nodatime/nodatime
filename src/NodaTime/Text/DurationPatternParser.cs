@@ -125,7 +125,7 @@ namespace NodaTime.Text
         /// Provides a container for the interim parsed pieces of an <see cref="Offset" /> value.
         /// </summary>
         [DebuggerStepThrough]
-        internal sealed class DurationParseBucket : ParseBucket<Duration>
+        private sealed class DurationParseBucket : ParseBucket<Duration>
         {
             // This is the negated number of "positive" ticks, so that we can cope with long.MinValue ticks
             // in the original duration. This value will always be negative (or 0).

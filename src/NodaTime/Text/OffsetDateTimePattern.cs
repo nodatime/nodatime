@@ -119,7 +119,7 @@ namespace NodaTime.Text
         /// <param name="templateValue">Template value to use for unspecified fields</param>
         /// <returns>A pattern for parsing and formatting zoned date/times.</returns>
         /// <exception cref="InvalidPatternException">The pattern text was invalid.</exception>
-        internal static OffsetDateTimePattern Create(string patternText, NodaFormatInfo formatInfo, OffsetDateTime templateValue)
+        private static OffsetDateTimePattern Create(string patternText, NodaFormatInfo formatInfo, OffsetDateTime templateValue)
         {
             Preconditions.CheckNotNull(patternText, "patternText");
             Preconditions.CheckNotNull(formatInfo, "formatInfo");

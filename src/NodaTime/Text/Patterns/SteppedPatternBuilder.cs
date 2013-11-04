@@ -20,7 +20,7 @@ namespace NodaTime.Text.Patterns
 
         private readonly NodaFormatInfo formatInfo;
 
-        private List<NodaAction<TResult, StringBuilder>> formatActions;
+        private readonly List<NodaAction<TResult, StringBuilder>> formatActions;
         private readonly List<ParseAction> parseActions;
         private readonly NodaFunc<TBucket> bucketProvider;
         private PatternFields usedFields;
@@ -86,7 +86,7 @@ namespace NodaTime.Text.Patterns
             {
                 throw new InvalidPatternException(Messages.Parse_EraWithoutYearOfEra);
             }
-            var calendarAndEra = PatternFields.Era | PatternFields.Calendar;
+            const PatternFields calendarAndEra = PatternFields.Era | PatternFields.Calendar;
             if ((usedFields & calendarAndEra) == calendarAndEra)
             {
                 throw new InvalidPatternException(Messages.Parse_CalendarAndEra);

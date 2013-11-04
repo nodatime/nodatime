@@ -85,7 +85,7 @@ namespace NodaTime.Text
         /// <param name="formatInfo">Localization information</param>
         /// <returns>A pattern for parsing and formatting offsets.</returns>
         /// <exception cref="InvalidPatternException">The pattern text was invalid.</exception>
-        internal static DurationPattern Create(string patternText, NodaFormatInfo formatInfo)
+        private static DurationPattern Create(string patternText, NodaFormatInfo formatInfo)
         {
             Preconditions.CheckNotNull(patternText, "patternText");
             Preconditions.CheckNotNull(formatInfo, "formatInfo");

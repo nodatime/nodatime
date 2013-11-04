@@ -16,12 +16,12 @@ namespace NodaTime.Text
         /// <summary>
         /// The maximum number of characters allowed for padded values.
         /// </summary>
-        internal const int MaximumPaddingLength = 16;
+        private const int MaximumPaddingLength = 16;
 
         /// <summary>
         /// Maximum number of digits in a (positive) long.
         /// </summary>
-        internal const int MaximumInt64Length = 19;
+        private const int MaximumInt64Length = 19;
 
         private static readonly string[] FixedNumberFormats = new[]
                                                               {

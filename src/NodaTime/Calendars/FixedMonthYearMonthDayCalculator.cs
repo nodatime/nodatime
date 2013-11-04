@@ -22,7 +22,7 @@ namespace NodaTime.Calendars
         // Number of ticks in all but the "short" month.
         private const long TicksPerMonth = DaysInMonth * NodaConstants.TicksPerStandardDay;
 
-        protected const long AverageTicksPerYear = (long)(365.25 * NodaConstants.TicksPerStandardDay);
+        private const long AverageTicksPerYear = (long)(365.25 * NodaConstants.TicksPerStandardDay);
 
         protected FixedMonthYearMonthDayCalculator(int minYear, int maxYear,
             long ticksAtStartOfYear1, IList<Era> eras)
@@ -94,7 +94,7 @@ namespace NodaTime.Calendars
             return (GetDayOfYear(localInstant) - 1) / DaysInMonth + 1;
         }
 
-        protected internal override int GetMonthOfYear(LocalInstant localInstant, int year)
+        protected override int GetMonthOfYear(LocalInstant localInstant, int year)
         {
             long monthZeroBased = (localInstant.Ticks - GetYearTicks(year)) / TicksPerMonth;
             return ((int)monthZeroBased) + 1;

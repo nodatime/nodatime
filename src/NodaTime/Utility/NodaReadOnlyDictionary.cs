@@ -18,7 +18,7 @@ namespace NodaTime.Utility
     /// <typeparam name="TValue">Value type</typeparam>
     internal sealed class NodaReadOnlyDictionary<TKey, TValue> : IDictionary<TKey, TValue>
     {
-        private IDictionary<TKey, TValue> original;
+        private readonly IDictionary<TKey, TValue> original;
 
         internal NodaReadOnlyDictionary(IDictionary<TKey, TValue> original)
         {

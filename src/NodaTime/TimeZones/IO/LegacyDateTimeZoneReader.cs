@@ -202,7 +202,7 @@ namespace NodaTime.TimeZones.IO
         /// <returns>The boolean value.</returns>
         internal bool ReadBoolean()
         {
-            return ReadByte() == 0 ? false : true;
+            return ReadByte() != 0;
         }
 
         /// <summary>
@@ -303,7 +303,7 @@ namespace NodaTime.TimeZones.IO
         ///   Reads a signed 16 bit integer value from the stream and returns it as an int.
         /// </summary>
         /// <returns>The 16 bit int value.</returns>
-        internal int ReadInt16()
+        private int ReadInt16()
         {
             unchecked
             {
@@ -331,7 +331,7 @@ namespace NodaTime.TimeZones.IO
         /// Reads a signed 64 bit integer value from the stream and returns it as an long.
         /// </summary>
         /// <returns>The 64 bit long value.</returns>
-        internal long ReadInt64()
+        private long ReadInt64()
         {
             unchecked
             {

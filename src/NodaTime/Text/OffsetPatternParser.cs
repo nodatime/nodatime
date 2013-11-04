@@ -69,7 +69,7 @@ namespace NodaTime.Text
             return ParsePartialPattern(patternText, formatInfo);
         }
 
-        internal IPartialPattern<Offset> ParsePartialPattern(string patternText, NodaFormatInfo formatInfo)
+        private IPartialPattern<Offset> ParsePartialPattern(string patternText, NodaFormatInfo formatInfo)
         {
             // Nullity check is performed in OffsetPattern.
             if (patternText.Length == 0)
@@ -297,7 +297,7 @@ namespace NodaTime.Text
         /// Provides a container for the interim parsed pieces of an <see cref="Offset" /> value.
         /// </summary>
         [DebuggerStepThrough]
-        internal sealed class OffsetParseBucket : ParseBucket<Offset>
+        private sealed class OffsetParseBucket : ParseBucket<Offset>
         {
             /// <summary>
             /// The hours in the range [0, 23].
