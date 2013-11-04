@@ -156,15 +156,6 @@ namespace NodaTime.TimeZones.IO
         }
 
         /// <summary>
-        /// Writes a boolean value to the stream.
-        /// </summary>
-        /// <param name="value">The value to write.</param>
-        internal void WriteBoolean(bool value)
-        {
-            WriteByte((byte)(value ? 1 : 0));
-        }
-
-        /// <summary>
         /// Writes the given dictionary of string to string to the stream.
         /// </summary>
         /// <param name="dictionary">The <see cref="IDictionary{TKey,TValue}" /> to write.</param>

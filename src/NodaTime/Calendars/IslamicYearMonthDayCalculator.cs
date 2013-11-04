@@ -144,7 +144,7 @@ namespace NodaTime.Calendars
             return (month & 1) == 0 ? ShortMonthLength : LongMonthLength;
         }
 
-        protected internal override int GetMonthOfYear(LocalInstant localInstant, int year)
+        protected override int GetMonthOfYear(LocalInstant localInstant, int year)
         {
             int dayOfYearZeroBased = (int)((localInstant.Ticks - GetYearTicks(year)) / NodaConstants.TicksPerStandardDay);
             if (dayOfYearZeroBased == DaysPerLeapYear - 1)

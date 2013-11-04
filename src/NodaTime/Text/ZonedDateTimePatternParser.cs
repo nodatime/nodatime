@@ -141,11 +141,11 @@ namespace NodaTime.Text
             return bucket.ParseZone(value);
         }
 
-        internal sealed class ZonedDateTimeParseBucket : ParseBucket<ZonedDateTime>
+        private sealed class ZonedDateTimeParseBucket : ParseBucket<ZonedDateTime>
         {
             internal readonly LocalDatePatternParser.LocalDateParseBucket Date;
             internal readonly LocalTimePatternParser.LocalTimeParseBucket Time;
-            internal DateTimeZone Zone;
+            private DateTimeZone Zone;
             internal Offset Offset;
             private readonly ZoneLocalMappingResolver resolver;
             private readonly IDateTimeZoneProvider zoneProvider;

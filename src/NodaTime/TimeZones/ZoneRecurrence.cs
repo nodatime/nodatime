@@ -56,11 +56,7 @@ namespace NodaTime.TimeZones
 
         public ZoneYearOffset YearOffset { get { return yearOffset; } }
 
-        public int FromYear { get { return fromYear; } }
-
-        public int ToYear { get { return toYear; } }
-
-        public bool IsInfinite { get { return ToYear == Int32.MaxValue; } }
+        public bool IsInfinite { get { return toYear == Int32.MaxValue; } }
 
         /// <summary>
         /// Returns a new recurrence which has the same values as this, but a different name.
@@ -307,7 +303,7 @@ namespace NodaTime.TimeZones
             builder.Append(Name);
             builder.Append(" ").Append(Savings);
             builder.Append(" ").Append(YearOffset);
-            builder.Append(" [").Append(FromYear).Append("-").Append(ToYear).Append("]");
+            builder.Append(" [").Append(fromYear).Append("-").Append(toYear).Append("]");
             return builder.ToString();
         }
         #endregion // Object overrides
@@ -328,7 +324,7 @@ namespace NodaTime.TimeZones
         /// </summary>
         internal ZoneRecurrence ToInfinity()
         {
-            return this.IsInfinite ? this : new ZoneRecurrence(name, savings, yearOffset, int.MinValue, int.MaxValue);
+            return IsInfinite ? this : new ZoneRecurrence(name, savings, yearOffset, int.MinValue, int.MaxValue);
         }
     }
 }

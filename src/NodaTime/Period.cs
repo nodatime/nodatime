@@ -636,7 +636,7 @@ namespace NodaTime
             {
                 case PeriodUnits.Years: return fields.Years;
                 case PeriodUnits.Months: return fields.Months;
-                case PeriodUnits.Weeks: return fields.Weeks;;
+                case PeriodUnits.Weeks: return fields.Weeks;
                 case PeriodUnits.Days: return fields.Days;
                 case PeriodUnits.Hours: return fields.Hours;
                 case PeriodUnits.Minutes: return fields.Minutes;

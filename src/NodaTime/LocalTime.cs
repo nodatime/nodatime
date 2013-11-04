@@ -204,7 +204,7 @@ namespace NodaTime
         /// <summary>
         /// Gets the minute of this local time, in the range 0 to 59 inclusive.
         /// </summary>
-        public int Minute { get { return CalendarSystem.Iso.GetMinuteOfHour(localInstant); ; } }
+        public int Minute { get { return CalendarSystem.Iso.GetMinuteOfHour(localInstant); } }
 
         /// <summary>
         /// Gets the second of this local time within the minute, in the range 0 to 59 inclusive.

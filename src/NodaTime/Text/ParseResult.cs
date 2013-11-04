@@ -183,7 +183,7 @@ namespace NodaTime.Text
         /// <summary>
         /// This isn't really an issue with the value so much as the pattern... but the result is the same.
         /// </summary>
-        internal static ParseResult<T> FormatOnlyPattern = ForInvalidValue(Messages.Parse_FormatOnlyPattern);
+        internal static readonly ParseResult<T> FormatOnlyPattern = ForInvalidValue(Messages.Parse_FormatOnlyPattern);
 
         internal static ParseResult<T> MismatchedNumber(string pattern)
         {

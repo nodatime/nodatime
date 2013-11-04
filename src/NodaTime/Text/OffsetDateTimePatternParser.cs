@@ -111,7 +111,7 @@ namespace NodaTime.Text
             builder.AddFormatAction((value, sb) => offsetPattern.FormatPartial(value.Offset, sb));
         }
 
-        internal sealed class OffsetDateTimeParseBucket : ParseBucket<OffsetDateTime>
+        private sealed class OffsetDateTimeParseBucket : ParseBucket<OffsetDateTime>
         {
             internal readonly LocalDatePatternParser.LocalDateParseBucket Date;
             internal readonly LocalTimePatternParser.LocalTimeParseBucket Time;

@@ -102,7 +102,7 @@ namespace NodaTime.Text
         /// <param name="templateValue">Template value to use for unspecified fields</param>
         /// <returns>A pattern for parsing and formatting local times.</returns>
         /// <exception cref="InvalidPatternException">The pattern text was invalid.</exception>
-        internal static LocalTimePattern Create(string patternText, NodaFormatInfo formatInfo, LocalTime templateValue)
+        private static LocalTimePattern Create(string patternText, NodaFormatInfo formatInfo, LocalTime templateValue)
         {
             Preconditions.CheckNotNull(patternText, "patternText");
             Preconditions.CheckNotNull(formatInfo, "formatInfo");

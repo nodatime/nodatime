@@ -64,7 +64,7 @@ namespace NodaTime.Calendars
         /// an invalid one, for estimates etc.
         /// </summary>
         protected abstract long CalculateYearTicks(int year);
-        protected internal abstract int GetMonthOfYear(LocalInstant localInstant, int year);
+        protected abstract int GetMonthOfYear(LocalInstant localInstant, int year);
         internal abstract int GetDaysInMonthMax(int month);
         internal abstract LocalInstant SetYear(LocalInstant localInstant, int year);
         internal abstract int GetDaysInMonth(int year, int month);
@@ -114,13 +114,7 @@ namespace NodaTime.Calendars
             return GetDayOfMonth(localInstant, year, month);
         }
 
-        internal int GetDayOfMonth(LocalInstant localInstant, int year)
-        {
-            int month = GetMonthOfYear(localInstant, year);
-            return GetDayOfMonth(localInstant, year, month);
-        }
-
-        internal int GetDayOfMonth(LocalInstant localInstant, int year, int month)
+        private int GetDayOfMonth(LocalInstant localInstant, int year, int month)
         {
             long dateTicks = GetYearMonthTicks(year, month);
             return (int)((localInstant.Ticks - dateTicks) / NodaConstants.TicksPerStandardDay) + 1;
