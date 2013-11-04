@@ -21,12 +21,6 @@ namespace NodaTime
     internal delegate TResult NodaFunc<in TArg, out TResult>(TArg input);
 
     /// <summary>
-    /// Equivalent to Func[TArg1, TArg2, TResult], but without requiring .NET 3.5. If we ever require .NET 3.5,
-    /// we can remove this.
-    /// </summary>
-    internal delegate TResult NodaFunc<in TArg1, in TArg2, out TResult>(TArg1 arg1, TArg2 arg2);
-
-    /// <summary>
     /// Equivalent to Action[TArg1, TArg2], but without requiring .NET 3.5. If we ever require .NET 3.5,
     /// we can remove this.
     /// </summary>
