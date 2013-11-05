@@ -18,7 +18,9 @@ namespace NodaTime
     /// assembly (or your own implementation).
     /// </remarks>
     /// <seealso cref="SystemClock"/>
+#pragma warning disable 1584,1711,1572,1581,1580
     /// <seealso cref="T:NodaTime.Testing.FakeClock"/>
+#pragma warning restore 1584,1711,1572,1581,1580
     /// <threadsafety>All implementations in Noda Time are thread-safe; custom implementations
     /// should be thread-safe too. See the thread safety section of the user guide for more information.
     /// </threadsafety>

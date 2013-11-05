@@ -902,7 +902,7 @@ namespace CommandLine.Text
         
         /// <summary>
         /// Gets or sets the format of options for adding or removing dashes.
-        /// It modifies behavior of <see cref="AddOptions"/> method.
+        /// It modifies behavior of <see cref="AddOptions(object)"/> method.
         /// </summary>
         public bool AddDashesToOption
         {
@@ -1012,6 +1012,7 @@ namespace CommandLine.Text
         /// <param name="options">
         /// An options target <see cref="CommandLineOptionsBase"/> instance that collected command line arguments parsed with the <see cref="CommandLine.CommandLineParser"/> class.
         /// </param>
+        /// <param name="indent">The level of indentation.</param>
         /// <returns>
         /// The <see cref="System.String"/> that contains the parsing error message.
         /// </returns>

@@ -8,7 +8,7 @@ using NodaTime.Calendars;
 namespace NodaTime.Test.Calendars
 {
     /// <summary>
-    /// Tests for <see cref="CopticCalendarSystem"/>.
+    /// Tests for the Coptic calendar system.
     /// </summary>
     [TestFixture]
     public class CopticCalendarSystemTest

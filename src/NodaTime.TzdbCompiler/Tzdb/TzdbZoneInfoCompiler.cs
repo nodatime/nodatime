@@ -41,7 +41,6 @@ namespace NodaTime.TzdbCompiler.Tzdb
         /// <summary>
         ///   Initializes a new instance of the <see cref="TzdbZoneInfoCompiler" /> class.
         /// </summary>
-        /// <param name="log">The log to send all output messages to.</param>
         internal TzdbZoneInfoCompiler()
         {
             tzdbParser = new TzdbZoneInfoParser();

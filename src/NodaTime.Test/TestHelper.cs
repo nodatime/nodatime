@@ -83,7 +83,7 @@ namespace NodaTime.Test
         }
 
         /// <summary>
-        ///   Tests the <see cref="M:IEquatable.Equals" /> method for reference objects. Also tests the
+        ///   Tests the IEquatable.Equals method for reference objects. Also tests the
         ///   object equals method.
         /// </summary>
         /// <typeparam name="T">The type to test.</typeparam>
@@ -101,7 +101,7 @@ namespace NodaTime.Test
         }
 
         /// <summary>
-        ///   Tests the <see cref="M:IEquatable.Equals" /> method for value objects. Also tests the
+        ///   Tests the IEquatable.Equals method for value objects. Also tests the
         ///   object equals method.
         /// </summary>
         /// <typeparam name="T">The type to test.</typeparam>
@@ -118,7 +118,7 @@ namespace NodaTime.Test
         }
 
         /// <summary>
-        ///   Tests the <see cref="M:System.Object.Equals" /> method.
+        ///   Tests the Object.Equals method.
         /// </summary>
         /// <remarks>
         ///   It takes three, non-null values: a value,
