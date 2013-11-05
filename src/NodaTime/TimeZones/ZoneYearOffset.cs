@@ -141,6 +141,11 @@ namespace NodaTime.TimeZones
         public TransitionMode Mode { get { return mode; } }
 
         /// <summary>
+        /// Gets a value indicating whether [advance day of week].
+        /// </summary>
+        public bool AdvanceDayOfWeek { get { return advance; } }
+
+        /// <summary>
         /// Gets the time of day when the rule takes effect.
         /// </summary>
         public LocalTime TimeOfDay { get { return timeOfDay; } }
