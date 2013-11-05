@@ -56,6 +56,10 @@ namespace NodaTime.TimeZones
 
         public ZoneYearOffset YearOffset { get { return yearOffset; } }
 
+        public int FromYear { get { return fromYear; } }
+
+        public int ToYear { get { return toYear; } }
+
         public bool IsInfinite { get { return toYear == Int32.MaxValue; } }
 
         /// <summary>
