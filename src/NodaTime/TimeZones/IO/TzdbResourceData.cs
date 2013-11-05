@@ -28,25 +28,25 @@ namespace NodaTime.TimeZones.IO
         /// The resource key for the Windows to TZDB ID mapping dictionary.
         /// This resource key contains hyphens, so cannot conflict with a time zone name.
         /// </summary>
-        private const string WindowsToPosixMapKey = "--meta-WindowsToPosix";
+        internal const string WindowsToPosixMapKey = "--meta-WindowsToPosix";
 
         /// <summary>
         /// The resource key for the Windows to TZDB ID mapping version string.
         /// This resource key contains hyphens, so cannot conflict with a time zone name.
         /// </summary>
-        private const string WindowsToPosixMapVersionKey = "--meta-WindowsToPosixVersion";
+        internal const string WindowsToPosixMapVersionKey = "--meta-WindowsToPosixVersion";
 
         /// <summary>
         /// The resource key for the timezone ID alias dictionary.
         /// This resource key contains hyphens, so cannot conflict with a time zone name.
         /// </summary>
-        private const string IdMapKey = "--meta-IdMap";
+        internal const string IdMapKey = "--meta-IdMap";
 
         /// <summary>
         /// The resource key for the TZDB version ID.
         /// This resource key contains hyphens, so cannot conflict with a time zone name.
         /// </summary>
-        private const string VersionKey = "--meta-VersionId";
+        internal const string VersionKey = "--meta-VersionId";
 
         private readonly string tzdbVersion;
         private readonly WindowsZones windowsMapping;
@@ -154,7 +154,7 @@ namespace NodaTime.TimeZones.IO
         /// </summary>
         /// <param name="name">The name to normalize.</param>
         /// <returns>The normalized name.</returns>
-        private static string NormalizeAsResourceName(string name)
+        internal static string NormalizeAsResourceName(string name)
         {
             Preconditions.CheckNotNull(name, "name");
             name = name.Replace("-", "_minus_");

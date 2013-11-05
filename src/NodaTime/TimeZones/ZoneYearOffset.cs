@@ -135,6 +135,16 @@ namespace NodaTime.TimeZones
             }
         }
 
+        /// <summary>
+        /// Gets the method by which offsets are added to Instants to get LocalInstants.
+        /// </summary>
+        public TransitionMode Mode { get { return mode; } }
+
+        /// <summary>
+        /// Gets the time of day when the rule takes effect.
+        /// </summary>
+        public LocalTime TimeOfDay { get { return timeOfDay; } }
+
         #region IEquatable<ZoneYearOffset> Members
 
         /// <summary>
