@@ -5,6 +5,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading;
+using JetBrains.Annotations;
 using NodaTime.TimeZones;
 using NodaTime.Utility;
 
@@ -529,6 +530,7 @@ namespace NodaTime
         /// Creates a fixed time zone for offsets -23.5 to +23.5 at every half hour,
         /// fixing the 0 offset as DateTimeZone.Utc.
         /// </summary>
+        [NotNull]
         private static DateTimeZone[] BuildFixedZoneCache()
         {
             DateTimeZone[] ret = new DateTimeZone[FixedZoneCacheSize];

@@ -41,7 +41,7 @@ namespace NodaTime.Calendars
             this.minYear = minYear;
             this.maxYear = maxYear;
             this.monthsInYear = monthsInYear;
-            this.eras = eras;
+            this.eras = Preconditions.CheckNotNull(eras, "eras");
             this.averageTicksPerYear = averageTicksPerYear;
             this.ticksAtStartOfYear1 = ticksAtStartOfYear1;
             this.ticksInNonLeapYear = ticksInNonLeapYear;

@@ -3,6 +3,7 @@
 // as found in the LICENSE.txt file.
 
 using System;
+using JetBrains.Annotations;
 
 namespace NodaTime.Utility
 {
@@ -15,7 +16,8 @@ namespace NodaTime.Utility
         /// Returns the given argument after checking whether it's null. This is useful for putting
         /// nullity checks in parameters which are passed to base class constructors.
         /// </summary>
-        internal static T CheckNotNull<T>(T argument, string paramName) where T : class
+        [ContractAnnotation("argument:null => halt")]
+        internal static T CheckNotNull<T>(T argument, [InvokerParameterName] string paramName) where T : class
         {
             if (argument == null)
             {
@@ -24,7 +26,7 @@ namespace NodaTime.Utility
             return argument;
         }
 
-        internal static void CheckArgumentRange(string paramName, long value, long minInclusive, long maxInclusive)
+        internal static void CheckArgumentRange([InvokerParameterName] string paramName, long value, long minInclusive, long maxInclusive)
         {
             if (value < minInclusive || value > maxInclusive)
             {
@@ -41,7 +43,7 @@ namespace NodaTime.Utility
         // Note: this overload exists for performance reasons. It would be reasonable to call the
         // version using "long" values, but we'd incur conversions on every call. This method
         // may well be called very often.
-        internal static void CheckArgumentRange(string paramName, int value, int minInclusive, int maxInclusive)
+        internal static void CheckArgumentRange([InvokerParameterName] string paramName, int value, int minInclusive, int maxInclusive)
         {
             if (value < minInclusive || value > maxInclusive)
             {
@@ -55,7 +57,8 @@ namespace NodaTime.Utility
             }
         }
 
-        internal static void CheckArgument(bool expression, string parameter, string message)
+        [ContractAnnotation("expression:false => halt")]
+        internal static void CheckArgument(bool expression, [InvokerParameterName] string parameter, string message)
         {
             if (!expression)
             {
@@ -63,7 +66,9 @@ namespace NodaTime.Utility
             }
         }
 
-        internal static void CheckArgument<T>(bool expression, string parameter, string messageFormat, T messageArg)
+        [ContractAnnotation("expression:false => halt")]
+        [StringFormatMethod("messageFormat")]
+        internal static void CheckArgument<T>(bool expression, [InvokerParameterName] string parameter, string messageFormat, T messageArg)
         {
             if (!expression)
             {
@@ -72,6 +77,8 @@ namespace NodaTime.Utility
             }
         }
 
+        [ContractAnnotation("expression:false => halt")]
+        [StringFormatMethod("messageFormat")]
         internal static void CheckArgument<T1, T2>(bool expression, string parameter, string messageFormat, T1 messageArg1, T2 messageArg2)
         {
             if (!expression)
@@ -81,6 +88,8 @@ namespace NodaTime.Utility
             }
         }
 
+        [ContractAnnotation("expression:false => halt")]
+        [StringFormatMethod("messageFormat")]
         internal static void CheckArgument(bool expression, string parameter, string messageFormat, params object[] messageArgs)
         {
             if (!expression)
