@@ -12,26 +12,26 @@ namespace NodaTime.Test
 {
     // Tests for DateTimeZoneTest.GetZoneIntervals. The calls to ToList()
     // in the assertions are to make the actual values get dumped on failure, instead of
-    // just <NodaTime.DateTimeZone+<GetAllZoneIntervalsImpl>d__0>
+    // just <NodaTime.DateTimeZone+<GetZoneIntervalsImpl>d__0>
     public partial class DateTimeZoneTest
     {
         private static readonly SingleTransitionDateTimeZone TestZone = new SingleTransitionDateTimeZone
             (Instant.FromUtc(2000, 1, 1, 0, 0), -3, +4);
 
         [Test]
-        public void GetAllZoneIntervals_EndBeforeStart()
+        public void GetZoneIntervals_EndBeforeStart()
         {
             Assert.Throws<ArgumentOutOfRangeException>(() => DateTimeZone.Utc.GetZoneIntervals(new Instant(100L), new Instant(99L)));
         }
 
         [Test]
-        public void GetAllZoneIntervals_EndEqualToStart()
+        public void GetZoneIntervals_EndEqualToStart()
         {
             CollectionAssert.IsEmpty(DateTimeZone.Utc.GetZoneIntervals(new Instant(100L), new Instant(100L)));
         }
 
         [Test]
-        public void GetAllZoneIntervals_FixedZone()
+        public void GetZoneIntervals_FixedZone()
         {
             var zone = DateTimeZone.ForOffset(Offset.FromHours(3));
             var expected = new[] { zone.GetZoneInterval(Instant.MinValue) };
@@ -41,7 +41,7 @@ namespace NodaTime.Test
         }
 
         [Test]
-        public void GetAllZoneIntervals_SingleTransitionZone_IntervalCoversTransition()
+        public void GetZoneIntervals_SingleTransitionZone_IntervalCoversTransition()
         {
             Instant start = TestZone.Transition - Duration.FromStandardDays(5);
             Instant end = TestZone.Transition + Duration.FromStandardDays(5);
@@ -51,7 +51,7 @@ namespace NodaTime.Test
         }
 
         [Test]
-        public void GetAllZoneIntervals_SingleTransitionZone_IntervalDoesNotCoverTransition()
+        public void GetZoneIntervals_SingleTransitionZone_IntervalDoesNotCoverTransition()
         {
             Instant start = TestZone.Transition - Duration.FromStandardDays(10);
             Instant end = TestZone.Transition - Duration.FromStandardDays(5);
@@ -61,7 +61,7 @@ namespace NodaTime.Test
         }
 
         [Test]
-        public void GetAllZoneIntervals_IncludesStart()
+        public void GetZoneIntervals_IncludesStart()
         {
             Instant start = TestZone.Transition - Duration.Epsilon;
             Instant end = TestZone.Transition + Duration.FromStandardDays(5);
@@ -71,7 +71,7 @@ namespace NodaTime.Test
         }
 
         [Test]
-        public void GetAllZoneIntervals_ExcludesEnd()
+        public void GetZoneIntervals_ExcludesEnd()
         {
             Instant start = TestZone.Transition - Duration.FromStandardDays(10);
             Instant end = TestZone.Transition;
@@ -81,7 +81,7 @@ namespace NodaTime.Test
         }
 
         [Test]
-        public void GetAllZoneIntervals_Complex()
+        public void GetZoneIntervals_Complex()
         {
             var london = DateTimeZoneProviders.Tzdb["Europe/London"];
             // Transitions are always Spring/Autumn, so June and January should be clear.
@@ -98,6 +98,9 @@ namespace NodaTime.Test
             var start = Instant.FromUtc(1999, 6, 19, 0, 0);
             var end = Instant.FromUtc(2002, 2, 4, 0, 0);
             var actual = london.GetZoneIntervals(start, end);
+            CollectionAssert.AreEqual(expected, actual.ToList());
+            // Just to exercise the other overload
+            actual = london.GetZoneIntervals(new Interval(start, end));
             CollectionAssert.AreEqual(expected, actual.ToList());
         }
     }
