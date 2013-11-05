@@ -29,14 +29,14 @@ namespace NodaTime.TimeZones.IO
         internal const byte FlagHalfHour = 0x00;
         internal const byte FlagMinutes = 0x40;
         internal const byte FlagSeconds = 0x80;
-        internal const byte FlagTicks = 0xc0;
+        private const byte FlagTicks = 0xc0;
 
         internal const long MaxHalfHours = 0x1fL;
-        internal const long MinHalfHours = -MaxHalfHours;
+        private const long MinHalfHours = -MaxHalfHours;
         internal const long MaxMinutes = 0x1fffffL;
-        internal const long MinMinutes = -MaxMinutes;
+        private const long MinMinutes = -MaxMinutes;
         internal const long MaxSeconds = 0x1fffffffffL;
-        internal const long MinSeconds = -MaxSeconds;
+        private const long MinSeconds = -MaxSeconds;
 
         // Flags and limits used for Offset
         internal const byte FlagOffsetSeconds = 0x80;

@@ -372,7 +372,7 @@ namespace NodaTime.Globalization
         /// <summary>
         /// Gets the <see cref="Offset" /> "S" pattern.
         /// </summary>
-        public string OffsetPatternShort { get { return PatternResources.ResourceManager.GetString("OffsetPatternShort", cultureInfo); ; } }
+        public string OffsetPatternShort { get { return PatternResources.ResourceManager.GetString("OffsetPatternShort", cultureInfo); } }
 
         /// <summary>
         /// Clears the cache. Only used for test purposes.

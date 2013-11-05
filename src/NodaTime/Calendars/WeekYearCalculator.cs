@@ -68,7 +68,7 @@ namespace NodaTime.Calendars
             return zeroBasedWeek + 1;
         }
 
-        internal int GetWeeksInWeekYear(int weekYear)
+        private int GetWeeksInWeekYear(int weekYear)
         {
             long startOfWeekYear = GetWeekYearTicks(weekYear);
             long startOfCalendarYear = yearMonthDayCalculator.GetYearTicks(weekYear);
@@ -86,7 +86,7 @@ namespace NodaTime.Calendars
         /// <summary>
         /// Returns the ticks at the start of the given week-year.
         /// </summary>
-        internal long GetWeekYearTicks(int weekYear)
+        private long GetWeekYearTicks(int weekYear)
         {
             // Need to be slightly careful here, as the week-year can reasonably be outside the calendar year range.
             long jan1Millis = yearMonthDayCalculator.GetYearTicksSafe(weekYear);

@@ -49,7 +49,7 @@ namespace NodaTime.TimeZones
         /// If another call is made which maps to the same cache entry number but is for a different
         /// period, the existing hash entry is simply overridden.
         /// </remarks>
-        internal sealed class HashArrayCache : IZoneIntervalMap
+        private sealed class HashArrayCache : IZoneIntervalMap
         {
             // Currently we have no need or way to create hash cache zones with
             // different cache sizes. But the cache size should always be a power of 2 to get the

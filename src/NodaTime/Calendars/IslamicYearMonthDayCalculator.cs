@@ -8,13 +8,6 @@ namespace NodaTime.Calendars
 {
     internal sealed class IslamicYearMonthDayCalculator : YearMonthDayCalculator
     {
-        // These are ugly, but we have unit tests which will spot if they get out of sync...
-        internal const int MinEpochNumber = 1;
-        internal const int MaxEpochNumber = 2;
-
-        internal const int MinLeapYearPatternNumber = 1;
-        internal const int MaxLeapYearPatternNumber = 4;
-
         /// <summary>Days in a pair of months, in days.</summary>
         private const int MonthPairLength = 59;
 
@@ -144,7 +137,7 @@ namespace NodaTime.Calendars
             return (month & 1) == 0 ? ShortMonthLength : LongMonthLength;
         }
 
-        protected internal override int GetMonthOfYear(LocalInstant localInstant, int year)
+        protected override int GetMonthOfYear(LocalInstant localInstant, int year)
         {
             int dayOfYearZeroBased = (int)((localInstant.Ticks - GetYearTicks(year)) / NodaConstants.TicksPerStandardDay);
             if (dayOfYearZeroBased == DaysPerLeapYear - 1)

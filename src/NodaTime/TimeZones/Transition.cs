@@ -19,12 +19,6 @@ namespace NodaTime.TimeZones
 
         private readonly Offset oldOffset;
 
-        /// <summary>
-        /// The offset which applied from the previous transition until this
-        /// one.
-        /// </summary>
-        public Offset OldOffset { get { return oldOffset; } }
-
         private readonly Offset newOffset;
 
         /// <summary>
@@ -41,7 +35,7 @@ namespace NodaTime.TimeZones
 
         public bool Equals(Transition other)
         {
-            return instant == other.Instant && oldOffset == other.OldOffset && newOffset == other.NewOffset;
+            return instant == other.Instant && oldOffset == other.oldOffset && newOffset == other.NewOffset;
         }
 
         /// <summary>

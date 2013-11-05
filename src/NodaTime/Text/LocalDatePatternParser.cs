@@ -100,7 +100,7 @@ namespace NodaTime.Text
 
             internal CalendarSystem Calendar;
             internal int Year;
-            internal int EraIndex;
+            private int EraIndex;
             internal int YearOfEra;
             internal int MonthOfYearNumeric;
             internal int MonthOfYearText;

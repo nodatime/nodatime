@@ -20,7 +20,7 @@ namespace NodaTime.Utility
         private readonly int size;
         private readonly object mutex = new object();
         private readonly NodaFunc<TKey, TValue> valueFactory;
-        private LinkedList<TKey> keyList; 
+        private readonly LinkedList<TKey> keyList; 
         private readonly Dictionary<TKey, TValue> dictionary; 
 
         internal Cache(int size, NodaFunc<TKey, TValue> valueFactory, IEqualityComparer<TKey> keyComparer)

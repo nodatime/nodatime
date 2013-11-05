@@ -130,7 +130,7 @@ namespace NodaTime.Text
         /// <param name="zoneProvider">Time zone provider, used when parsing text which contains a time zone identifier.</param>
         /// <returns>A pattern for parsing and formatting zoned date/times.</returns>
         /// <exception cref="InvalidPatternException">The pattern text was invalid.</exception>
-        internal static ZonedDateTimePattern Create(string patternText, NodaFormatInfo formatInfo,
+        private static ZonedDateTimePattern Create(string patternText, NodaFormatInfo formatInfo,
             ZoneLocalMappingResolver resolver, IDateTimeZoneProvider zoneProvider, ZonedDateTime templateValue)
         {
             Preconditions.CheckNotNull(patternText, "patternText");

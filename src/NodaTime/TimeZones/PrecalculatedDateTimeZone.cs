@@ -262,7 +262,7 @@ namespace NodaTime.TimeZones
         #region Offset computation for constructors
         // Essentially Func<Offset, Offset, Offset>
         private delegate Offset OffsetAggregator(Offset x, Offset y);
-        private delegate Offset OffsetExtractor<T>(T input);
+        private delegate Offset OffsetExtractor<in T>(T input);
 
         // Reasonably simple way of computing the maximum/minimum offset
         // from either periods or transitions, with or without a tail zone.

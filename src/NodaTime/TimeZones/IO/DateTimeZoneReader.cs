@@ -128,18 +128,6 @@ namespace NodaTime.TimeZones.IO
         }
 
         /// <summary>
-        /// Reads a boolean value from the stream.
-        /// </summary>
-        /// <remarks>
-        /// The value must have been written by <see cref="DateTimeZoneWriter.WriteBoolean" />.
-        /// </remarks>
-        /// <returns>The boolean value.</returns>
-        internal bool ReadBoolean()
-        {
-            return ReadByte() == 0 ? false : true;
-        }
-
-        /// <summary>
         /// Reads a string to string dictionary value from the stream.
         /// </summary>
         /// <remarks>
