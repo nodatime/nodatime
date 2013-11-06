@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Runtime.Serialization;
 using System.Xml;
+using JetBrains.Annotations;
 using NodaTime.Calendars;
 using NodaTime.Text;
 using NodaTime.Utility;
@@ -233,8 +234,7 @@ namespace NodaTime
         /// </summary>
         /// <param name="calendarSystem">The calendar system to convert this local date to.</param>
         /// <returns>The converted OffsetDateTime.</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="calendarSystem"/> is null.</exception>
-        public OffsetDateTime WithCalendar(CalendarSystem calendarSystem)
+        public OffsetDateTime WithCalendar([NotNull] CalendarSystem calendarSystem)
         {
             return new OffsetDateTime(localDateTime.WithCalendar(calendarSystem), offset);
         }

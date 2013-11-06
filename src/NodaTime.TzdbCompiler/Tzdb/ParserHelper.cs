@@ -6,6 +6,7 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Text.RegularExpressions;
+using JetBrains.Annotations;
 using NodaTime.Utility;
 
 namespace NodaTime.TzdbCompiler.Tzdb
@@ -20,10 +21,10 @@ namespace NodaTime.TzdbCompiler.Tzdb
         /// </summary>
         /// <param name="text">The text to convert.</param>
         /// <returns>The hour in the range [-23, 23].</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="text"/> is null.</exception>
         /// <exception cref="FormatException">If the text is not a valid integer in the range [-23, 23].</exception>
-        internal static long ConvertHourToTicks(string text)
+        internal static long ConvertHourToTicks([NotNull] string text)
         {
+            Preconditions.CheckNotNull(text, "text");
             int value = Int32.Parse(text, NumberStyles.Integer, CultureInfo.InvariantCulture);
             if (value < -23 || value > 23)
             {
@@ -37,10 +38,10 @@ namespace NodaTime.TzdbCompiler.Tzdb
         /// </summary>
         /// <param name="text">The text to convert.</param>
         /// <returns>The minute in the range [0, 59].</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="text"/> is null.</exception>
         /// <exception cref="FormatException">If the text is not a valid integer in the range [0, 59].</exception>
-        internal static long ConvertMinuteToTicks(string text)
+        internal static long ConvertMinuteToTicks([NotNull] string text)
         {
+            Preconditions.CheckNotNull(text, "text");
             int value = Int32.Parse(text, NumberStyles.AllowLeadingWhite | NumberStyles.AllowTrailingWhite, CultureInfo.InvariantCulture);
             if (value < 0 || value > 59)
             {
@@ -54,10 +55,10 @@ namespace NodaTime.TzdbCompiler.Tzdb
         /// </summary>
         /// <param name="text">The text to convert.</param>
         /// <returns>The second in the range [0, 60).</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="text"/> is null.</exception>
         /// <exception cref="FormatException">If the text is not a valid integer in the range [0, 60).</exception>
-        internal static long ConvertSecondsWithFractionalToTicks(string text)
+        internal static long ConvertSecondsWithFractionalToTicks([NotNull] string text)
         {
+            Preconditions.CheckNotNull(text, "text");
             double number = Double.Parse(text, NumberStyles.AllowLeadingWhite | NumberStyles.AllowTrailingWhite | NumberStyles.AllowDecimalPoint,
                                          CultureInfo.InvariantCulture);
             if (number < 0.0 || number >= 60.0)
@@ -102,8 +103,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
         /// </summary>
         /// <param name="text">The value to parse.</param>
         /// <returns>an integer number of ticks</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="text"/> is null.</exception>
-        public static Offset ParseOffset(string text)
+        public static Offset ParseOffset([NotNull] string text)
         {
             Preconditions.CheckNotNull(text, "text");
             int sign = 1;
@@ -136,8 +136,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
         /// </summary>
         /// <param name="text">The value to parse.</param>
         /// <returns>The input string or null.</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="text"/> is null.</exception>
-        public static string ParseOptional(String text)
+        public static string ParseOptional([NotNull] String text)
         {
             Preconditions.CheckNotNull(text, "text");
             return text == "-" ? null : text;

@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
+using JetBrains.Annotations;
 using NodaTime.Calendars;
 using NodaTime.Fields;
 using NodaTime.Utility;
@@ -447,10 +448,9 @@ namespace NodaTime
         /// <param name="yearOfEra">The year within the era.</param>
         /// <param name="era">The era in which to consider the year</param>
         /// <returns>The absolute year represented by the specified year of era.</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="era"/> is null.</exception>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="yearOfEra"/> is out of the range of years for the given era.</exception>
         /// <exception cref="ArgumentException"><paramref name="era"/> is not an era used in this calendar.</exception>
-        public int GetAbsoluteYear(int yearOfEra, Era era)
+        public int GetAbsoluteYear(int yearOfEra, [NotNull] Era era)
         {
             return GetAbsoluteYear(yearOfEra, GetEraIndex(era));
         }
@@ -460,9 +460,8 @@ namespace NodaTime
         /// </summary>
         /// <param name="era">The era in which to find the greatest year</param>
         /// <returns>The maximum valid year in the given era.</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="era"/> is null.</exception>
         /// <exception cref="ArgumentException"><paramref name="era"/> is not an era used in this calendar.</exception>
-        public int GetMaxYearOfEra(Era era)
+        public int GetMaxYearOfEra([NotNull] Era era)
         {
             return GetMaxYearOfEra(GetEraIndex(era));
         }
@@ -472,9 +471,8 @@ namespace NodaTime
         /// </summary>
         /// <param name="era">The era in which to find the greatest year</param>
         /// <returns>The minimum valid year in the given eraera.</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="era"/> is null.</exception>
         /// <exception cref="ArgumentException"><paramref name="era"/> is not an era used in this calendar.</exception>
-        public int GetMinYearOfEra(Era era)
+        public int GetMinYearOfEra([NotNull] Era era)
         {
             return GetMinYearOfEra(GetEraIndex(era));
         }
@@ -530,12 +528,11 @@ namespace NodaTime
         /// <param name="yearOfEra">Year of era to use</param>
         /// <param name="monthOfYear">Month to use</param>
         /// <param name="dayOfMonth">Day of month to use</param>
-        /// <exception cref="ArgumentNullException"><paramref name="era" />is null.</exception>
         /// <exception cref="ArgumentException"><paramref name="era"/> is not an era used in this calendar.</exception>
         /// <exception cref="ArgumentOutOfRangeException">The year of era, month of year and day of month values don't
         /// form a valid date.</exception>
         /// <returns>A <see cref="LocalInstant"/> with the given year, month, day and era.</returns>
-        internal LocalInstant GetLocalInstant(Era era, int yearOfEra, int monthOfYear, int dayOfMonth)
+        internal LocalInstant GetLocalInstant([NotNull] Era era, int yearOfEra, int monthOfYear, int dayOfMonth)
         {
             return yearMonthDayCalculator.GetLocalInstant(era, yearOfEra, monthOfYear, dayOfMonth);
         }

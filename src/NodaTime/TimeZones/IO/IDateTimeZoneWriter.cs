@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using JetBrains.Annotations;
 
 namespace NodaTime.TimeZones.IO
 {
@@ -53,8 +54,7 @@ namespace NodaTime.TimeZones.IO
         /// these values will be pooled in some fashion, so should not apply their own pooling.</remarks>
         /// <param name="value">The string to write to the stream.</param>
         /// <exception cref="IOException">The value couldn't be written to the stream.</exception>
-        /// <exception cref="ArgumentNullException"><paramref name="value"/> is null.</exception>
-        void WriteString(string value);
+        void WriteString([NotNull] string value);
 
         /// <summary>
         /// Writes an offset to the stream.
@@ -81,9 +81,8 @@ namespace NodaTime.TimeZones.IO
         /// Writes a string-to-string dictionary to the stream.
         /// </summary>
         /// <param name="dictionary"></param>
-        /// <exception cref="ArgumentNullException"><paramref name="dictionary"/> is null.</exception>
         /// <exception cref="IOException">The value couldn't be written to the stream.</exception>
-        void WriteDictionary(IDictionary<string, string> dictionary);
+        void WriteDictionary([NotNull] IDictionary<string, string> dictionary);
 
         /// <summary>
         /// Writes the given 8 bit integer value to the stream.

@@ -2,6 +2,7 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
+using JetBrains.Annotations;
 using NodaTime.Calendars;
 using NodaTime.Text;
 using NodaTime.TimeZones;
@@ -67,8 +68,7 @@ namespace NodaTime
         /// <param name="localInstant">The local instant.</param>
         /// <param name="calendar">The calendar system.</param>
         /// <returns>The resulting date/time.</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="calendar"/> is null.</exception>
-        internal LocalDateTime(LocalInstant localInstant, CalendarSystem calendar)
+        internal LocalDateTime(LocalInstant localInstant, [NotNull] CalendarSystem calendar)
         {
             Preconditions.CheckNotNull(calendar, "calendar");
             this.localInstant = localInstant;
@@ -102,9 +102,8 @@ namespace NodaTime
         /// <param name="minute">The minute.</param>
         /// <param name="calendar">The calendar.</param>
         /// <returns>The resulting date/time.</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="calendar"/> is null.</exception>
         /// <exception cref="ArgumentOutOfRangeException">The parameters do not form a valid date/time.</exception>
-        public LocalDateTime(int year, int month, int day, int hour, int minute, CalendarSystem calendar)
+        public LocalDateTime(int year, int month, int day, int hour, int minute, [NotNull] CalendarSystem calendar)
         {
             Preconditions.CheckNotNull(calendar, "calendar");
             localInstant = calendar.GetLocalInstant(year, month, day, hour, minute);
@@ -140,9 +139,8 @@ namespace NodaTime
         /// <param name="second">The second.</param>
         /// <param name="calendar">The calendar.</param>
         /// <returns>The resulting date/time.</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="calendar"/> is null.</exception>
         /// <exception cref="ArgumentOutOfRangeException">The parameters do not form a valid date/time.</exception>
-        public LocalDateTime(int year, int month, int day, int hour, int minute, int second, CalendarSystem calendar)
+        public LocalDateTime(int year, int month, int day, int hour, int minute, int second, [NotNull] CalendarSystem calendar)
         {
             Preconditions.CheckNotNull(calendar, "calendar");
             localInstant = calendar.GetLocalInstant(year, month, day, hour, minute, second);
@@ -180,9 +178,8 @@ namespace NodaTime
         /// <param name="millisecond">The millisecond.</param>
         /// <param name="calendar">The calendar.</param>
         /// <returns>The resulting date/time.</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="calendar"/> is null.</exception>
         /// <exception cref="ArgumentOutOfRangeException">The parameters do not form a valid date/time.</exception>
-        public LocalDateTime(int year, int month, int day, int hour, int minute, int second, int millisecond, CalendarSystem calendar)
+        public LocalDateTime(int year, int month, int day, int hour, int minute, int second, int millisecond, [NotNull] CalendarSystem calendar)
             : this(year, month, day, hour, minute, second, millisecond, 0, calendar)
         {
         }
@@ -220,9 +217,8 @@ namespace NodaTime
         /// <param name="tickWithinMillisecond">The tick within millisecond.</param>
         /// <param name="calendar">The calendar.</param>
         /// <returns>The resulting date/time.</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="calendar"/> is null.</exception>
         /// <exception cref="ArgumentOutOfRangeException">The parameters do not form a valid date/time.</exception>
-        public LocalDateTime(int year, int month, int day, int hour, int minute, int second, int millisecond, int tickWithinMillisecond, CalendarSystem calendar)
+        public LocalDateTime(int year, int month, int day, int hour, int minute, int second, int millisecond, int tickWithinMillisecond, [NotNull] CalendarSystem calendar)
         {
             Preconditions.CheckNotNull(calendar, "calendar");
             localInstant = calendar.GetLocalInstant(year, month, day, hour, minute, second, millisecond, tickWithinMillisecond);
@@ -661,8 +657,7 @@ namespace NodaTime
         /// </summary>
         /// <param name="calendarSystem">The calendar system to convert this local date to.</param>
         /// <returns>The converted LocalDateTime.</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="calendarSystem"/> is null.</exception>
-        public LocalDateTime WithCalendar(CalendarSystem calendarSystem)
+        public LocalDateTime WithCalendar([NotNull] CalendarSystem calendarSystem)
         {
             Preconditions.CheckNotNull(calendarSystem, "calendarSystem");
             return new LocalDateTime(localInstant, calendarSystem);
@@ -877,8 +872,7 @@ namespace NodaTime
         /// </remarks>
         /// <param name="zone">The time zone in which to map this local date/time.</param>
         /// <returns>The result of mapping this local date/time in the given time zone.</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="zone"/> is null.</exception>
-        public ZonedDateTime InZoneStrictly(DateTimeZone zone)
+        public ZonedDateTime InZoneStrictly([NotNull] DateTimeZone zone)
         {
             Preconditions.CheckNotNull(zone, "zone");
             return zone.AtStrictly(this);
@@ -895,8 +889,7 @@ namespace NodaTime
         /// </remarks>
         /// <param name="zone">The time zone in which to map this local date/time.</param>
         /// <returns>The result of mapping this local date/time in the given time zone.</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="zone"/> is null.</exception>
-        public ZonedDateTime InZoneLeniently(DateTimeZone zone)
+        public ZonedDateTime InZoneLeniently([NotNull] DateTimeZone zone)
         {
             Preconditions.CheckNotNull(zone, "zone");
             return zone.AtLeniently(this);
@@ -912,8 +905,7 @@ namespace NodaTime
         /// <param name="zone">The time zone to map this local date and time into</param>
         /// <param name="resolver">The resolver to apply to the mapping.</param>
         /// <returns>The result of resolving the mapping.</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="zone"/> or <paramref name="resolver"/> is null.</exception>
-        public ZonedDateTime InZone(DateTimeZone zone, ZoneLocalMappingResolver resolver)
+        public ZonedDateTime InZone([NotNull] DateTimeZone zone, [NotNull] ZoneLocalMappingResolver resolver)
         {
             Preconditions.CheckNotNull(zone, "zone");
             Preconditions.CheckNotNull(resolver, "resolver");

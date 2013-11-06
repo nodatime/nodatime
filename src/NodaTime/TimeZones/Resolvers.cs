@@ -3,6 +3,7 @@
 // as found in the LICENSE.txt file.
 
 using System;
+using JetBrains.Annotations;
 using NodaTime.Utility;
 
 namespace NodaTime.TimeZones
@@ -107,10 +108,8 @@ namespace NodaTime.TimeZones
         /// </remarks>
         /// <param name="ambiguousTimeResolver">Resolver to use for ambiguous mappings.</param>
         /// <param name="skippedTimeResolver">Resolver to use for "skipped" mappings.</param>
-        /// <exception cref="ArgumentNullException"><paramref name="ambiguousTimeResolver"/> or
-        /// <paramref name="skippedTimeResolver"/> is null.</exception>
         /// <returns>The logical combination of the two resolvers.</returns>
-        public static ZoneLocalMappingResolver CreateMappingResolver(AmbiguousTimeResolver ambiguousTimeResolver, SkippedTimeResolver skippedTimeResolver)
+        public static ZoneLocalMappingResolver CreateMappingResolver([NotNull] AmbiguousTimeResolver ambiguousTimeResolver, [NotNull] SkippedTimeResolver skippedTimeResolver)
         {
             Preconditions.CheckNotNull(ambiguousTimeResolver, "ambiguousTimeResolver");
             Preconditions.CheckNotNull(skippedTimeResolver, "skippedTimeResolver");

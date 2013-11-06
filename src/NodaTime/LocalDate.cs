@@ -6,6 +6,7 @@ using System;
 using System.Globalization;
 using System.Xml;
 using System.Xml.Schema;
+using JetBrains.Annotations;
 using NodaTime.Calendars;
 using NodaTime.Text;
 using NodaTime.Utility;
@@ -67,8 +68,7 @@ namespace NodaTime
         /// <param name="calendar">Calendar system in which to create the date.</param>
         /// <returns>The resulting date.</returns>
         /// <exception cref="ArgumentOutOfRangeException">The parameters do not form a valid date.</exception>
-        /// <exception cref="ArgumentNullException"><paramref name="calendar"/> is null.</exception>
-        public LocalDate(int year, int month, int day, CalendarSystem calendar)
+        public LocalDate(int year, int month, int day, [NotNull] CalendarSystem calendar)
             : this(new LocalDateTime(year, month, day, 0, 0, calendar))
         {
         }
@@ -97,8 +97,7 @@ namespace NodaTime
         /// <param name="calendar">Calendar system in which to create the date.</param>
         /// <returns>The resulting date.</returns>
         /// <exception cref="ArgumentOutOfRangeException">The parameters do not form a valid date.</exception>
-        /// <exception cref="ArgumentNullException"><paramref name="calendar"/> is null.</exception>
-        public LocalDate(Era era, int yearOfEra, int month, int day, CalendarSystem calendar)
+        public LocalDate(Era era, int yearOfEra, int month, int day, [NotNull] CalendarSystem calendar)
             : this(new LocalDateTime(Preconditions.CheckNotNull(calendar, "calendar").GetLocalInstant(era, yearOfEra, month, day), calendar))
         {
         }
@@ -451,8 +450,7 @@ namespace NodaTime
         /// </summary>
         /// <param name="calendarSystem">The calendar system to convert this local date to.</param>
         /// <returns>The converted LocalDate</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="calendarSystem"/> is null.</exception>
-        public LocalDate WithCalendar(CalendarSystem calendarSystem)
+        public LocalDate WithCalendar([NotNull] CalendarSystem calendarSystem)
         {
             return new LocalDate(localTime.WithCalendar(calendarSystem));
         }

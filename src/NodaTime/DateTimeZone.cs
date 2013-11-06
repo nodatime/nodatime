@@ -385,9 +385,8 @@ namespace NodaTime
         /// </remarks>
         /// <param name="localDateTime">The local date and time to map in this time zone.</param>
         /// <param name="resolver">The resolver to apply to the mapping.</param>
-        /// <exception cref="ArgumentNullException"><paramref name="resolver"/> is null.</exception>
         /// <returns>The result of resolving the mapping.</returns>
-        public ZonedDateTime ResolveLocal(LocalDateTime localDateTime, ZoneLocalMappingResolver resolver)
+        public ZonedDateTime ResolveLocal(LocalDateTime localDateTime, [NotNull] ZoneLocalMappingResolver resolver)
         {
             Preconditions.CheckNotNull(resolver, "resolver");
             return resolver(MapLocal(localDateTime));

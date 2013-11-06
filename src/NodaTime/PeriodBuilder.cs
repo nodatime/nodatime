@@ -83,8 +83,7 @@ namespace NodaTime
         /// allows object initializers to be used.
         /// </summary>
         /// <param name="period">An existing period to copy values from.</param>
-        /// <exception cref="ArgumentNullException"><paramref name="period"/> is null.</exception>
-        public PeriodBuilder(Period period)
+        public PeriodBuilder([NotNull] Period period)
         {
             Preconditions.CheckNotNull(period, "period");
             Years = period.Years;
