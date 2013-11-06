@@ -27,7 +27,7 @@ instructions on building Noda Time from source.
 System requirements
 -------------------
 
-As of release 1.1, there are two builds of Noda Time: the desktop version and the Portable Class Library version.
+From release 1.1 onwards, there are two builds of Noda Time: the desktop version and the Portable Class Library version.
 
 The desktop version requires .NET 3.5 (client profile). This build also supports Mono, [with some caveats](mono.html).
 
