@@ -195,6 +195,7 @@ namespace NodaTime
         /// </remarks>
         /// <param name="offset">The right hand side of the operator.</param>
         /// <returns>A new <see cref="LocalInstant" /> representing the sum of the given values.</returns>
+        [Pure]
         internal LocalInstant Plus(Offset offset)
         {
             return new LocalInstant(Ticks + offset.Ticks);
