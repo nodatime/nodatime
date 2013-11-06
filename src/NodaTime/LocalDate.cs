@@ -180,6 +180,7 @@ namespace NodaTime
         /// </summary>
         /// <returns>The <see cref="LocalDateTime" /> representing midnight on tthis local date, in the same calendar
         /// system.</returns>
+        [Pure]
         public LocalDateTime AtMidnight()
         {
             return localTime;
@@ -228,6 +229,7 @@ namespace NodaTime
         /// </summary>
         /// <param name="period">The period to add. Must not contain any (non-zero) time units.</param>
         /// <returns>The sum of this date and the given period</returns>
+        [Pure]
         public LocalDate Plus(Period period)
         {
             return this + period;
@@ -276,6 +278,7 @@ namespace NodaTime
         /// </summary>
         /// <param name="period">The period to subtract. Must not contain any (non-zero) time units.</param>
         /// <returns>The result of subtracting the given period from this date.</returns>
+        [Pure]
         public LocalDate Minus(Period period)
         {
             return this - period;
@@ -450,6 +453,7 @@ namespace NodaTime
         /// </summary>
         /// <param name="calendarSystem">The calendar system to convert this local date to.</param>
         /// <returns>The converted LocalDate</returns>
+        [Pure]
         public LocalDate WithCalendar([NotNull] CalendarSystem calendarSystem)
         {
             return new LocalDate(localTime.WithCalendar(calendarSystem));
@@ -465,6 +469,7 @@ namespace NodaTime
         /// </remarks>
         /// <param name="years">The number of years to add</param>
         /// <returns>The current value plus the given number of years.</returns>
+        [Pure]
         public LocalDate PlusYears(int years)
         {
             return new LocalDate(localTime.PlusYears(years));
@@ -486,6 +491,7 @@ namespace NodaTime
         /// </remarks>
         /// <param name="months">The number of months to add</param>
         /// <returns>The current date plus the given number of months</returns>
+        [Pure]
         public LocalDate PlusMonths(int months)
         {
             return new LocalDate(localTime.PlusMonths(months));
@@ -502,6 +508,7 @@ namespace NodaTime
         /// </remarks>
         /// <param name="days">The number of days to add</param>
         /// <returns>The current value plus the given number of days.</returns>
+        [Pure]
         public LocalDate PlusDays(int days)
         {
             return new LocalDate(localTime.PlusDays(days));
@@ -512,6 +519,7 @@ namespace NodaTime
         /// </summary>
         /// <param name="weeks">The number of weeks to add</param>
         /// <returns>The current value plus the given number of weeks.</returns>
+        [Pure]
         public LocalDate PlusWeeks(int weeks)
         {
             return new LocalDate(localTime.PlusWeeks(weeks));
@@ -527,6 +535,7 @@ namespace NodaTime
         /// <exception cref="InvalidOperationException">The underlying calendar doesn't use ISO days of the week.</exception>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="targetDayOfWeek"/> is not a valid day of the
         /// week (Monday to Sunday).</exception>
+        [Pure]
         public LocalDate Next(IsoDayOfWeek targetDayOfWeek)
         {
             // LocalDateTime.Next performs all the validation we need.
@@ -543,6 +552,7 @@ namespace NodaTime
         /// <exception cref="InvalidOperationException">The underlying calendar doesn't use ISO days of the week.</exception>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="targetDayOfWeek"/> is not a valid day of the
         /// week (Monday to Sunday).</exception>
+        [Pure]
         public LocalDate Previous(IsoDayOfWeek targetDayOfWeek)
         {
             // LocalDateTime.Next performs all the validation we need.

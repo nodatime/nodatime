@@ -272,6 +272,7 @@ namespace NodaTime
         /// the actual offset from UTC to local time, so it always knows the exact instant represented.
         /// </remarks>
         /// <returns>The instant corresponding to this value.</returns>
+        [Pure]
         public Instant ToInstant()
         {
             return localDateTime.LocalInstant.Minus(offset);
@@ -283,6 +284,7 @@ namespace NodaTime
         /// </summary>
         /// <param name="targetZone">The target time zone to convert to.</param>
         /// <returns>A new value in the target time zone.</returns>
+        [Pure]
         public ZonedDateTime WithZone([NotNull] DateTimeZone targetZone)
         {
             Preconditions.CheckNotNull(targetZone, "targetZone");
@@ -492,6 +494,7 @@ namespace NodaTime
         /// </summary>
         /// <param name="duration">The duration to add</param>
         /// <returns>A new <see cref="ZonedDateTime" /> representing the result of the addition.</returns>
+        [Pure]
         public ZonedDateTime Plus(Duration duration)
         {
             return this + duration;
@@ -514,6 +517,7 @@ namespace NodaTime
         /// </summary>
         /// <param name="duration">The duration to subtract</param>
         /// <returns>A new <see cref="ZonedDateTime" /> representing the result of the subtraction.</returns>
+        [Pure]
         public ZonedDateTime Minus(Duration duration)
         {
             return this - duration;
@@ -545,6 +549,7 @@ namespace NodaTime
         /// for the <c>ZoneInterval</c> containing that instant.
         /// </remarks>
         /// <returns>The <c>ZoneInterval</c> containing this value.</returns>
+        [Pure]
         public ZoneInterval GetZoneInterval()
         {
             return Zone.GetZoneInterval(ToInstant());
@@ -593,6 +598,7 @@ namespace NodaTime
         /// to find out what the local time would be for another instant.
         /// </remarks>
         /// <returns>A <see cref="DateTimeOffset"/> representation of this value.</returns>
+        [Pure]
         public DateTimeOffset ToDateTimeOffset()
         {
             return new DateTimeOffset(LocalInstant.Ticks - NodaConstants.BclEpoch.Ticks, Offset.ToTimeSpan());
@@ -618,6 +624,7 @@ namespace NodaTime
         /// </summary>
         /// <returns>A <see cref="DateTime"/> representation of this value with a "universal" kind, with the same
         /// instant of time as this value.</returns>
+        [Pure]
         public DateTime ToDateTimeUtc()
         {
             return ToInstant().ToDateTimeUtc();
@@ -635,6 +642,7 @@ namespace NodaTime
         /// </remarks>
         /// <returns>A <see cref="DateTime"/> representation of this value with an "unspecified" kind, with the same
         /// local date and time as this value.</returns>
+        [Pure]
         public DateTime ToDateTimeUnspecified()
         {
             return LocalInstant.ToDateTimeUnspecified();
@@ -645,6 +653,7 @@ namespace NodaTime
         /// as this zoned date and time, effectively just "removing" the time zone itself.
         /// </summary>
         /// <returns>An OffsetDateTime with the same local date/time and offset as this value.</returns>
+        [Pure]
         public OffsetDateTime ToOffsetDateTime()
         {
             return new OffsetDateTime(localDateTime, offset);

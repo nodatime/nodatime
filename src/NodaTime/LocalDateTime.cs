@@ -388,6 +388,7 @@ namespace NodaTime
         /// the Noda Time non-system-specific "local" concept as exists in .NET.
         /// </remarks>
         /// <returns>A <see cref="DateTime"/> value for the same date and time as this value.</returns>
+        [Pure]
         public DateTime ToDateTimeUnspecified()
         {
             return localInstant.ToDateTimeUnspecified();
@@ -574,6 +575,7 @@ namespace NodaTime
         /// </summary>
         /// <param name="period">Period to add</param>
         /// <returns>The resulting local date and time</returns>
+        [Pure]
         public LocalDateTime Plus(Period period)
         {
             Preconditions.CheckNotNull(period, "period");
@@ -609,6 +611,7 @@ namespace NodaTime
         /// </summary>
         /// <param name="period">Period to subtract</param>
         /// <returns>The resulting local date and time</returns>
+        [Pure]
         public LocalDateTime Minus(Period period)
         {
             Preconditions.CheckNotNull(period, "period");
@@ -657,6 +660,7 @@ namespace NodaTime
         /// </summary>
         /// <param name="calendarSystem">The calendar system to convert this local date to.</param>
         /// <returns>The converted LocalDateTime.</returns>
+        [Pure]
         public LocalDateTime WithCalendar([NotNull] CalendarSystem calendarSystem)
         {
             Preconditions.CheckNotNull(calendarSystem, "calendarSystem");
@@ -673,6 +677,7 @@ namespace NodaTime
         /// </remarks>
         /// <param name="years">The number of years to add</param>
         /// <returns>The current value plus the given number of years.</returns>
+        [Pure]
         public LocalDateTime PlusYears(int years)
         {
             LocalInstant newLocalInstant = Calendar.PeriodFields.Years.Add(localInstant, years);
@@ -695,6 +700,7 @@ namespace NodaTime
         /// </remarks>
         /// <param name="months">The number of months to add</param>
         /// <returns>The current value plus the given number of months.</returns>
+        [Pure]
         public LocalDateTime PlusMonths(int months)
         {
             LocalInstant newLocalInstant = Calendar.PeriodFields.Months.Add(localInstant, months);
@@ -712,6 +718,7 @@ namespace NodaTime
         /// </remarks>
         /// <param name="days">The number of days to add</param>
         /// <returns>The current value plus the given number of days.</returns>
+        [Pure]
         public LocalDateTime PlusDays(int days)
         {
             LocalInstant newLocalInstant = Calendar.PeriodFields.Days.Add(localInstant, days);
@@ -723,6 +730,7 @@ namespace NodaTime
         /// </summary>
         /// <param name="weeks">The number of weeks to add</param>
         /// <returns>The current value plus the given number of weeks.</returns>
+        [Pure]
         public LocalDateTime PlusWeeks(int weeks)
         {
             LocalInstant newLocalInstant = Calendar.PeriodFields.Weeks.Add(localInstant, weeks);
@@ -734,6 +742,7 @@ namespace NodaTime
         /// </summary>
         /// <param name="hours">The number of hours to add</param>
         /// <returns>The current value plus the given number of hours.</returns>
+        [Pure]
         public LocalDateTime PlusHours(long hours)
         {
             LocalInstant newLocalInstant = Calendar.PeriodFields.Hours.Add(localInstant, hours);
@@ -745,6 +754,7 @@ namespace NodaTime
         /// </summary>
         /// <param name="minutes">The number of minutes to add</param>
         /// <returns>The current value plus the given number of minutes.</returns>
+        [Pure]
         public LocalDateTime PlusMinutes(long minutes)
         {
             LocalInstant newLocalInstant = Calendar.PeriodFields.Minutes.Add(localInstant, minutes);
@@ -756,6 +766,7 @@ namespace NodaTime
         /// </summary>
         /// <param name="seconds">The number of seconds to add</param>
         /// <returns>The current value plus the given number of seconds.</returns>
+        [Pure]
         public LocalDateTime PlusSeconds(long seconds)
         {
             LocalInstant newLocalInstant = Calendar.PeriodFields.Seconds.Add(localInstant, seconds);
@@ -767,6 +778,7 @@ namespace NodaTime
         /// </summary>
         /// <param name="milliseconds">The number of milliseconds to add</param>
         /// <returns>The current value plus the given number of milliseconds.</returns>
+        [Pure]
         public LocalDateTime PlusMilliseconds(long milliseconds)
         {
             LocalInstant newLocalInstant = Calendar.PeriodFields.Milliseconds.Add(localInstant, milliseconds);
@@ -778,6 +790,7 @@ namespace NodaTime
         /// </summary>
         /// <param name="ticks">The number of ticks to add</param>
         /// <returns>The current value plus the given number of ticks.</returns>
+        [Pure]
         public LocalDateTime PlusTicks(long ticks)
         {
             LocalInstant newLocalInstant = Calendar.PeriodFields.Ticks.Add(localInstant, ticks);
@@ -795,6 +808,7 @@ namespace NodaTime
         /// <exception cref="InvalidOperationException">The underlying calendar doesn't use ISO days of the week.</exception>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="targetDayOfWeek"/> is not a valid day of the
         /// week (Monday to Sunday).</exception>
+        [Pure]
         public LocalDateTime Next(IsoDayOfWeek targetDayOfWeek)
         {
             // Avoids boxing...
@@ -823,6 +837,7 @@ namespace NodaTime
         /// <exception cref="InvalidOperationException">The underlying calendar doesn't use ISO days of the week.</exception>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="targetDayOfWeek"/> is not a valid day of the
         /// week (Monday to Sunday).</exception>
+        [Pure]
         public LocalDateTime Previous(IsoDayOfWeek targetDayOfWeek)
         {
             // Avoids boxing...
@@ -846,6 +861,7 @@ namespace NodaTime
         /// <remarks>This method is purely a convenient alternative to calling the <see cref="OffsetDateTime"/> constructor directly.</remarks>
         /// <param name="offset">The offset to apply.</param>
         /// <returns>The result of this local date/time offset by the given amount.</returns>
+        [Pure]
         public OffsetDateTime WithOffset(Offset offset)
         {
             return new OffsetDateTime(this, offset);
@@ -856,6 +872,7 @@ namespace NodaTime
         /// </summary>
         /// <remarks>As UTC is a fixed time zone, there is no chance that this local date/time is ambiguous or skipped.</remarks>
         /// <returns>The result of mapping this local date/time in UTC.</returns>
+        [Pure]
         public ZonedDateTime InUtc()
         {
             // Use the internal constructor to avoid validation. We know it will be fine.
@@ -872,6 +889,7 @@ namespace NodaTime
         /// </remarks>
         /// <param name="zone">The time zone in which to map this local date/time.</param>
         /// <returns>The result of mapping this local date/time in the given time zone.</returns>
+        [Pure]
         public ZonedDateTime InZoneStrictly([NotNull] DateTimeZone zone)
         {
             Preconditions.CheckNotNull(zone, "zone");
@@ -889,6 +907,7 @@ namespace NodaTime
         /// </remarks>
         /// <param name="zone">The time zone in which to map this local date/time.</param>
         /// <returns>The result of mapping this local date/time in the given time zone.</returns>
+        [Pure]
         public ZonedDateTime InZoneLeniently([NotNull] DateTimeZone zone)
         {
             Preconditions.CheckNotNull(zone, "zone");
@@ -905,6 +924,7 @@ namespace NodaTime
         /// <param name="zone">The time zone to map this local date and time into</param>
         /// <param name="resolver">The resolver to apply to the mapping.</param>
         /// <returns>The result of resolving the mapping.</returns>
+        [Pure]
         public ZonedDateTime InZone([NotNull] DateTimeZone zone, [NotNull] ZoneLocalMappingResolver resolver)
         {
             Preconditions.CheckNotNull(zone, "zone");

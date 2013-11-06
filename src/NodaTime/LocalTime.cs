@@ -4,6 +4,7 @@
 
 using System.Globalization;
 using System.Runtime.Serialization;
+using JetBrains.Annotations;
 using NodaTime.Text;
 using NodaTime.Utility;
 using System;
@@ -262,6 +263,7 @@ namespace NodaTime
         /// </summary>
         /// <param name="period">The period to add. Must not contain any (non-zero) date units.</param>
         /// <returns>The sum of this time and the given period</returns>
+        [Pure]
         public LocalTime Plus(Period period)
         {
             return this + period;
@@ -297,6 +299,7 @@ namespace NodaTime
         /// </summary>
         /// <param name="period">The period to subtract. Must not contain any (non-zero) date units.</param>
         /// <returns>The result of subtracting the given period from this time.</returns>
+        [Pure]
         public LocalTime Minus(Period period)
         {
             return this - period;
@@ -449,6 +452,7 @@ namespace NodaTime
         /// </remarks>
         /// <param name="hours">The number of hours to add</param>
         /// <returns>The current value plus the given number of hours.</returns>
+        [Pure]
         public LocalTime PlusHours(long hours)
         {
             return LocalDateTime.PlusHours(hours).TimeOfDay;
@@ -462,6 +466,7 @@ namespace NodaTime
         /// </remarks>
         /// <param name="minutes">The number of minutes to add</param>
         /// <returns>The current value plus the given number of minutes.</returns>
+        [Pure]
         public LocalTime PlusMinutes(long minutes)
         {
             return LocalDateTime.PlusMinutes(minutes).TimeOfDay;
@@ -475,6 +480,7 @@ namespace NodaTime
         /// </remarks>
         /// <param name="seconds">The number of seconds to add</param>
         /// <returns>The current value plus the given number of seconds.</returns>
+        [Pure]
         public LocalTime PlusSeconds(long seconds)
         {
             return LocalDateTime.PlusSeconds(seconds).TimeOfDay;
@@ -485,6 +491,7 @@ namespace NodaTime
         /// </summary>
         /// <param name="milliseconds">The number of milliseconds to add</param>
         /// <returns>The current value plus the given number of milliseconds.</returns>
+        [Pure]
         public LocalTime PlusMilliseconds(long milliseconds)
         {
             return LocalDateTime.PlusMilliseconds(milliseconds).TimeOfDay;
@@ -495,6 +502,7 @@ namespace NodaTime
         /// </summary>
         /// <param name="ticks">The number of ticks to add</param>
         /// <returns>The current value plus the given number of ticks.</returns>
+        [Pure]
         public LocalTime PlusTicks(long ticks)
         {
             return LocalDateTime.PlusTicks(ticks).TimeOfDay;

@@ -432,7 +432,6 @@ namespace NodaTime
             return result;
         }
 
-
         /// <summary>
         /// Returns the exact difference between two date/times.
         /// </summary>
@@ -554,6 +553,7 @@ namespace NodaTime
         /// result would be valid due to balancing positive and negative values, but for simplicity there is
         /// no attempt to work around this - in realistic periods, it shouldn't be a problem.</exception>
         /// <returns>The duration of the period.</returns>
+        [Pure]
         public Duration ToDuration()
         {
             if (Months != 0 || Years != 0)
@@ -587,6 +587,7 @@ namespace NodaTime
         /// changes made to the builder are not reflected in this period.
         /// </summary>
         /// <returns>A builder with the same values and units as this period.</returns>
+        [Pure]
         public PeriodBuilder ToBuilder()
         {
             return new PeriodBuilder(this);
@@ -613,6 +614,7 @@ namespace NodaTime
         /// shouldn't be a problem.</exception>
         /// <returns>The normalized period.</returns>
         /// <seealso cref="NormalizingEqualityComparer"/>
+        [Pure]
         public Period Normalize()
         {
             // Simplest way to normalize: grab all the fields up to "week" and
