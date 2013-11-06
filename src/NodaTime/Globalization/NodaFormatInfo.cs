@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Threading;
+using JetBrains.Annotations;
 using NodaTime.Calendars;
 using NodaTime.Properties;
 using NodaTime.Text;
@@ -313,8 +314,7 @@ namespace NodaTime.Globalization
         /// <param name="era">The era to find the names of.</param>
         /// <returns>A read-only list of names for the given era, or an empty list if
         /// the era is not known in this culture.</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="era"/> is null.</exception>
-        public IList<string> GetEraNames(Era era)
+        public IList<string> GetEraNames([NotNull] Era era)
         {
             Preconditions.CheckNotNull(era, "era");
             return GetEraDescription(era).AllNames;
@@ -325,8 +325,7 @@ namespace NodaTime.Globalization
         /// </summary>
         /// <param name="era">The era to find the primary name of.</param>
         /// <returns>The primary name for the given era, or an empty string if the era name is not known.</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="era"/> is null.</exception>
-        public string GetEraPrimaryName(Era era)
+        public string GetEraPrimaryName([NotNull] Era era)
         {
             Preconditions.CheckNotNull(era, "era");
             return GetEraDescription(era).PrimaryName;

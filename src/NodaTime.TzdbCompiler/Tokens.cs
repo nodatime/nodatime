@@ -5,6 +5,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using JetBrains.Annotations;
 using NodaTime.TzdbCompiler.Tzdb;
 using NodaTime.Utility;
 
@@ -79,8 +80,7 @@ namespace NodaTime.TzdbCompiler
         /// </summary>
         /// <param name="text">The text to break into words.</param>
         /// <returns>The tokenized text.</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="text"/> is null.</exception>
-        public static Tokens Tokenize(string text)
+        public static Tokens Tokenize([NotNull] string text)
         {
             Preconditions.CheckNotNull(text, "text");
             text = text.TrimEnd();

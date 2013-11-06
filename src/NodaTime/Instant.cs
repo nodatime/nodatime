@@ -2,6 +2,7 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
+using JetBrains.Annotations;
 using NodaTime.Text;
 using NodaTime.Utility;
 using System;
@@ -564,8 +565,7 @@ namespace NodaTime
         /// <param name="zone">The time zone in which to represent this instant.</param>
         /// <returns>A <see cref="ZonedDateTime"/> for the same instant, in the given time zone
         /// and the ISO-8601 calendar</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="zone"/> is null.</exception>
-        public ZonedDateTime InZone(DateTimeZone zone)
+        public ZonedDateTime InZone([NotNull] DateTimeZone zone)
         {
             Preconditions.CheckNotNull(zone, "zone");
             return new ZonedDateTime(this, zone, CalendarSystem.Iso);
@@ -579,8 +579,7 @@ namespace NodaTime
         /// <param name="calendar">The calendar system in which to represent this instant.</param>
         /// <returns>A <see cref="ZonedDateTime"/> for the same instant, in the given time zone
         /// and calendar</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="zone"/> or <paramref name="calendar"/> is null.</exception>
-        public ZonedDateTime InZone(DateTimeZone zone, CalendarSystem calendar)
+        public ZonedDateTime InZone([NotNull] DateTimeZone zone, [NotNull] CalendarSystem calendar)
         {
             Preconditions.CheckNotNull(zone, "zone");
             Preconditions.CheckNotNull(calendar, "calendar");
@@ -607,8 +606,7 @@ namespace NodaTime
         /// <param name="calendar">The calendar system in which to represent this instant.</param>
         /// <returns>An <see cref="OffsetDateTime"/> for the same instant, with the given offset
         /// and calendar</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="calendar"/> is null.</exception>
-        public OffsetDateTime WithOffset(Offset offset, CalendarSystem calendar)
+        public OffsetDateTime WithOffset(Offset offset, [NotNull] CalendarSystem calendar)
         {
             Preconditions.CheckNotNull(calendar, "calendar");
             return new OffsetDateTime(new LocalDateTime(this.Plus(offset), calendar), offset);

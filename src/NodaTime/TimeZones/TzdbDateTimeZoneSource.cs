@@ -10,6 +10,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Resources;
+using JetBrains.Annotations;
 using NodaTime.TimeZones.Cldr;
 using NodaTime.TimeZones.IO;
 using NodaTime.Utility;
@@ -144,12 +145,11 @@ namespace NodaTime.TimeZones
         /// </remarks>
         /// <param name="stream">The stream containing time zone data</param>
         /// <returns>A <c>TzdbDateTimeZoneSource</c> providing information from the given stream.</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="stream"/> is null.</exception>
         /// <exception cref="InvalidNodaDataException">The stream contains invalid time zone data, or data which cannot
         /// be read by this version of Noda Time.</exception>
         /// <exception cref="IOException">Reading from the stream failed.</exception>
         /// <exception cref="InvalidOperationException">The supplied stream doesn't support reading.</exception>
-        public static TzdbDateTimeZoneSource FromStream(Stream stream)
+        public static TzdbDateTimeZoneSource FromStream([NotNull] Stream stream)
         {
             Preconditions.CheckNotNull(stream, "stream");
             return new TzdbDateTimeZoneSource(TzdbStreamData.FromStream(stream));

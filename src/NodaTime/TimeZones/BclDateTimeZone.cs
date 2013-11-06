@@ -2,6 +2,7 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
+using JetBrains.Annotations;
 #if !PCL
 using System;
 using System.Collections.Generic;
@@ -64,8 +65,7 @@ namespace NodaTime.TimeZones
         /// </summary>
         /// <param name="bclZone">The original time zone to take information from.</param>
         /// <returns>A <see cref="BclDateTimeZone"/> wrapping the given <c>TimeZoneInfo</c>.</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="bclZone"/> is null.</exception>
-        public static BclDateTimeZone FromTimeZoneInfo(TimeZoneInfo bclZone)
+        public static BclDateTimeZone FromTimeZoneInfo([NotNull] TimeZoneInfo bclZone)
         {
             Preconditions.CheckNotNull(bclZone, "bclZone");
             Offset standardOffset = Offset.FromTimeSpan(bclZone.BaseUtcOffset);

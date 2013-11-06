@@ -9,6 +9,7 @@ using System.Runtime.Serialization;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
+using JetBrains.Annotations;
 using NodaTime.Calendars;
 using NodaTime.Text;
 using NodaTime.TimeZones;
@@ -74,8 +75,7 @@ namespace NodaTime
         /// <param name="instant">The instant.</param>
         /// <param name="zone">The time zone.</param>
         /// <param name="calendar">The calendar system.</param>
-        /// <exception cref="ArgumentNullException"><paramref name="zone"/> or <paramref name="calendar"/> is null.</exception>
-        public ZonedDateTime(Instant instant, DateTimeZone zone, CalendarSystem calendar)
+        public ZonedDateTime(Instant instant, [NotNull] DateTimeZone zone, [NotNull] CalendarSystem calendar)
         {
             Preconditions.CheckNotNull(zone, "zone");
             Preconditions.CheckNotNull(calendar, "calendar");
@@ -103,10 +103,9 @@ namespace NodaTime
         /// <param name="localDateTime">The local date and time.</param>
         /// <param name="zone">The time zone.</param>
         /// <param name="offset">The offset between UTC and local time at the desired instant.</param>
-        /// <exception cref="ArgumentNullException"><paramref name="zone"/> is null.</exception>
         /// <exception cref="ArgumentException"><paramref name="offset"/> is not a valid offset at the given
         /// local date and time.</exception>
-        public ZonedDateTime(LocalDateTime localDateTime, DateTimeZone zone, Offset offset)
+        public ZonedDateTime(LocalDateTime localDateTime, [NotNull] DateTimeZone zone, Offset offset)
         {
             Preconditions.CheckNotNull(zone, "zone");
             Instant candidateInstant = localDateTime.LocalInstant.Minus(offset);
@@ -284,8 +283,7 @@ namespace NodaTime
         /// </summary>
         /// <param name="targetZone">The target time zone to convert to.</param>
         /// <returns>A new value in the target time zone.</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="targetZone"/> is null.</exception>
-        public ZonedDateTime WithZone(DateTimeZone targetZone)
+        public ZonedDateTime WithZone([NotNull] DateTimeZone targetZone)
         {
             Preconditions.CheckNotNull(targetZone, "targetZone");
             return new ZonedDateTime(ToInstant(), targetZone, localDateTime.Calendar);

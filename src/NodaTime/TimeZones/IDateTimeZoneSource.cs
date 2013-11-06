@@ -4,6 +4,7 @@
 
 using System;
 using System.Collections.Generic;
+using JetBrains.Annotations;
 
 namespace NodaTime.TimeZones
 {
@@ -88,9 +89,8 @@ namespace NodaTime.TimeZones
         /// <param name="id">The ID of the time zone to return. This must be one of the IDs
         /// returned by <see cref="GetIds"/>.</param>
         /// <returns>The <see cref="DateTimeZone"/> for the given ID.</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="id"/> is null.</exception>
         /// <exception cref="ArgumentException"><paramref name="id"/> is not supported by this source.</exception>
-        DateTimeZone ForId(string id);
+        DateTimeZone ForId([NotNull] string id);
 
         /// <summary>
         /// Returns this source's corresponding ID for the given BCL time zone.

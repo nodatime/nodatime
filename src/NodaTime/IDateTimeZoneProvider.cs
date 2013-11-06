@@ -5,6 +5,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using JetBrains.Annotations;
 using NodaTime.TimeZones;
 
 namespace NodaTime
@@ -115,8 +116,7 @@ namespace NodaTime
         /// <param name="id">The time zone ID to find.</param>
         /// <returns>The <see cref="DateTimeZone" /> for the given ID or null if the provider does not support
         /// the given ID.</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="id"/> is null.</exception>
-        DateTimeZone GetZoneOrNull(string id);
+        DateTimeZone GetZoneOrNull([NotNull] string id);
 
         /// <summary>
         /// Returns the time zone for the given ID.
@@ -143,7 +143,6 @@ namespace NodaTime
         /// <param name="id">The time zone id to find.</param>
         /// <returns>The <see cref="DateTimeZone" /> for the given ID.</returns>
         /// <exception cref="DateTimeZoneNotFoundException">This provider does not support the given ID.</exception>
-        /// <exception cref="ArgumentNullException"><paramref name="id"/> is null.</exception>
-        DateTimeZone this[string id] { get; }
+        DateTimeZone this[[NotNull] string id] { get; }
     }
 }
