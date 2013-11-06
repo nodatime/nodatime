@@ -5,6 +5,7 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
+using JetBrains.Annotations;
 using NodaTime.Fields;
 using NodaTime.Text;
 using NodaTime.Utility;
@@ -148,6 +149,7 @@ namespace NodaTime
         /// </summary>
         /// <param name="years">The number of years in the new period</param>
         /// <returns>A period consisting of the given number of years.</returns>
+        [NotNull]
         public static Period FromYears(long years)
         {
             return new Period(PeriodUnits.Years, years);
