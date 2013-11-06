@@ -28,7 +28,7 @@ namespace NodaTime.Text
         internal static readonly PatternBclSupport<Duration> BclSupport = new PatternBclSupport<Duration>("o", fi => fi.DurationPatternParser);
 
         // Nested class for ease of type initialization
-        internal class Patterns
+        internal static class Patterns
         {
             internal static readonly DurationPattern RoundtripPatternImpl = CreateWithInvariantCulture("-D:hh:mm:ss.FFFFFFF");
         }

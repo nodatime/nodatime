@@ -76,8 +76,8 @@ namespace NodaTime.TimeZones
         public TzdbZoneLocation(int latitudeSeconds, int longitudeSeconds, string countryName, string countryCode,
             string zoneId, string comment)
         {
-            Preconditions.CheckArgumentRange("latitude", latitudeSeconds, -90 * 3600, 90 * 3600);
-            Preconditions.CheckArgumentRange("longitude", longitudeSeconds, -180 * 3600, 180 * 3600);
+            Preconditions.CheckArgumentRange("latitudeSeconds", latitudeSeconds, -90 * 3600, 90 * 3600);
+            Preconditions.CheckArgumentRange("longitudeSeconds", longitudeSeconds, -180 * 3600, 180 * 3600);
             this.latitudeSeconds = latitudeSeconds;
             this.longitudeSeconds = longitudeSeconds;
             this.countryName = Preconditions.CheckNotNull(countryName, "countryName");

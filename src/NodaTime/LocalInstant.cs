@@ -3,6 +3,7 @@
 // as found in the LICENSE.txt file.
 
 using System;
+using JetBrains.Annotations;
 using NodaTime.Text;
 using NodaTime.Utility;
 
@@ -54,6 +55,7 @@ namespace NodaTime
         /// you to construct a <see cref="DateTimeOffset"/> with an arbitrary offset, which makes it as close to
         /// the Noda Time non-system-specific "local" concept as exists in .NET.
         /// </remarks>
+        [Pure]
         public DateTime ToDateTimeUnspecified()
         {
             return new DateTime(ticks - NodaConstants.BclEpoch.Ticks, DateTimeKind.Unspecified);
@@ -213,6 +215,7 @@ namespace NodaTime
         /// Convenience method to add the given number of ticks. Useful
         /// for assembling date and time parts.
         /// </summary>
+        [Pure]
         internal LocalInstant PlusTicks(long ticksToAdd)
         {
             return new LocalInstant(Ticks + ticksToAdd);
