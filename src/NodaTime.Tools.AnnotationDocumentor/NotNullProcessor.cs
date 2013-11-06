@@ -2,6 +2,7 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 using System;
+using System.Data.Odbc;
 using System.Linq;
 using System.Reflection;
 using System.Xml.Linq;
@@ -43,6 +44,15 @@ namespace NodaTime.Tools.AnnotationDocumentor
                     " is null.");
             }
             parent.Add(newElement);
+        }
+
+        internal override void ProcessMethod(XElement element, MethodInfo method, Attribute annotation)
+        {
+            var returnElement = element.Element("returns");
+            if (returnElement != null)
+            {
+                returnElement.Add(" (The value returned is never null.)");
+            }
         }
     }
 }
