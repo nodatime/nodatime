@@ -181,6 +181,7 @@ namespace NodaTime
         /// Converts this offset date and time to an instant in time by subtracting the offset from the local date and time.
         /// </summary>
         /// <returns>The instant represented by this offset date and time</returns>
+        [Pure]
         public Instant ToInstant()
         {
             return localDateTime.LocalInstant.Minus(offset);
@@ -200,6 +201,7 @@ namespace NodaTime
         /// </para>
         /// </remarks>
         /// <returns>A zoned date/time with the same local time and a fixed time zone using the offset from this value.</returns>
+        [Pure]
         public ZonedDateTime InFixedZone()
         {
             return new ZonedDateTime(localDateTime, offset, DateTimeZone.ForOffset(offset));
@@ -210,6 +212,7 @@ namespace NodaTime
         /// </summary>
         /// <returns>A DateTimeOffset with the same local date/time and offset as this. The <see cref="DateTime"/> part of
         /// the result always has a "kind" of Unspecified.</returns>
+        [Pure]
         public DateTimeOffset ToDateTimeOffset()
         {
             return new DateTimeOffset(localDateTime.ToDateTimeUnspecified(), offset.ToTimeSpan());
@@ -221,6 +224,7 @@ namespace NodaTime
         /// </summary>
         /// <param name="dateTimeOffset">DateTimeOffset to convert</param>
         /// <returns>The converted offset date and time</returns>
+        [Pure]
         public static OffsetDateTime FromDateTimeOffset(DateTimeOffset dateTimeOffset)
         {
             return new OffsetDateTime(LocalDateTime.FromDateTime(dateTimeOffset.DateTime),
@@ -234,6 +238,7 @@ namespace NodaTime
         /// </summary>
         /// <param name="calendarSystem">The calendar system to convert this local date to.</param>
         /// <returns>The converted OffsetDateTime.</returns>
+        [Pure]
         public OffsetDateTime WithCalendar([NotNull] CalendarSystem calendarSystem)
         {
             return new OffsetDateTime(localDateTime.WithCalendar(calendarSystem), offset);

@@ -6,6 +6,7 @@ using System;
 using System.Runtime.Serialization;
 using System.Xml;
 using System.Xml.Schema;
+using JetBrains.Annotations;
 using NodaTime.Text;
 using NodaTime.Utility;
 using System.Xml.Serialization;
@@ -97,6 +98,7 @@ namespace NodaTime
         /// </remarks>
         /// <param name="instant">Instant to test.</param>
         /// <returns>True if this interval contains the given instant; false otherwise.</returns>
+        [Pure]
         public bool Contains(Instant instant)
         {
             return instant >= start && (instant < end || end == Instant.MaxValue);

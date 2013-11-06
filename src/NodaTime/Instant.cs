@@ -216,6 +216,7 @@ namespace NodaTime
         /// </summary>
         /// <param name="duration">The duration to add</param>
         /// <returns>A new <see cref="Instant" /> representing the result of the addition.</returns>
+        [Pure]
         public Instant Plus(Duration duration)
         {
             return this + duration;
@@ -259,6 +260,7 @@ namespace NodaTime
         /// </summary>
         /// <param name="other">The other instant to subtract</param>
         /// <returns>A new <see cref="Instant" /> representing the result of the subtraction.</returns>
+        [Pure]
         public Duration Minus(Instant other)
         {
             return this - other;
@@ -270,6 +272,7 @@ namespace NodaTime
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
         /// <returns>A new <see cref="Instant" /> representing the difference of the given values.</returns>
+        [Pure]
         public static Instant Subtract(Instant left, Duration right)
         {
             return left - right;
@@ -280,6 +283,7 @@ namespace NodaTime
         /// </summary>
         /// <param name="duration">The duration to subtract</param>
         /// <returns>A new <see cref="Instant" /> representing the result of the subtraction.</returns>
+        [Pure]
         public Instant Minus(Duration duration)
         {
             return this - duration;

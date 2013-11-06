@@ -2,6 +2,7 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
+using JetBrains.Annotations;
 using NodaTime.Text;
 using NodaTime.Utility;
 using System;
@@ -165,6 +166,7 @@ namespace NodaTime
         /// <param name="other">The offset to add</param>
         /// <exception cref="ArgumentOutOfRangeException">The result of the operation is outside the range of Offset.</exception>
         /// <returns>The result of adding the other offset to this one.</returns>
+        [Pure]
         public Offset Plus(Offset other)
         {
             return this + other;
@@ -202,6 +204,7 @@ namespace NodaTime
         /// <param name="other">The offset to subtract</param>
         /// <exception cref="ArgumentOutOfRangeException">The result of the operation is outside the range of Offset.</exception>
         /// <returns>The result of subtracting the other offset from this one.</returns>
+        [Pure]
         public Offset Minus(Offset other)
         {
             return this - other;
@@ -473,6 +476,7 @@ namespace NodaTime
         /// Converts this offset to a .NET standard <see cref="TimeSpan" /> value.
         /// </summary>
         /// <returns>An equivalent <see cref="TimeSpan"/> to this value.</returns>
+        [Pure]
         public TimeSpan ToTimeSpan()
         {
             return TimeSpan.FromMilliseconds(milliseconds);

@@ -6,6 +6,7 @@ using System;
 using System.Globalization;
 using System.Xml;
 using System.Xml.Schema;
+using JetBrains.Annotations;
 using NodaTime.Text;
 using NodaTime.Utility;
 using System.Xml.Serialization;
@@ -223,6 +224,7 @@ namespace NodaTime
         /// </summary>
         /// <param name="other">The duration to add</param>
         /// <returns>A new <see cref="Duration" /> representing the result of the addition.</returns>
+        [Pure]
         public Duration Plus(Duration other)
         {
             return this + other;
@@ -255,6 +257,7 @@ namespace NodaTime
         /// </summary>
         /// <param name="other">The duration to subtract</param>
         /// <returns>A new <see cref="Duration" /> representing the result of the subtraction.</returns>
+        [Pure]
         public Duration Minus(Duration other)
         {
             return this - other;
@@ -574,6 +577,7 @@ namespace NodaTime
         /// <see cref="Duration"/>.
         /// </summary>
         /// <returns>A new TimeSpan with the same number of ticks as this Duration.</returns>
+        [Pure]
         public TimeSpan ToTimeSpan()
         {
             return new TimeSpan(ticks);
