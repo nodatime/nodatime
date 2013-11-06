@@ -6,7 +6,7 @@ weight: 40
 ---
 
 This is a companion page to the
-["core concepts quick reference"](concepts.html), and ["core types"](core-types.html)
+["core concepts"](concepts.html), and ["core types quick reference"](core-types.html)
 pages, describing when it's appropriate to use which type, and how to convert between them.
 
 Ultimately, you should be thinking about what data you really have,
