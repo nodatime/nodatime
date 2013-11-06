@@ -42,20 +42,10 @@ namespace NodaTime.Tools.AnnotationDocumentor
 
         private void Process(Assembly assembly, XDocument doc)
         {
-            try
-            {
-                var publicTypes = assembly.GetTypes().Where(t => t.IsPublic).ToList();
-                ProcessAll(publicTypes, ProcessType, doc);
-                ProcessAll(publicTypes.SelectMany(t => t.GetProperties()), ProcessProperty, doc);
-                ProcessAll(publicTypes.SelectMany(t => t.GetMethods()), ProcessMethod, doc);
-            }
-            catch (ReflectionTypeLoadException e)
-            {
-                foreach (var e2 in e.LoaderExceptions)
-                {
-                    Console.WriteLine(e2);
-                }
-            }
+            var publicTypes = assembly.GetTypes().Where(t => t.IsPublic).ToList();
+            ProcessAll(publicTypes, ProcessType, doc);
+            ProcessAll(publicTypes.SelectMany(t => t.GetProperties()), ProcessProperty, doc);
+            ProcessAll(publicTypes.SelectMany(t => t.GetMethods()), ProcessMethod, doc);
         }
 
         private void ProcessAll<T>(IEnumerable<T> members, Action<T, XDocument> processor, XDocument doc)
@@ -81,12 +71,22 @@ namespace NodaTime.Tools.AnnotationDocumentor
 
         private void ProcessProperty(PropertyInfo property, XDocument doc)
         {
-            // TODO: Indexers
-            var element = FindMember(doc, "P:" + property.ReflectedType.FullName + "." + property.Name);
+            var parameters = property.GetIndexParameters();
+            string name = "P:" + property.ReflectedType.FullName + "." + property.Name
+                + (parameters.Length == 0 ? "" : GetParametersSignature(parameters));
+            var element = FindMember(doc, name);
             if (element == null)
             {
                 return;
             }
+            foreach (var parameter in parameters)
+            {
+                foreach (var annotation in GetAnnotations(parameter))
+                {
+                    rootProcessor.ProcessParameter(element, parameter, annotation);
+                }
+            }
+
             foreach (var annotation in GetAnnotations(property))
             {
                 rootProcessor.ProcessProperty(element, property, annotation);
@@ -95,7 +95,8 @@ namespace NodaTime.Tools.AnnotationDocumentor
 
         private void ProcessMethod(MethodInfo method, XDocument doc)
         {
-            var element = FindElement(method, doc);
+            string name = "M:" + method.ReflectedType.FullName + "." + method.Name + GetParametersSignature(method.GetParameters());
+            var element =  FindMember(doc, name);
             if (element == null)
             {
                 return;
@@ -113,10 +114,9 @@ namespace NodaTime.Tools.AnnotationDocumentor
             }
         }
 
-        private XElement FindElement(MethodInfo method, XDocument doc)
+        private string GetParametersSignature(ParameterInfo[] parameters)
         {
-            string name = "M:" + method.ReflectedType.FullName + "." + method.Name + "(" + string.Join(",", method.GetParameters().Select(p => p.ParameterType.FullName).ToArray())+")";
-            return FindMember(doc, name);
+            return "(" + string.Join(",", parameters.Select(p => p.ParameterType.FullName).ToArray()) + ")";
         }
 
         private XElement FindMember(XDocument doc, string name)
