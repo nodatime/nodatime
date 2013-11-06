@@ -75,7 +75,7 @@ namespace NodaTime
             {
                 lock (SerializationProviderLock)
                 {
-                    return serializationProvider ?? (serializationProvider = DateTimeZoneProviders.Tzdb);
+                    return serializationProvider ?? (serializationProvider = Tzdb);
                 }
             }
             set

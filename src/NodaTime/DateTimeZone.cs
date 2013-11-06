@@ -4,7 +4,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Threading;
 using JetBrains.Annotations;
 using NodaTime.TimeZones;
 using NodaTime.Utility;
@@ -538,7 +537,7 @@ namespace NodaTime
                 int offsetMillis = i * FixedZoneCacheGranularityMilliseconds + FixedZoneCacheMinimumMilliseconds;
                 ret[i] = new FixedDateTimeZone(Offset.FromMilliseconds(offsetMillis));
             }
-            ret[-FixedZoneCacheMinimumMilliseconds / FixedZoneCacheGranularityMilliseconds] = DateTimeZone.Utc;
+            ret[-FixedZoneCacheMinimumMilliseconds / FixedZoneCacheGranularityMilliseconds] = Utc;
             return ret;
         }
 

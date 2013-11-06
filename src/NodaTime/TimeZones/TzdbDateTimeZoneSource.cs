@@ -265,7 +265,7 @@ namespace NodaTime.TimeZones
             int thisYear = SystemClock.Instance.Now.InUtc().Year;
             Instant startOfThisYear = Instant.FromUtc(thisYear, 1, 1, 0, 0);
             Instant startOfNextYear = Instant.FromUtc(thisYear + 1, 1, 1, 0, 0);
-            var candidates = WindowsMapping.PrimaryMapping.Values.Select(id => ForId(id)).ToList();
+            var candidates = WindowsMapping.PrimaryMapping.Values.Select(ForId).ToList();
             // Would create a HashSet directly, but it appears not to be present on all versions of the PCL...
             var instants = candidates.SelectMany(z => z.GetZoneIntervals(startOfThisYear, startOfNextYear))
                                      .Select(zi => Instant.Max(zi.Start, startOfThisYear)) // Clamp to start of interval

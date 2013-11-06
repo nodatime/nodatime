@@ -2,7 +2,6 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-using System;
 using System.Globalization;
 using NodaTime.Text;
 using NodaTime.TimeZones.IO;
@@ -50,11 +49,10 @@ namespace NodaTime.TimeZones
         {
             if (offset == Offset.Zero)
             {
-                return DateTimeZone.UtcId;
+                return UtcId;
             }
             return string.Format(CultureInfo.InvariantCulture,
-                "{0}{1}", DateTimeZone.UtcId,
-                OffsetPattern.GeneralInvariantPattern.Format(offset));
+                "{0}{1}", UtcId, OffsetPattern.GeneralInvariantPattern.Format(offset));
         }
 
         /// <summary>
@@ -71,10 +69,10 @@ namespace NodaTime.TimeZones
             }
             if (id == UtcId)
             {
-                return DateTimeZone.Utc;
+                return Utc;
             }
             var parseResult = OffsetPattern.GeneralInvariantPattern.Parse(id.Substring(UtcId.Length));
-            return parseResult.Success ? DateTimeZone.ForOffset(parseResult.Value) : null;
+            return parseResult.Success ? ForOffset(parseResult.Value) : null;
         }
 
         /// <summary>

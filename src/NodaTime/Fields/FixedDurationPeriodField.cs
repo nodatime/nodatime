@@ -85,7 +85,7 @@ namespace NodaTime.Fields
                 ticks = (ulong)(minuendInstant.Ticks - subtrahendInstant.Ticks);
                 // This will naturally truncate towards 0, which is what we want.
             }
-            return (long) (ticks / (ulong)unitTicks);
+            return (long) (ticks / unitTicks);
         }
     }
 }
