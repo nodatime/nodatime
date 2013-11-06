@@ -8,7 +8,6 @@ using NodaTime.Properties;
 using NodaTime.Text.Patterns;
 using NodaTime.TimeZones;
 using System.Collections.Generic;
-using NodaTime.Utility;
 
 namespace NodaTime.Text
 {

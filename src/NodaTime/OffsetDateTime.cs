@@ -228,7 +228,7 @@ namespace NodaTime
         public static OffsetDateTime FromDateTimeOffset(DateTimeOffset dateTimeOffset)
         {
             return new OffsetDateTime(LocalDateTime.FromDateTime(dateTimeOffset.DateTime),
-                NodaTime.Offset.FromTimeSpan(dateTimeOffset.Offset));
+                Offset.FromTimeSpan(dateTimeOffset.Offset));
         }
 
         /// <summary>

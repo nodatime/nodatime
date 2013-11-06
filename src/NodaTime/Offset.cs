@@ -34,15 +34,15 @@ namespace NodaTime
         /// <summary>
         /// An offset of zero ticks - effectively the permanent offset for UTC.
         /// </summary>
-        public static readonly Offset Zero = Offset.FromMilliseconds(0);
+        public static readonly Offset Zero = FromMilliseconds(0);
         /// <summary>
         /// The minimum permitted offset; one millisecond less than a standard day before UTC.
         /// </summary>
-        public static readonly Offset MinValue = Offset.FromMilliseconds(-NodaConstants.MillisecondsPerStandardDay + 1);
+        public static readonly Offset MinValue = FromMilliseconds(-NodaConstants.MillisecondsPerStandardDay + 1);
         /// <summary>
         /// The maximum permitted offset; one millisecond less than a standard day after UTC.
         /// </summary>
-        public static readonly Offset MaxValue = Offset.FromMilliseconds(NodaConstants.MillisecondsPerStandardDay - 1);
+        public static readonly Offset MaxValue = FromMilliseconds(NodaConstants.MillisecondsPerStandardDay - 1);
 
         private readonly int milliseconds;
 
@@ -109,7 +109,7 @@ namespace NodaTime
         /// <returns>A new <see cref="Offset" /> instance with a negated value.</returns>
         public static Offset operator -(Offset offset)
         {
-            return Offset.FromMilliseconds(-offset.Milliseconds);
+            return FromMilliseconds(-offset.Milliseconds);
         }
 
         /// <summary>
@@ -144,7 +144,7 @@ namespace NodaTime
         /// <exception cref="ArgumentOutOfRangeException">The result of the operation is outside the range of Offset.</exception>
         public static Offset operator +(Offset left, Offset right)
         {
-            return Offset.FromMilliseconds(left.Milliseconds + right.Milliseconds);
+            return FromMilliseconds(left.Milliseconds + right.Milliseconds);
         }
 
         /// <summary>
@@ -182,7 +182,7 @@ namespace NodaTime
         /// <exception cref="ArgumentOutOfRangeException">The result of the operation is outside the range of Offset.</exception>
         public static Offset operator -(Offset minuend, Offset subtrahend)
         {
-            return Offset.FromMilliseconds(minuend.Milliseconds - subtrahend.Milliseconds);
+            return FromMilliseconds(minuend.Milliseconds - subtrahend.Milliseconds);
         }
 
         /// <summary>

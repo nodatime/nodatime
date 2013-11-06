@@ -5,7 +5,6 @@
 #if !PCL
 
 using System.Globalization;
-using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using NodaTime.TimeZones.Cldr;

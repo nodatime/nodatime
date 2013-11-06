@@ -296,7 +296,7 @@ namespace NodaTime.TimeZones
             if (Id != otherZone.Id ||
                 !Equals(tailZone, otherZone.tailZone) ||
                 tailZoneStart != otherZone.tailZoneStart ||
-                !object.Equals(firstTailZoneInterval, otherZone.firstTailZoneInterval))
+                !Equals(firstTailZoneInterval, otherZone.firstTailZoneInterval))
             {
                 return false;
             }

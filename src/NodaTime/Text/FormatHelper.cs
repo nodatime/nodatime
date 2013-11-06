@@ -23,12 +23,11 @@ namespace NodaTime.Text
         /// </summary>
         private const int MaximumInt64Length = 19;
 
-        private static readonly string[] FixedNumberFormats = new[]
-                                                              {
-                                                                  "0", "00", "000", "0000", "00000", "000000", "0000000", "00000000", "000000000", "0000000000",
-                                                                  "00000000000", "000000000000", "0000000000000", "00000000000000", "000000000000000",
-                                                                  "0000000000000000"
-                                                              };
+        private static readonly string[] FixedNumberFormats = {
+            "0", "00", "000", "0000", "00000", "000000", "0000000", "00000000", "000000000", "0000000000",
+            "00000000000", "000000000000", "0000000000000", "00000000000000", "000000000000000",
+            "0000000000000000"
+        };
 
         /// <summary>
         /// Formats the given value left padded with zeros.
