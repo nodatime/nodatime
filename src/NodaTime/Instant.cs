@@ -169,6 +169,7 @@ namespace NodaTime
         /// </summary>
         /// <param name="ticksToAdd">The ticks to add to this instant to create the return value.</param>
         /// <returns>The result of adding the given number of ticks to this instant.</returns>
+        [Pure]
         public Instant PlusTicks(long ticksToAdd)
         {
             return new Instant(this.ticks + ticksToAdd);
@@ -467,6 +468,7 @@ namespace NodaTime
         /// of <see cref="DateTimeKind.Utc"/> and represents the same instant of time as this value.
         /// </summary>
         /// <returns>A <see cref="DateTime"/> representing the same instant in time as this value, with a kind of "universal".</returns>
+        [Pure]
         public DateTime ToDateTimeUtc()
         {
             return new DateTime((this - NodaConstants.BclEpoch).Ticks, DateTimeKind.Utc);
@@ -476,6 +478,7 @@ namespace NodaTime
         /// Constructs a <see cref="DateTimeOffset"/> from this Instant which has an offset of zero.
         /// </summary>
         /// <returns>A <see cref="DateTimeOffset"/> representing the same instant in time as this value.</returns>
+        [Pure]
         public DateTimeOffset ToDateTimeOffset()
         {
             return new DateTimeOffset((this - NodaConstants.BclEpoch).Ticks, TimeSpan.Zero);
@@ -553,6 +556,7 @@ namespace NodaTime
         /// </summary>
         /// <returns>A <see cref="ZonedDateTime"/> for the same instant, in the UTC time zone
         /// and the ISO-8601 calendar</returns>
+        [Pure]
         public ZonedDateTime InUtc()
         {
             return new ZonedDateTime(this, DateTimeZone.Utc, CalendarSystem.Iso);
@@ -565,6 +569,7 @@ namespace NodaTime
         /// <param name="zone">The time zone in which to represent this instant.</param>
         /// <returns>A <see cref="ZonedDateTime"/> for the same instant, in the given time zone
         /// and the ISO-8601 calendar</returns>
+        [Pure]
         public ZonedDateTime InZone([NotNull] DateTimeZone zone)
         {
             Preconditions.CheckNotNull(zone, "zone");
@@ -579,6 +584,7 @@ namespace NodaTime
         /// <param name="calendar">The calendar system in which to represent this instant.</param>
         /// <returns>A <see cref="ZonedDateTime"/> for the same instant, in the given time zone
         /// and calendar</returns>
+        [Pure]
         public ZonedDateTime InZone([NotNull] DateTimeZone zone, [NotNull] CalendarSystem calendar)
         {
             Preconditions.CheckNotNull(zone, "zone");
@@ -593,6 +599,7 @@ namespace NodaTime
         /// <param name="offset">The offset from UTC with which to represent this instant.</param>
         /// <returns>An <see cref="OffsetDateTime"/> for the same instant, with the given offset
         /// in the ISO calendar system</returns>
+        [Pure]
         public OffsetDateTime WithOffset(Offset offset)
         {
             return new OffsetDateTime(new LocalDateTime(this.Plus(offset)), offset);
@@ -606,6 +613,7 @@ namespace NodaTime
         /// <param name="calendar">The calendar system in which to represent this instant.</param>
         /// <returns>An <see cref="OffsetDateTime"/> for the same instant, with the given offset
         /// and calendar</returns>
+        [Pure]
         public OffsetDateTime WithOffset(Offset offset, [NotNull] CalendarSystem calendar)
         {
             Preconditions.CheckNotNull(calendar, "calendar");
