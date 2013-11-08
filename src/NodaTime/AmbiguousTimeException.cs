@@ -3,6 +3,7 @@
 // as found in the LICENSE.txt file.
 
 using System;
+using NodaTime.Annotations;
 using NodaTime.Utility;
 
 namespace NodaTime
@@ -36,6 +37,7 @@ namespace NodaTime
 #if !PCL
     [Serializable]
 #endif
+    [Mutable] // Exception itself is mutable
     public sealed class AmbiguousTimeException : ArgumentOutOfRangeException
     {
         private readonly ZonedDateTime earlierMapping;

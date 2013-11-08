@@ -3,6 +3,7 @@
 // as found in the LICENSE.txt file.
 
 using System.Globalization;
+using NodaTime.Annotations;
 using NodaTime.Globalization;
 using NodaTime.Text.Patterns;
 using NodaTime.Utility;
@@ -17,6 +18,7 @@ namespace NodaTime.Text
     /// may be shared freely between threads. We recommend only using read-only cultures for patterns, although this is
     /// not currently enforced.
     /// </threadsafety>
+    [Immutable] // Well, assuming an immutable culture...
     public sealed class LocalDatePattern : IPattern<LocalDate>
     {
         internal static readonly LocalDate DefaultTemplateValue = new LocalDate(2000, 1, 1);

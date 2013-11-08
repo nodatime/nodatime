@@ -2,6 +2,7 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
+using NodaTime.Annotations;
 using NodaTime.TimeZones.IO;
 using NodaTime.Utility;
 using System.Collections.Generic;
@@ -13,6 +14,7 @@ namespace NodaTime.TimeZones.Cldr
     /// Represents a single <c>&lt;mapZone&gt;</c> element in the CLDR Windows zone mapping file. 
     /// </summary>
     /// <threadsafety>This type is immutable reference type. See the thread safety section of the user guide for more information.</threadsafety>
+    [Immutable]
     public sealed class MapZone
     {
         /// <summary>

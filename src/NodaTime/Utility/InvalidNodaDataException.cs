@@ -3,6 +3,7 @@
 // as found in the LICENSE.txt file.
 
 using System;
+using NodaTime.Annotations;
 
 namespace NodaTime.Utility
 {
@@ -21,6 +22,7 @@ namespace NodaTime.Utility
 #if !PCL
     [Serializable]
 #endif
+    [Mutable] // Exception itself is mutable
     public sealed class InvalidNodaDataException : Exception
     {
         /// <summary>

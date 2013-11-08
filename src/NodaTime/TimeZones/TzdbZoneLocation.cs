@@ -2,6 +2,7 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
+using NodaTime.Annotations;
 using NodaTime.TimeZones.IO;
 using NodaTime.Utility;
 using System;
@@ -12,6 +13,8 @@ namespace NodaTime.TimeZones
     /// A location entry generated from the "zone.tab" file in a TZDB release. This can be used to provide
     /// users with a choice of time zone, although it is not internationalized.
     /// </summary>
+    /// <threadsafety>This type is immutable reference type. See the thread safety section of the user guide for more information.</threadsafety>
+    [Immutable]
     public sealed class TzdbZoneLocation
     {
         private readonly int latitudeSeconds, longitudeSeconds;

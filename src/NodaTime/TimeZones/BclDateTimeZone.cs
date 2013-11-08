@@ -3,6 +3,7 @@
 // as found in the LICENSE.txt file.
 
 using JetBrains.Annotations;
+using NodaTime.Annotations;
 #if !PCL
 using System;
 using System.Collections.Generic;
@@ -19,6 +20,7 @@ namespace NodaTime.TimeZones
     /// to compare two different <c>BclDateTimeZone</c> instances.
     /// </remarks>
     /// <threadsafety>This type is immutable reference type. See the thread safety section of the user guide for more information.</threadsafety>
+    [Immutable]
     public sealed class BclDateTimeZone : DateTimeZone
     {
         /// <summary>

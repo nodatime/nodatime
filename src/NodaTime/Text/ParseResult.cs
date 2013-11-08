@@ -4,6 +4,7 @@
 
 using System;
 using System.Globalization;
+using NodaTime.Annotations;
 using NodaTime.Properties;
 
 namespace NodaTime.Text
@@ -13,6 +14,7 @@ namespace NodaTime.Text
     /// </summary>
     /// <typeparam name="T">The type which was parsed, such as a <see cref="LocalDateTime"/>.</typeparam>
     /// <threadsafety>This type is immutable reference type. See the thread safety section of the user guide for more information.</threadsafety>
+    [Immutable]
     public sealed class ParseResult<T>
     {
         private readonly T value;

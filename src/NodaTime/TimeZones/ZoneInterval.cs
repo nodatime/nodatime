@@ -5,6 +5,7 @@
 using System;
 using System.Diagnostics;
 using JetBrains.Annotations;
+using NodaTime.Annotations;
 using NodaTime.Utility;
 
 namespace NodaTime.TimeZones
@@ -13,6 +14,7 @@ namespace NodaTime.TimeZones
     /// Represents a range of time for which a particular Offset applies.
     /// </summary>
     /// <threadsafety>This type is an immutable reference type. See the thread safety section of the user guide for more information.</threadsafety>
+    [Immutable]
     public sealed class ZoneInterval : IEquatable<ZoneInterval>
     {
         private readonly Instant end;
