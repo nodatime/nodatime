@@ -1,13 +1,11 @@
-﻿// Copyright 2011 The Noda Time Authors. All rights reserved.
+﻿// Copyright 2013 The Noda Time Authors. All rights reserved.
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
-using System;
+using JetBrains.Annotations;
+using NUnit.Framework;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using JetBrains.Annotations;
-using NUnit.Framework;
 
 namespace NodaTime.Test.Annotations
 {
