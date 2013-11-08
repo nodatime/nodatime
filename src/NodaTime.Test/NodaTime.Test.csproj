@@ -106,7 +106,7 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AnnotationTest.cs" />
+    <Compile Include="Annotations\PurityTest.cs" />
     <Compile Include="CalendarSystemTest.cs" />
     <Compile Include="CalendarSystemTest.Era.cs">
       <DependentUpon>CalendarSystemTest.cs</DependentUpon>
