@@ -140,6 +140,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Annotations\MutableAttribute.cs" />
+    <Compile Include="Annotations\ImmutableAttribute.cs" />
     <Compile Include="CalendarSystem.cs" />
     <Compile Include="AmbiguousTimeException.cs" />
     <Compile Include="Calendars\CopticYearMonthDayCalculator.cs" />
@@ -164,7 +166,7 @@
     <Compile Include="Fields\NamespaceDoc.cs" />
     <Compile Include="Fields\YearsPeriodField.cs" />
     <Compile Include="Globalization\NamespaceDoc.cs" />
-    <Compile Include="JetBrainsAnnotations.cs" />
+    <Compile Include="Annotations\JetBrainsAnnotations.cs" />
     <Compile Include="OffsetDateTime.cs" />
     <Compile Include="IDateTimeZoneProvider.cs" />
     <Compile Include="PeriodBuilder.cs" />

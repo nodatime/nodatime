@@ -9,13 +9,13 @@ using System.Text;
 using JetBrains.Annotations;
 using NUnit.Framework;
 
-namespace NodaTime.Test
+namespace NodaTime.Test.Annotations
 {
     /// <summary>
-    /// Tests for annotations.
+    /// Tests for annotations around purity. No sniggering at the back, please.
     /// </summary>
     [TestFixture]
-    public class AnnotationTest
+    public class PurityTest
     {
         [Test]
         public void AllPublicStructMethodsArePure()
