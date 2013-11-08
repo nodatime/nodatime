@@ -4,7 +4,7 @@
 
 using System;
 using System.Globalization;
-
+using NodaTime.Annotations;
 #if !PCL
 using System.Runtime.Serialization;
 #endif
@@ -20,6 +20,7 @@ namespace NodaTime.Text
 #if !PCL
     [Serializable]
 #endif
+    [Mutable] // Exception is mutable
     public sealed class InvalidPatternException : FormatException
     {
         /// <summary>

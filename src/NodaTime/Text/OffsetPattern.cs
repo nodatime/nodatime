@@ -2,6 +2,7 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
+using NodaTime.Annotations;
 using NodaTime.Globalization;
 using NodaTime.Text.Patterns;
 using NodaTime.Utility;
@@ -17,6 +18,7 @@ namespace NodaTime.Text
     /// may be shared freely between threads. We recommend only using read-only cultures for patterns, although this is
     /// not currently enforced.
     /// </threadsafety>
+    [Immutable] // Well, assuming an immutable culture...
     public sealed class OffsetPattern : IPattern<Offset>
     {
         /// <summary>

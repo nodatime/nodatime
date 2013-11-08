@@ -11,6 +11,7 @@ using System.Linq;
 using System.Reflection;
 using System.Resources;
 using JetBrains.Annotations;
+using NodaTime.Annotations;
 using NodaTime.TimeZones.Cldr;
 using NodaTime.TimeZones.IO;
 using NodaTime.Utility;
@@ -27,6 +28,7 @@ namespace NodaTime.TimeZones
     /// will return zones equal to those returned by <see cref="DateTimeZone.ForOffset"/>.
     /// </remarks>
     /// <threadsafety>This type is immutable reference type. See the thread safety section of the user guide for more information.</threadsafety>
+    [Immutable]
     public sealed class TzdbDateTimeZoneSource : IDateTimeZoneSource
     {
         /// <summary>

@@ -7,6 +7,7 @@ using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
 using JetBrains.Annotations;
+using NodaTime.Annotations;
 using NodaTime.Text;
 using NodaTime.Utility;
 
@@ -21,6 +22,7 @@ namespace NodaTime
     /// This type is not thread-safe without extra synchronization, but has no
     /// thread affinity.
     /// </threadsafety>
+    [Mutable]
     public sealed class PeriodBuilder : IXmlSerializable
     {
         #region Properties

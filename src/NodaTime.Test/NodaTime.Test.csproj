@@ -106,6 +106,7 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Annotations\MutabilityTest.cs" />
     <Compile Include="Annotations\PurityTest.cs" />
     <Compile Include="CalendarSystemTest.cs" />
     <Compile Include="CalendarSystemTest.Era.cs">

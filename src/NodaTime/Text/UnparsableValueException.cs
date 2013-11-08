@@ -3,6 +3,7 @@
 // as found in the LICENSE.txt file.
 
 using System;
+using NodaTime.Annotations;
 #if !PCL
 using System.Runtime.Serialization;
 #endif
@@ -18,6 +19,7 @@ namespace NodaTime.Text
 #if !PCL
     [Serializable]
 #endif
+    [Mutable] // Exception is Mutable
     public sealed class UnparsableValueException : FormatException
     {
         /// <summary>

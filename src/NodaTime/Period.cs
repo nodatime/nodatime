@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 using JetBrains.Annotations;
+using NodaTime.Annotations;
 using NodaTime.Fields;
 using NodaTime.Text;
 using NodaTime.Utility;
@@ -43,6 +44,7 @@ namespace NodaTime
 #if !PCL
     [Serializable]
 #endif
+    [Immutable]
     public sealed class Period : IEquatable<Period>
 #if !PCL
         , ISerializable

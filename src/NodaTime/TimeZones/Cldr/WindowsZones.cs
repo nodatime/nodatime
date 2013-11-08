@@ -5,6 +5,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using NodaTime.Annotations;
 using NodaTime.TimeZones.IO;
 using NodaTime.Utility;
 
@@ -18,6 +19,7 @@ namespace NodaTime.TimeZones.Cldr
     /// for more details of the structure of the file from which data is taken.
     /// </remarks>
     /// <threadsafety>This type is immutable reference type. See the thread safety section of the user guide for more information.</threadsafety>
+    [Immutable]
     public sealed class WindowsZones
     {        
         private readonly string version;

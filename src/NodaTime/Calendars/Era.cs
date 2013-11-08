@@ -3,6 +3,7 @@
 // as found in the LICENSE.txt file.
 
 using System;
+using NodaTime.Annotations;
 
 namespace NodaTime.Calendars
 {
@@ -13,6 +14,7 @@ namespace NodaTime.Calendars
     /// read-only fields in this class. These may be compared for reference equality to check for specific
     /// eras.</remarks>
     /// <threadsafety>This type is immutable reference type. See the thread safety section of the user guide for more information.</threadsafety>
+    [Immutable]
     public sealed class Era
     {
         /// <summary>

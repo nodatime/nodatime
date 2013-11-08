@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using JetBrains.Annotations;
+using NodaTime.Annotations;
 using NodaTime.Calendars;
 using NodaTime.Fields;
 using NodaTime.Utility;
@@ -37,6 +38,7 @@ namespace NodaTime
     /// All calendar implementations within Noda Time are immutable and thread-safe. See the thread safety
     /// section of the user guide for more information.
     /// </threadsafety>
+    [Immutable]
     public sealed class CalendarSystem
     {
         // TODO(2.0): Consider moving the static accessors into a separate class. As we get more calendars,

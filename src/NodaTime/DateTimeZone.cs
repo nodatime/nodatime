@@ -5,6 +5,7 @@
 using System;
 using System.Collections.Generic;
 using JetBrains.Annotations;
+using NodaTime.Annotations;
 using NodaTime.TimeZones;
 using NodaTime.Utility;
 
@@ -78,6 +79,7 @@ namespace NodaTime
     /// All time zone implementations within Noda Time are immutable and thread-safe. See the thread safety
     /// section of the user guide for more information.
     /// </threadsafety>
+    [Immutable]
     public abstract class DateTimeZone : IEquatable<DateTimeZone>, IZoneIntervalMap
     {
         /// <summary>

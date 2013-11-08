@@ -3,6 +3,7 @@
 // as found in the LICENSE.txt file.
 
 using System;
+using NodaTime.Annotations;
 
 namespace NodaTime
 {
@@ -34,6 +35,7 @@ namespace NodaTime
 #if !PCL
     [Serializable]
 #endif
+    [Mutable] // Exception itself is mutable
     public sealed class SkippedTimeException : ArgumentOutOfRangeException
     {
         private readonly LocalDateTime localDateTime;

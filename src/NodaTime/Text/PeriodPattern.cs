@@ -3,6 +3,7 @@
 // as found in the LICENSE.txt file.
 
 using System.Text;
+using NodaTime.Annotations;
 using NodaTime.Properties;
 using NodaTime.Utility;
 
@@ -12,6 +13,7 @@ namespace NodaTime.Text
     /// Represents a pattern for parsing and formatting <see cref="Period"/> values.
     /// </summary>
     /// <threadsafety>This type is immutable reference type. See the thread safety section of the user guide for more information.</threadsafety>
+    [Immutable]
     public sealed class PeriodPattern : IPattern<Period>
     {
         /// <summary>

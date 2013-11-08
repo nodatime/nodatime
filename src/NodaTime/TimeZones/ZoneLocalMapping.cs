@@ -3,6 +3,7 @@
 // as found in the LICENSE.txt file.
 
 using System;
+using NodaTime.Annotations;
 using NodaTime.Utility;
 
 namespace NodaTime.TimeZones
@@ -45,6 +46,7 @@ namespace NodaTime.TimeZones
     /// </list>
     /// </remarks>
     /// <threadsafety>This type is an immutable reference type. See the thread safety section of the user guide for more information.</threadsafety>
+    [Immutable]
     public sealed class ZoneLocalMapping
     {
         private readonly DateTimeZone zone;

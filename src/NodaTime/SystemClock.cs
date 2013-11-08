@@ -3,6 +3,7 @@
 // as found in the LICENSE.txt file.
 
 using System;
+using NodaTime.Annotations;
 
 namespace NodaTime
 {
@@ -13,6 +14,7 @@ namespace NodaTime
     /// your application, which should only depend on the interface.
     /// </summary>
     /// <threadsafety>This type has no state, and is thread-safe. See the thread safety section of the user guide for more information.</threadsafety>
+    [Immutable]
     public sealed class SystemClock : IClock
     {
         /// <summary>
