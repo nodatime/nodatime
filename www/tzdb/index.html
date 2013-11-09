@@ -9,13 +9,20 @@
       as well, so that users don't need to update to a new version of
       Noda Time to benefit from updated data. See the
       <a href="http://nodatime.org/userguide/tzdb.html">user guide</a>
-      for details on how to use these files within your project.
+      for details on how to use these files within your project. The NZD
+      files in this directory should be usable for version of Noda Time
+      from 1.1 upwards. (If you need the files in 1.0 format, please contact
+      the mailing list.)
     </p>
     <p>
       Whenever a file is added, the <a href="latest.txt">latest.txt</a>
       file is also updated. This will always be an ASCII file *just*
       containing the URL of the latest version. You may use this to automate
       fetching the latest version.
+    </p>
+    <p>TODO: hopefully we'll come up with a nice way of listing the contents
+     of the directory here too... for the moment, just look at <a href="latest.txt">latest.txt</a>
+     or check for a file of the form <code>tzdb(version).nzd</code>, e.g. <a href="tzdb2013h.nzd">tzdb2013h.nzd</a>.
     </p>
   </body>
 </html>
