@@ -63,3 +63,4 @@ syntax:regexp
 
 # Generated offline userguide
 ^tmpdocs
+^tzdbtmp
