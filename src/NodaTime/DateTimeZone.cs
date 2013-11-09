@@ -76,8 +76,12 @@ namespace NodaTime
     /// that equivalent time zones compare as equal.</para>
     /// </remarks>
     /// <threadsafety>
-    /// All time zone implementations within Noda Time are immutable and thread-safe. See the thread safety
-    /// section of the user guide for more information.
+    /// All time zone implementations within Noda Time are immutable and thread-safe.
+    /// See the thread safety section of the user guide for more information.
+    /// It is expected that third party implementations will be immutable and thread-safe as well:
+    /// code within Noda Time assumes that it can hand out time zones to any thread without any concerns. If you
+    /// implement a non-thread-safe time zone, you will need to use it extremely carefully. We'd recommend that you
+    /// avoid this if possible.
     /// </threadsafety>
     [Immutable]
     public abstract class DateTimeZone : IEquatable<DateTimeZone>, IZoneIntervalMap
