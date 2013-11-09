@@ -1,7 +1,7 @@
 @echo off
 
 if "%1" == "" (
-  echo Usage: buildrelease version-number
+  echo Usage: buildofflineguide version-number
   goto end
 )
 
