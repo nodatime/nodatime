@@ -35,7 +35,7 @@ namespace NodaTime
     /// </para>
     /// </remarks>
     /// <threadsafety>
-    /// All calendar implementations within Noda Time are immutable and thread-safe. See the thread safety
+    /// All calendar implementations are immutable and thread-safe. See the thread safety
     /// section of the user guide for more information.
     /// </threadsafety>
     [Immutable]
