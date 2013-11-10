@@ -13,26 +13,83 @@ details.
 
 Major features:
 
-- XML serialization
-- (More to be documented)
+- Noda Time core types now support XML and (on the desktop build) binary
+  serialization (issues [24][issue 24] and [226][issue 226])
+- New optional `NodaTime.Serialization.JsonNet` NuGet package enabling JSON
+  serialization for Noda Time types using [Json.NET](http://json.net)
+- New support for parsing and formatting `Duration`, `OffsetDateTime`, and
+  `ZonedDateTime`, including new custom format patterns representing an
+  embedded offset (`o`), time zone identifier (`z`), (format-only) time zone
+  abbreviation (`x`), and various patterns for `Duration` (issues
+  [139][issue 139], [171][issue 171], and [216][issue 216])
+- New web site: [http://nodatime.org/](http://nodatime.org/)
 
 API changes:
 
-- ...
+- Added `DateTimeZoneProviders.Serialization`, which is a static _mutable_
+  property used to control the time zone provider used by XML and binary
+  serialization
+- New classes `DurationPattern`, `OffsetDateTimePattern`, and
+  `ZoneDateTimePattern` that represent patterns for parsing and formatting
+  `Duration`, `OffsetDateTime`, and `ZonedDateTime` respectively
+- Added `LocalDateTimePattern` properties `GeneralIsoPattern`,
+  `BclRoundtripPattern`, and `FullRoundtripPattern`, which provide
+  programmatic access to the `o`/`O`, `r`, and `s` patterns, respectively
+- Default formatting (i.e. `ToString()`) for `Duration`, `OffsetDateTime`,
+  and `ZonedDateTime` has changed
+- Local date patterns that include 'yyyy' (for example, the standard ones)
+  can now parse and format five-digit years in cases where the result would
+  not be ambiguous
+- Added `InstantPattern.WithMinMaxLabels()`, which allows replacement of the
+  text used to format the minimum and maximum instants (the defaults for
+  which have also changed)
+- Added `Era.AnnoMartyrum`, obsoleting the misnamed `AnnoMartyrm`
+- Added `Instant.WithOffset()`, which parallels the equivalent method in
+  `LocalDateTime`
+- Added `OffsetDateTime.WithCalendar()`, which returns an `OffsetDateTime`
+  representing the same point in time, but using a given calendar system
+- Added `Interval.Contains()`, which returns whether an `Interval` contains
+  the given `Instant`
+- Added `ZonedDateTime.Calendar`, which returns the calendar system used by
+  a `ZonedDateTime`
+- Added `ZonedDateTime.GetZoneInterval()`, a convenience method that returns
+  the `ZoneInterval` of the time zone used by a `ZonedDateTime`
+  ([issue 211][])
+- Added `ParseResult.Exception`, which provides direct access to the
+  exception that would be thrown by the `GetValueOrThrow()` method
+- `DateTimeZoneNotFoundException` and `InvalidNodaDataException` are now
+  sealed (as they should have been from the start)
+- `CalendarSystem` is now also `sealed` (though it was previously an
+  `abstract` class with an internal constructor, so this should have no
+  practical effect)
 
 Newly-obsolete members:
 
-- ...
-
-API changes for NodaTime.Testing:
-
-- ...
+- `Era.AnnoMartyrm`, which was a typo for the newly-introduced `AnnoMartyrum`
 
 Bug fixes:
 
-- ...
+- Built-in time zone providers are now initialised lazily ([issue 209][])
+- Fixed a bug where `Period.Between()` could return a mixture of positive
+  and negative values when called with end-of-month and near-leap-year
+  values (issues [223][issue 223] and [224][issue 224])
+- Fixed another bug where `Period.Between()` would incorrectly overflow when
+  creating a `Period` that exceeded `long.MaxValue` ticks ([issue 229][])
+- Fixed two serious bugs in the Islamic calendar system ([issue 225][])
+- Custom formats for `Instant` no longer trim whitespace from the result
+  ([issue 227][])
+- Removed support for the (undocumented) upper-case aliases for the
+  existing `Instant` patterns `n`, `g`, and `d` ([issue 228][])
 
 Other:
+
+- Completely changed the way documentation is generated; note in
+  particular that the developer guide is no longer shipped with releases (it
+  is available at
+  [http://nodatime.org/developer](http://nodatime.org/developer) instead
+- Visual Studio solution files have been split out into
+  `NodaTime-{All,Core,Documentation,Tools}.sln` ([issue 214][])
+- The `ZoneInfoCompiler` tool has been renamed to `NodaTime.TzdbCompiler`
 
 ## 1.1.1, released 2013-08-30 with tzdb 2013d
 
@@ -141,7 +198,7 @@ API changes for NodaTime.Testing:
   transitions, complementing the existing `SingleTransitionDateTimeZone`
 - Added the `SingleTransitionDateTimeZone.Transition` property that returns
   the transition point of the fake zone
-- Added an additional constructor to `SingleTransitionDateTimeZone` 
+- Added an additional constructor to `SingleTransitionDateTimeZone`
   that allows the time zone ID to be specified
 
 Bug fixes:
