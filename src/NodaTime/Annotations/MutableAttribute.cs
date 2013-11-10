@@ -6,7 +6,7 @@ using System;
 namespace NodaTime.Annotations
 {
     /// <summary>
-    /// Indicates that a type is immutable. Some members of this type
+    /// Indicates that a type is mutable. Some members of this type
     /// allow state to be visibly changed.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct)]
