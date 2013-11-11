@@ -34,8 +34,8 @@ offline, it's the offline API docs)
 [2]: http://groups.google.com/group/noda-time
 [home]: http://noda-time.googlecode.com
 [web]: http://nodatime.org
-[4]: http://nodatime.org/unstable/userguide/
-[5]: http://nodatime.org/unstable/api/Index.aspx
+[4]: http://nodatime.org/userguide
+[5]: http://nodatime.org/api
 [6]: ../api/Index.html
 [Developer guide]: http://nodatime.org/developer/
 [so]: http://stackoverflow.com
