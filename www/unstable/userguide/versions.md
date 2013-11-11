@@ -61,7 +61,7 @@ API changes:
   programmatic access to the `o`/`O`, `r`, and `s` patterns, respectively
 - Default formatting (i.e. `ToString()`) for `Duration`, `OffsetDateTime`,
   and `ZonedDateTime` has changed
-- Local date patterns that include 'yyyy' (for example, the standard ones)
+- Local date patterns that include `yyyy` (for example, the standard ones)
   can now parse and format five-digit years in cases where the result would
   not be ambiguous
 - Added `InstantPattern.WithMinMaxLabels()`, which allows replacement of the
@@ -80,7 +80,7 @@ API changes:
   the `ZoneInterval` of the time zone used by a `ZonedDateTime`
   ([issue 211][])
 - Added `ParseResult.Exception`, which provides direct access to the
-  exception that would be thrown by the `GetValueOrThrow()` method
+  exception that would be thrown by `GetValueOrThrow()`
 - `DateTimeZoneNotFoundException` and `InvalidNodaDataException` are now
   sealed (as they should have been from the start)
 - `CalendarSystem` is now also `sealed` (though it was previously an
@@ -108,8 +108,8 @@ Bug fixes:
 Other:
 
 - Completely changed the way documentation is generated; note in
-  particular that the developer guide is no longer shipped with releases (it
-  is available at
+  particular that the developer guide is no longer shipped with releases,
+  but is available at
   [http://nodatime.org/developer](http://nodatime.org/developer) instead
 - Visual Studio solution files have been split out into
   `NodaTime-{All,Core,Documentation,Tools}.sln` ([issue 214][])
