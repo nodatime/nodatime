@@ -41,6 +41,9 @@ namespace NodaTime.Serialization.JsonNet
             settings.Converters.Add(NodaConverters.OffsetDateTimeConverter);
             settings.Converters.Add(NodaConverters.CreateZonedDateTimeConverter(provider));
 
+            // Disable automatic conversion of anything that looks like a date and time to BCL types.
+            settings.DateParseHandling = DateParseHandling.None;
+
             // return to allow fluent chaining if desired
             return settings;
         }
@@ -73,6 +76,9 @@ namespace NodaTime.Serialization.JsonNet
             serializer.Converters.Add(NodaConverters.RoundtripPeriodConverter);
             serializer.Converters.Add(NodaConverters.OffsetDateTimeConverter);
             serializer.Converters.Add(NodaConverters.CreateZonedDateTimeConverter(provider));
+
+            // Disable automatic conversion of anything that looks like a date and time to BCL types.
+            serializer.DateParseHandling = DateParseHandling.None;
 
             // return to allow fluent chaining if desired
             return serializer;
