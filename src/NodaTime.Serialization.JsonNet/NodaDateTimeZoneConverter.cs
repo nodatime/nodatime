@@ -6,6 +6,7 @@ using System;
 using System.IO;
 using Newtonsoft.Json;
 using NodaTime.TimeZones;
+using NodaTime.Utility;
 
 namespace NodaTime.Serialization.JsonNet
 {
@@ -33,7 +34,7 @@ namespace NodaTime.Serialization.JsonNet
         {
             if (reader.TokenType != JsonToken.String)
             {
-                throw new InvalidDataException(
+                throw new InvalidNodaDataException(
                     string.Format("Unexpected token parsing instant. Expected String, got {0}.",
                     reader.TokenType));
             }

@@ -5,6 +5,7 @@
 using System;
 using System.IO;
 using Newtonsoft.Json;
+using NodaTime.Utility;
 
 namespace NodaTime.Serialization.JsonNet
 {
@@ -35,7 +36,7 @@ namespace NodaTime.Serialization.JsonNet
         /// <param name="objectType">The type to convert the JSON to.</param>
         /// <param name="existingValue">An existing value; ignored by this converter.</param>
         /// <param name="serializer">A serializer to use for any embedded deserialization.</param>
-        /// <exception cref="InvalidDataException">The JSON was invalid for this converter.</exception>
+        /// <exception cref="InvalidNodaDataException">The JSON was invalid for this converter.</exception>
         /// <returns>The deserialized value.</returns>
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
@@ -43,7 +44,7 @@ namespace NodaTime.Serialization.JsonNet
             {
                 if (objectType != NullableT)
                 {
-                    throw new InvalidDataException(string.Format("Cannot convert null value to {0}.", objectType));
+                    throw new InvalidNodaDataException(string.Format("Cannot convert null value to {0}.", objectType));
                 }
                 return null;
             }
@@ -56,7 +57,7 @@ namespace NodaTime.Serialization.JsonNet
                 {
                     if (objectType != NullableT)
                     {
-                        throw new InvalidDataException(string.Format("Cannot convert null value to {0}.", objectType));
+                        throw new InvalidNodaDataException(string.Format("Cannot convert null value to {0}.", objectType));
                     }
                     return null;
                 }
