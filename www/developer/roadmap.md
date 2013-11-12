@@ -7,7 +7,7 @@ The following is an _approximate_ roadmap for the major features that
 we hope to support in Noda Time.  Some of this roadmap is inspired by
 Noda Time's [current limitations][].
 
-[current limitations]: /{{ site.userguide }}limitations.html
+[current limitations]: http://nodatime.org/userguide/limitations.html
 
 If there's something not mentioned here that you feel should be on this
 roadmap, then *please* either raise an issue or post on the
