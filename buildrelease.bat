@@ -39,9 +39,12 @@ copy readme.txt %STAGING%
 mkdir %STAGING%\Portable
 copy docs\PublicApi\NodaTime.xml %STAGING%
 copy docs\PublicApi\NodaTime.Testing.xml %STAGING%
+copy docs\PublicApi\NodaTime.Serialization.JsonNet.xml %STAGING%
 copy "src\NodaTime\bin\Signed Release\NodaTime.dll" %STAGING%
+copy "src\NodaTime.Serialization.JsonNet\bin\Signed Release\NodaTime.Serialization.JsonNet.dll" %STAGING%
 copy "src\NodaTime.Testing\bin\Signed Release\NodaTime.Testing.dll" %STAGING%
 copy "src\NodaTime\bin\Signed Release Portable\NodaTime.dll" %STAGING%\Portable
+copy "src\NodaTime.Serialization.JsonNet\bin\Signed Release Portable\NodaTime.Serialization.JsonNet.dll" %STAGING%\Portable
 copy "src\NodaTime.Testing\bin\Signed Release Portable\NodaTime.Testing.dll" %STAGING%\Portable
   
 zip -r -9 %STAGING%.zip %STAGING%
