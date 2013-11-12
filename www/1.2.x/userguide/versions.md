@@ -9,6 +9,14 @@ User-visible changes from 1.0.0-beta1 onwards. See the
 [project repository](http://code.google.com/p/noda-time/source/list) for more
 details.
 
+## 1.2.0-rc2, released 2013-11-12 with tzdb 2013h
+
+Major features:
+
+- First attempt at a NodaTime.Serialization.JsonNet assembly NuGet release
+- Update Json.NET to v4.5.11
+- NodaTime.Serialization.JsonNet is now built in desktop and portable versions
+
 ## 1.2.0-rc1, released 2013-11-01 with tzdb 2013h
 
 Major features:
