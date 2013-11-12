@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>NodaTime.Serialization.JsonNet</id>
+    <version>1.3.0-dev</version>
+    <authors>Jon Skeet</authors>
+    <owners>Jon Skeet</owners>
+    <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
+    <projectUrl>http://noda-time.googlecode.com</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <!-- Note: line breaks in the description element are preserved, hence
+         the long lines here. -->
+    <description>
+      Provides serialization support between Noda Time and Json.NET.
+    </description>
+    <tags>nodatime testing</tags>
+    <dependencies>
+      <dependency id="NodaTime" version="1.3.0-dev" />
+      <dependency id="newtonsoft.json" version="4.5.11" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="bin\Signed Release\NodaTime.Serialization.JsonNet.dll" target="lib\net35-Client" />
+    <file src="bin\Signed Release\NodaTime.Serialization.JsonNet.pdb" target="lib\net35-Client" />
+    <file src="bin\Signed Release\NodaTime.Serialization.JsonNet.xml" target="lib\net35-Client" />
+    <file src="bin\Signed Release Portable\NodaTime.Serialization.JsonNet.dll" target="lib\portable-win+net40+sl4+wp7" />
+    <file src="bin\Signed Release Portable\NodaTime.Serialization.JsonNet.pdb" target="lib\portable-win+net40+sl4+wp7" />
+    <file src="bin\Signed Release Portable\NodaTime.Serialization.JsonNet.xml" target="lib\portable-win+net40+sl4+wp7" />
+    <file src="**\*.cs" target="src" />
+  </files>
+</package>
+    
