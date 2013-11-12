@@ -1,0 +1,2 @@
+This directory contains binaries for Json.NET 4.5.11, in the "portable" and "Net35" flavours.
+The Noda Time "full" release targets the Net35 flavour; the PCL release targets the portable flavour.

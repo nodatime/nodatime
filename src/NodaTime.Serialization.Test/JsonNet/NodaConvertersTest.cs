@@ -3,6 +3,7 @@
 // as found in the LICENSE.txt file.
 
 using System;
+using System.Collections.Generic;
 using NUnit.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
@@ -179,10 +180,16 @@ namespace NodaTime.Serialization.Test.JsonNet
 
         private static void AssertConversions<T>(T value, string expectedJson, JsonConverter converter)
         {
-            var actualJson = JsonConvert.SerializeObject(value, Formatting.None, converter);
+            var settings = new JsonSerializerSettings
+            {
+                Converters = { converter },
+                DateParseHandling = DateParseHandling.None
+            };
+
+            var actualJson = JsonConvert.SerializeObject(value, Formatting.None, settings);
             Assert.AreEqual(expectedJson, actualJson);
 
-            var deserializedValue = JsonConvert.DeserializeObject<T>(expectedJson, converter);
+            var deserializedValue = JsonConvert.DeserializeObject<T>(expectedJson, settings);
             Assert.AreEqual(value, deserializedValue);
         }
     }
