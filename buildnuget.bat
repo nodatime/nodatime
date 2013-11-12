@@ -18,6 +18,7 @@ IF ERRORLEVEL 1 EXIT /B 1
 
 copy /y docs\PublicApi\NodaTime.xml src\NodaTime\bin\Release
 copy /y docs\PublicApi\NodaTime.Testing.xml src\NodaTime.Testing\bin\Release
+copy /y docs\PublicApi\NodaTime.Serialization.JsonNet.xml src\NodaTime.Testing\bin\Release
 
 rmdir /s /q nuget
 mkdir nuget
@@ -27,6 +28,10 @@ IF ERRORLEVEL 1 EXIT /B 1
 
 nuget pack ..\src\NodaTime.Testing\NodaTime.Testing.nuspec -Symbols
 IF ERRORLEVEL 1 EXIT /B 1
+
+nuget pack ..\src\NodaTime.Serialization.JsonNet\NodaTime.Serialization.JsonNet.nuspec -Symbols
+IF ERRORLEVEL 1 EXIT /B 1
+
 popd
 
 :end

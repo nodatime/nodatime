@@ -29,8 +29,10 @@ namespace NodaTime.Tools.SetVersion
             ProjectVersion version = new ProjectVersion(args[0]);
             FixNuSpec(version, "src/NodaTime/NodaTime.nuspec");
             FixNuSpec(version, "src/NodaTime.Testing/NodaTime.Testing.nuspec");
+            FixNuSpec(version, "src/NodaTime.Serialization.JsonNet/NodaTime.Serialization.JsonNet.nuspec");
             FixAssemblyInfo(version, "src/NodaTime/Properties/AssemblyInfo.cs");
             FixAssemblyInfo(version, "src/NodaTime.Testing/Properties/AssemblyInfo.cs");
+            FixAssemblyInfo(version, "src/NodaTime.Serialization.JsonNet/Properties/AssemblyInfo.cs");
             return 0;
         }
 
