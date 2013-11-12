@@ -60,6 +60,8 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <AssemblyOriginatorKeyFile>..\..\NodaTime Release.snk</AssemblyOriginatorKeyFile>
+    <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug Portable|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
@@ -86,7 +88,7 @@
     <OutputPath>bin\Signed Release Portable\</OutputPath>
     <DefineConstants>TRACE;SIGNED;PCL</DefineConstants>
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
-    <DocumentationFile>bin\Signed Release Portable\NodaTime.xml</DocumentationFile>
+    <DocumentationFile>bin\Signed Release Portable\NodaTime.Serialization.JsonNet.xml</DocumentationFile>
     <Optimize>true</Optimize>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <DebugType>pdbonly</DebugType>
