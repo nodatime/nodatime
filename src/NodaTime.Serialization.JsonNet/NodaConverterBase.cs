@@ -19,14 +19,15 @@ namespace NodaTime.Serialization.JsonNet
         private static readonly Type NullableT = typeof(T).IsValueType ? typeof(Nullable<>).MakeGenericType(typeof(T)) : typeof(T);
 
         /// <summary>
-        /// Returns whether or not this converter supports the given type.
+        /// Returns whether or not this converter supports the given type. Type matching is done exactly:
+        /// subclasses aren't deemed to be convertible. (The nullable form of a value type is considered
+        /// convertible, however.)
         /// </summary>
         /// <param name="objectType">The type to check for compatibility.</param>
-        /// <returns>True if the given type is supported by this converter (including the nullable form for
-        /// value types); false otherwise.</returns>
+        /// <returns>True if the given type is supported by this converter.</returns>
         public override bool CanConvert(Type objectType)
         {
-            return typeof(T).IsAssignableFrom(objectType) || objectType == NullableT;
+            return objectType == typeof(T) || objectType == NullableT;
         }
 
         /// <summary>
