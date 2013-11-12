@@ -14,7 +14,7 @@ Resources
 - [Project web site][web]
 - [Current API documentation][api]
 
-[User Guide]: /{{ site.userguide }}
+[User Guide]: http://nodatime.org/userguide
 [home]: http://noda-time.googlecode.com
 [web]: http://nodatime.org
-[api]: /unstable/api/Index.html
+[api]: http://nodatime.org/unstable/api/
