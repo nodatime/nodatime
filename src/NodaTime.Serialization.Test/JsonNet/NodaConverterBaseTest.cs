@@ -4,6 +4,7 @@
 
 using System;
 using System.IO;
+using NodaTime.Utility;
 using NUnit.Framework;
 using Newtonsoft.Json;
 using NodaTime.Serialization.JsonNet;
@@ -60,8 +61,8 @@ namespace NodaTime.Serialization.Test.JsonNet
         {
             var converter = new TestConverter();
 
-            Assert.Throws<InvalidDataException>(() => JsonConvert.DeserializeObject<int>("null", converter));
-            Assert.Throws<InvalidDataException>(() => JsonConvert.DeserializeObject<int>("\"\"", converter));
+            Assert.Throws<InvalidNodaDataException>(() => JsonConvert.DeserializeObject<int>("null", converter));
+            Assert.Throws<InvalidNodaDataException>(() => JsonConvert.DeserializeObject<int>("\"\"", converter));
         }
 
         [Test]

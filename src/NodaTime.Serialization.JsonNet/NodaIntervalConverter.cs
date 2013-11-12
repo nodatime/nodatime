@@ -4,6 +4,7 @@
 
 using System.IO;
 using Newtonsoft.Json;
+using NodaTime.Utility;
 
 namespace NodaTime.Serialization.JsonNet
 {
@@ -55,7 +56,7 @@ namespace NodaTime.Serialization.JsonNet
 
             if (!(gotStartInstant && gotEndInstant))
             {
-                throw new InvalidDataException("An Interval must contain Start and End properties.");
+                throw new InvalidNodaDataException("An Interval must contain Start and End properties.");
             }
 
             return new Interval(startInstant, endInstant);
