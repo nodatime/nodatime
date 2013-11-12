@@ -71,14 +71,16 @@ Switch to the correct branch (e.g. `1.0.x`).
 Update the version number by building the tools solution and then running the `SetVersion` tool:
 
     msbuild src\NodaTime-Tools.sln
-	src\NodaTime.Tools.SetVersion\bin\debug\SetVersion 1.2.3-beta4
+    src\NodaTime.Tools.SetVersion\bin\debug\SetVersion 1.2.3-beta4
 
 > This will update the following AssemblyInfo files and NuGet package specs to include the
 version number you are building:
 
 > - `src/NodaTime/Properties/AssemblyInfo.cs`
+> - `src/NodaTime.Serialization.JsonNet/Properties/AssemblyInfo.cs`
 > - `src/NodaTime.Testing/Properties/AssemblyInfo.cs`
 > - `src/NodaTime/NodaTime.nuspec`
+> - `src/NodaTime.Serialization.JsonNet/NodaTime.Serialization.JsonNet.nuspec`
 > - `src/NodaTime.Testing/NodaTime.Testing.nuspec`
 
 > The various versions will be set according to the following scheme. Suppose
@@ -138,10 +140,11 @@ binary zipfile.
 Update the version number and the links on the front page to point to the new
 downloads.
 
-Upload the two NuGet packages to nuget.org:
+Upload the three NuGet packages to nuget.org:
 
     nuget push NodaTime.1.0.0-beta1.nupkg
     nuget push NodaTime.Testing.1.0.0-beta1.nupkg
+    nuget push NodaTime.Serialization.JsonNet.1.0.0-beta1.nupkg
 
 ## Announcing the release
 
@@ -151,11 +154,13 @@ Post to the mailing list, blog, etc.
 
 If this release required the creation of a new branch, then the following files
 on the *default* branch should be updated to bump (at least) the minor version
-number (and `NodaTime.Testing` dependency version), per the scheme above:
+number (and `NodaTime.Testing` / `NodaTime.Serialization.JsonNet` dependency version), per the scheme above:
 
 - `src/NodaTime/Properties/AssemblyInfo.cs`
+- `src/NodaTime.Serialization.JsonNet/Properties/AssemblyInfo.cs`
 - `src/NodaTime.Testing/Properties/AssemblyInfo.cs`
 - `src/NodaTime/NodaTime.nuspec`
+- `src/NodaTime.Serialization.JsonNet/NodaTime.Serialization.JsonNet.nuspec`
 - `src/NodaTime.Testing/NodaTime.Testing.nuspec`
 
 The version number string should be of the form `1.1.0-dev`.
