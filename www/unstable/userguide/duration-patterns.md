@@ -37,7 +37,12 @@ Bad (but legal) patterns would be:
 
 It's possible that a future release will be detect "bad" patterns and reject them more aggressively.
 
-Every total letter can be repeated up to 10 times, indicating the level of zero-padding applied. Total letter values are parsed for up to 10 digits. 
+Every total letter can be repeated up to 10 times, indicating the level of zero-padding applied.
+Total letter values are parsed for up to 10 digits.
+Partial letters for hours, minutes and seconds can be repeated once or twice
+(so 'h' and 'hh' are valid, but 'hhh' is not); again, this is for zero-padding, so a value of 3 hours
+and 2 minutes formatted with 'H:m' would simply be "3:2", whereas formatted with 'H:mm' it would be "3:02".
+We recommend using the repeated form in most cases.
 
 <table>
   <thead>

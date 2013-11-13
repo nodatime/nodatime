@@ -47,6 +47,9 @@ module Jekyll
     class APILink < Redcarpet::Render::HTML
       @@NamespacePattern = /noda-ns:\/\/([A-Za-z0-9_.]*)/
       @@TypePattern      = /noda-type:\/\/([A-Za-z0-9_.]*)/
+      @@MethodPattern      = /noda-method:\/\/([A-Za-z0-9_.]*)/
+      @@FieldPattern      = /noda-field:\/\/([A-Za-z0-9_.]*)/
+      @@PropertyPattern      = /noda-property:\/\/([A-Za-z0-9_.]*)/
       @@IssueUrlPattern  = /(\[[^\]]*\])\[issue (\d+)\]/
       @@IssueLinkPattern = /\[issue (\d+)\]\[\]/
       @@ApiUrlPrefix     = "../api/html/"
@@ -54,6 +57,9 @@ module Jekyll
       def preprocess(text)
         text.gsub!(@@NamespacePattern) { |match| translateurl(match, 'N') }
         text.gsub!(@@TypePattern) { |match| translateurl(match, 'T') }
+        text.gsub!(@@MethodPattern) { |match| translateurl(match, 'M') }
+        text.gsub!(@@FieldPattern) { |match| translateurl(match, 'F') }
+        text.gsub!(@@PropertyPattern) { |match| translateurl(match, 'P') }
         text.gsub!(@@IssueUrlPattern, '\1(http://code.google.com/p/noda-time/issues/detail?id=\2)')
         text.gsub!(@@IssueLinkPattern, '[issue \1](http://code.google.com/p/noda-time/issues/detail?id=\1)')
         text
@@ -62,7 +68,7 @@ module Jekyll
       def translateurl(match, prefix)
         match.gsub! /([A-Za-z0-9_.-]*):\/\//, ''
         match.gsub! /\./, '_'
-        "#{@@ApiUrlPrefix}#{prefix}_#{match.gsub(/\./,'_')}.htm"
+        "#{@@ApiUrlPrefix}#{prefix}_#{match}.htm"
       end
 
       def postprocess(text)
