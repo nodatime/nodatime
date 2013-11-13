@@ -176,13 +176,23 @@ Json.NET: NodaTime.Serialization.JsonNet
 ----------------------------------------
 
 [Json.NET](http://json.net) is supported within the `NodaTime.Serialization.JsonNet` assembly and the namespace
-of the same name.
+of the same name. This assembly is built against Json.NET 4.5.11, and is available in both portable and desktop flavours. It can be installed using Nuget, again with a package name of `NodaTime.Serialization.JsonNet`.
 
 An extension method of `ConfigureForNodaTime` is provided on both `JsonSerializer` and
 `JsonSerializerSettings`. Alternatively, the [`NodaConverters`](noda-type://NodaTime.Serialization.JsonNet.NodaConverters) type provides public static read-only fields
 for individual converters. (All converters are immutable.)
 
 Custom converters can be created easily from patterns using [`NodaPatternConverter`](noda-type://NodaTime.Serialization.JsonNet.NodaPatternConverter_1).
+
+### Disabling automatic date parsing ###
+
+Between releases 4.0 and 4.5.11, Json.NET introduced automatic date parsing: by default, if the parser detects a value which looks like a date, it will automatically convert it to a `DateTime` or (optionally) to a `DateTimeOffset`. In order to give Noda Time control over the serialization, this must be disabled in `JsonSerializerSettings` or `JsonSerializer`, like this:
+
+    settings.DateParseHandling = DateParseHandling.None;
+
+(The same code is valid for both `JsonSerializer` and `JsonSerializerSettings`.)
+
+The `ConfigureForNodaTime` extension methods described above both disable automatic date parsing automatically.
 
 ### Supported types and default representations
 
