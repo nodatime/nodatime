@@ -23,7 +23,7 @@ The following standard patterns are supported:
 Custom Patterns
 ---------------
 
-The following custom offset pattern characters are supported for local dates. See [custom pattern notes](text.html#custom-patterns)
+The following custom format pattern characters are supported for local dates. See [custom pattern notes](text.html#custom-patterns)
 for general notes on custom patterns, including characters used for escaping and text literals.
 
 For the meanings of "absolute" years and text handling, see later details.
@@ -137,7 +137,7 @@ For the meanings of "absolute" years and text handling, see later details.
       <td>
 	    (In an English locale.) <br />
 	    June: <code>MMM</code> => <code>Jun</code> (can parse from "jun" or "JUN" etc.)<br />
-	    December: <code>MM</code> => <code>Dec</code> (can parse from "dec" or "DEC" etc.)<br />
+	    December: <code>MMM</code> => <code>Dec</code> (can parse from "dec" or "DEC" etc.)<br />
       </td>
     </tr>
     <tr>
@@ -147,8 +147,8 @@ For the meanings of "absolute" years and text handling, see later details.
       </td>
       <td>
 	    (In an English locale.) <br />
-	    June: <code>MMM</code> => <code>Jun</code> (can parse from "june" or "JUNE" etc.)<br />
-	    December: <code>MM</code> => <code>Dec</code> (can parse from "december" or "DECEMBER" etc.)<br />
+	    June: <code>MMMM</code> => <code>June</code> (can parse from "june" or "JUNE" etc.)<br />
+	    December: <code>MMMM</code> => <code>December</code> (can parse from "december" or "DECEMBER" etc.)<br />
       </td>
     </tr>
 	<tr>

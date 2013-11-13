@@ -76,7 +76,7 @@ specifiers being available for some types but not others.
 - [ZonedDateTime patterns](zoneddatetime-patterns.html)
 - [Period patterns](period-patterns.html)
 
-<a name="custom-patterns">Custom patterns</a>
+<a name="custom-patterns"></a>Custom patterns
 ---------------
 
 All custom patterns support the following characters:
@@ -101,7 +101,7 @@ All custom patterns support the following characters:
         Open and close a text literal, which can include
         double quotes.
       </td>
-      <td><code>HH'H'mm'm'</code> => <code>07H30M</code></td>
+      <td><code>HH'H'mm'M'</code> => <code>07H30M</code></td>
     </tr>
     <tr>
       <td><code>"</code></td>
@@ -145,7 +145,7 @@ In other cases, there can be multiple fields specifying the same information - s
 Template values
 ---------------
 
-Many patterns allow a *template value* to be specified - for date/time values this is typically midnight on January 1st 2000. This value is used to provide and fields which aren't specified elsewhere. For example, if you create a `LocalDateTimePattern` with a custom pattern of "dd HH:mm:ss" then that doesn't specify the year or month - those will be picked from the template value. Template values can be specified for both standard and custom patterns, although standard patterns will rarely use them.
+Many patterns allow a *template value* to be specified - for date/time values this is typically midnight on January 1st 2000. This value is used to provide values for fields which aren't specified elsewhere. For example, if you create a `LocalDateTimePattern` with a custom pattern of "dd HH:mm:ss" then that doesn't specify the year or month - those will be picked from the template value. Template values can be specified for both standard and custom patterns, although standard patterns will rarely use them.
 
 The century in the template value is also used when a pattern specifies a two-digit year ("yy"), although such patterns are generally discouraged anyway.
 

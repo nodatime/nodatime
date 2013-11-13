@@ -26,7 +26,7 @@ The following standard patterns are supported:
 Custom Patterns
 ---------------
 
-The following custom offset pattern characters are supported for local times. See [custom pattern notes](text.html#custom-patterns)
+The following custom format pattern characters are supported for local times. See [custom pattern notes](text.html#custom-patterns)
 for general notes on custom patterns, including characters used for escaping and text literals.
 
 <table>
@@ -87,7 +87,7 @@ for general notes on custom patterns, including characters used for escaping and
     <tr>
       <td><code>f</code>, <code>ff</code> ... up to <code>fffffff</code></td>
       <td>
-        The fractional second part of the offset, using exactly the specified number of characters
+        The fractional second part of the time, using exactly the specified number of characters
 		(up to 7, for a representation accurate to a tick).
       </td>
       <td>
