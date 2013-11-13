@@ -26,45 +26,42 @@ However, the following mappings are reasonable:
     <tr>
       <td>Noda Time type</td>
       <td>DateTime kind</td>
-      <td>Noda Time to BCL conversion</td>
-      <td>BCL to Noda Time conversion</td>
-	  <td>Notes</td>
+      <td>Conversions</td>
+  	  <td>Notes</td>
     </tr>
   </thead>
   <tbody>
     <tr>
 	  <td>Instant</td>
 	  <td>Utc</td>
-	  <td>Instant.ToDateTimeUtc</td>
-	  <td>Instant.FromDateTimeUtc</td>
+	  <td>Instant.ToDateTimeUtc<br />
+	    Instant.FromDateTimeUtc</td>
 	  <td></td>
     </tr>
     <tr>
 	  <td>ZonedDateTime</td>
 	  <td>Universal</td>
 	  <td>ZonedDateTime.ToDateTimeUtc</td>
-	  <td>n/a</td>
 	  <td>This preserves the instant, but loses the time zone information</td>
     </tr>
     <tr>
 	  <td>ZonedDateTime</td>
 	  <td>Unspecified</td>
 	  <td>ZonedDateTime.ToDateTimeUnspecified</td>
-	  <td>n/a</td>
 	  <td>This preserves the local time, but loses the time zone information</td>
     </tr>
     <tr>
 	  <td>LocalDateTime</td>
 	  <td>Unspecified</td>
-	  <td>LocalDateTime.ToDateTimeUnspecified</td>
-	  <td>LocalDateTime.FromDateTime</td>
+	  <td>LocalDateTime.ToDateTimeUnspecified<br />
+	      LocalDateTime.FromDateTime</td>
 	  <td>FromDateTime uses the "local" value of the DateTime regardless of kind</td>
     </tr>
     <tr>
       <td>OffsetDateTime</td>
       <td>Unspecified</td>
-      <td>OffsetDateTime.ToDateTimeOffset</td>
-      <td>OffsetDateTime.FromDateTimeOffset</td>
+      <td>OffsetDateTime.ToDateTimeOffset<br />
+      OffsetDateTime.FromDateTimeOffset</td>
       <td>FromDateTimeOffset uses the "local" value of the DateTime regardless of kind</td>
     </tr>
   </tbody>
