@@ -2,7 +2,7 @@
 layout: userguide
 title: Patterns for OffsetDateTime values
 category: text
-weight: 90
+weight: 2080
 ---
 
 The [`OffsetDateTime`](noda-type://NodaTime.OffsetDateTime) type supports the following patterns:
