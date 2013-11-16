@@ -67,7 +67,8 @@ var before = london.AtStrictly(localDate);
 		<div class="large-4 columns">
 			<h3><i class="foundicon-page"></i> Documentation</h3>
 			<p>It is recommended that you read at least the first few pages of the <a href="http://nodatime.org/userguide">User Guide</a> before starting to develop using Noda Time.</p>
-                        <p>You can also check out the <a href="http://nodatime.org/api">API reference</a>.</p>
+            <p>You can also check out the <a href="http://nodatime.org/api">API reference</a>.</p>
+            <p>Noda Time is licensed under the <a href="http://www.apache.org/licenses/LICENSE-2.0.html">Apache 2.0 license</a>.</p>
 		</div>
 		<div class="large-4 columns">
 			<h3><i class="foundicon-add-doc"></i> Contributing</h3>
@@ -76,23 +77,26 @@ var before = london.AtStrictly(localDate);
 			<p><a href="http://teamcity.codebetter.com/project.html?projectId=project54">Our continuous build</a> is hosted by <a href="http://jetbrains.com/">JetBrains</a> on <a href="http://codebetter.com/">CodeBetter</a></p>
 		</div>
 	</div>
-	<div class="row install" id="install">
-		<div class="large-6 columns">
-			<h4>Main library</h4>
-			<div style="font-size: 0.8em;"><pre class="nuget-button">Install-Package NodaTime</pre></div>
-		</div>
-		<div class="large-6 columns">
-			<h4>Useful when testing code</h4>
-			<div style="font-size: 0.8em;"><pre class="nuget-button">Install-Package NodaTime.Testing</pre></div>
-		</div>
-	</div>
 	<div class="row">
+		<div class="large-12 columns">
+			<h1>Installation</h1>
+	  	</div>
+	</div>
+	<div class="row" id="install">
 		<div class="large-6 columns">
+            <h3><i class="foundicon-star"></i> NuGet</h3>
+			<h6>Main library</h6>
+			<div style="font-size: 0.8em;"><pre class="nuget-button">Install-Package NodaTime</pre></div>
+			<h6>Useful when testing code</h6>
+			<div style="font-size: 0.8em;"><pre class="nuget-button">Install-Package NodaTime.Testing</pre></div>
+			<h6>Json.NET serialization</h6>
+			<div style="font-size: 0.8em;"><pre class="nuget-button">Install-Package NodaTime.Serialization.JsonNet</pre></div>
 		</div>
 		<div class="large-6 columns">
-			<h6>Alternatively, source and binary archives are available for download</h6>
+            <h3><i class="foundicon-folder"></i> Manual downloads</h3>
+			<h6>Source and binary archives are available for download</h6>
 			<ul>
-				<li><a href="https://noda-time.googlecode.com/files/NodaTime-1.2.0.zip">NodaTime-1.2.0zip</a></li>
+				<li><a href="https://noda-time.googlecode.com/files/NodaTime-1.2.0.zip">NodaTime-1.2.0.zip</a></li>
 				<li><a href="https://noda-time.googlecode.com/files/NodaTime-1.2.0-src.zip">NodaTime-1.2.0-src.zip</a></li>
 			</ul>
 		</div>
