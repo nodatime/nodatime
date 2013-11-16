@@ -2,7 +2,7 @@
 layout: userguide
 title: Core concepts
 category: core
-weight: 30
+weight: 1010
 ---
 
 This is a companion page to the

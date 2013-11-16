@@ -2,7 +2,7 @@
 layout: userguide
 title: Why does Noda Time exist?
 category: intro
-weight: 10
+weight: 20
 ---
 
 Noda Time exists for .NET for the same reason that [Joda Time][1]

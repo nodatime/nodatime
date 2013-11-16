@@ -2,7 +2,7 @@
 layout: userguide
 title: Core types quick reference
 category: core
-weight: 50
+weight: 1030
 ---
 
 This is a companion page to the
