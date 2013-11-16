@@ -169,14 +169,16 @@ The serialized form is not documented here as it is not expected to be consumed 
 Third-party serialization
 -------------------------
 
-Currently third-party serialization is experimental. We will have one serialization assembly for each type of
+Currently [Json.NET](http://json.net) is the only supported third party serialization framework.
+If others are introduced, we will have one serialization assembly (and NuGet package) for each type of
 serialization we support which requires separate dependencies.
 
 Json.NET: NodaTime.Serialization.JsonNet
 ----------------------------------------
 
 [Json.NET](http://json.net) is supported within the `NodaTime.Serialization.JsonNet` assembly and the namespace
-of the same name. This assembly is built against Json.NET 4.5.11, and is available in both portable and desktop flavours. It can be installed using Nuget, again with a package name of `NodaTime.Serialization.JsonNet`.
+of the same name. This assembly is built against Json.NET 4.5.11, and is available in both portable and desktop flavours. It can be installed using Nuget, again with a package name of `NodaTime.Serialization.JsonNet`. See the
+[installation guide](installation.html) for more details.
 
 An extension method of `ConfigureForNodaTime` is provided on both `JsonSerializer` and
 `JsonSerializerSettings`. Alternatively, the [`NodaConverters`](noda-type://NodaTime.Serialization.JsonNet.NodaConverters) type provides public static read-only fields
