@@ -9,15 +9,7 @@ User-visible changes from 1.0.0-beta1 onwards. See the
 [project repository](http://code.google.com/p/noda-time/source/list) for more
 details.
 
-## 1.2.0-rc2, released 2013-11-12 with tzdb 2013h
-
-Major features:
-
-- First attempt at a NodaTime.Serialization.JsonNet assembly NuGet release
-- Update Json.NET to v4.5.11
-- NodaTime.Serialization.JsonNet is now built in desktop and portable versions
-
-## 1.2.0-rc1, released 2013-11-01 with tzdb 2013h
+## 1.2.0, released 2013-11-16 with tzdb 2013h
 
 Major features:
 
@@ -98,6 +90,20 @@ Other:
 - Visual Studio solution files have been split out into
   `NodaTime-{All,Core,Documentation,Tools}.sln` ([issue 214][])
 - The `ZoneInfoCompiler` tool has been renamed to `NodaTime.TzdbCompiler`
+
+## 1.2.0-rc2, released 2013-11-12 with tzdb 2013h
+
+First release of the NodaTime.Serialization.JsonNet assembly.
+
+Essentially identical to 1.2.0.  The only differences between 1.2.0-rc2 and
+1.2.0 were documentation and release process improvements.
+
+## 1.2.0-rc1, released 2013-11-01 with tzdb 2013h
+
+Essentially identical to 1.2.0.  The only differences between 1.2.0-rc1 and
+1.2.0-rc2 were within the NodaTime.Serialization.JsonNet assembly (not included
+in 1.2.0-rc1, and so not documented here), and to some benchmarks and
+documentation.
 
 ## 1.1.1, released 2013-08-30 with tzdb 2013d
 
