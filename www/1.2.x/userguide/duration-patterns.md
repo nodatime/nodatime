@@ -2,7 +2,7 @@
 layout: userguide
 title: Patterns for Duration values
 category: text
-weight: 80
+weight: 2020
 ---
 
 The [`Duration`](noda-type://NodaTime.Duration) type supports the following patterns:

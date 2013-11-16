@@ -1,6 +1,9 @@
 ---
 layout: userguide
+category: intro
+weight: 10
 title: Noda Time User Guide
+linktitle: Overview
 ---
 
 This guide provides documentation to complement the API reference.

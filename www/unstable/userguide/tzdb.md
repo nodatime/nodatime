@@ -2,7 +2,7 @@
 layout: userguide
 title: Updating the time zone database
 category: library
-weight: 130
+weight: 4020
 ---
 
 Noda Time comes with a version of the

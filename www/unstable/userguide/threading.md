@@ -2,7 +2,7 @@
 layout: userguide
 title: Threading
 category: advanced
-weight: 120
+weight: 3040
 ---
 
 Each type in the public API has its thread safety documented briefly, but that documentation usually

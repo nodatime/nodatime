@@ -2,7 +2,7 @@
 layout: userguide
 title: Choosing (and converting) between types
 category: core
-weight: 40
+weight: 1020
 ---
 
 This is a companion page to the

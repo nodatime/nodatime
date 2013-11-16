@@ -1,7 +1,7 @@
 ---
 layout: userguide
 category: intro
-weight: 1
+weight: 10
 title: Noda Time User Guide
 linktitle: Overview
 ---
