@@ -2,7 +2,7 @@
 layout: userguide
 title: Current roadmap
 category: library
-weight: 160
+weight: 4050
 ---
 
 Our online Developer Guide contains [an _approximate_ roadmap][roadmap] for the

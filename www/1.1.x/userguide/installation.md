@@ -2,7 +2,7 @@
 layout: userguide
 title: Installation
 category: intro
-weight: 20
+weight: 30
 ---
 
 Our primary distribution channel is [NuGet](http://nuget.org) with
