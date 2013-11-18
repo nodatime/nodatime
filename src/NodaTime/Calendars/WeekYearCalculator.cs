@@ -70,7 +70,7 @@ namespace NodaTime.Calendars
         private int GetWeeksInWeekYear(int weekYear)
         {
             long startOfWeekYear = GetWeekYearTicks(weekYear);
-            long startOfCalendarYear = yearMonthDayCalculator.GetYearTicks(weekYear);
+            long startOfCalendarYear = yearMonthDayCalculator.GetStartOfYearInTicks(weekYear);
             // The number of days gained or lost in the week year compared with the calendar year.
             // So if the week year starts on December 31st of the previous calendar year, this will be +1.
             // If the week year starts on January 2nd of this calendar year, this will be -1.
@@ -88,7 +88,7 @@ namespace NodaTime.Calendars
         private long GetWeekYearTicks(int weekYear)
         {
             // Need to be slightly careful here, as the week-year can reasonably be outside the calendar year range.
-            long jan1Millis = yearMonthDayCalculator.GetYearTicksSafe(weekYear);
+            long jan1Millis = yearMonthDayCalculator.GetStartOfYearInTicks(weekYear);
             int jan1DayOfWeek = GetDayOfWeek(new LocalInstant(jan1Millis));
 
             if (jan1DayOfWeek > (8 - minDaysInFirstWeek))

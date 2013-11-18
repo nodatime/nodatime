@@ -33,6 +33,23 @@ namespace NodaTime.Benchmarks.NodaTimeTests
         }
 
         [Benchmark]
+        public void ConstructionOutsidePrecomputedRange()
+        {
+            new LocalDate(1009, 12, 26).Consume();
+        }
+
+        [Benchmark]
+        public void ConstructionAvoidingCache()
+        {
+            // Construct the first day of every year between 1000 and 3000 AD. This
+            // should thoroughly test CalculateYearTicks, as we'll never get a cache hit.
+            for (int year = 1; year <= 3000; year++)
+            {
+                new LocalDate(year, 1, 1).Consume();
+            }
+        }
+ 
+        [Benchmark]
         public void FromWeekYearWeekAndDay()
         {
             LocalDate.FromWeekYearWeekAndDay(2009, 1, NodaTime.IsoDayOfWeek.Thursday).Consume();
@@ -61,7 +78,7 @@ namespace NodaTime.Benchmarks.NodaTimeTests
         {
             Sample.IsoDayOfWeek.Consume();
         }
-
+        
         [Benchmark]
         public void DayOfYear()
         {

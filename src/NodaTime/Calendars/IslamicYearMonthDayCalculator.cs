@@ -29,9 +29,6 @@ namespace NodaTime.Calendars
         /// <summary>The number of ticks in a non-leap year.</summary>
         private const long TicksPerNonLeapYear = DaysPerNonLeapYear * NodaConstants.TicksPerStandardDay;
 
-        /// <summary>The number of ticks in a leap year.</summary>
-        private const long TicksPerLeapYear = DaysPerLeapYear * NodaConstants.TicksPerStandardDay;
-
         /// <summary>The ticks for the civil (Friday) epoch of July 16th 622CE.</summary>
         private const long TicksAtCivilEpoch = -425215872000000000L;
 
@@ -41,11 +38,13 @@ namespace NodaTime.Calendars
         /// <summary>The length of the cycle of leap years.</summary>
         private const int LeapYearCycleLength = 30;
 
-        /// <summary>The number of ticks in leap cycle.</summary>
-        private const long TicksPerLeapCycle = 19L * TicksPerNonLeapYear + 11 * TicksPerLeapYear;
+        /// <summary>The number of days in leap cycle.</summary>
+        private const int DaysPerLeapCycle = 19 * DaysPerNonLeapYear + 11 * DaysPerLeapYear;
 
         /// <summary>The pattern of leap years within a cycle, one bit per year, for this calendar.</summary>
         private readonly int leapYearPatternBits;
+
+        private readonly int daysAtStartOfYear1;
 
         private static readonly long[] TotalTicksByMonth;
 
@@ -68,6 +67,7 @@ namespace NodaTime.Calendars
         internal IslamicYearMonthDayCalculator(IslamicLeapYearPattern leapYearPattern, IslamicEpoch epoch)
             : base(1, 31513, 12, TicksPerNonLeapYear, AverageTicksPerYear, GetYear1Ticks(epoch), new[] { Era.AnnoHegirae })
         {
+            this.daysAtStartOfYear1 = (int) (TicksAtStartOfYear1 / NodaConstants.TicksPerStandardDay);
             this.leapYearPatternBits = GetLeapYearPatternBits(leapYearPattern);
         }
 
@@ -83,7 +83,7 @@ namespace NodaTime.Calendars
             }
             long tickOfDay = TimeOfDayCalculator.GetTickOfDay(localInstant);
 
-            return new LocalInstant(GetYearTicks(year) + ((dayOfYear - 1) * NodaConstants.TicksPerStandardDay) + tickOfDay);
+            return new LocalInstant(GetStartOfYearInTicks(year) + ((dayOfYear - 1) * NodaConstants.TicksPerStandardDay) + tickOfDay);
         }
 
         protected override long GetTicksFromStartOfYearToStartOfMonth(int year, int month)
@@ -139,7 +139,7 @@ namespace NodaTime.Calendars
 
         protected override int GetMonthOfYear(LocalInstant localInstant, int year)
         {
-            int dayOfYearZeroBased = (int)((localInstant.Ticks - GetYearTicks(year)) / NodaConstants.TicksPerStandardDay);
+            int dayOfYearZeroBased = (int)((localInstant.Ticks - GetStartOfYearInTicks(year)) / NodaConstants.TicksPerStandardDay);
             if (dayOfYearZeroBased == DaysPerLeapYear - 1)
             {
                 return 12;
@@ -147,7 +147,7 @@ namespace NodaTime.Calendars
             return ((dayOfYearZeroBased * 2) / MonthPairLength) + 1;
         }
 
-        protected override long CalculateYearTicks(int year)
+        protected override int CalculateStartOfYearDays(int year)
         {
             // The first cycle starts in year 1, not year 0.
             // We try to cope with years outside the normal range, in order to allow arithmetic at the boundaries.
@@ -155,22 +155,20 @@ namespace NodaTime.Calendars
                                  : (year - LeapYearCycleLength) / LeapYearCycleLength;
             int yearAtStartOfCycle = (cycle * LeapYearCycleLength) + 1;
 
-            // The cycle * TicksPerLeapCycle may overflow (near the end of representable time), but then
-            // adding the epoch ticks will bring it back to a sensible range.
-            long ticks = unchecked (TicksAtStartOfYear1 + cycle * TicksPerLeapCycle);
+            int days = daysAtStartOfYear1 + cycle * DaysPerLeapCycle;
 
-            // We've got the ticks at the start of the cycle (e.g. at the start of year 1, 31, 61 etc).
+            // We've got the days at the start of the cycle (e.g. at the start of year 1, 31, 61 etc).
             // Now go from that year to (but not including) the year we're looking for, adding the right
-            // number of ticks in each year. So if we're trying to find the start of year 34, we would
-            // find the ticks at the start of year 31, then add the ticks *in* year 31, the ticks in year 32,
-            // and the ticks in year 33.
+            // number of days in each year. So if we're trying to find the start of year 34, we would
+            // find the days at the start of year 31, then add the days *in* year 31, the days in year 32,
+            // and the days in year 33.
             // If this ever proves to be a bottleneck, we could create an array for each IslamicLeapYearPattern
-            // with "the number of ticks for the first n years in a cycle".
+            // with "the number of days for the first n years in a cycle".
             for (int i = yearAtStartOfCycle; i < year; i++)
             {
-                ticks += GetTicksInYear(i);
+                days += GetDaysInYear(i);
             }
-            return ticks;
+            return days;
         }
 
         /// <summary>

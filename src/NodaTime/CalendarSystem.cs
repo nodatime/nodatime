@@ -334,8 +334,8 @@ namespace NodaTime
             this.weekYearCalculator = new WeekYearCalculator(yearMonthDayCalculator, minDaysInFirstWeek);
             this.minYear = yearMonthDayCalculator.MinYear;                   
             this.maxYear = yearMonthDayCalculator.MaxYear;
-            this.minTicks = yearMonthDayCalculator.GetYearTicks(minYear);
-            this.maxTicks = yearMonthDayCalculator.GetYearTicksSafe(maxYear + 1) - 1;
+            this.minTicks = yearMonthDayCalculator.GetStartOfYearInTicks(minYear);
+            this.maxTicks = yearMonthDayCalculator.GetStartOfYearInTicks(maxYear + 1) - 1;
             this.eras = new ReadOnlyCollection<Era>(new List<Era>(yearMonthDayCalculator.Eras));
             this.periodFields = new PeriodFieldSet.Builder(TimeOfDayCalculator.TimeFields)
             {
