@@ -48,7 +48,7 @@ namespace NodaTime.Calendars
                 }
             }
 
-            long ticks = GetYearTicks(year) + (dayOfYear - 1) * NodaConstants.TicksPerStandardDay + tickOfDay;
+            long ticks = GetStartOfYearInTicks(year) + (dayOfYear - 1) * NodaConstants.TicksPerStandardDay + tickOfDay;
             return new LocalInstant(ticks);
         }
 
@@ -59,8 +59,8 @@ namespace NodaTime.Calendars
             Preconditions.CheckArgumentRange("dayOfMonth", dayOfMonth, 1, GetDaysInMonth(year, monthOfYear));
 
             // Just inline the arithmetic that would be done via various methods.
-            long ticks = GetYearTicks(year) + (monthOfYear - 1) * TicksPerMonth + (dayOfMonth - 1) * NodaConstants.TicksPerStandardDay;
-            return new LocalInstant(ticks);
+            int days = GetStartOfYearInDays(year) + (monthOfYear - 1) * DaysInMonth + (dayOfMonth - 1);
+            return new LocalInstant(days * NodaConstants.TicksPerStandardDay);
         }
         
         protected override long GetTicksFromStartOfYearToStartOfMonth(int year, int month)
@@ -96,7 +96,7 @@ namespace NodaTime.Calendars
 
         protected override int GetMonthOfYear(LocalInstant localInstant, int year)
         {
-            long monthZeroBased = (localInstant.Ticks - GetYearTicks(year)) / TicksPerMonth;
+            long monthZeroBased = (localInstant.Ticks - GetStartOfYearInTicks(year)) / TicksPerMonth;
             return ((int)monthZeroBased) + 1;
         }
     }

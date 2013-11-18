@@ -46,7 +46,7 @@ namespace NodaTime.Calendars
             // ticks per day contains 1024 * 10000 as a factor. After the division,
             // the instant isn't measured in ticks, but in units of
             // (128/125) seconds.
-            int i = (int)((((localInstant.Ticks - GetYearTicks(year))) >> 10) / NodaConstants.TicksPerMillisecond);
+            int i = (int)((((localInstant.Ticks - GetStartOfYearInTicks(year))) >> 10) / NodaConstants.TicksPerMillisecond);
 
             return (IsLeapYear(year))
                        ? ((i < 182 * 84375)

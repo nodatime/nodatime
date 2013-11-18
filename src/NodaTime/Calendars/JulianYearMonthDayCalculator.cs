@@ -18,7 +18,7 @@ namespace NodaTime.Calendars
             return (year & 3) == 0;
         }
 
-        protected override long CalculateYearTicks(int year)
+        protected override int CalculateStartOfYearDays(int year)
         {
             // Unix epoch is 1970-01-01 Gregorian which is 1969-12-19 Julian.
             // Calculate relative to the nearest leap year and account for the
@@ -43,8 +43,7 @@ namespace NodaTime.Calendars
             }
 
             // Accounts for the difference between January 1st 1968 and December 19th 1969.
-            return (relativeYear * 365L + leapYears - (366 + 352)) * NodaConstants.TicksPerStandardDay;
+            return (relativeYear * 365 + leapYears - (366 + 352));
         }
-
     }
 }

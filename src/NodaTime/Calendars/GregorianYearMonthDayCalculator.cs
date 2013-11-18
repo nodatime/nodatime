@@ -13,6 +13,7 @@ namespace NodaTime.Calendars
         private static readonly long[] MonthStartTicks = new long[(LastOptimizedYear + 1 - FirstOptimizedYear) * 12 + 1];
         private static readonly int[] MonthLengths = new int[(LastOptimizedYear + 1 - FirstOptimizedYear) * 12 + 1];
         private static readonly long[] YearStartTicks = new long[LastOptimizedYear + 1 - FirstOptimizedYear];
+        private static readonly int[] YearStartDays = new int[LastOptimizedYear + 1 - FirstOptimizedYear];
 
         private const int DaysFrom0000To1970 = 719527;
         private const long AverageTicksPerGregorianYear = (long)(365.2425m * NodaConstants.TicksPerStandardDay);
@@ -24,7 +25,8 @@ namespace NodaTime.Calendars
             var instance = new GregorianYearMonthDayCalculator();
             for (int year = FirstOptimizedYear; year <= LastOptimizedYear; year++)
             {
-                YearStartTicks[year - FirstOptimizedYear] = instance.CalculateYearTicks(year);
+                YearStartDays[year - FirstOptimizedYear] = instance.CalculateStartOfYearDays(year);
+                YearStartTicks[year - FirstOptimizedYear] = YearStartDays[year - FirstOptimizedYear] * NodaConstants.TicksPerStandardDay;
                 for (int month = 1; month <= 12; month++)
                 {
                     int yearMonthIndex = (year - FirstOptimizedYear) * 12 + month;
@@ -39,11 +41,11 @@ namespace NodaTime.Calendars
         {
         }
 
-        internal override long GetYearTicks(int year)
+        internal override long GetStartOfYearInTicks(int year)
         {
             if (year < FirstOptimizedYear || year > LastOptimizedYear)
             {
-                return base.GetYearTicks(year);
+                return base.GetStartOfYearInTicks(year);
             }
             return YearStartTicks[year - FirstOptimizedYear];
         }
@@ -60,7 +62,7 @@ namespace NodaTime.Calendars
             return new LocalInstant(unchecked(MonthStartTicks[yearMonthIndex] + (dayOfMonth - 1) * NodaConstants.TicksPerStandardDay));
         }
 
-        protected override long CalculateYearTicks(int year)
+        protected override int CalculateStartOfYearDays(int year)
         {
             // Initial value is just temporary.
             int leapYears = year / 100;
@@ -82,7 +84,7 @@ namespace NodaTime.Calendars
                 }
             }
 
-            return (year * 365L + (leapYears - DaysFrom0000To1970)) * NodaConstants.TicksPerStandardDay;
+            return year * 365 + (leapYears - DaysFrom0000To1970);
         }
 
         internal override bool IsLeapYear(int year)
