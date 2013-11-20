@@ -4,8 +4,8 @@
 
 using System;
 using System.Collections.Generic;
-using NUnit.Framework;
 using NodaTime.Text;
+using NUnit.Framework;
 
 namespace NodaTime.Test
 {

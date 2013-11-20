@@ -4,10 +4,9 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using NUnit.Framework;
 using NodaTime.Testing.TimeZones;
 using NodaTime.TimeZones;
-using Options = NodaTime.TimeZones.ZoneEqualityComparer.Options;
+using NUnit.Framework;
 
 namespace NodaTime.Test.TimeZones
 {
@@ -42,21 +41,21 @@ namespace NodaTime.Test.TimeZones
             }.Build();
             // Even though the first transition point is different, by default that's fine if
             // the start point is "inside" both.
-            AssertEqual(zone1, zone2, Instants[1], Instants[5], Options.OnlyMatchWallOffset);
+            AssertEqual(zone1, zone2, Instants[1], Instants[5], ZoneEqualityComparer.Options.OnlyMatchWallOffset);
             // When we extend backwards a bit, we can see the difference between the two.
-            AssertNotEqual(zone1, zone2, Instants[1] - Duration.Epsilon, Instants[5], Options.OnlyMatchWallOffset);
+            AssertNotEqual(zone1, zone2, Instants[1] - Duration.Epsilon, Instants[5], ZoneEqualityComparer.Options.OnlyMatchWallOffset);
             // Or if we force the start and end transitions to be exact...
-            AssertNotEqual(zone1, zone2, Instants[1], Instants[5], Options.MatchStartAndEndTransitions);
+            AssertNotEqual(zone1, zone2, Instants[1], Instants[5], ZoneEqualityComparer.Options.MatchStartAndEndTransitions);
             
             // The first two transitions have the same split between standard and saving...
-            AssertEqual(zone1, zone2, Instants[1], Instants[4], Options.MatchOffsetComponents);
+            AssertEqual(zone1, zone2, Instants[1], Instants[4], ZoneEqualityComparer.Options.MatchOffsetComponents);
             // The third one (at Instants[4]) doesn't...
-            AssertNotEqual(zone1, zone2, Instants[1], Instants[5], Options.MatchOffsetComponents);
+            AssertNotEqual(zone1, zone2, Instants[1], Instants[5], ZoneEqualityComparer.Options.MatchOffsetComponents);
 
             // The first transition has the same name for the zone interval...
-            AssertEqual(zone1, zone2, Instants[1], Instants[2], Options.MatchNames);
+            AssertEqual(zone1, zone2, Instants[1], Instants[2], ZoneEqualityComparer.Options.MatchNames);
             // The second transition (at Instants[2]) doesn't...
-            AssertNotEqual(zone1, zone2, Instants[1], Instants[3], Options.MatchNames);
+            AssertNotEqual(zone1, zone2, Instants[1], Instants[3], ZoneEqualityComparer.Options.MatchNames);
         }
 
         [Test]
@@ -81,17 +80,17 @@ namespace NodaTime.Test.TimeZones
                 { Instants[8], 0, 0, "x" },
             }.Build();
 
-            AssertEqual(zone1, zone2, Instant.MinValue, Instant.MaxValue, Options.OnlyMatchWallOffset);
+            AssertEqual(zone1, zone2, Instant.MinValue, Instant.MaxValue, ZoneEqualityComparer.Options.OnlyMatchWallOffset);
             // BOT-Instants[6] will elide transitions when ignoring components, even if we match names
-            AssertEqual(zone1, zone2, Instant.MinValue, Instants[6], Options.MatchNames);
-            AssertNotEqual(zone1, zone2, Instant.MinValue, Instants[6], Options.MatchOffsetComponents);
+            AssertEqual(zone1, zone2, Instant.MinValue, Instants[6], ZoneEqualityComparer.Options.MatchNames);
+            AssertNotEqual(zone1, zone2, Instant.MinValue, Instants[6], ZoneEqualityComparer.Options.MatchOffsetComponents);
             // Instants[6]-EOT will elide transitions when ignoring names, even if we match components
-            AssertEqual(zone1, zone2, Instants[6], Instant.MaxValue, Options.MatchOffsetComponents);
-            AssertNotEqual(zone1, zone2, Instants[6], Instant.MaxValue, Options.MatchNames);
+            AssertEqual(zone1, zone2, Instants[6], Instant.MaxValue, ZoneEqualityComparer.Options.MatchOffsetComponents);
+            AssertNotEqual(zone1, zone2, Instants[6], Instant.MaxValue, ZoneEqualityComparer.Options.MatchNames);
             
             // But if we require the exact transitions, both fail
-            AssertNotEqual(zone1, zone2, Instant.MinValue, Instants[6], Options.MatchAllTransitions);
-            AssertNotEqual(zone1, zone2, Instants[6], Instant.MaxValue, Options.MatchAllTransitions);
+            AssertNotEqual(zone1, zone2, Instant.MinValue, Instants[6], ZoneEqualityComparer.Options.MatchAllTransitions);
+            AssertNotEqual(zone1, zone2, Instants[6], Instant.MaxValue, ZoneEqualityComparer.Options.MatchAllTransitions);
         }
 
         [Test]
@@ -99,7 +98,7 @@ namespace NodaTime.Test.TimeZones
         {
             var interval = new Interval(Instants[3], Instants[5]);
             var comparer = ZoneEqualityComparer.ForInterval(interval);
-            Assert.AreEqual(Options.OnlyMatchWallOffset, comparer.OptionsForTest);
+            Assert.AreEqual(ZoneEqualityComparer.Options.OnlyMatchWallOffset, comparer.OptionsForTest);
             Assert.AreEqual(interval, comparer.IntervalForTest);
         }
 
@@ -108,13 +107,13 @@ namespace NodaTime.Test.TimeZones
         {
             var interval = new Interval(Instants[3], Instants[5]);
             var firstComparer = ZoneEqualityComparer.ForInterval(interval);
-            var secondComparer = firstComparer.WithOptions(Options.MatchNames);
+            var secondComparer = firstComparer.WithOptions(ZoneEqualityComparer.Options.MatchNames);
 
-            Assert.AreEqual(Options.MatchNames, secondComparer.OptionsForTest);
+            Assert.AreEqual(ZoneEqualityComparer.Options.MatchNames, secondComparer.OptionsForTest);
             Assert.AreEqual(interval, secondComparer.IntervalForTest);
 
             // Validate that the first comparer hasn't changed
-            Assert.AreEqual(Options.OnlyMatchWallOffset, firstComparer.OptionsForTest);
+            Assert.AreEqual(ZoneEqualityComparer.Options.OnlyMatchWallOffset, firstComparer.OptionsForTest);
             Assert.AreEqual(interval, firstComparer.IntervalForTest);
         }
 
@@ -138,13 +137,13 @@ namespace NodaTime.Test.TimeZones
             }.Build();
 
             // We can match *everything* except exact transitions...
-            AssertEqual(zone1, zone2, Instant.MinValue, Instant.MaxValue, Options.MatchNames | Options.MatchOffsetComponents | Options.MatchStartAndEndTransitions);
+            AssertEqual(zone1, zone2, Instant.MinValue, Instant.MaxValue, ZoneEqualityComparer.Options.MatchNames | ZoneEqualityComparer.Options.MatchOffsetComponents | ZoneEqualityComparer.Options.MatchStartAndEndTransitions);
             // But not the exact transitions...
-            AssertNotEqual(zone1, zone2, Instant.MinValue, Instant.MaxValue, Options.MatchAllTransitions);
+            AssertNotEqual(zone1, zone2, Instant.MinValue, Instant.MaxValue, ZoneEqualityComparer.Options.MatchAllTransitions);
         }
 
         private void AssertEqual(DateTimeZone first, DateTimeZone second, 
-            Instant start, Instant end, Options options)
+            Instant start, Instant end, ZoneEqualityComparer.Options options)
         {
             var comparer = ZoneEqualityComparer.ForInterval(new Interval(start, end)).WithOptions(options);
             Assert.IsTrue(comparer.Equals(first, second));
@@ -152,7 +151,7 @@ namespace NodaTime.Test.TimeZones
         }
 
         private void AssertNotEqual(DateTimeZone first, DateTimeZone second, 
-            Instant start, Instant end, Options options)
+            Instant start, Instant end, ZoneEqualityComparer.Options options)
         {
             var comparer = ZoneEqualityComparer.ForInterval(new Interval(start, end)).WithOptions(options);
             Assert.IsFalse(comparer.Equals(first, second));

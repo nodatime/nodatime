@@ -5,7 +5,6 @@
 using System;
 using System.Linq;
 using NUnit.Framework;
-using NodaTime.Calendars;
 
 namespace NodaTime.Test.Calendars
 {

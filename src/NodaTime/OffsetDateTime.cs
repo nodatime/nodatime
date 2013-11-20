@@ -7,12 +7,12 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Runtime.Serialization;
 using System.Xml;
+using System.Xml.Schema;
+using System.Xml.Serialization;
 using JetBrains.Annotations;
 using NodaTime.Calendars;
 using NodaTime.Text;
 using NodaTime.Utility;
-using System.Xml.Serialization;
-using System.Xml.Schema;
 
 namespace NodaTime
 {

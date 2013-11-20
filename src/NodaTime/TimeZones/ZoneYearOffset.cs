@@ -2,10 +2,10 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-using NodaTime.TimeZones.IO;
-using NodaTime.Utility;
 using System;
 using System.Diagnostics.CodeAnalysis;
+using NodaTime.TimeZones.IO;
+using NodaTime.Utility;
 
 namespace NodaTime.TimeZones
 {

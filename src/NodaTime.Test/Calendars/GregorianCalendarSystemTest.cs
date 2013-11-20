@@ -4,8 +4,8 @@
 
 using System;
 using System.Linq;
-using NUnit.Framework;
 using NodaTime.Calendars;
+using NUnit.Framework;
 
 namespace NodaTime.Test.Calendars
 {

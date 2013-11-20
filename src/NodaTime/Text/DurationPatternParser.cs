@@ -2,13 +2,13 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using NodaTime.Globalization;
 using NodaTime.Properties;
 using NodaTime.Text.Patterns;
 using NodaTime.Utility;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 
 namespace NodaTime.Text
 {
