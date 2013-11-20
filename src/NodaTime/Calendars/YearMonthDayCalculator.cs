@@ -66,7 +66,6 @@ namespace NodaTime.Calendars
         protected abstract int GetMonthOfYear(LocalInstant localInstant, int year);
         protected abstract long GetTicksInYear(int year);
         internal abstract int GetMaxMonth(int year);
-        internal abstract int GetDaysInMonthMax(int month);
         internal abstract LocalInstant SetYear(LocalInstant localInstant, int year);
         internal abstract int GetDaysInMonth(int year, int month);
         internal abstract bool IsLeapYear(int year);
