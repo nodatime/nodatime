@@ -3,7 +3,6 @@
 // as found in the LICENSE.txt file.
 
 using NUnit.Framework;
-using NodaTime.TimeZones;
 
 namespace NodaTime.Test
 {

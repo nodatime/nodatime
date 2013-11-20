@@ -6,10 +6,10 @@ using System;
 using System.Runtime.Serialization;
 using System.Xml;
 using System.Xml.Schema;
+using System.Xml.Serialization;
 using JetBrains.Annotations;
 using NodaTime.Text;
 using NodaTime.Utility;
-using System.Xml.Serialization;
 
 namespace NodaTime
 {

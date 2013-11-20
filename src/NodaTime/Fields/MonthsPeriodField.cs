@@ -3,7 +3,6 @@
 // as found in the LICENSE.txt file.
 
 using System;
-using System.Globalization;
 using NodaTime.Calendars;
 
 namespace NodaTime.Fields
