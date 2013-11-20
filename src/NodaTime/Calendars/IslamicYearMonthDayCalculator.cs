@@ -6,7 +6,7 @@ using System;
 
 namespace NodaTime.Calendars
 {
-    internal sealed class IslamicYearMonthDayCalculator : YearMonthDayCalculator
+    internal sealed class IslamicYearMonthDayCalculator : RegularYearMonthDayCalculator
     {
         /// <summary>Days in a pair of months, in days.</summary>
         private const int MonthPairLength = 59;

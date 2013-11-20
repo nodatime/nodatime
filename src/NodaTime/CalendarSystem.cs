@@ -624,7 +624,7 @@ namespace NodaTime
         /// <returns>The maximum month number within the given year.</returns>
         public int GetMaxMonth(int year)
         {
-            return yearMonthDayCalculator.MonthsInYear;
+            return yearMonthDayCalculator.GetMaxMonth(year);
         }
 
         /// <summary>
