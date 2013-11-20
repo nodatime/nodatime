@@ -25,12 +25,7 @@ namespace NodaTime.Calendars
         private readonly int maxYear;
         internal int MaxYear { get { return maxYear; } }
 
-        private readonly int monthsInYear;
-        internal int MonthsInYear { get { return monthsInYear; } }
-
         private readonly long averageTicksPerYear;
-        private readonly long ticksInNonLeapYear;
-        private readonly long ticksInLeapYear;
         
         private readonly long ticksAtStartOfYear1;
         /// <summary>
@@ -38,20 +33,17 @@ namespace NodaTime.Calendars
         /// </summary>
         internal long TicksAtStartOfYear1 { get { return ticksAtStartOfYear1; } }
 
-        protected YearMonthDayCalculator(int minYear, int maxYear, int monthsInYear,
-            long ticksInNonLeapYear, long averageTicksPerYear, long ticksAtStartOfYear1, IList<Era> eras)
+        protected YearMonthDayCalculator(int minYear, int maxYear,
+            long averageTicksPerYear, long ticksAtStartOfYear1, IList<Era> eras)
         {
             // We should really check the minimum year as well, but constructing it hurts my brain.
             Preconditions.CheckArgument(maxYear < YearStartCacheEntry.InvalidEntryYear, "maxYear",
                 "Calendar year range would invalidate caching.");
             this.minYear = minYear;
             this.maxYear = maxYear;
-            this.monthsInYear = monthsInYear;
             this.eras = Preconditions.CheckNotNull(eras, "eras");
             this.averageTicksPerYear = averageTicksPerYear;
             this.ticksAtStartOfYear1 = ticksAtStartOfYear1;
-            this.ticksInNonLeapYear = ticksInNonLeapYear;
-            this.ticksInLeapYear = ticksInNonLeapYear + NodaConstants.TicksPerStandardDay;
             // Invalidate all initial cache entries.
             for (int i = 0; i < yearCache.Length; i++)
             {
@@ -72,10 +64,17 @@ namespace NodaTime.Calendars
         /// </summary>
         protected abstract int CalculateStartOfYearDays(int year);
         protected abstract int GetMonthOfYear(LocalInstant localInstant, int year);
+        protected abstract long GetTicksInYear(int year);
+        internal abstract int GetMaxMonth(int year);
         internal abstract int GetDaysInMonthMax(int month);
         internal abstract LocalInstant SetYear(LocalInstant localInstant, int year);
         internal abstract int GetDaysInMonth(int year, int month);
         internal abstract bool IsLeapYear(int year);
+        internal abstract LocalInstant AddMonths(LocalInstant localInstant, int months);
+        /// <summary>
+        /// Subtract subtrahendInstant from minuendInstant, in terms of months.
+        /// </summary>
+        internal abstract int MonthsBetween(LocalInstant minuendInstant, LocalInstant subtrahendInstant);
 
         /// <summary>
         /// Returns the number of ticks since the Unix epoch at the start of the given year.
@@ -91,14 +90,6 @@ namespace NodaTime.Calendars
             return GetStartOfYearInDays(year) * NodaConstants.TicksPerStandardDay;
         }
 
-        /// <summary>
-        /// Returns the number of ticks in the given year, based on whether or not it's a leap year.
-        /// </summary>
-        private long GetTicksInYear(int year)
-        {
-            return IsLeapYear(year) ? ticksInLeapYear : ticksInNonLeapYear;
-        }
-
         internal virtual int GetDayOfMonth(LocalInstant localInstant)
         {
             int year = GetYear(localInstant);
@@ -106,7 +97,7 @@ namespace NodaTime.Calendars
             return GetDayOfMonth(localInstant, year, month);
         }
 
-        private int GetDayOfMonth(LocalInstant localInstant, int year, int month)
+        protected int GetDayOfMonth(LocalInstant localInstant, int year, int month)
         {
             long dateTicks = GetYearMonthTicks(year, month);
             return (int)((localInstant.Ticks - dateTicks) / NodaConstants.TicksPerStandardDay) + 1;
@@ -131,7 +122,7 @@ namespace NodaTime.Calendars
         internal virtual LocalInstant GetLocalInstant(int year, int monthOfYear, int dayOfMonth)
         {
             Preconditions.CheckArgumentRange("year", year, MinYear, MaxYear);
-            Preconditions.CheckArgumentRange("monthOfYear", monthOfYear, 1, monthsInYear);
+            Preconditions.CheckArgumentRange("monthOfYear", monthOfYear, 1, GetMaxMonth(year));
             Preconditions.CheckArgumentRange("dayOfMonth", dayOfMonth, 1, GetDaysInMonth(year, monthOfYear));
             return new LocalInstant(GetYearMonthDayTicks(year, monthOfYear, dayOfMonth));
         }
@@ -263,57 +254,6 @@ namespace NodaTime.Calendars
         internal virtual int GetDaysInYear(int year)
         {
             return IsLeapYear(year) ? 366 : 365;
-        }
-
-        internal virtual LocalInstant AddMonths(LocalInstant localInstant, int months)
-        {
-            if (months == 0)
-            {
-                return localInstant;
-            }
-            // Save the time part first
-            long timePart = TimeOfDayCalculator.GetTickOfDay(localInstant);
-            // Get the year and month
-            int thisYear = GetYear(localInstant);
-            int thisMonth = GetMonthOfYear(localInstant, thisYear);
-
-            // Do not refactor without careful consideration.
-            // Order of calculation is important.
-
-            int yearToUse;
-            // Initially, monthToUse is zero-based
-            int monthToUse = thisMonth - 1 + months;
-            if (monthToUse >= 0)
-            {
-                yearToUse = thisYear + (monthToUse / monthsInYear);
-                monthToUse = (monthToUse % monthsInYear) + 1;
-            }
-            else
-            {
-                yearToUse = thisYear + (monthToUse / monthsInYear) - 1;
-                monthToUse = Math.Abs(monthToUse);
-                int remMonthToUse = monthToUse % monthsInYear;
-                // Take care of the boundary condition
-                if (remMonthToUse == 0)
-                {
-                    remMonthToUse = monthsInYear;
-                }
-                monthToUse = monthsInYear - remMonthToUse + 1;
-                // Take care of the boundary condition
-                if (monthToUse == 1)
-                {
-                    yearToUse++;
-                }
-            }
-            // End of do not refactor.
-
-            // Quietly force DOM to nearest sane value.
-            int dayToUse = GetDayOfMonth(localInstant, thisYear, thisMonth);
-            int maxDay = GetDaysInMonth(yearToUse, monthToUse);
-            dayToUse = Math.Min(dayToUse, maxDay);
-            // Get proper date part, and return result
-            long datePart = GetYearMonthDayTicks(yearToUse, monthToUse, dayToUse);
-            return new LocalInstant(datePart + timePart);
         }
 
         /// <summary>

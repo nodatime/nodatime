@@ -15,7 +15,7 @@ namespace NodaTime.Calendars
     /// This implementation assumes any additional days after twelve
     /// months fall into a thirteenth month.
     /// </remarks>
-    internal abstract class FixedMonthYearMonthDayCalculator : YearMonthDayCalculator
+    internal abstract class FixedMonthYearMonthDayCalculator : RegularYearMonthDayCalculator
     {
         private const int DaysInMonth = 30;
 

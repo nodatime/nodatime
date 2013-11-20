@@ -6,7 +6,7 @@ using NodaTime.Utility;
 
 namespace NodaTime.Calendars
 {
-    internal abstract class GJYearMonthDayCalculator : YearMonthDayCalculator
+    internal abstract class GJYearMonthDayCalculator : RegularYearMonthDayCalculator
     {
         // These arrays are NOT public. We trust ourselves not to alter the array.
         // They use zero-based array indexes so the that valid range of months is
