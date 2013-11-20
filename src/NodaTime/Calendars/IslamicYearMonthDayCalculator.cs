@@ -127,16 +127,6 @@ namespace NodaTime.Calendars
             return (month & 1) == 0 ? ShortMonthLength : LongMonthLength;
         }
 
-        internal override int GetDaysInMonthMax(int month)
-        {
-            if (month == 12)
-            {
-                return LongMonthLength;
-            }
-            // Note: month is 1-based here, so even months are the long ones
-            return (month & 1) == 0 ? ShortMonthLength : LongMonthLength;
-        }
-
         protected override int GetMonthOfYear(LocalInstant localInstant, int year)
         {
             int dayOfYearZeroBased = (int)((localInstant.Ticks - GetStartOfYearInTicks(year)) / NodaConstants.TicksPerStandardDay);

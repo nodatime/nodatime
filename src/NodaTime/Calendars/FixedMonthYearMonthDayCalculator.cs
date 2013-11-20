@@ -84,11 +84,6 @@ namespace NodaTime.Calendars
             return month != 13 ? DaysInMonth : IsLeapYear(year) ? 6 : 5;
         }
 
-        internal override int GetDaysInMonthMax(int month)
-        {
-            return month != 13 ? DaysInMonth : 6;
-        }
-
         internal override int GetMonthOfYear(LocalInstant localInstant)
         {
             return (GetDayOfYear(localInstant) - 1) / DaysInMonth + 1;
