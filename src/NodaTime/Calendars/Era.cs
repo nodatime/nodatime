@@ -43,6 +43,11 @@ namespace NodaTime.Calendars
         /// </summary>
         public static readonly Era AnnoHegirae = new Era("EH", "Eras_AnnoHegirae"); // AH
 
+        /// <summary>
+        /// The "Anno Mundi" era. This is the sole era used in the Hebrew calendar.
+        /// </summary>
+        public static readonly Era AnnoMundi = new Era("AM", "Anno_Mundi");
+
         private readonly string name;
         private readonly string resourceIdentifier;
 

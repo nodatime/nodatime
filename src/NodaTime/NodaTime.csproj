@@ -149,6 +149,7 @@
     <Compile Include="Calendars\FixedMonthYearMonthDayCalculator.cs" />
     <Compile Include="Calendars\GJYearMonthDayCalculator.cs" />
     <Compile Include="Calendars\GregorianYearMonthDayCalculator.cs" />
+    <Compile Include="Calendars\HebrewYearMonthDayCalculator.cs" />
     <Compile Include="Calendars\IslamicEpoch.cs" />
     <Compile Include="Calendars\IslamicLeapYearPattern.cs" />
     <Compile Include="Calendars\IslamicYearMonthDayCalculator.cs" />
