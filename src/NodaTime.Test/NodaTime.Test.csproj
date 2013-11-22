@@ -125,6 +125,7 @@
     <Compile Include="Calendars\JulianCalendarSystemTest.Era.cs">
       <DependentUpon>JulianCalendarSystemTest.cs</DependentUpon>
     </Compile>
+    <Compile Include="Calendars\PersianCalendarSystemTest.cs" />
     <Compile Include="Calendars\YearMonthDayCalculatorTest.cs" />
     <Compile Include="IntervalTest.cs" />
     <Compile Include="OffsetDateTimeTest.cs" />
