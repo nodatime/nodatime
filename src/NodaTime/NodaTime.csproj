@@ -155,6 +155,7 @@
     <Compile Include="Calendars\IsoYearMonthDayCalculator.cs" />
     <Compile Include="Calendars\JulianYearMonthDayCalculator.cs" />
     <Compile Include="Calendars\NamespaceDoc.cs" />
+    <Compile Include="Calendars\PersianYearMonthDayCalendar.cs" />
     <Compile Include="Calendars\RegularYearMonthDayCalculator.cs" />
     <Compile Include="Calendars\TimeOfDayCalculator.cs" />
     <Compile Include="Calendars\WeekYearCalculator.cs" />
