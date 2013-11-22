@@ -30,7 +30,7 @@ API changes:
   property used to control the time zone provider used by XML and binary
   serialization
 - New classes `DurationPattern`, `OffsetDateTimePattern`, and
-  `ZoneDateTimePattern` that represent patterns for parsing and formatting
+  `ZonedDateTimePattern` that represent patterns for parsing and formatting
   `Duration`, `OffsetDateTime`, and `ZonedDateTime` respectively
 - Added `LocalDateTimePattern` properties `GeneralIsoPattern`,
   `BclRoundtripPattern`, and `FullRoundtripPattern`, which provide
