@@ -13,7 +13,7 @@
     <description>
       Noda Time is a date and time API acting as an alternative to the built-in DateTime/DateTimeOffset etc types built into the .NET framework. It's based on the "engine" of Joda Time, the popular Java library - but with an API designed from the ground up.
     </description>
-    <tags>date time timezone calendar</tags>
+    <tags>date time timezone calendar nodatime</tags>
   </metadata>
   <files>
     <file src="bin\Signed Release\NodaTime.dll" target="lib\net35-Client" />
