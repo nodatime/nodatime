@@ -19,7 +19,7 @@ part of the Noda Time project. This saves both space (the 2012c version takes ab
 time, as the binary form contains various precomputed transitions. The resource file also contains a mapping from Windows time zone names
 to tzdb time zone IDs, primarily so that Noda Time can map the local time zone reported by `TimeZoneInfo` to a tzdb time zone.
 
-`ZoneInfoCompiler` is not currently provided in binary form in Nuget packages (although this decision can easily be revisited if there's
+`ZoneInfoCompiler` is not currently provided in binary form in NuGet packages (although this decision can easily be revisited if there's
 enough demand). You'll need to build it yourself - which should be as simple as getting hold of a Noda Time source distribution (the latest
 for your binary's major version number should be good enough; we won't change the format of the resource file without bumping the version
 number) and building the whole solution. You'll end up with binaries in ZoneInfoCompiler/bin/Debug (or Release).
