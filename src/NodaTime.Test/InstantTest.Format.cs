@@ -3,8 +3,8 @@
 // as found in the LICENSE.txt file.
 
 using System.Globalization;
-using NUnit.Framework;
 using NodaTime.Text;
+using NUnit.Framework;
 
 namespace NodaTime.Test
 {

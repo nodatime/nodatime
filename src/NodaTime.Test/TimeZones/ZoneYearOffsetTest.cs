@@ -3,9 +3,9 @@
 // as found in the LICENSE.txt file.
 
 using System;
-using NUnit.Framework;
 using NodaTime.Test.TimeZones.IO;
 using NodaTime.TimeZones;
+using NUnit.Framework;
 
 namespace NodaTime.Test.TimeZones
 {

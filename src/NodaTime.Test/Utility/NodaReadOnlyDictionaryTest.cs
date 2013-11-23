@@ -2,10 +2,10 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-using NodaTime.Utility;
-using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using NodaTime.Utility;
+using NUnit.Framework;
 
 namespace NodaTime.Test.Utility
 {

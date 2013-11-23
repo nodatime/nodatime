@@ -6,10 +6,10 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Threading;
-using NUnit.Framework;
 using NodaTime.Calendars;
 using NodaTime.Globalization;
 using NodaTime.Test.Text;
+using NUnit.Framework;
 
 namespace NodaTime.Test.Globalization
 {

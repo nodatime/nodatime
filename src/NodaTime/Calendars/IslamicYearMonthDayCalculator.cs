@@ -6,7 +6,7 @@ using System;
 
 namespace NodaTime.Calendars
 {
-    internal sealed class IslamicYearMonthDayCalculator : YearMonthDayCalculator
+    internal sealed class IslamicYearMonthDayCalculator : RegularYearMonthDayCalculator
     {
         /// <summary>Days in a pair of months, in days.</summary>
         private const int MonthPairLength = 59;
@@ -124,16 +124,6 @@ namespace NodaTime.Calendars
                 return LongMonthLength;
             }
             // Note: month is 1-based here, so even months are the short ones
-            return (month & 1) == 0 ? ShortMonthLength : LongMonthLength;
-        }
-
-        internal override int GetDaysInMonthMax(int month)
-        {
-            if (month == 12)
-            {
-                return LongMonthLength;
-            }
-            // Note: month is 1-based here, so even months are the long ones
             return (month & 1) == 0 ? ShortMonthLength : LongMonthLength;
         }
 

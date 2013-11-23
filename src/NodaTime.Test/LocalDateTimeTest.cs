@@ -5,10 +5,10 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using NUnit.Framework;
 using NodaTime.Calendars;
 using NodaTime.Text;
 using NodaTime.TimeZones;
+using NUnit.Framework;
 
 namespace NodaTime.Test
 {

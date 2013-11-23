@@ -2,11 +2,10 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-using System.IO;
-using NodaTime.Utility;
-using NUnit.Framework;
 using Newtonsoft.Json;
 using NodaTime.Serialization.JsonNet;
+using NodaTime.Utility;
+using NUnit.Framework;
 
 namespace NodaTime.Serialization.Test.JsonNet
 {

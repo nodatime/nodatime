@@ -1,4 +1,4 @@
-// Copyright 2010 The Noda Time Authors. All rights reserved.
+﻿// Copyright 2010 The Noda Time Authors. All rights reserved.
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
@@ -50,16 +50,19 @@ namespace NodaTime
         private const string CopticName = "Coptic";
         private const string JulianName = "Julian";
         private const string IslamicName = "Hijri";
+        private const string PersianName = "Persian";
 
         private static readonly CalendarSystem[] GregorianCalendarSystems;
         private static readonly CalendarSystem[] CopticCalendarSystems;
         private static readonly CalendarSystem[] JulianCalendarSystems;
         private static readonly CalendarSystem[,] IslamicCalendarSystems;
         private static readonly CalendarSystem IsoCalendarSystem;
+        private static readonly CalendarSystem PersianCalendarSystem;
 
         static CalendarSystem()
         {
             IsoCalendarSystem = new CalendarSystem(IsoName, IsoName, new IsoYearMonthDayCalculator(), 4);
+            PersianCalendarSystem = new CalendarSystem(PersianName, PersianName, new PersianYearMonthDayCalendar(), 4);
 
             // Variations for the calendar systems which have different objects for different "minimum first day of week"
             // values. We create a new year/month/day calculator for each instance, but there's no actual state - it's
@@ -114,6 +117,7 @@ namespace NodaTime
         private static readonly Dictionary<string, Func<CalendarSystem>> IdToFactoryMap = new Dictionary<string, Func<CalendarSystem>>
         {
             { "ISO", () => Iso },
+            { "Persian", () => Persian },
             { "Gregorian 1", () => GetGregorianCalendar(1) },
             { "Gregorian 2", () => GetGregorianCalendar(2) },
             { "Gregorian 3", () => GetGregorianCalendar(3) },
@@ -162,6 +166,11 @@ namespace NodaTime
         /// </para>
         /// </remarks>
         public static CalendarSystem Iso { get { return IsoCalendarSystem; } }
+
+        /// <summary>
+        /// Description TBD. Also consider whether this should be a method.
+        /// </summary>
+        public static CalendarSystem Persian { get { return PersianCalendarSystem; } }
 
         /// <summary>
         /// Returns a pure proleptic Gregorian calendar system, which defines every
@@ -624,7 +633,7 @@ namespace NodaTime
         /// <returns>The maximum month number within the given year.</returns>
         public int GetMaxMonth(int year)
         {
-            return yearMonthDayCalculator.MonthsInYear;
+            return yearMonthDayCalculator.GetMaxMonth(year);
         }
 
         /// <summary>

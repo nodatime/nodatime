@@ -4,10 +4,10 @@
 
 using System;
 using System.IO;
-using NodaTime.Utility;
-using NUnit.Framework;
 using Newtonsoft.Json;
 using NodaTime.Serialization.JsonNet;
+using NodaTime.Utility;
+using NUnit.Framework;
 
 namespace NodaTime.Serialization.Test.JsonNet
 {

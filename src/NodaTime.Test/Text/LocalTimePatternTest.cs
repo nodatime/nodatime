@@ -6,11 +6,10 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using NUnit.Framework;
-using NodaTime.Globalization;
 using NodaTime.Properties;
 using NodaTime.Text;
 using NodaTime.Text.Patterns;
+using NUnit.Framework;
 
 namespace NodaTime.Test.Text
 {

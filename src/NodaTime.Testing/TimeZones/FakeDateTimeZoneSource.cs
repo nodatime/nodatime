@@ -2,11 +2,11 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-using NodaTime.TimeZones;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using NodaTime.TimeZones;
 
 namespace NodaTime.Testing.TimeZones
 {
