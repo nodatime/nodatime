@@ -2,10 +2,10 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-using NUnit.Framework;
 using NodaTime.Testing.TimeZones;
-using NodaTime.TimeZones;
 using NodaTime.Text;
+using NodaTime.TimeZones;
+using NUnit.Framework;
 
 namespace NodaTime.Test
 {

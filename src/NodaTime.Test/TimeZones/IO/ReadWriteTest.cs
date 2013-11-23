@@ -4,8 +4,8 @@
 
 using System;
 using System.Collections.Generic;
-using NUnit.Framework;
 using NodaTime.TimeZones.IO;
+using NUnit.Framework;
 
 namespace NodaTime.Test.TimeZones.IO
 {

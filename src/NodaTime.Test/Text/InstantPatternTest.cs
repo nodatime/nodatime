@@ -5,9 +5,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using NUnit.Framework;
 using NodaTime.Properties;
 using NodaTime.Text;
+using NUnit.Framework;
 
 namespace NodaTime.Test.Text
 {

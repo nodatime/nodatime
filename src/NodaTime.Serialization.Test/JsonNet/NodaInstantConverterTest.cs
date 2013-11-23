@@ -3,10 +3,10 @@
 // as found in the LICENSE.txt file.
 
 using System;
-using NUnit.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using NodaTime.Serialization.JsonNet;
+using NUnit.Framework;
 
 namespace NodaTime.Serialization.Test.JsonNet
 {

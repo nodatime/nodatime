@@ -6,7 +6,7 @@ using NodaTime.Utility;
 
 namespace NodaTime.Calendars
 {
-    internal abstract class GJYearMonthDayCalculator : YearMonthDayCalculator
+    internal abstract class GJYearMonthDayCalculator : RegularYearMonthDayCalculator
     {
         // These arrays are NOT public. We trust ourselves not to alter the array.
         // They use zero-based array indexes so the that valid range of months is
@@ -64,11 +64,6 @@ namespace NodaTime.Calendars
         internal override int GetDaysInMonth(int year, int month)
         {
             return IsLeapYear(year) ? MaxDaysPerMonth[month - 1] : MinDaysPerMonth[month - 1];
-        }
-
-        internal override int GetDaysInMonthMax(int month)
-        {
-            return MaxDaysPerMonth[month - 1];
         }
 
         protected override long GetTicksFromStartOfYearToStartOfMonth(int year, int month)

@@ -4,8 +4,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using NodaTime.Benchmarks.Framework;
 
 namespace NodaTime.Benchmarks.BclTests

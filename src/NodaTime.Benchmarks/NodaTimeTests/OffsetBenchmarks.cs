@@ -2,11 +2,10 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-using System;
+using System.Globalization;
 using NodaTime.Benchmarks.Framework;
 using NodaTime.Globalization;
 using NodaTime.Text;
-using System.Globalization;
 
 namespace NodaTime.Benchmarks.NodaTimeTests
 {

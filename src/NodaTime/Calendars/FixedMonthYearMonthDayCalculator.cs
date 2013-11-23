@@ -2,8 +2,8 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-using NodaTime.Utility;
 using System.Collections.Generic;
+using NodaTime.Utility;
 
 namespace NodaTime.Calendars
 {
@@ -15,7 +15,7 @@ namespace NodaTime.Calendars
     /// This implementation assumes any additional days after twelve
     /// months fall into a thirteenth month.
     /// </remarks>
-    internal abstract class FixedMonthYearMonthDayCalculator : YearMonthDayCalculator
+    internal abstract class FixedMonthYearMonthDayCalculator : RegularYearMonthDayCalculator
     {
         private const int DaysInMonth = 30;
 
@@ -82,11 +82,6 @@ namespace NodaTime.Calendars
         internal override int GetDaysInMonth(int year, int month)
         {
             return month != 13 ? DaysInMonth : IsLeapYear(year) ? 6 : 5;
-        }
-
-        internal override int GetDaysInMonthMax(int month)
-        {
-            return month != 13 ? DaysInMonth : 6;
         }
 
         internal override int GetMonthOfYear(LocalInstant localInstant)

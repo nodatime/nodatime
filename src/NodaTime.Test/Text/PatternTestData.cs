@@ -6,8 +6,8 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
-using NUnit.Framework;
 using NodaTime.Text;
+using NUnit.Framework;
 
 namespace NodaTime.Test.Text
 {
