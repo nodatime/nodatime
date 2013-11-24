@@ -41,7 +41,7 @@ namespace NodaTime.Calendars
                 int days = i <= 6 ? 31 : 30;
                 // This doesn't take account of leap years, but that doesn't matter - because
                 // it's not used on the last iteration, and leap years only affect the final month
-                // in the Islamic calendar.
+                // in the Perisan calendar.
                 ticks += days * NodaConstants.TicksPerStandardDay;
             }
         }
