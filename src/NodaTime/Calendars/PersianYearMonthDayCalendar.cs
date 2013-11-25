@@ -1,7 +1,6 @@
 ﻿// Copyright 2013 The Noda Time Authors. All rights reserved.
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
-using System;
 
 namespace NodaTime.Calendars
 {
@@ -20,8 +19,6 @@ namespace NodaTime.Calendars
         private const int LeapYearCycleLength = 33;
         private const int DaysPerNonLeapYear = (31 * 6) + (30 * 5) + 29;
         private const int DaysPerLeapYear = DaysPerNonLeapYear + 1;
-        private const long TicksPerNonLeapYear = DaysPerNonLeapYear * NodaConstants.TicksPerStandardDay;
-        private const long TicksPerLeapYear = DaysPerLeapYear * NodaConstants.TicksPerStandardDay;
         private const int DaysPerLeapCycle = DaysPerNonLeapYear * 25 + DaysPerLeapYear * 8;
         private const long AverageTicksPerYear = (DaysPerLeapCycle * NodaConstants.TicksPerStandardDay) / 33;
 
@@ -47,7 +44,8 @@ namespace NodaTime.Calendars
         }
 
         internal PersianYearMonthDayCalendar()
-            : base(1, 10000 /* FIXME */, 12, TicksPerNonLeapYear, AverageTicksPerYear, TicksAtStartOfYear1Constant, Era.AnnoPersico)
+            : base(1, 31513, 12, DaysPerNonLeapYear * NodaConstants.TicksPerStandardDay,
+                   AverageTicksPerYear, TicksAtStartOfYear1Constant, Era.AnnoPersico)
         {
         }
 
@@ -138,6 +136,11 @@ namespace NodaTime.Calendars
             // would get us back to 1.
             long key = 1L << yearOfCycle;
             return (LeapYearPatternBits & key) > 0;
+        }
+
+        internal override int GetDaysInYear(int year)
+        {
+            return IsLeapYear(year) ? DaysPerLeapYear : DaysPerNonLeapYear;
         }
     }
 }
