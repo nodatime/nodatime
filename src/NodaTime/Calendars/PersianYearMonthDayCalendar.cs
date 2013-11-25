@@ -47,8 +47,7 @@ namespace NodaTime.Calendars
         }
 
         internal PersianYearMonthDayCalendar()
-            : base(1, 10000 /* FIXME */, 12, TicksPerNonLeapYear, AverageTicksPerYear, TicksAtStartOfYear1Constant,
-            new[] { Era.AnnoPersico })
+            : base(1, 10000 /* FIXME */, 12, TicksPerNonLeapYear, AverageTicksPerYear, TicksAtStartOfYear1Constant, Era.AnnoPersico)
         {
         }
 

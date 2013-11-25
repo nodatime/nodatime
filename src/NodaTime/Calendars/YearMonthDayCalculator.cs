@@ -17,8 +17,11 @@ namespace NodaTime.Calendars
         /// </summary>
         private readonly YearStartCacheEntry[] yearCache = new YearStartCacheEntry[YearStartCacheEntry.CacheSize];
 
-        private readonly IList<Era> eras;
-        internal IList<Era> Eras { get { return eras; } }
+        /// <summary>
+        /// Array of eras in this calculator; this is never mutated.
+        /// </summary>
+        private readonly Era[] eras;
+        internal Era[] Eras { get { return eras; } }
 
         private readonly int minYear;
         internal int MinYear { get { return minYear; } }
@@ -35,7 +38,7 @@ namespace NodaTime.Calendars
         internal long TicksAtStartOfYear1 { get { return ticksAtStartOfYear1; } }
 
         protected YearMonthDayCalculator(int minYear, int maxYear,
-            long averageTicksPerYear, long ticksAtStartOfYear1, IList<Era> eras)
+            long averageTicksPerYear, long ticksAtStartOfYear1, Era[] eras)
         {
             // We should really check the minimum year as well, but constructing it hurts my brain.
             Preconditions.CheckArgument(maxYear < YearStartCacheEntry.InvalidEntryYear, "maxYear",
@@ -165,7 +168,7 @@ namespace NodaTime.Calendars
         protected int GetEraIndex(Era era)
         {
             Preconditions.CheckNotNull(era, "era");
-            int index = Eras.IndexOf(era);
+            int index = Array.IndexOf(Eras, era);
             Preconditions.CheckArgument(index != -1, "era", "Era is not used in this calendar");
             return index;
         }

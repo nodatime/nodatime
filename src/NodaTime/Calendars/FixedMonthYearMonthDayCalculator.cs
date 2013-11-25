@@ -25,7 +25,7 @@ namespace NodaTime.Calendars
         private const long AverageTicksPerYear = (long)(365.25 * NodaConstants.TicksPerStandardDay);
 
         protected FixedMonthYearMonthDayCalculator(int minYear, int maxYear,
-            long ticksAtStartOfYear1, IList<Era> eras)
+            long ticksAtStartOfYear1, params Era[] eras)
             : base(minYear, maxYear, 13, 365 * NodaConstants.TicksPerStandardDay, AverageTicksPerYear,
                    ticksAtStartOfYear1, eras)
         {

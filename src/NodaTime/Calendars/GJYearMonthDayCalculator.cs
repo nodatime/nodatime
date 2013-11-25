@@ -33,7 +33,7 @@ namespace NodaTime.Calendars
         }
 
         protected GJYearMonthDayCalculator(int minYear, int maxYear, long averageTicksPerYear, long ticksAtStartOfYear1)
-            : base(minYear, maxYear, 12, 365 * NodaConstants.TicksPerStandardDay, averageTicksPerYear, ticksAtStartOfYear1, new[] { Era.BeforeCommon, Era.Common })
+            : base(minYear, maxYear, 12, 365 * NodaConstants.TicksPerStandardDay, averageTicksPerYear, ticksAtStartOfYear1, Era.BeforeCommon, Era.Common)
         {
         }
 
