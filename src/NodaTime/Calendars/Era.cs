@@ -43,6 +43,11 @@ namespace NodaTime.Calendars
         /// </summary>
         public static readonly Era AnnoHegirae = new Era("EH", "Eras_AnnoHegirae"); // AH
 
+        /// <summary>
+        /// The "Anno Persico" era. This is the sole era used in the Persian calendar.
+        /// </summary>
+        public static readonly Era AnnoPersico = new Era("AP", "Eras_AnnoPersico"); // AP
+
         private readonly string name;
         private readonly string resourceIdentifier;
 

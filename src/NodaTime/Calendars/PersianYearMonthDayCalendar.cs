@@ -41,14 +41,14 @@ namespace NodaTime.Calendars
                 int days = i <= 6 ? 31 : 30;
                 // This doesn't take account of leap years, but that doesn't matter - because
                 // it's not used on the last iteration, and leap years only affect the final month
-                // in the Perisan calendar.
+                // in the Persian calendar.
                 ticks += days * NodaConstants.TicksPerStandardDay;
             }
         }
 
         internal PersianYearMonthDayCalendar()
             : base(1, 10000 /* FIXME */, 12, TicksPerNonLeapYear, AverageTicksPerYear, TicksAtStartOfYear1Constant,
-            new[] { Era.AnnoHegirae } /* FIXME */)
+            new[] { Era.AnnoPersico })
         {
         }
 
@@ -67,13 +67,11 @@ namespace NodaTime.Calendars
 
             int days = DaysAtStartOfYear1 + cycle * DaysPerLeapCycle;
 
-            // We've got the days at the start of the cycle (e.g. at the start of year 1, 31, 61 etc).
+            // We've got the days at the start of the cycle (e.g. at the start of year 1, 34, 67 etc).
             // Now go from that year to (but not including) the year we're looking for, adding the right
-            // number of days in each year. So if we're trying to find the start of year 34, we would
-            // find the days at the start of year 31, then add the days *in* year 31, the days in year 32,
-            // and the days in year 33.
-            // If this ever proves to be a bottleneck, we could create an array for each IslamicLeapYearPattern
-            // with "the number of days for the first n years in a cycle".
+            // number of days in each year. So if we're trying to find the start of year 37, we would
+            // find the days at the start of year 34, then add the days *in* year 34, the days in year 35,
+            // and the days in year 36.
             for (int i = yearAtStartOfCycle; i < year; i++)
             {
                 days += GetDaysInYear(i);
