@@ -37,7 +37,7 @@ namespace NodaTime.Test.Calendars
         public void BclThroughHistory()
         {
             Calendar bcl = new PersianCalendar();
-            CalendarSystem noda = CalendarSystem.Persian;
+            CalendarSystem noda = CalendarSystem.GetPersianCalendar();
 
             for (int year = 1; year < 9378; year++)
             {
