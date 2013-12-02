@@ -111,12 +111,15 @@ namespace NodaTime.TimeZones
         private readonly Options options;
 
         /// <summary>
-        /// Returns the interval over which this comparer operates; visible for testing.
+        /// Returns the interval over which this comparer operates.
         /// </summary>
+        [VisibleForTesting]
         internal Interval IntervalForTest { get { return interval; } }
+
         /// <summary>
-        /// Returns the options used by this comparer; visible for testing.
+        /// Returns the options used by this comparer.
         /// </summary>
+        [VisibleForTesting]
         internal Options OptionsForTest { get { return options; } }
 
         private readonly ZoneIntervalEqualityComparer zoneIntervalComparer;

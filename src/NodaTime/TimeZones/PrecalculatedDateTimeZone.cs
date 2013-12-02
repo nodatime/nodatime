@@ -4,6 +4,7 @@
 
 using System;
 using System.Collections.Generic;
+using NodaTime.Annotations;
 using NodaTime.TimeZones.IO;
 using NodaTime.Utility;
 
@@ -27,11 +28,11 @@ namespace NodaTime.TimeZones
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PrecalculatedDateTimeZone"/> class.
-        /// This is only visible to make testing simpler.
         /// </summary>
         /// <param name="id">The id.</param>
         /// <param name="periods">The periods.</param>
         /// <param name="tailZone">The tail zone.</param>
+        [VisibleForTesting]
         internal PrecalculatedDateTimeZone(string id, ZoneInterval[] periods, DateTimeZone tailZone)
             : base(id, false,
                    ComputeOffset(periods, tailZone, Offset.Min),
