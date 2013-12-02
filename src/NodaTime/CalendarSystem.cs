@@ -117,7 +117,7 @@ namespace NodaTime
         private static readonly Dictionary<string, Func<CalendarSystem>> IdToFactoryMap = new Dictionary<string, Func<CalendarSystem>>
         {
             { "ISO", () => Iso },
-            { "Persian", () => GetPersianCalendar() },
+            { "Persian", GetPersianCalendar },
             { "Gregorian 1", () => GetGregorianCalendar(1) },
             { "Gregorian 2", () => GetGregorianCalendar(2) },
             { "Gregorian 3", () => GetGregorianCalendar(3) },
