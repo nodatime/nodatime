@@ -176,7 +176,7 @@ namespace NodaTime
         /// A complicated algorithmic alternative approach exists, proposed by Ahmad Birashk,
         /// but this isn't generally used in society. The implementation here is somewhat simpler, using a
         /// 33-year leap cycle, where years  1, 5, 9, 13, 17, 22, 26, and 30 in each cycle are leap years.
-        /// This is the same approach taken by the BCL <see cref="PersianCalendar"/> class, and the dates of
+        /// This is the same approach taken by the BCL <c>PersianCalendar</c> class, and the dates of
         /// this implementation align exactly with the BCL implementation.
         /// </remarks>
         public static CalendarSystem GetPersianCalendar()
