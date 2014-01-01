@@ -113,6 +113,7 @@
     <OutputPath>bin\Release Portable\</OutputPath>
     <DefineConstants>TRACE;PCL</DefineConstants>
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+    <DocumentationFile>bin\Release Portable\NodaTime.xml</DocumentationFile>
     <Optimize>true</Optimize>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <DebugType>pdbonly</DebugType>
