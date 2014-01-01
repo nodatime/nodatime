@@ -143,11 +143,12 @@ This will create:
 
 ## Publishing the artifacts
 
-Upload the source and release zipfiles to the
-[Google Code project](http://code.google.com/p/noda-time/downloads/list).
-Use the `Type-Source` label for the source zipfile, and the `Type-Archive` and
-`Featured` labels for the release zipfile.  Remove `Featured` from the previous
-binary zipfile.
+Upload the source and release zipfiles to the project website, under
+the `downloads` directory. (This directory is not mapped in the main source
+control repository ; typically Jon does this on Bagpuss.)
+
+Edit the `www/downloads.html` file to include the new downloads,
+including SHA-1 hash.
 
 Update the version number and the links on the front page to point to the new
 downloads.
