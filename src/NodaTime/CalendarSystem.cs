@@ -179,6 +179,7 @@ namespace NodaTime
         /// This is the same approach taken by the BCL <c>PersianCalendar</c> class, and the dates of
         /// this implementation align exactly with the BCL implementation.
         /// </remarks>
+        /// <returns>A Persian calendar system.</returns>
         public static CalendarSystem GetPersianCalendar()
         {
             // Note: this is a method rather than a property as we may wish to overload it to allow a choice
