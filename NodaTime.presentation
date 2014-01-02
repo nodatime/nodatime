@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PresentationStyles>
+    <PresentationStyle ID="NodaTime" Title="NodaTime Style" BasePath="%STYLE_DIR%">
+
+        <Description>This is my custom presentation style.</Description>
+
+        <SupportedFormats>
+            <Format Type="HtmlHelp1" />
+            <Format Type="MSHelp2" />
+            <Format Type="MSHelpViewer" />
+            <Format Type="Website" />
+        </SupportedFormats>
+
+        <HelpContent>
+            <Files Source="icons\*.*" Destination="icons" />
+            <Files Source="scripts\*.*" />
+            <Files Source="styles\*.*" />
+        </HelpContent>
+
+        <ResourceItems Path="Content">
+            <ToolResourceItems Path="SharedContent" />
+        </ResourceItems>
+
+        <DocumentModelTransformation File="%DXROOT%\ProductionTransforms\ApplyVSDocModel.xsl">
+            <Parameter Name="IncludeAllMembersTopic" Value="true" />
+            <Parameter Name="IncludeInheritedOverloadTopics" Value="false" />
+            <Parameter Name="project" Value="{@ProjectNodeIDOptional}" />
+        </DocumentModelTransformation>
+
+        <IntermediateTOCTransformation File="%DXROOT%\ProductionTransforms\CreateVSToc.xsl" />
+        <ConceptualBuildConfiguration File="%SHFBROOT%\Templates\Conceptual.config" />
+        <ReferenceBuildConfiguration File="%SHFBROOT%\Templates\VS2010.config" />
+
+        <TransformComponentArguments>
+            <Argument Key="logoFile" ForConceptualBuild="true"
+                    ForReferenceBuild="true" Value=""
+                    Description="An optional logo file to insert into the topic headers.
+Specify the filename only, omit the path.  Place the file in your project in an Icons\
+folder and set the Build Action to Content.  If blank, no logo will appear in the topic
+headers."/>
+            <Argument Key="logoHeight" ForConceptualBuild="true"
+                    ForReferenceBuild="true" Value=""
+                    Description="An optional logo height.  If left blank, the actual logo
+image height is used."/>
+            <Argument Key="logoWidth" ForConceptualBuild="true"
+                    ForReferenceBuild="true" Value=""
+                    Description="An optional logo width.  If left blank, the actual logo
+image width is used."/>
+            <Argument Key="logoAltText" ForConceptualBuild="true"
+                    ForReferenceBuild="true" Value=""
+                    Description="Optional logo alternate text.  If left blank, no alternate
+text is added."/>
+            <Argument Key="logoPlacement" ForConceptualBuild="true"
+                    ForReferenceBuild="true" Value="left"
+                    Description="An optional logo placement.  Specify left, right, or above.
+If not specified, the default is left."/>
+            <Argument Key="logoAlignment" ForConceptualBuild="true"
+                    ForReferenceBuild="true" Value="left"
+                    Description="An optional logo alignment when using the 'above'
+placement option.  Specify left, right, or center.  If not specified, the default is left."/>
+            <Argument Key="complexParameter" ForConceptualBuild="false"
+                    ForReferenceBuild="true"
+                    Description="An example argument containing XML content">
+                <extraInfo name="intValue" value="1" />
+                <extraInfo name="stringValue" value="XYZ" />
+            </Argument>
+        </TransformComponentArguments>
+    </PresentationStyle>
+</PresentationStyles>

@@ -49,7 +49,7 @@ Joda Time is the industry standard date and time handling library for Java. Noda
         </component>
       </ComponentConfig>
     </ComponentConfigurations>
-    <PresentationStyle>Prototype</PresentationStyle>
+    <PresentationStyle>NodaTime</PresentationStyle>
     <FrameworkVersion>.NET Framework 3.5</FrameworkVersion>
     <BuildAssemblerVerbosity>OnlyWarningsAndErrors</BuildAssemblerVerbosity>
     <IndentHtml>False</IndentHtml>
@@ -58,6 +58,10 @@ Joda Time is the industry standard date and time handling library for Java. Noda
     <CppCommentsFixup>False</CppCommentsFixup>
     <CleanIntermediates>True</CleanIntermediates>
     <VisibleItems>InheritedMembers, Protected, SealedProtected</VisibleItems>
+    <SyntaxFilters>Standard</SyntaxFilters>
+    <SdkLinkTarget>Blank</SdkLinkTarget>
+    <RootNamespaceContainer>False</RootNamespaceContainer>
+    <ContentPlacement>AboveNamespaces</ContentPlacement>
   </PropertyGroup>
   <!-- There are no properties for these groups.  AnyCPU needs to appear in
        order for Visual Studio to perform the build.  The others are optional

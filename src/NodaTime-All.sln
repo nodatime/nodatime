@@ -29,6 +29,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NodaTime.Tools.AnnotationDo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NodaTime.Benchmarks.Analyzer", "NodaTime.Benchmarks.Analyzer\NodaTime.Benchmarks.Analyzer.csproj", "{C20855DB-C1B4-4349-8325-DABE36FDDDD0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NodaTime.Tools.SandcastleStyleTweaker", "NodaTime.Tools.SandcastleStyleTweaker\NodaTime.Tools.SandcastleStyleTweaker.csproj", "{BD941E4C-CD4F-4C33-9E95-CB72E97C421E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NodaTime.Tools.VersionDocumentor", "NodaTime.Tools.VersionDocumentor\NodaTime.Tools.VersionDocumentor.csproj", "{828F1038-EDAF-405A-80AD-D479C215EE0B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug Portable|Any CPU = Debug Portable|Any CPU
@@ -418,6 +422,60 @@ Global
 		{C20855DB-C1B4-4349-8325-DABE36FDDDD0}.Signed Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{C20855DB-C1B4-4349-8325-DABE36FDDDD0}.Signed Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{C20855DB-C1B4-4349-8325-DABE36FDDDD0}.Signed Release|x86.ActiveCfg = Release|Any CPU
+		{BD941E4C-CD4F-4C33-9E95-CB72E97C421E}.Debug Portable|Any CPU.ActiveCfg = Debug|Any CPU
+		{BD941E4C-CD4F-4C33-9E95-CB72E97C421E}.Debug Portable|Any CPU.Build.0 = Debug|Any CPU
+		{BD941E4C-CD4F-4C33-9E95-CB72E97C421E}.Debug Portable|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{BD941E4C-CD4F-4C33-9E95-CB72E97C421E}.Debug Portable|x86.ActiveCfg = Debug|Any CPU
+		{BD941E4C-CD4F-4C33-9E95-CB72E97C421E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BD941E4C-CD4F-4C33-9E95-CB72E97C421E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BD941E4C-CD4F-4C33-9E95-CB72E97C421E}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{BD941E4C-CD4F-4C33-9E95-CB72E97C421E}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{BD941E4C-CD4F-4C33-9E95-CB72E97C421E}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{BD941E4C-CD4F-4C33-9E95-CB72E97C421E}.Release Portable|Any CPU.ActiveCfg = Release|Any CPU
+		{BD941E4C-CD4F-4C33-9E95-CB72E97C421E}.Release Portable|Any CPU.Build.0 = Release|Any CPU
+		{BD941E4C-CD4F-4C33-9E95-CB72E97C421E}.Release Portable|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{BD941E4C-CD4F-4C33-9E95-CB72E97C421E}.Release Portable|x86.ActiveCfg = Release|Any CPU
+		{BD941E4C-CD4F-4C33-9E95-CB72E97C421E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BD941E4C-CD4F-4C33-9E95-CB72E97C421E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BD941E4C-CD4F-4C33-9E95-CB72E97C421E}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{BD941E4C-CD4F-4C33-9E95-CB72E97C421E}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{BD941E4C-CD4F-4C33-9E95-CB72E97C421E}.Release|x86.ActiveCfg = Release|Any CPU
+		{BD941E4C-CD4F-4C33-9E95-CB72E97C421E}.Signed Release Portable|Any CPU.ActiveCfg = Release|Any CPU
+		{BD941E4C-CD4F-4C33-9E95-CB72E97C421E}.Signed Release Portable|Any CPU.Build.0 = Release|Any CPU
+		{BD941E4C-CD4F-4C33-9E95-CB72E97C421E}.Signed Release Portable|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{BD941E4C-CD4F-4C33-9E95-CB72E97C421E}.Signed Release Portable|x86.ActiveCfg = Release|Any CPU
+		{BD941E4C-CD4F-4C33-9E95-CB72E97C421E}.Signed Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BD941E4C-CD4F-4C33-9E95-CB72E97C421E}.Signed Release|Any CPU.Build.0 = Release|Any CPU
+		{BD941E4C-CD4F-4C33-9E95-CB72E97C421E}.Signed Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{BD941E4C-CD4F-4C33-9E95-CB72E97C421E}.Signed Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{BD941E4C-CD4F-4C33-9E95-CB72E97C421E}.Signed Release|x86.ActiveCfg = Release|Any CPU
+		{828F1038-EDAF-405A-80AD-D479C215EE0B}.Debug Portable|Any CPU.ActiveCfg = Debug|Any CPU
+		{828F1038-EDAF-405A-80AD-D479C215EE0B}.Debug Portable|Any CPU.Build.0 = Debug|Any CPU
+		{828F1038-EDAF-405A-80AD-D479C215EE0B}.Debug Portable|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{828F1038-EDAF-405A-80AD-D479C215EE0B}.Debug Portable|x86.ActiveCfg = Debug|Any CPU
+		{828F1038-EDAF-405A-80AD-D479C215EE0B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{828F1038-EDAF-405A-80AD-D479C215EE0B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{828F1038-EDAF-405A-80AD-D479C215EE0B}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{828F1038-EDAF-405A-80AD-D479C215EE0B}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{828F1038-EDAF-405A-80AD-D479C215EE0B}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{828F1038-EDAF-405A-80AD-D479C215EE0B}.Release Portable|Any CPU.ActiveCfg = Release|Any CPU
+		{828F1038-EDAF-405A-80AD-D479C215EE0B}.Release Portable|Any CPU.Build.0 = Release|Any CPU
+		{828F1038-EDAF-405A-80AD-D479C215EE0B}.Release Portable|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{828F1038-EDAF-405A-80AD-D479C215EE0B}.Release Portable|x86.ActiveCfg = Release|Any CPU
+		{828F1038-EDAF-405A-80AD-D479C215EE0B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{828F1038-EDAF-405A-80AD-D479C215EE0B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{828F1038-EDAF-405A-80AD-D479C215EE0B}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{828F1038-EDAF-405A-80AD-D479C215EE0B}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{828F1038-EDAF-405A-80AD-D479C215EE0B}.Release|x86.ActiveCfg = Release|Any CPU
+		{828F1038-EDAF-405A-80AD-D479C215EE0B}.Signed Release Portable|Any CPU.ActiveCfg = Release|Any CPU
+		{828F1038-EDAF-405A-80AD-D479C215EE0B}.Signed Release Portable|Any CPU.Build.0 = Release|Any CPU
+		{828F1038-EDAF-405A-80AD-D479C215EE0B}.Signed Release Portable|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{828F1038-EDAF-405A-80AD-D479C215EE0B}.Signed Release Portable|x86.ActiveCfg = Release|Any CPU
+		{828F1038-EDAF-405A-80AD-D479C215EE0B}.Signed Release|Any CPU.ActiveCfg = Release|Any CPU
+		{828F1038-EDAF-405A-80AD-D479C215EE0B}.Signed Release|Any CPU.Build.0 = Release|Any CPU
+		{828F1038-EDAF-405A-80AD-D479C215EE0B}.Signed Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{828F1038-EDAF-405A-80AD-D479C215EE0B}.Signed Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{828F1038-EDAF-405A-80AD-D479C215EE0B}.Signed Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
