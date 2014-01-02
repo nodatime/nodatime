@@ -61,6 +61,7 @@ syntax:regexp
 # Generated web site
 ^www/_site/
 
-# Generated offline userguide
+# Temporary build output directories
 ^tmpdocs
 ^tzdbtmp
+^SandcastleStyleTmp
