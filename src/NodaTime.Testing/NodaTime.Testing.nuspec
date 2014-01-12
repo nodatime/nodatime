@@ -6,7 +6,7 @@
     <authors>Jon Skeet</authors>
     <owners>Jon Skeet</owners>
     <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
-    <projectUrl>http://noda-time.googlecode.com</projectUrl>
+    <projectUrl>http://nodatime.org/</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <!-- Note: line breaks in the description element are preserved, hence
          the long lines here. -->
