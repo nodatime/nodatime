@@ -6,18 +6,20 @@ weight: 3050
 ---
 
 The history of time contains many amusing quirks. In many cases, Noda Time
-doesn't make any attempt to support the oddity described below. In
+doesn't make any attempt to support the oddities described below. In
 particular, Noda Time takes an idealized view of calendar systems, ignoring
-changes specific countries made to which calendar they used when. Still,
-it's fun to think about what's happened in history, if only to persuade you
-that it would be much worse if Noda Time *did* try to support them...
+(for example) the fact that countries have switched between calendar systems
+(and sometimes *invented* calendar systems) at various points in recent
+history. Still, it's fun to think about what's happened over time, if only
+to persuade you that it would be much worse if Noda Time *did* try to
+support them...
 
 More will be added as I discover them.
 
 The Curious Disappearance of December 30th (Samoa)
 ---
 
-In 2011, Samoa (time zone ID Pacific/Apia) decided to change their UTC
+In 2011, Samoa (time zone ID `Pacific/Apia`) decided to change their UTC
 offset from UTC-10 to UTC+14. This means they went from being the
 western-most time zone (the further behind UTC) to the eastern-most time
 zone (the furthest ahead of UTC). This took place at midnight local time at
@@ -30,8 +32,8 @@ was:
 - 2011-12-31T00:00:01+14
 - 2011-12-31T00:00:02+14
 
-As an act, it makes a certain amount of sense: Samoa does a lot of trade
-with Australia and New Zealand, and I can imagine it was a pain being a day
+As an act, it made a certain amount of sense: Samoa does a lot of trade with
+Australia and New Zealand, and I can imagine it was a pain being a day
 behind them most of the time. Additionally, this means that hotels in Samoa
 can offer the experience of being "the first to experience the New Year" for
 tourists who are particularly keen on that sort of thing.
@@ -42,11 +44,12 @@ which made December 30th not occur at all. I suspect that a transition at
 followed by a day lasting twenty one hours. While this is mostly a problem
 for computers, I would expect many automated systems to get thoroughly
 confused by a day not happening at all. (The counter-argument is that it's
-possible that few automated systems would cope with two significantly
+possible that a few automated systems would cope with two significantly
 shorter days, too...)
 
-Pacific/Apia isn't the only time zone to have made this sort of transition,
-although it is the largest population to do so, as far as I'm aware.  
+`Pacific/Apia` isn't the only time zone to have made this sort of
+transition, although it is the largest population to do so, as far as I'm
+aware.
 
 **Noda Time support:** fully supported!
 `DateTimeZoneProviders.Tzdb["Pacific/Apia"].AtStartOfDay(new LocalDate(2011,
@@ -66,20 +69,19 @@ divisible by 100, except that what it's also divisible by 400 it *is* a leap
 year again. This system was devised to keep the length of a calendar year
 very close to the solar year. It's more accurate than the Julian calendar
 system, which simply has every 4th year being a leap year. This is a little
-bit like 3 being a very bad approximation for pi, but 22/7 being more
-complicated by more accurate. In this case, it means that there are more
-leap years in the Julian calendar system than in the Gregorian calendar
-system: if you run the two side-by-side from the same start date, the
-Gregorian system will gradually get further ahead of the Julian system by
-including fewer February 29th days.
+bit like 3 being a very bad approximation for π, while 22/7 is more accurate
+but also more complicated. In this case, it means that there are more leap
+years in the Julian calendar system than in the Gregorian calendar system:
+if you run the two side-by-side from the same start date, the Gregorian
+system will gradually get further ahead of the Julian system by including
+fewer February 29th days.
 
 Many countries switched from the Julian calendar system to the Gregorian
-calendar system in the 18th century. They did so at varying points of time,
-but most made the change by skipping ten or eleven days to "catch up" with
-where the Gregorian calendar would be if the two calendars had both started
-with the same date at some point in the 3rd century AD. For example, Great
-Britain made the change in September 1752. September 2nd was followed by
-September 14th.
+calendar system in the 16th and 18th centuries.  Most made this change by
+skipping ten or eleven days to "catch up" with where the Gregorian calendar
+would be if the two calendars had both started with the same date at some
+point in the 3rd century AD. For example, when Great Britain made the change
+in September 1752, September 2nd was followed by September 14th.
 
 Sweden did things a little differently. Rather than skipping lots of days
 all in one go, they decided to skip February 29th altogether from 1700,
@@ -102,11 +104,12 @@ leap year in 1704 and 1708.
 
 At this point the Swedes apparently realized they were in a crazy situation,
 and decided to go back to the Julian calendar. In order to do that, they had
-to insert an extra leap day into their calendar. They could have done so in
-a regular year (1710 for example), just making that an extra leap year - but
-no, they decided to make 1712 a *double* leap year, by giving February 30
-days. Sweden made the final change to the Gregorian calendar in the "normal"
-way of skipping 11 days, in February 1753.
+to to insert the leap year they'd missed in 1700 back into their calendar.
+They could have done so in a regular year (1710 for example), just making
+that an extra leap year - but no, they decided to make 1712 a *double* leap
+year, by giving February 30 days. Sweden made the final change to the
+Gregorian calendar in the "normal" way of skipping 11 days, in February
+1753.
 
 So there we have it: February 30th was only a valid date once, and in one
 place: 1712 in Sweden.
@@ -128,23 +131,23 @@ UTC<sup>1</sup>. Those who are aware that UTC itself was only introduced in
 it was midnight on January 1st 1970 at Greenwich, expecting that Greenwich
 would be using GMT (Greenwich Mean Time) at the epoch.
 
-Unfortunately that's incorrect. At the Unix epoch, the time in London was
-observing British Standard Time, as introduced in 1968. During British
-Standard Time, the United Kingdom did not observe daylight saving, but
-instead used UTC+1 for the entire period, until it was scrapped in 1971.
+Unfortunately, that's incorrect. At the Unix epoch, the time in London was
+observing British *Standard* Time, which had been introduced in 1968. During
+British Standard Time, the United Kingdom did not observe daylight saving,
+but instead used UTC+1 for the entire period, until it was scrapped in 1971.
 
-Thus there are two time zone abbreviations of "BST" - "British Standard
-Time" and the rather more common "British Summer Time". Both have an overall
-offset from UTC of 1 hour, but British Standard Time  has a "standard"
-offset of 1 hour from UTC with no daylight saving component, and British
-Summer Time has a standard offset of 0 hours from UTC, but one hour of
-daylight saving time.  
+There are thus two British time zones abbreviated to "BST" - "British
+Standard Time" and the rather more common "British Summer Time". Both have
+an overall offset from UTC of 1 hour, but British Standard Time  has a
+"standard" offset of 1 hour from UTC with no daylight saving component, and
+British Summer Time has a standard offset of 0 hours from UTC, but one hour
+of daylight saving time.
 
 The Java standard library has a [known
-bug](http://developer.java.sun.com/developer/bugParade/bugs/4832236.html) on
-this matter. When formatting the Unix epoch in the Europe/London time zone,
-it correctly gives output of 1am, but incorrectly states that the time zone
-abbreviation is GMT.
+bug](http://bugs.java.com/view_bug.do?bug_id=4832236) on this matter. When
+formatting the Unix epoch in the `Europe/London` time zone, it correctly
+gives output of 1am, but incorrectly states that the time zone abbreviation
+is GMT.
 
 **Noda Time support:** Correct, but only by virtue of writing this article.
 Until late January 2014, the time zone data compiler considered a time zone
@@ -185,8 +188,10 @@ becomes the next.
 
 **Noda Time support:** Although `LocalTime` supports the idea of midnight,
 if you want to convert a `LocalDate` into a `ZonedDateTime`, you'd typically
-use noda-method://NodaTime.DateTimeZone.AtStartOfDay` which avoids the
-problem - so long as the date hasn't been skipped as we saw earlier...
+use
+[`DateTimeZone.AtStartOfDay`](noda-method://NodaTime.DateTimeZone.AtStartOfDay)
+which avoids the problem - so long as the date hasn't been skipped as we saw
+earlier...
 
 Which year is it anyway?
 ---
@@ -221,9 +226,9 @@ remained ever since.
 
 All of this means that when you see a date in history, you need to be very
 careful before you compare it with another date. To avoid *too* much
-confusion, many historical dates are given using the Julian calendar which
-was being observed at the time (depending on the place, of course) but using
-the "New Style" of year numbering. For example, [Henry
+confusion, many historical dates are given using the Julian calendar, which
+was being observed at the time (depending on the place, of course), while
+using the "New Style" of year numbering. For example, [Henry
 VIII](http://en.wikipedia.org/wiki/Henry_VIII_of_England) died on January
 28th 1547 (New Style) or January 28th 1546 (Old Style). In my experience,
 some web pages explicitly call out which numbering style they're using,
@@ -234,9 +239,9 @@ It's unclear to me at the moment whether before 1752, January 1st was still
 celebrated as "the New Year". It wouldn't be the New Year according to the
 obvious definition ("when the year number changes") but given that humanity
 never seems to miss a chance for a party, I suspect there were festivities
-anyway. 
+anyway.
 
-**Noda Time support**: Definitely not, although it would be *possible*... 
+**Noda Time support**: Definitely not, although it would be *possible*...
 
 **Read more:**
 
@@ -245,11 +250,12 @@ anyway.
 - [Wikipedia: Old and New Style
   dates](http://en.wikipedia.org/wiki/Old_Style_and_New_Style_dates)
 - [Malcolm Rowe's write-up in
-  Google+](https://plus.google.com/u/0/+MalcolmRowe/posts/Bf5swesMPUV)
+  Google+](https://plus.google.com/+MalcolmRowe/posts/Bf5swesMPUV)
 
 <sup>1</sup> When I say "we" here, I really mean "Malcolm" who did most of
 the work on understanding this issue based on Wikipedia and primary
-sources...  <sup>2</sup> Possibly 1800, possibly 1801 - we haven't found
+sources...
+<sup>2</sup> Possibly 1800, possibly 1801 - we haven't found
 details yet, and it would depend on whether the Treasury was considering the
 *tax* year for 1800, or the *calendar* year for 1800 to be a leap year.
 
@@ -276,25 +282,25 @@ Since then, I've learned that this isn't as rare an occurrence as one would
 hope - and that 11 days is quite a lot of notice compared with some
 examples. In 2013, both Morocco and Libya gave less than a day's notice that
 they were changing their time zone rules, leaving a certain amount of
-confusion in their wake.  
+confusion in their wake.
 
 **Noda Time support:** Well, there are five steps which need to occur
 between a change being announced and Noda Time supporting it in production:
 
-- The change is announced in a suitably credible manner
-- The change is committed within the TZDB source repository
-- The TZDB maintainers release a new version
-- I run a script to pull the latest version from TZDB, build it as an NZD
-  file and push it to the Noda Time web site
-- The system in question pulls the latest version from the web site and
-  [starts using it](tzdb.html)
+1. The change is announced in a suitably credible manner
+2. The change is committed within the TZDB source repository
+3. The TZDB maintainers release a new version
+4. I run a script to pull the latest version from TZDB, build it as an NZD
+   file and push it to the Noda Time web site
+5. The system in question pulls the latest version from the web site and
+   [starts using it](tzdb.html)
 
 As you can see, this depends on a lot of different people, so some delay is
 inevitable. However, if your application is configured to poll the web site
 reasonably often (once a day, for example) you're likely to see changes
-applied within a week of them being announced. That's considerably quicker
-than Microsoft typically deploys changes to the *Windows* time zone
-database... 
+applied within a week of them being announced (and of course, you can always
+build the NZD file yourself). That's considerably quicker than Microsoft
+typically deploys changes to the *Windows* time zone database...
 
 **Read more:**
 
