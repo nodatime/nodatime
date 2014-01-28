@@ -59,9 +59,13 @@ namespace NodaTime.TzdbCompiler.Tzdb
         /// </summary>
         /// <remarks>
         /// To be a transition from another the instant at which the transition occurs must be
-        /// greater than the given transition's and either the wall offset or the name must be
-        /// different. If this is not true then this transition is considered to be redundant
-        /// and should not be used.
+        /// greater than the given transition's and at least one aspect out of (name, standard
+        /// offset, wall offset) must differ. If this is not true then this transition is considered
+        /// to be redundant and should not be used. Note that there are a few transitions which
+        /// keep the same wall offset and name, but differ in how that wall offset is divided into
+        /// daylight saving and standard components. One notable example of this is October 27th 1968, when
+        /// the UK went from "British Summer Time" (BST, standard=0, daylight=1) to "British Standard Time"
+        /// (BST, standard=1, daylight=0).
         /// </remarks>
         /// <param name="other">The <see cref="ZoneTransition"/> to compare to.</param>
         /// <returns>
@@ -73,7 +77,9 @@ namespace NodaTime.TzdbCompiler.Tzdb
             {
                 return true;
             }
-            return Instant > other.Instant && (WallOffset != other.WallOffset || Name != other.Name);
+            bool later = Instant > other.Instant;
+            bool different = Name != other.Name || StandardOffset != other.StandardOffset || Savings != other.Savings;
+            return later && different;
         }
 
         #region Object overrides
