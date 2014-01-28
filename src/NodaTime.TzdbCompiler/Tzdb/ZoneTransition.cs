@@ -77,8 +77,9 @@ namespace NodaTime.TzdbCompiler.Tzdb
             {
                 return true;
             }
-            return Instant > other.Instant &&
-                WallOffset != other.WallOffset || Name != other.Name || StandardOffset != other.StandardOffset;
+            bool later = Instant > other.Instant;
+            bool different = Name != other.Name || StandardOffset != other.StandardOffset || Savings != other.Savings;
+            return later && different;
         }
 
         #region Object overrides
