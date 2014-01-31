@@ -178,7 +178,7 @@ namespace NodaTime
         /// <summary>
         /// Gets a <see cref="LocalDateTime" /> at midnight on the date represented by this local date.
         /// </summary>
-        /// <returns>The <see cref="LocalDateTime" /> representing midnight on tthis local date, in the same calendar
+        /// <returns>The <see cref="LocalDateTime" /> representing midnight on this local date, in the same calendar
         /// system.</returns>
         [Pure]
         public LocalDateTime AtMidnight()
