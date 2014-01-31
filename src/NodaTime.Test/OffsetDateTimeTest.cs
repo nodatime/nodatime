@@ -261,5 +261,16 @@ namespace NodaTime.Test
         {
             TestHelper.AssertXmlInvalid<OffsetDateTime>(xml, expectedExceptionType);
         }
+
+        [Test]
+        public void WithOffset()
+        {
+            LocalDateTime morning = new LocalDateTime(2014, 1, 31, 9, 30);
+            OffsetDateTime original = new OffsetDateTime(morning, Offset.FromHours(-8));
+            LocalDateTime evening = new LocalDateTime(2014, 1, 31, 19, 30);
+            Offset newOffset = Offset.FromHours(2);
+            OffsetDateTime expected = new OffsetDateTime(evening, newOffset);
+            Assert.AreEqual(expected, original.WithOffset(newOffset));
+        }
     }
 }
