@@ -245,6 +245,19 @@ namespace NodaTime
         }
 
         /// <summary>
+        /// Creates a new OffsetDateTime representing the instant in time in the same calendar,
+        /// but with a different offset. The local date and time is adjusted accordingly.
+        /// </summary>
+        /// <param name="offset">The new offset to use.</param>
+        /// <returns>The converted OffsetDateTime.</returns>
+        [Pure]
+        public OffsetDateTime WithOffset(Offset offset)
+        {
+            LocalDateTime newLocalDateTime = new LocalDateTime(LocalDateTime.LocalInstant.Minus(this.Offset).Plus(offset), Calendar);
+            return new OffsetDateTime(newLocalDateTime, offset);
+        }
+        
+        /// <summary>
         /// Returns a hash code for this local date.
         /// </summary>
         /// <returns>A hash code for this local date.</returns>
