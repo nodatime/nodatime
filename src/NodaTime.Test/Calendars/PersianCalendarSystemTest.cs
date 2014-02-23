@@ -33,7 +33,7 @@ namespace NodaTime.Test.Calendars
         /// <summary>
         /// This tests every day for 9000 (ISO) years, testing various aspects of each date.
         /// </summary>
-        [Test]
+        [Test, Timeout(300000)] // Can take a long time under NCrunch.
         public void BclThroughHistory()
         {
             Calendar bcl = new PersianCalendar();
