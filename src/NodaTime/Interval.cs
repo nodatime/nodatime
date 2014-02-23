@@ -154,13 +154,14 @@ namespace NodaTime
         }
 
         /// <summary>
-        /// Returns a string representation of this interval. The format of this string is
-        /// not yet specified, and may change without notice. 
+        /// Returns a string representation of this interval, in extended ISO-8601 format: the format
+        /// is "start/end" where each instant is uses a format of "yyyy'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFF'Z'".
         /// </summary>
         /// <returns>A string representation of this interval.</returns>
         public override string ToString()
         {
-            return string.Format("Interval: [{0}, {1})", Start, End);
+            var pattern = InstantPattern.ExtendedIsoPattern;
+            return pattern.Format(Start) + "/" + pattern.Format(End);
         }
         #endregion
 
