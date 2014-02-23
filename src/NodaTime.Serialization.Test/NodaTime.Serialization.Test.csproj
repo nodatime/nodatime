@@ -82,9 +82,11 @@
     <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="JsonNet\ExtensionsTest.cs" />
     <Compile Include="JsonNet\NodaConverterBaseTest.cs" />
     <Compile Include="JsonNet\NodaDateTimeZoneConverterTest.cs" />
     <Compile Include="JsonNet\NodaInstantConverterTest.cs" />
+    <Compile Include="JsonNet\NodaIsoIntervalConverterTest.cs" />
     <Compile Include="JsonNet\NodaIntervalConverterTest.cs" />
     <Compile Include="JsonNet\NodaConvertersTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -2,8 +2,9 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-using System;
 using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
 
 namespace NodaTime.Serialization.JsonNet
 {
@@ -82,6 +83,50 @@ namespace NodaTime.Serialization.JsonNet
 
             // return to allow fluent chaining if desired
             return serializer;
+        }
+
+        /// <summary>
+        /// Configures the given serializer settings to use <see cref="NodaConverters.IsoIntervalConverter"/>.
+        /// Any other converters which can convert <see cref="Interval"/> are removed from the serializer.
+        /// </summary>
+        /// <param name="settings">The existing serializer settings to add Noda Time converters to.</param>
+        /// <returns>The original <paramref name="settings"/> value, for further chaining.</returns>
+        public static JsonSerializerSettings WithIsoIntervalConverter(this JsonSerializerSettings settings)
+        {
+            if (settings == null)
+            {
+                throw new ArgumentNullException("settings");
+            }
+            ReplaceExistingConverters<Interval>(settings.Converters, NodaConverters.IsoIntervalConverter);
+            return settings;
+        }
+
+        /// <summary>
+        /// Configures the given serializer to use <see cref="NodaConverters.IsoIntervalConverter"/>.
+        /// Any other converters which can convert <see cref="Interval"/> are removed from the serializer.
+        /// </summary>
+        /// <param name="serializer">The existing serializer to add Noda Time converters to.</param>
+        /// <returns>The original <paramref name="serializer"/> value, for further chaining.</returns>
+        public static JsonSerializer WithIsoIntervalConverter(this JsonSerializer serializer)
+        {
+            if (serializer == null)
+            {
+                throw new ArgumentNullException("serializer");
+            }
+            ReplaceExistingConverters<Interval>(serializer.Converters, NodaConverters.IsoIntervalConverter);
+            return serializer;
+        }
+
+        private static void ReplaceExistingConverters<T>(IList<JsonConverter> converters, JsonConverter newConverter)
+        {
+            for (int i = converters.Count - 1; i >= 0; i--)
+            {
+                if (converters[i].CanConvert(typeof(T)))
+                {
+                    converters.RemoveAt(i);
+                }
+            }
+            converters.Add(newConverter);
         }
     }
 }
