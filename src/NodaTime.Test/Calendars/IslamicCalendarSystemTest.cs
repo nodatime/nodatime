@@ -297,7 +297,7 @@ namespace NodaTime.Test.Calendars
         /// <summary>
         /// This tests every day for 9000 (ISO) years, to check that it always matches the year, month and day.
         /// </summary>
-        [Test, Ignore("Takes a long time")]
+        [Test, Timeout(180000)] // Can take a long time under NCrunch.
         public void BclThroughHistory()
         {
             Calendar hijri = new HijriCalendar();
