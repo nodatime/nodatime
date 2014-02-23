@@ -30,17 +30,7 @@ namespace NodaTime.Serialization.JsonNet
                 throw new ArgumentNullException("provider");
             }
             // Add our converters
-            settings.Converters.Add(NodaConverters.InstantConverter);
-            settings.Converters.Add(NodaConverters.IntervalConverter);
-            settings.Converters.Add(NodaConverters.LocalDateConverter);
-            settings.Converters.Add(NodaConverters.LocalDateTimeConverter);
-            settings.Converters.Add(NodaConverters.LocalTimeConverter);
-            settings.Converters.Add(NodaConverters.OffsetConverter);
-            settings.Converters.Add(NodaConverters.CreateDateTimeZoneConverter(provider));
-            settings.Converters.Add(NodaConverters.DurationConverter);
-            settings.Converters.Add(NodaConverters.RoundtripPeriodConverter);
-            settings.Converters.Add(NodaConverters.OffsetDateTimeConverter);
-            settings.Converters.Add(NodaConverters.CreateZonedDateTimeConverter(provider));
+            AddDefaultConverters(settings.Converters, provider);
 
             // Disable automatic conversion of anything that looks like a date and time to BCL types.
             settings.DateParseHandling = DateParseHandling.None;
@@ -66,17 +56,7 @@ namespace NodaTime.Serialization.JsonNet
                 throw new ArgumentNullException("provider");
             }
             // Add our converters
-            serializer.Converters.Add(NodaConverters.InstantConverter);
-            serializer.Converters.Add(NodaConverters.IntervalConverter);
-            serializer.Converters.Add(NodaConverters.LocalDateConverter);
-            serializer.Converters.Add(NodaConverters.LocalDateTimeConverter);
-            serializer.Converters.Add(NodaConverters.LocalTimeConverter);
-            serializer.Converters.Add(NodaConverters.OffsetConverter);
-            serializer.Converters.Add(NodaConverters.CreateDateTimeZoneConverter(provider));
-            serializer.Converters.Add(NodaConverters.DurationConverter);
-            serializer.Converters.Add(NodaConverters.RoundtripPeriodConverter);
-            serializer.Converters.Add(NodaConverters.OffsetDateTimeConverter);
-            serializer.Converters.Add(NodaConverters.CreateZonedDateTimeConverter(provider));
+            AddDefaultConverters(serializer.Converters, provider);
 
             // Disable automatic conversion of anything that looks like a date and time to BCL types.
             serializer.DateParseHandling = DateParseHandling.None;
@@ -115,6 +95,21 @@ namespace NodaTime.Serialization.JsonNet
             }
             ReplaceExistingConverters<Interval>(serializer.Converters, NodaConverters.IsoIntervalConverter);
             return serializer;
+        }
+
+        private static void AddDefaultConverters(IList<JsonConverter> converters, IDateTimeZoneProvider provider)
+        {
+            converters.Add(NodaConverters.InstantConverter);
+            converters.Add(NodaConverters.IntervalConverter);
+            converters.Add(NodaConverters.LocalDateConverter);
+            converters.Add(NodaConverters.LocalDateTimeConverter);
+            converters.Add(NodaConverters.LocalTimeConverter);
+            converters.Add(NodaConverters.OffsetConverter);
+            converters.Add(NodaConverters.CreateDateTimeZoneConverter(provider));
+            converters.Add(NodaConverters.DurationConverter);
+            converters.Add(NodaConverters.RoundtripPeriodConverter);
+            converters.Add(NodaConverters.OffsetDateTimeConverter);
+            converters.Add(NodaConverters.CreateZonedDateTimeConverter(provider));
         }
 
         private static void ReplaceExistingConverters<T>(IList<JsonConverter> converters, JsonConverter newConverter)
