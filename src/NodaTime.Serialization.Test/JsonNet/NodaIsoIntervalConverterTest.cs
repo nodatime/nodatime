@@ -9,12 +9,15 @@ using NUnit.Framework;
 
 namespace NodaTime.Serialization.Test.JsonNet
 {
+    /// <summary>
+    /// The same tests as NodaIntervalConverterTest, but using the ISO-based interval converter.
+    /// </summary>
     [TestFixture]
-    public class NodaIntervalConverterTest
+    public class NodaIsoIntervalConverterTest
     {
         private readonly JsonSerializerSettings settings = new JsonSerializerSettings
         {
-            Converters = { NodaConverters.IntervalConverter, NodaConverters.InstantConverter },
+            Converters = { NodaConverters.IsoIntervalConverter },
             DateParseHandling = DateParseHandling.None
         };
 
@@ -27,14 +30,15 @@ namespace NodaTime.Serialization.Test.JsonNet
 
             var json = JsonConvert.SerializeObject(interval, Formatting.None, settings);
 
-            string expectedJson = "{\"Start\":\"2012-01-02T03:04:05.67Z\",\"End\":\"2013-06-07T08:09:10.1234567Z\"}";
+            string expectedJson = "\"2012-01-02T03:04:05.67Z/2013-06-07T08:09:10.1234567Z\"";
             Assert.AreEqual(expectedJson, json);
         }
 
         [Test]
         public void Deserialize()
         {
-            string json = "{\"Start\":\"2012-01-02T03:04:05.67Z\",\"End\":\"2013-06-07T08:09:10.1234567Z\"}";
+            // Comma is deliberate, to show that we can parse a comma decimal separator too.
+            string json = "\"2012-01-02T03:04:05.670Z/2013-06-07T08:09:10,1234567Z\"";
 
             var interval = JsonConvert.DeserializeObject<Interval>(json, settings);
 
@@ -45,17 +49,9 @@ namespace NodaTime.Serialization.Test.JsonNet
         }
 
         [Test]
-        public void Deserialize_MissingEnd()
+        public void Deserialize_MissingSlash()
         {
-            string json = "{\"Start\":\"2012-01-02T03:04:05Z\"}";
-
-            Assert.Throws<InvalidNodaDataException>(() => JsonConvert.DeserializeObject<Interval>(json, settings));
-        }
-
-        [Test]
-        public void Deserialize_MissingStart()
-        {
-            string json = "{\"End\":\"2012-01-02T03:04:05Z\"}";
+            string json = "\"2012-01-02T03:04:05Z2013-06-07T08:09:10Z\"";
 
             Assert.Throws<InvalidNodaDataException>(() => JsonConvert.DeserializeObject<Interval>(json, settings));
         }
@@ -71,14 +67,14 @@ namespace NodaTime.Serialization.Test.JsonNet
 
             var json = JsonConvert.SerializeObject(testObject, Formatting.None, settings);
 
-            string expectedJson = "{\"Interval\":{\"Start\":\"2012-01-02T03:04:05Z\",\"End\":\"2013-06-07T08:09:10Z\"}}";
+            string expectedJson = "{\"Interval\":\"2012-01-02T03:04:05Z/2013-06-07T08:09:10Z\"}";
             Assert.AreEqual(expectedJson, json);
         }
 
         [Test]
         public void Deserialize_InObject()
         {
-            string json = "{\"Interval\":{\"Start\":\"2012-01-02T03:04:05Z\",\"End\":\"2013-06-07T08:09:10Z\"}}";
+            string json = "{\"Interval\":\"2012-01-02T03:04:05Z/2013-06-07T08:09:10Z\"}";
 
             var testObject = JsonConvert.DeserializeObject<TestObject>(json, settings);
 

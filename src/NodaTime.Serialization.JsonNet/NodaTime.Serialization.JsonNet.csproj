@@ -97,7 +97,7 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <AssemblyOriginatorKeyFile>..\..\NodaTime Release.snk</AssemblyOriginatorKeyFile>
     <SignAssembly>True</SignAssembly>
-  </PropertyGroup>  
+  </PropertyGroup>
   <ItemGroup Condition="'$(Portability)' == 'Desktop'">
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\..\lib\jsonnet\Net35\Newtonsoft.Json.dll</HintPath>
@@ -120,6 +120,7 @@
     <Compile Include="NodaDateTimeZoneConverter.cs" />
     <Compile Include="NodaIntervalConverter.cs" />
     <Compile Include="Extensions.cs" />
+    <Compile Include="NodaIsoIntervalConverter.cs" />
     <Compile Include="NodaPatternConverter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
