@@ -885,9 +885,13 @@ namespace NodaTime
         /// ambiguous or the time is skipped.
         /// </summary>
         /// <remarks>
+        /// See <see cref="InZoneLeniently"/> and <see cref="InZone"/> for alternative ways to map a local time to a
+        /// specific instant.
         /// This is solely a convenience method for calling <see cref="DateTimeZone.AtStrictly" />.
         /// </remarks>
         /// <param name="zone">The time zone in which to map this local date/time.</param>
+        /// <exception cref="SkippedTimeException">This local date/time is skipped in the given time zone.</exception>
+        /// <exception cref="AmbiguousTimeException">This local date/time is ambiguous in the given time zone.</exception>
         /// <returns>The result of mapping this local date/time in the given time zone.</returns>
         [Pure]
         public ZonedDateTime InZoneStrictly([NotNull] DateTimeZone zone)
@@ -903,6 +907,8 @@ namespace NodaTime
         /// after the "gap".
         /// </summary>
         /// <remarks>
+        /// See <see cref="InZoneStrictly"/> and <see cref="InZone"/> for alternative ways to map a local time to a
+        /// specific instant.
         /// This is solely a convenience method for calling <see cref="DateTimeZone.AtLeniently" />.
         /// </remarks>
         /// <param name="zone">The time zone in which to map this local date/time.</param>
@@ -919,6 +925,8 @@ namespace NodaTime
         /// the given <see cref="ZoneLocalMappingResolver"/> to handle ambiguity and skipped times.
         /// </summary>
         /// <remarks>
+        /// See <see cref="InZoneStrictly"/> and <see cref="InZoneLeniently"/> for alternative ways to map a local time
+        /// to a specific instant.
         /// This is a convenience method for calling <see cref="DateTimeZone.ResolveLocal"/>.
         /// </remarks>
         /// <param name="zone">The time zone to map this local date and time into</param>
