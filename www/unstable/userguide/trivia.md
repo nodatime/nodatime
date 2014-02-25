@@ -111,9 +111,11 @@ It's unclear to me at the moment whether before 1752, January 1st was still cele
 
 **Read more:**
 
-- [Wikipedia: Calender (New Style) act](http://en.wikipedia.org/wiki/Calendar_(New_Style)_Act_1750)
+- [Wikipedia: Calender (New Style) act][wikipedia-newstyle-act]
 - [Wikipedia: Old and New Style dates](http://en.wikipedia.org/wiki/Old_Style_and_New_Style_dates)
 - [Malcolm Rowe's write-up in Google+](https://plus.google.com/u/0/+MalcolmRowe/posts/Bf5swesMPUV)
+
+[wikipedia-newstyle-act]: http://en.wikipedia.org/wiki/Calendar_(New_Style)_Act_1750
 
 <sup>1</sup> When I say "we" here, I really mean "Malcolm" who did most of the work on understanding this issue based on Wikipedia and primary sources...  
 <sup>2</sup> Possibly 1800, possibly 1801 - we haven't found details yet, and it would depend on whether the Treasury was considering the *tax* year for 1800, or the *calendar* year for 1800 to be a leap year.
