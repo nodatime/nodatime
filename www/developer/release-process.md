@@ -147,7 +147,7 @@ Upload the source and release zipfiles to the project website, under
 the `downloads` directory. (This directory is not mapped in the main source
 control repository ; typically Jon does this on Bagpuss.)
 
-Edit the `www/downloads.html` file to include the new downloads,
+Edit the `www/downloads/index.html` file to include the new downloads,
 including SHA-1 hash.
 
 Update the version number and the links on the front page to point to the new

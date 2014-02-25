@@ -15,7 +15,7 @@ three packages:
 Alternatively, source and binary downloads are available on the
 [project download page][downloads].
 
-[downloads]: http://nodatime.org/downloads.html
+[downloads]: http://nodatime.org/downloads/
 
 See the ["Building and testing"][building] section in the developer guide for
 instructions on building Noda Time from source.
