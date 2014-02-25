@@ -56,7 +56,7 @@ for testing code which uses Noda Time. See the [testing guide](testing.html) for
 that production code will only refer to the `NodaTime.dll` assembly, and that's all that's required at execution time.
 This assembly includes the [TZDB database](tzdb.html) as an embedded resource.
 
-For Json.NET serialization, the NodaTime.Serialzation.JsonNet package (containing a single assembly of the same name) is 
+For Json.NET serialization, the NodaTime.Serialization.JsonNet package (containing a single assembly of the same name) is 
 required, as well as an appropriate version of Json.NET itself. There is a NuGet dependency from NodaTime.Serialization.JsonNet
 to the newtonsoft.json package, so if you're using NuGet you just need to refer to NodaTime.Serialization.JsonNet and an 
 appropriate version of Json.NET will be installed automatically. See the [serialization guide](serialization.html) for more
