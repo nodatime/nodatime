@@ -108,6 +108,7 @@
   <ItemGroup>
     <Compile Include="Annotations\MutabilityTest.cs" />
     <Compile Include="Annotations\PurityTest.cs" />
+    <Compile Include="Annotations\SecurityTest.cs" />
     <Compile Include="CalendarSystemTest.cs" />
     <Compile Include="CalendarSystemTest.Era.cs">
       <DependentUpon>CalendarSystemTest.cs</DependentUpon>
