@@ -8,6 +8,7 @@ using System.Globalization;
 using NodaTime.Calendars;
 using NodaTime.Text;
 using NodaTime.TimeZones;
+using NodaTime.Utility;
 using NUnit.Framework;
 
 namespace NodaTime.Test
@@ -104,6 +105,23 @@ namespace NodaTime.Test
             LocalDateTime dateTime = new LocalDateTime(1975, 11, 8, 12, 5, 23);
             LocalDate expected = new LocalDate(1975, 11, 8);
             Assert.AreEqual(expected, dateTime.Date);
+        }
+
+        [Test]
+        public void IsoDayOfWeek_AroundEpoch()
+        {
+            // Test about couple of months around the Unix epoch. If that works, I'm confident the rest will.
+            LocalDateTime dateTime = new LocalDateTime(1969, 12, 1, 0, 0);
+            for (int i = 0; i < 60; i++)
+            {
+                // Check once per hour of the day, just in case something's messed up based on the time of day.
+                for (int hour = 0; hour < 24; hour++)
+                {
+                    Assert.AreEqual(BclConversions.ToIsoDayOfWeek(dateTime.ToDateTimeUnspecified().DayOfWeek),
+                        dateTime.IsoDayOfWeek);
+                    dateTime = dateTime.PlusHours(1);
+                }
+            }
         }
 
         [Test]

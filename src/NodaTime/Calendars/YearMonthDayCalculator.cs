@@ -90,7 +90,7 @@ namespace NodaTime.Calendars
         /// </summary>
         internal virtual long GetStartOfYearInTicks(int year)
         {
-            return GetStartOfYearInDays(year) * NodaConstants.TicksPerStandardDay;
+            return unchecked(GetStartOfYearInDays(year) * NodaConstants.TicksPerStandardDay);
         }
 
         internal virtual int GetDayOfMonth(LocalInstant localInstant)
@@ -103,7 +103,11 @@ namespace NodaTime.Calendars
         protected int GetDayOfMonth(LocalInstant localInstant, int year, int month)
         {
             long dateTicks = GetYearMonthTicks(year, month);
-            return (int)((localInstant.Ticks - dateTicks) / NodaConstants.TicksPerStandardDay) + 1;
+            unchecked
+            {
+                long ticksWithinMonth = localInstant.Ticks - dateTicks;
+                return TickArithmetic.TicksToDays(ticksWithinMonth) + 1;
+            }
         }
 
         internal int GetDayOfYear(LocalInstant localInstant)
@@ -114,7 +118,11 @@ namespace NodaTime.Calendars
         internal int GetDayOfYear(LocalInstant localInstant, int year)
         {
             long yearStart = GetStartOfYearInTicks(year);
-            return (int)((localInstant.Ticks - yearStart) / NodaConstants.TicksPerStandardDay) + 1;
+            unchecked
+            {
+                long ticksWithinYear = localInstant.Ticks - yearStart;
+                return TickArithmetic.TicksToDays(ticksWithinYear) + 1;
+            }
         }
 
         internal virtual int GetMonthOfYear(LocalInstant localInstant)

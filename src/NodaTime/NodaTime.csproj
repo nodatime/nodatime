@@ -159,6 +159,7 @@
     <Compile Include="Calendars\NamespaceDoc.cs" />
     <Compile Include="Calendars\PersianYearMonthDayCalendar.cs" />
     <Compile Include="Calendars\RegularYearMonthDayCalculator.cs" />
+    <Compile Include="Calendars\TickArithmetic.cs" />
     <Compile Include="Calendars\TimeOfDayCalculator.cs" />
     <Compile Include="Calendars\WeekYearCalculator.cs" />
     <Compile Include="Calendars\YearMonthDayCalculator.cs" />
