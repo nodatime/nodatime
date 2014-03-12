@@ -45,6 +45,40 @@ namespace NodaTime.Test
         }
 
         [Test]
+        public void TimeProperties_AfterEpoch()
+        {
+            // Use pretty big year number as part of validating against overflow
+            LocalDateTime ldt = new LocalDateTime(12345, 1, 2, 15, 48, 25, 456, 3456);
+            Assert.AreEqual(15, ldt.Hour);
+            Assert.AreEqual(3, ldt.ClockHourOfHalfDay);
+            Assert.AreEqual(48, ldt.Minute);
+            Assert.AreEqual(25, ldt.Second);
+            Assert.AreEqual(456, ldt.Millisecond);
+            Assert.AreEqual(4563456, ldt.TickOfSecond);
+            Assert.AreEqual(15 * NodaConstants.TicksPerHour + 
+                            48 * NodaConstants.TicksPerMinute +
+                            25 * NodaConstants.TicksPerSecond +
+                            4563456, ldt.TickOfDay);
+        }
+
+        [Test]
+        public void TimeProperties_BeforeEpoch()
+        {
+            // Use pretty big (negative) year number as part of validating against overflow
+            LocalDateTime ldt = new LocalDateTime(-12345, 1, 2, 15, 48, 25, 456, 3456);
+            Assert.AreEqual(15, ldt.Hour);
+            Assert.AreEqual(3, ldt.ClockHourOfHalfDay);
+            Assert.AreEqual(48, ldt.Minute);
+            Assert.AreEqual(25, ldt.Second);
+            Assert.AreEqual(456, ldt.Millisecond);
+            Assert.AreEqual(4563456, ldt.TickOfSecond);
+            Assert.AreEqual(15 * NodaConstants.TicksPerHour +
+                            48 * NodaConstants.TicksPerMinute +
+                            25 * NodaConstants.TicksPerSecond +
+                            4563456, ldt.TickOfDay);
+        }
+
+        [Test]
         public void DateTime_Roundtrip_OtherCalendarInBcl()
         {
             DateTime original = new DateTime(1376, 6, 19, new HijriCalendar());
