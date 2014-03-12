@@ -350,12 +350,7 @@ namespace NodaTime
         {
             get
             {
-                long ticks = localInstant.Ticks % NodaConstants.TicksPerStandardDay;
-                if (ticks < 0)
-                {
-                    ticks += NodaConstants.TicksPerStandardDay;
-                }
-                return new LocalTime(new LocalInstant(ticks));
+                return new LocalTime(new LocalInstant(TickOfDay));
             }
         }
 
