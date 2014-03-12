@@ -63,7 +63,18 @@ namespace NodaTime.Calendars
             unchecked
             {
                 long ticks = localInstant.Ticks;
-                return ticks >= 0 ? ticks % NodaConstants.TicksPerStandardDay : (NodaConstants.TicksPerStandardDay - 1) + ((ticks + 1) % NodaConstants.TicksPerStandardDay);                
+                if (ticks >= 0)
+                {
+                    // Surprisingly enough, this is faster than (but equivalent to)
+                    // return ticks % NodaConstants.TicksPerStandardDay;
+                    int days = TickArithmetic.TicksToDays(ticks);
+                    return ticks - ((days * 52734375L) << 14);
+                }
+                else
+                {
+                    // I'm sure this can be optimized using shifting, but it's complicated enough as it is...
+                    return (NodaConstants.TicksPerStandardDay - 1) + ((ticks + 1) % NodaConstants.TicksPerStandardDay);
+                }
             }
         }
 
