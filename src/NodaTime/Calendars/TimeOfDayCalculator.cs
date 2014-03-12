@@ -120,7 +120,10 @@ namespace NodaTime.Calendars
 
         internal static int GetHourOfDay(LocalInstant localInstant)
         {
-            return (int) (GetTickOfDay(localInstant) / NodaConstants.TicksPerHour);
+            long tickOfDay = GetTickOfDay(localInstant);
+            // Effectively tickOfDay / NodaConstants.TicksPerHour.
+            // Note that NodaConstants.TicksPerStandardDay >> 11 is about 491 million; less than int.MaxValue.
+            return ((int) (tickOfDay >> 11)) / 17578125;
         }
 
         internal static int GetHourOfHalfDay(LocalInstant localInstant)
