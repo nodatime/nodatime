@@ -352,7 +352,7 @@ namespace NodaTime.TimeZones
             // The time of day is written as an offset for historical reasons.
             var ticksOfDay = reader.ReadOffset();
             return new ZoneYearOffset(mode, monthOfYear, dayOfMonth, dayOfWeek, advance, 
-                new LocalTime(new LocalInstant(ticksOfDay.Ticks)), addDay);
+                new LocalTime(ticksOfDay.Ticks), addDay);
         }
 
         public static ZoneYearOffset ReadLegacy(LegacyDateTimeZoneReader reader)
@@ -368,7 +368,7 @@ namespace NodaTime.TimeZones
             var ticksOfDay = reader.ReadOffset();
             var addDay = reader.ReadBoolean();
             return new ZoneYearOffset(mode, monthOfYear, dayOfMonth, dayOfWeek, advance,
-                new LocalTime(new LocalInstant(ticksOfDay.Ticks)), addDay);
+                new LocalTime(ticksOfDay.Ticks), addDay);
         }
 
         /// <summary>

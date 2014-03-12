@@ -346,13 +346,7 @@ namespace NodaTime
         /// <summary>
         /// Gets the time portion of this local date and time as a <see cref="LocalTime"/>.
         /// </summary>
-        public LocalTime TimeOfDay
-        {
-            get
-            {
-                return new LocalTime(new LocalInstant(TickOfDay));
-            }
-        }
+        public LocalTime TimeOfDay { get { return new LocalTime(TickOfDay); } }
 
         /// <summary>
         /// Gets the date portion of this local date and time as a <see cref="LocalDate"/> in the same calendar system as this value.
