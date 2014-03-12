@@ -90,7 +90,7 @@ namespace NodaTime.Calendars
 
         internal static int GetMillisecondOfSecond(LocalInstant localInstant)
         {
-            return GetMillisecondOfSecondFromTickOfDay(GetNonNegativeTicks(localInstant));
+            return GetMillisecondOfSecondFromTickOfDay(GetTickOfDay(localInstant));
         }
 
         internal static int GetMillisecondOfDay(LocalInstant localInstant)
@@ -100,7 +100,7 @@ namespace NodaTime.Calendars
 
         internal static int GetSecondOfMinute(LocalInstant localInstant)
         {
-            return GetSecondOfMinuteFromTickOfDay(GetNonNegativeTicks(localInstant));
+            return GetSecondOfMinuteFromTickOfDay(GetTickOfDay(localInstant));
         }
 
         internal static int GetSecondOfDay(LocalInstant localInstant)
@@ -110,7 +110,7 @@ namespace NodaTime.Calendars
 
         internal static int GetMinuteOfHour(LocalInstant localInstant)
         {
-            return GetMinuteOfHourFromTickOfDay(GetNonNegativeTicks(localInstant));
+            return GetMinuteOfHourFromTickOfDay(GetTickOfDay(localInstant));
         }
 
         internal static int GetMinuteOfDay(LocalInstant localInstant)
@@ -162,12 +162,6 @@ namespace NodaTime.Calendars
         internal static int GetTickOfSecondFromTickOfDay(long tickOfDay)
         {
             return (int) (tickOfDay % (int) NodaConstants.TicksPerSecond);
-        }
-
-        private static long GetNonNegativeTicks(LocalInstant localInstant)
-        {
-            long ticks = localInstant.Ticks;
-            return ticks >= 0 ? ticks : (NodaConstants.TicksPerStandardDay - 1) + ((ticks + 1) % NodaConstants.TicksPerStandardDay);
         }
     }
 }
