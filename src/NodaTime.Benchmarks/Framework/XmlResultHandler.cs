@@ -29,7 +29,7 @@ namespace NodaTime.Benchmarks.Framework
                 new XAttribute("cores", Environment.ProcessorCount),
                 new XAttribute("is-64bit-process", Environment.Is64BitProcess),
                 new XAttribute("is-64bit-os", Environment.Is64BitOperatingSystem),
-                new XAttribute("machine", Environment.MachineName)));
+                new XAttribute("machine", options.MachineOverride ?? Environment.MachineName)));
             document.Root.Add(new XElement("options",
                 new XAttribute("type-filter", options.TypeFilter ?? ""),
                 new XAttribute("method-filter", options.MethodFilter ?? ""),
