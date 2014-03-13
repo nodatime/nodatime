@@ -86,6 +86,7 @@
     <Compile Include="NodaTimeTests\Text\LocalDatePatternBenchmarks.cs" />
     <Compile Include="NodaTimeTests\Text\InstantPatternBenchmarks.cs" />
     <Compile Include="NodaTimeTests\Text\LocalDateTimePatternBenchmarks.cs" />
+    <Compile Include="NodaTimeTests\Text\PeriodPatternBenchmarks.cs" />
     <Compile Include="NodaTimeTests\UtcZonedDateTimeBenchmarks.cs" />
     <Compile Include="NodaTimeTests\LocalDateTimeBenchmarks.cs" />
     <Compile Include="BclTests\DateTimeBenchmarks.cs" />
