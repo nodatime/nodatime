@@ -228,6 +228,27 @@ namespace NodaTime.Text
                     FormatInvariant(-value, outputBuffer);
                     return;
                 }
+                // Optimize common small cases (particularly for periods)
+                if (value < 10)
+                {
+                    outputBuffer.Append((char) ('0' + value));
+                    return;
+                }
+                if (value < 100)
+                {
+                    char digit1 = (char) ('0' + (value / 10));
+                    char digit2 = (char) ('0' + (value % 10));
+                    outputBuffer.Append(digit1).Append(digit2);
+                    return;
+                }
+                if (value < 1000)
+                {
+                    char digit1 = (char) ('0' + ((value / 100) % 10));
+                    char digit2 = (char) ('0' + ((value / 10) % 10));
+                    char digit3 = (char) ('0' + (value % 10));
+                    outputBuffer.Append(digit1).Append(digit2).Append(digit3);
+                    return;
+                }
 
                 var digits = new char[MaximumInt64Length];
                 int pos = MaximumInt64Length;
