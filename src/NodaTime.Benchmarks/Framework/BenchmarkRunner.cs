@@ -3,6 +3,7 @@
 // as found in the LICENSE.txt file.
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
@@ -49,6 +50,16 @@ namespace NodaTime.Benchmarks.Framework
                 object instance = ctor.Invoke(null);
                 foreach (var method in type.GetMethods(AllInstance).Where(IsBenchmark))
                 {
+                    var categories = GetCategories(method);
+                    if (options.IncludedCategories != null && !categories.Overlaps(options.IncludedCategories))
+                    {
+                        continue;
+                    }
+                    if (options.ExcludedCategories != null && categories.Overlaps(options.ExcludedCategories))
+                    {
+                        continue;
+                    }
+
                     if (options.MethodFilter != null && method.Name != options.MethodFilter)
                     {
                         continue;
@@ -69,6 +80,15 @@ namespace NodaTime.Benchmarks.Framework
                 resultHandler.HandleEndType();
             }
             resultHandler.HandleEndRun();
+        }
+
+        private static HashSet<string> GetCategories(MethodInfo method)
+        {
+            var categories = method.GetCustomAttributes(typeof(CategoryAttribute), false)
+                                   .Concat(method.DeclaringType.GetCustomAttributes(typeof(CategoryAttribute), false))
+                                   .Cast<CategoryAttribute>()
+                                   .Select(c => c.Category);
+            return new HashSet<string>(categories);
         }
 
         private static BenchmarkResult RunBenchmark(MethodInfo method, object instance, BenchmarkOptions options)

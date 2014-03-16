@@ -8,6 +8,7 @@ using NodaTime.Text;
 
 namespace NodaTime.Benchmarks.NodaTimeTests.Text
 {
+    [Category("Text")]
     class InstantPatternBenchmarks
     {
         private static readonly Instant Sample = Instant.FromUtc(2011, 8, 24, 12, 29, 30);

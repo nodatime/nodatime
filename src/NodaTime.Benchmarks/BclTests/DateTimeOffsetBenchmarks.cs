@@ -8,6 +8,7 @@ using NodaTime.Benchmarks.Framework;
 
 namespace NodaTime.Benchmarks.BclTests
 {
+    [Category("BCL")]
     public class DateTimeOffsetBenchmarks
     {
         private static readonly DateTimeOffset sample = new DateTimeOffset(2009, 12, 26, 10, 8, 30, 234, TimeSpan.Zero);
