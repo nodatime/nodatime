@@ -6,6 +6,7 @@ using NodaTime.Text;
 
 namespace NodaTime.Benchmarks.NodaTimeTests.Text
 {
+    [Category("Text")]
     internal class PeriodPatternBenchmarks
     {
         private static readonly Period SamplePeriod = new PeriodBuilder

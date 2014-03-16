@@ -7,6 +7,7 @@ using NodaTime.Benchmarks.Framework;
 
 namespace NodaTime.Benchmarks.BclTests
 {
+    [Category("BCL")]
     internal sealed class TimeZoneInfoBenchmarks
     {
         internal static readonly TimeZoneInfo PacificZone = GetPacificTime();
