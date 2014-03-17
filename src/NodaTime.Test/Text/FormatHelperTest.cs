@@ -84,7 +84,7 @@ namespace NodaTime.Test.Text
         public void TestRightPadTruncate_valueSmaller()
         {
             var builder = new StringBuilder();
-            FormatHelper.RightPadTruncate(1, 3, 3, ".", builder);
+            FormatHelper.RightPadTruncate(1, 3, 3, builder);
             Assert.AreEqual("001", builder.ToString());
         }
 
@@ -92,7 +92,7 @@ namespace NodaTime.Test.Text
         public void TestRightPadTruncate_valueSmallerLengthSmaller()
         {
             var builder = new StringBuilder();
-            FormatHelper.RightPadTruncate(1, 2, 3, ".", builder);
+            FormatHelper.RightPadTruncate(1, 2, 3, builder);
             Assert.AreEqual("", builder.ToString());
         }
 
@@ -101,7 +101,7 @@ namespace NodaTime.Test.Text
         {
             var builder = new StringBuilder();
             builder.Append(".");
-            FormatHelper.RightPadTruncate(1, 2, 3, ".", builder);
+            FormatHelper.RightPadTruncate(1, 2, 3, builder);
             Assert.AreEqual("", builder.ToString());
         }
 
@@ -109,14 +109,14 @@ namespace NodaTime.Test.Text
         public void TestRightPadTruncate_valueSmallerScaleLarger()
         {
             var builder = new StringBuilder();
-            Assert.Throws<FormatException>(() => FormatHelper.RightPadTruncate(1, 4, 3, ".", builder));
+            Assert.Throws<FormatException>(() => FormatHelper.RightPadTruncate(1, 4, 3, builder));
         }
 
         [Test]
         public void TestRightPadTruncate_scaleTooSmall()
         {
             var builder = new StringBuilder();
-            Assert.Throws<FormatException>(() => FormatHelper.RightPadTruncate(1, 2, 0, ".", builder));
+            Assert.Throws<FormatException>(() => FormatHelper.RightPadTruncate(1, 2, 0, builder));
         }
 
         [Test]

@@ -263,11 +263,6 @@ namespace NodaTime.Globalization
         public DateTimeFormatInfo DateTimeFormat { get { return cultureInfo.DateTimeFormat; } }
 
         /// <summary>
-        /// Gets the decimal separator from the number format associated with this provider.
-        /// </summary>
-        public string DecimalSeparator { get { return NumberFormat.NumberDecimalSeparator; } }
-
-        /// <summary>
         ///   Gets the positive sign.
         /// </summary>
         public string PositiveSign { get { return NumberFormat.PositiveSign; } }

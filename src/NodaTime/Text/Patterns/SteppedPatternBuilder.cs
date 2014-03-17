@@ -385,7 +385,7 @@ namespace NodaTime.Text.Patterns
 
         internal void AddFormatRightPadTruncate(int width, int scale, NodaFunc<TResult, int> selector)
         {
-            AddFormatAction((value, sb) => FormatHelper.RightPadTruncate(selector(value), width, scale, formatInfo.DecimalSeparator, sb));
+            AddFormatAction((value, sb) => FormatHelper.RightPadTruncate(selector(value), width, scale, sb));
         }
 
         /// <summary>
