@@ -101,7 +101,7 @@ namespace NodaTime.Text.Patterns
                         {
                             return ParseResult<TResult>.MismatchedNumber(new string('F', count));
                         }
-                        // No need to validate the value - we've got one to three digits, so the range 0-999 is guaranteed.
+                        // No need to validate the value - we've got an appropriate number of digits, so the range is guaranteed.
                         setter(bucket, fractionalSeconds);
                         return null;
                     });
