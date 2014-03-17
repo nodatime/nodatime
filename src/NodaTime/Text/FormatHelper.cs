@@ -167,9 +167,8 @@ namespace NodaTime.Text
         /// <param name="value">The value to format.</param>
         /// <param name="length">The length to fill.</param>
         /// <param name="scale">The scale of the value i.e. the number of significant digits is the range of the value.</param>
-        /// <param name="decimalSeparator">The decimal separator for this culture.</param>
         /// <param name="outputBuffer">The output buffer to add the digits to.</param>
-        internal static void RightPadTruncate(int value, int length, int scale, string decimalSeparator, StringBuilder outputBuffer)
+        internal static void RightPadTruncate(int value, int length, int scale, StringBuilder outputBuffer)
         {
             if (scale < 1)
             {
@@ -196,10 +195,9 @@ namespace NodaTime.Text
                 // TODO: Do we really need to call ToString here?
                 outputBuffer.Append(((int)relevantDigits).ToString(FixedNumberFormats[relevantLength - 1], CultureInfo.InvariantCulture));
             }
-            else if (outputBuffer.Length > 0 && outputBuffer.ToString().EndsWith(decimalSeparator, StringComparison.CurrentCulture))
+            else if (outputBuffer.Length > 0 && outputBuffer[outputBuffer.Length - 1] == '.')
             {
-                var decimalSeparatorLength = decimalSeparator.Length;
-                outputBuffer.Remove(outputBuffer.Length - decimalSeparatorLength, decimalSeparatorLength);
+                outputBuffer.Length--;
             }
         }
 

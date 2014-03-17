@@ -364,7 +364,7 @@ namespace NodaTime.Text
                         if (ticks != 0)
                         {
                             builder.Append(".");
-                            FormatHelper.RightPadTruncate((int)ticks, 7, 7, ".", builder);
+                            FormatHelper.RightPadTruncate((int)ticks, 7, 7, builder);
                         }
                         builder.Append("S");
                     }
