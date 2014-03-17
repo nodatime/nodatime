@@ -12,6 +12,7 @@ namespace NodaTime.Benchmarks.NodaTimeTests.Text
     class InstantPatternBenchmarks
     {
         private static readonly Instant Sample = Instant.FromUtc(2011, 8, 24, 12, 29, 30);
+        private static readonly Instant SampleWithTicks = Instant.FromUtc(2011, 8, 24, 12, 29, 30).PlusTicks(1234567);
         private static readonly InstantPattern GeneralPattern = InstantPattern.CreateWithInvariantCulture("g");
         private static readonly InstantPattern NumberPattern = InstantPattern.CreateWithInvariantCulture("n");
         private static readonly string SampleStringGeneral = GeneralPattern.Format(Sample);
@@ -36,7 +37,13 @@ namespace NodaTime.Benchmarks.NodaTimeTests.Text
         {
             InstantPattern.ExtendedIsoPattern.Format(Sample);
         }
- 
+
+        [Benchmark]
+        public void ExtendedIsoPatternFormatWithTicks()
+        {
+            InstantPattern.ExtendedIsoPattern.Format(SampleWithTicks);
+        }
+
         [Benchmark]
         public void NumberPatternParse()
         {
