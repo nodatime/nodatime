@@ -59,6 +59,14 @@ namespace NodaTime.Test.Text
         }
 
         [Test]
+        public void TestRightPad_example()
+        {
+            var builder = new StringBuilder();
+            FormatHelper.RightPad(1200, 4, 5, builder);
+            Assert.AreEqual("0120", builder.ToString());
+        }
+
+        [Test]
         public void TestRightPad_valueSmallerLengthSmaller()
         {
             var builder = new StringBuilder();
@@ -86,6 +94,14 @@ namespace NodaTime.Test.Text
             var builder = new StringBuilder();
             FormatHelper.RightPadTruncate(1, 3, 3, builder);
             Assert.AreEqual("001", builder.ToString());
+        }
+
+        [Test]
+        public void TestRightPadTruncate_example()
+        {
+            var builder = new StringBuilder();
+            FormatHelper.RightPadTruncate(1200, 4, 5, builder);
+            Assert.AreEqual("012", builder.ToString());
         }
 
         [Test]
