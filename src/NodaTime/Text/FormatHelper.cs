@@ -150,14 +150,6 @@ namespace NodaTime.Text
         /// <param name="outputBuffer">The output buffer to add the digits to.</param>
         internal static void RightPad(int value, int length, int scale, StringBuilder outputBuffer)
         {
-            if (scale < 1)
-            {
-                throw new FormatException("scale < 1");
-            }
-            if (length > scale)
-            {
-                throw new FormatException("length > scale");
-            }
             long relevantDigits = value;
             relevantDigits /= (long)Math.Pow(10.0, (scale - length));
             // TODO: Do we really need to call ToString here?
@@ -177,19 +169,11 @@ namespace NodaTime.Text
         /// 0 digit is truncated.
         /// </example>
         /// <param name="value">The value to format.</param>
-        /// <param name="length">The length to fill.</param>
-        /// <param name="scale">The scale of the value i.e. the number of significant digits is the range of the value.</param>
+        /// <param name="length">The length to fill. Must be at most <paramref name="scale"/>.</param>
+        /// <param name="scale">The scale of the value i.e. the number of significant digits is the range of the value. Must be in the range [1, 7].</param>
         /// <param name="outputBuffer">The output buffer to add the digits to.</param>
         internal static void RightPadTruncate(int value, int length, int scale, StringBuilder outputBuffer)
         {
-            if (scale < 1)
-            {
-                throw new FormatException("scale < 1");
-            }
-            if (length > scale)
-            {
-                throw new FormatException("length > scale");
-            }
             long relevantDigits = value;
             relevantDigits /= (long)Math.Pow(10.0, (scale - length));
             int relevantLength = length;

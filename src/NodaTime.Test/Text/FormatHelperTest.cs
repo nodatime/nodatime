@@ -75,20 +75,6 @@ namespace NodaTime.Test.Text
         }
 
         [Test]
-        public void TestRightPad_valueSmallerScaleLarger()
-        {
-            var builder = new StringBuilder();
-            Assert.Throws<FormatException>(() => FormatHelper.RightPad(1, 4, 3, builder));
-        }
-
-        [Test]
-        public void TestRightPad_scaleTooSmall()
-        {
-            var builder = new StringBuilder();
-            Assert.Throws<FormatException>(() => FormatHelper.RightPad(1, 2, 0, builder));
-        }
-
-        [Test]
         public void TestRightPadTruncate_valueSmaller()
         {
             var builder = new StringBuilder();
@@ -119,20 +105,6 @@ namespace NodaTime.Test.Text
             builder.Append(".");
             FormatHelper.RightPadTruncate(1, 2, 3, builder);
             Assert.AreEqual("", builder.ToString());
-        }
-
-        [Test]
-        public void TestRightPadTruncate_valueSmallerScaleLarger()
-        {
-            var builder = new StringBuilder();
-            Assert.Throws<FormatException>(() => FormatHelper.RightPadTruncate(1, 4, 3, builder));
-        }
-
-        [Test]
-        public void TestRightPadTruncate_scaleTooSmall()
-        {
-            var builder = new StringBuilder();
-            Assert.Throws<FormatException>(() => FormatHelper.RightPadTruncate(1, 2, 0, builder));
         }
 
         [Test]
