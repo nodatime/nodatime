@@ -143,8 +143,13 @@ namespace NodaTime.Text
         /// <param name="outputBuffer">The output buffer to add the digits to.</param>
         internal static void AppendFraction(int value, int length, int scale, StringBuilder outputBuffer)
         {
-            long relevantDigits = value;
-            relevantDigits /= (long)Math.Pow(10.0, (scale - length));
+            int relevantDigits = value;
+            while (scale > length)
+            {
+                relevantDigits /= 10;
+                scale--;
+            }
+
             outputBuffer.Append('0', length);
             int index = outputBuffer.Length - 1;
             while (relevantDigits > 0)
@@ -173,7 +178,11 @@ namespace NodaTime.Text
         internal static void AppendFractionTruncate(int value, int length, int scale, StringBuilder outputBuffer)
         {
             int relevantDigits = value;
-            relevantDigits /= (int) Math.Pow(10.0, (scale - length));
+            while (scale > length)
+            {
+                relevantDigits /= 10;
+                scale--;
+            }
             int relevantLength = length;
             while (relevantLength > 0)
             {
