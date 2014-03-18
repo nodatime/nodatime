@@ -3,7 +3,6 @@
 // as found in the LICENSE.txt file.
 
 using System;
-using System.Globalization;
 using System.Text;
 
 namespace NodaTime.Text
@@ -22,12 +21,6 @@ namespace NodaTime.Text
         /// Maximum number of digits in a (positive) long.
         /// </summary>
         private const int MaximumInt64Length = 19;
-
-        private static readonly string[] FixedNumberFormats = {
-            "0", "00", "000", "0000", "00000", "000000", "0000000", "00000000", "000000000", "0000000000",
-            "00000000000", "000000000000", "0000000000000", "00000000000000", "000000000000000",
-            "0000000000000000"
-        };
 
         /// <summary>
         /// Formats the given value left padded with zeros.
@@ -152,8 +145,13 @@ namespace NodaTime.Text
         {
             long relevantDigits = value;
             relevantDigits /= (long)Math.Pow(10.0, (scale - length));
-            // TODO: Do we really need to call ToString here?
-            outputBuffer.Append(((int) relevantDigits).ToString(FixedNumberFormats[length - 1], CultureInfo.InvariantCulture));
+            outputBuffer.Append('0', length);
+            int index = outputBuffer.Length - 1;
+            while (relevantDigits > 0)
+            {
+                outputBuffer[index--] = (char) ('0' + (relevantDigits % 10));
+                relevantDigits /= 10;
+            }
         }
 
         /// <summary>
@@ -174,8 +172,8 @@ namespace NodaTime.Text
         /// <param name="outputBuffer">The output buffer to add the digits to.</param>
         internal static void AppendFractionTruncate(int value, int length, int scale, StringBuilder outputBuffer)
         {
-            long relevantDigits = value;
-            relevantDigits /= (long)Math.Pow(10.0, (scale - length));
+            int relevantDigits = value;
+            relevantDigits /= (int) Math.Pow(10.0, (scale - length));
             int relevantLength = length;
             while (relevantLength > 0)
             {
@@ -183,13 +181,18 @@ namespace NodaTime.Text
                 {
                     break;
                 }
-                relevantDigits /= 10L;
+                relevantDigits /= 10;
                 relevantLength--;
             }
             if (relevantLength > 0)
             {
-                // TODO: Do we really need to call ToString here?
-                outputBuffer.Append(((int)relevantDigits).ToString(FixedNumberFormats[relevantLength - 1], CultureInfo.InvariantCulture));
+                outputBuffer.Append('0', relevantLength);
+                int index = outputBuffer.Length - 1;
+                while (relevantDigits > 0)
+                {
+                    outputBuffer[index--] = (char) ('0' + (relevantDigits % 10));
+                    relevantDigits /= 10;
+                }
             }
             else if (outputBuffer.Length > 0 && outputBuffer[outputBuffer.Length - 1] == '.')
             {
