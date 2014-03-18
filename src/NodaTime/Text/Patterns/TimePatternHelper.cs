@@ -54,7 +54,7 @@ namespace NodaTime.Text.Patterns
                         return null;
                     });
                     builder.AddFormatAction((localTime, sb) => sb.Append('.'));
-                    builder.AddFormatRightPadTruncate(count, maxCount, getter);
+                    builder.AddFormatFractionTruncate(count, maxCount, getter);
                 }
                 else
                 {
@@ -106,7 +106,7 @@ namespace NodaTime.Text.Patterns
                         return null;
                     });
                     builder.AddFormatAction((localTime, sb) => sb.Append('.'));
-                    builder.AddFormatRightPadTruncate(count, maxCount, getter);
+                    builder.AddFormatFractionTruncate(count, maxCount, getter);
                 }
                 else
                 {
@@ -146,11 +146,11 @@ namespace NodaTime.Text.Patterns
                 });
                 if (patternCharacter == 'f')
                 {
-                    builder.AddFormatRightPad(count, maxCount, getter);
+                    builder.AddFormatFraction(count, maxCount, getter);
                 }
                 else
                 {
-                    builder.AddFormatRightPadTruncate(count, maxCount, getter);
+                    builder.AddFormatFractionTruncate(count, maxCount, getter);
                 }
             };
         }
