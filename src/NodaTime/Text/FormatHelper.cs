@@ -140,7 +140,7 @@ namespace NodaTime.Text
         /// Note: current usage means this never has to cope with negative numbers.
         /// </summary>
         /// <example>
-        /// <code>RightPad(1200, 4, 5, builder)</code> will result in "0120" being
+        /// <code>AppendFraction(1200, 4, 5, builder)</code> will result in "0120" being
         /// appended to the builder. The value is treated as effectively 0.01200 because
         /// the scale is 5, but only 4 digits are formatted.
         /// </example>
@@ -148,7 +148,7 @@ namespace NodaTime.Text
         /// <param name="length">The length to fill. Must be at most <paramref name="scale"/>.</param>
         /// <param name="scale">The scale of the value i.e. the number of significant digits is the range of the value. Must be in the range [1, 7].</param>
         /// <param name="outputBuffer">The output buffer to add the digits to.</param>
-        internal static void RightPad(int value, int length, int scale, StringBuilder outputBuffer)
+        internal static void AppendFraction(int value, int length, int scale, StringBuilder outputBuffer)
         {
             long relevantDigits = value;
             relevantDigits /= (long)Math.Pow(10.0, (scale - length));
@@ -163,7 +163,7 @@ namespace NodaTime.Text
         /// Note: current usage means this never has to cope with negative numbers.
         /// </summary>
         /// <example>
-        /// <code>RightPadTruncate(1200, 4, 5, builder)</code> will result in "001" being
+        /// <code>AppendFractionTruncate(1200, 4, 5, builder)</code> will result in "001" being
         /// appended to the builder. The value is treated as effectively 0.01200 because
         /// the scale is 5; only 4 digits are formatted (leaving "0120") and then the rightmost
         /// 0 digit is truncated.
@@ -172,7 +172,7 @@ namespace NodaTime.Text
         /// <param name="length">The length to fill. Must be at most <paramref name="scale"/>.</param>
         /// <param name="scale">The scale of the value i.e. the number of significant digits is the range of the value. Must be in the range [1, 7].</param>
         /// <param name="outputBuffer">The output buffer to add the digits to.</param>
-        internal static void RightPadTruncate(int value, int length, int scale, StringBuilder outputBuffer)
+        internal static void AppendFractionTruncate(int value, int length, int scale, StringBuilder outputBuffer)
         {
             long relevantDigits = value;
             relevantDigits /= (long)Math.Pow(10.0, (scale - length));

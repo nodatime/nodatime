@@ -51,59 +51,59 @@ namespace NodaTime.Test.Text
         }
 
         [Test]
-        public void TestRightPad_valueSmaller()
+        public void TestAppendFraction_valueSmaller()
         {
             var builder = new StringBuilder();
-            FormatHelper.RightPad(1, 3, 3, builder);
+            FormatHelper.AppendFraction(1, 3, 3, builder);
             Assert.AreEqual("001", builder.ToString());
         }
 
         [Test]
-        public void TestRightPad_example()
+        public void TestAppendFraction_example()
         {
             var builder = new StringBuilder();
-            FormatHelper.RightPad(1200, 4, 5, builder);
+            FormatHelper.AppendFraction(1200, 4, 5, builder);
             Assert.AreEqual("0120", builder.ToString());
         }
 
         [Test]
-        public void TestRightPad_valueSmallerLengthSmaller()
+        public void TestAppendFraction_valueSmallerLengthSmaller()
         {
             var builder = new StringBuilder();
-            FormatHelper.RightPad(1, 2, 3, builder);
+            FormatHelper.AppendFraction(1, 2, 3, builder);
             Assert.AreEqual("00", builder.ToString());
         }
 
         [Test]
-        public void TestRightPadTruncate_valueSmaller()
+        public void TestAppendFractionTruncate_valueSmaller()
         {
             var builder = new StringBuilder();
-            FormatHelper.RightPadTruncate(1, 3, 3, builder);
+            FormatHelper.AppendFractionTruncate(1, 3, 3, builder);
             Assert.AreEqual("001", builder.ToString());
         }
 
         [Test]
-        public void TestRightPadTruncate_example()
+        public void TestAppendFractionTruncate_example()
         {
             var builder = new StringBuilder();
-            FormatHelper.RightPadTruncate(1200, 4, 5, builder);
+            FormatHelper.AppendFractionTruncate(1200, 4, 5, builder);
             Assert.AreEqual("012", builder.ToString());
         }
 
         [Test]
-        public void TestRightPadTruncate_valueSmallerLengthSmaller()
+        public void TestAppendFractionTruncate_valueSmallerLengthSmaller()
         {
             var builder = new StringBuilder();
-            FormatHelper.RightPadTruncate(1, 2, 3, builder);
+            FormatHelper.AppendFractionTruncate(1, 2, 3, builder);
             Assert.AreEqual("", builder.ToString());
         }
 
         [Test]
-        public void TestRightPadTruncate_valueSmallerRemoveDecimal()
+        public void TestAppendFractionTruncate_valueSmallerRemoveDecimal()
         {
             var builder = new StringBuilder();
             builder.Append(".");
-            FormatHelper.RightPadTruncate(1, 2, 3, builder);
+            FormatHelper.AppendFractionTruncate(1, 2, 3, builder);
             Assert.AreEqual("", builder.ToString());
         }
 
