@@ -63,6 +63,7 @@ syntax:regexp
 
 # Temporary build output directories
 ^tmpdocs
+^tmpwebdir
 ^tzdbtmp
 ^SandcastleStyleTmp
 
