@@ -65,3 +65,6 @@ syntax:regexp
 ^tmpdocs
 ^tzdbtmp
 ^SandcastleStyleTmp
+
+# NuGet packages (but not the configuration)
+^src/packages/.*/

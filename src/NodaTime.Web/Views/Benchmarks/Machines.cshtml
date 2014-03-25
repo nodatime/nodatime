@@ -1,0 +1,12 @@
+﻿@model IEnumerable<string>
+
+@{ViewBag.Title = "Machines with benchmarks";}
+
+<h2>@ViewBag.Title</h2>
+
+<ul>
+    @foreach (var item in Model)
+    {
+        <li>@Html.ActionLink(item, "Machine", new { machine = item })</li>
+    }
+</ul>
