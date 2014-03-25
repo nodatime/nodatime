@@ -46,7 +46,8 @@ goto :end
 
 :build_mvc
 pushd src\NodaTime.Web
-nuget restore -PackagesDirectory ..\packages
+REM Assume NuGet restore has already taken place
+REM nuget restore -PackagesDirectory ..\packages
 IF ERRORLEVEL 1 EXIT /B 1
 msbuild /t:Rebuild /p:DeployOnBuild=true /p:Configuration=Release
 IF ERRORLEVEL 1 EXIT /B 1
