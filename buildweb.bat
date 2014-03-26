@@ -11,13 +11,13 @@ if "%2" == "" (
 set STABLE_DIR=%1
 set WEB_DIR=%2
 
-call :clean
-IF ERRORLEVEL 1 EXIT /B 1
 call buildapidocs
 IF ERRORLEVEL 1 EXIT /B 1
 call :build_www
 IF ERRORLEVEL 1 EXIT /B 1
 call :build_mvc
+IF ERRORLEVEL 1 EXIT /B 1
+call :clean
 IF ERRORLEVEL 1 EXIT /B 1
 call :assemble
 IF ERRORLEVEL 1 EXIT /B 1
@@ -29,6 +29,7 @@ IF EXIST tmpwebdir rmdir /s /q tmpwebdir
 
 REM Hacky way to start with a clean directory
 move %WEB_DIR% tmpwebdir
+IF ERRORLEVEL 1 EXIT /B 1
 mkdir %WEB_DIR%
 attrib -h tmpwebdir\.git
 move tmpwebdir\.git %WEB_DIR%
