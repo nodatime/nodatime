@@ -16,7 +16,7 @@ namespace NodaTime.Web
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
-                defaults: new { controller = "Benchmarks", action = "Machines", id = UrlParameter.Optional }
+                defaults: new { action = "Machines", id = UrlParameter.Optional }
             );
         }
     }
