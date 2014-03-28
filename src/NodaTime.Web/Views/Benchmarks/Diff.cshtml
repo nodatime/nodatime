@@ -1,0 +1,115 @@
+﻿@model NodaTime.Web.Models.BenchmarkDiff
+@using System.Globalization
+@{ ViewBag.Title = "Diff for " + Model.Machine + " between " + Model.Left.Label + " and " + Model.Right.Label; }
+
+<h2>@ViewBag.Title</h2>
+
+<h3>Left</h3>
+Label: @Html.ActionLink(Model.Left.Label, "Benchmark", new { machine = Model.Machine, label = Model.Left.Label })<br />
+Date: @Model.Left.StartTime.ToString("yyyy-MM-dd HH:mm'Z'", CultureInfo.InvariantCulture)
+
+<h3>Right</h3>
+Label: @Html.ActionLink(Model.Right.Label, "Benchmark", new { machine = Model.Machine, label = Model.Right.Label })<br />
+Date: @Model.Right.StartTime.ToString("yyyy-MM-dd HH:mm'Z'", CultureInfo.InvariantCulture)
+
+@if (Model.LeftOnly.Any())
+{
+    <h3>Tests only in @Model.Left.Label</h3>
+    <table class="table">
+        <tr>
+            <th>Method</th>
+            <th>Duration (ns)</th>
+        </tr>
+
+        @foreach (var item in Model.LeftOnly)
+        {
+            <tr>
+                <td>@Html.ActionLink(item.FullyQualifiedMethod, "MethodHistory", new { machine = Model.Machine, method = item.FullyQualifiedMethod })</td>
+                <td>@item.NanosecondsPerCall</td>
+            </tr>
+        }
+    </table>
+}
+
+@if (Model.RightOnly.Any())
+{
+    <h3>Tests only in @Model.Right.Label</h3>
+
+    <table class="table">
+        <tr>
+            <th>Method</th>
+            <th>Duration (ns)</th>
+        </tr>
+
+        @foreach (var item in Model.RightOnly)
+        {
+            <tr>
+                <td>@Html.ActionLink(item.FullyQualifiedMethod, "MethodHistory", new { machine = Model.Machine, method = item.FullyQualifiedMethod })</td>
+                <td>@item.NanosecondsPerCall</td>
+            </tr>
+        }
+    </table>
+}
+
+@if (Model.LeftBetter.Any())
+{
+    <h3>Tests better in @Model.Left.Label</h3>
+    <table class="table">
+        <tr>
+            <th>Method</th>
+            <th>Left Duration (ns)</th>
+            <th>Right Duration (ns)</th>
+        </tr>
+
+        @foreach (var item in Model.LeftBetter)
+        {
+            <tr>
+                <td>@Html.ActionLink(item.Left.FullyQualifiedMethod, "MethodHistory", new { machine = Model.Machine, method = item.Left.FullyQualifiedMethod })</td>
+                <td>@item.Left.NanosecondsPerCall</td>
+                <td>@item.Right.NanosecondsPerCall</td>
+            </tr>
+        }
+    </table>
+}
+
+@if (Model.RightBetter.Any())
+{
+    <h3>Tests better in @Model.Right.Label</h3>
+    <table class="table">
+        <tr>
+            <th>Method</th>
+            <th>Left Duration (ns)</th>
+            <th>Right Duration (ns)</th>
+        </tr>
+
+        @foreach (var item in Model.RightBetter)
+        {
+            <tr>
+                <td>@Html.ActionLink(item.Left.FullyQualifiedMethod, "MethodHistory", new { machine = Model.Machine, method = item.Left.FullyQualifiedMethod })</td>
+                <td>@item.Left.NanosecondsPerCall</td>
+                <td>@item.Right.NanosecondsPerCall</td>
+            </tr>
+        }
+    </table>
+}
+
+@if (Model.LogEntries.Any())
+{
+    <h3>Source changes</h3>
+    <table class="table">
+        <tr>
+            <th>Date</th>
+            <th>Revision hash</th>
+            <th>Message</th>
+        </tr>
+
+        @foreach (var item in Model.LogEntries)
+        {
+            <tr>
+                <td style="white-space: nowrap">@item.Date.ToUniversalTime().ToString("yyyy-MM-dd HH:mm'Z'")</td>
+                <td><a href="https://code.google.com/p/noda-time/source/detail?r=@Html.Raw(Html.AttributeEncode(item.Hash))">@item.Hash.Substring(0, 12)</a></td>
+                <td>@item.Message</td>
+            </tr>
+        }
+    </table>
+}
