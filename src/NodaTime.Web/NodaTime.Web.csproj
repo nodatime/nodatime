@@ -126,7 +126,6 @@
     <Compile Include="Models\MethodHistoryModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Storage\BenchmarkRepository.cs" />
-    <Compile Include="Storage\BenchmarkRepositoryHolder.cs" />
     <Compile Include="Storage\BenchmarkResult.cs" />
     <Compile Include="Storage\BenchmarkRun.cs" />
     <Compile Include="Storage\FileWatchingReloader.cs" />

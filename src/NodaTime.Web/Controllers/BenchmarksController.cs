@@ -18,12 +18,13 @@ namespace NodaTime.Web.Controllers
 
         public BenchmarksController()
         {
-            string directory = Path.Combine(HostingEnvironment.ApplicationPhysicalPath, "benchmarkdata");
+            string root = HostingEnvironment.ApplicationPhysicalPath;
+            string benchmarkData = Path.Combine(root, "benchmarkdata");
             repositoryWatcher = new FileWatchingReloader<BenchmarkRepository>(
-                Path.Combine(directory, "index.txt"),
-                () => BenchmarkRepository.Load(directory),
+                Path.Combine(benchmarkData, "index.txt"),
+                () => BenchmarkRepository.Load(benchmarkData),
                 ReloadTime);
-            string logFile = Path.Combine(directory, "hg-log.xml");
+            string logFile = Path.Combine(root, "hg-log.xml");
             logWatcher = new FileWatchingReloader<MercurialLog>(logFile, () => MercurialLog.Load(logFile), ReloadTime);
         }
 
