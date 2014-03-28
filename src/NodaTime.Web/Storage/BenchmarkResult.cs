@@ -31,6 +31,7 @@ namespace NodaTime.Web.Storage
         public TimeSpan Duration { get { return duration; } }
         public long CallsPerSecond { get { return iterations * TimeSpan.TicksPerSecond / duration.Ticks; } }
         public long NanosecondsPerCall { get { return (Duration.Ticks * TicksPerNanosecond) / iterations; } }
+        public long PicosecondsPerCall { get { return (Duration.Ticks * TicksPerPicosecond) / iterations; } }
 
         private BenchmarkResult(string clrNamespace, string type, string method, int iterations, TimeSpan duration)
         {

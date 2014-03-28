@@ -1,0 +1,23 @@
+﻿@using System.Globalization
+@model NodaTime.Web.Models.MethodHistoryModel
+
+@{ViewBag.Title = "History of " + Model.Method + " in " + Model.Machine;}
+
+<h2>@ViewBag.Title</h2>
+
+<table class="table">
+    <tr>
+        <th>Date/time</th>
+        <th>Label</th>
+        <th>Change</th>
+    </tr>
+
+    @foreach (var item in Model.Entries)
+    {
+        <tr>
+            <td>@item.Run.StartTime.ToString("yyyy-MM-dd HH:mm'Z'", CultureInfo.InvariantCulture)</td>
+            <td>@Html.ActionLink(item.Run.Label, "BenchmarkRun", new { machine = item.Run.Machine, label = item.Run.Label })
+            <td>@item.Description</td>
+        </tr>
+    }
+</table>
