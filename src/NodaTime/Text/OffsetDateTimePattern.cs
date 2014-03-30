@@ -146,6 +146,38 @@ namespace NodaTime.Text
         }
 
         /// <summary>
+        /// Creates a pattern for the given pattern text in the invariant culture, using the default
+        /// template value of midnight January 1st 2000 at an offset of 0.
+        /// </summary>
+        /// <remarks>
+        /// See the user guide for the available pattern text options.
+        /// </remarks>
+        /// <param name="patternText">Pattern text to create the pattern for</param>
+        /// <returns>A pattern for parsing and formatting local date/times.</returns>
+        /// <exception cref="InvalidPatternException">The pattern text was invalid.</exception>
+        public static OffsetDateTimePattern CreateWithInvariantCulture(string patternText)
+        {
+            return Create(patternText, NodaFormatInfo.InvariantInfo, DefaultTemplateValue);
+        }
+
+        /// <summary>
+        /// Creates a pattern for the given pattern text in the current culture, using the default
+        /// template value of midnight January 1st 2000 at an offset of 0.
+        /// </summary>
+        /// <remarks>
+        /// See the user guide for the available pattern text options. Note that the current culture
+        /// is captured at the time this method is called - it is not captured at the point of parsing
+        /// or formatting values.
+        /// </remarks>
+        /// <param name="patternText">Pattern text to create the pattern for</param>
+        /// <returns>A pattern for parsing and formatting local date/times.</returns>
+        /// <exception cref="InvalidPatternException">The pattern text was invalid.</exception>
+        public static OffsetDateTimePattern CreateWithCurrentCulture(string patternText)
+        {
+            return Create(patternText, NodaFormatInfo.CurrentInfo, DefaultTemplateValue);
+        }
+
+        /// <summary>
         /// Creates a pattern for the same original localization information as this pattern, but with the specified
         /// pattern text.
         /// </summary>
