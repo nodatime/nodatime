@@ -181,6 +181,24 @@ namespace NodaTime.Text
         }
 
         /// <summary>
+        /// Creates a pattern for the given pattern text and time zone provider, using a strict resolver, the current
+        /// culture, and a default template value of midnight January 1st 2000 UTC.
+        /// </summary>
+        /// <remarks>
+        /// The resolver is only used if the pattern text doesn't include an offset.
+        /// If <paramref name="zoneProvider"/> is null, the resulting pattern can be used for formatting
+        /// but not parsing. Note that the current culture is captured at the time this method is called
+        /// - it is not captured at the point of parsing or formatting values.
+        /// </remarks>
+        /// <param name="patternText">Pattern text to create the pattern for</param>
+        /// <param name="zoneProvider">Time zone provider, used when parsing text which contains a time zone identifier.</param>
+        /// <returns>A pattern for parsing and formatting zoned date/times.</returns>
+        public static ZonedDateTimePattern CreateWithCurrentCulture(string patternText, IDateTimeZoneProvider zoneProvider)
+        {
+            return Create(patternText, NodaFormatInfo.CurrentInfo, Resolvers.StrictResolver, zoneProvider, DefaultTemplateValue);
+        }
+
+        /// <summary>
         /// Creates a pattern for the same original localization information as this pattern, but with the specified
         /// pattern text.
         /// </summary>
