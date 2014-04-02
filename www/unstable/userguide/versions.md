@@ -62,6 +62,7 @@ Bug fixes:
 - Fixed navigation in the user guide ([issue 242][])
 
 Other:
+
 - API documentation now indicates which versions of Noda Time support the given
   member
 - Significantly improve the performance of various parsing/formatting and
