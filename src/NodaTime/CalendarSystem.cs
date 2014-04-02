@@ -121,7 +121,7 @@ namespace NodaTime
             { "Gregorian 1", () => GetGregorianCalendar(1) },
             { "Gregorian 2", () => GetGregorianCalendar(2) },
             { "Gregorian 3", () => GetGregorianCalendar(3) },
-            { "Gregorian 4", () => GetGregorianCalendar(4) }, 
+            { "Gregorian 4", () => GetGregorianCalendar(4) },
             { "Gregorian 5", () => GetGregorianCalendar(5) },
             { "Gregorian 6", () => GetGregorianCalendar(6) },
             { "Gregorian 7", () => GetGregorianCalendar(7) },
@@ -335,7 +335,7 @@ namespace NodaTime
         private readonly int maxYear;
         private readonly long minTicks;
         private readonly long maxTicks;
-      
+
         private CalendarSystem(string name, YearMonthDayCalculator yearMonthDayCalculator, int minDaysInFirstWeek)
             : this(CreateIdFromNameAndMinDaysInFirstWeek(name, minDaysInFirstWeek), name, yearMonthDayCalculator, minDaysInFirstWeek)
         {
@@ -356,7 +356,7 @@ namespace NodaTime
             this.name = name;
             this.yearMonthDayCalculator = yearMonthDayCalculator;
             this.weekYearCalculator = new WeekYearCalculator(yearMonthDayCalculator, minDaysInFirstWeek);
-            this.minYear = yearMonthDayCalculator.MinYear;                   
+            this.minYear = yearMonthDayCalculator.MinYear;
             this.maxYear = yearMonthDayCalculator.MaxYear;
             this.minTicks = yearMonthDayCalculator.GetStartOfYearInTicks(minYear);
             this.maxTicks = yearMonthDayCalculator.GetStartOfYearInTicks(maxYear + 1) - 1;
@@ -416,6 +416,7 @@ namespace NodaTime
         ///   <item><term>Hijri Astronomical-Base15</term><description><see cref="CalendarSystem.GetIslamicCalendar"/>(IslamicLeapYearPattern.Base15, IslamicEpoch.Astronomical)</description></item>
         ///   <item><term>Hijri Astronomical-Base16</term><description><see cref="CalendarSystem.GetIslamicCalendar"/>(IslamicLeapYearPattern.Base16, IslamicEpoch.Astronomical)</description></item>
         ///   <item><term>Hijri Astronomical-HabashAlHasib</term><description><see cref="CalendarSystem.GetIslamicCalendar"/>(IslamicLeapYearPattern.HabashAlHasib, IslamicEpoch.Astronomical)</description></item>
+        ///   <item><term>Persian</term><description><see cref="CalendarSystem.GetPersianCalendar"/></description></item>
         /// </list>
         /// </remarks>
         public string Id { get { return id; } }
@@ -532,7 +533,7 @@ namespace NodaTime
             long timeTicks = TimeOfDayCalculator.GetTicks(hourOfDay, minuteOfHour);
             return date.PlusTicks(timeTicks);
         }
-        
+
         /// <summary>
         /// Returns the local date corresponding to the given "week year", "week of week year", and "day of week"
         /// in this calendar system.
@@ -564,7 +565,7 @@ namespace NodaTime
         }
 
         /// <summary>
-        /// Returns a local instant, formed from the given year, month, day, 
+        /// Returns a local instant, formed from the given year, month, day,
         /// hour, minute, second, millisecond and ticks values.
         /// </summary>
         /// <param name="year">Absolute year (not year within era; may be negative)</param>
