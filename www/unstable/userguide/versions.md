@@ -65,7 +65,7 @@ Other:
 
 - API documentation now indicates which versions of Noda Time support the given
   member
-- Significantly improve the performance of various parsing/formatting and
+- Significantly improved the performance of various parsing/formatting and
   point-in-time calculation methods
 
 ## 1.2.0, released 2013-11-16 with tzdb 2013h
