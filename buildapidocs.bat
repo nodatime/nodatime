@@ -30,7 +30,7 @@ IF ERRORLEVEL 1 EXIT /B 1
 
 %ANNOTATOR% %REL%\NodaTime.dll %REL%\NodaTime.xml %REL%\NodaTime.xml
 IF ERRORLEVEL 1 EXIT /B 1
-%ANNOTATOR% %TESTING_REL%\NodaTime.Testing.dll %TESTING_REL%\NodaTime.Testing.xml
+%ANNOTATOR% %TESTING_REL%\NodaTime.Testing.dll %TESTING_REL%\NodaTime.Testing.xml %TESTING_REL%\NodaTime.Testing.xml
 IF ERRORLEVEL 1 EXIT /B 1
 %ANNOTATOR% %JSONNET_REL%\NodaTime.Serialization.JsonNet.dll %JSONNET_REL%\NodaTime.Serialization.JsonNet.xml %JSONNET_REL%\NodaTime.Serialization.JsonNet.xml
 IF ERRORLEVEL 1 EXIT /B 1
