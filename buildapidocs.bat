@@ -37,9 +37,9 @@ IF ERRORLEVEL 1 EXIT /B 1
 
 %VERSION_DOC% %REL%\NodaTime.xml %REL%\NodaTime-Ref.xml "src\NodaTime\bin\Release Portable\NodaTime.xml" data\versionxml docs\history.txt
 IF ERRORLEVEL 1 EXIT /B 1
-%VERSION_DOC% %REL%\NodaTime.xml %TESTING_REL%\NodaTime.Testing-Ref.xml "src\NodaTime.Testing\bin\Release Portable\NodaTime.Testing.xml" data\versionxml docs\history-testing.txt
+%VERSION_DOC% %TESTING_REL%\NodaTime.Testing.xml %TESTING_REL%\NodaTime.Testing-Ref.xml "src\NodaTime.Testing\bin\Release Portable\NodaTime.Testing.xml" data\versionxml docs\history-testing.txt
 IF ERRORLEVEL 1 EXIT /B 1
-%VERSION_DOC% %REL%\NodaTime.xml %JSONNET_REL%\NodaTime.Serialization.JsonNet-Ref.xml "src\NodaTime.Serialization.JsonNet\bin\Release Portable\NodaTime.Serialization.JsonNet.xml" data\versionxml docs\history-jsonnet.txt
+%VERSION_DOC% %JSONNET_REL%\NodaTime.Serialization.JsonNet.xml %JSONNET_REL%\NodaTime.Serialization.JsonNet-Ref.xml "src\NodaTime.Serialization.JsonNet\bin\Release Portable\NodaTime.Serialization.JsonNet.xml" data\versionxml docs\history-jsonnet.txt
 IF ERRORLEVEL 1 EXIT /B 1
 
 REM Prepare the Sandcastle style, by copying then customizing the VS2010 style
