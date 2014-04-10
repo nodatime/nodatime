@@ -133,7 +133,7 @@ namespace NodaTime.TimeZones.IO
         /// Reads a long ticks value from the stream.
         /// </summary>
         /// <remarks>
-        /// The value must have been written by <see cref="LegacyDateTimeZoneWriter.WriteTicks" />.
+        /// The value must have been written by LegacyDateTimeZoneWriter.WriteTicks.
         /// </remarks>
         /// <returns>The long ticks value from the stream.</returns>
         private long ReadTicks()
