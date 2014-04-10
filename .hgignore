@@ -72,3 +72,6 @@ syntax:regexp
 
 # Local copy of benchmark data, used for testing the dynamic part of the web site
 ^src/NodaTime.Web/benchmarkdata/
+
+# Roslyn temporary files
+^src/.*\.sln\.ide/
