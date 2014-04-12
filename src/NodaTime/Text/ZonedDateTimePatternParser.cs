@@ -81,9 +81,13 @@ namespace NodaTime.Text
                 switch (patternText[0])
                 {
                     case 'G':
-                        return ZonedDateTimePattern.Patterns.GeneralFormatOnlyPatternImpl;
+                        return ZonedDateTimePattern.Patterns.GeneralFormatOnlyPatternImpl
+                            .WithZoneProvider(zoneProvider)
+                            .WithResolver(resolver);
                     case 'F':
-                        return ZonedDateTimePattern.Patterns.ExtendedFormatOnlyPatternImpl;
+                        return ZonedDateTimePattern.Patterns.ExtendedFormatOnlyPatternImpl
+                            .WithZoneProvider(zoneProvider)
+                            .WithResolver(resolver);
                     default:
                         throw new InvalidPatternException(Messages.Parse_UnknownStandardFormat, patternText[0], typeof(ZonedDateTime));
                 }
