@@ -178,7 +178,7 @@ namespace NodaTime
         /// <summary>
         /// Gets a <see cref="LocalDateTime" /> at midnight on the date represented by this local date.
         /// </summary>
-        /// <returns>The <see cref="LocalDateTime" /> representing midnight on tthis local date, in the same calendar
+        /// <returns>The <see cref="LocalDateTime" /> representing midnight on this local date, in the same calendar
         /// system.</returns>
         [Pure]
         public LocalDateTime AtMidnight()
@@ -559,6 +559,18 @@ namespace NodaTime
             return new LocalDate(localTime.Previous(targetDayOfWeek));
         }
 
+        /// <summary>
+        /// Combines this <see cref="LocalDate"/> with the given <see cref="LocalTime"/>
+        /// into a single <see cref="LocalDateTime"/>.
+        /// </summary>
+        /// <param name="time">The time to combine with this date.</param>
+        /// <returns>The <see cref="LocalDateTime"/>representation of the given time on this date</returns>
+        [Pure]
+        public LocalDateTime At(LocalTime time)
+        {
+            return this + time;
+        }
+
         #region Formatting
         /// <summary>
         /// Returns a <see cref="System.String" /> that represents this instance.
@@ -648,6 +660,7 @@ namespace NodaTime
         /// </summary>
         /// <param name="info">The <see cref="SerializationInfo"/> to populate with data.</param>
         /// <param name="context">The destination for this serialization.</param>
+        [System.Security.SecurityCritical]
         void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)
         {
             info.AddValue(LocalTicksSerializationName, localTime.LocalInstant.Ticks);

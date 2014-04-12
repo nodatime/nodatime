@@ -20,7 +20,8 @@ namespace NodaTime.Benchmarks.Framework
 
         internal override void HandleStartRun(BenchmarkOptions options)
         {
-            Console.WriteLine("Environment: CLR {0} on {1}", Environment.Version, Environment.OSVersion);
+            Console.WriteLine("Environment: CLR {0} on {1} ({2})", Environment.Version, Environment.OSVersion,
+                Environment.Is64BitProcess ? "64 bit" : "32 bit");
             if (options.Label != null)
             {
                 Console.WriteLine("Run label: {0}", options.Label);

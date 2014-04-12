@@ -116,6 +116,10 @@ namespace NodaTime.Test.Text
             // When the AM designator is a leading substring of the PM designator...
             new Data(2011, 10, 19, 16, 05, 20) { Pattern = "yyyy-MM-dd h:mm:ss tt", Text = "2011-10-19 4:05:20 FooBar", Culture = Cultures.AwkwardAmPmDesignatorCulture },
             new Data(2011, 10, 19, 4, 05, 20) { Pattern = "yyyy-MM-dd h:mm:ss tt", Text = "2011-10-19 4:05:20 Foo", Culture = Cultures.AwkwardAmPmDesignatorCulture },
+
+            // Current culture decimal separator is irrelevant when trimming the dot for truncated fractional settings
+            new Data(2011, 10, 19, 4, 5, 6) { Pattern="yyyy-MM-dd HH:mm:ss.FFF", Text="2011-10-19 04:05:06", Culture = Cultures.FrFr },
+            new Data(2011, 10, 19, 4, 5, 6, 123) { Pattern="yyyy-MM-dd HH:mm:ss.FFF", Text="2011-10-19 04:05:06.123", Culture = Cultures.FrFr },
         };
 
         internal static IEnumerable<Data> ParseData = ParseOnlyData.Concat(FormatAndParseData);

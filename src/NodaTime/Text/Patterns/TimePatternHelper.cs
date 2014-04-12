@@ -54,7 +54,7 @@ namespace NodaTime.Text.Patterns
                         return null;
                     });
                     builder.AddFormatAction((localTime, sb) => sb.Append('.'));
-                    builder.AddFormatRightPadTruncate(count, maxCount, getter);
+                    builder.AddFormatFractionTruncate(count, maxCount, getter);
                 }
                 else
                 {
@@ -101,12 +101,12 @@ namespace NodaTime.Text.Patterns
                         {
                             return ParseResult<TResult>.MismatchedNumber(new string('F', count));
                         }
-                        // No need to validate the value - we've got one to three digits, so the range 0-999 is guaranteed.
+                        // No need to validate the value - we've got an appropriate number of digits, so the range is guaranteed.
                         setter(bucket, fractionalSeconds);
                         return null;
                     });
                     builder.AddFormatAction((localTime, sb) => sb.Append('.'));
-                    builder.AddFormatRightPadTruncate(count, maxCount, getter);
+                    builder.AddFormatFractionTruncate(count, maxCount, getter);
                 }
                 else
                 {
@@ -146,11 +146,11 @@ namespace NodaTime.Text.Patterns
                 });
                 if (patternCharacter == 'f')
                 {
-                    builder.AddFormatRightPad(count, maxCount, getter);
+                    builder.AddFormatFraction(count, maxCount, getter);
                 }
                 else
                 {
-                    builder.AddFormatRightPadTruncate(count, maxCount, getter);
+                    builder.AddFormatFractionTruncate(count, maxCount, getter);
                 }
             };
         }

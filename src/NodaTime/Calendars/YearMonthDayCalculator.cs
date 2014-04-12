@@ -17,8 +17,11 @@ namespace NodaTime.Calendars
         /// </summary>
         private readonly YearStartCacheEntry[] yearCache = new YearStartCacheEntry[YearStartCacheEntry.CacheSize];
 
-        private readonly IList<Era> eras;
-        internal IList<Era> Eras { get { return eras; } }
+        /// <summary>
+        /// Array of eras in this calculator; this is never mutated.
+        /// </summary>
+        private readonly Era[] eras;
+        internal Era[] Eras { get { return eras; } }
 
         private readonly int minYear;
         internal int MinYear { get { return minYear; } }
@@ -35,7 +38,7 @@ namespace NodaTime.Calendars
         internal long TicksAtStartOfYear1 { get { return ticksAtStartOfYear1; } }
 
         protected YearMonthDayCalculator(int minYear, int maxYear,
-            long averageTicksPerYear, long ticksAtStartOfYear1, IList<Era> eras)
+            long averageTicksPerYear, long ticksAtStartOfYear1, Era[] eras)
         {
             // We should really check the minimum year as well, but constructing it hurts my brain.
             Preconditions.CheckArgument(maxYear < YearStartCacheEntry.InvalidEntryYear, "maxYear",
@@ -87,7 +90,7 @@ namespace NodaTime.Calendars
         /// </summary>
         internal virtual long GetStartOfYearInTicks(int year)
         {
-            return GetStartOfYearInDays(year) * NodaConstants.TicksPerStandardDay;
+            return unchecked(GetStartOfYearInDays(year) * NodaConstants.TicksPerStandardDay);
         }
 
         internal virtual int GetDayOfMonth(LocalInstant localInstant)
@@ -100,7 +103,11 @@ namespace NodaTime.Calendars
         protected int GetDayOfMonth(LocalInstant localInstant, int year, int month)
         {
             long dateTicks = GetYearMonthTicks(year, month);
-            return (int)((localInstant.Ticks - dateTicks) / NodaConstants.TicksPerStandardDay) + 1;
+            unchecked
+            {
+                long ticksWithinMonth = localInstant.Ticks - dateTicks;
+                return TickArithmetic.TicksToDays(ticksWithinMonth) + 1;
+            }
         }
 
         internal int GetDayOfYear(LocalInstant localInstant)
@@ -111,7 +118,11 @@ namespace NodaTime.Calendars
         internal int GetDayOfYear(LocalInstant localInstant, int year)
         {
             long yearStart = GetStartOfYearInTicks(year);
-            return (int)((localInstant.Ticks - yearStart) / NodaConstants.TicksPerStandardDay) + 1;
+            unchecked
+            {
+                long ticksWithinYear = localInstant.Ticks - yearStart;
+                return TickArithmetic.TicksToDays(ticksWithinYear) + 1;
+            }
         }
 
         internal virtual int GetMonthOfYear(LocalInstant localInstant)
@@ -165,7 +176,7 @@ namespace NodaTime.Calendars
         protected int GetEraIndex(Era era)
         {
             Preconditions.CheckNotNull(era, "era");
-            int index = Eras.IndexOf(era);
+            int index = Array.IndexOf(Eras, era);
             Preconditions.CheckArgument(index != -1, "era", "Era is not used in this calendar");
             return index;
         }
@@ -313,7 +324,7 @@ namespace NodaTime.Calendars
         /// </summary>
         /// <remarks>
         /// <para>
-        /// Each entry in the cache is a 32 bit number. The "value" part of the entry consists of the
+        /// Each entry in the cache is a 32-bit number. The "value" part of the entry consists of the
         /// number of days since the Unix epoch (negative for a value before the epoch). As Noda Time
         /// only supports a number of ticks since the Unix epoch of between long.MinValue and long.MaxValue,
         /// we only need to support a number of days in the range
@@ -326,9 +337,9 @@ namespace NodaTime.Calendars
         /// bits are stored in the entry. So long as we have fewer than 17 significant bits in the year value,
         /// this will be a unique combination. A single validation value (the most highly positive value) is
         /// reserved to indicate an invalid entry. The cache is initialized with all entries invalid.
-        /// This gives us a range of over 60,000 years (both positive and negative) without any risk of collisions. By
-        /// constrast, the ISO calendar years are in the range [-27255, 31195] - so we'd have to be dealing with
-        /// a calendar with either very short years, or an epoch a long way ahead or behind the Unix epoch.
+        /// This gives us a range of year numbers greater than [-60000, 60000] without any risk of collisions. By
+        /// contrast, the ISO calendar years are in the range [-27255, 31195] - so we'd have to be dealing with a
+        /// calendar with either very short years, or an epoch a long way ahead or behind the Unix epoch.
         /// </para>
         /// <para>
         /// The fact that each cache entry is only 32 bits means that we can safely use the cache from multiple
@@ -344,7 +355,9 @@ namespace NodaTime.Calendars
             private const int EntryValidationMask = (1 << EntryValidationBits) - 1;
 
             internal const int CacheSize = 1 << CacheIndexBits;
-            // Smallest year such that the validator is as high as possible.
+            // Smallest (positive) year such that the validator is as high as possible.
+            // (We shift the mask down by one because the top bit of the validator is effectively the sign bit for the
+            // year, and so a validation value with all bits set is already used for e.g. year -1.)
             internal const int InvalidEntryYear = (EntryValidationMask >> 1) << CacheIndexBits;
 
             /// <summary>
@@ -354,32 +367,50 @@ namespace NodaTime.Calendars
             internal static readonly YearStartCacheEntry Invalid = new YearStartCacheEntry(InvalidEntryYear, 0);
 
             /// <summary>
-            /// Entry value: least significant 8 bits are validation; remaining 24 bits are the number of days
-            /// since the Unix epoch.
+            /// Entry value: most significant 25 bits are the number of days since the Unix epoch; remaining 7 bits are
+            /// the validator.
             /// </summary>
             private readonly int value;
 
             internal YearStartCacheEntry(int year, int days)
             {
-                value = GetValidator(year) | (days << EntryValidationBits);
+                value = (days << EntryValidationBits) | GetValidator(year);
             }
 
+            /// <summary>
+            /// Returns the validator to use for a given year, a non-negative number containing at most
+            /// EntryValidationBits bits.
+            /// </summary>
             private static int GetValidator(int year)
             {
+                // Note that we assume that the input year fits into EntryValidationBits+CacheIndexBits bits - if not,
+                // this would return the same validator for more than one input year, meaning that we could potentially
+                // use the wrong cache value.
+                // The masking here is necessary to remove some of the sign-extended high bits for negative years.
                 return (year >> CacheIndexBits) & EntryValidationMask;
             }
 
+            /// <summary>
+            /// Returns the cache index, in [0, CacheSize), that should be used to store the given year's cache entry.
+            /// </summary>
             internal static int GetCacheIndex(int year)
             {
                 // Effectively keep only the bottom CacheIndexBits bits.
                 return year & CacheIndexMask;
             }
 
+            /// <summary>
+            /// Returns whether this cache entry is valid for the given year, and so is safe to use.  (We assume that we
+            /// have located this entry via the correct cache index.)
+            /// </summary>
             internal bool IsValidForYear(int year)
             {
                 return GetValidator(year) == (value & EntryValidationMask);
             }
 
+            /// <summary>
+            /// Returns the (signed) number of days since the Unix epoch for the cache entry.
+            /// </summary>
             internal int StartOfYearDays
             {
                 get { return value >> EntryValidationBits; }

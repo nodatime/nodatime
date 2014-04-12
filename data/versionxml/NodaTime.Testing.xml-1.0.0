@@ -1,0 +1,217 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<doc>
+  <assembly>
+    <name>NodaTime.Testing</name>
+  </assembly>
+  <members>
+    <member name="T:NodaTime.Testing.FakeClock">
+      <summary>
+            Clock which can be constructed with an initial instant, and then advanced programmatically.
+            This class is designed to be used when testing classes which take an <see cref="T:NodaTime.IClock" /> as a dependency.
+            </summary>
+    </member>
+    <member name="M:NodaTime.Testing.FakeClock.#ctor(NodaTime.Instant)">
+      <summary>
+            Creates a fake clock initially set to the given instant, with no auto-advance.
+            </summary>
+      <param name="initial">
+        <p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">[Missing &lt;param name="initial"/&gt; documentation for "M:NodaTime.Testing.FakeClock.#ctor(NodaTime.Instant)"]</p>
+      </param>
+    </member>
+    <member name="M:NodaTime.Testing.FakeClock.#ctor(NodaTime.Instant,NodaTime.Duration)">
+      <summary>
+            Creates a fake clock initially set to the given instant, with a given level of auto-advance.
+            </summary>
+      <param name="initial">
+        <p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">[Missing &lt;param name="initial"/&gt; documentation for "M:NodaTime.Testing.FakeClock.#ctor(NodaTime.Instant,NodaTime.Duration)"]</p>
+      </param>
+      <param name="autoAdvance">
+        <p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">[Missing &lt;param name="autoAdvance"/&gt; documentation for "M:NodaTime.Testing.FakeClock.#ctor(NodaTime.Instant,NodaTime.Duration)"]</p>
+      </param>
+    </member>
+    <member name="M:NodaTime.Testing.FakeClock.Advance(NodaTime.Duration)">
+      <summary>
+            Advances the clock by the given duration.
+            </summary>
+      <param name="duration">
+        <p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">[Missing &lt;param name="duration"/&gt; documentation for "M:NodaTime.Testing.FakeClock.Advance(NodaTime.Duration)"]</p>
+      </param>
+    </member>
+    <member name="M:NodaTime.Testing.FakeClock.AdvanceDays(System.Int64)">
+      <summary>
+            Advances the clock by the given number of standard (24-hour) days.
+            </summary>
+      <param name="days">
+        <p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">[Missing &lt;param name="days"/&gt; documentation for "M:NodaTime.Testing.FakeClock.AdvanceDays(System.Int64)"]</p>
+      </param>
+    </member>
+    <member name="M:NodaTime.Testing.FakeClock.AdvanceHours(System.Int64)">
+      <summary>
+            Advances the clock by the given number of hours.
+            </summary>
+      <param name="hours">
+        <p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">[Missing &lt;param name="hours"/&gt; documentation for "M:NodaTime.Testing.FakeClock.AdvanceHours(System.Int64)"]</p>
+      </param>
+    </member>
+    <member name="M:NodaTime.Testing.FakeClock.AdvanceMilliseconds(System.Int64)">
+      <summary>
+            Advances the clock by the given number of milliseconds.
+            </summary>
+      <param name="milliseconds">
+        <p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">[Missing &lt;param name="milliseconds"/&gt; documentation for "M:NodaTime.Testing.FakeClock.AdvanceMilliseconds(System.Int64)"]</p>
+      </param>
+    </member>
+    <member name="M:NodaTime.Testing.FakeClock.AdvanceMinutes(System.Int64)">
+      <summary>
+            Advances the clock by the given number of minutes.
+            </summary>
+      <param name="minutes">
+        <p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">[Missing &lt;param name="minutes"/&gt; documentation for "M:NodaTime.Testing.FakeClock.AdvanceMinutes(System.Int64)"]</p>
+      </param>
+    </member>
+    <member name="M:NodaTime.Testing.FakeClock.AdvanceSeconds(System.Int64)">
+      <summary>
+            Advances the clock by the given number of seconds.
+            </summary>
+      <param name="seconds">
+        <p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">[Missing &lt;param name="seconds"/&gt; documentation for "M:NodaTime.Testing.FakeClock.AdvanceSeconds(System.Int64)"]</p>
+      </param>
+    </member>
+    <member name="M:NodaTime.Testing.FakeClock.AdvanceTicks(System.Int64)">
+      <summary>
+            Advances the clock by the given number of ticks.
+            </summary>
+      <param name="ticks">
+        <p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">[Missing &lt;param name="ticks"/&gt; documentation for "M:NodaTime.Testing.FakeClock.AdvanceTicks(System.Int64)"]</p>
+      </param>
+    </member>
+    <member name="P:NodaTime.Testing.FakeClock.AutoAdvance">
+      <summary>
+            Amount of time to advance the clock by each time <see cref="P:NodaTime.Testing.FakeClock.Now" /> is fetched.
+            </summary>
+    </member>
+    <member name="M:NodaTime.Testing.FakeClock.FromUtc(System.Int32,System.Int32,System.Int32)">
+      <summary>
+            Returns a fake clock initially set to midnight of the given year/month/day in UTC in the ISO calendar.
+            </summary>
+      <param name="year">
+        <p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">[Missing &lt;param name="year"/&gt; documentation for "M:NodaTime.Testing.FakeClock.FromUtc(System.Int32,System.Int32,System.Int32)"]</p>
+      </param>
+      <param name="month">
+        <p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">[Missing &lt;param name="month"/&gt; documentation for "M:NodaTime.Testing.FakeClock.FromUtc(System.Int32,System.Int32,System.Int32)"]</p>
+      </param>
+      <param name="dayOfMonth">
+        <p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">[Missing &lt;param name="dayOfMonth"/&gt; documentation for "M:NodaTime.Testing.FakeClock.FromUtc(System.Int32,System.Int32,System.Int32)"]</p>
+      </param>
+      <returns>
+        <p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">[Missing &lt;returns&gt; documentation for "M:NodaTime.Testing.FakeClock.FromUtc(System.Int32,System.Int32,System.Int32)"]</p>
+      </returns>
+    </member>
+    <member name="M:NodaTime.Testing.FakeClock.FromUtc(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32)">
+      <summary>
+            Returns a fake clock initially set to the given year/month/day/time in UTC in the ISO calendar.
+            </summary>
+      <param name="year">
+        <p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">[Missing &lt;param name="year"/&gt; documentation for "M:NodaTime.Testing.FakeClock.FromUtc(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32)"]</p>
+      </param>
+      <param name="month">
+        <p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">[Missing &lt;param name="month"/&gt; documentation for "M:NodaTime.Testing.FakeClock.FromUtc(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32)"]</p>
+      </param>
+      <param name="dayOfMonth">
+        <p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">[Missing &lt;param name="dayOfMonth"/&gt; documentation for "M:NodaTime.Testing.FakeClock.FromUtc(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32)"]</p>
+      </param>
+      <param name="hour">
+        <p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">[Missing &lt;param name="hour"/&gt; documentation for "M:NodaTime.Testing.FakeClock.FromUtc(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32)"]</p>
+      </param>
+      <param name="minute">
+        <p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">[Missing &lt;param name="minute"/&gt; documentation for "M:NodaTime.Testing.FakeClock.FromUtc(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32)"]</p>
+      </param>
+      <param name="second">
+        <p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">[Missing &lt;param name="second"/&gt; documentation for "M:NodaTime.Testing.FakeClock.FromUtc(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32)"]</p>
+      </param>
+      <returns>
+        <p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">[Missing &lt;returns&gt; documentation for "M:NodaTime.Testing.FakeClock.FromUtc(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32)"]</p>
+      </returns>
+    </member>
+    <member name="P:NodaTime.Testing.FakeClock.Now">
+      <summary>
+            Returns the "current time" for this clock. Unlike a normal clock, this
+            property will return the same value from repeated calls until one of the methods
+            to change the time is called.
+            </summary>
+    </member>
+    <member name="M:NodaTime.Testing.FakeClock.Reset(NodaTime.Instant)">
+      <summary>
+            Resets the clock to the given instant.
+            </summary>
+      <param name="instant">
+        <p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">[Missing &lt;param name="instant"/&gt; documentation for "M:NodaTime.Testing.FakeClock.Reset(NodaTime.Instant)"]</p>
+      </param>
+    </member>
+    <member name="T:NodaTime.Testing.TimeZones.SingleTransitionDateTimeZone">
+      <summary>
+            Time zone with a single transition between two offsets. This is
+            similar to a precalculated zone with only two intervals and no
+            tail zone, but it's simpler to construct and can be used to test
+            PrecalculatedDateTimeZone.
+            </summary>
+    </member>
+    <member name="M:NodaTime.Testing.TimeZones.SingleTransitionDateTimeZone.#ctor(NodaTime.Instant,NodaTime.Offset,NodaTime.Offset)">
+      <summary>
+            Creates a zone with a single transition between two offsets.
+            </summary>
+      <param name="transitionPoint">The transition point as an <see cref="T:NodaTime.Instant" />.</param>
+      <param name="offsetBefore">The offset of local time from UTC before the transition.</param>
+      <param name="offsetAfter">The offset of local time from UTC before the transition.</param>
+    </member>
+    <member name="M:NodaTime.Testing.TimeZones.SingleTransitionDateTimeZone.#ctor(NodaTime.Instant,System.Int32,System.Int32)">
+      <summary>
+            Creates a zone with a single transition between two offsets.
+            </summary>
+      <param name="transitionPoint">The transition point as an <see cref="T:NodaTime.Instant" />.</param>
+      <param name="offsetBeforeHours">The offset of local time from UTC, in hours, before the transition.</param>
+      <param name="offsetAfterHours">The offset of local time from UTC, in hours, before the transition.</param>
+    </member>
+    <member name="P:NodaTime.Testing.TimeZones.SingleTransitionDateTimeZone.EarlyInterval">
+      <summary>
+            The ZoneInterval for the period before the transition.
+            </summary>
+    </member>
+    <member name="M:NodaTime.Testing.TimeZones.SingleTransitionDateTimeZone.EqualsImpl(NodaTime.DateTimeZone)">
+      <summary>
+            Implements equality in derived classes.
+            </summary>
+      <param name="zone">The zone to compare with this one. This is guaranteed (when called by <see cref="M:NodaTime.DateTimeZone.Equals(NodaTime.DateTimeZone)" />) to
+            be a non-null reference of the same type as this instance.</param>
+      <returns>
+        <c>true</c> if the specified <see cref="T:NodaTime.DateTimeZone" /> is equal to this instance;
+            otherwise, <c>false</c>.
+            </returns>
+    </member>
+    <member name="M:NodaTime.Testing.TimeZones.SingleTransitionDateTimeZone.GetHashCode">
+      <summary>
+            Returns a hash code for this instance.
+            </summary>
+      <returns>
+            A hash code for this instance, suitable for use in hashing algorithms and data
+            structures like a hash table. 
+            </returns>
+    </member>
+    <member name="M:NodaTime.Testing.TimeZones.SingleTransitionDateTimeZone.GetZoneInterval(NodaTime.Instant)">
+      <summary>
+            Returns the zone interval before or after the transition, based on the instant provided.
+            </summary>
+      <param name="instant">
+        <p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">[Missing &lt;param name="instant"/&gt; documentation for "M:NodaTime.Testing.TimeZones.SingleTransitionDateTimeZone.GetZoneInterval(NodaTime.Instant)"]</p>
+      </param>
+      <returns>
+        <p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">[Missing &lt;returns&gt; documentation for "M:NodaTime.Testing.TimeZones.SingleTransitionDateTimeZone.GetZoneInterval(NodaTime.Instant)"]</p>
+      </returns>
+    </member>
+    <member name="P:NodaTime.Testing.TimeZones.SingleTransitionDateTimeZone.LateInterval">
+      <summary>
+            The ZoneInterval for the period after the transition.
+            </summary>
+    </member>
+  </members>
+</doc>

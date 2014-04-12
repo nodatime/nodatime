@@ -378,14 +378,14 @@ namespace NodaTime.Text.Patterns
             AddFormatAction((value, sb) => FormatHelper.LeftPad(selector(value), count, sb));
         }
 
-        internal void AddFormatRightPad(int width, int scale, NodaFunc<TResult, int> selector)
+        internal void AddFormatFraction(int width, int scale, NodaFunc<TResult, int> selector)
         {
-            AddFormatAction((value, sb) => FormatHelper.RightPad(selector(value), width, scale, sb));
+            AddFormatAction((value, sb) => FormatHelper.AppendFraction(selector(value), width, scale, sb));
         }
 
-        internal void AddFormatRightPadTruncate(int width, int scale, NodaFunc<TResult, int> selector)
+        internal void AddFormatFractionTruncate(int width, int scale, NodaFunc<TResult, int> selector)
         {
-            AddFormatAction((value, sb) => FormatHelper.RightPadTruncate(selector(value), width, scale, formatInfo.DecimalSeparator, sb));
+            AddFormatAction((value, sb) => FormatHelper.AppendFractionTruncate(selector(value), width, scale, sb));
         }
 
         /// <summary>

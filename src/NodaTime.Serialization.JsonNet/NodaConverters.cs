@@ -42,7 +42,12 @@ namespace NodaTime.Serialization.JsonNet
         /// Converter for intervals. This must be used in a serializer which also has an instant converter.
         /// </summary>
         public static readonly JsonConverter IntervalConverter = new NodaIntervalConverter();
-        
+
+        /// <summary>
+        /// Converter for intervals using extended ISO-8601 format, as output by <see cref="Interval.ToString"/>.
+        /// </summary>
+        public static readonly JsonConverter IsoIntervalConverter = new NodaIsoIntervalConverter();
+
         /// <summary>
         /// Converter for offsets.
         /// </summary>

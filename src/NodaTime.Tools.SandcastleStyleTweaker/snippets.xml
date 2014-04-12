@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<snippets xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+
+  <snippet id="versions-call" file="transforms/main_sandcastle.xsl" xpath="/xsl:stylesheet/xsl:template[@name='t_body']/xsl:call-template[@name='t_contracts']">
+    <!-- NodaTime specific version tags -->
+    <xsl:call-template name="t_noda_versions" />
+  </snippet>
+  
+  <snippet id="versions-template" file="transforms/utilities_reference.xsl" xpath="/xsl:stylesheet/xsl:template[@name='t_versions']">
+    <xsl:template name="t_noda_versions">
+      <xsl:if test="/document/comments/since and /document/comments/pcl">
+        <xsl:call-template name="t_putSectionInclude">
+          <xsl:with-param name="p_titleInclude" select="'title_versions'"/>
+          <xsl:with-param name="p_content">
+            <b>Available since: </b>
+            <xsl:value-of select="/document/comments/since" />
+            <br />
+            <b>Supported in the PCL? </b>
+            <xsl:choose>
+              <xsl:when test="/document/comments/pcl/@supported='true'">Yes</xsl:when>
+              <xsl:otherwise>No</xsl:otherwise>
+            </xsl:choose>
+          </xsl:with-param>
+        </xsl:call-template>
+      </xsl:if>
+    </xsl:template>
+  </snippet>
+</snippets>

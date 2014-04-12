@@ -8,6 +8,7 @@ using System.Globalization;
 using NodaTime.Calendars;
 using NodaTime.Text;
 using NodaTime.TimeZones;
+using NodaTime.Utility;
 using NUnit.Framework;
 
 namespace NodaTime.Test
@@ -41,6 +42,40 @@ namespace NodaTime.Test
                 LocalDateTime actual = LocalDateTime.FromDateTime(x);
                 Assert.AreEqual(expected, actual);
             }
+        }
+
+        [Test]
+        public void TimeProperties_AfterEpoch()
+        {
+            // Use pretty big year number as part of validating against overflow
+            LocalDateTime ldt = new LocalDateTime(12345, 1, 2, 15, 48, 25, 456, 3456);
+            Assert.AreEqual(15, ldt.Hour);
+            Assert.AreEqual(3, ldt.ClockHourOfHalfDay);
+            Assert.AreEqual(48, ldt.Minute);
+            Assert.AreEqual(25, ldt.Second);
+            Assert.AreEqual(456, ldt.Millisecond);
+            Assert.AreEqual(4563456, ldt.TickOfSecond);
+            Assert.AreEqual(15 * NodaConstants.TicksPerHour + 
+                            48 * NodaConstants.TicksPerMinute +
+                            25 * NodaConstants.TicksPerSecond +
+                            4563456, ldt.TickOfDay);
+        }
+
+        [Test]
+        public void TimeProperties_BeforeEpoch()
+        {
+            // Use pretty big (negative) year number as part of validating against overflow
+            LocalDateTime ldt = new LocalDateTime(-12345, 1, 2, 15, 48, 25, 456, 3456);
+            Assert.AreEqual(15, ldt.Hour);
+            Assert.AreEqual(3, ldt.ClockHourOfHalfDay);
+            Assert.AreEqual(48, ldt.Minute);
+            Assert.AreEqual(25, ldt.Second);
+            Assert.AreEqual(456, ldt.Millisecond);
+            Assert.AreEqual(4563456, ldt.TickOfSecond);
+            Assert.AreEqual(15 * NodaConstants.TicksPerHour +
+                            48 * NodaConstants.TicksPerMinute +
+                            25 * NodaConstants.TicksPerSecond +
+                            4563456, ldt.TickOfDay);
         }
 
         [Test]
@@ -104,6 +139,23 @@ namespace NodaTime.Test
             LocalDateTime dateTime = new LocalDateTime(1975, 11, 8, 12, 5, 23);
             LocalDate expected = new LocalDate(1975, 11, 8);
             Assert.AreEqual(expected, dateTime.Date);
+        }
+
+        [Test]
+        public void IsoDayOfWeek_AroundEpoch()
+        {
+            // Test about couple of months around the Unix epoch. If that works, I'm confident the rest will.
+            LocalDateTime dateTime = new LocalDateTime(1969, 12, 1, 0, 0);
+            for (int i = 0; i < 60; i++)
+            {
+                // Check once per hour of the day, just in case something's messed up based on the time of day.
+                for (int hour = 0; hour < 24; hour++)
+                {
+                    Assert.AreEqual(BclConversions.ToIsoDayOfWeek(dateTime.ToDateTimeUnspecified().DayOfWeek),
+                        dateTime.IsoDayOfWeek);
+                    dateTime = dateTime.PlusHours(1);
+                }
+            }
         }
 
         [Test]

@@ -3,6 +3,8 @@
 // as found in the LICENSE.txt file.
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using CommandLine;
 using CommandLine.Text;
 
@@ -28,6 +30,9 @@ namespace NodaTime.Benchmarks.Framework
         internal string XmlFile { get; private set; }
         internal bool DryRunOnly { get; private set; }
         internal string Label { get; private set; }
+        internal string MachineOverride { get; private set; }
+        internal List<string> IncludedCategories { get; private set; }
+        internal List<string> ExcludedCategories { get; private set; }
 
         private class MutableOptions
         {
@@ -47,6 +52,12 @@ namespace NodaTime.Benchmarks.Framework
             public bool DryRunOnly { get; set; }
             [Option("l", "label", HelpText = "Test run label")]
             public string Label { get; set; }
+            [Option("o", "machine", HelpText = "Machine name override")]
+            public string MachineOverride { get; set; }
+            [Option(null, "included-categories", HelpText = "Included categories, comma-separated")]
+            public string IncludedCategories { get; set; }
+            [Option(null, "excluded-categories", HelpText = "Excluded categories, comma-separated")]
+            public string ExcludedCategories { get; set; }
 
             [HelpOption("?", "help", HelpText = "Display this help screen.")]
             public string GetUsage()
@@ -84,6 +95,9 @@ namespace NodaTime.Benchmarks.Framework
                 DisplayRawData = options.DisplayRawData,
                 XmlFile = options.XmlFile,
                 Label = options.Label,
+                MachineOverride = options.MachineOverride,
+                IncludedCategories = options.IncludedCategories == null ? null : options.IncludedCategories.Split(',').ToList(),
+                ExcludedCategories = options.ExcludedCategories == null ? null : options.ExcludedCategories.Split(',').ToList()
             };
         }
     }

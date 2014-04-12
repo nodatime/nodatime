@@ -59,7 +59,7 @@ namespace NodaTime.TimeZones.IO
         /// Reads a base-128 varint value from the stream.
         /// </summary>
         /// <remarks>
-        /// The value must have been written by <see cref="DateTimeZoneWriter.WriteVarint" />, which
+        /// The value must have been written by DateTimeZoneWriter.WriteVarint, which
         /// documents the format.
         /// </remarks>
         /// <returns>The integer value from the stream.</returns>

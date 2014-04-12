@@ -1,0 +1,42 @@
+﻿@using System.Globalization
+@using NodaTime.Web.Storage
+@model IEnumerable<BenchmarkRun>
+
+@{ViewBag.Title = "Benchmarks for " + @ViewBag.Machine;}
+
+<h2>@ViewBag.Title</h2>
+
+@using (@Html.BeginForm("Diff", "Benchmarks", FormMethod.Get))
+{
+    <input type="submit" value="Diff left/right" />
+    <input type="hidden" name="machine" value="@Html.Raw(@Html.AttributeEncode(@ViewBag.Machine))" />
+    <table class="table">
+        <tr>
+            <th>Left/Right diffs</th>
+            <th>
+                Date/time
+            </th>
+            <th>
+                Label
+            </th>
+            <th></th>
+        </tr>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.RadioButton("left", item.Label)
+                    @Html.RadioButton("right", item.Label)
+                </td>
+                <td>
+                    @item.StartTime.ToString("yyyy-MM-dd HH:mm'Z'", CultureInfo.InvariantCulture)
+                </td>
+                <td>
+                    @Html.ActionLink(item.Label, "BenchmarkRun", new { machine = item.Machine, label = item.Label })
+                </td>
+            </tr>
+        }
+
+    </table>
+    <input type="submit" value="Diff left/right" />
+}

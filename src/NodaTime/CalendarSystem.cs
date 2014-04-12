@@ -50,16 +50,19 @@ namespace NodaTime
         private const string CopticName = "Coptic";
         private const string JulianName = "Julian";
         private const string IslamicName = "Hijri";
+        private const string PersianName = "Persian";
 
         private static readonly CalendarSystem[] GregorianCalendarSystems;
         private static readonly CalendarSystem[] CopticCalendarSystems;
         private static readonly CalendarSystem[] JulianCalendarSystems;
         private static readonly CalendarSystem[,] IslamicCalendarSystems;
         private static readonly CalendarSystem IsoCalendarSystem;
+        private static readonly CalendarSystem PersianCalendarSystem;
 
         static CalendarSystem()
         {
             IsoCalendarSystem = new CalendarSystem(IsoName, IsoName, new IsoYearMonthDayCalculator(), 4);
+            PersianCalendarSystem = new CalendarSystem(PersianName, PersianName, new PersianYearMonthDayCalendar(), 4);
 
             // Variations for the calendar systems which have different objects for different "minimum first day of week"
             // values. We create a new year/month/day calculator for each instance, but there's no actual state - it's
@@ -114,10 +117,11 @@ namespace NodaTime
         private static readonly Dictionary<string, Func<CalendarSystem>> IdToFactoryMap = new Dictionary<string, Func<CalendarSystem>>
         {
             { "ISO", () => Iso },
+            { "Persian", GetPersianCalendar },
             { "Gregorian 1", () => GetGregorianCalendar(1) },
             { "Gregorian 2", () => GetGregorianCalendar(2) },
             { "Gregorian 3", () => GetGregorianCalendar(3) },
-            { "Gregorian 4", () => GetGregorianCalendar(4) }, 
+            { "Gregorian 4", () => GetGregorianCalendar(4) },
             { "Gregorian 5", () => GetGregorianCalendar(5) },
             { "Gregorian 6", () => GetGregorianCalendar(6) },
             { "Gregorian 7", () => GetGregorianCalendar(7) },
@@ -162,6 +166,26 @@ namespace NodaTime
         /// </para>
         /// </remarks>
         public static CalendarSystem Iso { get { return IsoCalendarSystem; } }
+
+        /// <summary>
+        /// Returns a Persian (also known as Solar Hijri) calendar system. This is the main calendar in Iran
+        /// and Afghanistan, and is also used in some other countries where Persian is spoken.
+        /// </summary>
+        /// <remarks>
+        /// The true Persian calendar is an astronomical one, where leap years depend on vernal equinox.
+        /// A complicated algorithmic alternative approach exists, proposed by Ahmad Birashk,
+        /// but this isn't generally used in society. The implementation here is somewhat simpler, using a
+        /// 33-year leap cycle, where years  1, 5, 9, 13, 17, 22, 26, and 30 in each cycle are leap years.
+        /// This is the same approach taken by the BCL <c>PersianCalendar</c> class, and the dates of
+        /// this implementation align exactly with the BCL implementation.
+        /// </remarks>
+        /// <returns>A Persian calendar system.</returns>
+        public static CalendarSystem GetPersianCalendar()
+        {
+            // Note: this is a method rather than a property as we may wish to overload it to allow a choice
+            // of other Persian calendars in the future and for consistency.
+            return PersianCalendarSystem;
+        }
 
         /// <summary>
         /// Returns a pure proleptic Gregorian calendar system, which defines every
@@ -311,7 +335,7 @@ namespace NodaTime
         private readonly int maxYear;
         private readonly long minTicks;
         private readonly long maxTicks;
-      
+
         private CalendarSystem(string name, YearMonthDayCalculator yearMonthDayCalculator, int minDaysInFirstWeek)
             : this(CreateIdFromNameAndMinDaysInFirstWeek(name, minDaysInFirstWeek), name, yearMonthDayCalculator, minDaysInFirstWeek)
         {
@@ -332,11 +356,11 @@ namespace NodaTime
             this.name = name;
             this.yearMonthDayCalculator = yearMonthDayCalculator;
             this.weekYearCalculator = new WeekYearCalculator(yearMonthDayCalculator, minDaysInFirstWeek);
-            this.minYear = yearMonthDayCalculator.MinYear;                   
+            this.minYear = yearMonthDayCalculator.MinYear;
             this.maxYear = yearMonthDayCalculator.MaxYear;
             this.minTicks = yearMonthDayCalculator.GetStartOfYearInTicks(minYear);
             this.maxTicks = yearMonthDayCalculator.GetStartOfYearInTicks(maxYear + 1) - 1;
-            this.eras = new ReadOnlyCollection<Era>(new List<Era>(yearMonthDayCalculator.Eras));
+            this.eras = new ReadOnlyCollection<Era>(yearMonthDayCalculator.Eras);
             this.periodFields = new PeriodFieldSet.Builder(TimeOfDayCalculator.TimeFields)
             {
                 Days = FixedDurationPeriodField.Days,
@@ -392,6 +416,7 @@ namespace NodaTime
         ///   <item><term>Hijri Astronomical-Base15</term><description><see cref="CalendarSystem.GetIslamicCalendar"/>(IslamicLeapYearPattern.Base15, IslamicEpoch.Astronomical)</description></item>
         ///   <item><term>Hijri Astronomical-Base16</term><description><see cref="CalendarSystem.GetIslamicCalendar"/>(IslamicLeapYearPattern.Base16, IslamicEpoch.Astronomical)</description></item>
         ///   <item><term>Hijri Astronomical-HabashAlHasib</term><description><see cref="CalendarSystem.GetIslamicCalendar"/>(IslamicLeapYearPattern.HabashAlHasib, IslamicEpoch.Astronomical)</description></item>
+        ///   <item><term>Persian</term><description><see cref="CalendarSystem.GetPersianCalendar"/></description></item>
         /// </list>
         /// </remarks>
         public string Id { get { return id; } }
@@ -508,7 +533,7 @@ namespace NodaTime
             long timeTicks = TimeOfDayCalculator.GetTicks(hourOfDay, minuteOfHour);
             return date.PlusTicks(timeTicks);
         }
-        
+
         /// <summary>
         /// Returns the local date corresponding to the given "week year", "week of week year", and "day of week"
         /// in this calendar system.
@@ -540,7 +565,7 @@ namespace NodaTime
         }
 
         /// <summary>
-        /// Returns a local instant, formed from the given year, month, day, 
+        /// Returns a local instant, formed from the given year, month, day,
         /// hour, minute, second, millisecond and ticks values.
         /// </summary>
         /// <param name="year">Absolute year (not year within era; may be negative)</param>

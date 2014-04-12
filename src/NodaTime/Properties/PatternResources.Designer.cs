@@ -79,6 +79,15 @@ namespace NodaTime.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to A.P.|AP.
+        /// </summary>
+        internal static string Eras_AnnoPersico {
+            get {
+                return ResourceManager.GetString("Eras_AnnoPersico", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to B.C.|B.C.E.|BC|BCE.
         /// </summary>
         internal static string Eras_BeforeCommon {

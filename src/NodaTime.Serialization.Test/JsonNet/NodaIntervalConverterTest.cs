@@ -21,25 +21,25 @@ namespace NodaTime.Serialization.Test.JsonNet
         [Test]
         public void Serialize()
         {
-            var startInstant = Instant.FromUtc(2012, 1, 2, 3, 4, 5);
-            var endInstant = Instant.FromUtc(2013, 6, 7, 8, 9, 10);
+            var startInstant = Instant.FromUtc(2012, 1, 2, 3, 4, 5) + Duration.FromMilliseconds(670);
+            var endInstant = Instant.FromUtc(2013, 6, 7, 8, 9, 10) + Duration.FromTicks(1234567);
             var interval = new Interval(startInstant, endInstant);
 
             var json = JsonConvert.SerializeObject(interval, Formatting.None, settings);
 
-            string expectedJson = "{\"Start\":\"2012-01-02T03:04:05Z\",\"End\":\"2013-06-07T08:09:10Z\"}";
+            string expectedJson = "{\"Start\":\"2012-01-02T03:04:05.67Z\",\"End\":\"2013-06-07T08:09:10.1234567Z\"}";
             Assert.AreEqual(expectedJson, json);
         }
 
         [Test]
         public void Deserialize()
         {
-            string json = "{\"Start\":\"2012-01-02T03:04:05Z\",\"End\":\"2013-06-07T08:09:10Z\"}";
+            string json = "{\"Start\":\"2012-01-02T03:04:05.67Z\",\"End\":\"2013-06-07T08:09:10.1234567Z\"}";
 
             var interval = JsonConvert.DeserializeObject<Interval>(json, settings);
 
-            var startInstant = Instant.FromUtc(2012, 1, 2, 3, 4, 5);
-            var endInstant = Instant.FromUtc(2013, 6, 7, 8, 9, 10);
+            var startInstant = Instant.FromUtc(2012, 1, 2, 3, 4, 5) + Duration.FromMilliseconds(670);
+            var endInstant = Instant.FromUtc(2013, 6, 7, 8, 9, 10) + Duration.FromTicks(1234567);
             var expectedInterval = new Interval(startInstant, endInstant);
             Assert.AreEqual(expectedInterval, interval);
         }

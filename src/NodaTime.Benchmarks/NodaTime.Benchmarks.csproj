@@ -65,6 +65,7 @@
       <Link>CommandLineText.cs</Link>
     </Compile>
     <Compile Include="BclTests\DateTimeOffsetBenchmarks.cs" />
+    <Compile Include="Framework\CategoryAttribute.cs" />
     <Compile Include="Framework\CompositeResultHandler.cs" />
     <Compile Include="Framework\ConsoleResultHandler.cs" />
     <Compile Include="Framework\XmlResultHandler.cs" />
@@ -86,6 +87,7 @@
     <Compile Include="NodaTimeTests\Text\LocalDatePatternBenchmarks.cs" />
     <Compile Include="NodaTimeTests\Text\InstantPatternBenchmarks.cs" />
     <Compile Include="NodaTimeTests\Text\LocalDateTimePatternBenchmarks.cs" />
+    <Compile Include="NodaTimeTests\Text\PeriodPatternBenchmarks.cs" />
     <Compile Include="NodaTimeTests\UtcZonedDateTimeBenchmarks.cs" />
     <Compile Include="NodaTimeTests\LocalDateTimeBenchmarks.cs" />
     <Compile Include="BclTests\DateTimeBenchmarks.cs" />
@@ -104,7 +106,7 @@
       <Name>NodaTime.Serialization.JsonNet</Name>
     </ProjectReference>
     <ProjectReference Include="..\NodaTime\NodaTime.csproj">
-      <Project>{42B687A6-0F76-4638-A372-161C922A998B}</Project>
+      <Project>{42b687a6-0f76-4638-a372-161c922a998b}</Project>
       <Name>NodaTime</Name>
     </ProjectReference>
   </ItemGroup>

@@ -151,10 +151,7 @@ All the source code is under the `src` directory. There are multiple projects:
 - NodaTime.TzdbCompiler: Tool to take a TZDB database and convert it into the NodaTime internal format
 - NodaTime.TzdbCompiler.Test: Tests for NodaTime.TzdbCompiler
 
-Additionally the `JodaDump` contains Java code to be used with NodaTime.CheckTimeZones.
-
-The documentation is in the `www` directory with the rest of the website: `www/developer` for the developer guide, and `www/unstable/userguide` for the latest user guide. 
-c
+The documentation is in the `www` directory with the rest of the website: `www/developer` for the developer guide, and `www/unstable/userguide` for the latest user guide.
 Additionally the `www` directory contains the source for the documentation, and `JodaDump` contains Java code to be used with NodaTime.CheckTimeZones.
 
 

@@ -63,58 +63,69 @@ namespace NodaTime.Calendars
             unchecked
             {
                 long ticks = localInstant.Ticks;
-                return ticks >= 0 ? ticks % NodaConstants.TicksPerStandardDay : (NodaConstants.TicksPerStandardDay - 1) + ((ticks + 1) % NodaConstants.TicksPerStandardDay);                
+                if (ticks >= 0)
+                {
+                    // Surprisingly enough, this is faster than (but equivalent to)
+                    // return ticks % NodaConstants.TicksPerStandardDay;
+                    int days = TickArithmetic.TicksToDays(ticks);
+                    return ticks - ((days * 52734375L) << 14);
+                }
+                else
+                {
+                    // I'm sure this can be optimized using shifting, but it's complicated enough as it is...
+                    return (NodaConstants.TicksPerStandardDay - 1) + ((ticks + 1) % NodaConstants.TicksPerStandardDay);
+                }
             }
         }
 
         internal static int GetTickOfSecond(LocalInstant localInstant)
         {
-            return ComputeDividedValue(localInstant, 1, NodaConstants.TicksPerSecond);
+            return GetTickOfSecondFromTickOfDay(GetTickOfDay(localInstant));
         }
 
         internal static int GetTickOfMillisecond(LocalInstant localInstant)
         {
-            return ComputeDividedValue(localInstant, 1, NodaConstants.TicksPerMillisecond);
+            return (int) (GetTickOfDay(localInstant) % NodaConstants.TicksPerMillisecond);
         }
 
         internal static int GetMillisecondOfSecond(LocalInstant localInstant)
         {
-            return ComputeDividedValue(localInstant, NodaConstants.TicksPerMillisecond, NodaConstants.MillisecondsPerSecond);
+            return GetMillisecondOfSecondFromTickOfDay(GetTickOfDay(localInstant));
         }
 
         internal static int GetMillisecondOfDay(LocalInstant localInstant)
         {
-            return ComputeDividedValue(localInstant, NodaConstants.TicksPerMillisecond, NodaConstants.MillisecondsPerStandardDay);
+            return (int) (GetTickOfDay(localInstant) / NodaConstants.TicksPerMillisecond);
         }
 
         internal static int GetSecondOfMinute(LocalInstant localInstant)
         {
-            return ComputeDividedValue(localInstant, NodaConstants.TicksPerSecond, NodaConstants.SecondsPerMinute);
+            return GetSecondOfMinuteFromTickOfDay(GetTickOfDay(localInstant));
         }
 
         internal static int GetSecondOfDay(LocalInstant localInstant)
         {
-            return ComputeDividedValue(localInstant, NodaConstants.TicksPerSecond, NodaConstants.SecondsPerStandardDay);
+            return (int) (GetTickOfDay(localInstant) / NodaConstants.TicksPerSecond);
         }
 
         internal static int GetMinuteOfHour(LocalInstant localInstant)
         {
-            return ComputeDividedValue(localInstant, NodaConstants.TicksPerMinute, NodaConstants.MinutesPerHour);
+            return GetMinuteOfHourFromTickOfDay(GetTickOfDay(localInstant));
         }
 
         internal static int GetMinuteOfDay(LocalInstant localInstant)
         {
-            return ComputeDividedValue(localInstant, NodaConstants.TicksPerMinute, NodaConstants.MinutesPerStandardDay);
+            return (int) (GetTickOfDay(localInstant) / NodaConstants.TicksPerMinute);
         }
 
         internal static int GetHourOfDay(LocalInstant localInstant)
         {
-            return ComputeDividedValue(localInstant, NodaConstants.TicksPerHour, NodaConstants.HoursPerStandardDay);
+            return GetHourOfDayFromTickOfDay(GetTickOfDay(localInstant));
         }
 
         internal static int GetHourOfHalfDay(LocalInstant localInstant)
         {
-            return ComputeDividedValue(localInstant, NodaConstants.TicksPerHour, NodaConstants.HoursPerStandardDay / 2);
+            return GetHourOfDay(localInstant) % 12;
         }
 
         internal static int GetClockHourOfHalfDay(LocalInstant localInstant)
@@ -123,16 +134,34 @@ namespace NodaTime.Calendars
             return hourOfHalfDay == 0 ? 12 : hourOfHalfDay;
         }
 
-        private static int ComputeDividedValue(LocalInstant localInstant, long unitTicks, long upperBound)
+        internal static int GetHourOfDayFromTickOfDay(long tickOfDay)
         {
-            // This is guaranteed not to overflow based on the operations we'll be performing.
-            unchecked
-            {
-                long ticks = localInstant.Ticks;
-                long longResult = ticks >= 0 ? (ticks / unitTicks) % upperBound
-                                             : upperBound - 1 + (((ticks + 1) / unitTicks) % upperBound);
-                return (int)longResult;                
-            }
+            // Effectively tickOfDay / NodaConstants.TicksPerHour.
+            // Note that NodaConstants.TicksPerStandardDay >> 11 is about 491 million; less than int.MaxValue.
+            return ((int) (tickOfDay >> 11)) / 17578125;
+        }
+
+        internal static int GetMinuteOfHourFromTickOfDay(long tickOfDay)
+        {
+            int minuteOfDay = (int) (tickOfDay / (int) NodaConstants.TicksPerMinute);
+            return minuteOfDay % NodaConstants.MinutesPerHour;
+        }
+
+        internal static int GetSecondOfMinuteFromTickOfDay(long tickOfDay)
+        {
+            int secondOfDay = (int) (tickOfDay / (int) NodaConstants.TicksPerSecond);
+            return secondOfDay % NodaConstants.SecondsPerMinute;
+        }
+
+        internal static int GetMillisecondOfSecondFromTickOfDay(long tickOfDay)
+        {
+            long milliSecondOfDay = (tickOfDay / (int) NodaConstants.TicksPerMillisecond);
+            return (int) (milliSecondOfDay % NodaConstants.MillisecondsPerSecond);
+        }
+
+        internal static int GetTickOfSecondFromTickOfDay(long tickOfDay)
+        {
+            return (int) (tickOfDay % (int) NodaConstants.TicksPerSecond);
         }
     }
 }

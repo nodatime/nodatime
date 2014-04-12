@@ -169,15 +169,13 @@ The serialized form is not documented here as it is not expected to be consumed 
 Third-party serialization
 -------------------------
 
-Currently [Json.NET](http://json.net) is the only supported third party serialization framework.
-If others are introduced, we will have one serialization assembly (and NuGet package) for each type of
-serialization we support which requires separate dependencies.
+The Noda Time project itself has support for [Json.NET](http://json.net). Additionally, there is a separate project for [ServiceStack.Text](https://github.com/ServiceStack/ServiceStack.Text/) support. Details of both are given below.
 
 Json.NET: NodaTime.Serialization.JsonNet
 ----------------------------------------
 
 [Json.NET](http://json.net) is supported within the `NodaTime.Serialization.JsonNet` assembly and the namespace
-of the same name. This assembly is built against Json.NET 4.5.11, and is available in both portable and desktop flavours. It can be installed using Nuget, again with a package name of `NodaTime.Serialization.JsonNet`. See the
+of the same name. This assembly is built against Json.NET 4.5.11, and is available in both portable and desktop flavours. It can be installed using NuGet, again with a package name of `NodaTime.Serialization.JsonNet`. See the
 [installation guide](installation.html) for more details.
 
 An extension method of `ConfigureForNodaTime` is provided on both `JsonSerializer` and
@@ -217,3 +215,11 @@ All default patterns use the invariant culture.
 - Currently only ISO calendars are supported, and handling for negative and non-four-digit years will depend on the appropriate underlying pattern implementation. (Non-ISO converters are now possible, but the results would be very specific to Noda Time.)
 - There's no indication of the time zone provider or its version in the `DateTimeZone` representation.
 
+ServiceStack.Text: NodaTime.Serialization.ServiceStackText
+-----------------------------------------------------------
+
+[ServiceStack.Text](https://github.com/ServiceStack/ServiceStack.Text/) is supported via a
+[separate project on GitHub](https://github.com/AnthonyCarl/NodaTime.Serialization.ServiceStackText).
+There is a [NuGet package](https://www.nuget.org/packages/NodaTime.Serialization.ServiceStackText/), and documentation is on the project page. The package supports Noda Time version ≥ 1.2.0 and ServiceStack.Text ≥ 3.9.44.
+
+The JSON representation is the same as that used by Json.NET above.

@@ -21,7 +21,7 @@ namespace NodaTime.Calendars
         private readonly long ticksInLeapYear;
 
         protected RegularYearMonthDayCalculator(int minYear, int maxYear, int monthsInYear,
-            long ticksInNonLeapYear, long averageTicksPerYear, long ticksAtStartOfYear1, IList<Era> eras)
+            long ticksInNonLeapYear, long averageTicksPerYear, long ticksAtStartOfYear1, params Era[] eras)
             : base(minYear, maxYear, averageTicksPerYear, ticksAtStartOfYear1, eras)
         {
             this.monthsInYear = monthsInYear;

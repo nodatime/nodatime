@@ -113,6 +113,7 @@
     <OutputPath>bin\Release Portable\</OutputPath>
     <DefineConstants>TRACE;PCL</DefineConstants>
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+    <DocumentationFile>bin\Release Portable\NodaTime.xml</DocumentationFile>
     <Optimize>true</Optimize>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <DebugType>pdbonly</DebugType>
@@ -142,6 +143,7 @@
   <ItemGroup>
     <Compile Include="Annotations\MutableAttribute.cs" />
     <Compile Include="Annotations\ImmutableAttribute.cs" />
+    <Compile Include="Annotations\VisibleForTestingAttribute.cs" />
     <Compile Include="CalendarSystem.cs" />
     <Compile Include="AmbiguousTimeException.cs" />
     <Compile Include="Calendars\CopticYearMonthDayCalculator.cs" />
@@ -156,7 +158,9 @@
     <Compile Include="Calendars\IsoYearMonthDayCalculator.cs" />
     <Compile Include="Calendars\JulianYearMonthDayCalculator.cs" />
     <Compile Include="Calendars\NamespaceDoc.cs" />
+    <Compile Include="Calendars\PersianYearMonthDayCalendar.cs" />
     <Compile Include="Calendars\RegularYearMonthDayCalculator.cs" />
+    <Compile Include="Calendars\TickArithmetic.cs" />
     <Compile Include="Calendars\TimeOfDayCalculator.cs" />
     <Compile Include="Calendars\WeekYearCalculator.cs" />
     <Compile Include="Calendars\YearMonthDayCalculator.cs" />
