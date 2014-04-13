@@ -2,10 +2,7 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
 using NodaTime.Calendars;
 using NUnit.Framework;
 
@@ -21,8 +18,7 @@ namespace NodaTime.Test.Calendars
         public void IsLeapYear()
         {
             var bcl = new PersianCalendar();
-            // TODO: Use CalendarSystem.Persian
-            var noda = new PersianYearMonthDayCalendar();
+            var noda = CalendarSystem.GetPersianCalendar();
 
             for (int year = 1; year < 9379; year++)
             {
