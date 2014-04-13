@@ -20,11 +20,15 @@ API changes:
 - Added support for the Persian/Solar Hijri calendar, via
   `CalendarSystem.GetPersianCalendar()`
 - Added `Era.AnnoPersico` (for the Persian calendar)
+- Added `LocalDate.At(LocalTime)` and `LocalTime.On(LocalDate)`, more
+  discoverable versions of `LocalDate + LocalTime` ([issue 192][])
 - Added `OffsetDateTime.WithOffset()`, which returns an `OffsetDateTime`
   representing the same point in time, but using a given offset ([issue 246][])
 - Added `CreateWithInvariantCulture()` to `OffsetDateTimePattern`, and
   `CreateWithCurrentCulture()` to both `OffsetDateTimePattern` and
   `ZonedDateTimePattern`
+- `ZonedDateTimePattern` patterns containing the `G` and `F` standard patterns
+  can now be used for parsing when used with a zone provider ([issue 277][])
 - Marked the desktop assembly with the `AllowPartiallyTrustedCallers`
   attribute (and relevant types with the `SecurityCritical` attribute),
   allowing it to be used in partially-trusted contexts (issues [268][issue 268]
@@ -59,7 +63,6 @@ Bug fixes:
   fractional-second format in a locale that doesn't use '.' as a decimal
   separator could erroneously cause the result to have a trailing '.'
   ([issue 273][])
-- Fixed navigation in the user guide ([issue 242][])
 
 Other:
 
