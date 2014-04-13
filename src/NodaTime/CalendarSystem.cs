@@ -62,7 +62,7 @@ namespace NodaTime
         static CalendarSystem()
         {
             IsoCalendarSystem = new CalendarSystem(IsoName, IsoName, new IsoYearMonthDayCalculator(), 4);
-            PersianCalendarSystem = new CalendarSystem(PersianName, PersianName, new PersianYearMonthDayCalendar(), 4);
+            PersianCalendarSystem = new CalendarSystem(PersianName, PersianName, new PersianYearMonthDayCalculator(), 4);
 
             // Variations for the calendar systems which have different objects for different "minimum first day of week"
             // values. We create a new year/month/day calculator for each instance, but there's no actual state - it's
