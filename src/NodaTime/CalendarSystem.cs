@@ -51,6 +51,7 @@ namespace NodaTime
         private const string JulianName = "Julian";
         private const string IslamicName = "Hijri";
         private const string PersianName = "Persian";
+        private const string HebrewName = "Hebrew";
 
         private static readonly CalendarSystem[] GregorianCalendarSystems;
         private static readonly CalendarSystem[] CopticCalendarSystems;
@@ -58,11 +59,17 @@ namespace NodaTime
         private static readonly CalendarSystem[,] IslamicCalendarSystems;
         private static readonly CalendarSystem IsoCalendarSystem;
         private static readonly CalendarSystem PersianCalendarSystem;
+        private static readonly CalendarSystem[] HebrewCalendarSystems;
 
         static CalendarSystem()
         {
             IsoCalendarSystem = new CalendarSystem(IsoName, IsoName, new IsoYearMonthDayCalculator(), 4);
             PersianCalendarSystem = new CalendarSystem(PersianName, PersianName, new PersianYearMonthDayCalculator(), 4);
+            HebrewCalendarSystems = new[]
+            {
+                new CalendarSystem(HebrewName, HebrewName, new HebrewYearMonthDayCalculator(HebrewMonthNumbering.Civil), 4),
+                new CalendarSystem(HebrewName, HebrewName, new HebrewYearMonthDayCalculator(HebrewMonthNumbering.Ecclesiastical), 4)
+            };
 
             // Variations for the calendar systems which have different objects for different "minimum first day of week"
             // values. We create a new year/month/day calculator for each instance, but there's no actual state - it's
@@ -118,6 +125,8 @@ namespace NodaTime
         {
             { "ISO", () => Iso },
             { "Persian", GetPersianCalendar },
+            { "Hebrew-Civil", () => GetHebrewCalendar(HebrewMonthNumbering.Civil) },
+            { "Hebrew-Ecclesiastical", () => GetHebrewCalendar(HebrewMonthNumbering.Ecclesiastical) },
             { "Gregorian 1", () => GetGregorianCalendar(1) },
             { "Gregorian 2", () => GetGregorianCalendar(2) },
             { "Gregorian 3", () => GetGregorianCalendar(3) },
@@ -185,6 +194,25 @@ namespace NodaTime
             // Note: this is a method rather than a property as we may wish to overload it to allow a choice
             // of other Persian calendars in the future and for consistency.
             return PersianCalendarSystem;
+        }
+
+        /// <summary>
+        /// Returns a Hebrew calendar, as described at http://en.wikipedia.org/wiki/Hebrew_calendar. This is a
+        /// purely mathematical calculator, applied proleptically to
+        /// the period where the real calendar was observational. 
+        /// </summary>
+        /// <remarks>
+        /// <para>The implementation for this was taken from http://www.cs.tau.ac.il/~nachum/calendar-book/papers/calendar.ps,
+        /// which is a public domain algorithm presumably equivalent to that given in the Calendrical Calculations book
+        /// by the same authors (Nachum Dershowitz and Edward Reingold).
+        /// </para>
+        /// </remarks>
+        /// <param name="monthNumbering">The month numbering system to use</param>
+        /// <returns>A Hebrew calendar system for the given month numbering.</returns>
+        public static CalendarSystem GetHebrewCalendar(HebrewMonthNumbering monthNumbering)
+        {
+            Preconditions.CheckArgumentRange("monthNumbering", (int) monthNumbering, 1, 2);
+            return HebrewCalendarSystems[((int) monthNumbering) - 1];
         }
 
         /// <summary>
@@ -417,6 +445,7 @@ namespace NodaTime
         ///   <item><term>Hijri Astronomical-Base16</term><description><see cref="CalendarSystem.GetIslamicCalendar"/>(IslamicLeapYearPattern.Base16, IslamicEpoch.Astronomical)</description></item>
         ///   <item><term>Hijri Astronomical-HabashAlHasib</term><description><see cref="CalendarSystem.GetIslamicCalendar"/>(IslamicLeapYearPattern.HabashAlHasib, IslamicEpoch.Astronomical)</description></item>
         ///   <item><term>Persian</term><description><see cref="CalendarSystem.GetPersianCalendar"/></description></item>
+        ///   <item><term>Hebrew</term><description><see cref="CalendarSystem.GetHebrewCalendar"/></description></item>
         /// </list>
         /// </remarks>
         public string Id { get { return id; } }
