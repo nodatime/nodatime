@@ -13,6 +13,8 @@ namespace NodaTime.Calendars
     {
         // Cache of when each year starts (in  terms of absolute days). This is the heart of
         // the algorithm, so just caching this is highly effective.
+        // TODO: Encode the information about month lengths in the cache too. We have plenty of
+        // space as we don't need day numbers to go terribly high.
         private static readonly YearStartCacheEntry[] YearCache = YearStartCacheEntry.CreateCache();
 
         internal static bool IsLeapYear(int year)
@@ -103,6 +105,7 @@ namespace NodaTime.Calendars
             int days = ElapsedDays(year) + day - 1373429;
 
             // Now work out the days leading up to this month.
+            // TODO: use the cache to compute all of this in one go.
             if (month < 7) // If before Tishri
             {
                 // Add days in prior months this year before and after Nisan
@@ -133,6 +136,8 @@ namespace NodaTime.Calendars
         internal static YearMonthDay HebrewFromAbsolute(int days)
         {
             // Initial guess (lower bound).
+            // TODO: See whether we can use a higher estimate (divide by 363.4) which should require
+            // fewer iterations.
             int year = (days + 1373429) / 366;
             while (days >= AbsoluteFromHebrew(year + 1, 7, 1))
             {

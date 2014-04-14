@@ -50,7 +50,7 @@
         private static readonly YearStartCacheEntry Invalid = new YearStartCacheEntry(InvalidEntryYear, 0);
 
         /// <summary>
-        /// Entry value: most significant 25 bits are the number of days since the Unix epoch; remaining 7 bits are
+        /// Entry value: most significant 25 bits are the number of days (e.g. since the Unix epoch); remaining 7 bits are
         /// the validator.
         /// </summary>
         private readonly int value;
