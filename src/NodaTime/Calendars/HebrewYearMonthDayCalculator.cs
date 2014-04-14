@@ -67,12 +67,31 @@ namespace NodaTime.Calendars
             return absoluteDay - AbsoluteDayOfUnixEpoch;
         }
 
+        internal override int GetMonthOfYear(LocalInstant localInstant)
+        {
+            int absoluteDay = AbsoluteDayFromLocalInstant(localInstant);
+            YearMonthDay ymd = HebrewEcclesiasticalCalculator.HebrewFromAbsolute(absoluteDay);
+            return ecclesiasticalToCalendar(ymd.Year, ymd.Month);
+        }
+
+        internal override int GetDaysInYear(int year)
+        {
+            return HebrewEcclesiasticalCalculator.DaysInYear(year);
+        }
+
+        internal override int GetDayOfMonth(LocalInstant localInstant)
+        {
+            int absoluteDay = AbsoluteDayFromLocalInstant(localInstant);
+            YearMonthDay ymd = HebrewEcclesiasticalCalculator.HebrewFromAbsolute(absoluteDay);
+            return ymd.Day;
+        }
+
         protected override int GetMonthOfYear(LocalInstant localInstant, int year)
         {
             // Ignore the year we're given...
-            int absoluteDay = AbsoluteDayFromLocalInstant(localInstant);
-            YearMonthDay ymd = HebrewEcclesiasticalCalculator.HebrewFromAbsolute(absoluteDay);
-            return ecclesiasticalToCalendar(year, ymd.Month);
+            // TODO: Consider throwing InvalidOperationException, as we're overriding the only methods
+            // that should call this...
+            return GetMonthOfYear(localInstant);
         }
 
         protected override long GetTicksInYear(int year)
