@@ -26,7 +26,8 @@ namespace NodaTime.Test.Calendars
         [Test]
         public void ResourcePresence(Era era)
         {
-            Assert.NotNull(PatternResources.ResourceManager.GetString(era.ResourceIdentifier, CultureInfo.InvariantCulture));
+            Assert.NotNull(PatternResources.ResourceManager.GetString(era.ResourceIdentifier, CultureInfo.InvariantCulture),
+                "Missing resource for " + era.ResourceIdentifier);
         }
     }
 }
