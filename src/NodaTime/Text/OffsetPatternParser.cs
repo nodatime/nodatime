@@ -141,7 +141,7 @@ namespace NodaTime.Text
             {
                 patterns.Add(ParsePartialPattern(c.ToString(), formatInfo));
             }
-            NodaFunc<Offset, IPartialPattern<Offset>> formatter = value => PickGeneralFormatter(value, patterns);
+            Func<Offset, IPartialPattern<Offset>> formatter = value => PickGeneralFormatter(value, patterns);
             return new CompositePattern<Offset>(patterns, formatter);
         }
 
