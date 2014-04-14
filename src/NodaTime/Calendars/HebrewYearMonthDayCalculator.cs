@@ -18,8 +18,8 @@ namespace NodaTime.Calendars
         private readonly Func<int, int, int> ecclesiasticalToCalendar;
 
         internal HebrewYearMonthDayCalculator(HebrewMonthNumbering monthNumbering)
-            : base(1, // Min year
-                  30000, // Max year (very conservative, but let's not worry...)
+            : base(HebrewEcclesiasticalCalculator.MinYear,
+                  HebrewEcclesiasticalCalculator.MaxYear,
                   (long) (363.4 * NodaConstants.TicksPerStandardDay), // Average year length
                   (AbsoluteDayOfHebrewEpoch - AbsoluteDayOfUnixEpoch) * NodaConstants.TicksPerStandardDay, // Tick at year 1
                   new[] { Era.AnnoMundi })

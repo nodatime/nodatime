@@ -11,6 +11,15 @@ namespace NodaTime.Calendars
     /// </summary>
     internal static class HebrewEcclesiasticalCalculator
     {
+        // This is artificially small due to wanting to only need 23 bits for the
+        // "absoluate start of year" cache entry part. With a different cache mechanism
+        // we could probably manage, but it's simplest just to use a restricted range.
+        internal const int MaxYear = 20000;
+        internal const int MinYear = 1;
+        private const int ElapsedDaysCacheMask = (1 << 23) - 1; // Low 23 bits
+        private const int IsHeshvanLongCacheBit = 1 << 23;
+        private const int IsKislevShortCacheBit = 1 << 24;
+
         // Cache of when each year starts (in  terms of absolute days). This is the heart of
         // the algorithm, so just caching this is highly effective.
         // TODO: Encode the information about month lengths in the cache too. We have plenty of
@@ -39,10 +48,10 @@ namespace NodaTime.Calendars
                     return 29;
                 case 8:
                     // Is Heshvan long in this year?
-                    return DaysInYear(year) % 10 == 5 ? 30 : 29;
+                    return IsHeshvanLong(year) ? 30 : 29;
                 case 9:
                     // Is Kislev short in this year?
-                    return DaysInYear(year) % 10 == 3 ? 29 : 30;
+                    return IsKislevShort(year) ?  29 : 30;
                 case 12:
                     return IsLeapYear(year) ? 30 : 29;
                 default:
@@ -50,22 +59,23 @@ namespace NodaTime.Calendars
             }
         }
 
+        private static bool IsHeshvanLong(int year)
+        {
+            int cache = GetOrPopulateCache(year);
+            return (cache & IsHeshvanLongCacheBit) != 0;
+        }
+
+        private static bool IsKislevShort(int year)
+        {
+            int cache = GetOrPopulateCache(year);
+            return (cache & IsKislevShortCacheBit) != 0;
+        }
+
         // Computed ElapsedDays using the cahce where possible.
         private static int ElapsedDays(int year)
         {
-            if (year < 1 || year > 30000)
-            {
-                return ElapsedDaysNoCache(year);
-            }
-            int cacheIndex = YearStartCacheEntry.GetCacheIndex(year);
-            YearStartCacheEntry cacheEntry = YearCache[cacheIndex];
-            if (!cacheEntry.IsValidForYear(year))
-            {
-                int days = ElapsedDaysNoCache(year);
-                cacheEntry = new YearStartCacheEntry(year, days);
-                YearCache[cacheIndex] = cacheEntry;
-            }
-            return cacheEntry.StartOfYearDays;
+            int cache = GetOrPopulateCache(year);
+            return cache & ElapsedDaysCacheMask;
         }
 
         private static int ElapsedDaysNoCache(int year)
@@ -85,6 +95,59 @@ namespace NodaTime.Calendars
             int alternativeDayMod7 = alternativeDay % 7;
             return (alternativeDayMod7 == 0 || alternativeDayMod7 == 3 || alternativeDayMod7 == 5)
                 ? alternativeDay + 1 : alternativeDay;
+        }
+
+        /// <summary>
+        /// Returns the cached "absolute day at start of year / IsHeshvanLong / IsKislevShort" combination,
+        /// populating the cache if necessary. Bits 0-22 are the "elapsed days start of year"; bit 23 is
+        /// "is Heshvan long"; bit 24 is "is Kislev short". If the year is out of the range for the cache,
+        /// the value is populated but not cached.
+        /// </summary>
+        /// <param name="year"></param>
+        private static int GetOrPopulateCache(int year)
+        {
+            if (year < MinYear || year > MaxYear)
+            {
+                return ComputeCacheEntry(year);
+            }
+            int cacheIndex = YearStartCacheEntry.GetCacheIndex(year);
+            YearStartCacheEntry cacheEntry = YearCache[cacheIndex];
+            if (!cacheEntry.IsValidForYear(year))
+            {
+                int days = ComputeCacheEntry(year);
+                cacheEntry = new YearStartCacheEntry(year, days);
+                YearCache[cacheIndex] = cacheEntry;
+            }
+            return cacheEntry.StartOfYearDays;
+        }
+
+        /// <summary>
+        /// Computes the cache entry value for the given year, but without populating the cache.
+        /// </summary>
+        private static int ComputeCacheEntry(int year)
+        {
+            int days = ElapsedDaysNoCache(year);
+            // We want the elapsed days for the next year as well. Check the cache if possible.
+            int nextYear = year + 1;
+            int nextYearDays;
+            if (nextYear <= MaxYear)
+            {
+                int cacheIndex = YearStartCacheEntry.GetCacheIndex(nextYear);
+                YearStartCacheEntry cacheEntry = YearCache[cacheIndex];
+                nextYearDays = cacheEntry.IsValidForYear(nextYear)
+                    ? cacheEntry.StartOfYearDays & ElapsedDaysCacheMask
+                    : ElapsedDaysNoCache(nextYear);
+            }
+            else
+            {
+                nextYearDays = ElapsedDaysNoCache(year);
+            }
+            int daysInYear = nextYearDays - days;
+            bool isHeshvanLong = daysInYear % 10 == 5;
+            bool isKislevShort = daysInYear % 10 == 3;
+            return days
+                | (isHeshvanLong ? IsHeshvanLongCacheBit : 0)
+                | (isKislevShort ? IsKislevShortCacheBit : 0);
         }
 
         internal static int DaysInYear(int year)
