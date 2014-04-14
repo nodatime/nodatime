@@ -2,6 +2,7 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -14,9 +15,9 @@ namespace NodaTime.Text.Patterns
     internal sealed class CompositePattern<T> : IPartialPattern<T>
     {
         private readonly List<IPartialPattern<T>> parsePatterns;
-        private readonly NodaFunc<T, IPartialPattern<T>> formatPatternPicker;
+        private readonly Func<T, IPartialPattern<T>> formatPatternPicker;
 
-        internal CompositePattern(IEnumerable<IPartialPattern<T>> parsePatterns, NodaFunc<T, IPartialPattern<T>> formatPatternPicker)
+        internal CompositePattern(IEnumerable<IPartialPattern<T>> parsePatterns, Func<T, IPartialPattern<T>> formatPatternPicker)
         {
             this.parsePatterns = new List<IPartialPattern<T>>(parsePatterns);
             this.formatPatternPicker = formatPatternPicker;

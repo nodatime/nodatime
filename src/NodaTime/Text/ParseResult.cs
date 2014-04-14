@@ -18,10 +18,10 @@ namespace NodaTime.Text
     public sealed class ParseResult<T>
     {
         private readonly T value;
-        private readonly NodaFunc<Exception> exceptionProvider;
+        private readonly Func<Exception> exceptionProvider;
         private readonly bool continueWithMultiple;
 
-        private ParseResult(NodaFunc<Exception> exceptionProvider, bool continueWithMultiple)
+        private ParseResult(Func<Exception> exceptionProvider, bool continueWithMultiple)
         {
             this.exceptionProvider = exceptionProvider;
             this.continueWithMultiple = continueWithMultiple;
@@ -107,7 +107,7 @@ namespace NodaTime.Text
         /// Converts this result to a new target type, either by executing the given projection
         /// for a success result, or propagating the exception provider for failure.
         /// </summary>
-        internal ParseResult<TTarget> Convert<TTarget>(NodaFunc<T, TTarget> projection)
+        internal ParseResult<TTarget> Convert<TTarget>(Func<T, TTarget> projection)
         {
             return Success ? ParseResult<TTarget>.ForValue(projection(Value))
                 : new ParseResult<TTarget>(exceptionProvider, continueWithMultiple);
@@ -133,7 +133,7 @@ namespace NodaTime.Text
             return new ParseResult<T>(value);
         }
 
-        internal static ParseResult<T> ForException(NodaFunc<Exception> exceptionProvider)
+        internal static ParseResult<T> ForException(Func<Exception> exceptionProvider)
         {
             return new ParseResult<T>(exceptionProvider, false);
         }
@@ -143,7 +143,7 @@ namespace NodaTime.Text
             return ForInvalidValue(() => new UnparsableValueException(string.Format(CultureInfo.CurrentCulture, formatString, parameters)));
         }
 
-        private static ParseResult<T> ForInvalidValue(NodaFunc<Exception> exceptionProvider)
+        private static ParseResult<T> ForInvalidValue(Func<Exception> exceptionProvider)
         {
             return new ParseResult<T>(exceptionProvider, true);
         }

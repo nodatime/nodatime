@@ -169,7 +169,6 @@
     <Compile Include="Calendars\YearMonthDay.cs" />
     <Compile Include="Calendars\YearMonthDayCalculator.cs" />
     <Compile Include="DateTimeZoneProviders.cs" />
-    <Compile Include="Delegates.cs" />
     <Compile Include="Fields\MonthsPeriodField.cs" />
     <Compile Include="Fields\FixedDurationPeriodField.cs" />
     <Compile Include="Fields\IPeriodField.cs" />
