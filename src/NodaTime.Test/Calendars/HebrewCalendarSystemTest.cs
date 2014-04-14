@@ -4,6 +4,7 @@
 using System;
 using System.Globalization;
 using NodaTime.Calendars;
+using NodaTime.Text;
 using NUnit.Framework;
 
 namespace NodaTime.Test.Calendars
@@ -101,6 +102,37 @@ namespace NodaTime.Test.Calendars
                     }
                 }
             }
+        }
+
+        // 5501 is not a leap year; 5502 is; 5503 is not; 5505 is.
+        // Heshvan (ecclesiastical 8) is long in 5507 and 5509; it is short in 5506 and 5508
+        // Kislev (ecclesiastical 9) is long in 5503-5505; it is short in 5502 and 5506
+        // Test cases are in ecclesiastical month numbering, but we check both. This is
+        // mostly testing the behaviour of SetYear, via LocalDate.PlusYears.
+        [Test]
+        [TestCase("5505-02-10", 1, "5506-02-10")] // No truncation required
+        [TestCase("5502-13-05", 1, "5503-12-29")] // Truncation from Adar II to end of Adar
+        [TestCase("5502-13-05", -1, "5501-12-29")] // And again, but in reverse (subtracting a year)
+        [TestCase("5502-12-05", 1, "5503-12-05")] // In Adar, but no truncation required
+        [TestCase("5502-13-05", 3, "5505-13-05")] // In Adar II, but no truncation required as we transferring to a leap year
+        [TestCase("5507-08-30", 1, "5508-08-29")] // Truncation in Heshvan
+        [TestCase("5507-08-30", 2, "5509-08-30")] // No truncation in Heshvan (both 5507 and 5509 are long)
+        [TestCase("5503-09-30", 1, "5504-09-30")] // No truncation in Kislev (both 5503 and 5504 are long)
+        [TestCase("5503-09-30", 3, "5506-09-29")] // Truncation in Kislev
+        public void SetYear(string startText, int years, string expectedEndText)
+        {
+            var civil = CalendarSystem.GetHebrewCalendar(HebrewMonthNumbering.Civil);
+            var ecclesiastical = CalendarSystem.GetHebrewCalendar(HebrewMonthNumbering.Ecclesiastical);
+            var pattern = LocalDatePattern.CreateWithInvariantCulture("yyyy-MM-dd")
+                .WithTemplateValue(new LocalDate(5774, 1, 1, ecclesiastical)); // Sample value in 2014 ISO
+
+            var start = pattern.Parse(startText).Value;
+            var expectedEnd = pattern.Parse(expectedEndText).Value;
+            Assert.AreEqual(expectedEnd, start.PlusYears(years));
+
+            // Check civil as well... the date should be the same (year, month, day) even though
+            // the numbering is different.
+            Assert.AreEqual(expectedEnd.WithCalendar(civil), start.WithCalendar(civil).PlusYears(years));
         }
     }
 }

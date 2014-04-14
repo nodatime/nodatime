@@ -2,15 +2,16 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 using System;
-using System.Globalization;
 
 namespace NodaTime.Calendars
 {
     /// <summary>
-    /// See <see cref="CalendarSystem.GetHebrewCalendar()" /> for details.
+    /// See <see cref="CalendarSystem.GetHebrewCalendar" /> for details. This is effectively
+    /// an adapter around <see cref="HebrewEcclesiasticalCalculator"/>.
     /// </summary>
     internal sealed class HebrewYearMonthDayCalculator : YearMonthDayCalculator
     {
+        private const int EcclesiasticalYearStartMonth = 7;
         private const int AbsoluteDayOfUnixEpoch = 719163;
         private const int AbsoluteDayOfHebrewEpoch = -1373427;
         private readonly Func<int, int, int> calendarToEcclesiastical;
@@ -54,17 +55,15 @@ namespace NodaTime.Calendars
         {
             int ecclesiasticalMonth = calendarToEcclesiastical(year, month);
             int absoluteDayAtStartOfMonth = HebrewEcclesiasticalCalculator.AbsoluteFromHebrew(year, ecclesiasticalMonth, 1);
-            // 7 = first month of year...
-            int absoluteDayAtStartOfYear = HebrewEcclesiasticalCalculator.AbsoluteFromHebrew(year, 7, 1);
+            int absoluteDayAtStartOfYear = HebrewEcclesiasticalCalculator.AbsoluteFromHebrew(year, EcclesiasticalYearStartMonth, 1);
             return (absoluteDayAtStartOfMonth - absoluteDayAtStartOfYear) * NodaConstants.TicksPerStandardDay;
         }
 
         protected override int CalculateStartOfYearDays(int year)
         {
             // Note that we might get called with a year of 0 here. I think that will still be okay,
-            // given CalendricalAlgorithms.
-            // Note that we pass in a month of 7, as that's the start of the year in calendrical numbering.
-            int absoluteDay = HebrewEcclesiasticalCalculator.AbsoluteFromHebrew(year, 7, 1);
+            // given how HebrewEcclesiaticalCalculator works.
+            int absoluteDay = HebrewEcclesiasticalCalculator.AbsoluteFromHebrew(year, EcclesiasticalYearStartMonth, 1);
             return absoluteDay - AbsoluteDayOfUnixEpoch;
         }
 
@@ -83,32 +82,37 @@ namespace NodaTime.Calendars
 
         internal override int GetMaxMonth(int year)
         {
+            // TODO: Argument validation
             return IsLeapYear(year) ? 13 : 12;
         }
 
         internal override LocalInstant SetYear(LocalInstant localInstant, int year)
         {
             // TODO: Validate this. It's not at all clear that it makes any sense at all.
-            // We try to preserve the calendrical month number where possible, which
-            // corresponds to the month name. That may change the BCL month number, if we
+            // We try to preserve the ecclesiastical month number where possible, which
+            // corresponds to the month name. That may change the civil month number, if we
             // start in a leap year and end in a non-leap year, or vice versa.
 
             long tickOfDay = TimeOfDayCalculator.GetTickOfDay(localInstant);
             int absoluteSourceDay = AbsoluteDayFromLocalInstant(localInstant);
             YearMonthDay ymd = HebrewEcclesiasticalCalculator.HebrewFromAbsolute(absoluteSourceDay);
-            int targetCalendricalMonth = ymd.Month;
-            if (targetCalendricalMonth == 13 && !IsLeapYear(year))
+            int targetDay = ymd.Day;
+            int targetEcclesiasticalMonth = ymd.Month;
+            if (targetEcclesiasticalMonth == 13 && !IsLeapYear(year))
             {
-                targetCalendricalMonth = 12;
+                // If we were in Adar II, go to the end of Adar I.
+                targetEcclesiasticalMonth = 12;
+                targetDay = 40; // Definitely beyond the end of the month, so we'll truncate below.
             }
-            int targetDay = Math.Min(ymd.Day, HebrewEcclesiasticalCalculator.DaysInMonth(year, targetCalendricalMonth));
+            targetDay = Math.Min(targetDay, HebrewEcclesiasticalCalculator.DaysInMonth(year, targetEcclesiasticalMonth));
 
-            int absoluteTargetDay = HebrewEcclesiasticalCalculator.AbsoluteFromHebrew(year, targetCalendricalMonth, targetDay);
+            int absoluteTargetDay = HebrewEcclesiasticalCalculator.AbsoluteFromHebrew(year, targetEcclesiasticalMonth, targetDay);
             return new LocalInstant((absoluteTargetDay - AbsoluteDayOfUnixEpoch) * NodaConstants.TicksPerStandardDay + tickOfDay);
         }
 
         internal override int GetDaysInMonth(int year, int month)
         {
+            // TODO: Argument validation
             return HebrewEcclesiasticalCalculator.DaysInMonth(year, calendarToEcclesiastical(year, month));
         }
 
