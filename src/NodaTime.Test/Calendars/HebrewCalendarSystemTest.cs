@@ -30,7 +30,7 @@ namespace NodaTime.Test.Calendars
         }
 
         /// <summary>
-        /// This tests every day for 9000 (ISO) years, testing various aspects of each date,
+        /// This tests every day for the BCL-supported Hebrew calendar range, testing various aspects of each date,
         /// using the civil month numbering.
         /// </summary>
         [Test, Timeout(300000)] // Can take a long time under NCrunch.
@@ -67,8 +67,8 @@ namespace NodaTime.Test.Calendars
         }
 
         /// <summary>
-        /// This tests every day for 9000 (ISO) years, testing various aspects of each date,
-        /// using the civil month numbering.
+        /// This tests every day for the BCL-supported Hebrew calendar range, testing various aspects of each date,
+        /// using the ecclesiastical month numbering.
         /// </summary>
         [Test, Timeout(300000)] // Can take a long time under NCrunch.
         public void BclThroughHistory_Ecclesiastical()
