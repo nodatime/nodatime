@@ -71,7 +71,7 @@ namespace NodaTime.Calendars
             return (cache & IsKislevShortCacheBit) != 0;
         }
 
-        // Computed ElapsedDays using the cahce where possible.
+        // Computed ElapsedDays using the cache where possible.
         private static int ElapsedDays(int year)
         {
             int cache = GetOrPopulateCache(year);
