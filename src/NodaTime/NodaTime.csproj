@@ -168,6 +168,7 @@
     <Compile Include="Calendars\WeekYearCalculator.cs" />
     <Compile Include="Calendars\YearMonthDay.cs" />
     <Compile Include="Calendars\YearMonthDayCalculator.cs" />
+    <Compile Include="Calendars\YearStartCacheEntry.cs" />
     <Compile Include="DateTimeZoneProviders.cs" />
     <Compile Include="Fields\MonthsPeriodField.cs" />
     <Compile Include="Fields\FixedDurationPeriodField.cs" />

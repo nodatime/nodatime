@@ -11,6 +11,10 @@ namespace NodaTime.Calendars
     /// </summary>
     internal static class HebrewEcclesiasticalCalculator
     {
+        // Cache of when each year starts (in  terms of absolute days). This is the heart of
+        // the algorithm, so just caching this is highly effective.
+        private static readonly YearStartCacheEntry[] YearCache = YearStartCacheEntry.CreateCache();
+
         internal static bool IsLeapYear(int year)
         {
             return ((year * 7) + 1) % 19 < 7;
@@ -44,7 +48,25 @@ namespace NodaTime.Calendars
             }
         }
 
+        // Computed ElapsedDays using the cahce where possible.
         private static int ElapsedDays(int year)
+        {
+            if (year < 1 || year > 30000)
+            {
+                return ElapsedDaysNoCache(year);
+            }
+            int cacheIndex = YearStartCacheEntry.GetCacheIndex(year);
+            YearStartCacheEntry cacheEntry = YearCache[cacheIndex];
+            if (!cacheEntry.IsValidForYear(year))
+            {
+                int days = ElapsedDaysNoCache(year);
+                cacheEntry = new YearStartCacheEntry(year, days);
+                YearCache[cacheIndex] = cacheEntry;
+            }
+            return cacheEntry.StartOfYearDays;
+        }
+
+        private static int ElapsedDaysNoCache(int year)
         {
             int monthsElapsed = (235 * ((year - 1) / 19)) // Months in complete cycles so far
                                 + (12 * ((year - 1) % 19)) // Regular months in this cycle
