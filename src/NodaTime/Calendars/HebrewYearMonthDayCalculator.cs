@@ -20,7 +20,7 @@ namespace NodaTime.Calendars
         internal HebrewYearMonthDayCalculator(HebrewMonthNumbering monthNumbering)
             : base(HebrewEcclesiasticalCalculator.MinYear,
                   HebrewEcclesiasticalCalculator.MaxYear,
-                  (long) (363.4 * NodaConstants.TicksPerStandardDay), // Average year length
+                  (long) (365.4 * NodaConstants.TicksPerStandardDay), // Average year length
                   (AbsoluteDayOfHebrewEpoch - AbsoluteDayOfUnixEpoch) * NodaConstants.TicksPerStandardDay, // Tick at year 1
                   new[] { Era.AnnoMundi })
         {

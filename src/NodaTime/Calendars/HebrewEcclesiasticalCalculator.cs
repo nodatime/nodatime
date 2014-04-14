@@ -199,7 +199,7 @@ namespace NodaTime.Calendars
         internal static YearMonthDay HebrewFromAbsolute(int days)
         {
             // Initial guess (lower bound).
-            // TODO: See whether we can use a higher estimate (divide by 363.4) which should require
+            // TODO: See whether we can use a higher estimate (divide by 365.4) which should require
             // fewer iterations.
             int year = (days + 1373429) / 366;
             while (days >= AbsoluteFromHebrew(year + 1, 7, 1))
