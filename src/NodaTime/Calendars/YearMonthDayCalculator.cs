@@ -193,6 +193,9 @@ namespace NodaTime.Calendars
             }
             int candidate = (int)(halfTicksSinceStartOfYear1 / halfTicksPerYear) + 1;
 
+            // TODO: Convert to days at this point, and do all the rest of the calculation with days.
+            // We can then remove GetTicksInYear, but make sure that everything overrides GetDaysInYear appropriately.
+
             // Most of the time we'll get the right year straight away, and we'll almost
             // always get it after one adjustment - but it's safer (and easier to think about)
             // if we just keep going until we know we're right.
