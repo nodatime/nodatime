@@ -150,10 +150,7 @@ namespace NodaTime.Calendars
         /// </summary>
         private static int AbsoluteDayFromLocalInstant(LocalInstant localInstant)
         {
-            long ticks = localInstant.Ticks;
-            int daysSinceUnixEpoch = ticks >= 0
-                ? TickArithmetic.TicksToDays(ticks)
-                : (int) ((ticks - (NodaConstants.TicksPerStandardDay - 1)) / NodaConstants.TicksPerStandardDay);
+            int daysSinceUnixEpoch = TickArithmetic.TicksToDays(localInstant.Ticks);
             return daysSinceUnixEpoch + AbsoluteDayOfUnixEpoch;
         }
     }

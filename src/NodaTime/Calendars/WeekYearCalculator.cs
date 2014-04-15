@@ -45,7 +45,7 @@ namespace NodaTime.Calendars
                 long ticks = localInstant.Ticks;
                 if (ticks >= 0)
                 {
-                    daysSince19700101 = TickArithmetic.TicksToDays(ticks);
+                    daysSince19700101 = TickArithmetic.FastTicksToDays(ticks);
                 }
                 else
                 {

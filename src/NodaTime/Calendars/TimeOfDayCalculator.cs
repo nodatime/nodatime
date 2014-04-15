@@ -67,7 +67,7 @@ namespace NodaTime.Calendars
                 {
                     // Surprisingly enough, this is faster than (but equivalent to)
                     // return ticks % NodaConstants.TicksPerStandardDay;
-                    int days = TickArithmetic.TicksToDays(ticks);
+                    int days = TickArithmetic.FastTicksToDays(ticks);
                     return ticks - ((days * 52734375L) << 14);
                 }
                 else
