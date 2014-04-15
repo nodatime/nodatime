@@ -28,9 +28,12 @@ namespace NodaTime.Calendars
         private readonly int maxYear;
         internal int MaxYear { get { return maxYear; } }
 
-        private readonly long averageTicksPerYear;
+        // We only need half the average, as this is only use in GetYear where the target ticks
+        // are halved as well, to avoid overflow.
+        private readonly long halfAverageTicksPerYear;
         
         private readonly long ticksAtStartOfYear1;
+
         /// <summary>
         /// Only exposed outside the calculator for validation by tests.
         /// </summary>
@@ -45,7 +48,7 @@ namespace NodaTime.Calendars
             this.minYear = minYear;
             this.maxYear = maxYear;
             this.eras = Preconditions.CheckNotNull(eras, "eras");
-            this.averageTicksPerYear = averageTicksPerYear;
+            this.halfAverageTicksPerYear = averageTicksPerYear >> 1;
             this.ticksAtStartOfYear1 = ticksAtStartOfYear1;
         }
 
@@ -183,38 +186,36 @@ namespace NodaTime.Calendars
             // necessary.
 
             // Initial estimate uses values divided by two to avoid overflow.
-            long halfTicksPerYear = averageTicksPerYear >> 1;
             long halfTicksSinceStartOfYear1 = (targetTicks >> 1) - (ticksAtStartOfYear1 >> 1);
 
             if (halfTicksSinceStartOfYear1 < 0)
             {
                 // When we divide, we want to round down, not towards 0.
-                halfTicksSinceStartOfYear1 += 1 - halfTicksPerYear;
+                halfTicksSinceStartOfYear1 += 1 - halfAverageTicksPerYear;
             }
-            int candidate = (int)(halfTicksSinceStartOfYear1 / halfTicksPerYear) + 1;
+            int candidate = (int)(halfTicksSinceStartOfYear1 / halfAverageTicksPerYear) + 1;
             
             int targetDays = TickArithmetic.TicksToDays(localInstant.Ticks);
 
             // Most of the time we'll get the right year straight away, and we'll almost
             // always get it after one adjustment - but it's safer (and easier to think about)
             // if we just keep going until we know we're right.
+            int candidateStart = GetStartOfYearInDays(candidate);
             while (true)
             {
-                int candidateStart = GetStartOfYearInDays(candidate);
                 int daysFromCandidateStartToTarget = targetDays - candidateStart;
                 if (daysFromCandidateStartToTarget < 0)
                 {
-                    // Our candidate year is later than we want.
-                    // TODO: Detect if the new difference in days is going to be small?
-                    // We could potentially never call GetStartOfYearInDays again, just
-                    // adding or subtracting GetDaysInYear repeatedly... need to benchmark.
+                    // Our candidate year is later than we want. Go back a year.
                     candidate--;
+                    candidateStart -= GetDaysInYear(candidate); // New candidate, not old!
                     continue;
                 }
                 int candidateLength = GetDaysInYear(candidate);
                 if (daysFromCandidateStartToTarget >= candidateLength)
                 {
-                    // Our candidate year is earlier than we want.
+                    // Our candidate year is earlier than we want. Go forward a year.
+                    candidateStart += candidateLength;
                     candidate++;
                     continue;
                 }
