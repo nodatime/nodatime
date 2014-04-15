@@ -26,9 +26,6 @@ namespace NodaTime.Calendars
         /// <summary>The number of days in a leap year.</summary>
         private const int DaysPerLeapYear = 355;
 
-        /// <summary>The number of ticks in a non-leap year.</summary>
-        private const long TicksPerNonLeapYear = DaysPerNonLeapYear * NodaConstants.TicksPerStandardDay;
-
         /// <summary>The ticks for the civil (Friday) epoch of July 16th 622CE.</summary>
         private const long TicksAtCivilEpoch = -425215872000000000L;
 
@@ -65,7 +62,7 @@ namespace NodaTime.Calendars
         }
 
         internal IslamicYearMonthDayCalculator(IslamicLeapYearPattern leapYearPattern, IslamicEpoch epoch)
-            : base(1, 31513, 12, TicksPerNonLeapYear, AverageTicksPerYear, GetYear1Ticks(epoch), Era.AnnoHegirae)
+            : base(1, 31513, 12, AverageTicksPerYear, GetYear1Ticks(epoch), Era.AnnoHegirae)
         {
             this.daysAtStartOfYear1 = (int) (TicksAtStartOfYear1 / NodaConstants.TicksPerStandardDay);
             this.leapYearPatternBits = GetLeapYearPatternBits(leapYearPattern);
