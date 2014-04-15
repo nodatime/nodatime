@@ -192,25 +192,27 @@ namespace NodaTime.Calendars
                 halfTicksSinceStartOfYear1 += 1 - halfTicksPerYear;
             }
             int candidate = (int)(halfTicksSinceStartOfYear1 / halfTicksPerYear) + 1;
-
-            // TODO: Convert to days at this point, and do all the rest of the calculation with days.
-            // We can then remove GetTicksInYear, but make sure that everything overrides GetDaysInYear appropriately.
+            
+            int targetDays = TickArithmetic.TicksToDays(localInstant.Ticks);
 
             // Most of the time we'll get the right year straight away, and we'll almost
             // always get it after one adjustment - but it's safer (and easier to think about)
             // if we just keep going until we know we're right.
             while (true)
             {
-                long candidateStart = GetStartOfYearInTicks(candidate);
-                long ticksFromCandidateStartToTarget = targetTicks - candidateStart;
-                if (ticksFromCandidateStartToTarget < 0)
+                int candidateStart = GetStartOfYearInDays(candidate);
+                int daysFromCandidateStartToTarget = targetDays - candidateStart;
+                if (daysFromCandidateStartToTarget < 0)
                 {
                     // Our candidate year is later than we want.
+                    // TODO: Detect if the new difference in days is going to be small?
+                    // We could potentially never call GetStartOfYearInDays again, just
+                    // adding or subtracting GetDaysInYear repeatedly... need to benchmark.
                     candidate--;
                     continue;
                 }
-                long candidateLength = GetTicksInYear(candidate);
-                if (ticksFromCandidateStartToTarget >= candidateLength)
+                int candidateLength = GetDaysInYear(candidate);
+                if (daysFromCandidateStartToTarget >= candidateLength)
                 {
                     // Our candidate year is earlier than we want.
                     candidate++;
