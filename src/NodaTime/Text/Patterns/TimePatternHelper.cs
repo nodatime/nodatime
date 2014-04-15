@@ -2,6 +2,7 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
+using System;
 using System.Globalization;
 
 namespace NodaTime.Text.Patterns
@@ -18,7 +19,7 @@ namespace NodaTime.Text.Patterns
         /// that makes the period optional.
         /// </summary>
         internal static CharacterHandler<TResult, TBucket> CreatePeriodHandler<TResult, TBucket>
-            (int maxCount, NodaFunc<TResult, int> getter, NodaAction<TBucket, int> setter)
+            (int maxCount, Func<TResult, int> getter, Action<TBucket, int> setter)
             where TBucket : ParseBucket<TResult>
         {
             return (pattern, builder) =>
@@ -69,7 +70,7 @@ namespace NodaTime.Text.Patterns
         /// ISO-8601. This is *not* culture sensitive.
         /// </summary>
         internal static CharacterHandler<TResult, TBucket> CreateCommaDotHandler<TResult, TBucket>
-            (int maxCount, NodaFunc<TResult, int> getter, NodaAction<TBucket, int> setter)
+            (int maxCount, Func<TResult, int> getter, Action<TBucket, int> setter)
             where TBucket : ParseBucket<TResult>
         {
             return (pattern, builder) =>
@@ -122,7 +123,7 @@ namespace NodaTime.Text.Patterns
         /// Creates a character handler to handle the "fraction of a second" specifier (f or F).
         /// </summary>
         internal static CharacterHandler<TResult, TBucket> CreateFractionHandler<TResult, TBucket>
-            (int maxCount, NodaFunc<TResult, int> getter, NodaAction<TBucket, int> setter)
+            (int maxCount, Func<TResult, int> getter, Action<TBucket, int> setter)
             where TBucket : ParseBucket<TResult>
         {
             return (pattern, builder) =>
@@ -156,7 +157,7 @@ namespace NodaTime.Text.Patterns
         }
 
         internal static CharacterHandler<TResult, TBucket> CreateAmPmHandler<TResult, TBucket>
-            (NodaFunc<TResult, int> hourOfDayGetter, NodaAction<TBucket, int> amPmSetter)
+            (Func<TResult, int> hourOfDayGetter, Action<TBucket, int> amPmSetter)
             where TBucket : ParseBucket<TResult>
         {
             return (pattern, builder) =>
@@ -237,7 +238,7 @@ namespace NodaTime.Text.Patterns
         }
 
         private static void HandleHalfAmPmDesignator<TResult, TBucket>
-            (int count, string specifiedDesignator, int specifiedDesignatorValue, NodaFunc<TResult, int> hourOfDayGetter, NodaAction<TBucket, int> amPmSetter,
+            (int count, string specifiedDesignator, int specifiedDesignatorValue, Func<TResult, int> hourOfDayGetter, Action<TBucket, int> amPmSetter,
              SteppedPatternBuilder<TResult, TBucket> builder)
             where TBucket : ParseBucket<TResult>
         {

@@ -195,7 +195,7 @@ namespace NodaTime.Globalization
         internal FixedFormatInfoPatternParser<ZonedDateTime> ZonedDateTimePatternParser { get { return EnsureFixedFormatInitialized(ref zonedDateTimePatternParser, () => new ZonedDateTimePatternParser(ZonedDateTimePattern.DefaultTemplateValue, Resolvers.StrictResolver, null)); } }
 
         private FixedFormatInfoPatternParser<T> EnsureFixedFormatInitialized<T>(ref FixedFormatInfoPatternParser<T> field,
-            NodaFunc<IPatternParser<T>> patternParserFactory)
+            Func<IPatternParser<T>> patternParserFactory)
         {
             lock (fieldLock)
             {

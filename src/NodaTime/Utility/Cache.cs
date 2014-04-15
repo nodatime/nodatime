@@ -2,6 +2,7 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
+using System;
 using System.Collections.Generic;
 
 namespace NodaTime.Utility
@@ -20,11 +21,11 @@ namespace NodaTime.Utility
     {
         private readonly int size;
         private readonly object mutex = new object();
-        private readonly NodaFunc<TKey, TValue> valueFactory;
+        private readonly Func<TKey, TValue> valueFactory;
         private readonly LinkedList<TKey> keyList; 
         private readonly Dictionary<TKey, TValue> dictionary; 
 
-        internal Cache(int size, NodaFunc<TKey, TValue> valueFactory, IEqualityComparer<TKey> keyComparer)
+        internal Cache(int size, Func<TKey, TValue> valueFactory, IEqualityComparer<TKey> keyComparer)
         {
             this.size = size;
             this.valueFactory = valueFactory;

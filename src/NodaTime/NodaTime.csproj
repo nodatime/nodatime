@@ -151,6 +151,10 @@
     <Compile Include="Calendars\FixedMonthYearMonthDayCalculator.cs" />
     <Compile Include="Calendars\GJYearMonthDayCalculator.cs" />
     <Compile Include="Calendars\GregorianYearMonthDayCalculator.cs" />
+    <Compile Include="Calendars\HebrewEcclesiasticalCalculator.cs" />
+    <Compile Include="Calendars\HebrewMonthConverter.cs" />
+    <Compile Include="Calendars\HebrewMonthNumbering.cs" />
+    <Compile Include="Calendars\HebrewYearMonthDayCalculator.cs" />
     <Compile Include="Calendars\IslamicEpoch.cs" />
     <Compile Include="Calendars\IslamicLeapYearPattern.cs" />
     <Compile Include="Calendars\IslamicYearMonthDayCalculator.cs" />
@@ -162,9 +166,10 @@
     <Compile Include="Calendars\TickArithmetic.cs" />
     <Compile Include="Calendars\TimeOfDayCalculator.cs" />
     <Compile Include="Calendars\WeekYearCalculator.cs" />
+    <Compile Include="Calendars\YearMonthDay.cs" />
     <Compile Include="Calendars\YearMonthDayCalculator.cs" />
+    <Compile Include="Calendars\YearStartCacheEntry.cs" />
     <Compile Include="DateTimeZoneProviders.cs" />
-    <Compile Include="Delegates.cs" />
     <Compile Include="Fields\MonthsPeriodField.cs" />
     <Compile Include="Fields\FixedDurationPeriodField.cs" />
     <Compile Include="Fields\IPeriodField.cs" />

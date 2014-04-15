@@ -119,6 +119,8 @@
     <Compile Include="Calendars\CopticCalendarSystemTest.cs" />
     <Compile Include="Calendars\EraTest.cs" />
     <Compile Include="Calendars\GregorianCalendarSystemTest.cs" />
+    <Compile Include="Calendars\HebrewEcclesiasticalCalculatorTest.cs" />
+    <Compile Include="Calendars\HebrewMonthConverterTest.cs" />
     <Compile Include="Calendars\IslamicCalendarSystemTest.cs" />
     <Compile Include="Calendars\IsoCalendarSystemTest.Era.cs">
       <DependentUpon>IsoCalendarSystemTest.cs</DependentUpon>
@@ -127,6 +129,7 @@
     <Compile Include="Calendars\JulianCalendarSystemTest.Era.cs">
       <DependentUpon>JulianCalendarSystemTest.cs</DependentUpon>
     </Compile>
+    <Compile Include="Calendars\HebrewCalendarSystemTest.cs" />
     <Compile Include="Calendars\PersianCalendarSystemTest.cs" />
     <Compile Include="Calendars\YearMonthDayCalculatorTest.cs" />
     <Compile Include="IntervalTest.cs" />
