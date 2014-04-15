@@ -44,7 +44,7 @@ namespace NodaTime.Calendars
         }
 
         internal PersianYearMonthDayCalculator()
-            : base(1, 30574, 12, DaysPerNonLeapYear * NodaConstants.TicksPerStandardDay,
+            : base(1, 30574, 12,
                    AverageTicksPerYear, TicksAtStartOfYear1Constant, Era.AnnoPersico)
         {
         }

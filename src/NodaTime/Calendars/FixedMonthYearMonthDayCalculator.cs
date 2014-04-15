@@ -26,7 +26,7 @@ namespace NodaTime.Calendars
 
         protected FixedMonthYearMonthDayCalculator(int minYear, int maxYear,
             long ticksAtStartOfYear1, params Era[] eras)
-            : base(minYear, maxYear, 13, 365 * NodaConstants.TicksPerStandardDay, AverageTicksPerYear,
+            : base(minYear, maxYear, 13, AverageTicksPerYear,
                    ticksAtStartOfYear1, eras)
         {
         }
