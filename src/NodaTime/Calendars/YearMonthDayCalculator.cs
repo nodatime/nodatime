@@ -100,7 +100,7 @@ namespace NodaTime.Calendars
             unchecked
             {
                 long ticksWithinMonth = localInstant.Ticks - dateTicks;
-                return TickArithmetic.TicksToDays(ticksWithinMonth) + 1;
+                return TickArithmetic.FastTicksToDays(ticksWithinMonth) + 1;
             }
         }
 
@@ -115,7 +115,7 @@ namespace NodaTime.Calendars
             unchecked
             {
                 long ticksWithinYear = localInstant.Ticks - yearStart;
-                return TickArithmetic.TicksToDays(ticksWithinYear) + 1;
+                return TickArithmetic.FastTicksToDays(ticksWithinYear) + 1;
             }
         }
 

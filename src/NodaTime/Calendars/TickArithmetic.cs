@@ -5,7 +5,7 @@
 namespace NodaTime.Calendars
 {
     /// <summary>
-    /// Just a class to hold optimization methods.
+    /// Common operations on ticks.
     /// </summary>
     internal static class TickArithmetic
     {
@@ -16,9 +16,25 @@ namespace NodaTime.Calendars
         /// very significantly faster under the x64 JIT (and no slower under the x86 JIT).
         /// See http://stackoverflow.com/questions/22258070 for the inspiration.
         /// </summary>
-        internal static int TicksToDays(long ticks)
+        internal static int FastTicksToDays(long ticks)
         {
             return unchecked((int) ((ticks >> 14) / 52734375L));
+        }
+
+        /// <summary>
+        /// Converts a number of ticks into days, rounding down. This method works with any number of
+        /// ticks, so long as it's not within the earliest representable 24 hours (where Noda Time arithmetic
+        /// tends to go pear-shaped anyway...)
+        /// </summary>
+        internal static int TicksToDays(long ticks)
+        {
+            unchecked
+            {
+                return ticks >= 0
+                    ? FastTicksToDays(ticks)
+                // TODO: Optimize with shifting at some point
+                : (int) ((ticks - (NodaConstants.TicksPerStandardDay - 1)) / NodaConstants.TicksPerStandardDay);
+            }
         }
     }
 }
