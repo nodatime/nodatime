@@ -155,7 +155,7 @@ namespace NodaTime
 
         /// <summary>
         /// Returns a string representation of this interval, in extended ISO-8601 format: the format
-        /// is "start/end" where each instant is uses a format of "yyyy'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFF'Z'".
+        /// is "start/end" where each instant uses a format of "yyyy'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFF'Z'".
         /// </summary>
         /// <returns>A string representation of this interval.</returns>
         public override string ToString()

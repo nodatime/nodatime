@@ -39,9 +39,10 @@ namespace NodaTime
         /// <summary>
         /// Combines this <see cref="LocalTime"/> with the given <see cref="LocalDate"/>
         /// into a single <see cref="LocalDateTime"/>.
+        /// Fluent alternative to <c>operator+()</c>.
         /// </summary>
         /// <param name="date">The date to combine with this time</param>
-        /// <returns>The <see cref="LocalDateTime"/>representation of the given time on this date</returns>
+        /// <returns>The <see cref="LocalDateTime"/> representation of the given time on this date</returns>
         [Pure]
         public LocalDateTime On(LocalDate date)
         {
