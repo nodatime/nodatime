@@ -94,6 +94,11 @@ namespace NodaTime.Calendars
             return GetMonthOfYear(localInstant);
         }
 
+        protected override long GetTicksInYear(int year)
+        {
+            return HebrewEcclesiasticalCalculator.DaysInYear(year) * NodaConstants.TicksPerStandardDay;
+        }
+
         internal override int GetMaxMonth(int year)
         {
             // TODO: Argument validation
