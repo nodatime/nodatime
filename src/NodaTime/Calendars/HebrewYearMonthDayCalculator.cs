@@ -79,6 +79,11 @@ namespace NodaTime.Calendars
             return HebrewEcclesiasticalCalculator.DaysInYear(year);
         }
 
+        protected override long GetTicksInYear(int year)
+        {
+            return GetDaysInYear(year) * NodaConstants.TicksPerStandardDay;
+        }
+
         internal override int GetDayOfMonth(LocalInstant localInstant)
         {
             int absoluteDay = AbsoluteDayFromLocalInstant(localInstant);
@@ -92,11 +97,6 @@ namespace NodaTime.Calendars
             // TODO: Consider throwing InvalidOperationException, as we're overriding the only methods
             // that should call this...
             return GetMonthOfYear(localInstant);
-        }
-
-        protected override long GetTicksInYear(int year)
-        {
-            return HebrewEcclesiasticalCalculator.DaysInYear(year) * NodaConstants.TicksPerStandardDay;
         }
 
         internal override int GetMaxMonth(int year)

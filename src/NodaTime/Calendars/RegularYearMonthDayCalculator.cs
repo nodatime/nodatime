@@ -16,16 +16,12 @@ namespace NodaTime.Calendars
     internal abstract class RegularYearMonthDayCalculator : YearMonthDayCalculator
     {
         private readonly int monthsInYear;
-        private readonly long ticksInNonLeapYear;
-        private readonly long ticksInLeapYear;
 
         protected RegularYearMonthDayCalculator(int minYear, int maxYear, int monthsInYear,
-            long ticksInNonLeapYear, long averageTicksPerYear, long ticksAtStartOfYear1, params Era[] eras)
+            long averageTicksPerYear, long ticksAtStartOfYear1, params Era[] eras)
             : base(minYear, maxYear, averageTicksPerYear, ticksAtStartOfYear1, eras)
         {
             this.monthsInYear = monthsInYear;
-            this.ticksInNonLeapYear = ticksInNonLeapYear;
-            this.ticksInLeapYear = ticksInNonLeapYear + NodaConstants.TicksPerStandardDay;
         }
 
         internal override int GetMaxMonth(int year)
@@ -109,14 +105,6 @@ namespace NodaTime.Calendars
                 // we've overshot backwards.
                 return simpleAddition >= minuendInstant ? diff : diff + 1;
             }
-        }
-
-        /// <summary>
-        /// Returns the number of ticks in the given year, based on whether or not it's a leap year.
-        /// </summary>
-        override protected long GetTicksInYear(int year)
-        {
-            return IsLeapYear(year) ? ticksInLeapYear : ticksInNonLeapYear;
         }
     }
 }

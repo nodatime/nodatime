@@ -28,12 +28,9 @@ namespace NodaTime.Calendars
         private readonly int maxYear;
         internal int MaxYear { get { return maxYear; } }
 
-        // We only need half the average, as this is only use in GetYear where the target ticks
-        // are halved as well, to avoid overflow.
-        private readonly long halfAverageTicksPerYear;
-        
-        private readonly long ticksAtStartOfYear1;
+        private readonly long averageTicksPerYear;
 
+        private readonly long ticksAtStartOfYear1;
         /// <summary>
         /// Only exposed outside the calculator for validation by tests.
         /// </summary>
@@ -48,7 +45,7 @@ namespace NodaTime.Calendars
             this.minYear = minYear;
             this.maxYear = maxYear;
             this.eras = Preconditions.CheckNotNull(eras, "eras");
-            this.halfAverageTicksPerYear = averageTicksPerYear >> 1;
+            this.averageTicksPerYear = averageTicksPerYear;
             this.ticksAtStartOfYear1 = ticksAtStartOfYear1;
         }
 
@@ -65,7 +62,6 @@ namespace NodaTime.Calendars
         /// </summary>
         protected abstract int CalculateStartOfYearDays(int year);
         protected abstract int GetMonthOfYear(LocalInstant localInstant, int year);
-        protected abstract long GetTicksInYear(int year);
         internal abstract int GetMaxMonth(int year);
         internal abstract LocalInstant SetYear(LocalInstant localInstant, int year);
         internal abstract int GetDaysInMonth(int year, int month);
@@ -186,41 +182,49 @@ namespace NodaTime.Calendars
             // necessary.
 
             // Initial estimate uses values divided by two to avoid overflow.
+            long halfTicksPerYear = averageTicksPerYear >> 1;
             long halfTicksSinceStartOfYear1 = (targetTicks >> 1) - (ticksAtStartOfYear1 >> 1);
 
             if (halfTicksSinceStartOfYear1 < 0)
             {
                 // When we divide, we want to round down, not towards 0.
-                halfTicksSinceStartOfYear1 += 1 - halfAverageTicksPerYear;
+                halfTicksSinceStartOfYear1 += 1 - halfTicksPerYear;
             }
-            int candidate = (int)(halfTicksSinceStartOfYear1 / halfAverageTicksPerYear) + 1;
-            
-            int targetDays = TickArithmetic.TicksToDays(localInstant.Ticks);
+            int candidate = (int) (halfTicksSinceStartOfYear1 / halfTicksPerYear) + 1;
+
+            // TODO: Convert to days at this point, and do all the rest of the calculation with days.
+            // We can then remove GetTicksInYear, but make sure that everything overrides GetDaysInYear appropriately.
 
             // Most of the time we'll get the right year straight away, and we'll almost
             // always get it after one adjustment - but it's safer (and easier to think about)
             // if we just keep going until we know we're right.
-            int candidateStart = GetStartOfYearInDays(candidate);
-            while (true)
+            long candidateStart = GetStartOfYearInTicks(candidate);
+            long ticksFromCandidateStartToTarget = targetTicks - candidateStart;
+            if (ticksFromCandidateStartToTarget < 0)
             {
-                int daysFromCandidateStartToTarget = targetDays - candidateStart;
-                if (daysFromCandidateStartToTarget < 0)
+                // Our candidate year is later than we want. Keep going backwards until we've got
+                // a non-negative result, which must then be correct.
+                do
                 {
-                    // Our candidate year is later than we want. Go back a year.
                     candidate--;
-                    candidateStart -= GetDaysInYear(candidate); // New candidate, not old!
-                    continue;
+                    ticksFromCandidateStartToTarget += GetTicksInYear(candidate);
                 }
-                int candidateLength = GetDaysInYear(candidate);
-                if (daysFromCandidateStartToTarget >= candidateLength)
-                {
-                    // Our candidate year is earlier than we want. Go forward a year.
-                    candidateStart += candidateLength;
-                    candidate++;
-                    continue;
-                }
+                while (ticksFromCandidateStartToTarget < 0);
                 return candidate;
             }
+            // Our candidate year is correct or earlier than the right one. Find out which by
+            // comparing it with the length of the candidate year.
+            long candidateLength = GetTicksInYear(candidate);
+            while (ticksFromCandidateStartToTarget >= candidateLength)
+            {
+                // Our candidate year is earlier than we want, so fast forward a year,
+                // removing the current candidate length from the "remaining ticks" and
+                // working out the length of the new candidate.
+                candidate++;
+                ticksFromCandidateStartToTarget -= candidateLength;
+                candidateLength = GetTicksInYear(candidate);
+            }
+            return candidate;
         }
 
         /// <summary>
@@ -265,6 +269,12 @@ namespace NodaTime.Calendars
         internal virtual int GetDaysInYear(int year)
         {
             return IsLeapYear(year) ? 366 : 365;
+        }
+
+        // Override if overriding GetDaysInYear, and vice versa
+        protected virtual long GetTicksInYear(int year)
+        {
+            return IsLeapYear(year) ? 366 * NodaConstants.TicksPerStandardDay : 365 * NodaConstants.TicksPerStandardDay;
         }
 
         /// <summary>

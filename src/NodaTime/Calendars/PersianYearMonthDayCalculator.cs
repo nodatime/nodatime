@@ -44,8 +44,7 @@ namespace NodaTime.Calendars
         }
 
         internal PersianYearMonthDayCalculator()
-            : base(1, 30574, 12, DaysPerNonLeapYear * NodaConstants.TicksPerStandardDay,
-                   AverageTicksPerYear, TicksAtStartOfYear1Constant, Era.AnnoPersico)
+            : base(1, 30574, 12, AverageTicksPerYear, TicksAtStartOfYear1Constant, Era.AnnoPersico)
         {
         }
 
@@ -141,6 +140,13 @@ namespace NodaTime.Calendars
         internal override int GetDaysInYear(int year)
         {
             return IsLeapYear(year) ? DaysPerLeapYear : DaysPerNonLeapYear;
+        }
+
+        protected override long GetTicksInYear(int year)
+        {
+            return IsLeapYear(year)
+                ? DaysPerLeapYear * NodaConstants.TicksPerStandardDay
+                : DaysPerNonLeapYear * NodaConstants.TicksPerStandardDay;
         }
     }
 }
