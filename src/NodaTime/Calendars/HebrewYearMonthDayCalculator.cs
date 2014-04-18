@@ -126,18 +126,66 @@ namespace NodaTime.Calendars
             targetDay = Math.Min(targetDay, HebrewEcclesiasticalCalculator.DaysInMonth(year, targetEcclesiasticalMonth));
 
             int absoluteTargetDay = HebrewEcclesiasticalCalculator.AbsoluteFromHebrew(year, targetEcclesiasticalMonth, targetDay);
-            return new LocalInstant((absoluteTargetDay - AbsoluteDayOfUnixEpoch) * NodaConstants.TicksPerStandardDay + tickOfDay);
+            return LocalInstantFromAbsoluteDay(absoluteTargetDay, tickOfDay);
         }
 
         internal override int GetDaysInMonth(int year, int month)
         {
-            // TODO: Argument validation
+            // TODO: Argument validation? Or put in CalendarSystem if possible?
             return HebrewEcclesiasticalCalculator.DaysInMonth(year, calendarToEcclesiastical(year, month));
         }
 
         internal override LocalInstant AddMonths(LocalInstant localInstant, int months)
         {
-            throw new NotImplementedException();
+            // Note: this method gives the same result regardless of the month numbering used
+            // by the instance. The method works in terms of civil month numbers for most of
+            // the time in order to simplify the logic.
+            if (months == 0)
+            {
+                return localInstant;
+            }
+            long tickOfDay = TimeOfDayCalculator.GetTickOfDay(localInstant);
+            var startDate = HebrewEcclesiasticalCalculator.HebrewFromAbsolute(AbsoluteDayFromLocalInstant(localInstant));
+            int year = startDate.Year;
+            int month = HebrewMonthConverter.EcclesiasticalToCivil(year, startDate.Month);
+            // There are 235 months per cycle of 19 years. This arithmetic works the same both backwards and
+            // forwards.
+            year += (months / 235) * 19;
+            months = months % 235;
+            if (months > 0)
+            {
+                // Add as many months as we need to in order to act as if we'd begun at the start
+                // of the year, for simplicity.
+                months += month - 1;
+                // Add a year at a time
+                while (months >= GetMaxMonth(year))
+                {
+                    months -= GetMaxMonth(year);
+                    year++;
+                }
+                // However many months we've got left to add tells us the final month.
+                month = months + 1;
+            }
+            else
+            {
+                // Pretend we were given the month at the end of the years.
+                months -= GetMaxMonth(year) - month;
+                // Subtract a year at a time
+                while (months + GetMaxMonth(year) <= 0)
+                {
+                    months += GetMaxMonth(year);
+                    year--;
+                }
+                // However many months we've got left to add (which will still be negative...)
+                // tells us the final month.
+                month = GetMaxMonth(year) + months;
+            }
+
+            // Convert back to ecclesiastical for the last bit
+            month = HebrewMonthConverter.CivilToEcclesiastical(year, month);
+            int day = Math.Min(HebrewEcclesiasticalCalculator.DaysInMonth(year, month), startDate.Day);
+            int absoluteDay = HebrewEcclesiasticalCalculator.AbsoluteFromHebrew(year, month, day);
+            return LocalInstantFromAbsoluteDay(absoluteDay, tickOfDay);
         }
 
         internal override int MonthsBetween(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
@@ -152,6 +200,12 @@ namespace NodaTime.Calendars
         {
             int daysSinceUnixEpoch = TickArithmetic.TicksToDays(localInstant.Ticks);
             return daysSinceUnixEpoch + AbsoluteDayOfUnixEpoch;
+        }
+
+        private static LocalInstant LocalInstantFromAbsoluteDay(int absoluteDay, long tickOfDay)
+        {
+            int daysSinceUnixEpoch = absoluteDay - AbsoluteDayOfUnixEpoch;
+            return new LocalInstant(daysSinceUnixEpoch * NodaConstants.TicksPerStandardDay + tickOfDay);
         }
     }
 }
