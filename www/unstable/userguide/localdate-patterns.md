@@ -228,3 +228,13 @@ Noda Time comes with its own limited set of era names, but month and day names a
 Unfortunately these are not available on a per-calendar basis, so the same names are used for all calendars, based solely
 on culture. It is hoped that future release of Noda Time may use information from the [Unicode CLDR](http://cldr.unicode.org/)
 to provide a more comprehensive treatment.
+
+**Hebrew month names**
+
+The Hebrew calendar has two month numbering systems (ecclesiastical and civil), each with their
+own benefits and drawbacks. Both have issues for text handling: as of Noda Time 1.3.0, the
+civil month numbering is assumed as that corresponds with the BCL month numbering... but due to
+the inclusion of a leap month, the month name/number correspondence changes in a leap year.
+Until this is fixed, it is strongly recommended that you only use month *numbers* in any textual
+representations of dates in the Hebrew calendar. Additionally, you may wish to consider how to
+best clarify whether that month number is in the ecclesiastical or civil numbering system.
