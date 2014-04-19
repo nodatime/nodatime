@@ -14,6 +14,8 @@ namespace NodaTime.Calendars
         private const int EcclesiasticalYearStartMonth = 7;
         private const int AbsoluteDayOfUnixEpoch = 719163;
         private const int AbsoluteDayOfHebrewEpoch = -1373427;
+        private const int MonthsPerLeapCycle = 235;
+        private const int YearsPerLeapCycle = 19;
         private readonly Func<int, int, int> calendarToEcclesiastical;
         private readonly Func<int, int, int> ecclesiasticalToCalendar;
 
@@ -101,7 +103,6 @@ namespace NodaTime.Calendars
 
         internal override int GetMaxMonth(int year)
         {
-            // TODO: Argument validation
             return IsLeapYear(year) ? 13 : 12;
         }
 
@@ -131,7 +132,6 @@ namespace NodaTime.Calendars
 
         internal override int GetDaysInMonth(int year, int month)
         {
-            // TODO: Argument validation? Or put in CalendarSystem if possible?
             return HebrewEcclesiasticalCalculator.DaysInMonth(year, calendarToEcclesiastical(year, month));
         }
 
@@ -148,10 +148,9 @@ namespace NodaTime.Calendars
             var startDate = HebrewEcclesiasticalCalculator.HebrewFromAbsolute(AbsoluteDayFromLocalInstant(localInstant));
             int year = startDate.Year;
             int month = HebrewMonthConverter.EcclesiasticalToCivil(year, startDate.Month);
-            // There are 235 months per cycle of 19 years. This arithmetic works the same both backwards and
-            // forwards.
-            year += (months / 235) * 19;
-            months = months % 235;
+            // This arithmetic works the same both backwards and forwards.
+            year += (months / MonthsPerLeapCycle) * YearsPerLeapCycle;
+            months = months % MonthsPerLeapCycle;
             if (months > 0)
             {
                 // Add as many months as we need to in order to act as if we'd begun at the start
@@ -188,9 +187,49 @@ namespace NodaTime.Calendars
             return LocalInstantFromAbsoluteDay(absoluteDay, tickOfDay);
         }
 
+        // Note to self: this is (minuendInstant - subtrahendInstant) in months. So if minuendInstant
+        // is later than subtrahendInstant, the result should be positive.
         internal override int MonthsBetween(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
         {
-            throw new NotImplementedException();
+            var minuendDate = HebrewEcclesiasticalCalculator.HebrewFromAbsolute(AbsoluteDayFromLocalInstant(minuendInstant));
+            var subtrahendDate = HebrewEcclesiasticalCalculator.HebrewFromAbsolute(AbsoluteDayFromLocalInstant(subtrahendInstant));
+            // First (quite rough) guess... we could probably be more efficient than this, but it's unlikely to be very far off.
+            double minuendMonths = (minuendDate.Year * MonthsPerLeapCycle) / (double) YearsPerLeapCycle + minuendDate.Month;
+            double subtrahendMonths = (subtrahendDate.Year * MonthsPerLeapCycle) / (double) YearsPerLeapCycle + subtrahendDate.Month;
+            int diff = (int) (minuendMonths - subtrahendMonths);
+
+            if (subtrahendInstant <= minuendInstant)
+            {
+                // Go backwards until we've got a tight upper bound...
+                while (AddMonths(subtrahendInstant, diff) > minuendInstant)
+                {
+                    diff--;
+                }
+                // Go forwards until we've overshot
+                while (AddMonths(subtrahendInstant, diff) <= minuendInstant)
+                {
+                    diff++;
+                }
+                // Take account of the overshoot
+                return diff - 1;
+            }
+            else
+            {
+                // Moving backwards, so we need to end up with a result greater than or equal to
+                // minuendInstant...
+                // Go forwards until we've got a tight upper bound...
+                while (AddMonths(subtrahendInstant, diff) < minuendInstant)
+                {
+                    diff++;
+                }
+                // Go backwards until we've overshot
+                while (AddMonths(subtrahendInstant, diff) >= minuendInstant)
+                {
+                    diff--;
+                }
+                // Take account of the overshoot
+                return diff + 1;
+            }
         }
 
         /// <summary>
