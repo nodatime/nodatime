@@ -194,8 +194,8 @@ namespace NodaTime.Calendars
             var minuendDate = HebrewEcclesiasticalCalculator.HebrewFromAbsolute(AbsoluteDayFromLocalInstant(minuendInstant));
             var subtrahendDate = HebrewEcclesiasticalCalculator.HebrewFromAbsolute(AbsoluteDayFromLocalInstant(subtrahendInstant));
             // First (quite rough) guess... we could probably be more efficient than this, but it's unlikely to be very far off.
-            double minuendMonths = (minuendDate.Year * MonthsPerLeapCycle) / (double) YearsPerLeapCycle + minuendDate.Month;
-            double subtrahendMonths = (subtrahendDate.Year * MonthsPerLeapCycle) / (double) YearsPerLeapCycle + subtrahendDate.Month;
+            double minuendMonths = (minuendDate.Year * MonthsPerLeapCycle) / (double) YearsPerLeapCycle + HebrewMonthConverter.EcclesiasticalToCivil(minuendDate.Year, minuendDate.Month);
+            double subtrahendMonths = (subtrahendDate.Year * MonthsPerLeapCycle) / (double) YearsPerLeapCycle + HebrewMonthConverter.EcclesiasticalToCivil(subtrahendDate.Year, subtrahendDate.Month);
             int diff = (int) (minuendMonths - subtrahendMonths);
 
             if (subtrahendInstant <= minuendInstant)
