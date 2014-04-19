@@ -136,26 +136,8 @@ namespace NodaTime.Test.Calendars
         }
 
         [Test]
-        // 5501 is not a leap year; 5502 is; 5503 is not; 5505 is.
-        // Heshvan (civil 2) is long in 5507 and 5509; it is short in 5506 and 5508
-        // Kislev (civil 3) is long in 5503-5505; it is short in 5502 and 5506
-        // Test cases are in civil month numbering (for the sake of sanity!) - the
-        // implementation performs converts to civil for most of the work.
-        [TestCase("5502-02-13", 3, "5502-05-13")] // Simple
-        [TestCase("5502-02-13", 238, "5521-05-13")] // Simple after a 19-year cycle
-        [TestCase("5502-05-13", -3, "5502-02-13")] // Simple (negative)
-        [TestCase("5521-05-13", -238, "5502-02-13")] // Simple after a 19-year cycle (negative)
-        [TestCase("5501-02-13", 12, "5502-02-13")] // Not a leap year
-        [TestCase("5502-02-13", 13, "5503-02-13")] // Leap year
-        [TestCase("5501-02-13", 26, "5503-03-13")] // Traversing both (and then an extra month)
-        [TestCase("5502-02-13", -12, "5501-02-13")] // Not a leap year (negative)
-        [TestCase("5503-02-13", -13, "5502-02-13")] // Leap year (negative)
-        [TestCase("5503-03-13", -26, "5501-02-13")] // Traversing both (and then an extra month) (negative)
-        [TestCase("5507-01-30", 1, "5507-02-30")] // Long Heshvan
-        [TestCase("5506-01-30", 1, "5506-02-29")] // Short Heshvan
-        [TestCase("5505-01-30", 2, "5505-03-30")] // Long Kislev
-        [TestCase("5506-01-30", 2, "5506-03-29")] // Short Kislev
-        public void AddMonths(string startText, int months, string expectedEndText)
+        [TestCaseSource("AddAndSubtractMonthCases")]
+        public void AddMonths_MonthsBetween(string startText, int months, string expectedEndText)
         {
             var civil = CalendarSystem.GetHebrewCalendar(HebrewMonthNumbering.Civil);
             var pattern = LocalDatePattern.CreateWithInvariantCulture("yyyy-MM-dd")
@@ -165,5 +147,65 @@ namespace NodaTime.Test.Calendars
             var expectedEnd = pattern.Parse(expectedEndText).Value;
             Assert.AreEqual(expectedEnd, start.PlusMonths(months));
         }
+
+        [Test]
+        [TestCaseSource("AddAndSubtractMonthCases")]
+        [TestCaseSource("MonthsBetweenCases")]
+        public void MonthsBetween(string startText, int expectedMonths, string endText)
+        {
+            var civil = CalendarSystem.GetHebrewCalendar(HebrewMonthNumbering.Civil);
+            var pattern = LocalDatePattern.CreateWithInvariantCulture("yyyy-MM-dd")
+                .WithTemplateValue(new LocalDate(5774, 1, 1, civil)); // Sample value in 2014 ISO
+
+            var start = pattern.Parse(startText).Value;
+            var end = pattern.Parse(endText).Value;
+            Assert.AreEqual(expectedMonths, Period.Between(start, end, PeriodUnits.Months).Months);
+        }
+
+        [Test]
+        public void MonthsBetween_TimeOfDay()
+        {
+            var civil = CalendarSystem.GetHebrewCalendar(HebrewMonthNumbering.Civil);
+            var start = new LocalDateTime(5774, 5, 10, 15, 0, civil); // 3pm
+            var end = new LocalDateTime(5774, 7, 10, 5, 0, civil); // 5am
+            // Would be 2, but the start time is later than the end time.
+            Assert.AreEqual(1, Period.Between(start, end, PeriodUnits.Months).Months);
+        }
+
+        // Cases used for adding months and differences between months.
+        // 5501 is not a leap year; 5502 is; 5503 is not; 5505 is.
+        // Heshvan (civil 2) is long in 5507 and 5509; it is short in 5506 and 5508
+        // Kislev (civil 3) is long in 5503-5505; it is short in 5502 and 5506
+        // Test cases are in civil month numbering (for the sake of sanity!) - the
+        // implementation performs converts to civil for most of the work.
+        private static readonly object[] AddAndSubtractMonthCases =
+        {
+            new object[] {"5502-02-13", 3, "5502-05-13"}, // Simple
+            new object[] {"5502-02-13", 238, "5521-05-13"}, // Simple after a 19-year cycle
+            new object[] {"5502-05-13", -3, "5502-02-13"}, // Simple (negative)
+            new object[] {"5521-05-13", -238, "5502-02-13"}, // Simple after a 19-year cycle (negative)
+            new object[] {"5501-02-13", 12, "5502-02-13"}, // Not a leap year
+            new object[] {"5502-02-13", 13, "5503-02-13"}, // Leap year
+            new object[] {"5501-02-13", 26, "5503-03-13"}, // Traversing both (and then an extra month)
+            new object[] {"5502-02-13", -12, "5501-02-13"}, // Not a leap year (negative)
+            new object[] {"5503-02-13", -13, "5502-02-13"}, // Leap year (negative)
+            new object[] {"5503-03-13", -26, "5501-02-13"}, // Traversing both (and then an extra month) (negative)
+            new object[] {"5507-01-30", 1, "5507-02-30"}, // Long Heshvan
+            new object[] {"5506-01-30", 1, "5506-02-29"}, // Short Heshvan
+            new object[] {"5505-01-30", 2, "5505-03-30"}, // Long Kislev
+            new object[] {"5506-01-30", 2, "5506-03-29"}, // Short Kislev
+        };
+
+        // Test cases only used for testing MonthsBetween, in the same format as AddAndSubtractMonthCases
+        // for simplicity.
+        private static readonly object[] MonthsBetweenCases =
+        {
+            new object[] {"5502-02-13", 1, "5502-03-15"},
+            new object[] {"5502-02-13", 0, "5502-03-05"},
+            new object[] {"5502-02-13", 0, "5502-02-15"},
+            new object[] {"5502-02-13", 0, "5502-02-05"},
+            new object[] {"5502-02-13", 0, "5502-01-15"},
+            new object[] {"5502-02-13", -1, "5502-01-05"},
+        };
     }
 }
