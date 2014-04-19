@@ -51,7 +51,7 @@ we may want to optimize further at some point too.
 
 Additionally, all our text localization resources (day and month names) come from the .NET
 framework itself. That has some significant limitations, and makes Noda Time more reliant
-on `CultureInfo` than is ideal. [CLDR](http://cldr.unicode.org) more information,
+on `CultureInfo` than is ideal. [CLDR](http://cldr.unicode.org) contains more information,
 which should allow for features such as ordinal day numbers ("1st", "2nd", "3rd") and
 a broader set of supported calendar/culture combinations (such as English names for the
 Hebrew calendar months).
