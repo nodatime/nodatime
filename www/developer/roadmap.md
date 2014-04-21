@@ -13,22 +13,28 @@ If there's something not mentioned here that you feel should be on this
 roadmap, then *please* either raise an issue or post on the
 [mailing list](http://groups.google.com/group/noda-time).
 
-This roadmap was last updated on **2013-11-13**.
+This roadmap was last updated on **2014-04-21**.
 
 - 1.3
   - Use of ReSharper annotations to allow better code analysis, both of Noda Time code itself and code using Noda Time
   - Provide more information from CLDR for time zone information
     (e.g. sample cities to display to users)
-  - Use CLDR for other l10n resources
   - Enable embedding Noda Time in SQLCLR
-  - Implement more calendar systems (candidates include the Persian, Hebrew, Ethiopian and Um Al Qura calendars)
+  - Support for the Persian (solar Hijri) calendar
+  - Experimental support for the Hebrew calendar
 
 - 1.4
-  - Address the issues of values going outside the supported range. (Work may well start on this in a branch during 1.3 timeline, but probably won't gate the release. There's a lot to think about, and potentially significant performance impact.)
+  - Support month name parsing/formatting for the Hebrew calendar (support leap months)
+  - Fix any issues with the previously-experimental Hebrew calendar calculations (e.g. what it means to add a year)
+  - Use CLDR for other some resources (month/day names, and possibly date/time formats, via new pattern classes)
+  - Possibly support Ethiopian and Um Al Qura calendars
+  - Address the issues of values going outside the supported range.
+  - Introduce new extension methods to the Testing assembly, and possibly make some existing methods in the main
+    library into extension methods (e.g. in BclConversions).
 
 Features currently scheduled for removal or breaking change in 2.0:
 
    - all obsolete API members
    - support for the legacy resource-based time zone data format
    - revisit all ordering and equality comparison operations, quite possibly
-     rewriting them to be calendar-insensitive
+     rewriting them to be calendar-insensitive (and zone-insensitive in the case of ZonedDateTime)
