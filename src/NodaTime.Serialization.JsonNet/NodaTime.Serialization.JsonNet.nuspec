@@ -8,6 +8,9 @@
     <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
     <projectUrl>http://nodatime.org/</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <summary>
+      Provides serialization support between Noda Time and Json.NET.
+    </summary>
     <!-- Note: line breaks in the description element are preserved, hence
          the long lines here. -->
     <description>
