@@ -26,7 +26,7 @@ This roadmap was last updated on **2014-04-21**.
 - 1.4
   - Support month name parsing/formatting for the Hebrew calendar (support leap months)
   - Fix any issues with the previously-experimental Hebrew calendar calculations (e.g. what it means to add a year)
-  - Use CLDR for other some resources (month/day names, and possibly date/time formats, via new pattern classes)
+  - Use CLDR for some other resources (month/day names, and possibly date/time formats, via new pattern classes)
   - Possibly support Ethiopian and Um Al Qura calendars
   - Address the issues of values going outside the supported range.
   - Introduce new extension methods to the Testing assembly, and possibly make some existing methods in the main
