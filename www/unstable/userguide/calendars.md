@@ -25,7 +25,7 @@ ISO
 ===
 
 First supported in v1.0.0  
-API access: [`CalendarSystem.Iso`](noda-method://NodaTime.CalendarSystem.Iso)
+API access: [`CalendarSystem.Iso`](noda-property://NodaTime.CalendarSystem.Iso)
 
 This is the default calendar system when constructing values without explicitly specifying a calendar.
 It is designed to correspond to the calendar described in [ISO-8601](http://en.wikipedia.org/wiki/ISO_8601),
@@ -155,4 +155,4 @@ This then means that the subsequent months (Nisan, Iyar, Sivan, Tamuz, Av, Elul)
 
 Unlike the parameters for the Islamic calendar, the month numbering in the Hebrew calendar doesn't affect any calculations - it *only*
 affects the numeric values of the months both accepted when constructing values (such as in the `LocalDate` constructor)
-and retrieving them (such as with `LocaleDate.Month`).
+and retrieving them (such as with `LocalDate.Month`).
