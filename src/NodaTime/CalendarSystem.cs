@@ -198,10 +198,13 @@ namespace NodaTime
 
         /// <summary>
         /// Returns a Hebrew calendar, as described at http://en.wikipedia.org/wiki/Hebrew_calendar. This is a
-        /// purely mathematical calculator, applied proleptically to
-        /// the period where the real calendar was observational. 
+        /// purely mathematical calculator, applied proleptically to the period where the real calendar was observational. 
         /// </summary>
         /// <remarks>
+        /// <para>Please note that in version 1.3.0 of Noda Time, support for the Hebrew calendar is somewhat experimental,
+        /// particularly in terms of calculations involving adding or subtracting years. Additionally, text formatting
+        /// and parsing using month names is not currently supported, due to the challenges of handling leap months.
+        /// It is hoped that this will be improved in future versions.</para>
         /// <para>The implementation for this was taken from http://www.cs.tau.ac.il/~nachum/calendar-book/papers/calendar.ps,
         /// which is a public domain algorithm presumably equivalent to that given in the Calendrical Calculations book
         /// by the same authors (Nachum Dershowitz and Edward Reingold).

@@ -17,6 +17,8 @@ Major features:
 
 API changes:
 
+- Added support for the Hebrew calendar, via
+  `CalendarSystem.GetHebrewCalendar(HebrewMonthNumbering)`
 - Added support for the Persian/Solar Hijri calendar, via
   `CalendarSystem.GetPersianCalendar()`
 - Added `Era.AnnoPersico` (for the Persian calendar)
