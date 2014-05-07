@@ -7,7 +7,7 @@ namespace NodaTime.Calendars
     /// <summary>
     /// Conversions between civil and ecclesiastical month numbers in the Hebrew calendar system.
     /// </summary>
-    public static class HebrewMonthConverter
+    internal static class HebrewMonthConverter
     {
         /// <summary>
         /// Given a civil month number and a year in which it occurs, this method returns
@@ -20,7 +20,7 @@ namespace NodaTime.Calendars
         /// <param name="year">Year during which the month occurs.</param>
         /// <param name="month">Civil month number.</param>
         /// <returns>The ecclesiastical month number.</returns>
-        public static int CivilToEcclesiastical(int year, int month)
+        internal static int CivilToEcclesiastical(int year, int month)
         {
             if (month < 7)
             {
@@ -45,7 +45,7 @@ namespace NodaTime.Calendars
         /// <param name="year">Year during which the month occurs.</param>
         /// <param name="month">Civil month number.</param>
         /// <returns>The ecclesiastical month number.</returns>
-        public static int EcclesiasticalToCivil(int year, int month)
+        internal static int EcclesiasticalToCivil(int year, int month)
         {
             if (month >= 7)
             {
