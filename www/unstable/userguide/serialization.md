@@ -202,7 +202,10 @@ All default patterns use the invariant culture.
 - `LocalDate`: ISO-8601 date pattern: `yyyy'-'MM'-'dd`
 - `LocalTime`: ISO-8601 time pattern, extended to handle fractional seconds: `HH':'mm':'ss.FFFFFFF`
 - `LocalDateTime`: ISO-8601 date/time pattern with no time zone specifier, extended to handle fractional seconds: `yyyy'-'MM'-'dd'T'HH':'mm':'ss.FFFFFFF`
-- `OffsetDateTime`: ISO-8601 date/time with offset pattern: `yyyy'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFFo<G>`
+- `OffsetDateTime`: ISO-8601 date/time with offset pattern:
+ `yyyy'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFFo<HH:mm>`; note that the
+ offset always includes hours and minutes, to conform with ECMA-262.
+ It does not support round-tripping offsets with sub-minute components.
 - `ZonedDateTime`: As `OffsetDateTime`, but with a time zone ID at the end: `yyyy'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFFo<G> z`
 - `Interval`: A compound object of the form `{ Start: xxx, End: yyy }` where `xxx` and `yyy` are represented however the serializer sees fit. (Typically using the default representation above.) An alternative form can be specified using the `WithIsoIntervalConverter` extension method on `JsonSerializer`/`JsonSerializerSettings`.
 - `Offset`: general pattern, e.g. `+05` or `-03:30`
