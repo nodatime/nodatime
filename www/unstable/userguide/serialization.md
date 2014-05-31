@@ -113,8 +113,8 @@ Most serialized forms just consist of element text using a specified text handli
     </tr>
     <tr>
       <td><code>OffsetDateTime</code></td>
-      <td>Extended ISO pattern, optional calendar</td>
-      <td><code>&lt;value calendar="Gregorian 3"&gt;16:45:20.1234567+01&lt;/value&gt;</td>
+      <td>RFC 3339 pattern (extended ISO but with offset in form +/-HH:mm or Z), optional calendar</td>
+      <td><code>&lt;value calendar="Gregorian 3"&gt;16:45:20.1234567+01:00&lt;/value&gt;</td>
     </tr>
     <tr>
       <td><code>ZonedDateTime</code></td>
@@ -202,8 +202,8 @@ All default patterns use the invariant culture.
 - `LocalDate`: ISO-8601 date pattern: `yyyy'-'MM'-'dd`
 - `LocalTime`: ISO-8601 time pattern, extended to handle fractional seconds: `HH':'mm':'ss.FFFFFFF`
 - `LocalDateTime`: ISO-8601 date/time pattern with no time zone specifier, extended to handle fractional seconds: `yyyy'-'MM'-'dd'T'HH':'mm':'ss.FFFFFFF`
-- `OffsetDateTime`: ISO-8601 date/time with offset pattern:
- `yyyy'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFFo<HH:mm>`; note that the
+- `OffsetDateTime`: RFC3339 pattern:
+ `yyyy'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFFo<Z+HH:mm>`; note that the
  offset always includes hours and minutes, to conform with ECMA-262.
  It does not support round-tripping offsets with sub-minute components.
 - `ZonedDateTime`: As `OffsetDateTime`, but with a time zone ID at the end: `yyyy'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFFo<G> z`

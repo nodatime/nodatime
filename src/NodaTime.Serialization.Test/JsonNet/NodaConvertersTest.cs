@@ -155,6 +155,16 @@ namespace NodaTime.Serialization.Test.JsonNet
         }
 
         [Test]
+        public void OffsetDateTimeConverter_ZeroOffset()
+        {
+            // Redundantly specify the minutes, so that Javascript can parse it and it's RFC3339-compliant.
+            // See issue 284 for details.
+            var value = new LocalDateTime(2012, 1, 2, 3, 4, 5, 6, 7).WithOffset(Offset.Zero);
+            string json = "\"2012-01-02T03:04:05.0060007Z\"";
+            AssertConversions(value, json, NodaConverters.OffsetDateTimeConverter);
+        }
+
+        [Test]
         public void Duration_WholeSeconds()
         {
             AssertConversions(Duration.FromHours(48), "\"48:00:00\"", NodaConverters.DurationConverter);
