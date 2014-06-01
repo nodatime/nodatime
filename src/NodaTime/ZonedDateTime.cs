@@ -555,6 +555,20 @@ namespace NodaTime
             return Zone.GetZoneInterval(ToInstant());
         }
 
+        /// <summary>
+        /// Indicates whether or not this <see cref="ZonedDateTime"/> is in daylight saving time
+        /// for its time zone. This is determined by checking the <see cref="ZoneInterval.Savings"/> property
+        /// of the zone interval containing this value.
+        /// </summary>
+        /// <seealso cref="GetZoneInterval()"/>
+        /// <returns><code>true</code> if the zone interval containing this value has a non-zero savings
+        /// component; <code>false</code> otherwise.</returns>
+        [Pure]
+        public bool IsDaylightSavingTime()
+        {
+            return GetZoneInterval().Savings != Offset.Zero;
+        }
+
         #region Formatting
         /// <summary>
         ///   Returns a <see cref="System.String" /> that represents this instance.
