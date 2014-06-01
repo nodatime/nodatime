@@ -119,6 +119,19 @@ namespace NodaTime.Test
         }
 
         [Test]
+        public void IsDaylightSavings()
+        {
+            // Use a real time zone rather than a single-transition zone, so that we can get
+            // a savings offset.
+            var zone = DateTimeZoneProviders.Tzdb["Europe/London"];
+            var winterSummerTransition = Instant.FromUtc(2014, 3, 30, 1, 0);
+            var winter = (winterSummerTransition - Duration.Epsilon).InZone(zone);
+            var summer = winterSummerTransition.InZone(zone);
+            Assert.IsFalse(winter.IsDaylightSavingTime());
+            Assert.IsTrue(summer.IsDaylightSavingTime());
+        }
+
+        [Test]
         public void FromDateTimeOffset()
         {
             DateTimeOffset dateTimeOffset = new DateTimeOffset(2011, 3, 5, 1, 0, 0, TimeSpan.FromHours(3));
