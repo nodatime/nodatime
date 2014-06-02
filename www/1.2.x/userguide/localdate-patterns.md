@@ -40,7 +40,7 @@ For the meanings of "absolute" years and text handling, see later details.
     <tr>
       <td><code>y</code> or <code>yy</code></td>
       <td>
-        Two digit absolute year with an optional leading `-` sign; a single <code>y</code> allows up to two digits to be parsed,
+        Two digit absolute year with an optional leading <code>-</code> sign; a single <code>y</code> allows up to two digits to be parsed,
 		but formats only one digit where possible. When parsing, the "base century" is chosen from the template
 		value; if the two-digit year is greater than 30, the corresponding year in the previous
 		century is used. Note that when formatting, no checking
@@ -59,7 +59,7 @@ For the meanings of "absolute" years and text handling, see later details.
     <tr>
       <td><code>yyy</code></td>
       <td>
-        Three digit absolute year with optional leading `-`
+        Three digit absolute year with optional leading <code>-</code>
         sign. This will parse up to five digits, but only format to as many as are
 		required, with a minimum of three.
       </td>
@@ -71,7 +71,7 @@ For the meanings of "absolute" years and text handling, see later details.
     <tr>
       <td><code>yyyy</code></td>
       <td>
-        The absolute year as 4 or 5 digits with an optional leading `-` sign.
+        The absolute year as 4 or 5 digits with an optional leading <code>-</code> sign.
         <p>
         If the absolute year is outside the range [-9999, 9999] the
         value will be formatted (with the excess digit), but
@@ -91,7 +91,7 @@ For the meanings of "absolute" years and text handling, see later details.
     <tr>
       <td><code>yyyyy</code></td>
       <td>
-        The absolute year as exactly 5 digits with an optional leading `-` sign.
+        The absolute year as exactly 5 digits with an optional leading <code>-</code> sign.
       </td>
       <td>
         2012: => <code>02012</code> <br />
