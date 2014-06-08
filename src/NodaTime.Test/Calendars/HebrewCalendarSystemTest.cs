@@ -11,6 +11,8 @@ namespace NodaTime.Test.Calendars
 {
     /// <summary>
     /// Tests for HebrewYearMonthDayCalculator via the Hebrew CalendarSystem.
+    /// See http://noda-time.blogspot.co.uk/2014/06/hebrew-calendar-cheat-sheet.html
+    /// for sample year information.
     /// </summary>
     [TestFixture]
     public class HebrewCalendarSystemTest
@@ -104,21 +106,28 @@ namespace NodaTime.Test.Calendars
             }
         }
 
-        // 5501 is not a leap year; 5502 is; 5503 is not; 5505 is.
-        // Heshvan (ecclesiastical 8) is long in 5507 and 5509; it is short in 5506 and 5508
-        // Kislev (ecclesiastical 9) is long in 5503-5505; it is short in 5502 and 5506
         // Test cases are in ecclesiastical month numbering, but we check both. This is
         // mostly testing the behaviour of SetYear, via LocalDate.PlusYears.
         [Test]
-        [TestCase("5505-02-10", 1, "5506-02-10")] // No truncation required
-        [TestCase("5502-13-05", 1, "5503-12-29")] // Truncation from Adar II to end of Adar
-        [TestCase("5502-13-05", -1, "5501-12-29")] // And again, but in reverse (subtracting a year)
-        [TestCase("5502-12-05", 1, "5503-12-05")] // In Adar, but no truncation required
-        [TestCase("5502-13-05", 3, "5505-13-05")] // In Adar II, but no truncation required as we transferring to a leap year
-        [TestCase("5507-08-30", 1, "5508-08-29")] // Truncation in Heshvan
-        [TestCase("5507-08-30", 2, "5509-08-30")] // No truncation in Heshvan (both 5507 and 5509 are long)
-        [TestCase("5503-09-30", 1, "5504-09-30")] // No truncation in Kislev (both 5503 and 5504 are long)
-        [TestCase("5503-09-30", 3, "5506-09-29")] // Truncation in Kislev
+        // Simple case
+        [TestCase("5405-02-10", 1, "5406-02-10")]
+        // Adar mapping - Adar from non-leap maps to Adar II in leap;
+        // Adar I and Adar II both map to Adar in a non-leap, except for the 30th of Adar I
+        // which maps to the 1st of Nisan.
+        [TestCase("5402-12-05", 1, "5403-12-05")] // Mapping from Adar I to Adar
+        [TestCase("5402-13-05", 1, "5403-12-05")] // Mapping from Adar II to Adar
+        [TestCase("5402-12-30", 1, "5403-01-01")] // Mapping from 30th of Adar I to 1st of Nisan
+        [TestCase("5401-12-05", 1, "5402-13-05")] // Mapping from Adar to Adar II
+        // Transfer to another leap year
+        [TestCase("5402-12-05", 2, "5404-12-05")] // Adar I to Adar I
+        [TestCase("5402-12-30", 2, "5404-12-30")] // 30th of Adar I to 30th of Adar I
+        [TestCase("5402-13-05", 2, "5404-13-05")] // Adar II to Adar II
+        // Rollover of 30th of Kislev and Heshvan to the 1st of the next month.
+        [TestCase("5402-08-30", 1, "5403-09-01")] // Rollover from 30th Heshvan to 1st Kislev
+        [TestCase("5400-09-30", 1, "5401-10-01")] // Rollover from 30th Kislev to 1st Tevet
+        // No rollover required (target year has 30 days in as well)
+        [TestCase("5402-08-30", 3, "5405-08-30")] // No truncation in Heshvan (both 5507 and 5509 are long)
+        [TestCase("5400-09-30", 2, "5402-09-30")] // No truncation in Kislev (both 5503 and 5504 are long)
         public void SetYear(string startText, int years, string expectedEndText)
         {
             var civil = CalendarSystem.GetHebrewCalendar(HebrewMonthNumbering.Civil);
