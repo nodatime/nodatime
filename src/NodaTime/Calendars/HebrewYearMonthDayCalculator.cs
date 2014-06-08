@@ -106,13 +106,13 @@ namespace NodaTime.Calendars
             return IsLeapYear(year) ? 13 : 12;
         }
 
+        /// <summary>
+        /// Change the year, maintaining month and day as well as possible. This doesn't
+        /// work in the same way as other calendars; see http://judaism.stackexchange.com/questions/39053
+        /// for the reasoning behind the rules.
+        /// </summary>
         internal override LocalInstant SetYear(LocalInstant localInstant, int year)
         {
-            // TODO: Validate this. It's not at all clear that it makes any sense at all.
-            // We try to preserve the ecclesiastical month number where possible, which
-            // corresponds to the month name. That may change the civil month number, if we
-            // start in a leap year and end in a non-leap year, or vice versa.
-
             long tickOfDay = TimeOfDayCalculator.GetTickOfDay(localInstant);
             int absoluteSourceDay = AbsoluteDayFromLocalInstant(localInstant);
             YearMonthDay ymd = HebrewEcclesiasticalCalculator.HebrewFromAbsolute(absoluteSourceDay);
@@ -120,12 +120,29 @@ namespace NodaTime.Calendars
             int targetEcclesiasticalMonth = ymd.Month;
             if (targetEcclesiasticalMonth == 13 && !IsLeapYear(year))
             {
-                // If we were in Adar II, go to the end of Adar I.
+                // If we were in Adar II and the target year is not a leap year, map to Adar.
                 targetEcclesiasticalMonth = 12;
-                targetDay = 40; // Definitely beyond the end of the month, so we'll truncate below.
             }
-            targetDay = Math.Min(targetDay, HebrewEcclesiasticalCalculator.DaysInMonth(year, targetEcclesiasticalMonth));
-
+            else if (targetEcclesiasticalMonth == 12 && IsLeapYear(year) && !IsLeapYear(ymd.Year))
+            {
+                // If we were in Adar (non-leap year), go to Adar II rather than Adar I in a leap year.
+                targetEcclesiasticalMonth = 13;
+            }
+            // If we're aiming for the 30th day of Heshvan, Kislev or an Adar, it's possible that the change in year
+            // has meant the day becomes invalid. In that case, roll over to the 1st of the subsequent month.
+            if (targetDay == 30 && (targetEcclesiasticalMonth == 8 || targetEcclesiasticalMonth == 9 || targetEcclesiasticalMonth == 12))
+            {
+                if (HebrewEcclesiasticalCalculator.DaysInMonth(year, targetEcclesiasticalMonth) != 30)
+                {
+                    targetDay = 1;
+                    targetEcclesiasticalMonth++;
+                    // From Adar, roll to Nisan.
+                    if (targetEcclesiasticalMonth == 13)
+                    {
+                        targetEcclesiasticalMonth = 1;
+                    }
+                }
+            }
             int absoluteTargetDay = HebrewEcclesiasticalCalculator.AbsoluteFromHebrew(year, targetEcclesiasticalMonth, targetDay);
             return LocalInstantFromAbsoluteDay(absoluteTargetDay, tickOfDay);
         }
