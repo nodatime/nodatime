@@ -528,7 +528,7 @@ namespace NodaTime
         /// Returns a <see cref="System.String" /> that represents this instance.
         /// </summary>
         /// <returns>
-        /// The value of the current instance in the standard format pattern, using the current thread's
+        /// The value of the current instance in the default format pattern ("T"), using the current thread's
         /// culture to obtain a format provider.
         /// </returns>
         public override string ToString()
@@ -543,7 +543,7 @@ namespace NodaTime
         /// A <see cref="T:System.String" /> containing the value of the current instance in the specified format.
         /// </returns>
         /// <param name="patternText">The <see cref="T:System.String" /> specifying the pattern to use,
-        /// or null to use the default format pattern.
+        /// or null to use the default format pattern ("T").
         /// </param>
         /// <param name="formatProvider">The <see cref="T:System.IFormatProvider" /> to use when formatting the value,
         /// or null to use the current thread's culture to obtain a format provider.

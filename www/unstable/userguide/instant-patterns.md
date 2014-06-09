@@ -16,6 +16,7 @@ The following standard patterns are supported:
   The ISO-8601 representation of this instant in UTC, using the
   pattern "yyyy-MM-ddTHH:mm:ss" and always using the invariant culture,
   with the default "start of time" and "end of time" labels.
+  This is the default format pattern.
   
 - `n`: Numeric with thousand separators.  
   This gives the number of ticks since the Unix epoch as an integer,

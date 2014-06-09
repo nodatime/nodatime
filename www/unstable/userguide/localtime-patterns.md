@@ -13,12 +13,12 @@ Standard Patterns
 The following standard patterns are supported:
 
 - `t`: Short format pattern.  
-  This is the short time pattern as defined by the culture's [`DateTimeFormatInfo.ShortTimePattern`](http://msdn.microsoft.com/en-us/library/system.globalization.datetimeformatinfo.shorttimepattern.aspx) 
+  This is the short time pattern as defined by the culture's [`DateTimeFormatInfo.ShortTimePattern`](http://msdn.microsoft.com/en-us/library/system.globalization.datetimeformatinfo.shorttimepattern.aspx). 
   For example, in the invariant culture this is "HH:mm".
 
 - `T`: Long format pattern.  
-  This is the long time pattern as defined by the culture's [`DateTimeFormatInfo.LongTimePattern`](http://msdn.microsoft.com/en-us/library/system.globalization.datetimeformatinfo.longtimepattern.aspx) 
-  For example, in the invariant culture this is "HH:mm:ss".
+  This is the long time pattern as defined by the culture's [`DateTimeFormatInfo.LongTimePattern`](http://msdn.microsoft.com/en-us/library/system.globalization.datetimeformatinfo.longtimepattern.aspx). 
+  For example, in the invariant culture this is "HH:mm:ss". This is the default format pattern.
 
 - `r`: Round-trip pattern.  
   This always uses a pattern of "HH:mm:ss.FFFFFFF", but with the culture-specific time separator.
