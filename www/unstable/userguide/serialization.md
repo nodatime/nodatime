@@ -68,6 +68,13 @@ When deserializing, the `XmlSerializer` will set the value of `PeriodBuilder` fr
 In an ideal world we'd also decorate the `PeriodBuilder` property with `[Obsolete("Only present for serialization", true)]` but unfortunately the XML serializer ignores obsolete
 properties, which would entirely defeat the point of the exercise.
 
+It's also worth noting that the XML serialization in .NET doesn't allow any user-defined types to be
+serialized via attributes. So while it would make perfect sense to be able to apply
+[`[XmlAttribute]`](http://msdn.microsoft.com/en-us/library/system.xml.serialization.xmlattributeattribute)
+to a particular property and have it serialized as an attribute, in reality you need to use
+[`[XmlElement]`](http://msdn.microsoft.com/en-us/library/system.xml.serialization.xmlelementattribute.aspx)
+instead. There's nothing Noda Time can do here; it's just a [limitation of .NET XML serialization](http://connect.microsoft.com/VisualStudio/feedback/details/277641/xmlattribute-xmltext-cannot-be-used-to-encode-types-implementing-ixmlserializable).
+
 Finally, serialization of `ZonedDateTime` comes with the tricky question of which `IDateTimeZoneProvider` to use in order to convert a time zone ID specified in the XML into a `DateTimeZone`.
 Noda Time has no concept of a "time zone provider registry" nor does a time zone "know" which provider it came from. Likewise XML serialization doesn't allow any particular local context to be
 specified as part of the deserialization process. As a horrible workaround, a static (thread-safe) `DateTimeZoneProviders.Serialization` property is used. This would normally be set on application start-up,
