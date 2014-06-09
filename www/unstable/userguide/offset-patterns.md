@@ -25,7 +25,7 @@ The following standard patterns are supported:
   - If the offset has seconds, the long format is used; otherwise
   - If the offset has minutes, the medium format is used; otherwise
   - The short format is used
-  When parsing, the other standard format patterns are tried one at a time.
+  When parsing, the other standard format patterns are tried one at a time. This is the default format pattern.
 - `G`: As `g`, but using `Z` for an offset of 0, as if it were Z-prefixed. (See below.)
 
 Custom Patterns

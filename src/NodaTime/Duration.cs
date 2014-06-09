@@ -165,10 +165,11 @@ namespace NodaTime
 
         #region Formatting
         /// <summary>
-        ///   Returns a <see cref="System.String" /> that represents this instance.
+        /// Returns a <see cref="System.String" /> that represents this instance.
         /// </summary>
         /// <returns>
-        ///   A <see cref="System.String" /> that represents this instance.
+        /// The value of the current instance in the default format pattern ("o"), using the current thread's
+        /// culture to obtain a format provider.
         /// </returns>
         public override string ToString()
         {
@@ -176,18 +177,16 @@ namespace NodaTime
         }
 
         /// <summary>
-        ///   Formats the value of the current instance using the specified format.
+        /// Formats the value of the current instance using the specified pattern.
         /// </summary>
         /// <returns>
-        ///   A <see cref="T:System.String" /> containing the value of the current instance in the specified format.
+        /// A <see cref="T:System.String" /> containing the value of the current instance in the specified format.
         /// </returns>
-        /// <param name="patternText">The <see cref="T:System.String" /> specifying the pattern to use.
-        ///   -or- 
-        ///   null to use the default pattern defined for the type of the <see cref="T:System.IFormattable" /> implementation. 
+        /// <param name="patternText">The <see cref="T:System.String" /> specifying the pattern to use,
+        /// or null to use the default format pattern ("o").
         /// </param>
-        /// <param name="formatProvider">The <see cref="T:System.IFormatProvider" /> to use to format the value.
-        ///   -or- 
-        ///   null to obtain the numeric format information from the current locale setting of the operating system. 
+        /// <param name="formatProvider">The <see cref="T:System.IFormatProvider" /> to use when formatting the value,
+        /// or null to use the current thread's culture to obtain a format provider.
         /// </param>
         /// <filterpriority>2</filterpriority>
         public string ToString(string patternText, IFormatProvider formatProvider)
