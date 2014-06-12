@@ -11,6 +11,8 @@ namespace NodaTime.Test.Text
     [TestFixture]
     public class ParseResultTest
     {
+        private static readonly ParseResult<int> FailureResult = ParseResult<int>.ForInvalidValue(new ValueCursor("text"), "text");
+
         [Test]
         public void Value_Success()
         {
@@ -21,8 +23,7 @@ namespace NodaTime.Test.Text
         [Test]
         public void Value_Failure()
         {
-            ParseResult<int> result = ParseResult<int>.ForInvalidValue("text");
-            Assert.Throws<UnparsableValueException>(() => result.Value.GetHashCode());
+            Assert.Throws<UnparsableValueException>(() => FailureResult.Value.GetHashCode());
         }
 
         [Test]
@@ -35,8 +36,7 @@ namespace NodaTime.Test.Text
         [Test]
         public void Exception_Failure()
         {
-            ParseResult<int> result = ParseResult<int>.ForInvalidValue("text");
-            Assert.IsInstanceOf<UnparsableValueException>(result.Exception);
+            Assert.IsInstanceOf<UnparsableValueException>(FailureResult.Exception);
         }
 
         [Test]
@@ -49,8 +49,7 @@ namespace NodaTime.Test.Text
         [Test]
         public void GetValueOrThrow_Failure()
         {
-            ParseResult<int> result = ParseResult<int>.ForInvalidValue("text");
-            Assert.Throws<UnparsableValueException>(() => result.GetValueOrThrow());
+            Assert.Throws<UnparsableValueException>(() => FailureResult.GetValueOrThrow());
         }
 
         [Test]
@@ -65,17 +64,15 @@ namespace NodaTime.Test.Text
         [Test]
         public void TryGetValue_Failure()
         {
-            ParseResult<int> result = ParseResult<int>.ForInvalidValue("text");
             int actual;
-            Assert.IsFalse(result.TryGetValue(-1, out actual));
+            Assert.IsFalse(FailureResult.TryGetValue(-1, out actual));
             Assert.AreEqual(-1, actual);
         }
 
         [Test]
         public void Convert_ForFailureResult()
         {
-            ParseResult<int> original = ParseResult<int>.ForInvalidValue("text");
-            ParseResult<string> converted = original.Convert(x => "xx" + x + "xx");
+            ParseResult<string> converted = FailureResult.Convert(x => "xx" + x + "xx");
             Assert.Throws<UnparsableValueException>(() => converted.GetValueOrThrow());
         }
 
@@ -90,8 +87,7 @@ namespace NodaTime.Test.Text
         [Test]
         public void ConvertError_ForFailureResult()
         {
-            ParseResult<int> original = ParseResult<int>.ForInvalidValue("text");
-            ParseResult<string> converted = original.ConvertError<string>();
+            ParseResult<string> converted = FailureResult.ConvertError<string>();
             Assert.Throws<UnparsableValueException>(() => converted.GetValueOrThrow());
         }
 

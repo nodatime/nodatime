@@ -134,14 +134,14 @@ namespace NodaTime.Text
             /// <summary>
             /// Calculates the value from the parsed pieces.
             /// </summary>            
-            internal override ParseResult<LocalTime> CalculateValue(PatternFields usedFields)
+            internal override ParseResult<LocalTime> CalculateValue(PatternFields usedFields, string text)
             {
                 if (AmPm == 2)
                 {
                     AmPm = templateValue.Hour / 12;
                 }
                 int hour;
-                ParseResult<LocalTime> failure = DetermineHour(usedFields, out hour);
+                ParseResult<LocalTime> failure = DetermineHour(usedFields, text, out hour);
                 if (failure != null)
                 {
                     return failure;
@@ -152,7 +152,7 @@ namespace NodaTime.Text
                 return ParseResult<LocalTime>.ForValue(LocalTime.FromHourMinuteSecondTick(hour, minutes, seconds, fraction));
             }
 
-            private ParseResult<LocalTime> DetermineHour(PatternFields usedFields, out int hour)
+            private ParseResult<LocalTime> DetermineHour(PatternFields usedFields, string text, out int hour)
             {
                 hour = 0;
                 if (IsFieldUsed(usedFields, PatternFields.Hours24))
@@ -161,14 +161,14 @@ namespace NodaTime.Text
                     {
                         if (Hours12 % 12 != Hours24 % 12)
                         {
-                            return ParseResult<LocalTime>.InconsistentValues('H', 'h');
+                            return ParseResult<LocalTime>.InconsistentValues(text, 'H', 'h');
                         }
                     }
                     if (IsFieldUsed(usedFields, PatternFields.AmPm))
                     {
                         if (Hours24 / 12 != AmPm)
                         {
-                            return ParseResult<LocalTime>.InconsistentValues('H', 't');
+                            return ParseResult<LocalTime>.InconsistentValues(text, 'H', 't');
                         }
                     }
                     hour = Hours24;

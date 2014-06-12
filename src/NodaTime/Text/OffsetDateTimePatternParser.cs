@@ -123,9 +123,9 @@ namespace NodaTime.Text
                 Offset = templateOffset;
             }
 
-            internal override ParseResult<OffsetDateTime> CalculateValue(PatternFields usedFields)
+            internal override ParseResult<OffsetDateTime> CalculateValue(PatternFields usedFields, string text)
             {
-                var localResult = LocalDateTimePatternParser.LocalDateTimeParseBucket.CombineBuckets(usedFields, Date, Time);
+                var localResult = LocalDateTimePatternParser.LocalDateTimeParseBucket.CombineBuckets(usedFields, Date, Time, text);
                 if (!localResult.Success)
                 {
                     return localResult.ConvertError<OffsetDateTime>();
