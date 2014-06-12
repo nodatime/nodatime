@@ -135,7 +135,7 @@ namespace NodaTime.Text
             /// <summary>
             /// Calculates the value from the parsed pieces.
             /// </summary>
-            internal override ParseResult<Duration> CalculateValue(PatternFields usedFields)
+            internal override ParseResult<Duration> CalculateValue(PatternFields usedFields, string text)
             {
                 return ParseResult<Duration>.ForValue(Duration.FromTicks(IsNegative ? NegativeTicks : -NegativeTicks));
             }

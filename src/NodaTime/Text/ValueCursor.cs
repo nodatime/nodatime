@@ -123,7 +123,7 @@ namespace NodaTime.Text
                     if (!MoveNext())
                     {
                         Move(startIndex);
-                        return ParseResult<T>.EndOfString;
+                        return ParseResult<T>.EndOfString(this);
                     }
                 }
                 int count = 0;
@@ -141,7 +141,7 @@ namespace NodaTime.Text
                 if (count == 0)
                 {
                     Move(startIndex);
-                    return ParseResult<T>.MissingNumber;
+                    return ParseResult<T>.MissingNumber(this);
                 }
 
                 if (result >= 922337203685477580 && (digit = GetDigit()) != -1)
@@ -191,7 +191,7 @@ namespace NodaTime.Text
             }
             string badValue = Value.Substring(startIndex, Index - startIndex);
             Move(startIndex);
-            return ParseResult<T>.ValueOutOfRange(badValue);
+            return ParseResult<T>.ValueOutOfRange(this, badValue);
         }
 
         /// <summary>
@@ -286,9 +286,14 @@ namespace NodaTime.Text
                 {
                     return false;
                 }
-                Move(localIndex);
                 result = (int) (result * Math.Pow(10.0, scale - count));
-                return !allRequired || localIndex == maxIndex;
+                bool ret = !allRequired || localIndex == maxIndex;
+                // Only move the cursor on success.
+                if (ret)
+                {
+                    Move(localIndex);
+                }
+                return ret;
             }
         }
 

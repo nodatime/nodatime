@@ -169,7 +169,7 @@ namespace NodaTime.Text
 
                 if (zone == null)
                 {
-                    return ParseResult<ZonedDateTime>.NoMatchingZoneId;
+                    return ParseResult<ZonedDateTime>.NoMatchingZoneId(value);
                 }
                 Zone = zone;
                 return null;
@@ -236,9 +236,9 @@ namespace NodaTime.Text
                 return null;
             }
 
-            internal override ParseResult<ZonedDateTime> CalculateValue(PatternFields usedFields)
+            internal override ParseResult<ZonedDateTime> CalculateValue(PatternFields usedFields, string text)
             {
-                var localResult = LocalDateTimePatternParser.LocalDateTimeParseBucket.CombineBuckets(usedFields, Date, Time);
+                var localResult = LocalDateTimePatternParser.LocalDateTimeParseBucket.CombineBuckets(usedFields, Date, Time, text);
                 if (!localResult.Success)
                 {
                     return localResult.ConvertError<ZonedDateTime>();
@@ -255,11 +255,11 @@ namespace NodaTime.Text
                     }
                     catch (SkippedTimeException)
                     {
-                        return ParseResult<ZonedDateTime>.SkippedLocalTime;
+                        return ParseResult<ZonedDateTime>.SkippedLocalTime(text);
                     }
                     catch (AmbiguousTimeException)
                     {
-                        return ParseResult<ZonedDateTime>.AmbiguousLocalTime;
+                        return ParseResult<ZonedDateTime>.AmbiguousLocalTime(text);
                     }
                 }
                 
@@ -270,7 +270,7 @@ namespace NodaTime.Text
                 {
                     // If the local time was skipped, the offset has to be invalid.
                     case 0:
-                        return ParseResult<ZonedDateTime>.InvalidOffset;
+                        return ParseResult<ZonedDateTime>.InvalidOffset(text);
                     case 1:
                         result = mapping.First(); // We'll validate in a minute
                         break;
@@ -282,7 +282,7 @@ namespace NodaTime.Text
                 }
                 if (result.Offset != Offset)
                 {
-                    return ParseResult<ZonedDateTime>.InvalidOffset;
+                    return ParseResult<ZonedDateTime>.InvalidOffset(text);
                 }
                 return ParseResult<ZonedDateTime>.ForValue(result);
             }

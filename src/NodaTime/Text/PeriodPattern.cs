@@ -81,19 +81,19 @@ namespace NodaTime.Text
             builder.Append(suffix);
         }
 
-        private static ParseResult<Period> InvalidUnit(char unitCharacter)
+        private static ParseResult<Period> InvalidUnit(ValueCursor cursor, char unitCharacter)
         {
-            return ParseResult<Period>.ForInvalidValue(Messages.Parse_InvalidUnitSpecifier, unitCharacter);
+            return ParseResult<Period>.ForInvalidValue(cursor, Messages.Parse_InvalidUnitSpecifier, unitCharacter);
         }
 
-        private static ParseResult<Period> RepeatedUnit(char unitCharacter)
+        private static ParseResult<Period> RepeatedUnit(ValueCursor cursor, char unitCharacter)
         {
-            return ParseResult<Period>.ForInvalidValue(Messages.Parse_RepeatedUnitSpecifier, unitCharacter);
+            return ParseResult<Period>.ForInvalidValue(cursor, Messages.Parse_RepeatedUnitSpecifier, unitCharacter);
         }
 
-        private static ParseResult<Period> MisplacedUnit(char unitCharacter)
+        private static ParseResult<Period> MisplacedUnit(ValueCursor cursor, char unitCharacter)
         {
-            return ParseResult<Period>.ForInvalidValue(Messages.Parse_MisplacedUnitSpecifier, unitCharacter);
+            return ParseResult<Period>.ForInvalidValue(cursor, Messages.Parse_MisplacedUnitSpecifier, unitCharacter);
         }
 
         private sealed class RoundtripPatternImpl : IPattern<Period>
@@ -114,7 +114,7 @@ namespace NodaTime.Text
                 valueCursor.MoveNext();
                 if (valueCursor.Current != 'P')
                 {
-                    return ParseResult<Period>.MismatchedCharacter('P');
+                    return ParseResult<Period>.MismatchedCharacter(valueCursor, 'P');
                 }
                 bool inDate = true;
                 PeriodBuilder builder = new PeriodBuilder();
@@ -134,7 +134,7 @@ namespace NodaTime.Text
                     }
                     if (valueCursor.Length == valueCursor.Index)
                     {
-                        return ParseResult<Period>.EndOfString;
+                        return ParseResult<Period>.EndOfString(valueCursor);
                     }
                     // Various failure cases:
                     // - Repeated unit (e.g. P1M2M)
@@ -154,24 +154,24 @@ namespace NodaTime.Text
                         case 'S': unit = PeriodUnits.Seconds; break;
                         case 's': unit = PeriodUnits.Milliseconds; break;
                         case 't': unit = PeriodUnits.Ticks; break;
-                        default: return InvalidUnit(valueCursor.Current);
+                        default: return InvalidUnit(valueCursor, valueCursor.Current);
                     }
                     if ((unit & unitsSoFar) != 0)
                     {
-                        return RepeatedUnit(valueCursor.Current);
+                        return RepeatedUnit(valueCursor, valueCursor.Current);
                     }
 
                     // This handles putting months before years, for example. Less significant units
                     // have higher integer representations.
                     if (unit < unitsSoFar)
                     {
-                        return MisplacedUnit(valueCursor.Current);
+                        return MisplacedUnit(valueCursor, valueCursor.Current);
                     }
                     // The result of checking "there aren't any time units in this unit" should be
                     // equal to "we're still in the date part".
                     if ((unit & PeriodUnits.AllTimeUnits) == 0 != inDate)
                     {
-                        return MisplacedUnit(valueCursor.Current);
+                        return MisplacedUnit(valueCursor, valueCursor.Current);
                     }
                     builder[unit] = unitValue;
                     unitsSoFar |= unit;
@@ -219,7 +219,7 @@ namespace NodaTime.Text
                 valueCursor.MoveNext();
                 if (valueCursor.Current != 'P')
                 {
-                    return ParseResult<Period>.MismatchedCharacter('P');
+                    return ParseResult<Period>.MismatchedCharacter(valueCursor, 'P');
                 }
                 bool inDate = true;
                 PeriodBuilder builder = new PeriodBuilder();
@@ -240,7 +240,7 @@ namespace NodaTime.Text
                     }
                     if (valueCursor.Length == valueCursor.Index)
                     {
-                        return ParseResult<Period>.EndOfString;
+                        return ParseResult<Period>.EndOfString(valueCursor);
                     }
                     // Various failure cases:
                     // - Repeated unit (e.g. P1M2M)
@@ -260,25 +260,25 @@ namespace NodaTime.Text
                         case 'S': unit = PeriodUnits.Seconds; break;
                         case ',':
                         case '.': unit = PeriodUnits.Ticks; break; // Special handling below
-                        default: return InvalidUnit(valueCursor.Current);
+                        default: return InvalidUnit(valueCursor, valueCursor.Current);
                     }
                     if ((unit & unitsSoFar) != 0)
                     {
-                        return RepeatedUnit(valueCursor.Current);
+                        return RepeatedUnit(valueCursor, valueCursor.Current);
                     }
 
                     // This handles putting months before years, for example. Less significant units
                     // have higher integer representations.
                     if (unit < unitsSoFar)
                     {
-                        return MisplacedUnit(valueCursor.Current);
+                        return MisplacedUnit(valueCursor, valueCursor.Current);
                     }
 
                     // The result of checking "there aren't any time units in this unit" should be
                     // equal to "we're still in the date part".
                     if ((unit & PeriodUnits.AllTimeUnits) == 0 != inDate)
                     {
-                        return MisplacedUnit(valueCursor.Current);
+                        return MisplacedUnit(valueCursor, valueCursor.Current);
                     }
 
                     // Seen a . or , which need special handling.
@@ -287,19 +287,19 @@ namespace NodaTime.Text
                         // Check for already having seen seconds, e.g. PT5S0.5
                         if ((unitsSoFar & PeriodUnits.Seconds) != 0)
                         {
-                            return MisplacedUnit(valueCursor.Current);
+                            return MisplacedUnit(valueCursor, valueCursor.Current);
                         }
                         builder.Seconds = unitValue;
 
                         if (!valueCursor.MoveNext())
                         {
-                            return ParseResult<Period>.MissingNumber;
+                            return ParseResult<Period>.MissingNumber(valueCursor);
                         }
                         int totalTicks;
                         // Can cope with at most 9999999 ticks
                         if (!valueCursor.ParseFraction(7, 7, out totalTicks, false))
                         {
-                            return ParseResult<Period>.MissingNumber;
+                            return ParseResult<Period>.MissingNumber(valueCursor);
                         }
                         // Use whether or not the seconds value was negative (even if 0)
                         // as the indication of whether this value is negative.
@@ -312,11 +312,11 @@ namespace NodaTime.Text
 
                         if (valueCursor.Current != 'S')
                         {
-                            return ParseResult<Period>.MismatchedCharacter('S');
+                            return ParseResult<Period>.MismatchedCharacter(valueCursor, 'S');
                         }
                         if (valueCursor.MoveNext())
                         {
-                            return ParseResult<Period>.ExpectedEndOfString;
+                            return ParseResult<Period>.ExpectedEndOfString(valueCursor);
                         }
                         return ParseResult<Period>.ForValue(builder.Build());
                     }
@@ -326,7 +326,7 @@ namespace NodaTime.Text
                 }
                 if (unitsSoFar == 0)
                 {
-                    return ParseResult<Period>.ForInvalidValue(Messages.Parse_EmptyPeriod);
+                    return ParseResult<Period>.ForInvalidValue(valueCursor, Messages.Parse_EmptyPeriod);
                 }
                 return ParseResult<Period>.ForValue(builder.Build());
             }
