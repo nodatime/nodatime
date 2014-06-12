@@ -17,6 +17,9 @@ namespace NodaTime.Text
     [DebuggerStepThrough]
     internal abstract class TextCursor
     {
+        private readonly string value;
+        private readonly int length;
+
         /// <summary>
         /// A nul character. This character is not allowed in any parsable string and is used to
         /// indicate that the current character is not set.
@@ -29,8 +32,8 @@ namespace NodaTime.Text
         protected TextCursor(string value)
         {
             // Validated by caller.
-            Value = value;
-            Length = value.Length;
+            this.value = value;
+            this.length = value.Length;
             Move(-1);
         }
 
@@ -55,12 +58,12 @@ namespace NodaTime.Text
         /// <summary>
         /// Gets the length of the string being parsed.
         /// </summary>
-        internal int Length { get; private set; }
+        internal int Length { get { return length; } }
 
         /// <summary>
         /// Gets the string being parsed.
         /// </summary>
-        internal string Value { get; private set; }
+        internal string Value { get { return value; } }
 
         /// <summary>
         /// Gets the remainder the string that has not been parsed yet.
