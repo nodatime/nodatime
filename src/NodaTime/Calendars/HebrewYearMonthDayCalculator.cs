@@ -7,21 +7,21 @@ namespace NodaTime.Calendars
 {
     /// <summary>
     /// See <see cref="CalendarSystem.GetHebrewCalendar" /> for details. This is effectively
-    /// an adapter around <see cref="HebrewEcclesiasticalCalculator"/>.
+    /// an adapter around <see cref="HebrewScripturalCalculator"/>.
     /// </summary>
     internal sealed class HebrewYearMonthDayCalculator : YearMonthDayCalculator
     {
-        private const int EcclesiasticalYearStartMonth = 7;
+        private const int ScripturalYearStartMonth = 7;
         private const int AbsoluteDayOfUnixEpoch = 719163;
         private const int AbsoluteDayOfHebrewEpoch = -1373427;
         private const int MonthsPerLeapCycle = 235;
         private const int YearsPerLeapCycle = 19;
-        private readonly Func<int, int, int> calendarToEcclesiastical;
-        private readonly Func<int, int, int> ecclesiasticalToCalendar;
+        private readonly Func<int, int, int> calendarToScriptural;
+        private readonly Func<int, int, int> scripturalToCalendar;
 
         internal HebrewYearMonthDayCalculator(HebrewMonthNumbering monthNumbering)
-            : base(HebrewEcclesiasticalCalculator.MinYear,
-                  HebrewEcclesiasticalCalculator.MaxYear,
+            : base(HebrewScripturalCalculator.MinYear,
+                  HebrewScripturalCalculator.MaxYear,
                   (long) (365.4 * NodaConstants.TicksPerStandardDay), // Average year length
                   (AbsoluteDayOfHebrewEpoch - AbsoluteDayOfUnixEpoch) * NodaConstants.TicksPerStandardDay, // Tick at year 1
                   new[] { Era.AnnoMundi })
@@ -29,12 +29,12 @@ namespace NodaTime.Calendars
             switch (monthNumbering)
             {
                 case HebrewMonthNumbering.Civil:
-                    calendarToEcclesiastical = HebrewMonthConverter.CivilToEcclesiastical;
-                    ecclesiasticalToCalendar = HebrewMonthConverter.EcclesiasticalToCivil;
+                    calendarToScriptural = HebrewMonthConverter.CivilToScriptural;
+                    scripturalToCalendar = HebrewMonthConverter.ScripturalToCivil;
                     break;
-                case HebrewMonthNumbering.Ecclesiastical:
-                    calendarToEcclesiastical = NoOp;
-                    ecclesiasticalToCalendar = NoOp;
+                case HebrewMonthNumbering.Scriptural:
+                    calendarToScriptural = NoOp;
+                    scripturalToCalendar = NoOp;
                     break;
             }
         }
@@ -50,35 +50,35 @@ namespace NodaTime.Calendars
         /// </summary>
         internal override bool IsLeapYear(int year)
         {
-            return HebrewEcclesiasticalCalculator.IsLeapYear(year);
+            return HebrewScripturalCalculator.IsLeapYear(year);
         }
 
         protected override long GetTicksFromStartOfYearToStartOfMonth(int year, int month)
         {
-            int ecclesiasticalMonth = calendarToEcclesiastical(year, month);
-            int absoluteDayAtStartOfMonth = HebrewEcclesiasticalCalculator.AbsoluteFromHebrew(year, ecclesiasticalMonth, 1);
-            int absoluteDayAtStartOfYear = HebrewEcclesiasticalCalculator.AbsoluteFromHebrew(year, EcclesiasticalYearStartMonth, 1);
+            int scripturalMonth = calendarToScriptural(year, month);
+            int absoluteDayAtStartOfMonth = HebrewScripturalCalculator.AbsoluteFromHebrew(year, scripturalMonth, 1);
+            int absoluteDayAtStartOfYear = HebrewScripturalCalculator.AbsoluteFromHebrew(year, ScripturalYearStartMonth, 1);
             return (absoluteDayAtStartOfMonth - absoluteDayAtStartOfYear) * NodaConstants.TicksPerStandardDay;
         }
 
         protected override int CalculateStartOfYearDays(int year)
         {
             // Note that we might get called with a year of 0 here. I think that will still be okay,
-            // given how HebrewEcclesiaticalCalculator works.
-            int absoluteDay = HebrewEcclesiasticalCalculator.AbsoluteFromHebrew(year, EcclesiasticalYearStartMonth, 1);
+            // given how HebrewScripturalCalculator works.
+            int absoluteDay = HebrewScripturalCalculator.AbsoluteFromHebrew(year, ScripturalYearStartMonth, 1);
             return absoluteDay - AbsoluteDayOfUnixEpoch;
         }
 
         internal override int GetMonthOfYear(LocalInstant localInstant)
         {
             int absoluteDay = AbsoluteDayFromLocalInstant(localInstant);
-            YearMonthDay ymd = HebrewEcclesiasticalCalculator.HebrewFromAbsolute(absoluteDay);
-            return ecclesiasticalToCalendar(ymd.Year, ymd.Month);
+            YearMonthDay ymd = HebrewScripturalCalculator.HebrewFromAbsolute(absoluteDay);
+            return scripturalToCalendar(ymd.Year, ymd.Month);
         }
 
         internal override int GetDaysInYear(int year)
         {
-            return HebrewEcclesiasticalCalculator.DaysInYear(year);
+            return HebrewScripturalCalculator.DaysInYear(year);
         }
 
         protected override long GetTicksInYear(int year)
@@ -89,7 +89,7 @@ namespace NodaTime.Calendars
         internal override int GetDayOfMonth(LocalInstant localInstant)
         {
             int absoluteDay = AbsoluteDayFromLocalInstant(localInstant);
-            YearMonthDay ymd = HebrewEcclesiasticalCalculator.HebrewFromAbsolute(absoluteDay);
+            YearMonthDay ymd = HebrewScripturalCalculator.HebrewFromAbsolute(absoluteDay);
             return ymd.Day;
         }
 
@@ -115,41 +115,41 @@ namespace NodaTime.Calendars
         {
             long tickOfDay = TimeOfDayCalculator.GetTickOfDay(localInstant);
             int absoluteSourceDay = AbsoluteDayFromLocalInstant(localInstant);
-            YearMonthDay ymd = HebrewEcclesiasticalCalculator.HebrewFromAbsolute(absoluteSourceDay);
+            YearMonthDay ymd = HebrewScripturalCalculator.HebrewFromAbsolute(absoluteSourceDay);
             int targetDay = ymd.Day;
-            int targetEcclesiasticalMonth = ymd.Month;
-            if (targetEcclesiasticalMonth == 13 && !IsLeapYear(year))
+            int targetScripturalMonth = ymd.Month;
+            if (targetScripturalMonth == 13 && !IsLeapYear(year))
             {
                 // If we were in Adar II and the target year is not a leap year, map to Adar.
-                targetEcclesiasticalMonth = 12;
+                targetScripturalMonth = 12;
             }
-            else if (targetEcclesiasticalMonth == 12 && IsLeapYear(year) && !IsLeapYear(ymd.Year))
+            else if (targetScripturalMonth == 12 && IsLeapYear(year) && !IsLeapYear(ymd.Year))
             {
                 // If we were in Adar (non-leap year), go to Adar II rather than Adar I in a leap year.
-                targetEcclesiasticalMonth = 13;
+                targetScripturalMonth = 13;
             }
             // If we're aiming for the 30th day of Heshvan, Kislev or an Adar, it's possible that the change in year
             // has meant the day becomes invalid. In that case, roll over to the 1st of the subsequent month.
-            if (targetDay == 30 && (targetEcclesiasticalMonth == 8 || targetEcclesiasticalMonth == 9 || targetEcclesiasticalMonth == 12))
+            if (targetDay == 30 && (targetScripturalMonth == 8 || targetScripturalMonth == 9 || targetScripturalMonth == 12))
             {
-                if (HebrewEcclesiasticalCalculator.DaysInMonth(year, targetEcclesiasticalMonth) != 30)
+                if (HebrewScripturalCalculator.DaysInMonth(year, targetScripturalMonth) != 30)
                 {
                     targetDay = 1;
-                    targetEcclesiasticalMonth++;
+                    targetScripturalMonth++;
                     // From Adar, roll to Nisan.
-                    if (targetEcclesiasticalMonth == 13)
+                    if (targetScripturalMonth == 13)
                     {
-                        targetEcclesiasticalMonth = 1;
+                        targetScripturalMonth = 1;
                     }
                 }
             }
-            int absoluteTargetDay = HebrewEcclesiasticalCalculator.AbsoluteFromHebrew(year, targetEcclesiasticalMonth, targetDay);
+            int absoluteTargetDay = HebrewScripturalCalculator.AbsoluteFromHebrew(year, targetScripturalMonth, targetDay);
             return LocalInstantFromAbsoluteDay(absoluteTargetDay, tickOfDay);
         }
 
         internal override int GetDaysInMonth(int year, int month)
         {
-            return HebrewEcclesiasticalCalculator.DaysInMonth(year, calendarToEcclesiastical(year, month));
+            return HebrewScripturalCalculator.DaysInMonth(year, calendarToScriptural(year, month));
         }
 
         internal override LocalInstant AddMonths(LocalInstant localInstant, int months)
@@ -162,9 +162,9 @@ namespace NodaTime.Calendars
                 return localInstant;
             }
             long tickOfDay = TimeOfDayCalculator.GetTickOfDay(localInstant);
-            var startDate = HebrewEcclesiasticalCalculator.HebrewFromAbsolute(AbsoluteDayFromLocalInstant(localInstant));
+            var startDate = HebrewScripturalCalculator.HebrewFromAbsolute(AbsoluteDayFromLocalInstant(localInstant));
             int year = startDate.Year;
-            int month = HebrewMonthConverter.EcclesiasticalToCivil(year, startDate.Month);
+            int month = HebrewMonthConverter.ScripturalToCivil(year, startDate.Month);
             // This arithmetic works the same both backwards and forwards.
             year += (months / MonthsPerLeapCycle) * YearsPerLeapCycle;
             months = months % MonthsPerLeapCycle;
@@ -197,10 +197,10 @@ namespace NodaTime.Calendars
                 month = GetMaxMonth(year) + months;
             }
 
-            // Convert back to ecclesiastical for the last bit
-            month = HebrewMonthConverter.CivilToEcclesiastical(year, month);
-            int day = Math.Min(HebrewEcclesiasticalCalculator.DaysInMonth(year, month), startDate.Day);
-            int absoluteDay = HebrewEcclesiasticalCalculator.AbsoluteFromHebrew(year, month, day);
+            // Convert back to scriptural for the last bit
+            month = HebrewMonthConverter.CivilToScriptural(year, month);
+            int day = Math.Min(HebrewScripturalCalculator.DaysInMonth(year, month), startDate.Day);
+            int absoluteDay = HebrewScripturalCalculator.AbsoluteFromHebrew(year, month, day);
             return LocalInstantFromAbsoluteDay(absoluteDay, tickOfDay);
         }
 
@@ -208,11 +208,11 @@ namespace NodaTime.Calendars
         // is later than subtrahendInstant, the result should be positive.
         internal override int MonthsBetween(LocalInstant minuendInstant, LocalInstant subtrahendInstant)
         {
-            var minuendDate = HebrewEcclesiasticalCalculator.HebrewFromAbsolute(AbsoluteDayFromLocalInstant(minuendInstant));
-            var subtrahendDate = HebrewEcclesiasticalCalculator.HebrewFromAbsolute(AbsoluteDayFromLocalInstant(subtrahendInstant));
+            var minuendDate = HebrewScripturalCalculator.HebrewFromAbsolute(AbsoluteDayFromLocalInstant(minuendInstant));
+            var subtrahendDate = HebrewScripturalCalculator.HebrewFromAbsolute(AbsoluteDayFromLocalInstant(subtrahendInstant));
             // First (quite rough) guess... we could probably be more efficient than this, but it's unlikely to be very far off.
-            double minuendMonths = (minuendDate.Year * MonthsPerLeapCycle) / (double) YearsPerLeapCycle + HebrewMonthConverter.EcclesiasticalToCivil(minuendDate.Year, minuendDate.Month);
-            double subtrahendMonths = (subtrahendDate.Year * MonthsPerLeapCycle) / (double) YearsPerLeapCycle + HebrewMonthConverter.EcclesiasticalToCivil(subtrahendDate.Year, subtrahendDate.Month);
+            double minuendMonths = (minuendDate.Year * MonthsPerLeapCycle) / (double) YearsPerLeapCycle + HebrewMonthConverter.ScripturalToCivil(minuendDate.Year, minuendDate.Month);
+            double subtrahendMonths = (subtrahendDate.Year * MonthsPerLeapCycle) / (double) YearsPerLeapCycle + HebrewMonthConverter.ScripturalToCivil(subtrahendDate.Year, subtrahendDate.Month);
             int diff = (int) (minuendMonths - subtrahendMonths);
 
             if (subtrahendInstant <= minuendInstant)

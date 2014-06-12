@@ -26,10 +26,10 @@ namespace NodaTime.Test.Calendars
         [TestCase(10, 4)] // Teveth
         [TestCase(11, 5)] // Shevat
         [TestCase(12, 6)] // Adar
-        public void NonLeapYear(int ecclesiastical, int civil)
+        public void NonLeapYear(int scriptural, int civil)
         {
-            Assert.AreEqual(ecclesiastical, HebrewMonthConverter.CivilToEcclesiastical(SampleNonLeapYear, civil));
-            Assert.AreEqual(civil, HebrewMonthConverter.EcclesiasticalToCivil(SampleNonLeapYear, ecclesiastical));
+            Assert.AreEqual(scriptural, HebrewMonthConverter.CivilToScriptural(SampleNonLeapYear, civil));
+            Assert.AreEqual(civil, HebrewMonthConverter.ScripturalToCivil(SampleNonLeapYear, scriptural));
         }
 
         [Test]
@@ -46,10 +46,10 @@ namespace NodaTime.Test.Calendars
         [TestCase(11, 5)] // Shevat
         [TestCase(12, 6)] // Adar I
         [TestCase(13, 7)] // Adar II
-        public void LeapYear(int ecclesiastical, int civil)
+        public void LeapYear(int scriptural, int civil)
         {
-            Assert.AreEqual(ecclesiastical, HebrewMonthConverter.CivilToEcclesiastical(SampleLeapYear, civil));
-            Assert.AreEqual(civil, HebrewMonthConverter.EcclesiasticalToCivil(SampleLeapYear, ecclesiastical));
+            Assert.AreEqual(scriptural, HebrewMonthConverter.CivilToScriptural(SampleLeapYear, civil));
+            Assert.AreEqual(civil, HebrewMonthConverter.ScripturalToCivil(SampleLeapYear, scriptural));
         }
     }
 }
