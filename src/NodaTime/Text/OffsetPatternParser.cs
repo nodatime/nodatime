@@ -229,6 +229,7 @@ namespace NodaTime.Text
 
             public ParseResult<Offset> ParsePartial(ValueCursor cursor)
             {
+                int startIndex = cursor.Index;
                 // TODO: Do better than this. It's horrible, and may well be invalid
                 // for some cultures. Or just remove the NumberPattern from 2.0...
                 int longestPossible = Math.Min(maxLength, cursor.Length - cursor.Index);
@@ -242,13 +243,15 @@ namespace NodaTime.Text
                         if (milliseconds < -NodaConstants.MillisecondsPerStandardDay ||
                             NodaConstants.MillisecondsPerStandardDay < milliseconds)
                         {
-                            return ParseResult<Offset>.ValueOutOfRange(milliseconds);
+                            cursor.Move(startIndex);
+                            return ParseResult<Offset>.ValueOutOfRange(cursor, milliseconds);
                         }
                         cursor.Move(cursor.Index + length);
                         return ParseResult<Offset>.ForValue(Offset.FromMilliseconds(milliseconds));
                     }
                 }
-                return ParseResult<Offset>.CannotParseValue(cursor.Value, "n");
+                cursor.Move(startIndex);
+                return ParseResult<Offset>.CannotParseValue(cursor, "n");
             }
 
             public void FormatPartial(Offset value, StringBuilder builder)
@@ -265,11 +268,11 @@ namespace NodaTime.Text
                     if (milliseconds < -NodaConstants.MillisecondsPerStandardDay ||
                         NodaConstants.MillisecondsPerStandardDay < milliseconds)
                     {
-                        return ParseResult<Offset>.ValueOutOfRange(milliseconds);
+                        return ParseResult<Offset>.ValueOutOfRange(new ValueCursor(text), milliseconds);
                     }
                     return ParseResult<Offset>.ForValue(Offset.FromMilliseconds(milliseconds));
                 }
-                return ParseResult<Offset>.CannotParseValue(text, "n");
+                return ParseResult<Offset>.CannotParseValue(new ValueCursor(text), "n");
             }
 
             public string Format(Offset value)
@@ -329,7 +332,7 @@ namespace NodaTime.Text
             /// <summary>
             /// Calculates the value from the parsed pieces.
             /// </summary>
-            internal override ParseResult<Offset> CalculateValue(PatternFields usedFields)
+            internal override ParseResult<Offset> CalculateValue(PatternFields usedFields, string text)
             {
                 int milliseconds = Hours * NodaConstants.MillisecondsPerHour +
                     Minutes * NodaConstants.MillisecondsPerMinute +

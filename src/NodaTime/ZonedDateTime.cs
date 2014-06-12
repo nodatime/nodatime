@@ -812,7 +812,7 @@ namespace NodaTime
             if (newZone.GetUtcOffset(offsetDateTime.ToInstant()) != offsetDateTime.Offset)
             {
                 // Might as well use the exception we've already got...
-                ParseResult<ZonedDateTime>.InvalidOffset.GetValueOrThrow();
+                ParseResult<ZonedDateTime>.InvalidOffset(text).GetValueOrThrow();
             }
             // Use the constructor which doesn't validate the offset, as we've already done that.
             this = new ZonedDateTime(offsetDateTime.LocalDateTime, offsetDateTime.Offset, newZone);

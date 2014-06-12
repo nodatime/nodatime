@@ -143,8 +143,10 @@ namespace NodaTime.Test.Text
             }
             catch (UnparsableValueException e)
             {
-                // Expected... now let's check the message
-                Assert.AreEqual(expectedMessage, e.Message);
+                // Expected... now let's check the message *starts* with the right part.
+                // We're not currently validating the bit that reproduces the bad value.
+                Assert.IsTrue(e.Message.StartsWith(expectedMessage),
+                    "Expected message to start with {0}; was actually {1}", expectedMessage, e.Message);
             }
         }
 

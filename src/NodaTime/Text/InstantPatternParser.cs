@@ -84,7 +84,7 @@ namespace NodaTime.Text
                 {
                     return ParseResult<Instant>.ForValue(new Instant(number));
                 }
-                return ParseResult<Instant>.CannotParseValue(value, patternText);
+                return ParseResult<Instant>.CannotParseValue(new ValueCursor(value), patternText);
             }
 
             public override string Format(Instant value)

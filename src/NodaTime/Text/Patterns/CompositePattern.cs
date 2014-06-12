@@ -33,7 +33,7 @@ namespace NodaTime.Text.Patterns
                     return result;
                 }
             }
-            return ParseResult<T>.NoMatchingFormat;
+            return ParseResult<T>.NoMatchingFormat(new ValueCursor(text));
         }
 
         public string Format(T value)
@@ -53,7 +53,8 @@ namespace NodaTime.Text.Patterns
                     return result;
                 }
             }
-            return ParseResult<T>.NoMatchingFormat;
+            cursor.Move(index);
+            return ParseResult<T>.NoMatchingFormat(cursor);
         }
 
         public void FormatPartial(T value, StringBuilder builder)

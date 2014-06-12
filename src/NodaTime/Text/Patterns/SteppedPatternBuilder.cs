@@ -140,15 +140,18 @@ namespace NodaTime.Text.Patterns
         {
             AddParseAction((cursor, bucket) =>
             {
+                int startingIndex = cursor.Index;
                 int value;
                 bool negative = cursor.Match('-');
                 if (negative && minimumValue >= 0)
                 {
-                    return ParseResult<TResult>.UnexpectedNegative;
+                    cursor.Move(startingIndex);
+                    return ParseResult<TResult>.UnexpectedNegative(cursor);
                 }
                 if (!cursor.ParseDigits(minimumDigits, maximumDigits, out value))
                 {
-                    return ParseResult<TResult>.MismatchedNumber(new string(patternChar, minimumDigits));
+                    cursor.Move(startingIndex);
+                    return ParseResult<TResult>.MismatchedNumber(cursor, new string(patternChar, minimumDigits));
                 }
                 if (negative)
                 {
@@ -156,7 +159,8 @@ namespace NodaTime.Text.Patterns
                 }
                 if (value < minimumValue || value > maximumValue)
                 {
-                    return ParseResult<TResult>.FieldValueOutOfRange(value, patternChar);
+                    cursor.Move(startingIndex);
+                    return ParseResult<TResult>.FieldValueOutOfRange(cursor, value, patternChar);
                 }
 
                 valueSetter(bucket, value);
@@ -168,20 +172,20 @@ namespace NodaTime.Text.Patterns
         /// Adds text which must be matched exactly when parsing, and appended directly when formatting.
         /// This overload uses the same failure result for all text values.
         /// </summary>
-        internal void AddLiteral(string expectedText, ParseResult<TResult> failure)
+        internal void AddLiteral(string expectedText, Func<ValueCursor, ParseResult<TResult>> failure)
         {
             // Common case - single character literal, often a date or time separator.
             if (expectedText.Length == 1)
             {
                 char expectedChar = expectedText[0];
-                AddParseAction((str, bucket) => str.Match(expectedChar) ? null : failure);
+                AddParseAction((str, bucket) => str.Match(expectedChar) ? null : failure(str));
                 AddFormatAction((value, builder) => builder.Append(expectedChar));
                 return;
             }
             // TODO: These are ludicrously slow... see
             // http://msmvps.com/blogs/jon_skeet/archive/2011/08/23/optimization-and-generics-part-2-lambda-expressions-and-reference-types.aspx
             // for a description of the problem. I need to find a solution though...
-            AddParseAction((str, bucket) => str.Match(expectedText) ? null : failure);
+            AddParseAction((str, bucket) => str.Match(expectedText) ? null : failure(str));
             AddFormatAction((value, builder) => builder.Append(expectedText));
         }
 
@@ -243,9 +247,9 @@ namespace NodaTime.Text.Patterns
         /// <summary>
         /// Adds a character which must be matched exactly when parsing, and appended directly when formatting.
         /// </summary>
-        internal void AddLiteral(char expectedChar, Func<char, ParseResult<TResult>> failureSelector)
+        internal void AddLiteral(char expectedChar, Func<ValueCursor, char, ParseResult<TResult>> failureSelector)
         {
-            AddParseAction((str, bucket) => str.Match(expectedChar) ? null : failureSelector(expectedChar));
+            AddParseAction((str, bucket) => str.Match(expectedChar) ? null : failureSelector(str, expectedChar));
             AddFormatAction((value, builder) => builder.Append(expectedChar));
         }
 
@@ -267,7 +271,7 @@ namespace NodaTime.Text.Patterns
                     str.Move(str.Index + longestMatch);
                     return null;
                 }
-                return ParseResult<TResult>.MismatchedText(field);
+                return ParseResult<TResult>.MismatchedText(str, field);
             });
         }
 
@@ -291,7 +295,7 @@ namespace NodaTime.Text.Patterns
                     str.Move(str.Index + longestMatch);
                     return null;
                 }
-                return ParseResult<TResult>.MismatchedText(field);
+                return ParseResult<TResult>.MismatchedText(str, field);
             });
         }
 
@@ -337,7 +341,7 @@ namespace NodaTime.Text.Patterns
                     signSetter(bucket, true);
                     return null;
                 }
-                return ParseResult<TResult>.MissingSign;
+                return ParseResult<TResult>.MissingSign(str);
             });
             AddFormatAction((value, sb) => sb.Append(nonNegativePredicate(value) ? positiveSign : negativeSign));
         }
@@ -360,7 +364,7 @@ namespace NodaTime.Text.Patterns
                 }
                 if (str.Match(positiveSign))
                 {
-                    return ParseResult<TResult>.PositiveSignInvalid;
+                    return ParseResult<TResult>.PositiveSignInvalid(str);
                 }
                 signSetter(bucket, true);
                 return null;
@@ -442,7 +446,7 @@ namespace NodaTime.Text.Patterns
                 // Check that we've used up all the text
                 if (valueCursor.Current != TextCursor.Nul)
                 {
-                    return ParseResult<TResult>.ExtraValueCharacters(valueCursor.Remainder);
+                    return ParseResult<TResult>.ExtraValueCharacters(valueCursor, valueCursor.Remainder);
                 }
                 return result;
             }
@@ -467,7 +471,7 @@ namespace NodaTime.Text.Patterns
                         return failure;
                     }
                 }
-                return bucket.CalculateValue(usedFields);
+                return bucket.CalculateValue(usedFields, cursor.Value);
             }
 
             public void FormatPartial(TResult value, StringBuilder builder)

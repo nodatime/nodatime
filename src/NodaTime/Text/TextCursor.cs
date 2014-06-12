@@ -17,6 +17,9 @@ namespace NodaTime.Text
     [DebuggerStepThrough]
     internal abstract class TextCursor
     {
+        private readonly string value;
+        private readonly int length;
+
         /// <summary>
         /// A nul character. This character is not allowed in any parsable string and is used to
         /// indicate that the current character is not set.
@@ -29,8 +32,8 @@ namespace NodaTime.Text
         protected TextCursor(string value)
         {
             // Validated by caller.
-            Value = value;
-            Length = value.Length;
+            this.value = value;
+            this.length = value.Length;
             Move(-1);
         }
 
@@ -55,12 +58,12 @@ namespace NodaTime.Text
         /// <summary>
         /// Gets the length of the string being parsed.
         /// </summary>
-        internal int Length { get; private set; }
+        internal int Length { get { return length; } }
 
         /// <summary>
         /// Gets the string being parsed.
         /// </summary>
-        internal string Value { get; private set; }
+        internal string Value { get { return value; } }
 
         /// <summary>
         /// Gets the remainder the string that has not been parsed yet.
@@ -75,29 +78,9 @@ namespace NodaTime.Text
         /// </returns>
         public override string ToString()
         {
-            var builder = new StringBuilder();
-            if (Index < 0)
-            {
-                builder.Append("<<>>");
-                builder.Append(Value);
-            }
-            else if (Index >= Length)
-            {
-                builder.Append(Value);
-                builder.Append("<<>>");
-            }
-            else
-            {
-                builder.Append(Value.Substring(0, Index));
-                builder.Append("<<");
-                builder.Append(Current);
-                builder.Append(">>");
-                if (Index < Length - 1)
-                {
-                    builder.Append(Value.Substring(Index + 1, Length - Index - 1));
-                }
-            }
-            return builder.ToString();
+            return Index <= 0 ? "^" + Value
+                : Index >= Length ? Value + "^"
+                : Value.Insert(Index, "^");
         }
 
         /// <summary>

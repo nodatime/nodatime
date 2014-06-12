@@ -48,7 +48,7 @@ namespace NodaTime.Text.Patterns
                         // Last argument is false because we don't need *all* the digits to be present
                         if (!valueCursor.ParseFraction(count, maxCount, out fractionalSeconds, false))
                         {
-                            return ParseResult<TResult>.MismatchedNumber(new string('F', count));
+                            return ParseResult<TResult>.MismatchedNumber(valueCursor, new string('F', count));
                         }
                         // No need to validate the value - we've got one to three digits, so the range 0-999 is guaranteed.
                         setter(bucket, fractionalSeconds);
@@ -100,7 +100,7 @@ namespace NodaTime.Text.Patterns
                         // Last argument is false because we don't need *all* the digits to be present
                         if (!valueCursor.ParseFraction(count, maxCount, out fractionalSeconds, false))
                         {
-                            return ParseResult<TResult>.MismatchedNumber(new string('F', count));
+                            return ParseResult<TResult>.MismatchedNumber(valueCursor, new string('F', count));
                         }
                         // No need to validate the value - we've got an appropriate number of digits, so the range is guaranteed.
                         setter(bucket, fractionalSeconds);
@@ -113,7 +113,7 @@ namespace NodaTime.Text.Patterns
                 {
                     builder.AddParseAction((str, bucket) => str.Match('.') || str.Match(',') 
                                                             ? null 
-                                                            : ParseResult<TResult>.MismatchedCharacter(';'));
+                                                            : ParseResult<TResult>.MismatchedCharacter(str, ';'));
                     builder.AddFormatAction((value, sb) => sb.Append('.'));
                 }
             };
@@ -139,7 +139,7 @@ namespace NodaTime.Text.Patterns
                     // "up to count" digits.
                     if (!str.ParseFraction(count, maxCount, out fractionalSeconds, patternCharacter == 'f'))
                     {
-                        return ParseResult<TResult>.MismatchedNumber(new string(patternCharacter, count));
+                        return ParseResult<TResult>.MismatchedNumber(str, new string(patternCharacter, count));
                     }
                     // No need to validate the value - we've got an appropriate number of digits, so the range is guaranteed.
                     setter(bucket, fractionalSeconds);
@@ -208,7 +208,7 @@ namespace NodaTime.Text.Patterns
                             amPmSetter(bucket, 1);
                             return null;
                         }
-                        return ParseResult<TResult>.MissingAmPmDesignator;
+                        return ParseResult<TResult>.MissingAmPmDesignator(str);
                     });
                     builder.AddFormatAction((value, sb) => sb.Append(hourOfDayGetter(value) > 11 ? pmDesignator[0] : amDesignator[0]));
                     return;
@@ -231,7 +231,7 @@ namespace NodaTime.Text.Patterns
                         amPmSetter(bucket, 1 - longerValue);
                         return null;
                     }
-                    return ParseResult<TResult>.MissingAmPmDesignator;
+                    return ParseResult<TResult>.MissingAmPmDesignator(str);
                 });
                 builder.AddFormatAction((value, sb) => sb.Append(hourOfDayGetter(value) > 11 ? pmDesignator : amDesignator));
             };
