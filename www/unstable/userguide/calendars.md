@@ -145,9 +145,9 @@ to note that parsing and formatting of month names is *expected* to be incorrect
 
 Like the Islamic calendar, a Hebrew day properly starts at sunset, but this is not modelled within Noda Time.
 
-The `GetHebrewCalendar()` method accepts one parameter, specifying which month numbering system to use. The ecclesiastical
+The `GetHebrewCalendar()` method accepts one parameter, specifying which month numbering system to use. The scriptural
 month numbering system uses Nisan as month 1, even though the new year (when the year number changes) occurs at the start of
-Tishri. In the ecclesiastical system, Adar is month 12 in a non-leap year, and Adar I and Adar II are months 12 and 13 in a leap year.
+Tishri. In the scriptural system, Adar is month 12 in a non-leap year, and Adar I and Adar II are months 12 and 13 in a leap year.
 
 The civil month numbering system uses Tishri as month 1 (so the year number increases when the month number becomes 1 again,
 as in most calendars) but this means that Adar is month 6 in a non-leap year, and Adar I and Adar II are months 6 and 7 in a leap year.
