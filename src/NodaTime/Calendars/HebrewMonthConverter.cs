@@ -5,13 +5,13 @@
 namespace NodaTime.Calendars
 {
     /// <summary>
-    /// Conversions between civil and ecclesiastical month numbers in the Hebrew calendar system.
+    /// Conversions between civil and scriptural month numbers in the Hebrew calendar system.
     /// </summary>
     internal static class HebrewMonthConverter
     {
         /// <summary>
         /// Given a civil month number and a year in which it occurs, this method returns
-        /// the equivalent ecclesiastical month number.
+        /// the equivalent scriptural month number.
         /// </summary>
         /// <remarks>
         /// No validation is performed in this method: an input month number of 13 in a non-leap-year
@@ -19,14 +19,14 @@ namespace NodaTime.Calendars
         /// </remarks>
         /// <param name="year">Year during which the month occurs.</param>
         /// <param name="month">Civil month number.</param>
-        /// <returns>The ecclesiastical month number.</returns>
-        internal static int CivilToEcclesiastical(int year, int month)
+        /// <returns>The scriptural month number.</returns>
+        internal static int CivilToScriptural(int year, int month)
         {
             if (month < 7)
             {
                 return month + 6;
             }
-            bool leapYear = HebrewEcclesiasticalCalculator.IsLeapYear(year);
+            bool leapYear = HebrewScripturalCalculator.IsLeapYear(year);
             if (month == 7) // Adar II (13) or Nisan (1) depending on whether it's a leap year.
             {
                 return leapYear ? 13 : 1;
@@ -35,8 +35,8 @@ namespace NodaTime.Calendars
         }
 
         /// <summary>
-        /// Given an ecclesiastical month number and a year in which it occurs, this method returns
-        /// the equivalent ecclesiastical month number.
+        /// Given an scriptural month number and a year in which it occurs, this method returns
+        /// the equivalent scriptural month number.
         /// </summary>
         /// <remarks>
         /// No validation is performed in this method: an input month number of 13 in a non-leap-year
@@ -44,14 +44,14 @@ namespace NodaTime.Calendars
         /// </remarks>
         /// <param name="year">Year during which the month occurs.</param>
         /// <param name="month">Civil month number.</param>
-        /// <returns>The ecclesiastical month number.</returns>
-        internal static int EcclesiasticalToCivil(int year, int month)
+        /// <returns>The scriptural month number.</returns>
+        internal static int ScripturalToCivil(int year, int month)
         {
             if (month >= 7)
             {
                 return month - 6;
             }
-            return HebrewEcclesiasticalCalculator.IsLeapYear(year) ? month + 7 : month + 6;
+            return HebrewScripturalCalculator.IsLeapYear(year) ? month + 7 : month + 6;
         }
     }
 }

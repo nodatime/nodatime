@@ -13,7 +13,7 @@ using NUnit.Framework;
 namespace NodaTime.Test.Calendars
 {
     [TestFixture]
-    public class HebrewEcclesiasticalCalculatorTest
+    public class HebrewScripturalCalculatorTest
     {
         [Test]
         public void DaysInYear()
@@ -24,7 +24,7 @@ namespace NodaTime.Test.Calendars
 
             for (int year = minYear; year <= maxYear; year++)
             {
-                Assert.AreEqual(bcl.GetDaysInYear(year), HebrewEcclesiasticalCalculator.DaysInYear(year));
+                Assert.AreEqual(bcl.GetDaysInYear(year), HebrewScripturalCalculator.DaysInYear(year));
             }
         }
 
@@ -41,9 +41,9 @@ namespace NodaTime.Test.Calendars
                 int months = bcl.GetMonthsInYear(year);
                 for (int month = 1; month <= months; month++)
                 {
-                    int ecclesiasticalMonth = HebrewMonthConverter.CivilToEcclesiastical(year, month);
+                    int scripturalMonth = HebrewMonthConverter.CivilToScriptural(year, month);
                     int bclDays = bcl.GetDaysInMonth(year, month);
-                    int nodaDays = HebrewEcclesiasticalCalculator.DaysInMonth(year, ecclesiasticalMonth);
+                    int nodaDays = HebrewScripturalCalculator.DaysInMonth(year, scripturalMonth);
                     Assert.AreEqual(bclDays, nodaDays);
                 }
             }

@@ -10,7 +10,7 @@ namespace NodaTime.Calendars
     /// <remarks>
     /// When requesting a Hebrew calendar with <see cref="CalendarSystem.GetHebrewCalendar"/>, a month numbering
     /// system needs to be specified. There are two main ways of numbering the Hebrew months: the civil
-    /// system where month 1 is the start of the new year (Tishri) and ecclesiastical system where month 1 is
+    /// system where month 1 is the start of the new year (Tishri) and scriptural system where month 1 is
     /// Nisan, according to biblical custom.
     /// </remarks>
     public enum HebrewMonthNumbering
@@ -35,6 +35,6 @@ namespace NodaTime.Calendars
         /// <para>The primary disadvantage of this numbering system is that months 1-6 come after months 7-12 (or 13),
         /// which is counter-intuitive.</para>
         /// </summary>
-        Ecclesiastical = 2,
+        Scriptural = 2,
     }
 }

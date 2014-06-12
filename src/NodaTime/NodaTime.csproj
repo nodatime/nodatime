@@ -151,7 +151,7 @@
     <Compile Include="Calendars\FixedMonthYearMonthDayCalculator.cs" />
     <Compile Include="Calendars\GJYearMonthDayCalculator.cs" />
     <Compile Include="Calendars\GregorianYearMonthDayCalculator.cs" />
-    <Compile Include="Calendars\HebrewEcclesiasticalCalculator.cs" />
+    <Compile Include="Calendars\HebrewScripturalCalculator.cs" />
     <Compile Include="Calendars\HebrewMonthConverter.cs" />
     <Compile Include="Calendars\HebrewMonthNumbering.cs" />
     <Compile Include="Calendars\HebrewYearMonthDayCalculator.cs" />

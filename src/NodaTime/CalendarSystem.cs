@@ -68,7 +68,7 @@ namespace NodaTime
             HebrewCalendarSystems = new[]
             {
                 new CalendarSystem(HebrewName, HebrewName, new HebrewYearMonthDayCalculator(HebrewMonthNumbering.Civil), 4),
-                new CalendarSystem(HebrewName, HebrewName, new HebrewYearMonthDayCalculator(HebrewMonthNumbering.Ecclesiastical), 4)
+                new CalendarSystem(HebrewName, HebrewName, new HebrewYearMonthDayCalculator(HebrewMonthNumbering.Scriptural), 4)
             };
 
             // Variations for the calendar systems which have different objects for different "minimum first day of week"
@@ -126,7 +126,7 @@ namespace NodaTime
             { "ISO", () => Iso },
             { "Persian", GetPersianCalendar },
             { "Hebrew-Civil", () => GetHebrewCalendar(HebrewMonthNumbering.Civil) },
-            { "Hebrew-Ecclesiastical", () => GetHebrewCalendar(HebrewMonthNumbering.Ecclesiastical) },
+            { "Hebrew-Scriptural", () => GetHebrewCalendar(HebrewMonthNumbering.Scriptural) },
             { "Gregorian 1", () => GetGregorianCalendar(1) },
             { "Gregorian 2", () => GetGregorianCalendar(2) },
             { "Gregorian 3", () => GetGregorianCalendar(3) },
