@@ -232,10 +232,10 @@ to provide a more comprehensive treatment.
 
 **Hebrew month names**
 
-The Hebrew calendar has two month numbering systems (ecclesiastical and civil), each with their
+The Hebrew calendar has two month numbering systems (scriptural and civil), each with their
 own benefits and drawbacks. Both have issues for text handling: as of Noda Time 1.3.0, the
 civil month numbering is assumed as that corresponds with the BCL month numbering... but due to
 the inclusion of a leap month, the month name/number correspondence changes in a leap year.
 Until this is fixed, it is strongly recommended that you only use month *numbers* in any textual
 representations of dates in the Hebrew calendar. Additionally, you may wish to consider how to
-best clarify whether that month number is in the ecclesiastical or civil numbering system.
+best clarify whether that month number is in the scriptural or civil numbering system.
