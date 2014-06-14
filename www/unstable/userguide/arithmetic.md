@@ -185,7 +185,7 @@ you know the rules, it's very easy to work out what Noda Time will
 do. The downside is that if you *don't* know the rules, it looks
 like it's broken. It's possible that in a future version we'll
 implement a "smarter" API (as a separate option, probably, rather
-than replacing this one) - please drop a line to the mailing list if
+than replacing this one) - please drop a line to the [mailing list][] if
 you have requirements in this area.
 
 Arithmetic with the Hebrew calendar
@@ -193,8 +193,8 @@ Arithmetic with the Hebrew calendar
 
 One exception to the rules given above is the Hebrew calendar system. For a start,
 the Hebrew calendar has a *leap month* - in a leap year, the single month of
-Adar becomes Adar I and Adar II (
-[with Adar I being considered the leap month](http://judaism.stackexchange.com/questions/37308)).
+Adar becomes Adar I and Adar II ([with Adar I being considered the leap
+month](http://judaism.stackexchange.com/questions/37308)).
 When an arithmetic operation requires that a date in Adar is mapped to a leap year, we use
 the same day-of-month but within Adar II. When an arithmetic operation requires that a date in
 Adar I or Adar II is mapped to a non-leap year, we use the same day-of-month in Adar. (This can
@@ -218,7 +218,7 @@ will result in the 1st of Tevet, if Kislev only has 29 days in the "target" year
 These scriptural rules are not necessarily what everyone would expect even within the community
 using the Hebrew calendar. It is possible that they will be adjusted in future releases. If you feel
 strongly about the correct behavior (whether that's what's already implemented or not), please
-contact the [mailing list][mailing-list].
+contact the [mailing list][].
 
 Finding a period between two values
 ===================================
@@ -266,7 +266,7 @@ then another 3 days takes us to March 31st. But `period2` is "-1 month and -1 da
 a month from `date2` we get to February 29th due to truncation, and then we only have to subtract
 one more day to get to February 28th.
 
-Again, this is easy to reason about and easy to implement. Contact the [mailing list][mailing-list] with
+Again, this is easy to reason about and easy to implement. Contact the [mailing list][] with
 extra requirements if you have them.
 
 Why doesn't this work with `ZonedDateTime`?
@@ -296,7 +296,7 @@ better suggestions, please raise them!
 Currently Noda Time doesn't support arithmetic with [`OffsetDateTime`](noda-type://NodaTime.OffsetDateTime)
 either, mostly because it's not clear what the use cases would be. You can always convert to either local or
 zoned date/time values, perform arithmetic in that domain and convert back if necessary - but if you find
-yourself in this situation, we'd love to hear about it on the [mailing list][mailing-list].
+yourself in this situation, we'd love to hear about it on the [mailing list][].
 
 Days of the week
 ================
@@ -318,4 +318,4 @@ See also:
 
 - [The joys of date/time arithmetic](http://noda-time.blogspot.com/2010/11/joys-of-datetime-arithmetic.html)
 
-[mailing-list]: http://groups.google.com/group/noda-time
+[mailing list]: http://groups.google.com/group/noda-time
