@@ -13,6 +13,7 @@ Standard Patterns
 The following standard pattern is supported:
 
 - `o`: Round-trip pattern, which always uses the invariant culture and a pattern string of `-D:hh:mm:ss.FFFFFFF`.
+  This is the default format pattern.
 
 Custom Patterns
 ---------------
