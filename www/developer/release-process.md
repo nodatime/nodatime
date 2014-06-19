@@ -186,6 +186,9 @@ Post to the mailing list, blog, etc.
 
 ## Post-release updates on the default branch
 
+If this release was a stable release, then the generated XML documentation
+should be copied to `data/versionxml/` on the default branch.
+
 If this release required the creation of a new branch, then the following
 updates need to be made to the default branch for the website:
 
