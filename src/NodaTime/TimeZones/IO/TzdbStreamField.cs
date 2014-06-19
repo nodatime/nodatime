@@ -2,6 +2,7 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
+using System;
 using System.Collections.Generic;
 using System.IO;
 using NodaTime.Utility;
@@ -32,7 +33,7 @@ namespace NodaTime.TimeZones.IO
             return new MemoryStream(data, false);
         }
 
-        internal T ExtractSingleValue<T>(NodaFunc<DateTimeZoneReader, T> readerFunction, IList<string> stringPool)
+        internal T ExtractSingleValue<T>(Func<DateTimeZoneReader, T> readerFunction, IList<string> stringPool)
         {
             using (var stream = CreateStream())
             {

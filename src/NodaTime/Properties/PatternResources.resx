@@ -123,6 +123,9 @@
   <data name="Eras_AnnoMartyrum" xml:space="preserve">
     <value>A.M.|AM</value>
   </data>
+  <data name="Eras_AnnoMundi" xml:space="preserve">
+    <value>A.M.|AM</value>
+  </data>
   <data name="Eras_AnnoPersico" xml:space="preserve">
     <value>A.P.|AP</value>
   </data>

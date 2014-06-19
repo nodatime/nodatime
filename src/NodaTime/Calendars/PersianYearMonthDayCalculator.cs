@@ -10,7 +10,7 @@ namespace NodaTime.Calendars
     /// simple 33 year leap cycle implemented by .NET rather than the more complicated
     /// form of variable-length cycles and grand cycles devised by Ahmad Birashk.
     /// </summary>
-    internal sealed class PersianYearMonthDayCalendar : RegularYearMonthDayCalculator
+    internal sealed class PersianYearMonthDayCalculator : RegularYearMonthDayCalculator
     {
         // This is a long because we're notionally handling 33 bits. The top bit is
         // false anyway, but IsLeapYear shifts a long for simplicity, so let's be consistent with that.
@@ -28,7 +28,7 @@ namespace NodaTime.Calendars
 
         private static readonly long[] TotalTicksByMonth;
 
-        static PersianYearMonthDayCalendar()
+        static PersianYearMonthDayCalculator()
         {
             long ticks = 0;
             TotalTicksByMonth = new long[13];
@@ -43,9 +43,8 @@ namespace NodaTime.Calendars
             }
         }
 
-        internal PersianYearMonthDayCalendar()
-            : base(1, 30574, 12, DaysPerNonLeapYear * NodaConstants.TicksPerStandardDay,
-                   AverageTicksPerYear, TicksAtStartOfYear1Constant, Era.AnnoPersico)
+        internal PersianYearMonthDayCalculator()
+            : base(1, 30574, 12, AverageTicksPerYear, TicksAtStartOfYear1Constant, Era.AnnoPersico)
         {
         }
 
@@ -141,6 +140,13 @@ namespace NodaTime.Calendars
         internal override int GetDaysInYear(int year)
         {
             return IsLeapYear(year) ? DaysPerLeapYear : DaysPerNonLeapYear;
+        }
+
+        protected override long GetTicksInYear(int year)
+        {
+            return IsLeapYear(year)
+                ? DaysPerLeapYear * NodaConstants.TicksPerStandardDay
+                : DaysPerNonLeapYear * NodaConstants.TicksPerStandardDay;
         }
     }
 }

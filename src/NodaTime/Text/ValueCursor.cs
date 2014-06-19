@@ -123,7 +123,7 @@ namespace NodaTime.Text
                     if (!MoveNext())
                     {
                         Move(startIndex);
-                        return ParseResult<T>.EndOfString;
+                        return ParseResult<T>.EndOfString(this);
                     }
                 }
                 int count = 0;
@@ -141,7 +141,7 @@ namespace NodaTime.Text
                 if (count == 0)
                 {
                     Move(startIndex);
-                    return ParseResult<T>.MissingNumber;
+                    return ParseResult<T>.MissingNumber(this);
                 }
 
                 if (result >= 922337203685477580 && (digit = GetDigit()) != -1)
@@ -191,7 +191,7 @@ namespace NodaTime.Text
             }
             string badValue = Value.Substring(startIndex, Index - startIndex);
             Move(startIndex);
-            return ParseResult<T>.ValueOutOfRange(badValue);
+            return ParseResult<T>.ValueOutOfRange(this, badValue);
         }
 
         /// <summary>
@@ -209,23 +209,29 @@ namespace NodaTime.Text
             unchecked
             {
                 result = 0;
-                int startIndex = Index;
-                int count = 0;
-                int digit;
-                while (count < maximumDigits && (digit = GetDigit()) != -1)
+                int localIndex = Index;
+                int maxIndex = localIndex + maximumDigits;
+                if (maxIndex >= Length)
                 {
-                    result = result * 10 + digit;
-                    count++;
-                    if (!MoveNext())
+                    maxIndex = Length;
+                }
+                for (;  localIndex < maxIndex; localIndex++)
+                {
+                    // Optimized digit handling: rather than checking for the range, returning -1
+                    // and then checking whether the result is -1, we can do both checks at once.
+                    int digit = Value[localIndex] - '0';
+                    if (digit < 0 || digit > 9)
                     {
                         break;
                     }
+                    result = result * 10 + digit;
                 }
+                int count = localIndex - Index;
                 if (count < minimumDigits)
                 {
-                    Move(startIndex);
                     return false;
                 }
+                Move(localIndex);
                 return true;
             }
         }
@@ -250,20 +256,44 @@ namespace NodaTime.Text
                 {
                     scale = maximumDigits;
                 }
-                result = GetDigit();
-                if (result == -1)
+
+                result = 0;
+                int localIndex = Index;
+                int maxIndex = localIndex + maximumDigits;
+                if (maxIndex > Length)
+                {
+                    // If we don't have all the digits we're meant to have, we can't possibly succeed.
+                    if (allRequired)
+                    {
+                        return false;
+                    }
+                    maxIndex = Length;
+                }
+                for (; localIndex < maxIndex; localIndex++)
+                {
+                    // Optimized digit handling: rather than checking for the range, returning -1
+                    // and then checking whether the result is -1, we can do both checks at once.
+                    int digit = Value[localIndex] - '0';
+                    if (digit < 0 || digit > 9)
+                    {
+                        break;
+                    }
+                    result = result * 10 + digit;
+                }
+                int count = localIndex - Index;
+                // Couldn't parse any digits?
+                if (count == 0)
                 {
                     return false;
                 }
-                int count = 1;
-                int digit;
-                while (MoveNext() && count < maximumDigits && (digit = GetDigit()) != -1)
+                result = (int) (result * Math.Pow(10.0, scale - count));
+                bool ret = !allRequired || localIndex == maxIndex;
+                // Only move the cursor on success.
+                if (ret)
                 {
-                    result = (result * 10) + digit;
-                    count++;
+                    Move(localIndex);
                 }
-                result = (int)(result * Math.Pow(10.0, scale - count));
-                return !allRequired || (count == maximumDigits);
+                return ret;
             }
         }
 
@@ -278,7 +308,7 @@ namespace NodaTime.Text
             unchecked
             {
                 int c = Current;
-                return c < '0' || c > '9' ? -1 : c - '0';                
+                return c < '0' || c > '9' ? -1 : c - '0';
             }
         }
     }

@@ -1,0 +1,41 @@
+﻿@model NodaTime.Web.Models.BenchmarkRunAndMercurialLogs
+
+@{ViewBag.Title = "Benchmark " + @Model.Run.Machine + "/" + @Model.Run.Label;}
+
+<h2>@ViewBag.Title</h2>
+
+<table class="table">
+    <tr>
+        <th>Fully qualified method</th>
+        <th>Duration (ns)</th>
+    </tr>
+
+    @foreach (var item in Model.Run.Results)
+    {
+        <tr>
+            <td>@Html.ActionLink(item.FullyQualifiedMethod, "MethodHistory", new { machine = Model.Run.Machine, method = item.FullyQualifiedMethod })</td>
+            <td>@item.NanosecondsPerCall</td>
+        </tr>
+    }
+</table>
+
+@if (Model.Changes != null && Model.Changes.Any())
+{
+    <h3>Source changes</h3>
+    <table class="table">
+        <tr>
+            <th>Date</th>
+            <th>Revision hash</th>
+            <th>Message</th>
+        </tr>
+
+        @foreach (var item in Model.Changes)
+        {
+            <tr>
+                <td style="white-space: nowrap">@item.Date.ToUniversalTime().ToString("yyyy-MM-dd HH:mm'Z'")</td>
+                <td><a href="https://code.google.com/p/noda-time/source/detail?r=@Html.Raw(Html.AttributeEncode(item.Hash))">@item.Hash.Substring(0, 12)</a></td>
+                <td>@item.Message</td>
+            </tr>
+        }
+    </table>
+}

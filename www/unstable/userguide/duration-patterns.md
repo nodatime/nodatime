@@ -13,6 +13,7 @@ Standard Patterns
 The following standard pattern is supported:
 
 - `o`: Round-trip pattern, which always uses the invariant culture and a pattern string of `-D:hh:mm:ss.FFFFFFF`.
+  This is the default format pattern.
 
 Custom Patterns
 ---------------
@@ -138,7 +139,7 @@ We recommend using the repeated form in most cases.
     <tr>
 	  <td><code>.</code></td>
 	  <td>
-	    This is *always* a period ("."); not a culture-sensitive decimal separator as one might expect. This
+	    This is <em>always</em> a period ("."); not a culture-sensitive decimal separator as one might expect. This
 		follows the example of other standard libraries, however odd it may appear. The only difference
 		between a period and any other literal character is that when followed by a series of "F" characters,
 		the period will be removed if there are no fractional seconds.

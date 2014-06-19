@@ -139,8 +139,28 @@ namespace NodaTime.Serialization.Test.JsonNet
         [Test]
         public void OffsetDateTimeConverter()
         {
-            var value = new LocalDateTime(2012, 1, 2, 3, 4, 5, 6, 7).WithOffset(Offset.FromHoursAndMinutes(-1, -30) + Offset.FromMilliseconds(-1234));
-            string json = "\"2012-01-02T03:04:05.0060007-01:30:01.234\"";
+            var value = new LocalDateTime(2012, 1, 2, 3, 4, 5, 6, 7).WithOffset(Offset.FromHoursAndMinutes(-1, -30));
+            string json = "\"2012-01-02T03:04:05.0060007-01:30\"";
+            AssertConversions(value, json, NodaConverters.OffsetDateTimeConverter);
+        }
+
+        [Test]
+        public void OffsetDateTimeConverter_WholeHours()
+        {
+            // Redundantly specify the minutes, so that Javascript can parse it and it's RFC3339-compliant.
+            // See issue 284 for details.
+            var value = new LocalDateTime(2012, 1, 2, 3, 4, 5, 6, 7).WithOffset(Offset.FromHours(5));
+            string json = "\"2012-01-02T03:04:05.0060007+05:00\"";
+            AssertConversions(value, json, NodaConverters.OffsetDateTimeConverter);
+        }
+
+        [Test]
+        public void OffsetDateTimeConverter_ZeroOffset()
+        {
+            // Redundantly specify the minutes, so that Javascript can parse it and it's RFC3339-compliant.
+            // See issue 284 for details.
+            var value = new LocalDateTime(2012, 1, 2, 3, 4, 5, 6, 7).WithOffset(Offset.Zero);
+            string json = "\"2012-01-02T03:04:05.0060007Z\"";
             AssertConversions(value, json, NodaConverters.OffsetDateTimeConverter);
         }
 

@@ -13,10 +13,10 @@ namespace NodaTime.Text.Patterns
     /// </summary>
     internal sealed class PatternBclSupport<T>
     {
-        private readonly NodaFunc<NodaFormatInfo, FixedFormatInfoPatternParser<T>> patternParser;
+        private readonly Func<NodaFormatInfo, FixedFormatInfoPatternParser<T>> patternParser;
         private readonly string defaultFormatPattern;
 
-        internal PatternBclSupport(string defaultFormatPattern, NodaFunc<NodaFormatInfo, FixedFormatInfoPatternParser<T>> patternParser)
+        internal PatternBclSupport(string defaultFormatPattern, Func<NodaFormatInfo, FixedFormatInfoPatternParser<T>> patternParser)
         {
             this.patternParser = patternParser;
             this.defaultFormatPattern = defaultFormatPattern;

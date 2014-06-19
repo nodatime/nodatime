@@ -49,6 +49,16 @@ While it is now possible (as of 1.2.0) to parse and format
 still lacking in some areas: some other types lack flexible formatting, and
 we may want to optimize further at some point too.
 
+Additionally, all our text localization resources (day and month names) come from the .NET
+framework itself. That has some significant limitations, and makes Noda Time more reliant
+on `CultureInfo` than is ideal. [CLDR](http://cldr.unicode.org) contains more information,
+which should allow for features such as ordinal day numbers ("1st", "2nd", "3rd") and
+a broader set of supported calendar/culture combinations (such as English names for the
+Hebrew calendar months).
+
+Speaking of the Hebrew calendar, initial support for the calendar has been introduced
+in 1.3.0, but month names are *not* properly supported currently. See [local date formatting](localdate-patterns.html) for more details of this limitation.
+
 Better resource handling
 ========================
 

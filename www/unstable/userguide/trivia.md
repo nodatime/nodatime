@@ -245,12 +245,13 @@ anyway.
 
 **Read more:**
 
-- [Wikipedia: Calender (New Style)
-  act](http://en.wikipedia.org/wiki/Calendar_(New_Style)_Act_1750)
+- [Wikipedia: Calender (New Style) act][wikipedia-newstyle-act]
 - [Wikipedia: Old and New Style
   dates](http://en.wikipedia.org/wiki/Old_Style_and_New_Style_dates)
 - [Malcolm Rowe's write-up in
   Google+](https://plus.google.com/+MalcolmRowe/posts/Bf5swesMPUV)
+
+[wikipedia-newstyle-act]: http://en.wikipedia.org/wiki/Calendar_(New_Style)_Act_1750
 
 <sup>1</sup> When I say "we" here, I really mean "Malcolm" who did most of
 the work on understanding this issue based on Wikipedia and primary

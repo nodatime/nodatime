@@ -2,6 +2,7 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
+using System;
 using System.Globalization;
 
 namespace NodaTime.Text.Patterns
@@ -18,7 +19,7 @@ namespace NodaTime.Text.Patterns
         /// that makes the period optional.
         /// </summary>
         internal static CharacterHandler<TResult, TBucket> CreatePeriodHandler<TResult, TBucket>
-            (int maxCount, NodaFunc<TResult, int> getter, NodaAction<TBucket, int> setter)
+            (int maxCount, Func<TResult, int> getter, Action<TBucket, int> setter)
             where TBucket : ParseBucket<TResult>
         {
             return (pattern, builder) =>
@@ -47,14 +48,14 @@ namespace NodaTime.Text.Patterns
                         // Last argument is false because we don't need *all* the digits to be present
                         if (!valueCursor.ParseFraction(count, maxCount, out fractionalSeconds, false))
                         {
-                            return ParseResult<TResult>.MismatchedNumber(new string('F', count));
+                            return ParseResult<TResult>.MismatchedNumber(valueCursor, new string('F', count));
                         }
                         // No need to validate the value - we've got one to three digits, so the range 0-999 is guaranteed.
                         setter(bucket, fractionalSeconds);
                         return null;
                     });
                     builder.AddFormatAction((localTime, sb) => sb.Append('.'));
-                    builder.AddFormatRightPadTruncate(count, maxCount, getter);
+                    builder.AddFormatFractionTruncate(count, maxCount, getter);
                 }
                 else
                 {
@@ -69,7 +70,7 @@ namespace NodaTime.Text.Patterns
         /// ISO-8601. This is *not* culture sensitive.
         /// </summary>
         internal static CharacterHandler<TResult, TBucket> CreateCommaDotHandler<TResult, TBucket>
-            (int maxCount, NodaFunc<TResult, int> getter, NodaAction<TBucket, int> setter)
+            (int maxCount, Func<TResult, int> getter, Action<TBucket, int> setter)
             where TBucket : ParseBucket<TResult>
         {
             return (pattern, builder) =>
@@ -99,20 +100,20 @@ namespace NodaTime.Text.Patterns
                         // Last argument is false because we don't need *all* the digits to be present
                         if (!valueCursor.ParseFraction(count, maxCount, out fractionalSeconds, false))
                         {
-                            return ParseResult<TResult>.MismatchedNumber(new string('F', count));
+                            return ParseResult<TResult>.MismatchedNumber(valueCursor, new string('F', count));
                         }
-                        // No need to validate the value - we've got one to three digits, so the range 0-999 is guaranteed.
+                        // No need to validate the value - we've got an appropriate number of digits, so the range is guaranteed.
                         setter(bucket, fractionalSeconds);
                         return null;
                     });
                     builder.AddFormatAction((localTime, sb) => sb.Append('.'));
-                    builder.AddFormatRightPadTruncate(count, maxCount, getter);
+                    builder.AddFormatFractionTruncate(count, maxCount, getter);
                 }
                 else
                 {
                     builder.AddParseAction((str, bucket) => str.Match('.') || str.Match(',') 
                                                             ? null 
-                                                            : ParseResult<TResult>.MismatchedCharacter(';'));
+                                                            : ParseResult<TResult>.MismatchedCharacter(str, ';'));
                     builder.AddFormatAction((value, sb) => sb.Append('.'));
                 }
             };
@@ -122,7 +123,7 @@ namespace NodaTime.Text.Patterns
         /// Creates a character handler to handle the "fraction of a second" specifier (f or F).
         /// </summary>
         internal static CharacterHandler<TResult, TBucket> CreateFractionHandler<TResult, TBucket>
-            (int maxCount, NodaFunc<TResult, int> getter, NodaAction<TBucket, int> setter)
+            (int maxCount, Func<TResult, int> getter, Action<TBucket, int> setter)
             where TBucket : ParseBucket<TResult>
         {
             return (pattern, builder) =>
@@ -138,7 +139,7 @@ namespace NodaTime.Text.Patterns
                     // "up to count" digits.
                     if (!str.ParseFraction(count, maxCount, out fractionalSeconds, patternCharacter == 'f'))
                     {
-                        return ParseResult<TResult>.MismatchedNumber(new string(patternCharacter, count));
+                        return ParseResult<TResult>.MismatchedNumber(str, new string(patternCharacter, count));
                     }
                     // No need to validate the value - we've got an appropriate number of digits, so the range is guaranteed.
                     setter(bucket, fractionalSeconds);
@@ -146,17 +147,17 @@ namespace NodaTime.Text.Patterns
                 });
                 if (patternCharacter == 'f')
                 {
-                    builder.AddFormatRightPad(count, maxCount, getter);
+                    builder.AddFormatFraction(count, maxCount, getter);
                 }
                 else
                 {
-                    builder.AddFormatRightPadTruncate(count, maxCount, getter);
+                    builder.AddFormatFractionTruncate(count, maxCount, getter);
                 }
             };
         }
 
         internal static CharacterHandler<TResult, TBucket> CreateAmPmHandler<TResult, TBucket>
-            (NodaFunc<TResult, int> hourOfDayGetter, NodaAction<TBucket, int> amPmSetter)
+            (Func<TResult, int> hourOfDayGetter, Action<TBucket, int> amPmSetter)
             where TBucket : ParseBucket<TResult>
         {
             return (pattern, builder) =>
@@ -207,7 +208,7 @@ namespace NodaTime.Text.Patterns
                             amPmSetter(bucket, 1);
                             return null;
                         }
-                        return ParseResult<TResult>.MissingAmPmDesignator;
+                        return ParseResult<TResult>.MissingAmPmDesignator(str);
                     });
                     builder.AddFormatAction((value, sb) => sb.Append(hourOfDayGetter(value) > 11 ? pmDesignator[0] : amDesignator[0]));
                     return;
@@ -230,14 +231,14 @@ namespace NodaTime.Text.Patterns
                         amPmSetter(bucket, 1 - longerValue);
                         return null;
                     }
-                    return ParseResult<TResult>.MissingAmPmDesignator;
+                    return ParseResult<TResult>.MissingAmPmDesignator(str);
                 });
                 builder.AddFormatAction((value, sb) => sb.Append(hourOfDayGetter(value) > 11 ? pmDesignator : amDesignator));
             };
         }
 
         private static void HandleHalfAmPmDesignator<TResult, TBucket>
-            (int count, string specifiedDesignator, int specifiedDesignatorValue, NodaFunc<TResult, int> hourOfDayGetter, NodaAction<TBucket, int> amPmSetter,
+            (int count, string specifiedDesignator, int specifiedDesignatorValue, Func<TResult, int> hourOfDayGetter, Action<TBucket, int> amPmSetter,
              SteppedPatternBuilder<TResult, TBucket> builder)
             where TBucket : ParseBucket<TResult>
         {

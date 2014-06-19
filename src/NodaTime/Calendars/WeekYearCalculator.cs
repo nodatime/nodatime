@@ -2,6 +2,10 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
+using System;
+using System.Diagnostics;
+using System.IO;
+using System.Threading;
 using NodaTime.Utility;
 
 namespace NodaTime.Calendars
@@ -32,26 +36,31 @@ namespace NodaTime.Calendars
             return new LocalInstant(ticks);
         }
 
-        internal static int GetDayOfWeek(LocalInstant localInstant)
+        internal static int GetDayOfWeek(LocalInstant localInstant)            
         {
             // 1970-01-01 is day of week 4, Thursday.
-
-            long daysSince19700101;
-            long ticks = localInstant.Ticks;
-            if (ticks >= 0)
+            unchecked
             {
-                daysSince19700101 = ticks / NodaConstants.TicksPerStandardDay;
-            }
-            else
-            {
-                daysSince19700101 = (ticks - (NodaConstants.TicksPerStandardDay - 1)) / NodaConstants.TicksPerStandardDay;
-                if (daysSince19700101 < -3)
+                long daysSince19700101;
+                long ticks = localInstant.Ticks;
+                if (ticks >= 0)
                 {
-                    return 7 + (int)((daysSince19700101 + 4) % 7);
+                    daysSince19700101 = TickArithmetic.FastTicksToDays(ticks);
                 }
-            }
+                else
+                {
+                    // Can't use TickArithmetic.TicksToDays here as we want to round down;
+                    // division on negative numbers rounds towards zero, while shifting
+                    // rounds down. The combination is awkward to think about for too long :)
+                    daysSince19700101 = ((ticks >> 14) - 52734374) / 52734375;
+                    if (daysSince19700101 < -3)
+                    {
+                        return 7 + (int) ((daysSince19700101 + 4) % 7);
+                    }
+                }
 
-            return 1 + (int)((daysSince19700101 + 3) % 7);
+                return 1 + (int) ((daysSince19700101 + 3) % 7);                
+            }
         }
 
         /// <summary>

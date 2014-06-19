@@ -195,7 +195,7 @@ namespace NodaTime.Globalization
         internal FixedFormatInfoPatternParser<ZonedDateTime> ZonedDateTimePatternParser { get { return EnsureFixedFormatInitialized(ref zonedDateTimePatternParser, () => new ZonedDateTimePatternParser(ZonedDateTimePattern.DefaultTemplateValue, Resolvers.StrictResolver, null)); } }
 
         private FixedFormatInfoPatternParser<T> EnsureFixedFormatInitialized<T>(ref FixedFormatInfoPatternParser<T> field,
-            NodaFunc<IPatternParser<T>> patternParserFactory)
+            Func<IPatternParser<T>> patternParserFactory)
         {
             lock (fieldLock)
             {
@@ -261,11 +261,6 @@ namespace NodaTime.Globalization
         /// Gets the BCL date time format associated with this formatting information.
         /// </summary>
         public DateTimeFormatInfo DateTimeFormat { get { return cultureInfo.DateTimeFormat; } }
-
-        /// <summary>
-        /// Gets the decimal separator from the number format associated with this provider.
-        /// </summary>
-        public string DecimalSeparator { get { return NumberFormat.NumberDecimalSeparator; } }
 
         /// <summary>
         ///   Gets the positive sign.

@@ -346,18 +346,7 @@ namespace NodaTime
         /// <summary>
         /// Gets the time portion of this local date and time as a <see cref="LocalTime"/>.
         /// </summary>
-        public LocalTime TimeOfDay
-        {
-            get
-            {
-                long ticks = localInstant.Ticks % NodaConstants.TicksPerStandardDay;
-                if (ticks < 0)
-                {
-                    ticks += NodaConstants.TicksPerStandardDay;
-                }
-                return new LocalTime(new LocalInstant(ticks));
-            }
-        }
+        public LocalTime TimeOfDay { get { return new LocalTime(TickOfDay); } }
 
         /// <summary>
         /// Gets the date portion of this local date and time as a <see cref="LocalDate"/> in the same calendar system as this value.
@@ -885,9 +874,13 @@ namespace NodaTime
         /// ambiguous or the time is skipped.
         /// </summary>
         /// <remarks>
+        /// See <see cref="InZoneLeniently"/> and <see cref="InZone"/> for alternative ways to map a local time to a
+        /// specific instant.
         /// This is solely a convenience method for calling <see cref="DateTimeZone.AtStrictly" />.
         /// </remarks>
         /// <param name="zone">The time zone in which to map this local date/time.</param>
+        /// <exception cref="SkippedTimeException">This local date/time is skipped in the given time zone.</exception>
+        /// <exception cref="AmbiguousTimeException">This local date/time is ambiguous in the given time zone.</exception>
         /// <returns>The result of mapping this local date/time in the given time zone.</returns>
         [Pure]
         public ZonedDateTime InZoneStrictly([NotNull] DateTimeZone zone)
@@ -903,6 +896,8 @@ namespace NodaTime
         /// after the "gap".
         /// </summary>
         /// <remarks>
+        /// See <see cref="InZoneStrictly"/> and <see cref="InZone"/> for alternative ways to map a local time to a
+        /// specific instant.
         /// This is solely a convenience method for calling <see cref="DateTimeZone.AtLeniently" />.
         /// </remarks>
         /// <param name="zone">The time zone in which to map this local date/time.</param>
@@ -919,6 +914,8 @@ namespace NodaTime
         /// the given <see cref="ZoneLocalMappingResolver"/> to handle ambiguity and skipped times.
         /// </summary>
         /// <remarks>
+        /// See <see cref="InZoneStrictly"/> and <see cref="InZoneLeniently"/> for alternative ways to map a local time
+        /// to a specific instant.
         /// This is a convenience method for calling <see cref="DateTimeZone.ResolveLocal"/>.
         /// </remarks>
         /// <param name="zone">The time zone to map this local date and time into</param>
@@ -937,7 +934,7 @@ namespace NodaTime
         /// Returns a <see cref="System.String" /> that represents this instance.
         /// </summary>
         /// <returns>
-        /// The value of the current instance in the standard format pattern, using the current thread's
+        /// The value of the current instance in the default format pattern ("G"), using the current thread's
         /// culture to obtain a format provider.
         /// </returns>
         public override string ToString()
@@ -952,7 +949,7 @@ namespace NodaTime
         /// A <see cref="T:System.String" /> containing the value of the current instance in the specified format.
         /// </returns>
         /// <param name="patternText">The <see cref="T:System.String" /> specifying the pattern to use,
-        /// or null to use the default format pattern.
+        /// or null to use the default format pattern ("G").
         /// </param>
         /// <param name="formatProvider">The <see cref="T:System.IFormatProvider" /> to use when formatting the value,
         /// or null to use the current thread's culture to obtain a format provider.
@@ -1021,6 +1018,7 @@ namespace NodaTime
         /// </summary>
         /// <param name="info">The <see cref="SerializationInfo"/> to populate with data.</param>
         /// <param name="context">The destination for this serialization.</param>
+        [System.Security.SecurityCritical]
         void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)
         {
             info.AddValue(LocalTicksSerializationName, localInstant.Ticks);

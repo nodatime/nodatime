@@ -136,7 +136,8 @@ namespace NodaTime.Text
             internal static ParseResult<LocalDateTime> CombineBuckets(
                 PatternFields usedFields,
                 LocalDatePatternParser.LocalDateParseBucket dateBucket,
-                LocalTimePatternParser.LocalTimeParseBucket timeBucket)
+                LocalTimePatternParser.LocalTimeParseBucket timeBucket,
+                string text)
             {
                 // Handle special case of hour = 24
                 bool hour24 = false;
@@ -146,12 +147,12 @@ namespace NodaTime.Text
                     hour24 = true;
                 }
 
-                ParseResult<LocalDate> dateResult = dateBucket.CalculateValue(usedFields & PatternFields.AllDateFields);
+                ParseResult<LocalDate> dateResult = dateBucket.CalculateValue(usedFields & PatternFields.AllDateFields, text);
                 if (!dateResult.Success)
                 {
                     return dateResult.ConvertError<LocalDateTime>();
                 }
-                ParseResult<LocalTime> timeResult = timeBucket.CalculateValue(usedFields & PatternFields.AllTimeFields);
+                ParseResult<LocalTime> timeResult = timeBucket.CalculateValue(usedFields & PatternFields.AllTimeFields, text);
                 if (!timeResult.Success)
                 {
                     return timeResult.ConvertError<LocalDateTime>();
@@ -164,16 +165,16 @@ namespace NodaTime.Text
                 {
                     if (time != LocalTime.Midnight)
                     {
-                        return ParseResult<LocalDateTime>.InvalidHour24;
+                        return ParseResult<LocalDateTime>.InvalidHour24(text);
                     }
                     date = date.PlusDays(1);
                 }
                 return ParseResult<LocalDateTime>.ForValue(date + time);
             }
 
-            internal override ParseResult<LocalDateTime> CalculateValue(PatternFields usedFields)
+            internal override ParseResult<LocalDateTime> CalculateValue(PatternFields usedFields, string text)
             {
-                return CombineBuckets(usedFields, Date, Time);
+                return CombineBuckets(usedFields, Date, Time, text);
             }
         }
     }

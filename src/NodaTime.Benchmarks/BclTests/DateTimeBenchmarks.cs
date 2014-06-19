@@ -8,6 +8,7 @@ using NodaTime.Benchmarks.Framework;
 
 namespace NodaTime.Benchmarks.BclTests
 {
+    [Category("BCL")]
     internal class DateTimeBenchmarks
     {
         private static readonly DateTime Sample = new DateTime(2009, 12, 26, 10, 8, 30, 234, DateTimeKind.Local);
@@ -79,12 +80,14 @@ namespace NodaTime.Benchmarks.BclTests
         }
 
         [Benchmark]
+        [Category("Text")]
         public void Format()
         {
             Sample.ToString("dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
         }
         
         [Benchmark]
+        [Category("Text")]
         public void TryParseExact()
         {
             DateTime result;

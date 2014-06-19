@@ -131,12 +131,16 @@ namespace ZoneInfoCompiler.Test.Tzdb
             Assert.True(newValue.IsTransitionFrom(oldValue));
         }
 
+        // We view any change as a time zone transition, even if it doesn't affect name or wall time.
+        // As an example, in 1968 the UK changed from BST (British Summer Time, standard 0, daylight 1)
+        // to BST (British Standard Time, standard 1, daylight 0). Regarding this as a transition is
+        // cleaner than ignoring it.
         [Test]
-        public void IsTransitionFrom_laterInstantAndEqualButOppositeStandardAndSavings_false()
+        public void IsTransitionFrom_laterInstantAndEqualButOppositeStandardAndSavings_true()
         {
             var newValue = new ZoneTransition(NodaConstants.UnixEpoch + Duration.Epsilon, "abc", Offset.FromHours(1), Offset.Zero);
             var oldValue = new ZoneTransition(NodaConstants.UnixEpoch, "abc", Offset.Zero, Offset.FromHours(1));
-            Assert.False(newValue.IsTransitionFrom(oldValue));
+            Assert.True(newValue.IsTransitionFrom(oldValue));
         }
 
         [Test]

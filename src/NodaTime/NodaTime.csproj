@@ -17,7 +17,7 @@
   <PropertyGroup Condition="'$(Portability)' == 'PCL'">
     <MinimumVisualStudioVersion>10.0</MinimumVisualStudioVersion>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <TargetFrameworkProfile>Profile2</TargetFrameworkProfile>
+    <TargetFrameworkProfile>Profile328</TargetFrameworkProfile>
   </PropertyGroup>
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -151,19 +151,25 @@
     <Compile Include="Calendars\FixedMonthYearMonthDayCalculator.cs" />
     <Compile Include="Calendars\GJYearMonthDayCalculator.cs" />
     <Compile Include="Calendars\GregorianYearMonthDayCalculator.cs" />
+    <Compile Include="Calendars\HebrewScripturalCalculator.cs" />
+    <Compile Include="Calendars\HebrewMonthConverter.cs" />
+    <Compile Include="Calendars\HebrewMonthNumbering.cs" />
+    <Compile Include="Calendars\HebrewYearMonthDayCalculator.cs" />
     <Compile Include="Calendars\IslamicEpoch.cs" />
     <Compile Include="Calendars\IslamicLeapYearPattern.cs" />
     <Compile Include="Calendars\IslamicYearMonthDayCalculator.cs" />
     <Compile Include="Calendars\IsoYearMonthDayCalculator.cs" />
     <Compile Include="Calendars\JulianYearMonthDayCalculator.cs" />
     <Compile Include="Calendars\NamespaceDoc.cs" />
-    <Compile Include="Calendars\PersianYearMonthDayCalendar.cs" />
+    <Compile Include="Calendars\PersianYearMonthDayCalculator.cs" />
     <Compile Include="Calendars\RegularYearMonthDayCalculator.cs" />
+    <Compile Include="Calendars\TickArithmetic.cs" />
     <Compile Include="Calendars\TimeOfDayCalculator.cs" />
     <Compile Include="Calendars\WeekYearCalculator.cs" />
+    <Compile Include="Calendars\YearMonthDay.cs" />
     <Compile Include="Calendars\YearMonthDayCalculator.cs" />
+    <Compile Include="Calendars\YearStartCacheEntry.cs" />
     <Compile Include="DateTimeZoneProviders.cs" />
-    <Compile Include="Delegates.cs" />
     <Compile Include="Fields\MonthsPeriodField.cs" />
     <Compile Include="Fields\FixedDurationPeriodField.cs" />
     <Compile Include="Fields\IPeriodField.cs" />

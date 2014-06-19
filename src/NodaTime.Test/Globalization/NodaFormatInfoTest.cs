@@ -75,7 +75,6 @@ namespace NodaTime.Test.Globalization
             Assert.AreSame(enUs, info.CultureInfo);
             Assert.NotNull(info.NumberFormat);
             Assert.NotNull(info.DateTimeFormat);
-            Assert.AreEqual(".", info.DecimalSeparator);
             Assert.AreEqual("+", info.PositiveSign);
             Assert.AreEqual("-", info.NegativeSign);
             Assert.AreEqual(":", info.TimeSeparator);

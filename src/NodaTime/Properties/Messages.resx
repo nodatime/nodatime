@@ -306,6 +306,12 @@
   <data name="Parse_UnknownStandardFormat" xml:space="preserve">
     <value>The standard format "{0}" is not valid for the {1} type.</value>
   </data>
+  <data name="Parse_UnparsableValue" xml:space="preserve">
+    <value>{0} Value being parsed: '{1}'. (^ indicates error position.)</value>
+  </data>
+  <data name="Parse_UnparsableValuePostParse" xml:space="preserve">
+    <value>{0} Value being parsed: '{1}'.</value>
+  </data>
   <data name="Parse_ValueOutOfRange" xml:space="preserve">
     <value>The value {0} is out of the legal range for the {1} type.</value>
   </data>

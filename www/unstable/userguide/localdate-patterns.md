@@ -13,12 +13,13 @@ Standard Patterns
 The following standard patterns are supported:
 
 - `d`: Short format pattern.  
-  This is the short date pattern as defined by the culture's [`DateTimeFormatInfo.ShortDatePattern`](http://msdn.microsoft.com/en-us/library/system.globalization.datetimeformatinfo.shortdatepattern.aspx) 
-  For example, in the invariant culture this is "dddd, dd MMMM yyyy".
+  This is the short date pattern as defined by the culture's [`DateTimeFormatInfo.ShortDatePattern`](http://msdn.microsoft.com/en-us/library/system.globalization.datetimeformatinfo.shortdatepattern.aspx).
+  For example, in the invariant culture this is "MM/dd/yyyy".
 
 - `D`: Long format pattern.  
-  This is the long date pattern as defined by the culture's [`DateTimeFormatInfo.LongDatePattern`](http://msdn.microsoft.com/en-us/library/system.globalization.datetimeformatinfo.longdatepattern.aspx) 
-  For example, in the invariant culture this is "MM/dd/yyyy".
+  This is the long date pattern as defined by the culture's [`DateTimeFormatInfo.LongDatePattern`](http://msdn.microsoft.com/en-us/library/system.globalization.datetimeformatinfo.longdatepattern.aspx).
+  For example, in the invariant culture this is "dddd, dd MMMM yyyy".
+  This is the default format pattern.
 
 Custom Patterns
 ---------------
@@ -40,7 +41,7 @@ For the meanings of "absolute" years and text handling, see later details.
     <tr>
       <td><code>y</code> or <code>yy</code></td>
       <td>
-        Two digit absolute year with an optional leading `-` sign; a single <code>y</code> allows up to two digits to be parsed,
+        Two digit absolute year with an optional leading <code>-</code> sign; a single <code>y</code> allows up to two digits to be parsed,
 		but formats only one digit where possible. When parsing, the "base century" is chosen from the template
 		value; if the two-digit year is greater than 30, the corresponding year in the previous
 		century is used. Note that when formatting, no checking
@@ -59,7 +60,7 @@ For the meanings of "absolute" years and text handling, see later details.
     <tr>
       <td><code>yyy</code></td>
       <td>
-        Three digit absolute year with optional leading `-`
+        Three digit absolute year with optional leading <code>-</code>
         sign. This will parse up to five digits, but only format to as many as are
 		required, with a minimum of three.
       </td>
@@ -71,7 +72,7 @@ For the meanings of "absolute" years and text handling, see later details.
     <tr>
       <td><code>yyyy</code></td>
       <td>
-        The absolute year as 4 or 5 digits with an optional leading `-` sign.
+        The absolute year as 4 or 5 digits with an optional leading <code>-</code> sign.
         <p>
         If the absolute year is outside the range [-9999, 9999] the
         value will be formatted (with the excess digit), but
@@ -91,7 +92,7 @@ For the meanings of "absolute" years and text handling, see later details.
     <tr>
       <td><code>yyyyy</code></td>
       <td>
-        The absolute year as exactly 5 digits with an optional leading `-` sign.
+        The absolute year as exactly 5 digits with an optional leading <code>-</code> sign.
       </td>
       <td>
         2012: => <code>02012</code> <br />
@@ -228,3 +229,13 @@ Noda Time comes with its own limited set of era names, but month and day names a
 Unfortunately these are not available on a per-calendar basis, so the same names are used for all calendars, based solely
 on culture. It is hoped that future release of Noda Time may use information from the [Unicode CLDR](http://cldr.unicode.org/)
 to provide a more comprehensive treatment.
+
+**Hebrew month names**
+
+The Hebrew calendar has two month numbering systems (scriptural and civil), each with their
+own benefits and drawbacks. Both have issues for text handling: as of Noda Time 1.3.0, the
+civil month numbering is assumed as that corresponds with the BCL month numbering... but due to
+the inclusion of a leap month, the month name/number correspondence changes in a leap year.
+Until this is fixed, it is strongly recommended that you only use month *numbers* in any textual
+representations of dates in the Hebrew calendar. Additionally, you may wish to consider how to
+best clarify whether that month number is in the scriptural or civil numbering system.

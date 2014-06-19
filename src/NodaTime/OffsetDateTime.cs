@@ -245,6 +245,19 @@ namespace NodaTime
         }
 
         /// <summary>
+        /// Creates a new OffsetDateTime representing the instant in time in the same calendar,
+        /// but with a different offset. The local date and time is adjusted accordingly.
+        /// </summary>
+        /// <param name="offset">The new offset to use.</param>
+        /// <returns>The converted OffsetDateTime.</returns>
+        [Pure]
+        public OffsetDateTime WithOffset(Offset offset)
+        {
+            LocalDateTime newLocalDateTime = new LocalDateTime(LocalDateTime.LocalInstant.Minus(this.Offset).Plus(offset), Calendar);
+            return new OffsetDateTime(newLocalDateTime, offset);
+        }
+        
+        /// <summary>
         /// Returns a hash code for this local date.
         /// </summary>
         /// <returns>A hash code for this local date.</returns>
@@ -284,10 +297,11 @@ namespace NodaTime
 
         #region Formatting
         /// <summary>
-        ///   Returns a <see cref="System.String" /> that represents this instance.
+        /// Returns a <see cref="System.String" /> that represents this instance.
         /// </summary>
         /// <returns>
-        ///   A <see cref="System.String" /> that represents this instance.
+        /// The value of the current instance in the default format pattern ("G"), using the current thread's
+        /// culture to obtain a format provider.
         /// </returns>
         public override string ToString()
         {
@@ -295,18 +309,16 @@ namespace NodaTime
         }
 
         /// <summary>
-        ///   Formats the value of the current instance using the specified format.
+        /// Formats the value of the current instance using the specified pattern.
         /// </summary>
         /// <returns>
-        ///   A <see cref="T:System.String" /> containing the value of the current instance in the specified format.
+        /// A <see cref="T:System.String" /> containing the value of the current instance in the specified format.
         /// </returns>
-        /// <param name="patternText">The <see cref="T:System.String" /> specifying the pattern to use.
-        ///   -or- 
-        ///   null to use the default pattern defined for the type of the <see cref="T:System.IFormattable" /> implementation. 
+        /// <param name="patternText">The <see cref="T:System.String" /> specifying the pattern to use,
+        /// or null to use the default format pattern ("G").
         /// </param>
-        /// <param name="formatProvider">The <see cref="T:System.IFormatProvider" /> to use to format the value.
-        ///   -or- 
-        ///   null to obtain the numeric format information from the current locale setting of the operating system. 
+        /// <param name="formatProvider">The <see cref="T:System.IFormatProvider" /> to use when formatting the value,
+        /// or null to use the current thread's culture to obtain a format provider.
         /// </param>
         /// <filterpriority>2</filterpriority>
         public string ToString(string patternText, IFormatProvider formatProvider)
@@ -458,7 +470,7 @@ namespace NodaTime
         void IXmlSerializable.ReadXml(XmlReader reader)
         {
             Preconditions.CheckNotNull(reader, "reader");
-            var pattern = OffsetDateTimePattern.ExtendedIsoPattern;
+            var pattern = OffsetDateTimePattern.Rfc3339Pattern;
             if (reader.MoveToAttribute("calendar"))
             {
                 string newCalendarId = reader.Value;
@@ -479,7 +491,7 @@ namespace NodaTime
             {
                 writer.WriteAttributeString("calendar", Calendar.Id);
             }
-            writer.WriteString(OffsetDateTimePattern.ExtendedIsoPattern.Format(this));
+            writer.WriteString(OffsetDateTimePattern.Rfc3339Pattern.Format(this));
         }
         #endregion
 
@@ -506,6 +518,7 @@ namespace NodaTime
         /// </summary>
         /// <param name="info">The <see cref="SerializationInfo"/> to populate with data.</param>
         /// <param name="context">The destination for this serialization.</param>
+        [System.Security.SecurityCritical]
         void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)
         {
             info.AddValue(LocalTicksSerializationName, localDateTime.LocalInstant.Ticks);

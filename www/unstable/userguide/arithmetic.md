@@ -100,8 +100,8 @@ with the new date/time.
 
 Even adding or subtracting a single unit can introduce problems due
 to unequal month lengths and the like. When adding a month or a year
-would create an invalid date, the day-of-month is truncated. For
-example:
+would create an invalid date, in most calendars the day-of-month is
+truncated. For example:
 
     LocalDate date = new LocalDate(2012, 2, 29);
     LocalDate date1 = date.PlusYears(1); // February 28th 2013
@@ -185,8 +185,40 @@ you know the rules, it's very easy to work out what Noda Time will
 do. The downside is that if you *don't* know the rules, it looks
 like it's broken. It's possible that in a future version we'll
 implement a "smarter" API (as a separate option, probably, rather
-than replacing this one) - please drop a line to the mailing list if
+than replacing this one) - please drop a line to the [mailing list][] if
 you have requirements in this area.
+
+Arithmetic with the Hebrew calendar
+-----------------------------------
+
+One exception to the rules given above is the Hebrew calendar system. For a start,
+the Hebrew calendar has a *leap month* - in a leap year, the single month of
+Adar becomes Adar I and Adar II ([with Adar I being considered the leap
+month](http://judaism.stackexchange.com/questions/37308)).
+When an arithmetic operation requires that a date in Adar is mapped to a leap year, we use
+the same day-of-month but within Adar II. When an arithmetic operation requires that a date in
+Adar I or Adar II is mapped to a non-leap year, we use the same day-of-month in Adar. (This can
+produce some surprising results in terms of ordering: even if date `X` is earlier than date `Y`,
+`X + 1 year` may be later than `Y + 1 year`.)
+
+It is important to note that in the civil month numbering system for the Hebrew calendar, the
+same month may have a different number in different years. For example, Nisan is month 7 in
+non-leap years, and month 8 in leap years. Arithmetic within Noda Time operates using the month,
+not the month *number*. So for example, bearing in mind that 5402 is a leap year but 5403 is not,
+01-08-5402 + 1 year = 01-07-5403. (1st Nisan 5402 + 1 year = 1st Nisan 5403.) This behavior is
+*not* the same as the .NET implementation, which appears to simply use the month numbers.
+
+Additionally, the "truncate the day-of-month if necessary" rule does not apply to the Hebrew
+calendar system, in the rules implemented in Noda Time 1.3.0. Instead,
+[following Hebrew scriptural rules](http://judaism.stackexchange.com/questions/39053), if changing
+year makes a day-of-month invalid (which can happen if the original month is Adar I, Kislev or Heshvan),
+the result is instead the first day of the subsequent month. So for example, adding one year to the 30th of Kislev
+will result in the 1st of Tevet, if Kislev only has 29 days in the "target" year.
+
+These scriptural rules are not necessarily what everyone would expect even within the community
+using the Hebrew calendar. It is possible that they will be adjusted in future releases. If you feel
+strongly about the correct behavior (whether that's what's already implemented or not), please
+contact the [mailing list][].
 
 Finding a period between two values
 ===================================
@@ -234,7 +266,7 @@ then another 3 days takes us to March 31st. But `period2` is "-1 month and -1 da
 a month from `date2` we get to February 29th due to truncation, and then we only have to subtract
 one more day to get to February 28th.
 
-Again, this is easy to reason about and easy to implement. Contact the mailing list with
+Again, this is easy to reason about and easy to implement. Contact the [mailing list][] with
 extra requirements if you have them.
 
 Why doesn't this work with `ZonedDateTime`?
@@ -264,7 +296,7 @@ better suggestions, please raise them!
 Currently Noda Time doesn't support arithmetic with [`OffsetDateTime`](noda-type://NodaTime.OffsetDateTime)
 either, mostly because it's not clear what the use cases would be. You can always convert to either local or
 zoned date/time values, perform arithmetic in that domain and convert back if necessary - but if you find
-yourself in this situation, we'd love to hear about it on the Noda Time mailing list.
+yourself in this situation, we'd love to hear about it on the [mailing list][].
 
 Days of the week
 ================
@@ -285,3 +317,5 @@ operating on non-ISO week days.
 See also:
 
 - [The joys of date/time arithmetic](http://noda-time.blogspot.com/2010/11/joys-of-datetime-arithmetic.html)
+
+[mailing list]: http://groups.google.com/group/noda-time

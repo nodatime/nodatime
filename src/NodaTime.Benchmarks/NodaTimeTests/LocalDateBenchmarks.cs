@@ -10,6 +10,7 @@ namespace NodaTime.Benchmarks.NodaTimeTests
     internal class LocalDateBenchmarks
     {
         private static readonly LocalDate Sample = new LocalDate(2009, 12, 26);
+        private static readonly LocalDate SampleBeforeEpoch = new LocalDate(1909, 12, 26);
 
         private static readonly LocalDatePattern Pattern = LocalDatePattern.CreateWithInvariantCulture("dd/MM/yyyy");
 
@@ -77,6 +78,12 @@ namespace NodaTime.Benchmarks.NodaTimeTests
         public void IsoDayOfWeek()
         {
             Sample.IsoDayOfWeek.Consume();
+        }
+
+        [Benchmark]
+        public void IsoDayOfWeek_BeforeEpoch()
+        {
+            SampleBeforeEpoch.IsoDayOfWeek.Consume();
         }
         
         [Benchmark]

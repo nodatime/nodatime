@@ -7,6 +7,7 @@ using NodaTime.Benchmarks.Framework;
 
 namespace NodaTime.Benchmarks.BclTests
 {
+    [Category("BCL")]
     internal sealed class TimeZoneInfoBenchmarks
     {
         internal static readonly TimeZoneInfo PacificZone = GetPacificTime();
@@ -50,6 +51,18 @@ namespace NodaTime.Benchmarks.BclTests
         {
             PacificZone.GetUtcOffset(SummerOffset);
             PacificZone.GetUtcOffset(WinterOffset);
+        }
+
+        [Benchmark]
+        public void ConvertLocalToUtc()
+        {
+            TimeZoneInfo.ConvertTimeToUtc(SummerUnspecified, PacificZone);
+        }
+
+        [Benchmark]
+        public void ConvertUtcToLocal()
+        {
+            TimeZoneInfo.ConvertTimeFromUtc(SummerUtc, PacificZone);
         }
     }
 }

@@ -69,27 +69,14 @@ The only change that needs to be made to the branch after creation is to
 remove the `<Preliminary/>` tag from the Sandcastle project file; see e.g.
 [issue 102][].
 
-## Making the release
+### Post-branch updates on the default branch
 
-Switch to the correct branch (e.g. `1.0.x`).
+If this release required the creation of a new branch, then the following files
+on the *default* branch should be updated to bump (at least) the minor version
+number (and `NodaTime.Testing` / `NodaTime.Serialization.JsonNet` dependency
+version), per the following scheme:
 
-Update the version number by building the tools solution and then running the `SetVersion` tool:
-
-    msbuild src\NodaTime-Tools.sln
-    src\NodaTime.Tools.SetVersion\bin\debug\SetVersion 1.2.3-beta4
-
-> This will update the following AssemblyInfo files and NuGet package specs to include the
-version number you are building:
-
-> - `src/NodaTime/Properties/AssemblyInfo.cs`
-> - `src/NodaTime.Serialization.JsonNet/Properties/AssemblyInfo.cs`
-> - `src/NodaTime.Testing/Properties/AssemblyInfo.cs`
-> - `src/NodaTime/NodaTime.nuspec`
-> - `src/NodaTime.Serialization.JsonNet/NodaTime.Serialization.JsonNet.nuspec`
-> - `src/NodaTime.Testing/NodaTime.Testing.nuspec`
-
-> The various versions will be set according to the following scheme. Suppose
-we were building version 1.2.3-beta4, then:
+Suppose we were building version 1.2.3-beta4, then:
 
 > - In the NuGet package specs, `<version>` should contain the version number
   ('1.2.3-beta4'). The `<dependency>` element in `NodaTime.Testing.nuspec`
@@ -104,6 +91,33 @@ we were building version 1.2.3-beta4, then:
   used.)
 
 [assemblyversion]: http://stackoverflow.com/a/65062
+
+Update the version number by building the tools solution and then running the `SetVersion` tool:
+
+    msbuild src\NodaTime-Tools.sln
+    src\NodaTime.Tools.SetVersion\bin\debug\SetVersion 1.1.0-dev
+
+The version number string should be of the form `1.1.0-dev`.
+
+## Making the release
+
+Switch to the correct branch (e.g. `1.0.x`).
+
+Update the version number according to the scheme above by building the tools
+solution and then running the `SetVersion` tool:
+
+    msbuild src\NodaTime-Tools.sln
+    src\NodaTime.Tools.SetVersion\bin\debug\SetVersion 1.2.3-beta4
+
+> This will update the following AssemblyInfo files and NuGet package specs to include the
+version number you are building:
+
+> - `src/NodaTime/Properties/AssemblyInfo.cs`
+> - `src/NodaTime.Serialization.JsonNet/Properties/AssemblyInfo.cs`
+> - `src/NodaTime.Testing/Properties/AssemblyInfo.cs`
+> - `src/NodaTime/NodaTime.nuspec`
+> - `src/NodaTime.Serialization.JsonNet/NodaTime.Serialization.JsonNet.nuspec`
+> - `src/NodaTime.Testing/NodaTime.Testing.nuspec`
 
 Add the current date and TZDB version to the version history in
 `www/unstable/userguide/versions.md` and regenerate all documentation.
@@ -129,6 +143,8 @@ First, *create a new clone for building the release*. Doing this avoids the
 need to worry about ignored files and local changes making their way into
 the archives.
 
+Copy the Noda Time private key into the top-level directory.
+
 Use the `buildrelease` batch file to build all the release artifacts:
 
     buildrelease 1.0.0-beta1
@@ -147,11 +163,11 @@ Upload the source and release zipfiles to the project website, under
 the `downloads` directory. (This directory is not mapped in the main source
 control repository ; typically Jon does this on Bagpuss.)
 
-Edit the `www/downloads.html` file to include the new downloads,
+Edit the `www/downloads/index.html` file to include the new downloads,
 including SHA-1 hash.
 
-Update the version number and the links on the front page to point to the new
-downloads.
+If this is a stable release, update the version number and the links on the
+front page to point to the new downloads.
 
 Upload the three NuGet packages to nuget.org:
 
@@ -170,20 +186,8 @@ Post to the mailing list, blog, etc.
 
 ## Post-release updates on the default branch
 
-If this release required the creation of a new branch, then the following files
-on the *default* branch should be updated to bump (at least) the minor version
-number (and `NodaTime.Testing` / `NodaTime.Serialization.JsonNet` dependency version), per the scheme above:
-
-- `src/NodaTime/Properties/AssemblyInfo.cs`
-- `src/NodaTime.Serialization.JsonNet/Properties/AssemblyInfo.cs`
-- `src/NodaTime.Testing/Properties/AssemblyInfo.cs`
-- `src/NodaTime/NodaTime.nuspec`
-- `src/NodaTime.Serialization.JsonNet/NodaTime.Serialization.JsonNet.nuspec`
-- `src/NodaTime.Testing/NodaTime.Testing.nuspec`
-
-The version number string should be of the form `1.1.0-dev`.
-
-Additionally:
+If this release required the creation of a new branch, then the following
+updates need to be made to the default branch for the website:
 
 - the user guide source in `www/unstable/userguide` should be copied to
   `www/$BRANCH/userguide` (except for `versions.md`, which should come from the

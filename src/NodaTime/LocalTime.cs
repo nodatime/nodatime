@@ -9,6 +9,7 @@ using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
 using JetBrains.Annotations;
+using NodaTime.Calendars;
 using NodaTime.Text;
 using NodaTime.Utility;
 
@@ -34,12 +35,29 @@ namespace NodaTime
         /// Local time at midnight, i.e. 0 hours, 0 minutes, 0 seconds.
         /// </summary>
         public static readonly LocalTime Midnight = new LocalTime(0, 0, 0);
+
+        /// <summary>
+        /// Combines this <see cref="LocalTime"/> with the given <see cref="LocalDate"/>
+        /// into a single <see cref="LocalDateTime"/>.
+        /// Fluent alternative to <c>operator+()</c>.
+        /// </summary>
+        /// <param name="date">The date to combine with this time</param>
+        /// <returns>The <see cref="LocalDateTime"/> representation of the given time on this date</returns>
+        [Pure]
+        public LocalDateTime On(LocalDate date)
+        {
+            return date + this;
+        }
+
         /// <summary>
         /// Local time at noon, i.e. 12 hours, 0 minutes, 0 seconds.
         /// </summary>
         public static readonly LocalTime Noon = new LocalTime(12, 0, 0);
-        
-        private readonly LocalInstant localInstant;
+
+        /// <summary>
+        /// Ticks since midnight, in the range [0, 864,000,000,000).
+        /// </summary>
+        private readonly long ticks;
 
         /// <summary>
         /// Creates a local time at the given hour and minute, with second, millisecond-of-second
@@ -53,9 +71,7 @@ namespace NodaTime
         {
             Preconditions.CheckArgumentRange("hour", hour, 0, NodaConstants.HoursPerStandardDay - 1);
             Preconditions.CheckArgumentRange("minute", minute, 0, NodaConstants.MinutesPerHour - 1);
-            localInstant = new LocalInstant(
-                hour * NodaConstants.TicksPerHour +
-                minute * NodaConstants.TicksPerMinute);
+            ticks = unchecked(hour * NodaConstants.TicksPerHour + minute * NodaConstants.TicksPerMinute);
         }
 
         /// <summary>
@@ -72,8 +88,7 @@ namespace NodaTime
             Preconditions.CheckArgumentRange("hour", hour, 0, NodaConstants.HoursPerStandardDay - 1);
             Preconditions.CheckArgumentRange("minute", minute, 0, NodaConstants.MinutesPerHour - 1);
             Preconditions.CheckArgumentRange("second", second, 0, NodaConstants.SecondsPerMinute - 1);
-            localInstant = new LocalInstant(
-                hour * NodaConstants.TicksPerHour +
+            ticks = unchecked(hour * NodaConstants.TicksPerHour +
                 minute * NodaConstants.TicksPerMinute +
                 second * NodaConstants.TicksPerSecond);
         }
@@ -94,7 +109,7 @@ namespace NodaTime
             Preconditions.CheckArgumentRange("minute", minute, 0, NodaConstants.MinutesPerHour - 1);
             Preconditions.CheckArgumentRange("second", second, 0, NodaConstants.SecondsPerMinute - 1);
             Preconditions.CheckArgumentRange("millisecond", millisecond, 0, NodaConstants.MillisecondsPerSecond - 1);
-            localInstant = new LocalInstant(
+            ticks = unchecked(
                 hour * NodaConstants.TicksPerHour +
                 minute * NodaConstants.TicksPerMinute +
                 second * NodaConstants.TicksPerSecond +
@@ -118,7 +133,7 @@ namespace NodaTime
             Preconditions.CheckArgumentRange("second", second, 0, NodaConstants.SecondsPerMinute - 1);
             Preconditions.CheckArgumentRange("millisecond", millisecond, 0, NodaConstants.MillisecondsPerSecond - 1);
             Preconditions.CheckArgumentRange("tickWithinMillisecond", tickWithinMillisecond, 0, NodaConstants.TicksPerMillisecond - 1);
-            localInstant = new LocalInstant(
+            ticks = unchecked(
                 hour * NodaConstants.TicksPerHour +
                 minute * NodaConstants.TicksPerMinute +
                 second * NodaConstants.TicksPerSecond +
@@ -144,7 +159,7 @@ namespace NodaTime
             Preconditions.CheckArgumentRange("minute", minute, 0, NodaConstants.MinutesPerHour - 1);
             Preconditions.CheckArgumentRange("second", second, 0, NodaConstants.SecondsPerMinute - 1);
             Preconditions.CheckArgumentRange("tickWithinSecond", tickWithinSecond, 0, NodaConstants.TicksPerSecond - 1);
-            return new LocalTime(new LocalInstant(
+            return new LocalTime(unchecked(
                 hour * NodaConstants.TicksPerHour +
                 minute * NodaConstants.TicksPerMinute +
                 second * NodaConstants.TicksPerSecond +
@@ -159,7 +174,7 @@ namespace NodaTime
         public static LocalTime FromTicksSinceMidnight(long ticks)
         {
             Preconditions.CheckArgumentRange("ticks", ticks, 0, NodaConstants.TicksPerStandardDay - 1);
-            return new LocalTime(new LocalInstant(ticks));
+            return new LocalTime(ticks);
         }
 
         /// <summary>
@@ -170,7 +185,7 @@ namespace NodaTime
         public static LocalTime FromMillisecondsSinceMidnight(int milliseconds)
         {
             Preconditions.CheckArgumentRange("milliseconds", milliseconds, 0, NodaConstants.MillisecondsPerStandardDay - 1);
-            return new LocalTime(new LocalInstant(milliseconds * NodaConstants.TicksPerMillisecond));
+            return new LocalTime(unchecked(milliseconds * NodaConstants.TicksPerMillisecond));
         }
 
         /// <summary>
@@ -181,57 +196,57 @@ namespace NodaTime
         public static LocalTime FromSecondsSinceMidnight(int seconds)
         {
             Preconditions.CheckArgumentRange("seconds", seconds, 0, NodaConstants.SecondsPerStandardDay - 1);
-            return new LocalTime(new LocalInstant(seconds * NodaConstants.TicksPerSecond));
+            return new LocalTime(unchecked(seconds * NodaConstants.TicksPerSecond));
         }
 
         /// <summary>
         /// Constructor only called from other parts of Noda Time - trusted to be within January 1st 1970 UTC.
         /// </summary>
-        internal LocalTime(LocalInstant localInstant)
+        internal LocalTime(long ticks)
         {
-            this.localInstant = localInstant;
+            this.ticks = ticks;
         }
 
         /// <summary>
         /// Gets the hour of day of this local time, in the range 0 to 23 inclusive.
         /// </summary>
-        public int Hour { get { return CalendarSystem.Iso.GetHourOfDay(localInstant); } }
+        public int Hour { get { return TimeOfDayCalculator.GetHourOfDayFromTickOfDay(ticks); } }
 
         /// <summary>
         /// Gets the hour of the half-day of this local time, in the range 1 to 12 inclusive.
         /// </summary>
-        public int ClockHourOfHalfDay { get { return CalendarSystem.Iso.GetClockHourOfHalfDay(localInstant); } }
+        public int ClockHourOfHalfDay { get { return CalendarSystem.Iso.GetClockHourOfHalfDay(new LocalInstant(ticks)); } }
 
         /// <summary>
         /// Gets the minute of this local time, in the range 0 to 59 inclusive.
         /// </summary>
-        public int Minute { get { return CalendarSystem.Iso.GetMinuteOfHour(localInstant); } }
+        public int Minute { get { return TimeOfDayCalculator.GetMinuteOfHourFromTickOfDay(ticks); } }
 
         /// <summary>
         /// Gets the second of this local time within the minute, in the range 0 to 59 inclusive.
         /// </summary>
-        public int Second { get { return CalendarSystem.Iso.GetSecondOfMinute(localInstant); } }
+        public int Second { get { return TimeOfDayCalculator.GetSecondOfMinuteFromTickOfDay(ticks); } }
 
         /// <summary>
         /// Gets the millisecond of this local time within the second, in the range 0 to 999 inclusive.
         /// </summary>
-        public int Millisecond { get { return CalendarSystem.Iso.GetMillisecondOfSecond(localInstant); } }
+        public int Millisecond { get { return TimeOfDayCalculator.GetMillisecondOfSecondFromTickOfDay(ticks); } }
 
         /// <summary>
         /// Gets the tick of this local time within the second, in the range 0 to 9,999,999 inclusive.
         /// </summary>
-        public int TickOfSecond { get { return CalendarSystem.Iso.GetTickOfSecond(localInstant); } }
+        public int TickOfSecond { get { return TimeOfDayCalculator.GetTickOfSecondFromTickOfDay(ticks); } }
 
         /// <summary>
         /// Gets the tick of this local time within the day, in the range 0 to 863,999,999,999 inclusive.
         /// </summary>
-        public long TickOfDay { get { return localInstant.Ticks; } }
+        public long TickOfDay { get { return ticks; } }
 
         /// <summary>
         /// Returns a <see cref="T:NodaTime.LocalDateTime"/> with this local time, on January 1st 1970 in the ISO
         /// calendar.
         /// </summary>
-        public LocalDateTime LocalDateTime { get { return new LocalDateTime(localInstant); } }
+        public LocalDateTime LocalDateTime { get { return new LocalDateTime(new LocalInstant(ticks)); } }
 
         /// <summary>
         /// Creates a new local time by adding a period to an existing time. The period must not contain
@@ -314,7 +329,7 @@ namespace NodaTime
         /// <returns>True if the two times are the same; false otherwise</returns>
         public static bool operator ==(LocalTime lhs, LocalTime rhs)
         {
-            return lhs.localInstant == rhs.localInstant;
+            return lhs.ticks == rhs.ticks;
         }
 
         /// <summary>
@@ -325,7 +340,7 @@ namespace NodaTime
         /// <returns>False if the two times are the same; true otherwise</returns>
         public static bool operator !=(LocalTime lhs, LocalTime rhs)
         {
-            return lhs.localInstant != rhs.localInstant;
+            return lhs.ticks != rhs.ticks;
         }
 
         /// <summary>
@@ -337,7 +352,7 @@ namespace NodaTime
         /// <returns>true if the <paramref name="lhs"/> is strictly earlier than <paramref name="rhs"/>, false otherwise.</returns>
         public static bool operator <(LocalTime lhs, LocalTime rhs)
         {
-            return lhs.localInstant < rhs.localInstant;
+            return lhs.ticks < rhs.ticks;
         }
 
         /// <summary>
@@ -349,7 +364,7 @@ namespace NodaTime
         /// <returns>true if the <paramref name="lhs"/> is earlier than or equal to <paramref name="rhs"/>, false otherwise.</returns>
         public static bool operator <=(LocalTime lhs, LocalTime rhs)
         {
-            return lhs.localInstant <= rhs.localInstant;
+            return lhs.ticks <= rhs.ticks;
         }
 
         /// <summary>
@@ -361,7 +376,7 @@ namespace NodaTime
         /// <returns>true if the <paramref name="lhs"/> is strictly later than <paramref name="rhs"/>, false otherwise.</returns>
         public static bool operator >(LocalTime lhs, LocalTime rhs)
         {
-            return lhs.localInstant > rhs.localInstant;
+            return lhs.ticks > rhs.ticks;
         }
 
         /// <summary>
@@ -373,7 +388,7 @@ namespace NodaTime
         /// <returns>true if the <paramref name="lhs"/> is later than or equal to <paramref name="rhs"/>, false otherwise.</returns>
         public static bool operator >=(LocalTime lhs, LocalTime rhs)
         {
-            return lhs.localInstant >= rhs.localInstant;
+            return lhs.ticks >= rhs.ticks;
         }
 
         /// <summary>
@@ -385,7 +400,7 @@ namespace NodaTime
         /// later than <paramref name="other"/>.</returns>
         public int CompareTo(LocalTime other)
         {
-            return localInstant.CompareTo(other.localInstant);
+            return ticks.CompareTo(other.ticks);
         }
 
         /// <summary>
@@ -415,7 +430,7 @@ namespace NodaTime
         /// <returns>A hash code for this local time.</returns>
         public override int GetHashCode()
         {
-            return localInstant.GetHashCode();
+            return ticks.GetHashCode();
         }
 
         /// <summary>
@@ -513,7 +528,7 @@ namespace NodaTime
         /// Returns a <see cref="System.String" /> that represents this instance.
         /// </summary>
         /// <returns>
-        /// The value of the current instance in the standard format pattern, using the current thread's
+        /// The value of the current instance in the default format pattern ("T"), using the current thread's
         /// culture to obtain a format provider.
         /// </returns>
         public override string ToString()
@@ -528,7 +543,7 @@ namespace NodaTime
         /// A <see cref="T:System.String" /> containing the value of the current instance in the specified format.
         /// </returns>
         /// <param name="patternText">The <see cref="T:System.String" /> specifying the pattern to use,
-        /// or null to use the default format pattern.
+        /// or null to use the default format pattern ("T").
         /// </param>
         /// <param name="formatProvider">The <see cref="T:System.IFormatProvider" /> to use when formatting the value,
         /// or null to use the current thread's culture to obtain a format provider.
@@ -568,13 +583,14 @@ namespace NodaTime
         #region Binary serialization
         private const string TickOfDaySerializationName = "ticks";
 
+        // TODO: Validation!
         /// <summary>
         /// Private constructor only present for serialization.
         /// </summary>
         /// <param name="info">The <see cref="SerializationInfo"/> to fetch data from.</param>
         /// <param name="context">The source for this deserialization.</param>
         private LocalTime(SerializationInfo info, StreamingContext context)
-            : this(new LocalInstant(info.GetInt64(TickOfDaySerializationName)))
+            : this(info.GetInt64(TickOfDaySerializationName))
         {
         }
 
@@ -583,9 +599,10 @@ namespace NodaTime
         /// </summary>
         /// <param name="info">The <see cref="SerializationInfo"/> to populate with data.</param>
         /// <param name="context">The destination for this serialization.</param>
+        [System.Security.SecurityCritical]
         void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)
         {
-            info.AddValue(TickOfDaySerializationName, localInstant.Ticks);
+            info.AddValue(TickOfDaySerializationName, ticks);
         }
         #endregion
 #endif

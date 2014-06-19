@@ -42,7 +42,12 @@ namespace NodaTime.Serialization.JsonNet
         /// Converter for intervals. This must be used in a serializer which also has an instant converter.
         /// </summary>
         public static readonly JsonConverter IntervalConverter = new NodaIntervalConverter();
-        
+
+        /// <summary>
+        /// Converter for intervals using extended ISO-8601 format, as output by <see cref="Interval.ToString"/>.
+        /// </summary>
+        public static readonly JsonConverter IsoIntervalConverter = new NodaIsoIntervalConverter();
+
         /// <summary>
         /// Converter for offsets.
         /// </summary>
@@ -52,7 +57,7 @@ namespace NodaTime.Serialization.JsonNet
         /// Converter for offset date/times.
         /// </summary>
         public static readonly JsonConverter OffsetDateTimeConverter = new NodaPatternConverter<OffsetDateTime>(
-            OffsetDateTimePattern.ExtendedIsoPattern, CreateIsoValidator<OffsetDateTime>(x => x.Calendar));
+            OffsetDateTimePattern.Rfc3339Pattern, CreateIsoValidator<OffsetDateTime>(x => x.Calendar));
 
         /// <summary>
         /// Creates a converter for zoned date/times, using the given time zone provider.

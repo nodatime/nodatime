@@ -3,6 +3,7 @@
 // as found in the LICENSE.txt file.
 
 using System;
+using NodaTime.Utility;
 using NUnit.Framework;
 
 namespace NodaTime.Test
@@ -60,6 +61,20 @@ namespace NodaTime.Test
             Assert.AreEqual(53, new LocalDate(2009, 12, 28).WeekOfWeekYear);
             Assert.AreEqual(53, new LocalDate(2010, 1, 3).WeekOfWeekYear);
             Assert.AreEqual(1, new LocalDate(2010, 1, 4).WeekOfWeekYear);
+        }
+
+        [Test]
+        public void IsoDayOfWeek_AroundEpoch()
+        {
+            // Test about couple of months around the Unix epoch. If that works, I'm confident the rest will.
+            LocalDate date = new LocalDate(1969, 12, 1);
+            for (int i = 0; i < 60; i++)
+            {
+                Assert.AreEqual(
+                    BclConversions.ToIsoDayOfWeek(date.AtMidnight().ToDateTimeUnspecified().DayOfWeek),
+                    date.IsoDayOfWeek);
+                date = date.PlusDays(1);
+            }
         }
     }
 }

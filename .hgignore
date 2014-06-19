@@ -63,5 +63,15 @@ syntax:regexp
 
 # Temporary build output directories
 ^tmpdocs
+^tmpwebdir
 ^tzdbtmp
 ^SandcastleStyleTmp
+
+# NuGet packages (but not the configuration)
+^src/packages/.*/
+
+# Local copy of benchmark data, used for testing the dynamic part of the web site
+^src/NodaTime.Web/benchmarkdata/
+
+# Roslyn temporary files
+^src/.*\.sln\.ide/

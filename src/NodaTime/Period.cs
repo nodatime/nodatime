@@ -816,7 +816,7 @@ namespace NodaTime
         }
         #endregion
 
-        #if !PCL
+#if !PCL
         #region Binary serialization
         private const string YearsSerializationName = "years";
         private const string MonthsSerializationName = "months";
@@ -851,6 +851,7 @@ namespace NodaTime
         /// </summary>
         /// <param name="info">The <see cref="SerializationInfo"/> to populate with data.</param>
         /// <param name="context">The destination for this serialization.</param>
+        [System.Security.SecurityCritical]
         void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)
         {
             info.AddValue(YearsSerializationName, years);

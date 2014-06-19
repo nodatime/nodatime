@@ -13,25 +13,65 @@ details.
 
 Major features:
 
-- ...
+- TODO: better calendar support?
 
 API changes:
 
-- ...
+- Added support for the Hebrew calendar, via
+  `CalendarSystem.GetHebrewCalendar(HebrewMonthNumbering)`
+- Added support for the Persian/Solar Hijri calendar, via
+  `CalendarSystem.GetPersianCalendar()`
+- Added `Era.AnnoPersico` (for the Persian calendar)
+- Added `LocalDate.At(LocalTime)` and `LocalTime.On(LocalDate)`, more
+  discoverable versions of `LocalDate + LocalTime` ([issue 192][])
+- Added `OffsetDateTime.WithOffset()`, which returns an `OffsetDateTime`
+  representing the same point in time, but using a given offset ([issue 246][])
+- Added `CreateWithInvariantCulture()` to `OffsetDateTimePattern`, and
+  `CreateWithCurrentCulture()` to both `OffsetDateTimePattern` and
+  `ZonedDateTimePattern`
+- `ZonedDateTimePattern` patterns containing the `G` and `F` standard patterns
+  can now be used for parsing when used with a zone provider ([issue 277][])
+- Marked the desktop assembly with the `AllowPartiallyTrustedCallers`
+  attribute (and relevant types with the `SecurityCritical` attribute),
+  allowing it to be used in partially-trusted contexts (issues [268][issue 268]
+  and [272][issue 272])
+- Changed the previously-undocumented format for `Interval.ToString()` to
+  ISO-8601 interval format ([issue 270][])
 
 Newly-obsolete members:
 
-- ...
+- TODO: none so far
+
+API changes for NodaTime.Serialization.JsonNet:
+
+- Added `JsonSerializerSettings.WithIsoIntervalConverter()` and
+  `JsonSerializer.WithIsoIntervalConverter()` extension methods, which change
+  the representation of a serialized `Interval` from the object-based format
+  (with 'Start' and 'End' properties) to the string representation using the
+  ISO-8601 interval format ([issue 270][])
+- Added `NodaConverters.IsoIntervalConverter`, which provides access to the
+  `JsonConverter` used for the ISO-8601 interval format
 
 API changes for NodaTime.Testing:
 
-- ...
+- TODO: none so far
 
 Bug fixes:
 
-- ...
+- Fixed recognition of time zone transitions that only adjusted the way a given
+  offset is divided between standard and daylight saving time (e.g. the UK,
+  1968-1971)
+- Fixed a bug where formatting a time with a whole number of seconds using a
+  fractional-second format in a locale that doesn't use '.' as a decimal
+  separator could erroneously cause the result to have a trailing '.'
+  ([issue 273][])
 
 Other:
+
+- API documentation now indicates which versions of Noda Time support the given
+  member
+- Significantly improved the performance of various parsing/formatting and
+  point-in-time calculation methods
 
 ## 1.2.0, released 2013-11-16 with tzdb 2013h
 

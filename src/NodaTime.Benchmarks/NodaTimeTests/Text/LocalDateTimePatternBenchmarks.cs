@@ -7,6 +7,7 @@ using NodaTime.Text;
 
 namespace NodaTime.Benchmarks.NodaTimeTests.Text
 {
+    [Category("Text")]
     internal class LocalDateTimePatternBenchmarks
     {
         private static readonly LocalDateTime SampleLocalDateTime = new LocalDateTime(2009, 12, 26, 10, 8, 30);

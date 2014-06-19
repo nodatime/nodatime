@@ -7,6 +7,7 @@ using NodaTime.Benchmarks.Framework;
 
 namespace NodaTime.Benchmarks.BclTests
 {
+    [Category("BCL")]
     internal class UtcDateTimeBenchmarks
     {
         private readonly DateTime sample = new DateTime(2009, 12, 26, 10, 8, 30, DateTimeKind.Utc);

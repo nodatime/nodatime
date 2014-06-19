@@ -30,6 +30,7 @@ The following standard patterns are supported:
 
 - `G`: The culture's [short date pattern](http://msdn.microsoft.com/en-us/library/system.globalization.datetimeformatinfo.shortdatepattern.aspx) followed by a space,
   followed by the [long time pattern](http://msdn.microsoft.com/en-us/library/system.globalization.datetimeformatinfo.longtimepattern.aspx).
+  This is the default format pattern.
 
 Custom Patterns
 ---------------

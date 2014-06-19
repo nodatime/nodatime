@@ -2,12 +2,17 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
+using NodaTime.Benchmarks.BclTests;
 using NodaTime.Benchmarks.Framework;
 
 namespace NodaTime.Benchmarks.NodaTimeTests
 {
     internal class CachedDateTimeZoneBenchmarks
     {
+        private static readonly DateTimeZone Pacific = DateTimeZoneProviders.Tzdb["America/Los_Angeles"];
+        private static readonly Instant SummerUtc = Instant.FromDateTimeUtc(TimeZoneInfoBenchmarks.SummerUtc);
+        private static readonly LocalDateTime SummerLocal = SummerUtc.InZone(Pacific).LocalDateTime;
+
         private readonly Instant[] cacheInstants = new Instant[100];
         private readonly Instant[] noCacheInstants = new Instant[500];
         private readonly DateTimeZone paris = DateTimeZoneProviders.Tzdb["Europe/Paris"];
@@ -67,6 +72,18 @@ namespace NodaTime.Benchmarks.NodaTimeTests
         public void GetUtcOffset()
         {
             paris.GetUtcOffset(NodaConstants.UnixEpoch);
+        }
+
+        [Benchmark]
+        public void ConvertUtcToLocal()
+        {
+            SummerUtc.InZone(Pacific);
+        }
+
+        [Benchmark]
+        public void ConvertLocalToUtc()
+        {
+            SummerLocal.InZoneStrictly(Pacific);
         }
     }
 }

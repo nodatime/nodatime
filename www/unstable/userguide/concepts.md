@@ -123,6 +123,9 @@ although a few useful methods are exposed. Most of the time even if you
 an appropriate object, and then pass it to other constructors etc as a
 little bundle of magic which simply does the right thing for you.
 
+See the [calendars documentation](calendars.html) for more details about
+which calendar systems are supported.
+
 <a name="time-zones">Time zones</a>
 -----------------------------------
 

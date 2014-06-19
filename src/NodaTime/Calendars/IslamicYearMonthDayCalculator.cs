@@ -65,7 +65,7 @@ namespace NodaTime.Calendars
         }
 
         internal IslamicYearMonthDayCalculator(IslamicLeapYearPattern leapYearPattern, IslamicEpoch epoch)
-            : base(1, 31513, 12, TicksPerNonLeapYear, AverageTicksPerYear, GetYear1Ticks(epoch), Era.AnnoHegirae)
+            : base(1, 31513, 12, AverageTicksPerYear, GetYear1Ticks(epoch), Era.AnnoHegirae)
         {
             this.daysAtStartOfYear1 = (int) (TicksAtStartOfYear1 / NodaConstants.TicksPerStandardDay);
             this.leapYearPatternBits = GetLeapYearPatternBits(leapYearPattern);
@@ -115,6 +115,13 @@ namespace NodaTime.Calendars
         internal override int GetDaysInYear(int year)
         {
             return IsLeapYear(year) ? DaysPerLeapYear : DaysPerNonLeapYear;
+        }
+
+        protected override long GetTicksInYear(int year)
+        {
+            return IsLeapYear(year)
+                ? DaysPerLeapYear * NodaConstants.TicksPerStandardDay
+                : DaysPerNonLeapYear * NodaConstants.TicksPerStandardDay;
         }
 
         internal override int GetDaysInMonth(int year, int month)

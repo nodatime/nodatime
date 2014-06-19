@@ -2,6 +2,7 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -14,9 +15,9 @@ namespace NodaTime.Text.Patterns
     internal sealed class CompositePattern<T> : IPartialPattern<T>
     {
         private readonly List<IPartialPattern<T>> parsePatterns;
-        private readonly NodaFunc<T, IPartialPattern<T>> formatPatternPicker;
+        private readonly Func<T, IPartialPattern<T>> formatPatternPicker;
 
-        internal CompositePattern(IEnumerable<IPartialPattern<T>> parsePatterns, NodaFunc<T, IPartialPattern<T>> formatPatternPicker)
+        internal CompositePattern(IEnumerable<IPartialPattern<T>> parsePatterns, Func<T, IPartialPattern<T>> formatPatternPicker)
         {
             this.parsePatterns = new List<IPartialPattern<T>>(parsePatterns);
             this.formatPatternPicker = formatPatternPicker;
@@ -32,7 +33,7 @@ namespace NodaTime.Text.Patterns
                     return result;
                 }
             }
-            return ParseResult<T>.NoMatchingFormat;
+            return ParseResult<T>.NoMatchingFormat(new ValueCursor(text));
         }
 
         public string Format(T value)
@@ -52,7 +53,8 @@ namespace NodaTime.Text.Patterns
                     return result;
                 }
             }
-            return ParseResult<T>.NoMatchingFormat;
+            cursor.Move(index);
+            return ParseResult<T>.NoMatchingFormat(cursor);
         }
 
         public void FormatPartial(T value, StringBuilder builder)

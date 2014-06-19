@@ -79,6 +79,15 @@ namespace NodaTime.Test
         }
 
         [Test]
+        public void ToStringUsesExtendedIsoFormat()
+        {
+            var start = new LocalDateTime(2013, 4, 12, 17, 53, 23, 123, 4567).InUtc().ToInstant();
+            var end = new LocalDateTime(2013, 10, 12, 17, 1, 2, 120).InUtc().ToInstant();
+            var value = new Interval(start, end);
+            Assert.AreEqual("2013-04-12T17:53:23.1234567Z/2013-10-12T17:01:02.12Z", value.ToString());
+        }
+
+        [Test]
         public void XmlSerialization()
         {
             var start = new LocalDateTime(2013, 4, 12, 17, 53, 23, 123, 4567).InUtc().ToInstant();

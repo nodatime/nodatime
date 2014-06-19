@@ -17,7 +17,8 @@ namespace NodaTime.Text
         /// are incompatible field values.
         /// </summary>
         /// <param name="usedFields">Indicates which fields were part of the original text pattern.</param>
-        internal abstract ParseResult<T> CalculateValue(PatternFields usedFields);
+        /// <param name="value">Complete value being parsed</param>
+        internal abstract ParseResult<T> CalculateValue(PatternFields usedFields, string value);
 
         /// <summary>
         /// Convenience method to check whether a particular field has been used. It's here as it'll primarily
