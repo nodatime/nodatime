@@ -47,7 +47,7 @@ using System.Runtime.CompilerServices;
 
 [assembly: AssemblyVersion("1.3")]
 [assembly: AssemblyFileVersion("1.3.0")]
-[assembly: AssemblyInformationalVersion("1.3.0-dev")]
+[assembly: AssemblyInformationalVersion("1.3.0-beta1")]
 [assembly: CLSCompliant(true)]
 [assembly: NeutralResourcesLanguage("en")]
 
