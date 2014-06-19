@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>NodaTime.Serialization.JsonNet</id>
-    <version>1.3.0-dev-20140518</version>
+    <version>1.3.0-beta1</version>
     <authors>Jon Skeet</authors>
     <owners>Jon Skeet</owners>
     <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
@@ -18,7 +18,7 @@
     </description>
     <tags>nodatime json</tags>
     <dependencies>
-      <dependency id="NodaTime" version="1.3.0-dev" />
+      <dependency id="NodaTime" version="1.3.0-beta1" />
       <dependency id="newtonsoft.json" version="4.5.11" />
     </dependencies>
   </metadata>
