@@ -321,24 +321,6 @@ namespace NodaTime.TimeZones
             writer.WriteOffset(Offset.FromTicks(timeOfDay.LocalDateTime.LocalInstant.Ticks));
         }
 
-        /// <summary>
-        /// Writes this object to the given <see cref="LegacyDateTimeZoneWriter"/>.
-        /// </summary>
-        /// <param name="writer">Where to send the output.</param>
-        internal void WriteLegacy(LegacyDateTimeZoneWriter writer)
-        {
-            writer.WriteCount((int) mode);
-            // Day of month can range from -31 to 31, so we add a suitable amount to force it to be positive.
-            // The other values cannot, but we offset them for legacy reasons.
-            writer.WriteCount(monthOfYear + 12);
-            writer.WriteCount(dayOfMonth + 31);
-            writer.WriteCount(dayOfWeek + 7);
-            writer.WriteBoolean(advance);
-            // The time of day is written as an offset for historical reasons.
-            writer.WriteOffset(Offset.FromTicks(timeOfDay.LocalDateTime.LocalInstant.Ticks));
-            writer.WriteBoolean(addDay);
-        }
-
         public static ZoneYearOffset Read(IDateTimeZoneReader reader)
         {
             Preconditions.CheckNotNull(reader, "reader");
@@ -352,22 +334,6 @@ namespace NodaTime.TimeZones
             // The time of day is written as an offset for historical reasons.
             var ticksOfDay = reader.ReadOffset();
             return new ZoneYearOffset(mode, monthOfYear, dayOfMonth, dayOfWeek, advance, 
-                new LocalTime(ticksOfDay.Ticks), addDay);
-        }
-
-        public static ZoneYearOffset ReadLegacy(LegacyDateTimeZoneReader reader)
-        {
-            Preconditions.CheckNotNull(reader, "reader");
-            var mode = (TransitionMode) reader.ReadCount();
-            // Remove the additions performed before
-            int monthOfYear = reader.ReadCount() - 12;
-            int dayOfMonth = reader.ReadCount() - 31;
-            int dayOfWeek = reader.ReadCount() - 7;
-            bool advance = reader.ReadBoolean();
-            // The time of day is written as an offset for historical reasons.
-            var ticksOfDay = reader.ReadOffset();
-            var addDay = reader.ReadBoolean();
-            return new ZoneYearOffset(mode, monthOfYear, dayOfMonth, dayOfWeek, advance,
                 new LocalTime(ticksOfDay.Ticks), addDay);
         }
 

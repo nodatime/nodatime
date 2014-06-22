@@ -74,29 +74,6 @@ namespace NodaTime.TimeZones
         }
 
         #region I/O
-        /// <summary>
-        /// Writes the time zone to the specified writer.
-        /// </summary>
-        /// <param name="writer">The writer to write to.</param>
-        internal void WriteLegacy(LegacyDateTimeZoneWriter writer)
-        {
-            Preconditions.CheckNotNull(writer, "writer");
-            writer.WriteTimeZone(timeZone);
-        }
-
-        /// <summary>
-        /// Reads the zone from the specified reader.
-        /// </summary>
-        /// <param name="reader">The reader.</param>
-        /// <param name="id">The id.</param>
-        /// <returns></returns>
-        internal static DateTimeZone ReadLegacy(LegacyDateTimeZoneReader reader, string id)
-        {
-            Preconditions.CheckNotNull(reader, "reader");
-            var timeZone = reader.ReadTimeZone(id);
-            return ForZone(timeZone);
-        }
-
         protected override bool EqualsImpl(DateTimeZone zone)
         {
             return TimeZone.Equals(((CachedDateTimeZone) zone).TimeZone);

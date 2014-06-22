@@ -22,3 +22,9 @@ using these is simply a matter of using the correct name instead:
 In addition, `DateTimeZoneProviders.Default` has been removed. It wasn't the default in any Noda 
 Time code, and it's clearer to use the `DateTimeZoneProviders.Tzdb` member, which the `Default`
 member was equivalent to anyway.
+
+Support for the resource-based time zone database format was removed in Noda Time 2.0. In terms
+of the public API, this just meant removing three `TzdbDateTimeZoneSource` constructors, and
+removing some documented edge cases where the legacy resource format didn't include as much
+information as the more recent "nzd" format. If you were previously using the resource format,
+just move to the "nzd" format, using the static factory members of `TzdbDateTimeZoneSource`.
