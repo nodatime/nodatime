@@ -116,7 +116,7 @@ namespace NodaTime
         /// Initializes a new instance of the <see cref="Duration"/> struct.
         /// </summary>
         /// <param name="ticks">The number of ticks.</param>
-        internal Duration(long ticks)
+        private Duration(long ticks)
         {
             this.ticks = ticks;
         }

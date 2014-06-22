@@ -231,7 +231,7 @@ namespace NodaTime
         /// <returns>A new <see cref="Instant" /> representing the difference of the given values.</returns>
         public static Duration operator -(Instant left, Instant right)
         {
-            return new Duration(left.Ticks - right.Ticks);
+            return Duration.FromTicks(left.Ticks - right.Ticks);
         }
 
         /// <summary>

@@ -96,7 +96,7 @@ namespace NodaTime
         /// </summary>
         public static Duration operator -(LocalInstant left, LocalInstant right)
         {
-            return new Duration(left.Ticks - right.Ticks);
+            return Duration.FromTicks(left.Ticks - right.Ticks);
         }
 
         /// <summary>
