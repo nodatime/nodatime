@@ -20,7 +20,7 @@ namespace NodaTime.Benchmarks.NodaTimeTests.JsonNet
         private static readonly Offset sampleOffset = Offset.FromHoursAndMinutes(5, 30);
         private static readonly OffsetDateTime sampleOffsetDateTime = sampleLocalDateTime.WithOffset(sampleOffset);
         private static readonly ZonedDateTime sampleZonedDateTime = sampleInstant.InZone(sampleDateTimeZone);
-        private static readonly Duration sampleDuration = new Duration(1234567890L);
+        private static readonly Duration sampleDuration = Duration.FromTicks(1234567890L);
         private static readonly Period samplePeriod = new PeriodBuilder { Days = 1, Hours = 20, Seconds = 3, Milliseconds = 5 }.Build();
         private static readonly Interval sampleInterval = new Interval(sampleInstant, sampleInstant + sampleDuration);
 

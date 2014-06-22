@@ -19,6 +19,6 @@ namespace NodaTime.Benchmarks.Framework
             stopwatch.Start();
         }
 
-        public Duration ElapsedTime { get { return new Duration(stopwatch.Elapsed.Ticks); } }
+        public Duration ElapsedTime { get { return Duration.FromTimeSpan(stopwatch.Elapsed); } }
     }
 }
