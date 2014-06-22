@@ -390,9 +390,9 @@ namespace NodaTime.Test
         [Test]
         public void Constructor_ArgumentValidation()
         {
-            Assert.Throws<ArgumentNullException>(() => new ZonedDateTime(new Instant(1000), null));
-            Assert.Throws<ArgumentNullException>(() => new ZonedDateTime(new Instant(1000), null, CalendarSystem.Iso));
-            Assert.Throws<ArgumentNullException>(() => new ZonedDateTime(new Instant(1000), SampleZone, null));
+            Assert.Throws<ArgumentNullException>(() => new ZonedDateTime(Instant.FromTicksSinceUnixEpoch(1000), null));
+            Assert.Throws<ArgumentNullException>(() => new ZonedDateTime(Instant.FromTicksSinceUnixEpoch(1000), null, CalendarSystem.Iso));
+            Assert.Throws<ArgumentNullException>(() => new ZonedDateTime(Instant.FromTicksSinceUnixEpoch(1000), SampleZone, null));
         }
 
         [Test]

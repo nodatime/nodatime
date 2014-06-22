@@ -124,8 +124,8 @@ namespace NodaTime.TimeZones
                 /// </summary>
                 internal static HashCacheNode CreateNode(int period, IZoneIntervalMap map)
                 {
-                    var periodStart = new Instant((long)period << PeriodShift);
-                    var periodEnd = new Instant((long)(period + 1) << PeriodShift);
+                    var periodStart = Instant.FromTicksSinceUnixEpoch((long)period << PeriodShift);
+                    var periodEnd = Instant.FromTicksSinceUnixEpoch((long)(period + 1) << PeriodShift);
 
                     var interval = map.GetZoneInterval(periodStart);
                     var node = new HashCacheNode(interval, period, null);

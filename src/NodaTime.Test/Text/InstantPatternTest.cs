@@ -84,7 +84,7 @@ namespace NodaTime.Test.Text
         public void OutOfRange_Low()
         {
             var ticks = CalendarSystem.Iso.MinTicks - 1;
-            var formatted = InstantPattern.ExtendedIsoPattern.Format(new Instant(ticks));
+            var formatted = InstantPattern.ExtendedIsoPattern.Format(Instant.FromTicksSinceUnixEpoch(ticks));
             StringAssert.StartsWith(InstantPattern.OutOfRangeLabel, formatted);
         }
 
@@ -92,15 +92,15 @@ namespace NodaTime.Test.Text
         public void OutOfRange_High()
         {
             var ticks = CalendarSystem.Iso.MaxTicks + 1;
-            var formatted = InstantPattern.ExtendedIsoPattern.Format(new Instant(ticks));
+            var formatted = InstantPattern.ExtendedIsoPattern.Format(Instant.FromTicksSinceUnixEpoch(ticks));
             StringAssert.StartsWith(InstantPattern.OutOfRangeLabel, formatted);
         }
 
         [Test]
         public void Extremities()
         {
-            AssertRoundTrip(new Instant(CalendarSystem.Iso.MinTicks), InstantPattern.ExtendedIsoPattern);
-            AssertRoundTrip(new Instant(CalendarSystem.Iso.MaxTicks), InstantPattern.ExtendedIsoPattern);
+            AssertRoundTrip(Instant.FromTicksSinceUnixEpoch(CalendarSystem.Iso.MinTicks), InstantPattern.ExtendedIsoPattern);
+            AssertRoundTrip(Instant.FromTicksSinceUnixEpoch(CalendarSystem.Iso.MaxTicks), InstantPattern.ExtendedIsoPattern);
         }
 
         /// <summary>

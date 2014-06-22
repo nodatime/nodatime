@@ -19,7 +19,7 @@ namespace NodaTime.Serialization.Test.JsonNet
             var explicitSerializer = new JsonSerializer {
                 Converters = { NodaConverters.IntervalConverter, NodaConverters.InstantConverter }
             };
-            var interval = new Interval(new Instant(1000L), new Instant(20000L));
+            var interval = new Interval(Instant.FromTicksSinceUnixEpoch(1000L), Instant.FromTicksSinceUnixEpoch(20000L));
             Assert.AreEqual(Serialize(interval, explicitSerializer),
                 Serialize(interval, configuredSerializer));
         }
@@ -29,7 +29,7 @@ namespace NodaTime.Serialization.Test.JsonNet
         {
             var configuredSerializer = new JsonSerializer().ConfigureForNodaTime(DateTimeZoneProviders.Tzdb).WithIsoIntervalConverter();
             var explicitSerializer = new JsonSerializer { Converters = { NodaConverters.IsoIntervalConverter } };
-            var interval = new Interval(new Instant(1000L), new Instant(20000L));
+            var interval = new Interval(Instant.FromTicksSinceUnixEpoch(1000L), Instant.FromTicksSinceUnixEpoch(20000L));
             Assert.AreEqual(Serialize(interval, explicitSerializer),
                 Serialize(interval, configuredSerializer));
         }
@@ -42,7 +42,7 @@ namespace NodaTime.Serialization.Test.JsonNet
             {
                 Converters = { NodaConverters.IntervalConverter, NodaConverters.InstantConverter }
             };
-            var interval = new Interval(new Instant(1000L), new Instant(20000L));
+            var interval = new Interval(Instant.FromTicksSinceUnixEpoch(1000L), Instant.FromTicksSinceUnixEpoch(20000L));
             Assert.AreEqual(JsonConvert.SerializeObject(interval, explicitSettings),
                 JsonConvert.SerializeObject(interval, configuredSettings));
         }
@@ -52,7 +52,7 @@ namespace NodaTime.Serialization.Test.JsonNet
         {
             var configuredSettings = new JsonSerializerSettings().ConfigureForNodaTime(DateTimeZoneProviders.Tzdb).WithIsoIntervalConverter();
             var explicitSettings = new JsonSerializerSettings { Converters = { NodaConverters.IsoIntervalConverter } };
-            var interval = new Interval(new Instant(1000L), new Instant(20000L));
+            var interval = new Interval(Instant.FromTicksSinceUnixEpoch(1000L), Instant.FromTicksSinceUnixEpoch(20000L));
             Assert.AreEqual(JsonConvert.SerializeObject(interval, explicitSettings),
                 JsonConvert.SerializeObject(interval, configuredSettings));
         }

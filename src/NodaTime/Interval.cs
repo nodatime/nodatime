@@ -237,8 +237,8 @@ namespace NodaTime
         /// <param name="info">The <see cref="SerializationInfo"/> to fetch data from.</param>
         /// <param name="context">The source for this deserialization.</param>
         private Interval(SerializationInfo info, StreamingContext context)
-            : this(new Instant(info.GetInt64(StartTicksSerializationName)),
-                   new Instant(info.GetInt64(EndTicksSerializationName)))
+            : this(Instant.FromTicksSinceUnixEpoch(info.GetInt64(StartTicksSerializationName)),
+                   Instant.FromTicksSinceUnixEpoch(info.GetInt64(EndTicksSerializationName)))
         {
         }
 

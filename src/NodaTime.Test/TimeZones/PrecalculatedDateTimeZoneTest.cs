@@ -206,8 +206,8 @@ namespace NodaTime.Test.TimeZones
         {
             ZoneInterval[] intervals =
             {
-                new ZoneInterval("foo", Instant.MinValue, new Instant(20), Offset.Zero, Offset.Zero),
-                new ZoneInterval("foo", new Instant(20), Instant.MaxValue, Offset.Zero, Offset.Zero),                                       
+                new ZoneInterval("foo", Instant.MinValue, Instant.FromTicksSinceUnixEpoch(20), Offset.Zero, Offset.Zero),
+                new ZoneInterval("foo", Instant.FromTicksSinceUnixEpoch(20), Instant.MaxValue, Offset.Zero, Offset.Zero),                                       
             };
             var zone = new PrecalculatedDateTimeZone("Test", intervals, null);
             Assert.AreEqual(intervals[1], zone.GetZoneInterval(Instant.MaxValue));
@@ -225,8 +225,8 @@ namespace NodaTime.Test.TimeZones
         {
             ZoneInterval[] intervals =
             {
-                new ZoneInterval("foo", new Instant(10), new Instant(20), Offset.Zero, Offset.Zero),
-                new ZoneInterval("foo", new Instant(20), new Instant(30), Offset.Zero, Offset.Zero),                                       
+                new ZoneInterval("foo", Instant.FromTicksSinceUnixEpoch(10), Instant.FromTicksSinceUnixEpoch(20), Offset.Zero, Offset.Zero),
+                new ZoneInterval("foo", Instant.FromTicksSinceUnixEpoch(20), Instant.FromTicksSinceUnixEpoch(30), Offset.Zero, Offset.Zero),                                       
             };
             Assert.Throws<ArgumentException>(() => PrecalculatedDateTimeZone.ValidatePeriods(intervals, DateTimeZone.Utc));
         }
@@ -236,8 +236,8 @@ namespace NodaTime.Test.TimeZones
         {
             ZoneInterval[] intervals =
             {
-                new ZoneInterval("foo", Instant.MinValue, new Instant(20), Offset.Zero, Offset.Zero),
-                new ZoneInterval("foo", new Instant(25), new Instant(30), Offset.Zero, Offset.Zero),                                       
+                new ZoneInterval("foo", Instant.MinValue, Instant.FromTicksSinceUnixEpoch(20), Offset.Zero, Offset.Zero),
+                new ZoneInterval("foo", Instant.FromTicksSinceUnixEpoch(25), Instant.FromTicksSinceUnixEpoch(30), Offset.Zero, Offset.Zero),                                       
             };
             Assert.Throws<ArgumentException>(() => PrecalculatedDateTimeZone.ValidatePeriods(intervals, DateTimeZone.Utc));
         }
@@ -247,10 +247,10 @@ namespace NodaTime.Test.TimeZones
         {
             ZoneInterval[] intervals =
             {
-                new ZoneInterval("foo", Instant.MinValue, new Instant(20), Offset.Zero, Offset.Zero),
-                new ZoneInterval("foo", new Instant(20), new Instant(30), Offset.Zero, Offset.Zero),                                       
-                new ZoneInterval("foo", new Instant(30), new Instant(100), Offset.Zero, Offset.Zero),                                       
-                new ZoneInterval("foo", new Instant(100), new Instant(200), Offset.Zero, Offset.Zero),                                       
+                new ZoneInterval("foo", Instant.MinValue, Instant.FromTicksSinceUnixEpoch(20), Offset.Zero, Offset.Zero),
+                new ZoneInterval("foo", Instant.FromTicksSinceUnixEpoch(20), Instant.FromTicksSinceUnixEpoch(30), Offset.Zero, Offset.Zero),                                       
+                new ZoneInterval("foo", Instant.FromTicksSinceUnixEpoch(30), Instant.FromTicksSinceUnixEpoch(100), Offset.Zero, Offset.Zero),                                       
+                new ZoneInterval("foo", Instant.FromTicksSinceUnixEpoch(100), Instant.FromTicksSinceUnixEpoch(200), Offset.Zero, Offset.Zero),                                       
             };
             PrecalculatedDateTimeZone.ValidatePeriods(intervals, DateTimeZone.Utc);
         }
@@ -260,8 +260,8 @@ namespace NodaTime.Test.TimeZones
         {
             ZoneInterval[] intervals =
             {
-                new ZoneInterval("foo", Instant.MinValue, new Instant(20), Offset.Zero, Offset.Zero),
-                new ZoneInterval("foo", new Instant(20), new Instant(30), Offset.Zero, Offset.Zero)                                      
+                new ZoneInterval("foo", Instant.MinValue, Instant.FromTicksSinceUnixEpoch(20), Offset.Zero, Offset.Zero),
+                new ZoneInterval("foo", Instant.FromTicksSinceUnixEpoch(20), Instant.FromTicksSinceUnixEpoch(30), Offset.Zero, Offset.Zero)                                      
             };
             Assert.Throws<ArgumentException>(() => PrecalculatedDateTimeZone.ValidatePeriods(intervals, null));
         }
@@ -271,8 +271,8 @@ namespace NodaTime.Test.TimeZones
         {
             ZoneInterval[] intervals =
             {
-                new ZoneInterval("foo", Instant.MinValue, new Instant(20), Offset.Zero, Offset.Zero),
-                new ZoneInterval("foo", new Instant(20), Instant.MaxValue, Offset.Zero, Offset.Zero),                                       
+                new ZoneInterval("foo", Instant.MinValue, Instant.FromTicksSinceUnixEpoch(20), Offset.Zero, Offset.Zero),
+                new ZoneInterval("foo", Instant.FromTicksSinceUnixEpoch(20), Instant.MaxValue, Offset.Zero, Offset.Zero),                                       
             };
             PrecalculatedDateTimeZone.ValidatePeriods(intervals, null);
         }

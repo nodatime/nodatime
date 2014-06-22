@@ -28,3 +28,11 @@ of the public API, this just meant removing three `TzdbDateTimeZoneSource` const
 removing some documented edge cases where the legacy resource format didn't include as much
 information as the more recent "nzd" format. If you were previously using the resource format,
 just move to the "nzd" format, using the static factory members of `TzdbDateTimeZoneSource`.
+
+Removed (or now private) members
+====
+
+The `Instant(long)` constructor is now private; use `Instant.FromTicksSinceUnixEpoch` instead.
+As the resolution of 2.0 is nanoseconds, a constructor taking a number of *ticks* since the
+Unix epoch is confusing. The static method is self-describing, and this allows the constructor
+to be rewritten for use within Noda Time itself.

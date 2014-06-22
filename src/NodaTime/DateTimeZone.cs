@@ -241,7 +241,7 @@ namespace NodaTime
         /// <returns>The struct containing up to two ZoneInterval references.</returns>
         internal virtual ZoneIntervalPair GetZoneIntervalPair(LocalInstant localInstant)
         {
-            Instant firstGuess = new Instant(localInstant.Ticks);
+            Instant firstGuess = Instant.FromTicksSinceUnixEpoch(localInstant.Ticks);
             ZoneInterval interval = GetZoneInterval(firstGuess);
 
             // Most of the time we'll go into here... the local instant and the instant
@@ -337,7 +337,7 @@ namespace NodaTime
         public ZoneLocalMapping MapLocal(LocalDateTime localDateTime)
         {
             LocalInstant localInstant = localDateTime.LocalInstant;
-            Instant firstGuess = new Instant(localInstant.Ticks);
+            Instant firstGuess = Instant.FromTicksSinceUnixEpoch(localInstant.Ticks);
             ZoneInterval interval = GetZoneInterval(firstGuess);
 
             // Most of the time we'll go into here... the local instant and the instant
@@ -485,7 +485,7 @@ namespace NodaTime
 
         private ZoneInterval GetIntervalBeforeGap(LocalInstant localInstant)
         {
-            Instant guess = new Instant(localInstant.Ticks);
+            Instant guess = Instant.FromTicksSinceUnixEpoch(localInstant.Ticks);
             ZoneInterval guessInterval = GetZoneInterval(guess);
             // If the local interval occurs before the zone interval we're looking at starts,
             // we need to find the earlier one; otherwise this interval must come after the gap, and
@@ -502,7 +502,7 @@ namespace NodaTime
 
         private ZoneInterval GetIntervalAfterGap(LocalInstant localInstant)
         {
-            Instant guess = new Instant(localInstant.Ticks);
+            Instant guess = Instant.FromTicksSinceUnixEpoch(localInstant.Ticks);
             ZoneInterval guessInterval = GetZoneInterval(guess);
             // If the local interval occurs before the zone interval we're looking at starts,
             // it's the one we're looking for. Otherwise, we need to find the next interval.

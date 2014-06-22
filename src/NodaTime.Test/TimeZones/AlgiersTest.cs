@@ -23,7 +23,7 @@ namespace NodaTime.Test.TimeZones
         {
             Instant april1981 = Instant.FromUtc(1981, 4, 1, 0, 0);
             var actual = Algiers.GetZoneInterval(april1981);
-            var expected = new ZoneInterval("WET", new Instant(3418020000000000L), new Instant(3575232000000000L), Offset.Zero, Offset.Zero);
+            var expected = new ZoneInterval("WET", Instant.FromTicksSinceUnixEpoch(3418020000000000L), Instant.FromTicksSinceUnixEpoch(3575232000000000L), Offset.Zero, Offset.Zero);
             Assert.AreEqual(expected, actual);
         }
 
@@ -32,7 +32,7 @@ namespace NodaTime.Test.TimeZones
         {
             var may1981 = DateTimeZone.Utc.AtStrictly(new LocalDateTime(1981, 5, 1, 0, 0, 1)).ToInstant();
             var actual = Algiers.GetZoneInterval(may1981);
-            var expected = new ZoneInterval("CET", new Instant(3575232000000000L), Instant.MaxValue, Offset.FromMilliseconds(NodaConstants.MillisecondsPerHour), Offset.Zero);
+            var expected = new ZoneInterval("CET", Instant.FromTicksSinceUnixEpoch(3575232000000000L), Instant.MaxValue, Offset.FromMilliseconds(NodaConstants.MillisecondsPerHour), Offset.Zero);
             Assert.AreEqual(expected, actual);
         }
     }

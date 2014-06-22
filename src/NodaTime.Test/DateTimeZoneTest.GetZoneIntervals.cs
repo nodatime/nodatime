@@ -20,13 +20,13 @@ namespace NodaTime.Test
         [Test]
         public void GetZoneIntervals_EndBeforeStart()
         {
-            Assert.Throws<ArgumentOutOfRangeException>(() => DateTimeZone.Utc.GetZoneIntervals(new Instant(100L), new Instant(99L)));
+            Assert.Throws<ArgumentOutOfRangeException>(() => DateTimeZone.Utc.GetZoneIntervals(Instant.FromTicksSinceUnixEpoch(100L), Instant.FromTicksSinceUnixEpoch(99L)));
         }
 
         [Test]
         public void GetZoneIntervals_EndEqualToStart()
         {
-            CollectionAssert.IsEmpty(DateTimeZone.Utc.GetZoneIntervals(new Instant(100L), new Instant(100L)));
+            CollectionAssert.IsEmpty(DateTimeZone.Utc.GetZoneIntervals(Instant.FromTicksSinceUnixEpoch(100L), Instant.FromTicksSinceUnixEpoch(100L)));
         }
 
         [Test]

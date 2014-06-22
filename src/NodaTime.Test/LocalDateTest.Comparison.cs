@@ -60,7 +60,7 @@ namespace NodaTime.Test
         public void Equals_DifferentToOtherType()
         {
             LocalDate date = new LocalDate(2011, 1, 2);
-            Assert.IsFalse(date.Equals(new Instant(0)));
+            Assert.IsFalse(date.Equals(Instant.FromTicksSinceUnixEpoch(0)));
         }
 
         [Test]
