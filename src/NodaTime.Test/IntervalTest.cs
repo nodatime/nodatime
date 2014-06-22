@@ -28,7 +28,7 @@ namespace NodaTime.Test
             var interval = new Interval(SampleStart, SampleStart);
             Assert.AreEqual(SampleStart, interval.Start);
             Assert.AreEqual(SampleStart, interval.End);
-            Assert.AreEqual(new Duration(0), interval.Duration);
+            Assert.AreEqual(NodaTime.Duration.Zero, interval.Duration);
         }
 
         [Test]
@@ -59,7 +59,7 @@ namespace NodaTime.Test
         public void Duration()
         {
             var interval = new Interval(SampleStart, SampleEnd);
-            Assert.AreEqual(new Duration(700), interval.Duration);
+            Assert.AreEqual(NodaTime.Duration.FromTicks(700), interval.Duration);
         }
 
         /// <summary>

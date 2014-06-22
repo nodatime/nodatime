@@ -113,14 +113,5 @@ namespace NodaTime.Test
             Assert.AreEqual(minDuration, Duration.FromTimeSpan(TimeSpan.MinValue));
             Assert.AreEqual(TimeSpan.MinValue, minDuration.ToTimeSpan());
         }
-
-        [Test]
-        public void ConstructFrom_Int64()
-        {
-            long length = 4 * NodaConstants.TicksPerStandardDay + 5 * NodaConstants.TicksPerHour + 6 * NodaConstants.TicksPerMinute + 7 * NodaConstants.TicksPerSecond +
-                                8 * NodaConstants.TicksPerMillisecond + 9;
-            var test = new Duration(length);
-            Assert.AreEqual(length, test.Ticks);
-        }
     }
 }

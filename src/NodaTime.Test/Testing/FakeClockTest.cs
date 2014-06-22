@@ -69,7 +69,7 @@ namespace NodaTime.Test.Testing
         public void Advance()
         {
             FakeClock clock = new FakeClock(new Instant(100L));
-            Duration d = new Duration(25);
+            Duration d = Duration.FromTicks(25);
             clock.Advance(d);
             Assert.AreEqual(125, clock.Now.Ticks);
         }
