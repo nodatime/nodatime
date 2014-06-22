@@ -2,7 +2,7 @@
 layout: userguide
 title: Migrating from 1.x to 2.0
 category: core
-weight: 3010
+weight: 1050
 ---
 
 Noda Time 2.0 contains a number of breaking changes. If you have a project which uses Noda Time
