@@ -311,8 +311,6 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="TestData\Tzdb.resx" />
-    <EmbeddedResource Include="TestData\Tzdb2012iFromNodaTime1.0.resx" />
     <EmbeddedResource Include="TestData\Tzdb2013bFromNodaTime1.1.nzd" />
   </ItemGroup>
   <ItemGroup />
