@@ -9,26 +9,38 @@ User-visible changes from 1.0.0-beta1 onwards. See the
 [project repository](http://code.google.com/p/noda-time/source/list) for more
 details.
 
-## 1.3 (current default branch)
+## 2.0 (current default branch)
+
+Breaking changes:
+
+See the [Noda Time 1.x to 2.0 migration guide](migration-to-2.html) for full details.
+
+- Removed members which had already been made obsolete in the 1.x release line
+
+## 1.3.0-beta1, released 2014-06-19 with tzdb 2014e
 
 Major features:
 
-- TODO: better calendar support?
+- Support for the Persian/Solar Hijri calendar
+- Experimental support for the Hebrew calendar ([issue 238][])
 
 API changes:
 
-- Added support for the Hebrew calendar, via
-  `CalendarSystem.GetHebrewCalendar(HebrewMonthNumbering)`
-- Added support for the Persian/Solar Hijri calendar, via
-  `CalendarSystem.GetPersianCalendar()`
-- Added `Era.AnnoPersico` (for the Persian calendar)
+- Added `CalendarSystem.GetPersianCalendar()` and `Era.AnnoPersico` for the
+  Persian calendar
+- Added `CalendarSystem.GetHebrewCalendar()`, `Era.AnnoMundi`, and the
+  `HebrewMonthNumbering` enum for the Hebrew calendar
 - Added `LocalDate.At(LocalTime)` and `LocalTime.On(LocalDate)`, more
   discoverable versions of `LocalDate + LocalTime` ([issue 192][])
 - Added `OffsetDateTime.WithOffset()`, which returns an `OffsetDateTime`
   representing the same point in time, but using a given offset ([issue 246][])
-- Added `CreateWithInvariantCulture()` to `OffsetDateTimePattern`, and
-  `CreateWithCurrentCulture()` to both `OffsetDateTimePattern` and
-  `ZonedDateTimePattern`
+- Added `ZonedDateTime.IsDaylightSavingTime()`, mirroring the method of the
+  same name in `System.DateTime` ([issue 264][])
+- Added missing `OffsetDateTimePattern.CreateWithInvariantCulture()`,
+  `OffsetDateTimePattern.CreateWithCurrentCulture()`, and
+  `ZonedDateTimePattern.CreateWithCurrentCulture()` ([issue 267][])
+- Added `OffsetDateTimePattern.Rfc3339Pattern`, an RFC 3339-compliant pattern
+  formatter ([issue 284][])
 - `ZonedDateTimePattern` patterns containing the `G` and `F` standard patterns
   can now be used for parsing when used with a zone provider ([issue 277][])
 - Marked the desktop assembly with the `AllowPartiallyTrustedCallers`
@@ -37,10 +49,6 @@ API changes:
   and [272][issue 272])
 - Changed the previously-undocumented format for `Interval.ToString()` to
   ISO-8601 interval format ([issue 270][])
-
-Newly-obsolete members:
-
-- TODO: none so far
 
 API changes for NodaTime.Serialization.JsonNet:
 
@@ -52,10 +60,6 @@ API changes for NodaTime.Serialization.JsonNet:
 - Added `NodaConverters.IsoIntervalConverter`, which provides access to the
   `JsonConverter` used for the ISO-8601 interval format
 
-API changes for NodaTime.Testing:
-
-- TODO: none so far
-
 Bug fixes:
 
 - Fixed recognition of time zone transitions that only adjusted the way a given
@@ -65,13 +69,21 @@ Bug fixes:
   fractional-second format in a locale that doesn't use '.' as a decimal
   separator could erroneously cause the result to have a trailing '.'
   ([issue 273][])
+- Fixed the JSON and XML serialization formats for `OffsetDateTime` to emit
+  offsets compatible with RFC 3339, and by extension, with JavaScript's
+  `Date.parse()` and .NET's XML conversions ([issue 284][])
 
 Other:
 
-- API documentation now indicates which versions of Noda Time support the given
-  member
 - Significantly improved the performance of various parsing/formatting and
   point-in-time calculation methods
+- Failures during text parsing now indicate which part of the input failed to
+  match the given part of the pattern ([issue 288][])
+- API documentation now indicates which versions of Noda Time support the given
+  member ([issue 261][])
+- Annotations added to support [ReSharper](http://jetbrains.com/resharper) users,
+  by indicating pure members, parameters which must be non-null etc ([issue
+  207][])
 
 ## 1.2.0, released 2013-11-16 with tzdb 2013h
 
