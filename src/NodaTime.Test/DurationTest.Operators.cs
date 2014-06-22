@@ -12,16 +12,16 @@ namespace NodaTime.Test
         [Test]
         public void Equality()
         {
-            TestHelper.TestEqualsStruct(threeMillion, new Duration(3000000), negativeFiftyMillion);
-            TestHelper.TestOperatorEquality(threeMillion, new Duration(3000000), negativeFiftyMillion);
+            TestHelper.TestEqualsStruct(threeMillion, Duration.FromTicks(3000000), negativeFiftyMillion);
+            TestHelper.TestOperatorEquality(threeMillion, Duration.FromTicks(3000000), negativeFiftyMillion);
         }
 
         [Test]
         public void Comparison()
         {
-            TestHelper.TestCompareToStruct(negativeFiftyMillion, new Duration(-50000000), threeMillion);
-            TestHelper.TestNonGenericCompareTo(negativeFiftyMillion, new Duration(-50000000), threeMillion);
-            TestHelper.TestOperatorComparisonEquality(negativeFiftyMillion, new Duration(-50000000), threeMillion);
+            TestHelper.TestCompareToStruct(negativeFiftyMillion, Duration.FromTicks(-50000000), threeMillion);
+            TestHelper.TestNonGenericCompareTo(negativeFiftyMillion, Duration.FromTicks(-50000000), threeMillion);
+            TestHelper.TestOperatorComparisonEquality(negativeFiftyMillion, Duration.FromTicks(-50000000), threeMillion);
         }
 
         #region operator +
@@ -44,8 +44,8 @@ namespace NodaTime.Test
         [Test]
         public void OperatorPlus_MethodEquivalents()
         {
-            Duration x = new Duration(100);
-            Duration y = new Duration(200);
+            Duration x = Duration.FromTicks(100);
+            Duration y = Duration.FromTicks(200);
             Assert.AreEqual(x + y, Duration.Add(x, y));
             Assert.AreEqual(x + y, x.Plus(y));
         }
@@ -71,8 +71,8 @@ namespace NodaTime.Test
         [Test]
         public void OperatorMinus_MethodEquivalents()
         {
-            Duration x = new Duration(100);
-            Duration y = new Duration(200);
+            Duration x = Duration.FromTicks(100);
+            Duration y = Duration.FromTicks(200);
             Assert.AreEqual(x - y, Duration.Subtract(x, y));
             Assert.AreEqual(x - y, x.Minus(y));
         }
@@ -109,10 +109,10 @@ namespace NodaTime.Test
         [Test]
         public void OperatorMultiplication_NonZeroNonOne()
         {
-            Assert.AreEqual(threeMillion, new Duration(3000) * 1000, "3000 * 1000");
-            Assert.AreEqual(negativeFiftyMillion, new Duration(50000) * -1000, "50000 * -1000");
-            Assert.AreEqual(negativeFiftyMillion, new Duration(-50000) * 1000, "-50000 * 1000");
-            Assert.AreEqual(threeMillion, new Duration(-3000) * -1000, "-3000 * -1000");
+            Assert.AreEqual(threeMillion, Duration.FromTicks(3000) * 1000, "3000 * 1000");
+            Assert.AreEqual(negativeFiftyMillion, Duration.FromTicks(50000) * -1000, "50000 * -1000");
+            Assert.AreEqual(negativeFiftyMillion, Duration.FromTicks(-50000) * 1000, "-50000 * 1000");
+            Assert.AreEqual(threeMillion, Duration.FromTicks(-3000) * -1000, "-3000 * -1000");
         }
 
         [Test]
@@ -141,8 +141,8 @@ namespace NodaTime.Test
         [Test]
         public void OperatorMultiplication_MethodEquivalents()
         {
-            Assert.AreEqual(new Duration(-50000) * 1000, Duration.Multiply(new Duration(-50000), 1000));
-            Assert.AreEqual(1000 * new Duration(-50000), Duration.Multiply(1000, new Duration(-50000)));
+            Assert.AreEqual(Duration.FromTicks(-50000) * 1000, Duration.Multiply(Duration.FromTicks(-50000), 1000));
+            Assert.AreEqual(1000 * Duration.FromTicks(-50000), Duration.Multiply(1000, Duration.FromTicks(-50000)));
         }
         #endregion
 

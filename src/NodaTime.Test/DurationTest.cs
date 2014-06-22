@@ -11,9 +11,9 @@ namespace NodaTime.Test
     [TestFixture]
     public partial class DurationTest
     {
-        private readonly Duration threeMillion = new Duration(3000000L);
-        private readonly Duration negativeFiftyMillion = new Duration(-50000000L);
-        private readonly Duration negativeEpsilon = new Duration(-1L);
+        private readonly Duration threeMillion = Duration.FromTicks(3000000L);
+        private readonly Duration negativeFiftyMillion = Duration.FromTicks(-50000000L);
+        private readonly Duration negativeEpsilon = Duration.FromTicks(-1L);
 
         /// <summary>
         /// Using the default constructor is equivalent to Duration.Zero.
