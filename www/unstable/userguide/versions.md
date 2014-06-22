@@ -9,7 +9,15 @@ User-visible changes from 1.0.0-beta1 onwards. See the
 [project repository](http://code.google.com/p/noda-time/source/list) for more
 details.
 
-## 1.3 (current default branch)
+## 2.0 (current default branch)
+
+Breaking changes:
+
+See the [Noda Time 1.x to 2.0 migration guide](migration-to-2.html) for full details.
+
+- TBD (brief descriptions)
+
+## 1.3, beta 1 released 2014-06-19
 
 Major features:
 
@@ -38,10 +46,6 @@ API changes:
 - Changed the previously-undocumented format for `Interval.ToString()` to
   ISO-8601 interval format ([issue 270][])
 
-Newly-obsolete members:
-
-- TODO: none so far
-
 API changes for NodaTime.Serialization.JsonNet:
 
 - Added `JsonSerializerSettings.WithIsoIntervalConverter()` and
@@ -51,10 +55,6 @@ API changes for NodaTime.Serialization.JsonNet:
   ISO-8601 interval format ([issue 270][])
 - Added `NodaConverters.IsoIntervalConverter`, which provides access to the
   `JsonConverter` used for the ISO-8601 interval format
-
-API changes for NodaTime.Testing:
-
-- TODO: none so far
 
 Bug fixes:
 
@@ -68,6 +68,8 @@ Bug fixes:
 
 Other:
 
+- Annotations added to support [ReSharper](http://jetbrains.com/resharper) users,
+  by indicating pure members, parameters which must be non-null etc.
 - API documentation now indicates which versions of Noda Time support the given
   member
 - Significantly improved the performance of various parsing/formatting and

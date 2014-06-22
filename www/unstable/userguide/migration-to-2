@@ -1,0 +1,10 @@
+---
+layout: userguide
+title: Migrating from 1.x to 2.0
+category: core
+weight: 3010
+---
+
+Noda Time 2.0 contains a number of breaking changes. If you have a project which uses Noda Time
+1.x and are considering upgrading to 2.0, please read the following migration guide carefully.
+In particular, there are some changes which are changes to execution-time behaviour, and won't show up as compile-time errors.
