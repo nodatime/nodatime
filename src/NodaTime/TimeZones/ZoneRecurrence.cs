@@ -219,16 +219,6 @@ namespace NodaTime.TimeZones
             writer.WriteCount(toYear);
         }
 
-        internal void WriteLegacy(LegacyDateTimeZoneWriter writer)
-        {
-            writer.WriteString(Name);
-            writer.WriteOffset(Savings);
-            YearOffset.WriteLegacy(writer);
-            // We'll never have time zones with recurrences between the beginning of time and 0AD,
-            // so we can treat anything negative as 0, and go to the beginning of time when reading.
-            writer.WriteCount(Math.Max(fromYear, 0));
-            writer.WriteCount(toYear);
-        }
 
         /// <summary>
         /// Reads a recurrence from the specified reader.
@@ -241,21 +231,6 @@ namespace NodaTime.TimeZones
             string name = reader.ReadString();
             Offset savings = reader.ReadOffset();
             ZoneYearOffset yearOffset = ZoneYearOffset.Read(reader);
-            int fromYear = reader.ReadCount();
-            if (fromYear == 0)
-            {
-                fromYear = int.MinValue;
-            }
-            int toYear = reader.ReadCount();
-            return new ZoneRecurrence(name, savings, yearOffset, fromYear, toYear);
-        }
-
-        internal static ZoneRecurrence ReadLegacy(LegacyDateTimeZoneReader reader)
-        {
-            Preconditions.CheckNotNull(reader, "reader");
-            string name = reader.ReadString();
-            Offset savings = reader.ReadOffset();
-            ZoneYearOffset yearOffset = ZoneYearOffset.ReadLegacy(reader);
             int fromYear = reader.ReadCount();
             if (fromYear == 0)
             {

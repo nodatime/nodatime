@@ -15,7 +15,8 @@ Breaking changes:
 
 See the [Noda Time 1.x to 2.0 migration guide](migration-to-2.html) for full details.
 
-- Removed members which had already been made obsolete in the 1.x release line
+- Removed members which had already been made obsolete in the 1.x release line, including
+  support for the legacy resource-based time zone data format.
 
 ## 1.3.0-beta1, released 2014-06-19 with tzdb 2014e
 
