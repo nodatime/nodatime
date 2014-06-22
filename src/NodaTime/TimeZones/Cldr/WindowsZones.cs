@@ -51,8 +51,7 @@ namespace NodaTime.TimeZones.Cldr
         /// "2013b" to be supply a <c>WindowsZones</c> object with a <c>TzdbVersion</c> of "2012f".
         /// </para>
         /// <para>
-        /// This property will never return a null value, but will be "Unknown" if the data
-        /// is loaded from the legacy resource format.
+        /// This property will never return a null value.
         /// </para>
         /// </remarks>
         public string TzdbVersion { get { return tzdbVersion; } }
@@ -68,8 +67,7 @@ namespace NodaTime.TimeZones.Cldr
         /// so "7dc0101" for example.
         /// </para>
         /// <para>
-        /// This property will never return a null value, but will be "Unknown" if the data
-        /// is loaded from the legacy resource format.
+        /// This property will never return a null value.
         /// </para>
         /// </remarks>
         public string WindowsVersion { get { return windowsVersion; } }
@@ -98,9 +96,6 @@ namespace NodaTime.TimeZones.Cldr
         /// and it appearing in CLDR, ready to be used by Noda Time. (There's also bound to be a delay between it appearing
         /// in CLDR and being used in your production system.) In practice however, you're unlikely to wish to use a time zone
         /// which isn't covered here.</para>
-        /// <para>
-        /// If the data is loaded from the legacy resource format, this will only include the primary mappings.
-        /// </para>
         /// </remarks>
         public IList<MapZone> MapZones { get { return mapZones; } }
 

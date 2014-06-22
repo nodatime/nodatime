@@ -102,7 +102,6 @@
     <Compile Include="Tzdb\PclSupport.cs" />
     <Compile Include="Tzdb\TzdbDatabase.cs" />
     <Compile Include="Tzdb\TzdbZoneLocationParser.cs" />
-    <Compile Include="Tzdb\TzdbResourceWriter.cs" />
     <Compile Include="Tzdb\TzdbStreamWriter.cs" />
     <Compile Include="Tzdb\TzdbZoneInfoCompiler.cs" />
     <Compile Include="Tzdb\TzdbZoneInfoParser.cs" />

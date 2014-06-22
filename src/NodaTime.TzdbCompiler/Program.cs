@@ -22,13 +22,6 @@ namespace NodaTime.TzdbCompiler
     /// </summary>
     internal sealed class Program
     {
-        private static readonly Dictionary<OutputType, string> Extensions = new Dictionary<OutputType, string>
-        {
-            { OutputType.Resource, "resources" },
-            { OutputType.ResX, "resx" },
-            { OutputType.NodaZoneData, "nzd" },
-        };
-
         /// <summary>
         /// Runs the compiler from the command line.
         /// </summary>
@@ -69,37 +62,17 @@ namespace NodaTime.TzdbCompiler
 
         private static ITzdbWriter CreateWriter(CompilerOptions options)
         {
-            string file = Path.ChangeExtension(options.OutputFileName, Extensions[options.OutputType]);
-            switch (options.OutputType)
-            {
-                case OutputType.ResX:
-                    return new TzdbResourceWriter(new ResXResourceWriter(file));
-                case OutputType.Resource:
-                    return new TzdbResourceWriter(new ResourceWriter(file));
-                case OutputType.NodaZoneData:
-                    return new TzdbStreamWriter(File.Create(file));
-                default:
-                    throw new ArgumentException("Invalid output type: " + options.OutputType, "options");
-            }
+            string file = Path.ChangeExtension(options.OutputFileName, "nzd");
+            return new TzdbStreamWriter(File.Create(file));
         }
 
         private static TzdbDateTimeZoneSource Read(CompilerOptions options)
         {
 #pragma warning disable 0618
-            string file = Path.ChangeExtension(options.OutputFileName, Extensions[options.OutputType]);
-            switch (options.OutputType)
+            string file = Path.ChangeExtension(options.OutputFileName, "nzd");
+            using (var stream = File.OpenRead(file))
             {
-                case OutputType.ResX:
-                    return new TzdbDateTimeZoneSource(new ResourceSet(new ResXResourceReader(file)));
-                case OutputType.Resource:
-                    return new TzdbDateTimeZoneSource(new ResourceSet(new ResourceReader(file)));
-                case OutputType.NodaZoneData:
-                    using (var stream = File.OpenRead(file))
-                    {
-                        return TzdbDateTimeZoneSource.FromStream(stream);
-                    }
-                default:
-                    throw new ArgumentException("Invalid output type: " + options.OutputType, "options");
+                return TzdbDateTimeZoneSource.FromStream(stream);
             }
 #pragma warning restore 0618
         }

@@ -19,7 +19,6 @@ msbuild "src\NodaTime.TzdbCompiler\NodaTime.TzdbCompiler.csproj" /property:Confi
 IF ERRORLEVEL 1 EXIT /B 1
 
 src\NodaTime.TzdbCompiler\bin\Release\NodaTime.TzdbCompiler.exe -o src\NodaTime\TimeZones\Tzdb.nzd -s data\tzdb\%1 -w %2
-src\NodaTime.TzdbCompiler\bin\Release\NodaTime.TzdbCompiler.exe -o src\NodaTime.Test\TestData\Tzdb.resx -s data\tzdb\%1 -w %2 -t ResX
 
 copy src\NodaTime\TimeZones\Tzdb.nzd www\tzdb\tzdb%1.nzd
 echo http://nodatime.org/tzdb/tzdb%1.nzd > www\tzdb\latest.txt

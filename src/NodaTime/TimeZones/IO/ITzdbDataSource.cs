@@ -48,8 +48,7 @@ namespace NodaTime.TimeZones.IO
 
         /// <summary>
         /// Additional mappings from Windows standard name to TZDB ID. Primarily used in
-        /// the PCL build, where we can't get at the system ID. Returns null when no data
-        /// is available (legacy resource format).
+        /// the PCL build, where we can't get at the system ID. This never returns null.
         /// </summary>
         IDictionary<string, string> WindowsAdditionalStandardNameToIdMapping { get; }
     }

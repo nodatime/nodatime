@@ -16,11 +16,8 @@ namespace NodaTime.TimeZones.IO
     /// </summary>
     /// <remarks>
     /// <para>It is expected that the code reading data written by an implementation
-    /// will be able to identify which implementation to use. Initially we have two
-    /// implementations: one for reading the data from the legacy resource format,
-    /// and one for reading the data from the first version of the newer blob format.
-    /// When the legacy resource format is retired, it's possible that we will only
-    /// have one implementation moving forward - but the interface will allow us to
+    /// will be able to identify which implementation to use. As of Noda Time 2.0,
+    /// there is only one implementation - but the interface will allow us to
     /// evolve the details of the binary structure independently of the code in the
     /// time zone implementations which knows how to write/read in terms of this interface
     /// and <see cref="IDateTimeZoneReader"/>.
@@ -48,7 +45,7 @@ namespace NodaTime.TimeZones.IO
         /// <summary>
         /// Writes a string to the stream.
         /// </summary>
-        /// <remarks>Other than the legacy resource writer, callers can reasonably expect that
+        /// <remarks>Callers can reasonably expect that
         /// these values will be pooled in some fashion, so should not apply their own pooling.</remarks>
         /// <param name="value">The string to write to the stream.</param>
         /// <exception cref="IOException">The value couldn't be written to the stream.</exception>

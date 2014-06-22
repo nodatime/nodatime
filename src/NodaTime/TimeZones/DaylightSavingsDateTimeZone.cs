@@ -168,18 +168,6 @@ namespace NodaTime.TimeZones
             writer.WriteOffset(dstRecurrence.Savings);
         }
 
-        /// <summary>
-        /// Writes the time zone to the specified legacy writer.
-        /// </summary>
-        /// <param name="writer">The writer to write to.</param>
-        internal void WriteLegacy(LegacyDateTimeZoneWriter writer)
-        {
-            Preconditions.CheckNotNull(writer, "writer");
-            writer.WriteOffset(standardOffset);
-            dstRecurrence.WriteLegacy(writer);
-            standardRecurrence.WriteLegacy(writer);
-        }
-
         internal static DaylightSavingsDateTimeZone Read(IDateTimeZoneReader reader, string id)
         {
             Preconditions.CheckNotNull(reader, "reader");
@@ -192,15 +180,6 @@ namespace NodaTime.TimeZones
             ZoneRecurrence standardRecurrence = new ZoneRecurrence(standardName, Offset.Zero, standardYearOffset, int.MinValue, int.MaxValue);
             ZoneRecurrence dstRecurrence = new ZoneRecurrence(daylightName, savings, daylightYearOffset, int.MinValue, int.MaxValue);
             return new DaylightSavingsDateTimeZone(id, standardOffset, standardRecurrence, dstRecurrence);
-        }
-
-        internal static DateTimeZone ReadLegacy(LegacyDateTimeZoneReader reader, string id)
-        {
-            Preconditions.CheckNotNull(reader, "reader");
-            Offset offset = reader.ReadOffset();
-            ZoneRecurrence start = ZoneRecurrence.ReadLegacy(reader);
-            ZoneRecurrence end = ZoneRecurrence.ReadLegacy(reader);
-            return new DaylightSavingsDateTimeZone(id, offset, start, end);
         }
     }
 }
