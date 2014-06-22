@@ -20,14 +20,6 @@ namespace NodaTime.Test
 
 #if !PCL
         [Test]
-        public void DefaultProviderIsTzdb()
-        {
-#pragma warning disable 0618
-            Assert.AreSame(DateTimeZoneProviders.Tzdb, DateTimeZoneProviders.Default);
-#pragma warning restore 0618
-        }
-
-        [Test]
         public void BclProviderUsesTimeZoneInfoSource()
         {
             Assert.IsTrue(DateTimeZoneProviders.Bcl.VersionId.StartsWith("TimeZoneInfo: "));

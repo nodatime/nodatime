@@ -31,15 +31,6 @@ namespace NodaTime
         }
 
 #if !PCL
-        /// <summary>
-        /// Gets the TZDB time zone provider.
-        /// This always returns the same value as the <see cref="Tzdb"/> property.
-        /// </summary>
-        /// <remarks>This method is not available in the PCL version, as it was made obsolete in Noda Time 1.1.</remarks>
-        /// <seealso cref="Tzdb"/>
-        [Obsolete("Use DateTimeZoneProviders.Tzdb instead")]
-        public static IDateTimeZoneProvider Default { get { return Tzdb; } }
-
         // As per TzDbHolder above, this exists to defer construction of a BCL provider until needed.
         // While BclDateTimeZoneSource itself is lightweight, DateTimeZoneCache still does a non-trivial amount of work
         // on initialisation.

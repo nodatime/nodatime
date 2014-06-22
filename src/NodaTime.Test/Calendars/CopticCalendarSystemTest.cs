@@ -43,10 +43,6 @@ namespace NodaTime.Test.Calendars
             LocalDateTime coptic = new LocalDateTime(iso.LocalInstant, copticCalendar);
 
             Assert.AreEqual(Era.AnnoMartyrum, coptic.Era);
-#pragma warning disable 0618
-            // The misspelled version of the Era works too.
-            Assert.AreEqual(Era.AnnoMartyrm, coptic.Era);
-#pragma warning restore 0618
             Assert.AreEqual(18, coptic.CenturyOfEra);
             Assert.AreEqual(20, coptic.YearOfCentury);
             Assert.AreEqual(1720, coptic.YearOfEra);

@@ -15,7 +15,7 @@ Breaking changes:
 
 See the [Noda Time 1.x to 2.0 migration guide](migration-to-2.html) for full details.
 
-- TBD (brief descriptions)
+- Removed members which had already been made obsolete in the 1.x release line
 
 ## 1.3, beta 1 released 2014-06-19
 
