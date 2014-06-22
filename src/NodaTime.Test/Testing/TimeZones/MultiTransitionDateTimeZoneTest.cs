@@ -16,8 +16,8 @@ namespace NodaTime.Test.Testing.TimeZones
         [Test]
         public void SimpleBuilding()
         {
-            var transition1 = new Instant(0L);
-            var transition2 = new Instant(100000L);
+            var transition1 = Instant.FromTicksSinceUnixEpoch(0L);
+            var transition2 = Instant.FromTicksSinceUnixEpoch(100000L);
             var zone = new MultiTransitionDateTimeZone.Builder
             {
                 { transition1, 5 },
@@ -41,8 +41,8 @@ namespace NodaTime.Test.Testing.TimeZones
         [Test]
         public void ComplexBuilding()
         {
-            var transition1 = new Instant(0L);
-            var transition2 = new Instant(100000L);
+            var transition1 = Instant.FromTicksSinceUnixEpoch(0L);
+            var transition2 = Instant.FromTicksSinceUnixEpoch(100000L);
             var zone = new MultiTransitionDateTimeZone.Builder(2, 1, "X")
             {
                 { transition1, 2, 0, "Y" },

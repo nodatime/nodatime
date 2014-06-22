@@ -111,7 +111,7 @@ namespace NodaTime
         /// <returns>A new <see cref="Instant"/> representing the difference of the given values.</returns>
         public Instant Minus(Offset offset)
         {
-            return new Instant(Ticks - offset.Ticks);
+            return Instant.FromTicksSinceUnixEpoch(Ticks - offset.Ticks);
         }
 
         /// <summary>

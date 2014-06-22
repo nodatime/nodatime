@@ -82,7 +82,7 @@ namespace NodaTime.Text
                 long number;
                 if (Int64.TryParse(value, ParsingNumberStyles, FormatInfo.NumberFormat, out number))
                 {
-                    return ParseResult<Instant>.ForValue(new Instant(number));
+                    return ParseResult<Instant>.ForValue(Instant.FromTicksSinceUnixEpoch(number));
                 }
                 return ParseResult<Instant>.CannotParseValue(new ValueCursor(value), patternText);
             }
@@ -140,7 +140,7 @@ namespace NodaTime.Text
                 {
                     return ParseResult<Instant>.ForValue(Instant.MaxValue);
                 }
-                return pattern.Parse(text).Convert(local => new Instant(local.LocalInstant.Ticks));
+                return pattern.Parse(text).Convert(local => Instant.FromTicksSinceUnixEpoch(local.LocalInstant.Ticks));
             }
         }
     }

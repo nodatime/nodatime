@@ -13,7 +13,7 @@ namespace NodaTime.Demo
         public void Construction()
         {
             // 10 million ticks = 1 second...
-            Instant instant = new Instant(10000000);
+            Instant instant = Instant.FromTicksSinceUnixEpoch(10000000);
             // Epoch is 1970 UTC
             // An instant isn't really "in" a time zone or calendar, but
             // it's convenient to consider UTC in the ISO-8601 calendar.
@@ -24,18 +24,18 @@ namespace NodaTime.Demo
         public void AdditionWithDuration()
         {
             // Some arbitrary instant. I've no idea when.
-            Instant instant = new Instant(150000000);
+            Instant instant = Instant.FromTicksSinceUnixEpoch(150000000);
             // A very short duration: a duration is simply a number of ticks.
             Duration duration = Duration.FromTicks(1000);
             Instant later = instant + duration;
-            Assert.AreEqual(new Instant(150001000), later);
+            Assert.AreEqual(Instant.FromTicksSinceUnixEpoch(150001000), later);
         }
 
         [Test]
         public void Comparison()
         {
-            Instant early = new Instant(1000);
-            Instant late = new Instant(2000);
+            Instant early = Instant.FromTicksSinceUnixEpoch(1000);
+            Instant late = Instant.FromTicksSinceUnixEpoch(2000);
             Assert.That(early < late);
         }
 

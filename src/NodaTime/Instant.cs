@@ -66,7 +66,7 @@ namespace NodaTime
         /// </remarks>
         /// <param name="ticks">The number of ticks since the Unix epoch. Negative values represent instants before the
         /// Unix epoch.</param>
-        public Instant(long ticks)
+        private Instant(long ticks)
         {
             this.ticks = ticks;
         }

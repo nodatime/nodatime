@@ -30,11 +30,11 @@ namespace NodaTime.Test
             (Y2003Days + 31L + 28L + 31L + 30L + 6L - 1L) * NodaConstants.MillisecondsPerStandardDay + 14L * NodaConstants.MillisecondsPerHour +
             28L * NodaConstants.MillisecondsPerMinute;
 
-        private Instant one = new Instant(1L);
-        private readonly Instant onePrime = new Instant(1L);
-        private Instant negativeOne = new Instant(-1L);
-        private Instant threeMillion = new Instant(3000000L);
-        private Instant negativeFiftyMillion = new Instant(-50000000L);
+        private Instant one = Instant.FromTicksSinceUnixEpoch(1L);
+        private readonly Instant onePrime = Instant.FromTicksSinceUnixEpoch(1L);
+        private Instant negativeOne = Instant.FromTicksSinceUnixEpoch(-1L);
+        private Instant threeMillion = Instant.FromTicksSinceUnixEpoch(3000000L);
+        private Instant negativeFiftyMillion = Instant.FromTicksSinceUnixEpoch(-50000000L);
 
         private readonly Duration durationNegativeEpsilon = Duration.FromTicks(-1L);
         private readonly Offset offsetOneHour = Offset.FromHours(1);
@@ -44,8 +44,8 @@ namespace NodaTime.Test
         {
             const long diff = TestTime2 - TestTime1;
 
-            var time1 = new Instant(TestTime1);
-            var time2 = new Instant(TestTime2);
+            var time1 = Instant.FromTicksSinceUnixEpoch(TestTime1);
+            var time2 = Instant.FromTicksSinceUnixEpoch(TestTime2);
             Duration duration = time2 - time1;
 
             Assert.AreEqual(diff, duration.Ticks);
@@ -114,16 +114,15 @@ namespace NodaTime.Test
         [Test]
         public void FromTicksSinceUnixEpoch()
         {
-            Instant actual = Instant.FromTicksSinceUnixEpoch(12345L);
-            Instant expected = new Instant(12345L);
-            Assert.AreEqual(expected, actual);
+            Instant instant = Instant.FromTicksSinceUnixEpoch(12345L);
+            Assert.AreEqual(12345L, instant.Ticks);
         }
 
         [Test]
         public void FromMillisecondsSinceUnixEpoch_Valid()
         {
             Instant actual = Instant.FromMillisecondsSinceUnixEpoch(12345L);
-            Instant expected = new Instant(12345L * NodaConstants.TicksPerMillisecond);
+            Instant expected = Instant.FromTicksSinceUnixEpoch(12345L * NodaConstants.TicksPerMillisecond);
             Assert.AreEqual(expected, actual);
         }
 
@@ -143,7 +142,7 @@ namespace NodaTime.Test
         public void FromSecondsSinceUnixEpoch_Valid()
         {
             Instant actual = Instant.FromSecondsSinceUnixEpoch(12345L);
-            Instant expected = new Instant(12345L * NodaConstants.TicksPerSecond);
+            Instant expected = Instant.FromTicksSinceUnixEpoch(12345L * NodaConstants.TicksPerSecond);
             Assert.AreEqual(expected, actual);
         }
 
@@ -175,8 +174,8 @@ namespace NodaTime.Test
         [Test]
         public void Max()
         {
-            Instant x = new Instant(100);
-            Instant y = new Instant(200);
+            Instant x = Instant.FromTicksSinceUnixEpoch(100);
+            Instant y = Instant.FromTicksSinceUnixEpoch(200);
             Assert.AreEqual(y, Instant.Max(x, y));
             Assert.AreEqual(y, Instant.Max(y, x));
             Assert.AreEqual(x, Instant.Max(x, Instant.MinValue));
@@ -188,8 +187,8 @@ namespace NodaTime.Test
         [Test]
         public void Min()
         {
-            Instant x = new Instant(100);
-            Instant y = new Instant(200);
+            Instant x = Instant.FromTicksSinceUnixEpoch(100);
+            Instant y = Instant.FromTicksSinceUnixEpoch(200);
             Assert.AreEqual(x, Instant.Min(x, y));
             Assert.AreEqual(x, Instant.Min(y, x));
             Assert.AreEqual(Instant.MinValue, Instant.Min(x, Instant.MinValue));
@@ -268,7 +267,7 @@ namespace NodaTime.Test
         [Test]
         public void BinarySerialization()
         {
-            TestHelper.AssertBinaryRoundtrip(new Instant(12345L));
+            TestHelper.AssertBinaryRoundtrip(Instant.FromTicksSinceUnixEpoch(12345L));
             TestHelper.AssertBinaryRoundtrip(Instant.MinValue);
             TestHelper.AssertBinaryRoundtrip(Instant.MaxValue);
         }
