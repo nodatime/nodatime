@@ -18,6 +18,7 @@ See the [Noda Time 1.x to 2.0 migration guide](migration-to-2.html) for full det
 - Removed members which had already been made obsolete in the 1.x release line, including
   support for the legacy resource-based time zone data format.
 - Remove `Instant(long)` constructor from the public API.
+- `Period` and `PeriodBuilder` properties for date-based values (years, months, weeks, days) are now of type `int` rather than `long`.
 
 ## 1.3.0-beta1, released 2014-06-19 with tzdb 2014e
 

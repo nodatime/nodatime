@@ -764,9 +764,9 @@ namespace NodaTime.Test
         {
             TestHelper.AssertBinaryRoundtrip(Period.Zero);
             // Check each field is distinct
-            TestHelper.AssertBinaryRoundtrip(new Period(1L, 2L, 3L, 4L, 5L, 6L, 7L, 8L, 9L));
-            // Check we're not truncating to Int32...
-            TestHelper.AssertBinaryRoundtrip(new Period(long.MaxValue, long.MaxValue, long.MaxValue, long.MaxValue, long.MaxValue,
+            TestHelper.AssertBinaryRoundtrip(new Period(1, 2, 3, 4, 5L, 6L, 7L, 8L, 9L));
+            // Check we're not truncating to Int32... (except for date values)
+            TestHelper.AssertBinaryRoundtrip(new Period(int.MaxValue, int.MaxValue, int.MinValue, int.MinValue, long.MaxValue,
                                                         long.MinValue, long.MinValue, long.MinValue, long.MinValue));
         }
 
