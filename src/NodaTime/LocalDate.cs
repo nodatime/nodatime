@@ -43,7 +43,8 @@ namespace NodaTime
         , ISerializable
 #endif
     {
-        private readonly LocalDateTime localTime;
+        private readonly LocalInstant localInstant;
+        private readonly CalendarSystem calendar;
 
         /// <summary>
         /// Constructs an instance for the given year, month and day in the ISO calendar.
@@ -69,7 +70,7 @@ namespace NodaTime
         /// <returns>The resulting date.</returns>
         /// <exception cref="ArgumentOutOfRangeException">The parameters do not form a valid date.</exception>
         public LocalDate(int year, int month, int day, [NotNull] CalendarSystem calendar)
-            : this(new LocalDateTime(year, month, day, 0, 0, calendar))
+            : this(Preconditions.CheckNotNull(calendar, "calendar").GetLocalInstant(year, month, day, 0, 0), calendar)
         {
         }
 
@@ -98,29 +99,32 @@ namespace NodaTime
         /// <returns>The resulting date.</returns>
         /// <exception cref="ArgumentOutOfRangeException">The parameters do not form a valid date.</exception>
         public LocalDate(Era era, int yearOfEra, int month, int day, [NotNull] CalendarSystem calendar)
-            : this(new LocalDateTime(Preconditions.CheckNotNull(calendar, "calendar").GetLocalInstant(era, yearOfEra, month, day), calendar))
+            : this(Preconditions.CheckNotNull(calendar, "calendar").GetLocalInstant(era, yearOfEra, month, day), calendar)
         {
         }
 
-        // Visible for extension methods.
-        internal LocalDate(LocalDateTime localTime)
+        // FIXME: Make this private?
+        internal LocalDate(LocalInstant localInstant, CalendarSystem calendar)
         {
-            this.localTime = localTime;
+            this.localInstant = localInstant;
+            this.calendar = Preconditions.CheckNotNull(calendar, "calendar");
         }
+
+        internal LocalInstant LocalInstant { get { return localInstant; } }
 
         /// <summary>Gets the calendar system associated with this local date.</summary>
-        public CalendarSystem Calendar { get { return localTime.Calendar; } }
+        public CalendarSystem Calendar { get { return calendar ?? CalendarSystem.Iso; } }
 
         /// <summary>Gets the year of this local date.</summary>
         /// <remarks>This returns the "absolute year", so, for the ISO calendar,
         /// a value of 0 means 1 BC, for example.</remarks>
-        public int Year { get { return localTime.Year; } }
+        public int Year { get { return Calendar.GetYear(localInstant); } }
 
         /// <summary>Gets the month of this local date within the year.</summary>
-        public int Month { get { return localTime.Month; } }
+        public int Month { get { return Calendar.GetMonthOfYear(localInstant); } }
 
         /// <summary>Gets the day of this local date within the month.</summary>
-        public int Day { get { return localTime.Day; } }
+        public int Day { get { return Calendar.GetDayOfMonth(localInstant); } }
 
         /// <summary>
         /// Gets the week day of this local date expressed as an <see cref="NodaTime.IsoDayOfWeek"/> value,
@@ -128,7 +132,7 @@ namespace NodaTime
         /// </summary>
         /// <exception cref="InvalidOperationException">The underlying calendar doesn't use ISO days of the week.</exception>
         /// <seealso cref="DayOfWeek"/>
-        public IsoDayOfWeek IsoDayOfWeek { get { return localTime.IsoDayOfWeek; } }
+        public IsoDayOfWeek IsoDayOfWeek { get { return Calendar.GetIsoDayOfWeek(localInstant); } }
 
         /// <summary>
         /// Gets the week day of this local date as a number.
@@ -137,7 +141,7 @@ namespace NodaTime
         /// For calendars using ISO week days, this gives 1 for Monday to 7 for Sunday.
         /// </remarks>
         /// <seealso cref="IsoDayOfWeek"/>
-        public int DayOfWeek { get { return localTime.DayOfWeek; } }
+        public int DayOfWeek { get { return Calendar.GetDayOfWeek(localInstant); } }
 
         /// <summary>
         /// Gets the "week year" of this local date.
@@ -157,23 +161,26 @@ namespace NodaTime
         /// so is part of week 1 of WeekYear 2013.
         /// </para>
         /// </remarks>
-        public int WeekYear { get { return localTime.WeekYear; } }
+        public int WeekYear { get { return Calendar.GetWeekYear(localInstant); } }
 
         /// <summary>Gets the week within the WeekYear. See <see cref="WeekYear"/> for more details.</summary>
-        public int WeekOfWeekYear { get { return localTime.WeekOfWeekYear; } }
+        public int WeekOfWeekYear { get { return Calendar.GetWeekOfWeekYear(localInstant); } }
 
         /// <summary>Gets the year of this local date within the century.</summary>
         /// <remarks>This always returns a value in the range 0 to 99 inclusive.</remarks>
-        public int YearOfCentury { get { return localTime.YearOfCentury; } }
+        public int YearOfCentury { get { return Calendar.GetYearOfCentury(localInstant); } }
 
         /// <summary>Gets the year of this local date within the era.</summary>
-        public int YearOfEra { get { return localTime.YearOfEra; } }
+        public int YearOfEra { get { return Calendar.GetYearOfEra(localInstant); } }
+
+        /// <summary>Gets the century of this local date within the era.</summary>
+        public int CenturyOfEra { get { return Calendar.GetCenturyOfEra(localInstant); } }
 
         /// <summary>Gets the era of this local date.</summary>
-        public Era Era { get { return localTime.Era; } }
+        public Era Era { get { return Calendar.Eras[Calendar.GetEra(localInstant)]; } }
 
         /// <summary>Gets the day of this local date within the year.</summary>
-        public int DayOfYear { get { return localTime.DayOfYear; } }
+        public int DayOfYear { get { return Calendar.GetDayOfYear(localInstant); } }
 
         /// <summary>
         /// Gets a <see cref="LocalDateTime" /> at midnight on the date represented by this local date.
@@ -183,7 +190,7 @@ namespace NodaTime
         [Pure]
         public LocalDateTime AtMidnight()
         {
-            return localTime;
+            return new LocalDateTime(this, LocalTime.Midnight);
         }
 
         /// <summary>
@@ -197,7 +204,7 @@ namespace NodaTime
         public static LocalDate FromWeekYearWeekAndDay(int weekYear, int weekOfWeekYear, IsoDayOfWeek dayOfWeek)
         {
             LocalInstant localInstant = CalendarSystem.Iso.GetLocalInstantFromWeekYearWeekAndDayOfWeek(weekYear, weekOfWeekYear, dayOfWeek);
-            return new LocalDate(new LocalDateTime(localInstant));
+            return new LocalDate(localInstant, CalendarSystem.Iso);
         }
 
         /// <summary>
@@ -210,7 +217,7 @@ namespace NodaTime
         {
             Preconditions.CheckNotNull(period, "period");
             Preconditions.CheckArgument(!period.HasTimeComponent, "period", "Cannot add a period with a time component to a date");
-            return new LocalDate(date.localTime + period);
+            return new LocalDate(period.AddTo(date.localInstant, date.Calendar, 1), date.Calendar);
         }
 
         /// <summary>
@@ -244,9 +251,9 @@ namespace NodaTime
         /// <returns>The sum of the given date and time</returns>
         public static LocalDateTime operator +(LocalDate date, LocalTime time)
         {
-            LocalInstant localDateInstant = date.localTime.LocalInstant;
+            LocalInstant localDateInstant = date.localInstant;
             LocalInstant localInstant = new LocalInstant(localDateInstant.Ticks + time.TickOfDay);
-            return new LocalDateTime(localInstant, date.localTime.Calendar);
+            return new LocalDateTime(localInstant, date.Calendar);
         }
 
         /// <summary>
@@ -259,7 +266,7 @@ namespace NodaTime
         {
             Preconditions.CheckNotNull(period, "period");
             Preconditions.CheckArgument(!period.HasTimeComponent, "period", "Cannot subtract a period with a time component from a date");
-            return new LocalDate(date.localTime - period);
+            return new LocalDate(period.AddTo(date.localInstant, date.Calendar, -1), date.Calendar);
         }
 
         /// <summary>
@@ -293,7 +300,7 @@ namespace NodaTime
         /// <returns>True if the two dates are the same and in the same calendar; false otherwise</returns>
         public static bool operator ==(LocalDate lhs, LocalDate rhs)
         {
-            return lhs.localTime == rhs.localTime;
+            return lhs.localInstant == rhs.localInstant && lhs.Calendar.Equals(rhs.Calendar);
         }
 
         /// <summary>
@@ -304,7 +311,7 @@ namespace NodaTime
         /// <returns>False if the two dates are the same and in the same calendar; true otherwise</returns>
         public static bool operator !=(LocalDate lhs, LocalDate rhs)
         {
-            return lhs.localTime != rhs.localTime;
+            return !(lhs == rhs);
         }
 
         /// <summary>
@@ -320,7 +327,7 @@ namespace NodaTime
         /// <returns>true if the <paramref name="lhs"/> is strictly earlier than <paramref name="rhs"/>, false otherwise.</returns>
         public static bool operator <(LocalDate lhs, LocalDate rhs)
         {
-            return lhs.localTime < rhs.localTime;
+            return lhs.localInstant < rhs.localInstant && Equals(lhs.Calendar, rhs.Calendar);
         }
 
         /// <summary>
@@ -336,7 +343,7 @@ namespace NodaTime
         /// <returns>true if the <paramref name="lhs"/> is earlier than or equal to <paramref name="rhs"/>, false otherwise.</returns>
         public static bool operator <=(LocalDate lhs, LocalDate rhs)
         {
-            return lhs.localTime <= rhs.localTime;
+            return lhs.localInstant <= rhs.localInstant && Equals(lhs.Calendar, rhs.Calendar);
         }
 
         /// <summary>
@@ -352,7 +359,7 @@ namespace NodaTime
         /// <returns>true if the <paramref name="lhs"/> is strictly later than <paramref name="rhs"/>, false otherwise.</returns>
         public static bool operator >(LocalDate lhs, LocalDate rhs)
         {
-            return lhs.localTime > rhs.localTime;
+            return lhs.localInstant > rhs.localInstant && Equals(lhs.Calendar, rhs.Calendar);
         }
 
         /// <summary>
@@ -368,7 +375,7 @@ namespace NodaTime
         /// <returns>true if the <paramref name="lhs"/> is later than or equal to <paramref name="rhs"/>, false otherwise.</returns>
         public static bool operator >=(LocalDate lhs, LocalDate rhs)
         {
-            return lhs.localTime >= rhs.localTime;
+            return lhs.localInstant >= rhs.localInstant && Equals(lhs.Calendar, rhs.Calendar);
         }
 
         /// <summary>
@@ -387,7 +394,7 @@ namespace NodaTime
         /// later than <paramref name="other"/>.</returns>
         public int CompareTo(LocalDate other)
         {
-            return localTime.CompareTo(other.localTime);
+            return localInstant.CompareTo(other.localInstant);
         }
 
         /// <summary>
@@ -417,7 +424,10 @@ namespace NodaTime
         /// <returns>A hash code for this local date.</returns>
         public override int GetHashCode()
         {
-            return localTime.GetHashCode();
+            int hash = HashCodeHelper.Initialize();
+            hash = HashCodeHelper.Hash(hash, localInstant);
+            hash = HashCodeHelper.Hash(hash, Calendar);
+            return hash;
         }
 
         /// <summary>
@@ -456,7 +466,7 @@ namespace NodaTime
         [Pure]
         public LocalDate WithCalendar([NotNull] CalendarSystem calendarSystem)
         {
-            return new LocalDate(localTime.WithCalendar(calendarSystem));
+            return new LocalDate(localInstant, Preconditions.CheckNotNull(calendarSystem, "calendarSystem"));
         }
 
         /// <summary>
@@ -472,7 +482,8 @@ namespace NodaTime
         [Pure]
         public LocalDate PlusYears(int years)
         {
-            return new LocalDate(localTime.PlusYears(years));
+            LocalInstant newLocalInstant = Calendar.PeriodFields.Years.Add(localInstant, years);
+            return new LocalDate(newLocalInstant, Calendar);
         }
 
         /// <summary>
@@ -494,7 +505,8 @@ namespace NodaTime
         [Pure]
         public LocalDate PlusMonths(int months)
         {
-            return new LocalDate(localTime.PlusMonths(months));
+            LocalInstant newLocalInstant = Calendar.PeriodFields.Months.Add(localInstant, months);
+            return new LocalDate(newLocalInstant, Calendar);
         }
 
         /// <summary>
@@ -511,7 +523,8 @@ namespace NodaTime
         [Pure]
         public LocalDate PlusDays(int days)
         {
-            return new LocalDate(localTime.PlusDays(days));
+            LocalInstant newLocalInstant = Calendar.PeriodFields.Days.Add(localInstant, days);
+            return new LocalDate(newLocalInstant, Calendar);
         }
 
         /// <summary>
@@ -522,7 +535,8 @@ namespace NodaTime
         [Pure]
         public LocalDate PlusWeeks(int weeks)
         {
-            return new LocalDate(localTime.PlusWeeks(weeks));
+            LocalInstant newLocalInstant = Calendar.PeriodFields.Weeks.Add(localInstant, weeks);
+            return new LocalDate(newLocalInstant, Calendar);
         }
 
         /// <summary>
@@ -538,8 +552,19 @@ namespace NodaTime
         [Pure]
         public LocalDate Next(IsoDayOfWeek targetDayOfWeek)
         {
-            // LocalDateTime.Next performs all the validation we need.
-            return new LocalDate(localTime.Next(targetDayOfWeek));
+            // Avoids boxing...
+            if (targetDayOfWeek < IsoDayOfWeek.Monday || targetDayOfWeek > IsoDayOfWeek.Sunday)
+            {
+                throw new ArgumentOutOfRangeException("targetDayOfWeek");
+            }
+            // This will throw the desired exception for calendars with different week systems.
+            IsoDayOfWeek thisDay = IsoDayOfWeek;
+            int difference = targetDayOfWeek - thisDay;
+            if (difference <= 0)
+            {
+                difference += 7;
+            }
+            return PlusDays(difference);
         }
 
         /// <summary>
@@ -555,8 +580,19 @@ namespace NodaTime
         [Pure]
         public LocalDate Previous(IsoDayOfWeek targetDayOfWeek)
         {
-            // LocalDateTime.Next performs all the validation we need.
-            return new LocalDate(localTime.Previous(targetDayOfWeek));
+            // Avoids boxing...
+            if (targetDayOfWeek < IsoDayOfWeek.Monday || targetDayOfWeek > IsoDayOfWeek.Sunday)
+            {
+                throw new ArgumentOutOfRangeException("targetDayOfWeek");
+            }
+            // This will throw the desired exception for calendars with different week systems.
+            IsoDayOfWeek thisDay = IsoDayOfWeek;
+            int difference = targetDayOfWeek - thisDay;
+            if (difference >= 0)
+            {
+                difference -= 7;
+            }
+            return PlusDays(difference);
         }
 
         /// <summary>
@@ -651,8 +687,8 @@ namespace NodaTime
         /// <param name="info">The <see cref="SerializationInfo"/> to fetch data from.</param>
         /// <param name="context">The source for this deserialization.</param>
         private LocalDate(SerializationInfo info, StreamingContext context)
-            : this(new LocalDateTime(new LocalInstant(info.GetInt64(LocalTicksSerializationName)),
-                                     CalendarSystem.ForId(info.GetString(CalendarIdSerializationName))))
+            : this(new LocalInstant(info.GetInt64(LocalTicksSerializationName)),
+                   CalendarSystem.ForId(info.GetString(CalendarIdSerializationName)))
         {
         }
 
@@ -664,7 +700,7 @@ namespace NodaTime
         [System.Security.SecurityCritical]
         void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)
         {
-            info.AddValue(LocalTicksSerializationName, localTime.LocalInstant.Ticks);
+            info.AddValue(LocalTicksSerializationName, localInstant.Ticks);
             info.AddValue(CalendarIdSerializationName, Calendar.Id);
         }
         #endregion
