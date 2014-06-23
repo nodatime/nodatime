@@ -28,10 +28,10 @@ namespace NodaTime.Test
                 Milliseconds = 7,
                 Ticks = 8
             };
-            Assert.AreEqual(0L, builder[PeriodUnits.Years]);
-            Assert.AreEqual(1L, builder[PeriodUnits.Months]);
-            Assert.AreEqual(2L, builder[PeriodUnits.Weeks]);
-            Assert.AreEqual(3L, builder[PeriodUnits.Days]);
+            Assert.AreEqual(0, builder[PeriodUnits.Years]);
+            Assert.AreEqual(1, builder[PeriodUnits.Months]);
+            Assert.AreEqual(2, builder[PeriodUnits.Weeks]);
+            Assert.AreEqual(3, builder[PeriodUnits.Days]);
             Assert.AreEqual(4L, builder[PeriodUnits.Hours]);
             Assert.AreEqual(5L, builder[PeriodUnits.Minutes]);
             Assert.AreEqual(6L, builder[PeriodUnits.Seconds]);

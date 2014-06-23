@@ -36,3 +36,24 @@ The `Instant(long)` constructor is now private; use `Instant.FromTicksSinceUnixE
 As the resolution of 2.0 is nanoseconds, a constructor taking a number of *ticks* since the
 Unix epoch is confusing. The static method is self-describing, and this allows the constructor
 to be rewritten for use within Noda Time itself.
+
+Period
+====
+
+The `Years`, `Months`, `Weeks` and `Days` properties of `Period` (and `PeriodBuilder`) are
+now `int` rather than `long` properties. Any property for those units outside the range of `int` 
+could never be added to a date anyway, as it would immediately go out of range. This change just
+makes that clearer, and embraces the new "`int` for dates, `long` for times" approach which 
+applies throughout Noda Time 2.0. The indexer for `PeriodBuilder` is still of type `long`, but 
+it will throw an `ArgumentOutOfRangeException` for values outside the range of `int` when 
+setting date-based units.
+
+Normalization of a period which has time units which add up to a "days" range outside the range
+of `int` will similarly fail.
+
+Serialization
+====
+
+TBD (this will be awkward). To note so far:
+
+- Periods with year/month/week/day values outside the range of `int`
