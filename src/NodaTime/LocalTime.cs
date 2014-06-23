@@ -245,8 +245,15 @@ namespace NodaTime
         /// <summary>
         /// Returns a <see cref="T:NodaTime.LocalDateTime"/> with this local time, on January 1st 1970 in the ISO
         /// calendar.
+        /// TODO(2.0): Remove? Doesn't feel useful.
         /// </summary>
-        public LocalDateTime LocalDateTime { get { return new LocalDateTime(new LocalInstant(ticks)); } }
+        public LocalDateTime LocalDateTime
+        {
+            get
+            {
+                return new LocalDateTime(new LocalDate(new LocalInstant(0), CalendarSystem.Iso), this);
+            }
+        }
 
         /// <summary>
         /// Creates a new local time by adding a period to an existing time. The period must not contain
