@@ -10,6 +10,7 @@ using System.Xml.Schema;
 using System.Xml.Serialization;
 using JetBrains.Annotations;
 using NodaTime.Calendars;
+using NodaTime.Fields;
 using NodaTime.Text;
 using NodaTime.TimeZones;
 using NodaTime.Utility;
@@ -586,7 +587,7 @@ namespace NodaTime
         public LocalDateTime Plus(Period period)
         {
             Preconditions.CheckNotNull(period, "period");
-            return new LocalDateTime(period.AddTo(LocalInstant, Calendar, 1), Calendar);
+            return period.AddTo(date, time, 1);
         }
 
         /// <summary>
@@ -622,7 +623,7 @@ namespace NodaTime
         public LocalDateTime Minus(Period period)
         {
             Preconditions.CheckNotNull(period, "period");
-            return new LocalDateTime(period.AddTo(LocalInstant, Calendar, -1), Calendar);
+            return period.AddTo(date, time, -1);
         }
         #endregion
 
@@ -737,8 +738,7 @@ namespace NodaTime
         [Pure]
         public LocalDateTime PlusWeeks(int weeks)
         {
-            LocalInstant newLocalInstant = Calendar.PeriodFields.Weeks.Add(LocalInstant, weeks);
-            return new LocalDateTime(newLocalInstant, Calendar);
+            return new LocalDateTime(date.PlusWeeks(weeks), time);
         }
 
         /// <summary>
@@ -749,8 +749,7 @@ namespace NodaTime
         [Pure]
         public LocalDateTime PlusHours(long hours)
         {
-            LocalInstant newLocalInstant = Calendar.PeriodFields.Hours.Add(LocalInstant, hours);
-            return new LocalDateTime(newLocalInstant, Calendar);
+            return TimePeriodField.Hours.Add(this, hours);
         }
 
         /// <summary>
@@ -761,8 +760,7 @@ namespace NodaTime
         [Pure]
         public LocalDateTime PlusMinutes(long minutes)
         {
-            LocalInstant newLocalInstant = Calendar.PeriodFields.Minutes.Add(LocalInstant, minutes);
-            return new LocalDateTime(newLocalInstant, Calendar);
+            return TimePeriodField.Minutes.Add(this, minutes);
         }
 
         /// <summary>
@@ -773,8 +771,7 @@ namespace NodaTime
         [Pure]
         public LocalDateTime PlusSeconds(long seconds)
         {
-            LocalInstant newLocalInstant = Calendar.PeriodFields.Seconds.Add(LocalInstant, seconds);
-            return new LocalDateTime(newLocalInstant, Calendar);
+            return TimePeriodField.Seconds.Add(this, seconds);
         }
 
         /// <summary>
@@ -785,8 +782,7 @@ namespace NodaTime
         [Pure]
         public LocalDateTime PlusMilliseconds(long milliseconds)
         {
-            LocalInstant newLocalInstant = Calendar.PeriodFields.Milliseconds.Add(LocalInstant, milliseconds);
-            return new LocalDateTime(newLocalInstant, Calendar);
+            return TimePeriodField.Milliseconds.Add(this, milliseconds);
         }
 
         /// <summary>
@@ -797,8 +793,7 @@ namespace NodaTime
         [Pure]
         public LocalDateTime PlusTicks(long ticks)
         {
-            LocalInstant newLocalInstant = Calendar.PeriodFields.Ticks.Add(LocalInstant, ticks);
-            return new LocalDateTime(newLocalInstant, Calendar);
+            return TimePeriodField.Ticks.Add(this, ticks);
         }
 
         /// <summary>

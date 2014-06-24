@@ -760,6 +760,31 @@ namespace NodaTime.Test
         }
 
         [Test]
+        [TestCase("2015-02-28T16:00:00", "2016-02-29T08:00:00", PeriodUnits.Years, 1, 0)]
+        [TestCase("2015-02-28T16:00:00", "2016-02-29T08:00:00", PeriodUnits.Months, 12, -11)]
+        [TestCase("2014-01-01T16:00:00", "2014-01-03T08:00:00", PeriodUnits.Days, 1, -1)]
+        [TestCase("2014-01-01T16:00:00", "2014-01-03T08:00:00", PeriodUnits.Hours, 40, -40)]
+        public void Between_LocalDateTime_AwkwardTimeOfDayWithSingleUnit(string startText, string endText, PeriodUnits units, int expectedForward, int expectedBackward)
+        {
+            LocalDateTime start = LocalDateTimePattern.ExtendedIsoPattern.Parse(startText).Value;
+            LocalDateTime end = LocalDateTimePattern.ExtendedIsoPattern.Parse(endText).Value;
+            Period forward = Period.Between(start, end, units);
+            Assert.AreEqual(expectedForward, forward.ToBuilder()[units]);
+            Period backward = Period.Between(end, start, units);
+            Assert.AreEqual(expectedBackward, backward.ToBuilder()[units]);
+        }
+
+        [Test]
+        public void Between_LocalDateTime_AwkwardTimeOfDayWithMultipleUnits()
+        {
+            LocalDateTime start = new LocalDateTime(2014, 1, 1, 16, 0, 0);
+            LocalDateTime end = new LocalDateTime(2015, 2, 3, 8, 0, 0);
+            Period actual = Period.Between(start, end, PeriodUnits.YearMonthDay | PeriodUnits.AllTimeUnits);
+            Period expected = new PeriodBuilder { Years = 1, Months = 1, Days = 1, Hours = 16 }.Build();
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
         public void BinaryRoundTrip()
         {
             TestHelper.AssertBinaryRoundtrip(Period.Zero);

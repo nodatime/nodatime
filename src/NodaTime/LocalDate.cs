@@ -10,6 +10,7 @@ using System.Xml.Schema;
 using System.Xml.Serialization;
 using JetBrains.Annotations;
 using NodaTime.Calendars;
+using NodaTime.Fields;
 using NodaTime.Text;
 using NodaTime.Utility;
 
@@ -217,7 +218,7 @@ namespace NodaTime
         {
             Preconditions.CheckNotNull(period, "period");
             Preconditions.CheckArgument(!period.HasTimeComponent, "period", "Cannot add a period with a time component to a date");
-            return new LocalDate(period.AddTo(date.localInstant, date.Calendar, 1), date.Calendar);
+            return period.AddTo(date, LocalTime.Midnight, 1).Date;
         }
 
         /// <summary>
@@ -251,9 +252,7 @@ namespace NodaTime
         /// <returns>The sum of the given date and time</returns>
         public static LocalDateTime operator +(LocalDate date, LocalTime time)
         {
-            LocalInstant localDateInstant = date.localInstant;
-            LocalInstant localInstant = new LocalInstant(localDateInstant.Ticks + time.TickOfDay);
-            return new LocalDateTime(localInstant, date.Calendar);
+            return new LocalDateTime(date, time);
         }
 
         /// <summary>
@@ -266,7 +265,7 @@ namespace NodaTime
         {
             Preconditions.CheckNotNull(period, "period");
             Preconditions.CheckArgument(!period.HasTimeComponent, "period", "Cannot subtract a period with a time component from a date");
-            return new LocalDate(period.AddTo(date.localInstant, date.Calendar, -1), date.Calendar);
+            return period.AddTo(date, LocalTime.Midnight, -1).Date;
         }
 
         /// <summary>
@@ -482,8 +481,7 @@ namespace NodaTime
         [Pure]
         public LocalDate PlusYears(int years)
         {
-            LocalInstant newLocalInstant = Calendar.PeriodFields.Years.Add(localInstant, years);
-            return new LocalDate(newLocalInstant, Calendar);
+            return DatePeriodFields.YearsField.Add(this, years);
         }
 
         /// <summary>
@@ -505,8 +503,7 @@ namespace NodaTime
         [Pure]
         public LocalDate PlusMonths(int months)
         {
-            LocalInstant newLocalInstant = Calendar.PeriodFields.Months.Add(localInstant, months);
-            return new LocalDate(newLocalInstant, Calendar);
+            return DatePeriodFields.MonthsField.Add(this, months);
         }
 
         /// <summary>
@@ -523,8 +520,7 @@ namespace NodaTime
         [Pure]
         public LocalDate PlusDays(int days)
         {
-            LocalInstant newLocalInstant = Calendar.PeriodFields.Days.Add(localInstant, days);
-            return new LocalDate(newLocalInstant, Calendar);
+            return DatePeriodFields.DaysField.Add(this, days);
         }
 
         /// <summary>
@@ -535,8 +531,7 @@ namespace NodaTime
         [Pure]
         public LocalDate PlusWeeks(int weeks)
         {
-            LocalInstant newLocalInstant = Calendar.PeriodFields.Weeks.Add(localInstant, weeks);
-            return new LocalDate(newLocalInstant, Calendar);
+            return DatePeriodFields.WeeksField.Add(this, weeks);
         }
 
         /// <summary>

@@ -319,60 +319,109 @@ namespace NodaTime
                 return Zero;
             }
 
-            PeriodFieldSet fields = calendar.PeriodFields;
+            // Adjust for situations like "days between 5th January 10am and 7th Janary 5am" which should be one
+            // day, because if we actually reach 7th January with date fields, we've overshot.
+            // The date adjustment will always be valid, because it's just moving it towards start.
+            // We need this for all date-based period fields. We could potentially optimize by not doing this
+            // in cases where we've only got time fields...
+            LocalDate endDate = end.Date;
+            if (start < end)
+            {
+                if (start.TimeOfDay > end.TimeOfDay)
+                {
+                    endDate = endDate.PlusDays(-1);
+                }
+            }
+            else if (start > end && start.TimeOfDay < end.TimeOfDay)
+            {
+                endDate = endDate.PlusDays(1);
+            }
 
             // Optimization for single field
             switch (units)
             {
-                case PeriodUnits.Years: return FromYears((int) fields.Years.Subtract(endLocalInstant, startLocalInstant));
-                case PeriodUnits.Months: return FromMonths((int) fields.Months.Subtract(endLocalInstant, startLocalInstant));
-                case PeriodUnits.Weeks: return FromWeeks((int) fields.Weeks.Subtract(endLocalInstant, startLocalInstant));
-                case PeriodUnits.Days: return FromDays((int) fields.Days.Subtract(endLocalInstant, startLocalInstant));
-                case PeriodUnits.Hours: return FromHours(fields.Hours.Subtract(endLocalInstant, startLocalInstant));
-                case PeriodUnits.Minutes: return FromMinutes(fields.Minutes.Subtract(endLocalInstant, startLocalInstant));
-                case PeriodUnits.Seconds: return FromSeconds(fields.Seconds.Subtract(endLocalInstant, startLocalInstant));
-                case PeriodUnits.Milliseconds: return FromMilliseconds(fields.Milliseconds.Subtract(endLocalInstant, startLocalInstant));
-                case PeriodUnits.Ticks: return FromTicks(fields.Ticks.Subtract(endLocalInstant, startLocalInstant));
+                case PeriodUnits.Years: return FromYears(DatePeriodFields.YearsField.Subtract(endDate, start.Date));
+                case PeriodUnits.Months: return FromMonths(DatePeriodFields.MonthsField.Subtract(endDate, start.Date));
+                case PeriodUnits.Weeks: return FromWeeks(DatePeriodFields.WeeksField.Subtract(endDate, start.Date));
+                case PeriodUnits.Days: return FromDays(DatePeriodFields.DaysField.Subtract(endDate, start.Date));
+                case PeriodUnits.Hours: return FromHours(GetTimeBetween(start, end, TimePeriodField.Hours));
+                case PeriodUnits.Minutes: return FromMinutes(GetTimeBetween(start, end, TimePeriodField.Minutes));
+                case PeriodUnits.Seconds: return FromSeconds(GetTimeBetween(start, end, TimePeriodField.Seconds));
+                case PeriodUnits.Milliseconds: return FromMilliseconds(GetTimeBetween(start, end, TimePeriodField.Milliseconds));
+                case PeriodUnits.Ticks: return FromTicks(GetTimeBetween(start, end, TimePeriodField.Ticks));
             }
 
             // Multiple fields
-            long[] values = new long[ValuesArraySize];
-
-            LocalInstant remaining = startLocalInstant;
-            int numericFields = (int) units;
-            for (int i = 0; i < ValuesArraySize; i++)
+            LocalDateTime remaining = start;
+            int years = 0, months = 0, weeks = 0, days = 0;
+            if ((units & PeriodUnits.AllDateUnits) != 0)
             {
-                if ((numericFields & (1 << i)) != 0)
-                {
-                    var field = GetFieldForIndex(fields, i);
-                    values[i] = field.Subtract(endLocalInstant, remaining);
-                    remaining = field.Add(remaining, values[i]);
-                }
+                LocalDate remainingDate = start.Date;
+                years = FieldBetween(units & PeriodUnits.Years, endDate, ref remainingDate, DatePeriodFields.YearsField);
+                months = FieldBetween(units & PeriodUnits.Months, endDate, ref remainingDate, DatePeriodFields.MonthsField);
+                weeks = FieldBetween(units & PeriodUnits.Weeks, endDate, ref remainingDate, DatePeriodFields.WeeksField);
+                days = FieldBetween(units & PeriodUnits.Days, endDate, ref remainingDate, DatePeriodFields.DaysField);
+                remaining = new LocalDateTime(remainingDate, start.TimeOfDay);
             }
-            // TODO(2.0): All this will change :)
-            return new Period((int) values[0], (int) values[1], (int) values[2], (int) values[3],
-                (long) values[4], (long) values[5], (long) values[6], (long) values[7], (long) values[8]);
+
+            long hours = 0, minutes = 0, seconds = 0, milliseconds = 0, ticks = 0;
+            if ((units & PeriodUnits.AllTimeUnits) != 0)
+            {
+                hours = FieldBetween(units & PeriodUnits.Hours, end, ref remaining, TimePeriodField.Hours);
+                minutes = FieldBetween(units & PeriodUnits.Minutes, end, ref remaining, TimePeriodField.Minutes);
+                seconds = FieldBetween(units & PeriodUnits.Seconds, end, ref remaining, TimePeriodField.Seconds);
+                milliseconds = FieldBetween(units & PeriodUnits.Milliseconds, end, ref remaining, TimePeriodField.Milliseconds);
+                ticks = FieldBetween(units & PeriodUnits.Ticks, end, ref remaining, TimePeriodField.Ticks);
+            }
+
+            return new Period(years, months, weeks, days, hours, minutes, seconds, milliseconds, ticks);
+        }
+
+        private static int FieldBetween(PeriodUnits units, LocalDate end, ref LocalDate remaining, IDatePeriodField dateField)
+        {
+            if (units == 0)
+            {
+                return 0;
+            }
+            int value = dateField.Subtract(end, remaining);
+            remaining = dateField.Add(remaining, value);
+            return value;
+        }
+
+        private static long FieldBetween(PeriodUnits units, LocalDateTime end, ref LocalDateTime remaining, TimePeriodField timeField)
+        {
+            if (units == 0)
+            {
+                return 0;
+            }
+            long value = GetTimeBetween(remaining, end, timeField);
+            remaining = timeField.Add(remaining, value);
+            return value;
+        }
+
+        private static long GetTimeBetween(LocalDateTime start, LocalDateTime end, TimePeriodField periodField)
+        {
+            int days = DatePeriodFields.DaysField.Subtract(end.Date, start.Date);
+            long units = periodField.Subtract(end.TimeOfDay, start.TimeOfDay);
+            return units + days * periodField.UnitsPerDay;
         }
 
         /// <summary>
-        /// Adds the contents of this period to the given local instant in the given calendar system.
+        /// Adds the contents of this period to the given date and time, with the given scale (either 1 or -1, usually).
         /// </summary>
-        internal LocalInstant AddTo(LocalInstant localInstant, CalendarSystem calendar, int scalar)
+        internal LocalDateTime AddTo(LocalDate date, LocalTime time, int scalar)
         {
-            Preconditions.CheckNotNull(calendar, "calendar");
+            date = DatePeriodFields.YearsField.Add(date, years * scalar);
+            date = DatePeriodFields.MonthsField.Add(date, months * scalar);
+            date = DatePeriodFields.WeeksField.Add(date, weeks * scalar);
+            date = DatePeriodFields.DaysField.Add(date, days * scalar);
 
-            PeriodFieldSet fields = calendar.PeriodFields;
-            LocalInstant result = localInstant;
-
-            if (years != 0) result = fields.Years.Add(result, years * scalar);
-            if (months != 0) result = fields.Months.Add(result, months * scalar);
-            if (weeks != 0) result = fields.Weeks.Add(result, weeks * scalar);
-            if (days != 0) result = fields.Days.Add(result, days * scalar);
-            if (hours != 0) result = fields.Hours.Add(result, hours * scalar);
-            if (minutes != 0) result = fields.Minutes.Add(result, minutes * scalar);
-            if (seconds != 0) result = fields.Seconds.Add(result, seconds * scalar);
-            if (milliseconds != 0) result = fields.Milliseconds.Add(result, milliseconds * scalar);
-            if (ticks != 0) result = fields.Ticks.Add(result, ticks * scalar);
+            LocalDateTime result = new LocalDateTime(date, time);
+            result = TimePeriodField.Hours.Add(result, hours * scalar);
+            result = TimePeriodField.Minutes.Add(result, minutes * scalar);
+            result = TimePeriodField.Seconds.Add(result, seconds * scalar);
+            result = TimePeriodField.Milliseconds.Add(result, milliseconds * scalar);
+            result = TimePeriodField.Ticks.Add(result, ticks * scalar);
 
             return result;
         }
@@ -573,26 +622,6 @@ namespace NodaTime
             long ticks = totalTicks % NodaConstants.TicksPerMillisecond;
 
             return new Period(this.years, this.months, 0 /* weeks */, days, hours, minutes, seconds, milliseconds, ticks);
-        }
-
-        /// <summary>
-        /// Returns the PeriodField for the given index, in the range 0-8 inclusive.
-        /// </summary>
-        private static IPeriodField GetFieldForIndex(PeriodFieldSet fields, int index)
-        {
-            switch (index)
-            {
-                case YearIndex: return fields.Years;
-                case MonthIndex: return fields.Months;
-                case WeekIndex: return fields.Weeks;
-                case DayIndex: return fields.Days;
-                case HourIndex: return fields.Hours;
-                case MinuteIndex: return fields.Minutes;
-                case SecondIndex: return fields.Seconds;
-                case MillisecondIndex: return fields.Milliseconds;
-                case TickIndex: return fields.Ticks;
-                default: throw new ArgumentOutOfRangeException("index");
-            }
         }
 
         #region Helper properties
