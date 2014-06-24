@@ -170,10 +170,12 @@
     <Compile Include="Calendars\YearMonthDayCalculator.cs" />
     <Compile Include="Calendars\YearStartCacheEntry.cs" />
     <Compile Include="DateTimeZoneProviders.cs" />
+    <Compile Include="Fields\FixedLengthDatePeriodField.cs" />
+    <Compile Include="Fields\TimePeriodField.cs" />
+    <Compile Include="Fields\IDatePeriodField.cs" />
     <Compile Include="Fields\MonthsPeriodField.cs" />
-    <Compile Include="Fields\FixedDurationPeriodField.cs" />
-    <Compile Include="Fields\IPeriodField.cs" />
     <Compile Include="Fields\NamespaceDoc.cs" />
+    <Compile Include="Fields\DatePeriodFields.cs" />
     <Compile Include="Fields\YearsPeriodField.cs" />
     <Compile Include="Globalization\NamespaceDoc.cs" />
     <Compile Include="Annotations\JetBrainsAnnotations.cs" />
@@ -229,7 +231,6 @@
     <Compile Include="LocalTime.cs" />
     <Compile Include="NamespaceDoc.cs" />
     <Compile Include="Offset.cs" />
-    <Compile Include="Fields\PeriodFieldSet.cs" />
     <Compile Include="LocalInstant.cs" />
     <Compile Include="Period.cs" />
     <Compile Include="Properties\Messages.Designer.cs">

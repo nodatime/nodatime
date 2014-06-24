@@ -15,15 +15,6 @@ namespace NodaTime.Calendars
     /// </summary>
     internal static class TimeOfDayCalculator
     {
-        internal static readonly PeriodFieldSet TimeFields = new PeriodFieldSet.Builder
-        {
-            Ticks = FixedDurationPeriodField.Ticks,
-            Milliseconds = FixedDurationPeriodField.Milliseconds,
-            Seconds = FixedDurationPeriodField.Seconds,
-            Minutes = FixedDurationPeriodField.Minutes,
-            Hours = FixedDurationPeriodField.Hours,
-        }.Build();
-
         internal static long GetTicks(int hourOfDay, int minuteOfHour)
         {
             Preconditions.CheckArgumentRange("hourOfDay", hourOfDay, 0, NodaConstants.HoursPerStandardDay - 1);
