@@ -28,6 +28,10 @@ namespace NodaTime.Fields
 
         public int Subtract(LocalDate minuendDate, LocalDate subtrahendDate)
         {
+            if (minuendDate == subtrahendDate)
+            {
+                return 0;
+            }
             int minuendDays = minuendDate.DaysSinceEpoch;
             int subtrahendDays = subtrahendDate.DaysSinceEpoch;
             return (minuendDays - subtrahendDays) / unitDays;

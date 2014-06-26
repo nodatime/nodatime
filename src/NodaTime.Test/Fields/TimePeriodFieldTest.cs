@@ -27,8 +27,8 @@ namespace NodaTime.Test.Fields
             var startTime = LocalTimePattern.ExtendedIsoPattern.Parse(start).Value;
             var expectedEndTime = LocalTimePattern.ExtendedIsoPattern.Parse(expectedEnd).Value;
 
-            int extraDays;
-            Assert.AreEqual(expectedEndTime, SampleField.Add(startTime, units, out extraDays));
+            int extraDays = 0;
+            Assert.AreEqual(expectedEndTime, SampleField.Add(startTime, units, ref extraDays));
             Assert.AreEqual(expectedExtraDays, extraDays);
         }
 
@@ -48,17 +48,15 @@ namespace NodaTime.Test.Fields
         [Test]
         public void Add_OverflowOnAddOrSubtract()
         {
-            int extraDays;
-            Assert.Throws<OverflowException>(() => TimePeriodField.Seconds.Add(LocalTime.Midnight, long.MaxValue, out extraDays));
-            Assert.Throws<OverflowException>(() => TimePeriodField.Seconds.Add(LocalTime.Midnight, long.MinValue, out extraDays));
+            Assert.Throws<OverflowException>(() => TimePeriodField.Seconds.Add(LocalTime.Midnight, long.MaxValue));
+            Assert.Throws<OverflowException>(() => TimePeriodField.Seconds.Add(LocalTime.Midnight, long.MinValue));
         }
 
         [Test]
         public void Add_MinLongTicks()
         {
             // Without a bit of care, this would fail.
-            int extraDays;
-            TimePeriodField.Ticks.Add(LocalTime.Midnight, long.MinValue, out extraDays);
+            TimePeriodField.Ticks.Add(LocalTime.Midnight, long.MinValue);
         }
     }
 }

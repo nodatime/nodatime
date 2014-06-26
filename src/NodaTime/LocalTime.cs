@@ -254,9 +254,7 @@ namespace NodaTime
         {
             Preconditions.CheckNotNull(period, "period");
             Preconditions.CheckArgument(!period.HasDateComponent, "period", "Cannot add a period with a date component to a time");
-            // FIXME(2.0): There are better ways of doing this! Shouldn't need to involve a date at all.
-            // Introduce method on Period...
-            return (new LocalDate(1970, 1, 1) + time + period).TimeOfDay;
+            return period.AddTo(time, 1);
         }
 
         /// <summary>
@@ -292,8 +290,7 @@ namespace NodaTime
         {
             Preconditions.CheckNotNull(period, "period");
             Preconditions.CheckArgument(!period.HasDateComponent, "period", "Cannot subtract a period with a date component from a time");
-            // FIXME(2.0) We should have Period.AddTo(LocalTime) and Period.AddTo(LocalDate) methods.
-            return (new LocalDateTime(new LocalDate(1970, 1, 1), time) - period).TimeOfDay;
+            return period.AddTo(time, -1);
         }
 
         /// <summary>
