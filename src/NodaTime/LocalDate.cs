@@ -270,6 +270,7 @@ namespace NodaTime
 
         /// <summary>
         /// Subtracts the specified period from the date.
+        /// This is a convenience operator over the <see cref="Minus(Period)"/> method.
         /// </summary>
         /// <param name="date">The date to subtract the period from</param>
         /// <param name="period">The period to subtract. Must not contain any (non-zero) time units.</param>
