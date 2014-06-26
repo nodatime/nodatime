@@ -184,7 +184,7 @@ namespace NodaTime
         [Pure]
         public Instant ToInstant()
         {
-            return localDateTime.LocalInstant.Minus(offset);
+            return localDateTime.ToLocalInstant().Minus(offset);
         }
 
         /// <summary>
@@ -253,7 +253,7 @@ namespace NodaTime
         [Pure]
         public OffsetDateTime WithOffset(Offset offset)
         {
-            LocalDateTime newLocalDateTime = new LocalDateTime(LocalDateTime.LocalInstant.Minus(this.Offset).Plus(offset), Calendar);
+            LocalDateTime newLocalDateTime = new LocalDateTime(LocalDateTime.ToLocalInstant().Minus(this.Offset).Plus(offset), Calendar);
             return new OffsetDateTime(newLocalDateTime, offset);
         }
         
@@ -435,7 +435,7 @@ namespace NodaTime
             /// <inheritdoc />
             public override int Compare(OffsetDateTime x, OffsetDateTime y)
             {
-                return x.localDateTime.LocalInstant.CompareTo(y.localDateTime.LocalInstant);
+                return x.localDateTime.ToLocalInstant().CompareTo(y.localDateTime.ToLocalInstant());
             }
         }
 
@@ -521,7 +521,7 @@ namespace NodaTime
         [System.Security.SecurityCritical]
         void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)
         {
-            info.AddValue(LocalTicksSerializationName, localDateTime.LocalInstant.Ticks);
+            info.AddValue(LocalTicksSerializationName, localDateTime.ToLocalInstant().Ticks);
             info.AddValue(CalendarIdSerializationName, Calendar.Id);
             info.AddValue(OffsetMillisecondsSerializationName, Offset.Milliseconds);
         }

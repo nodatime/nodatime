@@ -108,7 +108,7 @@ namespace NodaTime
         public ZonedDateTime(LocalDateTime localDateTime, [NotNull] DateTimeZone zone, Offset offset)
         {
             Preconditions.CheckNotNull(zone, "zone");
-            Instant candidateInstant = localDateTime.LocalInstant.Minus(offset);
+            Instant candidateInstant = localDateTime.ToLocalInstant().Minus(offset);
             Offset correctOffset = zone.GetUtcOffset(candidateInstant);
             // Not using Preconditions, to avoid building the string unnecessarily.
             if (correctOffset != offset)
@@ -272,7 +272,7 @@ namespace NodaTime
         [Pure]
         public Instant ToInstant()
         {
-            return localDateTime.LocalInstant.Minus(offset);
+            return localDateTime.ToLocalInstant().Minus(offset);
         }
 
         /// <summary>
@@ -611,7 +611,7 @@ namespace NodaTime
         [Pure]
         public DateTimeOffset ToDateTimeOffset()
         {
-            return new DateTimeOffset(NodaConstants.BclTicksAtUnixEpoch + LocalDateTime.LocalInstant.Ticks, Offset.ToTimeSpan());
+            return new DateTimeOffset(NodaConstants.BclTicksAtUnixEpoch + LocalDateTime.ToLocalInstant().Ticks, Offset.ToTimeSpan());
         }
 
         /// <summary>
@@ -655,7 +655,7 @@ namespace NodaTime
         [Pure]
         public DateTime ToDateTimeUnspecified()
         {
-            return LocalDateTime.LocalInstant.ToDateTimeUnspecified();
+            return LocalDateTime.ToLocalInstant().ToDateTimeUnspecified();
         }
 
         /// <summary>
@@ -757,7 +757,7 @@ namespace NodaTime
             public override int Compare(ZonedDateTime x, ZonedDateTime y)
             {
                 // FIXME(2.0): Different calendar systems?
-                return x.localDateTime.LocalInstant.CompareTo(y.localDateTime.LocalInstant);
+                return x.localDateTime.ToLocalInstant().CompareTo(y.localDateTime.ToLocalInstant());
             }
         }
 
@@ -859,7 +859,7 @@ namespace NodaTime
         void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)
         {
             // FIXME(2.0): Revisit serialization
-            info.AddValue(LocalTicksSerializationName, localDateTime.LocalInstant.Ticks);
+            info.AddValue(LocalTicksSerializationName, localDateTime.ToLocalInstant().Ticks);
             info.AddValue(CalendarIdSerializationName, Calendar.Id);
             info.AddValue(OffsetMillisecondsSerializationName, Offset.Milliseconds);
             info.AddValue(ZoneIdSerializationName, Zone.Id);
