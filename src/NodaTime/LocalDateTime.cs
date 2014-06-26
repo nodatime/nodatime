@@ -364,22 +364,6 @@ namespace NodaTime
         /// </summary>
         public LocalDate Date { get { return date; } }
 
-        /* FIXME: This is potentially useful code.
-        { 
-            get 
-            { 
-                // Work out how far into the current day we are, and subtract that from our current ticks.
-                // This is much quicker than finding out the current day, month, year etc and then reconstructing everything.
-                long dayTicks = localInstant.Ticks % NodaConstants.TicksPerStandardDay;
-                if (dayTicks < 0)
-                {
-                    dayTicks += NodaConstants.TicksPerStandardDay;
-                }
-                return new LocalDate(new LocalInstant(localInstant.Ticks - dayTicks), Calendar);
-            }
-        }
-        */
-
         /// <summary>
         /// Constructs a <see cref="DateTime"/> from this value which has a <see cref="DateTime.Kind" />
         /// of <see cref="DateTimeKind.Unspecified"/>.
