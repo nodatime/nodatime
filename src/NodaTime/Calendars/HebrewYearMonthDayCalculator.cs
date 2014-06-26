@@ -16,8 +16,7 @@ namespace NodaTime.Calendars
         private const int AbsoluteDayOfHebrewEpoch = -1373427;
         private const int MonthsPerLeapCycle = 235;
         private const int YearsPerLeapCycle = 19;
-        private readonly Func<int, int, int> calendarToScriptural;
-        private readonly Func<int, int, int> scripturalToCalendar;
+        private readonly HebrewMonthNumbering monthNumbering;
 
         internal HebrewYearMonthDayCalculator(HebrewMonthNumbering monthNumbering)
             : base(HebrewScripturalCalculator.MinYear,
@@ -26,22 +25,27 @@ namespace NodaTime.Calendars
                   (AbsoluteDayOfHebrewEpoch - AbsoluteDayOfUnixEpoch), // Day at year 1
                   new[] { Era.AnnoMundi })
         {
-            switch (monthNumbering)
-            {
-                case HebrewMonthNumbering.Civil:
-                    calendarToScriptural = HebrewMonthConverter.CivilToScriptural;
-                    scripturalToCalendar = HebrewMonthConverter.ScripturalToCivil;
-                    break;
-                case HebrewMonthNumbering.Scriptural:
-                    calendarToScriptural = NoOp;
-                    scripturalToCalendar = NoOp;
-                    break;
-            }
+            this.monthNumbering = monthNumbering;
         }
 
-        private static int NoOp(int year, int month)
+        private int CalendarToCivilMonth(int year, int month)
         {
-            return month;
+            return monthNumbering == HebrewMonthNumbering.Civil ? month : HebrewMonthConverter.ScripturalToCivil(year, month);
+        }
+
+        private int CalendarToScripturalMonth(int year, int month)
+        {
+            return monthNumbering == HebrewMonthNumbering.Scriptural ? month : HebrewMonthConverter.CivilToScriptural(year, month);
+        }
+
+        private int CivilToCalendarMonth(int year, int month)
+        {
+            return monthNumbering == HebrewMonthNumbering.Civil ? month : HebrewMonthConverter.CivilToScriptural(year, month);
+        }
+
+        private int ScripturalToCalendarMonth(int year, int month)
+        {
+            return monthNumbering == HebrewMonthNumbering.Scriptural ? month : HebrewMonthConverter.ScripturalToCivil(year, month);
         }
 
         /// <summary>
@@ -55,7 +59,7 @@ namespace NodaTime.Calendars
 
         protected override int GetDaysFromStartOfYearToStartOfMonth(int year, int month)
         {
-            int scripturalMonth = calendarToScriptural(year, month);
+            int scripturalMonth = CalendarToScripturalMonth(year, month);
             int absoluteDayAtStartOfMonth = HebrewScripturalCalculator.AbsoluteFromHebrew(year, scripturalMonth, 1);
             int absoluteDayAtStartOfYear = HebrewScripturalCalculator.AbsoluteFromHebrew(year, ScripturalYearStartMonth, 1);
             return absoluteDayAtStartOfMonth - absoluteDayAtStartOfYear;
@@ -73,7 +77,7 @@ namespace NodaTime.Calendars
         {
             int absoluteDay = daysSinceEpoch + AbsoluteDayOfUnixEpoch;
             YearMonthDay scripturalYmd = HebrewScripturalCalculator.HebrewFromAbsolute(absoluteDay);
-            return new YearMonthDay(scripturalYmd.Year, scripturalToCalendar(scripturalYmd.Year, scripturalYmd.Month), scripturalYmd.Day);
+            return new YearMonthDay(scripturalYmd.Year, ScripturalToCalendarMonth(scripturalYmd.Year, scripturalYmd.Month), scripturalYmd.Day);
         }
 
         internal override int GetDaysInYear(int year)
@@ -96,7 +100,7 @@ namespace NodaTime.Calendars
             int currentYear = yearMonthDay.Year;
             int currentMonth = yearMonthDay.Month;
             int targetDay = yearMonthDay.Day;
-            int targetScripturalMonth = calendarToScriptural(currentYear, currentMonth);
+            int targetScripturalMonth = CalendarToScripturalMonth(currentYear, currentMonth);
             if (targetScripturalMonth == 13 && !IsLeapYear(year))
             {
                 // If we were in Adar II and the target year is not a leap year, map to Adar.
@@ -122,28 +126,26 @@ namespace NodaTime.Calendars
                     }
                 }
             }
-            int targetCalendarMonth = scripturalToCalendar(year, targetScripturalMonth);
+            int targetCalendarMonth = ScripturalToCalendarMonth(year, targetScripturalMonth);
             return new YearMonthDay(year, targetCalendarMonth, targetDay);
         }
 
         internal override int GetDaysInMonth(int year, int month)
         {
-            return HebrewScripturalCalculator.DaysInMonth(year, calendarToScriptural(year, month));
+            return HebrewScripturalCalculator.DaysInMonth(year, CalendarToScripturalMonth(year, month));
         }
 
         internal override YearMonthDay AddMonths(YearMonthDay yearMonthDay, int months)
         {
             // Note: this method gives the same result regardless of the month numbering used
             // by the instance. The method works in terms of civil month numbers for most of
-            // the time in order to simplify the logic. There may be pointless conversions at
-            // the start and end. TODO(2.0): Remove the pointlessness...
+            // the time in order to simplify the logic.
             if (months == 0)
             {
                 return yearMonthDay;
             }
             int year = yearMonthDay.Year;
-            int scripturalMonth = calendarToScriptural(year, yearMonthDay.Month);
-            int month = HebrewMonthConverter.ScripturalToCivil(year, scripturalMonth);
+            int month = CalendarToCivilMonth(year, yearMonthDay.Month);
             // This arithmetic works the same both backwards and forwards.
             year += (months / MonthsPerLeapCycle) * YearsPerLeapCycle;
             months = months % MonthsPerLeapCycle;
@@ -176,10 +178,9 @@ namespace NodaTime.Calendars
                 month = GetMaxMonth(year) + months;
             }
 
-            // Convert back to scriptural for the last bit
-            month = HebrewMonthConverter.CivilToScriptural(year, month);
-            int day = Math.Min(HebrewScripturalCalculator.DaysInMonth(year, month), yearMonthDay.Day);
-            month = scripturalToCalendar(year, month);
+            // Convert back to calendar month
+            month = CivilToCalendarMonth(year, month);
+            int day = Math.Min(GetDaysInMonth(year, month), yearMonthDay.Day);
             return new YearMonthDay(year, month, day);
         }
 
@@ -187,11 +188,12 @@ namespace NodaTime.Calendars
         // is later than subtrahendInstant, the result should be positive.
         internal override int MonthsBetween(YearMonthDay minuendDate, YearMonthDay subtrahendDate)
         {
-            // TODO(2.0): Tidy this up!
             // First (quite rough) guess... we could probably be more efficient than this, but it's unlikely to be very far off.
-            double minuendMonths = (minuendDate.Year * MonthsPerLeapCycle) / (double) YearsPerLeapCycle + HebrewMonthConverter.ScripturalToCivil(minuendDate.Year, calendarToScriptural(minuendDate.Year, minuendDate.Month));
-            double subtrahendMonths = (subtrahendDate.Year * MonthsPerLeapCycle) / (double) YearsPerLeapCycle + HebrewMonthConverter.ScripturalToCivil(subtrahendDate.Year, calendarToScriptural(subtrahendDate.Year, subtrahendDate.Month));
-            int diff = (int) (minuendMonths - subtrahendMonths);
+            int minuendCivilMonth = CalendarToCivilMonth(minuendDate.Year, minuendDate.Month);
+            int subtrahendCivilMonth = CalendarToCivilMonth(subtrahendDate.Year, subtrahendDate.Month);
+            double minuendTotalMonths = minuendCivilMonth + (minuendDate.Year * MonthsPerLeapCycle) / (double) YearsPerLeapCycle;
+            double subtrahendTotalMonths = subtrahendCivilMonth + (subtrahendDate.Year * MonthsPerLeapCycle) / (double) YearsPerLeapCycle;
+            int diff = (int) (minuendTotalMonths - subtrahendTotalMonths);
 
             if (Compare(subtrahendDate, minuendDate) <= 0)
             {
@@ -229,35 +231,27 @@ namespace NodaTime.Calendars
 
         public override int Compare(YearMonthDay lhs, YearMonthDay rhs)
         {
-            // TODO(2.0): In the civil calendar, we can just use lhs.CompareTo(rhs) without conversion.
+            // The civil month numbering system allows a naive comparison.
+            if (monthNumbering == HebrewMonthNumbering.Civil)
+            {
+                return lhs.CompareTo(rhs);
+            }
+            // Otherwise, try one component at a time. (We could benchmark this
+            // against creating a new pair of YearMonthDay values in the civil month numbering,
+            // and comparing them...)
             int yearComparison = lhs.Year.CompareTo(rhs.Year);
             if (yearComparison != 0)
             {
                 return yearComparison;
             }
-            int lhsCivilMonth = HebrewMonthConverter.ScripturalToCivil(lhs.Year, calendarToScriptural(lhs.Year, lhs.Month));
-            int rhsCivilMonth = HebrewMonthConverter.ScripturalToCivil(rhs.Year, calendarToScriptural(rhs.Year, rhs.Month));
+            int lhsCivilMonth = CalendarToCivilMonth(lhs.Year, lhs.Month);
+            int rhsCivilMonth = CalendarToCivilMonth(rhs.Year, rhs.Month);
             int monthComparison = lhsCivilMonth.CompareTo(rhsCivilMonth);
             if (monthComparison != 0)
             {
                 return monthComparison;
             }
             return lhs.Day.CompareTo(rhs.Day);
-        }
-
-        /// <summary>
-        /// Converts a LocalInstant into an absolute day number.
-        /// </summary>
-        private static int AbsoluteDayFromLocalInstant(LocalInstant localInstant)
-        {
-            int daysSinceUnixEpoch = TickArithmetic.TicksToDays(localInstant.Ticks);
-            return daysSinceUnixEpoch + AbsoluteDayOfUnixEpoch;
-        }
-
-        private static LocalInstant LocalInstantFromAbsoluteDay(int absoluteDay, long tickOfDay)
-        {
-            int daysSinceUnixEpoch = absoluteDay - AbsoluteDayOfUnixEpoch;
-            return new LocalInstant(daysSinceUnixEpoch * NodaConstants.TicksPerStandardDay + tickOfDay);
         }
     }
 }
