@@ -44,7 +44,7 @@ namespace NodaTime.Test
 
             var time1 = new LocalInstant(TestTime1);
             var time2 = new LocalInstant(TestTime2);
-            Duration duration = time2 - time1;
+            Duration duration = Duration.FromTicks(diff);
 
             Assert.AreEqual(diff, duration.Ticks);
             Assert.AreEqual(TestTime2, (time1 + duration).Ticks);
