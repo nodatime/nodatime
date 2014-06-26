@@ -17,7 +17,8 @@ See the [Noda Time 1.x to 2.0 migration guide](migration-to-2.html) for full det
 
 - Removed members which had already been made obsolete in the 1.x release line, including
   support for the legacy resource-based time zone data format.
-- Remove `Instant(long)` constructor from the public API.
+- Removed `Instant(long)` constructor from the public API.
+- Removed `LocalDate.LocalDateTime` property.
 - `Period` and `PeriodBuilder` properties for date-based values (years, months, weeks, days) are now of type `int` rather than `long`.
 - Default values for local date-based structs (`LocalDate` etc) now return 0001-01-01
   instead of the Unix epoch.
