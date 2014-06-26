@@ -49,7 +49,7 @@ namespace NodaTime.Test.Calendars
             for (int year = minYear; year <= maxYear; year++)
             {
                 int months = bcl.GetMonthsInYear(year);
-                Assert.AreEqual(months, noda.GetMaxMonth(year));
+                Assert.AreEqual(months, noda.GetMonthsInYear(year));
                 for (int month = 1; month <= months; month++)
                 {
                     Assert.AreEqual(bcl.GetDaysInMonth(year, month), noda.GetDaysInMonth(year, month),
@@ -86,7 +86,7 @@ namespace NodaTime.Test.Calendars
             for (int year = minYear; year <= maxYear; year++)
             {
                 int months = bcl.GetMonthsInYear(year);
-                Assert.AreEqual(months, noda.GetMaxMonth(year));
+                Assert.AreEqual(months, noda.GetMonthsInYear(year));
                 for (int civilMonth = 1; civilMonth <= months; civilMonth++)
                 {
                     int scripturalMonth = HebrewMonthConverter.CivilToScriptural(year, civilMonth);

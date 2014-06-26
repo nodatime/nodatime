@@ -85,7 +85,7 @@ namespace NodaTime.Calendars
             return HebrewScripturalCalculator.DaysInYear(year);
         }
 
-        internal override int GetMaxMonth(int year)
+        internal override int GetMonthsInYear(int year)
         {
             return IsLeapYear(year) ? 13 : 12;
         }
@@ -155,9 +155,9 @@ namespace NodaTime.Calendars
                 // of the year, for simplicity.
                 months += month - 1;
                 // Add a year at a time
-                while (months >= GetMaxMonth(year))
+                while (months >= GetMonthsInYear(year))
                 {
-                    months -= GetMaxMonth(year);
+                    months -= GetMonthsInYear(year);
                     year++;
                 }
                 // However many months we've got left to add tells us the final month.
@@ -166,16 +166,16 @@ namespace NodaTime.Calendars
             else
             {
                 // Pretend we were given the month at the end of the years.
-                months -= GetMaxMonth(year) - month;
+                months -= GetMonthsInYear(year) - month;
                 // Subtract a year at a time
-                while (months + GetMaxMonth(year) <= 0)
+                while (months + GetMonthsInYear(year) <= 0)
                 {
-                    months += GetMaxMonth(year);
+                    months += GetMonthsInYear(year);
                     year--;
                 }
                 // However many months we've got left to add (which will still be negative...)
                 // tells us the final month.
-                month = GetMaxMonth(year) + months;
+                month = GetMonthsInYear(year) + months;
             }
 
             // Convert back to calendar month

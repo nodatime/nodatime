@@ -260,7 +260,7 @@ namespace NodaTime.Text
                         MonthOfYearNumeric = templateValue.Month;
                         break;
                 }
-                if (MonthOfYearNumeric > Calendar.GetMaxMonth(Year))
+                if (MonthOfYearNumeric > Calendar.GetMonthsInYear(Year))
                 {
                     return ParseResult<LocalDate>.MonthOutOfRange(text, MonthOfYearNumeric, Year);
                 }

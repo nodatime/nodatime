@@ -646,9 +646,9 @@ namespace NodaTime
         /// years have the same number of months in this calendar system). Failure to throw an exception should not be
         /// treated as an indication that the year is valid.</exception>
         /// <returns>The maximum month number within the given year.</returns>
-        public int GetMaxMonth(int year)
+        public int GetMonthsInYear(int year)
         {
-            return yearMonthDayCalculator.GetMaxMonth(year);
+            return yearMonthDayCalculator.GetMonthsInYear(year);
         }
 
         /// <summary>
