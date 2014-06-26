@@ -259,7 +259,7 @@ namespace NodaTime.TimeZones
         {
             Offset offset = GetOffset(standardOffset, savings);
             LocalInstant local = instant.Plus(offset);
-            int year = GetEligibleYear(CalendarSystem.Iso.GetYear(local), 1);
+            int year = GetEligibleYear(new LocalDateTime(local).Year, 1);
             Instant transitionSameYear = MakeInstant(year, standardOffset, savings);
             return transitionSameYear > instant ? transitionSameYear : MakeInstant(GetEligibleYear(year + 1, 1), standardOffset, savings);
         }
@@ -276,7 +276,7 @@ namespace NodaTime.TimeZones
         {
             Offset offset = GetOffset(standardOffset, savings);
             LocalInstant local = instant.Plus(offset);
-            int year = GetEligibleYear(CalendarSystem.Iso.GetYear(local), -1);
+            int year = GetEligibleYear(new LocalDateTime(local).Year, -1);
             Instant transitionSameYear = MakeInstant(year, standardOffset, savings);
             return transitionSameYear < instant ? transitionSameYear : MakeInstant(GetEligibleYear(year - 1, -1), standardOffset, savings);
         }
@@ -318,7 +318,7 @@ namespace NodaTime.TimeZones
             writer.WriteCount(monthOfYear);
             writer.WriteSignedCount(dayOfMonth);
             // The time of day is written as an offset for historical reasons.
-            writer.WriteOffset(Offset.FromTicks(timeOfDay.LocalDateTime.LocalInstant.Ticks));
+            writer.WriteOffset(Offset.FromTicks(timeOfDay.TickOfDay));
         }
 
         public static ZoneYearOffset Read(IDateTimeZoneReader reader)

@@ -6,10 +6,10 @@ namespace NodaTime.Calendars
 {
     internal sealed class JulianYearMonthDayCalculator : GJYearMonthDayCalculator
     {
-        private const long AverageTicksPerJulianYear = (long)(365.25m * NodaConstants.TicksPerStandardDay);
+        private const int AverageDaysPer10JulianYears = 3653; // Ideally 365.25 per year
 
         internal JulianYearMonthDayCalculator()
-            : base(-27256, 31196, AverageTicksPerJulianYear, -621357696000000000L)
+            : base(-27256, 31196, AverageDaysPer10JulianYears, -719164)
         {
         }
 

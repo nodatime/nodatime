@@ -108,8 +108,6 @@ namespace NodaTime.Test
             LocalDateTime dateTime = new LocalDateTime(1965, 11, 8, 12, 5, 23);
             LocalTime expected = new LocalTime(12, 5, 23);
             Assert.AreEqual(expected, dateTime.TimeOfDay);
-
-            Assert.AreEqual(new LocalDateTime(1970, 1, 1, 12, 5, 23), dateTime.TimeOfDay.LocalDateTime);
         }
 
         // Verifies that positive local instant ticks don't cause a problem with the date
@@ -119,8 +117,6 @@ namespace NodaTime.Test
             LocalDateTime dateTime = new LocalDateTime(1975, 11, 8, 12, 5, 23);
             LocalTime expected = new LocalTime(12, 5, 23);
             Assert.AreEqual(expected, dateTime.TimeOfDay);
-
-            Assert.AreEqual(new LocalDateTime(1970, 1, 1, 12, 5, 23), dateTime.TimeOfDay.LocalDateTime);
         }
 
         // Verifies that negative local instant ticks don't cause a problem with the date
@@ -404,7 +400,7 @@ namespace NodaTime.Test
         public void DefaultConstructor()
         {
             var actual = new LocalDateTime();
-            Assert.AreEqual(NodaConstants.UnixEpoch.InUtc().LocalDateTime, actual);
+            Assert.AreEqual(new LocalDateTime(1, 1, 1, 0, 0), actual);
         }
 
         [Test]

@@ -2,9 +2,6 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-using System.Collections.Generic;
-using NodaTime.Utility;
-
 namespace NodaTime.Calendars
 {
     /// <summary>
@@ -19,58 +16,25 @@ namespace NodaTime.Calendars
     {
         private const int DaysInMonth = 30;
 
-        // Number of ticks in all but the "short" month.
-        private const long TicksPerMonth = DaysInMonth * NodaConstants.TicksPerStandardDay;
-
-        private const long AverageTicksPerYear = (long)(365.25 * NodaConstants.TicksPerStandardDay);
+        private const int AverageDaysPer10Years = 3653; // Ideally 365.25 days per year...
 
         protected FixedMonthYearMonthDayCalculator(int minYear, int maxYear,
-            long ticksAtStartOfYear1, params Era[] eras)
-            : base(minYear, maxYear, 13, AverageTicksPerYear, ticksAtStartOfYear1, eras)
+            int daysAtStartOfYear1, params Era[] eras)
+            : base(minYear, maxYear, 13, AverageDaysPer10Years, daysAtStartOfYear1, eras)
         {
         }
 
-        internal override LocalInstant SetYear(LocalInstant localInstant, int year)
+        internal override int GetDaysSinceEpoch(YearMonthDay yearMonthDay)
         {
-            // Optimized implementation of set, due to fixed months
-            int thisYear = GetYear(localInstant);
-            int dayOfYear = GetDayOfYear(localInstant, thisYear);
-            long tickOfDay = TimeOfDayCalculator.GetTickOfDay(localInstant);
-
-            if (dayOfYear > 365)
-            {
-                // Current year is leap, and day is leap.
-                if (!IsLeapYear(year))
-                {
-                    // Moving to a non-leap year, leap day doesn't exist.
-                    dayOfYear--;
-                }
-            }
-
-            long ticks = GetStartOfYearInTicks(year) + (dayOfYear - 1) * NodaConstants.TicksPerStandardDay + tickOfDay;
-            return new LocalInstant(ticks);
-        }
-
-        internal override LocalInstant GetLocalInstant(int year, int monthOfYear, int dayOfMonth)
-        {
-            Preconditions.CheckArgumentRange("year", year, MinYear, MaxYear);
-            Preconditions.CheckArgumentRange("monthOfYear", monthOfYear, 1, 13);
-            Preconditions.CheckArgumentRange("dayOfMonth", dayOfMonth, 1, GetDaysInMonth(year, monthOfYear));
-
             // Just inline the arithmetic that would be done via various methods.
-            int days = GetStartOfYearInDays(year) + (monthOfYear - 1) * DaysInMonth + (dayOfMonth - 1);
-            return new LocalInstant(days * NodaConstants.TicksPerStandardDay);
-        }
-        
-        protected override long GetTicksFromStartOfYearToStartOfMonth(int year, int month)
-        {
-            return (month - 1) * TicksPerMonth;
+            return GetStartOfYearInDays(yearMonthDay.Year) +
+                   (yearMonthDay.Month - 1) * DaysInMonth
+                   + (yearMonthDay.Day - 1);
         }
 
-        internal override int GetDayOfMonth(LocalInstant localInstant)
+        protected override int GetDaysFromStartOfYearToStartOfMonth(int year, int month)
         {
-            // Optimized for fixed months
-            return (GetDayOfYear(localInstant) - 1) % DaysInMonth + 1;
+            return (month - 1) * DaysInMonth;
         }
 
         internal override bool IsLeapYear(int year)
@@ -83,15 +47,13 @@ namespace NodaTime.Calendars
             return month != 13 ? DaysInMonth : IsLeapYear(year) ? 6 : 5;
         }
 
-        internal override int GetMonthOfYear(LocalInstant localInstant)
+        internal override YearMonthDay GetYearMonthDay(int daysSinceEpoch)
         {
-            return (GetDayOfYear(localInstant) - 1) / DaysInMonth + 1;
-        }
-
-        protected override int GetMonthOfYear(LocalInstant localInstant, int year)
-        {
-            long monthZeroBased = (localInstant.Ticks - GetStartOfYearInTicks(year)) / TicksPerMonth;
-            return ((int)monthZeroBased) + 1;
+            int year = GetYear(daysSinceEpoch);
+            int zeroBasedDayOfYear = daysSinceEpoch - GetStartOfYearInDays(year);
+            int month = zeroBasedDayOfYear / DaysInMonth + 1;
+            int day = zeroBasedDayOfYear % DaysInMonth + 1;
+            return new YearMonthDay(year, month, day);
         }
     }
 }

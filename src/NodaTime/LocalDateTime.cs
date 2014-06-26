@@ -63,6 +63,7 @@ namespace NodaTime
         {
         }
 
+        // FIXME(2.0): Remove
         /// <summary>
         /// Initializes a new instance of the <see cref="LocalDateTime"/> struct using the given
         /// calendar system.
@@ -80,7 +81,7 @@ namespace NodaTime
             {
                 dayTicks += NodaConstants.TicksPerStandardDay;
             }
-            date = new LocalDate(new LocalInstant(localInstant.Ticks - dayTicks), calendar);
+            date = new LocalDate((int) ((localInstant.Ticks - dayTicks) / NodaConstants.TicksPerStandardDay), calendar);
             time = new LocalTime(dayTicks);
         }
 
@@ -235,12 +236,6 @@ namespace NodaTime
         {
             this.date = date;
             this.time = time;
-        }
-
-        // TODO(2.0): Remove this if at all possible.
-        internal LocalInstant LocalInstant
-        {
-            get { return date.LocalInstant.PlusTicks(time.TickOfDay); }
         }
 
         /// <summary>Gets the calendar system associated with this local date and time.</summary>
@@ -399,7 +394,21 @@ namespace NodaTime
         [Pure]
         public DateTime ToDateTimeUnspecified()
         {
-            return LocalInstant.ToDateTimeUnspecified();
+            long days = date.DaysSinceEpoch;
+            long timeTicks = time.TickOfDay;
+            long totalTicks = NodaConstants.BclTicksAtUnixEpoch + days * NodaConstants.TicksPerStandardDay + timeTicks;
+            return new DateTime(totalTicks, DateTimeKind.Unspecified);
+        }
+
+        // FIXME(2.0): Remove... we want to kill LocalInstant
+        internal LocalInstant LocalInstant
+        {
+            get
+            {
+                long days = date.DaysSinceEpoch;
+                long timeTicks = time.TickOfDay;
+                return new LocalInstant(days*NodaConstants.TicksPerStandardDay + timeTicks);
+            }
         }
 
         /// <summary>
@@ -464,7 +473,7 @@ namespace NodaTime
         /// <returns>true if the <paramref name="lhs"/> is strictly earlier than <paramref name="rhs"/>, false otherwise.</returns>
         public static bool operator <(LocalDateTime lhs, LocalDateTime rhs)
         {
-            return lhs.LocalInstant < rhs.LocalInstant && Equals(lhs.Calendar, rhs.Calendar);
+            return Equals(lhs.Calendar, rhs.Calendar) && lhs.CompareTo(rhs) < 0;
         }
 
         /// <summary>
@@ -480,7 +489,7 @@ namespace NodaTime
         /// <returns>true if the <paramref name="lhs"/> is earlier than or equal to <paramref name="rhs"/>, false otherwise.</returns>
         public static bool operator <=(LocalDateTime lhs, LocalDateTime rhs)
         {
-            return lhs.LocalInstant <= rhs.LocalInstant && Equals(lhs.Calendar, rhs.Calendar);
+            return Equals(lhs.Calendar, rhs.Calendar) && lhs.CompareTo(rhs) <= 0;
         }
 
         /// <summary>
@@ -496,7 +505,7 @@ namespace NodaTime
         /// <returns>true if the <paramref name="lhs"/> is strictly later than <paramref name="rhs"/>, false otherwise.</returns>
         public static bool operator >(LocalDateTime lhs, LocalDateTime rhs)
         {
-            return lhs.LocalInstant > rhs.LocalInstant && Equals(lhs.Calendar, rhs.Calendar);
+            return Equals(lhs.Calendar, rhs.Calendar) && lhs.CompareTo(rhs) > 0;
         }
 
         /// <summary>
@@ -512,7 +521,7 @@ namespace NodaTime
         /// <returns>true if the <paramref name="lhs"/> is later than or equal to <paramref name="rhs"/>, false otherwise.</returns>
         public static bool operator >=(LocalDateTime lhs, LocalDateTime rhs)
         {
-            return lhs.LocalInstant >= rhs.LocalInstant && Equals(lhs.Calendar, rhs.Calendar);
+            return Equals(lhs.Calendar, rhs.Calendar) && lhs.CompareTo(rhs) >= 0;
         }
 
         /// <summary>
@@ -531,6 +540,8 @@ namespace NodaTime
         /// later than <paramref name="other"/>.</returns>
         public int CompareTo(LocalDateTime other)
         {
+            // FIXME(2.0): Work out what we actually want to do if the calendars aren't equal.
+            // Probably throw!
             return LocalInstant.CompareTo(other.LocalInstant);
         }
 
@@ -655,7 +666,8 @@ namespace NodaTime
         public override int GetHashCode()
         {
             int hash = HashCodeHelper.Initialize();
-            hash = HashCodeHelper.Hash(hash, LocalInstant);
+            hash = HashCodeHelper.Hash(hash, date);
+            hash = HashCodeHelper.Hash(hash, time);
             hash = HashCodeHelper.Hash(hash, Calendar);
             return hash;
         }
@@ -1009,6 +1021,7 @@ namespace NodaTime
         [System.Security.SecurityCritical]
         void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)
         {
+            // FIXME(2.0): Revisit the serialization format
             info.AddValue(LocalTicksSerializationName, LocalInstant.Ticks);
             info.AddValue(CalendarIdSerializationName, Calendar.Id);
         }

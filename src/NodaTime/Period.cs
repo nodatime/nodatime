@@ -311,10 +311,7 @@ namespace NodaTime
             CalendarSystem calendar = start.Calendar;
             Preconditions.CheckArgument(calendar.Equals(end.Calendar), "end", "start and end must use the same calendar system");
 
-            LocalInstant startLocalInstant = start.LocalInstant;
-            LocalInstant endLocalInstant = end.LocalInstant;
-
-            if (startLocalInstant == endLocalInstant)
+            if (start == end)
             {
                 return Zero;
             }
@@ -475,7 +472,7 @@ namespace NodaTime
         /// <returns>The period between the two dates, using year, month and day units.</returns>
         public static Period Between(LocalDate start, LocalDate end)
         {
-            return Between(start.AtMidnight(), end.AtMidnight(), PeriodUnits.YearMonthDay);
+            return Between(start, end, PeriodUnits.YearMonthDay);
         }
 
         /// <summary>
@@ -497,7 +494,9 @@ namespace NodaTime
         public static Period Between(LocalTime start, LocalTime end, PeriodUnits units)
         {
             Preconditions.CheckArgument((units & PeriodUnits.AllDateUnits) == 0, "units", "Units contains date units: {0}", units);
-            return Between(start.LocalDateTime, end.LocalDateTime, units);
+            // FIXME(2.0): Don't do this! (Horrible temporary hack.)
+            return Between(new LocalDate(1970, 1, 1) + start,
+                           new LocalDate(1970, 1, 1) + end, units);
         }
 
         /// <summary>
@@ -512,7 +511,7 @@ namespace NodaTime
         /// <returns>The period between the two times, using the time period units.</returns>
         public static Period Between(LocalTime start, LocalTime end)
         {
-            return Between(start.LocalDateTime, end.LocalDateTime, PeriodUnits.AllTimeUnits);
+            return Between(start, end, PeriodUnits.AllTimeUnits);
         }
 
         /// <summary>

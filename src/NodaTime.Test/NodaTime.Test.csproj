@@ -275,6 +275,7 @@
     <Compile Include="Utility\BclConversionsTest.cs" />
     <Compile Include="Utility\CacheTest.cs" />
     <Compile Include="Utility\NodaReadOnlyDictionaryTest.cs" />
+    <Compile Include="YearMonthDayTest.cs" />
     <Compile Include="ZonedDateTimeTest.cs" />
     <None Include="Tests.nunit" />
   </ItemGroup>

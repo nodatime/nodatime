@@ -19,7 +19,7 @@ namespace NodaTime.Test
         public void DefaultConstructor()
         {
             var actual = new LocalDate();
-            Assert.AreEqual(NodaConstants.UnixEpoch.InUtc().LocalDateTime.Date, actual);
+            Assert.AreEqual(new LocalDate(1, 1, 1), actual);
         }
 
         [Test]

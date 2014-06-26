@@ -38,6 +38,13 @@ namespace NodaTime.Fields
             return new LocalDateTime(date, time);
         }
 
+        internal LocalTime Add(LocalTime localTime, long value)
+        {
+            // TODO(2.0): Try inlining the other method and removing the calculation of extra days.
+            int ignored;
+            return Add(localTime, value, out ignored);
+        }
+
         internal LocalTime Add(LocalTime localTime, long value, out int extraDays)
         {
             if (value == 0)

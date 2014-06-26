@@ -363,6 +363,8 @@ namespace NodaTime
         private readonly IList<Era> eras;
         private readonly int minYear;
         private readonly int maxYear;
+        private readonly long minDays;
+        private readonly long maxDays;
         private readonly long minTicks;
         private readonly long maxTicks;
 
@@ -388,8 +390,10 @@ namespace NodaTime
             this.weekYearCalculator = new WeekYearCalculator(yearMonthDayCalculator, minDaysInFirstWeek);
             this.minYear = yearMonthDayCalculator.MinYear;
             this.maxYear = yearMonthDayCalculator.MaxYear;
-            this.minTicks = yearMonthDayCalculator.GetStartOfYearInTicks(minYear);
-            this.maxTicks = yearMonthDayCalculator.GetStartOfYearInTicks(maxYear + 1) - 1;
+            this.minDays = yearMonthDayCalculator.GetStartOfYearInDays(minYear);
+            this.maxDays = yearMonthDayCalculator.GetStartOfYearInDays(maxYear + 1) - 1;
+            this.minTicks = minDays * NodaConstants.TicksPerStandardDay;
+            this.maxTicks = (maxDays + 1) * NodaConstants.TicksPerStandardDay - 1;
             this.eras = new ReadOnlyCollection<Era>(yearMonthDayCalculator.Eras);
         }
 
@@ -471,12 +475,22 @@ namespace NodaTime
         public int MaxYear { get { return maxYear; } }
 
         /// <summary>
-        /// Returns the minimum tick number this calendar can handle.
+        /// Returns the minimum day number this calendar can handle.
+        /// </summary>
+        internal long MinDays { get { return minDays; } }
+
+        /// <summary>
+        /// Returns the maximum day number (inclusive) this calendar can handle.
+        /// </summary>
+        internal long MaxDays { get { return maxDays; } }
+
+        /// <summary>
+        /// Returns the minimum ticks this calendar can handle.
         /// </summary>
         internal long MinTicks { get { return minTicks; } }
 
         /// <summary>
-        /// Returns the maximum tick number this calendar can handle.
+        /// Returns the maximum ticks (inclusive) this calendar can handle.
         /// </summary>
         internal long MaxTicks { get { return maxTicks; } }
 
@@ -543,21 +557,6 @@ namespace NodaTime
 
         internal YearMonthDayCalculator YearMonthDayCalculator { get { return yearMonthDayCalculator; } }
 
-        #region Factory methods for creating a LocalInstant from components
-        internal LocalInstant GetLocalInstant(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour, int secondOfMinute)
-        {
-            LocalInstant date = yearMonthDayCalculator.GetLocalInstant(year, monthOfYear, dayOfMonth);
-            long timeTicks = TimeOfDayCalculator.GetTicks(hourOfDay, minuteOfHour, secondOfMinute);
-            return date.PlusTicks(timeTicks);
-        }
-
-        internal LocalInstant GetLocalInstant(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour)
-        {
-            LocalInstant date = yearMonthDayCalculator.GetLocalInstant(year, monthOfYear, dayOfMonth);
-            long timeTicks = TimeOfDayCalculator.GetTicks(hourOfDay, minuteOfHour);
-            return date.PlusTicks(timeTicks);
-        }
-
         /// <summary>
         /// Returns the local date corresponding to the given "week year", "week of week year", and "day of week"
         /// in this calendar system.
@@ -566,48 +565,16 @@ namespace NodaTime
         /// <param name="weekOfWeekYear">ISO-8601 week of week year of value to return</param>
         /// <param name="dayOfWeek">ISO-8601 day of week to return</param>
         /// <returns>The date corresponding to the given week year / week of week year / day of week.</returns>
-        internal LocalInstant GetLocalInstantFromWeekYearWeekAndDayOfWeek(int weekYear, int weekOfWeekYear, IsoDayOfWeek dayOfWeek)
+        internal YearMonthDay GetYearMonthDayFromWeekYearWeekAndDayOfWeek(int weekYear, int weekOfWeekYear, IsoDayOfWeek dayOfWeek)
         {
-            return weekYearCalculator.GetLocalInstant(weekYear, weekOfWeekYear, dayOfWeek);
+            return weekYearCalculator.GetYearMonthDay(weekYear, weekOfWeekYear, dayOfWeek);
         }
 
-        /// <summary>
-        /// Returns a local instant, at the start of the day formed from the given year of era, month, day, and era arguments.
-        /// The set of given values must refer to a valid datetime.
-        /// </summary>
-        /// <param name="era">Era to use. This must be one of the eras used in this calendar</param>
-        /// <param name="yearOfEra">Year of era to use</param>
-        /// <param name="monthOfYear">Month to use</param>
-        /// <param name="dayOfMonth">Day of month to use</param>
-        /// <exception cref="ArgumentException"><paramref name="era"/> is not an era used in this calendar.</exception>
-        /// <exception cref="ArgumentOutOfRangeException">The year of era, month of year and day of month values don't
-        /// form a valid date.</exception>
-        /// <returns>A <see cref="LocalInstant"/> with the given year, month, day and era.</returns>
-        internal LocalInstant GetLocalInstant([NotNull] Era era, int yearOfEra, int monthOfYear, int dayOfMonth)
+        internal YearMonthDay GetYearMonthDayFromDaysSinceEpoch(int daysSinceEpoch)
         {
-            return yearMonthDayCalculator.GetLocalInstant(era, yearOfEra, monthOfYear, dayOfMonth);
+            // TODO(2.0): Validate date is in range
+            return yearMonthDayCalculator.GetYearMonthDay(daysSinceEpoch);
         }
-
-        /// <summary>
-        /// Returns a local instant, formed from the given year, month, day,
-        /// hour, minute, second, millisecond and ticks values.
-        /// </summary>
-        /// <param name="year">Absolute year (not year within era; may be negative)</param>
-        /// <param name="monthOfYear">Month of year</param>
-        /// <param name="dayOfMonth">Day of month</param>
-        /// <param name="hourOfDay">Hour within the day (0-23)</param>
-        /// <param name="minuteOfHour">Minute within the hour</param>
-        /// <param name="secondOfMinute">Second within the minute</param>
-        /// <param name="millisecondOfSecond">Millisecond within the second</param>
-        /// <param name="tickOfMillisecond">Tick within the millisecond</param>
-        /// <returns>A <see cref="LocalInstant"/> with the given values.</returns>
-        internal LocalInstant GetLocalInstant(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour, int secondOfMinute, int millisecondOfSecond, int tickOfMillisecond)
-        {
-            LocalInstant date = yearMonthDayCalculator.GetLocalInstant(year, monthOfYear, dayOfMonth);
-            long timeTicks = TimeOfDayCalculator.GetTicks(hourOfDay, minuteOfHour, secondOfMinute, millisecondOfSecond, tickOfMillisecond);
-            return date.PlusTicks(timeTicks);
-        }
-        #endregion
 
         #region object overrides
         /// <summary>
@@ -621,18 +588,26 @@ namespace NodaTime
         #endregion
 
         /// <summary>
+        /// Returns the number of days since the Unix epoch (1970-01-01 ISO) for the given date.
+        /// </summary>
+        internal int GetDaysSinceEpoch(YearMonthDay yearMonthDay)
+        {
+            return yearMonthDayCalculator.GetDaysSinceEpoch(yearMonthDay);
+        }
+
+        /// <summary>
         /// Returns the IsoDayOfWeek corresponding to the day of week for the given local instant
         /// if this calendar uses ISO days of the week, or throws an InvalidOperationException otherwise.
         /// </summary>
-        /// <param name="localInstant">The local instant to use to find the day of the week</param>
+        /// <param name="yearMonthDay">The year, month and day to use to find the day of the week</param>
         /// <returns>The day of the week as an IsoDayOfWeek</returns>
-        internal IsoDayOfWeek GetIsoDayOfWeek(LocalInstant localInstant)
+        internal IsoDayOfWeek GetIsoDayOfWeek(YearMonthDay yearMonthDay)
         {
             if (!UsesIsoDayOfWeek)
             {
                 throw new InvalidOperationException("Calendar " + id + " does not use ISO days of the week");
             }
-            return (IsoDayOfWeek) GetDayOfWeek(localInstant);
+            return (IsoDayOfWeek) GetDayOfWeek(yearMonthDay);
         }
 
         /// <summary>
@@ -697,129 +672,68 @@ namespace NodaTime
 
         /// <summary>
         /// See <see cref="GetAbsoluteYear(int, Era)"/> - but this uses a pre-validated index.
-        /// This default implementation validates that the year is between 1 and MaxYear inclusive,
-        /// but then returns it as-is, expecting that there's no further work to be
-        /// done. This is valid for single-era calendars; the method should be overridden for multi-era calendars.
         /// </summary>
         internal int GetAbsoluteYear(int yearOfEra, int eraIndex)
         {
+            int maxYear = yearMonthDayCalculator.GetMaxYearOfEra(eraIndex);
+            Preconditions.CheckArgumentRange("yearOfEra", yearOfEra, 1, maxYear);
             return yearMonthDayCalculator.GetAbsoluteYear(yearOfEra, eraIndex);
         }
 
+        internal void ValidateYearMonthDay(int year, int month, int day)
+        {
+            yearMonthDayCalculator.ValidateYearMonthDay(year, month, day);
+        }
+
+        internal int Compare(YearMonthDay lhs, YearMonthDay rhs)
+        {
+            return yearMonthDayCalculator.Compare(lhs, rhs);
+        }
+
         #region "Getter" methods which used to be DateTimeField
-        internal int GetTickOfSecond(LocalInstant localInstant)
-        {
-            return TimeOfDayCalculator.GetTickOfSecond(localInstant);
-        }
-
-        internal int GetTickOfMillisecond(LocalInstant localInstant)
-        {
-            return TimeOfDayCalculator.GetTickOfMillisecond(localInstant);
-        }
-
-        internal long GetTickOfDay(LocalInstant localInstant)
-        {
-            return TimeOfDayCalculator.GetTickOfDay(localInstant);
-        }
-
-        internal int GetMillisecondOfSecond(LocalInstant localInstant)
-        {
-            return TimeOfDayCalculator.GetMillisecondOfSecond(localInstant);
-        }
-
-        internal int GetMillisecondOfDay(LocalInstant localInstant)
-        {
-            return TimeOfDayCalculator.GetMillisecondOfDay(localInstant);
-        }
-
-        internal int GetSecondOfMinute(LocalInstant localInstant)
-        {
-            return TimeOfDayCalculator.GetSecondOfMinute(localInstant);
-        }
-
-        internal int GetSecondOfDay(LocalInstant localInstant)
-        {
-            return TimeOfDayCalculator.GetSecondOfDay(localInstant);
-        }
-
-        internal int GetMinuteOfHour(LocalInstant localInstant)
-        {
-            return TimeOfDayCalculator.GetMinuteOfHour(localInstant);
-        }
-
-        internal int GetMinuteOfDay(LocalInstant localInstant)
-        {
-            return TimeOfDayCalculator.GetMinuteOfDay(localInstant);
-        }
-
-        internal int GetHourOfDay(LocalInstant localInstant)
-        {
-            return TimeOfDayCalculator.GetHourOfDay(localInstant);
-        }
-
-        internal int GetHourOfHalfDay(LocalInstant localInstant)
-        {
-            return TimeOfDayCalculator.GetHourOfHalfDay(localInstant);
-        }
-
         internal int GetClockHourOfHalfDay(LocalInstant localInstant)
         {
             return TimeOfDayCalculator.GetClockHourOfHalfDay(localInstant);
         }
 
-        internal int GetDayOfWeek(LocalInstant localInstant)
+        internal int GetDayOfWeek(YearMonthDay yearMonthDay)
         {
-            return WeekYearCalculator.GetDayOfWeek(localInstant);
+            return weekYearCalculator.GetDayOfWeek(yearMonthDay);
         }
 
-        internal int GetDayOfMonth(LocalInstant localInstant)
+        internal int GetDayOfYear(YearMonthDay yearMonthDay)
         {
-            return yearMonthDayCalculator.GetDayOfMonth(localInstant);
+            return yearMonthDayCalculator.GetDayOfYear(yearMonthDay);
         }
 
-        internal int GetDayOfYear(LocalInstant localInstant)
+        internal int GetWeekOfWeekYear(YearMonthDay yearMonthDay)
         {
-            return yearMonthDayCalculator.GetDayOfYear(localInstant);
+            return weekYearCalculator.GetWeekOfWeekYear(yearMonthDay);
         }
 
-        internal int GetWeekOfWeekYear(LocalInstant localInstant)
+        internal int GetWeekYear(YearMonthDay yearMonthDay)
         {
-            return weekYearCalculator.GetWeekOfWeekYear(localInstant);
+            return weekYearCalculator.GetWeekYear(yearMonthDay);
         }
 
-        internal int GetWeekYear(LocalInstant localInstant)
+        internal int GetYearOfCentury(YearMonthDay yearMonthDay)
         {
-            return weekYearCalculator.GetWeekYear(localInstant);
+            return yearMonthDayCalculator.GetYearOfCentury(yearMonthDay);
         }
 
-        internal int GetMonthOfYear(LocalInstant localInstant)
+        internal int GetYearOfEra(YearMonthDay yearMonthDay)
         {
-            return yearMonthDayCalculator.GetMonthOfYear(localInstant);
+            return yearMonthDayCalculator.GetYearOfEra(yearMonthDay);
         }
 
-        internal int GetYear(LocalInstant localInstant)
+        internal int GetCenturyOfEra(YearMonthDay yearMonthDay)
         {
-            return yearMonthDayCalculator.GetYear(localInstant);
+            return yearMonthDayCalculator.GetCenturyOfEra(yearMonthDay);
         }
 
-        internal int GetYearOfCentury(LocalInstant localInstant)
+        internal int GetEra(YearMonthDay yearMonthDay)
         {
-            return yearMonthDayCalculator.GetYearOfCentury(localInstant);
-        }
-
-        internal int GetYearOfEra(LocalInstant localInstant)
-        {
-            return yearMonthDayCalculator.GetYearOfEra(localInstant);
-        }
-
-        internal int GetCenturyOfEra(LocalInstant localInstant)
-        {
-            return yearMonthDayCalculator.GetCenturyOfEra(localInstant);
-        }
-
-        internal int GetEra(LocalInstant localInstant)
-        {
-            return yearMonthDayCalculator.GetEra(localInstant);
+            return yearMonthDayCalculator.GetEra(yearMonthDay);
         }
         #endregion
     }

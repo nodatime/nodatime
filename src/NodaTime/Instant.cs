@@ -373,8 +373,8 @@ namespace NodaTime
         /// <returns>An <see cref="Instant"/> value representing the given date and time in UTC and the ISO calendar.</returns>
         public static Instant FromUtc(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour)
         {
-            var local = CalendarSystem.Iso.GetLocalInstant(year, monthOfYear, dayOfMonth, hourOfDay, minuteOfHour);
-            return new Instant(local.Ticks);
+            var local = new LocalDateTime(year, monthOfYear, dayOfMonth, hourOfDay, minuteOfHour);
+            return new Instant(local.LocalInstant.Ticks);
         }
 
         /// <summary>
@@ -394,8 +394,8 @@ namespace NodaTime
         /// <returns>An <see cref="Instant"/> value representing the given date and time in UTC and the ISO calendar.</returns>
         public static Instant FromUtc(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour, int secondOfMinute)
         {
-            var local = CalendarSystem.Iso.GetLocalInstant(year, monthOfYear, dayOfMonth, hourOfDay, minuteOfHour, secondOfMinute);
-            return new Instant(local.Ticks);
+            var local = new LocalDateTime(year, monthOfYear, dayOfMonth, hourOfDay, minuteOfHour, secondOfMinute);
+            return new Instant(local.LocalInstant.Ticks);
         }
 
         /// <summary>
@@ -476,7 +476,7 @@ namespace NodaTime
         [Pure]
         public DateTime ToDateTimeUtc()
         {
-            return new DateTime((this - NodaConstants.BclEpoch).Ticks, DateTimeKind.Utc);
+            return new DateTime(NodaConstants.BclTicksAtUnixEpoch + ticks, DateTimeKind.Utc);
         }
 
         /// <summary>
@@ -486,7 +486,7 @@ namespace NodaTime
         [Pure]
         public DateTimeOffset ToDateTimeOffset()
         {
-            return new DateTimeOffset((this - NodaConstants.BclEpoch).Ticks, TimeSpan.Zero);
+            return new DateTimeOffset(NodaConstants.BclTicksAtUnixEpoch + ticks, TimeSpan.Zero);
         }
 
         /// <summary>

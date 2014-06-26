@@ -166,7 +166,6 @@
     <Compile Include="Calendars\TickArithmetic.cs" />
     <Compile Include="Calendars\TimeOfDayCalculator.cs" />
     <Compile Include="Calendars\WeekYearCalculator.cs" />
-    <Compile Include="Calendars\YearMonthDay.cs" />
     <Compile Include="Calendars\YearMonthDayCalculator.cs" />
     <Compile Include="Calendars\YearStartCacheEntry.cs" />
     <Compile Include="DateTimeZoneProviders.cs" />
@@ -293,6 +292,7 @@
     <Compile Include="Utility\NodaReadOnlyDictionary.cs" />
     <Compile Include="Utility\ReferenceEqualityComparer.cs" />
     <Compile Include="Utility\Preconditions.cs" />
+    <Compile Include="YearMonthDay.cs" />
     <Compile Include="ZonedDateTime.cs" />
   </ItemGroup>
   <ItemGroup>

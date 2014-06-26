@@ -75,9 +75,9 @@ namespace NodaTime.Test.Calendars
         }
 
         [Test]
-        public void GetLocalInstant_WithAllFields()
+        public void ConstructLocalInstant_WithAllFields()
         {
-            LocalInstant localAchievement = CalendarSystem.Iso.GetLocalInstant(2009, 11, 27, 18, 38, 25, 345, 8765);
+            LocalInstant localAchievement = new LocalDateTime(2009, 11, 27, 18, 38, 25, 345, 8765).LocalInstant;
             Assert.AreEqual((TimeOfGreatAchievement - UnixEpochDateTime).Ticks, localAchievement.Ticks);
         }
 

@@ -9,13 +9,11 @@ namespace NodaTime.Fields
     /// </summary>
     internal sealed class FixedLengthDatePeriodField : IDatePeriodField
     {
-        private readonly long halfUnitTicks;
         private readonly int unitDays;
 
         internal FixedLengthDatePeriodField(int unitDays)
         {
             this.unitDays = unitDays;
-            this.halfUnitTicks = unitDays * NodaConstants.TicksPerStandardDay / 2;
         }
 
         public LocalDate Add(LocalDate localDate, int value)
@@ -24,19 +22,14 @@ namespace NodaTime.Fields
             {
                 return localDate;
             }
-            // TODO(2.0): This will become simpler when we're not using LocalInstant for dates.
-            // For the moment, just perform two half-additions to avoid overflowing.
-            return new LocalDate(localDate.LocalInstant
-                                          .PlusTicks(value * halfUnitTicks)
-                                          .PlusTicks(value * halfUnitTicks),
-                                 localDate.Calendar);
+            int days = localDate.DaysSinceEpoch + value * unitDays;
+            return new LocalDate(days, localDate.Calendar);
         }
 
         public int Subtract(LocalDate minuendDate, LocalDate subtrahendDate)
         {
-            // The tick values are guaranteed to be exact multiples, because the source values are dates.
-            int minuendDays = (int) (minuendDate.LocalInstant.Ticks / NodaConstants.TicksPerStandardDay);
-            int subtrahendDays = (int) (subtrahendDate.LocalInstant.Ticks / NodaConstants.TicksPerStandardDay);
+            int minuendDays = minuendDate.DaysSinceEpoch;
+            int subtrahendDays = subtrahendDate.DaysSinceEpoch;
             return (minuendDays - subtrahendDays) / unitDays;
         }
     }

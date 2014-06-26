@@ -271,9 +271,6 @@ namespace NodaTime.Test
         public void AtStrictly_InWinter()
         {
             var when = Pacific.AtStrictly(new LocalDateTime(2009, 12, 22, 21, 39, 30));
-            Instant instant = when.ToInstant();
-            LocalInstant localInstant = when.LocalInstant;
-            Assert.AreEqual(instant, localInstant.Minus(Offset.FromHours(-8)));
 
             Assert.AreEqual(2009, when.Year);
             Assert.AreEqual(12, when.Month);
@@ -282,15 +279,13 @@ namespace NodaTime.Test
             Assert.AreEqual(21, when.Hour);
             Assert.AreEqual(39, when.Minute);
             Assert.AreEqual(30, when.Second);
+            Assert.AreEqual(Offset.FromHours(-8), when.Offset);
         }
 
         [Test]
         public void AtStrictly_InSummer()
         {
             var when = Pacific.AtStrictly(new LocalDateTime(2009, 6, 22, 21, 39, 30));
-            Instant instant = when.ToInstant();
-            LocalInstant localInstant = when.LocalInstant;
-            Assert.AreEqual(instant, localInstant.Minus(Offset.FromHours(-7)));
 
             Assert.AreEqual(2009, when.Year);
             Assert.AreEqual(6, when.Month);
@@ -298,6 +293,7 @@ namespace NodaTime.Test
             Assert.AreEqual(21, when.Hour);
             Assert.AreEqual(39, when.Minute);
             Assert.AreEqual(30, when.Second);
+            Assert.AreEqual(Offset.FromHours(-7), when.Offset);
         }
 
         /// <summary>

@@ -20,7 +20,7 @@ namespace NodaTime.Test.Calendars
             LocalDateTime copticEpoch = new LocalDateTime(1, 1, 1, 0, 0, coptic);
 
             CalendarSystem julian = CalendarSystem.GetJulianCalendar(4);
-            LocalDateTime converted = new LocalDateTime(copticEpoch.LocalInstant, julian);
+            LocalDateTime converted = copticEpoch.WithCalendar(julian);
 
             LocalDateTime expected = new LocalDateTime(284, 8, 29, 0, 0, julian);
             Assert.AreEqual(expected, converted);
@@ -40,7 +40,7 @@ namespace NodaTime.Test.Calendars
         {
             CalendarSystem copticCalendar = CalendarSystem.GetCopticCalendar(4);
             LocalDateTime iso = new LocalDateTime(2004, 6, 9, 0, 0, 0, 0);
-            LocalDateTime coptic = new LocalDateTime(iso.LocalInstant, copticCalendar);
+            LocalDateTime coptic = iso.WithCalendar(copticCalendar);
 
             Assert.AreEqual(Era.AnnoMartyrum, coptic.Era);
             Assert.AreEqual(18, coptic.CenturyOfEra);

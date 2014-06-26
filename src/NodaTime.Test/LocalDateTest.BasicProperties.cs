@@ -13,7 +13,7 @@ namespace NodaTime.Test
         [Test]
         public void EpochProperties()
         {
-            LocalDate date = new LocalDate(new LocalInstant(0), CalendarSystem.Iso);
+            LocalDate date = new LocalDateTime(new LocalInstant(0)).Date;
             Assert.AreEqual(1970, date.Year);
             Assert.AreEqual(70, date.YearOfCentury);
             Assert.AreEqual(1970, date.YearOfEra);
@@ -31,7 +31,7 @@ namespace NodaTime.Test
         {
             DateTime bclDate = new DateTime(2011, 3, 5, 0, 0, 0, DateTimeKind.Utc);
             DateTime bclEpoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
-            LocalDate date = new LocalDate(new LocalInstant((bclDate - bclEpoch).Ticks), CalendarSystem.Iso);
+            LocalDate date = new LocalDateTime(new LocalInstant((bclDate - bclEpoch).Ticks)).Date;
             Assert.AreEqual(2011, date.Year);
             Assert.AreEqual(11, date.YearOfCentury);
             Assert.AreEqual(2011, date.YearOfEra);

@@ -7,7 +7,7 @@ namespace NodaTime.Calendars
     internal sealed class CopticYearMonthDayCalculator : FixedMonthYearMonthDayCalculator
     {
         internal CopticYearMonthDayCalculator()
-            : base(1, 29227, -531842112000000000L, Era.AnnoMartyrum)
+            : base(1, 29227, -615558, Era.AnnoMartyrum)
         {            
         }
 
