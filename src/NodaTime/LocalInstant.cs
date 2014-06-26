@@ -72,31 +72,12 @@ namespace NodaTime
         }
 
         #region Operators
-        /// <summary>
-        /// Returns an instant after adding the given duration
-        /// </summary>
+        // <summary>
+        // Returns an instant after adding the given duration
+        // </summary>
         public static LocalInstant operator +(LocalInstant left, Duration right)
         {
             return new LocalInstant(left.Ticks + right.Ticks);
-        }
-
-        /// <summary>
-        /// Adds a duration to a local instant. Friendly alternative to <c>operator-()</c>.
-        /// </summary>
-        /// <param name="left">The left hand side of the operator.</param>
-        /// <param name="right">The right hand side of the operator.</param>
-        /// <returns>A new <see cref="LocalInstant"/> representing the sum of the given values.</returns>
-        public static LocalInstant Add(LocalInstant left, Duration right)
-        {
-            return left + right;
-        }
-
-        /// <summary>
-        /// Returns the difference between two instants as a duration.
-        /// </summary>
-        public static Duration operator -(LocalInstant left, LocalInstant right)
-        {
-            return Duration.FromTicks(left.Ticks - right.Ticks);
         }
 
         /// <summary>
@@ -104,7 +85,7 @@ namespace NodaTime
         /// </summary>
         /// <remarks>
         /// This would normally be implemented as an operator, but as the corresponding "plus" operation
-        /// on Instant cannot be written (as Instant is a public class and LocalInstant is an internal class)
+        /// on Instant cannot be written (as Instant is a public type and LocalInstant is an internal type)
         /// it makes sense to keep them both as methods for consistency.
         /// </remarks>
         /// <param name="offset">The offset between UTC and a time zone for this local instant</param>
@@ -120,28 +101,6 @@ namespace NodaTime
         public static LocalInstant operator -(LocalInstant left, Duration right)
         {
             return new LocalInstant(left.Ticks - right.Ticks);
-        }
-
-        /// <summary>
-        /// Subtracts one local instant from another. Friendly alternative to <c>operator-()</c>.
-        /// </summary>
-        /// <param name="left">The left hand side of the operator.</param>
-        /// <param name="right">The right hand side of the operator.</param>
-        /// <returns>A new <see cref="Duration"/> representing the difference of the given values.</returns>
-        public static Duration Subtract(LocalInstant left, LocalInstant right)
-        {
-            return left - right;
-        }
-
-        /// <summary>
-        /// Subtracts a duration from a local instant. Friendly alternative to <c>operator-()</c>.
-        /// </summary>
-        /// <param name="left">The left hand side of the operator.</param>
-        /// <param name="right">The right hand side of the operator.</param>
-        /// <returns>A new <see cref="LocalInstant"/> representing the difference of the given values.</returns>
-        public static LocalInstant Subtract(LocalInstant left, Duration right)
-        {
-            return left - right;
         }
 
         /// <summary>
@@ -210,16 +169,6 @@ namespace NodaTime
             return left.CompareTo(right) >= 0;
         }
         #endregion // Operators
-
-        /// <summary>
-        /// Convenience method to add the given number of ticks. Useful
-        /// for assembling date and time parts.
-        /// </summary>
-        [Pure]
-        internal LocalInstant PlusTicks(long ticksToAdd)
-        {
-            return new LocalInstant(Ticks + ticksToAdd);
-        }
 
         #region IComparable<LocalInstant> Members
         /// <summary>
