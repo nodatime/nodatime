@@ -37,6 +37,11 @@ As the resolution of 2.0 is nanoseconds, a constructor taking a number of *ticks
 Unix epoch is confusing. The static method is self-describing, and this allows the constructor
 to be rewritten for use within Noda Time itself.
 
+The `LocalDate.LocalDateTime` property has been removed. It was rarely a good idea to
+arbitrarily pick the Unix epoch as the date, and usually indicates a broken design. If you
+still need this behaviour, you can easily construct a `LocalDate` for the Unix epoch and use
+the addition operator instead.
+
 Period
 ====
 
