@@ -14,6 +14,8 @@ namespace NodaTime.Benchmarks.NodaTimeTests
 
         private static readonly LocalDatePattern Pattern = LocalDatePattern.CreateWithInvariantCulture("dd/MM/yyyy");
 
+        private static readonly Period SamplePeriod = new PeriodBuilder { Years = 1, Months = 2, Weeks = 3, Days = 4 }.Build();
+
         [Benchmark]
         public void PatternFormat()
         {
@@ -126,6 +128,42 @@ namespace NodaTime.Benchmarks.NodaTimeTests
         public void YearOfEra()
         {
             Sample.YearOfEra.Consume();
+        }
+
+        [Benchmark]
+        public void PlusYears()
+        {
+            Sample.PlusYears(3).Consume();
+        }
+
+        [Benchmark]
+        public void PlusMonths()
+        {
+            Sample.PlusMonths(3).Consume();
+        }
+
+        [Benchmark]
+        public void PlusWeeks()
+        {
+            Sample.PlusWeeks(3).Consume();
+        }
+
+        [Benchmark]
+        public void PlusDays()
+        {
+            Sample.PlusDays(3).Consume();
+        }
+
+        [Benchmark]
+        public void PlusPeriod()
+        {
+            (Sample + SamplePeriod).Consume();
+        }
+
+        [Benchmark]
+        public void MinusPeriod()
+        {
+            (Sample - SamplePeriod).Consume();
         }
     }
 }

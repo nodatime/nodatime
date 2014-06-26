@@ -8,7 +8,8 @@ namespace NodaTime.Benchmarks.NodaTimeTests
 {
     internal class LocalTimeBenchmarks
     {
-        private readonly LocalTime sample = new LocalTime(10, 8, 30, 300, 1234);
+        private static readonly LocalTime Sample = new LocalTime(10, 8, 30, 300, 1234);
+        private static readonly Period SamplePeriod = new PeriodBuilder { Hours = 10, Minutes = 4, Seconds = 5, Milliseconds = 20, Ticks = 30 }.Build();
         private static readonly LocalDateTime LocalDateTime = new LocalDateTime(2011, 9, 14, 15, 10, 25);
 
         [Benchmark]
@@ -44,43 +45,85 @@ namespace NodaTime.Benchmarks.NodaTimeTests
         [Benchmark]
         public void Hour()
         {
-            sample.Hour.Consume();
+            Sample.Hour.Consume();
         }
 
         [Benchmark]
         public void Minute()
         {
-            sample.Minute.Consume();
+            Sample.Minute.Consume();
         }
 
         [Benchmark]
         public void Second()
         {
-            sample.Second.Consume();
+            Sample.Second.Consume();
         }
 
         [Benchmark]
         public void Millisecond()
         {
-            sample.Millisecond.Consume();
+            Sample.Millisecond.Consume();
         }
 
         [Benchmark]
         public void ClockHourOfHalfDay()
         {
-            sample.ClockHourOfHalfDay.Consume();
+            Sample.ClockHourOfHalfDay.Consume();
         }
 
         [Benchmark]
         public void TickOfSecond()
         {
-            sample.TickOfSecond.Consume();
+            Sample.TickOfSecond.Consume();
         }
 
         [Benchmark]
         public void TickOfDay()
         {
-            sample.TickOfDay.Consume();
+            Sample.TickOfDay.Consume();
+        }
+
+        [Benchmark]
+        public void PlusHours()
+        {
+            Sample.PlusHours(3).Consume();
+        }
+
+        [Benchmark]
+        public void PlusMinutes()
+        {
+            Sample.PlusMinutes(3).Consume();
+        }
+
+        [Benchmark]
+        public void PlusSeconds()
+        {
+            Sample.PlusSeconds(3).Consume();
+        }
+
+        [Benchmark]
+        public void PlusMilliseconds()
+        {
+            Sample.PlusMilliseconds(3).Consume();
+        }
+
+        [Benchmark]
+        public void PlusTicks()
+        {
+            Sample.PlusTicks(3).Consume();
+        }
+
+        [Benchmark]
+        public void PlusPeriod()
+        {
+            (Sample + SamplePeriod).Consume();
+        }
+
+        [Benchmark]
+        public void MinusPeriod()
+        {
+            (Sample - SamplePeriod).Consume();
         }
     }
 }

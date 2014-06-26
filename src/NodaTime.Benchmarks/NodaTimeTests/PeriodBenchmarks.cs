@@ -18,97 +18,43 @@ namespace NodaTime.Benchmarks.NodaTimeTests
         [Benchmark]
         public void Between_LocalDate()
         {
-            Period.Between(SampleStartDate, SampleEndDate);
+            Period.Between(SampleStartDate, SampleEndDate).Consume();
         }
 
         [Benchmark]
         public void Between_LocalDate_Years()
         {
-            Period.Between(SampleStartDate, SampleEndDate, PeriodUnits.Years);
+            Period.Between(SampleStartDate, SampleEndDate, PeriodUnits.Years).Consume();
         }
 
         [Benchmark]
         public void Between_LocalDate_Months()
         {
-            Period.Between(SampleStartDate, SampleEndDate, PeriodUnits.Months);
+            Period.Between(SampleStartDate, SampleEndDate, PeriodUnits.Months).Consume();
         }
 
         [Benchmark]
         public void Between_LocalDate_Days()
         {
-            Period.Between(SampleStartDate, SampleEndDate, PeriodUnits.Days);
+            Period.Between(SampleStartDate, SampleEndDate, PeriodUnits.Days).Consume();
         }
 
         [Benchmark]
         public void Between_LocalTime()
         {
-            Period.Between(SampleStartTime, SampleEndTime);
+            Period.Between(SampleStartTime, SampleEndTime).Consume();
         }
 
         [Benchmark]
         public void Between_LocalDateTime()
         {
-            Period.Between(SampleStartDateTime, SampleEndDateTime);
+            Period.Between(SampleStartDateTime, SampleEndDateTime).Consume();
         }
 
         [Benchmark]
         public void Between_LocalDateTime_Ticks()
         {
-            Period.Between(SampleStartDateTime, SampleEndDateTime, PeriodUnits.Ticks);
-        }
-
-        [Benchmark]
-        public void PlusYears()
-        {
-            SampleStartDate.PlusYears(3);
-        }
-
-        [Benchmark]
-        public void PlusMonths()
-        {
-            SampleStartDateTime.PlusMonths(3);
-        }
-
-        [Benchmark]
-        public void PlusDays()
-        {
-            SampleStartDateTime.PlusDays(3);
-        }
-
-        [Benchmark]
-        public void PlusWeeks()
-        {
-            SampleStartDateTime.PlusWeeks(3);
-        }
-
-        [Benchmark]
-        public void PlusHours()
-        {
-            SampleStartDateTime.PlusHours(3);
-        }
-
-        [Benchmark]
-        public void PlusMinutes()
-        {
-            SampleStartDateTime.PlusMinutes(3);
-        }
-
-        [Benchmark]
-        public void PlusSeconds()
-        {
-            SampleStartDateTime.PlusSeconds(3);
-        }
-
-        [Benchmark]
-        public void PlusMilliseconds()
-        {
-            SampleStartDateTime.PlusMilliseconds(3);
-        }
-
-        [Benchmark]
-        public void PlusTicks()
-        {
-            SampleStartDateTime.PlusTicks(3);
+            Period.Between(SampleStartDateTime, SampleEndDateTime, PeriodUnits.Ticks).Consume();
         }
     }
 }
