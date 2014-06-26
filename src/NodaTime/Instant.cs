@@ -374,7 +374,7 @@ namespace NodaTime
         public static Instant FromUtc(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour)
         {
             var local = new LocalDateTime(year, monthOfYear, dayOfMonth, hourOfDay, minuteOfHour);
-            return new Instant(local.LocalInstant.Ticks);
+            return new Instant(local.ToLocalInstant().Ticks);
         }
 
         /// <summary>
@@ -395,7 +395,7 @@ namespace NodaTime
         public static Instant FromUtc(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour, int secondOfMinute)
         {
             var local = new LocalDateTime(year, monthOfYear, dayOfMonth, hourOfDay, minuteOfHour, secondOfMinute);
-            return new Instant(local.LocalInstant.Ticks);
+            return new Instant(local.ToLocalInstant().Ticks);
         }
 
         /// <summary>

@@ -385,14 +385,11 @@ namespace NodaTime
         }
 
         // FIXME(2.0): Remove... we want to kill LocalInstant
-        internal LocalInstant LocalInstant
+        internal LocalInstant ToLocalInstant()
         {
-            get
-            {
-                long days = date.DaysSinceEpoch;
-                long timeTicks = time.TickOfDay;
-                return new LocalInstant(days*NodaConstants.TicksPerStandardDay + timeTicks);
-            }
+            long days = date.DaysSinceEpoch;
+            long timeTicks = time.TickOfDay;
+            return new LocalInstant(days*NodaConstants.TicksPerStandardDay + timeTicks);
         }
 
         /// <summary>
@@ -526,7 +523,7 @@ namespace NodaTime
         {
             // FIXME(2.0): Work out what we actually want to do if the calendars aren't equal.
             // Probably throw!
-            return LocalInstant.CompareTo(other.LocalInstant);
+            return ToLocalInstant().CompareTo(other.ToLocalInstant());
         }
 
         /// <summary>
@@ -1049,7 +1046,7 @@ namespace NodaTime
         void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)
         {
             // FIXME(2.0): Revisit the serialization format
-            info.AddValue(LocalTicksSerializationName, LocalInstant.Ticks);
+            info.AddValue(LocalTicksSerializationName, ToLocalInstant().Ticks);
             info.AddValue(CalendarIdSerializationName, Calendar.Id);
         }
         #endregion

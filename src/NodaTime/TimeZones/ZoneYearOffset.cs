@@ -239,7 +239,7 @@ namespace NodaTime.TimeZones
                 date = date.PlusDays(1);
             }
 
-            LocalInstant localInstant = (date + timeOfDay).LocalInstant;
+            LocalInstant localInstant = (date + timeOfDay).ToLocalInstant();
 
             Offset offset = GetOffset(standardOffset, savings);
 

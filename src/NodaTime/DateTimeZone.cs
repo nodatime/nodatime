@@ -297,7 +297,7 @@ namespace NodaTime
         /// <returns>The <see cref="ZonedDateTime"/> representing the earliest time in the given date, in this time zone.</returns>
         public ZonedDateTime AtStartOfDay(LocalDate date)
         {
-            LocalInstant localInstant = date.AtMidnight().LocalInstant;
+            LocalInstant localInstant = date.AtMidnight().ToLocalInstant();
             ZoneIntervalPair pair = GetZoneIntervalPair(localInstant);
             switch (pair.MatchingIntervals)
             {
@@ -336,7 +336,7 @@ namespace NodaTime
         /// <returns>A mapping of the given local date and time to zero, one or two zoned date/time values.</returns>
         public ZoneLocalMapping MapLocal(LocalDateTime localDateTime)
         {
-            LocalInstant localInstant = localDateTime.LocalInstant;
+            LocalInstant localInstant = localDateTime.ToLocalInstant();
             Instant firstGuess = Instant.FromTicksSinceUnixEpoch(localInstant.Ticks);
             ZoneInterval interval = GetZoneInterval(firstGuess);
 
