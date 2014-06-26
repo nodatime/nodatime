@@ -675,8 +675,9 @@ namespace NodaTime
         /// </summary>
         internal int GetAbsoluteYear(int yearOfEra, int eraIndex)
         {
-            int maxYear = yearMonthDayCalculator.GetMaxYearOfEra(eraIndex);
-            Preconditions.CheckArgumentRange("yearOfEra", yearOfEra, 1, maxYear);
+            int minYear = GetMinYearOfEra(eraIndex);
+            int maxYear = GetMaxYearOfEra(eraIndex);
+            Preconditions.CheckArgumentRange("yearOfEra", yearOfEra, minYear, maxYear);
             return yearMonthDayCalculator.GetAbsoluteYear(yearOfEra, eraIndex);
         }
 
