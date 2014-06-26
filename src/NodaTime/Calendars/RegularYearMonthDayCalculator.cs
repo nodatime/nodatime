@@ -25,7 +25,7 @@ namespace NodaTime.Calendars
             this.monthsInYear = monthsInYear;
         }
 
-        internal override int GetMaxMonth(int year)
+        internal override int GetMonthsInYear(int year)
         {
             return monthsInYear;
         }

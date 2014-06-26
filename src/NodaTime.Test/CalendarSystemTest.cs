@@ -20,7 +20,7 @@ namespace NodaTime.Test
             // Construct the largest LocalDate we can, and validate that all the properties can be fetched without
             // issues.
             int year = calendar.MaxYear;
-            int month = calendar.GetMaxMonth(year);
+            int month = calendar.GetMonthsInYear(year);
             int day = calendar.GetDaysInMonth(year, month);
             ValidateProperties(year, month, day, calendar);
         }

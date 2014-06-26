@@ -72,7 +72,7 @@ namespace NodaTime.Calendars
         /// an invalid one, for estimates etc.
         /// </summary>
         protected abstract int CalculateStartOfYearDays(int year);
-        internal abstract int GetMaxMonth(int year);
+        internal abstract int GetMonthsInYear(int year);
         internal abstract int GetDaysInMonth(int year, int month);
         internal abstract bool IsLeapYear(int year);
         internal abstract YearMonthDay AddMonths(YearMonthDay yearMonthDay, int months);
@@ -257,7 +257,7 @@ namespace NodaTime.Calendars
         internal void ValidateYearMonthDay(int year, int month, int day)
         {
             Preconditions.CheckArgumentRange("year", year, minYear, maxYear);
-            Preconditions.CheckArgumentRange("month", month, 1, GetMaxMonth(year));
+            Preconditions.CheckArgumentRange("month", month, 1, GetMonthsInYear(year));
             Preconditions.CheckArgumentRange("day", day, 1, GetDaysInMonth(year, month));
         }
     }
