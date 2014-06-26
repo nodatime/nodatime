@@ -50,9 +50,12 @@ namespace NodaTime.Test.Calendars
             var calculator = (YearMonthDayCalculator)calculatorAsObject;
             for (int year = calculator.MinYear; year <= calculator.MaxYear; year++)
             {
+                int dayOfYear;
                 int startOfYearDays = calculator.GetStartOfYearInDays(year);
-                Assert.AreEqual(year, calculator.GetYear(startOfYearDays), "Start of year {0}", year);
-                Assert.AreEqual(year - 1, calculator.GetYear(startOfYearDays - 1), "End of year {0}", year - 1);
+                Assert.AreEqual(year, calculator.GetYear(startOfYearDays, out dayOfYear), "Start of year {0}", year);
+                Assert.AreEqual(0, dayOfYear); // Zero-based...
+                Assert.AreEqual(year - 1, calculator.GetYear(startOfYearDays - 1, out dayOfYear), "End of year {0}", year - 1);
+                Assert.AreEqual(calculator.GetDaysInYear(year - 1) - 1, dayOfYear);
             }
         }
     }

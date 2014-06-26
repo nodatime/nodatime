@@ -49,8 +49,8 @@ namespace NodaTime.Calendars
 
         internal override YearMonthDay GetYearMonthDay(int daysSinceEpoch)
         {
-            int year = GetYear(daysSinceEpoch);
-            int zeroBasedDayOfYear = daysSinceEpoch - GetStartOfYearInDays(year);
+            int zeroBasedDayOfYear;
+            int year = GetYear(daysSinceEpoch, out zeroBasedDayOfYear);
             int month = zeroBasedDayOfYear / DaysInMonth + 1;
             int day = zeroBasedDayOfYear % DaysInMonth + 1;
             return new YearMonthDay(year, month, day);

@@ -37,10 +37,10 @@ namespace NodaTime.Calendars
 
         internal override YearMonthDay GetYearMonthDay(int daysSinceEpoch)
         {
-            int year = GetYear(daysSinceEpoch);
-            bool isLeap = IsLeapYear(year);
             // 0-based day-of-year
-            int d = daysSinceEpoch - GetStartOfYearInDays(year);
+            int d;
+            int year = GetYear(daysSinceEpoch, out d);
+            bool isLeap = IsLeapYear(year);
 
             int month;
             int[] totals;
