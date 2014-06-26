@@ -2,7 +2,6 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-using System;
 using System.Collections.Generic;
 using NodaTime.Annotations;
 using NodaTime.Utility;
@@ -89,6 +88,10 @@ namespace NodaTime.Calendars
         /// </summary>
         internal abstract YearMonthDay SetYear(YearMonthDay yearMonthDay, int year);
 
+        /// <summary>
+        /// Converts from a YearMonthDay representation to "day of year".
+        /// This assumes the parameter have been validated previously.
+        /// </summary>
         internal int GetDayOfYear(YearMonthDay yearMonthDay)
         {
             int daysSinceEpoch = GetDaysSinceEpoch(yearMonthDay);
@@ -98,21 +101,15 @@ namespace NodaTime.Calendars
 
         /// <summary>
         /// Computes the days since the Unix epoch at the start of the given year/month/day.
+        /// This is the opposite of <see cref="GetYearMonthDay"/>.
         /// This assumes the parameter have been validated previously.
         /// </summary>
         internal virtual int GetDaysSinceEpoch(YearMonthDay yearMonthDay)
         {
-            int startOfMonth = GetYearMonthDays(yearMonthDay.Year, yearMonthDay.Month);
+            int year = yearMonthDay.Year;
+            int startOfYear = GetStartOfYearInDays(year);
+            int startOfMonth = startOfYear + GetDaysFromStartOfYearToStartOfMonth(year, yearMonthDay.Month);
             return startOfMonth + yearMonthDay.Day - 1;
-        }
-
-        /// <summary>
-        /// Returns the number of days since the Unix epoch at the start of the given year/month.
-        /// </summary>
-        internal int GetYearMonthDays(int year, int month)
-        {
-            int days = GetStartOfYearInDays(year);
-            return days + GetDaysFromStartOfYearToStartOfMonth(year, month);
         }
 
         /// <summary>
