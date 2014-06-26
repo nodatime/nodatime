@@ -114,9 +114,11 @@ namespace NodaTime.Calendars
             return days + GetDaysFromStartOfYearToStartOfMonth(year, month);
         }
 
-        // TODO(2.0): Try adding a ref parameter for "the start of year we found"
-        // ... we almost always fetch it afterwards.
-        internal int GetYear(int daysSinceEpoch)
+        /// <summary>
+        /// Work out the year from the number of days since the epoch, as well as the
+        /// day of that year (0-based).
+        /// </summary>
+        internal int GetYear(int daysSinceEpoch, out int zeroBasedDayOfYear)
         {
             // Get an initial estimate of the year, and the days-since-epoch value that
             // represents the start of that year. Then verify estimate and fix if
@@ -140,6 +142,7 @@ namespace NodaTime.Calendars
                     daysFromCandidateStartToTarget += GetDaysInYear(candidate);
                 }
                 while (daysFromCandidateStartToTarget < 0);
+                zeroBasedDayOfYear = daysFromCandidateStartToTarget;
                 return candidate;
             }
             // Our candidate year is correct or earlier than the right one. Find out which by
@@ -154,6 +157,7 @@ namespace NodaTime.Calendars
                 daysFromCandidateStartToTarget -= candidateLength;
                 candidateLength = GetDaysInYear(candidate);
             }
+            zeroBasedDayOfYear = daysFromCandidateStartToTarget;
             return candidate;
         }
 

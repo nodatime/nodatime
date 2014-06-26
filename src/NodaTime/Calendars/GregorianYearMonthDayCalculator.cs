@@ -59,7 +59,7 @@ namespace NodaTime.Calendars
                 return base.GetDaysFromStartOfYearToStartOfMonth(year, month);
             }
             return MonthStartDays[yearMonthIndex];
-        }&*/
+        }*/
 
         internal override int GetDaysSinceEpoch(YearMonthDay yearMonthDay)
         {
