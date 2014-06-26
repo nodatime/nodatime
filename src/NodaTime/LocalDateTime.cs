@@ -846,7 +846,6 @@ namespace NodaTime
         [Pure]
         public LocalDateTime Next(IsoDayOfWeek targetDayOfWeek)
         {
-            // FIXME
             return new LocalDateTime(Date.Next(targetDayOfWeek), TimeOfDay);
         }
 
@@ -864,7 +863,6 @@ namespace NodaTime
         [Pure]
         public LocalDateTime Previous(IsoDayOfWeek targetDayOfWeek)
         {
-            // FIXME
             return new LocalDateTime(Date.Previous(targetDayOfWeek), TimeOfDay);
         }
 
