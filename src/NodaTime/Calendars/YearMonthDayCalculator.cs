@@ -4,6 +4,7 @@
 
 using System;
 using System.Collections.Generic;
+using NodaTime.Annotations;
 using NodaTime.Utility;
 
 namespace NodaTime.Calendars
@@ -118,6 +119,7 @@ namespace NodaTime.Calendars
         /// Work out the year from the number of days since the epoch, as well as the
         /// day of that year (0-based).
         /// </summary>
+        [VisibleForTesting] // Would be protected otherwise.
         internal int GetYear(int daysSinceEpoch, out int zeroBasedDayOfYear)
         {
             // Get an initial estimate of the year, and the days-since-epoch value that
