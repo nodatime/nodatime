@@ -304,6 +304,49 @@ namespace NodaTime
         }
 
         /// <summary>
+        /// Subtracts one date from another, returning the result as a <see cref="Period"/> with units of years, months and days.
+        /// </summary>
+        /// <remarks>
+        /// This is simply a convenience operator for calling <see cref="Period.Between(NodaTime.LocalDate,NodaTime.LocalDate)"/>.
+        /// The calendar systems of the two dates must be the same.
+        /// </remarks>
+        /// <param name="lhs">The date to subtract from</param>
+        /// <param name="rhs">The date to subtract</param>
+        /// <returns>The result of subtracting one date from another.</returns>
+        public static Period operator -(LocalDate lhs, LocalDate rhs)
+        {
+            return Period.Between(rhs, lhs);
+        }
+
+        /// <summary>
+        /// Subtracts one date from another, returning the result as a <see cref="Period"/> with units of years, months and days.
+        /// </summary>
+        /// <remarks>
+        /// This is simply a convenience method for calling <see cref="Period.Between(NodaTime.LocalDate,NodaTime.LocalDate)"/>.
+        /// The calendar systems of the two dates must be the same.
+        /// </remarks>
+        /// <param name="lhs">The date to subtract from</param>
+        /// <param name="rhs">The date to subtract</param>
+        /// <returns>The result of subtracting one date from another.</returns>
+        public static Period Subtract(LocalDate lhs, LocalDate rhs)
+        {
+            return lhs - rhs;
+        }
+
+        /// <summary>
+        /// Subtracts the specified date from this date, returning the result as a <see cref="Period"/> with units of years, months and days.
+        /// Fluent alternative to <c>operator-()</c>.
+        /// </summary>
+        /// <remarks>The specified date must be in the same calendar system as this.</remarks>
+        /// <param name="date">The date to subtract from this</param>
+        /// <returns>The difference between the specified date and this one</returns>
+        [Pure]
+        public Period Minus(LocalDate date)
+        {
+            return this - date;
+        }
+
+        /// <summary>
         /// Compares two <see cref="LocalDate" /> values for equality. This requires
         /// that the dates be the same, within the same calendar.
         /// </summary>

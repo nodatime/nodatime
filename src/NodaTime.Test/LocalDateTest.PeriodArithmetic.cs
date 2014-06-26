@@ -93,8 +93,12 @@ namespace NodaTime.Test
         {
             LocalDate start = new LocalDate(2010, 6, 19);
             Period period = Period.FromMonths(3) + Period.FromDays(10);
+            LocalDate end = start + period;
             Assert.AreEqual(start - period, LocalDate.Subtract(start, period));
             Assert.AreEqual(start - period, start.Minus(period));
+            Assert.AreEqual(period, end - start);
+            Assert.AreEqual(period, LocalDate.Subtract(end, start));
+            Assert.AreEqual(period, end.Minus(start));
         }
     }
 }

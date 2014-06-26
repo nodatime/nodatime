@@ -3,6 +3,7 @@
 // as found in the LICENSE.txt file.
 
 using System;
+using System.IO;
 using NUnit.Framework;
 
 namespace NodaTime.Test
@@ -93,8 +94,13 @@ namespace NodaTime.Test
         {
             LocalTime start = new LocalTime(20, 30);
             Period period = Period.FromHours(3) + Period.FromMinutes(10);
+            LocalTime end = start + period;
             Assert.AreEqual(start - period, LocalTime.Subtract(start, period));
             Assert.AreEqual(start - period, start.Minus(period));
+
+            Assert.AreEqual(period, end - start);
+            Assert.AreEqual(period, LocalTime.Subtract(end, start));
+            Assert.AreEqual(period, end.Minus(start));
         }
 
         [Test]

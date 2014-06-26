@@ -273,14 +273,19 @@ namespace NodaTime.Test
 
         // No tests for non-ISO-day-of-week calendars as we don't have any yet.
 
+        [Test]
         public void Operator_MethodEquivalents()
         {
             LocalDateTime start = new LocalDateTime(2011, 1, 1, 15, 25, 30, 100, 5000);
             Period period = Period.FromHours(1) + Period.FromDays(1);
+            LocalDateTime end = start + period;
             Assert.AreEqual(start + period, LocalDateTime.Add(start, period));
             Assert.AreEqual(start + period, start.Plus(period));
             Assert.AreEqual(start - period, LocalDateTime.Subtract(start, period));
             Assert.AreEqual(start - period, start.Minus(period));
+            Assert.AreEqual(period, end - start);
+            Assert.AreEqual(period, LocalDateTime.Subtract(end, start));
+            Assert.AreEqual(period, end.Minus(start));
         }
     }
 }
