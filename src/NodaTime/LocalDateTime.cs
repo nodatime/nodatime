@@ -636,6 +636,49 @@ namespace NodaTime
             Preconditions.CheckNotNull(period, "period");
             return period.AddTo(date, time, -1);
         }
+
+        /// <summary>
+        /// Subtracts one date/time from another, returning the result as a <see cref="Period"/>.
+        /// </summary>
+        /// <remarks>
+        /// This is simply a convenience operator for calling <see cref="Period.Between(NodaTime.LocalDateTime,NodaTime.LocalDateTime)"/>.
+        /// The calendar systems of the two date/times must be the same.
+        /// </remarks>
+        /// <param name="lhs">The date/time to subtract from</param>
+        /// <param name="rhs">The date/time to subtract</param>
+        /// <returns>The result of subtracting one date/time from another.</returns>
+        public static Period operator -(LocalDateTime lhs, LocalDateTime rhs)
+        {
+            return Period.Between(rhs, lhs);
+        }
+
+        /// <summary>
+        /// Subtracts one date/time from another, returning the result as a <see cref="Period"/>.
+        /// </summary>
+        /// <remarks>
+        /// This is simply a convenience method for calling <see cref="Period.Between(NodaTime.LocalDateTime,NodaTime.LocalDateTime)"/>.
+        /// The calendar systems of the two date/times must be the same.
+        /// </remarks>
+        /// <param name="lhs">The date/time to subtract from</param>
+        /// <param name="rhs">The date/time to subtract</param>
+        /// <returns>The result of subtracting one date/time from another.</returns>
+        public static Period Subtract(LocalDateTime lhs, LocalDateTime rhs)
+        {
+            return lhs - rhs;
+        }
+
+        /// <summary>
+        /// Subtracts the specified date/time from this date/time, returning the result as a <see cref="Period"/>.
+        /// Fluent alternative to <c>operator-()</c>.
+        /// </summary>
+        /// <remarks>The specified date/time must be in the same calendar system as this.</remarks>
+        /// <param name="localDateTime">The date/time to subtract from this</param>
+        /// <returns>The difference between the specified date/time and this one</returns>
+        [Pure]
+        public Period Minus(LocalDateTime localDateTime)
+        {
+            return this - localDateTime;
+        }
         #endregion
 
         #region object overrides
