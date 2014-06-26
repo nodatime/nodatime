@@ -241,8 +241,7 @@ namespace NodaTime.Calendars
         /// </summary>
         internal virtual int GetStartOfYearInDays(int year)
         {
-            // FIXME FIXME FIXME
-            if (year >= 0 || year < MinYear || year > MaxYear)
+            if (year < MinYear || year > MaxYear)
             {
                 return CalculateStartOfYearDays(year);
             }
