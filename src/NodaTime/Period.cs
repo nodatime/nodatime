@@ -132,7 +132,6 @@ namespace NodaTime
             this.ticks = ticks;
         }
 
-
         /// <summary>
         /// Creates a period representing the specified number of years.
         /// </summary>
