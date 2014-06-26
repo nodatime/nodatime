@@ -396,6 +396,17 @@ namespace NodaTime
             return value;
         }
 
+        private static long FieldBetween(PeriodUnits units, LocalTime end, ref LocalTime remaining, TimePeriodField timeField)
+        {
+            if (units == 0)
+            {
+                return 0;
+            }
+            long value = timeField.Subtract(end, remaining);
+            remaining = timeField.Add(remaining, value);
+            return value;
+        }
+
         private static long GetTimeBetween(LocalDateTime start, LocalDateTime end, TimePeriodField periodField)
         {
             int days = DatePeriodFields.DaysField.Subtract(end.Date, start.Date);
@@ -404,23 +415,43 @@ namespace NodaTime
         }
 
         /// <summary>
+        /// Adds the time components of this period to the given time, scaled accordingly.
+        /// </summary>
+        internal LocalTime AddTo(LocalTime time, int scalar)
+        {
+            return time.PlusHours(hours * scalar)
+                       .PlusMinutes(minutes * scalar)
+                       .PlusSeconds(seconds * scalar)
+                       .PlusMilliseconds(milliseconds * scalar)
+                       .PlusTicks(ticks * scalar);
+        }
+
+        /// <summary>
+        /// Adds the date components of this period to the given time, scaled accordingly.
+        /// </summary>
+        internal LocalDate AddTo(LocalDate date, int scalar)
+        {
+            return date.PlusYears(years * scalar)
+                       .PlusMonths(months * scalar)
+                       .PlusWeeks(weeks * scalar)
+                       .PlusDays(days * scalar);
+        }
+
+        /// <summary>
         /// Adds the contents of this period to the given date and time, with the given scale (either 1 or -1, usually).
         /// </summary>
         internal LocalDateTime AddTo(LocalDate date, LocalTime time, int scalar)
         {
-            date = DatePeriodFields.YearsField.Add(date, years * scalar);
-            date = DatePeriodFields.MonthsField.Add(date, months * scalar);
-            date = DatePeriodFields.WeeksField.Add(date, weeks * scalar);
-            date = DatePeriodFields.DaysField.Add(date, days * scalar);
-
-            LocalDateTime result = new LocalDateTime(date, time);
-            result = TimePeriodField.Hours.Add(result, hours * scalar);
-            result = TimePeriodField.Minutes.Add(result, minutes * scalar);
-            result = TimePeriodField.Seconds.Add(result, seconds * scalar);
-            result = TimePeriodField.Milliseconds.Add(result, milliseconds * scalar);
-            result = TimePeriodField.Ticks.Add(result, ticks * scalar);
-
-            return result;
+            date = AddTo(date, scalar);
+            int extraDays = 0;
+            time = TimePeriodField.Hours.Add(time, hours * scalar, ref extraDays);
+            time = TimePeriodField.Minutes.Add(time, minutes * scalar, ref extraDays);
+            time = TimePeriodField.Seconds.Add(time, seconds * scalar, ref extraDays);
+            time = TimePeriodField.Milliseconds.Add(time, milliseconds * scalar, ref extraDays);
+            time = TimePeriodField.Milliseconds.Add(time, ticks * scalar, ref extraDays);
+            // TODO(2.0): Investigate the performance impact of us calling PlusDays twice.
+            // Could optimize by including that in a single call...
+            return new LocalDateTime(date.PlusDays(extraDays), time);
         }
 
         /// <summary>
@@ -457,7 +488,32 @@ namespace NodaTime
         public static Period Between(LocalDate start, LocalDate end, PeriodUnits units)
         {
             Preconditions.CheckArgument((units & PeriodUnits.AllTimeUnits) == 0, "units", "Units contains time units: {0}", units);
-            return Between(start.AtMidnight(), end.AtMidnight(), units);
+            Preconditions.CheckArgument(units != 0, "units", "Units must not be empty");
+            Preconditions.CheckArgument((units & ~PeriodUnits.AllUnits) == 0, "units", "Units contains an unknown value: {0}", units);
+            CalendarSystem calendar = start.Calendar;
+            Preconditions.CheckArgument(calendar.Equals(end.Calendar), "end", "start and end must use the same calendar system");
+
+            if (start == end)
+            {
+                return Zero;
+            }
+
+            // Optimization for single field
+            switch (units)
+            {
+                case PeriodUnits.Years: return FromYears(DatePeriodFields.YearsField.Subtract(end, start));
+                case PeriodUnits.Months: return FromMonths(DatePeriodFields.MonthsField.Subtract(end, start));
+                case PeriodUnits.Weeks: return FromWeeks(DatePeriodFields.WeeksField.Subtract(end, start));
+                case PeriodUnits.Days: return FromDays(DatePeriodFields.DaysField.Subtract(end, start));
+            }
+
+            // Multiple fields
+            LocalDate remainingDate = start;
+            int years = FieldBetween(units & PeriodUnits.Years, end, ref remainingDate, DatePeriodFields.YearsField);
+            int months = FieldBetween(units & PeriodUnits.Months, end, ref remainingDate, DatePeriodFields.MonthsField);
+            int weeks = FieldBetween(units & PeriodUnits.Weeks, end, ref remainingDate, DatePeriodFields.WeeksField);
+            int days = FieldBetween(units & PeriodUnits.Days, end, ref remainingDate, DatePeriodFields.DaysField);
+            return new Period(years, months, weeks, days);
         }
 
         /// <summary>
@@ -494,9 +550,27 @@ namespace NodaTime
         public static Period Between(LocalTime start, LocalTime end, PeriodUnits units)
         {
             Preconditions.CheckArgument((units & PeriodUnits.AllDateUnits) == 0, "units", "Units contains date units: {0}", units);
-            // FIXME(2.0): Don't do this! (Horrible temporary hack.)
-            return Between(new LocalDate(1970, 1, 1) + start,
-                           new LocalDate(1970, 1, 1) + end, units);
+            Preconditions.CheckArgument(units != 0, "units", "Units must not be empty");
+            Preconditions.CheckArgument((units & ~PeriodUnits.AllUnits) == 0, "units", "Units contains an unknown value: {0}", units);
+
+            // Optimization for single field
+            switch (units)
+            {
+                case PeriodUnits.Hours: return FromHours(TimePeriodField.Hours.Subtract(end, start));
+                case PeriodUnits.Minutes: return FromMinutes(TimePeriodField.Minutes.Subtract(end, start));
+                case PeriodUnits.Seconds: return FromSeconds(TimePeriodField.Seconds.Subtract(end, start));
+                case PeriodUnits.Milliseconds: return FromMilliseconds(TimePeriodField.Milliseconds.Subtract(end, start));
+                case PeriodUnits.Ticks: return FromTicks(TimePeriodField.Ticks.Subtract(end, start));
+            }
+
+            LocalTime remaining = start;
+            long hours = FieldBetween(units & PeriodUnits.Hours, end, ref remaining, TimePeriodField.Hours);
+            long minutes = FieldBetween(units & PeriodUnits.Minutes, end, ref remaining, TimePeriodField.Minutes);
+            long seconds = FieldBetween(units & PeriodUnits.Seconds, end, ref remaining, TimePeriodField.Seconds);
+            long milliseconds = FieldBetween(units & PeriodUnits.Milliseconds, end, ref remaining, TimePeriodField.Milliseconds);
+            long ticks = FieldBetween(units & PeriodUnits.Ticks, end, ref remaining, TimePeriodField.Ticks);
+
+            return new Period(hours, minutes, seconds, milliseconds, ticks);
         }
 
         /// <summary>
