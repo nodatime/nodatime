@@ -282,6 +282,7 @@ namespace NodaTime
         /// <summary>
         /// Creates a new local time by subtracting a period from an existing time. The period must not contain
         /// any date-related units (days etc) with non-zero values.
+        /// This is a convenience operator over the <see cref="Minus(Period)"/> method.
         /// </summary>
         /// <param name="time">The time to subtract the period from</param>
         /// <param name="period">The period to subtract</param>

@@ -584,7 +584,7 @@ namespace NodaTime
 
         /// <summary>
         /// Subtracts a period from a local date/time. Fields are subtracted in the order provided by the period.
-        /// This is a convenience operator over the <see cref="Minus"/> method.
+        /// This is a convenience operator over the <see cref="Minus(Period)"/> method.
         /// </summary>
         /// <param name="localDateTime">Initial local date and time</param>
         /// <param name="period">Period to subtract</param>
@@ -607,7 +607,6 @@ namespace NodaTime
 
         /// <summary>
         /// Subtracts a period from a local date/time. Fields are subtracted in the order provided by the period.
-        /// This is a convenience operator over the <see cref="Minus"/> method.
         /// </summary>
         /// <param name="period">Period to subtract</param>
         /// <returns>The resulting local date and time</returns>
