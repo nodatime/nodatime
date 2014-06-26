@@ -22,6 +22,7 @@ See the [Noda Time 1.x to 2.0 migration guide](migration-to-2.html) for full det
 - `Period` and `PeriodBuilder` properties for date-based values (years, months, weeks, days) are now of type `int` rather than `long`.
 - Default values for local date-based structs (`LocalDate` etc) now return 0001-01-01
   instead of the Unix epoch.
+- `CalendarSystem.GetMaxMonth` has been renamed to `GetMonthsInYear`.
 
 ## 1.3.0-beta1, released 2014-06-19 with tzdb 2014e
 

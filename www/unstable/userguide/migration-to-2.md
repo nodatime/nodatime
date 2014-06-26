@@ -42,6 +42,9 @@ arbitrarily pick the Unix epoch as the date, and usually indicates a broken desi
 still need this behaviour, you can easily construct a `LocalDate` for the Unix epoch and use
 the addition operator instead.
 
+`CalendarSystem.GetMaxMonth` has been renamed to `GetMonthsInYear`, to match the equivalent
+method in `System.Globalization.Calendar`.
+
 Period
 ====
 
