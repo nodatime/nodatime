@@ -10,6 +10,7 @@ using System.Xml.Schema;
 using System.Xml.Serialization;
 using JetBrains.Annotations;
 using NodaTime.Calendars;
+using NodaTime.Fields;
 using NodaTime.Text;
 using NodaTime.Utility;
 
@@ -243,19 +244,6 @@ namespace NodaTime
         public long TickOfDay { get { return ticks; } }
 
         /// <summary>
-        /// Returns a <see cref="T:NodaTime.LocalDateTime"/> with this local time, on January 1st 1970 in the ISO
-        /// calendar.
-        /// TODO(2.0): Remove? Doesn't feel useful.
-        /// </summary>
-        public LocalDateTime LocalDateTime
-        {
-            get
-            {
-                return new LocalDateTime(new LocalDate(new LocalInstant(0), CalendarSystem.Iso), this);
-            }
-        }
-
-        /// <summary>
         /// Creates a new local time by adding a period to an existing time. The period must not contain
         /// any date-related units (days etc) with non-zero values.
         /// </summary>
@@ -266,7 +254,9 @@ namespace NodaTime
         {
             Preconditions.CheckNotNull(period, "period");
             Preconditions.CheckArgument(!period.HasDateComponent, "period", "Cannot add a period with a date component to a time");
-            return (time.LocalDateTime + period).TimeOfDay;
+            // FIXME(2.0): There are better ways of doing this! Shouldn't need to involve a date at all.
+            // Introduce method on Period...
+            return (new LocalDate(1970, 1, 1) + time + period).TimeOfDay;
         }
 
         /// <summary>
@@ -302,7 +292,8 @@ namespace NodaTime
         {
             Preconditions.CheckNotNull(period, "period");
             Preconditions.CheckArgument(!period.HasDateComponent, "period", "Cannot subtract a period with a date component from a time");
-            return (time.LocalDateTime - period).TimeOfDay;
+            // FIXME(2.0) We should have Period.AddTo(LocalTime) and Period.AddTo(LocalDate) methods.
+            return (new LocalDateTime(new LocalDate(1970, 1, 1), time) - period).TimeOfDay;
         }
 
         /// <summary>
@@ -477,7 +468,7 @@ namespace NodaTime
         [Pure]
         public LocalTime PlusHours(long hours)
         {
-            return LocalDateTime.PlusHours(hours).TimeOfDay;
+            return TimePeriodField.Hours.Add(this, hours);
         }
 
         /// <summary>
@@ -491,7 +482,7 @@ namespace NodaTime
         [Pure]
         public LocalTime PlusMinutes(long minutes)
         {
-            return LocalDateTime.PlusMinutes(minutes).TimeOfDay;
+            return TimePeriodField.Minutes.Add(this, minutes);
         }
 
         /// <summary>
@@ -505,7 +496,7 @@ namespace NodaTime
         [Pure]
         public LocalTime PlusSeconds(long seconds)
         {
-            return LocalDateTime.PlusSeconds(seconds).TimeOfDay;
+            return TimePeriodField.Seconds.Add(this, seconds);
         }
 
         /// <summary>
@@ -516,7 +507,7 @@ namespace NodaTime
         [Pure]
         public LocalTime PlusMilliseconds(long milliseconds)
         {
-            return LocalDateTime.PlusMilliseconds(milliseconds).TimeOfDay;
+            return TimePeriodField.Milliseconds.Add(this, milliseconds);
         }
 
         /// <summary>
@@ -527,7 +518,7 @@ namespace NodaTime
         [Pure]
         public LocalTime PlusTicks(long ticks)
         {
-            return LocalDateTime.PlusTicks(ticks).TimeOfDay;
+            return TimePeriodField.Ticks.Add(this, ticks);
         }
 
         #region Formatting

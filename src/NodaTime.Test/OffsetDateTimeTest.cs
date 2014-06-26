@@ -226,7 +226,7 @@ namespace NodaTime.Test
         public void DefaultConstructor()
         {
             var actual = new OffsetDateTime();
-            Assert.AreEqual(NodaConstants.UnixEpoch.InUtc().LocalDateTime, actual.LocalDateTime);
+            Assert.AreEqual(new LocalDateTime(1, 1, 1, 0, 0), actual.LocalDateTime);
             Assert.AreEqual(Offset.Zero, actual.Offset);
         }
 

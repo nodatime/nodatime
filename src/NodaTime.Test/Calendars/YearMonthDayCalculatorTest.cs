@@ -40,19 +40,19 @@ namespace NodaTime.Test.Calendars
         public void ValidateYear1Ticks(object calculatorAsObject)
         {
             var calculator = (YearMonthDayCalculator) calculatorAsObject;
-            Assert.AreEqual(calculator.GetStartOfYearInTicks(1), calculator.TicksAtStartOfYear1);
+            Assert.AreEqual(calculator.GetStartOfYearInDays(1), calculator.DaysAtStartOfYear1);
         }
 
         [Test]
         [TestCaseSource("AllCalculators")]
-        public void GetYearConsistentWithGetYearTicks(object calculatorAsObject)
+        public void GetYearConsistentWithGetYearDays(object calculatorAsObject)
         {
             var calculator = (YearMonthDayCalculator)calculatorAsObject;
             for (int year = calculator.MinYear; year <= calculator.MaxYear; year++)
             {
-                long startOfYearTicks = calculator.GetStartOfYearInTicks(year);
-                Assert.AreEqual(year, calculator.GetYear(new LocalInstant(startOfYearTicks)), "Start of year {0}", year);
-                Assert.AreEqual(year - 1, calculator.GetYear(new LocalInstant(startOfYearTicks - 1)), "End of year {0}", year - 1);
+                int startOfYearDays = calculator.GetStartOfYearInDays(year);
+                Assert.AreEqual(year, calculator.GetYear(startOfYearDays), "Start of year {0}", year);
+                Assert.AreEqual(year - 1, calculator.GetYear(startOfYearDays - 1), "End of year {0}", year - 1);
             }
         }
     }

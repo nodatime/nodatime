@@ -57,3 +57,17 @@ Serialization
 TBD (this will be awkward). To note so far:
 
 - Periods with year/month/week/day values outside the range of `int`
+
+Default values
+====
+
+The default values of some structs have changed, from returning the Unix epoch to returning January 1st 1AD (at midnight where applicable):
+
+- `LocalDate`
+- `LocalDateTime`
+- `ZonedDateTime` (in UTC, as in 1.x)
+- `OffsetDateTime` (with an offset of 0, as in 1.x)
+
+(The fate of `Instant` remains unknown at this point...)
+
+We recommend that you avoid relying on the default values at all - partly for the sake of clarity.

@@ -12,63 +12,33 @@ namespace NodaTime.Test.Calendars
         // These tests assume that if the method doesn't throw, it's doing the right thing - this
         // is all tested elsewhere.
         [Test]
-        public void GetLocalInstant_AllValues_ValidValuesDoesntThrow()
+        public void ValidateYearMonthDay_AllValues_ValidValuesDoesntThrow()
         {
-            Iso.GetLocalInstant(2010, 2, 20, 21, 57, 30, 250, 1234);
+            Iso.ValidateYearMonthDay(20, 2, 20);
         }
 
         [Test]
-        public void GetLocalInstant_InvalidYear_Throws()
+        public void ValidateYearMonthDay_InvalidYear_Throws()
         {
-            Assert.Throws<ArgumentOutOfRangeException>(() => Iso.GetLocalInstant(50000, 2, 20, 21, 57, 30, 250, 1234));
+            Assert.Throws<ArgumentOutOfRangeException>(() => Iso.ValidateYearMonthDay(50000, 2, 20));
         }
 
         [Test]
         public void GetLocalInstant_InvalidMonth_Throws()
         {
-            Assert.Throws<ArgumentOutOfRangeException>(() => Iso.GetLocalInstant(2010, 13, 20, 21, 57, 30, 250, 1234));
+            Assert.Throws<ArgumentOutOfRangeException>(() => Iso.ValidateYearMonthDay(2010, 13, 20));
         }
 
         [Test]
         public void GetLocalInstant_29thOfFebruaryInNonLeapYear_Throws()
         {
-            Assert.Throws<ArgumentOutOfRangeException>(() => Iso.GetLocalInstant(2010, 2, 29, 21, 57, 30, 250, 1234));
+            Assert.Throws<ArgumentOutOfRangeException>(() => Iso.ValidateYearMonthDay(2010, 2, 29));
         }
 
         [Test]
         public void GetLocalInstant_29thOfFebruaryInLeapYear_DoesntThrow()
         {
-            Iso.GetLocalInstant(2012, 2, 29, 21, 57, 30, 250, 1234);
-        }
-
-        [Test]
-        public void GetLocalInstant_InvalidHour_Throws()
-        {
-            Assert.Throws<ArgumentOutOfRangeException>(() => Iso.GetLocalInstant(2010, 2, 20, 24, 57, 30, 250, 1234));
-        }
-
-        [Test]
-        public void GetLocalInstant_InvalidMinute_Throws()
-        {
-            Assert.Throws<ArgumentOutOfRangeException>(() => Iso.GetLocalInstant(2010, 2, 20, 21, 60, 30, 250, 1234));
-        }
-
-        [Test]
-        public void GetLocalInstant_InvalidSecond_Throws()
-        {
-            Assert.Throws<ArgumentOutOfRangeException>(() => Iso.GetLocalInstant(2010, 2, 20, 21, 57, 60, 250, 1234));
-        }
-
-        [Test]
-        public void GetLocalInstant_InvalidMillisecond_Throws()
-        {
-            Assert.Throws<ArgumentOutOfRangeException>(() => Iso.GetLocalInstant(2010, 2, 20, 21, 57, 30, 1000, 1234));
-        }
-
-        [Test]
-        public void GetLocalInstant_InvalidTickOfMillisecond_Throws()
-        {
-            Assert.Throws<ArgumentOutOfRangeException>(() => Iso.GetLocalInstant(2010, 2, 20, 21, 57, 30, 250, 10000));
+            Iso.ValidateYearMonthDay(2012, 2, 29);
         }
     }
 }

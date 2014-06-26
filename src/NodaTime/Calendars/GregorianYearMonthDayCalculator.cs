@@ -10,13 +10,12 @@ namespace NodaTime.Calendars
         // dates will be in this range.
         private const int FirstOptimizedYear = 1900;
         private const int LastOptimizedYear = 2100;
-        private static readonly long[] MonthStartTicks = new long[(LastOptimizedYear + 1 - FirstOptimizedYear) * 12 + 1];
+        private static readonly int[] MonthStartDays = new int[(LastOptimizedYear + 1 - FirstOptimizedYear) * 12 + 1];
         private static readonly int[] MonthLengths = new int[(LastOptimizedYear + 1 - FirstOptimizedYear) * 12 + 1];
-        private static readonly long[] YearStartTicks = new long[LastOptimizedYear + 1 - FirstOptimizedYear];
         private static readonly int[] YearStartDays = new int[LastOptimizedYear + 1 - FirstOptimizedYear];
 
         private const int DaysFrom0000To1970 = 719527;
-        private const long AverageTicksPerGregorianYear = (long)(365.2425m * NodaConstants.TicksPerStandardDay);
+        private const int AverageDaysPer10Years = 3652; // Ideally 365.2425 per year...
 
         static GregorianYearMonthDayCalculator()
         {
@@ -26,40 +25,55 @@ namespace NodaTime.Calendars
             for (int year = FirstOptimizedYear; year <= LastOptimizedYear; year++)
             {
                 YearStartDays[year - FirstOptimizedYear] = instance.CalculateStartOfYearDays(year);
-                YearStartTicks[year - FirstOptimizedYear] = YearStartDays[year - FirstOptimizedYear] * NodaConstants.TicksPerStandardDay;
                 for (int month = 1; month <= 12; month++)
                 {
                     int yearMonthIndex = (year - FirstOptimizedYear) * 12 + month;
-                    MonthStartTicks[yearMonthIndex] = instance.GetYearMonthTicks(year, month);
+                    MonthStartDays[yearMonthIndex] = instance.GetYearMonthDays(year, month);
                     MonthLengths[yearMonthIndex] = instance.GetDaysInMonth(year, month);
                 }
             }
         }
 
         internal GregorianYearMonthDayCalculator()
-            : base(-27255, 31195, AverageTicksPerGregorianYear, -621355968000000000)
+            : base(-27255, 31195, AverageDaysPer10Years, -719162)
         {
         }
 
-        internal override long GetStartOfYearInTicks(int year)
+        // TODO(2.0): Check that this is worth doing, given our normal cache.
+        internal override int GetStartOfYearInDays(int year)
         {
             if (year < FirstOptimizedYear || year > LastOptimizedYear)
             {
-                return base.GetStartOfYearInTicks(year);
+                return base.GetStartOfYearInDays(year);
             }
-            return YearStartTicks[year - FirstOptimizedYear];
+            return YearStartDays[year - FirstOptimizedYear];
         }
 
-        internal override LocalInstant GetLocalInstant(int year, int monthOfYear, int dayOfMonth)
+        // FIXME: Should I remove this? Could get called in the optimization...
+        /*
+        protected override int GetDaysFromStartOfYearToStartOfMonth(int year, int month)
         {
+            int yearMonthIndex = (year - FirstOptimizedYear) * 12 + month;
+            if (year < FirstOptimizedYear || year > LastOptimizedYear - 1 || month < 1 || month > 12)
+            {
+                return base.GetDaysFromStartOfYearToStartOfMonth(year, month);
+            }
+            return MonthStartDays[yearMonthIndex];
+        }&*/
+
+        internal override int GetDaysSinceEpoch(YearMonthDay yearMonthDay)
+        {
+            int year = yearMonthDay.Year;
+            int monthOfYear = yearMonthDay.Month;
+            int dayOfMonth = yearMonthDay.Day;
             int yearMonthIndex = (year - FirstOptimizedYear) * 12 + monthOfYear;
             if (year < FirstOptimizedYear || year > LastOptimizedYear - 1 || monthOfYear < 1 || monthOfYear > 12 || dayOfMonth < 1 ||
                 dayOfMonth > MonthLengths[yearMonthIndex])
             {
-                return base.GetLocalInstant(year, monthOfYear, dayOfMonth);
+                return base.GetDaysSinceEpoch(yearMonthDay);
             }
             // This is guaranteed not to overflow, as we've already validated the arguments
-            return new LocalInstant(unchecked(MonthStartTicks[yearMonthIndex] + (dayOfMonth - 1) * NodaConstants.TicksPerStandardDay));
+            return unchecked(MonthStartDays[yearMonthIndex] + (dayOfMonth - 1));
         }
 
         protected override int CalculateStartOfYearDays(int year)

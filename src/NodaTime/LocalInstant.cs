@@ -58,7 +58,7 @@ namespace NodaTime
         [Pure]
         public DateTime ToDateTimeUnspecified()
         {
-            return new DateTime(ticks - NodaConstants.BclEpoch.Ticks, DateTimeKind.Unspecified);
+            return new DateTime(NodaConstants.BclTicksAtUnixEpoch + ticks, DateTimeKind.Unspecified);
         }
 
         /// <summary>

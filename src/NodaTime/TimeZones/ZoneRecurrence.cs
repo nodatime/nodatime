@@ -109,16 +109,14 @@ namespace NodaTime.TimeZones
         /// <returns>The next transition, or null if there is no next transition.</returns>
         internal Transition? Next(Instant instant, Offset standardOffset, Offset previousSavings)
         {
-            CalendarSystem calendar = CalendarSystem.Iso;
-
             Offset wallOffset = standardOffset + previousSavings;
 
-            int year = instant == Instant.MinValue ? Int32.MinValue : calendar.GetYear(instant.Plus(wallOffset));
+            int year = instant == Instant.MinValue ? Int32.MinValue : new LocalDateTime(instant.Plus(wallOffset)).Year;
 
             if (year < fromYear)
             {
                 // First advance instant to start of from year.
-                instant = calendar.GetLocalInstant(fromYear, 1, 1, 0, 0).Minus(wallOffset);
+                instant = new LocalDateTime(fromYear, 1, 1, 0, 0).LocalInstant.Minus(wallOffset);
                 // Back off one tick to account for next recurrence being exactly at the beginning
                 // of the year.
                 instant = instant - Duration.Epsilon;
@@ -128,7 +126,7 @@ namespace NodaTime.TimeZones
 
             if (next >= instant)
             {
-                year = calendar.GetYear(next.Plus(wallOffset));
+                year = new LocalDateTime(next.Plus(wallOffset)).Year;
                 if (year > toYear)
                 {
                     return null;
@@ -148,23 +146,21 @@ namespace NodaTime.TimeZones
         /// <returns>The previous transition, or null if there is no previous transition.</returns>
         internal Transition? Previous(Instant instant, Offset standardOffset, Offset previousSavings)
         {
-            CalendarSystem calendar = CalendarSystem.Iso;
-
             Offset wallOffset = standardOffset + previousSavings;
 
-            int year = instant == Instant.MaxValue ? Int32.MaxValue : calendar.GetYear(instant.Plus(wallOffset));
+            int year = instant == Instant.MaxValue ? Int32.MaxValue : new LocalDateTime(instant.Plus(wallOffset)).Year;
 
             if (year > toYear)
             {
                 // First pull instant back to the start of the year after toYear
-                instant = calendar.GetLocalInstant(toYear + 1, 1, 1, 0, 0).Minus(wallOffset);
+                instant = new LocalDateTime(toYear + 1, 1, 1, 0, 0).LocalInstant.Minus(wallOffset);
             }
 
             Instant previous = yearOffset.Previous(instant, standardOffset, previousSavings);
 
             if (previous <= instant)
             {
-                year = calendar.GetYear(previous.Plus(wallOffset));
+                year = new LocalDateTime(previous.Plus(wallOffset)).Year;
                 if (year < fromYear)
                 {
                     return null;

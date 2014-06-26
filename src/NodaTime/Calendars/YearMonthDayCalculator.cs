@@ -3,11 +3,12 @@
 // as found in the LICENSE.txt file.
 
 using System;
+using System.Collections.Generic;
 using NodaTime.Utility;
 
 namespace NodaTime.Calendars
 {
-    internal abstract class YearMonthDayCalculator
+    internal abstract class YearMonthDayCalculator : IComparer<YearMonthDay>
     {
         /// <summary>
         /// Cache to speed up working out when a particular year starts.
@@ -28,16 +29,16 @@ namespace NodaTime.Calendars
         private readonly int maxYear;
         internal int MaxYear { get { return maxYear; } }
 
-        private readonly long averageTicksPerYear;
+        private readonly int averageDaysPer10Years;
 
-        private readonly long ticksAtStartOfYear1;
+        private readonly int daysAtStartOfYear1;
         /// <summary>
         /// Only exposed outside the calculator for validation by tests.
         /// </summary>
-        internal long TicksAtStartOfYear1 { get { return ticksAtStartOfYear1; } }
+        internal int DaysAtStartOfYear1 { get { return daysAtStartOfYear1; } }
 
         protected YearMonthDayCalculator(int minYear, int maxYear,
-            long averageTicksPerYear, long ticksAtStartOfYear1, Era[] eras)
+            int averageDaysPer10Years, int daysAtStartOfYear1, Era[] eras)
         {
             // We should really check the minimum year as well, but constructing it hurts my brain.
             Preconditions.CheckArgument(maxYear < YearStartCacheEntry.InvalidEntryYear, "maxYear",
@@ -45,14 +46,24 @@ namespace NodaTime.Calendars
             this.minYear = minYear;
             this.maxYear = maxYear;
             this.eras = Preconditions.CheckNotNull(eras, "eras");
-            this.averageTicksPerYear = averageTicksPerYear;
-            this.ticksAtStartOfYear1 = ticksAtStartOfYear1;
+            this.averageDaysPer10Years = averageDaysPer10Years;
+            this.daysAtStartOfYear1 = daysAtStartOfYear1;
         }
 
         /// <summary>
-        /// Returns the number of ticks from the start of the given year to the start of the given month.
+        /// Compares two YearMonthDay values according to the rules of this calendar.
+        /// The default implementation simply uses a naive comparison of the values,
+        /// as this is suitable for most calendars.
         /// </summary>
-        protected abstract long GetTicksFromStartOfYearToStartOfMonth(int year, int month);
+        public virtual int Compare(YearMonthDay lhs, YearMonthDay rhs)
+        {
+            return lhs.CompareTo(rhs);
+        }
+
+        /// <summary>
+        /// Returns the number of days from the start of the given year to the start of the given month.
+        /// </summary>
+        protected abstract int GetDaysFromStartOfYearToStartOfMonth(int year, int month);
 
         /// <summary>
         /// Compute the start of the given year in days since 1970-01-01 ISO. The year may be outside
@@ -61,187 +72,106 @@ namespace NodaTime.Calendars
         /// an invalid one, for estimates etc.
         /// </summary>
         protected abstract int CalculateStartOfYearDays(int year);
-        protected abstract int GetMonthOfYear(LocalInstant localInstant, int year);
         internal abstract int GetMaxMonth(int year);
-        internal abstract LocalInstant SetYear(LocalInstant localInstant, int year);
         internal abstract int GetDaysInMonth(int year, int month);
         internal abstract bool IsLeapYear(int year);
-        internal abstract LocalInstant AddMonths(LocalInstant localInstant, int months);
+        internal abstract YearMonthDay AddMonths(YearMonthDay yearMonthDay, int months);
+        internal abstract YearMonthDay GetYearMonthDay(int daysSinceEpoch);
         /// <summary>
-        /// Subtract subtrahendInstant from minuendInstant, in terms of months.
+        /// Subtract subtrahendDate from minuendDate, in terms of months.
         /// </summary>
-        internal abstract int MonthsBetween(LocalInstant minuendInstant, LocalInstant subtrahendInstant);
+        internal abstract int MonthsBetween(YearMonthDay minuendDate, YearMonthDay subtrahendDate);
 
         /// <summary>
-        /// Returns the number of ticks since the Unix epoch at the start of the given year.
-        /// This is virtual to allow GregorianCalendarSystem to override it for an ultra-efficient
-        /// cache for modern years. This method can cope with a value for <paramref name="year"/> outside
-        /// the normal range, so long as the resulting computation doesn't overflow. (Min and max years
-        /// are therefore chosen to be slightly more restrictive than we would otherwise need, for the
-        /// sake of simplicity.) This is useful for values which first involve estimates which might be out
-        /// by a year either way.
+        /// Adjusts the given YearMonthDay to the specified year, potentially adjusting
+        /// other fields as required.
         /// </summary>
-        internal virtual long GetStartOfYearInTicks(int year)
-        {
-            return unchecked(GetStartOfYearInDays(year) * NodaConstants.TicksPerStandardDay);
-        }
+        internal abstract YearMonthDay SetYear(YearMonthDay yearMonthDay, int year);
 
-        internal virtual int GetDayOfMonth(LocalInstant localInstant)
+        internal int GetDayOfYear(YearMonthDay yearMonthDay)
         {
-            int year = GetYear(localInstant);
-            int month = GetMonthOfYear(localInstant, year);
-            return GetDayOfMonth(localInstant, year, month);
-        }
-
-        protected int GetDayOfMonth(LocalInstant localInstant, int year, int month)
-        {
-            long dateTicks = GetYearMonthTicks(year, month);
-            unchecked
-            {
-                long ticksWithinMonth = localInstant.Ticks - dateTicks;
-                return TickArithmetic.FastTicksToDays(ticksWithinMonth) + 1;
-            }
-        }
-
-        internal int GetDayOfYear(LocalInstant localInstant)
-        {
-            return GetDayOfYear(localInstant, GetYear(localInstant));
-        }
-
-        internal int GetDayOfYear(LocalInstant localInstant, int year)
-        {
-            long yearStart = GetStartOfYearInTicks(year);
-            unchecked
-            {
-                long ticksWithinYear = localInstant.Ticks - yearStart;
-                return TickArithmetic.FastTicksToDays(ticksWithinYear) + 1;
-            }
-        }
-
-        internal virtual int GetMonthOfYear(LocalInstant localInstant)
-        {
-            return GetMonthOfYear(localInstant, GetYear(localInstant));
-        }
-
-        internal virtual LocalInstant GetLocalInstant(int year, int monthOfYear, int dayOfMonth)
-        {
-            Preconditions.CheckArgumentRange("year", year, MinYear, MaxYear);
-            Preconditions.CheckArgumentRange("monthOfYear", monthOfYear, 1, GetMaxMonth(year));
-            Preconditions.CheckArgumentRange("dayOfMonth", dayOfMonth, 1, GetDaysInMonth(year, monthOfYear));
-            return new LocalInstant(GetYearMonthDayTicks(year, monthOfYear, dayOfMonth));
+            int daysSinceEpoch = GetDaysSinceEpoch(yearMonthDay);
+            int yearStart = GetStartOfYearInDays(yearMonthDay.Year);
+            return daysSinceEpoch - yearStart + 1;
         }
 
         /// <summary>
-        /// Computes the ticks of the local instant at the start of the given year/month/day.
-        /// This assumes all parameters have been validated previously.
+        /// Computes the days since the Unix epoch at the start of the given year/month/day.
+        /// This assumes the parameter have been validated previously.
         /// </summary>
-        internal long GetYearMonthDayTicks(int year, int month, int dayOfMonth)
+        internal virtual int GetDaysSinceEpoch(YearMonthDay yearMonthDay)
         {
-            long ticks = GetYearMonthTicks(year, month);
-            return ticks + (dayOfMonth - 1) * NodaConstants.TicksPerStandardDay;
+            int startOfMonth = GetYearMonthDays(yearMonthDay.Year, yearMonthDay.Month);
+            return startOfMonth + yearMonthDay.Day - 1;
         }
 
         /// <summary>
-        /// Returns the number of ticks (the LocalInstant, effectively) at the start of the
-        /// given year/month.
+        /// Returns the number of days since the Unix epoch at the start of the given year/month.
         /// </summary>
-        internal long GetYearMonthTicks(int year, int month)
+        internal int GetYearMonthDays(int year, int month)
         {
-            long ticks = GetStartOfYearInTicks(year);
-            return ticks + GetTicksFromStartOfYearToStartOfMonth(year, month);
+            int days = GetStartOfYearInDays(year);
+            return days + GetDaysFromStartOfYearToStartOfMonth(year, month);
         }
 
-        /// <summary>
-        /// Era-based year/month/day: this implementation ignores the era, which is valid for single-era
-        /// calendars, although it does validate the era first.
-        /// </summary>
-        internal virtual LocalInstant GetLocalInstant(Era era, int yearOfEra, int monthOfYear, int dayOfMonth)
+        // TODO(2.0): Try adding a ref parameter for "the start of year we found"
+        // ... we almost always fetch it afterwards.
+        internal int GetYear(int daysSinceEpoch)
         {
-            // Just validation
-            GetEraIndex(era);
-            return GetLocalInstant(yearOfEra, monthOfYear, dayOfMonth);
-        }
-
-        /// <summary>
-        /// Convenience method to perform nullity and validity checking on the era, converting it to
-        /// the index within the list of eras used in this calendar system.
-        /// </summary>
-        protected int GetEraIndex(Era era)
-        {
-            Preconditions.CheckNotNull(era, "era");
-            int index = Array.IndexOf(Eras, era);
-            Preconditions.CheckArgument(index != -1, "era", "Era is not used in this calendar");
-            return index;
-        }
-
-        internal int GetYear(LocalInstant localInstant)
-        {
-            long targetTicks = localInstant.Ticks;
-            // Get an initial estimate of the year, and the ticks value that
+            // Get an initial estimate of the year, and the days-since-epoch value that
             // represents the start of that year. Then verify estimate and fix if
-            // necessary.
-
-            // Initial estimate uses values divided by two to avoid overflow.
-            long halfTicksPerYear = averageTicksPerYear >> 1;
-            long halfTicksSinceStartOfYear1 = (targetTicks >> 1) - (ticksAtStartOfYear1 >> 1);
-
-            if (halfTicksSinceStartOfYear1 < 0)
-            {
-                // When we divide, we want to round down, not towards 0.
-                halfTicksSinceStartOfYear1 += 1 - halfTicksPerYear;
-            }
-            int candidate = (int) (halfTicksSinceStartOfYear1 / halfTicksPerYear) + 1;
-
-            // TODO: Convert to days at this point, and do all the rest of the calculation with days.
-            // We can then remove GetTicksInYear, but make sure that everything overrides GetDaysInYear appropriately.
+            // necessary. We have the average days per 100 years to avoid getting bad candidates
+            // pretty quickly.
+            int daysSinceYear1 = daysSinceEpoch - daysAtStartOfYear1;
+            int candidate = ((daysSinceYear1 * 10) / averageDaysPer10Years) + 1;
 
             // Most of the time we'll get the right year straight away, and we'll almost
             // always get it after one adjustment - but it's safer (and easier to think about)
             // if we just keep going until we know we're right.
-            long candidateStart = GetStartOfYearInTicks(candidate);
-            long ticksFromCandidateStartToTarget = targetTicks - candidateStart;
-            if (ticksFromCandidateStartToTarget < 0)
+            int candidateStart = GetStartOfYearInDays(candidate);
+            int daysFromCandidateStartToTarget = daysSinceEpoch - candidateStart;
+            if (daysFromCandidateStartToTarget < 0)
             {
                 // Our candidate year is later than we want. Keep going backwards until we've got
                 // a non-negative result, which must then be correct.
                 do
                 {
                     candidate--;
-                    ticksFromCandidateStartToTarget += GetTicksInYear(candidate);
+                    daysFromCandidateStartToTarget += GetDaysInYear(candidate);
                 }
-                while (ticksFromCandidateStartToTarget < 0);
+                while (daysFromCandidateStartToTarget < 0);
                 return candidate;
             }
             // Our candidate year is correct or earlier than the right one. Find out which by
             // comparing it with the length of the candidate year.
-            long candidateLength = GetTicksInYear(candidate);
-            while (ticksFromCandidateStartToTarget >= candidateLength)
+            int candidateLength = GetDaysInYear(candidate);
+            while (daysFromCandidateStartToTarget >= candidateLength)
             {
                 // Our candidate year is earlier than we want, so fast forward a year,
-                // removing the current candidate length from the "remaining ticks" and
+                // removing the current candidate length from the "remaining days" and
                 // working out the length of the new candidate.
                 candidate++;
-                ticksFromCandidateStartToTarget -= candidateLength;
-                candidateLength = GetTicksInYear(candidate);
+                daysFromCandidateStartToTarget -= candidateLength;
+                candidateLength = GetDaysInYear(candidate);
             }
             return candidate;
         }
 
         /// <summary>
-        /// Returns the year-of-era for the given local instant. The base implementation is to return the plain
+        /// Returns the year-of-era for the given date. The base implementation is to return the plain
         /// year, which is suitable for single-era calendars.
         /// </summary>
-        internal virtual int GetYearOfEra(LocalInstant localInstant)
+        internal virtual int GetYearOfEra(YearMonthDay yearMonthDay)
         {
-            return GetYear(localInstant);
+            return yearMonthDay.Year;
         }
 
         /// <summary>
         /// Handling for century-of-era where (say) year 123 is in century 2... but so is year 200.
         /// </summary>
-        internal virtual int GetCenturyOfEra(LocalInstant localInstant)
+        internal virtual int GetCenturyOfEra(YearMonthDay yearMonthDay)
         {
-            int yearOfEra = GetYearOfEra(localInstant);
+            int yearOfEra = GetYearOfEra(yearMonthDay);
             int zeroBasedRemainder = yearOfEra % 100;
             int zeroBasedResult = yearOfEra / 100;
             return zeroBasedRemainder == 0 ? zeroBasedResult : zeroBasedResult + 1;
@@ -250,18 +180,18 @@ namespace NodaTime.Calendars
         /// <summary>
         /// Handling for year-of-century in the range [1, 100].
         /// </summary>
-        internal virtual int GetYearOfCentury(LocalInstant localInstant)
+        internal virtual int GetYearOfCentury(YearMonthDay yearMonthDay)
         {
-            int yearOfEra = GetYearOfEra(localInstant);
+            int yearOfEra = GetYearOfEra(yearMonthDay);
             int zeroBased = yearOfEra % 100;
             return zeroBased == 0 ? 100 : zeroBased;
         }
 
         /// <summary>
-        /// Returns the era for the given local instant. The base implementation is to return 0, which is
+        /// Returns the era for the given date. The base implementation is to return 0, which is
         /// suitable for single-era calendars.
         /// </summary>
-        internal virtual int GetEra(LocalInstant localInstant)
+        internal virtual int GetEra(YearMonthDay yearMonthDay)
         {
             return 0;
         }
@@ -271,21 +201,12 @@ namespace NodaTime.Calendars
             return IsLeapYear(year) ? 366 : 365;
         }
 
-        // Override if overriding GetDaysInYear, and vice versa
-        protected virtual long GetTicksInYear(int year)
-        {
-            return IsLeapYear(year) ? 366 * NodaConstants.TicksPerStandardDay : 365 * NodaConstants.TicksPerStandardDay;
-        }
-
         /// <summary>
         /// Default implementation of GetAbsoluteYear which assumes a single era.
+        /// This does not perform any validation.
         /// </summary>
         internal virtual int GetAbsoluteYear(int yearOfEra, int eraIndex)
         {
-            if (yearOfEra < 1 || yearOfEra > MaxYear)
-            {
-                throw new ArgumentOutOfRangeException("yearOfEra");
-            }
             return yearOfEra;
         }
 
@@ -312,9 +233,10 @@ namespace NodaTime.Calendars
         /// Fetches the start of the year (in days since 1970-01-01 ISO) from the cache, or calculates
         /// and caches it.
         /// </summary>
-        protected int GetStartOfYearInDays(int year)
+        internal virtual int GetStartOfYearInDays(int year)
         {
-            if (year < MinYear || year > MaxYear)
+            // FIXME FIXME FIXME
+            if (year >= 0 || year < MinYear || year > MaxYear)
             {
                 return CalculateStartOfYearDays(year);
             }
@@ -327,6 +249,14 @@ namespace NodaTime.Calendars
                 yearCache[cacheIndex] = cacheEntry;
             }
             return cacheEntry.StartOfYearDays;
+        }
+
+        // TODO(2.0): Optimizations for specific calendars.
+        internal void ValidateYearMonthDay(int year, int month, int day)
+        {
+            Preconditions.CheckArgumentRange("year", year, minYear, maxYear);
+            Preconditions.CheckArgumentRange("month", month, 1, GetMaxMonth(year));
+            Preconditions.CheckArgumentRange("day", day, 1, GetDaysInMonth(year, month));
         }
     }
 }

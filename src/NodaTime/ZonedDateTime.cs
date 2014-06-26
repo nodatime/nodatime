@@ -127,9 +127,6 @@ namespace NodaTime
         /// <summary>Gets the time zone associated with this value.</summary>
         public DateTimeZone Zone { get { return zone ?? DateTimeZone.Utc; } }
 
-        /// <summary>Gets the local instant associated with this value.</summary>
-        internal LocalInstant LocalInstant { get { return localDateTime.LocalInstant; } }
-
         /// <summary>
         /// Gets the local date and time represented by this zoned date and time. The returned
         /// <see cref="T:NodaTime.LocalDateTime"/> will have the same calendar system and return the same values for
@@ -333,7 +330,7 @@ namespace NodaTime
         public override int GetHashCode()
         {
             int hash = HashCodeHelper.Initialize();
-            hash = HashCodeHelper.Hash(hash, LocalInstant);
+            hash = HashCodeHelper.Hash(hash, LocalDateTime);
             hash = HashCodeHelper.Hash(hash, Offset);
             hash = HashCodeHelper.Hash(hash, Zone);
             return hash;
@@ -614,7 +611,7 @@ namespace NodaTime
         [Pure]
         public DateTimeOffset ToDateTimeOffset()
         {
-            return new DateTimeOffset(LocalInstant.Ticks - NodaConstants.BclEpoch.Ticks, Offset.ToTimeSpan());
+            return new DateTimeOffset(NodaConstants.BclTicksAtUnixEpoch + LocalDateTime.LocalInstant.Ticks, Offset.ToTimeSpan());
         }
 
         /// <summary>
@@ -658,7 +655,7 @@ namespace NodaTime
         [Pure]
         public DateTime ToDateTimeUnspecified()
         {
-            return LocalInstant.ToDateTimeUnspecified();
+            return LocalDateTime.LocalInstant.ToDateTimeUnspecified();
         }
 
         /// <summary>
@@ -759,6 +756,7 @@ namespace NodaTime
             /// <inheritdoc />
             public override int Compare(ZonedDateTime x, ZonedDateTime y)
             {
+                // FIXME(2.0): Different calendar systems?
                 return x.localDateTime.LocalInstant.CompareTo(y.localDateTime.LocalInstant);
             }
         }
@@ -860,6 +858,7 @@ namespace NodaTime
         [System.Security.SecurityCritical]
         void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)
         {
+            // FIXME(2.0): Revisit serialization
             info.AddValue(LocalTicksSerializationName, localDateTime.LocalInstant.Ticks);
             info.AddValue(CalendarIdSerializationName, Calendar.Id);
             info.AddValue(OffsetMillisecondsSerializationName, Offset.Milliseconds);

@@ -2,10 +2,6 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-using System;
-using System.Diagnostics;
-using System.IO;
-using System.Threading;
 using NodaTime.Utility;
 
 namespace NodaTime.Calendars
@@ -24,67 +20,48 @@ namespace NodaTime.Calendars
             this.minDaysInFirstWeek = minDaysInFirstWeek;
         }
 
-        internal LocalInstant GetLocalInstant(int weekYear, int weekOfWeekYear, IsoDayOfWeek dayOfWeek)
+        internal YearMonthDay GetYearMonthDay(int weekYear, int weekOfWeekYear, IsoDayOfWeek dayOfWeek)
         {
             Preconditions.CheckArgumentRange("weekYear", weekYear, yearMonthDayCalculator.MinYear, yearMonthDayCalculator.MaxYear);
             Preconditions.CheckArgumentRange("weekOfWeekYear", weekOfWeekYear, 1, GetWeeksInWeekYear(weekYear));
             // TODO: Work out what argument validation we actually want here.
             Preconditions.CheckArgumentRange("dayOfWeek", (int)dayOfWeek, 1, 7);
-            long ticks = GetWeekYearTicks(weekYear)
-                + (weekOfWeekYear - 1) * NodaConstants.TicksPerStandardWeek
-                + ((int) dayOfWeek - 1) * NodaConstants.TicksPerStandardDay;
-            return new LocalInstant(ticks);
+            int days = GetWeekYearDaysSinceEpoch(weekYear) + (weekOfWeekYear - 1) * 7 + ((int) dayOfWeek - 1);
+            return yearMonthDayCalculator.GetYearMonthDay(days);
         }
 
-        internal static int GetDayOfWeek(LocalInstant localInstant)            
+        internal int GetDayOfWeek(YearMonthDay yearMonthDay)
         {
-            // 1970-01-01 is day of week 4, Thursday.
-            unchecked
-            {
-                long daysSince19700101;
-                long ticks = localInstant.Ticks;
-                if (ticks >= 0)
-                {
-                    daysSince19700101 = TickArithmetic.FastTicksToDays(ticks);
-                }
-                else
-                {
-                    // Can't use TickArithmetic.TicksToDays here as we want to round down;
-                    // division on negative numbers rounds towards zero, while shifting
-                    // rounds down. The combination is awkward to think about for too long :)
-                    daysSince19700101 = ((ticks >> 14) - 52734374) / 52734375;
-                    if (daysSince19700101 < -3)
-                    {
-                        return 7 + (int) ((daysSince19700101 + 4) % 7);
-                    }
-                }
-
-                return 1 + (int) ((daysSince19700101 + 3) % 7);                
-            }
+            int daysSinceEpoch = yearMonthDayCalculator.GetDaysSinceEpoch(yearMonthDay);
+            return daysSinceEpoch >= -3 ? 1 + ((daysSinceEpoch + 3) % 7)
+                                        : 7 + ((daysSinceEpoch + 4) % 7);
         }
 
         /// <summary>
         /// Finds the week-of-week year containing the given local instant, by finding out when the week year
         /// started, and then simply dividing "how far we are through the year" by "the number of ticks in a week".
         /// </summary>
-        internal int GetWeekOfWeekYear(LocalInstant localInstant)
+        internal int GetWeekOfWeekYear(YearMonthDay yearMonthDay)
         {
-            int weekYear = GetWeekYear(localInstant);
-            long startOfWeekYear = GetWeekYearTicks(weekYear);
-            long ticksIntoYear = localInstant.Ticks - startOfWeekYear;
-            int zeroBasedWeek = (int)(ticksIntoYear / NodaConstants.TicksPerStandardWeek);
+            // TODO(2.0): This is a bit inefficient, as we'll be converting forms several times. We might want to
+            // optimize.
+            int weekYear = GetWeekYear(yearMonthDay);
+            int startOfWeekYear = GetWeekYearDaysSinceEpoch(weekYear);
+            int daysSinceEpoch = yearMonthDayCalculator.GetDaysSinceEpoch(yearMonthDay);
+            int zeroBasedDayOfWeekYear = daysSinceEpoch - startOfWeekYear;
+            int zeroBasedWeek = zeroBasedDayOfWeekYear / 7;
             return zeroBasedWeek + 1;
         }
 
         private int GetWeeksInWeekYear(int weekYear)
         {
-            long startOfWeekYear = GetWeekYearTicks(weekYear);
-            long startOfCalendarYear = yearMonthDayCalculator.GetStartOfYearInTicks(weekYear);
+            int startOfWeekYear = GetWeekYearDaysSinceEpoch(weekYear);
+            int startOfCalendarYear = yearMonthDayCalculator.GetStartOfYearInDays(weekYear);
             // The number of days gained or lost in the week year compared with the calendar year.
             // So if the week year starts on December 31st of the previous calendar year, this will be +1.
             // If the week year starts on January 2nd of this calendar year, this will be -1.
 
-            int extraDays = (int)((startOfCalendarYear - startOfWeekYear) / NodaConstants.TicksPerStandardDay);
+            int extraDays = startOfCalendarYear - startOfWeekYear;
             int daysInThisYear = yearMonthDayCalculator.GetDaysInYear(weekYear);
 
             // We can have up to "minDaysInFirstWeek - 1" days of the next year, too.
@@ -94,33 +71,34 @@ namespace NodaTime.Calendars
         /// <summary>
         /// Returns the ticks at the start of the given week-year.
         /// </summary>
-        private long GetWeekYearTicks(int weekYear)
+        private int GetWeekYearDaysSinceEpoch(int weekYear)
         {
             // Need to be slightly careful here, as the week-year can reasonably be outside the calendar year range.
-            long jan1Millis = yearMonthDayCalculator.GetStartOfYearInTicks(weekYear);
-            int jan1DayOfWeek = GetDayOfWeek(new LocalInstant(jan1Millis));
+            int startOfCalendarYear = yearMonthDayCalculator.GetStartOfYearInDays(weekYear);
+            int jan1DayOfWeek = GetDayOfWeek(yearMonthDayCalculator.GetYearMonthDay(startOfCalendarYear));
 
             if (jan1DayOfWeek > (8 - minDaysInFirstWeek))
             {
                 // First week is end of previous year because it doesn't have enough days.
-                return jan1Millis + (8 - jan1DayOfWeek) * NodaConstants.TicksPerStandardDay;
+                return startOfCalendarYear + (8 - jan1DayOfWeek);
             }
             else
             {
                 // First week is start of this year because it has enough days.
-                return jan1Millis - (jan1DayOfWeek - 1) * NodaConstants.TicksPerStandardDay;
+                return startOfCalendarYear - (jan1DayOfWeek - 1);
             }
         }
 
         /// <summary>
         /// Finds the week-year containing the given local instant.
         /// </summary>
-        internal int GetWeekYear(LocalInstant localInstant)
+        internal int GetWeekYear(YearMonthDay yearMonthDay)
         {
             // Let's guess that it's in the same week year as calendar year, and check that.
-            int calendarYear = yearMonthDayCalculator.GetYear(localInstant);
-            long startOfWeekYear = GetWeekYearTicks(calendarYear);
-            if (localInstant.Ticks < startOfWeekYear)
+            int calendarYear = yearMonthDay.Year;
+            int startOfWeekYear = GetWeekYearDaysSinceEpoch(calendarYear);
+            int daysSinceEpoch = yearMonthDayCalculator.GetDaysSinceEpoch(yearMonthDay);
+            if (daysSinceEpoch < startOfWeekYear)
             {
                 // No, the week-year hadn't started yet. For example, we've been given January 1st 2011...
                 // and the first week of week-year 2011 starts on January 3rd 2011. Therefore the local instant
@@ -135,8 +113,8 @@ namespace NodaTime.Calendars
 
             // We assume that even for the maximum year, we've got just about enough leeway to get to the
             // start of the week year. (If not, we should adjust the maximum.)
-            long startOfNextCalendarYear = startOfWeekYear + weeksInWeekYear * NodaConstants.TicksPerStandardWeek;
-            return localInstant.Ticks < startOfNextCalendarYear ? calendarYear : calendarYear + 1;
+            int startOfNextWeekYear = startOfWeekYear + weeksInWeekYear * 7;
+            return daysSinceEpoch < startOfNextWeekYear ? calendarYear : calendarYear + 1;
         }
     }
 }

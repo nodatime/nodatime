@@ -22,32 +22,22 @@ namespace NodaTime.Fields
             {
                 return localDate;
             }
+            YearMonthDay yearMonthDay = localDate.YearMonthDay;
             var calculator = localDate.Calendar.YearMonthDayCalculator;
-            var localInstant = localDate.LocalInstant;
-            int currentYear = calculator.GetYear(localInstant);
+            int currentYear = yearMonthDay.Year;
             // Adjust argument range based on current year
             Preconditions.CheckArgumentRange("value", value, calculator.MinYear - currentYear, calculator.MaxYear - currentYear);
-            // If we got this far, the conversion to int must be fine.
-            int intValue = (int)value;
-            // TODO(2.0): Make SetYear more LocalDate-friendly.
-            return new LocalDate(calculator.SetYear(localInstant, intValue + currentYear), localDate.Calendar);
+            return new LocalDate(calculator.SetYear(yearMonthDay, currentYear + value), localDate.Calendar);
         }
 
         public int Subtract(LocalDate minuendDate, LocalDate subtrahendDate)
         {
-            // TODO(2.0): Change the signature of MonthsBetween to be more date-friendly.
-            var calculator = minuendDate.Calendar.YearMonthDayCalculator;
-            var minuendInstant = minuendDate.LocalInstant;
-            var subtrahendInstant = subtrahendDate.LocalInstant;
-            int minuendYear = calculator.GetYear(minuendInstant);
-            int subtrahendYear = calculator.GetYear(subtrahendInstant);
-
-            int diff = minuendYear - subtrahendYear;
+            int diff = minuendDate.Year - subtrahendDate.Year;
 
             // If we just add the difference in years to subtrahendInstant, what do we get?
             LocalDate simpleAddition = Add(subtrahendDate, diff);
 
-            if (subtrahendInstant <= minuendInstant)
+            if (subtrahendDate <= minuendDate)
             {
                 // Moving forward: if the result of the simple addition is before or equal to the minuend,
                 // we're done. Otherwise, rewind a year because we've overshot.

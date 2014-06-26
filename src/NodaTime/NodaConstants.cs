@@ -134,5 +134,10 @@ namespace NodaTime
         /// The instant at the BCL epoch of midnight 1st January 0001 UTC.
         /// </summary>
         public static readonly Instant BclEpoch = Instant.FromUtc(1, 1, 1, 0, 0);
+
+        /// <summary>
+        /// The number of ticks in a BCL DateTime at the Unix epoch.
+        /// </summary>
+        internal static readonly long BclTicksAtUnixEpoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).Ticks;
     }
 }

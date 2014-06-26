@@ -18,17 +18,15 @@ namespace NodaTime.Fields
 
         public LocalDate Add(LocalDate localDate, int value)
         {
-            // TODO(2.0): Change the signature of AddMonths to be more date-friendly.
             var calculator = localDate.Calendar.YearMonthDayCalculator;
-            LocalInstant newInstant = calculator.AddMonths(localDate.LocalInstant, value);
-            return new LocalDate(newInstant, localDate.Calendar);
+            var yearMonthDay = calculator.AddMonths(localDate.YearMonthDay, value);
+            return new LocalDate(yearMonthDay, localDate.Calendar);
         }
 
         public int Subtract(LocalDate minuendDate, LocalDate subtrahendDate)
         {
-            // TODO(2.0): Change the signature of MonthsBetween to be more date-friendly.
             var calculator = minuendDate.Calendar.YearMonthDayCalculator;
-            return calculator.MonthsBetween(minuendDate.LocalInstant, subtrahendDate.LocalInstant);
+            return calculator.MonthsBetween(minuendDate.YearMonthDay, subtrahendDate.YearMonthDay);
         }
     }
 }
