@@ -2,6 +2,7 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
+using System;
 using NUnit.Framework;
 
 namespace NodaTime.Test
@@ -24,6 +25,14 @@ namespace NodaTime.Test
             Assert.AreEqual(1969, julianEpoch.Year);
             Assert.AreEqual(12, julianEpoch.Month);
             Assert.AreEqual(19, julianEpoch.Day);
+        }
+
+
+        [Test]
+        public void WithCalendar_OutOfRange()
+        {
+            LocalDate start = new LocalDate(1, 1, 1);
+            Assert.Throws<ArgumentOutOfRangeException>(() => start.WithCalendar(CalendarSystem.GetPersianCalendar()));
         }
     }
 }

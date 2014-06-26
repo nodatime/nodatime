@@ -572,7 +572,7 @@ namespace NodaTime
 
         internal YearMonthDay GetYearMonthDayFromDaysSinceEpoch(int daysSinceEpoch)
         {
-            // TODO(2.0): Validate date is in range
+            Preconditions.CheckArgumentRange("daysSinceEpoch", daysSinceEpoch, minDays, maxDays);
             return yearMonthDayCalculator.GetYearMonthDay(daysSinceEpoch);
         }
 
