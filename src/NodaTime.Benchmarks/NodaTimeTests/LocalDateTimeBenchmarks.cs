@@ -11,6 +11,9 @@ namespace NodaTime.Benchmarks.NodaTimeTests
     {
         private static readonly LocalDateTime Sample = new LocalDateTime(2009, 12, 26, 10, 8, 30);
         private static readonly CultureInfo MutableCulture = (CultureInfo) CultureInfo.InvariantCulture.Clone();
+        private static readonly Period SampleTimePeriod = new PeriodBuilder { Hours = 10, Minutes = 4, Seconds = 5, Milliseconds = 20, Ticks = 30 }.Build();
+        private static readonly Period SampleDatePeriod = new PeriodBuilder { Years = 1, Months = 2, Weeks = 3, Days = 4 }.Build();
+        private static readonly Period SampleMixedPeriod = SampleDatePeriod + SampleTimePeriod;
 
         [Benchmark]
         public void ConstructionToMinute()
@@ -170,5 +173,96 @@ namespace NodaTime.Benchmarks.NodaTimeTests
         {
             Sample.ToString("dd/MM/yyyy HH:mm:ss", MutableCulture);
         }
+
+        [Benchmark]
+        public void PlusYears()
+        {
+            Sample.PlusYears(3).Consume();
+        }
+
+        [Benchmark]
+        public void PlusMonths()
+        {
+            Sample.PlusMonths(3).Consume();
+        }
+
+        [Benchmark]
+        public void PlusWeeks()
+        {
+            Sample.PlusWeeks(3).Consume();
+        }
+
+        [Benchmark]
+        public void PlusDays()
+        {
+            Sample.PlusDays(3).Consume();
+        }
+
+        [Benchmark]
+        public void PlusHours()
+        {
+            Sample.PlusHours(3).Consume();
+        }
+
+        [Benchmark]
+        public void PlusMinutes()
+        {
+            Sample.PlusMinutes(3).Consume();
+        }
+
+        [Benchmark]
+        public void PlusSeconds()
+        {
+            Sample.PlusSeconds(3).Consume();
+        }
+
+        [Benchmark]
+        public void PlusMilliseconds()
+        {
+            Sample.PlusMilliseconds(3).Consume();
+        }
+
+        [Benchmark]
+        public void PlusTicks()
+        {
+            Sample.PlusTicks(3).Consume();
+        }
+
+        [Benchmark]
+        public void PlusDatePeriod()
+        {
+            (Sample + SampleDatePeriod).Consume();
+        }
+
+        [Benchmark]
+        public void MinusDatePeriod()
+        {
+            (Sample - SampleDatePeriod).Consume();
+        }
+
+        [Benchmark]
+        public void PlusTimePeriod()
+        {
+            (Sample + SampleTimePeriod).Consume();
+        }
+
+        [Benchmark]
+        public void MinusTimePeriod()
+        {
+            (Sample - SampleTimePeriod).Consume();
+        }
+
+        [Benchmark]
+        public void PlusMixedPeriod()
+        {
+            (Sample + SampleMixedPeriod).Consume();
+        }
+
+        [Benchmark]
+        public void MinusMixedPeriod()
+        {
+            (Sample - SampleMixedPeriod).Consume();
+        }
+
     }
 }

@@ -526,6 +526,7 @@ namespace NodaTime
         /// <param name="start">Start date</param>
         /// <param name="end">End date</param>
         /// <returns>The period between the two dates, using year, month and day units.</returns>
+        [Pure]
         public static Period Between(LocalDate start, LocalDate end)
         {
             return Between(start, end, PeriodUnits.YearMonthDay);
@@ -547,6 +548,7 @@ namespace NodaTime
         /// <exception cref="ArgumentException"><paramref name="units"/> contains date units, is empty or contains unknown values.</exception>
         /// <exception cref="ArgumentException"><paramref name="start"/> and <paramref name="end"/> use different calendars.</exception>
         /// <returns>The period between the given times, using the given units.</returns>
+        [Pure]
         public static Period Between(LocalTime start, LocalTime end, PeriodUnits units)
         {
             Preconditions.CheckArgument((units & PeriodUnits.AllDateUnits) == 0, "units", "Units contains date units: {0}", units);
@@ -583,6 +585,7 @@ namespace NodaTime
         /// <param name="start">Start time</param>
         /// <param name="end">End time</param>
         /// <returns>The period between the two times, using the time period units.</returns>
+        [Pure]
         public static Period Between(LocalTime start, LocalTime end)
         {
             return Between(start, end, PeriodUnits.AllTimeUnits);
