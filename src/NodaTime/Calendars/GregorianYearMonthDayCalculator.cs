@@ -2,6 +2,8 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
+using System;
+
 namespace NodaTime.Calendars
 {
     internal class GregorianYearMonthDayCalculator : GJYearMonthDayCalculator
@@ -24,12 +26,17 @@ namespace NodaTime.Calendars
             var instance = new GregorianYearMonthDayCalculator();
             for (int year = FirstOptimizedYear; year <= LastOptimizedYear; year++)
             {
-                YearStartDays[year - FirstOptimizedYear] = instance.CalculateStartOfYearDays(year);
+                int yearStart = instance.CalculateStartOfYearDays(year);
+                YearStartDays[year - FirstOptimizedYear] = yearStart;
+                int monthStartDay = yearStart;
+                int yearMonthIndex = (year - FirstOptimizedYear) * 12;
                 for (int month = 1; month <= 12; month++)
                 {
-                    int yearMonthIndex = (year - FirstOptimizedYear) * 12 + month;
-                    MonthStartDays[yearMonthIndex] = instance.GetYearMonthDays(year, month);
-                    MonthLengths[yearMonthIndex] = instance.GetDaysInMonth(year, month);
+                    yearMonthIndex++;
+                    int monthLength = instance.GetDaysInMonth(year, month);
+                    MonthStartDays[yearMonthIndex] = monthStartDay;
+                    MonthLengths[yearMonthIndex] = monthLength;
+                    monthStartDay += monthLength;
                 }
             }
         }
@@ -48,18 +55,6 @@ namespace NodaTime.Calendars
             }
             return YearStartDays[year - FirstOptimizedYear];
         }
-
-        // FIXME: Should I remove this? Could get called in the optimization...
-        /*
-        protected override int GetDaysFromStartOfYearToStartOfMonth(int year, int month)
-        {
-            int yearMonthIndex = (year - FirstOptimizedYear) * 12 + month;
-            if (year < FirstOptimizedYear || year > LastOptimizedYear - 1 || month < 1 || month > 12)
-            {
-                return base.GetDaysFromStartOfYearToStartOfMonth(year, month);
-            }
-            return MonthStartDays[yearMonthIndex];
-        }*/
 
         internal override int GetDaysSinceEpoch(YearMonthDay yearMonthDay)
         {
