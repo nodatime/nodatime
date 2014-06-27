@@ -155,6 +155,18 @@ namespace NodaTime.Benchmarks.NodaTimeTests
         }
 
         [Benchmark]
+        public void PlusDays_MonthYearBoundary()
+        {
+            Sample.PlusDays(10).Consume();
+        }
+
+        [Benchmark]
+        public void PlusDays_LargeGap()
+        {
+            Sample.PlusDays(1000).Consume();
+        }
+
+        [Benchmark]
         public void PlusPeriod()
         {
             (Sample + SamplePeriod).Consume();
