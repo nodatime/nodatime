@@ -90,5 +90,12 @@ namespace NodaTime.Test
             Assert.AreEqual(expectedBackward, start.PlusTicks(-NodaConstants.TicksPerStandardDay - NodaConstants.TicksPerSecond));
         }
 
+        [Test]
+        public void With()
+        {
+            LocalTime start = new LocalTime(12, 15, 8, 100, 1234);
+            LocalTime expected = new LocalTime(12, 15, 8);
+            Assert.AreEqual(expected, start.With(TimeAdjusters.TruncateToSecond));
+        }
     }
 }

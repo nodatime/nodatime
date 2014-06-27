@@ -241,6 +241,8 @@
     <Compile Include="SystemClock.cs" />
     <Compile Include="Text\ValueCursor.cs" />
     <Compile Include="Text\ZonedDateTimePatternParser.cs" />
+    <Compile Include="DateAdjusters.cs" />
+    <Compile Include="TimeAdjusters.cs" />
     <Compile Include="TimeZones\BclDateTimeZone.cs" />
     <Compile Include="TimeZones\BclDateTimeZoneSource.cs" />
     <Compile Include="TimeZones\CachedDateTimeZone.cs" />

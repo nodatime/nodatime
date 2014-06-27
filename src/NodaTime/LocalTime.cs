@@ -457,7 +457,7 @@ namespace NodaTime
                 return 1;
             }
             Preconditions.CheckArgument(obj is LocalTime, "obj", "Object must be of type NodaTime.LocalTime.");
-            return CompareTo((LocalTime)obj);
+            return CompareTo((LocalTime) obj);
         }
 
         /// <summary>
@@ -492,7 +492,7 @@ namespace NodaTime
             {
                 return false;
             }
-            return this == (LocalTime)obj;
+            return this == (LocalTime) obj;
         }
 
         /// <summary>
@@ -557,6 +557,21 @@ namespace NodaTime
         public LocalTime PlusTicks(long ticks)
         {
             return TimePeriodField.Ticks.Add(this, ticks);
+        }
+
+        /// <summary>
+        /// Returns this time, with the given adjuster applied to it.
+        /// </summary>
+        /// <remarks>
+        /// If the adjuster attempts to construct an invalid time, any exception thrown by
+        /// that construction attempt will be propagated through this method.
+        /// </remarks>
+        /// <param name="adjuster">The adjuster to apply.</param>
+        /// <returns>The adjusted time.</returns>
+        [Pure]
+        public LocalTime With([NotNull] Func<LocalTime, LocalTime> adjuster)
+        {
+            return Preconditions.CheckNotNull(adjuster, "adjuster").Invoke(this);
         }
 
         #region Formatting

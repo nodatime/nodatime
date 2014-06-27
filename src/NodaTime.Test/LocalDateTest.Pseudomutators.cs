@@ -189,5 +189,13 @@ namespace NodaTime.Test
         }
 
         // No tests for non-ISO-day-of-week calendars as we don't have any yet.
+
+        [Test]
+        public void With()
+        {
+            LocalDate start = new LocalDate(2014, 6, 27);
+            LocalDate expected = new LocalDate(2014, 6, 30);
+            Assert.AreEqual(expected, start.With(DateAdjusters.EndOfMonth));
+        }
     }
 }

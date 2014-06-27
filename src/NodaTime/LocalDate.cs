@@ -664,6 +664,22 @@ namespace NodaTime
             return this + time;
         }
 
+        /// <summary>
+        /// Returns this date, with the given adjuster applied to it.
+        /// </summary>
+        /// <remarks>
+        /// If the adjuster attempts to construct an invalid date (such as by trying
+        /// to set a day-of-month of 30 in February), any exception thrown by
+        /// that construction attempt will be propagated through this method.
+        /// </remarks>
+        /// <param name="adjuster">The adjuster to apply.</param>
+        /// <returns>The adjusted date.</returns>
+        [Pure]
+        public LocalDate With([NotNull] Func<LocalDate, LocalDate> adjuster)
+        {
+            return Preconditions.CheckNotNull(adjuster, "adjuster").Invoke(this);
+        }
+
         #region Formatting
         /// <summary>
         /// Returns a <see cref="System.String" /> that represents this instance.

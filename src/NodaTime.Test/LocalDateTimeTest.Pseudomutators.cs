@@ -287,5 +287,21 @@ namespace NodaTime.Test
             Assert.AreEqual(period, LocalDateTime.Subtract(end, start));
             Assert.AreEqual(period, end.Minus(start));
         }
+
+        [Test]
+        public void With_TimeAdjuster()
+        {
+            LocalDateTime start = new LocalDateTime(2014, 6, 27, 12, 15, 8, 100, 1234);
+            LocalDateTime expected = new LocalDateTime(2014, 6, 27, 12, 15, 8);
+            Assert.AreEqual(expected, start.With(TimeAdjusters.TruncateToSecond));
+        }
+
+        [Test]
+        public void With_DateAdjuster()
+        {
+            LocalDateTime start = new LocalDateTime(2014, 6, 27, 12, 5, 8, 100, 1234);
+            LocalDateTime expected = new LocalDateTime(2014, 6, 30, 12, 5, 8, 100, 1234);
+            Assert.AreEqual(expected, start.With(DateAdjusters.EndOfMonth));
+        }
     }
 }
