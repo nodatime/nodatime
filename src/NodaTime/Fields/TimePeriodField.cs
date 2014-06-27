@@ -34,7 +34,8 @@ namespace NodaTime.Fields
             // Probably not worth doing when the date/time separation is firmer.
             int extraDays = 0;
             LocalTime time = Add(start.TimeOfDay, units, ref extraDays);
-            LocalDate date = start.Date.PlusDays(extraDays);
+            // Even though PlusDays optimizes for "value == 0", it's still quicker not to call it.
+            LocalDate date = extraDays == 0 ? start.Date :  start.Date.PlusDays(extraDays);
             return new LocalDateTime(date, time);
         }
 
@@ -54,6 +55,7 @@ namespace NodaTime.Fields
             // It's possible that there are better ways to do this, but this at least feels simple.
             if (value >= 0)
             {
+                ulong startTickOfDay = (ulong) localTime.TickOfDay;
                 // Check that we wouldn't wrap round *more* than once, by performing
                 // this multiplication in a checked context.
                 ulong ticks = (ulong) value * unitTicks;
@@ -62,16 +64,21 @@ namespace NodaTime.Fields
                 ulong newTicks;
                 unchecked
                 {
-                    newTicks = (ulong) localTime.TickOfDay + ticks;
+                    newTicks = startTickOfDay + ticks;
+                    // And check that we're not earlier than we should be.
+                    if (newTicks < startTickOfDay)
+                    {
+                        throw new OverflowException("Period addition overflowed.");
+                    }
+                    // If we're still in the same day, we're done.
+                    if (newTicks < (ulong) NodaConstants.TicksPerStandardDay)
+                    {
+                        return LocalTime.FromTicksSinceMidnight((long) newTicks);
+                    }
+                    // This can never actually overflow, as NodaConstants.TicksPerStandardDay is more than int.MaxValue.
+                    extraDays += (int) (newTicks / (ulong) NodaConstants.TicksPerStandardDay);
+                    return LocalTime.FromTicksSinceMidnight((long) (newTicks % (ulong) NodaConstants.TicksPerStandardDay));
                 }
-                // And check that we're not earlier than we should be.
-                if (newTicks < (ulong) localTime.TickOfDay)
-                {
-                    throw new OverflowException("Period addition overflowed.");
-                }
-                // This can never actually overflow, as NodaConstants.TicksPerStandardDay is more than int.MaxValue.
-                extraDays += (int) (newTicks / NodaConstants.TicksPerStandardDay);
-                return LocalTime.FromTicksSinceMidnight((long) (newTicks % NodaConstants.TicksPerStandardDay));
             }
             else
             {
@@ -85,22 +92,22 @@ namespace NodaTime.Fields
                 unchecked
                 {
                     newTicks = localTime.TickOfDay - (long) ticks;
-                }
-                // And check that we're not later than we should be.
-                if (newTicks > localTime.TickOfDay)
-                {
-                    throw new OverflowException("Period addition overflowed.");
-                }
-                if (newTicks < 0)
-                {
-                    long remainderTicks = NodaConstants.TicksPerStandardDay + (newTicks % NodaConstants.TicksPerStandardDay);
-                    extraDays += (int) ((newTicks + 1) / NodaConstants.TicksPerStandardDay) - 1;
-                    return LocalTime.FromTicksSinceMidnight(remainderTicks);
-                }
-                else
-                {
-                    // We know we haven't wrapped, so it's easy.
-                    return LocalTime.FromTicksSinceMidnight(newTicks);
+                    // And check that we're not later than we should be.
+                    if (newTicks > localTime.TickOfDay)
+                    {
+                        throw new OverflowException("Period addition overflowed.");
+                    }
+                    if (newTicks < 0)
+                    {
+                        long remainderTicks = NodaConstants.TicksPerStandardDay + (newTicks % NodaConstants.TicksPerStandardDay);
+                        extraDays += (int) ((newTicks + 1) / NodaConstants.TicksPerStandardDay) - 1;
+                        return LocalTime.FromTicksSinceMidnight(remainderTicks);
+                    }
+                    else
+                    {
+                        // We know we haven't wrapped, so it's easy.
+                        return LocalTime.FromTicksSinceMidnight(newTicks);
+                    }
                 }
             }
         }
