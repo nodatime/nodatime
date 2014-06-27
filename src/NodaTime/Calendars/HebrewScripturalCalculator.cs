@@ -2,6 +2,8 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
+using System;
+
 namespace NodaTime.Calendars
 {
     /// <summary>
@@ -12,7 +14,7 @@ namespace NodaTime.Calendars
     internal static class HebrewScripturalCalculator
     {
         // This is artificially small due to wanting to only need 23 bits for the
-        // "absoluate start of year" cache entry part. With a different cache mechanism
+        // "days at start of year" cache entry part. With a different cache mechanism
         // we could probably manage, but it's simplest just to use a restricted range.
         internal const int MaxYear = 20000;
         internal const int MinYear = 1;
@@ -31,9 +33,138 @@ namespace NodaTime.Calendars
             return ((year * 7) + 1) % 19 < 7;
         }
 
-        private static int MonthsInYear(int year)
+        internal static YearMonthDay GetYearMonthDay(int year, int dayOfYear)
         {
-            return IsLeapYear(year) ? 13 : 12;
+            unchecked
+            {
+                // Work out everything about the year in one go.
+                int cache = GetOrPopulateCache(year);
+                int heshvanLength = (cache & IsHeshvanLongCacheBit) != 0 ? 30 : 29;
+                int kislevLength = (cache & IsKislevShortCacheBit) != 0 ? 29 : 30;
+                bool isLeap = IsLeapYear(year);
+                int firstAdarLength = isLeap ? 30 : 29;
+
+                if (dayOfYear < 31)
+                {
+                    // Tishri
+                    return new YearMonthDay(year, 7, dayOfYear);
+                }
+                if (dayOfYear < 31 + heshvanLength)
+                {
+                    // Heshvan
+                    return new YearMonthDay(year, 8, dayOfYear - 30);
+                }
+                // Now "day of year without Heshvan"...
+                dayOfYear -= heshvanLength;
+                if (dayOfYear < 31 + kislevLength)
+                {
+                    // Kislev
+                    return new YearMonthDay(year, 9, dayOfYear - 30);
+                }
+                // Now "day of year without Heshvan or Kislev"...
+                dayOfYear -= kislevLength;
+                if (dayOfYear < 31 + 29)
+                {
+                    // Tevet
+                    return new YearMonthDay(year, 10, dayOfYear - 30);
+                }
+                if (dayOfYear < 31 + 29 + 30)
+                {
+                    // Shevat
+                    return new YearMonthDay(year, 11, dayOfYear - (30 + 29));
+                }
+                if (dayOfYear < 31 + 29 + 30 + firstAdarLength)
+                {
+                    // Adar / Adar I
+                    return new YearMonthDay(year, 12, dayOfYear - (30 + 29 + 30));
+                }
+                // Now "day of year without first month of Adar"
+                dayOfYear -= firstAdarLength;
+                if (isLeap)
+                {
+                    if (dayOfYear < 31 + 29 + 30 + 29)
+                    {
+                        return new YearMonthDay(year, 13, dayOfYear - (30 + 29 + 30));
+                    }
+                    // Now "day of year without any Adar"
+                    dayOfYear -= 29;
+                }
+                // TODO(2.0): We could definitely do a binary search from here...
+                if (dayOfYear < 31 + 29 + 30 + 30)
+                {
+                    // Nisan
+                    return new YearMonthDay(year, 1, dayOfYear - (30 + 29 + 30));
+                }
+                if (dayOfYear < 31 + 29 + 30 + 30 + 29)
+                {
+                    // Iyar
+                    return new YearMonthDay(year, 2, dayOfYear - (30 + 29 + 30 + 30));
+                }
+                if (dayOfYear < 31 + 29 + 30 + 30 + 29 + 30)
+                {
+                    // Sivan
+                    return new YearMonthDay(year, 3, dayOfYear - (30 + 29 + 30 + 30 + 29));
+                }
+                if (dayOfYear < 31 + 29 + 30 + 30 + 29 + 30 + 29)
+                {
+                    // Tamuz
+                    return new YearMonthDay(year, 4, dayOfYear - (30 + 29 + 30 + 30 + 29 + 30));
+                }
+                if (dayOfYear < 31 + 29 + 30 + 30 + 29 + 30 + 29 + 30)
+                {
+                    // Av
+                    return new YearMonthDay(year, 5, dayOfYear - (30 + 29 + 30 + 30 + 29 + 30 + 29));
+                }
+                // Elul
+                return new YearMonthDay(year, 6, dayOfYear - (30 + 29 + 30 + 30 + 29 + 30 + 29 + 30));
+            }
+        }
+
+        internal static int GetDaysFromStartOfYearToStartOfMonth(int year, int month)
+        {
+            // Work out everything about the year in one go. (Admittedly we don't always need it all... but for
+            // anything other than Tishri and Heshvan, we at least need the length of Heshvan...)
+            unchecked
+            {
+                int cache = GetOrPopulateCache(year);
+                int heshvanLength = (cache & IsHeshvanLongCacheBit) != 0 ? 30 : 29;
+                int kislevLength = (cache & IsKislevShortCacheBit) != 0 ? 29 : 30;
+                bool isLeap = IsLeapYear(year);
+                int firstAdarLength = isLeap ? 30 : 29;
+                int secondAdarLength = isLeap ? 29 : 0;
+                switch (month)
+                {
+                    // TODO(2.0): Check whether the constant addition is optimized here.
+                    case 1: // Nisan
+                        return 30 + heshvanLength + kislevLength + (29 + 30) + firstAdarLength + secondAdarLength;
+                    case 2: // Iyar
+                        return 30 + heshvanLength + kislevLength + (29 + 30) + firstAdarLength + secondAdarLength + 30;
+                    case 3: // Sivan
+                        return 30 + heshvanLength + kislevLength + (29 + 30) + firstAdarLength + secondAdarLength + (30 + 29);
+                    case 4: // Tamuz
+                        return 30 + heshvanLength + kislevLength + (29 + 30) + firstAdarLength + secondAdarLength + (30 + 29 + 30);
+                    case 5: // Av
+                        return 30 + heshvanLength + kislevLength + (29 + 30) + firstAdarLength + secondAdarLength + (30 + 29 + 30 + 29);
+                    case 6: // Elul
+                        return 30 + heshvanLength + kislevLength + (29 + 30) + firstAdarLength + secondAdarLength + (30 + 29 + 30 + 29 + 30);
+                    case 7: // Tishri
+                        return 0;
+                    case 8: // Heshvan
+                        return 30;
+                    case 9: // Kislev
+                        return 30 + heshvanLength;
+                    case 10: // Tevet
+                        return 30 + heshvanLength + kislevLength;
+                    case 11: // Shevat
+                        return 30 + heshvanLength + kislevLength + 29;
+                    case 12: // Adar / Adar I
+                        return 30 + heshvanLength + kislevLength + 29 + 30;
+                    case 13: // Adar II
+                        return 30 + heshvanLength + kislevLength + 29 + 30 + firstAdarLength;
+                    default:
+                        throw new ArgumentOutOfRangeException("month", month, "Invalid month number");
+                }
+            }
         }
 
         internal static int DaysInMonth(int year, int month)
@@ -54,6 +185,7 @@ namespace NodaTime.Calendars
                     return IsKislevShort(year) ?  29 : 30;
                 case 12:
                     return IsLeapYear(year) ? 30 : 29;
+                // 1, 3, 5, 7, 11, 13
                 default:
                     return 30;
             }
@@ -71,8 +203,11 @@ namespace NodaTime.Calendars
             return (cache & IsKislevShortCacheBit) != 0;
         }
 
-        // Computed ElapsedDays using the cache where possible.
-        private static int ElapsedDays(int year)
+        /// <summary>
+        /// Elapsed days since the Hebrew epoch at the start of the given Hebrew year.
+        /// This is *inclusive* of the first day of the year, so ElapsedDays(1) returns 1.
+        /// </summary>
+        internal static int ElapsedDays(int year)
         {
             int cache = GetOrPopulateCache(year);
             return cache & ElapsedDaysCacheMask;
@@ -98,7 +233,7 @@ namespace NodaTime.Calendars
         }
 
         /// <summary>
-        /// Returns the cached "absolute day at start of year / IsHeshvanLong / IsKislevShort" combination,
+        /// Returns the cached "elapsed day at start of year / IsHeshvanLong / IsKislevShort" combination,
         /// populating the cache if necessary. Bits 0-22 are the "elapsed days start of year"; bit 23 is
         /// "is Heshvan long"; bit 24 is "is Kislev short". If the year is out of the range for the cache,
         /// the value is populated but not cached.
@@ -153,67 +288,6 @@ namespace NodaTime.Calendars
         internal static int DaysInYear(int year)
         {
             return ElapsedDays(year + 1) - ElapsedDays(year);
-        }
-
-        /// <summary>
-        /// Returns the "absolute day number" for the given year, month and day in the Hebrew calendar.
-        /// The absolute day number of 0001-01-01 AD (Gregorian) is 1.
-        /// </summary>            
-        internal static int AbsoluteFromHebrew(int year, int month, int day)
-        {
-            // Easy bits:
-            // - Start of the year (in days since epoch)
-            // - Day of month
-            // - Constant (1AD epoch vs Hebrew epoch)
-            int days = ElapsedDays(year) + day - 1373429;
-
-            // Now work out the days leading up to this month.
-            // TODO: use the cache to compute all of this in one go.
-            if (month < 7) // If before Tishri
-            {
-                // Add days in prior months this year before and after Nisan
-                int monthsInYear = MonthsInYear(year);
-                for (int m = 7; m <= monthsInYear; m++)
-                {
-                    days += DaysInMonth(year, m);
-                }
-                for (int m = 1; m < month; m++)
-                {
-                    days += DaysInMonth(year, m);
-                }
-            }
-            else
-            {
-                for (int m = 7; m < month; m++)
-                {
-                    days += DaysInMonth(year, m);
-                }
-            }
-            return days;
-        }
-
-        /// <summary>
-        /// Converts an "absolute day number" into a year, month and day in the Hebrew calendar.
-        /// The absolute day number of 0001-01-01 AD (Gregorian) is 1.
-        /// </summary>            
-        internal static YearMonthDay HebrewFromAbsolute(int days)
-        {
-            // Initial guess (lower bound).
-            // TODO: See whether we can use a higher estimate (divide by 365.4) which should require
-            // fewer iterations.
-            int year = (days + 1373429) / 366;
-            while (days >= AbsoluteFromHebrew(year + 1, 7, 1))
-            {
-                year++;
-            }
-            // Start month search at either Tishri or Nisan
-            int month = days < AbsoluteFromHebrew(year, 1, 1) ? 7 : 1;
-            while (days > AbsoluteFromHebrew(year, month, DaysInMonth(year, month)))
-            {
-                month++;
-            }
-            int day = days - (AbsoluteFromHebrew(year, month, 1) - 1);
-            return new YearMonthDay(year, month, day);
         }
     }
 }

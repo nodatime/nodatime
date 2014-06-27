@@ -48,5 +48,13 @@ namespace NodaTime.Test.Calendars
                 }
             }
         }
+
+        [Test]
+        public void ElapsedDays()
+        {
+            Console.WriteLine(HebrewScripturalCalculator.ElapsedDays(1));
+            Console.WriteLine(HebrewScripturalCalculator.ElapsedDays(5730));
+            Console.WriteLine(HebrewScripturalCalculator.ElapsedDays(5731));
+        }
     }
 }

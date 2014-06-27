@@ -96,7 +96,7 @@ namespace NodaTime.Test.Calendars
                     {
                         DateTime bclDate = new DateTime(year, civilMonth, day, bcl);
                         LocalDate nodaDate = new LocalDate(year, scripturalMonth, day, noda);
-                        Assert.AreEqual(bclDate, nodaDate.AtMidnight().ToDateTimeUnspecified());
+                        Assert.AreEqual(bclDate, nodaDate.AtMidnight().ToDateTimeUnspecified(), "{0}-{1}-{2}", year, scripturalMonth, day);
                         Assert.AreEqual(nodaDate, LocalDateTime.FromDateTime(bclDate).WithCalendar(noda).Date);
                         Assert.AreEqual(year, nodaDate.Year);
                         Assert.AreEqual(scripturalMonth, nodaDate.Month);
@@ -180,6 +180,43 @@ namespace NodaTime.Test.Calendars
             // Would be 2, but the start time is later than the end time.
             Assert.AreEqual(1, Period.Between(start, end, PeriodUnits.Months).Months);
         }
+
+        [Test]
+        [TestCase(HebrewMonthNumbering.Civil)]
+        [TestCase(HebrewMonthNumbering.Scriptural)]
+        public void DayOfYearAndReverse(HebrewMonthNumbering numbering)
+        {
+            var calculator = new HebrewYearMonthDayCalculator(numbering);
+            for (int year = 5400; year < 5419; year++)
+            {
+                int daysInYear = calculator.GetDaysInYear(year);
+                for (int dayOfYear = 1; dayOfYear <= daysInYear; dayOfYear++)
+                {
+                    YearMonthDay ymd = calculator.GetYearMonthDay(year, dayOfYear);
+                    Assert.AreEqual(dayOfYear, calculator.GetDayOfYear(ymd));
+                }
+            }
+        }
+
+        [Test]
+        public void GetDaysSinceEpoch()
+        {
+            var calculator = new HebrewYearMonthDayCalculator(HebrewMonthNumbering.Scriptural);
+            var unixEpoch = new YearMonthDay(5730, 10, 23);
+            Assert.AreEqual(0, calculator.GetDaysSinceEpoch(unixEpoch));
+        }
+
+        [Test]
+        public void DaysAtStartOfYear()
+        {
+            // These are somewhat random values used when diagnosing an issue.
+            var calculator = new HebrewYearMonthDayCalculator(HebrewMonthNumbering.Scriptural);
+            Assert.AreEqual(-110, calculator.GetStartOfYearInDays(5730));
+            Assert.AreEqual(273, calculator.GetStartOfYearInDays(5731));
+            Assert.AreEqual(-140735, calculator.GetStartOfYearInDays(5345));
+            Assert.AreEqual(new YearMonthDay(5345, 1, 1), calculator.GetYearMonthDay(-140529));
+        }
+
 
         // Cases used for adding months and differences between months.
         // 5501 is not a leap year; 5502 is; 5503 is not; 5505 is.

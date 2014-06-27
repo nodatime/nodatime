@@ -11,9 +11,7 @@ namespace NodaTime.Calendars
     /// </summary>
     internal sealed class HebrewYearMonthDayCalculator : YearMonthDayCalculator
     {
-        private const int ScripturalYearStartMonth = 7;
-        private const int AbsoluteDayOfUnixEpoch = 719163;
-        private const int AbsoluteDayOfHebrewEpoch = -1373427;
+        private const int UnixEpochDayAtStartOfYear1 = -2092590;
         private const int MonthsPerLeapCycle = 235;
         private const int YearsPerLeapCycle = 19;
         private readonly HebrewMonthNumbering monthNumbering;
@@ -22,7 +20,7 @@ namespace NodaTime.Calendars
             : base(HebrewScripturalCalculator.MinYear,
                   HebrewScripturalCalculator.MaxYear,
                   3654, // Average length of 10 years
-                  (AbsoluteDayOfHebrewEpoch - AbsoluteDayOfUnixEpoch), // Day at year 1
+                  UnixEpochDayAtStartOfYear1,
                   new[] { Era.AnnoMundi })
         {
             this.monthNumbering = monthNumbering;
@@ -60,24 +58,21 @@ namespace NodaTime.Calendars
         protected override int GetDaysFromStartOfYearToStartOfMonth(int year, int month)
         {
             int scripturalMonth = CalendarToScripturalMonth(year, month);
-            int absoluteDayAtStartOfMonth = HebrewScripturalCalculator.AbsoluteFromHebrew(year, scripturalMonth, 1);
-            int absoluteDayAtStartOfYear = HebrewScripturalCalculator.AbsoluteFromHebrew(year, ScripturalYearStartMonth, 1);
-            return absoluteDayAtStartOfMonth - absoluteDayAtStartOfYear;
+            return HebrewScripturalCalculator.GetDaysFromStartOfYearToStartOfMonth(year, scripturalMonth);
         }
 
         protected override int CalculateStartOfYearDays(int year)
         {
             // Note that we might get called with a year of 0 here. I think that will still be okay,
             // given how HebrewScripturalCalculator works.
-            int absoluteDay = HebrewScripturalCalculator.AbsoluteFromHebrew(year, ScripturalYearStartMonth, 1);
-            return absoluteDay - AbsoluteDayOfUnixEpoch;
+            int daysSinceHebrewEpoch = HebrewScripturalCalculator.ElapsedDays(year) - 1; // ElapsedDays returns 1 for year 1.
+            return daysSinceHebrewEpoch + UnixEpochDayAtStartOfYear1;
         }
 
-        internal override YearMonthDay GetYearMonthDay(int daysSinceEpoch)
+        internal override YearMonthDay GetYearMonthDay(int year, int dayOfYear)
         {
-            int absoluteDay = daysSinceEpoch + AbsoluteDayOfUnixEpoch;
-            YearMonthDay scripturalYmd = HebrewScripturalCalculator.HebrewFromAbsolute(absoluteDay);
-            return new YearMonthDay(scripturalYmd.Year, ScripturalToCalendarMonth(scripturalYmd.Year, scripturalYmd.Month), scripturalYmd.Day);
+            YearMonthDay scriptural = HebrewScripturalCalculator.GetYearMonthDay(year, dayOfYear);
+            return monthNumbering == HebrewMonthNumbering.Scriptural ? scriptural : new YearMonthDay(year, HebrewMonthConverter.ScripturalToCivil(year, scriptural.Month), scriptural.Day);
         }
 
         internal override int GetDaysInYear(int year)

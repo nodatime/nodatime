@@ -76,7 +76,21 @@ namespace NodaTime.Calendars
         internal abstract int GetDaysInMonth(int year, int month);
         internal abstract bool IsLeapYear(int year);
         internal abstract YearMonthDay AddMonths(YearMonthDay yearMonthDay, int months);
-        internal abstract YearMonthDay GetYearMonthDay(int daysSinceEpoch);
+
+        internal abstract YearMonthDay GetYearMonthDay(int year, int dayOfYear);
+
+        /// <summary>
+        /// Works out the year/month/day of a given days-since-epoch by first computing the year and day of year,
+        /// then getting the month and day from those two. This is how almost all calendars are naturally implemented
+        /// anyway.
+        /// </summary>
+        internal YearMonthDay GetYearMonthDay(int daysSinceEpoch)
+        {
+            int zeroBasedDay;
+            int year = GetYear(daysSinceEpoch, out zeroBasedDay);
+            return GetYearMonthDay(year, zeroBasedDay + 1);
+        }
+
         /// <summary>
         /// Subtract subtrahendDate from minuendDate, in terms of months.
         /// </summary>
@@ -99,7 +113,7 @@ namespace NodaTime.Calendars
 
         /// <summary>
         /// Computes the days since the Unix epoch at the start of the given year/month/day.
-        /// This is the opposite of <see cref="GetYearMonthDay"/>.
+        /// This is the opposite of <see cref="GetYearMonthDay(int)"/>.
         /// This assumes the parameter have been validated previously.
         /// </summary>
         internal virtual int GetDaysSinceEpoch(YearMonthDay yearMonthDay)

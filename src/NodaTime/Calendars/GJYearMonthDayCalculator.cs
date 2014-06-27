@@ -35,11 +35,11 @@ namespace NodaTime.Calendars
         {
         }
 
-        internal override YearMonthDay GetYearMonthDay(int daysSinceEpoch)
+        internal override YearMonthDay GetYearMonthDay(int year, int dayOfYear)
         {
-            // 0-based day-of-year
-            int d;
-            int year = GetYear(daysSinceEpoch, out d);
+            // 0-based day-of-year.
+            // TODO(2.0): Rewrite the binary tree below to use dayOfYear instead.
+            int d = dayOfYear - 1;
             bool isLeap = IsLeapYear(year);
 
             int month;
@@ -63,7 +63,7 @@ namespace NodaTime.Calendars
                                      : ((d < 304) ? 10 : (d < 334) ? 11 : 12)));
                 totals = MinTotalDaysByMonth;
             }
-            int dayOfMonth = d - totals[month - 1] + 1;
+            int dayOfMonth = dayOfYear - totals[month - 1];
             return new YearMonthDay(year, month, dayOfMonth);
         }
 
