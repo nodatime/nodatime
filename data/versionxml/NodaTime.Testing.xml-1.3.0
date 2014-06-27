@@ -1,0 +1,409 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<doc>
+  <assembly>
+    <name>NodaTime.Testing</name>
+  </assembly>
+  <members>
+    <member name="T:NodaTime.Testing.FakeClock">
+      <summary>
+            Clock which can be constructed with an initial instant, and then advanced programmatically (and optionally,
+            automatically advanced on each read).
+            This class is designed to be used when testing classes which take an <see cref="T:NodaTime.IClock" /> as a dependency.
+            </summary>
+    </member>
+    <member name="M:NodaTime.Testing.FakeClock.#ctor(NodaTime.Instant)">
+      <summary>
+            Creates a fake clock initially set to the given instant, with no auto-advance.
+            </summary>
+      <param name="initial">The initial instant.</param>
+    </member>
+    <member name="M:NodaTime.Testing.FakeClock.#ctor(NodaTime.Instant,NodaTime.Duration)">
+      <summary>
+            Creates a fake clock initially set to the given instant. The clock will advance by the given duration on
+            each read.
+            </summary>
+      <param name="initial">The initial instant.</param>
+      <param name="autoAdvance">The duration to advance the clock on each read.</param>
+    </member>
+    <member name="M:NodaTime.Testing.FakeClock.Advance(NodaTime.Duration)">
+      <summary>
+            Advances the clock by the given duration.
+            </summary>
+      <param name="duration">The duration to advance the clock by (or if negative, the duration to move it back
+            by).</param>
+    </member>
+    <member name="M:NodaTime.Testing.FakeClock.AdvanceDays(System.Int64)">
+      <summary>
+            Advances the clock by the given number of standard (24-hour) days.
+            </summary>
+      <param name="days">The number of days to advance the clock by (or if negative, the number to move it
+            back by).</param>
+    </member>
+    <member name="M:NodaTime.Testing.FakeClock.AdvanceHours(System.Int64)">
+      <summary>
+            Advances the clock by the given number of hours.
+            </summary>
+      <param name="hours">The number of hours to advance the clock by (or if negative, the number to move it
+            back by).</param>
+    </member>
+    <member name="M:NodaTime.Testing.FakeClock.AdvanceMilliseconds(System.Int64)">
+      <summary>
+            Advances the clock by the given number of milliseconds.
+            </summary>
+      <param name="milliseconds">The number of milliseconds to advance the clock by (or if negative, the number
+            to move it back by).</param>
+    </member>
+    <member name="M:NodaTime.Testing.FakeClock.AdvanceMinutes(System.Int64)">
+      <summary>
+            Advances the clock by the given number of minutes.
+            </summary>
+      <param name="minutes">The number of minutes to advance the clock by (or if negative, the number to move it
+            back by).</param>
+    </member>
+    <member name="M:NodaTime.Testing.FakeClock.AdvanceSeconds(System.Int64)">
+      <summary>
+            Advances the clock by the given number of seconds.
+            </summary>
+      <param name="seconds">The number of seconds to advance the clock by (or if negative, the number to move it
+            back by).</param>
+    </member>
+    <member name="M:NodaTime.Testing.FakeClock.AdvanceTicks(System.Int64)">
+      <summary>
+            Advances the clock by the given number of ticks.
+            </summary>
+      <param name="ticks">The number of ticks to advance the clock by (or if negative, the number to move it back
+            by).</param>
+    </member>
+    <member name="P:NodaTime.Testing.FakeClock.AutoAdvance">
+      <summary>
+            Amount of time to advance the clock by on each call to read the current time.
+            </summary>
+    </member>
+    <member name="M:NodaTime.Testing.FakeClock.FromUtc(System.Int32,System.Int32,System.Int32)">
+      <summary>
+            Returns a fake clock initially set to midnight of the given year/month/day in UTC in the ISO calendar.
+            The value of the <see cref="P:NodaTime.Testing.FakeClock.AutoAdvance" /> property will be initialised to zero.
+            </summary>
+      <param name="year">The year. This is the "absolute year",
+            so a value of 0 means 1 BC, for example.</param>
+      <param name="monthOfYear">The month of year.</param>
+      <param name="dayOfMonth">The day of month.</param>
+      <returns>A <see cref="T:NodaTime.Testing.FakeClock" /> initialised to the given instant, with no auto-advance.</returns>
+    </member>
+    <member name="M:NodaTime.Testing.FakeClock.FromUtc(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32)">
+      <summary>
+            Returns a fake clock initially set to the given year/month/day/time in UTC in the ISO calendar.
+            The value of the <see cref="P:NodaTime.Testing.FakeClock.AutoAdvance" /> property will be initialised to zero.
+            </summary>
+      <param name="year">The year. This is the "absolute year",
+            so a value of 0 means 1 BC, for example.</param>
+      <param name="monthOfYear">The month of year.</param>
+      <param name="dayOfMonth">The day of month.</param>
+      <param name="hourOfDay">The hour.</param>
+      <param name="minuteOfHour">The minute.</param>
+      <param name="secondOfMinute">The second.</param>
+      <returns>A <see cref="T:NodaTime.Testing.FakeClock" /> initialised to the given instant, with no auto-advance.</returns>
+    </member>
+    <member name="P:NodaTime.Testing.FakeClock.Now">
+      <summary>
+            Returns the "current time" for this clock. Unlike a normal clock, this
+            property may return the same value from repeated calls until one of the methods
+            to change the time is called.
+            </summary>
+    </member>
+    <member name="M:NodaTime.Testing.FakeClock.Reset(NodaTime.Instant)">
+      <summary>
+            Resets the clock to the given instant.
+            The value of the <see cref="P:NodaTime.Testing.FakeClock.AutoAdvance" /> property will be unchanged.
+            </summary>
+      <param name="instant">The instant to set the clock to.</param>
+    </member>
+    <member name="T:NodaTime.Testing.TimeZones.FakeDateTimeZoneSource">
+      <summary>
+            A time zone source for test purposes.
+            Create instances via <see cref="T:NodaTime.Testing.TimeZones.FakeDateTimeZoneSource.Builder" />.
+            </summary>
+    </member>
+    <member name="M:NodaTime.Testing.TimeZones.FakeDateTimeZoneSource.ForId(System.String)">
+      <summary>
+            Returns the time zone definition associated with the given ID.
+            </summary>
+      <param name="id">The ID of the time zone to return. This must be one of the IDs
+            returned by <see cref="M:NodaTime.TimeZones.IDateTimeZoneSource.GetIds" />.</param>
+      <returns>The <see cref="T:NodaTime.DateTimeZone" /> for the given ID.</returns>
+      <exception cref="T:System.ArgumentException">
+        <paramref name="id" /> is not supported by this source.</exception>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="id" /> is null.</exception>
+    </member>
+    <member name="M:NodaTime.Testing.TimeZones.FakeDateTimeZoneSource.GetIds">
+      <summary>
+            Returns an unordered enumeration of the IDs available from this source.
+            </summary>
+      <returns>The IDs available from this source.</returns>
+    </member>
+    <member name="M:NodaTime.Testing.TimeZones.FakeDateTimeZoneSource.MapTimeZoneId(System.TimeZoneInfo)">
+      <summary>
+            Returns this source's corresponding ID for the given BCL time zone.
+            </summary>
+      <param name="timeZone">The BCL time zone, which must be a known system time zone.</param>
+      <returns>
+            The ID for the given system time zone for this source, or null if the system time
+            zone has no mapping in this source.
+            </returns>
+    </member>
+    <member name="M:NodaTime.Testing.TimeZones.FakeDateTimeZoneSource.ToProvider">
+      <summary>
+            Creates a time zone provider (<see cref="T:NodaTime.TimeZones.DateTimeZoneCache" />) from this source.
+            </summary>
+      <returns>A provider backed by this source.</returns>
+    </member>
+    <member name="P:NodaTime.Testing.TimeZones.FakeDateTimeZoneSource.VersionId">
+      <summary>
+            Returns an appropriate version ID for diagnostic purposes, which must not be null.
+            This doesn't have any specific format; it's solely for diagnostic purposes.
+            The included sources return strings of the format "source identifier: source version" indicating where the
+            information comes from and which version of the source information has been loaded.
+            </summary>
+    </member>
+    <member name="T:NodaTime.Testing.TimeZones.FakeDateTimeZoneSource.Builder">
+      <summary>
+            Builder for <see cref="T:NodaTime.Testing.TimeZones.FakeDateTimeZoneSource" />, allowing the built object to
+            be immutable, but constructed via object/collection initializers.
+            </summary>
+    </member>
+    <member name="M:NodaTime.Testing.TimeZones.FakeDateTimeZoneSource.Builder.#ctor">
+      <summary>
+            Creates a new builder.
+            </summary>
+    </member>
+    <member name="M:NodaTime.Testing.TimeZones.FakeDateTimeZoneSource.Builder.Add(NodaTime.DateTimeZone)">
+      <summary>
+            Adds a time zone to the builder.
+            </summary>
+      <param name="zone">The zone to add.</param>
+    </member>
+    <member name="P:NodaTime.Testing.TimeZones.FakeDateTimeZoneSource.Builder.BclIdsToZoneIds">
+      <summary>
+            The dictionary mapping BCL <see cref="T:System.TimeZoneInfo" /> IDs to the canonical IDs
+            served within the provider being built.
+            </summary>
+    </member>
+    <member name="M:NodaTime.Testing.TimeZones.FakeDateTimeZoneSource.Builder.Build">
+      <summary>
+            Builds a time zone source from this builder. The returned
+            builder will be independent of this builder; further changes
+            to this builder will not be reflected in the returned source.
+            </summary>
+      <returns>The newly-built time zone source.</returns>
+    </member>
+    <member name="M:NodaTime.Testing.TimeZones.FakeDateTimeZoneSource.Builder.GetEnumerator">
+      <summary>
+            Returns the zones within the builder. This mostly exists
+            to enable collection initializers.
+            </summary>
+      <returns>An iterator over the zones in this builder.</returns>
+    </member>
+    <member name="P:NodaTime.Testing.TimeZones.FakeDateTimeZoneSource.Builder.VersionId">
+      <summary>
+            The version ID to advertise; defaults to "TestZones".
+            </summary>
+    </member>
+    <member name="P:NodaTime.Testing.TimeZones.FakeDateTimeZoneSource.Builder.Zones">
+      <summary>
+            List of zones, exposed as a property for use when a test needs to set properties as
+            well as adding zones.
+            </summary>
+    </member>
+    <member name="T:NodaTime.Testing.TimeZones.MultiTransitionDateTimeZone">
+      <summary>
+            Time zone with multiple transitions, created via a builder.
+            </summary>
+    </member>
+    <member name="M:NodaTime.Testing.TimeZones.MultiTransitionDateTimeZone.EqualsImpl(NodaTime.DateTimeZone)">
+      <summary>
+            Implements equality in derived classes.
+            </summary>
+      <param name="zone">The zone to compare with this one. This is guaranteed (when called by <see cref="M:NodaTime.DateTimeZone.Equals(NodaTime.DateTimeZone)" />) to
+            be a non-null reference of the same type as this instance.</param>
+      <returns>
+        <c>true</c> if the specified <see cref="T:NodaTime.DateTimeZone" /> is equal to this instance;
+            otherwise, <c>false</c>.
+            </returns>
+    </member>
+    <member name="M:NodaTime.Testing.TimeZones.MultiTransitionDateTimeZone.GetHashCode">
+      <summary>
+            Returns a hash code for this instance.
+            </summary>
+      <returns>
+            A hash code for this instance, suitable for use in hashing algorithms and data
+            structures like a hash table. 
+            </returns>
+    </member>
+    <member name="M:NodaTime.Testing.TimeZones.MultiTransitionDateTimeZone.GetZoneInterval(NodaTime.Instant)">
+      <summary>
+            Gets the zone interval for the given instant; the range of time around the instant in which the same Offset
+            applies (with the same split between standard time and daylight saving time, and with the same offset).
+            </summary>
+      <param name="instant">The <see cref="T:NodaTime.Instant" /> to query.</param>
+      <returns>The defined <see cref="T:NodaTime.TimeZones.ZoneInterval" />.</returns>
+    </member>
+    <member name="P:NodaTime.Testing.TimeZones.MultiTransitionDateTimeZone.Intervals">
+      <summary>
+            Zone intervals within this time zone, in chronological order, spanning the whole time line.
+            </summary>
+    </member>
+    <member name="P:NodaTime.Testing.TimeZones.MultiTransitionDateTimeZone.Transitions">
+      <summary>
+            Transition points between intervals.
+            </summary>
+    </member>
+    <member name="T:NodaTime.Testing.TimeZones.MultiTransitionDateTimeZone.Builder">
+      <summary>
+            Builder to create instances of <see cref="T:NodaTime.Testing.TimeZones.MultiTransitionDateTimeZone" />. Each builder
+            can only be built once.
+            </summary>
+    </member>
+    <member name="M:NodaTime.Testing.TimeZones.MultiTransitionDateTimeZone.Builder.#ctor">
+      <summary>
+            Constructs a builder using an ID of "MultiZone", an initial offset of zero (standard and savings),
+            and an initial name of "First".
+            </summary>
+    </member>
+    <member name="M:NodaTime.Testing.TimeZones.MultiTransitionDateTimeZone.Builder.#ctor(System.Int32,System.Int32)">
+      <summary>
+            Constructs a builder using the given standard offset and saving offset. The ID is initially "MultiZone".
+            </summary>
+      <param name="firstStandardOffsetHours">Standard offset in hours in the first zone interval.</param>
+      <param name="firstSavingOffsetHours">Standard offset in hours in the first zone interval.</param>
+    </member>
+    <member name="M:NodaTime.Testing.TimeZones.MultiTransitionDateTimeZone.Builder.#ctor(System.Int32,System.Int32,System.String)">
+      <summary>
+            Constructs a builder using the given first name, standard offset, and daylight saving offset.
+            The ID is initially "MultiZone".
+            </summary>
+      <param name="firstStandardOffsetHours">Standard offset in hours in the first zone interval.</param>
+      <param name="firstSavingOffsetHours">Daylight saving offset in hours in the first zone interval.</param>
+      <param name="firstName">Name of the first zone interval.</param>
+    </member>
+    <member name="M:NodaTime.Testing.TimeZones.MultiTransitionDateTimeZone.Builder.#ctor(System.Int32,System.String)">
+      <summary>
+            Constructs a builder using the given first name, standard offset, and a daylight saving
+            offset of 0. The ID is initially "MultiZone".
+            </summary>
+      <param name="firstName">Name of the first zone interval.</param>
+      <param name="firstOffsetHours">Standard offset in hours in the first zone interval.</param>
+    </member>
+    <member name="M:NodaTime.Testing.TimeZones.MultiTransitionDateTimeZone.Builder.Add(NodaTime.Instant,System.Int32)">
+      <summary>
+            Adds a transition at the given instant, to the specified new standard offset,
+            with no daylight saving. The name is generated from the transition.
+            </summary>
+      <param name="transition">Instant at which the zone changes.</param>
+      <param name="newStandardOffsetHours">The new standard offset, in hours.</param>
+    </member>
+    <member name="M:NodaTime.Testing.TimeZones.MultiTransitionDateTimeZone.Builder.Add(NodaTime.Instant,System.Int32,System.Int32)">
+      <summary>
+            Adds a transition at the given instant, to the specified new standard offset,
+            with the new specified daylight saving. The name is generated from the transition.
+            </summary>
+      <param name="transition">Instant at which the zone changes.</param>
+      <param name="newStandardOffsetHours">The new standard offset, in hours.</param>
+      <param name="newSavingOffsetHours">The new daylight saving offset, in hours.</param>
+    </member>
+    <member name="M:NodaTime.Testing.TimeZones.MultiTransitionDateTimeZone.Builder.Add(NodaTime.Instant,System.Int32,System.Int32,System.String)">
+      <summary>
+            Adds a transition at the given instant, to the specified new standard offset,
+            with the new specified daylight saving. The name is generated from the transition.
+            </summary>
+      <param name="transition">Instant at which the zone changes.</param>
+      <param name="newStandardOffsetHours">The new standard offset, in hours.</param>
+      <param name="newSavingOffsetHours">The new daylight saving offset, in hours.</param>
+      <param name="newName">The new zone interval name.</param>
+    </member>
+    <member name="M:NodaTime.Testing.TimeZones.MultiTransitionDateTimeZone.Builder.Build">
+      <summary>
+            Builds a <see cref="T:NodaTime.Testing.TimeZones.MultiTransitionDateTimeZone" /> from this builder, invalidating it in the process.
+            </summary>
+      <returns>The newly-built zone.</returns>
+    </member>
+    <member name="P:NodaTime.Testing.TimeZones.MultiTransitionDateTimeZone.Builder.Id">
+      <summary>
+            ID of the time zone which will be built.
+            </summary>
+    </member>
+    <member name="T:NodaTime.Testing.TimeZones.SingleTransitionDateTimeZone">
+      <summary>
+            Time zone with a single transition between two offsets. This provides a simple way to test behaviour across a transition.
+            </summary>
+    </member>
+    <member name="M:NodaTime.Testing.TimeZones.SingleTransitionDateTimeZone.#ctor(NodaTime.Instant,NodaTime.Offset,NodaTime.Offset)">
+      <summary>
+            Creates a zone with a single transition between two offsets.
+            </summary>
+      <param name="transitionPoint">The transition point as an <see cref="T:NodaTime.Instant" />.</param>
+      <param name="offsetBefore">The offset of local time from UTC before the transition.</param>
+      <param name="offsetAfter">The offset of local time from UTC before the transition.</param>
+    </member>
+    <member name="M:NodaTime.Testing.TimeZones.SingleTransitionDateTimeZone.#ctor(NodaTime.Instant,NodaTime.Offset,NodaTime.Offset,System.String)">
+      <summary>
+            Creates a zone with a single transition between two offsets.
+            </summary>
+      <param name="transitionPoint">The transition point as an <see cref="T:NodaTime.Instant" />.</param>
+      <param name="offsetBefore">The offset of local time from UTC before the transition.</param>
+      <param name="offsetAfter">The offset of local time from UTC before the transition.</param>
+      <param name="id">ID for the newly created time zone.</param>
+    </member>
+    <member name="M:NodaTime.Testing.TimeZones.SingleTransitionDateTimeZone.#ctor(NodaTime.Instant,System.Int32,System.Int32)">
+      <summary>
+            Creates a zone with a single transition between two offsets.
+            </summary>
+      <param name="transitionPoint">The transition point as an <see cref="T:NodaTime.Instant" />.</param>
+      <param name="offsetBeforeHours">The offset of local time from UTC, in hours, before the transition.</param>
+      <param name="offsetAfterHours">The offset of local time from UTC, in hours, before the transition.</param>
+    </member>
+    <member name="P:NodaTime.Testing.TimeZones.SingleTransitionDateTimeZone.EarlyInterval">
+      <summary>
+            The <see cref="T:NodaTime.TimeZones.ZoneInterval" /> for the period before the transition, starting at the beginning of time.
+            </summary>
+    </member>
+    <member name="M:NodaTime.Testing.TimeZones.SingleTransitionDateTimeZone.EqualsImpl(NodaTime.DateTimeZone)">
+      <summary>
+            Implements equality in derived classes.
+            </summary>
+      <param name="zone">The zone to compare with this one. This is guaranteed (when called by <see cref="M:NodaTime.DateTimeZone.Equals(NodaTime.DateTimeZone)" />) to
+            be a non-null reference of the same type as this instance.</param>
+      <returns>
+        <c>true</c> if the specified <see cref="T:NodaTime.DateTimeZone" /> is equal to this instance;
+            otherwise, <c>false</c>.
+            </returns>
+    </member>
+    <member name="M:NodaTime.Testing.TimeZones.SingleTransitionDateTimeZone.GetHashCode">
+      <summary>
+            Returns a hash code for this instance.
+            </summary>
+      <returns>
+            A hash code for this instance, suitable for use in hashing algorithms and data
+            structures like a hash table. 
+            </returns>
+    </member>
+    <member name="M:NodaTime.Testing.TimeZones.SingleTransitionDateTimeZone.GetZoneInterval(NodaTime.Instant)">
+      <summary>
+            Gets the zone interval for the given instant; the range of time around the instant in which the same Offset
+            applies (with the same split between standard time and daylight saving time, and with the same offset).
+            </summary>
+      <param name="instant">The <see cref="T:NodaTime.Instant" /> to query.</param>
+      <returns>The defined <see cref="T:NodaTime.TimeZones.ZoneInterval" />.</returns>
+    </member>
+    <member name="P:NodaTime.Testing.TimeZones.SingleTransitionDateTimeZone.LateInterval">
+      <summary>
+            The <see cref="T:NodaTime.TimeZones.ZoneInterval" /> for the period after the transition, ending at the end of time.
+            </summary>
+    </member>
+    <member name="P:NodaTime.Testing.TimeZones.SingleTransitionDateTimeZone.Transition">
+      <summary>
+            The transition instant of the zone.
+            </summary>
+    </member>
+  </members>
+</doc>
