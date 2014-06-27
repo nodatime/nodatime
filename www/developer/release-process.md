@@ -177,8 +177,8 @@ Upload the three NuGet packages to nuget.org:
 
 ## Updating the generated API documentation
 
-Copy the generated API documentation from `docs/api` to the nodatime.org git
-repository (in `/$BRANCH/api/`) to update the version shown on the web site.
+Copy the generated API documentation from `docs/api` to the `StableWebDocs`
+directory on Bagpuss (in `/$BRANCH/api/`) to update the web site.
 
 ## Announcing the release
 
