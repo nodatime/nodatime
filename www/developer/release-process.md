@@ -133,7 +133,7 @@ to match the changes applied to the release branch, then (if this release
 changes the latest stable release), update the date and version number of the
 latest stable version in `www/_config.yml`, and (if that new stable release is
 not a patch release), also update the `/api` and `/userguide` redirects in
-`www/web.config`.
+`src/NodaTime.Web/web.config`.
 
 Push these changes to Google Code.
 
