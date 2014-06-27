@@ -24,7 +24,7 @@ See the [Noda Time 1.x to 2.0 migration guide](migration-to-2.html) for full det
   instead of the Unix epoch.
 - `CalendarSystem.GetMaxMonth` has been renamed to `GetMonthsInYear`.
 
-## 1.3.0-beta1, released 2014-06-19 with tzdb 2014e
+## 1.3.0, released 2014-06-27 with tzdb 2014e
 
 Major features:
 
@@ -89,8 +89,13 @@ Other:
 - API documentation now indicates which versions of Noda Time support the given
   member ([issue 261][])
 - Annotations added to support [ReSharper](http://jetbrains.com/resharper) users,
-  by indicating pure members, parameters which must be non-null etc ([issue
-  207][])
+  by indicating pure members, parameters which must be non-null etc
+  ([issue 207][])
+
+## 1.3.0-beta1, released 2014-06-19 with tzdb 2014e
+
+Essentially identical to 1.3.0.  The only change was the removal of some older
+TZDB versions from the source distribution.
 
 ## 1.2.0, released 2013-11-16 with tzdb 2013h
 
