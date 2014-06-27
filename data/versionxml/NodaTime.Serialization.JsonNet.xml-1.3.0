@@ -1,0 +1,228 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<doc>
+  <assembly>
+    <name>NodaTime.Serialization.JsonNet</name>
+  </assembly>
+  <members>
+    <member name="T:NodaTime.Serialization.JsonNet.Extensions">
+      <summary>
+            Static class containing extension methods to configure Json.NET for Noda Time types.
+            </summary>
+    </member>
+    <member name="M:NodaTime.Serialization.JsonNet.Extensions.ConfigureForNodaTime(Newtonsoft.Json.JsonSerializer,NodaTime.IDateTimeZoneProvider)">
+      <summary>
+            Configures Json.NET with everything required to properly serialize and deserialize NodaTime data types.
+            </summary>
+      <param name="serializer">The existing serializer to add Noda Time converters to.</param>
+      <param name="provider">The time zone provider to use when parsing time zones and zoned date/times.</param>
+      <returns>The original <paramref name="serializer" /> value, for further chaining.</returns>
+    </member>
+    <member name="M:NodaTime.Serialization.JsonNet.Extensions.ConfigureForNodaTime(Newtonsoft.Json.JsonSerializerSettings,NodaTime.IDateTimeZoneProvider)">
+      <summary>
+            Configures Json.NET with everything required to properly serialize and deserialize NodaTime data types.
+            </summary>
+      <param name="settings">The existing settings to add Noda Time converters to.</param>
+      <param name="provider">The time zone provider to use when parsing time zones and zoned date/times.</param>
+      <returns>The original <paramref name="settings" /> value, for further chaining.</returns>
+    </member>
+    <member name="M:NodaTime.Serialization.JsonNet.Extensions.WithIsoIntervalConverter(Newtonsoft.Json.JsonSerializer)">
+      <summary>
+            Configures the given serializer to use <see cref="F:NodaTime.Serialization.JsonNet.NodaConverters.IsoIntervalConverter" />.
+            Any other converters which can convert <see cref="T:NodaTime.Interval" /> are removed from the serializer.
+            </summary>
+      <param name="serializer">The existing serializer to add Noda Time converters to.</param>
+      <returns>The original <paramref name="serializer" /> value, for further chaining.</returns>
+    </member>
+    <member name="M:NodaTime.Serialization.JsonNet.Extensions.WithIsoIntervalConverter(Newtonsoft.Json.JsonSerializerSettings)">
+      <summary>
+            Configures the given serializer settings to use <see cref="F:NodaTime.Serialization.JsonNet.NodaConverters.IsoIntervalConverter" />.
+            Any other converters which can convert <see cref="T:NodaTime.Interval" /> are removed from the serializer.
+            </summary>
+      <param name="settings">The existing serializer settings to add Noda Time converters to.</param>
+      <returns>The original <paramref name="settings" /> value, for further chaining.</returns>
+    </member>
+    <member name="T:NodaTime.Serialization.JsonNet.NodaConverterBase`1">
+      <summary>
+            Base class for all the Json.NET converters which handle value types (which is most of them).
+            This deals handles all the boilerplate code dealing with nullity.
+            </summary>
+      <typeparam name="T">The type to convert to/from JSON.</typeparam>
+    </member>
+    <member name="M:NodaTime.Serialization.JsonNet.NodaConverterBase`1.#ctor">
+      <summary>
+        <markup>
+          <include item="SMCAutoDocConstructor">
+            <parameter>NodaTime.Serialization.JsonNet.NodaConverterBase`1</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="M:NodaTime.Serialization.JsonNet.NodaConverterBase`1.CanConvert(System.Type)">
+      <summary>
+            Returns whether or not this converter supports the given type.
+            </summary>
+      <param name="objectType">The type to check for compatibility.</param>
+      <returns>True if the given type is supported by this converter (including the nullable form for
+            value types); false otherwise.</returns>
+    </member>
+    <member name="M:NodaTime.Serialization.JsonNet.NodaConverterBase`1.ReadJson(Newtonsoft.Json.JsonReader,System.Type,System.Object,Newtonsoft.Json.JsonSerializer)">
+      <summary>
+            Converts the JSON stored in a reader into the relevant Noda Time type.
+            </summary>
+      <param name="reader">The Json.NET reader to read data from.</param>
+      <param name="objectType">The type to convert the JSON to.</param>
+      <param name="existingValue">An existing value; ignored by this converter.</param>
+      <param name="serializer">A serializer to use for any embedded deserialization.</param>
+      <returns>The deserialized value.</returns>
+      <exception cref="T:NodaTime.Utility.InvalidNodaDataException">The JSON was invalid for this converter.</exception>
+    </member>
+    <member name="M:NodaTime.Serialization.JsonNet.NodaConverterBase`1.ReadJsonImpl(Newtonsoft.Json.JsonReader,Newtonsoft.Json.JsonSerializer)">
+      <summary>
+            Implemented by concrete subclasses, this performs the final conversion from a non-null JSON value to
+            a value of type T.
+            </summary>
+      <param name="reader">The JSON reader to pull data from</param>
+      <param name="serializer">The serializer to use for nested serialization</param>
+      <returns>The deserialized value of type T.</returns>
+    </member>
+    <member name="M:NodaTime.Serialization.JsonNet.NodaConverterBase`1.WriteJson(Newtonsoft.Json.JsonWriter,System.Object,Newtonsoft.Json.JsonSerializer)">
+      <summary>
+            Writes the given value to a Json.NET writer.
+            </summary>
+      <param name="writer">The writer to write the JSON to.</param>
+      <param name="value">The value to write.</param>
+      <param name="serializer">The serializer to use for any embedded serialization.</param>
+    </member>
+    <member name="M:NodaTime.Serialization.JsonNet.NodaConverterBase`1.WriteJsonImpl(Newtonsoft.Json.JsonWriter,`0,Newtonsoft.Json.JsonSerializer)">
+      <summary>
+            Implemented by concrete subclasses, this performs the final write operation for a non-null value of type T
+            to JSON.
+            </summary>
+      <param name="writer">The writer to write JSON data to</param>
+      <param name="value">The value to serializer</param>
+      <param name="serializer">The serializer to use for nested serialization</param>
+    </member>
+    <member name="T:NodaTime.Serialization.JsonNet.NodaConverters">
+      <summary>
+            Convenience class to expose preconfigured converters for Noda Time types, and factory methods
+            for creating those which require parameters.
+            </summary>
+    </member>
+    <member name="M:NodaTime.Serialization.JsonNet.NodaConverters.CreateDateTimeZoneConverter(NodaTime.IDateTimeZoneProvider)">
+      <summary>
+            Creates a converter for time zones, using the given provider.
+            </summary>
+      <param name="provider">The time zone provider to use when parsing.</param>
+      <returns>A converter to handle <see cref="T:NodaTime.DateTimeZone" />.</returns>
+    </member>
+    <member name="M:NodaTime.Serialization.JsonNet.NodaConverters.CreateZonedDateTimeConverter(NodaTime.IDateTimeZoneProvider)">
+      <summary>
+            Creates a converter for zoned date/times, using the given time zone provider.
+            </summary>
+      <param name="provider">The time zone provider to use when parsing.</param>
+      <returns>A converter to handle <see cref="T:NodaTime.ZonedDateTime" />.</returns>
+    </member>
+    <member name="F:NodaTime.Serialization.JsonNet.NodaConverters.DurationConverter">
+      <summary>
+            Converter for durations.
+            </summary>
+    </member>
+    <member name="F:NodaTime.Serialization.JsonNet.NodaConverters.InstantConverter">
+      <summary>
+            Converter for instants, using the ISO-8601 date/time pattern, extended as required to accommodate milliseconds and ticks, and
+            specifying 'Z' at the end to show it's effectively in UTC.
+            </summary>
+    </member>
+    <member name="F:NodaTime.Serialization.JsonNet.NodaConverters.IntervalConverter">
+      <summary>
+            Converter for intervals. This must be used in a serializer which also has an instant converter.
+            </summary>
+    </member>
+    <member name="F:NodaTime.Serialization.JsonNet.NodaConverters.IsoIntervalConverter">
+      <summary>
+            Converter for intervals using extended ISO-8601 format, as output by <see cref="M:NodaTime.Interval.ToString" />.
+            </summary>
+    </member>
+    <member name="F:NodaTime.Serialization.JsonNet.NodaConverters.LocalDateConverter">
+      <summary>
+            Converter for local dates, using the ISO-8601 date pattern.
+            </summary>
+    </member>
+    <member name="F:NodaTime.Serialization.JsonNet.NodaConverters.LocalDateTimeConverter">
+      <summary>
+            Converter for local dates and times, using the ISO-8601 date/time pattern, extended as required to accommodate milliseconds and ticks.
+            No time zone designator is applied.
+            </summary>
+    </member>
+    <member name="F:NodaTime.Serialization.JsonNet.NodaConverters.LocalTimeConverter">
+      <summary>
+            Converter for local times, using the ISO-8601 time pattern, extended as required to accommodate milliseconds and ticks.
+            </summary>
+    </member>
+    <member name="F:NodaTime.Serialization.JsonNet.NodaConverters.NormalizingIsoPeriodConverter">
+      <summary>
+            Normalizing ISO converter for periods. Use this when you want compatibility with systems expecting
+            ISO durations (~= Noda Time periods). However, note that Noda Time can have negative periods. Note that
+            this converter losees information - after serialization and deserialization, "90 minutes" will become "an hour and 30 minutes".
+            </summary>
+    </member>
+    <member name="F:NodaTime.Serialization.JsonNet.NodaConverters.OffsetConverter">
+      <summary>
+            Converter for offsets.
+            </summary>
+    </member>
+    <member name="F:NodaTime.Serialization.JsonNet.NodaConverters.OffsetDateTimeConverter">
+      <summary>
+            Converter for offset date/times.
+            </summary>
+    </member>
+    <member name="F:NodaTime.Serialization.JsonNet.NodaConverters.RoundtripPeriodConverter">
+      <summary>
+            Round-tripping converter for periods. Use this when you really want to preserve information,
+            and don't need interoperability with systems expecting ISO.
+            </summary>
+    </member>
+    <member name="T:NodaTime.Serialization.JsonNet.NodaPatternConverter`1">
+      <summary>
+            A JSON converter for types which can be represented by a single string value, parsed or formatted
+            from an <see cref="T:NodaTime.Text.IPattern`1" />.
+            </summary>
+      <typeparam name="T">The type to convert to/from JSON.</typeparam>
+    </member>
+    <member name="M:NodaTime.Serialization.JsonNet.NodaPatternConverter`1.#ctor(NodaTime.Text.IPattern{`0})">
+      <summary>
+            Creates a new instance with a pattern and no validator.
+            </summary>
+      <param name="pattern">The pattern to use for parsing and formatting.</param>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="pattern" /> is null.</exception>
+    </member>
+    <member name="M:NodaTime.Serialization.JsonNet.NodaPatternConverter`1.#ctor(NodaTime.Text.IPattern{`0},System.Action{`0})">
+      <summary>
+            Creates a new instance with a pattern and an optional validator. The validator will be called before each
+            value is written, and may throw an exception to indicate that the value cannot be serialized.
+            </summary>
+      <param name="pattern">The pattern to use for parsing and formatting.</param>
+      <param name="validator">The validator to call before writing values. May be null, indicating that no validation is required.</param>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="pattern" /> is null.</exception>
+    </member>
+    <member name="M:NodaTime.Serialization.JsonNet.NodaPatternConverter`1.ReadJsonImpl(Newtonsoft.Json.JsonReader,Newtonsoft.Json.JsonSerializer)">
+      <summary>
+            Implemented by concrete subclasses, this performs the final conversion from a non-null JSON value to
+            a value of type T.
+            </summary>
+      <param name="reader">The JSON reader to pull data from</param>
+      <param name="serializer">The serializer to use for nested serialization</param>
+      <returns>The deserialized value of type T.</returns>
+    </member>
+    <member name="M:NodaTime.Serialization.JsonNet.NodaPatternConverter`1.WriteJsonImpl(Newtonsoft.Json.JsonWriter,`0,Newtonsoft.Json.JsonSerializer)">
+      <summary>
+            Writes the formatted value to the writer.
+            </summary>
+      <param name="writer">The writer to write JSON data to</param>
+      <param name="value">The value to serializer</param>
+      <param name="serializer">The serializer to use for nested serialization</param>
+    </member>
+  </members>
+</doc>
