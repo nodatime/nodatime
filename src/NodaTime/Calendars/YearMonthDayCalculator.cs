@@ -94,9 +94,7 @@ namespace NodaTime.Calendars
         /// </summary>
         internal int GetDayOfYear(YearMonthDay yearMonthDay)
         {
-            int daysSinceEpoch = GetDaysSinceEpoch(yearMonthDay);
-            int yearStart = GetStartOfYearInDays(yearMonthDay.Year);
-            return daysSinceEpoch - yearStart + 1;
+            return GetDaysFromStartOfYearToStartOfMonth(yearMonthDay.Year, yearMonthDay.Month) + yearMonthDay.Day;
         }
 
         /// <summary>
