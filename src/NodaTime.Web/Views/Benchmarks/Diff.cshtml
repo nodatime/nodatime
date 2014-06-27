@@ -5,11 +5,11 @@
 <h2>@ViewBag.Title</h2>
 
 <h3>Left</h3>
-Label: @Html.ActionLink(Model.Left.Label, "Benchmark", new { machine = Model.Machine, label = Model.Left.Label })<br />
+Label: @Html.ActionLink(Model.Left.Label, "BenchmarkRun", new { machine = Model.Machine, label = Model.Left.Label })<br />
 Date: @Model.Left.StartTime.ToString("yyyy-MM-dd HH:mm'Z'", CultureInfo.InvariantCulture)
 
 <h3>Right</h3>
-Label: @Html.ActionLink(Model.Right.Label, "Benchmark", new { machine = Model.Machine, label = Model.Right.Label })<br />
+Label: @Html.ActionLink(Model.Right.Label, "BenchmarkRun", new { machine = Model.Machine, label = Model.Right.Label })<br />
 Date: @Model.Right.StartTime.ToString("yyyy-MM-dd HH:mm'Z'", CultureInfo.InvariantCulture)
 
 @if (Model.LeftOnly.Any())
