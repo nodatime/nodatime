@@ -561,8 +561,8 @@ namespace NodaTime
         /// of the zone interval containing this value.
         /// </summary>
         /// <seealso cref="GetZoneInterval()"/>
-        /// <returns><code>true</code> if the zone interval containing this value has a non-zero savings
-        /// component; <code>false</code> otherwise.</returns>
+        /// <returns><c>true</c> if the zone interval containing this value has a non-zero savings
+        /// component; <c>false</c> otherwise.</returns>
         [Pure]
         public bool IsDaylightSavingTime()
         {
