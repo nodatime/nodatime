@@ -8,7 +8,7 @@
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width" />
 	<title>{{ page.title }}</title>
-  
+
 	<!-- foundation default -->
   	<link rel="stylesheet" href="{{relative}}css/foundation.css" />
 
@@ -48,6 +48,7 @@
 			      		<li><a href="{{relative}}1.0.x/userguide">1.0.x</a></li>
 			      		<li><a href="{{relative}}1.1.x/userguide">1.1.x</a></li>
 			      		<li><a href="{{relative}}1.2.x/userguide">1.2.x</a></li>
+			      		<li><a href="{{relative}}1.3.x/userguide">1.3.x</a></li>
 			      		<li class="divider hide-for-small"></li>
 			      		<li><a href="{{relative}}unstable/userguide">Unstable</a></li>
 			      	</ul>
@@ -64,6 +65,7 @@
 			      		<li><a href="{{relative}}1.0.x/api">1.0.x</a></li>
 			      		<li><a href="{{relative}}1.1.x/api">1.1.x</a></li>
 			      		<li><a href="{{relative}}1.2.x/api">1.2.x</a></li>
+			      		<li><a href="{{relative}}1.3.x/api">1.3.x</a></li>
 			      		<li class="divider hide-for-small"></li>
 			      		<li><a href="{{relative}}unstable/api">Unstable</a></li>
 			      	</ul>
@@ -100,22 +102,22 @@
 			</div>
 		</div>
 	</footer>
-	
+
 	<script>
 	document.write('<script src=' +
 	('__proto__' in {} ? '{{relative}}js/vendor/zepto' : '{{relative}}js/vendor/jquery') +
 	'.js><\/script>')
 	</script>
-  
+
   	<script src="{{relative}}js/foundation.min.js"></script>
   	{% for script in page.scripts %}
   	<script src="{{script}}"></script>
   	{% endfor %}
 
   <!--
-  <script src="js/foundation/foundation.js"></script>  
+  <script src="js/foundation/foundation.js"></script>
   <script src="js/foundation/foundation.alerts.js"></script>
-  <script src="js/foundation/foundation.clearing.js"></script>  
+  <script src="js/foundation/foundation.clearing.js"></script>
   <script src="js/foundation/foundation.cookie.js"></script>
   <script src="js/foundation/foundation.dropdown.js"></script>
   <script src="js/foundation/foundation.forms.js"></script>
@@ -129,7 +131,7 @@
   <script src="js/foundation/foundation.topbar.js"></script>
   <script src="js/foundation/foundation.interchange.js"></script>
   -->
-  
+
   <script>
     $(document).foundation();
   </script>
