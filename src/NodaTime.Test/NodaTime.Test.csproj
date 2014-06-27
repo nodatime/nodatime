@@ -219,6 +219,8 @@
     <Compile Include="Text\Patterns\PatternCursorTest.cs" />
     <Compile Include="Text\TextCursorTestBase.cs" />
     <Compile Include="Text\ValueCursorTest.cs" />
+    <Compile Include="DateAdjustersTest.cs" />
+    <Compile Include="TimeAdjustersTest.cs" />
     <Compile Include="TimeZones\AlgiersTest.cs" />
     <Compile Include="TimeZones\BclDateTimeZoneSourceTest.cs" />
     <Compile Include="TimeZones\BclDateTimeZoneTest.cs" />

@@ -245,6 +245,37 @@ namespace NodaTime
         }
 
         /// <summary>
+        /// Returns this offset date/time, with the given date adjuster applied to it, maintaining the existing time of day and offset.
+        /// </summary>
+        /// <remarks>
+        /// If the adjuster attempts to construct an
+        /// invalid date (such as by trying to set a day-of-month of 30 in February), any exception thrown by
+        /// that construction attempt will be propagated through this method.
+        /// </remarks>
+        /// <param name="adjuster">The adjuster to apply.</param>
+        /// <returns>The adjusted offset date/time.</returns>
+        [Pure]
+        public OffsetDateTime With([NotNull] Func<LocalDate, LocalDate> adjuster)
+        {
+            return localDateTime.With(adjuster).WithOffset(offset);
+        }
+
+        /// <summary>
+        /// Returns this date/time, with the given time adjuster applied to it, maintaining the existing date and offset.
+        /// </summary>
+        /// <remarks>
+        /// If the adjuster attempts to construct an invalid time, any exception thrown by
+        /// that construction attempt will be propagated through this method.
+        /// </remarks>
+        /// <param name="adjuster">The adjuster to apply.</param>
+        /// <returns>The adjusted offset date/time.</returns>
+        [Pure]
+        public OffsetDateTime With([NotNull] Func<LocalTime, LocalTime> adjuster)
+        {
+            return localDateTime.With(adjuster).WithOffset(offset);
+        }
+
+        /// <summary>
         /// Creates a new OffsetDateTime representing the instant in time in the same calendar,
         /// but with a different offset. The local date and time is adjusted accordingly.
         /// </summary>

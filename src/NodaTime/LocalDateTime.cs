@@ -695,6 +695,36 @@ namespace NodaTime
             return hash;
         }
         #endregion
+        /// <summary>
+        /// Returns this date/time, with the given date adjuster applied to it, maintaing the existing time of day.
+        /// </summary>
+        /// <remarks>
+        /// If the adjuster attempts to construct an
+        /// invalid date (such as by trying to set a day-of-month of 30 in February), any exception thrown by
+        /// that construction attempt will be propagated through this method.
+        /// </remarks>
+        /// <param name="adjuster">The adjuster to apply.</param>
+        /// <returns>The adjusted date/time.</returns>
+        [Pure]
+        public LocalDateTime With([NotNull] Func<LocalDate, LocalDate> adjuster)
+        {
+            return date.With(adjuster) + time;
+        }
+
+        /// <summary>
+        /// Returns this date/time, with the given time adjuster applied to it, maintaining the existing date.
+        /// </summary>
+        /// <remarks>
+        /// If the adjuster attempts to construct an invalid time, any exception thrown by
+        /// that construction attempt will be propagated through this method.
+        /// </remarks>
+        /// <param name="adjuster">The adjuster to apply.</param>
+        /// <returns>The adjusted date/time.</returns>
+        [Pure]
+        public LocalDateTime With([NotNull] Func<LocalTime, LocalTime> adjuster)
+        {
+            return date + time.With(adjuster);
+        }
 
         /// <summary>
         /// Creates a new LocalDateTime representing the same physical date and time, but in a different calendar.

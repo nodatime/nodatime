@@ -279,5 +279,23 @@ namespace NodaTime.Test
             OffsetDateTime expected = new OffsetDateTime(evening, newOffset);
             Assert.AreEqual(expected, original.WithOffset(newOffset));
         }
+
+        [Test]
+        public void With_TimeAdjuster()
+        {
+            Offset offset = Offset.FromHoursAndMinutes(2, 30);
+            OffsetDateTime start = new LocalDateTime(2014, 6, 27, 12, 15, 8, 100, 1234).WithOffset(offset);
+            OffsetDateTime expected = new LocalDateTime(2014, 6, 27, 12, 15, 8).WithOffset(offset);
+            Assert.AreEqual(expected, start.With(TimeAdjusters.TruncateToSecond));
+        }
+
+        [Test]
+        public void With_DateAdjuster()
+        {
+            Offset offset = Offset.FromHoursAndMinutes(2, 30);
+            OffsetDateTime start = new LocalDateTime(2014, 6, 27, 12, 5, 8, 100, 1234).WithOffset(offset);
+            OffsetDateTime expected = new LocalDateTime(2014, 6, 30, 12, 5, 8, 100, 1234).WithOffset(offset);
+            Assert.AreEqual(expected, start.With(DateAdjusters.EndOfMonth));
+        }
     }
 }
