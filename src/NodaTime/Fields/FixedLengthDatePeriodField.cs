@@ -2,6 +2,8 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
+using NodaTime.Calendars;
+
 namespace NodaTime.Fields
 {
     /// <summary>
@@ -22,7 +24,23 @@ namespace NodaTime.Fields
             {
                 return localDate;
             }
-            int days = localDate.DaysSinceEpoch + value * unitDays;
+            int daysToAdd = value * unitDays;
+            if (daysToAdd < 20 && daysToAdd > -20)
+            {
+                YearMonthDayCalculator calculator = localDate.Calendar.YearMonthDayCalculator;
+                YearMonthDay yearMonthDay = localDate.YearMonthDay;
+                int year = yearMonthDay.Year;
+                int month = yearMonthDay.Month;
+                int day = yearMonthDay.Day;
+                int newDayOfMonth = day + daysToAdd;
+                if (1 <= newDayOfMonth && newDayOfMonth <= calculator.GetDaysInMonth(year, month))
+                {
+                    return new LocalDate(new YearMonthDay(year, month, newDayOfMonth), localDate.Calendar);
+                }
+                // TODO(2.0): Improve this if we're still in the same year. Would be reasonably simple
+                // if we had GetYearMonthDay(year, dayOfYear).
+            }
+            int days = localDate.DaysSinceEpoch + daysToAdd;
             return new LocalDate(days, localDate.Calendar);
         }
 
