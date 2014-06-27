@@ -13,12 +13,7 @@ If there's something not mentioned here that you feel should be on this
 roadmap, then *please* either raise an issue or post on the
 [mailing list](http://groups.google.com/group/noda-time).
 
-This roadmap was last updated on **2014-06-16**.
-
-- 1.3
-  - Use of ReSharper annotations to allow better code analysis, both of Noda Time code itself and code using Noda Time
-  - Support for the Persian (solar Hijri) calendar
-  - Experimental support for the Hebrew calendar
+This roadmap was last updated on **2014-06-27**.
 
 - 2.0
   - Remove all obsolete API members
