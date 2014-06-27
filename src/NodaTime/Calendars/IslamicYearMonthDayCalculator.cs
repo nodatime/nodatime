@@ -84,19 +84,18 @@ namespace NodaTime.Calendars
             return TotalDaysByMonth[month - 1];
         }
 
-        internal override YearMonthDay GetYearMonthDay(int daysSinceEpoch)
+        internal override YearMonthDay GetYearMonthDay(int year, int dayOfYear)
         {
-            int dayOfYearZeroBased;
-            int year = GetYear(daysSinceEpoch, out dayOfYearZeroBased);
             int month, day;
             // Special case the last day in a leap year
-            if (dayOfYearZeroBased == DaysPerLeapYear - 1)
+            if (dayOfYear == DaysPerLeapYear)
             {
                 month = 12;
                 day = 30;
             }
             else
             {
+                int dayOfYearZeroBased = dayOfYear - 1;
                 month = ((dayOfYearZeroBased * 2) / MonthPairLength) + 1;
                 day = ((dayOfYearZeroBased % MonthPairLength) % LongMonthLength) + 1;
             }

@@ -76,13 +76,12 @@ namespace NodaTime.Calendars
             return days;
         }
 
-        internal override YearMonthDay GetYearMonthDay(int daysSinceEpoch)
+        internal override YearMonthDay GetYearMonthDay(int year, int dayOfYear)
         {
-            int dayOfYearZeroBased;
-            int year = GetYear(daysSinceEpoch, out dayOfYearZeroBased);
+            int dayOfYearZeroBased = dayOfYear - 1;
             int month;
             int day;
-            if (dayOfYearZeroBased == DaysPerLeapYear - 1)
+            if (dayOfYear == DaysPerLeapYear)
             {
                 // Last day of a leap year.
                 month = 12;
