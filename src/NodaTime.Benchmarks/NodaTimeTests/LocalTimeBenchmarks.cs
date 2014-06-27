@@ -91,6 +91,24 @@ namespace NodaTime.Benchmarks.NodaTimeTests
         }
 
         [Benchmark]
+        public void PlusHours_OverflowDay()
+        {
+            Sample.PlusHours(33).Consume();
+        }
+
+        [Benchmark]
+        public void PlusHours_Negative()
+        {
+            Sample.PlusHours(-3).Consume();
+        }
+
+        [Benchmark]
+        public void PlusHours_UnderflowDay()
+        {
+            Sample.PlusHours(-33).Consume();
+        }
+
+        [Benchmark]
         public void PlusMinutes()
         {
             Sample.PlusMinutes(3).Consume();
