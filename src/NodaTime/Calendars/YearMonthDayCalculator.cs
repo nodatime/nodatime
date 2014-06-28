@@ -265,8 +265,9 @@ namespace NodaTime.Calendars
             return cacheEntry.StartOfYearDays;
         }
 
-        // TODO(2.0): Optimizations for specific calendars.
-        internal void ValidateYearMonthDay(int year, int month, int day)
+        // Catch-all year/month/day validation. Subclasses can optimize further - currently
+        // this is only done for Gregorian/Julian calendars, which are the most performance-critical.
+        internal virtual void ValidateYearMonthDay(int year, int month, int day)
         {
             Preconditions.CheckArgumentRange("year", year, minYear, maxYear);
             Preconditions.CheckArgumentRange("month", month, 1, GetMonthsInYear(year));
