@@ -36,12 +36,6 @@ namespace NodaTime.Calendars
             return GetDayOfWeek(daysSinceEpoch);
         }
 
-        private int GetDayOfWeek(int daysSinceEpoch)
-        {
-            return daysSinceEpoch >= -3 ? 1 + ((daysSinceEpoch + 3) % 7)
-                                        : 7 + ((daysSinceEpoch + 4) % 7);
-        }
-
         /// <summary>
         /// Finds the week-of-week year containing the given local instant, by finding out when the week year
         /// started, and then simply dividing "how far we are through the year" by "the number of ticks in a week".
@@ -56,6 +50,40 @@ namespace NodaTime.Calendars
             int zeroBasedDayOfWeekYear = daysSinceEpoch - startOfWeekYear;
             int zeroBasedWeek = zeroBasedDayOfWeekYear / 7;
             return zeroBasedWeek + 1;
+        }
+
+        /// <summary>
+        /// Finds the week-year containing the given local instant.
+        /// </summary>
+        internal int GetWeekYear(YearMonthDay yearMonthDay)
+        {
+            // Let's guess that it's in the same week year as calendar year, and check that.
+            int calendarYear = yearMonthDay.Year;
+            int startOfWeekYear = GetWeekYearDaysSinceEpoch(calendarYear);
+            int daysSinceEpoch = yearMonthDayCalculator.GetDaysSinceEpoch(yearMonthDay);
+            if (daysSinceEpoch < startOfWeekYear)
+            {
+                // No, the week-year hadn't started yet. For example, we've been given January 1st 2011...
+                // and the first week of week-year 2011 starts on January 3rd 2011. Therefore the local instant
+                // must belong to the last week of the previous week-year.
+                return calendarYear - 1;
+            }
+
+            // By now, we know it's either calendarYear or calendarYear + 1. Check using the number of
+            // weeks in the year. Note that this will fetch the start of the calendar year and the week year
+            // again, so could be optimized by copying some logic here - but only when we find we need to.
+            int weeksInWeekYear = GetWeeksInWeekYear(calendarYear);
+
+            // We assume that even for the maximum year, we've got just about enough leeway to get to the
+            // start of the week year. (If not, we should adjust the maximum.)
+            int startOfNextWeekYear = startOfWeekYear + weeksInWeekYear * 7;
+            return daysSinceEpoch < startOfNextWeekYear ? calendarYear : calendarYear + 1;
+        }
+
+        private int GetDayOfWeek(int daysSinceEpoch)
+        {
+            return daysSinceEpoch >= -3 ? 1 + ((daysSinceEpoch + 3) % 7)
+                                        : 7 + ((daysSinceEpoch + 4) % 7);
         }
 
         private int GetWeeksInWeekYear(int weekYear)
@@ -92,34 +120,6 @@ namespace NodaTime.Calendars
                 // First week is start of this year because it has enough days.
                 return startOfCalendarYear - (jan1DayOfWeek - 1);
             }
-        }
-
-        /// <summary>
-        /// Finds the week-year containing the given local instant.
-        /// </summary>
-        internal int GetWeekYear(YearMonthDay yearMonthDay)
-        {
-            // Let's guess that it's in the same week year as calendar year, and check that.
-            int calendarYear = yearMonthDay.Year;
-            int startOfWeekYear = GetWeekYearDaysSinceEpoch(calendarYear);
-            int daysSinceEpoch = yearMonthDayCalculator.GetDaysSinceEpoch(yearMonthDay);
-            if (daysSinceEpoch < startOfWeekYear)
-            {
-                // No, the week-year hadn't started yet. For example, we've been given January 1st 2011...
-                // and the first week of week-year 2011 starts on January 3rd 2011. Therefore the local instant
-                // must belong to the last week of the previous week-year.
-                return calendarYear - 1;
-            }
-
-            // By now, we know it's either calendarYear or calendarYear + 1. Check using the number of
-            // weeks in the year. Note that this will fetch the start of the calendar year and the week year
-            // again, so could be optimized by copying some logic here - but only when we find we need to.
-            int weeksInWeekYear = GetWeeksInWeekYear(calendarYear);
-
-            // We assume that even for the maximum year, we've got just about enough leeway to get to the
-            // start of the week year. (If not, we should adjust the maximum.)
-            int startOfNextWeekYear = startOfWeekYear + weeksInWeekYear * 7;
-            return daysSinceEpoch < startOfNextWeekYear ? calendarYear : calendarYear + 1;
         }
     }
 }
