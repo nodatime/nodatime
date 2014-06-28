@@ -69,7 +69,19 @@ namespace NodaTime.Calendars
             return new YearMonthDay(year, month, dayOfMonth);
         }
 
-        internal override int GetDaysInMonth(int year, int month)
+        internal override void ValidateYearMonthDay(int year, int month, int day)
+        {
+            // Perform quick validation without calling Preconditions, then delegate up if we're going to throw
+            // an exception.
+            if (year < MinYear || year > MaxYear ||
+                month < 1 || month > 12 ||
+                day < 1 || day > GetDaysInMonth(year, month))
+            {
+                base.ValidateYearMonthDay(year, month, day);
+            }
+        }
+
+        internal sealed override int GetDaysInMonth(int year, int month)
         {
             // We know that only February differs, so avoid the virtual call for other months.
             return month == 2 && IsLeapYear(year) ? MaxDaysPerMonth[month - 1] : MinDaysPerMonth[month - 1];
