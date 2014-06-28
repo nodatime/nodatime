@@ -104,6 +104,19 @@ namespace NodaTime
         }
 
         /// <summary>
+        /// Returns a <see cref="LocalDate"/> in the ISO calendar for this LocalInstant.
+        /// </summary>
+        internal LocalDate ToIsoDate()
+        {
+            int days = (int) (ticks / NodaConstants.TicksPerStandardDay);
+            if (ticks < 0)
+            {
+                days++;
+            }
+            return new LocalDate(days, CalendarSystem.Iso);
+        }
+
+        /// <summary>
         /// Implements the operator == (equality).
         /// </summary>
         /// <param name="left">The left hand side of the operator.</param>
