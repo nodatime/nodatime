@@ -111,7 +111,7 @@ namespace NodaTime.TimeZones
         {
             Offset wallOffset = standardOffset + previousSavings;
 
-            int year = instant == Instant.MinValue ? Int32.MinValue : new LocalDateTime(instant.Plus(wallOffset)).Year;
+            int year = instant == Instant.MinValue ? Int32.MinValue : instant.Plus(wallOffset).ToIsoDate().Year;
 
             if (year < fromYear)
             {
@@ -126,7 +126,7 @@ namespace NodaTime.TimeZones
 
             if (next >= instant)
             {
-                year = new LocalDateTime(next.Plus(wallOffset)).Year;
+                year = next.Plus(wallOffset).ToIsoDate().Year;
                 if (year > toYear)
                 {
                     return null;
@@ -148,7 +148,7 @@ namespace NodaTime.TimeZones
         {
             Offset wallOffset = standardOffset + previousSavings;
 
-            int year = instant == Instant.MaxValue ? Int32.MaxValue : new LocalDateTime(instant.Plus(wallOffset)).Year;
+            int year = instant == Instant.MaxValue ? Int32.MaxValue : instant.Plus(wallOffset).ToIsoDate().Year;
 
             if (year > toYear)
             {
@@ -160,7 +160,7 @@ namespace NodaTime.TimeZones
 
             if (previous <= instant)
             {
-                year = new LocalDateTime(previous.Plus(wallOffset)).Year;
+                year = previous.Plus(wallOffset).ToIsoDate().Year;
                 if (year < fromYear)
                 {
                     return null;
