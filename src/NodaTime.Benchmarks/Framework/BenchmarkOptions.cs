@@ -42,7 +42,7 @@ namespace NodaTime.Benchmarks.Framework
             public int TestTimeSeconds { get; set; }
             [Option("t", "type", HelpText = "Type filter")]
             public string TypeFilter { get; set; }
-            [Option("m", "method", HelpText = "Method filter")]
+            [Option("m", "method", HelpText = "Method filter (use trailing * for wildcard)")]
             public string MethodFilter { get; set; }
             [Option("r", "raw", HelpText = "Display the raw data")]
             public bool DisplayRawData { get; set; }

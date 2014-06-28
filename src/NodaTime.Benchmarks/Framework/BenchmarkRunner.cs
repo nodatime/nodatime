@@ -60,7 +60,7 @@ namespace NodaTime.Benchmarks.Framework
                         continue;
                     }
 
-                    if (options.MethodFilter != null && method.Name != options.MethodFilter)
+                    if (options.MethodFilter != null && !MethodMatchesFilter(method, options.MethodFilter))
                     {
                         continue;
                     }
@@ -80,6 +80,15 @@ namespace NodaTime.Benchmarks.Framework
                 resultHandler.HandleEndType();
             }
             resultHandler.HandleEndRun();
+        }
+
+        private bool MethodMatchesFilter(MethodInfo method, string methodFilter)
+        {
+            if (!methodFilter.EndsWith("*"))
+            {
+                return method.Name == methodFilter;
+            }
+            return method.Name.StartsWith(methodFilter.Substring(0, methodFilter.Length - 1));
         }
 
         private static HashSet<string> GetCategories(MethodInfo method)
