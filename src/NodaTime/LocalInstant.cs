@@ -4,6 +4,7 @@
 
 using System;
 using JetBrains.Annotations;
+using NodaTime.Calendars;
 using NodaTime.Text;
 using NodaTime.Utility;
 
@@ -108,18 +109,7 @@ namespace NodaTime
         /// </summary>
         internal LocalDate ToIsoDate()
         {
-            int days;
-            if (ticks >= 0)
-            {
-                days = (int) (ticks / NodaConstants.TicksPerStandardDay);
-            }
-            else
-            {
-                // Division rounds towards zero; we want the floor instead. We can't just subtract
-                // one from the result of the division, as otherwise we'll be off by one if the instant
-                // is at the very start of a day.
-                days = (int) ((ticks - (NodaConstants.TicksPerStandardDay - 1)) / NodaConstants.TicksPerStandardDay);
-            }
+            int days = TickArithmetic.TicksToDays(ticks);
             return new LocalDate(days, CalendarSystem.Iso);
         }
 
