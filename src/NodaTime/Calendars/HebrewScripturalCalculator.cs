@@ -3,6 +3,7 @@
 // as found in the LICENSE.txt file.
 
 using System;
+using NodaTime.Utility;
 
 namespace NodaTime.Calendars
 {
@@ -162,7 +163,9 @@ namespace NodaTime.Calendars
                     case 13: // Adar II
                         return 30 + heshvanLength + kislevLength + 29 + 30 + firstAdarLength;
                     default:
-                        throw new ArgumentOutOfRangeException("month", month, "Invalid month number");
+                        // Just shorthand for using the right exception across PCL and desktop
+                        Preconditions.CheckArgumentRange("month", month, 1, 13);
+                        throw new InvalidOperationException("CheckArgumentRange should have thrown...");
                 }
             }
         }
