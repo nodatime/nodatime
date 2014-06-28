@@ -3,11 +3,15 @@
 // as found in the LICENSE.txt file.
 
 using System;
+using NodaTime.Utility;
 
 namespace NodaTime.Calendars
 {
     internal class GregorianYearMonthDayCalculator : GJYearMonthDayCalculator
     {
+        private const int MinGregorianYear = -27255;
+        private const int MaxGregorianYear = 31195;
+
         // We precompute useful values for each month between these years, as we anticipate most
         // dates will be in this range.
         private const int FirstOptimizedYear = 1900;
@@ -42,7 +46,7 @@ namespace NodaTime.Calendars
         }
 
         internal GregorianYearMonthDayCalculator()
-            : base(-27255, 31195, AverageDaysPer10Years, -719162)
+            : base(MinGregorianYear, MaxGregorianYear, AverageDaysPer10Years, -719162)
         {
         }
 
@@ -76,6 +80,32 @@ namespace NodaTime.Calendars
             }
         }
 
+        internal override void ValidateYearMonthDay(int year, int month, int day)
+        {
+            ValidateGregorianYearMonthDay(year, month, day);
+        }
+
+        internal static void ValidateGregorianYearMonthDay(int year, int month, int day)
+        {
+            // Perform quick validation without calling Preconditions, then do it properly if we're going to throw
+            // an exception. Avoiding the method call is pretty extreme, but it does help.
+            if (year < MinGregorianYear || year > MaxGregorianYear || month < 1 || month > 12)
+            {
+                Preconditions.CheckArgumentRange("year", year, MinGregorianYear, MaxGregorianYear);
+                Preconditions.CheckArgumentRange("month", month, 1, 12);
+            }
+            // If we've been asked for day 1-28, we're definitely okay regardless of month.
+            if (day >= 1 && day <= 28)
+            {
+                return;
+            }
+            int daysInMonth = month == 2 && IsGregorianLeapYear(year) ? MaxDaysPerMonth[month - 1] : MinDaysPerMonth[month - 1];
+            if (day > daysInMonth)
+            {
+                Preconditions.CheckArgumentRange("day", day, 1, daysInMonth);
+            }
+        }
+
         protected override int CalculateStartOfYearDays(int year)
         {
             // Initial value is just temporary.
@@ -103,7 +133,12 @@ namespace NodaTime.Calendars
 
         internal override bool IsLeapYear(int year)
         {
-            return ((year & 3) == 0) && ((year % 100) != 0 || (year % 400) == 0);
+            return IsGregorianLeapYear(year);
+        }
+
+        private static bool IsGregorianLeapYear(int year)
+        {
+            return ((year & 3) == 0) && ((year % 100) != 0 || (year % 400) == 0); ;
         }
     }
 }

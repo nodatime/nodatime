@@ -70,8 +70,10 @@ namespace NodaTime
         /// <returns>The resulting date.</returns>
         /// <exception cref="ArgumentOutOfRangeException">The parameters do not form a valid date.</exception>
         public LocalDate(int year, int month, int day)
-            : this(year, month, day, CalendarSystem.Iso)
         {
+            this.calendar = CalendarSystem.Iso;
+            GregorianYearMonthDayCalculator.ValidateGregorianYearMonthDay(year, month, day);
+            yearMonthDay = new YearMonthDay(year, month, day);
         }
 
         /// <summary>
