@@ -43,7 +43,7 @@ namespace NodaTime.Fields
                 int dayOfYear = calculator.GetDayOfYear(yearMonthDay);
                 int newDayOfYear = dayOfYear + daysToAdd;
 
-                // TODO: Validation of year...
+                // TODO(2.0): Validation of year...
                 if (newDayOfYear < 1)
                 {
                     newDayOfYear += calculator.GetDaysInYear(year - 1);

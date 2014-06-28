@@ -655,7 +655,7 @@ namespace NodaTime
         [Pure]
         public DateTime ToDateTimeUnspecified()
         {
-            return LocalDateTime.ToLocalInstant().ToDateTimeUnspecified();
+            return LocalDateTime.ToDateTimeUnspecified();
         }
 
         /// <summary>
