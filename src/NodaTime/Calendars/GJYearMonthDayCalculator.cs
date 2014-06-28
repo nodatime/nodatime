@@ -2,6 +2,8 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
+using System;
+
 namespace NodaTime.Calendars
 {
     internal abstract class GJYearMonthDayCalculator : RegularYearMonthDayCalculator
@@ -69,7 +71,8 @@ namespace NodaTime.Calendars
 
         internal override int GetDaysInMonth(int year, int month)
         {
-            return IsLeapYear(year) ? MaxDaysPerMonth[month - 1] : MinDaysPerMonth[month - 1];
+            // We know that only February differs, so avoid the virtual call for other months.
+            return month == 2 && IsLeapYear(year) ? MaxDaysPerMonth[month - 1] : MinDaysPerMonth[month - 1];
         }
 
         protected override int GetDaysFromStartOfYearToStartOfMonth(int year, int month)
