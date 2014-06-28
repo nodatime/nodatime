@@ -2,6 +2,7 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
+using System.Security.AccessControl;
 using NodaTime.Calendars;
 
 namespace NodaTime.Fields
@@ -25,9 +26,11 @@ namespace NodaTime.Fields
                 return localDate;
             }
             int daysToAdd = value * unitDays;
-            if (daysToAdd < 20 && daysToAdd > -20)
+            var calendar = localDate.Calendar;
+            // If we know it will be in this year, next year, or the previous year...
+            if (daysToAdd < 300 && daysToAdd > -300)
             {
-                YearMonthDayCalculator calculator = localDate.Calendar.YearMonthDayCalculator;
+                YearMonthDayCalculator calculator = calendar.YearMonthDayCalculator;
                 YearMonthDay yearMonthDay = localDate.YearMonthDay;
                 int year = yearMonthDay.Year;
                 int month = yearMonthDay.Month;
@@ -37,19 +40,41 @@ namespace NodaTime.Fields
                 {
                     return new LocalDate(new YearMonthDay(year, month, newDayOfMonth), localDate.Calendar);
                 }
-                // TODO(2.0): Improve this if we're still in the same year. Would be reasonably simple
-                // if we had GetYearMonthDay(year, dayOfYear).
+                int dayOfYear = calculator.GetDayOfYear(yearMonthDay);
+                int newDayOfYear = dayOfYear + daysToAdd;
+
+                // TODO: Validation of year...
+                if (newDayOfYear < 1)
+                {
+                    newDayOfYear += calculator.GetDaysInYear(year - 1);
+                    year--;
+                }
+                else
+                {
+                    int daysInYear = calculator.GetDaysInYear(year);
+                    if (newDayOfYear > daysInYear)
+                    {
+                        newDayOfYear -= daysInYear;
+                        year++;
+                    }
+                }
+                return new LocalDate(calculator.GetYearMonthDay(year, newDayOfYear), calendar);
             }
             int days = localDate.DaysSinceEpoch + daysToAdd;
-            return new LocalDate(days, localDate.Calendar);
+            return new LocalDate(days, calendar);
         }
 
         public int Subtract(LocalDate minuendDate, LocalDate subtrahendDate)
         {
-            if (minuendDate == subtrahendDate)
+            // We already assume the calendars are the same.
+            if (minuendDate.YearMonthDay == subtrahendDate.YearMonthDay)
             {
                 return 0;
             }
+            // Note: I've experimented with checking for the dates being in the same year and optimizing that.
+            // It helps a little if they're in the same month, but just that test has a cost for other situations.
+            // Being able to find the day of year if they're in the same year but different months doesn't help,
+            // somewhat surprisingly.
             int minuendDays = minuendDate.DaysSinceEpoch;
             int subtrahendDays = subtrahendDate.DaysSinceEpoch;
             return (minuendDays - subtrahendDays) / unitDays;

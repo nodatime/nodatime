@@ -64,7 +64,7 @@ namespace NodaTime.Test
         }
 
         [Test]
-        public void PlusDays_Simple()
+        public void PlusDays_SameMonth()
         {
             LocalDate start = new LocalDate(2011, 1, 15);
             LocalDate expected = new LocalDate(2011, 1, 23);
@@ -115,6 +115,14 @@ namespace NodaTime.Test
 
             // Round-trip back across the boundary
             Assert.AreEqual(start, start.PlusDays(8).PlusDays(-8));
+        }
+
+        [Test]
+        public void PlusDays_LargeValue()
+        {
+            LocalDate start = new LocalDate(2013, 2, 26);
+            LocalDate expected = new LocalDate(2015, 2, 26);
+            Assert.AreEqual(expected, start.PlusDays(365 * 2));
         }
 
         [Test]
