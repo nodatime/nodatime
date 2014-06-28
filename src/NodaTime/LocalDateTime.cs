@@ -378,10 +378,7 @@ namespace NodaTime
         [Pure]
         public DateTime ToDateTimeUnspecified()
         {
-            long days = date.DaysSinceEpoch;
-            long timeTicks = time.TickOfDay;
-            long totalTicks = NodaConstants.BclTicksAtUnixEpoch + days * NodaConstants.TicksPerStandardDay + timeTicks;
-            return new DateTime(totalTicks, DateTimeKind.Unspecified);
+            return ToLocalInstant().ToDateTimeUnspecified();
         }
 
         // FIXME(2.0): Remove... we want to kill LocalInstant
@@ -389,7 +386,7 @@ namespace NodaTime
         {
             long days = date.DaysSinceEpoch;
             long timeTicks = time.TickOfDay;
-            return new LocalInstant(days*NodaConstants.TicksPerStandardDay + timeTicks);
+            return new LocalInstant(days * NodaConstants.TicksPerStandardDay + timeTicks);
         }
 
         /// <summary>
