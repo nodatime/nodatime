@@ -33,6 +33,11 @@ namespace NodaTime.Calendars
         internal int GetDayOfWeek(YearMonthDay yearMonthDay)
         {
             int daysSinceEpoch = yearMonthDayCalculator.GetDaysSinceEpoch(yearMonthDay);
+            return GetDayOfWeek(daysSinceEpoch);
+        }
+
+        private int GetDayOfWeek(int daysSinceEpoch)
+        {
             return daysSinceEpoch >= -3 ? 1 + ((daysSinceEpoch + 3) % 7)
                                         : 7 + ((daysSinceEpoch + 4) % 7);
         }
@@ -75,7 +80,7 @@ namespace NodaTime.Calendars
         {
             // Need to be slightly careful here, as the week-year can reasonably be outside the calendar year range.
             int startOfCalendarYear = yearMonthDayCalculator.GetStartOfYearInDays(weekYear);
-            int jan1DayOfWeek = GetDayOfWeek(yearMonthDayCalculator.GetYearMonthDay(startOfCalendarYear));
+            int jan1DayOfWeek = GetDayOfWeek(startOfCalendarYear);
 
             if (jan1DayOfWeek > (8 - minDaysInFirstWeek))
             {
