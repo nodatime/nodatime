@@ -250,10 +250,9 @@ namespace NodaTime.Calendars
         /// </summary>
         internal virtual int GetStartOfYearInDays(int year)
         {
-            if (year < MinYear || year > MaxYear)
-            {
-                return CalculateStartOfYearDays(year);
-            }
+            // TODO(2.0): Check that it's valid to cache values outside the advertised
+            // bounds of the calendar (by one year). We used not to cache them, but just
+            // the check was relatively expensive.
             int cacheIndex = YearStartCacheEntry.GetCacheIndex(year);
             YearStartCacheEntry cacheEntry = yearCache[cacheIndex];
             if (!cacheEntry.IsValidForYear(year))

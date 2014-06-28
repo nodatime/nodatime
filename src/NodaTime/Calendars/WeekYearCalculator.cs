@@ -106,7 +106,7 @@ namespace NodaTime.Calendars
         /// </summary>
         private int GetWeekYearDaysSinceEpoch(int weekYear)
         {
-            // Need to be slightly careful here, as the week-year can reasonably be outside the calendar year range.
+            // Need to be slightly careful here, as the week-year can reasonably be (just) outside the calendar year range.
             int startOfCalendarYear = yearMonthDayCalculator.GetStartOfYearInDays(weekYear);
             int jan1DayOfWeek = GetDayOfWeek(startOfCalendarYear);
 
