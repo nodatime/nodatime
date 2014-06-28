@@ -42,9 +42,9 @@ namespace NodaTime
             }
         }
 
-        internal int Year { get { return (value >> 12) + 1; } }
-        internal int Month { get { return ((value & 0xfc0) >> 6) + 1; } }
-        internal int Day { get { return (value & 0x3f) + 1; } }
+        internal int Year { get { return unchecked((value >> 12) + 1); } }
+        internal int Month { get { return unchecked(((value & 0xfc0) >> 6) + 1); } }
+        internal int Day { get { return unchecked((value & 0x3f) + 1); } }
 
         public int RawValue { get { return value; } }
 
