@@ -12,8 +12,9 @@ namespace NodaTime.Calendars
         // dates will be in this range.
         private const int FirstOptimizedYear = 1900;
         private const int LastOptimizedYear = 2100;
+        // The 0-based days-since-unix-epoch for the start of each month
         private static readonly int[] MonthStartDays = new int[(LastOptimizedYear + 1 - FirstOptimizedYear) * 12 + 1];
-        private static readonly int[] MonthLengths = new int[(LastOptimizedYear + 1 - FirstOptimizedYear) * 12 + 1];
+        // The 1-based days-since-unix-epoch for the start of each year
         private static readonly int[] YearStartDays = new int[LastOptimizedYear + 1 - FirstOptimizedYear];
 
         private const int DaysFrom0000To1970 = 719527;
@@ -28,14 +29,13 @@ namespace NodaTime.Calendars
             {
                 int yearStart = instance.CalculateStartOfYearDays(year);
                 YearStartDays[year - FirstOptimizedYear] = yearStart;
-                int monthStartDay = yearStart;
+                int monthStartDay = yearStart - 1; // See field description
                 int yearMonthIndex = (year - FirstOptimizedYear) * 12;
                 for (int month = 1; month <= 12; month++)
                 {
                     yearMonthIndex++;
                     int monthLength = instance.GetDaysInMonth(year, month);
                     MonthStartDays[yearMonthIndex] = monthStartDay;
-                    MonthLengths[yearMonthIndex] = monthLength;
                     monthStartDay += monthLength;
                 }
             }
@@ -46,9 +46,10 @@ namespace NodaTime.Calendars
         {
         }
 
-        // TODO(2.0): Check that this is worth doing, given our normal cache.
         internal override int GetStartOfYearInDays(int year)
         {
+            // 2014-06-28: Tried removing this entirely (optimized: 5ns => 8ns; unoptimized: 11ns => 8ns)
+            // Decided to leave it in, as the optimized case is so much more common.
             if (year < FirstOptimizedYear || year > LastOptimizedYear)
             {
                 return base.GetStartOfYearInDays(year);
@@ -58,17 +59,21 @@ namespace NodaTime.Calendars
 
         internal override int GetDaysSinceEpoch(YearMonthDay yearMonthDay)
         {
-            int year = yearMonthDay.Year;
-            int monthOfYear = yearMonthDay.Month;
-            int dayOfMonth = yearMonthDay.Day;
-            int yearMonthIndex = (year - FirstOptimizedYear) * 12 + monthOfYear;
-            if (year < FirstOptimizedYear || year > LastOptimizedYear - 1 || monthOfYear < 1 || monthOfYear > 12 || dayOfMonth < 1 ||
-                dayOfMonth > MonthLengths[yearMonthIndex])
+            // 2014-06-28: Tried removing this entirely (optimized: 8ns => 13ns; unoptimized: 23ns => 19ns)
+            // Also tried computing everything lazily - it's a wash.
+            // Removed validation, however - we assume that the parameter is already valid by now.
+            unchecked
             {
-                return base.GetDaysSinceEpoch(yearMonthDay);
+                int year = yearMonthDay.Year;
+                int monthOfYear = yearMonthDay.Month;
+                int dayOfMonth = yearMonthDay.Day;
+                int yearMonthIndex = (year - FirstOptimizedYear) * 12 + monthOfYear;
+                if (year < FirstOptimizedYear || year > LastOptimizedYear - 1)
+                {
+                    return base.GetDaysSinceEpoch(yearMonthDay);
+                }
+                return MonthStartDays[yearMonthIndex] + dayOfMonth;
             }
-            // This is guaranteed not to overflow, as we've already validated the arguments
-            return unchecked(MonthStartDays[yearMonthIndex] + (dayOfMonth - 1));
         }
 
         protected override int CalculateStartOfYearDays(int year)
