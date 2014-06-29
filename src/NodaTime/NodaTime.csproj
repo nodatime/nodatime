@@ -164,7 +164,6 @@
     <Compile Include="Calendars\PersianYearMonthDayCalculator.cs" />
     <Compile Include="Calendars\RegularYearMonthDayCalculator.cs" />
     <Compile Include="Calendars\TickArithmetic.cs" />
-    <Compile Include="Calendars\TimeOfDayCalculator.cs" />
     <Compile Include="Calendars\WeekYearCalculator.cs" />
     <Compile Include="Calendars\YearMonthDayCalculator.cs" />
     <Compile Include="Calendars\YearStartCacheEntry.cs" />
