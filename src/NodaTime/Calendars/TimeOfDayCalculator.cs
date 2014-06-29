@@ -15,113 +15,14 @@ namespace NodaTime.Calendars
     /// </summary>
     internal static class TimeOfDayCalculator
     {
-        internal static long GetTicks(int hourOfDay, int minuteOfHour)
+        internal static int GetHourOfHalfDayFromTickOfDay(long tickOfDay)
         {
-            Preconditions.CheckArgumentRange("hourOfDay", hourOfDay, 0, NodaConstants.HoursPerStandardDay - 1);
-            Preconditions.CheckArgumentRange("minuteOfHour", minuteOfHour, 0, NodaConstants.MinutesPerHour - 1);
-            return unchecked(hourOfDay * NodaConstants.TicksPerHour +
-                 minuteOfHour * NodaConstants.TicksPerMinute);
+            return GetHourOfDayFromTickOfDay(tickOfDay) % 12;
         }
 
-        internal static long GetTicks(int hourOfDay, int minuteOfHour, int secondOfMinute)
+        internal static int GetClockHourOfHalfDayFromTickOfDay(long tickOfDay)
         {
-            Preconditions.CheckArgumentRange("hourOfDay", hourOfDay, 0, NodaConstants.HoursPerStandardDay - 1);
-            Preconditions.CheckArgumentRange("minuteOfHour", minuteOfHour, 0, NodaConstants.MinutesPerHour - 1);
-            Preconditions.CheckArgumentRange("secondOfMinute", secondOfMinute, 0, NodaConstants.SecondsPerMinute - 1);
-            return unchecked(hourOfDay * NodaConstants.TicksPerHour +
-                 minuteOfHour * NodaConstants.TicksPerMinute +
-                 secondOfMinute * NodaConstants.TicksPerSecond);
-        }
-
-        internal static long GetTicks(int hourOfDay, int minuteOfHour, int secondOfMinute, int millisecondOfSecond,
-                                      int tickOfMillisecond)
-        {
-            Preconditions.CheckArgumentRange("hourOfDay", hourOfDay, 0, NodaConstants.HoursPerStandardDay - 1);
-            Preconditions.CheckArgumentRange("minuteOfHour", minuteOfHour, 0, NodaConstants.MinutesPerHour - 1);
-            Preconditions.CheckArgumentRange("secondOfMinute", secondOfMinute, 0, NodaConstants.SecondsPerMinute - 1);
-            Preconditions.CheckArgumentRange("millisecondOfSecond", millisecondOfSecond, 0, NodaConstants.MillisecondsPerSecond - 1);
-            Preconditions.CheckArgumentRange("tickOfMillisecond", tickOfMillisecond, 0, NodaConstants.TicksPerMillisecond - 1);
-            return unchecked(hourOfDay * NodaConstants.TicksPerHour +
-                 minuteOfHour * NodaConstants.TicksPerMinute +
-                 secondOfMinute * NodaConstants.TicksPerSecond +
-                 millisecondOfSecond * NodaConstants.TicksPerMillisecond +
-                 tickOfMillisecond);
-        }
-
-        internal static long GetTickOfDay(LocalInstant localInstant)
-        {
-            // This is guaranteed not to overflow based on the operations we'll be performing.
-            unchecked
-            {
-                long ticks = localInstant.Ticks;
-                if (ticks >= 0)
-                {
-                    // Surprisingly enough, this is faster than (but equivalent to)
-                    // return ticks % NodaConstants.TicksPerStandardDay;
-                    int days = TickArithmetic.FastTicksToDays(ticks);
-                    return ticks - ((days * 52734375L) << 14);
-                }
-                else
-                {
-                    // I'm sure this can be optimized using shifting, but it's complicated enough as it is...
-                    return (NodaConstants.TicksPerStandardDay - 1) + ((ticks + 1) % NodaConstants.TicksPerStandardDay);
-                }
-            }
-        }
-
-        internal static int GetTickOfSecond(LocalInstant localInstant)
-        {
-            return GetTickOfSecondFromTickOfDay(GetTickOfDay(localInstant));
-        }
-
-        internal static int GetTickOfMillisecond(LocalInstant localInstant)
-        {
-            return (int) (GetTickOfDay(localInstant) % NodaConstants.TicksPerMillisecond);
-        }
-
-        internal static int GetMillisecondOfSecond(LocalInstant localInstant)
-        {
-            return GetMillisecondOfSecondFromTickOfDay(GetTickOfDay(localInstant));
-        }
-
-        internal static int GetMillisecondOfDay(LocalInstant localInstant)
-        {
-            return (int) (GetTickOfDay(localInstant) / NodaConstants.TicksPerMillisecond);
-        }
-
-        internal static int GetSecondOfMinute(LocalInstant localInstant)
-        {
-            return GetSecondOfMinuteFromTickOfDay(GetTickOfDay(localInstant));
-        }
-
-        internal static int GetSecondOfDay(LocalInstant localInstant)
-        {
-            return (int) (GetTickOfDay(localInstant) / NodaConstants.TicksPerSecond);
-        }
-
-        internal static int GetMinuteOfHour(LocalInstant localInstant)
-        {
-            return GetMinuteOfHourFromTickOfDay(GetTickOfDay(localInstant));
-        }
-
-        internal static int GetMinuteOfDay(LocalInstant localInstant)
-        {
-            return (int) (GetTickOfDay(localInstant) / NodaConstants.TicksPerMinute);
-        }
-
-        internal static int GetHourOfDay(LocalInstant localInstant)
-        {
-            return GetHourOfDayFromTickOfDay(GetTickOfDay(localInstant));
-        }
-
-        internal static int GetHourOfHalfDay(LocalInstant localInstant)
-        {
-            return GetHourOfDay(localInstant) % 12;
-        }
-
-        internal static int GetClockHourOfHalfDay(LocalInstant localInstant)
-        {
-            int hourOfHalfDay = GetHourOfHalfDay(localInstant);
+            int hourOfHalfDay = GetHourOfHalfDayFromTickOfDay(tickOfDay);
             return hourOfHalfDay == 0 ? 12 : hourOfHalfDay;
         }
 

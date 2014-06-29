@@ -9,7 +9,6 @@ using System.Globalization;
 using JetBrains.Annotations;
 using NodaTime.Annotations;
 using NodaTime.Calendars;
-using NodaTime.Fields;
 using NodaTime.Utility;
 
 namespace NodaTime
@@ -692,11 +691,6 @@ namespace NodaTime
         }
 
         #region "Getter" methods which used to be DateTimeField
-        internal int GetClockHourOfHalfDay(LocalInstant localInstant)
-        {
-            return TimeOfDayCalculator.GetClockHourOfHalfDay(localInstant);
-        }
-
         internal int GetDayOfWeek(YearMonthDay yearMonthDay)
         {
             return weekYearCalculator.GetDayOfWeek(yearMonthDay);
