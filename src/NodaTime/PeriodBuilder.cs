@@ -129,13 +129,16 @@ namespace NodaTime
             }
             set
             {
+                if ((unit & PeriodUnits.AllDateUnits) != 0)
+                {
+                    Preconditions.CheckArgumentRange("value", value, int.MinValue, int.MaxValue);
+                }
                 switch (unit)
                 {
-                    case PeriodUnits.Years: Years = (int) Preconditions.CheckArgumentRange("value", value, int.MinValue, int.MaxValue); return;
-                    case PeriodUnits.Months: Months = (int) Preconditions.CheckArgumentRange("value", value, int.MinValue, int.MaxValue); return;
-                    case PeriodUnits.Weeks: Weeks = (int) Preconditions.CheckArgumentRange("value", value, int.MinValue, int.MaxValue); return;
-                    case PeriodUnits.Days: Days = (int) Preconditions.CheckArgumentRange("value", value, int.MinValue, int.MaxValue); return;
-                    case PeriodUnits.Hours: Hours = value; return;
+                    case PeriodUnits.Years: Years = (int) value; return;
+                    case PeriodUnits.Months: Months = (int) value; return;
+                    case PeriodUnits.Weeks: Weeks = (int) value; return;
+                    case PeriodUnits.Days: Days = (int) value; return;
                     case PeriodUnits.Minutes: Minutes = value; return;
                     case PeriodUnits.Seconds: Seconds = value; return;
                     case PeriodUnits.Milliseconds: Milliseconds = value; return;
