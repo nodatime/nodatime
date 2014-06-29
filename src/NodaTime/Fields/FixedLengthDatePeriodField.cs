@@ -37,7 +37,7 @@ namespace NodaTime.Fields
                 int newDayOfMonth = day + daysToAdd;
                 if (1 <= newDayOfMonth && newDayOfMonth <= calculator.GetDaysInMonth(year, month))
                 {
-                    return new LocalDate(new YearMonthDay(year, month, newDayOfMonth), localDate.Calendar);
+                    return new LocalDate(new YearMonthDay(year, month, newDayOfMonth), calendar);
                 }
                 int dayOfYear = calculator.GetDayOfYear(yearMonthDay);
                 int newDayOfYear = dayOfYear + daysToAdd;

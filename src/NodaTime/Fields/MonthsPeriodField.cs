@@ -18,9 +18,10 @@ namespace NodaTime.Fields
 
         public LocalDate Add(LocalDate localDate, int value)
         {
-            var calculator = localDate.Calendar.YearMonthDayCalculator;
+            var calendar = localDate.Calendar;
+            var calculator = calendar.YearMonthDayCalculator;
             var yearMonthDay = calculator.AddMonths(localDate.YearMonthDay, value);
-            return new LocalDate(yearMonthDay, localDate.Calendar);
+            return new LocalDate(yearMonthDay, calendar);
         }
 
         public int Subtract(LocalDate minuendDate, LocalDate subtrahendDate)

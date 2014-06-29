@@ -23,11 +23,12 @@ namespace NodaTime.Fields
                 return localDate;
             }
             YearMonthDay yearMonthDay = localDate.YearMonthDay;
-            var calculator = localDate.Calendar.YearMonthDayCalculator;
+            var calendar = localDate.Calendar;
+            var calculator = calendar.YearMonthDayCalculator;
             int currentYear = yearMonthDay.Year;
             // Adjust argument range based on current year
             Preconditions.CheckArgumentRange("value", value, calculator.MinYear - currentYear, calculator.MaxYear - currentYear);
-            return new LocalDate(calculator.SetYear(yearMonthDay, currentYear + value), localDate.Calendar);
+            return new LocalDate(calculator.SetYear(yearMonthDay, currentYear + value), calendar);
         }
 
         public int Subtract(LocalDate minuendDate, LocalDate subtrahendDate)
