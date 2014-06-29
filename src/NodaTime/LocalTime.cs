@@ -257,32 +257,86 @@ namespace NodaTime
         /// <summary>
         /// Gets the hour of day of this local time, in the range 0 to 23 inclusive.
         /// </summary>
-        public int Hour { get { return TimeOfDayCalculator.GetHourOfDayFromTickOfDay(ticks); } }
+        public int Hour
+        {
+            get
+            {
+                // Effectively tickOfDay / NodaConstants.TicksPerHour.
+                // Note that NodaConstants.TicksPerStandardDay >> 11 is about 491 million; less than int.MaxValue.
+                return ((int) (ticks >> 11)) / 17578125;
+            }
+        }
 
         /// <summary>
         /// Gets the hour of the half-day of this local time, in the range 1 to 12 inclusive.
         /// </summary>
-        public int ClockHourOfHalfDay { get { return TimeOfDayCalculator.GetClockHourOfHalfDayFromTickOfDay(ticks); } }
+        public int ClockHourOfHalfDay
+        {
+            get
+            {
+                unchecked
+                {
+                    int hourOfHalfDay = HourOfHalfDay;
+                    return hourOfHalfDay == 0 ? 12 : hourOfHalfDay;
+                }
+            }
+        }
+
+        // TODO(2.0): Consider exposing this.
+        /// <summary>
+        /// Gets the hour of the half-day of this local time, in the range 0 to 11 inclusive.
+        /// </summary>
+        internal int HourOfHalfDay { get { return unchecked(Hour % 12); } }
 
         /// <summary>
         /// Gets the minute of this local time, in the range 0 to 59 inclusive.
         /// </summary>
-        public int Minute { get { return TimeOfDayCalculator.GetMinuteOfHourFromTickOfDay(ticks); } }
+        public int Minute
+        {
+            get
+            {
+                unchecked
+                {
+                    int minuteOfDay = (int) (ticks / (int) NodaConstants.TicksPerMinute);
+                    return minuteOfDay % NodaConstants.MinutesPerHour;
+                }
+            }
+        }
 
         /// <summary>
         /// Gets the second of this local time within the minute, in the range 0 to 59 inclusive.
         /// </summary>
-        public int Second { get { return TimeOfDayCalculator.GetSecondOfMinuteFromTickOfDay(ticks); } }
+        public int Second
+        {
+            get
+            {
+                unchecked
+                {
+                    int secondOfDay = (int) (ticks / (int) NodaConstants.TicksPerSecond);
+                    return secondOfDay % NodaConstants.SecondsPerMinute;
+                }
+            }
+        }
 
         /// <summary>
         /// Gets the millisecond of this local time within the second, in the range 0 to 999 inclusive.
         /// </summary>
-        public int Millisecond { get { return TimeOfDayCalculator.GetMillisecondOfSecondFromTickOfDay(ticks); } }
+        public int Millisecond
+        {
+            get
+            {
+                unchecked
+                {
+                    long milliSecondOfDay = (ticks / (int) NodaConstants.TicksPerMillisecond);
+                    return (int) (milliSecondOfDay % NodaConstants.MillisecondsPerSecond);
+                }
+            }
+        }
 
         /// <summary>
         /// Gets the tick of this local time within the second, in the range 0 to 9,999,999 inclusive.
         /// </summary>
-        public int TickOfSecond { get { return TimeOfDayCalculator.GetTickOfSecondFromTickOfDay(ticks); } }
+        public int TickOfSecond { get { return unchecked((int) (ticks % (int) NodaConstants.TicksPerSecond)); } }
 
         /// <summary>
         /// Gets the tick of this local time within the day, in the range 0 to 863,999,999,999 inclusive.
