@@ -209,6 +209,17 @@ namespace NodaTime.Test
             Assert.AreEqual(expectedBackward, start.PlusTicks(-NodaConstants.TicksPerStandardDay));
         }
 
+        [Test]
+        public void Plus_FullPeriod()
+        {
+            LocalDateTime start = new LocalDateTime(2011, 4, 2, 12, 15, 8);
+            var period = new PeriodBuilder { Years = 1, Months = 2, Weeks = 3, Days = 4, Hours = 5, Minutes = 6,
+                                             Seconds = 7, Milliseconds = 8, Ticks = 9 }.Build();
+            var actual = start.Plus(period);
+            var expected = new LocalDateTime(2012, 6, 27, 17, 21, 15, 8, 9);
+            Assert.AreEqual(expected, actual);
+        }
+
         // Each test case gives a day-of-month in November 2011 and a target "next day of week";
         // the result is the next day-of-month in November 2011 with that target day.
         // The tests are picked somewhat arbitrarily...

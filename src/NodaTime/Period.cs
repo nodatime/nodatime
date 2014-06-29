@@ -461,7 +461,7 @@ namespace NodaTime
             time = TimePeriodField.Minutes.Add(time, minutes * scalar, ref extraDays);
             time = TimePeriodField.Seconds.Add(time, seconds * scalar, ref extraDays);
             time = TimePeriodField.Milliseconds.Add(time, milliseconds * scalar, ref extraDays);
-            time = TimePeriodField.Milliseconds.Add(time, ticks * scalar, ref extraDays);
+            time = TimePeriodField.Ticks.Add(time, ticks * scalar, ref extraDays);
             // TODO(2.0): Investigate the performance impact of us calling PlusDays twice.
             // Could optimize by including that in a single call...
             return new LocalDateTime(date.PlusDays(extraDays), time);
