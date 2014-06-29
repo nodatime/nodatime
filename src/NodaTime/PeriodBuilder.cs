@@ -139,6 +139,7 @@ namespace NodaTime
                     case PeriodUnits.Months: Months = (int) value; return;
                     case PeriodUnits.Weeks: Weeks = (int) value; return;
                     case PeriodUnits.Days: Days = (int) value; return;
+                    case PeriodUnits.Hours: Hours = value; return;
                     case PeriodUnits.Minutes: Minutes = value; return;
                     case PeriodUnits.Seconds: Seconds = value; return;
                     case PeriodUnits.Milliseconds: Milliseconds = value; return;
