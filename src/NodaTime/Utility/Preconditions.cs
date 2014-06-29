@@ -26,7 +26,7 @@ namespace NodaTime.Utility
             return argument;
         }
 
-        internal static long CheckArgumentRange([InvokerParameterName] string paramName, long value, long minInclusive, long maxInclusive)
+        internal static void CheckArgumentRange([InvokerParameterName] string paramName, long value, long minInclusive, long maxInclusive)
         {
             if (value < minInclusive || value > maxInclusive)
             {
@@ -38,13 +38,12 @@ namespace NodaTime.Utility
                     "Value should be in range [" + minInclusive + "-" + maxInclusive + "]");
 #endif
             }
-            return value;
         }
 
         // Note: this overload exists for performance reasons. It would be reasonable to call the
         // version using "long" values, but we'd incur conversions on every call. This method
         // may well be called very often.
-        internal static int CheckArgumentRange([InvokerParameterName] string paramName, int value, int minInclusive, int maxInclusive)
+        internal static void CheckArgumentRange([InvokerParameterName] string paramName, int value, int minInclusive, int maxInclusive)
         {
             if (value < minInclusive || value > maxInclusive)
             {
@@ -56,7 +55,6 @@ namespace NodaTime.Utility
                     "Value should be in range [" + minInclusive + "-" + maxInclusive + "]");
 #endif
             }
-            return value;
         }
 
         [ContractAnnotation("expression:false => halt")]
