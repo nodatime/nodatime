@@ -56,8 +56,13 @@ namespace NodaTime
             this.calendar = calendar;
         }
 
+        /// <summary>
+        /// Constructs an instance from the number of days since the unix epoch, and a calendar
+        /// system. The calendar system is assumed to be non-null, but the days since the epoch are
+        /// validated.
+        /// </summary>
         internal LocalDate(int daysSinceEpoch, CalendarSystem calendar)
-            : this(Preconditions.CheckNotNull(calendar, "calendar").GetYearMonthDayFromDaysSinceEpoch(daysSinceEpoch), calendar)
+            : this(calendar.GetYearMonthDayFromDaysSinceEpoch(daysSinceEpoch), calendar)
         {
         }
 
