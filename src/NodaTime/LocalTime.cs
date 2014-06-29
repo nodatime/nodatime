@@ -262,7 +262,7 @@ namespace NodaTime
         /// <summary>
         /// Gets the hour of the half-day of this local time, in the range 1 to 12 inclusive.
         /// </summary>
-        public int ClockHourOfHalfDay { get { return CalendarSystem.Iso.GetClockHourOfHalfDay(new LocalInstant(ticks)); } }
+        public int ClockHourOfHalfDay { get { return TimeOfDayCalculator.GetClockHourOfHalfDayFromTickOfDay(ticks); } }
 
         /// <summary>
         /// Gets the minute of this local time, in the range 0 to 59 inclusive.
