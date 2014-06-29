@@ -14,7 +14,19 @@ namespace NodaTime.Benchmarks.BclTests
         private static readonly DateTime Sample = new DateTime(2009, 12, 26, 10, 8, 30, 234, DateTimeKind.Local);
 
         [Benchmark]
-        public void Construction()
+        public void ConstructionToDay()
+        {
+            new DateTime(2009, 12, 26).Consume();
+        }
+
+        [Benchmark]
+        public void ConstructionToSecond()
+        {
+            new DateTime(2009, 12, 26, 10, 8, 30, DateTimeKind.Local).Consume();
+        }
+
+        [Benchmark]
+        public void ConstructionToMillisecond()
         {
             new DateTime(2009, 12, 26, 10, 8, 30, 234, DateTimeKind.Local).Consume();
         }

@@ -3,6 +3,7 @@
 // as found in the LICENSE.txt file.
 
 using System;
+using System.Diagnostics;
 using System.Globalization;
 using System.Runtime.Serialization;
 using System.Xml;
@@ -70,8 +71,13 @@ namespace NodaTime
         /// <returns>The resulting time.</returns>
         public LocalTime(int hour, int minute)
         {
-            Preconditions.CheckArgumentRange("hour", hour, 0, NodaConstants.HoursPerStandardDay - 1);
-            Preconditions.CheckArgumentRange("minute", minute, 0, NodaConstants.MinutesPerHour - 1);
+            // Avoid the method calls which give a decent exception unless we're actually going to fail.
+            if (hour < 0 || hour > NodaConstants.HoursPerStandardDay - 1 ||
+                minute < 0 || minute > NodaConstants.MinutesPerHour - 1)
+            {
+                Preconditions.CheckArgumentRange("hour", hour, 0, NodaConstants.HoursPerStandardDay - 1);
+                Preconditions.CheckArgumentRange("minute", minute, 0, NodaConstants.MinutesPerHour - 1);
+            }
             ticks = unchecked(hour * NodaConstants.TicksPerHour + minute * NodaConstants.TicksPerMinute);
         }
 
@@ -86,9 +92,15 @@ namespace NodaTime
         /// <returns>The resulting time.</returns>
         public LocalTime(int hour, int minute, int second)
         {
-            Preconditions.CheckArgumentRange("hour", hour, 0, NodaConstants.HoursPerStandardDay - 1);
-            Preconditions.CheckArgumentRange("minute", minute, 0, NodaConstants.MinutesPerHour - 1);
-            Preconditions.CheckArgumentRange("second", second, 0, NodaConstants.SecondsPerMinute - 1);
+            // Avoid the method calls which give a decent exception unless we're actually going to fail.
+            if (hour < 0 || hour > NodaConstants.HoursPerStandardDay - 1 ||
+                minute < 0 || minute > NodaConstants.MinutesPerHour - 1 ||
+                second < 0 || second > NodaConstants.SecondsPerHour - 1)
+            {
+                Preconditions.CheckArgumentRange("hour", hour, 0, NodaConstants.HoursPerStandardDay - 1);
+                Preconditions.CheckArgumentRange("minute", minute, 0, NodaConstants.MinutesPerHour - 1);
+                Preconditions.CheckArgumentRange("second", second, 0, NodaConstants.SecondsPerMinute - 1);
+            }
             ticks = unchecked(hour * NodaConstants.TicksPerHour +
                 minute * NodaConstants.TicksPerMinute +
                 second * NodaConstants.TicksPerSecond);
@@ -106,10 +118,17 @@ namespace NodaTime
         /// <returns>The resulting time.</returns>
         public LocalTime(int hour, int minute, int second, int millisecond)
         {
-            Preconditions.CheckArgumentRange("hour", hour, 0, NodaConstants.HoursPerStandardDay - 1);
-            Preconditions.CheckArgumentRange("minute", minute, 0, NodaConstants.MinutesPerHour - 1);
-            Preconditions.CheckArgumentRange("second", second, 0, NodaConstants.SecondsPerMinute - 1);
-            Preconditions.CheckArgumentRange("millisecond", millisecond, 0, NodaConstants.MillisecondsPerSecond - 1);
+            // Avoid the method calls which give a decent exception unless we're actually going to fail.
+            if (hour < 0 || hour > NodaConstants.HoursPerStandardDay - 1 ||
+                minute < 0 || minute > NodaConstants.MinutesPerHour - 1 ||
+                second < 0 || second > NodaConstants.SecondsPerHour - 1 ||
+                millisecond < 0 || millisecond > NodaConstants.MillisecondsPerSecond - 1)
+            {
+                Preconditions.CheckArgumentRange("hour", hour, 0, NodaConstants.HoursPerStandardDay - 1);
+                Preconditions.CheckArgumentRange("minute", minute, 0, NodaConstants.MinutesPerHour - 1);
+                Preconditions.CheckArgumentRange("second", second, 0, NodaConstants.SecondsPerMinute - 1);
+                Preconditions.CheckArgumentRange("millisecond", millisecond, 0, NodaConstants.MillisecondsPerSecond - 1);
+            }
             ticks = unchecked(
                 hour * NodaConstants.TicksPerHour +
                 minute * NodaConstants.TicksPerMinute +
@@ -129,11 +148,19 @@ namespace NodaTime
         /// <returns>The resulting time.</returns>
         public LocalTime(int hour, int minute, int second, int millisecond, int tickWithinMillisecond)
         {
-            Preconditions.CheckArgumentRange("hour", hour, 0, NodaConstants.HoursPerStandardDay - 1);
-            Preconditions.CheckArgumentRange("minute", minute, 0, NodaConstants.MinutesPerHour - 1);
-            Preconditions.CheckArgumentRange("second", second, 0, NodaConstants.SecondsPerMinute - 1);
-            Preconditions.CheckArgumentRange("millisecond", millisecond, 0, NodaConstants.MillisecondsPerSecond - 1);
-            Preconditions.CheckArgumentRange("tickWithinMillisecond", tickWithinMillisecond, 0, NodaConstants.TicksPerMillisecond - 1);
+            // Avoid the method calls which give a decent exception unless we're actually going to fail.
+            if (hour < 0 || hour > NodaConstants.HoursPerStandardDay - 1 ||
+                minute < 0 || minute > NodaConstants.MinutesPerHour - 1 ||
+                second < 0 || second > NodaConstants.SecondsPerHour - 1 ||
+                millisecond < 0 || millisecond > NodaConstants.MillisecondsPerSecond - 1 ||
+                tickWithinMillisecond < 0 || tickWithinMillisecond > NodaConstants.TicksPerMillisecond - 1)
+            {
+                Preconditions.CheckArgumentRange("hour", hour, 0, NodaConstants.HoursPerStandardDay - 1);
+                Preconditions.CheckArgumentRange("minute", minute, 0, NodaConstants.MinutesPerHour - 1);
+                Preconditions.CheckArgumentRange("second", second, 0, NodaConstants.SecondsPerMinute - 1);
+                Preconditions.CheckArgumentRange("millisecond", millisecond, 0, NodaConstants.MillisecondsPerSecond - 1);
+                Preconditions.CheckArgumentRange("tickWithinMillisecond", tickWithinMillisecond, 0, NodaConstants.TicksPerMillisecond - 1);
+            }
             ticks = unchecked(
                 hour * NodaConstants.TicksPerHour +
                 minute * NodaConstants.TicksPerMinute +
@@ -156,10 +183,17 @@ namespace NodaTime
         /// <returns>The resulting time.</returns>
         public static LocalTime FromHourMinuteSecondTick(int hour, int minute, int second, int tickWithinSecond)
         {
-            Preconditions.CheckArgumentRange("hour", hour, 0, NodaConstants.HoursPerStandardDay - 1);
-            Preconditions.CheckArgumentRange("minute", minute, 0, NodaConstants.MinutesPerHour - 1);
-            Preconditions.CheckArgumentRange("second", second, 0, NodaConstants.SecondsPerMinute - 1);
-            Preconditions.CheckArgumentRange("tickWithinSecond", tickWithinSecond, 0, NodaConstants.TicksPerSecond - 1);
+            // Avoid the method calls which give a decent exception unless we're actually going to fail.
+            if (hour < 0 || hour > NodaConstants.HoursPerStandardDay - 1 ||
+                minute < 0 || minute > NodaConstants.MinutesPerHour - 1 ||
+                second < 0 || second > NodaConstants.SecondsPerHour - 1 ||
+                tickWithinSecond < 0 || tickWithinSecond > NodaConstants.TicksPerSecond - 1)
+            {
+                Preconditions.CheckArgumentRange("hour", hour, 0, NodaConstants.HoursPerStandardDay - 1);
+                Preconditions.CheckArgumentRange("minute", minute, 0, NodaConstants.MinutesPerHour - 1);
+                Preconditions.CheckArgumentRange("second", second, 0, NodaConstants.SecondsPerMinute - 1);
+                Preconditions.CheckArgumentRange("tickWithinSecond", tickWithinSecond, 0, NodaConstants.TicksPerSecond - 1);
+            }
             return new LocalTime(unchecked(
                 hour * NodaConstants.TicksPerHour +
                 minute * NodaConstants.TicksPerMinute +
@@ -174,7 +208,11 @@ namespace NodaTime
         /// <returns>The resulting time.</returns>
         public static LocalTime FromTicksSinceMidnight(long ticks)
         {
-            Preconditions.CheckArgumentRange("ticks", ticks, 0, NodaConstants.TicksPerStandardDay - 1);
+            // Avoid the method calls which give a decent exception unless we're actually going to fail.
+            if (ticks < 0 || ticks > NodaConstants.TicksPerStandardDay - 1)
+            {
+                Preconditions.CheckArgumentRange("ticks", ticks, 0, NodaConstants.TicksPerStandardDay - 1);
+            }
             return new LocalTime(ticks);
         }
 
@@ -185,7 +223,11 @@ namespace NodaTime
         /// <returns>The resulting time.</returns>
         public static LocalTime FromMillisecondsSinceMidnight(int milliseconds)
         {
-            Preconditions.CheckArgumentRange("milliseconds", milliseconds, 0, NodaConstants.MillisecondsPerStandardDay - 1);
+            // Avoid the method calls which give a decent exception unless we're actually going to fail.
+            if (milliseconds < 0 || milliseconds > NodaConstants.MillisecondsPerStandardDay - 1)
+            {
+                Preconditions.CheckArgumentRange("milliseconds", milliseconds, 0, NodaConstants.MillisecondsPerStandardDay - 1);
+            }
             return new LocalTime(unchecked(milliseconds * NodaConstants.TicksPerMillisecond));
         }
 
@@ -196,12 +238,16 @@ namespace NodaTime
         /// <returns>The resulting time.</returns>
         public static LocalTime FromSecondsSinceMidnight(int seconds)
         {
-            Preconditions.CheckArgumentRange("seconds", seconds, 0, NodaConstants.SecondsPerStandardDay - 1);
+            // Avoid the method calls which give a decent exception unless we're actually going to fail.
+            if (seconds < 0 || seconds > NodaConstants.SecondsPerStandardDay - 1)
+            {
+                Preconditions.CheckArgumentRange("seconds", seconds, 0, NodaConstants.SecondsPerStandardDay - 1);
+            }
             return new LocalTime(unchecked(seconds * NodaConstants.TicksPerSecond));
         }
 
         /// <summary>
-        /// Constructor only called from other parts of Noda Time - trusted to be within January 1st 1970 UTC.
+        /// Constructor only called from other parts of Noda Time - trusted to be the range [0, TicksPerStandardDay).
         /// </summary>
         internal LocalTime(long ticks)
         {
