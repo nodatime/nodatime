@@ -4,6 +4,7 @@ using System.Collections.Immutable;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Web;
 using System.Xml.Linq;
 using System.Xml.XPath;
@@ -23,6 +24,7 @@ namespace NodaTime.Web.Storage
         {
             AllRuns = allRuns;
             RunsByMachine = allRuns.ToLookup(x => x.Machine);
+            LoadingTime = loadingTime;
         }
 
         internal BenchmarkRun GetRun(string machine, string label)
@@ -34,7 +36,6 @@ namespace NodaTime.Web.Storage
         {
             Stopwatch sw = Stopwatch.StartNew();
             string index = Path.Combine(directory, "index.txt");
-            DateTime lastModified = File.GetLastWriteTime(index);
             var files = File.ReadLines(index)
                 .Select(file => XDocument.Load(Path.Combine(directory, file)))
                 .Select(BenchmarkRun.FromXDocument)
