@@ -9,6 +9,12 @@ namespace NodaTime.Fields
     /// <summary>
     /// Period field class representing a field with a fixed duration regardless of when it occurs.
     /// </summary>
+    /// <remarks>
+    /// 2014-06-29: Tried optimizing time period calculations by making these static methods accepting
+    /// the number of ticks. I'd expected that to be really significant, given that it would avoid
+    /// finding the object etc. It turned out to make about 10% difference, at the cost of quite a bit
+    /// of code elegance.
+    /// </remarks>
     internal sealed class TimePeriodField
     {
         internal static readonly TimePeriodField Ticks = new TimePeriodField(1);
