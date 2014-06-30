@@ -33,7 +33,9 @@ namespace NodaTime.Web.Controllers
         // GET: /Benchmarks/Machines
         public ActionResult Machines()
         {
-            var machines = repositoryWatcher.Get().RunsByMachine.Select(g => g.Key).ToList();
+            var repository = repositoryWatcher.Get();
+            var machines = repository.RunsByMachine.Select(g => g.Key).ToList();
+            ViewBag.LoadingTime = repository.LoadingTime;
             return View(machines);
         }
 

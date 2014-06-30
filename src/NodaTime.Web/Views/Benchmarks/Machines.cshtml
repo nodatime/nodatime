@@ -10,3 +10,5 @@
         <li>@Html.ActionLink(item, "Machine", new { machine = item })</li>
     }
 </ul>
+
+<p>Loading time: @{(long) ViewBag.LoadingTime.TotalMilliseconds}ms</p>
