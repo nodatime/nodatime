@@ -20,9 +20,14 @@ namespace NodaTime.Web.Controllers
         {
             string root = HostingEnvironment.ApplicationPhysicalPath;
             string benchmarkData = Path.Combine(root, "benchmarkdata");
+            /*
             repositoryWatcher = new FileWatchingReloader<BenchmarkRepository>(
                 Path.Combine(benchmarkData, "index.txt"),
                 () => BenchmarkRepository.Load(benchmarkData),
+                ReloadTime);*/
+            repositoryWatcher = new FileWatchingReloader<BenchmarkRepository>(
+                Path.Combine(benchmarkData, "benchmarks.xml"),
+                () => BenchmarkRepository.LoadSingleFile(Path.Combine(benchmarkData, "benchmarks.xml")),
                 ReloadTime);
             string logFile = Path.Combine(root, "hg-log.xml");
             logWatcher = new FileWatchingReloader<MercurialLog>(logFile, () => MercurialLog.Load(logFile), ReloadTime);
@@ -36,6 +41,7 @@ namespace NodaTime.Web.Controllers
             var repository = repositoryWatcher.Get();
             var machines = repository.RunsByMachine.Select(g => g.Key).ToList();
             ViewBag.LoadingTime = repository.LoadingTime;
+            ViewBag.Loaded = repository.Loaded;
             return View(machines);
         }
 
