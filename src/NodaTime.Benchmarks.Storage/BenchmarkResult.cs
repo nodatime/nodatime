@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Xml.Linq;
+using BenchmarkResultProto = NodaTime.Benchmarks.Storage.Proto.BenchmarkResult;
 
-namespace NodaTime.Web.Storage
+namespace NodaTime.Benchmarks.Storage
 {
     /// <summary>
     /// A single result from a benchmark run. This involves calling a single method multiple
@@ -16,15 +17,11 @@ namespace NodaTime.Web.Storage
         private const long TicksPerPicosecond = 100 * 1000L;
         private const long TicksPerNanosecond = 100;
 
-        private readonly string type;
-        private readonly string clrNamespace;
         private readonly string method;
         private readonly int iterations;
         private readonly TimeSpan duration;
         private readonly string fullyQualifiedMethod;
 
-        public string Type { get { return type; } }
-        public string Namespace { get { return clrNamespace; } }
         public string Method { get { return method; } }
         public string FullyQualifiedMethod { get { return fullyQualifiedMethod; } }
         public int Iterations { get { return iterations; } }
@@ -33,26 +30,37 @@ namespace NodaTime.Web.Storage
         public long NanosecondsPerCall { get { return (Duration.Ticks * TicksPerNanosecond) / iterations; } }
         public long PicosecondsPerCall { get { return (Duration.Ticks * TicksPerPicosecond) / iterations; } }
 
-        private BenchmarkResult(string clrNamespace, string type, string method, int iterations, TimeSpan duration)
+        private BenchmarkResult(string qualifiedType, string method, int iterations, TimeSpan duration)
         {
-            this.clrNamespace = clrNamespace;
-            this.type = type;
             this.method = method;
             this.iterations = iterations;
             this.duration = duration;
-            // Redundant, but means we only need to format once.
-            this.fullyQualifiedMethod = string.Format("{0}.{1}.{2}", clrNamespace, type, method);
+            this.fullyQualifiedMethod = string.Format("{0}.{1}", qualifiedType, method);
         }
 
-        internal static BenchmarkResult FromXElement(XElement element)
+        public static BenchmarkResult FromXElement(string qualifiedType, XElement element)
         {
-            XElement typeElement = element.Parent;
             return new BenchmarkResult(
-                clrNamespace: typeElement.Attribute("namespace").Value,
-                type: typeElement.Attribute("name").Value,
+                qualifiedType: qualifiedType,
                 method: element.Attribute("method").Value,
                 iterations: (int) element.Attribute("iterations"),
                 duration: TimeSpan.FromTicks((long) element.Attribute("duration")));
+        }
+
+        public static BenchmarkResult FromProto(string qualifiedType, BenchmarkResultProto proto)
+        {
+            return new BenchmarkResult(qualifiedType, 
+                proto.Method, proto.Iterations, new TimeSpan(proto.DurationTicks));
+        }
+
+        public BenchmarkResultProto ToProto()
+        {
+            return new BenchmarkResultProto.Builder
+            {
+                Method = method,
+                Iterations = iterations,
+                DurationTicks = duration.Ticks
+            }.Build();
         }
     }
 }

@@ -1,0 +1,20 @@
+package NodaTime.Benchmarks.Storage.Proto;
+
+message BenchmarkTypeResult {
+  required string type = 1;
+  required string clr_namespace = 2;
+  repeated BenchmarkResult results = 3;
+}
+
+message BenchmarkResult {
+  required string method = 3;
+  required int32 iterations = 4;
+  required int64 duration_ticks = 5;
+}
+
+message BenchmarkRun {
+  required string machine = 1;
+  optional string label = 2;
+  optional int64 start_ticks_since_0001 = 3;
+  repeated BenchmarkTypeResult type_results = 4;
+}

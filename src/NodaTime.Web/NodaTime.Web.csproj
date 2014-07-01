@@ -40,6 +40,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Google.ProtocolBuffers">
+      <HintPath>..\packages\Google.ProtocolBuffers.2.4.1.521\lib\net40\Google.ProtocolBuffers.dll</HintPath>
+    </Reference>
+    <Reference Include="Google.ProtocolBuffers.Serialization">
+      <HintPath>..\packages\Google.ProtocolBuffers.2.4.1.521\lib\net40\Google.ProtocolBuffers.Serialization.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="MoreLinq">
       <HintPath>..\packages\morelinq.1.0.16006\lib\net35\MoreLinq.dll</HintPath>
@@ -126,20 +132,24 @@
     <Compile Include="Models\MethodHistoryModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Storage\BenchmarkRepository.cs" />
-    <Compile Include="Storage\BenchmarkResult.cs" />
-    <Compile Include="Storage\BenchmarkRun.cs" />
     <Compile Include="Storage\FileWatchingReloader.cs" />
     <Compile Include="Storage\MercurialLog.cs" />
     <Compile Include="Storage\MercurialLogEntry.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="CHANGES.txt" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="licenses\license.txt" />
+    <Content Include="licenses\protoc-license.txt" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="protos\tutorial\addressbook.proto" />
+    <Content Include="protos\google\protobuf\descriptor.proto" />
+    <Content Include="protos\google\protobuf\csharp_options.proto" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -180,6 +190,12 @@
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\NodaTime.Benchmarks.Storage\NodaTime.Benchmarks.Storage.csproj">
+      <Project>{4efbc06c-5113-470a-9cfe-5a8aee0225da}</Project>
+      <Name>NodaTime.Benchmarks.Storage</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

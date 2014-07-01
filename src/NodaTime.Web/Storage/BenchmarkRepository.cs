@@ -8,6 +8,7 @@ using System.Threading;
 using System.Web;
 using System.Xml.Linq;
 using System.Xml.XPath;
+using NodaTime.Benchmarks.Storage;
 
 namespace NodaTime.Web.Storage
 {
