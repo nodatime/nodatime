@@ -28,14 +28,13 @@ namespace NodaTime.Web.Storage
             this.results = results;
         }
 
-        internal static BenchmarkRun FromXDocument(XDocument document)
+        internal static BenchmarkRun FromXElement(XElement element)
         {
-            var root = document.Root;
             return new BenchmarkRun(
-                machine: root.Element("environment").Attribute("machine").Value,
-                label: (string) root.Attribute("label"),
-                startTime: (DateTimeOffset) root.Attribute("start"),
-                results: root.Descendants("test")
+                machine: element.Element("environment").Attribute("machine").Value,
+                label: (string) element.Attribute("label"),
+                startTime: (DateTimeOffset) element.Attribute("start"),
+                results: element.Descendants("test")
                              .Select(BenchmarkResult.FromXElement)
                              .OrderBy(result => result.Namespace)
                              .ThenBy(result => result.Type)
