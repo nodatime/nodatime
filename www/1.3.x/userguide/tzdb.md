@@ -33,14 +33,17 @@ Obtaining and using a "NodaZoneData" file
 Fetching a NodaZoneData file from nodatime.org
 ----------------------------------------------
 
-The http://nodatime.org/tzdb directory contains NodaZoneData files
-from 2013h onwards. These can be downloaded and used with any Noda
+NodaZoneData files are [available from nodatime.org](http://nodatime.org/tzdb/)
+and contain compiled versions of TZDB from 2013h onwards.
+
+These can be downloaded and used with any Noda
 Time 1.1+ binary, so you don't need to update to the latest version
 of Noda Time in order to get the latest version of TZDB, and you
 don't have to build the file yourself either.
 
-The http://nodatime.org/tzdb/latest.txt file contains a URL to the
-latest version. This may be used for automation.
+The URL [http://nodatime.org/tzdb/latest.txt](http://nodatime.org/tzdb/latest.txt)
+returns a plaintext response containing the URL of the latest NZD file.
+This may be used for automation.
 
 Building a NodaZoneData file
 ----------------------------
@@ -70,7 +73,7 @@ file is relatively straightforward:
 
 - Open a stream to the file
 - Create a [`TzdbDateTimeZoneSource`][TzdbDateTimeZoneSource] with the stream, using the static `FromStream` method
-- Create [`DateTimeZoneCache`][DateTimeZoneCache] with the source 
+- Create [`DateTimeZoneCache`][DateTimeZoneCache] with the source
 - Use that cache (usually by way of dependency injection as an `IDateTimeZoneProvider`) wherever you need time zone information
 
 Here's some sample code for the first three steps above:
