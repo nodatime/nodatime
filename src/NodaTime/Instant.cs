@@ -9,6 +9,7 @@ using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
 using JetBrains.Annotations;
+using NodaTime.Calendars;
 using NodaTime.Text;
 using NodaTime.Utility;
 
@@ -52,7 +53,15 @@ namespace NodaTime
         /// </remarks>
         public static readonly Instant MaxValue = new Instant(Int64.MaxValue);
 
-        private readonly long ticks;
+        /// <summary>
+        /// Number of days since the Unix epoch, in UTC. While we could decide to just use a 96-bit number, this
+        /// days/part-of-day split is convenient for conversion to local date/time values.
+        /// </summary>
+        private readonly int days;
+        /// <summary>
+        /// The tick within the UTC day represented by <see cref="days"/>.
+        /// </summary>
+        private readonly long tickOfDay;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Instant" /> struct.
@@ -68,7 +77,7 @@ namespace NodaTime
         /// Unix epoch.</param>
         private Instant(long ticks)
         {
-            this.ticks = ticks;
+            days = TickArithmetic.TicksToDaysAndTickOfDay(ticks, out tickOfDay);
         }
 
         /// <summary>
@@ -77,7 +86,7 @@ namespace NodaTime
         /// <remarks>
         /// A tick is equal to 100 nanoseconds. There are 10,000 ticks in a millisecond.
         /// </remarks>
-        public long Ticks { get { return ticks; } }
+        public long Ticks { get { return TickArithmetic.DaysAndTickOfDayToTicks(days, tickOfDay); } }
 
         #region IComparable<Instant> and IComparable Members
         /// <summary>
@@ -172,7 +181,7 @@ namespace NodaTime
         [Pure]
         public Instant PlusTicks(long ticksToAdd)
         {
-            return new Instant(this.ticks + ticksToAdd);
+            return new Instant(this.Ticks + ticksToAdd);
         }
 
         #region Operators
@@ -476,7 +485,7 @@ namespace NodaTime
         [Pure]
         public DateTime ToDateTimeUtc()
         {
-            return new DateTime(NodaConstants.BclTicksAtUnixEpoch + ticks, DateTimeKind.Utc);
+            return new DateTime(NodaConstants.BclTicksAtUnixEpoch + Ticks, DateTimeKind.Utc);
         }
 
         /// <summary>
@@ -486,7 +495,7 @@ namespace NodaTime
         [Pure]
         public DateTimeOffset ToDateTimeOffset()
         {
-            return new DateTimeOffset(NodaConstants.BclTicksAtUnixEpoch + ticks, TimeSpan.Zero);
+            return new DateTimeOffset(NodaConstants.BclTicksAtUnixEpoch + Ticks, TimeSpan.Zero);
         }
 
         /// <summary>
@@ -671,7 +680,7 @@ namespace NodaTime
         [System.Security.SecurityCritical]
         void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)
         {
-            info.AddValue(TicksSerializationName, ticks);
+            info.AddValue(TicksSerializationName, Ticks);
         }
         #endregion
 #endif
