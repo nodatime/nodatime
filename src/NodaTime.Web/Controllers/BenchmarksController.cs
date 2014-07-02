@@ -13,10 +13,10 @@ namespace NodaTime.Web.Controllers
     {
         private static readonly TimeSpan ReloadTime = TimeSpan.FromMinutes(1);
 
-        private FileWatchingReloader<BenchmarkRepository> repositoryWatcher;
-        private FileWatchingReloader<MercurialLog> logWatcher;
+        private static readonly FileWatchingReloader<BenchmarkRepository> repositoryWatcher;
+        private static readonly FileWatchingReloader<MercurialLog> logWatcher;
 
-        public BenchmarksController()
+        static BenchmarksController()
         {
             string root = HostingEnvironment.ApplicationPhysicalPath;
             string benchmarkData = Path.Combine(root, "benchmarkdata");
