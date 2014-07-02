@@ -48,12 +48,14 @@ namespace NodaTime.Web.Storage
                 {
                     return currentValue;
                 }
+                Log.Info("Checking {0} for changes", triggerFile);
                 nextCheckTime = now + timeBetweenChecks;
                 DateTime latestLastWrite = File.GetLastWriteTime(triggerFile);
                 if (latestLastWrite == lastWrite)
                 {
                     return currentValue;
                 }
+                Log.Info("{0} has changed; reloading", triggerFile);
                 currentValue = reloadFunction();
                 lastWrite = latestLastWrite;
                 return currentValue;

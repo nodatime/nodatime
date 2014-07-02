@@ -121,6 +121,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Log.cs" />
     <Compile Include="Models\BenchmarkDiff.cs" />
     <Compile Include="Models\BenchmarkRunAndMercurialLogs.cs" />
     <Compile Include="Models\MethodHistoryModel.cs" />
@@ -131,6 +132,7 @@
     <Compile Include="Storage\FileWatchingReloader.cs" />
     <Compile Include="Storage\MercurialLog.cs" />
     <Compile Include="Storage\MercurialLogEntry.cs" />
+    <Compile Include="TrivialDependencyResolver.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
