@@ -11,26 +11,13 @@ namespace NodaTime.Web.Controllers
 {
     public class BenchmarksController : Controller
     {
-        private static readonly TimeSpan ReloadTime = TimeSpan.FromMinutes(1);
+        private readonly BenchmarkRepository repository;
+        private readonly MercurialLog log;
 
-        private static readonly FileWatchingReloader<BenchmarkRepository> repositoryWatcher;
-        private static readonly FileWatchingReloader<MercurialLog> logWatcher;
-
-        static BenchmarksController()
+        public BenchmarksController(BenchmarkRepository repository, MercurialLog log)
         {
-            string root = HostingEnvironment.ApplicationPhysicalPath;
-            string benchmarkData = Path.Combine(root, "benchmarkdata");
-            /*
-            repositoryWatcher = new FileWatchingReloader<BenchmarkRepository>(
-                Path.Combine(benchmarkData, "index.txt"),
-                () => BenchmarkRepository.Load(benchmarkData),
-                ReloadTime);*/
-            repositoryWatcher = new FileWatchingReloader<BenchmarkRepository>(
-                Path.Combine(benchmarkData, "benchmarks.xml"),
-                () => BenchmarkRepository.LoadSingleFile(Path.Combine(benchmarkData, "benchmarks.xml")),
-                ReloadTime);
-            string logFile = Path.Combine(root, "hg-log.xml");
-            logWatcher = new FileWatchingReloader<MercurialLog>(logFile, () => MercurialLog.Load(logFile), ReloadTime);
+            this.repository = repository;
+            this.log = log;
         }
 
         // GET: /Benchmarks/
@@ -38,7 +25,6 @@ namespace NodaTime.Web.Controllers
         // GET: /Benchmarks/Machines
         public ActionResult Machines()
         {
-            var repository = repositoryWatcher.Get();
             var machines = repository.RunsByMachine.Select(g => g.Key).ToList();
             ViewBag.LoadingTime = repository.LoadingTime;
             ViewBag.Loaded = repository.Loaded;
@@ -47,16 +33,13 @@ namespace NodaTime.Web.Controllers
 
         public ActionResult Machine(string machine)
         {
-            var runs = repositoryWatcher.Get().RunsByMachine[machine];
+            var runs = repository.RunsByMachine[machine];
             ViewBag.Machine = machine;
             return View(runs);
         }
 
         public ActionResult Diff(string machine, string left, string right)
         {
-            var repository = repositoryWatcher.Get();
-            var log = logWatcher.Get();
-
             var leftFile = repository.GetRun(machine, left);
             var rightFile = repository.GetRun(machine, right);
 
@@ -66,9 +49,6 @@ namespace NodaTime.Web.Controllers
 
         public ActionResult BenchmarkRun(string machine, string label)
         {
-            var repository = repositoryWatcher.Get();
-            var log = logWatcher.Get();
-
             BenchmarkRun run = null;
             string nextLabel = null; // In descending date order, so earlier...
             foreach (var candidate in repository.RunsByMachine[machine])
@@ -96,10 +76,8 @@ namespace NodaTime.Web.Controllers
 
         public ActionResult MethodHistory(string machine, string method)
         {
-            var repository = repositoryWatcher.Get();
             var history = MethodHistoryModel.ForMachineMethod(repository, machine, method);
             return View(history);
         }
-
     }
 }
