@@ -16,7 +16,7 @@ namespace NodaTime.Web.Storage
         private readonly Func<T> reloadFunction;
         private readonly TimeSpan timeBetweenChecks;
         private readonly object padlock = new object();
-        private DateTime lastWrite;
+        private long lastSize;
         private DateTime nextCheckTime;
         private T currentValue;
 
@@ -25,7 +25,7 @@ namespace NodaTime.Web.Storage
             this.triggerFile = triggerFile;
             this.reloadFunction = reloadFunction;
             this.timeBetweenChecks = timeBetweenChecks;
-            lastWrite = DateTime.MinValue;
+            lastSize = -1;
             nextCheckTime = DateTime.MinValue;
             // First call to GetValue will reload
         }
@@ -49,13 +49,13 @@ namespace NodaTime.Web.Storage
                     return currentValue;
                 }
                 nextCheckTime = now + timeBetweenChecks;
-                DateTime latestLastWrite = File.GetLastWriteTime(triggerFile);
-                if (latestLastWrite == lastWrite)
+                long latestSize = new FileInfo(triggerFile).Length;
+                if (latestSize == lastSize)
                 {
                     return currentValue;
                 }
                 currentValue = reloadFunction();
-                lastWrite = latestLastWrite;
+                lastSize = latestSize;
                 return currentValue;
             }
         }
