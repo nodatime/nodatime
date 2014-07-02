@@ -23,8 +23,7 @@ namespace NodaTime.Calendars
 
         /// <summary>
         /// Converts a number of ticks into days, rounding down. This method works with any number of
-        /// ticks, so long as it's not within the earliest representable 24 hours (where Noda Time arithmetic
-        /// tends to go pear-shaped anyway...)
+        /// ticks.
         /// </summary>
         internal static int TicksToDays(long ticks)
         {
@@ -32,9 +31,34 @@ namespace NodaTime.Calendars
             {
                 return ticks >= 0
                     ? FastTicksToDays(ticks)
-                // TODO: Optimize with shifting at some point
-                : (int) ((ticks - (NodaConstants.TicksPerStandardDay - 1)) / NodaConstants.TicksPerStandardDay);
+                // TODO: Optimize with shifting at some point. Note that this must *not* subtract from ticks,
+                // as it could already be long.MinValue.
+                : (int) ((ticks + 1) / NodaConstants.TicksPerStandardDay) - 1;
             }
+        }
+
+        internal static int TicksToDaysAndTickOfDay(long ticks, out long tickOfDay)
+        {
+            int ret = TicksToDays(ticks);
+            // We're almost always fine to do this...
+            if (ticks >= long.MinValue + NodaConstants.TicksPerStandardDay)
+            {
+                tickOfDay = ticks - ret * NodaConstants.TicksPerStandardDay;
+            }
+            else
+            {
+                // Make sure the multiplication doesn't overflow...
+                tickOfDay = ticks - (ret + 1) * NodaConstants.TicksPerStandardDay + NodaConstants.TicksPerStandardDay;
+            }
+            return ret;
+        }
+
+        internal static long DaysAndTickOfDayToTicks(int days, long tickOfDay)
+        {
+            return days >= (int) (long.MinValue / NodaConstants.TicksPerStandardDay)
+                ? days * NodaConstants.TicksPerStandardDay + tickOfDay
+                : (days + 1) * NodaConstants.TicksPerStandardDay + tickOfDay - NodaConstants.TicksPerStandardDay;
+
         }
     }
 }

@@ -22,7 +22,15 @@ namespace NodaTime
         public static readonly LocalInstant MinValue = new LocalInstant(Int64.MinValue);
         public static readonly LocalInstant MaxValue = new LocalInstant(Int64.MaxValue);
 
-        private readonly long ticks;
+        /// <summary>
+        /// Number of days since the 1970-01-01, in the relevant time zone. While we could decide to just use a 96-bit number, this
+        /// days/part-of-day split is convenient for conversion to local date/time values.
+        /// </summary>
+        private readonly int days;
+        /// <summary>
+        /// The tick within the local day represented by <see cref="days"/>.
+        /// </summary>
+        private readonly long tickOfDay;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LocalInstant"/> struct.
@@ -30,7 +38,7 @@ namespace NodaTime
         /// <param name="ticks">The number of ticks from the Unix Epoch.</param>
         internal LocalInstant(long ticks)
         {
-            this.ticks = ticks;
+            days = TickArithmetic.TicksToDaysAndTickOfDay(ticks, out tickOfDay);
         }
 
         /// <summary>
@@ -44,7 +52,7 @@ namespace NodaTime
         /// <summary>
         /// Ticks since the Unix epoch.
         /// </summary>
-        internal long Ticks { get { return ticks; } }
+        public long Ticks { get { return TickArithmetic.DaysAndTickOfDayToTicks(days, tickOfDay); } }
 
         /// <summary>
         /// Constructs a <see cref="DateTime"/> from this LocalInstant which has a <see cref="DateTime.Kind" />
@@ -59,7 +67,7 @@ namespace NodaTime
         [Pure]
         public DateTime ToDateTimeUnspecified()
         {
-            return new DateTime(NodaConstants.BclTicksAtUnixEpoch + ticks, DateTimeKind.Unspecified);
+            return new DateTime(NodaConstants.BclTicksAtUnixEpoch + Ticks, DateTimeKind.Unspecified);
         }
 
         /// <summary>
@@ -109,7 +117,6 @@ namespace NodaTime
         /// </summary>
         internal LocalDate ToIsoDate()
         {
-            int days = TickArithmetic.TicksToDays(ticks);
             return new LocalDate(days, CalendarSystem.Iso);
         }
 
