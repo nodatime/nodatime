@@ -51,6 +51,7 @@ namespace NodaTime.Web.Storage
         {
             Stopwatch sw = Stopwatch.StartNew();
             var runs = XDocument.Load(file)
+                .Root
                 .Elements("benchmark")
                 .Select(BenchmarkRun.FromXElement)
                 .OrderByDescending(b => b.StartTime)
