@@ -611,7 +611,7 @@ namespace NodaTime
         [Pure]
         public DateTimeOffset ToDateTimeOffset()
         {
-            return new DateTimeOffset(NodaConstants.BclTicksAtUnixEpoch + LocalDateTime.ToLocalInstant().Ticks, Offset.ToTimeSpan());
+            return new DateTimeOffset(LocalDateTime.ToDateTimeUnspecified(), Offset.ToTimeSpan());
         }
 
         /// <summary>
