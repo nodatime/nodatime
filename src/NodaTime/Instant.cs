@@ -261,7 +261,7 @@ namespace NodaTime
         /// </summary>
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
-        /// <returns>A new <see cref="Instant" /> representing the difference of the given values.</returns>
+        /// <returns>A new <see cref="Duration" /> representing the difference of the given values.</returns>
         public static Duration operator -(Instant left, Instant right)
         {
             // FIXME:PERF
