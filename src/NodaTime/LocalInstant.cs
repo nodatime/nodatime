@@ -67,6 +67,7 @@ namespace NodaTime
         [Pure]
         public DateTime ToDateTimeUnspecified()
         {
+            // FIXME:SERIALIZATION
             return new DateTime(NodaConstants.BclTicksAtUnixEpoch + Ticks, DateTimeKind.Unspecified);
         }
 
@@ -77,6 +78,7 @@ namespace NodaTime
         /// </summary>
         internal static LocalInstant FromDateTime(DateTime dateTime)
         {
+            // FIXME:SERIALIZATION
             return new LocalInstant(NodaConstants.BclEpoch.Ticks + dateTime.Ticks);
         }
 
@@ -86,6 +88,7 @@ namespace NodaTime
         // </summary>
         public static LocalInstant operator +(LocalInstant left, Duration right)
         {
+            // FIXME:SERIALIZATION
             return new LocalInstant(left.Ticks + right.Ticks);
         }
 
@@ -101,6 +104,7 @@ namespace NodaTime
         /// <returns>A new <see cref="Instant"/> representing the difference of the given values.</returns>
         public Instant Minus(Offset offset)
         {
+            // FIXME:SERIALIZATION
             return Instant.FromTicksSinceUnixEpoch(Ticks - offset.Ticks);
         }
 
@@ -109,6 +113,7 @@ namespace NodaTime
         /// </summary>
         public static LocalInstant operator -(LocalInstant left, Duration right)
         {
+            // FIXME:SERIALIZATION
             return new LocalInstant(left.Ticks - right.Ticks);
         }
 
@@ -117,6 +122,7 @@ namespace NodaTime
         /// </summary>
         internal LocalDate ToIsoDate()
         {
+            // FIXME:SERIALIZATION
             return new LocalDate(days, CalendarSystem.Iso);
         }
 
@@ -128,7 +134,7 @@ namespace NodaTime
         /// <returns><c>true</c> if values are equal to each other, otherwise <c>false</c>.</returns>
         public static bool operator ==(LocalInstant left, LocalInstant right)
         {
-            return left.Equals(right);
+            return left.days == right.days && left.tickOfDay == right.tickOfDay;
         }
 
         /// <summary>
@@ -150,7 +156,7 @@ namespace NodaTime
         /// <returns><c>true</c> if the left value is less than the right value, otherwise <c>false</c>.</returns>
         public static bool operator <(LocalInstant left, LocalInstant right)
         {
-            return left.CompareTo(right) < 0;
+            return left.days < right.days || (left.days == right.days && left.tickOfDay < right.tickOfDay);
         }
 
         /// <summary>
@@ -161,7 +167,7 @@ namespace NodaTime
         /// <returns><c>true</c> if the left value is less than or equal to the right value, otherwise <c>false</c>.</returns>
         public static bool operator <=(LocalInstant left, LocalInstant right)
         {
-            return left.CompareTo(right) <= 0;
+            return left.days < right.days || (left.days == right.days && left.tickOfDay <= right.tickOfDay);
         }
 
         /// <summary>
@@ -172,7 +178,7 @@ namespace NodaTime
         /// <returns><c>true</c> if the left value is greater than the right value, otherwise <c>false</c>.</returns>
         public static bool operator >(LocalInstant left, LocalInstant right)
         {
-            return left.CompareTo(right) > 0;
+            return left.days > right.days || (left.days == right.days && left.tickOfDay > right.tickOfDay);
         }
 
         /// <summary>
@@ -183,7 +189,7 @@ namespace NodaTime
         /// <returns><c>true</c> if the left value is greater than or equal to the right value, otherwise <c>false</c>.</returns>
         public static bool operator >=(LocalInstant left, LocalInstant right)
         {
-            return left.CompareTo(right) >= 0;
+            return left.days > right.days || (left.days == right.days && left.tickOfDay >= right.tickOfDay);
         }
         #endregion // Operators
 
@@ -216,7 +222,8 @@ namespace NodaTime
         /// </returns>
         public int CompareTo(LocalInstant other)
         {
-            return Ticks.CompareTo(other.Ticks);
+            int dayComparison = days.CompareTo(other.days);
+            return dayComparison != 0 ? dayComparison : tickOfDay.CompareTo(other.tickOfDay);
         }
 
         /// <summary>
@@ -268,7 +275,7 @@ namespace NodaTime
         /// </returns>
         public override int GetHashCode()
         {
-            return Ticks.GetHashCode();
+            return days ^ tickOfDay.GetHashCode();
         }
 
         /// <summary>
@@ -296,7 +303,7 @@ namespace NodaTime
         /// </returns>
         public bool Equals(LocalInstant other)
         {
-            return Ticks == other.Ticks;
+            return this == other;
         }
         #endregion
     }

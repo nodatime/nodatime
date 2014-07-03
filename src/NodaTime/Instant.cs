@@ -117,7 +117,8 @@ namespace NodaTime
         /// </returns>
         public int CompareTo(Instant other)
         {
-            return Ticks.CompareTo(other.Ticks);
+            int dayComparison = days.CompareTo(other.days);
+            return dayComparison != 0 ? dayComparison : tickOfDay.CompareTo(other.tickOfDay);
         }
 
         /// <summary>
@@ -169,7 +170,7 @@ namespace NodaTime
         /// </returns>
         public override int GetHashCode()
         {
-            return Ticks.GetHashCode();
+            return days ^ tickOfDay.GetHashCode();
         }
         #endregion  // Object overrides
 
@@ -181,6 +182,7 @@ namespace NodaTime
         [Pure]
         public Instant PlusTicks(long ticksToAdd)
         {
+            // FIXME:PERF
             return new Instant(this.Ticks + ticksToAdd);
         }
 
@@ -193,6 +195,7 @@ namespace NodaTime
         /// <returns>A new <see cref="Instant" /> representing the sum of the given values.</returns>
         public static Instant operator +(Instant left, Duration right)
         {
+            // FIXME:PERF
             return new Instant(left.Ticks + right.Ticks);
         }
 
@@ -207,6 +210,7 @@ namespace NodaTime
         [Pure]
         internal LocalInstant Plus(Offset offset)
         {
+            // FIXME:PERF
             return new LocalInstant(Ticks + offset.Ticks);
         }
 
@@ -218,6 +222,7 @@ namespace NodaTime
         /// <returns>A new <see cref="Instant" /> representing the sum of the given values.</returns>
         public static Instant Add(Instant left, Duration right)
         {
+            // FIXME:PERF
             return left + right;
         }
 
@@ -229,6 +234,7 @@ namespace NodaTime
         [Pure]
         public Instant Plus(Duration duration)
         {
+            // FIXME:PERF
             return this + duration;
         }
 
@@ -240,6 +246,7 @@ namespace NodaTime
         /// <returns>A new <see cref="Instant" /> representing the difference of the given values.</returns>
         public static Duration operator -(Instant left, Instant right)
         {
+            // FIXME:PERF
             return Duration.FromTicks(left.Ticks - right.Ticks);
         }
 
@@ -251,6 +258,7 @@ namespace NodaTime
         /// <returns>A new <see cref="Instant" /> representing the difference of the given values.</returns>
         public static Instant operator -(Instant left, Duration right)
         {
+            // FIXME:PERF
             return new Instant(left.Ticks - right.Ticks);
         }
 
@@ -262,6 +270,7 @@ namespace NodaTime
         /// <returns>A new <see cref="Duration" /> representing the difference of the given values.</returns>
         public static Duration Subtract(Instant left, Instant right)
         {
+            // FIXME:PERF
             return left - right;
         }
 
@@ -273,6 +282,7 @@ namespace NodaTime
         [Pure]
         public Duration Minus(Instant other)
         {
+            // FIXME:PERF
             return this - other;
         }
 
@@ -285,6 +295,7 @@ namespace NodaTime
         [Pure]
         public static Instant Subtract(Instant left, Duration right)
         {
+            // FIXME:PERF
             return left - right;
         }
 
@@ -307,7 +318,7 @@ namespace NodaTime
         /// <returns><c>true</c> if values are equal to each other, otherwise <c>false</c>.</returns>
         public static bool operator ==(Instant left, Instant right)
         {
-            return left.Equals(right);
+            return left.days == right.days && left.tickOfDay == right.tickOfDay;
         }
 
         /// <summary>
@@ -329,7 +340,7 @@ namespace NodaTime
         /// <returns><c>true</c> if the left value is less than the right value, otherwise <c>false</c>.</returns>
         public static bool operator <(Instant left, Instant right)
         {
-            return left.Ticks < right.Ticks;
+            return left.days < right.days || (left.days == right.days && left.tickOfDay < right.tickOfDay);
         }
 
         /// <summary>
@@ -340,7 +351,7 @@ namespace NodaTime
         /// <returns><c>true</c> if the left value is less than or equal to the right value, otherwise <c>false</c>.</returns>
         public static bool operator <=(Instant left, Instant right)
         {
-            return left.Ticks <= right.Ticks;
+            return left.days < right.days || (left.days == right.days && left.tickOfDay <= right.tickOfDay);
         }
 
         /// <summary>
@@ -351,7 +362,7 @@ namespace NodaTime
         /// <returns><c>true</c> if the left value is greater than the right value, otherwise <c>false</c>.</returns>
         public static bool operator >(Instant left, Instant right)
         {
-            return left.Ticks > right.Ticks;
+            return left.days > right.days || (left.days == right.days && left.tickOfDay > right.tickOfDay);
         }
 
         /// <summary>
@@ -362,7 +373,7 @@ namespace NodaTime
         /// <returns><c>true</c> if the left value is greater than or equal to the right value, otherwise <c>false</c>.</returns>
         public static bool operator >=(Instant left, Instant right)
         {
-            return left.Ticks >= right.Ticks;
+            return left.days > right.days || (left.days == right.days && left.tickOfDay >= right.tickOfDay);
         }
         #endregion // Operators
 
@@ -382,6 +393,7 @@ namespace NodaTime
         /// <returns>An <see cref="Instant"/> value representing the given date and time in UTC and the ISO calendar.</returns>
         public static Instant FromUtc(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour)
         {
+            // FIXME:PERF
             var local = new LocalDateTime(year, monthOfYear, dayOfMonth, hourOfDay, minuteOfHour);
             return new Instant(local.ToLocalInstant().Ticks);
         }
@@ -403,6 +415,7 @@ namespace NodaTime
         /// <returns>An <see cref="Instant"/> value representing the given date and time in UTC and the ISO calendar.</returns>
         public static Instant FromUtc(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour, int secondOfMinute)
         {
+            // FIXME:PERF
             var local = new LocalDateTime(year, monthOfYear, dayOfMonth, hourOfDay, minuteOfHour, secondOfMinute);
             return new Instant(local.ToLocalInstant().Ticks);
         }
@@ -473,7 +486,7 @@ namespace NodaTime
         /// </returns>
         public bool Equals(Instant other)
         {
-            return Ticks == other.Ticks;
+            return this == other;
         }
         #endregion
 
@@ -485,6 +498,7 @@ namespace NodaTime
         [Pure]
         public DateTime ToDateTimeUtc()
         {
+            // FIXME:PERF
             return new DateTime(NodaConstants.BclTicksAtUnixEpoch + Ticks, DateTimeKind.Utc);
         }
 
@@ -495,6 +509,7 @@ namespace NodaTime
         [Pure]
         public DateTimeOffset ToDateTimeOffset()
         {
+            // FIXME:PERF
             return new DateTimeOffset(NodaConstants.BclTicksAtUnixEpoch + Ticks, TimeSpan.Zero);
         }
 
@@ -506,6 +521,7 @@ namespace NodaTime
         /// <param name="dateTimeOffset">Date and time value with an offset.</param>
         public static Instant FromDateTimeOffset(DateTimeOffset dateTimeOffset)
         {
+            // FIXME:PERF
             return NodaConstants.BclEpoch.PlusTicks(dateTimeOffset.Ticks - dateTimeOffset.Offset.Ticks);
         }
 
@@ -518,6 +534,7 @@ namespace NodaTime
         /// <see cref="DateTimeKind.Utc"/>.</exception>
         public static Instant FromDateTimeUtc(DateTime dateTime)
         {
+            // FIXME:PERF
             Preconditions.CheckArgument(dateTime.Kind == DateTimeKind.Utc, "dateTime", "Invalid DateTime.Kind for Instant.FromDateTimeUtc");
             return NodaConstants.BclEpoch.PlusTicks(dateTime.Ticks);
         }
@@ -531,6 +548,7 @@ namespace NodaTime
         /// <exception cref="ArgumentOutOfRangeException">The constructed instant would be out of the range representable in Noda Time.</exception>
         public static Instant FromSecondsSinceUnixEpoch(long seconds)
         {
+            // FIXME:PERF
             Preconditions.CheckArgumentRange("seconds", seconds, long.MinValue / NodaConstants.TicksPerSecond,
                 long.MaxValue / NodaConstants.TicksPerSecond);
             return new Instant(seconds * NodaConstants.TicksPerSecond);
@@ -545,6 +563,7 @@ namespace NodaTime
         /// <exception cref="ArgumentOutOfRangeException">The constructed instant would be out of the range representable in Noda Time.</exception>
         public static Instant FromMillisecondsSinceUnixEpoch(long milliseconds)
         {
+            // FIXME:PERF
             Preconditions.CheckArgumentRange("milliseconds", milliseconds, long.MinValue / NodaConstants.TicksPerMillisecond,
                 long.MaxValue / NodaConstants.TicksPerMillisecond);
             return new Instant(milliseconds * NodaConstants.TicksPerMillisecond);
@@ -560,6 +579,7 @@ namespace NodaTime
         /// <param name="ticks">Number of ticks since the Unix epoch. May be negative (for instants before the epoch).</param>
         public static Instant FromTicksSinceUnixEpoch(long ticks)
         {
+            // FIXME:PERF
             return new Instant(ticks);
         }
 
@@ -573,6 +593,7 @@ namespace NodaTime
         [Pure]
         public ZonedDateTime InUtc()
         {
+            // FIXME:PERF
             return new ZonedDateTime(this, DateTimeZone.Utc, CalendarSystem.Iso);
         }
 
@@ -586,6 +607,7 @@ namespace NodaTime
         [Pure]
         public ZonedDateTime InZone([NotNull] DateTimeZone zone)
         {
+            // FIXME:PERF
             Preconditions.CheckNotNull(zone, "zone");
             return new ZonedDateTime(this, zone, CalendarSystem.Iso);
         }
@@ -616,6 +638,7 @@ namespace NodaTime
         [Pure]
         public OffsetDateTime WithOffset(Offset offset)
         {
+            // FIXME:PERF
             return new OffsetDateTime(new LocalDateTime(this.Plus(offset)), offset);
         }
 
@@ -630,6 +653,7 @@ namespace NodaTime
         [Pure]
         public OffsetDateTime WithOffset(Offset offset, [NotNull] CalendarSystem calendar)
         {
+            // FIXME:PERF
             Preconditions.CheckNotNull(calendar, "calendar");
             return new OffsetDateTime(new LocalDateTime(this.Plus(offset), calendar), offset);
         }
@@ -668,6 +692,7 @@ namespace NodaTime
         /// <param name="info">The <see cref="SerializationInfo"/> to fetch data from.</param>
         /// <param name="context">The source for this deserialization.</param>
         private Instant(SerializationInfo info, StreamingContext context)
+            // FIXME:SERIALIZATION
             : this(info.GetInt64(TicksSerializationName))
         {
         }
@@ -680,6 +705,7 @@ namespace NodaTime
         [System.Security.SecurityCritical]
         void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)
         {
+            // FIXME:SERIALIZATION
             info.AddValue(TicksSerializationName, Ticks);
         }
         #endregion
