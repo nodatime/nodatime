@@ -178,6 +178,7 @@
     <Compile Include="Fields\YearsPeriodField.cs" />
     <Compile Include="Globalization\NamespaceDoc.cs" />
     <Compile Include="Annotations\JetBrainsAnnotations.cs" />
+    <Compile Include="Nanoseconds.cs" />
     <Compile Include="OffsetDateTime.cs" />
     <Compile Include="IDateTimeZoneProvider.cs" />
     <Compile Include="PeriodBuilder.cs" />
