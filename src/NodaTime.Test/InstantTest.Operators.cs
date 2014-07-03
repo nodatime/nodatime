@@ -341,8 +341,8 @@ namespace NodaTime.Test
         public void OperatorPlusOffset_Zero_IsNeutralElement()
         {
             Assert.AreEqual(LocalInstant.LocalUnixEpoch, NodaConstants.UnixEpoch.Plus(Offset.Zero), "UnixEpoch + Offset.Zero");
-            Assert.AreEqual(new LocalInstant(1L), one.Plus(Offset.Zero), "Instant(1) + Offset.Zero");
-            Assert.AreEqual(new LocalInstant(NodaConstants.TicksPerHour), NodaConstants.UnixEpoch.Plus(offsetOneHour), "UnixEpoch + offsetOneHour");
+            Assert.AreEqual(new LocalInstant(0, 1L), one.Plus(Offset.Zero), "Instant(1) + Offset.Zero");
+            Assert.AreEqual(new LocalInstant(0, NodaConstants.TicksPerHour), NodaConstants.UnixEpoch.Plus(offsetOneHour), "UnixEpoch + offsetOneHour");
         }
         #endregion
 

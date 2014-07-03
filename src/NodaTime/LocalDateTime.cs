@@ -73,16 +73,9 @@ namespace NodaTime
         /// <returns>The resulting date/time.</returns>
         internal LocalDateTime(LocalInstant localInstant, [NotNull] CalendarSystem calendar)
         {
-            Preconditions.CheckNotNull(calendar, "calendar");
-            // Work out how far into the current day we are, and subtract that from our current ticks.
-            // This is much quicker than finding out the current day, month, year etc and then reconstructing everything.
-            long dayTicks = localInstant.Ticks % NodaConstants.TicksPerStandardDay;
-            if (dayTicks < 0)
-            {
-                dayTicks += NodaConstants.TicksPerStandardDay;
-            }
-            date = new LocalDate((int) ((localInstant.Ticks - dayTicks) / NodaConstants.TicksPerStandardDay), calendar);
-            time = new LocalTime(dayTicks);
+            // This will validate that calendar is non-null.
+            date = new LocalDate(localInstant.DaysSinceEpoch, calendar);
+            time = new LocalTime(localInstant.TickOfDay);
         }
 
         /// <summary>
@@ -385,12 +378,9 @@ namespace NodaTime
             return ToLocalInstant().ToDateTimeUnspecified();
         }
 
-        // FIXME(2.0): Remove... we want to kill LocalInstant
         internal LocalInstant ToLocalInstant()
         {
-            long days = date.DaysSinceEpoch;
-            long timeTicks = time.TickOfDay;
-            return new LocalInstant(days * NodaConstants.TicksPerStandardDay + timeTicks);
+            return new LocalInstant(date.DaysSinceEpoch, time.TickOfDay);
         }
 
         /// <summary>
@@ -1051,7 +1041,8 @@ namespace NodaTime
 
 #if !PCL
         #region Binary serialization
-        private const string LocalTicksSerializationName = "ticks";
+        private const string DaysSerializationName = "days";
+        private const string TickOfDaySerializationName = "tickOfDay";
         private const string CalendarIdSerializationName = "calendar";
 
         /// <summary>
@@ -1060,8 +1051,9 @@ namespace NodaTime
         /// <param name="info">The <see cref="SerializationInfo"/> to fetch data from.</param>
         /// <param name="context">The source for this deserialization.</param>
         private LocalDateTime(SerializationInfo info, StreamingContext context)
-            : this(new LocalInstant(info.GetInt64(LocalTicksSerializationName)),
-                   CalendarSystem.ForId(info.GetString(CalendarIdSerializationName)))
+            : this(new LocalDate(info.GetInt32(DaysSerializationName),
+                                 CalendarSystem.ForId(info.GetString(CalendarIdSerializationName))),
+                   LocalTime.FromTicksSinceMidnight(info.GetInt64(TickOfDaySerializationName)))
         {
         }
 
@@ -1074,7 +1066,8 @@ namespace NodaTime
         void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)
         {
             // FIXME(2.0): Revisit the serialization format
-            info.AddValue(LocalTicksSerializationName, ToLocalInstant().Ticks);
+            info.AddValue(DaysSerializationName, date.DaysSinceEpoch);
+            info.AddValue(TickOfDaySerializationName, time.TickOfDay);
             info.AddValue(CalendarIdSerializationName, Calendar.Id);
         }
         #endregion

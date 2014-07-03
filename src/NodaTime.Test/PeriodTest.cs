@@ -754,8 +754,9 @@ namespace NodaTime.Test
             {
                 return;
             }
-            var minValue = new LocalDateTime(new LocalInstant(CalendarSystem.Iso.MinTicks));
-            var maxValue = new LocalDateTime(new LocalInstant(CalendarSystem.Iso.MaxTicks));
+            var iso = CalendarSystem.Iso;
+            var minValue = new LocalDateTime(iso.MinYear, 1, 1, 0, 0);
+            var maxValue = new LocalDateTime(iso.MaxYear, 12, 31, 23, 59, 59, 999, (int) (NodaConstants.TicksPerMillisecond - 1));
             Period.Between(minValue, maxValue, units);
         }
 

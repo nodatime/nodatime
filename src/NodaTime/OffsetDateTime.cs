@@ -528,7 +528,8 @@ namespace NodaTime
 
 #if !PCL
         #region Binary serialization
-        private const string LocalTicksSerializationName = "ticks";
+        private const string DaysSerializationName = "days";
+        private const string TickOfDaySerializationName = "tickOfDay";
         private const string CalendarIdSerializationName = "calendar";
         private const string OffsetMillisecondsSerializationName = "offsetMilliseconds";
 
@@ -538,9 +539,10 @@ namespace NodaTime
         /// <param name="info">The <see cref="SerializationInfo"/> to fetch data from.</param>
         /// <param name="context">The source for this deserialization.</param>
         private OffsetDateTime(SerializationInfo info, StreamingContext context)
-            : this(new LocalDateTime(new LocalInstant(info.GetInt64(LocalTicksSerializationName)),
-                       CalendarSystem.ForId(info.GetString(CalendarIdSerializationName))),
-                    Offset.FromMilliseconds(info.GetInt32(OffsetMillisecondsSerializationName)))
+            : this(new LocalDateTime(new LocalDate(info.GetInt32(DaysSerializationName),
+                                                   CalendarSystem.ForId(info.GetString(CalendarIdSerializationName))),
+                                     LocalTime.FromTicksSinceMidnight(info.GetInt64(TickOfDaySerializationName))),
+                   Offset.FromMilliseconds(info.GetInt32(OffsetMillisecondsSerializationName)))
         {
         }
 
@@ -552,7 +554,9 @@ namespace NodaTime
         [System.Security.SecurityCritical]
         void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)
         {
-            info.AddValue(LocalTicksSerializationName, localDateTime.ToLocalInstant().Ticks);
+            // TODO(2.0): Consider serialization compatibility.
+            info.AddValue(DaysSerializationName, Date.DaysSinceEpoch);
+            info.AddValue(TickOfDaySerializationName, TimeOfDay.TickOfDay);
             info.AddValue(CalendarIdSerializationName, Calendar.Id);
             info.AddValue(OffsetMillisecondsSerializationName, Offset.Milliseconds);
         }
