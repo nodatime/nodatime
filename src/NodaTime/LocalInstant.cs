@@ -32,6 +32,12 @@ namespace NodaTime
         /// </summary>
         private readonly long tickOfDay;
 
+        internal LocalInstant(int days, long tickOfDay)
+        {
+            this.days = days;
+            this.tickOfDay = tickOfDay;
+        }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="LocalInstant"/> struct.
         /// </summary>
@@ -67,7 +73,7 @@ namespace NodaTime
         [Pure]
         public DateTime ToDateTimeUnspecified()
         {
-            // FIXME:SERIALIZATION
+            // FIXME:PERF
             return new DateTime(NodaConstants.BclTicksAtUnixEpoch + Ticks, DateTimeKind.Unspecified);
         }
 
@@ -78,7 +84,7 @@ namespace NodaTime
         /// </summary>
         internal static LocalInstant FromDateTime(DateTime dateTime)
         {
-            // FIXME:SERIALIZATION
+            // FIXME:PERF
             return new LocalInstant(NodaConstants.BclEpoch.Ticks + dateTime.Ticks);
         }
 
@@ -88,7 +94,7 @@ namespace NodaTime
         // </summary>
         public static LocalInstant operator +(LocalInstant left, Duration right)
         {
-            // FIXME:SERIALIZATION
+            // FIXME:PERF
             return new LocalInstant(left.Ticks + right.Ticks);
         }
 
@@ -104,8 +110,20 @@ namespace NodaTime
         /// <returns>A new <see cref="Instant"/> representing the difference of the given values.</returns>
         public Instant Minus(Offset offset)
         {
-            // FIXME:SERIALIZATION
-            return Instant.FromTicksSinceUnixEpoch(Ticks - offset.Ticks);
+            // Guaranteed not to overflow; offset can't be more than a day.
+            long newTickOfDay = tickOfDay - offset.Ticks;
+            int newDays = days;
+            if (newTickOfDay < 0)
+            {
+                newTickOfDay += NodaConstants.TicksPerStandardDay;
+                newDays--;
+            }
+            else if (newTickOfDay >= NodaConstants.TicksPerStandardDay)
+            {
+                newTickOfDay -= NodaConstants.TicksPerStandardDay;
+                newDays++;
+            }
+            return new Instant(newDays, newTickOfDay);
         }
 
         /// <summary>
@@ -113,7 +131,7 @@ namespace NodaTime
         /// </summary>
         public static LocalInstant operator -(LocalInstant left, Duration right)
         {
-            // FIXME:SERIALIZATION
+            // FIXME:PERF
             return new LocalInstant(left.Ticks - right.Ticks);
         }
 
@@ -122,7 +140,7 @@ namespace NodaTime
         /// </summary>
         internal LocalDate ToIsoDate()
         {
-            // FIXME:SERIALIZATION
+            // FIXME:PERF
             return new LocalDate(days, CalendarSystem.Iso);
         }
 

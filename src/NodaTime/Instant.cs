@@ -63,6 +63,12 @@ namespace NodaTime
         /// </summary>
         private readonly long tickOfDay;
 
+        internal Instant(int days, long tickOfDay)
+        {
+            this.days = days;
+            this.tickOfDay = tickOfDay;
+        }
+    
         /// <summary>
         /// Initializes a new instance of the <see cref="Instant" /> struct.
         /// </summary>
@@ -210,8 +216,20 @@ namespace NodaTime
         [Pure]
         internal LocalInstant Plus(Offset offset)
         {
-            // FIXME:PERF
-            return new LocalInstant(Ticks + offset.Ticks);
+            // Guaranteed not to overflow; offset can't be more than a day.
+            long newTickOfDay = tickOfDay + offset.Ticks;
+            int newDays = days;
+            if (newTickOfDay < 0)
+            {
+                newTickOfDay += NodaConstants.TicksPerStandardDay;
+                newDays--;
+            }
+            else if (newTickOfDay >= NodaConstants.TicksPerStandardDay)
+            {
+                newTickOfDay -= NodaConstants.TicksPerStandardDay;
+                newDays++;
+            }
+            return new LocalInstant(newDays, newTickOfDay);
         }
 
         /// <summary>
@@ -393,9 +411,9 @@ namespace NodaTime
         /// <returns>An <see cref="Instant"/> value representing the given date and time in UTC and the ISO calendar.</returns>
         public static Instant FromUtc(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour)
         {
-            // FIXME:PERF
-            var local = new LocalDateTime(year, monthOfYear, dayOfMonth, hourOfDay, minuteOfHour);
-            return new Instant(local.ToLocalInstant().Ticks);
+            var days = new LocalDate(year, monthOfYear, dayOfMonth).DaysSinceEpoch;
+            var ticks = new LocalTime(hourOfDay, minuteOfHour).TickOfDay;
+            return new Instant(days, ticks);
         }
 
         /// <summary>
@@ -415,9 +433,9 @@ namespace NodaTime
         /// <returns>An <see cref="Instant"/> value representing the given date and time in UTC and the ISO calendar.</returns>
         public static Instant FromUtc(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour, int secondOfMinute)
         {
-            // FIXME:PERF
-            var local = new LocalDateTime(year, monthOfYear, dayOfMonth, hourOfDay, minuteOfHour, secondOfMinute);
-            return new Instant(local.ToLocalInstant().Ticks);
+            var days = new LocalDate(year, monthOfYear, dayOfMonth).DaysSinceEpoch;
+            var ticks = new LocalTime(hourOfDay, minuteOfHour, secondOfMinute).TickOfDay;
+            return new Instant(days, ticks);
         }
 
         /// <summary>
