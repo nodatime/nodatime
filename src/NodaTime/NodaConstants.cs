@@ -12,6 +12,41 @@ namespace NodaTime
     public static class NodaConstants
     {
         /// <summary>
+        /// A constant for the number of nanoseconds in a tick. The value of this constant is 100.
+        /// </summary>
+        public const long NanosecondsPerTick = 100;
+
+        /// <summary>
+        /// A constant for the number of nanoseconds in a millisecond. The value of this constant is 1,000,000.
+        /// </summary>
+        public const long NanosecondsPerMillisecond = 1000000;
+
+        /// <summary>
+        /// A constant for the number of nanoseconds in a second. The value of this constant is 1,000,000,000.
+        /// </summary>
+        public const long NanosecondsPerSecond = 1000000000;
+
+        /// <summary>
+        /// A constant for the number of nanoseconds in a minute. The value of this constant is 60,000,000,000.
+        /// </summary>
+        public const long NanosecondsPerMinute = NanosecondsPerSecond * SecondsPerMinute;
+
+        /// <summary>
+        /// A constant for the number of nanoseconds in an hour. The value of this constant is 3,600,000,000,000.
+        /// </summary>
+        public const long NanosecondsPerHour = NanosecondsPerMinute * MinutesPerHour;
+
+        /// <summary>
+        /// A constant for the number of nanoseconds in a standard 24-hour day. The value of this constant is 86,400,000,000,000.
+        /// </summary>
+        public const long NanosecondsPerStandardDay = NanosecondsPerHour * HoursPerStandardDay;
+
+        /// <summary>
+        /// A constant for the number of nanoseconds in a standard week of seven 24-hour days. The value of this constant is 604,800,000,000,000.
+        /// </summary>
+        public const long NanosecondsPerStandardWeek = NanosecondsPerHour * HoursPerStandardDay;
+
+        /// <summary>
         /// A constant for the number of ticks in a millisecond. The value of this constant is 10,000.
         /// </summary>
         public const long TicksPerMillisecond = TimeSpan.TicksPerMillisecond;
