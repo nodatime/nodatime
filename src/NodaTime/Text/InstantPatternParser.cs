@@ -140,7 +140,7 @@ namespace NodaTime.Text
                 {
                     return ParseResult<Instant>.ForValue(Instant.MaxValue);
                 }
-                return pattern.Parse(text).Convert(local => Instant.FromTicksSinceUnixEpoch(local.ToLocalInstant().Ticks));
+                return pattern.Parse(text).Convert(local => local.ToLocalInstant().MinusZeroOffset());
             }
         }
     }

@@ -99,6 +99,15 @@ namespace NodaTime
         }
 
         /// <summary>
+        /// Returns a new instant based on this local instant, as if we'd applied a zero offset.
+        /// This is just a slight optimization over calling <c>localInstant.Minus(Offset.Zero)</c>.
+        /// </summary>
+        internal Instant MinusZeroOffset()
+        {
+            return new Instant(days, tickOfDay);
+        }
+
+        /// <summary>
         /// Subtracts the given time zone offset from this local instant, to give an <see cref="Instant" />.
         /// </summary>
         /// <remarks>

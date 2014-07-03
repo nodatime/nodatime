@@ -102,11 +102,10 @@ namespace NodaTime
         private readonly string id;
         private readonly bool isFixed;
 
-        // We very frequently need to add this to an instant, and there will be relatively few instances
-        // of DateTimeZone, so it makes sense to convert to ticks once and take the space cost, instead of
-        // performing the same multiplication over and over again.
-        private readonly long minOffsetTicks;
-        private readonly long maxOffsetTicks;
+        // TODO(2.0): Validate the performance of using Offset here instead of a pre-multiplied version.
+        // In 1.x this was minOffsetTicks, maxOffsetTicks.
+        private readonly Offset minOffset;
+        private readonly Offset maxOffset;
 
         /// <summary>
         /// Gets the UTC (Coordinated Universal Time) time zone. This is a single instance which is not
@@ -158,8 +157,8 @@ namespace NodaTime
         {
             this.id = id;
             this.isFixed = isFixed;
-            this.minOffsetTicks = minOffset.Ticks;
-            this.maxOffsetTicks = maxOffset.Ticks;
+            this.minOffset = minOffset;
+            this.maxOffset = maxOffset;
         }
 
         /// <summary>
@@ -187,12 +186,12 @@ namespace NodaTime
         /// <summary>
         /// Returns the least (most negative) offset within this time zone, over all time.
         /// </summary>
-        public Offset MinOffset { get { return Offset.FromTicks(minOffsetTicks); } }
+        public Offset MinOffset { get { return minOffset; } }
 
         /// <summary>
         /// Returns the greatest (most positive) offset within this time zone, over all time.
         /// </summary>
-        public Offset MaxOffset { get { return Offset.FromTicks(maxOffsetTicks); } }
+        public Offset MaxOffset { get { return maxOffset; } }
 
         #region Core abstract/virtual methods
         /// <summary>
@@ -241,7 +240,7 @@ namespace NodaTime
         /// <returns>The struct containing up to two ZoneInterval references.</returns>
         internal virtual ZoneIntervalPair GetZoneIntervalPair(LocalInstant localInstant)
         {
-            Instant firstGuess = Instant.FromTicksSinceUnixEpoch(localInstant.Ticks);
+            Instant firstGuess = localInstant.MinusZeroOffset();
             ZoneInterval interval = GetZoneInterval(firstGuess);
 
             // Most of the time we'll go into here... the local instant and the instant
@@ -337,7 +336,7 @@ namespace NodaTime
         public ZoneLocalMapping MapLocal(LocalDateTime localDateTime)
         {
             LocalInstant localInstant = localDateTime.ToLocalInstant();
-            Instant firstGuess = Instant.FromTicksSinceUnixEpoch(localInstant.Ticks);
+            Instant firstGuess = localInstant.MinusZeroOffset();
             ZoneInterval interval = GetZoneInterval(firstGuess);
 
             // Most of the time we'll go into here... the local instant and the instant
@@ -449,7 +448,7 @@ namespace NodaTime
             // If the tick before this interval started *could* map to a later local instant, let's
             // get the interval and check whether it actually includes the one we want.
             Instant endOfPrevious = intervalStart;
-            if (endOfPrevious.Ticks + maxOffsetTicks > localInstant.Ticks)
+            if (endOfPrevious.Plus(maxOffset) > localInstant)
             {
                 ZoneInterval candidate = GetZoneInterval(endOfPrevious - Duration.Epsilon);
                 if (candidate.Contains(localInstant))
@@ -472,7 +471,7 @@ namespace NodaTime
             {
                 return null;
             }
-            if (intervalEnd.Ticks + minOffsetTicks <= localInstant.Ticks)
+            if (intervalEnd.Plus(minOffset) <= localInstant)
             {
                 ZoneInterval candidate = GetZoneInterval(intervalEnd);
                 if (candidate.Contains(localInstant))
@@ -485,7 +484,7 @@ namespace NodaTime
 
         private ZoneInterval GetIntervalBeforeGap(LocalInstant localInstant)
         {
-            Instant guess = Instant.FromTicksSinceUnixEpoch(localInstant.Ticks);
+            Instant guess = localInstant.MinusZeroOffset();
             ZoneInterval guessInterval = GetZoneInterval(guess);
             // If the local interval occurs before the zone interval we're looking at starts,
             // we need to find the earlier one; otherwise this interval must come after the gap, and
@@ -502,7 +501,7 @@ namespace NodaTime
 
         private ZoneInterval GetIntervalAfterGap(LocalInstant localInstant)
         {
-            Instant guess = Instant.FromTicksSinceUnixEpoch(localInstant.Ticks);
+            Instant guess = localInstant.MinusZeroOffset();
             ZoneInterval guessInterval = GetZoneInterval(guess);
             // If the local interval occurs before the zone interval we're looking at starts,
             // it's the one we're looking for. Otherwise, we need to find the next interval.
