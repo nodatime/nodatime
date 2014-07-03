@@ -48,7 +48,7 @@ namespace NodaTime.Test.Calendars
         [Test]
         public void FieldsOf_GreatAchievement()
         {
-            LocalDateTime now = new LocalDateTime(new LocalInstant((TimeOfGreatAchievement - UnixEpochDateTime).Ticks), CalendarSystem.Iso);
+            LocalDateTime now = Instant.FromTicksSinceUnixEpoch((TimeOfGreatAchievement - UnixEpochDateTime).Ticks).InUtc().LocalDateTime;
 
             Assert.AreEqual(2009, now.Year);
             Assert.AreEqual(2009, now.YearOfEra);
@@ -78,7 +78,11 @@ namespace NodaTime.Test.Calendars
         public void ConstructLocalInstant_WithAllFields()
         {
             LocalInstant localAchievement = new LocalDateTime(2009, 11, 27, 18, 38, 25, 345, 8765).ToLocalInstant();
-            Assert.AreEqual((TimeOfGreatAchievement - UnixEpochDateTime).Ticks, localAchievement.Ticks);
+            long bclTicks = (TimeOfGreatAchievement - UnixEpochDateTime).Ticks;
+            int bclDays = (int) (bclTicks / NodaConstants.TicksPerStandardDay);
+            long bclTickOfDay = bclTicks % NodaConstants.TicksPerStandardDay;
+            Assert.AreEqual(bclDays, localAchievement.DaysSinceEpoch);
+            Assert.AreEqual(bclTickOfDay, localAchievement.TickOfDay);
         }
 
         [Test]

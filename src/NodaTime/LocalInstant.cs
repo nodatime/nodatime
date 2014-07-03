@@ -23,7 +23,7 @@ namespace NodaTime
         public static readonly LocalInstant MaxValue = new LocalInstant(Int64.MaxValue);
 
         /// <summary>
-        /// Number of days since the 1970-01-01, in the relevant time zone. While we could decide to just use a 96-bit number, this
+        /// Number of days since 1970-01-01, in a time zone neutral fashion. While we could decide to just use a 96-bit number, this
         /// days/part-of-day split is convenient for conversion to local date/time values.
         /// </summary>
         private readonly int days;
@@ -32,6 +32,11 @@ namespace NodaTime
         /// </summary>
         private readonly long tickOfDay;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LocalInstant"/> struct.
+        /// </summary>
+        /// <param name="days">Number of days since 1970-01-01, in a time zone neutral fashion.</param>
+        /// <param name="tickOfDay">Tick of the local day.</param>
         internal LocalInstant(int days, long tickOfDay)
         {
             this.days = days;
@@ -42,7 +47,7 @@ namespace NodaTime
         /// Initializes a new instance of the <see cref="LocalInstant"/> struct.
         /// </summary>
         /// <param name="ticks">The number of ticks from the Unix Epoch.</param>
-        internal LocalInstant(long ticks)
+        private LocalInstant(long ticks)
         {
             days = TickArithmetic.TicksToDaysAndTickOfDay(ticks, out tickOfDay);
         }
@@ -51,14 +56,26 @@ namespace NodaTime
         /// Convenience constructor for test purposes.
         /// </summary>
         internal LocalInstant(int year, int month, int day, int hour, int minute)
-            : this(Instant.FromUtc(year, month, day, hour, minute).Ticks)
+            : this(new LocalDate(year, month, day).DaysSinceEpoch,
+                   new LocalTime(hour, minute).TickOfDay)
         {            
         }
 
         /// <summary>
-        /// Ticks since the Unix epoch.
+        /// Number of days since the local unix epoch.
         /// </summary>
-        public long Ticks { get { return TickArithmetic.DaysAndTickOfDayToTicks(days, tickOfDay); } }
+        internal int DaysSinceEpoch { get { return days; } }
+
+        /// <summary>
+        /// Tick within the day.
+        /// </summary>
+        internal long TickOfDay { get { return tickOfDay; } }
+
+        /// <summary>
+        /// Ticks since the Unix epoch.
+        /// FIXME(2.0): We should be trying to remove this, probably...
+        /// </summary>
+        private long Ticks { get { return TickArithmetic.DaysAndTickOfDayToTicks(days, tickOfDay); } }
 
         /// <summary>
         /// Constructs a <see cref="DateTime"/> from this LocalInstant which has a <see cref="DateTime.Kind" />
@@ -84,8 +101,10 @@ namespace NodaTime
         /// </summary>
         internal static LocalInstant FromDateTime(DateTime dateTime)
         {
-            // FIXME:PERF
-            return new LocalInstant(NodaConstants.BclEpoch.Ticks + dateTime.Ticks);
+            long ticksSinceEpoch = NodaConstants.BclEpoch.Ticks + dateTime.Ticks;
+            long tickOfDay;
+            int days = TickArithmetic.TicksToDaysAndTickOfDay(ticksSinceEpoch, out tickOfDay);
+            return new LocalInstant(days, tickOfDay);
         }
 
         #region Operators
@@ -314,7 +333,7 @@ namespace NodaTime
         public override string ToString()
         {
             var pattern = LocalDateTimePattern.CreateWithInvariantCulture("yyyy-MM-ddTHH:mm:ss LOC");
-            var utc = new LocalDateTime(new LocalInstant(Ticks));
+            var utc = new LocalDateTime(ToIsoDate(), LocalTime.FromTicksSinceMidnight(tickOfDay));
             return pattern.Format(utc);
         }
         #endregion  // Object overrides
