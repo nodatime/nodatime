@@ -83,7 +83,7 @@ namespace NodaTime.Test
         public void MinusOffset_Zero_IsNeutralElement()
         {
             Instant sampleInstant = new Instant(1, 23456L);
-            LocalInstant sampleLocalInstant = new LocalInstant(1, 2345L);
+            LocalInstant sampleLocalInstant = new LocalInstant(1, 23456L);
             Assert.AreEqual(sampleInstant, sampleLocalInstant.Minus(Offset.Zero));
             Assert.AreEqual(sampleInstant, sampleLocalInstant.MinusZeroOffset());
         }
