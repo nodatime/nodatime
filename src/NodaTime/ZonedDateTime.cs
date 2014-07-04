@@ -832,7 +832,7 @@ namespace NodaTime
 #if !PCL
         #region Binary serialization
         private const string DaysSerializationName = "days";
-        private const string TickOfDaySerializationName = "tickOfDay";
+        private const string NanosecondOfDaySerializationName = "nanosecondOfDay";
         private const string CalendarIdSerializationName = "calendar";
         private const string OffsetMillisecondsSerializationName = "offsetMilliseconds";
         private const string ZoneIdSerializationName = "zone";
@@ -846,7 +846,7 @@ namespace NodaTime
             // Note: this uses the constructor which explicitly validates that the offset is reasonable.
             : this(new LocalDateTime(new LocalDate(info.GetInt32(DaysSerializationName),
                                                    CalendarSystem.ForId(info.GetString(CalendarIdSerializationName))),
-                                     LocalTime.FromTicksSinceMidnight(info.GetInt64(TickOfDaySerializationName))),
+                                     LocalTime.FromNanosecondsSinceMidnight(info.GetInt64(NanosecondOfDaySerializationName))),
                    DateTimeZoneProviders.Serialization[info.GetString(ZoneIdSerializationName)],
                    Offset.FromMilliseconds(info.GetInt32(OffsetMillisecondsSerializationName)))
         {
@@ -862,7 +862,7 @@ namespace NodaTime
         {
             // FIXME(2.0): Revisit serialization
             info.AddValue(DaysSerializationName, Date.DaysSinceEpoch);
-            info.AddValue(TickOfDaySerializationName, TimeOfDay.TickOfDay);
+            info.AddValue(NanosecondOfDaySerializationName, TimeOfDay.TickOfDay);
             info.AddValue(CalendarIdSerializationName, Calendar.Id);
             info.AddValue(OffsetMillisecondsSerializationName, Offset.Milliseconds);
             info.AddValue(ZoneIdSerializationName, Zone.Id);

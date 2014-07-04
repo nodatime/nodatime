@@ -380,7 +380,7 @@ namespace NodaTime
 
         internal LocalInstant ToLocalInstant()
         {
-            return new LocalInstant(date.DaysSinceEpoch, time.TickOfDay);
+            return new LocalInstant(date.DaysSinceEpoch, time.NanosecondOfDay);
         }
 
         /// <summary>
@@ -1042,7 +1042,7 @@ namespace NodaTime
 #if !PCL
         #region Binary serialization
         private const string DaysSerializationName = "days";
-        private const string TickOfDaySerializationName = "tickOfDay";
+        private const string NanosecondOfDaySerializationName = "nanoOfDay";
         private const string CalendarIdSerializationName = "calendar";
 
         /// <summary>
@@ -1053,7 +1053,7 @@ namespace NodaTime
         private LocalDateTime(SerializationInfo info, StreamingContext context)
             : this(new LocalDate(info.GetInt32(DaysSerializationName),
                                  CalendarSystem.ForId(info.GetString(CalendarIdSerializationName))),
-                   LocalTime.FromTicksSinceMidnight(info.GetInt64(TickOfDaySerializationName)))
+                   LocalTime.FromNanosecondsSinceMidnight(info.GetInt64(NanosecondOfDaySerializationName)))
         {
         }
 
@@ -1067,7 +1067,7 @@ namespace NodaTime
         {
             // FIXME(2.0): Revisit the serialization format
             info.AddValue(DaysSerializationName, date.DaysSinceEpoch);
-            info.AddValue(TickOfDaySerializationName, time.TickOfDay);
+            info.AddValue(NanosecondOfDaySerializationName, time.NanosecondOfDay);
             info.AddValue(CalendarIdSerializationName, Calendar.Id);
         }
         #endregion

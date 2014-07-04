@@ -565,7 +565,7 @@ namespace NodaTime
         /// <returns>A <see cref="Duration"/> representing the given number of ticks.</returns>
         public static Duration FromTicks(long ticks)
         {
-            return new Duration(ticks);
+            return new Duration(ticks * NodaConstants.NanosecondsPerTick);
         }
 
         /// <summary>

@@ -53,10 +53,10 @@ namespace NodaTime.Test.Fields
         }
 
         [Test]
-        public void Add_MinLongTicks()
+        public void Add_MinLongNanoseconds()
         {
             // Without a bit of care, this would fail.
-            TimePeriodField.Ticks.Add(LocalTime.Midnight, long.MinValue);
+            TimePeriodField.Nanoseconds.Add(LocalTime.Midnight, long.MinValue);
         }
     }
 }
