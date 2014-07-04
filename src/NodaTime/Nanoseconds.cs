@@ -5,6 +5,7 @@
 using System;
 using JetBrains.Annotations;
 using NodaTime.Calendars;
+using NodaTime.TimeZones;
 using NodaTime.Utility;
 
 namespace NodaTime
@@ -198,6 +199,54 @@ namespace NodaTime
         }
 
         /// <summary>
+        /// Implements addition for situations where the number of nanoseconds to add
+        /// is already known as an <c>Int64</c> nanos-of-day value.
+        /// </summary>
+        /// <param name="nanoseconds">The number of nanoseconds to add.</param>
+        /// <returns>A new <see cref="Nanoseconds" /> representing the sum of the given values.</returns>
+        [Pure]
+        internal Nanoseconds Plus(long nanoseconds)
+        {
+            int newDays = days;
+            long newNanos = nanoOfDay + nanoseconds;
+            if (newNanos >= NodaConstants.NanosecondsPerStandardDay)
+            {
+                newDays++;
+                newNanos -= NodaConstants.NanosecondsPerStandardDay;
+            }
+            else if (newNanos < 0)
+            {
+                newDays--;
+                newNanos += NodaConstants.NanosecondsPerStandardDay;
+            }
+            return new Nanoseconds(newDays, newNanos);
+        }
+
+        /// <summary>
+        /// Implements subtraction for situations where the number of nanoseconds to add
+        /// is already known as an <c>Int64</c> nanos-of-day value.
+        /// </summary>
+        /// <param name="nanoseconds">The nanoseconds to subtract.</param>
+        /// <returns>A new <see cref="Nanoseconds" /> representing the difference between the given values.</returns>
+        [Pure]
+        internal Nanoseconds Minus(long nanoseconds)
+        {
+            int newDays = days;
+            long newNanos = nanoOfDay - nanoseconds;
+            if (newNanos >= NodaConstants.NanosecondsPerStandardDay)
+            {
+                newDays++;
+                newNanos -= NodaConstants.NanosecondsPerStandardDay;
+            }
+            else if (newNanos < 0)
+            {
+                newDays--;
+                newNanos += NodaConstants.NanosecondsPerStandardDay;
+            }
+            return new Nanoseconds(newDays, newNanos);
+        }
+
+        /// <summary>
         /// Adds a duration to an instant. Friendly alternative to <c>operator+()</c>.
         /// </summary>
         /// <param name="left">The left hand side of the operator.</param>
@@ -252,6 +301,7 @@ namespace NodaTime
         {
             return left - right;
         }
+
         /// <summary>
         /// Returns the result of subtracting another instant from this one, for a fluent alternative to <c>operator-()</c>.
         /// </summary>
@@ -261,6 +311,37 @@ namespace NodaTime
         public Nanoseconds Minus(Nanoseconds other)
         {
             return this - other;
+        }
+
+        public static Nanoseconds operator /(Nanoseconds dividend, long divisor)
+        {
+            // FIXME:PERF
+            decimal x = (decimal) dividend;
+            return (Nanoseconds) x / divisor;
+        }
+
+        public static Nanoseconds operator *(Nanoseconds nanoseconds, long scalar)
+        {
+            // FIXME:PERF
+            decimal x = (decimal) nanoseconds;
+            return (Nanoseconds) x * scalar;
+        }
+
+        public static Nanoseconds operator *(long scalar, Nanoseconds nanoseconds)
+        {
+            return nanoseconds * scalar;
+        }
+
+        public static Nanoseconds operator -(Nanoseconds nanoseconds)
+        {
+            int oldDays = nanoseconds.days;
+            long oldNanoOfDay = nanoseconds.nanoOfDay;
+            if (oldNanoOfDay == 0)
+            {
+                return new Nanoseconds(-oldDays, 0);
+            }
+            long newNanoOfDay = NodaConstants.NanosecondsPerStandardDay - oldNanoOfDay;
+            return new Nanoseconds(-oldDays - 1, newNanoOfDay);
         }
 
         /// <summary>

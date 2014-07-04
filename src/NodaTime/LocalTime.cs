@@ -57,9 +57,9 @@ namespace NodaTime
         public static readonly LocalTime Noon = new LocalTime(12, 0, 0);
 
         /// <summary>
-        /// Ticks since midnight, in the range [0, 864,000,000,000).
+        /// Nanoseconds since midnight, in the range [0, 86,400,000,000,000).
         /// </summary>
-        private readonly long ticks;
+        private readonly long nanoseconds;
 
         /// <summary>
         /// Creates a local time at the given hour and minute, with second, millisecond-of-second
@@ -78,7 +78,7 @@ namespace NodaTime
                 Preconditions.CheckArgumentRange("hour", hour, 0, NodaConstants.HoursPerStandardDay - 1);
                 Preconditions.CheckArgumentRange("minute", minute, 0, NodaConstants.MinutesPerHour - 1);
             }
-            ticks = unchecked(hour * NodaConstants.TicksPerHour + minute * NodaConstants.TicksPerMinute);
+            nanoseconds = unchecked(hour * NodaConstants.NanosecondsPerHour + minute * NodaConstants.NanosecondsPerMinute);
         }
 
         /// <summary>
@@ -101,9 +101,9 @@ namespace NodaTime
                 Preconditions.CheckArgumentRange("minute", minute, 0, NodaConstants.MinutesPerHour - 1);
                 Preconditions.CheckArgumentRange("second", second, 0, NodaConstants.SecondsPerMinute - 1);
             }
-            ticks = unchecked(hour * NodaConstants.TicksPerHour +
-                minute * NodaConstants.TicksPerMinute +
-                second * NodaConstants.TicksPerSecond);
+            nanoseconds = unchecked(hour * NodaConstants.NanosecondsPerHour +
+                minute * NodaConstants.NanosecondsPerMinute +
+                second * NodaConstants.NanosecondsPerSecond);
         }
 
         /// <summary>
@@ -129,11 +129,11 @@ namespace NodaTime
                 Preconditions.CheckArgumentRange("second", second, 0, NodaConstants.SecondsPerMinute - 1);
                 Preconditions.CheckArgumentRange("millisecond", millisecond, 0, NodaConstants.MillisecondsPerSecond - 1);
             }
-            ticks = unchecked(
-                hour * NodaConstants.TicksPerHour +
-                minute * NodaConstants.TicksPerMinute +
-                second * NodaConstants.TicksPerSecond +
-                millisecond * NodaConstants.TicksPerMillisecond);
+            nanoseconds = unchecked(
+                hour * NodaConstants.NanosecondsPerHour +
+                minute * NodaConstants.NanosecondsPerMinute +
+                second * NodaConstants.NanosecondsPerSecond +
+                millisecond * NodaConstants.NanosecondsPerMillisecond);
         }
 
         /// <summary>
@@ -161,12 +161,12 @@ namespace NodaTime
                 Preconditions.CheckArgumentRange("millisecond", millisecond, 0, NodaConstants.MillisecondsPerSecond - 1);
                 Preconditions.CheckArgumentRange("tickWithinMillisecond", tickWithinMillisecond, 0, NodaConstants.TicksPerMillisecond - 1);
             }
-            ticks = unchecked(
-                hour * NodaConstants.TicksPerHour +
-                minute * NodaConstants.TicksPerMinute +
-                second * NodaConstants.TicksPerSecond +
-                millisecond * NodaConstants.TicksPerMillisecond +
-                tickWithinMillisecond);
+            nanoseconds = unchecked(
+                hour * NodaConstants.NanosecondsPerHour +
+                minute * NodaConstants.NanosecondsPerMinute +
+                second * NodaConstants.NanosecondsPerSecond +
+                millisecond * NodaConstants.NanosecondsPerMillisecond +
+                tickWithinMillisecond * NodaConstants.NanosecondsPerTick);
         }
 
         /// <summary>
@@ -195,10 +195,33 @@ namespace NodaTime
                 Preconditions.CheckArgumentRange("tickWithinSecond", tickWithinSecond, 0, NodaConstants.TicksPerSecond - 1);
             }
             return new LocalTime(unchecked(
-                hour * NodaConstants.TicksPerHour +
-                minute * NodaConstants.TicksPerMinute +
-                second * NodaConstants.TicksPerSecond +
-                tickWithinSecond));
+                hour * NodaConstants.NanosecondsPerHour +
+                minute * NodaConstants.NanosecondsPerMinute +
+                second * NodaConstants.NanosecondsPerSecond +
+                tickWithinSecond * NodaConstants.NanosecondsPerTick));
+        }
+
+        /// <summary>
+        /// Constructor only called from other parts of Noda Time - trusted to be the range [0, NanosecondsPerStandardDay).
+        /// </summary>
+        internal LocalTime(long nanoseconds)
+        {
+            this.nanoseconds = nanoseconds;
+        }
+
+        /// <summary>
+        /// Factory method for creating a local time from the number of ticks which have elapsed since midnight.
+        /// </summary>
+        /// <param name="nanoseconds">The number of ticks, in the range [0, 863,999,999,999]</param>
+        /// <returns>The resulting time.</returns>
+        internal static LocalTime FromNanosecondsSinceMidnight(long nanoseconds)
+        {
+            // Avoid the method calls which give a decent exception unless we're actually going to fail.
+            if (nanoseconds < 0 || nanoseconds > NodaConstants.NanosecondsPerStandardDay - 1)
+            {
+                Preconditions.CheckArgumentRange("nanoseconds", nanoseconds, 0, NodaConstants.NanosecondsPerStandardDay - 1);
+            }
+            return new LocalTime(nanoseconds);
         }
 
         /// <summary>
@@ -213,7 +236,7 @@ namespace NodaTime
             {
                 Preconditions.CheckArgumentRange("ticks", ticks, 0, NodaConstants.TicksPerStandardDay - 1);
             }
-            return new LocalTime(ticks);
+            return new LocalTime(unchecked(ticks * NodaConstants.NanosecondsPerTick));
         }
 
         /// <summary>
@@ -228,7 +251,7 @@ namespace NodaTime
             {
                 Preconditions.CheckArgumentRange("milliseconds", milliseconds, 0, NodaConstants.MillisecondsPerStandardDay - 1);
             }
-            return new LocalTime(unchecked(milliseconds * NodaConstants.TicksPerMillisecond));
+            return new LocalTime(unchecked(milliseconds * NodaConstants.NanosecondsPerMillisecond));
         }
 
         /// <summary>
@@ -243,15 +266,7 @@ namespace NodaTime
             {
                 Preconditions.CheckArgumentRange("seconds", seconds, 0, NodaConstants.SecondsPerStandardDay - 1);
             }
-            return new LocalTime(unchecked(seconds * NodaConstants.TicksPerSecond));
-        }
-
-        /// <summary>
-        /// Constructor only called from other parts of Noda Time - trusted to be the range [0, TicksPerStandardDay).
-        /// </summary>
-        internal LocalTime(long ticks)
-        {
-            this.ticks = ticks;
+            return new LocalTime(unchecked(seconds * NodaConstants.NanosecondsPerSecond));
         }
 
         /// <summary>
@@ -261,9 +276,9 @@ namespace NodaTime
         {
             get
             {
-                // Effectively tickOfDay / NodaConstants.TicksPerHour.
+                // Effectively tickOfDay / NodaConstants.NanosecondsPerHour.
                 // Note that NodaConstants.TicksPerStandardDay >> 11 is about 491 million; less than int.MaxValue.
-                return ((int) (ticks >> 11)) / 17578125;
+                return ((int) (nanoseconds >> 13)) / 439453125;
             }
         }
 
@@ -297,7 +312,7 @@ namespace NodaTime
             {
                 unchecked
                 {
-                    int minuteOfDay = (int) (ticks / (int) NodaConstants.TicksPerMinute);
+                    int minuteOfDay = (int) (nanoseconds / (int) NodaConstants.NanosecondsPerMinute);
                     return minuteOfDay % NodaConstants.MinutesPerHour;
                 }
             }
@@ -312,7 +327,7 @@ namespace NodaTime
             {
                 unchecked
                 {
-                    int secondOfDay = (int) (ticks / (int) NodaConstants.TicksPerSecond);
+                    int secondOfDay = (int) (nanoseconds / (int) NodaConstants.NanosecondsPerSecond);
                     return secondOfDay % NodaConstants.SecondsPerMinute;
                 }
             }
@@ -327,21 +342,27 @@ namespace NodaTime
             {
                 unchecked
                 {
-                    long milliSecondOfDay = (ticks / (int) NodaConstants.TicksPerMillisecond);
+                    long milliSecondOfDay = (nanoseconds / (int) NodaConstants.NanosecondsPerMillisecond);
                     return (int) (milliSecondOfDay % NodaConstants.MillisecondsPerSecond);
                 }
             }
         }
 
+        // TODO(2.0): Rewrite for performance?
         /// <summary>
         /// Gets the tick of this local time within the second, in the range 0 to 9,999,999 inclusive.
         /// </summary>
-        public int TickOfSecond { get { return unchecked((int) (ticks % (int) NodaConstants.TicksPerSecond)); } }
+        public int TickOfSecond { get { return unchecked((int) (TickOfDay % (int) NodaConstants.TicksPerSecond)); } }
 
         /// <summary>
         /// Gets the tick of this local time within the day, in the range 0 to 863,999,999,999 inclusive.
         /// </summary>
-        public long TickOfDay { get { return ticks; } }
+        public long TickOfDay { get { return nanoseconds / NodaConstants.NanosecondsPerTick; } }
+
+        /// <summary>
+        /// Gets the nanosecond of this local time within the day, int he range 0 to 86,399,999,999,999 inclusive.
+        /// </summary>
+        public long NanosecondOfDay { get { return nanoseconds; } }
 
         /// <summary>
         /// Creates a new local time by adding a period to an existing time. The period must not contain
@@ -465,7 +486,7 @@ namespace NodaTime
         /// <returns>True if the two times are the same; false otherwise</returns>
         public static bool operator ==(LocalTime lhs, LocalTime rhs)
         {
-            return lhs.ticks == rhs.ticks;
+            return lhs.nanoseconds == rhs.nanoseconds;
         }
 
         /// <summary>
@@ -476,7 +497,7 @@ namespace NodaTime
         /// <returns>False if the two times are the same; true otherwise</returns>
         public static bool operator !=(LocalTime lhs, LocalTime rhs)
         {
-            return lhs.ticks != rhs.ticks;
+            return lhs.nanoseconds != rhs.nanoseconds;
         }
 
         /// <summary>
@@ -488,7 +509,7 @@ namespace NodaTime
         /// <returns>true if the <paramref name="lhs"/> is strictly earlier than <paramref name="rhs"/>, false otherwise.</returns>
         public static bool operator <(LocalTime lhs, LocalTime rhs)
         {
-            return lhs.ticks < rhs.ticks;
+            return lhs.nanoseconds < rhs.nanoseconds;
         }
 
         /// <summary>
@@ -500,7 +521,7 @@ namespace NodaTime
         /// <returns>true if the <paramref name="lhs"/> is earlier than or equal to <paramref name="rhs"/>, false otherwise.</returns>
         public static bool operator <=(LocalTime lhs, LocalTime rhs)
         {
-            return lhs.ticks <= rhs.ticks;
+            return lhs.nanoseconds <= rhs.nanoseconds;
         }
 
         /// <summary>
@@ -512,7 +533,7 @@ namespace NodaTime
         /// <returns>true if the <paramref name="lhs"/> is strictly later than <paramref name="rhs"/>, false otherwise.</returns>
         public static bool operator >(LocalTime lhs, LocalTime rhs)
         {
-            return lhs.ticks > rhs.ticks;
+            return lhs.nanoseconds > rhs.nanoseconds;
         }
 
         /// <summary>
@@ -524,7 +545,7 @@ namespace NodaTime
         /// <returns>true if the <paramref name="lhs"/> is later than or equal to <paramref name="rhs"/>, false otherwise.</returns>
         public static bool operator >=(LocalTime lhs, LocalTime rhs)
         {
-            return lhs.ticks >= rhs.ticks;
+            return lhs.nanoseconds >= rhs.nanoseconds;
         }
 
         /// <summary>
@@ -536,7 +557,7 @@ namespace NodaTime
         /// later than <paramref name="other"/>.</returns>
         public int CompareTo(LocalTime other)
         {
-            return ticks.CompareTo(other.ticks);
+            return nanoseconds.CompareTo(other.nanoseconds);
         }
 
         /// <summary>
@@ -566,7 +587,7 @@ namespace NodaTime
         /// <returns>A hash code for this local time.</returns>
         public override int GetHashCode()
         {
-            return ticks.GetHashCode();
+            return nanoseconds.GetHashCode();
         }
 
         /// <summary>
@@ -659,6 +680,12 @@ namespace NodaTime
             return TimePeriodField.Ticks.Add(this, ticks);
         }
 
+        [Pure]
+        public LocalTime PlusNanoseconds(long nanoseconds)
+        {
+            return TimePeriodField.Nanoseconds.Add(this, nanoseconds);
+        }
+
         /// <summary>
         /// Returns this time, with the given adjuster applied to it.
         /// </summary>
@@ -732,7 +759,7 @@ namespace NodaTime
 
 #if !PCL
         #region Binary serialization
-        private const string TickOfDaySerializationName = "ticks";
+        private const string NanoOfDaySerializationName = "nanoOfDay";
 
         // TODO: Validation!
         /// <summary>
@@ -741,7 +768,7 @@ namespace NodaTime
         /// <param name="info">The <see cref="SerializationInfo"/> to fetch data from.</param>
         /// <param name="context">The source for this deserialization.</param>
         private LocalTime(SerializationInfo info, StreamingContext context)
-            : this(info.GetInt64(TickOfDaySerializationName))
+            : this(info.GetInt64(NanoOfDaySerializationName))
         {
         }
 
@@ -753,7 +780,7 @@ namespace NodaTime
         [System.Security.SecurityCritical]
         void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)
         {
-            info.AddValue(TickOfDaySerializationName, ticks);
+            info.AddValue(NanoOfDaySerializationName, nanoseconds);
         }
         #endregion
 #endif

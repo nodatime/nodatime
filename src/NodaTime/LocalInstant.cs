@@ -18,38 +18,31 @@ namespace NodaTime
     /// </summary>
     internal struct LocalInstant : IEquatable<LocalInstant>, IComparable<LocalInstant>, IComparable
     {
-        public static readonly LocalInstant LocalUnixEpoch = new LocalInstant(0);
-        public static readonly LocalInstant MinValue = new LocalInstant(Int64.MinValue);
-        public static readonly LocalInstant MaxValue = new LocalInstant(Int64.MaxValue);
+        public static readonly LocalInstant LocalUnixEpoch = new LocalInstant();
+        public static readonly LocalInstant MinValue = new LocalInstant(int.MinValue, 0);
+        public static readonly LocalInstant MaxValue = new LocalInstant(int.MaxValue, NodaConstants.NanosecondsPerStandardDay - 1);
 
         /// <summary>
-        /// Number of days since 1970-01-01, in a time zone neutral fashion. While we could decide to just use a 96-bit number, this
-        /// days/part-of-day split is convenient for conversion to local date/time values.
+        /// Number of nanoseconds since the local 1970-01-01T00:00:00.
         /// </summary>
-        private readonly int days;
-        /// <summary>
-        /// The tick within the local day represented by <see cref="days"/>.
-        /// </summary>
-        private readonly long tickOfDay;
+        private readonly Nanoseconds nanoseconds;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LocalInstant"/> struct.
         /// </summary>
-        /// <param name="days">Number of days since 1970-01-01, in a time zone neutral fashion.</param>
-        /// <param name="tickOfDay">Tick of the local day.</param>
-        internal LocalInstant(int days, long tickOfDay)
+        internal LocalInstant(Nanoseconds nanoseconds)
         {
-            this.days = days;
-            this.tickOfDay = tickOfDay;
+            this.nanoseconds = nanoseconds;
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LocalInstant"/> struct.
         /// </summary>
-        /// <param name="ticks">The number of ticks from the Unix Epoch.</param>
-        private LocalInstant(long ticks)
+        /// <param name="days">Number of days since 1970-01-01, in a time zone neutral fashion.</param>
+        /// <param name="nanoOfDay">Nanosecond of the local day.</param>
+        internal LocalInstant(int days, long nanoOfDay)
+            : this(new Nanoseconds(days, nanoOfDay))
         {
-            days = TickArithmetic.TicksToDaysAndTickOfDay(ticks, out tickOfDay);
         }
 
         /// <summary>
@@ -57,25 +50,19 @@ namespace NodaTime
         /// </summary>
         internal LocalInstant(int year, int month, int day, int hour, int minute)
             : this(new LocalDate(year, month, day).DaysSinceEpoch,
-                   new LocalTime(hour, minute).TickOfDay)
+                   new LocalTime(hour, minute).NanosecondOfDay)
         {            
         }
 
         /// <summary>
         /// Number of days since the local unix epoch.
         /// </summary>
-        internal int DaysSinceEpoch { get { return days; } }
+        internal int DaysSinceEpoch { get { return nanoseconds.Days; } }
 
         /// <summary>
-        /// Tick within the day.
+        /// Nanosecond within the day.
         /// </summary>
-        internal long TickOfDay { get { return tickOfDay; } }
-
-        /// <summary>
-        /// Ticks since the Unix epoch.
-        /// FIXME(2.0): We should be trying to remove this, probably...
-        /// </summary>
-        private long Ticks { get { return TickArithmetic.DaysAndTickOfDayToTicks(days, tickOfDay); } }
+        internal long NanosecondOfDay { get { return nanoseconds.NanosecondOfDay; } }
 
         /// <summary>
         /// Constructs a <see cref="DateTime"/> from this LocalInstant which has a <see cref="DateTime.Kind" />
@@ -90,8 +77,8 @@ namespace NodaTime
         [Pure]
         public DateTime ToDateTimeUnspecified()
         {
-            // FIXME:PERF
-            return new DateTime(NodaConstants.BclTicksAtUnixEpoch + Ticks, DateTimeKind.Unspecified);
+            return new DateTime(NodaConstants.BclTicksAtUnixEpoch + nanoseconds.Ticks,
+                                DateTimeKind.Unspecified);
         }
 
         /// <summary>
@@ -102,9 +89,7 @@ namespace NodaTime
         internal static LocalInstant FromDateTime(DateTime dateTime)
         {
             long ticksSinceEpoch = NodaConstants.BclEpoch.Ticks + dateTime.Ticks;
-            long tickOfDay;
-            int days = TickArithmetic.TicksToDaysAndTickOfDay(ticksSinceEpoch, out tickOfDay);
-            return new LocalInstant(days, tickOfDay);
+            return new LocalInstant(Nanoseconds.FromTicks(ticksSinceEpoch));
         }
 
         #region Operators
@@ -113,8 +98,7 @@ namespace NodaTime
         // </summary>
         public static LocalInstant operator +(LocalInstant left, Duration right)
         {
-            // FIXME:PERF
-            return new LocalInstant(left.Ticks + right.Ticks);
+            return new LocalInstant(left.nanoseconds + right.Nanoseconds);
         }
 
         /// <summary>
@@ -123,7 +107,7 @@ namespace NodaTime
         /// </summary>
         internal Instant MinusZeroOffset()
         {
-            return new Instant(days, tickOfDay);
+            return new Instant(nanoseconds);
         }
 
         /// <summary>
@@ -138,20 +122,7 @@ namespace NodaTime
         /// <returns>A new <see cref="Instant"/> representing the difference of the given values.</returns>
         public Instant Minus(Offset offset)
         {
-            // Guaranteed not to overflow; offset can't be more than a day.
-            long newTickOfDay = tickOfDay - offset.Ticks;
-            int newDays = days;
-            if (newTickOfDay < 0)
-            {
-                newTickOfDay += NodaConstants.TicksPerStandardDay;
-                newDays--;
-            }
-            else if (newTickOfDay >= NodaConstants.TicksPerStandardDay)
-            {
-                newTickOfDay -= NodaConstants.TicksPerStandardDay;
-                newDays++;
-            }
-            return new Instant(newDays, newTickOfDay);
+            return new Instant(nanoseconds.Minus(offset.Nanoseconds));
         }
 
         /// <summary>
@@ -159,8 +130,7 @@ namespace NodaTime
         /// </summary>
         public static LocalInstant operator -(LocalInstant left, Duration right)
         {
-            // FIXME:PERF
-            return new LocalInstant(left.Ticks - right.Ticks);
+            return new LocalInstant(left.nanoseconds - right.Nanoseconds);
         }
 
         /// <summary>
@@ -168,8 +138,7 @@ namespace NodaTime
         /// </summary>
         internal LocalDate ToIsoDate()
         {
-            // FIXME:PERF
-            return new LocalDate(days, CalendarSystem.Iso);
+            return new LocalDate(nanoseconds.Days, CalendarSystem.Iso);
         }
 
         /// <summary>
@@ -180,7 +149,7 @@ namespace NodaTime
         /// <returns><c>true</c> if values are equal to each other, otherwise <c>false</c>.</returns>
         public static bool operator ==(LocalInstant left, LocalInstant right)
         {
-            return left.days == right.days && left.tickOfDay == right.tickOfDay;
+            return left.nanoseconds == right.nanoseconds;
         }
 
         /// <summary>
@@ -202,7 +171,7 @@ namespace NodaTime
         /// <returns><c>true</c> if the left value is less than the right value, otherwise <c>false</c>.</returns>
         public static bool operator <(LocalInstant left, LocalInstant right)
         {
-            return left.days < right.days || (left.days == right.days && left.tickOfDay < right.tickOfDay);
+            return left.nanoseconds < right.nanoseconds;
         }
 
         /// <summary>
@@ -213,7 +182,7 @@ namespace NodaTime
         /// <returns><c>true</c> if the left value is less than or equal to the right value, otherwise <c>false</c>.</returns>
         public static bool operator <=(LocalInstant left, LocalInstant right)
         {
-            return left.days < right.days || (left.days == right.days && left.tickOfDay <= right.tickOfDay);
+            return left.nanoseconds <= right.nanoseconds;
         }
 
         /// <summary>
@@ -224,7 +193,7 @@ namespace NodaTime
         /// <returns><c>true</c> if the left value is greater than the right value, otherwise <c>false</c>.</returns>
         public static bool operator >(LocalInstant left, LocalInstant right)
         {
-            return left.days > right.days || (left.days == right.days && left.tickOfDay > right.tickOfDay);
+            return left.nanoseconds > right.nanoseconds;
         }
 
         /// <summary>
@@ -235,7 +204,7 @@ namespace NodaTime
         /// <returns><c>true</c> if the left value is greater than or equal to the right value, otherwise <c>false</c>.</returns>
         public static bool operator >=(LocalInstant left, LocalInstant right)
         {
-            return left.days > right.days || (left.days == right.days && left.tickOfDay >= right.tickOfDay);
+            return left.nanoseconds >= right.nanoseconds;
         }
         #endregion // Operators
 
@@ -268,8 +237,7 @@ namespace NodaTime
         /// </returns>
         public int CompareTo(LocalInstant other)
         {
-            int dayComparison = days.CompareTo(other.days);
-            return dayComparison != 0 ? dayComparison : tickOfDay.CompareTo(other.tickOfDay);
+            return nanoseconds.CompareTo(other.nanoseconds);
         }
 
         /// <summary>
@@ -321,7 +289,7 @@ namespace NodaTime
         /// </returns>
         public override int GetHashCode()
         {
-            return days ^ tickOfDay.GetHashCode();
+            return nanoseconds.GetHashCode();
         }
 
         /// <summary>
@@ -333,7 +301,7 @@ namespace NodaTime
         public override string ToString()
         {
             var pattern = LocalDateTimePattern.CreateWithInvariantCulture("yyyy-MM-ddTHH:mm:ss LOC");
-            var utc = new LocalDateTime(ToIsoDate(), LocalTime.FromTicksSinceMidnight(tickOfDay));
+            var utc = new LocalDateTime(ToIsoDate(), LocalTime.FromNanosecondsSinceMidnight(nanoseconds.NanosecondOfDay));
             return pattern.Format(utc);
         }
         #endregion  // Object overrides

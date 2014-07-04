@@ -44,55 +44,43 @@ namespace NodaTime
         /// <remarks>
         /// Within Noda Time, this is also used to represent 'the beginning of time'.
         /// </remarks>
-        public static readonly Instant MinValue = new Instant(Int64.MinValue);
+        public static readonly Instant MinValue = new Instant(new Nanoseconds(int.MinValue, 0));
         /// <summary>
         /// Represents the largest possible <see cref="Instant"/>.
         /// </summary>
         /// <remarks>
         /// Within Noda Time, this is also used to represent 'the end of time'.
         /// </remarks>
-        public static readonly Instant MaxValue = new Instant(Int64.MaxValue);
+        public static readonly Instant MaxValue = new Instant(new Nanoseconds(int.MaxValue, NodaConstants.NanosecondsPerStandardDay - 1));
 
         /// <summary>
-        /// Number of days since the Unix epoch, in UTC. While we could decide to just use a 96-bit number, this
-        /// days/part-of-day split is convenient for conversion to local date/time values.
+        /// Nanoseconds since the Unix epoch.
         /// </summary>
-        private readonly int days;
-        /// <summary>
-        /// The tick within the UTC day represented by <see cref="days"/>.
-        /// </summary>
-        private readonly long tickOfDay;
+        private Nanoseconds nanoseconds;
 
-        internal Instant(int days, long tickOfDay)
+        internal Instant(Nanoseconds nanoseconds)
         {
-            this.days = days;
-            this.tickOfDay = tickOfDay;
+            this.nanoseconds = nanoseconds;
         }
-    
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Instant" /> struct.
-        /// </summary>
-        /// <remarks>
-        /// Note that while the Noda Time <see cref="Instant"/> type and BCL <see cref="DateTime"/> and
-        /// <see cref="DateTimeOffset"/> types are all defined in terms of a number of ticks, they use different
-        /// origins: the Noda Time types count ticks from the Unix epoch (the start of 1970 AD), while the BCL types
-        /// count from the start of 1 AD. This constructor requires the former; to convert from a number-of-ticks since
-        /// the BCL epoch, construct a <see cref="DateTime"/> first, then use <see cref="FromDateTimeUtc"/>.
-        /// </remarks>
-        /// <param name="ticks">The number of ticks since the Unix epoch. Negative values represent instants before the
-        /// Unix epoch.</param>
-        private Instant(long ticks)
+
+        internal Instant(int days, long nanoOfDay) : this(new Nanoseconds(days, nanoOfDay))
         {
-            days = TickArithmetic.TicksToDaysAndTickOfDay(ticks, out tickOfDay);
         }
 
         /// <summary>
         /// The number of ticks since the Unix epoch. Negative values represent instants before the Unix epoch.
+        /// TODO(2.0): Document rounding.
         /// </summary>
         /// <remarks>
         /// A tick is equal to 100 nanoseconds. There are 10,000 ticks in a millisecond.
         /// </remarks>
-        public long Ticks { get { return TickArithmetic.DaysAndTickOfDayToTicks(days, tickOfDay); } }
+        public long Ticks { get { return nanoseconds.Ticks; } }
+
+        /// <summary>
+        /// Get the number of nanoseconds since the Unix epoch.
+        /// </summary>
+        /// <returns>The number of nanoseconds since the Unix epoch.</returns>
+        public Nanoseconds Nanoseconds { get { return nanoseconds; } }
 
         #region IComparable<Instant> and IComparable Members
         /// <summary>
@@ -123,8 +111,7 @@ namespace NodaTime
         /// </returns>
         public int CompareTo(Instant other)
         {
-            int dayComparison = days.CompareTo(other.days);
-            return dayComparison != 0 ? dayComparison : tickOfDay.CompareTo(other.tickOfDay);
+            return nanoseconds.CompareTo(other.nanoseconds);
         }
 
         /// <summary>
@@ -176,7 +163,7 @@ namespace NodaTime
         /// </returns>
         public override int GetHashCode()
         {
-            return days ^ tickOfDay.GetHashCode();
+            return nanoseconds.GetHashCode();
         }
         #endregion  // Object overrides
 
@@ -188,8 +175,7 @@ namespace NodaTime
         [Pure]
         public Instant PlusTicks(long ticksToAdd)
         {
-            // FIXME:PERF
-            return new Instant(this.Ticks + ticksToAdd);
+            return new Instant(nanoseconds + Nanoseconds.FromTicks(ticksToAdd));
         }
 
         #region Operators
@@ -201,8 +187,7 @@ namespace NodaTime
         /// <returns>A new <see cref="Instant" /> representing the sum of the given values.</returns>
         public static Instant operator +(Instant left, Duration right)
         {
-            // FIXME:PERF
-            return new Instant(left.Ticks + right.Ticks);
+            return new Instant(left.nanoseconds + right.Nanoseconds);
         }
 
         /// <summary>
@@ -216,20 +201,7 @@ namespace NodaTime
         [Pure]
         internal LocalInstant Plus(Offset offset)
         {
-            // Guaranteed not to overflow; offset can't be more than a day.
-            long newTickOfDay = tickOfDay + offset.Ticks;
-            int newDays = days;
-            if (newTickOfDay < 0)
-            {
-                newTickOfDay += NodaConstants.TicksPerStandardDay;
-                newDays--;
-            }
-            else if (newTickOfDay >= NodaConstants.TicksPerStandardDay)
-            {
-                newTickOfDay -= NodaConstants.TicksPerStandardDay;
-                newDays++;
-            }
-            return new LocalInstant(newDays, newTickOfDay);
+            return new LocalInstant(nanoseconds.Plus(offset.Nanoseconds));
         }
 
         /// <summary>
@@ -264,8 +236,7 @@ namespace NodaTime
         /// <returns>A new <see cref="Duration" /> representing the difference of the given values.</returns>
         public static Duration operator -(Instant left, Instant right)
         {
-            // FIXME:PERF
-            return Duration.FromTicks(left.Ticks - right.Ticks);
+            return Duration.FromNanoseconds(left.nanoseconds - right.nanoseconds);
         }
 
         /// <summary>
@@ -276,8 +247,7 @@ namespace NodaTime
         /// <returns>A new <see cref="Instant" /> representing the difference of the given values.</returns>
         public static Instant operator -(Instant left, Duration right)
         {
-            // FIXME:PERF
-            return new Instant(left.Ticks - right.Ticks);
+            return new Instant(left.nanoseconds - right.Nanoseconds);
         }
 
         /// <summary>
@@ -288,7 +258,6 @@ namespace NodaTime
         /// <returns>A new <see cref="Duration" /> representing the difference of the given values.</returns>
         public static Duration Subtract(Instant left, Instant right)
         {
-            // FIXME:PERF
             return left - right;
         }
 
@@ -300,7 +269,6 @@ namespace NodaTime
         [Pure]
         public Duration Minus(Instant other)
         {
-            // FIXME:PERF
             return this - other;
         }
 
@@ -313,7 +281,6 @@ namespace NodaTime
         [Pure]
         public static Instant Subtract(Instant left, Duration right)
         {
-            // FIXME:PERF
             return left - right;
         }
 
@@ -329,18 +296,18 @@ namespace NodaTime
         }
 
         /// <summary>
-        ///   Implements the operator == (equality).
+        /// Implements the operator == (equality).
         /// </summary>
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
         /// <returns><c>true</c> if values are equal to each other, otherwise <c>false</c>.</returns>
         public static bool operator ==(Instant left, Instant right)
         {
-            return left.days == right.days && left.tickOfDay == right.tickOfDay;
+            return left.nanoseconds == right.nanoseconds;
         }
 
         /// <summary>
-        ///   Implements the operator != (inequality).
+        /// Implements the operator != (inequality).
         /// </summary>
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
@@ -358,7 +325,7 @@ namespace NodaTime
         /// <returns><c>true</c> if the left value is less than the right value, otherwise <c>false</c>.</returns>
         public static bool operator <(Instant left, Instant right)
         {
-            return left.days < right.days || (left.days == right.days && left.tickOfDay < right.tickOfDay);
+            return left.nanoseconds < right.nanoseconds;
         }
 
         /// <summary>
@@ -369,7 +336,7 @@ namespace NodaTime
         /// <returns><c>true</c> if the left value is less than or equal to the right value, otherwise <c>false</c>.</returns>
         public static bool operator <=(Instant left, Instant right)
         {
-            return left.days < right.days || (left.days == right.days && left.tickOfDay <= right.tickOfDay);
+            return left.nanoseconds <= right.nanoseconds;
         }
 
         /// <summary>
@@ -380,7 +347,7 @@ namespace NodaTime
         /// <returns><c>true</c> if the left value is greater than the right value, otherwise <c>false</c>.</returns>
         public static bool operator >(Instant left, Instant right)
         {
-            return left.days > right.days || (left.days == right.days && left.tickOfDay > right.tickOfDay);
+            return left.nanoseconds > right.nanoseconds;
         }
 
         /// <summary>
@@ -391,7 +358,7 @@ namespace NodaTime
         /// <returns><c>true</c> if the left value is greater than or equal to the right value, otherwise <c>false</c>.</returns>
         public static bool operator >=(Instant left, Instant right)
         {
-            return left.days > right.days || (left.days == right.days && left.tickOfDay >= right.tickOfDay);
+            return left.nanoseconds >= right.nanoseconds;
         }
         #endregion // Operators
 
@@ -412,8 +379,8 @@ namespace NodaTime
         public static Instant FromUtc(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour)
         {
             var days = new LocalDate(year, monthOfYear, dayOfMonth).DaysSinceEpoch;
-            var ticks = new LocalTime(hourOfDay, minuteOfHour).TickOfDay;
-            return new Instant(days, ticks);
+            var nanoOfDay = new LocalTime(hourOfDay, minuteOfHour).NanosecondOfDay;
+            return new Instant(days, nanoOfDay);
         }
 
         /// <summary>
@@ -434,8 +401,8 @@ namespace NodaTime
         public static Instant FromUtc(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour, int secondOfMinute)
         {
             var days = new LocalDate(year, monthOfYear, dayOfMonth).DaysSinceEpoch;
-            var ticks = new LocalTime(hourOfDay, minuteOfHour, secondOfMinute).TickOfDay;
-            return new Instant(days, ticks);
+            var nanoOfDay = new LocalTime(hourOfDay, minuteOfHour, secondOfMinute).NanosecondOfDay;
+            return new Instant(days, nanoOfDay);
         }
 
         /// <summary>
@@ -539,7 +506,6 @@ namespace NodaTime
         /// <param name="dateTimeOffset">Date and time value with an offset.</param>
         public static Instant FromDateTimeOffset(DateTimeOffset dateTimeOffset)
         {
-            // FIXME:PERF
             return NodaConstants.BclEpoch.PlusTicks(dateTimeOffset.Ticks - dateTimeOffset.Offset.Ticks);
         }
 
@@ -566,10 +532,11 @@ namespace NodaTime
         /// <exception cref="ArgumentOutOfRangeException">The constructed instant would be out of the range representable in Noda Time.</exception>
         public static Instant FromSecondsSinceUnixEpoch(long seconds)
         {
-            // FIXME:PERF
+            // FIXME:Range checking
             Preconditions.CheckArgumentRange("seconds", seconds, long.MinValue / NodaConstants.TicksPerSecond,
                 long.MaxValue / NodaConstants.TicksPerSecond);
-            return new Instant(seconds * NodaConstants.TicksPerSecond);
+            // TODO(2.0): Create a Nanoseconds.FromSeconds call?
+            return FromTicksSinceUnixEpoch(seconds * NodaConstants.TicksPerSecond);
         }
 
         /// <summary>
@@ -581,10 +548,11 @@ namespace NodaTime
         /// <exception cref="ArgumentOutOfRangeException">The constructed instant would be out of the range representable in Noda Time.</exception>
         public static Instant FromMillisecondsSinceUnixEpoch(long milliseconds)
         {
-            // FIXME:PERF
+            // FIXME:Range
             Preconditions.CheckArgumentRange("milliseconds", milliseconds, long.MinValue / NodaConstants.TicksPerMillisecond,
                 long.MaxValue / NodaConstants.TicksPerMillisecond);
-            return new Instant(milliseconds * NodaConstants.TicksPerMillisecond);
+            // TODO(2.0): Create a Nanoseconds.FromSeconds call?
+            return FromTicksSinceUnixEpoch(milliseconds * NodaConstants.TicksPerMillisecond);
         }
 
         /// <summary>
@@ -597,8 +565,8 @@ namespace NodaTime
         /// <param name="ticks">Number of ticks since the Unix epoch. May be negative (for instants before the epoch).</param>
         public static Instant FromTicksSinceUnixEpoch(long ticks)
         {
-            // FIXME:PERF
-            return new Instant(ticks);
+            // FIXME:Range
+            return new Instant(Nanoseconds.FromTicks(ticks));
         }
 
         /// <summary>
@@ -625,7 +593,6 @@ namespace NodaTime
         [Pure]
         public ZonedDateTime InZone([NotNull] DateTimeZone zone)
         {
-            // FIXME:PERF
             Preconditions.CheckNotNull(zone, "zone");
             return new ZonedDateTime(this, zone, CalendarSystem.Iso);
         }
@@ -656,7 +623,6 @@ namespace NodaTime
         [Pure]
         public OffsetDateTime WithOffset(Offset offset)
         {
-            // FIXME:PERF
             return new OffsetDateTime(new LocalDateTime(this.Plus(offset)), offset);
         }
 
@@ -671,7 +637,6 @@ namespace NodaTime
         [Pure]
         public OffsetDateTime WithOffset(Offset offset, [NotNull] CalendarSystem calendar)
         {
-            // FIXME:PERF
             Preconditions.CheckNotNull(calendar, "calendar");
             return new OffsetDateTime(new LocalDateTime(this.Plus(offset), calendar), offset);
         }
@@ -702,7 +667,8 @@ namespace NodaTime
 
 #if !PCL
         #region Binary serialization
-        private const string TicksSerializationName = "ticks";
+        private const string DaysSerializationName = "days";
+        private const string NanoOfDaySerializationName = "nanoOfDay";
 
         /// <summary>
         /// Private constructor only present for serialization.
@@ -711,7 +677,7 @@ namespace NodaTime
         /// <param name="context">The source for this deserialization.</param>
         private Instant(SerializationInfo info, StreamingContext context)
             // FIXME:SERIALIZATION
-            : this(info.GetInt64(TicksSerializationName))
+            : this(new Nanoseconds(info.GetInt32(DaysSerializationName), info.GetInt64(NanoOfDaySerializationName)))
         {
         }
 
@@ -724,7 +690,8 @@ namespace NodaTime
         void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)
         {
             // FIXME:SERIALIZATION
-            info.AddValue(TicksSerializationName, Ticks);
+            info.AddValue(DaysSerializationName, nanoseconds.Days);
+            info.AddValue(NanoOfDaySerializationName, nanoseconds.NanosecondOfDay);
         }
         #endregion
 #endif

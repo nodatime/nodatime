@@ -51,11 +51,11 @@ namespace NodaTime.Test
         {
             var simple = new LocalInstant(0, 3000000L) + Duration.Epsilon;
             Assert.AreEqual(0, simple.DaysSinceEpoch);
-            Assert.AreEqual(3000001L, simple.TickOfDay);
+            Assert.AreEqual(3000001L, simple.NanosecondOfDay);
 
-            var crossDay = new LocalInstant(1, NodaConstants.TicksPerStandardDay - 1) + Duration.Epsilon;
+            var crossDay = new LocalInstant(1, NodaConstants.NanosecondsPerStandardDay - 1) + Duration.Epsilon;
             Assert.AreEqual(2, crossDay.DaysSinceEpoch);
-            Assert.AreEqual(0, crossDay.TickOfDay);
+            Assert.AreEqual(0, crossDay.NanosecondOfDay);
         }
         #endregion
 
@@ -72,11 +72,11 @@ namespace NodaTime.Test
         {
             var simple = new LocalInstant(0, 3000000L) - Duration.Epsilon;
             Assert.AreEqual(0, simple.DaysSinceEpoch);
-            Assert.AreEqual(2999999L, simple.TickOfDay);
+            Assert.AreEqual(2999999L, simple.NanosecondOfDay);
 
             var crossDay = new LocalInstant(2, 0L) - Duration.Epsilon;
             Assert.AreEqual(1, crossDay.DaysSinceEpoch);
-            Assert.AreEqual(NodaConstants.TicksPerStandardDay - 1, crossDay.TickOfDay);
+            Assert.AreEqual(NodaConstants.TicksPerStandardDay - 1, crossDay.NanosecondOfDay);
         }
 
         [Test]
