@@ -276,9 +276,12 @@ namespace NodaTime
         {
             get
             {
-                // Effectively tickOfDay / NodaConstants.NanosecondsPerHour.
-                // Note that NodaConstants.TicksPerStandardDay >> 11 is about 491 million; less than int.MaxValue.
-                return ((int) (nanoseconds >> 13)) / 439453125;
+                return (int) (nanoseconds / NodaConstants.NanosecondsPerHour);
+
+                // TODO(2.0): Check whether shift and divide is worth doing. The result of the shift no
+                // longer fits in an int, which may mean it's not worth it.
+                // Effectively nanoseconds / NodaConstants.NanosecondsPerHour.
+                //return (int)((nanoseconds >> 13) / 439453125);
             }
         }
 
@@ -312,7 +315,7 @@ namespace NodaTime
             {
                 unchecked
                 {
-                    int minuteOfDay = (int) (nanoseconds / (int) NodaConstants.NanosecondsPerMinute);
+                    int minuteOfDay = (int) (nanoseconds / NodaConstants.NanosecondsPerMinute);
                     return minuteOfDay % NodaConstants.MinutesPerHour;
                 }
             }

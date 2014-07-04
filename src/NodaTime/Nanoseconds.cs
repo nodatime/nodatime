@@ -324,7 +324,7 @@ namespace NodaTime
         {
             // FIXME:PERF
             decimal x = (decimal) nanoseconds;
-            return (Nanoseconds) x * scalar;
+            return (Nanoseconds) (x * scalar);
         }
 
         public static Nanoseconds operator *(long scalar, Nanoseconds nanoseconds)
