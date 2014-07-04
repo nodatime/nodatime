@@ -82,7 +82,7 @@ namespace NodaTime.Test.Calendars
             int bclDays = (int) (bclTicks / NodaConstants.TicksPerStandardDay);
             long bclTickOfDay = bclTicks % NodaConstants.TicksPerStandardDay;
             Assert.AreEqual(bclDays, localAchievement.DaysSinceEpoch);
-            Assert.AreEqual(bclTickOfDay, localAchievement.TickOfDay);
+            Assert.AreEqual(bclTickOfDay, localAchievement.NanosecondOfDay * NodaConstants.NanosecondsPerTick);
         }
 
         [Test]

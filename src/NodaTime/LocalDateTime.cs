@@ -75,7 +75,7 @@ namespace NodaTime
         {
             // This will validate that calendar is non-null.
             date = new LocalDate(localInstant.DaysSinceEpoch, calendar);
-            time = new LocalTime(localInstant.TickOfDay);
+            time = new LocalTime(localInstant.NanosecondOfDay);
         }
 
         /// <summary>

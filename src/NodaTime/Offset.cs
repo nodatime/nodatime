@@ -78,6 +78,16 @@ namespace NodaTime
         public long Ticks { get { return Milliseconds * NodaConstants.TicksPerMillisecond; } }
 
         /// <summary>
+        /// Returns the number of nanoseconds represented by this offset, which may be negative.
+        /// </summary>
+        /// <remarks>
+        /// Offsets are only accurate to nanosecond precision; the number of milliseconds is simply multiplied
+        /// by 1,000,000 to give the number of nanoseconds.
+        /// </remarks>
+        /// <value>The number of nanoseconds.</value>
+        public long Nanoseconds { get { return milliseconds * NodaConstants.NanosecondsPerMillisecond; } }
+
+        /// <summary>
         /// Returns the greater offset of the given two, i.e. the one which will give a later local
         /// time when added to an instant.
         /// </summary>
