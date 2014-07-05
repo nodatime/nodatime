@@ -316,6 +316,13 @@ namespace NodaTime
             return this - other;
         }
 
+        /// <summary>
+        /// Implements the operator / (division).
+        /// </summary>
+        /// <param name="dividend">The left hand side of the operator.</param>
+        /// <param name="divisor">The right hand side of the operator.</param>
+        /// <returns>A new <see cref="Nanoseconds"/> representing the result of dividing <paramref name="dividend"/> by
+        /// <paramref name="divisor"/>.</returns>
         public static Nanoseconds operator /(Nanoseconds dividend, long divisor)
         {
             // FIXME:PERF
@@ -323,6 +330,13 @@ namespace NodaTime
             return (Nanoseconds) (x / divisor);
         }
 
+        /// <summary>
+        /// Implements the operator * (multiplication).
+        /// </summary>
+        /// <param name="nanoseconds">The left hand side of the operator.</param>
+        /// <param name="scalar">The right hand side of the operator.</param>
+        /// <returns>A new <see cref="Nanoseconds"/> representing the result of multiplying <paramref name="nanoseconds"/> by
+        /// <paramref name="scalar"/>.</returns>
         public static Nanoseconds operator *(Nanoseconds nanoseconds, long scalar)
         {
             // FIXME:PERF
@@ -330,11 +344,23 @@ namespace NodaTime
             return (Nanoseconds) (x * scalar);
         }
 
+        /// <summary>
+        /// Implements the operator * (multiplication).
+        /// </summary>
+        /// <param name="scalar">The left hand side of the operator.</param>
+        /// <param name="nanoseconds">The right hand side of the operator.</param>
+        /// <returns>A new <see cref="Nanoseconds"/> representing the result of multiplying <paramref name="nanoseconds"/> by
+        /// <paramref name="scalar"/>.</returns>
         public static Nanoseconds operator *(long scalar, Nanoseconds nanoseconds)
         {
             return nanoseconds * scalar;
         }
 
+        /// <summary>
+        /// Implements the unary negation operator.
+        /// </summary>
+        /// <param name="nanoseconds">Number of nanoseconds to negate</param>
+        /// <returns>The negative value of this number of nanoseconds</returns>
         public static Nanoseconds operator -(Nanoseconds nanoseconds)
         {
             int oldDays = nanoseconds.days;
@@ -453,7 +479,7 @@ namespace NodaTime
         /// </remarks>
         /// <exception cref="ArgumentException"><paramref name="obj"/> is non-null but does not refer to an instance of <see cref="Instant"/>.</exception>
         /// <param name="obj">The object to compare this value with.</param>
-        /// <returns>The result of comparing this instant with another one; see <see cref="CompareTo(NodaTime.Instant)"/> for general details.
+        /// <returns>The result of comparing this instant with another one; see <see cref="CompareTo(Nanoseconds)"/> for general details.
         /// If <paramref name="obj"/> is null, this method returns a value greater than 0.
         /// </returns>
         int IComparable.CompareTo(object obj)
