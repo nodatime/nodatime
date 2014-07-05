@@ -3,6 +3,7 @@
 // as found in the LICENSE.txt file.
 
 using System;
+using System.Globalization;
 using JetBrains.Annotations;
 using NodaTime.Calendars;
 using NodaTime.Text;
@@ -144,6 +145,15 @@ namespace NodaTime
         internal LocalDate ToIsoDate()
         {
             return new LocalDate(nanoseconds.Days, CalendarSystem.Iso);
+        }
+
+        /// <summary>
+        /// Returns the year on which this LocalInstant occurs in the ISO calendar.
+        /// </summary>
+        internal int GetIsoYear()
+        {
+            int ignored;
+            return CalendarSystem.Iso.YearMonthDayCalculator.GetYear(nanoseconds.Days, out ignored);
         }
 
         /// <summary>

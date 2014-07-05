@@ -111,14 +111,15 @@ namespace NodaTime.TimeZones
         {
             Offset wallOffset = standardOffset + previousSavings;
 
-            int year = instant == Instant.MinValue ? Int32.MinValue : instant.Plus(wallOffset).ToIsoDate().Year;
+            int year = instant == Instant.MinValue ? Int32.MinValue : instant.Plus(wallOffset).GetIsoYear();
 
             if (year < fromYear)
             {
                 // First advance instant to start of from year.
-                instant = new LocalDateTime(fromYear, 1, 1, 0, 0).ToLocalInstant().Minus(wallOffset);
-                // Back off one tick to account for next recurrence being exactly at the beginning
-                // of the year.
+                LocalDate startOfYear = new LocalDate(fromYear, 1, 1);
+                instant = new LocalInstant(startOfYear.DaysSinceEpoch, 0).Minus(wallOffset);
+                // Back off one nanosecond to account for next recurrence potentially being
+                // exactly at the beginning of the year.
                 instant = instant - Duration.Epsilon;
             }
 
@@ -126,7 +127,7 @@ namespace NodaTime.TimeZones
 
             if (next >= instant)
             {
-                year = next.Plus(wallOffset).ToIsoDate().Year;
+                year = next.Plus(wallOffset).GetIsoYear();
                 if (year > toYear)
                 {
                     return null;
