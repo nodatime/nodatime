@@ -220,7 +220,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
                         {
                             // We happen to parse the time as if it's an offset...
                             Offset tickOfDay = ParserHelper.ParseOffset(atTime);
-                            timeOfDay = new LocalTime(tickOfDay.Ticks);
+                            timeOfDay = LocalTime.FromTicksSinceMidnight(tickOfDay.Ticks);
                         }
                     }
                 }

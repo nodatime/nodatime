@@ -9,9 +9,6 @@ namespace NodaTime.Test
 {
     partial class DurationTest
     {
-        private const long StartTicks = 123456789L;
-        private const long EndTicks = 987654321L;
-
         [Test]
         public void Zero()
         {

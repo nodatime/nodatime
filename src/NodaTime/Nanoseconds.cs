@@ -124,6 +124,9 @@ namespace NodaTime
         /// <exception cref="OverflowException">The specified number is outside the range of <see cref="Nanoseconds"/>.</exception>
         public static explicit operator Nanoseconds(decimal nanoseconds)
         {
+            // Avoid worrying about what happens in later arithmetic.
+            nanoseconds = decimal.Truncate(nanoseconds);
+
             int days = nanoseconds >= 0
                 ? (int) (nanoseconds / NodaConstants.NanosecondsPerStandardDay)
                 : (int) ((nanoseconds + 1) / NodaConstants.NanosecondsPerStandardDay) - 1;
@@ -317,7 +320,7 @@ namespace NodaTime
         {
             // FIXME:PERF
             decimal x = (decimal) dividend;
-            return (Nanoseconds) x / divisor;
+            return (Nanoseconds) (x / divisor);
         }
 
         public static Nanoseconds operator *(Nanoseconds nanoseconds, long scalar)

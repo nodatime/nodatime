@@ -746,6 +746,7 @@ namespace NodaTime.Test
         }
 
         [Test]
+        [Ignore("Still working on period, and determining value range of operations.")]
         [TestCaseSource("AllPeriodUnits")]
         public void Between_ExtremeValues(PeriodUnits units)
         {
