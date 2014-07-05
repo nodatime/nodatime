@@ -55,6 +55,11 @@ namespace NodaTime
         }
 
         /// <summary>
+        /// Number of nanoseconds since the local unix epoch.
+        /// </summary>
+        internal Nanoseconds Nanoseconds { get { return nanoseconds; } }
+
+        /// <summary>
         /// Number of days since the local unix epoch.
         /// </summary>
         internal int DaysSinceEpoch { get { return nanoseconds.Days; } }
