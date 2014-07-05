@@ -13,6 +13,16 @@ namespace NodaTime.Test.Text
     [TestFixture]
     public class DurationPatternTest : PatternTestBase<Duration>
     {
+        [Test]
+        public void Foo()
+        {
+            Duration hours = Duration.FromHours(2);
+            Duration minutes = Duration.FromMinutes(3);
+            Duration sum = hours + minutes;
+            var pattern = DurationPattern.CreateWithInvariantCulture("HH:mm");
+            string text = pattern.Format(sum);
+        }
+
         /// <summary>
         /// Test data that can only be used to test formatting.
         /// </summary>

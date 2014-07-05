@@ -91,7 +91,7 @@ namespace NodaTime
         /// <remarks>
         /// The value of this constant is 600 million ticks; that is, 60,000,000,000 nanoseconds.
         /// </remarks>
-        private static readonly Duration OneMinute = new Duration(NodaConstants.NanosecondsPerStandardDay);
+        private static readonly Duration OneMinute = new Duration(NodaConstants.NanosecondsPerMinute);
 
         /// <summary>
         /// Represents the <see cref="Duration"/> value equals to number of ticks in 1 second.
@@ -565,7 +565,7 @@ namespace NodaTime
         /// <returns>A <see cref="Duration"/> representing the given number of ticks.</returns>
         public static Duration FromTicks(long ticks)
         {
-            return new Duration(ticks * NodaConstants.NanosecondsPerTick);
+            return new Duration(Nanoseconds.FromTicks(ticks));
         }
 
         /// <summary>

@@ -862,7 +862,7 @@ namespace NodaTime
         {
             // FIXME(2.0): Revisit serialization
             info.AddValue(DaysSerializationName, Date.DaysSinceEpoch);
-            info.AddValue(NanosecondOfDaySerializationName, TimeOfDay.TickOfDay);
+            info.AddValue(NanosecondOfDaySerializationName, TimeOfDay.NanosecondOfDay);
             info.AddValue(CalendarIdSerializationName, Calendar.Id);
             info.AddValue(OffsetMillisecondsSerializationName, Offset.Milliseconds);
             info.AddValue(ZoneIdSerializationName, Zone.Id);

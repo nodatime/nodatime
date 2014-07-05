@@ -44,14 +44,14 @@ namespace NodaTime
         /// <remarks>
         /// Within Noda Time, this is also used to represent 'the beginning of time'.
         /// </remarks>
-        public static readonly Instant MinValue = new Instant(new Nanoseconds(int.MinValue, 0));
+        public static readonly Instant MinValue = new Instant(Nanoseconds.FromTicks(long.MinValue));
         /// <summary>
         /// Represents the largest possible <see cref="Instant"/>.
         /// </summary>
         /// <remarks>
         /// Within Noda Time, this is also used to represent 'the end of time'.
         /// </remarks>
-        public static readonly Instant MaxValue = new Instant(new Nanoseconds(int.MaxValue, NodaConstants.NanosecondsPerStandardDay - 1));
+        public static readonly Instant MaxValue = new Instant(Nanoseconds.FromTicks(long.MaxValue));
 
         /// <summary>
         /// Nanoseconds since the Unix epoch.

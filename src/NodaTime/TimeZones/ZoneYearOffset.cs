@@ -334,7 +334,7 @@ namespace NodaTime.TimeZones
             // The time of day is written as an offset for historical reasons.
             var ticksOfDay = reader.ReadOffset();
             return new ZoneYearOffset(mode, monthOfYear, dayOfMonth, dayOfWeek, advance, 
-                new LocalTime(ticksOfDay.Ticks), addDay);
+                LocalTime.FromTicksSinceMidnight(ticksOfDay.Ticks), addDay);
         }
 
         /// <summary>
