@@ -74,6 +74,7 @@
     <Compile Include="BclTests\TimeZoneInfoBenchmarks.cs" />
     <Compile Include="NodaTimeTests\Calendars\HebrewCalendarBenchmarks.cs" />
     <Compile Include="NodaTimeTests\Calendars\IsoCalendarBenchmarks.cs" />
+    <Compile Include="NodaTimeTests\DaylightSavingsDateTimeZoneBenchmarks.cs" />
     <Compile Include="NodaTimeTests\JsonNet\FormattingBenchmarks.cs" />
     <Compile Include="NodaTimeTests\JsonNet\ParsingBenchmarks.cs" />
     <Compile Include="NodaTimeTests\OffsetDateTimeBenchmarks.cs" />
