@@ -102,10 +102,9 @@ namespace NodaTime
         private readonly string id;
         private readonly bool isFixed;
 
-        // TODO(2.0): Validate the performance of using Offset here instead of a pre-multiplied version.
-        // In 1.x this was minOffsetTicks, maxOffsetTicks.
-        private readonly Offset minOffset;
-        private readonly Offset maxOffset;
+        // We frequently need to add this to an Instant, so store the raw Nanoseconds.
+        private readonly long minOffsetNanos;
+        private readonly long maxOffsetNanos;
 
         /// <summary>
         /// Gets the UTC (Coordinated Universal Time) time zone. This is a single instance which is not
@@ -157,8 +156,8 @@ namespace NodaTime
         {
             this.id = id;
             this.isFixed = isFixed;
-            this.minOffset = minOffset;
-            this.maxOffset = maxOffset;
+            this.minOffsetNanos = minOffset.Nanoseconds;
+            this.maxOffsetNanos = maxOffset.Nanoseconds;
         }
 
         /// <summary>
@@ -186,12 +185,12 @@ namespace NodaTime
         /// <summary>
         /// Returns the least (most negative) offset within this time zone, over all time.
         /// </summary>
-        public Offset MinOffset { get { return minOffset; } }
+        public Offset MinOffset { get { return Offset.FromNanoseconds(minOffsetNanos); } }
 
         /// <summary>
         /// Returns the greatest (most positive) offset within this time zone, over all time.
         /// </summary>
-        public Offset MaxOffset { get { return maxOffset; } }
+        public Offset MaxOffset { get { return Offset.FromNanoseconds(maxOffsetNanos); } }
 
         #region Core abstract/virtual methods
         /// <summary>
@@ -448,7 +447,7 @@ namespace NodaTime
             // If the tick before this interval started *could* map to a later local instant, let's
             // get the interval and check whether it actually includes the one we want.
             Instant endOfPrevious = intervalStart;
-            if (endOfPrevious.Plus(maxOffset) > localInstant)
+            if (endOfPrevious.Nanoseconds.Plus(maxOffsetNanos) > localInstant.Nanoseconds)
             {
                 ZoneInterval candidate = GetZoneInterval(endOfPrevious - Duration.Epsilon);
                 if (candidate.Contains(localInstant))
@@ -471,7 +470,7 @@ namespace NodaTime
             {
                 return null;
             }
-            if (intervalEnd.Plus(minOffset) <= localInstant)
+            if (intervalEnd.Nanoseconds.Plus(minOffsetNanos) <= localInstant.Nanoseconds)
             {
                 ZoneInterval candidate = GetZoneInterval(intervalEnd);
                 if (candidate.Contains(localInstant))
