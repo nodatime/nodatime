@@ -276,12 +276,8 @@ namespace NodaTime
         {
             get
             {
-                return (int) (nanoseconds / NodaConstants.NanosecondsPerHour);
-
-                // TODO(2.0): Check whether shift and divide is worth doing. The result of the shift no
-                // longer fits in an int, which may mean it's not worth it.
-                // Effectively nanoseconds / NodaConstants.NanosecondsPerHour.
-                //return (int)((nanoseconds >> 13) / 439453125);
+                // Effectively nanoseconds / NodaConstants.NanosecondsPerHour, but apparently rather more efficient.
+                return (int) ((nanoseconds >> 13) / 439453125);
             }
         }
 
@@ -315,7 +311,8 @@ namespace NodaTime
             {
                 unchecked
                 {
-                    int minuteOfDay = (int) (nanoseconds / NodaConstants.NanosecondsPerMinute);
+                    // Effectively nanoseconds / NodaConstants.NanosecondsPerMinute, but apparently rather more efficient.
+                    int minuteOfDay = (int) ((nanoseconds >> 11) / 29296875);
                     return minuteOfDay % NodaConstants.MinutesPerHour;
                 }
             }
