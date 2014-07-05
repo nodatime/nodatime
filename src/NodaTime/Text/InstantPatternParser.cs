@@ -117,6 +117,7 @@ namespace NodaTime.Text
                 {
                     return maxLabel;
                 }
+                // FIXME(2.0): Stop using ticks!
                 if (value.Ticks < CalendarSystem.Iso.MinTicks)
                 {
                     return string.Format("{0} {1} ticks is earlier than the earliest supported ISO calendar value.",
