@@ -317,7 +317,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
 
                 // Stop precalculating if year reaches some arbitrary limit. We can cheat in the
                 // conversion because it is an approximation anyway.
-                if (new LocalDateTime(nextTicks.Plus(Offset.Zero)).Year >= YearLimit)
+                if (nextTicks.Plus(Offset.Zero).GetIsoYear() >= YearLimit)
                 {
                     return null;
                 }

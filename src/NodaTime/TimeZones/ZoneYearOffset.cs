@@ -4,6 +4,7 @@
 
 using System;
 using System.Diagnostics.CodeAnalysis;
+using NodaTime.Calendars;
 using NodaTime.TimeZones.IO;
 using NodaTime.Utility;
 
@@ -210,25 +211,21 @@ namespace NodaTime.TimeZones
         /// definition is returned.
         /// </summary>
         /// <param name="year">The year to calculate for.</param>
-        /// <param name="standardOffset">The standard offset.</param>
-        /// <param name="savings">The daylight savings adjustment.</param>
+        /// <param name="offsetToApply">The offset to apply, based on the transition mode. (This is assumed to be
+        /// correct based on previous computations.)</param>
         /// <returns>The <see cref="Instant"/> of the point in the given year.</returns>
-        internal Instant MakeInstant(int year, Offset standardOffset, Offset savings)
+        private Instant MakeInstant(int year, Offset offsetToApply)
         {
-            CalendarSystem calendar = CalendarSystem.Iso;
-            if (year > calendar.MaxYear)
+            if (year > GregorianYearMonthDayCalculator.MaxGregorianYear)
             {
                 return Instant.MaxValue;
             }
-            if (year < calendar.MinYear)
+            if (year < GregorianYearMonthDayCalculator.MinGregorianYear)
             {
                 return Instant.MinValue;
             }
-            LocalDate date = new LocalDate(year, monthOfYear, dayOfMonth > 0 ? dayOfMonth : 1);
-            if (dayOfMonth < 0)
-            {
-                date = date.PlusMonths(1).PlusDays(dayOfMonth);
-            }
+            int actualDayOfMonth = dayOfMonth > 0 ? dayOfMonth : CalendarSystem.Iso.GetDaysInMonth(year, monthOfYear) + dayOfMonth + 1;
+            LocalDate date = new LocalDate(year, monthOfYear, actualDayOfMonth);
             if (dayOfWeek != 0 && dayOfWeek != date.DayOfWeek)
             {
                 IsoDayOfWeek isoDayOfWeek = (IsoDayOfWeek) dayOfWeek;
@@ -239,12 +236,25 @@ namespace NodaTime.TimeZones
                 date = date.PlusDays(1);
             }
 
-            LocalInstant localInstant = (date + timeOfDay).ToLocalInstant();
-
-            Offset offset = GetOffset(standardOffset, savings);
+            LocalInstant localInstant = new LocalInstant(date.DaysSinceEpoch, timeOfDay.NanosecondOfDay);
 
             // Convert from local time to UTC.
-            return localInstant.Minus(offset);
+            return localInstant.Minus(offsetToApply);
+        }
+
+        /// <summary>
+        /// Returns an <see cref="Instant"/> that represents the point in the given year that this
+        /// object defines. If the exact point is not valid then the nearest point that matches the
+        /// definition is returned.
+        /// </summary>
+        /// <param name="year">The year to calculate for.</param>
+        /// <param name="standardOffset">The standard offset.</param>
+        /// <param name="savings">The daylight savings adjustment.</param>
+        /// <returns>The <see cref="Instant"/> of the point in the given year.</returns>
+        internal Instant MakeInstant(int year, Offset standardOffset, Offset savings)
+        {
+            Offset offset = GetOffset(standardOffset, savings);
+            return MakeInstant(year, offset);
         }
 
         /// <summary>
@@ -253,15 +263,17 @@ namespace NodaTime.TimeZones
         /// </summary>
         /// <param name="instant">The instant to adjust.</param>
         /// <param name="standardOffset">The standard offset.</param>
-        /// <param name="savings">The daylight savings adjustment.</param>
+        /// <param name="currentSavings">The daylight savings adjustment currently in force at the given instant.
+        /// (This is used when the transition mode is Wall.)
+        /// </param>
         /// <returns>The adjusted <see cref="LocalInstant"/>.</returns>
-        internal Instant Next(Instant instant, Offset standardOffset, Offset savings)
+        internal Instant Next(Instant instant, Offset standardOffset, Offset currentSavings)
         {
-            Offset offset = GetOffset(standardOffset, savings);
+            Offset offset = GetOffset(standardOffset, currentSavings);
             LocalInstant local = instant.Plus(offset);
-            int year = GetEligibleYear(new LocalDateTime(local).Year, 1);
-            Instant transitionSameYear = MakeInstant(year, standardOffset, savings);
-            return transitionSameYear > instant ? transitionSameYear : MakeInstant(GetEligibleYear(year + 1, 1), standardOffset, savings);
+            int year = GetEligibleYear(local.GetIsoYear(), 1);
+            Instant transitionSameYear = MakeInstant(year, offset);
+            return transitionSameYear > instant ? transitionSameYear : MakeInstant(GetEligibleYear(year + 1, 1), offset);
         }
 
         /// <summary>
@@ -276,9 +288,9 @@ namespace NodaTime.TimeZones
         {
             Offset offset = GetOffset(standardOffset, savings);
             LocalInstant local = instant.Plus(offset);
-            int year = GetEligibleYear(new LocalDateTime(local).Year, -1);
-            Instant transitionSameYear = MakeInstant(year, standardOffset, savings);
-            return transitionSameYear < instant ? transitionSameYear : MakeInstant(GetEligibleYear(year - 1, -1), standardOffset, savings);
+            int year = GetEligibleYear(local.GetIsoYear(), -1);
+            Instant transitionSameYear = MakeInstant(year, offset);
+            return transitionSameYear < instant ? transitionSameYear : MakeInstant(GetEligibleYear(year - 1, -1), offset);
         }
 
         // For transitions on Feb 29th, we can't necessarily just go from one year to another.
