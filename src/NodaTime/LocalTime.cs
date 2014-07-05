@@ -683,6 +683,11 @@ namespace NodaTime
             return TimePeriodField.Ticks.Add(this, ticks);
         }
 
+        /// <summary>
+        /// Returns a new LocalTime representing the current value with the given number of nanoseconds added.
+        /// </summary>
+        /// <param name="nanoseconds">The number of nanoseconds to add</param>
+        /// <returns>The current value plus the given number of ticks.</returns>
         [Pure]
         public LocalTime PlusNanoseconds(long nanoseconds)
         {
