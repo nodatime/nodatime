@@ -746,7 +746,7 @@ namespace NodaTime
             long minutes = (totalNanoseconds / NodaConstants.NanosecondsPerMinute) % NodaConstants.MinutesPerHour;
             long seconds = (totalNanoseconds / NodaConstants.NanosecondsPerSecond) % NodaConstants.SecondsPerMinute;
             long milliseconds = (totalNanoseconds / NodaConstants.NanosecondsPerMillisecond) % NodaConstants.MillisecondsPerSecond;
-            long ticks = (totalNanoseconds / NodaConstants.NanosecondsPerTick) % NodaConstants.NanosecondsPerMillisecond;
+            long ticks = (totalNanoseconds / NodaConstants.NanosecondsPerTick) % NodaConstants.TicksPerMillisecond;
             Nanoseconds nanoseconds = (Nanoseconds) (totalNanoseconds % NodaConstants.NanosecondsPerTick);
 
             return new Period(this.years, this.months, 0 /* weeks */, days, hours, minutes, seconds, milliseconds, ticks, nanoseconds);

@@ -44,7 +44,7 @@ namespace NodaTime
         /// <summary>
         /// A constant for the number of nanoseconds in a standard week of seven 24-hour days. The value of this constant is 604,800,000,000,000.
         /// </summary>
-        public const long NanosecondsPerStandardWeek = NanosecondsPerHour * HoursPerStandardDay;
+        public const long NanosecondsPerStandardWeek = NanosecondsPerStandardDay * DaysPerStandardWeek;
 
         /// <summary>
         /// A constant for the number of ticks in a millisecond. The value of this constant is 10,000.
