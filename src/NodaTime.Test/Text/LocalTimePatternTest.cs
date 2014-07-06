@@ -32,8 +32,8 @@ namespace NodaTime.Test.Text
             new Data { Pattern = "\\", Message = Messages.Parse_UnknownStandardFormat, Parameters = { '\\', typeof(LocalTime).FullName } },
             new Data { Pattern = "%%", Message = Messages.Parse_PercentDoubled },
             new Data { Pattern = "%\\", Message = Messages.Parse_EscapeAtEndOfString },
-            new Data { Pattern = "ffffffff", Message = Messages.Parse_RepeatCountExceeded, Parameters = { 'f', 7 } },
-            new Data { Pattern = "FFFFFFFF", Message = Messages.Parse_RepeatCountExceeded, Parameters = { 'F', 7 } },
+            new Data { Pattern = "ffffffffff", Message = Messages.Parse_RepeatCountExceeded, Parameters = { 'f', 9 } },
+            new Data { Pattern = "FFFFFFFFFF", Message = Messages.Parse_RepeatCountExceeded, Parameters = { 'F', 9 } },
             new Data { Pattern = "H%", Message = Messages.Parse_PercentAtEndOfString },
             new Data { Pattern = "HHH", Message = Messages.Parse_RepeatCountExceeded, Parameters = { 'H', 2 } },
             new Data { Pattern = "mmm", Message = Messages.Parse_RepeatCountExceeded, Parameters = { 'm', 2 } },
@@ -179,6 +179,8 @@ namespace NodaTime.Test.Text
             new Data(0, 0, 0, 100) { Culture = Cultures.EnUs, Text = "1", Pattern = "%F" },
             new Data(0, 0, 0, 100) { Culture = Cultures.EnUs, Text = "1", Pattern = "FF" },
             new Data(0, 0, 0, 100) { Culture = Cultures.EnUs, Text = "1", Pattern = "FFF" },
+            new Data(0, 0, 0, 100) { Culture = Cultures.EnUs, Text = "100000000", Pattern = "fffffffff" },
+            new Data(0, 0, 0, 100) { Culture = Cultures.EnUs, Text = "1", Pattern = "FFFFFFFFF" },
             new Data(0, 0, 0, 120) { Culture = Cultures.EnUs, Text = "12", Pattern = "ff" },
             new Data(0, 0, 0, 120) { Culture = Cultures.EnUs, Text = "12", Pattern = "FF" },
             new Data(0, 0, 0, 120) { Culture = Cultures.EnUs, Text = "12", Pattern = "FFF" },
@@ -192,6 +194,10 @@ namespace NodaTime.Test.Text
             new Data(0, 0, 0, 123, 4560) { Culture = Cultures.EnUs, Text = "123456", Pattern = "FFFFFF" },
             new Data(0, 0, 0, 123, 4567) { Culture = Cultures.EnUs, Text = "1234567", Pattern = "fffffff" },
             new Data(0, 0, 0, 123, 4567) { Culture = Cultures.EnUs, Text = "1234567", Pattern = "FFFFFFF" },
+            new Data(0, 0, 0, 123456780L) { Culture = Cultures.EnUs, Text = "12345678", Pattern = "ffffffff" },
+            new Data(0, 0, 0, 123456780L) { Culture = Cultures.EnUs, Text = "12345678", Pattern = "FFFFFFFF" },
+            new Data(0, 0, 0, 123456789L) { Culture = Cultures.EnUs, Text = "123456789", Pattern = "fffffffff" },
+            new Data(0, 0, 0, 123456789L) { Culture = Cultures.EnUs, Text = "123456789", Pattern = "FFFFFFFFF" },
             new Data(0, 0, 0, 600) { Culture = Cultures.EnUs, Text = ".6", Pattern = ".f" },
             new Data(0, 0, 0, 600) { Culture = Cultures.EnUs, Text = ".6", Pattern = ".F" },
             new Data(0, 0, 0, 600) { Culture = Cultures.EnUs, Text = ".6", Pattern = ".FFF" }, // Elided fraction
@@ -225,6 +231,7 @@ namespace NodaTime.Test.Text
             new Data(14, 15, 16, 789, 1200) { Culture = Cultures.ItIt, Text = "14.15.16.78912", Pattern = "r" },
             new Data(14, 15, 16, 789, 1230) { Culture = Cultures.ItIt, Text = "14.15.16.789123", Pattern = "r" },
             new Data(14, 15, 16, 789, 1234) { Culture = Cultures.ItIt, Text = "14.15.16.7891234", Pattern = "r" },
+            new Data(14, 15, 16, 789123456L) { Culture = Cultures.ItIt, Text = "14.15.16.789123456", Pattern = "r" },
 
             // ------------ Template value tests ----------
             // Mixtures of 12 and 24 hour times
@@ -241,6 +248,7 @@ namespace NodaTime.Test.Text
             // Tests for each individual field being propagated
             new Data(new LocalTime(1, 6, 7, 8, 9)) { Culture = Cultures.EnUs, Text = "06:07.0080009", Pattern = "mm:ss.FFFFFFF", Template = new LocalTime(1, 2, 3, 4, 5) },
             new Data(new LocalTime(6, 2, 7, 8, 9)) { Culture = Cultures.EnUs, Text = "06:07.0080009", Pattern = "HH:ss.FFFFFFF", Template = new LocalTime(1, 2, 3, 4, 5) },
+            new Data(new LocalTime(6, 7, 3, 8, 9)) { Culture = Cultures.EnUs, Text = "06:07.0080009", Pattern = "HH:mm.FFFFFFF", Template = new LocalTime(1, 2, 3, 4, 5) },
             new Data(new LocalTime(6, 7, 3, 8, 9)) { Culture = Cultures.EnUs, Text = "06:07.0080009", Pattern = "HH:mm.FFFFFFF", Template = new LocalTime(1, 2, 3, 4, 5) },
             new Data(new LocalTime(6, 7, 8, 4, 5)) { Culture = Cultures.EnUs, Text = "06:07:08", Pattern = "HH:mm:ss", Template = new LocalTime(1, 2, 3, 4, 5) },
 
@@ -409,6 +417,11 @@ namespace NodaTime.Test.Text
 
             public Data(int hours, int minutes, int seconds, int milliseconds, int ticksWithinMillisecond)
                 : this(new LocalTime(hours, minutes, seconds, milliseconds, ticksWithinMillisecond))
+            {
+            }
+
+            public Data(int hours, int minutes, int seconds, long nanoOfSecond)
+                : this(new LocalTime(hours, minutes, seconds).PlusNanoseconds(nanoOfSecond))
             {
             }
 

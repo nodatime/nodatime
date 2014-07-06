@@ -14,11 +14,12 @@ namespace NodaTime.Test.Text
     [TestFixture]
     public class LocalDateTimePatternTest : PatternTestBase<LocalDateTime>
     {
-        private static readonly LocalDateTime SampleLocalDateTime = new LocalDateTime(1976, 6, 19, 21, 13, 34, 123, 4567);
-        private static readonly LocalDateTime SampleLocalDateTimeNoTicks = new LocalDateTime(1976, 6, 19, 21, 13, 34, 123);
-        private static readonly LocalDateTime SampleLocalDateTimeNoMillis = new LocalDateTime(1976, 6, 19, 21, 13, 34);
-        private static readonly LocalDateTime SampleLocalDateTimeNoSeconds = new LocalDateTime(1976, 6, 19, 21, 13);
-        internal static readonly LocalDateTime SampleLocalDateTimeCoptic = new LocalDateTime(1976, 6, 19, 21, 13, 34, 123, 4567, CalendarSystem.GetCopticCalendar(1));
+        private static readonly LocalDateTime SampleLocalDateTime = new LocalDateTime(1976, 6, 19, 21, 13, 34).PlusNanoseconds(123456789L);
+        private static readonly LocalDateTime SampleLocalDateTimeToTicks = new LocalDateTime(1976, 6, 19, 21, 13, 34).PlusNanoseconds(123456700L);
+        private static readonly LocalDateTime SampleLocalDateTimeToMillis = new LocalDateTime(1976, 6, 19, 21, 13, 34, 123);
+        private static readonly LocalDateTime SampleLocalDateTimeToSeconds = new LocalDateTime(1976, 6, 19, 21, 13, 34);
+        private static readonly LocalDateTime SampleLocalDateTimeToMinutes = new LocalDateTime(1976, 6, 19, 21, 13);
+        internal static readonly LocalDateTime SampleLocalDateTimeCoptic = new LocalDateTime(1976, 6, 19, 21, 13, 34, CalendarSystem.GetCopticCalendar(1)).PlusNanoseconds(123456789L);
         
         private static readonly string[] AllStandardPatterns = { "f", "F", "g", "G", "o", "O", "s" };
 
@@ -84,8 +85,8 @@ namespace NodaTime.Test.Text
             // Round-trip (o and O - same effect)
             new Data(MsdnStandardExample) { Pattern = "o", Text = "2009-06-15T13:45:30.0900000", Culture = Cultures.EnUs },
             new Data(MsdnStandardExample) { Pattern = "O", Text = "2009-06-15T13:45:30.0900000", Culture = Cultures.EnUs },
-            new Data(MsdnStandardExample) { Pattern = "r", Text = "2009-06-15T13:45:30.0900000 (ISO)", Culture = Cultures.EnUs },
-            new Data(SampleLocalDateTimeCoptic) { Pattern = "r", Text = "1976-06-19T21:13:34.1234567 (Coptic 1)", Culture = Cultures.EnUs },
+            new Data(MsdnStandardExample) { Pattern = "r", Text = "2009-06-15T13:45:30.090000000 (ISO)", Culture = Cultures.EnUs },
+            new Data(SampleLocalDateTimeCoptic) { Pattern = "r", Text = "1976-06-19T21:13:34.123456789 (Coptic 1)", Culture = Cultures.EnUs },
             // Note: No RFC1123, as that requires a time zone.
             // Sortable / ISO8601
             new Data(MsdnStandardExampleNoMillis) { Pattern = "s", Text = "2009-06-15T13:45:30", Culture = Cultures.EnUs },
@@ -98,14 +99,14 @@ namespace NodaTime.Test.Text
             // Culture has no impact on round-trip or sortable formats
             new Data(MsdnStandardExample) { Pattern = "o", Text = "2009-06-15T13:45:30.0900000", Culture = Cultures.FrFr },
             new Data(MsdnStandardExample) { Pattern = "O", Text = "2009-06-15T13:45:30.0900000", Culture = Cultures.FrFr },
-            new Data(MsdnStandardExample) { Pattern = "r", Text = "2009-06-15T13:45:30.0900000 (ISO)", Culture = Cultures.FrFr },
+            new Data(MsdnStandardExample) { Pattern = "r", Text = "2009-06-15T13:45:30.090000000 (ISO)", Culture = Cultures.FrFr },
             new Data(MsdnStandardExampleNoMillis) { Pattern = "s", Text = "2009-06-15T13:45:30", Culture = Cultures.FrFr },
 
             // Calendar patterns are invariant
-            new Data(MsdnStandardExample) { Pattern = "(c) yyyy-MM-ddTHH:mm:ss.FFFFFFF", Text = "(ISO) 2009-06-15T13:45:30.09", Culture = Cultures.FrFr },
-            new Data(MsdnStandardExample) { Pattern = "yyyy-MM-dd(c)THH:mm:ss.FFFFFFF", Text = "2009-06-15(ISO)T13:45:30.09", Culture = Cultures.EnUs },
-            new Data(SampleLocalDateTimeCoptic) { Pattern = "(c) yyyy-MM-ddTHH:mm:ss.FFFFFFF", Text = "(Coptic 1) 1976-06-19T21:13:34.1234567", Culture = Cultures.FrFr },
-            new Data(SampleLocalDateTimeCoptic) { Pattern = "yyyy-MM-dd'C'c'T'HH:mm:ss.FFFFFFF", Text = "1976-06-19CCoptic 1T21:13:34.1234567", Culture = Cultures.EnUs },
+            new Data(MsdnStandardExample) { Pattern = "(c) yyyy-MM-ddTHH:mm:ss.FFFFFFFFF", Text = "(ISO) 2009-06-15T13:45:30.09", Culture = Cultures.FrFr },
+            new Data(MsdnStandardExample) { Pattern = "yyyy-MM-dd(c)THH:mm:ss.FFFFFFFFF", Text = "2009-06-15(ISO)T13:45:30.09", Culture = Cultures.EnUs },
+            new Data(SampleLocalDateTimeCoptic) { Pattern = "(c) yyyy-MM-ddTHH:mm:ss.FFFFFFFFF", Text = "(Coptic 1) 1976-06-19T21:13:34.123456789", Culture = Cultures.FrFr },
+            new Data(SampleLocalDateTimeCoptic) { Pattern = "yyyy-MM-dd'C'c'T'HH:mm:ss.FFFFFFFFF", Text = "1976-06-19CCoptic 1T21:13:34.123456789", Culture = Cultures.EnUs },
             
             // Use of the semi-colon "comma dot" specifier
             new Data(2011, 10, 19, 16, 05, 20, 352) { Pattern = "yyyy-MM-dd HH:mm:ss;fff", Text = "2011-10-19 16:05:20.352" },
@@ -162,9 +163,10 @@ namespace NodaTime.Test.Text
             Assert.IsTrue(parseResult.Success);
             var parsed = parseResult.Value;
             Assert.That(parsed, Is.EqualTo(SampleLocalDateTime) |
-                                Is.EqualTo(SampleLocalDateTimeNoTicks) |
-                                Is.EqualTo(SampleLocalDateTimeNoMillis) |
-                                Is.EqualTo(SampleLocalDateTimeNoSeconds));
+                                Is.EqualTo(SampleLocalDateTimeToTicks) |
+                                Is.EqualTo(SampleLocalDateTimeToMillis) |
+                                Is.EqualTo(SampleLocalDateTimeToSeconds) |
+                                Is.EqualTo(SampleLocalDateTimeToMinutes));
         }
 
         private void AssertBclNodaEquality(CultureInfo culture, string patternText)

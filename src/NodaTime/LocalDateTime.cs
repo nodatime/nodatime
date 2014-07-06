@@ -352,6 +352,16 @@ namespace NodaTime
         public long TickOfDay { get { return time.TickOfDay; } }
 
         /// <summary>
+        /// Gets the nanosecond of this local time within the second, in the range 0 to 999,999,999 inclusive.
+        /// </summary>
+        public int NanosecondOfSecond { get { return time.NanosecondOfSecond; } }
+
+        /// <summary>
+        /// Gets the nanosecond of this local date and time within the day, in the range 0 to 86,399,999,999,999 inclusive.
+        /// </summary>
+        public long NanosecondOfDay { get { return time.NanosecondOfDay; } }
+
+        /// <summary>
         /// Gets the time portion of this local date and time as a <see cref="LocalTime"/>.
         /// </summary>
         public LocalTime TimeOfDay { get { return time; } }

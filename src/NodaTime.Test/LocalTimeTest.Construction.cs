@@ -10,6 +10,20 @@ namespace NodaTime.Test
     public partial class LocalTimeTest
     {
         [Test]
+        public void FromNanosecondsSinceMidnight_Valid()
+        {
+            Assert.AreEqual(LocalTime.Midnight, LocalTime.FromNanosecondsSinceMidnight(0));
+            Assert.AreEqual(LocalTime.Midnight.PlusNanoseconds(-1), LocalTime.FromNanosecondsSinceMidnight(NodaConstants.NanosecondsPerStandardDay - 1));
+        }
+
+        [Test]
+        public void FromNanosecondsSinceMidnight_RangeChecks()
+        {
+            Assert.Throws<ArgumentOutOfRangeException>(() => LocalTime.FromNanosecondsSinceMidnight(-1));
+            Assert.Throws<ArgumentOutOfRangeException>(() => LocalTime.FromNanosecondsSinceMidnight(NodaConstants.NanosecondsPerStandardDay));
+        }
+
+        [Test]
         public void FromTicksSinceMidnight_Valid()
         {
             Assert.AreEqual(LocalTime.Midnight, LocalTime.FromTicksSinceMidnight(0));

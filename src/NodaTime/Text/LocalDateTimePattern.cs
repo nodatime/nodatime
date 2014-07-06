@@ -47,13 +47,14 @@ namespace NodaTime.Text
         /// Returns an invariant local date/time pattern which is ISO-8601 compatible, providing up to 7 decimal places
         /// of sub-second accuracy which are always present (including trailing zeroes). This is compatible with the
         /// BCL round-trip formatting of <see cref="DateTime"/> values with a kind of "unspecified".
-        /// This corresponds to the text pattern "yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fffffff".
+        /// This corresponds to the text pattern "yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fffffffff".
+        /// FIXME(2.0): What should we do with this? Maintain BCL compatibility, or go to nanos?
         /// </summary>
         public static LocalDateTimePattern BclRoundtripPattern { get { return Patterns.BclRoundtripPatternImpl; } }
 
         /// <summary>
         /// Returns an invariant local date/time pattern which round trips values including the calendar system.
-        /// This corresponds to the text pattern "yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fffffff '('c')'".
+        /// This corresponds to the text pattern "yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fffffffff '('c')'".
         /// </summary>
         public static LocalDateTimePattern FullRoundtripPattern { get { return Patterns.FullRoundtripPatternImpl; } }
 
@@ -66,7 +67,7 @@ namespace NodaTime.Text
             internal static readonly LocalDateTimePattern GeneralIsoPatternImpl = CreateWithInvariantCulture("yyyy'-'MM'-'dd'T'HH':'mm':'ss");
             internal static readonly LocalDateTimePattern ExtendedIsoPatternImpl = CreateWithInvariantCulture("yyyy'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFF");
             internal static readonly LocalDateTimePattern BclRoundtripPatternImpl = CreateWithInvariantCulture("yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fffffff");
-            internal static readonly LocalDateTimePattern FullRoundtripPatternImpl = CreateWithInvariantCulture("yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fffffff '('c')'");
+            internal static readonly LocalDateTimePattern FullRoundtripPatternImpl = CreateWithInvariantCulture("yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fffffffff '('c')'");
         }
 
         private readonly string patternText;
