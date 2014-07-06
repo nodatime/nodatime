@@ -18,6 +18,11 @@ namespace NodaTime
     public struct Nanoseconds : IEquatable<Nanoseconds>, IComparable<Nanoseconds>, IComparable
     {
         /// <summary>
+        /// The zero value for the type.
+        /// </summary>
+        public static readonly Nanoseconds Zero = new Nanoseconds();
+
+        /// <summary>
         /// The number of days within this number of nanoseconds. When this is negative, it is
         /// offset by the positive <see cref="nanoOfDay"/> value. For example, -1ns is represented
         /// by -1 days + 86,399,999,999,999ns.

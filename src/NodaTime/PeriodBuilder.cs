@@ -70,6 +70,12 @@ namespace NodaTime
         /// Gets or sets the number of ticks within the period.
         /// </summary>
         public long Ticks { get; set; }
+
+        /// <summary>
+        /// Gets or sets the number of nanoseconds within the period.
+        /// </summary>
+        /// <returns>The number of nanoseconds within the period.</returns>
+        public Nanoseconds Nanoseconds { get; set; }
         #endregion
 
         /// <summary>
@@ -97,14 +103,22 @@ namespace NodaTime
             Seconds = period.Seconds;
             Milliseconds = period.Milliseconds;
             Ticks = period.Ticks;
+            Nanoseconds = period.Nanoseconds;
         }
-        
+
         /// <summary>
         /// Gets or sets the value of a single unit.
         /// </summary>
         /// <remarks>
+        /// <para>
         /// The type of this indexer is <see cref="System.Int64"/> for uniformity, but any date unit (year, month, week, day) will only ever have a value
         /// in the range of <see cref="System.Int32"/>.
+        /// </para>
+        /// <para>
+        /// For the <see cref="PeriodUnits.Nanoseconds"/> unit, the value is converted to <c>Int64</c> when reading from the indexer, causing it to
+        /// fail if the value is out of range (around 250 years). To access the values of very large numbers of nanoseconds, use the <see cref="Nanoseconds"/>
+        /// property directly.
+        /// </para>
         /// </remarks>
         /// <param name="unit">A single value within the <see cref="PeriodUnits"/> enumeration.</param>
         /// <returns>The value of the given unit within this period builder, or zero if the unit is unset.</returns>
@@ -124,6 +138,7 @@ namespace NodaTime
                     case PeriodUnits.Seconds: return Seconds;
                     case PeriodUnits.Milliseconds: return Milliseconds;
                     case PeriodUnits.Ticks: return Ticks;
+                    case PeriodUnits.Nanoseconds: return (long) Nanoseconds;
                     default: throw new ArgumentOutOfRangeException("unit", "Indexer for PeriodBuilder only takes a single unit");
                 }
             }
@@ -144,6 +159,7 @@ namespace NodaTime
                     case PeriodUnits.Seconds: Seconds = value; return;
                     case PeriodUnits.Milliseconds: Milliseconds = value; return;
                     case PeriodUnits.Ticks: Ticks = value; return;
+                    case PeriodUnits.Nanoseconds: Nanoseconds = (Nanoseconds) value; return;
                     default: throw new ArgumentOutOfRangeException("unit", "Indexer for PeriodBuilder only takes a single unit");
                 }
             }
@@ -155,7 +171,7 @@ namespace NodaTime
         /// <returns>A period containing the values from this builder.</returns>
         public Period Build()
         {
-            return new Period(Years, Months, Weeks, Days, Hours, Minutes, Seconds, Milliseconds, Ticks);
+            return new Period(Years, Months, Weeks, Days, Hours, Minutes, Seconds, Milliseconds, Ticks, Nanoseconds);
         }
         
         /// <inheritdoc />
@@ -178,6 +194,7 @@ namespace NodaTime
             Seconds = period.Seconds;
             Milliseconds = period.Milliseconds;
             Ticks = period.Ticks;
+            Nanoseconds = period.Nanoseconds;
         }
 
         /// <inheritdoc />
