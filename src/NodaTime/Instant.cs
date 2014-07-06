@@ -69,12 +69,19 @@ namespace NodaTime
 
         /// <summary>
         /// The number of ticks since the Unix epoch. Negative values represent instants before the Unix epoch.
-        /// TODO(2.0): Document rounding.
         /// </summary>
         /// <remarks>
-        /// A tick is equal to 100 nanoseconds. There are 10,000 ticks in a millisecond.
+        /// A tick is equal to 100 nanoseconds. There are 10,000 ticks in a millisecond. If the number of nanoseconds
+        /// in this instant is not an exact number of ticks, the value is truncated towards the start of time.
         /// </remarks>
-        public long Ticks { get { return nanoseconds.Ticks; } }
+        public long Ticks
+        {
+            get
+            {
+                // Can't use Nanoseconds.Ticks, as that truncates towards 0.
+                return TickArithmetic.DaysAndTickOfDayToTicks(nanoseconds.Days, nanoseconds.NanosecondOfDay / NodaConstants.NanosecondsPerTick);
+            }
+        }
 
         /// <summary>
         /// Get the number of nanoseconds since the Unix epoch.

@@ -68,9 +68,12 @@ namespace NodaTime.Test
         [TestCase(NodaConstants.TicksPerStandardDay + 1)]
         [TestCase(long.MaxValue - 1)]
         [TestCase(long.MaxValue)]
-        public void TickConversions(long ticks)
+        public void FromTicks(long ticks)
         {
             var nanoseconds = Nanoseconds.FromTicks(ticks);
+            Assert.AreEqual(ticks * (decimal) NodaConstants.NanosecondsPerTick, (decimal) nanoseconds);
+
+            // Just another sanity check, although Ticks is covered in more detail later.
             Assert.AreEqual(ticks, nanoseconds.Ticks);
         }
 
@@ -156,6 +159,96 @@ namespace NodaTime.Test
             TestHelper.TestCompareToStruct(equal1, equal2, greater2);
             TestHelper.TestNonGenericCompareTo(equal1, equal2, greater2);
             TestHelper.TestOperatorComparisonEquality(equal1, equal2, greater2);
+        }
+
+        [Test]
+        [TestCase(1, 5L, 2, 2, 10L, TestName = "Small, positive")]
+        [TestCase(-1, NodaConstants.NanosecondsPerStandardDay - 10, 2, -1, NodaConstants.NanosecondsPerStandardDay - 20, TestName = "Small, negative")]
+        [TestCase(365000, 1L, 2, 365000 * 2, 2L, TestName = "More than 2^64 nanos")]
+        [TestCase(0, 1L, NodaConstants.NanosecondsPerStandardDay, 1, 0L, TestName = "Large scalar")]
+        public void Multiplication(int startDays, long startNanoOfDay, long scalar, int expectedDays, long expectedNanoOfDay)
+        {
+            var start = new Nanoseconds(startDays, startNanoOfDay);
+            var expected = new Nanoseconds(expectedDays, expectedNanoOfDay);
+            Assert.AreEqual(expected, start * scalar);
+        }
+        
+        [Test]
+        [TestCase(0, 0L, 0, 0L)]
+        [TestCase(1, 0L, -1, 0L)]
+        [TestCase(0, 500L, -1, NodaConstants.NanosecondsPerStandardDay - 500L)]
+        [TestCase(365000, 500L, -365001, NodaConstants.NanosecondsPerStandardDay - 500L)]
+        public void UnaryNegation(int startDays, long startNanoOfDay, int expectedDays, long expectedNanoOfDay)
+        {
+            var start = new Nanoseconds(startDays, startNanoOfDay);
+            var expected = new Nanoseconds(expectedDays, expectedNanoOfDay);
+            Assert.AreEqual(expected, -start);
+            // Test it the other way round as well...
+            Assert.AreEqual(start, -expected);
+        }
+
+        [Test]
+        // Test cases around 0
+        [TestCase(-1, NodaConstants.NanosecondsPerStandardDay - 1, NodaConstants.NanosecondsPerStandardDay, 0, 0L)]
+        [TestCase(0, 0L, NodaConstants.NanosecondsPerStandardDay, 0, 0L)]
+        [TestCase(0, 1L, NodaConstants.NanosecondsPerStandardDay, 0, 0L)]
+
+        // Test cases around dividing -1 day by "nanos per day"
+        [TestCase(-2, NodaConstants.NanosecondsPerStandardDay - 1, NodaConstants.NanosecondsPerStandardDay, -1, NodaConstants.NanosecondsPerStandardDay - 1)] // -1ns
+        [TestCase(-1, 0, NodaConstants.NanosecondsPerStandardDay, -1, NodaConstants.NanosecondsPerStandardDay - 1)] // -1ns
+        [TestCase(-1, 1L, NodaConstants.NanosecondsPerStandardDay, 0, 0L)]
+
+        // Test cases around dividing 1 day by "nanos per day"
+        [TestCase(0, NodaConstants.NanosecondsPerStandardDay - 1, NodaConstants.NanosecondsPerStandardDay, 0, 0L)]
+        [TestCase(1, 0, NodaConstants.NanosecondsPerStandardDay, 0, 1L)]
+        [TestCase(1, NodaConstants.NanosecondsPerStandardDay - 1, NodaConstants.NanosecondsPerStandardDay, 0, 1L)]
+
+        [TestCase(10, 20L, 5, 2, 4L)]
+        public void Division(int startDays, long startNanoOfDay, long divisor, int expectedDays, long expectedNanoOfDay)
+        {
+            var start = new Nanoseconds(startDays, startNanoOfDay);
+            var expected = new Nanoseconds(expectedDays, expectedNanoOfDay);
+            Assert.AreEqual(expected, start / divisor);
+        }
+
+        [Test]
+        public void Ticks_Zero()
+        {
+            Assert.AreEqual(0, Nanoseconds.FromTicks(0).Ticks);
+            Assert.AreEqual(0, ((Nanoseconds) 99L).Ticks);
+            Assert.AreEqual(0, ((Nanoseconds) (-99L)).Ticks);
+        }
+
+        [Test]
+        [TestCase(5L)]
+        [TestCase(NodaConstants.TicksPerStandardDay * 2)]
+        [TestCase(NodaConstants.TicksPerStandardDay * 365000)]
+        public void Ticks_Positive(long ticks)
+        {
+            Assert.IsTrue(ticks > 0);
+            Nanoseconds start = Nanoseconds.FromTicks(ticks);
+            Assert.AreEqual(ticks, start.Ticks);
+
+            // We truncate towards zero... so subtracting 1 nanosecond should
+            // reduce the number of ticks, and adding 99 nanoseconds should not change it
+            Assert.AreEqual(ticks - 1, start.Minus(1L).Ticks);
+            Assert.AreEqual(ticks, start.Plus(99L).Ticks);
+        }
+
+        [Test]
+        [TestCase(-5L)]
+        [TestCase(-NodaConstants.TicksPerStandardDay * 2)]
+        [TestCase(-NodaConstants.TicksPerStandardDay * 365000)]
+        public void Ticks_Negative(long ticks)
+        {
+            Assert.IsTrue(ticks < 0);
+            Nanoseconds start = Nanoseconds.FromTicks(ticks);
+            Assert.AreEqual(ticks, start.Ticks);
+
+            // We truncate towards zero... to subtracting 99 nanoseconds should
+            // have no effect, and adding 1 should increase the number of ticks
+            Assert.AreEqual(ticks, start.Minus(99L).Ticks);
+            Assert.AreEqual(ticks + 1, start.Plus(1L).Ticks);
         }
     }
 }

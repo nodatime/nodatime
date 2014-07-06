@@ -127,7 +127,8 @@ namespace NodaTime
         /// The total number of ticks in the duration.
         /// </summary>
         /// <remarks>
-        /// TODO(2.0): Document rounding
+        /// If the number of nanoseconds in a duration is not a whole number of ticks, it is truncated towards zero.
+        /// For example, durations in the range [-99ns, 99ns] would all count as 0 ticks.
         /// </remarks>
         public long Ticks { get { return nanoseconds.Ticks; } }
 

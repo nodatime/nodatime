@@ -272,5 +272,21 @@ namespace NodaTime.Test
             var interval = new Interval(instant, instant);
             Assert.IsTrue(interval.Contains(instant));
         }
+
+        [Test]
+        [TestCase(-101L, -2L)]
+        [TestCase(-100L, -1L)]
+        [TestCase(-99L, -1L)]
+        [TestCase(-1L, -1L)]
+        [TestCase(0L, 0L)]
+        [TestCase(99L, 0L)]
+        [TestCase(100L, 1L)]
+        [TestCase(101L, 1L)]
+        public void TicksTruncatesDown(long nanoseconds, long expectedTicks)
+        {
+            Nanoseconds nanos = (Nanoseconds) nanoseconds;
+            Instant instant = new Instant(nanos);
+            Assert.AreEqual(expectedTicks, instant.Ticks);
+        }
     }
 }
