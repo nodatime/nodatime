@@ -39,7 +39,7 @@ namespace NodaTime.Text
         /// </summary>
         private static class Patterns
         {
-            internal static readonly LocalTimePattern ExtendedIsoPatternImpl = CreateWithInvariantCulture("HH':'mm':'ss;FFFFFFF");
+            internal static readonly LocalTimePattern ExtendedIsoPatternImpl = CreateWithInvariantCulture("HH':'mm':'ss;FFFFFFFFF");
         }
 
         private readonly string patternText;

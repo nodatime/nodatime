@@ -21,8 +21,8 @@ namespace NodaTime.Test.Text
             // Just a few - these are taken from other tests
             new Data { Pattern = "%%", Message = Messages.Parse_PercentDoubled },
             new Data { Pattern = "%\\", Message = Messages.Parse_EscapeAtEndOfString },
-            new Data { Pattern = "ffffffff", Message = Messages.Parse_RepeatCountExceeded, Parameters = { 'f', 7 } },
-            new Data { Pattern = "FFFFFFFF", Message = Messages.Parse_RepeatCountExceeded, Parameters = { 'F', 7 } },
+            new Data { Pattern = "ffffffffff", Message = Messages.Parse_RepeatCountExceeded, Parameters = { 'f', 9 } },
+            new Data { Pattern = "FFFFFFFFFF", Message = Messages.Parse_RepeatCountExceeded, Parameters = { 'F', 9 } },
         };
 
         internal static Data[] ParseFailureData = {

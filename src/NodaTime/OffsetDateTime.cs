@@ -154,6 +154,16 @@ namespace NodaTime
         public long TickOfDay { get { return localDateTime.TickOfDay; } }
 
         /// <summary>
+        /// Gets the nanosecond of this offset date and time within the second, in the range 0 to 999,999,999 inclusive.
+        /// </summary>
+        public int NanosecondOfSecond { get { return localDateTime.NanosecondOfSecond; } }
+
+        /// <summary>
+        /// Gets the nanosecond of this offset date and time within the day, in the range 0 to 86,399,999,999,999 inclusive.
+        /// </summary>
+        public long NanosecondOfDay { get { return localDateTime.NanosecondOfDay; } }
+
+        /// <summary>
         /// Returns the local date and time represented within this offset date and time.
         /// </summary>
         public LocalDateTime LocalDateTime { get { return localDateTime; } }

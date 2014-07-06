@@ -202,6 +202,38 @@ namespace NodaTime
         }
 
         /// <summary>
+        /// Factory method for creating a local time from the hour of day, minute of hour, second of minute, and nanosecond of second.
+        /// </summary>
+        /// <remarks>
+        /// This is not a constructor overload as it would have the same signature as the one taking millisecond of second.
+        /// </remarks>
+        /// <param name="hour">The hour of day in the desired time, in the range [0, 23].</param>
+        /// <param name="minute">The minute of hour in the desired time, in the range [0, 59].</param>
+        /// <param name="second">The second of minute in the desired time, in the range [0, 59].</param>
+        /// <param name="nanosecondWithinSecond">The nanosecond within the second in the desired time, in the range [0, 999999999].</param>
+        /// <exception cref="ArgumentOutOfRangeException">The parameters do not form a valid time.</exception>
+        /// <returns>The resulting time.</returns>
+        public static LocalTime FromHourMinuteSecondNanosecond(int hour, int minute, int second, long nanosecondWithinSecond)
+        {
+            // Avoid the method calls which give a decent exception unless we're actually going to fail.
+            if (hour < 0 || hour > NodaConstants.HoursPerStandardDay - 1 ||
+                minute < 0 || minute > NodaConstants.MinutesPerHour - 1 ||
+                second < 0 || second > NodaConstants.SecondsPerHour - 1 ||
+                nanosecondWithinSecond < 0 || nanosecondWithinSecond > NodaConstants.NanosecondsPerSecond - 1)
+            {
+                Preconditions.CheckArgumentRange("hour", hour, 0, NodaConstants.HoursPerStandardDay - 1);
+                Preconditions.CheckArgumentRange("minute", minute, 0, NodaConstants.MinutesPerHour - 1);
+                Preconditions.CheckArgumentRange("second", second, 0, NodaConstants.SecondsPerMinute - 1);
+                Preconditions.CheckArgumentRange("nanosecondWithinSecond", nanosecondWithinSecond, 0, NodaConstants.NanosecondsPerSecond - 1);
+            }
+            return new LocalTime(unchecked(
+                hour * NodaConstants.NanosecondsPerHour +
+                minute * NodaConstants.NanosecondsPerMinute +
+                second * NodaConstants.NanosecondsPerSecond +
+                nanosecondWithinSecond));
+        }
+
+        /// <summary>
         /// Constructor only called from other parts of Noda Time - trusted to be the range [0, NanosecondsPerStandardDay).
         /// </summary>
         internal LocalTime(long nanoseconds)
@@ -360,7 +392,12 @@ namespace NodaTime
         public long TickOfDay { get { return nanoseconds / NodaConstants.NanosecondsPerTick; } }
 
         /// <summary>
-        /// Gets the nanosecond of this local time within the day, int he range 0 to 86,399,999,999,999 inclusive.
+        /// Gets the nanosecond of this local time within the second, in the range 0 to 999,999,999 inclusive.
+        /// </summary>
+        public int NanosecondOfSecond { get { return unchecked((int) (nanoseconds % NodaConstants.NanosecondsPerSecond)); } }
+
+        /// <summary>
+        /// Gets the nanosecond of this local time within the day, in the range 0 to 86,399,999,999,999 inclusive.
         /// </summary>
         public long NanosecondOfDay { get { return nanoseconds; } }
 
