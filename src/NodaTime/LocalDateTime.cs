@@ -853,6 +853,12 @@ namespace NodaTime
             return TimePeriodField.Ticks.Add(this, ticks);
         }
 
+        [Pure]
+        internal LocalDateTime PlusNanoseconds(long nanoseconds)
+        {
+            return TimePeriodField.Nanoseconds.Add(this, nanoseconds);
+        }
+
         /// <summary>
         /// Returns the next <see cref="LocalDateTime" /> falling on the specified <see cref="IsoDayOfWeek"/>,
         /// at the same time of day as this value.
