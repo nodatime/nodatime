@@ -59,10 +59,34 @@ namespace NodaTime
 
         /// <summary>
         /// The number of ticks represented by this number of nanoseconds.
-        /// TODO(2.0): Determine rounding policy for negative values... truncate towards zero? Currently truncates down, always.
         /// </summary>
-        /// <returns></returns>
-        public long Ticks { get { return TickArithmetic.DaysAndTickOfDayToTicks(days, nanoOfDay / NodaConstants.NanosecondsPerTick); } }
+        /// <remarks>
+        /// If the value does not consist of an exact number of ticks, it is truncated to towards 0.
+        /// For example, the entire range of [-99ns, 99ns] returns 0 ticks. This is consistent with
+        /// integer division.
+        /// </remarks>
+        /// <returns>The number of ticks in this value, truncating towards zero.</returns>
+        public long Ticks
+        {
+            get
+            {
+                long ticks = TickArithmetic.DaysAndTickOfDayToTicks(days, nanoOfDay / NodaConstants.NanosecondsPerTick);
+                if (days < 0 && nanoOfDay % NodaConstants.NanosecondsPerTick != 0)
+                {
+                    ticks++;
+                }
+                return ticks;
+            }
+        }
+
+        /// <summary>
+        /// Similar to Ticks, but truncates negatively, so a value of -1ns will return -1 tick.
+        /// This is used by Instant.Ticks to always truncate towards the start of time.
+        /// </summary>
+        internal long FloorTicks
+        {
+            get { return TickArithmetic.DaysAndTickOfDayToTicks(days, nanoOfDay / NodaConstants.NanosecondsPerTick); }
+        }
 
         /// <summary>
         /// Explicit conversion to <see cref="Int64"/>. This conversion will fail if the number of nanoseconds is
@@ -490,6 +514,15 @@ namespace NodaTime
             }
             Preconditions.CheckArgument(obj is Nanoseconds, "obj", "Object must be of type NodaTime.Nanoseconds.");
             return CompareTo((Nanoseconds) obj);
+        }
+
+        /// <summary>
+        /// Returns the string representation of this value, as an integer followed by "ns".
+        /// </summary>
+        /// <returns>The string representation of this value.</returns>
+        public override string ToString()
+        {
+            return string.Format("{0}ns", (decimal) this);
         }
     }
 }
