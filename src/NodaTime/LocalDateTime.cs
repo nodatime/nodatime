@@ -378,6 +378,7 @@ namespace NodaTime
             return ToLocalInstant().ToDateTimeUnspecified();
         }
 
+        [Pure]
         internal LocalInstant ToLocalInstant()
         {
             return new LocalInstant(date.DaysSinceEpoch, time.NanosecondOfDay);
