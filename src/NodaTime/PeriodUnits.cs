@@ -77,6 +77,11 @@ namespace NodaTime
         Ticks = 256,
 
         /// <summary>
+        /// Nanoseconds element within a <see cref="Period" />.
+        /// </summary>
+        Nanoseconds = 512,
+
+        /// <summary>
         /// Compound value representing the combination of <see cref="Hours"/>, <see cref="Minutes"/> and <see cref="Seconds"/>.
         /// </summary>
         HourMinuteSecond = Hours | Minutes | Seconds,
@@ -84,16 +89,16 @@ namespace NodaTime
         /// <summary>
         /// Compound value representing the combination of all time elements.
         /// </summary>
-        AllTimeUnits = Hours | Minutes | Seconds | Milliseconds | Ticks,
+        AllTimeUnits = Hours | Minutes | Seconds | Milliseconds | Ticks | Nanoseconds,
 
         /// <summary>
         /// Compound value representing the combination of all possible elements except weeks.
         /// </summary>
-        DateAndTime = Years | Months | Days | Hours | Minutes | Seconds | Milliseconds | Ticks,
+        DateAndTime = Years | Months | Days | Hours | Minutes | Seconds | Milliseconds | Ticks | Nanoseconds,
 
         /// <summary>
         /// Compound value representing the combination of all possible elements.
         /// </summary>
-        AllUnits = Years | Months | Weeks | Days | Hours | Minutes | Seconds | Milliseconds | Ticks
+        AllUnits = Years | Months | Weeks | Days | Hours | Minutes | Seconds | Milliseconds | Ticks | Nanoseconds,
     }
 }
