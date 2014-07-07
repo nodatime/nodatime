@@ -60,9 +60,9 @@ The global time line, and `Instant`
 Noda Time assumes a single non-relativistic time line: global time
 progresses linearly, and everyone in the universe would agree on the
 global concept of "now". Time is measured with a granularity of
-*ticks* where there are 10,000 ticks in a millisecond. This is the
-same concept of a tick which is used in `DateTime` and `TimeSpan` in
-.NET, although a `Stopwatch` tick in .NET can vary based on the
+*nanoseconds*. This 100 times the granularity used in `DateTime` and
+`TimeSpan` in .NET, which is the *tick*. A tick is 100 nanoseconds
+in these types, but please be aware that a `Stopwatch` tick in .NET can vary based on the
 timer used.
 
 The "zero point" used everywhere in Noda Time is the Unix epoch:
@@ -74,13 +74,13 @@ simply have offset the values, and changed the maximum and minimum
 representable values. It's just an origin.
 
 The Noda Time [`Instant`][Instant] type represents a point on this
-global timeline: the number of ticks which have elapsed since the Unix
+global timeline: the number of nanoseconds which have elapsed since the Unix
 epoch. The value can be negative for dates and times before 1970 of
 course - the range of supported dates is from around 27000 BCE to
 around 31000 CE in the Gregorian calendar.
 
 An `Instant` has no concept of a particular time zone - it is 
-*just* the number of ticks which have occurred since
+*just* the number of nanoseconds which have occurred since
 the Unix epoch. The fact that the Unix epoch is defined in terms of
 UTC is irrelevant - it could have been defined in terms of a
 different time zone just as easily, such as "1am on January 1st 1970
@@ -192,17 +192,21 @@ time. In this situation, you should use [`OffsetDateTime`][OffsetDateTime].
 Periods and durations
 ---------------------
 
-There are two similar types in Noda Time used to represent "lengths of time". The simplest is [`Duration`][Duration]
-which is equivalent to [`TimeSpan`] in the BCL. This is a fixed number of ticks - it's the same length of time
-wherever its applied. `Duration` is used for arithmetic on `Instant` and `DateTime` values.
+There are two similar types in Noda Time used to represent "lengths of time". The
+simplest is [`Duration`][Duration] which is equivalent to [`TimeSpan`] in the BCL,
+other than in terms of granularity. This is a fixed number of nanoseconds - it's
+the same length of time wherever its applied. `Duration` is used for arithmetic on `Instant`
+and `ZonedDateTime` values.
 
-A more complex type is [`Period`], which is a set of values associated with different calendar-based periods: years,
-months, weeks, days, hours, minutes and so on. Some of these periods represent different lengths of time depending on
-what they're applied to - if you add "one month" to January 1st, that's going to be 31 days long. Adding the
-same period to February 1st will give a shorter length of time - which then depends on whether the year is a leap
-year or not. Periods based on smaller units (hours, minutes and so on) will always represent the same length of time,
-but they're still available within periods. [`Period`] is used for arithmetic on locally-based values (`LocalDateTime`,
-`LocalDate`, `LocalTime`).
+A more complex type is [`Period`], which is a set of values associated with different
+calendar-based periods: years, months, weeks, days, hours, minutes and so on. Some of
+these periods represent different lengths of time depending on what they're applied
+to - if you add "one month" to January 1st, that's going to be 31 days long. Adding the
+same period to February 1st will give a shorter length of time - which then depends
+on whether the year is a leap year or not. Periods based on smaller units (hours, minutes
+and so on) will always represent the same length of time, but they're still
+available within periods. [`Period`] is used for arithmetic on locally-based values
+(`LocalDateTime`, `LocalDate`, `LocalTime`).
 
 See the [arithmetic](arithmetic.html) page for more information.
 

@@ -14,8 +14,7 @@ Instant
 -------
 
 An [`Instant`][Instant] is a point on notional a global time-line, regardless of calendar system and time zone.
-It's simply a number of "ticks" since some arbitrary epoch, where a tick in Noda Time is 100 nanoseconds (a definition
-inherited from the BCL). Noda Time always uses the Unix epoch, which corresponds to midnight on January 1st 1970 UTC.
+It's simply a number of nanoseconds since some arbitrary epoch. Noda Time always uses the Unix epoch, which corresponds to midnight on January 1st 1970 UTC.
 (This is merely one way of expressing the epoch - it would be equally valid to express it using other calendar systems
 and time zones; the epoch itself has no notion of a time zone or calendar system.)
 
@@ -83,7 +82,7 @@ saving transitions, the same local date/time can occur twice.) An alternative wa
 Duration
 --------
 
-A [`Duration`][Duration] is simply a number of ticks, which can be added to (or subtracted from) an `Instant` or a `ZonedDateTime`. A particular value will always represent the same
+A [`Duration`][Duration] is simply a number of nanosecond, which can be added to (or subtracted from) an `Instant` or a `ZonedDateTime`. A particular value will always represent the same
 amount of elapsed time, however it's used.
 
 Period

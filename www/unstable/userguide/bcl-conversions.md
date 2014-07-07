@@ -88,7 +88,7 @@ TimeSpan
 
 Both [`Offset`](noda-type://NodaTime.Offset) and [`Duration`](noda-type://NodaTime.Duration) are similar to `TimeSpan`,
 but they're used in different senses; `Offset` is used to indicate the difference between UTC and local time, whereas
-a `Duration` is simply an arbitrary number of ticks.
+a `Duration` is simply an arbitrary number of nanoseconds.
 
 Both types have `ToTimeSpan` and `FromTimeSpan` methods, although `Offset.FromTimeSpan` will throw an `ArgumentOutOfRangeException`
 if the `TimeSpan` has a magnitude of 24 hours or more.
