@@ -5,7 +5,6 @@
 using System;
 using JetBrains.Annotations;
 using NodaTime.Calendars;
-using NodaTime.TimeZones;
 using NodaTime.Utility;
 
 namespace NodaTime
@@ -21,6 +20,10 @@ namespace NodaTime
         /// The zero value for the type.
         /// </summary>
         public static readonly Nanoseconds Zero = new Nanoseconds();
+
+        // The -1 here is to allow for the addition of nearly a whole day in the nanoOfDay field.
+        private const long MaxDaysForLongNanos = (int) (long.MaxValue / NodaConstants.NanosecondsPerStandardDay) - 1;
+        private const long MinDaysForLongNanos = (int) (long.MinValue / NodaConstants.NanosecondsPerStandardDay);
 
         /// <summary>
         /// The number of days within this number of nanoseconds. When this is negative, it is
@@ -101,21 +104,22 @@ namespace NodaTime
         /// <exception cref="System.OverflowException">The number of nanoseconds is outside the representable range.</exception>
         public static explicit operator long(Nanoseconds nanoseconds)
         {
-            if (nanoseconds.days < 0)
+            int days = nanoseconds.days;
+            if (days < 0)
             {
-                if (nanoseconds.days > long.MinValue / NodaConstants.NanosecondsPerStandardDay)
+                if (days >= MinDaysForLongNanos)
                 {
-                    return unchecked(nanoseconds.days * NodaConstants.NanosecondsPerStandardDay + nanoseconds.nanoOfDay);
+                    return unchecked(days * NodaConstants.NanosecondsPerStandardDay + nanoseconds.nanoOfDay);
                 }
                 // Need to be careful to avoid overflow in a case where it's actually representable
-                return (nanoseconds.days + 1) * NodaConstants.NanosecondsPerStandardDay + nanoseconds.nanoOfDay - NodaConstants.NanosecondsPerStandardDay;
+                return (days + 1) * NodaConstants.NanosecondsPerStandardDay + nanoseconds.nanoOfDay - NodaConstants.NanosecondsPerStandardDay;
             }
-            if (nanoseconds.days < long.MaxValue / NodaConstants.NanosecondsPerStandardDay)
+            if (days <= MaxDaysForLongNanos)
             {
-                return unchecked(nanoseconds.days * NodaConstants.NanosecondsPerStandardDay + nanoseconds.nanoOfDay);
+                return unchecked(days * NodaConstants.NanosecondsPerStandardDay + nanoseconds.nanoOfDay);
             }
-            // Need to be careful to avoid overflow in a case where it's actually representable
-            return (nanoseconds.days - 1) * NodaConstants.NanosecondsPerStandardDay + nanoseconds.nanoOfDay + NodaConstants.NanosecondsPerStandardDay;
+            // Either the multiplication or the addition could overflow, so we do it in a checked context.
+            return days * NodaConstants.NanosecondsPerStandardDay + nanoseconds.nanoOfDay;
         }
 
         /// <summary>
@@ -346,7 +350,7 @@ namespace NodaTime
         }
 
         /// <summary>
-        /// Implements the operator / (division).
+        /// Implements the operator / (division). The result is truncated towards zero.
         /// </summary>
         /// <param name="dividend">The left hand side of the operator.</param>
         /// <param name="divisor">The right hand side of the operator.</param>
@@ -354,7 +358,19 @@ namespace NodaTime
         /// <paramref name="divisor"/>.</returns>
         public static Nanoseconds operator /(Nanoseconds dividend, long divisor)
         {
-            // FIXME:PERF
+            int days = dividend.days;
+            // Simplest scenario to handle
+            if (days == 0 && divisor > 0)
+            {
+                return new Nanoseconds(0, dividend.nanoOfDay / divisor);
+            }
+            // Now for the ~[-250, +250] year range, where we can do it all as a long.
+            if (days >= MinDaysForLongNanos && days <= MaxDaysForLongNanos)
+            {
+                long nanos = ((long) dividend) / divisor;
+                return (Nanoseconds) nanos;
+            }
+            // Fall back to decimal arithmetic.
             decimal x = (decimal) dividend;
             return (Nanoseconds) (x / divisor);
         }
@@ -368,7 +384,32 @@ namespace NodaTime
         /// <paramref name="scalar"/>.</returns>
         public static Nanoseconds operator *(Nanoseconds nanoseconds, long scalar)
         {
-            // FIXME:PERF
+            if (scalar == 0 || nanoseconds == Zero)
+            {
+                return Zero;
+            }
+            int days = nanoseconds.days;
+            // Speculatively try integer arithmetic... currently just for positive nanos because
+            // it's more common and easier to think about.
+            if (days >= 0 && days <= MaxDaysForLongNanos)
+            {
+                long originalNanos = (long) nanoseconds;
+                if (scalar > 0)
+                {
+                    if (scalar < long.MaxValue / originalNanos)
+                    {
+                        return (Nanoseconds) (originalNanos * scalar);
+                    }
+                }
+                else
+                {
+                    if (scalar > long.MinValue / originalNanos)
+                    {
+                        return (Nanoseconds) (originalNanos * scalar);
+                    }
+                }
+            }
+            // Fall back to decimal arithmetic
             decimal x = (decimal) nanoseconds;
             return (Nanoseconds) (x * scalar);
         }

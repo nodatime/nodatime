@@ -63,7 +63,6 @@ namespace NodaTime
         {
         }
 
-        // FIXME(2.0): Remove
         /// <summary>
         /// Initializes a new instance of the <see cref="LocalDateTime"/> struct using the given
         /// calendar system.
