@@ -22,7 +22,7 @@ namespace NodaTime.Text
     public sealed class DurationPattern : IPattern<Duration>
     {
         /// <summary>
-        /// General pattern for durations using the invariant culture, with a format string of "-D:hh:mm:ss.FFFFFFF".
+        /// General pattern for durations using the invariant culture, with a format string of "-D:hh:mm:ss.FFFFFFFFF".
         /// This pattern round-trips.
         /// </summary>
         public static DurationPattern RoundtripPattern { get { return Patterns.RoundtripPatternImpl; } }
@@ -32,7 +32,7 @@ namespace NodaTime.Text
         // Nested class for ease of type initialization
         internal static class Patterns
         {
-            internal static readonly DurationPattern RoundtripPatternImpl = CreateWithInvariantCulture("-D:hh:mm:ss.FFFFFFF");
+            internal static readonly DurationPattern RoundtripPatternImpl = CreateWithInvariantCulture("-D:hh:mm:ss.FFFFFFFFF");
         }
 
         private readonly string patternText;

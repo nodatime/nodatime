@@ -12,7 +12,7 @@ Standard Patterns
 
 The following standard pattern is supported:
 
-- `o`: Round-trip pattern, which always uses the invariant culture and a pattern string of `-D:hh:mm:ss.FFFFFFF`.
+- `o`: Round-trip pattern, which always uses the invariant culture and a pattern string of `-D:hh:mm:ss.FFFFFFFFF`.
   This is the default format pattern.
 
 Custom Patterns
@@ -90,18 +90,18 @@ We recommend using the repeated form in most cases.
       <td>2 minutes and 10 seconds with a pattern of <code>M:ss.fff</code> => 2:10.000</td>
     </tr>
     <tr>
-      <td><code>f</code> ... <code>fffffff</code>
+      <td><code>f</code> ... <code>fffffffff</code>
       <td>
         The fractional second part of the offset, using exactly the specified number of characters.
 		Trailing digits are truncated towards zero.
       </td>
       <td>
-        1 second, 1234500 ticks: <code>s.fffffff</code> => <code>1.1234500</code> <br />
+        1 second, 123450000 nanoseconds: <code>s.fffffffff</code> => <code>1.123450000</code> <br />
         Exactly 1 second: <code>s.f</code> => <code>1.0</code> <br />
       </td>
     </tr>
     <tr>
-      <td><code>F</code> ... <code>FFFFFFF</code></td>
+      <td><code>F</code> ... <code>FFFFFFFFF</code></td>
       <td>
         The fractional second part of the offset, using at most the specified number of characters (up to 7).
 		Trailing digits are truncated towards zero, and trailing insignificant zeroes are truncated.
@@ -109,7 +109,7 @@ We recommend using the repeated form in most cases.
 		also truncated.
       </td>
       <td>
-        1 second, 1234500 ticks: <code>s.FFFFFFF</code> => <code>1.12345</code> <br />
+        1 second, 123450000 nanoseconds: <code>s.FFFFFFF</code> => <code>1.12345</code> <br />
         Exactly 1 second: <code>s.F</code> => <code>1</code> <br />
       </td>
     </tr>

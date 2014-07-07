@@ -13,16 +13,6 @@ namespace NodaTime.Test.Text
     [TestFixture]
     public class DurationPatternTest : PatternTestBase<Duration>
     {
-        [Test]
-        public void Foo()
-        {
-            Duration hours = Duration.FromHours(2);
-            Duration minutes = Duration.FromMinutes(3);
-            Duration sum = hours + minutes;
-            var pattern = DurationPattern.CreateWithInvariantCulture("HH:mm");
-            string text = pattern.Format(sum);
-        }
-
         /// <summary>
         /// Test data that can only be used to test formatting.
         /// </summary>
@@ -30,9 +20,9 @@ namespace NodaTime.Test.Text
             // No sign, so we can't parse it.                                                            
             new Data(-1, 0) { Pattern = "HH:mm", Text = "01:00" },
 
-            // Loss of tick precision
-            new Data(1, 2, 3, 4, 1234567) { Pattern = "D:hh:mm:ss.ffff", Text = "1:02:03:04.1234" },
-            new Data(1, 2, 3, 4, 1234567) { Pattern = "D:hh:mm:ss.FFFF", Text = "1:02:03:04.1234" },
+            // Loss of nano precision
+            new Data(1, 2, 3, 4, 123456789) { Pattern = "D:hh:mm:ss.ffff", Text = "1:02:03:04.1234" },
+            new Data(1, 2, 3, 4, 123456789) { Pattern = "D:hh:mm:ss.FFFF", Text = "1:02:03:04.1234" },
         };
 
         /// <summary>
@@ -78,22 +68,23 @@ namespace NodaTime.Test.Text
 
             new Data(2, 3, 4) { Pattern = "H:mm:ss", Text = "2:03:04" },
 
-            new Data(1, 2, 3, 4, 1234567) { Pattern = "D:hh:mm:ss.fffffff", Text = "1:02:03:04.1234567" },
-            new Data(1, 2, 3, 4, 1234560) { Pattern = "D:hh:mm:ss.fffffff", Text = "1:02:03:04.1234560" },
-            new Data(1, 2, 3, 4, 1234567) { Pattern = "D:hh:mm:ss.FFFFFFF", Text = "1:02:03:04.1234567" },
-            new Data(1, 2, 3, 4, 1234560) { Pattern = "D:hh:mm:ss.FFFFFFF", Text = "1:02:03:04.123456" },
+            new Data(1, 2, 3, 4, 123456789) { Pattern = "D:hh:mm:ss.fffffffff", Text = "1:02:03:04.123456789" },
+            new Data(1, 2, 3, 4, 123456000) { Pattern = "D:hh:mm:ss.fffffffff", Text = "1:02:03:04.123456000" },
+            new Data(1, 2, 3, 4, 123456789) { Pattern = "D:hh:mm:ss.FFFFFFFFF", Text = "1:02:03:04.123456789" },
+            new Data(1, 2, 3, 4, 123456000) { Pattern = "D:hh:mm:ss.FFFFFFFFF", Text = "1:02:03:04.123456" },
             new Data(1, 2, 3) { Pattern = "M:ss", Text = "62:03" },
             new Data(1, 2, 3) { Pattern = "MMM:ss", Text = "062:03" },
 
-            new Data(0, 0, 1, 2, 1234000) { Pattern = "SS.FFFF", Text = "62.1234" },
+            new Data(0, 0, 1, 2, 123400000) { Pattern = "SS.FFFF", Text = "62.1234" },
 
-            new Data(1, 2, 3, 4, 1234567) { Pattern = "D:hh:mm:ss.FFFFFFF", Text = "1.02.03.04.1234567", Culture = Cultures.ItIt },
+            new Data(1, 2, 3, 4, 123456789) { Pattern = "D:hh:mm:ss.FFFFFFFFF", Text = "1.02.03.04.123456789", Culture = Cultures.ItIt },
 
             // Roundtrip pattern is invariant; redundantly specify the culture to validate that it doesn't make a difference.
-            new Data(1, 2, 3, 4, 1234567) { Pattern = "o", Text = "1:02:03:04.1234567", Culture = Cultures.ItIt },
-            new Data(-1, -2, -3, -4, -1234567) { Pattern = "o", Text = "-1:02:03:04.1234567", Culture = Cultures.ItIt },
+            new Data(1, 2, 3, 4, 123456789) { Pattern = "o", Text = "1:02:03:04.123456789", Culture = Cultures.ItIt },
+            new Data(-1, -2, -3, -4, -123456789) { Pattern = "o", Text = "-1:02:03:04.123456789", Culture = Cultures.ItIt },
 
             // Extremes...
+            // TODO(2.0): Change when we know what the extremes for durations actually are.
             new Data(Duration.FromTicks(long.MaxValue)) { Pattern = "-D:hh:mm:ss.FFFFFFF", Text = "10675199:02:48:05.4775807" },
             new Data(Duration.FromTicks(long.MinValue)) { Pattern = "-D:hh:mm:ss.FFFFFFF", Text = "-10675199:02:48:05.4775808" },
         };
@@ -132,9 +123,9 @@ namespace NodaTime.Test.Text
             {
             }
 
-            public Data(int days, int hours, int minutes, int seconds, int ticks)
+            public Data(int days, int hours, int minutes, int seconds, long nanoseconds)
                 : this(Duration.FromHours(days * 24 + hours) + Duration.FromMinutes(minutes) + Duration.FromSeconds(seconds)
-                       + Duration.FromTicks(ticks))
+                       + Duration.FromNanoseconds(nanoseconds))
             {
             }
 
