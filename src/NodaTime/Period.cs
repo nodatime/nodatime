@@ -95,6 +95,7 @@ namespace NodaTime
             this.seconds = seconds;
             this.milliseconds = milliseconds;
             this.ticks = ticks;
+            this.nanoseconds = nanoseconds;
         }
 
         /// <summary>
@@ -112,6 +113,7 @@ namespace NodaTime
             this.seconds = seconds;
             this.milliseconds = milliseconds;
             this.ticks = ticks;
+            this.nanoseconds = nanoseconds;
         }
 
         /// <summary>
