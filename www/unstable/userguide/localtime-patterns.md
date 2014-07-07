@@ -21,7 +21,7 @@ The following standard patterns are supported:
   For example, in the invariant culture this is "HH:mm:ss". This is the default format pattern.
 
 - `r`: Round-trip pattern.  
-  This always uses a pattern of "HH:mm:ss.FFFFFFF", but with the culture-specific time separator.
+  This always uses a pattern of "HH:mm:ss.FFFFFFFFF", but with the culture-specific time separator.
 
 Custom Patterns
 ---------------
@@ -85,10 +85,10 @@ for general notes on custom patterns, including characters used for escaping and
       </td>
     </tr>
     <tr>
-      <td><code>f</code>, <code>ff</code> ... up to <code>fffffff</code></td>
+      <td><code>f</code>, <code>ff</code> ... up to <code>fffffffff</code></td>
       <td>
         The fractional second part of the time, using exactly the specified number of characters
-		(up to 7, for a representation accurate to a tick).
+		(up to 9, for a representation accurate to a nanosecond).
       </td>
       <td>
         1 second, 340 milliseconds: <code>s.fff</code> => <code>1.340</code> <br />
@@ -97,10 +97,10 @@ for general notes on custom patterns, including characters used for escaping and
       </td>
     </tr>
     <tr>
-      <td><code>F</code>, <code>FF</code> ... up to <code>FFFFFFF</code></td>
+      <td><code>F</code>, <code>FF</code> ... up to <code>FFFFFFFFF</code></td>
       <td>
         The fractional second part of the offset, using at most the specified number of characters
-		(up to 7, for a representation accurate to a tick).
+		(up to 9, for a representation accurate to a nanosecond).
 		Trailing digits are truncated towards zero, and trailing insignificant zeroes are truncated.
 		If this comes after a period (".") and the value is zero, the period is
 		also truncated.
