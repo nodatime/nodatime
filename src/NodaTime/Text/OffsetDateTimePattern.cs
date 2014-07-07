@@ -32,28 +32,28 @@ namespace NodaTime.Text
         public static OffsetDateTimePattern GeneralIsoPattern { get { return Patterns.GeneralIsoPatternImpl; } }
 
         /// <summary>
-        /// Returns an invariant offset date/time pattern based on ISO-8601 (down to the tick), including offset from UTC.
+        /// Returns an invariant offset date/time pattern based on ISO-8601 (down to the nanosecond), including offset from UTC.
         /// The calendar system is not parsed or formatted as part of this pattern. It corresponds to a custom pattern of
-        /// "yyyy'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFFo&lt;G&gt;". This will round-trip any values
+        /// "yyyy'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFFFFo&lt;G&gt;". This will round-trip any values
         /// in the ISO calendar, and is available as the "o" standard pattern.
         /// </summary>
         public static OffsetDateTimePattern ExtendedIsoPattern { get { return Patterns.ExtendedIsoPatternImpl; } }
 
         /// <summary>
-        /// Returns an invariant offset date/time pattern based on RFC 3339 (down to the tick), including offset from UTC
+        /// Returns an invariant offset date/time pattern based on RFC 3339 (down to the nanosecond), including offset from UTC
         /// as hours and minutes only. The minutes part of the offset is always included, but any sub-minute component
         /// of the offset is lost. An offset of zero is formatted as 'Z', but all of 'Z', '+00:00' and '-00:00' are parsed
         /// the same way. The RFC 3339 meaning of '-00:00' is not supported by Noda Time.
         /// Note that parsing is case-sensitive (so 'T' and 'Z' must be upper case).
         /// The calendar system is not parsed or formatted as part of this pattern. It corresponds to a custom pattern of
-        /// "yyyy'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFFo&lt;Z+HH:mm&gt;".
+        /// "yyyy'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFFFFo&lt;Z+HH:mm&gt;".
         /// </summary>
         public static OffsetDateTimePattern Rfc3339Pattern { get { return Patterns.Rfc3339PatternImpl; } }
 
         /// <summary>
-        /// Returns an invariant offset date/time pattern based on ISO-8601 (down to the tick)
+        /// Returns an invariant offset date/time pattern based on ISO-8601 (down to the nanosecond)
         /// including offset from UTC and calendar ID. It corresponds to a custom pattern of
-        /// "yyyy'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFFo&lt;G&gt; '('c')'". This will round-trip any value in any calendar,
+        /// "yyyy'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFFFFo&lt;G&gt; '('c')'". This will round-trip any value in any calendar,
         /// and is available as the "r" standard pattern.
         /// </summary>
         public static OffsetDateTimePattern FullRoundtripPattern { get { return Patterns.FullRoundtripPatternImpl; } }
@@ -65,9 +65,9 @@ namespace NodaTime.Text
         internal static class Patterns
         {
             internal static readonly OffsetDateTimePattern GeneralIsoPatternImpl = Create("yyyy'-'MM'-'dd'T'HH':'mm':'sso<G>", NodaFormatInfo.InvariantInfo, DefaultTemplateValue);
-            internal static readonly OffsetDateTimePattern ExtendedIsoPatternImpl = Create("yyyy'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFFo<G>", NodaFormatInfo.InvariantInfo, DefaultTemplateValue);
-            internal static readonly OffsetDateTimePattern Rfc3339PatternImpl = Create("yyyy'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFFo<Z+HH:mm>", NodaFormatInfo.InvariantInfo, DefaultTemplateValue);
-            internal static readonly OffsetDateTimePattern FullRoundtripPatternImpl = Create("yyyy'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFFo<G> '('c')'", NodaFormatInfo.InvariantInfo, DefaultTemplateValue);
+            internal static readonly OffsetDateTimePattern ExtendedIsoPatternImpl = Create("yyyy'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFFFFo<G>", NodaFormatInfo.InvariantInfo, DefaultTemplateValue);
+            internal static readonly OffsetDateTimePattern Rfc3339PatternImpl = Create("yyyy'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFFFFo<Z+HH:mm>", NodaFormatInfo.InvariantInfo, DefaultTemplateValue);
+            internal static readonly OffsetDateTimePattern FullRoundtripPatternImpl = Create("yyyy'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFFFFo<G> '('c')'", NodaFormatInfo.InvariantInfo, DefaultTemplateValue);
             internal static readonly PatternBclSupport<OffsetDateTime> BclSupport = new PatternBclSupport<OffsetDateTime>("G", fi => fi.OffsetDateTimePatternParser);
         }
 
