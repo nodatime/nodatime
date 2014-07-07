@@ -668,9 +668,6 @@ namespace NodaTime
 
 #if !PCL
         #region Binary serialization
-        private const string DaysSerializationName = "days";
-        private const string NanoOfDaySerializationName = "nanoOfDay";
-
         /// <summary>
         /// Private constructor only present for serialization.
         /// </summary>
@@ -678,7 +675,7 @@ namespace NodaTime
         /// <param name="context">The source for this deserialization.</param>
         private Instant(SerializationInfo info, StreamingContext context)
             // FIXME:SERIALIZATION
-            : this(new Nanoseconds(info.GetInt32(DaysSerializationName), info.GetInt64(NanoOfDaySerializationName)))
+            : this(Nanoseconds.Deserialize(info))
         {
         }
 
@@ -690,9 +687,7 @@ namespace NodaTime
         [System.Security.SecurityCritical]
         void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)
         {
-            // FIXME:SERIALIZATION
-            info.AddValue(DaysSerializationName, nanoseconds.Days);
-            info.AddValue(NanoOfDaySerializationName, nanoseconds.NanosecondOfDay);
+            nanoseconds.Serialize(info);
         }
         #endregion
 #endif

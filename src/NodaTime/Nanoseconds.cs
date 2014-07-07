@@ -3,6 +3,7 @@
 // as found in the LICENSE.txt file.
 
 using System;
+using System.Runtime.Serialization;
 using JetBrains.Annotations;
 using NodaTime.Calendars;
 using NodaTime.Utility;
@@ -570,5 +571,32 @@ namespace NodaTime
         {
             return string.Format("{0}ns", (decimal) this);
         }
+
+#if !BCL
+        private const string DefaultDaysSerializationName = "days";
+        private const string DefaultNanosecondOfDaySerializationName = "nanoOfDay";
+
+        internal static Nanoseconds Deserialize(SerializationInfo info)
+        {
+            return Deserialize(info, DefaultDaysSerializationName, DefaultNanosecondOfDaySerializationName);
+        }
+
+        internal static Nanoseconds Deserialize(SerializationInfo info, string daysSerializationName, string nanosecondOfDaySerializationName)
+            
+        {
+            return new Nanoseconds(info.GetInt32(daysSerializationName), info.GetInt64(nanosecondOfDaySerializationName));
+        }
+
+        internal void Serialize(SerializationInfo info)
+        {
+            Serialize(info, DefaultDaysSerializationName, DefaultNanosecondOfDaySerializationName);
+        }
+
+        internal void Serialize(SerializationInfo info, string daysSerializationName, string nanosecondOfDaySerializationName)
+        {
+            info.AddValue(daysSerializationName, days);
+            info.AddValue(nanosecondOfDaySerializationName, nanoOfDay);
+        }
+#endif
     }
 }
