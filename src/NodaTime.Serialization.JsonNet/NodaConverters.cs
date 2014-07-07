@@ -67,7 +67,7 @@ namespace NodaTime.Serialization.JsonNet
         public static JsonConverter CreateZonedDateTimeConverter(IDateTimeZoneProvider provider)
         {
             return new NodaPatternConverter<ZonedDateTime>(
-                ZonedDateTimePattern.CreateWithInvariantCulture("yyyy'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFFo<G> z", provider),
+                ZonedDateTimePattern.CreateWithInvariantCulture("yyyy'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFFFFo<G> z", provider),
                 CreateIsoValidator<ZonedDateTime>(x => x.Calendar));
         }
 
@@ -84,7 +84,7 @@ namespace NodaTime.Serialization.JsonNet
         /// <summary>
         /// Converter for durations.
         /// </summary>
-        public static readonly JsonConverter DurationConverter = new NodaPatternConverter<Duration>(DurationPattern.CreateWithInvariantCulture("-H:mm:ss.FFFFFFF"));
+        public static readonly JsonConverter DurationConverter = new NodaPatternConverter<Duration>(DurationPattern.CreateWithInvariantCulture("-H:mm:ss.FFFFFFFFF"));
 
         /// <summary>
         /// Round-tripping converter for periods. Use this when you really want to preserve information,

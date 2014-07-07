@@ -61,8 +61,8 @@ namespace NodaTime.Serialization.Test.JsonNet
         [Test]
         public void LocalDateTimeConverter()
         {
-            var value = new LocalDateTime(2012, 1, 2, 3, 4, 5, 6, 7, CalendarSystem.Iso);
-            var json = "\"2012-01-02T03:04:05.0060007\"";
+            var value = new LocalDateTime(2012, 1, 2, 3, 4, 5, 6, 7, CalendarSystem.Iso).PlusNanoseconds(89);
+            var json = "\"2012-01-02T03:04:05.006000789\"";
             AssertConversions(value, json, NodaConverters.LocalDateTimeConverter);
         }
 
@@ -89,8 +89,8 @@ namespace NodaTime.Serialization.Test.JsonNet
         [Test]
         public void LocalTimeConverter()
         {
-            var value = new LocalTime(1, 2, 3, 4, 5);
-            var json = "\"01:02:03.0040005\"";
+            var value = new LocalTime(1, 2, 3, 4, 5).PlusNanoseconds(67);
+            var json = "\"01:02:03.004000567\"";
             AssertConversions(value, json, NodaConverters.LocalTimeConverter);
         }
 
@@ -139,8 +139,8 @@ namespace NodaTime.Serialization.Test.JsonNet
         [Test]
         public void OffsetDateTimeConverter()
         {
-            var value = new LocalDateTime(2012, 1, 2, 3, 4, 5, 6, 7).WithOffset(Offset.FromHoursAndMinutes(-1, -30));
-            string json = "\"2012-01-02T03:04:05.0060007-01:30\"";
+            var value = new LocalDateTime(2012, 1, 2, 3, 4, 5, 6, 7).PlusNanoseconds(89).WithOffset(Offset.FromHoursAndMinutes(-1, -30));
+            string json = "\"2012-01-02T03:04:05.006000789-01:30\"";
             AssertConversions(value, json, NodaConverters.OffsetDateTimeConverter);
         }
 
@@ -149,8 +149,8 @@ namespace NodaTime.Serialization.Test.JsonNet
         {
             // Redundantly specify the minutes, so that Javascript can parse it and it's RFC3339-compliant.
             // See issue 284 for details.
-            var value = new LocalDateTime(2012, 1, 2, 3, 4, 5, 6, 7).WithOffset(Offset.FromHours(5));
-            string json = "\"2012-01-02T03:04:05.0060007+05:00\"";
+            var value = new LocalDateTime(2012, 1, 2, 3, 4, 5, 6, 7).PlusNanoseconds(89).WithOffset(Offset.FromHours(5));
+            string json = "\"2012-01-02T03:04:05.006000789+05:00\"";
             AssertConversions(value, json, NodaConverters.OffsetDateTimeConverter);
         }
 
@@ -159,8 +159,8 @@ namespace NodaTime.Serialization.Test.JsonNet
         {
             // Redundantly specify the minutes, so that Javascript can parse it and it's RFC3339-compliant.
             // See issue 284 for details.
-            var value = new LocalDateTime(2012, 1, 2, 3, 4, 5, 6, 7).WithOffset(Offset.Zero);
-            string json = "\"2012-01-02T03:04:05.0060007Z\"";
+            var value = new LocalDateTime(2012, 1, 2, 3, 4, 5, 6, 7).PlusNanoseconds(89).WithOffset(Offset.Zero);
+            string json = "\"2012-01-02T03:04:05.006000789Z\"";
             AssertConversions(value, json, NodaConverters.OffsetDateTimeConverter);
         }
 
@@ -173,7 +173,7 @@ namespace NodaTime.Serialization.Test.JsonNet
         [Test]
         public void Duration_FractionalSeconds()
         {
-            AssertConversions(Duration.FromHours(48) + Duration.FromSeconds(3) + Duration.FromTicks(1234567), "\"48:00:03.1234567\"", NodaConverters.DurationConverter);
+            AssertConversions(Duration.FromHours(48) + Duration.FromSeconds(3) + Duration.FromNanoseconds(123456789), "\"48:00:03.123456789\"", NodaConverters.DurationConverter);
             AssertConversions(Duration.FromHours(48) + Duration.FromSeconds(3) + Duration.FromTicks(1230000), "\"48:00:03.123\"", NodaConverters.DurationConverter);
             AssertConversions(Duration.FromHours(48) + Duration.FromSeconds(3) + Duration.FromTicks(1234000), "\"48:00:03.1234\"", NodaConverters.DurationConverter);
             AssertConversions(Duration.FromHours(48) + Duration.FromSeconds(3) + Duration.FromTicks(12345), "\"48:00:03.0012345\"", NodaConverters.DurationConverter);
