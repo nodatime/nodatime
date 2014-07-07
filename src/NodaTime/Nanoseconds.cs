@@ -572,7 +572,7 @@ namespace NodaTime
             return string.Format("{0}ns", (decimal) this);
         }
 
-#if !BCL
+#if !PCL
         private const string DefaultDaysSerializationName = "days";
         private const string DefaultNanosecondOfDaySerializationName = "nanoOfDay";
 
