@@ -164,7 +164,9 @@ namespace NodaTime.Test
         [Test]
         [TestCase(1, 5L, 2, 2, 10L, TestName = "Small, positive")]
         [TestCase(-1, NodaConstants.NanosecondsPerStandardDay - 10, 2, -1, NodaConstants.NanosecondsPerStandardDay - 20, TestName = "Small, negative")]
-        [TestCase(365000, 1L, 2, 365000 * 2, 2L, TestName = "More than 2^64 nanos")]
+        [TestCase(365000, 1L, 2, 365000 * 2, 2L, TestName = "More than 2^63 nanos before multiplication")]
+        [TestCase(1000, 1L, 365, 365000, 365L, TestName = "More than 2^63 nanos after multiplication")]
+        [TestCase(1000, 1L, -365, -365001, NodaConstants.NanosecondsPerStandardDay - 365L, TestName = "Less than -2^63 nanos after multiplication")]
         [TestCase(0, 1L, NodaConstants.NanosecondsPerStandardDay, 1, 0L, TestName = "Large scalar")]
         public void Multiplication(int startDays, long startNanoOfDay, long scalar, int expectedDays, long expectedNanoOfDay)
         {
@@ -204,6 +206,9 @@ namespace NodaTime.Test
         [TestCase(1, NodaConstants.NanosecondsPerStandardDay - 1, NodaConstants.NanosecondsPerStandardDay, 0, 1L)]
 
         [TestCase(10, 20L, 5, 2, 4L)]
+
+        // Large value, which will use decimal arithmetic
+        [TestCase(365000, 3000L, 1000, 365, 3L)]
         public void Division(int startDays, long startNanoOfDay, long divisor, int expectedDays, long expectedNanoOfDay)
         {
             var start = new Nanoseconds(startDays, startNanoOfDay);

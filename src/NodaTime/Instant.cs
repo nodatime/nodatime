@@ -219,7 +219,6 @@ namespace NodaTime
         /// <returns>A new <see cref="Instant" /> representing the sum of the given values.</returns>
         public static Instant Add(Instant left, Duration right)
         {
-            // FIXME:PERF
             return left + right;
         }
 
@@ -231,7 +230,6 @@ namespace NodaTime
         [Pure]
         public Instant Plus(Duration duration)
         {
-            // FIXME:PERF
             return this + duration;
         }
 
@@ -490,7 +488,6 @@ namespace NodaTime
         [Pure]
         public DateTime ToDateTimeUtc()
         {
-            // FIXME:PERF
             return new DateTime(NodaConstants.BclTicksAtUnixEpoch + Ticks, DateTimeKind.Utc);
         }
 
@@ -501,7 +498,6 @@ namespace NodaTime
         [Pure]
         public DateTimeOffset ToDateTimeOffset()
         {
-            // FIXME:PERF
             return new DateTimeOffset(NodaConstants.BclTicksAtUnixEpoch + Ticks, TimeSpan.Zero);
         }
 
@@ -525,7 +521,6 @@ namespace NodaTime
         /// <see cref="DateTimeKind.Utc"/>.</exception>
         public static Instant FromDateTimeUtc(DateTime dateTime)
         {
-            // FIXME:PERF
             Preconditions.CheckArgument(dateTime.Kind == DateTimeKind.Utc, "dateTime", "Invalid DateTime.Kind for Instant.FromDateTimeUtc");
             return NodaConstants.BclEpoch.PlusTicks(dateTime.Ticks);
         }
@@ -586,7 +581,6 @@ namespace NodaTime
         [Pure]
         public ZonedDateTime InUtc()
         {
-            // FIXME:PERF
             return new ZonedDateTime(this, DateTimeZone.Utc, CalendarSystem.Iso);
         }
 
