@@ -724,7 +724,7 @@ namespace NodaTime
         /// <remarks>Any fractional part of <paramref name="nanoseconds"/> is truncated.</remarks>
         /// <param name="nanoseconds">The number of nanoseconds to represent.</param>
         /// <returns>A duration with the given number of nanoseconds.</returns>
-        /// <exception cref="OverflowException">The specified number is outside the range of <see cref="Nanoseconds"/>.</exception>
+        /// <exception cref="OverflowException">The specified number is outside the range of <see cref="Duration"/>.</exception>
         public static Duration FromNanoseconds(decimal nanoseconds)
         {
             // Avoid worrying about what happens in later arithmetic.

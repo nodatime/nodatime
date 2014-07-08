@@ -828,6 +828,9 @@ namespace NodaTime
         /// </remarks>
         public long Ticks { get { return ticks; } }
 
+        /// <summary>
+        /// Number of nanoseconds.
+        /// </summary>
         public Duration Nanoseconds { get { return nanoseconds; } }
         #endregion
 
