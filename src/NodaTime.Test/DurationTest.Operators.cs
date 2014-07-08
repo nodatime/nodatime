@@ -12,36 +12,21 @@ namespace NodaTime.Test
         private readonly Duration threeMillion = Duration.FromNanoseconds(3000000L);
         private readonly Duration negativeFiftyMillion = Duration.FromNanoseconds(-50000000L);
 
-        [Test]
-        public void Equality()
-        {
-            TestHelper.TestEqualsStruct(threeMillion, Duration.FromNanoseconds(3000000), negativeFiftyMillion);
-            TestHelper.TestOperatorEquality(threeMillion, Duration.FromNanoseconds(3000000), negativeFiftyMillion);
-        }
-
-        [Test]
-        public void Comparison()
-        {
-            TestHelper.TestCompareToStruct(negativeFiftyMillion, Duration.FromNanoseconds(-50000000), threeMillion);
-            TestHelper.TestNonGenericCompareTo(negativeFiftyMillion, Duration.FromNanoseconds(-50000000), threeMillion);
-            TestHelper.TestOperatorComparisonEquality(negativeFiftyMillion, Duration.FromNanoseconds(-50000000), threeMillion);
-        }
-
         #region operator +
         [Test]
         public void OperatorPlus_Zero_IsNeutralElement()
         {
-            Assert.AreEqual(0L, (long) (Duration.Zero + Duration.Zero).Nanoseconds, "0 + 0");
-            Assert.AreEqual(1L, (long) (Duration.Epsilon + Duration.Zero).Nanoseconds, "1 + 0");
-            Assert.AreEqual(1L, (long) (Duration.Zero + Duration.Epsilon).Nanoseconds, "0 + 1");
+            Assert.AreEqual(0L, (Duration.Zero + Duration.Zero).ToInt64Nanoseconds(), "0 + 0");
+            Assert.AreEqual(1L, (Duration.Epsilon + Duration.Zero).ToInt64Nanoseconds(), "1 + 0");
+            Assert.AreEqual(1L, (Duration.Zero + Duration.Epsilon).ToInt64Nanoseconds(), "0 + 1");
         }
 
         [Test]
         public void OperatorPlus_NonZero()
         {
-            Assert.AreEqual(3000001L, (long) (threeMillion + Duration.Epsilon).Nanoseconds, "3,000,000 + 1");
-            Assert.AreEqual(0L, (long) (Duration.Epsilon + Duration.FromNanoseconds(-1)).Nanoseconds, "1 + (-1)");
-            Assert.AreEqual(-49999999L, (long) (negativeFiftyMillion + Duration.Epsilon).Nanoseconds, "-50,000,000 + 1");
+            Assert.AreEqual(3000001L, (threeMillion + Duration.Epsilon).ToInt64Nanoseconds(), "3,000,000 + 1");
+            Assert.AreEqual(0L, (Duration.Epsilon + Duration.FromNanoseconds(-1)).ToInt64Nanoseconds(), "1 + (-1)");
+            Assert.AreEqual(-49999999L, (negativeFiftyMillion + Duration.Epsilon).ToInt64Nanoseconds(), "-50,000,000 + 1");
         }
 
         [Test]
@@ -58,18 +43,18 @@ namespace NodaTime.Test
         [Test]
         public void OperatorMinus_Zero_IsNeutralElement()
         {
-            Assert.AreEqual(0L, (long) (Duration.Zero - Duration.Zero).Nanoseconds, "0 - 0");
-            Assert.AreEqual(1L, (long) (Duration.Epsilon - Duration.Zero).Nanoseconds, "1 - 0");
-            Assert.AreEqual(-1L, (long) (Duration.Zero - Duration.Epsilon).Nanoseconds, "0 - 1");
+            Assert.AreEqual(0L, (Duration.Zero - Duration.Zero).ToInt64Nanoseconds(), "0 - 0");
+            Assert.AreEqual(1L, (Duration.Epsilon - Duration.Zero).ToInt64Nanoseconds(), "1 - 0");
+            Assert.AreEqual(-1L, (Duration.Zero - Duration.Epsilon).ToInt64Nanoseconds(), "0 - 1");
         }
 
         [Test]
         public void OperatorMinus_NonZero()
         {
             Duration negativeEpsilon = Duration.FromNanoseconds(-1L);
-            Assert.AreEqual(2999999L, (long) (threeMillion - Duration.Epsilon).Nanoseconds, "3,000,000 - 1");
-            Assert.AreEqual(2L, (long) (Duration.Epsilon - negativeEpsilon).Nanoseconds, "1 - (-1)");
-            Assert.AreEqual(-50000001L, (long) (negativeFiftyMillion - Duration.Epsilon).Nanoseconds, "-50,000,000 - 1");
+            Assert.AreEqual(2999999L, (threeMillion - Duration.Epsilon).ToInt64Nanoseconds(), "3,000,000 - 1");
+            Assert.AreEqual(2L, (Duration.Epsilon - negativeEpsilon).ToInt64Nanoseconds(), "1 - (-1)");
+            Assert.AreEqual(-50000001L, (negativeFiftyMillion - Duration.Epsilon).ToInt64Nanoseconds(), "-50,000,000 - 1");
         }
 
         [Test]
@@ -86,7 +71,7 @@ namespace NodaTime.Test
         [Test]
         public void OperatorDivision_ByNonZero()
         {
-            Assert.AreEqual(1000, (long) (threeMillion / 3000).Nanoseconds, "3000000 / 3000");
+            Assert.AreEqual(1000, (threeMillion / 3000).ToInt64Nanoseconds(), "3000000 / 3000");
         }
 
         [Test]
@@ -98,8 +83,8 @@ namespace NodaTime.Test
         [Test]
         public void OperatorDivision_Truncates()
         {
-            Assert.AreEqual(1, (long) (threeMillion / 2000000).Nanoseconds, "3000000 / 2000000");
-            Assert.AreEqual(-1, (long) (threeMillion / -2000000).Nanoseconds, "3000000 / -2000000");
+            Assert.AreEqual(1L, (threeMillion / 2000000).ToInt64Nanoseconds(), "3000000 / 2000000");
+            Assert.AreEqual(-1L, (threeMillion / -2000000).ToInt64Nanoseconds(), "3000000 / -2000000");
         }
 
         [Test]

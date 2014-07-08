@@ -57,9 +57,9 @@ namespace NodaTime.Test
         [Test]
         public void OperatorPlusDuration_NonZero()
         {
-            Assert.AreEqual(3000001L, (long) (threeMillion + Duration.Epsilon).Nanoseconds, "3,000,000 + 1");
-            Assert.AreEqual(0L, (long) (one + -Duration.Epsilon).Nanoseconds, "1 + (-1)");
-            Assert.AreEqual(-49999999L, (long) (negativeFiftyMillion + Duration.Epsilon).Nanoseconds, "-50,000,000 + 1");
+            Assert.AreEqual(3000001L, (threeMillion + Duration.Epsilon).TimeSinceEpoch.ToInt64Nanoseconds(), "3,000,000 + 1");
+            Assert.AreEqual(0L, (one + -Duration.Epsilon).TimeSinceEpoch.ToInt64Nanoseconds(), "1 + (-1)");
+            Assert.AreEqual(-49999999L, (negativeFiftyMillion + Duration.Epsilon).TimeSinceEpoch.ToInt64Nanoseconds(), "-50,000,000 + 1");
         }
 
         // Smoke tests for methods which simply delegate to the + operator.
@@ -85,9 +85,9 @@ namespace NodaTime.Test
         public void OperatorMinusDuration()
         {
             Assert.AreEqual(threeMillion, threeMillion - Duration.Zero);
-            Assert.AreEqual(2999999L, (long) (threeMillion - Duration.Epsilon).Nanoseconds, "3,000,000 - 1");
-            Assert.AreEqual(2L, (long) (one - Duration.FromNanoseconds(-1)).Nanoseconds, "1 - (-1)");
-            Assert.AreEqual(-50000001L, (long) (negativeFiftyMillion - Duration.Epsilon).Nanoseconds, "-50,000,000 - 1");
+            Assert.AreEqual(2999999L, (threeMillion - Duration.Epsilon).TimeSinceEpoch.ToInt64Nanoseconds(), "3,000,000 - 1");
+            Assert.AreEqual(2L, (one - Duration.FromNanoseconds(-1)).TimeSinceEpoch.ToInt64Nanoseconds(), "1 - (-1)");
+            Assert.AreEqual(-50000001L, (negativeFiftyMillion - Duration.Epsilon).TimeSinceEpoch.ToInt64Nanoseconds(), "-50,000,000 - 1");
         }
 
         // Smoke tests for methods which simply delegate to the - operator.
@@ -103,17 +103,17 @@ namespace NodaTime.Test
         [Test]
         public void OperatorMinusInstant_NonZero()
         {
-            Assert.AreEqual(2999999L, (long) (threeMillion - one).Nanoseconds, "3,000,000 - 1");
-            Assert.AreEqual(2L, (long) (one - new Instant(0, -1L)).Nanoseconds, "1 - (-1)");
-            Assert.AreEqual(-50000001L, (long) (negativeFiftyMillion - one).Nanoseconds, "-50,000,000 - 1");
+            Assert.AreEqual(2999999L, (threeMillion - one).ToInt64Nanoseconds(), "3,000,000 - 1");
+            Assert.AreEqual(2L, (one - new Instant(0, -1L)).ToInt64Nanoseconds(), "1 - (-1)");
+            Assert.AreEqual(-50000001L, (negativeFiftyMillion - one).ToInt64Nanoseconds(), "-50,000,000 - 1");
         }
 
         [Test]
         public void OperatorMinusInstant_UnixEpoch_IsNeutralElement()
         {
-            Assert.AreEqual(0L, (long) (NodaConstants.UnixEpoch - NodaConstants.UnixEpoch).Nanoseconds, "0 - 0");
-            Assert.AreEqual(1L, (long) (one - NodaConstants.UnixEpoch).Nanoseconds, "1 - 0");
-            Assert.AreEqual(-1L, (long) (NodaConstants.UnixEpoch - one).Nanoseconds, "0 - 1");
+            Assert.AreEqual(0L, (NodaConstants.UnixEpoch - NodaConstants.UnixEpoch).ToInt64Nanoseconds(), "0 - 0");
+            Assert.AreEqual(1L, (one - NodaConstants.UnixEpoch).ToInt64Nanoseconds(), "1 - 0");
+            Assert.AreEqual(-1L, (NodaConstants.UnixEpoch - one).ToInt64Nanoseconds(), "0 - 1");
         }
 
         // Smoke tests for methods which simply delegate to the - operator.
