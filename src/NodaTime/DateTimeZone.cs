@@ -447,7 +447,7 @@ namespace NodaTime
             // If the tick before this interval started *could* map to a later local instant, let's
             // get the interval and check whether it actually includes the one we want.
             Instant endOfPrevious = intervalStart;
-            if (endOfPrevious.Nanoseconds.Plus(maxOffsetNanos) > localInstant.Nanoseconds)
+            if (endOfPrevious.TimeSinceEpoch.PlusSmallNanoseconds(maxOffsetNanos) > localInstant.Nanoseconds)
             {
                 ZoneInterval candidate = GetZoneInterval(endOfPrevious - Duration.Epsilon);
                 if (candidate.Contains(localInstant))
@@ -470,7 +470,7 @@ namespace NodaTime
             {
                 return null;
             }
-            if (intervalEnd.Nanoseconds.Plus(minOffsetNanos) <= localInstant.Nanoseconds)
+            if (intervalEnd.TimeSinceEpoch.PlusSmallNanoseconds(minOffsetNanos) <= localInstant.Nanoseconds)
             {
                 ZoneInterval candidate = GetZoneInterval(intervalEnd);
                 if (candidate.Contains(localInstant))

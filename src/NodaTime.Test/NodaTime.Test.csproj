@@ -135,7 +135,6 @@
     <Compile Include="Calendars\YearMonthDayCalculatorTest.cs" />
     <Compile Include="DateIntervalTest.cs" />
     <Compile Include="IntervalTest.cs" />
-    <Compile Include="NanosecondsTest.cs" />
     <Compile Include="OffsetDateTimeTest.cs" />
     <Compile Include="PeriodBuilderTest.cs" />
     <Compile Include="Testing\TimeZones\MultiTransitionDateTimeZoneTest.cs" />

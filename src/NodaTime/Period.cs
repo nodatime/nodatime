@@ -63,7 +63,7 @@ namespace NodaTime
         public static IEqualityComparer<Period> NormalizingEqualityComparer { get { return NormalizingPeriodEqualityComparer.Instance; } }
 
         // The fields that make up this period.
-        private readonly Nanoseconds nanoseconds;
+        private readonly Duration nanoseconds;
         private readonly long ticks;
         private readonly long milliseconds;
         private readonly long seconds;
@@ -88,7 +88,7 @@ namespace NodaTime
         /// <summary>
         /// Creates a period with the given time values.
         /// </summary>
-        private Period(long hours, long minutes, long seconds, long milliseconds, long ticks, Nanoseconds nanoseconds)
+        private Period(long hours, long minutes, long seconds, long milliseconds, long ticks, Duration nanoseconds)
         {
             this.hours = hours;
             this.minutes = minutes;
@@ -102,7 +102,7 @@ namespace NodaTime
         /// Creates a new period from the given values.
         /// </summary>
         internal Period(int years, int months, int weeks, int days, long hours, long minutes, long seconds,
-            long milliseconds, long ticks, Nanoseconds nanoseconds)
+            long milliseconds, long ticks, Duration nanoseconds)
         {
             this.years = years;
             this.months = months;
@@ -168,7 +168,7 @@ namespace NodaTime
         [NotNull]
         public static Period FromHours(long hours)
         {
-            return new Period(hours, 0L, 0L, 0L, 0L, Nanoseconds.Zero);
+            return new Period(hours, 0L, 0L, 0L, 0L, Duration.Zero);
         }
 
         /// <summary>
@@ -179,7 +179,7 @@ namespace NodaTime
         [NotNull]
         public static Period FromMinutes(long minutes)
         {
-            return new Period(0L, minutes, 0L, 0L, 0L, Nanoseconds.Zero);
+            return new Period(0L, minutes, 0L, 0L, 0L, Duration.Zero);
         }
 
         /// <summary>
@@ -190,7 +190,7 @@ namespace NodaTime
         [NotNull]
         public static Period FromSeconds(long seconds)
         {
-            return new Period(0L, 0L, seconds, 0L, 0L, Nanoseconds.Zero);
+            return new Period(0L, 0L, seconds, 0L, 0L, Duration.Zero);
         }
 
         /// <summary>
@@ -201,7 +201,7 @@ namespace NodaTime
         [NotNull]
         public static Period FromMilliseconds(long milliseconds)
         {
-            return new Period(0L, 0L, 0L, milliseconds, 0L, Nanoseconds.Zero);
+            return new Period(0L, 0L, 0L, milliseconds, 0L, Duration.Zero);
         }
 
         /// <summary>
@@ -212,7 +212,7 @@ namespace NodaTime
         [NotNull]
         public static Period FromTicks(long ticks)
         {
-            return new Period(0L, 0L, 0L, 0L, ticks, Nanoseconds.Zero);
+            return new Period(0L, 0L, 0L, 0L, ticks, Duration.Zero);
         }
 
         /// <summary>
@@ -223,7 +223,7 @@ namespace NodaTime
         [NotNull]
         public static Period FromNanoseconds(long nanoseconds)
         {
-            return new Period(0L, 0L, 0L, 0L, 0L, (Nanoseconds) nanoseconds);
+            return new Period(0L, 0L, 0L, 0L, 0L, Duration.FromNanoseconds(nanoseconds));
         }
 
 
@@ -233,7 +233,7 @@ namespace NodaTime
         /// <param name="nanoseconds">The number of nanoseconds in the new period</param>
         /// <returns>A period consisting of the given number of nanoseconds.</returns>
         [NotNull]
-        public static Period FromNanoseconds(Nanoseconds nanoseconds)
+        public static Period FromNanoseconds(Duration nanoseconds)
         {
             return new Period(0L, 0L, 0L, 0L, 0L, nanoseconds);
         }
@@ -383,7 +383,7 @@ namespace NodaTime
             }
 
             long hours = 0, minutes = 0, seconds = 0, milliseconds = 0, ticks = 0;
-            Nanoseconds nanoseconds = Nanoseconds.Zero;
+            Duration nanoseconds = Duration.Zero;
             if ((units & PeriodUnits.AllTimeUnits) != 0)
             {
                 hours = FieldBetween(units & PeriodUnits.Hours, end, ref remaining, TimePeriodField.Hours);
@@ -400,7 +400,7 @@ namespace NodaTime
             return new Period(years, months, weeks, days, hours, minutes, seconds, milliseconds, ticks, nanoseconds);
         }
 
-        private static Nanoseconds GetNanosecondsBetween(LocalDateTime start, LocalDateTime end)
+        private static Duration GetNanosecondsBetween(LocalDateTime start, LocalDateTime end)
         {
             // TODO(2.0): Optimize this for the common case of the dates being the same.
             return end.ToLocalInstant().Nanoseconds - start.ToLocalInstant().Nanoseconds;
@@ -458,7 +458,7 @@ namespace NodaTime
                        .PlusMilliseconds(milliseconds * scalar)
                        .PlusTicks(ticks * scalar)
                        // FIXME(2.0): Cope with larger nanosecond values
-                       .PlusNanoseconds(((long) nanoseconds) * scalar);
+                       .PlusNanoseconds(nanoseconds.ToInt64Nanoseconds() * scalar);
         }
 
         /// <summary>
@@ -486,7 +486,7 @@ namespace NodaTime
             time = TimePeriodField.Milliseconds.Add(time, milliseconds * scalar, ref extraDays);
             time = TimePeriodField.Ticks.Add(time, ticks * scalar, ref extraDays);
             // FIXME(2.0): Cope with larger nanosecond values
-            time = TimePeriodField.Nanoseconds.Add(time, ((long) nanoseconds) * scalar, ref extraDays);
+            time = TimePeriodField.Nanoseconds.Add(time, nanoseconds.ToInt64Nanoseconds() * scalar, ref extraDays);
             // TODO(2.0): Investigate the performance impact of us calling PlusDays twice.
             // Could optimize by including that in a single call...
             return new LocalDateTime(date.PlusDays(extraDays), time);
@@ -616,7 +616,7 @@ namespace NodaTime
             long seconds = FieldBetween(units & PeriodUnits.Seconds, end, ref remaining, TimePeriodField.Seconds);
             long milliseconds = FieldBetween(units & PeriodUnits.Milliseconds, end, ref remaining, TimePeriodField.Milliseconds);
             long ticks = FieldBetween(units & PeriodUnits.Ticks, end, ref remaining, TimePeriodField.Ticks);
-            Nanoseconds nanoseconds = (units & PeriodUnits.Nanoseconds) == 0 ? Nanoseconds.Zero : (Nanoseconds) TimePeriodField.Nanoseconds.Subtract(end, start);
+            Duration nanoseconds = (units & PeriodUnits.Nanoseconds) == 0 ? Duration.Zero : Duration.FromNanoseconds(TimePeriodField.Nanoseconds.Subtract(end, start));
 
             return new Period(hours, minutes, seconds, milliseconds, ticks, nanoseconds);
         }
@@ -689,7 +689,7 @@ namespace NodaTime
             {
                 // This can overflow even when it wouldn't necessarily need to. See comments elsewhere.
                 // TODO(2.0): Handle big nanosecond values. (Return Nanoseconds instead...)
-                return ((long) nanoseconds) +
+                return nanoseconds.ToInt64Nanoseconds() +
                     ticks * NodaConstants.NanosecondsPerTick +
                     milliseconds * NodaConstants.NanosecondsPerMillisecond +
                     seconds * NodaConstants.NanosecondsPerSecond +
@@ -749,7 +749,7 @@ namespace NodaTime
             long seconds = (totalNanoseconds / NodaConstants.NanosecondsPerSecond) % NodaConstants.SecondsPerMinute;
             long milliseconds = (totalNanoseconds / NodaConstants.NanosecondsPerMillisecond) % NodaConstants.MillisecondsPerSecond;
             long ticks = (totalNanoseconds / NodaConstants.NanosecondsPerTick) % NodaConstants.TicksPerMillisecond;
-            Nanoseconds nanoseconds = (Nanoseconds) (totalNanoseconds % NodaConstants.NanosecondsPerTick);
+            Duration nanoseconds = Duration.FromNanoseconds(totalNanoseconds % NodaConstants.NanosecondsPerTick);
 
             return new Period(this.years, this.months, 0 /* weeks */, days, hours, minutes, seconds, milliseconds, ticks, nanoseconds);
         }
@@ -828,7 +828,7 @@ namespace NodaTime
         /// </remarks>
         public long Ticks { get { return ticks; } }
 
-        public Nanoseconds Nanoseconds { get; internal set; }
+        public Duration Nanoseconds { get { return nanoseconds; } }
         #endregion
 
         #region Object overrides
@@ -929,7 +929,7 @@ namespace NodaTime
                    info.GetInt64(SecondsSerializationName),
                    info.GetInt64(MillisecondsSerializationName),
                    info.GetInt64(TicksSerializationName),
-                   new Nanoseconds(info.GetInt32(NanosecondsDaysSerializationName), info.GetInt64(NanosecondsNanoOfDaySerializationName)))
+                   new Duration(info.GetInt32(NanosecondsDaysSerializationName), info.GetInt64(NanosecondsNanoOfDaySerializationName)))
         {
         }
 

@@ -26,12 +26,12 @@ namespace NodaTime
         /// <summary>
         /// Number of nanoseconds since the local 1970-01-01T00:00:00.
         /// </summary>
-        private readonly Nanoseconds nanoseconds;
+        private readonly Duration nanoseconds;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LocalInstant"/> struct.
         /// </summary>
-        internal LocalInstant(Nanoseconds nanoseconds)
+        internal LocalInstant(Duration nanoseconds)
         {
             this.nanoseconds = nanoseconds;
         }
@@ -42,7 +42,7 @@ namespace NodaTime
         /// <param name="days">Number of days since 1970-01-01, in a time zone neutral fashion.</param>
         /// <param name="nanoOfDay">Nanosecond of the local day.</param>
         internal LocalInstant(int days, long nanoOfDay)
-            : this(new Nanoseconds(days, nanoOfDay))
+            : this(new Duration(days, nanoOfDay))
         {
         }
 
@@ -58,7 +58,7 @@ namespace NodaTime
         /// <summary>
         /// Number of nanoseconds since the local unix epoch.
         /// </summary>
-        internal Nanoseconds Nanoseconds { get { return nanoseconds; } }
+        internal Duration Nanoseconds { get { return nanoseconds; } }
 
         /// <summary>
         /// Number of days since the local unix epoch.
@@ -95,7 +95,7 @@ namespace NodaTime
         internal static LocalInstant FromDateTime(DateTime dateTime)
         {
             long ticksSinceEpoch = NodaConstants.BclEpoch.Ticks + dateTime.Ticks;
-            return new LocalInstant(Nanoseconds.FromTicks(ticksSinceEpoch));
+            return new LocalInstant(Duration.FromTicks(ticksSinceEpoch));
         }
 
         #region Operators
@@ -104,7 +104,7 @@ namespace NodaTime
         // </summary>
         public static LocalInstant operator +(LocalInstant left, Duration right)
         {
-            return new LocalInstant(left.nanoseconds + right.Nanoseconds);
+            return new LocalInstant(left.nanoseconds + right);
         }
 
         /// <summary>
@@ -128,7 +128,7 @@ namespace NodaTime
         /// <returns>A new <see cref="Instant"/> representing the difference of the given values.</returns>
         public Instant Minus(Offset offset)
         {
-            return new Instant(nanoseconds.Minus(offset.Nanoseconds));
+            return new Instant(nanoseconds.MinusSmallNanoseconds(offset.Nanoseconds));
         }
 
         /// <summary>
@@ -136,7 +136,7 @@ namespace NodaTime
         /// </summary>
         public static LocalInstant operator -(LocalInstant left, Duration right)
         {
-            return new LocalInstant(left.nanoseconds - right.Nanoseconds);
+            return new LocalInstant(left.nanoseconds - right);
         }
 
         /// <summary>

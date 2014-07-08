@@ -75,7 +75,7 @@ namespace NodaTime
         /// Gets or sets the number of nanoseconds within the period.
         /// </summary>
         /// <returns>The number of nanoseconds within the period.</returns>
-        public Nanoseconds Nanoseconds { get; set; }
+        public Duration Nanoseconds { get; set; }
         #endregion
 
         /// <summary>
@@ -138,7 +138,7 @@ namespace NodaTime
                     case PeriodUnits.Seconds: return Seconds;
                     case PeriodUnits.Milliseconds: return Milliseconds;
                     case PeriodUnits.Ticks: return Ticks;
-                    case PeriodUnits.Nanoseconds: return (long) Nanoseconds;
+                    case PeriodUnits.Nanoseconds: return Nanoseconds.ToInt64Nanoseconds();
                     default: throw new ArgumentOutOfRangeException("unit", "Indexer for PeriodBuilder only takes a single unit");
                 }
             }
@@ -159,7 +159,7 @@ namespace NodaTime
                     case PeriodUnits.Seconds: Seconds = value; return;
                     case PeriodUnits.Milliseconds: Milliseconds = value; return;
                     case PeriodUnits.Ticks: Ticks = value; return;
-                    case PeriodUnits.Nanoseconds: Nanoseconds = (Nanoseconds) value; return;
+                    case PeriodUnits.Nanoseconds: Nanoseconds = Duration.FromNanoseconds(value); return;
                     default: throw new ArgumentOutOfRangeException("unit", "Indexer for PeriodBuilder only takes a single unit");
                 }
             }

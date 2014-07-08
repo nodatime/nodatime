@@ -239,8 +239,8 @@ namespace NodaTime
         /// <param name="info">The <see cref="SerializationInfo"/> to fetch data from.</param>
         /// <param name="context">The source for this deserialization.</param>
         private Interval(SerializationInfo info, StreamingContext context)
-            : this(new Instant(Nanoseconds.Deserialize(info, StartDaysSerializationName, StartNanosecondOfDaySerializationName)),
-                   new Instant(Nanoseconds.Deserialize(info, EndDaysSerializationName, EndNanosecondOfDaySerializationName)))
+            : this(new Instant(Duration.Deserialize(info, StartDaysSerializationName, StartNanosecondOfDaySerializationName)),
+                   new Instant(Duration.Deserialize(info, EndDaysSerializationName, EndNanosecondOfDaySerializationName)))
         {
         }
 
@@ -253,8 +253,8 @@ namespace NodaTime
         void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)
         {
             // FIXME:SERIALIZATION
-            start.Nanoseconds.Serialize(info, StartDaysSerializationName, StartNanosecondOfDaySerializationName);
-            end.Nanoseconds.Serialize(info, EndDaysSerializationName, EndNanosecondOfDaySerializationName);
+            start.TimeSinceEpoch.Serialize(info, StartDaysSerializationName, StartNanosecondOfDaySerializationName);
+            end.TimeSinceEpoch.Serialize(info, EndDaysSerializationName, EndNanosecondOfDaySerializationName);
         }
         #endregion
 #endif

@@ -65,7 +65,7 @@ namespace NodaTime.Text
 
         private static int GetPositiveNanosecondOfSecond(Duration duration)
         {
-            Nanoseconds positive = GetPositiveNanoseconds(duration);
+            Duration positive = GetPositiveDuration(duration);
             return (int) (positive.NanosecondOfDay % NodaConstants.NanosecondsPerSecond);
         }
 
@@ -102,14 +102,13 @@ namespace NodaTime.Text
                 builder.AddParseValueAction(count, 10, pattern.Current, 0, int.MaxValue, (bucket, value) => bucket.AddDays(value));
                 builder.AddFormatLeftPad(count, duration => 
                 {
-                    var nanoseconds = duration.Nanoseconds;
-                    int days = nanoseconds.Days;
+                    int days = duration.Days;
                     if (days >= 0)
                     {
                         return days;
                     }
                     // Round towards 0.
-                    return nanoseconds.NanosecondOfDay == 0 ? -days : -(days + 1);
+                    return duration.NanosecondOfDay == 0 ? -days : -(days + 1);
                 });
             };
         }
@@ -130,28 +129,27 @@ namespace NodaTime.Text
         private static void HandlePlus(PatternCursor pattern, SteppedPatternBuilder<Duration, DurationParseBucket> builder)
         {
             builder.AddField(PatternFields.Sign, pattern.Current);
-            builder.AddRequiredSign((bucket, positive) => bucket.IsNegative = !positive, duration => duration.Nanoseconds.Days >= 0);
+            builder.AddRequiredSign((bucket, positive) => bucket.IsNegative = !positive, duration => duration.Days >= 0);
         }
 
         private static void HandleMinus(PatternCursor pattern, SteppedPatternBuilder<Duration, DurationParseBucket> builder)
         {
             builder.AddField(PatternFields.Sign, pattern.Current);
-            builder.AddNegativeOnlySign((bucket, positive) => bucket.IsNegative = !positive, duration => duration.Nanoseconds.Days >= 0);
+            builder.AddNegativeOnlySign((bucket, positive) => bucket.IsNegative = !positive, duration => duration.Days >= 0);
         }
 
         /// <summary>
-        /// Returns the absolute number of nanoseconds in a duration.
+        /// Returns the absolute duration (non-negative).
         /// </summary>
-        private static Nanoseconds GetPositiveNanoseconds(Duration duration)
+        private static Duration GetPositiveDuration(Duration duration)
         {
-            Nanoseconds nanos = duration.Nanoseconds;
-            return nanos.Days >= 0 ? nanos : -nanos;
+            return duration.Days >= 0 ? duration : -duration;
         }
 
         private static long GetPositiveNanosecondUnits(Duration duration, long nanosecondsPerUnit)
         {
-            Nanoseconds nanos = GetPositiveNanoseconds(duration);
-            return (long) (nanos / nanosecondsPerUnit);
+            Duration nanos = GetPositiveDuration(duration);
+            return (nanos / nanosecondsPerUnit).ToInt64Nanoseconds();
         }
 
         /// <summary>
@@ -161,17 +159,17 @@ namespace NodaTime.Text
         private sealed class DurationParseBucket : ParseBucket<Duration>
         {
             internal bool IsNegative { get; set; }
-            private Nanoseconds nanoseconds;
+            private Duration nanoseconds;
 
             internal void AddNanoseconds(long nanoseconds)
             {
-                this.nanoseconds = this.nanoseconds.Plus(nanoseconds);
+                this.nanoseconds = this.nanoseconds.PlusSmallNanoseconds(nanoseconds);
             }
 
             internal void AddDays(int days)
             {
-                // TODO(2.0): Add a PlusDays method to Nanoseconds?
-                nanoseconds = new Nanoseconds(nanoseconds.Days + days, nanoseconds.NanosecondOfDay);
+                // TODO(2.0): Add a PlusDays method to Duration?
+                nanoseconds = new Duration(nanoseconds.Days + days, nanoseconds.NanosecondOfDay);
             }
 
             internal void AddUnits(int units, long nanosecondsPerUnit)
@@ -180,11 +178,11 @@ namespace NodaTime.Text
                 // possibly by adding something to Nanoseconds itself.
                 if (units < long.MaxValue / nanosecondsPerUnit)
                 {
-                    nanoseconds += (Nanoseconds) (units * nanosecondsPerUnit);
+                    nanoseconds += Duration.FromNanoseconds(units * nanosecondsPerUnit);
                 }
                 else
                 {
-                    nanoseconds += ((Nanoseconds) units) * nanosecondsPerUnit;
+                    nanoseconds += (Duration.FromNanoseconds(units)) * nanosecondsPerUnit;
                 }
             }
 
@@ -193,7 +191,7 @@ namespace NodaTime.Text
             /// </summary>
             internal override ParseResult<Duration> CalculateValue(PatternFields usedFields, string text)
             {
-                return ParseResult<Duration>.ForValue(Duration.FromNanoseconds(IsNegative ? -nanoseconds : nanoseconds));
+                return ParseResult<Duration>.ForValue(IsNegative ? -nanoseconds : nanoseconds);
             }
         }
     }

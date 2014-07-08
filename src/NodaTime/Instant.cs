@@ -44,26 +44,26 @@ namespace NodaTime
         /// <remarks>
         /// Within Noda Time, this is also used to represent 'the beginning of time'.
         /// </remarks>
-        public static readonly Instant MinValue = new Instant(Nanoseconds.FromTicks(long.MinValue));
+        public static readonly Instant MinValue = new Instant(Duration.FromTicks(long.MinValue));
         /// <summary>
         /// Represents the largest possible <see cref="Instant"/>.
         /// </summary>
         /// <remarks>
         /// Within Noda Time, this is also used to represent 'the end of time'.
         /// </remarks>
-        public static readonly Instant MaxValue = new Instant(Nanoseconds.FromTicks(long.MaxValue));
+        public static readonly Instant MaxValue = new Instant(Duration.FromTicks(long.MaxValue));
 
         /// <summary>
-        /// Nanoseconds since the Unix epoch.
+        /// Time elapsed since the Unix epoch.
         /// </summary>
-        private Nanoseconds nanoseconds;
+        private Duration duration;
 
-        internal Instant(Nanoseconds nanoseconds)
+        internal Instant(Duration duration)
         {
-            this.nanoseconds = nanoseconds;
+            this.duration = duration;
         }
 
-        internal Instant(int days, long nanoOfDay) : this(new Nanoseconds(days, nanoOfDay))
+        internal Instant(int days, long nanoOfDay) : this(new Duration(days, nanoOfDay))
         {
         }
 
@@ -78,16 +78,16 @@ namespace NodaTime
         {
             get
             {
-                // Can't use Nanoseconds.Ticks, as that truncates towards 0.
-                return TickArithmetic.DaysAndTickOfDayToTicks(nanoseconds.Days, nanoseconds.NanosecondOfDay / NodaConstants.NanosecondsPerTick);
+                // Can't use Duration.Ticks, as that truncates towards 0.
+                return TickArithmetic.DaysAndTickOfDayToTicks(duration.Days, duration.NanosecondOfDay / NodaConstants.NanosecondsPerTick);
             }
         }
 
         /// <summary>
-        /// Get the number of nanoseconds since the Unix epoch.
+        /// Get the elapsed time since the Unix epoch, to nanosecond resolution.
         /// </summary>
-        /// <returns>The number of nanoseconds since the Unix epoch.</returns>
-        public Nanoseconds Nanoseconds { get { return nanoseconds; } }
+        /// <returns>The elapsed time since the Unix epoch.</returns>
+        public Duration TimeSinceEpoch { get { return duration; } }
 
         #region IComparable<Instant> and IComparable Members
         /// <summary>
@@ -118,7 +118,7 @@ namespace NodaTime
         /// </returns>
         public int CompareTo(Instant other)
         {
-            return nanoseconds.CompareTo(other.nanoseconds);
+            return duration.CompareTo(other.duration);
         }
 
         /// <summary>
@@ -170,7 +170,7 @@ namespace NodaTime
         /// </returns>
         public override int GetHashCode()
         {
-            return nanoseconds.GetHashCode();
+            return duration.GetHashCode();
         }
         #endregion  // Object overrides
 
@@ -182,7 +182,7 @@ namespace NodaTime
         [Pure]
         public Instant PlusTicks(long ticksToAdd)
         {
-            return new Instant(nanoseconds + Nanoseconds.FromTicks(ticksToAdd));
+            return new Instant(duration + Duration.FromTicks(ticksToAdd));
         }
 
         #region Operators
@@ -194,7 +194,7 @@ namespace NodaTime
         /// <returns>A new <see cref="Instant" /> representing the sum of the given values.</returns>
         public static Instant operator +(Instant left, Duration right)
         {
-            return new Instant(left.nanoseconds + right.Nanoseconds);
+            return new Instant(left.duration + right);
         }
 
         /// <summary>
@@ -208,7 +208,7 @@ namespace NodaTime
         [Pure]
         internal LocalInstant Plus(Offset offset)
         {
-            return new LocalInstant(nanoseconds.Plus(offset.Nanoseconds));
+            return new LocalInstant(duration.PlusSmallNanoseconds(offset.Nanoseconds));
         }
 
         /// <summary>
@@ -241,7 +241,7 @@ namespace NodaTime
         /// <returns>A new <see cref="Duration" /> representing the difference of the given values.</returns>
         public static Duration operator -(Instant left, Instant right)
         {
-            return Duration.FromNanoseconds(left.nanoseconds - right.nanoseconds);
+            return left.duration - right.duration;
         }
 
         /// <summary>
@@ -252,7 +252,7 @@ namespace NodaTime
         /// <returns>A new <see cref="Instant" /> representing the difference of the given values.</returns>
         public static Instant operator -(Instant left, Duration right)
         {
-            return new Instant(left.nanoseconds - right.Nanoseconds);
+            return new Instant(left.duration - right);
         }
 
         /// <summary>
@@ -308,7 +308,7 @@ namespace NodaTime
         /// <returns><c>true</c> if values are equal to each other, otherwise <c>false</c>.</returns>
         public static bool operator ==(Instant left, Instant right)
         {
-            return left.nanoseconds == right.nanoseconds;
+            return left.duration == right.duration;
         }
 
         /// <summary>
@@ -330,7 +330,7 @@ namespace NodaTime
         /// <returns><c>true</c> if the left value is less than the right value, otherwise <c>false</c>.</returns>
         public static bool operator <(Instant left, Instant right)
         {
-            return left.nanoseconds < right.nanoseconds;
+            return left.duration < right.duration;
         }
 
         /// <summary>
@@ -341,7 +341,7 @@ namespace NodaTime
         /// <returns><c>true</c> if the left value is less than or equal to the right value, otherwise <c>false</c>.</returns>
         public static bool operator <=(Instant left, Instant right)
         {
-            return left.nanoseconds <= right.nanoseconds;
+            return left.duration <= right.duration;
         }
 
         /// <summary>
@@ -352,7 +352,7 @@ namespace NodaTime
         /// <returns><c>true</c> if the left value is greater than the right value, otherwise <c>false</c>.</returns>
         public static bool operator >(Instant left, Instant right)
         {
-            return left.nanoseconds > right.nanoseconds;
+            return left.duration > right.duration;
         }
 
         /// <summary>
@@ -363,7 +363,7 @@ namespace NodaTime
         /// <returns><c>true</c> if the left value is greater than or equal to the right value, otherwise <c>false</c>.</returns>
         public static bool operator >=(Instant left, Instant right)
         {
-            return left.nanoseconds >= right.nanoseconds;
+            return left.duration >= right.duration;
         }
         #endregion // Operators
 
@@ -568,7 +568,7 @@ namespace NodaTime
         public static Instant FromTicksSinceUnixEpoch(long ticks)
         {
             // FIXME:Range
-            return new Instant(Nanoseconds.FromTicks(ticks));
+            return new Instant(Duration.FromTicks(ticks));
         }
 
         /// <summary>
@@ -675,7 +675,7 @@ namespace NodaTime
         /// <param name="context">The source for this deserialization.</param>
         private Instant(SerializationInfo info, StreamingContext context)
             // FIXME:SERIALIZATION
-            : this(Nanoseconds.Deserialize(info))
+            : this(Duration.Deserialize(info))
         {
         }
 
@@ -687,7 +687,7 @@ namespace NodaTime
         [System.Security.SecurityCritical]
         void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)
         {
-            nanoseconds.Serialize(info);
+            duration.Serialize(info);
         }
         #endregion
 #endif
