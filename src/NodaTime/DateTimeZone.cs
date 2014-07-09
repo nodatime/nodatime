@@ -102,7 +102,7 @@ namespace NodaTime
         private readonly string id;
         private readonly bool isFixed;
 
-        // We frequently need to add this to an Instant, so store the raw Nanoseconds.
+        // We frequently need to add this to an Instant, so store the raw number of nanoseconds.
         private readonly long minOffsetNanos;
         private readonly long maxOffsetNanos;
 
@@ -447,7 +447,7 @@ namespace NodaTime
             // If the tick before this interval started *could* map to a later local instant, let's
             // get the interval and check whether it actually includes the one we want.
             Instant endOfPrevious = intervalStart;
-            if (endOfPrevious.TimeSinceEpoch.PlusSmallNanoseconds(maxOffsetNanos) > localInstant.Nanoseconds)
+            if (endOfPrevious.TimeSinceEpoch.PlusSmallNanoseconds(maxOffsetNanos) > localInstant.TimeSinceLocalEpoch)
             {
                 ZoneInterval candidate = GetZoneInterval(endOfPrevious - Duration.Epsilon);
                 if (candidate.Contains(localInstant))
@@ -470,7 +470,7 @@ namespace NodaTime
             {
                 return null;
             }
-            if (intervalEnd.TimeSinceEpoch.PlusSmallNanoseconds(minOffsetNanos) <= localInstant.Nanoseconds)
+            if (intervalEnd.TimeSinceEpoch.PlusSmallNanoseconds(minOffsetNanos) <= localInstant.TimeSinceLocalEpoch)
             {
                 ZoneInterval candidate = GetZoneInterval(intervalEnd);
                 if (candidate.Contains(localInstant))

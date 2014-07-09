@@ -187,6 +187,7 @@ namespace NodaTime
         {
         }
 
+        // TODO(2.0): Remove this constructor? It's a pretty odd one at this point.
         /// <summary>
         /// Initializes a new instance of the <see cref="LocalDateTime"/> struct.
         /// </summary>
