@@ -585,9 +585,11 @@ namespace NodaTime
         /// </remarks>
         public abstract class Comparer : IComparer<ZonedDateTime>
         {
+            // TODO(2.0): A comparer which compares instants, but in a calendar-sensitive manner?
+
             /// <summary>
             /// Returns a comparer which compares <see cref="ZonedDateTime"/> values by their local date/time, without reference to
-            /// the time zone, offset or the calendar system.
+            /// the time zone or offset. Comparisons between two values of different calendar systems will fail with <see cref="ArgumentException"/>.
             /// </summary>
             /// <remarks>
             /// <para>For example, this comparer considers 2013-03-04T20:21:00 (Europe/London) to be later than
@@ -658,8 +660,7 @@ namespace NodaTime
             /// <inheritdoc />
             public override int Compare(ZonedDateTime x, ZonedDateTime y)
             {
-                // FIXME(2.0): Different calendar systems?
-                return x.localDateTime.ToLocalInstant().CompareTo(y.localDateTime.ToLocalInstant());
+                return x.localDateTime.CompareTo(y.localDateTime);
             }
         }
 

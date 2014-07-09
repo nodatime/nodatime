@@ -5,6 +5,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Runtime.InteropServices;
 using NodaTime.Calendars;
 using NodaTime.Testing.TimeZones;
 using NodaTime.Text;
@@ -370,6 +371,48 @@ namespace NodaTime.Test
             var local = new LocalDateTime(2013, 7, 23, 13, 05, 20);
             ZonedDateTime zoned = local.InZoneStrictly(SampleZone);
             Assert.AreEqual("2013/07/23 13:05:20 Single", zoned.ToString("yyyy/MM/dd HH:mm:ss z", CultureInfo.InvariantCulture));
+        }
+
+        [Test]
+        public void LocalComparer()
+        {
+            var london = DateTimeZoneProviders.Tzdb["Europe/London"];
+            var losAngeles = DateTimeZoneProviders.Tzdb["America/Los_Angeles"];
+
+            // LA is 8 hours behind London. So the London evening occurs before the LA afternoon.
+            var londonEvening = new LocalDateTime(2014, 7, 9, 20, 32).InZoneStrictly(london);
+            var losAngelesAfternoon = new LocalDateTime(2014, 7, 9, 14, 0).InZoneStrictly(losAngeles);
+
+            // Same local time as losAngelesAfternoon
+            var londonAfternoon = losAngelesAfternoon.LocalDateTime.InZoneStrictly(london);
+
+            var londonPersian = londonEvening.LocalDateTime
+                                             .WithCalendar(CalendarSystem.GetPersianCalendar())
+                                             .InZoneStrictly(london);
+
+            TestHelper.TestComparerStruct(ZonedDateTime.Comparer.Local, losAngelesAfternoon, londonAfternoon, londonEvening);
+            Assert.Throws<ArgumentException>(() => ZonedDateTime.Comparer.Local.Compare(londonPersian, londonEvening));
+        }
+
+        [Test]
+        public void InstantComparer()
+        {
+            var london = DateTimeZoneProviders.Tzdb["Europe/London"];
+            var losAngeles = DateTimeZoneProviders.Tzdb["America/Los_Angeles"];
+
+            // LA is 8 hours behind London. So the London evening occurs before the LA afternoon.
+            var londonEvening = new LocalDateTime(2014, 7, 9, 20, 32).InZoneStrictly(london);
+            var losAngelesAfternoon = new LocalDateTime(2014, 7, 9, 14, 0).InZoneStrictly(losAngeles);
+
+            // Same instant as londonEvening
+            var losAngelesLunchtime = new LocalDateTime(2014, 7, 9, 12, 32).InZoneStrictly(losAngeles);
+
+            var londonPersian = londonEvening.LocalDateTime
+                                             .WithCalendar(CalendarSystem.GetPersianCalendar())
+                                             .InZoneStrictly(london);
+
+            TestHelper.TestComparerStruct(ZonedDateTime.Comparer.Instant, londonEvening, losAngelesLunchtime, losAngelesAfternoon);
+            Assert.AreEqual(0, ZonedDateTime.Comparer.Instant.Compare(londonPersian, londonEvening));
         }
     }
 }

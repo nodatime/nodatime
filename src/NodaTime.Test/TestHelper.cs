@@ -20,6 +20,13 @@ namespace NodaTime.Test
     {
         public static readonly bool IsRunningOnMono = Type.GetType("Mono.Runtime") != null;
 
+        public static void TestComparerStruct<T>(IComparer<T> comparer, T value, T equalValue, T greaterValue) where T : struct
+        {
+            Assert.AreEqual(0, comparer.Compare(value, equalValue));
+            Assert.AreEqual(1, Math.Sign(comparer.Compare(greaterValue, value)));
+            Assert.AreEqual(-1, Math.Sign(comparer.Compare(value, greaterValue)));
+        }
+
         /// <summary>
         ///   Tests the <see cref="IComparable{T}.CompareTo" /> method for reference objects.
         /// </summary>
