@@ -31,25 +31,19 @@ namespace NodaTime
     /// and skipped date/time values becoming a problem within a series of calculations; instead,
     /// these can be considered just once, at the point of conversion to a <see cref="ZonedDateTime"/>.
     /// </para>
-    /// <para>Comparisons of values can be handled in a way which is either calendar and zone sensitive or insensitive.
-    /// Noda Time implements all the operators (and the <see cref="Equals(ZonedDateTime)"/> method) such that all operators other than <see cref="op_Inequality"/>
-    /// will return false if asked to compare two values in different calendar systems or time zones.
-    /// </para>
     /// <para>
-    /// However, the <see cref="CompareTo"/> method (implementing <see cref="IComparable{T}"/>) is calendar and zone insensitive; it compares the two
-    /// global instants in terms of when they actually occurred.
-    /// </para>
-    /// <para>
-    /// It's unclear at the time of this writing whether this is the most appropriate approach, and it may change in future versions. In general,
-    /// it would be a good idea for users to avoid comparing dates in different calendar systems, and indeed most users are unlikely to ever explicitly
-    /// consider which calendar system they're working in anyway.
+    /// As of Noda Time 2.0, <c>ZonedDateTime</c> no longer implements <see cref="IComparable"/> (either generically
+    /// or not), and doesn't implement ordered comparison operators. Equality is still supported, requiring equality
+    /// of zone, calendar and date/time - but there's no obvious natural ordering. If you want to sort <c>ZonedDateTime</c>
+    /// values, you should explicitly choose one of the orderings provided via the static properties in the
+    /// <see cref="ZonedDateTime.Comparer"/> nested class (or implement your own comparison).
     /// </para>
     /// </remarks>
     /// <threadsafety>This type is an immutable value type. See the thread safety section of the user guide for more information.</threadsafety>
 #if !PCL
     [Serializable]
 #endif
-    public struct ZonedDateTime : IEquatable<ZonedDateTime>, IComparable<ZonedDateTime>, IComparable, IFormattable, IXmlSerializable
+    public struct ZonedDateTime : IEquatable<ZonedDateTime>, IFormattable, IXmlSerializable
 #if !PCL
         , ISerializable
 #endif
@@ -371,106 +365,6 @@ namespace NodaTime
         }
 
         /// <summary>
-        /// Compares two <see cref="ZonedDateTime"/> values to see if the left one is strictly earlier than the right
-        /// one.
-        /// </summary>
-        /// <remarks>
-        /// This operator always returns false if the two operands have different calendars or time zones.
-        /// See the top-level type documentation for more information about comparisons.
-        /// </remarks>
-        /// <param name="lhs">First operand of the comparison</param>
-        /// <param name="rhs">Second operand of the comparison</param>
-        /// <returns>true if the <paramref name="lhs"/> is strictly earlier than <paramref name="rhs"/>, false otherwise.</returns>
-        public static bool operator <(ZonedDateTime lhs, ZonedDateTime rhs)
-        {
-            return lhs.ToInstant() < rhs.ToInstant() && Equals(lhs.LocalDateTime.Calendar, rhs.LocalDateTime.Calendar) && Equals(lhs.Zone, rhs.Zone);
-        }
-
-        /// <summary>
-        /// Compares two <see cref="ZonedDateTime"/> values to see if the left one is earlier than or equal to the right
-        /// one.
-        /// </summary>
-        /// <remarks>
-        /// This operator always returns false if the two operands have different calendars or time zones.
-        /// See the top-level type documentation for more information about comparisons.
-        /// </remarks>
-        /// <param name="lhs">First operand of the comparison</param>
-        /// <param name="rhs">Second operand of the comparison</param>
-        /// <returns>true if the <paramref name="lhs"/> is earlier than or equal to <paramref name="rhs"/>, false otherwise.</returns>
-        public static bool operator <=(ZonedDateTime lhs, ZonedDateTime rhs)
-        {
-            return lhs.ToInstant() <= rhs.ToInstant() && Equals(lhs.LocalDateTime.Calendar, rhs.LocalDateTime.Calendar) && Equals(lhs.Zone, rhs.Zone);
-        }
-
-        /// <summary>
-        /// Compares two <see cref="ZonedDateTime"/> values to see if the left one is strictly later than the right
-        /// one.
-        /// </summary>
-        /// <remarks>
-        /// This operator always returns false if the two operands have different calendars or time zones.
-        /// See the top-level type documentation for more information about comparisons.
-        /// </remarks>
-        /// <param name="lhs">First operand of the comparison</param>
-        /// <param name="rhs">Second operand of the comparison</param>
-        /// <returns>true if the <paramref name="lhs"/> is strictly later than <paramref name="rhs"/>, false otherwise.</returns>
-        public static bool operator >(ZonedDateTime lhs, ZonedDateTime rhs)
-        {
-            return lhs.ToInstant() > rhs.ToInstant() && Equals(lhs.LocalDateTime.Calendar, rhs.LocalDateTime.Calendar) && Equals(lhs.Zone, rhs.Zone);
-        }
-
-        /// <summary>
-        /// Compares two <see cref="ZonedDateTime"/> values to see if the left one is later than or equal to the right
-        /// one.
-        /// </summary>
-        /// <remarks>
-        /// This operator always returns false if the two operands have different calendars or time zones.
-        /// See the top-level type documentation for more information about comparisons.
-        /// </remarks>
-        /// <param name="lhs">First operand of the comparison</param>
-        /// <param name="rhs">Second operand of the comparison</param>
-        /// <returns>true if the <paramref name="lhs"/> is later than or equal to <paramref name="rhs"/>, false otherwise.</returns>
-        public static bool operator >=(ZonedDateTime lhs, ZonedDateTime rhs)
-        {
-            return lhs.ToInstant() >= rhs.ToInstant() && Equals(lhs.LocalDateTime.Calendar, rhs.LocalDateTime.Calendar) && Equals(lhs.Zone, rhs.Zone);
-        }
-
-        /// <summary>
-        /// Indicates whether this date/time is earlier, later or the same as another one.
-        /// </summary>
-        /// <remarks>
-        /// This is purely done in terms of the instant represented; the calendar system and time zone are ignored.
-        /// </remarks>
-        /// <param name="other">The other zoned date/time to compare this one with</param>
-        /// <returns>A value less than zero if the instant represented by this zoned date/time is earlier than the one in
-        /// <paramref name="other"/>; zero if the instant is the same as the one in <paramref name="other"/>;
-        /// a value greater than zero if the instant is later than the one in <paramref name="other"/>.</returns>
-        public int CompareTo(ZonedDateTime other)
-        {
-            return ToInstant().CompareTo(other.ToInstant());
-        }
-
-        /// <summary>
-        /// Implementation of <see cref="IComparable.CompareTo"/> to compare two ZonedDateTimes.
-        /// </summary>
-        /// <remarks>
-        /// This uses explicit interface implementation to avoid it being called accidentally. The generic implementation should usually be preferred.
-        /// </remarks>
-        /// <exception cref="ArgumentException"><paramref name="obj"/> is non-null but does not refer to an instance of <see cref="ZonedDateTime"/>.</exception>
-        /// <param name="obj">The object to compare this value with.</param>
-        /// <returns>The result of comparing this ZonedDateTime with another one; see <see cref="CompareTo(NodaTime.ZonedDateTime)"/> for general details.
-        /// If <paramref name="obj"/> is null, this method returns a value greater than 0.
-        /// </returns>
-        int IComparable.CompareTo(object obj)
-        {
-            if (obj == null)
-            {
-                return 1;
-            }
-            Preconditions.CheckArgument(obj is ZonedDateTime, "obj", "Object must be of type NodaTime.ZonedDateTime.");
-            return CompareTo((ZonedDateTime)obj);
-        }
-
-        /// <summary>
         /// Returns a new <see cref="ZonedDateTime"/> with the time advanced by the given duration. Note that
         /// due to daylight saving time changes this may not advance the local time by the same amount.
         /// </summary>
@@ -710,11 +604,9 @@ namespace NodaTime
             /// <para>For example, this comparer considers 2013-03-04T20:21:00 (Europe/London) to be earlier than
             /// 2013-03-04T19:21:00 (America/Los_Angeles) even though the second value has a local time which is earlier; the time zones
             /// mean that the first value occurred earlier in the universal time line.</para>
-            /// <para>This comparer behaves the same way as the <see cref="CompareTo"/> method; it is provided for symmetry with <see cref="Local"/>.</para>
             /// <para>This property will return a reference to the same instance every time it is called.</para>
             /// </remarks>
             public static Comparer Instant { get { return InstantComparer.Instance; } }
-
 
             /// <summary>
             /// Internal constructor to prevent external classes from deriving from this.
