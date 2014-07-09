@@ -404,9 +404,12 @@ namespace NodaTime
         /// </remarks>
         public abstract class Comparer : IComparer<OffsetDateTime>
         {
+            // TODO(2.0): Should we have a comparer which is calendar-sensitive (so will fail if the calendars are different)
+            // but still uses the offset?
+
             /// <summary>
             /// Returns a comparer which compares <see cref="OffsetDateTime"/> values by their local date/time, without reference to
-            /// either the offset or the calendar system.
+            /// the offset. Comparisons between two values of different calendar systems will fail with <see cref="ArgumentException"/>.
             /// </summary>
             /// <remarks>
             /// <para>For example, this comparer considers 2013-03-04T20:21:00+0100 to be later than 2013-03-04T19:21:00-0700 even though
@@ -476,7 +479,7 @@ namespace NodaTime
             /// <inheritdoc />
             public override int Compare(OffsetDateTime x, OffsetDateTime y)
             {
-                return x.localDateTime.ToLocalInstant().CompareTo(y.localDateTime.ToLocalInstant());
+                return x.localDateTime.CompareTo(y.localDateTime);
             }
         }
 

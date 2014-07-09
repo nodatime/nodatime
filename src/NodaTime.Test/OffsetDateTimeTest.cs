@@ -178,7 +178,7 @@ namespace NodaTime.Test
 
             Assert.AreEqual(0, comparer.Compare(control, negativeOffset));
             Assert.AreEqual(0, comparer.Compare(control, positiveOffset));
-            Assert.AreEqual(0, comparer.Compare(control, differentCalendar));
+            Assert.Throws<ArgumentException>(() => comparer.Compare(control, differentCalendar));
             Assert.AreEqual(1, Math.Sign(comparer.Compare(control, earlierLocal)));
             Assert.AreEqual(-1, Math.Sign(comparer.Compare(earlierLocal, control)));
             Assert.AreEqual(-1, Math.Sign(comparer.Compare(control, laterLocal)));
