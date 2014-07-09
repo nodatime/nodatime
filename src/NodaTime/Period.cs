@@ -403,7 +403,7 @@ namespace NodaTime
         private static Duration GetNanosecondsBetween(LocalDateTime start, LocalDateTime end)
         {
             // TODO(2.0): Optimize this for the common case of the dates being the same.
-            return end.ToLocalInstant().Nanoseconds - start.ToLocalInstant().Nanoseconds;
+            return end.ToLocalInstant().TimeSinceLocalEpoch - start.ToLocalInstant().TimeSinceLocalEpoch;
         }
 
         private static int FieldBetween(PeriodUnits units, LocalDate end, ref LocalDate remaining, IDatePeriodField dateField)
