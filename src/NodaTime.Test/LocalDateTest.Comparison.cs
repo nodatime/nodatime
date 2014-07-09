@@ -92,16 +92,15 @@ namespace NodaTime.Test
         }
 
         [Test]
-        public void ComparisonOperators_DifferentCalendars_AlwaysReturnsFalse()
+        public void ComparisonOperators_DifferentCalendars_Throws()
         {
             LocalDate date1 = new LocalDate(2011, 1, 2);
             LocalDate date2 = new LocalDate(2011, 1, 3, CalendarSystem.GetJulianCalendar(4));
 
-            // All inequality comparisons return false
-            Assert.IsFalse(date1 < date2);
-            Assert.IsFalse(date1 <= date2);
-            Assert.IsFalse(date1 > date2);
-            Assert.IsFalse(date1 >= date2);
+            Assert.Throws<ArgumentException>(() => (date1 < date2).ToString());
+            Assert.Throws<ArgumentException>(() => (date1 <= date2).ToString());
+            Assert.Throws<ArgumentException>(() => (date1 > date2).ToString());
+            Assert.Throws<ArgumentException>(() => (date1 >= date2).ToString());
         }
 
         [Test]
@@ -117,16 +116,14 @@ namespace NodaTime.Test
         }
 
         [Test]
-        public void CompareTo_DifferentCalendars_OnlyLocalInstantMatters()
+        public void CompareTo_DifferentCalendars_Throws()
         {
             CalendarSystem islamic = CalendarSystem.GetIslamicCalendar(IslamicLeapYearPattern.Base15, IslamicEpoch.Astronomical);
             LocalDate date1 = new LocalDate(2011, 1, 2);
             LocalDate date2 = new LocalDate(1500, 1, 1, islamic);
-            LocalDate date3 = date1.WithCalendar(islamic);
 
-            Assert.That(date1.CompareTo(date2), Is.LessThan(0));
-            Assert.That(date2.CompareTo(date1), Is.GreaterThan(0));
-            Assert.That(date1.CompareTo(date3), Is.EqualTo(0));
+            Assert.Throws<ArgumentException>(() => date1.CompareTo(date2));
+            Assert.Throws<ArgumentException>(() => ((IComparable) date1).CompareTo(date2));
         }
 
         /// <summary>
@@ -145,25 +142,6 @@ namespace NodaTime.Test
             Assert.That(i_instance.CompareTo(later), Is.LessThan(0));
             Assert.That(i_instance.CompareTo(earlier), Is.GreaterThan(0));
             Assert.That(i_instance.CompareTo(same), Is.EqualTo(0));
-        }
-
-        /// <summary>
-        /// IComparable.CompareTo works properly with LocalDate inputs with different calendars.
-        /// </summary>
-        [Test]
-        public void IComparableCompareTo_DifferentCalendars_OnlyLocalInstantMatters()
-        {
-            CalendarSystem islamic = CalendarSystem.GetIslamicCalendar(IslamicLeapYearPattern.Base15, IslamicEpoch.Astronomical);
-            LocalDate date1 = new LocalDate(2011, 1, 2);
-            LocalDate date2 = new LocalDate(1500, 1, 1, islamic);
-            LocalDate date3 = date1.WithCalendar(islamic);
-
-            IComparable i_date1 = (IComparable)date1;
-            IComparable i_date2 = (IComparable)date2;
-
-            Assert.That(i_date1.CompareTo(date2), Is.LessThan(0));
-            Assert.That(i_date2.CompareTo(date1), Is.GreaterThan(0));
-            Assert.That(i_date1.CompareTo(date3), Is.EqualTo(0));
         }
 
         /// <summary>
