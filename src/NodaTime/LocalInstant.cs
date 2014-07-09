@@ -3,9 +3,7 @@
 // as found in the LICENSE.txt file.
 
 using System;
-using System.Globalization;
 using JetBrains.Annotations;
-using NodaTime.Calendars;
 using NodaTime.Text;
 using NodaTime.Utility;
 
@@ -24,16 +22,16 @@ namespace NodaTime
         public static readonly LocalInstant MaxValue = new LocalInstant(int.MaxValue, NodaConstants.NanosecondsPerStandardDay - 1);
 
         /// <summary>
-        /// Number of nanoseconds since the local 1970-01-01T00:00:00.
+        /// Elapsed time since the local 1970-01-01T00:00:00.
         /// </summary>
-        private readonly Duration nanoseconds;
+        private readonly Duration duration;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LocalInstant"/> struct.
         /// </summary>
         internal LocalInstant(Duration nanoseconds)
         {
-            this.nanoseconds = nanoseconds;
+            this.duration = nanoseconds;
         }
 
         /// <summary>
@@ -58,17 +56,17 @@ namespace NodaTime
         /// <summary>
         /// Number of nanoseconds since the local unix epoch.
         /// </summary>
-        internal Duration Nanoseconds { get { return nanoseconds; } }
+        internal Duration TimeSinceLocalEpoch { get { return duration; } }
 
         /// <summary>
         /// Number of days since the local unix epoch.
         /// </summary>
-        internal int DaysSinceEpoch { get { return nanoseconds.Days; } }
+        internal int DaysSinceEpoch { get { return duration.Days; } }
 
         /// <summary>
         /// Nanosecond within the day.
         /// </summary>
-        internal long NanosecondOfDay { get { return nanoseconds.NanosecondOfDay; } }
+        internal long NanosecondOfDay { get { return duration.NanosecondOfDay; } }
 
         /// <summary>
         /// Constructs a <see cref="DateTime"/> from this LocalInstant which has a <see cref="DateTime.Kind" />
@@ -83,7 +81,7 @@ namespace NodaTime
         [Pure]
         public DateTime ToDateTimeUnspecified()
         {
-            return new DateTime(NodaConstants.BclTicksAtUnixEpoch + nanoseconds.Ticks,
+            return new DateTime(NodaConstants.BclTicksAtUnixEpoch + duration.Ticks,
                                 DateTimeKind.Unspecified);
         }
 
@@ -104,7 +102,7 @@ namespace NodaTime
         // </summary>
         public static LocalInstant operator +(LocalInstant left, Duration right)
         {
-            return new LocalInstant(left.nanoseconds + right);
+            return new LocalInstant(left.duration + right);
         }
 
         /// <summary>
@@ -113,7 +111,7 @@ namespace NodaTime
         /// </summary>
         internal Instant MinusZeroOffset()
         {
-            return new Instant(nanoseconds);
+            return new Instant(duration);
         }
 
         /// <summary>
@@ -128,7 +126,7 @@ namespace NodaTime
         /// <returns>A new <see cref="Instant"/> representing the difference of the given values.</returns>
         public Instant Minus(Offset offset)
         {
-            return new Instant(nanoseconds.MinusSmallNanoseconds(offset.Nanoseconds));
+            return new Instant(duration.MinusSmallNanoseconds(offset.Nanoseconds));
         }
 
         /// <summary>
@@ -136,7 +134,7 @@ namespace NodaTime
         /// </summary>
         public static LocalInstant operator -(LocalInstant left, Duration right)
         {
-            return new LocalInstant(left.nanoseconds - right);
+            return new LocalInstant(left.duration - right);
         }
 
         /// <summary>
@@ -144,7 +142,7 @@ namespace NodaTime
         /// </summary>
         internal LocalDate ToIsoDate()
         {
-            return new LocalDate(nanoseconds.Days, CalendarSystem.Iso);
+            return new LocalDate(duration.Days, CalendarSystem.Iso);
         }
 
         /// <summary>
@@ -153,7 +151,7 @@ namespace NodaTime
         internal int GetIsoYear()
         {
             int ignored;
-            return CalendarSystem.Iso.YearMonthDayCalculator.GetYear(nanoseconds.Days, out ignored);
+            return CalendarSystem.Iso.YearMonthDayCalculator.GetYear(duration.Days, out ignored);
         }
 
         /// <summary>
@@ -164,7 +162,7 @@ namespace NodaTime
         /// <returns><c>true</c> if values are equal to each other, otherwise <c>false</c>.</returns>
         public static bool operator ==(LocalInstant left, LocalInstant right)
         {
-            return left.nanoseconds == right.nanoseconds;
+            return left.duration == right.duration;
         }
 
         /// <summary>
@@ -186,7 +184,7 @@ namespace NodaTime
         /// <returns><c>true</c> if the left value is less than the right value, otherwise <c>false</c>.</returns>
         public static bool operator <(LocalInstant left, LocalInstant right)
         {
-            return left.nanoseconds < right.nanoseconds;
+            return left.duration < right.duration;
         }
 
         /// <summary>
@@ -197,7 +195,7 @@ namespace NodaTime
         /// <returns><c>true</c> if the left value is less than or equal to the right value, otherwise <c>false</c>.</returns>
         public static bool operator <=(LocalInstant left, LocalInstant right)
         {
-            return left.nanoseconds <= right.nanoseconds;
+            return left.duration <= right.duration;
         }
 
         /// <summary>
@@ -208,7 +206,7 @@ namespace NodaTime
         /// <returns><c>true</c> if the left value is greater than the right value, otherwise <c>false</c>.</returns>
         public static bool operator >(LocalInstant left, LocalInstant right)
         {
-            return left.nanoseconds > right.nanoseconds;
+            return left.duration > right.duration;
         }
 
         /// <summary>
@@ -219,7 +217,7 @@ namespace NodaTime
         /// <returns><c>true</c> if the left value is greater than or equal to the right value, otherwise <c>false</c>.</returns>
         public static bool operator >=(LocalInstant left, LocalInstant right)
         {
-            return left.nanoseconds >= right.nanoseconds;
+            return left.duration >= right.duration;
         }
         #endregion // Operators
 
@@ -252,7 +250,7 @@ namespace NodaTime
         /// </returns>
         public int CompareTo(LocalInstant other)
         {
-            return nanoseconds.CompareTo(other.nanoseconds);
+            return duration.CompareTo(other.duration);
         }
 
         /// <summary>
@@ -304,7 +302,7 @@ namespace NodaTime
         /// </returns>
         public override int GetHashCode()
         {
-            return nanoseconds.GetHashCode();
+            return duration.GetHashCode();
         }
 
         /// <summary>
@@ -316,7 +314,7 @@ namespace NodaTime
         public override string ToString()
         {
             var pattern = LocalDateTimePattern.CreateWithInvariantCulture("yyyy-MM-ddTHH:mm:ss LOC");
-            var utc = new LocalDateTime(ToIsoDate(), LocalTime.FromNanosecondsSinceMidnight(nanoseconds.NanosecondOfDay));
+            var utc = new LocalDateTime(ToIsoDate(), LocalTime.FromNanosecondsSinceMidnight(duration.NanosecondOfDay));
             return pattern.Format(utc);
         }
         #endregion  // Object overrides
