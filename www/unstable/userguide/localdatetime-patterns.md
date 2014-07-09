@@ -15,7 +15,7 @@ The following standard patterns are supported:
 - `o` or `O`: The round-trip pattern, which is always "yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fffffff" using the invariant culture. The calendar
   system is not round-tripped in this pattern, but it's compatible with the BCL round-trip pattern (for `DateTime` values with a `Kind` of `Unspecified`, which is closest in meaning to `LocalDateTime`).
 
-- `r`: The full round-trip pattern including calendar system, which is always "yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fffffff '('c')'" using the invariant culture.
+- `r`: The full round-trip pattern including calendar system, which is always "yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fffffffff '('c')'" using the invariant culture.
 
 - `s`: The sortable pattern, which is always "yyyy'-'MM'-'dd'T'HH':'mm':'ss" using the invariant culture. (Note: this is only truly sortable for years within the range [0-9999].)
 

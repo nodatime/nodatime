@@ -2,7 +2,6 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using NodaTime.Globalization;
@@ -21,17 +20,17 @@ namespace NodaTime.Text
             { '\'', SteppedPatternBuilder<Duration, DurationParseBucket>.HandleQuote },
             { '\"', SteppedPatternBuilder<Duration, DurationParseBucket>.HandleQuote },
             { '\\', SteppedPatternBuilder<Duration, DurationParseBucket>.HandleBackslash },
-            { '.', TimePatternHelper.CreatePeriodHandler<Duration, DurationParseBucket>(7, GetPositiveTickOfSecond, (bucket, value) => bucket.NegativeTicks -= value) },
+            { '.', TimePatternHelper.CreatePeriodHandler<Duration, DurationParseBucket>(9, GetPositiveNanosecondOfSecond, (bucket, value) => bucket.AddNanoseconds(value)) },
             { ':', (pattern, builder) => builder.AddLiteral(builder.FormatInfo.TimeSeparator, ParseResult<Duration>.TimeSeparatorMismatch) },
-            { 'D', CreateTotalHandler(PatternFields.DayOfMonth, NodaConstants.TicksPerStandardDay) },
-            { 'H', CreateTotalHandler(PatternFields.Hours24, NodaConstants.TicksPerHour) },
-            { 'h', CreatePartialHandler(PatternFields.Hours24, NodaConstants.TicksPerHour, NodaConstants.HoursPerStandardDay) },
-            { 'M', CreateTotalHandler(PatternFields.Minutes, NodaConstants.TicksPerMinute) },
-            { 'm', CreatePartialHandler(PatternFields.Minutes, NodaConstants.TicksPerMinute, NodaConstants.MinutesPerHour) },
-            { 'S', CreateTotalHandler(PatternFields.Seconds, NodaConstants.TicksPerSecond) },
-            { 's', CreatePartialHandler(PatternFields.Seconds, NodaConstants.TicksPerSecond, NodaConstants.SecondsPerMinute) },
-            { 'f', TimePatternHelper.CreateFractionHandler<Duration, DurationParseBucket>(7, GetPositiveTickOfSecond, (bucket, value) => bucket.NegativeTicks -= value) },
-            { 'F', TimePatternHelper.CreateFractionHandler<Duration, DurationParseBucket>(7, GetPositiveTickOfSecond, (bucket, value) => bucket.NegativeTicks -= value) },
+            { 'D', CreateDayHandler() },
+            { 'H', CreateTotalHandler(PatternFields.Hours24, NodaConstants.NanosecondsPerHour) },
+            { 'h', CreatePartialHandler(PatternFields.Hours24, NodaConstants.NanosecondsPerHour, NodaConstants.HoursPerStandardDay) },
+            { 'M', CreateTotalHandler(PatternFields.Minutes, NodaConstants.NanosecondsPerMinute) },
+            { 'm', CreatePartialHandler(PatternFields.Minutes, NodaConstants.NanosecondsPerMinute, NodaConstants.MinutesPerHour) },
+            { 'S', CreateTotalHandler(PatternFields.Seconds, NodaConstants.NanosecondsPerSecond) },
+            { 's', CreatePartialHandler(PatternFields.Seconds, NodaConstants.NanosecondsPerSecond, NodaConstants.SecondsPerMinute) },
+            { 'f', TimePatternHelper.CreateFractionHandler<Duration, DurationParseBucket>(9, GetPositiveNanosecondOfSecond, (bucket, value) => bucket.AddNanoseconds(value)) },
+            { 'F', TimePatternHelper.CreateFractionHandler<Duration, DurationParseBucket>(9, GetPositiveNanosecondOfSecond, (bucket, value) => bucket.AddNanoseconds(value)) },
             { '+', HandlePlus },
             { '-', HandleMinus },
         };
@@ -64,13 +63,14 @@ namespace NodaTime.Text
             return patternBuilder.Build();
         }
 
-        private static int GetPositiveTickOfSecond(Duration duration)
+        private static int GetPositiveNanosecondOfSecond(Duration duration)
         {
-            return (int) (GetPositiveTicks(duration) % NodaConstants.TicksPerSecond);
+            Duration positive = GetPositiveDuration(duration);
+            return (int) (positive.NanosecondOfDay % NodaConstants.NanosecondsPerSecond);
         }
 
         private static CharacterHandler<Duration, DurationParseBucket> CreateTotalHandler
-            (PatternFields field, long ticksPerUnit)
+            (PatternFields field, long nanosecondsPerUnit)
         {
             return (pattern, builder) =>
             {
@@ -82,43 +82,74 @@ namespace NodaTime.Text
                 }
                 builder.AddField(field, pattern.Current);
                 builder.AddField(PatternFields.TotalDuration, pattern.Current);
-                builder.AddParseValueAction(count, 10, pattern.Current, 0, int.MaxValue, (bucket, value) => bucket.NegativeTicks -= value * ticksPerUnit);
-                builder.AddFormatLeftPad(count, duration => (int) (GetPositiveTicks(duration) / (ulong)ticksPerUnit) );
+                builder.AddParseValueAction(count, 10, pattern.Current, 0, int.MaxValue, (bucket, value) => bucket.AddUnits(value, nanosecondsPerUnit));
+                builder.AddFormatLeftPad(count, duration => (int) (GetPositiveNanosecondUnits(duration, nanosecondsPerUnit)) );
+            };
+        }
+
+        private static CharacterHandler<Duration, DurationParseBucket> CreateDayHandler()
+        {
+            return (pattern, builder) =>
+            {
+                int count = pattern.GetRepeatCount(10);
+                // AddField would throw an inappropriate exception here, so handle it specially.
+                if ((builder.UsedFields & PatternFields.TotalDuration) != 0)
+                {
+                    throw new InvalidPatternException(Messages.Parse_MultipleCapitalDurationFields);
+                }
+                builder.AddField(PatternFields.DayOfMonth, pattern.Current);
+                builder.AddField(PatternFields.TotalDuration, pattern.Current);
+                builder.AddParseValueAction(count, 10, pattern.Current, 0, int.MaxValue, (bucket, value) => bucket.AddDays(value));
+                builder.AddFormatLeftPad(count, duration => 
+                {
+                    int days = duration.Days;
+                    if (days >= 0)
+                    {
+                        return days;
+                    }
+                    // Round towards 0.
+                    return duration.NanosecondOfDay == 0 ? -days : -(days + 1);
+                });
             };
         }
 
         private static CharacterHandler<Duration, DurationParseBucket> CreatePartialHandler
-            (PatternFields field, long ticksPerUnit, int unitsPerContainer)
+            (PatternFields field, long nanosecondsPerUnit, int unitsPerContainer)
         {
             return (pattern, builder) =>
             {
                 int count = pattern.GetRepeatCount(2);
                 builder.AddField(field, pattern.Current);
                 builder.AddParseValueAction(count, 2, pattern.Current, 0, unitsPerContainer - 1,
-                    (bucket, value) => bucket.NegativeTicks -= value * ticksPerUnit);
-                builder.AddFormatLeftPad(count, duration => (int)((GetPositiveTicks(duration) / (ulong)ticksPerUnit) % (uint)unitsPerContainer));
+                    (bucket, value) => bucket.AddUnits(value, nanosecondsPerUnit));
+                builder.AddFormatLeftPad(count, duration => (int)(GetPositiveNanosecondUnits(duration, nanosecondsPerUnit) % unitsPerContainer));
             };
         }
 
         private static void HandlePlus(PatternCursor pattern, SteppedPatternBuilder<Duration, DurationParseBucket> builder)
         {
             builder.AddField(PatternFields.Sign, pattern.Current);
-            builder.AddRequiredSign((bucket, positive) => bucket.IsNegative = !positive, duration => duration.Ticks >= 0);
+            builder.AddRequiredSign((bucket, positive) => bucket.IsNegative = !positive, duration => duration.Days >= 0);
         }
 
         private static void HandleMinus(PatternCursor pattern, SteppedPatternBuilder<Duration, DurationParseBucket> builder)
         {
             builder.AddField(PatternFields.Sign, pattern.Current);
-            builder.AddNegativeOnlySign((bucket, positive) => bucket.IsNegative = !positive, duration => duration.Ticks >= 0);
+            builder.AddNegativeOnlySign((bucket, positive) => bucket.IsNegative = !positive, duration => duration.Days >= 0);
         }
 
         /// <summary>
-        /// Returns the absolute number of ticks in a duration, as a ulong in order to handle long.MinValue sensibly.
+        /// Returns the absolute duration (non-negative).
         /// </summary>
-        private static ulong GetPositiveTicks(Duration duration)
+        private static Duration GetPositiveDuration(Duration duration)
         {
-            long ticks = duration.Ticks;
-            return ticks == long.MinValue ? long.MaxValue + 1UL : (ulong)Math.Abs(ticks);
+            return duration.Days >= 0 ? duration : -duration;
+        }
+
+        private static long GetPositiveNanosecondUnits(Duration duration, long nanosecondsPerUnit)
+        {
+            Duration nanos = GetPositiveDuration(duration);
+            return (nanos / nanosecondsPerUnit).ToInt64Nanoseconds();
         }
 
         /// <summary>
@@ -127,17 +158,40 @@ namespace NodaTime.Text
         [DebuggerStepThrough]
         private sealed class DurationParseBucket : ParseBucket<Duration>
         {
-            // This is the negated number of "positive" ticks, so that we can cope with long.MinValue ticks
-            // in the original duration. This value will always be negative (or 0).
-            internal long NegativeTicks;
-            public bool IsNegative;
+            internal bool IsNegative { get; set; }
+            private Duration nanoseconds;
+
+            internal void AddNanoseconds(long nanoseconds)
+            {
+                this.nanoseconds = this.nanoseconds.PlusSmallNanoseconds(nanoseconds);
+            }
+
+            internal void AddDays(int days)
+            {
+                // TODO(2.0): Add a PlusDays method to Duration?
+                nanoseconds = new Duration(nanoseconds.Days + days, nanoseconds.NanosecondOfDay);
+            }
+
+            internal void AddUnits(int units, long nanosecondsPerUnit)
+            {
+                // TODO(2.0): Check whether there's a quicker way to do this,
+                // possibly by adding something to Nanoseconds itself.
+                if (units < long.MaxValue / nanosecondsPerUnit)
+                {
+                    nanoseconds += Duration.FromNanoseconds(units * nanosecondsPerUnit);
+                }
+                else
+                {
+                    nanoseconds += (Duration.FromNanoseconds(units)) * nanosecondsPerUnit;
+                }
+            }
 
             /// <summary>
             /// Calculates the value from the parsed pieces.
             /// </summary>
             internal override ParseResult<Duration> CalculateValue(PatternFields usedFields, string text)
             {
-                return ParseResult<Duration>.ForValue(Duration.FromTicks(IsNegative ? NegativeTicks : -NegativeTicks));
+                return ParseResult<Duration>.ForValue(IsNegative ? -nanoseconds : nanoseconds);
             }
         }
     }

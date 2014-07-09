@@ -117,6 +117,7 @@ namespace NodaTime.Text
                 {
                     return maxLabel;
                 }
+                // FIXME(2.0): Stop using ticks!
                 if (value.Ticks < CalendarSystem.Iso.MinTicks)
                 {
                     return string.Format("{0} {1} ticks is earlier than the earliest supported ISO calendar value.",
@@ -127,7 +128,7 @@ namespace NodaTime.Text
                     return string.Format("{0} {1} ticks is later than the latest supported ISO calendar value.",
                         InstantPattern.OutOfRangeLabel, value.Ticks);
                 }
-                return pattern.Format(new LocalDateTime(new LocalInstant(value.Ticks)));
+                return pattern.Format(new LocalDateTime(value.Plus(Offset.Zero)));
             }
 
             public ParseResult<Instant> Parse(string text)
@@ -140,7 +141,7 @@ namespace NodaTime.Text
                 {
                     return ParseResult<Instant>.ForValue(Instant.MaxValue);
                 }
-                return pattern.Parse(text).Convert(local => Instant.FromTicksSinceUnixEpoch(local.ToLocalInstant().Ticks));
+                return pattern.Parse(text).Convert(local => local.ToLocalInstant().MinusZeroOffset());
             }
         }
     }

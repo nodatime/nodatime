@@ -12,6 +12,7 @@ namespace NodaTime.TimeZones.IO
     /// be simpler to use inheritance in this case with static factory methods, but
     /// there are already public constructors exposed - so to delegate to different
     /// implementations, we need a separate hierarchy :(
+    /// FIXME(2.0): So let's remove the constructors...
     /// </summary>
     internal interface ITzdbDataSource
     {

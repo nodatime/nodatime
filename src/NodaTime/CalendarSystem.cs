@@ -483,11 +483,13 @@ namespace NodaTime
         /// </summary>
         internal long MaxDays { get { return maxDays; } }
 
+        // FIXME(2.0): Use Nanoseconds
         /// <summary>
         /// Returns the minimum ticks this calendar can handle.
         /// </summary>
         internal long MinTicks { get { return minTicks; } }
 
+        // FIXME(2.0): Use Nanoseconds
         /// <summary>
         /// Returns the maximum ticks (inclusive) this calendar can handle.
         /// </summary>

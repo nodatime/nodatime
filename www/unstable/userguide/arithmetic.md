@@ -286,7 +286,7 @@ adding 20 minutes do? It could use the "elapsed" time, and end up with 1:10am (t
 or it could end up with 2:10am (which would actually be 80 minutes later in elapsed time). None
 of these options is particularly attractive.
 
-Instead when you want to do calculations which *aren't* just based on a fixed number of ticks,
+Instead when you want to do calculations which *aren't* just based on a fixed number of nanoseconds,
 Noda Time forces you to convert to a local representation, perform all the arithmetic you want
 there, then convert back to `ZonedDateTime` *once*, specifying how to handle ambiguous or
 skipped times in the normal way. We believe this makes the API easier to follow and forces you

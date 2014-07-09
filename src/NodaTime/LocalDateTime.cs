@@ -63,7 +63,6 @@ namespace NodaTime
         {
         }
 
-        // FIXME(2.0): Remove
         /// <summary>
         /// Initializes a new instance of the <see cref="LocalDateTime"/> struct using the given
         /// calendar system.
@@ -73,16 +72,9 @@ namespace NodaTime
         /// <returns>The resulting date/time.</returns>
         internal LocalDateTime(LocalInstant localInstant, [NotNull] CalendarSystem calendar)
         {
-            Preconditions.CheckNotNull(calendar, "calendar");
-            // Work out how far into the current day we are, and subtract that from our current ticks.
-            // This is much quicker than finding out the current day, month, year etc and then reconstructing everything.
-            long dayTicks = localInstant.Ticks % NodaConstants.TicksPerStandardDay;
-            if (dayTicks < 0)
-            {
-                dayTicks += NodaConstants.TicksPerStandardDay;
-            }
-            date = new LocalDate((int) ((localInstant.Ticks - dayTicks) / NodaConstants.TicksPerStandardDay), calendar);
-            time = new LocalTime(dayTicks);
+            // This will validate that calendar is non-null.
+            date = new LocalDate(localInstant.DaysSinceEpoch, calendar);
+            time = new LocalTime(localInstant.NanosecondOfDay);
         }
 
         /// <summary>
@@ -195,6 +187,7 @@ namespace NodaTime
         {
         }
 
+        // TODO(2.0): Remove this constructor? It's a pretty odd one at this point.
         /// <summary>
         /// Initializes a new instance of the <see cref="LocalDateTime"/> struct.
         /// </summary>
@@ -359,9 +352,19 @@ namespace NodaTime
         public long TickOfDay { get { return time.TickOfDay; } }
 
         /// <summary>
+        /// Gets the nanosecond of this local time within the second, in the range 0 to 999,999,999 inclusive.
+        /// </summary>
+        public int NanosecondOfSecond { get { return time.NanosecondOfSecond; } }
+
+        /// <summary>
+        /// Gets the nanosecond of this local date and time within the day, in the range 0 to 86,399,999,999,999 inclusive.
+        /// </summary>
+        public long NanosecondOfDay { get { return time.NanosecondOfDay; } }
+
+        /// <summary>
         /// Gets the time portion of this local date and time as a <see cref="LocalTime"/>.
         /// </summary>
-        public LocalTime TimeOfDay { get { return new LocalTime(TickOfDay); } }
+        public LocalTime TimeOfDay { get { return time; } }
 
         /// <summary>
         /// Gets the date portion of this local date and time as a <see cref="LocalDate"/> in the same calendar system as this value.
@@ -385,12 +388,10 @@ namespace NodaTime
             return ToLocalInstant().ToDateTimeUnspecified();
         }
 
-        // FIXME(2.0): Remove... we want to kill LocalInstant
+        [Pure]
         internal LocalInstant ToLocalInstant()
         {
-            long days = date.DaysSinceEpoch;
-            long timeTicks = time.TickOfDay;
-            return new LocalInstant(days * NodaConstants.TicksPerStandardDay + timeTicks);
+            return new LocalInstant(date.DaysSinceEpoch, time.NanosecondOfDay);
         }
 
         /// <summary>
@@ -863,6 +864,17 @@ namespace NodaTime
         }
 
         /// <summary>
+        /// Returns a new LocalDateTime representing the current value with the given number of nanoseconds added.
+        /// </summary>
+        /// <param name="nanoseconds">The number of nanoseconds to add</param>
+        /// <returns>The current value plus the given number of nanoseconds.</returns>
+        [Pure]
+        public LocalDateTime PlusNanoseconds(long nanoseconds)
+        {
+            return TimePeriodField.Nanoseconds.Add(this, nanoseconds);
+        }
+
+        /// <summary>
         /// Returns the next <see cref="LocalDateTime" /> falling on the specified <see cref="IsoDayOfWeek"/>,
         /// at the same time of day as this value.
         /// This is a strict "next" - if this value on already falls on the target
@@ -1051,7 +1063,8 @@ namespace NodaTime
 
 #if !PCL
         #region Binary serialization
-        private const string LocalTicksSerializationName = "ticks";
+        private const string DaysSerializationName = "days";
+        private const string NanosecondOfDaySerializationName = "nanoOfDay";
         private const string CalendarIdSerializationName = "calendar";
 
         /// <summary>
@@ -1060,8 +1073,9 @@ namespace NodaTime
         /// <param name="info">The <see cref="SerializationInfo"/> to fetch data from.</param>
         /// <param name="context">The source for this deserialization.</param>
         private LocalDateTime(SerializationInfo info, StreamingContext context)
-            : this(new LocalInstant(info.GetInt64(LocalTicksSerializationName)),
-                   CalendarSystem.ForId(info.GetString(CalendarIdSerializationName)))
+            : this(new LocalDate(info.GetInt32(DaysSerializationName),
+                                 CalendarSystem.ForId(info.GetString(CalendarIdSerializationName))),
+                   LocalTime.FromNanosecondsSinceMidnight(info.GetInt64(NanosecondOfDaySerializationName)))
         {
         }
 
@@ -1074,7 +1088,8 @@ namespace NodaTime
         void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)
         {
             // FIXME(2.0): Revisit the serialization format
-            info.AddValue(LocalTicksSerializationName, ToLocalInstant().Ticks);
+            info.AddValue(DaysSerializationName, date.DaysSinceEpoch);
+            info.AddValue(NanosecondOfDaySerializationName, time.NanosecondOfDay);
             info.AddValue(CalendarIdSerializationName, Calendar.Id);
         }
         #endregion

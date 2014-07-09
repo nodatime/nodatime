@@ -144,7 +144,7 @@ namespace NodaTime.Testing
         /// </summary>
         /// <param name="days">The number of days to advance the clock by (or if negative, the number to move it
         /// back by).</param>
-        public void AdvanceDays(long days)
+        public void AdvanceDays(int days)
         {
             Advance(Duration.FromStandardDays(days));
         }

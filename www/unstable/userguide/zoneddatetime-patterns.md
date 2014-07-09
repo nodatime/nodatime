@@ -16,7 +16,7 @@ The following standard patterns are supported:
 specified in conjunction with a time zone provider. It corresponds to the custom pattern of `yyyy'-'MM'-'dd'T'HH':'mm':'ss z '('o<g>')`. This is the default format pattern.
 
 - `F`: Extended invariant pattern, based on ISO-8601 down to the tick, but including the time zone ID and offset. This does not include the calendar ID, and can only be used for parsing when
-specified in conjunction with a time zone provider. It corresponds to the custom pattern of `yyyy'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFF z '('o<g>')`.
+specified in conjunction with a time zone provider. It corresponds to the custom pattern of `yyyy'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFFFF z '('o<g>')`.
 
 Custom Patterns
 ---------------

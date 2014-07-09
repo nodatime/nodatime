@@ -228,8 +228,10 @@ namespace NodaTime
 
 #if !PCL
         #region Binary serialization
-        private const string StartTicksSerializationName = "start";
-        private const string EndTicksSerializationName = "end";
+        private const string StartDaysSerializationName = "startDays";
+        private const string EndDaysSerializationName = "endDays";
+        private const string StartNanosecondOfDaySerializationName = "startNanoOfDay";
+        private const string EndNanosecondOfDaySerializationName = "endNanoOfDay";
 
         /// <summary>
         /// Private constructor only present for serialization.
@@ -237,8 +239,8 @@ namespace NodaTime
         /// <param name="info">The <see cref="SerializationInfo"/> to fetch data from.</param>
         /// <param name="context">The source for this deserialization.</param>
         private Interval(SerializationInfo info, StreamingContext context)
-            : this(Instant.FromTicksSinceUnixEpoch(info.GetInt64(StartTicksSerializationName)),
-                   Instant.FromTicksSinceUnixEpoch(info.GetInt64(EndTicksSerializationName)))
+            : this(new Instant(Duration.Deserialize(info, StartDaysSerializationName, StartNanosecondOfDaySerializationName)),
+                   new Instant(Duration.Deserialize(info, EndDaysSerializationName, EndNanosecondOfDaySerializationName)))
         {
         }
 
@@ -250,8 +252,9 @@ namespace NodaTime
         [System.Security.SecurityCritical]
         void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)
         {
-            info.AddValue(StartTicksSerializationName, start.Ticks);
-            info.AddValue(EndTicksSerializationName, end.Ticks);
+            // FIXME:SERIALIZATION
+            start.TimeSinceEpoch.Serialize(info, StartDaysSerializationName, StartNanosecondOfDaySerializationName);
+            end.TimeSinceEpoch.Serialize(info, EndDaysSerializationName, EndNanosecondOfDaySerializationName);
         }
         #endregion
 #endif

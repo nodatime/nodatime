@@ -101,7 +101,7 @@ Most serialized forms just consist of element text using a specified text handli
     <tr>
       <td><code>Instant</code></td>
       <td>Extended ISO pattern</td>
-      <td><code>&lt;value&gt;2013-07-26T16:45:20.1234567Z&lt;/value&gt;</td>
+      <td><code>&lt;value&gt;2013-07-26T16:45:20.123456789Z&lt;/value&gt;</td>
     </tr>
     <tr>
       <td><code>LocalDate</code></td>
@@ -111,27 +111,27 @@ Most serialized forms just consist of element text using a specified text handli
     <tr>
       <td><code>LocalTime</code></td>
       <td>Extended ISO pattern</td>
-      <td><code>&lt;value&gt;16:45:20.1234567&lt;/value&gt;</td>
+      <td><code>&lt;value&gt;16:45:20.123456789&lt;/value&gt;</td>
     </tr>
     <tr>
       <td><code>LocalDateTime</code></td>
       <td>Extended ISO pattern, optional calendar</td>
-      <td><code>&lt;value calendar="Gregorian 3"&gt;16:45:20.1234567&lt;/value&gt;</td>
+      <td><code>&lt;value calendar="Gregorian 3"&gt;16:45:20.123456789&lt;/value&gt;</td>
     </tr>
     <tr>
       <td><code>OffsetDateTime</code></td>
       <td>RFC 3339 pattern (extended ISO but with offset in form +/-HH:mm or Z), optional calendar</td>
-      <td><code>&lt;value calendar="Gregorian 3"&gt;16:45:20.1234567+01:00&lt;/value&gt;</td>
+      <td><code>&lt;value calendar="Gregorian 3"&gt;16:45:20.123456789+01:00&lt;/value&gt;</td>
     </tr>
     <tr>
       <td><code>ZonedDateTime</code></td>
       <td>Extended ISO pattern, optional calendar</td>
-      <td><code>&lt;value calendar="Gregorian 3" zone="Europe/London"&gt;16:45:20.1234567+01&lt;/value&gt;</td>
+      <td><code>&lt;value calendar="Gregorian 3" zone="Europe/London"&gt;16:45:20.123456789+01&lt;/value&gt;</td>
     </tr>
     <tr>
       <td><code>Interval</code></td>
       <td>Extended ISO pattern, optional calendar</td>
-      <td><code>&lt;value start="2013-07-26T16:45:20.1234567Z" end="2013-07-26T17:45:20.1234567Z" /&gt;</td>
+      <td><code>&lt;value start="2013-07-26T16:45:20.123456789Z" end="2013-07-26T17:45:20.123456789Z" /&gt;</td>
     </tr>
     <tr>
       <td><code>Offset</code></td>
@@ -146,7 +146,7 @@ Most serialized forms just consist of element text using a specified text handli
     <tr>
       <td><code>Duration</code></td>
       <td>Round-trip pattern</td>
-      <td><code>&lt;value&gt;1:12:34:56.1234567&lt;/value&gt;</td>
+      <td><code>&lt;value&gt;1:12:34:56.123456789&lt;/value&gt;</td>
     </tr>
   </tbody>
 </table> 

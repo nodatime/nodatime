@@ -281,5 +281,10 @@ namespace NodaTime.Benchmarks.NodaTimeTests
             (Sample - SampleMixedPeriod).Consume();
         }
 
+        [Benchmark]
+        public void ToLocalInstant()
+        {
+            Sample.ToLocalInstant().Consume();
+        }
     }
 }

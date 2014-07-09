@@ -23,8 +23,8 @@ namespace NodaTime.Text
             { '\'', SteppedPatternBuilder<LocalTime, LocalTimeParseBucket>.HandleQuote },
             { '\"', SteppedPatternBuilder<LocalTime, LocalTimeParseBucket>.HandleQuote },
             { '\\', SteppedPatternBuilder<LocalTime, LocalTimeParseBucket>.HandleBackslash },
-            { '.', TimePatternHelper.CreatePeriodHandler<LocalTime, LocalTimeParseBucket>(7, value => value.TickOfSecond, (bucket, value) => bucket.FractionalSeconds = value) },
-            { ';', TimePatternHelper.CreateCommaDotHandler<LocalTime, LocalTimeParseBucket>(7, value => value.TickOfSecond, (bucket, value) => bucket.FractionalSeconds = value) },
+            { '.', TimePatternHelper.CreatePeriodHandler<LocalTime, LocalTimeParseBucket>(9, value => value.NanosecondOfSecond, (bucket, value) => bucket.FractionalSeconds = value) },
+            { ';', TimePatternHelper.CreateCommaDotHandler<LocalTime, LocalTimeParseBucket>(9, value => value.NanosecondOfSecond, (bucket, value) => bucket.FractionalSeconds = value) },
             { ':', (pattern, builder) => builder.AddLiteral(builder.FormatInfo.TimeSeparator, ParseResult<LocalTime>.TimeSeparatorMismatch) },
             { 'h', SteppedPatternBuilder<LocalTime, LocalTimeParseBucket>.HandlePaddedField
                        (2, PatternFields.Hours12, 1, 12, value => value.ClockHourOfHalfDay, (bucket, value) => bucket.Hours12 = value) },
@@ -34,8 +34,8 @@ namespace NodaTime.Text
                        (2, PatternFields.Minutes, 0, 59, value => value.Minute, (bucket, value) => bucket.Minutes = value) },
             { 's', SteppedPatternBuilder<LocalTime, LocalTimeParseBucket>.HandlePaddedField
                        (2, PatternFields.Seconds, 0, 59, value => value.Second, (bucket, value) => bucket.Seconds = value) },
-            { 'f', TimePatternHelper.CreateFractionHandler<LocalTime, LocalTimeParseBucket>(7, value => value.TickOfSecond, (bucket, value) => bucket.FractionalSeconds = value) },
-            { 'F', TimePatternHelper.CreateFractionHandler<LocalTime, LocalTimeParseBucket>(7, value => value.TickOfSecond, (bucket, value) => bucket.FractionalSeconds = value) },
+            { 'f', TimePatternHelper.CreateFractionHandler<LocalTime, LocalTimeParseBucket>(9, value => value.NanosecondOfSecond, (bucket, value) => bucket.FractionalSeconds = value) },
+            { 'F', TimePatternHelper.CreateFractionHandler<LocalTime, LocalTimeParseBucket>(9, value => value.NanosecondOfSecond, (bucket, value) => bucket.FractionalSeconds = value) },
             { 't', TimePatternHelper.CreateAmPmHandler<LocalTime, LocalTimeParseBucket>(time => time.Hour, (bucket, value) => bucket.AmPm = value) }
         };
 
@@ -80,7 +80,7 @@ namespace NodaTime.Text
                 case 'T':
                     return formatInfo.DateTimeFormat.LongTimePattern;
                 case 'r':
-                    return "HH:mm:ss.FFFFFFF";
+                    return "HH:mm:ss.FFFFFFFFF";
                 default:
                     // Will be turned into an exception.
                     return null;
@@ -96,7 +96,7 @@ namespace NodaTime.Text
             private readonly LocalTime templateValue;
 
             /// <summary>
-            /// The fractions of a second in ticks, in the range [0, 9999999]
+            /// The fractions of a second in nanoseconds, in the range [0, 999999999]
             /// </summary>
             internal int FractionalSeconds;
 
@@ -148,8 +148,8 @@ namespace NodaTime.Text
                 }
                 int minutes = IsFieldUsed(usedFields, PatternFields.Minutes) ? Minutes : templateValue.Minute;
                 int seconds = IsFieldUsed(usedFields, PatternFields.Seconds) ? Seconds : templateValue.Second;
-                int fraction = IsFieldUsed(usedFields, PatternFields.FractionalSeconds) ? FractionalSeconds : templateValue.TickOfSecond;
-                return ParseResult<LocalTime>.ForValue(LocalTime.FromHourMinuteSecondTick(hour, minutes, seconds, fraction));
+                int fraction = IsFieldUsed(usedFields, PatternFields.FractionalSeconds) ? FractionalSeconds : templateValue.NanosecondOfSecond;
+                return ParseResult<LocalTime>.ForValue(LocalTime.FromHourMinuteSecondNanosecond(hour, minutes, seconds, fraction));
             }
 
             private ParseResult<LocalTime> DetermineHour(PatternFields usedFields, string text, out int hour)

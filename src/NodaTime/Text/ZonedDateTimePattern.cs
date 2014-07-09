@@ -36,9 +36,10 @@ namespace NodaTime.Text
         /// </remarks>
         public static ZonedDateTimePattern GeneralFormatOnlyIsoPattern { get { return Patterns.GeneralFormatOnlyPatternImpl; } }
 
+        // TODO(2.0): Add tests for this and other patterns from properties.
         /// <summary>
-        /// Returns an invariant zoned date/time pattern based on ISO-8601 (down to the tick) including offset from UTC and zone ID.
-        /// It corresponds to a custom pattern of "yyyy'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFF z '('o&lt;g&gt;')'" and is available
+        /// Returns an invariant zoned date/time pattern based on ISO-8601 (down to the nanosecond) including offset from UTC and zone ID.
+        /// It corresponds to a custom pattern of "yyyy'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFFFF z '('o&lt;g&gt;')'" and is available
         /// as the 'F' standard pattern.
         /// </summary>
         /// <remarks>
@@ -62,7 +63,7 @@ namespace NodaTime.Text
         internal static class Patterns
         {
             internal static readonly ZonedDateTimePattern GeneralFormatOnlyPatternImpl = CreateWithInvariantCulture("yyyy'-'MM'-'dd'T'HH':'mm':'ss z '('o<g>')'", null);
-            internal static readonly ZonedDateTimePattern ExtendedFormatOnlyPatternImpl = CreateWithInvariantCulture("yyyy'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFF z '('o<g>')'", null);
+            internal static readonly ZonedDateTimePattern ExtendedFormatOnlyPatternImpl = CreateWithInvariantCulture("yyyy'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFFFF z '('o<g>')'", null);
             internal static readonly PatternBclSupport<ZonedDateTime> BclSupport = new PatternBclSupport<ZonedDateTime>("G", fi => fi.ZonedDateTimePatternParser);
         }
 

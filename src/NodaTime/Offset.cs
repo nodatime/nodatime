@@ -78,6 +78,16 @@ namespace NodaTime
         public long Ticks { get { return Milliseconds * NodaConstants.TicksPerMillisecond; } }
 
         /// <summary>
+        /// Returns the number of nanoseconds represented by this offset, which may be negative.
+        /// </summary>
+        /// <remarks>
+        /// Offsets are only accurate to millisecond precision; the number of milliseconds is simply multiplied
+        /// by 1,000,000 to give the number of nanoseconds.
+        /// </remarks>
+        /// <value>The number of nanoseconds.</value>
+        public long Nanoseconds { get { return milliseconds * NodaConstants.NanosecondsPerMillisecond; } }
+
+        /// <summary>
         /// Returns the greater offset of the given two, i.e. the one which will give a later local
         /// time when added to an instant.
         /// </summary>
@@ -434,6 +444,21 @@ namespace NodaTime
         public static Offset FromTicks(long ticks)
         {
             return new Offset((int)(ticks / NodaConstants.TicksPerMillisecond));
+        }
+
+        /// <summary>
+        /// Creates a new offset from the given number of nanoseconds, which may be negative.
+        /// </summary>
+        /// <remarks>
+        /// Offsets are only accurate to millisecond precision; the given number of nanoseconds is simply divided
+        /// by 1,000,000 to give the number of milliseconds - any remainder is truncated towards zero.
+        /// </remarks>
+        /// <param name="nanoseconds">The number of nanoseconds specifying the length of the new offset.</param>
+        /// <returns>An offset representing the given number of nanoseconds, to the (truncated) millisecond.</returns>
+        /// <exception cref="ArgumentOutOfRangeException">The result of the operation is outside the range of Offset.</exception>
+        public static Offset FromNanoseconds(long nanoseconds)
+        {
+            return new Offset((int) (nanoseconds / NodaConstants.NanosecondsPerMillisecond));
         }
 
         /// <summary>

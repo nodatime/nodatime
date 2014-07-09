@@ -260,6 +260,16 @@ namespace NodaTime
         public long TickOfDay { get { return LocalDateTime.TickOfDay; } }
 
         /// <summary>
+        /// Gets the nanosecond of this zoned date and time within the second, in the range 0 to 999,999,999 inclusive.
+        /// </summary>
+        public int NanosecondOfSecond { get { return LocalDateTime.NanosecondOfSecond; } }
+
+        /// <summary>
+        /// Gets the nanosecond of this zoned date and time within the day, in the range 0 to 86,399,999,999,999 inclusive.
+        /// </summary>
+        public long NanosecondOfDay { get { return LocalDateTime.NanosecondOfDay; } }
+
+        /// <summary>
         /// Converts this value to the instant it represents on the time line.
         /// </summary>
         /// <remarks>
@@ -611,7 +621,7 @@ namespace NodaTime
         [Pure]
         public DateTimeOffset ToDateTimeOffset()
         {
-            return new DateTimeOffset(NodaConstants.BclTicksAtUnixEpoch + LocalDateTime.ToLocalInstant().Ticks, Offset.ToTimeSpan());
+            return new DateTimeOffset(LocalDateTime.ToDateTimeUnspecified(), Offset.ToTimeSpan());
         }
 
         /// <summary>
@@ -831,7 +841,8 @@ namespace NodaTime
 
 #if !PCL
         #region Binary serialization
-        private const string LocalTicksSerializationName = "ticks";
+        private const string DaysSerializationName = "days";
+        private const string NanosecondOfDaySerializationName = "nanosecondOfDay";
         private const string CalendarIdSerializationName = "calendar";
         private const string OffsetMillisecondsSerializationName = "offsetMilliseconds";
         private const string ZoneIdSerializationName = "zone";
@@ -843,8 +854,9 @@ namespace NodaTime
         /// <param name="context">The source for this deserialization.</param>
         private ZonedDateTime(SerializationInfo info, StreamingContext context)
             // Note: this uses the constructor which explicitly validates that the offset is reasonable.
-            : this(new LocalDateTime(new LocalInstant(info.GetInt64(LocalTicksSerializationName)),
-                       CalendarSystem.ForId(info.GetString(CalendarIdSerializationName))),
+            : this(new LocalDateTime(new LocalDate(info.GetInt32(DaysSerializationName),
+                                                   CalendarSystem.ForId(info.GetString(CalendarIdSerializationName))),
+                                     LocalTime.FromNanosecondsSinceMidnight(info.GetInt64(NanosecondOfDaySerializationName))),
                    DateTimeZoneProviders.Serialization[info.GetString(ZoneIdSerializationName)],
                    Offset.FromMilliseconds(info.GetInt32(OffsetMillisecondsSerializationName)))
         {
@@ -859,7 +871,8 @@ namespace NodaTime
         void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)
         {
             // FIXME(2.0): Revisit serialization
-            info.AddValue(LocalTicksSerializationName, localDateTime.ToLocalInstant().Ticks);
+            info.AddValue(DaysSerializationName, Date.DaysSinceEpoch);
+            info.AddValue(NanosecondOfDaySerializationName, TimeOfDay.NanosecondOfDay);
             info.AddValue(CalendarIdSerializationName, Calendar.Id);
             info.AddValue(OffsetMillisecondsSerializationName, Offset.Milliseconds);
             info.AddValue(ZoneIdSerializationName, Zone.Id);

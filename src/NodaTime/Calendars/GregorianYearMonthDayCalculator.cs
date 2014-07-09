@@ -9,8 +9,8 @@ namespace NodaTime.Calendars
 {
     internal class GregorianYearMonthDayCalculator : GJYearMonthDayCalculator
     {
-        private const int MinGregorianYear = -27255;
-        private const int MaxGregorianYear = 31195;
+        internal const int MinGregorianYear = -27255;
+        internal const int MaxGregorianYear = 31195;
 
         // We precompute useful values for each month between these years, as we anticipate most
         // dates will be in this range.

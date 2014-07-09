@@ -210,6 +210,27 @@ namespace NodaTime.Test
         }
 
         [Test]
+        public void PlusNanoseconds_Simple()
+        {
+            // Just use the ticks values
+            LocalDateTime start = new LocalDateTime(2011, 4, 2, 12, 15, 8, 300, 7500);
+            LocalDateTime expectedForward = new LocalDateTime(2011, 4, 2, 12, 15, 8, 300, 7540);
+            LocalDateTime expectedBackward = new LocalDateTime(2011, 4, 2, 12, 15, 8, 300, 7460);
+            Assert.AreEqual(expectedForward, start.PlusNanoseconds(4000));
+            Assert.AreEqual(expectedBackward, start.PlusNanoseconds(-4000));
+        }
+
+        [Test]
+        public void PlusTicks_CrossingDay()
+        {
+            LocalDateTime start = new LocalDateTime(2011, 4, 2, 12, 15, 8);
+            LocalDateTime expectedForward = new LocalDateTime(2011, 4, 3, 12, 15, 8);
+            LocalDateTime expectedBackward = new LocalDateTime(2011, 4, 1, 12, 15, 8);
+            Assert.AreEqual(expectedForward, start.PlusNanoseconds(NodaConstants.NanosecondsPerStandardDay));
+            Assert.AreEqual(expectedBackward, start.PlusNanoseconds(-NodaConstants.NanosecondsPerStandardDay));
+        }
+
+        [Test]
         public void Plus_FullPeriod()
         {
             LocalDateTime start = new LocalDateTime(2011, 4, 2, 12, 15, 8);

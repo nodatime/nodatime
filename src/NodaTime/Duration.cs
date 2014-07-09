@@ -9,6 +9,7 @@ using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
 using JetBrains.Annotations;
+using NodaTime.Calendars;
 using NodaTime.Text;
 using NodaTime.Utility;
 
@@ -19,9 +20,8 @@ namespace NodaTime
     /// </summary>
     /// <remarks>
     /// <para>
-    /// A duration is a length of time defined by an integral number of 'ticks', where a tick is equal to 100
-    /// nanoseconds. There are 10,000 ticks in a millisecond.
-    /// Although durations are usually used with a positive number of ticks, negative durations are valid, and may occur
+    /// A duration is a length of time defined by an integral number of nanoseconds.
+    /// Although durations are usually used with a positive number of nanoseconds, negative durations are valid, and may occur
     /// naturally when e.g. subtracting an earlier <see cref="Instant"/> from a later one.
     /// </para>
     /// <para>
@@ -44,93 +44,156 @@ namespace NodaTime
         , ISerializable
 #endif
     {
+        // The -1 here is to allow for the addition of nearly a whole day in the nanoOfDay field.
+        private const long MaxDaysForLongNanos = (int) (long.MaxValue / NodaConstants.NanosecondsPerStandardDay) - 1;
+        private const long MinDaysForLongNanos = (int) (long.MinValue / NodaConstants.NanosecondsPerStandardDay);
+
         #region Readonly static fields
         /// <summary>
         /// Represents the zero <see cref="Duration"/> value. 
         /// This field is read-only.
         /// </summary>
-        public static readonly Duration Zero = new Duration(0L);
+        public static readonly Duration Zero = new Duration(0, 0L);
 
         /// <summary>
-        /// Represents the <see cref="Duration"/> value equals to 1 tick; the smallest amount by which an instant can vary.
+        /// Represents the <see cref="Duration"/> value equals to 1 nanosecond; the smallest amount by which an instant can vary.
         /// This field is read-only.
         /// </summary>
-        public static readonly Duration Epsilon = new Duration(1L);
+        public static readonly Duration Epsilon = new Duration(0, 1L);
 
         /// <summary>
-        /// Represents the <see cref="Duration"/> value equals to number of ticks in 1 standard week (7 days).
+        /// Represents the <see cref="Duration"/> value equal to the number of nanoseconds in 1 standard week (7 days).
         /// This field is constant.
         /// </summary>
         /// <remarks>
-        /// The value of this constant is 6,048,000,000,000 ticks.
+        /// The value of this constant is 604,800,000,000,000 nanoseconds.
         /// </remarks>
-        internal static readonly Duration OneStandardWeek = new Duration(NodaConstants.TicksPerStandardWeek);
+        internal static readonly Duration OneStandardWeek = new Duration(7, 0L);
 
         /// <summary>
-        /// Represents the <see cref="Duration"/> value equals to number of ticks in 1 day.
+        /// Represents the <see cref="Duration"/> value equal to the number of nanoseconds in 1 day.
         /// This field is constant.
         /// </summary>
         /// <remarks>
-        /// The value of this constant is 864 billion ticks; that is, 864,000,000,000 ticks.
+        /// The value of this constant is 86.4 trillion nanoseconds; that is, 86,400,000,000,000 nanoseconds.
         /// </remarks>
-        internal static readonly Duration OneStandardDay = new Duration(NodaConstants.TicksPerStandardDay);
+        internal static readonly Duration OneStandardDay = new Duration(1, 0L);
 
         /// <summary>
-        /// Represents the <see cref="Duration"/> value equals to number of ticks in 1 hour.
+        /// Represents the <see cref="Duration"/> value equal to the number of nanoseconds in 1 hour.
         /// This field is constant.
         /// </summary>
         /// <remarks>
-        /// The value of this constant is 36 billion ticks; that is, 36,000,000,000 ticks.
+        /// The value of this constant is 3.6 trillion nanoseconds; that is, 3,600,000,000,000 nanoseconds.
         /// </remarks>
-        private static readonly Duration OneHour = new Duration(NodaConstants.TicksPerHour);
+        private static readonly Duration OneHour = new Duration(0, NodaConstants.NanosecondsPerHour);
 
         /// <summary>
-        /// Represents the <see cref="Duration"/> value equals to number of ticks in 1 minute.
+        /// Represents the <see cref="Duration"/> value equal to the number of nanoseconds in 1 minute.
         /// This field is constant.
         /// </summary>
         /// <remarks>
-        /// The value of this constant is 600 million ticks; that is, 600,000,000 ticks.
+        /// The value of this constant is 60 billion nanoseconds; that is, 60,000,000,000 nanoseconds.
         /// </remarks>
-        private static readonly Duration OneMinute = new Duration(NodaConstants.TicksPerMinute);
+        private static readonly Duration OneMinute = new Duration(0, NodaConstants.NanosecondsPerMinute);
 
         /// <summary>
-        /// Represents the <see cref="Duration"/> value equals to number of ticks in 1 second.
+        /// Represents the <see cref="Duration"/> value equal to the number of nanoseconds in 1 second.
         /// This field is constant.
         /// </summary>
         /// <remarks>
-        /// The value of this constant is 10 million ticks; that is, 10,000,000 ticks.
+        /// The value of this constant is 1 billion nanoseconds; that is, 1,000,000,000 nanoseconds.
         /// </remarks>
-        private static readonly Duration OneSecond = new Duration(NodaConstants.TicksPerSecond);
+        private static readonly Duration OneSecond = new Duration(0, NodaConstants.NanosecondsPerSecond);
 
         /// <summary>
         /// Represents the <see cref="Duration"/> value equals to number of ticks in 1 millisecond.
         /// This field is constant.
         /// </summary>
         /// <remarks>
-        /// The value of this constant is 10 thousand ticks; that is, 10,000 ticks.
+        /// The value of this constant is 1,000,000 nanoseconds.
         /// </remarks>
-        private static readonly Duration OneMillisecond = new Duration(NodaConstants.TicksPerMillisecond);
+        private static readonly Duration OneMillisecond = new Duration(0, NodaConstants.NanosecondsPerMillisecond);
         #endregion
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Duration"/> struct.
-        /// </summary>
-        /// <param name="ticks">The number of ticks.</param>
-        private Duration(long ticks)
+        private readonly int days;
+        private readonly long nanoOfDay;
+
+        internal Duration(int days, long nanoOfDay)
         {
-            this.ticks = ticks;
+            this.days = days;
+            this.nanoOfDay = nanoOfDay;
         }
 
-        private readonly long ticks;
+        internal int Days { get { return days; } }
+
+        internal long NanosecondOfDay { get { return nanoOfDay; } }
 
         /// <summary>
         /// The total number of ticks in the duration.
         /// </summary>
         /// <remarks>
-        /// This property effectively represents all of the information within a Duration value; a duration
-        /// is simply a number of ticks.
+        /// If the number of nanoseconds in a duration is not a whole number of ticks, it is truncated towards zero.
+        /// For example, durations in the range [-99ns, 99ns] would all count as 0 ticks.
         /// </remarks>
-        public long Ticks { get { return ticks; } }
+        public long Ticks
+        {
+            get
+            {
+                long ticks = TickArithmetic.DaysAndTickOfDayToTicks(days, nanoOfDay / NodaConstants.NanosecondsPerTick);
+                if (days < 0 && nanoOfDay % NodaConstants.NanosecondsPerTick != 0)
+                {
+                    ticks++;
+                }
+                return ticks;
+            }
+        }
+
+        /// <summary>
+        /// Adds a "small" number of nanoseconds to this duration: it is trusted to be less than 24 hours
+        /// in magnitude.
+        /// </summary>
+        [Pure]
+        internal Duration PlusSmallNanoseconds(long smallNanos)
+        {
+            // TODO(2.0): Add Preconditions.DebugArgumentRange
+            int newDays = days;
+            long newNanos = nanoOfDay + smallNanos;
+            if (newNanos >= NodaConstants.NanosecondsPerStandardDay)
+            {
+                newDays++;
+                newNanos -= NodaConstants.NanosecondsPerStandardDay;
+            }
+            else if (newNanos < 0)
+            {
+                newDays--;
+                newNanos += NodaConstants.NanosecondsPerStandardDay;
+            }
+            return new Duration(newDays, newNanos);
+        }
+
+        /// <summary>
+        /// Subtracts a "small" number of nanoseconds from this duration: it is trusted to be less than 24 hours
+        /// in magnitude.
+        /// </summary>
+        [Pure]
+        internal Duration MinusSmallNanoseconds(long smallNanos)
+        {
+            // TODO(2.0): Add Preconditions.DebugArgumentRange
+            int newDays = days;
+            long newNanos = nanoOfDay - smallNanos;
+            if (newNanos >= NodaConstants.NanosecondsPerStandardDay)
+            {
+                newDays++;
+                newNanos -= NodaConstants.NanosecondsPerStandardDay;
+            }
+            else if (newNanos < 0)
+            {
+                newDays--;
+                newNanos += NodaConstants.NanosecondsPerStandardDay;
+            }
+            return new Duration(newDays, newNanos);
+        }
 
         #region Object overrides
         /// <summary>
@@ -159,7 +222,7 @@ namespace NodaTime
         /// </returns>
         public override int GetHashCode()
         {
-            return Ticks.GetHashCode();
+            return days ^ nanoOfDay.GetHashCode();
         }
         #endregion
 
@@ -204,7 +267,19 @@ namespace NodaTime
         /// <returns>A new <see cref="Duration"/> representing the sum of the given values.</returns>
         public static Duration operator +(Duration left, Duration right)
         {
-            return new Duration(left.Ticks + right.Ticks);
+            int newDays = left.days + right.days;
+            long newNanos = left.nanoOfDay + right.nanoOfDay;
+            if (newNanos >= NodaConstants.NanosecondsPerStandardDay)
+            {
+                newDays++;
+                newNanos -= NodaConstants.NanosecondsPerStandardDay;
+            }
+            else if (newNanos < 0)
+            {
+                newDays--;
+                newNanos += NodaConstants.NanosecondsPerStandardDay;
+            }
+            return new Duration(newDays, newNanos);
         }
 
         /// <summary>
@@ -237,7 +312,19 @@ namespace NodaTime
         /// <returns>A new <see cref="Duration"/> representing the difference of the given values.</returns>
         public static Duration operator -(Duration left, Duration right)
         {
-            return new Duration(left.Ticks - right.Ticks);
+            int newDays = left.days - right.days;
+            long newNanos = left.nanoOfDay - right.nanoOfDay;
+            if (newNanos >= NodaConstants.NanosecondsPerStandardDay)
+            {
+                newDays++;
+                newNanos -= NodaConstants.NanosecondsPerStandardDay;
+            }
+            else if (newNanos < 0)
+            {
+                newDays--;
+                newNanos += NodaConstants.NanosecondsPerStandardDay;
+            }
+            return new Duration(newDays, newNanos);
         }
 
         /// <summary>
@@ -271,7 +358,21 @@ namespace NodaTime
         /// <paramref name="right"/>.</returns>
         public static Duration operator /(Duration left, long right)
         {
-            return new Duration(left.Ticks / right);
+            int days = left.days;
+            // Simplest scenario to handle
+            if (days == 0 && right > 0)
+            {
+                return new Duration(0, left.nanoOfDay / right);
+            }
+            // Now for the ~[-250, +250] year range, where we can do it all as a long.
+            if (days >= MinDaysForLongNanos && days <= MaxDaysForLongNanos)
+            {
+                long nanos = left.ToInt64Nanoseconds() / right;
+                return Duration.FromNanoseconds(nanos);
+            }
+            // Fall back to decimal arithmetic.
+            decimal x = left.ToDecimalNanoseconds();
+            return FromNanoseconds(x / right);
         }
 
         /// <summary>
@@ -295,7 +396,34 @@ namespace NodaTime
         /// <paramref name="right"/>.</returns>
         public static Duration operator *(Duration left, long right)
         {
-            return new Duration(left.Ticks * right);
+            if (right == 0 || left == Zero)
+            {
+                return Zero;
+            }
+            int days = left.days;
+            // Speculatively try integer arithmetic... currently just for positive nanos because
+            // it's more common and easier to think about.
+            if (days >= 0 && days <= MaxDaysForLongNanos)
+            {
+                long originalNanos = left.ToInt64Nanoseconds();
+                if (right > 0)
+                {
+                    if (right < long.MaxValue / originalNanos)
+                    {
+                        return FromNanoseconds(originalNanos * right);
+                    }
+                }
+                else
+                {
+                    if (right > long.MinValue / originalNanos)
+                    {
+                        return FromNanoseconds(originalNanos * right);
+                    }
+                }
+            }
+            // Fall back to decimal arithmetic
+            decimal x = left.ToDecimalNanoseconds();
+            return FromNanoseconds(x * right);
         }
 
         /// <summary>
@@ -307,7 +435,7 @@ namespace NodaTime
         /// <paramref name="right"/>.</returns>
         public static Duration operator *(long left, Duration right)
         {
-            return new Duration(left * right.Ticks);
+            return right * left;
         }
 
         /// <summary>
@@ -340,7 +468,7 @@ namespace NodaTime
         /// <returns><c>true</c> if values are equal to each other, otherwise <c>false</c>.</returns>
         public static bool operator ==(Duration left, Duration right)
         {
-            return left.Equals(right);
+            return left.days == right.days && left.nanoOfDay == right.nanoOfDay;
         }
 
         /// <summary>
@@ -362,7 +490,7 @@ namespace NodaTime
         /// <returns><c>true</c> if the left value is less than the right value, otherwise <c>false</c>.</returns>
         public static bool operator <(Duration left, Duration right)
         {
-            return left.CompareTo(right) < 0;
+            return left.days < right.days || (left.days == right.days && left.nanoOfDay < right.nanoOfDay);
         }
 
         /// <summary>
@@ -373,7 +501,7 @@ namespace NodaTime
         /// <returns><c>true</c> if the left value is less than or equal to the right value, otherwise <c>false</c>.</returns>
         public static bool operator <=(Duration left, Duration right)
         {
-            return left.CompareTo(right) <= 0;
+            return left.days < right.days || (left.days == right.days && left.nanoOfDay <= right.nanoOfDay);
         }
 
         /// <summary>
@@ -384,7 +512,7 @@ namespace NodaTime
         /// <returns><c>true</c> if the left value is greater than the right value, otherwise <c>false</c>.</returns>
         public static bool operator >(Duration left, Duration right)
         {
-            return left.CompareTo(right) > 0;
+            return left.days > right.days || (left.days == right.days && left.nanoOfDay > right.nanoOfDay);
         }
 
         /// <summary>
@@ -395,7 +523,7 @@ namespace NodaTime
         /// <returns><c>true</c> if the left value is greater than or equal to the right value, otherwise <c>false</c>.</returns>
         public static bool operator >=(Duration left, Duration right)
         {
-            return left.CompareTo(right) >= 0;
+            return left.days > right.days || (left.days == right.days && left.nanoOfDay >= right.nanoOfDay);
         }
 
         /// <summary>
@@ -405,7 +533,14 @@ namespace NodaTime
         /// <returns>The negative value of this duration</returns>
         public static Duration operator -(Duration duration)
         {
-            return new Duration(-duration.Ticks);
+            int oldDays = duration.days;
+            long oldNanoOfDay = duration.nanoOfDay;
+            if (oldNanoOfDay == 0)
+            {
+                return new Duration(-oldDays, 0);
+            }
+            long newNanoOfDay = NodaConstants.NanosecondsPerStandardDay - oldNanoOfDay;
+            return new Duration(-oldDays - 1, newNanoOfDay);
         }
 
         /// <summary>
@@ -448,7 +583,8 @@ namespace NodaTime
         /// </returns>
         public int CompareTo(Duration other)
         {
-            return Ticks.CompareTo(other.Ticks);
+            int dayComparison = days.CompareTo(other.days);
+            return dayComparison != 0 ? dayComparison : nanoOfDay.CompareTo(other.nanoOfDay);
         }
 
         /// <summary>
@@ -484,7 +620,7 @@ namespace NodaTime
         /// </returns>
         public bool Equals(Duration other)
         {
-            return Ticks == other.Ticks;
+            return this == other;
         }
         #endregion
 
@@ -494,9 +630,9 @@ namespace NodaTime
         /// </summary>
         /// <param name="weeks">The number of weeks.</param>
         /// <returns>A <see cref="Duration"/> representing the given number of weeks.</returns>
-        public static Duration FromStandardWeeks(long weeks)
+        public static Duration FromStandardWeeks(int weeks)
         {
-            return OneStandardWeek * weeks;
+            return new Duration(weeks * 7, 0L);
         }
 
         /// <summary>
@@ -505,9 +641,9 @@ namespace NodaTime
         /// </summary>
         /// <param name="days">The number of days.</param>
         /// <returns>A <see cref="Duration"/> representing the given number of days.</returns>
-        public static Duration FromStandardDays(long days)
+        public static Duration FromStandardDays(int days)
         {
-            return OneStandardDay * days;
+            return new Duration(days, 0L);
         }
 
         /// <summary>
@@ -517,6 +653,7 @@ namespace NodaTime
         /// <returns>A <see cref="Duration"/> representing the given number of hours.</returns>
         public static Duration FromHours(long hours)
         {
+            // TODO(2.0): Optimize?
             return OneHour * hours;
         }
 
@@ -527,6 +664,7 @@ namespace NodaTime
         /// <returns>A <see cref="Duration"/> representing the given number of minutes.</returns>
         public static Duration FromMinutes(long minutes)
         {
+            // TODO(2.0): Optimize?
             return OneMinute * minutes;
         }
 
@@ -537,6 +675,7 @@ namespace NodaTime
         /// <returns>A <see cref="Duration"/> representing the given number of seconds.</returns>
         public static Duration FromSeconds(long seconds)
         {
+            // TODO(2.0): Optimize?
             return OneSecond * seconds;
         }
 
@@ -547,6 +686,7 @@ namespace NodaTime
         /// <returns>A <see cref="Duration"/> representing the given number of milliseconds.</returns>
         public static Duration FromMilliseconds(long milliseconds)
         {
+            // TODO(2.0): Optimize?
             return OneMillisecond * milliseconds;
         }
 
@@ -557,7 +697,46 @@ namespace NodaTime
         /// <returns>A <see cref="Duration"/> representing the given number of ticks.</returns>
         public static Duration FromTicks(long ticks)
         {
-            return new Duration(ticks);
+            long tickOfDay;
+            int days = TickArithmetic.TicksToDaysAndTickOfDay(ticks, out tickOfDay);
+            return new Duration(days, tickOfDay * NodaConstants.NanosecondsPerTick);
+        }
+
+        /// <summary>
+        /// Returns a <see cref="Duration"/> that represents the given number of nanoseconds.
+        /// </summary>
+        /// <param name="nanoseconds">The number of nanoseconds.</param>
+        /// <returns>A <see cref="Duration"/> representing the given number of nanoseconds.</returns>
+        public static Duration FromNanoseconds(long nanoseconds)
+        {
+            int days = nanoseconds >= 0
+                ? (int) (nanoseconds / NodaConstants.NanosecondsPerStandardDay)
+                : (int) ((nanoseconds + 1) / NodaConstants.NanosecondsPerStandardDay) - 1;
+
+            long nanoOfDay = nanoseconds >= long.MinValue + NodaConstants.NanosecondsPerStandardDay
+                ? nanoseconds - days * NodaConstants.NanosecondsPerStandardDay
+                : nanoseconds - (days + 1) * NodaConstants.NanosecondsPerStandardDay + NodaConstants.NanosecondsPerStandardDay; // Avoid multiplication overflow
+            return new Duration(days, nanoOfDay);
+        }
+
+        /// <summary>
+        /// Converts a number of nanoseconds expressed as a <see cref="Decimal"/> into a duration.
+        /// </summary>
+        /// <remarks>Any fractional part of <paramref name="nanoseconds"/> is truncated.</remarks>
+        /// <param name="nanoseconds">The number of nanoseconds to represent.</param>
+        /// <returns>A duration with the given number of nanoseconds.</returns>
+        /// <exception cref="OverflowException">The specified number is outside the range of <see cref="Duration"/>.</exception>
+        public static Duration FromNanoseconds(decimal nanoseconds)
+        {
+            // Avoid worrying about what happens in later arithmetic.
+            nanoseconds = decimal.Truncate(nanoseconds);
+
+            int days = nanoseconds >= 0
+                ? (int) (nanoseconds / NodaConstants.NanosecondsPerStandardDay)
+                : (int) ((nanoseconds + 1) / NodaConstants.NanosecondsPerStandardDay) - 1;
+
+            long nanoOfDay = (long) (nanoseconds - ((decimal) days) * NodaConstants.NanosecondsPerStandardDay);
+            return new Duration(days, nanoOfDay);
         }
 
         /// <summary>
@@ -574,12 +753,13 @@ namespace NodaTime
         /// <summary>
         /// Returns a <see cref="TimeSpan"/> that represents the same number of ticks as this
         /// <see cref="Duration"/>.
+        /// TODO: Document rounding.
         /// </summary>
         /// <returns>A new TimeSpan with the same number of ticks as this Duration.</returns>
         [Pure]
         public TimeSpan ToTimeSpan()
         {
-            return new TimeSpan(ticks);
+            return new TimeSpan(Ticks);
         }
 
         #region XML serialization
@@ -606,9 +786,46 @@ namespace NodaTime
         }
         #endregion
 
+        /// <summary>
+        /// Conversion to an <see cref="Int64"/> number of nanoseconds. This will fail if the number of nanoseconds is
+        /// out of the range of <c>Int64</c>, which is approximately 292 years (positive or negative).
+        /// </summary>
+        /// <exception cref="System.OverflowException">The number of nanoseconds is outside the representable range.</exception>
+        [Pure]
+        public long ToInt64Nanoseconds()
+        {
+            if (days < 0)
+            {
+                if (days >= MinDaysForLongNanos)
+                {
+                    return unchecked(days * NodaConstants.NanosecondsPerStandardDay + nanoOfDay);
+                }
+                // Need to be careful to avoid overflow in a case where it's actually representable
+                return (days + 1) * NodaConstants.NanosecondsPerStandardDay + nanoOfDay - NodaConstants.NanosecondsPerStandardDay;
+            }
+            if (days <= MaxDaysForLongNanos)
+            {
+                return unchecked(days * NodaConstants.NanosecondsPerStandardDay + nanoOfDay);
+            }
+            // Either the multiplication or the addition could overflow, so we do it in a checked context.
+            return days * NodaConstants.NanosecondsPerStandardDay + nanoOfDay;
+        }
+
+        /// <summary>
+        /// Conversion to a <see cref="Decimal"/> number of nanoseconds, as a convenient built-in numeric
+        /// type which can always represent values in the range we need.
+        /// </summary>
+        /// <remarks>The value returned is always an integer.</remarks>
+        [Pure]
+        public decimal ToDecimalNanoseconds()
+        {
+            return ((decimal) days) * NodaConstants.NanosecondsPerStandardDay + nanoOfDay;
+        }
+
 #if !PCL
         #region Binary serialization
-        private const string TicksSerializationName = "ticks";
+        private const string DefaultDaysSerializationName = "days";
+        private const string DefaultNanosecondOfDaySerializationName = "nanoOfDay";
 
         /// <summary>
         /// Private constructor only present for serialization.
@@ -616,7 +833,7 @@ namespace NodaTime
         /// <param name="info">The <see cref="SerializationInfo"/> to fetch data from.</param>
         /// <param name="context">The source for this deserialization.</param>
         private Duration(SerializationInfo info, StreamingContext context)
-            : this(info.GetInt64(TicksSerializationName))
+            : this(info.GetInt32(DefaultDaysSerializationName), info.GetInt64(DefaultNanosecondOfDaySerializationName))
         {
         }
 
@@ -628,9 +845,32 @@ namespace NodaTime
         [System.Security.SecurityCritical]
         void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)
         {
-            info.AddValue(TicksSerializationName, ticks);
+            // FIXME(2.0): Determine serialization policy
+            Serialize(info);
         }
         #endregion
+
+
+        internal static Duration Deserialize(SerializationInfo info)
+        {
+            return Deserialize(info, DefaultDaysSerializationName, DefaultNanosecondOfDaySerializationName);
+        }
+
+        internal static Duration Deserialize(SerializationInfo info, string daysSerializationName, string nanosecondOfDaySerializationName)
+        {
+            return new Duration(info.GetInt32(daysSerializationName), info.GetInt64(nanosecondOfDaySerializationName));
+        }
+
+        internal void Serialize(SerializationInfo info)
+        {
+            Serialize(info, DefaultDaysSerializationName, DefaultNanosecondOfDaySerializationName);
+        }
+
+        internal void Serialize(SerializationInfo info, string daysSerializationName, string nanosecondOfDaySerializationName)
+        {
+            info.AddValue(daysSerializationName, days);
+            info.AddValue(nanosecondOfDaySerializationName, nanoOfDay);
+        }
 #endif
     }
 }
