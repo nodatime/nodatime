@@ -81,7 +81,7 @@ namespace NodaTime
         /// Returns the number of nanoseconds represented by this offset, which may be negative.
         /// </summary>
         /// <remarks>
-        /// Offsets are only accurate to nanosecond precision; the number of milliseconds is simply multiplied
+        /// Offsets are only accurate to millisecond precision; the number of milliseconds is simply multiplied
         /// by 1,000,000 to give the number of nanoseconds.
         /// </remarks>
         /// <value>The number of nanoseconds.</value>
@@ -450,10 +450,10 @@ namespace NodaTime
         /// Creates a new offset from the given number of nanoseconds, which may be negative.
         /// </summary>
         /// <remarks>
-        /// Offsets are only accurate to millisecond precision; the given number of ticks is simply divided
-        /// by 1,000,000 to give the number of milliseconds - any remainder is truncated.
+        /// Offsets are only accurate to millisecond precision; the given number of nanoseconds is simply divided
+        /// by 1,000,000 to give the number of milliseconds - any remainder is truncated towards zero.
         /// </remarks>
-        /// <param name="nanoseconds">The number of ticks specifying the length of the new offset.</param>
+        /// <param name="nanoseconds">The number of nanoseconds specifying the length of the new offset.</param>
         /// <returns>An offset representing the given number of nanoseconds, to the (truncated) millisecond.</returns>
         /// <exception cref="ArgumentOutOfRangeException">The result of the operation is outside the range of Offset.</exception>
         public static Offset FromNanoseconds(long nanoseconds)
