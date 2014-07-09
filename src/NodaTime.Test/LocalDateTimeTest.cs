@@ -193,16 +193,15 @@ namespace NodaTime.Test
         }
 
         [Test]
-        public void ComparisonOperators_DifferentCalendars_AlwaysReturnsFalse()
+        public void ComparisonOperators_DifferentCalendars_Throws()
         {
             LocalDateTime value1 = new LocalDateTime(2011, 1, 2, 10, 30);
             LocalDateTime value2 = new LocalDateTime(2011, 1, 3, 10, 30, CalendarSystem.GetJulianCalendar(4));
 
-            // All inequality comparisons return false
-            Assert.IsFalse(value1 < value2);
-            Assert.IsFalse(value1 <= value2);
-            Assert.IsFalse(value1 > value2);
-            Assert.IsFalse(value1 >= value2);
+            Assert.Throws<ArgumentException>(() => (value1 < value2).ToString());
+            Assert.Throws<ArgumentException>(() => (value1 <= value2).ToString());
+            Assert.Throws<ArgumentException>(() => (value1 > value2).ToString());
+            Assert.Throws<ArgumentException>(() => (value1 >= value2).ToString());
         }
 
         [Test]
@@ -218,16 +217,14 @@ namespace NodaTime.Test
         }
 
         [Test]
-        public void CompareTo_DifferentCalendars_OnlyLocalInstantMatters()
+        public void CompareTo_DifferentCalendars_Throws()
         {
             CalendarSystem islamic = CalendarSystem.GetIslamicCalendar(IslamicLeapYearPattern.Base15, IslamicEpoch.Astronomical);
             LocalDateTime value1 = new LocalDateTime(2011, 1, 2, 10, 30);
             LocalDateTime value2 = new LocalDateTime(1500, 1, 1, 10, 30, islamic);
-            LocalDateTime value3 = value1.WithCalendar(islamic);
 
-            Assert.That(value1.CompareTo(value2), Is.LessThan(0));
-            Assert.That(value2.CompareTo(value1), Is.GreaterThan(0));
-            Assert.That(value1.CompareTo(value3), Is.EqualTo(0));
+            Assert.Throws<ArgumentException>(() => value1.CompareTo(value2));
+            Assert.Throws<ArgumentException>(() => ((IComparable)value1).CompareTo(value2));
         }
 
         /// <summary>
@@ -246,25 +243,6 @@ namespace NodaTime.Test
             Assert.That(i_value1.CompareTo(value2), Is.EqualTo(0));
             Assert.That(i_value1.CompareTo(value3), Is.LessThan(0));
             Assert.That(i_value3.CompareTo(value2), Is.GreaterThan(0));
-        }
-
-        /// <summary>
-        /// IComparable.CompareTo works properly for LocalDateTime inputs with different calendars.
-        /// </summary>
-        [Test]
-        public void IComparableCompareTo_DifferentCalendars_OnlyLocalInstantMatters()
-        {
-            CalendarSystem islamic = CalendarSystem.GetIslamicCalendar(IslamicLeapYearPattern.Base15, IslamicEpoch.Astronomical);
-            LocalDateTime value1 = new LocalDateTime(2011, 1, 2, 10, 30);
-            LocalDateTime value2 = new LocalDateTime(1500, 1, 1, 10, 30, islamic);
-            LocalDateTime value3 = value1.WithCalendar(islamic);
-
-            IComparable i_value1 = (IComparable)value1;
-            IComparable i_value2 = (IComparable)value2;
-
-            Assert.That(i_value1.CompareTo(value2), Is.LessThan(0));
-            Assert.That(i_value2.CompareTo(value1), Is.GreaterThan(0));
-            Assert.That(i_value1.CompareTo(value3), Is.EqualTo(0));
         }
 
         /// <summary>
@@ -290,10 +268,7 @@ namespace NodaTime.Test
             var instance = new LocalDateTime(2012, 3, 5, 10, 45);
             var i_instance = (IComparable)instance;
             var arg = new LocalDate(2012, 3, 6);
-            Assert.Throws<ArgumentException>(() =>
-            {
-                i_instance.CompareTo(arg);
-            });
+            Assert.Throws<ArgumentException>(() => i_instance.CompareTo(arg));
         }
 
         [Test]

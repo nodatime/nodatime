@@ -21,18 +21,12 @@ namespace NodaTime
     /// with no reference to a particular time zone or time of day.
     /// </summary>
     /// <remarks>
-    /// <para>Comparisons of dates can be handled in a way which is either calendar-sensitive or calendar-insensitive.
-    /// Noda Time implements all the operators (and the <see cref="Equals(NodaTime.LocalDate)"/> method) such that all operators other than <see cref="op_Inequality"/>
-    /// will return false if asked to compare two values in different calendar systems.
-    /// </para>
     /// <para>
-    /// However, the <see cref="CompareTo"/> method (implementing <see cref="IComparable{T}"/>) is calendar-insensitive; it compares the two
-    /// dates historically in terms of when they actually occurred, as if they're both converted to some "neutral" calendar system first.
-    /// </para>
-    /// <para>
-    /// It's unclear at the time of this writing whether this is the most appropriate approach, and it may change in future versions. In general,
-    /// it would be a good idea for users to avoid comparing dates in different calendar systems, and indeed most users are unlikely to ever explicitly
-    /// consider which calendar system they're working in anyway.
+    /// Values can freely be compared for equality: a value in a different calendar system is not equal to
+    /// a value in a different calendar system. However, ordering comparisons (either via the <see cref="CompareTo"/> method
+    /// or via operators) fail with <see cref="ArgumentException"/>; attempting to compare values in different calendars
+    /// almost always indicates a bug in the calling code.
+    /// TODO(2.0): Calendar-neutral comparer.
     /// </para>
     /// </remarks>
     /// <threadsafety>This type is an immutable value type. See the thread safety section of the user guide for more information.</threadsafety>
@@ -378,89 +372,100 @@ namespace NodaTime
         }
 
         /// <summary>
-        /// Compares two LocalDate values to see if the left one is strictly earlier than the right
+        /// Compares two dates to see if the left one is strictly earlier than the right
         /// one.
         /// </summary>
         /// <remarks>
-        /// This operator always returns false if the two operands have different calendars. See the top-level type
+        /// Only dates with the same calendar system can be compared. See the top-level type
         /// documentation for more information about comparisons.
         /// </remarks>
         /// <param name="lhs">First operand of the comparison</param>
         /// <param name="rhs">Second operand of the comparison</param>
+        /// <exception cref="ArgumentException">The calendar system of <paramref name="rhs"/> is not the same
+        /// as the calendar of <paramref name="lhs"/>.</exception>
         /// <returns>true if the <paramref name="lhs"/> is strictly earlier than <paramref name="rhs"/>, false otherwise.</returns>
         public static bool operator <(LocalDate lhs, LocalDate rhs)
         {
-            return lhs.Calendar.Compare(lhs.yearMonthDay, rhs.yearMonthDay) < 0 && Equals(lhs.Calendar, rhs.Calendar);
+            Preconditions.CheckArgument(lhs.Calendar.Equals(rhs.Calendar), "rhs", "Only values in the same calendar can be compared");
+            return lhs.CompareTo(rhs) < 0;
         }
 
         /// <summary>
-        /// Compares two LocalDate values to see if the left one is earlier than or equal to the right
+        /// Compares two dates to see if the left one is earlier than or equal to the right
         /// one.
         /// </summary>
         /// <remarks>
-        /// This operator always returns false if the two operands have different calendars. See the top-level type
+        /// Only dates with the same calendar system can be compared. See the top-level type
         /// documentation for more information about comparisons.
         /// </remarks>
         /// <param name="lhs">First operand of the comparison</param>
         /// <param name="rhs">Second operand of the comparison</param>
+        /// <exception cref="ArgumentException">The calendar system of <paramref name="rhs"/> is not the same
+        /// as the calendar of <paramref name="lhs"/>.</exception>
         /// <returns>true if the <paramref name="lhs"/> is earlier than or equal to <paramref name="rhs"/>, false otherwise.</returns>
         public static bool operator <=(LocalDate lhs, LocalDate rhs)
         {
-            return lhs.Calendar.Compare(lhs.yearMonthDay, rhs.yearMonthDay) <= 0 && Equals(lhs.Calendar, rhs.Calendar);
+            Preconditions.CheckArgument(lhs.Calendar.Equals(rhs.Calendar), "rhs", "Only values in the same calendar can be compared");
+            return lhs.CompareTo(rhs) <= 0;
         }
 
         /// <summary>
-        /// Compares two LocalDate values to see if the left one is strictly later than the right
+        /// Compares two dates values to see if the left one is strictly later than the right
         /// one.
         /// </summary>
         /// <remarks>
-        /// This operator always returns false if the two operands have different calendars. See the top-level type
+        /// Only dates with the same calendar system can be compared. See the top-level type
         /// documentation for more information about comparisons.
         /// </remarks>
         /// <param name="lhs">First operand of the comparison</param>
         /// <param name="rhs">Second operand of the comparison</param>
+        /// <exception cref="ArgumentException">The calendar system of <paramref name="rhs"/> is not the same
+        /// as the calendar of <paramref name="lhs"/>.</exception>
         /// <returns>true if the <paramref name="lhs"/> is strictly later than <paramref name="rhs"/>, false otherwise.</returns>
         public static bool operator >(LocalDate lhs, LocalDate rhs)
         {
-            return lhs.Calendar.Compare(lhs.yearMonthDay, rhs.yearMonthDay) > 0 && Equals(lhs.Calendar, rhs.Calendar);
+            Preconditions.CheckArgument(lhs.Calendar.Equals(rhs.Calendar), "rhs", "Only values in the same calendar can be compared");
+            return lhs.CompareTo(rhs) > 0;
         }
 
         /// <summary>
-        /// Compares two LocalDate values to see if the left one is later than or equal to the right
+        /// Compares two dates to see if the left one is later than or equal to the right
         /// one.
         /// </summary>
         /// <remarks>
-        /// This operator always returns false if the two operands have different calendars. See the top-level type
+        /// Only dates with the same calendar system can be compared. See the top-level type
         /// documentation for more information about comparisons.
         /// </remarks>
         /// <param name="lhs">First operand of the comparison</param>
         /// <param name="rhs">Second operand of the comparison</param>
+        /// <exception cref="ArgumentException">The calendar system of <paramref name="rhs"/> is not the same
+        /// as the calendar of <paramref name="lhs"/>.</exception>
         /// <returns>true if the <paramref name="lhs"/> is later than or equal to <paramref name="rhs"/>, false otherwise.</returns>
         public static bool operator >=(LocalDate lhs, LocalDate rhs)
         {
-            return lhs.Calendar.Compare(lhs.yearMonthDay, rhs.yearMonthDay) >= 0 && Equals(lhs.Calendar, rhs.Calendar);
+            Preconditions.CheckArgument(lhs.Calendar.Equals(rhs.Calendar), "rhs", "Only values in the same calendar can be compared");
+            return lhs.CompareTo(rhs) >= 0;
         }
 
         /// <summary>
         /// Indicates whether this date is earlier, later or the same as another one.
         /// </summary>
         /// <remarks>
-        /// The comparison is performed in terms of a calendar-independent notion of date;
-        /// the calendar systems of both <see cref="LocalDate" /> values are ignored. When both values use the same calendar,
-        /// this is absolutely natural. However, when comparing a value in one calendar with a value in another,
-        /// this can lead to surprising results. For example, 1945 in the ISO calendar corresponds to around 1364
-        /// in the Islamic calendar, so an Islamic date in year 1400 is "after" a date in 1945 in the ISO calendar.
+        /// Only dates within the same calendar systems can be compared with this method. Attempting to compare
+        /// dates within different calendars will fail with an <see cref="ArgumentException"/>. Ideally, comparisons
+        /// between values in different calendars would be a compile-time failure, but failing at execution time
+        /// is almost always preferable to continuing.
         /// </remarks>
         /// <param name="other">The other date to compare this one with</param>
+        /// <exception cref="ArgumentException">The calendar system of <paramref name="other"/> is not the
+        /// same as the calendar system of this value.</exception>
         /// <returns>A value less than zero if this date is earlier than <paramref name="other"/>;
         /// zero if this date is the same as <paramref name="other"/>; a value greater than zero if this date is
         /// later than <paramref name="other"/>.</returns>
         public int CompareTo(LocalDate other)
         {
-            // TODO(2.0): Throw an exception if other.Calendar != Calendar? Definitely don't keep
-            // this behaviour!
-            return this.AtMidnight().CompareTo(other.AtMidnight());
-            // return Calendar.Compare(yearMonthDay, other.YearMonthDay);
+            Preconditions.CheckArgument(Calendar.Equals(other.Calendar), "other", "Only values with the same calendar system can be compared");
+            return Calendar.Compare(yearMonthDay, other.yearMonthDay);
         }
 
         /// <summary>
@@ -469,7 +474,8 @@ namespace NodaTime
         /// <remarks>
         /// This uses explicit interface implementation to avoid it being called accidentally. The generic implementation should usually be preferred.
         /// </remarks>
-        /// <exception cref="ArgumentException"><paramref name="obj"/> is non-null but does not refer to an instance of <see cref="LocalDate"/>.</exception>
+        /// <exception cref="ArgumentException"><paramref name="obj"/> is non-null but does not refer to an instance of <see cref="LocalDate"/>, or refers
+        /// to a date in a different calendar system.</exception>
         /// <param name="obj">The object to compare this value with.</param>
         /// <returns>The result of comparing this LocalDate with another one; see <see cref="CompareTo(NodaTime.LocalDate)"/> for general details.
         /// If <paramref name="obj"/> is null, this method returns a value greater than 0.

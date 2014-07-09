@@ -243,8 +243,8 @@ namespace NodaTime.Test
         [Test]
         public void ComparisonOperators_DifferentCalendars_AlwaysReturnsFalse()
         {
-            LocalDateTime value1 = new LocalDateTime(2011, 1, 2, 10, 30);
-            LocalDateTime value2 = new LocalDateTime(2011, 1, 3, 10, 30, CalendarSystem.GetJulianCalendar(4));
+            ZonedDateTime value1 = SampleZone.AtStrictly(new LocalDateTime(2011, 1, 2, 10, 30));
+            ZonedDateTime value2 = SampleZone.AtStrictly(new LocalDateTime(2011, 1, 3, 10, 30, CalendarSystem.GetJulianCalendar(4)));
 
             // All inequality comparisons return false
             Assert.IsFalse(value1 < value2);
