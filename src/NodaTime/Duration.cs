@@ -20,9 +20,8 @@ namespace NodaTime
     /// </summary>
     /// <remarks>
     /// <para>
-    /// A duration is a length of time defined by an integral number of 'ticks', where a tick is equal to 100
-    /// nanoseconds. There are 10,000 ticks in a millisecond.
-    /// Although durations are usually used with a positive number of ticks, negative durations are valid, and may occur
+    /// A duration is a length of time defined by an integral number of nanoseconds.
+    /// Although durations are usually used with a positive number of nanoseconds, negative durations are valid, and may occur
     /// naturally when e.g. subtracting an earlier <see cref="Instant"/> from a later one.
     /// </para>
     /// <para>
@@ -57,53 +56,53 @@ namespace NodaTime
         public static readonly Duration Zero = new Duration(0, 0L);
 
         /// <summary>
-        /// Represents the <see cref="Duration"/> value equals to 1 nanosecond;the smallest amount by which an instant can vary.
+        /// Represents the <see cref="Duration"/> value equals to 1 nanosecond; the smallest amount by which an instant can vary.
         /// This field is read-only.
         /// </summary>
         public static readonly Duration Epsilon = new Duration(0, 1L);
 
         /// <summary>
-        /// Represents the <see cref="Duration"/> value equals to number of ticks in 1 standard week (7 days).
+        /// Represents the <see cref="Duration"/> value equal to the number of nanoseconds in 1 standard week (7 days).
         /// This field is constant.
         /// </summary>
         /// <remarks>
-        /// The value of this constant is 604,800,000,000,000 ticks.
+        /// The value of this constant is 604,800,000,000,000 nanoseconds.
         /// </remarks>
         internal static readonly Duration OneStandardWeek = new Duration(7, 0L);
 
         /// <summary>
-        /// Represents the <see cref="Duration"/> value equals to number of nanoseconds in 1 day.
+        /// Represents the <see cref="Duration"/> value equal to the number of nanoseconds in 1 day.
         /// This field is constant.
         /// </summary>
         /// <remarks>
-        /// The value of this constant is 864 billion ticks; that is, 86,400,000,000,000 ticks.
+        /// The value of this constant is 86.4 trillion nanoseconds; that is, 86,400,000,000,000 nanoseconds.
         /// </remarks>
         internal static readonly Duration OneStandardDay = new Duration(1, 0L);
 
         /// <summary>
-        /// Represents the <see cref="Duration"/> value equals to number of ticks in 1 hour.
+        /// Represents the <see cref="Duration"/> value equal to the number of nanoseconds in 1 hour.
         /// This field is constant.
         /// </summary>
         /// <remarks>
-        /// The value of this constant is 36 billion ticks; that is, 3,600,000,000,000 nanoseconds.
+        /// The value of this constant is 3.6 trillion nanoseconds; that is, 3,600,000,000,000 nanoseconds.
         /// </remarks>
         private static readonly Duration OneHour = new Duration(0, NodaConstants.NanosecondsPerHour);
 
         /// <summary>
-        /// Represents the <see cref="Duration"/> value equals to number of nanoseconds in 1 minute.
+        /// Represents the <see cref="Duration"/> value equal to the number of nanoseconds in 1 minute.
         /// This field is constant.
         /// </summary>
         /// <remarks>
-        /// The value of this constant is 600 million ticks; that is, 60,000,000,000 nanoseconds.
+        /// The value of this constant is 60 billion nanoseconds; that is, 60,000,000,000 nanoseconds.
         /// </remarks>
         private static readonly Duration OneMinute = new Duration(0, NodaConstants.NanosecondsPerMinute);
 
         /// <summary>
-        /// Represents the <see cref="Duration"/> value equals to number of ticks in 1 second.
+        /// Represents the <see cref="Duration"/> value equal to the number of nanoseconds in 1 second.
         /// This field is constant.
         /// </summary>
         /// <remarks>
-        /// The value of this constant is 10 million ticks; that is, 1,000,000,000 ticks.
+        /// The value of this constant is 1 billion nanoseconds; that is, 1,000,000,000 nanoseconds.
         /// </remarks>
         private static readonly Duration OneSecond = new Duration(0, NodaConstants.NanosecondsPerSecond);
 
@@ -112,7 +111,7 @@ namespace NodaTime
         /// This field is constant.
         /// </summary>
         /// <remarks>
-        /// The value of this constant is 10 thousand ticks; that is, 1,000,000 ticks.
+        /// The value of this constant is 1,000,000 nanoseconds.
         /// </remarks>
         private static readonly Duration OneMillisecond = new Duration(0, NodaConstants.NanosecondsPerMillisecond);
         #endregion
@@ -157,6 +156,7 @@ namespace NodaTime
         [Pure]
         internal Duration PlusSmallNanoseconds(long smallNanos)
         {
+            // TODO(2.0): Add Preconditions.DebugArgumentRange
             int newDays = days;
             long newNanos = nanoOfDay + smallNanos;
             if (newNanos >= NodaConstants.NanosecondsPerStandardDay)
@@ -179,6 +179,7 @@ namespace NodaTime
         [Pure]
         internal Duration MinusSmallNanoseconds(long smallNanos)
         {
+            // TODO(2.0): Add Preconditions.DebugArgumentRange
             int newDays = days;
             long newNanos = nanoOfDay - smallNanos;
             if (newNanos >= NodaConstants.NanosecondsPerStandardDay)

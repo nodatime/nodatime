@@ -82,7 +82,7 @@ saving transitions, the same local date/time can occur twice.) An alternative wa
 Duration
 --------
 
-A [`Duration`][Duration] is simply a number of nanosecond, which can be added to (or subtracted from) an `Instant` or a `ZonedDateTime`. A particular value will always represent the same
+A [`Duration`][Duration] is simply a number of nanoseconds, which can be added to (or subtracted from) an `Instant` or a `ZonedDateTime`. A particular value will always represent the same
 amount of elapsed time, however it's used.
 
 Period

@@ -87,7 +87,7 @@ namespace NodaTime
         /// Get the elapsed time since the Unix epoch, to nanosecond resolution.
         /// </summary>
         /// <returns>The elapsed time since the Unix epoch.</returns>
-        public Duration TimeSinceEpoch { get { return duration; } }
+        internal Duration TimeSinceEpoch { get { return duration; } }
 
         #region IComparable<Instant> and IComparable Members
         /// <summary>

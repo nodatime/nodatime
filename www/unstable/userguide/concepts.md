@@ -60,7 +60,7 @@ The global time line, and `Instant`
 Noda Time assumes a single non-relativistic time line: global time
 progresses linearly, and everyone in the universe would agree on the
 global concept of "now". Time is measured with a granularity of
-*nanoseconds*. This 100 times the granularity used in `DateTime` and
+*nanoseconds*. This is 100 times finer than the granularity used in `DateTime` and
 `TimeSpan` in .NET, which is the *tick*. A tick is 100 nanoseconds
 in these types, but please be aware that a `Stopwatch` tick in .NET can vary based on the
 timer used.
@@ -193,19 +193,19 @@ Periods and durations
 ---------------------
 
 There are two similar types in Noda Time used to represent "lengths of time". The
-simplest is [`Duration`][Duration] which is equivalent to [`TimeSpan`] in the BCL,
+simplest is [`Duration`][Duration] which is equivalent to [`TimeSpan`][TimeSpan] in the BCL,
 other than in terms of granularity. This is a fixed number of nanoseconds - it's
 the same length of time wherever its applied. `Duration` is used for arithmetic on `Instant`
 and `ZonedDateTime` values.
 
-A more complex type is [`Period`], which is a set of values associated with different
+A more complex type is [`Period`][Period], which is a set of values associated with different
 calendar-based periods: years, months, weeks, days, hours, minutes and so on. Some of
 these periods represent different lengths of time depending on what they're applied
 to - if you add "one month" to January 1st, that's going to be 31 days long. Adding the
 same period to February 1st will give a shorter length of time - which then depends
 on whether the year is a leap year or not. Periods based on smaller units (hours, minutes
 and so on) will always represent the same length of time, but they're still
-available within periods. [`Period`] is used for arithmetic on locally-based values
+available within periods. `Period` is used for arithmetic on locally-based values
 (`LocalDateTime`, `LocalDate`, `LocalTime`).
 
 See the [arithmetic](arithmetic.html) page for more information.
@@ -227,3 +227,4 @@ See the [arithmetic](arithmetic.html) page for more information.
 [TZDB]: http://www.iana.org/time-zones
 [IDateTimeZoneProvider]: noda-type://NodaTime.IDateTimeZoneProvider
 [DateTimeZoneProviders]: noda-type://NodaTime.DateTimeZoneProviders
+[TimeSpan]: http://msdn.microsoft.com/en-us/library/system.timespan.aspx
