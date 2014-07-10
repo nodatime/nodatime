@@ -294,8 +294,10 @@ namespace NodaTime
         [Pure]
         public OffsetDateTime WithOffset(Offset offset)
         {
-            LocalDateTime newLocalDateTime = new LocalDateTime(LocalDateTime.ToLocalInstant().Minus(this.Offset).Plus(offset), Calendar);
-            return new OffsetDateTime(newLocalDateTime, offset);
+            // The millisecond difference will be small, hopefully not even changing the day...
+            // so there's no point in converting to and from LocalInstant representation.
+            long millisecondDifference = offset.Milliseconds - this.offset.Milliseconds;
+            return new OffsetDateTime(localDateTime.PlusMilliseconds(millisecondDifference), offset);
         }
         
         /// <summary>
