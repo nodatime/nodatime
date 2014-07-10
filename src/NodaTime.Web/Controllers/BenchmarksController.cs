@@ -50,7 +50,7 @@ namespace NodaTime.Web.Controllers
         public ActionResult BenchmarkRun(string machine, string label)
         {
             BenchmarkRun run = null;
-            string nextLabel = null; // In descending date order, so earlier...
+            string nextLabel = null; // In descending label order, so earlier...
             foreach (var candidate in repository.RunsByMachine[machine])
             {
                 if (run != null)

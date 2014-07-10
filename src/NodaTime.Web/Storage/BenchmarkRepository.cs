@@ -54,7 +54,8 @@ namespace NodaTime.Web.Storage
                 .Root
                 .Elements("benchmark")
                 .Select(BenchmarkRun.FromXElement)
-                .OrderByDescending(b => b.StartTime)
+                .OrderByDescending(b => BuildForLabel(b.Label))
+                .ThenByDescending(b => b.StartTime)
                 .ToImmutableList();
             sw.Stop();
             return new BenchmarkRepository(runs, sw.Elapsed, DateTimeOffset.Now);
@@ -63,6 +64,11 @@ namespace NodaTime.Web.Storage
         public static string HashForLabel(string label)
         {
             return label.Split('.')[0];
+        }
+
+        public static int BuildForLabel(string label)
+        {
+            return int.Parse(label.Split('.')[1]);
         }
     }
 }

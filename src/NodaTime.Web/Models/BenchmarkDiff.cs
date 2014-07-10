@@ -47,11 +47,14 @@ namespace NodaTime.Web.Models
             LeftBetter = pairs.Where(pair => pair.Percent < ImprovementThreshold).ToList();
             RightBetter = pairs.Where(pair => pair.Percent > RegressionThreshold).ToList();
 
-            var earlier = left.StartTime < right.StartTime ? left : right;
-            var later = left.StartTime < right.StartTime ? right : left;
+            bool leftEarlier = BenchmarkRepository.BuildForLabel(left.Label) < BenchmarkRepository.BuildForLabel(right.Label);
+
+            var earlier = leftEarlier ? left : right;
+            var later = leftEarlier ? right : left;
 
             var earlierHash = BenchmarkRepository.HashForLabel(earlier.Label);
             var laterHash = BenchmarkRepository.HashForLabel(later.Label);
+            
             LogEntries = log.EntriesBetween(earlierHash, laterHash).ToList();
         }
     }

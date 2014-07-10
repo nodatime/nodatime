@@ -6,6 +6,11 @@
 
 <h2>@ViewBag.Title</h2>
 
+<p>
+    Benchmarks for @ViewBag.Machine by build number then date, so that the most recent <i>source</i> is always
+    closer to the top, even if benchmarks were run out of order.
+</p>
+
 @using (@Html.BeginForm("Diff", "Benchmarks", FormMethod.Get))
 {
     <input type="submit" value="Diff left/right" />
