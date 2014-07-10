@@ -109,32 +109,40 @@ namespace NodaTime.TimeZones
         /// <returns>The next transition, or null if there is no next transition.</returns>
         internal Transition? Next(Instant instant, Offset standardOffset, Offset previousSavings)
         {
-            Offset wallOffset = standardOffset + previousSavings;
+            Offset ruleOffset = yearOffset.GetRuleOffset(standardOffset, previousSavings);
 
-            int year = instant == Instant.MinValue ? Int32.MinValue : instant.Plus(wallOffset).GetIsoYear();
-
-            if (year < fromYear)
+            // TODO(2.0): Remove all the MinValue stuff... start with in-bounds values.
+            if (instant == Instant.MinValue)
             {
-                // First advance instant to start of from year.
-                LocalDate startOfYear = new LocalDate(fromYear, 1, 1);
-                instant = new LocalInstant(startOfYear.DaysSinceEpoch, 0).Minus(wallOffset);
-                // Back off one nanosecond to account for next recurrence potentially being
-                // exactly at the beginning of the year.
-                instant = instant - Duration.Epsilon;
+                instant = Instant.FromUtc(-9997, 1, 1, 0, 0);
+            }
+            if (instant == Instant.MaxValue)
+            {
+                instant = Instant.FromUtc(9998, 12, 31, 0, 0);
             }
 
-            Instant next = yearOffset.Next(instant, standardOffset, previousSavings);
+            OffsetDateTime offsetDateTime = instant.WithOffset(ruleOffset);
 
-            if (next >= instant)
+            int targetYear = offsetDateTime.Year;
+            if (offsetDateTime.Year < fromYear)
             {
-                year = next.Plus(wallOffset).GetIsoYear();
-                if (year > toYear)
+                targetYear = fromYear;
+            }
+            if (targetYear > toYear)
+            {
+                return null;
+            }
+            LocalDateTime transition = yearOffset.GetOccurrenceForYear(targetYear);
+            if (transition <= offsetDateTime.LocalDateTime)
+            {
+                targetYear++;
+                if (targetYear > toYear)
                 {
                     return null;
                 }
+                transition = yearOffset.GetOccurrenceForYear(targetYear);
             }
-
-            return new Transition(next, wallOffset, standardOffset + Savings);
+            return new Transition(transition.WithOffset(ruleOffset).ToInstant(), standardOffset + previousSavings, standardOffset + Savings);
         }
 
         /// <summary>
@@ -147,28 +155,40 @@ namespace NodaTime.TimeZones
         /// <returns>The previous transition, or null if there is no previous transition.</returns>
         internal Transition? Previous(Instant instant, Offset standardOffset, Offset previousSavings)
         {
-            Offset wallOffset = standardOffset + previousSavings;
+            Offset ruleOffset = yearOffset.GetRuleOffset(standardOffset, previousSavings);
 
-            int year = instant == Instant.MaxValue ? Int32.MaxValue : instant.Plus(wallOffset).ToIsoDate().Year;
-
-            if (year > toYear)
+            // TODO(2.0): Remove all the MinValue stuff... start with in-bounds values.
+            if (instant == Instant.MinValue)
             {
-                // First pull instant back to the start of the year after toYear
-                instant = new LocalDateTime(toYear + 1, 1, 1, 0, 0).ToLocalInstant().Minus(wallOffset);
+                instant = Instant.FromUtc(-9997, 1, 1, 0, 0);
+            }
+            if (instant == Instant.MaxValue)
+            {
+                instant = Instant.FromUtc(9998, 12, 31, 0, 0);
             }
 
-            Instant previous = yearOffset.Previous(instant, standardOffset, previousSavings);
+            OffsetDateTime offsetDateTime = instant.WithOffset(ruleOffset);
 
-            if (previous <= instant)
+            int targetYear = offsetDateTime.Year;
+            if (offsetDateTime.Year > toYear)
             {
-                year = previous.Plus(wallOffset).ToIsoDate().Year;
-                if (year < fromYear)
+                targetYear = toYear;
+            }
+            if (targetYear < fromYear)
+            {
+                return null;
+            }
+            LocalDateTime transition = yearOffset.GetOccurrenceForYear(targetYear);
+            if (transition >= offsetDateTime.LocalDateTime)
+            {
+                targetYear--;
+                if (targetYear < fromYear)
                 {
                     return null;
                 }
+                transition = yearOffset.GetOccurrenceForYear(targetYear);
             }
-
-            return new Transition(previous, wallOffset, standardOffset + Savings);
+            return new Transition(transition.WithOffset(ruleOffset).ToInstant(), standardOffset + previousSavings, standardOffset + Savings);
         }
 
         /// <summary>

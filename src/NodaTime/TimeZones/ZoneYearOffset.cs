@@ -206,25 +206,30 @@ namespace NodaTime.TimeZones
         }
 
         /// <summary>
-        /// Returns an <see cref="Instant"/> that represents the point in the given year that this
-        /// object defines. If the exact point is not valid then the nearest point that matches the
-        /// definition is returned.
+        /// Returns the occurrence of this rule within the given year, at the offset indicated
+        /// by the standard offset, the savings offset when approaching the transition, and
+        /// the transition mode.
         /// </summary>
-        /// <param name="year">The year to calculate for.</param>
-        /// <param name="offsetToApply">The offset to apply, based on the transition mode. (This is assumed to be
-        /// correct based on previous computations.)</param>
-        /// <returns>The <see cref="Instant"/> of the point in the given year.</returns>
-        private Instant MakeInstant(int year, Offset offsetToApply)
+        internal OffsetDateTime GetOccurrenceForYear(int year, Offset standardOffset, Offset savingsOffset)
         {
-            if (year > GregorianYearMonthDayCalculator.MaxGregorianYear)
-            {
-                return Instant.MaxValue;
-            }
-            if (year < GregorianYearMonthDayCalculator.MinGregorianYear)
-            {
-                return Instant.MinValue;
-            }
+            return GetOccurrenceForYear(year).WithOffset(GetRuleOffset(standardOffset, savingsOffset));
+        }
+
+        /// <summary>
+        /// Returns the occurrence of this rule within the given year.
+        /// </summary>
+        internal LocalDateTime GetOccurrenceForYear(int year)
+        {
             int actualDayOfMonth = dayOfMonth > 0 ? dayOfMonth : CalendarSystem.Iso.GetDaysInMonth(year, monthOfYear) + dayOfMonth + 1;
+            if (monthOfYear == 2 && dayOfMonth == 29 && !CalendarSystem.Iso.IsLeapYear(year))
+            {
+                // This mirrors zic.c. It's an odd rule, but...
+                if (dayOfWeek == 0 || advance)
+                {
+                    throw new InvalidOperationException("Requested transition for a ZoneYearOffset of February 29th in a non-leap year, not moving backwards to find a day-of-week");
+                }
+                actualDayOfMonth = 28; // We'll now look backwards for the right day-of-week.
+            }
             LocalDate date = new LocalDate(year, monthOfYear, actualDayOfMonth);
             if (dayOfWeek != 0 && dayOfWeek != date.DayOfWeek)
             {
@@ -235,79 +240,7 @@ namespace NodaTime.TimeZones
             {
                 date = date.PlusDays(1);
             }
-
-            LocalInstant localInstant = new LocalInstant(date.DaysSinceEpoch, timeOfDay.NanosecondOfDay);
-
-            // Convert from local time to UTC.
-            return localInstant.Minus(offsetToApply);
-        }
-
-        /// <summary>
-        /// Returns an <see cref="Instant"/> that represents the point in the given year that this
-        /// object defines. If the exact point is not valid then the nearest point that matches the
-        /// definition is returned.
-        /// </summary>
-        /// <param name="year">The year to calculate for.</param>
-        /// <param name="standardOffset">The standard offset.</param>
-        /// <param name="savings">The daylight savings adjustment.</param>
-        /// <returns>The <see cref="Instant"/> of the point in the given year.</returns>
-        internal Instant MakeInstant(int year, Offset standardOffset, Offset savings)
-        {
-            Offset offset = GetOffset(standardOffset, savings);
-            return MakeInstant(year, offset);
-        }
-
-        /// <summary>
-        /// Returns the given instant adjusted one year forward taking into account leap years and other
-        /// adjustments like day of week.
-        /// </summary>
-        /// <param name="instant">The instant to adjust.</param>
-        /// <param name="standardOffset">The standard offset.</param>
-        /// <param name="currentSavings">The daylight savings adjustment currently in force at the given instant.
-        /// (This is used when the transition mode is Wall.)
-        /// </param>
-        /// <returns>The adjusted <see cref="LocalInstant"/>.</returns>
-        internal Instant Next(Instant instant, Offset standardOffset, Offset currentSavings)
-        {
-            Offset offset = GetOffset(standardOffset, currentSavings);
-            LocalInstant local = instant.Plus(offset);
-            int year = GetEligibleYear(local.GetIsoYear(), 1);
-            Instant transitionSameYear = MakeInstant(year, offset);
-            return transitionSameYear > instant ? transitionSameYear : MakeInstant(GetEligibleYear(year + 1, 1), offset);
-        }
-
-        /// <summary>
-        /// Returns the given instant adjusted one year backward taking into account leap years and other
-        /// adjustments like day of week.
-        /// </summary>
-        /// <param name="instant">The instant to adjust.</param>
-        /// <param name="standardOffset">The standard offset.</param>
-        /// <param name="savings">The daylight savings adjustment.</param>
-        /// <returns>The adjusted <see cref="LocalInstant"/>.</returns>
-        internal Instant Previous(Instant instant, Offset standardOffset, Offset savings)
-        {
-            Offset offset = GetOffset(standardOffset, savings);
-            LocalInstant local = instant.Plus(offset);
-            int year = GetEligibleYear(local.GetIsoYear(), -1);
-            Instant transitionSameYear = MakeInstant(year, offset);
-            return transitionSameYear < instant ? transitionSameYear : MakeInstant(GetEligibleYear(year - 1, -1), offset);
-        }
-
-        // For transitions on Feb 29th, we can't necessarily just go from one year to another.
-        // Instead, we need to find the next or previous leap year.
-        private int GetEligibleYear(int year, int direction)
-        {
-            // Not looking for February 29th? We're fine.
-            if (dayOfMonth != 29 || monthOfYear != 2)
-            {
-                return year;
-            }
-            // Iterate until we find a leap year.
-            while (!CalendarSystem.Iso.IsLeapYear(year))
-            {
-                year += direction;
-            }
-            return year;
+            return date + timeOfDay;
         }
 
         /// <summary>
@@ -350,12 +283,14 @@ namespace NodaTime.TimeZones
         }
 
         /// <summary>
-        /// Returns the offset to use for this object's <see cref="TransitionMode"/>.
+        /// Returns the offset to use for this rule's <see cref="TransitionMode"/>.
+        /// The year/month/day/time for a rule is in a specific frame of reference:
+        /// UTC, "wall" or "standard".
         /// </summary>
         /// <param name="standardOffset">The standard offset.</param>
         /// <param name="savings">The daylight savings adjustment.</param>
         /// <returns>The base time offset as a <see cref="Duration"/>.</returns>
-        private Offset GetOffset(Offset standardOffset, Offset savings)
+        internal Offset GetRuleOffset(Offset standardOffset, Offset savings)
         {
             switch (mode)
             {

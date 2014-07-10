@@ -99,7 +99,11 @@ namespace NodaTime.TzdbCompiler.Tzdb
         /// <returns>The <see cref="LocalInstant"/> of the upper limit for this rule set.</returns>
         internal Instant GetUpperLimit(Offset savings)
         {
-            return upperYear == Int32.MaxValue ? Instant.MaxValue : upperYearOffset.MakeInstant(upperYear, StandardOffset, savings);
+            if (upperYear == int.MaxValue)
+            {
+                return Instant.MaxValue;
+            }
+            return upperYearOffset.GetOccurrenceForYear(upperYear, StandardOffset, savings).ToInstant();
         }
 
         /// <summary>
@@ -325,7 +329,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
                 // Check if upper limit reached or passed.
                 if (ruleSet.upperYear < Int32.MaxValue)
                 {
-                    Instant upperTicks = ruleSet.upperYearOffset.MakeInstant(ruleSet.upperYear, ruleSet.StandardOffset, savings);
+                    Instant upperTicks = ruleSet.GetUpperLimit(savings);
                     if (nextTicks >= upperTicks)
                     {
                         // At or after upper limit.
