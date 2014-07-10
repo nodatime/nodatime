@@ -102,9 +102,8 @@ namespace NodaTime
         private readonly string id;
         private readonly bool isFixed;
 
-        // We frequently need to add this to an Instant, so store the raw number of nanoseconds.
-        private readonly long minOffsetNanos;
-        private readonly long maxOffsetNanos;
+        private readonly Offset minOffset;
+        private readonly Offset maxOffset;
 
         /// <summary>
         /// Gets the UTC (Coordinated Universal Time) time zone. This is a single instance which is not
@@ -156,8 +155,8 @@ namespace NodaTime
         {
             this.id = id;
             this.isFixed = isFixed;
-            this.minOffsetNanos = minOffset.Nanoseconds;
-            this.maxOffsetNanos = maxOffset.Nanoseconds;
+            this.minOffset = minOffset;
+            this.maxOffset = maxOffset;
         }
 
         /// <summary>
@@ -185,12 +184,12 @@ namespace NodaTime
         /// <summary>
         /// Returns the least (most negative) offset within this time zone, over all time.
         /// </summary>
-        public Offset MinOffset { get { return Offset.FromNanoseconds(minOffsetNanos); } }
+        public Offset MinOffset { get { return minOffset; } }
 
         /// <summary>
         /// Returns the greatest (most positive) offset within this time zone, over all time.
         /// </summary>
-        public Offset MaxOffset { get { return Offset.FromNanoseconds(maxOffsetNanos); } }
+        public Offset MaxOffset { get { return maxOffset; } }
 
         #region Core abstract/virtual methods
         /// <summary>
@@ -444,11 +443,13 @@ namespace NodaTime
             {
                 return null;
             }
-            // If the tick before this interval started *could* map to a later local instant, let's
-            // get the interval and check whether it actually includes the one we want.
+            // This allows for a maxOffset of up to +1 day, and the "truncate towards beginning of time"
+            // nature of the Days property.
             Instant endOfPrevious = intervalStart;
-            if (endOfPrevious.TimeSinceEpoch.PlusSmallNanoseconds(maxOffsetNanos) > localInstant.TimeSinceLocalEpoch)
+            if (endOfPrevious.TimeSinceEpoch.Days + 2 > localInstant.TimeSinceLocalEpoch.Days)
             {
+                // We *could* do a more accurate check here based on the actual maxOffset, but it's probably
+                // not worth it.
                 ZoneInterval candidate = GetZoneInterval(endOfPrevious - Duration.Epsilon);
                 if (candidate.Contains(localInstant))
                 {
@@ -470,8 +471,13 @@ namespace NodaTime
             {
                 return null;
             }
-            if (intervalEnd.TimeSinceEpoch.PlusSmallNanoseconds(minOffsetNanos) <= localInstant.TimeSinceLocalEpoch)
+            // Crude but cheap first check to see whether there *might* be a later interval.
+            // This allows for a minOffset of up to -1 day, and the "truncate towards beginning of time"
+            // nature of the Days property.
+            if (intervalEnd.TimeSinceEpoch.Days - 1 < localInstant.TimeSinceLocalEpoch.Days)
             {
+                // We *could* do a more accurate check here based on the actual maxOffset, but it's probably
+                // not worth it.
                 ZoneInterval candidate = GetZoneInterval(intervalEnd);
                 if (candidate.Contains(localInstant))
                 {
