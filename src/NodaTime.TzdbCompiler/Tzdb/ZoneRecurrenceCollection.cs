@@ -23,7 +23,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
         // pre-calculating far sooner anyhow. Either a simple DST cycle is detected or the last
         // rule is a fixed offset. If a zone has a fixed offset set more than 100 years into the
         // future, then it won't be observed.
-        private static readonly int YearLimit = SystemClock.Instance.Now.InUtc().Year + 100;
+        private static readonly Instant PrecomputationLimit = SystemClock.Instance.Now.InUtc().LocalDateTime.PlusYears(100).InUtc().ToInstant();
 
         private readonly List<ZoneRecurrence> rules = new List<ZoneRecurrence>();
         private string initialNameKey;
@@ -152,7 +152,6 @@ namespace NodaTime.TzdbCompiler.Tzdb
         /// </remarks>
         internal sealed class TransitionIterator
         {
-            private readonly CalendarSystem calendar;
             private readonly ZoneRecurrenceCollection ruleSet;
             private readonly Instant startingInstant;
             private Instant instant;
@@ -167,7 +166,6 @@ namespace NodaTime.TzdbCompiler.Tzdb
             /// <param name="startingInstant">The starting instant.</param>
             internal TransitionIterator(ZoneRecurrenceCollection ruleSet, Instant startingInstant)
             {
-                calendar = CalendarSystem.Iso;
                 this.ruleSet = ruleSet;
                 this.startingInstant = startingInstant;
             }
@@ -321,7 +319,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
 
                 // Stop precalculating if year reaches some arbitrary limit. We can cheat in the
                 // conversion because it is an approximation anyway.
-                if (nextTicks.Plus(Offset.Zero).GetIsoYear() >= YearLimit)
+                if (nextTicks >= PrecomputationLimit)
                 {
                     return null;
                 }

@@ -138,23 +138,6 @@ namespace NodaTime
         }
 
         /// <summary>
-        /// Returns a <see cref="LocalDate"/> in the ISO calendar for this LocalInstant.
-        /// </summary>
-        internal LocalDate ToIsoDate()
-        {
-            return new LocalDate(duration.Days, CalendarSystem.Iso);
-        }
-
-        /// <summary>
-        /// Returns the year on which this LocalInstant occurs in the ISO calendar.
-        /// </summary>
-        internal int GetIsoYear()
-        {
-            int ignored;
-            return CalendarSystem.Iso.YearMonthDayCalculator.GetYear(duration.Days, out ignored);
-        }
-
-        /// <summary>
         /// Implements the operator == (equality).
         /// </summary>
         /// <param name="left">The left hand side of the operator.</param>
@@ -313,8 +296,9 @@ namespace NodaTime
         /// </returns>
         public override string ToString()
         {
+            var date = new LocalDate(duration.Days, CalendarSystem.Iso);
             var pattern = LocalDateTimePattern.CreateWithInvariantCulture("yyyy-MM-ddTHH:mm:ss LOC");
-            var utc = new LocalDateTime(ToIsoDate(), LocalTime.FromNanosecondsSinceMidnight(duration.NanosecondOfDay));
+            var utc = new LocalDateTime(date, LocalTime.FromNanosecondsSinceMidnight(duration.NanosecondOfDay));
             return pattern.Format(utc);
         }
         #endregion  // Object overrides
