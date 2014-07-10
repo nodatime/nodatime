@@ -31,7 +31,9 @@ which avoids ever having to parse 5-digit years. This leads to a Gregorian calen
 and from natural restrictions (such as not being proleptic).
 
 The date range is always a complete number of years - the range shown below is inclusive at both ends, so every
-date from the start of the minimum year to the end of the maximum year is valid.
+date from the start of the minimum year to the end of the maximum year is valid. (The min/max Gregorian year
+shows the Gregorian year corresponding to the min/max calendar values; this does *not* mean that the whole of
+that Gregorian year can be converted into the relevant calendar.)
 
 <table>
 	<thead>
@@ -39,6 +41,8 @@ date from the start of the minimum year to the end of the maximum year is valid.
 			<th>Calendar</th>
 			<th>Min year</th>
 			<th>Max year</th>
+			<th>Min year (Gregorian)</th>
+			<th>Max year (Gregorian)</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -46,31 +50,43 @@ date from the start of the minimum year to the end of the maximum year is valid.
 			<td>Gregorian/ISO</td>
 			<td>-9998</td>
 			<td>9999</td>
+			<td>-9998</td>
+			<td>9999</td>
 		</tr>
 		<tr>
 			<td>Julian</td>
 			<td>-9997</td>
-			<td>9997</td>
+			<td>9998</td>
+			<td>-9998</td>
+			<td>9999</td>
 		</tr>
 		<tr>
 			<td>Islamic</td>
 			<td>1</td>
-			<td>9664</td>
+			<td>9665</td>
+			<td>622</td>
+			<td>9999</td>
 		</tr>
 		<tr>
 			<td>Persian</td>
 			<td>1</td>
 			<td>9376</td>
+			<td>622</td>
+			<td>9999</td>
 		</tr>
 		<tr>
 			<td>Hebrew</td>
 			<td>1</td>
 			<td>9999</td>
+			<td>-3760</td>
+			<td>6239</td>
 		</tr>
 		<tr>
 			<td>Coptic</td>
 			<td>1</td>
-			<td>9714</td>
+			<td>9715</td>
+			<td>284</td>
+			<td>9999</td>
 		</tr>		
 	</tbody>
 </table>
