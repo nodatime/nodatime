@@ -10,6 +10,8 @@ namespace NodaTime.Benchmarks.NodaTimeTests
     internal class OffsetDateTimeBenchmarks
     {
         private static readonly Offset OneHourOffset = Offset.FromHours(1);
+        private static readonly Offset LargePositiveOffset = Offset.FromHours(12);
+        private static readonly Offset LargeNegativeOffset = Offset.FromHours(12);
         private static readonly LocalDateTime SampleLocal = new LocalDateTime(2009, 12, 26, 10, 8, 30);
         private static readonly OffsetDateTime SampleEarlier = new OffsetDateTime(SampleLocal, -OneHourOffset);
         private static readonly OffsetDateTime Sample = new OffsetDateTime(SampleLocal, Offset.Zero);
@@ -92,6 +94,20 @@ namespace NodaTime.Benchmarks.NodaTimeTests
             InstantComparer.Compare(Sample, SampleEarlier);
             InstantComparer.Compare(Sample, Sample);
             InstantComparer.Compare(Sample, SampleLater);
+        }
+
+        [Benchmark]
+        public void WithOffset_SameLocalDay()
+        {
+            // This just about stays within the same local day
+            SampleEarlier.WithOffset(LargePositiveOffset).Consume();
+        }
+
+        [Benchmark]
+        public void WithOffset_DifferentLocalDay()
+        {
+            // This ends up in the day before
+            SampleEarlier.WithOffset(LargeNegativeOffset).Consume();
         }
     }
 }
