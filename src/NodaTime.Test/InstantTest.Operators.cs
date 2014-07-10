@@ -104,7 +104,7 @@ namespace NodaTime.Test
         public void OperatorMinusInstant_NonZero()
         {
             Assert.AreEqual(2999999L, (threeMillion - one).ToInt64Nanoseconds(), "3,000,000 - 1");
-            Assert.AreEqual(2L, (one - new Instant(0, -1L)).ToInt64Nanoseconds(), "1 - (-1)");
+            Assert.AreEqual(2L, (one - new Instant(Duration.FromNanoseconds(-1L))).ToInt64Nanoseconds(), "1 - (-1)");
             Assert.AreEqual(-50000001L, (negativeFiftyMillion - one).ToInt64Nanoseconds(), "-50,000,000 - 1");
         }
 

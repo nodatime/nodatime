@@ -238,6 +238,7 @@ namespace NodaTime
         /// </summary>
         internal LocalTime(long nanoseconds)
         {
+            Preconditions.DebugCheckArgumentRange("nanoseconds", nanoseconds, 0, NodaConstants.NanosecondsPerStandardDay - 1);
             this.nanoseconds = nanoseconds;
         }
 

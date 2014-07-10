@@ -3,6 +3,7 @@
 // as found in the LICENSE.txt file.
 
 using System;
+using System.Diagnostics;
 using JetBrains.Annotations;
 
 namespace NodaTime.Utility
@@ -44,6 +45,46 @@ namespace NodaTime.Utility
         // version using "long" values, but we'd incur conversions on every call. This method
         // may well be called very often.
         internal static void CheckArgumentRange([InvokerParameterName] string paramName, int value, int minInclusive, int maxInclusive)
+        {
+            if (value < minInclusive || value > maxInclusive)
+            {
+#if PCL
+                throw new ArgumentOutOfRangeException(paramName,
+                    "Value should be in range [" + minInclusive + "-" + maxInclusive + "]");
+#else
+                throw new ArgumentOutOfRangeException(paramName, value,
+                    "Value should be in range [" + minInclusive + "-" + maxInclusive + "]");
+#endif
+            }
+        }
+
+        /// <summary>
+        /// Range change to perform just within debug builds. This is typically for internal sanity checking, where we normally
+        /// trusting the argument value to be valid, and adding a check just for the sake of documentation - and to help find
+        /// internal bugs during development.
+        /// </summary>
+        [Conditional("DEBUG")]
+        internal static void DebugCheckArgumentRange([InvokerParameterName] string paramName, int value, int minInclusive, int maxInclusive)
+        {
+            if (value < minInclusive || value > maxInclusive)
+            {
+#if PCL
+                throw new ArgumentOutOfRangeException(paramName,
+                    "Value should be in range [" + minInclusive + "-" + maxInclusive + "]");
+#else
+                throw new ArgumentOutOfRangeException(paramName, value,
+                    "Value should be in range [" + minInclusive + "-" + maxInclusive + "]");
+#endif
+            }
+        }
+
+        /// <summary>
+        /// Range change to perform just within debug builds. This is typically for internal sanity checking, where we normally
+        /// trusting the argument value to be valid, and adding a check just for the sake of documentation - and to help find
+        /// internal bugs during development.
+        /// </summary>
+        [Conditional("DEBUG")]
+        internal static void DebugCheckArgumentRange([InvokerParameterName] string paramName, long value, long minInclusive, long maxInclusive)
         {
             if (value < minInclusive || value > maxInclusive)
             {
