@@ -142,7 +142,7 @@ namespace NodaTime.TimeZones
                 }
                 transition = yearOffset.GetOccurrenceForYear(targetYear);
             }
-            return new Transition(transition.WithOffset(ruleOffset).ToInstant(), standardOffset + previousSavings, standardOffset + Savings);
+            return new Transition(transition.WithOffset(ruleOffset).ToInstant(), standardOffset + Savings);
         }
 
         /// <summary>
@@ -188,7 +188,7 @@ namespace NodaTime.TimeZones
                 }
                 transition = yearOffset.GetOccurrenceForYear(targetYear);
             }
-            return new Transition(transition.WithOffset(ruleOffset).ToInstant(), standardOffset + previousSavings, standardOffset + Savings);
+            return new Transition(transition.WithOffset(ruleOffset).ToInstant(), standardOffset + Savings);
         }
 
         /// <summary>

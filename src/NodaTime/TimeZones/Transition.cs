@@ -8,7 +8,7 @@ namespace NodaTime.TimeZones
 {
     /// <summary>
     /// A transition between two offsets, usually for daylight saving reasons. This type only knows about
-    /// the old offset, the new offset, and the transition point.
+    /// the new offset, and the transition point.
     /// </summary>
     /// 
     /// <threadsafety>This type is an immutable value type. See the thread safety section of the user guide for more information.</threadsafety>
@@ -17,7 +17,6 @@ namespace NodaTime.TimeZones
         private readonly Instant instant;
         internal Instant Instant { get { return instant; } }
 
-        private readonly Offset oldOffset;
         private readonly Offset newOffset;
 
         /// <summary>
@@ -25,16 +24,15 @@ namespace NodaTime.TimeZones
         /// </summary>
         internal Offset NewOffset { get { return newOffset; } }
 
-        internal Transition(Instant instant, Offset oldOffset, Offset newOffset)
+        internal Transition(Instant instant, Offset newOffset)
         {
             this.instant = instant;
-            this.oldOffset = oldOffset;
             this.newOffset = newOffset;
         }
 
         public bool Equals(Transition other)
         {
-            return instant == other.Instant && oldOffset == other.oldOffset && newOffset == other.NewOffset;
+            return instant == other.Instant && newOffset == other.NewOffset;
         }
 
         #region Operators
@@ -90,7 +88,6 @@ namespace NodaTime.TimeZones
         {
             int hash = 23;
             hash = hash * 31 + instant.GetHashCode();
-            hash = hash * 31 + oldOffset.GetHashCode();
             hash = hash * 31 + newOffset.GetHashCode();
             return hash;
         }
@@ -103,7 +100,7 @@ namespace NodaTime.TimeZones
         /// </returns>
         public override string ToString()
         {
-            return "Transition from " + oldOffset + " to " + newOffset + " at " + instant;
+            return "Transition to " + newOffset + " at " + instant;
         }
         #endregion  // Object overrides
     }
