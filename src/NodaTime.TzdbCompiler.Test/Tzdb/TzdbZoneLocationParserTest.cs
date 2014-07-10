@@ -7,7 +7,7 @@ using System;
 using System.Collections.Generic;
 using NodaTime.TzdbCompiler.Tzdb;
 
-namespace ZoneInfoCompiler.Test.Tzdb
+namespace NodaTime.TzdbCompiler.Test.Tzdb
 {
     [TestFixture]
     public class TzdbZoneLocationParserTest

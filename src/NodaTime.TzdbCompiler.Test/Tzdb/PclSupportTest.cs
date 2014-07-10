@@ -8,7 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace ZoneInfoCompiler.Test.Tzdb
+namespace NodaTime.TzdbCompiler.Test.Tzdb
 {
     [TestFixture]
     public class PclSupportTest
