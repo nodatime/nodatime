@@ -121,6 +121,7 @@ namespace NodaTime
 
         internal Duration(int days, long nanoOfDay)
         {
+            Preconditions.DebugCheckArgumentRange("nanoOfDay", nanoOfDay, 0, NodaConstants.NanosecondsPerStandardDay - 1);
             this.days = days;
             this.nanoOfDay = nanoOfDay;
         }
@@ -150,13 +151,13 @@ namespace NodaTime
         }
 
         /// <summary>
-        /// Adds a "small" number of nanoseconds to this duration: it is trusted to be less than 24 hours
+        /// Adds a "small" number of nanoseconds to this duration: it is trusted to be less or equal to than 24 hours
         /// in magnitude.
         /// </summary>
         [Pure]
         internal Duration PlusSmallNanoseconds(long smallNanos)
         {
-            // TODO(2.0): Add Preconditions.DebugArgumentRange
+            Preconditions.DebugCheckArgumentRange("smallNanos", smallNanos, -NodaConstants.NanosecondsPerStandardDay, NodaConstants.NanosecondsPerStandardDay);
             int newDays = days;
             long newNanos = nanoOfDay + smallNanos;
             if (newNanos >= NodaConstants.NanosecondsPerStandardDay)
@@ -179,7 +180,7 @@ namespace NodaTime
         [Pure]
         internal Duration MinusSmallNanoseconds(long smallNanos)
         {
-            // TODO(2.0): Add Preconditions.DebugArgumentRange
+            Preconditions.DebugCheckArgumentRange("smallNanos", smallNanos, -NodaConstants.NanosecondsPerStandardDay, NodaConstants.NanosecondsPerStandardDay);
             int newDays = days;
             long newNanos = nanoOfDay - smallNanos;
             if (newNanos >= NodaConstants.NanosecondsPerStandardDay)
