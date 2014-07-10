@@ -91,4 +91,76 @@ that Gregorian year can be converted into the relevant calendar.)
 	</tbody>
 </table>
 
-TODO: Talk about Duration, Instant etc.
+Instant
+----
+
+The range for [`Instant`](noda-type://NodaTime.Instant) is simply the range of the Gregorian calendar, in UTC.
+In other words, it covers -9998-01-01T00:00:00Z to 9999-12-031T23:59:59.999999999Z inclusive.
+
+`LocalDateTime`, `LocalDate`, `ZonedDateTime`, and `OffsetDateTime`
+----
+
+All of the types in this heading are based on dates in calendars, and they all have ranges based on that
+*local* date (and thus on the calendar). So even if the logical position on the global time-line for a
+`ZonedDateTime` or `OffsetDateTime` is out of the range of `Instant`, the value is still valid. For example, consider
+this code:
+
+    LocalDate earliestDate = new LocalDate(-9998, 1, 1);
+    OffsetDateTime offsetDateTime = earliestDate.AtMidnight().WithOffset(Offset.FromHours(10));
+
+Here, `offsetDateTime` has a local date/time value of -9998-01-01T00:00:00, but it's 10 hours ahead of UTC... giving a logical
+instant of -9999-12-31T14:00:00Z... which is out of range. That's fine, and the code above won't throw an exception... unless
+you try to convert `offsetDateTime` to an `Instant`.
+
+`Duration`
+----
+
+[`Duration`](noda-type://NodaTime.Duration) is designed to allow for *at least* the largest difference in valid `Instant`
+values in either direction. As such, it needs to cover 631,075,881,599,999,999,999 nanoseconds - which is just shy of 7,304,119 days.
+Internally, durations are stored in terms of "day" and "nanosecond within the day" (an implementation detail to be sure, but one
+which sometimes affects other decisions).
+
+Option 1: Restrict the number of days to *exactly* the range -7,304,119 to 7,304,118 days (inclusive at both ends) with any number 
+of nanoseconds of day. This would permit a single value (-7,304,119 days + 0 nanoseconds) to be "unusable" - there wouldn't be any 
+valid instant it could be added to without breaking. (Removing that one extreme value would be very hard indeed.)
+
+Option 2: Use 24 bits to store the number of days, giving a range of -8,388,608 to +8,388,607 days (inclusive at both ends). A 
+duration will be valid if the number of days is in that range. The range of "nanosecond of day" always covers the full range, so the 
+effective range of the whole type is \[-8388608, 8388608) days (not the exclusive upper bound), with every nanosecond in between being 
+precisely represented. That range of durations is more than strictly needed, but quite possibly cheaper to work with than option 1.
+
+Option 3: Use all 32 bits to store the number of days, and rely on checked arithmetic to catch anything going out of range.
+That may make things simpler, but allows nonsensical values to build up without being spotted as early.
+
+`Period`
+----
+
+TBD. (Depends on the redesign...)
+
+Failure modes
+----
+
+Assuming Noda Time is bug free<sup>1</sup>, we ensure that if you try to create a value outside the valid
+range for that type (via any normal API calls), an exception of one of the following types will be thrown:
+
+- `OverflowException`
+- `ArgumentOutOfRangeException`
+- `ArgumentException`
+- `InvalidOperationException`
+
+(TBD: Serialization? We should probably protect against invalid binary data.)
+
+The "best" exception in each case depends very much on the context - but in the aim of code reuse and
+performance, we may not always have that context available when the exception is thrown. For example, a call
+to `OffsetDateTime.ToInstant()` doesn't have any arguments - but internally we may end up calling another method
+and passing one or more arguments. If the validation of the "inner" method throws an `ArgumentOutOfRangeException`,
+that's what you'll see too. It's not ideal, but it's a reasonable balance. You should almost never be catching any
+of those exceptions explicitly anyway, so hopefully it's just a matter of being aware that if one of those exceptions
+is thrown from the depths of Noda Time, it's probably due to a value being out of range somewhere.
+
+As far as possible, we try to ensure that if you try to perform an operation which *can* succeed, it *will* succeed.
+This is *not* guaranteed in all cases, however. For example, consider adding a `Period` consisting of -1 year and 365 days
+to -9998-01-01. The "logical" result is a no-op, but as `Period` addition is performed one unit at a time, it will fail
+on the addition of the -1 year.
+
+<sup>1</sup> I'm not claiming that it *is* bug free, but I can't predict what will happen if there are bugs.
