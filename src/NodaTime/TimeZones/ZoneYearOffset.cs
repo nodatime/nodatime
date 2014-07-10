@@ -196,27 +196,47 @@ namespace NodaTime.TimeZones
         /// </summary>
         internal LocalDateTime GetOccurrenceForYear(int year)
         {
-            int actualDayOfMonth = dayOfMonth > 0 ? dayOfMonth : CalendarSystem.Iso.GetDaysInMonth(year, monthOfYear) + dayOfMonth + 1;
-            if (monthOfYear == 2 && dayOfMonth == 29 && !CalendarSystem.Iso.IsLeapYear(year))
+            unchecked
             {
-                // This mirrors zic.c. It's an odd rule, but...
-                if (dayOfWeek == 0 || advance)
+                int actualDayOfMonth = dayOfMonth > 0 ? dayOfMonth : CalendarSystem.Iso.GetDaysInMonth(year, monthOfYear) + dayOfMonth + 1;
+                if (monthOfYear == 2 && dayOfMonth == 29 && !CalendarSystem.Iso.IsLeapYear(year))
                 {
-                    throw new InvalidOperationException("Requested transition for a ZoneYearOffset of February 29th in a non-leap year, not moving backwards to find a day-of-week");
+                    // This mirrors zic.c. It's an odd rule, but...
+                    if (dayOfWeek == 0 || advance)
+                    {
+                        throw new InvalidOperationException("Requested transition for a ZoneYearOffset of February 29th in a non-leap year, not moving backwards to find a day-of-week");
+                    }
+                    actualDayOfMonth = 28; // We'll now look backwards for the right day-of-week.
                 }
-                actualDayOfMonth = 28; // We'll now look backwards for the right day-of-week.
+                LocalDate date = new LocalDate(year, monthOfYear, actualDayOfMonth);
+                if (dayOfWeek != 0)
+                {
+                    // Optimized "go to next or previous occurrence of day or week". Try to do as few comparisons
+                    // as possible, and only fetch DayOfWeek once. (If we call Next or Previous, it will work it out again.)
+                    int currentDayOfWeek = date.DayOfWeek;
+                    if (currentDayOfWeek != dayOfWeek)
+                    {
+                        int diff = dayOfWeek - currentDayOfWeek;
+                        if (diff > 0)
+                        {
+                            if (!advance)
+                            {
+                                diff -= 7;
+                            }
+                        }
+                        else if (advance)
+                        {
+                            diff += 7;
+                        }
+                        date = date.PlusDays(diff);
+                    }
+                }
+                if (addDay)
+                {
+                    date = date.PlusDays(1);
+                }
+                return date + timeOfDay;
             }
-            LocalDate date = new LocalDate(year, monthOfYear, actualDayOfMonth);
-            if (dayOfWeek != 0 && dayOfWeek != date.DayOfWeek)
-            {
-                IsoDayOfWeek isoDayOfWeek = (IsoDayOfWeek) dayOfWeek;
-                date = advance ? date.Next(isoDayOfWeek) : date.Previous(isoDayOfWeek);
-            }
-            if (addDay)
-            {
-                date = date.PlusDays(1);
-            }
-            return date + timeOfDay;
         }
 
         /// <summary>
