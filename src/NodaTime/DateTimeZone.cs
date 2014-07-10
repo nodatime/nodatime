@@ -445,12 +445,11 @@ namespace NodaTime
             }
             // This allows for a maxOffset of up to +1 day, and the "truncate towards beginning of time"
             // nature of the Days property.
-            Instant endOfPrevious = intervalStart;
-            if (endOfPrevious.TimeSinceEpoch.Days + 2 > localInstant.TimeSinceLocalEpoch.Days)
+            if (localInstant.TimeSinceLocalEpoch.Days <= intervalStart.TimeSinceEpoch.Days + 1)
             {
                 // We *could* do a more accurate check here based on the actual maxOffset, but it's probably
                 // not worth it.
-                ZoneInterval candidate = GetZoneInterval(endOfPrevious - Duration.Epsilon);
+                ZoneInterval candidate = GetZoneInterval(intervalStart - Duration.Epsilon);
                 if (candidate.Contains(localInstant))
                 {
                     return candidate;
@@ -474,7 +473,7 @@ namespace NodaTime
             // Crude but cheap first check to see whether there *might* be a later interval.
             // This allows for a minOffset of up to -1 day, and the "truncate towards beginning of time"
             // nature of the Days property.
-            if (intervalEnd.TimeSinceEpoch.Days - 1 < localInstant.TimeSinceLocalEpoch.Days)
+            if (localInstant.TimeSinceLocalEpoch.Days >= intervalEnd.TimeSinceEpoch.Days - 1)
             {
                 // We *could* do a more accurate check here based on the actual maxOffset, but it's probably
                 // not worth it.
