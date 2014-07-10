@@ -13,8 +13,8 @@ namespace NodaTime.Calendars
         protected static readonly int[] MinDaysPerMonth = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
         protected static readonly int[] MaxDaysPerMonth = { 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
 
-        private static readonly int[] MinTotalDaysByMonth;
-        private static readonly int[] MaxTotalDaysByMonth;
+        protected static readonly int[] MinTotalDaysByMonth;
+        protected static readonly int[] MaxTotalDaysByMonth;
 
         static GJYearMonthDayCalculator()
         {

@@ -16,6 +16,8 @@ namespace NodaTime.Calendars
         // dates will be in this range.
         private const int FirstOptimizedYear = 1900;
         private const int LastOptimizedYear = 2100;
+        private const int FirstOptimizedDay = -25567;
+        private const int LastOptimizedDay = 47846;
         // The 0-based days-since-unix-epoch for the start of each month
         private static readonly int[] MonthStartDays = new int[(LastOptimizedYear + 1 - FirstOptimizedYear) * 12 + 1];
         // The 1-based days-since-unix-epoch for the start of each year
@@ -43,6 +45,58 @@ namespace NodaTime.Calendars
                     monthStartDay += monthLength;
                 }
             }
+        }
+
+        /// <summary>
+        /// Specifically Gregorian-optimized conversion from "days since epoch" to year/month/day.
+        /// </summary>
+        internal static YearMonthDay GetGregorianYearMonthDayFromDaysSinceEpoch(int daysSinceEpoch)
+        {
+            if (daysSinceEpoch < FirstOptimizedDay || daysSinceEpoch > LastOptimizedDay)
+            {
+                return CalendarSystem.Iso.GetYearMonthDayFromDaysSinceEpoch(daysSinceEpoch);
+            }
+            // Divide by more than we need to, in order to guarantee that we only need to move forward.
+            // We can still only be out by 1 year.
+            int yearIndex = (daysSinceEpoch - FirstOptimizedDay) / 366;
+            int indexValue = YearStartDays[yearIndex];
+            // Zero-based day of year
+            int d = daysSinceEpoch - indexValue;
+            int year = yearIndex + FirstOptimizedYear;
+            bool isLeap = IsGregorianLeapYear(year);
+            int daysInYear = isLeap ? 366 : 365;
+            if (d >= daysInYear)
+            {
+                year++;
+                d -= daysInYear;
+                isLeap = IsGregorianLeapYear(year);
+            }
+
+            // The remaining code is copied from GJYearMonthDayCalculator
+
+            int month;
+            int[] totals;
+            // Perform a hard-coded binary search to get the month.
+            if (isLeap)
+            {
+                month = ((d < 182)
+                              ? ((d < 91) ? ((d < 31) ? 1 : (d < 60) ? 2 : 3) : ((d < 121) ? 4 : (d < 152) ? 5 : 6))
+                              : ((d < 274)
+                                     ? ((d < 213) ? 7 : (d < 244) ? 8 : 9)
+                                     : ((d < 305) ? 10 : (d < 335) ? 11 : 12)));
+                totals = MaxTotalDaysByMonth;
+            }
+            else
+            {
+                month = ((d < 181)
+                              ? ((d < 90) ? ((d < 31) ? 1 : (d < 59) ? 2 : 3) : ((d < 120) ? 4 : (d < 151) ? 5 : 6))
+                              : ((d < 273)
+                                     ? ((d < 212) ? 7 : (d < 243) ? 8 : 9)
+                                     : ((d < 304) ? 10 : (d < 334) ? 11 : 12)));
+                totals = MinTotalDaysByMonth;
+            }
+            int dayOfMonth = d - totals[month - 1] + 1;
+            return new YearMonthDay(year, month, dayOfMonth);
         }
 
         internal GregorianYearMonthDayCalculator()
