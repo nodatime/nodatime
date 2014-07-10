@@ -40,8 +40,8 @@ namespace NodaTime.Test.Text
         [Test]
         public void IsoHandlesCommas()
         {
-            Instant expected = Instant.FromUtc(2012, 1, 1, 0, 0) + Duration.FromTicks(1);
-            Instant actual = InstantPattern.ExtendedIsoPattern.Parse("2012-01-01T00:00:00,0000001Z").Value;
+            Instant expected = Instant.FromUtc(2012, 1, 1, 0, 0) + Duration.Epsilon;
+            Instant actual = InstantPattern.ExtendedIsoPattern.Parse("2012-01-01T00:00:00,000000001Z").Value;
             Assert.AreEqual(actual, expected);
         }
 
