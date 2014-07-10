@@ -7,7 +7,7 @@ using NodaTime.TzdbCompiler.Tzdb;
 using NUnit.Framework;
 using System;
 
-namespace ZoneInfoCompiler.Test.Tzdb
+namespace NodaTime.TzdbCompiler.Test.Tzdb
 {
     [TestFixture]
     public class ZoneTransitionTest
