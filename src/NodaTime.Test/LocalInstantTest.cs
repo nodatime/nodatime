@@ -22,19 +22,5 @@ namespace NodaTime.Test
                 Assert.AreEqual(expected, actual);
             }
         }
-
-        [Test]
-        [TestCase("0001-01-01")]
-        [TestCase("0001-12-31")]
-        [TestCase("1969-12-31")]
-        [TestCase("1970-01-01")]
-        [TestCase("1976-06-19")]
-        [TestCase("9999-01-01")]
-        public void ToIsoDate(string dateText)
-        {
-            LocalDate date = LocalDatePattern.IsoPattern.Parse(dateText).Value;
-            Assert.AreEqual(date, date.AtMidnight().ToLocalInstant().ToIsoDate());
-            Assert.AreEqual(date, date.At(new LocalTime(23, 59, 59)).ToLocalInstant().ToIsoDate());
-        }
     }
 }
