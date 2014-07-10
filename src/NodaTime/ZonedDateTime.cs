@@ -83,8 +83,12 @@ namespace NodaTime
         /// </summary>
         /// <param name="instant">The instant.</param>
         /// <param name="zone">The time zone.</param>
-        public ZonedDateTime(Instant instant, DateTimeZone zone) : this(instant, zone, CalendarSystem.Iso)
+        public ZonedDateTime(Instant instant, DateTimeZone zone)
         {
+            Preconditions.CheckNotNull(zone, "zone");
+            offset = zone.GetUtcOffset(instant);
+            localDateTime = new LocalDateTime(instant.Plus(offset));
+            this.zone = zone;
         }
 
         /// <summary>

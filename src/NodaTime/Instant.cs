@@ -595,7 +595,7 @@ namespace NodaTime
         public ZonedDateTime InZone([NotNull] DateTimeZone zone)
         {
             Preconditions.CheckNotNull(zone, "zone");
-            return new ZonedDateTime(this, zone, CalendarSystem.Iso);
+            return new ZonedDateTime(this, zone);
         }
 
         /// <summary>

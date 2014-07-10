@@ -51,6 +51,16 @@ namespace NodaTime
         }
 
         /// <summary>
+        /// Constructs an instance from the number of days since the unix epoch, in the ISO
+        /// calendar system.
+        /// </summary>
+        internal LocalDate(int daysSinceEpoch)
+        {
+            this.yearMonthDay = GregorianYearMonthDayCalculator.GetGregorianYearMonthDayFromDaysSinceEpoch(daysSinceEpoch);
+            this.calendar = CalendarSystem.Iso;
+        }
+
+        /// <summary>
         /// Constructs an instance from the number of days since the unix epoch, and a calendar
         /// system. The calendar system is assumed to be non-null, but the days since the epoch are
         /// validated.
