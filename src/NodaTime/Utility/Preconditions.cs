@@ -27,6 +27,20 @@ namespace NodaTime.Utility
             return argument;
         }
 
+        /// <summary>
+        /// Like <see cref="Preconditions.CheckNotNull"/>, but only checked in debug builds. (This means it can't return
+        /// anything...)
+        /// </summary>
+        [Conditional("DEBUG")]
+        [ContractAnnotation("argument:null => halt")]
+        internal static void DebugCheckNotNull<T>(T argument, [InvokerParameterName] string paramName) where T : class
+        {
+            if (argument == null)
+            {
+                throw new ArgumentNullException(paramName);
+            }
+        }
+
         internal static void CheckArgumentRange([InvokerParameterName] string paramName, long value, long minInclusive, long maxInclusive)
         {
             if (value < minInclusive || value > maxInclusive)
