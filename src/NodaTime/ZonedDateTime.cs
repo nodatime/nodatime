@@ -32,9 +32,8 @@ namespace NodaTime
     /// these can be considered just once, at the point of conversion to a <see cref="ZonedDateTime"/>.
     /// </para>
     /// <para>
-    /// As of Noda Time 2.0, <c>ZonedDateTime</c> no longer implements <see cref="IComparable"/> (either generically
-    /// or not), and doesn't implement ordered comparison operators. Equality is still supported, requiring equality
-    /// of zone, calendar and date/time - but there's no obvious natural ordering. If you want to sort <c>ZonedDateTime</c>
+    /// <c>ZonedDateTime</c> does not implement ordered comparison operators, as there is no obvious natural ordering that works in all cases. 
+    /// Equality is supported however, requiring equality of zone, calendar and date/time. If you want to sort <c>ZonedDateTime</c>
     /// values, you should explicitly choose one of the orderings provided via the static properties in the
     /// <see cref="ZonedDateTime.Comparer"/> nested class (or implement your own comparison).
     /// </para>
