@@ -182,30 +182,6 @@ namespace NodaTime.TimeZones
         #endregion
 
         /// <summary>
-        /// Normalizes the transition mode characater.
-        /// </summary>
-        /// <param name="modeCharacter">The character to normalize.</param>
-        /// <returns>The <see cref="TransitionMode"/>.</returns>
-        public static TransitionMode NormalizeModeCharacter(char modeCharacter)
-        {
-            switch (modeCharacter)
-            {
-                case 's':
-                case 'S':
-                    return TransitionMode.Standard;
-                case 'u':
-                case 'U':
-                case 'g':
-                case 'G':
-                case 'z':
-                case 'Z':
-                    return TransitionMode.Utc;
-                default:
-                    return TransitionMode.Wall;
-            }
-        }
-
-        /// <summary>
         /// Returns the occurrence of this rule within the given year, at the offset indicated
         /// by the standard offset, the savings offset when approaching the transition, and
         /// the transition mode.

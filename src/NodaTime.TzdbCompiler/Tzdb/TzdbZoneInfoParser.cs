@@ -208,7 +208,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
                         if (Char.IsLetter(atTime[atTime.Length - 1]))
                         {
                             char zoneCharacter = atTime[atTime.Length - 1];
-                            mode = ZoneYearOffset.NormalizeModeCharacter(zoneCharacter);
+                            mode = ConvertModeCharacter(zoneCharacter);
                             atTime = atTime.Substring(0, atTime.Length - 1);
                         }
                         if (atTime == "24:00")
@@ -395,6 +395,30 @@ namespace NodaTime.TzdbCompiler.Tzdb
             }
 
             return new Zone(name, offset, rules, format, year, ZoneYearOffset.StartOfYear);
+        }
+
+        /// <summary>
+        /// Normalizes the transition mode characater.
+        /// </summary>
+        /// <param name="modeCharacter">The character to normalize.</param>
+        /// <returns>The <see cref="TransitionMode"/>.</returns>
+        private static TransitionMode ConvertModeCharacter(char modeCharacter)
+        {
+            switch (modeCharacter)
+            {
+                case 's':
+                case 'S':
+                    return TransitionMode.Standard;
+                case 'u':
+                case 'U':
+                case 'g':
+                case 'G':
+                case 'z':
+                case 'Z':
+                    return TransitionMode.Utc;
+                default:
+                    return TransitionMode.Wall;
+            }
         }
     }
 }
