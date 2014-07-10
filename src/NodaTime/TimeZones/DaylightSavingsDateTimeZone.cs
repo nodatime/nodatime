@@ -88,54 +88,38 @@ namespace NodaTime.TimeZones
         /// of the recurrence rules of the zone.</exception>
         public override ZoneInterval GetZoneInterval(Instant instant)
         {
-            var previous = PreviousTransition(instant + Duration.Epsilon);
-            var next = NextTransition(instant);
-            var recurrence = FindMatchingRecurrence(instant);
-            return new ZoneInterval(recurrence.Name, previous.Instant, next.Instant,
-                standardOffset + recurrence.Savings, recurrence.Savings);
+            ZoneRecurrence recurrence;
+            var next = NextTransition(instant, out recurrence);
+            // Now we know the recurrence we're in, we can work out when we went into it. (We'll never have
+            // two transitions into the same recurrence in a row.)
+            Offset previousSavings = ReferenceEquals(recurrence, standardRecurrence) ? dstRecurrence.Savings : Offset.Zero;
+            var previous = recurrence.PreviousOrFail(instant + Duration.Epsilon, standardOffset, previousSavings);
+            return new ZoneInterval(recurrence.Name, previous.Instant, next.Instant, standardOffset + recurrence.Savings, recurrence.Savings);
         }
 
         /// <summary>
-        /// Finds the recurrence containing the given instant, if any.
-        /// </summary>
-        /// <returns>The recurrence containing the given instant, or null if
-        /// the instant occurs before the start of the earlier recurrence.</returns>
-        private ZoneRecurrence FindMatchingRecurrence(Instant instant)
-        {
-            // Find the transitions which start *after* the one we're currently in - then
-            // pick the later of them, which will be the same "polarity" as the one we're currently
-            // in.
-            // Both transitions must be non-null, as our recurrences are infinite.
-            Transition nextDstStart = dstRecurrence.NextOrFail(instant, standardOffset, standardRecurrence.Savings);
-            Transition nextStandardStart = standardRecurrence.NextOrFail(instant, standardOffset, dstRecurrence.Savings);
-            return nextDstStart.Instant > nextStandardStart.Instant ? dstRecurrence : standardRecurrence;
-        }
-
-        /// <summary>
-        /// Returns the transition occurring strictly after the specified instant
+        /// Returns the transition occurring strictly after the specified instant. The <paramref name="recurrence"/>
+        /// parameter will be populated with the recurrence the transition goes *from*.
         /// </summary>
         /// <param name="instant">The instant after which to consider transitions.</param>
-        private Transition NextTransition(Instant instant)
+        /// <param name="recurrence">Receives the savings offset for the transition.</param>
+        private Transition NextTransition(Instant instant, out ZoneRecurrence recurrence)
         {
             // Both recurrences are infinite, so they'll both have previous transitions (possibly at int.MinValue).
-            Transition dstTransition = dstRecurrence.NextOrFail(instant, standardOffset, standardRecurrence.Savings);
+            Transition dstTransition = dstRecurrence.NextOrFail(instant, standardOffset, Offset.Zero);
             Transition standardTransition = standardRecurrence.NextOrFail(instant, standardOffset, dstRecurrence.Savings);
-            return (dstTransition.Instant > standardTransition.Instant) ? standardTransition : dstTransition;
-        }
-
-        /// <summary>
-        /// Returns the transition occurring strictly before the specified instant.
-        /// </summary>
-        /// <param name="instant">The instant before which to consider transitions.</param>
-        /// <returns>
-        /// The instant of the previous transition, or null if there are no further transitions.
-        /// </returns>
-        private Transition PreviousTransition(Instant instant)
-        {
-            // Both recurrences are infinite, so they'll both have previous transitions (possibly at int.MinValue).
-            Transition dstTransition = dstRecurrence.PreviousOrFail(instant, standardOffset, standardRecurrence.Savings);
-            Transition standardTransition = standardRecurrence.PreviousOrFail(instant, standardOffset, dstRecurrence.Savings);
-            return (dstTransition.Instant > standardTransition.Instant) ? dstTransition : standardTransition;
+            if (dstTransition.Instant > standardTransition.Instant)
+            {
+                // From DST *to* standard
+                recurrence = dstRecurrence;
+                return standardTransition;
+            }
+            else
+            {
+                // From standard *to* DST
+                recurrence = standardRecurrence;
+                return dstTransition;
+            }
         }
 
         /// <summary>
@@ -148,7 +132,9 @@ namespace NodaTime.TimeZones
         /// </returns>
         public override Offset GetUtcOffset(Instant instant)
         {
-            return FindMatchingRecurrence(instant).Savings + standardOffset;
+            ZoneRecurrence recurrence;
+            NextTransition(instant, out recurrence);
+            return recurrence.Savings + standardOffset;
         }
         
         /// <summary>
