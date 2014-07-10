@@ -406,13 +406,14 @@ namespace NodaTime.TzdbCompiler.Test.Tzdb
 
         /* ############################################################################### */
 
+        [Test]
         public void Parse_2400_FromDay_AtLeast_Sunday()
         {
             const string text = "Apr Sun>=1  24:00";
             var tokens = Tokens.Tokenize(text);
             var rule = Parser.ParseDateTimeOfYear(tokens, true);
-            var actual = rule.Next(Instant.FromUtc(2012, 1, 1, 0, 0), Offset.Zero, Offset.Zero);
-            var expected = Instant.FromUtc(2012, 4, 2, 0, 0);
+            var actual = rule.GetOccurrenceForYear(2012);
+            var expected = new LocalDateTime(2012, 4, 2, 0, 0);
             Assert.AreEqual(expected, actual);
         }
 
@@ -422,18 +423,19 @@ namespace NodaTime.TzdbCompiler.Test.Tzdb
             const string text = "Apr Sun<=7  24:00";
             var tokens = Tokens.Tokenize(text);
             var rule = Parser.ParseDateTimeOfYear(tokens, true);
-            var actual = rule.Next(Instant.FromUtc(2012, 1, 1, 0, 0), Offset.Zero, Offset.Zero);
-            var expected = Instant.FromUtc(2012, 4, 2, 0, 0);
+            var actual = rule.GetOccurrenceForYear(2012);
+            var expected = new LocalDateTime(2012, 4, 2, 0, 0);
             Assert.AreEqual(expected, actual);
         }
 
+        [Test]
         public void Parse_2400_FromDay_AtLeast_Wednesday()
         {
             const string text = "Apr Wed>=1  24:00";
             var tokens = Tokens.Tokenize(text);
             var rule = Parser.ParseDateTimeOfYear(tokens, true);
-            var actual = rule.Next(Instant.FromUtc(2012, 1, 1, 0, 0), Offset.Zero, Offset.Zero);
-            var expected = Instant.FromUtc(2012, 4, 5, 0, 0);
+            var actual = rule.GetOccurrenceForYear(2012);
+            var expected = new LocalDateTime(2012, 4, 5, 0, 0);
             Assert.AreEqual(expected, actual);
         }
 
@@ -443,8 +445,8 @@ namespace NodaTime.TzdbCompiler.Test.Tzdb
             const string text = "Apr Wed<=14  24:00";
             var tokens = Tokens.Tokenize(text);
             var rule = Parser.ParseDateTimeOfYear(tokens, true);
-            var actual = rule.Next(Instant.FromUtc(2012, 1, 1, 0, 0), Offset.Zero, Offset.Zero);
-            var expected = Instant.FromUtc(2012, 4, 12, 0, 0);
+            var actual = rule.GetOccurrenceForYear(2012);
+            var expected = new LocalDateTime(2012, 4, 12, 0, 0);
             Assert.AreEqual(expected, actual);
         }
 
