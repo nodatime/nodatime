@@ -13,8 +13,8 @@ namespace NodaTime.Calendars
         protected static readonly int[] MinDaysPerMonth = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
         protected static readonly int[] MaxDaysPerMonth = { 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
 
-        protected static readonly int[] MinTotalDaysByMonth;
-        protected static readonly int[] MaxTotalDaysByMonth;
+        private static readonly int[] MinTotalDaysByMonth;
+        private static readonly int[] MaxTotalDaysByMonth;
 
         static GJYearMonthDayCalculator()
         {
@@ -36,36 +36,34 @@ namespace NodaTime.Calendars
         {
         }
 
-        internal override YearMonthDay GetYearMonthDay(int year, int dayOfYear)
+        // Note: parameter is renamed to d for brevity. It's still the 1-based day-of-year
+        internal override YearMonthDay GetYearMonthDay(int year, int d)
         {
-            // 0-based day-of-year.
-            // TODO(2.0): Rewrite the binary tree below to use dayOfYear instead.
-            int d = dayOfYear - 1;
             bool isLeap = IsLeapYear(year);
 
-            int month;
-            int[] totals;
-            // Perform a hard-coded binary search to get the month.
+            int startOfMonth;
+            // Perform a hard-coded binary search to get the 0-based start day of the month. We can
+            // then use that to work out the month... without ever hitting the heap. The values
+            // are still MinTotalDaysPerMonth and MaxTotalDaysPerMonth (-1 for convenience), just hard-coded.
             if (isLeap)
             {
-                month = ((d < 182)
-                              ? ((d < 91) ? ((d < 31) ? 1 : (d < 60) ? 2 : 3) : ((d < 121) ? 4 : (d < 152) ? 5 : 6))
-                              : ((d < 274)
-                                     ? ((d < 213) ? 7 : (d < 244) ? 8 : 9)
-                                     : ((d < 305) ? 10 : (d < 335) ? 11 : 12)));
-                totals = MaxTotalDaysByMonth;
+                startOfMonth = ((d < 183)
+                              ? ((d < 92) ? ((d < 32) ? 0 : (d < 61) ? 31 : 60) : ((d < 122) ? 91 : (d < 153) ? 121 : 152))
+                              : ((d < 275)
+                                     ? ((d < 214) ? 182 : (d < 245) ? 213 : 244)
+                                     : ((d < 306) ? 274 : (d < 336) ? 305 : 335)));
             }
             else
             {
-                month = ((d < 181)
-                              ? ((d < 90) ? ((d < 31) ? 1 : (d < 59) ? 2 : 3) : ((d < 120) ? 4 : (d < 151) ? 5 : 6))
-                              : ((d < 273)
-                                     ? ((d < 212) ? 7 : (d < 243) ? 8 : 9)
-                                     : ((d < 304) ? 10 : (d < 334) ? 11 : 12)));
-                totals = MinTotalDaysByMonth;
+                startOfMonth = ((d < 182)
+                              ? ((d < 91) ? ((d < 32) ? 0 : (d < 60) ? 31 : 59) : ((d < 121) ? 90 : (d < 152) ? 120 : 151))
+                              : ((d < 274)
+                                     ? ((d < 213) ? 181 : (d < 244) ? 212 : 243)
+                                     : ((d < 305) ? 273 : (d < 335) ? 304 : 334)));
             }
-            int dayOfMonth = dayOfYear - totals[month - 1];
-            return new YearMonthDay(year, month, dayOfMonth);
+
+            int dayOfMonth = d - startOfMonth;
+            return new YearMonthDay(year, (startOfMonth / 29) + 1, dayOfMonth);
         }
 
         internal sealed override int GetDaysInMonth(int year, int month)
