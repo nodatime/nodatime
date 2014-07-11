@@ -11,6 +11,36 @@ namespace NodaTime.Test
     public partial class LocalDateTest
     {
         [Test]
+        [TestCase(1620)] // Leap year in non-optimized period
+        [TestCase(1621)] // Non-leap year in non-optimized period
+        [TestCase(1980)] // Leap year in optimized period
+        [TestCase(1981)] // Non-leap year in optimized period
+        public void Constructor_WithDays(int year)
+        {
+            LocalDate start = new LocalDate(year, 1, 1);
+            int startDays = start.DaysSinceEpoch;
+            for (int i = 0; i < 366; i++)
+            {
+                Assert.AreEqual(start.PlusDays(i), new LocalDate(startDays + i));
+            }
+        }
+
+        [Test]
+        [TestCase(1620)] // Leap year in non-optimized period
+        [TestCase(1621)] // Non-leap year in non-optimized period
+        [TestCase(1980)] // Leap year in optimized period
+        [TestCase(1981)] // Non-leap year in optimized period
+        public void Constructor_WithDaysAndCalendar(int year)
+        {
+            LocalDate start = new LocalDate(year, 1, 1);
+            int startDays = start.DaysSinceEpoch;
+            for (int i = 0; i < 366; i++)
+            {
+                Assert.AreEqual(start.PlusDays(i), new LocalDate(startDays + i, CalendarSystem.Iso));
+            }
+        }
+
+        [Test]
         public void Constructor_CalendarDefaultsToIso()
         {
             LocalDate date = new LocalDate(2000, 1, 1);
