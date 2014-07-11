@@ -56,6 +56,7 @@ namespace NodaTime
         /// </summary>
         internal LocalDate(int daysSinceEpoch)
         {
+            // TODO(2.0): Check where this is used, and whether we need to validate the parameter.
             this.yearMonthDay = GregorianYearMonthDayCalculator.GetGregorianYearMonthDayFromDaysSinceEpoch(daysSinceEpoch);
             this.calendar = CalendarSystem.Iso;
         }
