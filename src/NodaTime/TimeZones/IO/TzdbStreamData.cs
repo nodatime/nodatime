@@ -10,7 +10,10 @@ using NodaTime.Utility;
 
 namespace NodaTime.TimeZones.IO
 {
-    internal sealed class TzdbStreamData : ITzdbDataSource
+    /// <summary>
+    /// Provides the raw data exposed by <see cref="TzdbDateTimeZoneSource"/>.
+    /// </summary>
+    internal sealed class TzdbStreamData
     {
         private static readonly Dictionary<TzdbStreamFieldId, Action<Builder, TzdbStreamField>> FieldHanders =
             new Dictionary<TzdbStreamFieldId, Action<Builder, TzdbStreamField>>

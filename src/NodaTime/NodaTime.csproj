@@ -258,7 +258,6 @@
     <Compile Include="TimeZones\IO\DateTimeZoneWriter.cs" />
     <Compile Include="TimeZones\IO\IDateTimeZoneReader.cs" />
     <Compile Include="TimeZones\IO\IDateTimeZoneWriter.cs" />
-    <Compile Include="TimeZones\IO\ITzdbDataSource.cs" />
     <Compile Include="TimeZones\IO\TzdbStreamData.cs" />
     <Compile Include="TimeZones\IO\TzdbStreamField.cs" />
     <Compile Include="TimeZones\IO\TzdbStreamFieldId.cs" />
