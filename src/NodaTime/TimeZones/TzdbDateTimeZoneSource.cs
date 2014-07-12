@@ -41,7 +41,7 @@ namespace NodaTime.TimeZones
 
             internal static readonly TzdbDateTimeZoneSource builtin = new TzdbDateTimeZoneSource(LoadDefaultDataSource());
 
-            private static ITzdbDataSource LoadDefaultDataSource()
+            private static TzdbStreamData LoadDefaultDataSource()
             {
                 var assembly = typeof(DefaultHolder).Assembly;
                 using (Stream stream = assembly.GetManifestResourceStream("NodaTime.TimeZones.Tzdb.nzd"))
@@ -55,7 +55,7 @@ namespace NodaTime.TimeZones
         /// Original source data - we delegate to this to create actual DateTimeZone instances,
         /// and for windows mappings.
         /// </summary>
-        private readonly ITzdbDataSource source;
+        private readonly TzdbStreamData source;
         /// <summary>
         /// Map from ID (possibly an alias) to canonical ID. This is a read-only wrapper,
         /// and can be returned directly to clients.
@@ -101,7 +101,7 @@ namespace NodaTime.TimeZones
             return new TzdbDateTimeZoneSource(TzdbStreamData.FromStream(stream));
         }
 
-        private TzdbDateTimeZoneSource(ITzdbDataSource source)
+        private TzdbDateTimeZoneSource(TzdbStreamData source)
         {
             Preconditions.CheckNotNull(source, "source");
             this.source = source;
