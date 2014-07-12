@@ -41,7 +41,7 @@ namespace NodaTime.TimeZones
         /// </summary>
         /// <remarks>
         /// Each hash table entry is either entry or contains a node with enough
-        /// information for a particular "period" of about 40 days - so multiple calls for time
+        /// information for a particular "period" of 32 days - so multiple calls for time
         /// zone information within the same few years are likely to hit the cache. Note that
         /// a single "period" may include a daylight saving change (or conceivably more than one);
         /// a node therefore has to contain enough intervals to completely represent that period.
@@ -60,10 +60,10 @@ namespace NodaTime.TimeZones
             private const int CachePeriodMask = CacheSize - 1;
 
             /// <summary>
-            /// Defines the number of bits to shift an instant value to get the period. This
-            /// converts a number of ticks to a number of 40.6 days periods.
+            /// Defines the number of bits to shift an instant's "days since epoch" to get the period. This
+            /// converts an instant into a number of 32 day periods.
             /// </summary>
-            private const int PeriodShift = 45;
+            private const int PeriodShift = 5;
 
             private readonly HashCacheNode[] instantCache;
             private readonly IZoneIntervalMap map;
@@ -82,7 +82,7 @@ namespace NodaTime.TimeZones
             /// <returns>The defined ZoneOffsetPeriod or null.</returns>
             public ZoneInterval GetZoneInterval(Instant instant)
             {
-                int period = (int)(instant.Ticks >> PeriodShift);
+                int period = instant.TimeSinceEpoch.Days >> PeriodShift;
                 int index = period & CachePeriodMask;
                 var node = instantCache[index];
                 if (node == null || node.Period != period)
@@ -93,7 +93,7 @@ namespace NodaTime.TimeZones
 
                 // Note: moving this code into an instance method in HashCacheNode makes a surprisingly
                 // large performance difference.
-                while (node.Interval.Start > instant)
+                while (node.Previous != null && node.Interval.Start > instant)
                 {
                     node = node.Previous;
                 }
@@ -106,6 +106,11 @@ namespace NodaTime.TimeZones
             // than two zone intervals in a period. It halved the performance...
             private sealed class HashCacheNode
             {
+                // The start of the zone interval, as a duration. This just avoids a bit
+                // of indirection when we're comparing the start (which happens a lot...)
+//                private readonly Duration start;
+//                internal Duration Start { get { return start; } }
+
                 private readonly ZoneInterval interval;
                 internal ZoneInterval Interval { get { return interval; } }
 
@@ -124,8 +129,9 @@ namespace NodaTime.TimeZones
                 /// </summary>
                 internal static HashCacheNode CreateNode(int period, IZoneIntervalMap map)
                 {
-                    var periodStart = Instant.FromTicksSinceUnixEpoch((long)period << PeriodShift);
-                    var periodEnd = Instant.FromTicksSinceUnixEpoch((long)(period + 1) << PeriodShift);
+                    var days = period << PeriodShift;
+                    var periodStart = new Instant(new Duration(days, 0L));
+                    var periodEnd = new Instant(new Duration(days + (1 << PeriodShift), 0L));
 
                     var interval = map.GetZoneInterval(periodStart);
                     var node = new HashCacheNode(interval, period, null);
@@ -151,6 +157,7 @@ namespace NodaTime.TimeZones
                     this.period = period;
                     this.interval = interval;
                     this.previous = previous;
+                    //this.start = interval.Start.TimeSinceEpoch;
                 }
             }
             #endregion
