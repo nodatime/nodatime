@@ -40,12 +40,22 @@ namespace NodaTime
         private readonly LocalDateTime localDateTime;
         private readonly Offset offset;
 
+        /// <summary>
+        /// Optimized conversion from an Instant to an OffsetDateTime in the ISO calendar.
+        /// This is equivalent to <c>new OffsetDateTime(new LocalDateTime(instant.Plus(offset)), offset)</c>
+        /// but with less overhead.
+        /// </summary>
         internal OffsetDateTime(Instant instant, Offset offset)
         {
             this.localDateTime = new LocalDateTime(instant, offset);
             this.offset = offset;
         }
 
+        /// <summary>
+        /// Optimized conversion from an Instant to an OffsetDateTime in the specified calendar.
+        /// This is equivalent to <c>new OffsetDateTime(new LocalDateTime(instant.Plus(offset), calendar), offset)</c>
+        /// but with less overhead.
+        /// </summary>
         internal OffsetDateTime(Instant instant, Offset offset, CalendarSystem calendar)
         {
             this.localDateTime = new LocalDateTime(instant, offset, calendar);

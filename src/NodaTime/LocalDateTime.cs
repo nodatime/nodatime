@@ -47,6 +47,10 @@ namespace NodaTime
         private readonly LocalDate date;
         private readonly LocalTime time;
 
+        /// <summary>
+        /// Optimized constructor to convert an instant to local date/time in the ISO calendar.
+        /// This is equivalent to <c>new LocalDateTime(instant.Plus(offset))</c>, but avoids some overhead.
+        /// </summary>
         internal LocalDateTime(Instant instant, Offset offset)
         {
             unchecked
@@ -69,6 +73,10 @@ namespace NodaTime
             }
         }
 
+        /// <summary>
+        /// Optimized constructor to convert an instant to local date/time in the specified calendar.
+        /// This is equivalent to <c>new LocalDateTime(instant.Plus(offset), calendar)</c>, but avoids some overhead.
+        /// </summary>
         internal LocalDateTime(Instant instant, Offset offset, CalendarSystem calendar)
         {
             unchecked
