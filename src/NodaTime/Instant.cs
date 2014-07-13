@@ -594,7 +594,7 @@ namespace NodaTime
         [Pure]
         public ZonedDateTime InZone([NotNull] DateTimeZone zone)
         {
-            Preconditions.CheckNotNull(zone, "zone");
+            // zone is checked for nullity by the constructor.
             return new ZonedDateTime(this, zone);
         }
 
@@ -624,7 +624,7 @@ namespace NodaTime
         [Pure]
         public OffsetDateTime WithOffset(Offset offset)
         {
-            return new OffsetDateTime(new LocalDateTime(this.Plus(offset)), offset);
+            return new OffsetDateTime(this, offset);
         }
 
         /// <summary>
@@ -639,7 +639,7 @@ namespace NodaTime
         public OffsetDateTime WithOffset(Offset offset, [NotNull] CalendarSystem calendar)
         {
             Preconditions.CheckNotNull(calendar, "calendar");
-            return new OffsetDateTime(new LocalDateTime(this.Plus(offset), calendar), offset);
+            return new OffsetDateTime(this, offset, calendar);
         }
 
         #region XML serialization

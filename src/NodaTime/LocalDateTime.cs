@@ -47,6 +47,50 @@ namespace NodaTime
         private readonly LocalDate date;
         private readonly LocalTime time;
 
+        internal LocalDateTime(Instant instant, Offset offset)
+        {
+            unchecked
+            {
+                Duration duration = instant.TimeSinceEpoch;
+                int days = duration.Days;
+                long nanoOfDay = duration.NanosecondOfDay + offset.Nanoseconds;
+                if (nanoOfDay >= NodaConstants.NanosecondsPerStandardDay)
+                {
+                    days++;
+                    nanoOfDay -= NodaConstants.NanosecondsPerStandardDay;
+                }
+                else if (nanoOfDay < 0)
+                {
+                    days--;
+                    nanoOfDay += NodaConstants.NanosecondsPerStandardDay;
+                }
+                time = new LocalTime(nanoOfDay);
+                date = new LocalDate(days);
+            }
+        }
+
+        internal LocalDateTime(Instant instant, Offset offset, CalendarSystem calendar)
+        {
+            unchecked
+            {
+                Duration duration = instant.TimeSinceEpoch;
+                int days = duration.Days;
+                long nanoOfDay = duration.NanosecondOfDay + offset.Nanoseconds;
+                if (nanoOfDay >= NodaConstants.NanosecondsPerStandardDay)
+                {
+                    days++;
+                    nanoOfDay -= NodaConstants.NanosecondsPerStandardDay;
+                }
+                else if (nanoOfDay < 0)
+                {
+                    days--;
+                    nanoOfDay += NodaConstants.NanosecondsPerStandardDay;
+                }
+                time = new LocalTime(nanoOfDay);
+                date = new LocalDate(days, calendar);
+            }
+        }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="LocalDateTime"/> struct using the ISO
         /// calendar system.

@@ -72,8 +72,9 @@ namespace NodaTime
         {
             Preconditions.CheckNotNull(zone, "zone");
             Preconditions.CheckNotNull(calendar, "calendar");
-            offset = zone.GetUtcOffset(instant);
-            localDateTime = new LocalDateTime(instant.Plus(offset), calendar);
+            Offset offset = zone.GetUtcOffset(instant);
+            localDateTime = new LocalDateTime(instant, offset, calendar);
+            this.offset = offset;
             this.zone = zone;
         }
 
@@ -86,8 +87,9 @@ namespace NodaTime
         public ZonedDateTime(Instant instant, DateTimeZone zone)
         {
             Preconditions.CheckNotNull(zone, "zone");
-            offset = zone.GetUtcOffset(instant);
-            localDateTime = new LocalDateTime(instant.Plus(offset));
+            Offset offset = zone.GetUtcOffset(instant);
+            localDateTime = new LocalDateTime(instant, offset);
+            this.offset = offset;
             this.zone = zone;
         }
 
