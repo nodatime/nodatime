@@ -75,7 +75,7 @@ namespace NodaTime
         /// by 10,000 to give the number of ticks.
         /// </remarks>
         /// <value>The number of ticks.</value>
-        public long Ticks { get { return Milliseconds * NodaConstants.TicksPerMillisecond; } }
+        public long Ticks { get { return unchecked(Milliseconds * NodaConstants.TicksPerMillisecond); } }
 
         /// <summary>
         /// Returns the number of nanoseconds represented by this offset, which may be negative.
@@ -85,7 +85,7 @@ namespace NodaTime
         /// by 1,000,000 to give the number of nanoseconds.
         /// </remarks>
         /// <value>The number of nanoseconds.</value>
-        public long Nanoseconds { get { return milliseconds * NodaConstants.NanosecondsPerMillisecond; } }
+        public long Nanoseconds { get { return unchecked(milliseconds * NodaConstants.NanosecondsPerMillisecond); } }
 
         /// <summary>
         /// Returns the greater offset of the given two, i.e. the one which will give a later local

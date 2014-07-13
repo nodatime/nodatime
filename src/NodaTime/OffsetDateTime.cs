@@ -40,6 +40,18 @@ namespace NodaTime
         private readonly LocalDateTime localDateTime;
         private readonly Offset offset;
 
+        internal OffsetDateTime(Instant instant, Offset offset)
+        {
+            this.localDateTime = new LocalDateTime(instant, offset);
+            this.offset = offset;
+        }
+
+        internal OffsetDateTime(Instant instant, Offset offset, CalendarSystem calendar)
+        {
+            this.localDateTime = new LocalDateTime(instant, offset, calendar);
+            this.offset = offset;
+        }
+
         /// <summary>
         /// Constructs a new offset date/time with the given local date and time, and the given offset from UTC.
         /// </summary>
