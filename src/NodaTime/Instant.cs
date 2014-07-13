@@ -581,7 +581,13 @@ namespace NodaTime
         [Pure]
         public ZonedDateTime InUtc()
         {
-            return new ZonedDateTime(this, DateTimeZone.Utc, CalendarSystem.Iso);
+            // Bypass any determination of offset and arithmetic - construct it all verbatim.
+            LocalDate date = new LocalDate(duration.Days);
+            LocalTime time = new LocalTime(duration.NanosecondOfDay);
+            // Note that this constructor performs no validation (which is what we want).
+            // The public constructor with parameters of (LocalDateTime, DateTimeZone, Offset) *does*
+            // perform validation. Be careful not to change to that one!
+            return new ZonedDateTime(new LocalDateTime(date, time), Offset.Zero, DateTimeZone.Utc);
         }
 
         /// <summary>
