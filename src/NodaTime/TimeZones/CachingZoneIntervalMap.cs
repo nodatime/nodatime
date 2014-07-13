@@ -106,11 +106,6 @@ namespace NodaTime.TimeZones
             // than two zone intervals in a period. It halved the performance...
             private sealed class HashCacheNode
             {
-                // The start of the zone interval, as a duration. This just avoids a bit
-                // of indirection when we're comparing the start (which happens a lot...)
-//                private readonly Duration start;
-//                internal Duration Start { get { return start; } }
-
                 private readonly ZoneInterval interval;
                 internal ZoneInterval Interval { get { return interval; } }
 
@@ -157,7 +152,6 @@ namespace NodaTime.TimeZones
                     this.period = period;
                     this.interval = interval;
                     this.previous = previous;
-                    //this.start = interval.Start.TimeSinceEpoch;
                 }
             }
             #endregion
