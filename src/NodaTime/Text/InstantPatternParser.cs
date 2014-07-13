@@ -128,7 +128,7 @@ namespace NodaTime.Text
                     return string.Format("{0} {1} ticks is later than the latest supported ISO calendar value.",
                         InstantPattern.OutOfRangeLabel, value.Ticks);
                 }
-                return pattern.Format(new LocalDateTime(value.Plus(Offset.Zero)));
+                return pattern.Format(value.InUtc().LocalDateTime);
             }
 
             public ParseResult<Instant> Parse(string text)
