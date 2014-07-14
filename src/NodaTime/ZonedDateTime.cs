@@ -47,9 +47,24 @@ namespace NodaTime
         , ISerializable
 #endif
     {
-        private readonly LocalDateTime localDateTime;
-        private readonly DateTimeZone zone;
+        // TODO(2.0): Try to optimize memory usage here. It could get really ugly, admittedly.
+        // These fields are equivalent to an OffsetDateTime and a DateTimeZone, or
+        // a LocalDateTime, DateTimeZone and Offset if you want. But "inlining" them seems to
+        // improve performance in most cases, and may let us reduce the memory footprint, if we're careful.
+        private readonly YearMonthDay yearMonthDay;
+        private readonly LocalTime time;
         private readonly Offset offset;
+        private readonly CalendarSystem calendar;
+        private readonly DateTimeZone zone;
+
+        internal ZonedDateTime(LocalDate date, LocalTime time, Offset offset, DateTimeZone zone)
+        {
+            yearMonthDay = date.YearMonthDay;
+            calendar = date.Calendar;
+            this.time = time;
+            this.offset = offset;
+            this.zone = zone;
+        }
 
         /// <summary>
         /// Internal constructor used by other code that has already validated and 
@@ -57,7 +72,10 @@ namespace NodaTime
         /// </summary>
         internal ZonedDateTime(LocalDateTime localDateTime, Offset offset, DateTimeZone zone)
         {
-            this.localDateTime = localDateTime;
+            var date = localDateTime.Date;
+            yearMonthDay = date.YearMonthDay;
+            time = localDateTime.TimeOfDay;
+            calendar = date.Calendar;
             this.offset = offset;
             this.zone = zone;
         }
@@ -70,12 +88,27 @@ namespace NodaTime
         /// <param name="calendar">The calendar system.</param>
         public ZonedDateTime(Instant instant, [NotNull] DateTimeZone zone, [NotNull] CalendarSystem calendar)
         {
-            Preconditions.CheckNotNull(zone, "zone");
-            Preconditions.CheckNotNull(calendar, "calendar");
-            Offset offset = zone.GetUtcOffset(instant);
-            localDateTime = new LocalDateTime(instant, offset, calendar);
-            this.offset = offset;
-            this.zone = zone;
+            this.zone = Preconditions.CheckNotNull(zone, "zone");
+            this.calendar = Preconditions.CheckNotNull(calendar, "calendar");
+            unchecked
+            {
+                Duration duration = instant.TimeSinceEpoch;
+                int days = duration.Days;
+                offset = zone.GetUtcOffset(instant);
+                long nanoOfDay = duration.NanosecondOfDay + offset.Nanoseconds;
+                if (nanoOfDay >= NodaConstants.NanosecondsPerStandardDay)
+                {
+                    days++;
+                    nanoOfDay -= NodaConstants.NanosecondsPerStandardDay;
+                }
+                else if (nanoOfDay < 0)
+                {
+                    days--;
+                    nanoOfDay += NodaConstants.NanosecondsPerStandardDay;
+                }
+                yearMonthDay = calendar.GetYearMonthDayFromDaysSinceEpoch(days);
+                time = new LocalTime(nanoOfDay);
+            }
         }
 
         /// <summary>
@@ -86,11 +119,27 @@ namespace NodaTime
         /// <param name="zone">The time zone.</param>
         public ZonedDateTime(Instant instant, DateTimeZone zone)
         {
-            Preconditions.CheckNotNull(zone, "zone");
-            Offset offset = zone.GetUtcOffset(instant);
-            localDateTime = new LocalDateTime(instant, offset);
-            this.offset = offset;
-            this.zone = zone;
+            this.zone = Preconditions.CheckNotNull(zone, "zone");
+            unchecked
+            {
+                Duration duration = instant.TimeSinceEpoch;
+                int days = duration.Days;
+                offset = zone.GetUtcOffset(instant);
+                long nanoOfDay = duration.NanosecondOfDay + offset.Nanoseconds;
+                if (nanoOfDay >= NodaConstants.NanosecondsPerStandardDay)
+                {
+                    days++;
+                    nanoOfDay -= NodaConstants.NanosecondsPerStandardDay;
+                }
+                else if (nanoOfDay < 0)
+                {
+                    days--;
+                    nanoOfDay += NodaConstants.NanosecondsPerStandardDay;
+                }
+                yearMonthDay = GregorianYearMonthDayCalculator.GetGregorianYearMonthDayFromDaysSinceEpoch(days);
+                time = new LocalTime(nanoOfDay);
+                calendar = CalendarSystem.Iso;
+            }
         }
 
         /// <summary>
@@ -115,7 +164,10 @@ namespace NodaTime
                 throw new ArgumentException("Offset " + offset + " is invalid for local date and time " + localDateTime
                     + " in time zone " + zone.Id, "offset");
             }
-            this.localDateTime = localDateTime;
+            var date = localDateTime.Date;
+            yearMonthDay = date.YearMonthDay;
+            time = localDateTime.TimeOfDay;
+            calendar = date.Calendar;
             this.offset = offset;
             this.zone = zone;
         }
@@ -132,12 +184,12 @@ namespace NodaTime
         /// each of the calendar properties (Year, MonthOfYear and so on), but will not be associated with any
         /// particular time zone.
         /// </summary>
-        public LocalDateTime LocalDateTime { get { return localDateTime; } }
+        public LocalDateTime LocalDateTime { get { return new LocalDateTime(Date, time); } }
 
         /// <summary>Gets the calendar system associated with this zoned date and time.</summary>
         public CalendarSystem Calendar
         {
-            get { return localDateTime.Calendar; }
+            get { return calendar ?? CalendarSystem.Iso; }
         }
 
         /// <summary>
@@ -145,32 +197,32 @@ namespace NodaTime
         /// will have the same calendar system and return the same values for each of the date-based calendar
         /// properties (Year, MonthOfYear and so on), but will not be associated with any particular time zone.
         /// </summary>
-        public LocalDate Date { get { return localDateTime.Date; } }
+        public LocalDate Date { get { return new LocalDate(yearMonthDay, Calendar); } }
 
         /// <summary>
         /// Gets the time portion of this zoned date and time. The returned <see cref="LocalTime"/> will
         /// return the same values for each of the time-based properties (Hour, Minute and so on), but
         /// will not be associated with any particular time zone.
         /// </summary>
-        public LocalTime TimeOfDay { get { return localDateTime.TimeOfDay; } }
+        public LocalTime TimeOfDay { get { return time; } }
 
         /// <summary>Gets the era for this zoned date and time.</summary>
-        public Era Era { get { return LocalDateTime.Era; } }
+        public Era Era { get { return Calendar.Eras[Calendar.GetEra(yearMonthDay)]; } }
 
         /// <summary>Gets the century within the era of this zoned date and time.</summary>
-        public int CenturyOfEra { get { return LocalDateTime.CenturyOfEra; } }
+        public int CenturyOfEra { get { return Calendar.GetCenturyOfEra(yearMonthDay); } }
 
         /// <summary>Gets the year of this zoned date and time.</summary>
         /// <remarks>This returns the "absolute year", so, for the ISO calendar,
         /// a value of 0 means 1 BC, for example.</remarks>
-        public int Year { get { return LocalDateTime.Year; } }
+        public int Year { get { return yearMonthDay.Year; } }
 
         /// <summary>Gets the year of this zoned date and time within its century.</summary>
         /// <remarks>This always returns a value in the range 0 to 99 inclusive.</remarks>
-        public int YearOfCentury { get { return LocalDateTime.YearOfCentury; } }
+        public int YearOfCentury { get { return Calendar.GetYearOfCentury(yearMonthDay); } }
 
         /// <summary>Gets the year of this zoned date and time within its era.</summary>
-        public int YearOfEra { get { return LocalDateTime.YearOfEra; } }
+        public int YearOfEra { get { return Calendar.GetYearOfEra(yearMonthDay); } }
 
         /// <summary>
         /// Gets the "week year" of this date and time.
@@ -190,21 +242,21 @@ namespace NodaTime
         /// so is part of week 1 of WeekYear 2013.
         /// </para>
         /// </remarks>
-        public int WeekYear { get { return LocalDateTime.WeekYear; } }
+        public int WeekYear { get { return Calendar.GetWeekYear(yearMonthDay); } }
 
         /// <summary>Gets the month of this zoned date and time within the year.</summary>
-        public int Month { get { return LocalDateTime.Month; } }
+        public int Month { get { return yearMonthDay.Month; } }
 
         /// <summary>Gets the week within the WeekYear. See <see cref="WeekYear"/> for more details.</summary>
-        public int WeekOfWeekYear { get { return LocalDateTime.WeekOfWeekYear; } }
+        public int WeekOfWeekYear { get { return Calendar.GetWeekOfWeekYear(yearMonthDay); } }
 
         /// <summary>Gets the day of this zoned date and time within the year.</summary>
-        public int DayOfYear { get { return LocalDateTime.DayOfYear; } }
+        public int DayOfYear { get { return Calendar.GetDayOfYear(yearMonthDay); } }
 
         /// <summary>
         /// Gets the day of this zoned date and time within the month.
         /// </summary>
-        public int Day { get { return LocalDateTime.Day; } }
+        public int Day { get { return yearMonthDay.Day; } }
 
         /// <summary>
         /// Gets the week day of this zoned date and time expressed as an <see cref="NodaTime.IsoDayOfWeek"/> value,
@@ -212,7 +264,7 @@ namespace NodaTime
         /// </summary>
         /// <exception cref="InvalidOperationException">The underlying calendar doesn't use ISO days of the week.</exception>
         /// <seealso cref="DayOfWeek"/>
-        public IsoDayOfWeek IsoDayOfWeek { get { return LocalDateTime.IsoDayOfWeek; } }
+        public IsoDayOfWeek IsoDayOfWeek { get { return Calendar.GetIsoDayOfWeek(yearMonthDay); } }
 
         /// <summary>
         /// Gets the week day of this zoned date and time as a number.
@@ -221,52 +273,52 @@ namespace NodaTime
         /// For calendars using ISO week days, this gives 1 for Monday to 7 for Sunday.
         /// </remarks>
         /// <seealso cref="IsoDayOfWeek"/>
-        public int DayOfWeek { get { return LocalDateTime.DayOfWeek; } }
+        public int DayOfWeek { get { return Calendar.GetDayOfWeek(yearMonthDay); } }
 
         /// <summary>
         /// Gets the hour of day of this zoned date and time, in the range 0 to 23 inclusive.
         /// </summary>
-        public int Hour { get { return LocalDateTime.Hour; } }
+        public int Hour { get { return time.Hour; } }
 
         /// <summary>
         /// Gets the hour of the half-day of this zoned date and time, in the range 1 to 12 inclusive.
         /// </summary>
-        public int ClockHourOfHalfDay { get { return LocalDateTime.ClockHourOfHalfDay; } }
+        public int ClockHourOfHalfDay { get { return time.ClockHourOfHalfDay; } }
         
         /// <summary>
         /// Gets the minute of this zoned date and time, in the range 0 to 59 inclusive.
         /// </summary>
-        public int Minute { get { return LocalDateTime.Minute; } }
+        public int Minute { get { return time.Minute; } }
 
         /// <summary>
         /// Gets the second of this zoned date and time within the minute, in the range 0 to 59 inclusive.
         /// </summary>
-        public int Second { get { return LocalDateTime.Second; } }
+        public int Second { get { return time.Second; } }
 
         /// <summary>
         /// Gets the millisecond of this zoned date and time within the second, in the range 0 to 999 inclusive.
         /// </summary>
-        public int Millisecond { get { return LocalDateTime.Millisecond; } }
+        public int Millisecond { get { return time.Millisecond; } }
 
         /// <summary>
         /// Gets the tick of this zoned date and time within the second, in the range 0 to 9,999,999 inclusive.
         /// </summary>
-        public int TickOfSecond { get { return LocalDateTime.TickOfSecond; } }
+        public int TickOfSecond { get { return time.TickOfSecond; } }
 
         /// <summary>
         /// Gets the tick of this zoned date and time within the day, in the range 0 to 863,999,999,999 inclusive.
         /// </summary>
-        public long TickOfDay { get { return LocalDateTime.TickOfDay; } }
+        public long TickOfDay { get { return time.TickOfDay; } }
 
         /// <summary>
         /// Gets the nanosecond of this zoned date and time within the second, in the range 0 to 999,999,999 inclusive.
         /// </summary>
-        public int NanosecondOfSecond { get { return LocalDateTime.NanosecondOfSecond; } }
+        public int NanosecondOfSecond { get { return time.NanosecondOfSecond; } }
 
         /// <summary>
         /// Gets the nanosecond of this zoned date and time within the day, in the range 0 to 86,399,999,999,999 inclusive.
         /// </summary>
-        public long NanosecondOfDay { get { return LocalDateTime.NanosecondOfDay; } }
+        public long NanosecondOfDay { get { return time.NanosecondOfDay; } }
 
         /// <summary>
         /// Converts this value to the instant it represents on the time line.
@@ -281,7 +333,7 @@ namespace NodaTime
         [Pure]
         public Instant ToInstant()
         {
-            return localDateTime.ToLocalInstant().Minus(offset);
+            return LocalDateTime.ToLocalInstant().Minus(offset);
         }
 
         /// <summary>
@@ -294,7 +346,7 @@ namespace NodaTime
         public ZonedDateTime WithZone([NotNull] DateTimeZone targetZone)
         {
             Preconditions.CheckNotNull(targetZone, "targetZone");
-            return new ZonedDateTime(ToInstant(), targetZone, localDateTime.Calendar);
+            return new ZonedDateTime(ToInstant(), targetZone, Calendar);
         }
 
         #region Equality
@@ -575,7 +627,7 @@ namespace NodaTime
         [Pure]
         public OffsetDateTime ToOffsetDateTime()
         {
-            return new OffsetDateTime(localDateTime, offset);
+            return new OffsetDateTime(LocalDateTime, offset);
         }
 
         #region Comparers
@@ -665,7 +717,7 @@ namespace NodaTime
             /// <inheritdoc />
             public override int Compare(ZonedDateTime x, ZonedDateTime y)
             {
-                return x.localDateTime.CompareTo(y.localDateTime);
+                return x.LocalDateTime.CompareTo(y.LocalDateTime);
             }
         }
 
