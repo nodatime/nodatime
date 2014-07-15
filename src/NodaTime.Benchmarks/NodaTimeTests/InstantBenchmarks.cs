@@ -10,6 +10,9 @@ namespace NodaTime.Benchmarks.NodaTimeTests
     internal class InstantBenchmarks
     {
         private static readonly Instant Sample = Instant.FromUtc(2011, 8, 24, 12, 29, 30);
+        private static readonly Offset SmallOffset = Offset.FromHours(1);
+        private static readonly Offset LargePositiveOffset = Offset.FromHours(12);
+        private static readonly Offset LargeNegativeOffset = Offset.FromHours(-13);
         private static readonly DateTimeZone London = DateTimeZoneProviders.Tzdb["Europe/London"];
 
         [Benchmark]
@@ -52,6 +55,24 @@ namespace NodaTime.Benchmarks.NodaTimeTests
         public void InZoneLondon()
         {
             Sample.InZone(London);
+        }
+
+        [Benchmark]
+        public void WithOffset_SameUtcDay()
+        {
+            Sample.WithOffset(SmallOffset);
+        }
+
+        [Benchmark]
+        public void WithOffset_NextUtcDay()
+        {
+            Sample.WithOffset(LargePositiveOffset);
+        }
+
+        [Benchmark]
+        public void WithOffset_PreviousUtcDay()
+        {
+            Sample.WithOffset(LargeNegativeOffset);
         }
     }
 }
