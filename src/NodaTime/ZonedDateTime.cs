@@ -333,7 +333,13 @@ namespace NodaTime
         [Pure]
         public Instant ToInstant()
         {
-            return LocalDateTime.ToLocalInstant().Minus(offset);
+            return new Instant(ToElapsedTimeSinceEpoch());
+        }
+
+        private Duration ToElapsedTimeSinceEpoch()
+        {
+            int days = Calendar.GetDaysSinceEpoch(yearMonthDay);
+            return new Duration(days, time.NanosecondOfDay).MinusSmallNanoseconds(offset.Nanoseconds);
         }
 
         /// <summary>
@@ -717,7 +723,14 @@ namespace NodaTime
             /// <inheritdoc />
             public override int Compare(ZonedDateTime x, ZonedDateTime y)
             {
-                return x.LocalDateTime.CompareTo(y.LocalDateTime);
+                Preconditions.CheckArgument(x.Calendar.Equals(y.Calendar), "y",
+                    "Only values with the same calendar system can be compared");
+                int dateComparison = x.Calendar.Compare(x.yearMonthDay, y.yearMonthDay);
+                if (dateComparison != 0)
+                {
+                    return dateComparison;
+                }
+                return x.time.CompareTo(y.time);
             }
         }
 
@@ -735,7 +748,8 @@ namespace NodaTime
             /// <inheritdoc />
             public override int Compare(ZonedDateTime x, ZonedDateTime y)
             {
-                return x.ToInstant().CompareTo(y.ToInstant());
+                // TODO(2.0): Optimize cases which are more than 2 days apart, by avoiding the arithmetic?
+                return x.ToElapsedTimeSinceEpoch().CompareTo(y.ToElapsedTimeSinceEpoch());
             }
         }
         #endregion
