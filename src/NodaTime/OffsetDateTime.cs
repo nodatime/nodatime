@@ -371,10 +371,42 @@ namespace NodaTime
         [Pure]
         public OffsetDateTime WithOffset(Offset offset)
         {
-            // The millisecond difference will be small, hopefully not even changing the day...
-            // so there's no point in converting to and from LocalInstant representation.
-            long millisecondDifference = offset.Milliseconds - this.offset.Milliseconds;
-            return new OffsetDateTime(LocalDateTime.PlusMilliseconds(millisecondDifference), offset);
+            unchecked
+            {
+                // Slight change to the normal operation, as it's *just* about plausible that we change day
+                // twice in one direction or the other.
+                int days = 0;
+                long nanos = time.NanosecondOfDay + offset.Nanoseconds - this.offset.Nanoseconds;
+                if (nanos >= NodaConstants.NanosecondsPerStandardDay)
+                {
+                    days++;
+                    nanos -= NodaConstants.NanosecondsPerStandardDay;
+                    if (nanos >= NodaConstants.NanosecondsPerStandardDay)
+                    {
+                        days++;
+                        nanos -= NodaConstants.NanosecondsPerStandardDay;
+                    }
+                }
+                else if (nanos < 0)
+                {
+                    days--;
+                    nanos += NodaConstants.NanosecondsPerStandardDay;
+                    if (nanos < 0)
+                    {
+                        days--;
+                        nanos += NodaConstants.NanosecondsPerStandardDay;
+                    }
+                }
+                if (days == 0)
+                {
+                    return new OffsetDateTime(yearMonthDay, new LocalTime(nanos), offset, calendar);
+                }
+                else
+                {
+                    YearMonthDay ymd = days == 0 ? yearMonthDay : Date.PlusDays(days).YearMonthDay;
+                    return new OffsetDateTime(ymd, new LocalTime(nanos), offset, calendar);
+                }
+            }
         }
         
         /// <summary>
