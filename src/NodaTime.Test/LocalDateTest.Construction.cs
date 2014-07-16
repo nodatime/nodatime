@@ -59,7 +59,7 @@ namespace NodaTime.Test
         [Test]
         public void Constructor_PropertiesRoundTrip_CustomCalendar()
         {
-            LocalDate date = new LocalDate(2023, 7, 27, CalendarSystem.GetJulianCalendar(4));
+            LocalDate date = new LocalDate(2023, 7, 27, CommonCalendars.Julian);
             Assert.AreEqual(2023, date.Year);
             Assert.AreEqual(7, date.Month);
             Assert.AreEqual(27, date.Day);

@@ -250,8 +250,8 @@ namespace NodaTime.Test.Calendars
         [Test]
         public void ThursdayEpoch()
         {
-            CalendarSystem thursdayEpochCalendar = CalendarSystem.GetIslamicCalendar(IslamicLeapYearPattern.Base16, IslamicEpoch.Astronomical);
-            CalendarSystem julianCalendar = CalendarSystem.GetJulianCalendar(4);
+            CalendarSystem thursdayEpochCalendar = CommonCalendars.BclIslamic;
+            CalendarSystem julianCalendar = CommonCalendars.Julian;
 
             LocalDate thursdayEpoch = new LocalDate(1, 1, 1, thursdayEpochCalendar);
             LocalDate thursdayEpochJulian = new LocalDate(622, 7, 15, julianCalendar);
@@ -262,7 +262,7 @@ namespace NodaTime.Test.Calendars
         public void FridayEpoch()
         {
             CalendarSystem fridayEpochCalendar = CalendarSystem.GetIslamicCalendar(IslamicLeapYearPattern.Base16, IslamicEpoch.Civil);
-            CalendarSystem julianCalendar = CalendarSystem.GetJulianCalendar(4);
+            CalendarSystem julianCalendar = CommonCalendars.Julian;
 
             LocalDate fridayEpoch = new LocalDate(1, 1, 1, fridayEpochCalendar);
             LocalDate fridayEpochJulian = new LocalDate(622, 7, 16, julianCalendar);
@@ -275,7 +275,7 @@ namespace NodaTime.Test.Calendars
             Calendar hijri = new HijriCalendar();
             DateTime bclDirect = new DateTime(1, 1, 1, 0, 0, 0, 0, hijri, DateTimeKind.Unspecified);
 
-            CalendarSystem julianCalendar = CalendarSystem.GetJulianCalendar(4);
+            CalendarSystem julianCalendar = CommonCalendars.Julian;
             LocalDate julianIslamicEpoch = new LocalDate(622, 7, 15, julianCalendar);
             LocalDate isoIslamicEpoch = julianIslamicEpoch.WithCalendar(CalendarSystem.Iso);
             DateTime bclFromNoda = isoIslamicEpoch.AtMidnight().ToDateTimeUnspecified();
@@ -288,7 +288,7 @@ namespace NodaTime.Test.Calendars
             Calendar hijri = new HijriCalendar();
             DateTime bclDirect = new DateTime(1302, 10, 15, 0, 0, 0, 0, hijri, DateTimeKind.Unspecified);
 
-            CalendarSystem islamicCalendar = CalendarSystem.GetIslamicCalendar(IslamicLeapYearPattern.Base16, IslamicEpoch.Astronomical);
+            CalendarSystem islamicCalendar = CommonCalendars.BclIslamic;
             LocalDate iso = new LocalDate(1302, 10, 15, islamicCalendar);
             DateTime bclFromNoda = iso.AtMidnight().ToDateTimeUnspecified();
             Assert.AreEqual(bclDirect, bclFromNoda);
@@ -303,8 +303,8 @@ namespace NodaTime.Test.Calendars
             Calendar hijri = new HijriCalendar();
             DateTime bclDirect = new DateTime(1, 1, 1, 0, 0, 0, 0, hijri, DateTimeKind.Unspecified);
 
-            CalendarSystem islamicCalendar = CalendarSystem.GetIslamicCalendar(IslamicLeapYearPattern.Base16, IslamicEpoch.Astronomical);
-            CalendarSystem julianCalendar = CalendarSystem.GetJulianCalendar(4);
+            CalendarSystem islamicCalendar = CommonCalendars.BclIslamic;
+            CalendarSystem julianCalendar = CommonCalendars.Julian;
             LocalDate julianIslamicEpoch = new LocalDate(622, 7, 15, julianCalendar);
             LocalDate islamicDate = julianIslamicEpoch.WithCalendar(islamicCalendar);
 
