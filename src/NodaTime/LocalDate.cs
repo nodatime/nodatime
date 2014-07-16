@@ -38,7 +38,7 @@ namespace NodaTime
         , ISerializable
 #endif
     {
-        private readonly YearMonthDay yearMonthDay;
+        private YearMonthDay yearMonthDay;
         private readonly CalendarSystem calendar;
 
         /// <summary>
