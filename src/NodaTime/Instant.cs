@@ -9,6 +9,7 @@ using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
 using JetBrains.Annotations;
+using NodaTime.Annotations;
 using NodaTime.Calendars;
 using NodaTime.Text;
 using NodaTime.Utility;
@@ -56,7 +57,7 @@ namespace NodaTime
         /// <summary>
         /// Time elapsed since the Unix epoch.
         /// </summary>
-        private Duration duration;
+        [ReadWriteForEfficiency] private Duration duration;
 
         internal Instant(Duration duration)
         {

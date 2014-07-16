@@ -9,6 +9,7 @@ using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
 using JetBrains.Annotations;
+using NodaTime.Annotations;
 using NodaTime.Calendars;
 using NodaTime.Fields;
 using NodaTime.Text;
@@ -44,8 +45,8 @@ namespace NodaTime
         , ISerializable
 #endif
     {
-        private LocalDate date;
-        private LocalTime time;
+        [ReadWriteForEfficiency] private LocalDate date;
+        [ReadWriteForEfficiency] private LocalTime time;
 
         /// <summary>
         /// Optimized constructor to convert an instant to local date/time in the ISO calendar.
