@@ -341,8 +341,8 @@ namespace NodaTime
         [Pure]
         public OffsetDateTime WithCalendar([NotNull] CalendarSystem calendarSystem)
         {
-            // FIXME! This is broken! Need a test first...
-            return new OffsetDateTime(this.yearMonthDay, this.time, this.offset, calendarSystem);
+            LocalDate newDate = Date.WithCalendar(calendarSystem);
+            return new OffsetDateTime(newDate.YearMonthDay, this.time, this.offset, calendarSystem);
         }
 
         /// <summary>
