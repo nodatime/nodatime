@@ -10,6 +10,7 @@ using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
 using JetBrains.Annotations;
+using NodaTime.Annotations;
 using NodaTime.Calendars;
 using NodaTime.Text;
 using NodaTime.TimeZones;
@@ -47,8 +48,7 @@ namespace NodaTime
         , ISerializable
 #endif
     {
-        // Note: non-readonly just for performance, to avoid copying data when calling members.
-        private OffsetDateTime offsetDateTime;
+        [ReadWriteForEfficiency] private OffsetDateTime offsetDateTime;
         private readonly DateTimeZone zone;
 
         /// <summary>

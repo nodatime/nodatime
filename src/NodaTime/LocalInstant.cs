@@ -4,6 +4,7 @@
 
 using System;
 using JetBrains.Annotations;
+using NodaTime.Annotations;
 using NodaTime.Text;
 using NodaTime.Utility;
 
@@ -24,7 +25,7 @@ namespace NodaTime
         /// <summary>
         /// Elapsed time since the local 1970-01-01T00:00:00.
         /// </summary>
-        private Duration duration;
+        [ReadWriteForEfficiency] private Duration duration;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LocalInstant"/> struct.
