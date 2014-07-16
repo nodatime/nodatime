@@ -66,7 +66,7 @@ namespace NodaTime.Test.Text
             }
             if (bcl is HijriCalendar)
             {
-                return CalendarSystem.GetIslamicCalendar(IslamicLeapYearPattern.Base16, IslamicEpoch.Astronomical);
+                return CommonCalendars.BclIslamic;
             }
             // This is *not* a general rule. Noda Time simply doesn't support this calendar, which requires
             // table-based data. However, using the Islamic calendar with the civil epoch gives the same date for
@@ -84,7 +84,7 @@ namespace NodaTime.Test.Text
             }
             if (bcl is JulianCalendar)
             {
-                return CalendarSystem.GetJulianCalendar(4);
+                return CommonCalendars.Julian;
             }
             // No idea - we can't test with this calendar...
             return null;

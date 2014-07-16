@@ -283,11 +283,11 @@ namespace NodaTime.Test
         [Test]
         public void WithCalendar()
         {
-            CalendarSystem julianCalendar = CalendarSystem.GetJulianCalendar(4);
+            CalendarSystem julianCalendar = CommonCalendars.Julian;
             OffsetDateTime gregorianEpoch = NodaConstants.UnixEpoch.WithOffset(Offset.Zero);
 
             OffsetDateTime expected = new LocalDate(1969, 12, 19, julianCalendar).AtMidnight().WithOffset(Offset.FromHours(0));
-            OffsetDateTime actual = gregorianEpoch.WithCalendar(CalendarSystem.GetJulianCalendar(4));
+            OffsetDateTime actual = gregorianEpoch.WithCalendar(CommonCalendars.Julian);
             Assert.AreEqual(expected, actual);
         }
 

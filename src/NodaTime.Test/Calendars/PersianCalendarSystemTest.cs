@@ -17,7 +17,7 @@ namespace NodaTime.Test.Calendars
         public void IsLeapYear()
         {
             var bcl = new PersianCalendar();
-            var noda = CalendarSystem.GetPersianCalendar();
+            var noda = CommonCalendars.Persian;
 
             for (int year = 1; year < 9379; year++)
             {
@@ -32,7 +32,7 @@ namespace NodaTime.Test.Calendars
         public void BclThroughHistory()
         {
             Calendar bcl = new PersianCalendar();
-            CalendarSystem noda = CalendarSystem.GetPersianCalendar();
+            CalendarSystem noda = CommonCalendars.Persian;
 
             for (int year = 1; year < 9378; year++)
             {

@@ -21,7 +21,7 @@ namespace NodaTime.Test
         public void WithCalendar()
         {
             LocalDate isoEpoch = new LocalDate(1970, 1, 1);
-            LocalDate julianEpoch = isoEpoch.WithCalendar(CalendarSystem.GetJulianCalendar(4));
+            LocalDate julianEpoch = isoEpoch.WithCalendar(CommonCalendars.Julian);
             Assert.AreEqual(1969, julianEpoch.Year);
             Assert.AreEqual(12, julianEpoch.Month);
             Assert.AreEqual(19, julianEpoch.Day);
@@ -32,7 +32,7 @@ namespace NodaTime.Test
         public void WithCalendar_OutOfRange()
         {
             LocalDate start = new LocalDate(1, 1, 1);
-            Assert.Throws<ArgumentOutOfRangeException>(() => start.WithCalendar(CalendarSystem.GetPersianCalendar()));
+            Assert.Throws<ArgumentOutOfRangeException>(() => start.WithCalendar(CommonCalendars.Persian));
         }
     }
 }

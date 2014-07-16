@@ -11,7 +11,7 @@ namespace NodaTime.Test
     [TestFixture]
     public class DateIntervalTest
     {
-        private static readonly CalendarSystem JulianCalendar = CalendarSystem.GetJulianCalendar(4);
+        private static readonly CalendarSystem JulianCalendar = CommonCalendars.Julian;
 
         [Test]
         public void Construction_DifferentCalendars()

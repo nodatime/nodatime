@@ -26,7 +26,7 @@ namespace NodaTime.Test
         public void CombinationWithTime()
         {
             // Test all three approaches in the same test - they're logically equivalent.
-            var calendar = CalendarSystem.GetJulianCalendar(4);
+            var calendar = CommonCalendars.Julian;
             LocalDate date = new LocalDate(2014, 3, 28, calendar);
             LocalTime time = new LocalTime(20, 17, 30);
             LocalDateTime expected = new LocalDateTime(2014, 3, 28, 20, 17, 30, calendar);

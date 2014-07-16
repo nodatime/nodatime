@@ -15,7 +15,7 @@ namespace NodaTime.Test.Calendars
         [Test]
         public void LeapYears()
         {
-            var calendar = CalendarSystem.GetGregorianCalendar(4);
+            var calendar = CommonCalendars.Gregorian;
             Assert.IsFalse(calendar.IsLeapYear(1900));
             Assert.IsFalse(calendar.IsLeapYear(1901));
             Assert.IsTrue(calendar.IsLeapYear(1904));
@@ -56,7 +56,7 @@ namespace NodaTime.Test.Calendars
         [Test]
         public void EraProperty()
         {
-            CalendarSystem calendar = CalendarSystem.GetGregorianCalendar(4);
+            CalendarSystem calendar = CommonCalendars.Gregorian;
             LocalDateTime startOfEra = new LocalDateTime(1, 1, 1, 0, 0, 0, calendar);
             Assert.AreEqual(Era.Common, startOfEra.Era);
             Assert.AreEqual(Era.BeforeCommon, startOfEra.PlusTicks(-1).Era);
