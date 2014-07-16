@@ -160,7 +160,7 @@ namespace NodaTime.TimeZones
 
         private ZonedDateTime BuildZonedDateTime(ZoneInterval interval)
         {
-            return new ZonedDateTime(localDateTime, interval.WallOffset, zone);
+            return new ZonedDateTime(localDateTime.WithOffset(interval.WallOffset), zone);
         }
     }
 }

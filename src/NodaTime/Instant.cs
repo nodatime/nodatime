@@ -581,10 +581,10 @@ namespace NodaTime
         [Pure]
         public ZonedDateTime InUtc()
         {
-            // Bypass any determination of offset and arithmetic - construct it all verbatim.
-            LocalDate date = new LocalDate(duration.Days);
-            LocalTime time = new LocalTime(duration.NanosecondOfDay);
-            return new ZonedDateTime(date, time, Offset.Zero, DateTimeZone.Utc);
+            // Bypass any determination of offset and arithmetic, as we know the offset is zero.
+            var ymd = GregorianYearMonthDayCalculator.GetGregorianYearMonthDayFromDaysSinceEpoch(duration.Days);
+            var offsetDateTime = new OffsetDateTime(ymd, new LocalTime(duration.NanosecondOfDay), Offset.Zero, CalendarSystem.Iso);
+            return new ZonedDateTime(offsetDateTime, DateTimeZone.Utc);
         }
 
         /// <summary>

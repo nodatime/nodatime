@@ -51,25 +51,12 @@ namespace NodaTime
         private OffsetDateTime offsetDateTime;
         private readonly DateTimeZone zone;
 
+        /// <summary>
+        /// Internal constructor from pre-validated values.
+        /// </summary>
         internal ZonedDateTime(OffsetDateTime offsetDateTime, DateTimeZone zone)
         {
             this.offsetDateTime = offsetDateTime;
-            this.zone = zone;
-        }
-
-        internal ZonedDateTime(LocalDate date, LocalTime time, Offset offset, DateTimeZone zone)
-        {
-            offsetDateTime = new OffsetDateTime(date.YearMonthDay, time, offset, date.Calendar);
-            this.zone = zone;
-        }
-
-        /// <summary>
-        /// Internal constructor used by other code that has already validated and 
-        /// computed the appropriate field values. No further validation is performed.
-        /// </summary>
-        internal ZonedDateTime(LocalDateTime localDateTime, Offset offset, DateTimeZone zone)
-        {
-            offsetDateTime = new OffsetDateTime(localDateTime, offset);
             this.zone = zone;
         }
 
@@ -82,7 +69,7 @@ namespace NodaTime
         public ZonedDateTime(Instant instant, [NotNull] DateTimeZone zone, [NotNull] CalendarSystem calendar)
         {
             this.zone = Preconditions.CheckNotNull(zone, "zone");
-            offsetDateTime = new OffsetDateTime(instant, zone.GetUtcOffset(instant), calendar);
+            offsetDateTime = new OffsetDateTime(instant, zone.GetUtcOffset(instant), Preconditions.CheckNotNull(calendar, "calendar"));
         }
 
         /// <summary>
@@ -724,7 +711,7 @@ namespace NodaTime
                 ParseResult<ZonedDateTime>.InvalidOffset(text).GetValueOrThrow();
             }
             // Use the constructor which doesn't validate the offset, as we've already done that.
-            this = new ZonedDateTime(offsetDateTime.LocalDateTime, offsetDateTime.Offset, newZone);
+            this = new ZonedDateTime(offsetDateTime, newZone);
         }
 
         /// <inheritdoc />

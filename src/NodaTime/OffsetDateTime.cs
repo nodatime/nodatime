@@ -304,7 +304,7 @@ namespace NodaTime
         [Pure]
         public ZonedDateTime InFixedZone()
         {
-            return new ZonedDateTime(Date, time, offset, DateTimeZone.ForOffset(offset));
+            return new ZonedDateTime(this, DateTimeZone.ForOffset(offset));
         }
 
         /// <summary>
