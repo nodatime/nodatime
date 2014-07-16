@@ -43,12 +43,13 @@ namespace NodaTime
         // we reduce the levels of indirection and copying, which makes a surprising difference in speed, and
         // should allow us to optimize memory usage too.
         // TODO(2.0): Sort out the memory usage. See http://stackoverflow.com/questions/24742325
-        private readonly YearMonthDay yearMonthDay;
-        private readonly LocalTime time;
-        private readonly Offset offset;
+        // Note: non-readonly just for performance, to avoid copying data when calling members.
+        private YearMonthDay yearMonthDay;
+        private LocalTime time;
+        private Offset offset;
         private readonly CalendarSystem calendar;
 
-        private OffsetDateTime(YearMonthDay yearMonthDay, LocalTime time, Offset offset, CalendarSystem calendar)
+        internal OffsetDateTime(YearMonthDay yearMonthDay, LocalTime time, Offset offset, CalendarSystem calendar)
         {
             this.yearMonthDay = yearMonthDay;
             this.time = time;
@@ -192,6 +193,9 @@ namespace NodaTime
         /// <summary>Gets the era of this offset date and time.</summary>
         public Era Era { get { return Calendar.Eras[Calendar.GetEra(yearMonthDay)]; } }
 
+        /// <summary>Gets the century within the era of this zoned date and time.</summary>
+        public int CenturyOfEra { get { return Calendar.GetCenturyOfEra(yearMonthDay); } }
+
         /// <summary>Gets the day of this offset date and time within the year.</summary>
         public int DayOfYear { get { return Calendar.GetDayOfYear(yearMonthDay); } }
 
@@ -282,7 +286,6 @@ namespace NodaTime
             Duration elapsedTime = new Duration(days, time.NanosecondOfDay).MinusSmallNanoseconds(offset.Nanoseconds);
             return elapsedTime;
         }
-
 
         /// <summary>
         /// Returns this value as a <see cref="ZonedDateTime"/>.

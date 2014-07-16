@@ -44,8 +44,8 @@ namespace NodaTime
         , ISerializable
 #endif
     {
-        private readonly LocalDate date;
-        private readonly LocalTime time;
+        private LocalDate date;
+        private LocalTime time;
 
         /// <summary>
         /// Optimized constructor to convert an instant to local date/time in the ISO calendar.
