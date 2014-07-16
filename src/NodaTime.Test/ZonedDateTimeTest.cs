@@ -282,7 +282,7 @@ namespace NodaTime.Test
         {
             DateTimeZoneProviders.Serialization = DateTimeZoneProviders.Tzdb;
             var zone = DateTimeZoneProviders.Tzdb["America/New_York"];
-            var value = new ZonedDateTime(new LocalDateTime(2013, 4, 12, 17, 53, 23), Offset.FromHours(-4), zone);
+            var value = new ZonedDateTime(new LocalDateTime(2013, 4, 12, 17, 53, 23).WithOffset(Offset.FromHours(-4)), zone);
             TestHelper.AssertBinaryRoundtrip(value);
         }
 
@@ -291,7 +291,7 @@ namespace NodaTime.Test
         {
             DateTimeZoneProviders.Serialization = DateTimeZoneProviders.Tzdb;
             var zone = DateTimeZoneProviders.Tzdb["America/New_York"];
-            var value = new ZonedDateTime(new LocalDateTime(2013, 4, 12, 17, 53, 23), Offset.FromHours(-4), zone);
+            var value = new ZonedDateTime(new LocalDateTime(2013, 4, 12, 17, 53, 23).WithOffset(Offset.FromHours(-4)), zone);
             TestHelper.AssertXmlRoundtrip(value, "<value zone=\"America/New_York\">2013-04-12T17:53:23-04</value>");
         }
 
@@ -305,7 +305,7 @@ namespace NodaTime.Test
             {
                 DateTimeZoneProviders.Serialization = DateTimeZoneProviders.Bcl;
                 var zone = DateTimeZoneProviders.Bcl["Eastern Standard Time"];
-                var value = new ZonedDateTime(new LocalDateTime(2013, 4, 12, 17, 53, 23), Offset.FromHours(-4), zone);
+                var value = new ZonedDateTime(new LocalDateTime(2013, 4, 12, 17, 53, 23).WithOffset(Offset.FromHours(-4)), zone);
                 TestHelper.AssertXmlRoundtrip(value, "<value zone=\"Eastern Standard Time\">2013-04-12T17:53:23-04</value>");
             }
         }
@@ -319,7 +319,7 @@ namespace NodaTime.Test
             {
                 DateTimeZoneProviders.Serialization = DateTimeZoneProviders.Bcl;
                 var zone = DateTimeZoneProviders.Bcl["Eastern Standard Time"];
-                var value = new ZonedDateTime(new LocalDateTime(2013, 4, 12, 17, 53, 23), Offset.FromHours(-4), zone);
+                var value = new ZonedDateTime(new LocalDateTime(2013, 4, 12, 17, 53, 23).WithOffset(Offset.FromHours(-4)), zone);
                 TestHelper.AssertBinaryRoundtrip(value);
             }
         }
@@ -330,8 +330,8 @@ namespace NodaTime.Test
         {
             DateTimeZoneProviders.Serialization = DateTimeZoneProviders.Tzdb;
             var zone = DateTimeZoneProviders.Tzdb["America/New_York"];
-            var value = new ZonedDateTime(new LocalDateTime(2013, 6, 12, 17, 53, 23, CalendarSystem.GetJulianCalendar(3)),
-                Offset.FromHours(-4), zone);
+            var localDateTime = new LocalDateTime(2013, 6, 12, 17, 53, 23, CalendarSystem.GetJulianCalendar(3));
+            var value = new ZonedDateTime(localDateTime.WithOffset(Offset.FromHours(-4)), zone);
             TestHelper.AssertXmlRoundtrip(value,
                 "<value zone=\"America/New_York\" calendar=\"Julian 3\">2013-06-12T17:53:23-04</value>");
         }
@@ -341,8 +341,8 @@ namespace NodaTime.Test
         {
             DateTimeZoneProviders.Serialization = DateTimeZoneProviders.Tzdb;
             var zone = DateTimeZoneProviders.Tzdb["America/New_York"];
-            var value = new ZonedDateTime(new LocalDateTime(2013, 6, 12, 17, 53, 23, CalendarSystem.GetJulianCalendar(3)),
-                Offset.FromHours(-4), zone);
+            var localDateTime = new LocalDateTime(2013, 6, 12, 17, 53, 23, CalendarSystem.GetJulianCalendar(3));
+            var value = new ZonedDateTime(localDateTime.WithOffset(Offset.FromHours(-4)), zone);
             TestHelper.AssertBinaryRoundtrip(value);
         }
 

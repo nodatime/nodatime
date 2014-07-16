@@ -53,7 +53,7 @@ namespace NodaTime.Test
         public void AmbiguousStartOfDay_TransitionAtMidnight()
         {
             // Occurrence before transition
-            var expected = new ZonedDateTime(new LocalDateTime(2000, 6, 1, 0, 0), Offset.FromHours(-2),
+            var expected = new ZonedDateTime(new LocalDateTime(2000, 6, 1, 0, 0).WithOffset(Offset.FromHours(-2)),
                 TransitionBackwardToMidnightZone);
             var actual = TransitionBackwardToMidnightZone.AtStartOfDay(TransitionDate);
             Assert.AreEqual(expected, actual);
@@ -63,7 +63,7 @@ namespace NodaTime.Test
         public void AmbiguousStartOfDay_TransitionAfterMidnight()
         {
             // Occurrence before transition
-            var expected = new ZonedDateTime(new LocalDateTime(2000, 6, 1, 0, 0), Offset.FromHours(-2),
+            var expected = new ZonedDateTime(new LocalDateTime(2000, 6, 1, 0, 0).WithOffset(Offset.FromHours(-2)),
                 TransitionBackwardAfterMidnightZone);
             var actual = TransitionBackwardAfterMidnightZone.AtStartOfDay(TransitionDate);
             Assert.AreEqual(expected, actual);
@@ -73,7 +73,7 @@ namespace NodaTime.Test
         public void SkippedStartOfDay_TransitionAtMidnight()
         {
             // 1am because of the skip
-            var expected = new ZonedDateTime(new LocalDateTime(2000, 6, 1, 1, 0), Offset.FromHours(-1),
+            var expected = new ZonedDateTime(new LocalDateTime(2000, 6, 1, 1, 0).WithOffset(Offset.FromHours(-1)),
                 TransitionForwardAtMidnightZone);
             var actual = TransitionForwardAtMidnightZone.AtStartOfDay(TransitionDate);
             Assert.AreEqual(expected, actual);
@@ -83,7 +83,7 @@ namespace NodaTime.Test
         public void SkippedStartOfDay_TransitionBeforeMidnight()
         {
             // 12.20am because of the skip
-            var expected = new ZonedDateTime(new LocalDateTime(2000, 6, 1, 0, 20), Offset.FromHours(-1),
+            var expected = new ZonedDateTime(new LocalDateTime(2000, 6, 1, 0, 20).WithOffset(Offset.FromHours(-1)),
                 TransitionForwardBeforeMidnightZone);
             var actual = TransitionForwardBeforeMidnightZone.AtStartOfDay(TransitionDate);
             Assert.AreEqual(expected, actual);
@@ -93,7 +93,7 @@ namespace NodaTime.Test
         public void UnambiguousStartOfDay()
         {
             // Just a simple midnight in March.
-            var expected = new ZonedDateTime(new LocalDateTime(2000, 3, 1, 0, 0), Offset.FromHours(-2),
+            var expected = new ZonedDateTime(new LocalDateTime(2000, 3, 1, 0, 0).WithOffset(Offset.FromHours(-2)),
                 TransitionForwardAtMidnightZone);
             var actual = TransitionForwardAtMidnightZone.AtStartOfDay(new LocalDate(2000, 3, 1));
             Assert.AreEqual(expected, actual);

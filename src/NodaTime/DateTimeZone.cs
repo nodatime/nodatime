@@ -294,7 +294,8 @@ namespace NodaTime
         /// <returns>The <see cref="ZonedDateTime"/> representing the earliest time in the given date, in this time zone.</returns>
         public ZonedDateTime AtStartOfDay(LocalDate date)
         {
-            LocalInstant localInstant = date.AtMidnight().ToLocalInstant();
+            LocalDateTime midnight = date.AtMidnight();
+            LocalInstant localInstant = midnight.ToLocalInstant();
             ZoneIntervalPair pair = GetZoneIntervalPair(localInstant);
             switch (pair.MatchingIntervals)
             {
@@ -304,12 +305,12 @@ namespace NodaTime
                     // It's possible that the entire day is skipped. For example, Samoa skipped December 30th 2011.
                     if (localDateTime.Date != date)
                     {
-                        throw new SkippedTimeException(date + LocalTime.Midnight, this);
+                        throw new SkippedTimeException(midnight, this);
                     }
-                    return new ZonedDateTime(localDateTime, interval.WallOffset, this);
+                    return new ZonedDateTime(localDateTime.WithOffset(interval.WallOffset), this);
                 case 1:
                 case 2:
-                    return new ZonedDateTime(date.AtMidnight(), pair.EarlyInterval.WallOffset, this);
+                    return new ZonedDateTime(midnight.WithOffset(pair.EarlyInterval.WallOffset), this);
                 default:
                     throw new InvalidOperationException("This won't happen.");
             }

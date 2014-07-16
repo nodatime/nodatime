@@ -982,7 +982,7 @@ namespace NodaTime
         [Pure]
         public OffsetDateTime WithOffset(Offset offset)
         {
-            return new OffsetDateTime(this, offset);
+            return new OffsetDateTime(date.YearMonthDay, time, offset, Calendar);
         }
 
         /// <summary>
@@ -993,8 +993,8 @@ namespace NodaTime
         [Pure]
         public ZonedDateTime InUtc()
         {
-            // Use the internal constructor to avoid validation. We know it will be fine.
-            return new ZonedDateTime(this, Offset.Zero, DateTimeZone.Utc);
+            // Use the internal constructors to avoid validation. We know it will be fine.
+            return new ZonedDateTime(new OffsetDateTime(date.YearMonthDay, time, Offset.Zero, Calendar), DateTimeZone.Utc);
         }
 
         /// <summary>
