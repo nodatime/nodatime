@@ -10,6 +10,10 @@ namespace NodaTime.Annotations
     /// is read/write so that invoking members on the field avoids taking a copy of
     /// the field value.
     /// </summary>
+    /// <remarks>
+    /// See http://msmvps.com/blogs/jon_skeet/archive/2014/07/16/micro-optimization-the-surprising-inefficiency-of-readonly-fields.aspx
+    /// for details of why we're doing this at all.
+    /// </remarks>
     [AttributeUsage(AttributeTargets.Field)]
     internal sealed class ReadWriteForEfficiencyAttribute : Attribute
     {
