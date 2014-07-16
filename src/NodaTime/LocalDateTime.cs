@@ -465,7 +465,7 @@ namespace NodaTime
         /// </returns>
         public bool Equals(LocalDateTime other)
         {
-            return date == other.Date && time == other.time;
+            return date == other.date && time == other.time;
         }
         #endregion
 
@@ -585,12 +585,12 @@ namespace NodaTime
         public int CompareTo(LocalDateTime other)
         {
             // This will check calendars...
-            int dateComparison = Date.CompareTo(other.Date);
+            int dateComparison = date.CompareTo(other.date);
             if (dateComparison != 0)
             {
                 return dateComparison;
             }
-            return time.CompareTo(other.TimeOfDay);
+            return time.CompareTo(other.time);
         }
 
         /// <summary>
@@ -954,7 +954,7 @@ namespace NodaTime
         [Pure]
         public LocalDateTime Next(IsoDayOfWeek targetDayOfWeek)
         {
-            return new LocalDateTime(Date.Next(targetDayOfWeek), TimeOfDay);
+            return new LocalDateTime(date.Next(targetDayOfWeek), time);
         }
 
         /// <summary>
@@ -971,7 +971,7 @@ namespace NodaTime
         [Pure]
         public LocalDateTime Previous(IsoDayOfWeek targetDayOfWeek)
         {
-            return new LocalDateTime(Date.Previous(targetDayOfWeek), TimeOfDay);
+            return new LocalDateTime(date.Previous(targetDayOfWeek), time);
         }
 
         /// <summary>

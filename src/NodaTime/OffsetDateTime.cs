@@ -341,6 +341,7 @@ namespace NodaTime
         [Pure]
         public OffsetDateTime WithCalendar([NotNull] CalendarSystem calendarSystem)
         {
+            // FIXME! This is broken! Need a test first...
             return new OffsetDateTime(this.yearMonthDay, this.time, this.offset, calendarSystem);
         }
 
@@ -357,7 +358,8 @@ namespace NodaTime
         [Pure]
         public OffsetDateTime With([NotNull] Func<LocalDate, LocalDate> adjuster)
         {
-            return LocalDateTime.With(adjuster).WithOffset(offset);
+            LocalDate newDate = Date.With(adjuster);
+            return new OffsetDateTime(newDate.YearMonthDay, time, offset, newDate.Calendar);
         }
 
         /// <summary>
@@ -372,7 +374,8 @@ namespace NodaTime
         [Pure]
         public OffsetDateTime With([NotNull] Func<LocalTime, LocalTime> adjuster)
         {
-            return LocalDateTime.With(adjuster).WithOffset(offset);
+            LocalTime newTime = time.With(adjuster);
+            return new OffsetDateTime(yearMonthDay, newTime, offset, Calendar);
         }
 
         /// <summary>
