@@ -281,6 +281,17 @@ namespace NodaTime.Test
         }
 
         [Test]
+        public void WithCalendar()
+        {
+            CalendarSystem julianCalendar = CalendarSystem.GetJulianCalendar(4);
+            OffsetDateTime gregorianEpoch = NodaConstants.UnixEpoch.WithOffset(Offset.Zero);
+
+            OffsetDateTime expected = new LocalDate(1969, 12, 19, julianCalendar).AtMidnight().WithOffset(Offset.FromHours(0));
+            OffsetDateTime actual = gregorianEpoch.WithCalendar(CalendarSystem.GetJulianCalendar(4));
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
         public void With_TimeAdjuster()
         {
             Offset offset = Offset.FromHoursAndMinutes(2, 30);
