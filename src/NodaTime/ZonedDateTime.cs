@@ -329,8 +329,7 @@ namespace NodaTime
         public override int GetHashCode()
         {
             int hash = HashCodeHelper.Initialize();
-            hash = HashCodeHelper.Hash(hash, LocalDateTime);
-            hash = HashCodeHelper.Hash(hash, Offset);
+            hash = HashCodeHelper.Hash(hash, offsetDateTime);
             hash = HashCodeHelper.Hash(hash, Zone);
             return hash;
         }
@@ -371,7 +370,7 @@ namespace NodaTime
         /// <returns>A new value with the time advanced by the given duration, in the same calendar system and time zone.</returns>
         public static ZonedDateTime operator +(ZonedDateTime zonedDateTime, Duration duration)
         {
-            return new ZonedDateTime(zonedDateTime.ToInstant() + duration, zonedDateTime.Zone, zonedDateTime.LocalDateTime.Calendar);
+            return new ZonedDateTime(zonedDateTime.ToInstant() + duration, zonedDateTime.Zone, zonedDateTime.Calendar);
         }
 
         /// <summary>
@@ -431,7 +430,7 @@ namespace NodaTime
         /// <returns>A new value with the time "rewound" by the given duration, in the same calendar system and time zone.</returns>
         public static ZonedDateTime operator -(ZonedDateTime zonedDateTime, Duration duration)
         {
-            return new ZonedDateTime(zonedDateTime.ToInstant() - duration, zonedDateTime.Zone, zonedDateTime.LocalDateTime.Calendar);
+            return new ZonedDateTime(zonedDateTime.ToInstant() - duration, zonedDateTime.Zone, zonedDateTime.Calendar);
         }
         #endregion
 
@@ -510,7 +509,7 @@ namespace NodaTime
         [Pure]
         public DateTimeOffset ToDateTimeOffset()
         {
-            return new DateTimeOffset(LocalDateTime.ToDateTimeUnspecified(), Offset.ToTimeSpan());
+            return offsetDateTime.ToDateTimeOffset();
         }
 
         /// <summary>
