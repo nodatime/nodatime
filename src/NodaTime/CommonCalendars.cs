@@ -1,6 +1,7 @@
 ﻿// Copyright 2014 The Noda Time Authors. All rights reserved.
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
+using System.Globalization;
 using NodaTime.Calendars;
 
 namespace NodaTime
@@ -40,7 +41,7 @@ namespace NodaTime
         public static CalendarSystem Coptic { get { return CalendarSystem.GetCopticCalendar(4); } }
 
         /// <summary>
-        /// Returns an Islamic calendar system equivalent to the one used by the BCL <see cref="System.Globalization.HijriCalendar"/>.
+        /// Returns an Islamic calendar system equivalent to the one used by the BCL <see cref="HijriCalendar"/>.
         /// </summary>
         /// <remarks>
         /// This uses the <see cref="IslamicLeapYearPattern.Base16"/> leap year pattern and the
@@ -66,7 +67,7 @@ namespace NodaTime
         /// <summary>
         /// Returns a Hebrew calendar system using the civil month numbering.
         /// </summary>
-        /// <remarks>This calendar system is compatible with the BCL <see cref="System.Globalization.HebrewCalendar"/>.</remarks>
+        /// <remarks>This calendar system is compatible with the BCL <see cref="HebrewCalendar"/>.</remarks>
         /// <seealso cref="CalendarSystem.GetHebrewCalendar"/>
         /// <returns>A Hebrew calendar system using the civil month numbering.</returns>
         public static CalendarSystem CivilHebrew { get { return CalendarSystem.GetHebrewCalendar(HebrewMonthNumbering.Civil); } }
