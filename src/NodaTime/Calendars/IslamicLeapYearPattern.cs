@@ -2,8 +2,6 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-using System.Globalization;
-
 namespace NodaTime.Calendars
 {
     /// <summary>
@@ -36,7 +34,7 @@ namespace NodaTime.Calendars
         /// A pattern of leap years in 2, 5, 7, 10, 13, 16, 18, 21, 24, 26 and 29.
         /// This pattern and <see cref="Base15"/> are the most commonly used ones,
         /// and only differ in whether the 15th or 16th year is deemed leap. This is
-        /// the pattern used by the BCL <see cref="HijriCalendar"/>.
+        /// the pattern used by the BCL <see cref="System.Globalization.HijriCalendar"/>.
         /// </summary>
         Base16 = 2,
         /// <summary>
