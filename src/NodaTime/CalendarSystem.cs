@@ -728,9 +728,9 @@ namespace NodaTime
             return yearMonthDayCalculator.GetCenturyOfEra(yearMonthDay);
         }
 
-        internal int GetEra(YearMonthDay yearMonthDay)
+        internal Era GetEra(YearMonthDay yearMonthDay)
         {
-            return yearMonthDayCalculator.GetEra(yearMonthDay);
+            return Eras[yearMonthDayCalculator.GetEra(yearMonthDay)];
         }
         #endregion
     }

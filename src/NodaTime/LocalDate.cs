@@ -202,7 +202,7 @@ namespace NodaTime
         public int CenturyOfEra { get { return Calendar.GetCenturyOfEra(yearMonthDay); } }
 
         /// <summary>Gets the era of this local date.</summary>
-        public Era Era { get { return Calendar.Eras[Calendar.GetEra(yearMonthDay)]; } }
+        public Era Era { get { return Calendar.GetEra(yearMonthDay); } }
 
         /// <summary>Gets the day of this local date within the year.</summary>
         public int DayOfYear { get { return Calendar.GetDayOfYear(yearMonthDay); } }

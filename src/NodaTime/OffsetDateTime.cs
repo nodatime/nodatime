@@ -191,7 +191,7 @@ namespace NodaTime
         public int YearOfEra { get { return Calendar.GetYearOfEra(yearMonthDay); } }
 
         /// <summary>Gets the era of this offset date and time.</summary>
-        public Era Era { get { return Calendar.Eras[Calendar.GetEra(yearMonthDay)]; } }
+        public Era Era { get { return Calendar.GetEra(yearMonthDay); } }
 
         /// <summary>Gets the century within the era of this zoned date and time.</summary>
         public int CenturyOfEra { get { return Calendar.GetCenturyOfEra(yearMonthDay); } }
