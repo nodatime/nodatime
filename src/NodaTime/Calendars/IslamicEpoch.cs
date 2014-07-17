@@ -2,8 +2,6 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-using System.Globalization;
-
 namespace NodaTime.Calendars
 {
     /// <summary>
@@ -19,7 +17,7 @@ namespace NodaTime.Calendars
     {
         /// <summary>
         /// Epoch beginning on July 15th 622CE (Julian), which is July 18th 622 CE in the Gregorian calendar.
-        /// This is the epoch used by the BCL <see cref="HijriCalendar"/>.
+        /// This is the epoch used by the BCL <see cref="System.Globalization.HijriCalendar"/>.
         /// </summary>
         Astronomical = 1,
         /// <summary>
