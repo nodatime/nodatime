@@ -37,19 +37,6 @@ namespace NodaTime
         public static readonly LocalTime Midnight = new LocalTime(0, 0, 0);
 
         /// <summary>
-        /// Combines this <see cref="LocalTime"/> with the given <see cref="LocalDate"/>
-        /// into a single <see cref="LocalDateTime"/>.
-        /// Fluent alternative to <c>operator+()</c>.
-        /// </summary>
-        /// <param name="date">The date to combine with this time</param>
-        /// <returns>The <see cref="LocalDateTime"/> representation of the given time on this date</returns>
-        [Pure]
-        public LocalDateTime On(LocalDate date)
-        {
-            return date + this;
-        }
-
-        /// <summary>
         /// Local time at noon, i.e. 12 hours, 0 minutes, 0 seconds.
         /// </summary>
         public static readonly LocalTime Noon = new LocalTime(12, 0, 0);
@@ -740,6 +727,19 @@ namespace NodaTime
         public LocalTime With([NotNull] Func<LocalTime, LocalTime> adjuster)
         {
             return Preconditions.CheckNotNull(adjuster, "adjuster").Invoke(this);
+        }
+
+        /// <summary>
+        /// Combines this <see cref="LocalTime"/> with the given <see cref="LocalDate"/>
+        /// into a single <see cref="LocalDateTime"/>.
+        /// Fluent alternative to <c>operator+()</c>.
+        /// </summary>
+        /// <param name="date">The date to combine with this time</param>
+        /// <returns>The <see cref="LocalDateTime"/> representation of the given time on this date</returns>
+        [Pure]
+        public LocalDateTime On(LocalDate date)
+        {
+            return date + this;
         }
 
         #region Formatting
