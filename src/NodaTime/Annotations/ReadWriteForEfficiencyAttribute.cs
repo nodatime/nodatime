@@ -11,7 +11,7 @@ namespace NodaTime.Annotations
     /// the field value.
     /// </summary>
     /// <remarks>
-    /// See http://msmvps.com/blogs/jon_skeet/archive/2014/07/16/micro-optimization-the-surprising-inefficiency-of-readonly-fields.aspx
+    /// See http://noda-time.blogspot.com/2014/07/micro-optimization-surprising.html
     /// for details of why we're doing this at all.
     /// </remarks>
     [AttributeUsage(AttributeTargets.Field)]
