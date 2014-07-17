@@ -203,7 +203,7 @@ namespace NodaTime.Calendars
         }
 
         /// <summary>
-        /// Returns the era for the given date. The base implementation is to return 0, which is
+        /// Returns the era index for the given date. The base implementation is to return 0, which is
         /// suitable for single-era calendars.
         /// </summary>
         internal virtual int GetEra(YearMonthDay yearMonthDay)
