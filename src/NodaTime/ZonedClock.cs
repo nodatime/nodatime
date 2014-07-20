@@ -2,6 +2,7 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 using JetBrains.Annotations;
+using NodaTime.Annotations;
 using NodaTime.Utility;
 
 namespace NodaTime
@@ -10,6 +11,8 @@ namespace NodaTime
     /// A clock with an associated time zone and calendar. This is effectively a convenience
     /// class decorating an <see cref="IClock"/>.
     /// </summary>
+    /// <threadsafety>This type is immutable reference type. See the thread safety section of the user guide for more information.</threadsafety>
+    [Immutable]
     public sealed class ZonedClock
     {
         private readonly IClock clock;
@@ -44,6 +47,7 @@ namespace NodaTime
         /// </summary>
         /// <returns>The current instant provided by the underlying clock, adjusted to the
         /// time zone of this object.</returns>
+        [Pure]
         public ZonedDateTime GetCurrentZonedDateTime()
         {
             return GetCurrentInstant().InZone(zone, calendar);
@@ -55,6 +59,7 @@ namespace NodaTime
         /// </summary>
         /// <returns>The local date/time of the current instant provided by the underlying clock, adjusted to the
         /// time zone of this object.</returns>
+        [Pure]
         public LocalDateTime GetCurrentLocalDateTime()
         {
             return GetCurrentZonedDateTime().LocalDateTime;
@@ -66,6 +71,7 @@ namespace NodaTime
         /// </summary>
         /// <returns>The offset date/time of the current instant provided by the underlying clock, adjusted to the
         /// time zone of this object.</returns>
+        [Pure]
         public OffsetDateTime GetCurrentOffsetDateTime()
         {
             return GetCurrentZonedDateTime().ToOffsetDateTime();
@@ -78,6 +84,7 @@ namespace NodaTime
         /// </summary>
         /// <param name="zone">The time zone for the new <c>ZonedClock</c>.</param>
         /// <returns>A new <c>ZonedClock</c> using the specified time zone.</returns>
+        [Pure]
         public ZonedClock WithZone([NotNull] DateTimeZone zone)
         {
             return new ZonedClock(clock, zone, calendar);
@@ -90,6 +97,7 @@ namespace NodaTime
         /// </summary>
         /// <param name="calendar">The calendar system for the new <c>ZonedClock</c>.</param>
         /// <returns>A new <c>ZonedClock</c> using the specified calendar system.</returns>
+        [Pure]
         public ZonedClock WithCalendar([NotNull] CalendarSystem calendar)
         {
             return new ZonedClock(clock, zone, calendar);
