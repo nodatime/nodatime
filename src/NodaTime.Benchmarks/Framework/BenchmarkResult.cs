@@ -28,9 +28,9 @@ namespace NodaTime.Benchmarks.Framework
         internal MethodInfo Method { get { return method; } }
         internal long Iterations { get { return iterations; } }
         internal Duration Duration { get { return duration; } }
+        // Use ticks here rather than nanoseconds, as otherwise the multiplication could easily overflow. As an alternative,
+        // we could use decimal arithmetic or BigInteger...
         internal long CallsPerSecond { get { return iterations * NodaConstants.TicksPerSecond / duration.Ticks; } }
-        internal long TicksPerCall { get { return Duration.Ticks / iterations; } }
-        internal long PicosecondsPerCall { get { return (Duration.Ticks * TicksPerPicosecond) / iterations; } }
-        internal long NanosecondsPerCall { get { return (Duration.Ticks * TicksPerNanosecond) / iterations; } }
+        internal long NanosecondsPerCall { get { return Duration.ToInt64Nanoseconds() / iterations; } }
     }
 }
