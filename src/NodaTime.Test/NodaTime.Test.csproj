@@ -281,6 +281,7 @@
     <Compile Include="Utility\NodaReadOnlyDictionaryTest.cs" />
     <Compile Include="Utility\PreconditionsTest.cs" />
     <Compile Include="YearMonthDayTest.cs" />
+    <Compile Include="ZonedClockTest.cs" />
     <Compile Include="ZonedDateTimeTest.cs" />
     <None Include="Tests.nunit" />
   </ItemGroup>

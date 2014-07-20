@@ -296,6 +296,7 @@
     <Compile Include="Utility\ReferenceEqualityComparer.cs" />
     <Compile Include="Utility\Preconditions.cs" />
     <Compile Include="YearMonthDay.cs" />
+    <Compile Include="ZonedClock.cs" />
     <Compile Include="ZonedDateTime.cs" />
   </ItemGroup>
   <ItemGroup>
