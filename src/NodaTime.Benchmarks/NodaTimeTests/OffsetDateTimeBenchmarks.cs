@@ -27,6 +27,72 @@ namespace NodaTime.Benchmarks.NodaTimeTests
         }
 
         [Benchmark]
+        public void Year()
+        {
+            Sample.Year.Consume();
+        }
+
+        [Benchmark]
+        public void Month()
+        {
+            Sample.Month.Consume();
+        }
+
+        [Benchmark]
+        public void DayOfMonth()
+        {
+            Sample.Day.Consume();
+        }
+
+        [Benchmark]
+        public void IsoDayOfWeek()
+        {
+            Sample.IsoDayOfWeek.Consume();
+        }
+
+        [Benchmark]
+        public void DayOfYear()
+        {
+            Sample.DayOfYear.Consume();
+        }
+
+        [Benchmark]
+        public void Hour()
+        {
+            Sample.Hour.Consume();
+        }
+
+        [Benchmark]
+        public void Minute()
+        {
+            Sample.Minute.Consume();
+        }
+
+        [Benchmark]
+        public void Second()
+        {
+            Sample.Second.Consume();
+        }
+
+        [Benchmark]
+        public void Millisecond()
+        {
+            Sample.Millisecond.Consume();
+        }
+
+        [Benchmark]
+        public void Date()
+        {
+            Sample.Date.Consume();
+        }
+
+        [Benchmark]
+        public void TimeOfDay()
+        {
+            Sample.TimeOfDay.Consume();
+        }
+
+        [Benchmark]
         public void TickOfDay()
         {
             Sample.TickOfDay.Consume();
