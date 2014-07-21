@@ -35,10 +35,12 @@ namespace NodaTime.Utility
         [ContractAnnotation("argument:null => halt")]
         internal static void DebugCheckNotNull<T>(T argument, [InvokerParameterName] string paramName) where T : class
         {
+#if DEBUG
             if (argument == null)
             {
-                throw new ArgumentNullException(paramName);
+                throw new DebugPreconditionException("{0} is null", paramName);
             }
+#endif
         }
 
         internal static void CheckArgumentRange([InvokerParameterName] string paramName, long value, long minInclusive, long maxInclusive)
@@ -80,16 +82,13 @@ namespace NodaTime.Utility
         [Conditional("DEBUG")]
         internal static void DebugCheckArgumentRange([InvokerParameterName] string paramName, int value, int minInclusive, int maxInclusive)
         {
+#if DEBUG
             if (value < minInclusive || value > maxInclusive)
             {
-#if PCL
-                throw new ArgumentOutOfRangeException(paramName,
-                    "Value should be in range [" + minInclusive + "-" + maxInclusive + "]");
-#else
-                throw new ArgumentOutOfRangeException(paramName, value,
-                    "Value should be in range [" + minInclusive + "-" + maxInclusive + "]");
-#endif
+                throw new DebugPreconditionException("Value {0} for {1} is out of range [{2}-{3}]", value, paramName,
+                    minInclusive, maxInclusive);
             }
+#endif
         }
 
         /// <summary>
@@ -99,17 +98,14 @@ namespace NodaTime.Utility
         /// </summary>
         [Conditional("DEBUG")]
         internal static void DebugCheckArgumentRange([InvokerParameterName] string paramName, long value, long minInclusive, long maxInclusive)
-        {
+        {            
+#if DEBUG
             if (value < minInclusive || value > maxInclusive)
             {
-#if PCL
-                throw new ArgumentOutOfRangeException(paramName,
-                    "Value should be in range [" + minInclusive + "-" + maxInclusive + "]");
-#else
-                throw new ArgumentOutOfRangeException(paramName, value,
-                    "Value should be in range [" + minInclusive + "-" + maxInclusive + "]");
-#endif
+                throw new DebugPreconditionException("Value {0} for {1} is out of range [{2}-{3}]", value, paramName,
+                    minInclusive, maxInclusive);
             }
+#endif
         }
 
         [ContractAnnotation("expression:false => halt")]
@@ -154,4 +150,22 @@ namespace NodaTime.Utility
             }
         }
     }
+
+#if DEBUG
+    /// <summary>
+    /// Exception which occurs only for preconditions violated in debug mode. This is
+    /// thrown from the Preconditions.Debug* methods to avoid them throwing exceptions
+    /// which might cause tests to pass. The type doesn't even exist in non-debug configurations,
+    /// so even though the Preconditions.Debug* methods *do* exist, they can't actually do anything.
+    /// That's fine, as Preconditions is an internal class; we don't expect to be building
+    /// an assembly which might use this in debug configuration against a non-debug Noda Time or vice versa.
+    /// </summary>
+    internal class DebugPreconditionException : Exception
+    {
+        internal DebugPreconditionException(string format, params object[] args)
+            : base(string.Format(format, args))
+        {
+        }
+    }
+#endif
 }
