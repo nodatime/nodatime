@@ -47,8 +47,8 @@ namespace NodaTime.Test
         [Test]
         public void TimeProperties_AfterEpoch()
         {
-            // Use pretty big year number as part of validating against overflow
-            LocalDateTime ldt = new LocalDateTime(12345, 1, 2, 15, 48, 25, 456, 3456);
+            // Use the largest valid year as part of validating against overflow
+            LocalDateTime ldt = new LocalDateTime(GregorianYearMonthDayCalculator.MaxGregorianYear, 1, 2, 15, 48, 25, 456, 3456);
             Assert.AreEqual(15, ldt.Hour);
             Assert.AreEqual(3, ldt.ClockHourOfHalfDay);
             Assert.AreEqual(48, ldt.Minute);
@@ -64,8 +64,8 @@ namespace NodaTime.Test
         [Test]
         public void TimeProperties_BeforeEpoch()
         {
-            // Use pretty big (negative) year number as part of validating against overflow
-            LocalDateTime ldt = new LocalDateTime(-12345, 1, 2, 15, 48, 25, 456, 3456);
+            // Use the smallest valid year number as part of validating against overflow
+            LocalDateTime ldt = new LocalDateTime(GregorianYearMonthDayCalculator.MinGregorianYear, 1, 2, 15, 48, 25, 456, 3456);
             Assert.AreEqual(15, ldt.Hour);
             Assert.AreEqual(3, ldt.ClockHourOfHalfDay);
             Assert.AreEqual(48, ldt.Minute);

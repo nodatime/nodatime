@@ -621,6 +621,8 @@ namespace NodaTime
         /// <returns>The number of days in the given month and year.</returns>
         public int GetDaysInMonth(int year, int month)
         {
+            // Simplest way to validate the year and month. Assume it's quick enough to validate the day...
+            ValidateYearMonthDay(year, month, 1);
             return yearMonthDayCalculator.GetDaysInMonth(year, month);
         }
 
@@ -634,6 +636,7 @@ namespace NodaTime
         /// <returns>True if the given year is a leap year; false otherwise.</returns>
         public bool IsLeapYear(int year)
         {
+            Preconditions.CheckArgumentRange("year", year, minYear, maxYear);
             return yearMonthDayCalculator.IsLeapYear(year);
         }
 
@@ -649,6 +652,7 @@ namespace NodaTime
         /// <returns>The maximum month number within the given year.</returns>
         public int GetMonthsInYear(int year)
         {
+            Preconditions.CheckArgumentRange("year", year, minYear, maxYear);
             return yearMonthDayCalculator.GetMonthsInYear(year);
         }
 
@@ -657,7 +661,7 @@ namespace NodaTime
         /// This default implementation returns the maximum year for this calendar, which is
         /// a valid implementation for single-era calendars.
         /// </summary>
-        internal int GetMaxYearOfEra(int eraIndex)
+        internal int GetMaxYearOfEra([Trusted] int eraIndex)
         {
             return yearMonthDayCalculator.GetMaxYearOfEra(eraIndex);
         }
@@ -666,7 +670,7 @@ namespace NodaTime
         /// See <see cref="GetMinYearOfEra(NodaTime.Calendars.Era)" /> - but this uses a pre-validated index.
         /// This default implementation returns 1, but can be overridden by derived classes.
         /// </summary>
-        internal int GetMinYearOfEra(int eraIndex)
+        internal int GetMinYearOfEra([Trusted] int eraIndex)
         {
             return yearMonthDayCalculator.GetMinYearOfEra(eraIndex);
         }
@@ -674,7 +678,7 @@ namespace NodaTime
         /// <summary>
         /// See <see cref="GetAbsoluteYear(int, Era)"/> - but this uses a pre-validated index.
         /// </summary>
-        internal int GetAbsoluteYear(int yearOfEra, int eraIndex)
+        internal int GetAbsoluteYear(int yearOfEra, [Trusted] int eraIndex)
         {
             int minYear = GetMinYearOfEra(eraIndex);
             int maxYear = GetMaxYearOfEra(eraIndex);
@@ -687,48 +691,48 @@ namespace NodaTime
             yearMonthDayCalculator.ValidateYearMonthDay(year, month, day);
         }
 
-        internal int Compare(YearMonthDay lhs, YearMonthDay rhs)
+        internal int Compare([Trusted] YearMonthDay lhs, [Trusted] YearMonthDay rhs)
         {
             return yearMonthDayCalculator.Compare(lhs, rhs);
         }
 
         #region "Getter" methods which used to be DateTimeField
-        internal int GetDayOfWeek(YearMonthDay yearMonthDay)
+        internal int GetDayOfWeek([Trusted] YearMonthDay yearMonthDay)
         {
             return weekYearCalculator.GetDayOfWeek(yearMonthDay);
         }
 
-        internal int GetDayOfYear(YearMonthDay yearMonthDay)
+        internal int GetDayOfYear([Trusted] YearMonthDay yearMonthDay)
         {
             return yearMonthDayCalculator.GetDayOfYear(yearMonthDay);
         }
 
-        internal int GetWeekOfWeekYear(YearMonthDay yearMonthDay)
+        internal int GetWeekOfWeekYear([Trusted] YearMonthDay yearMonthDay)
         {
             return weekYearCalculator.GetWeekOfWeekYear(yearMonthDay);
         }
 
-        internal int GetWeekYear(YearMonthDay yearMonthDay)
+        internal int GetWeekYear([Trusted] YearMonthDay yearMonthDay)
         {
             return weekYearCalculator.GetWeekYear(yearMonthDay);
         }
 
-        internal int GetYearOfCentury(YearMonthDay yearMonthDay)
+        internal int GetYearOfCentury([Trusted] YearMonthDay yearMonthDay)
         {
             return yearMonthDayCalculator.GetYearOfCentury(yearMonthDay);
         }
 
-        internal int GetYearOfEra(YearMonthDay yearMonthDay)
+        internal int GetYearOfEra([Trusted] YearMonthDay yearMonthDay)
         {
             return yearMonthDayCalculator.GetYearOfEra(yearMonthDay);
         }
 
-        internal int GetCenturyOfEra(YearMonthDay yearMonthDay)
+        internal int GetCenturyOfEra([Trusted] YearMonthDay yearMonthDay)
         {
             return yearMonthDayCalculator.GetCenturyOfEra(yearMonthDay);
         }
 
-        internal Era GetEra(YearMonthDay yearMonthDay)
+        internal Era GetEra([Trusted] YearMonthDay yearMonthDay)
         {
             return Eras[yearMonthDayCalculator.GetEra(yearMonthDay)];
         }

@@ -2,6 +2,7 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
+using NodaTime.Annotations;
 using NodaTime.Utility;
 
 namespace NodaTime.Calendars
@@ -95,7 +96,7 @@ namespace NodaTime.Calendars
             }
         }
 
-        private int GetWeeksInWeekYear(int weekYear)
+        private int GetWeeksInWeekYear([Trusted] int weekYear)
         {
             unchecked
             {
@@ -116,7 +117,7 @@ namespace NodaTime.Calendars
         /// <summary>
         /// Returns the ticks at the start of the given week-year.
         /// </summary>
-        private int GetWeekYearDaysSinceEpoch(int weekYear)
+        private int GetWeekYearDaysSinceEpoch([Trusted] int weekYear)
         {
             unchecked
             {

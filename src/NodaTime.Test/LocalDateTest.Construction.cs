@@ -66,27 +66,11 @@ namespace NodaTime.Test
         }
 
         [Test]
-        public void Constructor_InvalidMonth()
+        [TestCase(GregorianYearMonthDayCalculator.MaxGregorianYear + 1, 1, 1)]
+        [TestCase(2010, 13, 1), TestCase(2010, 1, 100), TestCase(2010, 2, 30)]
+        public void Constructor_Invalid(int year, int month, int day)
         {
-            Assert.Throws<ArgumentOutOfRangeException>(() => new LocalDate(2010, 13, 1));
-        }
-
-        [Test]
-        public void Constructor_InvalidDay()
-        {
-            Assert.Throws<ArgumentOutOfRangeException>(() => new LocalDate(2010, 1, 100));
-        }
-
-        [Test]
-        public void Constructor_InvalidDayWithinMonth()
-        {
-            Assert.Throws<ArgumentOutOfRangeException>(() => new LocalDate(2010, 2, 30));
-        }
-
-        [Test]
-        public void Constructor_InvalidYear()
-        {
-            Assert.Throws<ArgumentOutOfRangeException>(() => new LocalDate(CalendarSystem.Iso.MaxYear + 1, 1, 1));
+            Assert.Throws<ArgumentOutOfRangeException>(() => new LocalDate(year, month, day));
         }
 
         [Test]
@@ -94,8 +78,9 @@ namespace NodaTime.Test
         {
             Assert.Throws<ArgumentOutOfRangeException>(() => new LocalDate(Era.Common, 0, 1, 1));
             Assert.Throws<ArgumentOutOfRangeException>(() => new LocalDate(Era.BeforeCommon, 0, 1, 1));
-            // We go further in AD than in BC
-            Assert.Throws<ArgumentOutOfRangeException>(() => new LocalDate(Era.BeforeCommon, CalendarSystem.Iso.MaxYear, 1, 1));
+            Assert.Throws<ArgumentOutOfRangeException>(() => new LocalDate(Era.Common, 10000, 1, 1));
+            // Although our minimum year is -9998, that's 9999 BC.
+            Assert.Throws<ArgumentOutOfRangeException>(() => new LocalDate(Era.BeforeCommon, 10000, 1, 1));
         }
 
         [Test]

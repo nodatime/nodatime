@@ -9,7 +9,7 @@ namespace NodaTime.Calendars
         private const int AverageDaysPer10JulianYears = 3653; // Ideally 365.25 per year
 
         internal JulianYearMonthDayCalculator()
-            : base(-27256, 31196, AverageDaysPer10JulianYears, -719164)
+            : base(-9997, 9998, AverageDaysPer10JulianYears, -719164)
         {
         }
 

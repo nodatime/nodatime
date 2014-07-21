@@ -32,9 +32,8 @@ namespace NodaTime.Calendars
         private readonly int averageDaysPer10Years;
 
         private readonly int daysAtStartOfYear1;
-        /// <summary>
-        /// Only exposed outside the calculator for validation by tests.
-        /// </summary>
+
+        [VisibleForTesting]
         internal int DaysAtStartOfYear1 { get { return daysAtStartOfYear1; } }
 
         protected YearMonthDayCalculator(int minYear, int maxYear,
@@ -63,7 +62,7 @@ namespace NodaTime.Calendars
         /// <summary>
         /// Returns the number of days from the start of the given year to the start of the given month.
         /// </summary>
-        protected abstract int GetDaysFromStartOfYearToStartOfMonth(int year, int month);
+        protected abstract int GetDaysFromStartOfYearToStartOfMonth([Trusted] int year, [Trusted] int month);
 
         /// <summary>
         /// Compute the start of the given year in days since 1970-01-01 ISO. The year may be outside
@@ -71,20 +70,20 @@ namespace NodaTime.Calendars
         /// used for internal calls which sometimes need to compare a valid value with
         /// an invalid one, for estimates etc.
         /// </summary>
-        protected abstract int CalculateStartOfYearDays(int year);
-        internal abstract int GetMonthsInYear(int year);
-        internal abstract int GetDaysInMonth(int year, int month);
-        internal abstract bool IsLeapYear(int year);
-        internal abstract YearMonthDay AddMonths(YearMonthDay yearMonthDay, int months);
+        protected abstract int CalculateStartOfYearDays([Trusted] int year);
+        internal abstract int GetMonthsInYear([Trusted] int year);
+        internal abstract int GetDaysInMonth([Trusted] int year, int month);
+        internal abstract bool IsLeapYear([Trusted] int year);
+        internal abstract YearMonthDay AddMonths([Trusted] YearMonthDay yearMonthDay, int months);
 
-        internal abstract YearMonthDay GetYearMonthDay(int year, int dayOfYear);
+        internal abstract YearMonthDay GetYearMonthDay([Trusted] int year, [Trusted] int dayOfYear);
 
         /// <summary>
         /// Works out the year/month/day of a given days-since-epoch by first computing the year and day of year,
         /// then getting the month and day from those two. This is how almost all calendars are naturally implemented
         /// anyway.
         /// </summary>
-        internal YearMonthDay GetYearMonthDay(int daysSinceEpoch)
+        internal YearMonthDay GetYearMonthDay([Trusted] int daysSinceEpoch)
         {
             int zeroBasedDay;
             int year = GetYear(daysSinceEpoch, out zeroBasedDay);
@@ -94,19 +93,19 @@ namespace NodaTime.Calendars
         /// <summary>
         /// Subtract subtrahendDate from minuendDate, in terms of months.
         /// </summary>
-        internal abstract int MonthsBetween(YearMonthDay minuendDate, YearMonthDay subtrahendDate);
+        internal abstract int MonthsBetween([Trusted] YearMonthDay minuendDate, [Trusted] YearMonthDay subtrahendDate);
 
         /// <summary>
         /// Adjusts the given YearMonthDay to the specified year, potentially adjusting
         /// other fields as required.
         /// </summary>
-        internal abstract YearMonthDay SetYear(YearMonthDay yearMonthDay, int year);
+        internal abstract YearMonthDay SetYear(YearMonthDay yearMonthDay, [Trusted] int year);
 
         /// <summary>
         /// Converts from a YearMonthDay representation to "day of year".
         /// This assumes the parameter have been validated previously.
         /// </summary>
-        internal int GetDayOfYear(YearMonthDay yearMonthDay)
+        internal int GetDayOfYear([Trusted] YearMonthDay yearMonthDay)
         {
             return GetDaysFromStartOfYearToStartOfMonth(yearMonthDay.Year, yearMonthDay.Month) + yearMonthDay.Day;
         }
@@ -116,7 +115,7 @@ namespace NodaTime.Calendars
         /// This is the opposite of <see cref="GetYearMonthDay(int)"/>.
         /// This assumes the parameter have been validated previously.
         /// </summary>
-        internal virtual int GetDaysSinceEpoch(YearMonthDay yearMonthDay)
+        internal virtual int GetDaysSinceEpoch([Trusted] YearMonthDay yearMonthDay)
         {
             int year = yearMonthDay.Year;
             int startOfYear = GetStartOfYearInDays(year);
@@ -129,7 +128,7 @@ namespace NodaTime.Calendars
         /// day of that year (0-based).
         /// </summary>
         [VisibleForTesting] // Would be protected otherwise.
-        internal int GetYear(int daysSinceEpoch, out int zeroBasedDayOfYear)
+        internal int GetYear([Trusted] int daysSinceEpoch, out int zeroBasedDayOfYear)
         {
             // Get an initial estimate of the year, and the days-since-epoch value that
             // represents the start of that year. Then verify estimate and fix if
@@ -176,7 +175,7 @@ namespace NodaTime.Calendars
         /// Returns the year-of-era for the given date. The base implementation is to return the plain
         /// year, which is suitable for single-era calendars.
         /// </summary>
-        internal virtual int GetYearOfEra(YearMonthDay yearMonthDay)
+        internal virtual int GetYearOfEra([Trusted] YearMonthDay yearMonthDay)
         {
             return yearMonthDay.Year;
         }
@@ -184,7 +183,7 @@ namespace NodaTime.Calendars
         /// <summary>
         /// Handling for century-of-era where (say) year 123 is in century 2... but so is year 200.
         /// </summary>
-        internal virtual int GetCenturyOfEra(YearMonthDay yearMonthDay)
+        internal virtual int GetCenturyOfEra([Trusted] YearMonthDay yearMonthDay)
         {
             int yearOfEra = GetYearOfEra(yearMonthDay);
             int zeroBasedRemainder = yearOfEra % 100;
@@ -195,7 +194,7 @@ namespace NodaTime.Calendars
         /// <summary>
         /// Handling for year-of-century in the range [1, 100].
         /// </summary>
-        internal virtual int GetYearOfCentury(YearMonthDay yearMonthDay)
+        internal virtual int GetYearOfCentury([Trusted] YearMonthDay yearMonthDay)
         {
             int yearOfEra = GetYearOfEra(yearMonthDay);
             int zeroBased = yearOfEra % 100;
@@ -206,7 +205,7 @@ namespace NodaTime.Calendars
         /// Returns the era index for the given date. The base implementation is to return 0, which is
         /// suitable for single-era calendars.
         /// </summary>
-        internal virtual int GetEra(YearMonthDay yearMonthDay)
+        internal virtual int GetEra([Trusted] YearMonthDay yearMonthDay)
         {
             return 0;
         }
@@ -220,7 +219,7 @@ namespace NodaTime.Calendars
         /// Default implementation of GetAbsoluteYear which assumes a single era.
         /// This does not perform any validation.
         /// </summary>
-        internal virtual int GetAbsoluteYear(int yearOfEra, int eraIndex)
+        internal virtual int GetAbsoluteYear([Trusted] int yearOfEra, [Trusted] int eraIndex)
         {
             return yearOfEra;
         }
@@ -229,7 +228,7 @@ namespace NodaTime.Calendars
         /// See <see cref="CalendarSystem.GetMinYearOfEra(NodaTime.Calendars.Era)" /> - but this uses a pre-validated index.
         /// This default implementation returns 1, but can be overridden by derived classes.
         /// </summary>
-        internal virtual int GetMinYearOfEra(int eraIndex)
+        internal virtual int GetMinYearOfEra([Trusted] int eraIndex)
         {
             return 1;
         }
@@ -239,7 +238,7 @@ namespace NodaTime.Calendars
         /// This default implementation returns the maximum year for this calendar, which is
         /// a valid implementation for single-era calendars.
         /// </summary>
-        internal virtual int GetMaxYearOfEra(int eraIndex)
+        internal virtual int GetMaxYearOfEra([Trusted] int eraIndex)
         {
             return MaxYear;
         }
@@ -248,7 +247,7 @@ namespace NodaTime.Calendars
         /// Fetches the start of the year (in days since 1970-01-01 ISO) from the cache, or calculates
         /// and caches it.
         /// </summary>
-        internal virtual int GetStartOfYearInDays(int year)
+        internal virtual int GetStartOfYearInDays([Trusted] int year)
         {
             // TODO(2.0): Check that it's valid to cache values outside the advertised
             // bounds of the calendar (by one year). We used not to cache them, but just

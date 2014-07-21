@@ -14,10 +14,7 @@ namespace NodaTime.Calendars
     /// </summary>
     internal static class HebrewScripturalCalculator
     {
-        // This is artificially small due to wanting to only need 23 bits for the
-        // "days at start of year" cache entry part. With a different cache mechanism
-        // we could probably manage, but it's simplest just to use a restricted range.
-        internal const int MaxYear = 20000;
+        internal const int MaxYear = 9999;
         internal const int MinYear = 1;
         private const int ElapsedDaysCacheMask = (1 << 23) - 1; // Low 23 bits
         private const int IsHeshvanLongCacheBit = 1 << 23;
