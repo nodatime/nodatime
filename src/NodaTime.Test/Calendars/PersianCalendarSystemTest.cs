@@ -19,7 +19,7 @@ namespace NodaTime.Test.Calendars
             var bcl = new PersianCalendar();
             var noda = CommonCalendars.Persian;
 
-            for (int year = 1; year < 9379; year++)
+            for (int year = 1; year < 9377; year++)
             {
                 Assert.AreEqual(bcl.IsLeapYear(year), noda.IsLeapYear(year));
             }
@@ -34,7 +34,9 @@ namespace NodaTime.Test.Calendars
             Calendar bcl = new PersianCalendar();
             CalendarSystem noda = CommonCalendars.Persian;
 
-            for (int year = 1; year < 9378; year++)
+            // Note: Noda Time stops in 9377, whereas the BCL goes into the start of 9378. This is because
+            // Noda Time ensures that the whole year is valid.
+            for (int year = 1; year < 9377; year++)
             {
                 for (int month = 1; month < 13; month++)
                 {

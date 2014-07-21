@@ -27,8 +27,8 @@ namespace NodaTime.Calendars
         internal override int GetDaysSinceEpoch(YearMonthDay yearMonthDay)
         {
             // Just inline the arithmetic that would be done via various methods.
-            return GetStartOfYearInDays(yearMonthDay.Year) +
-                   (yearMonthDay.Month - 1) * DaysInMonth
+            return GetStartOfYearInDays(yearMonthDay.Year)
+                   + (yearMonthDay.Month - 1) * DaysInMonth
                    + (yearMonthDay.Day - 1);
         }
 

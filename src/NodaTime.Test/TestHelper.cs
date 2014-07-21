@@ -20,6 +20,94 @@ namespace NodaTime.Test
     {
         public static readonly bool IsRunningOnMono = Type.GetType("Mono.Runtime") != null;
 
+        /// <summary>
+        /// Asserts that calling the specified delegate with the specified value throws ArgumentException.
+        /// </summary>
+        internal static void AssertInvalid<TArg, TOut>(Func<TArg, TOut> func, TArg arg)
+        {
+            Assert.Throws<ArgumentException>(() => func(arg));
+        }
+
+        /// <summary>
+        /// Asserts that calling the specified delegate with the specified values throws ArgumentException.
+        /// </summary>
+        internal static void AssertInvalid<TArg1, TArg2, TOut>(Func<TArg1, TArg2, TOut> func, TArg1 arg1, TArg2 arg2)
+        {
+            Assert.Throws<ArgumentException>(() => func(arg1, arg2));
+        }
+
+        /// <summary>
+        /// Asserts that calling the specified delegate with the specified value throws ArgumentNullException.
+        /// </summary>
+        internal static void AssertArgumentNull<TArg, TOut>(Func<TArg, TOut> func, TArg arg)
+        {
+            Assert.Throws<ArgumentNullException>(() => func(arg));
+        }
+
+        /// <summary>
+        /// Asserts that calling the specified delegate with the specified value throws ArgumentOutOfRangeException.
+        /// </summary>
+        internal static void AssertOutOfRange<TArg, TOut>(Func<TArg, TOut> func, TArg arg)
+        {
+            Assert.Throws<ArgumentOutOfRangeException>(() => func(arg));
+        }
+
+        /// <summary>
+        /// Asserts that calling the specified delegate with the specified value doesn't throw an exception.
+        /// </summary>
+        internal static void AssertValid<TArg, TOut>(Func<TArg, TOut> func, TArg arg)
+        {
+            func(arg);
+        }
+
+        /// <summary>
+        /// Asserts that calling the specified delegate with the specified values throws ArgumentOutOfRangeException.
+        /// </summary>
+        internal static void AssertOutOfRange<TArg1, TArg2, TOut>(Func<TArg1, TArg2, TOut> func, TArg1 arg1, TArg2 arg2)
+        {
+            Assert.Throws<ArgumentOutOfRangeException>(() => func(arg1, arg2));
+        }
+
+        /// <summary>
+        /// Asserts that calling the specified delegate with the specified values throws ArgumentNullException.
+        /// </summary>
+        internal static void AssertArgumentNull<TArg1, TArg2, TOut>(Func<TArg1, TArg2, TOut> func, TArg1 arg1, TArg2 arg2)
+        {
+            Assert.Throws<ArgumentNullException>(() => func(arg1, arg2));
+        }
+
+        /// <summary>
+        /// Asserts that calling the specified delegate with the specified values doesn't throw an exception.
+        /// </summary>
+        internal static void AssertValid<TArg1, TArg2, TOut>(Func<TArg1, TArg2, TOut> func, TArg1 arg1, TArg2 arg2)
+        {
+            func(arg1, arg2);
+        }
+
+        /// <summary>
+        /// Asserts that calling the specified delegate with the specified values throws ArgumentOutOfRangeException.
+        /// </summary>
+        internal static void AssertOutOfRange<TArg1, TArg2, TArg3, TOut>(Func<TArg1, TArg2, TArg3, TOut> func, TArg1 arg1, TArg2 arg2, TArg3 arg3)
+        {
+            Assert.Throws<ArgumentOutOfRangeException>(() => func(arg1, arg2, arg3));
+        }
+
+        /// <summary>
+        /// Asserts that calling the specified delegate with the specified values throws ArgumentNullException.
+        /// </summary>
+        internal static void AssertArgumentNull<TArg1, TArg2, TArg3, TOut>(Func<TArg1, TArg2, TArg3, TOut> func, TArg1 arg1, TArg2 arg2, TArg3 arg3)
+        {
+            Assert.Throws<ArgumentNullException>(() => func(arg1, arg2, arg3));
+        }
+
+        /// <summary>
+        /// Asserts that calling the specified delegate with the specified values doesn't throw an exception.
+        /// </summary>
+        internal static void AssertValid<TArg1, TArg2, TArg3, TOut>(Func<TArg1, TArg2, TArg3, TOut> func, TArg1 arg1, TArg2 arg2, TArg3 arg3)
+        {
+            func(arg1, arg2, arg3);
+        }
+
         public static void TestComparerStruct<T>(IComparer<T> comparer, T value, T equalValue, T greaterValue) where T : struct
         {
             Assert.AreEqual(0, comparer.Compare(value, equalValue));
