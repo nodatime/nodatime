@@ -16,15 +16,15 @@ namespace NodaTime.Test.Utility
         {
             Preconditions.DebugCheckArgumentRange("ignore", 5, 0, 10);
             Preconditions.DebugCheckArgumentRange("ignore", 5L, 0L, 10L);
-            Assert.Throws<ArgumentOutOfRangeException>(() => Preconditions.DebugCheckArgumentRange("ignore", 10, 0, 5));
-            Assert.Throws<ArgumentOutOfRangeException>(() => Preconditions.DebugCheckArgumentRange("ignore", 10L, 0L, 5L));
+            Assert.Throws<DebugPreconditionException>(() => Preconditions.DebugCheckArgumentRange("ignore", 10, 0, 5));
+            Assert.Throws<DebugPreconditionException>(() => Preconditions.DebugCheckArgumentRange("ignore", 10L, 0L, 5L));
         }
 
         [Test]
         public void DebugCheckNotNull_Debug()
         {
             Preconditions.DebugCheckNotNull("value", "ignore");
-            Assert.Throws<ArgumentNullException>(() => Preconditions.DebugCheckNotNull((string) null, "ignore"));
+            Assert.Throws<DebugPreconditionException>(() => Preconditions.DebugCheckNotNull((string) null, "ignore"));
         }
 #else
         [Test]

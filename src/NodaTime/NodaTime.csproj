@@ -141,6 +141,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Annotations\TrustedAttribute.cs" />
     <Compile Include="Annotations\MutableAttribute.cs" />
     <Compile Include="Annotations\ImmutableAttribute.cs" />
     <Compile Include="Annotations\ReadWriteForEfficiencyAttribute.cs" />
