@@ -26,8 +26,8 @@ namespace NodaTime.Test.Text
             new Data { Pattern = "MMMMM", Message = Messages.Parse_RepeatCountExceeded, Parameters = { 'M', 4 } },
             new Data { Pattern = "ddddd", Message = Messages.Parse_RepeatCountExceeded, Parameters = { 'd', 4 } },
             new Data { Pattern = "H%", Message = Messages.Parse_PercentAtEndOfString },
-            new Data { Pattern = "yyyyyy", Message = Messages.Parse_RepeatCountExceeded, Parameters = { 'y', 5 } },
-            new Data { Pattern = "YYYYYY", Message = Messages.Parse_RepeatCountExceeded, Parameters = { 'Y', 5 } },
+            new Data { Pattern = "yyyyy", Message = Messages.Parse_RepeatCountExceeded, Parameters = { 'y', 4 } },
+            new Data { Pattern = "YYYYY", Message = Messages.Parse_RepeatCountExceeded, Parameters = { 'Y', 4 } },
             new Data { Pattern = "ggg", Message = Messages.Parse_RepeatCountExceeded, Parameters = { 'g', 2 } },
             new Data { Pattern = "'qwe", Message = Messages.Parse_MissingEndQuote, Parameters = { '\'' } },
             new Data { Pattern = "'qwe\\", Message = Messages.Parse_EscapeAtEndOfString },
@@ -57,8 +57,6 @@ namespace NodaTime.Test.Text
             new Data { Pattern = "yyyy MMM dd", Text = "2011 October 09", Message = Messages.Parse_MismatchedCharacter, Parameters = {' '}},
 
             // Invalid year, year-of-era, month, day
-            new Data { Pattern = "yyyyy MM dd", Text = "99999 01 01", Message = Messages.Parse_FieldValueOutOfRange, Parameters = { 99999, 'y', typeof(LocalDate) } },
-            new Data { Pattern = "YYYYY MM dd", Text = "99999 01 01", Message = Messages.Parse_YearOfEraOutOfRange, Parameters = { 99999, "CE", "ISO" } },
             new Data { Pattern = "YYYY MM dd", Text = "0000 01 01", Message = Messages.Parse_YearOfEraOutOfRange, Parameters = { 0, "CE", "ISO" } },
             new Data { Pattern = "yyyy MM dd", Text = "2011 15 29", Message = Messages.Parse_MonthOutOfRange, Parameters = { 15, 2011 } },
             new Data { Pattern = "yyyy MM dd", Text = "2011 02 35", Message = Messages.Parse_DayOfMonthOutOfRange, Parameters = { 35, 2, 2011 } },
