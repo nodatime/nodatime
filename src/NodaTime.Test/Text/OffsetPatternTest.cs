@@ -22,12 +22,12 @@ namespace NodaTime.Test.Text
         /// Test data that can only be used to test formatting.
         /// </summary>
         internal static readonly Data[] FormatOnlyData = {
-            new Data(3, 0, 0, 0) { Culture = Cultures.EnUs, Text = "", Pattern = "%-", },
+            new Data(3, 0, 0) { Culture = Cultures.EnUs, Text = "", Pattern = "%-", },
             new Data(5, 6, 7, 8) { Culture = Cultures.EnUs, Text = "", Pattern = "%F"  },
             new Data(5, 6, 7, 8) { Culture = Cultures.EnUs, Text = "", Pattern = "FF"  },
-            new Data(5, 0, 0, 0) { Culture = Cultures.EnUs, Text = "+05", Pattern = "g" },
-            new Data(5, 12, 0, 0) { Culture = Cultures.EnUs, Text = "+05:12", Pattern = "g" },
-            new Data(5, 12, 34, 0) { Culture = Cultures.EnUs, Text = "+05:12:34", Pattern = "g" },
+            new Data(5, 0, 0) { Culture = Cultures.EnUs, Text = "+05", Pattern = "g" },
+            new Data(5, 12, 0) { Culture = Cultures.EnUs, Text = "+05:12", Pattern = "g" },
+            new Data(5, 12, 34) { Culture = Cultures.EnUs, Text = "+05:12:34", Pattern = "g" },
             new Data(5, 12, 34, 567) { Culture = Cultures.EnUs, Text = "+05:12:34.567", Pattern = "g" },
             // Note: we ignore the decimal separator, as per issue 21.
             new Data(Offset.MaxValue) { Culture = Cultures.EnUs, Text = "+23:59:59.999", Pattern = "g" },
@@ -53,12 +53,12 @@ namespace NodaTime.Test.Text
             new Data(0, 0, 3, 450) { Culture = Cultures.EnUs, Text = "3.45", Pattern = "s.FF" },
 
             // Decimal point is dropped for F
-            new Data(0, 0, 3, 0) { Culture = Cultures.EnUs, Text = "3.00", Pattern = "s.ff" },
-            new Data(0, 0, 3, 0) { Culture = Cultures.EnUs, Text = "3", Pattern = "s.FF" },
+            new Data(0, 0, 3) { Culture = Cultures.EnUs, Text = "3.00", Pattern = "s.ff" },
+            new Data(0, 0, 3) { Culture = Cultures.EnUs, Text = "3", Pattern = "s.FF" },
 
             // But no other character is dropped - e.g. not the time separator
-            new Data(0, 0, 3, 0) { Culture = Cultures.EnUs, Text = "3:00", Pattern = "s:ff" },
-            new Data(0, 0, 3, 0) { Culture = Cultures.EnUs, Text = "3:", Pattern = "s:FF" },
+            new Data(0, 0, 3) { Culture = Cultures.EnUs, Text = "3:00", Pattern = "s:ff" },
+            new Data(0, 0, 3) { Culture = Cultures.EnUs, Text = "3:", Pattern = "s:FF" },
 
             // Losing information
             new Data(1, 1, 1, 400) { Culture = Cultures.EnUs, Text = "4", Pattern = "%f" },
@@ -99,9 +99,9 @@ namespace NodaTime.Test.Text
             new Data(Offset.MaxValue) { Culture = Cultures.EnUs, Text = "mmmmmmmmmm", Pattern = "'mmmmmmmmmm'" },
             new Data(Offset.MaxValue) { Culture = Cultures.EnUs, Text = "z", Pattern = "%z" },
             new Data(Offset.MaxValue) { Culture = Cultures.EnUs, Text = "zqw", Pattern = "zqw" },
-            new Data(3, 0, 0, 0, true) { Culture = Cultures.EnUs, Text = "-", Pattern = "%-" },
-            new Data(3, 0, 0, 0) { Culture = Cultures.EnUs, Text = "+", Pattern = "%+" },
-            new Data(3, 0, 0, 0, true) { Culture = Cultures.EnUs, Text = "-", Pattern = "%+" },
+            new Data(3, 0, 0, true) { Culture = Cultures.EnUs, Text = "-", Pattern = "%-" },
+            new Data(3, 0, 0) { Culture = Cultures.EnUs, Text = "+", Pattern = "%+" },
+            new Data(3, 0, 0, true) { Culture = Cultures.EnUs, Text = "-", Pattern = "%+" },
             new Data(5, 12, 34, 567) { Culture = Cultures.EnUs, Text = "+05", Pattern = "s" },
             new Data(5, 12, 34, 567) { Culture = Cultures.EnUs, Text = "+05:12", Pattern = "m" },
             new Data(5, 12, 34, 567) { Culture = Cultures.EnUs, Text = "+05:12:34", Pattern = "l" },
@@ -116,9 +116,9 @@ namespace NodaTime.Test.Text
             new Data(Offset.Zero) { Culture = Cultures.EnUs, Text = "-", Pattern = "%-" },
             new Data(Offset.Zero) { Culture = Cultures.EnUs, Text = "+", Pattern = "%+" },
             new Data(Offset.Zero) { Culture = Cultures.EnUs, Text = "-", Pattern = "%+" },
-            new Data(5, 0, 0, 0) { Culture = Cultures.EnUs, Text = "+05", Pattern = "s" },
-            new Data(5, 12, 0, 0) { Culture = Cultures.EnUs, Text = "+05:12", Pattern = "m" },
-            new Data(5, 12, 34, 0) { Culture = Cultures.EnUs, Text = "+05:12:34", Pattern = "l" },
+            new Data(5, 0, 0) { Culture = Cultures.EnUs, Text = "+05", Pattern = "s" },
+            new Data(5, 12, 0) { Culture = Cultures.EnUs, Text = "+05:12", Pattern = "m" },
+            new Data(5, 12, 34) { Culture = Cultures.EnUs, Text = "+05:12:34", Pattern = "l" },
             new Data(Offset.Zero) { Pattern = "Z+HH:mm", Text = "+00:00" } // Lenient when parsing Z-prefixed patterns.
         };
 
@@ -211,25 +211,25 @@ namespace NodaTime.Test.Text
             new Data(0, 0, 0, 600) { Culture = Cultures.EnUs, Text = ".6", Pattern = ".FFF" }, // elided zeroes
             new Data(0, 0, 0, 678) { Culture = Cultures.EnUs, Text = ".678", Pattern = ".fff" },
             new Data(0, 0, 0, 678) { Culture = Cultures.EnUs, Text = ".678", Pattern = ".FFF" },
-            new Data(0, 0, 12, 0) { Culture = Cultures.EnUs, Text = "12", Pattern = "%s" },
-            new Data(0, 0, 12, 0) { Culture = Cultures.EnUs, Text = "12", Pattern = "ss" },
-            new Data(0, 0, 2, 0) { Culture = Cultures.EnUs, Text = "2", Pattern = "%s" },
-            new Data(0, 12, 0, 0) { Culture = Cultures.EnUs, Text = "12", Pattern = "%m" },
-            new Data(0, 12, 0, 0) { Culture = Cultures.EnUs, Text = "12", Pattern = "mm" },
-            new Data(0, 2, 0, 0) { Culture = Cultures.EnUs, Text = "2", Pattern = "%m" },
-            new Data(1, 0, 0, 0) { Culture = Cultures.EnUs, Text = "1", Pattern = "H.FFF"}, // missing fraction
+            new Data(0, 0, 12) { Culture = Cultures.EnUs, Text = "12", Pattern = "%s" },
+            new Data(0, 0, 12) { Culture = Cultures.EnUs, Text = "12", Pattern = "ss" },
+            new Data(0, 0, 2) { Culture = Cultures.EnUs, Text = "2", Pattern = "%s" },
+            new Data(0, 12, 0) { Culture = Cultures.EnUs, Text = "12", Pattern = "%m" },
+            new Data(0, 12, 0) { Culture = Cultures.EnUs, Text = "12", Pattern = "mm" },
+            new Data(0, 2, 0) { Culture = Cultures.EnUs, Text = "2", Pattern = "%m" },
+            new Data(1, 0, 0) { Culture = Cultures.EnUs, Text = "1", Pattern = "H.FFF"}, // missing fraction
 
-            new Data(12, 0, 0, 0) { Culture = Cultures.EnUs, Text = "12", Pattern = "%H" },
-            new Data(12, 0, 0, 0) { Culture = Cultures.EnUs, Text = "12", Pattern = "HH" },
-            new Data(2, 0, 0, 0) { Culture = Cultures.EnUs, Text = "2", Pattern = "%H" },
-            new Data(2, 0, 0, 0) { Culture = Cultures.EnUs, Text = "2", Pattern = "%H" },
-            new Data(5, 0, 0, 0) { Culture = Cultures.EnUs, Text = "+05", Pattern = "G"  },
-            new Data(5, 12, 0, 0) { Culture = Cultures.EnUs, Text = "+05:12", Pattern = "G"  },
-            new Data(5, 12, 34, 0) { Culture = Cultures.EnUs, Text = "+05:12:34", Pattern = "G"  },
+            new Data(12, 0, 0) { Culture = Cultures.EnUs, Text = "12", Pattern = "%H" },
+            new Data(12, 0, 0) { Culture = Cultures.EnUs, Text = "12", Pattern = "HH" },
+            new Data(2, 0, 0) { Culture = Cultures.EnUs, Text = "2", Pattern = "%H" },
+            new Data(2, 0, 0) { Culture = Cultures.EnUs, Text = "2", Pattern = "%H" },
+            new Data(5, 0, 0) { Culture = Cultures.EnUs, Text = "+05", Pattern = "G"  },
+            new Data(5, 12, 0) { Culture = Cultures.EnUs, Text = "+05:12", Pattern = "G"  },
+            new Data(5, 12, 34) { Culture = Cultures.EnUs, Text = "+05:12:34", Pattern = "G"  },
             new Data(5, 12, 34, 567) { Culture = Cultures.EnUs, Text = "+05:12:34.567", Pattern = "G"  },
-            new Data(5, 0, 0, 0) { Culture = Cultures.EnUs, Text = "+05", Pattern = "g"  },
-            new Data(5, 12, 0, 0) { Culture = Cultures.EnUs, Text = "+05:12", Pattern = "g"  },
-            new Data(5, 12, 34, 0) { Culture = Cultures.EnUs, Text = "+05:12:34", Pattern = "g"  },
+            new Data(5, 0, 0) { Culture = Cultures.EnUs, Text = "+05", Pattern = "g"  },
+            new Data(5, 12, 0) { Culture = Cultures.EnUs, Text = "+05:12", Pattern = "g"  },
+            new Data(5, 12, 34) { Culture = Cultures.EnUs, Text = "+05:12:34", Pattern = "g"  },
             new Data(5, 12, 34, 567) { Culture = Cultures.EnUs, Text = "+05:12:34.567", Pattern = "f"  },
             new Data(5, 12, 34, 567) { Culture = Cultures.EnUs, Text = "+05:12:34.567", Pattern = "g"  },
             new Data(5, 12, 34, 567) { Culture = Cultures.EnUs, Text = "18,754,567", Pattern = "n"  },
@@ -242,23 +242,23 @@ namespace NodaTime.Test.Text
             new Data(Offset.Zero) { Culture = Cultures.EnUs, Text = "+00:00", Pattern = "m"  },
             new Data(Offset.Zero) { Culture = Cultures.EnUs, Text = "+00:00:00", Pattern = "l"  },
             new Data(Offset.Zero) { Culture = Cultures.EnUs, Text = "+00:00:00.000", Pattern = "f"  },
-            new Data(5, 0, 0, 0) { Culture = Cultures.FrFr, Text = "+05", Pattern = "g" },
-            new Data(5, 12, 0, 0) { Culture = Cultures.FrFr, Text = "+05:12", Pattern = "g" },
-            new Data(5, 12, 34, 0) { Culture = Cultures.FrFr, Text = "+05:12:34", Pattern = "g" },
+            new Data(5, 0, 0) { Culture = Cultures.FrFr, Text = "+05", Pattern = "g" },
+            new Data(5, 12, 0) { Culture = Cultures.FrFr, Text = "+05:12", Pattern = "g" },
+            new Data(5, 12, 34) { Culture = Cultures.FrFr, Text = "+05:12:34", Pattern = "g" },
             new Data(5, 12, 34, 567) { Culture = Cultures.FrFr, Text = "+05:12:34.567", Pattern = "g" }, // Note still a period, not a comma
             new Data(5, 12, 34, 567) { Culture = Cultures.FrFr, Text = "18" + Nbsp + "754" + Nbsp + "567", Pattern = "n" },
             new Data(Offset.MaxValue) { Culture = Cultures.FrFr, Text = "+23:59:59.999", Pattern = "g" },
             new Data(Offset.MinValue) { Culture = Cultures.FrFr, Text = "-23:59:59.999", Pattern = "g" },
-            new Data(5, 0, 0, 0) { Culture = Cultures.ItIt, Text = "+05", Pattern = "g" },
-            new Data(5, 12, 0, 0) { Culture = Cultures.ItIt, Text = "+05.12", Pattern = "g" },
-            new Data(5, 12, 34, 0) { Culture = Cultures.ItIt, Text = "+05.12.34", Pattern = "g" },
+            new Data(5, 0, 0) { Culture = Cultures.ItIt, Text = "+05", Pattern = "g" },
+            new Data(5, 12, 0) { Culture = Cultures.ItIt, Text = "+05.12", Pattern = "g" },
+            new Data(5, 12, 34) { Culture = Cultures.ItIt, Text = "+05.12.34", Pattern = "g" },
             new Data(5, 12, 34, 567) { Culture = Cultures.ItIt, Text = "+05.12.34.567", Pattern = "g" },
             new Data(5, 12, 34, 567) { Culture = Cultures.ItIt, Text = "18.754.567", Pattern = "n" },
             new Data(Offset.MaxValue) { Culture = Cultures.ItIt, Text = "+23.59.59.999", Pattern = "g" },
             new Data(Offset.MinValue) { Culture = Cultures.ItIt, Text = "-23.59.59.999", Pattern = "g" },
-            new Data(0, 30, 0, 0, true) { Culture = Cultures.EnUs, Text = "-00:30", Pattern = "+HH:mm" },
-            new Data(0, 30, 0, 0, true) { Culture = Cultures.EnUs, Text = "-00:30", Pattern = "-HH:mm" },
-            new Data(0, 30, 0, 0, false) { Culture = Cultures.EnUs, Text = "00:30", Pattern = "-HH:mm" },
+            new Data(0, 30, 0, true) { Culture = Cultures.EnUs, Text = "-00:30", Pattern = "+HH:mm" },
+            new Data(0, 30, 0, true) { Culture = Cultures.EnUs, Text = "-00:30", Pattern = "-HH:mm" },
+            new Data(0, 30, 0, false) { Culture = Cultures.EnUs, Text = "00:30", Pattern = "-HH:mm" },
 
             // Z-prefixes
             new Data(Offset.Zero) { Text = "Z", Pattern = "Z+HH:mm:ss" },
@@ -314,9 +314,9 @@ namespace NodaTime.Test.Text
             {
             }
 
-            public Data(int hours, int minutes, int seconds, int milliseconds, bool negative)
-                : this(negative ? TestObjects.CreateNegativeOffset(hours, minutes, seconds, milliseconds) :
-                                  TestObjects.CreatePositiveOffset(hours, minutes, seconds, milliseconds))
+            public Data(int hours, int minutes, int seconds, bool negative)
+                : this(negative ? TestObjects.CreateNegativeOffset(hours, minutes, seconds) :
+                                  TestObjects.CreatePositiveOffset(hours, minutes, seconds))
             {
             }
 
