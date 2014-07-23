@@ -31,7 +31,6 @@ namespace NodaTime.Test.Text
             new Data(5, 12, 34, 567) { Culture = Cultures.EnUs, Text = "+05:12:34.567", Pattern = "g" },
             // Note: we ignore the decimal separator, as per issue 21.
             new Data(Offset.MaxValue) { Culture = Cultures.EnUs, Text = "+23:59:59.999", Pattern = "g" },
-            new Data(Offset.MaxValue) { Culture = Cultures.EnUs, Text = "+23:59:59.999", Pattern = "g" },
             new Data(Offset.MinValue) { Culture = Cultures.EnUs, Text = "-23:59:59.999", Pattern = "g" },
             new Data(Offset.MaxValue) { Culture = Cultures.FrFr, Text = "+23:59:59.999", Pattern = "g" },
             new Data(Offset.MinValue) { Culture = Cultures.FrFr, Text = "-23:59:59.999", Pattern = "g" },
