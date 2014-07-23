@@ -1,6 +1,7 @@
 ---
 layout: developer
 title: Current roadmap
+weight: 400
 ---
 
 The following is an _approximate_ roadmap for the major features that

@@ -1,6 +1,7 @@
 ---
 layout: developer
 title: Coding conventions
+weight: 200
 ---
 
 ## Use of C# and .NET features ##
