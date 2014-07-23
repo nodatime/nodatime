@@ -563,7 +563,7 @@ namespace NodaTime
         [System.Security.SecurityCritical]
         void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)
         {
-            info.AddValue(MillisecondsSerializationName, milliseconds);
+            info.AddValue(MillisecondsSerializationName, Milliseconds);
         }
         #endregion
 #endif
