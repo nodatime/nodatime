@@ -13,9 +13,9 @@ namespace NodaTime.Test
     [TestFixture]
     public partial class OffsetTest
     {
-        private static readonly Offset ThreeHours = TestObjects.CreatePositiveOffset(3, 0, 0, 0);
-        private static readonly Offset NegativeThreeHours = TestObjects.CreateNegativeOffset(3, 0, 0, 0);
-        private static readonly Offset NegativeTwelveHours = TestObjects.CreateNegativeOffset(12, 0, 0, 0);
+        private static readonly Offset ThreeHours = TestObjects.CreatePositiveOffset(3, 0, 0);
+        private static readonly Offset NegativeThreeHours = TestObjects.CreateNegativeOffset(3, 0, 0);
+        private static readonly Offset NegativeTwelveHours = TestObjects.CreateNegativeOffset(12, 0, 0);
 
         [Test]
         public void Max()
