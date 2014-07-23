@@ -63,7 +63,15 @@ namespace NodaTime
         }
 
         /// <summary>
-        /// Gets the total number of milliseconds in the offset, which may be negative.
+        /// Gets the number of seconds represented by this offset, which may be negative.
+        /// </summary>
+        /// <remarks>
+        /// Offsets are accurate to millisecond precision; fractional milliseconds are discarded.
+        /// </remarks>
+        public int Seconds { get { return milliseconds / NodaConstants.MillisecondsPerSecond; } }
+
+        /// <summary>
+        /// Gets the number of milliseconds represented by this offset, which may be negative.
         /// </summary>
         public int Milliseconds { get { return milliseconds; } }
 
@@ -420,6 +428,16 @@ namespace NodaTime
         #endregion Formatting
 
         #region Construction
+        /// Returns an offset for the given seconds value, which may be negative.
+        /// </summary>
+        /// <param name="seconds">The int seconds value.</param>
+        /// <returns>An offset representing the given number of seconds.</returns>
+        /// <exception cref="ArgumentOutOfRangeException">The result of the operation is outside the range of Offset.</exception>
+        public static Offset FromSeconds(int seconds)
+        {
+            return new Offset(seconds * NodaConstants.MillisecondsPerSecond);
+        }
+ 
         /// <summary>
         /// Returns an offset for the given milliseconds value, which may be negative.
         /// </summary>

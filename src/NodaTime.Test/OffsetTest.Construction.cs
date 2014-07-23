@@ -17,6 +17,21 @@ namespace NodaTime.Test
         }
 
         [Test]
+        public void FromSeconds_Valid()
+        {
+            var test = Offset.FromSeconds(12345);
+            Assert.AreEqual(12345, test.Seconds);
+        }
+
+        [Test]
+        public void FromSeconds_Invalid()
+        {
+            int seconds = 24 * NodaConstants.SecondsPerHour;
+            Assert.Throws<ArgumentOutOfRangeException>(() => Offset.FromSeconds(seconds));
+            Assert.Throws<ArgumentOutOfRangeException>(() => Offset.FromSeconds(-seconds));
+        }
+
+        [Test]
         public void FromMillis_Valid()
         {
             var test = Offset.FromMilliseconds(12345);
