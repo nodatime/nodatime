@@ -49,58 +49,6 @@ namespace NodaTime
         [ReadWriteForEfficiency] private LocalTime time;
 
         /// <summary>
-        /// Optimized constructor to convert an instant to local date/time in the ISO calendar.
-        /// This is equivalent to <c>new LocalDateTime(instant.Plus(offset))</c>, but avoids some overhead.
-        /// </summary>
-        internal LocalDateTime(Instant instant, Offset offset)
-        {
-            unchecked
-            {
-                Duration duration = instant.TimeSinceEpoch;
-                int days = duration.Days;
-                long nanoOfDay = duration.NanosecondOfDay + offset.Nanoseconds;
-                if (nanoOfDay >= NodaConstants.NanosecondsPerStandardDay)
-                {
-                    days++;
-                    nanoOfDay -= NodaConstants.NanosecondsPerStandardDay;
-                }
-                else if (nanoOfDay < 0)
-                {
-                    days--;
-                    nanoOfDay += NodaConstants.NanosecondsPerStandardDay;
-                }
-                time = new LocalTime(nanoOfDay);
-                date = new LocalDate(days);
-            }
-        }
-
-        /// <summary>
-        /// Optimized constructor to convert an instant to local date/time in the specified calendar.
-        /// This is equivalent to <c>new LocalDateTime(instant.Plus(offset), calendar)</c>, but avoids some overhead.
-        /// </summary>
-        internal LocalDateTime(Instant instant, Offset offset, CalendarSystem calendar)
-        {
-            unchecked
-            {
-                Duration duration = instant.TimeSinceEpoch;
-                int days = duration.Days;
-                long nanoOfDay = duration.NanosecondOfDay + offset.Nanoseconds;
-                if (nanoOfDay >= NodaConstants.NanosecondsPerStandardDay)
-                {
-                    days++;
-                    nanoOfDay -= NodaConstants.NanosecondsPerStandardDay;
-                }
-                else if (nanoOfDay < 0)
-                {
-                    days--;
-                    nanoOfDay += NodaConstants.NanosecondsPerStandardDay;
-                }
-                time = new LocalTime(nanoOfDay);
-                date = new LocalDate(days, calendar);
-            }
-        }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="LocalDateTime"/> struct using the ISO
         /// calendar system.
         /// </summary>
@@ -109,20 +57,6 @@ namespace NodaTime
         internal LocalDateTime(LocalInstant localInstant)
         {
             date = new LocalDate(localInstant.DaysSinceEpoch);
-            time = new LocalTime(localInstant.NanosecondOfDay);
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="LocalDateTime"/> struct using the given
-        /// calendar system. (The caller must ensure this is non-null.)
-        /// </summary>
-        /// <param name="localInstant">The local instant.</param>
-        /// <param name="calendar">The calendar system.</param>
-        /// <returns>The resulting date/time.</returns>
-        internal LocalDateTime(LocalInstant localInstant, [NotNull] CalendarSystem calendar)
-        {
-            // We assume the calendar system is already non-null...
-            date = new LocalDate(localInstant.DaysSinceEpoch, calendar);
             time = new LocalTime(localInstant.NanosecondOfDay);
         }
 
@@ -452,7 +386,10 @@ namespace NodaTime
         /// <returns>A new <see cref="LocalDateTime"/> with the same values as the specified <c>DateTime</c>.</returns>
         public static LocalDateTime FromDateTime(DateTime dateTime)
         {
-            return new LocalDateTime(LocalInstant.FromDateTime(dateTime), CalendarSystem.Iso);
+            long ticks = dateTime.Ticks - NodaConstants.BclTicksAtUnixEpoch;
+            long tickOfDay;
+            int days = TickArithmetic.TicksToDaysAndTickOfDay(ticks, out tickOfDay);
+            return new LocalDateTime(new LocalDate(days), new LocalTime(unchecked(tickOfDay * NodaConstants.NanosecondsPerTick)));
         }
 
         #region Implementation of IEquatable<LocalDateTime>

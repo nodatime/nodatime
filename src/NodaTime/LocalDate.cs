@@ -45,7 +45,7 @@ namespace NodaTime
         /// <summary>
         /// Constructs an instance from values which are assumed to already have been validated.
         /// </summary>
-        internal LocalDate(YearMonthDay yearMonthDay, CalendarSystem calendar)
+        internal LocalDate([Trusted] YearMonthDay yearMonthDay, [Trusted] CalendarSystem calendar)
         {
             this.yearMonthDay = yearMonthDay;
             this.calendar = calendar;

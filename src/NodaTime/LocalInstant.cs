@@ -18,7 +18,6 @@ namespace NodaTime
     /// </summary>
     internal struct LocalInstant : IEquatable<LocalInstant>, IComparable<LocalInstant>, IComparable
     {
-        public static readonly LocalInstant LocalUnixEpoch = new LocalInstant();
         public static readonly LocalInstant MinValue = new LocalInstant(int.MinValue, 0);
         public static readonly LocalInstant MaxValue = new LocalInstant(int.MaxValue, NodaConstants.NanosecondsPerStandardDay - 1);
 
@@ -84,17 +83,6 @@ namespace NodaTime
         {
             return new DateTime(NodaConstants.BclTicksAtUnixEpoch + duration.Ticks,
                                 DateTimeKind.Unspecified);
-        }
-
-        /// <summary>
-        /// Converts a <see cref="DateTime" /> of any kind to a LocalDateTime in the ISO calendar. This does not perform
-        /// any time zone conversions, so a DateTime with a <see cref="DateTime.Kind"/> of <see cref="DateTimeKind.Utc"/>
-        /// will still have the same day/hour/minute etc - it won't be converted into the local system time.
-        /// </summary>
-        internal static LocalInstant FromDateTime(DateTime dateTime)
-        {
-            long ticksSinceEpoch = NodaConstants.BclEpoch.Ticks + dateTime.Ticks;
-            return new LocalInstant(Duration.FromTicks(ticksSinceEpoch));
         }
 
         #region Operators

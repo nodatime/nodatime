@@ -23,7 +23,7 @@ namespace NodaTime.Test.Calendars
         {
             // It's easiest to test this using a LocalDateTime in the ISO calendar system.
             // LocalDateTime just passes everything through anyway.
-            LocalDateTime epoch = new LocalDateTime(LocalInstant.LocalUnixEpoch, CalendarSystem.Iso);
+            LocalDateTime epoch = NodaConstants.UnixEpoch.InUtc().LocalDateTime;
 
             Assert.AreEqual(1970, epoch.Year);
             Assert.AreEqual(1970, epoch.YearOfEra);
