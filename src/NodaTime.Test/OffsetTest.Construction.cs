@@ -17,7 +17,22 @@ namespace NodaTime.Test
         }
 
         [Test]
-        public void FromMillis_Valid()
+        public void FromSeconds_Valid()
+        {
+            var test = Offset.FromSeconds(12345);
+            Assert.AreEqual(12345, test.Seconds);
+        }
+
+        [Test]
+        public void FromSeconds_Invalid()
+        {
+            int seconds = 24 * NodaConstants.SecondsPerHour;
+            Assert.Throws<ArgumentOutOfRangeException>(() => Offset.FromSeconds(seconds));
+            Assert.Throws<ArgumentOutOfRangeException>(() => Offset.FromSeconds(-seconds));
+        }
+
+        [Test]
+        public void FromMilliseconds_Valid()
         {
             var test = Offset.FromMilliseconds(12345);
             Assert.AreEqual(12345, test.Milliseconds);
@@ -36,6 +51,7 @@ namespace NodaTime.Test
         {
             Offset value = Offset.FromTicks(-15 * NodaConstants.TicksPerMinute);
             Assert.AreEqual(-15 * NodaConstants.MillisecondsPerMinute, value.Milliseconds);
+            Assert.AreEqual(-15 * NodaConstants.TicksPerMinute, value.Ticks);
         }
         
         [Test]
@@ -44,6 +60,22 @@ namespace NodaTime.Test
             long ticks = 24 * NodaConstants.TicksPerHour;
             Assert.Throws<ArgumentOutOfRangeException>(() => Offset.FromTicks(ticks));
             Assert.Throws<ArgumentOutOfRangeException>(() => Offset.FromTicks(-ticks));
+        }
+
+        [Test]
+        public void FromNanoseconds_Valid()
+        {
+            Offset value = Offset.FromNanoseconds(-15 * NodaConstants.NanosecondsPerMinute);
+            Assert.AreEqual(-15 * NodaConstants.MillisecondsPerMinute, value.Milliseconds);
+            Assert.AreEqual(-15 * NodaConstants.NanosecondsPerMinute, value.Nanoseconds);
+        }
+
+        [Test]
+        public void FromNanoseconds_Invalid()
+        {
+            long nanos = 24 * NodaConstants.NanosecondsPerHour;
+            Assert.Throws<ArgumentOutOfRangeException>(() => Offset.FromNanoseconds(nanos));
+            Assert.Throws<ArgumentOutOfRangeException>(() => Offset.FromNanoseconds(-nanos));
         }
 
         [Test]
