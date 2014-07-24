@@ -349,11 +349,6 @@ namespace NodaTime.Globalization
         }
 
         /// <summary>
-        /// Gets the <see cref="Offset" /> "F" pattern.
-        /// </summary>
-        public string OffsetPatternFull { get { return PatternResources.ResourceManager.GetString("OffsetPatternFull", cultureInfo); } }
-
-        /// <summary>
         /// Gets the <see cref="Offset" /> "L" pattern.
         /// </summary>
         public string OffsetPatternLong { get { return PatternResources.ResourceManager.GetString("OffsetPatternLong", cultureInfo); } }

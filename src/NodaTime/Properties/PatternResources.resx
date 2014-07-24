@@ -135,9 +135,6 @@
   <data name="Eras_Common" xml:space="preserve">
     <value>A.D.|AD|C.E.|CE</value>
   </data>
-  <data name="OffsetPatternFull" xml:space="preserve">
-    <value>+HH:mm:ss.fff</value>
-  </data>
   <data name="OffsetPatternLong" xml:space="preserve">
     <value>+HH:mm:ss</value>
   </data>
