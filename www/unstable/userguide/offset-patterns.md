@@ -12,8 +12,6 @@ Standard Patterns
 
 The following standard patterns are supported:
 
-- `f`: Full format, displaying all information including fractional seconds.  
-  Typical pattern text: `+HH:mm:ss.fff`
 - `l`: Long format, displaying information down to the second.  
   Typical pattern text: `+HH:mm:ss`
 - `m`: Medium format, displaying information down to the minute.  
@@ -21,7 +19,6 @@ The following standard patterns are supported:
 - `s`: Short format, displaying information down to the hour.  
   Typical pattern text: `+HH`
 - `g`: General pattern. Formatting depends on the value passed in:
-  - If the offset has fractional seconds, the full format is used; otherwise
   - If the offset has seconds, the long format is used; otherwise
   - If the offset has minutes, the medium format is used; otherwise
   - The short format is used
@@ -89,35 +86,8 @@ for general notes on custom patterns, including characters used for escaping and
         Number of seconds within the minute. <code>ss</code> is zero-padded; <code>s</code> is not.
       </td>
       <td>
-        5 seconds: <code>s.fff</code> => <code>5.000</code> <br />
-        5 seconds: <code>ss.fff</code> => <code>05.000</code>
-      </td>
-    </tr>
-    <tr>
-      <td><code>f</code>, <code>ff</code> or <code>fff</code></td>
-      <td>
-        The fractional second part of the offset, using exactly the specified number of characters.
-		Trailing digits are truncated towards zero.
-      </td>
-      <td>
-        1 second, 340 milliseconds: <code>s.fff</code> => 340 <br />
-        1 second, 340 milliseconds: <code>s.ff</code> => 34 <br />
-        1 second, 340 milliseconds: <code>s.f</code> => 3 <br />
-      </td>
-    </tr>
-    <tr>
-      <td><code>F</code>, <code>FF</code> or <code>FFF</code></td>
-      <td>
-        The fractional second part of the offset, using at most the specified number of characters.
-		Trailing digits are truncated towards zero, and trailing insignificant zeroes are truncated.
-		If this comes after a decimal separator and the value is zero, the decimal separator is
-		also truncated.
-      </td>
-      <td>
-        1 second, 340 milliseconds: <code>s.FFF</code> => <code>1.34</code> <br />
-        1 second, 340 milliseconds: <code>s.FF</code> => <code>1.34</code> <br />
-        1 second, 340 milliseconds: <code>s.F</code> => <code>1.3</code> <br />
-        Exactly 1 second: <code>s.F</code> => <code>1</code> <br />
+        5 seconds: <code>s</code> => <code>5</code> <br />
+        5 seconds: <code>ss</code> => <code>05</code>
       </td>
     </tr>
     <tr>
@@ -143,19 +113,6 @@ for general notes on custom patterns, including characters used for escaping and
       <td>
         Positive value: <code>-HH:mm</code> => <code>07:30</code> <br />
         Negative value: <code>-HH:mm</code> => <code>-07:30</code>
-      </td>
-    </tr>
-	<tr>
-	  <td><code>.</code></td>
-	  <td>
-	    This is *always* a period ("."); not a culture-sensitive decimal separator as one might expect. This
-		follows the example of other standard libraries, however odd it may appear. The only difference
-		between a period and any other literal character is that when followed by a series of "F" characters,
-		the period will be removed if there are no fractional seconds.
-      </td>
-	  <td>
-	    12 seconds, 500 milliseconds (en-US): <code>ss.FFF</code> => <code>12.5</code> <br />
-	    12 seconds, 500 milliseconds (fr-FR): <code>ss.FFF</code> => <code>12.5</code>
       </td>
     </tr>
     <tr>
