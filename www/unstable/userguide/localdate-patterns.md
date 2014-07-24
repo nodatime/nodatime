@@ -72,35 +72,11 @@ For the meanings of "absolute" years and text handling, see later details.
     <tr>
       <td><code>yyyy</code></td>
       <td>
-        The absolute year as 4 or 5 digits with an optional leading <code>-</code> sign.
-        <p>
-        If the absolute year is outside the range [-9999, 9999] the
-        value will be formatted (with the excess digit), but
-        the result may not be parsed back to the original value.
-        If the next character in the pattern represents a literal
-        non-digit, or a non-alphanumeric character, or this appears
-        at the end of the pattern, then up to five digits will be
-        parsed. Otherwise, only exactly 4 digits will be parsed.<p>This is
-        to avoid a pattern such as "yyyyMMdd" from becoming ambiguous or
-        hard to parse, while allowing "yyyy-MM-dd" to handle 5-digit years
-        in a convenient fashion. (The detection of "5 digits would be okay"
-        is quite conservative; "yyyyVMMdd" wouldn't handle 5-digit years,
-        but "yyyy'V'MMdd" would, even though the two patterns are otherwise
-        equivalent. This algorithm may change over time.)
-      </td>
-    </tr>
-    <tr>
-      <td><code>yyyyy</code></td>
-      <td>
-        The absolute year as exactly 5 digits with an optional leading <code>-</code> sign.
-      </td>
-      <td>
-        2012: => <code>02012</code> <br />
-        12345: => <code>12345</code> <br />
+        The absolute year as 4 digits with an optional leading <code>-</code> sign.
       </td>
     </tr>
 	<tr>
-	  <td><code>Y</code>, <code>YY</code>, <code>YYY</code>, <code>YYYY</code> or <code>YYYYY</code>
+	  <td><code>Y</code>, <code>YY</code>, <code>YYY</code>, <code>YYYY</code>
 	  <td>
 	    The year of era, zero-padded as necessary to the same number of characters as the number of 'Y' characters.
 		See notes below.

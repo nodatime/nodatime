@@ -1,6 +1,7 @@
 ---
 layout: developer
 title: Release process
+weight: 300
 ---
 
 This document describes how Noda Time is released. It is intended to be used as

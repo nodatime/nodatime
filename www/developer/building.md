@@ -1,6 +1,7 @@
 ---
 layout: developer
 title: Building and testing
+weight: 100
 ---
 
 ## Visual Studio (Windows)
