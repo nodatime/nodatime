@@ -18,7 +18,6 @@ namespace NodaTime
     /// </summary>
     internal struct LocalInstant : IEquatable<LocalInstant>, IComparable<LocalInstant>, IComparable
     {
-        public static readonly LocalInstant LocalUnixEpoch = new LocalInstant();
         public static readonly LocalInstant MinValue = new LocalInstant(int.MinValue, 0);
         public static readonly LocalInstant MaxValue = new LocalInstant(int.MaxValue, NodaConstants.NanosecondsPerStandardDay - 1);
 

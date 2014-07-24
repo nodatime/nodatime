@@ -32,7 +32,7 @@ namespace NodaTime
     /// <threadsafety>This type is an immutable value type. See the thread safety section of the user guide for more information.</threadsafety>
 #if !PCL
     [Serializable]
-//    [StructLayout(LayoutKind.Explicit)]
+    //    [StructLayout(LayoutKind.Explicit)]
 #endif
     public struct OffsetDateTime : IEquatable<OffsetDateTime>, IFormattable, IXmlSerializable
 #if !PCL
@@ -142,6 +142,8 @@ namespace NodaTime
 
         /// <summary>Gets the day of this offset date and time within the month.</summary>
         public int Day { get { return yearMonthDay.Day; } }
+
+        internal YearMonthDay YearMonthDay { get { return yearMonthDay; } }
 
         /// <summary>
         /// Gets the week day of this offset date and time expressed as an <see cref="NodaTime.IsoDayOfWeek"/> value,
