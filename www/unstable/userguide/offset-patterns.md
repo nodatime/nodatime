@@ -29,7 +29,7 @@ The following standard patterns are supported:
   When parsing, the other standard format patterns are tried one at a time. This is the default format pattern.
 - `G`: As `g`, but using `Z` for an offset of 0, as if it were Z-prefixed. (See below.)
 - `n`: Numeric with thousand separators.  
-  This gives the number of milliseconds as an integer, including thousands
+  This gives the number of seconds as an integer, including thousands
   separators.
   
 
