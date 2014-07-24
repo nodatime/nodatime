@@ -447,7 +447,7 @@ namespace NodaTime
             }
             // This allows for a maxOffset of up to +1 day, and the "truncate towards beginning of time"
             // nature of the Days property.
-            if (localInstant.TimeSinceLocalEpoch.Days <= intervalStart.TimeSinceEpoch.Days + 1)
+            if (localInstant.DaysSinceEpoch <= intervalStart.DaysSinceEpoch + 1)
             {
                 // We *could* do a more accurate check here based on the actual maxOffset, but it's probably
                 // not worth it.
@@ -475,7 +475,7 @@ namespace NodaTime
             // Crude but cheap first check to see whether there *might* be a later interval.
             // This allows for a minOffset of up to -1 day, and the "truncate towards beginning of time"
             // nature of the Days property.
-            if (localInstant.TimeSinceLocalEpoch.Days >= intervalEnd.TimeSinceEpoch.Days - 1)
+            if (localInstant.DaysSinceEpoch >= intervalEnd.DaysSinceEpoch - 1)
             {
                 // We *could* do a more accurate check here based on the actual maxOffset, but it's probably
                 // not worth it.
