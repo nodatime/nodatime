@@ -267,9 +267,6 @@
       <DependentUpon>InstantTest.cs</DependentUpon>
     </Compile>
     <Compile Include="LocalInstantTest.cs" />
-    <Compile Include="LocalInstantTest.Operators.cs">
-      <DependentUpon>LocalInstantTest.cs</DependentUpon>
-    </Compile>
     <Compile Include="TestHelper.cs" />
     <Compile Include="TimeZones\FixedDateTimeZoneTest.cs" />
     <Compile Include="TimeZones\MiscellaneousBugReports.cs" />
