@@ -224,7 +224,7 @@ namespace NodaTime.Text
             internal NumberPattern(NodaFormatInfo formatInfo)
             {
                 this.formatInfo = formatInfo;
-                this.maxLength = Offset.MinValue.Milliseconds.ToString("N0", formatInfo.NumberFormat).Length;
+                this.maxLength = Offset.MinValue.Seconds.ToString("N0", formatInfo.NumberFormat).Length;
             }
 
             public ParseResult<Offset> ParsePartial(ValueCursor cursor)
@@ -236,18 +236,18 @@ namespace NodaTime.Text
                 for (int length = longestPossible; length >= 0; length--)
                 {
                     string candidate = cursor.Value.Substring(cursor.Index, length);
-                    int milliseconds;
+                    int seconds;
                     if (Int32.TryParse(candidate, NumberStyles.Integer | NumberStyles.AllowThousands,
-                                        formatInfo.NumberFormat, out milliseconds))
+                                        formatInfo.NumberFormat, out seconds))
                     {
-                        if (milliseconds < -NodaConstants.MillisecondsPerStandardDay ||
-                            NodaConstants.MillisecondsPerStandardDay < milliseconds)
+                        if (seconds < -NodaConstants.SecondsPerStandardDay ||
+                            NodaConstants.SecondsPerStandardDay < seconds)
                         {
                             cursor.Move(startIndex);
-                            return ParseResult<Offset>.ValueOutOfRange(cursor, milliseconds);
+                            return ParseResult<Offset>.ValueOutOfRange(cursor, seconds);
                         }
                         cursor.Move(cursor.Index + length);
-                        return ParseResult<Offset>.ForValue(Offset.FromMilliseconds(milliseconds));
+                        return ParseResult<Offset>.ForValue(Offset.FromSeconds(seconds));
                     }
                 }
                 cursor.Move(startIndex);
@@ -261,23 +261,23 @@ namespace NodaTime.Text
 
             public ParseResult<Offset> Parse(string text)
             {
-                int milliseconds;
+                int seconds;
                 if (Int32.TryParse(text, NumberStyles.Integer | NumberStyles.AllowThousands,
-                                    formatInfo.NumberFormat, out milliseconds))
+                                    formatInfo.NumberFormat, out seconds))
                 {
-                    if (milliseconds < -NodaConstants.MillisecondsPerStandardDay ||
-                        NodaConstants.MillisecondsPerStandardDay < milliseconds)
+                    if (seconds < -NodaConstants.SecondsPerStandardDay ||
+                        NodaConstants.SecondsPerStandardDay < seconds)
                     {
-                        return ParseResult<Offset>.ValueOutOfRange(new ValueCursor(text), milliseconds);
+                        return ParseResult<Offset>.ValueOutOfRange(new ValueCursor(text), seconds);
                     }
-                    return ParseResult<Offset>.ForValue(Offset.FromMilliseconds(milliseconds));
+                    return ParseResult<Offset>.ForValue(Offset.FromSeconds(seconds));
                 }
                 return ParseResult<Offset>.CannotParseValue(new ValueCursor(text), "n");
             }
 
             public string Format(Offset value)
             {
-                return value.Milliseconds.ToString("N0", formatInfo.NumberFormat);
+                return value.Seconds.ToString("N0", formatInfo.NumberFormat);
             }
         }
 

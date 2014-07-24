@@ -182,6 +182,7 @@ namespace NodaTime.Test.Text
             new Data(Offset.Zero) { Culture = Cultures.EnUs, Text = "24", Pattern = "HH", Message = Messages.Parse_FieldValueOutOfRange, Parameters = {24, 'H', typeof(Offset) }},
             new Data(Offset.Zero) { Culture = Cultures.EnUs, Text = "60", Pattern = "mm", Message = Messages.Parse_FieldValueOutOfRange, Parameters = {60, 'm', typeof(Offset) }},
             new Data(Offset.Zero) { Culture = Cultures.EnUs, Text = "60", Pattern = "ss", Message = Messages.Parse_FieldValueOutOfRange, Parameters = {60, 's', typeof(Offset) }},
+            new Data(Offset.Zero) { Culture = Cultures.EnUs, Text = "123,456", Pattern = "n", Message = Messages.Parse_ValueOutOfRange, Parameters = {123456, typeof(Offset) }},
             new Data(Offset.Zero) { Text = "+12", Pattern = "-HH", Message = Messages.Parse_PositiveSignInvalid },
         };
 
@@ -231,7 +232,7 @@ namespace NodaTime.Test.Text
             new Data(5, 12, 34) { Culture = Cultures.EnUs, Text = "+05:12:34", Pattern = "g"  },
             new Data(5, 12, 34, 567) { Culture = Cultures.EnUs, Text = "+05:12:34.567", Pattern = "f"  },
             new Data(5, 12, 34, 567) { Culture = Cultures.EnUs, Text = "+05:12:34.567", Pattern = "g"  },
-            new Data(5, 12, 34, 567) { Culture = Cultures.EnUs, Text = "18,754,567", Pattern = "n"  },
+            new Data(5, 12, 34) { Culture = Cultures.EnUs, Text = "18,754", Pattern = "n"  },
             // See issue 15
             new Data(0, 0, 12, 340) { Culture = Cultures.EnUs, Text = "12.34", Pattern = "ss.FFF"  },
             new Data(Offset.MinValue) { Culture = Cultures.EnUs, Text = "-23:59:59.999", Pattern = "g" },
@@ -245,14 +246,14 @@ namespace NodaTime.Test.Text
             new Data(5, 12, 0) { Culture = Cultures.FrFr, Text = "+05:12", Pattern = "g" },
             new Data(5, 12, 34) { Culture = Cultures.FrFr, Text = "+05:12:34", Pattern = "g" },
             new Data(5, 12, 34, 567) { Culture = Cultures.FrFr, Text = "+05:12:34.567", Pattern = "g" }, // Note still a period, not a comma
-            new Data(5, 12, 34, 567) { Culture = Cultures.FrFr, Text = "18" + Nbsp + "754" + Nbsp + "567", Pattern = "n" },
+            new Data(5, 12, 34) { Culture = Cultures.FrFr, Text = "18" + Nbsp + "754", Pattern = "n" },
             new Data(Offset.MaxValue) { Culture = Cultures.FrFr, Text = "+23:59:59.999", Pattern = "g" },
             new Data(Offset.MinValue) { Culture = Cultures.FrFr, Text = "-23:59:59.999", Pattern = "g" },
             new Data(5, 0, 0) { Culture = Cultures.ItIt, Text = "+05", Pattern = "g" },
             new Data(5, 12, 0) { Culture = Cultures.ItIt, Text = "+05.12", Pattern = "g" },
             new Data(5, 12, 34) { Culture = Cultures.ItIt, Text = "+05.12.34", Pattern = "g" },
             new Data(5, 12, 34, 567) { Culture = Cultures.ItIt, Text = "+05.12.34.567", Pattern = "g" },
-            new Data(5, 12, 34, 567) { Culture = Cultures.ItIt, Text = "18.754.567", Pattern = "n" },
+            new Data(5, 12, 34) { Culture = Cultures.ItIt, Text = "18.754", Pattern = "n" },
             new Data(Offset.MaxValue) { Culture = Cultures.ItIt, Text = "+23.59.59.999", Pattern = "g" },
             new Data(Offset.MinValue) { Culture = Cultures.ItIt, Text = "-23.59.59.999", Pattern = "g" },
             new Data(0, 30, 0, true) { Culture = Cultures.EnUs, Text = "-00:30", Pattern = "+HH:mm" },
