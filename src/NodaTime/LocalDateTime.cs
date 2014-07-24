@@ -49,58 +49,6 @@ namespace NodaTime
         [ReadWriteForEfficiency] private LocalTime time;
 
         /// <summary>
-        /// Optimized constructor to convert an instant to local date/time in the ISO calendar.
-        /// This is equivalent to <c>new LocalDateTime(instant.Plus(offset))</c>, but avoids some overhead.
-        /// </summary>
-        internal LocalDateTime(Instant instant, Offset offset)
-        {
-            unchecked
-            {
-                Duration duration = instant.TimeSinceEpoch;
-                int days = duration.Days;
-                long nanoOfDay = duration.NanosecondOfDay + offset.Nanoseconds;
-                if (nanoOfDay >= NodaConstants.NanosecondsPerStandardDay)
-                {
-                    days++;
-                    nanoOfDay -= NodaConstants.NanosecondsPerStandardDay;
-                }
-                else if (nanoOfDay < 0)
-                {
-                    days--;
-                    nanoOfDay += NodaConstants.NanosecondsPerStandardDay;
-                }
-                time = new LocalTime(nanoOfDay);
-                date = new LocalDate(days);
-            }
-        }
-
-        /// <summary>
-        /// Optimized constructor to convert an instant to local date/time in the specified calendar.
-        /// This is equivalent to <c>new LocalDateTime(instant.Plus(offset), calendar)</c>, but avoids some overhead.
-        /// </summary>
-        internal LocalDateTime(Instant instant, Offset offset, CalendarSystem calendar)
-        {
-            unchecked
-            {
-                Duration duration = instant.TimeSinceEpoch;
-                int days = duration.Days;
-                long nanoOfDay = duration.NanosecondOfDay + offset.Nanoseconds;
-                if (nanoOfDay >= NodaConstants.NanosecondsPerStandardDay)
-                {
-                    days++;
-                    nanoOfDay -= NodaConstants.NanosecondsPerStandardDay;
-                }
-                else if (nanoOfDay < 0)
-                {
-                    days--;
-                    nanoOfDay += NodaConstants.NanosecondsPerStandardDay;
-                }
-                time = new LocalTime(nanoOfDay);
-                date = new LocalDate(days, calendar);
-            }
-        }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="LocalDateTime"/> struct using the ISO
         /// calendar system.
         /// </summary>
