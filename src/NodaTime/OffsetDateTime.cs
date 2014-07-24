@@ -66,9 +66,8 @@ namespace NodaTime
         {
             unchecked
             {
-                Duration duration = instant.TimeSinceEpoch;
-                int days = duration.Days;
-                long nanoOfDay = duration.NanosecondOfDay + offset.Nanoseconds;
+                int days = instant.DaysSinceEpoch;
+                long nanoOfDay = instant.NanosecondOfDay + offset.Nanoseconds;
                 if (nanoOfDay >= NodaConstants.NanosecondsPerStandardDay)
                 {
                     days++;
@@ -95,9 +94,8 @@ namespace NodaTime
         {
             unchecked
             {
-                Duration duration = instant.TimeSinceEpoch;
-                int days = duration.Days;
-                long nanoOfDay = duration.NanosecondOfDay + offset.Nanoseconds;
+                int days = instant.DaysSinceEpoch;
+                long nanoOfDay = instant.NanosecondOfDay + offset.Nanoseconds;
                 if (nanoOfDay >= NodaConstants.NanosecondsPerStandardDay)
                 {
                     days++;
