@@ -90,6 +90,16 @@ namespace NodaTime
         /// <returns>The elapsed time since the Unix epoch.</returns>
         internal Duration TimeSinceEpoch { get { return duration; } }
 
+        /// <summary>
+        /// Number of days since the local unix epoch.
+        /// </summary>
+        internal int DaysSinceEpoch { get { return duration.Days; } }
+
+        /// <summary>
+        /// Nanosecond within the day.
+        /// </summary>
+        internal long NanosecondOfDay { get { return duration.NanosecondOfDay; } }
+
         #region IComparable<Instant> and IComparable Members
         /// <summary>
         /// Compares the current object with another object of the same type.
