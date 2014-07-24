@@ -22,7 +22,7 @@ namespace NodaTime.Test.Calendars
         [Test]
         public void Epoch()
         {
-            LocalDateTime julianEpoch = new LocalDateTime(LocalInstant.LocalUnixEpoch, Julian);
+            LocalDateTime julianEpoch = NodaConstants.UnixEpoch.InZone(DateTimeZone.Utc, Julian).LocalDateTime;
             Assert.AreEqual(1969, julianEpoch.Year);
             Assert.AreEqual(12, julianEpoch.Month);
             Assert.AreEqual(19, julianEpoch.Day);

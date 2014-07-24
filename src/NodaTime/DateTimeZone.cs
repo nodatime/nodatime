@@ -301,13 +301,14 @@ namespace NodaTime
             {
                 case 0:
                     var interval = GetIntervalAfterGap(localInstant);
-                    var localDateTime = new LocalDateTime(interval.LocalStart, date.Calendar);
+                    var offsetDateTime = new OffsetDateTime(interval.Start, interval.WallOffset, date.Calendar);
                     // It's possible that the entire day is skipped. For example, Samoa skipped December 30th 2011.
-                    if (localDateTime.Date != date)
+                    // We know the two values are in the same calendar here, so we just need to check the YearMonthDay.
+                    if (offsetDateTime.YearMonthDay != date.YearMonthDay)
                     {
                         throw new SkippedTimeException(midnight, this);
                     }
-                    return new ZonedDateTime(localDateTime.WithOffset(interval.WallOffset), this);
+                    return new ZonedDateTime(offsetDateTime, this);
                 case 1:
                 case 2:
                     return new ZonedDateTime(midnight.WithOffset(pair.EarlyInterval.WallOffset), this);

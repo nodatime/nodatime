@@ -61,20 +61,6 @@ namespace NodaTime
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="LocalDateTime"/> struct using the given
-        /// calendar system. (The caller must ensure this is non-null.)
-        /// </summary>
-        /// <param name="localInstant">The local instant.</param>
-        /// <param name="calendar">The calendar system.</param>
-        /// <returns>The resulting date/time.</returns>
-        internal LocalDateTime(LocalInstant localInstant, [NotNull] CalendarSystem calendar)
-        {
-            // We assume the calendar system is already non-null...
-            date = new LocalDate(localInstant.DaysSinceEpoch, calendar);
-            time = new LocalTime(localInstant.NanosecondOfDay);
-        }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="LocalDateTime"/> struct using the ISO calendar system.
         /// </summary>
         /// <param name="year">The year. This is the "absolute year",
