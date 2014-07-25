@@ -11,9 +11,9 @@ namespace NodaTime.Test
         [Test]
         public void IEquatableIComparable_Tests()
         {
-            var value = Offset.FromMilliseconds(12345);
-            var equalValue = Offset.FromMilliseconds(12345);
-            var greaterValue = Offset.FromMilliseconds(5432199);
+            var value = Offset.FromSeconds(12345);
+            var equalValue = Offset.FromSeconds(12345);
+            var greaterValue = Offset.FromSeconds(54321);
 
             TestHelper.TestEqualsStruct(value, equalValue, greaterValue);
             TestHelper.TestCompareToStruct(value, equalValue, greaterValue);
@@ -25,31 +25,31 @@ namespace NodaTime.Test
         public void UnaryPlusOperator()
         {
             Assert.AreEqual(Offset.Zero, +Offset.Zero, "+ 0");
-            Assert.AreEqual(Offset.FromMilliseconds(1), + Offset.FromMilliseconds(1), "+ 1");
-            Assert.AreEqual(Offset.FromMilliseconds(-7), + Offset.FromMilliseconds(-7), "+ (-7)");
+            Assert.AreEqual(Offset.FromSeconds(1), + Offset.FromSeconds(1), "+ 1");
+            Assert.AreEqual(Offset.FromSeconds(-7), + Offset.FromSeconds(-7), "+ (-7)");
         }
 
         [Test]
         public void NegateOperator()
         {
             Assert.AreEqual(Offset.Zero, -Offset.Zero, "-0");
-            Assert.AreEqual(Offset.FromMilliseconds(-1), -Offset.FromMilliseconds(1), "-1");
-            Assert.AreEqual(Offset.FromMilliseconds(7), -Offset.FromMilliseconds(-7), "- (-7)");
+            Assert.AreEqual(Offset.FromSeconds(-1), -Offset.FromSeconds(1), "-1");
+            Assert.AreEqual(Offset.FromSeconds(7), -Offset.FromSeconds(-7), "- (-7)");
         }
 
         [Test]
         public void NegateMethod()
         {
             Assert.AreEqual(Offset.Zero, Offset.Negate(Offset.Zero), "-0");
-            Assert.AreEqual(Offset.FromMilliseconds(-1), Offset.Negate(Offset.FromMilliseconds(1)), "-1");
-            Assert.AreEqual(Offset.FromMilliseconds(7), Offset.Negate(Offset.FromMilliseconds(-7)), "- (-7)");
+            Assert.AreEqual(Offset.FromSeconds(-1), Offset.Negate(Offset.FromSeconds(1)), "-1");
+            Assert.AreEqual(Offset.FromSeconds(7), Offset.Negate(Offset.FromSeconds(-7)), "- (-7)");
         }
 
         #region operator +
         [Test]
         public void OperatorPlus_Zero_IsNeutralElement()
         {
-            Assert.AreEqual(0, (Offset.Zero + Offset.Zero).Milliseconds, "0 + 0");
+            Assert.AreEqual(0, (Offset.Zero + Offset.Zero).Seconds, "0 + 0");
             Assert.AreEqual(TestObjects.CreatePositiveOffset(3, 0, 0), ThreeHours + Offset.Zero, "ThreeHours + 0");
             Assert.AreEqual(TestObjects.CreatePositiveOffset(3, 0, 0), Offset.Zero + ThreeHours, "0 + ThreeHours");
         }

@@ -82,12 +82,12 @@ A `LocalDateTime` is simply the combination of a `LocalDate` and a `LocalTime`:
 
 #Offset#
 
-An `Offset` stores the number of milliseconds (currently; this may change to seconds) difference
+An `Offset` stores the number of seconds difference
 between UTC and local time. This is within exclusive bounds of +/- 1 day.
 
-- `int milliseconds`
+- `int seconds`
 
-Note that even a representation in seconds still takes up 18 bits, as the range of 2 days is 172,800
+Note that even this representation still takes up 18 bits, as the range of 2 days is 172,800
 seconds. If we limited ourselves to +/- 18 hours, we could use just 17 bits... which would allow
 a `LocalTime` and an `Offset` to be stored in a single 64-bit integer.
 

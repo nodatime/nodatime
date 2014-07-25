@@ -34,8 +34,9 @@ namespace NodaTime.Test
         [Test]
         public void FromMilliseconds_Valid()
         {
-            var test = Offset.FromMilliseconds(12345);
-            Assert.AreEqual(12345, test.Milliseconds);
+            Offset value = Offset.FromMilliseconds(-15 * NodaConstants.MillisecondsPerMinute);
+            Assert.AreEqual(-15 * NodaConstants.SecondsPerMinute, value.Seconds);
+            Assert.AreEqual(-15 * NodaConstants.MillisecondsPerMinute, value.Milliseconds);
         }
 
         [Test]
@@ -50,7 +51,7 @@ namespace NodaTime.Test
         public void FromTicks_Valid()
         {
             Offset value = Offset.FromTicks(-15 * NodaConstants.TicksPerMinute);
-            Assert.AreEqual(-15 * NodaConstants.MillisecondsPerMinute, value.Milliseconds);
+            Assert.AreEqual(-15 * NodaConstants.SecondsPerMinute, value.Seconds);
             Assert.AreEqual(-15 * NodaConstants.TicksPerMinute, value.Ticks);
         }
         
@@ -66,7 +67,7 @@ namespace NodaTime.Test
         public void FromNanoseconds_Valid()
         {
             Offset value = Offset.FromNanoseconds(-15 * NodaConstants.NanosecondsPerMinute);
-            Assert.AreEqual(-15 * NodaConstants.MillisecondsPerMinute, value.Milliseconds);
+            Assert.AreEqual(-15 * NodaConstants.SecondsPerMinute, value.Seconds);
             Assert.AreEqual(-15 * NodaConstants.NanosecondsPerMinute, value.Nanoseconds);
         }
 
@@ -82,7 +83,7 @@ namespace NodaTime.Test
         public void FromHours_Valid()
         {
             Offset value = Offset.FromHours(-15);
-            Assert.AreEqual(-15 * NodaConstants.MillisecondsPerHour, value.Milliseconds);
+            Assert.AreEqual(-15 * NodaConstants.SecondsPerHour, value.Seconds);
         }
 
         [Test]
@@ -96,7 +97,7 @@ namespace NodaTime.Test
         public void FromHoursAndMinutes_Valid()
         {
             Offset value = Offset.FromHoursAndMinutes(5, 30);
-            Assert.AreEqual(5 * NodaConstants.MillisecondsPerHour + 30 * NodaConstants.MillisecondsPerMinute, value.Milliseconds);
+            Assert.AreEqual(5 * NodaConstants.SecondsPerHour + 30 * NodaConstants.SecondsPerMinute, value.Seconds);
         }
     }
 }
