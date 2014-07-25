@@ -223,11 +223,6 @@ namespace NodaTime.Test.Text
             {
             }
 
-            public Data(int hours, int minutes, int seconds, int milliseconds)
-                : this(TestObjects.CreatePositiveOffset(hours, minutes, seconds, milliseconds))
-            {
-            }
-
             public Data(int hours, int minutes, int seconds, bool negative)
                 : this(negative ? TestObjects.CreateNegativeOffset(hours, minutes, seconds) :
                                   TestObjects.CreatePositiveOffset(hours, minutes, seconds))
