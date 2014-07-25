@@ -99,7 +99,7 @@ for general notes on custom patterns, including characters used for escaping and
     <tr>
       <td><code>F</code>, <code>FF</code> ... up to <code>FFFFFFFFF</code></td>
       <td>
-        The fractional second part of the offset, using at most the specified number of characters
+        The fractional second part of the time, using at most the specified number of characters
 		(up to 9, for a representation accurate to a nanosecond).
 		Trailing digits are truncated towards zero, and trailing insignificant zeroes are truncated.
 		If this comes after a period (".") and the value is zero, the period is

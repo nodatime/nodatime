@@ -82,7 +82,7 @@ namespace NodaTime.TimeZones
             /// <returns>The defined ZoneOffsetPeriod or null.</returns>
             public ZoneInterval GetZoneInterval(Instant instant)
             {
-                int period = instant.TimeSinceEpoch.Days >> PeriodShift;
+                int period = instant.DaysSinceEpoch >> PeriodShift;
                 int index = period & CachePeriodMask;
                 var node = instantCache[index];
                 if (node == null || node.Period != period)
@@ -126,13 +126,15 @@ namespace NodaTime.TimeZones
                 {
                     var days = period << PeriodShift;
                     var periodStart = new Instant(new Duration(days, 0L));
-                    var periodEnd = new Instant(new Duration(days + (1 << PeriodShift), 0L));
+                    var nextPeriodStartDays = days + (1 << PeriodShift);
 
                     var interval = map.GetZoneInterval(periodStart);
                     var node = new HashCacheNode(interval, period, null);
 
                     // Keep going while the current interval ends before the period.
-                    while (interval.End < periodEnd)
+                    // (We only need to check the days, as every period lands on a
+                    // day boundary.)
+                    while (interval.End.DaysSinceEpoch < nextPeriodStartDays)
                     {
                         interval = map.GetZoneInterval(interval.End);
                         node = new HashCacheNode(interval, period, node);

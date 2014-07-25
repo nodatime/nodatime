@@ -2,6 +2,7 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
+using System;
 using System.Globalization;
 using NodaTime.Benchmarks.Framework;
 
@@ -9,6 +10,7 @@ namespace NodaTime.Benchmarks.NodaTimeTests
 {
     internal class LocalDateTimeBenchmarks
     {
+        private static readonly DateTime SampleDateTime = new DateTime(2009, 12, 26, 10, 8, 30);
         private static readonly LocalDateTime Sample = new LocalDateTime(2009, 12, 26, 10, 8, 30);
         private static readonly CultureInfo MutableCulture = (CultureInfo) CultureInfo.InvariantCulture.Clone();
         private static readonly Period SampleTimePeriod = new PeriodBuilder { Hours = 10, Minutes = 4, Seconds = 5, Milliseconds = 20, Ticks = 30 }.Build();
@@ -31,6 +33,12 @@ namespace NodaTime.Benchmarks.NodaTimeTests
         public void ConstructionToTick()
         {
             new LocalDateTime(2009, 12, 26, 10, 8, 30, 0, 0).Consume();
+        }
+
+        [Benchmark]
+        public void FromDateTime()
+        {
+            LocalDateTime.FromDateTime(SampleDateTime);
         }
 
         [Benchmark]
