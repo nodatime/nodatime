@@ -13,7 +13,7 @@ namespace NodaTime.Test
         [Test]
         public void ForOffset_UncachedExample_NotOnHalfHour()
         {
-            var offset = Offset.FromMilliseconds(12345);
+            var offset = Offset.FromSeconds(123);
             var zone1 = DateTimeZone.ForOffset(offset);
             var zone2 = DateTimeZone.ForOffset(offset);
 

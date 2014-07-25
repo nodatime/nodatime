@@ -162,10 +162,10 @@ namespace NodaTime.Test.TimeZones.IO
             Dio.TestOffset(Offset.FromHoursAndMinutes(-5, -15));
             Dio.TestOffset(Offset.FromHoursAndMinutes(-5, -30));
             Dio.TestOffset(Offset.FromHoursAndMinutes(-5, -45));
-            Dio.TestOffset(Offset.FromMilliseconds(1));
-            Dio.TestOffset(Offset.FromMilliseconds(-1));
-            Dio.TestOffset(Offset.FromMilliseconds(1000));
-            Dio.TestOffset(Offset.FromMilliseconds(-1000));
+            Dio.TestOffset(Offset.FromSeconds(1));
+            Dio.TestOffset(Offset.FromSeconds(-1));
+            Dio.TestOffset(Offset.FromSeconds(1000));
+            Dio.TestOffset(Offset.FromSeconds(-1000));
         }
 
         [Test]
