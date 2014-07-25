@@ -28,7 +28,7 @@ namespace NodaTime.Test.Text
             new FakeDateTimeZoneSource.Builder { TestZone1, TestZone2, TestZone3 }.Build().ToProvider();
         private static readonly DateTimeZone FixedPlus1 = FixedDateTimeZone.ForOffset(Offset.FromHours(1));
         private static readonly DateTimeZone FixedWithMinutes = FixedDateTimeZone.ForOffset(Offset.FromHoursAndMinutes(1, 30));
-        private static readonly DateTimeZone FixedWithSeconds = FixedDateTimeZone.ForOffset(Offset.FromMilliseconds(5000));
+        private static readonly DateTimeZone FixedWithSeconds = FixedDateTimeZone.ForOffset(Offset.FromSeconds(5));
         private static readonly DateTimeZone FixedMinus1 = FixedDateTimeZone.ForOffset(Offset.FromHours(-1));
 
         private static readonly DateTimeZone France = DateTimeZoneProviders.Tzdb["Europe/Paris"];
