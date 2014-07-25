@@ -94,8 +94,8 @@ namespace NodaTime
         internal const string UtcId = "UTC";
 
         private static readonly DateTimeZone UtcZone = new FixedDateTimeZone(Offset.Zero);
-        private const int FixedZoneCacheGranularityMilliseconds = NodaConstants.MillisecondsPerMinute * 30;
-        private const int FixedZoneCacheMinimumMilliseconds = -FixedZoneCacheGranularityMilliseconds * 12 * 2; // From UTC-12
+        private const int FixedZoneCacheGranularitySeconds = NodaConstants.SecondsPerMinute * 30;
+        private const int FixedZoneCacheMinimumSeconds = -FixedZoneCacheGranularitySeconds * 12 * 2; // From UTC-12
         private const int FixedZoneCacheSize = (12 + 15) * 2 + 1; // To UTC+15 inclusive
         private static readonly DateTimeZone[] FixedZoneCache = BuildFixedZoneCache();
 
@@ -131,12 +131,12 @@ namespace NodaTime
         /// <returns>A fixed time zone with the given offset.</returns>
         public static DateTimeZone ForOffset(Offset offset)
         {
-            int millis = offset.Milliseconds;
-            if (millis % FixedZoneCacheGranularityMilliseconds != 0)
+            int seconds = offset.Seconds;
+            if (seconds % FixedZoneCacheGranularitySeconds != 0)
             {
                 return new FixedDateTimeZone(offset);
             }
-            int index = (millis - FixedZoneCacheMinimumMilliseconds) / FixedZoneCacheGranularityMilliseconds;
+            int index = (seconds - FixedZoneCacheMinimumSeconds) / FixedZoneCacheGranularitySeconds;
             if (index < 0 || index >= FixedZoneCacheSize)
             {
                 return new FixedDateTimeZone(offset);
@@ -545,10 +545,10 @@ namespace NodaTime
             DateTimeZone[] ret = new DateTimeZone[FixedZoneCacheSize];
             for (int i = 0; i < FixedZoneCacheSize; i++)
             {
-                int offsetMillis = i * FixedZoneCacheGranularityMilliseconds + FixedZoneCacheMinimumMilliseconds;
-                ret[i] = new FixedDateTimeZone(Offset.FromMilliseconds(offsetMillis));
+                int offsetSeconds = i * FixedZoneCacheGranularitySeconds + FixedZoneCacheMinimumSeconds;
+                ret[i] = new FixedDateTimeZone(Offset.FromSeconds(offsetSeconds));
             }
-            ret[-FixedZoneCacheMinimumMilliseconds / FixedZoneCacheGranularityMilliseconds] = Utc;
+            ret[-FixedZoneCacheMinimumSeconds / FixedZoneCacheGranularitySeconds] = Utc;
             return ret;
         }
 
