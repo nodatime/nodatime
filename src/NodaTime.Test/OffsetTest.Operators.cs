@@ -50,16 +50,16 @@ namespace NodaTime.Test
         public void OperatorPlus_Zero_IsNeutralElement()
         {
             Assert.AreEqual(0, (Offset.Zero + Offset.Zero).Milliseconds, "0 + 0");
-            Assert.AreEqual(TestObjects.CreatePositiveOffset(3, 0, 0, 0), ThreeHours + Offset.Zero, "1 + 0");
-            Assert.AreEqual(TestObjects.CreatePositiveOffset(3, 0, 0, 0), Offset.Zero + ThreeHours, "0 + 1");
+            Assert.AreEqual(TestObjects.CreatePositiveOffset(3, 0, 0, 0), ThreeHours + Offset.Zero, "ThreeHours + 0");
+            Assert.AreEqual(TestObjects.CreatePositiveOffset(3, 0, 0, 0), Offset.Zero + ThreeHours, "0 + ThreeHours");
         }
 
         [Test]
         public void OperatorPlus_NonZero()
         {
-            Assert.AreEqual(TestObjects.CreatePositiveOffset(6, 0, 0, 0), ThreeHours + ThreeHours, "3,000,000 + 1");
-            Assert.AreEqual(Offset.Zero, ThreeHours + NegativeThreeHours, "1 + (-1)");
-            Assert.AreEqual(TestObjects.CreateNegativeOffset(9, 0, 0, 0), NegativeTwelveHours + ThreeHours, "-TwelveHours + threeHours");
+            Assert.AreEqual(TestObjects.CreatePositiveOffset(6, 0, 0, 0), ThreeHours + ThreeHours, "ThreeHours + ThreeHours");
+            Assert.AreEqual(Offset.Zero, ThreeHours + NegativeThreeHours, "ThreeHours + (-ThreeHours)");
+            Assert.AreEqual(TestObjects.CreateNegativeOffset(9, 0, 0, 0), NegativeTwelveHours + ThreeHours, "-TwelveHours + ThreeHours");
         }
 
         // Static method equivalents
@@ -67,16 +67,16 @@ namespace NodaTime.Test
         public void MethodAdd_Zero_IsNeutralElement()
         {
             Assert.AreEqual(0, Offset.Add(Offset.Zero, Offset.Zero).Milliseconds, "0 + 0");
-            Assert.AreEqual(TestObjects.CreatePositiveOffset(3, 0, 0, 0), Offset.Add(ThreeHours, Offset.Zero), "1 + 0");
-            Assert.AreEqual(TestObjects.CreatePositiveOffset(3, 0, 0, 0), Offset.Add(Offset.Zero, ThreeHours), "0 + 1");
+            Assert.AreEqual(TestObjects.CreatePositiveOffset(3, 0, 0, 0), Offset.Add(ThreeHours, Offset.Zero), "ThreeHours + 0");
+            Assert.AreEqual(TestObjects.CreatePositiveOffset(3, 0, 0, 0), Offset.Add(Offset.Zero, ThreeHours), "0 + ThreeHours");
         }
 
         [Test]
         public void MethodAdd_NonZero()
         {
-            Assert.AreEqual(TestObjects.CreatePositiveOffset(6, 0, 0, 0), Offset.Add(ThreeHours, ThreeHours), "3,000,000 + 1");
-            Assert.AreEqual(Offset.Zero, Offset.Add(ThreeHours, NegativeThreeHours), "1 + (-1)");
-            Assert.AreEqual(TestObjects.CreateNegativeOffset(9, 0, 0, 0), Offset.Add(NegativeTwelveHours, ThreeHours), "-TwelveHours + threeHours");
+            Assert.AreEqual(TestObjects.CreatePositiveOffset(6, 0, 0, 0), Offset.Add(ThreeHours, ThreeHours), "ThreeHours + ThreeHours");
+            Assert.AreEqual(Offset.Zero, Offset.Add(ThreeHours, NegativeThreeHours), "ThreeHours + (-ThreeHours)");
+            Assert.AreEqual(TestObjects.CreateNegativeOffset(9, 0, 0, 0), Offset.Add(NegativeTwelveHours, ThreeHours), "-TwelveHours + ThreeHours");
         }
 
         // Instance method equivalents
@@ -84,16 +84,16 @@ namespace NodaTime.Test
         public void MethodPlus_Zero_IsNeutralElement()
         {
             Assert.AreEqual(0, Offset.Zero.Plus(Offset.Zero).Milliseconds, "0 + 0");
-            Assert.AreEqual(TestObjects.CreatePositiveOffset(3, 0, 0, 0), ThreeHours.Plus(Offset.Zero), "1 + 0");
-            Assert.AreEqual(TestObjects.CreatePositiveOffset(3, 0, 0, 0), Offset.Zero.Plus(ThreeHours), "0 + 1");
+            Assert.AreEqual(TestObjects.CreatePositiveOffset(3, 0, 0, 0), ThreeHours.Plus(Offset.Zero), "ThreeHours + 0");
+            Assert.AreEqual(TestObjects.CreatePositiveOffset(3, 0, 0, 0), Offset.Zero.Plus(ThreeHours), "0 + ThreeHours");
         }
 
         [Test]
         public void MethodPlus_NonZero()
         {
-            Assert.AreEqual(TestObjects.CreatePositiveOffset(6, 0, 0, 0), ThreeHours.Plus(ThreeHours), "3,000,000 + 1");
-            Assert.AreEqual(Offset.Zero, ThreeHours.Plus(NegativeThreeHours), "1 + (-1)");
-            Assert.AreEqual(TestObjects.CreateNegativeOffset(9, 0, 0, 0), NegativeTwelveHours.Plus(ThreeHours), "-TwelveHours + threeHours");
+            Assert.AreEqual(TestObjects.CreatePositiveOffset(6, 0, 0, 0), ThreeHours.Plus(ThreeHours), "ThreeHours + ThreeHours");
+            Assert.AreEqual(Offset.Zero, ThreeHours.Plus(NegativeThreeHours), "ThreeHours + (-ThreeHours)");
+            Assert.AreEqual(TestObjects.CreateNegativeOffset(9, 0, 0, 0), NegativeTwelveHours.Plus(ThreeHours), "-TwelveHours + ThreeHours");
         }
         #endregion
 
@@ -102,16 +102,16 @@ namespace NodaTime.Test
         public void OperatorMinus_Zero_IsNeutralElement()
         {
             Assert.AreEqual(Offset.Zero, Offset.Zero - Offset.Zero, "0 - 0");
-            Assert.AreEqual(TestObjects.CreatePositiveOffset(3, 0, 0, 0), ThreeHours - Offset.Zero, "1 - 0");
-            Assert.AreEqual(TestObjects.CreateNegativeOffset(3, 0, 0, 0), Offset.Zero - ThreeHours, "0 - 1");
+            Assert.AreEqual(TestObjects.CreatePositiveOffset(3, 0, 0, 0), ThreeHours - Offset.Zero, "ThreeHours - 0");
+            Assert.AreEqual(TestObjects.CreateNegativeOffset(3, 0, 0, 0), Offset.Zero - ThreeHours, "0 - ThreeHours");
         }
 
         [Test]
         public void OperatorMinus_NonZero()
         {
-            Assert.AreEqual(Offset.Zero, ThreeHours - ThreeHours, "3,000,000 - 1");
-            Assert.AreEqual(TestObjects.CreatePositiveOffset(6, 0, 0, 0), ThreeHours - NegativeThreeHours, "1 - (-1)");
-            Assert.AreEqual(TestObjects.CreateNegativeOffset(15, 0, 0, 0), NegativeTwelveHours - ThreeHours, "-TwelveHours - threeHours");
+            Assert.AreEqual(Offset.Zero, ThreeHours - ThreeHours, "ThreeHours - ThreeHours");
+            Assert.AreEqual(TestObjects.CreatePositiveOffset(6, 0, 0, 0), ThreeHours - NegativeThreeHours, "ThreeHours - (-ThreeHours)");
+            Assert.AreEqual(TestObjects.CreateNegativeOffset(15, 0, 0, 0), NegativeTwelveHours - ThreeHours, "-TwelveHours - ThreeHours");
         }
 
         // Static method equivalents
@@ -119,16 +119,16 @@ namespace NodaTime.Test
         public void Subtract_Zero_IsNeutralElement()
         {
             Assert.AreEqual(Offset.Zero, Offset.Subtract(Offset.Zero, Offset.Zero), "0 - 0");
-            Assert.AreEqual(TestObjects.CreatePositiveOffset(3, 0, 0, 0), Offset.Subtract(ThreeHours, Offset.Zero), "1 - 0");
-            Assert.AreEqual(TestObjects.CreateNegativeOffset(3, 0, 0, 0), Offset.Subtract(Offset.Zero, ThreeHours), "0 - 1");
+            Assert.AreEqual(TestObjects.CreatePositiveOffset(3, 0, 0, 0), Offset.Subtract(ThreeHours, Offset.Zero), "ThreeHours - 0");
+            Assert.AreEqual(TestObjects.CreateNegativeOffset(3, 0, 0, 0), Offset.Subtract(Offset.Zero, ThreeHours), "0 - ThreeHours");
         }
 
         [Test]
         public void Subtract_NonZero()
         {
-            Assert.AreEqual(Offset.Zero, Offset.Subtract(ThreeHours, ThreeHours), "3,000,000 - 1");
-            Assert.AreEqual(TestObjects.CreatePositiveOffset(6, 0, 0, 0), Offset.Subtract(ThreeHours, NegativeThreeHours), "1 - (-1)");
-            Assert.AreEqual(TestObjects.CreateNegativeOffset(15, 0, 0, 0), Offset.Subtract(NegativeTwelveHours, ThreeHours), "-TwelveHours - threeHours");
+            Assert.AreEqual(Offset.Zero, Offset.Subtract(ThreeHours, ThreeHours), "ThreeHours - ThreeHours");
+            Assert.AreEqual(TestObjects.CreatePositiveOffset(6, 0, 0, 0), Offset.Subtract(ThreeHours, NegativeThreeHours), "ThreeHours - (-ThreeHours)");
+            Assert.AreEqual(TestObjects.CreateNegativeOffset(15, 0, 0, 0), Offset.Subtract(NegativeTwelveHours, ThreeHours), "-TwelveHours - ThreeHours");
         }
 
         // Instance method equivalents
@@ -136,16 +136,16 @@ namespace NodaTime.Test
         public void Minus_Zero_IsNeutralElement()
         {
             Assert.AreEqual(Offset.Zero, Offset.Zero.Minus(Offset.Zero), "0 - 0");
-            Assert.AreEqual(TestObjects.CreatePositiveOffset(3, 0, 0, 0), ThreeHours.Minus(Offset.Zero), "1 - 0");
-            Assert.AreEqual(TestObjects.CreateNegativeOffset(3, 0, 0, 0), Offset.Zero.Minus(ThreeHours), "0 - 1");
+            Assert.AreEqual(TestObjects.CreatePositiveOffset(3, 0, 0, 0), ThreeHours.Minus(Offset.Zero), "ThreeHours - 0");
+            Assert.AreEqual(TestObjects.CreateNegativeOffset(3, 0, 0, 0), Offset.Zero.Minus(ThreeHours), "0 - ThreeHours");
         }
 
         [Test]
         public void Minus_NonZero()
         {
-            Assert.AreEqual(Offset.Zero, ThreeHours.Minus(ThreeHours), "3,000,000 - 1");
-            Assert.AreEqual(TestObjects.CreatePositiveOffset(6, 0, 0, 0), ThreeHours.Minus(NegativeThreeHours), "1 - (-1)");
-            Assert.AreEqual(TestObjects.CreateNegativeOffset(15, 0, 0, 0), NegativeTwelveHours.Minus(ThreeHours), "-TwelveHours - threeHours");
+            Assert.AreEqual(Offset.Zero, ThreeHours.Minus(ThreeHours), "ThreeHours - ThreeHours");
+            Assert.AreEqual(TestObjects.CreatePositiveOffset(6, 0, 0, 0), ThreeHours.Minus(NegativeThreeHours), "ThreeHours - (-ThreeHours)");
+            Assert.AreEqual(TestObjects.CreateNegativeOffset(15, 0, 0, 0), NegativeTwelveHours.Minus(ThreeHours), "-TwelveHours - ThreeHours");
         }
         #endregion
     }
