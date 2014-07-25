@@ -47,8 +47,10 @@ namespace NodaTime.TimeZones
         /// </summary>
         public static readonly SkippedTimeResolver ReturnEndOfIntervalBefore = (local, zone, before, after) =>
         {
-            var localDateTime = new LocalDateTime(before.LocalEnd - Duration.Epsilon, local.Calendar);
-            return new ZonedDateTime(localDateTime.WithOffset(before.WallOffset), zone);
+            Preconditions.CheckNotNull(zone, "zone");
+            Preconditions.CheckNotNull(before, "before");
+            Preconditions.CheckNotNull(after, "after");
+            return new ZonedDateTime(before.End - Duration.Epsilon, zone, local.Calendar);
         };
 
         /// <summary>
@@ -60,8 +62,7 @@ namespace NodaTime.TimeZones
             Preconditions.CheckNotNull(zone, "zone");
             Preconditions.CheckNotNull(before, "before");
             Preconditions.CheckNotNull(after, "after");
-            var localDateTime = new LocalDateTime(after.LocalStart, local.Calendar);
-            return new ZonedDateTime(localDateTime.WithOffset(after.WallOffset), zone);
+            return new ZonedDateTime(after.Start, zone, local.Calendar);
         };
 
         /// <summary>

@@ -30,7 +30,7 @@ namespace NodaTime.Test.Calendars
         public void UnixEpoch()
         {
             CalendarSystem coptic = CalendarSystem.GetCopticCalendar(4);
-            LocalDateTime unixEpochInCopticCalendar = new LocalDateTime(LocalInstant.LocalUnixEpoch, coptic);
+            LocalDateTime unixEpochInCopticCalendar = NodaConstants.UnixEpoch.InZone(DateTimeZone.Utc, coptic).LocalDateTime;
             LocalDateTime expected = new LocalDateTime(1686, 4, 23, 0, 0, coptic);
             Assert.AreEqual(expected, unixEpochInCopticCalendar);
         }

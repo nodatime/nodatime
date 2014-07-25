@@ -134,7 +134,7 @@ namespace NodaTime.TimeZones
 
         /// <summary>
         /// Returns the local start time of the interval, as LocalDateTime
-        /// in the ISO calendar. This does not include any daylight saving 
+        /// in the ISO calendar.
         /// </summary>
         public LocalDateTime IsoLocalEnd
         {

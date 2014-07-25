@@ -301,13 +301,14 @@ namespace NodaTime
             {
                 case 0:
                     var interval = GetIntervalAfterGap(localInstant);
-                    var localDateTime = new LocalDateTime(interval.LocalStart, date.Calendar);
+                    var offsetDateTime = new OffsetDateTime(interval.Start, interval.WallOffset, date.Calendar);
                     // It's possible that the entire day is skipped. For example, Samoa skipped December 30th 2011.
-                    if (localDateTime.Date != date)
+                    // We know the two values are in the same calendar here, so we just need to check the YearMonthDay.
+                    if (offsetDateTime.YearMonthDay != date.YearMonthDay)
                     {
                         throw new SkippedTimeException(midnight, this);
                     }
-                    return new ZonedDateTime(localDateTime.WithOffset(interval.WallOffset), this);
+                    return new ZonedDateTime(offsetDateTime, this);
                 case 1:
                 case 2:
                     return new ZonedDateTime(midnight.WithOffset(pair.EarlyInterval.WallOffset), this);
@@ -446,7 +447,7 @@ namespace NodaTime
             }
             // This allows for a maxOffset of up to +1 day, and the "truncate towards beginning of time"
             // nature of the Days property.
-            if (localInstant.TimeSinceLocalEpoch.Days <= intervalStart.TimeSinceEpoch.Days + 1)
+            if (localInstant.DaysSinceEpoch <= intervalStart.DaysSinceEpoch + 1)
             {
                 // We *could* do a more accurate check here based on the actual maxOffset, but it's probably
                 // not worth it.
@@ -474,7 +475,7 @@ namespace NodaTime
             // Crude but cheap first check to see whether there *might* be a later interval.
             // This allows for a minOffset of up to -1 day, and the "truncate towards beginning of time"
             // nature of the Days property.
-            if (localInstant.TimeSinceLocalEpoch.Days >= intervalEnd.TimeSinceEpoch.Days - 1)
+            if (localInstant.DaysSinceEpoch >= intervalEnd.DaysSinceEpoch - 1)
             {
                 // We *could* do a more accurate check here based on the actual maxOffset, but it's probably
                 // not worth it.
