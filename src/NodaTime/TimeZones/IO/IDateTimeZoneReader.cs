@@ -49,6 +49,14 @@ namespace NodaTime.TimeZones.IO
         byte ReadByte();
 
         /// <summary>
+        /// Reads a number of milliseconds from the stream.
+        /// </summary>
+        /// <returns>The number of milliseconds read from the stream</returns>
+        /// <exception cref="InvalidNodaDataException">The data was invalid.</exception>
+        /// <exception cref="IOException">The stream could not be read.</exception>
+        int ReadMilliseconds();
+
+        /// <summary>
         /// Reads an offset from the stream.
         /// </summary>
         /// <returns>The offset read from the stream</returns>

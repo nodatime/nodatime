@@ -246,7 +246,8 @@ namespace NodaTime.Test.TimeZones
         public void Serialization()
         {
             var dio = DtzIoHelper.CreateNoStringPool();
-            var expected = new ZoneYearOffset(TransitionMode.Utc, 10, 31, (int)IsoDayOfWeek.Wednesday, true, LocalTime.Midnight);
+            var expected = new ZoneYearOffset(TransitionMode.Utc, 10, 31, (int)IsoDayOfWeek.Wednesday, true,
+                new LocalTime(12, 34, 45, 678));
             dio.TestZoneYearOffset(expected);
 
             dio.Reset();

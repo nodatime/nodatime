@@ -83,13 +83,13 @@ namespace NodaTime.TimeZones.IO
         }
 
         /// <summary>
-        /// Reads an offset value from the stream.
+        /// Reads a number of milliseconds from the stream.
         /// </summary>
         /// <remarks>
-        /// The value must have been written by <see cref="DateTimeZoneWriter.WriteOffset" />.
+        /// The value must have been written by <see cref="DateTimeZoneWriter.WriteMilliseconds" />.
         /// </remarks>
         /// <returns>The offset value from the stream.</returns>
-        public Offset ReadOffset()
+        public int ReadMilliseconds()
         {
             unchecked
             {
@@ -123,8 +123,21 @@ namespace NodaTime.TimeZones.IO
                     }
                 }
                 millis -= NodaConstants.MillisecondsPerStandardDay;
-                return Offset.FromMilliseconds(millis);
+                return millis;
             }
+        }
+
+        /// <summary>
+        /// Reads an offset value from the stream.
+        /// </summary>
+        /// <remarks>
+        /// The value must have been written by <see cref="DateTimeZoneWriter.WriteOffset" />.
+        /// </remarks>
+        /// <returns>The offset value from the stream.</returns>
+        public Offset ReadOffset()
+        {
+            int millis = ReadMilliseconds();
+            return Offset.FromMilliseconds(millis);
         }
 
         /// <summary>

@@ -52,6 +52,15 @@ namespace NodaTime.TimeZones.IO
         void WriteString([NotNull] string value);
 
         /// <summary>
+        /// Writes a number of milliseconds to the stream, where the number
+        /// of milliseconds must be in the range (-1 day, +1 day).
+        /// </summary>
+        /// <param name="millis">The number of milliseconds to write to the stream.</param>
+        /// <exception cref="IOException">The value couldn't be written to the stream.</exception>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="millis"/> is out of range.</exception>
+        void WriteMilliseconds(int millis);
+
+        /// <summary>
         /// Writes an offset to the stream.
         /// </summary>
         /// <param name="offset">The offset to write to the stream.</param>

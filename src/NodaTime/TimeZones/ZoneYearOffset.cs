@@ -266,8 +266,8 @@ namespace NodaTime.TimeZones
             writer.WriteByte((byte) flags);
             writer.WriteCount(monthOfYear);
             writer.WriteSignedCount(dayOfMonth);
-            // The time of day is written as an offset for historical reasons.
-            writer.WriteOffset(Offset.FromTicks(timeOfDay.TickOfDay));
+            // The time of day is written as a number of milliseconds historical reasons.
+            writer.WriteMilliseconds((int) (timeOfDay.TickOfDay / NodaConstants.TicksPerMillisecond));
         }
 
         public static ZoneYearOffset Read(IDateTimeZoneReader reader)
@@ -280,10 +280,9 @@ namespace NodaTime.TimeZones
             var addDay = (flags & 1) != 0;
             int monthOfYear = reader.ReadCount();
             int dayOfMonth = reader.ReadSignedCount();
-            // The time of day is written as an offset for historical reasons.
-            var ticksOfDay = reader.ReadOffset();
-            return new ZoneYearOffset(mode, monthOfYear, dayOfMonth, dayOfWeek, advance, 
-                LocalTime.FromTicksSinceMidnight(ticksOfDay.Ticks), addDay);
+            // The time of day is written as a number of milliseconds for historical reasons.
+            var timeOfDay = LocalTime.FromMillisecondsSinceMidnight(reader.ReadMilliseconds());
+            return new ZoneYearOffset(mode, monthOfYear, dayOfMonth, dayOfWeek, advance, timeOfDay, addDay);
         }
 
         /// <summary>
