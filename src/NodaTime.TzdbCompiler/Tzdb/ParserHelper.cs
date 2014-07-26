@@ -7,6 +7,8 @@ using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Text.RegularExpressions;
 using JetBrains.Annotations;
+using NodaTime.Text;
+using NodaTime.Text.Patterns;
 using NodaTime.Utility;
 
 namespace NodaTime.TzdbCompiler.Tzdb
@@ -16,6 +18,13 @@ namespace NodaTime.TzdbCompiler.Tzdb
     /// </summary>
     internal static class ParserHelper
     {
+        private static readonly LocalTimePattern[] TimePatterns =
+        {
+            LocalTimePattern.CreateWithInvariantCulture("H:mm:ss.FFF"),
+            LocalTimePattern.CreateWithInvariantCulture("H:mm"),
+            LocalTimePattern.CreateWithInvariantCulture("%H")
+        };
+
         /// <summary>
         ///   Converts an hour string to its long value.
         /// </summary>
@@ -105,6 +114,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
         /// <returns>an integer number of ticks</returns>
         public static Offset ParseOffset([NotNull] string text)
         {
+            // TODO(2.0): Use normal parsers!
             Preconditions.CheckNotNull(text, "text");
             int sign = 1;
             if (text.StartsWith("-", StringComparison.Ordinal))
@@ -128,6 +138,19 @@ namespace NodaTime.TzdbCompiler.Tzdb
             }
             ticks = ticks * sign;
             return Offset.FromTicks(ticks);
+        }
+
+        public static LocalTime ParseTime([NotNull] string text)
+        {
+            foreach (var pattern in TimePatterns)
+            {
+                var result = pattern.Parse(text);
+                if (result.Success)
+                {
+                    return result.Value;
+                }
+            }
+            throw new FormatException("Invalid time in rules: " + text);
         }
 
         /// <summary>
