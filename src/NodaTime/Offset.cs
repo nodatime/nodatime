@@ -428,6 +428,7 @@ namespace NodaTime
         #endregion Formatting
 
         #region Construction
+        /// <summary>
         /// Returns an offset for the given seconds value, which may be negative.
         /// </summary>
         /// <param name="seconds">The int seconds value.</param>
