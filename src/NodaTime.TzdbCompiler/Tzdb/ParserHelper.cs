@@ -12,7 +12,7 @@ using NodaTime.Utility;
 namespace NodaTime.TzdbCompiler.Tzdb
 {
     /// <summary>
-    ///   Contains helper methods for parsing the TZFB files.
+    ///   Contains helper methods for parsing the TZDB files.
     /// </summary>
     internal static class ParserHelper
     {
