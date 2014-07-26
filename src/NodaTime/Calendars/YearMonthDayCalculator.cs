@@ -54,7 +54,9 @@ namespace NodaTime.Calendars
         /// The default implementation simply uses a naive comparison of the values,
         /// as this is suitable for most calendars.
         /// </summary>
-        public virtual int Compare(YearMonthDay lhs, YearMonthDay rhs)
+        /// <remarks>Although the parameters are trusted (as in, they'll be valid in this calendar),
+        /// the method being public isn't a problem - this type is never exposed.</remarks>
+        public virtual int Compare([Trusted] YearMonthDay lhs, [Trusted] YearMonthDay rhs)
         {
             return lhs.CompareTo(rhs);
         }
@@ -84,7 +86,7 @@ namespace NodaTime.Calendars
         /// anyway.
         /// </summary>
         internal YearMonthDay GetYearMonthDay([Trusted] int daysSinceEpoch)
-        {
+        {            
             int zeroBasedDay;
             int year = GetYear(daysSinceEpoch, out zeroBasedDay);
             return GetYearMonthDay(year, zeroBasedDay + 1);

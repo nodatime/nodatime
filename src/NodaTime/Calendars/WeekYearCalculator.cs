@@ -34,7 +34,7 @@ namespace NodaTime.Calendars
             }
         }
 
-        internal int GetDayOfWeek(YearMonthDay yearMonthDay)
+        internal int GetDayOfWeek([Trusted] YearMonthDay yearMonthDay)
         {
             int daysSinceEpoch = yearMonthDayCalculator.GetDaysSinceEpoch(yearMonthDay);
             return GetDayOfWeek(daysSinceEpoch);
@@ -44,7 +44,7 @@ namespace NodaTime.Calendars
         /// Finds the week-of-week year containing the given local instant, by finding out when the week year
         /// started, and then simply dividing "how far we are through the year" by "the number of ticks in a week".
         /// </summary>
-        internal int GetWeekOfWeekYear(YearMonthDay yearMonthDay)
+        internal int GetWeekOfWeekYear([Trusted] YearMonthDay yearMonthDay)
         {
             // TODO(2.0): This is a bit inefficient, as we'll be converting forms several times. We might want to
             // optimize.
@@ -59,7 +59,7 @@ namespace NodaTime.Calendars
         /// <summary>
         /// Finds the week-year containing the given local instant.
         /// </summary>
-        internal int GetWeekYear(YearMonthDay yearMonthDay)
+        internal int GetWeekYear([Trusted] YearMonthDay yearMonthDay)
         {
             unchecked
             {
@@ -87,7 +87,7 @@ namespace NodaTime.Calendars
             }
         }
 
-        private int GetDayOfWeek(int daysSinceEpoch)
+        private int GetDayOfWeek([Trusted] int daysSinceEpoch)
         {
             unchecked
             {
