@@ -176,6 +176,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
                 allStrings.Add(value);
             }
 
+            public void WriteMilliseconds(int millis) { }
             public void WriteOffset(Offset offset) {}
             public void WriteCount(int count) { }
             public void WriteByte(byte value) { }

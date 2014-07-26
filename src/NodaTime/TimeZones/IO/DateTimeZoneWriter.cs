@@ -107,19 +107,16 @@ namespace NodaTime.TimeZones.IO
             }
         }
 
-        /// <summary>
-        /// Writes the offset value to the stream.
-        /// </summary>
-        /// <param name="offset">The value to write.</param>
-        public void WriteOffset(Offset offset)
+        public void WriteMilliseconds(int millis)
         {
-            // TODO(2.0): This (and the corresponding reader code and format documentation) can be simplified slightly
-            // now that Offset is based upon a number of milliseconds rather than seconds.
-
+            Preconditions.CheckArgumentRange("millis", millis,
+                -NodaConstants.MillisecondsPerStandardDay + 1,
+                NodaConstants.MillisecondsPerStandardDay - 1);
+            millis += NodaConstants.MillisecondsPerStandardDay;
             /*
              * First, add 24 hours to the number of milliseconds, to get a value in the range (0, 172800000).
              * (It's exclusive at both ends, but that's insignificant.)
-             * Next, check whether it's an exact multiple of half-hours or minutes, and encode
+             * Check whether it's an exact multiple of half-hours or minutes, and encode
              * appropriately. In every case, if it's an exact multiple, we know that we'll be able to fit
              * the value into the number of bits available.
              * 
@@ -130,23 +127,22 @@ namespace NodaTime.TimeZones.IO
              * 101xxxxx        seconds     172800                3 bytes (21 data bits)
              * 110xxxxx        millis      172800000             4 bytes (29 data bits)
              */
-            int millis = offset.Milliseconds + NodaConstants.MillisecondsPerStandardDay;
             unchecked
             {
                 if (millis % (30 * NodaConstants.MillisecondsPerMinute) == 0)
                 {
                     int units = millis / (30 * NodaConstants.MillisecondsPerMinute);
-                    WriteByte((byte)units);
+                    WriteByte((byte) units);
                 }
                 else if (millis % NodaConstants.MillisecondsPerMinute == 0)
                 {
                     int minutes = millis / NodaConstants.MillisecondsPerMinute;
-                    WriteByte((byte)(0x80 | (minutes >> 8)));
-                    WriteByte((byte)(minutes & 0xff));
+                    WriteByte((byte) (0x80 | (minutes >> 8)));
+                    WriteByte((byte) (minutes & 0xff));
                 }
-                else if (millis%NodaConstants.MillisecondsPerSecond == 0)
+                else if (millis % NodaConstants.MillisecondsPerSecond == 0)
                 {
-                    int seconds = millis/NodaConstants.MillisecondsPerSecond;
+                    int seconds = millis / NodaConstants.MillisecondsPerSecond;
                     WriteByte((byte) (0xa0 | (byte) ((seconds >> 16))));
                     WriteInt16((short) (seconds & 0xffff));
                 }
@@ -155,6 +151,15 @@ namespace NodaTime.TimeZones.IO
                     WriteInt32((int) 0xc0000000 | millis);
                 }
             }
+        }
+
+        /// <summary>
+        /// Writes the offset value to the stream.
+        /// </summary>
+        /// <param name="offset">The value to write.</param>
+        public void WriteOffset(Offset offset)
+        {
+            WriteMilliseconds(offset.Milliseconds);
         }
 
         /// <summary>
