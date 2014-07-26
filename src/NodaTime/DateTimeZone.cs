@@ -536,7 +536,7 @@ namespace NodaTime
         #endregion
 
         /// <summary>
-        /// Creates a fixed time zone for offsets -23.5 to +23.5 at every half hour,
+        /// Creates a fixed time zone for offsets -12 to +15 at every half hour,
         /// fixing the 0 offset as DateTimeZone.Utc.
         /// </summary>
         [NotNull]
