@@ -52,10 +52,14 @@ DEBUG_TEST_DLL := \
 	src/NodaTime.Test/${DEBUG_OUTPUTPATH}/NodaTime.Test.dll
 DEBUG_SERIALIZATION_TEST_DLL := \
 	src/NodaTime.Serialization.Test/${DEBUG_OUTPUTPATH}/NodaTime.Serialization.Test.dll
+DEBUG_TZDBCOMPILER_TEST_DLL := \
+	src/NodaTime.TzdbCompiler.Test/${DEBUG_OUTPUTPATH}/NodaTime.TzdbCompiler.Test.dll
 FAKEPCL_TEST_DLL := \
 	src/NodaTime.Test/${FAKEPCL_OUTPUTPATH}/NodaTime.Test.dll
 FAKEPCL_SERIALIZATION_TEST_DLL := \
 	src/NodaTime.Serialization.Test/${FAKEPCL_OUTPUTPATH}/NodaTime.Serialization.Test.dll
+FAKEPCL_TZDBCOMPILER_TEST_DLL := \
+	src/NodaTime.TzdbCompiler.Test/${FAKEPCL_OUTPUTPATH}/NodaTime.TzdbCompiler.Test.dll
 
 debug:
 	$(XBUILD) $(XBUILDFLAGS_DEBUG) $(SOLUTION)
@@ -77,10 +81,12 @@ fakepcl:
 		src/NodaTime.Serialization.Test/NodaTime.Serialization.Test.csproj
 
 check: debug
-	$(NUNIT) $(DEBUG_TEST_DLL) $(DEBUG_SERIALIZATION_TEST_DLL)
+	$(NUNIT) $(DEBUG_TEST_DLL) $(DEBUG_SERIALIZATION_TEST_DLL) \
+		$(DEBUG_TZDBCOMPILER_TEST_DLL)
 
 checkfakepcl: fakepcl
-	$(NUNIT) $(FAKEPCL_TEST_DLL) $(FAKEPCL_SERIALIZATION_TEST_DLL)
+	$(NUNIT) $(FAKEPCL_TEST_DLL) $(FAKEPCL_SERIALIZATION_TEST_DLL) \
+		$(FAKEPCL_TZDBCOMPILER_TEST_DLL)
 
 docs:
 	echo TODO
