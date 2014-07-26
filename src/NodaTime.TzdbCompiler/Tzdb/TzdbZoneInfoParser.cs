@@ -5,6 +5,7 @@
 using System;
 using System.Globalization;
 using System.IO;
+using NodaTime.Text;
 using NodaTime.TimeZones;
 using NodaTime.Utility;
 
@@ -218,9 +219,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
                         }
                         else
                         {
-                            // We happen to parse the time as if it's an offset...
-                            Offset tickOfDay = ParserHelper.ParseOffset(atTime);
-                            timeOfDay = LocalTime.FromTicksSinceMidnight(tickOfDay.Ticks);
+                            timeOfDay = ParserHelper.ParseTime(atTime);
                         }
                     }
                 }
