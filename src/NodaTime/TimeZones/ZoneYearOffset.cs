@@ -4,6 +4,7 @@
 
 using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 using NodaTime.Calendars;
 using NodaTime.TimeZones.IO;
 using NodaTime.Utility;
@@ -180,6 +181,13 @@ namespace NodaTime.TimeZones
         }
 
         #endregion
+
+        public override string ToString()
+        {
+            return string.Format(CultureInfo.InvariantCulture,
+                "ZoneYearOffset[mode:{0} monthOfYear:{1} dayOfMonth:{2} advance:{3} timeOfDay:{4:r} addDay:{5}]",
+                mode, monthOfYear, dayOfMonth, advance, timeOfDay, addDay);
+        }
 
         /// <summary>
         /// Returns the occurrence of this rule within the given year, at the offset indicated
