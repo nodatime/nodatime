@@ -218,6 +218,7 @@ namespace NodaTime.Test.Calendars
         }
 
 
+#pragma warning disable 0414 // Used by tests via reflection - do not remove!
         // Cases used for adding months and differences between months.
         // 5501 is not a leap year; 5502 is; 5503 is not; 5505 is.
         // Heshvan (civil 2) is long in 5507 and 5509; it is short in 5506 and 5508
@@ -253,5 +254,6 @@ namespace NodaTime.Test.Calendars
             new object[] {"5502-02-13", 0, "5502-01-15"},
             new object[] {"5502-02-13", -1, "5502-01-05"},
         };
+#pragma warning restore 0414
     }
 }
