@@ -79,7 +79,6 @@ namespace NodaTime.Test.Globalization
             Assert.AreEqual("-", info.NegativeSign);
             Assert.AreEqual(":", info.TimeSeparator);
             Assert.AreEqual("/", info.DateSeparator);
-            Assert.IsInstanceOf<string>(info.OffsetPatternFull);
             Assert.IsInstanceOf<string>(info.OffsetPatternLong);
             Assert.IsInstanceOf<string>(info.OffsetPatternMedium);
             Assert.IsInstanceOf<string>(info.OffsetPatternShort);
@@ -166,14 +165,6 @@ namespace NodaTime.Test.Globalization
             var format = NumberFormatInfo.InvariantInfo;
             var info = new NodaFormatInfo(enUs);
             Assert.AreNotEqual(format, info.NumberFormat);
-        }
-
-        [Test]
-        public void TestOffsetPatternFull()
-        {
-            const string pattern = "This is a test";
-            var info = new NodaFormatInfo(enUs);
-            Assert.AreNotEqual(pattern, info.OffsetPatternFull);
         }
 
         [Test]

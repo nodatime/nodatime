@@ -23,6 +23,8 @@ See the [Noda Time 1.x to 2.0 migration guide](migration-to-2.html) for full det
 - Default values for local date-based structs (`LocalDate` etc) now return 0001-01-01
   instead of the Unix epoch.
 - `CalendarSystem.GetMaxMonth` has been renamed to `GetMonthsInYear`.
+- `Offset` can no longer represent sub-second offsets (which are not used in
+  practice); formatting and parsing for these has been removed.
 
 ## 1.3.0, released 2014-06-27 with tzdb 2014e
 

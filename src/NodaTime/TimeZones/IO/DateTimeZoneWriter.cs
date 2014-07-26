@@ -113,6 +113,9 @@ namespace NodaTime.TimeZones.IO
         /// <param name="offset">The value to write.</param>
         public void WriteOffset(Offset offset)
         {
+            // TODO(2.0): This (and the corresponding reader code and format documentation) can be simplified slightly
+            // now that Offset is based upon a number of milliseconds rather than seconds.
+
             /*
              * First, add 24 hours to the number of milliseconds, to get a value in the range (0, 172800000).
              * (It's exclusive at both ends, but that's insignificant.)

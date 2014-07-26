@@ -155,7 +155,7 @@ namespace NodaTime.Test.Text
         {
             try
             {
-                PatternResources.ResourceManager.GetString("OffsetPatternFull", culture);
+                PatternResources.ResourceManager.GetString("OffsetPatternLong", culture);
             }
             catch (ArgumentNullException)
             {

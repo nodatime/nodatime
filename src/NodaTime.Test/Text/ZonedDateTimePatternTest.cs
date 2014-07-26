@@ -28,10 +28,7 @@ namespace NodaTime.Test.Text
             new FakeDateTimeZoneSource.Builder { TestZone1, TestZone2, TestZone3 }.Build().ToProvider();
         private static readonly DateTimeZone FixedPlus1 = FixedDateTimeZone.ForOffset(Offset.FromHours(1));
         private static readonly DateTimeZone FixedWithMinutes = FixedDateTimeZone.ForOffset(Offset.FromHoursAndMinutes(1, 30));
-        private static readonly DateTimeZone FixedWithSeconds = FixedDateTimeZone.ForOffset(Offset.FromMilliseconds(5000));
-        private static readonly DateTimeZone FixedWithMilliseconds1 = FixedDateTimeZone.ForOffset(Offset.FromMilliseconds(1500));
-        private static readonly DateTimeZone FixedWithMilliseconds2 = FixedDateTimeZone.ForOffset(Offset.FromMilliseconds(1510));
-        private static readonly DateTimeZone FixedWithMilliseconds3 = FixedDateTimeZone.ForOffset(Offset.FromMilliseconds(1512));
+        private static readonly DateTimeZone FixedWithSeconds = FixedDateTimeZone.ForOffset(Offset.FromSeconds(5));
         private static readonly DateTimeZone FixedMinus1 = FixedDateTimeZone.ForOffset(Offset.FromHours(-1));
 
         private static readonly DateTimeZone France = DateTimeZoneProviders.Tzdb["Europe/Paris"];
@@ -112,7 +109,6 @@ namespace NodaTime.Test.Text
             // Redundant specification of offset
             new Data(2013, 01, 13, 15, 44, FixedPlus1) { Pattern = "yyyy-MM-dd HH:mm z", Text = "2013-01-13 15:44 UTC+01:00" },
             new Data(2013, 01, 13, 15, 44, FixedPlus1) { Pattern = "yyyy-MM-dd HH:mm z", Text = "2013-01-13 15:44 UTC+01:00:00" },
-            new Data(2013, 01, 13, 15, 44, FixedPlus1) { Pattern = "yyyy-MM-dd HH:mm z", Text = "2013-01-13 15:44 UTC+01:00:00.000" },
         };
 
         internal static Data[] FormatOnlyData = {
@@ -157,9 +153,6 @@ namespace NodaTime.Test.Text
             // More precise fixed zones.
             new Data(2013, 01, 13, 15, 44, FixedWithMinutes) { Pattern = "yyyy-MM-dd HH:mm z", Text = "2013-01-13 15:44 UTC+01:30" },
             new Data(2013, 01, 13, 15, 44, FixedWithSeconds) { Pattern = "yyyy-MM-dd HH:mm z", Text = "2013-01-13 15:44 UTC+00:00:05" },
-            new Data(2013, 01, 13, 15, 44, FixedWithMilliseconds1) { Pattern = "yyyy-MM-dd HH:mm z", Text = "2013-01-13 15:44 UTC+00:00:01.500" },
-            new Data(2013, 01, 13, 15, 44, FixedWithMilliseconds2) { Pattern = "yyyy-MM-dd HH:mm z", Text = "2013-01-13 15:44 UTC+00:00:01.510" },
-            new Data(2013, 01, 13, 15, 44, FixedWithMilliseconds3) { Pattern = "yyyy-MM-dd HH:mm z", Text = "2013-01-13 15:44 UTC+00:00:01.512" },
 
             // Valid offset for an unambiguous time
             new Data(new LocalDateTime(2005, 1, 1, 1, 30).InZoneStrictly(TestZone1)) { Pattern = "yyyy-MM-dd HH:mm z o<g>", Text = "2005-01-01 01:30 ab +01"},

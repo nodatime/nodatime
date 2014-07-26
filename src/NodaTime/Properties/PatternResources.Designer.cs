@@ -115,15 +115,6 @@ namespace NodaTime.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to +HH:mm:ss.fff.
-        /// </summary>
-        internal static string OffsetPatternFull {
-            get {
-                return ResourceManager.GetString("OffsetPatternFull", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to +HH:mm:ss.
         /// </summary>
         internal static string OffsetPatternLong {
