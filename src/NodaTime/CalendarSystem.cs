@@ -5,6 +5,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Globalization;
 using JetBrains.Annotations;
 using NodaTime.Annotations;
@@ -591,8 +592,9 @@ namespace NodaTime
         /// <summary>
         /// Returns the number of days since the Unix epoch (1970-01-01 ISO) for the given date.
         /// </summary>
-        internal int GetDaysSinceEpoch(YearMonthDay yearMonthDay)
+        internal int GetDaysSinceEpoch([Trusted] YearMonthDay yearMonthDay)
         {
+            DebugValidateYearMonthDay(yearMonthDay);
             return yearMonthDayCalculator.GetDaysSinceEpoch(yearMonthDay);
         }
 
@@ -602,8 +604,9 @@ namespace NodaTime
         /// </summary>
         /// <param name="yearMonthDay">The year, month and day to use to find the day of the week</param>
         /// <returns>The day of the week as an IsoDayOfWeek</returns>
-        internal IsoDayOfWeek GetIsoDayOfWeek(YearMonthDay yearMonthDay)
+        internal IsoDayOfWeek GetIsoDayOfWeek([Trusted] YearMonthDay yearMonthDay)
         {
+            DebugValidateYearMonthDay(yearMonthDay);
             if (!UsesIsoDayOfWeek)
             {
                 throw new InvalidOperationException("Calendar " + id + " does not use ISO days of the week");
@@ -663,6 +666,7 @@ namespace NodaTime
         /// </summary>
         internal int GetMaxYearOfEra([Trusted] int eraIndex)
         {
+            Preconditions.DebugCheckArgumentRange("eraIndex", eraIndex, 0, eras.Count - 1);
             return yearMonthDayCalculator.GetMaxYearOfEra(eraIndex);
         }
 
@@ -672,6 +676,7 @@ namespace NodaTime
         /// </summary>
         internal int GetMinYearOfEra([Trusted] int eraIndex)
         {
+            Preconditions.DebugCheckArgumentRange("eraIndex", eraIndex, 0, eras.Count - 1);
             return yearMonthDayCalculator.GetMinYearOfEra(eraIndex);
         }
 
@@ -680,6 +685,7 @@ namespace NodaTime
         /// </summary>
         internal int GetAbsoluteYear(int yearOfEra, [Trusted] int eraIndex)
         {
+            Preconditions.DebugCheckArgumentRange("eraIndex", eraIndex, 0, eras.Count - 1);
             int minYear = GetMinYearOfEra(eraIndex);
             int maxYear = GetMaxYearOfEra(eraIndex);
             Preconditions.CheckArgumentRange("yearOfEra", yearOfEra, minYear, maxYear);
@@ -693,48 +699,70 @@ namespace NodaTime
 
         internal int Compare([Trusted] YearMonthDay lhs, [Trusted] YearMonthDay rhs)
         {
+            DebugValidateYearMonthDay(lhs);
+            DebugValidateYearMonthDay(rhs);
             return yearMonthDayCalculator.Compare(lhs, rhs);
         }
 
         #region "Getter" methods which used to be DateTimeField
         internal int GetDayOfWeek([Trusted] YearMonthDay yearMonthDay)
         {
+            DebugValidateYearMonthDay(yearMonthDay);
             return weekYearCalculator.GetDayOfWeek(yearMonthDay);
         }
 
         internal int GetDayOfYear([Trusted] YearMonthDay yearMonthDay)
         {
+            DebugValidateYearMonthDay(yearMonthDay);
             return yearMonthDayCalculator.GetDayOfYear(yearMonthDay);
         }
 
         internal int GetWeekOfWeekYear([Trusted] YearMonthDay yearMonthDay)
         {
+            DebugValidateYearMonthDay(yearMonthDay);
             return weekYearCalculator.GetWeekOfWeekYear(yearMonthDay);
         }
 
         internal int GetWeekYear([Trusted] YearMonthDay yearMonthDay)
         {
+            DebugValidateYearMonthDay(yearMonthDay);
             return weekYearCalculator.GetWeekYear(yearMonthDay);
         }
 
         internal int GetYearOfCentury([Trusted] YearMonthDay yearMonthDay)
         {
+            DebugValidateYearMonthDay(yearMonthDay);
             return yearMonthDayCalculator.GetYearOfCentury(yearMonthDay);
         }
 
         internal int GetYearOfEra([Trusted] YearMonthDay yearMonthDay)
         {
+            DebugValidateYearMonthDay(yearMonthDay);
             return yearMonthDayCalculator.GetYearOfEra(yearMonthDay);
         }
 
         internal int GetCenturyOfEra([Trusted] YearMonthDay yearMonthDay)
         {
+            DebugValidateYearMonthDay(yearMonthDay);
             return yearMonthDayCalculator.GetCenturyOfEra(yearMonthDay);
         }
 
         internal Era GetEra([Trusted] YearMonthDay yearMonthDay)
         {
+            DebugValidateYearMonthDay(yearMonthDay);
             return Eras[yearMonthDayCalculator.GetEra(yearMonthDay)];
+        }
+
+        /// <summary>
+        /// In debug configurations only, this method calls <see cref="ValidateYearMonthDay"/>
+        /// with the components of the given YearMonthDay, ensuring that it's valid in the
+        /// current calendar.
+        /// </summary>
+        /// <param name="yearMonthDay">The value to validate.</param>
+        [Conditional("DEBUG")]
+        internal void DebugValidateYearMonthDay(YearMonthDay yearMonthDay)
+        {
+            ValidateYearMonthDay(yearMonthDay.Year, yearMonthDay.Month, yearMonthDay.Day);
         }
         #endregion
     }

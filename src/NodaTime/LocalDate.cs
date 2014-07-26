@@ -49,15 +49,18 @@ namespace NodaTime
         {
             this.yearMonthDay = yearMonthDay;
             this.calendar = calendar;
+            // Use the property instead of the parameter, so that we can cope with a null parameter.
+            // (That's okay, it'll just use ISO.)
+            Calendar.DebugValidateYearMonthDay(yearMonthDay);
         }
 
         /// <summary>
         /// Constructs an instance from the number of days since the unix epoch, in the ISO
         /// calendar system.
         /// </summary>
-        internal LocalDate(int daysSinceEpoch)
+        internal LocalDate([Trusted] int daysSinceEpoch)
         {
-            // TODO(2.0): Check where this is used, and whether we need to validate the parameter.
+            Preconditions.DebugCheckArgumentRange("daysSinceEpoch", daysSinceEpoch, CalendarSystem.Iso.MinDays, CalendarSystem.Iso.MaxDays);
             this.yearMonthDay = GregorianYearMonthDayCalculator.GetGregorianYearMonthDayFromDaysSinceEpoch(daysSinceEpoch);
             this.calendar = CalendarSystem.Iso;
         }
@@ -67,7 +70,7 @@ namespace NodaTime
         /// system. The calendar system is assumed to be non-null, but the days since the epoch are
         /// validated.
         /// </summary>
-        internal LocalDate(int daysSinceEpoch, CalendarSystem calendar)
+        internal LocalDate(int daysSinceEpoch, [Trusted] CalendarSystem calendar)
             : this(calendar.GetYearMonthDayFromDaysSinceEpoch(daysSinceEpoch), calendar)
         {
         }

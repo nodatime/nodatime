@@ -33,7 +33,7 @@ namespace NodaTime.Test.Annotations
         private static bool InvalidForTrustedParameters(dynamic member)
         {
             // We'll need to be more specific at some point, but this will do to start with...
-            return member.IsPublic;
+            return member.IsPublic && member.DeclaringType.IsPublic;
         }
 
         private static IEnumerable<ParameterInfo> GetParameters(MemberInfo member)
