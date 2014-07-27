@@ -25,6 +25,7 @@ See the [Noda Time 1.x to 2.0 migration guide](migration-to-2.html) for full det
 - `CalendarSystem.GetMaxMonth` has been renamed to `GetMonthsInYear`.
 - `Offset` can no longer represent sub-second offsets (which are not used in
   practice); formatting and parsing for these has been removed.
+- `Offset` now has a range of +/- 18 hours instead just less than a complete day.
 
 ## 1.3.0, released 2014-06-27 with tzdb 2014e
 

@@ -1,4 +1,4 @@
-// Copyright 2011 The Noda Time Authors. All rights reserved.
+// Copyright 2011 The Noda Time Authors. All rights reserved.M
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
@@ -35,10 +35,10 @@ namespace NodaTime.Test.Text
             new Data(5, 6, 7) { Culture = Cultures.EnUs, Text = "6", Pattern = "%m" },
             new Data(5, 6, 7) { Culture = Cultures.EnUs, Text = "7", Pattern = "%s" },
 
-            new Data(Offset.MaxValue) { Culture = Cultures.EnUs, Text = "+23:59:59", Pattern = "g" },
-            new Data(Offset.MaxValue) { Culture = Cultures.EnUs, Text = "23", Pattern = "%H" },
-            new Data(Offset.MaxValue) { Culture = Cultures.EnUs, Text = "59", Pattern = "%m" },
-            new Data(Offset.MaxValue) { Culture = Cultures.EnUs, Text = "59", Pattern = "%s" },
+            new Data(Offset.MaxValue) { Culture = Cultures.EnUs, Text = "+18", Pattern = "g" },
+            new Data(Offset.MaxValue) { Culture = Cultures.EnUs, Text = "18", Pattern = "%H" },
+            new Data(Offset.MaxValue) { Culture = Cultures.EnUs, Text = "0", Pattern = "%m" },
+            new Data(Offset.MaxValue) { Culture = Cultures.EnUs, Text = "0", Pattern = "%s" },
             new Data(Offset.MaxValue) { Culture = Cultures.EnUs, Text = "m", Pattern = "\\m" },
             new Data(Offset.MaxValue) { Culture = Cultures.EnUs, Text = "m", Pattern = "'m'" },
             new Data(Offset.MaxValue) { Culture = Cultures.EnUs, Text = "mmmmmmmmmm", Pattern = "'mmmmmmmmmm'" },
@@ -152,7 +152,7 @@ namespace NodaTime.Test.Text
             new Data(5, 12, 0) { Culture = Cultures.EnUs, Text = "+05:12", Pattern = "g"  },
             new Data(5, 12, 34) { Culture = Cultures.EnUs, Text = "+05:12:34", Pattern = "g"  },
             new Data(5, 12, 34) { Culture = Cultures.EnUs, Text = "18,754", Pattern = "n"  },
-            new Data(Offset.MinValue) { Culture = Cultures.EnUs, Text = "-23:59:59", Pattern = "g" },
+            new Data(Offset.MinValue) { Culture = Cultures.EnUs, Text = "-18", Pattern = "g" },
             new Data(Offset.Zero) { Culture = Cultures.EnUs, Text = "Z", Pattern = "G"  },
             new Data(Offset.Zero) { Culture = Cultures.EnUs, Text = "+00", Pattern = "g"  },
             new Data(Offset.Zero) { Culture = Cultures.EnUs, Text = "+00", Pattern = "s"  },
@@ -162,14 +162,14 @@ namespace NodaTime.Test.Text
             new Data(5, 12, 0) { Culture = Cultures.FrFr, Text = "+05:12", Pattern = "g" },
             new Data(5, 12, 34) { Culture = Cultures.FrFr, Text = "+05:12:34", Pattern = "g" },
             new Data(5, 12, 34) { Culture = Cultures.FrFr, Text = "18" + Nbsp + "754", Pattern = "n" },
-            new Data(Offset.MaxValue) { Culture = Cultures.FrFr, Text = "+23:59:59", Pattern = "g" },
-            new Data(Offset.MinValue) { Culture = Cultures.FrFr, Text = "-23:59:59", Pattern = "g" },
+            new Data(Offset.MaxValue) { Culture = Cultures.FrFr, Text = "+18", Pattern = "g" },
+            new Data(Offset.MinValue) { Culture = Cultures.FrFr, Text = "-18", Pattern = "g" },
             new Data(5, 0, 0) { Culture = Cultures.ItIt, Text = "+05", Pattern = "g" },
             new Data(5, 12, 0) { Culture = Cultures.ItIt, Text = "+05.12", Pattern = "g" },
             new Data(5, 12, 34) { Culture = Cultures.ItIt, Text = "+05.12.34", Pattern = "g" },
             new Data(5, 12, 34) { Culture = Cultures.ItIt, Text = "18.754", Pattern = "n" },
-            new Data(Offset.MaxValue) { Culture = Cultures.ItIt, Text = "+23.59.59", Pattern = "g" },
-            new Data(Offset.MinValue) { Culture = Cultures.ItIt, Text = "-23.59.59", Pattern = "g" },
+            new Data(Offset.MaxValue) { Culture = Cultures.ItIt, Text = "+18", Pattern = "g" },
+            new Data(Offset.MinValue) { Culture = Cultures.ItIt, Text = "-18", Pattern = "g" },
             new Data(0, 30, 0, true) { Culture = Cultures.EnUs, Text = "-00:30", Pattern = "+HH:mm" },
             new Data(0, 30, 0, true) { Culture = Cultures.EnUs, Text = "-00:30", Pattern = "-HH:mm" },
             new Data(0, 30, 0, false) { Culture = Cultures.EnUs, Text = "00:30", Pattern = "-HH:mm" },
