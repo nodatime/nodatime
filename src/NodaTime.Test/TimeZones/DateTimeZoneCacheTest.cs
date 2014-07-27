@@ -253,7 +253,7 @@ namespace NodaTime.Test.TimeZones
             public DateTimeZone ForId(string id)
             {
                 LastRequestedId = id;
-                return new SingleTransitionDateTimeZone(NodaConstants.UnixEpoch, 0, id.GetHashCode() % 24);
+                return new SingleTransitionDateTimeZone(NodaConstants.UnixEpoch, 0, id.GetHashCode() % 18);
             }
 
             public string VersionId { get; set; }

@@ -21,8 +21,11 @@ and time zones; the epoch itself has no notion of a time zone or calendar system
 Offset
 ------
 
-An [`Offset`][Offset] is used to express the difference between UTC and local time. It is always *added* to a UTC value
-to obtain a local time, or *subtracted* from a local time to obtain a UTC value.
+An [`Offset`][Offset] is used to express the difference between UTC and local time. It is always *added*
+to a UTC value to obtain a local time, or *subtracted* from a local time to obtain a UTC value. Values
+are between 18 hours before UTC and 18 hours after UTC, inclusive. `Offset` has a granularity of
+one second; any attempt to create an offset with a value including subseconds is simply truncated to
+the second.
 
 CalendarSystem
 --------------

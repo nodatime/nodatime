@@ -22,13 +22,13 @@ namespace NodaTime.Test.Text.Patterns
         [Test]
         public void ParsePartial_ValidInMiddle()
         {
-            var value = new ValueCursor("x20:30y");
+            var value = new ValueCursor("x17:30y");
             value.MoveNext();
             value.MoveNext();
             // Start already looking at the value to parse
-            Assert.AreEqual('2', value.Current);
+            Assert.AreEqual('1', value.Current);
             var result = SimpleOffsetPattern.ParsePartial(value);
-            Assert.AreEqual(Offset.FromHoursAndMinutes(20, 30), result.Value);
+            Assert.AreEqual(Offset.FromHoursAndMinutes(17, 30), result.Value);
             // Finish just after the value
             Assert.AreEqual('y', value.Current);
         }
@@ -36,11 +36,11 @@ namespace NodaTime.Test.Text.Patterns
         [Test]
         public void ParsePartial_ValidAtEnd()
         {
-            var value = new ValueCursor("x20:30");
+            var value = new ValueCursor("x17:30");
             value.MoveNext();
             value.MoveNext();
             var result = SimpleOffsetPattern.ParsePartial(value);
-            Assert.AreEqual(Offset.FromHoursAndMinutes(20, 30), result.Value);
+            Assert.AreEqual(Offset.FromHoursAndMinutes(17, 30), result.Value);
             // Finish just after the value, which in this case is at the end.
             Assert.AreEqual(TextCursor.Nul, value.Current);
         }
@@ -48,7 +48,7 @@ namespace NodaTime.Test.Text.Patterns
         [Test]
         public void Parse_Partial_Invalid()
         {
-            var value = new ValueCursor("x20:y");
+            var value = new ValueCursor("x17:y");
             value.MoveNext();
             value.MoveNext();
             var result = SimpleOffsetPattern.ParsePartial(value);
@@ -59,9 +59,9 @@ namespace NodaTime.Test.Text.Patterns
         public void FormatPartial()
         {
             var builder = new StringBuilder("x");
-            var offset = Offset.FromHoursAndMinutes(20, 30);
+            var offset = Offset.FromHoursAndMinutes(17, 30);
             SimpleOffsetPattern.FormatPartial(offset, builder);
-            Assert.AreEqual("x20:30", builder.ToString());
+            Assert.AreEqual("x17:30", builder.ToString());
         }
     }
 }

@@ -9,6 +9,7 @@ using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
 using JetBrains.Annotations;
+using NodaTime.Annotations;
 using NodaTime.Text;
 using NodaTime.Utility;
 
@@ -20,7 +21,16 @@ namespace NodaTime
     /// UTC (e.g. for America).
     /// </summary>
     /// <remarks>
-    /// Offsets are always strictly less than 24 hours (as either a positive or negative offset).
+    /// <para>
+    /// Offsets are always in the range of [-18, +18] hours. (Note that the ends are inclusive,
+    /// so an offset of 18 hours can be represented, but an offset of 18 hours and one second cannot.)
+    /// This allows all offsets within TZDB to be represented. The BCL <see cref="DateTimeOffset"/> type
+    /// only allows offsets up to 14 hours, which means some historical data within TZDB could not be
+    /// represented.
+    /// </para>
+    /// <para>Offsets are represented with a granularity of one second. This allows all offsets within TZDB
+    /// to be represented. It is possible that it could present issues to some other time zone data sources,
+    /// but only in very rare historical cases (or fictional ones).</para>
     /// </remarks>
     /// <threadsafety>This type is an immutable value type. See the thread safety section of the user guide for more information.</threadsafety>
 #if !PCL
@@ -35,29 +45,36 @@ namespace NodaTime
         /// An offset of zero seconds - effectively the permanent offset for UTC.
         /// </summary>
         public static readonly Offset Zero = FromSeconds(0);
+
         /// <summary>
-        /// The minimum permitted offset; one second less than a standard day before UTC.
+        /// The minimum permitted offset; 18 hours before UTC.
         /// </summary>
-        public static readonly Offset MinValue = FromSeconds(-NodaConstants.SecondsPerStandardDay + 1);
+        public static readonly Offset MinValue = FromHours(-18);
         /// <summary>
-        /// The maximum permitted offset; one second less than a standard day after UTC.
+        /// The maximum permitted offset; 18 hours after UTC.
         /// </summary>
-        public static readonly Offset MaxValue = FromSeconds(NodaConstants.SecondsPerStandardDay - 1);
+        public static readonly Offset MaxValue = FromHours(18);
+
+        private const int MinHours = -18;
+        private const int MaxHours = 18;
+        private const int MinSeconds = -18 * NodaConstants.SecondsPerHour;
+        private const int MaxSeconds = 18 * NodaConstants.SecondsPerHour;
+        private const int MinMilliseconds = -18 * NodaConstants.MillisecondsPerHour;
+        private const int MaxMilliseconds = 18 * NodaConstants.MillisecondsPerHour;
+        private const long MinTicks = -18 * NodaConstants.TicksPerHour;
+        private const long MaxTicks = 18 * NodaConstants.TicksPerHour;
+        private const long MinNanoseconds = -18 * NodaConstants.NanosecondsPerHour;
+        private const long MaxNanoseconds = 18 * NodaConstants.NanosecondsPerHour;
 
         private readonly int seconds;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Offset" /> struct.
         /// </summary>
-        /// <remarks>
-        /// Offsets are constrained to the range (-24 hours, 24 hours).
-        /// </remarks>
         /// <param name="seconds">The number of seconds in the offset.</param>
-        /// <exception cref="ArgumentOutOfRangeException">The result of the operation is outside the range of Offset.</exception>
-        private Offset(int seconds)
+        internal Offset([Trusted] int seconds)
         {
-            Preconditions.CheckArgumentRange("seconds", seconds,
-                -NodaConstants.SecondsPerStandardDay + 1, NodaConstants.SecondsPerStandardDay - 1);
+            Preconditions.DebugCheckArgumentRange("seconds", seconds, MinSeconds, MaxSeconds);
             this.seconds = seconds;
         }
 
@@ -127,7 +144,8 @@ namespace NodaTime
         /// <returns>A new <see cref="Offset" /> instance with a negated value.</returns>
         public static Offset operator -(Offset offset)
         {
-            return FromSeconds(-offset.Seconds);
+            // Guaranteed to still be in range.
+            return new Offset(-offset.Seconds);
         }
 
         /// <summary>
@@ -433,9 +451,11 @@ namespace NodaTime
         /// </summary>
         /// <param name="seconds">The int seconds value.</param>
         /// <returns>An offset representing the given number of seconds.</returns>
-        /// <exception cref="ArgumentOutOfRangeException">The result of the operation is outside the range of Offset.</exception>
+        /// <exception cref="ArgumentOutOfRangeException">The specified number of seconds is outside the range of
+        /// [-18, +18] hours.</exception>
         public static Offset FromSeconds(int seconds)
         {
+            Preconditions.CheckArgumentRange("seconds", seconds, MinSeconds, MaxSeconds);
             return new Offset(seconds);
         }
 
@@ -448,10 +468,12 @@ namespace NodaTime
         /// </remarks>
         /// <param name="milliseconds">The int milliseconds value.</param>
         /// <returns>An offset representing the given number of milliseconds, to the (truncated) second.</returns>
-        /// <exception cref="ArgumentOutOfRangeException">The result of the operation is outside the range of Offset.</exception>
+        /// <exception cref="ArgumentOutOfRangeException">The specified number of milliseconds is outside the range of
+        /// [-18, +18] hours.</exception>
         public static Offset FromMilliseconds(int milliseconds)
         {
-             return new Offset((int) milliseconds / NodaConstants.MillisecondsPerSecond);
+            Preconditions.CheckArgumentRange("milliseconds", milliseconds, MinMilliseconds, MaxMilliseconds);
+            return new Offset((int) milliseconds / NodaConstants.MillisecondsPerSecond);
         }
 
         /// <summary>
@@ -463,9 +485,11 @@ namespace NodaTime
         /// </remarks>
         /// <param name="ticks">The number of ticks specifying the length of the new offset.</param>
         /// <returns>An offset representing the given number of ticks, to the (truncated) second.</returns>
-        /// <exception cref="ArgumentOutOfRangeException">The result of the operation is outside the range of Offset.</exception>
+        /// <exception cref="ArgumentOutOfRangeException">The specified number of ticks is outside the range of
+        /// [-18, +18] hours.</exception>
         public static Offset FromTicks(long ticks)
         {
+            Preconditions.CheckArgumentRange("ticks", ticks, MinTicks, MaxTicks);
             return new Offset((int)(ticks / NodaConstants.TicksPerSecond));
         }
 
@@ -478,9 +502,11 @@ namespace NodaTime
         /// </remarks>
         /// <param name="nanoseconds">The number of nanoseconds specifying the length of the new offset.</param>
         /// <returns>An offset representing the given number of nanoseconds, to the (truncated) second.</returns>
-        /// <exception cref="ArgumentOutOfRangeException">The result of the operation is outside the range of Offset.</exception>
+        /// <exception cref="ArgumentOutOfRangeException">The specified number of nanoseconds is outside the range of
+        /// [-18, +18] hours.</exception>
         public static Offset FromNanoseconds(long nanoseconds)
         {
+            Preconditions.CheckArgumentRange("nanoseconds", nanoseconds, MinNanoseconds, MaxNanoseconds);
             return new Offset((int) (nanoseconds / NodaConstants.NanosecondsPerSecond));
         }
 
@@ -489,9 +515,11 @@ namespace NodaTime
         /// </summary>
         /// <param name="hours">The number of hours to represent in the new offset.</param>
         /// <returns>An offset representing the given value.</returns>
-        /// <exception cref="ArgumentOutOfRangeException">The result of the operation is outside the range of Offset.</exception>
+        /// <exception cref="ArgumentOutOfRangeException">The specified number of hours is outside the range of
+        /// [-18, +18].</exception>
         public static Offset FromHours(int hours)
         {
+            Preconditions.CheckArgumentRange("hours", hours, MinHours, MaxHours);
             return new Offset(hours * NodaConstants.SecondsPerHour);
         }
 
@@ -510,7 +538,7 @@ namespace NodaTime
         /// <exception cref="ArgumentOutOfRangeException">The result of the operation is outside the range of Offset.</exception>
         public static Offset FromHoursAndMinutes(int hours, int minutes)
         {
-            return new Offset(hours * NodaConstants.SecondsPerHour + minutes * NodaConstants.SecondsPerMinute);
+            return FromSeconds(hours * NodaConstants.SecondsPerHour + minutes * NodaConstants.SecondsPerMinute);
         }
         #endregion
 
@@ -534,9 +562,9 @@ namespace NodaTime
         /// <exception cref="ArgumentOutOfRangeException">The result of the operation is outside the range of Offset.</exception>
         internal static Offset FromTimeSpan(TimeSpan timeSpan)
         {
-            long seconds = (long) timeSpan.TotalSeconds;
-            Preconditions.CheckArgumentRange("timeSpan", seconds, MinValue.Seconds, MaxValue.Seconds);
-            return new Offset((int) seconds);
+            long ticks = timeSpan.Ticks;
+            Preconditions.CheckArgumentRange("timeSpan", ticks, MinTicks, MaxTicks);
+            return FromTicks(timeSpan.Ticks);
         }
         #endregion
 

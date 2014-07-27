@@ -26,7 +26,7 @@ namespace NodaTime.Test
         [Test]
         public void FromSeconds_Invalid()
         {
-            int seconds = 24 * NodaConstants.SecondsPerHour;
+            int seconds = 18 * NodaConstants.SecondsPerHour + 1;
             Assert.Throws<ArgumentOutOfRangeException>(() => Offset.FromSeconds(seconds));
             Assert.Throws<ArgumentOutOfRangeException>(() => Offset.FromSeconds(-seconds));
         }
@@ -42,7 +42,7 @@ namespace NodaTime.Test
         [Test]
         public void FromMilliseconds_Invalid()
         {
-            int millis = 24 * NodaConstants.MillisecondsPerHour;
+            int millis = 18 * NodaConstants.MillisecondsPerHour + 1;
             Assert.Throws<ArgumentOutOfRangeException>(() => Offset.FromMilliseconds(millis));
             Assert.Throws<ArgumentOutOfRangeException>(() => Offset.FromMilliseconds(-millis));
         }
@@ -58,7 +58,7 @@ namespace NodaTime.Test
         [Test]
         public void FromTicks_Invalid()
         {
-            long ticks = 24 * NodaConstants.TicksPerHour;
+            long ticks = 18 * NodaConstants.TicksPerHour + 1;
             Assert.Throws<ArgumentOutOfRangeException>(() => Offset.FromTicks(ticks));
             Assert.Throws<ArgumentOutOfRangeException>(() => Offset.FromTicks(-ticks));
         }
@@ -74,7 +74,7 @@ namespace NodaTime.Test
         [Test]
         public void FromNanoseconds_Invalid()
         {
-            long nanos = 24 * NodaConstants.NanosecondsPerHour;
+            long nanos = 18 * NodaConstants.NanosecondsPerHour + 1;
             Assert.Throws<ArgumentOutOfRangeException>(() => Offset.FromNanoseconds(nanos));
             Assert.Throws<ArgumentOutOfRangeException>(() => Offset.FromNanoseconds(-nanos));
         }
@@ -89,8 +89,8 @@ namespace NodaTime.Test
         [Test]
         public void FromHours_Invalid()
         {
-            Assert.Throws<ArgumentOutOfRangeException>(() => Offset.FromHours(24));
-            Assert.Throws<ArgumentOutOfRangeException>(() => Offset.FromHours(-24));
+            Assert.Throws<ArgumentOutOfRangeException>(() => Offset.FromHours(19));
+            Assert.Throws<ArgumentOutOfRangeException>(() => Offset.FromHours(-19));
         }
 
         [Test]
