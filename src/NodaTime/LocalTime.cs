@@ -9,6 +9,7 @@ using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
 using JetBrains.Annotations;
+using NodaTime.Annotations;
 using NodaTime.Fields;
 using NodaTime.Text;
 using NodaTime.Utility;
@@ -221,7 +222,7 @@ namespace NodaTime
         /// <summary>
         /// Constructor only called from other parts of Noda Time - trusted to be the range [0, NanosecondsPerStandardDay).
         /// </summary>
-        internal LocalTime(long nanoseconds)
+        internal LocalTime([Trusted] long nanoseconds)
         {
             Preconditions.DebugCheckArgumentRange("nanoseconds", nanoseconds, 0, NodaConstants.NanosecondsPerStandardDay - 1);
             this.nanoseconds = nanoseconds;

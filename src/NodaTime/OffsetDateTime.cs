@@ -5,12 +5,12 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Runtime.InteropServices;
 using System.Runtime.Serialization;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
 using JetBrains.Annotations;
+using NodaTime.Annotations;
 using NodaTime.Calendars;
 using NodaTime.Text;
 using NodaTime.Utility;
@@ -32,28 +32,37 @@ namespace NodaTime
     /// <threadsafety>This type is an immutable value type. See the thread safety section of the user guide for more information.</threadsafety>
 #if !PCL
     [Serializable]
-    //    [StructLayout(LayoutKind.Explicit)]
 #endif
     public struct OffsetDateTime : IEquatable<OffsetDateTime>, IFormattable, IXmlSerializable
 #if !PCL
         , ISerializable
 #endif
     {
+        private const int NanosecondsBits = 47;
+        private const long NanosecondsMask = (1L << NanosecondsBits) - 1;
+        private const long OffsetMask = ~NanosecondsMask;
+
         // These are effectively the fields of a LocalDateTime and an Offset, but by keeping them directly here,
         // we reduce the levels of indirection and copying, which makes a surprising difference in speed, and
         // should allow us to optimize memory usage too.
-        // TODO(2.0): Sort out the memory usage. See http://stackoverflow.com/questions/24742325
-        // Note: non-readonly just for performance, to avoid copying data when calling members.
-        private YearMonthDay yearMonthDay;
-        private LocalTime time;
-        private Offset offset;
+        [ReadWriteForEfficiency] private YearMonthDay yearMonthDay;
+        // Bottom NanosecondsBits bits are the nanosecond-of-day; top 17 bits are the offset (in seconds). This has a slight
+        // execution-time cost (masking for each component) but the logical benefit of saving 4 bytes per
+        // value actually ends up being 8 bytes per value on a 64-bit CLR due to alignment.
+        private readonly long nanosecondsAndOffset;
         private readonly CalendarSystem calendar;
+
+        internal OffsetDateTime(YearMonthDay yearMonthDay, long nanosecondsAndOffset, CalendarSystem calendar)
+        {
+            this.yearMonthDay = yearMonthDay;
+            this.nanosecondsAndOffset = nanosecondsAndOffset;
+            this.calendar = calendar;
+        }
 
         internal OffsetDateTime(YearMonthDay yearMonthDay, LocalTime time, Offset offset, CalendarSystem calendar)
         {
             this.yearMonthDay = yearMonthDay;
-            this.time = time;
-            this.offset = offset;
+            this.nanosecondsAndOffset = time.NanosecondOfDay | (((long) offset.Seconds) << NanosecondsBits);
             this.calendar = calendar;
         }
 
@@ -79,8 +88,7 @@ namespace NodaTime
                     nanoOfDay += NodaConstants.NanosecondsPerStandardDay;
                 }
                 yearMonthDay = GregorianYearMonthDayCalculator.GetGregorianYearMonthDayFromDaysSinceEpoch(days);
-                this.offset = offset;
-                time = new LocalTime(nanoOfDay);
+                nanosecondsAndOffset = nanoOfDay | (((long) offset.Seconds) << NanosecondsBits);
                 calendar = CalendarSystem.Iso;
             }
         }
@@ -107,8 +115,7 @@ namespace NodaTime
                     nanoOfDay += NodaConstants.NanosecondsPerStandardDay;
                 }
                 yearMonthDay = calendar.GetYearMonthDayFromDaysSinceEpoch(days);
-                time = new LocalTime(nanoOfDay);
-                this.offset = offset;
+                nanosecondsAndOffset = nanoOfDay | (((long) offset.Seconds) << NanosecondsBits);
                 this.calendar = calendar;
             }
         }
@@ -122,9 +129,8 @@ namespace NodaTime
         {
             var date = localDateTime.Date;
             yearMonthDay = date.YearMonthDay;
-            time = localDateTime.TimeOfDay;
+            nanosecondsAndOffset = localDateTime.NanosecondOfDay | (((long) offset.Seconds) << NanosecondsBits);
             calendar = date.Calendar;
-            this.offset = offset;
         }
 
         /// <summary>Gets the calendar system associated with this local date and time.</summary>
@@ -200,54 +206,109 @@ namespace NodaTime
         public int DayOfYear { get { return Calendar.GetDayOfYear(yearMonthDay); } }
 
         /// <summary>
-        /// Gets the hour of day of this offset date and time, in the range 0 to 23 inclusive.
+        /// Gets the hour of day of this local time, in the range 0 to 23 inclusive.
         /// </summary>
-        public int Hour { get { return time.Hour;  } }
+        public int Hour
+        {
+            get
+            {
+                // Effectively nanoseconds / NodaConstants.NanosecondsPerHour, but apparently rather more efficient.
+                return (int) ((NanosecondOfDay >> 13) / 439453125);
+            }
+        }
 
         /// <summary>
-        /// Gets the hour of the half-day of this date and time, in the range 1 to 12 inclusive.
+        /// Gets the hour of the half-day of this local time, in the range 1 to 12 inclusive.
         /// </summary>
-        public int ClockHourOfHalfDay { get { return time.ClockHourOfHalfDay; } }
+        public int ClockHourOfHalfDay
+        {
+            get
+            {
+                unchecked
+                {
+                    int hourOfHalfDay = HourOfHalfDay;
+                    return hourOfHalfDay == 0 ? 12 : hourOfHalfDay;
+                }
+            }
+        }
+
+        // TODO(2.0): Consider exposing this.
+        /// <summary>
+        /// Gets the hour of the half-day of this local time, in the range 0 to 11 inclusive.
+        /// </summary>
+        internal int HourOfHalfDay { get { return unchecked(Hour % 12); } }
 
         /// <summary>
-        /// Gets the minute of this offset date and time, in the range 0 to 59 inclusive.
+        /// Gets the minute of this local time, in the range 0 to 59 inclusive.
         /// </summary>
-        public int Minute { get { return time.Minute; } }
+        public int Minute
+        {
+            get
+            {
+                unchecked
+                {
+                    // Effectively NanosecondOfDay / NodaConstants.NanosecondsPerMinute, but apparently rather more efficient.
+                    int minuteOfDay = (int) ((NanosecondOfDay >> 11) / 29296875);
+                    return minuteOfDay % NodaConstants.MinutesPerHour;
+                }
+            }
+        }
 
         /// <summary>
-        /// Gets the second of this offset date and time within the minute, in the range 0 to 59 inclusive.
+        /// Gets the second of this local time within the minute, in the range 0 to 59 inclusive.
         /// </summary>
-        public int Second { get { return time.Second; } }
+        public int Second
+        {
+            get
+            {
+                unchecked
+                {
+                    int secondOfDay = (int) (NanosecondOfDay / (int) NodaConstants.NanosecondsPerSecond);
+                    return secondOfDay % NodaConstants.SecondsPerMinute;
+                }
+            }
+        }
 
         /// <summary>
-        /// Gets the millisecond of this offset date and time within the second, in the range 0 to 999 inclusive.
+        /// Gets the millisecond of this local time within the second, in the range 0 to 999 inclusive.
         /// </summary>
-        public int Millisecond { get { return time.Millisecond; } }
+        public int Millisecond
+        {
+            get
+            {
+                unchecked
+                {
+                    long milliSecondOfDay = (NanosecondOfDay / (int) NodaConstants.NanosecondsPerMillisecond);
+                    return (int) (milliSecondOfDay % NodaConstants.MillisecondsPerSecond);
+                }
+            }
+        }
+
+        // TODO(2.0): Rewrite for performance?
+        /// <summary>
+        /// Gets the tick of this local time within the second, in the range 0 to 9,999,999 inclusive.
+        /// </summary>
+        public int TickOfSecond { get { return unchecked((int) (TickOfDay % (int) NodaConstants.TicksPerSecond)); } }
 
         /// <summary>
-        /// Gets the tick of this offset date and time within the second, in the range 0 to 9,999,999 inclusive.
+        /// Gets the tick of this local time within the day, in the range 0 to 863,999,999,999 inclusive.
         /// </summary>
-        public int TickOfSecond { get { return time.TickOfSecond; } }
+        public long TickOfDay { get { return NanosecondOfDay / NodaConstants.NanosecondsPerTick; } }
 
         /// <summary>
-        /// Gets the tick of this offset date and time within the day, in the range 0 to 863,999,999,999 inclusive.
+        /// Gets the nanosecond of this local time within the second, in the range 0 to 999,999,999 inclusive.
         /// </summary>
-        public long TickOfDay { get { return time.TickOfDay; } }
+        public int NanosecondOfSecond { get { return unchecked((int) (NanosecondOfDay % NodaConstants.NanosecondsPerSecond)); } }
 
         /// <summary>
-        /// Gets the nanosecond of this offset date and time within the second, in the range 0 to 999,999,999 inclusive.
+        /// Gets the nanosecond of this local time within the day, in the range 0 to 86,399,999,999,999 inclusive.
         /// </summary>
-        public int NanosecondOfSecond { get { return time.NanosecondOfSecond; } }
-
-        /// <summary>
-        /// Gets the nanosecond of this offset date and time within the day, in the range 0 to 86,399,999,999,999 inclusive.
-        /// </summary>
-        public long NanosecondOfDay { get { return time.NanosecondOfDay; } }
+        public long NanosecondOfDay { get { return nanosecondsAndOffset & NanosecondsMask; } }
 
         /// <summary>
         /// Returns the local date and time represented within this offset date and time.
         /// </summary>
-        public LocalDateTime LocalDateTime { get { return new LocalDateTime(Date, time); } }
+        public LocalDateTime LocalDateTime { get { return new LocalDateTime(Date, TimeOfDay); } }
 
         /// <summary>
         /// Gets the local date represented by this offset date and time. The returned <see cref="LocalDate"/>
@@ -261,12 +322,17 @@ namespace NodaTime
         /// return the same values for each of the time-based properties (Hour, Minute and so on), but
         /// will not have any offset information.
         /// </summary>
-        public LocalTime TimeOfDay { get { return time; } }
+        public LocalTime TimeOfDay { get { return new LocalTime(NanosecondOfDay); } }
 
         /// <summary>
         /// Returns the offset from UTC.
         /// </summary>
-        public Offset Offset { get { return offset; } }
+        public Offset Offset { get { return new Offset((int) (nanosecondsAndOffset >> NanosecondsBits)); } }
+
+        /// <summary>
+        /// Returns the number of nanoseconds in the offset, without going via an Offset.
+        /// </summary>
+        private long OffsetNanoseconds { get { return unchecked(nanosecondsAndOffset >> NanosecondsBits) * NodaConstants.NanosecondsPerSecond; } }
 
         /// <summary>
         /// Converts this offset date and time to an instant in time by subtracting the offset from the local date and time.
@@ -283,7 +349,7 @@ namespace NodaTime
         {
             // Equivalent to LocalDateTime.ToLocalInstant().Minus(offset)
             int days = Calendar.GetDaysSinceEpoch(yearMonthDay);
-            Duration elapsedTime = new Duration(days, time.NanosecondOfDay).MinusSmallNanoseconds(offset.Nanoseconds);
+            Duration elapsedTime = new Duration(days, NanosecondOfDay).MinusSmallNanoseconds(OffsetNanoseconds);
             return elapsedTime;
         }
 
@@ -304,7 +370,7 @@ namespace NodaTime
         [Pure]
         public ZonedDateTime InFixedZone()
         {
-            return new ZonedDateTime(this, DateTimeZone.ForOffset(offset));
+            return new ZonedDateTime(this, DateTimeZone.ForOffset(Offset));
         }
 
         /// <summary>
@@ -315,7 +381,7 @@ namespace NodaTime
         [Pure]
         public DateTimeOffset ToDateTimeOffset()
         {
-            return new DateTimeOffset(LocalDateTime.ToDateTimeUnspecified(), offset.ToTimeSpan());
+            return new DateTimeOffset(LocalDateTime.ToDateTimeUnspecified(), Offset.ToTimeSpan());
         }
 
         /// <summary>
@@ -342,7 +408,7 @@ namespace NodaTime
         public OffsetDateTime WithCalendar([NotNull] CalendarSystem calendarSystem)
         {
             LocalDate newDate = Date.WithCalendar(calendarSystem);
-            return new OffsetDateTime(newDate.YearMonthDay, this.time, this.offset, calendarSystem);
+            return new OffsetDateTime(newDate.YearMonthDay, nanosecondsAndOffset, calendarSystem);
         }
 
         /// <summary>
@@ -359,7 +425,7 @@ namespace NodaTime
         public OffsetDateTime With([NotNull] Func<LocalDate, LocalDate> adjuster)
         {
             LocalDate newDate = Date.With(adjuster);
-            return new OffsetDateTime(newDate.YearMonthDay, time, offset, newDate.Calendar);
+            return new OffsetDateTime(newDate.YearMonthDay, nanosecondsAndOffset, newDate.Calendar);
         }
 
         /// <summary>
@@ -374,8 +440,8 @@ namespace NodaTime
         [Pure]
         public OffsetDateTime With([NotNull] Func<LocalTime, LocalTime> adjuster)
         {
-            LocalTime newTime = time.With(adjuster);
-            return new OffsetDateTime(yearMonthDay, newTime, offset, Calendar);
+            LocalTime newTime = TimeOfDay.With(adjuster);
+            return new OffsetDateTime(yearMonthDay, (nanosecondsAndOffset & OffsetMask) | newTime.NanosecondOfDay, Calendar);
         }
 
         /// <summary>
@@ -392,7 +458,7 @@ namespace NodaTime
                 // Slight change to the normal operation, as it's *just* about plausible that we change day
                 // twice in one direction or the other.
                 int days = 0;
-                long nanos = time.NanosecondOfDay + offset.Nanoseconds - this.offset.Nanoseconds;
+                long nanos = (nanosecondsAndOffset & NanosecondsMask) + offset.Nanoseconds - OffsetNanoseconds;
                 if (nanos >= NodaConstants.NanosecondsPerStandardDay)
                 {
                     days++;
@@ -433,7 +499,7 @@ namespace NodaTime
         {
             int hash = HashCodeHelper.Initialize();
             hash = HashCodeHelper.Hash(hash, LocalDateTime);
-            hash = HashCodeHelper.Hash(hash, offset);
+            hash = HashCodeHelper.Hash(hash, Offset);
             return hash;
         }
 
@@ -460,7 +526,7 @@ namespace NodaTime
         /// <returns>True if the given value is another offset date/time equal to this one; false otherwise.</returns>
         public bool Equals(OffsetDateTime other)
         {
-            return this.yearMonthDay == other.yearMonthDay && this.time == other.time && this.offset == other.offset && this.Calendar.Equals(other.Calendar);
+            return this.yearMonthDay == other.yearMonthDay && this.nanosecondsAndOffset == other.nanosecondsAndOffset && this.Calendar.Equals(other.Calendar);
         }
 
         #region Formatting
@@ -613,7 +679,7 @@ namespace NodaTime
                 {
                     return dateComparison;
                 }
-                return x.time.CompareTo(y.time);
+                return x.NanosecondOfDay.CompareTo(y.NanosecondOfDay);
             }
         }
 
