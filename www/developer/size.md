@@ -83,13 +83,11 @@ A `LocalDateTime` is simply the combination of a `LocalDate` and a `LocalTime`:
 #Offset#
 
 An `Offset` stores the number of seconds difference
-between UTC and local time. This is within exclusive bounds of +/- 1 day.
+between UTC and local time. This is within inclusive bounds of +/- 18 hours.
 
 - `int seconds`
 
-Note that even this representation still takes up 18 bits, as the range of 2 days is 172,800
-seconds. If we limited ourselves to +/- 18 hours, we could use just 17 bits... which would allow
-a `LocalTime` and an `Offset` to be stored in a single 64-bit integer.
+(4 bytes; 17 bits used)
 
 #OffsetDateTime#
 
@@ -97,13 +95,15 @@ An `OffsetDateTime` is *logically* a `LocalDateTime` and an `Offset`, but it's s
 fields, as that has shown some surprising performance benefits:
 
 - `YearMonthDay yearMonthDay`
-- `LocalTime time`
-- `Offset offset`
+- `long nanosecondsAndOffset`
 - `CalendarSystem calendar`
 
-(16 bytes + 1 reference - theoretically. In reality, it seems that the 64-bit CLR (as of 2014-07-23)
-treats the `Offset` and `YearMonthDay` values as 8 bytes each, rather than packing them
-efficiently. That leads to a total size of 32 bytes.)
+(12 bytes + 1 reference)
+
+The nanosecondsAndOffset value is split into two parts as:
+
+- Nanosecond-of-day: 47 bits
+- Offset: 17 bits
 
 #ZonedDateTime#
 
@@ -112,4 +112,4 @@ A `ZonedDateTime` is an `OffsetDateTime` and a `DateTimeZone` reference:
 - `OffsetDateTime offsetDateTime`
 - `DateTimeZone zone`
 
-(In theory, 16 bytes + 2 references; in reality, 40 bytes at the moment)
+(12 bytes + 2 references)
