@@ -26,6 +26,7 @@ See the [Noda Time 1.x to 2.0 migration guide](migration-to-2.html) for full det
 - `Offset` can no longer represent sub-second offsets (which are not used in
   practice); formatting and parsing for these has been removed.
 - `Offset` now has a range of +/- 18 hours instead of just less than a complete day.
+- The "numeric" standard patterns for `Instant` and `Offset` have been removed.
 
 ## 1.3.0, released 2014-06-27 with tzdb 2014e
 

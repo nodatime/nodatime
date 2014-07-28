@@ -70,23 +70,23 @@ namespace NodaTime.Text
 
             if (patternText.Length == 1)
             {
-                char patternCharacter = patternText[0];
-                if (patternCharacter == 'n')
+                switch (patternText)
                 {
-                    return new NumberPattern(formatInfo);
-                }
-                if (patternCharacter == 'g')
-                {
-                    return CreateGeneralPattern(formatInfo);
-                }
-                if (patternCharacter == 'G')
-                {
-                    return new ZPrefixPattern(CreateGeneralPattern(formatInfo));
-                }
-                patternText = ExpandStandardFormatPattern(patternCharacter, formatInfo);
-                if (patternText == null)
-                {
-                    throw new InvalidPatternException(Messages.Parse_UnknownStandardFormat, patternCharacter, typeof(Offset));
+                    case "g":
+                        return CreateGeneralPattern(formatInfo);
+                    case "G":
+                        return new ZPrefixPattern(CreateGeneralPattern(formatInfo));
+                    case "l":
+                        patternText = formatInfo.OffsetPatternLong;
+                        break;
+                    case "m":
+                        patternText = formatInfo.OffsetPatternMedium;
+                        break;
+                    case "s":
+                        patternText = formatInfo.OffsetPatternShort;
+                        break;
+                    default:
+                        throw new InvalidPatternException(Messages.Parse_UnknownStandardFormat, patternText, typeof(Offset));
                 }
             }
             // This is the only way we'd normally end up in custom parsing land for Z on its own.
@@ -108,21 +108,6 @@ namespace NodaTime.Text
         }
 
         #region Standard patterns
-        private string ExpandStandardFormatPattern(char patternCharacter, NodaFormatInfo formatInfo)
-        {
-            switch (patternCharacter)
-            {
-                case 'l':
-                    return formatInfo.OffsetPatternLong;
-                case 'm':
-                    return formatInfo.OffsetPatternMedium;
-                case 's':
-                    return formatInfo.OffsetPatternShort;
-                default:
-                    // Will be turned into an exception.
-                    return null;
-            }
-        }
 
         private IPartialPattern<Offset> CreateGeneralPattern(NodaFormatInfo formatInfo)
         {
@@ -199,71 +184,6 @@ namespace NodaTime.Text
                 {
                     fullPattern.FormatPartial(value, builder);
                 }
-            }
-        }
-
-        private sealed class NumberPattern : IPartialPattern<Offset>
-        {
-            private readonly NodaFormatInfo formatInfo;
-            private readonly int maxLength;
-
-            internal NumberPattern(NodaFormatInfo formatInfo)
-            {
-                this.formatInfo = formatInfo;
-                this.maxLength = Offset.MinValue.Seconds.ToString("N0", formatInfo.NumberFormat).Length;
-            }
-
-            public ParseResult<Offset> ParsePartial(ValueCursor cursor)
-            {
-                int startIndex = cursor.Index;
-                // TODO: Do better than this. It's horrible, and may well be invalid
-                // for some cultures. Or just remove the NumberPattern from 2.0...
-                int longestPossible = Math.Min(maxLength, cursor.Length - cursor.Index);
-                for (int length = longestPossible; length >= 0; length--)
-                {
-                    string candidate = cursor.Value.Substring(cursor.Index, length);
-                    int seconds;
-                    if (Int32.TryParse(candidate, NumberStyles.Integer | NumberStyles.AllowThousands,
-                                        formatInfo.NumberFormat, out seconds))
-                    {
-                        if (seconds < -NodaConstants.SecondsPerStandardDay ||
-                            NodaConstants.SecondsPerStandardDay < seconds)
-                        {
-                            cursor.Move(startIndex);
-                            return ParseResult<Offset>.ValueOutOfRange(cursor, seconds);
-                        }
-                        cursor.Move(cursor.Index + length);
-                        return ParseResult<Offset>.ForValue(Offset.FromSeconds(seconds));
-                    }
-                }
-                cursor.Move(startIndex);
-                return ParseResult<Offset>.CannotParseValue(cursor, "n");
-            }
-
-            public void FormatPartial(Offset value, StringBuilder builder)
-            {
-                builder.Append(Format(value));
-            }
-
-            public ParseResult<Offset> Parse(string text)
-            {
-                int seconds;
-                if (Int32.TryParse(text, NumberStyles.Integer | NumberStyles.AllowThousands,
-                                    formatInfo.NumberFormat, out seconds))
-                {
-                    if (seconds < -NodaConstants.SecondsPerStandardDay ||
-                        NodaConstants.SecondsPerStandardDay < seconds)
-                    {
-                        return ParseResult<Offset>.ValueOutOfRange(new ValueCursor(text), seconds);
-                    }
-                    return ParseResult<Offset>.ForValue(Offset.FromSeconds(seconds));
-                }
-                return ParseResult<Offset>.CannotParseValue(new ValueCursor(text), "n");
-            }
-
-            public string Format(Offset value)
-            {
-                return value.Seconds.ToString("N0", formatInfo.NumberFormat);
             }
         }
 
