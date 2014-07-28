@@ -172,6 +172,8 @@
     <Compile Include="CommonCalendars.cs" />
     <Compile Include="DateInterval.cs" />
     <Compile Include="DateTimeZoneProviders.cs" />
+    <Compile Include="Extensions\ClockExtensions.cs" />
+    <Compile Include="Extensions\NamespaceDoc.cs" />
     <Compile Include="Fields\FixedLengthDatePeriodField.cs" />
     <Compile Include="Fields\TimePeriodField.cs" />
     <Compile Include="Fields\IDatePeriodField.cs" />
