@@ -29,7 +29,7 @@ added to either an `Instant` or `ZonedDateTime` using either the `+` operator
 or `Plus` methods:
 
     Duration duration = Duration.FromMinutes(3);
-    Instant now = SystemClock.Instance.Now;    
+    Instant now = SystemClock.Instance.GetCurrentInstant();    
     Instant future = now + duration; // Or now.Plus(duration)
     
     ZonedDateTime nowInIsoUtc = now.InUtc();
