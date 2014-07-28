@@ -199,18 +199,6 @@ namespace NodaTime.Text
         }
 
         /// <summary>
-        /// Creates a "numeric" pattern for the given culture. The numeric format gives the
-        /// number of ticks in decimal format, with or without thousands separators.
-        /// </summary>
-        /// <param name="cultureInfo">The culture to use in the pattern</param>
-        /// <param name="includeThousandsSeparators">True to include thousands separators when parsing or formatting; false to omit them.</param>
-        /// <returns>A numeric pattern for the configuration</returns>
-        public static InstantPattern CreateNumericPattern(CultureInfo cultureInfo, bool includeThousandsSeparators)
-        {
-            return Create(includeThousandsSeparators ? "n" : "d", cultureInfo);
-        }
-
-        /// <summary>
         /// Creates a pattern for the same original pattern text as this pattern, but with the specified
         /// localization information.
         /// </summary>
