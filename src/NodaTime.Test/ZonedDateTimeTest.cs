@@ -392,6 +392,9 @@ namespace NodaTime.Test
 
             TestHelper.TestComparerStruct(ZonedDateTime.Comparer.Local, losAngelesAfternoon, londonAfternoon, londonEvening);
             Assert.Throws<ArgumentException>(() => ZonedDateTime.Comparer.Local.Compare(londonPersian, londonEvening));
+            Assert.IsFalse(ZonedDateTime.Comparer.Local.Equals(londonPersian, londonEvening));
+            Assert.IsFalse(ZonedDateTime.Comparer.Local.Equals(londonAfternoon, londonEvening));
+            Assert.IsTrue(ZonedDateTime.Comparer.Local.Equals(londonAfternoon, losAngelesAfternoon));
         }
 
         [Test]
@@ -413,6 +416,9 @@ namespace NodaTime.Test
 
             TestHelper.TestComparerStruct(ZonedDateTime.Comparer.Instant, londonEvening, losAngelesLunchtime, losAngelesAfternoon);
             Assert.AreEqual(0, ZonedDateTime.Comparer.Instant.Compare(londonPersian, londonEvening));
+            Assert.IsTrue(ZonedDateTime.Comparer.Instant.Equals(londonPersian, londonEvening));
+            Assert.IsTrue(ZonedDateTime.Comparer.Instant.Equals(losAngelesLunchtime, londonEvening));
+            Assert.IsFalse(ZonedDateTime.Comparer.Instant.Equals(losAngelesAfternoon, londonEvening));
         }
     }
 }

@@ -590,12 +590,10 @@ namespace NodaTime
         /// Base class for <see cref="OffsetDateTime"/> comparers.
         /// </summary>
         /// <remarks>
-        /// <para>Use the static properties of this class to obtain instances.</para>
-        /// <para>For the curious: this class only exists so that in the future, it can expose more functionality - probably
-        /// implementing <see cref="IEqualityComparer{T}"/>. If we simply provided properties on OffsetDateTime of type
-        /// <see cref="IComparer{T}"/> we'd have no backward-compatible way of adding to the set of implemented interfaces.</para>
+        /// Use the static properties of this class to obtain instances. This type is exposed so that the
+        /// same value can be used for both equality and ordering comparisons.
         /// </remarks>
-        public abstract class Comparer : IComparer<OffsetDateTime>
+        public abstract class Comparer : IComparer<OffsetDateTime>, IEqualityComparer<OffsetDateTime>
         {
             // TODO(2.0): Should we have a comparer which is calendar-sensitive (so will fail if the calendars are different)
             // but still uses the offset?
@@ -656,6 +654,21 @@ namespace NodaTime
             ///   </list>
             /// </returns>
             public abstract int Compare(OffsetDateTime x, OffsetDateTime y);
+
+            /// <summary>
+            /// Determines whether the specified <c>OffsetDateTime</c> values are equal.
+            /// </summary>
+            /// <param name="x">The first <c>OffsetDateTime</c> to compare.</param>
+            /// <param name="y">The second <c>OffsetDateTime</c> to compare.</param>
+            /// <returns><c>true</c> if the specified objects are equal; otherwise, <c>false</c>.</returns>
+            public abstract bool Equals(OffsetDateTime x, OffsetDateTime y);
+
+            /// <summary>
+            /// Returns a hash code for the specified <c>OffsetDateTime</c>.
+            /// </summary>
+            /// <param name="obj">The <c>OffsetDateTime</c> for which a hash code is to be returned.</param>
+            /// <returns>A hash code for the specified value.</returns>
+            public abstract int GetHashCode(OffsetDateTime obj);
         }
 
         /// <summary>
@@ -681,6 +694,26 @@ namespace NodaTime
                 }
                 return x.NanosecondOfDay.CompareTo(y.NanosecondOfDay);
             }
+
+            /// <inheritdoc />
+            public override bool Equals(OffsetDateTime x, OffsetDateTime y)
+            {
+                if (!x.Calendar.Equals(y.Calendar))
+                {
+                    return false;
+                }
+                return x.yearMonthDay == y.yearMonthDay && x.NanosecondOfDay == y.NanosecondOfDay;
+            }
+
+            /// <inheritdoc />
+            public override int GetHashCode(OffsetDateTime obj)
+            {
+                var hash = HashCodeHelper.Initialize();
+                hash = HashCodeHelper.Hash(hash, obj.yearMonthDay);
+                hash = HashCodeHelper.Hash(hash, obj.NanosecondOfDay);
+                hash = HashCodeHelper.Hash(hash, obj.Calendar);
+                return hash;
+            }
         }
 
         /// <summary>
@@ -699,6 +732,18 @@ namespace NodaTime
             {
                 // TODO(2.0): Optimize cases which are more than 2 days apart, by avoiding the arithmetic?
                 return x.ToElapsedTimeSinceEpoch().CompareTo(y.ToElapsedTimeSinceEpoch());
+            }
+
+            /// <inheritdoc />
+            public override bool Equals(OffsetDateTime x, OffsetDateTime y)
+            {
+                return x.ToElapsedTimeSinceEpoch() == y.ToElapsedTimeSinceEpoch();
+            }
+
+            /// <inheritdoc />
+            public override int GetHashCode(OffsetDateTime obj)
+            {
+                return obj.ToElapsedTimeSinceEpoch().GetHashCode();
             }
         }
         #endregion

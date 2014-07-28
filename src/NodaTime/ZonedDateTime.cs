@@ -572,12 +572,10 @@ namespace NodaTime
         /// Base class for <see cref="ZonedDateTime"/> comparers.
         /// </summary>
         /// <remarks>
-        /// <para>Use the static properties of this class to obtain instances.</para>
-        /// <para>For the curious: this class only exists so that in the future, it can expose more functionality - probably
-        /// implementing <see cref="IEqualityComparer{T}"/>. If we simply provided properties on ZonedDateTime of type
-        /// <see cref="IComparer{T}"/> we'd have no backward-compatible way of adding to the set of implemented interfaces.</para>
+        /// Use the static properties of this class to obtain instances. This type is exposed so that the
+        /// same value can be used for both equality and ordering comparisons.
         /// </remarks>
-        public abstract class Comparer : IComparer<ZonedDateTime>
+        public abstract class Comparer : IComparer<ZonedDateTime>, IEqualityComparer<ZonedDateTime>
         {
             // TODO(2.0): A comparer which compares instants, but in a calendar-sensitive manner?
 
@@ -638,6 +636,21 @@ namespace NodaTime
             ///   </list>
             /// </returns>
             public abstract int Compare(ZonedDateTime x, ZonedDateTime y);
+
+            /// <summary>
+            /// Determines whether the specified <c>ZonedDateTime</c> values are equal.
+            /// </summary>
+            /// <param name="x">The first <c>ZonedDateTime</c> to compare.</param>
+            /// <param name="y">The second <c>ZonedDateTime</c> to compare.</param>
+            /// <returns><c>true</c> if the specified objects are equal; otherwise, <c>false</c>.</returns>
+            public abstract bool Equals(ZonedDateTime x, ZonedDateTime y);
+
+            /// <summary>
+            /// Returns a hash code for the specified <c>ZonedDateTime</c>.
+            /// </summary>
+            /// <param name="obj">The <c>ZonedDateTime</c> for which a hash code is to be returned.</param>
+            /// <returns>A hash code for the specified value.</returns>
+            public abstract int GetHashCode(ZonedDateTime obj);
         }
 
         /// <summary>
@@ -656,6 +669,18 @@ namespace NodaTime
             {
                 return OffsetDateTime.Comparer.Local.Compare(x.offsetDateTime, y.offsetDateTime);
             }
+
+            /// <inheritdoc />
+            public override bool Equals(ZonedDateTime x, ZonedDateTime y)
+            {
+                return OffsetDateTime.Comparer.Local.Equals(x.offsetDateTime, y.offsetDateTime);
+            }
+
+            /// <inheritdoc />
+            public override int GetHashCode(ZonedDateTime obj)
+            {
+                return OffsetDateTime.Comparer.Local.GetHashCode(obj.offsetDateTime);
+            }
         }
 
         /// <summary>
@@ -673,6 +698,18 @@ namespace NodaTime
             public override int Compare(ZonedDateTime x, ZonedDateTime y)
             {
                 return OffsetDateTime.Comparer.Instant.Compare(x.offsetDateTime, y.offsetDateTime);
+            }
+
+            /// <inheritdoc />
+            public override bool Equals(ZonedDateTime x, ZonedDateTime y)
+            {
+                return OffsetDateTime.Comparer.Instant.Equals(x.offsetDateTime, y.offsetDateTime);
+            }
+
+            /// <inheritdoc />
+            public override int GetHashCode(ZonedDateTime obj)
+            {
+                return OffsetDateTime.Comparer.Instant.GetHashCode(obj.offsetDateTime);
             }
         }
         #endregion
