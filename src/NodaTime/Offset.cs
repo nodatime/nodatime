@@ -603,8 +603,12 @@ namespace NodaTime
         /// <param name="info">The <see cref="SerializationInfo"/> to fetch data from.</param>
         /// <param name="context">The source for this deserialization.</param>
         private Offset(SerializationInfo info, StreamingContext context)
-            : this(info.GetInt32(MillisecondsSerializationName) / NodaConstants.MillisecondsPerSecond)
         {
+            int millis = info.GetInt32(MillisecondsSerializationName);
+
+            Preconditions.CheckArgument(millis >= MinMilliseconds && millis <= MaxMilliseconds, "info",
+                "Serialized offset value is outside the range of +/- 18 hours");
+            this.seconds = millis / NodaConstants.MillisecondsPerSecond;
         }
 
         /// <summary>
