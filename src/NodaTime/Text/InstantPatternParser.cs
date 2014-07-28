@@ -15,11 +15,9 @@ namespace NodaTime.Text
     /// Pattern parsing support for <see cref="Instant" />.
     /// </summary>
     /// <remarks>
-    /// Supported patterns:
+    /// Supported standard patterns:
     /// <list type="bullet">
     ///   <item><description>g: general; the UTC ISO-8601 instant in the style yyyy-MM-ddTHH:mm:ssZ</description></item>
-    ///   <item><description>n: numeric; the number of ticks since the epoch using thousands separators</description></item>
-    ///   <item><description>d: numeric; the number of ticks since the epoch without thousands separators</description></item>
     /// </list>
     /// </remarks>
     internal sealed class InstantPatternParser : IPatternParser<Instant>
@@ -41,56 +39,20 @@ namespace NodaTime.Text
             {
                 throw new InvalidPatternException(Messages.Parse_FormatStringEmpty);
             }
-            // Simplest way of handling the general pattern...
-            if (patternText == "g")
+            if (patternText.Length == 1)
             {
-                patternText = GeneralPatternText;
-            }
-
-            if (patternText.Length > 1)
-            {
-                IPattern<LocalDateTime> localResult = formatInfo.LocalDateTimePatternParser.ParsePattern(patternText);
-                return new LocalDateTimePatternAdapter(localResult, minLabel, maxLabel);
-            }
-            char patternChar = char.ToLowerInvariant(patternText[0]);
-            switch (patternChar)
-            {
-                case 'n':
-                    return new NumberPattern(formatInfo, patternText, "N0");
-                case 'd':
-                    return new NumberPattern(formatInfo, patternText, "D");
-                default:
-                    throw new InvalidPatternException(Messages.Parse_UnknownStandardFormat, patternChar, typeof(Instant));
-            }
-        }
-
-        private sealed class NumberPattern : AbstractPattern<Instant>
-        {
-            private const NumberStyles ParsingNumberStyles = NumberStyles.AllowLeadingSign | NumberStyles.AllowThousands;
-            private readonly string patternText;
-            private readonly string systemFormatString;
-
-            internal NumberPattern(NodaFormatInfo formatInfo, string patternText, string systemFormatString)
-                : base(formatInfo)
-            {
-                this.patternText = patternText;
-                this.systemFormatString = systemFormatString;
-            }
-
-            protected override ParseResult<Instant> ParseImpl(string value)
-            {                
-                long number;
-                if (Int64.TryParse(value, ParsingNumberStyles, FormatInfo.NumberFormat, out number))
+                switch (patternText)
                 {
-                    return ParseResult<Instant>.ForValue(Instant.FromTicksSinceUnixEpoch(number));
+                    case "g": // Simplest way of handling the general pattern...
+                        patternText = GeneralPatternText;
+                        break;
+                    default:
+                        throw new InvalidPatternException(Messages.Parse_UnknownStandardFormat, patternText, typeof(Instant));
                 }
-                return ParseResult<Instant>.CannotParseValue(new ValueCursor(value), patternText);
             }
 
-            public override string Format(Instant value)
-            {
-                return value.Ticks.ToString(systemFormatString, FormatInfo.NumberFormat);
-            }
+            IPattern<LocalDateTime> localResult = formatInfo.LocalDateTimePatternParser.ParsePattern(patternText);
+            return new LocalDateTimePatternAdapter(localResult, minLabel, maxLabel);
         }
 
         // This not only converts between LocalDateTime and Instant; it also handles infinity.
