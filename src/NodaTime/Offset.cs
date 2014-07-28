@@ -559,8 +559,7 @@ namespace NodaTime
         /// <param name="timeSpan">The timespan to convert</param>
         /// <exception cref="ArgumentOutOfRangeException">The given time span falls outside the range of +/- 18 hours.</exception>
         /// <returns>An offset for the same time as the given time span.</returns>
-        /// <exception cref="ArgumentOutOfRangeException">The result of the operation is outside the range of Offset.</exception>
-        internal static Offset FromTimeSpan(TimeSpan timeSpan)
+        public static Offset FromTimeSpan(TimeSpan timeSpan)
         {
             long ticks = timeSpan.Ticks;
             Preconditions.CheckArgumentRange("timeSpan", ticks, MinTicks, MaxTicks);
