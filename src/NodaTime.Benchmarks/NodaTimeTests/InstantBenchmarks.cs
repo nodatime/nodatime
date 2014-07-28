@@ -22,18 +22,6 @@ namespace NodaTime.Benchmarks.NodaTimeTests
         }
 
         [Benchmark]
-        public void ToStringNumericWithThousandsSeparator()
-        {
-            Sample.ToString("n", CultureInfo.InvariantCulture);
-        }
-
-        [Benchmark]
-        public void ToStringNumericWithoutThousandsSeparator()
-        {
-            Sample.ToString("d", CultureInfo.InvariantCulture);
-        }
-
-        [Benchmark]
         public void PlusDuration()
         {
             Sample.Plus(Duration.Epsilon);
