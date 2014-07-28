@@ -119,4 +119,3 @@ These were not known to be useful, felt "alien" in various ways, and cause issue
 implementation. If you need these features - possibly in a specialized way - please contact the
 mailing list and we may be able to suggest alternative implementations to meet your specific 
 requirements.
-Time 
