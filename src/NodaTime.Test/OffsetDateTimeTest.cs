@@ -183,6 +183,10 @@ namespace NodaTime.Test
             Assert.AreEqual(-1, Math.Sign(comparer.Compare(earlierLocal, control)));
             Assert.AreEqual(-1, Math.Sign(comparer.Compare(control, laterLocal)));
             Assert.AreEqual(1, Math.Sign(comparer.Compare(laterLocal, control)));
+
+            Assert.IsFalse(comparer.Equals(control, differentCalendar));
+            Assert.IsFalse(comparer.Equals(control, earlierLocal));
+            Assert.IsTrue(comparer.Equals(control, control));
         }
 
         [Test]
@@ -217,6 +221,10 @@ namespace NodaTime.Test
             Assert.AreEqual(1, Math.Sign(comparer.Compare(earlierLocal, control)));
             Assert.AreEqual(1, Math.Sign(comparer.Compare(control, laterLocal)));
             Assert.AreEqual(-1, Math.Sign(comparer.Compare(laterLocal, control)));
+
+            Assert.IsTrue(comparer.Equals(control, differentCalendar));
+            Assert.IsFalse(comparer.Equals(control, earlierLocal));
+            Assert.IsTrue(comparer.Equals(control, equalAndOppositeChanges));
         }
 
         /// <summary>
