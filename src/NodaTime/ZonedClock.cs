@@ -13,7 +13,7 @@ namespace NodaTime
     /// </summary>
     /// <threadsafety>This type is immutable reference type. See the thread safety section of the user guide for more information.</threadsafety>
     [Immutable]
-    public sealed class ZonedClock
+    public sealed class ZonedClock : IClock
     {
         private readonly IClock clock;
         private readonly DateTimeZone zone;
@@ -78,29 +78,27 @@ namespace NodaTime
         }
 
         /// <summary>
-        /// Returns a new <see cref="ZonedClock"/> with the same underlying clock
-        /// and calendar system as this one, but using the specified time zone.
-        /// This does not change the current object.
+        /// Returns the local date of the current instant provided by the underlying clock, adjusted
+        /// to the time zone of this object.
         /// </summary>
-        /// <param name="zone">The time zone for the new <c>ZonedClock</c>.</param>
-        /// <returns>A new <c>ZonedClock</c> using the specified time zone.</returns>
+        /// <returns>The local date of the current instant provided by the underlying clock, adjusted to the
+        /// time zone of this object.</returns>
         [Pure]
-        public ZonedClock WithZone([NotNull] DateTimeZone zone)
+        public LocalDate GetCurrentDate()
         {
-            return new ZonedClock(clock, zone, calendar);
+            return GetCurrentZonedDateTime().Date;
         }
 
         /// <summary>
-        /// Returns a new <see cref="ZonedClock"/> with the same underlying clock
-        /// and time zone as this one, but using the specified calendar system.
-        /// This does not change the current object.
+        /// Returns the local time of the current instant provided by the underlying clock, adjusted
+        /// to the time zone of this object.
         /// </summary>
-        /// <param name="calendar">The calendar system for the new <c>ZonedClock</c>.</param>
-        /// <returns>A new <c>ZonedClock</c> using the specified calendar system.</returns>
+        /// <returns>The local time of the current instant provided by the underlying clock, adjusted to the
+        /// time zone of this object.</returns>
         [Pure]
-        public ZonedClock WithCalendar([NotNull] CalendarSystem calendar)
+        public LocalTime GetCurrentTimeOfDay()
         {
-            return new ZonedClock(clock, zone, calendar);
+            return GetCurrentZonedDateTime().TimeOfDay;
         }
     }
 }
