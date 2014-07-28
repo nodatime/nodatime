@@ -38,7 +38,7 @@ namespace NodaTime
         /// <returns>The current instant provided by the underlying clock.</returns>
         public Instant GetCurrentInstant()
         {
-            return clock.Now;
+            return clock.GetCurrentInstant();
         }
 
         /// <summary>

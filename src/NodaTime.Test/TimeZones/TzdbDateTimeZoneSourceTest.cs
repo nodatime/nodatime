@@ -210,7 +210,7 @@ namespace NodaTime.Test.TimeZones
             Assert.IsNotNull(id);
             var tzdbZone = TzdbDateTimeZoneSource.Default.ForId(id);
 
-            var thisYear = SystemClock.Instance.Now.InUtc().Year;
+            var thisYear = SystemClock.Instance.GetCurrentInstant().InUtc().Year;
             LocalDate? lastIncorrectDate = null;
             Offset? lastIncorrectBclOffset = null;
             Offset? lastIncorrectTzdbOffset = null;

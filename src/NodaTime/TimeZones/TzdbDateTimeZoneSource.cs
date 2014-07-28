@@ -208,7 +208,7 @@ namespace NodaTime.TimeZones
         {
             // Very rare use of the system clock! Windows time zone updates sometimes sacrifice past
             // accuracy for future accuracy, so let's use the current year's transitions.
-            int thisYear = SystemClock.Instance.Now.InUtc().Year;
+            int thisYear = SystemClock.Instance.GetCurrentInstant().InUtc().Year;
             Instant startOfThisYear = Instant.FromUtc(thisYear, 1, 1, 0, 0);
             Instant startOfNextYear = Instant.FromUtc(thisYear + 1, 1, 1, 0, 0);
             var candidates = WindowsMapping.PrimaryMapping.Values.Select(ForId).ToList();

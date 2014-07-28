@@ -23,7 +23,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
         // pre-calculating far sooner anyhow. Either a simple DST cycle is detected or the last
         // rule is a fixed offset. If a zone has a fixed offset set more than 100 years into the
         // future, then it won't be observed.
-        private static readonly Instant PrecomputationLimit = SystemClock.Instance.Now.InUtc().LocalDateTime.PlusYears(100).InUtc().ToInstant();
+        private static readonly Instant PrecomputationLimit = SystemClock.Instance.GetCurrentInstant().InUtc().LocalDateTime.PlusYears(100).InUtc().ToInstant();
 
         private readonly List<ZoneRecurrence> rules = new List<ZoneRecurrence>();
         private string initialNameKey;

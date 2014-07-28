@@ -17,8 +17,8 @@ namespace NodaTime.Test
         {
             FakeClock underlyingClock = FakeClock.FromUtc(2000, 1, 1);
             ZonedClock zonedClock = new ZonedClock(underlyingClock, SampleZone, CalendarSystem.Iso);
-            Assert.AreEqual(underlyingClock.Now, zonedClock.GetCurrentInstant());
-            Assert.AreEqual(new ZonedDateTime(underlyingClock.Now, SampleZone), zonedClock.GetCurrentZonedDateTime());
+            Assert.AreEqual(underlyingClock.GetCurrentInstant(), zonedClock.GetCurrentInstant());
+            Assert.AreEqual(new ZonedDateTime(underlyingClock.GetCurrentInstant(), SampleZone), zonedClock.GetCurrentZonedDateTime());
             Assert.AreEqual(new LocalDateTime(2000, 1, 1, 2, 0), zonedClock.GetCurrentLocalDateTime());
             Assert.AreEqual(new LocalDateTime(2000, 1, 1, 2, 0).WithOffset(Offset.FromHours(2)),
                 zonedClock.GetCurrentOffsetDateTime());
