@@ -194,7 +194,7 @@ namespace NodaTime.Testing
         /// The value could even be negative, to simulate particularly odd system clock effects.
         /// </para>
         /// </remarks>
-        /// <seealso cref="Now"/>
+        /// <seealso cref="GetCurrentInstant"/>
         public Duration AutoAdvance
         {
             get

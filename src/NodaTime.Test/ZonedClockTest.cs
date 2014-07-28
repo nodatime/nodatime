@@ -1,6 +1,8 @@
 ﻿// Copyright 2014 The Noda Time Authors. All rights reserved.
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
+
+using NodaTime.Extensions;
 using NodaTime.Testing;
 using NodaTime.Testing.TimeZones;
 using NUnit.Framework;
@@ -15,34 +17,17 @@ namespace NodaTime.Test
         [Test]
         public void GetCurrent()
         {
-            FakeClock underlyingClock = FakeClock.FromUtc(2000, 1, 1);
-            ZonedClock zonedClock = new ZonedClock(underlyingClock, SampleZone, CalendarSystem.Iso);
-            Assert.AreEqual(underlyingClock.GetCurrentInstant(), zonedClock.GetCurrentInstant());
-            Assert.AreEqual(new ZonedDateTime(underlyingClock.GetCurrentInstant(), SampleZone), zonedClock.GetCurrentZonedDateTime());
-            Assert.AreEqual(new LocalDateTime(2000, 1, 1, 2, 0), zonedClock.GetCurrentLocalDateTime());
-            Assert.AreEqual(new LocalDateTime(2000, 1, 1, 2, 0).WithOffset(Offset.FromHours(2)),
-                zonedClock.GetCurrentOffsetDateTime());
-        }
-
-        [Test]
-        public void WithZone()
-        {
-            FakeClock underlyingClock = FakeClock.FromUtc(2000, 1, 1);
-            ZonedClock zonedClock = new ZonedClock(underlyingClock, SampleZone, CalendarSystem.Iso).WithZone(DateTimeZone.Utc);
-            Assert.AreEqual(new LocalDateTime(2000, 1, 1, 0, 0), zonedClock.GetCurrentLocalDateTime());
-            Assert.AreEqual(new LocalDateTime(2000, 1, 1, 0, 0).WithOffset(Offset.Zero),
-                zonedClock.GetCurrentOffsetDateTime());
-        }
-
-        [Test]
-        public void WithCalendar()
-        {
             var julian = CommonCalendars.Julian;
             FakeClock underlyingClock = new FakeClock(NodaConstants.UnixEpoch);
-            ZonedClock zonedClock = new ZonedClock(underlyingClock, SampleZone, CalendarSystem.Iso).WithCalendar(julian);
+            ZonedClock zonedClock = underlyingClock.InZone(SampleZone, julian);
+            Assert.AreEqual(NodaConstants.UnixEpoch, zonedClock.GetCurrentInstant());
+            Assert.AreEqual(new ZonedDateTime(underlyingClock.GetCurrentInstant(), SampleZone, julian),
+                zonedClock.GetCurrentZonedDateTime());
             Assert.AreEqual(new LocalDateTime(1969, 12, 19, 2, 0, julian), zonedClock.GetCurrentLocalDateTime());
             Assert.AreEqual(new LocalDateTime(1969, 12, 19, 2, 0, julian).WithOffset(Offset.FromHours(2)),
                 zonedClock.GetCurrentOffsetDateTime());
+            Assert.AreEqual(new LocalDate(1969, 12, 19, julian), zonedClock.GetCurrentDate());
+            Assert.AreEqual(new LocalTime(2, 0, 0), zonedClock.GetCurrentTimeOfDay());
         }
     }
 }
