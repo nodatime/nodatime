@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
+using System.Threading;
 using NodaTime.Globalization;
 using NodaTime.Properties;
 
@@ -408,6 +409,8 @@ namespace NodaTime.Text.Patterns
             private readonly ParseAction[] parseActions;
             private readonly Func<TBucket> bucketProvider;
             private readonly PatternFields usedFields;
+            // StringBuilder to reuse where possible for formatting.
+            private StringBuilder cachedBuilder = new StringBuilder();
 
             public SteppedPattern(Action<TResult, StringBuilder> formatActions,
                 ParseAction[] parseActions,
@@ -453,10 +456,24 @@ namespace NodaTime.Text.Patterns
 
             public string Format(TResult value)
             {
-                StringBuilder builder = new StringBuilder();
+                // Try to borrow the cached builder, in a thread-safe way. (If another thread is using the
+                // builder, this will return null.)
+                StringBuilder builder = Interlocked.CompareExchange(ref cachedBuilder, cachedBuilder, null);
+                if (builder == null)
+                {
+                    builder = new StringBuilder();
+                }
+                else
+                {
+                    builder.Length = 0;
+                }
                 // This will call all the actions in the multicast delegate.
                 formatActions(value, builder);
-                return builder.ToString();
+                string ret = builder.ToString();
+                // Whether we managed to borrow the cached builder or not, we can replace it with the
+                // one we've used, now that we know what to return.
+                cachedBuilder = builder;
+                return ret;
             }
 
             public ParseResult<TResult> ParsePartial(ValueCursor cursor)
