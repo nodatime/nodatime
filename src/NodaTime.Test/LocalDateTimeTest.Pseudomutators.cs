@@ -335,5 +335,15 @@ namespace NodaTime.Test
             LocalDateTime expected = new LocalDateTime(2014, 6, 30, 12, 5, 8, 100, 1234);
             Assert.AreEqual(expected, start.With(DateAdjusters.EndOfMonth));
         }
+
+        [Test]
+        [TestCase(-9998, 1, 1, -1)]
+        [TestCase(9999, 12, 31, 24)]
+        [TestCase(1970, 1, 1, long.MaxValue)]
+        [TestCase(1970, 1, 1, long.MinValue)]
+        public void PlusHours_Overflow(int year, int month, int day, long hours)
+        {
+            TestHelper.AssertOverflow(new LocalDateTime(year, month, day, 0, 0).PlusHours, hours);
+        }
     }
 }
