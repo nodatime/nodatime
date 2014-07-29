@@ -48,9 +48,39 @@ namespace NodaTime.Fields
 
         internal LocalTime Add(LocalTime localTime, long value)
         {
-            // TODO(2.0): Try inlining the other method and removing the calculation of extra days.
-            int ignored = 0;
-            return Add(localTime, value, ref ignored);
+            unchecked
+            {
+                // Arithmetic with a LocalTime wraps round, and every unit divides exactly
+                // into a day, so we can make sure we add a value which is less than a day.
+                if (value >= 0)
+                {
+                    if (value >= unitsPerDay)
+                    {
+                        value = value % unitsPerDay;
+                    }
+                    long nanosToAdd = value * (long) unitNanoseconds;
+                    long newNanos = localTime.NanosecondOfDay + nanosToAdd;
+                    if (newNanos >= NodaConstants.NanosecondsPerStandardDay)
+                    {
+                        newNanos -= NodaConstants.NanosecondsPerStandardDay;
+                    }
+                    return new LocalTime(newNanos);
+                }
+                else
+                {
+                    if (value <= -unitsPerDay)
+                    {
+                        value = value % unitsPerDay;
+                    }
+                    long nanosToAdd = value * (long) unitNanoseconds;
+                    long newNanos = localTime.NanosecondOfDay + nanosToAdd;
+                    if (newNanos < 0)
+                    {
+                        newNanos += NodaConstants.NanosecondsPerStandardDay;
+                    }
+                    return new LocalTime(newNanos);
+                }
+            }
         }
 
         internal LocalTime Add(LocalTime localTime, long value, ref int extraDays)

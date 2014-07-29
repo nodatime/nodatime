@@ -97,5 +97,17 @@ namespace NodaTime.Test
             LocalTime expected = new LocalTime(12, 15, 8);
             Assert.AreEqual(expected, start.With(TimeAdjusters.TruncateToSecond));
         }
+
+        [Test]
+        public void PlusMinutes_WouldOverflowNaively()
+        {
+            LocalTime start = new LocalTime(12, 34, 56);
+            // Very big value, which just wraps round a *lot* and adds one minute.
+            // There's no way we could compute that many nanoseconds.
+            long value = (NodaConstants.NanosecondsPerStandardDay << 15) + 1;
+            LocalTime expected = new LocalTime(12, 35, 56);
+            LocalTime actual = start.PlusMinutes(value);
+            Assert.AreEqual(expected, actual);
+        }
     }
 }
