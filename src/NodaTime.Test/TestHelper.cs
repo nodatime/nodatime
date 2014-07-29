@@ -108,6 +108,41 @@ namespace NodaTime.Test
             func(arg1, arg2, arg3);
         }
 
+        /// <summary>
+        /// Asserts that the given operation throws one of InvalidOperationException, ArgumentException (including
+        /// ArgumentOutOfRangeException) or OverflowException. (It's hard to always be consistent bearing in mind
+        /// one method calling another.)
+        /// </summary>
+        internal static void AssertOverflow<TArg1, TOut>(Func<TArg1, TOut> func, TArg1 arg1)
+        {
+            AssertOverflow(() => func(arg1));
+        }
+
+        /// <summary>
+        /// Asserts that the given operation throws one of InvalidOperationException, ArgumentException (including
+        /// ArgumentOutOfRangeException) or OverflowException. (It's hard to always be consistent bearing in mind
+        /// one method calling another.)
+        /// </summary>
+        internal static void AssertOverflow(Action action)
+        {
+            try
+            {
+                action();
+                Assert.Fail("Expected OverflowException, ArgumentException, ArgumentOutOfRangeException or InvalidOperationException");
+            }
+            catch (OverflowException)
+            {
+            }
+            catch (ArgumentException e)
+            {
+                Assert.IsTrue(e.GetType() == typeof(ArgumentException) || e.GetType() == typeof(ArgumentOutOfRangeException),
+                    "Exception should not be a subtype of ArgumentException, other than ArgumentOutOfRangeException");
+            }
+            catch (InvalidOperationException)
+            {
+            }
+        }
+
         public static void TestComparerStruct<T>(IComparer<T> comparer, T value, T equalValue, T greaterValue) where T : struct
         {
             Assert.AreEqual(0, comparer.Compare(value, equalValue));

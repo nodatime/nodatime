@@ -212,7 +212,11 @@ namespace NodaTime.Calendars
             return 0;
         }
 
-        internal virtual int GetDaysInYear(int year)
+        /// <summary>
+        /// Returns the number of days in the given year, which will always be within 1 year of
+        /// the valid range for the calculator.
+        /// </summary>
+        internal virtual int GetDaysInYear([Trusted] int year)
         {
             return IsLeapYear(year) ? 366 : 365;
         }

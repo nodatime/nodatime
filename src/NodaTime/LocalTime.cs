@@ -810,8 +810,11 @@ namespace NodaTime
         /// <param name="info">The <see cref="SerializationInfo"/> to fetch data from.</param>
         /// <param name="context">The source for this deserialization.</param>
         private LocalTime(SerializationInfo info, StreamingContext context)
-            : this(info.GetInt64(NanoOfDaySerializationName))
         {
+            long nanoOfDay = info.GetInt64(NanoOfDaySerializationName);
+            Preconditions.CheckArgument(nanoOfDay >= 0 && nanoOfDay < NodaConstants.NanosecondsPerStandardDay, "info",
+                "Serialized offset value is outside the range of +/- 18 hours");
+            this.nanoseconds = nanoOfDay;
         }
 
         /// <summary>
