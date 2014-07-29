@@ -2,6 +2,7 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
+using System;
 using NodaTime.Calendars;
 
 namespace NodaTime.Fields
@@ -42,11 +43,14 @@ namespace NodaTime.Fields
                 int dayOfYear = calculator.GetDayOfYear(yearMonthDay);
                 int newDayOfYear = dayOfYear + daysToAdd;
 
-                // TODO(2.0): Validation of year...
                 if (newDayOfYear < 1)
                 {
                     newDayOfYear += calculator.GetDaysInYear(year - 1);
                     year--;
+                    if (year < calculator.MinYear)
+                    {
+                        throw new OverflowException("Date computation would underflow the minimum year of the calendar");
+                    }
                 }
                 else
                 {
@@ -55,10 +59,15 @@ namespace NodaTime.Fields
                     {
                         newDayOfYear -= daysInYear;
                         year++;
+                        if (year > calculator.MaxYear)
+                        {
+                            throw new OverflowException("Date computation would overflow the maximum year of the calendar");
+                        }
                     }
                 }
                 return new LocalDate(calculator.GetYearMonthDay(year, newDayOfYear), calendar);
             }
+            // LocalDate constructor will validate.
             int days = localDate.DaysSinceEpoch + daysToAdd;
             return new LocalDate(days, calendar);
         }

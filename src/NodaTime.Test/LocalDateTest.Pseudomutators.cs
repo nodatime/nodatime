@@ -135,6 +135,19 @@ namespace NodaTime.Test
             Assert.AreEqual(expectedBackward, start.PlusWeeks(-3));
         }
 
+        [Test]
+        [TestCase(-9998, 1, 1, -1)]
+        [TestCase(-9996, 1, 1, -1000)]
+        [TestCase(9999, 12, 31, 1)]
+        [TestCase(9997, 12, 31, 1000)]
+        [TestCase(2000, 1, 1, int.MaxValue)]
+        [TestCase(1, 1, 1, int.MinValue)]
+        public void PlusDays_OutOfRange(int year, int month, int day, int days)
+        {
+            var start = new LocalDate(year, month, day);
+            TestHelper.AssertOverflow(start.PlusDays, days);
+        }
+
         // Each test case gives a day-of-month in November 2011 and a target "next day of week";
         // the result is the next day-of-month in November 2011 with that target day.
         // The tests are picked somewhat arbitrarily...
