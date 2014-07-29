@@ -13,9 +13,7 @@ namespace NodaTime.Utility
     /// and <see cref="LocalDateTime.FromDateTime"/>.
     /// </summary>
     /// <remarks>
-    /// Many of the methods within this class could be expressed as extension methods - but currently
-    /// Noda Time always builds against .NET 2. In a future version, there may be multiple build targets,
-    /// allowing these to become extension methods for the builds which use .NET 3.5 and higher.
+    /// These methods are also available in the form of extension methods in the <c>NodaTime.Extensions</c> namespace.
     /// </remarks>
     /// <threadsafety>All members of this type are thread-safe. See the thread safety section of the user guide for more information.</threadsafety>
     public static class BclConversions
