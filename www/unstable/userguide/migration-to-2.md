@@ -119,3 +119,9 @@ These were not known to be useful, felt "alien" in various ways, and cause issue
 implementation. If you need these features - possibly in a specialized way - please contact the
 mailing list and we may be able to suggest alternative implementations to meet your specific 
 requirements.
+
+Patterns no longer allow ASCII letters (a-z, A-Z) to act as literals when they're not escaped or quoted.
+Quoting make the intention more explicit, and avoids unintended use of a literal when a specifier was
+expected (e.g. a date pattern of "yyyy-mm-dd"). One exception here is 'T', which is allowed for date/time
+patterns only - so a date/time pattern of "yyyy-MM-ddTHH:mm:ss" is still acceptable for ISO-8601, for example.
+If this change breaks your code, simply escape or quote the literals within the pattern.

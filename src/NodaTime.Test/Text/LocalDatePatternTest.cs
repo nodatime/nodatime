@@ -25,7 +25,7 @@ namespace NodaTime.Test.Text
             new Data { Pattern = "%\\", Message = Messages.Parse_EscapeAtEndOfString },
             new Data { Pattern = "MMMMM", Message = Messages.Parse_RepeatCountExceeded, Parameters = { 'M', 4 } },
             new Data { Pattern = "ddddd", Message = Messages.Parse_RepeatCountExceeded, Parameters = { 'd', 4 } },
-            new Data { Pattern = "H%", Message = Messages.Parse_PercentAtEndOfString },
+            new Data { Pattern = "M%", Message = Messages.Parse_PercentAtEndOfString },
             new Data { Pattern = "yyyyy", Message = Messages.Parse_RepeatCountExceeded, Parameters = { 'y', 4 } },
             new Data { Pattern = "YYYYY", Message = Messages.Parse_RepeatCountExceeded, Parameters = { 'Y', 4 } },
             new Data { Pattern = "ggg", Message = Messages.Parse_RepeatCountExceeded, Parameters = { 'g', 2 } },
@@ -41,6 +41,11 @@ namespace NodaTime.Test.Text
             // continue and reject it in the normal path.
             new Data { Pattern = "yyyy'", Message = Messages.Parse_MissingEndQuote, Parameters = { '\'' } },
             new Data { Pattern = "yyyy\\", Message = Messages.Parse_EscapeAtEndOfString },
+
+            // Common typo, which is caught in 2.0...
+            new Data { Pattern = "yyyy-mm-dd", Message = Messages.Parse_UnquotedLiteral, Parameters = { 'm' } },
+            // T isn't valid in a date pattern
+            new Data { Pattern = "yyyy-MM-ddT00:00:00", Message = Messages.Parse_UnquotedLiteral, Parameters = { 'T' } }
         };
 
         internal static Data[] ParseFailureData = {

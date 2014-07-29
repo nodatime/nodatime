@@ -38,8 +38,12 @@ Custom Patterns
 The custom format patterns for local date and time values are provided by combining the [custom patterns for `LocalDate`](localdate-patterns.html) with
 the [custom patterns for `LocalTime`](localtime-patterns.html). The result is simply the combination of the date and the time.
 
-There is one exception to this: when parsing a `LocalDateTime`, an 24-hour (`HH`) specifier is allowed to have the value 24,
-instead of being limited to the range 00-23. This is only permitted if the resulting time of day is midnight, and it indicates
-the end of the specified day. The result is midnight on the following day. For example, using the ISO pattern, the values
-`2012-11-24T24:00:00` and `2012-11-25T00:00:00` are equivalent. A value of 24 is never produced when formatting.
+There are two exceptions to this:
 
+- When parsing a `LocalDateTime`, an 24-hour (`HH`) specifier is allowed to have the value 24, instead of being 
+  limited to the range 00-23. This is only permitted if the resulting time of day is midnight, and it indicates
+  the end of the specified day. The result is midnight on the following day. For example, using the ISO pattern,
+  the values `2012-11-24T24:00:00` and `2012-11-25T00:00:00` are equivalent. A value of 24 is never produced when 
+  formatting.
+- The character 'T' is allowed to be unquoted, and acts as a single-character literal. This is to simplify the very
+  common case where 'T' is used to separate the date and time parts of a value.

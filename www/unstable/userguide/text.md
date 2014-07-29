@@ -126,13 +126,16 @@ Additionally:
 - Where valid, `:` always refers to the culture-specific time separator (a colon in the invariant culture)
 - Where valid, `/` always refers to the culture-specific date separator (a forward slash in the invariant culture)
 
-Any characters within a custom format which *don't* have a specific
-meaning are treated as text literals (when parsing, they must be
-matched exactly; when formatting they are reproduced exactly). This
-is supported mostly for the sake of compatibility. We **strongly
-recommend** that you quote any text literals, to avoid nasty
-surprises if extra characters take on special meanings in later
-versions.
+Any ASCII letters (a-z, A-Z) which are intended to be used as text literals (when parsing, they must be
+matched exactly; when formatting they are reproduced exactly) *must* be quoted or escaped. Even if they do not have
+a specific meaning for the given pattern type, their presence within the pattern would be a potential cause for 
+confusion and error. Additionally, by effectively reserving all ASCII letters, Noda Time has more room for future
+expansion without compatibility concerns. The one exception to this rule is 'T', which is explicitly allowed within
+date/time-based patterns (`LocalDateTime` etc) as a common separator between the two parts. It is *not* permitted
+(without quoting or escaping) in other patterns such as for `LocalDate` or `LocalTime`.
+
+Any non-letter characters within a custom format which *don't* have a specific meaning are treated as text literals.
+You may wish to escape or quote such characters anyway, for the sake of consistency.
 
 ### Related fields
 

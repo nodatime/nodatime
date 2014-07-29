@@ -42,6 +42,8 @@ namespace NodaTime.Test.Text
             new Data { Pattern = "'qwe\\", Message = Messages.Parse_EscapeAtEndOfString },
             new Data { Pattern = "'qwe\\'", Message = Messages.Parse_MissingEndQuote, Parameters = { '\'' } },
             new Data { Pattern = "sss", Message = Messages.Parse_RepeatCountExceeded, Parameters = { 's', 2 } },
+            // T isn't valid in a time pattern
+            new Data { Pattern = "1970-01-01THH:mm:ss", Message = Messages.Parse_UnquotedLiteral, Parameters = { 'T' } }
         };
 
         internal static Data[] ParseFailureData = {
@@ -147,7 +149,7 @@ namespace NodaTime.Test.Text
 
         internal static readonly Data[] TemplateValueData = {
             // Pattern specifies nothing - template value is passed through
-            new Data(new LocalTime(1, 2, 3, 4, 5)) { Culture = Cultures.EnUs, Text = "X", Pattern = "%X", Template = new LocalTime(1, 2, 3, 4, 5) },
+            new Data(new LocalTime(1, 2, 3, 4, 5)) { Culture = Cultures.EnUs, Text = "X", Pattern = "'X'", Template = new LocalTime(1, 2, 3, 4, 5) },
             // Tests for each individual field being propagated
             new Data(new LocalTime(1, 6, 7, 8, 9)) { Culture = Cultures.EnUs, Text = "06:07.0080009", Pattern = "mm:ss.FFFFFFF", Template = new LocalTime(1, 2, 3, 4, 5) },
             new Data(new LocalTime(6, 2, 7, 8, 9)) { Culture = Cultures.EnUs, Text = "06:07.0080009", Pattern = "HH:ss.FFFFFFF", Template = new LocalTime(1, 2, 3, 4, 5) },
@@ -244,7 +246,7 @@ namespace NodaTime.Test.Text
             new Data(12, 0, 0) { Culture = Cultures.EnUs, Text = "PM", Pattern = "tt" },
 
             // Pattern specifies nothing - template value is passed through
-            new Data(new LocalTime(1, 2, 3, 4, 5)) { Culture = Cultures.EnUs, Text = "X", Pattern = "%X", Template = new LocalTime(1, 2, 3, 4, 5) },
+            new Data(new LocalTime(1, 2, 3, 4, 5)) { Culture = Cultures.EnUs, Text = "*", Pattern = "%*", Template = new LocalTime(1, 2, 3, 4, 5) },
             // Tests for each individual field being propagated
             new Data(new LocalTime(1, 6, 7, 8, 9)) { Culture = Cultures.EnUs, Text = "06:07.0080009", Pattern = "mm:ss.FFFFFFF", Template = new LocalTime(1, 2, 3, 4, 5) },
             new Data(new LocalTime(6, 2, 7, 8, 9)) { Culture = Cultures.EnUs, Text = "06:07.0080009", Pattern = "HH:ss.FFFFFFF", Template = new LocalTime(1, 2, 3, 4, 5) },

@@ -312,6 +312,9 @@
   <data name="Parse_UnparsableValuePostParse" xml:space="preserve">
     <value>{0} Value being parsed: '{1}'.</value>
   </data>
+  <data name="Parse_UnquotedLiteral" xml:space="preserve">
+    <value>The character {0} is not a format specifier, and should be quoted to act as a literal.</value>
+  </data>
   <data name="Parse_ValueOutOfRange" xml:space="preserve">
     <value>The value {0} is out of the legal range for the {1} type.</value>
   </data>
