@@ -6,7 +6,6 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
-using System.Threading;
 using NodaTime.Globalization;
 using NodaTime.Properties;
 
@@ -409,13 +408,14 @@ namespace NodaTime.Text.Patterns
 
         private sealed class SteppedPattern : IPartialPattern<TResult>
         {
+            private readonly StringBuilder pooledStringBuilder = new StringBuilder();
+            private bool pooledBuilderInUse = false;
+
             private readonly Action<TResult, StringBuilder> formatActions;
             // This will be null if the pattern is only capable of formatting.
             private readonly ParseAction[] parseActions;
             private readonly Func<TBucket> bucketProvider;
             private readonly PatternFields usedFields;
-            // StringBuilder to reuse where possible for formatting.
-            private StringBuilder cachedBuilder = new StringBuilder();
 
             public SteppedPattern(Action<TResult, StringBuilder> formatActions,
                 ParseAction[] parseActions,
@@ -461,24 +461,33 @@ namespace NodaTime.Text.Patterns
 
             public string Format(TResult value)
             {
-                // Try to borrow the cached builder, in a thread-safe way. (If another thread is using the
-                // builder, this will return null.)
-                StringBuilder builder = Interlocked.CompareExchange(ref cachedBuilder, cachedBuilder, null);
-                if (builder == null)
+                StringBuilder builder = null;
+                lock (pooledStringBuilder)
                 {
-                    builder = new StringBuilder();
+                    if (!pooledBuilderInUse)
+                    {
+                        pooledBuilderInUse = true;
+                        builder = pooledStringBuilder;
+                        builder.Length = 0;
+                    }
                 }
-                else
+                try
                 {
-                    builder.Length = 0;
+                    builder = builder ?? new StringBuilder();
+                    // This will call all the actions in the multicast delegate.
+                    formatActions(value, builder);
+                    return builder.ToString();
                 }
-                // This will call all the actions in the multicast delegate.
-                formatActions(value, builder);
-                string ret = builder.ToString();
-                // Whether we managed to borrow the cached builder or not, we can replace it with the
-                // one we've used, now that we know what to return.
-                cachedBuilder = builder;
-                return ret;
+                finally
+                {
+                    if (builder == pooledStringBuilder)
+                    {
+                        lock (pooledStringBuilder)
+                        {
+                            pooledBuilderInUse = false;
+                        }
+                    }
+                }
             }
 
             public ParseResult<TResult> ParsePartial(ValueCursor cursor)
