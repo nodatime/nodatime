@@ -26,7 +26,7 @@ namespace NodaTime.Test.Text
         };
 
         internal static Data[] ParseFailureData = {
-            new Data { Text = "rubbish", Pattern = "yyyyMMddTHH:mm:ss", Message = Messages.Parse_MismatchedNumber, Parameters = { "yyyy" } },
+            new Data { Text = "rubbish", Pattern = "yyyyMMdd'T'HH:mm:ss", Message = Messages.Parse_MismatchedNumber, Parameters = { "yyyy" } },
             new Data { Text = "17 6", Pattern = "HH h", Message = Messages.Parse_InconsistentValues2, Parameters = {'H', 'h', typeof(LocalTime).FullName}},
             new Data { Text = "17 AM", Pattern = "HH tt", Message = Messages.Parse_InconsistentValues2, Parameters = {'H', 't', typeof(LocalTime).FullName}},
         };
@@ -108,6 +108,8 @@ namespace NodaTime.Test.Text
         /// cannot be run both ways. This ensures that as many round-trip type tests are performed as possible.
         /// </summary>
         internal static readonly Data[] FormatAndParseData = {
+            new Data(2012, 1, 31, 17, 36, 45) { Text = "2012-01-31T17:36:45", Pattern = "yyyy-MM-dd'T'HH:mm:ss" },
+            // Check that unquoted T still works.
             new Data(2012, 1, 31, 17, 36, 45) { Text = "2012-01-31T17:36:45", Pattern = "yyyy-MM-ddTHH:mm:ss" },
             new Data(2012, 4, 28, 0, 0, 0) { Text = "2012 avr. 28", Pattern = "yyyy MMM dd", Culture = Cultures.FrFr },
             new Data { Text = " 1970 ", Pattern = " yyyy " }

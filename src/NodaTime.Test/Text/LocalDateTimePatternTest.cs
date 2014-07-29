@@ -103,9 +103,9 @@ namespace NodaTime.Test.Text
             new Data(MsdnStandardExampleNoMillis) { Pattern = "s", Text = "2009-06-15T13:45:30", Culture = Cultures.FrFr },
 
             // Calendar patterns are invariant
-            new Data(MsdnStandardExample) { Pattern = "(c) yyyy-MM-ddTHH:mm:ss.FFFFFFFFF", Text = "(ISO) 2009-06-15T13:45:30.09", Culture = Cultures.FrFr },
-            new Data(MsdnStandardExample) { Pattern = "yyyy-MM-dd(c)THH:mm:ss.FFFFFFFFF", Text = "2009-06-15(ISO)T13:45:30.09", Culture = Cultures.EnUs },
-            new Data(SampleLocalDateTimeCoptic) { Pattern = "(c) yyyy-MM-ddTHH:mm:ss.FFFFFFFFF", Text = "(Coptic 1) 1976-06-19T21:13:34.123456789", Culture = Cultures.FrFr },
+            new Data(MsdnStandardExample) { Pattern = "(c) yyyy-MM-dd'T'HH:mm:ss.FFFFFFFFF", Text = "(ISO) 2009-06-15T13:45:30.09", Culture = Cultures.FrFr },
+            new Data(MsdnStandardExample) { Pattern = "yyyy-MM-dd(c)'T'HH:mm:ss.FFFFFFFFF", Text = "2009-06-15(ISO)T13:45:30.09", Culture = Cultures.EnUs },
+            new Data(SampleLocalDateTimeCoptic) { Pattern = "(c) yyyy-MM-dd'T'HH:mm:ss.FFFFFFFFF", Text = "(Coptic 1) 1976-06-19T21:13:34.123456789", Culture = Cultures.FrFr },
             new Data(SampleLocalDateTimeCoptic) { Pattern = "yyyy-MM-dd'C'c'T'HH:mm:ss.FFFFFFFFF", Text = "1976-06-19CCoptic 1T21:13:34.123456789", Culture = Cultures.EnUs },
             
             // Use of the semi-colon "comma dot" specifier
@@ -121,6 +121,9 @@ namespace NodaTime.Test.Text
             // Current culture decimal separator is irrelevant when trimming the dot for truncated fractional settings
             new Data(2011, 10, 19, 4, 5, 6) { Pattern="yyyy-MM-dd HH:mm:ss.FFF", Text="2011-10-19 04:05:06", Culture = Cultures.FrFr },
             new Data(2011, 10, 19, 4, 5, 6, 123) { Pattern="yyyy-MM-dd HH:mm:ss.FFF", Text="2011-10-19 04:05:06.123", Culture = Cultures.FrFr },
+
+            // Check that unquoted T still works.
+            new Data(2012, 1, 31, 17, 36, 45) { Text = "2012-01-31T17:36:45", Pattern = "yyyy-MM-ddTHH:mm:ss" },
         };
 
         internal static IEnumerable<Data> ParseData = ParseOnlyData.Concat(FormatAndParseData);

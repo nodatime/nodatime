@@ -70,6 +70,11 @@ namespace NodaTime.Text.Patterns
                 }
                 else
                 {
+                    char current = patternCursor.Current;
+                    if ((current >= 'A' && current <= 'Z') || (current >= 'a' && current <= 'z'))
+                    {
+                        throw new InvalidPatternException(Messages.Parse_UnquotedLiteral, current);
+                    }
                     AddLiteral(patternCursor.Current, ParseResult<TResult>.MismatchedCharacter);
                 }
             }

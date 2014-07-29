@@ -176,9 +176,9 @@ namespace NodaTime.Test.Text
 
             // Tests without zones, copied from LocalDateTimePatternTest
             // Calendar patterns are invariant
-            new Data(MsdnStandardExample) { Pattern = "(c) yyyy-MM-ddTHH:mm:ss.FFFFFFF", Text = "(ISO) 2009-06-15T13:45:30.09", Culture = Cultures.FrFr },
-            new Data(MsdnStandardExample) { Pattern = "yyyy-MM-dd(c)THH:mm:ss.FFFFFFF", Text = "2009-06-15(ISO)T13:45:30.09", Culture = Cultures.EnUs },
-            new Data(SampleZonedDateTimeCoptic) { Pattern = "(c) yyyy-MM-ddTHH:mm:ss.FFFFFFFFF", Text = "(Coptic 1) 1976-06-19T21:13:34.123456789", Culture = Cultures.FrFr },
+            new Data(MsdnStandardExample) { Pattern = "(c) yyyy-MM-dd'T'HH:mm:ss.FFFFFFF", Text = "(ISO) 2009-06-15T13:45:30.09", Culture = Cultures.FrFr },
+            new Data(MsdnStandardExample) { Pattern = "yyyy-MM-dd(c)'T'HH:mm:ss.FFFFFFF", Text = "2009-06-15(ISO)T13:45:30.09", Culture = Cultures.EnUs },
+            new Data(SampleZonedDateTimeCoptic) { Pattern = "(c) yyyy-MM-dd'T'HH:mm:ss.FFFFFFFFF", Text = "(Coptic 1) 1976-06-19T21:13:34.123456789", Culture = Cultures.FrFr },
             new Data(SampleZonedDateTimeCoptic) { Pattern = "yyyy-MM-dd'C'c'T'HH:mm:ss.FFFFFFFFF", Text = "1976-06-19CCoptic 1T21:13:34.123456789", Culture = Cultures.EnUs },
             
             // Use of the semi-colon "comma dot" specifier
@@ -190,6 +190,9 @@ namespace NodaTime.Test.Text
             // Standard patterns with a time zone provider
             new Data(2013, 01, 13, 15, 44, 30, 0, TestZone1) { Pattern = "G", Text = "2013-01-13T15:44:30 ab (+02)", Culture = Cultures.FrFr },
             new Data(2013, 01, 13, 15, 44, 30, 90, TestZone1) { Pattern = "F", Text = "2013-01-13T15:44:30.09 ab (+02)", Culture = Cultures.FrFr },
+
+            // Check that unquoted T still works.
+            new Data(2012, 1, 31, 17, 36, 45) { Text = "2012-01-31T17:36:45", Pattern = "yyyy-MM-ddTHH:mm:ss" },
         };
 
         internal static IEnumerable<Data> ParseData = ParseOnlyData.Concat(FormatAndParseData);

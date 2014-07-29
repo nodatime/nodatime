@@ -646,6 +646,15 @@ namespace NodaTime.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The character {0} is not a format specifier, and should be quoted to act as a literal..
+        /// </summary>
+        internal static string Parse_UnquotedLiteral {
+            get {
+                return ResourceManager.GetString("Parse_UnquotedLiteral", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The value {0} is out of the legal range for the {1} type..
         /// </summary>
         internal static string Parse_ValueOutOfRange {

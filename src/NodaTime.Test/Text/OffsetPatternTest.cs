@@ -42,8 +42,8 @@ namespace NodaTime.Test.Text
             new Data(Offset.MaxValue) { Culture = Cultures.EnUs, Text = "m", Pattern = "\\m" },
             new Data(Offset.MaxValue) { Culture = Cultures.EnUs, Text = "m", Pattern = "'m'" },
             new Data(Offset.MaxValue) { Culture = Cultures.EnUs, Text = "mmmmmmmmmm", Pattern = "'mmmmmmmmmm'" },
-            new Data(Offset.MaxValue) { Culture = Cultures.EnUs, Text = "z", Pattern = "%z" },
-            new Data(Offset.MaxValue) { Culture = Cultures.EnUs, Text = "zqw", Pattern = "zqw" },
+            new Data(Offset.MaxValue) { Culture = Cultures.EnUs, Text = "z", Pattern = "'z'" },
+            new Data(Offset.MaxValue) { Culture = Cultures.EnUs, Text = "zqw", Pattern = "'zqw'" },
             new Data(3, 0, 0, true) { Culture = Cultures.EnUs, Text = "-", Pattern = "%-" },
             new Data(3, 0, 0) { Culture = Cultures.EnUs, Text = "+", Pattern = "%+" },
             new Data(3, 0, 0, true) { Culture = Cultures.EnUs, Text = "-", Pattern = "%+" },
@@ -56,8 +56,8 @@ namespace NodaTime.Test.Text
         /// Test data that can only be used to test successful parsing.
         /// </summary>
         internal static readonly Data[] ParseOnlyData = {
-            new Data(Offset.Zero) { Culture = Cultures.EnUs, Text = "z", Pattern = "%z" },
-            new Data(Offset.Zero) { Culture = Cultures.EnUs, Text = "zqw", Pattern = "zqw" },
+            new Data(Offset.Zero) { Culture = Cultures.EnUs, Text = "*", Pattern = "%*" },
+            new Data(Offset.Zero) { Culture = Cultures.EnUs, Text = "zqw", Pattern = "'zqw'" },
             new Data(Offset.Zero) { Culture = Cultures.EnUs, Text = "-", Pattern = "%-" },
             new Data(Offset.Zero) { Culture = Cultures.EnUs, Text = "+", Pattern = "%+" },
             new Data(Offset.Zero) { Culture = Cultures.EnUs, Text = "-", Pattern = "%+" },
@@ -115,7 +115,7 @@ namespace NodaTime.Test.Text
             new Data(Offset.Zero) { Culture = Cultures.EnUs, Text = "a", Pattern = ".H", Message = Messages.Parse_MismatchedCharacter, Parameters = {'.'}},
             new Data(Offset.Zero) { Culture = Cultures.EnUs, Text = "a", Pattern = "\\'", Message = Messages.Parse_EscapedCharacterMismatch, Parameters = {'\''} },
             new Data(Offset.Zero) { Culture = Cultures.EnUs, Text = "axc", Pattern = "'abc'", Message = Messages.Parse_QuotedStringMismatch},
-            new Data(Offset.Zero) { Culture = Cultures.EnUs, Text = "z", Pattern = "%y", Message = Messages.Parse_MismatchedCharacter, Parameters = {'y'} },
+            new Data(Offset.Zero) { Culture = Cultures.EnUs, Text = "z", Pattern = "%*", Message = Messages.Parse_MismatchedCharacter, Parameters = {'*'} },
             new Data(Offset.Zero) { Culture = Cultures.EnUs, Text = "24", Pattern = "HH", Message = Messages.Parse_FieldValueOutOfRange, Parameters = {24, 'H', typeof(Offset) }},
             new Data(Offset.Zero) { Culture = Cultures.EnUs, Text = "60", Pattern = "mm", Message = Messages.Parse_FieldValueOutOfRange, Parameters = {60, 'm', typeof(Offset) }},
             new Data(Offset.Zero) { Culture = Cultures.EnUs, Text = "60", Pattern = "ss", Message = Messages.Parse_FieldValueOutOfRange, Parameters = {60, 's', typeof(Offset) }},
