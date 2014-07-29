@@ -43,20 +43,5 @@ namespace NodaTime.Test.Fields
             Assert.AreEqual(expected, SampleField.Subtract(minuendTime, subtrahendTime));
             Assert.AreEqual(-expected, SampleField.Subtract(subtrahendTime, minuendTime));
         }
-
-
-        [Test]
-        public void Add_OverflowOnAddOrSubtract()
-        {
-            Assert.Throws<OverflowException>(() => TimePeriodField.Seconds.Add(LocalTime.Midnight, long.MaxValue));
-            Assert.Throws<OverflowException>(() => TimePeriodField.Seconds.Add(LocalTime.Midnight, long.MinValue));
-        }
-
-        [Test]
-        public void Add_MinLongNanoseconds()
-        {
-            // Without a bit of care, this would fail.
-            TimePeriodField.Nanoseconds.Add(LocalTime.Midnight, long.MinValue);
-        }
     }
 }
