@@ -173,6 +173,12 @@
     <Compile Include="DateInterval.cs" />
     <Compile Include="DateTimeZoneProviders.cs" />
     <Compile Include="Extensions\ClockExtensions.cs" />
+    <Compile Include="Extensions\IsoDayOfWeekExtensions.cs" />
+    <Compile Include="Extensions\DayOfWeekExtensions.cs" />
+    <Compile Include="Extensions\StopwatchExtensions.cs" />
+    <Compile Include="Extensions\TimeSpanExtensions.cs" />
+    <Compile Include="Extensions\DateTimeOffsetExtensions.cs" />
+    <Compile Include="Extensions\DateTimeExtensions.cs" />
     <Compile Include="Extensions\NamespaceDoc.cs" />
     <Compile Include="Fields\FixedLengthDatePeriodField.cs" />
     <Compile Include="Fields\TimePeriodField.cs" />

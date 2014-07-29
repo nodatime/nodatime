@@ -141,6 +141,13 @@ make things slightly smoother:
     DayOfWeek bcl = BclConversions.ToDayOfWeek(IsoDayOfWeek.Wednesday);
     IsoDayOfWeek iso = BclConversions.ToIsoDayOfWeek(DayOfWeek.Wednesday);
 
+Extension methods
+=================
+
+All of the above methods are also available in the `NodaTime.Extensions` namespace,
+as extension methods. Each extended type has a separate type declaring extension methods on
+it, so that with C# 6 you can import just the extension methods you want to use.
+
 Any others?
 ===========
 
