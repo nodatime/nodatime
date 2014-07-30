@@ -71,39 +71,12 @@ namespace NodaTime.Text
 
             public string Format(Instant value)
             {
-                if (value == Instant.MinValue)
-                {
-                    return minLabel;
-                }
-                if (value == Instant.MaxValue)
-                {
-                    return maxLabel;
-                }
-                // FIXME(2.0): Stop using ticks!
-                if (value.Ticks < CalendarSystem.Iso.MinTicks)
-                {
-                    return string.Format("{0} {1} ticks is earlier than the earliest supported ISO calendar value.",
-                        InstantPattern.OutOfRangeLabel, value.Ticks);
-                }
-                if (value.Ticks > CalendarSystem.Iso.MaxTicks)
-                {
-                    return string.Format("{0} {1} ticks is later than the latest supported ISO calendar value.",
-                        InstantPattern.OutOfRangeLabel, value.Ticks);
-                }
                 return pattern.Format(value.InUtc().LocalDateTime);
             }
 
             public ParseResult<Instant> Parse(string text)
             {
-                if (text == minLabel)
-                {
-                    return ParseResult<Instant>.ForValue(Instant.MinValue);
-                }
-                if (text == maxLabel)
-                {
-                    return ParseResult<Instant>.ForValue(Instant.MaxValue);
-                }
-                return pattern.Parse(text).Convert(local => local.ToLocalInstant().MinusZeroOffset());
+                return pattern.Parse(text).Convert(local => new Instant(local.Date.DaysSinceEpoch, local.NanosecondOfDay));
             }
         }
     }
