@@ -71,7 +71,7 @@ namespace NodaTime.TimeZones
     /// </summary>
     /// <remarks>
     /// <para>
-    /// This delegate is consumed by <see cref="LocalDateTime.InZone"/> and <see cref="DateTimeZone.ResolveLocal"/>,
+    /// This delegate is consumed by <see cref="LocalDateTime.InZone"/> and <see cref="DateTimeZone.ResolveLocal(LocalDateTime, ZoneLocalMappingResolver)"/>,
     /// among others. It provides the strategy for converting a <see cref="ZoneLocalMapping"/> (the result of attempting
     /// to map a local date and time to a target time zone) to a <see cref="ZonedDateTime"/>.
     /// </para>

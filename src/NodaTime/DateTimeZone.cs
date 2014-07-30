@@ -36,7 +36,7 @@ namespace NodaTime
     ///     skipped times.</description>
     ///   </item>
     ///   <item>
-    ///     <description><see cref="ResolveLocal"/> will apply a <see cref="ZoneLocalMappingResolver"/> to the result of
+    ///     <description><see cref="ResolveLocal(LocalDateTime, ZoneLocalMappingResolver)"/> will apply a <see cref="ZoneLocalMappingResolver"/> to the result of
     ///     a mapping.</description>
     ///   </item>
     ///   <item>
@@ -231,7 +231,7 @@ namespace NodaTime
         /// your use case.
         /// </para>
         /// <para>
-        /// As an alternative, consider <see cref="ResolveLocal"/>, which uses a caller-provided strategy to
+        /// As an alternative, consider <see cref="ResolveLocal(LocalDateTime, ZoneLocalMappingResolver)"/>, which uses a caller-provided strategy to
         /// convert the <see cref="ZoneLocalMapping"/> returned here to a <see cref="ZonedDateTime"/>.
         /// </para>
         /// </remarks>
@@ -342,6 +342,51 @@ namespace NodaTime
             return resolver(MapLocal(localDateTime));
         }
 
+        internal ZonedDateTime ResolveLocal(LocalDateTime localDateTime,
+            [Trusted] [NotNull] AmbiguousTimeResolver ambiguousResolver,
+            [Trusted] [NotNull] SkippedTimeResolver skippedResolver)
+        {
+            LocalInstant localInstant = localDateTime.ToLocalInstant();
+            Instant firstGuess = localInstant.MinusZeroOffset();
+            ZoneInterval interval = GetZoneInterval(firstGuess);
+
+            // Most of the time we'll go into here... the local instant and the instant
+            // are close enough that we've found the right instant.
+            if (interval.Contains(localInstant))
+            {
+                ZonedDateTime guessZoned = new ZonedDateTime(localDateTime.WithOffset(interval.WallOffset), this);
+                ZoneInterval earlier = GetEarlierMatchingInterval(interval, localInstant);
+                if (earlier != null)
+                {
+                    ZonedDateTime earlierZoned = new ZonedDateTime(localDateTime.WithOffset(earlier.WallOffset), this);
+                    return ambiguousResolver(earlierZoned, guessZoned);
+                }
+                ZoneInterval later = GetLaterMatchingInterval(interval, localInstant);
+                if (later != null)
+                {
+                    ZonedDateTime laterZoned = new ZonedDateTime(localDateTime.WithOffset(later.WallOffset), this);
+                    return ambiguousResolver(guessZoned, laterZoned);
+                }
+                return guessZoned;
+            }
+            else
+            {
+                // Our first guess was wrong. Either we need to change interval by one (either direction)
+                // or we're in a gap.
+                ZoneInterval earlier = GetEarlierMatchingInterval(interval, localInstant);
+                if (earlier != null)
+                {
+                    return new ZonedDateTime(localDateTime.WithOffset(earlier.WallOffset), this);
+                }
+                ZoneInterval later = GetLaterMatchingInterval(interval, localInstant);
+                if (later != null)
+                {
+                    return new ZonedDateTime(localDateTime.WithOffset(later.WallOffset), this);
+                }
+                return skippedResolver(localDateTime, this, GetIntervalBeforeGap(localInstant), GetIntervalAfterGap(localInstant));
+            }
+        }
+
         /// <summary>
         /// Maps the given <see cref="LocalDateTime"/> to the corresponding <see cref="ZonedDateTime"/>, if and only if
         /// that mapping is unambiguous in this time zone.  Otherwise, <see cref="SkippedTimeException"/> or
@@ -349,7 +394,7 @@ namespace NodaTime
         /// date/time is skipped entirely.
         /// </summary>
         /// <remarks>
-        /// See <see cref="AtLeniently"/> and <see cref="ResolveLocal"/> for alternative ways to map a local time to a
+        /// See <see cref="AtLeniently"/> and <see cref="ResolveLocal(LocalDateTime, ZoneLocalMappingResolver)"/> for alternative ways to map a local time to a
         /// specific instant.
         /// </remarks>
         /// <param name="localDateTime">The local date and time to map into this time zone.</param>
@@ -358,7 +403,7 @@ namespace NodaTime
         /// <returns>The unambiguous matching <see cref="ZonedDateTime"/> if it exists.</returns>
         public ZonedDateTime AtStrictly(LocalDateTime localDateTime)
         {
-            return MapLocal(localDateTime).Single();
+            return ResolveLocal(localDateTime, Resolvers.ThrowWhenAmbiguous, Resolvers.ThrowWhenSkipped);
         }
 
         /// <summary>
@@ -367,7 +412,7 @@ namespace NodaTime
         /// zone interval after the "gap".
         /// </summary>
         /// <remarks>
-        /// See <see cref="AtStrictly"/> and <see cref="ResolveLocal"/> for alternative ways to map a local time to a
+        /// See <see cref="AtStrictly"/> and <see cref="ResolveLocal(LocalDateTime, ZoneLocalMappingResolver)"/> for alternative ways to map a local time to a
         /// specific instant.
         /// </remarks>
         /// <param name="localDateTime">The local date/time to map.</param>
@@ -375,7 +420,7 @@ namespace NodaTime
         /// or the start of the later zone interval if the given local date/time is skipped.</returns>
         public ZonedDateTime AtLeniently(LocalDateTime localDateTime)
         {
-            return ResolveLocal(localDateTime, Resolvers.LenientResolver);
+            return ResolveLocal(localDateTime, Resolvers.ReturnLater, Resolvers.ReturnStartOfIntervalAfter);
         }
         #endregion
 
