@@ -983,7 +983,7 @@ namespace NodaTime
         /// <remarks>
         /// See <see cref="InZoneStrictly"/> and <see cref="InZoneLeniently"/> for alternative ways to map a local time
         /// to a specific instant.
-        /// This is a convenience method for calling <see cref="DateTimeZone.ResolveLocal"/>.
+        /// This is a convenience method for calling <see cref="DateTimeZone.ResolveLocal(LocalDateTime, ZoneLocalMappingResolver)"/>.
         /// </remarks>
         /// <param name="zone">The time zone to map this local date and time into</param>
         /// <param name="resolver">The resolver to apply to the mapping.</param>
