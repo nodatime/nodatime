@@ -222,104 +222,6 @@ namespace NodaTime
         public abstract ZoneInterval GetZoneInterval(Instant instant);
 
         /// <summary>
-        /// Finds all zone intervals for the given local instant. Usually there's one (i.e. only a single
-        /// instant is mapped to the given local instant within the time zone) but during DST transitions
-        /// there can be either 0 (the given local instant doesn't exist, e.g. local time skipped from 1am to
-        /// 2am, but you gave us 1.30am) or 2 (the given local instant is ambiguous, e.g. local time skipped
-        /// from 2am to 1am, but you gave us 1.30am).
-        /// </summary>
-        /// <remarks>
-        /// This method is implemented in terms of GetZoneInterval(Instant) within DateTimeZone,
-        /// and should work for any zone. However, internal derived classes may override this method
-        /// for optimization purposes, e.g. if the zone interval is always ambiguous with
-        /// a fixed value.
-        /// </remarks>
-        /// <param name="localInstant">The local instant to find matching zone intervals for</param>
-        /// <returns>The struct containing up to two ZoneInterval references.</returns>
-        internal virtual ZoneIntervalPair GetZoneIntervalPair(LocalInstant localInstant)
-        {
-            // TODO(2.0): This (and ZoneIntervalPair itself) are only used within AtStartOfDay.
-            // There must be a simpler way of making that work...
-            Instant firstGuess = localInstant.MinusZeroOffset();
-            ZoneInterval interval = GetZoneInterval(firstGuess);
-
-            // Most of the time we'll go into here... the local instant and the instant
-            // are close enough that we've found the right instant.
-            if (interval.Contains(localInstant))
-            {
-                ZoneInterval earlier = GetEarlierMatchingInterval(interval, localInstant);
-                if (earlier != null)
-                {
-                    return ZoneIntervalPair.Ambiguous(earlier, interval);
-                }
-                ZoneInterval later = GetLaterMatchingInterval(interval, localInstant);
-                if (later != null)
-                {
-                    return ZoneIntervalPair.Ambiguous(interval, later);
-                }
-                return ZoneIntervalPair.Unambiguous(interval);
-            }
-            else
-            {
-                // Our first guess was wrong. Either we need to change interval by one (either direction)
-                // or we're in a gap.
-                ZoneInterval earlier = GetEarlierMatchingInterval(interval, localInstant);
-                if (earlier != null)
-                {
-                    return ZoneIntervalPair.Unambiguous(earlier);
-                }
-                ZoneInterval later = GetLaterMatchingInterval(interval, localInstant);
-                if (later != null)
-                {
-                    return ZoneIntervalPair.Unambiguous(later);
-                }
-                return ZoneIntervalPair.NoMatch;
-            }
-        }
-
-        #endregion
-
-        #region Conversion between local dates/times and ZonedDateTime
-        /// <summary>
-        /// Returns the earliest valid <see cref="ZonedDateTime"/> with the given local date.
-        /// </summary>
-        /// <remarks>
-        /// If midnight exists unambiguously on the given date, it is returned.
-        /// If the given date has an ambiguous start time (e.g. the clocks go back from 1am to midnight)
-        /// then the earlier ZonedDateTime is returned. If the given date has no midnight (e.g. the clocks
-        /// go forward from midnight to 1am) then the earliest valid value is returned; this will be the instant
-        /// of the transition.
-        /// </remarks>
-        /// <param name="date">The local date to map in this time zone.</param>
-        /// <exception cref="SkippedTimeException">The entire day was skipped due to a very large time zone transition.
-        /// (This is extremely rare.)</exception>
-        /// <returns>The <see cref="ZonedDateTime"/> representing the earliest time in the given date, in this time zone.</returns>
-        public ZonedDateTime AtStartOfDay(LocalDate date)
-        {
-            LocalDateTime midnight = date.AtMidnight();
-            LocalInstant localInstant = midnight.ToLocalInstant();
-            ZoneIntervalPair pair = GetZoneIntervalPair(localInstant);
-            switch (pair.MatchingIntervals)
-            {
-                case 0:
-                    var interval = GetIntervalAfterGap(localInstant);
-                    var offsetDateTime = new OffsetDateTime(interval.Start, interval.WallOffset, date.Calendar);
-                    // It's possible that the entire day is skipped. For example, Samoa skipped December 30th 2011.
-                    // We know the two values are in the same calendar here, so we just need to check the YearMonthDay.
-                    if (offsetDateTime.YearMonthDay != date.YearMonthDay)
-                    {
-                        throw new SkippedTimeException(midnight, this);
-                    }
-                    return new ZonedDateTime(offsetDateTime, this);
-                case 1:
-                case 2:
-                    return new ZonedDateTime(midnight.WithOffset(pair.EarlyInterval.WallOffset), this);
-                default:
-                    throw new InvalidOperationException("This won't happen.");
-            }
-        }
-
-        /// <summary>
         /// Returns complete information about how the given <see cref="LocalDateTime" /> is mapped in this time zone.
         /// </summary>
         /// <remarks>
@@ -335,7 +237,7 @@ namespace NodaTime
         /// </remarks>
         /// <param name="localDateTime">The local date and time to map in this time zone.</param>
         /// <returns>A mapping of the given local date and time to zero, one or two zoned date/time values.</returns>
-        public ZoneLocalMapping MapLocal(LocalDateTime localDateTime)
+        public virtual ZoneLocalMapping MapLocal(LocalDateTime localDateTime)
         {
             LocalInstant localInstant = localDateTime.ToLocalInstant();
             Instant firstGuess = localInstant.MinusZeroOffset();
@@ -372,6 +274,48 @@ namespace NodaTime
                     return new ZoneLocalMapping(this, localDateTime, later, later, 1);
                 }
                 return new ZoneLocalMapping(this, localDateTime, GetIntervalBeforeGap(localInstant), GetIntervalAfterGap(localInstant), 0);
+            }
+        }
+        #endregion
+
+        #region Conversion between local dates/times and ZonedDateTime
+        /// <summary>
+        /// Returns the earliest valid <see cref="ZonedDateTime"/> with the given local date.
+        /// </summary>
+        /// <remarks>
+        /// If midnight exists unambiguously on the given date, it is returned.
+        /// If the given date has an ambiguous start time (e.g. the clocks go back from 1am to midnight)
+        /// then the earlier ZonedDateTime is returned. If the given date has no midnight (e.g. the clocks
+        /// go forward from midnight to 1am) then the earliest valid value is returned; this will be the instant
+        /// of the transition.
+        /// </remarks>
+        /// <param name="date">The local date to map in this time zone.</param>
+        /// <exception cref="SkippedTimeException">The entire day was skipped due to a very large time zone transition.
+        /// (This is extremely rare.)</exception>
+        /// <returns>The <see cref="ZonedDateTime"/> representing the earliest time in the given date, in this time zone.</returns>
+        public ZonedDateTime AtStartOfDay(LocalDate date)
+        {
+            LocalDateTime midnight = date.AtMidnight();
+            var mapping = MapLocal(midnight);
+            switch (mapping.Count)
+            {
+                // Midnight doesn't exist. Maybe we just skip to 1am (or whatever), or maybe the whole day is missed.
+                case 0:
+                    var interval = mapping.LateInterval;
+                    var offsetDateTime = new OffsetDateTime(interval.Start, interval.WallOffset, date.Calendar);
+                    // It's possible that the entire day is skipped. For example, Samoa skipped December 30th 2011.
+                    // We know the two values are in the same calendar here, so we just need to check the YearMonthDay.
+                    if (offsetDateTime.YearMonthDay != date.YearMonthDay)
+                    {
+                        throw new SkippedTimeException(midnight, this);
+                    }
+                    return new ZonedDateTime(offsetDateTime, this);
+                // Unambiguous or occurs twice, we can just use the offset from the earlier interval.
+                case 1:
+                case 2:
+                    return new ZonedDateTime(midnight.WithOffset(mapping.EarlyInterval.WallOffset), this);
+                default:
+                    throw new InvalidOperationException("This won't happen.");
             }
         }
 

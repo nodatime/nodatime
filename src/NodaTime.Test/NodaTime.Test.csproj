@@ -206,7 +206,7 @@
     <Compile Include="DateTimeZoneTest.GetZoneIntervals.cs">
       <DependentUpon>DateTimeZoneTest.cs</DependentUpon>
     </Compile>
-    <Compile Include="DateTimeZoneTest.GetZoneIntervalPair.cs">
+    <Compile Include="DateTimeZoneTest.MapLocal.cs">
       <DependentUpon>DateTimeZoneTest.cs</DependentUpon>
     </Compile>
     <Compile Include="DateTimeZoneTest.LocalConversions.cs">
@@ -274,7 +274,6 @@
     <Compile Include="TimeZones\TzdbZoneLocationTest.cs" />
     <Compile Include="TimeZones\TzTestHelper.cs" />
     <Compile Include="TimeZones\ZoneEqualityComparerTest.cs" />
-    <Compile Include="TimeZones\ZoneIntervalPairTest.cs" />
     <Compile Include="TimeZones\ZoneIntervalTest.cs" />
     <Compile Include="TimeZones\ZoneRecurrenceTest.cs" />
     <Compile Include="TimeZones\ZoneYearOffsetTest.cs" />
