@@ -236,44 +236,6 @@ namespace NodaTime.Test
         }
 
         [Test]
-        [TestCase("1990-01-01T00:00:00Z", false, Description = "Before interval")]
-        [TestCase("2000-01-01T00:00:00Z", true, Description = "Start of interval")]
-        [TestCase("2010-01-01T00:00:00Z", true, Description = "Within interval")]
-        [TestCase("2020-01-01T00:00:00Z", false, Description = "End instant of interval")]
-        [TestCase("2030-01-01T00:00:00Z", false, Description = "After interval")]
-        public void Contains(string candidateText, bool expectedResult)
-        {
-            var start = Instant.FromUtc(2000, 1, 1, 0, 0);
-            var end = Instant.FromUtc(2020, 1, 1, 0, 0);
-            var interval = new Interval(start, end);
-            var candidate = InstantPattern.ExtendedIsoPattern.Parse(candidateText).Value;
-            Assert.AreEqual(expectedResult, interval.Contains(candidate));
-        }
-
-        [Test]
-        public void Contains_EndOfTime()
-        {
-            var interval = new Interval(NodaConstants.UnixEpoch, Instant.MaxValue);
-            Assert.IsTrue(interval.Contains(Instant.MaxValue));
-        }
-
-        [Test]
-        public void Contains_EmptyInterval()
-        {
-            var instant = NodaConstants.UnixEpoch;
-            var interval = new Interval(instant, instant);
-            Assert.IsFalse(interval.Contains(instant));
-        }
-
-        [Test]
-        public void Contains_EmptyInterval_EndOfTime()
-        {
-            var instant = Instant.MaxValue;
-            var interval = new Interval(instant, instant);
-            Assert.IsTrue(interval.Contains(instant));
-        }
-
-        [Test]
         [TestCase(-101L, -2L)]
         [TestCase(-100L, -1L)]
         [TestCase(-99L, -1L)]
