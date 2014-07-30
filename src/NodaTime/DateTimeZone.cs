@@ -238,6 +238,8 @@ namespace NodaTime
         /// <returns>The struct containing up to two ZoneInterval references.</returns>
         internal virtual ZoneIntervalPair GetZoneIntervalPair(LocalInstant localInstant)
         {
+            // TODO(2.0): This (and ZoneIntervalPair itself) are only used within AtStartOfDay.
+            // There must be a simpler way of making that work...
             Instant firstGuess = localInstant.MinusZeroOffset();
             ZoneInterval interval = GetZoneInterval(firstGuess);
 

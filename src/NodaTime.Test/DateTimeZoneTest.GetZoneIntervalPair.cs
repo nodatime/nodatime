@@ -30,6 +30,8 @@ namespace NodaTime.Test
         private static readonly Offset Minus5 = Offset.FromHours(-5);
         private static readonly Offset Plus10 = Offset.FromHours(10);
 
+        private static readonly LocalInstant NearStartOfTime = new LocalInstant(-9998, 1, 5, 0, 0);
+        private static readonly LocalInstant NearEndOfTime = new LocalInstant(9999, 12, 25, 0, 0);
         private static readonly LocalInstant TransitionMinus5 = Transition.Plus(Minus5);
         private static readonly LocalInstant TransitionPlus10 = Transition.Plus(Plus10);
         private static readonly LocalInstant MidTransition = Transition.Plus(Offset.Zero);
@@ -47,17 +49,17 @@ namespace NodaTime.Test
 
         // Time zone with an ambiguity
         [Test]
-        public void ZoneWithAmbiguity_StartOfTime()
+        public void ZoneWithAmbiguity_NearStartOfTime()
         {
-            var actual = ZoneWithAmbiguity.GetZoneIntervalPair(LocalInstant.MinValue);
+            var actual = ZoneWithAmbiguity.GetZoneIntervalPair(new LocalInstant(-9998, 1, 5, 0, 0));
             var expected = ZoneIntervalPair.Unambiguous(IntervalBeforeAmbiguity);
             Assert.AreEqual(expected, actual);
         }
 
         [Test]
-        public void ZoneWithAmbiguity_EndOfTime()
+        public void ZoneWithAmbiguity_NearEndOfTime()
         {
-            var actual = ZoneWithAmbiguity.GetZoneIntervalPair(LocalInstant.MaxValue);
+            var actual = ZoneWithAmbiguity.GetZoneIntervalPair(NearEndOfTime);
             var expected = ZoneIntervalPair.Unambiguous(IntervalAfterAmbiguity);
             Assert.AreEqual(expected, actual);
         }
@@ -128,17 +130,17 @@ namespace NodaTime.Test
 
         // Time zone with a gap
         [Test]
-        public void ZoneWithGap_StartOfTime()
+        public void ZoneWithGap_NearStartOfTime()
         {
-            var actual = ZoneWithGap.GetZoneIntervalPair(LocalInstant.MinValue);
+            var actual = ZoneWithGap.GetZoneIntervalPair(NearStartOfTime);
             var expected = ZoneIntervalPair.Unambiguous(IntervalBeforeGap);
             Assert.AreEqual(expected, actual);
         }
 
         [Test]
-        public void ZoneWithGap_EndOfTime()
+        public void ZoneWithGap_NearEndOfTime()
         {
-            var actual = ZoneWithGap.GetZoneIntervalPair(LocalInstant.MaxValue);
+            var actual = ZoneWithGap.GetZoneIntervalPair(NearEndOfTime);
             var expected = ZoneIntervalPair.Unambiguous(IntervalAfterGap);
             Assert.AreEqual(expected, actual);
         }

@@ -111,7 +111,10 @@ namespace NodaTime.Test.TimeZones.IO
             Dio.TestZoneIntervalTransition(null, Instant.MinValue);
             Dio.TestZoneIntervalTransition(null, Instant.MaxValue);
             Dio.TestZoneIntervalTransition(null, Instant.MinValue.PlusTicks(1));
-            Dio.TestZoneIntervalTransition(null, Instant.MaxValue.PlusTicks(-1));
+            // The ZoneIntervalTransition has precision to the tick (with no real need to change that).
+            // Round to the tick just lower than Instant.MaxValue...
+            Instant tickBeforeMaxInstant = Instant.FromTicksSinceUnixEpoch(Instant.MaxValue.Ticks);
+            Dio.TestZoneIntervalTransition(null, tickBeforeMaxInstant);
 
             // Encoding as hours-since-previous.
             Instant previous = Instant.FromUtc(1990, 1, 1, 11, 30);  // arbitrary
@@ -126,7 +129,7 @@ namespace NodaTime.Test.TimeZones.IO
             Dio.TestZoneIntervalTransition(previous, previous + Duration.FromHours(
                 DateTimeZoneWriter.ZoneIntervalConstants.MinValueForMinutesSinceEpoch));  // out of range
             // A large difference from the previous transition.
-            Dio.TestZoneIntervalTransition(Instant.MinValue.PlusTicks(1), Instant.MaxValue.PlusTicks(-1));
+            Dio.TestZoneIntervalTransition(Instant.MinValue.PlusTicks(1), tickBeforeMaxInstant);
 
             // Encoding as minutes-since-epoch.
             Instant epoch = DateTimeZoneWriter.ZoneIntervalConstants.EpochForMinutesSinceEpoch;

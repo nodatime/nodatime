@@ -20,13 +20,13 @@ namespace NodaTime.Test
         [Test, Category("Formatting"), Category("Format")]
         public void TestToString_MinValue()
         {
-            TestToStringBase(Instant.MinValue, InstantPattern.DefaultMinLabel);
+            TestToStringBase(Instant.MinValue, "-9998-01-01T00:00:00Z");
         }
 
         [Test, Category("Formatting"), Category("Format")]
         public void TestToString_MaxValue()
         {
-            TestToStringBase(Instant.MaxValue, InstantPattern.DefaultMaxLabel);
+            TestToStringBase(Instant.MaxValue, "9999-12-31T23:59:59Z");
         }
 
         [Test, Category("Formatting"), Category("Format")]

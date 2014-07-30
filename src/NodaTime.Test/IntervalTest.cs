@@ -100,7 +100,7 @@ namespace NodaTime.Test
         public void XmlSerialization_Extremes()
         {
             var value = new Interval(Instant.MinValue, Instant.MaxValue);
-            TestHelper.AssertXmlRoundtrip(value, "<value start=\"MinInstant\" end=\"MaxInstant\" />");
+            TestHelper.AssertXmlRoundtrip(value, "<value start=\"-9998-01-01T00:00:00Z\" end=\"9999-12-31T23:59:59.999999999Z\" />");
         }
 
         [Test]

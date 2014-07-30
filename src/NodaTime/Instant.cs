@@ -39,20 +39,20 @@ namespace NodaTime
         , ISerializable
 #endif
     {
+        // These correspond to -9998-01-01 and 9999-12-31 respectively.
+        private const int MinDay = -4371222;
+        private const int MaxDay = 2932896;
+
         /// <summary>
         /// Represents the smallest possible <see cref="Instant"/>.
         /// </summary>
-        /// <remarks>
-        /// Within Noda Time, this is also used to represent 'the beginning of time'.
-        /// </remarks>
-        public static readonly Instant MinValue = new Instant(Duration.FromTicks(long.MinValue));
+        /// <remarks>This value is equivalent to -9998-01-01T00:00:00Z</remarks>
+        public static readonly Instant MinValue = new Instant(MinDay, 0);
         /// <summary>
         /// Represents the largest possible <see cref="Instant"/>.
         /// </summary>
-        /// <remarks>
-        /// Within Noda Time, this is also used to represent 'the end of time'.
-        /// </remarks>
-        public static readonly Instant MaxValue = new Instant(Duration.FromTicks(long.MaxValue));
+        /// <remarks>This value is equivalent to 9999-12-31T23:59:59.999999999Z</remarks>
+        public static readonly Instant MaxValue = new Instant(MaxDay, NodaConstants.NanosecondsPerStandardDay - 1);
 
         /// <summary>
         /// Time elapsed since the Unix epoch.
@@ -62,10 +62,15 @@ namespace NodaTime
         internal Instant(Duration duration)
         {
             this.duration = duration;
+            Preconditions.DebugCheckArgumentRange("duration", duration.Days, MinDay, MaxDay);
+            Preconditions.DebugCheckArgumentRange("duration", duration.NanosecondOfDay, 0, NodaConstants.NanosecondsPerStandardDay - 1);
         }
 
-        internal Instant(int days, long nanoOfDay) : this(new Duration(days, nanoOfDay))
+        internal Instant([Trusted] int days, [Trusted] long nanoOfDay)
         {
+            Preconditions.DebugCheckArgumentRange("days", days, MinDay, MaxDay);
+            Preconditions.DebugCheckArgumentRange("nanoOfDay", nanoOfDay, 0, NodaConstants.NanosecondsPerStandardDay - 1);
+            duration = new Duration(days, nanoOfDay);
         }
 
         /// <summary>
@@ -195,7 +200,6 @@ namespace NodaTime
         {
             return new Instant(duration + Duration.FromTicks(ticksToAdd));
         }
-
         #region Operators
         /// <summary>
         /// Implements the operator + (addition) for <see cref="Instant" /> + <see cref="Duration" />.

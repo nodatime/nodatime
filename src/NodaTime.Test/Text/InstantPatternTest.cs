@@ -60,49 +60,6 @@ namespace NodaTime.Test.Text
             Assert.Throws<ArgumentException>(() => InstantPattern.GeneralPattern.WithMinMaxLabels(min, max));
         }
 
-        [Test]
-        public void Format_CustomLabels()
-        {
-            var pattern = InstantPattern.GeneralPattern.WithMinMaxLabels("min", "max");
-            Assert.AreEqual("min", pattern.Format(Instant.MinValue));
-            Assert.AreEqual("max", pattern.Format(Instant.MaxValue));
-            Assert.AreEqual(InstantPattern.GeneralPattern.Format(NodaConstants.UnixEpoch),
-                pattern.Format(NodaConstants.UnixEpoch));
-        }
-
-        [Test]
-        public void Parse_CustomLabels()
-        {
-            var pattern = InstantPattern.GeneralPattern.WithMinMaxLabels("min", "max");
-            Assert.AreEqual(Instant.MinValue, pattern.Parse("min").Value);
-            Assert.AreEqual(Instant.MaxValue, pattern.Parse("max").Value);
-            Assert.AreEqual(NodaConstants.UnixEpoch,
-                pattern.Parse(InstantPattern.GeneralPattern.Format(NodaConstants.UnixEpoch)).Value);
-        }
-
-        [Test]
-        public void OutOfRange_Low()
-        {
-            var ticks = CalendarSystem.Iso.MinTicks - 1;
-            var formatted = InstantPattern.ExtendedIsoPattern.Format(Instant.FromTicksSinceUnixEpoch(ticks));
-            StringAssert.StartsWith(InstantPattern.OutOfRangeLabel, formatted);
-        }
-
-        [Test]
-        public void OutOfRange_High()
-        {
-            var ticks = CalendarSystem.Iso.MaxTicks + 1;
-            var formatted = InstantPattern.ExtendedIsoPattern.Format(Instant.FromTicksSinceUnixEpoch(ticks));
-            StringAssert.StartsWith(InstantPattern.OutOfRangeLabel, formatted);
-        }
-
-        [Test]
-        public void Extremities()
-        {
-            AssertRoundTrip(Instant.FromTicksSinceUnixEpoch(CalendarSystem.Iso.MinTicks), InstantPattern.ExtendedIsoPattern);
-            AssertRoundTrip(Instant.FromTicksSinceUnixEpoch(CalendarSystem.Iso.MaxTicks), InstantPattern.ExtendedIsoPattern);
-        }
-
         /// <summary>
         /// Common test data for both formatting and parsing. A test should be placed here unless is truly
         /// cannot be run both ways. This ensures that as many round-trip type tests are performed as possible.
@@ -112,7 +69,9 @@ namespace NodaTime.Test.Text
             // Check that unquoted T still works.
             new Data(2012, 1, 31, 17, 36, 45) { Text = "2012-01-31T17:36:45", Pattern = "yyyy-MM-ddTHH:mm:ss" },
             new Data(2012, 4, 28, 0, 0, 0) { Text = "2012 avr. 28", Pattern = "yyyy MMM dd", Culture = Cultures.FrFr },
-            new Data { Text = " 1970 ", Pattern = " yyyy " }
+            new Data { Text = " 1970 ", Pattern = " yyyy " },
+            new Data(Instant.MinValue) { Text = "-9998-01-01T00:00:00Z", Pattern = "yyyy-MM-dd'T'HH:mm:ss.FFFFFFFFF'Z'" },
+            new Data(Instant.MaxValue) { Text = "9999-12-31T23:59:59.999999999Z", Pattern = "yyyy-MM-dd'T'HH:mm:ss.FFFFFFFFF'Z'" },
         };
 
         internal static IEnumerable<Data> ParseData = ParseOnlyData.Concat(FormatAndParseData);
