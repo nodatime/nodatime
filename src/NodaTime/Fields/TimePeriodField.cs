@@ -108,7 +108,7 @@ namespace NodaTime.Fields
                         newNanos -= NodaConstants.NanosecondsPerStandardDay;
                         days = checked(days + 1);
                     }
-                    extraDays += days;
+                    extraDays = checked(extraDays + days);
                     return new LocalTime(newNanos);
                 }
                 else
