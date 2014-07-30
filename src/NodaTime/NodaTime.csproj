@@ -282,7 +282,6 @@
     <Compile Include="TimeZones\IDateTimeZoneSource.cs" />
     <Compile Include="TimeZones\ZoneEqualityComparer.cs" />
     <Compile Include="TimeZones\ZoneInterval.cs" />
-    <Compile Include="TimeZones\ZoneIntervalPair.cs" />
     <Compile Include="TimeZones\ZoneLocalMapping.cs" />
     <Compile Include="TimeZones\ZoneYearOffset.cs" />
     <Compile Include="TimeZones\PrecalculatedDateTimeZone.cs" />

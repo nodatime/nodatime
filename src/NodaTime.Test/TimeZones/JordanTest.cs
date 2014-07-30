@@ -42,8 +42,8 @@ namespace NodaTime.Test.TimeZones
             for (int year = 2000; year <= 2010; year++)
             {
                 LocalDate summer = new LocalDate(year, 6, 1);
-                var intervalPair = Jordan.GetZoneIntervalPair(summer.AtMidnight().ToLocalInstant());
-                Assert.AreEqual(1, intervalPair.MatchingIntervals);
+                var intervalPair = Jordan.MapLocal(summer.AtMidnight());
+                Assert.AreEqual(1, intervalPair.Count);
                 Assert.AreEqual(expectedDates[year - 2000], intervalPair.EarlyInterval.IsoLocalStart.Date);
             }
         }

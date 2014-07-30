@@ -67,144 +67,122 @@ namespace NodaTime.Test.TimeZones
         }
 
         [Test]
-        public void GetZoneIntervals_WithinFirstSummer()
+        public void MapLocal_WithinFirstSummer()
         {
-            var early = new LocalInstant(2000, 6, 1, 0, 0);
-            var pair = TestZone.GetZoneIntervalPair(early);
-            Assert.AreEqual("Summer", pair.EarlyInterval.Name);
-            Assert.IsNull(pair.LateInterval);
+            var early = new LocalDateTime(2000, 6, 1, 0, 0);
+            CheckMapping(TestZone.MapLocal(early), "Summer", "Summer", 1);
         }
 
         [Test]
-        public void GetZoneIntervals_WithinFirstWinter()
+        public void MapLocal_WithinFirstWinter()
         {
-            var winter = new LocalInstant(2000, 12, 1, 0, 0);
-            var pair = TestZone.GetZoneIntervalPair(winter);
-            Assert.AreEqual("Winter", pair.EarlyInterval.Name);
-            Assert.IsNull(pair.LateInterval);
+            var winter = new LocalDateTime(2000, 12, 1, 0, 0);
+            CheckMapping(TestZone.MapLocal(winter), "Winter", "Winter", 1);
         }
 
         [Test]
-        public void GetZoneIntervals_AtFirstGapStart()
+        public void MapLocal_AtFirstGapStart()
         {
-            var startOfFirstGap = new LocalInstant(2000, 3, 10, 1, 0);
-            var actual = TestZone.GetZoneIntervalPair(startOfFirstGap);
-            var expected = ZoneIntervalPair.NoMatch;
-            Assert.AreEqual(expected, actual);
+            var startOfFirstGap = new LocalDateTime(2000, 3, 10, 1, 0);
+            CheckMapping(TestZone.MapLocal(startOfFirstGap), "Winter", "Summer", 0);
         }
 
         [Test]
-        public void GetZoneIntervals_WithinFirstGap()
+        public void MapLocal_WithinFirstGap()
         {
-            var middleOfFirstGap = new LocalInstant(2000, 3, 10, 1, 30);
-            var pair = TestZone.GetZoneIntervalPair(middleOfFirstGap);
-            Assert.AreEqual(0, pair.MatchingIntervals);
+            var middleOfFirstGap = new LocalDateTime(2000, 3, 10, 1, 30);
+            CheckMapping(TestZone.MapLocal(middleOfFirstGap), "Winter", "Summer", 0);
         }
 
         [Test]
         public void GetZoneIntervals_EndOfFirstGap()
         {
-            var endOfFirstGap = new LocalInstant(2000, 3, 10, 2, 0);
-            var pair = TestZone.GetZoneIntervalPair(endOfFirstGap);
-            Assert.AreEqual("Summer", pair.EarlyInterval.Name);
-            Assert.IsNull(pair.LateInterval);
+            var endOfFirstGap = new LocalDateTime(2000, 3, 10, 2, 0);
+            CheckMapping(TestZone.MapLocal(endOfFirstGap), "Summer", "Summer", 1);
         }
 
         [Test]
         public void GetZoneIntervals_StartOfFirstAmbiguity()
         {
-            var firstAmbiguity = new LocalInstant(2000, 10, 5, 1, 0);
-            var pair = TestZone.GetZoneIntervalPair(firstAmbiguity);
-            Assert.AreEqual("Summer", pair.EarlyInterval.Name);
-            Assert.AreEqual("Winter", pair.LateInterval.Name);
+            var firstAmbiguity = new LocalDateTime(2000, 10, 5, 1, 0);
+            CheckMapping(TestZone.MapLocal(firstAmbiguity), "Summer", "Winter", 2);
         }
 
         [Test]
         public void GetZoneIntervals_MiddleOfFirstAmbiguity()
         {
-            var firstAmbiguity = new LocalInstant(2000, 10, 5, 1, 30);
-            var pair = TestZone.GetZoneIntervalPair(firstAmbiguity);
-            Assert.AreEqual("Summer", pair.EarlyInterval.Name);
-            Assert.AreEqual("Winter", pair.LateInterval.Name);
+            var firstAmbiguity = new LocalDateTime(2000, 10, 5, 1, 30);
+            CheckMapping(TestZone.MapLocal(firstAmbiguity), "Summer", "Winter", 2);
         }
 
         [Test]
         public void GetZoneIntervals_AfterFirstAmbiguity()
         {
-            var unambiguousWinter = new LocalInstant(2000, 10, 5, 2, 0);
-            var pair = TestZone.GetZoneIntervalPair(unambiguousWinter);
-            Assert.AreEqual("Winter", pair.EarlyInterval.Name);
-            Assert.IsNull(pair.LateInterval);
+            var unambiguousWinter = new LocalDateTime(2000, 10, 5, 2, 0);
+            CheckMapping(TestZone.MapLocal(unambiguousWinter), "Winter", "Winter", 1);
         }
 
         [Test]
         public void GetZoneIntervals_WithinArbitrarySummer()
         {
-            var summer = new LocalInstant(2010, 6, 1, 0, 0);
-            var pair = TestZone.GetZoneIntervalPair(summer);
-            Assert.AreEqual("Summer", pair.EarlyInterval.Name);
-            Assert.IsNull(pair.LateInterval);
+            var summer = new LocalDateTime(2010, 6, 1, 0, 0);
+            CheckMapping(TestZone.MapLocal(summer), "Summer", "Summer", 1);
         }
 
         [Test]
         public void GetZoneIntervals_WithinArbitraryWinter()
         {
-            var winter = new LocalInstant(2010, 12, 1, 0, 0);
-            var pair = TestZone.GetZoneIntervalPair(winter);
-            Assert.AreEqual("Winter", pair.EarlyInterval.Name);
-            Assert.IsNull(pair.LateInterval);
+            var winter = new LocalDateTime(2010, 12, 1, 0, 0);
+            CheckMapping(TestZone.MapLocal(winter), "Winter", "Winter", 1);
         }
 
         [Test]
         public void GetZoneIntervals_AtArbitraryGapStart()
         {
-            var startOfGap = new LocalInstant(2010, 3, 10, 1, 0);
-            var pair = TestZone.GetZoneIntervalPair(startOfGap);
-            Assert.AreEqual(0, pair.MatchingIntervals);
+            var startOfGap = new LocalDateTime(2010, 3, 10, 1, 0);
+            CheckMapping(TestZone.MapLocal(startOfGap), "Winter", "Summer", 0);
         }
 
         [Test]
         public void GetZoneIntervals_WithinArbitraryGap()
         {
-            var middleOfGap = new LocalInstant(2010, 3, 10, 1, 30);
-            var pair = TestZone.GetZoneIntervalPair(middleOfGap);
-            Assert.AreEqual(0, pair.MatchingIntervals);
+            var middleOfGap = new LocalDateTime(2010, 3, 10, 1, 30);
+            CheckMapping(TestZone.MapLocal(middleOfGap), "Winter", "Summer", 0);
         }
 
         [Test]
         public void GetZoneIntervals_EndOfArbitraryGap()
         {
-            var endOfGap = new LocalInstant(2010, 3, 10, 2, 0);
-            var pair = TestZone.GetZoneIntervalPair(endOfGap);
-            Assert.AreEqual("Summer", pair.EarlyInterval.Name);
-            Assert.IsNull(pair.LateInterval);
+            var endOfGap = new LocalDateTime(2010, 3, 10, 2, 0);
+            CheckMapping(TestZone.MapLocal(endOfGap), "Summer", "Summer", 1);
         }
 
         [Test]
         public void GetZoneIntervals_StartOfArbitraryAmbiguity()
         {
-            var ambiguity = new LocalInstant(2010, 10, 5, 1, 0);
-            var pair = TestZone.GetZoneIntervalPair(ambiguity);
-            Assert.AreEqual("Summer", pair.EarlyInterval.Name);
-            Assert.AreEqual("Winter", pair.LateInterval.Name);
+            var ambiguity = new LocalDateTime(2010, 10, 5, 1, 0);
+            CheckMapping(TestZone.MapLocal(ambiguity), "Summer", "Winter", 2);
         }
 
         [Test]
         public void GetZoneIntervals_MiddleOfArbitraryAmbiguity()
         {
-            var ambiguity = new LocalInstant(2010, 10, 5, 1, 30);
-            var pair = TestZone.GetZoneIntervalPair(ambiguity);
-            Assert.AreEqual("Summer", pair.EarlyInterval.Name);
-            Assert.AreEqual("Winter", pair.LateInterval.Name);
+            var ambiguity = new LocalDateTime(2010, 10, 5, 1, 30);
+            CheckMapping(TestZone.MapLocal(ambiguity), "Summer", "Winter", 2);
         }
 
         [Test]
         public void GetZoneIntervals_AfterArbitraryAmbiguity()
         {
-            var unambiguousWinter = new LocalInstant(2010, 10, 5, 2, 0);
-            var pair = TestZone.GetZoneIntervalPair(unambiguousWinter);
-            Assert.AreEqual("Winter", pair.EarlyInterval.Name);
-            Assert.IsNull(pair.LateInterval);
+            var unambiguousWinter = new LocalDateTime(2010, 10, 5, 2, 0);
+            CheckMapping(TestZone.MapLocal(unambiguousWinter), "Winter", "Winter", 1);
+        }
+
+        private void CheckMapping(ZoneLocalMapping mapping, string earlyIntervalName, string lateIntervalName, int count)
+        {
+            Assert.AreEqual(earlyIntervalName, mapping.EarlyInterval.Name);
+            Assert.AreEqual(lateIntervalName, mapping.LateInterval.Name);
+            Assert.AreEqual(count, mapping.Count);
         }
     }
 }

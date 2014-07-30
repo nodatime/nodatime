@@ -18,7 +18,6 @@ namespace NodaTime.TimeZones
     {
         private readonly Offset offset;
         private readonly ZoneInterval interval;
-        private readonly ZoneIntervalPair intervalPair;
 
         /// <summary>
         /// Creates a new fixed time zone.
@@ -37,7 +36,6 @@ namespace NodaTime.TimeZones
         {
             this.offset = offset;
             interval = new ZoneInterval(id, Instant.MinValue, Instant.MaxValue, offset, Offset.Zero);
-            intervalPair = ZoneIntervalPair.Unambiguous(interval);
         }
 
         /// <summary>
@@ -90,11 +88,11 @@ namespace NodaTime.TimeZones
         }
 
         /// <summary>
-        /// Gets the zone interval pair for the given instant. This implementation always returns the same unambiguous interval pair.
+        /// Override for efficiency: we know we'll always have an unambiguous mapping for any LocalDateTime.
         /// </summary>
-        internal override ZoneIntervalPair GetZoneIntervalPair(LocalInstant localInstant)
+        public override ZoneLocalMapping MapLocal(LocalDateTime localDateTime)
         {
-            return intervalPair;
+            return new ZoneLocalMapping(this, localDateTime, interval, interval, 1);
         }
 
         /// <summary>
