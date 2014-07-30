@@ -95,84 +95,84 @@ namespace NodaTime.Test.TimeZones
         }
 
         [Test]
-        public void GetZoneIntervals_EndOfFirstGap()
+        public void MapLocal_EndOfFirstGap()
         {
             var endOfFirstGap = new LocalDateTime(2000, 3, 10, 2, 0);
             CheckMapping(TestZone.MapLocal(endOfFirstGap), "Summer", "Summer", 1);
         }
 
         [Test]
-        public void GetZoneIntervals_StartOfFirstAmbiguity()
+        public void MapLocal_StartOfFirstAmbiguity()
         {
             var firstAmbiguity = new LocalDateTime(2000, 10, 5, 1, 0);
             CheckMapping(TestZone.MapLocal(firstAmbiguity), "Summer", "Winter", 2);
         }
 
         [Test]
-        public void GetZoneIntervals_MiddleOfFirstAmbiguity()
+        public void MapLocal_MiddleOfFirstAmbiguity()
         {
             var firstAmbiguity = new LocalDateTime(2000, 10, 5, 1, 30);
             CheckMapping(TestZone.MapLocal(firstAmbiguity), "Summer", "Winter", 2);
         }
 
         [Test]
-        public void GetZoneIntervals_AfterFirstAmbiguity()
+        public void MapLocal_AfterFirstAmbiguity()
         {
             var unambiguousWinter = new LocalDateTime(2000, 10, 5, 2, 0);
             CheckMapping(TestZone.MapLocal(unambiguousWinter), "Winter", "Winter", 1);
         }
 
         [Test]
-        public void GetZoneIntervals_WithinArbitrarySummer()
+        public void MapLocal_WithinArbitrarySummer()
         {
             var summer = new LocalDateTime(2010, 6, 1, 0, 0);
             CheckMapping(TestZone.MapLocal(summer), "Summer", "Summer", 1);
         }
 
         [Test]
-        public void GetZoneIntervals_WithinArbitraryWinter()
+        public void MapLocal_WithinArbitraryWinter()
         {
             var winter = new LocalDateTime(2010, 12, 1, 0, 0);
             CheckMapping(TestZone.MapLocal(winter), "Winter", "Winter", 1);
         }
 
         [Test]
-        public void GetZoneIntervals_AtArbitraryGapStart()
+        public void MapLocal_AtArbitraryGapStart()
         {
             var startOfGap = new LocalDateTime(2010, 3, 10, 1, 0);
             CheckMapping(TestZone.MapLocal(startOfGap), "Winter", "Summer", 0);
         }
 
         [Test]
-        public void GetZoneIntervals_WithinArbitraryGap()
+        public void MapLocal_WithinArbitraryGap()
         {
             var middleOfGap = new LocalDateTime(2010, 3, 10, 1, 30);
             CheckMapping(TestZone.MapLocal(middleOfGap), "Winter", "Summer", 0);
         }
 
         [Test]
-        public void GetZoneIntervals_EndOfArbitraryGap()
+        public void MapLocal_EndOfArbitraryGap()
         {
             var endOfGap = new LocalDateTime(2010, 3, 10, 2, 0);
             CheckMapping(TestZone.MapLocal(endOfGap), "Summer", "Summer", 1);
         }
 
         [Test]
-        public void GetZoneIntervals_StartOfArbitraryAmbiguity()
+        public void MapLocal_StartOfArbitraryAmbiguity()
         {
             var ambiguity = new LocalDateTime(2010, 10, 5, 1, 0);
             CheckMapping(TestZone.MapLocal(ambiguity), "Summer", "Winter", 2);
         }
 
         [Test]
-        public void GetZoneIntervals_MiddleOfArbitraryAmbiguity()
+        public void MapLocal_MiddleOfArbitraryAmbiguity()
         {
             var ambiguity = new LocalDateTime(2010, 10, 5, 1, 30);
             CheckMapping(TestZone.MapLocal(ambiguity), "Summer", "Winter", 2);
         }
 
         [Test]
-        public void GetZoneIntervals_AfterArbitraryAmbiguity()
+        public void MapLocal_AfterArbitraryAmbiguity()
         {
             var unambiguousWinter = new LocalDateTime(2010, 10, 5, 2, 0);
             CheckMapping(TestZone.MapLocal(unambiguousWinter), "Winter", "Winter", 1);
