@@ -187,7 +187,7 @@ namespace NodaTime.Globalization
 
         internal FixedFormatInfoPatternParser<Duration> DurationPatternParser { get { return EnsureFixedFormatInitialized(ref durationPatternParser, () => new DurationPatternParser()); } }
         internal FixedFormatInfoPatternParser<Offset> OffsetPatternParser { get { return EnsureFixedFormatInitialized(ref offsetPatternParser, () => new OffsetPatternParser()); } }
-        internal FixedFormatInfoPatternParser<Instant> InstantPatternParser { get { return EnsureFixedFormatInitialized(ref instantPatternParser, () => new InstantPatternParser(InstantPattern.DefaultMinLabel, InstantPattern.DefaultMaxLabel)); } }
+        internal FixedFormatInfoPatternParser<Instant> InstantPatternParser { get { return EnsureFixedFormatInitialized(ref instantPatternParser, () => new InstantPatternParser()); } }
         internal FixedFormatInfoPatternParser<LocalTime> LocalTimePatternParser { get { return EnsureFixedFormatInitialized(ref localTimePatternParser, () => new LocalTimePatternParser(LocalTime.Midnight)); } }
         internal FixedFormatInfoPatternParser<LocalDate> LocalDatePatternParser { get { return EnsureFixedFormatInitialized(ref localDatePatternParser, () => new LocalDatePatternParser(LocalDatePattern.DefaultTemplateValue)); } }
         internal FixedFormatInfoPatternParser<LocalDateTime> LocalDateTimePatternParser { get { return EnsureFixedFormatInitialized(ref localDateTimePatternParser, () => new LocalDateTimePatternParser(LocalDateTimePattern.DefaultTemplateValue)); } }
