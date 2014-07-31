@@ -22,15 +22,7 @@ namespace NodaTime.Text
     /// </remarks>
     internal sealed class InstantPatternParser : IPatternParser<Instant>
     {
-        private readonly string minLabel;
-        private readonly string maxLabel;
         private const string GeneralPatternText = "yyyy'-'MM'-'dd'T'HH':'mm':'ss'Z'";
-
-        internal InstantPatternParser(string minLabel, string maxLabel)
-        {
-            this.minLabel = minLabel;
-            this.maxLabel = maxLabel;
-        }
 
         public IPattern<Instant> ParsePattern(string patternText, NodaFormatInfo formatInfo)
         {
@@ -52,21 +44,17 @@ namespace NodaTime.Text
             }
 
             IPattern<LocalDateTime> localResult = formatInfo.LocalDateTimePatternParser.ParsePattern(patternText);
-            return new LocalDateTimePatternAdapter(localResult, minLabel, maxLabel);
+            return new LocalDateTimePatternAdapter(localResult);
         }
 
         // This not only converts between LocalDateTime and Instant; it also handles infinity.
         private sealed class LocalDateTimePatternAdapter : IPattern<Instant>
         {
             private readonly IPattern<LocalDateTime> pattern;
-            private readonly string minLabel;
-            private readonly string maxLabel;
 
-            internal LocalDateTimePatternAdapter(IPattern<LocalDateTime> pattern, string minLabel, string maxLabel)
+            internal LocalDateTimePatternAdapter(IPattern<LocalDateTime> pattern)
             {
                 this.pattern = pattern;
-                this.minLabel = minLabel;
-                this.maxLabel = maxLabel;
             }
 
             public string Format(Instant value)

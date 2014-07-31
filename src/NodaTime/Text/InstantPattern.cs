@@ -23,21 +23,6 @@ namespace NodaTime.Text
     public sealed class InstantPattern : IPattern<Instant>
     {
         /// <summary>
-        /// Default label for <see cref="Instant.MinValue"/> when formatting.
-        /// </summary>
-        internal const string DefaultMinLabel = "MinInstant";
-
-        /// <summary>
-        /// Default label for <see cref="Instant.MaxValue"/> when formatting.
-        /// </summary>
-        internal const string DefaultMaxLabel = "MaxInstant";
-
-        /// <summary>
-        /// Label at the start of any out-of-range value.
-        /// </summary>
-        internal const string OutOfRangeLabel = "Out of formatting range: ";
-
-        /// <summary>
         /// Returns the general pattern, which always uses an invariant culture. The general pattern represents
         /// an instant as a UTC date/time in ISO-8601 style "yyyy-MM-ddTHH:mm:ss'Z'".
         /// </summary>
@@ -64,8 +49,6 @@ namespace NodaTime.Text
             internal static readonly InstantPattern GeneralPatternImpl = CreateWithInvariantCulture("yyyy-MM-ddTHH:mm:ss'Z'");
         }
 
-        private readonly string minLabel;
-        private readonly string maxLabel;
         private readonly string patternText;
         private readonly NodaFormatInfo formatInfo;
         private readonly IPattern<Instant> pattern;
@@ -80,14 +63,11 @@ namespace NodaTime.Text
         /// </summary>
         internal NodaFormatInfo FormatInfo { get { return formatInfo; } }
 
-        private InstantPattern(string patternText, NodaFormatInfo formatInfo,
-            string minLabel, string maxLabel, IPattern<Instant> pattern)
+        private InstantPattern(string patternText, NodaFormatInfo formatInfo, IPattern<Instant> pattern)
         {
             this.patternText = patternText;
             this.formatInfo = formatInfo;
             this.pattern = pattern;
-            this.minLabel = minLabel;
-            this.maxLabel = maxLabel;
         }
 
         /// <summary>
@@ -118,22 +98,8 @@ namespace NodaTime.Text
         {
             Preconditions.CheckNotNull(patternText, "patternText");
             Preconditions.CheckNotNull(formatInfo, "formatInfo");
-            IPattern<Instant> pattern;
-            // This will be the case the vast majority of the time.
-            if (minLabel == DefaultMinLabel && maxLabel == DefaultMaxLabel)
-            {
-                 pattern = formatInfo.InstantPatternParser.ParsePattern(patternText);
-            }
-            else
-            {
-                Preconditions.CheckNotNull(minLabel, "minLabel");
-                Preconditions.CheckNotNull(maxLabel, "maxLabel");
-                Preconditions.CheckArgument(minLabel != "", "minLabel", "minLabel must be non-empty");
-                Preconditions.CheckArgument(maxLabel != "", "maxLabel", "maxLabel must be non-empty");
-                Preconditions.CheckArgument(minLabel != maxLabel, "minLabel", "minLabel and maxLabel must differ");
-                pattern = new InstantPatternParser(minLabel, maxLabel).ParsePattern(patternText, formatInfo);
-            }
-            return new InstantPattern(patternText, formatInfo, DefaultMinLabel, DefaultMaxLabel, pattern);
+            IPattern<Instant> pattern = formatInfo.InstantPatternParser.ParsePattern(patternText);
+            return new InstantPattern(patternText, formatInfo, pattern);
         }
 
         /// <summary>
@@ -149,7 +115,7 @@ namespace NodaTime.Text
             Preconditions.CheckNotNull(patternText, "patternText");
             Preconditions.CheckNotNull(formatInfo, "formatInfo");
             var pattern = formatInfo.InstantPatternParser.ParsePattern(patternText);
-            return new InstantPattern(patternText, formatInfo, DefaultMinLabel, DefaultMaxLabel, pattern);
+            return new InstantPattern(patternText, formatInfo, pattern);
         }
 
         /// <summary>
@@ -206,7 +172,7 @@ namespace NodaTime.Text
         /// <returns>A new pattern with the given localization information.</returns>
         private InstantPattern WithFormatInfo(NodaFormatInfo formatInfo)
         {
-            return Create(patternText, formatInfo, minLabel, maxLabel);
+            return Create(patternText, formatInfo);
         }
 
         /// <summary>
@@ -218,19 +184,6 @@ namespace NodaTime.Text
         public InstantPattern WithCulture(CultureInfo cultureInfo)
         {
             return WithFormatInfo(NodaFormatInfo.GetFormatInfo(cultureInfo));
-        }
-
-        /// <summary>
-        /// Creates a new pattern for the same original pattern text and culture as this pattern, but
-        /// with the given min/max labels.
-        /// </summary>
-        /// <param name="minLabel">Text to use for <see cref="Instant.MinValue"/>. Must be non-empty, and not the same as <paramref name="maxLabel"/>.</param>
-        /// <param name="maxLabel">Text to use for <see cref="Instant.MaxValue"/>. Must be non-empty, and not the same as <paramref name="minLabel"/></param>
-        /// <returns>A new pattern with the given min/max labels.</returns>
-        /// <exception cref="ArgumentException"></exception>
-        public InstantPattern WithMinMaxLabels(string minLabel, string maxLabel)
-        {
-            return Create(patternText, formatInfo, minLabel, maxLabel);
         }
     }
 }

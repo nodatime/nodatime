@@ -45,21 +45,6 @@ namespace NodaTime.Test.Text
             Assert.AreEqual(actual, expected);
         }
 
-        [Test]
-        public void NullLabels()
-        {
-            Assert.Throws<ArgumentNullException>(() => InstantPattern.GeneralPattern.WithMinMaxLabels(null, "x"));
-            Assert.Throws<ArgumentNullException>(() => InstantPattern.GeneralPattern.WithMinMaxLabels("x", null));
-        }
-
-        [TestCase("", "x")]
-        [TestCase("x", "")]
-        [TestCase("same", "same")]
-        public void BadLabels(string min, string max)
-        {
-            Assert.Throws<ArgumentException>(() => InstantPattern.GeneralPattern.WithMinMaxLabels(min, max));
-        }
-
         /// <summary>
         /// Common test data for both formatting and parsing. A test should be placed here unless is truly
         /// cannot be run both ways. This ensures that as many round-trip type tests are performed as possible.
