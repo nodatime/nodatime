@@ -149,10 +149,12 @@ namespace NodaTime.TimeZones
         /// offsets at all points within a given interval.
         /// To specify non-default options, call the <see cref="WithOptions"/> method on the result
         /// of this method.</remarks>
-        /// <param name="interval">The interval over which to compare time zones.</param>
+        /// <param name="interval">The interval over which to compare time zones. This must have both a start and an end.</param>
         /// <returns>A ZoneEqualityComparer for the given interval with the default options.</returns>
         public static ZoneEqualityComparer ForInterval(Interval interval)
         {
+            Preconditions.CheckArgument(interval.HasStart && interval.HasEnd, "interval",
+                "The interval must have both a start and an end.");
             return new ZoneEqualityComparer(interval, Options.OnlyMatchWallOffset);
         }
 

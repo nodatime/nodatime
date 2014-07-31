@@ -152,10 +152,41 @@ namespace NodaTime.Test
         }
 
         [Test]
-        public void Contains_EndOfTime()
+        public void Contains_Infinite()
         {
-            var interval = new Interval(NodaConstants.UnixEpoch, Instant.MaxValue);
+            var interval = new Interval(null, null);
             Assert.IsTrue(interval.Contains(Instant.MaxValue));
+            Assert.IsTrue(interval.Contains(Instant.MinValue));
+        }
+
+        [Test]
+        public void HasStart()
+        {
+            Assert.IsTrue(new Interval(Instant.MinValue, null).HasStart);
+            Assert.IsFalse(new Interval(null, Instant.MinValue).HasStart);
+        }
+
+        [Test]
+        public void HasEnd()
+        {
+            Assert.IsTrue(new Interval(null, Instant.MaxValue).HasEnd);
+            Assert.IsFalse(new Interval(Instant.MaxValue, null).HasEnd);
+        }
+
+        [Test]
+        public void Start()
+        {
+            Assert.AreEqual(NodaConstants.UnixEpoch, new Interval(NodaConstants.UnixEpoch, null).Start);
+            Interval noStart = new Interval(null, NodaConstants.UnixEpoch);
+            Assert.Throws<InvalidOperationException>(() => noStart.Start.ToString());
+        }
+
+        [Test]
+        public void End()
+        {
+            Assert.AreEqual(NodaConstants.UnixEpoch, new Interval(null, NodaConstants.UnixEpoch).End);
+            Interval noEnd = new Interval(NodaConstants.UnixEpoch, null);
+            Assert.Throws<InvalidOperationException>(() => noEnd.End.ToString());
         }
 
         [Test]
@@ -167,11 +198,12 @@ namespace NodaTime.Test
         }
 
         [Test]
-        public void Contains_EmptyInterval_EndOfTime()
+        public void Contains_EmptyInterval_MaxValue()
         {
             var instant = Instant.MaxValue;
             var interval = new Interval(instant, instant);
-            Assert.IsTrue(interval.Contains(instant));
+            // This would have been true under Noda Time 1.x
+            Assert.IsFalse(interval.Contains(instant));
         }
     }
 }

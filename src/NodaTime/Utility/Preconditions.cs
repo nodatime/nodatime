@@ -149,6 +149,14 @@ namespace NodaTime.Utility
                 throw new ArgumentException(message, parameter);
             }
         }
+
+        internal static void CheckState(bool expression, string message)
+        {
+            if (!expression)
+            {
+                throw new InvalidOperationException(message);
+            }
+        }
     }
 
 #if DEBUG

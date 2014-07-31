@@ -18,9 +18,9 @@ namespace NodaTime
     /// </summary>
     /// <remarks>
     /// <para>
-    /// The interval includes the start instant and excludes the end instant, unless the end instant
-    /// is <see cref="Instant.MaxValue"/> in which case it's deemed to be inclusive.
-    /// (An interval stretching to infinity includes the end of time.)
+    /// The interval includes the start instant and excludes the end instant. However, an interval
+    /// may be missing its start or end, in which case the interval is deemed to be infinite in that
+    /// direction.
     /// </para>
     /// <para>
     /// The end may equal the start (resulting in an empty interval), but will not be before the start.
@@ -60,13 +60,52 @@ namespace NodaTime
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="Interval"/> struct from two nullable <see cref="Instant"/>
+        /// values.
+        /// </summary>
+        /// <remarks>
+        /// If the start is null, the interval is deemed to stretch to the start of time. If the end is null,
+        /// the interval is deemed to stretch to the end of time.
+        /// </remarks>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="end"/> is earlier than <paramref name="start"/>,
+        /// if they are both non-null.</exception>
+        /// <param name="start">The start <see cref="Instant"/> or null.</param>
+        /// <param name="end">The end <see cref="Instant"/> or null.</param>
+        public Interval(Instant? start, Instant? end)
+        {
+            this.start = start ?? Instant.BeforeMinValue;
+            this.end = end ?? Instant.AfterMaxValue;
+            if (end < start)
+            {
+                throw new ArgumentOutOfRangeException("end", "The end parameter must be equal to or later than the start parameter");
+            }
+        }
+
+        /// <summary>
         /// Gets the start instant - the inclusive lower bound of the interval.
         /// </summary>
         /// <remarks>
         /// This will never be later than <see cref="End"/>, though it may be equal to it.
         /// </remarks>
         /// <value>The start <see cref="Instant"/>.</value>
-        public Instant Start { get { return start; } }
+        /// <exception cref="InvalidOperationException">The interval extends to the start of time.</exception>
+        /// <seealso cref="HasStart"/>
+        public Instant Start
+        {
+            get
+            {
+                Preconditions.CheckState(start.IsValid, "Interval extends to start of time");
+                return start;
+            }
+        }
+
+        /// <summary>
+        /// Returns <c>true</c> if this interval has a fixed start point, or <c>false</c> if it
+        /// extends to the start of time.
+        /// </summary>
+        /// <returns><c>true</c> if this interval has a fixed start point, or <c>false</c> if it
+        /// extends to the start of time.</returns>
+        public bool HasStart { get { return start.IsValid; } }
 
         /// <summary>
         /// Gets the end instant - the exclusive upper bound of the interval.
@@ -77,7 +116,24 @@ namespace NodaTime
         /// upper bound: an interval stretching to infinity includes the end of time.
         /// </remarks>
         /// <value>The end <see cref="Instant"/>.</value>
-        public Instant End { get { return end; } }
+        /// <exception cref="InvalidOperationException">The interval extends to the end of time.</exception>
+        /// <seealso cref="HasEnd"/>
+        public Instant End
+        {
+            get
+            {
+                Preconditions.CheckState(end.IsValid, "Interval extends to end of time");
+                return end;
+            }
+        }
+
+        /// <summary>
+        /// Returns <c>true</c> if this interval has a fixed end point, or <c>false</c> if it
+        /// extends to the end of time.
+        /// </summary>
+        /// <returns><c>true</c> if this interval has a fixed end point, or <c>false</c> if it
+        /// extends to the end of time.</returns>
+        public bool HasEnd { get { return end.IsValid; } }
 
         /// <summary>
         /// Returns the duration of the interval.
@@ -86,22 +142,18 @@ namespace NodaTime
         /// This will always be a non-negative duration, though it may be zero.
         /// </remarks>
         /// <value>The duration of the interval.</value>
-        public Duration Duration { get { return end - start; } }
+        /// <exception cref="InvalidOperationException">The interval extends to the start or end of time.</exception>
+        public Duration Duration { get { return End - Start; } }
 
         /// <summary>
         /// Returns whether or not this interval contains the given instant.
         /// </summary>
-        /// <remarks>
-        /// The interval is considered to include the <see cref="Start"/> instant but
-        /// not the <see cref="End"/> instant - unless the end is <see cref="Instant.MaxValue"/>, in
-        /// which case it's considered to be infinite from the start point onwards.
-        /// </remarks>
         /// <param name="instant">Instant to test.</param>
         /// <returns>True if this interval contains the given instant; false otherwise.</returns>
         [Pure]
         public bool Contains(Instant instant)
         {
-            return instant >= start && (instant < end || end == Instant.MaxValue);
+            return instant >= start && instant < end;
         }
 
         #region Implementation of IEquatable<Interval>
