@@ -408,9 +408,6 @@ namespace NodaTime.Text.Patterns
 
         private sealed class SteppedPattern : IPartialPattern<TResult>
         {
-            private readonly StringBuilder pooledStringBuilder = new StringBuilder();
-            private bool pooledBuilderInUse = false;
-
             private readonly Action<TResult, StringBuilder> formatActions;
             // This will be null if the pattern is only capable of formatting.
             private readonly ParseAction[] parseActions;
@@ -461,33 +458,10 @@ namespace NodaTime.Text.Patterns
 
             public string Format(TResult value)
             {
-                StringBuilder builder = null;
-                lock (pooledStringBuilder)
-                {
-                    if (!pooledBuilderInUse)
-                    {
-                        pooledBuilderInUse = true;
-                        builder = pooledStringBuilder;
-                        builder.Length = 0;
-                    }
-                }
-                try
-                {
-                    builder = builder ?? new StringBuilder();
-                    // This will call all the actions in the multicast delegate.
-                    formatActions(value, builder);
-                    return builder.ToString();
-                }
-                finally
-                {
-                    if (builder == pooledStringBuilder)
-                    {
-                        lock (pooledStringBuilder)
-                        {
-                            pooledBuilderInUse = false;
-                        }
-                    }
-                }
+                StringBuilder builder = new StringBuilder();
+                // This will call all the actions in the multicast delegate.
+                formatActions(value, builder);
+                return builder.ToString();
             }
 
             public ParseResult<TResult> ParsePartial(ValueCursor cursor)
