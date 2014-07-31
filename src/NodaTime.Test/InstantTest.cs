@@ -250,5 +250,21 @@ namespace NodaTime.Test
             Instant instant = new Instant(nanos);
             Assert.AreEqual(expectedTicks, instant.Ticks);
         }
+
+        [Test]
+        public void IsValid()
+        {
+            Assert.IsFalse(Instant.BeforeMinValue.IsValid);
+            Assert.IsTrue(Instant.MinValue.IsValid);
+            Assert.IsTrue(Instant.MaxValue.IsValid);
+            Assert.IsFalse(Instant.AfterMaxValue.IsValid);
+        }
+
+        [Test]
+        public void InvalidValues()
+        {
+            Assert.Greater(Instant.AfterMaxValue, Instant.MaxValue);
+            Assert.Less(Instant.BeforeMinValue, Instant.MinValue);
+        }
     }
 }

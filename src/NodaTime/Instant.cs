@@ -55,9 +55,28 @@ namespace NodaTime
         public static readonly Instant MaxValue = new Instant(MaxDay, NodaConstants.NanosecondsPerStandardDay - 1);
 
         /// <summary>
+        /// Instant which is invalid *except* for comparison purposes; it is earlier than any valid value.
+        /// This must never be exposed.
+        /// </summary>
+        internal static readonly Instant BeforeMinValue = new Instant(int.MinValue, deliberatelyInvalid: true);
+        /// <summary>
+        /// Instant which is invalid *except* for comparison purposes; it is later than any valid value.
+        /// This must never be exposed.
+        /// </summary>
+        internal static readonly Instant AfterMaxValue = new Instant(int.MaxValue, deliberatelyInvalid: true);
+
+        /// <summary>
         /// Time elapsed since the Unix epoch.
         /// </summary>
         [ReadWriteForEfficiency] private Duration duration;
+
+        /// <summary>
+        /// Constructor which should *only* be used to construct the invalid instances.
+        /// </summary>
+        internal Instant([Trusted] int days, bool deliberatelyInvalid)
+        {
+            this.duration = new Duration(days, 0);
+        }
 
         internal Instant(Duration duration)
         {
@@ -72,6 +91,12 @@ namespace NodaTime
             Preconditions.DebugCheckArgumentRange("nanoOfDay", nanoOfDay, 0, NodaConstants.NanosecondsPerStandardDay - 1);
             duration = new Duration(days, nanoOfDay);
         }
+
+        /// <summary>
+        /// Returns whether or not this is a valid instant. Returns true for all but
+        /// <see cref="BeforeMinValue"/> and <see cref="AfterMaxValue"/>.
+        /// </summary>
+        internal bool IsValid { get { return DaysSinceEpoch >= MinDay && DaysSinceEpoch <= MaxDay; } }
 
         /// <summary>
         /// The number of ticks since the Unix epoch. Negative values represent instants before the Unix epoch.

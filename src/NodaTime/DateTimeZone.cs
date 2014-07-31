@@ -628,11 +628,14 @@ namespace NodaTime
         /// the zone intervals returned are not truncated to match the start and end points.
         /// </para>
         /// </remarks>
-        /// <param name="interval">Interval to find zone intervals for.</param>
+        /// <param name="interval">Interval to find zone intervals for. This must be bounded (i.e. it must not
+        /// extend to the start or end of time).</param>
         /// <returns>A sequence of zone intervals covering the given interval.</returns>
         /// <seealso cref="GetZoneInterval"/>
         public IEnumerable<ZoneInterval> GetZoneIntervals(Interval interval)
         {
+            Preconditions.CheckArgument(interval.HasStart && interval.HasEnd, "interval",
+                "The interval must have both a start and an end.");
             var current = interval.Start;
             while (current < interval.End)
             {
