@@ -8,7 +8,6 @@ using System.Globalization;
 using System.Text;
 using NodaTime.Globalization;
 using NodaTime.Properties;
-using NodaTime.Utility;
 
 namespace NodaTime.Text.Patterns
 {
@@ -413,12 +412,6 @@ namespace NodaTime.Text.Patterns
 
         private sealed class SteppedPattern : IPartialPattern<TResult>
         {
-            [ThreadStatic]
-            private static StringBuilder cachedBuilder;
-#if DEBUG
-            [ThreadStatic]
-            private static bool builderInUse;
-#endif
             private readonly Action<TResult, StringBuilder> formatActions;
             // This will be null if the pattern is only capable of formatting.
             private readonly ParseAction[] parseActions;
@@ -467,40 +460,9 @@ namespace NodaTime.Text.Patterns
                 return result;
             }
 
-// Guard against re-entrancy in debug configuration
-#if DEBUG
             public string Format(TResult value)
             {
-                if (builderInUse)
-                {
-                    throw new InvalidOperationException("Detected re-entrant Format call");
-                }
-                try
-                {
-                    builderInUse = true;
-                    return FormatImpl(value);
-                }
-                finally
-                {
-                    builderInUse = false;
-                }
-            }
-
-            private string FormatImpl(TResult value)
-#else
-            public string Format(TResult value)
-#endif
-            {
-                StringBuilder builder = cachedBuilder;
-                if (cachedBuilder == null)
-                {
-                    builder = new StringBuilder();
-                    cachedBuilder = builder;
-                }
-                else
-                {
-                    builder.Length = 0;
-                }
+                StringBuilder builder = new StringBuilder();
                 // This will call all the actions in the multicast delegate.
                 formatActions(value, builder);
                 return builder.ToString();

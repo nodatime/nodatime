@@ -2,11 +2,9 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-using System;
 using System.Text;
 using NodaTime.Globalization;
 using NodaTime.Text;
-using NodaTime.Text.Patterns;
 using NUnit.Framework;
 
 namespace NodaTime.Test.Text.Patterns
@@ -65,31 +63,5 @@ namespace NodaTime.Test.Text.Patterns
             SimpleOffsetPattern.FormatPartial(offset, builder);
             Assert.AreEqual("x17:30", builder.ToString());
         }
-
-#if DEBUG
-        [Test]
-        public void FormatReentrancyDetection()
-        {
-            var innerBuilder = new SteppedPatternBuilder<string, StringBucket>(
-                NodaFormatInfo.InvariantInfo, () => new StringBucket());
-            innerBuilder.AddFormatAction((value, sb) => sb.Append("inner"));
-            var inner = innerBuilder.Build();
-
-            var outerBuilder = new SteppedPatternBuilder<string, StringBucket>(
-                NodaFormatInfo.InvariantInfo, () => new StringBucket());
-            outerBuilder.AddFormatAction((value, sb) => sb.Append(inner.Format("foo")));
-            var outer = outerBuilder.Build();
-
-            Assert.Throws<InvalidOperationException>(() => outer.Format("bar"));
-        }
-
-        private class StringBucket : ParseBucket<string>
-        {
-            internal override ParseResult<string> CalculateValue(PatternFields usedFields, string value)
-            {
-                return ParseResult<string>.ForValue("result");
-            }
-        }
-#endif
     }
 }
