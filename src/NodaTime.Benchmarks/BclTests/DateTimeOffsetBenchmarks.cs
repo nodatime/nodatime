@@ -4,6 +4,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using NodaTime.Benchmarks.Framework;
 
 namespace NodaTime.Benchmarks.BclTests
@@ -41,6 +42,13 @@ namespace NodaTime.Benchmarks.BclTests
             (sample < sample).Consume();
 #pragma warning restore 1718
             (sample < later).Consume();
+        }
+
+        [Benchmark]
+        [Category("Text")]
+        public void Format()
+        {
+            sample.ToString("dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture).Consume();
         }
     }
 }
