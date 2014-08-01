@@ -13,7 +13,7 @@ namespace NodaTime.Test.TimeZones
     public class PrecalculatedDateTimeZoneTest
     {
         private static readonly ZoneInterval FirstInterval =
-            new ZoneInterval("First", Instant.MinValue, Instant.FromUtc(2000, 3, 10, 10, 0), Offset.FromHours(3), Offset.Zero);
+            new ZoneInterval("First", Instant.BeforeMinValue, Instant.FromUtc(2000, 3, 10, 10, 0), Offset.FromHours(3), Offset.Zero);
 
         // Note that this is effectively UTC +3 + 1 hour DST.
         private static readonly ZoneInterval SecondInterval =
@@ -60,7 +60,7 @@ namespace NodaTime.Test.TimeZones
         {
             var testZone = new PrecalculatedDateTimeZone("Test",
                 new[] { FirstInterval, SecondInterval, ThirdInterval,
-                        new ZoneInterval("Last", ThirdInterval.End, Instant.MaxValue, Offset.Zero, Offset.Zero) }, null);
+                        new ZoneInterval("Last", ThirdInterval.End, Instant.AfterMaxValue, Offset.Zero, Offset.Zero) }, null);
             Assert.AreEqual(Offset.FromHours(-5), testZone.MinOffset);
             Assert.AreEqual(Offset.FromHours(4), testZone.MaxOffset);
         }
@@ -174,7 +174,7 @@ namespace NodaTime.Test.TimeZones
                 new[] { FirstInterval, SecondInterval, ThirdInterval }, tailZone);
             var mapping = gapZone.MapLocal(ThirdInterval.IsoLocalEnd);
             Assert.AreEqual(ThirdInterval, mapping.EarlyInterval);
-            Assert.AreEqual(new ZoneInterval("UTC+05", ThirdInterval.End, Instant.MaxValue, Offset.FromHours(5), Offset.Zero),
+            Assert.AreEqual(new ZoneInterval("UTC+05", ThirdInterval.End, Instant.AfterMaxValue, Offset.FromHours(5), Offset.Zero),
                             mapping.LateInterval);
             Assert.AreEqual(0, mapping.Count);
         }
@@ -201,8 +201,8 @@ namespace NodaTime.Test.TimeZones
         {
             ZoneInterval[] intervals =
             {
-                new ZoneInterval("foo", Instant.MinValue, Instant.FromTicksSinceUnixEpoch(20), Offset.Zero, Offset.Zero),
-                new ZoneInterval("foo", Instant.FromTicksSinceUnixEpoch(20), Instant.MaxValue, Offset.Zero, Offset.Zero)
+                new ZoneInterval("foo", Instant.BeforeMinValue, Instant.FromTicksSinceUnixEpoch(20), Offset.Zero, Offset.Zero),
+                new ZoneInterval("foo", Instant.FromTicksSinceUnixEpoch(20), Instant.AfterMaxValue, Offset.Zero, Offset.Zero)
             };
             var zone = new PrecalculatedDateTimeZone("Test", intervals, null);
             Assert.AreEqual(intervals[1], zone.GetZoneInterval(Instant.MaxValue));
@@ -239,7 +239,7 @@ namespace NodaTime.Test.TimeZones
         {
             ZoneInterval[] intervals =
             {
-                new ZoneInterval("foo", Instant.MinValue, Instant.FromTicksSinceUnixEpoch(20), Offset.Zero, Offset.Zero),
+                new ZoneInterval("foo", Instant.BeforeMinValue, Instant.FromTicksSinceUnixEpoch(20), Offset.Zero, Offset.Zero),
                 new ZoneInterval("foo", Instant.FromTicksSinceUnixEpoch(25), Instant.FromTicksSinceUnixEpoch(30), Offset.Zero, Offset.Zero)
             };
             Assert.Throws<ArgumentException>(() => PrecalculatedDateTimeZone.ValidatePeriods(intervals, DateTimeZone.Utc));
@@ -250,7 +250,7 @@ namespace NodaTime.Test.TimeZones
         {
             ZoneInterval[] intervals =
             {
-                new ZoneInterval("foo", Instant.MinValue, Instant.FromTicksSinceUnixEpoch(20), Offset.Zero, Offset.Zero),
+                new ZoneInterval("foo", Instant.BeforeMinValue, Instant.FromTicksSinceUnixEpoch(20), Offset.Zero, Offset.Zero),
                 new ZoneInterval("foo", Instant.FromTicksSinceUnixEpoch(20), Instant.FromTicksSinceUnixEpoch(30), Offset.Zero, Offset.Zero),                                       
                 new ZoneInterval("foo", Instant.FromTicksSinceUnixEpoch(30), Instant.FromTicksSinceUnixEpoch(100), Offset.Zero, Offset.Zero),                                       
                 new ZoneInterval("foo", Instant.FromTicksSinceUnixEpoch(100), Instant.FromTicksSinceUnixEpoch(200), Offset.Zero, Offset.Zero)
@@ -263,7 +263,7 @@ namespace NodaTime.Test.TimeZones
         {
             ZoneInterval[] intervals =
             {
-                new ZoneInterval("foo", Instant.MinValue, Instant.FromTicksSinceUnixEpoch(20), Offset.Zero, Offset.Zero),
+                new ZoneInterval("foo", Instant.BeforeMinValue, Instant.FromTicksSinceUnixEpoch(20), Offset.Zero, Offset.Zero),
                 new ZoneInterval("foo", Instant.FromTicksSinceUnixEpoch(20), Instant.FromTicksSinceUnixEpoch(30), Offset.Zero, Offset.Zero)                                      
             };
             Assert.Throws<ArgumentException>(() => PrecalculatedDateTimeZone.ValidatePeriods(intervals, null));
@@ -274,8 +274,8 @@ namespace NodaTime.Test.TimeZones
         {
             ZoneInterval[] intervals =
             {
-                new ZoneInterval("foo", Instant.MinValue, Instant.FromTicksSinceUnixEpoch(20), Offset.Zero, Offset.Zero),
-                new ZoneInterval("foo", Instant.FromTicksSinceUnixEpoch(20), Instant.MaxValue, Offset.Zero, Offset.Zero)
+                new ZoneInterval("foo", Instant.BeforeMinValue, Instant.FromTicksSinceUnixEpoch(20), Offset.Zero, Offset.Zero),
+                new ZoneInterval("foo", Instant.FromTicksSinceUnixEpoch(20), Instant.AfterMaxValue, Offset.Zero, Offset.Zero)
             };
             PrecalculatedDateTimeZone.ValidatePeriods(intervals, null);
         }
@@ -290,7 +290,7 @@ namespace NodaTime.Test.TimeZones
             TestHelper.TestEqualsClass<DateTimeZone>
                 (new PrecalculatedDateTimeZone("Test", new[] { FirstInterval, SecondInterval, ThirdInterval }, TailZone),
                  new PrecalculatedDateTimeZone("Test", new[] { FirstInterval, SecondInterval, ThirdInterval }, TailZone),
-                 new PrecalculatedDateTimeZone("Test", new[] { SecondInterval.WithStart(Instant.MinValue), ThirdInterval }, TailZone));
+                 new PrecalculatedDateTimeZone("Test", new[] { SecondInterval.WithStart(Instant.BeforeMinValue), ThirdInterval }, TailZone));
         }
     }
 }

@@ -93,6 +93,7 @@ namespace NodaTime.TimeZones
             // Now we know the recurrence we're in, we can work out when we went into it. (We'll never have
             // two transitions into the same recurrence in a row.)
             Offset previousSavings = ReferenceEquals(recurrence, standardRecurrence) ? dstRecurrence.Savings : Offset.Zero;
+            // FIXME(2.0): Work out what to do with Instant.MaxValue (where adding epsilon will fail...)
             var previous = recurrence.PreviousOrFail(instant + Duration.Epsilon, standardOffset, previousSavings);
             return new ZoneInterval(recurrence.Name, previous.Instant, next.Instant, standardOffset + recurrence.Savings, recurrence.Savings);
         }

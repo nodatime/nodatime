@@ -128,6 +128,12 @@ namespace NodaTime
         }
 
         /// <summary>
+        /// Returns the raw end value of the interval: a normal instant or <see cref="Instant.AfterMaxValue"/>.
+        /// This value should never be exposed.
+        /// </summary>
+        internal Instant RawEnd { get { return end; } }
+
+        /// <summary>
         /// Returns <c>true</c> if this interval has a fixed end point, or <c>false</c> if it
         /// extends to the end of time.
         /// </summary>

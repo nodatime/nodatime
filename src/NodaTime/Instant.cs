@@ -73,7 +73,7 @@ namespace NodaTime
         /// <summary>
         /// Constructor which should *only* be used to construct the invalid instances.
         /// </summary>
-        internal Instant([Trusted] int days, bool deliberatelyInvalid)
+        private Instant([Trusted] int days, bool deliberatelyInvalid)
         {
             this.duration = new Duration(days, 0);
         }

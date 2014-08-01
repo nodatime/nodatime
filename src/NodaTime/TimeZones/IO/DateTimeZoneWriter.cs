@@ -186,12 +186,13 @@ namespace NodaTime.TimeZones.IO
 
             unchecked
             {
-                if (value == Instant.MinValue)
+                // FIXME!
+                if (value == Instant.BeforeMinValue)
                 {
                     WriteCount(ZoneIntervalConstants.MarkerMinValue);
                     return;
                 }
-                if (value == Instant.MaxValue)
+                if (value == Instant.AfterMaxValue)
                 {
                     WriteCount(ZoneIntervalConstants.MarkerMaxValue);
                     return;

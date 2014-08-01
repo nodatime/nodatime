@@ -32,7 +32,7 @@ namespace NodaTime.Test.TimeZones
         {
             var may1981 = DateTimeZone.Utc.AtStrictly(new LocalDateTime(1981, 5, 1, 0, 0, 1)).ToInstant();
             var actual = Algiers.GetZoneInterval(may1981);
-            var expected = new ZoneInterval("CET", Instant.FromTicksSinceUnixEpoch(3575232000000000L), Instant.MaxValue, Offset.FromSeconds(NodaConstants.SecondsPerHour), Offset.Zero);
+            var expected = new ZoneInterval("CET", Instant.FromTicksSinceUnixEpoch(3575232000000000L), null, Offset.FromSeconds(NodaConstants.SecondsPerHour), Offset.Zero);
             Assert.AreEqual(expected, actual);
         }
     }

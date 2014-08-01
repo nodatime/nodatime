@@ -50,11 +50,11 @@ namespace NodaTime.Testing.TimeZones
             {
                 int current = (lower + upper) / 2;
                 var candidate = intervals[current];
-                if (candidate.Start > instant)
+                if (candidate.HasStart && candidate.Start > instant)
                 {
                     upper = current;
                 }
-                else if (candidate.End <= instant)
+                else if (candidate.HasEnd && candidate.End <= instant)
                 {
                     lower = current + 1;
                 }
@@ -175,7 +175,7 @@ namespace NodaTime.Testing.TimeZones
             public void Add(Instant transition, int newStandardOffsetHours, int newSavingOffsetHours, string newName)
             {
                 EnsureNotBuilt();
-                Instant previousStart = intervals.Count == 0 ? Instant.MinValue : intervals.Last().End;
+                Instant? previousStart = intervals.Count == 0 ? (Instant?) null : intervals.Last().End;
                 // The ZoneInterval constructor will perform validation.
                 intervals.Add(new ZoneInterval(currentName, previousStart, transition, currentStandardOffset + currentSavings, currentSavings));
                 currentName = newName;
@@ -191,8 +191,8 @@ namespace NodaTime.Testing.TimeZones
             {
                 EnsureNotBuilt();
                 built = true;
-                Instant previousStart = intervals.Count == 0 ? Instant.MinValue : intervals.Last().End;
-                intervals.Add(new ZoneInterval(currentName, previousStart, Instant.MaxValue, currentStandardOffset + currentSavings, currentSavings));
+                Instant? previousStart = intervals.Count == 0 ? (Instant?) null : intervals.Last().End;
+                intervals.Add(new ZoneInterval(currentName, previousStart, null, currentStandardOffset + currentSavings, currentSavings));
                 return new MultiTransitionDateTimeZone(Id, intervals);
             }
 

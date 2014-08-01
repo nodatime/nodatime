@@ -108,8 +108,11 @@ namespace NodaTime.Test.TimeZones.IO
         [Test]
         public void Test_ZoneIntervalTransition()
         {
+            Dio.TestZoneIntervalTransition(null, Instant.BeforeMinValue);
             Dio.TestZoneIntervalTransition(null, Instant.MinValue);
-            Dio.TestZoneIntervalTransition(null, Instant.MaxValue);
+            // No test for Instant.MaxValue, as it's not on a tick boundary.
+            Dio.TestZoneIntervalTransition(null, Instant.AfterMaxValue);
+
             Dio.TestZoneIntervalTransition(null, Instant.MinValue.PlusTicks(1));
             // The ZoneIntervalTransition has precision to the tick (with no real need to change that).
             // Round to the tick just lower than Instant.MaxValue...

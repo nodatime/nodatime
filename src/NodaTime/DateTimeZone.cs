@@ -302,6 +302,7 @@ namespace NodaTime
                 // Midnight doesn't exist. Maybe we just skip to 1am (or whatever), or maybe the whole day is missed.
                 case 0:
                     var interval = mapping.LateInterval;
+                    // Safe to use Start, as it can't extend to the start of time.
                     var offsetDateTime = new OffsetDateTime(interval.Start, interval.WallOffset, date.Calendar);
                     // It's possible that the entire day is skipped. For example, Samoa skipped December 30th 2011.
                     // We know the two values are in the same calendar here, so we just need to check the YearMonthDay.
@@ -431,11 +432,8 @@ namespace NodaTime
         {
             // Micro-optimization to avoid fetching interval.Start multiple times. Seems
             // to give a performance improvement on x86 at least...
-            Instant intervalStart = interval.Start;
-            if (intervalStart == Instant.MinValue)
-            {
-                return null;
-            }
+            // If the zone interval extends to the start of time, the next check will definitely evaluate to false.
+            Instant intervalStart = interval.RawStart;
             // This allows for a maxOffset of up to +1 day, and the "truncate towards beginning of time"
             // nature of the Days property.
             if (localInstant.DaysSinceEpoch <= intervalStart.DaysSinceEpoch + 1)
@@ -458,11 +456,9 @@ namespace NodaTime
         {
             // Micro-optimization to avoid fetching interval.End multiple times. Seems
             // to give a performance improvement on x86 at least...
-            Instant intervalEnd = interval.End;
-            if (intervalEnd == Instant.MaxValue)
-            {
-                return null;
-            }
+            // If the zone interval extends to the end of time, the next check will
+            // definitely evaluate to false.
+            Instant intervalEnd = interval.RawEnd;
             // Crude but cheap first check to see whether there *might* be a later interval.
             // This allows for a minOffset of up to -1 day, and the "truncate towards beginning of time"
             // nature of the Days property.
@@ -486,7 +482,7 @@ namespace NodaTime
             // If the local interval occurs before the zone interval we're looking at starts,
             // we need to find the earlier one; otherwise this interval must come after the gap, and
             // it's therefore the one we want.
-            if (localInstant.Minus(guessInterval.WallOffset) < guessInterval.Start)
+            if (localInstant.Minus(guessInterval.WallOffset) < guessInterval.RawStart)
             {
                 return GetZoneInterval(guessInterval.Start - Duration.Epsilon);
             }
@@ -502,12 +498,13 @@ namespace NodaTime
             ZoneInterval guessInterval = GetZoneInterval(guess);
             // If the local interval occurs before the zone interval we're looking at starts,
             // it's the one we're looking for. Otherwise, we need to find the next interval.
-            if (localInstant.Minus(guessInterval.WallOffset) < guessInterval.Start)
+            if (localInstant.Minus(guessInterval.WallOffset) < guessInterval.RawStart)
             {
                 return guessInterval;
             }
             else
             {
+                // Will definitely be valid - there can't be a gap after an infinite interval.
                 return GetZoneInterval(guessInterval.End);
             }
         }
@@ -622,26 +619,27 @@ namespace NodaTime
         /// Returns all the zone intervals which occur for any instant in the given interval.
         /// </summary>
         /// <remarks>
-        /// <para>The zone intervals are returned in chronological order. This method is equivalent to calling <see cref="GetZoneInterval"/> for every
+        /// <para>The zone intervals are returned in chronological order.
+        /// This method is equivalent to calling <see cref="GetZoneInterval"/> for every
         /// instant in the interval and then collapsing to a set of distinct zone intervals.
         /// The first and last zone intervals are likely to also cover instants outside the given interval;
         /// the zone intervals returned are not truncated to match the start and end points.
         /// </para>
         /// </remarks>
-        /// <param name="interval">Interval to find zone intervals for. This must be bounded (i.e. it must not
-        /// extend to the start or end of time).</param>
+        /// <param name="interval">Interval to find zone intervals for. This is allowed to be unbounded (i.e.
+        /// infinite in both directions).</param>
         /// <returns>A sequence of zone intervals covering the given interval.</returns>
         /// <seealso cref="GetZoneInterval"/>
         public IEnumerable<ZoneInterval> GetZoneIntervals(Interval interval)
         {
-            Preconditions.CheckArgument(interval.HasStart && interval.HasEnd, "interval",
-                "The interval must have both a start and an end.");
-            var current = interval.Start;
-            while (current < interval.End)
+            var current = interval.HasStart ? interval.Start : Instant.MinValue;
+            var end = interval.RawEnd;
+            while (current < end)
             {
                 var zoneInterval = GetZoneInterval(current);
                 yield return zoneInterval;
-                current = zoneInterval.End;
+                // If this is the end of time, this will just fail on the next comparison.
+                current = zoneInterval.RawEnd;
             }
         }
     }

@@ -179,9 +179,9 @@ namespace NodaTime.TimeZones.IO
                     switch (value)
                     {
                         case DateTimeZoneWriter.ZoneIntervalConstants.MarkerMinValue:
-                            return Instant.MinValue;
+                            return Instant.BeforeMinValue;
                         case DateTimeZoneWriter.ZoneIntervalConstants.MarkerMaxValue:
-                            return Instant.MaxValue;
+                            return Instant.AfterMaxValue;
                         case DateTimeZoneWriter.ZoneIntervalConstants.MarkerRaw:
                             return Instant.FromTicksSinceUnixEpoch(ReadInt64());
                         default: 

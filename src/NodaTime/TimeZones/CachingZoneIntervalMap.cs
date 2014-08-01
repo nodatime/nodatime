@@ -93,7 +93,7 @@ namespace NodaTime.TimeZones
 
                 // Note: moving this code into an instance method in HashCacheNode makes a surprisingly
                 // large performance difference.
-                while (node.Previous != null && node.Interval.Start > instant)
+                while (node.Previous != null && node.Interval.RawStart > instant)
                 {
                     node = node.Previous;
                 }
@@ -134,7 +134,9 @@ namespace NodaTime.TimeZones
                     // Keep going while the current interval ends before the period.
                     // (We only need to check the days, as every period lands on a
                     // day boundary.)
-                    while (interval.End.DaysSinceEpoch < nextPeriodStartDays)
+                    // If the raw end is the end of time, the condition will definitely
+                    // evaluate to false.
+                    while (interval.RawEnd.DaysSinceEpoch < nextPeriodStartDays)
                     {
                         interval = map.GetZoneInterval(interval.End);
                         node = new HashCacheNode(interval, period, node);

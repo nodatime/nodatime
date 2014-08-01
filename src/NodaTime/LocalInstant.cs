@@ -18,13 +18,21 @@ namespace NodaTime
     /// </summary>
     internal struct LocalInstant : IEquatable<LocalInstant>, IComparable<LocalInstant>, IComparable
     {
-        public static readonly LocalInstant MinValue = new LocalInstant(int.MinValue, 0);
-        public static readonly LocalInstant MaxValue = new LocalInstant(int.MaxValue, NodaConstants.NanosecondsPerStandardDay - 1);
+        public static readonly LocalInstant BeforeMinValue = new LocalInstant(Instant.BeforeMinValue.DaysSinceEpoch, deliberatelyInvalid: true);
+        public static readonly LocalInstant AfterMaxValue = new LocalInstant(Instant.AfterMaxValue.DaysSinceEpoch, deliberatelyInvalid: true);
 
         /// <summary>
         /// Elapsed time since the local 1970-01-01T00:00:00.
         /// </summary>
         [ReadWriteForEfficiency] private Duration duration;
+
+        /// <summary>
+        /// Constructor which should *only* be used to construct the invalid instances.
+        /// </summary>
+        private LocalInstant([Trusted] int days, bool deliberatelyInvalid)
+        {
+            this.duration = new Duration(days, 0);
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LocalInstant"/> struct.
