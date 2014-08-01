@@ -237,7 +237,7 @@ namespace NodaTime.TimeZones
                 }
                 if (zoneIntervalComparer.EqualExceptStartAndEnd(current, zoneInterval))
                 {
-                    current = current.WithEnd(zoneInterval.End);
+                    current = current.WithEnd(zoneInterval.RawEnd);
                 }
                 else
                 {
@@ -297,13 +297,13 @@ namespace NodaTime.TimeZones
             private Instant GetEffectiveStart(ZoneInterval zoneInterval)
             {
                 return CheckOption(options, Options.MatchStartAndEndTransitions)
-                    ? zoneInterval.Start : Instant.Max(zoneInterval.Start, interval.Start);                
+                    ? zoneInterval.RawStart : Instant.Max(zoneInterval.RawStart, interval.Start);                
             }
 
             private Instant GetEffectiveEnd(ZoneInterval zoneInterval)
             {
                 return CheckOption(options, Options.MatchStartAndEndTransitions)
-                    ? zoneInterval.End : Instant.Min(zoneInterval.End, interval.End);
+                    ? zoneInterval.RawEnd : Instant.Min(zoneInterval.RawEnd, interval.End);
             }
 
             /// <summary>

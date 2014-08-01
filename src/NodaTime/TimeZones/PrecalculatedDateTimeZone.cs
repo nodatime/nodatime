@@ -21,7 +21,7 @@ namespace NodaTime.TimeZones
         private readonly ZoneInterval[] periods;
         private readonly DateTimeZone tailZone;
         /// <summary>
-        /// The first instant covered by the tail zone, or Instant.MaxValue if there's no tail zone.
+        /// The first instant covered by the tail zone, or Instant.AfterMaxValue if there's no tail zone.
         /// </summary>
         private readonly Instant tailZoneStart;
         private readonly ZoneInterval firstTailZoneInterval;
@@ -41,7 +41,7 @@ namespace NodaTime.TimeZones
             this.tailZone = tailZone;
             this.periods = periods;
             this.tailZone = tailZone;
-            this.tailZoneStart = periods[periods.Length - 1].End;
+            this.tailZoneStart = periods[periods.Length - 1].RawEnd; // We want this to be AfterMaxValue for tail-less zones.
             if (tailZone != null)
             {
                 // Cache a "clamped" zone interval for use at the start of the tail zone.
@@ -59,12 +59,14 @@ namespace NodaTime.TimeZones
         internal static void ValidatePeriods(ZoneInterval[] periods, DateTimeZone tailZone)
         {
             Preconditions.CheckArgument(periods.Length > 0, "periods", "No periods specified in precalculated time zone");
-            Preconditions.CheckArgument(periods[0].Start == Instant.MinValue, "periods", "Periods in precalculated time zone must start with the beginning of time");
+            Preconditions.CheckArgument(!periods[0].HasStart, "periods", "Periods in precalculated time zone must start with the beginning of time");
             for (int i = 0; i < periods.Length - 1; i++)
             {
+                // Safe to use End here: there can't be a period *after* an endless one. Likewise it's safe to use Start on the next 
+                // period, as there can't be a period *before* one which goes back to the start of time.
                 Preconditions.CheckArgument(periods[i].End == periods[i + 1].Start, "periods", "Non-adjoining ZoneIntervals for precalculated time zone");
             }
-            Preconditions.CheckArgument(tailZone != null || periods[periods.Length - 1].End == Instant.MaxValue, "tailZone", "Null tail zone given but periods don't cover all of time");
+            Preconditions.CheckArgument(tailZone != null || periods[periods.Length - 1].RawEnd == Instant.AfterMaxValue, "tailZone", "Null tail zone given but periods don't cover all of time");
         }
 
         /// <summary>
@@ -79,15 +81,9 @@ namespace NodaTime.TimeZones
                 // Clamp the tail zone interval to start at the end of our final period, if necessary, so that the
                 // join is seamless.
                 ZoneInterval intervalFromTailZone = tailZone.GetZoneInterval(instant);
-                return intervalFromTailZone.Start < tailZoneStart ? firstTailZoneInterval : intervalFromTailZone;
+                return intervalFromTailZone.RawStart < tailZoneStart ? firstTailZoneInterval : intervalFromTailZone;
             }
             
-            // Special case to avoid the later logic being problematic
-            if (instant == Instant.MaxValue)
-            {
-                return periods[periods.Length - 1];
-            }
-
             int lower = 0; // Inclusive
             int upper = periods.Length; // Exclusive
 
@@ -95,11 +91,12 @@ namespace NodaTime.TimeZones
             {
                 int current = (lower + upper) / 2;
                 var candidate = periods[current];
-                if (candidate.Start > instant)
+                if (candidate.RawStart > instant)
                 {
                     upper = current;
                 }
-                else if (candidate.End <= instant)
+                // Safe to use RawEnd, as it's just for the comparison.
+                else if (candidate.RawEnd <= instant)
                 {
                     lower = current + 1;
                 }
@@ -142,7 +139,7 @@ namespace NodaTime.TimeZones
             Instant? previous = null;
             foreach (var period in periods)
             {
-                writer.WriteZoneIntervalTransition(previous, (Instant) (previous = period.Start));
+                writer.WriteZoneIntervalTransition(previous, (Instant) (previous = period.RawStart));
                 writer.WriteString(period.Name);
                 writer.WriteOffset(period.WallOffset);
                 writer.WriteOffset(period.Savings);

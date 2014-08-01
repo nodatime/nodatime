@@ -53,9 +53,19 @@ namespace NodaTime.Test.TimeZones
         }
 
         [Test]
-        public void Contains_Instant_WholeOfTime()
+        public void Contains_Instant_WholeOfTime_ViaNullity()
         {
-            ZoneInterval interval = new ZoneInterval("All Time", Instant.MinValue, Instant.MaxValue,
+            ZoneInterval interval = new ZoneInterval("All Time", null, null,
+                Offset.FromHours(9), Offset.FromHours(1));
+            Assert.IsTrue(interval.Contains(SampleStart));
+            Assert.IsTrue(interval.Contains(Instant.MinValue));
+            Assert.IsTrue(interval.Contains(Instant.MaxValue));
+        }
+
+        [Test]
+        public void Contains_Instant_WholeOfTime_ViaSpecialInstants()
+        {
+            ZoneInterval interval = new ZoneInterval("All Time", Instant.BeforeMinValue, Instant.AfterMaxValue,
                 Offset.FromHours(9), Offset.FromHours(1));
             Assert.IsTrue(interval.Contains(SampleStart));
             Assert.IsTrue(interval.Contains(Instant.MinValue));
@@ -65,11 +75,11 @@ namespace NodaTime.Test.TimeZones
         [Test]
         public void Contains_LocalInstant_WholeOfTime()
         {
-            ZoneInterval interval = new ZoneInterval("All Time", Instant.MinValue, Instant.MaxValue,
+            ZoneInterval interval = new ZoneInterval("All Time", Instant.BeforeMinValue, Instant.AfterMaxValue,
                 Offset.FromHours(9), Offset.FromHours(1));
             Assert.IsTrue(interval.Contains(SampleStart.Plus(Offset.Zero)));
-            Assert.IsTrue(interval.Contains(LocalInstant.MinValue));
-            Assert.IsTrue(interval.Contains(LocalInstant.MaxValue));
+            Assert.IsTrue(interval.Contains(Instant.MinValue.Plus(Offset.Zero)));
+            Assert.IsTrue(interval.Contains(Instant.MaxValue.Plus(Offset.Zero)));
         }
     }
 }

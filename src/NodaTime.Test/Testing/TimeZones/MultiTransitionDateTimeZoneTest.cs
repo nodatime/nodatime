@@ -26,7 +26,7 @@ namespace NodaTime.Test.Testing.TimeZones
             var intervals = zone.GetZoneIntervals(transition1 - Duration.Epsilon, transition2 + Duration.Epsilon).ToList();
             Assert.AreEqual(3, intervals.Count);
             Assert.AreEqual(Offset.Zero, intervals[0].WallOffset);
-            Assert.AreEqual(Instant.MinValue, intervals[0].Start);
+            Assert.AreEqual(Instant.BeforeMinValue, intervals[0].RawStart);
             Assert.AreEqual(transition1, intervals[0].End);
 
             Assert.AreEqual(Offset.FromHours(5), intervals[1].WallOffset);
@@ -35,7 +35,7 @@ namespace NodaTime.Test.Testing.TimeZones
 
             Assert.AreEqual(Offset.FromHours(3), intervals[2].WallOffset);
             Assert.AreEqual(transition2, intervals[2].Start);
-            Assert.AreEqual(Instant.MaxValue, intervals[2].End);
+            Assert.AreEqual(Instant.AfterMaxValue, intervals[2].RawEnd);
         }
 
         [Test]
@@ -52,9 +52,9 @@ namespace NodaTime.Test.Testing.TimeZones
             // ZoneInterval uses wall offset and savings...
             var expected = new[]
             {
-                new ZoneInterval("X", Instant.MinValue, transition1, Offset.FromHours(3), Offset.FromHours(1)),
+                new ZoneInterval("X", Instant.BeforeMinValue, transition1, Offset.FromHours(3), Offset.FromHours(1)),
                 new ZoneInterval("Y", transition1, transition2, Offset.FromHours(2), Offset.FromHours(0)),
-                new ZoneInterval("Z", transition2, Instant.MaxValue, Offset.FromHours(2), Offset.FromHours(1)),
+                new ZoneInterval("Z", transition2, Instant.AfterMaxValue, Offset.FromHours(2), Offset.FromHours(1)),
             };
 
             CollectionAssert.AreEqual(expected, actual);

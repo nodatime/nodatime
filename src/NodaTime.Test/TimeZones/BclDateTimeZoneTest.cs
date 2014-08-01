@@ -35,7 +35,7 @@ namespace NodaTime.Test.TimeZones
             {
                 ValidateZoneEquality(instant - Duration.Epsilon, nodaZone, windowsZone);
                 ValidateZoneEquality(instant, nodaZone, windowsZone);
-                instant = nodaZone.GetZoneInterval(instant).End;
+                instant = nodaZone.GetZoneInterval(instant).RawEnd;
             }
         }
 
@@ -109,7 +109,7 @@ namespace NodaTime.Test.TimeZones
             var interval = nodaZone.GetZoneInterval(instant);
 
             // Check that the zone interval really represents a transition.
-            if (interval.Start != Instant.MinValue)
+            if (interval.RawStart != Instant.BeforeMinValue)
             {
                 Assert.AreNotEqual(interval.WallOffset, nodaZone.GetUtcOffset(interval.Start - Duration.Epsilon));
             }

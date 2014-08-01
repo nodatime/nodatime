@@ -26,15 +26,33 @@ namespace NodaTime.TimeZones
         private readonly Instant start;
 
         /// <summary>
-        ///   Initializes a new instance of the <see cref="ZoneInterval" /> class.
+        /// Initializes a new instance of the <see cref="ZoneInterval" /> class.
         /// </summary>
         /// <param name="name">The name of this offset period (e.g. PST or PDT).</param>
-        /// <param name="start">The first <see cref="Instant" /> that the <paramref name = "wallOffset" /> applies.</param>
-        /// <param name="end">The last <see cref="Instant" /> (exclusive) that the <paramref name = "wallOffset" /> applies.</param>
+        /// <param name="start">The first <see cref="Instant" /> that the <paramref name = "wallOffset" /> applies,
+        /// or <c>null</c> to make the zone interval extend to the start of time.</param>
+        /// <param name="end">The last <see cref="Instant" /> (exclusive) that the <paramref name = "wallOffset" /> applies,
+        /// or <c>null</c> to make the zone interval extend to the end of time.</param>
         /// <param name="wallOffset">The <see cref="WallOffset" /> from UTC for this period including any daylight savings.</param>
         /// <param name="savings">The <see cref="WallOffset" /> daylight savings contribution to the offset.</param>
         /// <exception cref="ArgumentException">If <c><paramref name = "start" /> &gt;= <paramref name = "end" /></c>.</exception>
-        public ZoneInterval([NotNull] string name, Instant start, Instant end, Offset wallOffset, Offset savings)
+        public ZoneInterval([NotNull] string name, Instant? start, Instant? end, Offset wallOffset, Offset savings)
+            : this(name, start ?? Instant.BeforeMinValue, end ?? Instant.AfterMaxValue, wallOffset, savings)
+        {
+        }
+     
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ZoneInterval" /> class.
+        /// </summary>
+        /// <param name="name">The name of this offset period (e.g. PST or PDT).</param>
+        /// <param name="start">The first <see cref="Instant" /> that the <paramref name = "wallOffset" /> applies,
+        /// or <see cref="Instant.BeforeMinValue"/> to make the zone interval extend to the start of time.</param>
+        /// <param name="end">The last <see cref="Instant" /> (exclusive) that the <paramref name = "wallOffset" /> applies,
+        /// or <see cref="Instant.AfterMaxValue"/> to make the zone interval extend to the end of time.</param>
+        /// <param name="wallOffset">The <see cref="WallOffset" /> from UTC for this period including any daylight savings.</param>
+        /// <param name="savings">The <see cref="WallOffset" /> daylight savings contribution to the offset.</param>
+        /// <exception cref="ArgumentException">If <c><paramref name = "start" /> &gt;= <paramref name = "end" /></c>.</exception>
+        internal ZoneInterval([NotNull] string name, Instant start, Instant end, Offset wallOffset, Offset savings)
         {
             Preconditions.CheckNotNull(name, "name");
             Preconditions.CheckArgument(start < end, "start", "The start Instant must be less than the end Instant");
@@ -43,10 +61,11 @@ namespace NodaTime.TimeZones
             this.end = end;
             this.wallOffset = wallOffset;
             this.savings = savings;
-            localStart = start == Instant.MinValue ? LocalInstant.MinValue : this.start.Plus(this.wallOffset);
-            localEnd = end == Instant.MaxValue ? LocalInstant.MaxValue : this.end.Plus(this.wallOffset);
+            // FIXME(2.0): Work out what to do about these (and IsoLocalStart etc).
+            // In particular, consider Instant.MinValue with a negative offset, etc.
+            localStart = start == Instant.BeforeMinValue ? LocalInstant.BeforeMinValue : this.start.Plus(this.wallOffset);
+            localEnd = end == Instant.AfterMaxValue ? LocalInstant.AfterMaxValue : this.end.Plus(this.wallOffset);
         }
-
         
         /// <summary>
         /// Returns a copy of this zone interval, but with the given start instant.
@@ -79,12 +98,13 @@ namespace NodaTime.TimeZones
         }
 
         /// <summary>
-        ///   Gets the duration of this period.
+        /// Gets the duration of this zone interval.
         /// </summary>
         /// <remarks>
-        ///   This is effectively <c>End - Start</c>.
+        /// This is effectively <c>End - Start</c>.
         /// </remarks>
-        /// <value>The Duration of this period.</value>
+        /// <value>The Duration of this zone interval.</value>
+        /// <exception cref="InvalidOperationException">This zone extends to the start or end of time.</exception>
         public Duration Duration
         {
             [DebuggerStepThrough] get { return End - Start; }
@@ -94,10 +114,31 @@ namespace NodaTime.TimeZones
         ///   Gets the last Instant (exclusive) that the Offset applies.
         /// </summary>
         /// <value>The last Instant (exclusive) that the Offset applies.</value>
+        /// <exception cref="InvalidOperationException">The zone interval extends to the end of time</exception>
         public Instant End
         {
-            [DebuggerStepThrough] get { return end; }
+            [DebuggerStepThrough]
+            get
+            {
+                Preconditions.CheckState(end.IsValid, "Zone interval extends to the end of time");
+                return end;
+            }
         }
+
+        /// <summary>
+        /// Returns the underlying end instant of this zone interval. If the zone interval extends to the
+        /// end of time, the return value will be <see cref="Instant.AfterMaxValue"/>; this value
+        /// should *not* be exposed publicly.
+        /// </summary>
+        internal Instant RawEnd { get { return end; } }
+
+        /// <summary>
+        /// Returns <c>true</c> if this zone interval has a fixed end point, or <c>false</c> if it
+        /// extends to the end of time.
+        /// </summary>
+        /// <returns><c>true</c> if this interval has a fixed end point, or <c>false</c> if it
+        /// extends to the end of time.</returns>
+        public bool HasEnd { get { return end.IsValid; } }
 
         /// <summary>
         ///   Gets the end time as a LocalInstant.
@@ -174,8 +215,28 @@ namespace NodaTime.TimeZones
         /// <value>The first Instant that the Offset applies.</value>
         public Instant Start
         {
-            [DebuggerStepThrough] get { return start; }
+            [DebuggerStepThrough]
+            get
+            {
+                Preconditions.CheckState(start.IsValid, "Zone interval extends to the beginning of time");
+                return start;
+            }
         }
+
+        /// <summary>
+        /// Returns the underlying start instant of this zone interval. If the zone interval extends to the
+        /// beginning of time, the return value will be <see cref="Instant.BeforeMinValue"/>; this value
+        /// should *not* be exposed publicly.
+        /// </summary>
+        internal Instant RawStart { get { return start; } }
+
+        /// <summary>
+        /// Returns <c>true</c> if this zone interval has a fixed start point, or <c>false</c> if it
+        /// extends to the beginning of time.
+        /// </summary>
+        /// <returns><c>true</c> if this interval has a fixed start point, or <c>false</c> if it
+        /// extends to the beginning of time.</returns>
+        public bool HasStart { get { return start.IsValid; } }
         #endregion // Properties
 
         #region Contains
@@ -193,7 +254,7 @@ namespace NodaTime.TimeZones
         [DebuggerStepThrough]
         public bool Contains(Instant instant)
         {
-            return Start <= instant && (instant < End || End == Instant.MaxValue);
+            return start <= instant && instant < end;
         }
 
         /// <summary>
@@ -206,7 +267,7 @@ namespace NodaTime.TimeZones
         [DebuggerStepThrough]
         internal bool Contains(LocalInstant localInstant)
         {
-            return LocalStart <= localInstant && (localInstant < LocalEnd || End == Instant.MaxValue);
+            return localStart <= localInstant && localInstant < localEnd;
         }
         #endregion // Contains
 
@@ -230,7 +291,8 @@ namespace NodaTime.TimeZones
             {
                 return true;
             }
-            return Name == other.Name && Start == other.Start && End == other.End && WallOffset == other.WallOffset && Savings == other.Savings;
+            return name == other.Name && RawStart == other.RawStart && RawEnd == other.RawEnd
+                && WallOffset == other.WallOffset && Savings == other.Savings;
         }
         #endregion
 
@@ -260,8 +322,8 @@ namespace NodaTime.TimeZones
         {
             int hash = HashCodeHelper.Initialize();
             hash = HashCodeHelper.Hash(hash, Name);
-            hash = HashCodeHelper.Hash(hash, Start);
-            hash = HashCodeHelper.Hash(hash, End);
+            hash = HashCodeHelper.Hash(hash, RawStart);
+            hash = HashCodeHelper.Hash(hash, RawEnd);
             hash = HashCodeHelper.Hash(hash, WallOffset);
             hash = HashCodeHelper.Hash(hash, Savings);
             return hash;
@@ -275,7 +337,11 @@ namespace NodaTime.TimeZones
         /// </returns>
         public override string ToString()
         {
-            return string.Format("{0}: [{1}, {2}) {3} ({4})", Name, Start, End, WallOffset, Savings);
+            return string.Format("{0}: [{1}, {2}) {3} ({4})",
+                Name,
+                HasStart ? Start.ToString() : "StartOfTime",
+                HasEnd ? End.ToString() : "EndOfTime",
+                WallOffset, Savings);
         }
         #endregion // object Overrides
     }

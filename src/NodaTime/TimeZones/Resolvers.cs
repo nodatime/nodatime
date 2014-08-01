@@ -50,6 +50,7 @@ namespace NodaTime.TimeZones
             Preconditions.CheckNotNull(zone, "zone");
             Preconditions.CheckNotNull(before, "before");
             Preconditions.CheckNotNull(after, "after");
+            // Given that there's a zone after before, it can't extend to the end of time.
             return new ZonedDateTime(before.End - Duration.Epsilon, zone, local.Calendar);
         };
 

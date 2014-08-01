@@ -78,13 +78,14 @@ namespace NodaTime.TimeZones
             var rules = bclZone.GetAdjustmentRules();
             if (!bclZone.SupportsDaylightSavingTime || rules.Length == 0)
             {
-                var fixedInterval = new ZoneInterval(bclZone.StandardName, Instant.MinValue, Instant.MaxValue, standardOffset, Offset.Zero);
+                var fixedInterval = new ZoneInterval(bclZone.StandardName, Instant.BeforeMinValue, Instant.AfterMaxValue, standardOffset, Offset.Zero);
                 return new BclDateTimeZone(bclZone, standardOffset, standardOffset, new FixedZoneIntervalMap(fixedInterval));
             }
             var adjustmentIntervals = new List<AdjustmentInterval>();
             var headInterval = ComputeHeadInterval(bclZone, rules[0]);
-            Instant previousEnd = headInterval != null ? headInterval.End : Instant.MinValue;
-
+            // The head interval will never extend to the end of time, so calling End is safe.
+            Instant previousEnd = headInterval != null ? headInterval.End : Instant.BeforeMinValue;
+            
             // TODO(Post-V1): Tidy this up. All of this is horrible.
             for (int i = 0; i < rules.Length; i++)
             {
@@ -142,8 +143,8 @@ namespace NodaTime.TimeZones
                     var firstDaylight = nextDaylight.NextOrFail(lastTransition.Instant, standardOffset, seamSavings);
 
                     // Ignore any "right at the start of the rule"  transitions.
-                    var firstStandardInstant = firstStandard.Instant == ruleEnd ? Instant.MaxValue : firstStandard.Instant;
-                    var firstDaylightInstant = firstDaylight.Instant == ruleEnd ? Instant.MaxValue : firstDaylight.Instant;
+                    var firstStandardInstant = firstStandard.Instant == ruleEnd ? Instant.AfterMaxValue : firstStandard.Instant;
+                    var firstDaylightInstant = firstDaylight.Instant == ruleEnd ? Instant.AfterMaxValue : firstDaylight.Instant;
                     bool firstStandardIsEarlier = firstStandardInstant < firstDaylightInstant;
                     var firstTransition = firstStandardIsEarlier ? firstStandard : firstDaylight;
                     nextStart = firstTransition.Instant;
@@ -175,8 +176,8 @@ namespace NodaTime.TimeZones
                     previousEnd = nextStart;
                 }
             }
-            ZoneInterval tailInterval = previousEnd == Instant.MaxValue ? null
-                : new ZoneInterval(bclZone.StandardName, previousEnd, Instant.MaxValue, standardOffset, Offset.Zero);
+            ZoneInterval tailInterval = previousEnd == Instant.AfterMaxValue ? null
+                : new ZoneInterval(bclZone.StandardName, previousEnd, Instant.AfterMaxValue, standardOffset, Offset.Zero);
 
             IZoneIntervalMap uncachedMap = new BclZoneIntervalMap(adjustmentIntervals, headInterval, tailInterval);
             IZoneIntervalMap cachedMap = CachingZoneIntervalMap.CacheMap(uncachedMap, CachingZoneIntervalMap.CacheType.Hashtable);
@@ -208,7 +209,7 @@ namespace NodaTime.TimeZones
             GetRecurrences(zone, rule, out firstStandard, out firstDaylight);
             var standardOffset = Offset.FromTimeSpan(zone.BaseUtcOffset);
             Transition firstTransition = firstDaylight.NextOrFail(Instant.MinValue, standardOffset, Offset.Zero);
-            return new ZoneInterval(zone.StandardName, Instant.MinValue, firstTransition.Instant, standardOffset, Offset.Zero);
+            return new ZoneInterval(zone.StandardName, Instant.BeforeMinValue, firstTransition.Instant, standardOffset, Offset.Zero);
         }
 
         /// <summary>
@@ -270,7 +271,7 @@ namespace NodaTime.TimeZones
             private readonly DaylightSavingsDateTimeZone adjustmentZone;
 
             internal Instant Start { get { return start; } }
-            internal Instant End { get { return seam.End; } }
+            internal Instant RawEnd { get { return seam.RawEnd; } }
 
             internal AdjustmentInterval(Instant start, DaylightSavingsDateTimeZone adjustmentZone, ZoneInterval seam)
             {
@@ -338,11 +339,6 @@ namespace NodaTime.TimeZones
                 }
 
                 // Avoid having to worry about Instant.MaxValue for the rest of the class.
-                if (instant == Instant.MaxValue)
-                {
-                    return adjustmentIntervals[adjustmentIntervals.Count - 1].GetZoneInterval(instant);
-                }
-
                 int lower = 0; // Inclusive
                 int upper = adjustmentIntervals.Count; // Exclusive
 
@@ -354,7 +350,7 @@ namespace NodaTime.TimeZones
                     {
                         upper = current;
                     }
-                    else if (candidate.End <= instant)
+                    else if (candidate.RawEnd <= instant)
                     {
                         lower = current + 1;
                     }
