@@ -25,6 +25,9 @@ namespace NodaTime.TimeZones
         private readonly Offset savings;
         private readonly Instant start;
 
+        // TODO(2.0): Consider changing the fourth parameter of the constructors to accept standard time rather than the wall offset. It's very
+        // inconsistent with everything else...
+
         /// <summary>
         /// Initializes a new instance of the <see cref="ZoneInterval" /> class.
         /// </summary>
@@ -62,38 +65,8 @@ namespace NodaTime.TimeZones
             this.wallOffset = wallOffset;
             this.savings = savings;
             // Work out the corresponding local instants, taking care to "go infinite" appropriately.
-            localStart = GetLocalInstant(start, wallOffset);
-            localEnd = GetLocalInstant(end, wallOffset);
-        }
-
-        private static LocalInstant GetLocalInstant(Instant instant, Offset offset)
-        {
-            int days = instant.DaysSinceEpoch;
-            // If we can do the arithmetic safely, do so.
-            if (days > Instant.MinDays && days < Instant.MaxDays)
-            {
-                return instant.Plus(offset);
-            }
-            // Handle BeforeMinValue and BeforeMaxValue simply.
-            if (days < Instant.MinDays)
-            {
-                return LocalInstant.BeforeMinValue;
-            }
-            if (days > Instant.MaxDays)
-            {
-                return LocalInstant.AfterMaxValue;
-            }
-            // Okay, do the arithmetic as a Duration, then check the result for overflow, effectively.
-            var asDuration = instant.TimeSinceEpoch.PlusSmallNanoseconds(offset.Nanoseconds);
-            if (asDuration.Days < Instant.MinDays)
-            {
-                return LocalInstant.BeforeMinValue;
-            }
-            if (asDuration.Days > Instant.MaxDays)
-            {
-                return LocalInstant.AfterMaxValue;
-            }
-            return new LocalInstant(asDuration);
+            localStart = start.SafePlus(wallOffset);
+            localEnd = end.SafePlus(wallOffset);
         }
 
         /// <summary>

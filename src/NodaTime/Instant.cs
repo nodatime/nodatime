@@ -263,6 +263,43 @@ namespace NodaTime
         }
 
         /// <summary>
+        /// Adds the given offset to this instant, either returning a normal LocalInstant,
+        /// or <see cref="LocalInstant.BeforeMinValue"/> or <see cref="LocalInstant.AfterMaxValue"/>
+        /// if the value would overflow.
+        /// </summary>
+        /// <param name="offset"></param>
+        /// <returns></returns>
+        internal LocalInstant SafePlus(Offset offset)
+        {
+            int days = duration.Days;
+            // If we can do the arithmetic safely, do so.
+            if (days > MinDays && days < MaxDays)
+            {
+                return Plus(offset);
+            }
+            // Handle BeforeMinValue and BeforeMaxValue simply.
+            if (days < MinDays)
+            {
+                return LocalInstant.BeforeMinValue;
+            }
+            if (days > MaxDays)
+            {
+                return LocalInstant.AfterMaxValue;
+            }
+            // Okay, do the arithmetic as a Duration, then check the result for overflow, effectively.
+            var asDuration = duration.PlusSmallNanoseconds(offset.Nanoseconds);
+            if (asDuration.Days < Instant.MinDays)
+            {
+                return LocalInstant.BeforeMinValue;
+            }
+            if (asDuration.Days > Instant.MaxDays)
+            {
+                return LocalInstant.AfterMaxValue;
+            }
+            return new LocalInstant(asDuration);
+        }
+
+        /// <summary>
         /// Adds a duration to an instant. Friendly alternative to <c>operator+()</c>.
         /// </summary>
         /// <param name="left">The left hand side of the operator.</param>
