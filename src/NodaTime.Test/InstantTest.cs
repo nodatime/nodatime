@@ -275,6 +275,18 @@ namespace NodaTime.Test
         }
 
         [Test]
+        public void ExtremeArithmetic()
+        {
+            Duration hugeAndPositive = Instant.MaxValue - Instant.MinValue;
+            Duration hugeAndNegative = Instant.MinValue - Instant.MaxValue;
+            Assert.AreEqual(hugeAndNegative, -hugeAndPositive);
+            Assert.AreEqual(Instant.MaxValue, Instant.MinValue - hugeAndNegative);
+            Assert.AreEqual(Instant.MaxValue, Instant.MinValue + hugeAndPositive);
+            Assert.AreEqual(Instant.MinValue, Instant.MaxValue + hugeAndNegative);
+            Assert.AreEqual(Instant.MinValue, Instant.MaxValue - hugeAndPositive);
+        }
+
+        [Test]
         public void PlusOffset_Overflow()
         {
             TestHelper.AssertOverflow(Instant.MinValue.Plus, Offset.FromSeconds(-1));

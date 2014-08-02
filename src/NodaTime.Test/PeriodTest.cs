@@ -794,7 +794,8 @@ namespace NodaTime.Test
             TestHelper.AssertBinaryRoundtrip(new Period(1, 2, 3, 4, 5L, 6L, 7L, 8L, 9L, new Duration(10, 11L)));
             // Check we're not truncating to Int32... (except for date values)
             TestHelper.AssertBinaryRoundtrip(new Period(int.MaxValue, int.MaxValue, int.MinValue, int.MinValue, long.MaxValue,
-                                                        long.MinValue, long.MinValue, long.MinValue, long.MinValue, new Duration(int.MinValue, NodaConstants.NanosecondsPerStandardDay - 1)));
+                                                        long.MinValue, long.MinValue, long.MinValue, long.MinValue,
+                                                        new Duration(Duration.MaxDays, NodaConstants.NanosecondsPerStandardDay - 1)));
         }
 
         /// <summary>
