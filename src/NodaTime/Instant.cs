@@ -43,6 +43,13 @@ namespace NodaTime
         internal const int MinDays = -4371222;
         internal const int MaxDays = 2932896;
 
+        private const long MinTicks = MinDays * NodaConstants.TicksPerStandardDay;
+        private const long MaxTicks = (MaxDays + 1) * NodaConstants.TicksPerStandardDay - 1;
+        private const long MinMilliseconds = MinDays * (long) NodaConstants.MillisecondsPerStandardDay;
+        private const long MaxMilliseconds = (MaxDays + 1) * (long) NodaConstants.MillisecondsPerStandardDay - 1;
+        private const long MinSeconds = MinDays * (long) NodaConstants.SecondsPerStandardDay;
+        private const long MaxSeconds = (MaxDays + 1) * (long) NodaConstants.SecondsPerStandardDay - 1;
+
         /// <summary>
         /// Represents the smallest possible <see cref="Instant"/>.
         /// </summary>
@@ -578,11 +585,8 @@ namespace NodaTime
         /// <exception cref="ArgumentOutOfRangeException">The constructed instant would be out of the range representable in Noda Time.</exception>
         public static Instant FromSecondsSinceUnixEpoch(long seconds)
         {
-            // FIXME:Range checking
-            Preconditions.CheckArgumentRange("seconds", seconds, long.MinValue / NodaConstants.TicksPerSecond,
-                long.MaxValue / NodaConstants.TicksPerSecond);
-            // TODO(2.0): Create a Nanoseconds.FromSeconds call?
-            return FromTicksSinceUnixEpoch(seconds * NodaConstants.TicksPerSecond);
+            Preconditions.CheckArgumentRange("seconds", seconds, MinSeconds, MaxSeconds);
+            return new Instant(Duration.FromSeconds(seconds));
         }
 
         /// <summary>
@@ -594,11 +598,8 @@ namespace NodaTime
         /// <exception cref="ArgumentOutOfRangeException">The constructed instant would be out of the range representable in Noda Time.</exception>
         public static Instant FromMillisecondsSinceUnixEpoch(long milliseconds)
         {
-            // FIXME:Range
-            Preconditions.CheckArgumentRange("milliseconds", milliseconds, long.MinValue / NodaConstants.TicksPerMillisecond,
-                long.MaxValue / NodaConstants.TicksPerMillisecond);
-            // TODO(2.0): Create a Nanoseconds.FromSeconds call?
-            return FromTicksSinceUnixEpoch(milliseconds * NodaConstants.TicksPerMillisecond);
+            Preconditions.CheckArgumentRange("milliseconds", milliseconds, MinMilliseconds, MaxMilliseconds);
+            return new Instant(Duration.FromMilliseconds(milliseconds));
         }
 
         /// <summary>
@@ -611,7 +612,7 @@ namespace NodaTime
         /// <param name="ticks">Number of ticks since the Unix epoch. May be negative (for instants before the epoch).</param>
         public static Instant FromTicksSinceUnixEpoch(long ticks)
         {
-            // FIXME:Range
+            Preconditions.CheckArgumentRange("ticks", ticks, MinTicks, MaxTicks);
             return new Instant(Duration.FromTicks(ticks));
         }
 
