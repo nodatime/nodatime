@@ -325,5 +325,18 @@ namespace NodaTime.Test
             TestHelper.AssertValid(Instant.FromTicksSinceUnixEpoch, largestValid);
             TestHelper.AssertOutOfRange(Instant.FromTicksSinceUnixEpoch, largestValid + 1);
         }
+
+        // See issue 269.
+        [Test]
+        public void ToDateTimeUtc_WithOverflow()
+        {
+            TestHelper.AssertOverflow(() => Instant.MinValue.ToDateTimeUtc());
+        }
+
+        [Test]
+        public void ToDateTimeOffset_WithOverflow()
+        {
+            TestHelper.AssertOverflow(() => Instant.MinValue.ToDateTimeOffset());
+        }
     }
 }
