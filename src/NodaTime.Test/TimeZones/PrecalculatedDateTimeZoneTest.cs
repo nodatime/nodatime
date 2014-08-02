@@ -142,7 +142,7 @@ namespace NodaTime.Test.TimeZones
         public void MapLocal_GapWithinPrecalculated()
         {
             // Transition from +3 to +4 has a 1 hour gap
-            Assert.IsTrue(FirstInterval.LocalEnd < SecondInterval.LocalStart);
+            Assert.IsTrue(FirstInterval.IsoLocalEnd < SecondInterval.IsoLocalStart);
             CheckMapping(FirstInterval.IsoLocalEnd, FirstInterval, SecondInterval, 0);
         }
 

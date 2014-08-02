@@ -141,30 +141,6 @@ namespace NodaTime.TimeZones
         public bool HasEnd { get { return end.IsValid; } }
 
         /// <summary>
-        ///   Gets the end time as a LocalInstant.
-        /// </summary>
-        /// <remarks>
-        ///   This is effectively <c>End + Offset</c>.
-        /// </remarks>
-        /// <value>The ending LocalInstant.</value>
-        internal LocalInstant LocalEnd
-        {
-            [DebuggerStepThrough] get { return localEnd; }
-        }
-
-        /// <summary>
-        ///   Gets the start time as a LocalInstant.
-        /// </summary>
-        /// <remarks>
-        ///   This is effectively <c>Start + Offset</c>.
-        /// </remarks>
-        /// <value>The starting LocalInstant.</value>
-        internal LocalInstant LocalStart
-        {
-            [DebuggerStepThrough] get { return localStart; }
-        }
-
-        /// <summary>
         /// Returns the local start time of the interval, as LocalDateTime
         /// in the ISO calendar.
         /// </summary>

@@ -41,8 +41,8 @@ namespace NodaTime.Test.TimeZones
             Assert.AreEqual(Offset.FromHours(6), interval.WallOffset);
             Assert.AreEqual(Offset.FromHours(5), interval.StandardOffset);
             Assert.AreEqual(Offset.FromHours(1), interval.Savings);
-            Assert.AreEqual(new LocalInstant(2010, 3, 10, 2, 0), interval.LocalStart);
-            Assert.AreEqual(new LocalInstant(2010, 10, 5, 2, 0), interval.LocalEnd);
+            Assert.AreEqual(new LocalDateTime(2010, 3, 10, 2, 0), interval.IsoLocalStart);
+            Assert.AreEqual(new LocalDateTime(2010, 10, 5, 2, 0), interval.IsoLocalEnd);
         }
 
         [Test]
@@ -53,8 +53,8 @@ namespace NodaTime.Test.TimeZones
             Assert.AreEqual(Offset.FromHours(5), interval.WallOffset);
             Assert.AreEqual(Offset.FromHours(5), interval.StandardOffset);
             Assert.AreEqual(Offset.FromHours(0), interval.Savings);
-            Assert.AreEqual(new LocalInstant(2010, 10, 5, 1, 0), interval.LocalStart);
-            Assert.AreEqual(new LocalInstant(2011, 3, 10, 1, 0), interval.LocalEnd);
+            Assert.AreEqual(new LocalDateTime(2010, 10, 5, 1, 0), interval.IsoLocalStart);
+            Assert.AreEqual(new LocalDateTime(2011, 3, 10, 1, 0), interval.IsoLocalEnd);
         }
 
         [Test]
