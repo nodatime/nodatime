@@ -60,9 +60,9 @@ namespace NodaTime.Testing.TimeZones
         public SingleTransitionDateTimeZone(Instant transitionPoint, Offset offsetBefore, Offset offsetAfter, string id)
             : base(id, false, Offset.Min(offsetBefore, offsetAfter), Offset.Max(offsetBefore, offsetAfter))
         {
-            earlyInterval = new ZoneInterval(id + "-Early", Instant.MinValue, transitionPoint,
+            earlyInterval = new ZoneInterval(id + "-Early", null, transitionPoint,
                 offsetBefore, Offset.Zero);
-            lateInterval = new ZoneInterval(id + "-Late", transitionPoint, Instant.MaxValue,
+            lateInterval = new ZoneInterval(id + "-Late", transitionPoint, null,
                 offsetAfter, Offset.Zero);
         }
 
