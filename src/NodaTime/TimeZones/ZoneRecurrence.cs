@@ -4,6 +4,7 @@
 
 using System;
 using System.Text;
+using NodaTime.Calendars;
 using NodaTime.TimeZones.IO;
 using NodaTime.Utility;
 
@@ -29,6 +30,8 @@ namespace NodaTime.TimeZones
         private readonly string name;
         private readonly Offset savings;
         private readonly int toYear;
+        private readonly LocalInstant maxLocalInstant;
+        private readonly LocalInstant minLocalInstant;
         private readonly ZoneYearOffset yearOffset;
 
         /// <summary>
@@ -43,11 +46,18 @@ namespace NodaTime.TimeZones
         {
             Preconditions.CheckNotNull(name, "name");
             Preconditions.CheckNotNull(yearOffset, "yearOffset");
+
+            Preconditions.CheckArgument(fromYear == int.MinValue || (fromYear >= -9998 && fromYear <= 9999), "fromYear",
+                "fromYear must be in the range [-9998, 9999] or Int32.MinValue");
+            Preconditions.CheckArgument(toYear == int.MaxValue || (toYear >= -9998 && toYear <= 9999), "toYear",
+                "toYear must be in the range [-9998, 9999] or Int32.MaxValue");
             this.name = name;
             this.savings = savings;
             this.yearOffset = yearOffset;
             this.fromYear = fromYear;
             this.toYear = toYear;
+            this.minLocalInstant = fromYear == int.MinValue ? LocalInstant.BeforeMinValue : new LocalDateTime(fromYear, 1, 1, 0, 0).ToLocalInstant();
+            this.maxLocalInstant = toYear == int.MaxValue ? LocalInstant.AfterMaxValue : new LocalDateTime(toYear, 12, 31, 0, 0).PlusNanoseconds(NodaConstants.NanosecondsPerStandardDay - 1).ToLocalInstant();
         }
 
         public string Name { get { return name; } }
@@ -94,8 +104,7 @@ namespace NodaTime.TimeZones
         #endregion
 
         /// <summary>
-        /// Returns the given instant adjusted one year forward taking into account leap years and other
-        /// adjustments like day of week.
+        /// Returns the first transition which occurs strictly after the given instant.
         /// </summary>
         /// <remarks>
         /// If the given instant is before the starting year, the year of the given instant is
@@ -110,85 +119,142 @@ namespace NodaTime.TimeZones
         internal Transition? Next(Instant instant, Offset standardOffset, Offset previousSavings)
         {
             Offset ruleOffset = yearOffset.GetRuleOffset(standardOffset, previousSavings);
+            Offset newOffset = standardOffset + Savings;
 
-            // TODO(2.0): Remove all the MinValue stuff... start with in-bounds values.
-            if (instant == Instant.MinValue)
+            LocalInstant safeLocal = instant.SafePlus(ruleOffset);
+            int targetYear;
+            if (safeLocal < minLocalInstant)
             {
-                instant = Instant.FromUtc(-9997, 1, 1, 0, 0);
-            }
-            if (instant == Instant.MaxValue)
-            {
-                instant = Instant.FromUtc(9998, 12, 31, 0, 0);
-            }
-
-            OffsetDateTime offsetDateTime = instant.WithOffset(ruleOffset);
-
-            int targetYear = offsetDateTime.Year;
-            if (offsetDateTime.Year < fromYear)
-            {
+                // Asked for a transition after some point before our first year: crop to first year.
                 targetYear = fromYear;
             }
+            else if (safeLocal > maxLocalInstant)
+            {
+                // Asked for a transition after our end point: there isn't one.
+                return null;
+            }
+            else if (!safeLocal.IsValid)
+            {
+                if (safeLocal == LocalInstant.BeforeMinValue)
+                {
+                    // We've been asked to find the next transition after some point which is a valid instant, but is before the
+                    // start of valid local time after applying the rule offset. For example, passing Instant.MinValue for a rule which says
+                    // "transition uses wall time, which is UTC-5". Proceed as if we'd been asked for something in -9998.
+                    // I *think* that works...
+                    targetYear = GregorianYearMonthDayCalculator.MinGregorianYear;
+                }
+                else
+                {
+                    // We've been asked to find the next transition after some point which is a valid instant, but is after the
+                    // end of valid local time after applying the rule offset. It's possible that the next transition *would*
+                    // be representable as an instant (e.g. 1am Jan 1st 10000 with an offset of +5) but it's reasonable to
+                    // just return an infinite transition.
+                    return new Transition(Instant.AfterMaxValue, newOffset);
+                }
+            }
+            else
+            {
+                // Simple case: we were asked for a "normal" value in the range of years for which this recurrence is valid.
+                int ignoredDayOfYear;
+                targetYear = CalendarSystem.Iso.YearMonthDayCalculator.GetYear(safeLocal.DaysSinceEpoch, out ignoredDayOfYear);
+            }
+
+            LocalInstant transition = yearOffset.GetOccurrenceForYear(targetYear).ToLocalInstant();
+
+            Instant safeTransition = transition.SafeMinus(ruleOffset);
+            if (safeTransition > instant)
+            {
+                return new Transition(safeTransition, newOffset);
+            }
+
+            // We've got a transition earlier than we were asked for. Try next year.
+            targetYear++;
             if (targetYear > toYear)
             {
                 return null;
             }
-            LocalDateTime transition = yearOffset.GetOccurrenceForYear(targetYear);
-            if (transition <= offsetDateTime.LocalDateTime)
+            // Handle infinite transitions
+            if (targetYear > GregorianYearMonthDayCalculator.MaxGregorianYear)
             {
-                targetYear++;
-                if (targetYear > toYear)
-                {
-                    return null;
-                }
-                transition = yearOffset.GetOccurrenceForYear(targetYear);
+                return new Transition(Instant.AfterMaxValue, newOffset);
             }
-            return new Transition(transition.WithOffset(ruleOffset).ToInstant(), standardOffset + Savings);
+            // It's fine for this to be "end of time", and it can't be "start of time" because we're at least finding a transition in -9997.
+            safeTransition = yearOffset.GetOccurrenceForYear(targetYear).ToLocalInstant().SafeMinus(ruleOffset);
+            return new Transition(safeTransition, newOffset);
         }
 
         /// <summary>
-        /// Returns the given instant adjusted one year backward taking into account leap years and other
-        /// adjustments like day of week.
+        /// Returns the last transition which occurs before or on the given instant.
         /// </summary>
         /// <param name="instant">The <see cref="Instant"/> lower bound for the next trasnition.</param>
         /// <param name="standardOffset">The <see cref="Offset"/> standard offset.</param>
         /// <param name="previousSavings">The <see cref="Offset"/> savings adjustment at the given Instant.</param>
         /// <returns>The previous transition, or null if there is no previous transition.</returns>
-        internal Transition? Previous(Instant instant, Offset standardOffset, Offset previousSavings)
+        internal Transition? PreviousOrSame(Instant instant, Offset standardOffset, Offset previousSavings)
         {
             Offset ruleOffset = yearOffset.GetRuleOffset(standardOffset, previousSavings);
+            Offset newOffset = standardOffset + Savings;
 
-            // TODO(2.0): Remove all the MinValue stuff... start with in-bounds values.
-            if (instant == Instant.MinValue)
+            LocalInstant safeLocal = instant.SafePlus(ruleOffset);
+            int targetYear;
+            if (safeLocal > maxLocalInstant)
             {
-                instant = Instant.FromUtc(-9997, 1, 1, 0, 0);
-            }
-            if (instant == Instant.MaxValue)
-            {
-                instant = Instant.FromUtc(9998, 12, 31, 0, 0);
-            }
-
-            OffsetDateTime offsetDateTime = instant.WithOffset(ruleOffset);
-
-            int targetYear = offsetDateTime.Year;
-            if (offsetDateTime.Year > toYear)
-            {
+                // Asked for a transition before some point after our last year: crop to last year.
                 targetYear = toYear;
             }
+            else if (safeLocal < minLocalInstant)
+            {
+                // Asked for a transition before our first year: there isn't one.
+                return null;
+            }
+            else if (!safeLocal.IsValid)
+            {
+                if (safeLocal == LocalInstant.BeforeMinValue)
+                {
+                    // We've been asked to find the next transition before some point which is a valid instant, but is before the
+                    // start of valid local time after applying the rule offset.  It's possible that the next transition *would*
+                    // be representable as an instant (e.g. 1pm Dec 31st -9999 with an offset of -5) but it's reasonable to
+                    // just return an infinite transition.
+                    return new Transition(Instant.BeforeMinValue, newOffset);
+                }
+                else
+                {
+                    // We've been asked to find the next transition before some point which is a valid instant, but is after the
+                    // end of valid local time after applying the rule offset. For example, passing Instant.MaxValue for a rule which says
+                    // "transition uses wall time, which is UTC+5". Proceed as if we'd been asked for something in 9999.
+                    // I *think* that works...
+                    targetYear = GregorianYearMonthDayCalculator.MaxGregorianYear;
+                }
+            }
+            else
+            {
+                // Simple case: we were asked for a "normal" value in the range of years for which this recurrence is valid.
+                int ignoredDayOfYear;
+                targetYear = CalendarSystem.Iso.YearMonthDayCalculator.GetYear(safeLocal.DaysSinceEpoch, out ignoredDayOfYear);
+            }
+
+            LocalInstant transition = yearOffset.GetOccurrenceForYear(targetYear).ToLocalInstant();
+
+            Instant safeTransition = transition.SafeMinus(ruleOffset);
+            if (safeTransition <= instant)
+            {
+                return new Transition(safeTransition, newOffset);
+            }
+
+            // We've got a transition later than we were asked for. Try next year.
+            targetYear--;
             if (targetYear < fromYear)
             {
                 return null;
             }
-            LocalDateTime transition = yearOffset.GetOccurrenceForYear(targetYear);
-            if (transition >= offsetDateTime.LocalDateTime)
+            // Handle infinite transitions
+            if (targetYear < GregorianYearMonthDayCalculator.MinGregorianYear)
             {
-                targetYear--;
-                if (targetYear < fromYear)
-                {
-                    return null;
-                }
-                transition = yearOffset.GetOccurrenceForYear(targetYear);
+                return new Transition(Instant.BeforeMinValue, newOffset);
             }
-            return new Transition(transition.WithOffset(ruleOffset).ToInstant(), standardOffset + Savings);
+            // It's fine for this to be "start of time", and it can't be "end of time" because we're at latest finding a transition in 9998.
+            safeTransition = yearOffset.GetOccurrenceForYear(targetYear).ToLocalInstant().SafeMinus(ruleOffset);
+            return new Transition(safeTransition, newOffset);
         }
 
         /// <summary>
@@ -207,11 +273,11 @@ namespace NodaTime.TimeZones
         }
 
         /// <summary>
-        /// Piggy-backs onto Previous, but fails with a descriptive InvalidOperationException if there's no such transition.
+        /// Piggy-backs onto PreviousOrSame, but fails with a descriptive InvalidOperationException if there's no such transition.
         /// </summary>
-        internal Transition PreviousOrFail(Instant instant, Offset standardOffset, Offset previousSavings)
+        internal Transition PreviousOrSameOrFail(Instant instant, Offset standardOffset, Offset previousSavings)
         {
-            Transition? previous = Previous(instant, standardOffset, previousSavings);
+            Transition? previous = PreviousOrSame(instant, standardOffset, previousSavings);
             if (previous == null)
             {
                 throw new InvalidOperationException(
