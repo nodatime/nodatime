@@ -266,5 +266,19 @@ namespace NodaTime.Test
             Assert.Greater(Instant.AfterMaxValue, Instant.MaxValue);
             Assert.Less(Instant.BeforeMinValue, Instant.MinValue);
         }
+
+        [Test]
+        public void PlusDuration_Overflow()
+        {
+            TestHelper.AssertOverflow(Instant.MinValue.Plus, -Duration.Epsilon);
+            TestHelper.AssertOverflow(Instant.MaxValue.Plus, Duration.Epsilon);
+        }
+
+        [Test]
+        public void PlusOffset_Overflow()
+        {
+            TestHelper.AssertOverflow(Instant.MinValue.Plus, Offset.FromSeconds(-1));
+            TestHelper.AssertOverflow(Instant.MaxValue.Plus, Offset.FromSeconds(1));
+        }
     }
 }

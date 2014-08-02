@@ -39,6 +39,11 @@ namespace NodaTime
         /// </summary>
         internal LocalInstant(Duration nanoseconds)
         {
+            int days = nanoseconds.Days;
+            if (days < Instant.MinDay || days > Instant.MaxDay)
+            {
+                throw new OverflowException("Operation would overflow bounds of local date/time");
+            }
             this.duration = nanoseconds;
         }
 
@@ -47,18 +52,9 @@ namespace NodaTime
         /// </summary>
         /// <param name="days">Number of days since 1970-01-01, in a time zone neutral fashion.</param>
         /// <param name="nanoOfDay">Nanosecond of the local day.</param>
-        internal LocalInstant(int days, long nanoOfDay)
-            : this(new Duration(days, nanoOfDay))
+        internal LocalInstant([Trusted] int days, [Trusted] long nanoOfDay)
         {
-        }
-
-        /// <summary>
-        /// Convenience constructor for test purposes.
-        /// </summary>
-        internal LocalInstant(int year, int month, int day, int hour, int minute)
-            : this(new LocalDate(year, month, day).DaysSinceEpoch,
-                   new LocalTime(hour, minute).NanosecondOfDay)
-        {            
+            this.duration = new Duration(days, nanoOfDay);
         }
 
         /// <summary>

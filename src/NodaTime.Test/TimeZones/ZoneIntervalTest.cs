@@ -2,6 +2,7 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
+using System;
 using NodaTime.TimeZones;
 using NUnit.Framework;
 
@@ -10,8 +11,8 @@ namespace NodaTime.Test.TimeZones
     [TestFixture]
     public class ZoneIntervalTest
     {
-        private static readonly Instant SampleStart =  Instant.FromUtc(2011, 6, 3, 10, 15);
-        private static readonly Instant SampleEnd =  Instant.FromUtc(2011, 8, 2, 13, 45);
+        private static readonly Instant SampleStart = Instant.FromUtc(2011, 6, 3, 10, 15);
+        private static readonly Instant SampleEnd = Instant.FromUtc(2011, 8, 2, 13, 45);
 
         private static readonly ZoneInterval SampleInterval =
             new ZoneInterval("TestTime", SampleStart, SampleEnd,
@@ -78,6 +79,36 @@ namespace NodaTime.Test.TimeZones
             Assert.IsTrue(interval.Contains(SampleStart.Plus(Offset.Zero)));
             Assert.IsTrue(interval.Contains(Instant.MinValue.Plus(Offset.Zero)));
             Assert.IsTrue(interval.Contains(Instant.MaxValue.Plus(Offset.Zero)));
+        }
+
+        [Test]
+        public void Contains_OutsideLocalInstantange()
+        {
+            ZoneInterval veryEarly = new ZoneInterval("Very early", Instant.BeforeMinValue, Instant.MinValue + Duration.FromHours(8), Offset.FromHours(-9), Offset.Zero);
+            ZoneInterval veryLate = new ZoneInterval("Very late", Instant.MaxValue - Duration.FromHours(8), Instant.AfterMaxValue, Offset.FromHours(9), Offset.Zero);
+            // The instants are contained...
+            Assert.IsTrue(veryEarly.Contains(Instant.MinValue + Duration.FromHours(4)));
+            Assert.IsTrue(veryLate.Contains(Instant.MaxValue - Duration.FromHours(4)));
+            // But there are no valid local instants
+            Assert.IsFalse(veryEarly.Contains(Instant.MinValue.Plus(Offset.Zero)));
+            Assert.IsFalse(veryLate.Contains(Instant.MaxValue.Plus(Offset.Zero)));
+        }
+
+        [Test]
+        public void IsoLocalStartAndEnd_Infinite()
+        {
+            var interval = new ZoneInterval("All time", null, null, Offset.Zero, Offset.Zero);
+            Assert.Throws<InvalidOperationException>(() => interval.IsoLocalStart.ToString());
+            Assert.Throws<InvalidOperationException>(() => interval.IsoLocalEnd.ToString());
+        }
+
+        [Test]
+        public void IsoLocalStartAndEnd_OutOfRange()
+        {
+            var interval = new ZoneInterval("All time", Instant.MinValue, null, Offset.FromHours(-1), Offset.Zero);
+            Assert.Throws<OverflowException>(() => interval.IsoLocalStart.ToString());
+            interval = new ZoneInterval("All time", null, Instant.MaxValue, Offset.FromHours(11), Offset.Zero);
+            Assert.Throws<OverflowException>(() => interval.IsoLocalEnd.ToString());
         }
     }
 }

@@ -61,12 +61,41 @@ namespace NodaTime.TimeZones
             this.end = end;
             this.wallOffset = wallOffset;
             this.savings = savings;
-            // FIXME(2.0): Work out what to do about these (and IsoLocalStart etc).
-            // In particular, consider Instant.MinValue with a negative offset, etc.
-            localStart = start == Instant.BeforeMinValue ? LocalInstant.BeforeMinValue : this.start.Plus(this.wallOffset);
-            localEnd = end == Instant.AfterMaxValue ? LocalInstant.AfterMaxValue : this.end.Plus(this.wallOffset);
+            // Work out the corresponding local instants, taking care to "go infinite" appropriately.
+            localStart = GetLocalInstant(start, wallOffset);
+            localEnd = GetLocalInstant(end, wallOffset);
         }
-        
+
+        private static LocalInstant GetLocalInstant(Instant instant, Offset offset)
+        {
+            int days = instant.DaysSinceEpoch;
+            // If we can do the arithmetic safely, do so.
+            if (days > Instant.MinDay && days < Instant.MaxDay)
+            {
+                return instant.Plus(offset);
+            }
+            // Handle BeforeMinValue and BeforeMaxValue simply.
+            if (days < Instant.MinDay)
+            {
+                return LocalInstant.BeforeMinValue;
+            }
+            if (days > Instant.MaxDay)
+            {
+                return LocalInstant.AfterMaxValue;
+            }
+            // Okay, do the arithmetic as a Duration, then check the result for overflow, effectively.
+            var asDuration = instant.TimeSinceEpoch.PlusSmallNanoseconds(offset.Nanoseconds);
+            if (asDuration.Days < Instant.MinDay)
+            {
+                return LocalInstant.BeforeMinValue;
+            }
+            if (asDuration.Days > Instant.MaxDay)
+            {
+                return LocalInstant.AfterMaxValue;
+            }
+            return new LocalInstant(asDuration);
+        }
+
         /// <summary>
         /// Returns a copy of this zone interval, but with the given start instant.
         /// </summary>
@@ -140,23 +169,34 @@ namespace NodaTime.TimeZones
         /// extends to the end of time.</returns>
         public bool HasEnd { get { return end.IsValid; } }
 
+        // TODO(2.0): Consider whether we need some way of checking whether IsoLocalStart/End will throw.
+        // Clients can check HasStart/HasEnd for infinity, but what about unrepresentable local values?
+
         /// <summary>
-        /// Returns the local start time of the interval, as LocalDateTime
+        /// Returns the local start time of the interval, as a <see cref="LocalDateTime" />
         /// in the ISO calendar.
         /// </summary>
+        /// <exception cref="OverflowException">The interval starts too early to represent as a `LocalDateTime`.</exception>
+        /// <exception cref="InvalidOperationException">The interval extends to the start of time.</exception>
         public LocalDateTime IsoLocalStart
         {
-            [DebuggerStepThrough] get { return new LocalDateTime(localStart); }
+            // Use the Start property to trigger the appropriate end-of-time exception.
+            // Call Plus to trigger an appropriate out-of-range exception.
+            [DebuggerStepThrough] get { return new LocalDateTime(Start.Plus(wallOffset)); }
         }
 
         /// <summary>
-        /// Returns the local start time of the interval, as LocalDateTime
+        /// Returns the local start time of the interval, as a <see cref="LocalDateTime" />
         /// in the ISO calendar.
         /// </summary>
+        /// <exception cref="OverflowException">The interval ends too late to represent as a `LocalDateTime`.</exception>
+        /// <exception cref="InvalidOperationException">The interval extends to the end of time.</exception>
         public LocalDateTime IsoLocalEnd
         {
             [DebuggerStepThrough]
-            get { return new LocalDateTime(localEnd); }
+            // Use the End property to trigger the appropriate end-of-time exception.
+            // Call Plus to trigger an appropriate out-of-range exception.
+            get { return new LocalDateTime(End.Plus(wallOffset)); }
         }
         /// <summary>
         ///   Gets the name of this offset period (e.g. PST or PDT).
