@@ -52,18 +52,20 @@ namespace NodaTime
         private readonly long nanosecondsAndOffset;
         private readonly CalendarSystem calendar;
 
-        internal OffsetDateTime(YearMonthDay yearMonthDay, long nanosecondsAndOffset, CalendarSystem calendar)
+        internal OffsetDateTime([Trusted] YearMonthDay yearMonthDay, [Trusted] long nanosecondsAndOffset, [Trusted] CalendarSystem calendar)
         {
             this.yearMonthDay = yearMonthDay;
             this.nanosecondsAndOffset = nanosecondsAndOffset;
             this.calendar = calendar;
+            Calendar.DebugValidateYearMonthDay(yearMonthDay);
         }
 
-        internal OffsetDateTime(YearMonthDay yearMonthDay, LocalTime time, Offset offset, CalendarSystem calendar)
+        internal OffsetDateTime([Trusted] YearMonthDay yearMonthDay, LocalTime time, Offset offset, [Trusted] CalendarSystem calendar)
         {
             this.yearMonthDay = yearMonthDay;
             this.nanosecondsAndOffset = time.NanosecondOfDay | (((long) offset.Seconds) << NanosecondsBits);
             this.calendar = calendar;
+            Calendar.DebugValidateYearMonthDay(yearMonthDay);
         }
 
         /// <summary>
