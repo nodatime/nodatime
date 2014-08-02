@@ -93,8 +93,7 @@ namespace NodaTime.TimeZones
             // Now we know the recurrence we're in, we can work out when we went into it. (We'll never have
             // two transitions into the same recurrence in a row.)
             Offset previousSavings = ReferenceEquals(recurrence, standardRecurrence) ? dstRecurrence.Savings : Offset.Zero;
-            // FIXME(2.0): Work out what to do with Instant.MaxValue (where adding epsilon will fail...)
-            var previous = recurrence.PreviousOrFail(instant + Duration.Epsilon, standardOffset, previousSavings);
+            var previous = recurrence.PreviousOrSameOrFail(instant, standardOffset, previousSavings);
             return new ZoneInterval(recurrence.Name, previous.Instant, next.Instant, standardOffset + recurrence.Savings, recurrence.Savings);
         }
 
@@ -109,17 +108,43 @@ namespace NodaTime.TimeZones
             // Both recurrences are infinite, so they'll both have previous transitions (possibly at int.MinValue).
             Transition dstTransition = dstRecurrence.NextOrFail(instant, standardOffset, Offset.Zero);
             Transition standardTransition = standardRecurrence.NextOrFail(instant, standardOffset, dstRecurrence.Savings);
-            if (dstTransition.Instant > standardTransition.Instant)
+            var standardTransitionInstant = standardTransition.Instant;
+            var dstTransitionInstant = dstTransition.Instant;
+            if (standardTransitionInstant < dstTransitionInstant)
             {
-                // From DST *to* standard
+                // Next transition is from DST to standard.
                 recurrence = dstRecurrence;
                 return standardTransition;
             }
-            else
+            else if (standardTransitionInstant > dstTransitionInstant)
             {
-                // From standard *to* DST
+                // Next transition is from standard to DST.
                 recurrence = standardRecurrence;
                 return dstTransition;
+            }
+            else
+            {
+                // Okay, the transitions happen at the same time. If they're not at infinity, we're stumped.
+                if (standardTransitionInstant.IsValid)
+                {
+                    throw new InvalidOperationException("Zone recurrence rules have identical transitions. This time zone is broken.");
+                }
+                // Okay, the two transitions must be to the end of time. Find which recurrence has the later *previous* transition...
+                var previousDstTransition = dstRecurrence.PreviousOrSameOrFail(instant, standardOffset, Offset.Zero);
+                var previousStandardTransition = standardRecurrence.PreviousOrSameOrFail(instant, standardOffset, dstRecurrence.Savings);
+                // No point in checking for equality here... they can't go back from the end of time to the start...
+                if (previousDstTransition.Instant > previousStandardTransition.Instant)
+                {
+                    // The previous transition is from standard to DST. Therefore the next one is from DST to standard.
+                    recurrence = dstRecurrence;
+                    return standardTransition;
+                }
+                else
+                {
+                    // The previous transition is from standard to DST. Therefore the next one is from DST to standard.
+                    recurrence = standardRecurrence;
+                    return dstTransition;
+                }
             }
         }
 

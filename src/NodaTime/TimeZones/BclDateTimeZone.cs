@@ -30,13 +30,6 @@ namespace NodaTime.TimeZones
         /// </summary>
         private static BclDateTimeZone systemDefault;
 
-        /// <summary>
-        /// This is a bit before the last valid tick where we would be able to construct a LocalDateTime. We need to be a little
-        /// bit before that, to avoid failures when we add an offset.
-        /// </summary>
-        private static readonly Instant CloseToEndOfTime =
-            new LocalDateTime(CalendarSystem.Iso.MaxYear, 12, 30, 23, 59, 59, 999, 9999).InUtc().ToInstant();
-
         private readonly TimeZoneInfo bclZone;
         private readonly IZoneIntervalMap map;
 
@@ -98,8 +91,8 @@ namespace NodaTime.TimeZones
 
                 // Find the last valid transition by working back from the end of time. It's safe to unconditionally
                 // take the value here, as there must *be* some recurrences.
-                var lastStandard = standard.PreviousOrFail(CloseToEndOfTime, standardOffset, daylight.Savings);
-                var lastDaylight = daylight.PreviousOrFail(CloseToEndOfTime, standardOffset, Offset.Zero);
+                var lastStandard = standard.PreviousOrSameOrFail(Instant.MaxValue, standardOffset, daylight.Savings);
+                var lastDaylight = daylight.PreviousOrSameOrFail(Instant.MaxValue, standardOffset, Offset.Zero);
                 bool standardIsLater = lastStandard.Instant > lastDaylight.Instant;
                 Transition lastTransition = standardIsLater ? lastStandard : lastDaylight;
                 Offset seamSavings = lastTransition.NewOffset - standardOffset;
@@ -114,7 +107,7 @@ namespace NodaTime.TimeZones
                 if (i == rules.Length - 1)
                 {
                     // If the final transition was to standard time, we can just treat the seam as going on forever.
-                    nextStart = standardIsLater ? Instant.MaxValue : ruleEnd;
+                    nextStart = standardIsLater ? Instant.AfterMaxValue : ruleEnd;
                     var seam = new ZoneInterval(seamName, lastTransition.Instant, nextStart, lastTransition.NewOffset, seamSavings);
                     var adjustmentZone = new DaylightSavingsDateTimeZone("ignored", standardOffset, standard.ToInfinity(), daylight.ToInfinity());
                     adjustmentIntervals.Add(new AdjustmentInterval(previousEnd, adjustmentZone, seam));
@@ -188,7 +181,7 @@ namespace NodaTime.TimeZones
         {
             if (rule.DateEnd.Year == 9999)
             {
-                return Instant.MaxValue;
+                return Instant.AfterMaxValue;
             }
             // We work out the instant at which the *current* offset reaches the end of the given date.
             LocalDateTime ruleEndLocal = LocalDateTime.FromDateTime(rule.DateEnd).PlusDays(1);
@@ -270,7 +263,7 @@ namespace NodaTime.TimeZones
             private readonly ZoneInterval seam;
             private readonly DaylightSavingsDateTimeZone adjustmentZone;
 
-            internal Instant Start { get { return start; } }
+            internal Instant RawStart { get { return start; } }
             internal Instant RawEnd { get { return seam.RawEnd; } }
 
             internal AdjustmentInterval(Instant start, DaylightSavingsDateTimeZone adjustmentZone, ZoneInterval seam)
@@ -338,7 +331,6 @@ namespace NodaTime.TimeZones
                     return tailInterval;
                 }
 
-                // Avoid having to worry about Instant.MaxValue for the rest of the class.
                 int lower = 0; // Inclusive
                 int upper = adjustmentIntervals.Count; // Exclusive
 
@@ -346,7 +338,7 @@ namespace NodaTime.TimeZones
                 {
                     int current = (lower + upper) / 2;
                     var candidate = adjustmentIntervals[current];
-                    if (candidate.Start > instant)
+                    if (candidate.RawStart > instant)
                     {
                         upper = current;
                     }

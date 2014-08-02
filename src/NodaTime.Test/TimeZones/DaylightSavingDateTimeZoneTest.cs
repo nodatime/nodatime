@@ -2,6 +2,8 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
+using System.Collections.Generic;
+using System.Linq;
 using NodaTime.TimeZones;
 using NUnit.Framework;
 
@@ -176,6 +178,50 @@ namespace NodaTime.Test.TimeZones
         {
             var unambiguousWinter = new LocalDateTime(2010, 10, 5, 2, 0);
             CheckMapping(TestZone.MapLocal(unambiguousWinter), "Winter", "Winter", 1);
+        }
+
+        [Test]
+        public void Extremes()
+        {
+            ZoneRecurrence winter = new ZoneRecurrence("Winter", Offset.Zero,
+                new ZoneYearOffset(TransitionMode.Wall, 10, 5, 0, false, new LocalTime(2, 0)), int.MinValue, int.MaxValue);
+
+            ZoneRecurrence summer = new ZoneRecurrence("Summer", Offset.FromHours(1),
+                new ZoneYearOffset(TransitionMode.Wall, 3, 10, 0, false, new LocalTime(1, 0)), int.MinValue, int.MaxValue);
+
+            var zone = new DaylightSavingsDateTimeZone("infinite", Offset.Zero, winter, summer);
+
+            var firstSpring = Instant.FromUtc(-9998, 3, 10, 1, 0);
+            var firstAutumn = Instant.FromUtc(-9998, 10, 5, 1, 0); // 1am UTC = 2am wall
+
+            var lastSpring = Instant.FromUtc(9999, 3, 10, 1, 0);
+            var lastAutumn = Instant.FromUtc(9999, 10, 5, 1, 0); // 1am UTC = 2am wall
+
+            var dstOffset = Offset.FromHours(1);
+
+            // Check both year -9998 and 9999, both the infinite interval and the next one in
+            var firstWinter = new ZoneInterval("Winter", Instant.BeforeMinValue, firstSpring, Offset.Zero, Offset.Zero);
+            var firstSummer = new ZoneInterval("Summer", firstSpring, firstAutumn, dstOffset, dstOffset);
+            var lastSummer = new ZoneInterval("Summer", lastSpring, lastAutumn, dstOffset, dstOffset);
+            var lastWinter = new ZoneInterval("Winter", lastAutumn, Instant.AfterMaxValue, Offset.Zero, Offset.Zero);
+
+            Assert.AreEqual(firstWinter, zone.GetZoneInterval(Instant.MinValue));
+            Assert.AreEqual(firstWinter, zone.GetZoneInterval(Instant.FromUtc(-9998, 2, 1, 0, 0)));
+            Assert.AreEqual(firstSummer, zone.GetZoneInterval(firstSpring));
+            Assert.AreEqual(firstSummer, zone.GetZoneInterval(Instant.FromUtc(-9998, 5, 1, 0, 0)));
+
+            Assert.AreEqual(lastSummer, zone.GetZoneInterval(lastSpring));
+            Assert.AreEqual(lastSummer, zone.GetZoneInterval(Instant.FromUtc(9999, 5, 1, 0, 0)));
+            Assert.AreEqual(lastWinter, zone.GetZoneInterval(lastAutumn));
+            Assert.AreEqual(lastWinter, zone.GetZoneInterval(Instant.FromUtc(9999, 11, 1, 0, 0)));
+            Assert.AreEqual(lastWinter, zone.GetZoneInterval(Instant.MaxValue));
+
+            // And just for kicks, let's check we can get them all with GetZoneIntervals.
+            IEnumerable<ZoneInterval> intervals = zone.GetZoneIntervals(new Interval(null, null)).ToList();
+            Assert.AreEqual(firstWinter, intervals.First());
+            Assert.AreEqual(firstSummer, intervals.Skip(1).First());
+            Assert.AreEqual(lastSummer, intervals.Reverse().Skip(1).First());
+            Assert.AreEqual(lastWinter, intervals.Last());
         }
 
         private void CheckMapping(ZoneLocalMapping mapping, string earlyIntervalName, string lateIntervalName, int count)
