@@ -115,22 +115,18 @@ you try to convert `offsetDateTime` to an `Instant`.
 `Duration`
 ----
 
-[`Duration`](noda-type://NodaTime.Duration) is designed to allow for *at least* the largest difference in valid `Instant`
-values in either direction. As such, it needs to cover 631,075,881,599,999,999,999 nanoseconds - which is just shy of 7,304,119 days.
-Internally, durations are stored in terms of "day" and "nanosecond within the day" (an implementation detail to be sure, but one
-which sometimes affects other decisions).
+[`Duration`](noda-type://NodaTime.Duration) is designed to allow for *at least* the largest difference in
+valid `Instant` values in either direction. As such, it needs to cover 631,075,881,599,999,999,999 nanoseconds -
+which is just shy of 7,304,119 days. Internally, durations are stored in terms of "day" and "nanosecond within the day" (an 
+implementation detail to be sure, but one which sometimes affects other decisions).
 
-Option 1: Restrict the number of days to *exactly* the range -7,304,119 to 7,304,118 days (inclusive at both ends) with any number 
-of nanoseconds of day. This would permit a single value (-7,304,119 days + 0 nanoseconds) to be "unusable" - there wouldn't be any 
-valid instant it could be added to without breaking. (Removing that one extreme value would be very hard indeed.)
+Additionally, it seems useful to be able to cover the full range of
+[`TimeSpan`](http://msdn.microsoft.com/en-us/library/system.timespan), given that `Duration` is meant to be the roughly-equivalent
+type.
 
-Option 2: Use 24 bits to store the number of days, giving a range of -8,388,608 to +8,388,607 days (inclusive at both ends). A 
-duration will be valid if the number of days is in that range. The range of "nanosecond of day" always covers the full range, so the 
-effective range of the whole type is \[-8388608, 8388608) days (not the exclusive upper bound), with every nanosecond in between being 
-precisely represented. That range of durations is more than strictly needed, but quite possibly cheaper to work with than option 1.
-
-Option 3: Use all 32 bits to store the number of days, and rely on checked arithmetic to catch anything going out of range.
-That may make things simpler, but allows nonsensical values to build up without being spotted as early.
+The result is that we have a range of days from -2<sup>24</sup> to +2<sup>24</sup>-1 - and the nanosecond part means that the
+total range is from -2<sup>24</sup> days inclusive to +2<sup>24</sup> days exclusive - the largest valid `Duration` is 1 
+nanosecond less than 2<sup>24</sup> days.
 
 `Period`
 ----

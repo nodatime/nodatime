@@ -9,8 +9,10 @@ using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
 using JetBrains.Annotations;
+using NodaTime.Annotations;
 using NodaTime.Calendars;
 using NodaTime.Text;
+using NodaTime.TimeZones;
 using NodaTime.Utility;
 
 namespace NodaTime
@@ -26,13 +28,18 @@ namespace NodaTime
     /// </para>
     /// <para>
     /// A duration represents a fixed length of elapsed time along the time line that occupies the same amount of
-    /// time regardless of when it is applied.  In contrast, <see cref="Period"/> represents a period of time in
+    /// time regardless of when it is applied. In contrast, <see cref="Period"/> represents a period of time in
     /// calendrical terms (hours, days, and so on) that may vary in elapsed time when applied.
     /// </para>
     /// <para>
     /// In general, use <see cref="Duration"/> to represent durations applied to global types like <see cref="Instant"/>
     /// and <see cref="ZonedDateTime"/>; use <c>Period</c> to represent a period applied to local types like
     /// <see cref="LocalDateTime"/>.
+    /// </para>
+    /// <para>
+    /// The range of valid values of a <c>Duration</c> is greater than the span of time supported by Noda Time - so for
+    /// example, subtracting one <see cref="Instant"/> from another will always give a valid <c>Duration</c>. See the user guide
+    /// for more details of the exact range, but it is not expected that this will ever be exceeded in normal code.
     /// </para>
     /// </remarks>
     /// <threadsafety>This type is an immutable value type. See the thread safety section of the user guide for more information.</threadsafety>
@@ -44,6 +51,9 @@ namespace NodaTime
         , ISerializable
 #endif
     {
+        internal const int MaxDays = (1 << 24) - 1;
+        internal const int MinDays = ~MaxDays;
+
         // The -1 here is to allow for the addition of nearly a whole day in the nanoOfDay field.
         private const long MaxDaysForLongNanos = (int) (long.MaxValue / NodaConstants.NanosecondsPerStandardDay) - 1;
         private const long MinDaysForLongNanos = (int) (long.MinValue / NodaConstants.NanosecondsPerStandardDay);
@@ -116,14 +126,28 @@ namespace NodaTime
         private static readonly Duration OneMillisecond = new Duration(0, NodaConstants.NanosecondsPerMillisecond);
         #endregion
 
+        // This is effectively a 25 bit value. (It can't be 24 bits, or we can't represent every TimeSpan value.)
+        // 
         private readonly int days;
         private readonly long nanoOfDay;
 
-        internal Duration(int days, long nanoOfDay)
+        internal Duration(int days, [Trusted] long nanoOfDay)
         {
+            if (days < MinDays || days > MaxDays)
+            {
+                Preconditions.CheckArgumentRange("days", days, MinDays, MaxDays);
+            }
             Preconditions.DebugCheckArgumentRange("nanoOfDay", nanoOfDay, 0, NodaConstants.NanosecondsPerStandardDay - 1);
             this.days = days;
             this.nanoOfDay = nanoOfDay;
+        }
+
+        /// <summary>
+        /// Like the other constructor, but the nano-of-day is validated as well. Used for deserialization.
+        /// </summary>
+        private Duration(int days, long nanoOfDay, bool ignored) : this(days, nanoOfDay)
+        {
+            Preconditions.CheckArgumentRange("nanoOfDay", nanoOfDay, 0, NodaConstants.NanosecondsPerStandardDay - 1);
         }
 
         internal int Days { get { return days; } }
@@ -137,6 +161,7 @@ namespace NodaTime
         /// If the number of nanoseconds in a duration is not a whole number of ticks, it is truncated towards zero.
         /// For example, durations in the range [-99ns, 99ns] would all count as 0 ticks.
         /// </remarks>
+        /// <exception cref="OverflowException">The number of ticks cannot be represented a signed 64-bit integer.</exception>
         public long Ticks
         {
             get
@@ -846,7 +871,7 @@ namespace NodaTime
         /// <param name="info">The <see cref="SerializationInfo"/> to fetch data from.</param>
         /// <param name="context">The source for this deserialization.</param>
         private Duration(SerializationInfo info, StreamingContext context)
-            : this(info.GetInt32(DefaultDaysSerializationName), info.GetInt64(DefaultNanosecondOfDaySerializationName))
+            : this(info.GetInt32(DefaultDaysSerializationName), info.GetInt64(DefaultNanosecondOfDaySerializationName), true /* validate */)
         {
         }
 
@@ -871,7 +896,7 @@ namespace NodaTime
 
         internal static Duration Deserialize(SerializationInfo info, string daysSerializationName, string nanosecondOfDaySerializationName)
         {
-            return new Duration(info.GetInt32(daysSerializationName), info.GetInt64(nanosecondOfDaySerializationName));
+            return new Duration(info.GetInt32(daysSerializationName), info.GetInt64(nanosecondOfDaySerializationName), true /* validate */);
         }
 
         internal void Serialize(SerializationInfo info)

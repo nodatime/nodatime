@@ -291,5 +291,21 @@ namespace NodaTime.Test
             Assert.AreEqual(ticks, start.MinusSmallNanoseconds(99L).Ticks);
             Assert.AreEqual(ticks + 1, start.PlusSmallNanoseconds(1L).Ticks);
         }
+
+        [Test]
+        public void Validation()
+        {
+            TestHelper.AssertValid(Duration.FromStandardDays, (1 << 24) - 1);
+            TestHelper.AssertOutOfRange(Duration.FromStandardDays, 1 << 24);
+            TestHelper.AssertValid(Duration.FromStandardDays, -(1 << 24));
+            TestHelper.AssertOutOfRange(Duration.FromStandardDays, -(1 << 24) - 1);
+        }
+
+        [Test]
+        public void TicksWithOverflow()
+        {
+            Duration maxTicks = Duration.FromTicks(long.MaxValue) + Duration.FromTicks(1);
+            Assert.Throws<OverflowException>(() => maxTicks.Ticks.ToString());
+        }
     }
 }

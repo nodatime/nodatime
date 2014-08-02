@@ -65,12 +65,12 @@ namespace NodaTime
         /// Instant which is invalid *except* for comparison purposes; it is earlier than any valid value.
         /// This must never be exposed.
         /// </summary>
-        internal static readonly Instant BeforeMinValue = new Instant(int.MinValue, deliberatelyInvalid: true);
+        internal static readonly Instant BeforeMinValue = new Instant(Duration.MinDays, deliberatelyInvalid: true);
         /// <summary>
         /// Instant which is invalid *except* for comparison purposes; it is later than any valid value.
         /// This must never be exposed.
         /// </summary>
-        internal static readonly Instant AfterMaxValue = new Instant(int.MaxValue, deliberatelyInvalid: true);
+        internal static readonly Instant AfterMaxValue = new Instant(Duration.MaxDays, deliberatelyInvalid: true);
 
         /// <summary>
         /// Time elapsed since the Unix epoch.
@@ -722,7 +722,7 @@ namespace NodaTime
         /// <param name="info">The <see cref="SerializationInfo"/> to fetch data from.</param>
         /// <param name="context">The source for this deserialization.</param>
         private Instant(SerializationInfo info, StreamingContext context)
-            // FIXME:SERIALIZATION
+            // FIXME:SERIALIZATION COMPATIBILITY
             : this(Duration.Deserialize(info))
         {
         }
