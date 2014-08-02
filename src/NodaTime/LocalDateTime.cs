@@ -54,7 +54,7 @@ namespace NodaTime
         /// </summary>
         /// <param name="localInstant">The local instant.</param>
         /// <returns>The resulting date/time.</returns>
-        internal LocalDateTime(LocalInstant localInstant)
+        internal LocalDateTime([Trusted] LocalInstant localInstant)
         {
             date = new LocalDate(localInstant.DaysSinceEpoch);
             time = new LocalTime(localInstant.NanosecondOfDay);

@@ -37,9 +37,7 @@ namespace NodaTime.Test.TimeZones
             LocalDateTime start = new LocalDateTime(2011, 6, 3, 19, 15);
             LocalDateTime end = new LocalDateTime(2011, 8, 2, 22, 45);
             Assert.AreEqual(start, SampleInterval.IsoLocalStart);
-            Assert.AreEqual(start.ToLocalInstant(), SampleInterval.LocalStart);
             Assert.AreEqual(end, SampleInterval.IsoLocalEnd);
-            Assert.AreEqual(end.ToLocalInstant(), SampleInterval.LocalEnd);
             Assert.AreEqual(SampleEnd - SampleStart, SampleInterval.Duration);
         }
 
