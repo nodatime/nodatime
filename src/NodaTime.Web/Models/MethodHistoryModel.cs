@@ -10,12 +10,13 @@ namespace NodaTime.Web.Models
         public string Machine { get; private set; }
         public string Method { get; private set; }
         public ImmutableList<Entry> Entries { get; private set; }
+        public bool AllResults { get; private set; }
 
         private MethodHistoryModel()
         {
         }
 
-        public static MethodHistoryModel ForMachineMethod(BenchmarkRepository repository, string machine, string method)
+        public static MethodHistoryModel ForMachineMethod(BenchmarkRepository repository, string machine, string method, bool allResults)
         {
             var runs = repository.RunsByMachine[machine];
             List<Entry> entries = new List<Entry>();
@@ -31,6 +32,10 @@ namespace NodaTime.Web.Models
                 if (result == null)
                 {
                     entries.Add(new Entry(run, "Method removed"));
+                }
+                else if (allResults)
+                {
+                    entries.Add(new Entry(run, result.NanosecondsPerCall + "ns"));
                 }
                 else if (previousResult == null)
                 {
@@ -53,7 +58,7 @@ namespace NodaTime.Web.Models
                 previousResult = result;
             }
             entries.Reverse();
-            return new MethodHistoryModel { Machine = machine, Method = method, Entries = entries.ToImmutableList() };
+            return new MethodHistoryModel { Machine = machine, Method = method, Entries = entries.ToImmutableList(), AllResults = allResults};
         }
 
         public class Entry
