@@ -25,9 +25,7 @@ namespace NodaTime.Web.Controllers
         // GET: /Benchmarks/Machines
         public ActionResult Machines()
         {
-            var machines = repository.RunsByMachine.Select(g => g.Key).ToList();
-            ViewBag.LoadingTime = repository.LoadingTime;
-            ViewBag.Loaded = repository.Loaded;
+            var machines = repository.RunsByMachine.Select(g => g.Key).OrderBy(name => name).ToList();
             return View(machines);
         }
 
@@ -74,9 +72,9 @@ namespace NodaTime.Web.Controllers
         }
 
 
-        public ActionResult MethodHistory(string machine, string method)
+        public ActionResult MethodHistory(string machine, string method, bool full = false)
         {
-            var history = MethodHistoryModel.ForMachineMethod(repository, machine, method);
+            var history = MethodHistoryModel.ForMachineMethod(repository, machine, method, full);
             return View(history);
         }
     }

@@ -5,11 +5,20 @@
 
 <h2>@ViewBag.Title</h2>
 
+@if (Model.AllResults)
+{
+    <p>(Viewing full history; @Html.ActionLink("list of significant changes", "MethodHistory", new { machine = Model.Machine, method = Model.Method }) also available.)</p>
+}
+else
+{
+    <p>(Viewing list of significant changes; @Html.ActionLink("full history", "MethodHistory", new { machine = Model.Machine, method = Model.Method, full = true}) also available.)</p>
+}
+
 <table class="table">
     <tr>
         <th>Date/time</th>
         <th>Label</th>
-        <th>Change</th>
+        <th>Result</th>
     </tr>
 
     @foreach (var item in Model.Entries)
