@@ -110,11 +110,6 @@ namespace NodaTime
         /// <summary>
         /// Gets the end instant - the exclusive upper bound of the interval.
         /// </summary>
-        /// <remarks>
-        /// This will never be earlier than <see cref="Start"/>, though it may be equal to it.
-        /// If this value is <see cref="Instant.MaxValue"/>, it is treated as an inclusive
-        /// upper bound: an interval stretching to infinity includes the end of time.
-        /// </remarks>
         /// <value>The end <see cref="Instant"/>.</value>
         /// <exception cref="InvalidOperationException">The interval extends to the end of time.</exception>
         /// <seealso cref="HasEnd"/>
