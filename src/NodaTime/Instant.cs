@@ -40,8 +40,8 @@ namespace NodaTime
 #endif
     {
         // These correspond to -9998-01-01 and 9999-12-31 respectively.
-        private const int MinDay = -4371222;
-        private const int MaxDay = 2932896;
+        internal const int MinDay = -4371222;
+        internal const int MaxDay = 2932896;
 
         /// <summary>
         /// Represents the smallest possible <see cref="Instant"/>.
@@ -80,9 +80,13 @@ namespace NodaTime
 
         internal Instant(Duration duration)
         {
+            // TODO(2.0): Check callers, and handle ones which might not need validation.
             this.duration = duration;
-            Preconditions.DebugCheckArgumentRange("duration", duration.Days, MinDay, MaxDay);
-            Preconditions.DebugCheckArgumentRange("duration", duration.NanosecondOfDay, 0, NodaConstants.NanosecondsPerStandardDay - 1);
+            int days = duration.Days;
+            if (days < MinDay || days > MaxDay)
+            {
+                throw new OverflowException("Operation would overflow range of Instant");
+            }
         }
 
         internal Instant([Trusted] int days, [Trusted] long nanoOfDay)
