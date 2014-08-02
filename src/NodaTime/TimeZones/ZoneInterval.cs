@@ -70,26 +70,26 @@ namespace NodaTime.TimeZones
         {
             int days = instant.DaysSinceEpoch;
             // If we can do the arithmetic safely, do so.
-            if (days > Instant.MinDay && days < Instant.MaxDay)
+            if (days > Instant.MinDays && days < Instant.MaxDays)
             {
                 return instant.Plus(offset);
             }
             // Handle BeforeMinValue and BeforeMaxValue simply.
-            if (days < Instant.MinDay)
+            if (days < Instant.MinDays)
             {
                 return LocalInstant.BeforeMinValue;
             }
-            if (days > Instant.MaxDay)
+            if (days > Instant.MaxDays)
             {
                 return LocalInstant.AfterMaxValue;
             }
             // Okay, do the arithmetic as a Duration, then check the result for overflow, effectively.
             var asDuration = instant.TimeSinceEpoch.PlusSmallNanoseconds(offset.Nanoseconds);
-            if (asDuration.Days < Instant.MinDay)
+            if (asDuration.Days < Instant.MinDays)
             {
                 return LocalInstant.BeforeMinValue;
             }
-            if (asDuration.Days > Instant.MaxDay)
+            if (asDuration.Days > Instant.MaxDays)
             {
                 return LocalInstant.AfterMaxValue;
             }

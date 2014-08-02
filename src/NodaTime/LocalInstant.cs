@@ -40,7 +40,7 @@ namespace NodaTime
         internal LocalInstant(Duration nanoseconds)
         {
             int days = nanoseconds.Days;
-            if (days < Instant.MinDay || days > Instant.MaxDay)
+            if (days < Instant.MinDays || days > Instant.MaxDays)
             {
                 throw new OverflowException("Operation would overflow bounds of local date/time");
             }

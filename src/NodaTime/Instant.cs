@@ -40,19 +40,19 @@ namespace NodaTime
 #endif
     {
         // These correspond to -9998-01-01 and 9999-12-31 respectively.
-        internal const int MinDay = -4371222;
-        internal const int MaxDay = 2932896;
+        internal const int MinDays = -4371222;
+        internal const int MaxDays = 2932896;
 
         /// <summary>
         /// Represents the smallest possible <see cref="Instant"/>.
         /// </summary>
         /// <remarks>This value is equivalent to -9998-01-01T00:00:00Z</remarks>
-        public static readonly Instant MinValue = new Instant(MinDay, 0);
+        public static readonly Instant MinValue = new Instant(MinDays, 0);
         /// <summary>
         /// Represents the largest possible <see cref="Instant"/>.
         /// </summary>
         /// <remarks>This value is equivalent to 9999-12-31T23:59:59.999999999Z</remarks>
-        public static readonly Instant MaxValue = new Instant(MaxDay, NodaConstants.NanosecondsPerStandardDay - 1);
+        public static readonly Instant MaxValue = new Instant(MaxDays, NodaConstants.NanosecondsPerStandardDay - 1);
 
         /// <summary>
         /// Instant which is invalid *except* for comparison purposes; it is earlier than any valid value.
@@ -83,7 +83,7 @@ namespace NodaTime
             // TODO(2.0): Check callers, and handle ones which might not need validation.
             this.duration = duration;
             int days = duration.Days;
-            if (days < MinDay || days > MaxDay)
+            if (days < MinDays || days > MaxDays)
             {
                 throw new OverflowException("Operation would overflow range of Instant");
             }
@@ -91,7 +91,7 @@ namespace NodaTime
 
         internal Instant([Trusted] int days, [Trusted] long nanoOfDay)
         {
-            Preconditions.DebugCheckArgumentRange("days", days, MinDay, MaxDay);
+            Preconditions.DebugCheckArgumentRange("days", days, MinDays, MaxDays);
             Preconditions.DebugCheckArgumentRange("nanoOfDay", nanoOfDay, 0, NodaConstants.NanosecondsPerStandardDay - 1);
             duration = new Duration(days, nanoOfDay);
         }
@@ -100,7 +100,7 @@ namespace NodaTime
         /// Returns whether or not this is a valid instant. Returns true for all but
         /// <see cref="BeforeMinValue"/> and <see cref="AfterMaxValue"/>.
         /// </summary>
-        internal bool IsValid { get { return DaysSinceEpoch >= MinDay && DaysSinceEpoch <= MaxDay; } }
+        internal bool IsValid { get { return DaysSinceEpoch >= MinDays && DaysSinceEpoch <= MaxDays; } }
 
         /// <summary>
         /// The number of ticks since the Unix epoch. Negative values represent instants before the Unix epoch.
