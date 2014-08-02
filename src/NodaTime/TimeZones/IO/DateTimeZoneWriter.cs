@@ -186,7 +186,6 @@ namespace NodaTime.TimeZones.IO
 
             unchecked
             {
-                // FIXME!
                 if (value == Instant.BeforeMinValue)
                 {
                     WriteCount(ZoneIntervalConstants.MarkerMinValue);
