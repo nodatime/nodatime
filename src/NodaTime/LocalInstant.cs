@@ -58,6 +58,12 @@ namespace NodaTime
         }
 
         /// <summary>
+        /// Returns whether or not this is a valid instant. Returns true for all but
+        /// <see cref="BeforeMinValue"/> and <see cref="AfterMaxValue"/>.
+        /// </summary>
+        internal bool IsValid { get { return DaysSinceEpoch >= Instant.MinDays && DaysSinceEpoch <= Instant.MaxDays; } }
+
+        /// <summary>
         /// Number of nanoseconds since the local unix epoch.
         /// </summary>
         internal Duration TimeSinceLocalEpoch { get { return duration; } }
@@ -140,6 +146,40 @@ namespace NodaTime
         {
             return left.duration == right.duration;
         }
+
+        /// <summary>
+        /// Equivalent to <see cref="Instant.SafePlus"/>, but in the opposite direction.
+        /// </summary>
+        internal Instant SafeMinus(Offset offset)
+        {
+            int days = duration.Days;
+            // If we can do the arithmetic safely, do so.
+            if (days > Instant.MinDays && days < Instant.MaxDays)
+            {
+                return Minus(offset);
+            }
+            // Handle BeforeMinValue and BeforeMaxValue simply.
+            if (days < Instant.MinDays)
+            {
+                return Instant.BeforeMinValue;
+            }
+            if (days > Instant.MaxDays)
+            {
+                return Instant.AfterMaxValue;
+            }
+            // Okay, do the arithmetic as a Duration, then check the result for overflow, effectively.
+            var asDuration = duration.PlusSmallNanoseconds(offset.Nanoseconds);
+            if (asDuration.Days < Instant.MinDays)
+            {
+                return Instant.BeforeMinValue;
+            }
+            if (asDuration.Days > Instant.MaxDays)
+            {
+                return Instant.AfterMaxValue;
+            }
+            return new Instant(asDuration);
+        }
+
 
         /// <summary>
         /// Implements the operator != (inequality).
