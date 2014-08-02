@@ -280,5 +280,38 @@ namespace NodaTime.Test
             TestHelper.AssertOverflow(Instant.MinValue.Plus, Offset.FromSeconds(-1));
             TestHelper.AssertOverflow(Instant.MaxValue.Plus, Offset.FromSeconds(1));
         }
+
+        [Test]
+        public void FromMillisecondsSinceUnixEpoch_Range()
+        {
+            long smallestValid = Instant.MinValue.Ticks / NodaConstants.TicksPerMillisecond;
+            long largestValid = Instant.MaxValue.Ticks / NodaConstants.TicksPerMillisecond;
+            TestHelper.AssertValid(Instant.FromMillisecondsSinceUnixEpoch, smallestValid);
+            TestHelper.AssertOutOfRange(Instant.FromMillisecondsSinceUnixEpoch, smallestValid - 1);
+            TestHelper.AssertValid(Instant.FromMillisecondsSinceUnixEpoch, largestValid);
+            TestHelper.AssertOutOfRange(Instant.FromMillisecondsSinceUnixEpoch, largestValid + 1);
+        }
+
+        [Test]
+        public void FromSecondsSinceUnixEpoch_Range()
+        {
+            long smallestValid = Instant.MinValue.Ticks / NodaConstants.TicksPerSecond;
+            long largestValid = Instant.MaxValue.Ticks / NodaConstants.TicksPerSecond;
+            TestHelper.AssertValid(Instant.FromSecondsSinceUnixEpoch, smallestValid);
+            TestHelper.AssertOutOfRange(Instant.FromSecondsSinceUnixEpoch, smallestValid - 1);
+            TestHelper.AssertValid(Instant.FromSecondsSinceUnixEpoch, largestValid);
+            TestHelper.AssertOutOfRange(Instant.FromSecondsSinceUnixEpoch, largestValid + 1);
+        }
+
+        [Test]
+        public void FromTicksSinceUnixEpoch_Range()
+        {
+            long smallestValid = Instant.MinValue.Ticks;
+            long largestValid = Instant.MaxValue.Ticks;
+            TestHelper.AssertValid(Instant.FromTicksSinceUnixEpoch, smallestValid);
+            TestHelper.AssertOutOfRange(Instant.FromTicksSinceUnixEpoch, smallestValid - 1);
+            TestHelper.AssertValid(Instant.FromTicksSinceUnixEpoch, largestValid);
+            TestHelper.AssertOutOfRange(Instant.FromTicksSinceUnixEpoch, largestValid + 1);
+        }
     }
 }
