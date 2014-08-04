@@ -62,6 +62,21 @@ namespace NodaTime.Test.Calendars
             Assert.AreEqual(Era.BeforeCommon, startOfEra.PlusTicks(-1).Era);
         }
 
+        [Test]
+        [TestCase(100, 1, 100)]
+        [TestCase(101, 2, 1)]
+        [TestCase(200, 2, 100)]
+        [TestCase(0, 1, 1)] // 1BC
+        [TestCase(-1, 1, 2)] // 2BC
+        [TestCase(-99, 1, 100)] // 100BC
+        [TestCase(-100, 2, 1)] // 101BC
+        public void GregorianCenturies(int year, int expectedCentury, int expectedYearOfCentury)
+        {
+            var date = new LocalDate(year, 1, 1, CommonCalendars.Gregorian);
+            Assert.AreEqual(expectedCentury, date.CenturyOfEra);
+            Assert.AreEqual(expectedYearOfCentury, date.YearOfCentury);
+        }
+
         private int GetDaysInFirstWeek(int year, CalendarSystem calendar)
         {
             // Some of the first few days of the week year may be in the previous week year.

@@ -148,5 +148,20 @@ namespace NodaTime.Test.Calendars
             Assert.AreEqual(-1, localDate.Year);
             Assert.AreEqual(2, localDate.YearOfEra);
         }
+
+        [Test]
+        [TestCase(100, 1, 0)]
+        [TestCase(101, 1, 1)]
+        [TestCase(200, 2, 0)]
+        [TestCase(0, 0, 0)] // 1BC
+        [TestCase(-1, 0, 1)] // 2BC
+        [TestCase(-99, 0, 99)] // 100BC
+        [TestCase(-100, 1, 0)] // 101BC
+        public void IsoCenturies(int year, int expectedCentury, int expectedYearOfCentury)
+        {
+            var date = new LocalDate(year, 1, 1);
+            Assert.AreEqual(expectedCentury, date.CenturyOfEra);
+            Assert.AreEqual(expectedYearOfCentury , date.YearOfCentury);
+        }
     }
 }
