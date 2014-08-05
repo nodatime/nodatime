@@ -604,9 +604,8 @@ namespace NodaTime
         private CalendarEra GetCalendarEra(Era era)
         {
             Preconditions.CheckNotNull(era, "era");
-            for (int i = calendarEras.Length - 1; i >= 0; i--)
+            foreach (var calendarEra in calendarEras)
             {
-                var calendarEra = calendarEras[i];
                 if (calendarEra.Era == era)
                 {
                     return calendarEra;
