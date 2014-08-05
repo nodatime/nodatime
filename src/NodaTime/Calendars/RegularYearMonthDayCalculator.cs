@@ -19,8 +19,8 @@ namespace NodaTime.Calendars
         private readonly int monthsInYear;
 
         protected RegularYearMonthDayCalculator(int minYear, int maxYear, int monthsInYear,
-            int averageDaysPer10Years, int daysAtStartOfYear1, params Era[] eras)
-            : base(minYear, maxYear, averageDaysPer10Years, daysAtStartOfYear1, eras)
+            int averageDaysPer10Years, int daysAtStartOfYear1)
+            : base(minYear, maxYear, averageDaysPer10Years, daysAtStartOfYear1)
         {
             this.monthsInYear = monthsInYear;
         }

@@ -148,6 +148,7 @@
     <Compile Include="Annotations\VisibleForTestingAttribute.cs" />
     <Compile Include="CalendarSystem.cs" />
     <Compile Include="AmbiguousTimeException.cs" />
+    <Compile Include="Calendars\CalendarEra.cs" />
     <Compile Include="Calendars\CopticYearMonthDayCalculator.cs" />
     <Compile Include="Calendars\Era.cs" />
     <Compile Include="Calendars\FixedMonthYearMonthDayCalculator.cs" />

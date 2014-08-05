@@ -14,14 +14,6 @@ namespace NodaTime.Calendars
     /// </summary>
     internal sealed class IsoYearMonthDayCalculator : GregorianYearMonthDayCalculator
     {
-        internal override int GetCenturyOfEra(YearMonthDay yearMonthDay)
-        {
-            return Math.Abs(yearMonthDay.Year) / 100;
-        }
-
-        internal override int GetYearOfCentury(YearMonthDay yearMonthDay)
-        {
-            return Math.Abs(yearMonthDay.Year) % 100;
-        }
+        // Look ma, nothing to override! Keeping this class here for now, but it can clearly go...
     }
 }

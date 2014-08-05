@@ -17,12 +17,6 @@ namespace NodaTime.Calendars
         /// </summary>
         private readonly YearStartCacheEntry[] yearCache = YearStartCacheEntry.CreateCache();
 
-        /// <summary>
-        /// Array of eras in this calculator; this is never mutated.
-        /// </summary>
-        private readonly Era[] eras;
-        internal Era[] Eras { get { return eras; } }
-
         private readonly int minYear;
         internal int MinYear { get { return minYear; } }
 
@@ -37,14 +31,13 @@ namespace NodaTime.Calendars
         internal int DaysAtStartOfYear1 { get { return daysAtStartOfYear1; } }
 
         protected YearMonthDayCalculator(int minYear, int maxYear,
-            int averageDaysPer10Years, int daysAtStartOfYear1, Era[] eras)
+            int averageDaysPer10Years, int daysAtStartOfYear1)
         {
             // We should really check the minimum year as well, but constructing it hurts my brain.
             Preconditions.CheckArgument(maxYear < YearStartCacheEntry.InvalidEntryYear, "maxYear",
                 "Calendar year range would invalidate caching.");
             this.minYear = minYear;
             this.maxYear = maxYear;
-            this.eras = Preconditions.CheckNotNull(eras, "eras");
             this.averageDaysPer10Years = averageDaysPer10Years;
             this.daysAtStartOfYear1 = daysAtStartOfYear1;
         }
@@ -174,79 +167,12 @@ namespace NodaTime.Calendars
         }
 
         /// <summary>
-        /// Returns the year-of-era for the given date. The base implementation is to return the plain
-        /// year, which is suitable for single-era calendars.
-        /// </summary>
-        internal virtual int GetYearOfEra([Trusted] YearMonthDay yearMonthDay)
-        {
-            return yearMonthDay.Year;
-        }
-
-        /// <summary>
-        /// Handling for century-of-era where (say) year 123 is in century 2... but so is year 200.
-        /// </summary>
-        internal virtual int GetCenturyOfEra([Trusted] YearMonthDay yearMonthDay)
-        {
-            int yearOfEra = GetYearOfEra(yearMonthDay);
-            int zeroBasedRemainder = yearOfEra % 100;
-            int zeroBasedResult = yearOfEra / 100;
-            return zeroBasedRemainder == 0 ? zeroBasedResult : zeroBasedResult + 1;
-        }
-
-        /// <summary>
-        /// Handling for year-of-century in the range [1, 100].
-        /// </summary>
-        internal virtual int GetYearOfCentury([Trusted] YearMonthDay yearMonthDay)
-        {
-            int yearOfEra = GetYearOfEra(yearMonthDay);
-            int zeroBased = yearOfEra % 100;
-            return zeroBased == 0 ? 100 : zeroBased;
-        }
-
-        /// <summary>
-        /// Returns the era index for the given date. The base implementation is to return 0, which is
-        /// suitable for single-era calendars.
-        /// </summary>
-        internal virtual int GetEra([Trusted] YearMonthDay yearMonthDay)
-        {
-            return 0;
-        }
-
-        /// <summary>
         /// Returns the number of days in the given year, which will always be within 1 year of
         /// the valid range for the calculator.
         /// </summary>
         internal virtual int GetDaysInYear([Trusted] int year)
         {
             return IsLeapYear(year) ? 366 : 365;
-        }
-
-        /// <summary>
-        /// Default implementation of GetAbsoluteYear which assumes a single era.
-        /// This does not perform any validation.
-        /// </summary>
-        internal virtual int GetAbsoluteYear([Trusted] int yearOfEra, [Trusted] int eraIndex)
-        {
-            return yearOfEra;
-        }
-
-        /// <summary>
-        /// See <see cref="CalendarSystem.GetMinYearOfEra(NodaTime.Calendars.Era)" /> - but this uses a pre-validated index.
-        /// This default implementation returns 1, but can be overridden by derived classes.
-        /// </summary>
-        internal virtual int GetMinYearOfEra([Trusted] int eraIndex)
-        {
-            return 1;
-        }
-
-        /// <summary>
-        /// See <see cref="CalendarSystem.GetMaxYearOfEra(Era)"/> - but this uses a pre-validated index.
-        /// This default implementation returns the maximum year for this calendar, which is
-        /// a valid implementation for single-era calendars.
-        /// </summary>
-        internal virtual int GetMaxYearOfEra([Trusted] int eraIndex)
-        {
-            return MaxYear;
         }
 
         /// <summary>

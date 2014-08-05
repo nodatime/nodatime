@@ -45,7 +45,7 @@ namespace NodaTime.Calendars
         }
 
         internal PersianYearMonthDayCalculator()
-            : base(1, 9376, 12, AverageDaysPer10Years, DaysAtStartOfYear1Constant, Era.AnnoPersico)
+            : base(1, 9376, 12, AverageDaysPer10Years, DaysAtStartOfYear1Constant)
         {
         }
 

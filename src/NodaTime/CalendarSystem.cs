@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Globalization;
+using System.Linq;
 using JetBrains.Annotations;
 using NodaTime.Annotations;
 using NodaTime.Calendars;
@@ -63,25 +64,34 @@ namespace NodaTime
 
         static CalendarSystem()
         {
-            IsoCalendarSystem = new CalendarSystem(IsoName, IsoName, new IsoYearMonthDayCalculator(), 4);
-            PersianCalendarSystem = new CalendarSystem(PersianName, PersianName, new PersianYearMonthDayCalculator(), 4);
+            IsoCalendarSystem = new CalendarSystem(IsoName, IsoName, new IsoYearMonthDayCalculator(), 4,
+                new CalendarEra.BcCalendarEra(new YearMonthDay(-9998, 1, 1), true),
+                new CalendarEra(Era.Common, new YearMonthDay(1, 1, 1), new YearMonthDay(9999, 12, 31), true));
+            PersianCalendarSystem = new CalendarSystem(PersianName, PersianName, new PersianYearMonthDayCalculator(), Era.AnnoPersico);
             HebrewCalendarSystems = new[]
             {
-                new CalendarSystem(HebrewName, HebrewName, new HebrewYearMonthDayCalculator(HebrewMonthNumbering.Civil), 4),
-                new CalendarSystem(HebrewName, HebrewName, new HebrewYearMonthDayCalculator(HebrewMonthNumbering.Scriptural), 4)
+                new CalendarSystem(HebrewName + "-Civil", HebrewName, new HebrewYearMonthDayCalculator(HebrewMonthNumbering.Civil), 4),
+                new CalendarSystem(HebrewName + "-Scriptural", HebrewName, new HebrewYearMonthDayCalculator(HebrewMonthNumbering.Scriptural), 4)
             };
 
             // Variations for the calendar systems which have different objects for different "minimum first day of week"
-            // values. We create a new year/month/day calculator for each instance, but there's no actual state - it's
-            // unimportant. Later we could save a whole 18 objects by avoiding that...
+            // values. These share eras and year/month/day calculators where appropriate.
             GregorianCalendarSystems = new CalendarSystem[7];
             CopticCalendarSystems = new CalendarSystem[7];
             JulianCalendarSystems = new CalendarSystem[7];
+            var gregorianCalculator = new GregorianYearMonthDayCalculator();
+            var copticCalculator = new CopticYearMonthDayCalculator();
+            var julianCalculator = new JulianYearMonthDayCalculator();
+            var copticEra = new CalendarEra(Era.AnnoMartyrum, GetStartOfCalendar(copticCalculator), GetEndOfCalendar(copticCalculator));
+            var gregorianBeforeCommon = new CalendarEra.BcCalendarEra(GetStartOfCalendar(gregorianCalculator), false);
+            var julianBeforeCommon = new CalendarEra.BcCalendarEra(GetStartOfCalendar(julianCalculator), false);
+            var gregorianCommon = new CalendarEra(Era.Common, new YearMonthDay(1, 1, 1), GetEndOfCalendar(gregorianCalculator));
+            var julianCommon = new CalendarEra(Era.Common, new YearMonthDay(1, 1, 1), GetEndOfCalendar(julianCalculator));
             for (int i = 1; i <= 7; i++)
             {
-                GregorianCalendarSystems[i - 1] = new CalendarSystem(GregorianName, new GregorianYearMonthDayCalculator(), i);
-                CopticCalendarSystems[i - 1] = new CalendarSystem(CopticName, new CopticYearMonthDayCalculator(), i);
-                JulianCalendarSystems[i - 1] = new CalendarSystem(JulianName, new JulianYearMonthDayCalculator(), i);
+                GregorianCalendarSystems[i - 1] = new CalendarSystem(GregorianName, new GregorianYearMonthDayCalculator(), i, gregorianBeforeCommon, gregorianCommon);
+                CopticCalendarSystems[i - 1] = new CalendarSystem(CopticName, new CopticYearMonthDayCalculator(), i, copticEra);
+                JulianCalendarSystems[i - 1] = new CalendarSystem(JulianName, new JulianYearMonthDayCalculator(), i, julianBeforeCommon, julianCommon);
             }
             IslamicCalendarSystems = new CalendarSystem[4, 2];
             for (int i = 1; i <= 4; i++)
@@ -92,7 +102,7 @@ namespace NodaTime
                     var epoch = (IslamicEpoch)j;
                     var calculator = new IslamicYearMonthDayCalculator((IslamicLeapYearPattern)i, (IslamicEpoch)j);
                     string id = string.Format(CultureInfo.InvariantCulture, "{0} {1}-{2}", IslamicName, epoch, leapYearPattern);
-                    IslamicCalendarSystems[i - 1, j - 1] = new CalendarSystem(id, IslamicName, calculator, 4);
+                    IslamicCalendarSystems[i - 1, j - 1] = new CalendarSystem(id, IslamicName, calculator, Era.AnnoHegirae);
                 }
             }
         }
@@ -361,15 +371,29 @@ namespace NodaTime
         private readonly string id;
         private readonly string name;
         private readonly IList<Era> eras;
+        private readonly CalendarEra[] calendarEras;
         private readonly int minYear;
         private readonly int maxYear;
-        private readonly long minDays;
-        private readonly long maxDays;
-        private readonly long minTicks;
-        private readonly long maxTicks;
+        private readonly int minDays;
+        private readonly int maxDays;
 
-        private CalendarSystem(string name, YearMonthDayCalculator yearMonthDayCalculator, int minDaysInFirstWeek)
-            : this(CreateIdFromNameAndMinDaysInFirstWeek(name, minDaysInFirstWeek), name, yearMonthDayCalculator, minDaysInFirstWeek)
+        private CalendarSystem(string id, string name, YearMonthDayCalculator yearMonthDayCalculator, Era singleEra)
+        {
+            this.id = id;
+            this.name = name;
+            this.yearMonthDayCalculator = yearMonthDayCalculator;
+            this.weekYearCalculator = new WeekYearCalculator(yearMonthDayCalculator, 4);
+            this.minYear = yearMonthDayCalculator.MinYear;
+            this.maxYear = yearMonthDayCalculator.MaxYear;
+            this.minDays = yearMonthDayCalculator.GetStartOfYearInDays(minYear);
+            this.maxDays = yearMonthDayCalculator.GetStartOfYearInDays(maxYear + 1) - 1;
+            // We trust the construction code not to mutate the array...
+            this.calendarEras = new[] { new CalendarEra(singleEra, GetStartOfCalendar(yearMonthDayCalculator), GetEndOfCalendar(yearMonthDayCalculator)) };
+            this.eras = new ReadOnlyCollection<Era>(new List<Era> { singleEra });
+        }
+
+        private CalendarSystem(string name, YearMonthDayCalculator yearMonthDayCalculator, int minDaysInFirstWeek, params CalendarEra[] calendarEras)
+            : this(CreateIdFromNameAndMinDaysInFirstWeek(name, minDaysInFirstWeek), name, yearMonthDayCalculator, minDaysInFirstWeek, calendarEras)
         {
         }
 
@@ -382,7 +406,19 @@ namespace NodaTime
             return string.Format(CultureInfo.InvariantCulture, "{0} {1}", name, minDaysInFirstWeek);
         }
 
-        private CalendarSystem(string id, string name, YearMonthDayCalculator yearMonthDayCalculator, int minDaysInFirstWeek)
+        private static YearMonthDay GetStartOfCalendar(YearMonthDayCalculator calculator)
+        {
+            int minYear = calculator.MinYear;
+            return calculator.GetYearMonthDay(calculator.GetStartOfYearInDays(minYear));
+        }
+
+        private static YearMonthDay GetEndOfCalendar(YearMonthDayCalculator calculator)
+        {
+            int maxYear = calculator.MaxYear;
+            return calculator.GetYearMonthDay(calculator.GetStartOfYearInDays(maxYear + 1) - 1);
+        }        
+
+        private CalendarSystem(string id, string name, YearMonthDayCalculator yearMonthDayCalculator, int minDaysInFirstWeek, params CalendarEra[] calendarEras)
         {
             this.id = id;
             this.name = name;
@@ -392,9 +428,9 @@ namespace NodaTime
             this.maxYear = yearMonthDayCalculator.MaxYear;
             this.minDays = yearMonthDayCalculator.GetStartOfYearInDays(minYear);
             this.maxDays = yearMonthDayCalculator.GetStartOfYearInDays(maxYear + 1) - 1;
-            this.minTicks = minDays * NodaConstants.TicksPerStandardDay;
-            this.maxTicks = (maxDays + 1) * NodaConstants.TicksPerStandardDay - 1;
-            this.eras = new ReadOnlyCollection<Era>(yearMonthDayCalculator.Eras);
+            // We trust the construction code not to mutate the array...
+            this.calendarEras = calendarEras;
+            this.eras = new ReadOnlyCollection<Era>(calendarEras.Select(x => x.Era).ToList());
         }
 
         /// <summary>
@@ -477,26 +513,17 @@ namespace NodaTime
         /// <summary>
         /// Returns the minimum day number this calendar can handle.
         /// </summary>
-        internal long MinDays { get { return minDays; } }
+        internal int MinDays { get { return minDays; } }
 
         /// <summary>
         /// Returns the maximum day number (inclusive) this calendar can handle.
         /// </summary>
-        internal long MaxDays { get { return maxDays; } }
-
-        // FIXME(2.0): Use Nanoseconds
-        /// <summary>
-        /// Returns the minimum ticks this calendar can handle.
-        /// </summary>
-        internal long MinTicks { get { return minTicks; } }
-
-        // FIXME(2.0): Use Nanoseconds
-        /// <summary>
-        /// Returns the maximum ticks (inclusive) this calendar can handle.
-        /// </summary>
-        internal long MaxTicks { get { return maxTicks; } }
+        internal int MaxDays { get { return maxDays; } }
 
         #region Era-based members
+        // Caution! Nothing should modify this...
+        internal CalendarEra[] CalendarEras { get { return calendarEras; } }
+
         /// <summary>
         /// Returns a read-only list of eras used in this calendar system.
         /// </summary>
@@ -519,41 +546,65 @@ namespace NodaTime
         /// <exception cref="ArgumentException"><paramref name="era"/> is not an era used in this calendar.</exception>
         public int GetAbsoluteYear(int yearOfEra, [NotNull] Era era)
         {
-            return GetAbsoluteYear(yearOfEra, GetEraIndex(era));
+            return GetCalendarEra(era).GetAbsoluteYear(yearOfEra);
         }
 
         /// <summary>
         /// Returns the maximum valid year-of-era in the given era.
         /// </summary>
+        /// <remarks>Note that depending on the calendar system, it's possible that only
+        /// part of the returned year falls within the given era. It is also possible that
+        /// the returned value represents the earliest year of the era rather than the latest
+        /// year. (See the BC era in the Gregorian calendar, for example.)</remarks>
         /// <param name="era">The era in which to find the greatest year</param>
         /// <returns>The maximum valid year in the given era.</returns>
         /// <exception cref="ArgumentException"><paramref name="era"/> is not an era used in this calendar.</exception>
         public int GetMaxYearOfEra([NotNull] Era era)
         {
-            return GetMaxYearOfEra(GetEraIndex(era));
+            return GetCalendarEra(era).MaxYearOfEra;
         }
 
         /// <summary>
         /// Returns the minimum valid year-of-era in the given era.
         /// </summary>
+        /// <remarks>Note that depending on the calendar system, it's possible that only
+        /// part of the returned year falls within the given era. It is also possible that
+        /// the returned value represents the latest year of the era rather than the earliest
+        /// year. (See the BC era in the Gregorian calendar, for example.)</remarks>
         /// <param name="era">The era in which to find the greatest year</param>
         /// <returns>The minimum valid year in the given eraera.</returns>
         /// <exception cref="ArgumentException"><paramref name="era"/> is not an era used in this calendar.</exception>
         public int GetMinYearOfEra([NotNull] Era era)
         {
-            return GetMinYearOfEra(GetEraIndex(era));
+            return GetCalendarEra(era).MinYearOfEra;
+        }
+        
+        public LocalDate GetStartOfEra([NotNull] Era era)
+        {
+            var yearMonthDay = GetCalendarEra(era).MinDate;
+            return new LocalDate(yearMonthDay, this);
         }
 
-        /// <summary>
-        /// Convenience method to perform nullity and validity checking on the era, converting it to
-        /// the index within the list of eras used in this calendar system.
-        /// </summary>
-        private int GetEraIndex(Era era)
+        public LocalDate GetEndOfEra([NotNull] Era era)
+        {
+            var yearMonthDay = GetCalendarEra(era).MaxDate;
+            return new LocalDate(yearMonthDay, this);
+        }
+        
+        private CalendarEra GetCalendarEra(Era era)
         {
             Preconditions.CheckNotNull(era, "era");
-            int index = Eras.IndexOf(era);
-            Preconditions.CheckArgument(index != -1, "era", "Era is not used in this calendar");
-            return index;
+            for (int i = calendarEras.Length - 1; i >= 0; i--)
+            {
+                var calendarEra = calendarEras[i];
+                if (calendarEra.Era == era)
+                {
+                    return calendarEra;
+                }
+            }
+            Preconditions.CheckArgument(false, "era", "Era is not used in this calendar");
+            // We never actually get here...
+            return null;
         }
         #endregion
 
@@ -644,9 +695,13 @@ namespace NodaTime
         }
 
         /// <summary>
-        /// The maximum valid month (inclusive) within this calendar in the given year. It is assumed that
-        /// all calendars start with month 1 and go up to this month number in any valid year.
+        /// The maximum valid month (inclusive) within this calendar in the given year.
         /// </summary>
+        /// <remarks>
+        /// It is assumed that in all calendars, every month between 1 and this month
+        /// number is valid for the given year. This does not necessarily mean that the first month of the year
+        /// is 1, however. (See the Hebrew calendar system using the scriptural month numbering system for example.)
+        /// </remarks>
         /// <param name="year">The year to consider.</param>
         /// <exception cref="ArgumentOutOfRangeException">The given year is invalid for this calendar.
         /// Note that some implementations may return a month rather than throw this exception (for example, if all
@@ -657,39 +712,6 @@ namespace NodaTime
         {
             Preconditions.CheckArgumentRange("year", year, minYear, maxYear);
             return yearMonthDayCalculator.GetMonthsInYear(year);
-        }
-
-        /// <summary>
-        /// See <see cref="GetMaxYearOfEra(Era)"/> - but this uses a pre-validated index.
-        /// This default implementation returns the maximum year for this calendar, which is
-        /// a valid implementation for single-era calendars.
-        /// </summary>
-        internal int GetMaxYearOfEra([Trusted] int eraIndex)
-        {
-            Preconditions.DebugCheckArgumentRange("eraIndex", eraIndex, 0, eras.Count - 1);
-            return yearMonthDayCalculator.GetMaxYearOfEra(eraIndex);
-        }
-
-        /// <summary>
-        /// See <see cref="GetMinYearOfEra(NodaTime.Calendars.Era)" /> - but this uses a pre-validated index.
-        /// This default implementation returns 1, but can be overridden by derived classes.
-        /// </summary>
-        internal int GetMinYearOfEra([Trusted] int eraIndex)
-        {
-            Preconditions.DebugCheckArgumentRange("eraIndex", eraIndex, 0, eras.Count - 1);
-            return yearMonthDayCalculator.GetMinYearOfEra(eraIndex);
-        }
-
-        /// <summary>
-        /// See <see cref="GetAbsoluteYear(int, Era)"/> - but this uses a pre-validated index.
-        /// </summary>
-        internal int GetAbsoluteYear(int yearOfEra, [Trusted] int eraIndex)
-        {
-            Preconditions.DebugCheckArgumentRange("eraIndex", eraIndex, 0, eras.Count - 1);
-            int minYear = GetMinYearOfEra(eraIndex);
-            int maxYear = GetMaxYearOfEra(eraIndex);
-            Preconditions.CheckArgumentRange("yearOfEra", yearOfEra, minYear, maxYear);
-            return yearMonthDayCalculator.GetAbsoluteYear(yearOfEra, eraIndex);
         }
 
         internal void ValidateYearMonthDay(int year, int month, int day)
@@ -732,25 +754,37 @@ namespace NodaTime
         internal int GetYearOfCentury([Trusted] YearMonthDay yearMonthDay)
         {
             DebugValidateYearMonthDay(yearMonthDay);
-            return yearMonthDayCalculator.GetYearOfCentury(yearMonthDay);
+            return GetCalendarEra(yearMonthDay).GetYearOfCentury(yearMonthDay);
         }
 
         internal int GetYearOfEra([Trusted] YearMonthDay yearMonthDay)
         {
             DebugValidateYearMonthDay(yearMonthDay);
-            return yearMonthDayCalculator.GetYearOfEra(yearMonthDay);
+            return GetCalendarEra(yearMonthDay).GetYearOfEra(yearMonthDay);
         }
 
         internal int GetCenturyOfEra([Trusted] YearMonthDay yearMonthDay)
         {
             DebugValidateYearMonthDay(yearMonthDay);
-            return yearMonthDayCalculator.GetCenturyOfEra(yearMonthDay);
+            return GetCalendarEra(yearMonthDay).GetCenturyOfEra(yearMonthDay);
+        }
+
+        internal CalendarEra GetCalendarEra([Trusted] YearMonthDay yearMonthDay)
+        {
+            DebugValidateYearMonthDay(yearMonthDay);
+            foreach (var era in calendarEras)
+            {
+                if (Compare(era.MinDate, yearMonthDay) <= 0 && Compare(yearMonthDay, era.MaxDate) <= 0)
+                {
+                    return era;
+                }
+            }
+            throw new InvalidOperationException("YearMonthDay " + yearMonthDay + " is in no era for calendar " + id);
         }
 
         internal Era GetEra([Trusted] YearMonthDay yearMonthDay)
         {
-            DebugValidateYearMonthDay(yearMonthDay);
-            return Eras[yearMonthDayCalculator.GetEra(yearMonthDay)];
+            return GetCalendarEra(yearMonthDay).Era;
         }
 
         /// <summary>

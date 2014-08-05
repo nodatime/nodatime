@@ -11,7 +11,7 @@ namespace NodaTime.Test
     [TestFixture]
     public partial class CalendarSystemTest
     {
-        internal static readonly List<CalendarSystem> AllCalendars = CalendarSystem.Ids.Select(id => CalendarSystem.ForId(id)).ToList();
+        internal static readonly List<CalendarSystem> AllCalendars = CalendarSystem.Ids.Select(CalendarSystem.ForId).ToList();
 
         [Test]
         [TestCaseSource("AllCalendars")]
@@ -19,10 +19,7 @@ namespace NodaTime.Test
         {
             // Construct the largest LocalDate we can, and validate that all the properties can be fetched without
             // issues.
-            int year = calendar.MaxYear;
-            int month = calendar.GetMonthsInYear(year);
-            int day = calendar.GetDaysInMonth(year, month);
-            ValidateProperties(year, month, day, calendar);
+            ValidateProperties(calendar, calendar.MaxDays, calendar.MaxYear);
         }
 
         [Test]
@@ -31,15 +28,13 @@ namespace NodaTime.Test
         {
             // Construct the smallest LocalDate we can, and validate that all the properties can be fetched without
             // issues.
-            ValidateProperties(calendar.MinYear, 1, 1, calendar);
+            ValidateProperties(calendar, calendar.MinDays, calendar.MinYear);
         }
 
-        private static void ValidateProperties(int year, int month, int day, CalendarSystem calendar)
+        private static void ValidateProperties(CalendarSystem calendar, int daysSinceEpoch, int expectedYear)
         {
-            var localDate = new LocalDate(year, month, day, calendar);
-            Assert.AreEqual(year, localDate.Year);
-            Assert.AreEqual(month, localDate.Month);
-            Assert.AreEqual(day, localDate.Day);
+            var localDate = new LocalDate(daysSinceEpoch, calendar);
+            Assert.AreEqual(expectedYear, localDate.Year);
 
             foreach (var property in typeof(LocalDate).GetProperties())
             {

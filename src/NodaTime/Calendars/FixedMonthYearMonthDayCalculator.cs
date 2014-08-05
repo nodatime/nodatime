@@ -18,9 +18,8 @@ namespace NodaTime.Calendars
 
         private const int AverageDaysPer10Years = 3653; // Ideally 365.25 days per year...
 
-        protected FixedMonthYearMonthDayCalculator(int minYear, int maxYear,
-            int daysAtStartOfYear1, params Era[] eras)
-            : base(minYear, maxYear, 13, AverageDaysPer10Years, daysAtStartOfYear1, eras)
+        protected FixedMonthYearMonthDayCalculator(int minYear, int maxYear, int daysAtStartOfYear1)
+            : base(minYear, maxYear, 13, AverageDaysPer10Years, daysAtStartOfYear1)
         {
         }
 

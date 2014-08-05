@@ -20,8 +20,7 @@ namespace NodaTime.Calendars
             : base(HebrewScripturalCalculator.MinYear,
                   HebrewScripturalCalculator.MaxYear,
                   3654, // Average length of 10 years
-                  UnixEpochDayAtStartOfYear1,
-                  new[] { Era.AnnoMundi })
+                  UnixEpochDayAtStartOfYear1)
         {
             this.monthNumbering = monthNumbering;
         }
