@@ -275,7 +275,7 @@ namespace NodaTime.Calendars
             }
             else
             {
-                nextYearDays = ElapsedDaysNoCache(year);
+                nextYearDays = ElapsedDaysNoCache(year + 1);
             }
             int daysInYear = nextYearDays - days;
             bool isHeshvanLong = daysInYear % 10 == 5;
