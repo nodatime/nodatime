@@ -2,7 +2,10 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 using System;
+using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
+using System.Linq;
 using NodaTime.Calendars;
 using NodaTime.Text;
 using NUnit.Framework;
@@ -217,6 +220,17 @@ namespace NodaTime.Test.Calendars
             Assert.AreEqual(new YearMonthDay(5345, 1, 1), calculator.GetYearMonthDay(-140529));
         }
 
+        [Test]
+        public void GetDaysInYearCrossCheck()
+        {
+            var calculator = new HebrewYearMonthDayCalculator(HebrewMonthNumbering.Civil);
+            for (int year = calculator.MinYear; year <= calculator.MaxYear; year++)
+            {
+                int sum = Enumerable.Range(1, calculator.GetMonthsInYear(year))
+                                    .Sum(month => calculator.GetDaysInMonth(year, month));
+                Assert.AreEqual(sum, calculator.GetDaysInYear(year), "Days in {0}", year);
+            }
+        }
 
 #pragma warning disable 0414 // Used by tests via reflection - do not remove!
         // Cases used for adding months and differences between months.
