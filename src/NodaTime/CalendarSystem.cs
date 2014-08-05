@@ -70,8 +70,8 @@ namespace NodaTime
             PersianCalendarSystem = new CalendarSystem(PersianName, PersianName, new PersianYearMonthDayCalculator(), Era.AnnoPersico);
             HebrewCalendarSystems = new[]
             {
-                new CalendarSystem(HebrewName + "-Civil", HebrewName, new HebrewYearMonthDayCalculator(HebrewMonthNumbering.Civil), 4),
-                new CalendarSystem(HebrewName + "-Scriptural", HebrewName, new HebrewYearMonthDayCalculator(HebrewMonthNumbering.Scriptural), 4)
+                new CalendarSystem(HebrewName + "-Civil", HebrewName, new HebrewYearMonthDayCalculator(HebrewMonthNumbering.Civil), Era.AnnoMundi),
+                new CalendarSystem(HebrewName + "-Scriptural", HebrewName, new HebrewYearMonthDayCalculator(HebrewMonthNumbering.Scriptural), Era.AnnoMundi)
             };
 
             // Variations for the calendar systems which have different objects for different "minimum first day of week"
