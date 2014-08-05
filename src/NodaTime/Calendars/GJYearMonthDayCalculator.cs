@@ -32,7 +32,7 @@ namespace NodaTime.Calendars
         }
 
         protected GJYearMonthDayCalculator(int minYear, int maxYear, int averageDaysPer10Years, int daysAtStartOfYear1)
-            : base(minYear, maxYear, 12, averageDaysPer10Years, daysAtStartOfYear1, Era.BeforeCommon, Era.Common)
+            : base(minYear, maxYear, 12, averageDaysPer10Years, daysAtStartOfYear1)
         {
         }
 
@@ -88,30 +88,5 @@ namespace NodaTime.Calendars
             }
             return new YearMonthDay(year, month, day);
         }
-
-        #region Era handling
-        internal override int GetAbsoluteYear(int yearOfEra, int eraIndex)
-        {
-            // By now the era will have been validated; it's either 0 (BC) or 1 (AD)
-            return eraIndex == 0 ? 1 - yearOfEra: yearOfEra;
-        }
-
-        internal override int GetMaxYearOfEra(int eraIndex)
-        {
-            // By now the era will have been validated; it's either 0 (BC) or 1 (AD)
-            return eraIndex == 0 ? 1 - MinYear : MaxYear;
-        }
-
-        internal override int GetYearOfEra(YearMonthDay yearMonthDay)
-        {
-            int year = yearMonthDay.Year;
-            return year <= 0 ? -year + 1 : year;
-        }
-
-        internal override int GetEra(YearMonthDay yearMonthDay)
-        {
-            return yearMonthDay.Year < 1 ? 0 : 1;
-        }
-        #endregion
     }
 }

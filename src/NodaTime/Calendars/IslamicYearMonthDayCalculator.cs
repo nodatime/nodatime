@@ -60,7 +60,7 @@ namespace NodaTime.Calendars
         }
 
         internal IslamicYearMonthDayCalculator(IslamicLeapYearPattern leapYearPattern, IslamicEpoch epoch)
-            : base(1, 9665, 12, AverageDaysPer10Years, GetYear1Days(epoch), Era.AnnoHegirae)
+            : base(1, 9665, 12, AverageDaysPer10Years, GetYear1Days(epoch))
         {
             this.leapYearPatternBits = GetLeapYearPatternBits(leapYearPattern);
         }

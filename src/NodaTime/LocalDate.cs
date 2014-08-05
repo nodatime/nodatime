@@ -194,8 +194,9 @@ namespace NodaTime
         /// <summary>Gets the week within the WeekYear. See <see cref="WeekYear"/> for more details.</summary>
         public int WeekOfWeekYear { get { return Calendar.GetWeekOfWeekYear(yearMonthDay); } }
 
-        /// <summary>Gets the year of this local date within the century.</summary>
-        /// <remarks>This always returns a value in the range 0 to 99 inclusive.</remarks>
+        /// <summary>Gets the year of this local date within the century within the era.</summary>
+        /// <remarks>This always returns a value in the range 0 to 100 inclusive. (Some calendars use a
+        /// range of 0-99; others use a range of 1-100.)</remarks>
         public int YearOfCentury { get { return Calendar.GetYearOfCentury(yearMonthDay); } }
 
         /// <summary>Gets the year of this local date within the era.</summary>

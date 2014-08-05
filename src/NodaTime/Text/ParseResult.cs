@@ -5,6 +5,7 @@
 using System;
 using System.Globalization;
 using NodaTime.Annotations;
+using NodaTime.Calendars;
 using NodaTime.Properties;
 
 namespace NodaTime.Text
@@ -325,9 +326,9 @@ namespace NodaTime.Text
             return ForInvalidValue(cursor, Messages.Parse_ExpectedEndOfString);
         }
 
-        internal static ParseResult<T> YearOfEraOutOfRange(string text, int value, int eraIndex, CalendarSystem calendar)
+        internal static ParseResult<T> YearOfEraOutOfRange(string text, int value, Era era, CalendarSystem calendar)
         {
-            return ForInvalidValuePostParse(text, Messages.Parse_YearOfEraOutOfRange, value, calendar.Eras[eraIndex].Name, calendar.Name);
+            return ForInvalidValuePostParse(text, Messages.Parse_YearOfEraOutOfRange, value, era.Name, calendar.Name);
         }
 
         internal static ParseResult<T> MonthOutOfRange(string text, int month, int year)
