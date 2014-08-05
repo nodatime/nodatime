@@ -578,13 +578,23 @@ namespace NodaTime
         {
             return GetCalendarEra(era).MinYearOfEra;
         }
-        
+
+        /// <summary>
+        /// Returns the first valid <see cref="LocalDate"/> of the given era.
+        /// </summary>
+        /// <exception cref="ArgumentException"><paramref name="era"/> is not an era used in this calendar.</exception>
+        /// <returns>The start of the era.</returns>
         public LocalDate GetStartOfEra([NotNull] Era era)
         {
             var yearMonthDay = GetCalendarEra(era).MinDate;
             return new LocalDate(yearMonthDay, this);
         }
 
+        /// <summary>
+        /// Returns the last valid <see cref="LocalDate"/> of the given era.
+        /// </summary>
+        /// <exception cref="ArgumentException"><paramref name="era"/> is not an era used in this calendar.</exception>
+        /// <returns>The end of the era.</returns>
         public LocalDate GetEndOfEra([NotNull] Era era)
         {
             var yearMonthDay = GetCalendarEra(era).MaxDate;
