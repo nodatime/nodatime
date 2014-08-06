@@ -100,7 +100,7 @@ namespace NodaTime.Text
 
             internal CalendarSystem Calendar;
             internal int Year;
-            private CalendarEra CalendarEra;
+            private Era Era;
             internal int YearOfEra;
             internal int MonthOfYearNumeric;
             internal int MonthOfYearText;
@@ -117,14 +117,13 @@ namespace NodaTime.Text
             internal ParseResult<TResult> ParseEra<TResult>(NodaFormatInfo formatInfo, ValueCursor cursor)
             {
                 var compareInfo = formatInfo.CompareInfo;
-                var calendarEras = Calendar.CalendarEras;
-                foreach (var calendarEra in calendarEras)
+                foreach (var era in Calendar.Eras)
                 {
-                    foreach (string eraName in formatInfo.GetEraNames(calendarEra.Era))
+                    foreach (string eraName in formatInfo.GetEraNames(era))
                     {
                         if (cursor.MatchCaseInsensitive(eraName, compareInfo, true))
                         {
-                            CalendarEra = calendarEra;
+                            Era = era;
                             return null;
                         }
                     }
@@ -172,14 +171,14 @@ namespace NodaTime.Text
                     // Odd to have a year-of-era without era, but it's valid...
                     if (!IsFieldUsed(usedFields, PatternFields.Era))
                     {
-                        CalendarEra = Calendar.GetCalendarEra(templateValue.YearMonthDay);
+                        Era = Calendar.GetEra(templateValue.YearMonthDay);
                     }
                     // Find the absolute year from the year-of-era and era
-                    if (YearOfEra < CalendarEra.MinYearOfEra || YearOfEra > CalendarEra.MaxYearOfEra)
+                    if (YearOfEra < Calendar.GetMinYearOfEra(Era) || YearOfEra > Calendar.GetMaxYearOfEra(Era))
                     {
-                        return ParseResult<LocalDate>.YearOfEraOutOfRange(text, YearOfEra, CalendarEra.Era, Calendar);
+                        return ParseResult<LocalDate>.YearOfEraOutOfRange(text, YearOfEra, Era, Calendar);
                     }
-                    yearFromEra = CalendarEra.GetAbsoluteYear(YearOfEra);
+                    yearFromEra = Calendar.GetAbsoluteYear(YearOfEra, Era);
                 }
 
                 // Note: we can't have YearTwoDigits without Year, hence there are only 6 options here rather than 8.
