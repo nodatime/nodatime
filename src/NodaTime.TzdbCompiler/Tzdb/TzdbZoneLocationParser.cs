@@ -25,6 +25,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
         internal static IList<TzdbZoneLocation> ParseFiles(DirectoryInfo sourceDirectory)
         {
             var iso3166File = Path.Combine(sourceDirectory.FullName, "iso3166.tab");
+            // TODO(2.0): Consider using zone1970.tab if it exists. This was introduced in 2014f.
             var zoneFile = Path.Combine(sourceDirectory.FullName, "zone.tab");
             if (!File.Exists(iso3166File) || !File.Exists(zoneFile))
             {

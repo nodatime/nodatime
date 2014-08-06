@@ -32,6 +32,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
             "solar89",
             "yearistype.sh",
             "zone.tab",
+            "zone1970.tab",
             "Readme.txt", // Just to handle old directories in Noda Time. Not part of tzdb.
             "README"
         };
