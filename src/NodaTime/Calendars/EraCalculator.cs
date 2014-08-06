@@ -30,7 +30,9 @@ namespace NodaTime.Calendars
         internal abstract Era GetEra(YearMonthDay yearMonthDay);
         internal abstract int GetYearOfEra(YearMonthDay yearMonthDay);
         internal abstract int GetAbsoluteYear(int yearOfEra, [NotNull] Era era);
-        internal abstract YearMonthDay GetStartOfEra([NotNull] Era era);        
+        // We may not need the next two methods... and if we do want them, we could
+        // potentially return a DateInterval instead, although that requires LocalDate...
+        internal abstract YearMonthDay GetStartOfEra([NotNull] Era era);     
         internal abstract YearMonthDay GetEndOfEra([NotNull] Era era);
         internal abstract int GetCenturyOfEra(YearMonthDay yearMonthDay);
         internal abstract int GetYearOfCentury(YearMonthDay yearMonthDay);

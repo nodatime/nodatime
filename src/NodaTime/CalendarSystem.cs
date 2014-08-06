@@ -391,18 +391,6 @@ namespace NodaTime
             return string.Format(CultureInfo.InvariantCulture, "{0} {1}", name, minDaysInFirstWeek);
         }
 
-        private static YearMonthDay GetStartOfCalendar(YearMonthDayCalculator calculator)
-        {
-            int minYear = calculator.MinYear;
-            return calculator.GetYearMonthDay(calculator.GetStartOfYearInDays(minYear));
-        }
-
-        private static YearMonthDay GetEndOfCalendar(YearMonthDayCalculator calculator)
-        {
-            int maxYear = calculator.MaxYear;
-            return calculator.GetYearMonthDay(calculator.GetStartOfYearInDays(maxYear + 1) - 1);
-        }        
-
         private CalendarSystem(string id, string name, YearMonthDayCalculator yearMonthDayCalculator, int minDaysInFirstWeek, EraCalculator eraCalculator)
         {
             this.id = id;
@@ -560,6 +548,8 @@ namespace NodaTime
             return eraCalculator.GetMinYearOfEra(era);
         }
 
+        // TODO(2.0): Check we want this. It would be useful for eras which don't start at the beginning of year,
+        // as per the Japanese calendar, but we don't have any of those yet.
         /// <summary>
         /// Returns the first valid <see cref="LocalDate"/> of the given era.
         /// </summary>
@@ -570,6 +560,9 @@ namespace NodaTime
             return new LocalDate(eraCalculator.GetStartOfEra(era), this);
         }
 
+        // TODO(2.0): Check we want this. It would be useful for eras which don't start at the beginning of year,
+        // as per the Japanese calendar, but we don't have any of those yet. If we do want it, we could consider
+        // using DateInterval instead of having two methods.
         /// <summary>
         /// Returns the last valid <see cref="LocalDate"/> of the given era.
         /// </summary>
