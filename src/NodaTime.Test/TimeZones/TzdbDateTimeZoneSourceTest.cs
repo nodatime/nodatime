@@ -222,7 +222,8 @@ namespace NodaTime.Test.TimeZones
             Assert.AreEqual("", france.Comment);
         }
 
-        // Input line: CA	+744144-0944945	America/Resolute	Central Standard Time - Resolute, Nunavut
+        // Input line: CA	+744144-0944945	America/Resolute	Central Time - Resolute, Nunavut
+        // (Note: prior to 2014f, this was "Central Standard Time - Resolute, Nunavut".)
         [Test]
         public void ZoneLocations_ContainsResolute()
         {
@@ -233,7 +234,7 @@ namespace NodaTime.Test.TimeZones
             Assert.AreEqual(-94.82916, resolute.Longitude, 0.00055);
             Assert.AreEqual("Canada", resolute.CountryName);
             Assert.AreEqual("CA", resolute.CountryCode);
-            Assert.AreEqual("Central Standard Time - Resolute, Nunavut", resolute.Comment);
+            Assert.AreEqual("Central Time - Resolute, Nunavut", resolute.Comment);
         }
 
         [Test]
