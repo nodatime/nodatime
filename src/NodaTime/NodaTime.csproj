@@ -148,10 +148,11 @@
     <Compile Include="Annotations\VisibleForTestingAttribute.cs" />
     <Compile Include="CalendarSystem.cs" />
     <Compile Include="AmbiguousTimeException.cs" />
-    <Compile Include="Calendars\CalendarEra.cs" />
     <Compile Include="Calendars\CopticYearMonthDayCalculator.cs" />
     <Compile Include="Calendars\Era.cs" />
+    <Compile Include="Calendars\EraCalculator.cs" />
     <Compile Include="Calendars\FixedMonthYearMonthDayCalculator.cs" />
+    <Compile Include="Calendars\GJEraCalculator.cs" />
     <Compile Include="Calendars\GJYearMonthDayCalculator.cs" />
     <Compile Include="Calendars\GregorianYearMonthDayCalculator.cs" />
     <Compile Include="Calendars\HebrewScripturalCalculator.cs" />
@@ -161,11 +162,12 @@
     <Compile Include="Calendars\IslamicEpoch.cs" />
     <Compile Include="Calendars\IslamicLeapYearPattern.cs" />
     <Compile Include="Calendars\IslamicYearMonthDayCalculator.cs" />
-    <Compile Include="Calendars\IsoYearMonthDayCalculator.cs" />
+    <Compile Include="Calendars\IsoEraCalculator.cs" />
     <Compile Include="Calendars\JulianYearMonthDayCalculator.cs" />
     <Compile Include="Calendars\NamespaceDoc.cs" />
     <Compile Include="Calendars\PersianYearMonthDayCalculator.cs" />
     <Compile Include="Calendars\RegularYearMonthDayCalculator.cs" />
+    <Compile Include="Calendars\SingleEraCalculator.cs" />
     <Compile Include="Calendars\TickArithmetic.cs" />
     <Compile Include="Calendars\WeekYearCalculator.cs" />
     <Compile Include="Calendars\YearMonthDayCalculator.cs" />

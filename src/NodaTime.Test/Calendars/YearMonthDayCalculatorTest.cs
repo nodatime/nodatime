@@ -15,7 +15,6 @@ namespace NodaTime.Test.Calendars
     {
         private static readonly TestCaseData[] NonIslamicCalculators = {
             new TestCaseData(new GregorianYearMonthDayCalculator()).SetName("Gregorian"),
-            new TestCaseData(new IsoYearMonthDayCalculator()).SetName("ISO"),
             new TestCaseData(new CopticYearMonthDayCalculator()).SetName("Coptic"),
             new TestCaseData(new JulianYearMonthDayCalculator()).SetName("Julian"),
         };
