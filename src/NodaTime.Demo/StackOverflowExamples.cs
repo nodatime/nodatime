@@ -69,19 +69,19 @@ namespace NodaTime.Demo
         /// Why does "1927-12-31 23:54:08" minus "1927-12-31 23:54:07" give a difference of nearly 6 minutes?
         /// <see cref="http://stackoverflow.com/questions/6841333" />
         /// </summary>
-        /// <remarks>Note that the TZDB data changed in version 2013a, so the transition is now deemed to be
-        /// at 23:54:03 instead of 23:54:08.
+        /// <remarks>Note that the TZDB data changed in version 2013a, so the transition was then deemed to be
+        /// at 23:54:03 instead of 23:54:08. Then in 2014f it was changed to be at the end of 1900, and a few seconds less...
         /// </remarks>
         [Test]
         public void CuriousSubtraction()
         {
             var shanghai = DateTimeZoneProviders.Tzdb["Asia/Shanghai"];
-            var localBefore = new LocalDateTime(1927, 12, 31, 23, 54, 02);
+            var localBefore = new LocalDateTime(1900, 12, 31, 23, 54, 16);
             var localAfter = localBefore.PlusSeconds(1);
             var instantBefore = localBefore.InZoneLeniently(shanghai).ToInstant();
             var instantAfter = localAfter.InZoneLeniently(shanghai).ToInstant();
 
-            Assert.AreEqual(Duration.FromSeconds(358), instantAfter - instantBefore);
+            Assert.AreEqual(Duration.FromSeconds(344), instantAfter - instantBefore);
 
             // Now let's resolve them differently...
             var resolver = Resolvers.CreateMappingResolver(Resolvers.ReturnEarlier, Resolvers.ThrowWhenSkipped);
