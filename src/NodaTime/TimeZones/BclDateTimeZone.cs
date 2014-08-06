@@ -91,8 +91,8 @@ namespace NodaTime.TimeZones
 
                 // Find the last valid transition by working back from the end of time. It's safe to unconditionally
                 // take the value here, as there must *be* some recurrences.
-                var lastStandard = standard.PreviousOrSameOrFail(Instant.MaxValue, standardOffset, daylight.Savings);
-                var lastDaylight = daylight.PreviousOrSameOrFail(Instant.MaxValue, standardOffset, Offset.Zero);
+                var lastStandard = standard.PreviousOrSameOrFail(Instant.AfterMaxValue, standardOffset, daylight.Savings);
+                var lastDaylight = daylight.PreviousOrSameOrFail(Instant.AfterMaxValue, standardOffset, Offset.Zero);
                 bool standardIsLater = lastStandard.Instant > lastDaylight.Instant;
                 Transition lastTransition = standardIsLater ? lastStandard : lastDaylight;
                 Offset seamSavings = lastTransition.NewOffset - standardOffset;
@@ -201,7 +201,7 @@ namespace NodaTime.TimeZones
             ZoneRecurrence firstStandard, firstDaylight;
             GetRecurrences(zone, rule, out firstStandard, out firstDaylight);
             var standardOffset = Offset.FromTimeSpan(zone.BaseUtcOffset);
-            Transition firstTransition = firstDaylight.NextOrFail(Instant.MinValue, standardOffset, Offset.Zero);
+            Transition firstTransition = firstDaylight.NextOrFail(Instant.BeforeMinValue, standardOffset, Offset.Zero);
             return new ZoneInterval(zone.StandardName, Instant.BeforeMinValue, firstTransition.Instant, standardOffset, Offset.Zero);
         }
 

@@ -166,6 +166,8 @@ namespace NodaTime.TimeZones
         {
             int size = reader.ReadCount();
             var periods = new ZoneInterval[size];
+            // It's not entirely clear why we don't just assume that the first zone interval always starts at Instant.BeforeMinValue
+            // (given that we check that later) but we don't... and changing that now could cause compatibility issues.
             var start = reader.ReadZoneIntervalTransition(null);
             for (int i = 0; i < size; i++)
             {

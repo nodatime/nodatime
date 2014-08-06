@@ -151,7 +151,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
 
             var transitions = new List<ZoneTransition>();
             DateTimeZone tailZone = null;
-            Instant instant = Instant.MinValue;
+            Instant instant = Instant.BeforeMinValue;
 
             int ruleSetCount = ruleSets.Count;
             bool tailZoneSeamValid = false;
@@ -202,7 +202,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
                     case 1:
                         return new FixedDateTimeZone(zoneId, transitions[0].WallOffset);
                     default:
-                        var ret = CreatePrecalculatedDateTimeZone(zoneId, transitions, Instant.MaxValue, null);
+                        var ret = CreatePrecalculatedDateTimeZone(zoneId, transitions, Instant.AfterMaxValue, null);
                         return ret.IsCachable() ? CachedDateTimeZone.ForZone(ret) : ret;
                 }
             }
@@ -266,6 +266,13 @@ namespace NodaTime.TzdbCompiler.Tzdb
             if (!transition.IsTransitionFrom(lastTransition))
             {
                 return false;
+            }
+
+            // A transition after the "beginning of time" one will always be valid.
+            if (lastTransition.Instant == Instant.BeforeMinValue)
+            {
+                transitions.Add(transition);
+                return true;
             }
 
             Offset lastOffset = transitions.Count < 2 ? Offset.Zero : transitions[transitions.Count - 2].WallOffset;

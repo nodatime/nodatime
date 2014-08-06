@@ -2,6 +2,7 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
+using System.Linq;
 using NUnit.Framework;
 
 namespace NodaTime.Test
@@ -16,6 +17,14 @@ namespace NodaTime.Test
         public void TzdbProviderUsesTzdbSource()
         {
             Assert.IsTrue(DateTimeZoneProviders.Tzdb.VersionId.StartsWith("TZDB: "));
+        }
+
+        [Test]
+        public void AllTzdbTimeZonesLoad()
+        {
+            var allZones = DateTimeZoneProviders.Tzdb.Ids.Select(id => DateTimeZoneProviders.Tzdb[id]).ToList();
+            // Just to stop the variable from being lonely. In reality, it's likely there'll be a breakpoint here to inspect a particular zone...
+            Assert.IsTrue(allZones.Count > 50);
         }
 
 #if !PCL

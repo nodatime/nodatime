@@ -101,7 +101,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
         {
             if (upperYear == int.MaxValue)
             {
-                return Instant.MaxValue;
+                return Instant.AfterMaxValue;
             }
             return upperYearOffset.GetOccurrenceForYear(upperYear, StandardOffset, savings).ToInstant();
         }
@@ -238,7 +238,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
                 // Iterate through all the transitions until startingInstant is reached. Use the name key
                 // and savings for whatever rule reaches the limit.
 
-                Instant nextInstant = Instant.MinValue;
+                Instant nextInstant = Instant.BeforeMinValue;
                 ZoneTransition firstTransition = null;
 
                 for (ZoneTransition next = GetNext(nextInstant); next != null; next = GetNext(nextInstant))
@@ -289,7 +289,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
             {
                 // Find next matching rule.
                 ZoneRecurrence nextRule = null;
-                Instant nextTicks = Instant.MaxValue;
+                Instant nextTicks = Instant.AfterMaxValue;
 
                 for (int i = 0; i < rules.Count; i++)
                 {

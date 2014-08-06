@@ -181,7 +181,7 @@ namespace NodaTime.TimeZones.IO
         {
             if (previous != null)
             {
-                Preconditions.CheckArgumentRange("value", value.Ticks, previous.Value.Ticks, long.MaxValue);
+                Preconditions.CheckArgument(value >= previous.Value, "value", "Transition must move forward in time");
             }
 
             unchecked
@@ -201,8 +201,8 @@ namespace NodaTime.TimeZones.IO
                 // (i.e. about 5-8 months), and at an integral number of hours difference. We therefore gain a
                 // significant reduction in output size by encoding transitions as the whole number of hours since the
                 // previous, if possible.
-
-                if (previous != null)
+                // If the previous value was "the start of time" then there's no point in trying to use it.
+                if (previous != null && previous.Value != Instant.BeforeMinValue)
                 {
                     // Note that the difference might exceed the range of a long, so we can't use a Duration here.
                     ulong ticks = (ulong) (value.Ticks - previous.Value.Ticks);
