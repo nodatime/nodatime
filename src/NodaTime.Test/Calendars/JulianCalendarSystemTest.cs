@@ -2,8 +2,6 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-using System;
-using System.Linq;
 using NUnit.Framework;
 
 namespace NodaTime.Test.Calendars
@@ -40,43 +38,6 @@ namespace NodaTime.Test.Calendars
             // Check 1BC, 5BC etc...
             Assert.IsTrue(Julian.IsLeapYear(0));
             Assert.IsTrue(Julian.IsLeapYear(-4));
-        }
-
-        [Test]
-        public void GetInstance_UniqueIds()
-        {
-            Assert.AreEqual(7, Enumerable.Range(1, 7).Select(x => CalendarSystem.GetJulianCalendar(x).Id).Distinct().Count());
-        }
-
-        [Test]
-        public void GetInstance_InvalidMinDaysInFirstWeek()
-        {
-            Assert.Throws<ArgumentOutOfRangeException>(() => CalendarSystem.GetJulianCalendar(0));
-            Assert.Throws<ArgumentOutOfRangeException>(() => CalendarSystem.GetJulianCalendar(8));
-        }
-
-        [Test]
-        public void GetInstance_MinDaysInFirstWeekIsRespected()
-        {
-            // Seems the simplest way to test this... yes, it seems somewhat wasteful, but hey...
-            for (int i = 1; i < 7; i++)
-            {
-                CalendarSystem calendar = CalendarSystem.GetJulianCalendar(i);
-
-                int actualMin = Enumerable.Range(1900, 400)
-                                          .Select(year => GetDaysInFirstWeek(year, calendar))
-                                          .Min();
-                Assert.AreEqual(i, actualMin);
-            }
-        }
-
-        private int GetDaysInFirstWeek(int year, CalendarSystem calendar)
-        {
-            // Some of the first few days of the week year may be in the previous week year.
-            // However, the whole of the first week of the week year definitely occurs
-            // within the first 13 days of January.
-            return Enumerable.Range(1, 13)
-                             .Count(day => new LocalDate(year, 1, day, calendar).WeekOfWeekYear == 1);
         }
     }
 }

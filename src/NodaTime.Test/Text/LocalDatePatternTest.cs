@@ -169,8 +169,8 @@ namespace NodaTime.Test.Text
             // Calendar handling
             new Data(2011, 10, 9) { Pattern = "c yyyy MM dd", Text = "ISO 2011 10 09" },
             new Data(2011, 10, 9) { Pattern = "yyyy MM dd c", Text = "2011 10 09 ISO" },
-            new Data(2011, 10, 9, CalendarSystem.GetCopticCalendar(4)) { Pattern = "c yyyy MM dd", Text = "Coptic 4 2011 10 09" },
-            new Data(2011, 10, 9, CalendarSystem.GetCopticCalendar(4)) { Pattern = "yyyy MM dd c", Text = "2011 10 09 Coptic 4" },
+            new Data(2011, 10, 9, CommonCalendars.Coptic) { Pattern = "c yyyy MM dd", Text = "Coptic 2011 10 09" },
+            new Data(2011, 10, 9, CommonCalendars.Coptic) { Pattern = "yyyy MM dd c", Text = "2011 10 09 Coptic" },
 
             // Awkward day-of-week handling
             // December 14th 2012 was a Friday. Friday is "Foo" or "FooBar" in AwkwardDayOfWeekCulture.

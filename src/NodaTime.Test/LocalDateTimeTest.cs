@@ -388,15 +388,15 @@ namespace NodaTime.Test
         [Test]
         public void BinarySerialization()
         {
-            TestHelper.AssertBinaryRoundtrip(new LocalDateTime(2013, 4, 12, 17, 53, 23, CalendarSystem.GetJulianCalendar(3)));
+            TestHelper.AssertBinaryRoundtrip(new LocalDateTime(2013, 4, 12, 17, 53, 23, CommonCalendars.Julian));
             TestHelper.AssertBinaryRoundtrip(new LocalDateTime(2013, 4, 12, 17, 53, 23, 123, 4567));
         }
 
         [Test]
         public void XmlSerialization_NonIso()
         {
-            var value = new LocalDateTime(2013, 4, 12, 17, 53, 23, CalendarSystem.GetJulianCalendar(3));
-            TestHelper.AssertXmlRoundtrip(value, "<value calendar=\"Julian 3\">2013-04-12T17:53:23</value>");
+            var value = new LocalDateTime(2013, 4, 12, 17, 53, 23, CommonCalendars.Julian);
+            TestHelper.AssertXmlRoundtrip(value, "<value calendar=\"Julian\">2013-04-12T17:53:23</value>");
         }
 
         [Test]

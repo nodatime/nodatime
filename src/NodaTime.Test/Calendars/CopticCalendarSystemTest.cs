@@ -16,7 +16,7 @@ namespace NodaTime.Test.Calendars
         [Test]
         public void CopticEpoch()
         {
-            CalendarSystem coptic = CalendarSystem.GetCopticCalendar(4);
+            CalendarSystem coptic = CommonCalendars.Coptic;
             LocalDateTime copticEpoch = new LocalDateTime(1, 1, 1, 0, 0, coptic);
 
             CalendarSystem julian = CommonCalendars.Julian;
@@ -29,7 +29,7 @@ namespace NodaTime.Test.Calendars
         [Test]
         public void UnixEpoch()
         {
-            CalendarSystem coptic = CalendarSystem.GetCopticCalendar(4);
+            CalendarSystem coptic = CommonCalendars.Coptic;
             LocalDateTime unixEpochInCopticCalendar = NodaConstants.UnixEpoch.InZone(DateTimeZone.Utc, coptic).LocalDateTime;
             LocalDateTime expected = new LocalDateTime(1686, 4, 23, 0, 0, coptic);
             Assert.AreEqual(expected, unixEpochInCopticCalendar);
@@ -38,7 +38,7 @@ namespace NodaTime.Test.Calendars
         [Test]
         public void SampleDate()
         {
-            CalendarSystem copticCalendar = CalendarSystem.GetCopticCalendar(4);
+            CalendarSystem copticCalendar = CommonCalendars.Coptic;
             LocalDateTime iso = new LocalDateTime(2004, 6, 9, 0, 0, 0, 0);
             LocalDateTime coptic = iso.WithCalendar(copticCalendar);
 

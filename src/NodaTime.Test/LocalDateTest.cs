@@ -45,8 +45,8 @@ namespace NodaTime.Test
         [Test]
         public void XmlSerialization_NonIso()
         {
-            var value = new LocalDate(2013, 4, 12, CalendarSystem.GetJulianCalendar(3));
-            TestHelper.AssertXmlRoundtrip(value, "<value calendar=\"Julian 3\">2013-04-12</value>");
+            var value = new LocalDate(2013, 4, 12, CommonCalendars.Julian);
+            TestHelper.AssertXmlRoundtrip(value, "<value calendar=\"Julian\">2013-04-12</value>");
         }
 
         [Test]

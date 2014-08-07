@@ -53,7 +53,7 @@ namespace NodaTime.Serialization.Test.JsonNet
         [Test]
         public void LocalDateConverter_SerializeNonIso_Throws()
         {
-            var localDate = new LocalDate(2012, 1, 2, CalendarSystem.GetCopticCalendar(4));
+            var localDate = new LocalDate(2012, 1, 2, CommonCalendars.Coptic);
 
             Assert.Throws<ArgumentException>(() => JsonConvert.SerializeObject(localDate, Formatting.None, NodaConverters.LocalDateConverter));
         }
@@ -81,7 +81,7 @@ namespace NodaTime.Serialization.Test.JsonNet
         [Test]
         public void LocalDateTimeConverter_SerializeNonIso_Throws()
         {
-            var localDateTime = new LocalDateTime(2012, 1, 2, 3, 4, 5, CalendarSystem.GetCopticCalendar(4));
+            var localDateTime = new LocalDateTime(2012, 1, 2, 3, 4, 5, CommonCalendars.Coptic);
 
             Assert.Throws<ArgumentException>(() => JsonConvert.SerializeObject(localDateTime, Formatting.None, NodaConverters.LocalDateTimeConverter));
         }

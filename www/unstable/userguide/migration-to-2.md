@@ -105,6 +105,15 @@ than the value being truncated to a whole number of seconds: the serialized
 form is still based on milliseconds. (Serialized data which stored values which
 are now outside the range of valid values cannot be deserialized, however.)
 
+Calendars
+====
+
+The Coptic and Julian calendars no longer support variants based on "minimum number of days in the first week of the week
+year" - it was felt this was really only important for the Gregorian calendar. This affects the calls used to fetch
+Coptic/Julian calendars, the ID in formatted text, and also serialized values.
+
+As noted above (when talking about removed members), the ISO calendar is now equivalent to the Gregorian 4 calendar.
+
 Serialization
 ====
 
@@ -112,6 +121,7 @@ TBD (this will be awkward). To note so far:
 
 - Periods with year/month/week/day values outside the range of `int`
 - Offset truncation to seconds (see above)
+- Calendar names
 
 Default values
 ====

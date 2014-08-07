@@ -328,10 +328,10 @@ namespace NodaTime.Test
         {
             DateTimeZoneProviders.Serialization = DateTimeZoneProviders.Tzdb;
             var zone = DateTimeZoneProviders.Tzdb["America/New_York"];
-            var localDateTime = new LocalDateTime(2013, 6, 12, 17, 53, 23, CalendarSystem.GetJulianCalendar(3));
+            var localDateTime = new LocalDateTime(2013, 6, 12, 17, 53, 23, CommonCalendars.Julian);
             var value = new ZonedDateTime(localDateTime.WithOffset(Offset.FromHours(-4)), zone);
             TestHelper.AssertXmlRoundtrip(value,
-                "<value zone=\"America/New_York\" calendar=\"Julian 3\">2013-06-12T17:53:23-04</value>");
+                "<value zone=\"America/New_York\" calendar=\"Julian\">2013-06-12T17:53:23-04</value>");
         }
 
         [Test]
@@ -339,7 +339,7 @@ namespace NodaTime.Test
         {
             DateTimeZoneProviders.Serialization = DateTimeZoneProviders.Tzdb;
             var zone = DateTimeZoneProviders.Tzdb["America/New_York"];
-            var localDateTime = new LocalDateTime(2013, 6, 12, 17, 53, 23, CalendarSystem.GetJulianCalendar(3));
+            var localDateTime = new LocalDateTime(2013, 6, 12, 17, 53, 23, CommonCalendars.Julian);
             var value = new ZonedDateTime(localDateTime.WithOffset(Offset.FromHours(-4)), zone);
             TestHelper.AssertBinaryRoundtrip(value);
         }

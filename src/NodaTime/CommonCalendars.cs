@@ -30,14 +30,14 @@ namespace NodaTime
         /// </summary>
         /// <seealso cref="CalendarSystem.GetJulianCalendar"/>
         /// <returns>A Julian calendar system with at least 4 days in the first week of a week-year.</returns>
-        public static CalendarSystem Julian { get { return CalendarSystem.GetJulianCalendar(4); } }
+        public static CalendarSystem Julian { get { return CalendarSystem.GetJulianCalendar(); } }
 
         /// <summary>
         /// Returns a Coptic calendar system with at least 4 days in the first week of a week-year.
         /// </summary>
         /// <seealso cref="CalendarSystem.GetCopticCalendar"/>
         /// <returns>A Coptic calendar system with at least 4 days in the first week of a week-year.</returns>
-        public static CalendarSystem Coptic { get { return CalendarSystem.GetCopticCalendar(4); } }
+        public static CalendarSystem Coptic { get { return CalendarSystem.GetCopticCalendar(); } }
 
         /// <summary>
         /// Returns an Islamic calendar system equivalent to the one used by the BCL HijriCalendar.
