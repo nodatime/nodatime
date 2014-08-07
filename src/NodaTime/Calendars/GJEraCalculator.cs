@@ -13,7 +13,7 @@ namespace NodaTime.Calendars
     /// <summary>
     /// Era calculator for Gregorian and Julian calendar systems, which use BC and AD.
     /// </summary>
-    internal class GJEraCalculator : EraCalculator
+    internal sealed class GJEraCalculator : EraCalculator
     {
         private static readonly YearMonthDay endOfBc = new YearMonthDay(0, 12, 31);
         private static readonly YearMonthDay startOfAd = new YearMonthDay(1, 1, 1);
@@ -29,9 +29,9 @@ namespace NodaTime.Calendars
 
         private void ValidateEra(Era era)
         {
-            Preconditions.CheckNotNull(era, "era");
             if (era != Era.Common && era != Era.BeforeCommon)
             {
+                Preconditions.CheckNotNull(era, "era");
                 Preconditions.CheckArgument(false, "era", "Era {0} is not supported by this calendar; only BC and AD are supported", era.Name);
             }
         }
@@ -52,20 +52,6 @@ namespace NodaTime.Calendars
         {
             int absoluteYear = yearMonthDay.Year;
             return absoluteYear > 0 ? absoluteYear : 1 - absoluteYear;
-        }
-
-        internal override int GetCenturyOfEra(YearMonthDay yearMonthDay)
-        {
-            int yearOfEra = GetYearOfEra(yearMonthDay);
-            int zeroBasedRemainder = yearOfEra % 100;
-            int zeroBasedResult = yearOfEra / 100;
-            return zeroBasedRemainder == 0 ? zeroBasedResult : zeroBasedResult + 1;
-        }
-
-        internal override int GetYearOfCentury(YearMonthDay yearMonthDay)
-        {
-            int zeroBased = GetYearOfEra(yearMonthDay) % 100;
-            return zeroBased == 0 ? 100 : zeroBased;
         }
 
         internal override Era GetEra(YearMonthDay yearMonthDay)

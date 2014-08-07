@@ -27,8 +27,6 @@ namespace NodaTime.Test.Calendars
 
             Assert.AreEqual(1970, epoch.Year);
             Assert.AreEqual(1970, epoch.YearOfEra);
-            Assert.AreEqual(70, epoch.YearOfCentury);
-            Assert.AreEqual(19, epoch.CenturyOfEra);
             Assert.AreEqual(1970, epoch.WeekYear);
             Assert.AreEqual(1, epoch.WeekOfWeekYear);
             Assert.AreEqual(1, epoch.Month);
@@ -52,8 +50,6 @@ namespace NodaTime.Test.Calendars
 
             Assert.AreEqual(2009, now.Year);
             Assert.AreEqual(2009, now.YearOfEra);
-            Assert.AreEqual(9, now.YearOfCentury);
-            Assert.AreEqual(20, now.CenturyOfEra);
             Assert.AreEqual(2009, now.WeekYear);
             Assert.AreEqual(48, now.WeekOfWeekYear);
             Assert.AreEqual(11, now.Month);
@@ -147,21 +143,6 @@ namespace NodaTime.Test.Calendars
             Assert.AreEqual(Era.BeforeCommon, localDate.Era);
             Assert.AreEqual(-1, localDate.Year);
             Assert.AreEqual(2, localDate.YearOfEra);
-        }
-
-        [Test]
-        [TestCase(100, 1, 0)]
-        [TestCase(101, 1, 1)]
-        [TestCase(200, 2, 0)]
-        [TestCase(0, 0, 0)] // 1BC
-        [TestCase(-1, 0, 1)] // 2BC
-        [TestCase(-99, 0, 99)] // 100BC
-        [TestCase(-100, 1, 0)] // 101BC
-        public void IsoCenturies(int year, int expectedCentury, int expectedYearOfCentury)
-        {
-            var date = new LocalDate(year, 1, 1);
-            Assert.AreEqual(expectedCentury, date.CenturyOfEra);
-            Assert.AreEqual(expectedYearOfCentury , date.YearOfCentury);
         }
     }
 }

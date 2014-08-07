@@ -35,8 +35,6 @@ namespace NodaTime.Test
             Assert.AreEqual(new LocalDate(2012, 2, 10), value.Date);
             Assert.AreEqual(new LocalTime(8, 9, 10, 11, 12), value.TimeOfDay);
             Assert.AreEqual(Era.Common, value.Era);
-            Assert.AreEqual(20, value.CenturyOfEra);
-            Assert.AreEqual(12, value.YearOfCentury);
             Assert.AreEqual(2012, value.Year);
             Assert.AreEqual(2012, value.YearOfEra);
             Assert.AreEqual(2, value.Month);

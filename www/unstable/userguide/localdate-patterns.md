@@ -41,13 +41,15 @@ For the meanings of "absolute" years and text handling, see later details.
     <tr>
       <td><code>y</code> or <code>yy</code></td>
       <td>
-        Two digit absolute year with an optional leading <code>-</code> sign; a single <code>y</code> allows up to two digits to be parsed,
-		but formats only one digit where possible. When parsing, the "base century" is chosen from the template
-		value; if the two-digit year is greater than 30, the corresponding year in the previous
-		century is used. Note that when formatting, no checking
-        is performed to ensure that the year will be parsed to
-        the same value. (For example, 1725 would be formatted
-        as 25 but parsed as 2025.) 
+        Two digit absolute year, in the range 0-99; a single <code>y</code> allows up to two digits to be parsed,
+        but formats only one digit where possible. When parsing, the "base century" is chosen from the template
+        value; if the two-digit year is greater than 30, the corresponding year in the previous century is used.
+        Note that when formatting, no checking is performed to ensure that the year will be parsed to
+        the same value. (For example, 1725 would be formatted as 25 but parsed as 2025.) Negative absolute years
+        are coalesced into 2-digit year numbers in a way which maintains chronological ordering - so for example,
+        95BC is absolute -94; that will be formatted as `06`. The following yaear (94BC) is absolute -93; that will be
+        formatted as `07`. This is documented for completeness; it is *strongly* recommended that you do not use
+        `y` or `yy` with dates which may have negative absolute years.
       </td>
       <td>
 	    Assuming a template value of 2000 (the default):

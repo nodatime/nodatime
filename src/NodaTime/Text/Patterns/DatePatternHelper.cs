@@ -20,7 +20,7 @@ namespace NodaTime.Text.Patterns
         /// Creates a character handler for the year specifier (y).
         /// </summary>
         internal static CharacterHandler<TResult, TBucket> CreateYearHandler<TResult, TBucket>
-            (Func<TResult, int> centuryGetter, Func<TResult, int> yearGetter, Action<TBucket, int> setter)
+            (Func<TResult, int> yearGetter, Action<TBucket, int> setter)
             where TBucket : ParseBucket<TResult>
         {
             return (pattern, builder) =>
@@ -31,8 +31,9 @@ namespace NodaTime.Text.Patterns
                 {
                     case 1:
                     case 2:
-                        builder.AddParseValueAction(count, 2, 'y', -99, 99, setter);
-                        builder.AddFormatAction((value, sb) => FormatHelper.LeftPad(centuryGetter(value), count, sb));
+                        builder.AddParseValueAction(count, 2, 'y', 0, 99, setter);
+                        // Force the year into the range 0-99.
+                        builder.AddFormatAction((value, sb) => FormatHelper.LeftPad(((yearGetter(value) % 100) + 100) % 100, count, sb));
                         // Just remember that we've set this particular field. We can't set it twice as we've already got the Year flag set.
                         builder.AddField(PatternFields.YearTwoDigits, pattern.Current);
                         break;

@@ -108,6 +108,9 @@ namespace NodaTime.Test.Text
         internal static Data[] FormatOnlyData = {
             // Would parse back to 2011
             new Data(1811, 7, 3) { Pattern = "yy M d", Text = "11 7 3" },
+            // Tests for the documented 2-digit formatting of BC years
+            new Data(-94, 7, 3) { Pattern = "yy M d", Text = "06 7 3" },
+            new Data(-93, 7, 3) { Pattern = "yy M d", Text = "07 7 3" },
         };
 
         internal static Data[] FormatAndParseData = {

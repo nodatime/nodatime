@@ -43,8 +43,6 @@ namespace NodaTime.Test.Calendars
             LocalDateTime coptic = iso.WithCalendar(copticCalendar);
 
             Assert.AreEqual(Era.AnnoMartyrum, coptic.Era);
-            Assert.AreEqual(18, coptic.CenturyOfEra);
-            Assert.AreEqual(20, coptic.YearOfCentury);
             Assert.AreEqual(1720, coptic.YearOfEra);
 
             Assert.AreEqual(1720, coptic.Year);

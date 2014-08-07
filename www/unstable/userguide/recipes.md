@@ -22,9 +22,9 @@ How old is Jon?
 Jon was born on June 19th, 1976 (Gregorian). How old is he now, in the UK time zone?
 
     LocalDate birthDate = new LocalDate(1976, 6, 19);
-    IClock clock = SystemClock.Instance;
     DateTimeZone zone = DateTimeZoneProviders.Tzdb["Europe/London"];
-    LocalDate today = clock.GetCurrentInstant().InZone(zone).Date;
+    ZonedClock clock = SystemClock.Instance.InZone(zone);
+    LocalDate today = clock.GetCurrentLocalDateTime().Date;
     Period age = Period.Between(birthDate, today);
     Console.WriteLine("Jon is: {0} years, {1} months, {2} days old.",
                       age.Years, age.Months, age.Days);

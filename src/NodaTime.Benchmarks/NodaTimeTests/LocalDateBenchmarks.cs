@@ -126,18 +126,6 @@ namespace NodaTime.Benchmarks.NodaTimeTests
         }
 
         [Benchmark]
-        public void CenturyOfEra()
-        {
-            Sample.YearOfCentury.Consume();
-        }
-
-        [Benchmark]
-        public void YearOfCentury()
-        {
-            Sample.YearOfCentury.Consume();
-        }
-
-        [Benchmark]
         public void YearOfEra()
         {
             Sample.YearOfEra.Consume();

@@ -15,7 +15,6 @@ namespace NodaTime.Test
         {
             LocalDate date = NodaConstants.UnixEpoch.InUtc().Date;
             Assert.AreEqual(1970, date.Year);
-            Assert.AreEqual(70, date.YearOfCentury);
             Assert.AreEqual(1970, date.YearOfEra);
             Assert.AreEqual(1, date.Day);
             Assert.AreEqual((int) IsoDayOfWeek.Thursday, date.DayOfWeek);
@@ -35,7 +34,6 @@ namespace NodaTime.Test
             int bclDays = (int) (bclTicks / NodaConstants.TicksPerStandardDay);
             LocalDate date = new LocalDate(bclDays, CalendarSystem.Iso);
             Assert.AreEqual(2011, date.Year);
-            Assert.AreEqual(11, date.YearOfCentury);
             Assert.AreEqual(2011, date.YearOfEra);
             Assert.AreEqual(5, date.Day);
             Assert.AreEqual((int)IsoDayOfWeek.Saturday, date.DayOfWeek);

@@ -191,18 +191,11 @@ namespace NodaTime
         /// <summary>Gets the week within the WeekYear. See <see cref="WeekYear"/> for more details.</summary>
         public int WeekOfWeekYear { get { return Calendar.GetWeekOfWeekYear(yearMonthDay); } }
 
-        /// <summary>Gets the year of this offset date and time within the century.</summary>
-        /// <remarks>This always returns a value in the range 0 to 99 inclusive.</remarks>
-        public int YearOfCentury { get { return Calendar.GetYearOfCentury(yearMonthDay); } }
-
         /// <summary>Gets the year of this offset date and time within the era.</summary>
         public int YearOfEra { get { return Calendar.GetYearOfEra(yearMonthDay); } }
 
         /// <summary>Gets the era of this offset date and time.</summary>
         public Era Era { get { return Calendar.GetEra(yearMonthDay); } }
-
-        /// <summary>Gets the century within the era of this zoned date and time.</summary>
-        public int CenturyOfEra { get { return Calendar.GetCenturyOfEra(yearMonthDay); } }
 
         /// <summary>Gets the day of this offset date and time within the year.</summary>
         public int DayOfYear { get { return Calendar.GetDayOfYear(yearMonthDay); } }

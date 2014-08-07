@@ -28,9 +28,9 @@ namespace NodaTime.Calendars
 
         private void ValidateEra([NotNull] Era era)
         {
-            Preconditions.CheckNotNull(era, "era");
             if (era != this.era)
             {
+                Preconditions.CheckNotNull(era, "era");
                 Preconditions.CheckArgument(era == this.era, "era", "Only supported era is {0}; requested era was {1}",
                     this.era.Name, era.Name);
             }
@@ -58,20 +58,6 @@ namespace NodaTime.Calendars
         {
             ValidateEra(era);
             return endOfEra.Year;
-        }
-
-        internal override int GetCenturyOfEra(YearMonthDay yearMonthDay)
-        {
-            int yearOfEra = yearMonthDay.Year;
-            int zeroBasedRemainder = yearOfEra % 100;
-            int zeroBasedResult = yearOfEra / 100;
-            return zeroBasedRemainder == 0 ? zeroBasedResult : zeroBasedResult + 1;
-        }
-
-        internal override int GetYearOfCentury(YearMonthDay yearMonthDay)
-        {
-            int zeroBased = yearMonthDay.Year % 100;
-            return zeroBased == 0 ? 100 : zeroBased;
         }
 
         internal override YearMonthDay GetStartOfEra(Era era)

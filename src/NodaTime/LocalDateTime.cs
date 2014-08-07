@@ -224,17 +224,10 @@ namespace NodaTime
             get { return date.Calendar; }
         }
 
-        /// <summary>Gets the century within the era of this local date and time.</summary>
-        public int CenturyOfEra { get { return date.CenturyOfEra; } }
-
         /// <summary>Gets the year of this local date and time.</summary>
         /// <remarks>This returns the "absolute year", so, for the ISO calendar,
         /// a value of 0 means 1 BC, for example.</remarks>
         public int Year { get { return date.Year; } }
-
-        /// <summary>Gets the year of this local date and time within its century.</summary>
-        /// <remarks>This always returns a value in the range 0 to 99 inclusive.</remarks>
-        public int YearOfCentury { get { return date.YearOfCentury; } }
 
         /// <summary>Gets the year of this local date and time within its era.</summary>
         public int YearOfEra { get { return date.YearOfEra; } }

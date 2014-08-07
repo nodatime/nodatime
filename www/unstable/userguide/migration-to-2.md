@@ -45,6 +45,13 @@ the addition operator instead.
 `CalendarSystem.GetMaxMonth` has been renamed to `GetMonthsInYear`, to match the equivalent
 method in `System.Globalization.Calendar`.
 
+`CenturyOfEra` and `YearOfCentury` have both been removed. We considered it unlikely that they
+were being used, and the subtle differences between the Gregorian and ISO calendar systems were
+almost certainly not helpful. Users who wish to compute the century and year of century in a
+particular form can do so reasonably easily in their own code. With this change in place, the
+distinction between the ISO calendar system and Gregorian-4 is only maintained for simplicity,
+compatibility and consistency; the two calendars behave identically.
+
 Period
 ====
 
