@@ -41,6 +41,11 @@ namespace NodaTime.Calendars
             return (year & 3) == 3;
         }
 
+        internal override int GetDaysInYear(int year)
+        {
+            return IsLeapYear(year) ? 366 : 365;
+        }
+
         internal override int GetDaysInMonth(int year, int month)
         {
             return month != 13 ? DaysInMonth : IsLeapYear(year) ? 6 : 5;

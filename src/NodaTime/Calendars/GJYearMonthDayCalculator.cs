@@ -66,6 +66,11 @@ namespace NodaTime.Calendars
             return new YearMonthDay(year, (startOfMonth / 29) + 1, dayOfMonth);
         }
 
+        internal override int GetDaysInYear(int year)
+        {
+            return IsLeapYear(year) ? 366 : 365;
+        }
+
         internal sealed override int GetDaysInMonth(int year, int month)
         {
             // We know that only February differs, so avoid the virtual call for other months.

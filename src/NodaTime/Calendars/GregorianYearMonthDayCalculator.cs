@@ -2,12 +2,11 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-using System;
 using NodaTime.Utility;
 
 namespace NodaTime.Calendars
 {
-    internal class GregorianYearMonthDayCalculator : GJYearMonthDayCalculator
+    internal sealed class GregorianYearMonthDayCalculator : GJYearMonthDayCalculator
     {
         internal const int MinGregorianYear = -9998;
         internal const int MaxGregorianYear = 9999;
@@ -186,6 +185,12 @@ namespace NodaTime.Calendars
             return year * 365 + (leapYears - DaysFrom0000To1970);
         }
 
+        // Override GetDaysInYear so we can avoid a pointless virtual method call.
+        internal override int GetDaysInYear(int year)
+        {
+            return IsGregorianLeapYear(year) ? 366 : 365;
+        }
+
         internal override bool IsLeapYear(int year)
         {
             return IsGregorianLeapYear(year);
@@ -193,7 +198,7 @@ namespace NodaTime.Calendars
 
         private static bool IsGregorianLeapYear(int year)
         {
-            return ((year & 3) == 0) && ((year % 100) != 0 || (year % 400) == 0); ;
+            return ((year & 3) == 0) && ((year % 100) != 0 || (year % 400) == 0);
         }
     }
 }
