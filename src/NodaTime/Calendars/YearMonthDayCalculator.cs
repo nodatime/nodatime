@@ -8,6 +8,10 @@ using NodaTime.Utility;
 
 namespace NodaTime.Calendars
 {
+    /// <summary>
+    /// The core of date calculations in Noda Time. This class *only* cares about absolute years, and only
+    /// dates - it has no time aspects at all, nor era-related aspects.
+    /// </summary>
     internal abstract class YearMonthDayCalculator : IComparer<YearMonthDay>
     {
         /// <summary>
@@ -42,18 +46,7 @@ namespace NodaTime.Calendars
             this.daysAtStartOfYear1 = daysAtStartOfYear1;
         }
 
-        /// <summary>
-        /// Compares two YearMonthDay values according to the rules of this calendar.
-        /// The default implementation simply uses a naive comparison of the values,
-        /// as this is suitable for most calendars.
-        /// </summary>
-        /// <remarks>Although the parameters are trusted (as in, they'll be valid in this calendar),
-        /// the method being public isn't a problem - this type is never exposed.</remarks>
-        public virtual int Compare([Trusted] YearMonthDay lhs, [Trusted] YearMonthDay rhs)
-        {
-            return lhs.CompareTo(rhs);
-        }
-
+        #region Abstract methods
         /// <summary>
         /// Returns the number of days from the start of the given year to the start of the given month.
         /// </summary>
@@ -74,16 +67,10 @@ namespace NodaTime.Calendars
         internal abstract YearMonthDay GetYearMonthDay([Trusted] int year, [Trusted] int dayOfYear);
 
         /// <summary>
-        /// Works out the year/month/day of a given days-since-epoch by first computing the year and day of year,
-        /// then getting the month and day from those two. This is how almost all calendars are naturally implemented
-        /// anyway.
+        /// Returns the number of days in the given year, which will always be within 1 year of
+        /// the valid range for the calculator.
         /// </summary>
-        internal YearMonthDay GetYearMonthDay([Trusted] int daysSinceEpoch)
-        {            
-            int zeroBasedDay;
-            int year = GetYear(daysSinceEpoch, out zeroBasedDay);
-            return GetYearMonthDay(year, zeroBasedDay + 1);
-        }
+        internal abstract int GetDaysInYear([Trusted] int year);
 
         /// <summary>
         /// Subtract subtrahendDate from minuendDate, in terms of months.
@@ -95,16 +82,9 @@ namespace NodaTime.Calendars
         /// other fields as required.
         /// </summary>
         internal abstract YearMonthDay SetYear(YearMonthDay yearMonthDay, [Trusted] int year);
+        #endregion
 
-        /// <summary>
-        /// Converts from a YearMonthDay representation to "day of year".
-        /// This assumes the parameter have been validated previously.
-        /// </summary>
-        internal int GetDayOfYear([Trusted] YearMonthDay yearMonthDay)
-        {
-            return GetDaysFromStartOfYearToStartOfMonth(yearMonthDay.Year, yearMonthDay.Month) + yearMonthDay.Day;
-        }
-
+        #region Virtual methods (subclasses should check to see whether they could override for performance, or should override for correctness)
         /// <summary>
         /// Computes the days since the Unix epoch at the start of the given year/month/day.
         /// This is the opposite of <see cref="GetYearMonthDay(int)"/>.
@@ -116,6 +96,71 @@ namespace NodaTime.Calendars
             int startOfYear = GetStartOfYearInDays(year);
             int startOfMonth = startOfYear + GetDaysFromStartOfYearToStartOfMonth(year, yearMonthDay.Month);
             return startOfMonth + yearMonthDay.Day - 1;
+        }
+
+        /// <summary>
+        /// Fetches the start of the year (in days since 1970-01-01 ISO) from the cache, or calculates
+        /// and caches it.
+        /// </summary>
+        internal virtual int GetStartOfYearInDays([Trusted] int year)
+        {
+            // TODO(2.0): Check that it's valid to cache values outside the advertised
+            // bounds of the calendar (by one year). We used not to cache them, but just
+            // the check was relatively expensive.
+            int cacheIndex = YearStartCacheEntry.GetCacheIndex(year);
+            YearStartCacheEntry cacheEntry = yearCache[cacheIndex];
+            if (!cacheEntry.IsValidForYear(year))
+            {
+                int days = CalculateStartOfYearDays(year);
+                cacheEntry = new YearStartCacheEntry(year, days);
+                yearCache[cacheIndex] = cacheEntry;
+            }
+            return cacheEntry.StartOfYearDays;
+        }
+
+        /// <summary>
+        /// Compares two YearMonthDay values according to the rules of this calendar.
+        /// The default implementation simply uses a naive comparison of the values,
+        /// as this is suitable for most calendars (where the first month of the year is month 1).
+        /// </summary>
+        /// <remarks>Although the parameters are trusted (as in, they'll be valid in this calendar),
+        /// the method being public isn't a problem - this type is never exposed.</remarks>
+        public virtual int Compare([Trusted] YearMonthDay lhs, [Trusted] YearMonthDay rhs)
+        {
+            return lhs.CompareTo(rhs);
+        }
+
+        // Catch-all year/month/day validation. Subclasses can optimize further - currently
+        // this is only done for Gregorian/Julian calendars, which are the most performance-critical.
+        internal virtual void ValidateYearMonthDay(int year, int month, int day)
+        {
+            Preconditions.CheckArgumentRange("year", year, minYear, maxYear);
+            Preconditions.CheckArgumentRange("month", month, 1, GetMonthsInYear(year));
+            Preconditions.CheckArgumentRange("day", day, 1, GetDaysInMonth(year, month));
+        }
+        #endregion
+
+        #region Concrete methods (convenience methods delegating to virtual/abstract ones primarily)
+
+        /// <summary>
+        /// Converts from a YearMonthDay representation to "day of year".
+        /// This assumes the parameter have been validated previously.
+        /// </summary>
+        internal int GetDayOfYear([Trusted] YearMonthDay yearMonthDay)
+        {
+            return GetDaysFromStartOfYearToStartOfMonth(yearMonthDay.Year, yearMonthDay.Month) + yearMonthDay.Day;
+        }
+
+        /// <summary>
+        /// Works out the year/month/day of a given days-since-epoch by first computing the year and day of year,
+        /// then getting the month and day from those two. This is how almost all calendars are naturally implemented
+        /// anyway.
+        /// </summary>
+        internal YearMonthDay GetYearMonthDay([Trusted] int daysSinceEpoch)
+        {
+            int zeroBasedDay;
+            int year = GetYear(daysSinceEpoch, out zeroBasedDay);
+            return GetYearMonthDay(year, zeroBasedDay + 1);
         }
 
         /// <summary>
@@ -165,43 +210,6 @@ namespace NodaTime.Calendars
             zeroBasedDayOfYear = daysFromCandidateStartToTarget;
             return candidate;
         }
-
-        /// <summary>
-        /// Returns the number of days in the given year, which will always be within 1 year of
-        /// the valid range for the calculator.
-        /// </summary>
-        internal virtual int GetDaysInYear([Trusted] int year)
-        {
-            return IsLeapYear(year) ? 366 : 365;
-        }
-
-        /// <summary>
-        /// Fetches the start of the year (in days since 1970-01-01 ISO) from the cache, or calculates
-        /// and caches it.
-        /// </summary>
-        internal virtual int GetStartOfYearInDays([Trusted] int year)
-        {
-            // TODO(2.0): Check that it's valid to cache values outside the advertised
-            // bounds of the calendar (by one year). We used not to cache them, but just
-            // the check was relatively expensive.
-            int cacheIndex = YearStartCacheEntry.GetCacheIndex(year);
-            YearStartCacheEntry cacheEntry = yearCache[cacheIndex];
-            if (!cacheEntry.IsValidForYear(year))
-            {
-                int days = CalculateStartOfYearDays(year);
-                cacheEntry = new YearStartCacheEntry(year, days);
-                yearCache[cacheIndex] = cacheEntry;
-            }
-            return cacheEntry.StartOfYearDays;
-        }
-
-        // Catch-all year/month/day validation. Subclasses can optimize further - currently
-        // this is only done for Gregorian/Julian calendars, which are the most performance-critical.
-        internal virtual void ValidateYearMonthDay(int year, int month, int day)
-        {
-            Preconditions.CheckArgumentRange("year", year, minYear, maxYear);
-            Preconditions.CheckArgumentRange("month", month, 1, GetMonthsInYear(year));
-            Preconditions.CheckArgumentRange("day", day, 1, GetDaysInMonth(year, month));
-        }
+        #endregion
     }
 }
