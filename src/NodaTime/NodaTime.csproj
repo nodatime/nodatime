@@ -168,6 +168,7 @@
     <Compile Include="Calendars\RegularYearMonthDayCalculator.cs" />
     <Compile Include="Calendars\SingleEraCalculator.cs" />
     <Compile Include="Calendars\TickArithmetic.cs" />
+    <Compile Include="Calendars\UmAlQuraYearMonthDayCalculator.cs" />
     <Compile Include="Calendars\WeekYearCalculator.cs" />
     <Compile Include="Calendars\YearMonthDayCalculator.cs" />
     <Compile Include="Calendars\YearStartCacheEntry.cs" />
