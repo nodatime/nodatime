@@ -32,6 +32,7 @@ namespace NodaTime.Calendars
 
         static UmAlQuraYearMonthDayCalculator()
         {
+            // Try to initialize. If anything fails, YearLengths will still be null, so IsSupported will return false.
             Calendar bclCalendar;
 #if PCL
             // Can't refer to the BCL calendar by name, but it *might* be available anyway. Let's try to instantiate
@@ -41,9 +42,6 @@ namespace NodaTime.Calendars
                 var type = typeof(Calendar).Assembly.GetType("System.Globalization.UmAlQuraCalendar");
                 if (type == null)
                 {
-                    YearLengths = null;
-                    MonthLengths = null;
-                    YearStartDays = null;
                     return;
                 }
                 bclCalendar = (Calendar) Activator.CreateInstance(type);
@@ -51,9 +49,6 @@ namespace NodaTime.Calendars
             catch
             {
                 // Don't really care what went wrong here. We'll assume it's not supported.
-                YearLengths = null;
-                MonthLengths = null;
-                YearStartDays = null;
                 return;
             }
 #else
