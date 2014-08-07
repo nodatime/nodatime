@@ -34,7 +34,5 @@ namespace NodaTime.Calendars
         // potentially return a DateInterval instead, although that requires LocalDate...
         internal abstract YearMonthDay GetStartOfEra([NotNull] Era era);     
         internal abstract YearMonthDay GetEndOfEra([NotNull] Era era);
-        internal abstract int GetCenturyOfEra(YearMonthDay yearMonthDay);
-        internal abstract int GetYearOfCentury(YearMonthDay yearMonthDay);
     }
 }

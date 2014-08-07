@@ -30,9 +30,11 @@ API access: [`CalendarSystem.Iso`](noda-property://NodaTime.CalendarSystem.Iso)
 This is the default calendar system when constructing values without explicitly specifying a calendar.
 It is designed to correspond to the calendar described in [ISO-8601](http://en.wikipedia.org/wiki/ISO_8601),
 and is equivalent to the Gregorian calendar in all respects other than the century and year-of-century values.
-(In the ISO calendar, 1985 is year number 85 in century 19, and 1900 is year number 0 in century 19. In the
-Gregorian calendar, the same years would be year 85 in century 20 and year 100 in century 19 respectively.)
-This difference is rarely relevant in code.
+
+As of Noda Time 2.0, century and year-of-century properties have been removed as they almost certainly didn't
+behave how everyone would have expected, at which point the ISO calendar system and the Gregorian calendar system
+(with a "minimum number of days in the first week" of 4) are equivalent. The separation between them in Noda Time
+is maintained for simplicity, compatibility and consistency.
 
 The ISO calendar system always has at least 4 days in the first week of the week-year, where a week always
 runs Monday to Sunday. The first week of the week-year is therefore always the one containing the first Thursday

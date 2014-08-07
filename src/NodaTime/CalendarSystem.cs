@@ -65,7 +65,8 @@ namespace NodaTime
         static CalendarSystem()
         {
             var gregorianCalculator = new GregorianYearMonthDayCalculator();
-            IsoCalendarSystem = new CalendarSystem(IsoName, IsoName, gregorianCalculator, 4, new IsoEraCalculator(gregorianCalculator));
+            var gregorianEraCalculator = new GJEraCalculator(gregorianCalculator);
+            IsoCalendarSystem = new CalendarSystem(IsoName, IsoName, gregorianCalculator, 4, gregorianEraCalculator);
             PersianCalendarSystem = new CalendarSystem(PersianName, PersianName, new PersianYearMonthDayCalculator(), Era.AnnoPersico);
             HebrewCalendarSystems = new[]
             {
@@ -78,7 +79,6 @@ namespace NodaTime
             GregorianCalendarSystems = new CalendarSystem[7];
             CopticCalendarSystems = new CalendarSystem[7];
             JulianCalendarSystems = new CalendarSystem[7];
-            var gregorianEraCalculator = new GJEraCalculator(gregorianCalculator);
             var copticCalculator = new CopticYearMonthDayCalculator();
             var copticEraCalculator = new SingleEraCalculator(Era.AnnoMartyrum, copticCalculator);
             var julianCalculator = new JulianYearMonthDayCalculator();
@@ -169,16 +169,11 @@ namespace NodaTime
         /// which is compatible with Gregorian for all modern dates.
         /// </summary>
         /// <remarks>
-        /// <para>
-        /// When ISO does not define a field, but it can be determined (such as AM/PM) it is included.
-        /// </para>
-        /// <para>
-        /// With the exception of century related fields, the ISO calendar is exactly the
-        /// same as the Gregorian calendar system. In the ISO system, centuries and year
-        /// of century are zero based. For all years, the century is determined by
-        /// dropping the last two digits of the year, ignoring sign. The year of century
-        /// is the value of the last two year digits.
-        /// </para>
+        /// As of Noda Time 2.0, this calendar system is equivalent to the Gregorian calendar system
+        /// with a "minimum number of days in the first week" of 4. The only areas in which the calendars differed
+        /// were around centuries, and the members relating to those differences were removed in Noda Time 2.0.
+        /// The distinction between Gregorian-4 and ISO has been maintained for the sake of simplicity, compatibility
+        /// and consistency.
         /// </remarks>
         public static CalendarSystem Iso { get { return IsoCalendarSystem; } }
 
@@ -717,22 +712,10 @@ namespace NodaTime
             return weekYearCalculator.GetWeekYear(yearMonthDay);
         }
 
-        internal int GetYearOfCentury([Trusted] YearMonthDay yearMonthDay)
-        {
-            DebugValidateYearMonthDay(yearMonthDay);
-            return eraCalculator.GetYearOfCentury(yearMonthDay);
-        }
-
         internal int GetYearOfEra([Trusted] YearMonthDay yearMonthDay)
         {
             DebugValidateYearMonthDay(yearMonthDay);
             return eraCalculator.GetYearOfEra(yearMonthDay);
-        }
-
-        internal int GetCenturyOfEra([Trusted] YearMonthDay yearMonthDay)
-        {
-            DebugValidateYearMonthDay(yearMonthDay);
-            return eraCalculator.GetCenturyOfEra(yearMonthDay);
         }
 
         internal Era GetEra([Trusted] YearMonthDay yearMonthDay)

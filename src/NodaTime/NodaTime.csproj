@@ -162,7 +162,6 @@
     <Compile Include="Calendars\IslamicEpoch.cs" />
     <Compile Include="Calendars\IslamicLeapYearPattern.cs" />
     <Compile Include="Calendars\IslamicYearMonthDayCalculator.cs" />
-    <Compile Include="Calendars\IsoEraCalculator.cs" />
     <Compile Include="Calendars\JulianYearMonthDayCalculator.cs" />
     <Compile Include="Calendars\NamespaceDoc.cs" />
     <Compile Include="Calendars\PersianYearMonthDayCalculator.cs" />

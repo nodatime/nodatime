@@ -147,17 +147,10 @@ namespace NodaTime
         /// <summary>Gets the era for this zoned date and time.</summary>
         public Era Era { get { return offsetDateTime.Era; } }
 
-        /// <summary>Gets the century within the era of this zoned date and time.</summary>
-        public int CenturyOfEra { get { return offsetDateTime.CenturyOfEra; } }
-
         /// <summary>Gets the year of this zoned date and time.</summary>
         /// <remarks>This returns the "absolute year", so, for the ISO calendar,
         /// a value of 0 means 1 BC, for example.</remarks>
         public int Year { get { return offsetDateTime.Year; } }
-
-        /// <summary>Gets the year of this zoned date and time within its century.</summary>
-        /// <remarks>This always returns a value in the range 0 to 99 inclusive.</remarks>
-        public int YearOfCentury { get { return offsetDateTime.YearOfCentury; } }
 
         /// <summary>Gets the year of this zoned date and time within its era.</summary>
         public int YearOfEra { get { return offsetDateTime.YearOfEra; } }

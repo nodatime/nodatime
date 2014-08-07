@@ -29,6 +29,7 @@ See the [Noda Time 1.x to 2.0 migration guide](migration-to-2.html) for full det
 - The "numeric" standard patterns for `Instant` and `Offset` have been removed.
 - Renamed `IClock.Now` to `IClock.GetCurrentInstant()`.
 - Prohibited unescaped ASCII letters from acting as literals in patterns (except 'T' in date/time patterns)
+- `CenturyOfEra` and `YearOfCentury` removed from `LocalDate` and related types.
 
 ## 1.3.0, released 2014-06-27 with tzdb 2014e
 
