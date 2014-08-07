@@ -137,6 +137,7 @@
     <Compile Include="Calendars\HebrewCalendarSystemTest.cs" />
     <Compile Include="Calendars\PersianCalendarSystemTest.cs" />
     <Compile Include="Calendars\TickArithmeticTest.cs" />
+    <Compile Include="Calendars\UmAlQuraYearMonthDayCalculatorTest.cs" />
     <Compile Include="Calendars\YearMonthDayCalculatorTest.cs" />
     <Compile Include="DateIntervalTest.cs" />
     <Compile Include="IntervalTest.cs" />
