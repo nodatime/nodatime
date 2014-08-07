@@ -1,9 +1,11 @@
 ﻿// Copyright 2014 The Noda Time Authors. All rights reserved.
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
-#if !PCL
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using NodaTime.Calendars;
 using NUnit.Framework;
 
@@ -12,11 +14,43 @@ namespace NodaTime.Test.Calendars
     [TestFixture]
     public class UmAlQuraYearMonthDayCalculatorTest
     {
-        private static readonly Calendar BclCalendar = new UmAlQuraCalendar();
-        private static readonly UmAlQuraYearMonthDayCalculator Calculator = new UmAlQuraYearMonthDayCalculator();
+        private static readonly Calendar BclCalendar = GetBclCalendar();
+
+        private static readonly UmAlQuraYearMonthDayCalculator Calculator = UmAlQuraYearMonthDayCalculator.IsSupported ? new UmAlQuraYearMonthDayCalculator() : null;
+
+        // Horrible way to conditionalize tests at execution time...
+        private static readonly IEnumerable<string> Supported =
+            UmAlQuraYearMonthDayCalculator.IsSupported ? new[] { "(Supported)" } : new string[0];
+
+        private static Calendar GetBclCalendar()
+        {
+            // Always get it with reflection in the test, just for simplicity.
+            try
+            {
+                var type = typeof(Calendar).Assembly.GetType("System.Globalization.UmAlQuraCalendar");
+                if (type == null)
+                {
+                    return null;
+                }
+                return (Calendar) Activator.CreateInstance(type);
+            }
+            catch
+            {
+                return null;
+            }
+        }
 
         [Test]
-        public void GetDaysInMonth()
+        public void CannotInstantiateOnUnsupportedPlatform()
+        {
+            if (!UmAlQuraYearMonthDayCalculator.IsSupported)
+            {
+                Assert.Throws<InvalidOperationException>(() => new UmAlQuraYearMonthDayCalculator());
+            }
+        }
+
+        [Test, TestCaseSource("Supported")]
+        public void GetDaysInMonth(string ignored)
         {
             for (int year = Calculator.MinYear; year <= Calculator.MaxYear; year++)
             {
@@ -27,8 +61,8 @@ namespace NodaTime.Test.Calendars
             }
         }
 
-        [Test]
-        public void GetDaysInYear()
+        [Test, TestCaseSource("Supported")]
+        public void GetDaysInYear(string ignored)
         {
             for (int year = Calculator.MinYear; year <= Calculator.MaxYear; year++)
             {
@@ -36,8 +70,8 @@ namespace NodaTime.Test.Calendars
             }
         }
 
-        [Test]
-        public void IsLeapYear()
+        [Test, TestCaseSource("Supported")]
+        public void IsLeapYear(string ignored)
         {
             for (int year = Calculator.MinYear; year <= Calculator.MaxYear; year++)
             {
@@ -45,8 +79,8 @@ namespace NodaTime.Test.Calendars
             }
         }
 
-        [Test]
-        public void GetStartOfYearInDays()
+        [Test, TestCaseSource("Supported")]
+        public void GetStartOfYearInDays(string ignored)
         {
             // This exercises CalculateStartOfYearInDays too.
             for (int year = Calculator.MinYear; year <= Calculator.MaxYear; year++)
@@ -57,8 +91,8 @@ namespace NodaTime.Test.Calendars
             }
         }
 
-        [Test]
-        public void GetYearMonthDay_DaysSinceEpoch()
+        [Test, TestCaseSource("Supported")]
+        public void GetYearMonthDay_DaysSinceEpoch(string ignored)
         {
             int daysSinceEpoch = Calculator.GetStartOfYearInDays(Calculator.MinYear);
             for (int year = Calculator.MinYear; year <= Calculator.MaxYear; year++)
@@ -76,8 +110,8 @@ namespace NodaTime.Test.Calendars
             }
         }
 
-        [Test]
-        public void GetYearMonthDay_YearAndDayOfYear()
+        [Test, TestCaseSource("Supported")]
+        public void GetYearMonthDay_YearAndDayOfYear(string ignored)
         {
             for (int year = Calculator.MinYear; year <= Calculator.MaxYear; year++)
             {
@@ -95,8 +129,8 @@ namespace NodaTime.Test.Calendars
             }
         }
 
-        [Test]
-        public void GetDaysFromStartOfYearToStartOfMonth()
+        [Test, TestCaseSource("Supported")]
+        public void GetDaysFromStartOfYearToStartOfMonth(string ignored)
         {
             for (int year = Calculator.MinYear; year <= Calculator.MaxYear; year++)
             {
@@ -111,4 +145,3 @@ namespace NodaTime.Test.Calendars
         }
     }
 }
-#endif
