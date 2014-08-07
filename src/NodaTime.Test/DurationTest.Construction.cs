@@ -19,13 +19,13 @@ namespace NodaTime.Test
         [Test]
         public void Factory_StandardDays()
         {
-            Duration test = Duration.FromStandardDays(1);
-            Assert.AreEqual(1 * NodaConstants.TicksPerStandardDay, test.Ticks);
+            Duration test = Duration.FromDays(1);
+            Assert.AreEqual(1 * NodaConstants.TicksPerDay, test.Ticks);
 
-            test = Duration.FromStandardDays(2);
-            Assert.AreEqual(2 * NodaConstants.TicksPerStandardDay, test.Ticks);
+            test = Duration.FromDays(2);
+            Assert.AreEqual(2 * NodaConstants.TicksPerDay, test.Ticks);
 
-            test = Duration.FromStandardDays(0);
+            test = Duration.FromDays(0);
             Assert.AreEqual(Duration.Zero, test);
         }
 

@@ -57,7 +57,7 @@ namespace NodaTime.TimeZones
             this.fromYear = fromYear;
             this.toYear = toYear;
             this.minLocalInstant = fromYear == int.MinValue ? LocalInstant.BeforeMinValue : new LocalDateTime(fromYear, 1, 1, 0, 0).ToLocalInstant();
-            this.maxLocalInstant = toYear == int.MaxValue ? LocalInstant.AfterMaxValue : new LocalDateTime(toYear, 12, 31, 0, 0).PlusNanoseconds(NodaConstants.NanosecondsPerStandardDay - 1).ToLocalInstant();
+            this.maxLocalInstant = toYear == int.MaxValue ? LocalInstant.AfterMaxValue : new LocalDateTime(toYear, 12, 31, 0, 0).PlusNanoseconds(NodaConstants.NanosecondsPerDay - 1).ToLocalInstant();
         }
 
         public string Name { get { return name; } }

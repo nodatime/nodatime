@@ -75,8 +75,8 @@ namespace NodaTime.Test.Calendars
         {
             LocalInstant localAchievement = new LocalDateTime(2009, 11, 27, 18, 38, 25, 345, 8765).ToLocalInstant();
             long bclTicks = (TimeOfGreatAchievement - UnixEpochDateTime).Ticks;
-            int bclDays = (int) (bclTicks / NodaConstants.TicksPerStandardDay);
-            long bclTickOfDay = bclTicks % NodaConstants.TicksPerStandardDay;
+            int bclDays = (int) (bclTicks / NodaConstants.TicksPerDay);
+            long bclTickOfDay = bclTicks % NodaConstants.TicksPerDay;
             Assert.AreEqual(bclDays, localAchievement.DaysSinceEpoch);
             Assert.AreEqual(bclTickOfDay, localAchievement.NanosecondOfDay / NodaConstants.NanosecondsPerTick);
         }

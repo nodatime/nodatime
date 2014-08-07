@@ -39,12 +39,12 @@ namespace NodaTime
         /// <summary>
         /// A constant for the number of nanoseconds in a standard 24-hour day. The value of this constant is 86,400,000,000,000.
         /// </summary>
-        public const long NanosecondsPerStandardDay = NanosecondsPerHour * HoursPerStandardDay;
+        public const long NanosecondsPerDay = NanosecondsPerHour * HoursPerDay;
 
         /// <summary>
         /// A constant for the number of nanoseconds in a standard week of seven 24-hour days. The value of this constant is 604,800,000,000,000.
         /// </summary>
-        public const long NanosecondsPerStandardWeek = NanosecondsPerStandardDay * DaysPerStandardWeek;
+        public const long NanosecondsPerWeek = NanosecondsPerDay * DaysPerWeek;
 
         /// <summary>
         /// A constant for the number of ticks in a millisecond. The value of this constant is 10,000.
@@ -67,13 +67,13 @@ namespace NodaTime
         /// A constant for the number of ticks in a standard 24-hour day.
         /// The value of this constant is 864,000,000,000.
         /// </summary>
-        public const long TicksPerStandardDay = TicksPerHour * HoursPerStandardDay;
+        public const long TicksPerDay = TicksPerHour * HoursPerDay;
 
         /// <summary>
         /// A constant for the number of ticks in a standard week of seven 24-hour days.
         /// The value of this constant is 6,048,000,000,000.
         /// </summary>
-        public const long TicksPerStandardWeek = TicksPerStandardDay * DaysPerStandardWeek;
+        public const long TicksPerWeek = TicksPerDay * DaysPerWeek;
 
         /// <summary>
         /// A constant for the number of milliseconds per second.
@@ -94,12 +94,12 @@ namespace NodaTime
         /// A constant for the number of milliseconds per standard 24-hour day.
         /// The value of this constant is 86,400,000.
         /// </summary>
-        public const int MillisecondsPerStandardDay = MillisecondsPerHour * HoursPerStandardDay;
+        public const int MillisecondsPerDay = MillisecondsPerHour * HoursPerDay;
         /// <summary>
         /// A constant for the number of milliseconds per standard week of seven 24-hour days.
         /// The value of this constant is 604,800,000.
         /// </summary>
-        public const int MillisecondsPerStandardWeek = MillisecondsPerStandardDay * DaysPerStandardWeek;
+        public const int MillisecondsPerWeek = MillisecondsPerDay * DaysPerWeek;
 
         /// <summary>
         /// A constant for the number of seconds per minute.
@@ -115,12 +115,12 @@ namespace NodaTime
         /// A constant for the number of seconds per standard 24-hour day.
         /// The value of this constant is 86,400.
         /// </summary>
-        public const int SecondsPerStandardDay = SecondsPerHour * HoursPerStandardDay;
+        public const int SecondsPerDay = SecondsPerHour * HoursPerDay;
         /// <summary>
         /// A constant for the number of seconds per standard week of seven 24-hour days.
         /// The value of this constant is 604,800.
         /// </summary>
-        public const int SecondsPerWeek = SecondsPerStandardDay * DaysPerStandardWeek;
+        public const int SecondsPerWeek = SecondsPerDay * DaysPerWeek;
 
         /// <summary>
         /// A constant for the number of minutes per hour.
@@ -131,30 +131,30 @@ namespace NodaTime
         /// A constant for the number of minutes per standard 24-hour day.
         /// The value of this constant is 1,440.
         /// </summary>
-        public const int MinutesPerStandardDay = MinutesPerHour * HoursPerStandardDay;
+        public const int MinutesPerDay = MinutesPerHour * HoursPerDay;
         /// <summary>
         /// A constant for the number of minutes per standard week of seven 24-hour days.
         /// The value of this constant is 10,080.
         /// </summary>
-        public const int MinutesPerStandardWeek = MinutesPerStandardDay * DaysPerStandardWeek;
+        public const int MinutesPerWeek = MinutesPerDay * DaysPerWeek;
 
         /// <summary>
         /// A constant for the number of hours in a standard day. Note that the number of hours
         /// in a day can vary due to daylight saving effects.
         /// The value of this constant is 24.
         /// </summary>
-        public const int HoursPerStandardDay = 24;
+        public const int HoursPerDay = 24;
         /// <summary>
         /// A constant for the number of hours in a standard week of seven 24-hour days.
         /// The value of this constant is 168.
         /// </summary>
-        public const int HoursPerStandardWeek = HoursPerStandardDay * DaysPerStandardWeek;
+        public const int HoursPerWeek = HoursPerDay * DaysPerWeek;
 
         /// <summary>
         /// Number of days in a standard Gregorian week.
         /// The value of this constant is 7.
         /// </summary>
-        public const int DaysPerStandardWeek = 7;
+        public const int DaysPerWeek = 7;
 
         /// <summary>
         /// The instant at the Unix epoch of midnight 1st January 1970 UTC.

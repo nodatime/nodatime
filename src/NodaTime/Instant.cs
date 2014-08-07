@@ -43,12 +43,12 @@ namespace NodaTime
         internal const int MinDays = -4371222;
         internal const int MaxDays = 2932896;
 
-        private const long MinTicks = MinDays * NodaConstants.TicksPerStandardDay;
-        private const long MaxTicks = (MaxDays + 1) * NodaConstants.TicksPerStandardDay - 1;
-        private const long MinMilliseconds = MinDays * (long) NodaConstants.MillisecondsPerStandardDay;
-        private const long MaxMilliseconds = (MaxDays + 1) * (long) NodaConstants.MillisecondsPerStandardDay - 1;
-        private const long MinSeconds = MinDays * (long) NodaConstants.SecondsPerStandardDay;
-        private const long MaxSeconds = (MaxDays + 1) * (long) NodaConstants.SecondsPerStandardDay - 1;
+        private const long MinTicks = MinDays * NodaConstants.TicksPerDay;
+        private const long MaxTicks = (MaxDays + 1) * NodaConstants.TicksPerDay - 1;
+        private const long MinMilliseconds = MinDays * (long) NodaConstants.MillisecondsPerDay;
+        private const long MaxMilliseconds = (MaxDays + 1) * (long) NodaConstants.MillisecondsPerDay - 1;
+        private const long MinSeconds = MinDays * (long) NodaConstants.SecondsPerDay;
+        private const long MaxSeconds = (MaxDays + 1) * (long) NodaConstants.SecondsPerDay - 1;
 
         /// <summary>
         /// Represents the smallest possible <see cref="Instant"/>.
@@ -59,7 +59,7 @@ namespace NodaTime
         /// Represents the largest possible <see cref="Instant"/>.
         /// </summary>
         /// <remarks>This value is equivalent to 9999-12-31T23:59:59.999999999Z</remarks>
-        public static readonly Instant MaxValue = new Instant(MaxDays, NodaConstants.NanosecondsPerStandardDay - 1);
+        public static readonly Instant MaxValue = new Instant(MaxDays, NodaConstants.NanosecondsPerDay - 1);
 
         /// <summary>
         /// Instant which is invalid *except* for comparison purposes; it is earlier than any valid value.
@@ -99,7 +99,7 @@ namespace NodaTime
         internal Instant([Trusted] int days, [Trusted] long nanoOfDay)
         {
             Preconditions.DebugCheckArgumentRange("days", days, MinDays, MaxDays);
-            Preconditions.DebugCheckArgumentRange("nanoOfDay", nanoOfDay, 0, NodaConstants.NanosecondsPerStandardDay - 1);
+            Preconditions.DebugCheckArgumentRange("nanoOfDay", nanoOfDay, 0, NodaConstants.NanosecondsPerDay - 1);
             duration = new Duration(days, nanoOfDay);
         }
 

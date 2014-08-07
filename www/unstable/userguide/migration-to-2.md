@@ -29,7 +29,7 @@ removing some documented edge cases where the legacy resource format didn't incl
 information as the more recent "nzd" format. If you were previously using the resource format,
 just move to the "nzd" format, using the static factory members of `TzdbDateTimeZoneSource`.
 
-Removed (or now private) members
+Removed, renamed or now private members
 ====
 
 The `Instant(long)` constructor is now private; use `Instant.FromTicksSinceUnixEpoch` instead.
@@ -51,6 +51,15 @@ almost certainly not helpful. Users who wish to compute the century and year of 
 particular form can do so reasonably easily in their own code. With this change in place, the
 distinction between the ISO calendar system and Gregorian-4 is only maintained for simplicity,
 compatibility and consistency; the two calendars behave identically.
+
+`Duration.FromStandardWeeks` has been removed on the grounds that it was quite odd; it's unusual
+to want a duration of a standard week - you can always just multiply by 7 and call `Duration.FromDays`
+instead.
+
+The word `Standard` has been removed from the members of `NodaConstants` and also from `Duration.FromStandardDays`
+(so that's now `Duration.FromDays`). If it was annoying for the Noda Time developers, it was probably annoying
+for users too... the meaning is exactly the same, and the documentation still talks about "standard" days/weeks,
+but having it in the names was a bit obnoxious, particularly in code which used a lot of constants.
 
 Period
 ====

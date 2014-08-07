@@ -14,31 +14,31 @@ namespace NodaTime.Calendars
         {
             // First work out the number of days, always rounding down (so that ticks * TicksPerDay is always the
             // start of the day).
-            // The shift approach here is equivalent to dividing by NodaConstants.TicksPerStandardDay, but appears to be
+            // The shift approach here is equivalent to dividing by NodaConstants.TicksPerDay, but appears to be
             // very significantly faster under the x64 JIT (and no slower under the x86 JIT).
             // See http://stackoverflow.com/questions/22258070 for the inspiration.
             int days = ticks >= 0 ? unchecked((int) ((ticks >> 14) / 52734375L))
                     // TODO: Optimize with shifting at some point. Note that this must *not* subtract from ticks,
                     // as it could already be long.MinValue.
-                    : (int) ((ticks + 1) / NodaConstants.TicksPerStandardDay) - 1;
+                    : (int) ((ticks + 1) / NodaConstants.TicksPerDay) - 1;
             // We're almost always fine to do this...
-            if (ticks >= long.MinValue + NodaConstants.TicksPerStandardDay)
+            if (ticks >= long.MinValue + NodaConstants.TicksPerDay)
             {
-                tickOfDay = ticks - days * NodaConstants.TicksPerStandardDay;
+                tickOfDay = ticks - days * NodaConstants.TicksPerDay;
             }
             else
             {
                 // Make sure the multiplication doesn't overflow...
-                tickOfDay = ticks - (days + 1) * NodaConstants.TicksPerStandardDay + NodaConstants.TicksPerStandardDay;
+                tickOfDay = ticks - (days + 1) * NodaConstants.TicksPerDay + NodaConstants.TicksPerDay;
             }
             return days;
         }
 
         internal static long DaysAndTickOfDayToTicks(int days, long tickOfDay)
         {
-            return days >= (int) (long.MinValue / NodaConstants.TicksPerStandardDay)
-                ? days * NodaConstants.TicksPerStandardDay + tickOfDay
-                : (days + 1) * NodaConstants.TicksPerStandardDay + tickOfDay - NodaConstants.TicksPerStandardDay;
+            return days >= (int) (long.MinValue / NodaConstants.TicksPerDay)
+                ? days * NodaConstants.TicksPerDay + tickOfDay
+                : (days + 1) * NodaConstants.TicksPerDay + tickOfDay - NodaConstants.TicksPerDay;
 
         }
     }

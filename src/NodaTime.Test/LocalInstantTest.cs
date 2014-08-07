@@ -56,7 +56,7 @@ namespace NodaTime.Test
             Assert.AreEqual(0, simple.DaysSinceEpoch);
             Assert.AreEqual(3000001L, simple.NanosecondOfDay);
 
-            var crossDay = new LocalInstant(1, NodaConstants.NanosecondsPerStandardDay - 1) + Duration.Epsilon;
+            var crossDay = new LocalInstant(1, NodaConstants.NanosecondsPerDay - 1) + Duration.Epsilon;
             Assert.AreEqual(2, crossDay.DaysSinceEpoch);
             Assert.AreEqual(0, crossDay.NanosecondOfDay);
         }
@@ -79,7 +79,7 @@ namespace NodaTime.Test
 
             var crossDay = new LocalInstant(2, 0L) - Duration.Epsilon;
             Assert.AreEqual(1, crossDay.DaysSinceEpoch);
-            Assert.AreEqual(NodaConstants.NanosecondsPerStandardDay - 1, crossDay.NanosecondOfDay);
+            Assert.AreEqual(NodaConstants.NanosecondsPerDay - 1, crossDay.NanosecondOfDay);
         }
 
         [Test]

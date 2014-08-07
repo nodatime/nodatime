@@ -48,15 +48,15 @@ namespace NodaTime.Test
         [Test]
         [TestCase(long.MinValue)]
         [TestCase(long.MinValue + 1)]
-        [TestCase(-NodaConstants.NanosecondsPerStandardDay - 1)]
-        [TestCase(-NodaConstants.NanosecondsPerStandardDay)]
-        [TestCase(-NodaConstants.NanosecondsPerStandardDay + 1)]
+        [TestCase(-NodaConstants.NanosecondsPerDay - 1)]
+        [TestCase(-NodaConstants.NanosecondsPerDay)]
+        [TestCase(-NodaConstants.NanosecondsPerDay + 1)]
         [TestCase(-1)]
         [TestCase(0)]
         [TestCase(1)]
-        [TestCase(NodaConstants.NanosecondsPerStandardDay - 1)]
-        [TestCase(NodaConstants.NanosecondsPerStandardDay)]
-        [TestCase(NodaConstants.NanosecondsPerStandardDay + 1)]
+        [TestCase(NodaConstants.NanosecondsPerDay - 1)]
+        [TestCase(NodaConstants.NanosecondsPerDay)]
+        [TestCase(NodaConstants.NanosecondsPerDay + 1)]
         [TestCase(long.MaxValue - 1)]
         [TestCase(long.MaxValue)]
         public void Int64Conversions(long int64Nanos)
@@ -68,15 +68,15 @@ namespace NodaTime.Test
         [Test]
         [TestCase(long.MinValue)]
         [TestCase(long.MinValue + 1)]
-        [TestCase(-NodaConstants.NanosecondsPerStandardDay - 1)]
-        [TestCase(-NodaConstants.NanosecondsPerStandardDay)]
-        [TestCase(-NodaConstants.NanosecondsPerStandardDay + 1)]
+        [TestCase(-NodaConstants.NanosecondsPerDay - 1)]
+        [TestCase(-NodaConstants.NanosecondsPerDay)]
+        [TestCase(-NodaConstants.NanosecondsPerDay + 1)]
         [TestCase(-1)]
         [TestCase(0)]
         [TestCase(1)]
-        [TestCase(NodaConstants.NanosecondsPerStandardDay - 1)]
-        [TestCase(NodaConstants.NanosecondsPerStandardDay)]
-        [TestCase(NodaConstants.NanosecondsPerStandardDay + 1)]
+        [TestCase(NodaConstants.NanosecondsPerDay - 1)]
+        [TestCase(NodaConstants.NanosecondsPerDay)]
+        [TestCase(NodaConstants.NanosecondsPerDay + 1)]
         [TestCase(long.MaxValue - 1)]
         [TestCase(long.MaxValue)]
         public void DecimalConversions(long int64Nanos)
@@ -94,15 +94,15 @@ namespace NodaTime.Test
         [Test]
         [TestCase(long.MinValue)]
         [TestCase(long.MinValue + 1)]
-        [TestCase(-NodaConstants.TicksPerStandardDay - 1)]
-        [TestCase(-NodaConstants.TicksPerStandardDay)]
-        [TestCase(-NodaConstants.TicksPerStandardDay + 1)]
+        [TestCase(-NodaConstants.TicksPerDay - 1)]
+        [TestCase(-NodaConstants.TicksPerDay)]
+        [TestCase(-NodaConstants.TicksPerDay + 1)]
         [TestCase(-1)]
         [TestCase(0)]
         [TestCase(1)]
-        [TestCase(NodaConstants.TicksPerStandardDay - 1)]
-        [TestCase(NodaConstants.TicksPerStandardDay)]
-        [TestCase(NodaConstants.TicksPerStandardDay + 1)]
+        [TestCase(NodaConstants.TicksPerDay - 1)]
+        [TestCase(NodaConstants.TicksPerDay)]
+        [TestCase(NodaConstants.TicksPerDay + 1)]
         [TestCase(long.MaxValue - 1)]
         [TestCase(long.MaxValue)]
         public void FromTicks(long ticks)
@@ -117,7 +117,7 @@ namespace NodaTime.Test
         [Test]
         public void ConstituentParts_Positive()
         {
-            var nanos = Duration.FromNanoseconds(NodaConstants.NanosecondsPerStandardDay * 5 + 100);
+            var nanos = Duration.FromNanoseconds(NodaConstants.NanosecondsPerDay * 5 + 100);
             Assert.AreEqual(5, nanos.Days);
             Assert.AreEqual(100, nanos.NanosecondOfDay);
         }
@@ -125,7 +125,7 @@ namespace NodaTime.Test
         [Test]
         public void ConstituentParts_Negative()
         {
-            var nanos = Duration.FromNanoseconds(NodaConstants.NanosecondsPerStandardDay * -5 + 100);
+            var nanos = Duration.FromNanoseconds(NodaConstants.NanosecondsPerDay * -5 + 100);
             Assert.AreEqual(-5, nanos.Days);
             Assert.AreEqual(100, nanos.NanosecondOfDay);
         }
@@ -134,19 +134,19 @@ namespace NodaTime.Test
         public void ConstituentParts_Large()
         {
             // And outside the normal range of long...
-            var nanos = Duration.FromNanoseconds(NodaConstants.NanosecondsPerStandardDay * 365000m + 500m);
+            var nanos = Duration.FromNanoseconds(NodaConstants.NanosecondsPerDay * 365000m + 500m);
             Assert.AreEqual(365000, nanos.Days);
             Assert.AreEqual(500, nanos.NanosecondOfDay);
         }
 
         [Test]
         [TestCase(1, 100L, 2, 200L, 3, 300L)]
-        [TestCase(1, NodaConstants.NanosecondsPerStandardDay - 5,
+        [TestCase(1, NodaConstants.NanosecondsPerDay - 5,
                   3, 100L,
                   5, 95L, TestName = "Overflow")]
         [TestCase(1, 10L,
-                  -1, NodaConstants.NanosecondsPerStandardDay - 100L,
-                  0, NodaConstants.NanosecondsPerStandardDay - 90L,
+                  -1, NodaConstants.NanosecondsPerDay - 100L,
+                  0, NodaConstants.NanosecondsPerDay - 90L,
                   TestName = "Underflow")]
         public void Addition_Subtraction(int leftDays, long leftNanos,
                                          int rightDays, long rightNanos,
@@ -199,11 +199,11 @@ namespace NodaTime.Test
 
         [Test]
         [TestCase(1, 5L, 2, 2, 10L, TestName = "Small, positive")]
-        [TestCase(-1, NodaConstants.NanosecondsPerStandardDay - 10, 2, -1, NodaConstants.NanosecondsPerStandardDay - 20, TestName = "Small, negative")]
+        [TestCase(-1, NodaConstants.NanosecondsPerDay - 10, 2, -1, NodaConstants.NanosecondsPerDay - 20, TestName = "Small, negative")]
         [TestCase(365000, 1L, 2, 365000 * 2, 2L, TestName = "More than 2^63 nanos before multiplication")]
         [TestCase(1000, 1L, 365, 365000, 365L, TestName = "More than 2^63 nanos after multiplication")]
-        [TestCase(1000, 1L, -365, -365001, NodaConstants.NanosecondsPerStandardDay - 365L, TestName = "Less than -2^63 nanos after multiplication")]
-        [TestCase(0, 1L, NodaConstants.NanosecondsPerStandardDay, 1, 0L, TestName = "Large scalar")]
+        [TestCase(1000, 1L, -365, -365001, NodaConstants.NanosecondsPerDay - 365L, TestName = "Less than -2^63 nanos after multiplication")]
+        [TestCase(0, 1L, NodaConstants.NanosecondsPerDay, 1, 0L, TestName = "Large scalar")]
         public void Multiplication(int startDays, long startNanoOfDay, long scalar, int expectedDays, long expectedNanoOfDay)
         {
             var start = new Duration(startDays, startNanoOfDay);
@@ -214,8 +214,8 @@ namespace NodaTime.Test
         [Test]
         [TestCase(0, 0L, 0, 0L)]
         [TestCase(1, 0L, -1, 0L)]
-        [TestCase(0, 500L, -1, NodaConstants.NanosecondsPerStandardDay - 500L)]
-        [TestCase(365000, 500L, -365001, NodaConstants.NanosecondsPerStandardDay - 500L)]
+        [TestCase(0, 500L, -1, NodaConstants.NanosecondsPerDay - 500L)]
+        [TestCase(365000, 500L, -365001, NodaConstants.NanosecondsPerDay - 500L)]
         public void UnaryNegation(int startDays, long startNanoOfDay, int expectedDays, long expectedNanoOfDay)
         {
             var start = new Duration(startDays, startNanoOfDay);
@@ -227,19 +227,19 @@ namespace NodaTime.Test
 
         [Test]
         // Test cases around 0
-        [TestCase(-1, NodaConstants.NanosecondsPerStandardDay - 1, NodaConstants.NanosecondsPerStandardDay, 0, 0L)]
-        [TestCase(0, 0L, NodaConstants.NanosecondsPerStandardDay, 0, 0L)]
-        [TestCase(0, 1L, NodaConstants.NanosecondsPerStandardDay, 0, 0L)]
+        [TestCase(-1, NodaConstants.NanosecondsPerDay - 1, NodaConstants.NanosecondsPerDay, 0, 0L)]
+        [TestCase(0, 0L, NodaConstants.NanosecondsPerDay, 0, 0L)]
+        [TestCase(0, 1L, NodaConstants.NanosecondsPerDay, 0, 0L)]
 
         // Test cases around dividing -1 day by "nanos per day"
-        [TestCase(-2, NodaConstants.NanosecondsPerStandardDay - 1, NodaConstants.NanosecondsPerStandardDay, -1, NodaConstants.NanosecondsPerStandardDay - 1)] // -1ns
-        [TestCase(-1, 0, NodaConstants.NanosecondsPerStandardDay, -1, NodaConstants.NanosecondsPerStandardDay - 1)] // -1ns
-        [TestCase(-1, 1L, NodaConstants.NanosecondsPerStandardDay, 0, 0L)]
+        [TestCase(-2, NodaConstants.NanosecondsPerDay - 1, NodaConstants.NanosecondsPerDay, -1, NodaConstants.NanosecondsPerDay - 1)] // -1ns
+        [TestCase(-1, 0, NodaConstants.NanosecondsPerDay, -1, NodaConstants.NanosecondsPerDay - 1)] // -1ns
+        [TestCase(-1, 1L, NodaConstants.NanosecondsPerDay, 0, 0L)]
 
         // Test cases around dividing 1 day by "nanos per day"
-        [TestCase(0, NodaConstants.NanosecondsPerStandardDay - 1, NodaConstants.NanosecondsPerStandardDay, 0, 0L)]
-        [TestCase(1, 0, NodaConstants.NanosecondsPerStandardDay, 0, 1L)]
-        [TestCase(1, NodaConstants.NanosecondsPerStandardDay - 1, NodaConstants.NanosecondsPerStandardDay, 0, 1L)]
+        [TestCase(0, NodaConstants.NanosecondsPerDay - 1, NodaConstants.NanosecondsPerDay, 0, 0L)]
+        [TestCase(1, 0, NodaConstants.NanosecondsPerDay, 0, 1L)]
+        [TestCase(1, NodaConstants.NanosecondsPerDay - 1, NodaConstants.NanosecondsPerDay, 0, 1L)]
 
         [TestCase(10, 20L, 5, 2, 4L)]
 
@@ -262,8 +262,8 @@ namespace NodaTime.Test
 
         [Test]
         [TestCase(5L)]
-        [TestCase(NodaConstants.TicksPerStandardDay * 2)]
-        [TestCase(NodaConstants.TicksPerStandardDay * 365000)]
+        [TestCase(NodaConstants.TicksPerDay * 2)]
+        [TestCase(NodaConstants.TicksPerDay * 365000)]
         public void Ticks_Positive(long ticks)
         {
             Assert.IsTrue(ticks > 0);
@@ -278,8 +278,8 @@ namespace NodaTime.Test
 
         [Test]
         [TestCase(-5L)]
-        [TestCase(-NodaConstants.TicksPerStandardDay * 2)]
-        [TestCase(-NodaConstants.TicksPerStandardDay * 365000)]
+        [TestCase(-NodaConstants.TicksPerDay * 2)]
+        [TestCase(-NodaConstants.TicksPerDay * 365000)]
         public void Ticks_Negative(long ticks)
         {
             Assert.IsTrue(ticks < 0);
@@ -295,10 +295,10 @@ namespace NodaTime.Test
         [Test]
         public void Validation()
         {
-            TestHelper.AssertValid(Duration.FromStandardDays, (1 << 24) - 1);
-            TestHelper.AssertOutOfRange(Duration.FromStandardDays, 1 << 24);
-            TestHelper.AssertValid(Duration.FromStandardDays, -(1 << 24));
-            TestHelper.AssertOutOfRange(Duration.FromStandardDays, -(1 << 24) - 1);
+            TestHelper.AssertValid(Duration.FromDays, (1 << 24) - 1);
+            TestHelper.AssertOutOfRange(Duration.FromDays, 1 << 24);
+            TestHelper.AssertValid(Duration.FromDays, -(1 << 24));
+            TestHelper.AssertOutOfRange(Duration.FromDays, -(1 << 24) - 1);
         }
 
         [Test]

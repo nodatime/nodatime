@@ -30,7 +30,7 @@ namespace NodaTime.Fields
         private TimePeriodField(long unitNanoseconds)
         {
             this.unitNanoseconds = unitNanoseconds;
-            unitsPerDay = NodaConstants.NanosecondsPerStandardDay / unitNanoseconds;
+            unitsPerDay = NodaConstants.NanosecondsPerDay / unitNanoseconds;
         }
 
         internal LocalDateTime Add(LocalDateTime start, long units)
@@ -56,9 +56,9 @@ namespace NodaTime.Fields
                     }
                     long nanosToAdd = value * unitNanoseconds;
                     long newNanos = localTime.NanosecondOfDay + nanosToAdd;
-                    if (newNanos >= NodaConstants.NanosecondsPerStandardDay)
+                    if (newNanos >= NodaConstants.NanosecondsPerDay)
                     {
-                        newNanos -= NodaConstants.NanosecondsPerStandardDay;
+                        newNanos -= NodaConstants.NanosecondsPerDay;
                     }
                     return new LocalTime(newNanos);
                 }
@@ -72,7 +72,7 @@ namespace NodaTime.Fields
                     long newNanos = localTime.NanosecondOfDay + nanosToAdd;
                     if (newNanos < 0)
                     {
-                        newNanos += NodaConstants.NanosecondsPerStandardDay;
+                        newNanos += NodaConstants.NanosecondsPerDay;
                     }
                     return new LocalTime(newNanos);
                 }
@@ -100,9 +100,9 @@ namespace NodaTime.Fields
                     }
                     long nanosToAdd = value * unitNanoseconds;
                     long newNanos = localTime.NanosecondOfDay + nanosToAdd;
-                    if (newNanos >= NodaConstants.NanosecondsPerStandardDay)
+                    if (newNanos >= NodaConstants.NanosecondsPerDay)
                     {
-                        newNanos -= NodaConstants.NanosecondsPerStandardDay;
+                        newNanos -= NodaConstants.NanosecondsPerDay;
                         days = checked(days + 1);
                     }
                     extraDays = checked(extraDays + days);
@@ -121,7 +121,7 @@ namespace NodaTime.Fields
                     long newNanos = localTime.NanosecondOfDay + nanosToAdd;
                     if (newNanos < 0)
                     {
-                        newNanos += NodaConstants.NanosecondsPerStandardDay;
+                        newNanos += NodaConstants.NanosecondsPerDay;
                         days = checked(days - 1);
                     }
                     extraDays = checked(days + extraDays);

@@ -201,12 +201,12 @@ namespace NodaTime.Test
         [Test]
         public void PlusTicks_Long()
         {
-            Assert.IsTrue(NodaConstants.TicksPerStandardDay > int.MaxValue);
+            Assert.IsTrue(NodaConstants.TicksPerDay > int.MaxValue);
             LocalDateTime start = new LocalDateTime(2011, 4, 2, 12, 15, 8);
             LocalDateTime expectedForward = new LocalDateTime(2011, 4, 3, 12, 15, 8);
             LocalDateTime expectedBackward = new LocalDateTime(2011, 4, 1, 12, 15, 8);
-            Assert.AreEqual(expectedForward, start.PlusTicks(NodaConstants.TicksPerStandardDay));
-            Assert.AreEqual(expectedBackward, start.PlusTicks(-NodaConstants.TicksPerStandardDay));
+            Assert.AreEqual(expectedForward, start.PlusTicks(NodaConstants.TicksPerDay));
+            Assert.AreEqual(expectedBackward, start.PlusTicks(-NodaConstants.TicksPerDay));
         }
 
         [Test]
@@ -226,8 +226,8 @@ namespace NodaTime.Test
             LocalDateTime start = new LocalDateTime(2011, 4, 2, 12, 15, 8);
             LocalDateTime expectedForward = new LocalDateTime(2011, 4, 3, 12, 15, 8);
             LocalDateTime expectedBackward = new LocalDateTime(2011, 4, 1, 12, 15, 8);
-            Assert.AreEqual(expectedForward, start.PlusNanoseconds(NodaConstants.NanosecondsPerStandardDay));
-            Assert.AreEqual(expectedBackward, start.PlusNanoseconds(-NodaConstants.NanosecondsPerStandardDay));
+            Assert.AreEqual(expectedForward, start.PlusNanoseconds(NodaConstants.NanosecondsPerDay));
+            Assert.AreEqual(expectedBackward, start.PlusNanoseconds(-NodaConstants.NanosecondsPerDay));
         }
 
         [Test]

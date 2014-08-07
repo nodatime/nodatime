@@ -146,7 +146,7 @@ namespace NodaTime.Testing
         /// back by).</param>
         public void AdvanceDays(int days)
         {
-            Advance(Duration.FromStandardDays(days));
+            Advance(Duration.FromDays(days));
         }
 
         /// <summary>

@@ -119,7 +119,7 @@ namespace NodaTime.Test.Testing
         {
             FakeClock clock = new FakeClock(Instant.FromTicksSinceUnixEpoch(100L));
             clock.AdvanceDays(3);
-            Assert.AreEqual(100 + 3 * NodaConstants.TicksPerStandardDay, clock.GetCurrentInstant().Ticks);
+            Assert.AreEqual(100 + 3 * NodaConstants.TicksPerDay, clock.GetCurrentInstant().Ticks);
         }
 
         [Test]

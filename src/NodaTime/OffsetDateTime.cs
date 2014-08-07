@@ -79,15 +79,15 @@ namespace NodaTime
             {
                 int days = instant.DaysSinceEpoch;
                 long nanoOfDay = instant.NanosecondOfDay + offset.Nanoseconds;
-                if (nanoOfDay >= NodaConstants.NanosecondsPerStandardDay)
+                if (nanoOfDay >= NodaConstants.NanosecondsPerDay)
                 {
                     days++;
-                    nanoOfDay -= NodaConstants.NanosecondsPerStandardDay;
+                    nanoOfDay -= NodaConstants.NanosecondsPerDay;
                 }
                 else if (nanoOfDay < 0)
                 {
                     days--;
-                    nanoOfDay += NodaConstants.NanosecondsPerStandardDay;
+                    nanoOfDay += NodaConstants.NanosecondsPerDay;
                 }
                 yearMonthDay = GregorianYearMonthDayCalculator.GetGregorianYearMonthDayFromDaysSinceEpoch(days);
                 nanosecondsAndOffset = nanoOfDay | (((long) offset.Seconds) << NanosecondsBits);
@@ -106,15 +106,15 @@ namespace NodaTime
             {
                 int days = instant.DaysSinceEpoch;
                 long nanoOfDay = instant.NanosecondOfDay + offset.Nanoseconds;
-                if (nanoOfDay >= NodaConstants.NanosecondsPerStandardDay)
+                if (nanoOfDay >= NodaConstants.NanosecondsPerDay)
                 {
                     days++;
-                    nanoOfDay -= NodaConstants.NanosecondsPerStandardDay;
+                    nanoOfDay -= NodaConstants.NanosecondsPerDay;
                 }
                 else if (nanoOfDay < 0)
                 {
                     days--;
-                    nanoOfDay += NodaConstants.NanosecondsPerStandardDay;
+                    nanoOfDay += NodaConstants.NanosecondsPerDay;
                 }
                 yearMonthDay = calendar.GetYearMonthDayFromDaysSinceEpoch(days);
                 nanosecondsAndOffset = nanoOfDay | (((long) offset.Seconds) << NanosecondsBits);
@@ -454,24 +454,24 @@ namespace NodaTime
                 // twice in one direction or the other.
                 int days = 0;
                 long nanos = (nanosecondsAndOffset & NanosecondsMask) + offset.Nanoseconds - OffsetNanoseconds;
-                if (nanos >= NodaConstants.NanosecondsPerStandardDay)
+                if (nanos >= NodaConstants.NanosecondsPerDay)
                 {
                     days++;
-                    nanos -= NodaConstants.NanosecondsPerStandardDay;
-                    if (nanos >= NodaConstants.NanosecondsPerStandardDay)
+                    nanos -= NodaConstants.NanosecondsPerDay;
+                    if (nanos >= NodaConstants.NanosecondsPerDay)
                     {
                         days++;
-                        nanos -= NodaConstants.NanosecondsPerStandardDay;
+                        nanos -= NodaConstants.NanosecondsPerDay;
                     }
                 }
                 else if (nanos < 0)
                 {
                     days--;
-                    nanos += NodaConstants.NanosecondsPerStandardDay;
+                    nanos += NodaConstants.NanosecondsPerDay;
                     if (nanos < 0)
                     {
                         days--;
-                        nanos += NodaConstants.NanosecondsPerStandardDay;
+                        nanos += NodaConstants.NanosecondsPerDay;
                     }
                 }
                 if (days == 0)

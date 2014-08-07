@@ -80,7 +80,7 @@ namespace NodaTime.Test.TimeZones
             while (instant < end)
             {
                 ValidateZoneEquality(instant, nodaZone, windowsZone);
-                instant += Duration.OneStandardWeek;
+                instant += Duration.OneWeek;
             }
         }
 

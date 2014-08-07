@@ -42,8 +42,8 @@ namespace NodaTime.Test
         [Test]
         public void GetZoneIntervals_SingleTransitionZone_IntervalCoversTransition()
         {
-            Instant start = TestZone.Transition - Duration.FromStandardDays(5);
-            Instant end = TestZone.Transition + Duration.FromStandardDays(5);
+            Instant start = TestZone.Transition - Duration.FromDays(5);
+            Instant end = TestZone.Transition + Duration.FromDays(5);
             var expected = new[] { TestZone.EarlyInterval, TestZone.LateInterval };
             var actual = TestZone.GetZoneIntervals(start, end);
             CollectionAssert.AreEqual(expected, actual.ToList());
@@ -52,8 +52,8 @@ namespace NodaTime.Test
         [Test]
         public void GetZoneIntervals_SingleTransitionZone_IntervalDoesNotCoverTransition()
         {
-            Instant start = TestZone.Transition - Duration.FromStandardDays(10);
-            Instant end = TestZone.Transition - Duration.FromStandardDays(5);
+            Instant start = TestZone.Transition - Duration.FromDays(10);
+            Instant end = TestZone.Transition - Duration.FromDays(5);
             var expected = new[] { TestZone.EarlyInterval };
             var actual = TestZone.GetZoneIntervals(start, end);
             CollectionAssert.AreEqual(expected, actual.ToList());
@@ -63,7 +63,7 @@ namespace NodaTime.Test
         public void GetZoneIntervals_IncludesStart()
         {
             Instant start = TestZone.Transition - Duration.Epsilon;
-            Instant end = TestZone.Transition + Duration.FromStandardDays(5);
+            Instant end = TestZone.Transition + Duration.FromDays(5);
             var expected = new[] { TestZone.EarlyInterval, TestZone.LateInterval };
             var actual = TestZone.GetZoneIntervals(start, end);
             CollectionAssert.AreEqual(expected, actual.ToList());
@@ -72,7 +72,7 @@ namespace NodaTime.Test
         [Test]
         public void GetZoneIntervals_ExcludesEnd()
         {
-            Instant start = TestZone.Transition - Duration.FromStandardDays(10);
+            Instant start = TestZone.Transition - Duration.FromDays(10);
             Instant end = TestZone.Transition;
             var expected = new[] { TestZone.EarlyInterval };
             var actual = TestZone.GetZoneIntervals(start, end);

@@ -50,9 +50,9 @@ namespace NodaTime.Test.TimeZones
         {
             var actual = timeZone.GetZoneInterval(summer);
             Assert.IsNotNull(timeZone.GetZoneInterval(NodaConstants.UnixEpoch));
-            Assert.IsNotNull(timeZone.GetZoneInterval(NodaConstants.UnixEpoch + Duration.FromStandardWeeks(2000)));
-            Assert.IsNotNull(timeZone.GetZoneInterval(NodaConstants.UnixEpoch + Duration.FromStandardWeeks(3000)));
-            Assert.IsNotNull(timeZone.GetZoneInterval(NodaConstants.UnixEpoch + Duration.FromStandardWeeks(4000)));
+            Assert.IsNotNull(timeZone.GetZoneInterval(NodaConstants.UnixEpoch + Duration.FromDays(2000 * 7)));
+            Assert.IsNotNull(timeZone.GetZoneInterval(NodaConstants.UnixEpoch + Duration.FromDays(3000 * 7)));
+            Assert.IsNotNull(timeZone.GetZoneInterval(NodaConstants.UnixEpoch + Duration.FromDays(4000 * 7)));
             var newPeriod = timeZone.GetZoneInterval(summer);
             Assert.AreSame(actual, newPeriod);
         }
