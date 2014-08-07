@@ -677,13 +677,13 @@ namespace NodaTime
             {
                 throw new InvalidOperationException("Cannot construct duration of period with non-zero months or years.");
             }
-            return Duration.FromNanoseconds(TotalStandardNanoseconds);
+            return Duration.FromNanoseconds(TotalNanoseconds);
         }
 
         /// <summary>
         /// Gets the total number of nanoseconds duration for the 'standard' properties (all bar years and months).
         /// </summary>
-        private long TotalStandardNanoseconds
+        private long TotalNanoseconds
         {
             get
             {
@@ -695,8 +695,8 @@ namespace NodaTime
                     seconds * NodaConstants.NanosecondsPerSecond +
                     minutes * NodaConstants.NanosecondsPerMinute +
                     hours * NodaConstants.NanosecondsPerHour +
-                    days * NodaConstants.NanosecondsPerStandardDay +
-                    weeks * NodaConstants.NanosecondsPerStandardWeek;
+                    days * NodaConstants.NanosecondsPerDay +
+                    weeks * NodaConstants.NanosecondsPerWeek;
             }
         }
 
@@ -742,9 +742,9 @@ namespace NodaTime
             // FIXME: Normalize to a Nanoseconds value instead, then go from there.
             // Simplest way to normalize: grab all the fields up to "week" and
             // sum them.
-            long totalNanoseconds = TotalStandardNanoseconds;
-            int days = (int) (totalNanoseconds / NodaConstants.NanosecondsPerStandardDay);
-            long hours = (totalNanoseconds / NodaConstants.NanosecondsPerHour) % NodaConstants.HoursPerStandardDay;
+            long totalNanoseconds = TotalNanoseconds;
+            int days = (int) (totalNanoseconds / NodaConstants.NanosecondsPerDay);
+            long hours = (totalNanoseconds / NodaConstants.NanosecondsPerHour) % NodaConstants.HoursPerDay;
             long minutes = (totalNanoseconds / NodaConstants.NanosecondsPerMinute) % NodaConstants.MinutesPerHour;
             long seconds = (totalNanoseconds / NodaConstants.NanosecondsPerSecond) % NodaConstants.SecondsPerMinute;
             long milliseconds = (totalNanoseconds / NodaConstants.NanosecondsPerMillisecond) % NodaConstants.MillisecondsPerSecond;

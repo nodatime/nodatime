@@ -11,15 +11,15 @@ namespace NodaTime.Test.Calendars
     {
         [Test]
         [TestCase(long.MinValue)]
-        [TestCase(-NodaConstants.TicksPerStandardDay - 1)]
-        [TestCase(-NodaConstants.TicksPerStandardDay)]
-        [TestCase(-NodaConstants.TicksPerStandardDay + 1)]
+        [TestCase(-NodaConstants.TicksPerDay - 1)]
+        [TestCase(-NodaConstants.TicksPerDay)]
+        [TestCase(-NodaConstants.TicksPerDay + 1)]
         [TestCase(-1)]
         [TestCase(0)]
         [TestCase(-1)]
-        [TestCase(NodaConstants.TicksPerStandardDay - 1)]
-        [TestCase(NodaConstants.TicksPerStandardDay)]
-        [TestCase(NodaConstants.TicksPerStandardDay + 1)]
+        [TestCase(NodaConstants.TicksPerDay - 1)]
+        [TestCase(NodaConstants.TicksPerDay)]
+        [TestCase(NodaConstants.TicksPerDay + 1)]
         [TestCase(long.MaxValue)]
         public void TicksToDaysAndTickOfDayAndBack(long ticks)
         {

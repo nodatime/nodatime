@@ -110,9 +110,9 @@ namespace NodaTime.TimeZones.IO
         public void WriteMilliseconds(int millis)
         {
             Preconditions.CheckArgumentRange("millis", millis,
-                -NodaConstants.MillisecondsPerStandardDay + 1,
-                NodaConstants.MillisecondsPerStandardDay - 1);
-            millis += NodaConstants.MillisecondsPerStandardDay;
+                -NodaConstants.MillisecondsPerDay + 1,
+                NodaConstants.MillisecondsPerDay - 1);
+            millis += NodaConstants.MillisecondsPerDay;
             /*
              * First, add 24 hours to the number of milliseconds, to get a value in the range (0, 172800000).
              * (It's exclusive at both ends, but that's insignificant.)

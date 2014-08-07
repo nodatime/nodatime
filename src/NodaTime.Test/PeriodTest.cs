@@ -615,8 +615,8 @@ namespace NodaTime.Test
                 Ticks = 7
             }.Build();
             Assert.AreEqual(
-                1 * NodaConstants.TicksPerStandardWeek +
-                2 * NodaConstants.TicksPerStandardDay +
+                1 * NodaConstants.TicksPerWeek +
+                2 * NodaConstants.TicksPerDay +
                 3 * NodaConstants.TicksPerHour +
                 4 * NodaConstants.TicksPerMinute +
                 5 * NodaConstants.TicksPerSecond +
@@ -630,7 +630,7 @@ namespace NodaTime.Test
             Period period = Period.FromMonths(1) + Period.FromYears(1);
             period = period - period + Period.FromDays(1);
             Assert.IsFalse(period.HasTimeComponent);
-            Assert.AreEqual(Duration.OneStandardDay, period.ToDuration());
+            Assert.AreEqual(Duration.OneDay, period.ToDuration());
         }
 
         [Test]
@@ -795,7 +795,7 @@ namespace NodaTime.Test
             // Check we're not truncating to Int32... (except for date values)
             TestHelper.AssertBinaryRoundtrip(new Period(int.MaxValue, int.MaxValue, int.MinValue, int.MinValue, long.MaxValue,
                                                         long.MinValue, long.MinValue, long.MinValue, long.MinValue,
-                                                        new Duration(Duration.MaxDays, NodaConstants.NanosecondsPerStandardDay - 1)));
+                                                        new Duration(Duration.MaxDays, NodaConstants.NanosecondsPerDay - 1)));
         }
 
         /// <summary>

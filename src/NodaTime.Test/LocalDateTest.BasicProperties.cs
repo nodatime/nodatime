@@ -31,7 +31,7 @@ namespace NodaTime.Test
             DateTime bclDate = new DateTime(2011, 3, 5, 0, 0, 0, DateTimeKind.Utc);
             DateTime bclEpoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
             long bclTicks = bclDate.Ticks - bclEpoch.Ticks;
-            int bclDays = (int) (bclTicks / NodaConstants.TicksPerStandardDay);
+            int bclDays = (int) (bclTicks / NodaConstants.TicksPerDay);
             LocalDate date = new LocalDate(bclDays, CalendarSystem.Iso);
             Assert.AreEqual(2011, date.Year);
             Assert.AreEqual(2011, date.YearOfEra);

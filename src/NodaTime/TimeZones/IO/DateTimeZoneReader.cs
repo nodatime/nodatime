@@ -122,7 +122,7 @@ namespace NodaTime.TimeZones.IO
                             throw new InvalidNodaDataException("Invalid flag in offset: " + flag.ToString("x2"));
                     }
                 }
-                millis -= NodaConstants.MillisecondsPerStandardDay;
+                millis -= NodaConstants.MillisecondsPerDay;
                 return millis;
             }
         }

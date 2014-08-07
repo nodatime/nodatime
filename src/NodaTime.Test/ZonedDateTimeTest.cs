@@ -65,8 +65,8 @@ namespace NodaTime.Test
             ZonedDateTime before = SampleZone.AtStrictly(new LocalDateTime(2011, 6, 12, 15, 0));
             // 24 hours elapsed, and it's 4pm
             ZonedDateTime afterExpected = SampleZone.AtStrictly(new LocalDateTime(2011, 6, 13, 16, 0));
-            ZonedDateTime afterAdd = ZonedDateTime.Add(before, Duration.OneStandardDay);
-            ZonedDateTime afterOperator = before + Duration.OneStandardDay;
+            ZonedDateTime afterAdd = ZonedDateTime.Add(before, Duration.OneDay);
+            ZonedDateTime afterOperator = before + Duration.OneDay;
 
             Assert.AreEqual(afterExpected, afterAdd);
             Assert.AreEqual(afterExpected, afterOperator);
@@ -76,8 +76,8 @@ namespace NodaTime.Test
         public void Add_MethodEquivalents()
         {
             ZonedDateTime before = SampleZone.AtStrictly(new LocalDateTime(2011, 6, 12, 15, 0));
-            Assert.AreEqual(before + Duration.OneStandardDay, ZonedDateTime.Add(before, Duration.OneStandardDay));
-            Assert.AreEqual(before + Duration.OneStandardDay, before.Plus(Duration.OneStandardDay));
+            Assert.AreEqual(before + Duration.OneDay, ZonedDateTime.Add(before, Duration.OneDay));
+            Assert.AreEqual(before + Duration.OneDay, before.Plus(Duration.OneDay));
         }
 
         [Test]
@@ -87,8 +87,8 @@ namespace NodaTime.Test
             ZonedDateTime after = SampleZone.AtStrictly(new LocalDateTime(2011, 6, 13, 16, 0));
             // 24 hours earlier, and it's 3pm
             ZonedDateTime beforeExpected = SampleZone.AtStrictly(new LocalDateTime(2011, 6, 12, 15, 0));
-            ZonedDateTime beforeSubtract = ZonedDateTime.Subtract(after, Duration.OneStandardDay);
-            ZonedDateTime beforeOperator = after - Duration.OneStandardDay;
+            ZonedDateTime beforeSubtract = ZonedDateTime.Subtract(after, Duration.OneDay);
+            ZonedDateTime beforeOperator = after - Duration.OneDay;
 
             Assert.AreEqual(beforeExpected, beforeSubtract);
             Assert.AreEqual(beforeExpected, beforeOperator);
@@ -98,8 +98,8 @@ namespace NodaTime.Test
         public void Subtract_MethodEquivalents()
         {
             ZonedDateTime after = SampleZone.AtStrictly(new LocalDateTime(2011, 6, 13, 16, 0));
-            Assert.AreEqual(after - Duration.OneStandardDay, ZonedDateTime.Subtract(after, Duration.OneStandardDay));
-            Assert.AreEqual(after - Duration.OneStandardDay, after.Minus(Duration.OneStandardDay));
+            Assert.AreEqual(after - Duration.OneDay, ZonedDateTime.Subtract(after, Duration.OneDay));
+            Assert.AreEqual(after - Duration.OneDay, after.Minus(Duration.OneDay));
         }
 
 

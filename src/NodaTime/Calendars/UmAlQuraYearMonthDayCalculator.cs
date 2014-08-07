@@ -116,7 +116,7 @@ namespace NodaTime.Calendars
             // correct, but it gets roughly the right estimate. It doesn't matter that startOfMinYear isn't in UTC; we're only
             // taking the Ticks property, which doesn't take account of the Kind.
             DateTime startOfMinYear = bclCalendar.ToDateTime(ComputedMinYear, 1, 1, 0, 0, 0, 0);
-            ComputedDaysAtStartOfMinYear = (int) ((startOfMinYear.Ticks - NodaConstants.BclTicksAtUnixEpoch) / NodaConstants.TicksPerStandardDay);
+            ComputedDaysAtStartOfMinYear = (int) ((startOfMinYear.Ticks - NodaConstants.BclTicksAtUnixEpoch) / NodaConstants.TicksPerDay);
             ComputedDaysAtStartOfYear1 = ComputedDaysAtStartOfMinYear + (int) (((1 - ComputedMinYear) / 10.0) * AverageDaysPer10Years);
         }
 

@@ -24,7 +24,7 @@ namespace NodaTime.Text
             { ':', (pattern, builder) => builder.AddLiteral(builder.FormatInfo.TimeSeparator, ParseResult<Duration>.TimeSeparatorMismatch) },
             { 'D', CreateDayHandler() },
             { 'H', CreateTotalHandler(PatternFields.Hours24, NodaConstants.NanosecondsPerHour) },
-            { 'h', CreatePartialHandler(PatternFields.Hours24, NodaConstants.NanosecondsPerHour, NodaConstants.HoursPerStandardDay) },
+            { 'h', CreatePartialHandler(PatternFields.Hours24, NodaConstants.NanosecondsPerHour, NodaConstants.HoursPerDay) },
             { 'M', CreateTotalHandler(PatternFields.Minutes, NodaConstants.NanosecondsPerMinute) },
             { 'm', CreatePartialHandler(PatternFields.Minutes, NodaConstants.NanosecondsPerMinute, NodaConstants.MinutesPerHour) },
             { 'S', CreateTotalHandler(PatternFields.Seconds, NodaConstants.NanosecondsPerSecond) },

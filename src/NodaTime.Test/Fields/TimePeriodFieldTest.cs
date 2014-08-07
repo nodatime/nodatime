@@ -34,7 +34,7 @@ namespace NodaTime.Test.Fields
 
         [Test]
         [TestCase("00:00:01.000", "00:00:00.000", 1000)]
-        [TestCase("23:59:59.000", "00:00:00.000", NodaConstants.MillisecondsPerStandardDay - 1000)]
+        [TestCase("23:59:59.000", "00:00:00.000", NodaConstants.MillisecondsPerDay - 1000)]
         [TestCase("00:00:01.0000", "00:00:00.9999", 0)]
         public void Subtract(string minuend, string subtrahend, long expected)
         {

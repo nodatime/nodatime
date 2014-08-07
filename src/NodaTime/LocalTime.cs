@@ -58,10 +58,10 @@ namespace NodaTime
         public LocalTime(int hour, int minute)
         {
             // Avoid the method calls which give a decent exception unless we're actually going to fail.
-            if (hour < 0 || hour > NodaConstants.HoursPerStandardDay - 1 ||
+            if (hour < 0 || hour > NodaConstants.HoursPerDay - 1 ||
                 minute < 0 || minute > NodaConstants.MinutesPerHour - 1)
             {
-                Preconditions.CheckArgumentRange("hour", hour, 0, NodaConstants.HoursPerStandardDay - 1);
+                Preconditions.CheckArgumentRange("hour", hour, 0, NodaConstants.HoursPerDay - 1);
                 Preconditions.CheckArgumentRange("minute", minute, 0, NodaConstants.MinutesPerHour - 1);
             }
             nanoseconds = unchecked(hour * NodaConstants.NanosecondsPerHour + minute * NodaConstants.NanosecondsPerMinute);
@@ -79,11 +79,11 @@ namespace NodaTime
         public LocalTime(int hour, int minute, int second)
         {
             // Avoid the method calls which give a decent exception unless we're actually going to fail.
-            if (hour < 0 || hour > NodaConstants.HoursPerStandardDay - 1 ||
+            if (hour < 0 || hour > NodaConstants.HoursPerDay - 1 ||
                 minute < 0 || minute > NodaConstants.MinutesPerHour - 1 ||
                 second < 0 || second > NodaConstants.SecondsPerHour - 1)
             {
-                Preconditions.CheckArgumentRange("hour", hour, 0, NodaConstants.HoursPerStandardDay - 1);
+                Preconditions.CheckArgumentRange("hour", hour, 0, NodaConstants.HoursPerDay - 1);
                 Preconditions.CheckArgumentRange("minute", minute, 0, NodaConstants.MinutesPerHour - 1);
                 Preconditions.CheckArgumentRange("second", second, 0, NodaConstants.SecondsPerMinute - 1);
             }
@@ -105,12 +105,12 @@ namespace NodaTime
         public LocalTime(int hour, int minute, int second, int millisecond)
         {
             // Avoid the method calls which give a decent exception unless we're actually going to fail.
-            if (hour < 0 || hour > NodaConstants.HoursPerStandardDay - 1 ||
+            if (hour < 0 || hour > NodaConstants.HoursPerDay - 1 ||
                 minute < 0 || minute > NodaConstants.MinutesPerHour - 1 ||
                 second < 0 || second > NodaConstants.SecondsPerHour - 1 ||
                 millisecond < 0 || millisecond > NodaConstants.MillisecondsPerSecond - 1)
             {
-                Preconditions.CheckArgumentRange("hour", hour, 0, NodaConstants.HoursPerStandardDay - 1);
+                Preconditions.CheckArgumentRange("hour", hour, 0, NodaConstants.HoursPerDay - 1);
                 Preconditions.CheckArgumentRange("minute", minute, 0, NodaConstants.MinutesPerHour - 1);
                 Preconditions.CheckArgumentRange("second", second, 0, NodaConstants.SecondsPerMinute - 1);
                 Preconditions.CheckArgumentRange("millisecond", millisecond, 0, NodaConstants.MillisecondsPerSecond - 1);
@@ -135,13 +135,13 @@ namespace NodaTime
         public LocalTime(int hour, int minute, int second, int millisecond, int tickWithinMillisecond)
         {
             // Avoid the method calls which give a decent exception unless we're actually going to fail.
-            if (hour < 0 || hour > NodaConstants.HoursPerStandardDay - 1 ||
+            if (hour < 0 || hour > NodaConstants.HoursPerDay - 1 ||
                 minute < 0 || minute > NodaConstants.MinutesPerHour - 1 ||
                 second < 0 || second > NodaConstants.SecondsPerHour - 1 ||
                 millisecond < 0 || millisecond > NodaConstants.MillisecondsPerSecond - 1 ||
                 tickWithinMillisecond < 0 || tickWithinMillisecond > NodaConstants.TicksPerMillisecond - 1)
             {
-                Preconditions.CheckArgumentRange("hour", hour, 0, NodaConstants.HoursPerStandardDay - 1);
+                Preconditions.CheckArgumentRange("hour", hour, 0, NodaConstants.HoursPerDay - 1);
                 Preconditions.CheckArgumentRange("minute", minute, 0, NodaConstants.MinutesPerHour - 1);
                 Preconditions.CheckArgumentRange("second", second, 0, NodaConstants.SecondsPerMinute - 1);
                 Preconditions.CheckArgumentRange("millisecond", millisecond, 0, NodaConstants.MillisecondsPerSecond - 1);
@@ -170,12 +170,12 @@ namespace NodaTime
         public static LocalTime FromHourMinuteSecondTick(int hour, int minute, int second, int tickWithinSecond)
         {
             // Avoid the method calls which give a decent exception unless we're actually going to fail.
-            if (hour < 0 || hour > NodaConstants.HoursPerStandardDay - 1 ||
+            if (hour < 0 || hour > NodaConstants.HoursPerDay - 1 ||
                 minute < 0 || minute > NodaConstants.MinutesPerHour - 1 ||
                 second < 0 || second > NodaConstants.SecondsPerHour - 1 ||
                 tickWithinSecond < 0 || tickWithinSecond > NodaConstants.TicksPerSecond - 1)
             {
-                Preconditions.CheckArgumentRange("hour", hour, 0, NodaConstants.HoursPerStandardDay - 1);
+                Preconditions.CheckArgumentRange("hour", hour, 0, NodaConstants.HoursPerDay - 1);
                 Preconditions.CheckArgumentRange("minute", minute, 0, NodaConstants.MinutesPerHour - 1);
                 Preconditions.CheckArgumentRange("second", second, 0, NodaConstants.SecondsPerMinute - 1);
                 Preconditions.CheckArgumentRange("tickWithinSecond", tickWithinSecond, 0, NodaConstants.TicksPerSecond - 1);
@@ -202,12 +202,12 @@ namespace NodaTime
         public static LocalTime FromHourMinuteSecondNanosecond(int hour, int minute, int second, long nanosecondWithinSecond)
         {
             // Avoid the method calls which give a decent exception unless we're actually going to fail.
-            if (hour < 0 || hour > NodaConstants.HoursPerStandardDay - 1 ||
+            if (hour < 0 || hour > NodaConstants.HoursPerDay - 1 ||
                 minute < 0 || minute > NodaConstants.MinutesPerHour - 1 ||
                 second < 0 || second > NodaConstants.SecondsPerHour - 1 ||
                 nanosecondWithinSecond < 0 || nanosecondWithinSecond > NodaConstants.NanosecondsPerSecond - 1)
             {
-                Preconditions.CheckArgumentRange("hour", hour, 0, NodaConstants.HoursPerStandardDay - 1);
+                Preconditions.CheckArgumentRange("hour", hour, 0, NodaConstants.HoursPerDay - 1);
                 Preconditions.CheckArgumentRange("minute", minute, 0, NodaConstants.MinutesPerHour - 1);
                 Preconditions.CheckArgumentRange("second", second, 0, NodaConstants.SecondsPerMinute - 1);
                 Preconditions.CheckArgumentRange("nanosecondWithinSecond", nanosecondWithinSecond, 0, NodaConstants.NanosecondsPerSecond - 1);
@@ -220,11 +220,11 @@ namespace NodaTime
         }
 
         /// <summary>
-        /// Constructor only called from other parts of Noda Time - trusted to be the range [0, NanosecondsPerStandardDay).
+        /// Constructor only called from other parts of Noda Time - trusted to be the range [0, NanosecondsPerDay).
         /// </summary>
         internal LocalTime([Trusted] long nanoseconds)
         {
-            Preconditions.DebugCheckArgumentRange("nanoseconds", nanoseconds, 0, NodaConstants.NanosecondsPerStandardDay - 1);
+            Preconditions.DebugCheckArgumentRange("nanoseconds", nanoseconds, 0, NodaConstants.NanosecondsPerDay - 1);
             this.nanoseconds = nanoseconds;
         }
 
@@ -236,9 +236,9 @@ namespace NodaTime
         internal static LocalTime FromNanosecondsSinceMidnight(long nanoseconds)
         {
             // Avoid the method calls which give a decent exception unless we're actually going to fail.
-            if (nanoseconds < 0 || nanoseconds > NodaConstants.NanosecondsPerStandardDay - 1)
+            if (nanoseconds < 0 || nanoseconds > NodaConstants.NanosecondsPerDay - 1)
             {
-                Preconditions.CheckArgumentRange("nanoseconds", nanoseconds, 0, NodaConstants.NanosecondsPerStandardDay - 1);
+                Preconditions.CheckArgumentRange("nanoseconds", nanoseconds, 0, NodaConstants.NanosecondsPerDay - 1);
             }
             return new LocalTime(nanoseconds);
         }
@@ -251,9 +251,9 @@ namespace NodaTime
         public static LocalTime FromTicksSinceMidnight(long ticks)
         {
             // Avoid the method calls which give a decent exception unless we're actually going to fail.
-            if (ticks < 0 || ticks > NodaConstants.TicksPerStandardDay - 1)
+            if (ticks < 0 || ticks > NodaConstants.TicksPerDay - 1)
             {
-                Preconditions.CheckArgumentRange("ticks", ticks, 0, NodaConstants.TicksPerStandardDay - 1);
+                Preconditions.CheckArgumentRange("ticks", ticks, 0, NodaConstants.TicksPerDay - 1);
             }
             return new LocalTime(unchecked(ticks * NodaConstants.NanosecondsPerTick));
         }
@@ -266,9 +266,9 @@ namespace NodaTime
         public static LocalTime FromMillisecondsSinceMidnight(int milliseconds)
         {
             // Avoid the method calls which give a decent exception unless we're actually going to fail.
-            if (milliseconds < 0 || milliseconds > NodaConstants.MillisecondsPerStandardDay - 1)
+            if (milliseconds < 0 || milliseconds > NodaConstants.MillisecondsPerDay - 1)
             {
-                Preconditions.CheckArgumentRange("milliseconds", milliseconds, 0, NodaConstants.MillisecondsPerStandardDay - 1);
+                Preconditions.CheckArgumentRange("milliseconds", milliseconds, 0, NodaConstants.MillisecondsPerDay - 1);
             }
             return new LocalTime(unchecked(milliseconds * NodaConstants.NanosecondsPerMillisecond));
         }
@@ -281,9 +281,9 @@ namespace NodaTime
         public static LocalTime FromSecondsSinceMidnight(int seconds)
         {
             // Avoid the method calls which give a decent exception unless we're actually going to fail.
-            if (seconds < 0 || seconds > NodaConstants.SecondsPerStandardDay - 1)
+            if (seconds < 0 || seconds > NodaConstants.SecondsPerDay - 1)
             {
-                Preconditions.CheckArgumentRange("seconds", seconds, 0, NodaConstants.SecondsPerStandardDay - 1);
+                Preconditions.CheckArgumentRange("seconds", seconds, 0, NodaConstants.SecondsPerDay - 1);
             }
             return new LocalTime(unchecked(seconds * NodaConstants.NanosecondsPerSecond));
         }
@@ -812,7 +812,7 @@ namespace NodaTime
         private LocalTime(SerializationInfo info, StreamingContext context)
         {
             long nanoOfDay = info.GetInt64(NanoOfDaySerializationName);
-            Preconditions.CheckArgument(nanoOfDay >= 0 && nanoOfDay < NodaConstants.NanosecondsPerStandardDay, "info",
+            Preconditions.CheckArgument(nanoOfDay >= 0 && nanoOfDay < NodaConstants.NanosecondsPerDay, "info",
                 "Serialized offset value is outside the range of +/- 18 hours");
             this.nanoseconds = nanoOfDay;
         }
