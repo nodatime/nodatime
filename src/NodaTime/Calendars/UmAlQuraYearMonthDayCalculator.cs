@@ -2,7 +2,6 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-#if !PCL
 using System;
 using System.Globalization;
 using NodaTime.Annotations;
@@ -33,8 +32,47 @@ namespace NodaTime.Calendars
 
         static UmAlQuraYearMonthDayCalculator()
         {
-            Calendar bclCalendar = new UmAlQuraCalendar();
+            Calendar bclCalendar;
+#if PCL
+            // Can't refer to the BCL calendar by name, but it *might* be available anyway. Let's try to instantiate
+            // it with reflection. If we can't, that's fair enough.
+            try
+            {
+                var type = typeof(Calendar).Assembly.GetType("System.Globalization.UmAlQuraCalendar");
+                if (type == null)
+                {
+                    YearLengths = null;
+                    MonthLengths = null;
+                    YearStartDays = null;
+                    return;
+                }
+                bclCalendar = (Calendar) Activator.CreateInstance(type);
+            }
+            catch
+            {
+                // Don't really care what went wrong here. We'll assume it's not supported.
+                YearLengths = null;
+                MonthLengths = null;
+                YearStartDays = null;
+                return;
+            }
+#else
+            bclCalendar = new UmAlQuraCalendar();
+#endif
+
             DateTime minDateTime = bclCalendar.MinSupportedDateTime;
+
+            // Check if this looks like a sensible implementation, with a limited time range.
+            // (The .NET implementation only runs from 1900-2077, for example.)
+            // Mono is unfortunately broken - it advertises a large range, but then is inconsistent:
+            // Year 2 (for example) either has 354 or 355 days depending on how you ask.
+            if (minDateTime.Year < 1800 || minDateTime.Year > 3000)
+            {
+                YearLengths = null;
+                MonthLengths = null;
+                YearStartDays = null;
+                return;
+            }
 
             // Work out the min and max supported years, ensuring that we support complete years.
             ComputedMinYear = bclCalendar.GetYear(minDateTime);
@@ -80,15 +118,26 @@ namespace NodaTime.Calendars
             YearLengths[YearStartDays.Length - 1] = 354;
 
             // Assume every 10 years before minDateTime has exactly 3544 days... it doesn't matter whether or not that's
-            // correct, but it gets roughly the right estimate.
-            DateTime startOfMinYear = new DateTime(ComputedMinYear, 1, 1, 0, 0, 0, 0, bclCalendar, DateTimeKind.Utc);
+            // correct, but it gets roughly the right estimate. It doesn't matter that startOfMinYear isn't in UTC; we're only
+            // taking the Ticks property, which doesn't take account of the Kind.
+            DateTime startOfMinYear = bclCalendar.ToDateTime(ComputedMinYear, 1, 1, 0, 0, 0, 0);
             ComputedDaysAtStartOfMinYear = (int) ((startOfMinYear.Ticks - NodaConstants.BclTicksAtUnixEpoch) / NodaConstants.TicksPerStandardDay);
             ComputedDaysAtStartOfYear1 = ComputedDaysAtStartOfMinYear + (int) (((1 - ComputedMinYear) / 10.0) * AverageDaysPer10Years);
         }
 
+        /// <summary>
+        /// Checks whether the calendar is supported on this execution environment. We don't currently support the PCL
+        /// or Mono.
+        /// </summary>
+        internal static bool IsSupported { get { return YearLengths != null; } }
+
         internal UmAlQuraYearMonthDayCalculator()
             : base(ComputedMinYear, ComputedMaxYear, 12, AverageDaysPer10Years, ComputedDaysAtStartOfYear1)
         {
+            if (!IsSupported)
+            {
+                throw new InvalidOperationException("The Um Al Qura calendar is not supported on this platform");
+            }
         }
 
         // No need to use the YearMonthDayCalculator cache, given that we've got the value in array already.
@@ -152,4 +201,3 @@ namespace NodaTime.Calendars
         }
     }
 }
-#endif
