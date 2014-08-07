@@ -178,8 +178,8 @@ namespace NodaTime.Test.Text
             // Calendar patterns are invariant
             new Data(MsdnStandardExample) { Pattern = "(c) yyyy-MM-dd'T'HH:mm:ss.FFFFFFF", Text = "(ISO) 2009-06-15T13:45:30.09", Culture = Cultures.FrFr },
             new Data(MsdnStandardExample) { Pattern = "yyyy-MM-dd(c)'T'HH:mm:ss.FFFFFFF", Text = "2009-06-15(ISO)T13:45:30.09", Culture = Cultures.EnUs },
-            new Data(SampleZonedDateTimeCoptic) { Pattern = "(c) yyyy-MM-dd'T'HH:mm:ss.FFFFFFFFF", Text = "(Coptic 1) 1976-06-19T21:13:34.123456789", Culture = Cultures.FrFr },
-            new Data(SampleZonedDateTimeCoptic) { Pattern = "yyyy-MM-dd'C'c'T'HH:mm:ss.FFFFFFFFF", Text = "1976-06-19CCoptic 1T21:13:34.123456789", Culture = Cultures.EnUs },
+            new Data(SampleZonedDateTimeCoptic) { Pattern = "(c) yyyy-MM-dd'T'HH:mm:ss.FFFFFFFFF", Text = "(Coptic) 1976-06-19T21:13:34.123456789", Culture = Cultures.FrFr },
+            new Data(SampleZonedDateTimeCoptic) { Pattern = "yyyy-MM-dd'C'c'T'HH:mm:ss.FFFFFFFFF", Text = "1976-06-19CCopticT21:13:34.123456789", Culture = Cultures.EnUs },
             
             // Use of the semi-colon "comma dot" specifier
             new Data(2011, 10, 19, 16, 05, 20, 352) { Pattern = "yyyy-MM-dd HH:mm:ss;fff", Text = "2011-10-19 16:05:20.352" },

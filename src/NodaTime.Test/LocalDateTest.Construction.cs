@@ -102,7 +102,7 @@ namespace NodaTime.Test
         [Test]
         public void Constructor_WithYearOfEra_NonIsoCalendar()
         {
-            var calendar = CalendarSystem.GetCopticCalendar(4);
+            var calendar = CommonCalendars.Coptic;
             LocalDate absolute = new LocalDate(50, 6, 19, calendar);
             LocalDate withEra = new LocalDate(Era.AnnoMartyrum, 50, 6, 19, calendar);
             Assert.AreEqual(absolute, withEra);

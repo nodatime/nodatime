@@ -33,6 +33,8 @@ See the [Noda Time 1.x to 2.0 migration guide](migration-to-2.html) for full det
 - `Duration.FromStandardDays` has been renamed to `Duration.FromDays`
 - `Duration.FromStandardWeeks` has been removed.
 - Constants within `NodaConstants` which had `Standard` in their name have had that part removed.
+- `CalendarSystem.GetJulianCalendar` and `CalendarSystem.GetCopticCalendar` are now parameterless; Julian
+  and Coptic calendars with a minimum number of days in the first week other than 4 are not supported.
 
 ## 1.3.0, released 2014-06-27 with tzdb 2014e
 

@@ -10,7 +10,7 @@ namespace NodaTime.Test
 {
     public partial class CalendarSystemTest
     {
-        private static readonly CalendarSystem CopticCalendar = CalendarSystem.GetCopticCalendar(4);
+        private static readonly CalendarSystem CopticCalendar = CalendarSystem.GetCopticCalendar();
 
         // Tests using CopticCalendar as a simple example which doesn't override anything.
         [Test]

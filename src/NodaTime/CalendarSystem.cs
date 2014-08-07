@@ -4,10 +4,8 @@
 
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Globalization;
-using System.Linq;
 using JetBrains.Annotations;
 using NodaTime.Annotations;
 using NodaTime.Calendars;
@@ -55,8 +53,8 @@ namespace NodaTime
         private const string HebrewName = "Hebrew";
 
         private static readonly CalendarSystem[] GregorianCalendarSystems;
-        private static readonly CalendarSystem[] CopticCalendarSystems;
-        private static readonly CalendarSystem[] JulianCalendarSystems;
+        private static readonly CalendarSystem CopticCalendarSystem;
+        private static readonly CalendarSystem JulianCalendarSystem;
         private static readonly CalendarSystem[,] IslamicCalendarSystems;
         private static readonly CalendarSystem IsoCalendarSystem;
         private static readonly CalendarSystem PersianCalendarSystem;
@@ -68,26 +66,21 @@ namespace NodaTime
             var gregorianEraCalculator = new GJEraCalculator(gregorianCalculator);
             IsoCalendarSystem = new CalendarSystem(IsoName, IsoName, gregorianCalculator, 4, gregorianEraCalculator);
             PersianCalendarSystem = new CalendarSystem(PersianName, PersianName, new PersianYearMonthDayCalculator(), Era.AnnoPersico);
+            CopticCalendarSystem = new CalendarSystem(CopticName, CopticName, new CopticYearMonthDayCalculator(), Era.AnnoMartyrum);
+            var julianCalculator = new JulianYearMonthDayCalculator();
+            JulianCalendarSystem = new CalendarSystem(JulianName, JulianName, new JulianYearMonthDayCalculator(), 4, new GJEraCalculator(julianCalculator));
             HebrewCalendarSystems = new[]
             {
-                new CalendarSystem(HebrewName + "-Civil", HebrewName, new HebrewYearMonthDayCalculator(HebrewMonthNumbering.Civil), Era.AnnoMundi),
-                new CalendarSystem(HebrewName + "-Scriptural", HebrewName, new HebrewYearMonthDayCalculator(HebrewMonthNumbering.Scriptural), Era.AnnoMundi)
+                new CalendarSystem(HebrewName + " Civil", HebrewName, new HebrewYearMonthDayCalculator(HebrewMonthNumbering.Civil), Era.AnnoMundi),
+                new CalendarSystem(HebrewName + " Scriptural", HebrewName, new HebrewYearMonthDayCalculator(HebrewMonthNumbering.Scriptural), Era.AnnoMundi)
             };
 
             // Variations for the calendar systems which have different objects for different "minimum first day of week"
             // values. These share eras and year/month/day calculators where appropriate.
             GregorianCalendarSystems = new CalendarSystem[7];
-            CopticCalendarSystems = new CalendarSystem[7];
-            JulianCalendarSystems = new CalendarSystem[7];
-            var copticCalculator = new CopticYearMonthDayCalculator();
-            var copticEraCalculator = new SingleEraCalculator(Era.AnnoMartyrum, copticCalculator);
-            var julianCalculator = new JulianYearMonthDayCalculator();
-            var julianEraCalculator = new GJEraCalculator(julianCalculator);
             for (int i = 1; i <= 7; i++)
             {
                 GregorianCalendarSystems[i - 1] = new CalendarSystem(GregorianName, gregorianCalculator, i, gregorianEraCalculator);
-                CopticCalendarSystems[i - 1] = new CalendarSystem(CopticName, copticCalculator, i, copticEraCalculator);
-                JulianCalendarSystems[i - 1] = new CalendarSystem(JulianName, julianCalculator, i, julianEraCalculator);
             }
             IslamicCalendarSystems = new CalendarSystem[4, 2];
             for (int i = 1; i <= 4; i++)
@@ -131,8 +124,8 @@ namespace NodaTime
         {
             { "ISO", () => Iso },
             { "Persian", GetPersianCalendar },
-            { "Hebrew-Civil", () => GetHebrewCalendar(HebrewMonthNumbering.Civil) },
-            { "Hebrew-Scriptural", () => GetHebrewCalendar(HebrewMonthNumbering.Scriptural) },
+            { "Hebrew Civil", () => GetHebrewCalendar(HebrewMonthNumbering.Civil) },
+            { "Hebrew Scriptural", () => GetHebrewCalendar(HebrewMonthNumbering.Scriptural) },
             { "Gregorian 1", () => GetGregorianCalendar(1) },
             { "Gregorian 2", () => GetGregorianCalendar(2) },
             { "Gregorian 3", () => GetGregorianCalendar(3) },
@@ -140,20 +133,8 @@ namespace NodaTime
             { "Gregorian 5", () => GetGregorianCalendar(5) },
             { "Gregorian 6", () => GetGregorianCalendar(6) },
             { "Gregorian 7", () => GetGregorianCalendar(7) },
-            { "Coptic 1", () => GetCopticCalendar(1) },
-            { "Coptic 2", () => GetCopticCalendar(2) },
-            { "Coptic 3", () => GetCopticCalendar(3) },
-            { "Coptic 4", () => GetCopticCalendar(4) },
-            { "Coptic 5", () => GetCopticCalendar(5) },
-            { "Coptic 6", () => GetCopticCalendar(6) },
-            { "Coptic 7", () => GetCopticCalendar(7) },
-            { "Julian 1", () => GetJulianCalendar(1) },
-            { "Julian 2", () => GetJulianCalendar(2) },
-            { "Julian 3", () => GetJulianCalendar(3) },
-            { "Julian 4", () => GetJulianCalendar(4) },
-            { "Julian 5", () => GetJulianCalendar(5) },
-            { "Julian 6", () => GetJulianCalendar(6) },
-            { "Julian 7", () => GetJulianCalendar(7) },
+            { "Coptic", GetCopticCalendar },
+            { "Julian", GetJulianCalendar },
             { "Hijri Civil-Indian", () => GetIslamicCalendar(IslamicLeapYearPattern.Indian, IslamicEpoch.Civil) },
             { "Hijri Civil-Base15", () => GetIslamicCalendar(IslamicLeapYearPattern.Base15, IslamicEpoch.Civil) },
             { "Hijri Civil-Base16", () => GetIslamicCalendar(IslamicLeapYearPattern.Base16, IslamicEpoch.Civil) },
@@ -251,15 +232,14 @@ namespace NodaTime
         /// assumes it did, thus it is proleptic. This implementation also fixes the
         /// start of the year at January 1.
         /// </remarks>
-        /// <param name="minDaysInFirstWeek">The minimum number of days in the first week of the year.
-        /// When computing the WeekOfWeekYear and WeekYear properties of a particular date, this is
-        /// used to decide at what point the week year changes.</param>
+        /// <para>
+        /// This calendar always has at least 4 days in the first week of the week-year.
+        /// </para>
         /// <returns>A suitable Julian calendar reference; the same reference may be returned by several
         /// calls as the object is immutable and thread-safe.</returns>
-        public static CalendarSystem GetJulianCalendar(int minDaysInFirstWeek)
+        public static CalendarSystem GetJulianCalendar()
         {
-            Preconditions.CheckArgumentRange("minDaysInFirstWeek", minDaysInFirstWeek, 1, 7);
-            return JulianCalendarSystems[minDaysInFirstWeek - 1];
+            return JulianCalendarSystem;
         }
 
         /// <summary>
@@ -280,16 +260,15 @@ namespace NodaTime
         /// sunset on the previous ISO day, but this has not been confirmed and is not
         /// implemented.
         /// </para>
+        /// <para>
+        /// This calendar always has at least 4 days in the first week of the week-year.
+        /// </para>
         /// </remarks>
-        /// <param name="minDaysInFirstWeek">The minimum number of days in the first week of the year.
-        /// When computing the WeekOfWeekYear and WeekYear properties of a particular date, this is
-        /// used to decide at what point the week year changes.</param>
         /// <returns>A suitable Coptic calendar reference; the same reference may be returned by several
         /// calls as the object is immutable and thread-safe.</returns>
-        public static CalendarSystem GetCopticCalendar(int minDaysInFirstWeek)
+        public static CalendarSystem GetCopticCalendar()
         {
-            Preconditions.CheckArgumentRange("minDaysInFirstWeek", minDaysInFirstWeek, 1, 7);
-            return CopticCalendarSystems[minDaysInFirstWeek - 1];
+            return CopticCalendarSystem;
         }
 
         /// <summary>
@@ -420,24 +399,12 @@ namespace NodaTime
         ///   <item><term>Gregorian 1</term><description><see cref="CalendarSystem.GetGregorianCalendar"/>(1)</description></item>
         ///   <item><term>Gregorian 2</term><description><see cref="CalendarSystem.GetGregorianCalendar"/>(2)</description></item>
         ///   <item><term>Gregorian 3</term><description><see cref="CalendarSystem.GetGregorianCalendar"/>(3)</description></item>
-        ///   <item><term>Gregorian 3</term><description><see cref="CalendarSystem.GetGregorianCalendar"/>(4)</description></item>
+        ///   <item><term>Gregorian 4</term><description><see cref="CalendarSystem.GetGregorianCalendar"/>(4)</description></item>
         ///   <item><term>Gregorian 5</term><description><see cref="CalendarSystem.GetGregorianCalendar"/>(5)</description></item>
         ///   <item><term>Gregorian 6</term><description><see cref="CalendarSystem.GetGregorianCalendar"/>(6)</description></item>
         ///   <item><term>Gregorian 7</term><description><see cref="CalendarSystem.GetGregorianCalendar"/>(7)</description></item>
-        ///   <item><term>Coptic 1</term><description><see cref="CalendarSystem.GetCopticCalendar"/>(1)</description></item>
-        ///   <item><term>Coptic 2</term><description><see cref="CalendarSystem.GetCopticCalendar"/>(2)</description></item>
-        ///   <item><term>Coptic 3</term><description><see cref="CalendarSystem.GetCopticCalendar"/>(3)</description></item>
-        ///   <item><term>Coptic 4</term><description><see cref="CalendarSystem.GetCopticCalendar"/>(4)</description></item>
-        ///   <item><term>Coptic 5</term><description><see cref="CalendarSystem.GetCopticCalendar"/>(5)</description></item>
-        ///   <item><term>Coptic 6</term><description><see cref="CalendarSystem.GetCopticCalendar"/>(6)</description></item>
-        ///   <item><term>Coptic 7</term><description><see cref="CalendarSystem.GetCopticCalendar"/>(7)</description></item>
-        ///   <item><term>Julian 1</term><description><see cref="CalendarSystem.GetJulianCalendar"/>(1)</description></item>
-        ///   <item><term>Julian 2</term><description><see cref="CalendarSystem.GetJulianCalendar"/>(2)</description></item>
-        ///   <item><term>Julian 3</term><description><see cref="CalendarSystem.GetJulianCalendar"/>(3)</description></item>
-        ///   <item><term>Julian 4</term><description><see cref="CalendarSystem.GetJulianCalendar"/>(4)</description></item>
-        ///   <item><term>Julian 5</term><description><see cref="CalendarSystem.GetJulianCalendar"/>(5)</description></item>
-        ///   <item><term>Julian 6</term><description><see cref="CalendarSystem.GetJulianCalendar"/>(6)</description></item>
-        ///   <item><term>Julian 7</term><description><see cref="CalendarSystem.GetJulianCalendar"/>(7)</description></item>
+        ///   <item><term>Coptic</term><description><see cref="CalendarSystem.GetCopticCalendar"/>()</description></item>
+        ///   <item><term>Julian</term><description><see cref="CalendarSystem.GetJulianCalendar"/>()</description></item>
         ///   <item><term>Hijri Civil-Indian</term><description><see cref="CalendarSystem.GetIslamicCalendar"/>(IslamicLeapYearPattern.Indian, IslamicEpoch.Civil)</description></item>
         ///   <item><term>Hijri Civil-Base15</term><description><see cref="CalendarSystem.GetIslamicCalendar"/>(IslamicLeapYearPattern.Base15, IslamicEpoch.Civil)</description></item>
         ///   <item><term>Hijri Civil-Base16</term><description><see cref="CalendarSystem.GetIslamicCalendar"/>(IslamicLeapYearPattern.Base16, IslamicEpoch.Civil)</description></item>
@@ -446,8 +413,9 @@ namespace NodaTime
         ///   <item><term>Hijri Astronomical-Base15</term><description><see cref="CalendarSystem.GetIslamicCalendar"/>(IslamicLeapYearPattern.Base15, IslamicEpoch.Astronomical)</description></item>
         ///   <item><term>Hijri Astronomical-Base16</term><description><see cref="CalendarSystem.GetIslamicCalendar"/>(IslamicLeapYearPattern.Base16, IslamicEpoch.Astronomical)</description></item>
         ///   <item><term>Hijri Astronomical-HabashAlHasib</term><description><see cref="CalendarSystem.GetIslamicCalendar"/>(IslamicLeapYearPattern.HabashAlHasib, IslamicEpoch.Astronomical)</description></item>
-        ///   <item><term>Persian</term><description><see cref="CalendarSystem.GetPersianCalendar"/></description></item>
-        ///   <item><term>Hebrew</term><description><see cref="CalendarSystem.GetHebrewCalendar"/></description></item>
+        ///   <item><term>Persian</term><description><see cref="CalendarSystem.GetPersianCalendar"/>()</description></item>
+        ///   <item><term>Hebrew Civil</term><description><see cref="CalendarSystem.GetHebrewCalendar"/>(HebrewMonthNumbering.Civil)</description></item>
+        ///   <item><term>Hebrew Scriptural</term><description><see cref="CalendarSystem.GetHebrewCalendar"/>(HebrewMonthNumbering.Scriptural)</description></item>
         /// </list>
         /// </remarks>
         public string Id { get { return id; } }
