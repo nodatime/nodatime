@@ -170,5 +170,16 @@ The Noda Time implementation uses the BCL
 [`UmAlQuraCalendar`](http://msdn.microsoft.com/en-us/library/system.globalization.umalquracalendar.aspx) to obtain the required
 information, which means it can only work on platforms where that class is available. It isn't available on all PCL-supporting runtimes,
 and the Mono implementation is [known to have serious flaws](https://bugzilla.xamarin.com/show_bug.cgi?id=21930). Where a sensible
-implementation is not available, requesting this calendar will throw a `NotSupportedException`. (Details of supported and unsupported
-platforms will be included here as they are confirmed.)
+implementation is not available, requesting this calendar will throw a `NotSupportedException`.
+
+**Supported platforms:**
+
+- Windows Phone 8.1 Silverlight
+- Desktop Silverlight
+- Desktop .NET
+
+**Unsupported platforms:**
+
+- Mono (Xamarin.iOS, Xamarin.Android, and desktop) - tested up to v3.6.0
+- Windows Phone 8.1 store apps (despite MSDN claiming otherwise)
+- Windows 8.1 store apps
