@@ -43,7 +43,7 @@ namespace NodaTime.Test.Calendars
         {
             if (!UmAlQuraYearMonthDayCalculator.IsSupported)
             {
-                Assert.Throws<InvalidOperationException>(() => new UmAlQuraYearMonthDayCalculator());
+                Assert.Throws<NotSupportedException>(() => new UmAlQuraYearMonthDayCalculator());
             }
         }
 

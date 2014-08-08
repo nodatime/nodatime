@@ -2,9 +2,11 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using NodaTime.Calendars;
 using NUnit.Framework;
 
 namespace NodaTime.Test
@@ -12,15 +14,17 @@ namespace NodaTime.Test
     [TestFixture]
     public partial class CalendarSystemTest
     {
+        private static readonly IEnumerable<string> SupportedIds = CalendarSystem.Ids.Where(x => x != "Um Al Qura" || UmAlQuraYearMonthDayCalculator.IsSupported).ToList();
+
         [Test]
-        [TestCaseSource(typeof(CalendarSystem), "Ids")]
+        [TestCaseSource("SupportedIds")]
         public void ValidId(string id)
         {
             Assert.IsInstanceOf<CalendarSystem>(CalendarSystem.ForId(id));
         }
 
         [Test]
-        [TestCaseSource(typeof(CalendarSystem), "Ids")]
+        [TestCaseSource("SupportedIds")]
         public void IdsAreCaseSensitive(string id)
         {
             Assert.Throws<KeyNotFoundException>(() => CalendarSystem.ForId(id.ToLowerInvariant()));
@@ -29,14 +33,32 @@ namespace NodaTime.Test
         [Test]
         public void AllIdsGiveDifferentCalendars()
         {
-            var allCalendars = CalendarSystem.Ids.Select(id => CalendarSystem.ForId(id));
-            Assert.AreEqual(CalendarSystem.Ids.Count(), allCalendars.Distinct().Count());
+            var allCalendars = SupportedIds.Select(CalendarSystem.ForId);
+            Assert.AreEqual(SupportedIds.Count(), allCalendars.Distinct().Count());
         }
 
         [Test]
         public void BadId()
         {
             Assert.Throws<KeyNotFoundException>(() => CalendarSystem.ForId("bad"));
+        }
+
+        [Test]
+        public void GetUmAlQuraCalendar_ThrowsOnUnsupportedPlatform()
+        {
+            if (!UmAlQuraYearMonthDayCalculator.IsSupported)
+            {
+                Assert.Throws<NotSupportedException>(() => CalendarSystem.GetUmAlQuraCalendar());
+            }
+        }
+
+        [Test]
+        public void GetUmAlQuraCalendar_WorksOnsupportedPlatform()
+        {
+            if (UmAlQuraYearMonthDayCalculator.IsSupported)
+            {
+                Assert.IsNotNull(CalendarSystem.GetUmAlQuraCalendar());
+            }
         }
 
         [Test]
