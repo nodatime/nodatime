@@ -73,8 +73,6 @@ The Noda Time implementation of the Julian calendar is proleptic, and ignores th
 year rule was accidentally implemented as a leap year every *three* years. See the linked Wikipedia article for more
 details of this leap year error, along with suggestions of how history might have actually played out.
 
-The parameter to `GetJulianCalendar()` indicates the minimum number of days in the first week of the week-year.
-
 Coptic (Alexandrian)
 ===
 
@@ -87,8 +85,6 @@ every year number divisible by 4 is a leap year in the Coptic calendar.
 
 Year 1 in the Coptic calendar began on August 29th 284 CE (Julian). The implementation is not proleptic;
 dates earlier than year 1 cannot be represented in the Coptic calendar in Noda Time.
-
-The parameter to `GetCopticCalendar()` indicates the minimum number of days in the first week of the week-year.
 
 Islamic (Hijri)
 ===
@@ -158,3 +154,21 @@ This then means that the subsequent months (Nisan, Iyar, Sivan, Tamuz, Av, Elul)
 Unlike the parameters for the Islamic calendar, the month numbering in the Hebrew calendar doesn't affect any calculations - it *only*
 affects the numeric values of the months both accepted when constructing values (such as in the `LocalDate` constructor)
 and retrieving them (such as with `LocalDate.Month`).
+
+Um Al Qura
+===
+
+First supported in v2.0.0  
+API access: [`CalendarSystem.GetUmAlQuraCalendar()`](noda-method://NodaTime.CalendarSystem.GetUmAlQuraCalendar)
+
+The [Um Al Qura (or Umm al-Qura) calendar](http://en.wikipedia.org/wiki/Islamic_calendar#Saudi_Arabia.27s_Umm_al-Qura_calendar),
+primarily used in Saudi Arabia, is similar to the Islamic Hijri calendar, except that instead of being algorithmic it relies on
+tabular data. Each month has 29 or 30 days, and each year has 354 or 355 days, but the month lengths cannot be determined
+algorithmically.
+
+The Noda Time implementation uses the BCL
+[`UmAlQuraCalendar`](http://msdn.microsoft.com/en-us/library/system.globalization.umalquracalendar.aspx) to obtain the required
+information, which means it can only work on platforms where that class is available. It isn't available on all PCL-supporting runtimes,
+and the Mono implementation is [known to have serious flaws](https://bugzilla.xamarin.com/show_bug.cgi?id=21930). Where a sensible
+implementation is not available, requesting this calendar will throw a `NotSupportedException`. (Details of supported and unsupported
+platforms will be included here as they are confirmed.)
