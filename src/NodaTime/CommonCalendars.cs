@@ -64,18 +64,19 @@ namespace NodaTime
         public static CalendarSystem Persian { get { return CalendarSystem.GetPersianCalendar(); } }
 
         /// <summary>
-        /// Returns a Hebrew calendar system using the civil month numbering.
+        /// Returns a Hebrew calendar system using the civil month numbering,
+        /// equivalent to the one used by the BCL HebrewCalendar.
         /// </summary>
-        /// <remarks>This calendar system is compatible with the BCL HebrewCalendar.</remarks>
         /// <seealso cref="CalendarSystem.GetHebrewCalendar"/>
-        /// <returns>A Hebrew calendar system using the civil month numbering.</returns>
+        /// <returns>A Hebrew calendar system using the civil month numbering, equivalent to the one used by the
+        /// BCL.</returns>
         public static CalendarSystem CivilHebrew { get { return CalendarSystem.GetHebrewCalendar(HebrewMonthNumbering.Civil); } }
 
         /// <summary>
         /// Returns a Hebrew calendar system using the scriptural month numbering.
         /// </summary>
         /// <seealso cref="CalendarSystem.GetHebrewCalendar"/>
-        /// <returns>A Hebrew calendar system using the civil month numbering.</returns>
+        /// <returns>A Hebrew calendar system using the scriptural month numbering.</returns>
         public static CalendarSystem ScripturalHebrew { get { return CalendarSystem.GetHebrewCalendar(HebrewMonthNumbering.Scriptural); } }
     }
 }
