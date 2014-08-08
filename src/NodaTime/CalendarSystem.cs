@@ -249,6 +249,13 @@ namespace NodaTime
             return JulianCalendarSystem;
         }
 
+#if PCL
+        /// <summary>
+        /// Returns an Um Al Qura calendar system - an Islamic calendar system primarily used by
+        /// Saudi Arabia.
+        /// </summary>
+        public static CalendarSystem GetUmAlQuraCalendar()
+#else
         /// <summary>
         /// Returns an Um Al Qura calendar system - an Islamic calendar system primarily used by
         /// Saudi Arabia.
@@ -264,6 +271,7 @@ namespace NodaTime
         /// <returns>A calendar system for the Um Al Qura calendar.</returns>
         /// <exception cref="NotSupportedException">The Um Al Qura calendar is not supported on the current platform.</exception>
         public static CalendarSystem GetUmAlQuraCalendar()
+#endif
         {
             if (UmAlQuraCalendarSystem != null)
             {
