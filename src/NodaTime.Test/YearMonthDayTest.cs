@@ -2,10 +2,6 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using NUnit.Framework;
 
 namespace NodaTime.Test
@@ -29,8 +25,8 @@ namespace NodaTime.Test
         [Test]
         public void AllMonths()
         {
-            // We'll never actually need 63 months, but we support that many...
-            for (int month = 1; month < 63; month++)
+            // We'll never actually need 16 months, but we support that many...
+            for (int month = 1; month < 16; month++)
             {
                 var ymd = new YearMonthDay(-123, month, 20);
                 Assert.AreEqual(-123, ymd.Year);
@@ -42,8 +38,8 @@ namespace NodaTime.Test
         [Test]
         public void AllDays()
         {
-            // We'll never actually need 63 days, but we support that many...
-            for (int day = 1; day < 63; day++)
+            // We'll never actually need 64 days, but we support that many...
+            for (int day = 1; day < 64; day++)
             {
                 var ymd = new YearMonthDay(-123, 12, day);
                 Assert.AreEqual(-123, ymd.Year);
@@ -55,12 +51,12 @@ namespace NodaTime.Test
         [Test]
         [TestCase("1000-01-01", "1000-01-02")]
         [TestCase("1000-01-01", "1000-02-01")]
-        [TestCase("999-63-63", "1000-01-01")]
+        [TestCase("999-16-64", "1000-01-01")]
         [TestCase("-1-01-01", "-1-01-02")]
         [TestCase("-1-01-01", "-1-02-01")]
-        [TestCase("-2-63-63", "-1-01-01")]
-        [TestCase("-1-63-63", "0-01-01")]
-        [TestCase("-1-63-63", "1-01-01")]
+        [TestCase("-2-16-64", "-1-01-01")]
+        [TestCase("-1-16-64", "0-01-01")]
+        [TestCase("-1-16-64", "1-01-01")]
         public void Comparisons(string smallerText, string greaterText)
         {
             var smaller = YearMonthDay.Parse(smallerText);
