@@ -51,6 +51,9 @@ namespace NodaTime
         private const string IslamicName = "Hijri";
         private const string PersianName = "Persian";
         private const string HebrewName = "Hebrew";
+        private const string HebrewCivilId = HebrewName + " Civil";
+        private const string HebrewScripturalId = HebrewName + " Scriptural";
+        private const string UmAlQuraName = "Um Al Qura";
 
         private static readonly CalendarSystem[] GregorianCalendarSystems;
         private static readonly CalendarSystem CopticCalendarSystem;
@@ -59,6 +62,7 @@ namespace NodaTime
         private static readonly CalendarSystem IsoCalendarSystem;
         private static readonly CalendarSystem PersianCalendarSystem;
         private static readonly CalendarSystem[] HebrewCalendarSystems;
+        private static readonly CalendarSystem UmAlQuraCalendarSystem;
 
         static CalendarSystem()
         {
@@ -69,10 +73,11 @@ namespace NodaTime
             CopticCalendarSystem = new CalendarSystem(CopticName, CopticName, new CopticYearMonthDayCalculator(), Era.AnnoMartyrum);
             var julianCalculator = new JulianYearMonthDayCalculator();
             JulianCalendarSystem = new CalendarSystem(JulianName, JulianName, new JulianYearMonthDayCalculator(), 4, new GJEraCalculator(julianCalculator));
+            UmAlQuraCalendarSystem = UmAlQuraYearMonthDayCalculator.IsSupported ? new CalendarSystem(UmAlQuraName, UmAlQuraName, new UmAlQuraYearMonthDayCalculator(), Era.AnnoHegirae) : null;
             HebrewCalendarSystems = new[]
             {
-                new CalendarSystem(HebrewName + " Civil", HebrewName, new HebrewYearMonthDayCalculator(HebrewMonthNumbering.Civil), Era.AnnoMundi),
-                new CalendarSystem(HebrewName + " Scriptural", HebrewName, new HebrewYearMonthDayCalculator(HebrewMonthNumbering.Scriptural), Era.AnnoMundi)
+                new CalendarSystem(HebrewCivilId, HebrewName, new HebrewYearMonthDayCalculator(HebrewMonthNumbering.Civil), Era.AnnoMundi),
+                new CalendarSystem(HebrewScripturalId, HebrewName, new HebrewYearMonthDayCalculator(HebrewMonthNumbering.Scriptural), Era.AnnoMundi)
             };
 
             // Variations for the calendar systems which have different objects for different "minimum first day of week"
@@ -105,6 +110,7 @@ namespace NodaTime
         /// <returns>The calendar system with the given ID.</returns>
         /// <seealso cref="Id"/>
         /// <exception cref="KeyNotFoundException">No calendar system for the specified ID can be found.</exception>
+        /// <exception cref="NotSupportedException">The calendar system with the specified ID is known, but not supported on this platform.</exception>
         public static CalendarSystem ForId(string id)
         {
             Func<CalendarSystem> factory;
@@ -122,27 +128,28 @@ namespace NodaTime
 
         private static readonly Dictionary<string, Func<CalendarSystem>> IdToFactoryMap = new Dictionary<string, Func<CalendarSystem>>
         {
-            { "ISO", () => Iso },
-            { "Persian", GetPersianCalendar },
-            { "Hebrew Civil", () => GetHebrewCalendar(HebrewMonthNumbering.Civil) },
-            { "Hebrew Scriptural", () => GetHebrewCalendar(HebrewMonthNumbering.Scriptural) },
-            { "Gregorian 1", () => GetGregorianCalendar(1) },
-            { "Gregorian 2", () => GetGregorianCalendar(2) },
-            { "Gregorian 3", () => GetGregorianCalendar(3) },
-            { "Gregorian 4", () => GetGregorianCalendar(4) },
-            { "Gregorian 5", () => GetGregorianCalendar(5) },
-            { "Gregorian 6", () => GetGregorianCalendar(6) },
-            { "Gregorian 7", () => GetGregorianCalendar(7) },
-            { "Coptic", GetCopticCalendar },
-            { "Julian", GetJulianCalendar },
-            { "Hijri Civil-Indian", () => GetIslamicCalendar(IslamicLeapYearPattern.Indian, IslamicEpoch.Civil) },
-            { "Hijri Civil-Base15", () => GetIslamicCalendar(IslamicLeapYearPattern.Base15, IslamicEpoch.Civil) },
-            { "Hijri Civil-Base16", () => GetIslamicCalendar(IslamicLeapYearPattern.Base16, IslamicEpoch.Civil) },
-            { "Hijri Civil-HabashAlHasib", () => GetIslamicCalendar(IslamicLeapYearPattern.HabashAlHasib, IslamicEpoch.Civil) },
-            { "Hijri Astronomical-Indian", () => GetIslamicCalendar(IslamicLeapYearPattern.Indian, IslamicEpoch.Astronomical) },
-            { "Hijri Astronomical-Base15", () => GetIslamicCalendar(IslamicLeapYearPattern.Base15, IslamicEpoch.Astronomical) },
-            { "Hijri Astronomical-Base16", () => GetIslamicCalendar(IslamicLeapYearPattern.Base16, IslamicEpoch.Astronomical) },
-            { "Hijri Astronomical-HabashAlHasib", () => GetIslamicCalendar(IslamicLeapYearPattern.HabashAlHasib, IslamicEpoch.Astronomical) },
+            { IsoName, () => Iso },
+            { PersianName, GetPersianCalendar },
+            { HebrewCivilId, () => GetHebrewCalendar(HebrewMonthNumbering.Civil) },
+            { HebrewScripturalId, () => GetHebrewCalendar(HebrewMonthNumbering.Scriptural) },
+            { GregorianName + " 1", () => GetGregorianCalendar(1) },
+            { GregorianName + " 2", () => GetGregorianCalendar(2) },
+            { GregorianName + " 3", () => GetGregorianCalendar(3) },
+            { GregorianName + " 4", () => GetGregorianCalendar(4) },
+            { GregorianName + " 5", () => GetGregorianCalendar(5) },
+            { GregorianName + " 6", () => GetGregorianCalendar(6) },
+            { GregorianName + " 7", () => GetGregorianCalendar(7) },
+            { CopticName, GetCopticCalendar },
+            { JulianName, GetJulianCalendar },
+            { UmAlQuraName, GetUmAlQuraCalendar }, 
+            { IslamicName + " Civil-Indian", () => GetIslamicCalendar(IslamicLeapYearPattern.Indian, IslamicEpoch.Civil) },
+            { IslamicName + " Civil-Base15", () => GetIslamicCalendar(IslamicLeapYearPattern.Base15, IslamicEpoch.Civil) },
+            { IslamicName + " Civil-Base16", () => GetIslamicCalendar(IslamicLeapYearPattern.Base16, IslamicEpoch.Civil) },
+            { IslamicName + " Civil-HabashAlHasib", () => GetIslamicCalendar(IslamicLeapYearPattern.HabashAlHasib, IslamicEpoch.Civil) },
+            { IslamicName + " Astronomical-Indian", () => GetIslamicCalendar(IslamicLeapYearPattern.Indian, IslamicEpoch.Astronomical) },
+            { IslamicName + " Astronomical-Base15", () => GetIslamicCalendar(IslamicLeapYearPattern.Base15, IslamicEpoch.Astronomical) },
+            { IslamicName + " Astronomical-Base16", () => GetIslamicCalendar(IslamicLeapYearPattern.Base16, IslamicEpoch.Astronomical) },
+            { IslamicName + " Astronomical-HabashAlHasib", () => GetIslamicCalendar(IslamicLeapYearPattern.HabashAlHasib, IslamicEpoch.Astronomical) },
         };
 
         /// <summary>
@@ -240,6 +247,29 @@ namespace NodaTime
         public static CalendarSystem GetJulianCalendar()
         {
             return JulianCalendarSystem;
+        }
+
+        /// <summary>
+        /// Returns an Um Al Qura calendar system - an Islamic calendar system primarily used by
+        /// Saudi Arabia.
+        /// </summary>
+        /// <remarks>
+        /// This is a tabular calendar, which relies on data provided by the BCL
+        /// <see cref="UmAlQuraCalendar" /> class during initialization.
+        /// As such, some platforms do not support this calendar. In particular, the Mono implementation
+        /// is known to be unreliable (at least as far as Mono 3.6.0). The calendar is available on
+        /// some Portable Class Library variants, but not all. When in doubt, please test thoroughly
+        /// on all platforms you intend to support.
+        /// </remarks>
+        /// <returns>A calendar system for the Um Al Qura calendar.</returns>
+        /// <exception cref="NotSupportedException">The Um Al Qura calendar is not supported on the current platform.</exception>
+        public static CalendarSystem GetUmAlQuraCalendar()
+        {
+            if (UmAlQuraCalendarSystem != null)
+            {
+                return UmAlQuraCalendarSystem;
+            }
+            throw new NotSupportedException("The Um Al Qura calendar is not supported on your platform");
         }
 
         /// <summary>
