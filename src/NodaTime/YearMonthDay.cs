@@ -11,8 +11,8 @@ namespace NodaTime
     /// </summary>
     /// <remarks>
     /// <para>
-    /// The day is represented in bits 0-5. The month is represented in bits 6-11. The
-    /// year is represented in bits 12-29. This type is naive: comparisons are performed
+    /// The day is represented in bits 0-5. The month is represented in bits 6-9. The
+    /// year is represented in bits 10-24. This type is naive: comparisons are performed
     /// assuming that a larger month number always comes after a smaller month number,
     /// etc. This is suitable for most, but not all, calendar systems.
     /// </para>
@@ -24,6 +24,13 @@ namespace NodaTime
     /// </remarks>
     internal struct YearMonthDay : IComparable<YearMonthDay>, IEquatable<YearMonthDay>
     {
+        private const int DayBits = 6;   // Up to 64 days in a month.
+        private const int MonthBits = 4; // Up to 16 months per year.
+        private const int YearBits = 15; // 32K range; only need -10K to +10K.
+
+        private const int DayMask = (1 << DayBits) - 1;
+        private const int MonthMask = ((1 << MonthBits) - 1) << DayBits;
+
         private readonly int value;
 
         internal YearMonthDay(int rawValue)
@@ -38,13 +45,13 @@ namespace NodaTime
         {
             unchecked
             {
-                value = ((year - 1) << 12) | ((month - 1) << 6) | (day - 1);
+                value = ((year - 1) << (DayBits + MonthBits)) | ((month - 1) << DayBits) | (day - 1);
             }
         }
 
-        internal int Year { get { return unchecked((value >> 12) + 1); } }
-        internal int Month { get { return unchecked(((value & 0xfc0) >> 6) + 1); } }
-        internal int Day { get { return unchecked((value & 0x3f) + 1); } }
+        internal int Year { get { return unchecked((value >> (DayBits + MonthBits)) + 1); } }
+        internal int Month { get { return unchecked(((value & MonthMask) >> DayBits) + 1); } }
+        internal int Day { get { return unchecked((value & DayMask) + 1); } }
 
         public int RawValue { get { return value; } }
 
