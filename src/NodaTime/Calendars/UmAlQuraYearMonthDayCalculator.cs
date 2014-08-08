@@ -131,7 +131,7 @@ namespace NodaTime.Calendars
         {
             if (!IsSupported)
             {
-                throw new InvalidOperationException("The Um Al Qura calendar is not supported on this platform");
+                throw new NotSupportedException("The Um Al Qura calendar is not supported on this platform");
             }
         }
 
