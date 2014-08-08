@@ -25,7 +25,7 @@ namespace NodaTime.Demo
         [Test]
         public void MysteryTimeZones()
         {
-            var julianCalendar = CommonCalendars.Julian;
+            var julianCalendar = CalendarSystem.Julian;
             var julianEpoch = new LocalDate(Era.BeforeCommon, 4713, 1, 1, julianCalendar);
             var sampleDate = julianEpoch.PlusDays(2475213);
 

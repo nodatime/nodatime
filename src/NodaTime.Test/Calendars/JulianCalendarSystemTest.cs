@@ -12,7 +12,7 @@ namespace NodaTime.Test.Calendars
     [TestFixture]
     public partial class JulianCalendarSystemTest
     {
-        private static readonly CalendarSystem Julian = CommonCalendars.Julian;
+        private static readonly CalendarSystem Julian = CalendarSystem.Julian;
 
         /// <summary>
         /// The Unix epoch is equivalent to December 19th 1969 in the Julian calendar.

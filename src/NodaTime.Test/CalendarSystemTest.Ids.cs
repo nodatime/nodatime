@@ -46,7 +46,7 @@ namespace NodaTime.Test
         {
             if (!UmAlQuraYearMonthDayCalculator.IsSupported)
             {
-                Assert.Throws<NotSupportedException>(() => CalendarSystem.GetUmAlQuraCalendar());
+                Assert.Throws<NotSupportedException>(() => CalendarSystem.UmAlQura.ToString());
             }
         }
 
@@ -55,7 +55,7 @@ namespace NodaTime.Test
         {
             if (UmAlQuraYearMonthDayCalculator.IsSupported)
             {
-                Assert.IsNotNull(CalendarSystem.GetUmAlQuraCalendar());
+                Assert.IsNotNull(CalendarSystem.UmAlQura);
             }
         }
 

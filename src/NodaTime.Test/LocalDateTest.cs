@@ -26,7 +26,7 @@ namespace NodaTime.Test
         public void CombinationWithTime()
         {
             // Test all three approaches in the same test - they're logically equivalent.
-            var calendar = CommonCalendars.Julian;
+            var calendar = CalendarSystem.Julian;
             LocalDate date = new LocalDate(2014, 3, 28, calendar);
             LocalTime time = new LocalTime(20, 17, 30);
             LocalDateTime expected = new LocalDateTime(2014, 3, 28, 20, 17, 30, calendar);
@@ -45,7 +45,7 @@ namespace NodaTime.Test
         [Test]
         public void XmlSerialization_NonIso()
         {
-            var value = new LocalDate(2013, 4, 12, CommonCalendars.Julian);
+            var value = new LocalDate(2013, 4, 12, CalendarSystem.Julian);
             TestHelper.AssertXmlRoundtrip(value, "<value calendar=\"Julian\">2013-04-12</value>");
         }
 

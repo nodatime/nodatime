@@ -94,7 +94,7 @@ namespace NodaTime.Test
         public void WithCalendar()
         {
             LocalDateTime isoEpoch = new LocalDateTime(1970, 1, 1, 0, 0, 0);
-            LocalDateTime julianEpoch = isoEpoch.WithCalendar(CommonCalendars.Julian);
+            LocalDateTime julianEpoch = isoEpoch.WithCalendar(CalendarSystem.Julian);
             Assert.AreEqual(1969, julianEpoch.Year);
             Assert.AreEqual(12, julianEpoch.Month);
             Assert.AreEqual(19, julianEpoch.Day);
@@ -196,7 +196,7 @@ namespace NodaTime.Test
         public void ComparisonOperators_DifferentCalendars_Throws()
         {
             LocalDateTime value1 = new LocalDateTime(2011, 1, 2, 10, 30);
-            LocalDateTime value2 = new LocalDateTime(2011, 1, 3, 10, 30, CommonCalendars.Julian);
+            LocalDateTime value2 = new LocalDateTime(2011, 1, 3, 10, 30, CalendarSystem.Julian);
 
             Assert.Throws<ArgumentException>(() => (value1 < value2).ToString());
             Assert.Throws<ArgumentException>(() => (value1 <= value2).ToString());
@@ -388,14 +388,14 @@ namespace NodaTime.Test
         [Test]
         public void BinarySerialization()
         {
-            TestHelper.AssertBinaryRoundtrip(new LocalDateTime(2013, 4, 12, 17, 53, 23, CommonCalendars.Julian));
+            TestHelper.AssertBinaryRoundtrip(new LocalDateTime(2013, 4, 12, 17, 53, 23, CalendarSystem.Julian));
             TestHelper.AssertBinaryRoundtrip(new LocalDateTime(2013, 4, 12, 17, 53, 23, 123, 4567));
         }
 
         [Test]
         public void XmlSerialization_NonIso()
         {
-            var value = new LocalDateTime(2013, 4, 12, 17, 53, 23, CommonCalendars.Julian);
+            var value = new LocalDateTime(2013, 4, 12, 17, 53, 23, CalendarSystem.Julian);
             TestHelper.AssertXmlRoundtrip(value, "<value calendar=\"Julian\">2013-04-12T17:53:23</value>");
         }
 

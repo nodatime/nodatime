@@ -59,7 +59,7 @@ namespace NodaTime.Test
         [Test]
         public void Constructor_PropertiesRoundTrip_CustomCalendar()
         {
-            LocalDate date = new LocalDate(2023, 7, 27, CommonCalendars.Julian);
+            LocalDate date = new LocalDate(2023, 7, 27, CalendarSystem.Julian);
             Assert.AreEqual(2023, date.Year);
             Assert.AreEqual(7, date.Month);
             Assert.AreEqual(27, date.Day);
@@ -102,7 +102,7 @@ namespace NodaTime.Test
         [Test]
         public void Constructor_WithYearOfEra_NonIsoCalendar()
         {
-            var calendar = CommonCalendars.Coptic;
+            var calendar = CalendarSystem.Coptic;
             LocalDate absolute = new LocalDate(50, 6, 19, calendar);
             LocalDate withEra = new LocalDate(Era.AnnoMartyrum, 50, 6, 19, calendar);
             Assert.AreEqual(absolute, withEra);

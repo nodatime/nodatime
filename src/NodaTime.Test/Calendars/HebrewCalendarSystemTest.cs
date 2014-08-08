@@ -26,7 +26,7 @@ namespace NodaTime.Test.Calendars
             var bcl = new HebrewCalendar();
             var minYear = bcl.GetYear(bcl.MinSupportedDateTime);
             var maxYear = bcl.GetYear(bcl.MaxSupportedDateTime);
-            var noda = CommonCalendars.CivilHebrew;
+            var noda = CalendarSystem.CivilHebrew;
 
             for (int year = minYear; year <= maxYear; year++)
             {
@@ -42,7 +42,7 @@ namespace NodaTime.Test.Calendars
         public void BclThroughHistory_Civil()
         {
             Calendar bcl = new HebrewCalendar();
-            var noda = CommonCalendars.CivilHebrew;
+            var noda = CalendarSystem.CivilHebrew;
 
             // The min supported date/time starts part way through the year
             var minYear = bcl.GetYear(bcl.MinSupportedDateTime) + 1;
@@ -79,7 +79,7 @@ namespace NodaTime.Test.Calendars
         public void BclThroughHistory_Scriptural()
         {
             Calendar bcl = new HebrewCalendar();
-            var noda = CommonCalendars.ScripturalHebrew;
+            var noda = CalendarSystem.ScripturalHebrew;
 
             // The min supported date/time starts part way through the year
             var minYear = bcl.GetYear(bcl.MinSupportedDateTime) + 1;
@@ -133,8 +133,8 @@ namespace NodaTime.Test.Calendars
         [TestCase("5400-09-30", 2, "5402-09-30")] // No truncation in Kislev (both 5503 and 5504 are long)
         public void SetYear(string startText, int years, string expectedEndText)
         {
-            var civil = CommonCalendars.CivilHebrew;
-            var scriptural = CommonCalendars.ScripturalHebrew;
+            var civil = CalendarSystem.CivilHebrew;
+            var scriptural = CalendarSystem.ScripturalHebrew;
             var pattern = LocalDatePattern.CreateWithInvariantCulture("yyyy-MM-dd")
                 .WithTemplateValue(new LocalDate(5774, 1, 1, scriptural)); // Sample value in 2014 ISO
 
@@ -151,7 +151,7 @@ namespace NodaTime.Test.Calendars
         [TestCaseSource("AddAndSubtractMonthCases")]
         public void AddMonths_MonthsBetween(string startText, int months, string expectedEndText)
         {
-            var civil = CommonCalendars.CivilHebrew;
+            var civil = CalendarSystem.CivilHebrew;
             var pattern = LocalDatePattern.CreateWithInvariantCulture("yyyy-MM-dd")
                 .WithTemplateValue(new LocalDate(5774, 1, 1, civil)); // Sample value in 2014 ISO
 
@@ -165,7 +165,7 @@ namespace NodaTime.Test.Calendars
         [TestCaseSource("MonthsBetweenCases")]
         public void MonthsBetween(string startText, int expectedMonths, string endText)
         {
-            var civil = CommonCalendars.CivilHebrew;
+            var civil = CalendarSystem.CivilHebrew;
             var pattern = LocalDatePattern.CreateWithInvariantCulture("yyyy-MM-dd")
                 .WithTemplateValue(new LocalDate(5774, 1, 1, civil)); // Sample value in 2014 ISO
 
@@ -177,7 +177,7 @@ namespace NodaTime.Test.Calendars
         [Test]
         public void MonthsBetween_TimeOfDay()
         {
-            var civil = CommonCalendars.CivilHebrew;
+            var civil = CalendarSystem.CivilHebrew;
             var start = new LocalDateTime(5774, 5, 10, 15, 0, civil); // 3pm
             var end = new LocalDateTime(5774, 7, 10, 5, 0, civil); // 5am
             // Would be 2, but the start time is later than the end time.

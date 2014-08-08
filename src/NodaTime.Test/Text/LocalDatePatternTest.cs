@@ -79,8 +79,8 @@ namespace NodaTime.Test.Text
             new Data { Pattern = "c yyyy MM dd", Text = "2015 01 01", Message = Messages.Parse_NoMatchingCalendarSystem },
 
             // Invald year
-            new Data { Template = new LocalDate(1, 1, 1, CommonCalendars.BclIslamic), Pattern = "yyyy", Text = "9999", Message = Messages.Parse_FieldValueOutOfRange, Parameters = { 9999, 'y', typeof(LocalDate) } },
-            new Data { Template = new LocalDate(1, 1, 1, CommonCalendars.BclIslamic), Pattern = "YYYY", Text = "9999", Message = Messages.Parse_YearOfEraOutOfRange, Parameters = { 9999, "EH", "Hijri" } },
+            new Data { Template = new LocalDate(1, 1, 1, CalendarSystem.BclIslamic), Pattern = "yyyy", Text = "9999", Message = Messages.Parse_FieldValueOutOfRange, Parameters = { 9999, 'y', typeof(LocalDate) } },
+            new Data { Template = new LocalDate(1, 1, 1, CalendarSystem.BclIslamic), Pattern = "YYYY", Text = "9999", Message = Messages.Parse_YearOfEraOutOfRange, Parameters = { 9999, "EH", "Hijri" } },
         };
 
         internal static Data[] ParseOnlyData = {
@@ -169,8 +169,8 @@ namespace NodaTime.Test.Text
             // Calendar handling
             new Data(2011, 10, 9) { Pattern = "c yyyy MM dd", Text = "ISO 2011 10 09" },
             new Data(2011, 10, 9) { Pattern = "yyyy MM dd c", Text = "2011 10 09 ISO" },
-            new Data(2011, 10, 9, CommonCalendars.Coptic) { Pattern = "c yyyy MM dd", Text = "Coptic 2011 10 09" },
-            new Data(2011, 10, 9, CommonCalendars.Coptic) { Pattern = "yyyy MM dd c", Text = "2011 10 09 Coptic" },
+            new Data(2011, 10, 9, CalendarSystem.Coptic) { Pattern = "c yyyy MM dd", Text = "Coptic 2011 10 09" },
+            new Data(2011, 10, 9, CalendarSystem.Coptic) { Pattern = "yyyy MM dd c", Text = "2011 10 09 Coptic" },
 
             // Awkward day-of-week handling
             // December 14th 2012 was a Friday. Friday is "Foo" or "FooBar" in AwkwardDayOfWeekCulture.
