@@ -14,8 +14,6 @@ namespace NodaTime.Test
     [TestFixture]
     public partial class CalendarSystemTest
     {
-        private static readonly IEnumerable<string> SupportedIds = CalendarSystem.Ids.Where(x => x != "Um Al Qura" || UmAlQuraYearMonthDayCalculator.IsSupported).ToList();
-
         [Test]
         [TestCaseSource("SupportedIds")]
         public void ValidId(string id)
