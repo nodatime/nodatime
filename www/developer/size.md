@@ -37,39 +37,38 @@ A `LocalTime` only knows about the nanosecond of the day, which is represented a
 
 The value is always non-negative, and requires 47 bits (to represent a maximum value one less than 86,400,000,000,000).
 
-#YearMonthDay#
+#YearMonthDay and YearMonthDayCalendar#
 
-`YearMonthDay` is used to split a date into year, month and day in a particular calendar, which
-isn't represented in the value itself. Its representation is just a single `int`:
+`YearMonthDay` and `YearMonthDayCalendar` are used to split a date into year, month and day. Its representation is just a single `int`:
 
 - `int value`
 
 (4 bytes)
 
-The value is split into the three parts as:
+The value is split into the three or four parts as:
 
 - Day: 6 bits
-- Month: 6 bits
+- Month: 4 bits
 - Year: 15 bits
+- Calendar: 7 bits (only in `YearMonthDayCalendar`)
 
-This leaves 5 bits available for future expansion, should they be useful - while actually allowing 
-for days and months of up to 64. (If we reasonably assume no day-of-month above 32 and no month 
-above 16, we can save an extra 3 bits.) Each component stores the desired value minus one, i.e. a 
-raw value of 0 represents 0001-01-01. This ensures that a "default" `YearMonthDay` (for example
-in the context of `new LocalDate()`) represents a valid value.
+`YearMonthDay` is used within `YearMonthCalculator` code, whereas `YearMonthDayCalendar` is used in `LocalDate` and `OffsetDateTime`.
+The calendar is represented in 7 bits by assigning an ordinal to each calendar system. This approach limits Noda Time to having
+a maximum of 128 calendar systems (including variants such as leap year patterns, epochs and month numbering systems). However,
+as of August 2014 it seems unlikely that we'll ever hit that limit. Perhaps more importantly, it does mean that we can't easily
+allow user-provided calendar systems.
 
-With an extra 3 bits, we could *potentially* encode a calendar system ID into `YearMonthDay` as well,
-so that `LocalDate` was just a wrapper around `YearMonthDay`. This would have an impact on our
-ability to create arbitrary calendar systems later, however.
+The ISO calendar system is calendar 0, making it a natural default for the type. The other components are encoded such that a 0
+in the value means 1 in the component itself, so the default values of `YearMonthDay` and `YearMonthDayCalendar` are 0001-01-01
+and 0001-01-01 ISO respectively.
 
 #LocalDate#
 
-A `LocalDate` is a `YearMonthDay` and a calendar system reference:
+A `LocalDate` is simply a `YearMonthDayCalendar`:
 
-- `YearMonthDay yearMonthDay`
-- `CalendarSystem calendar`
+- `YearMonthDayCalendar yearMonthDayCalendar`
 
-(4 bytes + 1 reference)
+(4 bytes)
 
 #LocalDateTime#
 
@@ -78,7 +77,7 @@ A `LocalDateTime` is simply the combination of a `LocalDate` and a `LocalTime`:
 - `LocalDate date`
 - `LocalTime time`
 
-(12 bytes + 1 reference)
+(12 bytes)
 
 #Offset#
 
@@ -91,14 +90,13 @@ between UTC and local time. This is within inclusive bounds of +/- 18 hours.
 
 #OffsetDateTime#
 
-An `OffsetDateTime` is *logically* a `LocalDateTime` and an `Offset`, but it's stored with separate
-fields, as that has shown some surprising performance benefits:
+An `OffsetDateTime` is *logically* a `LocalDateTime` and an `Offset`, but it's stored somewhat differently,
+as that has shown some surprising performance benefits:
 
-- `YearMonthDay yearMonthDay`
+- `YearMonthDayCalendar yearMonthDayCalendar`
 - `long nanosecondsAndOffset`
-- `CalendarSystem calendar`
 
-(12 bytes + 1 reference)
+(12 bytes)
 
 The nanosecondsAndOffset value is split into two parts as:
 
@@ -112,4 +110,4 @@ A `ZonedDateTime` is an `OffsetDateTime` and a `DateTimeZone` reference:
 - `OffsetDateTime offsetDateTime`
 - `DateTimeZone zone`
 
-(12 bytes + 2 references)
+(12 bytes + 1 reference)
