@@ -3,6 +3,7 @@
 // as found in the LICENSE.txt file.
 using System;
 using System.Globalization;
+using JetBrains.Annotations;
 
 namespace NodaTime
 {
@@ -75,6 +76,16 @@ namespace NodaTime
         public override string ToString()
         {
             return string.Format(CultureInfo.InvariantCulture, "{0:0000}-{1:00}-{2:00}", Year, Month, Day);
+        }
+
+        internal YearMonthDayCalendar WithCalendar([CanBeNull] CalendarSystem calendar)
+        {
+            return new YearMonthDayCalendar(value, calendar == null ? 0 : calendar.Ordinal);
+        }
+
+        internal YearMonthDayCalendar WithCalendarOrdinal(CalendarOrdinal calendarOrdinal)
+        {
+            return new YearMonthDayCalendar(value, calendarOrdinal);
         }
 
         public int CompareTo(YearMonthDay other)
