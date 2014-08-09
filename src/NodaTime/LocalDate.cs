@@ -39,19 +39,22 @@ namespace NodaTime
         , ISerializable
 #endif
     {
-        [ReadWriteForEfficiency] private YearMonthDay yearMonthDay;
-        private readonly CalendarSystem calendar;
+        [ReadWriteForEfficiency] private YearMonthDayCalendar yearMonthDayCalendar;
 
         /// <summary>
         /// Constructs an instance from values which are assumed to already have been validated.
         /// </summary>
+        internal LocalDate([Trusted] YearMonthDayCalendar yearMonthDayCalendar)
+        {
+            this.yearMonthDayCalendar = yearMonthDayCalendar;
+        }
+        /// <summary>
+        /// Constructs an instance from values which are assumed to already have been validated.
+        /// </summary>
+        // TODO: See if we still need this.
         internal LocalDate([Trusted] YearMonthDay yearMonthDay, [Trusted] CalendarSystem calendar)
         {
-            this.yearMonthDay = yearMonthDay;
-            this.calendar = calendar;
-            // Use the property instead of the parameter, so that we can cope with a null parameter.
-            // (That's okay, it'll just use ISO.)
-            Calendar.DebugValidateYearMonthDay(yearMonthDay);
+            this.yearMonthDayCalendar = yearMonthDay.WithCalendar(calendar);
         }
 
         /// <summary>
@@ -61,8 +64,7 @@ namespace NodaTime
         internal LocalDate([Trusted] int daysSinceEpoch)
         {
             Preconditions.DebugCheckArgumentRange("daysSinceEpoch", daysSinceEpoch, CalendarSystem.Iso.MinDays, CalendarSystem.Iso.MaxDays);
-            this.yearMonthDay = GregorianYearMonthDayCalculator.GetGregorianYearMonthDayFromDaysSinceEpoch(daysSinceEpoch);
-            this.calendar = CalendarSystem.Iso;
+            this.yearMonthDayCalendar = GregorianYearMonthDayCalculator.GetGregorianYearMonthDayCalendarFromDaysSinceEpoch(daysSinceEpoch);
         }
 
         /// <summary>
@@ -70,6 +72,7 @@ namespace NodaTime
         /// system. The calendar system is assumed to be non-null, but the days since the epoch are
         /// validated.
         /// </summary>
+        // TODO: See if we still need this.
         internal LocalDate(int daysSinceEpoch, [Trusted] CalendarSystem calendar)
             : this(calendar.GetYearMonthDayFromDaysSinceEpoch(daysSinceEpoch), calendar)
         {
@@ -85,9 +88,8 @@ namespace NodaTime
         /// <exception cref="ArgumentOutOfRangeException">The parameters do not form a valid date.</exception>
         public LocalDate(int year, int month, int day)
         {
-            this.calendar = CalendarSystem.Iso;
             GregorianYearMonthDayCalculator.ValidateGregorianYearMonthDay(year, month, day);
-            yearMonthDay = new YearMonthDay(year, month, day);
+            yearMonthDayCalendar = new YearMonthDayCalendar(year, month, day, CalendarOrdinal.Iso);
         }
 
         /// <summary>
@@ -103,9 +105,8 @@ namespace NodaTime
         public LocalDate(int year, int month, int day, [NotNull] CalendarSystem calendar)
         {
             Preconditions.CheckNotNull(calendar, "calendar");
-            this.calendar = calendar;
             calendar.ValidateYearMonthDay(year, month, day);
-            yearMonthDay = new YearMonthDay(year, month, day);
+            yearMonthDayCalendar = new YearMonthDayCalendar(year, month, day, calendar.Ordinal);
         }
 
         /// <summary>
@@ -138,21 +139,21 @@ namespace NodaTime
         }
 
         /// <summary>Gets the calendar system associated with this local date.</summary>
-        public CalendarSystem Calendar { get { return calendar ?? CalendarSystem.Iso; } }
+        public CalendarSystem Calendar { get { return CalendarSystem.ForOrdinal(yearMonthDayCalendar.CalendarOrdinal); } }
 
         /// <summary>Gets the year of this local date.</summary>
         /// <remarks>This returns the "absolute year", so, for the ISO calendar,
         /// a value of 0 means 1 BC, for example.</remarks>
-        public int Year { get { return yearMonthDay.Year; } }
+        public int Year { get { return yearMonthDayCalendar.Year; } }
 
         /// <summary>Gets the month of this local date within the year.</summary>
-        public int Month { get { return yearMonthDay.Month; } }
+        public int Month { get { return yearMonthDayCalendar.Month; } }
 
         /// <summary>Gets the day of this local date within the month.</summary>
-        public int Day { get { return yearMonthDay.Day; } }
+        public int Day { get { return yearMonthDayCalendar.Day; } }
 
         /// <summary>Gets the number of days since the Unix epoch for this date.</summary>
-        internal int DaysSinceEpoch { get { return Calendar.GetDaysSinceEpoch(yearMonthDay); } }
+        internal int DaysSinceEpoch { get { return Calendar.GetDaysSinceEpoch(yearMonthDayCalendar.ToYearMonthDay()); } }
 
         /// <summary>
         /// Gets the week day of this local date expressed as an <see cref="NodaTime.IsoDayOfWeek"/> value,
@@ -160,7 +161,7 @@ namespace NodaTime
         /// </summary>
         /// <exception cref="InvalidOperationException">The underlying calendar doesn't use ISO days of the week.</exception>
         /// <seealso cref="DayOfWeek"/>
-        public IsoDayOfWeek IsoDayOfWeek { get { return Calendar.GetIsoDayOfWeek(yearMonthDay); } }
+        public IsoDayOfWeek IsoDayOfWeek { get { return Calendar.GetIsoDayOfWeek(yearMonthDayCalendar.ToYearMonthDay()); } }
 
         /// <summary>
         /// Gets the week day of this local date as a number.
@@ -169,7 +170,7 @@ namespace NodaTime
         /// For calendars using ISO week days, this gives 1 for Monday to 7 for Sunday.
         /// </remarks>
         /// <seealso cref="IsoDayOfWeek"/>
-        public int DayOfWeek { get { return Calendar.GetDayOfWeek(yearMonthDay); } }
+        public int DayOfWeek { get { return Calendar.GetDayOfWeek(yearMonthDayCalendar.ToYearMonthDay()); } }
 
         /// <summary>
         /// Gets the "week year" of this local date.
@@ -189,21 +190,24 @@ namespace NodaTime
         /// so is part of week 1 of WeekYear 2013.
         /// </para>
         /// </remarks>
-        public int WeekYear { get { return Calendar.GetWeekYear(yearMonthDay); } }
+        public int WeekYear { get { return Calendar.GetWeekYear(yearMonthDayCalendar.ToYearMonthDay()); } }
 
         /// <summary>Gets the week within the WeekYear. See <see cref="WeekYear"/> for more details.</summary>
-        public int WeekOfWeekYear { get { return Calendar.GetWeekOfWeekYear(yearMonthDay); } }
+        public int WeekOfWeekYear { get { return Calendar.GetWeekOfWeekYear(yearMonthDayCalendar.ToYearMonthDay()); } }
 
         /// <summary>Gets the year of this local date within the era.</summary>
-        public int YearOfEra { get { return Calendar.GetYearOfEra(yearMonthDay); } }
+        public int YearOfEra { get { return Calendar.GetYearOfEra(yearMonthDayCalendar.ToYearMonthDay()); } }
 
         /// <summary>Gets the era of this local date.</summary>
-        public Era Era { get { return Calendar.GetEra(yearMonthDay); } }
+        public Era Era { get { return Calendar.GetEra(yearMonthDayCalendar.ToYearMonthDay()); } }
 
         /// <summary>Gets the day of this local date within the year.</summary>
-        public int DayOfYear { get { return Calendar.GetDayOfYear(yearMonthDay); } }
+        public int DayOfYear { get { return Calendar.GetDayOfYear(yearMonthDayCalendar.ToYearMonthDay()); } }
 
-        internal YearMonthDay YearMonthDay { get { return yearMonthDay; } }
+        internal YearMonthDay YearMonthDay { get { return yearMonthDayCalendar.ToYearMonthDay(); } }
+
+        internal YearMonthDayCalendar YearMonthDayCalendar { get { return yearMonthDayCalendar; } }
+
 
         /// <summary>
         /// Gets a <see cref="LocalDateTime" /> at midnight on the date represented by this local date.
@@ -365,7 +369,7 @@ namespace NodaTime
         /// <returns>True if the two dates are the same and in the same calendar; false otherwise</returns>
         public static bool operator ==(LocalDate lhs, LocalDate rhs)
         {
-            return lhs.yearMonthDay == rhs.yearMonthDay && lhs.Calendar.Equals(rhs.Calendar);
+            return lhs.yearMonthDayCalendar == rhs.yearMonthDayCalendar;
         }
 
         /// <summary>
@@ -394,8 +398,7 @@ namespace NodaTime
         /// <returns>true if the <paramref name="lhs"/> is strictly earlier than <paramref name="rhs"/>, false otherwise.</returns>
         public static bool operator <(LocalDate lhs, LocalDate rhs)
         {
-            Preconditions.CheckArgument(lhs.Calendar.Equals(rhs.Calendar), "rhs", "Only values in the same calendar can be compared");
-            return lhs.CompareTo(rhs) < 0;
+            return lhs.yearMonthDayCalendar.CompareTo(rhs.yearMonthDayCalendar) < 0;
         }
 
         /// <summary>
@@ -473,7 +476,7 @@ namespace NodaTime
         public int CompareTo(LocalDate other)
         {
             Preconditions.CheckArgument(Calendar.Equals(other.Calendar), "other", "Only values with the same calendar system can be compared");
-            return Calendar.Compare(yearMonthDay, other.yearMonthDay);
+            return Calendar.Compare(YearMonthDay, other.YearMonthDay);
         }
 
         /// <summary>
@@ -504,10 +507,7 @@ namespace NodaTime
         /// <returns>A hash code for this local date.</returns>
         public override int GetHashCode()
         {
-            int hash = HashCodeHelper.Initialize();
-            hash = HashCodeHelper.Hash(hash, yearMonthDay);
-            hash = HashCodeHelper.Hash(hash, Calendar);
-            return hash;
+            return yearMonthDayCalendar.GetHashCode();
         }
 
         /// <summary>
@@ -771,8 +771,7 @@ namespace NodaTime
 
 #if !PCL
         #region Binary serialization
-        private const string CalendarIdSerializationName = "calendar";
-        private const string YearMonthDaySerializationName = "yearMonthDay";
+        private const string YearMonthDayCalendarSerializationName = "yearMonthDayCalendar";
 
         /// <summary>
         /// Private constructor only present for serialization.
@@ -780,9 +779,9 @@ namespace NodaTime
         /// <param name="info">The <see cref="SerializationInfo"/> to fetch data from.</param>
         /// <param name="context">The source for this deserialization.</param>
         private LocalDate(SerializationInfo info, StreamingContext context)
-            : this(new YearMonthDay(info.GetInt32(YearMonthDaySerializationName)),
-                   CalendarSystem.ForId(info.GetString(CalendarIdSerializationName)))
+            : this(new YearMonthDayCalendar(info.GetInt32(YearMonthDayCalendarSerializationName)))
         {
+            // TODO(2.0): Validation!
         }
 
         /// <summary>
@@ -793,9 +792,8 @@ namespace NodaTime
         [System.Security.SecurityCritical]
         void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)
         {
-            // TODO(2.0): Consider deserialization of 1.x, and consider serializing year, month, day separately.
-            info.AddValue(YearMonthDaySerializationName, yearMonthDay.RawValue);
-            info.AddValue(CalendarIdSerializationName, Calendar.Id);
+            // TODO(2.0): Consider deserialization of 1.x, and consider serializing year, month, day and calendar separately.
+            info.AddValue(YearMonthDayCalendarSerializationName, yearMonthDayCalendar.RawValue);
         }
         #endregion
 #endif

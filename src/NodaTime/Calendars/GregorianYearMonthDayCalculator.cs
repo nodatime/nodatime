@@ -49,13 +49,13 @@ namespace NodaTime.Calendars
         /// <summary>
         /// Specifically Gregorian-optimized conversion from "days since epoch" to year/month/day.
         /// </summary>
-        internal static YearMonthDay GetGregorianYearMonthDayFromDaysSinceEpoch(int daysSinceEpoch)
+        internal static YearMonthDayCalendar GetGregorianYearMonthDayCalendarFromDaysSinceEpoch(int daysSinceEpoch)
         {
             unchecked
             {
                 if (daysSinceEpoch < FirstOptimizedDay || daysSinceEpoch > LastOptimizedDay)
                 {
-                    return CalendarSystem.Iso.GetYearMonthDayFromDaysSinceEpoch(daysSinceEpoch);
+                    return CalendarSystem.Iso.GetYearMonthDayFromDaysSinceEpoch(daysSinceEpoch).WithCalendarOrdinal(CalendarOrdinal.Iso);
                 }
                 // Divide by more than we need to, in order to guarantee that we only need to move forward.
                 // We can still only be out by 1 year.
@@ -95,7 +95,8 @@ namespace NodaTime.Calendars
                 }
                 int month = startOfMonth / 29 + 1;
                 int dayOfMonth = d - startOfMonth;
-                return new YearMonthDay(year, month, dayOfMonth);
+                // TODO(2.0): Consider an overload which doesn't take the ordinal. That would save a single bitwise OR, and an argument. Doubt that it's worth it...
+                return new YearMonthDayCalendar(year, month, dayOfMonth, CalendarOrdinal.Iso);
             }
         }
 

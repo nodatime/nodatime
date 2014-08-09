@@ -43,6 +43,5 @@ namespace NodaTime.Test
                 property.GetValue(localDate, null);
             }
         }
-
     }
 }

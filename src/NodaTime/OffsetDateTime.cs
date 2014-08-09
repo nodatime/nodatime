@@ -45,27 +45,24 @@ namespace NodaTime
         // These are effectively the fields of a LocalDateTime and an Offset, but by keeping them directly here,
         // we reduce the levels of indirection and copying, which makes a surprising difference in speed, and
         // should allow us to optimize memory usage too.
-        [ReadWriteForEfficiency] private YearMonthDay yearMonthDay;
+        [ReadWriteForEfficiency] private YearMonthDayCalendar yearMonthDayCalendar;
         // Bottom NanosecondsBits bits are the nanosecond-of-day; top 17 bits are the offset (in seconds). This has a slight
         // execution-time cost (masking for each component) but the logical benefit of saving 4 bytes per
         // value actually ends up being 8 bytes per value on a 64-bit CLR due to alignment.
         private readonly long nanosecondsAndOffset;
-        private readonly CalendarSystem calendar;
 
-        internal OffsetDateTime([Trusted] YearMonthDay yearMonthDay, [Trusted] long nanosecondsAndOffset, [Trusted] CalendarSystem calendar)
+        internal OffsetDateTime([Trusted] YearMonthDayCalendar yearMonthDayCalendar, [Trusted] long nanosecondsAndOffset)
         {
-            this.yearMonthDay = yearMonthDay;
+            this.yearMonthDayCalendar = yearMonthDayCalendar;
             this.nanosecondsAndOffset = nanosecondsAndOffset;
-            this.calendar = calendar;
-            Calendar.DebugValidateYearMonthDay(yearMonthDay);
+            Calendar.DebugValidateYearMonthDay(YearMonthDay);
         }
 
-        internal OffsetDateTime([Trusted] YearMonthDay yearMonthDay, LocalTime time, Offset offset, [Trusted] CalendarSystem calendar)
+        internal OffsetDateTime([Trusted] YearMonthDayCalendar yearMonthDayCalendar, LocalTime time, Offset offset)
         {
-            this.yearMonthDay = yearMonthDay;
+            this.yearMonthDayCalendar = yearMonthDayCalendar;
             this.nanosecondsAndOffset = time.NanosecondOfDay | (((long) offset.Seconds) << NanosecondsBits);
-            this.calendar = calendar;
-            Calendar.DebugValidateYearMonthDay(yearMonthDay);
+            Calendar.DebugValidateYearMonthDay(YearMonthDay);
         }
 
         /// <summary>
@@ -89,9 +86,8 @@ namespace NodaTime
                     days--;
                     nanoOfDay += NodaConstants.NanosecondsPerDay;
                 }
-                yearMonthDay = GregorianYearMonthDayCalculator.GetGregorianYearMonthDayFromDaysSinceEpoch(days);
+                yearMonthDayCalendar = GregorianYearMonthDayCalculator.GetGregorianYearMonthDayCalendarFromDaysSinceEpoch(days);
                 nanosecondsAndOffset = nanoOfDay | (((long) offset.Seconds) << NanosecondsBits);
-                calendar = CalendarSystem.Iso;
             }
         }
 
@@ -116,9 +112,8 @@ namespace NodaTime
                     days--;
                     nanoOfDay += NodaConstants.NanosecondsPerDay;
                 }
-                yearMonthDay = calendar.GetYearMonthDayFromDaysSinceEpoch(days);
+                yearMonthDayCalendar = calendar.GetYearMonthDayFromDaysSinceEpoch(days).WithCalendar(calendar);
                 nanosecondsAndOffset = nanoOfDay | (((long) offset.Seconds) << NanosecondsBits);
-                this.calendar = calendar;
             }
         }
 
@@ -130,26 +125,25 @@ namespace NodaTime
         public OffsetDateTime(LocalDateTime localDateTime, Offset offset)
         {
             var date = localDateTime.Date;
-            yearMonthDay = date.YearMonthDay;
+            yearMonthDayCalendar = date.YearMonthDayCalendar;
             nanosecondsAndOffset = localDateTime.NanosecondOfDay | (((long) offset.Seconds) << NanosecondsBits);
-            calendar = date.Calendar;
         }
 
         /// <summary>Gets the calendar system associated with this local date and time.</summary>
-        public CalendarSystem Calendar { get { return calendar ?? CalendarSystem.Iso; } }
+        public CalendarSystem Calendar { get { return CalendarSystem.ForOrdinal(yearMonthDayCalendar.CalendarOrdinal); } }
 
         /// <summary>Gets the year of this offset date and time.</summary>
         /// <remarks>This returns the "absolute year", so, for the ISO calendar,
         /// a value of 0 means 1 BC, for example.</remarks>
-        public int Year { get { return yearMonthDay.Year; } }
+        public int Year { get { return yearMonthDayCalendar.Year; } }
 
         /// <summary>Gets the month of this offset date and time within the year.</summary>
-        public int Month { get { return yearMonthDay.Month; } }
+        public int Month { get { return yearMonthDayCalendar.Month; } }
 
         /// <summary>Gets the day of this offset date and time within the month.</summary>
-        public int Day { get { return yearMonthDay.Day; } }
+        public int Day { get { return yearMonthDayCalendar.Day; } }
 
-        internal YearMonthDay YearMonthDay { get { return yearMonthDay; } }
+        internal YearMonthDay YearMonthDay { get { return yearMonthDayCalendar.ToYearMonthDay(); } }
 
         /// <summary>
         /// Gets the week day of this offset date and time expressed as an <see cref="NodaTime.IsoDayOfWeek"/> value,
@@ -157,7 +151,7 @@ namespace NodaTime
         /// </summary>
         /// <exception cref="InvalidOperationException">The underlying calendar doesn't use ISO days of the week.</exception>
         /// <seealso cref="DayOfWeek"/>
-        public IsoDayOfWeek IsoDayOfWeek { get { return Calendar.GetIsoDayOfWeek(yearMonthDay); } }
+        public IsoDayOfWeek IsoDayOfWeek { get { return Calendar.GetIsoDayOfWeek(yearMonthDayCalendar.ToYearMonthDay()); } }
 
         /// <summary>
         /// Gets the week day of this offset date and time as a number.
@@ -166,7 +160,7 @@ namespace NodaTime
         /// For calendars using ISO week days, this gives 1 for Monday to 7 for Sunday.
         /// </remarks>
         /// <seealso cref="IsoDayOfWeek"/>
-        public int DayOfWeek { get { return Calendar.GetDayOfWeek(yearMonthDay); } }
+        public int DayOfWeek { get { return Calendar.GetDayOfWeek(yearMonthDayCalendar.ToYearMonthDay()); } }
 
         /// <summary>
         /// Gets the "week year" of this offset date and time.
@@ -186,19 +180,19 @@ namespace NodaTime
         /// so is part of week 1 of WeekYear 2013.
         /// </para>
         /// </remarks>
-        public int WeekYear { get { return Calendar.GetWeekYear(yearMonthDay); } }
+        public int WeekYear { get { return Calendar.GetWeekYear(yearMonthDayCalendar.ToYearMonthDay()); } }
 
         /// <summary>Gets the week within the WeekYear. See <see cref="WeekYear"/> for more details.</summary>
-        public int WeekOfWeekYear { get { return Calendar.GetWeekOfWeekYear(yearMonthDay); } }
+        public int WeekOfWeekYear { get { return Calendar.GetWeekOfWeekYear(yearMonthDayCalendar.ToYearMonthDay()); } }
 
         /// <summary>Gets the year of this offset date and time within the era.</summary>
-        public int YearOfEra { get { return Calendar.GetYearOfEra(yearMonthDay); } }
+        public int YearOfEra { get { return Calendar.GetYearOfEra(yearMonthDayCalendar.ToYearMonthDay()); } }
 
         /// <summary>Gets the era of this offset date and time.</summary>
-        public Era Era { get { return Calendar.GetEra(yearMonthDay); } }
+        public Era Era { get { return Calendar.GetEra(yearMonthDayCalendar.ToYearMonthDay()); } }
 
         /// <summary>Gets the day of this offset date and time within the year.</summary>
-        public int DayOfYear { get { return Calendar.GetDayOfYear(yearMonthDay); } }
+        public int DayOfYear { get { return Calendar.GetDayOfYear(yearMonthDayCalendar.ToYearMonthDay()); } }
 
         /// <summary>
         /// Gets the hour of day of this local time, in the range 0 to 23 inclusive.
@@ -310,7 +304,7 @@ namespace NodaTime
         /// will have the same calendar system and return the same values for each of the date-based calendar
         /// properties (Year, MonthOfYear and so on), but will not have any offset information.
         /// </summary>
-        public LocalDate Date { get { return new LocalDate(yearMonthDay, calendar); } }
+        public LocalDate Date { get { return new LocalDate(yearMonthDayCalendar); } }
 
         /// <summary>
         /// Gets the time portion of this offset date and time. The returned <see cref="LocalTime"/> will
@@ -343,7 +337,7 @@ namespace NodaTime
         private Duration ToElapsedTimeSinceEpoch()
         {
             // Equivalent to LocalDateTime.ToLocalInstant().Minus(offset)
-            int days = Calendar.GetDaysSinceEpoch(yearMonthDay);
+            int days = Calendar.GetDaysSinceEpoch(yearMonthDayCalendar.ToYearMonthDay());
             Duration elapsedTime = new Duration(days, NanosecondOfDay).MinusSmallNanoseconds(OffsetNanoseconds);
             return elapsedTime;
         }
@@ -403,7 +397,7 @@ namespace NodaTime
         public OffsetDateTime WithCalendar([NotNull] CalendarSystem calendarSystem)
         {
             LocalDate newDate = Date.WithCalendar(calendarSystem);
-            return new OffsetDateTime(newDate.YearMonthDay, nanosecondsAndOffset, calendarSystem);
+            return new OffsetDateTime(newDate.YearMonthDayCalendar, nanosecondsAndOffset);
         }
 
         /// <summary>
@@ -420,7 +414,7 @@ namespace NodaTime
         public OffsetDateTime With([NotNull] Func<LocalDate, LocalDate> adjuster)
         {
             LocalDate newDate = Date.With(adjuster);
-            return new OffsetDateTime(newDate.YearMonthDay, nanosecondsAndOffset, newDate.Calendar);
+            return new OffsetDateTime(newDate.YearMonthDayCalendar, nanosecondsAndOffset);
         }
 
         /// <summary>
@@ -436,7 +430,7 @@ namespace NodaTime
         public OffsetDateTime With([NotNull] Func<LocalTime, LocalTime> adjuster)
         {
             LocalTime newTime = TimeOfDay.With(adjuster);
-            return new OffsetDateTime(yearMonthDay, (nanosecondsAndOffset & OffsetMask) | newTime.NanosecondOfDay, Calendar);
+            return new OffsetDateTime(yearMonthDayCalendar, (nanosecondsAndOffset & OffsetMask) | newTime.NanosecondOfDay);
         }
 
         /// <summary>
@@ -476,12 +470,12 @@ namespace NodaTime
                 }
                 if (days == 0)
                 {
-                    return new OffsetDateTime(yearMonthDay, new LocalTime(nanos), offset, calendar);
+                    return new OffsetDateTime(yearMonthDayCalendar, new LocalTime(nanos), offset);
                 }
                 else
                 {
-                    YearMonthDay ymd = days == 0 ? yearMonthDay : Date.PlusDays(days).YearMonthDay;
-                    return new OffsetDateTime(ymd, new LocalTime(nanos), offset, calendar);
+                    YearMonthDayCalendar ymdc = Date.PlusDays(days).YearMonthDayCalendar;
+                    return new OffsetDateTime(ymdc, new LocalTime(nanos), offset);
                 }
             }
         }
@@ -521,7 +515,7 @@ namespace NodaTime
         /// <returns>True if the given value is another offset date/time equal to this one; false otherwise.</returns>
         public bool Equals(OffsetDateTime other)
         {
-            return this.yearMonthDay == other.yearMonthDay && this.nanosecondsAndOffset == other.nanosecondsAndOffset && this.Calendar.Equals(other.Calendar);
+            return this.yearMonthDayCalendar == other.yearMonthDayCalendar && this.nanosecondsAndOffset == other.nanosecondsAndOffset;
         }
 
         #region Formatting
@@ -682,7 +676,7 @@ namespace NodaTime
             {
                 Preconditions.CheckArgument(x.Calendar.Equals(y.Calendar), "y",
                     "Only values with the same calendar system can be compared");
-                int dateComparison = x.Calendar.Compare(x.yearMonthDay, y.yearMonthDay);
+                int dateComparison = x.Calendar.Compare(x.YearMonthDay, y.YearMonthDay);
                 if (dateComparison != 0)
                 {
                     return dateComparison;
@@ -693,20 +687,15 @@ namespace NodaTime
             /// <inheritdoc />
             public override bool Equals(OffsetDateTime x, OffsetDateTime y)
             {
-                if (!x.Calendar.Equals(y.Calendar))
-                {
-                    return false;
-                }
-                return x.yearMonthDay == y.yearMonthDay && x.NanosecondOfDay == y.NanosecondOfDay;
+                return x.yearMonthDayCalendar == y.yearMonthDayCalendar && x.NanosecondOfDay == y.NanosecondOfDay;
             }
 
             /// <inheritdoc />
             public override int GetHashCode(OffsetDateTime obj)
             {
                 var hash = HashCodeHelper.Initialize();
-                hash = HashCodeHelper.Hash(hash, obj.yearMonthDay);
+                hash = HashCodeHelper.Hash(hash, obj.yearMonthDayCalendar);
                 hash = HashCodeHelper.Hash(hash, obj.NanosecondOfDay);
-                hash = HashCodeHelper.Hash(hash, obj.Calendar);
                 return hash;
             }
         }
@@ -807,7 +796,7 @@ namespace NodaTime
         [System.Security.SecurityCritical]
         void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)
         {
-            // TODO(2.0): Consider serialization compatibility.
+            // TODO(2.0): Consider serialization compatibility. (And just serialize the fields?)
             info.AddValue(DaysSerializationName, Date.DaysSinceEpoch);
             info.AddValue(TickOfDaySerializationName, TimeOfDay.TickOfDay);
             info.AddValue(CalendarIdSerializationName, Calendar.Id);

@@ -63,21 +63,23 @@ namespace NodaTime
         private static readonly CalendarSystem PersianCalendarSystem;
         private static readonly CalendarSystem[] HebrewCalendarSystems;
         private static readonly CalendarSystem UmAlQuraCalendarSystem;
+        private static readonly CalendarSystem[] CalendarByOrdinal;
 
         static CalendarSystem()
         {
+            CalendarByOrdinal = new CalendarSystem[(int) CalendarOrdinal.Size];
             var gregorianCalculator = new GregorianYearMonthDayCalculator();
             var gregorianEraCalculator = new GJEraCalculator(gregorianCalculator);
-            IsoCalendarSystem = new CalendarSystem(IsoName, IsoName, gregorianCalculator, 4, gregorianEraCalculator);
-            PersianCalendarSystem = new CalendarSystem(PersianName, PersianName, new PersianYearMonthDayCalculator(), Era.AnnoPersico);
-            CopticCalendarSystem = new CalendarSystem(CopticName, CopticName, new CopticYearMonthDayCalculator(), Era.AnnoMartyrum);
+            IsoCalendarSystem = new CalendarSystem(CalendarOrdinal.Iso, IsoName, IsoName, gregorianCalculator, 4, gregorianEraCalculator);
+            PersianCalendarSystem = new CalendarSystem(CalendarOrdinal.Persian, PersianName, PersianName, new PersianYearMonthDayCalculator(), Era.AnnoPersico);
+            CopticCalendarSystem = new CalendarSystem(CalendarOrdinal.Coptic, CopticName, CopticName, new CopticYearMonthDayCalculator(), Era.AnnoMartyrum);
             var julianCalculator = new JulianYearMonthDayCalculator();
-            JulianCalendarSystem = new CalendarSystem(JulianName, JulianName, new JulianYearMonthDayCalculator(), 4, new GJEraCalculator(julianCalculator));
-            UmAlQuraCalendarSystem = UmAlQuraYearMonthDayCalculator.IsSupported ? new CalendarSystem(UmAlQuraName, UmAlQuraName, new UmAlQuraYearMonthDayCalculator(), Era.AnnoHegirae) : null;
+            JulianCalendarSystem = new CalendarSystem(CalendarOrdinal.Julian, JulianName, JulianName, new JulianYearMonthDayCalculator(), 4, new GJEraCalculator(julianCalculator));
+            UmAlQuraCalendarSystem = UmAlQuraYearMonthDayCalculator.IsSupported ? new CalendarSystem(CalendarOrdinal.UmAlQura, UmAlQuraName, UmAlQuraName, new UmAlQuraYearMonthDayCalculator(), Era.AnnoHegirae) : null;
             HebrewCalendarSystems = new[]
             {
-                new CalendarSystem(HebrewCivilId, HebrewName, new HebrewYearMonthDayCalculator(HebrewMonthNumbering.Civil), Era.AnnoMundi),
-                new CalendarSystem(HebrewScripturalId, HebrewName, new HebrewYearMonthDayCalculator(HebrewMonthNumbering.Scriptural), Era.AnnoMundi)
+                new CalendarSystem(CalendarOrdinal.HebrewCivil, HebrewCivilId, HebrewName, new HebrewYearMonthDayCalculator(HebrewMonthNumbering.Civil), Era.AnnoMundi),
+                new CalendarSystem(CalendarOrdinal.HebrewScriptural, HebrewScripturalId, HebrewName, new HebrewYearMonthDayCalculator(HebrewMonthNumbering.Scriptural), Era.AnnoMundi)
             };
 
             // Variations for the calendar systems which have different objects for different "minimum first day of week"
@@ -85,7 +87,8 @@ namespace NodaTime
             GregorianCalendarSystems = new CalendarSystem[7];
             for (int i = 1; i <= 7; i++)
             {
-                GregorianCalendarSystems[i - 1] = new CalendarSystem(GregorianName, gregorianCalculator, i, gregorianEraCalculator);
+                // CalendarOrdinal is set up to make this simple :)
+                GregorianCalendarSystems[i - 1] = new CalendarSystem((CalendarOrdinal) i, GregorianName, gregorianCalculator, i, gregorianEraCalculator);
             }
             IslamicCalendarSystems = new CalendarSystem[4, 2];
             for (int i = 1; i <= 4; i++)
@@ -96,7 +99,8 @@ namespace NodaTime
                     var epoch = (IslamicEpoch)j;
                     var calculator = new IslamicYearMonthDayCalculator((IslamicLeapYearPattern)i, (IslamicEpoch)j);
                     string id = string.Format(CultureInfo.InvariantCulture, "{0} {1}-{2}", IslamicName, epoch, leapYearPattern);
-                    IslamicCalendarSystems[i - 1, j - 1] = new CalendarSystem(id, IslamicName, calculator, Era.AnnoHegirae);
+                    CalendarOrdinal ordinal = (CalendarOrdinal) (8 + i + j * 4);
+                    IslamicCalendarSystems[i - 1, j - 1] = new CalendarSystem(ordinal, id, IslamicName, calculator, Era.AnnoHegirae);
                 }
             }
         }
@@ -119,6 +123,25 @@ namespace NodaTime
                 throw new KeyNotFoundException(string.Format("No calendar system for ID {0} exists", id));
             }
             return factory();
+        }
+
+        /// <summary>
+        /// Fetches a calendar system by its ordinal value. Note that this currently assumes eager instantiation
+        /// of all calendars. We may need to convert this to a switch statement if we change to use lazy instantiation.
+        /// </summary>
+        internal static CalendarSystem ForOrdinal([Trusted] CalendarOrdinal ordinal)
+        {
+            // Avoid an array lookup for the overwhelmingly common case.
+            if (ordinal == CalendarOrdinal.Iso)
+            {
+                return IsoCalendarSystem;
+            }
+            CalendarSystem calendar = CalendarByOrdinal[(int) ordinal];
+            if (calendar == null)
+            {
+                throw new NotSupportedException("Calendar " + ordinal + " is not supported on this platform");
+            }
+            return calendar;
         }
 
         /// <summary>
@@ -374,6 +397,7 @@ namespace NodaTime
         }
         #endregion
 
+        private readonly CalendarOrdinal ordinal;
         private readonly YearMonthDayCalculator yearMonthDayCalculator;
         private readonly WeekYearCalculator weekYearCalculator;
         private readonly string id;
@@ -384,27 +408,20 @@ namespace NodaTime
         private readonly int minDays;
         private readonly int maxDays;
 
-        private CalendarSystem(string id, string name, YearMonthDayCalculator yearMonthDayCalculator, Era singleEra)
-            : this(id, name, yearMonthDayCalculator, 4, new SingleEraCalculator(singleEra, yearMonthDayCalculator))
+        private CalendarSystem(CalendarOrdinal ordinal, string id, string name, YearMonthDayCalculator yearMonthDayCalculator, Era singleEra)
+            : this(ordinal, id, name, yearMonthDayCalculator, 4, new SingleEraCalculator(singleEra, yearMonthDayCalculator))
         {
         }
 
-        private CalendarSystem(string name, YearMonthDayCalculator yearMonthDayCalculator, int minDaysInFirstWeek, EraCalculator eraCalculator)
-            : this(CreateIdFromNameAndMinDaysInFirstWeek(name, minDaysInFirstWeek), name, yearMonthDayCalculator, minDaysInFirstWeek, eraCalculator)
+        private CalendarSystem(CalendarOrdinal ordinal, string name, YearMonthDayCalculator yearMonthDayCalculator, int minDaysInFirstWeek, EraCalculator eraCalculator)
+            : this(ordinal, string.Format(CultureInfo.InvariantCulture, "{0} {1}", name, minDaysInFirstWeek),
+                   name, yearMonthDayCalculator, minDaysInFirstWeek, eraCalculator)
         {
         }
 
-        /// <summary>
-        /// Creates an ID for a calendar system which only needs to be distinguished by its name and
-        /// the minimum number of days in the first week of the week-year.
-        /// </summary>
-        private static string CreateIdFromNameAndMinDaysInFirstWeek(string name, int minDaysInFirstWeek)
+        private CalendarSystem(CalendarOrdinal ordinal, string id, string name, YearMonthDayCalculator yearMonthDayCalculator, int minDaysInFirstWeek, EraCalculator eraCalculator)
         {
-            return string.Format(CultureInfo.InvariantCulture, "{0} {1}", name, minDaysInFirstWeek);
-        }
-
-        private CalendarSystem(string id, string name, YearMonthDayCalculator yearMonthDayCalculator, int minDaysInFirstWeek, EraCalculator eraCalculator)
-        {
+            this.ordinal = ordinal;
             this.id = id;
             this.name = name;
             this.yearMonthDayCalculator = yearMonthDayCalculator;
@@ -415,6 +432,7 @@ namespace NodaTime
             this.maxDays = yearMonthDayCalculator.GetStartOfYearInDays(maxYear + 1) - 1;
             // We trust the construction code not to mutate the array...
             this.eraCalculator = eraCalculator;
+            CalendarByOrdinal[(int) ordinal] = this;
         }
 
         /// <summary>
@@ -492,6 +510,11 @@ namespace NodaTime
         /// Returns the maximum day number (inclusive) this calendar can handle.
         /// </summary>
         internal int MaxDays { get { return maxDays; } }
+
+        /// <summary>
+        /// Returns the ordinal value of this calendar.
+        /// </summary>
+        internal CalendarOrdinal Ordinal { get { return ordinal; } }
 
         #region Era-based members
         /// <summary>

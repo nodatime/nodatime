@@ -77,5 +77,31 @@ namespace NodaTime.Test
                 }
             }
         }
+
+        // Ordinals are similar enough to IDs to keep the tests in this file too...
+
+        [Test, TestCaseSource("SupportedCalendars")]
+        public void ForOrdinal_Roundtrip(CalendarSystem calendar)
+        {
+            Assert.AreSame(calendar, CalendarSystem.ForOrdinal(calendar.Ordinal));
+        }
+
+        [Test]
+        public void ForOrdinal_UmAlQura_ThrowsOnUnsupportedPlatform()
+        {
+            if (!UmAlQuraYearMonthDayCalculator.IsSupported)
+            {
+                Assert.Throws<NotSupportedException>(() => CalendarSystem.ForOrdinal(CalendarOrdinal.UmAlQura));
+            }
+        }
+
+        [Test]
+        public void ForOrdinal_UmAlQura_WorksOnsupportedPlatform()
+        {
+            if (UmAlQuraYearMonthDayCalculator.IsSupported)
+            {
+                Assert.IsNotNull(CalendarSystem.ForOrdinal(CalendarOrdinal.UmAlQura));
+            }
+        }
     }
 }
