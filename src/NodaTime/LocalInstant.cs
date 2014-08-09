@@ -329,7 +329,7 @@ namespace NodaTime
         /// </returns>
         public override string ToString()
         {
-            var date = new LocalDate(duration.Days, CalendarSystem.Iso);
+            var date = new LocalDate(duration.Days);
             var pattern = LocalDateTimePattern.CreateWithInvariantCulture("yyyy-MM-ddTHH:mm:ss LOC");
             var utc = new LocalDateTime(date, LocalTime.FromNanosecondsSinceMidnight(duration.NanosecondOfDay));
             return pattern.Format(utc);

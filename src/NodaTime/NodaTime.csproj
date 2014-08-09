@@ -146,6 +146,7 @@
     <Compile Include="Annotations\ImmutableAttribute.cs" />
     <Compile Include="Annotations\ReadWriteForEfficiencyAttribute.cs" />
     <Compile Include="Annotations\VisibleForTestingAttribute.cs" />
+    <Compile Include="CalendarOrdinal.cs" />
     <Compile Include="CalendarSystem.cs" />
     <Compile Include="AmbiguousTimeException.cs" />
     <Compile Include="Calendars\CopticYearMonthDayCalculator.cs" />
@@ -306,6 +307,7 @@
     <Compile Include="Utility\NodaReadOnlyDictionary.cs" />
     <Compile Include="Utility\ReferenceEqualityComparer.cs" />
     <Compile Include="Utility\Preconditions.cs" />
+    <Compile Include="YearMonthDayCalendar.cs" />
     <Compile Include="YearMonthDay.cs" />
     <Compile Include="ZonedClock.cs" />
     <Compile Include="ZonedDateTime.cs" />
