@@ -383,6 +383,9 @@ namespace NodaTime
             return !(lhs == rhs);
         }
 
+        // Comparison operators: note that we can't use YearMonthDayCalendar.Compare, as only the calendar knows whether it can use
+        // naive comparisons.
+
         /// <summary>
         /// Compares two dates to see if the left one is strictly earlier than the right
         /// one.
@@ -398,7 +401,8 @@ namespace NodaTime
         /// <returns>true if the <paramref name="lhs"/> is strictly earlier than <paramref name="rhs"/>, false otherwise.</returns>
         public static bool operator <(LocalDate lhs, LocalDate rhs)
         {
-            return lhs.yearMonthDayCalendar.CompareTo(rhs.yearMonthDayCalendar) < 0;
+            Preconditions.CheckArgument(lhs.Calendar.Equals(rhs.Calendar), "rhs", "Only values in the same calendar can be compared");
+            return lhs.CompareTo(rhs) < 0;
         }
 
         /// <summary>
