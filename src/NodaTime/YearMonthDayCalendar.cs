@@ -97,7 +97,7 @@ namespace NodaTime
                 int.Parse(bits[0], CultureInfo.InvariantCulture),
                 int.Parse(bits[1], CultureInfo.InvariantCulture),
                 int.Parse(bits[2], CultureInfo.InvariantCulture),
-                (CalendarOrdinal) Enum.Parse(typeof(CalendarOrdinal), bits[3]));
+                (CalendarOrdinal) Enum.Parse(typeof(CalendarOrdinal), bits[3], false));
         }
 
         internal YearMonthDay ToYearMonthDay()
