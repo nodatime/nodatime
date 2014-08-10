@@ -13,7 +13,7 @@ namespace NodaTime.Test
         public void AllYears()
         {
             // Range of years we actually care about. We support more, but that's okay.
-            for (int year = -99999; year <= 99999; year++)
+            for (int year = -9999; year <= 9999; year++)
             {
                 var ymd = new YearMonthDay(year, 5, 20);
                 Assert.AreEqual(year, ymd.Year);

@@ -4,6 +4,7 @@
 using System;
 using System.Globalization;
 using System.Linq.Expressions;
+using NodaTime.Annotations;
 using NodaTime.Utility;
 
 namespace NodaTime
@@ -18,9 +19,12 @@ namespace NodaTime
     /// The month is represented in bits 13-16.
     /// The year is represented in bits 17-31. (It's convenient to put this at the top as it can be negative.)
     /// 
-    /// This type is naive: comparisons are performed
-    /// assuming that a larger month number always comes after a smaller month number,
-    /// etc. This is suitable for most, but not all, calendar systems.
+    /// This type does not implement IComparable[YearMonthDayCalendar] as it turns out it doesn't need to:
+    /// comparisons are always done through the calendar system, which uses YearMonthDay instead. We could potentially
+    /// optimize by bypassing the calendar and embedding knowledge of calendars which have "odd" month numberings
+    /// in here, but it would be a bit of a design smell.
+    /// 
+    /// Equality is easily tested, however, as it can check for calendar equality.
     /// </para>
     /// <para>
     /// The internal representation actually uses 0 for 1 (etc) for each component.
@@ -28,7 +32,7 @@ namespace NodaTime
     /// supported calendars.
     /// </para>
     /// </remarks>
-    internal struct YearMonthDayCalendar : IComparable<YearMonthDayCalendar>, IEquatable<YearMonthDayCalendar>
+    internal struct YearMonthDayCalendar : IEquatable<YearMonthDayCalendar>
     {
         private const int CalendarBits = 7; // Up to 128 calendars.
         private const int DayBits = 6;   // Up to 64 days in a month.
@@ -78,6 +82,7 @@ namespace NodaTime
         public int RawValue { get { return value; } }
 
         // Just for testing purposes...
+        [VisibleForTesting]
         internal static YearMonthDayCalendar Parse(string text)
         {
             // Handle a leading - to negate the year
@@ -92,7 +97,7 @@ namespace NodaTime
                 int.Parse(bits[0], CultureInfo.InvariantCulture),
                 int.Parse(bits[1], CultureInfo.InvariantCulture),
                 int.Parse(bits[2], CultureInfo.InvariantCulture),
-                (CalendarOrdinal) int.Parse(bits[3], CultureInfo.InvariantCulture));
+                (CalendarOrdinal) Enum.Parse(typeof(CalendarOrdinal), bits[3]));
         }
 
         internal YearMonthDay ToYearMonthDay()
@@ -103,18 +108,6 @@ namespace NodaTime
         public override string ToString()
         {
             return string.Format(CultureInfo.InvariantCulture, "{0:0000}-{1:00}-{2:00}-{3}", Year, Month, Day, CalendarOrdinal);
-        }
-
-        public int Compare(YearMonthDayCalendar lhs, YearMonthDayCalendar rhs)
-        {
-            Preconditions.CheckArgument(lhs.CalendarOrdinal == rhs.CalendarOrdinal, "rhs", "Only values in the same calendar can be compared");
-            return value.CompareTo(rhs.value);
-        }
-
-        public int CompareTo(YearMonthDayCalendar other)
-        {
-            Preconditions.CheckArgument(CalendarOrdinal == other.CalendarOrdinal, "other", "Only values in the same calendar can be compared");
-            return value.CompareTo(other.value);
         }
 
         public static bool operator ==(YearMonthDayCalendar lhs, YearMonthDayCalendar rhs)
