@@ -11,7 +11,7 @@ namespace NodaTime.Annotations
     /// the field value.
     /// </summary>
     /// <remarks>
-    /// See http://noda-time.blogspot.com/2014/07/micro-optimization-surprising.html
+    /// See http://blog.nodatime.org/2014/07/micro-optimization-surprising.html
     /// for details of why we're doing this at all.
     /// </remarks>
     [AttributeUsage(AttributeTargets.Field)]
