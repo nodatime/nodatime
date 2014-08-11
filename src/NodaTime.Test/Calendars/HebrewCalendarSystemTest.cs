@@ -14,7 +14,7 @@ namespace NodaTime.Test.Calendars
 {
     /// <summary>
     /// Tests for HebrewYearMonthDayCalculator via the Hebrew CalendarSystem.
-    /// See http://noda-time.blogspot.co.uk/2014/06/hebrew-calendar-cheat-sheet.html
+    /// See http://blog.nodatime.org/2014/06/hebrew-calendar-cheat-sheet.html
     /// for sample year information.
     /// </summary>
     [TestFixture]
