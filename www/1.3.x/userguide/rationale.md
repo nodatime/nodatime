@@ -34,4 +34,4 @@ retirement (other than for the sake of those forced to stick with
 earlier versions of .NET, of course).
 
 [1]: http://www.joda.org/joda-time
-[2]: http://noda-time.blogspot.com/2011/08/what-wrong-with-datetime-anyway.html
+[2]: http://blog.nodatime.org/2011/08/what-wrong-with-datetime-anyway.html
