@@ -30,7 +30,7 @@ offline, it's the offline API docs)
 - [Blog][1]
 - [Mailing list][2]
 
-[1]: http://noda-time.blogspot.com
+[1]: http://blog.nodatime.org
 [2]: http://groups.google.com/group/noda-time
 [home]: http://noda-time.googlecode.com
 [web]: http://nodatime.org
