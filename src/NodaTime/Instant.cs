@@ -89,7 +89,7 @@ namespace NodaTime
         {
             // TODO(2.0): Check callers, and handle ones which might not need validation.
             this.duration = duration;
-            int days = duration.Days;
+            int days = duration.FloorDays;
             if (days < MinDays || days > MaxDays)
             {
                 throw new OverflowException("Operation would overflow range of Instant");
@@ -121,7 +121,7 @@ namespace NodaTime
             get
             {
                 // Can't use Duration.Ticks, as that truncates towards 0.
-                return TickArithmetic.DaysAndTickOfDayToTicks(duration.Days, duration.NanosecondOfDay / NodaConstants.NanosecondsPerTick);
+                return TickArithmetic.DaysAndTickOfDayToTicks(duration.FloorDays, duration.NanosecondOfFloorDay / NodaConstants.NanosecondsPerTick);
             }
         }
 
@@ -134,12 +134,12 @@ namespace NodaTime
         /// <summary>
         /// Number of days since the local unix epoch.
         /// </summary>
-        internal int DaysSinceEpoch { get { return duration.Days; } }
+        internal int DaysSinceEpoch { get { return duration.FloorDays; } }
 
         /// <summary>
         /// Nanosecond within the day.
         /// </summary>
-        internal long NanosecondOfDay { get { return duration.NanosecondOfDay; } }
+        internal long NanosecondOfDay { get { return duration.NanosecondOfFloorDay; } }
 
         #region IComparable<Instant> and IComparable Members
         /// <summary>
@@ -271,7 +271,7 @@ namespace NodaTime
         /// <returns></returns>
         internal LocalInstant SafePlus(Offset offset)
         {
-            int days = duration.Days;
+            int days = duration.FloorDays;
             // If we can do the arithmetic safely, do so.
             if (days > MinDays && days < MaxDays)
             {
@@ -288,11 +288,11 @@ namespace NodaTime
             }
             // Okay, do the arithmetic as a Duration, then check the result for overflow, effectively.
             var asDuration = duration.PlusSmallNanoseconds(offset.Nanoseconds);
-            if (asDuration.Days < Instant.MinDays)
+            if (asDuration.FloorDays < Instant.MinDays)
             {
                 return LocalInstant.BeforeMinValue;
             }
-            if (asDuration.Days > Instant.MaxDays)
+            if (asDuration.FloorDays > Instant.MaxDays)
             {
                 return LocalInstant.AfterMaxValue;
             }
@@ -664,8 +664,8 @@ namespace NodaTime
         public ZonedDateTime InUtc()
         {
             // Bypass any determination of offset and arithmetic, as we know the offset is zero.
-            var ymdc = GregorianYearMonthDayCalculator.GetGregorianYearMonthDayCalendarFromDaysSinceEpoch(duration.Days);
-            var offsetDateTime = new OffsetDateTime(ymdc, new LocalTime(duration.NanosecondOfDay), Offset.Zero);
+            var ymdc = GregorianYearMonthDayCalculator.GetGregorianYearMonthDayCalendarFromDaysSinceEpoch(duration.FloorDays);
+            var offsetDateTime = new OffsetDateTime(ymdc, new LocalTime(duration.NanosecondOfFloorDay), Offset.Zero);
             return new ZonedDateTime(offsetDateTime, DateTimeZone.Utc);
         }
 

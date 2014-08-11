@@ -954,8 +954,8 @@ namespace NodaTime
             info.AddValue(SecondsSerializationName, seconds);
             info.AddValue(MillisecondsSerializationName, milliseconds);
             info.AddValue(TicksSerializationName, ticks);
-            info.AddValue(NanosecondsDaysSerializationName, nanoseconds.Days);
-            info.AddValue(NanosecondsNanoOfDaySerializationName, nanoseconds.NanosecondOfDay);
+            info.AddValue(NanosecondsDaysSerializationName, nanoseconds.FloorDays);
+            info.AddValue(NanosecondsNanoOfDaySerializationName, nanoseconds.NanosecondOfFloorDay);
         }
         #endregion
 #endif

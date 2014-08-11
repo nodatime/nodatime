@@ -118,16 +118,16 @@ namespace NodaTime.Test
         public void ConstituentParts_Positive()
         {
             var nanos = Duration.FromNanoseconds(NodaConstants.NanosecondsPerDay * 5 + 100);
-            Assert.AreEqual(5, nanos.Days);
-            Assert.AreEqual(100, nanos.NanosecondOfDay);
+            Assert.AreEqual(5, nanos.FloorDays);
+            Assert.AreEqual(100, nanos.NanosecondOfFloorDay);
         }
 
         [Test]
         public void ConstituentParts_Negative()
         {
             var nanos = Duration.FromNanoseconds(NodaConstants.NanosecondsPerDay * -5 + 100);
-            Assert.AreEqual(-5, nanos.Days);
-            Assert.AreEqual(100, nanos.NanosecondOfDay);
+            Assert.AreEqual(-5, nanos.FloorDays);
+            Assert.AreEqual(100, nanos.NanosecondOfFloorDay);
         }
 
         [Test]
@@ -135,8 +135,8 @@ namespace NodaTime.Test
         {
             // And outside the normal range of long...
             var nanos = Duration.FromNanoseconds(NodaConstants.NanosecondsPerDay * 365000m + 500m);
-            Assert.AreEqual(365000, nanos.Days);
-            Assert.AreEqual(500, nanos.NanosecondOfDay);
+            Assert.AreEqual(365000, nanos.FloorDays);
+            Assert.AreEqual(500, nanos.NanosecondOfFloorDay);
         }
 
         [Test]

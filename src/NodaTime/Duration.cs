@@ -12,7 +12,6 @@ using JetBrains.Annotations;
 using NodaTime.Annotations;
 using NodaTime.Calendars;
 using NodaTime.Text;
-using NodaTime.TimeZones;
 using NodaTime.Utility;
 
 namespace NodaTime
@@ -150,9 +149,17 @@ namespace NodaTime
             Preconditions.CheckArgumentRange("nanoOfDay", nanoOfDay, 0, NodaConstants.NanosecondsPerDay - 1);
         }
 
-        internal int Days { get { return days; } }
+        /// <summary>
+        /// Days portion of this duration. The <see cref="NanosecondOfFloorDay" /> is added to this
+        /// value, so this effectively Math.Floor(TotalDays).
+        /// </summary>
+        internal int FloorDays { get { return days; } }
 
-        internal long NanosecondOfDay { get { return nanoOfDay; } }
+        /// <summary>
+        /// Nanosecond within the "floor day". This is *always* non-negative, even for
+        /// negative durations.
+        /// </summary>
+        internal long NanosecondOfFloorDay { get { return nanoOfDay; } }
 
         /// <summary>
         /// The total number of ticks in the duration.
@@ -780,8 +787,12 @@ namespace NodaTime
         /// <summary>
         /// Returns a <see cref="TimeSpan"/> that represents the same number of ticks as this
         /// <see cref="Duration"/>.
-        /// TODO: Document rounding.
         /// </summary>
+        /// <remarks>
+        /// If the number of nanoseconds in a duration is not a whole number of ticks, it is truncated towards zero.
+        /// For example, durations in the range [-99ns, 99ns] would all count as 0 ticks.
+        /// </remarks>
+        /// <exception cref="OverflowException">The number of ticks cannot be represented a signed 64-bit integer.</exception>
         /// <returns>A new TimeSpan with the same number of ticks as this Duration.</returns>
         [Pure]
         public TimeSpan ToTimeSpan()

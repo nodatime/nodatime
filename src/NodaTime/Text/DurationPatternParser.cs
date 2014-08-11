@@ -66,7 +66,7 @@ namespace NodaTime.Text
         private static int GetPositiveNanosecondOfSecond(Duration duration)
         {
             Duration positive = GetPositiveDuration(duration);
-            return (int) (positive.NanosecondOfDay % NodaConstants.NanosecondsPerSecond);
+            return (int) (positive.NanosecondOfFloorDay % NodaConstants.NanosecondsPerSecond);
         }
 
         private static CharacterHandler<Duration, DurationParseBucket> CreateTotalHandler
@@ -102,13 +102,13 @@ namespace NodaTime.Text
                 builder.AddParseValueAction(count, 10, pattern.Current, 0, int.MaxValue, (bucket, value) => bucket.AddDays(value));
                 builder.AddFormatLeftPad(count, duration => 
                 {
-                    int days = duration.Days;
+                    int days = duration.FloorDays;
                     if (days >= 0)
                     {
                         return days;
                     }
                     // Round towards 0.
-                    return duration.NanosecondOfDay == 0 ? -days : -(days + 1);
+                    return duration.NanosecondOfFloorDay == 0 ? -days : -(days + 1);
                 });
             };
         }
@@ -129,13 +129,13 @@ namespace NodaTime.Text
         private static void HandlePlus(PatternCursor pattern, SteppedPatternBuilder<Duration, DurationParseBucket> builder)
         {
             builder.AddField(PatternFields.Sign, pattern.Current);
-            builder.AddRequiredSign((bucket, positive) => bucket.IsNegative = !positive, duration => duration.Days >= 0);
+            builder.AddRequiredSign((bucket, positive) => bucket.IsNegative = !positive, duration => duration.FloorDays >= 0);
         }
 
         private static void HandleMinus(PatternCursor pattern, SteppedPatternBuilder<Duration, DurationParseBucket> builder)
         {
             builder.AddField(PatternFields.Sign, pattern.Current);
-            builder.AddNegativeOnlySign((bucket, positive) => bucket.IsNegative = !positive, duration => duration.Days >= 0);
+            builder.AddNegativeOnlySign((bucket, positive) => bucket.IsNegative = !positive, duration => duration.FloorDays >= 0);
         }
 
         /// <summary>
@@ -143,7 +143,7 @@ namespace NodaTime.Text
         /// </summary>
         private static Duration GetPositiveDuration(Duration duration)
         {
-            return duration.Days >= 0 ? duration : -duration;
+            return duration.FloorDays >= 0 ? duration : -duration;
         }
 
         private static long GetPositiveNanosecondUnits(Duration duration, long nanosecondsPerUnit)
@@ -169,7 +169,7 @@ namespace NodaTime.Text
             internal void AddDays(int days)
             {
                 // TODO(2.0): Add a PlusDays method to Duration?
-                nanoseconds = new Duration(nanoseconds.Days + days, nanoseconds.NanosecondOfDay);
+                nanoseconds = new Duration(nanoseconds.FloorDays + days, nanoseconds.NanosecondOfFloorDay);
             }
 
             internal void AddUnits(int units, long nanosecondsPerUnit)
