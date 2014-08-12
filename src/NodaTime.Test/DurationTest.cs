@@ -307,5 +307,35 @@ namespace NodaTime.Test
             Duration maxTicks = Duration.FromTicks(long.MaxValue) + Duration.FromTicks(1);
             Assert.Throws<OverflowException>(() => maxTicks.Ticks.ToString());
         }
+
+        [Test]
+        public void PositiveComponents()
+        {
+            // Worked out with a calculator :)
+            Duration duration = Duration.FromNanoseconds(1234567890123456L);
+            Assert.AreEqual(14, duration.Days);
+            Assert.AreEqual(24967890123456L, duration.NanosecondOfDay);
+            Assert.AreEqual(6, duration.Hours);
+            Assert.AreEqual(56, duration.Minutes);
+            Assert.AreEqual(7, duration.Seconds);
+            Assert.AreEqual(890, duration.Milliseconds);
+            Assert.AreEqual(8901234, duration.SubsecondTicks);
+            Assert.AreEqual(890123456, duration.SubsecondNanoseconds);
+        }
+
+        [Test]
+        public void NegativeComponents()
+        {
+            // Worked out with a calculator :)
+            Duration duration = Duration.FromNanoseconds(-1234567890123456L);
+            Assert.AreEqual(-14, duration.Days);
+            Assert.AreEqual(-24967890123456L, duration.NanosecondOfDay);
+            Assert.AreEqual(-6, duration.Hours);
+            Assert.AreEqual(-56, duration.Minutes);
+            Assert.AreEqual(-7, duration.Seconds);
+            Assert.AreEqual(-890, duration.Milliseconds);
+            Assert.AreEqual(-8901234, duration.SubsecondTicks);
+            Assert.AreEqual(-890123456, duration.SubsecondNanoseconds);
+        }
     }
 }
