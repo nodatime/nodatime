@@ -337,5 +337,27 @@ namespace NodaTime.Test
             Assert.AreEqual(-8901234, duration.SubsecondTicks);
             Assert.AreEqual(-890123456, duration.SubsecondNanoseconds);
         }
+
+        [Test]
+        public void PositiveTotals()
+        {
+            Duration duration = Duration.FromDays(4) + Duration.FromHours(3) + Duration.FromMinutes(2) + Duration.FromSeconds(1)
+                + Duration.FromNanoseconds(123456789L);
+            Assert.AreEqual(4.1264, duration.TotalDays, 0.0001);
+            Assert.AreEqual(99.0336, duration.TotalHours, 0.0001);
+            Assert.AreEqual(5942.0187, duration.TotalMinutes, 0.0001);
+            Assert.AreEqual(356521.123456789, duration.TotalSeconds, 0.000000001);
+        }
+
+        [Test]
+        public void NegativeTotals()
+        {
+            Duration duration = Duration.FromDays(-4) + Duration.FromHours(-3) + Duration.FromMinutes(-2) + Duration.FromSeconds(-1)
+                + Duration.FromNanoseconds(-123456789L);
+            Assert.AreEqual(-4.1264, duration.TotalDays, 0.0001);
+            Assert.AreEqual(-99.0336, duration.TotalHours, 0.0001);
+            Assert.AreEqual(-5942.0187, duration.TotalMinutes, 0.0001);
+            Assert.AreEqual(-356521.123456789, duration.TotalSeconds, 0.000000001);
+        }
     }
 }

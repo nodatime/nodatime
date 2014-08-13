@@ -270,6 +270,65 @@ namespace NodaTime
         }
 
         /// <summary>
+        /// Returns the total number of days in this duration, as a <see cref="double"/>.
+        /// </summary>
+        /// <remarks>This method is the <c>Duration</c> equivalent of <see cref="TimeSpan.TotalDays"/>.
+        /// It represents the complete duration in days, rather than only the whole number of
+        /// days. For example, for a duration of 36 hours, this property would return 1.5.
+        /// </remarks>
+        /// <returns>The total number of days in this duration.</returns>
+        public double TotalDays
+        {
+            get { return days + nanoOfDay / (double) NodaConstants.NanosecondsPerDay; }
+        }
+
+        /// <summary>
+        /// Returns the total number of hours in this duration, as a <see cref="double"/>.
+        /// </summary>
+        /// <remarks>
+        /// This method is the <c>Duration</c> equivalent of <see cref="TimeSpan.TotalHours"/>.
+        /// Unlike <see cref="Hours"/>, it represents the complete duration in hours rather than the
+        /// whole number of hours as part of the day. So for a duration
+        /// of 1 day, 2 hours and 30 minutes, the <c>Hours</c> property will return 2, but <c>TotalHours</c>
+        /// will return 26.5.
+        /// </remarks>
+        /// <returns>The total number of hours in this duration.</returns>
+        public double TotalHours
+        {
+            get { return days * 24.0 + nanoOfDay / (double) NodaConstants.NanosecondsPerHour; }
+        }
+
+        /// <summary>
+        /// Returns the total number of minutes in this duration, as a <see cref="double"/>.
+        /// </summary>
+        /// <remarks>This method is the <c>Duration</c> equivalent of <see cref="TimeSpan.TotalMinutes"/>.</remarks>
+        /// Unlike <see cref="Minutes"/>, it represents the complete duration in minutes rather than
+        /// the whole number of minutes within the hour. So for a duration
+        /// of 2 hours, 30 minutes and 45 seconds, the <c>Minutes</c> property will return 30, but <c>TotalMinutes</c>
+        /// will return 150.75.
+        /// <returns>The total number of minutes in this duration.</returns>
+        public double TotalMinutes
+        {
+            get { return days * (double) NodaConstants.MinutesPerDay
+                    + nanoOfDay / (double) NodaConstants.NanosecondsPerMinute; }
+        }
+
+        /// <summary>
+        /// Returns the total number of seconds in this duration, as a <see cref="double"/>.
+        /// </summary>
+        /// <remarks>This method is the <c>Duration</c> equivalent of <see cref="TimeSpan.TotalSeconds"/>.</remarks>
+        /// Unlike <see cref="Seconds"/>, it represents the complete duration in seconds rather than
+        /// the whole number of seconds within the minute. So for a duration
+        /// of 10 minutes, 20 seconds and 250 milliseconds, the <c>Seconds</c> property will return 20, but <c>TotalSeconds</c>
+        /// will return 620.25.
+        /// <returns>The total number of minutes in this duration.</returns>
+        public double TotalSeconds
+        {
+            get { return days * (double) NodaConstants.SecondsPerDay
+                    + nanoOfDay / (double) NodaConstants.NanosecondsPerSecond; }
+        }
+
+        /// <summary>
         /// Adds a "small" number of nanoseconds to this duration: it is trusted to be less or equal to than 24 hours
         /// in magnitude.
         /// </summary>
