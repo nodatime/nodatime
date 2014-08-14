@@ -551,24 +551,20 @@ namespace NodaTime
         #endregion Formatting
 
         #region Operators
+
         /// <summary>
-        /// Subtracts one <see cref="OffsetDateTime"/> from another, resulting in the elapsed time between
-        /// the two values.
+        /// Subtracts one offset date and time from another, returning an elapsed duration.
         /// </summary>
         /// <remarks>
-        /// This is equivalent to <c>end.ToInstant() - start.ToInstant()</c>; in particular:
-        /// <list type="bullet">
-        ///   <item><description>The two values can use different calendar systems</description></item>
-        ///   <item><description>The two values can have different UTC offsets</description></item>
-        /// </list>
+        /// This is an alternative way of calling <see cref="op_Subtraction(OffsetDateTime, OffsetDateTime)"/>.
         /// </remarks>
         /// <param name="end">The offset date and time value to subtract from; if this is later than <paramref name="start"/>
         /// then the result will be positive.</param>
         /// <param name="start">The offset date and time to subtract from <paramref name="end"/>.</param>
         /// <returns>The elapsed duration from <paramref name="start"/> to <paramref name="end"/>.</returns>
-        public static Duration operator -(OffsetDateTime end, OffsetDateTime start)
+        public static Duration Subtract(OffsetDateTime end, OffsetDateTime start)
         {
-            return end.ToInstant() - start.ToInstant();
+            return end - start;
         }
 
         /// <summary>
@@ -587,18 +583,23 @@ namespace NodaTime
         }
 
         /// <summary>
-        /// Subtracts one offset date and time from another, returning an elapsed duration.
+        /// Subtracts one <see cref="OffsetDateTime"/> from another, resulting in the elapsed time between
+        /// the two values.
         /// </summary>
         /// <remarks>
-        /// This is an alternative way of calling <see cref="op_Subtraction(OffsetDateTime, OffsetDateTime)"/>.
+        /// This is equivalent to <c>end.ToInstant() - start.ToInstant()</c>; in particular:
+        /// <list type="bullet">
+        ///   <item><description>The two values can use different calendar systems</description></item>
+        ///   <item><description>The two values can have different UTC offsets</description></item>
+        /// </list>
         /// </remarks>
         /// <param name="end">The offset date and time value to subtract from; if this is later than <paramref name="start"/>
         /// then the result will be positive.</param>
         /// <param name="start">The offset date and time to subtract from <paramref name="end"/>.</param>
         /// <returns>The elapsed duration from <paramref name="start"/> to <paramref name="end"/>.</returns>
-        public static Duration Subtract(OffsetDateTime end, OffsetDateTime start)
+        public static Duration operator -(OffsetDateTime end, OffsetDateTime start)
         {
-            return end - start;
+            return end.ToInstant() - start.ToInstant();
         }
 
         /// <summary>
