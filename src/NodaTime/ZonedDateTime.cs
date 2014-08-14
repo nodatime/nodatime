@@ -352,21 +352,6 @@ namespace NodaTime
         }
 
         /// <summary>
-        /// Returns a new <see cref="ZonedDateTime"/> with the time advanced by the given duration. Note that
-        /// due to daylight saving time changes this may not advance the local time by the same amount.
-        /// </summary>
-        /// <remarks>
-        /// The returned value retains the calendar system and time zone of the <see cref="ZonedDateTime"/>.
-        /// </remarks>
-        /// <param name="zonedDateTime">The <see cref="ZonedDateTime"/> to add the duration to.</param>
-        /// <param name="duration">The duration to add.</param>
-        /// <returns>A new value with the time advanced by the given duration, in the same calendar system and time zone.</returns>
-        public static ZonedDateTime operator +(ZonedDateTime zonedDateTime, Duration duration)
-        {
-            return new ZonedDateTime(zonedDateTime.ToInstant() + duration, zonedDateTime.Zone, zonedDateTime.Calendar);
-        }
-
-        /// <summary>
         /// Adds a duration to a zoned date and time.
         /// </summary>
         /// <remarks>
@@ -395,6 +380,21 @@ namespace NodaTime
         }
 
         /// <summary>
+        /// Returns a new <see cref="ZonedDateTime"/> with the time advanced by the given duration. Note that
+        /// due to daylight saving time changes this may not advance the local time by the same amount.
+        /// </summary>
+        /// <remarks>
+        /// The returned value retains the calendar system and time zone of the <see cref="ZonedDateTime"/>.
+        /// </remarks>
+        /// <param name="zonedDateTime">The <see cref="ZonedDateTime"/> to add the duration to.</param>
+        /// <param name="duration">The duration to add.</param>
+        /// <returns>A new value with the time advanced by the given duration, in the same calendar system and time zone.</returns>
+        public static ZonedDateTime operator +(ZonedDateTime zonedDateTime, Duration duration)
+        {
+            return new ZonedDateTime(zonedDateTime.ToInstant() + duration, zonedDateTime.Zone, zonedDateTime.Calendar);
+        }
+
+        /// <summary>
         /// Subtracts a duration from a zoned date and time.
         /// </summary>
         /// <remarks>
@@ -406,6 +406,33 @@ namespace NodaTime
         public static ZonedDateTime Subtract(ZonedDateTime zonedDateTime, Duration duration)
         {
             return zonedDateTime - duration;
+        }
+
+        /// <summary>
+        /// Returns the result of subtracting a duration from this zoned date and time, for a fluent alternative to
+        /// <see cref="op_Subtraction(ZonedDateTime, Duration)"/>
+        /// </summary>
+        /// <param name="duration">The duration to subtract</param>
+        /// <returns>A new <see cref="ZonedDateTime" /> representing the result of the subtraction.</returns>
+        [Pure]
+        public ZonedDateTime Minus(Duration duration)
+        {
+            return this - duration;
+        }
+
+        /// <summary>
+        /// Returns a new ZonedDateTime with the duration subtracted. Note that
+        /// due to daylight saving time changes this may not change the local time by the same amount.
+        /// </summary>
+        /// <remarks>
+        /// The returned value retains the calendar system and time zone of the <see cref="ZonedDateTime"/>.
+        /// </remarks>
+        /// <param name="zonedDateTime">The value to subtract the duration from.</param>
+        /// <param name="duration">The duration to subtract.</param>
+        /// <returns>A new value with the time "rewound" by the given duration, in the same calendar system and time zone.</returns>
+        public static ZonedDateTime operator -(ZonedDateTime zonedDateTime, Duration duration)
+        {
+            return new ZonedDateTime(zonedDateTime.ToInstant() - duration, zonedDateTime.Zone, zonedDateTime.Calendar);
         }
 
         /// <summary>
@@ -424,18 +451,6 @@ namespace NodaTime
         }
 
         /// <summary>
-        /// Returns the result of subtracting a duration from this zoned date and time, for a fluent alternative to
-        /// <see cref="op_Subtraction(ZonedDateTime, Duration)"/>
-        /// </summary>
-        /// <param name="duration">The duration to subtract</param>
-        /// <returns>A new <see cref="ZonedDateTime" /> representing the result of the subtraction.</returns>
-        [Pure]
-        public ZonedDateTime Minus(Duration duration)
-        {
-            return this - duration;
-        }
-
-        /// <summary>
         /// Returns the result of subtracting another zoned date and time from this one, resulting in the elapsed duration
         /// between the two instants represented in the values.
         /// </summary>
@@ -448,21 +463,6 @@ namespace NodaTime
         public Duration Minus(ZonedDateTime other)
         {
             return this - other;
-        }
-
-        /// <summary>
-        /// Returns a new ZonedDateTime with the duration subtracted. Note that
-        /// due to daylight saving time changes this may not change the local time by the same amount.
-        /// </summary>
-        /// <remarks>
-        /// The returned value retains the calendar system and time zone of the <see cref="ZonedDateTime"/>.
-        /// </remarks>
-        /// <param name="zonedDateTime">The value to subtract the duration from.</param>
-        /// <param name="duration">The duration to subtract.</param>
-        /// <returns>A new value with the time "rewound" by the given duration, in the same calendar system and time zone.</returns>
-        public static ZonedDateTime operator -(ZonedDateTime zonedDateTime, Duration duration)
-        {
-            return new ZonedDateTime(zonedDateTime.ToInstant() - duration, zonedDateTime.Zone, zonedDateTime.Calendar);
         }
 
         /// <summary>
