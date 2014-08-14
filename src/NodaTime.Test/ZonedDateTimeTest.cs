@@ -95,13 +95,26 @@ namespace NodaTime.Test
         }
 
         [Test]
-        public void Subtract_MethodEquivalents()
+        public void SubtractDuration_MethodEquivalents()
         {
             ZonedDateTime after = SampleZone.AtStrictly(new LocalDateTime(2011, 6, 13, 16, 0));
             Assert.AreEqual(after - Duration.OneDay, ZonedDateTime.Subtract(after, Duration.OneDay));
             Assert.AreEqual(after - Duration.OneDay, after.Minus(Duration.OneDay));
         }
 
+        [Test]
+        public void Subtraction_ZonedDateTime()
+        {
+            // Test all three approaches... not bothering to check a different calendar,
+            // but we'll use two different time zones.
+            ZonedDateTime start = new LocalDateTime(2014, 08, 14, 5, 51).InUtc();
+            // Sample zone is UTC+4 at this point, so this is 14:00Z.
+            ZonedDateTime end = SampleZone.AtStrictly(new LocalDateTime(2014, 08, 14, 18, 0));
+            Duration expected = Duration.FromHours(8) + Duration.FromMinutes(9);
+            Assert.AreEqual(expected, end - start);
+            Assert.AreEqual(expected, end.Minus(start));
+            Assert.AreEqual(expected, ZonedDateTime.Subtract(end, start));
+        }
 
         [Test]
         public void WithZone()

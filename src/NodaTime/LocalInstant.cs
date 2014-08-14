@@ -39,7 +39,7 @@ namespace NodaTime
         /// </summary>
         internal LocalInstant(Duration nanoseconds)
         {
-            int days = nanoseconds.Days;
+            int days = nanoseconds.FloorDays;
             if (days < Instant.MinDays || days > Instant.MaxDays)
             {
                 throw new OverflowException("Operation would overflow bounds of local date/time");
@@ -71,12 +71,12 @@ namespace NodaTime
         /// <summary>
         /// Number of days since the local unix epoch.
         /// </summary>
-        internal int DaysSinceEpoch { get { return duration.Days; } }
+        internal int DaysSinceEpoch { get { return duration.FloorDays; } }
 
         /// <summary>
         /// Nanosecond within the day.
         /// </summary>
-        internal long NanosecondOfDay { get { return duration.NanosecondOfDay; } }
+        internal long NanosecondOfDay { get { return duration.NanosecondOfFloorDay; } }
 
         /// <summary>
         /// Constructs a <see cref="DateTime"/> from this LocalInstant which has a <see cref="DateTime.Kind" />
@@ -152,7 +152,7 @@ namespace NodaTime
         /// </summary>
         internal Instant SafeMinus(Offset offset)
         {
-            int days = duration.Days;
+            int days = duration.FloorDays;
             // If we can do the arithmetic safely, do so.
             if (days > Instant.MinDays && days < Instant.MaxDays)
             {
@@ -169,11 +169,11 @@ namespace NodaTime
             }
             // Okay, do the arithmetic as a Duration, then check the result for overflow, effectively.
             var asDuration = duration.PlusSmallNanoseconds(offset.Nanoseconds);
-            if (asDuration.Days < Instant.MinDays)
+            if (asDuration.FloorDays < Instant.MinDays)
             {
                 return Instant.BeforeMinValue;
             }
-            if (asDuration.Days > Instant.MaxDays)
+            if (asDuration.FloorDays > Instant.MaxDays)
             {
                 return Instant.AfterMaxValue;
             }
@@ -329,9 +329,9 @@ namespace NodaTime
         /// </returns>
         public override string ToString()
         {
-            var date = new LocalDate(duration.Days);
+            var date = new LocalDate(duration.FloorDays);
             var pattern = LocalDateTimePattern.CreateWithInvariantCulture("yyyy-MM-ddTHH:mm:ss LOC");
-            var utc = new LocalDateTime(date, LocalTime.FromNanosecondsSinceMidnight(duration.NanosecondOfDay));
+            var utc = new LocalDateTime(date, LocalTime.FromNanosecondsSinceMidnight(duration.NanosecondOfFloorDay));
             return pattern.Format(utc);
         }
         #endregion  // Object overrides

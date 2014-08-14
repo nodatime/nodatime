@@ -12,7 +12,6 @@ using JetBrains.Annotations;
 using NodaTime.Annotations;
 using NodaTime.Calendars;
 using NodaTime.Text;
-using NodaTime.TimeZones;
 using NodaTime.Utility;
 
 namespace NodaTime
@@ -29,7 +28,7 @@ namespace NodaTime
     /// <para>
     /// A duration represents a fixed length of elapsed time along the time line that occupies the same amount of
     /// time regardless of when it is applied. In contrast, <see cref="Period"/> represents a period of time in
-    /// calendrical terms (hours, days, and so on) that may vary in elapsed time when applied.
+    /// calendrical terms (years, months, days, and so on) that may vary in elapsed time when applied.
     /// </para>
     /// <para>
     /// In general, use <see cref="Duration"/> to represent durations applied to global types like <see cref="Instant"/>
@@ -51,6 +50,8 @@ namespace NodaTime
         , ISerializable
 #endif
     {
+        // This is one more bit than we really need, but it allows Instant.BeforeMinValue and Instant.AfterMaxValue
+        // to be easily 
         internal const int MaxDays = (1 << 24) - 1;
         internal const int MinDays = ~MaxDays;
 
@@ -150,16 +151,109 @@ namespace NodaTime
             Preconditions.CheckArgumentRange("nanoOfDay", nanoOfDay, 0, NodaConstants.NanosecondsPerDay - 1);
         }
 
-        internal int Days { get { return days; } }
+        /// <summary>
+        /// Days portion of this duration. The <see cref="NanosecondOfFloorDay" /> is added to this
+        /// value, so this effectively Math.Floor(TotalDays).
+        /// </summary>
+        internal int FloorDays { get { return days; } }
 
-        internal long NanosecondOfDay { get { return nanoOfDay; } }
+        /// <summary>
+        /// Nanosecond within the "floor day". This is *always* non-negative, even for
+        /// negative durations.
+        /// </summary>
+        internal long NanosecondOfFloorDay { get { return nanoOfDay; } }
+
+        /// <summary>
+        /// The whole number of standard (24 hour) days within this duration. This is truncated towards zero;
+        /// for example, "-1.75 days" and "1.75 days" would have results of -1 and 1 respectively.
+        /// </summary>
+        /// <returns>The whole number of days in the duration</returns>
+        public int Days
+        {
+            get
+            {
+                return days >= 0 || nanoOfDay == 0 ? days : days + 1;
+            }
+        }
+
+        /// <summary>
+        /// The number of nanoseconds within the day of this duration. For negative durations, this
+        /// will be negative (or zero).
+        /// </summary>
+        public long NanosecondOfDay
+        {
+            get
+            {
+                return days >= 0 ? nanoOfDay
+                    : nanoOfDay == 0 ? 0L
+                    : nanoOfDay - NodaConstants.NanosecondsPerDay;
+            }
+        }
+
+        /// <summary>
+        /// The hour component of this duration, in the range [-23, 23], truncated towards zero.
+        /// </summary>
+        /// <returns>The hour component of the duration, within the day.</returns>
+        public int Hours
+        {
+            get { return unchecked((int) (NanosecondOfDay / NodaConstants.NanosecondsPerHour)); }
+        }
+
+        /// <summary>
+        /// The minute component of this duration, in the range [-59, 59], truncated towards zero.
+        /// </summary>
+        /// <returns>The minute component of the duration, within the hour.</returns>
+        public int Minutes
+        {
+            get { return unchecked((int) ((NanosecondOfDay / NodaConstants.NanosecondsPerMinute) % NodaConstants.MinutesPerHour)); }
+        }
+
+        /// <summary>
+        /// The second component of this duration, in the range [-59, 59], truncated towards zero.
+        /// </summary>
+        /// <returns>The second component of the duration, within the minute.</returns>
+        public int Seconds
+        {
+            get { return unchecked((int) ((NanosecondOfDay / NodaConstants.NanosecondsPerSecond) % NodaConstants.SecondsPerMinute)); }
+        }
+
+        /// <summary>
+        /// The subsecond component of this duration, expressed in milliseconds, in the range [-999, 999] and truncated towards zero.
+        /// </summary>
+        /// <returns>The subsecond component of the duration, in milliseconds.</returns>
+        public int Milliseconds
+        {
+            get { return unchecked((int) ((NanosecondOfDay / NodaConstants.NanosecondsPerMillisecond) % NodaConstants.MillisecondsPerSecond)); }
+        }
+
+        /// <summary>
+        /// The subsecond component of this duration, expressed in ticks, in the range [-9999999, 9999999] and truncated towards zero.
+        /// </summary>
+        /// <returns>The subsecond component of the duration, in ticks.</returns>
+        public int SubsecondTicks
+        {
+            get { return unchecked((int) ((NanosecondOfDay / NodaConstants.NanosecondsPerTick) % NodaConstants.TicksPerSecond)); }
+        }
+
+        /// <summary>
+        /// The subsecond component of this duration, expressed in nanoseconds, in the range [-999999999, 999999999].
+        /// </summary>
+        /// <returns>The subsecond component of the duration, in nanoseconds.</returns>
+        public int SubsecondNanoseconds
+        {
+            get { return unchecked((int) (NanosecondOfDay % NodaConstants.NanosecondsPerSecond)); }
+        }
 
         /// <summary>
         /// The total number of ticks in the duration.
         /// </summary>
         /// <remarks>
+        /// <para>
         /// If the number of nanoseconds in a duration is not a whole number of ticks, it is truncated towards zero.
         /// For example, durations in the range [-99ns, 99ns] would all count as 0 ticks.
+        /// </para>
+        /// <para>Although this method can overflow, it will only do so in very exceptional cases, with durations
+        /// with a magnitude of more than 29000 Gregorian years or so.</para>
         /// </remarks>
         /// <exception cref="OverflowException">The number of ticks cannot be represented a signed 64-bit integer.</exception>
         public long Ticks
@@ -173,6 +267,65 @@ namespace NodaTime
                 }
                 return ticks;
             }
+        }
+
+        /// <summary>
+        /// Returns the total number of days in this duration, as a <see cref="double"/>.
+        /// </summary>
+        /// <remarks>This method is the <c>Duration</c> equivalent of <see cref="TimeSpan.TotalDays"/>.
+        /// It represents the complete duration in days, rather than only the whole number of
+        /// days. For example, for a duration of 36 hours, this property would return 1.5.
+        /// </remarks>
+        /// <returns>The total number of days in this duration.</returns>
+        public double TotalDays
+        {
+            get { return days + nanoOfDay / (double) NodaConstants.NanosecondsPerDay; }
+        }
+
+        /// <summary>
+        /// Returns the total number of hours in this duration, as a <see cref="double"/>.
+        /// </summary>
+        /// <remarks>
+        /// This method is the <c>Duration</c> equivalent of <see cref="TimeSpan.TotalHours"/>.
+        /// Unlike <see cref="Hours"/>, it represents the complete duration in hours rather than the
+        /// whole number of hours as part of the day. So for a duration
+        /// of 1 day, 2 hours and 30 minutes, the <c>Hours</c> property will return 2, but <c>TotalHours</c>
+        /// will return 26.5.
+        /// </remarks>
+        /// <returns>The total number of hours in this duration.</returns>
+        public double TotalHours
+        {
+            get { return days * 24.0 + nanoOfDay / (double) NodaConstants.NanosecondsPerHour; }
+        }
+
+        /// <summary>
+        /// Returns the total number of minutes in this duration, as a <see cref="double"/>.
+        /// </summary>
+        /// <remarks>This method is the <c>Duration</c> equivalent of <see cref="TimeSpan.TotalMinutes"/>.</remarks>
+        /// Unlike <see cref="Minutes"/>, it represents the complete duration in minutes rather than
+        /// the whole number of minutes within the hour. So for a duration
+        /// of 2 hours, 30 minutes and 45 seconds, the <c>Minutes</c> property will return 30, but <c>TotalMinutes</c>
+        /// will return 150.75.
+        /// <returns>The total number of minutes in this duration.</returns>
+        public double TotalMinutes
+        {
+            get { return days * (double) NodaConstants.MinutesPerDay
+                    + nanoOfDay / (double) NodaConstants.NanosecondsPerMinute; }
+        }
+
+        /// <summary>
+        /// Returns the total number of seconds in this duration, as a <see cref="double"/>.
+        /// </summary>
+        /// <remarks>This method is the <c>Duration</c> equivalent of <see cref="TimeSpan.TotalSeconds"/>.</remarks>
+        /// Unlike <see cref="Seconds"/>, it represents the complete duration in seconds rather than
+        /// the whole number of seconds within the minute. So for a duration
+        /// of 10 minutes, 20 seconds and 250 milliseconds, the <c>Seconds</c> property will return 20, but <c>TotalSeconds</c>
+        /// will return 620.25.
+        /// <returns>The total number of minutes in this duration.</returns>
+        public double TotalSeconds
+        {
+            get { return days * (double) NodaConstants.SecondsPerDay
+                    + nanoOfDay / (double) NodaConstants.NanosecondsPerSecond; }
         }
 
         /// <summary>
@@ -780,8 +933,12 @@ namespace NodaTime
         /// <summary>
         /// Returns a <see cref="TimeSpan"/> that represents the same number of ticks as this
         /// <see cref="Duration"/>.
-        /// TODO: Document rounding.
         /// </summary>
+        /// <remarks>
+        /// If the number of nanoseconds in a duration is not a whole number of ticks, it is truncated towards zero.
+        /// For example, durations in the range [-99ns, 99ns] would all count as 0 ticks.
+        /// </remarks>
+        /// <exception cref="OverflowException">The number of ticks cannot be represented a signed 64-bit integer.</exception>
         /// <returns>A new TimeSpan with the same number of ticks as this Duration.</returns>
         [Pure]
         public TimeSpan ToTimeSpan()
