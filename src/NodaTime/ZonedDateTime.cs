@@ -409,14 +409,15 @@ namespace NodaTime
         }
 
         /// <summary>
-        /// Subtracts a one zoned date and time from another, returning an elapsed duration.
+        /// Subtracts one zoned date and time from another, returning an elapsed duration.
         /// </summary>
         /// <remarks>
         /// This is an alternative way of calling <see cref="op_Subtraction(ZonedDateTime, ZonedDateTime)"/>.
         /// </remarks>
-        /// <param name="end">The value to subtract <paramref name="end"/> from.</param>
-        /// <param name="start">The value to subtract from <paramref name="start"/>.</param>
-        /// <returns>The elapsed duration between the instants represented by <paramref name="end"/> and <paramref name="start"/>.</returns>
+        /// <param name="end">The zoned date and time value to subtract from; if this is later than <paramref name="start"/>
+        /// then the result will be positive.</param>
+        /// <param name="start">The zoned date and time to subtract from <paramref name="end"/>.</param>
+        /// <returns>The elapsed duration from <paramref name="start"/> to <paramref name="end"/>.</returns>
         public static Duration Subtract(ZonedDateTime end, ZonedDateTime start)
         {
             return end - start;
