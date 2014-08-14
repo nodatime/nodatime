@@ -239,6 +239,19 @@ namespace NodaTime.Test
         }
 
         [Test]
+        public void Subtraction_OffsetDateTime()
+        {
+            // Test all three approaches... not bothering to check a different calendar,
+            // but we'll use two different offsets.
+            OffsetDateTime start = new LocalDateTime(2014, 08, 14, 6, 51).WithOffset(Offset.FromHours(1));
+            OffsetDateTime end = new LocalDateTime(2014, 08, 14, 18, 0).WithOffset(Offset.FromHours(4));
+            Duration expected = Duration.FromHours(8) + Duration.FromMinutes(9);
+            Assert.AreEqual(expected, end - start);
+            Assert.AreEqual(expected, end.Minus(start));
+            Assert.AreEqual(expected, OffsetDateTime.Subtract(end, start));
+        }
+
+        [Test]
         public void BinarySerialization()
         {
             TestHelper.AssertBinaryRoundtrip(
