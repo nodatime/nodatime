@@ -553,6 +553,88 @@ namespace NodaTime
         #region Operators
 
         /// <summary>
+        /// Adds a duration to an offset date and time.
+        /// </summary>
+        /// <remarks>
+        /// This is an alternative way of calling <see cref="op_Addition(OffsetDateTime, Duration)"/>.
+        /// </remarks>
+        /// <param name="offsetDateTime">The value to add the duration to.</param>
+        /// <param name="duration">The duration to add</param>
+        /// <returns>A new value with the time advanced by the given duration, in the same calendar system and with the same offset.</returns>
+        public static OffsetDateTime Add(OffsetDateTime offsetDateTime, Duration duration)
+        {
+            return offsetDateTime + duration;
+        }
+
+        /// <summary>
+        /// Returns the result of adding a duration to this offset date and time.
+        /// </summary>
+        /// <remarks>
+        /// This is an alternative way of calling <see cref="op_Addition(OffsetDateTime, Duration)"/>.
+        /// </remarks>
+        /// <param name="duration">The duration to add</param>
+        /// <returns>A new <see cref="OffsetDateTime" /> representing the result of the addition.</returns>
+        [Pure]
+        public OffsetDateTime Plus(Duration duration)
+        {
+            return this + duration;
+        }
+
+        /// <summary>
+        /// Returns a new <see cref="OffsetDateTime"/> with the time advanced by the given duration.
+        /// </summary>
+        /// <remarks>
+        /// The returned value retains the calendar system and offset of the <paramref name="offsetDateTime"/>.
+        /// </remarks>
+        /// <param name="offsetDateTime">The <see cref="OffsetDateTime"/> to add the duration to.</param>
+        /// <param name="duration">The duration to add.</param>
+        /// <returns>A new value with the time advanced by the given duration, in the same calendar system and with the same offset.</returns>
+        public static OffsetDateTime operator +(OffsetDateTime offsetDateTime, Duration duration)
+        {
+            return new OffsetDateTime(offsetDateTime.ToInstant() + duration, offsetDateTime.Offset);
+        }
+
+        /// <summary>
+        /// Subtracts a duration from an offset date and time.
+        /// </summary>
+        /// <remarks>
+        /// This is an alternative way of calling <see cref="op_Subtraction(OffsetDateTime, Duration)"/>.
+        /// </remarks>
+        /// <param name="offsetDateTime">The value to subtract the duration from.</param>
+        /// <param name="duration">The duration to subtract.</param>
+        /// <returns>A new value with the time "rewound" by the given duration, in the same calendar system and with the same offset.</returns>
+        public static OffsetDateTime Subtract(OffsetDateTime offsetDateTime, Duration duration)
+        {
+            return offsetDateTime - duration;
+        }
+
+        /// <summary>
+        /// Returns the result of subtracting a duration from this offset date and time, for a fluent alternative to
+        /// <see cref="op_Subtraction(OffsetDateTime, Duration)"/>
+        /// </summary>
+        /// <param name="duration">The duration to subtract</param>
+        /// <returns>A new <see cref="OffsetDateTime" /> representing the result of the subtraction.</returns>
+        [Pure]
+        public OffsetDateTime Minus(Duration duration)
+        {
+            return this - duration;
+        }
+
+        /// <summary>
+        /// Returns a new <see cref="OffsetDateTime"/> with the duration subtracted.
+        /// </summary>
+        /// <remarks>
+        /// The returned value retains the calendar system and offset of the <paramref name="offsetDateTime"/>.
+        /// </remarks>
+        /// <param name="offsetDateTime">The value to subtract the duration from.</param>
+        /// <param name="duration">The duration to subtract.</param>
+        /// <returns>A new value with the time "rewound" by the given duration, in the same calendar system and with the same offset.</returns>
+        public static OffsetDateTime operator -(OffsetDateTime offsetDateTime, Duration duration)
+        {
+            return new OffsetDateTime(offsetDateTime.ToInstant() - duration, offsetDateTime.Offset);
+        }
+
+        /// <summary>
         /// Subtracts one offset date and time from another, returning an elapsed duration.
         /// </summary>
         /// <remarks>
