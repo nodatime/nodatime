@@ -384,7 +384,7 @@ namespace NodaTime
         /// due to daylight saving time changes this may not advance the local time by the same amount.
         /// </summary>
         /// <remarks>
-        /// The returned value retains the calendar system and time zone of the <see cref="ZonedDateTime"/>.
+        /// The returned value retains the calendar system and time zone of <paramref name="zonedDateTime"/>.
         /// </remarks>
         /// <param name="zonedDateTime">The <see cref="ZonedDateTime"/> to add the duration to.</param>
         /// <param name="duration">The duration to add.</param>
@@ -421,11 +421,11 @@ namespace NodaTime
         }
 
         /// <summary>
-        /// Returns a new ZonedDateTime with the duration subtracted. Note that
+        /// Returns a new <see cref="ZonedDateTime"/> with the duration subtracted. Note that
         /// due to daylight saving time changes this may not change the local time by the same amount.
         /// </summary>
         /// <remarks>
-        /// The returned value retains the calendar system and time zone of the <see cref="ZonedDateTime"/>.
+        /// The returned value retains the calendar system and time zone of <paramref name="zonedDateTime"/>.
         /// </remarks>
         /// <param name="zonedDateTime">The value to subtract the duration from.</param>
         /// <param name="duration">The duration to subtract.</param>
