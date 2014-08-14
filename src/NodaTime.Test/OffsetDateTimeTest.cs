@@ -239,6 +239,45 @@ namespace NodaTime.Test
         }
 
         [Test]
+        public void Subtraction_Duration()
+        {
+            // Test all three approaches... not bothering to check a different calendar,
+            // but we'll use two different offsets.
+            OffsetDateTime end = new LocalDateTime(2014, 08, 14, 15, 0).WithOffset(Offset.FromHours(1));
+            Duration duration = Duration.FromHours(8) + Duration.FromMinutes(9);
+            OffsetDateTime expected = new LocalDateTime(2014, 08, 14, 6, 51).WithOffset(Offset.FromHours(1));
+            Assert.AreEqual(expected, end - duration);
+            Assert.AreEqual(expected, end.Minus(duration));
+            Assert.AreEqual(expected, OffsetDateTime.Subtract(end, duration));
+        }
+
+        [Test]
+        public void Addition_Duration()
+        {
+            // Test all three approaches... not bothering to check a different calendar,
+            // but we'll use two different offsets.
+            OffsetDateTime start = new LocalDateTime(2014, 08, 14, 6, 51).WithOffset(Offset.FromHours(1));
+            Duration duration = Duration.FromHours(8) + Duration.FromMinutes(9);
+            OffsetDateTime expected = new LocalDateTime(2014, 08, 14, 15, 0).WithOffset(Offset.FromHours(1));
+            Assert.AreEqual(expected, start + duration);
+            Assert.AreEqual(expected, start.Plus(duration));
+            Assert.AreEqual(expected, OffsetDateTime.Add(start, duration));
+        }
+
+        [Test]
+        public void Subtraction_OffsetDateTime()
+        {
+            // Test all three approaches... not bothering to check a different calendar,
+            // but we'll use two different offsets.
+            OffsetDateTime start = new LocalDateTime(2014, 08, 14, 6, 51).WithOffset(Offset.FromHours(1));
+            OffsetDateTime end = new LocalDateTime(2014, 08, 14, 18, 0).WithOffset(Offset.FromHours(4));
+            Duration expected = Duration.FromHours(8) + Duration.FromMinutes(9);
+            Assert.AreEqual(expected, end - start);
+            Assert.AreEqual(expected, end.Minus(start));
+            Assert.AreEqual(expected, OffsetDateTime.Subtract(end, start));
+        }
+
+        [Test]
         public void BinarySerialization()
         {
             TestHelper.AssertBinaryRoundtrip(
