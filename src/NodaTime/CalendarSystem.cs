@@ -767,6 +767,7 @@ namespace NodaTime
         /// Returns an Um Al Qura calendar system - an Islamic calendar system primarily used by
         /// Saudi Arabia.
         /// </summary>
+        public static CalendarSystem UmAlQura
 #else
         /// <summary>
         /// Returns an Um Al Qura calendar system - an Islamic calendar system primarily used by
