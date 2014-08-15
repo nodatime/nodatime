@@ -79,8 +79,8 @@ namespace NodaTime.Test.Text
             new Data { Pattern = "c yyyy MM dd", Text = "2015 01 01", Message = Messages.Parse_NoMatchingCalendarSystem },
 
             // Invald year
-            new Data { Template = new LocalDate(1, 1, 1, CalendarSystem.BclIslamic), Pattern = "yyyy", Text = "9999", Message = Messages.Parse_FieldValueOutOfRange, Parameters = { 9999, 'y', typeof(LocalDate) } },
-            new Data { Template = new LocalDate(1, 1, 1, CalendarSystem.BclIslamic), Pattern = "YYYY", Text = "9999", Message = Messages.Parse_YearOfEraOutOfRange, Parameters = { 9999, "EH", "Hijri" } },
+            new Data { Template = new LocalDate(1, 1, 1, CalendarSystem.IslamicBcl), Pattern = "yyyy", Text = "9999", Message = Messages.Parse_FieldValueOutOfRange, Parameters = { 9999, 'y', typeof(LocalDate) } },
+            new Data { Template = new LocalDate(1, 1, 1, CalendarSystem.IslamicBcl), Pattern = "YYYY", Text = "9999", Message = Messages.Parse_YearOfEraOutOfRange, Parameters = { 9999, "EH", "Hijri" } },
         };
 
         internal static Data[] ParseOnlyData = {

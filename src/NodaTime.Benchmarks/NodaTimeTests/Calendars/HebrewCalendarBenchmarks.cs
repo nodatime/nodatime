@@ -9,8 +9,8 @@ namespace NodaTime.Benchmarks.NodaTimeTests.Calendars
 {
     internal class HebrewCalendarBenchmarks
     {
-        private static readonly CalendarSystem ScripturalCalendar = CalendarSystem.ScripturalHebrew;
-        private static readonly CalendarSystem CivilCalendar = CalendarSystem.CivilHebrew;
+        private static readonly CalendarSystem ScripturalCalendar = CalendarSystem.HebrewScriptural;
+        private static readonly CalendarSystem CivilCalendar = CalendarSystem.HebrewCivil;
 
         [Benchmark]
         public void ScripturalConversion()
