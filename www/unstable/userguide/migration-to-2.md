@@ -61,6 +61,10 @@ The word `Standard` has been removed from the members of `NodaConstants` and als
 for users too... the meaning is exactly the same, and the documentation still talks about "standard" days/weeks,
 but having it in the names was a bit obnoxious, particularly in code which used a lot of constants.
 
+Factory methods in `CalendarSystem` which either didn't take any parameters (`GetPersianCalendar`) or which
+no longer support those parameters (`GetCopticCalendar`, `GetJulianCalendar`) have been converted into properties.
+So for example, the equivalent of `CalendarSystem.GetJulianCalendar(4)` is now just `CalendarSystem.Julian`.
+
 Period
 ====
 

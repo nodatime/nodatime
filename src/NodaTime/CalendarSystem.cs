@@ -40,9 +40,6 @@ namespace NodaTime
     [Immutable]
     public sealed class CalendarSystem
     {
-        // TODO(2.0): Consider moving the static accessors into a separate class. As we get more calendars,
-        // this approach will become unwieldy.
-
         #region Public factory members for calendars
         private const string GregorianName = "Gregorian";
         private const string IsoName = "ISO";
