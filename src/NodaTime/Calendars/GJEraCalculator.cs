@@ -15,16 +15,13 @@ namespace NodaTime.Calendars
     /// </summary>
     internal sealed class GJEraCalculator : EraCalculator
     {
-        private static readonly YearMonthDay endOfBc = new YearMonthDay(0, 12, 31);
-        private static readonly YearMonthDay startOfAd = new YearMonthDay(1, 1, 1);
-
-        private readonly YearMonthDay startOfBc;
-        private readonly YearMonthDay endOfAd;
+        private readonly int maxYearOfBc;
+        private readonly int maxYearOfAd;
 
         internal GJEraCalculator(YearMonthDayCalculator ymdCalculator) : base(Era.BeforeCommon, Era.Common)
         {
-            startOfBc = new YearMonthDay(ymdCalculator.MinYear, 1, 1);
-            endOfAd = new YearMonthDay(ymdCalculator.MaxYear, 12, 31);
+            maxYearOfBc = 1 - ymdCalculator.MinYear; // Convert from absolute to year-of-era
+            maxYearOfAd = ymdCalculator.MaxYear;
         }
 
         private void ValidateEra(Era era)
@@ -41,10 +38,10 @@ namespace NodaTime.Calendars
             ValidateEra(era);
             if (era == Era.Common)
             {
-                Preconditions.CheckArgumentRange("yearOfEra", yearOfEra, 1, endOfAd.Year);
+                Preconditions.CheckArgumentRange("yearOfEra", yearOfEra, 1, maxYearOfAd);
                 return yearOfEra;
             }
-            Preconditions.CheckArgumentRange("yearOfEra", yearOfEra, 1, 1 - startOfBc.Year);
+            Preconditions.CheckArgumentRange("yearOfEra", yearOfEra, 1, maxYearOfBc);
             return 1 - yearOfEra;
         }
 
@@ -68,19 +65,7 @@ namespace NodaTime.Calendars
         internal override int GetMaxYearOfEra(Era era)
         {
             ValidateEra(era);
-            return era == Era.Common ? endOfAd.Year : 1 - startOfBc.Year;
-        }
-
-        internal override YearMonthDay GetStartOfEra(Era era)
-        {
-            ValidateEra(era);
-            return era == Era.Common ? startOfAd : startOfBc;
-        }
-
-        internal override YearMonthDay GetEndOfEra(Era era)
-        {
-            ValidateEra(era);
-            return era == Era.Common ? endOfAd : endOfBc;
+            return era == Era.Common ? maxYearOfAd : maxYearOfBc;
         }
     }
 }
