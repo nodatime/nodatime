@@ -152,7 +152,7 @@ namespace NodaTime
         private static readonly Dictionary<string, Func<CalendarSystem>> IdToFactoryMap = new Dictionary<string, Func<CalendarSystem>>
         {
             { IsoName, () => Iso },
-            { PersianName, GetPersianCalendar },
+            { PersianName, () => Persian },
             { HebrewCivilId, () => GetHebrewCalendar(HebrewMonthNumbering.Civil) },
             { HebrewScripturalId, () => GetHebrewCalendar(HebrewMonthNumbering.Scriptural) },
             { GregorianName + " 1", () => GetGregorianCalendar(1) },
@@ -162,9 +162,9 @@ namespace NodaTime
             { GregorianName + " 5", () => GetGregorianCalendar(5) },
             { GregorianName + " 6", () => GetGregorianCalendar(6) },
             { GregorianName + " 7", () => GetGregorianCalendar(7) },
-            { CopticName, GetCopticCalendar },
-            { JulianName, GetJulianCalendar },
-            { UmAlQuraName, GetUmAlQuraCalendar }, 
+            { CopticName, () => Coptic },
+            { JulianName, () => Julian },
+            { UmAlQuraName, () => UmAlQura }, 
             { IslamicName + " Civil-Indian", () => GetIslamicCalendar(IslamicLeapYearPattern.Indian, IslamicEpoch.Civil) },
             { IslamicName + " Civil-Base15", () => GetIslamicCalendar(IslamicLeapYearPattern.Base15, IslamicEpoch.Civil) },
             { IslamicName + " Civil-Base16", () => GetIslamicCalendar(IslamicLeapYearPattern.Base16, IslamicEpoch.Civil) },
@@ -187,26 +187,6 @@ namespace NodaTime
         /// and consistency.
         /// </remarks>
         public static CalendarSystem Iso { get { return IsoCalendarSystem; } }
-
-        /// <summary>
-        /// Returns a Persian (also known as Solar Hijri) calendar system. This is the main calendar in Iran
-        /// and Afghanistan, and is also used in some other countries where Persian is spoken.
-        /// </summary>
-        /// <remarks>
-        /// The true Persian calendar is an astronomical one, where leap years depend on vernal equinox.
-        /// A complicated algorithmic alternative approach exists, proposed by Ahmad Birashk,
-        /// but this isn't generally used in society. The implementation here is somewhat simpler, using a
-        /// 33-year leap cycle, where years  1, 5, 9, 13, 17, 22, 26, and 30 in each cycle are leap years.
-        /// This is the same approach taken by the BCL <c>PersianCalendar</c> class, and the dates of
-        /// this implementation align exactly with the BCL implementation.
-        /// </remarks>
-        /// <returns>A Persian calendar system.</returns>
-        public static CalendarSystem GetPersianCalendar()
-        {
-            // Note: this is a method rather than a property as we may wish to overload it to allow a choice
-            // of other Persian calendars in the future and for consistency.
-            return PersianCalendarSystem;
-        }
 
         /// <summary>
         /// Returns a Hebrew calendar, as described at http://en.wikipedia.org/wiki/Hebrew_calendar. This is a
@@ -249,87 +229,6 @@ namespace NodaTime
         {
             Preconditions.CheckArgumentRange("minDaysInFirstWeek", minDaysInFirstWeek, 1, 7);
             return GregorianCalendarSystems[minDaysInFirstWeek - 1];
-        }
-
-        /// <summary>
-        /// Returns a pure proleptic Julian calendar system, which defines every
-        /// fourth year as a leap year. This implementation follows the leap year rule
-        /// strictly, even for dates before 8 CE, where leap years were actually
-        /// irregular.
-        /// </summary>
-        /// <remarks>
-        /// Although the Julian calendar did not exist before 45 BCE, this calendar
-        /// assumes it did, thus it is proleptic. This implementation also fixes the
-        /// start of the year at January 1.
-        /// </remarks>
-        /// <para>
-        /// This calendar always has at least 4 days in the first week of the week-year.
-        /// </para>
-        /// <returns>A suitable Julian calendar reference; the same reference may be returned by several
-        /// calls as the object is immutable and thread-safe.</returns>
-        public static CalendarSystem GetJulianCalendar()
-        {
-            return JulianCalendarSystem;
-        }
-
-#if PCL
-        /// <summary>
-        /// Returns an Um Al Qura calendar system - an Islamic calendar system primarily used by
-        /// Saudi Arabia.
-        /// </summary>
-        public static CalendarSystem GetUmAlQuraCalendar()
-#else
-        /// <summary>
-        /// Returns an Um Al Qura calendar system - an Islamic calendar system primarily used by
-        /// Saudi Arabia.
-        /// </summary>
-        /// <remarks>
-        /// This is a tabular calendar, which relies on data provided by the BCL
-        /// <see cref="UmAlQuraCalendar" /> class during initialization.
-        /// As such, some platforms do not support this calendar. In particular, the Mono implementation
-        /// is known to be unreliable (at least as far as Mono 3.6.0). The calendar is available on
-        /// some Portable Class Library variants, but not all. When in doubt, please test thoroughly
-        /// on all platforms you intend to support.
-        /// </remarks>
-        /// <returns>A calendar system for the Um Al Qura calendar.</returns>
-        /// <exception cref="NotSupportedException">The Um Al Qura calendar is not supported on the current platform.</exception>
-        public static CalendarSystem GetUmAlQuraCalendar()
-#endif
-        {
-            if (UmAlQuraCalendarSystem != null)
-            {
-                return UmAlQuraCalendarSystem;
-            }
-            throw new NotSupportedException("The Um Al Qura calendar is not supported on your platform");
-        }
-
-        /// <summary>
-        /// Returns a Coptic calendar system, which defines every fourth year as
-        /// leap, much like the Julian calendar. The year is broken down into 12 months,
-        /// each 30 days in length. An extra period at the end of the year is either 5
-        /// or 6 days in length. In this implementation, it is considered a 13th month.
-        /// </summary>
-        /// <remarks>
-        /// <para>
-        /// Year 1 in the Coptic calendar began on August 29, 284 CE (Julian), thus
-        /// Coptic years do not begin at the same time as Julian years. This calendar
-        /// is not proleptic, as it does not allow dates before the first Coptic year.
-        /// </para>
-        /// <para>
-        /// This implementation defines a day as midnight to midnight exactly as per
-        /// the ISO calendar. Some references indicate that a Coptic day starts at
-        /// sunset on the previous ISO day, but this has not been confirmed and is not
-        /// implemented.
-        /// </para>
-        /// <para>
-        /// This calendar always has at least 4 days in the first week of the week-year.
-        /// </para>
-        /// </remarks>
-        /// <returns>A suitable Coptic calendar reference; the same reference may be returned by several
-        /// calls as the object is immutable and thread-safe.</returns>
-        public static CalendarSystem GetCopticCalendar()
-        {
-            return CopticCalendarSystem;
         }
 
         /// <summary>
@@ -459,8 +358,8 @@ namespace NodaTime
         ///   <item><term>Gregorian 5</term><description><see cref="CalendarSystem.GetGregorianCalendar"/>(5)</description></item>
         ///   <item><term>Gregorian 6</term><description><see cref="CalendarSystem.GetGregorianCalendar"/>(6)</description></item>
         ///   <item><term>Gregorian 7</term><description><see cref="CalendarSystem.GetGregorianCalendar"/>(7)</description></item>
-        ///   <item><term>Coptic</term><description><see cref="CalendarSystem.GetCopticCalendar"/>()</description></item>
-        ///   <item><term>Julian</term><description><see cref="CalendarSystem.GetJulianCalendar"/>()</description></item>
+        ///   <item><term>Coptic</term><description><see cref="CalendarSystem.Coptic"/>()</description></item>
+        ///   <item><term>Julian</term><description><see cref="CalendarSystem.Julian"/>()</description></item>
         ///   <item><term>Hijri Civil-Indian</term><description><see cref="CalendarSystem.GetIslamicCalendar"/>(IslamicLeapYearPattern.Indian, IslamicEpoch.Civil)</description></item>
         ///   <item><term>Hijri Civil-Base15</term><description><see cref="CalendarSystem.GetIslamicCalendar"/>(IslamicLeapYearPattern.Base15, IslamicEpoch.Civil)</description></item>
         ///   <item><term>Hijri Civil-Base16</term><description><see cref="CalendarSystem.GetIslamicCalendar"/>(IslamicLeapYearPattern.Base16, IslamicEpoch.Civil)</description></item>
@@ -469,7 +368,8 @@ namespace NodaTime
         ///   <item><term>Hijri Astronomical-Base15</term><description><see cref="CalendarSystem.GetIslamicCalendar"/>(IslamicLeapYearPattern.Base15, IslamicEpoch.Astronomical)</description></item>
         ///   <item><term>Hijri Astronomical-Base16</term><description><see cref="CalendarSystem.GetIslamicCalendar"/>(IslamicLeapYearPattern.Base16, IslamicEpoch.Astronomical)</description></item>
         ///   <item><term>Hijri Astronomical-HabashAlHasib</term><description><see cref="CalendarSystem.GetIslamicCalendar"/>(IslamicLeapYearPattern.HabashAlHasib, IslamicEpoch.Astronomical)</description></item>
-        ///   <item><term>Persian</term><description><see cref="CalendarSystem.GetPersianCalendar"/>()</description></item>
+        ///   <item><term>Persian</term><description><see cref="CalendarSystem.Persian"/>()</description></item>
+        ///   <item><term>Um Al Qura</term><description><see cref="CalendarSystem.UmAlQura"/>()</description></item>
         ///   <item><term>Hebrew Civil</term><description><see cref="CalendarSystem.GetHebrewCalendar"/>(HebrewMonthNumbering.Civil)</description></item>
         ///   <item><term>Hebrew Scriptural</term><description><see cref="CalendarSystem.GetHebrewCalendar"/>(HebrewMonthNumbering.Scriptural)</description></item>
         /// </list>
