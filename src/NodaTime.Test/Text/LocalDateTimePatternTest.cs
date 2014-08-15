@@ -19,7 +19,7 @@ namespace NodaTime.Test.Text
         private static readonly LocalDateTime SampleLocalDateTimeToMillis = new LocalDateTime(1976, 6, 19, 21, 13, 34, 123);
         private static readonly LocalDateTime SampleLocalDateTimeToSeconds = new LocalDateTime(1976, 6, 19, 21, 13, 34);
         private static readonly LocalDateTime SampleLocalDateTimeToMinutes = new LocalDateTime(1976, 6, 19, 21, 13);
-        internal static readonly LocalDateTime SampleLocalDateTimeCoptic = new LocalDateTime(1976, 6, 19, 21, 13, 34, CommonCalendars.Coptic).PlusNanoseconds(123456789L);
+        internal static readonly LocalDateTime SampleLocalDateTimeCoptic = new LocalDateTime(1976, 6, 19, 21, 13, 34, CalendarSystem.Coptic).PlusNanoseconds(123456789L);
         
         private static readonly string[] AllStandardPatterns = { "f", "F", "g", "G", "o", "O", "s" };
 

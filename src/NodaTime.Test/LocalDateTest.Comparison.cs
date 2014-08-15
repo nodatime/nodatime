@@ -13,7 +13,7 @@ namespace NodaTime.Test
         [Test]
         public void Equals_EqualValues()
         {
-            CalendarSystem calendar = CommonCalendars.Julian;
+            CalendarSystem calendar = CalendarSystem.Julian;
             LocalDate date1 = new LocalDate(2011, 1, 2, calendar);
             LocalDate date2 = new LocalDate(2011, 1, 2, calendar);
             Assert.AreEqual(date1, date2);
@@ -26,7 +26,7 @@ namespace NodaTime.Test
         [Test]
         public void Equals_DifferentDates()
         {
-            CalendarSystem calendar = CommonCalendars.Julian;
+            CalendarSystem calendar = CalendarSystem.Julian;
             LocalDate date1 = new LocalDate(2011, 1, 2, calendar);
             LocalDate date2 = new LocalDate(2011, 1, 3, calendar);
             Assert.AreNotEqual(date1, date2);
@@ -39,7 +39,7 @@ namespace NodaTime.Test
         [Test]
         public void Equals_DifferentCalendars()
         {
-            CalendarSystem calendar = CommonCalendars.Julian;
+            CalendarSystem calendar = CalendarSystem.Julian;
             LocalDate date1 = new LocalDate(2011, 1, 2, calendar);
             LocalDate date2 = new LocalDate(2011, 1, 2, CalendarSystem.Iso);
             Assert.AreNotEqual(date1, date2);
@@ -95,7 +95,7 @@ namespace NodaTime.Test
         public void ComparisonOperators_DifferentCalendars_Throws()
         {
             LocalDate date1 = new LocalDate(2011, 1, 2);
-            LocalDate date2 = new LocalDate(2011, 1, 3, CommonCalendars.Julian);
+            LocalDate date2 = new LocalDate(2011, 1, 3, CalendarSystem.Julian);
 
             Assert.Throws<ArgumentException>(() => (date1 < date2).ToString());
             Assert.Throws<ArgumentException>(() => (date1 <= date2).ToString());

@@ -98,7 +98,7 @@ namespace NodaTime
                     var leapYearPattern = (IslamicLeapYearPattern)i;
                     var epoch = (IslamicEpoch)j;
                     var calculator = new IslamicYearMonthDayCalculator((IslamicLeapYearPattern)i, (IslamicEpoch)j);
-                    string id = string.Format(CultureInfo.InvariantCulture, "{0} {1}-{2}", IslamicName, epoch, leapYearPattern);
+                    string id = String.Format(CultureInfo.InvariantCulture, "{0} {1}-{2}", IslamicName, epoch, leapYearPattern);
                     CalendarOrdinal ordinal = (CalendarOrdinal) (8 + i + j * 4);
                     IslamicCalendarSystems[i - 1, j - 1] = new CalendarSystem(ordinal, id, IslamicName, calculator, Era.AnnoHegirae);
                 }
@@ -120,7 +120,7 @@ namespace NodaTime
             Func<CalendarSystem> factory;
             if (!IdToFactoryMap.TryGetValue(id, out factory))
             {
-                throw new KeyNotFoundException(string.Format("No calendar system for ID {0} exists", id));
+                throw new KeyNotFoundException(String.Format("No calendar system for ID {0} exists", id));
             }
             return factory();
         }
@@ -414,7 +414,7 @@ namespace NodaTime
         }
 
         private CalendarSystem(CalendarOrdinal ordinal, string name, YearMonthDayCalculator yearMonthDayCalculator, int minDaysInFirstWeek, EraCalculator eraCalculator)
-            : this(ordinal, string.Format(CultureInfo.InvariantCulture, "{0} {1}", name, minDaysInFirstWeek),
+            : this(ordinal, String.Format(CultureInfo.InvariantCulture, "{0} {1}", name, minDaysInFirstWeek),
                    name, yearMonthDayCalculator, minDaysInFirstWeek, eraCalculator)
         {
         }
@@ -764,5 +764,137 @@ namespace NodaTime
             ValidateYearMonthDay(yearMonthDay.Year, yearMonthDay.Month, yearMonthDay.Day);
         }
         #endregion
+
+        /// <summary>
+        /// Returns a Gregorian calendar system with at least 4 days in the first week of a week-year.
+        /// </summary>
+        /// <seealso cref="CalendarSystem.GetGregorianCalendar"/>
+        /// <returns>A Gregorian calendar system with at least 4 days in the first week of a week-year.</returns>
+        public static CalendarSystem Gregorian { get { return GetGregorianCalendar(4); } }
+
+        /// <summary>
+        /// Returns a pure proleptic Julian calendar system, which defines every
+        /// fourth year as a leap year. This implementation follows the leap year rule
+        /// strictly, even for dates before 8 CE, where leap years were actually
+        /// irregular.
+        /// </summary>
+        /// <remarks>
+        /// Although the Julian calendar did not exist before 45 BCE, this calendar
+        /// assumes it did, thus it is proleptic. This implementation also fixes the
+        /// start of the year at January 1.
+        /// </remarks>
+        /// <para>
+        /// This calendar always has at least 4 days in the first week of the week-year.
+        /// </para>
+        /// <returns>A suitable Julian calendar reference; the same reference may be returned by several
+        /// calls as the object is immutable and thread-safe.</returns>
+        public static CalendarSystem Julian { get { return JulianCalendarSystem; } }
+
+        /// <summary>
+        /// Returns a Coptic calendar system, which defines every fourth year as
+        /// leap, much like the Julian calendar. The year is broken down into 12 months,
+        /// each 30 days in length. An extra period at the end of the year is either 5
+        /// or 6 days in length. In this implementation, it is considered a 13th month.
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// Year 1 in the Coptic calendar began on August 29, 284 CE (Julian), thus
+        /// Coptic years do not begin at the same time as Julian years. This calendar
+        /// is not proleptic, as it does not allow dates before the first Coptic year.
+        /// </para>
+        /// <para>
+        /// This implementation defines a day as midnight to midnight exactly as per
+        /// the ISO calendar. Some references indicate that a Coptic day starts at
+        /// sunset on the previous ISO day, but this has not been confirmed and is not
+        /// implemented.
+        /// </para>
+        /// <para>
+        /// This calendar always has at least 4 days in the first week of the week-year.
+        /// </para>
+        /// </remarks>
+        /// <returns>A suitable Coptic calendar reference; the same reference may be returned by several
+        /// calls as the object is immutable and thread-safe.</returns>
+        public static CalendarSystem Coptic { get { return CopticCalendarSystem; } }
+
+        /// <summary>
+        /// Returns an Islamic calendar system equivalent to the one used by the BCL HijriCalendar.
+        /// </summary>
+        /// <remarks>
+        /// This uses the <see cref="IslamicLeapYearPattern.Base16"/> leap year pattern and the
+        /// <see cref="IslamicEpoch.Astronomical"/> epoch.
+        /// </remarks>
+        /// <seealso cref="CalendarSystem.GetIslamicCalendar"/>
+        /// <returns>An Islamic calendar system equivalent to the one used by the BCL.</returns>
+        public static CalendarSystem BclIslamic
+        {
+            get
+            {
+                return GetIslamicCalendar(IslamicLeapYearPattern.Base16, IslamicEpoch.Astronomical);
+            }
+        }
+
+        /// <summary>
+        /// Returns a Persian (also known as Solar Hijri) calendar system. This is the main calendar in Iran
+        /// and Afghanistan, and is also used in some other countries where Persian is spoken.
+        /// </summary>
+        /// <remarks>
+        /// The true Persian calendar is an astronomical one, where leap years depend on vernal equinox.
+        /// A complicated algorithmic alternative approach exists, proposed by Ahmad Birashk,
+        /// but this isn't generally used in society. The implementation here is somewhat simpler, using a
+        /// 33-year leap cycle, where years  1, 5, 9, 13, 17, 22, 26, and 30 in each cycle are leap years.
+        /// This is the same approach taken by the BCL <c>PersianCalendar</c> class, and the dates of
+        /// this implementation align exactly with the BCL implementation.
+        /// </remarks>
+        /// <returns>A Persian calendar system.</returns>
+        public static CalendarSystem Persian { get { return PersianCalendarSystem; } }
+
+        /// <summary>
+        /// Returns a Hebrew calendar system using the civil month numbering,
+        /// equivalent to the one used by the BCL HebrewCalendar.
+        /// </summary>
+        /// <seealso cref="CalendarSystem.GetHebrewCalendar"/>
+        /// <returns>A Hebrew calendar system using the civil month numbering, equivalent to the one used by the
+        /// BCL.</returns>
+        public static CalendarSystem CivilHebrew { get { return GetHebrewCalendar(HebrewMonthNumbering.Civil); } }
+
+        /// <summary>
+        /// Returns a Hebrew calendar system using the scriptural month numbering.
+        /// </summary>
+        /// <seealso cref="CalendarSystem.GetHebrewCalendar"/>
+        /// <returns>A Hebrew calendar system using the scriptural month numbering.</returns>
+        public static CalendarSystem ScripturalHebrew { get { return GetHebrewCalendar(HebrewMonthNumbering.Scriptural); } }
+
+#if PCL
+        /// <summary>
+        /// Returns an Um Al Qura calendar system - an Islamic calendar system primarily used by
+        /// Saudi Arabia.
+        /// </summary>
+#else
+        /// <summary>
+        /// Returns an Um Al Qura calendar system - an Islamic calendar system primarily used by
+        /// Saudi Arabia.
+        /// </summary>
+        /// <remarks>
+        /// This is a tabular calendar, which relies on data provided by the BCL
+        /// <see cref="UmAlQuraCalendar" /> class during initialization.
+        /// As such, some platforms do not support this calendar. In particular, the Mono implementation
+        /// is known to be unreliable (at least as far as Mono 3.6.0). The calendar is available on
+        /// some Portable Class Library variants, but not all. When in doubt, please test thoroughly
+        /// on all platforms you intend to support.
+        /// </remarks>
+        /// <returns>A calendar system for the Um Al Qura calendar.</returns>
+        /// <exception cref="NotSupportedException">The Um Al Qura calendar is not supported on the current platform.</exception>
+        public static CalendarSystem UmAlQura
+#endif
+        {
+            get
+            {
+                if (UmAlQuraCalendarSystem != null)
+                {
+                    return UmAlQuraCalendarSystem;
+                }
+                throw new NotSupportedException("The Um Al Qura calendar is not supported on your platform");
+            }
+        }
     }
 }

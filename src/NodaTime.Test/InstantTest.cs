@@ -124,7 +124,7 @@ namespace NodaTime.Test
         [Test]
         public void InZoneWithCalendar()
         {
-            CalendarSystem copticCalendar = CommonCalendars.Coptic;
+            CalendarSystem copticCalendar = CalendarSystem.Coptic;
             DateTimeZone london = DateTimeZoneProviders.Tzdb["Europe/London"];
             ZonedDateTime viaInstant = Instant.FromUtc(2004, 6, 9, 11, 10).InZone(london, copticCalendar);
 
