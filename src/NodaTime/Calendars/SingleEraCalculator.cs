@@ -14,15 +14,13 @@ namespace NodaTime.Calendars
     {
         private readonly Era era;
 
-        private readonly YearMonthDay startOfEra;
-        private readonly YearMonthDay endOfEra;
+        private readonly int minYear;
+        private readonly int maxYear;
 
         internal SingleEraCalculator(Era era, YearMonthDayCalculator ymdCalculator) : base(era)
         {
-            int minDays = ymdCalculator.GetStartOfYearInDays(ymdCalculator.MinYear);
-            int maxDays = ymdCalculator.GetStartOfYearInDays(ymdCalculator.MaxYear) + ymdCalculator.GetDaysInYear(ymdCalculator.MaxYear) - 1;
-            startOfEra = ymdCalculator.GetYearMonthDay(minDays);
-            endOfEra = ymdCalculator.GetYearMonthDay(maxDays);
+            minYear = ymdCalculator.MinYear;
+            maxYear = ymdCalculator.MaxYear;
             this.era = era;
         }
 
@@ -39,7 +37,7 @@ namespace NodaTime.Calendars
         internal override int GetAbsoluteYear(int yearOfEra, Era era)
         {
             ValidateEra(era);
-            Preconditions.CheckArgumentRange("yearOfEra", yearOfEra, startOfEra.Year, endOfEra.Year);
+            Preconditions.CheckArgumentRange("yearOfEra", yearOfEra, minYear, maxYear);
             return yearOfEra;
         }
 
@@ -51,25 +49,13 @@ namespace NodaTime.Calendars
         internal override int GetMinYearOfEra(Era era)
         {
             ValidateEra(era);
-            return startOfEra.Year;
+            return minYear;
         }
 
         internal override int GetMaxYearOfEra(Era era)
         {
             ValidateEra(era);
-            return endOfEra.Year;
-        }
-
-        internal override YearMonthDay GetStartOfEra(Era era)
-        {
-            ValidateEra(era);
-            return startOfEra;
-        }
-
-        internal override YearMonthDay GetEndOfEra(Era era)
-        {
-            ValidateEra(era);
-            return endOfEra;
+            return maxYear;
         }
 
         internal override Era GetEra(YearMonthDay yearMonthDay)
