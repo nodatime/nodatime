@@ -721,11 +721,12 @@ namespace NodaTime
         /// </summary>
         /// <remarks>
         /// This uses the <see cref="IslamicLeapYearPattern.Base16"/> leap year pattern and the
-        /// <see cref="IslamicEpoch.Astronomical"/> epoch.
+        /// <see cref="IslamicEpoch.Astronomical"/> epoch. This is equivalent to HijriCalendar
+        /// when the HijriCalendar.HijriAdjustment is 0.
         /// </remarks>
         /// <seealso cref="CalendarSystem.GetIslamicCalendar"/>
         /// <returns>An Islamic calendar system equivalent to the one used by the BCL.</returns>
-        public static CalendarSystem BclIslamic
+        public static CalendarSystem IslamicBcl
         {
             get
             {
@@ -755,14 +756,14 @@ namespace NodaTime
         /// <seealso cref="CalendarSystem.GetHebrewCalendar"/>
         /// <returns>A Hebrew calendar system using the civil month numbering, equivalent to the one used by the
         /// BCL.</returns>
-        public static CalendarSystem CivilHebrew { get { return GetHebrewCalendar(HebrewMonthNumbering.Civil); } }
+        public static CalendarSystem HebrewCivil { get { return GetHebrewCalendar(HebrewMonthNumbering.Civil); } }
 
         /// <summary>
         /// Returns a Hebrew calendar system using the scriptural month numbering.
         /// </summary>
         /// <seealso cref="CalendarSystem.GetHebrewCalendar"/>
         /// <returns>A Hebrew calendar system using the scriptural month numbering.</returns>
-        public static CalendarSystem ScripturalHebrew { get { return GetHebrewCalendar(HebrewMonthNumbering.Scriptural); } }
+        public static CalendarSystem HebrewScriptural { get { return GetHebrewCalendar(HebrewMonthNumbering.Scriptural); } }
 
 #if PCL
         /// <summary>

@@ -246,7 +246,7 @@ namespace NodaTime.Test.Calendars
         [Test]
         public void ThursdayEpoch()
         {
-            CalendarSystem thursdayEpochCalendar = CalendarSystem.BclIslamic;
+            CalendarSystem thursdayEpochCalendar = CalendarSystem.IslamicBcl;
             CalendarSystem julianCalendar = CalendarSystem.Julian;
 
             LocalDate thursdayEpoch = new LocalDate(1, 1, 1, thursdayEpochCalendar);
@@ -284,7 +284,7 @@ namespace NodaTime.Test.Calendars
             Calendar hijri = new HijriCalendar();
             DateTime bclDirect = new DateTime(1302, 10, 15, 0, 0, 0, 0, hijri, DateTimeKind.Unspecified);
 
-            CalendarSystem islamicCalendar = CalendarSystem.BclIslamic;
+            CalendarSystem islamicCalendar = CalendarSystem.IslamicBcl;
             LocalDate iso = new LocalDate(1302, 10, 15, islamicCalendar);
             DateTime bclFromNoda = iso.AtMidnight().ToDateTimeUnspecified();
             Assert.AreEqual(bclDirect, bclFromNoda);
@@ -299,7 +299,7 @@ namespace NodaTime.Test.Calendars
             Calendar hijri = new HijriCalendar();
             DateTime bclDirect = new DateTime(1, 1, 1, 0, 0, 0, 0, hijri, DateTimeKind.Unspecified);
 
-            CalendarSystem islamicCalendar = CalendarSystem.BclIslamic;
+            CalendarSystem islamicCalendar = CalendarSystem.IslamicBcl;
             CalendarSystem julianCalendar = CalendarSystem.Julian;
             LocalDate julianIslamicEpoch = new LocalDate(622, 7, 15, julianCalendar);
             LocalDate islamicDate = julianIslamicEpoch.WithCalendar(islamicCalendar);

@@ -66,7 +66,7 @@ namespace NodaTime.Test.Text
             }
             if (bcl is HijriCalendar)
             {
-                return CalendarSystem.BclIslamic;
+                return CalendarSystem.IslamicBcl;
             }
             // This is *not* a general rule. Noda Time simply doesn't support this calendar, which requires
             // table-based data. However, using the Islamic calendar with the civil epoch gives the same date for
