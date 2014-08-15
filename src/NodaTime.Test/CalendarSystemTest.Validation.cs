@@ -40,8 +40,8 @@ namespace NodaTime.Test
         [Test]
         public void GetDaysInMonth_Hebrew()
         {
-            TestHelper.AssertValid(CommonCalendars.CivilHebrew.GetDaysInMonth, 5402, 13); // Leap year
-            TestHelper.AssertOutOfRange(CommonCalendars.CivilHebrew.GetDaysInMonth, 5401, 13); // Not a leap year
+            TestHelper.AssertValid(CalendarSystem.CivilHebrew.GetDaysInMonth, 5402, 13); // Leap year
+            TestHelper.AssertOutOfRange(CalendarSystem.CivilHebrew.GetDaysInMonth, 5401, 13); // Not a leap year
         }
 
         [Test, TestCase(-9998), TestCase(9999)]

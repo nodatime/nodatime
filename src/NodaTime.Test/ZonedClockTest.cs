@@ -17,7 +17,7 @@ namespace NodaTime.Test
         [Test]
         public void GetCurrent()
         {
-            var julian = CommonCalendars.Julian;
+            var julian = CalendarSystem.Julian;
             FakeClock underlyingClock = new FakeClock(NodaConstants.UnixEpoch);
             ZonedClock zonedClock = underlyingClock.InZone(SampleZone, julian);
             Assert.AreEqual(NodaConstants.UnixEpoch, zonedClock.GetCurrentInstant());

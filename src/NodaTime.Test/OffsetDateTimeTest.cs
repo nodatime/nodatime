@@ -20,7 +20,7 @@ namespace NodaTime.Test
         [Test]
         public void LocalDateTimeProperties()
         {
-            LocalDateTime local = new LocalDateTime(2012, 6, 19, 1, 2, 3, 4, 5, CommonCalendars.Julian);
+            LocalDateTime local = new LocalDateTime(2012, 6, 19, 1, 2, 3, 4, 5, CalendarSystem.Julian);
             Offset offset = Offset.FromHours(5);
 
             OffsetDateTime odt = new OffsetDateTime(local, offset);
@@ -49,7 +49,7 @@ namespace NodaTime.Test
         [Test]
         public void LocalDateTimeProperty()
         {
-            LocalDateTime local = new LocalDateTime(2012, 6, 19, 1, 2, 3, 4, 5, CommonCalendars.Julian);
+            LocalDateTime local = new LocalDateTime(2012, 6, 19, 1, 2, 3, 4, 5, CalendarSystem.Julian);
             Offset offset = Offset.FromHours(5);
 
             OffsetDateTime odt = new OffsetDateTime(local, offset);
@@ -168,7 +168,7 @@ namespace NodaTime.Test
             var control = new OffsetDateTime(localControl, Offset.Zero);
             var negativeOffset = control.LocalDateTime.WithOffset(Offset.FromHours(-1));
             var positiveOffset = control.LocalDateTime.WithOffset(Offset.FromHours(1));
-            var differentCalendar = control.LocalDateTime.WithCalendar(CommonCalendars.Coptic).WithOffset(Offset.FromHours(5));
+            var differentCalendar = control.LocalDateTime.WithCalendar(CalendarSystem.Coptic).WithOffset(Offset.FromHours(5));
             // Later instant, earlier local
             var earlierLocal = control.LocalDateTime.PlusHours(-2).WithOffset(Offset.FromHours(-10));
             // Earlier instant, later local
@@ -195,7 +195,7 @@ namespace NodaTime.Test
             var localControl = new LocalDateTime(2013, 4, 2, 19, 54);
             var control = new OffsetDateTime(localControl, Offset.Zero);
             var equalAndOppositeChanges = control.LocalDateTime.PlusHours(1).WithOffset(Offset.FromHours(1));
-            var differentCalendar = control.LocalDateTime.WithCalendar(CommonCalendars.Coptic).WithOffset(Offset.Zero);
+            var differentCalendar = control.LocalDateTime.WithCalendar(CalendarSystem.Coptic).WithOffset(Offset.Zero);
 
             // Negative offset means later instant
             var negativeOffset = control.LocalDateTime.WithOffset(Offset.FromHours(-1));
@@ -283,7 +283,7 @@ namespace NodaTime.Test
             TestHelper.AssertBinaryRoundtrip(
                 new OffsetDateTime(new LocalDateTime(2013, 4, 12, 17, 53, 23), Offset.FromHours(1)));
             TestHelper.AssertBinaryRoundtrip(
-                new OffsetDateTime(new LocalDateTime(2013, 4, 12, 17, 53, 23, CommonCalendars.Julian), Offset.FromHours(1)));
+                new OffsetDateTime(new LocalDateTime(2013, 4, 12, 17, 53, 23, CalendarSystem.Julian), Offset.FromHours(1)));
         }
 
         [Test]
@@ -303,7 +303,7 @@ namespace NodaTime.Test
         [Test]
         public void XmlSerialization_NonIso()
         {
-            var value = new OffsetDateTime(new LocalDateTime(2013, 4, 12, 17, 53, 23, CommonCalendars.Julian),
+            var value = new OffsetDateTime(new LocalDateTime(2013, 4, 12, 17, 53, 23, CalendarSystem.Julian),
                 Offset.FromHours(1));
             TestHelper.AssertXmlRoundtrip(value, "<value calendar=\"Julian\">2013-04-12T17:53:23+01:00</value>");
         }
@@ -330,11 +330,11 @@ namespace NodaTime.Test
         [Test]
         public void WithCalendar()
         {
-            CalendarSystem julianCalendar = CommonCalendars.Julian;
+            CalendarSystem julianCalendar = CalendarSystem.Julian;
             OffsetDateTime gregorianEpoch = NodaConstants.UnixEpoch.WithOffset(Offset.Zero);
 
             OffsetDateTime expected = new LocalDate(1969, 12, 19, julianCalendar).AtMidnight().WithOffset(Offset.FromHours(0));
-            OffsetDateTime actual = gregorianEpoch.WithCalendar(CommonCalendars.Julian);
+            OffsetDateTime actual = gregorianEpoch.WithCalendar(CalendarSystem.Julian);
             Assert.AreEqual(expected, actual);
         }
 

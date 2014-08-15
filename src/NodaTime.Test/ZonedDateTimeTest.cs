@@ -220,7 +220,7 @@ namespace NodaTime.Test
             Assert.AreNotEqual(sample, zone.MapLocal(new LocalDateTime(2011, 6, 13, 1, 29)).First());
 
             // Different calendar
-            var withOtherCalendar = zone.MapLocal(new LocalDateTime(2011, 6, 13, 1, 30, CommonCalendars.Gregorian)).First();
+            var withOtherCalendar = zone.MapLocal(new LocalDateTime(2011, 6, 13, 1, 30, CalendarSystem.Gregorian)).First();
             Assert.AreNotEqual(sample, withOtherCalendar);
         }
 
@@ -341,7 +341,7 @@ namespace NodaTime.Test
         {
             DateTimeZoneProviders.Serialization = DateTimeZoneProviders.Tzdb;
             var zone = DateTimeZoneProviders.Tzdb["America/New_York"];
-            var localDateTime = new LocalDateTime(2013, 6, 12, 17, 53, 23, CommonCalendars.Julian);
+            var localDateTime = new LocalDateTime(2013, 6, 12, 17, 53, 23, CalendarSystem.Julian);
             var value = new ZonedDateTime(localDateTime.WithOffset(Offset.FromHours(-4)), zone);
             TestHelper.AssertXmlRoundtrip(value,
                 "<value zone=\"America/New_York\" calendar=\"Julian\">2013-06-12T17:53:23-04</value>");
@@ -352,7 +352,7 @@ namespace NodaTime.Test
         {
             DateTimeZoneProviders.Serialization = DateTimeZoneProviders.Tzdb;
             var zone = DateTimeZoneProviders.Tzdb["America/New_York"];
-            var localDateTime = new LocalDateTime(2013, 6, 12, 17, 53, 23, CommonCalendars.Julian);
+            var localDateTime = new LocalDateTime(2013, 6, 12, 17, 53, 23, CalendarSystem.Julian);
             var value = new ZonedDateTime(localDateTime.WithOffset(Offset.FromHours(-4)), zone);
             TestHelper.AssertBinaryRoundtrip(value);
         }
@@ -398,7 +398,7 @@ namespace NodaTime.Test
             var londonAfternoon = losAngelesAfternoon.LocalDateTime.InZoneStrictly(london);
 
             var londonPersian = londonEvening.LocalDateTime
-                                             .WithCalendar(CommonCalendars.Persian)
+                                             .WithCalendar(CalendarSystem.Persian)
                                              .InZoneStrictly(london);
 
             TestHelper.TestComparerStruct(ZonedDateTime.Comparer.Local, losAngelesAfternoon, londonAfternoon, londonEvening);
@@ -422,7 +422,7 @@ namespace NodaTime.Test
             var losAngelesLunchtime = new LocalDateTime(2014, 7, 9, 12, 32).InZoneStrictly(losAngeles);
 
             var londonPersian = londonEvening.LocalDateTime
-                                             .WithCalendar(CommonCalendars.Persian)
+                                             .WithCalendar(CalendarSystem.Persian)
                                              .InZoneStrictly(london);
 
             TestHelper.TestComparerStruct(ZonedDateTime.Comparer.Instant, londonEvening, losAngelesLunchtime, losAngelesAfternoon);

@@ -140,7 +140,7 @@ namespace NodaTime.Test
         public void Comparison_IgnoresOriginalCalendar()
         {
             LocalDateTime dateTime1 = new LocalDateTime(1900, 1, 1, 10, 30, 0);
-            LocalDateTime dateTime2 = dateTime1.WithCalendar(CommonCalendars.Julian);
+            LocalDateTime dateTime2 = dateTime1.WithCalendar(CalendarSystem.Julian);
 
             // Calendar information is propagated into LocalDate, but not into LocalTime
             Assert.IsFalse(dateTime1.Date == dateTime2.Date);

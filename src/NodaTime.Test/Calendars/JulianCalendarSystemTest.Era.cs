@@ -45,7 +45,7 @@ namespace NodaTime.Test.Calendars
         [Test]
         public void EraProperty()
         {
-            CalendarSystem calendar = CommonCalendars.Julian;
+            CalendarSystem calendar = CalendarSystem.Julian;
             LocalDateTime startOfEra = new LocalDateTime(1, 1, 1, 0, 0, 0, calendar);
             Assert.AreEqual(Era.Common, startOfEra.Era);
             Assert.AreEqual(Era.BeforeCommon, startOfEra.PlusTicks(-1).Era);
