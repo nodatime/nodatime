@@ -554,41 +554,44 @@ namespace NodaTime
         }
 
         /// <summary>
-        /// Subtracts one time from another, returning the result as a <see cref="Period"/>.
+        /// Subtracts one time from another, returning the result as a <see cref="Duration"/>.
         /// </summary>
         /// <remarks>
-        /// This is simply a convenience operator for calling <see cref="Period.Between(NodaTime.LocalTime,NodaTime.LocalTime)"/>.
+        /// If <paramref name="lhs"/> is earlier than <paramref name="rhs"/>, the result will be
+        /// a negative duration. The result is always less than 1 day in magnitude.
         /// </remarks>
         /// <param name="lhs">The time to subtract from</param>
         /// <param name="rhs">The time to subtract</param>
         /// <returns>The result of subtracting one time from another.</returns>
-        public static Period operator -(LocalTime lhs, LocalTime rhs)
+        public static Duration operator -(LocalTime lhs, LocalTime rhs)
         {
-            return Period.Between(rhs, lhs);
+            return Duration.FromNanoseconds(lhs.nanoseconds - rhs.nanoseconds);
         }
 
         /// <summary>
-        /// Subtracts one time from another, returning the result as a <see cref="Period"/> with units of years, months and days.
+        /// Subtracts one time from another, returning the result as a <see cref="Duration"/> with units of years, months and days.
         /// </summary>
         /// <remarks>
-        /// This is simply a convenience method for calling <see cref="Period.Between(NodaTime.LocalTime,NodaTime.LocalTime)"/>.
+        /// This is an alternative way of calling <see cref="op_Subtraction(LocalTime, LocalTime)"/>.
         /// </remarks>
         /// <param name="lhs">The time to subtract from</param>
         /// <param name="rhs">The time to subtract</param>
         /// <returns>The result of subtracting one time from another.</returns>
-        public static Period Subtract(LocalTime lhs, LocalTime rhs)
+        public static Duration Subtract(LocalTime lhs, LocalTime rhs)
         {
             return lhs - rhs;
         }
 
         /// <summary>
-        /// Subtracts the specified time from this time, returning the result as a <see cref="Period"/>.
-        /// Fluent alternative to <c>operator-()</c>.
+        /// Subtracts the specified time from this time, returning the result as a <see cref="Duration"/>.
         /// </summary>
+        /// <remarks>
+        /// This is an alternative way of calling <see cref="op_Subtraction(LocalTime, Duration)"/>.
+        /// </remarks>
         /// <param name="time">The time to subtract from this</param>
         /// <returns>The difference between the specified time and this one</returns>
         [Pure]
-        public Period Minus(LocalTime time)
+        public Duration Minus(LocalTime time)
         {
             return this - time;
         }

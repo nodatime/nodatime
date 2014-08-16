@@ -36,6 +36,21 @@ namespace NodaTime.Test
         }
 
         [Test]
+        public void Subtraction_LocalTime()
+        {
+            LocalTime start = new LocalTime(5, 30, 1);
+            LocalTime end = new LocalTime(15, 35, 10);
+            Duration expected = Duration.FromHours(10) + Duration.FromMinutes(5) + Duration.FromSeconds(9);
+            Assert.AreEqual(expected, end - start);
+            Assert.AreEqual(expected, end.Minus(start));
+            Assert.AreEqual(expected, LocalTime.Subtract(end, start));
+
+            Assert.AreEqual(-expected, start - end);
+            Assert.AreEqual(-expected, start.Minus(end));
+            Assert.AreEqual(-expected, LocalTime.Subtract(start, end));
+        }
+
+        [Test]
         public void Subtraction_WithPeriod()
         {
             LocalTime start = new LocalTime(5, 30, 1);
@@ -140,10 +155,6 @@ namespace NodaTime.Test
             LocalTime end = start + period;
             Assert.AreEqual(start - period, LocalTime.Subtract(start, period));
             Assert.AreEqual(start - period, start.Minus(period));
-
-            Assert.AreEqual(period, end - start);
-            Assert.AreEqual(period, LocalTime.Subtract(end, start));
-            Assert.AreEqual(period, end.Minus(start));
         }
 
         [Test]
