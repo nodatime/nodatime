@@ -394,7 +394,7 @@ namespace NodaTime
         /// </summary>
         /// <param name="time">The time to add the period to</param>
         /// <param name="period">The period to add</param>
-        /// <returns>The result of adding the period to the time, wrapping via midnight if necessary</returns>
+        /// <returns>The result of adding the period to the time, wrapping via midnight if necessary.</returns>
         public static LocalTime operator +(LocalTime time, Period period)
         {
             Preconditions.CheckNotNull(period, "period");
@@ -403,21 +403,27 @@ namespace NodaTime
         }
 
         /// <summary>
-        /// Adds the specified period to the time. Friendly alternative to <c>operator+()</c>.
+        /// Adds the specified period to the time.
         /// </summary>
+        /// <remarks>
+        /// This is an alternative way of calling <see cref="op_Addition(LocalTime, Period)"/>.
+        /// </remarks>
         /// <param name="time">The time to add the period to</param>
         /// <param name="period">The period to add. Must not contain any (non-zero) date units.</param>
-        /// <returns>The sum of the given time and period</returns>
+        /// <returns>The sum of the given time and period, wrapping via midnight if necessary.</returns>
         public static LocalTime Add(LocalTime time, Period period)
         {
             return time + period;
         }
 
         /// <summary>
-        /// Adds the specified period to this time. Fluent alternative to <c>operator+()</c>.
+        /// Adds the specified period to this time.
         /// </summary>
+        /// <remarks>
+        /// This is an alternative way of calling <see cref="op_Addition(LocalTime, Period)"/>.
+        /// </remarks>
         /// <param name="period">The period to add. Must not contain any (non-zero) date units.</param>
-        /// <returns>The sum of this time and the given period</returns>
+        /// <returns>The sum of this time and the given period, wrapping via midnight if necessary.</returns>
         [Pure]
         public LocalTime Plus(Period period)
         {
@@ -427,11 +433,10 @@ namespace NodaTime
         /// <summary>
         /// Creates a new local time by subtracting a period from an existing time. The period must not contain
         /// any date-related units (days etc) with non-zero values.
-        /// This is a convenience operator over the <see cref="Minus(Period)"/> method.
         /// </summary>
         /// <param name="time">The time to subtract the period from</param>
         /// <param name="period">The period to subtract</param>
-        /// <returns>The result of subtract the period from the time, wrapping via midnight if necessary</returns>
+        /// <returns>The result of subtract the period from the time, wrapping via midnight if necessary.</returns>
         public static LocalTime operator -(LocalTime time, Period period)
         {
             Preconditions.CheckNotNull(period, "period");
@@ -440,25 +445,112 @@ namespace NodaTime
         }
 
         /// <summary>
-        /// Subtracts the specified period from the time. Friendly alternative to <c>operator-()</c>.
+        /// Subtracts the specified period from the time.
         /// </summary>
+        /// <remarks>
+        /// This is an alternative way of calling <see cref="op_Subtraction(LocalTime, Period)"/>.
+        /// </remarks>
         /// <param name="time">The time to subtract the period from</param>
         /// <param name="period">The period to subtract. Must not contain any (non-zero) date units.</param>
-        /// <returns>The result of subtracting the given period from the time.</returns>
+        /// <returns>The result of subtracting the given period from the time, wrapping via midnight if necessary.</returns>
         public static LocalTime Subtract(LocalTime time, Period period)
         {
             return time - period;
         }
 
         /// <summary>
-        /// Subtracts the specified period from this time. Fluent alternative to <c>operator-()</c>.
+        /// Subtracts the specified period from this time.
         /// </summary>
+        /// <remarks>
+        /// This is an alternative way of calling <see cref="op_Subtraction(LocalTime, Period)"/>.
+        /// </remarks>
         /// <param name="period">The period to subtract. Must not contain any (non-zero) date units.</param>
-        /// <returns>The result of subtracting the given period from this time.</returns>
+        /// <returns>The result of subtracting the given period from this time, wrapping via midnight if necessary.</returns>
         [Pure]
         public LocalTime Minus(Period period)
         {
             return this - period;
+        }
+
+        /// <summary>
+        /// Creates a new local time by adding a duration to an existing time.
+        /// </summary>
+        /// <param name="time">The time to add the duration to</param>
+        /// <param name="duration">The duration to add</param>
+        /// <returns>The result of adding the duration to the time, wrapping via midnight if necessary.</returns>
+        public static LocalTime operator +(LocalTime time, Duration duration)
+        {
+            // Ignore the days part of the duration; it's irrelevant.
+            return new LocalTime((time.nanoseconds + duration.NanosecondOfFloorDay) % NodaConstants.NanosecondsPerDay);
+        }
+
+        /// <summary>
+        /// Adds the specified duration to the time.
+        /// </summary>
+        /// <remarks>
+        /// This is an alternative way of calling <see cref="op_Addition(LocalTime, Duration)"/>.
+        /// </remarks>
+        /// <param name="time">The time to add the period to</param>
+        /// <param name="duration">The duration to add.</param>
+        /// <returns>The sum of the given time and duration, wrapping via midnight if necessary.</returns>
+        public static LocalTime Add(LocalTime time, Duration duration)
+        {
+            return time + duration;
+        }
+
+        /// <summary>
+        /// Adds the specified duration to this time.
+        /// </summary>
+        /// <remarks>
+        /// This is an alternative way of calling <see cref="op_Addition(LocalTime, Duration)"/>.
+        /// </remarks>
+        /// <param name="duration">The duration to add.</param>
+        /// <returns>The sum of this time and the given duration, wrapping via midnight if necessary.</returns>
+        [Pure]
+        public LocalTime Plus(Duration duration)
+        {
+            return this + duration;
+        }
+
+        /// <summary>
+        /// Creates a new local time by subtracting a duration from an existing time.
+        /// </summary>
+        /// <param name="time">The time to subtract the period from</param>
+        /// <param name="duration">The duration to subtract</param>
+        /// <returns>The result of subtract the duration from the time, wrapping via midnight if necessary.</returns>
+        public static LocalTime operator -(LocalTime time, Duration duration)
+        {
+            // Ignore the days part of the duration; it's irrelevant. Just make sure it's positive and in the right range.
+            long nanos = (time.nanoseconds - duration.NanosecondOfFloorDay + NodaConstants.NanosecondsPerDay) % NodaConstants.NanosecondsPerDay;
+            return new LocalTime(nanos);
+        }
+
+        /// <summary>
+        /// Subtracts the specified duration from the time.
+        /// </summary>
+        /// <remarks>
+        /// This is an alternative way of calling <see cref="op_Subtraction(LocalTime, Duration)"/>.
+        /// </remarks>
+        /// <param name="time">The time to subtract the duration from</param>
+        /// <param name="duration">The duration to subtract.</param>
+        /// <returns>The result of subtracting the given duration from the time, wrapping via midnight if necessary.</returns>
+        public static LocalTime Subtract(LocalTime time, Duration duration)
+        {
+            return time - duration;
+        }
+
+        /// <summary>
+        /// Subtracts the specified duration from this time.
+        /// </summary>
+        /// <remarks>
+        /// This is an alternative way of calling <see cref="op_Subtraction(LocalTime, Duration)"/>.
+        /// </remarks>
+        /// <param name="duration">The duration to subtract.</param>
+        /// <returns>The result of subtracting the given duration from this time, wrapping via midnight if necessary.</returns>
+        [Pure]
+        public LocalTime Minus(Duration duration)
+        {
+            return this - duration;
         }
 
         /// <summary>

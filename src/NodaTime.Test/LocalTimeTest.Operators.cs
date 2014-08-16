@@ -3,7 +3,6 @@
 // as found in the LICENSE.txt file.
 
 using System;
-using System.IO;
 using NUnit.Framework;
 
 namespace NodaTime.Test
@@ -69,6 +68,50 @@ namespace NodaTime.Test
             Period period = Period.FromDays(1);
             // Use method not operator here to form a valid statement
             Assert.Throws<ArgumentException>(() => LocalTime.Add(time, period));
+        }
+
+        [Test]
+        public void Addition_PositiveDuration()
+        {
+            LocalTime time = new LocalTime(20, 30);
+            Duration duration = Duration.FromDays(5) + Duration.FromHours(6) + Duration.FromMinutes(5) + Duration.FromSeconds(30);
+            LocalTime expected = new LocalTime(2, 35, 30);
+            Assert.AreEqual(expected, time + duration);
+            Assert.AreEqual(expected, time.Plus(duration));
+            Assert.AreEqual(expected, LocalTime.Add(time, duration));
+        }
+
+        [Test]
+        public void Addition_NegativeDuration()
+        {
+            LocalTime time = new LocalTime(8, 30);
+            Duration duration = Duration.FromDays(-5) + Duration.FromHours(-10) + Duration.FromMinutes(-5) + Duration.FromSeconds(-30);
+            LocalTime expected = new LocalTime(22, 24, 30);
+            Assert.AreEqual(expected, time + duration);
+            Assert.AreEqual(expected, time.Plus(duration));
+            Assert.AreEqual(expected, LocalTime.Add(time, duration));
+        }
+
+        [Test]
+        public void Subtraction_PositiveDuration()
+        {
+            LocalTime time = new LocalTime(8, 30);
+            Duration duration = Duration.FromDays(5) + Duration.FromHours(10) + Duration.FromMinutes(5) + Duration.FromSeconds(30);
+            LocalTime expected = new LocalTime(22, 24, 30);
+            Assert.AreEqual(expected, time - duration);
+            Assert.AreEqual(expected, time.Minus(duration));
+            Assert.AreEqual(expected, LocalTime.Subtract(time, duration));
+        }
+
+        [Test]
+        public void Subtraction_NegativeDuration()
+        {
+            LocalTime time = new LocalTime(20, 30);
+            Duration duration = Duration.FromDays(-5) + Duration.FromHours(-6) + Duration.FromMinutes(-5) + Duration.FromSeconds(-30);
+            LocalTime expected = new LocalTime(2, 35, 30);
+            Assert.AreEqual(expected, time - duration);
+            Assert.AreEqual(expected, time.Minus(duration));
+            Assert.AreEqual(expected, LocalTime.Subtract(time, duration));
         }
 
         [Test]
