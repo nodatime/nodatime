@@ -235,6 +235,44 @@ namespace NodaTime
         }
 
         /// <summary>
+        /// Returns the local date corresponding to a particular occurrence of a day-of-week
+        /// within a year and month. For example, this method can be used to ask for "the third Monday in April 2012".
+        /// </summary>
+        /// <remarks>
+        /// The returned date is always in the ISO calendar. This method is unrelated to week-years and any rules for
+        /// "business weeks" and the like - if a month begins on a Friday, then asking for the first Friday will give
+        /// that day, for example.
+        /// </remarks>
+        /// <param name="year">The year of the value to return.</param>
+        /// <param name="month">The month of the value to return.</param>
+        /// <param name="occurrence">The occurrence of the value to return, which must be in the range [1, 5]. The value 5 can
+        /// be used to always return the last occurrence of the specified day-of-week, even if there are only 4
+        /// occurrences of that day-of-week in the month.</param>
+        /// <param name="dayOfWeek">The day-of-week of the value to return.</param>
+        /// <returns></returns>
+        public static LocalDate FromYearMonthWeekAndDay(int year, int month, int occurrence, IsoDayOfWeek dayOfWeek)
+        {
+            // This validates year and month as well as getting us a useful date.
+            LocalDate startOfMonth = new LocalDate(year, month, 1);
+            Preconditions.CheckArgumentRange("occurrence", occurrence, 1, 5);
+            Preconditions.CheckArgumentRange("dayOfWeek", (int) dayOfWeek, 1, 7);
+
+            // Correct day of week, 1st week of month.
+            int week1Day = (int) dayOfWeek - startOfMonth.DayOfWeek + 1;
+            if (week1Day <= 0)
+            {
+                week1Day += 7;
+            }
+            int targetDay = week1Day + (occurrence - 1) * 7;
+            if (targetDay > CalendarSystem.Iso.GetDaysInMonth(year, month))
+            {
+                targetDay -= 7;
+            }
+            return new LocalDate(year, month, targetDay);
+
+        }
+
+        /// <summary>
         /// Adds the specified period to the date.
         /// </summary>
         /// <param name="date">The date to add the period to</param>
