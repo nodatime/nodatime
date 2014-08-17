@@ -160,5 +160,21 @@ namespace NodaTime.Test
             // Week year 2005 only has 52 weeks
             Assert.Throws<ArgumentOutOfRangeException>(() => LocalDate.FromWeekYearWeekAndDay(2005, 53, IsoDayOfWeek.Sunday));
         }
+
+        [Test]
+        [TestCase(2014, 8, 3, IsoDayOfWeek.Sunday, 17)]
+        [TestCase(2014, 8, 3, IsoDayOfWeek.Friday, 15)]
+        // Needs "rewind" logic as August 1st 2014 is a Friday
+        [TestCase(2014, 8, 3, IsoDayOfWeek.Thursday, 21)]
+        [TestCase(2014, 8, 5, IsoDayOfWeek.Sunday, 31)]
+        // Only 4 Mondays in August in 2014.
+        [TestCase(2014, 8, 5, IsoDayOfWeek.Monday, 25)]
+        public void FromYearMonthWeekAndDay(int year, int month, int occurrence, IsoDayOfWeek dayOfWeek, int expectedDay)
+        {
+            var date = LocalDate.FromYearMonthWeekAndDay(year, month, occurrence, dayOfWeek);
+            Assert.AreEqual(year, date.Year);
+            Assert.AreEqual(month, date.Month);
+            Assert.AreEqual(expectedDay, date.Day);
+        }
     }
 }
