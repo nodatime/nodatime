@@ -31,17 +31,87 @@ namespace NodaTime
         /// <summary>
         /// A date adjuster to move to the specified day of the current month.
         /// </summary>
+        /// <remarks>
+        /// The returned adjuster will throw an exception if it is applied to a date
+        /// that would create an invalid result.
+        /// </remarks>
         public static Func<LocalDate, LocalDate> DayOfMonth(int day)
         {
             return date => new LocalDate(date.Year, date.Month, day, date.Calendar);
         }
 
         /// <summary>
-        /// A date adjuster to move to the specified day of the current month.
+        /// A date adjuster to move to the same day of the specified month.
         /// </summary>
+        /// <remarks>
+        /// The returned adjuster will throw an exception if it is applied to a date
+        /// that would create an invalid result.
+        /// </remarks>
         public static Func<LocalDate, LocalDate> Month(int month)
         {
             return date => new LocalDate(date.Year, month, date.Day, date.Calendar);
+        }
+
+        /// <summary>
+        /// A date adjuster to move to the next specified day-of-week, but return the
+        /// original date if the day is already correct.
+        /// </summary>
+        public static Func<LocalDate, LocalDate> NextOrSame(IsoDayOfWeek dayOfWeek)
+        {
+            // Avoids boxing...
+            if (dayOfWeek < IsoDayOfWeek.Monday || dayOfWeek > IsoDayOfWeek.Sunday)
+            {
+                throw new ArgumentOutOfRangeException("dayOfWeek");
+            }
+            return date => date.IsoDayOfWeek == dayOfWeek ? date : date.Next(dayOfWeek);
+        }
+
+        /// <summary>
+        /// A date adjuster to move to the previous specified day-of-week, but return the
+        /// original date if the day is already correct.
+        /// </summary>
+        public static Func<LocalDate, LocalDate> PreviousOrSame(IsoDayOfWeek dayOfWeek)
+        {
+            // Avoids boxing...
+            if (dayOfWeek < IsoDayOfWeek.Monday || dayOfWeek > IsoDayOfWeek.Sunday)
+            {
+                throw new ArgumentOutOfRangeException("dayOfWeek");
+            }
+            return date => date.IsoDayOfWeek == dayOfWeek ? date : date.Previous(dayOfWeek);
+        }
+
+        /// <summary>
+        /// A date adjuster to move to the next specified day-of-week, adding
+        /// a week if the day is already correct.
+        /// </summary>
+        /// <remarks>
+        /// This is the adjuster equivalent of <see cref="LocalDate.Next"/>.
+        /// </remarks>
+        public static Func<LocalDate, LocalDate> Next(IsoDayOfWeek dayOfWeek)
+        {
+            // Avoids boxing...
+            if (dayOfWeek < IsoDayOfWeek.Monday || dayOfWeek > IsoDayOfWeek.Sunday)
+            {
+                throw new ArgumentOutOfRangeException("dayOfWeek");
+            }
+            return date => date.Next(dayOfWeek);
+        }
+
+        /// <summary>
+        /// A date adjuster to move to the previous specified day-of-week, subtracting
+        /// a week if the day is already correct.
+        /// </summary>
+        /// <remarks>
+        /// This is the adjuster equivalent of <see cref="LocalDate.Previous"/>.
+        /// </remarks>
+        public static Func<LocalDate, LocalDate> Previous(IsoDayOfWeek dayOfWeek)
+        {
+            // Avoids boxing...
+            if (dayOfWeek < IsoDayOfWeek.Monday || dayOfWeek > IsoDayOfWeek.Sunday)
+            {
+                throw new ArgumentOutOfRangeException("dayOfWeek");
+            }
+            return date => date.Previous(dayOfWeek);
         }
     }
 }
