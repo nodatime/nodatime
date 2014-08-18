@@ -305,9 +305,10 @@ namespace NodaTime.Test.TimeZones
                 }
                 total++;
             }
-            Assert.That(correct * 100.0 / total, Is.GreaterThanOrEqualTo(80.0),
-                "Last incorrect date for {0}: {1} (BCL: {2}; TZDB: {3})",
+            Assert.That(correct * 100.0 / total, Is.GreaterThanOrEqualTo(75.0),
+                "Last incorrect date for {0} vs {1}: {2} (BCL: {3}; TZDB: {4})",
                 bclZone.Id,
+                id,
                 lastIncorrectDate, lastIncorrectBclOffset, lastIncorrectTzdbOffset);
         }
     }
