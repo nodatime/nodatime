@@ -25,6 +25,9 @@
     <file src="bin\Signed Release\NodaTime.Testing.dll" target="lib\net35-Client" />
     <file src="bin\Signed Release\NodaTime.Testing.pdb" target="lib\net35-Client" />
     <file src="bin\Signed Release\NodaTime.Testing.xml" target="lib\net35-Client" />
+    <file src="bin\Signed Release Net4\NodaTime.Testing.dll" target="lib\net4-Client" />
+    <file src="bin\Signed Release Net4\NodaTime.Testing.pdb" target="lib\net4-Client" />
+    <file src="bin\Signed Release Net4\NodaTime.Testing.xml" target="lib\net4-Client" />
     <file src="bin\Signed Release Portable\NodaTime.Testing.dll" target="lib\portable-net4+sl5+netcore45+wpa81+wp8+MonoAndroid1+MonoTouch1" />
     <file src="bin\Signed Release Portable\NodaTime.Testing.pdb" target="lib\portable-net4+sl5+netcore45+wpa81+wp8+MonoAndroid1+MonoTouch1" />
     <file src="bin\Signed Release Portable\NodaTime.Testing.xml" target="lib\portable-net4+sl5+netcore45+wpa81+wp8+MonoAndroid1+MonoTouch1" />

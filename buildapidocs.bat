@@ -12,7 +12,12 @@ rmdir /s /q src\NodaTime\bin\"Release Portable"
 
 msbuild "src\NodaTime-All.sln" /property:Configuration=Release
 IF ERRORLEVEL 1 EXIT /B 1
-msbuild "src\NodaTime-All.sln" /property:Configuration="Release Portable"
+
+REM Get the PCL version ready to build...
+src\NodaTime.Tools.ProjectBuilder\bin\Release\NodaTime.Tools.ProjectBuilder src
+IF ERRORLEVEL 1 EXIT /B 1
+
+msbuild "src\NodaTime-Core-pcl.sln" /property:Configuration=Release
 IF ERRORLEVEL 1 EXIT /B 1
 
 set REL=src\NodaTime\bin\Release

@@ -26,6 +26,9 @@
     <file src="bin\Signed Release\NodaTime.Serialization.JsonNet.dll" target="lib\net35-Client" />
     <file src="bin\Signed Release\NodaTime.Serialization.JsonNet.pdb" target="lib\net35-Client" />
     <file src="bin\Signed Release\NodaTime.Serialization.JsonNet.xml" target="lib\net35-Client" />
+    <file src="bin\Signed Release Net4\NodaTime.Serialization.JsonNet.dll" target="lib\net4-Client" />
+    <file src="bin\Signed Release Net4\NodaTime.Serialization.JsonNet.pdb" target="lib\net4-Client" />
+    <file src="bin\Signed Release Net4\NodaTime.Serialization.JsonNet.xml" target="lib\net4-Client" />
     <file src="bin\Signed Release Portable\NodaTime.Serialization.JsonNet.dll" target="lib\portable-net4+sl5+netcore45+wpa81+wp8+MonoAndroid1+MonoTouch1" />
     <file src="bin\Signed Release Portable\NodaTime.Serialization.JsonNet.pdb" target="lib\portable-net4+sl5+netcore45+wpa81+wp8+MonoAndroid1+MonoTouch1" />
     <file src="bin\Signed Release Portable\NodaTime.Serialization.JsonNet.xml" target="lib\portable-net4+sl5+netcore45+wpa81+wp8+MonoAndroid1+MonoTouch1" />

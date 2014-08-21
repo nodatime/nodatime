@@ -5,10 +5,18 @@ if not exist "NodaTime Release.snk" (
     goto :end
 )
 
-msbuild "src\NodaTime-All.sln" /property:Configuration="Signed Release"
+REM Make sure we can build all the variants
+msbuild "src\NodaTime-Tools.sln" /property:Configuration=Release
+src\NodaTime.Tools.ProjectBuilder\bin\Release\NodaTime.Tools.ProjectBuilder src
 IF ERRORLEVEL 1 EXIT /B 1
 
-msbuild "src\NodaTime-All.sln" /property:Configuration="Signed Release Portable"
+msbuild "src\NodaTime-Core-signed.sln" /property:Configuration=Release
+IF ERRORLEVEL 1 EXIT /B 1
+
+msbuild "src\NodaTime-Core-signed-pcl.sln" /property:Configuration=Release
+IF ERRORLEVEL 1 EXIT /B 1
+
+msbuild "src\NodaTime-Core-signed-net4.sln" /property:Configuration=Release
 IF ERRORLEVEL 1 EXIT /B 1
 
 REM This will also build the unsigned release build. A bit wasteful,
