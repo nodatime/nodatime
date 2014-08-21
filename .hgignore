@@ -43,11 +43,8 @@ syntax:regexp
 # NUnit output
 ^TestResult\.xml$
 
-# Sandcastle output that we're not interested in
-^docs/api/fti/
-^docs/api/Web\.Config$
-^docs/api/[^.]+\.(aspx|xml)$
-^docs/api/LastBuild.log$
+# The docs directory - we've already got docs/api/Index.html, but we don't want anything new.
+^docs/
 
 # Sandcastle public API output (consumed by buildnuget.bat)
 ^docs/PublicApi/
