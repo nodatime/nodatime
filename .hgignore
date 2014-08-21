@@ -76,3 +76,7 @@ syntax:regexp
 
 # Roslyn temporary files
 ^src/.*\.sln\.ide/
+
+# Generated packages/projects
+^src/NodaTime-Core-.*.sln$
+^src/.*/.*-.*.csproj$
