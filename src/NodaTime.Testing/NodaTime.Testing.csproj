@@ -1,25 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <!-- Set the custom Portability property based on configuration -->
-  <PropertyGroup>
-    <Portability Condition="'$(Configuration)' == 'Debug Portable'">PCL</Portability>
-    <Portability Condition="'$(Configuration)' == 'Release Portable'">PCL</Portability>
-    <Portability Condition="'$(Configuration)' == 'Signed Release Portable'">PCL</Portability>
-    <!-- Default to desktop if not explicitly set above -->
-    <Portability Condition="'$(Portability)' == ''">Desktop</Portability>
-  </PropertyGroup>
-  <!-- Desktop-specific properties -->
-  <PropertyGroup Condition="'$(Portability)' == 'Desktop'">
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
-    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
-  </PropertyGroup>
-  <!-- PCL-specific properties -->
-  <PropertyGroup Condition="'$(Portability)' == 'PCL'">
-    <MinimumVisualStudioVersion>10.0</MinimumVisualStudioVersion>
-    <ProjectGuid>{c78f6992-28d7-45c9-a4c1-6eaa649f3247}</ProjectGuid>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <TargetFrameworkProfile>Profile328</TargetFrameworkProfile>
-  </PropertyGroup>
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -54,6 +34,8 @@
     <SccLocalPath>&lt;Local Binding Root of Project&gt;</SccLocalPath>
     <SccAuxPath>&lt;Source Control Database&gt;</SccAuxPath>
     <SccProvider>Mercurial Source Control Package</SccProvider>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
     <TargetFrameworkSubset>
     </TargetFrameworkSubset>
   </PropertyGroup>
@@ -74,49 +56,6 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Release\NodaTime.Testing.xml</DocumentationFile>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Signed Release|AnyCPU'">
-    <OutputPath>bin\Signed Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <DocumentationFile>bin\Signed Release\NodaTime.Testing.xml</DocumentationFile>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>..\..\NodaTime Release.snk</AssemblyOriginatorKeyFile>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug Portable|AnyCPU'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\Debug Portable\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;PCL</DefineConstants>
-    <DebugType>full</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release Portable|AnyCPU'">
-    <OutputPath>bin\Release Portable\</OutputPath>
-    <DefineConstants>TRACE;PCL</DefineConstants>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <DocumentationFile>bin\Release Portable\NodaTime.Testing.xml</DocumentationFile>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Signed Release Portable|AnyCPU'">
-    <OutputPath>bin\Signed Release Portable\</OutputPath>
-    <DefineConstants>TRACE;PCL</DefineConstants>
-    <DocumentationFile>bin\Signed Release Portable\NodaTime.Testing.xml</DocumentationFile>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <AssemblyOriginatorKeyFile>..\..\NodaTime Release.snk</AssemblyOriginatorKeyFile>
-    <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -139,8 +78,7 @@
       <Name>NodaTime</Name>
     </ProjectReference>
   </ItemGroup>
-  <Import Condition="'$(Portability)' == 'Desktop'" Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Condition="'$(Portability)' == 'PCL'" Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
