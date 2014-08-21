@@ -34,7 +34,7 @@ namespace NodaTime.Tools.ProjectBuilder
             }
             string src = args[0];
             string coreSln = Path.Combine(src, "NodaTime-Core.sln");
-            if (File.Exists(coreSln))
+            if (!File.Exists(coreSln))
             {
                 Console.WriteLine("Cannot find solution file: {0}", coreSln);
                 return 1;
@@ -94,7 +94,7 @@ namespace NodaTime.Tools.ProjectBuilder
 
         static XElement GetPropertyGroup(XDocument project)
         {
-            return project.Root.Elements(MsBuild + "PropertyGroup").Single(p => p.Attribute("Configuration") == null);
+            return project.Root.Elements(MsBuild + "PropertyGroup").Single(p => p.Attribute("Condition") == null);
         }
 
         static Action<XDocument> DefineConstant(string constant)

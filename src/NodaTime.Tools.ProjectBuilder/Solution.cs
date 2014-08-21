@@ -33,8 +33,9 @@ namespace NodaTime.Tools.ProjectBuilder
 
         internal void Build(string directory)
         {
+            Console.WriteLine("Building {0}", suffix);
             string currentSln = Path.Combine(directory, "NodaTime-Core.sln");
-            string newSln = Path.Combine(directory, "NodaTime-Core-" + directory + ".sln");
+            string newSln = Path.Combine(directory, "NodaTime-Core-" + suffix + ".sln");
             string fullSuffix = "-" + suffix + ".csproj";
             File.WriteAllLines(newSln, File.ReadLines(currentSln).Select(x => x.Replace(".csproj", fullSuffix)));
 
@@ -42,6 +43,7 @@ namespace NodaTime.Tools.ProjectBuilder
             {
                 foreach (var project in collection.Projects)
                 {
+                    Console.WriteLine("  Cloning {0}", project);
                     XDocument document = XDocument.Load(Path.Combine(directory, project, project + ".csproj"));
                     foreach (var transformation in collection.Transformations)
                     {
@@ -75,7 +77,7 @@ namespace NodaTime.Tools.ProjectBuilder
         {
             string original = @"bin\" + configuration + @"\";
             string replacement = @"bin\" + string.Format(outputPathFormat, configuration) + @"\";
-            document.Descendants(MsBuild + "OutputPath").Single(x => x.Value == @"bin\" + original + @"\").Value = @"bin\" + replacement + @"\";
+            document.Descendants(MsBuild + "OutputPath").Single(x => x.Value == original).Value = replacement;
         }
 
         private void SetDocumentationationFile(XDocument document)
