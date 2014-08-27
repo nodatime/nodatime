@@ -46,11 +46,9 @@ syntax:regexp
 # The docs directory - we've already got docs/api/Index.html, but we don't want anything new.
 ^docs/
 
-# Sandcastle public API output (consumed by buildnuget.bat)
-^docs/PublicApi/
-
 # Sandcastle per-user settings
 ^NodaTime.shfbproj_.+$
+^NodaTime-Pcl.shfbproj_.+$
 
 # NuGet temporary build area (see buildnuget.bat)
 ^nuget/
