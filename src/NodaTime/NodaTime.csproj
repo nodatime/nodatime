@@ -156,7 +156,6 @@
     <Compile Include="Text\NamespaceDoc.cs" />
     <Compile Include="Text\OffsetPattern.cs" />
     <Compile Include="Text\OffsetPatternParser.cs" />
-    <Compile Include="Text\Patterns\AbstractPattern.cs" />
     <Compile Include="Text\Patterns\DatePatternHelper.cs" />
     <Compile Include="Text\Patterns\IPatternParser.cs" />
     <Compile Include="Text\Patterns\PatternCursor.cs" />
