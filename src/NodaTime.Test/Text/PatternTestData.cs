@@ -106,12 +106,12 @@ namespace NodaTime.Test.Text
             throw new NotImplementedException();
         }
 
-        internal void TestFormatPartial()
+        internal void TestAppendFormat()
         {
             var pattern = CreatePartialPattern();
             Assert.IsNull(Message);
             var builder = new StringBuilder("x");
-            pattern.FormatPartial(Value, builder);
+            pattern.AppendFormat(Value, builder);
             Assert.AreEqual("x" + Text, builder.ToString());
         }
 

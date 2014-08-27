@@ -21,12 +21,5 @@ namespace NodaTime.Text
         /// <param name="cursor">The cursor to parse from.</param>
         /// <returns>The result of parsing from the cursor.</returns>
         ParseResult<T> ParsePartial(ValueCursor cursor);
-
-        /// <summary>
-        /// Formats the given value by appending to an existing StringBuilder.
-        /// </summary>
-        /// <param name="value">The value to format.</param>
-        /// <param name="builder">The builder to append to.</param>
-        void FormatPartial(T value, StringBuilder builder);
     }
 }

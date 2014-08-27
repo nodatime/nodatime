@@ -2,6 +2,7 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
+using System.Text;
 using NodaTime.Globalization;
 
 namespace NodaTime.Text.Patterns
@@ -44,5 +45,7 @@ namespace NodaTime.Text.Patterns
         protected abstract ParseResult<T> ParseImpl(string value);
 
         public abstract string Format(T value);
+
+        public abstract StringBuilder AppendFormat(T value, StringBuilder builder);
     }
 }

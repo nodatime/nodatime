@@ -108,7 +108,7 @@ namespace NodaTime.Text
                     bucket.Offset = result.Value;
                     return null;
                 });
-            builder.AddFormatAction((value, sb) => offsetPattern.FormatPartial(value.Offset, sb));
+            builder.AddFormatAction((value, sb) => offsetPattern.AppendFormat(value.Offset, sb));
         }
 
         private sealed class OffsetDateTimeParseBucket : ParseBucket<OffsetDateTime>
