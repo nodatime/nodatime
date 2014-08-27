@@ -24,6 +24,10 @@ REM but that's okay...
 call buildapidocs.bat
 IF ERRORLEVEL 1 EXIT /B 1
 
+REM Also build the PCL docs...
+msbuild NodaTime.shfbproj
+IF ERRORLEVEL 1 EXIT /B 1
+
 copy /y docs\PublicApi\NodaTime.xml "src\NodaTime\bin\Signed Release"
 copy /y docs\PublicApi\NodaTime.Testing.xml "src\NodaTime.Testing\bin\Signed Release"
 copy /y docs\PublicApi\NodaTime.Serialization.JsonNet.xml "src\NodaTime.Testing\bin\Signed Release"
@@ -31,6 +35,10 @@ copy /y docs\PublicApi\NodaTime.Serialization.JsonNet.xml "src\NodaTime.Testing\
 copy /y docs\PublicApi\NodaTime.xml "src\NodaTime\bin\Signed Release Net4"
 copy /y docs\PublicApi\NodaTime.Testing.xml "src\NodaTime.Testing\bin\Signed Release Net4"
 copy /y docs\PublicApi\NodaTime.Serialization.JsonNet.xml "src\NodaTime.Testing\bin\Signed Release Net4"
+
+copy /y docs\PublicPclApi\NodaTime.xml "src\NodaTime\bin\Signed Release Portable"
+copy /y docs\PublicPclApi\NodaTime.Testing.xml "src\NodaTime.Testing\bin\Signed Release Portable"
+copy /y docs\PublicPclApi\NodaTime.Serialization.JsonNet.xml "src\NodaTime.Testing\bin\Signed Release Portable"
 
 rmdir /s /q nuget
 mkdir nuget
