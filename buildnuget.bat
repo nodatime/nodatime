@@ -24,9 +24,13 @@ REM but that's okay...
 call buildapidocs.bat
 IF ERRORLEVEL 1 EXIT /B 1
 
-copy /y docs\PublicApi\NodaTime.xml src\NodaTime\bin\Release
-copy /y docs\PublicApi\NodaTime.Testing.xml src\NodaTime.Testing\bin\Release
-copy /y docs\PublicApi\NodaTime.Serialization.JsonNet.xml src\NodaTime.Testing\bin\Release
+copy /y docs\PublicApi\NodaTime.xml "src\NodaTime\bin\Signed Release"
+copy /y docs\PublicApi\NodaTime.Testing.xml "src\NodaTime.Testing\bin\Signed Release"
+copy /y docs\PublicApi\NodaTime.Serialization.JsonNet.xml "src\NodaTime.Testing\bin\Signed Release"
+
+copy /y docs\PublicApi\NodaTime.xml "src\NodaTime\bin\Signed Release Net4"
+copy /y docs\PublicApi\NodaTime.Testing.xml "src\NodaTime.Testing\bin\Signed Release Net4"
+copy /y docs\PublicApi\NodaTime.Serialization.JsonNet.xml "src\NodaTime.Testing\bin\Signed Release Net4"
 
 rmdir /s /q nuget
 mkdir nuget
