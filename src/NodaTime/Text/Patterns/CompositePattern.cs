@@ -57,9 +57,9 @@ namespace NodaTime.Text.Patterns
             return ParseResult<T>.NoMatchingFormat(cursor);
         }
 
-        public void FormatPartial(T value, StringBuilder builder)
+        public StringBuilder AppendFormat(T value, StringBuilder builder)
         {
-            formatPatternPicker(value).FormatPartial(value, builder);
+            return formatPatternPicker(value).AppendFormat(value, builder);
         }
     }
 

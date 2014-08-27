@@ -3,6 +3,7 @@
 // as found in the LICENSE.txt file.
 
 using System.Globalization;
+using System.Text;
 using NodaTime.Annotations;
 using NodaTime.Globalization;
 using NodaTime.Text.Patterns;
@@ -95,6 +96,18 @@ namespace NodaTime.Text
         public string Format(LocalDate value)
         {
             return pattern.Format(value);
+        }
+
+        /// <summary>
+        /// Formats the given value as text according to the rules of this pattern,
+        /// appending to the given <see cref="StringBuilder"/>.
+        /// </summary>
+        /// <param name="value">The value to format.</param>
+        /// <param name="builder">The <c>StringBuilder</c> to append to.</param>
+        /// <returns>The builder passed in as <paramref name="builder"/>.</returns>
+        public StringBuilder AppendFormat(LocalDate value, StringBuilder builder)
+        {
+            return pattern.AppendFormat(value, builder);
         }
 
         /// <summary>

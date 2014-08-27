@@ -56,11 +56,11 @@ namespace NodaTime.Test.Text.Patterns
         }
 
         [Test]
-        public void FormatPartial()
+        public void AppendFormat()
         {
             var builder = new StringBuilder("x");
             var offset = Offset.FromHoursAndMinutes(17, 30);
-            SimpleOffsetPattern.FormatPartial(offset, builder);
+            SimpleOffsetPattern.AppendFormat(offset, builder);
             Assert.AreEqual("x17:30", builder.ToString());
         }
     }

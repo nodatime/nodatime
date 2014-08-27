@@ -4,6 +4,7 @@
 
 using System;
 using System.Globalization;
+using System.Text;
 using NodaTime.Globalization;
 using NodaTime.Properties;
 using NodaTime.Text.Patterns;
@@ -60,6 +61,11 @@ namespace NodaTime.Text
             public string Format(Instant value)
             {
                 return pattern.Format(value.InUtc().LocalDateTime);
+            }
+
+            public StringBuilder AppendFormat(Instant value, StringBuilder builder)
+            {
+                return pattern.AppendFormat(value.InUtc().LocalDateTime, builder);
             }
 
             public ParseResult<Instant> Parse(string text)

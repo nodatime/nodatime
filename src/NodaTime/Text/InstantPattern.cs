@@ -2,8 +2,8 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-using System;
 using System.Globalization;
+using System.Text;
 using NodaTime.Annotations;
 using NodaTime.Globalization;
 using NodaTime.Text.Patterns;
@@ -94,17 +94,20 @@ namespace NodaTime.Text
             return pattern.Format(value);
         }
 
-        private static InstantPattern Create(string patternText, NodaFormatInfo formatInfo, string minLabel, string maxLabel)
+        /// <summary>
+        /// Formats the given value as text according to the rules of this pattern,
+        /// appending to the given <see cref="StringBuilder"/>.
+        /// </summary>
+        /// <param name="value">The value to format.</param>
+        /// <param name="builder">The <c>StringBuilder</c> to append to.</param>
+        /// <returns>The builder passed in as <paramref name="builder"/>.</returns>
+        public StringBuilder AppendFormat(Instant value, StringBuilder builder)
         {
-            Preconditions.CheckNotNull(patternText, "patternText");
-            Preconditions.CheckNotNull(formatInfo, "formatInfo");
-            IPattern<Instant> pattern = formatInfo.InstantPatternParser.ParsePattern(patternText);
-            return new InstantPattern(patternText, formatInfo, pattern);
+            return pattern.AppendFormat(value, builder);
         }
 
         /// <summary>
-        /// Creates a pattern for the given pattern text and format info. The default
-        /// min/max labels are used.
+        /// Creates a pattern for the given pattern text and format info.
         /// </summary>
         /// <param name="patternText">Pattern text to create the pattern for</param>
         /// <param name="formatInfo">The format info to use in the pattern</param>
@@ -150,8 +153,7 @@ namespace NodaTime.Text
         }
 
         /// <summary>
-        /// Creates a pattern for the given pattern text in the invariant culture, using the default
-        /// min/max labels.
+        /// Creates a pattern for the given pattern text in the invariant culture.
         /// </summary>
         /// <remarks>
         /// See the user guide for the available pattern text options.

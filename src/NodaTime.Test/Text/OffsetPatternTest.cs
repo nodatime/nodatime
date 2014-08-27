@@ -188,9 +188,9 @@ namespace NodaTime.Test.Text
 
         [Test]
         [TestCaseSource("FormatData")]
-        public void FormatPartial(PatternTestData<Offset> data)
+        public void AppendFormat(PatternTestData<Offset> data)
         {
-            data.TestFormatPartial();
+            data.TestAppendFormat();
         }
 
         /// <summary>

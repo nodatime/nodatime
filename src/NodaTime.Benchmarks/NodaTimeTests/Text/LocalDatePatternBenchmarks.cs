@@ -2,6 +2,7 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
+using System.Text;
 using NodaTime.Benchmarks.Framework;
 using NodaTime.Text;
 
@@ -16,10 +17,19 @@ namespace NodaTime.Benchmarks.NodaTimeTests.Text
         private static readonly LocalDatePattern PatternWithLongDay = LocalDatePattern.CreateWithInvariantCulture("dddd MM dd yyyy");
         private static readonly LocalDatePattern PatternWithShortDay = LocalDatePattern.CreateWithInvariantCulture("ddd MM dd yyyy");
 
+        private static readonly StringBuilder builder = new StringBuilder();
+
         [Benchmark]
         public void FormatWithIso()
         {
             LocalDatePattern.IsoPattern.Format(SampleLocalDate);
+        }
+
+        [Benchmark]
+        public void AppendFormatWithIso()
+        {
+            builder.Clear();
+            LocalDatePattern.IsoPattern.AppendFormat(SampleLocalDate, builder);
         }
 
         [Benchmark]

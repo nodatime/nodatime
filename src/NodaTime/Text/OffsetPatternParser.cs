@@ -10,6 +10,7 @@ using System.Text;
 using NodaTime.Globalization;
 using NodaTime.Properties;
 using NodaTime.Text.Patterns;
+using NodaTime.Utility;
 
 namespace NodaTime.Text
 {
@@ -174,16 +175,10 @@ namespace NodaTime.Text
                 return fullPattern.ParsePartial(cursor);
             }
 
-            public void FormatPartial(Offset value, StringBuilder builder)
+            public StringBuilder AppendFormat(Offset value, StringBuilder builder)
             {
-                if (value == Offset.Zero)
-                {
-                    builder.Append("Z");
-                }
-                else
-                {
-                    fullPattern.FormatPartial(value, builder);
-                }
+                Preconditions.CheckNotNull(builder, "builder");
+                return value == Offset.Zero ? builder.Append("Z") : fullPattern.AppendFormat(value, builder);
             }
         }
 

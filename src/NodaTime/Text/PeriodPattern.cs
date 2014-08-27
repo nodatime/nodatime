@@ -70,6 +70,18 @@ namespace NodaTime.Text
             return pattern.Format(value);
         }
 
+        /// <summary>
+        /// Formats the given value as text according to the rules of this pattern,
+        /// appending to the given <see cref="StringBuilder"/>.
+        /// </summary>
+        /// <param name="value">The value to format.</param>
+        /// <param name="builder">The <c>StringBuilder</c> to append to.</param>
+        /// <returns>The builder passed in as <paramref name="builder"/>.</returns>
+        public StringBuilder AppendFormat(Period value, StringBuilder builder)
+        {
+            return pattern.AppendFormat(value, builder);
+        }
+
         private static void AppendValue(StringBuilder builder, long value, string suffix)
         {
             // Avoid having a load of conditions in the calling code by checking here
@@ -181,8 +193,14 @@ namespace NodaTime.Text
 
             public string Format(Period value)
             {
+                return AppendFormat(value, new StringBuilder()).ToString();
+            }
+
+            public StringBuilder AppendFormat(Period value, StringBuilder builder)
+            {
                 Preconditions.CheckNotNull(value, "value");
-                StringBuilder builder = new StringBuilder("P");
+                Preconditions.CheckNotNull(builder, "builder");
+                builder.Append("P");
                 AppendValue(builder, value.Years, "Y");
                 AppendValue(builder, value.Months, "M");
                 AppendValue(builder, value.Weeks, "W");
@@ -196,7 +214,7 @@ namespace NodaTime.Text
                     AppendValue(builder, value.Milliseconds, "s");
                     AppendValue(builder, value.Ticks, "t");
                 }
-                return builder.ToString();
+                return builder;
             }
         }
 
@@ -333,14 +351,21 @@ namespace NodaTime.Text
 
             public string Format(Period value)
             {
+                return AppendFormat(value, new StringBuilder()).ToString();
+            }
+
+            public StringBuilder AppendFormat(Period value, StringBuilder builder)
+            {
                 Preconditions.CheckNotNull(value, "value");
+                Preconditions.CheckNotNull(builder, "builder");
                 value = value.Normalize();
                 // Always ensure we've got *some* unit; arbitrarily pick days.
                 if (value.Equals(Period.Zero))
                 {
-                    return "P0D";
+                    builder.Append("P0D");
+                    return builder;
                 }
-                StringBuilder builder = new StringBuilder("P");
+                builder.Append("P");
                 AppendValue(builder, value.Years, "Y");
                 AppendValue(builder, value.Months, "M");
                 AppendValue(builder, value.Weeks, "W");
@@ -369,7 +394,7 @@ namespace NodaTime.Text
                         builder.Append("S");
                     }
                 }
-                return builder.ToString();
+                return builder;
             }
         }
     }

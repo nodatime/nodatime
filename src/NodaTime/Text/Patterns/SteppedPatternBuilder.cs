@@ -8,6 +8,7 @@ using System.Globalization;
 using System.Text;
 using NodaTime.Globalization;
 using NodaTime.Properties;
+using NodaTime.Utility;
 
 namespace NodaTime.Text.Patterns
 {
@@ -15,10 +16,6 @@ namespace NodaTime.Text.Patterns
     /// Builder for a pattern which implements parsing and formatting as a sequence of steps applied
     /// in turn.
     /// </summary>
-    /// <remarks>
-    /// For performance reasons, the formatter in a SteppedPatternBuilder is *not* re-entrant.
-    /// Instead, you should use FormatPartial to use one formatter within another.
-    /// </remarks>
     internal sealed class SteppedPatternBuilder<TResult, TBucket> where TBucket : ParseBucket<TResult>
     {
         internal delegate ParseResult<TResult> ParseAction(ValueCursor cursor, TBucket bucket);
@@ -483,9 +480,11 @@ namespace NodaTime.Text.Patterns
                 return bucket.CalculateValue(usedFields, cursor.Value);
             }
 
-            public void FormatPartial(TResult value, StringBuilder builder)
+            public StringBuilder AppendFormat(TResult value, StringBuilder builder)
             {
+                Preconditions.CheckNotNull(builder, "builder");
                 formatActions(value, builder);
+                return builder;
             }
         }
     }
