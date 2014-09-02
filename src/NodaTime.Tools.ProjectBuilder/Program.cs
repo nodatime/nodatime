@@ -3,12 +3,8 @@
 // as found in the LICENSE.txt file.
 
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime.Remoting.Messaging;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
 using System.Xml.Linq;
 
 namespace NodaTime.Tools.ProjectBuilder
