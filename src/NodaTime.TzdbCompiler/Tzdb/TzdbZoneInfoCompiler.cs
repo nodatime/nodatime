@@ -19,8 +19,11 @@ namespace NodaTime.TzdbCompiler.Tzdb
     {
         // Files that we don't want to build into the TZDB resources. Excluding them here saves the maintainer from having to
         // remove them manually.
+        // TODO(2.0): Consider making an inclusive set instead of an exclusive set...
         private static readonly HashSet<string> ExcludedFiles = new HashSet<string>
         { 
+            "backzone",
+            "checktab.awk",
             "factory",
             "iso3166.tab",
             "leapseconds",
@@ -34,7 +37,11 @@ namespace NodaTime.TzdbCompiler.Tzdb
             "zone.tab",
             "zone1970.tab",
             "Readme.txt", // Just to handle old directories in Noda Time. Not part of tzdb.
-            "README"
+            "README",
+            "Theory",
+            "CONTRIBUTING",
+            "NEWS",
+            "zoneinfo2tdf.pl"
         };
 
         private readonly TzdbZoneInfoParser tzdbParser;
