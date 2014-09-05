@@ -171,6 +171,7 @@ namespace NodaTime.Testing
         /// If the value of the <see cref="AutoAdvance"/> property is non-zero, then every
         /// call to this method will advance the current time by that value.
         /// </remarks>
+        /// <returns>The "current time" from this (fake) clock.</returns>
         public Instant GetCurrentInstant()
         {
             lock (mutex)

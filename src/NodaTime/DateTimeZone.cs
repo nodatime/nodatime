@@ -608,7 +608,7 @@ namespace NodaTime
         /// <param name="end">Exclusive end point of the interval for which to retrieve zone intervals.</param>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="end"/> is earlier than <paramref name="start"/>.</exception>
         /// <returns>A sequence of zone intervals covering the given interval.</returns>
-        /// <seealso cref="GetZoneInterval"/>
+        /// <seealso cref="DateTimeZone.GetZoneInterval"/>
         public IEnumerable<ZoneInterval> GetZoneIntervals(Instant start, Instant end)
         {
             // The constructor performs all the validation we need.
@@ -620,7 +620,7 @@ namespace NodaTime
         /// </summary>
         /// <remarks>
         /// <para>The zone intervals are returned in chronological order.
-        /// This method is equivalent to calling <see cref="GetZoneInterval"/> for every
+        /// This method is equivalent to calling <see cref="DateTimeZone.GetZoneInterval"/> for every
         /// instant in the interval and then collapsing to a set of distinct zone intervals.
         /// The first and last zone intervals are likely to also cover instants outside the given interval;
         /// the zone intervals returned are not truncated to match the start and end points.
@@ -629,7 +629,7 @@ namespace NodaTime
         /// <param name="interval">Interval to find zone intervals for. This is allowed to be unbounded (i.e.
         /// infinite in both directions).</param>
         /// <returns>A sequence of zone intervals covering the given interval.</returns>
-        /// <seealso cref="GetZoneInterval"/>
+        /// <seealso cref="DateTimeZone.GetZoneInterval"/>
         public IEnumerable<ZoneInterval> GetZoneIntervals(Interval interval)
         {
             var current = interval.HasStart ? interval.Start : Instant.MinValue;

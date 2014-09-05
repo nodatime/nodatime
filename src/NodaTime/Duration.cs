@@ -975,6 +975,7 @@ namespace NodaTime
         /// out of the range of <c>Int64</c>, which is approximately 292 years (positive or negative).
         /// </summary>
         /// <exception cref="System.OverflowException">The number of nanoseconds is outside the representable range.</exception>
+        /// <returns>This duration as a number of nanoseconds, represented as an <c>Int64</c>.</returns>
         [Pure]
         public long ToInt64Nanoseconds()
         {
@@ -1000,6 +1001,7 @@ namespace NodaTime
         /// type which can always represent values in the range we need.
         /// </summary>
         /// <remarks>The value returned is always an integer.</remarks>
+        /// <returns>This duration as a number of nanoseconds, represented as a <c>Decimal</c>.</returns>
         [Pure]
         public decimal ToDecimalNanoseconds()
         {
