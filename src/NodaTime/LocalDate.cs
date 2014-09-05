@@ -249,7 +249,8 @@ namespace NodaTime
         /// be used to always return the last occurrence of the specified day-of-week, even if there are only 4
         /// occurrences of that day-of-week in the month.</param>
         /// <param name="dayOfWeek">The day-of-week of the value to return.</param>
-        /// <returns></returns>
+        /// <returns>The date corresponding to the given year and month, on the given occurrence of the
+        /// given day of week.</returns>
         public static LocalDate FromYearMonthWeekAndDay(int year, int month, int occurrence, IsoDayOfWeek dayOfWeek)
         {
             // This validates year and month as well as getting us a useful date.

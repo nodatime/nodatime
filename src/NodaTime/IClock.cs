@@ -27,6 +27,7 @@ namespace NodaTime
         /// <summary>
         /// Gets the current <see cref="Instant"/> on the time line according to this clock.
         /// </summary>
+        /// <returns>The current instant on the time line according to this clock.</returns>
         Instant GetCurrentInstant();
     }
 }

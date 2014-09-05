@@ -58,6 +58,7 @@ namespace NodaTime.Extensions
         /// Constructs a <see cref="ZonedClock"/> from a clock (the target of the method),
         /// in the TZDB mapping for the system default time zone time zone and the ISO calendar system.
         /// </summary>
+        /// <param name="clock">Clock to use in the returned object.</param>
         /// <returns>A <c>ZonedClock</c> in the system default time zone (using TZDB) and the ISO calendar system,
         /// using the system clock.</returns>
         /// <exception cref="DateTimeZoneNotFoundException">The system default time zone is not mapped by
@@ -76,6 +77,7 @@ namespace NodaTime.Extensions
         /// BCL system default time zone time zone and the ISO calendar system.
         /// </summary>
         /// <remarks>The <c>DateTimeZone</c> used is a wrapper for <see cref="TimeZoneInfo.Local"/>.</remarks>
+        /// <param name="clock">Clock to use in the returned object.</param>
         /// <returns>A <c>ZonedClock</c> in the system default time zone and the ISO calendar system,
         /// using the system clock.</returns>
         /// <seealso cref="DateTimeZoneProviders.Bcl"/>
