@@ -3,6 +3,7 @@
 // as found in the LICENSE.txt file.
 
 using System;
+using JetBrains.Annotations;
 using NodaTime.Annotations;
 using NodaTime.Utility;
 
@@ -44,23 +45,27 @@ namespace NodaTime
         private readonly ZonedDateTime laterMapping;
 
         /// <summary>
-        /// The local date and time which is ambiguous in the time zone.
+        /// Get the local date and time which is ambiguous in the time zone.
         /// </summary>
+        /// <value>The local date and time which is ambiguous in the time zone.</value>
         internal LocalDateTime LocalDateTime { get { return earlierMapping.LocalDateTime; } }
 
         /// <summary>
         /// The time zone in which the local date and time is ambiguous.
         /// </summary>
-        public DateTimeZone Zone { get { return earlierMapping.Zone; } }
+        /// <value>The time zone in which the local date and time is ambiguous.</value>
+        [NotNull] public DateTimeZone Zone { get { return earlierMapping.Zone; } }
 
         /// <summary>
-        /// The earlier of the two occurrences of the local date and time within the time zone.
+        /// Gets the earlier of the two occurrences of the local date and time within the time zone.
         /// </summary>
+        /// <value>The earlier of the two occurrences of the local date and time within the time zone.</value>
         public ZonedDateTime EarlierMapping { get { return earlierMapping; } }
 
         /// <summary>
-        /// The later of the two occurrences of the local date and time within the time zone.
+        /// Gets the later of the two occurrences of the local date and time within the time zone.
         /// </summary>
+        /// <value>The later of the two occurrences of the local date and time within the time zone.</value>
         public ZonedDateTime LaterMapping { get { return laterMapping; } }
 
         /// <summary>

@@ -34,13 +34,15 @@ namespace NodaTime.TimeZones
         private readonly IZoneIntervalMap map;
 
         /// <summary>
-        /// Returns the original <see cref="TimeZoneInfo"/> from which this was created.
+        /// Gets the original <see cref="TimeZoneInfo"/> from which this was created.
         /// </summary>
+        /// <value>The original <see cref="TimeZoneInfo"/> from which this was created.</value>
         public TimeZoneInfo OriginalZone { get { return bclZone; } }
 
         /// <summary>
-        /// Returns the display name associated with the time zone, as provided by the Base Class Library.
+        /// Gets the display name associated with the time zone, as provided by the Base Class Library.
         /// </summary>
+        /// <value>The display name associated with the time zone, as provided by the Base Class Library.</value>
         public string DisplayName { get { return OriginalZone.DisplayName; } }
 
         private BclDateTimeZone(TimeZoneInfo bclZone, Offset minOffset, Offset maxOffset, IZoneIntervalMap map)

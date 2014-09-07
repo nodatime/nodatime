@@ -23,9 +23,10 @@ namespace NodaTime.Text
     public sealed class DurationPattern : IPattern<Duration>
     {
         /// <summary>
-        /// General pattern for durations using the invariant culture, with a format string of "-D:hh:mm:ss.FFFFFFFFF".
+        /// Gets the general pattern for durations using the invariant culture, with a format string of "-D:hh:mm:ss.FFFFFFFFF".
         /// This pattern round-trips.
         /// </summary>
+        /// <value>The general pattern for durations using the invariant culture.</value>
         public static DurationPattern RoundtripPattern { get { return Patterns.RoundtripPatternImpl; } }
 
         internal static readonly PatternBclSupport<Duration> BclSupport = new PatternBclSupport<Duration>("o", fi => fi.DurationPatternParser);
@@ -41,12 +42,13 @@ namespace NodaTime.Text
         private readonly IPattern<Duration> pattern;
 
         /// <summary>
-        /// Returns the pattern text for this pattern, as supplied on creation.
+        /// Gets the pattern text for this pattern, as supplied on creation.
         /// </summary>
+        /// <value>The pattern text for this pattern, as supplied on creation.</value>
         public string PatternText { get { return patternText; } }
 
         /// <summary>
-        /// Returns the localization information used in this pattern.
+        /// Gets the localization information used in this pattern.
         /// </summary>
         internal NodaFormatInfo FormatInfo { get { return formatInfo; } }
 

@@ -25,38 +25,54 @@ namespace NodaTime.Text
         internal static readonly OffsetDateTime DefaultTemplateValue = new LocalDateTime(2000, 1, 1, 0, 0).WithOffset(Offset.Zero);
 
         /// <summary>
-        /// Returns an invariant offset date/time pattern based on ISO-8601 (down to the second), including offset from UTC.
+        /// Gets an invariant offset date/time pattern based on ISO-8601 (down to the second), including offset from UTC.
+        /// </summary>
+        /// <remarks>
         /// The calendar system is not parsed or formatted as part of this pattern. It corresponds to a custom pattern of
         /// "yyyy'-'MM'-'dd'T'HH':'mm':'sso&lt;G&gt;". This pattern is available as the "G"
         /// standard pattern (even though it is invariant).
-        /// </summary>
+        /// </remarks>
+        /// <value>An invariant offset date/time pattern based on ISO-8601 (down to the second), including offset from UTC.</value>
         public static OffsetDateTimePattern GeneralIsoPattern { get { return Patterns.GeneralIsoPatternImpl; } }
 
         /// <summary>
-        /// Returns an invariant offset date/time pattern based on ISO-8601 (down to the nanosecond), including offset from UTC.
+        /// Gets an invariant offset date/time pattern based on ISO-8601 (down to the nanosecond), including offset from UTC.
+        /// </summary>
+        /// <remarks>
         /// The calendar system is not parsed or formatted as part of this pattern. It corresponds to a custom pattern of
         /// "yyyy'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFFFFo&lt;G&gt;". This will round-trip any values
         /// in the ISO calendar, and is available as the "o" standard pattern.
-        /// </summary>
+        /// </remarks>
+        /// <value>An invariant offset date/time pattern based on ISO-8601 (down to the nanosecond), including offset from UTC.</value>
         public static OffsetDateTimePattern ExtendedIsoPattern { get { return Patterns.ExtendedIsoPatternImpl; } }
 
         /// <summary>
-        /// Returns an invariant offset date/time pattern based on RFC 3339 (down to the nanosecond), including offset from UTC
-        /// as hours and minutes only. The minutes part of the offset is always included, but any sub-minute component
+        /// Gets an invariant offset date/time pattern based on RFC 3339 (down to the nanosecond), including offset from UTC
+        /// as hours and minutes only.
+        /// </summary>
+        /// <remarks>
+        /// The minutes part of the offset is always included, but any sub-minute component
         /// of the offset is lost. An offset of zero is formatted as 'Z', but all of 'Z', '+00:00' and '-00:00' are parsed
         /// the same way. The RFC 3339 meaning of '-00:00' is not supported by Noda Time.
         /// Note that parsing is case-sensitive (so 'T' and 'Z' must be upper case).
         /// The calendar system is not parsed or formatted as part of this pattern. It corresponds to a custom pattern of
         /// "yyyy'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFFFFo&lt;Z+HH:mm&gt;".
-        /// </summary>
+        /// </remarks>
+        /// <value>An invariant offset date/time pattern based on RFC 3339 (down to the nanosecond), including offset from UTC
+        /// as hours and minutes only.</value>
         public static OffsetDateTimePattern Rfc3339Pattern { get { return Patterns.Rfc3339PatternImpl; } }
 
         /// <summary>
-        /// Returns an invariant offset date/time pattern based on ISO-8601 (down to the nanosecond)
-        /// including offset from UTC and calendar ID. It corresponds to a custom pattern of
+        /// Gets an invariant offset date/time pattern based on ISO-8601 (down to the nanosecond)
+        /// including offset from UTC and calendar ID.
+        /// </summary>
+        /// <remarks>
+        /// The returned pattern corresponds to a custom pattern of
         /// "yyyy'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFFFFo&lt;G&gt; '('c')'". This will round-trip any value in any calendar,
         /// and is available as the "r" standard pattern.
-        /// </summary>
+        /// </remarks>
+        /// <value>An invariant offset date/time pattern based on ISO-8601 (down to the nanosecond)
+        /// including offset from UTC and calendar ID.</value>
         public static OffsetDateTimePattern FullRoundtripPattern { get { return Patterns.FullRoundtripPatternImpl; } }
 
         /// <summary>
@@ -78,19 +94,21 @@ namespace NodaTime.Text
         private readonly OffsetDateTime templateValue;
 
         /// <summary>
-        /// Returns the pattern text for this pattern, as supplied on creation.
+        /// Gets the pattern text for this pattern, as supplied on creation.
         /// </summary>
+        /// <value>The pattern text for this pattern, as supplied on creation.</value>
         public string PatternText { get { return patternText; } }
 
         /// <summary>
-        /// Returns the localization information used in this pattern.
+        /// Gets the localization information used in this pattern.
         /// </summary>
         internal NodaFormatInfo FormatInfo { get { return formatInfo; } }
 
         /// <summary>
-        /// Returns the value used as a template for parsing: any field values unspecified
+        /// Gets the value used as a template for parsing: any field values unspecified
         /// in the pattern are taken from the template.
         /// </summary>
+        /// <value>The value used as a template for parsing.</value>
         public OffsetDateTime TemplateValue { get { return templateValue; } }
 
         private OffsetDateTimePattern(string patternText, NodaFormatInfo formatInfo, OffsetDateTime templateValue,

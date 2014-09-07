@@ -87,11 +87,11 @@ namespace NodaTime.TimeZones
 
         #region Properties
         /// <summary>
-        ///   Gets the standard offset for this period. This is the offset without any daylight savings
-        ///   contributions.
+        /// Gets the standard offset for this period. This is the offset without any daylight savings
+        /// contributions.
         /// </summary>
         /// <remarks>
-        ///   This is effectively <c>Offset - Savings</c>.
+        /// This is effectively <c>Offset - Savings</c>.
         /// </remarks>
         /// <value>The base Offset.</value>
         public Offset StandardOffset
@@ -113,7 +113,7 @@ namespace NodaTime.TimeZones
         }
 
         /// <summary>
-        ///   Gets the last Instant (exclusive) that the Offset applies.
+        /// Gets the last Instant (exclusive) that the Offset applies.
         /// </summary>
         /// <value>The last Instant (exclusive) that the Offset applies.</value>
         /// <exception cref="InvalidOperationException">The zone interval extends to the end of time</exception>
@@ -138,17 +138,18 @@ namespace NodaTime.TimeZones
         /// Returns <c>true</c> if this zone interval has a fixed end point, or <c>false</c> if it
         /// extends to the end of time.
         /// </summary>
-        /// <returns><c>true</c> if this interval has a fixed end point, or <c>false</c> if it
-        /// extends to the end of time.</returns>
+        /// <value><c>true</c> if this interval has a fixed end point, or <c>false</c> if it
+        /// extends to the end of time.</value>
         public bool HasEnd { get { return end.IsValid; } }
 
         // TODO(2.0): Consider whether we need some way of checking whether IsoLocalStart/End will throw.
         // Clients can check HasStart/HasEnd for infinity, but what about unrepresentable local values?
 
         /// <summary>
-        /// Returns the local start time of the interval, as a <see cref="LocalDateTime" />
+        /// Gets the local start time of the interval, as a <see cref="LocalDateTime" />
         /// in the ISO calendar.
         /// </summary>
+        /// <value>The local start time of the interval in the ISO calendar.</value>
         /// <exception cref="OverflowException">The interval starts too early to represent as a `LocalDateTime`.</exception>
         /// <exception cref="InvalidOperationException">The interval extends to the start of time.</exception>
         public LocalDateTime IsoLocalStart
@@ -159,9 +160,10 @@ namespace NodaTime.TimeZones
         }
 
         /// <summary>
-        /// Returns the local start time of the interval, as a <see cref="LocalDateTime" />
+        /// Gets the local end time of the interval, as a <see cref="LocalDateTime" />
         /// in the ISO calendar.
         /// </summary>
+        /// <value>The local end time of the interval in the ISO calendar.</value>
         /// <exception cref="OverflowException">The interval ends too late to represent as a `LocalDateTime`.</exception>
         /// <exception cref="InvalidOperationException">The interval extends to the end of time.</exception>
         public LocalDateTime IsoLocalEnd
@@ -172,7 +174,7 @@ namespace NodaTime.TimeZones
             get { return new LocalDateTime(End.Plus(wallOffset)); }
         }
         /// <summary>
-        ///   Gets the name of this offset period (e.g. PST or PDT).
+        /// Gets the name of this offset period (e.g. PST or PDT).
         /// </summary>
         /// <value>The name of this offset period (e.g. PST or PDT).</value>
         public string Name
@@ -181,7 +183,7 @@ namespace NodaTime.TimeZones
         }
 
         /// <summary>
-        ///   Gets the offset from UTC for this period. This includes any daylight savings value.
+        /// Gets the offset from UTC for this period. This includes any daylight savings value.
         /// </summary>
         /// <value>The offset from UTC for this period.</value>
         public Offset WallOffset
@@ -190,7 +192,7 @@ namespace NodaTime.TimeZones
         }
 
         /// <summary>
-        ///   Gets the daylight savings value for this period.
+        /// Gets the daylight savings value for this period.
         /// </summary>
         /// <value>The savings value.</value>
         public Offset Savings
@@ -199,7 +201,7 @@ namespace NodaTime.TimeZones
         }
 
         /// <summary>
-        ///   Gets the first Instant that the Offset applies.
+        /// Gets the first Instant that the Offset applies.
         /// </summary>
         /// <value>The first Instant that the Offset applies.</value>
         public Instant Start
@@ -223,8 +225,8 @@ namespace NodaTime.TimeZones
         /// Returns <c>true</c> if this zone interval has a fixed start point, or <c>false</c> if it
         /// extends to the beginning of time.
         /// </summary>
-        /// <returns><c>true</c> if this interval has a fixed start point, or <c>false</c> if it
-        /// extends to the beginning of time.</returns>
+        /// <value><c>true</c> if this interval has a fixed start point, or <c>false</c> if it
+        /// extends to the beginning of time.</value>
         public bool HasStart { get { return start.IsValid; } }
         #endregion // Properties
 

@@ -160,7 +160,7 @@ namespace NodaTime
         }
 
         /// <summary>
-        /// The provider's ID for the time zone.
+        /// Get the provider's ID for the time zone.
         /// </summary>
         /// <remarks>
         /// <para>
@@ -168,6 +168,7 @@ namespace NodaTime
         /// provide a different time zone with the same ID, or may not provide a time zone with that ID at all.
         /// </para>
         /// </remarks>
+        /// <value>The provider's ID for the time zone.</value>
         public string Id { get { return id; } }
 
         /// <summary>
@@ -179,16 +180,19 @@ namespace NodaTime
         /// if the time zone has transitions and this returns <c>true</c> then the transitions will never
         /// be examined.
         /// </remarks>
+        /// <value>true if the time zone is fixed; false otherwise.</value>
         internal bool IsFixed { get { return isFixed; } }
 
         /// <summary>
-        /// Returns the least (most negative) offset within this time zone, over all time.
+        /// Gets the least (most negative) offset within this time zone, over all time.
         /// </summary>
+        /// <value>The least (most negative) offset within this time zone, over all time.</value>
         public Offset MinOffset { get { return minOffset; } }
 
         /// <summary>
-        /// Returns the greatest (most positive) offset within this time zone, over all time.
+        /// Gets the greatest (most positive) offset within this time zone, over all time.
         /// </summary>
+        /// <value>The greatest (most positive) offset within this time zone, over all time.</value>
         public Offset MaxOffset { get { return maxOffset; } }
 
         #region Core abstract/virtual methods

@@ -81,6 +81,7 @@ namespace NodaTime
         /// <summary>
         /// Gets the number of seconds represented by this offset, which may be negative.
         /// </summary>
+        /// <value>The number of seconds represented by this offset, which may be negative.</value>
         public int Seconds { get { return seconds; } }
 
         /// <summary>
@@ -90,6 +91,7 @@ namespace NodaTime
         /// Offsets are only accurate to second precision; the number of seconds is simply multiplied
         /// by 1,000 to give the number of milliseconds.
         /// </remarks>
+        /// <value>The number of milliseconds represented by this offset, which may be negative.</value>
         public int Milliseconds { get { return unchecked(seconds * NodaConstants.MillisecondsPerSecond); } }
 
         /// <summary>

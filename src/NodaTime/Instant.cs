@@ -110,12 +110,13 @@ namespace NodaTime
         internal bool IsValid { get { return DaysSinceEpoch >= MinDays && DaysSinceEpoch <= MaxDays; } }
 
         /// <summary>
-        /// The number of ticks since the Unix epoch. Negative values represent instants before the Unix epoch.
+        /// Gets the number of ticks since the Unix epoch. Negative values represent instants before the Unix epoch.
         /// </summary>
         /// <remarks>
         /// A tick is equal to 100 nanoseconds. There are 10,000 ticks in a millisecond. If the number of nanoseconds
         /// in this instant is not an exact number of ticks, the value is truncated towards the start of time.
         /// </remarks>
+        /// <value>The number of ticks since the Unix epoch.</value>
         public long Ticks
         {
             get
@@ -665,7 +666,7 @@ namespace NodaTime
         {
             // Bypass any determination of offset and arithmetic, as we know the offset is zero.
             var ymdc = GregorianYearMonthDayCalculator.GetGregorianYearMonthDayCalendarFromDaysSinceEpoch(duration.FloorDays);
-            var offsetDateTime = new OffsetDateTime(ymdc, new LocalTime(duration.NanosecondOfFloorDay), Offset.Zero);
+            var offsetDateTime = new OffsetDateTime(ymdc, duration.NanosecondOfFloorDay);
             return new ZonedDateTime(offsetDateTime, DateTimeZone.Utc);
         }
 

@@ -4,6 +4,7 @@
 
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using JetBrains.Annotations;
 using NodaTime.Annotations;
 using NodaTime.TimeZones.IO;
 using NodaTime.Utility;
@@ -42,7 +43,8 @@ namespace NodaTime.TimeZones.Cldr
         /// doesn't mean that it doesn't observe daylight saving time.
         /// </para>
         /// </remarks>
-        public string WindowsId { get { return windowsId; } }
+        /// <value>The Windows system time zone identifier for this mapping, such as "Central Standard Time".</value>
+        [NotNull] public string WindowsId { get { return windowsId; } }
 
         /// <summary>
         /// Gets the territory code for this mapping.
@@ -52,7 +54,8 @@ namespace NodaTime.TimeZones.Cldr
         /// "ZZ" to indicate a fixed-offset ID, or a different two-character capitalized code
         /// which indicates the geographical territory.
         /// </remarks>
-        public string Territory { get { return territory; } }
+        /// <value>The territory code for this mapping.</value>
+        [NotNull] public string Territory { get { return territory; } }
 
         /// <summary>
         /// Gets a read-only non-empty collection of TZDB zone identifiers for this mapping, such as
@@ -63,7 +66,8 @@ namespace NodaTime.TimeZones.Cldr
         /// For the primary and fixed-offset territory IDs ("001" and "ZZ") this always
         /// contains exactly one time zone ID.
         /// </remarks>
-        public IList<string> TzdbIds { get { return tzdbIds; } }
+        /// <value>A read-only non-empty collection of TZDB zone identifiers for this mapping.</value>
+        [NotNull] public IList<string> TzdbIds { get { return tzdbIds; } }
 
         /// <summary>
         /// Creates a new mapping entry.

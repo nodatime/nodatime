@@ -291,6 +291,7 @@ namespace NodaTime
         /// <summary>
         /// Gets the hour of day of this local time, in the range 0 to 23 inclusive.
         /// </summary>
+        /// <value>The hour of day of this local time, in the range 0 to 23 inclusive.</value>
         public int Hour
         {
             get
@@ -303,6 +304,7 @@ namespace NodaTime
         /// <summary>
         /// Gets the hour of the half-day of this local time, in the range 1 to 12 inclusive.
         /// </summary>
+        /// <value>The hour of the half-day of this local time, in the range 1 to 12 inclusive.</value>
         public int ClockHourOfHalfDay
         {
             get
@@ -319,11 +321,13 @@ namespace NodaTime
         /// <summary>
         /// Gets the hour of the half-day of this local time, in the range 0 to 11 inclusive.
         /// </summary>
+        /// <value>The hour of the half-day of this local time, in the range 0 to 11 inclusive.</value>
         internal int HourOfHalfDay { get { return unchecked(Hour % 12); } }
 
         /// <summary>
         /// Gets the minute of this local time, in the range 0 to 59 inclusive.
         /// </summary>
+        /// <value>The minute of this local time, in the range 0 to 59 inclusive.</value>
         public int Minute
         {
             get
@@ -340,6 +344,7 @@ namespace NodaTime
         /// <summary>
         /// Gets the second of this local time within the minute, in the range 0 to 59 inclusive.
         /// </summary>
+        /// <value>The second of this local time within the minute, in the range 0 to 59 inclusive.</value>
         public int Second
         {
             get
@@ -355,6 +360,7 @@ namespace NodaTime
         /// <summary>
         /// Gets the millisecond of this local time within the second, in the range 0 to 999 inclusive.
         /// </summary>
+        /// <value>The millisecond of this local time within the second, in the range 0 to 999 inclusive.</value>
         public int Millisecond
         {
             get
@@ -371,21 +377,25 @@ namespace NodaTime
         /// <summary>
         /// Gets the tick of this local time within the second, in the range 0 to 9,999,999 inclusive.
         /// </summary>
+        /// <value>The tick of this local time within the second, in the range 0 to 9,999,999 inclusive.</value>
         public int TickOfSecond { get { return unchecked((int) (TickOfDay % (int) NodaConstants.TicksPerSecond)); } }
 
         /// <summary>
         /// Gets the tick of this local time within the day, in the range 0 to 863,999,999,999 inclusive.
         /// </summary>
+        /// <value>The tick of this local time within the day, in the range 0 to 863,999,999,999 inclusive.</value>
         public long TickOfDay { get { return nanoseconds / NodaConstants.NanosecondsPerTick; } }
 
         /// <summary>
         /// Gets the nanosecond of this local time within the second, in the range 0 to 999,999,999 inclusive.
         /// </summary>
+        /// <value>The nanosecond of this local time within the second, in the range 0 to 999,999,999 inclusive.</value>
         public int NanosecondOfSecond { get { return unchecked((int) (nanoseconds % NodaConstants.NanosecondsPerSecond)); } }
 
         /// <summary>
         /// Gets the nanosecond of this local time within the day, in the range 0 to 86,399,999,999,999 inclusive.
         /// </summary>
+        /// <value>The nanosecond of this local time within the day, in the range 0 to 86,399,999,999,999 inclusive.</value>
         public long NanosecondOfDay { get { return nanoseconds; } }
 
         /// <summary>

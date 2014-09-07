@@ -3,6 +3,7 @@
 // as found in the LICENSE.txt file.
 
 using System;
+using JetBrains.Annotations;
 using NodaTime.Annotations;
 using NodaTime.TimeZones.IO;
 using NodaTime.Utility;
@@ -23,45 +24,48 @@ namespace NodaTime.TimeZones
         private readonly string zoneId;
 
         /// <summary>
-        /// Latitude in degrees; positive for North, negative for South.
+        /// Gets the latitude in degrees; positive for North, negative for South.
         /// </summary>
         /// <remarks>The value will be in the range [-90, 90].</remarks>
+        /// <value>The latitude in degrees; positive for North, negative for South.</value>
         public double Latitude { get { return latitudeSeconds / 3600.0; } }
 
         /// <summary>
-        /// Longitude in degrees; positive for East, negative for West.
+        /// Gets the longitude in degrees; positive for East, negative for West.
         /// </summary>
         /// <remarks>The value will be in the range [-180, 180].</remarks>
+        /// <value>The longitude in degrees; positive for East, negative for West.</value>
         public double Longitude { get { return longitudeSeconds / 3600.0; } }
 
         /// <summary>
-        /// The English name of the country containing the location.
+        /// Gets the English name of the country containing the location.
         /// </summary>
-        /// <remarks>This will never be null.</remarks>
-        public string CountryName { get { return countryName; } }
+        /// <value>The English name of the country containing the location.</value>
+        [NotNull] public string CountryName { get { return countryName; } }
 
         /// <summary>
-        /// The ISO-3166 2-letter country code for the country containing the location.
+        /// Gets the ISO-3166 2-letter country code for the country containing the location.
         /// </summary>
-        /// <remarks>This will never be null.</remarks>
-        public string CountryCode { get { return countryCode; } }
+        /// <value>The ISO-3166 2-letter country code for the country containing the location.</value>
+        [NotNull] public string CountryCode { get { return countryCode; } }
 
         /// <summary>
         /// The ID of the time zone for this location.
         /// </summary>
-        /// <remarks>This will never be null, and if this mapping was fetched
-        /// from a <see cref="TzdbDateTimeZoneSource"/>, it will always be a valid ID within that source.
+        /// <remarks>If this mapping was fetched from a <see cref="TzdbDateTimeZoneSource"/>, it will always be a valid ID within that source.
         /// </remarks>
-        public string ZoneId { get { return zoneId; } }
+        /// <value>The ID of the time zone for this location.</value>
+        [NotNull] public string ZoneId { get { return zoneId; } }
 
         /// <summary>
-        /// The comment (in English) for the mapping, if any.
+        /// Gets the comment (in English) for the mapping, if any.
         /// </summary>
         /// <remarks>
         /// This is usually used to differentiate between locations in the same country.
         /// This will return an empty string if no comment was provided in the original data.
         /// </remarks>
-        public string Comment { get { return comment; } }
+        /// <value>The comment (in English) for the mapping, if any.</value>
+        [NotNull] public string Comment { get { return comment; } }
 
         /// <summary>
         /// Creates a new location.

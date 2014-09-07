@@ -219,6 +219,7 @@ namespace NodaTime
         }
 
         /// <summary>Gets the calendar system associated with this local date and time.</summary>
+        /// <value>The calendar system associated with this local date and time.</value>
         public CalendarSystem Calendar
         {
             get { return date.Calendar; }
@@ -227,12 +228,15 @@ namespace NodaTime
         /// <summary>Gets the year of this local date and time.</summary>
         /// <remarks>This returns the "absolute year", so, for the ISO calendar,
         /// a value of 0 means 1 BC, for example.</remarks>
+        /// <value>The year of this local date and time.</value>
         public int Year { get { return date.Year; } }
 
         /// <summary>Gets the year of this local date and time within its era.</summary>
+        /// <value>The year of this local date and time within its era.</value>
         public int YearOfEra { get { return date.YearOfEra; } }
 
         /// <summary>Gets the era of this local date and time.</summary>
+        /// <value>The era of this local date and time.</value>
         public Era Era { get { return date.Era; } }
 
         /// <summary>
@@ -253,26 +257,31 @@ namespace NodaTime
         /// so is part of week 1 of WeekYear 2013.
         /// </para>
         /// </remarks>
+        /// <value>The "week year" of this local date and time.</value>
         public int WeekYear { get { return date.WeekYear; } }
 
         /// <summary>
         /// Gets the month of this local date and time within the year.
         /// </summary>
+        /// <value>The month of this local date and time within the year.</value>
         public int Month { get { return date.Month; } }
 
         /// <summary>
-        /// Gets the week within the WeekYear. See <see cref="WeekYear"/> for more details.
+        /// Gets the week within the week-year. See <see cref="WeekYear"/> for more details.
         /// </summary>
+        /// <value>The week within the week-year. See <see cref="WeekYear"/> for more details.</value>
         public int WeekOfWeekYear { get { return date.WeekOfWeekYear; } }
 
         /// <summary>
         /// Gets the day of this local date and time within the year.
         /// </summary>
+        /// <value>The day of this local date and time within the year.</value>
         public int DayOfYear { get { return date.DayOfYear; } }
 
         /// <summary>
         /// Gets the day of this local date and time within the month.
         /// </summary>
+        /// <value>The day of this local date and time within the month.</value>
         public int Day { get { return date.Day; } }
 
         /// <summary>
@@ -281,6 +290,7 @@ namespace NodaTime
         /// </summary>
         /// <exception cref="InvalidOperationException">The underlying calendar doesn't use ISO days of the week.</exception>
         /// <seealso cref="DayOfWeek"/>
+        /// <value>The week day of this local date and time expressed as an <c>IsoDayOfWeek</c>.</value>
         public IsoDayOfWeek IsoDayOfWeek { get { return date.IsoDayOfWeek; } }
 
         /// <summary>
@@ -290,61 +300,73 @@ namespace NodaTime
         /// For calendars using ISO week days, this gives 1 for Monday to 7 for Sunday.
         /// </remarks>
         /// <seealso cref="IsoDayOfWeek"/>
+        /// <value>The week day of this local date and time as a number.</value>
         public int DayOfWeek { get { return date.DayOfWeek; } }
 
         /// <summary>
         /// Gets the hour of day of this local date and time, in the range 0 to 23 inclusive.
         /// </summary>
+        /// <value>The hour of day of this local date and time, in the range 0 to 23 inclusive.</value>
         public int Hour { get { return time.Hour; } }
 
         /// <summary>
         /// Gets the hour of the half-day of this local date and time, in the range 1 to 12 inclusive.
         /// </summary>
+        /// <value>The hour of the half-day of this local date and time, in the range 1 to 12 inclusive.</value>
         public int ClockHourOfHalfDay { get { return time.ClockHourOfHalfDay; } }
 
         /// <summary>
         /// Gets the minute of this local date and time, in the range 0 to 59 inclusive.
         /// </summary>
+        /// <value>The minute of this local date and time, in the range 0 to 59 inclusive.</value>
         public int Minute { get { return time.Minute; } }
 
         /// <summary>
         /// Gets the second of this local date and time within the minute, in the range 0 to 59 inclusive.
         /// </summary>
+        /// <value>The second of this local date and time within the minute, in the range 0 to 59 inclusive.</value>
         public int Second { get { return time.Second; } }
 
         /// <summary>
         /// Gets the millisecond of this local date and time within the second, in the range 0 to 999 inclusive.
         /// </summary>
+        /// <value>The millisecond of this local date and time within the second, in the range 0 to 999 inclusive.</value>
         public int Millisecond { get { return time.Millisecond; } }
 
         /// <summary>
         /// Gets the tick of this local time within the second, in the range 0 to 9,999,999 inclusive.
         /// </summary>
+        /// <value>The tick of this local time within the second, in the range 0 to 9,999,999 inclusive.</value>
         public int TickOfSecond { get { return time.TickOfSecond; } }
 
         /// <summary>
         /// Gets the tick of this local date and time within the day, in the range 0 to 863,999,999,999 inclusive.
         /// </summary>
+        /// <value>The tick of this local date and time within the day, in the range 0 to 863,999,999,999 inclusive.</value>
         public long TickOfDay { get { return time.TickOfDay; } }
 
         /// <summary>
         /// Gets the nanosecond of this local time within the second, in the range 0 to 999,999,999 inclusive.
         /// </summary>
+        /// <value>The nanosecond of this local time within the second, in the range 0 to 999,999,999 inclusive.</value>
         public int NanosecondOfSecond { get { return time.NanosecondOfSecond; } }
 
         /// <summary>
         /// Gets the nanosecond of this local date and time within the day, in the range 0 to 86,399,999,999,999 inclusive.
         /// </summary>
+        /// <value>The nanosecond of this local date and time within the day, in the range 0 to 86,399,999,999,999 inclusive.</value>
         public long NanosecondOfDay { get { return time.NanosecondOfDay; } }
 
         /// <summary>
         /// Gets the time portion of this local date and time as a <see cref="LocalTime"/>.
         /// </summary>
+        /// <value>The time portion of this local date and time as a <c>LocalTime</c>.</value>
         public LocalTime TimeOfDay { get { return time; } }
 
         /// <summary>
         /// Gets the date portion of this local date and time as a <see cref="LocalDate"/> in the same calendar system as this value.
         /// </summary>
+        /// <value>The date portion of this local date and time as a <c>LocalDate</c> in the same calendar system as this value.</value>
         public LocalDate Date { get { return date; } }
 
         /// <summary>
@@ -925,7 +947,7 @@ namespace NodaTime
         public ZonedDateTime InUtc()
         {
             // Use the internal constructors to avoid validation. We know it will be fine.
-            return new ZonedDateTime(new OffsetDateTime(date.YearMonthDayCalendar, time, Offset.Zero), DateTimeZone.Utc);
+            return new ZonedDateTime(new OffsetDateTime(date.YearMonthDayCalendar, time.NanosecondOfDay), DateTimeZone.Utc);
         }
 
         /// <summary>

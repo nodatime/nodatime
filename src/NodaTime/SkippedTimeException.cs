@@ -42,13 +42,15 @@ namespace NodaTime
         private readonly DateTimeZone zone;
 
         /// <summary>
-        /// The local date/time which is invalid in the time zone
+        /// Gets the local date/time which is invalid in the time zone, prompting this exception.
         /// </summary>
+        /// <value>The local date/time which is invalid in the time zone.</value>
         public LocalDateTime LocalDateTime { get { return localDateTime; } }
 
         /// <summary>
-        /// The time zone in which the local date/time is invalid
+        /// Gets the time zone in which the local date/time is invalid.
         /// </summary>
+        /// <value>The time zone in which the local date/time is invalid</value>
         public DateTimeZone Zone { get { return zone; } }
 
         /// <summary>

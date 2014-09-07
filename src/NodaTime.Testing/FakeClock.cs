@@ -183,7 +183,7 @@ namespace NodaTime.Testing
         }
 
         /// <summary>
-        /// Amount of time to advance the clock by on each call to read the current time.
+        /// Gets the amount of time to advance the clock by on each call to read the current time.
         /// </summary>
         /// <remarks>
         /// <para>
@@ -196,6 +196,7 @@ namespace NodaTime.Testing
         /// </para>
         /// </remarks>
         /// <seealso cref="GetCurrentInstant"/>
+        /// <value>The amount of time to advance the clock by on each call to read the current time.</value>
         public Duration AutoAdvance
         {
             get

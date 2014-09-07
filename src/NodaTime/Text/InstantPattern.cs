@@ -23,16 +23,19 @@ namespace NodaTime.Text
     public sealed class InstantPattern : IPattern<Instant>
     {
         /// <summary>
-        /// Returns the general pattern, which always uses an invariant culture. The general pattern represents
+        /// Gets the general pattern, which always uses an invariant culture. The general pattern represents
         /// an instant as a UTC date/time in ISO-8601 style "yyyy-MM-ddTHH:mm:ss'Z'".
         /// </summary>
+        /// <value>The general pattern, which always uses an invariant culture.</value>
         public static InstantPattern GeneralPattern { get { return Patterns.GeneralPatternImpl; } }
 
         /// <summary>
-        /// Returns an invariant instant pattern which is ISO-8601 compatible, providing up to 9 decimal places
+        /// Gets an invariant instant pattern which is ISO-8601 compatible, providing up to 9 decimal places
         /// of sub-second accuracy. (These digits are omitted when unnecessary.)
         /// This corresponds to the text pattern "yyyy'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFFFF'Z'".
         /// </summary>
+        /// <value>An invariant instant pattern which is ISO-8601 compatible, providing up to 9 decimal places
+        /// of sub-second accuracy.</value>
         public static InstantPattern ExtendedIsoPattern { get { return Patterns.ExtendedIsoPatternImpl; } }
 
         private const string DefaultFormatPattern = "g";
@@ -54,8 +57,9 @@ namespace NodaTime.Text
         private readonly IPattern<Instant> pattern;
 
         /// <summary>
-        /// Returns the pattern text for this pattern, as supplied on creation.
+        /// Gets the pattern text for this pattern, as supplied on creation.
         /// </summary>
+        /// <value>The pattern text for this pattern, as supplied on creation.</value>
         public string PatternText { get { return patternText; } }
 
         /// <summary>

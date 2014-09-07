@@ -19,6 +19,7 @@ namespace NodaTime
         /// The underlying source is <see cref="TzdbDateTimeZoneSource.Default"/>, which is initialized from
         /// resources within the NodaTime assembly.
         /// </summary>
+        /// <value>A time zone provider using a <c>TzdbDateTimeZoneSource</c>.</value>
         public static IDateTimeZoneProvider Tzdb { get { return TzdbHolder.TzdbImpl; } }
 
         // This class exists to force TZDB initialization to be lazy. We don't want using
@@ -44,6 +45,7 @@ namespace NodaTime
         /// Gets a time zone provider which uses a <see cref="BclDateTimeZoneSource"/>.
         /// This property is not available on the PCL build of Noda Time.
         /// </summary>
+        /// <value>A time zone provider which uses a <c>BclDateTimeZoneSource</c>.</value>
         public static IDateTimeZoneProvider Bcl { get { return BclHolder.BclImpl; } }
 #endif
 
@@ -51,7 +53,7 @@ namespace NodaTime
         private static IDateTimeZoneProvider serializationProvider;
 
         /// <summary>
-        /// The <see cref="IDateTimeZoneProvider"/> to use to interpret a time zone ID read as part of
+        /// Gets the <see cref="IDateTimeZoneProvider"/> to use to interpret a time zone ID read as part of
         /// XML or binary serialization.
         /// </summary>
         /// <remarks>
@@ -60,6 +62,8 @@ namespace NodaTime
         /// appropriate context. It is expected that any single application is unlikely to want to serialize
         /// <c>ZonedDateTime</c> values using different time zone providers.
         /// </remarks>
+        /// <value>The <c>IDateTimeZoneProvider</c> to use to interpret a time zone ID read as part of
+        /// XML or binary serialization.</value>
         public static IDateTimeZoneProvider Serialization
         {
             get

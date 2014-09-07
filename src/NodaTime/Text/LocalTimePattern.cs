@@ -23,10 +23,11 @@ namespace NodaTime.Text
     public sealed class LocalTimePattern : IPattern<LocalTime>
     {
         /// <summary>
-        /// Returns an invariant local time pattern which is ISO-8601 compatible, providing up to 7 decimal places.
+        /// Gets an invariant local time pattern which is ISO-8601 compatible, providing up to 7 decimal places.
         /// (These digits are omitted when unnecessary.)
         /// This corresponds to the text pattern "HH':'mm':'ss;FFFFFFF".
         /// </summary>
+        /// <value>An invariant local time pattern which is ISO-8601 compatible, providing up to 7 decimal places.</value>
         public static LocalTimePattern ExtendedIsoPattern { get { return Patterns.ExtendedIsoPatternImpl; } }
 
         private const string DefaultFormatPattern = "T"; // Long
@@ -49,19 +50,21 @@ namespace NodaTime.Text
         private readonly LocalTime templateValue;
 
         /// <summary>
-        /// Returns the pattern text for this pattern, as supplied on creation.
+        /// Gets the pattern text for this pattern, as supplied on creation.
         /// </summary>
+        /// <value>The pattern text for this pattern, as supplied on creation.</value>
         public string PatternText { get { return patternText; } }
 
         /// <summary>
-        /// Returns the localization information used in this pattern.
+        /// Gets the localization information used in this pattern.
         /// </summary>
         internal NodaFormatInfo FormatInfo { get { return formatInfo; } }
 
         /// <summary>
-        /// Returns the value used as a template for parsing: any field values unspecified
+        /// Gets the value used as a template for parsing: any field values unspecified
         /// in the pattern are taken from the template.
         /// </summary>
+        /// <value>The value used as a template for parsing.</value>
         public LocalTime TemplateValue { get { return templateValue; } }
 
         private LocalTimePattern(string patternText, NodaFormatInfo formatInfo, LocalTime templateValue, IPattern<LocalTime> pattern)

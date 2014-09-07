@@ -34,7 +34,7 @@ namespace NodaTime
         /// <summary>
         /// Gets the start date of the interval, which is always included in the interval.
         /// </summary>
-        /// <returns>The start date of the interval.</returns>
+        /// <value>The start date of the interval.</value>
         public LocalDate Start { get { return start; } }
 
         /// <summary>
@@ -44,13 +44,13 @@ namespace NodaTime
         /// Use the <see cref="Inclusive"/> property to determine whether or not the end
         /// date is considered part of the interval.
         /// </remarks>
-        /// <returns>The end date of the interval.</returns>
+        /// <value>The end date of the interval.</value>
         public LocalDate End { get { return end; } }
 
         /// <summary>
         /// Indicates whether or not this interval includes its end date.
         /// </summary>
-        /// <returns>Whether or not this </returns>
+        /// <value>Whether or not this </value>
         public bool Inclusive { get { return inclusive; } }
 
         /// <summary>
@@ -116,7 +116,7 @@ namespace NodaTime
         /// same has a length of 1, whereas an exclusive interval for the same dates has a
         /// length of 0.
         /// </remarks>
-        /// <returns>The length of this date interval in days.</returns>
+        /// <value>The length of this date interval in days.</value>
         public int Length
         {
             get

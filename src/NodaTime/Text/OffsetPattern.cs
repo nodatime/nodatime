@@ -41,8 +41,9 @@ namespace NodaTime.Text
         private readonly IPartialPattern<Offset> pattern;
 
         /// <summary>
-        /// Returns the pattern text for this pattern, as supplied on creation.
+        /// Gets the pattern text for this pattern, as supplied on creation.
         /// </summary>
+        /// <value>The pattern text for this pattern, as supplied on creation.</value>
         public string PatternText { get { return patternText; } }
 
         /// <summary>

@@ -21,13 +21,15 @@ namespace NodaTime.Testing.TimeZones
         private readonly ReadOnlyCollection<Instant> transitions;
 
         /// <summary>
-        /// Zone intervals within this time zone, in chronological order, spanning the whole time line.
+        /// Gets the zone intervals within this time zone, in chronological order, spanning the whole time line.
         /// </summary>
+        /// <value>The zone intervals within this time zone, in chronological order, spanning the whole time line.</value>
         public ReadOnlyCollection<ZoneInterval> Intervals { get { return intervals; } }
 
         /// <summary>
-        /// Transition points between intervals.
+        /// Gets the transition points between intervals.
         /// </summary>
+        /// <value>The transition points between intervals.</value>
         public ReadOnlyCollection<Instant> Transitions { get { return transitions; } }
 
         private MultiTransitionDateTimeZone(string id, IList<ZoneInterval> intervals)
@@ -93,8 +95,9 @@ namespace NodaTime.Testing.TimeZones
             private bool built = false;
 
             /// <summary>
-            /// ID of the time zone which will be built.
+            /// Gets the ID of the time zone which will be built.
             /// </summary>
+            /// <value>The ID of the time zone which will be built.</value>
             public string Id { get; set; }
 
             /// <summary>

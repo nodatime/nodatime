@@ -60,6 +60,7 @@ namespace NodaTime
         /// Note that as per the <see cref="Normalize"/> method, years and months are unchanged by normalization - so 12 months does not
         /// equal 1 year.
         /// </summary>
+        /// <value>An equality comparer which compares periods by first normalizing them.</value>
         public static IEqualityComparer<Period> NormalizingEqualityComparer { get { return NormalizingPeriodEqualityComparer.Instance; } }
 
         // The fields that make up this period.
@@ -641,6 +642,7 @@ namespace NodaTime
         /// <summary>
         /// Returns whether or not this period contains any non-zero-valued time-based properties (hours or lower).
         /// </summary>
+        /// <value>true if the period contains any non-zero-valued time-based properties (hours or lower); false otherwise.</value>
         public bool HasTimeComponent
         {
             get
@@ -652,6 +654,7 @@ namespace NodaTime
         /// <summary>
         /// Returns whether or not this period contains any non-zero date-based properties (days or higher).
         /// </summary>
+        /// <value>true if this period contains any non-zero date-based properties (days or higher); false otherwise.</value>
         public bool HasDateComponent
         {
             get
@@ -683,6 +686,7 @@ namespace NodaTime
         /// <summary>
         /// Gets the total number of nanoseconds duration for the 'standard' properties (all bar years and months).
         /// </summary>
+        /// <value>The total number of nanoseconds duration for the 'standard' properties (all bar years and months).</value>
         private long TotalNanoseconds
         {
             get
@@ -762,7 +766,9 @@ namespace NodaTime
         /// This property returns zero both when the property has been explicitly set to zero and when the period does not
         /// contain this property.
         /// </remarks>
+        /// <value>The number of years within this period.</value>
         public int Years { get { return years; } }
+
         /// <summary>
         /// Gets the number of months within this period.
         /// </summary>
@@ -770,7 +776,9 @@ namespace NodaTime
         /// This property returns zero both when the property has been explicitly set to zero and when the period does not
         /// contain this property.
         /// </remarks>
+        /// <value>The number of months within this period.</value>
         public int Months { get { return months; } }
+
         /// <summary>
         /// Gets the number of weeks within this period.
         /// </summary>
@@ -778,7 +786,9 @@ namespace NodaTime
         /// This property returns zero both when the property has been explicitly set to zero and when the period does not
         /// contain this property.
         /// </remarks>
+        /// <value>The number of weeks within this period.</value>
         public int Weeks { get { return weeks; } }
+
         /// <summary>
         /// Gets the number of days within this period.
         /// </summary>
@@ -786,7 +796,9 @@ namespace NodaTime
         /// This property returns zero both when the property has been explicitly set to zero and when the period does not
         /// contain this property.
         /// </remarks>
+        /// <value>The number of days within this period.</value>
         public int Days { get { return days; } }
+
         /// <summary>
         /// Gets the number of hours within this period.
         /// </summary>
@@ -794,7 +806,9 @@ namespace NodaTime
         /// This property returns zero both when the property has been explicitly set to zero and when the period does not
         /// contain this property.
         /// </remarks>
+        /// <value>The number of hours within this period.</value>
         public long Hours { get { return hours; } }
+
         /// <summary>
         /// Gets the number of minutes within this period.
         /// </summary>
@@ -802,7 +816,9 @@ namespace NodaTime
         /// This property returns zero both when the property has been explicitly set to zero and when the period does not
         /// contain this property.
         /// </remarks>
+        /// <value>The number of minutes within this period.</value>
         public long Minutes { get { return minutes; } }
+
         /// <summary>
         /// Gets the number of seconds within this period.
         /// </summary>
@@ -810,7 +826,9 @@ namespace NodaTime
         /// This property returns zero both when the property has been explicitly set to zero and when the period does not
         /// contain this property.
         /// </remarks>
+        /// <value>The number of seconds within this period.</value>
         public long Seconds { get { return seconds; } }
+
         /// <summary>
         /// Gets the number of milliseconds within this period.
         /// </summary>
@@ -818,7 +836,9 @@ namespace NodaTime
         /// This property returns zero both when the property has been explicitly set to zero and when the period does not
         /// contain this property.
         /// </remarks>
+        /// <value>The number of milliseconds within this period.</value>
         public long Milliseconds { get { return milliseconds; } }
+
         /// <summary>
         /// Gets the number of ticks within this period.
         /// </summary>
@@ -826,11 +846,13 @@ namespace NodaTime
         /// This property returns zero both when the property has been explicitly set to zero and when the period does not
         /// contain this property.
         /// </remarks>
+        /// <value>The number of ticks within this period.</value>
         public long Ticks { get { return ticks; } }
 
         /// <summary>
-        /// Number of nanoseconds.
+        /// Gets the number of nanoseconds.
         /// </summary>
+        /// <value>The number of nanoseconds.</value>
         public Duration Nanoseconds { get { return nanoseconds; } }
         #endregion
 

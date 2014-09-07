@@ -139,20 +139,25 @@ namespace NodaTime
         }
 
         /// <summary>Gets the calendar system associated with this local date.</summary>
+        /// <value>The calendar system associated with this local date.</value>
         public CalendarSystem Calendar { get { return CalendarSystem.ForOrdinal(yearMonthDayCalendar.CalendarOrdinal); } }
 
         /// <summary>Gets the year of this local date.</summary>
         /// <remarks>This returns the "absolute year", so, for the ISO calendar,
         /// a value of 0 means 1 BC, for example.</remarks>
+        /// <value>The year of this local date.</value>
         public int Year { get { return yearMonthDayCalendar.Year; } }
 
         /// <summary>Gets the month of this local date within the year.</summary>
+        /// <value>The month of this local date within the year.</value>
         public int Month { get { return yearMonthDayCalendar.Month; } }
 
         /// <summary>Gets the day of this local date within the month.</summary>
+        /// <value>The day of this local date within the month.</value>
         public int Day { get { return yearMonthDayCalendar.Day; } }
 
         /// <summary>Gets the number of days since the Unix epoch for this date.</summary>
+        /// <value>The number of days since the Unix epoch for this date.</value>
         internal int DaysSinceEpoch { get { return Calendar.GetDaysSinceEpoch(yearMonthDayCalendar.ToYearMonthDay()); } }
 
         /// <summary>
@@ -161,6 +166,7 @@ namespace NodaTime
         /// </summary>
         /// <exception cref="InvalidOperationException">The underlying calendar doesn't use ISO days of the week.</exception>
         /// <seealso cref="DayOfWeek"/>
+        /// <value>The week day of this local date expressed as an <c>IsoDayOfWeek</c>.</value>
         public IsoDayOfWeek IsoDayOfWeek { get { return Calendar.GetIsoDayOfWeek(yearMonthDayCalendar.ToYearMonthDay()); } }
 
         /// <summary>
@@ -170,6 +176,7 @@ namespace NodaTime
         /// For calendars using ISO week days, this gives 1 for Monday to 7 for Sunday.
         /// </remarks>
         /// <seealso cref="IsoDayOfWeek"/>
+        /// <value>The week day of this local date as a number.</value>
         public int DayOfWeek { get { return Calendar.GetDayOfWeek(yearMonthDayCalendar.ToYearMonthDay()); } }
 
         /// <summary>
@@ -190,24 +197,28 @@ namespace NodaTime
         /// so is part of week 1 of WeekYear 2013.
         /// </para>
         /// </remarks>
+        /// <value>The "week year" of this local date.</value>
         public int WeekYear { get { return Calendar.GetWeekYear(yearMonthDayCalendar.ToYearMonthDay()); } }
 
-        /// <summary>Gets the week within the WeekYear. See <see cref="WeekYear"/> for more details.</summary>
+        /// <summary>Gets the week within the week-year. See <see cref="WeekYear"/> for more details.</summary>
+        /// <value>The week within the week-year.</value>
         public int WeekOfWeekYear { get { return Calendar.GetWeekOfWeekYear(yearMonthDayCalendar.ToYearMonthDay()); } }
 
         /// <summary>Gets the year of this local date within the era.</summary>
+        /// <value>The year of this local date within the era.</value>
         public int YearOfEra { get { return Calendar.GetYearOfEra(yearMonthDayCalendar.ToYearMonthDay()); } }
 
         /// <summary>Gets the era of this local date.</summary>
+        /// <value>The era of this local date.</value>
         public Era Era { get { return Calendar.GetEra(yearMonthDayCalendar.ToYearMonthDay()); } }
 
         /// <summary>Gets the day of this local date within the year.</summary>
+        /// <value>The day of this local date within the year.</value>
         public int DayOfYear { get { return Calendar.GetDayOfYear(yearMonthDayCalendar.ToYearMonthDay()); } }
 
         internal YearMonthDay YearMonthDay { get { return yearMonthDayCalendar.ToYearMonthDay(); } }
 
         internal YearMonthDayCalendar YearMonthDayCalendar { get { return yearMonthDayCalendar; } }
-
 
         /// <summary>
         /// Gets a <see cref="LocalDateTime" /> at midnight on the date represented by this local date.

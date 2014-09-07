@@ -30,9 +30,10 @@ namespace NodaTime.Text
             new PatternBclSupport<LocalDate>(DefaultFormatPattern, fi => fi.LocalDatePatternParser);
 
         /// <summary>
-        /// Returns an invariant local date pattern which is ISO-8601 compatible.
+        /// Gets an invariant local date pattern which is ISO-8601 compatible.
         /// This corresponds to the text pattern "yyyy'-'MM'-'dd".
         /// </summary>
+        /// <value>An invariant local date pattern which is ISO-8601 compatible.</value>
         public static LocalDatePattern IsoPattern { get { return Patterns.IsoPatternImpl; } }
         
         /// <summary>
@@ -50,8 +51,9 @@ namespace NodaTime.Text
         private readonly LocalDate templateValue;
 
         /// <summary>
-        /// Returns the pattern text for this pattern, as supplied on creation.
+        /// Gets the pattern text for this pattern, as supplied on creation.
         /// </summary>
+        /// <value>The pattern text for this pattern, as supplied on creation.</value>
         public string PatternText { get { return patternText; } }
 
         /// <summary>
@@ -60,9 +62,10 @@ namespace NodaTime.Text
         internal NodaFormatInfo FormatInfo { get { return formatInfo; } }
 
         /// <summary>
-        /// Returns the value used as a template for parsing: any field values unspecified
+        /// Gets the value used as a template for parsing: any field values unspecified
         /// in the pattern are taken from the template.
         /// </summary>
+        /// <value>The value used as a template for parsing.</value>
         public LocalDate TemplateValue { get { return templateValue; } }
 
         private LocalDatePattern(string patternText, NodaFormatInfo formatInfo, LocalDate templateValue,

@@ -26,7 +26,7 @@ namespace NodaTime.Text
         internal static readonly ZonedDateTime DefaultTemplateValue = new LocalDateTime(2000, 1, 1, 0, 0).InUtc();
 
         /// <summary>
-        /// Returns an zoned local date/time pattern based on ISO-8601 (down to the second) including offset from UTC and zone ID.
+        /// Gets an zoned local date/time pattern based on ISO-8601 (down to the second) including offset from UTC and zone ID.
         /// It corresponds to a custom pattern of "yyyy'-'MM'-'dd'T'HH':'mm':'ss z '('o&lt;g&gt;')'" and is available
         /// as the 'G' standard pattern.
         /// </summary>
@@ -35,6 +35,7 @@ namespace NodaTime.Text
         /// provider is included. Call <see cref="WithZoneProvider"/> on the value of this property to obtain a
         /// pattern which can be used for parsing.
         /// </remarks>
+        /// <value>An zoned local date/time pattern based on ISO-8601 (down to the second) including offset from UTC and zone ID.</value>
         public static ZonedDateTimePattern GeneralFormatOnlyIsoPattern { get { return Patterns.GeneralFormatOnlyPatternImpl; } }
 
         // TODO(2.0): Add tests for this and other patterns from properties.
@@ -48,6 +49,7 @@ namespace NodaTime.Text
         /// provider is included. Call <see cref="WithZoneProvider"/> on the value of this property to obtain a
         /// pattern which can be used for parsing.
         /// </remarks>
+        /// <value>An invariant zoned date/time pattern based on ISO-8601 (down to the nanosecond) including offset from UTC and zone ID.</value>
         public static ZonedDateTimePattern ExtendedFormatOnlyIsoPattern { get { return Patterns.ExtendedFormatOnlyPatternImpl; } }
 
         private readonly string patternText;
@@ -69,32 +71,37 @@ namespace NodaTime.Text
         }
 
         /// <summary>
-        /// Returns the pattern text for this pattern, as supplied on creation.
+        /// Gets the pattern text for this pattern, as supplied on creation.
         /// </summary>
+        /// <value>The pattern text for this pattern, as supplied on creation.</value>
         public string PatternText { get { return patternText; } }
 
         /// <summary>
-        /// Returns the localization information used in this pattern.
+        /// Gets the localization information used in this pattern.
         /// </summary>
         internal NodaFormatInfo FormatInfo { get { return formatInfo; } }
 
         /// <summary>
-        /// Returns the value used as a template for parsing: any field values unspecified
+        /// Gets the value used as a template for parsing: any field values unspecified
         /// in the pattern are taken from the template.
         /// </summary>
+        /// <value>The value used as a template for parsing.</value>
         public ZonedDateTime TemplateValue { get { return templateValue; } }
 
         /// <summary>
-        /// Returns the resolver which is used to map local date/times to zoned date/times,
+        /// Gets the resolver which is used to map local date/times to zoned date/times,
         /// handling skipped and ambiguous times appropriately (where the offset isn't specified in the pattern).
         /// </summary>
+        /// <value>The resolver which is used to map local date/times to zoned date/times.</value>
         public ZoneLocalMappingResolver Resolver { get { return resolver; } }
 
         /// <summary>
-        /// Returns the provider which is used to look up time zones when parsing a pattern
+        /// Gets the provider which is used to look up time zones when parsing a pattern
         /// which contains a time zone identifier. This may be null, in which case the pattern can
         /// only be used for formatting (not parsing).
         /// </summary>
+        /// <value>The provider which is used to look up time zones when parsing a pattern
+        /// which contains a time zone identifier.</value>
         public IDateTimeZoneProvider ZoneProvider { get { return zoneProvider; } }
 
         private ZonedDateTimePattern(string patternText, NodaFormatInfo formatInfo, ZonedDateTime templateValue,

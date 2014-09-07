@@ -25,8 +25,9 @@ namespace NodaTime
     public interface IDateTimeZoneProvider
     {
         /// <summary>
-        /// The version ID of this provider.
+        /// Gets the version ID of this provider.
         /// </summary>
+        /// <value>The version ID of this provider.</value>
         string VersionId { get; }
 
         /// <summary>
@@ -141,7 +142,7 @@ namespace NodaTime
         /// </para>
         /// </remarks>
         /// <param name="id">The time zone id to find.</param>
-        /// <returns>The <see cref="DateTimeZone" /> for the given ID.</returns>
+        /// <value>The <see cref="DateTimeZone" /> for the given ID.</value>
         /// <exception cref="DateTimeZoneNotFoundException">This provider does not support the given ID.</exception>
         DateTimeZone this[[NotNull] string id] { get; }
     }
