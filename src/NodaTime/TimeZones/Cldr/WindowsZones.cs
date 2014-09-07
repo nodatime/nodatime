@@ -5,6 +5,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using JetBrains.Annotations;
 using NodaTime.Annotations;
 using NodaTime.TimeZones.IO;
 using NodaTime.Utility;
@@ -27,49 +28,37 @@ namespace NodaTime.TimeZones.Cldr
         /// Gets the version of the Windows zones mapping data read from the original file.
         /// </summary>
         /// <remarks>
-        /// <para>
         /// As with other IDs, this should largely be treated as an opaque string, but the current method for
         /// generating this from the mapping file extracts a number from an element such as <c>&lt;version number="$Revision: 7825 $"/&gt;</c>.
         /// This is a Subversion revision number, but that association should only be used for diagnostic curiosity, and never
         /// assumed in code.
-        /// </para>
-        /// <para>
-        /// This property will never return a null value.
-        /// </para>
         /// </remarks>
-        public string Version { get { return version; } }
+        /// <value>The version of the Windows zones mapping data read from the original file.</value>
+        [NotNull] public string Version { get { return version; } }
 
         private readonly string tzdbVersion;
         /// <summary>
         /// Gets the TZDB version this Windows zone mapping data was created from.
         /// </summary>
         /// <remarks>
-        /// <para>
         /// The CLDR mapping file usually lags behind the TZDB file somewhat - partly because the
         /// mappings themselves don't always change when the time zone data does. For example, it's entirely
         /// reasonable for a <see cref="TzdbDateTimeZoneSource"/> with a <see cref="TzdbDateTimeZoneSource.TzdbVersion">TzdbVersion</see> of
         /// "2013b" to be supply a <c>WindowsZones</c> object with a <c>TzdbVersion</c> of "2012f".
-        /// </para>
-        /// <para>
-        /// This property will never return a null value.
-        /// </para>
         /// </remarks>
-        public string TzdbVersion { get { return tzdbVersion; } }
+        /// <value>The TZDB version this Windows zone mapping data was created from.</value>
+        [NotNull] public string TzdbVersion { get { return tzdbVersion; } }
 
         private readonly string windowsVersion;
         /// <summary>
         /// Gets the Windows time zone database version this Windows zone mapping data was created from.
         /// </summary>
         /// <remarks>
-        /// <para>
         /// At the time of this writing, this is populated (by CLDR) from the registry key
         /// HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Time Zones\TzVersion,
         /// so "7dc0101" for example.
-        /// </para>
-        /// <para>
-        /// This property will never return a null value.
-        /// </para>
         /// </remarks>
+        /// <value>The Windows time zone database version this Windows zone mapping data was created from.</value>
         public string WindowsVersion { get { return windowsVersion; } }
 
         private readonly ReadOnlyCollection<MapZone> mapZones;
@@ -97,7 +86,9 @@ namespace NodaTime.TimeZones.Cldr
         /// in CLDR and being used in your production system.) In practice however, you're unlikely to wish to use a time zone
         /// which isn't covered here.</para>
         /// </remarks>
-        public IList<MapZone> MapZones { get { return mapZones; } }
+        /// <value>An immutable collection of mappings from Windows system time zones to
+        /// TZDB time zones.</value>
+        [NotNull] public IList<MapZone> MapZones { get { return mapZones; } }
 
         private readonly NodaReadOnlyDictionary<string, string> primaryMapping;
         /// <summary>
@@ -105,7 +96,9 @@ namespace NodaTime.TimeZones.Cldr
         /// to TZDB zone ID. This corresponds to the "001" territory which is present for every zone
         /// within the mapping file.
         /// </summary>
-        public IDictionary<string, string> PrimaryMapping { get { return primaryMapping; } }
+        /// <value>An immutable dictionary of primary mappings, from Windows system time zone ID
+        /// to TZDB zone ID.</value>
+        [NotNull] public IDictionary<string, string> PrimaryMapping { get { return primaryMapping; } }
 
         internal WindowsZones(string version, string tzdbVersion, string windowsVersion, IList<MapZone> mapZones)
             : this(Preconditions.CheckNotNull(version, "version"),

@@ -103,8 +103,8 @@ namespace NodaTime
         /// Returns <c>true</c> if this interval has a fixed start point, or <c>false</c> if it
         /// extends to the start of time.
         /// </summary>
-        /// <returns><c>true</c> if this interval has a fixed start point, or <c>false</c> if it
-        /// extends to the start of time.</returns>
+        /// <value><c>true</c> if this interval has a fixed start point, or <c>false</c> if it
+        /// extends to the start of time.</value>
         public bool HasStart { get { return start.IsValid; } }
 
         /// <summary>
@@ -132,8 +132,8 @@ namespace NodaTime
         /// Returns <c>true</c> if this interval has a fixed end point, or <c>false</c> if it
         /// extends to the end of time.
         /// </summary>
-        /// <returns><c>true</c> if this interval has a fixed end point, or <c>false</c> if it
-        /// extends to the end of time.</returns>
+        /// <value><c>true</c> if this interval has a fixed end point, or <c>false</c> if it
+        /// extends to the end of time.</value>
         public bool HasEnd { get { return end.IsValid; } }
 
         /// <summary>

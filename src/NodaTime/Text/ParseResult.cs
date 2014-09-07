@@ -34,21 +34,21 @@ namespace NodaTime.Text
         }
 
         /// <summary>
-        /// Returns the value from the parse operation if it was successful, or throws an exception indicating the parse failure
+        /// Gets the value from the parse operation if it was successful, or throws an exception indicating the parse failure
         /// otherwise.
         /// </summary>
         /// <remarks>
         /// This method is exactly equivalent to calling the <see cref="GetValueOrThrow"/> method, but is terser if the code is
         /// already clear that it will throw if the parse failed.
         /// </remarks>
-        /// <returns>The result of the parsing operation if it was successful.</returns>
+        /// <value>The result of the parsing operation if it was successful.</value>
         public T Value { get { return GetValueOrThrow(); } }
 
         /// <summary>
-        /// Returns an exception indicating the cause of the parse failure.
+        /// Gets an exception indicating the cause of the parse failure.
         /// </summary>
         /// <remarks>This property is typically used to wrap parse failures in higher level exceptions.</remarks>
-        /// <returns>The exception indicating the cause of the parse failure.</returns>
+        /// <value>The exception indicating the cause of the parse failure.</value>
         /// <exception cref="InvalidOperationException">The parse operation succeeded.</exception>
         public Exception Exception
         {
@@ -63,7 +63,7 @@ namespace NodaTime.Text
         }
 
         /// <summary>
-        /// Returns the value from the parse operation if it was successful, or throws an exception indicating the parse failure
+        /// Gets the value from the parse operation if it was successful, or throws an exception indicating the parse failure
         /// otherwise.
         /// </summary>
         /// <remarks>
@@ -100,6 +100,7 @@ namespace NodaTime.Text
         /// <remarks>
         /// This returns True if and only if fetching the value with the <see cref="Value"/> property will return with no exception.
         /// </remarks>
+        /// <value>true if the parse operation was successful; otherwise false.</value>
         public bool Success { get { return exceptionProvider == null; } }
 
         internal bool ContinueAfterErrorWithMultipleFormats { get { return continueWithMultiple; } }

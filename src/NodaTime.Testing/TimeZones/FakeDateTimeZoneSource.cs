@@ -89,20 +89,24 @@ namespace NodaTime.Testing.TimeZones
             private readonly List<DateTimeZone> zones = new List<DateTimeZone>();
 
             /// <summary>
-            /// The dictionary mapping BCL <see cref="TimeZoneInfo"/> IDs to the canonical IDs
+            /// Gets the dictionary mapping BCL <see cref="TimeZoneInfo"/> IDs to the canonical IDs
             /// served within the provider being built.
             /// </summary>
+            /// <value>The dictionary mapping BCL IDs to the canonical IDs served within the provider
+            /// being built.</value>
             public IDictionary<string, string> BclIdsToZoneIds { get { return bclIdsToZoneIds; } }
 
             /// <summary>
-            /// List of zones, exposed as a property for use when a test needs to set properties as
+            /// Gets the list of zones, exposed as a property for use when a test needs to set properties as
             /// well as adding zones.
             /// </summary>
+            /// <value>The list of zones within the provider being built.</value>
             public IList<DateTimeZone> Zones { get { return zones; } }
 
             /// <summary>
-            /// The version ID to advertise; defaults to "TestZones".
+            /// Gets the version ID to advertise; defaults to "TestZones".
             /// </summary>
+            /// <value>The version ID to advertise; defaults to "TestZones".</value>
             public string VersionId { get; set; }
 
             /// <summary>

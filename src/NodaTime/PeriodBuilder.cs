@@ -29,52 +29,61 @@ namespace NodaTime
         /// <summary>
         /// Gets or sets the number of years within the period.
         /// </summary>
+        /// <value>The number of years within the period.</value>
         public int Years { get; set; }
 
         /// <summary>
         /// Gets or sets the number of months within the period.
         /// </summary>
+        /// <value>The number of months within the period.</value>
         public int Months { get; set; }
 
         /// <summary>
         /// Gets or sets the number of weeks within the period.
         /// </summary>
+        /// <value>The number of weeks within the period.</value>
         public int Weeks { get; set; }
 
         /// <summary>
         /// Gets or sets the number of days within the period.
         /// </summary>
+        /// <value>The number of days within the period.</value>
         public int Days { get; set; }
 
         /// <summary>
         /// Gets or sets the number of hours within the period.
         /// </summary>
+        /// <value>The number of hours within the period.</value>
         public long Hours { get; set; }
 
         /// <summary>
         /// Gets or sets the number of minutes within the period.
         /// </summary>
+        /// <value>The number of minutes within the period.</value>
         public long Minutes { get; set; }
 
         /// <summary>
         /// Gets or sets the number of seconds within the period.
         /// </summary>
+        /// <value>The number of seconds within the period.</value>
         public long Seconds { get; set; }
 
         /// <summary>
         /// Gets or sets the number of milliseconds within the period.
         /// </summary>
+        /// <value>The number of milliseconds within the period.</value>
         public long Milliseconds { get; set; }
 
         /// <summary>
         /// Gets or sets the number of ticks within the period.
         /// </summary>
+        /// <value>The number of ticks within the period.</value>
         public long Ticks { get; set; }
 
         /// <summary>
         /// Gets or sets the number of nanoseconds within the period.
         /// </summary>
-        /// <returns>The number of nanoseconds within the period.</returns>
+        /// <value>The number of nanoseconds within the period.</value>
         public Duration Nanoseconds { get; set; }
         #endregion
 
@@ -121,7 +130,7 @@ namespace NodaTime
         /// </para>
         /// </remarks>
         /// <param name="unit">A single value within the <see cref="PeriodUnits"/> enumeration.</param>
-        /// <returns>The value of the given unit within this period builder, or zero if the unit is unset.</returns>
+        /// <value>The value of the given unit within this period builder, or zero if the unit is unset.</value>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="unit"/> is not a single unit, or a value is provided for a date unit which is outside the range of <see cref="System.Int32"/>.</exception>
         public long this[PeriodUnits unit]
         {

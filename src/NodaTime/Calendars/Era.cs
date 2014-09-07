@@ -17,6 +17,7 @@ namespace NodaTime.Calendars
     [Immutable]
     public sealed class Era
     {
+        // TODO(2.0): Make all of these properties...
         /// <summary>
         /// The "Common" era (CE), also known as Anno Domini (AD). This is used in the ISO, Gregorian and Julian calendars.
         /// </summary>
@@ -61,6 +62,7 @@ namespace NodaTime.Calendars
         /// <summary>
         /// Returns the name of this era, e.g. "CE" or "BCE".
         /// </summary>
+        /// <value>The name of this era.</value>
         public string Name { get { return name; } }
 
         /// <summary>

@@ -70,9 +70,10 @@ namespace NodaTime.TimeZones
         }
 
         /// <summary>
-        /// The version ID of this provider. This is simply the <see cref="IDateTimeZoneSource.VersionId"/> returned by
+        /// Gets the version ID of this provider. This is simply the <see cref="IDateTimeZoneSource.VersionId"/> returned by
         /// the underlying source.
         /// </summary>
+        /// <value>The version ID of this provider.</value>
         public string VersionId { get { return providerVersionId; } }
 
         /// <inheritdoc />

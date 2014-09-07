@@ -57,10 +57,13 @@ namespace NodaTime.TimeZones
 
         /// <summary>
         /// Returns an appropriate version ID for diagnostic purposes, which must not be null.
+        /// </summary>
+        /// <remarks>
         /// This doesn't have any specific format; it's solely for diagnostic purposes.
         /// The included sources return strings of the format "source identifier: source version" indicating where the
         /// information comes from and which version of the source information has been loaded.
-        /// </summary>
+        /// </remarks>
+        /// <value>An appropriate version ID for diagnostic purposes, which must not be null.</value>
         string VersionId { get; }
 
         /// <summary>

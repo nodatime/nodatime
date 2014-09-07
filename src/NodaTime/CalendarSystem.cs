@@ -144,6 +144,7 @@ namespace NodaTime
         /// <summary>
         /// Returns the IDs of all calendar systems available within Noda Time. The order of the keys is not guaranteed.
         /// </summary>
+        /// <value>The IDs of all calendar systems available within Noda Time.</value>
         public static IEnumerable<string> Ids { get { return IdToFactoryMap.Keys; } }
 
         private static readonly Dictionary<string, Func<CalendarSystem>> IdToFactoryMap = new Dictionary<string, Func<CalendarSystem>>
@@ -183,6 +184,7 @@ namespace NodaTime
         /// The distinction between Gregorian-4 and ISO has been maintained for the sake of simplicity, compatibility
         /// and consistency.
         /// </remarks>
+        /// <value>The ISO calendar system.</value>
         public static CalendarSystem Iso { get { return IsoCalendarSystem; } }
 
         /// <summary>
@@ -371,6 +373,7 @@ namespace NodaTime
         ///   <item><term>Hebrew Scriptural</term><description><see cref="CalendarSystem.GetHebrewCalendar"/>(HebrewMonthNumbering.Scriptural)</description></item>
         /// </list>
         /// </remarks>
+        /// <value>The unique identifier for this calendar system.</value>
         public string Id { get { return id; } }
 
         /// <summary>
@@ -379,23 +382,38 @@ namespace NodaTime
         /// Islamic calendar system does not indicate which kind of leap cycle it uses, and other calendars
         /// specify the minimum number of days in the first week of a year.)
         /// </summary>
+        /// <value>The name of this calendar system.</value>
         public string Name { get { return name; } }
 
         /// <summary>
-        /// Returns whether the day-of-week field refers to ISO days. If true, types such as <see cref="LocalDateTime" />
+        /// Returns whether the day-of-week field refers to ISO days.
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// If true, types such as <see cref="LocalDateTime" />
         /// can use the <see cref="IsoDayOfWeek" /> property to avoid using magic numbers.
         /// This defaults to true, but can be overridden by specific calendars.
-        /// </summary>
+        /// </para>
+        /// <para>
+        /// Currently all calendar systems supported by Noda Time are deemed to use ISO
+        /// days, so every week is seven days long, and this property always returns true.
+        /// In the future, however, calendar systems with different - possibly even variable
+        /// - week lengths may be supported.
+        /// </para>
+        /// </remarks>
+        /// <value>true if the calendar system refers to ISO days; false otherwise.</value>
         public bool UsesIsoDayOfWeek { get { return true; } }
 
         /// <summary>
-        /// The minimum valid year (inclusive) within this calendar.
+        /// Gets the minimum valid year (inclusive) within this calendar.
         /// </summary>
+        /// <value>The minimum valid year (inclusive) within this calendar.</value>
         public int MinYear { get { return minYear; } }
 
         /// <summary>
-        /// The maximum valid year (inclusive) within this calendar.
+        /// Gets the maximum valid year (inclusive) within this calendar.
         /// </summary>
+        /// <value>The maximum valid year (inclusive) within this calendar.</value>
         public int MaxYear { get { return maxYear; } }
 
         /// <summary>
@@ -415,8 +433,9 @@ namespace NodaTime
 
         #region Era-based members
         /// <summary>
-        /// Returns a read-only list of eras used in this calendar system.
+        /// Gets a read-only list of eras used in this calendar system.
         /// </summary>
+        /// <value>A read-only list of eras used in this calendar system.</value>
         public IList<Era> Eras { get { return eraCalculator.Eras; } }
 
         /// <summary>
@@ -641,7 +660,7 @@ namespace NodaTime
         /// Returns a Gregorian calendar system with at least 4 days in the first week of a week-year.
         /// </summary>
         /// <seealso cref="CalendarSystem.GetGregorianCalendar"/>
-        /// <returns>A Gregorian calendar system with at least 4 days in the first week of a week-year.</returns>
+        /// <value>A Gregorian calendar system with at least 4 days in the first week of a week-year.</value>
         public static CalendarSystem Gregorian { get { return GetGregorianCalendar(4); } }
 
         /// <summary>
@@ -658,8 +677,8 @@ namespace NodaTime
         /// <para>
         /// This calendar always has at least 4 days in the first week of the week-year.
         /// </para>
-        /// <returns>A suitable Julian calendar reference; the same reference may be returned by several
-        /// calls as the object is immutable and thread-safe.</returns>
+        /// <value>A suitable Julian calendar reference; the same reference may be returned by several
+        /// calls as the object is immutable and thread-safe.</value>
         public static CalendarSystem Julian { get { return JulianCalendarSystem; } }
 
         /// <summary>
@@ -684,8 +703,8 @@ namespace NodaTime
         /// This calendar always has at least 4 days in the first week of the week-year.
         /// </para>
         /// </remarks>
-        /// <returns>A suitable Coptic calendar reference; the same reference may be returned by several
-        /// calls as the object is immutable and thread-safe.</returns>
+        /// <value>A suitable Coptic calendar reference; the same reference may be returned by several
+        /// calls as the object is immutable and thread-safe.</value>
         public static CalendarSystem Coptic { get { return CopticCalendarSystem; } }
 
         /// <summary>
@@ -694,10 +713,10 @@ namespace NodaTime
         /// <remarks>
         /// This uses the <see cref="IslamicLeapYearPattern.Base16"/> leap year pattern and the
         /// <see cref="IslamicEpoch.Astronomical"/> epoch. This is equivalent to HijriCalendar
-        /// when the HijriCalendar.HijriAdjustment is 0.
+        /// when the <c>HijriCalendar.HijriAdjustment</c> is 0.
         /// </remarks>
         /// <seealso cref="CalendarSystem.GetIslamicCalendar"/>
-        /// <returns>An Islamic calendar system equivalent to the one used by the BCL.</returns>
+        /// <value>An Islamic calendar system equivalent to the one used by the BCL.</value>
         public static CalendarSystem IslamicBcl
         {
             get
@@ -718,7 +737,7 @@ namespace NodaTime
         /// This is the same approach taken by the BCL <c>PersianCalendar</c> class, and the dates of
         /// this implementation align exactly with the BCL implementation.
         /// </remarks>
-        /// <returns>A Persian calendar system.</returns>
+        /// <value>A Persian calendar system.</value>
         public static CalendarSystem Persian { get { return PersianCalendarSystem; } }
 
         /// <summary>
@@ -726,15 +745,15 @@ namespace NodaTime
         /// equivalent to the one used by the BCL HebrewCalendar.
         /// </summary>
         /// <seealso cref="CalendarSystem.GetHebrewCalendar"/>
-        /// <returns>A Hebrew calendar system using the civil month numbering, equivalent to the one used by the
-        /// BCL.</returns>
+        /// <value>A Hebrew calendar system using the civil month numbering, equivalent to the one used by the
+        /// BCL.</value>
         public static CalendarSystem HebrewCivil { get { return GetHebrewCalendar(HebrewMonthNumbering.Civil); } }
 
         /// <summary>
         /// Returns a Hebrew calendar system using the scriptural month numbering.
         /// </summary>
         /// <seealso cref="CalendarSystem.GetHebrewCalendar"/>
-        /// <returns>A Hebrew calendar system using the scriptural month numbering.</returns>
+        /// <value>A Hebrew calendar system using the scriptural month numbering.</value>
         public static CalendarSystem HebrewScriptural { get { return GetHebrewCalendar(HebrewMonthNumbering.Scriptural); } }
 
 #if PCL
@@ -756,7 +775,7 @@ namespace NodaTime
         /// some Portable Class Library variants, but not all. When in doubt, please test thoroughly
         /// on all platforms you intend to support.
         /// </remarks>
-        /// <returns>A calendar system for the Um Al Qura calendar.</returns>
+        /// <value>A calendar system for the Um Al Qura calendar.</value>
         /// <exception cref="NotSupportedException">The Um Al Qura calendar is not supported on the current platform.</exception>
         public static CalendarSystem UmAlQura
 #endif

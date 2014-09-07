@@ -13,19 +13,22 @@ namespace NodaTime.Testing.TimeZones
     {
         private readonly ZoneInterval earlyInterval;
         /// <summary>
-        /// The <see cref="ZoneInterval"/> for the period before the transition, starting at the beginning of time.
+        /// Gets the <see cref="ZoneInterval"/> for the period before the transition, starting at the beginning of time.
         /// </summary>
+        /// <value>The zone interval for the period before the transition, starting at the beginning of time.</value>
         public ZoneInterval EarlyInterval { get { return earlyInterval; } }
 
         private readonly ZoneInterval lateInterval;
         /// <summary>
-        /// The <see cref="ZoneInterval"/> for the period after the transition, ending at the end of time.
+        /// Gets the <see cref="ZoneInterval"/> for the period after the transition, ending at the end of time.
         /// </summary>
+        /// <value>The zone interval for the period after the transition, ending at the end of time.</value>
         public ZoneInterval LateInterval { get { return lateInterval; } }
 
         /// <summary>
-        /// The transition instant of the zone.
+        /// Gets the transition instant of the zone.
         /// </summary>
+        /// <value>The transition instant of the zone.</value>
         public Instant Transition { get { return earlyInterval.End; } }
 
         /// <summary>

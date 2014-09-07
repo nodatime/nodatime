@@ -5,6 +5,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using JetBrains.Annotations;
 using NodaTime.TimeZones.Cldr;
 using NodaTime.Utility;
 
@@ -59,25 +60,25 @@ namespace NodaTime.TimeZones.IO
         /// <summary>
         /// Returns the TZDB version string.
         /// </summary>
-        public string TzdbVersion { get { return tzdbVersion; } }
+        [NotNull] public string TzdbVersion { get { return tzdbVersion; } }
 
         /// <summary>
         /// Returns the TZDB ID dictionary (alias to canonical ID). This needn't be read-only; it won't be
         /// exposed directly.
         /// </summary>
-        public IDictionary<string, string> TzdbIdMap { get { return tzdbIdMap; } }
+        [NotNull] public IDictionary<string, string> TzdbIdMap { get { return tzdbIdMap; } }
 
         /// <summary>
         /// Returns the Windows mapping dictionary. (As the type is immutable, it can be exposed directly
         /// to callers.)
         /// </summary>
-        public WindowsZones WindowsMapping { get { return windowsMapping; } }
+        [NotNull] public WindowsZones WindowsMapping { get { return windowsMapping; } }
 
         /// <summary>
         /// Returns the zone locations for the source, or null if no location data is available.
         /// This needn't be read-only; it won't be exposed directly.
         /// </summary>
-        public IList<TzdbZoneLocation> ZoneLocations { get { return zoneLocations; } }
+        [NotNull] public IList<TzdbZoneLocation> ZoneLocations { get { return zoneLocations; } }
 
         /// <summary>
         /// Creates the <see cref="DateTimeZone"/> for the given canonical ID, which will definitely

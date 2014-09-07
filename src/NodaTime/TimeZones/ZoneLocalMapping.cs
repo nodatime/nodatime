@@ -69,35 +69,46 @@ namespace NodaTime.TimeZones
         }
 
         /// <summary>
-        /// Returns the number of results within this mapping: the number of distinct
+        /// Gets the number of results within this mapping: the number of distinct
         /// <see cref="ZonedDateTime" /> values which map to the original <see cref="T:NodaTime.LocalDateTime" />.
         /// </summary>
+        /// <value>The number of results within this mapping: the number of distinct values which map to the
+        /// original local date and time.</value>
         public int Count { get { return count; } }
 
         /// <summary>
-        /// Returns the <see cref="DateTimeZone" /> in which this mapping was performed.
+        /// Gets the <see cref="DateTimeZone" /> in which this mapping was performed.
         /// </summary>
+        /// <value>The time zone in which this mapping was performed.</value>
         public DateTimeZone Zone { get { return zone; } }
 
         /// <summary>
-        /// Returns the <see cref="T:NodaTime.LocalDateTime" /> which was mapped with in the time zone.
+        /// Gets the <see cref="T:NodaTime.LocalDateTime" /> which was mapped within the time zone.
         /// </summary>
+        /// <value>The local date and time which was mapped within the time zone.</value>
         public LocalDateTime LocalDateTime { get { return localDateTime; } }
 
         /// <summary>
-        /// Returns the earlier <see cref="ZoneInterval" /> within this mapping. For unambiguous
-        /// mappings, this is the same as <see cref="LateInterval" />; for ambiguous mappings,
+        /// Gets the earlier <see cref="ZoneInterval" /> within this mapping.
+        /// </summary>
+        /// <remarks>
+        /// For unambiguous mappings, this is the same as <see cref="LateInterval" />; for ambiguous mappings,
         /// this is the interval during which the mapped local time first occurs; for impossible
         /// mappings, this is the interval before which the mapped local time occurs.
-        /// </summary>
+        /// </remarks>
+        /// <value>The earlier zone interval within this mapping.</value>
         public ZoneInterval EarlyInterval { get { return earlyInterval; } }
 
         /// <summary>
-        /// Returns the later <see cref="ZoneInterval" /> within this mapping. For unambiguous
+        /// Gets the later <see cref="ZoneInterval" /> within this mapping.
+        /// </summary>
+        /// <remarks>
+        /// For unambiguous
         /// mappings, this is the same as <see cref="EarlyInterval" />; for ambiguous mappings,
         /// this is the interval during which the mapped local time last occurs; for impossible
         /// mappings, this is the interval after which the mapped local time occurs.
-        /// </summary>
+        /// </remarks>
+        /// <value>The later zone interval within this mapping.</value>
         public ZoneInterval LateInterval { get { return lateInterval; } }
 
         /// <summary>

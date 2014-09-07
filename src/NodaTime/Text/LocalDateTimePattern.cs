@@ -31,32 +31,38 @@ namespace NodaTime.Text
             new PatternBclSupport<LocalDateTime>(DefaultFormatPattern, fi => fi.LocalDateTimePatternParser);
 
         /// <summary>
-        /// Returns an invariant local date/time pattern which is ISO-8601 compatible, down to the second.
+        /// Gets an invariant local date/time pattern which is ISO-8601 compatible, down to the second.
         /// This corresponds to the text pattern "yyyy'-'MM'-'dd'T'HH':'mm':'ss", and is also used as the "sortable"
         /// standard pattern.
         /// </summary>
+        /// <value>An invariant local date/time pattern which is ISO-8601 compatible, down to the second.</value>
         public static LocalDateTimePattern GeneralIsoPattern { get { return Patterns.GeneralIsoPatternImpl; } }
 
         /// <summary>
-        /// Returns an invariant local date/time pattern which is ISO-8601 compatible, providing up to 9 decimal places
+        /// Gets an invariant local date/time pattern which is ISO-8601 compatible, providing up to 9 decimal places
         /// of sub-second accuracy. (These digits are omitted when unnecessary.)
         /// This corresponds to the text pattern "yyyy'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFFFF".
         /// </summary>
+        /// <value>An invariant local date/time pattern which is ISO-8601 compatible, providing up to 9 decimal places
+        /// of sub-second accuracy.</value>
         public static LocalDateTimePattern ExtendedIsoPattern { get { return Patterns.ExtendedIsoPatternImpl; } }
 
         /// <summary>
-        /// Returns an invariant local date/time pattern which is ISO-8601 compatible, providing up to 7 decimal places
+        /// Gets an invariant local date/time pattern which is ISO-8601 compatible, providing up to 7 decimal places
         /// of sub-second accuracy which are always present (including trailing zeroes). This is compatible with the
         /// BCL round-trip formatting of <see cref="DateTime"/> values with a kind of "unspecified".
         /// This corresponds to the text pattern "yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fffffffff".
         /// FIXME(2.0): What should we do with this? Maintain BCL compatibility, or go to nanos?
         /// </summary>
+        /// <value>An invariant local date/time pattern which is ISO-8601 compatible, providing up to 7 decimal places
+        /// of sub-second accuracy which are always present (including trailing zeroes).</value>
         public static LocalDateTimePattern BclRoundtripPattern { get { return Patterns.BclRoundtripPatternImpl; } }
 
         /// <summary>
-        /// Returns an invariant local date/time pattern which round trips values including the calendar system.
+        /// Gets an invariant local date/time pattern which round trips values including the calendar system.
         /// This corresponds to the text pattern "yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fffffffff '('c')'".
         /// </summary>
+        /// <value>An invariant local date/time pattern which round trips values including the calendar system.</value>
         public static LocalDateTimePattern FullRoundtripPattern { get { return Patterns.FullRoundtripPatternImpl; } }
 
         /// <summary>
@@ -77,19 +83,22 @@ namespace NodaTime.Text
         private readonly LocalDateTime templateValue;
 
         /// <summary>
-        /// Returns the pattern text for this pattern, as supplied on creation.
+        /// Gets the pattern text for this pattern, as supplied on creation.
         /// </summary>
+        /// <value>The pattern text for this pattern, as supplied on creation.</value>
         public string PatternText { get { return patternText; } }
 
         /// <summary>
-        /// Returns the localization information used in this pattern.
+        /// Gets the localization information used in this pattern.
         /// </summary>
+        /// <value>The localization information used in this pattern.</value>
         internal NodaFormatInfo FormatInfo { get { return formatInfo; } }
 
         /// <summary>
-        /// Returns the value used as a template for parsing: any field values unspecified
+        /// Get the value used as a template for parsing: any field values unspecified
         /// in the pattern are taken from the template.
         /// </summary>
+        /// <value>The value used as a template for parsing.</value>
         public LocalDateTime TemplateValue { get { return templateValue; } }
 
         private LocalDateTimePattern(string patternText, NodaFormatInfo formatInfo, LocalDateTime templateValue,

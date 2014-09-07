@@ -111,48 +111,66 @@ namespace NodaTime
         }
 
         /// <summary>Gets the offset of the local representation of this value from UTC.</summary>
+        /// <value>The offset of the local representation of this value from UTC.</value>
         public Offset Offset { get { return offsetDateTime.Offset; } }
 
         /// <summary>Gets the time zone associated with this value.</summary>
+        /// <value>The time zone associated with this value.</value>
         public DateTimeZone Zone { get { return zone ?? DateTimeZone.Utc; } }
 
         /// <summary>
-        /// Gets the local date and time represented by this zoned date and time. The returned
+        /// Gets the local date and time represented by this zoned date and time.
+        /// </summary>
+        /// <remarks>
+        /// The returned
         /// <see cref="T:NodaTime.LocalDateTime"/> will have the same calendar system and return the same values for
         /// each of the calendar properties (Year, MonthOfYear and so on), but will not be associated with any
         /// particular time zone.
-        /// </summary>
+        /// </remarks>
+        /// <value>The local date and time represented by this zoned date and time.</value>
         public LocalDateTime LocalDateTime { get { return offsetDateTime.LocalDateTime; } }
 
         /// <summary>Gets the calendar system associated with this zoned date and time.</summary>
+        /// <value>The calendar system associated with this zoned date and time.</value>
         public CalendarSystem Calendar
         {
             get { return offsetDateTime.Calendar; }
         }
 
         /// <summary>
-        /// Gets the local date represented by this zoned date and time. The returned <see cref="LocalDate"/>
+        /// Gets the local date represented by this zoned date and time.
+        /// </summary>
+        /// <remarks>
+        /// The returned <see cref="LocalDate"/>
         /// will have the same calendar system and return the same values for each of the date-based calendar
         /// properties (Year, MonthOfYear and so on), but will not be associated with any particular time zone.
-        /// </summary>
+        /// </remarks>
+        /// <value>The local date represented by this zoned date and time.</value>
         public LocalDate Date { get { return offsetDateTime.Date; } }
 
         /// <summary>
-        /// Gets the time portion of this zoned date and time. The returned <see cref="LocalTime"/> will
+        /// Gets the time portion of this zoned date and time.
+        /// </summary>
+        /// <remarks>
+        /// The returned <see cref="LocalTime"/> will
         /// return the same values for each of the time-based properties (Hour, Minute and so on), but
         /// will not be associated with any particular time zone.
-        /// </summary>
+        /// </remarks>
+        /// <value>The time portion of this zoned date and time.</value>
         public LocalTime TimeOfDay { get { return offsetDateTime.TimeOfDay; } }
 
         /// <summary>Gets the era for this zoned date and time.</summary>
+        /// <value>The era for this zoned date and time.</value>
         public Era Era { get { return offsetDateTime.Era; } }
 
         /// <summary>Gets the year of this zoned date and time.</summary>
         /// <remarks>This returns the "absolute year", so, for the ISO calendar,
         /// a value of 0 means 1 BC, for example.</remarks>
+        /// <value>The year of this zoned date and time.</value>
         public int Year { get { return offsetDateTime.Year; } }
 
         /// <summary>Gets the year of this zoned date and time within its era.</summary>
+        /// <value>The year of this zoned date and time within its era.</value>
         public int YearOfEra { get { return offsetDateTime.YearOfEra; } }
 
         /// <summary>
@@ -173,20 +191,25 @@ namespace NodaTime
         /// so is part of week 1 of WeekYear 2013.
         /// </para>
         /// </remarks>
+        /// <value>The "week year" of this date and time.</value>
         public int WeekYear { get { return offsetDateTime.WeekYear; } }
 
         /// <summary>Gets the month of this zoned date and time within the year.</summary>
+        /// <value>The month of this zoned date and time within the year.</value>
         public int Month { get { return offsetDateTime.Month; } }
 
-        /// <summary>Gets the week within the WeekYear. See <see cref="WeekYear"/> for more details.</summary>
+        /// <summary>Gets the week within the week-year. See <see cref="WeekYear"/> for more details.</summary>
+        /// <value>The week within the week-year.</value>
         public int WeekOfWeekYear { get { return offsetDateTime.WeekOfWeekYear; } }
 
         /// <summary>Gets the day of this zoned date and time within the year.</summary>
+        /// <value>The day of this zoned date and time within the year.</value>
         public int DayOfYear { get { return offsetDateTime.DayOfYear; } }
 
         /// <summary>
         /// Gets the day of this zoned date and time within the month.
         /// </summary>
+        /// <value>The day of this zoned date and time within the month.</value>
         public int Day { get { return offsetDateTime.Day; } }
 
         /// <summary>
@@ -195,6 +218,7 @@ namespace NodaTime
         /// </summary>
         /// <exception cref="InvalidOperationException">The underlying calendar doesn't use ISO days of the week.</exception>
         /// <seealso cref="DayOfWeek"/>
+        /// <value>The week day of this zoned date and time expressed as an <c>IsoDayOfWeek</c> value.</value>
         public IsoDayOfWeek IsoDayOfWeek { get { return offsetDateTime.IsoDayOfWeek; } }
 
         /// <summary>
@@ -203,52 +227,62 @@ namespace NodaTime
         /// <remarks>
         /// For calendars using ISO week days, this gives 1 for Monday to 7 for Sunday.
         /// </remarks>
+        /// <value>The week day of this zoned date and time as a number.</value>
         /// <seealso cref="IsoDayOfWeek"/>
         public int DayOfWeek { get { return offsetDateTime.DayOfWeek; } }
 
         /// <summary>
         /// Gets the hour of day of this zoned date and time, in the range 0 to 23 inclusive.
         /// </summary>
+        /// <value>The hour of day of this zoned date and time, in the range 0 to 23 inclusive.</value>
         public int Hour { get { return offsetDateTime.Hour; } }
 
         /// <summary>
         /// Gets the hour of the half-day of this zoned date and time, in the range 1 to 12 inclusive.
         /// </summary>
+        /// <value>The hour of the half-day of this zoned date and time, in the range 1 to 12 inclusive.</value>
         public int ClockHourOfHalfDay { get { return offsetDateTime.ClockHourOfHalfDay; } }
-        
+
         /// <summary>
         /// Gets the minute of this zoned date and time, in the range 0 to 59 inclusive.
         /// </summary>
+        /// <value>The minute of this zoned date and time, in the range 0 to 59 inclusive.</value>
         public int Minute { get { return offsetDateTime.Minute; } }
 
         /// <summary>
         /// Gets the second of this zoned date and time within the minute, in the range 0 to 59 inclusive.
         /// </summary>
+        /// <value>The second of this zoned date and time within the minute, in the range 0 to 59 inclusive.</value>
         public int Second { get { return offsetDateTime.Second; } }
 
         /// <summary>
         /// Gets the millisecond of this zoned date and time within the second, in the range 0 to 999 inclusive.
         /// </summary>
+        /// <value>The millisecond of this zoned date and time within the second, in the range 0 to 999 inclusive.</value>
         public int Millisecond { get { return offsetDateTime.Millisecond; } }
 
         /// <summary>
         /// Gets the tick of this zoned date and time within the second, in the range 0 to 9,999,999 inclusive.
         /// </summary>
+        /// <value>The tick of this zoned date and time within the second, in the range 0 to 9,999,999 inclusive.</value>
         public int TickOfSecond { get { return offsetDateTime.TickOfSecond; } }
 
         /// <summary>
         /// Gets the tick of this zoned date and time within the day, in the range 0 to 863,999,999,999 inclusive.
         /// </summary>
+        /// <value>The tick of this zoned date and time within the day, in the range 0 to 863,999,999,999 inclusive.</value>
         public long TickOfDay { get { return offsetDateTime.TickOfDay; } }
 
         /// <summary>
         /// Gets the nanosecond of this zoned date and time within the second, in the range 0 to 999,999,999 inclusive.
         /// </summary>
+        /// <value>The nanosecond of this zoned date and time within the second, in the range 0 to 999,999,999 inclusive.</value>
         public int NanosecondOfSecond { get { return offsetDateTime.NanosecondOfSecond; } }
 
         /// <summary>
         /// Gets the nanosecond of this zoned date and time within the day, in the range 0 to 86,399,999,999,999 inclusive.
         /// </summary>
+        /// <value>The nanosecond of this zoned date and time within the day, in the range 0 to 86,399,999,999,999 inclusive.</value>
         public long NanosecondOfDay { get { return offsetDateTime.NanosecondOfDay; } }
 
         /// <summary>
@@ -633,7 +667,7 @@ namespace NodaTime
             // TODO(2.0): A comparer which compares instants, but in a calendar-sensitive manner?
 
             /// <summary>
-            /// Returns a comparer which compares <see cref="ZonedDateTime"/> values by their local date/time, without reference to
+            /// Gets a comparer which compares <see cref="ZonedDateTime"/> values by their local date/time, without reference to
             /// the time zone or offset. Comparisons between two values of different calendar systems will fail with <see cref="ArgumentException"/>.
             /// </summary>
             /// <remarks>
@@ -641,10 +675,11 @@ namespace NodaTime
             /// 2013-03-04T19:21:00 (America/Los_Angeles) even though the second value represents a later instant in time.</para>
             /// <para>This property will return a reference to the same instance every time it is called.</para>
             /// </remarks>
+            /// <value>A comparer which compares values by their local date/time.</value>
             public static Comparer Local { get { return LocalComparer.Instance; } }
 
             /// <summary>
-            /// Returns a comparer which compares <see cref="ZonedDateTime"/> values by the instants obtained by applying the offset to
+            /// Gets a comparer which compares <see cref="ZonedDateTime"/> values by the instants obtained by applying the offset to
             /// the local date/time, ignoring the calendar system.
             /// </summary>
             /// <remarks>
@@ -653,6 +688,8 @@ namespace NodaTime
             /// mean that the first value occurred earlier in the universal time line.</para>
             /// <para>This property will return a reference to the same instance every time it is called.</para>
             /// </remarks>
+            /// <value>A comparer which compares values by the instants obtained by applying the offset to
+            /// the local date/time, ignoring the calendar system.</value>
             public static Comparer Instant { get { return InstantComparer.Instance; } }
 
             /// <summary>
