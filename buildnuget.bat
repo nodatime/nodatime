@@ -25,7 +25,7 @@ call buildapidocs.bat
 IF ERRORLEVEL 1 EXIT /B 1
 
 REM Also build the PCL docs...
-msbuild NodaTime.shfbproj
+msbuild NodaTime-Pcl.shfbproj
 IF ERRORLEVEL 1 EXIT /B 1
 
 copy /y docs\PublicApi\NodaTime.xml "src\NodaTime\bin\Signed Release"
