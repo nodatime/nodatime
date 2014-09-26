@@ -24,6 +24,7 @@ namespace NodaTime.Test.TimeZones
 
         [Test]
         [TestCaseSource("BclZonesOrEmptyOnMono")]
+        [Ignore("See issue 331")]
         public void AllZoneTransitions(TimeZoneInfo windowsZone)
         {
             var nodaZone = BclDateTimeZone.FromTimeZoneInfo(windowsZone);
