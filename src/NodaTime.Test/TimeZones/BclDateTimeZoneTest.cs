@@ -24,7 +24,6 @@ namespace NodaTime.Test.TimeZones
 
         [Test]
         [TestCaseSource("BclZonesOrEmptyOnMono")]
-        [Ignore("See issue 331")]
         public void AllZoneTransitions(TimeZoneInfo windowsZone)
         {
             var nodaZone = BclDateTimeZone.FromTimeZoneInfo(windowsZone);
@@ -100,9 +99,11 @@ namespace NodaTime.Test.TimeZones
 
         private void ValidateZoneEquality(Instant instant, DateTimeZone nodaZone, TimeZoneInfo windowsZone)
         {
-            // Skip just the first transition in Libya. It's broken in Windows.
-            // See issue 220 for the background.
-            if (windowsZone.Id == "Libya Standard Time" && instant.InUtc().Year == 2011)
+            // The BCL is basically broken (up to and including .NET 4.5.1 at least) around its interpretation
+            // of its own data around the new year. See http://codeblog.jonskeet.uk/2014/09/30/the-mysteries-of-bcl-time-zone-data/
+            // for details. We're not trying to emulate this behaviour.
+            var utc = instant.InUtc();
+            if ((utc.Month == 12 && utc.Day == 31) || (utc.Month == 1 && utc.Day == 1))
             {
                 return;
             }
