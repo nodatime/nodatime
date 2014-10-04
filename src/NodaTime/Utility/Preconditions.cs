@@ -109,6 +109,17 @@ namespace NodaTime.Utility
         }
 
         [ContractAnnotation("expression:false => halt")]
+        [Conditional("DEBUG")]
+        internal static void DebugCheckArgument(bool expression, [InvokerParameterName] string parameter, string messageFormat, params object[] messageArgs)
+        {
+            if (!expression)
+            {
+                string message = string.Format(messageFormat, messageArgs);
+                throw new ArgumentException(message, parameter);
+            }
+        }
+
+        [ContractAnnotation("expression:false => halt")]
         internal static void CheckArgument(bool expression, [InvokerParameterName] string parameter, string message)
         {
             if (!expression)

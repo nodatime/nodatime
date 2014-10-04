@@ -36,6 +36,12 @@ See the [Noda Time 1.x to 2.0 migration guide](migration-to-2.html) for full det
 - Julian and Coptic calendars with a minimum number of days in the first week other than 4 are not supported.
 - Factory methods for the Julian, Coptic and Persian calendars have been converted into properties.
 
+Bug fixes:
+
+- `BclDateTimeZone` has been reimplemented from scratch. This may result in a very few differences
+  in the interpretation of when an adjustment rule starts and ends. It is now known to be incompatible
+  with the BCL in well-understood ways which we don't intend to change.
+
 ## 1.3.0, released 2014-06-27 with tzdb 2014e
 
 Major features:
