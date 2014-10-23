@@ -18,11 +18,22 @@ namespace ZoneInfoCompiler.Test.Tzdb
                     .Where(zone => zone.Id != zone.StandardName)
                     .ToDictionary(zone => zone.StandardName, zone => zone.Id);
 
+        private static readonly string[] ExpectedMissingKeys =
+        {
+            "Russia TZ 3 Standard Time",
+            "Russia TZ 5 Standard Time",
+            "Russia TZ 10 Standard Time",
+            "Russia TZ 11 Standard Time",
+        };
+
         [Test]
         public void AllDetectedNamesAreMapped()
         {
-            var missingNames = DetectedMapping.Keys.Except(PclSupport.StandardNameToIdMap.Keys).ToList();
-            CollectionAssert.IsEmpty(missingNames);
+            var missingPairs = DetectedMapping.Keys.Except(PclSupport.StandardNameToIdMap.Keys)
+                .Except(ExpectedMissingKeys)
+                .Select(name => new { Name = name, Id = DetectedMapping[name] })
+                .ToList();
+            CollectionAssert.IsEmpty(missingPairs);
         }
 
         [Test]
