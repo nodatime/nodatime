@@ -285,6 +285,10 @@ examples. In 2013, both Morocco and Libya gave less than a day's notice that
 they were changing their time zone rules, leaving a certain amount of
 confusion in their wake.
 
+In 2011, Turkey gave a fair amount of warning (over two weeks!) that it
+was delaying the DST transition, just by a single day, but the reason was
+slightly odd - a nationwide exam that 1.5 million students were taking.
+
 **Noda Time support:** Well, there are five steps which need to occur
 between a change being announced and Noda Time supporting it in production:
 
@@ -311,3 +315,4 @@ typically deploys changes to the *Windows* time zone database...
   2013)](http://www.timeanddate.com/news/time/morocco-ends-dst-2013.html)
 - [Libya (October
   2013)](http://www.timeanddate.com/news/time/libya-cancels-dst-switch-2013.html)
+- [Turkey (March 2011)](http://www.timeanddate.com/news/time/turkey-starts-dst-2011.html)
