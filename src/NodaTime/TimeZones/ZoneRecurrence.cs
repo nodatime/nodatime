@@ -128,6 +128,9 @@ namespace NodaTime.TimeZones
                 // Asked for a transition after some point before our first year: crop to first year.
                 targetYear = fromYear;
             }
+            // TODO(2.0): This should probably be >=, really. The maxLocalInstant is inclusive, but
+            // we're being asked for a transition strictly after safeLocal. *Not* fixing this keeps
+            // us safe (I think) from issue 335, but that's really two bugs cancelling each other out.
             else if (safeLocal > maxLocalInstant)
             {
                 // Asked for a transition after our end point: there isn't one.
