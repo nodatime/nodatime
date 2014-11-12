@@ -128,7 +128,8 @@ namespace NodaTime.TimeZones
 
             if (next >= instant)
             {
-                year = calendar.GetYear(next.Plus(wallOffset));
+                // If the year-offset includes "add a day", the *effective* local year is the year a day earlier.
+                year = calendar.GetYear(yearOffset.AddDay ? next.Minus(Duration.OneStandardDay).Plus(wallOffset) :  next.Plus(wallOffset));
                 if (year > toYear)
                 {
                     return null;

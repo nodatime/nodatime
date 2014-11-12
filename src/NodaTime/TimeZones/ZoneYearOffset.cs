@@ -150,6 +150,12 @@ namespace NodaTime.TimeZones
         /// </summary>
         public LocalTime TimeOfDay { get { return timeOfDay; } }
 
+        /// <summary>
+        /// Returns whether or not a day is added to the result, due to
+        /// the time being 24:00.
+        /// </summary>
+        internal bool AddDay { get { return addDay; } }
+
         #region IEquatable<ZoneYearOffset> Members
 
         /// <summary>
