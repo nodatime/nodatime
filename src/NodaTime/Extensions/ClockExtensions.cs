@@ -21,10 +21,8 @@ namespace NodaTime.Extensions
         /// <param name="zone">Time zone to use in the returned object.</param>
         /// <returns>A <see cref="ZonedClock"/> with the given clock and time zone, in the ISO calendar system.</returns>
         [NotNull]
-        public static ZonedClock InZone([NotNull] this IClock clock, [NotNull] DateTimeZone zone)
-        {
-            return InZone(clock, zone, CalendarSystem.Iso);
-        }
+        public static ZonedClock InZone([NotNull] this IClock clock, [NotNull] DateTimeZone zone) =>
+            InZone(clock, zone, CalendarSystem.Iso);
 
         /// <summary>
         /// Constructs a <see cref="ZonedClock"/> from a clock (the target of the method),
@@ -37,10 +35,7 @@ namespace NodaTime.Extensions
         [NotNull]
         public static ZonedClock InZone([NotNull] this IClock clock,
             [NotNull] DateTimeZone zone,
-            [NotNull] CalendarSystem calendar)
-        {
-            return new ZonedClock(clock, zone, calendar);
-        }
+            [NotNull] CalendarSystem calendar) => new ZonedClock(clock, zone, calendar);
 
         /// <summary>
         /// Constructs a <see cref="ZonedClock"/> from a clock (the target of the method),
@@ -49,10 +44,8 @@ namespace NodaTime.Extensions
         /// <param name="clock">Clock to use in the returned object.</param>
         /// <returns>A <see cref="ZonedClock"/> with the given clock, in the UTC time zone and ISO calendar system.</returns>
         [NotNull]
-        public static ZonedClock InUtc([NotNull] this IClock clock)
-        {
-            return new ZonedClock(clock, DateTimeZone.Utc, CalendarSystem.Iso);
-        }
+        public static ZonedClock InUtc([NotNull] this IClock clock) =>
+            new ZonedClock(clock, DateTimeZone.Utc, CalendarSystem.Iso);
 
         /// <summary>
         /// Constructs a <see cref="ZonedClock"/> from a clock (the target of the method),

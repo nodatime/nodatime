@@ -82,7 +82,7 @@ namespace NodaTime
         /// Gets the number of seconds represented by this offset, which may be negative.
         /// </summary>
         /// <value>The number of seconds represented by this offset, which may be negative.</value>
-        public int Seconds { get { return seconds; } }
+        public int Seconds => seconds;
 
         /// <summary>
         /// Gets the number of milliseconds represented by this offset, which may be negative.
@@ -92,7 +92,7 @@ namespace NodaTime
         /// by 1,000 to give the number of milliseconds.
         /// </remarks>
         /// <value>The number of milliseconds represented by this offset, which may be negative.</value>
-        public int Milliseconds { get { return unchecked(seconds * NodaConstants.MillisecondsPerSecond); } }
+        public int Milliseconds => unchecked(seconds * NodaConstants.MillisecondsPerSecond);
 
         /// <summary>
         /// Gets the number of ticks represented by this offset, which may be negative.
@@ -102,7 +102,7 @@ namespace NodaTime
         /// by 10,000,000 to give the number of ticks.
         /// </remarks>
         /// <value>The number of ticks.</value>
-        public long Ticks { get { return unchecked(seconds * NodaConstants.TicksPerSecond); } }
+        public long Ticks => unchecked(seconds * NodaConstants.TicksPerSecond);
 
         /// <summary>
         /// Gets the number of nanoseconds represented by this offset, which may be negative.
@@ -112,7 +112,7 @@ namespace NodaTime
         /// by 1,000,000,000 to give the number of nanoseconds.
         /// </remarks>
         /// <value>The number of nanoseconds.</value>
-        public long Nanoseconds { get { return unchecked(seconds * NodaConstants.NanosecondsPerSecond); } }
+        public long Nanoseconds => unchecked(seconds * NodaConstants.NanosecondsPerSecond);
 
         /// <summary>
         /// Returns the greater offset of the given two, i.e. the one which will give a later local
@@ -121,10 +121,7 @@ namespace NodaTime
         /// <param name="x">The first offset</param>
         /// <param name="y">The second offset</param>
         /// <returns>The greater offset of <paramref name="x"/> and <paramref name="y"/>.</returns>
-        public static Offset Max(Offset x, Offset y)
-        {
-            return x > y ? x : y;
-        }
+        public static Offset Max(Offset x, Offset y) => x > y ? x : y;
 
         /// <summary>
         /// Returns the lower offset of the given two, i.e. the one which will give an earlier local
@@ -133,10 +130,7 @@ namespace NodaTime
         /// <param name="x">The first offset</param>
         /// <param name="y">The second offset</param>
         /// <returns>The lower offset of <paramref name="x"/> and <paramref name="y"/>.</returns>
-        public static Offset Min(Offset x, Offset y)
-        {
-            return x < y ? x : y;
-        }
+        public static Offset Min(Offset x, Offset y) => x < y ? x : y;
 
         #region Operators
         /// <summary>
@@ -144,21 +138,16 @@ namespace NodaTime
         /// </summary>
         /// <param name="offset">The offset to negate.</param>
         /// <returns>A new <see cref="Offset" /> instance with a negated value.</returns>
-        public static Offset operator -(Offset offset)
-        {
+        public static Offset operator -(Offset offset) =>
             // Guaranteed to still be in range.
-            return new Offset(-offset.Seconds);
-        }
+            new Offset(-offset.Seconds);
 
         /// <summary>
         /// Returns the negation of the specified offset. This is the method form of the unary minus operator.
         /// </summary>
         /// <param name="offset">The offset to negate.</param>
         /// <returns>The negation of the specified offset.</returns>
-        public static Offset Negate(Offset offset)
-        {
-            return -offset;
-        }
+        public static Offset Negate(Offset offset) => -offset;
 
         /// <summary>
         /// Implements the unary operator + .
@@ -167,10 +156,7 @@ namespace NodaTime
         /// <remarks>There is no method form of this operator; the <see cref="Plus"/> method is an instance
         /// method for addition, and is more useful than a method form of this would be.</remarks>
         /// <returns>The same <see cref="Offset" /> instance</returns>
-        public static Offset operator +(Offset offset)
-        {
-            return offset;
-        }
+        public static Offset operator +(Offset offset) => offset;
 
         /// <summary>
         /// Implements the operator + (addition).
@@ -180,10 +166,7 @@ namespace NodaTime
         /// <exception cref="ArgumentOutOfRangeException">The result of the operation is outside the range of Offset.</exception>
         /// <returns>A new <see cref="Offset" /> representing the sum of the given values.</returns>
         /// <exception cref="ArgumentOutOfRangeException">The result of the operation is outside the range of Offset.</exception>
-        public static Offset operator +(Offset left, Offset right)
-        {
-            return FromSeconds(left.Seconds + right.Seconds);
-        }
+        public static Offset operator +(Offset left, Offset right) =>  FromSeconds(left.Seconds + right.Seconds);
 
         /// <summary>
         /// Adds one Offset to another. Friendly alternative to <c>operator+()</c>.
@@ -193,10 +176,7 @@ namespace NodaTime
         /// <exception cref="ArgumentOutOfRangeException">The result of the operation is outside the range of Offset.</exception>
         /// <returns>A new <see cref="Offset" /> representing the sum of the given values.</returns>
         /// <exception cref="ArgumentOutOfRangeException">The result of the operation is outside the range of Offset.</exception>
-        public static Offset Add(Offset left, Offset right)
-        {
-            return left + right;
-        }
+        public static Offset Add(Offset left, Offset right) => left + right;
 
         /// <summary>
         /// Returns the result of adding another Offset to this one, for a fluent alternative to <c>operator+()</c>.
@@ -205,10 +185,7 @@ namespace NodaTime
         /// <exception cref="ArgumentOutOfRangeException">The result of the operation is outside the range of Offset.</exception>
         /// <returns>The result of adding the other offset to this one.</returns>
         [Pure]
-        public Offset Plus(Offset other)
-        {
-            return this + other;
-        }
+        public Offset Plus(Offset other) => this + other;
 
         /// <summary>
         /// Implements the operator - (subtraction).
@@ -218,10 +195,8 @@ namespace NodaTime
         /// <exception cref="ArgumentOutOfRangeException">The result of the operation is outside the range of Offset.</exception>
         /// <returns>A new <see cref="Offset" /> representing the difference of the given values.</returns>
         /// <exception cref="ArgumentOutOfRangeException">The result of the operation is outside the range of Offset.</exception>
-        public static Offset operator -(Offset minuend, Offset subtrahend)
-        {
-            return FromSeconds(minuend.Seconds - subtrahend.Seconds);
-        }
+        public static Offset operator -(Offset minuend, Offset subtrahend) =>
+            FromSeconds(minuend.Seconds - subtrahend.Seconds);
 
         /// <summary>
         /// Subtracts one Offset from another. Friendly alternative to <c>operator-()</c>.
@@ -231,10 +206,7 @@ namespace NodaTime
         /// <exception cref="ArgumentOutOfRangeException">The result of the operation is outside the range of Offset.</exception>
         /// <returns>A new <see cref="Offset" /> representing the difference of the given values.</returns>
         /// <exception cref="ArgumentOutOfRangeException">The result of the operation is outside the range of Offset.</exception>
-        public static Offset Subtract(Offset minuend, Offset subtrahend)
-        {
-            return minuend - subtrahend;
-        }
+        public static Offset Subtract(Offset minuend, Offset subtrahend) => minuend - subtrahend;
 
         /// <summary>
         /// Returns the result of subtracting another Offset from this one, for a fluent alternative to <c>operator-()</c>.
@@ -243,10 +215,7 @@ namespace NodaTime
         /// <exception cref="ArgumentOutOfRangeException">The result of the operation is outside the range of Offset.</exception>
         /// <returns>The result of subtracting the other offset from this one.</returns>
         [Pure]
-        public Offset Minus(Offset other)
-        {
-            return this - other;
-        }
+        public Offset Minus(Offset other) => this - other;
 
         /// <summary>
         /// Implements the operator == (equality).
@@ -254,10 +223,7 @@ namespace NodaTime
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
         /// <returns><c>true</c> if values are equal to each other, otherwise <c>false</c>.</returns>
-        public static bool operator ==(Offset left, Offset right)
-        {
-            return left.Equals(right);
-        }
+        public static bool operator ==(Offset left, Offset right) => left.Equals(right);
 
         /// <summary>
         /// Implements the operator != (inequality).
@@ -265,10 +231,7 @@ namespace NodaTime
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
         /// <returns><c>true</c> if values are not equal to each other, otherwise <c>false</c>.</returns>
-        public static bool operator !=(Offset left, Offset right)
-        {
-            return !(left == right);
-        }
+        public static bool operator !=(Offset left, Offset right) => !(left == right);
 
         /// <summary>
         /// Implements the operator &lt; (less than).
@@ -276,10 +239,7 @@ namespace NodaTime
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
         /// <returns><c>true</c> if the left value is less than the right value, otherwise <c>false</c>.</returns>
-        public static bool operator <(Offset left, Offset right)
-        {
-            return left.CompareTo(right) < 0;
-        }
+        public static bool operator <(Offset left, Offset right) => left.CompareTo(right) < 0;
 
         /// <summary>
         /// Implements the operator &lt;= (less than or equal).
@@ -287,10 +247,7 @@ namespace NodaTime
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
         /// <returns><c>true</c> if the left value is less than or equal to the right value, otherwise <c>false</c>.</returns>
-        public static bool operator <=(Offset left, Offset right)
-        {
-            return left.CompareTo(right) <= 0;
-        }
+        public static bool operator <=(Offset left, Offset right) => left.CompareTo(right) <= 0;
 
         /// <summary>
         /// Implements the operator &gt; (greater than).
@@ -298,10 +255,7 @@ namespace NodaTime
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
         /// <returns><c>true</c> if the left value is greater than the right value, otherwise <c>false</c>.</returns>
-        public static bool operator >(Offset left, Offset right)
-        {
-            return left.CompareTo(right) > 0;
-        }
+        public static bool operator >(Offset left, Offset right) => left.CompareTo(right) > 0;
 
         /// <summary>
         ///   Implements the operator &gt;= (greater than or equal).
@@ -309,10 +263,7 @@ namespace NodaTime
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
         /// <returns><c>true</c> if the left value is greater than or equal to the right value, otherwise <c>false</c>.</returns>
-        public static bool operator >=(Offset left, Offset right)
-        {
-            return left.CompareTo(right) >= 0;
-        }
+        public static bool operator >=(Offset left, Offset right) => left.CompareTo(right) >= 0;
         #endregion // Operators
 
         #region IComparable<Offset> Members
@@ -342,10 +293,7 @@ namespace NodaTime
         ///     </item>
         ///   </list>
         /// </returns>
-        public int CompareTo(Offset other)
-        {
-            return Seconds.CompareTo(other.Seconds);
-        }
+        public int CompareTo(Offset other) => Seconds.CompareTo(other.Seconds);
 
         /// <summary>
         /// Implementation of <see cref="IComparable.CompareTo"/> to compare two offsets.
@@ -378,10 +326,7 @@ namespace NodaTime
         ///   true if the current object is equal to the <paramref name = "other" /> parameter;
         ///   otherwise, false.
         /// </returns>
-        public bool Equals(Offset other)
-        {
-            return Seconds == other.Seconds;
-        }
+        public bool Equals(Offset other) => Seconds == other.Seconds;
         #endregion
 
         #region Object overrides
@@ -393,14 +338,7 @@ namespace NodaTime
         ///   <c>true</c> if the specified <see cref="System.Object" /> is equal to this instance;
         ///   otherwise, <c>false</c>.
         /// </returns>
-        public override bool Equals(object obj)
-        {
-            if (obj is Offset)
-            {
-                return Equals((Offset)obj);
-            }
-            return false;
-        }
+        public override bool Equals(object obj) => obj is Offset && Equals((Offset)obj);
 
         /// <summary>
         ///   Returns a hash code for this instance.
@@ -409,10 +347,7 @@ namespace NodaTime
         ///   A hash code for this instance, suitable for use in hashing algorithms and data
         ///   structures like a hash table. 
         /// </returns>
-        public override int GetHashCode()
-        {
-            return Seconds.GetHashCode();
-        }
+        public override int GetHashCode() => Seconds.GetHashCode();
         #endregion  // Object overrides
 
         #region Formatting
@@ -423,10 +358,7 @@ namespace NodaTime
         /// The value of the current instance in the default format pattern ("g"), using the current thread's
         /// culture to obtain a format provider.
         /// </returns>
-        public override string ToString()
-        {
-            return OffsetPattern.BclSupport.Format(this, null, CultureInfo.CurrentCulture);
-        }
+        public override string ToString() => OffsetPattern.BclSupport.Format(this, null, CultureInfo.CurrentCulture);
 
         /// <summary>
         /// Formats the value of the current instance using the specified pattern.
@@ -441,10 +373,8 @@ namespace NodaTime
         /// or null to use the current thread's culture to obtain a format provider.
         /// </param>
         /// <filterpriority>2</filterpriority>
-        public string ToString(string patternText, IFormatProvider formatProvider)
-        {
-            return OffsetPattern.BclSupport.Format(this, patternText, formatProvider);
-        }
+        public string ToString(string patternText, IFormatProvider formatProvider) =>
+            OffsetPattern.BclSupport.Format(this, patternText, formatProvider);
         #endregion Formatting
 
         #region Construction
@@ -538,10 +468,8 @@ namespace NodaTime
         /// <param name="minutes">The number of minutes to represent in the new offset.</param>
         /// <returns>An offset representing the given value.</returns>
         /// <exception cref="ArgumentOutOfRangeException">The result of the operation is outside the range of Offset.</exception>
-        public static Offset FromHoursAndMinutes(int hours, int minutes)
-        {
-            return FromSeconds(hours * NodaConstants.SecondsPerHour + minutes * NodaConstants.SecondsPerMinute);
-        }
+        public static Offset FromHoursAndMinutes(int hours, int minutes) =>
+            FromSeconds(hours * NodaConstants.SecondsPerHour + minutes * NodaConstants.SecondsPerMinute);
         #endregion
 
         #region Conversion
@@ -550,10 +478,7 @@ namespace NodaTime
         /// </summary>
         /// <returns>An equivalent <see cref="TimeSpan"/> to this value.</returns>
         [Pure]
-        public TimeSpan ToTimeSpan()
-        {
-            return TimeSpan.FromSeconds(seconds);
-        }
+        public TimeSpan ToTimeSpan() => TimeSpan.FromSeconds(seconds);
 
         /// <summary>
         /// Converts the given <see cref="TimeSpan"/> to an offset, with fractional seconds truncated.
@@ -571,10 +496,7 @@ namespace NodaTime
 
         #region XML serialization
         /// <inheritdoc />
-        XmlSchema IXmlSerializable.GetSchema()
-        {
-            return null;
-        }
+        XmlSchema IXmlSerializable.GetSchema() => null;
 
         /// <inheritdoc />
         void IXmlSerializable.ReadXml(XmlReader reader)

@@ -19,10 +19,8 @@ namespace NodaTime.Extensions
         /// <remarks>This is a convenience method which calls <see cref="OffsetDateTime.FromDateTimeOffset"/>.</remarks>        
         /// <param name="dateTimeOffset">The <c>DateTimeOffset</c> to convert.</param>
         /// <returns>A new <see cref="OffsetDateTime"/> with the same values as <paramref name="dateTimeOffset"/>.</returns>
-        public static OffsetDateTime ToOffsetDateTime(this DateTime dateTimeOffset)
-        {
-            return OffsetDateTime.FromDateTimeOffset(dateTimeOffset);
-        }
+        public static OffsetDateTime ToOffsetDateTime(this DateTime dateTimeOffset) =>
+            OffsetDateTime.FromDateTimeOffset(dateTimeOffset);
 
         /// <summary>
         /// Converts a <see cref="DateTimeOffset"/> to <see cref="OffsetDateTime"/>.
@@ -30,10 +28,8 @@ namespace NodaTime.Extensions
         /// <remarks>This is a convenience method which calls <see cref="ZonedDateTime.FromDateTimeOffset"/>.</remarks>        
         /// <param name="dateTimeOffset">The <c>DateTimeOffset</c> to convert.</param>
         /// <returns>A new <see cref="ZonedDateTime"/> with the same values as <paramref name="dateTimeOffset"/>.</returns>
-        public static ZonedDateTime ToZonedDateTime(this DateTime dateTimeOffset)
-        {
-            return ZonedDateTime.FromDateTimeOffset(dateTimeOffset);
-        }
+        public static ZonedDateTime ToZonedDateTime(this DateTime dateTimeOffset) =>
+            ZonedDateTime.FromDateTimeOffset(dateTimeOffset);
 
         /// <summary>
         /// Converts a <see cref="DateTimeOffset"/> into an <see cref="Instant"/>.
@@ -41,9 +37,6 @@ namespace NodaTime.Extensions
         /// <remarks>This is a convenience method which calls <see cref="Instant.FromDateTimeOffset"/>.</remarks>        
         /// <param name="dateTimeOffset">The <c>DateTimeOffset</c> to convert.</param>
         /// <returns>An <see cref="Instant"/> value representing the same instant in time as <paramref name="dateTimeOffset"/>.</returns>
-        public static Instant ToInstant(this DateTimeOffset dateTimeOffset)
-        {
-            return Instant.FromDateTimeOffset(dateTimeOffset);
-        }
+        public static Instant ToInstant(this DateTimeOffset dateTimeOffset) => Instant.FromDateTimeOffset(dateTimeOffset);
     }
 }

@@ -16,10 +16,7 @@ namespace NodaTime.Extensions
         /// <remarks>This is a convenience method which calls <see cref="LocalDateTime.FromDateTime"/>.</remarks>        
         /// <param name="dateTime">The <c>DateTime</c> to convert.</param>
         /// <returns>A new <see cref="LocalDateTime"/> with the same values as <paramref name="dateTime"/>.</returns>
-        public static LocalDateTime ToLocalDateTime(this DateTime dateTime)
-        {
-            return LocalDateTime.FromDateTime(dateTime);
-        }
+        public static LocalDateTime ToLocalDateTime(this DateTime dateTime) => LocalDateTime.FromDateTime(dateTime);
 
         /// <summary>
         /// Converts a <see cref="DateTime"/> with a kind of <see cref="DateTimeKind.Utc"/> into an <see cref="Instant"/>.
@@ -28,9 +25,6 @@ namespace NodaTime.Extensions
         /// <param name="dateTime">The <c>DateTime</c> to convert.</param>
         /// <returns>An <see cref="Instant"/> value representing the same instant in time as <paramref name="dateTime"/>.</returns>
         /// <exception cref="ArgumentException"><paramref name="dateTime"/> does not have a kind of <c>Utc</c>.</exception>
-        public static Instant ToInstant(this DateTime dateTime)
-        {
-            return Instant.FromDateTimeUtc(dateTime);
-        }
+        public static Instant ToInstant(this DateTime dateTime) => Instant.FromDateTimeUtc(dateTime);
     }
 }
