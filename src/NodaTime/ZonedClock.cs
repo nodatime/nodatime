@@ -36,10 +36,7 @@ namespace NodaTime
         /// Returns the current instant provided by the underlying clock.
         /// </summary>
         /// <returns>The current instant provided by the underlying clock.</returns>
-        public Instant GetCurrentInstant()
-        {
-            return clock.GetCurrentInstant();
-        }
+        public Instant GetCurrentInstant() => clock.GetCurrentInstant();
 
         /// <summary>
         /// Returns the current instant provided by the underlying clock, adjusted
@@ -48,10 +45,7 @@ namespace NodaTime
         /// <returns>The current instant provided by the underlying clock, adjusted to the
         /// time zone of this object.</returns>
         [Pure]
-        public ZonedDateTime GetCurrentZonedDateTime()
-        {
-            return GetCurrentInstant().InZone(zone, calendar);
-        }
+        public ZonedDateTime GetCurrentZonedDateTime() => GetCurrentInstant().InZone(zone, calendar);
 
         /// <summary>
         /// Returns the local date/time of the current instant provided by the underlying clock, adjusted
@@ -60,10 +54,7 @@ namespace NodaTime
         /// <returns>The local date/time of the current instant provided by the underlying clock, adjusted to the
         /// time zone of this object.</returns>
         [Pure]
-        public LocalDateTime GetCurrentLocalDateTime()
-        {
-            return GetCurrentZonedDateTime().LocalDateTime;
-        }
+        public LocalDateTime GetCurrentLocalDateTime() => GetCurrentZonedDateTime().LocalDateTime;
 
         /// <summary>
         /// Returns the offset date/time of the current instant provided by the underlying clock, adjusted
@@ -72,10 +63,7 @@ namespace NodaTime
         /// <returns>The offset date/time of the current instant provided by the underlying clock, adjusted to the
         /// time zone of this object.</returns>
         [Pure]
-        public OffsetDateTime GetCurrentOffsetDateTime()
-        {
-            return GetCurrentZonedDateTime().ToOffsetDateTime();
-        }
+        public OffsetDateTime GetCurrentOffsetDateTime() => GetCurrentZonedDateTime().ToOffsetDateTime();
 
         /// <summary>
         /// Returns the local date of the current instant provided by the underlying clock, adjusted
@@ -84,10 +72,7 @@ namespace NodaTime
         /// <returns>The local date of the current instant provided by the underlying clock, adjusted to the
         /// time zone of this object.</returns>
         [Pure]
-        public LocalDate GetCurrentDate()
-        {
-            return GetCurrentZonedDateTime().Date;
-        }
+        public LocalDate GetCurrentDate() => GetCurrentZonedDateTime().Date;
 
         /// <summary>
         /// Returns the local time of the current instant provided by the underlying clock, adjusted
@@ -96,9 +81,6 @@ namespace NodaTime
         /// <returns>The local time of the current instant provided by the underlying clock, adjusted to the
         /// time zone of this object.</returns>
         [Pure]
-        public LocalTime GetCurrentTimeOfDay()
-        {
-            return GetCurrentZonedDateTime().TimeOfDay;
-        }
+        public LocalTime GetCurrentTimeOfDay() => GetCurrentZonedDateTime().TimeOfDay;
     }
 }

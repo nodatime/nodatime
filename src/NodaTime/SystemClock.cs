@@ -4,7 +4,6 @@
 
 using System;
 using NodaTime.Annotations;
-using NodaTime.TimeZones;
 
 namespace NodaTime
 {
@@ -18,13 +17,11 @@ namespace NodaTime
     [Immutable]
     public sealed class SystemClock : IClock
     {
-        private static readonly SystemClock instance = new SystemClock();
-
         /// <summary>
         /// The singleton instance of <see cref="SystemClock"/>.
         /// </summary>
         /// <value>The singleton instance of <see cref="SystemClock"/>.</value>
-        public static SystemClock Instance { get { return instance; } }
+        public static SystemClock Instance { get; } = new SystemClock();
 
         /// <summary>
         /// Constructor present to prevent external construction.
@@ -37,9 +34,6 @@ namespace NodaTime
         /// Gets the current time as an <see cref="Instant"/>.
         /// </summary>
         /// <returns>The current time in ticks as an <see cref="Instant"/>.</returns>
-        public Instant GetCurrentInstant()
-        {
-            return NodaConstants.BclEpoch.PlusTicks(DateTime.UtcNow.Ticks);
-        }
+        public Instant GetCurrentInstant() => NodaConstants.BclEpoch.PlusTicks(DateTime.UtcNow.Ticks);
     }
 }

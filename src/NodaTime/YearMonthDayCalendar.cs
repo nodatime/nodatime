@@ -74,12 +74,12 @@ namespace NodaTime
             }
         }
 
-        internal CalendarOrdinal CalendarOrdinal { get { return (CalendarOrdinal) unchecked(value & CalendarMask); } }
-        internal int Year { get { return unchecked(((value & YearMask) >> CalendarDayMonthBits) + 1); } }
-        internal int Month { get { return unchecked(((value & MonthMask) >> CalendarDayBits) + 1); } }
-        internal int Day { get { return unchecked(((value & DayMask) >> CalendarBits) + 1); } }
+        internal CalendarOrdinal CalendarOrdinal => (CalendarOrdinal) unchecked(value & CalendarMask);
+        internal int Year => unchecked(((value & YearMask) >> CalendarDayMonthBits) + 1);
+        internal int Month => unchecked(((value & MonthMask) >> CalendarDayBits) + 1);
+        internal int Day => unchecked(((value & DayMask) >> CalendarBits) + 1);
 
-        public int RawValue { get { return value; } }
+        public int RawValue => value;
 
         // Just for testing purposes...
         [VisibleForTesting]
@@ -100,39 +100,19 @@ namespace NodaTime
                 (CalendarOrdinal) Enum.Parse(typeof(CalendarOrdinal), bits[3], false));
         }
 
-        internal YearMonthDay ToYearMonthDay()
-        {
-            return new YearMonthDay(value >> CalendarBits);
-        }
+        internal YearMonthDay ToYearMonthDay() => new YearMonthDay(value >> CalendarBits);
 
-        public override string ToString()
-        {
-            return string.Format(CultureInfo.InvariantCulture, "{0:0000}-{1:00}-{2:00}-{3}", Year, Month, Day, CalendarOrdinal);
-        }
+        public override string ToString() =>
+            string.Format(CultureInfo.InvariantCulture, "{0:0000}-{1:00}-{2:00}-{3}", Year, Month, Day, CalendarOrdinal);
 
-        public static bool operator ==(YearMonthDayCalendar lhs, YearMonthDayCalendar rhs)
-        {
-            return lhs.value == rhs.value;
-        }
+        public static bool operator ==(YearMonthDayCalendar lhs, YearMonthDayCalendar rhs) => lhs.value == rhs.value;
 
-        public static bool operator !=(YearMonthDayCalendar lhs, YearMonthDayCalendar rhs)
-        {
-            return lhs.value != rhs.value;
-        }
+        public static bool operator !=(YearMonthDayCalendar lhs, YearMonthDayCalendar rhs) => lhs.value != rhs.value;
 
-        public bool Equals(YearMonthDayCalendar other)
-        {
-            return value == other.value;
-        }
+        public bool Equals(YearMonthDayCalendar other) => value == other.value;
 
-        public override bool Equals(object other)
-        {
-            return other is YearMonthDayCalendar && Equals((YearMonthDayCalendar) other);
-        }
+        public override bool Equals(object other) => other is YearMonthDayCalendar && Equals((YearMonthDayCalendar) other);
 
-        public override int GetHashCode()
-        {
-            return value;
-        }
+        public override int GetHashCode() => value;
     }
 }

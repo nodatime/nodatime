@@ -35,12 +35,12 @@ namespace NodaTime
         /// <summary>
         /// Local time at midnight, i.e. 0 hours, 0 minutes, 0 seconds.
         /// </summary>
-        public static readonly LocalTime Midnight = new LocalTime(0, 0, 0);
+        public static LocalTime Midnight { get; } = new LocalTime(0, 0, 0);
 
         /// <summary>
         /// Local time at noon, i.e. 12 hours, 0 minutes, 0 seconds.
         /// </summary>
-        public static readonly LocalTime Noon = new LocalTime(12, 0, 0);
+        public static LocalTime Noon { get; } = new LocalTime(12, 0, 0);
 
         /// <summary>
         /// Nanoseconds since midnight, in the range [0, 86,400,000,000,000).
@@ -292,15 +292,10 @@ namespace NodaTime
         /// Gets the hour of day of this local time, in the range 0 to 23 inclusive.
         /// </summary>
         /// <value>The hour of day of this local time, in the range 0 to 23 inclusive.</value>
-        public int Hour
-        {
-            get
-            {
-                // Effectively nanoseconds / NodaConstants.NanosecondsPerHour, but apparently rather more efficient.
-                return (int) ((nanoseconds >> 13) / 439453125);
-            }
-        }
-
+        public int Hour =>
+            // Effectively nanoseconds / NodaConstants.NanosecondsPerHour, but apparently rather more efficient.
+            (int) ((nanoseconds >> 13) / 439453125);
+            
         /// <summary>
         /// Gets the hour of the half-day of this local time, in the range 1 to 12 inclusive.
         /// </summary>
@@ -322,7 +317,7 @@ namespace NodaTime
         /// Gets the hour of the half-day of this local time, in the range 0 to 11 inclusive.
         /// </summary>
         /// <value>The hour of the half-day of this local time, in the range 0 to 11 inclusive.</value>
-        internal int HourOfHalfDay { get { return unchecked(Hour % 12); } }
+        internal int HourOfHalfDay => unchecked(Hour % 12);
 
         /// <summary>
         /// Gets the minute of this local time, in the range 0 to 59 inclusive.
@@ -378,25 +373,25 @@ namespace NodaTime
         /// Gets the tick of this local time within the second, in the range 0 to 9,999,999 inclusive.
         /// </summary>
         /// <value>The tick of this local time within the second, in the range 0 to 9,999,999 inclusive.</value>
-        public int TickOfSecond { get { return unchecked((int) (TickOfDay % (int) NodaConstants.TicksPerSecond)); } }
+        public int TickOfSecond => unchecked((int) (TickOfDay % (int) NodaConstants.TicksPerSecond));
 
         /// <summary>
         /// Gets the tick of this local time within the day, in the range 0 to 863,999,999,999 inclusive.
         /// </summary>
         /// <value>The tick of this local time within the day, in the range 0 to 863,999,999,999 inclusive.</value>
-        public long TickOfDay { get { return nanoseconds / NodaConstants.NanosecondsPerTick; } }
+        public long TickOfDay => nanoseconds / NodaConstants.NanosecondsPerTick;
 
         /// <summary>
         /// Gets the nanosecond of this local time within the second, in the range 0 to 999,999,999 inclusive.
         /// </summary>
         /// <value>The nanosecond of this local time within the second, in the range 0 to 999,999,999 inclusive.</value>
-        public int NanosecondOfSecond { get { return unchecked((int) (nanoseconds % NodaConstants.NanosecondsPerSecond)); } }
+        public int NanosecondOfSecond => unchecked((int) (nanoseconds % NodaConstants.NanosecondsPerSecond));
 
         /// <summary>
         /// Gets the nanosecond of this local time within the day, in the range 0 to 86,399,999,999,999 inclusive.
         /// </summary>
         /// <value>The nanosecond of this local time within the day, in the range 0 to 86,399,999,999,999 inclusive.</value>
-        public long NanosecondOfDay { get { return nanoseconds; } }
+        public long NanosecondOfDay => nanoseconds;
 
         /// <summary>
         /// Creates a new local time by adding a period to an existing time. The period must not contain
@@ -418,10 +413,7 @@ namespace NodaTime
         /// <param name="time">The time to add the period to</param>
         /// <param name="period">The period to add. Must not contain any (non-zero) date units.</param>
         /// <returns>The sum of the given time and period</returns>
-        public static LocalTime Add(LocalTime time, Period period)
-        {
-            return time + period;
-        }
+        public static LocalTime Add(LocalTime time, Period period) => time + period;
 
         /// <summary>
         /// Adds the specified period to this time. Fluent alternative to <c>operator+()</c>.
@@ -429,10 +421,7 @@ namespace NodaTime
         /// <param name="period">The period to add. Must not contain any (non-zero) date units.</param>
         /// <returns>The sum of this time and the given period</returns>
         [Pure]
-        public LocalTime Plus(Period period)
-        {
-            return this + period;
-        }
+        public LocalTime Plus(Period period) => this + period;
 
         /// <summary>
         /// Creates a new local time by subtracting a period from an existing time. The period must not contain
@@ -455,10 +444,7 @@ namespace NodaTime
         /// <param name="time">The time to subtract the period from</param>
         /// <param name="period">The period to subtract. Must not contain any (non-zero) date units.</param>
         /// <returns>The result of subtracting the given period from the time.</returns>
-        public static LocalTime Subtract(LocalTime time, Period period)
-        {
-            return time - period;
-        }
+        public static LocalTime Subtract(LocalTime time, Period period) => time - period;
 
         /// <summary>
         /// Subtracts the specified period from this time. Fluent alternative to <c>operator-()</c>.
@@ -466,10 +452,7 @@ namespace NodaTime
         /// <param name="period">The period to subtract. Must not contain any (non-zero) date units.</param>
         /// <returns>The result of subtracting the given period from this time.</returns>
         [Pure]
-        public LocalTime Minus(Period period)
-        {
-            return this - period;
-        }
+        public LocalTime Minus(Period period) => this - period;
 
         /// <summary>
         /// Subtracts one time from another, returning the result as a <see cref="Period"/>.
@@ -480,10 +463,7 @@ namespace NodaTime
         /// <param name="lhs">The time to subtract from</param>
         /// <param name="rhs">The time to subtract</param>
         /// <returns>The result of subtracting one time from another.</returns>
-        public static Period operator -(LocalTime lhs, LocalTime rhs)
-        {
-            return Period.Between(rhs, lhs);
-        }
+        public static Period operator -(LocalTime lhs, LocalTime rhs) => Period.Between(rhs, lhs);
 
         /// <summary>
         /// Subtracts one time from another, returning the result as a <see cref="Period"/> with units of years, months and days.
@@ -494,10 +474,7 @@ namespace NodaTime
         /// <param name="lhs">The time to subtract from</param>
         /// <param name="rhs">The time to subtract</param>
         /// <returns>The result of subtracting one time from another.</returns>
-        public static Period Subtract(LocalTime lhs, LocalTime rhs)
-        {
-            return lhs - rhs;
-        }
+        public static Period Subtract(LocalTime lhs, LocalTime rhs) => lhs - rhs;
 
         /// <summary>
         /// Subtracts the specified time from this time, returning the result as a <see cref="Period"/>.
@@ -506,10 +483,7 @@ namespace NodaTime
         /// <param name="time">The time to subtract from this</param>
         /// <returns>The difference between the specified time and this one</returns>
         [Pure]
-        public Period Minus(LocalTime time)
-        {
-            return this - time;
-        }
+        public Period Minus(LocalTime time) => this - time;
 
         /// <summary>
         /// Compares two local times for equality, by checking whether they represent
@@ -518,10 +492,7 @@ namespace NodaTime
         /// <param name="lhs">The first value to compare</param>
         /// <param name="rhs">The second value to compare</param>
         /// <returns>True if the two times are the same; false otherwise</returns>
-        public static bool operator ==(LocalTime lhs, LocalTime rhs)
-        {
-            return lhs.nanoseconds == rhs.nanoseconds;
-        }
+        public static bool operator ==(LocalTime lhs, LocalTime rhs) => lhs.nanoseconds == rhs.nanoseconds;
 
         /// <summary>
         /// Compares two local times for inequality.
@@ -529,10 +500,7 @@ namespace NodaTime
         /// <param name="lhs">The first value to compare</param>
         /// <param name="rhs">The second value to compare</param>
         /// <returns>False if the two times are the same; true otherwise</returns>
-        public static bool operator !=(LocalTime lhs, LocalTime rhs)
-        {
-            return lhs.nanoseconds != rhs.nanoseconds;
-        }
+        public static bool operator !=(LocalTime lhs, LocalTime rhs) => lhs.nanoseconds != rhs.nanoseconds;
 
         /// <summary>
         /// Compares two LocalTime values to see if the left one is strictly earlier than the right
@@ -541,10 +509,7 @@ namespace NodaTime
         /// <param name="lhs">First operand of the comparison</param>
         /// <param name="rhs">Second operand of the comparison</param>
         /// <returns>true if the <paramref name="lhs"/> is strictly earlier than <paramref name="rhs"/>, false otherwise.</returns>
-        public static bool operator <(LocalTime lhs, LocalTime rhs)
-        {
-            return lhs.nanoseconds < rhs.nanoseconds;
-        }
+        public static bool operator <(LocalTime lhs, LocalTime rhs) => lhs.nanoseconds < rhs.nanoseconds;
 
         /// <summary>
         /// Compares two LocalTime values to see if the left one is earlier than or equal to the right
@@ -553,10 +518,7 @@ namespace NodaTime
         /// <param name="lhs">First operand of the comparison</param>
         /// <param name="rhs">Second operand of the comparison</param>
         /// <returns>true if the <paramref name="lhs"/> is earlier than or equal to <paramref name="rhs"/>, false otherwise.</returns>
-        public static bool operator <=(LocalTime lhs, LocalTime rhs)
-        {
-            return lhs.nanoseconds <= rhs.nanoseconds;
-        }
+        public static bool operator <=(LocalTime lhs, LocalTime rhs) => lhs.nanoseconds <= rhs.nanoseconds;
 
         /// <summary>
         /// Compares two LocalTime values to see if the left one is strictly later than the right
@@ -565,10 +527,7 @@ namespace NodaTime
         /// <param name="lhs">First operand of the comparison</param>
         /// <param name="rhs">Second operand of the comparison</param>
         /// <returns>true if the <paramref name="lhs"/> is strictly later than <paramref name="rhs"/>, false otherwise.</returns>
-        public static bool operator >(LocalTime lhs, LocalTime rhs)
-        {
-            return lhs.nanoseconds > rhs.nanoseconds;
-        }
+        public static bool operator >(LocalTime lhs, LocalTime rhs) => lhs.nanoseconds > rhs.nanoseconds;
 
         /// <summary>
         /// Compares two LocalTime values to see if the left one is later than or equal to the right
@@ -577,10 +536,7 @@ namespace NodaTime
         /// <param name="lhs">First operand of the comparison</param>
         /// <param name="rhs">Second operand of the comparison</param>
         /// <returns>true if the <paramref name="lhs"/> is later than or equal to <paramref name="rhs"/>, false otherwise.</returns>
-        public static bool operator >=(LocalTime lhs, LocalTime rhs)
-        {
-            return lhs.nanoseconds >= rhs.nanoseconds;
-        }
+        public static bool operator >=(LocalTime lhs, LocalTime rhs) => lhs.nanoseconds >= rhs.nanoseconds;
 
         /// <summary>
         /// Indicates whether this time is earlier, later or the same as another one.
@@ -589,10 +545,7 @@ namespace NodaTime
         /// <returns>A value less than zero if this time is earlier than <paramref name="other"/>;
         /// zero if this time is the same as <paramref name="other"/>; a value greater than zero if this time is
         /// later than <paramref name="other"/>.</returns>
-        public int CompareTo(LocalTime other)
-        {
-            return nanoseconds.CompareTo(other.nanoseconds);
-        }
+        public int CompareTo(LocalTime other) => nanoseconds.CompareTo(other.nanoseconds);
 
         /// <summary>
         /// Implementation of <see cref="IComparable.CompareTo"/> to compare two LocalTimes.
@@ -619,10 +572,7 @@ namespace NodaTime
         /// Returns a hash code for this local time.
         /// </summary>
         /// <returns>A hash code for this local time.</returns>
-        public override int GetHashCode()
-        {
-            return nanoseconds.GetHashCode();
-        }
+        public override int GetHashCode() => nanoseconds.GetHashCode();
 
         /// <summary>
         /// Compares this local time with the specified one for equality,
@@ -630,10 +580,7 @@ namespace NodaTime
         /// </summary>
         /// <param name="other">The other local time to compare this one with</param>
         /// <returns>True if the specified time is equal to this one; false otherwise</returns>
-        public bool Equals(LocalTime other)
-        {
-            return this == other;
-        }
+        public bool Equals(LocalTime other) => this == other;
 
         /// <summary>
         /// Compares this local time with the specified reference. A local time is
@@ -641,14 +588,7 @@ namespace NodaTime
         /// </summary>
         /// <param name="obj">The object to compare this one with</param>
         /// <returns>True if the specified value is a local time is equal to this one; false otherwise</returns>
-        public override bool Equals(object obj)
-        {
-            if (!(obj is LocalTime))
-            {
-                return false;
-            }
-            return this == (LocalTime) obj;
-        }
+        public override bool Equals(object obj) => obj is LocalTime && this == (LocalTime)obj;
 
         /// <summary>
         /// Returns a new LocalTime representing the current value with the given number of hours added.
@@ -659,10 +599,7 @@ namespace NodaTime
         /// <param name="hours">The number of hours to add</param>
         /// <returns>The current value plus the given number of hours.</returns>
         [Pure]
-        public LocalTime PlusHours(long hours)
-        {
-            return TimePeriodField.Hours.Add(this, hours);
-        }
+        public LocalTime PlusHours(long hours) => TimePeriodField.Hours.Add(this, hours);
 
         /// <summary>
         /// Returns a new LocalTime representing the current value with the given number of minutes added.
@@ -673,10 +610,7 @@ namespace NodaTime
         /// <param name="minutes">The number of minutes to add</param>
         /// <returns>The current value plus the given number of minutes.</returns>
         [Pure]
-        public LocalTime PlusMinutes(long minutes)
-        {
-            return TimePeriodField.Minutes.Add(this, minutes);
-        }
+        public LocalTime PlusMinutes(long minutes) => TimePeriodField.Minutes.Add(this, minutes);
 
         /// <summary>
         /// Returns a new LocalTime representing the current value with the given number of seconds added.
@@ -687,10 +621,7 @@ namespace NodaTime
         /// <param name="seconds">The number of seconds to add</param>
         /// <returns>The current value plus the given number of seconds.</returns>
         [Pure]
-        public LocalTime PlusSeconds(long seconds)
-        {
-            return TimePeriodField.Seconds.Add(this, seconds);
-        }
+        public LocalTime PlusSeconds(long seconds) => TimePeriodField.Seconds.Add(this, seconds);
 
         /// <summary>
         /// Returns a new LocalTime representing the current value with the given number of milliseconds added.
@@ -698,10 +629,7 @@ namespace NodaTime
         /// <param name="milliseconds">The number of milliseconds to add</param>
         /// <returns>The current value plus the given number of milliseconds.</returns>
         [Pure]
-        public LocalTime PlusMilliseconds(long milliseconds)
-        {
-            return TimePeriodField.Milliseconds.Add(this, milliseconds);
-        }
+        public LocalTime PlusMilliseconds(long milliseconds) => TimePeriodField.Milliseconds.Add(this, milliseconds);
 
         /// <summary>
         /// Returns a new LocalTime representing the current value with the given number of ticks added.
@@ -709,10 +637,7 @@ namespace NodaTime
         /// <param name="ticks">The number of ticks to add</param>
         /// <returns>The current value plus the given number of ticks.</returns>
         [Pure]
-        public LocalTime PlusTicks(long ticks)
-        {
-            return TimePeriodField.Ticks.Add(this, ticks);
-        }
+        public LocalTime PlusTicks(long ticks) => TimePeriodField.Ticks.Add(this, ticks);
 
         /// <summary>
         /// Returns a new LocalTime representing the current value with the given number of nanoseconds added.
@@ -720,10 +645,7 @@ namespace NodaTime
         /// <param name="nanoseconds">The number of nanoseconds to add</param>
         /// <returns>The current value plus the given number of ticks.</returns>
         [Pure]
-        public LocalTime PlusNanoseconds(long nanoseconds)
-        {
-            return TimePeriodField.Nanoseconds.Add(this, nanoseconds);
-        }
+        public LocalTime PlusNanoseconds(long nanoseconds) => TimePeriodField.Nanoseconds.Add(this, nanoseconds);
 
         /// <summary>
         /// Returns this time, with the given adjuster applied to it.
@@ -735,10 +657,8 @@ namespace NodaTime
         /// <param name="adjuster">The adjuster to apply.</param>
         /// <returns>The adjusted time.</returns>
         [Pure]
-        public LocalTime With([NotNull] Func<LocalTime, LocalTime> adjuster)
-        {
-            return Preconditions.CheckNotNull(adjuster, "adjuster").Invoke(this);
-        }
+        public LocalTime With([NotNull] Func<LocalTime, LocalTime> adjuster) =>
+            Preconditions.CheckNotNull(adjuster, "adjuster").Invoke(this);
 
         /// <summary>
         /// Combines this <see cref="LocalTime"/> with the given <see cref="LocalDate"/>
@@ -748,10 +668,7 @@ namespace NodaTime
         /// <param name="date">The date to combine with this time</param>
         /// <returns>The <see cref="LocalDateTime"/> representation of the given time on this date</returns>
         [Pure]
-        public LocalDateTime On(LocalDate date)
-        {
-            return date + this;
-        }
+        public LocalDateTime On(LocalDate date) => date + this;
 
         #region Formatting
         /// <summary>
@@ -761,10 +678,7 @@ namespace NodaTime
         /// The value of the current instance in the default format pattern ("T"), using the current thread's
         /// culture to obtain a format provider.
         /// </returns>
-        public override string ToString()
-        {
-            return LocalTimePattern.BclSupport.Format(this, null, CultureInfo.CurrentCulture);
-        }
+        public override string ToString() => LocalTimePattern.BclSupport.Format(this, null, CultureInfo.CurrentCulture);
 
         /// <summary>
         /// Formats the value of the current instance using the specified pattern.
@@ -779,10 +693,8 @@ namespace NodaTime
         /// or null to use the current thread's culture to obtain a format provider.
         /// </param>
         /// <filterpriority>2</filterpriority>
-        public string ToString(string patternText, IFormatProvider formatProvider)
-        {
-            return LocalTimePattern.BclSupport.Format(this, patternText, formatProvider);
-        }
+        public string ToString(string patternText, IFormatProvider formatProvider) =>
+            LocalTimePattern.BclSupport.Format(this, patternText, formatProvider);
         #endregion Formatting
 
         #region XML serialization

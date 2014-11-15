@@ -50,11 +50,11 @@ namespace NodaTime
             }
         }
 
-        internal int Year { get { return unchecked((value >> (DayBits + MonthBits)) + 1); } }
-        internal int Month { get { return unchecked(((value & MonthMask) >> DayBits) + 1); } }
-        internal int Day { get { return unchecked((value & DayMask) + 1); } }
+        internal int Year => unchecked((value >> (DayBits + MonthBits)) + 1);
+        internal int Month => unchecked(((value & MonthMask) >> DayBits) + 1);
+        internal int Day => unchecked((value & DayMask) + 1);
 
-        public int RawValue { get { return value; } }
+        public int RawValue => value;
 
         // Just for testing purposes...
         internal static YearMonthDay Parse(string text)
@@ -73,69 +73,36 @@ namespace NodaTime
                 int.Parse(bits[2], CultureInfo.InvariantCulture));
         }
 
-        public override string ToString()
-        {
-            return string.Format(CultureInfo.InvariantCulture, "{0:0000}-{1:00}-{2:00}", Year, Month, Day);
-        }
+        public override string ToString() =>
+            string.Format(CultureInfo.InvariantCulture, "{0:0000}-{1:00}-{2:00}", Year, Month, Day);
 
-        internal YearMonthDayCalendar WithCalendar([CanBeNull] CalendarSystem calendar)
-        {
-            return new YearMonthDayCalendar(value, calendar == null ? 0 : calendar.Ordinal);
-        }
+        internal YearMonthDayCalendar WithCalendar([CanBeNull] CalendarSystem calendar) =>
+            new YearMonthDayCalendar(value, calendar == null ? 0 : calendar.Ordinal);
 
-        internal YearMonthDayCalendar WithCalendarOrdinal(CalendarOrdinal calendarOrdinal)
-        {
-            return new YearMonthDayCalendar(value, calendarOrdinal);
-        }
+        internal YearMonthDayCalendar WithCalendarOrdinal(CalendarOrdinal calendarOrdinal) =>
+            new YearMonthDayCalendar(value, calendarOrdinal);
 
-        public int CompareTo(YearMonthDay other)
-        {
-            return value.CompareTo(other.value);
-        }
+        public int CompareTo(YearMonthDay other) => value.CompareTo(other.value);
 
         public bool Equals(YearMonthDay other)
         {
             return value == other.value;
         }
 
-        public override bool Equals(object other)
-        {
-            return other is YearMonthDay && Equals((YearMonthDay) other);
-        }
+        public override bool Equals(object other) => other is YearMonthDay && Equals((YearMonthDay) other);
 
-        public override int GetHashCode()
-        {
-            return value;
-        }
+        public override int GetHashCode() => value;
 
-        public static bool operator ==(YearMonthDay lhs, YearMonthDay rhs)
-        {
-            return lhs.value == rhs.value;
-        }
+        public static bool operator ==(YearMonthDay lhs, YearMonthDay rhs) => lhs.value == rhs.value;
 
-        public static bool operator !=(YearMonthDay lhs, YearMonthDay rhs)
-        {
-            return lhs.value != rhs.value;
-        }
+        public static bool operator !=(YearMonthDay lhs, YearMonthDay rhs) => lhs.value != rhs.value;
 
-        public static bool operator <(YearMonthDay lhs, YearMonthDay rhs)
-        {
-            return lhs.value < rhs.value;
-        }
+        public static bool operator <(YearMonthDay lhs, YearMonthDay rhs) => lhs.value < rhs.value;
 
-        public static bool operator <=(YearMonthDay lhs, YearMonthDay rhs)
-        {
-            return lhs.value <= rhs.value;
-        }
+        public static bool operator <=(YearMonthDay lhs, YearMonthDay rhs) => lhs.value <= rhs.value;
 
-        public static bool operator >(YearMonthDay lhs, YearMonthDay rhs)
-        {
-            return lhs.value > rhs.value;
-        }
+        public static bool operator >(YearMonthDay lhs, YearMonthDay rhs) => lhs.value > rhs.value;
 
-        public static bool operator >=(YearMonthDay lhs, YearMonthDay rhs)
-        {
-            return lhs.value >= rhs.value;
-        }
+        public static bool operator >=(YearMonthDay lhs, YearMonthDay rhs) => lhs.value >= rhs.value;
     }
 }

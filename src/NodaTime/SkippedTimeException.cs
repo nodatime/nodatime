@@ -38,20 +38,17 @@ namespace NodaTime
     [Mutable] // Exception itself is mutable
     public sealed class SkippedTimeException : ArgumentOutOfRangeException
     {
-        private readonly LocalDateTime localDateTime;
-        private readonly DateTimeZone zone;
-
         /// <summary>
         /// Gets the local date/time which is invalid in the time zone, prompting this exception.
         /// </summary>
         /// <value>The local date/time which is invalid in the time zone.</value>
-        public LocalDateTime LocalDateTime { get { return localDateTime; } }
+        public LocalDateTime LocalDateTime { get; }
 
         /// <summary>
         /// Gets the time zone in which the local date/time is invalid.
         /// </summary>
         /// <value>The time zone in which the local date/time is invalid</value>
-        public DateTimeZone Zone { get { return zone; } }
+        public DateTimeZone Zone { get; }
 
         /// <summary>
         /// Creates a new instance for the given local date/time and time zone.
@@ -65,8 +62,8 @@ namespace NodaTime
         public SkippedTimeException(LocalDateTime localDateTime, DateTimeZone zone)
             : base("Local time " + localDateTime + " is invalid in time zone " + zone.Id)
         {
-            this.localDateTime = localDateTime;
-            this.zone = zone;
+            this.LocalDateTime = localDateTime;
+            this.Zone = zone;
         }
     }
 }

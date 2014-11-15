@@ -54,12 +54,12 @@ namespace NodaTime
         /// Represents the smallest possible <see cref="Instant"/>.
         /// </summary>
         /// <remarks>This value is equivalent to -9998-01-01T00:00:00Z</remarks>
-        public static readonly Instant MinValue = new Instant(MinDays, 0);
+        public static Instant MinValue { get; } = new Instant(MinDays, 0);
         /// <summary>
         /// Represents the largest possible <see cref="Instant"/>.
         /// </summary>
         /// <remarks>This value is equivalent to 9999-12-31T23:59:59.999999999Z</remarks>
-        public static readonly Instant MaxValue = new Instant(MaxDays, NodaConstants.NanosecondsPerDay - 1);
+        public static Instant MaxValue { get; } = new Instant(MaxDays, NodaConstants.NanosecondsPerDay - 1);
 
         /// <summary>
         /// Instant which is invalid *except* for comparison purposes; it is earlier than any valid value.
@@ -107,7 +107,7 @@ namespace NodaTime
         /// Returns whether or not this is a valid instant. Returns true for all but
         /// <see cref="BeforeMinValue"/> and <see cref="AfterMaxValue"/>.
         /// </summary>
-        internal bool IsValid { get { return DaysSinceEpoch >= MinDays && DaysSinceEpoch <= MaxDays; } }
+        internal bool IsValid => DaysSinceEpoch >= MinDays && DaysSinceEpoch <= MaxDays;
 
         /// <summary>
         /// Gets the number of ticks since the Unix epoch. Negative values represent instants before the Unix epoch.
@@ -117,30 +117,25 @@ namespace NodaTime
         /// in this instant is not an exact number of ticks, the value is truncated towards the start of time.
         /// </remarks>
         /// <value>The number of ticks since the Unix epoch.</value>
-        public long Ticks
-        {
-            get
-            {
-                // Can't use Duration.Ticks, as that truncates towards 0.
-                return TickArithmetic.DaysAndTickOfDayToTicks(duration.FloorDays, duration.NanosecondOfFloorDay / NodaConstants.NanosecondsPerTick);
-            }
-        }
+        public long Ticks =>
+            // Can't use Duration.Ticks, as that truncates towards 0.
+            TickArithmetic.DaysAndTickOfDayToTicks(duration.FloorDays, duration.NanosecondOfFloorDay / NodaConstants.NanosecondsPerTick);
 
         /// <summary>
         /// Get the elapsed time since the Unix epoch, to nanosecond resolution.
         /// </summary>
         /// <returns>The elapsed time since the Unix epoch.</returns>
-        internal Duration TimeSinceEpoch { get { return duration; } }
+        internal Duration TimeSinceEpoch => duration;
 
         /// <summary>
         /// Number of days since the local unix epoch.
         /// </summary>
-        internal int DaysSinceEpoch { get { return duration.FloorDays; } }
+        internal int DaysSinceEpoch => duration.FloorDays;
 
         /// <summary>
         /// Nanosecond within the day.
         /// </summary>
-        internal long NanosecondOfDay { get { return duration.NanosecondOfFloorDay; } }
+        internal long NanosecondOfDay => duration.NanosecondOfFloorDay;
 
         #region IComparable<Instant> and IComparable Members
         /// <summary>
@@ -169,10 +164,7 @@ namespace NodaTime
         ///     </item>
         ///   </list>
         /// </returns>
-        public int CompareTo(Instant other)
-        {
-            return duration.CompareTo(other.duration);
-        }
+        public int CompareTo(Instant other) => duration.CompareTo(other.duration);
 
         /// <summary>
         /// Implementation of <see cref="IComparable.CompareTo"/> to compare two instants.
@@ -205,14 +197,7 @@ namespace NodaTime
         /// <c>true</c> if the specified <see cref="System.Object" /> is equal to this instance;
         /// otherwise, <c>false</c>.
         /// </returns>
-        public override bool Equals(object obj)
-        {
-            if (obj is Instant)
-            {
-                return Equals((Instant)obj);
-            }
-            return false;
-        }
+        public override bool Equals(object obj) => obj is Instant && Equals((Instant)obj);
 
         /// <summary>
         ///   Returns a hash code for this instance.
@@ -221,10 +206,7 @@ namespace NodaTime
         ///   A hash code for this instance, suitable for use in hashing algorithms and data
         ///   structures like a hash table. 
         /// </returns>
-        public override int GetHashCode()
-        {
-            return duration.GetHashCode();
-        }
+        public override int GetHashCode() => duration.GetHashCode();
         #endregion  // Object overrides
 
         /// <summary>
@@ -233,10 +215,7 @@ namespace NodaTime
         /// <param name="ticksToAdd">The ticks to add to this instant to create the return value.</param>
         /// <returns>The result of adding the given number of ticks to this instant.</returns>
         [Pure]
-        public Instant PlusTicks(long ticksToAdd)
-        {
-            return new Instant(duration + Duration.FromTicks(ticksToAdd));
-        }
+        public Instant PlusTicks(long ticksToAdd) => new Instant(duration + Duration.FromTicks(ticksToAdd));
         #region Operators
         /// <summary>
         /// Implements the operator + (addition) for <see cref="Instant" /> + <see cref="Duration" />.
@@ -244,10 +223,7 @@ namespace NodaTime
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
         /// <returns>A new <see cref="Instant" /> representing the sum of the given values.</returns>
-        public static Instant operator +(Instant left, Duration right)
-        {
-            return new Instant(left.duration + right);
-        }
+        public static Instant operator +(Instant left, Duration right) => new Instant(left.duration + right);
 
         /// <summary>
         /// Adds the given offset to this instant, to return a <see cref="LocalInstant" />.
@@ -258,10 +234,7 @@ namespace NodaTime
         /// <param name="offset">The right hand side of the operator.</param>
         /// <returns>A new <see cref="LocalInstant" /> representing the sum of the given values.</returns>
         [Pure]
-        internal LocalInstant Plus(Offset offset)
-        {
-            return new LocalInstant(duration.PlusSmallNanoseconds(offset.Nanoseconds));
-        }
+        internal LocalInstant Plus(Offset offset) => new LocalInstant(duration.PlusSmallNanoseconds(offset.Nanoseconds));
 
         /// <summary>
         /// Adds the given offset to this instant, either returning a normal LocalInstant,
@@ -306,10 +279,7 @@ namespace NodaTime
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
         /// <returns>A new <see cref="Instant" /> representing the sum of the given values.</returns>
-        public static Instant Add(Instant left, Duration right)
-        {
-            return left + right;
-        }
+        public static Instant Add(Instant left, Duration right) => left + right;
 
         /// <summary>
         /// Returns the result of adding a duration to this instant, for a fluent alternative to <c>operator+()</c>.
@@ -317,10 +287,7 @@ namespace NodaTime
         /// <param name="duration">The duration to add</param>
         /// <returns>A new <see cref="Instant" /> representing the result of the addition.</returns>
         [Pure]
-        public Instant Plus(Duration duration)
-        {
-            return this + duration;
-        }
+        public Instant Plus(Duration duration) => this + duration;
 
         /// <summary>
         ///   Implements the operator - (subtraction) for <see cref="Instant" /> - <see cref="Instant" />.
@@ -328,10 +295,7 @@ namespace NodaTime
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
         /// <returns>A new <see cref="Duration" /> representing the difference of the given values.</returns>
-        public static Duration operator -(Instant left, Instant right)
-        {
-            return left.duration - right.duration;
-        }
+        public static Duration operator -(Instant left, Instant right) => left.duration - right.duration;
 
         /// <summary>
         /// Implements the operator - (subtraction) for <see cref="Instant" /> - <see cref="Duration" />.
@@ -339,10 +303,7 @@ namespace NodaTime
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
         /// <returns>A new <see cref="Instant" /> representing the difference of the given values.</returns>
-        public static Instant operator -(Instant left, Duration right)
-        {
-            return new Instant(left.duration - right);
-        }
+        public static Instant operator -(Instant left, Duration right) => new Instant(left.duration - right);
 
         /// <summary>
         ///   Subtracts one instant from another. Friendly alternative to <c>operator-()</c>.
@@ -350,10 +311,7 @@ namespace NodaTime
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
         /// <returns>A new <see cref="Duration" /> representing the difference of the given values.</returns>
-        public static Duration Subtract(Instant left, Instant right)
-        {
-            return left - right;
-        }
+        public static Duration Subtract(Instant left, Instant right) => left - right;
 
         /// <summary>
         /// Returns the result of subtracting another instant from this one, for a fluent alternative to <c>operator-()</c>.
@@ -361,10 +319,7 @@ namespace NodaTime
         /// <param name="other">The other instant to subtract</param>
         /// <returns>A new <see cref="Instant" /> representing the result of the subtraction.</returns>
         [Pure]
-        public Duration Minus(Instant other)
-        {
-            return this - other;
-        }
+        public Duration Minus(Instant other) => this - other;
 
         /// <summary>
         /// Subtracts a duration from an instant. Friendly alternative to <c>operator-()</c>.
@@ -373,10 +328,7 @@ namespace NodaTime
         /// <param name="right">The right hand side of the operator.</param>
         /// <returns>A new <see cref="Instant" /> representing the difference of the given values.</returns>
         [Pure]
-        public static Instant Subtract(Instant left, Duration right)
-        {
-            return left - right;
-        }
+        public static Instant Subtract(Instant left, Duration right) => left - right;
 
         /// <summary>
         /// Returns the result of subtracting a duration from this instant, for a fluent alternative to <c>operator-()</c>.
@@ -384,10 +336,7 @@ namespace NodaTime
         /// <param name="duration">The duration to subtract</param>
         /// <returns>A new <see cref="Instant" /> representing the result of the subtraction.</returns>
         [Pure]
-        public Instant Minus(Duration duration)
-        {
-            return this - duration;
-        }
+        public Instant Minus(Duration duration) => this - duration;
 
         /// <summary>
         /// Implements the operator == (equality).
@@ -395,10 +344,7 @@ namespace NodaTime
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
         /// <returns><c>true</c> if values are equal to each other, otherwise <c>false</c>.</returns>
-        public static bool operator ==(Instant left, Instant right)
-        {
-            return left.duration == right.duration;
-        }
+        public static bool operator ==(Instant left, Instant right) => left.duration == right.duration;
 
         /// <summary>
         /// Implements the operator != (inequality).
@@ -406,10 +352,7 @@ namespace NodaTime
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
         /// <returns><c>true</c> if values are not equal to each other, otherwise <c>false</c>.</returns>
-        public static bool operator !=(Instant left, Instant right)
-        {
-            return !(left == right);
-        }
+        public static bool operator !=(Instant left, Instant right) => !(left == right);
 
         /// <summary>
         ///   Implements the operator &lt; (less than).
@@ -417,10 +360,7 @@ namespace NodaTime
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
         /// <returns><c>true</c> if the left value is less than the right value, otherwise <c>false</c>.</returns>
-        public static bool operator <(Instant left, Instant right)
-        {
-            return left.duration < right.duration;
-        }
+        public static bool operator <(Instant left, Instant right) => left.duration < right.duration;
 
         /// <summary>
         ///   Implements the operator &lt;= (less than or equal).
@@ -428,10 +368,7 @@ namespace NodaTime
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
         /// <returns><c>true</c> if the left value is less than or equal to the right value, otherwise <c>false</c>.</returns>
-        public static bool operator <=(Instant left, Instant right)
-        {
-            return left.duration <= right.duration;
-        }
+        public static bool operator <=(Instant left, Instant right) => left.duration <= right.duration;
 
         /// <summary>
         ///   Implements the operator &gt; (greater than).
@@ -439,10 +376,7 @@ namespace NodaTime
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
         /// <returns><c>true</c> if the left value is greater than the right value, otherwise <c>false</c>.</returns>
-        public static bool operator >(Instant left, Instant right)
-        {
-            return left.duration > right.duration;
-        }
+        public static bool operator >(Instant left, Instant right) => left.duration > right.duration;
 
         /// <summary>
         ///   Implements the operator &gt;= (greater than or equal).
@@ -450,10 +384,7 @@ namespace NodaTime
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
         /// <returns><c>true</c> if the left value is greater than or equal to the right value, otherwise <c>false</c>.</returns>
-        public static bool operator >=(Instant left, Instant right)
-        {
-            return left.duration >= right.duration;
-        }
+        public static bool operator >=(Instant left, Instant right) => left.duration >= right.duration;
         #endregion // Operators
 
         #region Convenience methods
@@ -516,10 +447,7 @@ namespace NodaTime
         /// <param name="x">The first instant to compare.</param>
         /// <param name="y">The second instant to compare.</param>
         /// <returns>The earlier instant of <paramref name="x"/> or <paramref name="y"/>.</returns>
-        public static Instant Min(Instant x, Instant y)
-        {
-            return x < y ? x : y;
-        }
+        public static Instant Min(Instant x, Instant y) => x < y ? x : y;
         #endregion
 
         #region Formatting
@@ -530,10 +458,7 @@ namespace NodaTime
         /// The value of the current instance in the default format pattern ("g"), using the current thread's
         /// culture to obtain a format provider.
         /// </returns>
-        public override string ToString()
-        {
-            return InstantPattern.BclSupport.Format(this, null, CultureInfo.CurrentCulture);
-        }
+        public override string ToString() => InstantPattern.BclSupport.Format(this, null, CultureInfo.CurrentCulture);
 
         /// <summary>
         /// Formats the value of the current instance using the specified pattern.
@@ -548,10 +473,8 @@ namespace NodaTime
         /// or null to use the current thread's culture to obtain a format provider.
         /// </param>
         /// <filterpriority>2</filterpriority>
-        public string ToString(string patternText, IFormatProvider formatProvider)
-        {
-            return InstantPattern.BclSupport.Format(this, patternText, formatProvider);
-        }
+        public string ToString(string patternText, IFormatProvider formatProvider) =>
+            InstantPattern.BclSupport.Format(this, patternText, formatProvider);
         #endregion Formatting
 
         #region IEquatable<Instant> Members
@@ -563,10 +486,7 @@ namespace NodaTime
         /// true if the value of this instant is equal to the value of the <paramref name="other" /> parameter;
         /// otherwise, false.
         /// </returns>
-        public bool Equals(Instant other)
-        {
-            return this == other;
-        }
+        public bool Equals(Instant other) => this == other;
         #endregion
 
         /// <summary>
@@ -575,20 +495,14 @@ namespace NodaTime
         /// </summary>
         /// <returns>A <see cref="DateTime"/> representing the same instant in time as this value, with a kind of "universal".</returns>
         [Pure]
-        public DateTime ToDateTimeUtc()
-        {
-            return new DateTime(NodaConstants.BclTicksAtUnixEpoch + Ticks, DateTimeKind.Utc);
-        }
+        public DateTime ToDateTimeUtc() => new DateTime(NodaConstants.BclTicksAtUnixEpoch + Ticks, DateTimeKind.Utc);
 
         /// <summary>
         /// Constructs a <see cref="DateTimeOffset"/> from this Instant which has an offset of zero.
         /// </summary>
         /// <returns>A <see cref="DateTimeOffset"/> representing the same instant in time as this value.</returns>
         [Pure]
-        public DateTimeOffset ToDateTimeOffset()
-        {
-            return new DateTimeOffset(NodaConstants.BclTicksAtUnixEpoch + Ticks, TimeSpan.Zero);
-        }
+        public DateTimeOffset ToDateTimeOffset() => new DateTimeOffset(NodaConstants.BclTicksAtUnixEpoch + Ticks, TimeSpan.Zero);
 
         /// <summary>
         /// Converts a <see cref="DateTimeOffset"/> into a new Instant representing the same instant in time. Note that
@@ -596,10 +510,8 @@ namespace NodaTime
         /// </summary>
         /// <returns>An <see cref="Instant"/> value representing the same instant in time as the given <see cref="DateTimeOffset"/>.</returns>
         /// <param name="dateTimeOffset">Date and time value with an offset.</param>
-        public static Instant FromDateTimeOffset(DateTimeOffset dateTimeOffset)
-        {
-            return NodaConstants.BclEpoch.PlusTicks(dateTimeOffset.Ticks - dateTimeOffset.Offset.Ticks);
-        }
+        public static Instant FromDateTimeOffset(DateTimeOffset dateTimeOffset) =>
+            NodaConstants.BclEpoch.PlusTicks(dateTimeOffset.Ticks - dateTimeOffset.Offset.Ticks);
 
         /// <summary>
         /// Converts a <see cref="DateTime"/> into a new Instant representing the same instant in time.
@@ -678,11 +590,9 @@ namespace NodaTime
         /// <returns>A <see cref="ZonedDateTime"/> for the same instant, in the given time zone
         /// and the ISO-8601 calendar</returns>
         [Pure]
-        public ZonedDateTime InZone([NotNull] DateTimeZone zone)
-        {
+        public ZonedDateTime InZone([NotNull] DateTimeZone zone) =>
             // zone is checked for nullity by the constructor.
-            return new ZonedDateTime(this, zone);
-        }
+            new ZonedDateTime(this, zone);
 
         /// <summary>
         /// Returns the <see cref="ZonedDateTime"/> representing the same point in time as this instant, in the
@@ -708,10 +618,7 @@ namespace NodaTime
         /// <returns>An <see cref="OffsetDateTime"/> for the same instant, with the given offset
         /// in the ISO calendar system</returns>
         [Pure]
-        public OffsetDateTime WithOffset(Offset offset)
-        {
-            return new OffsetDateTime(this, offset);
-        }
+        public OffsetDateTime WithOffset(Offset offset) => new OffsetDateTime(this, offset);
 
         /// <summary>
         /// Returns the <see cref="OffsetDateTime"/> representing the same point in time as this instant, with
@@ -730,10 +637,7 @@ namespace NodaTime
 
         #region XML serialization
         /// <inheritdoc />
-        XmlSchema IXmlSerializable.GetSchema()
-        {
-            return null;
-        }
+        XmlSchema IXmlSerializable.GetSchema() => null;
 
         /// <inheritdoc />
         void IXmlSerializable.ReadXml(XmlReader reader)

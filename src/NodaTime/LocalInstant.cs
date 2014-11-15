@@ -61,22 +61,22 @@ namespace NodaTime
         /// Returns whether or not this is a valid instant. Returns true for all but
         /// <see cref="BeforeMinValue"/> and <see cref="AfterMaxValue"/>.
         /// </summary>
-        internal bool IsValid { get { return DaysSinceEpoch >= Instant.MinDays && DaysSinceEpoch <= Instant.MaxDays; } }
+        internal bool IsValid => DaysSinceEpoch >= Instant.MinDays && DaysSinceEpoch <= Instant.MaxDays;
 
         /// <summary>
         /// Number of nanoseconds since the local unix epoch.
         /// </summary>
-        internal Duration TimeSinceLocalEpoch { get { return duration; } }
+        internal Duration TimeSinceLocalEpoch => duration;
 
         /// <summary>
         /// Number of days since the local unix epoch.
         /// </summary>
-        internal int DaysSinceEpoch { get { return duration.FloorDays; } }
+        internal int DaysSinceEpoch => duration.FloorDays;
 
         /// <summary>
         /// Nanosecond within the day.
         /// </summary>
-        internal long NanosecondOfDay { get { return duration.NanosecondOfFloorDay; } }
+        internal long NanosecondOfDay => duration.NanosecondOfFloorDay;
 
         /// <summary>
         /// Constructs a <see cref="DateTime"/> from this LocalInstant which has a <see cref="DateTime.Kind" />
@@ -89,29 +89,20 @@ namespace NodaTime
         /// the Noda Time non-system-specific "local" concept as exists in .NET.
         /// </remarks>
         [Pure]
-        public DateTime ToDateTimeUnspecified()
-        {
-            return new DateTime(NodaConstants.BclTicksAtUnixEpoch + duration.Ticks,
-                                DateTimeKind.Unspecified);
-        }
+        public DateTime ToDateTimeUnspecified() => 
+            new DateTime(NodaConstants.BclTicksAtUnixEpoch + duration.Ticks, DateTimeKind.Unspecified);
 
         #region Operators
         // <summary>
         // Returns an instant after adding the given duration
         // </summary>
-        public static LocalInstant operator +(LocalInstant left, Duration right)
-        {
-            return new LocalInstant(left.duration + right);
-        }
+        public static LocalInstant operator +(LocalInstant left, Duration right) => new LocalInstant(left.duration + right);
 
         /// <summary>
         /// Returns a new instant based on this local instant, as if we'd applied a zero offset.
         /// This is just a slight optimization over calling <c>localInstant.Minus(Offset.Zero)</c>.
         /// </summary>
-        internal Instant MinusZeroOffset()
-        {
-            return new Instant(duration);
-        }
+        internal Instant MinusZeroOffset() => new Instant(duration);
 
         /// <summary>
         /// Subtracts the given time zone offset from this local instant, to give an <see cref="Instant" />.
@@ -123,18 +114,12 @@ namespace NodaTime
         /// </remarks>
         /// <param name="offset">The offset between UTC and a time zone for this local instant</param>
         /// <returns>A new <see cref="Instant"/> representing the difference of the given values.</returns>
-        public Instant Minus(Offset offset)
-        {
-            return new Instant(duration.MinusSmallNanoseconds(offset.Nanoseconds));
-        }
+        public Instant Minus(Offset offset) => new Instant(duration.MinusSmallNanoseconds(offset.Nanoseconds));
 
         /// <summary>
         /// Returns an instant after subtracting the given duration
         /// </summary>
-        public static LocalInstant operator -(LocalInstant left, Duration right)
-        {
-            return new LocalInstant(left.duration - right);
-        }
+        public static LocalInstant operator -(LocalInstant left, Duration right) => new LocalInstant(left.duration - right);
 
         /// <summary>
         /// Implements the operator == (equality).
@@ -142,10 +127,7 @@ namespace NodaTime
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
         /// <returns><c>true</c> if values are equal to each other, otherwise <c>false</c>.</returns>
-        public static bool operator ==(LocalInstant left, LocalInstant right)
-        {
-            return left.duration == right.duration;
-        }
+        public static bool operator ==(LocalInstant left, LocalInstant right) => left.duration == right.duration;
 
         /// <summary>
         /// Equivalent to <see cref="Instant.SafePlus"/>, but in the opposite direction.
@@ -180,17 +162,13 @@ namespace NodaTime
             return new Instant(asDuration);
         }
 
-
         /// <summary>
         /// Implements the operator != (inequality).
         /// </summary>
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
         /// <returns><c>true</c> if values are not equal to each other, otherwise <c>false</c>.</returns>
-        public static bool operator !=(LocalInstant left, LocalInstant right)
-        {
-            return !(left == right);
-        }
+        public static bool operator !=(LocalInstant left, LocalInstant right) => !(left == right);
 
         /// <summary>
         /// Implements the operator &lt; (less than).
@@ -198,10 +176,7 @@ namespace NodaTime
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
         /// <returns><c>true</c> if the left value is less than the right value, otherwise <c>false</c>.</returns>
-        public static bool operator <(LocalInstant left, LocalInstant right)
-        {
-            return left.duration < right.duration;
-        }
+        public static bool operator <(LocalInstant left, LocalInstant right) => left.duration < right.duration;
 
         /// <summary>
         /// Implements the operator &lt;= (less than or equal).
@@ -209,10 +184,7 @@ namespace NodaTime
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
         /// <returns><c>true</c> if the left value is less than or equal to the right value, otherwise <c>false</c>.</returns>
-        public static bool operator <=(LocalInstant left, LocalInstant right)
-        {
-            return left.duration <= right.duration;
-        }
+        public static bool operator <=(LocalInstant left, LocalInstant right) => left.duration <= right.duration;
 
         /// <summary>
         /// Implements the operator &gt; (greater than).
@@ -220,10 +192,7 @@ namespace NodaTime
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
         /// <returns><c>true</c> if the left value is greater than the right value, otherwise <c>false</c>.</returns>
-        public static bool operator >(LocalInstant left, LocalInstant right)
-        {
-            return left.duration > right.duration;
-        }
+        public static bool operator >(LocalInstant left, LocalInstant right) => left.duration > right.duration;
 
         /// <summary>
         /// Implements the operator &gt;= (greater than or equal).
@@ -231,10 +200,7 @@ namespace NodaTime
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
         /// <returns><c>true</c> if the left value is greater than or equal to the right value, otherwise <c>false</c>.</returns>
-        public static bool operator >=(LocalInstant left, LocalInstant right)
-        {
-            return left.duration >= right.duration;
-        }
+        public static bool operator >=(LocalInstant left, LocalInstant right) => left.duration >= right.duration;
         #endregion // Operators
 
         #region IComparable<LocalInstant> Members
@@ -264,10 +230,7 @@ namespace NodaTime
         /// </item>
         /// </list>
         /// </returns>
-        public int CompareTo(LocalInstant other)
-        {
-            return duration.CompareTo(other.duration);
-        }
+        public int CompareTo(LocalInstant other) => duration.CompareTo(other.duration);
 
         /// <summary>
         /// Implementation of <see cref="IComparable.CompareTo"/> to compare two local instants.
@@ -300,14 +263,7 @@ namespace NodaTime
         /// <c>true</c> if the specified <see cref="System.Object"/> is equal to this instance;
         /// otherwise, <c>false</c>.
         /// </returns>
-        public override bool Equals(object obj)
-        {
-            if (obj is LocalInstant)
-            {
-                return Equals((LocalInstant)obj);
-            }
-            return false;
-        }
+        public override bool Equals(object obj) => obj is LocalInstant && Equals((LocalInstant)obj);
 
         /// <summary>
         /// Returns a hash code for this instance.
@@ -316,10 +272,7 @@ namespace NodaTime
         /// A hash code for this instance, suitable for use in hashing algorithms and data
         /// structures like a hash table. 
         /// </returns>
-        public override int GetHashCode()
-        {
-            return duration.GetHashCode();
-        }
+        public override int GetHashCode() => duration.GetHashCode();
 
         /// <summary>
         /// Returns a <see cref="System.String"/> that represents this instance.
@@ -345,10 +298,7 @@ namespace NodaTime
         /// true if the current object is equal to the <paramref name="other"/> parameter;
         /// otherwise, false.
         /// </returns>
-        public bool Equals(LocalInstant other)
-        {
-            return this == other;
-        }
+        public bool Equals(LocalInstant other) => this == other;
         #endregion
     }
 }
