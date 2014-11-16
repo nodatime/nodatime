@@ -14,26 +14,20 @@ namespace NodaTime.TimeZones
     /// <threadsafety>This type is an immutable value type. See the thread safety section of the user guide for more information.</threadsafety>
     internal struct Transition : IEquatable<Transition>
     {
-        private readonly Instant instant;
-        internal Instant Instant { get { return instant; } }
-
-        private readonly Offset newOffset;
+        internal Instant Instant { get; }
 
         /// <summary>
         /// The offset from the time when this transition occurs until the next transition.
         /// </summary>
-        internal Offset NewOffset { get { return newOffset; } }
+        internal Offset NewOffset { get; }
 
-        internal Transition(Instant instant, Offset newOffset)
+        internal Transition(Instant instant, Offset newOffset) : this()
         {
-            this.instant = instant;
-            this.newOffset = newOffset;
+            this.Instant = instant;
+            this.NewOffset = newOffset;
         }
 
-        public bool Equals(Transition other)
-        {
-            return instant == other.Instant && newOffset == other.NewOffset;
-        }
+        public bool Equals(Transition other) => Instant == other.Instant && NewOffset == other.NewOffset;
 
         #region Operators
         /// <summary>
@@ -42,10 +36,7 @@ namespace NodaTime.TimeZones
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
         /// <returns><c>true</c> if values are equal to each other, otherwise <c>false</c>.</returns>
-        public static bool operator ==(Transition left, Transition right)
-        {
-            return left.Equals(right);
-        }
+        public static bool operator ==(Transition left, Transition right) => left.Equals(right);
 
         /// <summary>
         /// Implements the operator != (inequality).
@@ -53,10 +44,7 @@ namespace NodaTime.TimeZones
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
         /// <returns><c>true</c> if values are not equal to each other, otherwise <c>false</c>.</returns>
-        public static bool operator !=(Transition left, Transition right)
-        {
-            return !(left == right);
-        }
+        public static bool operator !=(Transition left, Transition right) => !(left == right);
         #endregion
 
         #region Object overrides
@@ -68,14 +56,7 @@ namespace NodaTime.TimeZones
         /// <c>true</c> if the specified <see cref="System.Object"/> is equal to this instance;
         /// otherwise, <c>false</c>.
         /// </returns>
-        public override bool Equals(object obj)
-        {
-            if (obj is Transition)
-            {
-                return Equals((Transition)obj);
-            }
-            return false;
-        }
+        public override bool Equals(object obj) => obj is Transition && Equals((Transition)obj);
 
         /// <summary>
         /// Returns a hash code for this instance.
@@ -87,8 +68,8 @@ namespace NodaTime.TimeZones
         public override int GetHashCode()
         {
             int hash = 23;
-            hash = hash * 31 + instant.GetHashCode();
-            hash = hash * 31 + newOffset.GetHashCode();
+            hash = hash * 31 + Instant.GetHashCode();
+            hash = hash * 31 + NewOffset.GetHashCode();
             return hash;
         }
 
@@ -98,10 +79,7 @@ namespace NodaTime.TimeZones
         /// <returns>
         /// A <see cref="System.String"/> that represents this instance.
         /// </returns>
-        public override string ToString()
-        {
-            return "Transition to " + newOffset + " at " + instant;
-        }
+        public override string ToString() => "Transition to " + NewOffset + " at " + Instant;
         #endregion  // Object overrides
     }
 }

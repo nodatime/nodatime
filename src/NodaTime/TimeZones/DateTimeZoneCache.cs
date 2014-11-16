@@ -28,9 +28,17 @@ namespace NodaTime.TimeZones
     {
         private readonly object accessLock = new object();
         private readonly IDateTimeZoneSource source;
-        private readonly ReadOnlyCollection<string> ids;
         private readonly IDictionary<string, DateTimeZone> timeZoneMap = new Dictionary<string, DateTimeZone>();
-        private readonly string providerVersionId;
+
+        /// <summary>
+        /// Gets the version ID of this provider. This is simply the <see cref="IDateTimeZoneSource.VersionId"/> returned by
+        /// the underlying source.
+        /// </summary>
+        /// <value>The version ID of this provider.</value>
+        public string VersionId { get; }
+
+        /// <inheritdoc />
+        public ReadOnlyCollection<string> Ids { get; }
 
         /// <summary>
         /// Creates a provider backed by the given <see cref="IDateTimeZoneSource"/>.
@@ -45,8 +53,8 @@ namespace NodaTime.TimeZones
         public DateTimeZoneCache([NotNull] IDateTimeZoneSource source)
         {
             this.source = Preconditions.CheckNotNull(source, "source");
-            this.providerVersionId = source.VersionId;
-            if (providerVersionId == null)
+            this.VersionId = source.VersionId;
+            if (VersionId == null)
             {
                 throw new InvalidDateTimeZoneSourceException("Source-returned version ID was null");
             }
@@ -57,9 +65,9 @@ namespace NodaTime.TimeZones
             }
             var idList = new List<string>(providerIds);
             idList.Sort(StringComparer.Ordinal);
-            ids = new ReadOnlyCollection<string>(idList);
+            Ids = new ReadOnlyCollection<string>(idList);
             // Populate the dictionary with null values meaning "the ID is valid, we haven't fetched the zone yet".
-            foreach (string id in ids)
+            foreach (string id in Ids)
             {
                 if (id == null)
                 {
@@ -68,13 +76,6 @@ namespace NodaTime.TimeZones
                 timeZoneMap[id] = null;
             }
         }
-
-        /// <summary>
-        /// Gets the version ID of this provider. This is simply the <see cref="IDateTimeZoneSource.VersionId"/> returned by
-        /// the underlying source.
-        /// </summary>
-        /// <value>The version ID of this provider.</value>
-        public string VersionId { get { return providerVersionId; } }
 
         /// <inheritdoc />
         public DateTimeZone GetSystemDefault()
@@ -86,14 +87,11 @@ namespace NodaTime.TimeZones
 #if PCL
                 throw new DateTimeZoneNotFoundException("TimeZoneInfo name " + bcl.StandardName + " is unknown to source " + providerVersionId);
 #else
-                throw new DateTimeZoneNotFoundException("TimeZoneInfo ID " + bcl.Id + " is unknown to source " + providerVersionId);
+                throw new DateTimeZoneNotFoundException("TimeZoneInfo ID " + bcl.Id + " is unknown to source " + VersionId);
 #endif
             }
             return this[id];
         }
-
-        /// <inheritdoc />
-        public ReadOnlyCollection<string> Ids { get { return ids; } }
 
         /// <inheritdoc />
         public DateTimeZone GetZoneOrNull(string id)
@@ -116,7 +114,7 @@ namespace NodaTime.TimeZones
                     zone = source.ForId(id);
                     if (zone == null)
                     {
-                        throw new InvalidDateTimeZoneSourceException("Time zone " + id + " is supported by source " + providerVersionId + " but not returned");
+                        throw new InvalidDateTimeZoneSourceException("Time zone " + id + " is supported by source " + VersionId + " but not returned");
                     }
                     timeZoneMap[id] = zone;
                 }
@@ -132,7 +130,7 @@ namespace NodaTime.TimeZones
                 var zone = GetZoneOrNull(id);
                 if (zone == null)
                 {
-                    throw new DateTimeZoneNotFoundException("Time zone " + id + " is unknown to source " + providerVersionId);
+                    throw new DateTimeZoneNotFoundException("Time zone " + id + " is unknown to source " + VersionId);
                 }
                 return zone;
             }

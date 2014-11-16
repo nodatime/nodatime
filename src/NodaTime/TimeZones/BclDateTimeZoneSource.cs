@@ -75,10 +75,7 @@ namespace NodaTime.TimeZones
         /// This source returns a string such as "TimeZoneInfo: 3.5.0.0" corresponding to the version of the assembly
         /// containing <see cref="TimeZoneInfo"/>.
         /// </remarks>
-        public string VersionId
-        {
-            get { return "TimeZoneInfo: " + typeof(TimeZoneInfo).Assembly.GetName().Version; }
-        }
+        public string VersionId => "TimeZoneInfo: " + typeof(TimeZoneInfo).Assembly.GetName().Version;
 
         /// <summary>
         /// Creates a new instance of <see cref="BclDateTimeZone" /> from the <see cref="TimeZoneInfo"/> with the given
@@ -90,10 +87,7 @@ namespace NodaTime.TimeZones
         /// zones returned by this implementation are instances of <see cref="BclDateTimeZone"/> (rather than the built-in
         /// fixed offset zones).
         /// </remarks>        
-        DateTimeZone IDateTimeZoneSource.ForId(string id)
-        {
-            return ForId(id);
-        }
+        DateTimeZone IDateTimeZoneSource.ForId(string id) => ForId(id);
 
         /// <summary>
         /// Creates a new instance of <see cref="BclDateTimeZone" /> from the <see cref="TimeZoneInfo"/> with the given
@@ -123,10 +117,7 @@ namespace NodaTime.TimeZones
         /// The ID for the given BCL time zone for this source; that is, the value of the <c>Id</c> property of the
         /// passed-in <see cref="TimeZoneInfo"/>.
         /// </returns>
-        public string MapTimeZoneId(TimeZoneInfo timeZone)
-        {
-            return timeZone.Id;
-        }
+        public string MapTimeZoneId(TimeZoneInfo timeZone) => timeZone.Id;
     }
 }
 #endif

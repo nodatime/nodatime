@@ -2,7 +2,6 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-using NodaTime.TimeZones.IO;
 using NodaTime.Utility;
 
 namespace NodaTime.TimeZones
@@ -13,7 +12,7 @@ namespace NodaTime.TimeZones
     /// </summary>
     /// <remarks>
     /// <para>
-    /// The cache supports multiple caching strategies which are implemented in nested subclasses of
+    /// The cache supports mulTiple caching strategies which are implemented in nested subclasses of
     /// this one. Until we have a better sense of what the usage behavior is, we cannot tune the
     /// cache. It is possible that we may support multiple strategies selectable at runtime so the
     /// user can tune the performance based on their knowledge of how they are using the system.
@@ -28,7 +27,12 @@ namespace NodaTime.TimeZones
     internal sealed class CachedDateTimeZone : DateTimeZone
     {
         private readonly IZoneIntervalMap map;
-        private readonly DateTimeZone timeZone;
+
+        /// <summary>
+        /// Gets the cached time zone.
+        /// </summary>
+        /// <value>The time zone.</value>
+        internal DateTimeZone TimeZone { get; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CachedDateTimeZone"/> class.
@@ -37,15 +41,9 @@ namespace NodaTime.TimeZones
         /// <param name="map">The caching map</param>
         private CachedDateTimeZone(DateTimeZone timeZone, IZoneIntervalMap map) : base(timeZone.Id, false, timeZone.MinOffset, timeZone.MaxOffset)
         {
-            this.timeZone = timeZone;
+            this.TimeZone = timeZone;
             this.map = map;
         }
-
-        /// <summary>
-        /// Gets the cached time zone.
-        /// </summary>
-        /// <value>The time zone.</value>
-        internal DateTimeZone TimeZone { get { return timeZone; } }
 
         /// <summary>
         /// Returns a cached time zone for the given time zone.

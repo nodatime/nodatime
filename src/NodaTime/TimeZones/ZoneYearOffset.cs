@@ -45,14 +45,25 @@ namespace NodaTime.TimeZones
         [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "ZoneYearOffset is immutable")]
         public static readonly ZoneYearOffset StartOfYear = new ZoneYearOffset(TransitionMode.Wall, 1, 1, 0, false, LocalTime.Midnight);
 
-        private readonly bool advance;
         private readonly int dayOfMonth;
         private readonly int dayOfWeek;
-        private readonly TransitionMode mode;
         private readonly int monthOfYear;
         private readonly bool addDay;
 
-        private readonly LocalTime timeOfDay;
+        /// <summary>
+        /// Gets the method by which offsets are added to Instants to get LocalInstants.
+        /// </summary>
+        public TransitionMode Mode { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether [advance day of week].
+        /// </summary>
+        public bool AdvanceDayOfWeek { get; }
+
+        /// <summary>
+        /// Gets the time of day when the rule takes effect.
+        /// </summary>
+        public LocalTime TimeOfDay { get; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ZoneYearOffset"/> class.
@@ -87,12 +98,12 @@ namespace NodaTime.TimeZones
                 VerifyFieldValue(1, 7, "dayOfWeek", dayOfWeek, false);
             }
 
-            this.mode = mode;
+            this.Mode = mode;
             this.monthOfYear = monthOfYear;
             this.dayOfMonth = dayOfMonth;
             this.dayOfWeek = dayOfWeek;
-            this.advance = advance;
-            this.timeOfDay = timeOfDay;
+            this.AdvanceDayOfWeek = advance;
+            this.TimeOfDay = timeOfDay;
             this.addDay = addDay;
         }
 
@@ -137,21 +148,6 @@ namespace NodaTime.TimeZones
             }
         }
 
-        /// <summary>
-        /// Gets the method by which offsets are added to Instants to get LocalInstants.
-        /// </summary>
-        public TransitionMode Mode { get { return mode; } }
-
-        /// <summary>
-        /// Gets a value indicating whether [advance day of week].
-        /// </summary>
-        public bool AdvanceDayOfWeek { get { return advance; } }
-
-        /// <summary>
-        /// Gets the time of day when the rule takes effect.
-        /// </summary>
-        public LocalTime TimeOfDay { get { return timeOfDay; } }
-
         #region IEquatable<ZoneYearOffset> Members
 
         /// <summary>
@@ -171,33 +167,29 @@ namespace NodaTime.TimeZones
             {
                 return true;
             }
-            return mode == other.mode &&
+            return Mode == other.Mode &&
                    monthOfYear == other.monthOfYear &&
                    dayOfMonth == other.dayOfMonth &&
                    dayOfWeek == other.dayOfWeek &&
-                   advance == other.advance &&
-                   timeOfDay == other.timeOfDay &&
+                   AdvanceDayOfWeek == other.AdvanceDayOfWeek &&
+                   TimeOfDay == other.TimeOfDay &&
                    addDay == other.addDay;
         }
 
         #endregion
 
-        public override string ToString()
-        {
-            return string.Format(CultureInfo.InvariantCulture,
+        public override string ToString() =>
+            string.Format(CultureInfo.InvariantCulture,
                 "ZoneYearOffset[mode:{0} monthOfYear:{1} dayOfMonth:{2} advance:{3} timeOfDay:{4:r} addDay:{5}]",
-                mode, monthOfYear, dayOfMonth, advance, timeOfDay, addDay);
-        }
+                Mode, monthOfYear, dayOfMonth, AdvanceDayOfWeek, TimeOfDay, addDay);
 
         /// <summary>
         /// Returns the occurrence of this rule within the given year, at the offset indicated
         /// by the standard offset, the savings offset when approaching the transition, and
         /// the transition mode.
         /// </summary>
-        internal OffsetDateTime GetOccurrenceForYear(int year, Offset standardOffset, Offset savingsOffset)
-        {
-            return GetOccurrenceForYear(year).WithOffset(GetRuleOffset(standardOffset, savingsOffset));
-        }
+        internal OffsetDateTime GetOccurrenceForYear(int year, Offset standardOffset, Offset savingsOffset) =>
+            GetOccurrenceForYear(year).WithOffset(GetRuleOffset(standardOffset, savingsOffset));
 
         /// <summary>
         /// Returns the occurrence of this rule within the given year.
@@ -210,7 +202,7 @@ namespace NodaTime.TimeZones
                 if (monthOfYear == 2 && dayOfMonth == 29 && !CalendarSystem.Iso.IsLeapYear(year))
                 {
                     // This mirrors zic.c. It's an odd rule, but...
-                    if (dayOfWeek == 0 || advance)
+                    if (dayOfWeek == 0 || AdvanceDayOfWeek)
                     {
                         throw new InvalidOperationException("Requested transition for a ZoneYearOffset of February 29th in a non-leap year, not moving backwards to find a day-of-week");
                     }
@@ -227,12 +219,12 @@ namespace NodaTime.TimeZones
                         int diff = dayOfWeek - currentDayOfWeek;
                         if (diff > 0)
                         {
-                            if (!advance)
+                            if (!AdvanceDayOfWeek)
                             {
                                 diff -= 7;
                             }
                         }
-                        else if (advance)
+                        else if (AdvanceDayOfWeek)
                         {
                             diff += 7;
                         }
@@ -243,7 +235,7 @@ namespace NodaTime.TimeZones
                 {
                     date = date.PlusDays(1);
                 }
-                return date + timeOfDay;
+                return date + TimeOfDay;
             }
         }
 
@@ -259,15 +251,15 @@ namespace NodaTime.TimeZones
             // - DDD is the day of week (0-7)
             // - A is the AdvanceDayOfWeek
             // - P is the "addDay" (24:00) flag
-            int flags = ((int) mode << 5) |
+            int flags = ((int) Mode << 5) |
                         (dayOfWeek << 2) |
-                        (advance ? 2 : 0) |
+                        (AdvanceDayOfWeek ? 2 : 0) |
                         (addDay ? 1 : 0);
             writer.WriteByte((byte) flags);
             writer.WriteCount(monthOfYear);
             writer.WriteSignedCount(dayOfMonth);
             // The time of day is written as a number of milliseconds historical reasons.
-            writer.WriteMilliseconds((int) (timeOfDay.TickOfDay / NodaConstants.TicksPerMillisecond));
+            writer.WriteMilliseconds((int) (TimeOfDay.TickOfDay / NodaConstants.TicksPerMillisecond));
         }
 
         public static ZoneYearOffset Read(IDateTimeZoneReader reader)
@@ -295,7 +287,7 @@ namespace NodaTime.TimeZones
         /// <returns>The base time offset as a <see cref="Duration"/>.</returns>
         internal Offset GetRuleOffset(Offset standardOffset, Offset savings)
         {
-            switch (mode)
+            switch (Mode)
             {
                 case TransitionMode.Wall:
                     return standardOffset + savings;
@@ -316,10 +308,7 @@ namespace NodaTime.TimeZones
         /// <c>true</c> if the specified <see cref="System.Object"/> is equal to this instance;
         /// otherwise, <c>false</c>.
         /// </returns>
-        public override bool Equals(object obj)
-        {
-            return Equals(obj as ZoneYearOffset);
-        }
+        public override bool Equals(object obj) => Equals(obj as ZoneYearOffset);
 
         /// <summary>
         /// Returns a hash code for this instance.
@@ -331,12 +320,12 @@ namespace NodaTime.TimeZones
         public override int GetHashCode()
         {
             int hash = HashCodeHelper.Initialize();
-            hash = HashCodeHelper.Hash(hash, mode);
+            hash = HashCodeHelper.Hash(hash, Mode);
             hash = HashCodeHelper.Hash(hash, monthOfYear);
             hash = HashCodeHelper.Hash(hash, dayOfMonth);
             hash = HashCodeHelper.Hash(hash, dayOfWeek);
-            hash = HashCodeHelper.Hash(hash, advance);
-            hash = HashCodeHelper.Hash(hash, timeOfDay);
+            hash = HashCodeHelper.Hash(hash, AdvanceDayOfWeek);
+            hash = HashCodeHelper.Hash(hash, TimeOfDay);
             hash = HashCodeHelper.Hash(hash, addDay);
             return hash;
         }

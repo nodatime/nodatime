@@ -26,17 +26,17 @@ namespace NodaTime.TimeZones
         /// <summary>
         /// An <see cref="AmbiguousTimeResolver"/> which returns the earlier of the two matching times.
         /// </summary>
-        public static readonly AmbiguousTimeResolver ReturnEarlier = (earlier, later) => earlier;
+        public static AmbiguousTimeResolver ReturnEarlier { get; } = (earlier, later) => earlier;
 
         /// <summary>
         /// An <see cref="AmbiguousTimeResolver"/> which returns the later of the two matching times.
         /// </summary>
-        public static readonly AmbiguousTimeResolver ReturnLater = (earlier, later) => later;
+        public static AmbiguousTimeResolver ReturnLater { get; } = (earlier, later) => later;
 
         /// <summary>
         /// An <see cref="AmbiguousTimeResolver"/> which simply throws an <see cref="AmbiguousTimeException"/>.
         /// </summary>
-        public static readonly AmbiguousTimeResolver ThrowWhenAmbiguous = (earlier, later) =>
+        public static AmbiguousTimeResolver ThrowWhenAmbiguous { get; } = (earlier, later) =>
         {
             throw new AmbiguousTimeException(earlier, later);
         };
@@ -87,7 +87,8 @@ namespace NodaTime.TimeZones
         /// <see cref="ThrowWhenAmbiguous"/> and <see cref="ThrowWhenSkipped"/>.
         /// </remarks>
         /// <seealso cref="DateTimeZone.AtStrictly"/>
-        public static readonly ZoneLocalMappingResolver StrictResolver = CreateMappingResolver(ThrowWhenAmbiguous, ThrowWhenSkipped);
+        public static ZoneLocalMappingResolver StrictResolver { get; } =
+            CreateMappingResolver(ThrowWhenAmbiguous, ThrowWhenSkipped);
 
         /// <summary>
         /// A <see cref="ZoneLocalMappingResolver"/> which never throws an exception due to ambiguity or skipped time.
@@ -97,7 +98,8 @@ namespace NodaTime.TimeZones
         /// after the gap. This resolver combines <see cref="ReturnLater"/> and <see cref="ReturnStartOfIntervalAfter"/>.
         /// </remarks>
         /// <seealso cref="DateTimeZone.AtLeniently"/>
-        public static readonly ZoneLocalMappingResolver LenientResolver = CreateMappingResolver(ReturnLater, ReturnStartOfIntervalAfter);
+        public static ZoneLocalMappingResolver LenientResolver { get; } =
+            CreateMappingResolver(ReturnLater, ReturnStartOfIntervalAfter);
 
         /// <summary>
         /// Combines an <see cref="AmbiguousTimeResolver"/> and a <see cref="SkippedTimeResolver"/> to create a

@@ -42,25 +42,24 @@ namespace NodaTime.TimeZones
         /// </summary>
         private static BclDateTimeZone systemDefault;
 
-        private readonly TimeZoneInfo bclZone;
         private readonly IZoneIntervalMap map;
 
         /// <summary>
         /// Gets the original <see cref="TimeZoneInfo"/> from which this was created.
         /// </summary>
         /// <value>The original <see cref="TimeZoneInfo"/> from which this was created.</value>
-        public TimeZoneInfo OriginalZone { get { return bclZone; } }
+        public TimeZoneInfo OriginalZone { get; }
 
         /// <summary>
         /// Gets the display name associated with the time zone, as provided by the Base Class Library.
         /// </summary>
         /// <value>The display name associated with the time zone, as provided by the Base Class Library.</value>
-        public string DisplayName { get { return OriginalZone.DisplayName; } }
+        public string DisplayName => OriginalZone.DisplayName;
 
         private BclDateTimeZone(TimeZoneInfo bclZone, Offset minOffset, Offset maxOffset, IZoneIntervalMap map)
             : base(bclZone.Id, bclZone.SupportsDaylightSavingTime, minOffset, maxOffset)
         {
-            this.bclZone = bclZone;
+            this.OriginalZone = bclZone;
             this.map = map;
         }
 
@@ -102,56 +101,48 @@ namespace NodaTime.TimeZones
         {
             private static readonly DateTime MaxDate = DateTime.MaxValue.Date;
 
-            // The first instant on which this rule takes effect.
-            private readonly Instant start;
-            // The instant on which this rule expires.
-            private readonly Instant end;
-            private readonly Offset savings; // Do we need this?
             private readonly IZoneIntervalMap intervalMap;
-
-            private readonly ZoneInterval headInterval;
-            private readonly ZoneInterval tailInterval;
 
             /// <summary>
             /// Instant on which this rule starts.
             /// </summary>
-            internal Instant Start { get { return start; } }
+            internal Instant Start { get; }
 
             /// <summary>
             /// Instant on which this rule ends.
             /// </summary>
-            internal Instant End { get { return end; } }
+            internal Instant End { get; }
 
             /// <summary>
             /// Daylight savings, when applicable within this rule.
             /// </summary>
-            internal Offset Savings { get { return savings; } }
+            internal Offset Savings { get; }
 
             /// <summary>
             /// The ZoneInterval at the start of this rule, clamped to start at the start of this rule.
             /// </summary>
-            internal ZoneInterval HeadInterval { get { return headInterval; } }
+            internal ZoneInterval HeadInterval { get; }
 
             /// <summary>
             /// The ZoneInterval at the end of this rule, clamped to end at the end of this rule.
             /// </summary>
-            internal ZoneInterval TailInterval { get { return tailInterval; } }
+            internal ZoneInterval TailInterval { get; }
 
             internal BclAdjustmentRule(TimeZoneInfo zone, TimeZoneInfo.AdjustmentRule rule)
             {
                 var standardOffset = zone.BaseUtcOffset.ToOffset();
-                // Note: this extend back from DateTime.MinValue to start of time, even though the BCL can represent
+                // Note: this extends back from DateTime.MinValue to start of time, even though the BCL can represent
                 // as far back as 1AD. This is in the *spirit* of a rule which goes back that far.
-                start = rule.DateStart.ToLocalDateTime().WithOffset(standardOffset).ToInstant();
+                Start = rule.DateStart.ToLocalDateTime().WithOffset(standardOffset).ToInstant();
                 // The end instant (exclusive) is the end of the given date, so we need to add a day.
-                end = rule.DateEnd == MaxDate ? Instant.AfterMaxValue : rule.DateEnd.ToLocalDateTime().PlusDays(1).WithOffset(standardOffset).ToInstant();
-                savings = rule.DaylightDelta.ToOffset();
-                var daylightRecurrence = new ZoneRecurrence(zone.DaylightName, savings, ConvertTransition(rule.DaylightTransitionStart), int.MinValue, int.MaxValue);
+                End = rule.DateEnd == MaxDate ? Instant.AfterMaxValue : rule.DateEnd.ToLocalDateTime().PlusDays(1).WithOffset(standardOffset).ToInstant();
+                Savings = rule.DaylightDelta.ToOffset();
+                var daylightRecurrence = new ZoneRecurrence(zone.DaylightName, Savings, ConvertTransition(rule.DaylightTransitionStart), int.MinValue, int.MaxValue);
                 var standardRecurrence = new ZoneRecurrence(zone.StandardName, Offset.Zero, ConvertTransition(rule.DaylightTransitionEnd), int.MinValue, int.MaxValue);
                 intervalMap = new DaylightSavingsDateTimeZone("ignored", standardOffset, standardRecurrence, daylightRecurrence);
 
-                headInterval = intervalMap.GetZoneInterval(start.IsValid ? start : Instant.MinValue).WithStart(start);
-                tailInterval = intervalMap.GetZoneInterval(end.IsValid ? end - Duration.Epsilon : Instant.MaxValue).WithEnd(end);
+                HeadInterval = intervalMap.GetZoneInterval(Start.IsValid ? Start : Instant.MinValue).WithStart(Start);
+                TailInterval = intervalMap.GetZoneInterval(End.IsValid ? End - Duration.Epsilon : Instant.MaxValue).WithEnd(End);
             }
 
             // Converts a TimeZoneInfo "TransitionTime" to a "ZoneYearOffset" - the two correspond pretty closely.
@@ -167,7 +158,7 @@ namespace NodaTime.TimeZones
                 }
 
                 // Floating: 1st Sunday in March etc.
-                int dayOfWeek = (int) BclConversions.ToIsoDayOfWeek(transitionTime.DayOfWeek);
+                int dayOfWeek = (int)BclConversions.ToIsoDayOfWeek(transitionTime.DayOfWeek);
                 int dayOfMonth;
                 bool advance;
                 // "Last"
@@ -194,8 +185,8 @@ namespace NodaTime.TimeZones
             internal PartialZoneIntervalMap ToPartialZoneIntervalMap()
             {
                 return new PartialZoneIntervalMap(
-                    start.IsValid ? headInterval.End : Instant.BeforeMinValue,
-                    end.IsValid ? tailInterval.Start : Instant.AfterMaxValue,
+                    Start.IsValid ? HeadInterval.End : Instant.BeforeMinValue,
+                    End.IsValid ? TailInterval.Start : Instant.AfterMaxValue,
                     intervalMap);
             }
         }
@@ -209,47 +200,40 @@ namespace NodaTime.TimeZones
                 this.interval = interval;
             }
 
-            public ZoneInterval GetZoneInterval(Instant instant)
-            {
-                return interval;
-            }
+            public ZoneInterval GetZoneInterval(Instant instant) => interval;
         }
 
         private sealed class PartialZoneIntervalMap
         {
-            private readonly Instant start;
-            private readonly Instant end;
             private readonly IZoneIntervalMap map;
 
             /// <summary>
             /// Start of the interval during which this map is valid.
             /// </summary>
-            internal Instant Start { get { return start; } }
+            internal Instant Start { get; }
 
             /// <summary>
             /// End (exclusive) of the interval during which this map is valid.
             /// </summary>
-            internal Instant End { get { return end; } }
+            internal Instant End { get; }
 
             internal PartialZoneIntervalMap(Instant start, Instant end, IZoneIntervalMap map)
             {
                 // Allowing empty maps makes life simpler.
                 Preconditions.DebugCheckArgument(start <= end, "end",
                     "Invalid start/end combination: {0} - {1}", start, end);
-                this.start = start;
-                this.end = end;
+                this.Start = start;
+                this.End = end;
                 this.map = map;
             }
 
-            internal static PartialZoneIntervalMap ForZoneInterval(ZoneInterval interval)
-            {
-                return new PartialZoneIntervalMap(interval.RawStart, interval.RawEnd, new FixedZoneIntervalMap(interval));
-            }
+            internal static PartialZoneIntervalMap ForZoneInterval(ZoneInterval interval) =>
+                new PartialZoneIntervalMap(interval.RawStart, interval.RawEnd, new FixedZoneIntervalMap(interval));
 
             internal ZoneInterval GetZoneInterval(Instant instant)
             {
-                Preconditions.DebugCheckArgument(instant >= start && instant < end, "instant",
-                    "Value {0} was not in the range [{0}, {1})", instant, start, end);
+                Preconditions.DebugCheckArgument(instant >= Start && instant < End, "instant",
+                    "Value {0} was not in the range [{0}, {1})", instant, Start, End);
                 return map.GetZoneInterval(instant);
             }
         }
@@ -387,10 +371,7 @@ namespace NodaTime.TimeZones
         }
 
         /// <inheritdoc />
-        public override int GetHashCode()
-        {
-            return OriginalZone.GetHashCode();
-        }
+        public override int GetHashCode() => OriginalZone.GetHashCode();
     }
 }
 #endif

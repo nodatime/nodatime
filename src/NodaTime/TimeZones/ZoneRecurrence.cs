@@ -26,13 +26,15 @@ namespace NodaTime.TimeZones
     /// </remarks>
     internal sealed class ZoneRecurrence : IEquatable<ZoneRecurrence>
     {
-        private readonly int fromYear;
-        private readonly string name;
-        private readonly Offset savings;
-        private readonly int toYear;
         private readonly LocalInstant maxLocalInstant;
         private readonly LocalInstant minLocalInstant;
-        private readonly ZoneYearOffset yearOffset;
+
+        public string Name { get; }
+        public Offset Savings { get; }
+        public ZoneYearOffset YearOffset { get; }
+        public int FromYear { get; }
+        public int ToYear { get; }
+        public bool IsInfinite => ToYear == Int32.MaxValue;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ZoneRecurrence"/> class.
@@ -51,34 +53,20 @@ namespace NodaTime.TimeZones
                 "fromYear must be in the range [-9998, 9999] or Int32.MinValue");
             Preconditions.CheckArgument(toYear == int.MaxValue || (toYear >= -9998 && toYear <= 9999), "toYear",
                 "toYear must be in the range [-9998, 9999] or Int32.MaxValue");
-            this.name = name;
-            this.savings = savings;
-            this.yearOffset = yearOffset;
-            this.fromYear = fromYear;
-            this.toYear = toYear;
+            this.Name = name;
+            this.Savings = savings;
+            this.YearOffset = yearOffset;
+            this.FromYear = fromYear;
+            this.ToYear = toYear;
             this.minLocalInstant = fromYear == int.MinValue ? LocalInstant.BeforeMinValue : new LocalDateTime(fromYear, 1, 1, 0, 0).ToLocalInstant();
             this.maxLocalInstant = toYear == int.MaxValue ? LocalInstant.AfterMaxValue : new LocalDateTime(toYear, 12, 31, 0, 0).PlusNanoseconds(NodaConstants.NanosecondsPerDay - 1).ToLocalInstant();
         }
 
-        public string Name { get { return name; } }
-
-        public Offset Savings { get { return savings; } }
-
-        public ZoneYearOffset YearOffset { get { return yearOffset; } }
-
-        public int FromYear { get { return fromYear; } }
-
-        public int ToYear { get { return toYear; } }
-
-        public bool IsInfinite { get { return toYear == Int32.MaxValue; } }
-
         /// <summary>
         /// Returns a new recurrence which has the same values as this, but a different name.
         /// </summary>
-        internal ZoneRecurrence WithName(string newName)
-        {
-            return new ZoneRecurrence(newName, savings, yearOffset, fromYear, toYear);
-        }
+        internal ZoneRecurrence WithName(string newName) =>
+            new ZoneRecurrence(newName, Savings, YearOffset, FromYear, ToYear);
 
         #region IEquatable<ZoneRecurrence> Members
         /// <summary>
@@ -99,7 +87,7 @@ namespace NodaTime.TimeZones
             {
                 return true;
             }
-            return savings == other.savings && fromYear == other.fromYear && toYear == other.toYear && name == other.name && yearOffset.Equals(other.yearOffset);
+            return Savings == other.Savings && FromYear == other.FromYear && ToYear == other.ToYear && Name == other.Name && YearOffset.Equals(other.YearOffset);
         }
         #endregion
 
@@ -118,7 +106,7 @@ namespace NodaTime.TimeZones
         /// <returns>The next transition, or null if there is no next transition.</returns>
         internal Transition? Next(Instant instant, Offset standardOffset, Offset previousSavings)
         {
-            Offset ruleOffset = yearOffset.GetRuleOffset(standardOffset, previousSavings);
+            Offset ruleOffset = YearOffset.GetRuleOffset(standardOffset, previousSavings);
             Offset newOffset = standardOffset + Savings;
 
             LocalInstant safeLocal = instant.SafePlus(ruleOffset);
@@ -126,7 +114,7 @@ namespace NodaTime.TimeZones
             if (safeLocal < minLocalInstant)
             {
                 // Asked for a transition after some point before our first year: crop to first year.
-                targetYear = fromYear;
+                targetYear = FromYear;
             }
             // TODO(2.0): This should probably be >=, really. The maxLocalInstant is inclusive, but
             // we're being asked for a transition strictly after safeLocal. *Not* fixing this keeps
@@ -162,7 +150,7 @@ namespace NodaTime.TimeZones
                 targetYear = CalendarSystem.Iso.YearMonthDayCalculator.GetYear(safeLocal.DaysSinceEpoch, out ignoredDayOfYear);
             }
 
-            LocalInstant transition = yearOffset.GetOccurrenceForYear(targetYear).ToLocalInstant();
+            LocalInstant transition = YearOffset.GetOccurrenceForYear(targetYear).ToLocalInstant();
 
             Instant safeTransition = transition.SafeMinus(ruleOffset);
             if (safeTransition > instant)
@@ -172,7 +160,7 @@ namespace NodaTime.TimeZones
 
             // We've got a transition earlier than we were asked for. Try next year.
             targetYear++;
-            if (targetYear > toYear)
+            if (targetYear > ToYear)
             {
                 return null;
             }
@@ -182,7 +170,7 @@ namespace NodaTime.TimeZones
                 return new Transition(Instant.AfterMaxValue, newOffset);
             }
             // It's fine for this to be "end of time", and it can't be "start of time" because we're at least finding a transition in -9997.
-            safeTransition = yearOffset.GetOccurrenceForYear(targetYear).ToLocalInstant().SafeMinus(ruleOffset);
+            safeTransition = YearOffset.GetOccurrenceForYear(targetYear).ToLocalInstant().SafeMinus(ruleOffset);
             return new Transition(safeTransition, newOffset);
         }
 
@@ -195,7 +183,7 @@ namespace NodaTime.TimeZones
         /// <returns>The previous transition, or null if there is no previous transition.</returns>
         internal Transition? PreviousOrSame(Instant instant, Offset standardOffset, Offset previousSavings)
         {
-            Offset ruleOffset = yearOffset.GetRuleOffset(standardOffset, previousSavings);
+            Offset ruleOffset = YearOffset.GetRuleOffset(standardOffset, previousSavings);
             Offset newOffset = standardOffset + Savings;
 
             LocalInstant safeLocal = instant.SafePlus(ruleOffset);
@@ -203,7 +191,7 @@ namespace NodaTime.TimeZones
             if (safeLocal > maxLocalInstant)
             {
                 // Asked for a transition before some point after our last year: crop to last year.
-                targetYear = toYear;
+                targetYear = ToYear;
             }
             else if (safeLocal < minLocalInstant)
             {
@@ -236,7 +224,7 @@ namespace NodaTime.TimeZones
                 targetYear = CalendarSystem.Iso.YearMonthDayCalculator.GetYear(safeLocal.DaysSinceEpoch, out ignoredDayOfYear);
             }
 
-            LocalInstant transition = yearOffset.GetOccurrenceForYear(targetYear).ToLocalInstant();
+            LocalInstant transition = YearOffset.GetOccurrenceForYear(targetYear).ToLocalInstant();
 
             Instant safeTransition = transition.SafeMinus(ruleOffset);
             if (safeTransition <= instant)
@@ -246,7 +234,7 @@ namespace NodaTime.TimeZones
 
             // We've got a transition later than we were asked for. Try next year.
             targetYear--;
-            if (targetYear < fromYear)
+            if (targetYear < FromYear)
             {
                 return null;
             }
@@ -256,7 +244,7 @@ namespace NodaTime.TimeZones
                 return new Transition(Instant.BeforeMinValue, newOffset);
             }
             // It's fine for this to be "start of time", and it can't be "end of time" because we're at latest finding a transition in 9998.
-            safeTransition = yearOffset.GetOccurrenceForYear(targetYear).ToLocalInstant().SafeMinus(ruleOffset);
+            safeTransition = YearOffset.GetOccurrenceForYear(targetYear).ToLocalInstant().SafeMinus(ruleOffset);
             return new Transition(safeTransition, newOffset);
         }
 
@@ -301,8 +289,8 @@ namespace NodaTime.TimeZones
             YearOffset.Write(writer);
             // We'll never have time zones with recurrences between the beginning of time and 0AD,
             // so we can treat anything negative as 0, and go to the beginning of time when reading.
-            writer.WriteCount(Math.Max(fromYear, 0));
-            writer.WriteCount(toYear);
+            writer.WriteCount(Math.Max(FromYear, 0));
+            writer.WriteCount(ToYear);
         }
 
 
@@ -335,10 +323,7 @@ namespace NodaTime.TimeZones
         /// <c>true</c> if the specified <see cref="System.Object"/> is equal to this instance;
         /// otherwise, <c>false</c>.
         /// </returns>
-        public override bool Equals(object obj)
-        {
-            return Equals(obj as ZoneRecurrence);
-        }
+        public override bool Equals(object obj) => Equals(obj as ZoneRecurrence);
 
         /// <summary>
         /// Returns a hash code for this instance.
@@ -350,46 +335,41 @@ namespace NodaTime.TimeZones
         public override int GetHashCode()
         {
             int hash = HashCodeHelper.Initialize();
-            hash = HashCodeHelper.Hash(hash, savings);
-            hash = HashCodeHelper.Hash(hash, name);
-            hash = HashCodeHelper.Hash(hash, yearOffset);
+            hash = HashCodeHelper.Hash(hash, Savings);
+            hash = HashCodeHelper.Hash(hash, Name);
+            hash = HashCodeHelper.Hash(hash, YearOffset);
             return hash;
         }
 
+        // TODO(2.0): Use string interpolation.
         /// <summary>
         /// Returns a <see cref="System.String"/> that represents this instance.
         /// </summary>
         /// <returns>
         /// A <see cref="System.String"/> that represents this instance.
         /// </returns>
-        public override string ToString()
-        {
-            var builder = new StringBuilder();
-            builder.Append(Name);
-            builder.Append(" ").Append(Savings);
-            builder.Append(" ").Append(YearOffset);
-            builder.Append(" [").Append(fromYear).Append("-").Append(toYear).Append("]");
-            return builder.ToString();
-        }
+        public override string ToString() =>
+            new StringBuilder(Name)
+                .Append(" ").Append(Savings)
+                .Append(" ").Append(YearOffset)
+                .Append(" [").Append(FromYear).Append("-").Append(ToYear).Append("]")
+                .ToString();
+
         #endregion // Object overrides
 
         /// <summary>
         /// Returns either "this" (if this zone recurrence already has a from year of int.MinValue)
         /// or a new zone recurrence which is identical but with a from year of int.MinValue.
         /// </summary>
-        internal ZoneRecurrence ToStartOfTime()
-        {
-            return fromYear == int.MinValue ? this : new ZoneRecurrence(name, savings, yearOffset, int.MinValue, toYear);
-        }
+        internal ZoneRecurrence ToStartOfTime() =>
+            FromYear == int.MinValue ? this : new ZoneRecurrence(Name, Savings, YearOffset, int.MinValue, ToYear);
 
         /// <summary>
         /// Returns either "this" (if this zone recurrence is already infinite)
         /// or a new zone recurrence which is identical but with a from year of int.MinValue
         /// and an end year of int.MaxValue.
         /// </summary>
-        internal ZoneRecurrence ToInfinity()
-        {
-            return IsInfinite ? this : new ZoneRecurrence(name, savings, yearOffset, int.MinValue, int.MaxValue);
-        }
+        internal ZoneRecurrence ToInfinity() =>
+            IsInfinite ? this : new ZoneRecurrence(Name, Savings, YearOffset, int.MinValue, int.MaxValue);
     }
 }

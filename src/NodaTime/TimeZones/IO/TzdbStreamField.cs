@@ -14,24 +14,19 @@ namespace NodaTime.TimeZones.IO
     /// </summary>
     internal sealed class TzdbStreamField
     {
-        private readonly TzdbStreamFieldId id;
         private readonly byte[] data;
+        internal TzdbStreamFieldId Id { get; }
 
         private TzdbStreamField(TzdbStreamFieldId id, byte[] data)
         {
-            this.id = id;
+            this.Id = id;
             this.data = data;
         }
-
-        internal TzdbStreamFieldId Id { get { return id; } }
 
         /// <summary>
         /// Creates a new read-only stream over the data for this field.
         /// </summary>
-        internal Stream CreateStream()
-        {
-            return new MemoryStream(data, false);
-        }
+        internal Stream CreateStream() => new MemoryStream(data, false);
 
         internal T ExtractSingleValue<T>(Func<DateTimeZoneReader, T> readerFunction, IList<string> stringPool)
         {

@@ -19,66 +19,67 @@ namespace NodaTime.TimeZones.IO
         private static readonly Dictionary<TzdbStreamFieldId, Action<Builder, TzdbStreamField>> FieldHanders =
             new Dictionary<TzdbStreamFieldId, Action<Builder, TzdbStreamField>>
         {
-            { TzdbStreamFieldId.StringPool, (builder, field) => builder.HandleStringPoolField(field) },
-            { TzdbStreamFieldId.TimeZone, (builder, field) => builder.HandleZoneField(field) },
-            { TzdbStreamFieldId.TzdbIdMap, (builder, field) => builder.HandleTzdbIdMapField(field) },
-            { TzdbStreamFieldId.TzdbVersion, (builder, field) => builder.HandleTzdbVersionField(field) },
-            { TzdbStreamFieldId.CldrSupplementalWindowsZones, (builder, field) => builder.HandleSupplementalWindowsZonesField(field) },
-            { TzdbStreamFieldId.WindowsAdditionalStandardNameToIdMapping, (builder, field) => builder.HandleWindowsAdditionalStandardNameToIdMappingField(field) },
-            { TzdbStreamFieldId.ZoneLocations, (builder, field) => builder.HandleZoneLocationsField(field) }
+            [TzdbStreamFieldId.StringPool] = (builder, field) => builder.HandleStringPoolField(field),
+            [TzdbStreamFieldId.TimeZone] = (builder, field) => builder.HandleZoneField(field),
+            [TzdbStreamFieldId.TzdbIdMap] = (builder, field) => builder.HandleTzdbIdMapField(field),
+            [TzdbStreamFieldId.TzdbVersion] = (builder, field) => builder.HandleTzdbVersionField(field),
+            [TzdbStreamFieldId.CldrSupplementalWindowsZones] = (builder, field) => builder.HandleSupplementalWindowsZonesField(field),
+            [TzdbStreamFieldId.WindowsAdditionalStandardNameToIdMapping] = (builder, field) => builder.HandleWindowsAdditionalStandardNameToIdMappingField(field),
+            [TzdbStreamFieldId.ZoneLocations] = (builder, field) => builder.HandleZoneLocationsField(field)
         };
 
         private const int AcceptedVersion = 0;
 
         private readonly IList<string> stringPool;
-        private readonly string tzdbVersion;
-        private readonly IDictionary<string, string> tzdbIdMap;
-        private readonly WindowsZones windowsMapping;
         private readonly IDictionary<string, TzdbStreamField> zoneFields;
-        private readonly IList<TzdbZoneLocation> zoneLocations;
-        private readonly IDictionary<string, string> windowsAdditionalStandardNameToIdMapping;
-
-        private TzdbStreamData(Builder builder)
-        {
-            stringPool = CheckNotNull(builder.stringPool, "string pool");
-            tzdbIdMap = CheckNotNull(builder.tzdbIdMap, "TZDB alias map");
-            tzdbVersion = CheckNotNull(builder.tzdbVersion, "TZDB version");
-            windowsMapping = CheckNotNull(builder.windowsMapping, "CLDR Supplemental Windows Zones");
-            zoneFields = builder.zoneFields;
-            zoneLocations = builder.zoneLocations;
-
-            // Add in the canonical IDs as mappings to themselves.
-            foreach (var id in zoneFields.Keys)
-            {
-                tzdbIdMap[id] = id;
-            }
-
-            windowsAdditionalStandardNameToIdMapping = CheckNotNull(builder.windowsAdditionalStandardNameToIdMapping,
-                "Windows additional standard name to ID mapping");
-        }
 
         /// <summary>
         /// Returns the TZDB version string.
         /// </summary>
-        [NotNull] public string TzdbVersion { get { return tzdbVersion; } }
+        [NotNull] public string TzdbVersion { get; }
 
         /// <summary>
         /// Returns the TZDB ID dictionary (alias to canonical ID). This needn't be read-only; it won't be
         /// exposed directly.
         /// </summary>
-        [NotNull] public IDictionary<string, string> TzdbIdMap { get { return tzdbIdMap; } }
+        [NotNull] public IDictionary<string, string> TzdbIdMap { get; }
 
         /// <summary>
         /// Returns the Windows mapping dictionary. (As the type is immutable, it can be exposed directly
         /// to callers.)
         /// </summary>
-        [NotNull] public WindowsZones WindowsMapping { get { return windowsMapping; } }
+        [NotNull] public WindowsZones WindowsMapping { get; }
 
         /// <summary>
         /// Returns the zone locations for the source, or null if no location data is available.
-        /// This needn't be read-only; it won't be exposed directly.
+        /// This needn't be a read-only collection; it won't be exposed directly.
         /// </summary>
-        [NotNull] public IList<TzdbZoneLocation> ZoneLocations { get { return zoneLocations; } }
+        public IList<TzdbZoneLocation> ZoneLocations { get; }
+
+        /// <summary>
+        /// Additional mappings from Windows standard name to TZDB ID. Primarily used in
+        /// the PCL build, where we can't get at the system ID. This never returns null.
+        /// </summary>
+        public IDictionary<string, string> WindowsAdditionalStandardNameToIdMapping { get; }
+
+        private TzdbStreamData(Builder builder)
+        {
+            stringPool = CheckNotNull(builder.stringPool, "string pool");
+            TzdbIdMap = CheckNotNull(builder.tzdbIdMap, "TZDB alias map");
+            TzdbVersion = CheckNotNull(builder.tzdbVersion, "TZDB version");
+            WindowsMapping = CheckNotNull(builder.windowsMapping, "CLDR Supplemental Windows Zones");
+            zoneFields = builder.zoneFields;
+            ZoneLocations = builder.zoneLocations;
+
+            // Add in the canonical IDs as mappings to themselves.
+            foreach (var id in zoneFields.Keys)
+            {
+                TzdbIdMap[id] = id;
+            }
+
+            WindowsAdditionalStandardNameToIdMapping = CheckNotNull(builder.windowsAdditionalStandardNameToIdMapping,
+                "Windows additional standard name to ID mapping");
+        }
 
         /// <summary>
         /// Creates the <see cref="DateTimeZone"/> for the given canonical ID, which will definitely
@@ -105,12 +106,6 @@ namespace NodaTime.TimeZones.IO
                 }
             }
         }
-
-        /// <summary>
-        /// Additional mappings from Windows standard name to TZDB ID. Primarily used in
-        /// the PCL build, where we can't get at the system ID. This never returns null.
-        /// </summary>
-        public IDictionary<string, string> WindowsAdditionalStandardNameToIdMapping { get { return windowsAdditionalStandardNameToIdMapping; } }
 
         // Like Preconditions.CheckNotNull, but specifically for incomplete data.
         private static T CheckNotNull<T>(T input, string name) where T : class

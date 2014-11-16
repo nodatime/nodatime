@@ -17,13 +17,143 @@ namespace NodaTime.TimeZones
     [Immutable]
     public sealed class ZoneInterval : IEquatable<ZoneInterval>
     {
-        private readonly Instant end;
-        private readonly LocalInstant localEnd;
+
+        /// <summary>
+        /// Returns the underlying start instant of this zone interval. If the zone interval extends to the
+        /// beginning of time, the return value will be <see cref="Instant.BeforeMinValue"/>; this value
+        /// should *not* be exposed publicly.
+        /// </summary>
+        internal Instant RawStart { get; }
+
+        /// <summary>
+        /// Returns the underlying end instant of this zone interval. If the zone interval extends to the
+        /// end of time, the return value will be <see cref="Instant.AfterMaxValue"/>; this value
+        /// should *not* be exposed publicly.
+        /// </summary>
+        internal Instant RawEnd { get; }
+
         private readonly LocalInstant localStart;
-        private readonly string name;
-        private readonly Offset wallOffset;
-        private readonly Offset savings;
-        private readonly Instant start;
+        private readonly LocalInstant localEnd;
+
+        /// <summary>
+        /// Gets the standard offset for this period. This is the offset without any daylight savings
+        /// contributions.
+        /// </summary>
+        /// <remarks>
+        /// This is effectively <c>Offset - Savings</c>.
+        /// </remarks>
+        /// <value>The base Offset.</value>
+        public Offset StandardOffset
+        {
+            [DebuggerStepThrough] get { return WallOffset - Savings; }
+        }
+
+        /// <summary>
+        /// Gets the duration of this zone interval.
+        /// </summary>
+        /// <remarks>
+        /// This is effectively <c>End - Start</c>.
+        /// </remarks>
+        /// <value>The Duration of this zone interval.</value>
+        /// <exception cref="InvalidOperationException">This zone extends to the start or end of time.</exception>
+        public Duration Duration
+        {
+            [DebuggerStepThrough] get { return End - Start; }
+        }
+
+        /// <summary>
+        /// Returns <c>true</c> if this zone interval has a fixed start point, or <c>false</c> if it
+        /// extends to the beginning of time.
+        /// </summary>
+        /// <value><c>true</c> if this interval has a fixed start point, or <c>false</c> if it
+        /// extends to the beginning of time.</value>
+        public bool HasStart => RawStart.IsValid;
+        /// <summary>
+        /// Gets the last Instant (exclusive) that the Offset applies.
+        /// </summary>
+        /// <value>The last Instant (exclusive) that the Offset applies.</value>
+        /// <exception cref="InvalidOperationException">The zone interval extends to the end of time</exception>
+        public Instant End
+        {
+            [DebuggerStepThrough]
+            get
+            {
+                Preconditions.CheckState(RawEnd.IsValid, "Zone interval extends to the end of time");
+                return RawEnd;
+            }
+        }
+
+        /// <summary>
+        /// Returns <c>true</c> if this zone interval has a fixed end point, or <c>false</c> if it
+        /// extends to the end of time.
+        /// </summary>
+        /// <value><c>true</c> if this interval has a fixed end point, or <c>false</c> if it
+        /// extends to the end of time.</value>
+        public bool HasEnd => RawEnd.IsValid;
+
+        // TODO(2.0): Consider whether we need some way of checking whether IsoLocalStart/End will throw.
+        // Clients can check HasStart/HasEnd for infinity, but what about unrepresentable local values?
+
+        /// <summary>
+        /// Gets the local start time of the interval, as a <see cref="LocalDateTime" />
+        /// in the ISO calendar.
+        /// </summary>
+        /// <value>The local start time of the interval in the ISO calendar.</value>
+        /// <exception cref="OverflowException">The interval starts too early to represent as a `LocalDateTime`.</exception>
+        /// <exception cref="InvalidOperationException">The interval extends to the start of time.</exception>
+        public LocalDateTime IsoLocalStart
+        {
+            // Use the Start property to trigger the appropriate end-of-time exception.
+            // Call Plus to trigger an appropriate out-of-range exception.
+            [DebuggerStepThrough] get { return new LocalDateTime(Start.Plus(WallOffset)); }
+        }
+
+        /// <summary>
+        /// Gets the local end time of the interval, as a <see cref="LocalDateTime" />
+        /// in the ISO calendar.
+        /// </summary>
+        /// <value>The local end time of the interval in the ISO calendar.</value>
+        /// <exception cref="OverflowException">The interval ends too late to represent as a `LocalDateTime`.</exception>
+        /// <exception cref="InvalidOperationException">The interval extends to the end of time.</exception>
+        public LocalDateTime IsoLocalEnd
+        {
+            [DebuggerStepThrough]
+            // Use the End property to trigger the appropriate end-of-time exception.
+            // Call Plus to trigger an appropriate out-of-range exception.
+            get { return new LocalDateTime(End.Plus(WallOffset)); }
+        }
+
+        /// <summary>
+        /// Gets the name of this offset period (e.g. PST or PDT).
+        /// </summary>
+        /// <value>The name of this offset period (e.g. PST or PDT).</value>
+        public string Name { [DebuggerStepThrough] get; }
+
+        /// <summary>
+        /// Gets the offset from UTC for this period. This includes any daylight savings value.
+        /// </summary>
+        /// <value>The offset from UTC for this period.</value>
+        public Offset WallOffset { [DebuggerStepThrough] get; }
+
+        /// <summary>
+        /// Gets the daylight savings value for this period.
+        /// </summary>
+        /// <value>The savings value.</value>
+        public Offset Savings { [DebuggerStepThrough] get; }
+
+        /// <summary>
+        /// Gets the first Instant that the Offset applies.
+        /// </summary>
+        /// <value>The first Instant that the Offset applies.</value>
+        public Instant Start
+        {
+            [DebuggerStepThrough]
+            get
+            {
+                Preconditions.CheckState(RawStart.IsValid, "Zone interval extends to the beginning of time");
+                return RawStart;
+            }
+        }
 
         // TODO(2.0): Consider changing the fourth parameter of the constructors to accept standard time rather than the wall offset. It's very
         // inconsistent with everything else...
@@ -59,11 +189,11 @@ namespace NodaTime.TimeZones
         {
             Preconditions.CheckNotNull(name, "name");
             Preconditions.CheckArgument(start < end, "start", "The start Instant must be less than the end Instant");
-            this.name = name;
-            this.start = start;
-            this.end = end;
-            this.wallOffset = wallOffset;
-            this.savings = savings;
+            this.Name = name;
+            this.RawStart = start;
+            this.RawEnd = end;
+            this.WallOffset = wallOffset;
+            this.Savings = savings;
             // Work out the corresponding local instants, taking care to "go infinite" appropriately.
             localStart = start.SafePlus(wallOffset);
             localEnd = end.SafePlus(wallOffset);
@@ -74,7 +204,7 @@ namespace NodaTime.TimeZones
         /// </summary>
         internal ZoneInterval WithStart(Instant newStart)
         {
-            return new ZoneInterval(name, newStart, end, wallOffset, savings);
+            return new ZoneInterval(Name, newStart, RawEnd, WallOffset, Savings);
         }
 
         /// <summary>
@@ -82,153 +212,8 @@ namespace NodaTime.TimeZones
         /// </summary>
         internal ZoneInterval WithEnd(Instant newEnd)
         {
-            return new ZoneInterval(name, start, newEnd, wallOffset, savings);
+            return new ZoneInterval(Name, RawStart, newEnd, WallOffset, Savings);
         }
-
-        #region Properties
-        /// <summary>
-        /// Gets the standard offset for this period. This is the offset without any daylight savings
-        /// contributions.
-        /// </summary>
-        /// <remarks>
-        /// This is effectively <c>Offset - Savings</c>.
-        /// </remarks>
-        /// <value>The base Offset.</value>
-        public Offset StandardOffset
-        {
-            [DebuggerStepThrough] get { return WallOffset - Savings; }
-        }
-
-        /// <summary>
-        /// Gets the duration of this zone interval.
-        /// </summary>
-        /// <remarks>
-        /// This is effectively <c>End - Start</c>.
-        /// </remarks>
-        /// <value>The Duration of this zone interval.</value>
-        /// <exception cref="InvalidOperationException">This zone extends to the start or end of time.</exception>
-        public Duration Duration
-        {
-            [DebuggerStepThrough] get { return End - Start; }
-        }
-
-        /// <summary>
-        /// Gets the last Instant (exclusive) that the Offset applies.
-        /// </summary>
-        /// <value>The last Instant (exclusive) that the Offset applies.</value>
-        /// <exception cref="InvalidOperationException">The zone interval extends to the end of time</exception>
-        public Instant End
-        {
-            [DebuggerStepThrough]
-            get
-            {
-                Preconditions.CheckState(end.IsValid, "Zone interval extends to the end of time");
-                return end;
-            }
-        }
-
-        /// <summary>
-        /// Returns the underlying end instant of this zone interval. If the zone interval extends to the
-        /// end of time, the return value will be <see cref="Instant.AfterMaxValue"/>; this value
-        /// should *not* be exposed publicly.
-        /// </summary>
-        internal Instant RawEnd { get { return end; } }
-
-        /// <summary>
-        /// Returns <c>true</c> if this zone interval has a fixed end point, or <c>false</c> if it
-        /// extends to the end of time.
-        /// </summary>
-        /// <value><c>true</c> if this interval has a fixed end point, or <c>false</c> if it
-        /// extends to the end of time.</value>
-        public bool HasEnd { get { return end.IsValid; } }
-
-        // TODO(2.0): Consider whether we need some way of checking whether IsoLocalStart/End will throw.
-        // Clients can check HasStart/HasEnd for infinity, but what about unrepresentable local values?
-
-        /// <summary>
-        /// Gets the local start time of the interval, as a <see cref="LocalDateTime" />
-        /// in the ISO calendar.
-        /// </summary>
-        /// <value>The local start time of the interval in the ISO calendar.</value>
-        /// <exception cref="OverflowException">The interval starts too early to represent as a `LocalDateTime`.</exception>
-        /// <exception cref="InvalidOperationException">The interval extends to the start of time.</exception>
-        public LocalDateTime IsoLocalStart
-        {
-            // Use the Start property to trigger the appropriate end-of-time exception.
-            // Call Plus to trigger an appropriate out-of-range exception.
-            [DebuggerStepThrough] get { return new LocalDateTime(Start.Plus(wallOffset)); }
-        }
-
-        /// <summary>
-        /// Gets the local end time of the interval, as a <see cref="LocalDateTime" />
-        /// in the ISO calendar.
-        /// </summary>
-        /// <value>The local end time of the interval in the ISO calendar.</value>
-        /// <exception cref="OverflowException">The interval ends too late to represent as a `LocalDateTime`.</exception>
-        /// <exception cref="InvalidOperationException">The interval extends to the end of time.</exception>
-        public LocalDateTime IsoLocalEnd
-        {
-            [DebuggerStepThrough]
-            // Use the End property to trigger the appropriate end-of-time exception.
-            // Call Plus to trigger an appropriate out-of-range exception.
-            get { return new LocalDateTime(End.Plus(wallOffset)); }
-        }
-        /// <summary>
-        /// Gets the name of this offset period (e.g. PST or PDT).
-        /// </summary>
-        /// <value>The name of this offset period (e.g. PST or PDT).</value>
-        public string Name
-        {
-            [DebuggerStepThrough] get { return name; }
-        }
-
-        /// <summary>
-        /// Gets the offset from UTC for this period. This includes any daylight savings value.
-        /// </summary>
-        /// <value>The offset from UTC for this period.</value>
-        public Offset WallOffset
-        {
-            [DebuggerStepThrough] get { return wallOffset; }
-        }
-
-        /// <summary>
-        /// Gets the daylight savings value for this period.
-        /// </summary>
-        /// <value>The savings value.</value>
-        public Offset Savings
-        {
-            [DebuggerStepThrough] get { return savings; }
-        }
-
-        /// <summary>
-        /// Gets the first Instant that the Offset applies.
-        /// </summary>
-        /// <value>The first Instant that the Offset applies.</value>
-        public Instant Start
-        {
-            [DebuggerStepThrough]
-            get
-            {
-                Preconditions.CheckState(start.IsValid, "Zone interval extends to the beginning of time");
-                return start;
-            }
-        }
-
-        /// <summary>
-        /// Returns the underlying start instant of this zone interval. If the zone interval extends to the
-        /// beginning of time, the return value will be <see cref="Instant.BeforeMinValue"/>; this value
-        /// should *not* be exposed publicly.
-        /// </summary>
-        internal Instant RawStart { get { return start; } }
-
-        /// <summary>
-        /// Returns <c>true</c> if this zone interval has a fixed start point, or <c>false</c> if it
-        /// extends to the beginning of time.
-        /// </summary>
-        /// <value><c>true</c> if this interval has a fixed start point, or <c>false</c> if it
-        /// extends to the beginning of time.</value>
-        public bool HasStart { get { return start.IsValid; } }
-        #endregion // Properties
 
         #region Contains
         /// <summary>
@@ -243,10 +228,7 @@ namespace NodaTime.TimeZones
         ///   <c>true</c> if this period contains the given Instant in its range; otherwise, <c>false</c>.
         /// </returns>
         [DebuggerStepThrough]
-        public bool Contains(Instant instant)
-        {
-            return start <= instant && instant < end;
-        }
+        public bool Contains(Instant instant) => RawStart <= instant && instant < RawEnd;
 
         /// <summary>
         ///   Determines whether this period contains the given LocalInstant in its range.
@@ -256,10 +238,8 @@ namespace NodaTime.TimeZones
         ///   <c>true</c> if this period contains the given LocalInstant in its range; otherwise, <c>false</c>.
         /// </returns>
         [DebuggerStepThrough]
-        internal bool Contains(LocalInstant localInstant)
-        {
-            return localStart <= localInstant && localInstant < localEnd;
-        }
+        internal bool Contains(LocalInstant localInstant) => localStart <= localInstant && localInstant < localEnd;
+
         #endregion // Contains
 
         #region IEquatable<ZoneInterval> Members
@@ -282,7 +262,7 @@ namespace NodaTime.TimeZones
             {
                 return true;
             }
-            return name == other.Name && RawStart == other.RawStart && RawEnd == other.RawEnd
+            return Name == other.Name && RawStart == other.RawStart && RawEnd == other.RawEnd
                 && WallOffset == other.WallOffset && Savings == other.Savings;
         }
         #endregion
@@ -297,10 +277,7 @@ namespace NodaTime.TimeZones
         /// <param name="obj">The <see cref="T:System.Object" /> to compare with the current <see cref="T:System.Object" />.</param>
         /// <filterpriority>2</filterpriority>
         [DebuggerStepThrough]
-        public override bool Equals(object obj)
-        {
-            return Equals(obj as ZoneInterval);
-        }
+        public override bool Equals(object obj) => Equals(obj as ZoneInterval);
 
         /// <summary>
         ///   Serves as a hash function for a particular type.
@@ -326,14 +303,13 @@ namespace NodaTime.TimeZones
         /// <returns>
         ///   A <see cref="System.String" /> that represents this instance.
         /// </returns>
-        public override string ToString()
-        {
-            return string.Format("{0}: [{1}, {2}) {3} ({4})",
+        public override string ToString() =>
+            string.Format("{0}: [{1}, {2}) {3} ({4})",
                 Name,
                 HasStart ? Start.ToString() : "StartOfTime",
                 HasEnd ? End.ToString() : "EndOfTime",
                 WallOffset, Savings);
-        }
+
         #endregion // object Overrides
     }
 }

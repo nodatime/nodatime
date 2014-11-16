@@ -106,14 +106,11 @@ namespace NodaTime.TimeZones
             // than two zone intervals in a period. It halved the performance...
             private sealed class HashCacheNode
             {
-                private readonly ZoneInterval interval;
-                internal ZoneInterval Interval { get { return interval; } }
+                internal ZoneInterval Interval { get; }
 
-                private readonly int period;
-                internal int Period { get { return period; } }
+                internal int Period { get; }
 
-                private readonly HashCacheNode previous;
-                internal HashCacheNode Previous { get { return previous; } }
+                internal HashCacheNode Previous { get; }
 
                 /// <summary>
                 /// Creates a hash table node with all the information for this period.
@@ -153,9 +150,9 @@ namespace NodaTime.TimeZones
                 /// <param name="previous">The previous <see cref="HashCacheNode"/> node.</param>
                 private HashCacheNode(ZoneInterval interval, int period, HashCacheNode previous)
                 {
-                    this.period = period;
-                    this.interval = interval;
-                    this.previous = previous;
+                    this.Period = period;
+                    this.Interval = interval;
+                    this.Previous = previous;
                 }
             }
             #endregion
