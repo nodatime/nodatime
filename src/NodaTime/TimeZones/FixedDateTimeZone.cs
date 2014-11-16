@@ -82,18 +82,13 @@ namespace NodaTime.TimeZones
         /// <summary>
         /// Gets the zone interval for the given instant. This implementation always returns the same interval.
         /// </summary>
-        public override ZoneInterval GetZoneInterval(Instant instant)
-        {
-            return interval;
-        }
+        public override ZoneInterval GetZoneInterval(Instant instant) => interval;
 
         /// <summary>
         /// Override for efficiency: we know we'll always have an unambiguous mapping for any LocalDateTime.
         /// </summary>
-        public override ZoneLocalMapping MapLocal(LocalDateTime localDateTime)
-        {
-            return new ZoneLocalMapping(this, localDateTime, interval, interval, 1);
-        }
+        public override ZoneLocalMapping MapLocal(LocalDateTime localDateTime) =>
+            new ZoneLocalMapping(this, localDateTime, interval, interval, 1);
 
         /// <summary>
         /// Returns the offset from UTC, where a positive duration indicates that local time is later
@@ -103,10 +98,7 @@ namespace NodaTime.TimeZones
         /// <returns>
         /// The offset from UTC at the specified instant.
         /// </returns>
-        public override Offset GetUtcOffset(Instant instant)
-        {
-            return offset;
-        }
+        public override Offset GetUtcOffset(Instant instant) => offset;
 
         /// <summary>
         /// Writes the time zone to the specified writer.
@@ -132,12 +124,8 @@ namespace NodaTime.TimeZones
             return new FixedDateTimeZone(id, offset);
         }
 
-
-        protected override bool EqualsImpl(DateTimeZone other)
-        {
-            FixedDateTimeZone otherZone = (FixedDateTimeZone) other;
-            return offset == otherZone.offset && Id == other.Id;
-        }
+        protected override bool EqualsImpl(DateTimeZone other) =>
+            offset == ((FixedDateTimeZone)other).offset && Id == other.Id;
 
         public override int GetHashCode()
         {
@@ -153,9 +141,6 @@ namespace NodaTime.TimeZones
         /// <returns>
         /// A <see cref="System.String"/> that represents this instance.
         /// </returns>
-        public override string ToString()
-        {
-            return Id;
-        }
+        public override string ToString() => Id;
     }
 }

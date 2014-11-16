@@ -33,7 +33,7 @@ namespace NodaTime.TimeZones
         /// Gets the <see cref="TzdbDateTimeZoneSource"/> initialised from resources within the NodaTime assembly.
         /// </summary>
         /// <value>The source initialised from resources within the NodaTime assembly.</value>
-        public static TzdbDateTimeZoneSource Default { get { return DefaultHolder.builtin; } }
+        public static TzdbDateTimeZoneSource Default => DefaultHolder.builtin;
 
         // Class to enable lazy initialization of the default instance.
         private static class DefaultHolder
@@ -57,25 +57,61 @@ namespace NodaTime.TimeZones
         /// and for windows mappings.
         /// </summary>
         private readonly TzdbStreamData source;
-        /// <summary>
-        /// Map from ID (possibly an alias) to canonical ID. This is a read-only wrapper,
-        /// and can be returned directly to clients.
-        /// </summary>
-        private readonly IDictionary<string, string> timeZoneIdMap;
-        /// <summary>
-        /// Lookup from canonical ID to aliases.
-        /// </summary>
-        private readonly ILookup<string, string> aliases;
+
         /// <summary>
         /// Composite version ID including TZDB and Windows mapping version strings.
         /// </summary>
         private readonly string version;
+
         /// <summary>
-        /// List of zone locations, if any. This is a read-only wrapper, and can be
-        /// returned directly to clients. It may be null, if the underlying data source
-        /// has no location data.
+        /// Gets a lookup from canonical time zone ID (e.g. "Europe/London") to a group of aliases for that time zone
+        /// (e.g. {"Europe/Belfast", "Europe/Guernsey", "Europe/Jersey", "Europe/Isle_of_Man", "GB", "GB-Eire"}).
         /// </summary>
-        private readonly IList<TzdbZoneLocation> zoneLocations;
+        /// <remarks>
+        /// The group of values for a key never contains the canonical ID, only aliases. Any time zone
+        /// ID which is itself an alias or has no aliases linking to it will not be present in the lookup.
+        /// The aliases within a group are returned in alphabetical (ordinal) order.
+        /// </remarks>
+        /// <value>A lookup from canonical ID to the aliases of that ID.</value>
+        public ILookup<string, string> Aliases { get; }
+
+        /// <summary>
+        /// Returns a read-only map from time zone ID to the canonical ID. For example, the key "Europe/Jersey"
+        /// would be associated with the value "Europe/London".
+        /// </summary>
+        /// <remarks>
+        /// <para>This map contains an entry for every ID returned by <see cref="GetIds"/>, where
+        /// canonical IDs map to themselves.</para>
+        /// <para>The returned map is read-only; any attempts to call a mutating method will throw
+        /// <see cref="NotSupportedException" />.</para>
+        /// </remarks>
+        /// <value>A map from time zone ID to the canonical ID.</value>
+        [NotNull]
+        public IDictionary<string, string> CanonicalIdMap { get; }
+
+        /// <summary>
+        /// Gets a read-only list of zone locations known to this source, or null if the original source data
+        /// does not include zone locations.
+        /// </summary>
+        /// <remarks>
+        /// Every zone location's time zone ID is guaranteed to be valid within this source (assuming the source
+        /// has been validated).
+        /// </remarks>
+        /// <value>A read-only list of zone locations known to this source.</value>
+        public IList<TzdbZoneLocation> ZoneLocations { get; }
+
+        /// <inheritdoc />
+        /// <remarks>
+        /// <para>
+        /// This source returns a string such as "TZDB: 2013b (mapping: 8274)" corresponding to the versions of the tz
+        /// database and the CLDR Windows zones mapping file.
+        /// </para>
+        /// <para>
+        /// Note that there is no need to parse this string to extract any of the above information, as it is available
+        /// directly from the <see cref="TzdbVersion"/> and <see cref="WindowsZones.Version"/> properties.
+        /// </para>
+        /// </remarks>
+        public string VersionId => "TZDB: " + version;
 
         /// <summary>
         /// Creates an instance from a stream in the custom Noda Time format. The stream must be readable.
@@ -106,21 +142,21 @@ namespace NodaTime.TimeZones
         {
             Preconditions.CheckNotNull(source, "source");
             this.source = source;
-            timeZoneIdMap = new NodaReadOnlyDictionary<string, string>(source.TzdbIdMap);
-            aliases = timeZoneIdMap
+            CanonicalIdMap = new NodaReadOnlyDictionary<string, string>(source.TzdbIdMap);
+            Aliases = CanonicalIdMap
                 .Where(pair => pair.Key != pair.Value)
                 .OrderBy(pair => pair.Key, StringComparer.Ordinal)
                 .ToLookup(pair => pair.Value, pair => pair.Key);
             version = source.TzdbVersion + " (mapping: " + source.WindowsMapping.Version + ")";
             var originalZoneLocations = source.ZoneLocations;
-            zoneLocations = originalZoneLocations == null ? null : new ReadOnlyCollection<TzdbZoneLocation>(originalZoneLocations);
+            ZoneLocations = originalZoneLocations == null ? null : new ReadOnlyCollection<TzdbZoneLocation>(originalZoneLocations);
         }
 
         /// <inheritdoc />
         public DateTimeZone ForId(string id)
         {
             string canonicalId;
-            if (!timeZoneIdMap.TryGetValue(Preconditions.CheckNotNull(id, "id"), out canonicalId))
+            if (!CanonicalIdMap.TryGetValue(Preconditions.CheckNotNull(id, "id"), out canonicalId))
             {
                 throw new ArgumentException("Time zone with ID " + id + " not found in source " + version, "id");
             }
@@ -129,23 +165,7 @@ namespace NodaTime.TimeZones
 
         /// <inheritdoc />
         [DebuggerStepThrough]
-        public IEnumerable<string> GetIds()
-        {
-            return timeZoneIdMap.Keys;
-        }
-
-        /// <inheritdoc />
-        /// <remarks>
-        /// <para>
-        /// This source returns a string such as "TZDB: 2013b (mapping: 8274)" corresponding to the versions of the tz
-        /// database and the CLDR Windows zones mapping file.
-        /// </para>
-        /// <para>
-        /// Note that there is no need to parse this string to extract any of the above information, as it is available
-        /// directly from the <see cref="TzdbVersion"/> and <see cref="WindowsZones.Version"/> properties.
-        /// </para>
-        /// </remarks>
-        public string VersionId { get { return "TZDB: " + version; } }
+        public IEnumerable<string> GetIds() => CanonicalIdMap.Keys;
 
         /// <inheritdoc />
         /// <param name="zone">The BCL time zone, which must be a known system time zone.</param>
@@ -235,41 +255,6 @@ namespace NodaTime.TimeZones
         }
 
         /// <summary>
-        /// Gets a lookup from canonical time zone ID (e.g. "Europe/London") to a group of aliases for that time zone
-        /// (e.g. {"Europe/Belfast", "Europe/Guernsey", "Europe/Jersey", "Europe/Isle_of_Man", "GB", "GB-Eire"}).
-        /// </summary>
-        /// <remarks>
-        /// The group of values for a key never contains the canonical ID, only aliases. Any time zone
-        /// ID which is itself an alias or has no aliases linking to it will not be present in the lookup.
-        /// The aliases within a group are returned in alphabetical (ordinal) order.
-        /// </remarks>
-        /// <value>A lookup from canonical ID to the aliases of that ID.</value>
-        public ILookup<string, string> Aliases { get { return aliases; } }
-
-        /// <summary>
-        /// Returns a read-only map from time zone ID to the canonical ID. For example, the key "Europe/Jersey"
-        /// would be associated with the value "Europe/London".
-        /// </summary>
-        /// <remarks>
-        /// <para>This map contains an entry for every ID returned by <see cref="GetIds"/>, where
-        /// canonical IDs map to themselves.</para>
-        /// <para>The returned map is read-only; any attempts to call a mutating method will throw
-        /// <see cref="NotSupportedException" />.</para>
-        /// </remarks>
-        /// <value>A map from time zone ID to the canonical ID.</value>
-        [NotNull] public IDictionary<string, string> CanonicalIdMap { get { return timeZoneIdMap; } }
-
-        /// <summary>
-        /// Gets a read-only list of zone locations known to this source.
-        /// </summary>
-        /// <remarks>
-        /// Every zone location's time zone ID is guaranteed to be valid within this source (assuming the source
-        /// has been validated).
-        /// </remarks>
-        /// <value>A read-only list of zone locations known to this source.</value>
-        [NotNull] public IList<TzdbZoneLocation> ZoneLocations { get { return zoneLocations; } }
-
-        /// <summary>
         /// Gets just the TZDB version (e.g. "2013a") of the source data.
         /// </summary>
         /// <value>The TZDB version (e.g. "2013a") of the source data.</value>
@@ -348,9 +333,9 @@ namespace NodaTime.TimeZones
             }
 
             // Check that each zone location has a valid zone ID
-            if (zoneLocations != null)
+            if (ZoneLocations != null)
             {
-                foreach (var location in zoneLocations)
+                foreach (var location in ZoneLocations)
                 {
                     if (!CanonicalIdMap.ContainsKey(location.ZoneId))
                     {

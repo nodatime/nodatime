@@ -114,13 +114,11 @@ namespace NodaTime.TimeZones
         /// lots of quick changes do not work well with <see cref="CachedDateTimeZone"/>.
         /// </summary>
         /// <returns><c>true</c> if this instance is cachable; otherwise, <c>false</c>.</returns>
-        public bool IsCachable()
-        {
+        public bool IsCachable() =>
             // TODO: Work out some decent rules for this. Previously we would only cache if the
             // tail zone was non-null... which was *always* the case due to the use of NullDateTimeZone.
             // We could potentially go back to returning tailZone != null - benchmarking required.
-            return true;
-        }
+            true;
 
         #region I/O
         /// <summary>

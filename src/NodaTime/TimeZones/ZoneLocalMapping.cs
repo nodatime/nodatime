@@ -49,44 +49,17 @@ namespace NodaTime.TimeZones
     [Immutable]
     public sealed class ZoneLocalMapping
     {
-        private readonly DateTimeZone zone;
-        private readonly LocalDateTime localDateTime;
-        private readonly ZoneInterval earlyInterval;
-        private readonly ZoneInterval lateInterval;
-        private readonly int count;
-
-        internal ZoneLocalMapping(DateTimeZone zone, LocalDateTime localDateTime, ZoneInterval earlyInterval, ZoneInterval lateInterval, int count)
-        {
-            Preconditions.DebugCheckNotNull(zone, "zone");
-            Preconditions.DebugCheckNotNull(earlyInterval, "earlyInterval");
-            Preconditions.DebugCheckNotNull(lateInterval, "lateInterval");
-            Preconditions.DebugCheckArgumentRange("count", count, 0, 2);
-            this.zone = zone;
-            this.earlyInterval = earlyInterval;
-            this.lateInterval = lateInterval;
-            this.localDateTime = localDateTime;
-            this.count = count;
-        }
-
-        /// <summary>
-        /// Gets the number of results within this mapping: the number of distinct
-        /// <see cref="ZonedDateTime" /> values which map to the original <see cref="T:NodaTime.LocalDateTime" />.
-        /// </summary>
-        /// <value>The number of results within this mapping: the number of distinct values which map to the
-        /// original local date and time.</value>
-        public int Count { get { return count; } }
-
         /// <summary>
         /// Gets the <see cref="DateTimeZone" /> in which this mapping was performed.
         /// </summary>
         /// <value>The time zone in which this mapping was performed.</value>
-        public DateTimeZone Zone { get { return zone; } }
+        public DateTimeZone Zone { get; }
 
         /// <summary>
         /// Gets the <see cref="T:NodaTime.LocalDateTime" /> which was mapped within the time zone.
         /// </summary>
         /// <value>The local date and time which was mapped within the time zone.</value>
-        public LocalDateTime LocalDateTime { get { return localDateTime; } }
+        public LocalDateTime LocalDateTime { get; }
 
         /// <summary>
         /// Gets the earlier <see cref="ZoneInterval" /> within this mapping.
@@ -97,7 +70,7 @@ namespace NodaTime.TimeZones
         /// mappings, this is the interval before which the mapped local time occurs.
         /// </remarks>
         /// <value>The earlier zone interval within this mapping.</value>
-        public ZoneInterval EarlyInterval { get { return earlyInterval; } }
+        public ZoneInterval EarlyInterval { get; }
 
         /// <summary>
         /// Gets the later <see cref="ZoneInterval" /> within this mapping.
@@ -109,7 +82,28 @@ namespace NodaTime.TimeZones
         /// mappings, this is the interval after which the mapped local time occurs.
         /// </remarks>
         /// <value>The later zone interval within this mapping.</value>
-        public ZoneInterval LateInterval { get { return lateInterval; } }
+        public ZoneInterval LateInterval { get; }
+
+        /// <summary>
+        /// Gets the number of results within this mapping: the number of distinct
+        /// <see cref="ZonedDateTime" /> values which map to the original <see cref="T:NodaTime.LocalDateTime" />.
+        /// </summary>
+        /// <value>The number of results within this mapping: the number of distinct values which map to the
+        /// original local date and time.</value>
+        public int Count { get; }
+
+        internal ZoneLocalMapping(DateTimeZone zone, LocalDateTime localDateTime, ZoneInterval earlyInterval, ZoneInterval lateInterval, int count)
+        {
+            Preconditions.DebugCheckNotNull(zone, "zone");
+            Preconditions.DebugCheckNotNull(earlyInterval, "earlyInterval");
+            Preconditions.DebugCheckNotNull(lateInterval, "lateInterval");
+            Preconditions.DebugCheckArgumentRange("count", count, 0, 2);
+            this.Zone = zone;
+            this.EarlyInterval = earlyInterval;
+            this.LateInterval = lateInterval;
+            this.LocalDateTime = localDateTime;
+            this.Count = count;
+        }
 
         /// <summary>
         /// Returns the single <see cref="ZonedDateTime"/> which maps to the original
@@ -120,13 +114,13 @@ namespace NodaTime.TimeZones
         /// <returns>The unambiguous result of mapping the local date/time in the time zone.</returns>
         public ZonedDateTime Single()
         {
-            switch (count)
+            switch (Count)
             {
-                case 0: throw new SkippedTimeException(localDateTime, zone);
-                case 1: return BuildZonedDateTime(earlyInterval);
+                case 0: throw new SkippedTimeException(LocalDateTime, Zone);
+                case 1: return BuildZonedDateTime(EarlyInterval);
                 case 2: throw new AmbiguousTimeException(
-                            BuildZonedDateTime(earlyInterval),
-                            BuildZonedDateTime(lateInterval));
+                            BuildZonedDateTime(EarlyInterval),
+                            BuildZonedDateTime(LateInterval));
                 default: throw new InvalidOperationException("Can't happen");
             }
         }
@@ -141,11 +135,11 @@ namespace NodaTime.TimeZones
         /// <returns>The unambiguous result of mapping a local date/time in a time zone.</returns>
         public ZonedDateTime First()
         {
-            switch (count)
+            switch (Count)
             {
-                case 0: throw new SkippedTimeException(localDateTime, zone);
+                case 0: throw new SkippedTimeException(LocalDateTime, Zone);
                 case 1: 
-                case 2: return BuildZonedDateTime(earlyInterval);
+                case 2: return BuildZonedDateTime(EarlyInterval);
                 default: throw new InvalidOperationException("Can't happen");
             }
         }
@@ -160,18 +154,16 @@ namespace NodaTime.TimeZones
         /// <returns>The unambiguous result of mapping a local date/time in a time zone.</returns>
         public ZonedDateTime Last()
         {
-            switch (count)
+            switch (Count)
             {
-                case 0: throw new SkippedTimeException(localDateTime, zone);
-                case 1: return BuildZonedDateTime(earlyInterval);
-                case 2: return BuildZonedDateTime(lateInterval);
+                case 0: throw new SkippedTimeException(LocalDateTime, Zone);
+                case 1: return BuildZonedDateTime(EarlyInterval);
+                case 2: return BuildZonedDateTime(LateInterval);
                 default: throw new InvalidOperationException("Can't happen");
             }
         }
 
-        private ZonedDateTime BuildZonedDateTime(ZoneInterval interval)
-        {
-            return new ZonedDateTime(localDateTime.WithOffset(interval.WallOffset), zone);
-        }
+        private ZonedDateTime BuildZonedDateTime(ZoneInterval interval) =>
+            new ZonedDateTime(LocalDateTime.WithOffset(interval.WallOffset), Zone);
     }
 }

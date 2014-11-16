@@ -114,13 +114,13 @@ namespace NodaTime.TimeZones
         /// Returns the interval over which this comparer operates.
         /// </summary>
         [VisibleForTesting]
-        internal Interval IntervalForTest { get { return interval; } }
+        internal Interval IntervalForTest => interval;
 
         /// <summary>
         /// Returns the options used by this comparer.
         /// </summary>
         [VisibleForTesting]
-        internal Options OptionsForTest { get { return options; } }
+        internal Options OptionsForTest => options;
 
         private readonly ZoneIntervalEqualityComparer zoneIntervalComparer;
         
@@ -294,17 +294,13 @@ namespace NodaTime.TimeZones
                 return hash;
             }
 
-            private Instant GetEffectiveStart(ZoneInterval zoneInterval)
-            {
-                return CheckOption(options, Options.MatchStartAndEndTransitions)
-                    ? zoneInterval.RawStart : Instant.Max(zoneInterval.RawStart, interval.Start);                
-            }
+            private Instant GetEffectiveStart(ZoneInterval zoneInterval) =>
+                CheckOption(options, Options.MatchStartAndEndTransitions)
+                    ? zoneInterval.RawStart : Instant.Max(zoneInterval.RawStart, interval.Start);
 
-            private Instant GetEffectiveEnd(ZoneInterval zoneInterval)
-            {
-                return CheckOption(options, Options.MatchStartAndEndTransitions)
+            private Instant GetEffectiveEnd(ZoneInterval zoneInterval) =>
+                CheckOption(options, Options.MatchStartAndEndTransitions)
                     ? zoneInterval.RawEnd : Instant.Min(zoneInterval.RawEnd, interval.End);
-            }
 
             /// <summary>
             /// Compares the parts of two zone intervals which are deemed "interesting" by the options.

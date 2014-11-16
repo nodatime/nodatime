@@ -22,8 +22,7 @@ namespace NodaTime.TimeZones.Cldr
     /// <threadsafety>This type is immutable reference type. See the thread safety section of the user guide for more information.</threadsafety>
     [Immutable]
     public sealed class WindowsZones
-    {        
-        private readonly string version;
+    {
         /// <summary>
         /// Gets the version of the Windows zones mapping data read from the original file.
         /// </summary>
@@ -34,9 +33,8 @@ namespace NodaTime.TimeZones.Cldr
         /// assumed in code.
         /// </remarks>
         /// <value>The version of the Windows zones mapping data read from the original file.</value>
-        [NotNull] public string Version { get { return version; } }
+        [NotNull] public string Version { get; }
 
-        private readonly string tzdbVersion;
         /// <summary>
         /// Gets the TZDB version this Windows zone mapping data was created from.
         /// </summary>
@@ -47,9 +45,8 @@ namespace NodaTime.TimeZones.Cldr
         /// "2013b" to be supply a <c>WindowsZones</c> object with a <c>TzdbVersion</c> of "2012f".
         /// </remarks>
         /// <value>The TZDB version this Windows zone mapping data was created from.</value>
-        [NotNull] public string TzdbVersion { get { return tzdbVersion; } }
+        [NotNull] public string TzdbVersion { get; }
 
-        private readonly string windowsVersion;
         /// <summary>
         /// Gets the Windows time zone database version this Windows zone mapping data was created from.
         /// </summary>
@@ -59,9 +56,8 @@ namespace NodaTime.TimeZones.Cldr
         /// so "7dc0101" for example.
         /// </remarks>
         /// <value>The Windows time zone database version this Windows zone mapping data was created from.</value>
-        public string WindowsVersion { get { return windowsVersion; } }
+        public string WindowsVersion { get; }
 
-        private readonly ReadOnlyCollection<MapZone> mapZones;
         /// <summary>
         /// Gets an immutable collection of mappings from Windows system time zones to
         /// TZDB time zones.
@@ -88,9 +84,8 @@ namespace NodaTime.TimeZones.Cldr
         /// </remarks>
         /// <value>An immutable collection of mappings from Windows system time zones to
         /// TZDB time zones.</value>
-        [NotNull] public IList<MapZone> MapZones { get { return mapZones; } }
+        [NotNull] public IList<MapZone> MapZones { get; }
 
-        private readonly NodaReadOnlyDictionary<string, string> primaryMapping;
         /// <summary>
         /// Gets an immutable dictionary of primary mappings, from Windows system time zone ID
         /// to TZDB zone ID. This corresponds to the "001" territory which is present for every zone
@@ -98,7 +93,7 @@ namespace NodaTime.TimeZones.Cldr
         /// </summary>
         /// <value>An immutable dictionary of primary mappings, from Windows system time zone ID
         /// to TZDB zone ID.</value>
-        [NotNull] public IDictionary<string, string> PrimaryMapping { get { return primaryMapping; } }
+        [NotNull] public IDictionary<string, string> PrimaryMapping { get; }
 
         internal WindowsZones(string version, string tzdbVersion, string windowsVersion, IList<MapZone> mapZones)
             : this(Preconditions.CheckNotNull(version, "version"),
@@ -110,27 +105,27 @@ namespace NodaTime.TimeZones.Cldr
 
         private WindowsZones(string version, string tzdbVersion, string windowsVersion, ReadOnlyCollection<MapZone> mapZones)
         {
-            this.version = version;
-            this.tzdbVersion = tzdbVersion;
-            this.windowsVersion = windowsVersion;
-            this.mapZones = mapZones;
-            this.primaryMapping = new NodaReadOnlyDictionary<string, string>(
+            this.Version = version;
+            this.TzdbVersion = tzdbVersion;
+            this.WindowsVersion = windowsVersion;
+            this.MapZones = mapZones;
+            this.PrimaryMapping = new NodaReadOnlyDictionary<string, string>(
                 mapZones.Where(z => z.Territory == MapZone.PrimaryTerritory)
                         .ToDictionary(z => z.WindowsId, z => z.TzdbIds.Single()));
         }
 
         private WindowsZones(string version, NodaReadOnlyDictionary<string, string> primaryMapping)
         {
-            this.version = version;
-            this.windowsVersion = "Unknown";
-            this.tzdbVersion = "Unknown";
-            this.primaryMapping = primaryMapping;
+            this.Version = version;
+            this.WindowsVersion = "Unknown";
+            this.TzdbVersion = "Unknown";
+            this.PrimaryMapping = primaryMapping;
             var mapZoneList = new List<MapZone>(primaryMapping.Count);
             foreach (var entry in primaryMapping)
             {
                 mapZoneList.Add(new MapZone(entry.Key, MapZone.PrimaryTerritory, new[] { entry.Value }));
             }
-            mapZones = new ReadOnlyCollection<MapZone>(mapZoneList);
+            MapZones = new ReadOnlyCollection<MapZone>(mapZoneList);
         }
 
         internal static WindowsZones FromPrimaryMapping(string version, IDictionary<string, string> mappings)
@@ -156,11 +151,11 @@ namespace NodaTime.TimeZones.Cldr
 
         internal void Write(IDateTimeZoneWriter writer)
         {
-            writer.WriteString(version);
-            writer.WriteString(tzdbVersion);
-            writer.WriteString(windowsVersion);
-            writer.WriteCount(mapZones.Count);
-            foreach (var mapZone in mapZones)
+            writer.WriteString(Version);
+            writer.WriteString(TzdbVersion);
+            writer.WriteString(WindowsVersion);
+            writer.WriteCount(MapZones.Count);
+            foreach (var mapZone in MapZones)
             {
                 mapZone.Write(writer);
             }
