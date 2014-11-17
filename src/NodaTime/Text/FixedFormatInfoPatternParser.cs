@@ -25,9 +25,6 @@ namespace NodaTime.Text
                 StringComparer.Ordinal);
         }
 
-        internal IPattern<T> ParsePattern(string pattern)
-        {
-            return cache.GetOrAdd(pattern);
-        }
+        internal IPattern<T> ParsePattern(string pattern) => cache.GetOrAdd(pattern);
     }
 }

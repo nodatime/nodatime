@@ -16,13 +16,11 @@ namespace NodaTime.Calendars
     /// </summary>
     internal abstract class EraCalculator
     {
-        private readonly IList<Era> eras;
-
-        internal IList<Era> Eras { get { return eras; } }
+        internal IList<Era> Eras { get; }
 
         protected EraCalculator(params Era[] eras)
         {
-            this.eras = new ReadOnlyCollection<Era>(eras);
+            this.Eras = new ReadOnlyCollection<Era>(eras);
         }
 
         internal abstract int GetMinYearOfEra([NotNull] Era era);

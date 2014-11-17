@@ -111,10 +111,7 @@ namespace NodaTime.Calendars
             return (leapYearPatternBits & key) > 0;
         }
 
-        internal override int GetDaysInYear(int year)
-        {
-            return IsLeapYear(year) ? DaysPerLeapYear : DaysPerNonLeapYear;
-        }
+        internal override int GetDaysInYear(int year) => IsLeapYear(year) ? DaysPerLeapYear : DaysPerNonLeapYear;
 
         internal override int GetDaysInMonth(int year, int month)
         {

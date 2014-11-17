@@ -34,12 +34,9 @@ namespace NodaTime.Calendars
             return days;
         }
 
-        internal static long DaysAndTickOfDayToTicks(int days, long tickOfDay)
-        {
-            return days >= (int) (long.MinValue / NodaConstants.TicksPerDay)
+        internal static long DaysAndTickOfDayToTicks(int days, long tickOfDay) =>
+            days >= (int) (long.MinValue / NodaConstants.TicksPerDay)
                 ? days * NodaConstants.TicksPerDay + tickOfDay
                 : (days + 1) * NodaConstants.TicksPerDay + tickOfDay - NodaConstants.TicksPerDay;
-
-        }
     }
 }

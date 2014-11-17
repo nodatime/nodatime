@@ -141,10 +141,7 @@ namespace NodaTime.Text
         /// <summary>
         /// Returns the absolute duration (non-negative).
         /// </summary>
-        private static Duration GetPositiveDuration(Duration duration)
-        {
-            return duration.FloorDays >= 0 ? duration : -duration;
-        }
+        private static Duration GetPositiveDuration(Duration duration) => duration.FloorDays >= 0 ? duration : -duration;
 
         private static long GetPositiveNanosecondUnits(Duration duration, long nanosecondsPerUnit)
         {

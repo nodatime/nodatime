@@ -26,10 +26,7 @@ namespace NodaTime.Calendars
         // space as we don't need day numbers to go terribly high.
         private static readonly YearStartCacheEntry[] YearCache = YearStartCacheEntry.CreateCache();
 
-        internal static bool IsLeapYear(int year)
-        {
-            return ((year * 7) + 1) % 19 < 7;
-        }
+        internal static bool IsLeapYear(int year) => ((year * 7) + 1) % 19 < 7;
 
         internal static YearMonthDay GetYearMonthDay(int year, int dayOfYear)
         {
@@ -285,9 +282,6 @@ namespace NodaTime.Calendars
                 | (isKislevShort ? IsKislevShortCacheBit : 0);
         }
 
-        internal static int DaysInYear(int year)
-        {
-            return ElapsedDays(year + 1) - ElapsedDays(year);
-        }
+        internal static int DaysInYear(int year) => ElapsedDays(year + 1) - ElapsedDays(year);
     }
 }

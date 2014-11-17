@@ -51,10 +51,7 @@ namespace NodaTime.Calendars
             return absoluteYear > 0 ? absoluteYear : 1 - absoluteYear;
         }
 
-        internal override Era GetEra(YearMonthDay yearMonthDay)
-        {
-            return yearMonthDay.Year > 0 ? Era.Common : Era.BeforeCommon;
-        }
+        internal override Era GetEra(YearMonthDay yearMonthDay) => yearMonthDay.Year > 0 ? Era.Common : Era.BeforeCommon;
 
         internal override int GetMinYearOfEra(Era era)
         {

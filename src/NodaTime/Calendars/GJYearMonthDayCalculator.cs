@@ -66,21 +66,14 @@ namespace NodaTime.Calendars
             return new YearMonthDay(year, (startOfMonth / 29) + 1, dayOfMonth);
         }
 
-        internal override int GetDaysInYear(int year)
-        {
-            return IsLeapYear(year) ? 366 : 365;
-        }
+        internal override int GetDaysInYear(int year) => IsLeapYear(year) ? 366 : 365;
 
-        internal sealed override int GetDaysInMonth(int year, int month)
-        {
+        internal sealed override int GetDaysInMonth(int year, int month) =>
             // We know that only February differs, so avoid the virtual call for other months.
-            return month == 2 && IsLeapYear(year) ? MaxDaysPerMonth[month - 1] : MinDaysPerMonth[month - 1];
-        }
+            month == 2 && IsLeapYear(year) ? MaxDaysPerMonth[month - 1] : MinDaysPerMonth[month - 1];
 
-        protected override int GetDaysFromStartOfYearToStartOfMonth(int year, int month)
-        {
-            return IsLeapYear(year) ? MaxTotalDaysByMonth[month - 1] : MinTotalDaysByMonth[month - 1];
-        }
+        protected override int GetDaysFromStartOfYearToStartOfMonth(int year, int month) =>
+            IsLeapYear(year) ? MaxTotalDaysByMonth[month - 1] : MinTotalDaysByMonth[month - 1];
 
         internal override YearMonthDay SetYear(YearMonthDay yearMonthDay, int year)
         {

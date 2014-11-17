@@ -124,7 +124,7 @@ namespace NodaTime.Calendars
         /// Checks whether the calendar is supported on this execution environment. We don't currently support the PCL
         /// or Mono.
         /// </summary>
-        internal static bool IsSupported { get { return YearLengths != null; } }
+        internal static bool IsSupported => YearLengths != null;
 
         internal UmAlQuraYearMonthDayCalculator()
             : base(ComputedMinYear, ComputedMaxYear, 12, AverageDaysPer10Years, ComputedDaysAtStartOfYear1)
@@ -136,16 +136,11 @@ namespace NodaTime.Calendars
         }
 
         // No need to use the YearMonthDayCalculator cache, given that we've got the value in array already.
-        internal override int GetStartOfYearInDays(int year)
-        {
-            return CalculateStartOfYearDays(year);
-        }
+        internal override int GetStartOfYearInDays(int year) => CalculateStartOfYearDays(year);
 
-        protected override int CalculateStartOfYearDays([Trusted] int year)
-        {
+        protected override int CalculateStartOfYearDays([Trusted] int year) =>
             // Fine for one year either side of min/max.
-            return YearStartDays[year - ComputedMinYear + 1] + ComputedDaysAtStartOfMinYear;
-        }
+            YearStartDays[year - ComputedMinYear + 1] + ComputedDaysAtStartOfMinYear;
 
         protected override int GetDaysFromStartOfYearToStartOfMonth([Trusted] int year, [Trusted] int month)
         {
@@ -165,11 +160,9 @@ namespace NodaTime.Calendars
             return 29 + ((monthBits >> month) & 1);
         }
 
-        internal override int GetDaysInYear([Trusted] int year)
-        {
+        internal override int GetDaysInYear([Trusted] int year) =>
             // Fine for one year either side of min/max.
-            return YearLengths[year - ComputedMinYear + 1];
-        }
+            YearLengths[year - ComputedMinYear + 1];
 
         internal override YearMonthDay GetYearMonthDay([Trusted] int year, [Trusted] int dayOfYear)
         {
@@ -190,9 +183,6 @@ namespace NodaTime.Calendars
                 " has " + GetDaysInYear(year) + " days but " + dayOfYear + " isn't valid");
         }
 
-        internal override bool IsLeapYear([Trusted] int year)
-        {
-            return YearLengths[year - ComputedMinYear + 1] == 355;
-        }
+        internal override bool IsLeapYear([Trusted] int year) => YearLengths[year - ComputedMinYear + 1] == 355;
     }
 }
