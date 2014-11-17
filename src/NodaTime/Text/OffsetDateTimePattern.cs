@@ -154,8 +154,8 @@ namespace NodaTime.Text
         /// <exception cref="InvalidPatternException">The pattern text was invalid.</exception>
         private static OffsetDateTimePattern Create(string patternText, NodaFormatInfo formatInfo, OffsetDateTime templateValue)
         {
-            Preconditions.CheckNotNull(patternText, "patternText");
-            Preconditions.CheckNotNull(formatInfo, "formatInfo");
+            Preconditions.CheckNotNull(patternText, nameof(patternText));
+            Preconditions.CheckNotNull(formatInfo, nameof(formatInfo));
             var pattern = new OffsetDateTimePatternParser(templateValue).ParsePattern(patternText, formatInfo);
             return new OffsetDateTimePattern(patternText, formatInfo, templateValue, pattern);
         }

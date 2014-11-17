@@ -775,7 +775,7 @@ namespace NodaTime
             /// <inheritdoc />
             public override int Compare(OffsetDateTime x, OffsetDateTime y)
             {
-                Preconditions.CheckArgument(x.Calendar.Equals(y.Calendar), "y",
+                Preconditions.CheckArgument(x.Calendar.Equals(y.Calendar), nameof(y),
                     "Only values with the same calendar system can be compared");
                 int dateComparison = x.Calendar.Compare(x.YearMonthDay, y.YearMonthDay);
                 if (dateComparison != 0)
@@ -831,7 +831,7 @@ namespace NodaTime
         /// <inheritdoc />
         void IXmlSerializable.ReadXml(XmlReader reader)
         {
-            Preconditions.CheckNotNull(reader, "reader");
+            Preconditions.CheckNotNull(reader, nameof(reader));
             var pattern = OffsetDateTimePattern.Rfc3339Pattern;
             if (reader.MoveToAttribute("calendar"))
             {
@@ -848,7 +848,7 @@ namespace NodaTime
         /// <inheritdoc />
         void IXmlSerializable.WriteXml(XmlWriter writer)
         {
-            Preconditions.CheckNotNull(writer, "writer"); 
+            Preconditions.CheckNotNull(writer, nameof(writer)); 
             if (Calendar != CalendarSystem.Iso)
             {
                 writer.WriteAttributeString("calendar", Calendar.Id);

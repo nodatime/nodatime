@@ -64,7 +64,7 @@ namespace NodaTime.TimeZones.IO
         /// <param name="value">The value to write.</param>
         public void WriteCount(int value)
         {
-            Preconditions.CheckArgumentRange("value", value, 0, int.MaxValue);
+            Preconditions.CheckArgumentRange(nameof(value), value, 0, int.MaxValue);
             WriteVarint((uint) value);
         }
 
@@ -109,7 +109,7 @@ namespace NodaTime.TimeZones.IO
 
         public void WriteMilliseconds(int millis)
         {
-            Preconditions.CheckArgumentRange("millis", millis,
+            Preconditions.CheckArgumentRange(nameof(millis), millis,
                 -NodaConstants.MillisecondsPerDay + 1,
                 NodaConstants.MillisecondsPerDay - 1);
             millis += NodaConstants.MillisecondsPerDay;
@@ -168,7 +168,7 @@ namespace NodaTime.TimeZones.IO
         /// <param name="dictionary">The <see cref="IDictionary{TKey,TValue}" /> to write.</param>
         public void WriteDictionary(IDictionary<string, string> dictionary)
         {
-            Preconditions.CheckNotNull(dictionary, "dictionary");
+            Preconditions.CheckNotNull(dictionary, nameof(dictionary));
             WriteCount(dictionary.Count);
             foreach (var entry in dictionary)
             {
@@ -181,7 +181,7 @@ namespace NodaTime.TimeZones.IO
         {
             if (previous != null)
             {
-                Preconditions.CheckArgument(value >= previous.Value, "value", "Transition must move forward in time");
+                Preconditions.CheckArgument(value >= previous.Value, nameof(value), "Transition must move forward in time");
             }
 
             unchecked

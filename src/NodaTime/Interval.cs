@@ -230,7 +230,7 @@ internal Instant RawEnd => end;
         /// <inheritdoc />
         void IXmlSerializable.ReadXml(XmlReader reader)
         {
-            Preconditions.CheckNotNull(reader, "reader");
+            Preconditions.CheckNotNull(reader, nameof(reader));
             var pattern = InstantPattern.ExtendedIsoPattern;
             if (!reader.MoveToAttribute("start"))
             {
@@ -250,7 +250,7 @@ internal Instant RawEnd => end;
         /// <inheritdoc />
         void IXmlSerializable.WriteXml(XmlWriter writer)
         {
-            Preconditions.CheckNotNull(writer, "writer");
+            Preconditions.CheckNotNull(writer, nameof(writer));
             var pattern = InstantPattern.ExtendedIsoPattern;
             writer.WriteAttributeString("start", pattern.Format(start));
             writer.WriteAttributeString("end", pattern.Format(end));

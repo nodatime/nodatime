@@ -76,7 +76,7 @@ namespace NodaTime.TimeZones
         /// <returns>A <see cref="BclDateTimeZone"/> wrapping the given <c>TimeZoneInfo</c>.</returns>
         public static BclDateTimeZone FromTimeZoneInfo([NotNull] TimeZoneInfo bclZone)
         {
-            Preconditions.CheckNotNull(bclZone, "bclZone");
+            Preconditions.CheckNotNull(bclZone, nameof(bclZone));
             Offset standardOffset = bclZone.BaseUtcOffset.ToOffset();
             var rules = bclZone.GetAdjustmentRules();
             if (!bclZone.SupportsDaylightSavingTime || rules.Length == 0)

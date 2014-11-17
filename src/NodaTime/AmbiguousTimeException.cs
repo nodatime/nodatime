@@ -87,9 +87,9 @@ namespace NodaTime
         {
             this.earlierMapping = earlierMapping;
             this.laterMapping = laterMapping;
-            Preconditions.CheckArgument(earlierMapping.Zone == laterMapping.Zone, "laterMapping",
+            Preconditions.CheckArgument(earlierMapping.Zone == laterMapping.Zone, nameof(laterMapping),
                                         "Ambiguous possible values must use the same time zone");
-            Preconditions.CheckArgument(earlierMapping.LocalDateTime == laterMapping.LocalDateTime, "laterMapping",
+            Preconditions.CheckArgument(earlierMapping.LocalDateTime == laterMapping.LocalDateTime, nameof(laterMapping),
                                         "Ambiguous possible values must have the same local date/time");
         }
     }

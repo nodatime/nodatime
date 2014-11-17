@@ -80,7 +80,7 @@ namespace NodaTime
             {
                 lock (SerializationProviderLock)
                 {
-                    serializationProvider = Preconditions.CheckNotNull(value, "value");
+                    serializationProvider = Preconditions.CheckNotNull(value, nameof(value));
                 }
             }
         }

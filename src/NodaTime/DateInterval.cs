@@ -64,9 +64,9 @@ namespace NodaTime
         /// <returns>A date interval between the specified dates, with the specified inclusivity.</returns>
         public DateInterval(LocalDate start, LocalDate end, bool inclusive)
         {
-            Preconditions.CheckArgument(start.Calendar.Equals(end.Calendar), "end",
+            Preconditions.CheckArgument(start.Calendar.Equals(end.Calendar), nameof(end),
                 "Calendars of start and end dates must be the same.");
-            Preconditions.CheckArgument(!(end < start), "end", "End date must not be earlier than the start date");
+            Preconditions.CheckArgument(!(end < start), nameof(end), "End date must not be earlier than the start date");
             this.Start = start;
             this.End = end;
             this.Inclusive = inclusive;
@@ -98,7 +98,7 @@ namespace NodaTime
         /// <returns><c>true</c> if <paramref name="date"/> is within this interval; <c>false</c> otherwise.</returns>
         public bool Contains(LocalDate date)
         {
-            Preconditions.CheckArgument(date.Calendar.Equals(Start.Calendar), "date",
+            Preconditions.CheckArgument(date.Calendar.Equals(Start.Calendar), nameof(date),
                 "The date to check must be in the same calendar as the start and end dates");
             return Start <= date && (Inclusive ? date <= End : date < End);
         }

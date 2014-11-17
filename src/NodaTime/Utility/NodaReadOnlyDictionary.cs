@@ -22,7 +22,7 @@ namespace NodaTime.Utility
 
         internal NodaReadOnlyDictionary(IDictionary<TKey, TValue> original)
         {
-            this.original = Preconditions.CheckNotNull(original, "original");
+            this.original = Preconditions.CheckNotNull(original, nameof(original));
         }
 
         public bool ContainsKey(TKey key) => original.ContainsKey(key);

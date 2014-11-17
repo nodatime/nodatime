@@ -301,8 +301,8 @@ namespace NodaTime
         [NotNull]
         public static Period operator +(Period left, Period right)
         {
-            Preconditions.CheckNotNull(left, "left");
-            Preconditions.CheckNotNull(right, "right");
+            Preconditions.CheckNotNull(left, nameof(left));
+            Preconditions.CheckNotNull(right, nameof(right));
             return new Period(
                 left.Years + right.Years,
                 left.Months + right.Months,
@@ -342,8 +342,8 @@ namespace NodaTime
         [NotNull]
         public static Period operator -(Period minuend, Period subtrahend)
         {
-            Preconditions.CheckNotNull(minuend, "minuend");
-            Preconditions.CheckNotNull(subtrahend, "subtrahend");
+            Preconditions.CheckNotNull(minuend, nameof(minuend));
+            Preconditions.CheckNotNull(subtrahend, nameof(subtrahend));
             return new Period(
                 minuend.Years - subtrahend.Years,
                 minuend.Months - subtrahend.Months,
@@ -376,10 +376,10 @@ namespace NodaTime
         [NotNull]
         public static Period Between(LocalDateTime start, LocalDateTime end, PeriodUnits units)
         {
-            Preconditions.CheckArgument(units != 0, "units", "Units must not be empty");
-            Preconditions.CheckArgument((units & ~PeriodUnits.AllUnits) == 0, "units", "Units contains an unknown value: {0}", units);
+            Preconditions.CheckArgument(units != 0, nameof(units), "Units must not be empty");
+            Preconditions.CheckArgument((units & ~PeriodUnits.AllUnits) == 0, nameof(units), "Units contains an unknown value: {0}", units);
             CalendarSystem calendar = start.Calendar;
-            Preconditions.CheckArgument(calendar.Equals(end.Calendar), "end", "start and end must use the same calendar system");
+            Preconditions.CheckArgument(calendar.Equals(end.Calendar), nameof(end), "start and end must use the same calendar system");
 
             if (start == end)
             {
@@ -570,11 +570,11 @@ namespace NodaTime
         [NotNull]
         public static Period Between(LocalDate start, LocalDate end, PeriodUnits units)
         {
-            Preconditions.CheckArgument((units & PeriodUnits.AllTimeUnits) == 0, "units", "Units contains time units: {0}", units);
-            Preconditions.CheckArgument(units != 0, "units", "Units must not be empty");
-            Preconditions.CheckArgument((units & ~PeriodUnits.AllUnits) == 0, "units", "Units contains an unknown value: {0}", units);
+            Preconditions.CheckArgument((units & PeriodUnits.AllTimeUnits) == 0, nameof(units), "Units contains time units: {0}", units);
+            Preconditions.CheckArgument(units != 0, nameof(units), "Units must not be empty");
+            Preconditions.CheckArgument((units & ~PeriodUnits.AllUnits) == 0, nameof(units), "Units contains an unknown value: {0}", units);
             CalendarSystem calendar = start.Calendar;
-            Preconditions.CheckArgument(calendar.Equals(end.Calendar), "end", "start and end must use the same calendar system");
+            Preconditions.CheckArgument(calendar.Equals(end.Calendar), nameof(end), "start and end must use the same calendar system");
 
             if (start == end)
             {
@@ -633,9 +633,9 @@ namespace NodaTime
         [NotNull]
         public static Period Between(LocalTime start, LocalTime end, PeriodUnits units)
         {
-            Preconditions.CheckArgument((units & PeriodUnits.AllDateUnits) == 0, "units", "Units contains date units: {0}", units);
-            Preconditions.CheckArgument(units != 0, "units", "Units must not be empty");
-            Preconditions.CheckArgument((units & ~PeriodUnits.AllUnits) == 0, "units", "Units contains an unknown value: {0}", units);
+            Preconditions.CheckArgument((units & PeriodUnits.AllDateUnits) == 0, nameof(units), "Units contains date units: {0}", units);
+            Preconditions.CheckArgument(units != 0, nameof(units), "Units must not be empty");
+            Preconditions.CheckArgument((units & ~PeriodUnits.AllUnits) == 0, nameof(units), "Units contains an unknown value: {0}", units);
 
             // Optimization for single field
             switch (units)
@@ -912,7 +912,7 @@ namespace NodaTime
             }
 
             public override int GetHashCode(Period obj) =>
-                Preconditions.CheckNotNull(obj, "obj").Normalize().GetHashCode();
+                Preconditions.CheckNotNull(obj, nameof(obj)).Normalize().GetHashCode();
         }
 
         private sealed class PeriodComparer : Comparer<Period>

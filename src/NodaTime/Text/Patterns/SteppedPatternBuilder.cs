@@ -468,7 +468,7 @@ namespace NodaTime.Text.Patterns
 
             public StringBuilder AppendFormat(TResult value, StringBuilder builder)
             {
-                Preconditions.CheckNotNull(builder, "builder");
+                Preconditions.CheckNotNull(builder, nameof(builder));
                 formatActions(value, builder);
                 return builder;
             }

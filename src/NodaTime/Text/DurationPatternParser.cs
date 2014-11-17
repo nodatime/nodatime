@@ -39,7 +39,7 @@ namespace NodaTime.Text
         // interface implementation.
         public IPattern<Duration> ParsePattern(string patternText, NodaFormatInfo formatInfo)
         {
-            Preconditions.CheckNotNull(patternText, "patternText");
+            Preconditions.CheckNotNull(patternText, nameof(patternText));
             if (patternText.Length == 0)
             {
                 throw new InvalidPatternException(Messages.Parse_FormatStringEmpty);

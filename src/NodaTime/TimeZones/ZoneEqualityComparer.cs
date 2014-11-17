@@ -153,7 +153,7 @@ namespace NodaTime.TimeZones
         /// <returns>A ZoneEqualityComparer for the given interval with the default options.</returns>
         public static ZoneEqualityComparer ForInterval(Interval interval)
         {
-            Preconditions.CheckArgument(interval.HasStart && interval.HasEnd, "interval",
+            Preconditions.CheckArgument(interval.HasStart && interval.HasEnd, nameof(interval),
                 "The interval must have both a start and an end.");
             return new ZoneEqualityComparer(interval, Options.OnlyMatchWallOffset);
         }
@@ -207,7 +207,7 @@ namespace NodaTime.TimeZones
         /// <returns>A hash code for the specified object.</returns>
         public int GetHashCode(DateTimeZone obj)
         {
-            Preconditions.CheckNotNull(obj, "obj");
+            Preconditions.CheckNotNull(obj, nameof(obj));
             unchecked
             {
                 int hash = 19;

@@ -63,7 +63,7 @@ namespace NodaTime
         /// </summary>
         internal LocalDate([Trusted] int daysSinceEpoch)
         {
-            Preconditions.DebugCheckArgumentRange("daysSinceEpoch", daysSinceEpoch, CalendarSystem.Iso.MinDays, CalendarSystem.Iso.MaxDays);
+            Preconditions.DebugCheckArgumentRange(nameof(daysSinceEpoch), daysSinceEpoch, CalendarSystem.Iso.MinDays, CalendarSystem.Iso.MaxDays);
             this.yearMonthDayCalendar = GregorianYearMonthDayCalculator.GetGregorianYearMonthDayCalendarFromDaysSinceEpoch(daysSinceEpoch);
         }
 
@@ -104,7 +104,7 @@ namespace NodaTime
         /// <exception cref="ArgumentOutOfRangeException">The parameters do not form a valid date.</exception>
         public LocalDate(int year, int month, int day, [NotNull] CalendarSystem calendar)
         {
-            Preconditions.CheckNotNull(calendar, "calendar");
+            Preconditions.CheckNotNull(calendar, nameof(calendar));
             calendar.ValidateYearMonthDay(year, month, day);
             yearMonthDayCalendar = new YearMonthDayCalendar(year, month, day, calendar.Ordinal);
         }
@@ -134,7 +134,7 @@ namespace NodaTime
         /// <returns>The resulting date.</returns>
         /// <exception cref="ArgumentOutOfRangeException">The parameters do not form a valid date.</exception>
         public LocalDate([NotNull] Era era, int yearOfEra, int month, int day, [NotNull] CalendarSystem calendar)
-            : this(Preconditions.CheckNotNull(calendar, "calendar").GetAbsoluteYear(yearOfEra, era), month, day, calendar)
+            : this(Preconditions.CheckNotNull(calendar, nameof(calendar)).GetAbsoluteYear(yearOfEra, era), month, day, calendar)
         {
         }
 
@@ -263,8 +263,8 @@ namespace NodaTime
         {
             // This validates year and month as well as getting us a useful date.
             LocalDate startOfMonth = new LocalDate(year, month, 1);
-            Preconditions.CheckArgumentRange("occurrence", occurrence, 1, 5);
-            Preconditions.CheckArgumentRange("dayOfWeek", (int) dayOfWeek, 1, 7);
+            Preconditions.CheckArgumentRange(nameof(occurrence), occurrence, 1, 5);
+            Preconditions.CheckArgumentRange(nameof(dayOfWeek), (int) dayOfWeek, 1, 7);
 
             // Correct day of week, 1st week of month.
             int week1Day = (int) dayOfWeek - startOfMonth.DayOfWeek + 1;
@@ -288,8 +288,8 @@ namespace NodaTime
         /// <returns>The sum of the given date and period</returns>
         public static LocalDate operator +(LocalDate date, Period period)
         {
-            Preconditions.CheckNotNull(period, "period");
-            Preconditions.CheckArgument(!period.HasTimeComponent, "period", "Cannot add a period with a time component to a date");
+            Preconditions.CheckNotNull(period, nameof(period));
+            Preconditions.CheckArgument(!period.HasTimeComponent, nameof(period), "Cannot add a period with a time component to a date");
             return period.AddTo(date, 1);
         }
 
@@ -327,8 +327,8 @@ namespace NodaTime
         /// <returns>The result of subtracting the given period from the date</returns>
         public static LocalDate operator -(LocalDate date, Period period)
         {
-            Preconditions.CheckNotNull(period, "period");
-            Preconditions.CheckArgument(!period.HasTimeComponent, "period", "Cannot subtract a period with a time component from a date");
+            Preconditions.CheckNotNull(period, nameof(period));
+            Preconditions.CheckArgument(!period.HasTimeComponent, nameof(period), "Cannot subtract a period with a time component from a date");
             return period.AddTo(date, -1);
         }
 
@@ -417,7 +417,7 @@ namespace NodaTime
         /// <returns>true if the <paramref name="lhs"/> is strictly earlier than <paramref name="rhs"/>, false otherwise.</returns>
         public static bool operator <(LocalDate lhs, LocalDate rhs)
         {
-            Preconditions.CheckArgument(lhs.Calendar.Equals(rhs.Calendar), "rhs", "Only values in the same calendar can be compared");
+            Preconditions.CheckArgument(lhs.Calendar.Equals(rhs.Calendar), nameof(rhs), "Only values in the same calendar can be compared");
             return lhs.CompareTo(rhs) < 0;
         }
 
@@ -436,7 +436,7 @@ namespace NodaTime
         /// <returns>true if the <paramref name="lhs"/> is earlier than or equal to <paramref name="rhs"/>, false otherwise.</returns>
         public static bool operator <=(LocalDate lhs, LocalDate rhs)
         {
-            Preconditions.CheckArgument(lhs.Calendar.Equals(rhs.Calendar), "rhs", "Only values in the same calendar can be compared");
+            Preconditions.CheckArgument(lhs.Calendar.Equals(rhs.Calendar), nameof(rhs), "Only values in the same calendar can be compared");
             return lhs.CompareTo(rhs) <= 0;
         }
 
@@ -455,7 +455,7 @@ namespace NodaTime
         /// <returns>true if the <paramref name="lhs"/> is strictly later than <paramref name="rhs"/>, false otherwise.</returns>
         public static bool operator >(LocalDate lhs, LocalDate rhs)
         {
-            Preconditions.CheckArgument(lhs.Calendar.Equals(rhs.Calendar), "rhs", "Only values in the same calendar can be compared");
+            Preconditions.CheckArgument(lhs.Calendar.Equals(rhs.Calendar), nameof(rhs), "Only values in the same calendar can be compared");
             return lhs.CompareTo(rhs) > 0;
         }
 
@@ -474,7 +474,7 @@ namespace NodaTime
         /// <returns>true if the <paramref name="lhs"/> is later than or equal to <paramref name="rhs"/>, false otherwise.</returns>
         public static bool operator >=(LocalDate lhs, LocalDate rhs)
         {
-            Preconditions.CheckArgument(lhs.Calendar.Equals(rhs.Calendar), "rhs", "Only values in the same calendar can be compared");
+            Preconditions.CheckArgument(lhs.Calendar.Equals(rhs.Calendar), nameof(rhs), "Only values in the same calendar can be compared");
             return lhs.CompareTo(rhs) >= 0;
         }
 
@@ -495,7 +495,7 @@ namespace NodaTime
         /// later than <paramref name="other"/>.</returns>
         public int CompareTo(LocalDate other)
         {
-            Preconditions.CheckArgument(Calendar.Equals(other.Calendar), "other", "Only values with the same calendar system can be compared");
+            Preconditions.CheckArgument(Calendar.Equals(other.Calendar), nameof(other), "Only values with the same calendar system can be compared");
             return Calendar.Compare(YearMonthDay, other.YearMonthDay);
         }
 
@@ -517,7 +517,7 @@ namespace NodaTime
             {
                 return 1;
             }
-            Preconditions.CheckArgument(obj is LocalDate, "obj", "Object must be of type NodaTime.LocalDate.");
+            Preconditions.CheckArgument(obj is LocalDate, nameof(obj), "Object must be of type NodaTime.LocalDate.");
             return CompareTo((LocalDate)obj);
         }
 
@@ -553,7 +553,7 @@ namespace NodaTime
         [Pure]
         public LocalDate WithCalendar([NotNull] CalendarSystem calendarSystem)
         {
-            Preconditions.CheckNotNull(calendarSystem, "calendarSystem");
+            Preconditions.CheckNotNull(calendarSystem, nameof(calendarSystem));
             return new LocalDate(DaysSinceEpoch, calendarSystem);
         }
 
@@ -627,7 +627,7 @@ namespace NodaTime
             // Avoids boxing...
             if (targetDayOfWeek < IsoDayOfWeek.Monday || targetDayOfWeek > IsoDayOfWeek.Sunday)
             {
-                throw new ArgumentOutOfRangeException("targetDayOfWeek");
+                throw new ArgumentOutOfRangeException(nameof(targetDayOfWeek));
             }
             // This will throw the desired exception for calendars with different week systems.
             IsoDayOfWeek thisDay = IsoDayOfWeek;
@@ -655,7 +655,7 @@ namespace NodaTime
             // Avoids boxing...
             if (targetDayOfWeek < IsoDayOfWeek.Monday || targetDayOfWeek > IsoDayOfWeek.Sunday)
             {
-                throw new ArgumentOutOfRangeException("targetDayOfWeek");
+                throw new ArgumentOutOfRangeException(nameof(targetDayOfWeek));
             }
             // This will throw the desired exception for calendars with different week systems.
             IsoDayOfWeek thisDay = IsoDayOfWeek;
@@ -689,7 +689,7 @@ namespace NodaTime
         /// <returns>The adjusted date.</returns>
         [Pure]
         public LocalDate With([NotNull] Func<LocalDate, LocalDate> adjuster) =>
-            Preconditions.CheckNotNull(adjuster, "adjuster").Invoke(this);
+            Preconditions.CheckNotNull(adjuster, nameof(adjuster)).Invoke(this);
 
         #region Formatting
         /// <summary>
@@ -725,7 +725,7 @@ namespace NodaTime
         /// <inheritdoc />
         void IXmlSerializable.ReadXml(XmlReader reader)
         {
-            Preconditions.CheckNotNull(reader, "reader");
+            Preconditions.CheckNotNull(reader, nameof(reader));
             var pattern = LocalDatePattern.IsoPattern;
             if (reader.MoveToAttribute("calendar"))
             {
@@ -742,7 +742,7 @@ namespace NodaTime
         /// <inheritdoc />
         void IXmlSerializable.WriteXml(XmlWriter writer)
         {
-            Preconditions.CheckNotNull(writer, "writer");
+            Preconditions.CheckNotNull(writer, nameof(writer));
             if (Calendar != CalendarSystem.Iso)
             {
                 writer.WriteAttributeString("calendar", Calendar.Id);

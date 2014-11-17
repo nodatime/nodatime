@@ -58,15 +58,15 @@ namespace NodaTime.TimeZones
         /// <exception cref="ArgumentException">The periods specified are invalid.</exception>
         internal static void ValidatePeriods(ZoneInterval[] periods, DateTimeZone tailZone)
         {
-            Preconditions.CheckArgument(periods.Length > 0, "periods", "No periods specified in precalculated time zone");
-            Preconditions.CheckArgument(!periods[0].HasStart, "periods", "Periods in precalculated time zone must start with the beginning of time");
+            Preconditions.CheckArgument(periods.Length > 0, nameof(periods), "No periods specified in precalculated time zone");
+            Preconditions.CheckArgument(!periods[0].HasStart, nameof(periods), "Periods in precalculated time zone must start with the beginning of time");
             for (int i = 0; i < periods.Length - 1; i++)
             {
                 // Safe to use End here: there can't be a period *after* an endless one. Likewise it's safe to use Start on the next 
                 // period, as there can't be a period *before* one which goes back to the start of time.
-                Preconditions.CheckArgument(periods[i].End == periods[i + 1].Start, "periods", "Non-adjoining ZoneIntervals for precalculated time zone");
+                Preconditions.CheckArgument(periods[i].End == periods[i + 1].Start, nameof(periods), "Non-adjoining ZoneIntervals for precalculated time zone");
             }
-            Preconditions.CheckArgument(tailZone != null || periods[periods.Length - 1].RawEnd == Instant.AfterMaxValue, "tailZone", "Null tail zone given but periods don't cover all of time");
+            Preconditions.CheckArgument(tailZone != null || periods[periods.Length - 1].RawEnd == Instant.AfterMaxValue, nameof(tailZone), "Null tail zone given but periods don't cover all of time");
         }
 
         /// <summary>
@@ -127,7 +127,7 @@ namespace NodaTime.TimeZones
         /// <param name="writer">The writer to write to.</param>
         internal void Write(IDateTimeZoneWriter writer)
         {
-            Preconditions.CheckNotNull(writer, "writer");
+            Preconditions.CheckNotNull(writer, nameof(writer));
 
             // We used to create a pool of strings just for this zone. This was more efficient
             // for some zones, as it meant that each string would be written out with just a single
@@ -192,8 +192,8 @@ namespace NodaTime.TimeZones
             DateTimeZone tailZone,
             OffsetAggregator aggregator)
         {
-            Preconditions.CheckNotNull(intervals, "intervals");
-            Preconditions.CheckArgument(intervals.Length > 0, "intervals", "No intervals specified");
+            Preconditions.CheckNotNull(intervals, nameof(intervals));
+            Preconditions.CheckArgument(intervals.Length > 0, nameof(intervals), "No intervals specified");
             Offset ret = intervals[0].WallOffset;
             for (int i = 1; i < intervals.Length; i++)
             {

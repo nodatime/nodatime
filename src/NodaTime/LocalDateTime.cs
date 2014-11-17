@@ -441,7 +441,7 @@ namespace NodaTime
         /// <returns>true if the <paramref name="lhs"/> is strictly earlier than <paramref name="rhs"/>, false otherwise.</returns>
         public static bool operator <(LocalDateTime lhs, LocalDateTime rhs)
         {
-            Preconditions.CheckArgument(lhs.Calendar.Equals(rhs.Calendar), "rhs", "Only values in the same calendar can be compared");
+            Preconditions.CheckArgument(lhs.Calendar.Equals(rhs.Calendar), nameof(rhs), "Only values in the same calendar can be compared");
             return lhs.CompareTo(rhs) < 0;
         }
 
@@ -460,7 +460,7 @@ namespace NodaTime
         /// <returns>true if the <paramref name="lhs"/> is earlier than or equal to <paramref name="rhs"/>, false otherwise.</returns>
         public static bool operator <=(LocalDateTime lhs, LocalDateTime rhs)
         {
-            Preconditions.CheckArgument(lhs.Calendar.Equals(rhs.Calendar), "rhs", "Only values in the same calendar can be compared");
+            Preconditions.CheckArgument(lhs.Calendar.Equals(rhs.Calendar), nameof(rhs), "Only values in the same calendar can be compared");
             return lhs.CompareTo(rhs) <= 0;
         }
 
@@ -479,7 +479,7 @@ namespace NodaTime
         /// <returns>true if the <paramref name="lhs"/> is strictly later than <paramref name="rhs"/>, false otherwise.</returns>
         public static bool operator >(LocalDateTime lhs, LocalDateTime rhs)
         {
-            Preconditions.CheckArgument(lhs.Calendar.Equals(rhs.Calendar), "rhs", "Only values in the same calendar can be compared");
+            Preconditions.CheckArgument(lhs.Calendar.Equals(rhs.Calendar), nameof(rhs), "Only values in the same calendar can be compared");
             return lhs.CompareTo(rhs) > 0;
         }
 
@@ -498,7 +498,7 @@ namespace NodaTime
         /// <returns>true if the <paramref name="lhs"/> is later than or equal to <paramref name="rhs"/>, false otherwise.</returns>
         public static bool operator >=(LocalDateTime lhs, LocalDateTime rhs)
         {
-            Preconditions.CheckArgument(lhs.Calendar.Equals(rhs.Calendar), "rhs", "Only values in the same calendar can be compared");
+            Preconditions.CheckArgument(lhs.Calendar.Equals(rhs.Calendar), nameof(rhs), "Only values in the same calendar can be compared");
             return lhs.CompareTo(rhs) >= 0;
         }
 
@@ -545,7 +545,7 @@ namespace NodaTime
             {
                 return 1;
             }
-            Preconditions.CheckArgument(obj is LocalDateTime, "obj", "Object must be of type NodaTime.LocalDateTime.");
+            Preconditions.CheckArgument(obj is LocalDateTime, nameof(obj), "Object must be of type NodaTime.LocalDateTime.");
             return CompareTo((LocalDateTime)obj);
         }
 
@@ -574,7 +574,7 @@ namespace NodaTime
         [Pure]
         public LocalDateTime Plus(Period period)
         {
-            Preconditions.CheckNotNull(period, "period");
+            Preconditions.CheckNotNull(period, nameof(period));
             return period.AddTo(date, time, 1);
         }
 
@@ -603,7 +603,7 @@ namespace NodaTime
         [Pure]
         public LocalDateTime Minus(Period period)
         {
-            Preconditions.CheckNotNull(period, "period");
+            Preconditions.CheckNotNull(period, nameof(period));
             return period.AddTo(date, time, -1);
         }
 
@@ -706,7 +706,7 @@ namespace NodaTime
         [Pure]
         public LocalDateTime WithCalendar([NotNull] CalendarSystem calendarSystem)
         {
-            Preconditions.CheckNotNull(calendarSystem, "calendarSystem");
+            Preconditions.CheckNotNull(calendarSystem, nameof(calendarSystem));
             return new LocalDateTime(date.WithCalendar(calendarSystem), time);
         }
 
@@ -877,7 +877,7 @@ namespace NodaTime
         [Pure]
         public ZonedDateTime InZoneStrictly([NotNull] DateTimeZone zone)
         {
-            Preconditions.CheckNotNull(zone, "zone");
+            Preconditions.CheckNotNull(zone, nameof(zone));
             return zone.AtStrictly(this);
         }
 
@@ -897,7 +897,7 @@ namespace NodaTime
         [Pure]
         public ZonedDateTime InZoneLeniently([NotNull] DateTimeZone zone)
         {
-            Preconditions.CheckNotNull(zone, "zone");
+            Preconditions.CheckNotNull(zone, nameof(zone));
             return zone.AtLeniently(this);
         }
 
@@ -916,8 +916,8 @@ namespace NodaTime
         [Pure]
         public ZonedDateTime InZone([NotNull] DateTimeZone zone, [NotNull] ZoneLocalMappingResolver resolver)
         {
-            Preconditions.CheckNotNull(zone, "zone");
-            Preconditions.CheckNotNull(resolver, "resolver");
+            Preconditions.CheckNotNull(zone, nameof(zone));
+            Preconditions.CheckNotNull(resolver, nameof(resolver));
             return zone.ResolveLocal(this, resolver);
         }
 
@@ -956,7 +956,7 @@ namespace NodaTime
         /// <inheritdoc />
         void IXmlSerializable.ReadXml(XmlReader reader)
         {
-            Preconditions.CheckNotNull(reader, "reader");
+            Preconditions.CheckNotNull(reader, nameof(reader));
             var pattern = LocalDateTimePattern.ExtendedIsoPattern;
             if (reader.MoveToAttribute("calendar"))
             {
@@ -973,7 +973,7 @@ namespace NodaTime
         /// <inheritdoc />
         void IXmlSerializable.WriteXml(XmlWriter writer)
         {
-            Preconditions.CheckNotNull(writer, "writer");
+            Preconditions.CheckNotNull(writer, nameof(writer));
             if (Calendar != CalendarSystem.Iso)
             {
                 writer.WriteAttributeString("calendar", Calendar.Id);

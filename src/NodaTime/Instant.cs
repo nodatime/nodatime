@@ -98,8 +98,8 @@ namespace NodaTime
 
         internal Instant([Trusted] int days, [Trusted] long nanoOfDay)
         {
-            Preconditions.DebugCheckArgumentRange("days", days, MinDays, MaxDays);
-            Preconditions.DebugCheckArgumentRange("nanoOfDay", nanoOfDay, 0, NodaConstants.NanosecondsPerDay - 1);
+            Preconditions.DebugCheckArgumentRange(nameof(days), days, MinDays, MaxDays);
+            Preconditions.DebugCheckArgumentRange(nameof(nanoOfDay), nanoOfDay, 0, NodaConstants.NanosecondsPerDay - 1);
             duration = new Duration(days, nanoOfDay);
         }
 
@@ -183,7 +183,7 @@ namespace NodaTime
             {
                 return 1;
             }
-            Preconditions.CheckArgument(obj is Instant, "obj", "Object must be of type NodaTime.Instant.");
+            Preconditions.CheckArgument(obj is Instant, nameof(obj), "Object must be of type NodaTime.Instant.");
             return CompareTo((Instant)obj);
         }
         #endregion
@@ -522,7 +522,7 @@ namespace NodaTime
         /// <see cref="DateTimeKind.Utc"/>.</exception>
         public static Instant FromDateTimeUtc(DateTime dateTime)
         {
-            Preconditions.CheckArgument(dateTime.Kind == DateTimeKind.Utc, "dateTime", "Invalid DateTime.Kind for Instant.FromDateTimeUtc");
+            Preconditions.CheckArgument(dateTime.Kind == DateTimeKind.Utc, nameof(dateTime), "Invalid DateTime.Kind for Instant.FromDateTimeUtc");
             return NodaConstants.BclEpoch.PlusTicks(dateTime.Ticks);
         }
 
@@ -535,7 +535,7 @@ namespace NodaTime
         /// <exception cref="ArgumentOutOfRangeException">The constructed instant would be out of the range representable in Noda Time.</exception>
         public static Instant FromSecondsSinceUnixEpoch(long seconds)
         {
-            Preconditions.CheckArgumentRange("seconds", seconds, MinSeconds, MaxSeconds);
+            Preconditions.CheckArgumentRange(nameof(seconds), seconds, MinSeconds, MaxSeconds);
             return new Instant(Duration.FromSeconds(seconds));
         }
 
@@ -548,7 +548,7 @@ namespace NodaTime
         /// <exception cref="ArgumentOutOfRangeException">The constructed instant would be out of the range representable in Noda Time.</exception>
         public static Instant FromMillisecondsSinceUnixEpoch(long milliseconds)
         {
-            Preconditions.CheckArgumentRange("milliseconds", milliseconds, MinMilliseconds, MaxMilliseconds);
+            Preconditions.CheckArgumentRange(nameof(milliseconds), milliseconds, MinMilliseconds, MaxMilliseconds);
             return new Instant(Duration.FromMilliseconds(milliseconds));
         }
 
@@ -562,7 +562,7 @@ namespace NodaTime
         /// <param name="ticks">Number of ticks since the Unix epoch. May be negative (for instants before the epoch).</param>
         public static Instant FromTicksSinceUnixEpoch(long ticks)
         {
-            Preconditions.CheckArgumentRange("ticks", ticks, MinTicks, MaxTicks);
+            Preconditions.CheckArgumentRange(nameof(ticks), ticks, MinTicks, MaxTicks);
             return new Instant(Duration.FromTicks(ticks));
         }
 
@@ -605,8 +605,8 @@ namespace NodaTime
         [Pure]
         public ZonedDateTime InZone([NotNull] DateTimeZone zone, [NotNull] CalendarSystem calendar)
         {
-            Preconditions.CheckNotNull(zone, "zone");
-            Preconditions.CheckNotNull(calendar, "calendar");
+            Preconditions.CheckNotNull(zone, nameof(zone));
+            Preconditions.CheckNotNull(calendar, nameof(calendar));
             return new ZonedDateTime(this, zone, calendar);
         }
 
@@ -631,7 +631,7 @@ namespace NodaTime
         [Pure]
         public OffsetDateTime WithOffset(Offset offset, [NotNull] CalendarSystem calendar)
         {
-            Preconditions.CheckNotNull(calendar, "calendar");
+            Preconditions.CheckNotNull(calendar, nameof(calendar));
             return new OffsetDateTime(this, offset, calendar);
         }
 
@@ -642,7 +642,7 @@ namespace NodaTime
         /// <inheritdoc />
         void IXmlSerializable.ReadXml(XmlReader reader)
         {
-            Preconditions.CheckNotNull(reader, "reader");
+            Preconditions.CheckNotNull(reader, nameof(reader));
             var pattern = InstantPattern.ExtendedIsoPattern;
             string text = reader.ReadElementContentAsString();
             this = pattern.Parse(text).Value;
@@ -651,7 +651,7 @@ namespace NodaTime
         /// <inheritdoc />
         void IXmlSerializable.WriteXml(XmlWriter writer)
         {
-            Preconditions.CheckNotNull(writer, "writer");
+            Preconditions.CheckNotNull(writer, nameof(writer));
             writer.WriteString(InstantPattern.ExtendedIsoPattern.Format(this));
         }
         #endregion

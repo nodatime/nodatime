@@ -43,7 +43,7 @@ namespace NodaTime.Text
 
         private PeriodPattern(IPattern<Period> pattern)
         {
-            this.pattern = Preconditions.CheckNotNull(pattern, "pattern");
+            this.pattern = Preconditions.CheckNotNull(pattern, nameof(pattern));
         }
 
         /// <summary>
@@ -177,8 +177,8 @@ namespace NodaTime.Text
 
             public StringBuilder AppendFormat(Period value, StringBuilder builder)
             {
-                Preconditions.CheckNotNull(value, "value");
-                Preconditions.CheckNotNull(builder, "builder");
+                Preconditions.CheckNotNull(value, nameof(value));
+                Preconditions.CheckNotNull(builder, nameof(builder));
                 builder.Append("P");
                 AppendValue(builder, value.Years, "Y");
                 AppendValue(builder, value.Months, "M");
@@ -332,8 +332,8 @@ namespace NodaTime.Text
 
             public StringBuilder AppendFormat(Period value, StringBuilder builder)
             {
-                Preconditions.CheckNotNull(value, "value");
-                Preconditions.CheckNotNull(builder, "builder");
+                Preconditions.CheckNotNull(value, nameof(value));
+                Preconditions.CheckNotNull(builder, nameof(builder));
                 value = value.Normalize();
                 // Always ensure we've got *some* unit; arbitrarily pick days.
                 if (value.Equals(Period.Zero))

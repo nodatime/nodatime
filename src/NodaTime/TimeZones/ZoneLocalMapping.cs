@@ -94,10 +94,10 @@ namespace NodaTime.TimeZones
 
         internal ZoneLocalMapping(DateTimeZone zone, LocalDateTime localDateTime, ZoneInterval earlyInterval, ZoneInterval lateInterval, int count)
         {
-            Preconditions.DebugCheckNotNull(zone, "zone");
-            Preconditions.DebugCheckNotNull(earlyInterval, "earlyInterval");
-            Preconditions.DebugCheckNotNull(lateInterval, "lateInterval");
-            Preconditions.DebugCheckArgumentRange("count", count, 0, 2);
+            Preconditions.DebugCheckNotNull(zone, nameof(zone));
+            Preconditions.DebugCheckNotNull(earlyInterval, nameof(earlyInterval));
+            Preconditions.DebugCheckNotNull(lateInterval, nameof(lateInterval));
+            Preconditions.DebugCheckArgumentRange(nameof(count), count, 0, 2);
             this.Zone = zone;
             this.EarlyInterval = earlyInterval;
             this.LateInterval = lateInterval;

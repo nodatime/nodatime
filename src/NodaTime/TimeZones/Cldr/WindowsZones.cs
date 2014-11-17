@@ -96,10 +96,10 @@ namespace NodaTime.TimeZones.Cldr
         [NotNull] public IDictionary<string, string> PrimaryMapping { get; }
 
         internal WindowsZones(string version, string tzdbVersion, string windowsVersion, IList<MapZone> mapZones)
-            : this(Preconditions.CheckNotNull(version, "version"),
-                   Preconditions.CheckNotNull(tzdbVersion, "tzdbVersion"),
-                   Preconditions.CheckNotNull(windowsVersion, "windowsVersion"),
-                   new ReadOnlyCollection<MapZone>(new List<MapZone>(Preconditions.CheckNotNull(mapZones, "mapZones"))))
+            : this(Preconditions.CheckNotNull(version, nameof(version)),
+                   Preconditions.CheckNotNull(tzdbVersion, nameof(tzdbVersion)),
+                   Preconditions.CheckNotNull(windowsVersion, nameof(windowsVersion)),
+                   new ReadOnlyCollection<MapZone>(new List<MapZone>(Preconditions.CheckNotNull(mapZones, nameof(mapZones)))))
         {
         }
 
@@ -130,8 +130,8 @@ namespace NodaTime.TimeZones.Cldr
 
         internal static WindowsZones FromPrimaryMapping(string version, IDictionary<string, string> mappings)
         {
-            return new WindowsZones(Preconditions.CheckNotNull(version, "version"),
-                new NodaReadOnlyDictionary<string, string>(Preconditions.CheckNotNull(mappings, "mappings")));
+            return new WindowsZones(Preconditions.CheckNotNull(version, nameof(version)),
+                new NodaReadOnlyDictionary<string, string>(Preconditions.CheckNotNull(mappings, nameof(mappings))));
         }
 
         internal static WindowsZones Read(IDateTimeZoneReader reader)

@@ -80,14 +80,14 @@ namespace NodaTime.TimeZones
         public TzdbZoneLocation(int latitudeSeconds, int longitudeSeconds, string countryName, string countryCode,
             string zoneId, string comment)
         {
-            Preconditions.CheckArgumentRange("latitudeSeconds", latitudeSeconds, -90 * 3600, 90 * 3600);
-            Preconditions.CheckArgumentRange("longitudeSeconds", longitudeSeconds, -180 * 3600, 180 * 3600);
+            Preconditions.CheckArgumentRange(nameof(latitudeSeconds), latitudeSeconds, -90 * 3600, 90 * 3600);
+            Preconditions.CheckArgumentRange(nameof(longitudeSeconds), longitudeSeconds, -180 * 3600, 180 * 3600);
             this.latitudeSeconds = latitudeSeconds;
             this.longitudeSeconds = longitudeSeconds;
-            this.CountryName = Preconditions.CheckNotNull(countryName, "countryName");
-            this.CountryCode = Preconditions.CheckNotNull(countryCode, "countryCode");
-            this.ZoneId = Preconditions.CheckNotNull(zoneId, "zoneId");
-            this.Comment = Preconditions.CheckNotNull(comment, "comment");
+            this.CountryName = Preconditions.CheckNotNull(countryName, nameof(countryName));
+            this.CountryCode = Preconditions.CheckNotNull(countryCode, nameof(countryCode));
+            this.ZoneId = Preconditions.CheckNotNull(zoneId, nameof(zoneId));
+            this.Comment = Preconditions.CheckNotNull(comment, nameof(comment));
         }
 
         internal void Write(IDateTimeZoneWriter writer)

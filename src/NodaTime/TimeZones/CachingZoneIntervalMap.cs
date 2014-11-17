@@ -70,7 +70,7 @@ namespace NodaTime.TimeZones
 
             internal HashArrayCache(IZoneIntervalMap map)
             {
-                this.map = Preconditions.CheckNotNull(map, "map");
+                this.map = Preconditions.CheckNotNull(map, nameof(map));
                 instantCache = new HashCacheNode[CacheSize];
             }
 

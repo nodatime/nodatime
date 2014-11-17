@@ -129,9 +129,9 @@ namespace NodaTime
         {
             if (days < MinDays || days > MaxDays)
             {
-                Preconditions.CheckArgumentRange("days", days, MinDays, MaxDays);
+                Preconditions.CheckArgumentRange(nameof(days), days, MinDays, MaxDays);
             }
-            Preconditions.DebugCheckArgumentRange("nanoOfDay", nanoOfDay, 0, NodaConstants.NanosecondsPerDay - 1);
+            Preconditions.DebugCheckArgumentRange(nameof(nanoOfDay), nanoOfDay, 0, NodaConstants.NanosecondsPerDay - 1);
             this.days = days;
             this.nanoOfDay = nanoOfDay;
         }
@@ -141,7 +141,7 @@ namespace NodaTime
         /// </summary>
         private Duration(int days, long nanoOfDay, bool ignored) : this(days, nanoOfDay)
         {
-            Preconditions.CheckArgumentRange("nanoOfDay", nanoOfDay, 0, NodaConstants.NanosecondsPerDay - 1);
+            Preconditions.CheckArgumentRange(nameof(nanoOfDay), nanoOfDay, 0, NodaConstants.NanosecondsPerDay - 1);
         }
 
         /// <summary>
@@ -295,7 +295,7 @@ namespace NodaTime
         {
             unchecked
             {
-                Preconditions.DebugCheckArgumentRange("smallNanos", smallNanos, -NodaConstants.NanosecondsPerDay, NodaConstants.NanosecondsPerDay);
+                Preconditions.DebugCheckArgumentRange(nameof(smallNanos), smallNanos, -NodaConstants.NanosecondsPerDay, NodaConstants.NanosecondsPerDay);
                 int newDays = days;
                 long newNanos = nanoOfDay + smallNanos;
                 if (newNanos >= NodaConstants.NanosecondsPerDay)
@@ -321,7 +321,7 @@ namespace NodaTime
         {
             unchecked
             {
-                Preconditions.DebugCheckArgumentRange("smallNanos", smallNanos, -NodaConstants.NanosecondsPerDay, NodaConstants.NanosecondsPerDay);
+                Preconditions.DebugCheckArgumentRange(nameof(smallNanos), smallNanos, -NodaConstants.NanosecondsPerDay, NodaConstants.NanosecondsPerDay);
                 int newDays = days;
                 long newNanos = nanoOfDay - smallNanos;
                 if (newNanos >= NodaConstants.NanosecondsPerDay)
@@ -698,7 +698,7 @@ namespace NodaTime
             {
                 return 1;
             }
-            Preconditions.CheckArgument(obj is Duration, "obj", "Object must be of type NodaTime.Duration.");
+            Preconditions.CheckArgument(obj is Duration, nameof(obj), "Object must be of type NodaTime.Duration.");
             return CompareTo((Duration)obj);
         }
         #endregion
@@ -835,7 +835,7 @@ namespace NodaTime
         /// <inheritdoc />
         void IXmlSerializable.ReadXml(XmlReader reader)
         {
-            Preconditions.CheckNotNull(reader, "reader");
+            Preconditions.CheckNotNull(reader, nameof(reader));
             var pattern = DurationPattern.RoundtripPattern;
             string text = reader.ReadElementContentAsString();
             this = pattern.Parse(text).Value;
@@ -844,7 +844,7 @@ namespace NodaTime
         /// <inheritdoc />
         void IXmlSerializable.WriteXml(XmlWriter writer)
         {
-            Preconditions.CheckNotNull(writer, "writer");
+            Preconditions.CheckNotNull(writer, nameof(writer));
             writer.WriteString(DurationPattern.RoundtripPattern.Format(this));
         }
         #endregion

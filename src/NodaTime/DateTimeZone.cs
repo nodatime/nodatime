@@ -332,7 +332,7 @@ namespace NodaTime
         /// <returns>The result of resolving the mapping.</returns>
         public ZonedDateTime ResolveLocal(LocalDateTime localDateTime, [NotNull] ZoneLocalMappingResolver resolver)
         {
-            Preconditions.CheckNotNull(resolver, "resolver");
+            Preconditions.CheckNotNull(resolver, nameof(resolver));
             return resolver(MapLocal(localDateTime));
         }
 
