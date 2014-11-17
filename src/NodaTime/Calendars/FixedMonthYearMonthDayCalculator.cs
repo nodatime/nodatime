@@ -23,33 +23,19 @@ namespace NodaTime.Calendars
         {
         }
 
-        internal override int GetDaysSinceEpoch(YearMonthDay yearMonthDay)
-        {
+        internal override int GetDaysSinceEpoch(YearMonthDay yearMonthDay) =>
             // Just inline the arithmetic that would be done via various methods.
-            return GetStartOfYearInDays(yearMonthDay.Year)
+            GetStartOfYearInDays(yearMonthDay.Year)
                    + (yearMonthDay.Month - 1) * DaysInMonth
                    + (yearMonthDay.Day - 1);
-        }
 
-        protected override int GetDaysFromStartOfYearToStartOfMonth(int year, int month)
-        {
-            return (month - 1) * DaysInMonth;
-        }
+        protected override int GetDaysFromStartOfYearToStartOfMonth(int year, int month) => (month - 1) * DaysInMonth;
 
-        internal override bool IsLeapYear(int year)
-        {
-            return (year & 3) == 3;
-        }
+        internal override bool IsLeapYear(int year) => (year & 3) == 3;
 
-        internal override int GetDaysInYear(int year)
-        {
-            return IsLeapYear(year) ? 366 : 365;
-        }
+        internal override int GetDaysInYear(int year) => IsLeapYear(year) ? 366 : 365;
 
-        internal override int GetDaysInMonth(int year, int month)
-        {
-            return month != 13 ? DaysInMonth : IsLeapYear(year) ? 6 : 5;
-        }
+        internal override int GetDaysInMonth(int year, int month) => month != 13 ? DaysInMonth : IsLeapYear(year) ? 6 : 5;
 
         internal override YearMonthDay GetYearMonthDay(int year, int dayOfYear)
         {

@@ -20,25 +20,23 @@ namespace NodaTime.Text.Patterns
     {
         internal delegate ParseResult<TResult> ParseAction(ValueCursor cursor, TBucket bucket);
 
-        private readonly NodaFormatInfo formatInfo;
-
         private readonly List<Action<TResult, StringBuilder>> formatActions;
         private readonly List<ParseAction> parseActions;
         private readonly Func<TBucket> bucketProvider;
         private PatternFields usedFields;
         private bool formatOnly = false;
 
+        internal NodaFormatInfo FormatInfo { get; }
+
+        internal PatternFields UsedFields => usedFields;
+
         internal SteppedPatternBuilder(NodaFormatInfo formatInfo, Func<TBucket> bucketProvider)
         {
-            this.formatInfo = formatInfo;
+            this.FormatInfo = formatInfo;
             formatActions = new List<Action<TResult, StringBuilder>>();
             parseActions = new List<ParseAction>();
             this.bucketProvider = bucketProvider;
         }
-
-        internal NodaFormatInfo FormatInfo { get { return formatInfo; } }
-
-        internal PatternFields UsedFields { get { return usedFields; } }
 
         /// <summary>
         /// Sets this pattern to only be capable of formatting; any attempt to parse using the
@@ -130,15 +128,9 @@ namespace NodaTime.Text.Patterns
             usedFields = newUsedFields;
         }
 
-        internal void AddParseAction(ParseAction parseAction)
-        {
-            parseActions.Add(parseAction);
-        }
+        internal void AddParseAction(ParseAction parseAction) => parseActions.Add(parseAction);
 
-        internal void AddFormatAction(Action<TResult, StringBuilder> formatAction)
-        {
-            formatActions.Add(formatAction);
-        }
+        internal void AddFormatAction(Action<TResult, StringBuilder> formatAction) => formatActions.Add(formatAction);
 
         internal void AddParseValueAction(int minimumDigits, int maximumDigits, char patternChar,
                                           int minimumValue, int maximumValue,
@@ -333,8 +325,8 @@ namespace NodaTime.Text.Patterns
         /// <param name="nonNegativePredicate">Predicate to detect whether the value being formatted is non-negative</param>
         public void AddRequiredSign(Action<TBucket, bool> signSetter, Func<TResult, bool> nonNegativePredicate)
         {
-            string negativeSign = formatInfo.NegativeSign;
-            string positiveSign = formatInfo.PositiveSign;
+            string negativeSign = FormatInfo.NegativeSign;
+            string positiveSign = FormatInfo.PositiveSign;
             AddParseAction((str, bucket) =>
             {
                 if (str.Match(negativeSign))
@@ -359,8 +351,8 @@ namespace NodaTime.Text.Patterns
         /// <param name="nonNegativePredicate">Predicate to detect whether the value being formatted is non-negative</param>
         public void AddNegativeOnlySign(Action<TBucket, bool> signSetter, Func<TResult, bool> nonNegativePredicate)
         {
-            string negativeSign = formatInfo.NegativeSign;
-            string positiveSign = formatInfo.PositiveSign;
+            string negativeSign = FormatInfo.NegativeSign;
+            string positiveSign = FormatInfo.PositiveSign;
             AddParseAction((str, bucket) =>
             {
                 if (str.Match(negativeSign))
@@ -384,20 +376,14 @@ namespace NodaTime.Text.Patterns
             });
         }
 
-        internal void AddFormatLeftPad(int count, Func<TResult, int> selector)
-        {
+        internal void AddFormatLeftPad(int count, Func<TResult, int> selector) =>
             AddFormatAction((value, sb) => FormatHelper.LeftPad(selector(value), count, sb));
-        }
 
-        internal void AddFormatFraction(int width, int scale, Func<TResult, int> selector)
-        {
+        internal void AddFormatFraction(int width, int scale, Func<TResult, int> selector) =>
             AddFormatAction((value, sb) => FormatHelper.AppendFraction(selector(value), width, scale, sb));
-        }
 
-        internal void AddFormatFractionTruncate(int width, int scale, Func<TResult, int> selector)
-        {
+        internal void AddFormatFractionTruncate(int width, int scale, Func<TResult, int> selector) =>
             AddFormatAction((value, sb) => FormatHelper.AppendFractionTruncate(selector(value), width, scale, sb));
-        }
 
         /// <summary>
         /// Hack to handle genitive month names - we only know what we need to do *after* we've parsed the whole pattern.

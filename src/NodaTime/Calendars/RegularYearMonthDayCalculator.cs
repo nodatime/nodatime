@@ -25,10 +25,7 @@ namespace NodaTime.Calendars
             this.monthsInYear = monthsInYear;
         }
 
-        internal override int GetMonthsInYear(int year)
-        {
-            return monthsInYear;
-        }
+        internal override int GetMonthsInYear(int year) => monthsInYear;
 
         /// <summary>
         /// Implements a simple year-setting policy, truncating the day

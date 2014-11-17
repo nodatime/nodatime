@@ -74,39 +74,29 @@
         /// Returns the validator to use for a given year, a non-negative number containing at most
         /// EntryValidationBits bits.
         /// </summary>
-        private static int GetValidator(int year)
-        {
+        private static int GetValidator(int year) =>
             // Note that we assume that the input year fits into EntryValidationBits+CacheIndexBits bits - if not,
             // this would return the same validator for more than one input year, meaning that we could potentially
             // use the wrong cache value.
             // The masking here is necessary to remove some of the sign-extended high bits for negative years.
-            return (year >> CacheIndexBits) & EntryValidationMask;
-        }
+            (year >> CacheIndexBits) & EntryValidationMask;
 
         /// <summary>
         /// Returns the cache index, in [0, CacheSize), that should be used to store the given year's cache entry.
         /// </summary>
-        internal static int GetCacheIndex(int year)
-        {
+        internal static int GetCacheIndex(int year) =>
             // Effectively keep only the bottom CacheIndexBits bits.
-            return year & CacheIndexMask;
-        }
+            year & CacheIndexMask;
 
         /// <summary>
         /// Returns whether this cache entry is valid for the given year, and so is safe to use.  (We assume that we
         /// have located this entry via the correct cache index.)
         /// </summary>
-        internal bool IsValidForYear(int year)
-        {
-            return GetValidator(year) == (value & EntryValidationMask);
-        }
+        internal bool IsValidForYear(int year) => GetValidator(year) == (value & EntryValidationMask);
 
         /// <summary>
         /// Returns the (signed) number of days since the Unix epoch for the cache entry.
         /// </summary>
-        internal int StartOfYearDays
-        {
-            get { return value >> EntryValidationBits; }
-        }
+        internal int StartOfYearDays => value >> EntryValidationBits;
     }
 }

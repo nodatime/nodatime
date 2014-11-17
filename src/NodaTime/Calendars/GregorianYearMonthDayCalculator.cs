@@ -135,10 +135,7 @@ namespace NodaTime.Calendars
             }
         }
 
-        internal override void ValidateYearMonthDay(int year, int month, int day)
-        {
-            ValidateGregorianYearMonthDay(year, month, day);
-        }
+        internal override void ValidateYearMonthDay(int year, int month, int day) => ValidateGregorianYearMonthDay(year, month, day);
 
         internal static void ValidateGregorianYearMonthDay(int year, int month, int day)
         {
@@ -187,19 +184,10 @@ namespace NodaTime.Calendars
         }
 
         // Override GetDaysInYear so we can avoid a pointless virtual method call.
-        internal override int GetDaysInYear(int year)
-        {
-            return IsGregorianLeapYear(year) ? 366 : 365;
-        }
+        internal override int GetDaysInYear(int year) => IsGregorianLeapYear(year) ? 366 : 365;
 
-        internal override bool IsLeapYear(int year)
-        {
-            return IsGregorianLeapYear(year);
-        }
+        internal override bool IsLeapYear(int year) => IsGregorianLeapYear(year);
 
-        private static bool IsGregorianLeapYear(int year)
-        {
-            return ((year & 3) == 0) && ((year % 100) != 0 || (year % 400) == 0);
-        }
+        private static bool IsGregorianLeapYear(int year) => ((year & 3) == 0) && ((year % 100) != 0 || (year % 400) == 0);
     }
 }

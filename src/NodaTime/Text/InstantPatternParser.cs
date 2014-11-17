@@ -58,20 +58,13 @@ namespace NodaTime.Text
                 this.pattern = pattern;
             }
 
-            public string Format(Instant value)
-            {
-                return pattern.Format(value.InUtc().LocalDateTime);
-            }
+            public string Format(Instant value) => pattern.Format(value.InUtc().LocalDateTime);
 
-            public StringBuilder AppendFormat(Instant value, StringBuilder builder)
-            {
-                return pattern.AppendFormat(value.InUtc().LocalDateTime, builder);
-            }
+            public StringBuilder AppendFormat(Instant value, StringBuilder builder) =>
+                pattern.AppendFormat(value.InUtc().LocalDateTime, builder);
 
-            public ParseResult<Instant> Parse(string text)
-            {
-                return pattern.Parse(text).Convert(local => new Instant(local.Date.DaysSinceEpoch, local.NanosecondOfDay));
-            }
+            public ParseResult<Instant> Parse(string text) =>
+                pattern.Parse(text).Convert(local => new Instant(local.Date.DaysSinceEpoch, local.NanosecondOfDay));
         }
     }
 }
