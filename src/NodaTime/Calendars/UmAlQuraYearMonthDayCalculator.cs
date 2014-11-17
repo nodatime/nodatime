@@ -178,7 +178,7 @@ namespace NodaTime.Calendars
                 daysLeft -= monthLength;
             }
             // This should throw...
-            Preconditions.CheckArgumentRange("dayOfYear", dayOfYear, 1, GetDaysInYear(year));
+            Preconditions.CheckArgumentRange(nameof(dayOfYear), dayOfYear, 1, GetDaysInYear(year));
             throw new InvalidOperationException("Bug in Noda Time: year " + year +
                 " has " + GetDaysInYear(year) + " days but " + dayOfYear + " isn't valid");
         }

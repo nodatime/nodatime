@@ -158,7 +158,7 @@ namespace NodaTime.Calendars
                         return 30 + heshvanLength + kislevLength + 29 + 30 + firstAdarLength;
                     default:
                         // Just shorthand for using the right exception across PCL and desktop
-                        Preconditions.CheckArgumentRange("month", month, 1, 13);
+                        Preconditions.CheckArgumentRange(nameof(month), month, 1, 13);
                         throw new InvalidOperationException("CheckArgumentRange should have thrown...");
                 }
             }

@@ -23,10 +23,10 @@ namespace NodaTime.Calendars
 
         internal YearMonthDay GetYearMonthDay(int weekYear, int weekOfWeekYear, IsoDayOfWeek dayOfWeek)
         {
-            Preconditions.CheckArgumentRange("weekYear", weekYear, yearMonthDayCalculator.MinYear, yearMonthDayCalculator.MaxYear);
-            Preconditions.CheckArgumentRange("weekOfWeekYear", weekOfWeekYear, 1, GetWeeksInWeekYear(weekYear));
+            Preconditions.CheckArgumentRange(nameof(weekYear), weekYear, yearMonthDayCalculator.MinYear, yearMonthDayCalculator.MaxYear);
+            Preconditions.CheckArgumentRange(nameof(weekOfWeekYear), weekOfWeekYear, 1, GetWeeksInWeekYear(weekYear));
             // TODO: Work out what argument validation we actually want here.
-            Preconditions.CheckArgumentRange("dayOfWeek", (int)dayOfWeek, 1, 7);
+            Preconditions.CheckArgumentRange(nameof(dayOfWeek), (int)dayOfWeek, 1, 7);
             unchecked
             {
                 int days = GetWeekYearDaysSinceEpoch(weekYear) + (weekOfWeekYear - 1) * 7 + ((int) dayOfWeek - 1);

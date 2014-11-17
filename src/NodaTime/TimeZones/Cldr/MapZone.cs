@@ -76,9 +76,9 @@ namespace NodaTime.TimeZones.Cldr
         /// <param name="tzdbIds">List of territory codes. Must not be null, and must not
         /// contains null values.</param>
         public MapZone(string windowsId, string territory, IList<string> tzdbIds)
-            : this(Preconditions.CheckNotNull(windowsId, "windowsId"),
-                   Preconditions.CheckNotNull(territory, "territory"),
-                   new ReadOnlyCollection<string>(new List<string>(Preconditions.CheckNotNull(tzdbIds, "tzdbIds"))))
+            : this(Preconditions.CheckNotNull(windowsId, nameof(windowsId)),
+                   Preconditions.CheckNotNull(territory, nameof(territory)),
+                   new ReadOnlyCollection<string>(new List<string>(Preconditions.CheckNotNull(tzdbIds, nameof(tzdbIds)))))
         {
         }
 

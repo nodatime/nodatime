@@ -79,7 +79,7 @@ namespace NodaTime.Globalization
         /// <param name="cultureInfo">The culture info to base this on.</param>
         internal NodaFormatInfo(CultureInfo cultureInfo)
         {
-            Preconditions.CheckNotNull(cultureInfo, "cultureInfo");
+            Preconditions.CheckNotNull(cultureInfo, nameof(cultureInfo));
             this.CultureInfo = cultureInfo;
             eraDescriptions = new Dictionary<Era, EraDescription>();
 #if PCL
@@ -310,7 +310,7 @@ namespace NodaTime.Globalization
         /// the era is not known in this culture.</returns>
         public IList<string> GetEraNames([NotNull] Era era)
         {
-            Preconditions.CheckNotNull(era, "era");
+            Preconditions.CheckNotNull(era, nameof(era));
             return GetEraDescription(era).AllNames;
         }
 
@@ -321,7 +321,7 @@ namespace NodaTime.Globalization
         /// <returns>The primary name for the given era, or an empty string if the era name is not known.</returns>
         public string GetEraPrimaryName([NotNull] Era era)
         {
-            Preconditions.CheckNotNull(era, "era");
+            Preconditions.CheckNotNull(era, nameof(era));
             return GetEraDescription(era).PrimaryName;
         }
 
@@ -374,7 +374,7 @@ namespace NodaTime.Globalization
         /// <returns>The <see cref="NodaFormatInfo" />. Will never be null.</returns>
         internal static NodaFormatInfo GetFormatInfo(CultureInfo cultureInfo)
         {
-            Preconditions.CheckNotNull(cultureInfo, "cultureInfo");
+            Preconditions.CheckNotNull(cultureInfo, nameof(cultureInfo));
             if (cultureInfo == CultureInfo.InvariantCulture)
             {
                 return InvariantInfo;

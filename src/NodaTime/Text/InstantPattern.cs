@@ -108,8 +108,8 @@ namespace NodaTime.Text
         /// <exception cref="InvalidPatternException">The pattern text was invalid.</exception>
         private static InstantPattern Create(string patternText, NodaFormatInfo formatInfo)
         {
-            Preconditions.CheckNotNull(patternText, "patternText");
-            Preconditions.CheckNotNull(formatInfo, "formatInfo");
+            Preconditions.CheckNotNull(patternText, nameof(patternText));
+            Preconditions.CheckNotNull(formatInfo, nameof(formatInfo));
             var pattern = formatInfo.InstantPatternParser.ParsePattern(patternText);
             return new InstantPattern(patternText, formatInfo, pattern);
         }

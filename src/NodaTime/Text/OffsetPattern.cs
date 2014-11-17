@@ -98,8 +98,8 @@ namespace NodaTime.Text
         /// <exception cref="InvalidPatternException">The pattern text was invalid.</exception>
         internal static OffsetPattern Create(string patternText, NodaFormatInfo formatInfo)
         {
-            Preconditions.CheckNotNull(patternText, "patternText");
-            Preconditions.CheckNotNull(formatInfo, "formatInfo");
+            Preconditions.CheckNotNull(patternText, nameof(patternText));
+            Preconditions.CheckNotNull(formatInfo, nameof(formatInfo));
             var pattern = (IPartialPattern<Offset>) formatInfo.OffsetPatternParser.ParsePattern(patternText);
             return new OffsetPattern(patternText, formatInfo, pattern);
         }

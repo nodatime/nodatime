@@ -144,8 +144,8 @@ namespace NodaTime.Text
         /// <exception cref="InvalidPatternException">The pattern text was invalid.</exception>
         private static LocalDateTimePattern Create(string patternText, NodaFormatInfo formatInfo, LocalDateTime templateValue)
         {
-            Preconditions.CheckNotNull(patternText, "patternText");
-            Preconditions.CheckNotNull(formatInfo, "formatInfo");
+            Preconditions.CheckNotNull(patternText, nameof(patternText));
+            Preconditions.CheckNotNull(formatInfo, nameof(formatInfo));
             // Use the "fixed" parser for the common case of the default template value.
             var pattern = templateValue == DefaultTemplateValue
                 ? formatInfo.LocalDateTimePatternParser.ParsePattern(patternText)

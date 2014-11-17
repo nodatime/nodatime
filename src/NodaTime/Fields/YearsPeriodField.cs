@@ -27,7 +27,7 @@ namespace NodaTime.Fields
             var calculator = calendar.YearMonthDayCalculator;
             int currentYear = yearMonthDay.Year;
             // Adjust argument range based on current year
-            Preconditions.CheckArgumentRange("value", value, calculator.MinYear - currentYear, calculator.MaxYear - currentYear);
+            Preconditions.CheckArgumentRange(nameof(value), value, calculator.MinYear - currentYear, calculator.MaxYear - currentYear);
             return new LocalDate(calculator.SetYear(yearMonthDay, currentYear + value), calendar);
         }
 

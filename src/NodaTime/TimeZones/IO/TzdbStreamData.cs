@@ -119,7 +119,7 @@ namespace NodaTime.TimeZones.IO
 
         internal static TzdbStreamData FromStream(Stream stream)
         {
-            Preconditions.CheckNotNull(stream, "stream");
+            Preconditions.CheckNotNull(stream, nameof(stream));
             int version = new BinaryReader(stream).ReadInt32();
             if (version != AcceptedVersion)
             {

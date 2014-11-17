@@ -28,8 +28,8 @@ namespace NodaTime.Calendars
         {
             if (era != Era.Common && era != Era.BeforeCommon)
             {
-                Preconditions.CheckNotNull(era, "era");
-                Preconditions.CheckArgument(false, "era", "Era {0} is not supported by this calendar; only BC and AD are supported", era.Name);
+                Preconditions.CheckNotNull(era, nameof(era));
+                Preconditions.CheckArgument(false, nameof(era), "Era {0} is not supported by this calendar; only BC and AD are supported", era.Name);
             }
         }
 
@@ -38,10 +38,10 @@ namespace NodaTime.Calendars
             ValidateEra(era);
             if (era == Era.Common)
             {
-                Preconditions.CheckArgumentRange("yearOfEra", yearOfEra, 1, maxYearOfAd);
+                Preconditions.CheckArgumentRange(nameof(yearOfEra), yearOfEra, 1, maxYearOfAd);
                 return yearOfEra;
             }
-            Preconditions.CheckArgumentRange("yearOfEra", yearOfEra, 1, maxYearOfBc);
+            Preconditions.CheckArgumentRange(nameof(yearOfEra), yearOfEra, 1, maxYearOfBc);
             return 1 - yearOfEra;
         }
 

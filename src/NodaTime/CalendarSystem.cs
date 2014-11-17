@@ -206,7 +206,7 @@ namespace NodaTime
         /// <returns>A Hebrew calendar system for the given month numbering.</returns>
         public static CalendarSystem GetHebrewCalendar(HebrewMonthNumbering monthNumbering)
         {
-            Preconditions.CheckArgumentRange("monthNumbering", (int)monthNumbering, 1, 2);
+            Preconditions.CheckArgumentRange(nameof(monthNumbering), (int)monthNumbering, 1, 2);
             return HebrewCalendarSystems[((int)monthNumbering) - 1];
         }
 
@@ -227,7 +227,7 @@ namespace NodaTime
         /// calls as the object is immutable and thread-safe.</returns>
         public static CalendarSystem GetGregorianCalendar(int minDaysInFirstWeek)
         {
-            Preconditions.CheckArgumentRange("minDaysInFirstWeek", minDaysInFirstWeek, 1, 7);
+            Preconditions.CheckArgumentRange(nameof(minDaysInFirstWeek), minDaysInFirstWeek, 1, 7);
             return GregorianCalendarSystems[minDaysInFirstWeek - 1];
         }
 
@@ -290,8 +290,8 @@ namespace NodaTime
         /// calls as the object is immutable and thread-safe.</returns>
         public static CalendarSystem GetIslamicCalendar(IslamicLeapYearPattern leapYearPattern, IslamicEpoch epoch)
         {
-            Preconditions.CheckArgumentRange("leapYearPattern", (int)leapYearPattern, 1, 4);
-            Preconditions.CheckArgumentRange("epoch", (int)epoch, 1, 2);
+            Preconditions.CheckArgumentRange(nameof(leapYearPattern), (int)leapYearPattern, 1, 4);
+            Preconditions.CheckArgumentRange(nameof(epoch), (int)epoch, 1, 2);
             return IslamicCalendarSystems[(int)leapYearPattern - 1, (int)epoch - 1];
         }
         #endregion
@@ -491,7 +491,7 @@ namespace NodaTime
 
         internal YearMonthDay GetYearMonthDayFromDaysSinceEpoch(int daysSinceEpoch)
         {
-            Preconditions.CheckArgumentRange("daysSinceEpoch", daysSinceEpoch, MinDays, MaxDays);
+            Preconditions.CheckArgumentRange(nameof(daysSinceEpoch), daysSinceEpoch, MinDays, MaxDays);
             return YearMonthDayCalculator.GetYearMonthDay(daysSinceEpoch);
         }
 
@@ -553,7 +553,7 @@ namespace NodaTime
         /// <returns>True if the given year is a leap year; false otherwise.</returns>
         public bool IsLeapYear(int year)
         {
-            Preconditions.CheckArgumentRange("year", year, MinYear, MaxYear);
+            Preconditions.CheckArgumentRange(nameof(year), year, MinYear, MaxYear);
             return YearMonthDayCalculator.IsLeapYear(year);
         }
 
@@ -573,7 +573,7 @@ namespace NodaTime
         /// <returns>The maximum month number within the given year.</returns>
         public int GetMonthsInYear(int year)
         {
-            Preconditions.CheckArgumentRange("year", year, MinYear, MaxYear);
+            Preconditions.CheckArgumentRange(nameof(year), year, MinYear, MaxYear);
             return YearMonthDayCalculator.GetMonthsInYear(year);
         }
 

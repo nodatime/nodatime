@@ -27,9 +27,9 @@ namespace NodaTime
         /// <param name="calendar">Calendar system to use.</param>
         public ZonedClock([NotNull] IClock clock, [NotNull] DateTimeZone zone, [NotNull] CalendarSystem calendar)
         {
-            this.clock = Preconditions.CheckNotNull(clock, "clock");
-            this.zone = Preconditions.CheckNotNull(zone, "zone");
-            this.calendar = Preconditions.CheckNotNull(calendar, "calendar");
+            this.clock = Preconditions.CheckNotNull(clock, nameof(clock));
+            this.zone = Preconditions.CheckNotNull(zone, nameof(zone));
+            this.calendar = Preconditions.CheckNotNull(calendar, nameof(calendar));
         }
 
         /// <summary>

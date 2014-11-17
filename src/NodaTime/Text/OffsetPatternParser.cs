@@ -159,7 +159,7 @@ namespace NodaTime.Text
 
             public StringBuilder AppendFormat(Offset value, StringBuilder builder)
             {
-                Preconditions.CheckNotNull(builder, "builder");
+                Preconditions.CheckNotNull(builder, nameof(builder));
                 return value == Offset.Zero ? builder.Append("Z") : fullPattern.AppendFormat(value, builder);
             }
         }

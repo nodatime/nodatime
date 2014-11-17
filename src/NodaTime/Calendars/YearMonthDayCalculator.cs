@@ -34,7 +34,7 @@ namespace NodaTime.Calendars
             int averageDaysPer10Years, int daysAtStartOfYear1)
         {
             // We should really check the minimum year as well, but constructing it hurts my brain.
-            Preconditions.CheckArgument(maxYear < YearStartCacheEntry.InvalidEntryYear, "maxYear",
+            Preconditions.CheckArgument(maxYear < YearStartCacheEntry.InvalidEntryYear, nameof(maxYear),
                 "Calendar year range would invalidate caching.");
             this.MinYear = minYear;
             this.MaxYear = maxYear;
@@ -127,9 +127,9 @@ namespace NodaTime.Calendars
         // this is only done for Gregorian/Julian calendars, which are the most performance-critical.
         internal virtual void ValidateYearMonthDay(int year, int month, int day)
         {
-            Preconditions.CheckArgumentRange("year", year, MinYear, MaxYear);
-            Preconditions.CheckArgumentRange("month", month, 1, GetMonthsInYear(year));
-            Preconditions.CheckArgumentRange("day", day, 1, GetDaysInMonth(year, month));
+            Preconditions.CheckArgumentRange(nameof(year), year, MinYear, MaxYear);
+            Preconditions.CheckArgumentRange(nameof(month), month, 1, GetMonthsInYear(year));
+            Preconditions.CheckArgumentRange(nameof(day), day, 1, GetDaysInMonth(year, month));
         }
         #endregion
 

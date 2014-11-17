@@ -143,8 +143,8 @@ namespace NodaTime.Calendars
             // an exception. Avoiding the method call is pretty extreme, but it does help.
             if (year < MinGregorianYear || year > MaxGregorianYear || month < 1 || month > 12)
             {
-                Preconditions.CheckArgumentRange("year", year, MinGregorianYear, MaxGregorianYear);
-                Preconditions.CheckArgumentRange("month", month, 1, 12);
+                Preconditions.CheckArgumentRange(nameof(year), year, MinGregorianYear, MaxGregorianYear);
+                Preconditions.CheckArgumentRange(nameof(month), month, 1, 12);
             }
             // If we've been asked for day 1-28, we're definitely okay regardless of month.
             if (day >= 1 && day <= 28)
@@ -154,7 +154,7 @@ namespace NodaTime.Calendars
             int daysInMonth = month == 2 && IsGregorianLeapYear(year) ? MaxDaysPerMonth[month - 1] : MinDaysPerMonth[month - 1];
             if (day > daysInMonth)
             {
-                Preconditions.CheckArgumentRange("day", day, 1, daysInMonth);
+                Preconditions.CheckArgumentRange(nameof(day), day, 1, daysInMonth);
             }
         }
 

@@ -249,7 +249,7 @@ namespace NodaTime
             {
                 return 1;
             }
-            Preconditions.CheckArgument(obj is LocalInstant, "obj", "Object must be of type NodaTime.LocalInstant.");
+            Preconditions.CheckArgument(obj is LocalInstant, nameof(obj), "Object must be of type NodaTime.LocalInstant.");
             return CompareTo((LocalInstant)obj);
         }
         #endregion

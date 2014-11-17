@@ -102,7 +102,7 @@ namespace NodaTime
         /// <param name="period">An existing period to copy values from.</param>
         public PeriodBuilder([NotNull] Period period)
         {
-            Preconditions.CheckNotNull(period, "period");
+            Preconditions.CheckNotNull(period, nameof(period));
             Years = period.Years;
             Months = period.Months;
             Weeks = period.Weeks;
@@ -155,7 +155,7 @@ namespace NodaTime
             {
                 if ((unit & PeriodUnits.AllDateUnits) != 0)
                 {
-                    Preconditions.CheckArgumentRange("value", value, int.MinValue, int.MaxValue);
+                    Preconditions.CheckArgumentRange(nameof(value), value, int.MinValue, int.MaxValue);
                 }
                 switch (unit)
                 {

@@ -46,12 +46,12 @@ namespace NodaTime.TimeZones
         /// <param name="toYear">The last year in which this recurrence is valid</param>
         public ZoneRecurrence(String name, Offset savings, ZoneYearOffset yearOffset, int fromYear, int toYear)
         {
-            Preconditions.CheckNotNull(name, "name");
-            Preconditions.CheckNotNull(yearOffset, "yearOffset");
+            Preconditions.CheckNotNull(name, nameof(name));
+            Preconditions.CheckNotNull(yearOffset, nameof(yearOffset));
 
-            Preconditions.CheckArgument(fromYear == int.MinValue || (fromYear >= -9998 && fromYear <= 9999), "fromYear",
+            Preconditions.CheckArgument(fromYear == int.MinValue || (fromYear >= -9998 && fromYear <= 9999), nameof(fromYear),
                 "fromYear must be in the range [-9998, 9999] or Int32.MinValue");
-            Preconditions.CheckArgument(toYear == int.MaxValue || (toYear >= -9998 && toYear <= 9999), "toYear",
+            Preconditions.CheckArgument(toYear == int.MaxValue || (toYear >= -9998 && toYear <= 9999), nameof(toYear),
                 "toYear must be in the range [-9998, 9999] or Int32.MaxValue");
             this.Name = name;
             this.Savings = savings;
@@ -301,7 +301,7 @@ namespace NodaTime.TimeZones
         /// <returns>The recurrence read from the reader.</returns>
         public static ZoneRecurrence Read(IDateTimeZoneReader reader)
         {
-            Preconditions.CheckNotNull(reader, "reader");
+            Preconditions.CheckNotNull(reader, nameof(reader));
             string name = reader.ReadString();
             Offset savings = reader.ReadOffset();
             ZoneYearOffset yearOffset = ZoneYearOffset.Read(reader);

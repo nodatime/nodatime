@@ -74,7 +74,7 @@ namespace NodaTime
         /// <param name="seconds">The number of seconds in the offset.</param>
         internal Offset([Trusted] int seconds)
         {
-            Preconditions.DebugCheckArgumentRange("seconds", seconds, MinSeconds, MaxSeconds);
+            Preconditions.DebugCheckArgumentRange(nameof(seconds), seconds, MinSeconds, MaxSeconds);
             this.seconds = seconds;
         }
 
@@ -312,7 +312,7 @@ namespace NodaTime
             {
                 return 1;
             }
-            Preconditions.CheckArgument(obj is Offset, "obj", "Object must be of type NodaTime.Offset.");
+            Preconditions.CheckArgument(obj is Offset, nameof(obj), "Object must be of type NodaTime.Offset.");
             return CompareTo((Offset)obj);
         }
         #endregion
@@ -387,7 +387,7 @@ namespace NodaTime
         /// [-18, +18] hours.</exception>
         public static Offset FromSeconds(int seconds)
         {
-            Preconditions.CheckArgumentRange("seconds", seconds, MinSeconds, MaxSeconds);
+            Preconditions.CheckArgumentRange(nameof(seconds), seconds, MinSeconds, MaxSeconds);
             return new Offset(seconds);
         }
 
@@ -404,7 +404,7 @@ namespace NodaTime
         /// [-18, +18] hours.</exception>
         public static Offset FromMilliseconds(int milliseconds)
         {
-            Preconditions.CheckArgumentRange("milliseconds", milliseconds, MinMilliseconds, MaxMilliseconds);
+            Preconditions.CheckArgumentRange(nameof(milliseconds), milliseconds, MinMilliseconds, MaxMilliseconds);
             return new Offset((int) milliseconds / NodaConstants.MillisecondsPerSecond);
         }
 
@@ -421,7 +421,7 @@ namespace NodaTime
         /// [-18, +18] hours.</exception>
         public static Offset FromTicks(long ticks)
         {
-            Preconditions.CheckArgumentRange("ticks", ticks, MinTicks, MaxTicks);
+            Preconditions.CheckArgumentRange(nameof(ticks), ticks, MinTicks, MaxTicks);
             return new Offset((int)(ticks / NodaConstants.TicksPerSecond));
         }
 
@@ -438,7 +438,7 @@ namespace NodaTime
         /// [-18, +18] hours.</exception>
         public static Offset FromNanoseconds(long nanoseconds)
         {
-            Preconditions.CheckArgumentRange("nanoseconds", nanoseconds, MinNanoseconds, MaxNanoseconds);
+            Preconditions.CheckArgumentRange(nameof(nanoseconds), nanoseconds, MinNanoseconds, MaxNanoseconds);
             return new Offset((int) (nanoseconds / NodaConstants.NanosecondsPerSecond));
         }
 
@@ -451,7 +451,7 @@ namespace NodaTime
         /// [-18, +18].</exception>
         public static Offset FromHours(int hours)
         {
-            Preconditions.CheckArgumentRange("hours", hours, MinHours, MaxHours);
+            Preconditions.CheckArgumentRange(nameof(hours), hours, MinHours, MaxHours);
             return new Offset(hours * NodaConstants.SecondsPerHour);
         }
 
@@ -489,7 +489,7 @@ namespace NodaTime
         public static Offset FromTimeSpan(TimeSpan timeSpan)
         {
             long ticks = timeSpan.Ticks;
-            Preconditions.CheckArgumentRange("timeSpan", ticks, MinTicks, MaxTicks);
+            Preconditions.CheckArgumentRange(nameof(timeSpan), ticks, MinTicks, MaxTicks);
             return FromTicks(ticks);
         }
         #endregion
@@ -501,7 +501,7 @@ namespace NodaTime
         /// <inheritdoc />
         void IXmlSerializable.ReadXml(XmlReader reader)
         {
-            Preconditions.CheckNotNull(reader, "reader");
+            Preconditions.CheckNotNull(reader, nameof(reader));
             var pattern = OffsetPattern.GeneralInvariantPattern;
             string text = reader.ReadElementContentAsString();
             this = pattern.Parse(text).Value;
@@ -510,7 +510,7 @@ namespace NodaTime
         /// <inheritdoc />
         void IXmlSerializable.WriteXml(XmlWriter writer)
         {
-            Preconditions.CheckNotNull(writer, "writer");
+            Preconditions.CheckNotNull(writer, nameof(writer));
             writer.WriteString(OffsetPattern.GeneralInvariantPattern.Format(this));
         }
         #endregion
@@ -530,7 +530,7 @@ namespace NodaTime
         {
             int millis = info.GetInt32(MillisecondsSerializationName);
 
-            Preconditions.CheckArgument(millis >= MinMilliseconds && millis <= MaxMilliseconds, "info",
+            Preconditions.CheckArgument(millis >= MinMilliseconds && millis <= MaxMilliseconds, nameof(info),
                 "Serialized offset value is outside the range of +/- 18 hours");
             this.seconds = millis / NodaConstants.MillisecondsPerSecond;
         }

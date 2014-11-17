@@ -134,13 +134,13 @@ namespace NodaTime.TimeZones
         /// <exception cref="InvalidOperationException">The supplied stream doesn't support reading.</exception>
         public static TzdbDateTimeZoneSource FromStream([NotNull] Stream stream)
         {
-            Preconditions.CheckNotNull(stream, "stream");
+            Preconditions.CheckNotNull(stream, nameof(stream));
             return new TzdbDateTimeZoneSource(TzdbStreamData.FromStream(stream));
         }
 
         private TzdbDateTimeZoneSource(TzdbStreamData source)
         {
-            Preconditions.CheckNotNull(source, "source");
+            Preconditions.CheckNotNull(source, nameof(source));
             this.source = source;
             CanonicalIdMap = new NodaReadOnlyDictionary<string, string>(source.TzdbIdMap);
             Aliases = CanonicalIdMap
@@ -156,7 +156,7 @@ namespace NodaTime.TimeZones
         public DateTimeZone ForId(string id)
         {
             string canonicalId;
-            if (!CanonicalIdMap.TryGetValue(Preconditions.CheckNotNull(id, "id"), out canonicalId))
+            if (!CanonicalIdMap.TryGetValue(Preconditions.CheckNotNull(id, nameof(id)), out canonicalId))
             {
                 throw new ArgumentException("Time zone with ID " + id + " not found in source " + version, "id");
             }

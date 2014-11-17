@@ -264,7 +264,7 @@ namespace NodaTime.TimeZones
 
         public static ZoneYearOffset Read(IDateTimeZoneReader reader)
         {
-            Preconditions.CheckNotNull(reader, "reader");
+            Preconditions.CheckNotNull(reader, nameof(reader));
             int flags = reader.ReadByte();
             var mode = (TransitionMode) (flags >> 5);
             var dayOfWeek = (flags >> 2) & 7;

@@ -52,7 +52,7 @@ namespace NodaTime.TimeZones
         /// <exception cref="InvalidDateTimeZoneSourceException"><paramref name="source"/> violates its contract.</exception>
         public DateTimeZoneCache([NotNull] IDateTimeZoneSource source)
         {
-            this.source = Preconditions.CheckNotNull(source, "source");
+            this.source = Preconditions.CheckNotNull(source, nameof(source));
             this.VersionId = source.VersionId;
             if (VersionId == null)
             {
@@ -96,7 +96,7 @@ namespace NodaTime.TimeZones
         /// <inheritdoc />
         public DateTimeZone GetZoneOrNull(string id)
         {
-            Preconditions.CheckNotNull(id, "id");
+            Preconditions.CheckNotNull(id, nameof(id));
             DateTimeZone fixedZone = FixedDateTimeZone.GetFixedZoneOrNull(id);
             if (fixedZone != null)
             {

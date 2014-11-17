@@ -187,8 +187,8 @@ namespace NodaTime.TimeZones
         /// <exception cref="ArgumentException">If <c><paramref name = "start" /> &gt;= <paramref name = "end" /></c>.</exception>
         internal ZoneInterval([NotNull] string name, Instant start, Instant end, Offset wallOffset, Offset savings)
         {
-            Preconditions.CheckNotNull(name, "name");
-            Preconditions.CheckArgument(start < end, "start", "The start Instant must be less than the end Instant");
+            Preconditions.CheckNotNull(name, nameof(name));
+            Preconditions.CheckArgument(start < end, nameof(start), "The start Instant must be less than the end Instant");
             this.Name = name;
             this.RawStart = start;
             this.RawEnd = end;

@@ -68,8 +68,8 @@ namespace NodaTime
         /// <param name="calendar">The calendar system.</param>
         public ZonedDateTime(Instant instant, [NotNull] DateTimeZone zone, [NotNull] CalendarSystem calendar)
         {
-            this.zone = Preconditions.CheckNotNull(zone, "zone");
-            offsetDateTime = new OffsetDateTime(instant, zone.GetUtcOffset(instant), Preconditions.CheckNotNull(calendar, "calendar"));
+            this.zone = Preconditions.CheckNotNull(zone, nameof(zone));
+            offsetDateTime = new OffsetDateTime(instant, zone.GetUtcOffset(instant), Preconditions.CheckNotNull(calendar, nameof(calendar)));
         }
 
         /// <summary>
@@ -80,7 +80,7 @@ namespace NodaTime
         /// <param name="zone">The time zone.</param>
         public ZonedDateTime(Instant instant, DateTimeZone zone)
         {
-            this.zone = Preconditions.CheckNotNull(zone, "zone");
+            this.zone = Preconditions.CheckNotNull(zone, nameof(zone));
             offsetDateTime = new OffsetDateTime(instant, zone.GetUtcOffset(instant));
         }
 
@@ -97,7 +97,7 @@ namespace NodaTime
         /// local date and time.</exception>
         public ZonedDateTime(LocalDateTime localDateTime, [NotNull] DateTimeZone zone, Offset offset)
         {
-            this.zone = Preconditions.CheckNotNull(zone, "zone");
+            this.zone = Preconditions.CheckNotNull(zone, nameof(zone));
             Instant candidateInstant = localDateTime.ToLocalInstant().Minus(offset);
             Offset correctOffset = zone.GetUtcOffset(candidateInstant);
             // Not using Preconditions, to avoid building the string unnecessarily.
@@ -304,7 +304,7 @@ namespace NodaTime
         [Pure]
         public ZonedDateTime WithZone([NotNull] DateTimeZone targetZone)
         {
-            Preconditions.CheckNotNull(targetZone, "targetZone");
+            Preconditions.CheckNotNull(targetZone, nameof(targetZone));
             return new ZonedDateTime(ToInstant(), targetZone, Calendar);
         }
 
@@ -728,7 +728,7 @@ namespace NodaTime
         /// <inheritdoc />
         void IXmlSerializable.ReadXml(XmlReader reader)
         {
-            Preconditions.CheckNotNull(reader, "reader");
+            Preconditions.CheckNotNull(reader, nameof(reader));
             var pattern = OffsetDateTimePattern.ExtendedIsoPattern;
             if (!reader.MoveToAttribute("zone"))
             {
@@ -757,7 +757,7 @@ namespace NodaTime
         /// <inheritdoc />
         void IXmlSerializable.WriteXml(XmlWriter writer)
         {
-            Preconditions.CheckNotNull(writer, "writer");
+            Preconditions.CheckNotNull(writer, nameof(writer));
             writer.WriteAttributeString("zone", Zone.Id);
             if (Calendar != CalendarSystem.Iso)
             {
