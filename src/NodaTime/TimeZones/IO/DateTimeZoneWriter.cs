@@ -5,6 +5,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using NodaTime.NodaConstants;
 using NodaTime.Utility;
 
 namespace NodaTime.TimeZones.IO
@@ -110,9 +111,9 @@ namespace NodaTime.TimeZones.IO
         public void WriteMilliseconds(int millis)
         {
             Preconditions.CheckArgumentRange(nameof(millis), millis,
-                -NodaConstants.MillisecondsPerDay + 1,
-                NodaConstants.MillisecondsPerDay - 1);
-            millis += NodaConstants.MillisecondsPerDay;
+                -MillisecondsPerDay + 1,
+                MillisecondsPerDay - 1);
+            millis += MillisecondsPerDay;
             /*
              * First, add 24 hours to the number of milliseconds, to get a value in the range (0, 172800000).
              * (It's exclusive at both ends, but that's insignificant.)
@@ -129,20 +130,20 @@ namespace NodaTime.TimeZones.IO
              */
             unchecked
             {
-                if (millis % (30 * NodaConstants.MillisecondsPerMinute) == 0)
+                if (millis % (30 * MillisecondsPerMinute) == 0)
                 {
-                    int units = millis / (30 * NodaConstants.MillisecondsPerMinute);
+                    int units = millis / (30 * MillisecondsPerMinute);
                     WriteByte((byte) units);
                 }
-                else if (millis % NodaConstants.MillisecondsPerMinute == 0)
+                else if (millis % MillisecondsPerMinute == 0)
                 {
-                    int minutes = millis / NodaConstants.MillisecondsPerMinute;
+                    int minutes = millis / MillisecondsPerMinute;
                     WriteByte((byte) (0x80 | (minutes >> 8)));
                     WriteByte((byte) (minutes & 0xff));
                 }
-                else if (millis % NodaConstants.MillisecondsPerSecond == 0)
+                else if (millis % MillisecondsPerSecond == 0)
                 {
-                    int seconds = millis / NodaConstants.MillisecondsPerSecond;
+                    int seconds = millis / MillisecondsPerSecond;
                     WriteByte((byte) (0xa0 | (byte) ((seconds >> 16))));
                     WriteInt16((short) (seconds & 0xffff));
                 }
@@ -206,9 +207,9 @@ namespace NodaTime.TimeZones.IO
                 {
                     // Note that the difference might exceed the range of a long, so we can't use a Duration here.
                     ulong ticks = (ulong) (value.Ticks - previous.Value.Ticks);
-                    if (ticks % NodaConstants.TicksPerHour == 0)
+                    if (ticks % TicksPerHour == 0)
                     {
-                        ulong hours = ticks / NodaConstants.TicksPerHour;
+                        ulong hours = ticks / TicksPerHour;
                         // As noted above, this will generally fall within the 4000-6000 range, although values up to
                         // ~700,000 exist in TZDB.
                         if (ZoneIntervalConstants.MinValueForHoursSincePrevious <= hours &&
@@ -225,9 +226,9 @@ namespace NodaTime.TimeZones.IO
                 if (value >= ZoneIntervalConstants.EpochForMinutesSinceEpoch)
                 {
                     ulong ticks = (ulong) (value.Ticks - ZoneIntervalConstants.EpochForMinutesSinceEpoch.Ticks);
-                    if (ticks % NodaConstants.TicksPerMinute == 0)
+                    if (ticks % TicksPerMinute == 0)
                     {
-                        ulong minutes = ticks / NodaConstants.TicksPerMinute;
+                        ulong minutes = ticks / TicksPerMinute;
                         // We typically have a count on the order of 80M here.
                         if (ZoneIntervalConstants.MinValueForMinutesSinceEpoch < minutes && minutes <= int.MaxValue)
                         {

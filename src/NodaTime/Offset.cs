@@ -10,6 +10,7 @@ using System.Xml.Schema;
 using System.Xml.Serialization;
 using JetBrains.Annotations;
 using NodaTime.Annotations;
+using NodaTime.NodaConstants;
 using NodaTime.Text;
 using NodaTime.Utility;
 
@@ -57,14 +58,14 @@ namespace NodaTime
 
         private const int MinHours = -18;
         private const int MaxHours = 18;
-        private const int MinSeconds = -18 * NodaConstants.SecondsPerHour;
-        private const int MaxSeconds = 18 * NodaConstants.SecondsPerHour;
-        private const int MinMilliseconds = -18 * NodaConstants.MillisecondsPerHour;
-        private const int MaxMilliseconds = 18 * NodaConstants.MillisecondsPerHour;
-        private const long MinTicks = -18 * NodaConstants.TicksPerHour;
-        private const long MaxTicks = 18 * NodaConstants.TicksPerHour;
-        private const long MinNanoseconds = -18 * NodaConstants.NanosecondsPerHour;
-        private const long MaxNanoseconds = 18 * NodaConstants.NanosecondsPerHour;
+        private const int MinSeconds = -18 * SecondsPerHour;
+        private const int MaxSeconds = 18 * SecondsPerHour;
+        private const int MinMilliseconds = -18 * MillisecondsPerHour;
+        private const int MaxMilliseconds = 18 * MillisecondsPerHour;
+        private const long MinTicks = -18 * TicksPerHour;
+        private const long MaxTicks = 18 * TicksPerHour;
+        private const long MinNanoseconds = -18 * NanosecondsPerHour;
+        private const long MaxNanoseconds = 18 * NanosecondsPerHour;
 
         private readonly int seconds;
 
@@ -92,7 +93,7 @@ namespace NodaTime
         /// by 1,000 to give the number of milliseconds.
         /// </remarks>
         /// <value>The number of milliseconds represented by this offset, which may be negative.</value>
-        public int Milliseconds => unchecked(seconds * NodaConstants.MillisecondsPerSecond);
+        public int Milliseconds => unchecked(seconds * MillisecondsPerSecond);
 
         /// <summary>
         /// Gets the number of ticks represented by this offset, which may be negative.
@@ -102,7 +103,7 @@ namespace NodaTime
         /// by 10,000,000 to give the number of ticks.
         /// </remarks>
         /// <value>The number of ticks.</value>
-        public long Ticks => unchecked(seconds * NodaConstants.TicksPerSecond);
+        public long Ticks => unchecked(seconds * TicksPerSecond);
 
         /// <summary>
         /// Gets the number of nanoseconds represented by this offset, which may be negative.
@@ -112,7 +113,7 @@ namespace NodaTime
         /// by 1,000,000,000 to give the number of nanoseconds.
         /// </remarks>
         /// <value>The number of nanoseconds.</value>
-        public long Nanoseconds => unchecked(seconds * NodaConstants.NanosecondsPerSecond);
+        public long Nanoseconds => unchecked(seconds * NanosecondsPerSecond);
 
         /// <summary>
         /// Returns the greater offset of the given two, i.e. the one which will give a later local
@@ -405,7 +406,7 @@ namespace NodaTime
         public static Offset FromMilliseconds(int milliseconds)
         {
             Preconditions.CheckArgumentRange(nameof(milliseconds), milliseconds, MinMilliseconds, MaxMilliseconds);
-            return new Offset((int) milliseconds / NodaConstants.MillisecondsPerSecond);
+            return new Offset((int) milliseconds / MillisecondsPerSecond);
         }
 
         /// <summary>
@@ -422,7 +423,7 @@ namespace NodaTime
         public static Offset FromTicks(long ticks)
         {
             Preconditions.CheckArgumentRange(nameof(ticks), ticks, MinTicks, MaxTicks);
-            return new Offset((int)(ticks / NodaConstants.TicksPerSecond));
+            return new Offset((int)(ticks / TicksPerSecond));
         }
 
         /// <summary>
@@ -439,7 +440,7 @@ namespace NodaTime
         public static Offset FromNanoseconds(long nanoseconds)
         {
             Preconditions.CheckArgumentRange(nameof(nanoseconds), nanoseconds, MinNanoseconds, MaxNanoseconds);
-            return new Offset((int) (nanoseconds / NodaConstants.NanosecondsPerSecond));
+            return new Offset((int) (nanoseconds / NanosecondsPerSecond));
         }
 
         /// <summary>
@@ -452,7 +453,7 @@ namespace NodaTime
         public static Offset FromHours(int hours)
         {
             Preconditions.CheckArgumentRange(nameof(hours), hours, MinHours, MaxHours);
-            return new Offset(hours * NodaConstants.SecondsPerHour);
+            return new Offset(hours * SecondsPerHour);
         }
 
         /// <summary>
@@ -469,7 +470,7 @@ namespace NodaTime
         /// <returns>An offset representing the given value.</returns>
         /// <exception cref="ArgumentOutOfRangeException">The result of the operation is outside the range of Offset.</exception>
         public static Offset FromHoursAndMinutes(int hours, int minutes) =>
-            FromSeconds(hours * NodaConstants.SecondsPerHour + minutes * NodaConstants.SecondsPerMinute);
+            FromSeconds(hours * SecondsPerHour + minutes * SecondsPerMinute);
         #endregion
 
         #region Conversion
@@ -532,7 +533,7 @@ namespace NodaTime
 
             Preconditions.CheckArgument(millis >= MinMilliseconds && millis <= MaxMilliseconds, nameof(info),
                 "Serialized offset value is outside the range of +/- 18 hours");
-            this.seconds = millis / NodaConstants.MillisecondsPerSecond;
+            this.seconds = millis / MillisecondsPerSecond;
         }
 
         /// <summary>

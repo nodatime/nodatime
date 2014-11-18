@@ -8,6 +8,7 @@ using System.Runtime.Serialization;
 using JetBrains.Annotations;
 using NodaTime.Annotations;
 using NodaTime.Fields;
+using NodaTime.NodaConstants;
 using NodaTime.Text;
 using NodaTime.Utility;
 
@@ -713,13 +714,13 @@ namespace NodaTime
             // This can overflow even when it wouldn't necessarily need to. See comments elsewhere.
             // TODO(2.0): Handle big nanosecond values. (Return Nanoseconds instead...)
             Nanoseconds.ToInt64Nanoseconds() +
-                Ticks * NodaConstants.NanosecondsPerTick +
-                Milliseconds * NodaConstants.NanosecondsPerMillisecond +
-                Seconds * NodaConstants.NanosecondsPerSecond +
-                Minutes * NodaConstants.NanosecondsPerMinute +
-                Hours * NodaConstants.NanosecondsPerHour +
-                Days * NodaConstants.NanosecondsPerDay +
-                Weeks * NodaConstants.NanosecondsPerWeek;
+                Ticks * NanosecondsPerTick +
+                Milliseconds * NanosecondsPerMillisecond +
+                Seconds * NanosecondsPerSecond +
+                Minutes * NanosecondsPerMinute +
+                Hours * NanosecondsPerHour +
+                Days * NanosecondsPerDay +
+                Weeks * NanosecondsPerWeek;
 
         /// <summary>
         /// Creates a <see cref="PeriodBuilder"/> from this instance. The new builder
@@ -761,13 +762,13 @@ namespace NodaTime
             // Simplest way to normalize: grab all the fields up to "week" and
             // sum them.
             long totalNanoseconds = TotalNanoseconds;
-            int days = (int) (totalNanoseconds / NodaConstants.NanosecondsPerDay);
-            long hours = (totalNanoseconds / NodaConstants.NanosecondsPerHour) % NodaConstants.HoursPerDay;
-            long minutes = (totalNanoseconds / NodaConstants.NanosecondsPerMinute) % NodaConstants.MinutesPerHour;
-            long seconds = (totalNanoseconds / NodaConstants.NanosecondsPerSecond) % NodaConstants.SecondsPerMinute;
-            long milliseconds = (totalNanoseconds / NodaConstants.NanosecondsPerMillisecond) % NodaConstants.MillisecondsPerSecond;
-            long ticks = (totalNanoseconds / NodaConstants.NanosecondsPerTick) % NodaConstants.TicksPerMillisecond;
-            Duration nanoseconds = Duration.FromNanoseconds(totalNanoseconds % NodaConstants.NanosecondsPerTick);
+            int days = (int) (totalNanoseconds / NanosecondsPerDay);
+            long hours = (totalNanoseconds / NanosecondsPerHour) % HoursPerDay;
+            long minutes = (totalNanoseconds / NanosecondsPerMinute) % MinutesPerHour;
+            long seconds = (totalNanoseconds / NanosecondsPerSecond) % SecondsPerMinute;
+            long milliseconds = (totalNanoseconds / NanosecondsPerMillisecond) % MillisecondsPerSecond;
+            long ticks = (totalNanoseconds / NanosecondsPerTick) % TicksPerMillisecond;
+            Duration nanoseconds = Duration.FromNanoseconds(totalNanoseconds % NanosecondsPerTick);
 
             return new Period(this.Years, this.Months, 0 /* weeks */, days, hours, minutes, seconds, milliseconds, ticks, nanoseconds);
         }
