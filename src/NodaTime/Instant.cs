@@ -11,6 +11,7 @@ using System.Xml.Serialization;
 using JetBrains.Annotations;
 using NodaTime.Annotations;
 using NodaTime.Calendars;
+using NodaTime.NodaConstants;
 using NodaTime.Text;
 using NodaTime.Utility;
 
@@ -43,12 +44,12 @@ namespace NodaTime
         internal const int MinDays = -4371222;
         internal const int MaxDays = 2932896;
 
-        private const long MinTicks = MinDays * NodaConstants.TicksPerDay;
-        private const long MaxTicks = (MaxDays + 1) * NodaConstants.TicksPerDay - 1;
-        private const long MinMilliseconds = MinDays * (long) NodaConstants.MillisecondsPerDay;
-        private const long MaxMilliseconds = (MaxDays + 1) * (long) NodaConstants.MillisecondsPerDay - 1;
-        private const long MinSeconds = MinDays * (long) NodaConstants.SecondsPerDay;
-        private const long MaxSeconds = (MaxDays + 1) * (long) NodaConstants.SecondsPerDay - 1;
+        private const long MinTicks = MinDays * TicksPerDay;
+        private const long MaxTicks = (MaxDays + 1) * TicksPerDay - 1;
+        private const long MinMilliseconds = MinDays * (long) MillisecondsPerDay;
+        private const long MaxMilliseconds = (MaxDays + 1) * (long) MillisecondsPerDay - 1;
+        private const long MinSeconds = MinDays * (long) SecondsPerDay;
+        private const long MaxSeconds = (MaxDays + 1) * (long) SecondsPerDay - 1;
 
         /// <summary>
         /// Represents the smallest possible <see cref="Instant"/>.
@@ -59,7 +60,7 @@ namespace NodaTime
         /// Represents the largest possible <see cref="Instant"/>.
         /// </summary>
         /// <remarks>This value is equivalent to 9999-12-31T23:59:59.999999999Z</remarks>
-        public static Instant MaxValue { get; } = new Instant(MaxDays, NodaConstants.NanosecondsPerDay - 1);
+        public static Instant MaxValue { get; } = new Instant(MaxDays, NanosecondsPerDay - 1);
 
         /// <summary>
         /// Instant which is invalid *except* for comparison purposes; it is earlier than any valid value.
@@ -99,7 +100,7 @@ namespace NodaTime
         internal Instant([Trusted] int days, [Trusted] long nanoOfDay)
         {
             Preconditions.DebugCheckArgumentRange(nameof(days), days, MinDays, MaxDays);
-            Preconditions.DebugCheckArgumentRange(nameof(nanoOfDay), nanoOfDay, 0, NodaConstants.NanosecondsPerDay - 1);
+            Preconditions.DebugCheckArgumentRange(nameof(nanoOfDay), nanoOfDay, 0, NanosecondsPerDay - 1);
             duration = new Duration(days, nanoOfDay);
         }
 
@@ -119,7 +120,7 @@ namespace NodaTime
         /// <value>The number of ticks since the Unix epoch.</value>
         public long Ticks =>
             // Can't use Duration.Ticks, as that truncates towards 0.
-            TickArithmetic.DaysAndTickOfDayToTicks(duration.FloorDays, duration.NanosecondOfFloorDay / NodaConstants.NanosecondsPerTick);
+            TickArithmetic.DaysAndTickOfDayToTicks(duration.FloorDays, duration.NanosecondOfFloorDay / NanosecondsPerTick);
 
         /// <summary>
         /// Get the elapsed time since the Unix epoch, to nanosecond resolution.
@@ -495,14 +496,14 @@ namespace NodaTime
         /// </summary>
         /// <returns>A <see cref="DateTime"/> representing the same instant in time as this value, with a kind of "universal".</returns>
         [Pure]
-        public DateTime ToDateTimeUtc() => new DateTime(NodaConstants.BclTicksAtUnixEpoch + Ticks, DateTimeKind.Utc);
+        public DateTime ToDateTimeUtc() => new DateTime(BclTicksAtUnixEpoch + Ticks, DateTimeKind.Utc);
 
         /// <summary>
         /// Constructs a <see cref="DateTimeOffset"/> from this Instant which has an offset of zero.
         /// </summary>
         /// <returns>A <see cref="DateTimeOffset"/> representing the same instant in time as this value.</returns>
         [Pure]
-        public DateTimeOffset ToDateTimeOffset() => new DateTimeOffset(NodaConstants.BclTicksAtUnixEpoch + Ticks, TimeSpan.Zero);
+        public DateTimeOffset ToDateTimeOffset() => new DateTimeOffset(BclTicksAtUnixEpoch + Ticks, TimeSpan.Zero);
 
         /// <summary>
         /// Converts a <see cref="DateTimeOffset"/> into a new Instant representing the same instant in time. Note that
@@ -511,7 +512,7 @@ namespace NodaTime
         /// <returns>An <see cref="Instant"/> value representing the same instant in time as the given <see cref="DateTimeOffset"/>.</returns>
         /// <param name="dateTimeOffset">Date and time value with an offset.</param>
         public static Instant FromDateTimeOffset(DateTimeOffset dateTimeOffset) =>
-            NodaConstants.BclEpoch.PlusTicks(dateTimeOffset.Ticks - dateTimeOffset.Offset.Ticks);
+            BclEpoch.PlusTicks(dateTimeOffset.Ticks - dateTimeOffset.Offset.Ticks);
 
         /// <summary>
         /// Converts a <see cref="DateTime"/> into a new Instant representing the same instant in time.
@@ -523,7 +524,7 @@ namespace NodaTime
         public static Instant FromDateTimeUtc(DateTime dateTime)
         {
             Preconditions.CheckArgument(dateTime.Kind == DateTimeKind.Utc, nameof(dateTime), "Invalid DateTime.Kind for Instant.FromDateTimeUtc");
-            return NodaConstants.BclEpoch.PlusTicks(dateTime.Ticks);
+            return BclEpoch.PlusTicks(dateTime.Ticks);
         }
 
         /// <summary>

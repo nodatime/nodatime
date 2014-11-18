@@ -12,6 +12,7 @@ using System.Xml.Serialization;
 using JetBrains.Annotations;
 using NodaTime.Annotations;
 using NodaTime.Calendars;
+using NodaTime.NodaConstants;
 using NodaTime.Text;
 using NodaTime.Utility;
 
@@ -76,15 +77,15 @@ namespace NodaTime
             {
                 int days = instant.DaysSinceEpoch;
                 long nanoOfDay = instant.NanosecondOfDay + offset.Nanoseconds;
-                if (nanoOfDay >= NodaConstants.NanosecondsPerDay)
+                if (nanoOfDay >= NanosecondsPerDay)
                 {
                     days++;
-                    nanoOfDay -= NodaConstants.NanosecondsPerDay;
+                    nanoOfDay -= NanosecondsPerDay;
                 }
                 else if (nanoOfDay < 0)
                 {
                     days--;
-                    nanoOfDay += NodaConstants.NanosecondsPerDay;
+                    nanoOfDay += NanosecondsPerDay;
                 }
                 yearMonthDayCalendar = GregorianYearMonthDayCalculator.GetGregorianYearMonthDayCalendarFromDaysSinceEpoch(days);
                 nanosecondsAndOffset = nanoOfDay | (((long) offset.Seconds) << NanosecondsBits);
@@ -102,15 +103,15 @@ namespace NodaTime
             {
                 int days = instant.DaysSinceEpoch;
                 long nanoOfDay = instant.NanosecondOfDay + offset.Nanoseconds;
-                if (nanoOfDay >= NodaConstants.NanosecondsPerDay)
+                if (nanoOfDay >= NanosecondsPerDay)
                 {
                     days++;
-                    nanoOfDay -= NodaConstants.NanosecondsPerDay;
+                    nanoOfDay -= NanosecondsPerDay;
                 }
                 else if (nanoOfDay < 0)
                 {
                     days--;
-                    nanoOfDay += NodaConstants.NanosecondsPerDay;
+                    nanoOfDay += NanosecondsPerDay;
                 }
                 yearMonthDayCalendar = calendar.GetYearMonthDayFromDaysSinceEpoch(days).WithCalendar(calendar);
                 nanosecondsAndOffset = nanoOfDay | (((long) offset.Seconds) << NanosecondsBits);
@@ -212,7 +213,7 @@ namespace NodaTime
         /// </summary>
         /// <value>The hour of day of this offest date and time, in the range 0 to 23 inclusive.</value>
         public int Hour =>
-            // Effectively nanoseconds / NodaConstants.NanosecondsPerHour, but apparently rather more efficient.
+            // Effectively nanoseconds / NanosecondsPerHour, but apparently rather more efficient.
             (int) ((NanosecondOfDay >> 13) / 439453125);            
 
         /// <summary>
@@ -248,9 +249,9 @@ namespace NodaTime
             {
                 unchecked
                 {
-                    // Effectively NanosecondOfDay / NodaConstants.NanosecondsPerMinute, but apparently rather more efficient.
+                    // Effectively NanosecondOfDay / NanosecondsPerMinute, but apparently rather more efficient.
                     int minuteOfDay = (int) ((NanosecondOfDay >> 11) / 29296875);
-                    return minuteOfDay % NodaConstants.MinutesPerHour;
+                    return minuteOfDay % MinutesPerHour;
                 }
             }
         }
@@ -265,8 +266,8 @@ namespace NodaTime
             {
                 unchecked
                 {
-                    int secondOfDay = (int) (NanosecondOfDay / (int) NodaConstants.NanosecondsPerSecond);
-                    return secondOfDay % NodaConstants.SecondsPerMinute;
+                    int secondOfDay = (int) (NanosecondOfDay / (int) NanosecondsPerSecond);
+                    return secondOfDay % SecondsPerMinute;
                 }
             }
         }
@@ -281,8 +282,8 @@ namespace NodaTime
             {
                 unchecked
                 {
-                    long milliSecondOfDay = (NanosecondOfDay / (int) NodaConstants.NanosecondsPerMillisecond);
-                    return (int) (milliSecondOfDay % NodaConstants.MillisecondsPerSecond);
+                    long milliSecondOfDay = (NanosecondOfDay / (int) NanosecondsPerMillisecond);
+                    return (int) (milliSecondOfDay % MillisecondsPerSecond);
                 }
             }
         }
@@ -292,19 +293,19 @@ namespace NodaTime
         /// Gets the tick of this offset date and time within the second, in the range 0 to 9,999,999 inclusive.
         /// </summary>
         /// <value>The tick of this offset date and time within the second, in the range 0 to 9,999,999 inclusive.</value>
-        public int TickOfSecond => unchecked((int) (TickOfDay % (int) NodaConstants.TicksPerSecond));
+        public int TickOfSecond => unchecked((int) (TickOfDay % (int) TicksPerSecond));
 
         /// <summary>
         /// Gets the tick of this offset date and time within the day, in the range 0 to 863,999,999,999 inclusive.
         /// </summary>
         /// <value>The tick of this offset date and time within the day, in the range 0 to 863,999,999,999 inclusive.</value>
-        public long TickOfDay => NanosecondOfDay / NodaConstants.NanosecondsPerTick;
+        public long TickOfDay => NanosecondOfDay / NanosecondsPerTick;
 
         /// <summary>
         /// Gets the nanosecond of this offset date and time within the second, in the range 0 to 999,999,999 inclusive.
         /// </summary>
         /// <value>The nanosecond of this offset date and time within the second, in the range 0 to 999,999,999 inclusive.</value>
-        public int NanosecondOfSecond => unchecked((int) (NanosecondOfDay % NodaConstants.NanosecondsPerSecond));
+        public int NanosecondOfSecond => unchecked((int) (NanosecondOfDay % NanosecondsPerSecond));
 
         /// <summary>
         /// Gets the nanosecond of this offset date and time within the day, in the range 0 to 86,399,999,999,999 inclusive.
@@ -349,7 +350,7 @@ namespace NodaTime
         /// <summary>
         /// Returns the number of nanoseconds in the offset, without going via an Offset.
         /// </summary>
-        private long OffsetNanoseconds => unchecked(nanosecondsAndOffset >> NanosecondsBits) * NodaConstants.NanosecondsPerSecond;
+        private long OffsetNanoseconds => unchecked(nanosecondsAndOffset >> NanosecondsBits) * NanosecondsPerSecond;
 
         /// <summary>
         /// Converts this offset date and time to an instant in time by subtracting the offset from the local date and time.
@@ -464,24 +465,24 @@ namespace NodaTime
                 // twice in one direction or the other.
                 int days = 0;
                 long nanos = (nanosecondsAndOffset & NanosecondsMask) + offset.Nanoseconds - OffsetNanoseconds;
-                if (nanos >= NodaConstants.NanosecondsPerDay)
+                if (nanos >= NanosecondsPerDay)
                 {
                     days++;
-                    nanos -= NodaConstants.NanosecondsPerDay;
-                    if (nanos >= NodaConstants.NanosecondsPerDay)
+                    nanos -= NanosecondsPerDay;
+                    if (nanos >= NanosecondsPerDay)
                     {
                         days++;
-                        nanos -= NodaConstants.NanosecondsPerDay;
+                        nanos -= NanosecondsPerDay;
                     }
                 }
                 else if (nanos < 0)
                 {
                     days--;
-                    nanos += NodaConstants.NanosecondsPerDay;
+                    nanos += NanosecondsPerDay;
                     if (nanos < 0)
                     {
                         days--;
-                        nanos += NodaConstants.NanosecondsPerDay;
+                        nanos += NanosecondsPerDay;
                     }
                 }
                 return new OffsetDateTime(

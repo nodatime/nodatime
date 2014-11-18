@@ -11,6 +11,7 @@ using System.Xml.Serialization;
 using JetBrains.Annotations;
 using NodaTime.Annotations;
 using NodaTime.Calendars;
+using NodaTime.NodaConstants;
 using NodaTime.Text;
 using NodaTime.Utility;
 
@@ -56,8 +57,8 @@ namespace NodaTime
         internal const int MinDays = ~MaxDays;
 
         // The -1 here is to allow for the addition of nearly a whole day in the nanoOfDay field.
-        private const long MaxDaysForLongNanos = (int) (long.MaxValue / NodaConstants.NanosecondsPerDay) - 1;
-        private const long MinDaysForLongNanos = (int) (long.MinValue / NodaConstants.NanosecondsPerDay);
+        private const long MaxDaysForLongNanos = (int) (long.MaxValue / NanosecondsPerDay) - 1;
+        private const long MinDaysForLongNanos = (int) (long.MinValue / NanosecondsPerDay);
 
         #region Readonly static properties
         /// <summary>
@@ -94,7 +95,7 @@ namespace NodaTime
         /// <remarks>
         /// The value of this property is 3.6 trillion nanoseconds; that is, 3,600,000,000,000 nanoseconds.
         /// </remarks>
-        private static Duration OneHour => new Duration(0, NodaConstants.NanosecondsPerHour);
+        private static Duration OneHour => new Duration(0, NanosecondsPerHour);
 
         /// <summary>
         /// Represents the <see cref="Duration"/> value equal to the number of nanoseconds in 1 minute.
@@ -102,7 +103,7 @@ namespace NodaTime
         /// <remarks>
         /// The value of this property is 60 billion nanoseconds; that is, 60,000,000,000 nanoseconds.
         /// </remarks>
-        private static Duration OneMinute => new Duration(0, NodaConstants.NanosecondsPerMinute);
+        private static Duration OneMinute => new Duration(0, NanosecondsPerMinute);
 
         /// <summary>
         /// Represents the <see cref="Duration"/> value equal to the number of nanoseconds in 1 second.
@@ -110,7 +111,7 @@ namespace NodaTime
         /// <remarks>
         /// The value of this property is 1 billion nanoseconds; that is, 1,000,000,000 nanoseconds.
         /// </remarks>
-        private static Duration OneSecond => new Duration(0, NodaConstants.NanosecondsPerSecond);
+        private static Duration OneSecond => new Duration(0, NanosecondsPerSecond);
 
         /// <summary>
         /// Represents the <see cref="Duration"/> value equals to number of ticks in 1 millisecond.
@@ -118,7 +119,7 @@ namespace NodaTime
         /// <remarks>
         /// The value of this property is 1,000,000 nanoseconds.
         /// </remarks>
-        private static Duration OneMillisecond => new Duration(0, NodaConstants.NanosecondsPerMillisecond);
+        private static Duration OneMillisecond => new Duration(0, NanosecondsPerMillisecond);
         #endregion
 
         // This is effectively a 25 bit value. (It can't be 24 bits, or we can't represent every TimeSpan value.)
@@ -131,7 +132,7 @@ namespace NodaTime
             {
                 Preconditions.CheckArgumentRange(nameof(days), days, MinDays, MaxDays);
             }
-            Preconditions.DebugCheckArgumentRange(nameof(nanoOfDay), nanoOfDay, 0, NodaConstants.NanosecondsPerDay - 1);
+            Preconditions.DebugCheckArgumentRange(nameof(nanoOfDay), nanoOfDay, 0, NanosecondsPerDay - 1);
             this.days = days;
             this.nanoOfDay = nanoOfDay;
         }
@@ -141,7 +142,7 @@ namespace NodaTime
         /// </summary>
         private Duration(int days, long nanoOfDay, bool ignored) : this(days, nanoOfDay)
         {
-            Preconditions.CheckArgumentRange(nameof(nanoOfDay), nanoOfDay, 0, NodaConstants.NanosecondsPerDay - 1);
+            Preconditions.CheckArgumentRange(nameof(nanoOfDay), nanoOfDay, 0, NanosecondsPerDay - 1);
         }
 
         /// <summary>
@@ -170,48 +171,48 @@ namespace NodaTime
         /// <value>The number of nanoseconds within the day of this duration.</value>
         public long NanosecondOfDay => days >= 0 ? nanoOfDay
                     : nanoOfDay == 0 ? 0L
-                    : nanoOfDay - NodaConstants.NanosecondsPerDay;
+                    : nanoOfDay - NanosecondsPerDay;
 
         /// <summary>
         /// The hour component of this duration, in the range [-23, 23], truncated towards zero.
         /// </summary>
         /// <value>The hour component of the duration, within the day.</value>
-        public int Hours => unchecked((int) (NanosecondOfDay / NodaConstants.NanosecondsPerHour));
+        public int Hours => unchecked((int) (NanosecondOfDay / NanosecondsPerHour));
 
         /// <summary>
         /// The minute component of this duration, in the range [-59, 59], truncated towards zero.
         /// </summary>
         /// <value>The minute component of the duration, within the hour.</value>
         public int Minutes =>
-            unchecked((int) ((NanosecondOfDay / NodaConstants.NanosecondsPerMinute) % NodaConstants.MinutesPerHour));
+            unchecked((int) ((NanosecondOfDay / NanosecondsPerMinute) % MinutesPerHour));
 
         /// <summary>
         /// Gets the second component of this duration, in the range [-59, 59], truncated towards zero.
         /// </summary>
         /// <value>The second component of the duration, within the minute.</value>
         public int Seconds =>
-            unchecked((int) ((NanosecondOfDay / NodaConstants.NanosecondsPerSecond) % NodaConstants.SecondsPerMinute));
+            unchecked((int) ((NanosecondOfDay / NanosecondsPerSecond) % SecondsPerMinute));
 
         /// <summary>
         /// Gets the subsecond component of this duration, expressed in milliseconds, in the range [-999, 999] and truncated towards zero.
         /// </summary>
         /// <value>The subsecond component of the duration, in milliseconds.</value>
         public int Milliseconds =>
-            unchecked((int) ((NanosecondOfDay / NodaConstants.NanosecondsPerMillisecond) % NodaConstants.MillisecondsPerSecond));
+            unchecked((int) ((NanosecondOfDay / NanosecondsPerMillisecond) % MillisecondsPerSecond));
 
         /// <summary>
         /// Gets the subsecond component of this duration, expressed in ticks, in the range [-9999999, 9999999] and truncated towards zero.
         /// </summary>
         /// <value>The subsecond component of the duration, in ticks.</value>
         public int SubsecondTicks =>
-            unchecked((int) ((NanosecondOfDay / NodaConstants.NanosecondsPerTick) % NodaConstants.TicksPerSecond));
+            unchecked((int) ((NanosecondOfDay / NanosecondsPerTick) % TicksPerSecond));
 
         /// <summary>
         /// Gets the subsecond component of this duration, expressed in nanoseconds, in the range [-999999999, 999999999].
         /// </summary>
         /// <value>The subsecond component of the duration, in nanoseconds.</value>
         public int SubsecondNanoseconds =>
-            unchecked((int) (NanosecondOfDay % NodaConstants.NanosecondsPerSecond));
+            unchecked((int) (NanosecondOfDay % NanosecondsPerSecond));
 
         /// <summary>
         /// Gets the total number of ticks in the duration.
@@ -230,8 +231,8 @@ namespace NodaTime
         {
             get
             {
-                long ticks = TickArithmetic.DaysAndTickOfDayToTicks(days, nanoOfDay / NodaConstants.NanosecondsPerTick);
-                if (days < 0 && nanoOfDay % NodaConstants.NanosecondsPerTick != 0)
+                long ticks = TickArithmetic.DaysAndTickOfDayToTicks(days, nanoOfDay / NanosecondsPerTick);
+                if (days < 0 && nanoOfDay % NanosecondsPerTick != 0)
                 {
                     ticks++;
                 }
@@ -247,7 +248,7 @@ namespace NodaTime
         /// days. For example, for a duration of 36 hours, this property would return 1.5.
         /// </remarks>
         /// <value>The total number of days in this duration.</value>
-        public double TotalDays => days + nanoOfDay / (double) NodaConstants.NanosecondsPerDay;
+        public double TotalDays => days + nanoOfDay / (double) NanosecondsPerDay;
 
         /// <summary>
         /// Gets the total number of hours in this duration, as a <see cref="double"/>.
@@ -260,7 +261,7 @@ namespace NodaTime
         /// will return 26.5.
         /// </remarks>
         /// <value>The total number of hours in this duration.</value>
-        public double TotalHours =>days * 24.0 + nanoOfDay / (double) NodaConstants.NanosecondsPerHour;
+        public double TotalHours =>days * 24.0 + nanoOfDay / (double) NanosecondsPerHour;
 
         /// <summary>
         /// Gets the total number of minutes in this duration, as a <see cref="double"/>.
@@ -272,7 +273,7 @@ namespace NodaTime
         /// will return 150.75.
         /// <value>The total number of minutes in this duration.</value>
         public double TotalMinutes =>
-            days * (double) NodaConstants.MinutesPerDay + nanoOfDay / (double) NodaConstants.NanosecondsPerMinute;
+            days * (double) MinutesPerDay + nanoOfDay / (double) NanosecondsPerMinute;
 
         /// <summary>
         /// Gets the total number of seconds in this duration, as a <see cref="double"/>.
@@ -284,7 +285,7 @@ namespace NodaTime
         /// will return 620.25.
         /// <value>The total number of minutes in this duration.</value>
         public double TotalSeconds =>
-            days * (double) NodaConstants.SecondsPerDay + nanoOfDay / (double) NodaConstants.NanosecondsPerSecond;
+            days * (double) SecondsPerDay + nanoOfDay / (double) NanosecondsPerSecond;
 
         /// <summary>
         /// Adds a "small" number of nanoseconds to this duration: it is trusted to be less or equal to than 24 hours
@@ -295,18 +296,18 @@ namespace NodaTime
         {
             unchecked
             {
-                Preconditions.DebugCheckArgumentRange(nameof(smallNanos), smallNanos, -NodaConstants.NanosecondsPerDay, NodaConstants.NanosecondsPerDay);
+                Preconditions.DebugCheckArgumentRange(nameof(smallNanos), smallNanos, -NanosecondsPerDay, NanosecondsPerDay);
                 int newDays = days;
                 long newNanos = nanoOfDay + smallNanos;
-                if (newNanos >= NodaConstants.NanosecondsPerDay)
+                if (newNanos >= NanosecondsPerDay)
                 {
                     newDays++;
-                    newNanos -= NodaConstants.NanosecondsPerDay;
+                    newNanos -= NanosecondsPerDay;
                 }
                 else if (newNanos < 0)
                 {
                     newDays--;
-                    newNanos += NodaConstants.NanosecondsPerDay;
+                    newNanos += NanosecondsPerDay;
                 }
                 return new Duration(newDays, newNanos);
             }
@@ -321,18 +322,18 @@ namespace NodaTime
         {
             unchecked
             {
-                Preconditions.DebugCheckArgumentRange(nameof(smallNanos), smallNanos, -NodaConstants.NanosecondsPerDay, NodaConstants.NanosecondsPerDay);
+                Preconditions.DebugCheckArgumentRange(nameof(smallNanos), smallNanos, -NanosecondsPerDay, NanosecondsPerDay);
                 int newDays = days;
                 long newNanos = nanoOfDay - smallNanos;
-                if (newNanos >= NodaConstants.NanosecondsPerDay)
+                if (newNanos >= NanosecondsPerDay)
                 {
                     newDays++;
-                    newNanos -= NodaConstants.NanosecondsPerDay;
+                    newNanos -= NanosecondsPerDay;
                 }
                 else if (newNanos < 0)
                 {
                     newDays--;
-                    newNanos += NodaConstants.NanosecondsPerDay;
+                    newNanos += NanosecondsPerDay;
                 }
                 return new Duration(newDays, newNanos);
             }
@@ -399,15 +400,15 @@ namespace NodaTime
             {
                 int newDays = left.days + right.days;
                 long newNanos = left.nanoOfDay + right.nanoOfDay;
-                if (newNanos >= NodaConstants.NanosecondsPerDay)
+                if (newNanos >= NanosecondsPerDay)
                 {
                     newDays++;
-                    newNanos -= NodaConstants.NanosecondsPerDay;
+                    newNanos -= NanosecondsPerDay;
                 }
                 else if (newNanos < 0)
                 {
                     newDays--;
-                    newNanos += NodaConstants.NanosecondsPerDay;
+                    newNanos += NanosecondsPerDay;
                 }
                 return new Duration(newDays, newNanos);
             }
@@ -441,15 +442,15 @@ namespace NodaTime
             {
                 int newDays = left.days - right.days;
                 long newNanos = left.nanoOfDay - right.nanoOfDay;
-                if (newNanos >= NodaConstants.NanosecondsPerDay)
+                if (newNanos >= NanosecondsPerDay)
                 {
                     newDays++;
-                    newNanos -= NodaConstants.NanosecondsPerDay;
+                    newNanos -= NanosecondsPerDay;
                 }
                 else if (newNanos < 0)
                 {
                     newDays--;
-                    newNanos += NodaConstants.NanosecondsPerDay;
+                    newNanos += NanosecondsPerDay;
                 }
                 return new Duration(newDays, newNanos);
             }
@@ -636,7 +637,7 @@ namespace NodaTime
             {
                 return new Duration(-oldDays, 0);
             }
-            long newNanoOfDay = NodaConstants.NanosecondsPerDay - oldNanoOfDay;
+            long newNanoOfDay = NanosecondsPerDay - oldNanoOfDay;
             return new Duration(-oldDays - 1, newNanoOfDay);
         }
 
@@ -764,7 +765,7 @@ namespace NodaTime
         {
             long tickOfDay;
             int days = TickArithmetic.TicksToDaysAndTickOfDay(ticks, out tickOfDay);
-            return new Duration(days, tickOfDay * NodaConstants.NanosecondsPerTick);
+            return new Duration(days, tickOfDay * NanosecondsPerTick);
         }
 
         /// <summary>
@@ -775,12 +776,12 @@ namespace NodaTime
         public static Duration FromNanoseconds(long nanoseconds)
         {
             int days = nanoseconds >= 0
-                ? (int) (nanoseconds / NodaConstants.NanosecondsPerDay)
-                : (int) ((nanoseconds + 1) / NodaConstants.NanosecondsPerDay) - 1;
+                ? (int) (nanoseconds / NanosecondsPerDay)
+                : (int) ((nanoseconds + 1) / NanosecondsPerDay) - 1;
 
-            long nanoOfDay = nanoseconds >= long.MinValue + NodaConstants.NanosecondsPerDay
-                ? nanoseconds - days * NodaConstants.NanosecondsPerDay
-                : nanoseconds - (days + 1) * NodaConstants.NanosecondsPerDay + NodaConstants.NanosecondsPerDay; // Avoid multiplication overflow
+            long nanoOfDay = nanoseconds >= long.MinValue + NanosecondsPerDay
+                ? nanoseconds - days * NanosecondsPerDay
+                : nanoseconds - (days + 1) * NanosecondsPerDay + NanosecondsPerDay; // Avoid multiplication overflow
             return new Duration(days, nanoOfDay);
         }
 
@@ -797,10 +798,10 @@ namespace NodaTime
             nanoseconds = decimal.Truncate(nanoseconds);
 
             int days = nanoseconds >= 0
-                ? (int) (nanoseconds / NodaConstants.NanosecondsPerDay)
-                : (int) ((nanoseconds + 1) / NodaConstants.NanosecondsPerDay) - 1;
+                ? (int) (nanoseconds / NanosecondsPerDay)
+                : (int) ((nanoseconds + 1) / NanosecondsPerDay) - 1;
 
-            long nanoOfDay = (long) (nanoseconds - ((decimal) days) * NodaConstants.NanosecondsPerDay);
+            long nanoOfDay = (long) (nanoseconds - ((decimal) days) * NanosecondsPerDay);
             return new Duration(days, nanoOfDay);
         }
 
@@ -862,17 +863,17 @@ namespace NodaTime
             {
                 if (days >= MinDaysForLongNanos)
                 {
-                    return unchecked(days * NodaConstants.NanosecondsPerDay + nanoOfDay);
+                    return unchecked(days * NanosecondsPerDay + nanoOfDay);
                 }
                 // Need to be careful to avoid overflow in a case where it's actually representable
-                return (days + 1) * NodaConstants.NanosecondsPerDay + nanoOfDay - NodaConstants.NanosecondsPerDay;
+                return (days + 1) * NanosecondsPerDay + nanoOfDay - NanosecondsPerDay;
             }
             if (days <= MaxDaysForLongNanos)
             {
-                return unchecked(days * NodaConstants.NanosecondsPerDay + nanoOfDay);
+                return unchecked(days * NanosecondsPerDay + nanoOfDay);
             }
             // Either the multiplication or the addition could overflow, so we do it in a checked context.
-            return days * NodaConstants.NanosecondsPerDay + nanoOfDay;
+            return days * NanosecondsPerDay + nanoOfDay;
         }
 
         /// <summary>
@@ -882,7 +883,7 @@ namespace NodaTime
         /// <remarks>The value returned is always an integer.</remarks>
         /// <returns>This duration as a number of nanoseconds, represented as a <c>Decimal</c>.</returns>
         [Pure]
-        public decimal ToDecimalNanoseconds() => ((decimal)days) * NodaConstants.NanosecondsPerDay + nanoOfDay;
+        public decimal ToDecimalNanoseconds() => ((decimal)days) * NanosecondsPerDay + nanoOfDay;
 
 #if !PCL
         #region Binary serialization
