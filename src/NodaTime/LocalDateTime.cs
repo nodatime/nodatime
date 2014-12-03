@@ -572,7 +572,7 @@ namespace NodaTime
         /// <param name="period">Period to add</param>
         /// <returns>The resulting local date and time</returns>
         [Pure]
-        public LocalDateTime Plus(Period period)
+        public LocalDateTime Plus([NotNull] Period period)
         {
             Preconditions.CheckNotNull(period, nameof(period));
             return period.AddTo(date, time, 1);
