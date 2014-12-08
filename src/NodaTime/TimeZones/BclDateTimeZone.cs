@@ -351,7 +351,7 @@ namespace NodaTime.TimeZones
             BclDateTimeZone currentSystemDefault = systemDefault;
 
             // Cached copy is out of date - wrap a new one
-            if (currentSystemDefault == null || currentSystemDefault.OriginalZone != local)
+            if (currentSystemDefault?.OriginalZone != local)
             {
                 currentSystemDefault = FromTimeZoneInfo(local);
                 systemDefault = currentSystemDefault;
