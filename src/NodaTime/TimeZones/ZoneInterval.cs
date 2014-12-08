@@ -308,7 +308,8 @@ namespace NodaTime.TimeZones
                 Name,
                 HasStart ? Start.ToString() : "StartOfTime",
                 HasEnd ? End.ToString() : "EndOfTime",
-                WallOffset, Savings);
+                WallOffset,
+                Savings);
 
         #endregion // object Overrides
     }
