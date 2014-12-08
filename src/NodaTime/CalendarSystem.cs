@@ -118,7 +118,7 @@ namespace NodaTime
             Func<CalendarSystem> factory;
             if (!IdToFactoryMap.TryGetValue(id, out factory))
             {
-                throw new KeyNotFoundException(String.Format("No calendar system for ID {0} exists", id));
+                throw new KeyNotFoundException("No calendar system for ID \{id} exists");
             }
             return factory();
         }
