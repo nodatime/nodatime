@@ -23,6 +23,9 @@ src\NodaTime.TzdbCompiler\bin\Release\NodaTime.TzdbCompiler.exe -o src\NodaTime\
 copy src\NodaTime\TimeZones\Tzdb.nzd www\tzdb\tzdb%1.nzd
 echo http://nodatime.org/tzdb/tzdb%1.nzd > www\tzdb\latest.txt
 
+del www\tzdb\index.txt
+FOR %%i IN (www\tzdb\*.nzd) DO echo http://nodatime.org/tzdb/%%~nxi >> www\tzdb\index.txt
+
 rmdir /s /q tzdbtmp
 
 :end
