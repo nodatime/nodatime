@@ -556,7 +556,7 @@ namespace NodaTime
         /// <param name="localDateTime">Initial local date and time</param>
         /// <param name="period">Period to add</param>
         /// <returns>The resulting local date and time</returns>
-        public static LocalDateTime operator +(LocalDateTime localDateTime, Period period) => localDateTime.Plus(period);
+        public static LocalDateTime operator +(LocalDateTime localDateTime, [NotNull] Period period) => localDateTime.Plus(period);
 
         /// <summary>
         /// Add the specified period to the date and time. Friendly alternative to <c>operator+()</c>.
@@ -564,7 +564,7 @@ namespace NodaTime
         /// <param name="localDateTime">Initial local date and time</param>
         /// <param name="period">Period to add</param>
         /// <returns>The resulting local date and time</returns>
-        public static LocalDateTime Add(LocalDateTime localDateTime, Period period) => localDateTime.Plus(period);
+        public static LocalDateTime Add(LocalDateTime localDateTime, [NotNull] Period period) => localDateTime.Plus(period);
 
         /// <summary>
         /// Adds a period to this local date/time. Fields are added in the order provided by the period.
@@ -585,7 +585,7 @@ namespace NodaTime
         /// <param name="localDateTime">Initial local date and time</param>
         /// <param name="period">Period to subtract</param>
         /// <returns>The resulting local date and time</returns>
-        public static LocalDateTime operator -(LocalDateTime localDateTime, Period period) => localDateTime.Minus(period);
+        public static LocalDateTime operator -(LocalDateTime localDateTime, [NotNull] Period period) => localDateTime.Minus(period);
 
         /// <summary>
         /// Subtracts the specified period from the date and time. Friendly alternative to <c>operator-()</c>.
@@ -593,7 +593,7 @@ namespace NodaTime
         /// <param name="localDateTime">Initial local date and time</param>
         /// <param name="period">Period to subtract</param>
         /// <returns>The resulting local date and time</returns>
-        public static LocalDateTime Subtract(LocalDateTime localDateTime, Period period) => localDateTime.Minus(period);
+        public static LocalDateTime Subtract(LocalDateTime localDateTime, [NotNull] Period period) => localDateTime.Minus(period);
 
         /// <summary>
         /// Subtracts a period from a local date/time. Fields are subtracted in the order provided by the period.
@@ -601,7 +601,7 @@ namespace NodaTime
         /// <param name="period">Period to subtract</param>
         /// <returns>The resulting local date and time</returns>
         [Pure]
-        public LocalDateTime Minus(Period period)
+        public LocalDateTime Minus([NotNull] Period period)
         {
             Preconditions.CheckNotNull(period, nameof(period));
             return period.AddTo(date, time, -1);
@@ -954,7 +954,7 @@ namespace NodaTime
         XmlSchema IXmlSerializable.GetSchema() => null;
 
         /// <inheritdoc />
-        void IXmlSerializable.ReadXml(XmlReader reader)
+        void IXmlSerializable.ReadXml([NotNull] XmlReader reader)
         {
             Preconditions.CheckNotNull(reader, nameof(reader));
             var pattern = LocalDateTimePattern.ExtendedIsoPattern;
@@ -971,7 +971,7 @@ namespace NodaTime
         }
 
         /// <inheritdoc />
-        void IXmlSerializable.WriteXml(XmlWriter writer)
+        void IXmlSerializable.WriteXml([NotNull] XmlWriter writer)
         {
             Preconditions.CheckNotNull(writer, nameof(writer));
             if (Calendar != CalendarSystem.Iso)

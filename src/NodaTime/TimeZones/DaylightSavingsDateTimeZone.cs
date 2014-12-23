@@ -5,6 +5,7 @@
 using System;
 using NodaTime.TimeZones.IO;
 using NodaTime.Utility;
+using JetBrains.Annotations;
 
 namespace NodaTime.TimeZones
 {
@@ -167,7 +168,7 @@ namespace NodaTime.TimeZones
         /// Writes the time zone to the specified writer.
         /// </summary>
         /// <param name="writer">The writer to write to.</param>
-        internal void Write(IDateTimeZoneWriter writer)
+        internal void Write([NotNull] IDateTimeZoneWriter writer)
         {
             // We don't need everything a recurrence can supply: we know that both recurrences should be
             // infinite, and that only the DST recurrence should have savings.
@@ -180,7 +181,7 @@ namespace NodaTime.TimeZones
             writer.WriteOffset(dstRecurrence.Savings);
         }
 
-        internal static DaylightSavingsDateTimeZone Read(IDateTimeZoneReader reader, string id)
+        internal static DaylightSavingsDateTimeZone Read([NotNull] IDateTimeZoneReader reader, string id)
         {
             Preconditions.CheckNotNull(reader, nameof(reader));
             Offset standardOffset = reader.ReadOffset();

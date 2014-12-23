@@ -77,8 +77,9 @@ namespace NodaTime.TimeZones
         /// <param name="zoneId">Time zone identifier of the location. Must not be null.</param>
         /// <param name="comment">Optional comment. Must not be null, but may be empty.</param>
         /// <exception cref="ArgumentOutOfRangeException">The latitude or longitude is invalid.</exception>
-        public TzdbZoneLocation(int latitudeSeconds, int longitudeSeconds, string countryName, string countryCode,
-            string zoneId, string comment)
+        public TzdbZoneLocation(int latitudeSeconds, int longitudeSeconds,
+            [NotNull] string countryName, [NotNull] string countryCode,
+            [NotNull] string zoneId, [NotNull] string comment)
         {
             Preconditions.CheckArgumentRange(nameof(latitudeSeconds), latitudeSeconds, -90 * 3600, 90 * 3600);
             Preconditions.CheckArgumentRange(nameof(longitudeSeconds), longitudeSeconds, -180 * 3600, 180 * 3600);

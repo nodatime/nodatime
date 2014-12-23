@@ -77,7 +77,7 @@ namespace NodaTime.Globalization
         /// Initializes a new instance of the <see cref="NodaFormatInfo" /> class.
         /// </summary>
         /// <param name="cultureInfo">The culture info to base this on.</param>
-        internal NodaFormatInfo(CultureInfo cultureInfo)
+        internal NodaFormatInfo([NotNull] CultureInfo cultureInfo)
         {
             Preconditions.CheckNotNull(cultureInfo, nameof(cultureInfo));
             this.CultureInfo = cultureInfo;
@@ -372,7 +372,7 @@ namespace NodaTime.Globalization
         /// </remarks>
         /// <param name="cultureInfo">The culture info.</param>
         /// <returns>The <see cref="NodaFormatInfo" />. Will never be null.</returns>
-        internal static NodaFormatInfo GetFormatInfo(CultureInfo cultureInfo)
+        internal static NodaFormatInfo GetFormatInfo([NotNull] CultureInfo cultureInfo)
         {
             Preconditions.CheckNotNull(cultureInfo, nameof(cultureInfo));
             if (cultureInfo == CultureInfo.InvariantCulture)

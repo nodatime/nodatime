@@ -13,6 +13,7 @@
 //
 // JetBrains is aware of and sanctions the Noda Time usage of these attributes.
 
+using NodaTime.Utility;
 using System;
 
 #pragma warning disable 1591
@@ -148,6 +149,7 @@ namespace JetBrains.Annotations
 
         public ContractAnnotationAttribute([NotNull] string contract, bool forceFullStates)
         {
+            Preconditions.CheckNotNull(contract, nameof(contract));
             Contract = contract;
             ForceFullStates = forceFullStates;
         }

@@ -9,6 +9,7 @@ using System.Text;
 using NodaTime.Globalization;
 using NodaTime.Properties;
 using NodaTime.Utility;
+using JetBrains.Annotations;
 
 namespace NodaTime.Text.Patterns
 {
@@ -466,7 +467,7 @@ namespace NodaTime.Text.Patterns
                 return bucket.CalculateValue(usedFields, cursor.Value);
             }
 
-            public StringBuilder AppendFormat(TResult value, StringBuilder builder)
+            public StringBuilder AppendFormat(TResult value, [NotNull] StringBuilder builder)
             {
                 Preconditions.CheckNotNull(builder, nameof(builder));
                 formatActions(value, builder);

@@ -22,9 +22,9 @@ namespace NodaTime.Test
         /// <exception cref="ArgumentOutOfRangeException">The result of the operation is outside the range of Offset.</exception>
         public static Offset CreatePositiveOffset(int hours, int minutes, int seconds)
         {
-            Preconditions.CheckArgumentRange("hours", hours, 0, 23);
-            Preconditions.CheckArgumentRange("minutes", minutes, 0, 59);
-            Preconditions.CheckArgumentRange("seconds", seconds, 0, 59);
+            Preconditions.CheckArgumentRange(nameof(hours), hours, 0, 23);
+            Preconditions.CheckArgumentRange(nameof(minutes), minutes, 0, 59);
+            Preconditions.CheckArgumentRange(nameof(seconds), seconds, 0, 59);
             seconds += minutes * NodaConstants.SecondsPerMinute;
             seconds += hours * NodaConstants.SecondsPerHour;
             return Offset.FromSeconds(seconds);
