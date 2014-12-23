@@ -5,6 +5,7 @@
 using System;
 using NodaTime.TimeZones;
 using NodaTime.Utility;
+using JetBrains.Annotations;
 
 namespace NodaTime
 {
@@ -67,7 +68,7 @@ namespace NodaTime
         /// </remarks>
         /// <value>The <c>IDateTimeZoneProvider</c> to use to interpret a time zone ID read as part of
         /// XML or binary serialization.</value>
-        public static IDateTimeZoneProvider Serialization
+        [NotNull] public static IDateTimeZoneProvider Serialization
         {
             get
             {

@@ -34,7 +34,7 @@ namespace NodaTime.Calendars
             }
         }
 
-        internal override int GetAbsoluteYear(int yearOfEra, Era era)
+        internal override int GetAbsoluteYear(int yearOfEra, [NotNull] Era era)
         {
             ValidateEra(era);
             Preconditions.CheckArgumentRange(nameof(yearOfEra), yearOfEra, minYear, maxYear);
@@ -43,13 +43,13 @@ namespace NodaTime.Calendars
 
         internal override int GetYearOfEra(YearMonthDay yearMonthDay) => yearMonthDay.Year;
 
-        internal override int GetMinYearOfEra(Era era)
+        internal override int GetMinYearOfEra([NotNull] Era era)
         {
             ValidateEra(era);
             return minYear;
         }
 
-        internal override int GetMaxYearOfEra(Era era)
+        internal override int GetMaxYearOfEra([NotNull] Era era)
         {
             ValidateEra(era);
             return maxYear;

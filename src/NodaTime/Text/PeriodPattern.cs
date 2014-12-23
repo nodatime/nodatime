@@ -6,6 +6,7 @@ using System.Text;
 using NodaTime.Annotations;
 using NodaTime.Properties;
 using NodaTime.Utility;
+using JetBrains.Annotations;
 
 namespace NodaTime.Text
 {
@@ -41,7 +42,7 @@ namespace NodaTime.Text
 
         private readonly IPattern<Period> pattern;
 
-        private PeriodPattern(IPattern<Period> pattern)
+        private PeriodPattern([NotNull] IPattern<Period> pattern)
         {
             this.pattern = Preconditions.CheckNotNull(pattern, nameof(pattern));
         }
@@ -71,7 +72,7 @@ namespace NodaTime.Text
         /// <param name="value">The value to format.</param>
         /// <param name="builder">The <c>StringBuilder</c> to append to.</param>
         /// <returns>The builder passed in as <paramref name="builder"/>.</returns>
-        public StringBuilder AppendFormat(Period value, StringBuilder builder) => pattern.AppendFormat(value, builder);
+        public StringBuilder AppendFormat(Period value, [NotNull] StringBuilder builder) => pattern.AppendFormat(value, builder);
 
         private static void AppendValue(StringBuilder builder, long value, string suffix)
         {
@@ -173,9 +174,9 @@ namespace NodaTime.Text
                 return ParseResult<Period>.ForValue(builder.Build());
             }
 
-            public string Format(Period value) => AppendFormat(value, new StringBuilder()).ToString();
+            public string Format([NotNull] Period value) => AppendFormat(value, new StringBuilder()).ToString();
 
-            public StringBuilder AppendFormat(Period value, StringBuilder builder)
+            public StringBuilder AppendFormat([NotNull] Period value, [NotNull] StringBuilder builder)
             {
                 Preconditions.CheckNotNull(value, nameof(value));
                 Preconditions.CheckNotNull(builder, nameof(builder));
@@ -328,9 +329,9 @@ namespace NodaTime.Text
                 return ParseResult<Period>.ForValue(builder.Build());
             }
 
-            public string Format(Period value) => AppendFormat(value, new StringBuilder()).ToString();
+            public string Format([NotNull] Period value) => AppendFormat(value, new StringBuilder()).ToString();
 
-            public StringBuilder AppendFormat(Period value, StringBuilder builder)
+            public StringBuilder AppendFormat([NotNull] Period value, [NotNull] StringBuilder builder)
             {
                 Preconditions.CheckNotNull(value, nameof(value));
                 Preconditions.CheckNotNull(builder, nameof(builder));

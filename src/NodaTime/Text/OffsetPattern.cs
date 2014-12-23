@@ -8,6 +8,7 @@ using NodaTime.Annotations;
 using NodaTime.Globalization;
 using NodaTime.Text.Patterns;
 using NodaTime.Utility;
+using JetBrains.Annotations;
 
 namespace NodaTime.Text
 {
@@ -87,7 +88,7 @@ namespace NodaTime.Text
         /// <param name="value">The value to format.</param>
         /// <param name="builder">The <c>StringBuilder</c> to append to.</param>
         /// <returns>The builder passed in as <paramref name="builder"/>.</returns>
-        public StringBuilder AppendFormat(Offset value, StringBuilder builder) => UnderlyingPattern.AppendFormat(value, builder);
+        public StringBuilder AppendFormat(Offset value, [NotNull] StringBuilder builder) => UnderlyingPattern.AppendFormat(value, builder);
 
         /// <summary>
         /// Creates a pattern for the given pattern text and format info.
@@ -96,7 +97,7 @@ namespace NodaTime.Text
         /// <param name="formatInfo">Localization information</param>
         /// <returns>A pattern for parsing and formatting offsets.</returns>
         /// <exception cref="InvalidPatternException">The pattern text was invalid.</exception>
-        internal static OffsetPattern Create(string patternText, NodaFormatInfo formatInfo)
+        internal static OffsetPattern Create([NotNull] string patternText, [NotNull] NodaFormatInfo formatInfo)
         {
             Preconditions.CheckNotNull(patternText, nameof(patternText));
             Preconditions.CheckNotNull(formatInfo, nameof(formatInfo));
@@ -114,7 +115,7 @@ namespace NodaTime.Text
         /// <param name="cultureInfo">The culture to use in the pattern</param>
         /// <returns>A pattern for parsing and formatting offsets.</returns>
         /// <exception cref="InvalidPatternException">The pattern text was invalid.</exception>
-        public static OffsetPattern Create(string patternText, CultureInfo cultureInfo) =>
+        public static OffsetPattern Create([NotNull] string patternText, [NotNull] CultureInfo cultureInfo) =>
             Create(patternText, NodaFormatInfo.GetFormatInfo(cultureInfo));
 
         /// <summary>
@@ -128,7 +129,7 @@ namespace NodaTime.Text
         /// <param name="patternText">Pattern text to create the pattern for</param>
         /// <returns>A pattern for parsing and formatting offsets.</returns>
         /// <exception cref="InvalidPatternException">The pattern text was invalid.</exception>
-        public static OffsetPattern CreateWithCurrentCulture(string patternText) =>
+        public static OffsetPattern CreateWithCurrentCulture([NotNull] string patternText) =>
             Create(patternText, NodaFormatInfo.CurrentInfo);
 
         /// <summary>
@@ -142,7 +143,7 @@ namespace NodaTime.Text
         /// <param name="patternText">Pattern text to create the pattern for</param>
         /// <returns>A pattern for parsing and formatting offsets.</returns>
         /// <exception cref="InvalidPatternException">The pattern text was invalid.</exception>
-        public static OffsetPattern CreateWithInvariantCulture(string patternText) =>
+        public static OffsetPattern CreateWithInvariantCulture([NotNull] string patternText) =>
             Create(patternText, NodaFormatInfo.InvariantInfo);
 
         /// <summary>
@@ -151,7 +152,7 @@ namespace NodaTime.Text
         /// </summary>
         /// <param name="cultureInfo">The culture to use in the new pattern.</param>
         /// <returns>A new pattern with the given culture.</returns>
-        public OffsetPattern WithCulture(CultureInfo cultureInfo) =>
+        public OffsetPattern WithCulture([NotNull] CultureInfo cultureInfo) =>
             Create(PatternText, NodaFormatInfo.GetFormatInfo(cultureInfo));
     }
 }

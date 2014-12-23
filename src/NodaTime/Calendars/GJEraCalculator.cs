@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using NodaTime.Utility;
+using JetBrains.Annotations;
 
 namespace NodaTime.Calendars
 {
@@ -24,7 +25,7 @@ namespace NodaTime.Calendars
             maxYearOfAd = ymdCalculator.MaxYear;
         }
 
-        private void ValidateEra(Era era)
+        private void ValidateEra([NotNull] Era era)
         {
             if (era != Era.Common && era != Era.BeforeCommon)
             {
@@ -33,7 +34,7 @@ namespace NodaTime.Calendars
             }
         }
 
-        internal override int GetAbsoluteYear(int yearOfEra, Era era)
+        internal override int GetAbsoluteYear(int yearOfEra, [NotNull] Era era)
         {
             ValidateEra(era);
             if (era == Era.Common)
@@ -53,13 +54,13 @@ namespace NodaTime.Calendars
 
         internal override Era GetEra(YearMonthDay yearMonthDay) => yearMonthDay.Year > 0 ? Era.Common : Era.BeforeCommon;
 
-        internal override int GetMinYearOfEra(Era era)
+        internal override int GetMinYearOfEra([NotNull] Era era)
         {
             ValidateEra(era);
             return 1;
         }
 
-        internal override int GetMaxYearOfEra(Era era)
+        internal override int GetMaxYearOfEra([NotNull] Era era)
         {
             ValidateEra(era);
             return era == Era.Common ? maxYearOfAd : maxYearOfBc;

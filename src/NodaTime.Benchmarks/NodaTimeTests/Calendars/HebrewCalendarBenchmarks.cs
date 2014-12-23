@@ -31,7 +31,6 @@ namespace NodaTime.Benchmarks.NodaTimeTests.Calendars
         /// </summary>
         private static void TestLeapCycle(CalendarSystem calendar)
         {
-            
             for (int year = 5400; year < 5419; year++)
             {
                 int maxMonth = calendar.GetMonthsInYear(year);

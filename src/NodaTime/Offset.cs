@@ -500,7 +500,7 @@ namespace NodaTime
         XmlSchema IXmlSerializable.GetSchema() => null;
 
         /// <inheritdoc />
-        void IXmlSerializable.ReadXml(XmlReader reader)
+        void IXmlSerializable.ReadXml([NotNull] XmlReader reader)
         {
             Preconditions.CheckNotNull(reader, nameof(reader));
             var pattern = OffsetPattern.GeneralInvariantPattern;
@@ -509,7 +509,7 @@ namespace NodaTime
         }
 
         /// <inheritdoc />
-        void IXmlSerializable.WriteXml(XmlWriter writer)
+        void IXmlSerializable.WriteXml([NotNull] XmlWriter writer)
         {
             Preconditions.CheckNotNull(writer, nameof(writer));
             writer.WriteString(OffsetPattern.GeneralInvariantPattern.Format(this));

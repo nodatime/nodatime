@@ -78,7 +78,7 @@ namespace NodaTime
         /// </summary>
         /// <param name="instant">The instant.</param>
         /// <param name="zone">The time zone.</param>
-        public ZonedDateTime(Instant instant, DateTimeZone zone)
+        public ZonedDateTime(Instant instant, [NotNull] DateTimeZone zone)
         {
             this.zone = Preconditions.CheckNotNull(zone, nameof(zone));
             offsetDateTime = new OffsetDateTime(instant, zone.GetUtcOffset(instant));
@@ -726,7 +726,7 @@ namespace NodaTime
         XmlSchema IXmlSerializable.GetSchema() => null;
 
         /// <inheritdoc />
-        void IXmlSerializable.ReadXml(XmlReader reader)
+        void IXmlSerializable.ReadXml([NotNull] XmlReader reader)
         {
             Preconditions.CheckNotNull(reader, nameof(reader));
             var pattern = OffsetDateTimePattern.ExtendedIsoPattern;
@@ -755,7 +755,7 @@ namespace NodaTime
         }
 
         /// <inheritdoc />
-        void IXmlSerializable.WriteXml(XmlWriter writer)
+        void IXmlSerializable.WriteXml([NotNull] XmlWriter writer)
         {
             Preconditions.CheckNotNull(writer, nameof(writer));
             writer.WriteAttributeString("zone", Zone.Id);

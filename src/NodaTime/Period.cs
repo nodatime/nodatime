@@ -300,7 +300,7 @@ namespace NodaTime
         /// <returns>The sum of the two periods. The units of the result will be the union of those in both
         /// periods.</returns>
         [NotNull]
-        public static Period operator +(Period left, Period right)
+        public static Period operator +([NotNull] Period left, [NotNull] Period right)
         {
             Preconditions.CheckNotNull(left, nameof(left));
             Preconditions.CheckNotNull(right, nameof(right));
@@ -341,7 +341,7 @@ namespace NodaTime
         /// units of the result will be the union of both periods, even if the subtraction caused some properties to
         /// become zero (so "2 weeks, 1 days" minus "2 weeks" is "zero weeks, 1 days", not "1 days").</returns>
         [NotNull]
-        public static Period operator -(Period minuend, Period subtrahend)
+        public static Period operator -([NotNull] Period minuend, [NotNull] Period subtrahend)
         {
             Preconditions.CheckNotNull(minuend, nameof(minuend));
             Preconditions.CheckNotNull(subtrahend, nameof(subtrahend));
@@ -912,7 +912,7 @@ namespace NodaTime
                 return x.Normalize().Equals(y.Normalize());
             }
 
-            public override int GetHashCode(Period obj) =>
+            public override int GetHashCode([NotNull] Period obj) =>
                 Preconditions.CheckNotNull(obj, nameof(obj)).Normalize().GetHashCode();
         }
 
