@@ -7,6 +7,7 @@ using System.Text;
 using NodaTime.Calendars;
 using NodaTime.TimeZones.IO;
 using NodaTime.Utility;
+using JetBrains.Annotations;
 
 namespace NodaTime.TimeZones
 {
@@ -44,7 +45,7 @@ namespace NodaTime.TimeZones
         /// <param name="yearOffset">The year offset of when this period starts in a year.</param>
         /// <param name="fromYear">The first year in which this recurrence is valid</param>
         /// <param name="toYear">The last year in which this recurrence is valid</param>
-        public ZoneRecurrence(String name, Offset savings, ZoneYearOffset yearOffset, int fromYear, int toYear)
+        public ZoneRecurrence([NotNull] String name, Offset savings, [NotNull] ZoneYearOffset yearOffset, int fromYear, int toYear)
         {
             Preconditions.CheckNotNull(name, nameof(name));
             Preconditions.CheckNotNull(yearOffset, nameof(yearOffset));
@@ -65,8 +66,8 @@ namespace NodaTime.TimeZones
         /// <summary>
         /// Returns a new recurrence which has the same values as this, but a different name.
         /// </summary>
-        internal ZoneRecurrence WithName(string newName) =>
-            new ZoneRecurrence(newName, Savings, YearOffset, FromYear, ToYear);
+        internal ZoneRecurrence WithName([NotNull] string name) =>
+            new ZoneRecurrence(name, Savings, YearOffset, FromYear, ToYear);
 
         #region IEquatable<ZoneRecurrence> Members
         /// <summary>
@@ -299,7 +300,7 @@ namespace NodaTime.TimeZones
         /// </summary>
         /// <param name="reader">The reader.</param>
         /// <returns>The recurrence read from the reader.</returns>
-        public static ZoneRecurrence Read(IDateTimeZoneReader reader)
+        public static ZoneRecurrence Read([NotNull] IDateTimeZoneReader reader)
         {
             Preconditions.CheckNotNull(reader, nameof(reader));
             string name = reader.ReadString();

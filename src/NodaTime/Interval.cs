@@ -228,7 +228,7 @@ internal Instant RawEnd => end;
         XmlSchema IXmlSerializable.GetSchema() => null;
 
         /// <inheritdoc />
-        void IXmlSerializable.ReadXml(XmlReader reader)
+        void IXmlSerializable.ReadXml([NotNull] XmlReader reader)
         {
             Preconditions.CheckNotNull(reader, nameof(reader));
             var pattern = InstantPattern.ExtendedIsoPattern;
@@ -248,7 +248,7 @@ internal Instant RawEnd => end;
         }
 
         /// <inheritdoc />
-        void IXmlSerializable.WriteXml(XmlWriter writer)
+        void IXmlSerializable.WriteXml([NotNull] XmlWriter writer)
         {
             Preconditions.CheckNotNull(writer, nameof(writer));
             var pattern = InstantPattern.ExtendedIsoPattern;

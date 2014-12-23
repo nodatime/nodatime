@@ -94,7 +94,7 @@ namespace NodaTime.TimeZones
         }
 
         /// <inheritdoc />
-        public DateTimeZone GetZoneOrNull(string id)
+        public DateTimeZone GetZoneOrNull([NotNull] string id)
         {
             Preconditions.CheckNotNull(id, nameof(id));
             DateTimeZone fixedZone = FixedDateTimeZone.GetFixedZoneOrNull(id);

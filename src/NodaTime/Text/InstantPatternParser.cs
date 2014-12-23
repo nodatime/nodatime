@@ -9,6 +9,7 @@ using NodaTime.Globalization;
 using NodaTime.Properties;
 using NodaTime.Text.Patterns;
 using NodaTime.Utility;
+using JetBrains.Annotations;
 
 namespace NodaTime.Text
 {
@@ -25,7 +26,7 @@ namespace NodaTime.Text
     {
         private const string GeneralPatternText = "yyyy'-'MM'-'dd'T'HH':'mm':'ss'Z'";
 
-        public IPattern<Instant> ParsePattern(string patternText, NodaFormatInfo formatInfo)
+        public IPattern<Instant> ParsePattern([NotNull] string patternText, NodaFormatInfo formatInfo)
         {
             Preconditions.CheckNotNull(patternText, nameof(patternText));
             if (patternText.Length == 0)
@@ -60,7 +61,7 @@ namespace NodaTime.Text
 
             public string Format(Instant value) => pattern.Format(value.InUtc().LocalDateTime);
 
-            public StringBuilder AppendFormat(Instant value, StringBuilder builder) =>
+            public StringBuilder AppendFormat(Instant value, [NotNull] StringBuilder builder) =>
                 pattern.AppendFormat(value.InUtc().LocalDateTime, builder);
 
             public ParseResult<Instant> Parse(string text) =>

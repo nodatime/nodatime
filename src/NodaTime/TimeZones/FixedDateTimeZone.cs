@@ -6,6 +6,7 @@ using System.Globalization;
 using NodaTime.Text;
 using NodaTime.TimeZones.IO;
 using NodaTime.Utility;
+using JetBrains.Annotations;
 
 namespace NodaTime.TimeZones
 {
@@ -32,8 +33,9 @@ namespace NodaTime.TimeZones
         /// </summary>
         /// <param name="id">The id.</param>
         /// <param name="offset">The offset.</param>
-        public FixedDateTimeZone(string id, Offset offset) : base(id, true, offset, offset)
+        public FixedDateTimeZone([NotNull] string id, Offset offset) : base(id, true, offset, offset)
         {
+            Preconditions.CheckNotNull(id, nameof(id));
             this.offset = offset;
             interval = new ZoneInterval(id, Instant.BeforeMinValue, Instant.AfterMaxValue, offset, Offset.Zero);
         }
@@ -104,7 +106,7 @@ namespace NodaTime.TimeZones
         /// Writes the time zone to the specified writer.
         /// </summary>
         /// <param name="writer">The writer.</param>
-        internal void Write(IDateTimeZoneWriter writer)
+        internal void Write([NotNull] IDateTimeZoneWriter writer)
         {
             Preconditions.CheckNotNull(writer, nameof(writer));
             writer.WriteOffset(offset);
@@ -116,10 +118,10 @@ namespace NodaTime.TimeZones
         /// <param name="reader">The reader.</param>
         /// <param name="id">The id.</param>
         /// <returns>The fixed time zone.</returns>
-        public static DateTimeZone Read(IDateTimeZoneReader reader, string id)
+        public static DateTimeZone Read([NotNull] IDateTimeZoneReader reader, [NotNull] string id)
         {
             Preconditions.CheckNotNull(reader, nameof(reader));
-            Preconditions.CheckNotNull(reader, "id");
+            Preconditions.CheckNotNull(id, nameof(id));
             var offset = reader.ReadOffset();
             return new FixedDateTimeZone(id, offset);
         }

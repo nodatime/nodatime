@@ -9,6 +9,7 @@ using NodaTime.Annotations;
 using NodaTime.Globalization;
 using NodaTime.Text.Patterns;
 using NodaTime.Utility;
+using JetBrains.Annotations;
 
 namespace NodaTime.Text
 {
@@ -132,7 +133,7 @@ namespace NodaTime.Text
         /// <param name="value">The value to format.</param>
         /// <param name="builder">The <c>StringBuilder</c> to append to.</param>
         /// <returns>The builder passed in as <paramref name="builder"/>.</returns>
-        public StringBuilder AppendFormat(LocalDateTime value, StringBuilder builder) => pattern.AppendFormat(value, builder);
+        public StringBuilder AppendFormat(LocalDateTime value, [NotNull] StringBuilder builder) => pattern.AppendFormat(value, builder);
 
         /// <summary>
         /// Creates a pattern for the given pattern text, format info, and template value.
@@ -142,7 +143,8 @@ namespace NodaTime.Text
         /// <param name="templateValue">Template value to use for unspecified fields</param>
         /// <returns>A pattern for parsing and formatting local date/times.</returns>
         /// <exception cref="InvalidPatternException">The pattern text was invalid.</exception>
-        private static LocalDateTimePattern Create(string patternText, NodaFormatInfo formatInfo, LocalDateTime templateValue)
+        private static LocalDateTimePattern Create([NotNull] string patternText, [NotNull] NodaFormatInfo formatInfo,
+            LocalDateTime templateValue)
         {
             Preconditions.CheckNotNull(patternText, nameof(patternText));
             Preconditions.CheckNotNull(formatInfo, nameof(formatInfo));
@@ -164,7 +166,8 @@ namespace NodaTime.Text
         /// <param name="templateValue">Template value to use for unspecified fields</param>
         /// <returns>A pattern for parsing and formatting local date/times.</returns>
         /// <exception cref="InvalidPatternException">The pattern text was invalid.</exception>
-        public static LocalDateTimePattern Create(string patternText, CultureInfo cultureInfo, LocalDateTime templateValue) =>
+        public static LocalDateTimePattern Create([NotNull] string patternText, [NotNull] CultureInfo cultureInfo,
+            LocalDateTime templateValue) =>
             Create(patternText, NodaFormatInfo.GetFormatInfo(cultureInfo), templateValue);
 
         /// <summary>
@@ -177,7 +180,7 @@ namespace NodaTime.Text
         /// <param name="cultureInfo">The culture to use in the pattern</param>
         /// <returns>A pattern for parsing and formatting local date/times.</returns>
         /// <exception cref="InvalidPatternException">The pattern text was invalid.</exception>
-        public static LocalDateTimePattern Create(string patternText, CultureInfo cultureInfo) =>
+        public static LocalDateTimePattern Create([NotNull] string patternText, [NotNull] CultureInfo cultureInfo) =>
             Create(patternText, cultureInfo, DefaultTemplateValue);
 
         /// <summary>
@@ -191,7 +194,7 @@ namespace NodaTime.Text
         /// <param name="patternText">Pattern text to create the pattern for</param>
         /// <returns>A pattern for parsing and formatting local date/times.</returns>
         /// <exception cref="InvalidPatternException">The pattern text was invalid.</exception>
-        public static LocalDateTimePattern CreateWithCurrentCulture(string patternText) =>
+        public static LocalDateTimePattern CreateWithCurrentCulture([NotNull] string patternText) =>
             Create(patternText, NodaFormatInfo.CurrentInfo, DefaultTemplateValue);
 
         /// <summary>
@@ -203,7 +206,7 @@ namespace NodaTime.Text
         /// <param name="patternText">Pattern text to create the pattern for</param>
         /// <returns>A pattern for parsing and formatting local date/times.</returns>
         /// <exception cref="InvalidPatternException">The pattern text was invalid.</exception>
-        public static LocalDateTimePattern CreateWithInvariantCulture(string patternText) =>
+        public static LocalDateTimePattern CreateWithInvariantCulture([NotNull] string patternText) =>
             Create(patternText, NodaFormatInfo.InvariantInfo, DefaultTemplateValue);
 
         /// <summary>
@@ -212,8 +215,8 @@ namespace NodaTime.Text
         /// </summary>
         /// <param name="newFormatInfo">The localization information to use in the new pattern.</param>
         /// <returns>A new pattern with the given localization information.</returns>
-        private LocalDateTimePattern WithFormatInfo(NodaFormatInfo newFormatInfo) =>
-            Create(PatternText, newFormatInfo, TemplateValue);
+        private LocalDateTimePattern WithFormatInfo([NotNull] NodaFormatInfo formatInfo) =>
+            Create(PatternText, formatInfo, TemplateValue);
 
         /// <summary>
         /// Creates a pattern for the same original pattern text as this pattern, but with the specified
@@ -221,7 +224,7 @@ namespace NodaTime.Text
         /// </summary>
         /// <param name="cultureInfo">The culture to use in the new pattern.</param>
         /// <returns>A new pattern with the given culture.</returns>
-        public LocalDateTimePattern WithCulture(CultureInfo cultureInfo) =>
+        public LocalDateTimePattern WithCulture([NotNull] CultureInfo cultureInfo) =>
             WithFormatInfo(NodaFormatInfo.GetFormatInfo(cultureInfo));
 
         /// <summary>

@@ -5,6 +5,7 @@
 using System;
 using NodaTime.Annotations;
 using NodaTime.Utility;
+using JetBrains.Annotations;
 
 namespace NodaTime.TimeZones
 {
@@ -92,7 +93,8 @@ namespace NodaTime.TimeZones
         /// original local date and time.</value>
         public int Count { get; }
 
-        internal ZoneLocalMapping(DateTimeZone zone, LocalDateTime localDateTime, ZoneInterval earlyInterval, ZoneInterval lateInterval, int count)
+        internal ZoneLocalMapping([Trusted] [NotNull] DateTimeZone zone, [Trusted] LocalDateTime localDateTime,
+            [Trusted] [NotNull] ZoneInterval earlyInterval, [Trusted] [NotNull] ZoneInterval lateInterval, int count)
         {
             Preconditions.DebugCheckNotNull(zone, nameof(zone));
             Preconditions.DebugCheckNotNull(earlyInterval, nameof(earlyInterval));
