@@ -2,6 +2,7 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
+using JetBrains.Annotations;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -54,7 +55,7 @@ namespace NodaTime.Text.Patterns
             return ParseResult<T>.NoMatchingFormat(cursor);
         }
 
-        public StringBuilder AppendFormat(T value, StringBuilder builder) => formatPatternPicker(value).AppendFormat(value, builder);
+        public StringBuilder AppendFormat(T value, [NotNull] StringBuilder builder) => formatPatternPicker(value).AppendFormat(value, builder);
     }
 
 }

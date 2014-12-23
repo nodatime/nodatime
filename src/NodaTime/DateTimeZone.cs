@@ -340,6 +340,8 @@ namespace NodaTime
             [Trusted] [NotNull] AmbiguousTimeResolver ambiguousResolver,
             [Trusted] [NotNull] SkippedTimeResolver skippedResolver)
         {
+            Preconditions.DebugCheckNotNull(ambiguousResolver, nameof(ambiguousResolver));
+            Preconditions.DebugCheckNotNull(skippedResolver, nameof(skippedResolver));
             LocalInstant localInstant = localDateTime.ToLocalInstant();
             Instant firstGuess = localInstant.MinusZeroOffset();
             ZoneInterval interval = GetZoneInterval(firstGuess);

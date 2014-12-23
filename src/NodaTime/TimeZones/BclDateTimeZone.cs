@@ -220,7 +220,7 @@ namespace NodaTime.TimeZones
             internal PartialZoneIntervalMap(Instant start, Instant end, IZoneIntervalMap map)
             {
                 // Allowing empty maps makes life simpler.
-                Preconditions.DebugCheckArgument(start <= end, "end",
+                Preconditions.DebugCheckArgument(start <= end, nameof(end),
                     "Invalid start/end combination: {0} - {1}", start, end);
                 this.Start = start;
                 this.End = end;
@@ -232,7 +232,7 @@ namespace NodaTime.TimeZones
 
             internal ZoneInterval GetZoneInterval(Instant instant)
             {
-                Preconditions.DebugCheckArgument(instant >= Start && instant < End, "instant",
+                Preconditions.DebugCheckArgument(instant >= Start && instant < End, nameof(instant),
                     "Value {0} was not in the range [{0}, {1})", instant, Start, End);
                 return map.GetZoneInterval(instant);
             }
@@ -248,8 +248,10 @@ namespace NodaTime.TimeZones
         {
             private readonly PartialZoneIntervalMap[] partialMaps;
 
-            internal BclZoneIntervalMap(BclAdjustmentRule[] rules, Offset standardOffset, string standardName, string daylightName)
+            internal BclZoneIntervalMap(BclAdjustmentRule[] rules, Offset standardOffset, [NotNull] string standardName, [NotNull] string daylightName)
             {
+                Preconditions.CheckNotNull(standardName, nameof(standardName));
+                Preconditions.CheckNotNull(daylightName, nameof(daylightName));
                 List<PartialZoneIntervalMap> maps = new List<PartialZoneIntervalMap>();
                 if (rules[0].Start.IsValid)
                 {
@@ -294,7 +296,7 @@ namespace NodaTime.TimeZones
                 for (int i = 1; i < intervals.Length; i++)
                 {
                     var candidate = intervals[i];
-                    Preconditions.DebugCheckArgument(candidate.RawStart == current.RawEnd, "intervals", "Intervals should abut; {0} and {1} don't.", current, candidate);
+                    Preconditions.DebugCheckArgument(candidate.RawStart == current.RawEnd, nameof(intervals), "Intervals should abut; {0} and {1} don't.", current, candidate);
                     if (current.WallOffset == candidate.WallOffset)
                     {
                         current = current.WithEnd(candidate.RawEnd);

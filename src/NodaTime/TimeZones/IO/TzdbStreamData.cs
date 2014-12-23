@@ -87,8 +87,10 @@ namespace NodaTime.TimeZones.IO
         /// </summary>
         /// <param name="id">ID for the returned zone, which may be an alias.</param>
         /// <param name="canonicalId">Canonical ID for zone data</param>
-        public DateTimeZone CreateZone(string id, string canonicalId)
+        public DateTimeZone CreateZone([NotNull] string id, [NotNull] string canonicalId)
         {
+            Preconditions.CheckNotNull(id, nameof(id));
+            Preconditions.CheckNotNull(canonicalId, nameof(canonicalId));
             using (var stream = zoneFields[canonicalId].CreateStream())
             {
                 var reader = new DateTimeZoneReader(stream, stringPool);
@@ -117,7 +119,7 @@ namespace NodaTime.TimeZones.IO
             return input;
         }
 
-        internal static TzdbStreamData FromStream(Stream stream)
+        internal static TzdbStreamData FromStream([NotNull] Stream stream)
         {
             Preconditions.CheckNotNull(stream, nameof(stream));
             int version = new BinaryReader(stream).ReadInt32();

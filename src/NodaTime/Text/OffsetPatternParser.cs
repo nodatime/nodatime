@@ -11,6 +11,7 @@ using NodaTime.Globalization;
 using NodaTime.Properties;
 using NodaTime.Text.Patterns;
 using NodaTime.Utility;
+using JetBrains.Annotations;
 
 namespace NodaTime.Text
 {
@@ -157,7 +158,7 @@ namespace NodaTime.Text
                 return fullPattern.ParsePartial(cursor);
             }
 
-            public StringBuilder AppendFormat(Offset value, StringBuilder builder)
+            public StringBuilder AppendFormat(Offset value, [NotNull] StringBuilder builder)
             {
                 Preconditions.CheckNotNull(builder, nameof(builder));
                 return value == Offset.Zero ? builder.Append("Z") : fullPattern.AppendFormat(value, builder);

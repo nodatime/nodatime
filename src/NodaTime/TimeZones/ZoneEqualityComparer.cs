@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using NodaTime.Annotations;
 using NodaTime.Utility;
+using JetBrains.Annotations;
 
 namespace NodaTime.TimeZones
 {
@@ -205,7 +206,7 @@ namespace NodaTime.TimeZones
         /// </remarks>
         /// <param name="obj">The time zone to compute a hash code for.</param>
         /// <returns>A hash code for the specified object.</returns>
-        public int GetHashCode(DateTimeZone obj)
+        public int GetHashCode([NotNull] DateTimeZone obj)
         {
             Preconditions.CheckNotNull(obj, nameof(obj));
             unchecked

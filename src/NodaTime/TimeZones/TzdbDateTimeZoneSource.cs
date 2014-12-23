@@ -138,7 +138,7 @@ namespace NodaTime.TimeZones
             return new TzdbDateTimeZoneSource(TzdbStreamData.FromStream(stream));
         }
 
-        private TzdbDateTimeZoneSource(TzdbStreamData source)
+        private TzdbDateTimeZoneSource([NotNull] TzdbStreamData source)
         {
             Preconditions.CheckNotNull(source, nameof(source));
             this.source = source;
@@ -153,7 +153,7 @@ namespace NodaTime.TimeZones
         }
 
         /// <inheritdoc />
-        public DateTimeZone ForId(string id)
+        public DateTimeZone ForId([NotNull] string id)
         {
             string canonicalId;
             if (!CanonicalIdMap.TryGetValue(Preconditions.CheckNotNull(id, nameof(id)), out canonicalId))

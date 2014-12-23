@@ -7,6 +7,7 @@ using System.IO;
 using System.Text;
 using NodaTime.NodaConstants;
 using NodaTime.Utility;
+using JetBrains.Annotations;
 
 namespace NodaTime.TimeZones.IO
 {
@@ -167,7 +168,7 @@ namespace NodaTime.TimeZones.IO
         /// Writes the given dictionary of string to string to the stream.
         /// </summary>
         /// <param name="dictionary">The <see cref="IDictionary{TKey,TValue}" /> to write.</param>
-        public void WriteDictionary(IDictionary<string, string> dictionary)
+        public void WriteDictionary([NotNull] IDictionary<string, string> dictionary)
         {
             Preconditions.CheckNotNull(dictionary, nameof(dictionary));
             WriteCount(dictionary.Count);

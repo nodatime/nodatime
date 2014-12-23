@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using NodaTime.Annotations;
 using NodaTime.TimeZones.IO;
 using NodaTime.Utility;
+using JetBrains.Annotations;
 
 namespace NodaTime.TimeZones
 {
@@ -30,24 +31,24 @@ namespace NodaTime.TimeZones
         /// Initializes a new instance of the <see cref="PrecalculatedDateTimeZone"/> class.
         /// </summary>
         /// <param name="id">The id.</param>
-        /// <param name="periods">The periods.</param>
+        /// <param name="intervals">The intervals before the tail zone.</param>
         /// <param name="tailZone">The tail zone.</param>
         [VisibleForTesting]
-        internal PrecalculatedDateTimeZone(string id, ZoneInterval[] periods, DateTimeZone tailZone)
+        internal PrecalculatedDateTimeZone(string id, [NotNull] ZoneInterval[] intervals, DateTimeZone tailZone)
             : base(id, false,
-                   ComputeOffset(periods, tailZone, Offset.Min),
-                   ComputeOffset(periods, tailZone, Offset.Max))
+                   ComputeOffset(intervals, tailZone, Offset.Min),
+                   ComputeOffset(intervals, tailZone, Offset.Max))
         {
             this.tailZone = tailZone;
-            this.periods = periods;
+            this.periods = intervals;
             this.tailZone = tailZone;
-            this.tailZoneStart = periods[periods.Length - 1].RawEnd; // We want this to be AfterMaxValue for tail-less zones.
+            this.tailZoneStart = intervals[intervals.Length - 1].RawEnd; // We want this to be AfterMaxValue for tail-less zones.
             if (tailZone != null)
             {
                 // Cache a "clamped" zone interval for use at the start of the tail zone.
                 firstTailZoneInterval = tailZone.GetZoneInterval(tailZoneStart).WithStart(tailZoneStart);
             }
-            ValidatePeriods(periods, tailZone);
+            ValidatePeriods(intervals, tailZone);
         }
 
         /// <summary>
@@ -125,7 +126,7 @@ namespace NodaTime.TimeZones
         /// Writes the time zone to the specified writer.
         /// </summary>
         /// <param name="writer">The writer to write to.</param>
-        internal void Write(IDateTimeZoneWriter writer)
+        internal void Write([NotNull] IDateTimeZoneWriter writer)
         {
             Preconditions.CheckNotNull(writer, nameof(writer));
 
@@ -160,7 +161,7 @@ namespace NodaTime.TimeZones
         /// <param name="reader">The reader.</param>
         /// <param name="id">The id.</param>
         /// <returns>The time zone.</returns>
-        public static DateTimeZone Read(IDateTimeZoneReader reader, string id)
+        public static DateTimeZone Read([NotNull] IDateTimeZoneReader reader, string id)
         {
             int size = reader.ReadCount();
             var periods = new ZoneInterval[size];
@@ -188,7 +189,7 @@ namespace NodaTime.TimeZones
 
         // Reasonably simple way of computing the maximum/minimum offset
         // from either periods or transitions, with or without a tail zone.
-        private static Offset ComputeOffset(ZoneInterval[] intervals,
+        private static Offset ComputeOffset([NotNull] ZoneInterval[] intervals,
             DateTimeZone tailZone,
             OffsetAggregator aggregator)
         {
