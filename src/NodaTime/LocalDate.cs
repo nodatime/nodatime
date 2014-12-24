@@ -74,9 +74,9 @@ namespace NodaTime
         /// </summary>
         // TODO: See if we still need this.
         internal LocalDate(int daysSinceEpoch, [Trusted] [NotNull] CalendarSystem calendar)
-            : this(calendar.GetYearMonthDayFromDaysSinceEpoch(daysSinceEpoch), calendar)
         {
             Preconditions.DebugCheckNotNull(calendar, nameof(calendar));
+            this.yearMonthDayCalendar = calendar.GetYearMonthDayFromDaysSinceEpoch(daysSinceEpoch).WithCalendar(calendar);
         }
 
         /// <summary>
