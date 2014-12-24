@@ -35,7 +35,6 @@ namespace NodaTime.TimeZones
         /// <param name="offset">The offset.</param>
         public FixedDateTimeZone([NotNull] string id, Offset offset) : base(id, true, offset, offset)
         {
-            Preconditions.CheckNotNull(id, nameof(id));
             this.offset = offset;
             interval = new ZoneInterval(id, Instant.BeforeMinValue, Instant.AfterMaxValue, offset, Offset.Zero);
         }
