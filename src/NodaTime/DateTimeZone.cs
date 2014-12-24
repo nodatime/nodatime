@@ -143,9 +143,9 @@ namespace NodaTime
         /// <param name="isFixed">Set to <c>true</c> if this time zone has no transitions.</param>
         /// <param name="minOffset">Minimum offset applied within this zone</param>
         /// <param name="maxOffset">Maximum offset applied within this zone</param>
-        protected DateTimeZone(string id, bool isFixed, Offset minOffset, Offset maxOffset)
+        protected DateTimeZone([NotNull] string id, bool isFixed, Offset minOffset, Offset maxOffset)
         {
-            this.Id = id;
+            this.Id = Preconditions.CheckNotNull(id, nameof(id));
             this.IsFixed = isFixed;
             this.MinOffset = minOffset;
             this.MaxOffset = maxOffset;
@@ -161,7 +161,7 @@ namespace NodaTime
         /// </para>
         /// </remarks>
         /// <value>The provider's ID for the time zone.</value>
-        public string Id { get; }
+        [NotNull] public string Id { get; }
 
         /// <summary>
         /// Indicates whether the time zone is fixed, i.e. contains no transitions.

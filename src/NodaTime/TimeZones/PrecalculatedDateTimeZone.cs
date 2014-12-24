@@ -34,7 +34,7 @@ namespace NodaTime.TimeZones
         /// <param name="intervals">The intervals before the tail zone.</param>
         /// <param name="tailZone">The tail zone.</param>
         [VisibleForTesting]
-        internal PrecalculatedDateTimeZone(string id, [NotNull] ZoneInterval[] intervals, DateTimeZone tailZone)
+        internal PrecalculatedDateTimeZone([NotNull] string id, [NotNull] ZoneInterval[] intervals, DateTimeZone tailZone)
             : base(id, false,
                    ComputeOffset(intervals, tailZone, Offset.Min),
                    ComputeOffset(intervals, tailZone, Offset.Max))
