@@ -66,7 +66,7 @@ namespace NodaTime.TimeZones
     /// <param name="intervalAfter">The zone interval directly after the target local date and time would have occurred</param>
     /// <exception cref="SkippedTimeException">The implementation rejects requests to map skipped times.</exception>
     /// <returns>A <see cref="ZonedDateTime"/> in the target time zone.</returns>
-    public delegate ZonedDateTime SkippedTimeResolver([NotNull] LocalDateTime localDateTime, [NotNull] DateTimeZone zone,
+    public delegate ZonedDateTime SkippedTimeResolver(LocalDateTime localDateTime, [NotNull] DateTimeZone zone,
         [NotNull] ZoneInterval intervalBefore, [NotNull] ZoneInterval intervalAfter);
 
     /// <summary>

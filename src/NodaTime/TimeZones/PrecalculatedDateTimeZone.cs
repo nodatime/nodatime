@@ -161,7 +161,7 @@ namespace NodaTime.TimeZones
         /// <param name="reader">The reader.</param>
         /// <param name="id">The id.</param>
         /// <returns>The time zone.</returns>
-        public static DateTimeZone Read([NotNull] IDateTimeZoneReader reader, string id)
+        public static DateTimeZone Read([NotNull] IDateTimeZoneReader reader, [NotNull] string id)
         {
             int size = reader.ReadCount();
             var periods = new ZoneInterval[size];
