@@ -270,8 +270,8 @@ internal Instant RawEnd => end;
         /// <param name="info">The <see cref="SerializationInfo"/> to fetch data from.</param>
         /// <param name="context">The source for this deserialization.</param>
         private Interval(SerializationInfo info, StreamingContext context)
-            : this(new Instant(Duration.Deserialize(info, StartDaysSerializationName, StartNanosecondOfDaySerializationName)),
-                   new Instant(Duration.Deserialize(info, EndDaysSerializationName, EndNanosecondOfDaySerializationName)))
+            : this(new Instant(new Duration(info, StartDaysSerializationName, StartNanosecondOfDaySerializationName)),
+                   new Instant(new Duration(info, EndDaysSerializationName, EndNanosecondOfDaySerializationName)))
         {
         }
 

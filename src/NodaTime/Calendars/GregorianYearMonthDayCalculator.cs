@@ -2,6 +2,7 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
+using NodaTime.Annotations;
 using NodaTime.Utility;
 
 namespace NodaTime.Calendars
@@ -116,7 +117,7 @@ namespace NodaTime.Calendars
             return YearStartDays[year - FirstOptimizedYear];
         }
 
-        internal override int GetDaysSinceEpoch(YearMonthDay yearMonthDay)
+        internal override int GetDaysSinceEpoch([Trusted] YearMonthDay yearMonthDay)
         {
             // 2014-06-28: Tried removing this entirely (optimized: 8ns => 13ns; unoptimized: 23ns => 19ns)
             // Also tried computing everything lazily - it's a wash.

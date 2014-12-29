@@ -93,7 +93,7 @@ namespace NodaTime.TimeZones
         /// original local date and time.</value>
         public int Count { get; }
 
-        internal ZoneLocalMapping([Trusted] [NotNull] DateTimeZone zone, [Trusted] LocalDateTime localDateTime,
+        internal ZoneLocalMapping([Trusted] [NotNull] DateTimeZone zone, LocalDateTime localDateTime,
             [Trusted] [NotNull] ZoneInterval earlyInterval, [Trusted] [NotNull] ZoneInterval lateInterval, int count)
         {
             Preconditions.DebugCheckNotNull(zone, nameof(zone));
