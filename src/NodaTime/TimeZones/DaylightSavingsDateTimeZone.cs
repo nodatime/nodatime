@@ -181,7 +181,7 @@ namespace NodaTime.TimeZones
             writer.WriteOffset(dstRecurrence.Savings);
         }
 
-        internal static DaylightSavingsDateTimeZone Read([NotNull] IDateTimeZoneReader reader, string id)
+        internal static DaylightSavingsDateTimeZone Read([NotNull] IDateTimeZoneReader reader, [NotNull] string id)
         {
             Preconditions.CheckNotNull(reader, nameof(reader));
             Offset standardOffset = reader.ReadOffset();
