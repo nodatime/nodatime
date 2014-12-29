@@ -136,7 +136,7 @@ namespace NodaTime.Calendars
         }
 
         // No need to use the YearMonthDayCalculator cache, given that we've got the value in array already.
-        internal override int GetStartOfYearInDays(int year) => CalculateStartOfYearDays(year);
+        internal override int GetStartOfYearInDays([Trusted] int year) => CalculateStartOfYearDays(year);
 
         protected override int CalculateStartOfYearDays([Trusted] int year) =>
             // Fine for one year either side of min/max.

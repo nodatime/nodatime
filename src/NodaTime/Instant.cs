@@ -666,7 +666,7 @@ namespace NodaTime
         /// <param name="context">The source for this deserialization.</param>
         private Instant(SerializationInfo info, StreamingContext context)
             // FIXME:SERIALIZATION COMPATIBILITY
-            : this(Duration.Deserialize(info))
+            : this(new Duration(info))
         {
         }
 

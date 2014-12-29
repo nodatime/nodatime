@@ -124,6 +124,9 @@ namespace NodaTime
 
         // This is effectively a 25 bit value. (It can't be 24 bits, or we can't represent every TimeSpan value.)
         private readonly int days;
+        // Always non-negative; a negative duration will have a negative number of days, but may have a
+        // positive nanoOfDay. (A duration of -1ns will have a days value of -1 and a nanoOfDay of
+        // NanosecondsPerDay - 1, for example.)
         private readonly long nanoOfDay;
 
         internal Duration(int days, [Trusted] long nanoOfDay)
@@ -135,14 +138,6 @@ namespace NodaTime
             Preconditions.DebugCheckArgumentRange(nameof(nanoOfDay), nanoOfDay, 0, NanosecondsPerDay - 1);
             this.days = days;
             this.nanoOfDay = nanoOfDay;
-        }
-
-        /// <summary>
-        /// Like the other constructor, but the nano-of-day is validated as well. Used for deserialization.
-        /// </summary>
-        private Duration(int days, long nanoOfDay, bool ignored) : this(days, nanoOfDay)
-        {
-            Preconditions.CheckArgumentRange(nameof(nanoOfDay), nanoOfDay, 0, NanosecondsPerDay - 1);
         }
 
         /// <summary>
@@ -896,8 +891,36 @@ namespace NodaTime
         /// <param name="info">The <see cref="SerializationInfo"/> to fetch data from.</param>
         /// <param name="context">The source for this deserialization.</param>
         private Duration(SerializationInfo info, StreamingContext context)
-            : this(info.GetInt32(DefaultDaysSerializationName), info.GetInt64(DefaultNanosecondOfDaySerializationName), true /* validate */)
+            : this(info, DefaultDaysSerializationName, DefaultNanosecondOfDaySerializationName)
         {
+        }
+
+        /// <summary>
+        /// Internal constructor used for deserialization, for cases where this is part of
+        /// a larger value, but the duration part has been serialized with the default keys.
+        /// </summary>
+        internal Duration(SerializationInfo info)
+            : this(info, DefaultDaysSerializationName, DefaultNanosecondOfDaySerializationName)
+        {
+        }
+
+        /// <summary>
+        /// Internal constructor used for deserialization, for cases where the
+        /// names in the serialization info aren't the default ones.
+        /// </summary>
+        internal Duration(SerializationInfo info,
+            string daysSerializationName, string nanosecondOfDaySerializationName)
+        {
+            days = info.GetInt32(daysSerializationName);
+            nanoOfDay = info.GetInt64(nanosecondOfDaySerializationName);
+            if (days < MinDays || days > MaxDays)
+            {
+                throw new ArgumentException("Serialized value contains a 'days' value which is out of range");
+            }
+            if (nanoOfDay < 0 || nanoOfDay >= NanosecondsPerDay)
+            {
+                throw new ArgumentException("Serialized value contains a 'nanosecond-of-day' value which is out of range");
+            }
         }
 
         /// <summary>
@@ -912,14 +935,6 @@ namespace NodaTime
             Serialize(info);
         }
         #endregion
-
-
-        internal static Duration Deserialize(SerializationInfo info) =>
-            Deserialize(info, DefaultDaysSerializationName, DefaultNanosecondOfDaySerializationName);
-
-        internal static Duration Deserialize(SerializationInfo info,
-            string daysSerializationName, string nanosecondOfDaySerializationName) =>
-            new Duration(info.GetInt32(daysSerializationName), info.GetInt64(nanosecondOfDaySerializationName), true /* validate */);
 
         internal void Serialize(SerializationInfo info)
         {
