@@ -10,6 +10,7 @@ using System.Xml.Serialization;
 using JetBrains.Annotations;
 using NodaTime.Text;
 using NodaTime.Utility;
+using NodaTime.Annotations;
 
 namespace NodaTime
 {
@@ -269,7 +270,7 @@ internal Instant RawEnd => end;
         /// </summary>
         /// <param name="info">The <see cref="SerializationInfo"/> to fetch data from.</param>
         /// <param name="context">The source for this deserialization.</param>
-        private Interval(SerializationInfo info, StreamingContext context)
+        private Interval([NotNull] SerializationInfo info, StreamingContext context)
             : this(new Instant(new Duration(info, StartDaysSerializationName, StartNanosecondOfDaySerializationName)),
                    new Instant(new Duration(info, EndDaysSerializationName, EndNanosecondOfDaySerializationName)))
         {
@@ -281,7 +282,7 @@ internal Instant RawEnd => end;
         /// <param name="info">The <see cref="SerializationInfo"/> to populate with data.</param>
         /// <param name="context">The destination for this serialization.</param>
         [System.Security.SecurityCritical]
-        void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)
+        void ISerializable.GetObjectData([NotNull] SerializationInfo info, StreamingContext context)
         {
             // FIXME:SERIALIZATION
             start.TimeSinceEpoch.Serialize(info, StartDaysSerializationName, StartNanosecondOfDaySerializationName);

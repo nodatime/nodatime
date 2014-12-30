@@ -761,8 +761,8 @@ namespace NodaTime
         /// </summary>
         /// <param name="info">The <see cref="SerializationInfo"/> to fetch data from.</param>
         /// <param name="context">The source for this deserialization.</param>
-        private LocalDate(SerializationInfo info, StreamingContext context)
-            : this(new YearMonthDayCalendar(info.GetInt32(YearMonthDayCalendarSerializationName)))
+        private LocalDate([NotNull] SerializationInfo info, StreamingContext context)
+            : this(new YearMonthDayCalendar(Preconditions.CheckNotNull(info, nameof(info)).GetInt32(YearMonthDayCalendarSerializationName)))
         {
             // TODO(2.0): Validation!
         }
@@ -773,8 +773,9 @@ namespace NodaTime
         /// <param name="info">The <see cref="SerializationInfo"/> to populate with data.</param>
         /// <param name="context">The destination for this serialization.</param>
         [System.Security.SecurityCritical]
-        void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)
+        void ISerializable.GetObjectData([NotNull] SerializationInfo info, StreamingContext context)
         {
+            Preconditions.CheckNotNull(info, nameof(info));
             // TODO(2.0): Consider deserialization of 1.x, and consider serializing year, month, day and calendar separately.
             info.AddValue(YearMonthDayCalendarSerializationName, yearMonthDayCalendar.RawValue);
         }

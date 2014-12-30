@@ -363,7 +363,7 @@ namespace NodaTime
         /// The value of the current instance in the default format pattern ("o"), using the current thread's
         /// culture to obtain a format provider.
         /// </returns>
-        public override string ToString() =>DurationPattern.BclSupport.Format(this, null, CultureInfo.CurrentCulture);
+        public override string ToString() => DurationPattern.BclSupport.Format(this, null, CultureInfo.CurrentCulture);
 
         /// <summary>
         /// Formats the value of the current instance using the specified pattern.
@@ -890,7 +890,7 @@ namespace NodaTime
         /// </summary>
         /// <param name="info">The <see cref="SerializationInfo"/> to fetch data from.</param>
         /// <param name="context">The source for this deserialization.</param>
-        private Duration(SerializationInfo info, StreamingContext context)
+        private Duration([NotNull] SerializationInfo info, StreamingContext context)
             : this(info, DefaultDaysSerializationName, DefaultNanosecondOfDaySerializationName)
         {
         }
@@ -899,7 +899,7 @@ namespace NodaTime
         /// Internal constructor used for deserialization, for cases where this is part of
         /// a larger value, but the duration part has been serialized with the default keys.
         /// </summary>
-        internal Duration(SerializationInfo info)
+        internal Duration([NotNull] SerializationInfo info)
             : this(info, DefaultDaysSerializationName, DefaultNanosecondOfDaySerializationName)
         {
         }
@@ -908,9 +908,12 @@ namespace NodaTime
         /// Internal constructor used for deserialization, for cases where the
         /// names in the serialization info aren't the default ones.
         /// </summary>
-        internal Duration(SerializationInfo info,
-            string daysSerializationName, string nanosecondOfDaySerializationName)
+        internal Duration([NotNull] SerializationInfo info,
+            [Trusted] [NotNull] string daysSerializationName, [Trusted] [NotNull] string nanosecondOfDaySerializationName)
         {
+            Preconditions.CheckNotNull(info, nameof(info));
+            Preconditions.DebugCheckNotNull(daysSerializationName, nameof(daysSerializationName));
+            Preconditions.DebugCheckNotNull(nanosecondOfDaySerializationName, nameof(nanosecondOfDaySerializationName));
             days = info.GetInt32(daysSerializationName);
             nanoOfDay = info.GetInt64(nanosecondOfDaySerializationName);
             if (days < MinDays || days > MaxDays)
@@ -929,20 +932,24 @@ namespace NodaTime
         /// <param name="info">The <see cref="SerializationInfo"/> to populate with data.</param>
         /// <param name="context">The destination for this serialization.</param>
         [System.Security.SecurityCritical]
-        void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)
+        void ISerializable.GetObjectData([NotNull] SerializationInfo info, StreamingContext context)
         {
             // FIXME(2.0): Determine serialization policy
             Serialize(info);
         }
         #endregion
 
-        internal void Serialize(SerializationInfo info)
+        internal void Serialize([NotNull] SerializationInfo info)
         {
             Serialize(info, DefaultDaysSerializationName, DefaultNanosecondOfDaySerializationName);
         }
 
-        internal void Serialize(SerializationInfo info, string daysSerializationName, string nanosecondOfDaySerializationName)
+        internal void Serialize([NotNull] SerializationInfo info,
+            [Trusted] [NotNull] string daysSerializationName, [Trusted] [NotNull] string nanosecondOfDaySerializationName)
         {
+            Preconditions.CheckNotNull(info, nameof(info));
+            Preconditions.DebugCheckNotNull(daysSerializationName, nameof(daysSerializationName));
+            Preconditions.DebugCheckNotNull(nanosecondOfDaySerializationName, nameof(nanosecondOfDaySerializationName));
             info.AddValue(daysSerializationName, days);
             info.AddValue(nanosecondOfDaySerializationName, nanoOfDay);
         }

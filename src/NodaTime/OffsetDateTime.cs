@@ -870,8 +870,8 @@ namespace NodaTime
         /// </summary>
         /// <param name="info">The <see cref="SerializationInfo"/> to fetch data from.</param>
         /// <param name="context">The source for this deserialization.</param>
-        private OffsetDateTime(SerializationInfo info, StreamingContext context)
-            : this(new LocalDateTime(new LocalDate(info.GetInt32(DaysSerializationName),
+        private OffsetDateTime([NotNull] SerializationInfo info, StreamingContext context)
+            : this(new LocalDateTime(new LocalDate(Preconditions.CheckNotNull(info, nameof(info)).GetInt32(DaysSerializationName),
                                                    CalendarSystem.ForId(info.GetString(CalendarIdSerializationName))),
                                      LocalTime.FromTicksSinceMidnight(info.GetInt64(TickOfDaySerializationName))),
                    Offset.FromMilliseconds(info.GetInt32(OffsetMillisecondsSerializationName)))
@@ -884,8 +884,9 @@ namespace NodaTime
         /// <param name="info">The <see cref="SerializationInfo"/> to populate with data.</param>
         /// <param name="context">The destination for this serialization.</param>
         [System.Security.SecurityCritical]
-        void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)
+        void ISerializable.GetObjectData([NotNull] SerializationInfo info, StreamingContext context)
         {
+            Preconditions.CheckNotNull(info, nameof(info));
             // TODO(2.0): Consider serialization compatibility. (And just serialize the fields?)
             info.AddValue(DaysSerializationName, Date.DaysSinceEpoch);
             info.AddValue(TickOfDaySerializationName, TimeOfDay.TickOfDay);
