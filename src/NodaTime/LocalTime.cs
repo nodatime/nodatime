@@ -732,8 +732,9 @@ namespace NodaTime
         /// </summary>
         /// <param name="info">The <see cref="SerializationInfo"/> to fetch data from.</param>
         /// <param name="context">The source for this deserialization.</param>
-        private LocalTime(SerializationInfo info, StreamingContext context)
+        private LocalTime([NotNull] SerializationInfo info, StreamingContext context)
         {
+            Preconditions.CheckNotNull(info, nameof(info));
             long nanoOfDay = info.GetInt64(NanoOfDaySerializationName);
             Preconditions.CheckArgument(nanoOfDay >= 0 && nanoOfDay < NanosecondsPerDay, nameof(info),
                 "Serialized offset value is outside the range of +/- 18 hours");
@@ -746,8 +747,9 @@ namespace NodaTime
         /// <param name="info">The <see cref="SerializationInfo"/> to populate with data.</param>
         /// <param name="context">The destination for this serialization.</param>
         [System.Security.SecurityCritical]
-        void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)
+        void ISerializable.GetObjectData([NotNull] SerializationInfo info, StreamingContext context)
         {
+            Preconditions.CheckNotNull(info, nameof(info));
             info.AddValue(NanoOfDaySerializationName, nanoseconds);
         }
         #endregion

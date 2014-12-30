@@ -527,8 +527,9 @@ namespace NodaTime
         /// </summary>
         /// <param name="info">The <see cref="SerializationInfo"/> to fetch data from.</param>
         /// <param name="context">The source for this deserialization.</param>
-        private Offset(SerializationInfo info, StreamingContext context)
+        private Offset([NotNull] SerializationInfo info, StreamingContext context)
         {
+            Preconditions.CheckNotNull(info, nameof(info));
             int millis = info.GetInt32(MillisecondsSerializationName);
 
             Preconditions.CheckArgument(millis >= MinMilliseconds && millis <= MaxMilliseconds, nameof(info),
@@ -542,8 +543,9 @@ namespace NodaTime
         /// <param name="info">The <see cref="SerializationInfo"/> to populate with data.</param>
         /// <param name="context">The destination for this serialization.</param>
         [System.Security.SecurityCritical]
-        void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)
+        void ISerializable.GetObjectData([NotNull] SerializationInfo info, StreamingContext context)
         {
+            Preconditions.CheckNotNull(info, nameof(info));
             info.AddValue(MillisecondsSerializationName, Milliseconds);
         }
         #endregion

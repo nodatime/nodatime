@@ -993,8 +993,8 @@ namespace NodaTime
         /// </summary>
         /// <param name="info">The <see cref="SerializationInfo"/> to fetch data from.</param>
         /// <param name="context">The source for this deserialization.</param>
-        private LocalDateTime(SerializationInfo info, StreamingContext context)
-            : this(new LocalDate(info.GetInt32(DaysSerializationName),
+        private LocalDateTime([NotNull] SerializationInfo info, StreamingContext context)
+            : this(new LocalDate(Preconditions.CheckNotNull(info, nameof(info)).GetInt32(DaysSerializationName),
                                  CalendarSystem.ForId(info.GetString(CalendarIdSerializationName))),
                    LocalTime.FromNanosecondsSinceMidnight(info.GetInt64(NanosecondOfDaySerializationName)))
         {
@@ -1006,8 +1006,9 @@ namespace NodaTime
         /// <param name="info">The <see cref="SerializationInfo"/> to populate with data.</param>
         /// <param name="context">The destination for this serialization.</param>
         [System.Security.SecurityCritical]
-        void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)
+        void ISerializable.GetObjectData([NotNull] SerializationInfo info, StreamingContext context)
         {
+            Preconditions.CheckNotNull(info, nameof(info));
             // FIXME(2.0): Revisit the serialization format
             info.AddValue(DaysSerializationName, date.DaysSinceEpoch);
             info.AddValue(NanosecondOfDaySerializationName, time.NanosecondOfDay);

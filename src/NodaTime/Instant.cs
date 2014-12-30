@@ -664,7 +664,7 @@ namespace NodaTime
         /// </summary>
         /// <param name="info">The <see cref="SerializationInfo"/> to fetch data from.</param>
         /// <param name="context">The source for this deserialization.</param>
-        private Instant(SerializationInfo info, StreamingContext context)
+        private Instant([NotNull] SerializationInfo info, StreamingContext context)
             // FIXME:SERIALIZATION COMPATIBILITY
             : this(new Duration(info))
         {
@@ -676,7 +676,7 @@ namespace NodaTime
         /// <param name="info">The <see cref="SerializationInfo"/> to populate with data.</param>
         /// <param name="context">The destination for this serialization.</param>
         [System.Security.SecurityCritical]
-        void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)
+        void ISerializable.GetObjectData([NotNull] SerializationInfo info, StreamingContext context)
         {
             duration.Serialize(info);
         }
