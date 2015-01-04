@@ -2,7 +2,9 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
+using JetBrains.Annotations;
 using NodaTime.Annotations;
+using NodaTime.Utility;
 #if !PCL
 using System;
 using System.Collections.Generic;
@@ -117,7 +119,11 @@ namespace NodaTime.TimeZones
         /// The ID for the given BCL time zone for this source; that is, the value of the <c>Id</c> property of the
         /// passed-in <see cref="TimeZoneInfo"/>.
         /// </returns>
-        public string MapTimeZoneId(TimeZoneInfo timeZone) => timeZone.Id;
+        public string MapTimeZoneId([NotNull] TimeZoneInfo timeZone)
+        {
+            Preconditions.CheckNotNull(timeZone, nameof(timeZone));
+            return timeZone.Id;
+        }
     }
 }
 #endif

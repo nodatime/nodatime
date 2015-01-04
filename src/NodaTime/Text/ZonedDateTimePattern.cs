@@ -242,7 +242,7 @@ namespace NodaTime.Text
         /// <param name="resolver">The new local mapping resolver to use.</param>
         /// <returns>A new pattern with the given resolver.</returns>
         public ZonedDateTimePattern WithResolver([NotNull] ZoneLocalMappingResolver resolver) =>
-            Resolver == resolver ? this :  Create(PatternText, FormatInfo, resolver, ZoneProvider, TemplateValue);
+            Resolver == resolver ? this : Create(PatternText, FormatInfo, resolver, ZoneProvider, TemplateValue);
 
         /// <summary>
         /// Creates a pattern for the same original pattern text as this pattern, but with the specified
