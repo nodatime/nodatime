@@ -168,14 +168,15 @@ namespace NodaTime.TimeZones
         public IEnumerable<string> GetIds() => CanonicalIdMap.Keys;
 
         /// <inheritdoc />
-        /// <param name="zone">The BCL time zone, which must be a known system time zone.</param>
-        public string MapTimeZoneId(TimeZoneInfo zone)
+        /// <param name="timeZone">The BCL time zone, which must be a known system time zone.</param>
+        public string MapTimeZoneId([NotNull] TimeZoneInfo timeZone)
         {
+            Preconditions.CheckNotNull(timeZone, nameof(timeZone));
 #if PCL
             // Our in-memory mapping is effectively from standard name to TZDB ID.
             string id = zone.StandardName;
 #else
-            string id = zone.Id;
+            string id = timeZone.Id;
 #endif
             string result;
             source.WindowsMapping.PrimaryMapping.TryGetValue(id, out result);

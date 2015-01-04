@@ -161,8 +161,10 @@ namespace NodaTime.TimeZones
         /// <param name="reader">The reader.</param>
         /// <param name="id">The id.</param>
         /// <returns>The time zone.</returns>
-        public static DateTimeZone Read([NotNull] IDateTimeZoneReader reader, [NotNull] string id)
+        internal static DateTimeZone Read([Trusted] [NotNull] IDateTimeZoneReader reader, [Trusted] [NotNull] string id)
         {
+            Preconditions.DebugCheckNotNull(reader, nameof(reader));
+            Preconditions.DebugCheckNotNull(id, nameof(id));
             int size = reader.ReadCount();
             var periods = new ZoneInterval[size];
             // It's not entirely clear why we don't just assume that the first zone interval always starts at Instant.BeforeMinValue

@@ -103,6 +103,6 @@ namespace NodaTime.TimeZones
         /// The ID for the given system time zone for this source, or null if the system time
         /// zone has no mapping in this source.
         /// </returns>
-        string MapTimeZoneId(TimeZoneInfo timeZone);
+        string MapTimeZoneId([NotNull] TimeZoneInfo timeZone);
     }
 }
