@@ -1,3 +1,7 @@
+// Copyright 2015 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0,
+// as found in the LICENSE.txt file.
+
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -15,17 +19,14 @@ namespace NodaTime.CodeDiagnostics
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public sealed class InvokerParameterNameDiagnosticAnalyzer : DiagnosticAnalyzer
     {
-        public const string DiagnosticId = "InvokerParameterName";
-        internal const string Category = "Style";
 
-        internal static DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId,
+        internal static readonly DiagnosticDescriptor InvokerParameterName = Helpers.CreateWarning(
             "Argument should be a parameter using nameof",
             "Argument {0} of method {1} should be a parameter of the calling member, specified using the nameof operator",
-            Category,
-            DiagnosticSeverity.Warning,
-            isEnabledByDefault: true);
+            Category.Correctness);
 
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics =>
+            ImmutableArray.Create(InvokerParameterName);
 
         public override void Initialize(AnalysisContext context)
         {
@@ -58,7 +59,7 @@ namespace NodaTime.CodeDiagnostics
                 var argument = invocation.ArgumentList.Arguments[i];
                 if (argument.Expression.CSharpKind() != SyntaxKind.NameOfExpression)
                 {
-                    context.ReportDiagnostic(Diagnostic.Create(Rule, context.Node.GetLocation(), i, method.Name));
+                    context.ReportDiagnostic(InvokerParameterName, context.Node, i, method.Name);
                     return;
                 }
                 var nameOf = (NameOfExpressionSyntax) argument.Expression;
@@ -68,7 +69,7 @@ namespace NodaTime.CodeDiagnostics
                 var symbolInfo = model.GetSymbolInfo(nameOf.Argument);
                 if (symbolInfo.Symbol?.Kind != SymbolKind.Parameter && !symbolInfo.CandidateSymbols.Select(cs => cs.Kind).Contains(SymbolKind.Parameter))
                 {
-                    context.ReportDiagnostic(Diagnostic.Create(Rule, context.Node.GetLocation(), i, method.Name));
+                    context.ReportDiagnostic(InvokerParameterName, context.Node, i, method.Name);
                     return;
                 }
             }

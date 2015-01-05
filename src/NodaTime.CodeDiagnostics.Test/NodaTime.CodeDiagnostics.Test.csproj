@@ -96,6 +96,7 @@
     <Compile Include="Framework\FileLocation.cs" />
     <Compile Include="Framework\SimplifiedDiagnostic.cs" />
     <Compile Include="Framework\SourceFile.cs" />
+    <Compile Include="MutabilityDiagnosticAnalyzerTest.cs" />
     <Compile Include="PurityDiagnosticAnalyzerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

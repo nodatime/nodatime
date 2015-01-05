@@ -17,18 +17,14 @@ namespace NodaTime.CodeDiagnostics
         // explicitly Pure too, except for a few which are implicitly pure.
 
         internal const string PureAttributeName = "PureAttribute";
-        internal const string Category = "Style";
 
-        public static DiagnosticDescriptor PureTypeMethodsMustBePureRule = new DiagnosticDescriptor(
-            "PureTypeMethodsMustBePure",
+        public static readonly DiagnosticDescriptor PureTypeMethodsMustBePure = Helpers.CreateWarning(
             "[Pure] types must not contain public impure methods",
             "[Pure] type {0} contains impure method {1}",
-            Category,
-            DiagnosticSeverity.Warning,
-            isEnabledByDefault: true);
+            Category.Correctness);
 
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics =>
-            ImmutableArray.Create(PureTypeMethodsMustBePureRule);
+            ImmutableArray.Create(PureTypeMethodsMustBePure);
 
         public override void Initialize(AnalysisContext context)
         {
@@ -47,7 +43,7 @@ namespace NodaTime.CodeDiagnostics
                 method.DeclaredAccessibility == Accessibility.Public &&
                 type.DeclaredAccessibility == Accessibility.Public)
             {
-                context.ReportDiagnostic(Diagnostic.Create(PureTypeMethodsMustBePureRule, context.Symbol.FirstLocation(), type.Name, method.Name));
+                context.ReportDiagnostic(PureTypeMethodsMustBePure, context.Symbol, type.Name, method.Name);
             }
         }
     }

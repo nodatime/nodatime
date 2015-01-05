@@ -32,6 +32,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Category.cs" />
     <Compile Include="Helpers.cs" />
     <Compile Include="MutabilityDiagnosticAnalyzer.cs" />
     <Compile Include="InvokerParameterNameDiagnosticAnalyzer.cs" />

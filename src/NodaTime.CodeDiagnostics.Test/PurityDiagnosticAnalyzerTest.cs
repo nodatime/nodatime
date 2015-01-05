@@ -26,7 +26,7 @@ public struct Foo
 }
 ";
             NewTestCase('^', AttributeSource, testSource)
-                .ExpectDiagnostic(PurityDiagnosticAnalyzer.PureTypeMethodsMustBePureRule, "Foo", "Bar")
+                .ExpectDiagnostic(PurityDiagnosticAnalyzer.PureTypeMethodsMustBePure, "Foo", "Bar")
                 .Verify();
         }
 

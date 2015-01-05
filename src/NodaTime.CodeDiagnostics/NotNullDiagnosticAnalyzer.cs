@@ -15,66 +15,46 @@ namespace NodaTime.CodeDiagnostics
 
     public sealed class NotNullDiagnosticAnalyzer : DiagnosticAnalyzer
     {
-        internal const string Category = "Style";
-
-
-        internal static DiagnosticDescriptor FirstParameterUseIsMemberAccessRule = new DiagnosticDescriptor(
-            "FirstParameterUseIsMemberAccess",
+        internal static readonly DiagnosticDescriptor FirstNotNullParameterUseIsMemberAccess = Helpers.CreateWarning(
             "First use of parameter is member access; check for nullity first",
             "First use of parameter is member access; check for nullity first",
-            Category,
-            DiagnosticSeverity.Warning,
-            isEnabledByDefault: true);
+            Category.Correctness);
 
-
-        internal static DiagnosticDescriptor CheckWithoutParameterRule = new DiagnosticDescriptor(
-            "NotNullCheckWithoutParameter",
+        internal static readonly DiagnosticDescriptor NotNullCheckWithoutParameter = Helpers.CreateWarning(
             "Preconditions.CheckNotNull should check an untrusted [NotNull] parameter",
             "Preconditions.CheckNotNull should check an untrusted [NotNull] parameter",
-            Category,
-            DiagnosticSeverity.Warning,
-            isEnabledByDefault: true);
-        internal static DiagnosticDescriptor DebugCheckWithoutParameterRule = new DiagnosticDescriptor(
-            "NotNullCheckWithoutParameter",
+            Category.Clarity);
+
+        internal static readonly DiagnosticDescriptor DebugCheckNotNullWithoutParameter = Helpers.CreateWarning(
             "Preconditions.DebugCheckNotNull should check a trusted [NotNull] parameter",
             "Preconditions.DebugCheckNotNull should check a trusted [NotNull] parameter",
-            Category,
-            DiagnosticSeverity.Warning,
-            isEnabledByDefault: true);
-        internal static DiagnosticDescriptor ParameterIsNotCheckedRule = new DiagnosticDescriptor(
-            "ParameterIsNotCheckedForNull",
+            Category.Clarity);
+
+        internal static readonly DiagnosticDescriptor NotNullParameterIsNotChecked = Helpers.CreateWarning(
             "[NotNull] parameter unchecked",
             "[NotNull] parameter {0} is not checked for nullity",
-            Category,
-            DiagnosticSeverity.Warning,
-            isEnabledByDefault: true);
-        internal static DiagnosticDescriptor ParameterCheckedWithWrongNameRule = new DiagnosticDescriptor(
-            "ParameterCheckedWithWrongName",
+            Category.Correctness);
+
+        internal static readonly DiagnosticDescriptor NotNullParameterCheckedWithWrongName = Helpers.CreateWarning(
             "[NotNull] parameter checked with the wrong name",
             "[NotNull] parameter {0} is passed as an argument for a [NotNull] parameter {1}",
-            Category,
-            DiagnosticSeverity.Warning,
-            isEnabledByDefault: true);
-        internal static DiagnosticDescriptor ParameterImplicitlyCheckedWithoutAttributeRule = new DiagnosticDescriptor(
-            "ParameterCheckedWithoutAttribute",
+            Category.Correctness);
+
+        internal static readonly DiagnosticDescriptor ParameterImplicitlyNotNullCheckedWithoutAttribute = Helpers.CreateWarning(
             "Nullable parameter is used for call as [NotNull] argument",
             "Parameter {0} is passed as an argument for a [NotNull] parameter; it should be marked as [NotNull]",
-            Category,
-            DiagnosticSeverity.Info,
-            isEnabledByDefault: true);
-        internal static DiagnosticDescriptor NotNullParameterIsValueTypeRule = new DiagnosticDescriptor(
-            "NotNullParameterIsValueType",
+            Category.Clarity);
+
+        internal static readonly DiagnosticDescriptor NotNullParameterIsValueType = Helpers.CreateWarning(
             "[NotNull] should not be applied to value type parameters",
             "Parameter {0} is marked as [NotNull] but is of type {1} which is a value type",
-            Category,
-            DiagnosticSeverity.Info,
-            isEnabledByDefault: true);
+            Category.Inconsistency);
 
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics =>
-            ImmutableArray.Create(CheckWithoutParameterRule, DebugCheckWithoutParameterRule,
-                ParameterIsNotCheckedRule, ParameterCheckedWithWrongNameRule,
-                ParameterImplicitlyCheckedWithoutAttributeRule, NotNullParameterIsValueTypeRule,
-                FirstParameterUseIsMemberAccessRule);
+            ImmutableArray.Create(NotNullCheckWithoutParameter, DebugCheckNotNullWithoutParameter,
+                NotNullParameterIsNotChecked, NotNullParameterCheckedWithWrongName,
+                ParameterImplicitlyNotNullCheckedWithoutAttribute, NotNullParameterIsValueType,
+                FirstNotNullParameterUseIsMemberAccess);
 
         public override void Initialize(AnalysisContext context)
         {
@@ -125,7 +105,7 @@ namespace NodaTime.CodeDiagnostics
             {
                 if (container.DeclaredAccessibility == Accessibility.Public && container.ContainingType.DeclaredAccessibility == Accessibility.Public)
                 {
-                    context.ReportDiagnostic(Diagnostic.Create(FirstParameterUseIsMemberAccessRule, firstUse.UsageNode.GetLocation()));
+                    context.ReportDiagnostic(FirstNotNullParameterUseIsMemberAccess, firstUse.UsageNode);
                 }
                 return;
             }
@@ -152,21 +132,20 @@ namespace NodaTime.CodeDiagnostics
                 // TODO: Consider the interplay of Trusted here.
                 if (!notNull)
                 {
-                    context.ReportDiagnostic(Diagnostic.Create(ParameterImplicitlyCheckedWithoutAttributeRule, firstUse.UsageNode.GetLocation(),
-                        parameterSymbol.Name));
+                    context.ReportDiagnostic(ParameterImplicitlyNotNullCheckedWithoutAttribute, firstUse.UsageNode,
+                        parameterSymbol.Name);
                 }
                 if (firstUse.CorrespondingParameter.Name != parameterSymbol.Name)
                 {
-                    context.ReportDiagnostic(Diagnostic.Create(ParameterCheckedWithWrongNameRule, firstUse.UsageNode.GetLocation(),
-                        parameterSymbol.Name, firstUse.CorrespondingParameter.Name));
+                    context.ReportDiagnostic(NotNullParameterCheckedWithWrongName, firstUse.UsageNode,
+                        parameterSymbol.Name, firstUse.CorrespondingParameter.Name);
                 }
                 return;
             }
             if (notNull)
             {
                 // First usage doesn't check for nullity, despite this being a NotNull parameter.
-                context.ReportDiagnostic(Diagnostic.Create(ParameterIsNotCheckedRule, parameterSyntax.GetLocation(),
-                    parameterSymbol.Name));
+                context.ReportDiagnostic(NotNullParameterIsNotChecked, parameterSyntax, parameterSymbol.Name);
             }
 
             // TODO: Check later uses?
@@ -209,7 +188,7 @@ namespace NodaTime.CodeDiagnostics
             var argumentSymbol = model.GetSymbolInfo(argument.Expression);
             if (argumentSymbol.Symbol?.Kind != SymbolKind.Parameter)
             {
-                context.ReportDiagnostic(Diagnostic.Create(CheckWithoutParameterRule, context.Node.GetLocation()));
+                context.ReportDiagnostic(NotNullCheckWithoutParameter, context.Node);
                 return;
             }
             var symbolToCheck = argumentSymbol.Symbol;
@@ -221,7 +200,7 @@ namespace NodaTime.CodeDiagnostics
             }
             if (!HasNotNullAttribute(symbolToCheck))
             {
-                context.ReportDiagnostic(Diagnostic.Create(CheckWithoutParameterRule, context.Node.GetLocation()));
+                context.ReportDiagnostic(NotNullCheckWithoutParameter, context.Node);
             }
 
             // Finally, check that we're calling the right variant (debug or not) based on whether
@@ -229,11 +208,11 @@ namespace NodaTime.CodeDiagnostics
             var trusted = symbolToCheck.HasAttribute(TrustedDiagnosticAnalyzer.TrustedAttributeName);
             if (trusted && invokedDefinition.Name == "CheckNotNull")
             {
-                context.ReportDiagnostic(Diagnostic.Create(CheckWithoutParameterRule, context.Node.GetLocation()));
+                context.ReportDiagnostic(NotNullCheckWithoutParameter, context.Node);
             }
             else if (!trusted && invokedDefinition.Name == "DebugCheckNotNull")
             {
-                context.ReportDiagnostic(Diagnostic.Create(DebugCheckWithoutParameterRule, context.Node.GetLocation()));
+                context.ReportDiagnostic(DebugCheckNotNullWithoutParameter, context.Node);
             }
         }
 
@@ -242,8 +221,7 @@ namespace NodaTime.CodeDiagnostics
             var parameter = context.SemanticModel.GetDeclaredSymbol((ParameterSyntax) context.Node);
             if (HasNotNullAttribute(parameter) && parameter.Type.IsValueType)
             {
-                context.ReportDiagnostic(Diagnostic.Create(NotNullParameterIsValueTypeRule, parameter.FirstLocation(),
-                    parameter.Name, parameter.Type.Name));
+                context.ReportDiagnostic(NotNullParameterIsValueType, parameter, parameter.Name, parameter.Type.Name);
             }
         }
 
@@ -252,8 +230,7 @@ namespace NodaTime.CodeDiagnostics
             var parameter = (IParameterSymbol) context.Symbol;
             if (HasNotNullAttribute(parameter) && parameter.Type.IsValueType)
             {
-                context.ReportDiagnostic(Diagnostic.Create(NotNullParameterIsValueTypeRule, parameter.FirstLocation(),
-                    parameter.Name, parameter.Type.Name));
+                context.ReportDiagnostic(NotNullParameterIsValueType, parameter, parameter.Name, parameter.Type.Name);
             }
         }
 
