@@ -67,7 +67,6 @@ namespace NodaTime.CodeDiagnostics
                         fieldSymbol.Name));
                 }
 
-                // TODO: Check it's private
                 var invalidAssignments = fieldSymbol.ContainingType.DeclaringSyntaxReferences
                     .SelectMany(reference => reference.GetSyntax().DescendantNodes())
                     .OfType<AssignmentExpressionSyntax>()
@@ -88,8 +87,8 @@ namespace NodaTime.CodeDiagnostics
                 return false;
             }
             // Method (or whatever) enclosing the assignment
-            var enclosingSymbol = model.GetEnclosingSymbol(assignment.GetLocation().SourceSpan.Start);
-            var isCtor = enclosingSymbol.Kind == SymbolKind.Method && enclosingSymbol.MetadataName == ".ctor";
+            var enclosingSymbol = model.GetEnclosingSymbol(assignment.SpanStart) as IMethodSymbol;
+            var isCtor = enclosingSymbol?.MethodKind == MethodKind.Constructor;
             return !isCtor;
         }
     }
