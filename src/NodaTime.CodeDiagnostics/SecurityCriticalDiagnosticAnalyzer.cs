@@ -19,19 +19,14 @@ namespace NodaTime.CodeDiagnostics
         // interface method has SecurityCriticalAttribute applied, the
         // implementation should too.
 
-        internal const string Category = "Security";
-
-        internal static DiagnosticDescriptor SecurityCriticalMethodImplementationsShouldBeSecurityCriticalRule = new DiagnosticDescriptor(
-            "SecurityCriticalMethodImplementationsShouldBeSecurityCritical",
+        internal static readonly DiagnosticDescriptor SecurityCriticalMethodImplementationsShouldBeSecurityCritical = Helpers.CreateWarning(
             "Any implementation of an interface method marked SecurityCritical should also be marked SecurityCritical",
             "Any implementation of an interface method marked SecurityCritical should also be marked SecurityCritical",
-            Category,
-            DiagnosticSeverity.Warning,
-            isEnabledByDefault: true);
+            Category.Correctness);
 
 
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
-            => ImmutableArray.Create(SecurityCriticalMethodImplementationsShouldBeSecurityCriticalRule);
+            => ImmutableArray.Create(SecurityCriticalMethodImplementationsShouldBeSecurityCritical);
 
         public override void Initialize(AnalysisContext context)
         {
@@ -54,8 +49,7 @@ namespace NodaTime.CodeDiagnostics
                     var implementation = typeSymbol.FindImplementationForInterfaceMember(member);
                     if (!implementation.HasAttribute(nameof(SecurityCriticalAttribute)))
                     {
-                        context.ReportDiagnostic(Diagnostic.Create(SecurityCriticalMethodImplementationsShouldBeSecurityCriticalRule,
-                            implementation.FirstLocation()));
+                        context.ReportDiagnostic(SecurityCriticalMethodImplementationsShouldBeSecurityCritical, implementation);
                     }
                 }
             }

@@ -14,26 +14,20 @@ namespace NodaTime.CodeDiagnostics
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public sealed class TrustedDiagnosticAnalyzer : DiagnosticAnalyzer
     {
-        internal const string Category = "Style";
         internal const string TrustedAttributeName = "TrustedAttribute";
 
-        internal static DiagnosticDescriptor PublicMethodWithTrustedParameterRule = new DiagnosticDescriptor(
-            "PublicMethodWithTrustedParameter",
+        internal static readonly DiagnosticDescriptor PublicMethodWithTrustedParameter = Helpers.CreateWarning(
             "[Trusted] attribute should not appear on public method parameters",
             "Parameter {0} of public method {1} of public type {2} is [Trusted]",
-            Category,
-            DiagnosticSeverity.Warning,
-            isEnabledByDefault: true);
-        internal static DiagnosticDescriptor UntrustedParameterIsTrustedRule = new DiagnosticDescriptor(
-            "UntrustedParameterIsTrusted",
+            Category.Correctness);
+
+        internal static readonly DiagnosticDescriptor UntrustedParameterIsTrusted = Helpers.CreateWarning(
             "Untrusted parameters should not be used for arguments to [Trusted] parameters",
             "Parameter {0} of method {1} is passed for a [Trusted] parameter",
-            Category,
-            DiagnosticSeverity.Warning,
-            isEnabledByDefault: true);
+            Category.Correctness);
 
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
-            => ImmutableArray.Create(PublicMethodWithTrustedParameterRule);
+            => ImmutableArray.Create(PublicMethodWithTrustedParameter);
 
         public override void Initialize(AnalysisContext context)
         {
@@ -56,8 +50,8 @@ namespace NodaTime.CodeDiagnostics
             {
                 if (parameter.HasAttribute(TrustedAttributeName))
                 {
-                    context.ReportDiagnostic(Diagnostic.Create(PublicMethodWithTrustedParameterRule,
-                        parameter.FirstLocation(), parameter.Name, method.Name, method.ContainingSymbol.Name));
+                    context.ReportDiagnostic(PublicMethodWithTrustedParameter,
+                        parameter, parameter.Name, method.Name, method.ContainingSymbol.Name);
                 }
             }
         }
@@ -89,8 +83,7 @@ namespace NodaTime.CodeDiagnostics
             }
             if (firstUse.CorrespondingParameter.HasAttribute(TrustedAttributeName))
             {
-                context.ReportDiagnostic(Diagnostic.Create(UntrustedParameterIsTrustedRule, firstUse.UsageNode.GetLocation(),
-                    parameter.Name, container.Name));
+                context.ReportDiagnostic(UntrustedParameterIsTrusted, firstUse.UsageNode, parameter.Name, container.Name);
             }
         }
     }

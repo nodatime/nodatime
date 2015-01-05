@@ -63,8 +63,7 @@ namespace NodaTime.CodeDiagnostics
                 var fieldSymbol = model.GetDeclaredSymbol(individualField);
                 if (fieldSymbol.DeclaredAccessibility != Accessibility.Private)
                 {
-                    context.ReportDiagnostic(Diagnostic.Create(ReadWriteForEfficiencyNotPrivateRule, individualField.GetLocation(),
-                        fieldSymbol.Name));
+                    context.ReportDiagnostic(ReadWriteForEfficiencyNotPrivateRule, individualField, fieldSymbol.Name);
                 }
 
                 var invalidAssignments = fieldSymbol.ContainingType.DeclaringSyntaxReferences
@@ -73,8 +72,8 @@ namespace NodaTime.CodeDiagnostics
                     .Where(n => IsAssignmentOutsideConstructor(n, fieldSymbol, model));
                 foreach (var invalidAssignment in invalidAssignments)
                 {
-                    context.ReportDiagnostic(Diagnostic.Create(ReadWriteForEfficiencyAssignmentOutsideConstructorRule,
-                        invalidAssignment.GetLocation(), fieldSymbol.Name));
+                    context.ReportDiagnostic(ReadWriteForEfficiencyAssignmentOutsideConstructorRule,
+                        invalidAssignment, fieldSymbol.Name);
                 }
             }
         }
