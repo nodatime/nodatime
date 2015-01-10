@@ -51,9 +51,13 @@ namespace NodaTime.CodeDiagnostics
             Category.Inconsistency);
 
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics =>
-            ImmutableArray.Create(NotNullCheckWithoutParameter, DebugCheckNotNullWithoutParameter,
-                NotNullParameterIsNotChecked, NotNullParameterCheckedWithWrongName,
-                ParameterImplicitlyNotNullCheckedWithoutAttribute, NotNullParameterIsValueType,
+            ImmutableArray.Create(
+                NotNullCheckWithoutParameter,
+                DebugCheckNotNullWithoutParameter,
+                NotNullParameterIsNotChecked,
+                NotNullParameterCheckedWithWrongName,
+                ParameterImplicitlyNotNullCheckedWithoutAttribute,
+                NotNullParameterIsValueType,
                 FirstNotNullParameterUseIsMemberAccess);
 
         public override void Initialize(AnalysisContext context)
@@ -91,12 +95,24 @@ namespace NodaTime.CodeDiagnostics
                 return;
             }
 
+            if ((container as IMethodSymbol)?.IsAbstract == true)
+            {
+                // Abstract methods can't check their parameters
+                return;
+            }
+
             var firstUse = container.DeclaringSyntaxReferences
                 .SelectMany(syntaxRef => syntaxRef.GetSyntax().DescendantNodes())
                 .Select(node => ParameterUsage.ForNode(node, model, parameterSymbol))
                 .FirstOrDefault(usage => usage != null);
             if (firstUse == null)
             {
+                // No "interesting" usage that could have been some other kind of check. (Could
+                // be used in an assignment etc.)
+                if (notNull)
+                {
+                    context.ReportDiagnostic(NotNullParameterIsNotChecked, parameterSyntax.Identifier, parameterSymbol.Name);
+                }
                 return;
             }
             // First use is parameter.Foo or parameter.Foo(). This might always be invalid... see how much
@@ -145,7 +161,7 @@ namespace NodaTime.CodeDiagnostics
             if (notNull)
             {
                 // First usage doesn't check for nullity, despite this being a NotNull parameter.
-                context.ReportDiagnostic(NotNullParameterIsNotChecked, parameterSyntax, parameterSymbol.Name);
+                context.ReportDiagnostic(NotNullParameterIsNotChecked, parameterSyntax.Identifier, parameterSymbol.Name);
             }
 
             // TODO: Check later uses?
