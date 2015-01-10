@@ -22,7 +22,7 @@ namespace NodaTime.CodeDiagnostics
 
         internal static readonly DiagnosticDescriptor InvokerParameterName = Helpers.CreateWarning(
             "Argument should be a parameter using nameof",
-            "Argument {0} of method {1} should be a parameter of the calling member, specified using the nameof operator",
+            "Argument should be a parameter of the calling member, specified using the nameof operator",
             Category.Correctness);
 
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics =>
@@ -49,8 +49,7 @@ namespace NodaTime.CodeDiagnostics
             for (int i = 0; i < parameters.Length; i++)
             {
                 var parameter = parameters[i];
-                if (!parameter.GetAttributes()
-                        .Any(attr => attr.AttributeClass.Name == "InvokerParameterNameAttribute"))
+                if (!parameter.HasAttribute("InvokerParameterNameAttribute"))
                 {
                     continue;
                 }
@@ -59,9 +58,10 @@ namespace NodaTime.CodeDiagnostics
                 var argument = invocation.ArgumentList.Arguments[i];
                 if (argument.Expression.CSharpKind() != SyntaxKind.NameOfExpression)
                 {
-                    context.ReportDiagnostic(InvokerParameterName, context.Node, i, method.Name);
+                    context.ReportDiagnostic(InvokerParameterName, argument);
                     return;
                 }
+
                 var nameOf = (NameOfExpressionSyntax) argument.Expression;
                 // The same identifier might matches parameters, instance variables, method names, types etc.
                 // We're fine so long as at least one of them is a parameter - if a parameter is one of the
@@ -69,7 +69,7 @@ namespace NodaTime.CodeDiagnostics
                 var symbolInfo = model.GetSymbolInfo(nameOf.Argument);
                 if (symbolInfo.Symbol?.Kind != SymbolKind.Parameter && !symbolInfo.CandidateSymbols.Select(cs => cs.Kind).Contains(SymbolKind.Parameter))
                 {
-                    context.ReportDiagnostic(InvokerParameterName, context.Node, i, method.Name);
+                    context.ReportDiagnostic(InvokerParameterName, argument);
                     return;
                 }
             }
