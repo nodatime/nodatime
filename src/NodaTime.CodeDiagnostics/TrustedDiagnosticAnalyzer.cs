@@ -31,7 +31,8 @@ namespace NodaTime.CodeDiagnostics
 
         public override void Initialize(AnalysisContext context)
         {
-            context.RegisterNodaTimeSyntaxNodeAction(PublicMethodParametersShouldNotBeTrusted, SyntaxKind.MethodDeclaration);
+            context.RegisterNodaTimeSyntaxNodeAction(PublicMethodParametersShouldNotBeTrusted,
+                SyntaxKind.MethodDeclaration, SyntaxKind.ConstructorDeclaration);
             context.RegisterNodaTimeSyntaxNodeAction(FirstUseOfUntrustedParameterShouldNotBeArgumentToTrustedParameter,
                 SyntaxKind.Parameter);
         }
