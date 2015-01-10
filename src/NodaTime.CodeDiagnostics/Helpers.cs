@@ -80,6 +80,14 @@ namespace NodaTime.CodeDiagnostics
             context.ReportDiagnostic(Diagnostic.Create(descriptor, symbol.Locations[0], messageArgs));
         }
 
+        internal static void ReportDiagnostic(this SyntaxNodeAnalysisContext context,
+            DiagnosticDescriptor descriptor,
+            SyntaxToken token,
+            params object[] messageArgs)
+        {
+            context.ReportDiagnostic(Diagnostic.Create(descriptor, token.GetLocation(), messageArgs));
+        }
+
         internal static void ReportDiagnostic(this SymbolAnalysisContext context,
             DiagnosticDescriptor descriptor,
             Location location,
@@ -94,6 +102,14 @@ namespace NodaTime.CodeDiagnostics
             params object[] messageArgs)
         {
             context.ReportDiagnostic(Diagnostic.Create(descriptor, syntaxNode.GetLocation(), messageArgs));
+        }
+
+        internal static void ReportDiagnostic(this SymbolAnalysisContext context,
+            DiagnosticDescriptor descriptor,
+            SyntaxToken token,
+            params object[] messageArgs)
+        {
+            context.ReportDiagnostic(Diagnostic.Create(descriptor, token.GetLocation(), messageArgs));
         }
 
         internal static void ReportDiagnostic(this SymbolAnalysisContext context,
