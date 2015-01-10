@@ -18,27 +18,19 @@ namespace NodaTime.CodeDiagnostics
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     internal sealed class ReadWriteForEfficiencyDiagnosticAnalyzer : DiagnosticAnalyzer
     {
-        internal const string Category = "Style";
-
-        internal static DiagnosticDescriptor ReadWriteForEfficiencyAssignmentOutsideConstructorRule = new DiagnosticDescriptor(
-            "ReadWriteForEfficiencyAssignmentOutsideConstructor",
+        internal static DiagnosticDescriptor ReadWriteForEfficiencyAssignmentOutsideConstructor = Helpers.CreateWarning(
             "[ReadWriteForEfficiency] fields should only be assigned in constructors",
             "[ReadWriteForEfficiency] field {0} should only be assigned in constructors",
-            Category,
-            DiagnosticSeverity.Warning,
-            isEnabledByDefault: true);
+            Category.Correctness);
 
-        internal static DiagnosticDescriptor ReadWriteForEfficiencyNotPrivateRule = new DiagnosticDescriptor(
-            "ReadWriteForEfficiencyNotPrivate",
+        internal static DiagnosticDescriptor ReadWriteForEfficiencyNotPrivate = Helpers.CreateWarning(
             "[ReadWriteForEfficiency] fields should be private",
             "[ReadWriteForEfficiency] field {0} should be private",
-            Category,
-            DiagnosticSeverity.Warning,
-            isEnabledByDefault: true);
+            Category.Correctness);
 
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics =>
-            ImmutableArray.Create(ReadWriteForEfficiencyAssignmentOutsideConstructorRule,
-                ReadWriteForEfficiencyNotPrivateRule);
+            ImmutableArray.Create(ReadWriteForEfficiencyAssignmentOutsideConstructor,
+                ReadWriteForEfficiencyNotPrivate);
 
         public override void Initialize(AnalysisContext context)
         {
@@ -63,7 +55,7 @@ namespace NodaTime.CodeDiagnostics
                 var fieldSymbol = model.GetDeclaredSymbol(individualField);
                 if (fieldSymbol.DeclaredAccessibility != Accessibility.Private)
                 {
-                    context.ReportDiagnostic(ReadWriteForEfficiencyNotPrivateRule, individualField, fieldSymbol.Name);
+                    context.ReportDiagnostic(ReadWriteForEfficiencyNotPrivate, individualField, fieldSymbol.Name);
                 }
 
                 var invalidAssignments = fieldSymbol.ContainingType.DeclaringSyntaxReferences
@@ -72,7 +64,7 @@ namespace NodaTime.CodeDiagnostics
                     .Where(n => IsAssignmentOutsideConstructor(n, fieldSymbol, model));
                 foreach (var invalidAssignment in invalidAssignments)
                 {
-                    context.ReportDiagnostic(ReadWriteForEfficiencyAssignmentOutsideConstructorRule,
+                    context.ReportDiagnostic(ReadWriteForEfficiencyAssignmentOutsideConstructor,
                         invalidAssignment, fieldSymbol.Name);
                 }
             }
