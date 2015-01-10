@@ -87,17 +87,20 @@ namespace NodaTime.CodeDiagnostics
 
             bool notNull = HasNotNullAttribute(parameterSymbol);
             var container = parameterSymbol.ContainingSymbol;
+            var methodSymbol = container as IMethodSymbol;
 
-            if ((container as IMethodSymbol)?.MethodKind == MethodKind.AnonymousFunction)
+            if (methodSymbol?.MethodKind == MethodKind.AnonymousFunction)
             {
                 // Be lenient for anonymous functions. Not entirely sure whether this is a good idea,
-                // admittedly.
+                // admittedly. Potentially check the attributes applied to the delegate type that the
+                // anonymous function is being converted to.
                 return;
             }
 
-            if ((container as IMethodSymbol)?.IsAbstract == true)
+            if (container?.IsAbstract == true ||
+                methodSymbol?.MethodKind == MethodKind.DelegateInvoke)
             {
-                // Abstract methods can't check their parameters
+                // Abstract members (including interface members) and delegates can't check their parameters
                 return;
             }
 
