@@ -5,7 +5,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using NodaTime.Annotations;
 using NUnit.Framework;
@@ -17,7 +16,6 @@ namespace NodaTime.Test.Annotations
     {
         private static IEnumerable<IFieldSymbol> GetFieldsWithAttribute()
         {
-            var compilation = RoslynHelper.Compilation;
             return RoslynHelper.GetSyntaxNodes<FieldDeclarationSyntax>()
                 .SelectMany(fds => fds.Declaration.Variables)
                 .Select(vds => (IFieldSymbol) vds.GetDeclaredSymbol())
