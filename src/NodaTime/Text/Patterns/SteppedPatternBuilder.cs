@@ -105,7 +105,7 @@ namespace NodaTime.Text.Patterns
         /// and for thread safety (publishing a new object, thus leading to a memory barrier).
         /// Note that this builder *must not* be used after the result has been built.
         /// </summary>
-        internal IPartialPattern<TResult> Build()
+        internal IPartialPattern<TResult> Build(TResult sample)
         {
             Action<TResult, StringBuilder> formatDelegate = null;
             foreach (Action<TResult, StringBuilder> formatAction in formatActions)
@@ -113,7 +113,7 @@ namespace NodaTime.Text.Patterns
                 IPostPatternParseFormatAction postAction = formatAction.Target as IPostPatternParseFormatAction;
                 formatDelegate += postAction == null ? formatAction : postAction.BuildFormatAction(usedFields);
             }
-            return new SteppedPattern(formatDelegate, formatOnly ? null : parseActions.ToArray(), bucketProvider, usedFields);
+            return new SteppedPattern(formatDelegate, formatOnly ? null : parseActions.ToArray(), bucketProvider, usedFields, sample);
         }
 
         /// <summary>
@@ -414,15 +414,25 @@ namespace NodaTime.Text.Patterns
             private readonly ParseAction[] parseActions;
             private readonly Func<TBucket> bucketProvider;
             private readonly PatternFields usedFields;
+            private readonly int expectedLength;
 
             public SteppedPattern(Action<TResult, StringBuilder> formatActions,
                 ParseAction[] parseActions,
-                Func<TBucket> bucketProvider, PatternFields usedFields)
+                Func<TBucket> bucketProvider,
+                PatternFields usedFields,
+                TResult sample)
             {
                 this.formatActions = formatActions;
                 this.parseActions = parseActions;
                 this.bucketProvider = bucketProvider;
                 this.usedFields = usedFields;
+
+                // Format the sample value to work out the expected length, so we
+                // can use that when creating a StringBuilder. This will definitely not always
+                // be appropriate, but it's a start.
+                StringBuilder builder = new StringBuilder();
+                formatActions(sample, builder);
+                expectedLength = builder.Length;
             }
 
             public ParseResult<TResult> Parse(string text)
@@ -459,7 +469,7 @@ namespace NodaTime.Text.Patterns
 
             public string Format(TResult value)
             {
-                StringBuilder builder = new StringBuilder();
+                StringBuilder builder = new StringBuilder(expectedLength);
                 // This will call all the actions in the multicast delegate.
                 formatActions(value, builder);
                 return builder.ToString();
