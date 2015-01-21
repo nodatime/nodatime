@@ -89,7 +89,8 @@ namespace NodaTime.Text
                 () => new OffsetDateTimeParseBucket(templateValueDate, templateValueTime, templateValueOffset));
             patternBuilder.ParseCustomPattern(patternText, PatternCharacterHandlers);
             patternBuilder.ValidateUsedFields();
-            return patternBuilder.Build();
+            // Need to reconstruct the template value from the bits...
+            return patternBuilder.Build(templateValueDate.At(templateValueTime).WithOffset(templateValueOffset));
         }
         
         private static void HandleOffset(PatternCursor pattern,

@@ -102,7 +102,7 @@ namespace NodaTime.Text
             }
             patternBuilder.ParseCustomPattern(patternText, PatternCharacterHandlers);
             patternBuilder.ValidateUsedFields();
-            return patternBuilder.Build();
+            return patternBuilder.Build(templateValueDate.At(templateValueTime).InZoneLeniently(templateValueZone));
         }
 
         private static void HandleZone(PatternCursor pattern,

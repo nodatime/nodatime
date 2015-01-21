@@ -94,7 +94,7 @@ namespace NodaTime.Text
                 () => new LocalDateTimeParseBucket(templateValueDate, templateValueTime));
             patternBuilder.ParseCustomPattern(patternText, PatternCharacterHandlers);
             patternBuilder.ValidateUsedFields();
-            return patternBuilder.Build();
+            return patternBuilder.Build(templateValueDate.At(templateValueTime));
         }
 
         private string ExpandStandardFormatPattern(char patternCharacter, NodaFormatInfo formatInfo)

@@ -104,7 +104,7 @@ namespace NodaTime.Text
             patternBuilder.ParseCustomPattern(zPrefix ? patternText.Substring(1) : patternText, PatternCharacterHandlers);
             // No need to validate field combinations here, but we do need to do something a bit special
             // for Z-handling.
-            IPartialPattern<Offset> pattern = patternBuilder.Build();
+            IPartialPattern<Offset> pattern = patternBuilder.Build(Offset.FromHoursAndMinutes(5, 30));
             return zPrefix ? new ZPrefixPattern(pattern) : pattern;
         }
 

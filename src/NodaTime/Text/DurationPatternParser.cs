@@ -60,7 +60,8 @@ namespace NodaTime.Text
             var patternBuilder = new SteppedPatternBuilder<Duration, DurationParseBucket>(formatInfo,
                 () => new DurationParseBucket());
             patternBuilder.ParseCustomPattern(patternText, PatternCharacterHandlers);
-            return patternBuilder.Build();
+            // Somewhat random sample, admittedly...
+            return patternBuilder.Build(Duration.FromHours(1) + Duration.FromMinutes(30) + Duration.FromSeconds(5) + Duration.FromMilliseconds(500));
         }
 
         private static int GetPositiveNanosecondOfSecond(Duration duration)
