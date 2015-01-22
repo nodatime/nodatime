@@ -5,6 +5,7 @@
 using System;
 using NodaTime.TimeZones.IO;
 using NodaTime.Utility;
+using JetBrains.Annotations;
 
 namespace NodaTime.TimeZones
 {
@@ -37,7 +38,7 @@ namespace NodaTime.TimeZones
         /// <param name="standardOffset">The standard offset.</param>
         /// <param name="startRecurrence">The start recurrence.</param>
         /// <param name="endRecurrence">The end recurrence.</param>
-        internal DaylightSavingsDateTimeZone(String id, Offset standardOffset, ZoneRecurrence startRecurrence, ZoneRecurrence endRecurrence)
+        internal DaylightSavingsDateTimeZone([NotNull] String id, Offset standardOffset, ZoneRecurrence startRecurrence, ZoneRecurrence endRecurrence)
             : base(id, false,
             standardOffset + Offset.Min(startRecurrence.Savings, endRecurrence.Savings),
             standardOffset + Offset.Max(startRecurrence.Savings, endRecurrence.Savings))
@@ -46,8 +47,8 @@ namespace NodaTime.TimeZones
             // Treat the recurrences as if they extended to the start of time.
             startRecurrence = startRecurrence.ToStartOfTime();
             endRecurrence = endRecurrence.ToStartOfTime();
-            Preconditions.CheckArgument(startRecurrence.IsInfinite, "startRecurrence", "Start recurrence must extend to the end of time");
-            Preconditions.CheckArgument(endRecurrence.IsInfinite, "endRecurrence", "End recurrence must extend to the end of time");
+            Preconditions.CheckArgument(startRecurrence.IsInfinite, nameof(startRecurrence), "Start recurrence must extend to the end of time");
+            Preconditions.CheckArgument(endRecurrence.IsInfinite, nameof(endRecurrence), "End recurrence must extend to the end of time");
             var dst = startRecurrence;
             var standard = endRecurrence;
             if (startRecurrence.Savings == Offset.Zero)
@@ -55,7 +56,7 @@ namespace NodaTime.TimeZones
                 dst = endRecurrence;
                 standard = startRecurrence;
             }
-            Preconditions.CheckArgument(standard.Savings == Offset.Zero, "startRecurrence", "At least one recurrence must not have savings applied");
+            Preconditions.CheckArgument(standard.Savings == Offset.Zero, nameof(startRecurrence), "At least one recurrence must not have savings applied");
             dstRecurrence = dst;
             standardRecurrence = standard;
         }
@@ -167,11 +168,11 @@ namespace NodaTime.TimeZones
         /// Writes the time zone to the specified writer.
         /// </summary>
         /// <param name="writer">The writer to write to.</param>
-        internal void Write(IDateTimeZoneWriter writer)
+        internal void Write([NotNull] IDateTimeZoneWriter writer)
         {
             // We don't need everything a recurrence can supply: we know that both recurrences should be
             // infinite, and that only the DST recurrence should have savings.
-            Preconditions.CheckNotNull(writer, "writer");
+            Preconditions.CheckNotNull(writer, nameof(writer));
             writer.WriteOffset(standardOffset);
             writer.WriteString(standardRecurrence.Name);
             standardRecurrence.YearOffset.Write(writer);
@@ -180,9 +181,9 @@ namespace NodaTime.TimeZones
             writer.WriteOffset(dstRecurrence.Savings);
         }
 
-        internal static DaylightSavingsDateTimeZone Read(IDateTimeZoneReader reader, string id)
+        internal static DaylightSavingsDateTimeZone Read([NotNull] IDateTimeZoneReader reader, [NotNull] string id)
         {
-            Preconditions.CheckNotNull(reader, "reader");
+            Preconditions.CheckNotNull(reader, nameof(reader));
             Offset standardOffset = reader.ReadOffset();
             string standardName = reader.ReadString();
             ZoneYearOffset standardYearOffset = ZoneYearOffset.Read(reader);

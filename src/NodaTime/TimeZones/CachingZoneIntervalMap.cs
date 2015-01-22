@@ -4,6 +4,7 @@
 
 using System;
 using NodaTime.Utility;
+using JetBrains.Annotations;
 
 namespace NodaTime.TimeZones
 {
@@ -23,7 +24,7 @@ namespace NodaTime.TimeZones
         /// <summary>
         /// Returns a caching map for the given input map.
         /// </summary>
-        internal static IZoneIntervalMap CacheMap(IZoneIntervalMap map, CacheType type)
+        internal static IZoneIntervalMap CacheMap([NotNull] IZoneIntervalMap map, CacheType type)
         {
             switch (type)
             {
@@ -68,9 +69,9 @@ namespace NodaTime.TimeZones
             private readonly HashCacheNode[] instantCache;
             private readonly IZoneIntervalMap map;
 
-            internal HashArrayCache(IZoneIntervalMap map)
+            internal HashArrayCache([NotNull] IZoneIntervalMap map)
             {
-                this.map = Preconditions.CheckNotNull(map, "map");
+                this.map = Preconditions.CheckNotNull(map, nameof(map));
                 instantCache = new HashCacheNode[CacheSize];
             }
 
@@ -106,14 +107,11 @@ namespace NodaTime.TimeZones
             // than two zone intervals in a period. It halved the performance...
             private sealed class HashCacheNode
             {
-                private readonly ZoneInterval interval;
-                internal ZoneInterval Interval { get { return interval; } }
+                internal ZoneInterval Interval { get; }
 
-                private readonly int period;
-                internal int Period { get { return period; } }
+                internal int Period { get; }
 
-                private readonly HashCacheNode previous;
-                internal HashCacheNode Previous { get { return previous; } }
+                internal HashCacheNode Previous { get; }
 
                 /// <summary>
                 /// Creates a hash table node with all the information for this period.
@@ -153,9 +151,9 @@ namespace NodaTime.TimeZones
                 /// <param name="previous">The previous <see cref="HashCacheNode"/> node.</param>
                 private HashCacheNode(ZoneInterval interval, int period, HashCacheNode previous)
                 {
-                    this.period = period;
-                    this.interval = interval;
-                    this.previous = previous;
+                    this.Period = period;
+                    this.Interval = interval;
+                    this.Previous = previous;
                 }
             }
             #endregion

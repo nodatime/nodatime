@@ -17,61 +17,54 @@ namespace NodaTime.Calendars
     [Immutable]
     public sealed class Era
     {
-        // TODO(2.0): Make all of these properties...
         /// <summary>
         /// The "Common" era (CE), also known as Anno Domini (AD). This is used in the ISO, Gregorian and Julian calendars.
         /// </summary>
-        public static readonly Era Common = new Era("CE", "Eras_Common"); // CE
+        public static Era Common { get; } = new Era("CE", "Eras_Common");
 
         /// <summary>
         /// The "before common" era (BCE), also known as Before Christ (BC). This is used in the ISO, Gregorian and Julian calendars.
         /// </summary>
-        public static readonly Era BeforeCommon = new Era("BCE", "Eras_BeforeCommon"); // BCE
+        public static Era BeforeCommon { get; } = new Era("BCE", "Eras_BeforeCommon");
 
         /// <summary>
         /// The "Anno Martyrum" or "Era of the Martyrs". This is the sole era used in the Coptic calendar.
         /// </summary>
-        public static readonly Era AnnoMartyrum = new Era("AM", "Eras_AnnoMartyrum"); // AM
+        public static Era AnnoMartyrum { get; } = new Era("AM", "Eras_AnnoMartyrum");
 
         /// <summary>
         /// The "Anno Hegira" era. This is the sole era used in the Hijri (Islamic) calendar.
         /// </summary>
-        public static readonly Era AnnoHegirae = new Era("EH", "Eras_AnnoHegirae"); // AH
+        public static Era AnnoHegirae { get; } = new Era("EH", "Eras_AnnoHegirae");
 
         /// <summary>
         /// The "Anno Mundi" era. This is the sole era used in the Hebrew calendar.
         /// </summary>
-        public static readonly Era AnnoMundi = new Era("AM", "Eras_AnnoMundi"); // AM
-        
+        public static Era AnnoMundi { get; } = new Era("AM", "Eras_AnnoMundi");
+
         /// <summary>
         /// The "Anno Persico" era. This is the sole era used in the Persian calendar.
         /// </summary>
-        public static readonly Era AnnoPersico = new Era("AP", "Eras_AnnoPersico"); // AP
+        public static Era AnnoPersico { get; } = new Era("AP", "Eras_AnnoPersico");
 
-        private readonly string name;
-        private readonly string resourceIdentifier;
-
-        internal string ResourceIdentifier { get { return resourceIdentifier; } }
-
-        internal Era(string name, string resourceIdentifier)
-        {
-            this.name = name;
-            this.resourceIdentifier = resourceIdentifier;
-        }
+        internal string ResourceIdentifier { get; }
 
         /// <summary>
         /// Returns the name of this era, e.g. "CE" or "BCE".
         /// </summary>
         /// <value>The name of this era.</value>
-        public string Name { get { return name; } }
+        public string Name { get; }
+
+        internal Era(string name, string resourceIdentifier)
+        {
+            this.Name = name;
+            this.ResourceIdentifier = resourceIdentifier;
+        }
 
         /// <summary>
         /// Returns the name of this era.
         /// </summary>
         /// <returns>The name of this era.</returns>
-        public override string ToString()
-        {
-            return name;
-        }
+        public override string ToString() => Name;
     }
 }

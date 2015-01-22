@@ -8,6 +8,7 @@ using NodaTime.Globalization;
 using NodaTime.Properties;
 using NodaTime.Text.Patterns;
 using NodaTime.Utility;
+using JetBrains.Annotations;
 
 namespace NodaTime.Text
 {
@@ -37,9 +38,9 @@ namespace NodaTime.Text
 
         // Note: public to implement the interface. It does no harm, and it's simpler than using explicit
         // interface implementation.
-        public IPattern<Duration> ParsePattern(string patternText, NodaFormatInfo formatInfo)
+        public IPattern<Duration> ParsePattern([NotNull] string patternText, NodaFormatInfo formatInfo)
         {
-            Preconditions.CheckNotNull(patternText, "patternText");
+            Preconditions.CheckNotNull(patternText, nameof(patternText));
             if (patternText.Length == 0)
             {
                 throw new InvalidPatternException(Messages.Parse_FormatStringEmpty);
@@ -142,10 +143,7 @@ namespace NodaTime.Text
         /// <summary>
         /// Returns the absolute duration (non-negative).
         /// </summary>
-        private static Duration GetPositiveDuration(Duration duration)
-        {
-            return duration.FloorDays >= 0 ? duration : -duration;
-        }
+        private static Duration GetPositiveDuration(Duration duration) => duration.FloorDays >= 0 ? duration : -duration;
 
         private static long GetPositiveNanosecondUnits(Duration duration, long nanosecondsPerUnit)
         {

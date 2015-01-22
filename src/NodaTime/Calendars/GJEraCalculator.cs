@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using NodaTime.Utility;
+using JetBrains.Annotations;
 
 namespace NodaTime.Calendars
 {
@@ -24,24 +25,24 @@ namespace NodaTime.Calendars
             maxYearOfAd = ymdCalculator.MaxYear;
         }
 
-        private void ValidateEra(Era era)
+        private void ValidateEra([NotNull] Era era)
         {
             if (era != Era.Common && era != Era.BeforeCommon)
             {
-                Preconditions.CheckNotNull(era, "era");
-                Preconditions.CheckArgument(false, "era", "Era {0} is not supported by this calendar; only BC and AD are supported", era.Name);
+                Preconditions.CheckNotNull(era, nameof(era));
+                Preconditions.CheckArgument(false, nameof(era), "Era {0} is not supported by this calendar; only BC and AD are supported", era.Name);
             }
         }
 
-        internal override int GetAbsoluteYear(int yearOfEra, Era era)
+        internal override int GetAbsoluteYear(int yearOfEra, [NotNull] Era era)
         {
             ValidateEra(era);
             if (era == Era.Common)
             {
-                Preconditions.CheckArgumentRange("yearOfEra", yearOfEra, 1, maxYearOfAd);
+                Preconditions.CheckArgumentRange(nameof(yearOfEra), yearOfEra, 1, maxYearOfAd);
                 return yearOfEra;
             }
-            Preconditions.CheckArgumentRange("yearOfEra", yearOfEra, 1, maxYearOfBc);
+            Preconditions.CheckArgumentRange(nameof(yearOfEra), yearOfEra, 1, maxYearOfBc);
             return 1 - yearOfEra;
         }
 
@@ -51,18 +52,15 @@ namespace NodaTime.Calendars
             return absoluteYear > 0 ? absoluteYear : 1 - absoluteYear;
         }
 
-        internal override Era GetEra(YearMonthDay yearMonthDay)
-        {
-            return yearMonthDay.Year > 0 ? Era.Common : Era.BeforeCommon;
-        }
+        internal override Era GetEra(YearMonthDay yearMonthDay) => yearMonthDay.Year > 0 ? Era.Common : Era.BeforeCommon;
 
-        internal override int GetMinYearOfEra(Era era)
+        internal override int GetMinYearOfEra([NotNull] Era era)
         {
             ValidateEra(era);
             return 1;
         }
 
-        internal override int GetMaxYearOfEra(Era era)
+        internal override int GetMaxYearOfEra([NotNull] Era era)
         {
             ValidateEra(era);
             return era == Era.Common ? maxYearOfAd : maxYearOfBc;

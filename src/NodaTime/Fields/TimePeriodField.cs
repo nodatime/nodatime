@@ -2,6 +2,8 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
+using NodaTime.NodaConstants;
+
 namespace NodaTime.Fields
 {
     /// <summary>
@@ -16,21 +18,20 @@ namespace NodaTime.Fields
     internal sealed class TimePeriodField
     {
         internal static readonly TimePeriodField Nanoseconds = new TimePeriodField(1L);
-        internal static readonly TimePeriodField Ticks = new TimePeriodField(NodaConstants.NanosecondsPerTick);
-        internal static readonly TimePeriodField Milliseconds = new TimePeriodField(NodaConstants.NanosecondsPerMillisecond);
-        internal static readonly TimePeriodField Seconds = new TimePeriodField(NodaConstants.NanosecondsPerSecond);
-        internal static readonly TimePeriodField Minutes = new TimePeriodField(NodaConstants.NanosecondsPerMinute);
-        internal static readonly TimePeriodField Hours = new TimePeriodField(NodaConstants.NanosecondsPerHour);
+        internal static readonly TimePeriodField Ticks = new TimePeriodField(NanosecondsPerTick);
+        internal static readonly TimePeriodField Milliseconds = new TimePeriodField(NanosecondsPerMillisecond);
+        internal static readonly TimePeriodField Seconds = new TimePeriodField(NanosecondsPerSecond);
+        internal static readonly TimePeriodField Minutes = new TimePeriodField(NanosecondsPerMinute);
+        internal static readonly TimePeriodField Hours = new TimePeriodField(NanosecondsPerHour);
 
         private readonly long unitNanoseconds;
-        private readonly long unitsPerDay;
 
-        public long UnitsPerDay { get { return unitsPerDay; } }
+        public long UnitsPerDay { get; }
 
         private TimePeriodField(long unitNanoseconds)
         {
             this.unitNanoseconds = unitNanoseconds;
-            unitsPerDay = NodaConstants.NanosecondsPerDay / unitNanoseconds;
+            UnitsPerDay = NanosecondsPerDay / unitNanoseconds;
         }
 
         internal LocalDateTime Add(LocalDateTime start, long units)
@@ -50,29 +51,29 @@ namespace NodaTime.Fields
                 // into a day, so we can make sure we add a value which is less than a day.
                 if (value >= 0)
                 {
-                    if (value >= unitsPerDay)
+                    if (value >= UnitsPerDay)
                     {
-                        value = value % unitsPerDay;
+                        value = value % UnitsPerDay;
                     }
                     long nanosToAdd = value * unitNanoseconds;
                     long newNanos = localTime.NanosecondOfDay + nanosToAdd;
-                    if (newNanos >= NodaConstants.NanosecondsPerDay)
+                    if (newNanos >= NanosecondsPerDay)
                     {
-                        newNanos -= NodaConstants.NanosecondsPerDay;
+                        newNanos -= NanosecondsPerDay;
                     }
                     return new LocalTime(newNanos);
                 }
                 else
                 {
-                    if (value <= -unitsPerDay)
+                    if (value <= -UnitsPerDay)
                     {
-                        value = value % unitsPerDay;
+                        value = value % UnitsPerDay;
                     }
                     long nanosToAdd = value * unitNanoseconds;
                     long newNanos = localTime.NanosecondOfDay + nanosToAdd;
                     if (newNanos < 0)
                     {
-                        newNanos += NodaConstants.NanosecondsPerDay;
+                        newNanos += NanosecondsPerDay;
                     }
                     return new LocalTime(newNanos);
                 }
@@ -91,18 +92,18 @@ namespace NodaTime.Fields
                 // It's possible that there are better ways to do this, but this at least feels simple.
                 if (value >= 0)
                 {
-                    if (value >= unitsPerDay)
+                    if (value >= UnitsPerDay)
                     {
-                        long longDays = value / unitsPerDay;
+                        long longDays = value / UnitsPerDay;
                         // If this overflows, that's fine. (An OverflowException is a reasonable outcome.)
                         days = checked ((int) longDays);
-                        value = value % unitsPerDay;
+                        value = value % UnitsPerDay;
                     }
                     long nanosToAdd = value * unitNanoseconds;
                     long newNanos = localTime.NanosecondOfDay + nanosToAdd;
-                    if (newNanos >= NodaConstants.NanosecondsPerDay)
+                    if (newNanos >= NanosecondsPerDay)
                     {
-                        newNanos -= NodaConstants.NanosecondsPerDay;
+                        newNanos -= NanosecondsPerDay;
                         days = checked(days + 1);
                     }
                     extraDays = checked(extraDays + days);
@@ -110,18 +111,18 @@ namespace NodaTime.Fields
                 }
                 else
                 {
-                    if (value <= -unitsPerDay)
+                    if (value <= -UnitsPerDay)
                     {
-                        long longDays = value / unitsPerDay;
+                        long longDays = value / UnitsPerDay;
                         // If this overflows, that's fine. (An OverflowException is a reasonable outcome.)
                         days = checked((int) longDays);
-                        value = value % unitsPerDay;
+                        value = value % UnitsPerDay;
                     }
                     long nanosToAdd = value * unitNanoseconds;
                     long newNanos = localTime.NanosecondOfDay + nanosToAdd;
                     if (newNanos < 0)
                     {
-                        newNanos += NodaConstants.NanosecondsPerDay;
+                        newNanos += NanosecondsPerDay;
                         days = checked(days - 1);
                     }
                     extraDays = checked(days + extraDays);

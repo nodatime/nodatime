@@ -9,6 +9,7 @@ using NodaTime.Globalization;
 using NodaTime.Properties;
 using NodaTime.Text.Patterns;
 using NodaTime.Utility;
+using JetBrains.Annotations;
 
 namespace NodaTime.Text
 {
@@ -25,9 +26,9 @@ namespace NodaTime.Text
     {
         private const string GeneralPatternText = "yyyy'-'MM'-'dd'T'HH':'mm':'ss'Z'";
 
-        public IPattern<Instant> ParsePattern(string patternText, NodaFormatInfo formatInfo)
+        public IPattern<Instant> ParsePattern([NotNull] string patternText, NodaFormatInfo formatInfo)
         {
-            Preconditions.CheckNotNull(patternText, "patternText");
+            Preconditions.CheckNotNull(patternText, nameof(patternText));
             if (patternText.Length == 0)
             {
                 throw new InvalidPatternException(Messages.Parse_FormatStringEmpty);
@@ -58,20 +59,13 @@ namespace NodaTime.Text
                 this.pattern = pattern;
             }
 
-            public string Format(Instant value)
-            {
-                return pattern.Format(value.InUtc().LocalDateTime);
-            }
+            public string Format(Instant value) => pattern.Format(value.InUtc().LocalDateTime);
 
-            public StringBuilder AppendFormat(Instant value, StringBuilder builder)
-            {
-                return pattern.AppendFormat(value.InUtc().LocalDateTime, builder);
-            }
+            public StringBuilder AppendFormat(Instant value, [NotNull] StringBuilder builder) =>
+                pattern.AppendFormat(value.InUtc().LocalDateTime, builder);
 
-            public ParseResult<Instant> Parse(string text)
-            {
-                return pattern.Parse(text).Convert(local => new Instant(local.Date.DaysSinceEpoch, local.NanosecondOfDay));
-            }
+            public ParseResult<Instant> Parse(string text) =>
+                pattern.Parse(text).Convert(local => new Instant(local.Date.DaysSinceEpoch, local.NanosecondOfDay));
         }
     }
 }

@@ -11,6 +11,7 @@ using NodaTime.Globalization;
 using NodaTime.Properties;
 using NodaTime.Text.Patterns;
 using NodaTime.Utility;
+using JetBrains.Annotations;
 
 namespace NodaTime.Text
 {
@@ -39,27 +40,15 @@ namespace NodaTime.Text
         // These are used to compute the individual (always-positive) components of an offset.
         // For example, an offset of "three and a half hours behind UTC" would have a "positive hours" value
         // of 3, and a "positive minutes" value of 30. The sign is computed elsewhere.
-        private static int GetPositiveHours(Offset offset)
-        {
-            return Math.Abs(offset.Milliseconds) / NodaConstants.MillisecondsPerHour;
-        }
+        private static int GetPositiveHours(Offset offset) => Math.Abs(offset.Milliseconds) / NodaConstants.MillisecondsPerHour;
 
-        private static int GetPositiveMinutes(Offset offset)
-        {
-            return (Math.Abs(offset.Milliseconds) % NodaConstants.MillisecondsPerHour) / NodaConstants.MillisecondsPerMinute;
-        }
+        private static int GetPositiveMinutes(Offset offset) => (Math.Abs(offset.Milliseconds) % NodaConstants.MillisecondsPerHour) / NodaConstants.MillisecondsPerMinute;
 
-        private static int GetPositiveSeconds(Offset offset)
-        {
-            return (Math.Abs(offset.Milliseconds) % NodaConstants.MillisecondsPerMinute) / NodaConstants.MillisecondsPerSecond;
-        }
+        private static int GetPositiveSeconds(Offset offset) => (Math.Abs(offset.Milliseconds) % NodaConstants.MillisecondsPerMinute) / NodaConstants.MillisecondsPerSecond;
 
         // Note: public to implement the interface. It does no harm, and it's simpler than using explicit
         // interface implementation.
-        public IPattern<Offset> ParsePattern(string patternText, NodaFormatInfo formatInfo)
-        {
-            return ParsePartialPattern(patternText, formatInfo);
-        }
+        public IPattern<Offset> ParsePattern(string patternText, NodaFormatInfo formatInfo) => ParsePartialPattern(patternText, formatInfo);
 
         private IPartialPattern<Offset> ParsePartialPattern(string patternText, NodaFormatInfo formatInfo)
         {
@@ -155,15 +144,9 @@ namespace NodaTime.Text
                 this.fullPattern = fullPattern;
             }
 
-            public ParseResult<Offset> Parse(string text)
-            {
-                return text == "Z" ? ParseResult<Offset>.ForValue(Offset.Zero) : fullPattern.Parse(text);
-            }
+            public ParseResult<Offset> Parse(string text) => text == "Z" ? ParseResult<Offset>.ForValue(Offset.Zero) : fullPattern.Parse(text);
 
-            public string Format(Offset value)
-            {
-                return value == Offset.Zero ? "Z" : fullPattern.Format(value);
-            }
+            public string Format(Offset value) => value == Offset.Zero ? "Z" : fullPattern.Format(value);
 
             public ParseResult<Offset> ParsePartial(ValueCursor cursor)
             {
@@ -175,9 +158,9 @@ namespace NodaTime.Text
                 return fullPattern.ParsePartial(cursor);
             }
 
-            public StringBuilder AppendFormat(Offset value, StringBuilder builder)
+            public StringBuilder AppendFormat(Offset value, [NotNull] StringBuilder builder)
             {
-                Preconditions.CheckNotNull(builder, "builder");
+                Preconditions.CheckNotNull(builder, nameof(builder));
                 return value == Offset.Zero ? builder.Append("Z") : fullPattern.AppendFormat(value, builder);
             }
         }

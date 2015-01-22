@@ -10,7 +10,10 @@ namespace NodaTime.Test.Utility
     [TestFixture]
     public class PreconditionsTest
     {
-#if DEBUG        
+        // It's really not worth inventing parameters for these...
+#pragma warning disable InvokerParameterName
+#pragma warning disable NotNullCheckWithoutParameter
+#if DEBUG
         [Test]
         public void DebugCheckArgumentRange_Debug()
         {
@@ -45,3 +48,4 @@ namespace NodaTime.Test.Utility
 #endif
     }
 }
+#pragma warning restore InvokerParameterName

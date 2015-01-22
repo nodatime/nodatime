@@ -27,15 +27,11 @@ namespace NodaTime
     [Immutable]
     public sealed class DateInterval
     {
-        private readonly LocalDate start;
-        private readonly LocalDate end;
-        private readonly bool inclusive;
-
         /// <summary>
         /// Gets the start date of the interval, which is always included in the interval.
         /// </summary>
         /// <value>The start date of the interval.</value>
-        public LocalDate Start { get { return start; } }
+        public LocalDate Start { get; }
 
         /// <summary>
         /// Gets the end date of the interval.
@@ -45,13 +41,13 @@ namespace NodaTime
         /// date is considered part of the interval.
         /// </remarks>
         /// <value>The end date of the interval.</value>
-        public LocalDate End { get { return end; } }
+        public LocalDate End { get; }
 
         /// <summary>
         /// Indicates whether or not this interval includes its end date.
         /// </summary>
         /// <value>Whether or not this </value>
-        public bool Inclusive { get { return inclusive; } }
+        public bool Inclusive { get; }
 
         /// <summary>
         /// Constructs a date interval from a start date and an end date, and an indication
@@ -68,12 +64,12 @@ namespace NodaTime
         /// <returns>A date interval between the specified dates, with the specified inclusivity.</returns>
         public DateInterval(LocalDate start, LocalDate end, bool inclusive)
         {
-            Preconditions.CheckArgument(start.Calendar.Equals(end.Calendar), "end",
+            Preconditions.CheckArgument(start.Calendar.Equals(end.Calendar), nameof(end),
                 "Calendars of start and end dates must be the same.");
-            Preconditions.CheckArgument(!(end < start), "end", "End date must not be earlier than the start date");
-            this.start = start;
-            this.end = end;
-            this.inclusive = inclusive;
+            Preconditions.CheckArgument(!(end < start), nameof(end), "End date must not be earlier than the start date");
+            this.Start = start;
+            this.End = end;
+            this.Inclusive = inclusive;
         }
 
         /// <summary>
@@ -102,9 +98,9 @@ namespace NodaTime
         /// <returns><c>true</c> if <paramref name="date"/> is within this interval; <c>false</c> otherwise.</returns>
         public bool Contains(LocalDate date)
         {
-            Preconditions.CheckArgument(date.Calendar.Equals(start.Calendar), "date",
+            Preconditions.CheckArgument(date.Calendar.Equals(Start.Calendar), nameof(date),
                 "The date to check must be in the same calendar as the start and end dates");
-            return start <= date && (inclusive ? date <= end : date < end);
+            return Start <= date && (Inclusive ? date <= End : date < End);
         }
 
         /// <summary>
@@ -117,14 +113,9 @@ namespace NodaTime
         /// length of 0.
         /// </remarks>
         /// <value>The length of this date interval in days.</value>
-        public int Length
-        {
-            get
-            {
-                // Period.Between will give us the exclusive result, so we need to add 1
-                // if this period is inclusive.
-                return Period.Between(start, end, PeriodUnits.Days).Days + (inclusive ? 1 : 0);
-            }
-        }
+        public int Length =>
+            // Period.Between will give us the exclusive result, so we need to add 1
+            // if this period is inclusive.
+            Period.Between(Start, End, PeriodUnits.Days).Days + (Inclusive ? 1 : 0);
     }
 }

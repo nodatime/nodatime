@@ -18,16 +18,14 @@ namespace NodaTime.Test.Text
     /// </summary>
     public abstract class PatternTestData<T>
     {
-        private readonly T value;
-
-        internal T Value { get { return value; } }
+        internal T Value { get; }
 
         protected abstract T DefaultTemplate { get; }
 
         /// <summary>
         /// Culture of the pattern.
         /// </summary>
-        internal CultureInfo Culture { get; set; }
+        internal CultureInfo Culture { get; set; } = CultureInfo.InvariantCulture;
 
         /// <summary>
         /// Pattern text.
@@ -54,17 +52,14 @@ namespace NodaTime.Test.Text
         /// </summary>
         internal string Message { get; set; }
 
-        private readonly List<object> parameters = new List<object>();
-
         /// <summary>
         /// Message parameters to verify for exceptions.
         /// </summary>
-        internal List<object> Parameters { get { return parameters; } }
+        internal List<object> Parameters { get; } = new List<object>();
 
         internal PatternTestData(T value)
         {
-            this.value = value;
-            Culture = CultureInfo.InvariantCulture;
+            this.Value = value;
             Template = DefaultTemplate;
         }
 
@@ -117,7 +112,7 @@ namespace NodaTime.Test.Text
 
         internal void TestInvalidPattern()
         {
-            string expectedMessage = FormatMessage(Message, parameters.ToArray());
+            string expectedMessage = FormatMessage(Message, Parameters.ToArray());
             try
             {
                 CreatePattern();
@@ -132,7 +127,7 @@ namespace NodaTime.Test.Text
 
         public void TestParseFailure()
         {
-            string expectedMessage = FormatMessage(Message, parameters.ToArray());
+            string expectedMessage = FormatMessage(Message, Parameters.ToArray());
             IPattern<T> pattern = CreatePattern();
             var result = pattern.Parse(Text);
             Assert.IsFalse(result.Success);

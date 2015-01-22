@@ -60,7 +60,6 @@ namespace NodaTime.Globalization
         private static readonly Cache<CultureInfo, NodaFormatInfo> Cache = new Cache<CultureInfo, NodaFormatInfo>
             (500, culture => new NodaFormatInfo(culture), new ReferenceEqualityComparer<CultureInfo>());
 
-        private readonly CultureInfo cultureInfo;
 #if PCL
         private readonly string dateSeparator;
         private readonly string timeSeparator;
@@ -78,10 +77,10 @@ namespace NodaTime.Globalization
         /// Initializes a new instance of the <see cref="NodaFormatInfo" /> class.
         /// </summary>
         /// <param name="cultureInfo">The culture info to base this on.</param>
-        internal NodaFormatInfo(CultureInfo cultureInfo)
+        internal NodaFormatInfo([NotNull] CultureInfo cultureInfo)
         {
-            Preconditions.CheckNotNull(cultureInfo, "cultureInfo");
-            this.cultureInfo = cultureInfo;
+            Preconditions.CheckNotNull(cultureInfo, nameof(cultureInfo));
+            this.CultureInfo = cultureInfo;
             eraDescriptions = new Dictionary<Era, EraDescription>();
 #if PCL
             // Horrible, but it does the job...
@@ -99,10 +98,10 @@ namespace NodaTime.Globalization
                     return;
                 }
                 // Turn month names into 1-based read-only lists
-                longMonthNames = ConvertMonthArray(cultureInfo.DateTimeFormat.MonthNames);
-                shortMonthNames = ConvertMonthArray(cultureInfo.DateTimeFormat.AbbreviatedMonthNames);
-                longMonthGenitiveNames = ConvertGenitiveMonthArray(longMonthNames, cultureInfo.DateTimeFormat.MonthGenitiveNames, LongInvariantMonthNames);
-                shortMonthGenitiveNames = ConvertGenitiveMonthArray(shortMonthNames, cultureInfo.DateTimeFormat.AbbreviatedMonthGenitiveNames, ShortInvariantMonthNames);
+                longMonthNames = ConvertMonthArray(CultureInfo.DateTimeFormat.MonthNames);
+                shortMonthNames = ConvertMonthArray(CultureInfo.DateTimeFormat.AbbreviatedMonthNames);
+                longMonthGenitiveNames = ConvertGenitiveMonthArray(longMonthNames, CultureInfo.DateTimeFormat.MonthGenitiveNames, LongInvariantMonthNames);
+                shortMonthGenitiveNames = ConvertGenitiveMonthArray(shortMonthNames, CultureInfo.DateTimeFormat.AbbreviatedMonthGenitiveNames, ShortInvariantMonthNames);
             }
         }
 
@@ -124,8 +123,8 @@ namespace NodaTime.Globalization
                 {
                     return;
                 }
-                longDayNames = ConvertDayArray(cultureInfo.DateTimeFormat.DayNames);
-                shortDayNames = ConvertDayArray(cultureInfo.DateTimeFormat.AbbreviatedDayNames);
+                longDayNames = ConvertDayArray(CultureInfo.DateTimeFormat.DayNames);
+                shortDayNames = ConvertDayArray(CultureInfo.DateTimeFormat.AbbreviatedDayNames);
             }
         }
 
@@ -178,21 +177,21 @@ namespace NodaTime.Globalization
         /// <summary>
         /// Gets the culture info associated with this format provider.
         /// </summary>
-        public CultureInfo CultureInfo { get { return cultureInfo; } }
+        public CultureInfo CultureInfo { get; }
 
         /// <summary>
         /// Gets the text comparison information associated with this format provider.
         /// </summary>
-        public CompareInfo CompareInfo { get { return cultureInfo.CompareInfo; } }
+        public CompareInfo CompareInfo => CultureInfo.CompareInfo;
 
-        internal FixedFormatInfoPatternParser<Duration> DurationPatternParser { get { return EnsureFixedFormatInitialized(ref durationPatternParser, () => new DurationPatternParser()); } }
-        internal FixedFormatInfoPatternParser<Offset> OffsetPatternParser { get { return EnsureFixedFormatInitialized(ref offsetPatternParser, () => new OffsetPatternParser()); } }
-        internal FixedFormatInfoPatternParser<Instant> InstantPatternParser { get { return EnsureFixedFormatInitialized(ref instantPatternParser, () => new InstantPatternParser()); } }
-        internal FixedFormatInfoPatternParser<LocalTime> LocalTimePatternParser { get { return EnsureFixedFormatInitialized(ref localTimePatternParser, () => new LocalTimePatternParser(LocalTime.Midnight)); } }
-        internal FixedFormatInfoPatternParser<LocalDate> LocalDatePatternParser { get { return EnsureFixedFormatInitialized(ref localDatePatternParser, () => new LocalDatePatternParser(LocalDatePattern.DefaultTemplateValue)); } }
-        internal FixedFormatInfoPatternParser<LocalDateTime> LocalDateTimePatternParser { get { return EnsureFixedFormatInitialized(ref localDateTimePatternParser, () => new LocalDateTimePatternParser(LocalDateTimePattern.DefaultTemplateValue)); } }
-        internal FixedFormatInfoPatternParser<OffsetDateTime> OffsetDateTimePatternParser { get { return EnsureFixedFormatInitialized(ref offsetDateTimePatternParser, () => new OffsetDateTimePatternParser(OffsetDateTimePattern.DefaultTemplateValue)); } }
-        internal FixedFormatInfoPatternParser<ZonedDateTime> ZonedDateTimePatternParser { get { return EnsureFixedFormatInitialized(ref zonedDateTimePatternParser, () => new ZonedDateTimePatternParser(ZonedDateTimePattern.DefaultTemplateValue, Resolvers.StrictResolver, null)); } }
+        internal FixedFormatInfoPatternParser<Duration> DurationPatternParser => EnsureFixedFormatInitialized(ref durationPatternParser, () => new DurationPatternParser());
+        internal FixedFormatInfoPatternParser<Offset> OffsetPatternParser => EnsureFixedFormatInitialized(ref offsetPatternParser, () => new OffsetPatternParser());
+        internal FixedFormatInfoPatternParser<Instant> InstantPatternParser => EnsureFixedFormatInitialized(ref instantPatternParser, () => new InstantPatternParser());
+        internal FixedFormatInfoPatternParser<LocalTime> LocalTimePatternParser => EnsureFixedFormatInitialized(ref localTimePatternParser, () => new LocalTimePatternParser(LocalTime.Midnight));
+        internal FixedFormatInfoPatternParser<LocalDate> LocalDatePatternParser => EnsureFixedFormatInitialized(ref localDatePatternParser, () => new LocalDatePatternParser(LocalDatePattern.DefaultTemplateValue));
+        internal FixedFormatInfoPatternParser<LocalDateTime> LocalDateTimePatternParser => EnsureFixedFormatInitialized(ref localDateTimePatternParser, () => new LocalDateTimePatternParser(LocalDateTimePattern.DefaultTemplateValue));
+        internal FixedFormatInfoPatternParser<OffsetDateTime> OffsetDateTimePatternParser => EnsureFixedFormatInitialized(ref offsetDateTimePatternParser, () => new OffsetDateTimePatternParser(OffsetDateTimePattern.DefaultTemplateValue));
+        internal FixedFormatInfoPatternParser<ZonedDateTime> ZonedDateTimePatternParser => EnsureFixedFormatInitialized(ref zonedDateTimePatternParser, () => new ZonedDateTimePatternParser(ZonedDateTimePattern.DefaultTemplateValue, Resolvers.StrictResolver, null));
 
         private FixedFormatInfoPatternParser<T> EnsureFixedFormatInitialized<T>(ref FixedFormatInfoPatternParser<T> field,
             Func<IPatternParser<T>> patternParserFactory)
@@ -255,53 +254,53 @@ namespace NodaTime.Globalization
         /// <summary>
         /// Gets the number format associated with this formatting information.
         /// </summary>
-        public NumberFormatInfo NumberFormat { get { return cultureInfo.NumberFormat; } }
+        public NumberFormatInfo NumberFormat => CultureInfo.NumberFormat;
 
         /// <summary>
         /// Gets the BCL date time format associated with this formatting information.
         /// </summary>
-        public DateTimeFormatInfo DateTimeFormat { get { return cultureInfo.DateTimeFormat; } }
+        public DateTimeFormatInfo DateTimeFormat => CultureInfo.DateTimeFormat;
 
         /// <summary>
         ///   Gets the positive sign.
         /// </summary>
-        public string PositiveSign { get { return NumberFormat.PositiveSign; } }
+        public string PositiveSign => NumberFormat.PositiveSign;
 
         /// <summary>
         /// Gets the negative sign.
         /// </summary>
-        public string NegativeSign { get { return NumberFormat.NegativeSign; } }
+        public string NegativeSign => NumberFormat.NegativeSign;
 
 #if PCL
         /// <summary>
         /// Gets the time separator.
         /// </summary>
-        public string TimeSeparator { get { return timeSeparator; } }
+        public string TimeSeparator => timeSeparator;
 
         /// <summary>
         /// Gets the date separator.
         /// </summary>
-        public string DateSeparator { get { return dateSeparator; } }
+        public string DateSeparator => dateSeparator;
 #else
         /// <summary>
         /// Gets the time separator.
         /// </summary>
-        public string TimeSeparator { get { return DateTimeFormat.TimeSeparator; } }
+        public string TimeSeparator => DateTimeFormat.TimeSeparator;
 
         /// <summary>
         /// Gets the date separator.
         /// </summary>
-        public string DateSeparator { get { return DateTimeFormat.DateSeparator; } }
+        public string DateSeparator => DateTimeFormat.DateSeparator;
 #endif
         /// <summary>
         /// Gets the AM designator.
         /// </summary>
-        public string AMDesignator { get { return DateTimeFormat.AMDesignator; } }
+        public string AMDesignator => DateTimeFormat.AMDesignator;
 
         /// <summary>
         /// Gets the PM designator.
         /// </summary>
-        public string PMDesignator { get { return DateTimeFormat.PMDesignator; } }
+        public string PMDesignator => DateTimeFormat.PMDesignator;
 
         /// <summary>
         /// Returns the names for the given era in this culture.
@@ -311,7 +310,7 @@ namespace NodaTime.Globalization
         /// the era is not known in this culture.</returns>
         public IList<string> GetEraNames([NotNull] Era era)
         {
-            Preconditions.CheckNotNull(era, "era");
+            Preconditions.CheckNotNull(era, nameof(era));
             return GetEraDescription(era).AllNames;
         }
 
@@ -322,7 +321,7 @@ namespace NodaTime.Globalization
         /// <returns>The primary name for the given era, or an empty string if the era name is not known.</returns>
         public string GetEraPrimaryName([NotNull] Era era)
         {
-            Preconditions.CheckNotNull(era, "era");
+            Preconditions.CheckNotNull(era, nameof(era));
             return GetEraDescription(era).PrimaryName;
         }
 
@@ -333,7 +332,7 @@ namespace NodaTime.Globalization
                 EraDescription ret;
                 if (!eraDescriptions.TryGetValue(era, out ret))
                 {
-                    ret = EraDescription.ForEra(era, cultureInfo);
+                    ret = EraDescription.ForEra(era, CultureInfo);
                     eraDescriptions[era] = ret;
                 }
                 return ret;
@@ -343,33 +342,27 @@ namespace NodaTime.Globalization
         /// <summary>
         /// Gets the <see cref="NodaFormatInfo" /> object for the current thread.
         /// </summary>
-        public static NodaFormatInfo CurrentInfo
-        {
-            get { return GetInstance(Thread.CurrentThread.CurrentCulture); }
-        }
+        public static NodaFormatInfo CurrentInfo => GetInstance(Thread.CurrentThread.CurrentCulture);
 
         /// <summary>
         /// Gets the <see cref="Offset" /> "L" pattern.
         /// </summary>
-        public string OffsetPatternLong { get { return PatternResources.ResourceManager.GetString("OffsetPatternLong", cultureInfo); } }
+        public string OffsetPatternLong => PatternResources.ResourceManager.GetString("OffsetPatternLong", CultureInfo);
 
         /// <summary>
         /// Gets the <see cref="Offset" /> "M" pattern.
         /// </summary>
-        public string OffsetPatternMedium { get { return PatternResources.ResourceManager.GetString("OffsetPatternMedium", cultureInfo); } }
+        public string OffsetPatternMedium => PatternResources.ResourceManager.GetString("OffsetPatternMedium", CultureInfo);
 
         /// <summary>
         /// Gets the <see cref="Offset" /> "S" pattern.
         /// </summary>
-        public string OffsetPatternShort { get { return PatternResources.ResourceManager.GetString("OffsetPatternShort", cultureInfo); } }
+        public string OffsetPatternShort => PatternResources.ResourceManager.GetString("OffsetPatternShort", CultureInfo);
 
         /// <summary>
         /// Clears the cache. Only used for test purposes.
         /// </summary>
-        internal static void ClearCache()
-        {
-            Cache.Clear();
-        }
+        internal static void ClearCache() => Cache.Clear();
 
         /// <summary>
         /// Gets the <see cref="NodaFormatInfo" /> for the given <see cref="CultureInfo" />.
@@ -379,9 +372,9 @@ namespace NodaTime.Globalization
         /// </remarks>
         /// <param name="cultureInfo">The culture info.</param>
         /// <returns>The <see cref="NodaFormatInfo" />. Will never be null.</returns>
-        internal static NodaFormatInfo GetFormatInfo(CultureInfo cultureInfo)
+        internal static NodaFormatInfo GetFormatInfo([NotNull] CultureInfo cultureInfo)
         {
-            Preconditions.CheckNotNull(cultureInfo, "cultureInfo");
+            Preconditions.CheckNotNull(cultureInfo, nameof(cultureInfo));
             if (cultureInfo == CultureInfo.InvariantCulture)
             {
                 return InvariantInfo;
@@ -417,26 +410,20 @@ namespace NodaTime.Globalization
         /// <summary>
         /// Returns a <see cref="System.String" /> that represents this instance.
         /// </summary>
-        public override string ToString()
-        {
-            return "NodaFormatInfo[" + cultureInfo.Name + "]";
-        }
+        public override string ToString() => "NodaFormatInfo[" + CultureInfo.Name + "]";
 
         /// <summary>
         /// The description for an era: the primary name and all possible names.
         /// </summary>
         private class EraDescription
         {
-            private readonly string primaryName;
-            private readonly ReadOnlyCollection<string> allNames;
-
-            internal string PrimaryName { get { return primaryName; } }
-            internal ReadOnlyCollection<string> AllNames { get { return allNames; } }
+            internal string PrimaryName { get; }
+            internal ReadOnlyCollection<string> AllNames { get; }
 
             private EraDescription(string primaryName, ReadOnlyCollection<string> allNames)
             {
-                this.primaryName = primaryName;
-                this.allNames = allNames;
+                this.PrimaryName = primaryName;
+                this.AllNames = allNames;
             }
 
             internal static EraDescription ForEra(Era era, CultureInfo cultureInfo)

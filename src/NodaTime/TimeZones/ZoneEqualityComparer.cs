@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using NodaTime.Annotations;
 using NodaTime.Utility;
+using JetBrains.Annotations;
 
 namespace NodaTime.TimeZones
 {
@@ -114,13 +115,13 @@ namespace NodaTime.TimeZones
         /// Returns the interval over which this comparer operates.
         /// </summary>
         [VisibleForTesting]
-        internal Interval IntervalForTest { get { return interval; } }
+        internal Interval IntervalForTest => interval;
 
         /// <summary>
         /// Returns the options used by this comparer.
         /// </summary>
         [VisibleForTesting]
-        internal Options OptionsForTest { get { return options; } }
+        internal Options OptionsForTest => options;
 
         private readonly ZoneIntervalEqualityComparer zoneIntervalComparer;
         
@@ -153,7 +154,7 @@ namespace NodaTime.TimeZones
         /// <returns>A ZoneEqualityComparer for the given interval with the default options.</returns>
         public static ZoneEqualityComparer ForInterval(Interval interval)
         {
-            Preconditions.CheckArgument(interval.HasStart && interval.HasEnd, "interval",
+            Preconditions.CheckArgument(interval.HasStart && interval.HasEnd, nameof(interval),
                 "The interval must have both a start and an end.");
             return new ZoneEqualityComparer(interval, Options.OnlyMatchWallOffset);
         }
@@ -205,9 +206,9 @@ namespace NodaTime.TimeZones
         /// </remarks>
         /// <param name="obj">The time zone to compute a hash code for.</param>
         /// <returns>A hash code for the specified object.</returns>
-        public int GetHashCode(DateTimeZone obj)
+        public int GetHashCode([NotNull] DateTimeZone obj)
         {
-            Preconditions.CheckNotNull(obj, "obj");
+            Preconditions.CheckNotNull(obj, nameof(obj));
             unchecked
             {
                 int hash = 19;
@@ -294,17 +295,13 @@ namespace NodaTime.TimeZones
                 return hash;
             }
 
-            private Instant GetEffectiveStart(ZoneInterval zoneInterval)
-            {
-                return CheckOption(options, Options.MatchStartAndEndTransitions)
-                    ? zoneInterval.RawStart : Instant.Max(zoneInterval.RawStart, interval.Start);                
-            }
+            private Instant GetEffectiveStart(ZoneInterval zoneInterval) =>
+                CheckOption(options, Options.MatchStartAndEndTransitions)
+                    ? zoneInterval.RawStart : Instant.Max(zoneInterval.RawStart, interval.Start);
 
-            private Instant GetEffectiveEnd(ZoneInterval zoneInterval)
-            {
-                return CheckOption(options, Options.MatchStartAndEndTransitions)
+            private Instant GetEffectiveEnd(ZoneInterval zoneInterval) =>
+                CheckOption(options, Options.MatchStartAndEndTransitions)
                     ? zoneInterval.RawEnd : Instant.Min(zoneInterval.RawEnd, interval.End);
-            }
 
             /// <summary>
             /// Compares the parts of two zone intervals which are deemed "interesting" by the options.

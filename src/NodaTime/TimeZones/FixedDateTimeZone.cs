@@ -6,6 +6,7 @@ using System.Globalization;
 using NodaTime.Text;
 using NodaTime.TimeZones.IO;
 using NodaTime.Utility;
+using JetBrains.Annotations;
 
 namespace NodaTime.TimeZones
 {
@@ -32,7 +33,7 @@ namespace NodaTime.TimeZones
         /// </summary>
         /// <param name="id">The id.</param>
         /// <param name="offset">The offset.</param>
-        public FixedDateTimeZone(string id, Offset offset) : base(id, true, offset, offset)
+        public FixedDateTimeZone([NotNull] string id, Offset offset) : base(id, true, offset, offset)
         {
             this.offset = offset;
             interval = new ZoneInterval(id, Instant.BeforeMinValue, Instant.AfterMaxValue, offset, Offset.Zero);
@@ -82,18 +83,13 @@ namespace NodaTime.TimeZones
         /// <summary>
         /// Gets the zone interval for the given instant. This implementation always returns the same interval.
         /// </summary>
-        public override ZoneInterval GetZoneInterval(Instant instant)
-        {
-            return interval;
-        }
+        public override ZoneInterval GetZoneInterval(Instant instant) => interval;
 
         /// <summary>
         /// Override for efficiency: we know we'll always have an unambiguous mapping for any LocalDateTime.
         /// </summary>
-        public override ZoneLocalMapping MapLocal(LocalDateTime localDateTime)
-        {
-            return new ZoneLocalMapping(this, localDateTime, interval, interval, 1);
-        }
+        public override ZoneLocalMapping MapLocal(LocalDateTime localDateTime) =>
+            new ZoneLocalMapping(this, localDateTime, interval, interval, 1);
 
         /// <summary>
         /// Returns the offset from UTC, where a positive duration indicates that local time is later
@@ -103,18 +99,15 @@ namespace NodaTime.TimeZones
         /// <returns>
         /// The offset from UTC at the specified instant.
         /// </returns>
-        public override Offset GetUtcOffset(Instant instant)
-        {
-            return offset;
-        }
+        public override Offset GetUtcOffset(Instant instant) => offset;
 
         /// <summary>
         /// Writes the time zone to the specified writer.
         /// </summary>
         /// <param name="writer">The writer.</param>
-        internal void Write(IDateTimeZoneWriter writer)
+        internal void Write([NotNull] IDateTimeZoneWriter writer)
         {
-            Preconditions.CheckNotNull(writer, "writer");
+            Preconditions.CheckNotNull(writer, nameof(writer));
             writer.WriteOffset(offset);
         }
 
@@ -124,20 +117,16 @@ namespace NodaTime.TimeZones
         /// <param name="reader">The reader.</param>
         /// <param name="id">The id.</param>
         /// <returns>The fixed time zone.</returns>
-        public static DateTimeZone Read(IDateTimeZoneReader reader, string id)
+        public static DateTimeZone Read([NotNull] IDateTimeZoneReader reader, [NotNull] string id)
         {
-            Preconditions.CheckNotNull(reader, "reader");
-            Preconditions.CheckNotNull(reader, "id");
+            Preconditions.CheckNotNull(reader, nameof(reader));
+            Preconditions.CheckNotNull(id, nameof(id));
             var offset = reader.ReadOffset();
             return new FixedDateTimeZone(id, offset);
         }
 
-
-        protected override bool EqualsImpl(DateTimeZone other)
-        {
-            FixedDateTimeZone otherZone = (FixedDateTimeZone) other;
-            return offset == otherZone.offset && Id == other.Id;
-        }
+        protected override bool EqualsImpl(DateTimeZone other) =>
+            offset == ((FixedDateTimeZone)other).offset && Id == other.Id;
 
         public override int GetHashCode()
         {
@@ -153,9 +142,6 @@ namespace NodaTime.TimeZones
         /// <returns>
         /// A <see cref="System.String"/> that represents this instance.
         /// </returns>
-        public override string ToString()
-        {
-            return Id;
-        }
+        public override string ToString() => Id;
     }
 }

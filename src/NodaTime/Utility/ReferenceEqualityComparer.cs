@@ -13,14 +13,8 @@ namespace NodaTime.Utility
     /// </summary>
     internal sealed class ReferenceEqualityComparer<T> : IEqualityComparer<T> where T : class
     {
-        public bool Equals(T first, T second)
-        {
-            return ReferenceEquals(first, second);
-        }
+        public bool Equals(T first, T second) => ReferenceEquals(first, second);
 
-        public int GetHashCode(T value)
-        {
-            return ReferenceEquals(value, null) ? 0 : RuntimeHelpers.GetHashCode(value);
-        }
+        public int GetHashCode(T value) => ReferenceEquals(value, null) ? 0 : RuntimeHelpers.GetHashCode(value);
     }
 }

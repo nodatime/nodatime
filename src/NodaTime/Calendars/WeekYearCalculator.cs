@@ -23,10 +23,10 @@ namespace NodaTime.Calendars
 
         internal YearMonthDay GetYearMonthDay(int weekYear, int weekOfWeekYear, IsoDayOfWeek dayOfWeek)
         {
-            Preconditions.CheckArgumentRange("weekYear", weekYear, yearMonthDayCalculator.MinYear, yearMonthDayCalculator.MaxYear);
-            Preconditions.CheckArgumentRange("weekOfWeekYear", weekOfWeekYear, 1, GetWeeksInWeekYear(weekYear));
+            Preconditions.CheckArgumentRange(nameof(weekYear), weekYear, yearMonthDayCalculator.MinYear, yearMonthDayCalculator.MaxYear);
+            Preconditions.CheckArgumentRange(nameof(weekOfWeekYear), weekOfWeekYear, 1, GetWeeksInWeekYear(weekYear));
             // TODO: Work out what argument validation we actually want here.
-            Preconditions.CheckArgumentRange("dayOfWeek", (int)dayOfWeek, 1, 7);
+            Preconditions.CheckArgumentRange(nameof(dayOfWeek), (int)dayOfWeek, 1, 7);
             unchecked
             {
                 int days = GetWeekYearDaysSinceEpoch(weekYear) + (weekOfWeekYear - 1) * 7 + ((int) dayOfWeek - 1);
@@ -34,11 +34,7 @@ namespace NodaTime.Calendars
             }
         }
 
-        internal int GetDayOfWeek([Trusted] YearMonthDay yearMonthDay)
-        {
-            int daysSinceEpoch = yearMonthDayCalculator.GetDaysSinceEpoch(yearMonthDay);
-            return GetDayOfWeek(daysSinceEpoch);
-        }
+        internal int GetDayOfWeek([Trusted] YearMonthDay yearMonthDay) => GetDayOfWeek(yearMonthDayCalculator.GetDaysSinceEpoch(yearMonthDay));
 
         /// <summary>
         /// Finds the week-of-week year containing the given local instant, by finding out when the week year
@@ -87,14 +83,9 @@ namespace NodaTime.Calendars
             }
         }
 
-        private int GetDayOfWeek([Trusted] int daysSinceEpoch)
-        {
-            unchecked
-            {
-                return daysSinceEpoch >= -3 ? 1 + ((daysSinceEpoch + 3) % 7)
-                                            : 7 + ((daysSinceEpoch + 4) % 7);
-            }
-        }
+        private int GetDayOfWeek([Trusted] int daysSinceEpoch) =>
+            unchecked(daysSinceEpoch >= -3 ? 1 + ((daysSinceEpoch + 3) % 7)
+                                           : 7 + ((daysSinceEpoch + 4) % 7));
 
         private int GetWeeksInWeekYear([Trusted] int weekYear)
         {

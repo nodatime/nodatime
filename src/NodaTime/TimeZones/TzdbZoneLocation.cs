@@ -19,35 +19,32 @@ namespace NodaTime.TimeZones
     public sealed class TzdbZoneLocation
     {
         private readonly int latitudeSeconds, longitudeSeconds;
-        private readonly string countryName, countryCode;
-        private readonly string comment;
-        private readonly string zoneId;
 
         /// <summary>
         /// Gets the latitude in degrees; positive for North, negative for South.
         /// </summary>
         /// <remarks>The value will be in the range [-90, 90].</remarks>
         /// <value>The latitude in degrees; positive for North, negative for South.</value>
-        public double Latitude { get { return latitudeSeconds / 3600.0; } }
+        public double Latitude => latitudeSeconds / 3600.0;
 
         /// <summary>
         /// Gets the longitude in degrees; positive for East, negative for West.
         /// </summary>
         /// <remarks>The value will be in the range [-180, 180].</remarks>
         /// <value>The longitude in degrees; positive for East, negative for West.</value>
-        public double Longitude { get { return longitudeSeconds / 3600.0; } }
+        public double Longitude => longitudeSeconds / 3600.0;
 
         /// <summary>
         /// Gets the English name of the country containing the location.
         /// </summary>
         /// <value>The English name of the country containing the location.</value>
-        [NotNull] public string CountryName { get { return countryName; } }
+        [NotNull] public string CountryName { get; }
 
         /// <summary>
         /// Gets the ISO-3166 2-letter country code for the country containing the location.
         /// </summary>
         /// <value>The ISO-3166 2-letter country code for the country containing the location.</value>
-        [NotNull] public string CountryCode { get { return countryCode; } }
+        [NotNull] public string CountryCode { get; }
 
         /// <summary>
         /// The ID of the time zone for this location.
@@ -55,7 +52,7 @@ namespace NodaTime.TimeZones
         /// <remarks>If this mapping was fetched from a <see cref="TzdbDateTimeZoneSource"/>, it will always be a valid ID within that source.
         /// </remarks>
         /// <value>The ID of the time zone for this location.</value>
-        [NotNull] public string ZoneId { get { return zoneId; } }
+        [NotNull] public string ZoneId { get; }
 
         /// <summary>
         /// Gets the comment (in English) for the mapping, if any.
@@ -65,7 +62,7 @@ namespace NodaTime.TimeZones
         /// This will return an empty string if no comment was provided in the original data.
         /// </remarks>
         /// <value>The comment (in English) for the mapping, if any.</value>
-        [NotNull] public string Comment { get { return comment; } }
+        [NotNull] public string Comment { get; }
 
         /// <summary>
         /// Creates a new location.
@@ -80,27 +77,28 @@ namespace NodaTime.TimeZones
         /// <param name="zoneId">Time zone identifier of the location. Must not be null.</param>
         /// <param name="comment">Optional comment. Must not be null, but may be empty.</param>
         /// <exception cref="ArgumentOutOfRangeException">The latitude or longitude is invalid.</exception>
-        public TzdbZoneLocation(int latitudeSeconds, int longitudeSeconds, string countryName, string countryCode,
-            string zoneId, string comment)
+        public TzdbZoneLocation(int latitudeSeconds, int longitudeSeconds,
+            [NotNull] string countryName, [NotNull] string countryCode,
+            [NotNull] string zoneId, [NotNull] string comment)
         {
-            Preconditions.CheckArgumentRange("latitudeSeconds", latitudeSeconds, -90 * 3600, 90 * 3600);
-            Preconditions.CheckArgumentRange("longitudeSeconds", longitudeSeconds, -180 * 3600, 180 * 3600);
+            Preconditions.CheckArgumentRange(nameof(latitudeSeconds), latitudeSeconds, -90 * 3600, 90 * 3600);
+            Preconditions.CheckArgumentRange(nameof(longitudeSeconds), longitudeSeconds, -180 * 3600, 180 * 3600);
             this.latitudeSeconds = latitudeSeconds;
             this.longitudeSeconds = longitudeSeconds;
-            this.countryName = Preconditions.CheckNotNull(countryName, "countryName");
-            this.countryCode = Preconditions.CheckNotNull(countryCode, "countryCode");
-            this.zoneId = Preconditions.CheckNotNull(zoneId, "zoneId");
-            this.comment = Preconditions.CheckNotNull(comment, "comment");
+            this.CountryName = Preconditions.CheckNotNull(countryName, nameof(countryName));
+            this.CountryCode = Preconditions.CheckNotNull(countryCode, nameof(countryCode));
+            this.ZoneId = Preconditions.CheckNotNull(zoneId, nameof(zoneId));
+            this.Comment = Preconditions.CheckNotNull(comment, nameof(comment));
         }
 
         internal void Write(IDateTimeZoneWriter writer)
         {
             writer.WriteSignedCount(latitudeSeconds);
             writer.WriteSignedCount(longitudeSeconds);
-            writer.WriteString(countryName);
-            writer.WriteString(countryCode);
-            writer.WriteString(zoneId);
-            writer.WriteString(comment);
+            writer.WriteString(CountryName);
+            writer.WriteString(CountryCode);
+            writer.WriteString(ZoneId);
+            writer.WriteString(Comment);
         }
 
         internal static TzdbZoneLocation Read(IDateTimeZoneReader reader)
