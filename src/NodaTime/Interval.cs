@@ -10,6 +10,7 @@ using System.Xml.Serialization;
 using JetBrains.Annotations;
 using NodaTime.Text;
 using NodaTime.Utility;
+using NodaTime.Annotations;
 
 namespace NodaTime
 {
@@ -105,7 +106,7 @@ namespace NodaTime
         /// </summary>
         /// <value><c>true</c> if this interval has a fixed start point, or <c>false</c> if it
         /// extends to the start of time.</value>
-        public bool HasStart { get { return start.IsValid; } }
+        public bool HasStart => start.IsValid;
 
         /// <summary>
         /// Gets the end instant - the exclusive upper bound of the interval.
@@ -122,11 +123,11 @@ namespace NodaTime
             }
         }
 
-        /// <summary>
-        /// Returns the raw end value of the interval: a normal instant or <see cref="Instant.AfterMaxValue"/>.
-        /// This value should never be exposed.
-        /// </summary>
-        internal Instant RawEnd { get { return end; } }
+/// <summary>
+/// Returns the raw end value of the interval: a normal instant or <see cref="Instant.AfterMaxValue"/>.
+/// This value should never be exposed.
+/// </summary>
+internal Instant RawEnd => end;
 
         /// <summary>
         /// Returns <c>true</c> if this interval has a fixed end point, or <c>false</c> if it
@@ -134,7 +135,7 @@ namespace NodaTime
         /// </summary>
         /// <value><c>true</c> if this interval has a fixed end point, or <c>false</c> if it
         /// extends to the end of time.</value>
-        public bool HasEnd { get { return end.IsValid; } }
+        public bool HasEnd => end.IsValid;
 
         /// <summary>
         /// Returns the duration of the interval.
@@ -144,7 +145,7 @@ namespace NodaTime
         /// </remarks>
         /// <value>The duration of the interval.</value>
         /// <exception cref="InvalidOperationException">The interval extends to the start or end of time.</exception>
-        public Duration Duration { get { return End - Start; } }
+        public Duration Duration => End - Start;
 
         /// <summary>
         /// Returns whether or not this interval contains the given instant.
@@ -152,10 +153,7 @@ namespace NodaTime
         /// <param name="instant">Instant to test.</param>
         /// <returns>True if this interval contains the given instant; false otherwise.</returns>
         [Pure]
-        public bool Contains(Instant instant)
-        {
-            return instant >= start && instant < end;
-        }
+        public bool Contains(Instant instant) => instant >= start && instant < end;
 
         #region Implementation of IEquatable<Interval>
         /// <summary>
@@ -166,10 +164,7 @@ namespace NodaTime
         /// true if the value of this instant is equal to the value of the <paramref name="other" /> parameter;
         /// otherwise, false.
         /// </returns>
-        public bool Equals(Interval other)
-        {
-            return Start == other.Start && End == other.End;
-        }
+        public bool Equals(Interval other) => Start == other.Start && End == other.End;
         #endregion
 
         #region object overrides
@@ -182,14 +177,7 @@ namespace NodaTime
         /// <c>true</c> if the specified <see cref="System.Object" /> is equal to this instance;
         /// otherwise, <c>false</c>.
         /// </returns>
-        public override bool Equals(object obj)
-        {
-            if (obj is Interval)
-            {
-                return Equals((Interval)obj);
-            }
-            return false;
-        }
+        public override bool Equals(object obj) => obj is Interval && Equals((Interval)obj);
 
         /// <summary>
         /// Returns the hash code for this instance.
@@ -225,10 +213,7 @@ namespace NodaTime
         /// <param name="left">The left.</param>
         /// <param name="right">The right.</param>
         /// <returns>The result of the operator.</returns>
-        public static bool operator ==(Interval left, Interval right)
-        {
-            return left.Equals(right);
-        }
+        public static bool operator ==(Interval left, Interval right) => left.Equals(right);
 
         /// <summary>
         /// Implements the operator !=.
@@ -236,23 +221,17 @@ namespace NodaTime
         /// <param name="left">The left.</param>
         /// <param name="right">The right.</param>
         /// <returns>The result of the operator.</returns>
-        public static bool operator !=(Interval left, Interval right)
-        {
-            return !(left == right);
-        }
+        public static bool operator !=(Interval left, Interval right) => !(left == right);
         #endregion
 
         #region XML serialization
         /// <inheritdoc />
-        XmlSchema IXmlSerializable.GetSchema()
-        {
-            return null;
-        }
+        XmlSchema IXmlSerializable.GetSchema() => null;
 
         /// <inheritdoc />
-        void IXmlSerializable.ReadXml(XmlReader reader)
+        void IXmlSerializable.ReadXml([NotNull] XmlReader reader)
         {
-            Preconditions.CheckNotNull(reader, "reader");
+            Preconditions.CheckNotNull(reader, nameof(reader));
             var pattern = InstantPattern.ExtendedIsoPattern;
             if (!reader.MoveToAttribute("start"))
             {
@@ -270,9 +249,9 @@ namespace NodaTime
         }
 
         /// <inheritdoc />
-        void IXmlSerializable.WriteXml(XmlWriter writer)
+        void IXmlSerializable.WriteXml([NotNull] XmlWriter writer)
         {
-            Preconditions.CheckNotNull(writer, "writer");
+            Preconditions.CheckNotNull(writer, nameof(writer));
             var pattern = InstantPattern.ExtendedIsoPattern;
             writer.WriteAttributeString("start", pattern.Format(start));
             writer.WriteAttributeString("end", pattern.Format(end));
@@ -291,9 +270,9 @@ namespace NodaTime
         /// </summary>
         /// <param name="info">The <see cref="SerializationInfo"/> to fetch data from.</param>
         /// <param name="context">The source for this deserialization.</param>
-        private Interval(SerializationInfo info, StreamingContext context)
-            : this(new Instant(Duration.Deserialize(info, StartDaysSerializationName, StartNanosecondOfDaySerializationName)),
-                   new Instant(Duration.Deserialize(info, EndDaysSerializationName, EndNanosecondOfDaySerializationName)))
+        private Interval([NotNull] SerializationInfo info, StreamingContext context)
+            : this(new Instant(new Duration(info, StartDaysSerializationName, StartNanosecondOfDaySerializationName)),
+                   new Instant(new Duration(info, EndDaysSerializationName, EndNanosecondOfDaySerializationName)))
         {
         }
 
@@ -303,7 +282,7 @@ namespace NodaTime
         /// <param name="info">The <see cref="SerializationInfo"/> to populate with data.</param>
         /// <param name="context">The destination for this serialization.</param>
         [System.Security.SecurityCritical]
-        void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)
+        void ISerializable.GetObjectData([NotNull] SerializationInfo info, StreamingContext context)
         {
             // FIXME:SERIALIZATION
             start.TimeSinceEpoch.Serialize(info, StartDaysSerializationName, StartNanosecondOfDaySerializationName);

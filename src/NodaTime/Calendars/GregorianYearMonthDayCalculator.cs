@@ -2,6 +2,7 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
+using NodaTime.Annotations;
 using NodaTime.Utility;
 
 namespace NodaTime.Calendars
@@ -116,7 +117,7 @@ namespace NodaTime.Calendars
             return YearStartDays[year - FirstOptimizedYear];
         }
 
-        internal override int GetDaysSinceEpoch(YearMonthDay yearMonthDay)
+        internal override int GetDaysSinceEpoch([Trusted] YearMonthDay yearMonthDay)
         {
             // 2014-06-28: Tried removing this entirely (optimized: 8ns => 13ns; unoptimized: 23ns => 19ns)
             // Also tried computing everything lazily - it's a wash.
@@ -135,10 +136,7 @@ namespace NodaTime.Calendars
             }
         }
 
-        internal override void ValidateYearMonthDay(int year, int month, int day)
-        {
-            ValidateGregorianYearMonthDay(year, month, day);
-        }
+        internal override void ValidateYearMonthDay(int year, int month, int day) => ValidateGregorianYearMonthDay(year, month, day);
 
         internal static void ValidateGregorianYearMonthDay(int year, int month, int day)
         {
@@ -146,8 +144,8 @@ namespace NodaTime.Calendars
             // an exception. Avoiding the method call is pretty extreme, but it does help.
             if (year < MinGregorianYear || year > MaxGregorianYear || month < 1 || month > 12)
             {
-                Preconditions.CheckArgumentRange("year", year, MinGregorianYear, MaxGregorianYear);
-                Preconditions.CheckArgumentRange("month", month, 1, 12);
+                Preconditions.CheckArgumentRange(nameof(year), year, MinGregorianYear, MaxGregorianYear);
+                Preconditions.CheckArgumentRange(nameof(month), month, 1, 12);
             }
             // If we've been asked for day 1-28, we're definitely okay regardless of month.
             if (day >= 1 && day <= 28)
@@ -157,7 +155,7 @@ namespace NodaTime.Calendars
             int daysInMonth = month == 2 && IsGregorianLeapYear(year) ? MaxDaysPerMonth[month - 1] : MinDaysPerMonth[month - 1];
             if (day > daysInMonth)
             {
-                Preconditions.CheckArgumentRange("day", day, 1, daysInMonth);
+                Preconditions.CheckArgumentRange(nameof(day), day, 1, daysInMonth);
             }
         }
 
@@ -187,19 +185,10 @@ namespace NodaTime.Calendars
         }
 
         // Override GetDaysInYear so we can avoid a pointless virtual method call.
-        internal override int GetDaysInYear(int year)
-        {
-            return IsGregorianLeapYear(year) ? 366 : 365;
-        }
+        internal override int GetDaysInYear(int year) => IsGregorianLeapYear(year) ? 366 : 365;
 
-        internal override bool IsLeapYear(int year)
-        {
-            return IsGregorianLeapYear(year);
-        }
+        internal override bool IsLeapYear(int year) => IsGregorianLeapYear(year);
 
-        private static bool IsGregorianLeapYear(int year)
-        {
-            return ((year & 3) == 0) && ((year % 100) != 0 || (year % 400) == 0);
-        }
+        private static bool IsGregorianLeapYear(int year) => ((year & 3) == 0) && ((year % 100) != 0 || (year % 400) == 0);
     }
 }

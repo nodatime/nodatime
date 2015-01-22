@@ -29,10 +29,6 @@ namespace NodaTime.TimeZones.Cldr
         /// </summary>
         public const string FixedOffsetTerritory = "ZZ";
 
-        private readonly string windowsId;
-        private readonly string territory;
-        private readonly IList<string> tzdbIds;
-
         /// <summary>
         /// Gets the Windows system time zone identifier for this mapping, such as "Central Standard Time".
         /// </summary>
@@ -44,7 +40,7 @@ namespace NodaTime.TimeZones.Cldr
         /// </para>
         /// </remarks>
         /// <value>The Windows system time zone identifier for this mapping, such as "Central Standard Time".</value>
-        [NotNull] public string WindowsId { get { return windowsId; } }
+        [NotNull] public string WindowsId { get; }
 
         /// <summary>
         /// Gets the territory code for this mapping.
@@ -55,7 +51,7 @@ namespace NodaTime.TimeZones.Cldr
         /// which indicates the geographical territory.
         /// </remarks>
         /// <value>The territory code for this mapping.</value>
-        [NotNull] public string Territory { get { return territory; } }
+        [NotNull] public string Territory { get; }
 
         /// <summary>
         /// Gets a read-only non-empty collection of TZDB zone identifiers for this mapping, such as
@@ -67,7 +63,7 @@ namespace NodaTime.TimeZones.Cldr
         /// contains exactly one time zone ID.
         /// </remarks>
         /// <value>A read-only non-empty collection of TZDB zone identifiers for this mapping.</value>
-        [NotNull] public IList<string> TzdbIds { get { return tzdbIds; } }
+        [NotNull] public IList<string> TzdbIds { get; }
 
         /// <summary>
         /// Creates a new mapping entry.
@@ -79,10 +75,10 @@ namespace NodaTime.TimeZones.Cldr
         /// <param name="territory">Territory code. Must not be null.</param>
         /// <param name="tzdbIds">List of territory codes. Must not be null, and must not
         /// contains null values.</param>
-        public MapZone(string windowsId, string territory, IList<string> tzdbIds)
-            : this(Preconditions.CheckNotNull(windowsId, "windowsId"),
-                   Preconditions.CheckNotNull(territory, "territory"),
-                   new ReadOnlyCollection<string>(new List<string>(Preconditions.CheckNotNull(tzdbIds, "tzdbIds"))))
+        public MapZone([NotNull] string windowsId, [NotNull] string territory, [NotNull] IList<string> tzdbIds)
+            : this(Preconditions.CheckNotNull(windowsId, nameof(windowsId)),
+                   Preconditions.CheckNotNull(territory, nameof(territory)),
+                   new ReadOnlyCollection<string>(new List<string>(Preconditions.CheckNotNull(tzdbIds, nameof(tzdbIds)))))
         {
         }
 
@@ -91,9 +87,9 @@ namespace NodaTime.TimeZones.Cldr
         /// </summary>
         private MapZone(string windowsId, string territory, ReadOnlyCollection<string> tzdbIds)
         {
-            this.windowsId = windowsId;
-            this.territory = territory;
-            this.tzdbIds = tzdbIds;
+            this.WindowsId = windowsId;
+            this.Territory = territory;
+            this.TzdbIds = tzdbIds;
         }
 
         /// <summary>
@@ -118,10 +114,10 @@ namespace NodaTime.TimeZones.Cldr
         /// <param name="writer"></param>
         internal void Write(IDateTimeZoneWriter writer)
         {
-            writer.WriteString(windowsId);
-            writer.WriteString(territory);
-            writer.WriteCount(tzdbIds.Count);
-            foreach (string id in tzdbIds)
+            writer.WriteString(WindowsId);
+            writer.WriteString(Territory);
+            writer.WriteCount(TzdbIds.Count);
+            foreach (string id in TzdbIds)
             {
                 writer.WriteString(id);
             }

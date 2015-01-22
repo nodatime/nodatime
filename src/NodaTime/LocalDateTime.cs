@@ -220,24 +220,21 @@ namespace NodaTime
 
         /// <summary>Gets the calendar system associated with this local date and time.</summary>
         /// <value>The calendar system associated with this local date and time.</value>
-        public CalendarSystem Calendar
-        {
-            get { return date.Calendar; }
-        }
+        public CalendarSystem Calendar => date.Calendar;
 
         /// <summary>Gets the year of this local date and time.</summary>
         /// <remarks>This returns the "absolute year", so, for the ISO calendar,
         /// a value of 0 means 1 BC, for example.</remarks>
         /// <value>The year of this local date and time.</value>
-        public int Year { get { return date.Year; } }
+        public int Year => date.Year;
 
         /// <summary>Gets the year of this local date and time within its era.</summary>
         /// <value>The year of this local date and time within its era.</value>
-        public int YearOfEra { get { return date.YearOfEra; } }
+        public int YearOfEra => date.YearOfEra;
 
         /// <summary>Gets the era of this local date and time.</summary>
         /// <value>The era of this local date and time.</value>
-        public Era Era { get { return date.Era; } }
+        public Era Era => date.Era;
 
         /// <summary>
         /// Gets the "week year" of this local date and time.
@@ -258,31 +255,31 @@ namespace NodaTime
         /// </para>
         /// </remarks>
         /// <value>The "week year" of this local date and time.</value>
-        public int WeekYear { get { return date.WeekYear; } }
+        public int WeekYear => date.WeekYear;
 
         /// <summary>
         /// Gets the month of this local date and time within the year.
         /// </summary>
         /// <value>The month of this local date and time within the year.</value>
-        public int Month { get { return date.Month; } }
+        public int Month => date.Month;
 
         /// <summary>
         /// Gets the week within the week-year. See <see cref="WeekYear"/> for more details.
         /// </summary>
         /// <value>The week within the week-year. See <see cref="WeekYear"/> for more details.</value>
-        public int WeekOfWeekYear { get { return date.WeekOfWeekYear; } }
+        public int WeekOfWeekYear => date.WeekOfWeekYear;
 
         /// <summary>
         /// Gets the day of this local date and time within the year.
         /// </summary>
         /// <value>The day of this local date and time within the year.</value>
-        public int DayOfYear { get { return date.DayOfYear; } }
+        public int DayOfYear => date.DayOfYear;
 
         /// <summary>
         /// Gets the day of this local date and time within the month.
         /// </summary>
         /// <value>The day of this local date and time within the month.</value>
-        public int Day { get { return date.Day; } }
+        public int Day => date.Day;
 
         /// <summary>
         /// Gets the week day of this local date and time expressed as an <see cref="NodaTime.IsoDayOfWeek"/> value,
@@ -291,7 +288,7 @@ namespace NodaTime
         /// <exception cref="InvalidOperationException">The underlying calendar doesn't use ISO days of the week.</exception>
         /// <seealso cref="DayOfWeek"/>
         /// <value>The week day of this local date and time expressed as an <c>IsoDayOfWeek</c>.</value>
-        public IsoDayOfWeek IsoDayOfWeek { get { return date.IsoDayOfWeek; } }
+        public IsoDayOfWeek IsoDayOfWeek => date.IsoDayOfWeek;
 
         /// <summary>
         /// Gets the week day of this local date and time as a number.
@@ -301,73 +298,73 @@ namespace NodaTime
         /// </remarks>
         /// <seealso cref="IsoDayOfWeek"/>
         /// <value>The week day of this local date and time as a number.</value>
-        public int DayOfWeek { get { return date.DayOfWeek; } }
+        public int DayOfWeek => date.DayOfWeek;
 
         /// <summary>
         /// Gets the hour of day of this local date and time, in the range 0 to 23 inclusive.
         /// </summary>
         /// <value>The hour of day of this local date and time, in the range 0 to 23 inclusive.</value>
-        public int Hour { get { return time.Hour; } }
+        public int Hour => time.Hour;
 
         /// <summary>
         /// Gets the hour of the half-day of this local date and time, in the range 1 to 12 inclusive.
         /// </summary>
         /// <value>The hour of the half-day of this local date and time, in the range 1 to 12 inclusive.</value>
-        public int ClockHourOfHalfDay { get { return time.ClockHourOfHalfDay; } }
+        public int ClockHourOfHalfDay => time.ClockHourOfHalfDay;
 
         /// <summary>
         /// Gets the minute of this local date and time, in the range 0 to 59 inclusive.
         /// </summary>
         /// <value>The minute of this local date and time, in the range 0 to 59 inclusive.</value>
-        public int Minute { get { return time.Minute; } }
+        public int Minute => time.Minute;
 
         /// <summary>
         /// Gets the second of this local date and time within the minute, in the range 0 to 59 inclusive.
         /// </summary>
         /// <value>The second of this local date and time within the minute, in the range 0 to 59 inclusive.</value>
-        public int Second { get { return time.Second; } }
+        public int Second => time.Second;
 
         /// <summary>
         /// Gets the millisecond of this local date and time within the second, in the range 0 to 999 inclusive.
         /// </summary>
         /// <value>The millisecond of this local date and time within the second, in the range 0 to 999 inclusive.</value>
-        public int Millisecond { get { return time.Millisecond; } }
+        public int Millisecond => time.Millisecond;
 
         /// <summary>
         /// Gets the tick of this local time within the second, in the range 0 to 9,999,999 inclusive.
         /// </summary>
         /// <value>The tick of this local time within the second, in the range 0 to 9,999,999 inclusive.</value>
-        public int TickOfSecond { get { return time.TickOfSecond; } }
+        public int TickOfSecond => time.TickOfSecond;
 
         /// <summary>
         /// Gets the tick of this local date and time within the day, in the range 0 to 863,999,999,999 inclusive.
         /// </summary>
         /// <value>The tick of this local date and time within the day, in the range 0 to 863,999,999,999 inclusive.</value>
-        public long TickOfDay { get { return time.TickOfDay; } }
+        public long TickOfDay => time.TickOfDay;
 
         /// <summary>
         /// Gets the nanosecond of this local time within the second, in the range 0 to 999,999,999 inclusive.
         /// </summary>
         /// <value>The nanosecond of this local time within the second, in the range 0 to 999,999,999 inclusive.</value>
-        public int NanosecondOfSecond { get { return time.NanosecondOfSecond; } }
+        public int NanosecondOfSecond => time.NanosecondOfSecond;
 
         /// <summary>
         /// Gets the nanosecond of this local date and time within the day, in the range 0 to 86,399,999,999,999 inclusive.
         /// </summary>
         /// <value>The nanosecond of this local date and time within the day, in the range 0 to 86,399,999,999,999 inclusive.</value>
-        public long NanosecondOfDay { get { return time.NanosecondOfDay; } }
+        public long NanosecondOfDay => time.NanosecondOfDay;
 
         /// <summary>
         /// Gets the time portion of this local date and time as a <see cref="LocalTime"/>.
         /// </summary>
         /// <value>The time portion of this local date and time as a <c>LocalTime</c>.</value>
-        public LocalTime TimeOfDay { get { return time; } }
+        public LocalTime TimeOfDay => time;
 
         /// <summary>
         /// Gets the date portion of this local date and time as a <see cref="LocalDate"/> in the same calendar system as this value.
         /// </summary>
         /// <value>The date portion of this local date and time as a <c>LocalDate</c> in the same calendar system as this value.</value>
-        public LocalDate Date { get { return date; } }
+        public LocalDate Date => date;
 
         /// <summary>
         /// Constructs a <see cref="DateTime"/> from this value which has a <see cref="DateTime.Kind" />
@@ -381,16 +378,10 @@ namespace NodaTime
         /// </remarks>
         /// <returns>A <see cref="DateTime"/> value for the same date and time as this value.</returns>
         [Pure]
-        public DateTime ToDateTimeUnspecified()
-        {
-            return ToLocalInstant().ToDateTimeUnspecified();
-        }
+        public DateTime ToDateTimeUnspecified() => ToLocalInstant().ToDateTimeUnspecified();
 
         [Pure]
-        internal LocalInstant ToLocalInstant()
-        {
-            return new LocalInstant(date.DaysSinceEpoch, time.NanosecondOfDay);
-        }
+        internal LocalInstant ToLocalInstant() => new LocalInstant(date.DaysSinceEpoch, time.NanosecondOfDay);
 
         /// <summary>
         /// Converts a <see cref="DateTime" /> of any kind to a LocalDateTime in the ISO calendar. This does not perform
@@ -415,10 +406,7 @@ namespace NodaTime
         /// <returns>
         /// true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
         /// </returns>
-        public bool Equals(LocalDateTime other)
-        {
-            return date == other.date && time == other.time;
-        }
+        public bool Equals(LocalDateTime other) => date == other.date && time == other.time;
         #endregion
 
         #region Operators
@@ -428,10 +416,7 @@ namespace NodaTime
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
         /// <returns><c>true</c> if values are equal to each other, otherwise <c>false</c>.</returns>
-        public static bool operator ==(LocalDateTime left, LocalDateTime right)
-        {
-            return left.Equals(right);
-        }
+        public static bool operator ==(LocalDateTime left, LocalDateTime right) => left.Equals(right);
 
         /// <summary>
         /// Implements the operator != (inequality).
@@ -439,10 +424,7 @@ namespace NodaTime
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
         /// <returns><c>true</c> if values are not equal to each other, otherwise <c>false</c>.</returns>
-        public static bool operator !=(LocalDateTime left, LocalDateTime right)
-        {
-            return !(left == right);
-        }
+        public static bool operator !=(LocalDateTime left, LocalDateTime right) => !(left == right);
 
         /// <summary>
         /// Compares two LocalDateTime values to see if the left one is strictly earlier than the right
@@ -459,7 +441,7 @@ namespace NodaTime
         /// <returns>true if the <paramref name="lhs"/> is strictly earlier than <paramref name="rhs"/>, false otherwise.</returns>
         public static bool operator <(LocalDateTime lhs, LocalDateTime rhs)
         {
-            Preconditions.CheckArgument(lhs.Calendar.Equals(rhs.Calendar), "rhs", "Only values in the same calendar can be compared");
+            Preconditions.CheckArgument(lhs.Calendar.Equals(rhs.Calendar), nameof(rhs), "Only values in the same calendar can be compared");
             return lhs.CompareTo(rhs) < 0;
         }
 
@@ -478,7 +460,7 @@ namespace NodaTime
         /// <returns>true if the <paramref name="lhs"/> is earlier than or equal to <paramref name="rhs"/>, false otherwise.</returns>
         public static bool operator <=(LocalDateTime lhs, LocalDateTime rhs)
         {
-            Preconditions.CheckArgument(lhs.Calendar.Equals(rhs.Calendar), "rhs", "Only values in the same calendar can be compared");
+            Preconditions.CheckArgument(lhs.Calendar.Equals(rhs.Calendar), nameof(rhs), "Only values in the same calendar can be compared");
             return lhs.CompareTo(rhs) <= 0;
         }
 
@@ -497,7 +479,7 @@ namespace NodaTime
         /// <returns>true if the <paramref name="lhs"/> is strictly later than <paramref name="rhs"/>, false otherwise.</returns>
         public static bool operator >(LocalDateTime lhs, LocalDateTime rhs)
         {
-            Preconditions.CheckArgument(lhs.Calendar.Equals(rhs.Calendar), "rhs", "Only values in the same calendar can be compared");
+            Preconditions.CheckArgument(lhs.Calendar.Equals(rhs.Calendar), nameof(rhs), "Only values in the same calendar can be compared");
             return lhs.CompareTo(rhs) > 0;
         }
 
@@ -516,7 +498,7 @@ namespace NodaTime
         /// <returns>true if the <paramref name="lhs"/> is later than or equal to <paramref name="rhs"/>, false otherwise.</returns>
         public static bool operator >=(LocalDateTime lhs, LocalDateTime rhs)
         {
-            Preconditions.CheckArgument(lhs.Calendar.Equals(rhs.Calendar), "rhs", "Only values in the same calendar can be compared");
+            Preconditions.CheckArgument(lhs.Calendar.Equals(rhs.Calendar), nameof(rhs), "Only values in the same calendar can be compared");
             return lhs.CompareTo(rhs) >= 0;
         }
 
@@ -563,7 +545,7 @@ namespace NodaTime
             {
                 return 1;
             }
-            Preconditions.CheckArgument(obj is LocalDateTime, "obj", "Object must be of type NodaTime.LocalDateTime.");
+            Preconditions.CheckArgument(obj is LocalDateTime, nameof(obj), "Object must be of type NodaTime.LocalDateTime.");
             return CompareTo((LocalDateTime)obj);
         }
 
@@ -574,10 +556,7 @@ namespace NodaTime
         /// <param name="localDateTime">Initial local date and time</param>
         /// <param name="period">Period to add</param>
         /// <returns>The resulting local date and time</returns>
-        public static LocalDateTime operator +(LocalDateTime localDateTime, Period period)
-        {
-            return localDateTime.Plus(period);
-        }
+        public static LocalDateTime operator +(LocalDateTime localDateTime, [NotNull] Period period) => localDateTime.Plus(period);
 
         /// <summary>
         /// Add the specified period to the date and time. Friendly alternative to <c>operator+()</c>.
@@ -585,10 +564,7 @@ namespace NodaTime
         /// <param name="localDateTime">Initial local date and time</param>
         /// <param name="period">Period to add</param>
         /// <returns>The resulting local date and time</returns>
-        public static LocalDateTime Add(LocalDateTime localDateTime, Period period)
-        {
-            return localDateTime.Plus(period);
-        }
+        public static LocalDateTime Add(LocalDateTime localDateTime, [NotNull] Period period) => localDateTime.Plus(period);
 
         /// <summary>
         /// Adds a period to this local date/time. Fields are added in the order provided by the period.
@@ -596,9 +572,9 @@ namespace NodaTime
         /// <param name="period">Period to add</param>
         /// <returns>The resulting local date and time</returns>
         [Pure]
-        public LocalDateTime Plus(Period period)
+        public LocalDateTime Plus([NotNull] Period period)
         {
-            Preconditions.CheckNotNull(period, "period");
+            Preconditions.CheckNotNull(period, nameof(period));
             return period.AddTo(date, time, 1);
         }
 
@@ -609,10 +585,7 @@ namespace NodaTime
         /// <param name="localDateTime">Initial local date and time</param>
         /// <param name="period">Period to subtract</param>
         /// <returns>The resulting local date and time</returns>
-        public static LocalDateTime operator -(LocalDateTime localDateTime, Period period)
-        {
-            return localDateTime.Minus(period);
-        }
+        public static LocalDateTime operator -(LocalDateTime localDateTime, [NotNull] Period period) => localDateTime.Minus(period);
 
         /// <summary>
         /// Subtracts the specified period from the date and time. Friendly alternative to <c>operator-()</c>.
@@ -620,10 +593,7 @@ namespace NodaTime
         /// <param name="localDateTime">Initial local date and time</param>
         /// <param name="period">Period to subtract</param>
         /// <returns>The resulting local date and time</returns>
-        public static LocalDateTime Subtract(LocalDateTime localDateTime, Period period)
-        {
-            return localDateTime.Minus(period);
-        }
+        public static LocalDateTime Subtract(LocalDateTime localDateTime, [NotNull] Period period) => localDateTime.Minus(period);
 
         /// <summary>
         /// Subtracts a period from a local date/time. Fields are subtracted in the order provided by the period.
@@ -631,9 +601,9 @@ namespace NodaTime
         /// <param name="period">Period to subtract</param>
         /// <returns>The resulting local date and time</returns>
         [Pure]
-        public LocalDateTime Minus(Period period)
+        public LocalDateTime Minus([NotNull] Period period)
         {
-            Preconditions.CheckNotNull(period, "period");
+            Preconditions.CheckNotNull(period, nameof(period));
             return period.AddTo(date, time, -1);
         }
 
@@ -647,10 +617,7 @@ namespace NodaTime
         /// <param name="lhs">The date/time to subtract from</param>
         /// <param name="rhs">The date/time to subtract</param>
         /// <returns>The result of subtracting one date/time from another.</returns>
-        public static Period operator -(LocalDateTime lhs, LocalDateTime rhs)
-        {
-            return Period.Between(rhs, lhs);
-        }
+        public static Period operator -(LocalDateTime lhs, LocalDateTime rhs) => Period.Between(rhs, lhs);
 
         /// <summary>
         /// Subtracts one date/time from another, returning the result as a <see cref="Period"/>.
@@ -662,10 +629,7 @@ namespace NodaTime
         /// <param name="lhs">The date/time to subtract from</param>
         /// <param name="rhs">The date/time to subtract</param>
         /// <returns>The result of subtracting one date/time from another.</returns>
-        public static Period Subtract(LocalDateTime lhs, LocalDateTime rhs)
-        {
-            return lhs - rhs;
-        }
+        public static Period Subtract(LocalDateTime lhs, LocalDateTime rhs) => lhs - rhs;
 
         /// <summary>
         /// Subtracts the specified date/time from this date/time, returning the result as a <see cref="Period"/>.
@@ -675,10 +639,7 @@ namespace NodaTime
         /// <param name="localDateTime">The date/time to subtract from this</param>
         /// <returns>The difference between the specified date/time and this one</returns>
         [Pure]
-        public Period Minus(LocalDateTime localDateTime)
-        {
-            return this - localDateTime;
-        }
+        public Period Minus(LocalDateTime localDateTime) => this - localDateTime;
         #endregion
 
         #region object overrides
@@ -690,14 +651,7 @@ namespace NodaTime
         /// <c>true</c> if the specified <see cref="System.Object"/> is equal to this instance;
         /// otherwise, <c>false</c>.
         /// </returns>
-        public override bool Equals(object obj)
-        {
-            if (obj is LocalDateTime)
-            {
-                return Equals((LocalDateTime)obj);
-            }
-            return false;
-        }
+        public override bool Equals(object obj) => obj is LocalDateTime && Equals((LocalDateTime)obj);
 
         /// <summary>
         /// Returns a hash code for this instance.
@@ -726,10 +680,8 @@ namespace NodaTime
         /// <param name="adjuster">The adjuster to apply.</param>
         /// <returns>The adjusted date/time.</returns>
         [Pure]
-        public LocalDateTime With([NotNull] Func<LocalDate, LocalDate> adjuster)
-        {
-            return date.With(adjuster) + time;
-        }
+        public LocalDateTime With([NotNull] Func<LocalDate, LocalDate> adjuster) =>
+            date.With(adjuster) + time;
 
         /// <summary>
         /// Returns this date/time, with the given time adjuster applied to it, maintaining the existing date.
@@ -741,10 +693,8 @@ namespace NodaTime
         /// <param name="adjuster">The adjuster to apply.</param>
         /// <returns>The adjusted date/time.</returns>
         [Pure]
-        public LocalDateTime With([NotNull] Func<LocalTime, LocalTime> adjuster)
-        {
-            return date + time.With(adjuster);
-        }
+        public LocalDateTime With([NotNull] Func<LocalTime, LocalTime> adjuster) =>
+            date + time.With(adjuster);
 
         /// <summary>
         /// Creates a new LocalDateTime representing the same physical date and time, but in a different calendar.
@@ -756,7 +706,7 @@ namespace NodaTime
         [Pure]
         public LocalDateTime WithCalendar([NotNull] CalendarSystem calendarSystem)
         {
-            Preconditions.CheckNotNull(calendarSystem, "calendarSystem");
+            Preconditions.CheckNotNull(calendarSystem, nameof(calendarSystem));
             return new LocalDateTime(date.WithCalendar(calendarSystem), time);
         }
 
@@ -771,10 +721,7 @@ namespace NodaTime
         /// <param name="years">The number of years to add</param>
         /// <returns>The current value plus the given number of years.</returns>
         [Pure]
-        public LocalDateTime PlusYears(int years)
-        {
-            return new LocalDateTime(date.PlusYears(years), time);
-        }
+        public LocalDateTime PlusYears(int years) => new LocalDateTime(date.PlusYears(years), time);
 
         /// <summary>
         /// Returns a new LocalDateTime representing the current value with the given number of months added.
@@ -793,10 +740,7 @@ namespace NodaTime
         /// <param name="months">The number of months to add</param>
         /// <returns>The current value plus the given number of months.</returns>
         [Pure]
-        public LocalDateTime PlusMonths(int months)
-        {
-            return new LocalDateTime(date.PlusMonths(months), time);
-        }
+        public LocalDateTime PlusMonths(int months) => new LocalDateTime(date.PlusMonths(months), time);
 
         /// <summary>
         /// Returns a new LocalDateTime representing the current value with the given number of days added.
@@ -810,10 +754,7 @@ namespace NodaTime
         /// <param name="days">The number of days to add</param>
         /// <returns>The current value plus the given number of days.</returns>
         [Pure]
-        public LocalDateTime PlusDays(int days)
-        {
-            return new LocalDateTime(date.PlusDays(days), time);
-        }
+        public LocalDateTime PlusDays(int days) => new LocalDateTime(date.PlusDays(days), time);
 
         /// <summary>
         /// Returns a new LocalDateTime representing the current value with the given number of weeks added.
@@ -821,10 +762,7 @@ namespace NodaTime
         /// <param name="weeks">The number of weeks to add</param>
         /// <returns>The current value plus the given number of weeks.</returns>
         [Pure]
-        public LocalDateTime PlusWeeks(int weeks)
-        {
-            return new LocalDateTime(date.PlusWeeks(weeks), time);
-        }
+        public LocalDateTime PlusWeeks(int weeks) => new LocalDateTime(date.PlusWeeks(weeks), time);
 
         /// <summary>
         /// Returns a new LocalDateTime representing the current value with the given number of hours added.
@@ -832,10 +770,7 @@ namespace NodaTime
         /// <param name="hours">The number of hours to add</param>
         /// <returns>The current value plus the given number of hours.</returns>
         [Pure]
-        public LocalDateTime PlusHours(long hours)
-        {
-            return TimePeriodField.Hours.Add(this, hours);
-        }
+        public LocalDateTime PlusHours(long hours) => TimePeriodField.Hours.Add(this, hours);
 
         /// <summary>
         /// Returns a new LocalDateTime representing the current value with the given number of minutes added.
@@ -843,10 +778,7 @@ namespace NodaTime
         /// <param name="minutes">The number of minutes to add</param>
         /// <returns>The current value plus the given number of minutes.</returns>
         [Pure]
-        public LocalDateTime PlusMinutes(long minutes)
-        {
-            return TimePeriodField.Minutes.Add(this, minutes);
-        }
+        public LocalDateTime PlusMinutes(long minutes) => TimePeriodField.Minutes.Add(this, minutes);
 
         /// <summary>
         /// Returns a new LocalDateTime representing the current value with the given number of seconds added.
@@ -854,10 +786,7 @@ namespace NodaTime
         /// <param name="seconds">The number of seconds to add</param>
         /// <returns>The current value plus the given number of seconds.</returns>
         [Pure]
-        public LocalDateTime PlusSeconds(long seconds)
-        {
-            return TimePeriodField.Seconds.Add(this, seconds);
-        }
+        public LocalDateTime PlusSeconds(long seconds) => TimePeriodField.Seconds.Add(this, seconds);
 
         /// <summary>
         /// Returns a new LocalDateTime representing the current value with the given number of milliseconds added.
@@ -865,10 +794,8 @@ namespace NodaTime
         /// <param name="milliseconds">The number of milliseconds to add</param>
         /// <returns>The current value plus the given number of milliseconds.</returns>
         [Pure]
-        public LocalDateTime PlusMilliseconds(long milliseconds)
-        {
-            return TimePeriodField.Milliseconds.Add(this, milliseconds);
-        }
+        public LocalDateTime PlusMilliseconds(long milliseconds) =>
+            TimePeriodField.Milliseconds.Add(this, milliseconds);
 
         /// <summary>
         /// Returns a new LocalDateTime representing the current value with the given number of ticks added.
@@ -876,10 +803,7 @@ namespace NodaTime
         /// <param name="ticks">The number of ticks to add</param>
         /// <returns>The current value plus the given number of ticks.</returns>
         [Pure]
-        public LocalDateTime PlusTicks(long ticks)
-        {
-            return TimePeriodField.Ticks.Add(this, ticks);
-        }
+        public LocalDateTime PlusTicks(long ticks) => TimePeriodField.Ticks.Add(this, ticks);
 
         /// <summary>
         /// Returns a new LocalDateTime representing the current value with the given number of nanoseconds added.
@@ -887,10 +811,7 @@ namespace NodaTime
         /// <param name="nanoseconds">The number of nanoseconds to add</param>
         /// <returns>The current value plus the given number of nanoseconds.</returns>
         [Pure]
-        public LocalDateTime PlusNanoseconds(long nanoseconds)
-        {
-            return TimePeriodField.Nanoseconds.Add(this, nanoseconds);
-        }
+        public LocalDateTime PlusNanoseconds(long nanoseconds) => TimePeriodField.Nanoseconds.Add(this, nanoseconds);
 
         /// <summary>
         /// Returns the next <see cref="LocalDateTime" /> falling on the specified <see cref="IsoDayOfWeek"/>,
@@ -904,10 +825,7 @@ namespace NodaTime
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="targetDayOfWeek"/> is not a valid day of the
         /// week (Monday to Sunday).</exception>
         [Pure]
-        public LocalDateTime Next(IsoDayOfWeek targetDayOfWeek)
-        {
-            return new LocalDateTime(date.Next(targetDayOfWeek), time);
-        }
+        public LocalDateTime Next(IsoDayOfWeek targetDayOfWeek) => new LocalDateTime(date.Next(targetDayOfWeek), time);
 
         /// <summary>
         /// Returns the previous <see cref="LocalDateTime" /> falling on the specified <see cref="IsoDayOfWeek"/>,
@@ -921,10 +839,7 @@ namespace NodaTime
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="targetDayOfWeek"/> is not a valid day of the
         /// week (Monday to Sunday).</exception>
         [Pure]
-        public LocalDateTime Previous(IsoDayOfWeek targetDayOfWeek)
-        {
-            return new LocalDateTime(date.Previous(targetDayOfWeek), time);
-        }
+        public LocalDateTime Previous(IsoDayOfWeek targetDayOfWeek) => new LocalDateTime(date.Previous(targetDayOfWeek), time);
 
         /// <summary>
         /// Returns an <see cref="OffsetDateTime"/> for this local date/time with the given offset.
@@ -933,10 +848,7 @@ namespace NodaTime
         /// <param name="offset">The offset to apply.</param>
         /// <returns>The result of this local date/time offset by the given amount.</returns>
         [Pure]
-        public OffsetDateTime WithOffset(Offset offset)
-        {
-            return new OffsetDateTime(date.YearMonthDayCalendar, time, offset);
-        }
+        public OffsetDateTime WithOffset(Offset offset) => new OffsetDateTime(date.YearMonthDayCalendar, time, offset);
 
         /// <summary>
         /// Returns the mapping of this local date/time within <see cref="DateTimeZone.Utc"/>.
@@ -944,11 +856,9 @@ namespace NodaTime
         /// <remarks>As UTC is a fixed time zone, there is no chance that this local date/time is ambiguous or skipped.</remarks>
         /// <returns>The result of mapping this local date/time in UTC.</returns>
         [Pure]
-        public ZonedDateTime InUtc()
-        {
+        public ZonedDateTime InUtc() =>
             // Use the internal constructors to avoid validation. We know it will be fine.
-            return new ZonedDateTime(new OffsetDateTime(date.YearMonthDayCalendar, time.NanosecondOfDay), DateTimeZone.Utc);
-        }
+            new ZonedDateTime(new OffsetDateTime(date.YearMonthDayCalendar, time.NanosecondOfDay), DateTimeZone.Utc);
 
         /// <summary>
         /// Returns the mapping of this local date/time within the given <see cref="DateTimeZone" />,
@@ -967,7 +877,7 @@ namespace NodaTime
         [Pure]
         public ZonedDateTime InZoneStrictly([NotNull] DateTimeZone zone)
         {
-            Preconditions.CheckNotNull(zone, "zone");
+            Preconditions.CheckNotNull(zone, nameof(zone));
             return zone.AtStrictly(this);
         }
 
@@ -987,7 +897,7 @@ namespace NodaTime
         [Pure]
         public ZonedDateTime InZoneLeniently([NotNull] DateTimeZone zone)
         {
-            Preconditions.CheckNotNull(zone, "zone");
+            Preconditions.CheckNotNull(zone, nameof(zone));
             return zone.AtLeniently(this);
         }
 
@@ -1006,8 +916,8 @@ namespace NodaTime
         [Pure]
         public ZonedDateTime InZone([NotNull] DateTimeZone zone, [NotNull] ZoneLocalMappingResolver resolver)
         {
-            Preconditions.CheckNotNull(zone, "zone");
-            Preconditions.CheckNotNull(resolver, "resolver");
+            Preconditions.CheckNotNull(zone, nameof(zone));
+            Preconditions.CheckNotNull(resolver, nameof(resolver));
             return zone.ResolveLocal(this, resolver);
         }
 
@@ -1019,10 +929,8 @@ namespace NodaTime
         /// The value of the current instance in the default format pattern ("G"), using the current thread's
         /// culture to obtain a format provider.
         /// </returns>
-        public override string ToString()
-        {
-            return LocalDateTimePattern.BclSupport.Format(this, null, CultureInfo.CurrentCulture);
-        }
+        public override string ToString() =>
+            LocalDateTimePattern.BclSupport.Format(this, null, CultureInfo.CurrentCulture);
 
         /// <summary>
         /// Formats the value of the current instance using the specified pattern.
@@ -1037,23 +945,18 @@ namespace NodaTime
         /// or null to use the current thread's culture to obtain a format provider.
         /// </param>
         /// <filterpriority>2</filterpriority>
-        public string ToString(string patternText, IFormatProvider formatProvider)
-        {
-            return LocalDateTimePattern.BclSupport.Format(this, patternText, formatProvider);
-        }
+        public string ToString(string patternText, IFormatProvider formatProvider) =>
+            LocalDateTimePattern.BclSupport.Format(this, patternText, formatProvider);
         #endregion Formatting
 
         #region XML serialization
         /// <inheritdoc />
-        XmlSchema IXmlSerializable.GetSchema()
-        {
-            return null;
-        }
+        XmlSchema IXmlSerializable.GetSchema() => null;
 
         /// <inheritdoc />
-        void IXmlSerializable.ReadXml(XmlReader reader)
+        void IXmlSerializable.ReadXml([NotNull] XmlReader reader)
         {
-            Preconditions.CheckNotNull(reader, "reader");
+            Preconditions.CheckNotNull(reader, nameof(reader));
             var pattern = LocalDateTimePattern.ExtendedIsoPattern;
             if (reader.MoveToAttribute("calendar"))
             {
@@ -1068,9 +971,9 @@ namespace NodaTime
         }
 
         /// <inheritdoc />
-        void IXmlSerializable.WriteXml(XmlWriter writer)
+        void IXmlSerializable.WriteXml([NotNull] XmlWriter writer)
         {
-            Preconditions.CheckNotNull(writer, "writer");
+            Preconditions.CheckNotNull(writer, nameof(writer));
             if (Calendar != CalendarSystem.Iso)
             {
                 writer.WriteAttributeString("calendar", Calendar.Id);
@@ -1090,8 +993,8 @@ namespace NodaTime
         /// </summary>
         /// <param name="info">The <see cref="SerializationInfo"/> to fetch data from.</param>
         /// <param name="context">The source for this deserialization.</param>
-        private LocalDateTime(SerializationInfo info, StreamingContext context)
-            : this(new LocalDate(info.GetInt32(DaysSerializationName),
+        private LocalDateTime([NotNull] SerializationInfo info, StreamingContext context)
+            : this(new LocalDate(Preconditions.CheckNotNull(info, nameof(info)).GetInt32(DaysSerializationName),
                                  CalendarSystem.ForId(info.GetString(CalendarIdSerializationName))),
                    LocalTime.FromNanosecondsSinceMidnight(info.GetInt64(NanosecondOfDaySerializationName)))
         {
@@ -1103,8 +1006,9 @@ namespace NodaTime
         /// <param name="info">The <see cref="SerializationInfo"/> to populate with data.</param>
         /// <param name="context">The destination for this serialization.</param>
         [System.Security.SecurityCritical]
-        void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)
+        void ISerializable.GetObjectData([NotNull] SerializationInfo info, StreamingContext context)
         {
+            Preconditions.CheckNotNull(info, nameof(info));
             // FIXME(2.0): Revisit the serialization format
             info.AddValue(DaysSerializationName, date.DaysSinceEpoch);
             info.AddValue(NanosecondOfDaySerializationName, time.NanosecondOfDay);

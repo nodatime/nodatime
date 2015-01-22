@@ -2,6 +2,7 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
+using JetBrains.Annotations;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -20,24 +21,18 @@ namespace NodaTime.Utility
     {
         private readonly IDictionary<TKey, TValue> original;
 
-        internal NodaReadOnlyDictionary(IDictionary<TKey, TValue> original)
+        internal NodaReadOnlyDictionary([NotNull] IDictionary<TKey, TValue> original)
         {
-            this.original = Preconditions.CheckNotNull(original, "original");
+            this.original = Preconditions.CheckNotNull(original, nameof(original));
         }
 
-        public bool ContainsKey(TKey key)
-        {
-            return original.ContainsKey(key);
-        }
+        public bool ContainsKey(TKey key) => original.ContainsKey(key);
 
-        public ICollection<TKey> Keys { get { return original.Keys; } }
-    
-        public bool TryGetValue(TKey key, out TValue value)
-        {
-            return original.TryGetValue(key, out value);
-        }
+        public ICollection<TKey> Keys => original.Keys;
 
-        public ICollection<TValue> Values { get { return original.Values; } }
+        public bool TryGetValue(TKey key, out TValue value) => original.TryGetValue(key, out value);
+
+        public ICollection<TValue> Values => original.Values;
 
         public TValue this[TKey key]
         {
@@ -48,29 +43,17 @@ namespace NodaTime.Utility
             }
         }
 
-        public bool Contains(KeyValuePair<TKey, TValue> item)
-        {
-            return original.Contains(item);
-        }
+        public bool Contains(KeyValuePair<TKey, TValue> item) => original.Contains(item);
 
-        public void CopyTo(KeyValuePair<TKey, TValue>[] array, int arrayIndex)
-        {
-            original.CopyTo(array, arrayIndex);
-        }
+        public void CopyTo(KeyValuePair<TKey, TValue>[] array, int arrayIndex) => original.CopyTo(array, arrayIndex);
 
-        public int Count { get { return original.Count; } }
+        public int Count => original.Count;
 
-        public bool IsReadOnly { get { return true; } }
+        public bool IsReadOnly => true;
 
-        public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator()
-        {
-            return original.GetEnumerator();
-        }
+        public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator() => original.GetEnumerator();
 
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
         void IDictionary<TKey, TValue>.Add(TKey key, TValue value)
         {

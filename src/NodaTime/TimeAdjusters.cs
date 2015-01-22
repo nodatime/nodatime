@@ -15,26 +15,25 @@ namespace NodaTime
     /// </summary>
     public static class TimeAdjusters
     {
-        private static readonly Func<LocalTime, LocalTime> truncateToSecond = time => new LocalTime(time.Hour, time.Minute, time.Second);
-        private static readonly Func<LocalTime, LocalTime> truncateToMinute = time => new LocalTime(time.Hour, time.Minute);
-        private static readonly Func<LocalTime, LocalTime> truncateToHour = time => new LocalTime(time.Hour, 0);
-
         /// <summary>
         /// Gets a time adjuster to truncate the time to the second, discarding fractional seconds.
         /// </summary>
         /// <value>A time adjuster to truncate the time to the second, discarding fractional seconds.</value>
-        public static Func<LocalTime, LocalTime> TruncateToSecond { get { return truncateToSecond; } }
+        public static Func<LocalTime, LocalTime> TruncateToSecond { get; }
+            = time => new LocalTime(time.Hour, time.Minute, time.Second);
 
         /// <summary>
         /// Gets a time adjuster to truncate the time to the minute, discarding fractional minutes.
         /// </summary>
         /// <value>A time adjuster to truncate the time to the minute, discarding fractional minutes.</value>
-        public static Func<LocalTime, LocalTime> TruncateToMinute { get { return truncateToMinute; } }
+        public static Func<LocalTime, LocalTime> TruncateToMinute { get; }
+            = time => new LocalTime(time.Hour, time.Minute);
 
         /// <summary>
         /// Get a time adjuster to truncate the time to the hour, discarding fractional hours.
         /// </summary>
         /// <value>A time adjuster to truncate the time to the hour, discarding fractional hours.</value>
-        public static Func<LocalTime, LocalTime> TruncateToHour { get { return truncateToHour; } }
+        public static Func<LocalTime, LocalTime> TruncateToHour { get; }
+            = time => new LocalTime(time.Hour, 0);
     }
 }

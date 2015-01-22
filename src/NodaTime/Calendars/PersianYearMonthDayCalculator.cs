@@ -49,10 +49,7 @@ namespace NodaTime.Calendars
         {
         }
 
-        protected override int GetDaysFromStartOfYearToStartOfMonth(int year, int month)
-        {
-            return TotalDaysByMonth[month];
-        }
+        protected override int GetDaysFromStartOfYearToStartOfMonth(int year, int month) => TotalDaysByMonth[month];
 
         protected override int CalculateStartOfYearDays(int year)
         {
@@ -116,13 +113,11 @@ namespace NodaTime.Calendars
             return new YearMonthDay(year, month, day);
         }
 
-        internal override int GetDaysInMonth(int year, int month)
-        {
-            return month < 7 ? 31
+        internal override int GetDaysInMonth(int year, int month) =>
+            month < 7 ? 31
                 : month < 12 ? 30
                 : IsLeapYear(year) ? 30 : 29;
-        }
-
+  
         internal override bool IsLeapYear(int year)
         {
             // Handle negative years in order to make calculations near the start of the calendar work cleanly.
@@ -134,9 +129,6 @@ namespace NodaTime.Calendars
             return (LeapYearPatternBits & key) > 0;
         }
 
-        internal override int GetDaysInYear(int year)
-        {
-            return IsLeapYear(year) ? DaysPerLeapYear : DaysPerNonLeapYear;
-        }
+        internal override int GetDaysInYear(int year) => IsLeapYear(year) ? DaysPerLeapYear : DaysPerNonLeapYear;
     }
 }

@@ -140,10 +140,7 @@ namespace NodaTime.Text
             builder.AddFormatAction((value, sb) => offsetPattern.AppendFormat(value.Offset, sb));
         }
 
-        private static ParseResult<ZonedDateTime> ParseZone(ValueCursor value, ZonedDateTimeParseBucket bucket)
-        {
-            return bucket.ParseZone(value);
-        }
+        private static ParseResult<ZonedDateTime> ParseZone(ValueCursor value, ZonedDateTimeParseBucket bucket) => bucket.ParseZone(value);
 
         private sealed class ZonedDateTimeParseBucket : ParseBucket<ZonedDateTime>
         {

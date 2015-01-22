@@ -13,10 +13,7 @@ namespace NodaTime.Calendars
         {
         }
 
-        internal override bool IsLeapYear(int year)
-        {
-            return (year & 3) == 0;
-        }
+        internal override bool IsLeapYear(int year) => (year & 3) == 0;
 
         protected override int CalculateStartOfYearDays(int year)
         {

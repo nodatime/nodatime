@@ -20,12 +20,12 @@ namespace NodaTime.Text
     {
         private readonly T value;
         private readonly Func<Exception> exceptionProvider;
-        private readonly bool continueWithMultiple;
+        internal bool ContinueAfterErrorWithMultipleFormats { get; }
 
         private ParseResult(Func<Exception> exceptionProvider, bool continueWithMultiple)
         {
             this.exceptionProvider = exceptionProvider;
-            this.continueWithMultiple = continueWithMultiple;
+            this.ContinueAfterErrorWithMultipleFormats = continueWithMultiple;
         }
 
         private ParseResult(T value)
@@ -42,7 +42,7 @@ namespace NodaTime.Text
         /// already clear that it will throw if the parse failed.
         /// </remarks>
         /// <value>The result of the parsing operation if it was successful.</value>
-        public T Value { get { return GetValueOrThrow(); } }
+        public T Value => GetValueOrThrow();
 
         /// <summary>
         /// Gets an exception indicating the cause of the parse failure.
@@ -101,19 +101,15 @@ namespace NodaTime.Text
         /// This returns True if and only if fetching the value with the <see cref="Value"/> property will return with no exception.
         /// </remarks>
         /// <value>true if the parse operation was successful; otherwise false.</value>
-        public bool Success { get { return exceptionProvider == null; } }
-
-        internal bool ContinueAfterErrorWithMultipleFormats { get { return continueWithMultiple; } }
+        public bool Success => exceptionProvider == null;
 
         /// <summary>
         /// Converts this result to a new target type, either by executing the given projection
         /// for a success result, or propagating the exception provider for failure.
         /// </summary>
-        internal ParseResult<TTarget> Convert<TTarget>(Func<T, TTarget> projection)
-        {
-            return Success ? ParseResult<TTarget>.ForValue(projection(Value))
-                : new ParseResult<TTarget>(exceptionProvider, continueWithMultiple);
-        }
+        internal ParseResult<TTarget> Convert<TTarget>(Func<T, TTarget> projection) =>
+            Success ? ParseResult<TTarget>.ForValue(projection(Value))
+                    : new ParseResult<TTarget>(exceptionProvider, ContinueAfterErrorWithMultipleFormats);
 
         /// <summary>
         /// Converts this result to a new target type by propagating the exception provider.
@@ -125,20 +121,14 @@ namespace NodaTime.Text
             {
                 throw new InvalidOperationException("ConvertError should not be called on a successful parse result");
             }
-            return new ParseResult<TTarget>(exceptionProvider, continueWithMultiple);
+            return new ParseResult<TTarget>(exceptionProvider, ContinueAfterErrorWithMultipleFormats);
         }
 
         #region Factory methods and readonly static fields
         // TODO: Expose this and following method? What about continueOnMultiple?
-        internal static ParseResult<T> ForValue(T value)
-        {
-            return new ParseResult<T>(value);
-        }
+        internal static ParseResult<T> ForValue(T value) => new ParseResult<T>(value);
 
-        internal static ParseResult<T> ForException(Func<Exception> exceptionProvider)
-        {
-            return new ParseResult<T>(exceptionProvider, false);
-        }
+        internal static ParseResult<T> ForException(Func<Exception> exceptionProvider) => new ParseResult<T>(exceptionProvider, false);
 
         internal static ParseResult<T> ForInvalidValue(ValueCursor cursor, string formatString, params object[] parameters)
         {
@@ -164,198 +154,103 @@ namespace NodaTime.Text
             });
         }
 
-        private static ParseResult<T> ForInvalidValue(Func<Exception> exceptionProvider)
-        {
-            return new ParseResult<T>(exceptionProvider, true);
-        }
+        private static ParseResult<T> ForInvalidValue(Func<Exception> exceptionProvider) => new ParseResult<T>(exceptionProvider, true);
 
-        internal static ParseResult<T> ArgumentNull(string parameter)
-        {
-            return new ParseResult<T>(() => new ArgumentNullException(parameter), false);
-        }
+        internal static ParseResult<T> ArgumentNull(string parameter) => new ParseResult<T>(() => new ArgumentNullException(parameter), false);
 
-        internal static ParseResult<T> PositiveSignInvalid(ValueCursor cursor)
-        {
-            return ForInvalidValue(cursor, Messages.Parse_PositiveSignInvalid);
-        }
+        internal static ParseResult<T> PositiveSignInvalid(ValueCursor cursor) => ForInvalidValue(cursor, Messages.Parse_PositiveSignInvalid);
 
-        internal static ParseResult<T> CannotParseValue(ValueCursor cursor, string format)
-        {
-            return ForInvalidValue(cursor, Messages.Parse_CannotParseValue, typeof(T), format);
-        }
+        internal static ParseResult<T> CannotParseValue(ValueCursor cursor, string format) => ForInvalidValue(cursor, Messages.Parse_CannotParseValue, typeof(T), format);
 
         // Special case: it's a fault with the value, but we still don't want to continue with multiple patterns.
         // Also, there's no point in including the text.
         internal static readonly ParseResult<T> ValueStringEmpty =
             new ParseResult<T>(() => new UnparsableValueException(string.Format(CultureInfo.CurrentCulture, Messages.Parse_ValueStringEmpty)), false);
 
-        internal static ParseResult<T> ExtraValueCharacters(ValueCursor cursor, string remainder)
-        {
-            return ForInvalidValue(cursor, Messages.Parse_ExtraValueCharacters, remainder);
-        }
+        internal static ParseResult<T> ExtraValueCharacters(ValueCursor cursor, string remainder) => ForInvalidValue(cursor, Messages.Parse_ExtraValueCharacters, remainder);
 
-        internal static ParseResult<T> QuotedStringMismatch(ValueCursor cursor)
-        {
-            return ForInvalidValue(cursor, Messages.Parse_QuotedStringMismatch);
-        }
+        internal static ParseResult<T> QuotedStringMismatch(ValueCursor cursor) => ForInvalidValue(cursor, Messages.Parse_QuotedStringMismatch);
 
-        internal static ParseResult<T> EscapedCharacterMismatch(ValueCursor cursor, char patternCharacter)
-        {
-            return ForInvalidValue(cursor, Messages.Parse_EscapedCharacterMismatch, patternCharacter);
-        }
+        internal static ParseResult<T> EscapedCharacterMismatch(ValueCursor cursor, char patternCharacter) => ForInvalidValue(cursor, Messages.Parse_EscapedCharacterMismatch, patternCharacter);
 
-        internal static ParseResult<T> EndOfString(ValueCursor cursor)
-        {
-            return ForInvalidValue(cursor, Messages.Parse_EndOfString);
-        }
+        internal static ParseResult<T> EndOfString(ValueCursor cursor) => ForInvalidValue(cursor, Messages.Parse_EndOfString);
 
-        internal static ParseResult<T> TimeSeparatorMismatch(ValueCursor cursor)
-        {
-            return ForInvalidValue(cursor, Messages.Parse_TimeSeparatorMismatch);
-        }
+        internal static ParseResult<T> TimeSeparatorMismatch(ValueCursor cursor) => ForInvalidValue(cursor, Messages.Parse_TimeSeparatorMismatch);
 
-        internal static ParseResult<T> DateSeparatorMismatch(ValueCursor cursor)
-        {
-            return ForInvalidValue(cursor, Messages.Parse_DateSeparatorMismatch);
-        }
+        internal static ParseResult<T> DateSeparatorMismatch(ValueCursor cursor) => ForInvalidValue(cursor, Messages.Parse_DateSeparatorMismatch);
 
-        internal static ParseResult<T> MissingNumber(ValueCursor cursor)
-        {
-            return ForInvalidValue(cursor, Messages.Parse_MissingNumber);
-        }
+        internal static ParseResult<T> MissingNumber(ValueCursor cursor) => ForInvalidValue(cursor, Messages.Parse_MissingNumber);
 
-        internal static ParseResult<T> UnexpectedNegative(ValueCursor cursor)
-        {
-            return ForInvalidValue(cursor, Messages.Parse_UnexpectedNegative);
-        }
+        internal static ParseResult<T> UnexpectedNegative(ValueCursor cursor) => ForInvalidValue(cursor, Messages.Parse_UnexpectedNegative);
+
         /// <summary>
         /// This isn't really an issue with the value so much as the pattern... but the result is the same.
         /// </summary>
         internal static readonly ParseResult<T> FormatOnlyPattern =
             new ParseResult<T>(() => new UnparsableValueException(string.Format(CultureInfo.CurrentCulture, Messages.Parse_FormatOnlyPattern)), true);
 
-        internal static ParseResult<T> MismatchedNumber(ValueCursor cursor, string pattern)
-        {
-            return ForInvalidValue(cursor, Messages.Parse_MismatchedNumber, pattern);
-        }
-        
-        internal static ParseResult<T> MismatchedCharacter(ValueCursor cursor, char patternCharacter)
-        {
-            return ForInvalidValue(cursor, Messages.Parse_MismatchedCharacter, patternCharacter);
-        }
+        internal static ParseResult<T> MismatchedNumber(ValueCursor cursor, string pattern) => ForInvalidValue(cursor, Messages.Parse_MismatchedNumber, pattern);
 
-        internal static ParseResult<T> MismatchedText(ValueCursor cursor, char field)
-        {
-            return ForInvalidValue(cursor, Messages.Parse_MismatchedText, field);
-        }
+        internal static ParseResult<T> MismatchedCharacter(ValueCursor cursor, char patternCharacter) => ForInvalidValue(cursor, Messages.Parse_MismatchedCharacter, patternCharacter);
 
-        internal static ParseResult<T> NoMatchingFormat(ValueCursor cursor)
-        {
-            return ForInvalidValue(cursor, Messages.Parse_NoMatchingFormat);
-        }
+        internal static ParseResult<T> MismatchedText(ValueCursor cursor, char field) => ForInvalidValue(cursor, Messages.Parse_MismatchedText, field);
 
-        internal static ParseResult<T> ValueOutOfRange(ValueCursor cursor, object value)
-        {
-            return ForInvalidValue(cursor, Messages.Parse_ValueOutOfRange, value, typeof(T));
-        }
+        internal static ParseResult<T> NoMatchingFormat(ValueCursor cursor) => ForInvalidValue(cursor, Messages.Parse_NoMatchingFormat);
 
-        internal static ParseResult<T> MissingSign(ValueCursor cursor)
-        {
-            return ForInvalidValue(cursor, Messages.Parse_MissingSign);
-        }
+        internal static ParseResult<T> ValueOutOfRange(ValueCursor cursor, object value) => ForInvalidValue(cursor, Messages.Parse_ValueOutOfRange, value, typeof(T));
 
-        internal static ParseResult<T> MissingAmPmDesignator(ValueCursor cursor)
-        {
-            return ForInvalidValue(cursor, Messages.Parse_MissingAmPmDesignator);
-        }
+        internal static ParseResult<T> MissingSign(ValueCursor cursor) => ForInvalidValue(cursor, Messages.Parse_MissingSign);
 
-        internal static ParseResult<T> NoMatchingCalendarSystem(ValueCursor cursor)
-        {
-            return ForInvalidValue(cursor, Messages.Parse_NoMatchingCalendarSystem);
-        }
-        internal static ParseResult<T> NoMatchingZoneId(ValueCursor cursor)
-        {
-            return ForInvalidValue(cursor, Messages.Parse_NoMatchingZoneId);
-        }
+        internal static ParseResult<T> MissingAmPmDesignator(ValueCursor cursor) => ForInvalidValue(cursor, Messages.Parse_MissingAmPmDesignator);
 
-        internal static ParseResult<T> InvalidHour24(string text)
-        {
-            return ForInvalidValuePostParse(text, Messages.Parse_InvalidHour24);
-        }
+        internal static ParseResult<T> NoMatchingCalendarSystem(ValueCursor cursor) => ForInvalidValue(cursor, Messages.Parse_NoMatchingCalendarSystem);
 
-        internal static ParseResult<T> FieldValueOutOfRange(ValueCursor cursor, int value, char field)
-        {
-            return ForInvalidValue(cursor, Messages.Parse_FieldValueOutOfRange, value, field, typeof(T));
-        }
+        internal static ParseResult<T> NoMatchingZoneId(ValueCursor cursor) => ForInvalidValue(cursor, Messages.Parse_NoMatchingZoneId);
 
-        internal static ParseResult<T> FieldValueOutOfRangePostParse(string text, int value, char field)
-        {
-            return ForInvalidValuePostParse(text, Messages.Parse_FieldValueOutOfRange, value, field, typeof(T));
-        }
+        internal static ParseResult<T> InvalidHour24(string text) => ForInvalidValuePostParse(text, Messages.Parse_InvalidHour24);
+
+        internal static ParseResult<T> FieldValueOutOfRange(ValueCursor cursor, int value, char field) =>
+            ForInvalidValue(cursor, Messages.Parse_FieldValueOutOfRange, value, field, typeof(T));
+
+        internal static ParseResult<T> FieldValueOutOfRangePostParse(string text, int value, char field) =>
+            ForInvalidValuePostParse(text, Messages.Parse_FieldValueOutOfRange, value, field, typeof(T));
 
         /// <summary>
         /// Two fields (e.g. "hour of day" and "hour of half day") were mutually inconsistent.
         /// </summary>
-        internal static ParseResult<T> InconsistentValues(string text, char field1, char field2)
-        {
-            return ForInvalidValuePostParse(text, Messages.Parse_InconsistentValues2, field1, field2, typeof(T));
-        }
+        internal static ParseResult<T> InconsistentValues(string text, char field1, char field2) =>
+            ForInvalidValuePostParse(text, Messages.Parse_InconsistentValues2, field1, field2, typeof(T));
 
         /// <summary>
         /// The month of year is inconsistent between the text and numeric specifications.
         /// We can't use InconsistentValues for this as the pattern character is the same in both cases.
         /// </summary>
-        internal static ParseResult<T> InconsistentMonthValues(string text)
-        {
-            return ForInvalidValuePostParse(text, Messages.Parse_InconsistentMonthTextValue);
-        }
+        internal static ParseResult<T> InconsistentMonthValues(string text) => ForInvalidValuePostParse(text, Messages.Parse_InconsistentMonthTextValue);
 
         /// <summary>
         /// The day of month is inconsistent with the day of week value.
         /// We can't use InconsistentValues for this as the pattern character is the same in both cases.
         /// </summary>
-        internal static ParseResult<T> InconsistentDayOfWeekTextValue(string text)
-        {
-            return ForInvalidValuePostParse(text, Messages.Parse_InconsistentDayOfWeekTextValue);
-        }
+        internal static ParseResult<T> InconsistentDayOfWeekTextValue(string text) => ForInvalidValuePostParse(text, Messages.Parse_InconsistentDayOfWeekTextValue);
 
         /// <summary>
         /// We'd expected to get to the end of the string now, but we haven't.
         /// </summary>
-        internal static ParseResult<T> ExpectedEndOfString(ValueCursor cursor)
-        {
-            return ForInvalidValue(cursor, Messages.Parse_ExpectedEndOfString);
-        }
+        internal static ParseResult<T> ExpectedEndOfString(ValueCursor cursor) => ForInvalidValue(cursor, Messages.Parse_ExpectedEndOfString);
 
-        internal static ParseResult<T> YearOfEraOutOfRange(string text, int value, Era era, CalendarSystem calendar)
-        {
-            return ForInvalidValuePostParse(text, Messages.Parse_YearOfEraOutOfRange, value, era.Name, calendar.Name);
-        }
+        internal static ParseResult<T> YearOfEraOutOfRange(string text, int value, Era era, CalendarSystem calendar) =>
+            ForInvalidValuePostParse(text, Messages.Parse_YearOfEraOutOfRange, value, era.Name, calendar.Name);
 
-        internal static ParseResult<T> MonthOutOfRange(string text, int month, int year)
-        {
-            return ForInvalidValuePostParse(text, Messages.Parse_MonthOutOfRange, month, year);
-        }
+        internal static ParseResult<T> MonthOutOfRange(string text, int month, int year) => ForInvalidValuePostParse(text, Messages.Parse_MonthOutOfRange, month, year);
 
-        internal static ParseResult<T> DayOfMonthOutOfRange(string text, int day, int month, int year)
-        {
-            return ForInvalidValuePostParse(text, Messages.Parse_DayOfMonthOutOfRange, day, month, year);
-        }
+        internal static ParseResult<T> DayOfMonthOutOfRange(string text, int day, int month, int year) => ForInvalidValuePostParse(text, Messages.Parse_DayOfMonthOutOfRange, day, month, year);
 
-        internal static ParseResult<T> InvalidOffset(string text)
-        {
-            return ForInvalidValuePostParse(text, Messages.Parse_InvalidOffset);
-        }
+        internal static ParseResult<T> InvalidOffset(string text) => ForInvalidValuePostParse(text, Messages.Parse_InvalidOffset);
 
-        internal static ParseResult<T> SkippedLocalTime(string text)
-        {
-            return ForInvalidValuePostParse(text, Messages.Parse_SkippedLocalTime);
-        }
+        internal static ParseResult<T> SkippedLocalTime(string text) => ForInvalidValuePostParse(text, Messages.Parse_SkippedLocalTime);
 
-        internal static ParseResult<T> AmbiguousLocalTime(string text)
-        {
-            return ForInvalidValuePostParse(text, Messages.Parse_AmbiguousLocalTime);
-        }
+        internal static ParseResult<T> AmbiguousLocalTime(string text) => ForInvalidValuePostParse(text, Messages.Parse_AmbiguousLocalTime);
+
         #endregion
     }
 }

@@ -173,10 +173,8 @@ namespace NodaTime.Text
                 return ParseResult<LocalDateTime>.ForValue(date + time);
             }
 
-            internal override ParseResult<LocalDateTime> CalculateValue(PatternFields usedFields, string text)
-            {
-                return CombineBuckets(usedFields, Date, Time, text);
-            }
+            internal override ParseResult<LocalDateTime> CalculateValue(PatternFields usedFields, string text) =>
+                CombineBuckets(usedFields, Date, Time, text);
         }
     }
 }

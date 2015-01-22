@@ -2,6 +2,7 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
+using NodaTime.Annotations;
 using System;
 
 namespace NodaTime.Calendars
@@ -25,16 +26,13 @@ namespace NodaTime.Calendars
             this.monthsInYear = monthsInYear;
         }
 
-        internal override int GetMonthsInYear(int year)
-        {
-            return monthsInYear;
-        }
+        internal override int GetMonthsInYear([Trusted] int year) => monthsInYear;
 
         /// <summary>
         /// Implements a simple year-setting policy, truncating the day
         /// if necessary.
         /// </summary>
-        internal override YearMonthDay SetYear(YearMonthDay yearMonthDay, int year)
+        internal override YearMonthDay SetYear(YearMonthDay yearMonthDay, [Trusted] int year)
         {
             // TODO(2.0): All subclasses have the same logic of "detect leap years,
             // and otherwise we're fine". Put it here instead.

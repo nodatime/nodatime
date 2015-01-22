@@ -28,39 +28,33 @@ namespace NodaTime.Calendars
         {
             if (era != this.era)
             {
-                Preconditions.CheckNotNull(era, "era");
-                Preconditions.CheckArgument(era == this.era, "era", "Only supported era is {0}; requested era was {1}",
+                Preconditions.CheckNotNull(era, nameof(era));
+                Preconditions.CheckArgument(era == this.era, nameof(era), "Only supported era is {0}; requested era was {1}",
                     this.era.Name, era.Name);
             }
         }
 
-        internal override int GetAbsoluteYear(int yearOfEra, Era era)
+        internal override int GetAbsoluteYear(int yearOfEra, [NotNull] Era era)
         {
             ValidateEra(era);
-            Preconditions.CheckArgumentRange("yearOfEra", yearOfEra, minYear, maxYear);
+            Preconditions.CheckArgumentRange(nameof(yearOfEra), yearOfEra, minYear, maxYear);
             return yearOfEra;
         }
 
-        internal override int GetYearOfEra(YearMonthDay yearMonthDay)
-        {
-            return yearMonthDay.Year;
-        }
+        internal override int GetYearOfEra(YearMonthDay yearMonthDay) => yearMonthDay.Year;
 
-        internal override int GetMinYearOfEra(Era era)
+        internal override int GetMinYearOfEra([NotNull] Era era)
         {
             ValidateEra(era);
             return minYear;
         }
 
-        internal override int GetMaxYearOfEra(Era era)
+        internal override int GetMaxYearOfEra([NotNull] Era era)
         {
             ValidateEra(era);
             return maxYear;
         }
 
-        internal override Era GetEra(YearMonthDay yearMonthDay)
-        {
-            return era;
-        }
+        internal override Era GetEra(YearMonthDay yearMonthDay) => era;
     }
 }

@@ -20,7 +20,7 @@ namespace NodaTime.Extensions
         /// <returns>The elapsed time of <paramref name="stopwatch"/> as a <c>Duration</c>.</returns>
         public static Duration ElapsedDuration([NotNull] this Stopwatch stopwatch)
         {
-            Preconditions.CheckNotNull(stopwatch, "stopwatch");
+            Preconditions.CheckNotNull(stopwatch, nameof(stopwatch));
             return stopwatch.Elapsed.ToDuration();
         }
     }

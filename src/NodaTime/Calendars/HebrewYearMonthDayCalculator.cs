@@ -25,34 +25,23 @@ namespace NodaTime.Calendars
             this.monthNumbering = monthNumbering;
         }
 
-        private int CalendarToCivilMonth(int year, int month)
-        {
-            return monthNumbering == HebrewMonthNumbering.Civil ? month : HebrewMonthConverter.ScripturalToCivil(year, month);
-        }
+        private int CalendarToCivilMonth(int year, int month) =>
+            monthNumbering == HebrewMonthNumbering.Civil ? month : HebrewMonthConverter.ScripturalToCivil(year, month);
 
-        private int CalendarToScripturalMonth(int year, int month)
-        {
-            return monthNumbering == HebrewMonthNumbering.Scriptural ? month : HebrewMonthConverter.CivilToScriptural(year, month);
-        }
+        private int CalendarToScripturalMonth(int year, int month) =>
+            monthNumbering == HebrewMonthNumbering.Scriptural ? month : HebrewMonthConverter.CivilToScriptural(year, month);
 
-        private int CivilToCalendarMonth(int year, int month)
-        {
-            return monthNumbering == HebrewMonthNumbering.Civil ? month : HebrewMonthConverter.CivilToScriptural(year, month);
-        }
+        private int CivilToCalendarMonth(int year, int month) =>
+            monthNumbering == HebrewMonthNumbering.Civil ? month : HebrewMonthConverter.CivilToScriptural(year, month);
 
-        private int ScripturalToCalendarMonth(int year, int month)
-        {
-            return monthNumbering == HebrewMonthNumbering.Scriptural ? month : HebrewMonthConverter.ScripturalToCivil(year, month);
-        }
+        private int ScripturalToCalendarMonth(int year, int month) =>
+            monthNumbering == HebrewMonthNumbering.Scriptural ? month : HebrewMonthConverter.ScripturalToCivil(year, month);
 
         /// <summary>
         /// Returns whether or not the given year is a leap year - that is, one with 13 months. This is
         /// not quite the same as a leap year in (say) the Gregorian calendar system...
         /// </summary>
-        internal override bool IsLeapYear(int year)
-        {
-            return HebrewScripturalCalculator.IsLeapYear(year);
-        }
+        internal override bool IsLeapYear(int year) => HebrewScripturalCalculator.IsLeapYear(year);
 
         protected override int GetDaysFromStartOfYearToStartOfMonth(int year, int month)
         {
@@ -74,15 +63,9 @@ namespace NodaTime.Calendars
             return monthNumbering == HebrewMonthNumbering.Scriptural ? scriptural : new YearMonthDay(year, HebrewMonthConverter.ScripturalToCivil(year, scriptural.Month), scriptural.Day);
         }
 
-        internal override int GetDaysInYear(int year)
-        {
-            return HebrewScripturalCalculator.DaysInYear(year);
-        }
+        internal override int GetDaysInYear(int year) => HebrewScripturalCalculator.DaysInYear(year);
 
-        internal override int GetMonthsInYear(int year)
-        {
-            return IsLeapYear(year) ? 13 : 12;
-        }
+        internal override int GetMonthsInYear(int year) => IsLeapYear(year) ? 13 : 12;
 
         /// <summary>
         /// Change the year, maintaining month and day as well as possible. This doesn't
@@ -124,10 +107,8 @@ namespace NodaTime.Calendars
             return new YearMonthDay(year, targetCalendarMonth, targetDay);
         }
 
-        internal override int GetDaysInMonth(int year, int month)
-        {
-            return HebrewScripturalCalculator.DaysInMonth(year, CalendarToScripturalMonth(year, month));
-        }
+        internal override int GetDaysInMonth(int year, int month) =>
+            HebrewScripturalCalculator.DaysInMonth(year, CalendarToScripturalMonth(year, month));
 
         internal override YearMonthDay AddMonths(YearMonthDay yearMonthDay, int months)
         {

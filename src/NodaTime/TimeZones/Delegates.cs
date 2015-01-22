@@ -2,6 +2,8 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
+using JetBrains.Annotations;
+
 namespace NodaTime.TimeZones
 {
     // Delegates used for mapping local date/time values to ZonedDateTime.
@@ -64,7 +66,8 @@ namespace NodaTime.TimeZones
     /// <param name="intervalAfter">The zone interval directly after the target local date and time would have occurred</param>
     /// <exception cref="SkippedTimeException">The implementation rejects requests to map skipped times.</exception>
     /// <returns>A <see cref="ZonedDateTime"/> in the target time zone.</returns>
-    public delegate ZonedDateTime SkippedTimeResolver(LocalDateTime localDateTime, DateTimeZone zone, ZoneInterval intervalBefore, ZoneInterval intervalAfter);
+    public delegate ZonedDateTime SkippedTimeResolver(LocalDateTime localDateTime, [NotNull] DateTimeZone zone,
+        [NotNull] ZoneInterval intervalBefore, [NotNull] ZoneInterval intervalAfter);
 
     /// <summary>
     /// Resolves the result of attempting to map a local date and time to a target time zone.

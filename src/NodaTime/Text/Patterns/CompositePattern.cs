@@ -2,6 +2,7 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
+using JetBrains.Annotations;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -36,10 +37,7 @@ namespace NodaTime.Text.Patterns
             return ParseResult<T>.NoMatchingFormat(new ValueCursor(text));
         }
 
-        public string Format(T value)
-        {
-            return formatPatternPicker(value).Format(value);
-        }
+        public string Format(T value) => formatPatternPicker(value).Format(value);
 
         public ParseResult<T> ParsePartial(ValueCursor cursor)
         {
@@ -57,10 +55,7 @@ namespace NodaTime.Text.Patterns
             return ParseResult<T>.NoMatchingFormat(cursor);
         }
 
-        public StringBuilder AppendFormat(T value, StringBuilder builder)
-        {
-            return formatPatternPicker(value).AppendFormat(value, builder);
-        }
+        public StringBuilder AppendFormat(T value, [NotNull] StringBuilder builder) => formatPatternPicker(value).AppendFormat(value, builder);
     }
 
 }

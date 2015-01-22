@@ -21,29 +21,25 @@ namespace NodaTime.Calendars
         /// </summary>
         private readonly YearStartCacheEntry[] yearCache = YearStartCacheEntry.CreateCache();
 
-        private readonly int minYear;
-        internal int MinYear { get { return minYear; } }
+        internal int MinYear { get; }
 
-        private readonly int maxYear;
-        internal int MaxYear { get { return maxYear; } }
-
-        private readonly int averageDaysPer10Years;
-
-        private readonly int daysAtStartOfYear1;
+        internal int MaxYear { get; }
 
         [VisibleForTesting]
-        internal int DaysAtStartOfYear1 { get { return daysAtStartOfYear1; } }
+        internal int DaysAtStartOfYear1 { get; }
+
+        private readonly int averageDaysPer10Years;
 
         protected YearMonthDayCalculator(int minYear, int maxYear,
             int averageDaysPer10Years, int daysAtStartOfYear1)
         {
             // We should really check the minimum year as well, but constructing it hurts my brain.
-            Preconditions.CheckArgument(maxYear < YearStartCacheEntry.InvalidEntryYear, "maxYear",
+            Preconditions.CheckArgument(maxYear < YearStartCacheEntry.InvalidEntryYear, nameof(maxYear),
                 "Calendar year range would invalidate caching.");
-            this.minYear = minYear;
-            this.maxYear = maxYear;
+            this.MinYear = minYear;
+            this.MaxYear = maxYear;
             this.averageDaysPer10Years = averageDaysPer10Years;
-            this.daysAtStartOfYear1 = daysAtStartOfYear1;
+            this.DaysAtStartOfYear1 = daysAtStartOfYear1;
         }
 
         #region Abstract methods
@@ -125,18 +121,15 @@ namespace NodaTime.Calendars
         /// </summary>
         /// <remarks>Although the parameters are trusted (as in, they'll be valid in this calendar),
         /// the method being public isn't a problem - this type is never exposed.</remarks>
-        public virtual int Compare([Trusted] YearMonthDay lhs, [Trusted] YearMonthDay rhs)
-        {
-            return lhs.CompareTo(rhs);
-        }
+        public virtual int Compare([Trusted] YearMonthDay lhs, [Trusted] YearMonthDay rhs) => lhs.CompareTo(rhs);
 
         // Catch-all year/month/day validation. Subclasses can optimize further - currently
         // this is only done for Gregorian/Julian calendars, which are the most performance-critical.
         internal virtual void ValidateYearMonthDay(int year, int month, int day)
         {
-            Preconditions.CheckArgumentRange("year", year, minYear, maxYear);
-            Preconditions.CheckArgumentRange("month", month, 1, GetMonthsInYear(year));
-            Preconditions.CheckArgumentRange("day", day, 1, GetDaysInMonth(year, month));
+            Preconditions.CheckArgumentRange(nameof(year), year, MinYear, MaxYear);
+            Preconditions.CheckArgumentRange(nameof(month), month, 1, GetMonthsInYear(year));
+            Preconditions.CheckArgumentRange(nameof(day), day, 1, GetDaysInMonth(year, month));
         }
         #endregion
 
@@ -146,10 +139,7 @@ namespace NodaTime.Calendars
         /// Converts from a YearMonthDay representation to "day of year".
         /// This assumes the parameter have been validated previously.
         /// </summary>
-        internal int GetDayOfYear([Trusted] YearMonthDay yearMonthDay)
-        {
-            return GetDaysFromStartOfYearToStartOfMonth(yearMonthDay.Year, yearMonthDay.Month) + yearMonthDay.Day;
-        }
+        internal int GetDayOfYear([Trusted] YearMonthDay yearMonthDay) => GetDaysFromStartOfYearToStartOfMonth(yearMonthDay.Year, yearMonthDay.Month) + yearMonthDay.Day;
 
         /// <summary>
         /// Works out the year/month/day of a given days-since-epoch by first computing the year and day of year,
@@ -174,7 +164,7 @@ namespace NodaTime.Calendars
             // represents the start of that year. Then verify estimate and fix if
             // necessary. We have the average days per 100 years to avoid getting bad candidates
             // pretty quickly.
-            int daysSinceYear1 = daysSinceEpoch - daysAtStartOfYear1;
+            int daysSinceYear1 = daysSinceEpoch - DaysAtStartOfYear1;
             int candidate = ((daysSinceYear1 * 10) / averageDaysPer10Years) + 1;
 
             // Most of the time we'll get the right year straight away, and we'll almost
