@@ -208,7 +208,7 @@ namespace NodaTime.Text
         /// Creates a pattern for the same original localization information as this pattern, but with the specified
         /// pattern text.
         /// </summary>
-        /// <param name="newPatternText">The pattern text to use in the new pattern.</param>
+        /// <param name="patternText">The pattern text to use in the new pattern.</param>
         /// <returns>A new pattern with the given pattern text.</returns>
         public OffsetDateTimePattern WithPatternText([NotNull] string patternText) =>
             Create(patternText, FormatInfo, TemplateValue);
@@ -217,7 +217,7 @@ namespace NodaTime.Text
         /// Creates a pattern for the same original pattern text as this pattern, but with the specified
         /// localization information.
         /// </summary>
-        /// <param name="newFormatInfo">The localization information to use in the new pattern.</param>
+        /// <param name="formatInfo">The localization information to use in the new pattern.</param>
         /// <returns>A new pattern with the given localization information.</returns>
         private OffsetDateTimePattern WithFormatInfo([NotNull] NodaFormatInfo formatInfo) =>
             Create(PatternText, formatInfo, TemplateValue);

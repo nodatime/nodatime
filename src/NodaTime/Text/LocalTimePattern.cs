@@ -179,7 +179,7 @@ namespace NodaTime.Text
         /// Creates a pattern for the same original pattern text as this pattern, but with the specified
         /// localization information.
         /// </summary>
-        /// <param name="newFormatInfo">The localization information to use in the new pattern.</param>
+        /// <param name="formatInfo">The localization information to use in the new pattern.</param>
         /// <returns>A new pattern with the given localization information.</returns>
         private LocalTimePattern WithFormatInfo([NotNull] NodaFormatInfo formatInfo) =>
             Create(PatternText, formatInfo, TemplateValue);
