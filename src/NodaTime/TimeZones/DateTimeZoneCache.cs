@@ -85,7 +85,7 @@ namespace NodaTime.TimeZones
             if (id == null)
             {
 #if PCL
-                throw new DateTimeZoneNotFoundException("TimeZoneInfo name " + bcl.StandardName + " is unknown to source " + providerVersionId);
+                throw new DateTimeZoneNotFoundException("TimeZoneInfo name " + bcl.StandardName + " is unknown to source " + VersionId);
 #else
                 throw new DateTimeZoneNotFoundException("TimeZoneInfo ID " + bcl.Id + " is unknown to source " + VersionId);
 #endif

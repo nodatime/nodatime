@@ -174,7 +174,7 @@ namespace NodaTime.TimeZones
             Preconditions.CheckNotNull(timeZone, nameof(timeZone));
 #if PCL
             // Our in-memory mapping is effectively from standard name to TZDB ID.
-            string id = zone.StandardName;
+            string id = timeZone.StandardName;
 #else
             string id = timeZone.Id;
 #endif
@@ -187,7 +187,7 @@ namespace NodaTime.TimeZones
             }
             if (result == null)
             {
-                result = GuessZoneIdByTransitions(zone);
+                result = GuessZoneIdByTransitions(timeZone);
             }
 #endif
             return result;
