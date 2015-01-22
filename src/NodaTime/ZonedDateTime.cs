@@ -591,6 +591,7 @@ namespace NodaTime
         /// Use the static properties of this class to obtain instances. This type is exposed so that the
         /// same value can be used for both equality and ordering comparisons.
         /// </remarks>
+        [Immutable]
         public abstract class Comparer : IComparer<ZonedDateTime>, IEqualityComparer<ZonedDateTime>
         {
             // TODO(2.0): A comparer which compares instants, but in a calendar-sensitive manner?

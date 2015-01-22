@@ -287,7 +287,7 @@ namespace NodaTime
         /// in magnitude.
         /// </summary>
         [Pure]
-        internal Duration PlusSmallNanoseconds(long smallNanos)
+        internal Duration PlusSmallNanoseconds([Trusted] long smallNanos)
         {
             unchecked
             {
