@@ -11,6 +11,7 @@ using NUnit.Framework;
 
 namespace NodaTime.Test.Annotations
 {
+    [Category("Roslyn")]
     [TestFixture]
     public class RoslynReadWriteForEfficiencyTest
     {
