@@ -3,6 +3,7 @@
 // as found in the LICENSE.txt file.
 
 using System;
+using NodaTime.NodaConstants;
 using NUnit.Framework;
 
 namespace NodaTime.Test
@@ -109,6 +110,30 @@ namespace NodaTime.Test
 
             Assert.AreEqual(minDuration, Duration.FromTimeSpan(TimeSpan.MinValue));
             Assert.AreEqual(TimeSpan.MinValue, minDuration.ToTimeSpan());
+        }
+
+        [Test]
+        public void FromNanoSeconds_Int64()
+        {
+            Assert.AreEqual(Duration.OneDay - Duration.Epsilon, Duration.FromNanoseconds(NanosecondsPerDay - 1L));
+            Assert.AreEqual(Duration.OneDay, Duration.FromNanoseconds(NanosecondsPerDay));
+            Assert.AreEqual(Duration.OneDay + Duration.Epsilon, Duration.FromNanoseconds(NanosecondsPerDay + 1L));
+
+            Assert.AreEqual(-Duration.OneDay - Duration.Epsilon, Duration.FromNanoseconds(-NanosecondsPerDay - 1L));
+            Assert.AreEqual(-Duration.OneDay, Duration.FromNanoseconds(-NanosecondsPerDay));
+            Assert.AreEqual(-Duration.OneDay + Duration.Epsilon, Duration.FromNanoseconds(-NanosecondsPerDay + 1L));
+        }
+
+        [Test]
+        public void FromNanoSeconds_Decimal()
+        {
+            Assert.AreEqual(Duration.OneDay - Duration.Epsilon, Duration.FromNanoseconds(NanosecondsPerDay - 1M));
+            Assert.AreEqual(Duration.OneDay, Duration.FromNanoseconds(NanosecondsPerDay + 0M));
+            Assert.AreEqual(Duration.OneDay + Duration.Epsilon, Duration.FromNanoseconds(NanosecondsPerDay + 1M));
+
+            Assert.AreEqual(-Duration.OneDay - Duration.Epsilon, Duration.FromNanoseconds(-NanosecondsPerDay - 1M));
+            Assert.AreEqual(-Duration.OneDay, Duration.FromNanoseconds(-NanosecondsPerDay + 0M));
+            Assert.AreEqual(-Duration.OneDay + Duration.Epsilon, Duration.FromNanoseconds(-NanosecondsPerDay + 1M));
         }
     }
 }
