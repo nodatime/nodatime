@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Text;
 using NodaTime.Calendars;
 using NodaTime.Globalization;
+using NodaTime.Properties;
 
 namespace NodaTime.Text.Patterns
 {
@@ -29,19 +30,12 @@ namespace NodaTime.Text.Patterns
                 builder.AddField(PatternFields.Year, pattern.Current);
                 switch (count)
                 {
-                    case 1:
                     case 2:
-                        builder.AddParseValueAction(count, 2, 'y', 0, 99, setter);
+                        builder.AddParseValueAction(2, 2, 'y', 0, 99, setter);
                         // Force the year into the range 0-99.
                         builder.AddFormatAction((value, sb) => FormatHelper.LeftPad(((yearGetter(value) % 100) + 100) % 100, count, sb));
                         // Just remember that we've set this particular field. We can't set it twice as we've already got the Year flag set.
                         builder.AddField(PatternFields.YearTwoDigits, pattern.Current);
-                        break;
-                    case 3:
-                        // Maximum value will be determined later.
-                        // Three or more digits (ick).
-                        builder.AddParseValueAction(3, 4, 'y', -9999, 9999, setter);
-                        builder.AddFormatAction((value, sb) => FormatHelper.LeftPad(yearGetter(value), 3, sb));
                         break;
                     case 4:
                         // Left-pad to 4 digits when formatting; parse either exactly 4 digits.
@@ -49,7 +43,7 @@ namespace NodaTime.Text.Patterns
                         builder.AddFormatAction((value, sb) => FormatHelper.LeftPad(yearGetter(value), 4, sb));
                         break;
                     default:
-                        throw new InvalidOperationException("Bug in Noda Time; invalid count for year went undetected.");
+                        throw new InvalidPatternException(Messages.Parse_InvalidRepeatCount, pattern.Current, count);
                 }
             };
         }

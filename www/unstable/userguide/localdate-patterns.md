@@ -39,36 +39,21 @@ For the meanings of "absolute" years and text handling, see later details.
   </thead>
   <tbody>
     <tr>
-      <td><code>y</code> or <code>yy</code></td>
+      <td><code>yy</code></td>
       <td>
-        Two digit absolute year, in the range 0-99; a single <code>y</code> allows up to two digits to be parsed,
-        but formats only one digit where possible. When parsing, the "base century" is chosen from the template
+        Two digit absolute year, in the range 0-99. When parsing, the "base century" is chosen from the template
         value; if the two-digit year is greater than 30, the corresponding year in the previous century is used.
         Note that when formatting, no checking is performed to ensure that the year will be parsed to
         the same value. (For example, 1725 would be formatted as 25 but parsed as 2025.) Negative absolute years
         are coalesced into 2-digit year numbers in a way which maintains chronological ordering - so for example,
-        95BC is absolute -94; that will be formatted as `06`. The following yaear (94BC) is absolute -93; that will be
+        95BC is absolute -94; that will be formatted as `06`. The following year (94BC) is absolute -93; that will be
         formatted as `07`. This is documented for completeness; it is *strongly* recommended that you do not use
-        `y` or `yy` with dates which may have negative absolute years.
+        `yy` with dates which may have negative absolute years.
       </td>
       <td>
 	    Assuming a template value of 2000 (the default):
-        2012: <code>y</code> => <code>12</code> <br />
-        2040: <code>y</code> => <code>40</code> - parsing "40" would give a date in 1940 <br />
-        2004: <code>y</code> => <code>4</code> <br />
-        2004: <code>yy</code> => <code>04</code> <br />
-      </td>
-    </tr>
-    <tr>
-      <td><code>yyy</code></td>
-      <td>
-        Three digit absolute year with optional leading <code>-</code>
-        sign. This will parse up to five digits, but only format to as many as are
-		required, with a minimum of three.
-      </td>
-      <td>
-	    1984: parsed to 1984, formatted to "1984" <br />
-		00123: parsed to year 123, formatted just to "123" <br />
+        2012: <code>yy</code> => <code>12</code> <br />
+        2040: <code>yy</code> => <code>40</code> - parsing "40" would give a date in 1940 <br />
       </td>
     </tr>
     <tr>
