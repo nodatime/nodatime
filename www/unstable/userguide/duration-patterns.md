@@ -103,7 +103,7 @@ We recommend using the repeated form in most cases.
     <tr>
       <td><code>F</code> ... <code>FFFFFFFFF</code></td>
       <td>
-        The fractional second part of the duration, using at most the specified number of characters (up to 7).
+        The fractional second part of the duration, using at most the specified number of characters (up to 9).
 		Trailing digits are truncated towards zero, and trailing insignificant zeroes are truncated.
 		If this comes after a decimal separator and the value is zero, the decimal separator is
 		also truncated.

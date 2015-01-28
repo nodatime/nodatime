@@ -45,7 +45,11 @@ namespace NodaTime.Test.Text
             // Common typo, which is caught in 2.0...
             new Data { Pattern = "yyyy-mm-dd", Message = Messages.Parse_UnquotedLiteral, Parameters = { 'm' } },
             // T isn't valid in a date pattern
-            new Data { Pattern = "yyyy-MM-ddT00:00:00", Message = Messages.Parse_UnquotedLiteral, Parameters = { 'T' } }
+            new Data { Pattern = "yyyy-MM-ddT00:00:00", Message = Messages.Parse_UnquotedLiteral, Parameters = { 'T' } },
+
+            // These became invalid in v2.0, when we decided that y and yyy weren't sensible.
+            new Data { Pattern = "y M d", Message = Messages.Parse_InvalidRepeatCount, Parameters = { 'y', 1 } },
+            new Data { Pattern = "yyy M d", Message = Messages.Parse_InvalidRepeatCount, Parameters = { 'y', 3 } },
         };
 
         internal static Data[] ParseFailureData = {
@@ -123,13 +127,10 @@ namespace NodaTime.Test.Text
             new Data(2011, 10, 3) { Pattern = "yyyy/MM/dd", Text = "2011/10/03" },
             new Data(2011, 10, 3) { Pattern = "yyyy/MM/dd", Text = "2011-10-03", Culture = Cultures.FrCa },
             new Data(2011, 10, 3) { Pattern = "yyyyMMdd", Text = "20111003" },
-            new Data(2011, 7, 3) { Pattern = "yyy M d", Text = "2011 7 3" },
             new Data(2001, 7, 3) { Pattern = "yy M d", Text = "01 7 3" },
             new Data(2011, 7, 3) { Pattern = "yy M d", Text = "11 7 3" },
-            new Data(2001, 7, 3) { Pattern = "y M d", Text = "1 7 3" },
-            new Data(2011, 7, 3) { Pattern = "y M d", Text = "11 7 3"},
             // Cutoff defaults to 30 (at the moment...)
-            new Data(1976, 7, 3) { Pattern = "y M d", Text = "76 7 3" },
+            new Data(1976, 7, 3) { Pattern = "yy M d", Text = "76 7 3" },
 
             new Data(2000, 10, 3) { Pattern = "MM/dd", Text = "10/03"},
             new Data(1885, 10, 3) { Pattern = "MM/dd", Text = "10/03", Template = new LocalDate(1885, 10, 3) },

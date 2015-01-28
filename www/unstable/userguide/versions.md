@@ -35,6 +35,7 @@ See the [Noda Time 1.x to 2.0 migration guide](migration-to-2.html) for full det
 - Constants within `NodaConstants` which had `Standard` in their name have had that part removed.
 - Julian and Coptic calendars with a minimum number of days in the first week other than 4 are not supported.
 - Factory methods for the Julian, Coptic and Persian calendars have been converted into properties.
+- `y` and `yyy` are no longer supported in date format specifiers; use `yy` or `yyyy` instead.
 
 Bug fixes:
 
