@@ -21,13 +21,6 @@ namespace NodaTime.Test.Text
         }
 
         [Test]
-        public void TestLeftPad_lengthTooLarge()
-        {
-            var builder = new StringBuilder();
-            Assert.Throws<FormatException>(() => FormatHelper.LeftPad(123456, 3000, builder));
-        }
-
-        [Test]
         public void TestLeftPad_Negative()
         {
             AssertLeftPad(-123, 5, "-00123");

@@ -33,14 +33,18 @@ namespace NodaTime.Text.Patterns
                     case 2:
                         builder.AddParseValueAction(2, 2, 'y', 0, 99, setter);
                         // Force the year into the range 0-99.
-                        builder.AddFormatAction((value, sb) => FormatHelper.LeftPad(((yearGetter(value) % 100) + 100) % 100, count, sb));
+                        builder.AddFormatLeftPad(2, value => ((yearGetter(value) % 100) + 100) % 100,
+                            assumeNonNegative: true,
+                            assumeFitsInCount: true);
                         // Just remember that we've set this particular field. We can't set it twice as we've already got the Year flag set.
                         builder.AddField(PatternFields.YearTwoDigits, pattern.Current);
                         break;
                     case 4:
-                        // Left-pad to 4 digits when formatting; parse either exactly 4 digits.
+                        // Left-pad to 4 digits when formatting; parse exactly 4 digits.
                         builder.AddParseValueAction(4, 4, 'y', -9999, 9999, setter);
-                        builder.AddFormatAction((value, sb) => FormatHelper.LeftPad(yearGetter(value), 4, sb));
+                        builder.AddFormatLeftPad(4, yearGetter,
+                            assumeNonNegative: false,
+                            assumeFitsInCount: true);
                         break;
                     default:
                         throw new InvalidPatternException(Messages.Parse_InvalidRepeatCount, pattern.Current, count);
@@ -66,7 +70,7 @@ namespace NodaTime.Text.Patterns
                         field = PatternFields.MonthOfYearNumeric;
                         // Handle real maximum value in the bucket
                         builder.AddParseValueAction(count, 2, pattern.Current, 0, 99, numberSetter);
-                        builder.AddFormatAction((value, sb) => FormatHelper.LeftPad(numberGetter(value), count, sb));
+                        builder.AddFormatLeftPad(count, numberGetter, assumeNonNegative: true, assumeFitsInCount: count == 2);
                         break;
                     case 3:
                     case 4:
@@ -144,7 +148,7 @@ namespace NodaTime.Text.Patterns
                         field = PatternFields.DayOfMonth;
                         // Handle real maximum value in the bucket
                         builder.AddParseValueAction(count, 2, pattern.Current, 1, 99, dayOfMonthSetter);
-                        builder.AddFormatAction((value, sb) => FormatHelper.LeftPad(dayOfMonthGetter(value), count, sb));
+                        builder.AddFormatLeftPad(count, dayOfMonthGetter, assumeNonNegative: true, assumeFitsInCount: count == 2);
                         break;
                     case 3:
                     case 4:
