@@ -239,7 +239,7 @@ namespace NodaTime.Text.Patterns
                 int count = pattern.GetRepeatCount(maxCount);
                 builder.AddField(field, pattern.Current);
                 builder.AddParseValueAction(count, maxCount, pattern.Current, minValue, maxValue, setter);
-                builder.AddFormatLeftPad(count, getter);
+                builder.AddFormatLeftPad(count, getter, assumeNonNegative: minValue >= 0, assumeFitsInCount: count == maxCount);
             };
         }
 
@@ -377,8 +377,33 @@ namespace NodaTime.Text.Patterns
             });
         }
 
-        internal void AddFormatLeftPad(int count, Func<TResult, int> selector) =>
-            AddFormatAction((value, sb) => FormatHelper.LeftPad(selector(value), count, sb));
+        /// <summary>
+        /// Adds an action to pad a selected value to a given minimum lenth.
+        /// </summary>
+        /// <param name="count">The minimum length to pad to</param>
+        /// <param name="selector">The selector function to apply to obtain a value to format</param>
+        /// <param name="assumeNonNegative">Whether it is safe to assume the value will be non-negative</param>
+        /// <param name="assumeFitsInCount">Whether it is safe to assume the value will not exceed the specified length</param>
+        internal void AddFormatLeftPad(int count, Func<TResult, int> selector,
+            bool assumeNonNegative, bool assumeFitsInCount)
+        {
+            if (count == 2 && assumeNonNegative && assumeFitsInCount)
+            {
+                AddFormatAction((value, sb) => FormatHelper.Format2DigitsNonNegative(selector(value), sb));
+            }
+            else if (count == 4 && assumeFitsInCount)
+            {
+                AddFormatAction((value, sb) => FormatHelper.Format4DigitsValueFits(selector(value), sb));
+            }
+            else if (assumeNonNegative)
+            {
+                AddFormatAction((value, sb) => FormatHelper.LeftPadNonNegative(selector(value), count, sb));
+            }
+            else
+            {
+                AddFormatAction((value, sb) => FormatHelper.LeftPad(selector(value), count, sb));
+            }
+        }
 
         internal void AddFormatFraction(int width, int scale, Func<TResult, int> selector) =>
             AddFormatAction((value, sb) => FormatHelper.AppendFraction(selector(value), width, scale, sb));

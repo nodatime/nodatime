@@ -4,6 +4,8 @@
 
 using System;
 using System.Text;
+using NodaTime.Annotations;
+using NodaTime.Utility;
 
 namespace NodaTime.Text
 {
@@ -23,6 +25,44 @@ namespace NodaTime.Text
         private const int MaximumInt64Length = 19;
 
         /// <summary>
+        /// Formats the given value to two digits, left-padding with '0' if necessary.
+        /// It is assumed that the value is in the range [0, 100). This is usually
+        /// used for month, day-of-month, hour, minute, second and year-of-century values.
+        /// </summary>
+        internal static void Format2DigitsNonNegative([Trusted] int value, StringBuilder outputBuffer)
+        {
+            Preconditions.DebugCheckArgumentRange(nameof(value), value, 0, 99);
+            unchecked
+            {
+                outputBuffer.Append((char)('0' + value / 10));
+                outputBuffer.Append((char)('0' + value % 10));
+            }
+        }
+
+        /// <summary>
+        /// Formats the given value to two digits, left-padding with '0' if necessary.
+        /// It is assumed that the value is in the range [-9999, 10000). This is usually
+        /// used for year values. If the value is negative, a '-' character is prepended.
+        /// </summary>
+        internal static void Format4DigitsValueFits([Trusted] int value, StringBuilder outputBuffer)
+        {
+            Preconditions.DebugCheckArgumentRange(nameof(value), value, -9999, 10000);
+            unchecked
+            {
+                if (value < 0)
+                {
+                    value = -value;
+                    // TODO: Should we use a culture-specific negative sign?
+                    outputBuffer.Append('-');
+                }
+                outputBuffer.Append((char)('0' + (value / 1000)));
+                outputBuffer.Append((char)('0' + ((value / 100) % 10)));
+                outputBuffer.Append((char)('0' + ((value / 10) % 10)));
+                outputBuffer.Append((char)('0' + (value % 10)));
+            }
+        }
+
+        /// <summary>
         /// Formats the given value left padded with zeros.
         /// </summary>
         /// <remarks>
@@ -33,32 +73,48 @@ namespace NodaTime.Text
         /// <param name="value">The value to format.</param>
         /// <param name="length">The length to fill.</param>
         /// <param name="outputBuffer">The output buffer to add the digits to.</param>
-        /// <exception cref="FormatException">if too many characters are requested. <see cref="MaximumPaddingLength" />.</exception>
-        internal static void LeftPad(int value, int length, StringBuilder outputBuffer)
+        internal static void LeftPad(int value, [Trusted] int length, StringBuilder outputBuffer)
         {
-            // TODO: Check whether we actually need this check. I think we're already making sure the length is short everywhere.
-            if (length > MaximumPaddingLength)
-            {
-                throw new FormatException("Too many digits");
-            }
+            Preconditions.DebugCheckArgumentRange(nameof(length), length, 1, MaximumPaddingLength);
             unchecked
             {
-                if (value < 0)
+                if (value >= 0)
                 {
-                    outputBuffer.Append('-');
-                    // Special case, as we can't use Math.Abs.
-                    if (value == int.MinValue)
-                    {
-                        if (length > 10)
-                        {
-                            outputBuffer.Append("000000".Substring(16 - length));
-                        }
-                        outputBuffer.Append("2147483648");
-                        return;
-                    }
-                    LeftPad(Math.Abs(value), length, outputBuffer);
+                    LeftPadNonNegative(value, length, outputBuffer);
                     return;
                 }
+                outputBuffer.Append('-');
+                // Special case, as we can't use Math.Abs.
+                if (value == int.MinValue)
+                {
+                    if (length > 10)
+                    {
+                        outputBuffer.Append("000000".Substring(16 - length));
+                    }
+                    outputBuffer.Append("2147483648");
+                    return;
+                }
+                LeftPadNonNegative(-value, length, outputBuffer);
+            }
+        }
+
+        /// <summary>
+        /// Formats the given value left padded with zeros. The value is assumed to be non-negative.
+        /// </summary>
+        /// <remarks>
+        /// Left pads with zeros the value into a field of <paramref name = "length" /> characters. If the value
+        /// is longer than <paramref name = "length" />, the entire value is formatted. If the value is negative,
+        /// it is preceded by "-" but this does not count against the length.
+        /// </remarks>
+        /// <param name="value">The value to format.</param>
+        /// <param name="length">The length to fill.</param>
+        /// <param name="outputBuffer">The output buffer to add the digits to.</param>
+        internal static void LeftPadNonNegative(int value, [Trusted] int length, StringBuilder outputBuffer)
+        {
+            Preconditions.DebugCheckArgumentRange(nameof(value), value, 0, int.MaxValue);
+            Preconditions.DebugCheckArgumentRange(nameof(length), length, 1, MaximumPaddingLength);
+            unchecked
+            {
                 // Special handling for common cases, because we really don't want a heap allocation
                 // if we can help it...
                 if (length == 1)
