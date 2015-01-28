@@ -359,5 +359,13 @@ namespace NodaTime.Test
             Assert.AreEqual(-5942.0187, duration.TotalMinutes, 0.0001);
             Assert.AreEqual(-356521.123456789, duration.TotalSeconds, 0.000000001);
         }
+        
+        [Test]
+        public void MaxMinRelationship()
+        {
+            // Max and Min work like they do for other signed types - basically the max value is one less than the absolute
+            // of the min value.
+            Assert.AreEqual(Duration.MinValue, -Duration.MaxValue - Duration.Epsilon);
+        }
     }
 }

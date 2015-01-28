@@ -68,10 +68,20 @@ namespace NodaTime
         public static Duration Zero => new Duration(0, 0L);
 
         /// <summary>
-        /// Get a <see cref="Duration"/> value equal to 1 nanosecond; the smallest amount by which an instant can vary.
+        /// Gets a <see cref="Duration"/> value equal to 1 nanosecond; the smallest amount by which an instant can vary.
         /// </summary>
         /// <value>A duration representing 1 nanosecond.</value>
         public static Duration Epsilon => new Duration(0, 1L);
+
+        /// <summary>
+        /// Gets the maximum value supported by <see cref="Duration"/>.
+        /// </summary>
+        public static Duration MaxValue => new Duration(MaxDays, NodaConstants.NanosecondsPerDay - 1);
+
+        /// <summary>
+        /// Gets the minimum (largest negative) value supported by <see cref="Duration"/>.
+        /// </summary>
+        public static Duration MinValue => new Duration(MinDays, 0);
 
         /// <summary>
         /// Represents the <see cref="Duration"/> value equal to the number of nanoseconds in 1 standard week (7 days).
