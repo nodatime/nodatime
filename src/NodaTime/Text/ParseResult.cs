@@ -4,6 +4,7 @@
 
 using System;
 using System.Globalization;
+using System.Runtime.Serialization.Formatters;
 using NodaTime.Annotations;
 using NodaTime.Calendars;
 using NodaTime.Properties;
@@ -210,6 +211,8 @@ namespace NodaTime.Text
         internal static ParseResult<T> InvalidHour24(string text) => ForInvalidValuePostParse(text, Messages.Parse_InvalidHour24);
 
         internal static ParseResult<T> FieldValueOutOfRange(ValueCursor cursor, int value, char field) =>
+            ForInvalidValue(cursor, Messages.Parse_FieldValueOutOfRange, value, field, typeof(T));
+        internal static ParseResult<T> FieldValueOutOfRange(ValueCursor cursor, long value, char field) =>
             ForInvalidValue(cursor, Messages.Parse_FieldValueOutOfRange, value, field, typeof(T));
 
         internal static ParseResult<T> FieldValueOutOfRangePostParse(string text, int value, char field) =>

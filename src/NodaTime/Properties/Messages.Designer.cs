@@ -502,6 +502,15 @@ namespace NodaTime.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Value is out of the legal range for the {0} type..
+        /// </summary>
+        internal static string Parse_OverallValueOutOfRange {
+            get {
+                return ResourceManager.GetString("Parse_OverallValueOutOfRange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to A percent sign (%) appears at the end of the format string..
         /// </summary>
         internal static string Parse_PercentAtEndOfString {
