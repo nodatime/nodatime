@@ -4,7 +4,6 @@
 
 using System;
 using System.Globalization;
-using System.Runtime.Serialization.Formatters;
 using NodaTime.Annotations;
 using NodaTime.Calendars;
 using NodaTime.Properties;
