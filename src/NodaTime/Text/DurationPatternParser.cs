@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using NodaTime.Globalization;
 using NodaTime.Properties;
+using NodaTime.NodaConstants;
 using NodaTime.Text.Patterns;
 using NodaTime.Utility;
 using JetBrains.Annotations;
@@ -25,12 +26,12 @@ namespace NodaTime.Text
             { '.', TimePatternHelper.CreatePeriodHandler<Duration, DurationParseBucket>(9, GetPositiveNanosecondOfSecond, (bucket, value) => bucket.AddNanoseconds(value)) },
             { ':', (pattern, builder) => builder.AddLiteral(builder.FormatInfo.TimeSeparator, ParseResult<Duration>.TimeSeparatorMismatch) },
             { 'D', CreateDayHandler() },
-            { 'H', CreateTotalHandler(PatternFields.Hours24, NodaConstants.NanosecondsPerHour, NodaConstants.HoursPerDay) },
-            { 'h', CreatePartialHandler(PatternFields.Hours24, NodaConstants.NanosecondsPerHour, NodaConstants.HoursPerDay) },
-            { 'M', CreateTotalHandler(PatternFields.Minutes, NodaConstants.NanosecondsPerMinute, NodaConstants.MinutesPerDay) },
-            { 'm', CreatePartialHandler(PatternFields.Minutes, NodaConstants.NanosecondsPerMinute, NodaConstants.MinutesPerHour) },
-            { 'S', CreateTotalHandler(PatternFields.Seconds, NodaConstants.NanosecondsPerSecond, NodaConstants.SecondsPerDay) },
-            { 's', CreatePartialHandler(PatternFields.Seconds, NodaConstants.NanosecondsPerSecond, NodaConstants.SecondsPerMinute) },
+            { 'H', CreateTotalHandler(PatternFields.Hours24, NanosecondsPerHour, HoursPerDay, 402653184L) },
+            { 'h', CreatePartialHandler(PatternFields.Hours24, NanosecondsPerHour, HoursPerDay) },
+            { 'M', CreateTotalHandler(PatternFields.Minutes, NanosecondsPerMinute, MinutesPerDay, 24159191040L) },
+            { 'm', CreatePartialHandler(PatternFields.Minutes, NanosecondsPerMinute, MinutesPerHour) },
+            { 'S', CreateTotalHandler(PatternFields.Seconds, NanosecondsPerSecond, SecondsPerDay, 1449551462400L) },
+            { 's', CreatePartialHandler(PatternFields.Seconds, NanosecondsPerSecond, SecondsPerMinute) },
             { 'f', TimePatternHelper.CreateFractionHandler<Duration, DurationParseBucket>(9, GetPositiveNanosecondOfSecond, (bucket, value) => bucket.AddNanoseconds(value)) },
             { 'F', TimePatternHelper.CreateFractionHandler<Duration, DurationParseBucket>(9, GetPositiveNanosecondOfSecond, (bucket, value) => bucket.AddNanoseconds(value)) },
             { '+', HandlePlus },
@@ -68,11 +69,11 @@ namespace NodaTime.Text
 
         private static int GetPositiveNanosecondOfSecond(Duration duration)
         {
-            return (int) (Math.Abs(duration.NanosecondOfDay) % NodaConstants.NanosecondsPerSecond);
+            return (int) (Math.Abs(duration.NanosecondOfDay) % NanosecondsPerSecond);
         }
 
         private static CharacterHandler<Duration, DurationParseBucket> CreateTotalHandler
-            (PatternFields field, long nanosecondsPerUnit, int unitsPerDay)
+            (PatternFields field, long nanosecondsPerUnit, int unitsPerDay, long maxValue)
         {
             return (pattern, builder) =>
             {
@@ -85,12 +86,8 @@ namespace NodaTime.Text
                 }
                 builder.AddField(field, pattern.Current);
                 builder.AddField(PatternFields.TotalDuration, pattern.Current);
-                // FIXME: This will fail for large numbers of seconds. We probably need specific parse/format
-                // code here as it needs to deal with long values :(
-                builder.AddParseValueAction(count, 10, pattern.Current, 0, int.MaxValue, (bucket, value) => bucket.AddUnits(value, nanosecondsPerUnit));
-                builder.AddFormatLeftPad(count, duration => (int) (GetPositiveNanosecondUnits(duration, nanosecondsPerUnit, unitsPerDay)),
-                    assumeNonNegative: true,
-                    assumeFitsInCount: false);
+                builder.AddParseInt64ValueAction(count, 13, pattern.Current, 0, maxValue, (bucket, value) => bucket.AddUnits(value, nanosecondsPerUnit));
+                builder.AddFormatAction((value, sb) => FormatHelper.LeftPadNonNegativeInt64(GetPositiveNanosecondUnits(value, nanosecondsPerUnit, unitsPerDay), count, sb));
             };
         }
 
@@ -98,7 +95,7 @@ namespace NodaTime.Text
         {
             return (pattern, builder) =>
             {
-                int count = pattern.GetRepeatCount(10);
+                int count = pattern.GetRepeatCount(8); // Enough for 16777216
                 // AddField would throw an inappropriate exception here, so handle it specially.
                 if ((builder.UsedFields & PatternFields.TotalDuration) != 0)
                 {
@@ -106,7 +103,7 @@ namespace NodaTime.Text
                 }
                 builder.AddField(PatternFields.DayOfMonth, pattern.Current);
                 builder.AddField(PatternFields.TotalDuration, pattern.Current);
-                builder.AddParseValueAction(count, 10, pattern.Current, 0, int.MaxValue, (bucket, value) => bucket.AddDays(value));
+                builder.AddParseValueAction(count, 8, pattern.Current, 0, 16777216, (bucket, value) => bucket.AddDays(value));
                 builder.AddFormatLeftPad(count, duration => 
                 {
                     int days = duration.FloorDays;
@@ -153,17 +150,19 @@ namespace NodaTime.Text
 
         private static long GetPositiveNanosecondUnits(Duration duration, long nanosecondsPerUnit, int unitsPerDay)
         {
-            if (duration.FloorDays >= 0)
+            // The property is declared as an int, but we it as a long to force 64-bit arithmetic when multiplying.
+            long floorDays = duration.FloorDays;
+            if (floorDays >= 0)
             {
-                return duration.FloorDays * unitsPerDay + duration.NanosecondOfFloorDay / nanosecondsPerUnit;
+                return floorDays * unitsPerDay + duration.NanosecondOfFloorDay / nanosecondsPerUnit;
             }
             else
             {
                 long nanosecondOfDay = duration.NanosecondOfDay;
                 // If it's not an exact number of days, FloorDays will overshoot (negatively) by 1.
                 long negativeValue = nanosecondOfDay == 0
-                    ? duration.FloorDays * unitsPerDay
-                    : (duration.FloorDays + 1) * unitsPerDay + nanosecondOfDay / nanosecondsPerUnit;
+                    ? floorDays * unitsPerDay
+                    : (floorDays + 1) * unitsPerDay + nanosecondOfDay / nanosecondsPerUnit;
                 return -negativeValue;
             }
         }
@@ -174,33 +173,28 @@ namespace NodaTime.Text
         [DebuggerStepThrough]
         private sealed class DurationParseBucket : ParseBucket<Duration>
         {
-            // FIXME: This model breaks for Duration.MinValue, which can't be represented as a positive duration :(
+            private const decimal DecimalNanosecondsPerDay = (decimal) NanosecondsPerDay;
+            private static readonly decimal MinNanos = Duration.MinValue.ToDecimalNanoseconds();
+            private static readonly decimal MaxNanos = Duration.MaxValue.ToDecimalNanoseconds();
+
+            // TODO: We might want to try to optimize this, but it's *much* simpler to get working reliably this way
+            // than to manipulate a real Duration.
             internal bool IsNegative { get; set; }
-            private Duration currentValue;
+            private decimal currentNanos;
 
             internal void AddNanoseconds(long nanoseconds)
             {
-                this.currentValue = this.currentValue.PlusSmallNanoseconds(nanoseconds);
+                this.currentNanos += nanoseconds;
             }
 
             internal void AddDays(int days)
             {
-                // TODO(2.0): Add a PlusDays method to Duration?
-                currentValue = new Duration(currentValue.FloorDays + days, currentValue.NanosecondOfFloorDay);
+                currentNanos += days * DecimalNanosecondsPerDay;
             }
 
-            internal void AddUnits(int units, long nanosecondsPerUnit)
+            internal void AddUnits(long units, long nanosecondsPerUnit)
             {
-                // TODO(2.0): Check whether there's a quicker way to do this,
-                // possibly by adding something to Duration itself.
-                if (units < long.MaxValue / nanosecondsPerUnit)
-                {
-                    currentValue += Duration.FromNanoseconds(units * nanosecondsPerUnit);
-                }
-                else
-                {
-                    currentValue += (Duration.FromNanoseconds(units)) * nanosecondsPerUnit;
-                }
+                currentNanos += units * (decimal) nanosecondsPerUnit;
             }
 
             /// <summary>
@@ -208,7 +202,17 @@ namespace NodaTime.Text
             /// </summary>
             internal override ParseResult<Duration> CalculateValue(PatternFields usedFields, string text)
             {
-                return ParseResult<Duration>.ForValue(IsNegative ? -currentValue : currentValue);
+                if (IsNegative)
+                {
+                    currentNanos = -currentNanos;
+                }
+                if (currentNanos < MinNanos || currentNanos > MaxNanos)
+                {
+                    // TODO: Work out whether this is really the best message. (Created a new one...)
+                    return ParseResult<Duration>.ForInvalidValuePostParse(text, Messages.Parse_OverallValueOutOfRange,
+                        typeof(Duration));
+                }
+                return ParseResult<Duration>.ForValue(Duration.FromNanoseconds(currentNanos));
             }
         }
     }

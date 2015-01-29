@@ -185,6 +185,92 @@ namespace NodaTime.Text
         }
 
         /// <summary>
+        /// Formats the given Int64 value left padded with zeros. The value is assumed to be non-negative.
+        /// </summary>
+        /// <remarks>
+        /// Left pads with zeros the value into a field of <paramref name = "length" /> characters. If the value
+        /// is longer than <paramref name = "length" />, the entire value is formatted. If the value is negative,
+        /// it is preceded by "-" but this does not count against the length.
+        /// </remarks>
+        /// <param name="value">The value to format.</param>
+        /// <param name="length">The length to fill.</param>
+        /// <param name="outputBuffer">The output buffer to add the digits to.</param>
+        internal static void LeftPadNonNegativeInt64(long value, [Trusted] int length, StringBuilder outputBuffer)
+        {
+            Preconditions.DebugCheckArgumentRange(nameof(value), value, 0, long.MaxValue);
+            Preconditions.DebugCheckArgumentRange(nameof(length), length, 1, MaximumPaddingLength);
+            unchecked
+            {
+                // Special handling for common cases, because we really don't want a heap allocation
+                // if we can help it...
+                if (length == 1)
+                {
+                    if (value < 10)
+                    {
+                        outputBuffer.Append((char)('0' + value));
+                        return;
+                    }
+                    // Handle overflow by a single character manually
+                    if (value < 100)
+                    {
+                        char digit1 = (char)('0' + (value / 10));
+                        char digit2 = (char)('0' + (value % 10));
+                        outputBuffer.Append(digit1).Append(digit2);
+                        return;
+                    }
+                }
+                if (length == 2 && value < 100)
+                {
+                    char digit1 = (char)('0' + (value / 10));
+                    char digit2 = (char)('0' + (value % 10));
+                    outputBuffer.Append(digit1).Append(digit2);
+                    return;
+                }
+                if (length == 3 && value < 1000)
+                {
+                    char digit1 = (char)('0' + ((value / 100) % 10));
+                    char digit2 = (char)('0' + ((value / 10) % 10));
+                    char digit3 = (char)('0' + (value % 10));
+                    outputBuffer.Append(digit1).Append(digit2).Append(digit3);
+                    return;
+                }
+                if (length == 4 && value < 10000)
+                {
+                    char digit1 = (char)('0' + (value / 1000));
+                    char digit2 = (char)('0' + ((value / 100) % 10));
+                    char digit3 = (char)('0' + ((value / 10) % 10));
+                    char digit4 = (char)('0' + (value % 10));
+                    outputBuffer.Append(digit1).Append(digit2).Append(digit3).Append(digit4);
+                    return;
+                }
+                if (length == 5 && value < 100000)
+                {
+                    char digit1 = (char)('0' + (value / 10000));
+                    char digit2 = (char)('0' + ((value / 1000) % 10));
+                    char digit3 = (char)('0' + ((value / 100) % 10));
+                    char digit4 = (char)('0' + ((value / 10) % 10));
+                    char digit5 = (char)('0' + (value % 10));
+                    outputBuffer.Append(digit1).Append(digit2).Append(digit3).Append(digit4).Append(digit5);
+                    return;
+                }
+
+                // Unfortunate, but never mind - let's go the whole hog...
+                var digits = new char[MaximumPaddingLength];
+                int pos = MaximumPaddingLength;
+                do
+                {
+                    digits[--pos] = (char)('0' + (value % 10));
+                    value /= 10;
+                } while (value != 0 && pos > 0);
+                while ((MaximumPaddingLength - pos) < length)
+                {
+                    digits[--pos] = '0';
+                }
+                outputBuffer.Append(digits, pos, MaximumPaddingLength - pos);
+            }
+        }
+
+        /// <summary>
         /// Formats the given value, which is an integer representation of a fraction.
         /// Note: current usage means this never has to cope with negative numbers.
         /// </summary>

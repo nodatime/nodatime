@@ -264,6 +264,9 @@
   <data name="Parse_NoMatchingZoneId" xml:space="preserve">
     <value>The specified time zone identifier is not recognized.</value>
   </data>
+  <data name="Parse_OverallValueOutOfRange" xml:space="preserve">
+    <value>Value is out of the legal range for the {0} type.</value>
+  </data>
   <data name="Parse_PercentAtEndOfString" xml:space="preserve">
     <value>A percent sign (%) appears at the end of the format string.</value>
   </data>

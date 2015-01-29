@@ -45,6 +45,33 @@ namespace NodaTime.Test.Text
         /// </summary>
         internal static readonly Data[] ParseFailureData = {
             new Data(Duration.Zero) { Pattern = "H:mm", Text = "1:60", Message = Messages.Parse_FieldValueOutOfRange, Parameters = { 60, 'm', typeof(Duration) }},
+            // Total field values out of range
+            new Data(Duration.MinValue) { Pattern = "-D:hh:mm:ss.fffffffff", Text = "16777217:00:00:00.000000000",
+                Message = Messages.Parse_FieldValueOutOfRange, Parameters = { "16777217", 'D', typeof(Duration) } },
+            new Data(Duration.MinValue) { Pattern = "-H:mm:ss.fffffffff", Text = "402653185:00:00.000000000",
+                Message = Messages.Parse_FieldValueOutOfRange, Parameters = { "402653185", 'H', typeof(Duration) } },
+            new Data(Duration.MinValue) { Pattern = "-M:ss.fffffffff", Text = "24159191041:00.000000000",
+                Message = Messages.Parse_FieldValueOutOfRange, Parameters = { "24159191041", 'M', typeof(Duration) } },
+            new Data(Duration.MinValue) { Pattern = "-S.fffffffff", Text = "1449551462401.000000000",
+                Message = Messages.Parse_FieldValueOutOfRange, Parameters = { "1449551462401", 'S', typeof(Duration) } },
+
+            // Each field in range, but overall result out of range
+            new Data(Duration.MinValue) { Pattern = "-D:hh:mm:ss.fffffffff", Text = "-16777216:00:00:00.000000001",
+                Message = Messages.Parse_OverallValueOutOfRange, Parameters = { typeof(Duration) } },
+            new Data(Duration.MaxValue) { Pattern = "-D:hh:mm:ss.fffffffff", Text = "16777216:00:00:00.000000000",
+                Message = Messages.Parse_OverallValueOutOfRange, Parameters = { typeof(Duration) } },
+            new Data(Duration.MinValue) { Pattern = "-H:mm:ss.fffffffff", Text = "-402653184:00:00.000000001",
+                Message = Messages.Parse_OverallValueOutOfRange, Parameters = { typeof(Duration) } },
+            new Data(Duration.MinValue) { Pattern = "-H:mm:ss.fffffffff", Text = "402653184:00:00.000000000",
+                Message = Messages.Parse_OverallValueOutOfRange, Parameters = { typeof(Duration) } },
+            new Data(Duration.MinValue) { Pattern = "-M:ss.fffffffff", Text = "-24159191040:00.000000001",
+                Message = Messages.Parse_OverallValueOutOfRange, Parameters = { typeof(Duration) } },
+            new Data(Duration.MinValue) { Pattern = "-M:ss.fffffffff", Text = "24159191040:00.000000000",
+                Message = Messages.Parse_OverallValueOutOfRange, Parameters = { typeof(Duration) } },
+            new Data(Duration.MinValue) { Pattern = "-S.fffffffff", Text = "-1449551462400.000000001",
+                Message = Messages.Parse_OverallValueOutOfRange, Parameters = { typeof(Duration) } },
+            new Data(Duration.MinValue) { Pattern = "-S.fffffffff", Text = "1449551462400.000000000",
+                Message = Messages.Parse_OverallValueOutOfRange, Parameters = { typeof(Duration) } },
         };
 
         /// <summary>
@@ -84,9 +111,14 @@ namespace NodaTime.Test.Text
             new Data(-1, -2, -3, -4, -123456789) { Pattern = "o", Text = "-1:02:03:04.123456789", Culture = Cultures.ItIt },
 
             // Extremes...
-            // TODO(2.0): Change when we know what the extremes for durations actually are.
-            new Data(Duration.FromTicks(long.MaxValue)) { Pattern = "-D:hh:mm:ss.FFFFFFF", Text = "10675199:02:48:05.4775807" },
-            new Data(Duration.FromTicks(long.MinValue)) { Pattern = "-D:hh:mm:ss.FFFFFFF", Text = "-10675199:02:48:05.4775808" },
+            new Data(Duration.MinValue) { Pattern = "-D:hh:mm:ss.fffffffff", Text = "-16777216:00:00:00.000000000" },
+            new Data(Duration.MaxValue) { Pattern = "-D:hh:mm:ss.fffffffff", Text = "16777215:23:59:59.999999999" },
+            new Data(Duration.MinValue) { Pattern = "-H:mm:ss.fffffffff", Text = "-402653184:00:00.000000000" },
+            new Data(Duration.MaxValue) { Pattern = "-H:mm:ss.fffffffff", Text = "402653183:59:59.999999999" },
+            new Data(Duration.MinValue) { Pattern = "-M:ss.fffffffff", Text = "-24159191040:00.000000000" },
+            new Data(Duration.MaxValue) { Pattern = "-M:ss.fffffffff", Text = "24159191039:59.999999999" },
+            new Data(Duration.MinValue) { Pattern = "-S.fffffffff", Text = "-1449551462400.000000000" },
+            new Data(Duration.MaxValue) { Pattern = "-S.fffffffff", Text = "1449551462399.999999999" },
         };
 
         internal static IEnumerable<Data> ParseData = ParseOnlyData.Concat(FormatAndParseData);

@@ -195,6 +195,49 @@ namespace NodaTime.Text
         }
 
         /// <summary>
+        /// Parses digits at the current point in the string, as an <see cref="Int64"/> value.
+        /// If the minimum required
+        /// digits are not present then the index is unchanged. If there are more digits than
+        /// the maximum allowed they are ignored.
+        /// </summary>
+        /// <param name="minimumDigits">The minimum allowed digits.</param>
+        /// <param name="maximumDigits">The maximum allowed digits.</param>
+        /// <param name="result">The result integer value. The value of this is not guaranteed
+        /// to be anything specific if the return value is false.</param>
+        /// <returns><c>true</c> if the digits were parsed.</returns>
+        internal bool ParseInt64Digits(int minimumDigits, int maximumDigits, out long result)
+        {
+            unchecked
+            {
+                result = 0;
+                int localIndex = Index;
+                int maxIndex = localIndex + maximumDigits;
+                if (maxIndex >= Length)
+                {
+                    maxIndex = Length;
+                }
+                for (; localIndex < maxIndex; localIndex++)
+                {
+                    // Optimized digit handling: rather than checking for the range, returning -1
+                    // and then checking whether the result is -1, we can do both checks at once.
+                    int digit = Value[localIndex] - '0';
+                    if (digit < 0 || digit > 9)
+                    {
+                        break;
+                    }
+                    result = result * 10 + digit;
+                }
+                int count = localIndex - Index;
+                if (count < minimumDigits)
+                {
+                    return false;
+                }
+                Move(localIndex);
+                return true;
+            }
+        }
+
+        /// <summary>
         /// Parses digits at the current point in the string. If the minimum required
         /// digits are not present then the index is unchanged. If there are more digits than
         /// the maximum allowed they are ignored.

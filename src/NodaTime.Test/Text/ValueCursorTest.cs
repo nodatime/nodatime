@@ -177,6 +177,93 @@ namespace NodaTime.Test.Text
         }
 
         [Test]
+        public void ParseInt64Digits_TooFewDigits()
+        {
+            var value = new ValueCursor("a12b");
+            Assert.True(value.MoveNext());
+            ValidateCurrentCharacter(value, 0, 'a');
+            Assert.True(value.MoveNext());
+            long actual;
+            Assert.False(value.ParseInt64Digits(3, 3, out actual));
+            ValidateCurrentCharacter(value, 1, '1');
+        }
+
+        [Test]
+        public void ParseInt64Digits_NoNumber()
+        {
+            var value = new ValueCursor("abc");
+            Assert.True(value.MoveNext());
+            long actual;
+            Assert.False(value.ParseInt64Digits(1, 2, out actual));
+            ValidateCurrentCharacter(value, 0, 'a');
+        }
+
+        [Test]
+        public void ParseInt64Digits_Maximum()
+        {
+            var value = new ValueCursor("12");
+            Assert.True(value.MoveNext());
+            long actual;
+            Assert.True(value.ParseInt64Digits(1, 2, out actual));
+            Assert.AreEqual(12, actual);
+        }
+
+        [Test]
+        public void ParseInt64Digits_MaximumMoreDigits()
+        {
+            var value = new ValueCursor("1234");
+            Assert.True(value.MoveNext());
+            long actual;
+            Assert.True(value.ParseInt64Digits(1, 2, out actual));
+            Assert.AreEqual(12, actual);
+            ValidateCurrentCharacter(value, 2, '3');
+        }
+
+        [Test]
+        public void ParseInt64Digits_Minimum()
+        {
+            var value = new ValueCursor("1");
+            value.MoveNext();
+            long actual;
+            Assert.True(value.ParseInt64Digits(1, 2, out actual));
+            Assert.AreEqual(1, actual);
+            ValidateEndOfString(value);
+        }
+
+        [Test]
+        public void ParseInt64Digits_MinimumNonDigits()
+        {
+            var value = new ValueCursor("1abc");
+            Assert.True(value.MoveNext());
+            long actual;
+            Assert.True(value.ParseInt64Digits(1, 2, out actual));
+            Assert.AreEqual(1, actual);
+            ValidateCurrentCharacter(value, 1, 'a');
+        }
+
+        [Test]
+        public void ParseInt64Digits_NonAscii_NeverMatches()
+        {
+            // Arabic-Indic digits 0 and 1. See
+            // http://www.unicode.org/charts/PDF/U0600.pdf
+            var value = new ValueCursor("\u0660\u0661");
+            Assert.True(value.MoveNext());
+            long actual;
+            Assert.False(value.ParseInt64Digits(1, 2, out actual));
+        }
+
+        [Test]
+        public void ParseInt64Digits_LargeNumber()
+        {
+            var value = new ValueCursor("9999999999999");
+            Assert.True(value.MoveNext());
+            long actual;
+            Assert.True(value.ParseInt64Digits(1, 13, out actual));
+            Assert.AreEqual(actual, 9999999999999L);
+            Assert.Greater(9999999999999L, int.MaxValue);
+        }
+
+        [Test]
         public void ParseFraction_NonAscii_NeverMatches()
         {
             // Arabic-Indic digits 0 and 1. See

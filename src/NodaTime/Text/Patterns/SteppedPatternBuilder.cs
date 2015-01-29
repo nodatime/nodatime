@@ -133,6 +133,34 @@ namespace NodaTime.Text.Patterns
 
         internal void AddFormatAction(Action<TResult, StringBuilder> formatAction) => formatActions.Add(formatAction);
 
+        /// <summary>
+        /// Equivalent of <see cref="AddParseValueAction"/> but for 64-bit integers. Currently only
+        /// positive values are supported.
+        /// </summary>
+        internal void AddParseInt64ValueAction(int minimumDigits, int maximumDigits, char patternChar,
+            long minimumValue, long maximumValue, Action<TBucket, long> valueSetter)
+        {
+            Preconditions.DebugCheckArgumentRange(nameof(minimumValue), minimumValue, 0, long.MaxValue);
+            AddParseAction((cursor, bucket) =>
+            {
+                int startingIndex = cursor.Index;
+                long value;
+                if (!cursor.ParseInt64Digits(minimumDigits, maximumDigits, out value))
+                {
+                    cursor.Move(startingIndex);
+                    return ParseResult<TResult>.MismatchedNumber(cursor, new string(patternChar, minimumDigits));
+                }
+                if (value < minimumValue || value > maximumValue)
+                {
+                    cursor.Move(startingIndex);
+                    return ParseResult<TResult>.FieldValueOutOfRange(cursor, value, patternChar);
+                }
+
+                valueSetter(bucket, value);
+                return null;
+            });
+        }
+
         internal void AddParseValueAction(int minimumDigits, int maximumDigits, char patternChar,
                                           int minimumValue, int maximumValue,
                                           Action<TBucket, int> valueSetter)
