@@ -23,6 +23,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
         private static readonly HashSet<string> ExcludedFiles = new HashSet<string>
         { 
             "backzone",
+            "checklinks.awk",
             "checktab.awk",
             "factory",
             "iso3166.tab",
