@@ -86,12 +86,12 @@ namespace NodaTime.TimeZones
             }
 
             BclAdjustmentRule[] mappedRules = Array.ConvertAll(rules, rule => new BclAdjustmentRule(bclZone, rule));
-            Offset minSavings = mappedRules.Aggregate(Offset.Zero, (min, rule) => Offset.Min(min, rule.Savings));
-            Offset maxSavings = mappedRules.Aggregate(Offset.Zero, (min, rule) => Offset.Max(min, rule.Savings));
+            Offset minRuleOffset = mappedRules.Aggregate(Offset.Zero, (min, rule) => Offset.Min(min, rule.Savings + rule.StandardOffset));
+            Offset maxRuleOffset = mappedRules.Aggregate(Offset.Zero, (min, rule) => Offset.Max(min, rule.Savings + rule.StandardOffset));
 
             IZoneIntervalMap uncachedMap = new BclZoneIntervalMap(mappedRules, standardOffset, bclZone.StandardName, bclZone.DaylightName);
             IZoneIntervalMap cachedMap = CachingZoneIntervalMap.CacheMap(uncachedMap, CachingZoneIntervalMap.CacheType.Hashtable);
-            return new BclDateTimeZone(bclZone, standardOffset + minSavings, standardOffset + maxSavings, cachedMap);
+            return new BclDateTimeZone(bclZone, Offset.Min(standardOffset, minRuleOffset), Offset.Max(standardOffset, maxRuleOffset), cachedMap);
         }
 
         /// <summary>
@@ -128,18 +128,39 @@ namespace NodaTime.TimeZones
             /// </summary>
             internal ZoneInterval TailInterval { get; }
 
+            /// <summary>
+            /// The standard offset for the duration of this rule.
+            /// </summary>
+            internal Offset StandardOffset { get; }
+
             internal BclAdjustmentRule(TimeZoneInfo zone, TimeZoneInfo.AdjustmentRule rule)
             {
-                var standardOffset = zone.BaseUtcOffset.ToOffset();
+                // With .NET 4.6, adjustment rules can have their own standard offsets, allowing
+                // a much more reasonable set of time zone data. Unfortunately, this isn't directly
+                // exposed, but we can detect it by just finding the UTC offset for an arbitrary
+                // time within the rule - the start, in this case - and then take account of the
+                // possibility of that being in daylight saving time. Fortunately, we only need
+                // to do this during the setup.
+                var ruleStandardOffset = zone.GetUtcOffset(rule.DateStart);
+                if (zone.IsDaylightSavingTime(rule.DateStart))
+                {
+                    ruleStandardOffset -= rule.DaylightDelta;
+                }
+                StandardOffset = ruleStandardOffset.ToOffset();
+
+                // Although the rule may have its own standard offset, the start/end is still determined
+                // using the zone's standard offset.
+                var zoneStandardOffset = zone.BaseUtcOffset.ToOffset();
+
                 // Note: this extends back from DateTime.MinValue to start of time, even though the BCL can represent
                 // as far back as 1AD. This is in the *spirit* of a rule which goes back that far.
-                Start = rule.DateStart.ToLocalDateTime().WithOffset(standardOffset).ToInstant();
+                Start = rule.DateStart.ToLocalDateTime().WithOffset(zoneStandardOffset).ToInstant();
                 // The end instant (exclusive) is the end of the given date, so we need to add a day.
-                End = rule.DateEnd == MaxDate ? Instant.AfterMaxValue : rule.DateEnd.ToLocalDateTime().PlusDays(1).WithOffset(standardOffset).ToInstant();
+                End = rule.DateEnd == MaxDate ? Instant.AfterMaxValue : rule.DateEnd.ToLocalDateTime().PlusDays(1).WithOffset(zoneStandardOffset).ToInstant();
                 Savings = rule.DaylightDelta.ToOffset();
                 var daylightRecurrence = new ZoneRecurrence(zone.DaylightName, Savings, ConvertTransition(rule.DaylightTransitionStart), int.MinValue, int.MaxValue);
                 var standardRecurrence = new ZoneRecurrence(zone.StandardName, Offset.Zero, ConvertTransition(rule.DaylightTransitionEnd), int.MinValue, int.MaxValue);
-                intervalMap = new DaylightSavingsDateTimeZone("ignored", standardOffset, standardRecurrence, daylightRecurrence);
+                intervalMap = new DaylightSavingsDateTimeZone("ignored", StandardOffset, standardRecurrence, daylightRecurrence);
 
                 HeadInterval = intervalMap.GetZoneInterval(Start.IsValid ? Start : Instant.MinValue).WithStart(Start);
                 TailInterval = intervalMap.GetZoneInterval(End.IsValid ? End - Duration.Epsilon : Instant.MaxValue).WithEnd(End);
@@ -268,6 +289,7 @@ namespace NodaTime.TimeZones
                     // Basically, we may need to add in another standard time interval between the rules if they don't abut.
                     if (beforeRule.End < afterRule.Start)
                     {
+                        // We assume that the time between the rules uses the zone's standard offset.
                         maps.AddRange(CoalesceIntervals(beforeRule.TailInterval,
                             new ZoneInterval(standardName, beforeRule.End, afterRule.Start, standardOffset, Offset.Zero),
                         afterRule.HeadInterval));
