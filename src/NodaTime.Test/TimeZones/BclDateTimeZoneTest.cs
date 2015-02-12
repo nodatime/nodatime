@@ -110,14 +110,22 @@ namespace NodaTime.Test.TimeZones
 
             var interval = nodaZone.GetZoneInterval(instant);
 
-            // Check that the zone interval really represents a transition.
+            // Check that the zone interval really represents a transition. It could be a change in
+            // wall offset, name, or the split between standard time and daylight savings for the interval.
             if (interval.RawStart != Instant.BeforeMinValue)
             {
-                Assert.AreNotEqual(interval.WallOffset, nodaZone.GetUtcOffset(interval.Start - Duration.Epsilon));
+                var previousInterval = nodaZone.GetZoneInterval(interval.Start - Duration.Epsilon);
+                Assert.AreNotEqual(new {interval.WallOffset, interval.Name, interval.StandardOffset},
+                    new {previousInterval.WallOffset, previousInterval.Name, previousInterval.StandardOffset});
             }
             var nodaOffset = interval.WallOffset;
             var windowsOffset = windowsZone.GetUtcOffset(instant.ToDateTimeUtc());
-            Assert.AreEqual(windowsOffset, nodaOffset.ToTimeSpan(), "Incorrect offset at " + instant + " in interval " + interval);
+            Assert.AreEqual(windowsOffset, nodaOffset.ToTimeSpan(), $"Incorrect offset at {instant} in interval {interval}");
+
+            // FIXME: This fails, even though everything else is right. I need to look into this.
+            // var bclDaylight = windowsZone.IsDaylightSavingTime(instant.ToDateTimeUtc());
+            // Assert.AreEqual(bclDaylight, interval.Savings != Offset.Zero,
+            //    $"At {instant}, BCL IsDaylightSavingTime={bclDaylight}; Noda savings={interval.Savings}");
         }
     }
 }
