@@ -2,10 +2,11 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
+using static NodaTime.NodaConstants;
+
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using NodaTime.NodaConstants;
 using NodaTime.Utility;
 using JetBrains.Annotations;
 
