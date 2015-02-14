@@ -153,6 +153,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
             DateTimeZone tailZone = null;
             Instant instant = Instant.BeforeMinValue;
 
+            // TODO: See whether PartialZoneIntervalMap would help to tidy this up.
             int ruleSetCount = ruleSets.Count;
             bool tailZoneSeamValid = false;
             for (int i = 0; i < ruleSetCount; i++)
