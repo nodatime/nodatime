@@ -240,6 +240,15 @@ namespace NodaTime.TimeZones
         [DebuggerStepThrough]
         internal bool Contains(LocalInstant localInstant) => localStart <= localInstant && localInstant < localEnd;
 
+        /// <summary>
+        /// Returns whether this zone interval has the same offsets and name as another.
+        /// </summary>
+        internal bool EqualIgnoreBounds([NotNull] [Trusted] ZoneInterval other)
+        {
+            Preconditions.DebugCheckNotNull(other, nameof(other));
+            return other.WallOffset == WallOffset && other.Savings == Savings && other.Name == Name;
+        }
+
         #endregion // Contains
 
         #region IEquatable<ZoneInterval> Members

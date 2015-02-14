@@ -199,6 +199,8 @@
     <Compile Include="TimeZones\DateTimeZoneCache.cs" />
     <Compile Include="TimeZones\DateTimeZoneNotFoundException.cs" />
     <Compile Include="TimeZones\Delegates.cs" />
+    <Compile Include="TimeZones\PartialZoneIntervalMap.cs" />
+    <Compile Include="TimeZones\SingleZoneIntervalMap.cs" />
     <Compile Include="TimeZones\TzdbZoneLocation.cs" />
     <Compile Include="TimeZones\IO\DateTimeZoneReader.cs" />
     <Compile Include="TimeZones\IO\DateTimeZoneWriter.cs" />
