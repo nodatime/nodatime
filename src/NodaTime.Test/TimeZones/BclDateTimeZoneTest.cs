@@ -102,6 +102,7 @@ namespace NodaTime.Test.TimeZones
             // The BCL is basically broken (up to and including .NET 4.5.1 at least) around its interpretation
             // of its own data around the new year. See http://codeblog.jonskeet.uk/2014/09/30/the-mysteries-of-bcl-time-zone-data/
             // for details. We're not trying to emulate this behaviour.
+            // It's a lot *better* for .NET 4.6, 
             var utc = instant.InUtc();
             if ((utc.Month == 12 && utc.Day == 31) || (utc.Month == 1 && utc.Day == 1))
             {
@@ -110,14 +111,22 @@ namespace NodaTime.Test.TimeZones
 
             var interval = nodaZone.GetZoneInterval(instant);
 
-            // Check that the zone interval really represents a transition.
+            // Check that the zone interval really represents a transition. It could be a change in
+            // wall offset, name, or the split between standard time and daylight savings for the interval.
             if (interval.Start != Instant.MinValue)
             {
-                Assert.AreNotEqual(interval.WallOffset, nodaZone.GetUtcOffset(interval.Start - Duration.Epsilon));
+                var previousInterval = nodaZone.GetZoneInterval(interval.Start - Duration.Epsilon);
+                Assert.AreNotEqual(new { interval.WallOffset, interval.Name, interval.StandardOffset },
+                    new { previousInterval.WallOffset, previousInterval.Name, previousInterval.StandardOffset },
+                    "Non-transition from {0} to {1}", previousInterval, interval);
             }
             var nodaOffset = interval.WallOffset;
             var windowsOffset = windowsZone.GetUtcOffset(instant.ToDateTimeUtc());
-            Assert.AreEqual(windowsOffset, nodaOffset.ToTimeSpan(), "Incorrect offset at " + instant + " in interval " + interval);
+            Assert.AreEqual(windowsOffset, nodaOffset.ToTimeSpan(), $"Incorrect offset at {instant} in interval {interval}");
+            var bclDaylight = windowsZone.IsDaylightSavingTime(instant.ToDateTimeUtc());
+            Assert.AreEqual(bclDaylight, interval.Savings != Offset.Zero,
+                "At {0}, BCL IsDaylightSavingTime={1}; Noda savings={2}",
+                instant, bclDaylight, interval.Savings);
         }
     }
 }

@@ -210,6 +210,11 @@ namespace NodaTime.TimeZones
         }
         #endregion // Contains
 
+        internal bool EqualIgnoreBounds([NotNull] ZoneInterval other)
+        {
+            return other.WallOffset == WallOffset && other.Savings == Savings && other.Name == Name;
+        }
+
         #region IEquatable<ZoneInterval> Members
         /// <summary>
         ///   Indicates whether the current object is equal to another object of the same type.

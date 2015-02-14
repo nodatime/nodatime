@@ -226,6 +226,7 @@
     <Compile Include="TimeZones\IO\DtzIoHelper.cs" />
     <Compile Include="TimeZones\IO\IoStream.cs" />
     <Compile Include="TimeZones\IO\ReadWriteTest.cs" />
+    <Compile Include="TimeZones\PartialZoneIntervalMapTest.cs" />
     <Compile Include="TimeZones\ResolversTest.cs" />
     <Compile Include="TimeZones\TzdbDateTimeZoneSourceTest.cs" />
     <Compile Include="TimeZones\DateTimeZoneCacheTest.cs" />
