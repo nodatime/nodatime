@@ -70,6 +70,7 @@
     <UseVSHostingProcess>true</UseVSHostingProcess>
     <DocumentationFile>
     </DocumentationFile>
+    <LangVersion>5</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -251,6 +252,8 @@
     <Compile Include="TimeZones\DateTimeZoneCache.cs" />
     <Compile Include="TimeZones\DateTimeZoneNotFoundException.cs" />
     <Compile Include="TimeZones\Delegates.cs" />
+    <Compile Include="TimeZones\PartialZoneIntervalMap.cs" />
+    <Compile Include="TimeZones\SingleZoneIntervalMap.cs" />
     <Compile Include="TimeZones\TzdbZoneLocation.cs" />
     <Compile Include="TimeZones\IO\LegacyDateTimeZoneReader.cs" />
     <Compile Include="TimeZones\IO\LegacyDateTimeZoneWriter.cs" />
