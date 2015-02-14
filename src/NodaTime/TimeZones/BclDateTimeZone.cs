@@ -82,16 +82,51 @@ namespace NodaTime.TimeZones
             if (!bclZone.SupportsDaylightSavingTime || rules.Length == 0)
             {
                 var fixedInterval = new ZoneInterval(bclZone.StandardName, Instant.BeforeMinValue, Instant.AfterMaxValue, standardOffset, Offset.Zero);
-                return new BclDateTimeZone(bclZone, standardOffset, standardOffset, new FixedZoneIntervalMap(fixedInterval));
+                return new BclDateTimeZone(bclZone, standardOffset, standardOffset, new SingleZoneIntervalMap(fixedInterval));
             }
 
-            BclAdjustmentRule[] mappedRules = Array.ConvertAll(rules, rule => new BclAdjustmentRule(bclZone, rule));
-            Offset minRuleOffset = mappedRules.Aggregate(Offset.Zero, (min, rule) => Offset.Min(min, rule.Savings + rule.StandardOffset));
-            Offset maxRuleOffset = mappedRules.Aggregate(Offset.Zero, (min, rule) => Offset.Max(min, rule.Savings + rule.StandardOffset));
+            BclAdjustmentRule[] convertedRules = Array.ConvertAll(rules, rule => new BclAdjustmentRule(bclZone, rule));
+            Offset minRuleOffset = convertedRules.Aggregate(Offset.MaxValue, (min, rule) => Offset.Min(min, rule.Savings + rule.StandardOffset));
+            Offset maxRuleOffset = convertedRules.Aggregate(Offset.MinValue, (min, rule) => Offset.Max(min, rule.Savings + rule.StandardOffset));
 
-            IZoneIntervalMap uncachedMap = new BclZoneIntervalMap(mappedRules, standardOffset, bclZone.StandardName, bclZone.DaylightName);
+            IZoneIntervalMap uncachedMap = BuildMap(convertedRules, standardOffset, bclZone.StandardName);
             IZoneIntervalMap cachedMap = CachingZoneIntervalMap.CacheMap(uncachedMap, CachingZoneIntervalMap.CacheType.Hashtable);
             return new BclDateTimeZone(bclZone, Offset.Min(standardOffset, minRuleOffset), Offset.Max(standardOffset, maxRuleOffset), cachedMap);
+        }
+
+        private static IZoneIntervalMap BuildMap(BclAdjustmentRule[] rules, Offset standardOffset, [NotNull] string standardName)
+        {
+            Preconditions.CheckNotNull(standardName, nameof(standardName));
+
+            // First work out a naive list of partial maps. These will give the right offset at every instant, but not necessarily
+            // correct intervals - we may we need to stitch intervals together.
+            List<PartialZoneIntervalMap> maps = new List<PartialZoneIntervalMap>();
+            // Handle the start of time until the start of the first rule, if necessary.
+            if (rules[0].Start.IsValid)
+            {
+                maps.Add(PartialZoneIntervalMap.ForZoneInterval(standardName, Instant.BeforeMinValue, rules[0].Start, standardOffset, Offset.Zero));
+            }
+            for (int i = 0; i < rules.Length - 1; i++)
+            {
+                var beforeRule = rules[i];
+                var afterRule = rules[i + 1];
+                maps.Add(beforeRule.PartialMap);
+                // If there's a gap between this rule and the next one, fill it with a fixed interval.
+                if (beforeRule.End < afterRule.Start)
+                {
+                    maps.Add(PartialZoneIntervalMap.ForZoneInterval(standardName, beforeRule.End, afterRule.Start, standardOffset, Offset.Zero));
+                }
+            }
+
+            var lastRule = rules[rules.Length - 1];
+            maps.Add(lastRule.PartialMap);
+
+            // Handle the end of the last rule until the end of time, if necessary.
+            if (lastRule.End.IsValid)
+            {
+                maps.Add(PartialZoneIntervalMap.ForZoneInterval(standardName, lastRule.End, Instant.AfterMaxValue, standardOffset, Offset.Zero));
+            }
+            return PartialZoneIntervalMap.ConvertToFullMap(maps);
         }
 
         /// <summary>
@@ -100,8 +135,6 @@ namespace NodaTime.TimeZones
         private sealed class BclAdjustmentRule
         {
             private static readonly DateTime MaxDate = DateTime.MaxValue.Date;
-
-            private readonly IZoneIntervalMap intervalMap;
 
             /// <summary>
             /// Instant on which this rule starts.
@@ -119,19 +152,11 @@ namespace NodaTime.TimeZones
             internal Offset Savings { get; }
 
             /// <summary>
-            /// The ZoneInterval at the start of this rule, clamped to start at the start of this rule.
-            /// </summary>
-            internal ZoneInterval HeadInterval { get; }
-
-            /// <summary>
-            /// The ZoneInterval at the end of this rule, clamped to end at the end of this rule.
-            /// </summary>
-            internal ZoneInterval TailInterval { get; }
-
-            /// <summary>
             /// The standard offset for the duration of this rule.
             /// </summary>
             internal Offset StandardOffset { get; }
+
+            internal PartialZoneIntervalMap PartialMap { get; }
 
             internal BclAdjustmentRule(TimeZoneInfo zone, TimeZoneInfo.AdjustmentRule rule)
             {
@@ -158,12 +183,35 @@ namespace NodaTime.TimeZones
                 // The end instant (exclusive) is the end of the given date, so we need to add a day.
                 End = rule.DateEnd == MaxDate ? Instant.AfterMaxValue : rule.DateEnd.ToLocalDateTime().PlusDays(1).WithOffset(zoneStandardOffset).ToInstant();
                 Savings = rule.DaylightDelta.ToOffset();
-                var daylightRecurrence = new ZoneRecurrence(zone.DaylightName, Savings, ConvertTransition(rule.DaylightTransitionStart), int.MinValue, int.MaxValue);
-                var standardRecurrence = new ZoneRecurrence(zone.StandardName, Offset.Zero, ConvertTransition(rule.DaylightTransitionEnd), int.MinValue, int.MaxValue);
-                intervalMap = new DaylightSavingsDateTimeZone("ignored", StandardOffset, standardRecurrence, daylightRecurrence);
 
-                HeadInterval = intervalMap.GetZoneInterval(Start.IsValid ? Start : Instant.MinValue).WithStart(Start);
-                TailInterval = intervalMap.GetZoneInterval(End.IsValid ? End - Duration.Epsilon : Instant.MaxValue).WithEnd(End);
+                // Some rules have DST start/end of "January 1st", to indicate that they're just in standard time. This is important
+                // for rules which have a standard offset which is different to the standard offset of the zone itself.
+                if (IsStandardOffsetOnlyRule(rule))
+                {
+                    PartialMap = PartialZoneIntervalMap.ForZoneInterval(zone.StandardName, Start, End, StandardOffset, Offset.Zero);
+                }
+                else
+                {
+                    var daylightRecurrence = new ZoneRecurrence(zone.DaylightName, Savings, ConvertTransition(rule.DaylightTransitionStart), int.MinValue, int.MaxValue);
+                    var standardRecurrence = new ZoneRecurrence(zone.StandardName, Offset.Zero, ConvertTransition(rule.DaylightTransitionEnd), int.MinValue, int.MaxValue);
+                    var recurringMap = new DaylightSavingsDateTimeZone("ignored", StandardOffset, standardRecurrence, daylightRecurrence);
+                    PartialMap = new PartialZoneIntervalMap(Start, End, recurringMap);
+                }
+            }
+
+            /// <summary>
+            /// The BCL represents "standard-only" rules using two fixed date January 1st transitions.
+            /// Currently the time-of-day used for the DST end transition is at one millisecond past midnight... we'll
+            /// be slightly more lenient, accepting anything up to 12:01...
+            /// </summary>
+            private static bool IsStandardOffsetOnlyRule(TimeZoneInfo.AdjustmentRule rule)
+            {
+                var daylight = rule.DaylightTransitionStart;
+                var standard = rule.DaylightTransitionEnd;
+                return daylight.IsFixedDateRule && daylight.Day == 1 && daylight.Month == 1 &&
+                       daylight.TimeOfDay.TimeOfDay < TimeSpan.FromMinutes(1) &&
+                       standard.IsFixedDateRule && standard.Day == 1 && standard.Month == 1 &&
+                       standard.TimeOfDay.TimeOfDay < TimeSpan.FromMinutes(1);
             }
 
             // Converts a TimeZoneInfo "TransitionTime" to a "ZoneYearOffset" - the two correspond pretty closely.
@@ -197,158 +245,8 @@ namespace NodaTime.TimeZones
                 }
                 return new ZoneYearOffset(TransitionMode.Wall, transitionTime.Month, dayOfMonth, dayOfWeek, advance, timeOfDay);
             }
-
-            /// <summary>
-            /// Creates a partial zone interval map covering the period between the end of the
-            /// head interval and the start of the tail interval - unless the rule extends to the start/end
-            /// of time, in which case the partial zone interval map will do so too.
-            /// </summary>
-            internal PartialZoneIntervalMap ToPartialZoneIntervalMap()
-            {
-                return new PartialZoneIntervalMap(
-                    Start.IsValid ? HeadInterval.End : Instant.BeforeMinValue,
-                    End.IsValid ? TailInterval.Start : Instant.AfterMaxValue,
-                    intervalMap);
-            }
         }
-
-        private sealed class FixedZoneIntervalMap : IZoneIntervalMap
-        {
-            private readonly ZoneInterval interval;
-
-            internal FixedZoneIntervalMap(ZoneInterval interval)
-            {
-                this.interval = interval;
-            }
-
-            public ZoneInterval GetZoneInterval(Instant instant) => interval;
-        }
-
-        private sealed class PartialZoneIntervalMap
-        {
-            private readonly IZoneIntervalMap map;
-
-            /// <summary>
-            /// Start of the interval during which this map is valid.
-            /// </summary>
-            internal Instant Start { get; }
-
-            /// <summary>
-            /// End (exclusive) of the interval during which this map is valid.
-            /// </summary>
-            internal Instant End { get; }
-
-            internal PartialZoneIntervalMap(Instant start, Instant end, IZoneIntervalMap map)
-            {
-                // Allowing empty maps makes life simpler.
-                Preconditions.DebugCheckArgument(start <= end, nameof(end),
-                    "Invalid start/end combination: {0} - {1}", start, end);
-                this.Start = start;
-                this.End = end;
-                this.map = map;
-            }
-
-            internal static PartialZoneIntervalMap ForZoneInterval(ZoneInterval interval) =>
-                new PartialZoneIntervalMap(interval.RawStart, interval.RawEnd, new FixedZoneIntervalMap(interval));
-
-            internal ZoneInterval GetZoneInterval(Instant instant)
-            {
-                Preconditions.DebugCheckArgument(instant >= Start && instant < End, nameof(instant),
-                    "Value {0} was not in the range [{0}, {1})", instant, Start, End);
-                return map.GetZoneInterval(instant);
-            }
-        }
-
-        /// <summary>
-        /// The core part of working out zone intervals; separated into its own type to allow for caching. This type is not heavily
-        /// optimized - it is expected that the cache will do the heavy lifting. Correctness in the face of extreme values (and odd rules)
-        /// is much more important. There's nothing specific post-construction here... it could be extracted
-        /// into a more general place if that would be useful.
-        /// </summary>
-        private sealed class BclZoneIntervalMap : IZoneIntervalMap
-        {
-            private readonly PartialZoneIntervalMap[] partialMaps;
-
-            internal BclZoneIntervalMap(BclAdjustmentRule[] rules, Offset standardOffset, [NotNull] string standardName, [NotNull] string daylightName)
-            {
-                Preconditions.CheckNotNull(standardName, nameof(standardName));
-                Preconditions.CheckNotNull(daylightName, nameof(daylightName));
-                List<PartialZoneIntervalMap> maps = new List<PartialZoneIntervalMap>();
-                if (rules[0].Start.IsValid)
-                {
-                    var ruleHead = rules[0].HeadInterval;
-                    var timeHead = new ZoneInterval(standardName, Instant.BeforeMinValue, rules[0].Start, standardOffset, Offset.Zero);
-                    maps.AddRange(CoalesceIntervals(timeHead, ruleHead));
-                }
-                for (int i = 0; i < rules.Length - 1; i++)
-                {
-                    var beforeRule = rules[i];
-                    var afterRule = rules[i + 1];
-                    maps.Add(beforeRule.ToPartialZoneIntervalMap());
-                    // ZoneInterval can't have start == end, which makes some sense even though it would be handy here...
-                    // Basically, we may need to add in another standard time interval between the rules if they don't abut.
-                    if (beforeRule.End < afterRule.Start)
-                    {
-                        // We assume that the time between the rules uses the zone's standard offset.
-                        maps.AddRange(CoalesceIntervals(beforeRule.TailInterval,
-                            new ZoneInterval(standardName, beforeRule.End, afterRule.Start, standardOffset, Offset.Zero),
-                        afterRule.HeadInterval));
-                    }
-                    else
-                    {
-                        maps.AddRange(CoalesceIntervals(beforeRule.TailInterval, afterRule.HeadInterval));
-                    }
-                }
-                var lastRule = rules[rules.Length - 1];
-                maps.Add(lastRule.ToPartialZoneIntervalMap());
-                if (lastRule.End.IsValid)
-                {
-                    var ruleTail = lastRule.TailInterval;
-                    var timeTail = new ZoneInterval(standardName, lastRule.End, Instant.AfterMaxValue, standardOffset, Offset.Zero);
-                    maps.AddRange(CoalesceIntervals(ruleTail, timeTail));
-                }
-                this.partialMaps = maps.ToArray();
-            }
-
-            // Given some zone intervals, coalesce abutting ones if they have the same offset, and return a matching
-            // sequence of PartialZoneIntervalMaps containing them.
-            private static IEnumerable<PartialZoneIntervalMap> CoalesceIntervals(params ZoneInterval[] intervals)
-            {
-                var current = intervals[0];
-                for (int i = 1; i < intervals.Length; i++)
-                {
-                    var candidate = intervals[i];
-                    Preconditions.DebugCheckArgument(candidate.RawStart == current.RawEnd, nameof(intervals), "Intervals should abut; {0} and {1} don't.", current, candidate);
-                    if (current.WallOffset == candidate.WallOffset)
-                    {
-                        current = current.WithEnd(candidate.RawEnd);
-                    }
-                    else
-                    {
-                        yield return PartialZoneIntervalMap.ForZoneInterval(current);
-                        current = candidate;
-                    }
-                }
-                yield return PartialZoneIntervalMap.ForZoneInterval(current);
-            }
-
-            public ZoneInterval GetZoneInterval(Instant instant)
-            {
-                // We assume the maps are ordered, and start with "beginning of time"
-                // which means we only need to find the first partial map which ends after
-                // the instant we're interested in. This is just a linear search - a binary search
-                // would be feasible, but we're not expecting very many entries.
-                foreach (var partialMap in partialMaps)
-                {
-                    if (instant < partialMap.End)
-                    {
-                        return partialMap.GetZoneInterval(instant);
-                    }
-                }
-                throw new InvalidOperationException("Instant not contained in any map");
-            }
-        }
-
+        
         /// <summary>
         /// Returns a time zone converted from the BCL representation of the system local time zone.
         /// </summary>
