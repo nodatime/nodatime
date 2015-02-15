@@ -179,7 +179,7 @@ namespace NodaTime.TimeZones
 
                 // Note: this extends back from DateTime.MinValue to start of time, even though the BCL can represent
                 // as far back as 1AD. This is in the *spirit* of a rule which goes back that far.
-                Start = rule.DateStart.ToLocalDateTime().WithOffset(zoneStandardOffset).ToInstant();
+                Start = rule.DateStart == DateTime.MinValue ? Instant.BeforeMinValue : rule.DateStart.ToLocalDateTime().WithOffset(zoneStandardOffset).ToInstant();
                 // The end instant (exclusive) is the end of the given date, so we need to add a day.
                 End = rule.DateEnd == MaxDate ? Instant.AfterMaxValue : rule.DateEnd.ToLocalDateTime().PlusDays(1).WithOffset(zoneStandardOffset).ToInstant();
                 Savings = rule.DaylightDelta.ToOffset();

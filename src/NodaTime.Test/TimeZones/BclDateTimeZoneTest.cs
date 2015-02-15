@@ -97,6 +97,31 @@ namespace NodaTime.Test.TimeZones
             Assert.AreSame(nodaLocal1, nodaLocal2);
         }
 
+        [Test]
+        public void DateTimeMinValueStartRuleExtendsToBeginningOfTime()
+        {
+            var rules = new[]
+            {
+                // Rule for the whole of time, with DST of 1 hour commencing on March 1st
+                // and ending on September 1st.
+                TimeZoneInfo.AdjustmentRule.CreateAdjustmentRule(
+                    DateTime.MinValue, DateTime.MaxValue.Date, TimeSpan.FromHours(1),
+                    TimeZoneInfo.TransitionTime.CreateFixedDateRule(DateTime.MinValue, 3, 1),
+                    TimeZoneInfo.TransitionTime.CreateFixedDateRule(DateTime.MinValue, 9, 1))
+            };
+            var bclZone = TimeZoneInfo.CreateCustomTimeZone("custom", baseUtcOffset: TimeSpan.Zero,
+                displayName: "DisplayName", standardDisplayName: "Standard",
+                daylightDisplayName: "Daylight",
+                adjustmentRules: rules);
+            var nodaZone = BclDateTimeZone.FromTimeZoneInfo(bclZone);
+            // Standard time in February BC 101
+            Assert.AreEqual(Offset.Zero, nodaZone.GetUtcOffset(Instant.FromUtc(-100, 2, 1, 0, 0)));
+            // Daylight time in July BC 101
+            Assert.AreEqual(Offset.FromHours(1), nodaZone.GetUtcOffset(Instant.FromUtc(-100, 7, 1, 0, 0)));
+            // Standard time in October BC 101
+            Assert.AreEqual(Offset.Zero, nodaZone.GetUtcOffset(Instant.FromUtc(-100, 10, 1, 0, 0)));
+        }
+
         private void ValidateZoneEquality(Instant instant, DateTimeZone nodaZone, TimeZoneInfo windowsZone)
         {
             // The BCL is basically broken (up to and including .NET 4.5.1 at least) around its interpretation
