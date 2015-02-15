@@ -7,8 +7,6 @@ using Microsoft.CodeAnalysis.MSBuild;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using NUnit.Framework;
 
 namespace NodaTime.Test.Annotations
 {

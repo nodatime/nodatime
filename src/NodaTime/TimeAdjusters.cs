@@ -3,9 +3,6 @@
 // as found in the LICENSE.txt file.
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace NodaTime
 {
