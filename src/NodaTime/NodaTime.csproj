@@ -109,6 +109,7 @@
     <Compile Include="DateInterval.cs" />
     <Compile Include="DateTimeZoneProviders.cs" />
     <Compile Include="Extensions\ClockExtensions.cs" />
+    <Compile Include="Extensions\DateTimeZoneProviderExtensions.cs" />
     <Compile Include="Extensions\IsoDayOfWeekExtensions.cs" />
     <Compile Include="Extensions\DayOfWeekExtensions.cs" />
     <Compile Include="Extensions\StopwatchExtensions.cs" />

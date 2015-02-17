@@ -123,7 +123,7 @@ namespace NodaTime.TimeZones
                 internal static HashCacheNode CreateNode(int period, IZoneIntervalMap map)
                 {
                     var days = period << PeriodShift;
-                    var periodStart = new Instant(new Duration(days, 0L));
+                    var periodStart = new Instant(new Duration(Math.Max(days, Instant.MinDays), 0L));
                     var nextPeriodStartDays = days + (1 << PeriodShift);
 
                     var interval = map.GetZoneInterval(periodStart);
