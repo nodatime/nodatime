@@ -61,31 +61,40 @@ namespace NodaTime.CheckTimeZones
                     Console.WriteLine("Unknown time zone: {0}", options.Zone);
                     return 1;
                 }
-                DumpZone(zone, Console.Out, options.FromYear, options.ToYear);
+                DumpZone(zone, Console.Out, options);
             }
             else
             {
                 foreach (var id in provider.Ids)
                 {
-                    DumpZone(provider[id], Console.Out, options.FromYear, options.ToYear);
+                    DumpZone(provider[id], Console.Out, options);
                 }
             }
             return 0;
         }
 
-        private static void DumpZone(DateTimeZone zone, TextWriter output, int fromYear, int toYear)
+        private static void DumpZone(DateTimeZone zone, TextWriter output, Options options)
         {
+            int fromYear = options.FromYear;
+            int toYear = options.ToYear;
+
             output.WriteLine(zone.Id);
             var start = Instant.FromUtc(fromYear, 1, 1, 0, 0);
             // Exclusive upper bound
-            var end = Instant.FromUtc(toYear + 1, 1, 1, 0, 0);
-            
+            var end = toYear == 9999 ? Instant.MaxValue : Instant.FromUtc(toYear + 1, 1, 1, 0, 0);
+            ZoneInterval lastDisplayed = null;
+
             foreach (var interval in zone.GetZoneIntervals(start, end))
             {
-               output.WriteLine("{0}  {1}  {2}",
-                    DateTimePattern.Format(Instant.Max(start, interval.Start)),
-                    OffsetPattern.Format(interval.StandardOffset),
-                    OffsetPattern.Format(interval.Savings));
+                output.WriteLine(interval);
+                lastDisplayed = interval;
+            }
+
+            // This will never be null; every interval has at least one zone interval.
+            if (lastDisplayed.HasEnd && options.IncludeFinal)
+            {
+                output.WriteLine("...");
+                output.WriteLine(zone.GetZoneInterval(Instant.MaxValue));
             }
 
             output.WriteLine();
