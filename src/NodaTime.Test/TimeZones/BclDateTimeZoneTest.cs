@@ -70,6 +70,17 @@ namespace NodaTime.Test.TimeZones
             }
         }
 
+        [Test]
+        [TestCaseSource("BclZonesOrEmptyOnMono")]
+        public void AllZonesStartAndEndOfTime(TimeZoneInfo windowsZone)
+        {
+            var nodaZone = BclDateTimeZone.FromTimeZoneInfo(windowsZone);
+            var firstInterval = nodaZone.GetZoneInterval(Instant.MinValue);
+            Assert.IsFalse(firstInterval.HasStart);
+            var lastInterval = nodaZone.GetZoneInterval(Instant.MaxValue);
+            Assert.IsFalse(lastInterval.HasEnd);
+        }
+
         private void ValidateZoneEveryWeek(TimeZoneInfo windowsZone)
         {
             var nodaZone = BclDateTimeZone.FromTimeZoneInfo(windowsZone);
