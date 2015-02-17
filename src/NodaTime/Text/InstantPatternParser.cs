@@ -59,7 +59,12 @@ namespace NodaTime.Text
                 this.pattern = pattern;
             }
 
-            public string Format(Instant value) => pattern.Format(value.InUtc().LocalDateTime);
+            public string Format(Instant value) =>
+                // We don't need to be able to parse before-min/after-max values, but it's convenient to be
+                // able to format them - mostly for the sake of testing (but also for ZoneInterval).
+                value.IsValid ? pattern.Format(value.InUtc().LocalDateTime)
+                    : value == Instant.BeforeMinValue ? "StartOfTime"
+                    : "EndOfTime";
 
             public StringBuilder AppendFormat(Instant value, [NotNull] StringBuilder builder) =>
                 pattern.AppendFormat(value.InUtc().LocalDateTime, builder);
