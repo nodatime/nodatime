@@ -312,13 +312,7 @@ namespace NodaTime.TimeZones
         /// <returns>
         ///   A <see cref="System.String" /> that represents this instance.
         /// </returns>
-        public override string ToString() =>
-            string.Format("{0}: [{1}, {2}) {3} ({4})",
-                Name,
-                HasStart ? Start.ToString() : "StartOfTime",
-                HasEnd ? End.ToString() : "EndOfTime",
-                WallOffset,
-                Savings);
+        public override string ToString() => $"{Name}: [{RawStart}, {RawEnd}) {WallOffset} ({Savings})";
 
         #endregion // object Overrides
     }
