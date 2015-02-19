@@ -122,7 +122,7 @@ namespace NodaTime.Test.TimeZones
             }
             var nodaOffset = interval.WallOffset;
             var windowsOffset = windowsZone.GetUtcOffset(instant.ToDateTimeUtc());
-            Assert.AreEqual(windowsOffset, nodaOffset.ToTimeSpan(), $"Incorrect offset at {instant} in interval {interval}");
+            Assert.AreEqual(windowsOffset, nodaOffset.ToTimeSpan(), "Incorrect offset at " + instant + " in interval " + interval);
             var bclDaylight = windowsZone.IsDaylightSavingTime(instant.ToDateTimeUtc());
             Assert.AreEqual(bclDaylight, interval.Savings != Offset.Zero,
                 "At {0}, BCL IsDaylightSavingTime={1}; Noda savings={2}",
