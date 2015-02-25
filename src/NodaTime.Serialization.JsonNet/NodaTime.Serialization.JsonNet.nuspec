@@ -19,7 +19,7 @@
     <tags>nodatime json</tags>
     <dependencies>
       <dependency id="NodaTime" version="2.0.0-alpha" />
-      <dependency id="newtonsoft.json" version="4.5.11" />
+      <dependency id="Newtonsoft.Json" version="4.5.11" />
     </dependencies>
   </metadata>
   <files>
