@@ -18,9 +18,8 @@ namespace NodaTime.TimeZones
     /// </summary>
     /// <remarks>
     /// <para>
-    /// Note that although this class implements <see cref="IEquatable{DateTimeZone}"/> by virtue of extending
-    /// <see cref="DateTimeZone"/>, the implementation here will always throw <c>NotImplementedException</c> when asked
-    /// to compare two different <c>BclDateTimeZone</c> instances.
+    /// Two instances of this class are deemed equal if and only if they refer to the exact same
+    /// <see cref="TimeZoneInfo"/> object.
     /// </para>
     /// <para>
     /// This implementation does not always give the same results as <c>TimeZoneInfo</c>, in that it doesn't replicate
@@ -284,12 +283,12 @@ namespace NodaTime.TimeZones
 
         /// <inheritdoc />
         /// <remarks>
-        /// This implementation always throws <c>NotImplementedException</c>.
+        /// This implementation simply compares the underlying `TimeZoneInfo` values for
+        /// reference equality.
         /// </remarks>
-        /// <exception cref="NotImplementedException">Always.</exception>
         protected override bool EqualsImpl(DateTimeZone zone)
         {
-            throw new NotImplementedException();
+            return ReferenceEquals(OriginalZone, ((BclDateTimeZone) zone).OriginalZone);
         }
 
         /// <inheritdoc />
