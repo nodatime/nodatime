@@ -97,6 +97,22 @@ namespace NodaTime.Test.TimeZones
             Assert.AreSame(nodaLocal1, nodaLocal2);
         }
 
+        [Test]
+        public void Equality()
+        {
+            if (BclZonesOrEmptyOnMono.Count < 2)
+            {
+                return;
+            }
+            var firstEqual = BclDateTimeZone.FromTimeZoneInfo(BclZonesOrEmptyOnMono[0]);
+            var secondEqual = BclDateTimeZone.FromTimeZoneInfo(BclZonesOrEmptyOnMono[0]);
+            var unequal = BclDateTimeZone.FromTimeZoneInfo(BclZonesOrEmptyOnMono[1]);
+            Assert.AreEqual(firstEqual, secondEqual);
+            Assert.AreEqual(firstEqual.GetHashCode(), secondEqual.GetHashCode());
+            Assert.AreNotSame(firstEqual, secondEqual);
+            Assert.AreNotEqual(firstEqual, unequal);
+        }
+
         private void ValidateZoneEquality(Instant instant, DateTimeZone nodaZone, TimeZoneInfo windowsZone)
         {
             // The BCL is basically broken (up to and including .NET 4.5.1 at least) around its interpretation
