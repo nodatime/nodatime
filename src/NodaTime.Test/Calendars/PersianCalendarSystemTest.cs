@@ -21,7 +21,11 @@ namespace NodaTime.Test.Calendars
 
             for (int year = 1; year < 9377; year++)
             {
-                Assert.AreEqual(bcl.IsLeapYear(year), noda.IsLeapYear(year));
+                var bclLeap = bcl.IsLeapYear(year);
+                var nodaLeap = noda.IsLeapYear(year);
+                Assert.AreEqual(bclLeap, nodaLeap,
+                    "Year: {0}; BCL leap: {1}; Noda Time leap: {2}", year,
+                    bclLeap, nodaLeap);
             }
         }
 
