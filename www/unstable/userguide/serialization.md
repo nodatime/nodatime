@@ -116,17 +116,17 @@ Most serialized forms just consist of element text using a specified text handli
     <tr>
       <td><code>LocalDateTime</code></td>
       <td>Extended ISO pattern, optional calendar</td>
-      <td><code>&lt;value calendar="Gregorian 3"&gt;16:45:20.123456789&lt;/value&gt;</td>
+      <td><code>&lt;value calendar="Gregorian 3"&gt;2013-07-26T16:45:20.123456789&lt;/value&gt;</td>
     </tr>
     <tr>
       <td><code>OffsetDateTime</code></td>
       <td>RFC 3339 pattern (extended ISO but with offset in form +/-HH:mm or Z), optional calendar</td>
-      <td><code>&lt;value calendar="Gregorian 3"&gt;16:45:20.123456789+01:00&lt;/value&gt;</td>
+      <td><code>&lt;value calendar="Gregorian 3"&gt;2013-07-26T16:45:20.123456789+01:00&lt;/value&gt;</td>
     </tr>
     <tr>
       <td><code>ZonedDateTime</code></td>
       <td>Extended ISO pattern, optional calendar</td>
-      <td><code>&lt;value calendar="Gregorian 3" zone="Europe/London"&gt;16:45:20.123456789+01&lt;/value&gt;</td>
+      <td><code>&lt;value calendar="Gregorian 3" zone="Europe/London"&gt;2013-07-26T16:45:20.123456789+01&lt;/value&gt;</td>
     </tr>
     <tr>
       <td><code>Interval</code></td>
@@ -205,19 +205,19 @@ The `ConfigureForNodaTime` extension methods described above both disable automa
 
 All default patterns use the invariant culture.
 
-- `Instant`: an ISO-8601 pattern extended to handle fractional seconds: `yyyy'-'MM'-'dd'T'HH':'mm':'ss.FFFFFFF'Z'`
+- `Instant`: an ISO-8601 pattern extended to handle fractional seconds: `yyyy'-'MM'-'dd'T'HH':'mm':'ss.FFFFFFFFF'Z'`
 - `LocalDate`: ISO-8601 date pattern: `yyyy'-'MM'-'dd`
-- `LocalTime`: ISO-8601 time pattern, extended to handle fractional seconds: `HH':'mm':'ss.FFFFFFF`
-- `LocalDateTime`: ISO-8601 date/time pattern with no time zone specifier, extended to handle fractional seconds: `yyyy'-'MM'-'dd'T'HH':'mm':'ss.FFFFFFF`
+- `LocalTime`: ISO-8601 time pattern, extended to handle fractional seconds: `HH':'mm':'ss.FFFFFFFFF`
+- `LocalDateTime`: ISO-8601 date/time pattern with no time zone specifier, extended to handle fractional seconds: `yyyy'-'MM'-'dd'T'HH':'mm':'ss.FFFFFFFFF`
 - `OffsetDateTime`: RFC3339 pattern:
- `yyyy'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFFo<Z+HH:mm>`; note that the
+ `yyyy'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFFFFo<Z+HH:mm>`; note that the
  offset always includes hours and minutes, to conform with ECMA-262.
  It does not support round-tripping offsets with sub-minute components.
-- `ZonedDateTime`: As `OffsetDateTime`, but with a time zone ID at the end: `yyyy'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFFo<G> z`
+- `ZonedDateTime`: As `OffsetDateTime`, but with a time zone ID at the end: `yyyy'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFFFFo<G> z`
 - `Interval`: A compound object of the form `{ Start: xxx, End: yyy }` where `xxx` and `yyy` are represented however the serializer sees fit. (Typically using the default representation above.) An alternative form can be specified using the `WithIsoIntervalConverter` extension method on `JsonSerializer`/`JsonSerializerSettings`.
 - `Offset`: general pattern, e.g. `+05` or `-03:30`
 - `Period`: The round-trip period pattern; `NodaConverters.NormalizingIsoPeriodConverter` provides a converter using the normalizing ISO-like pattern
-- `Duration`: A duration pattern of `-H:mm:ss.FFFFFFF` (like the standard round-trip pattern, but starting with hours instead of days)
+- `Duration`: A duration pattern of `-H:mm:ss.FFFFFFFFF` (like the standard round-trip pattern, but starting with hours instead of days)
 - `DateTimeZone`: The ID, as a string
 
 ### Limitations
