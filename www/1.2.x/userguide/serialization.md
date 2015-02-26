@@ -109,17 +109,17 @@ Most serialized forms just consist of element text using a specified text handli
     <tr>
       <td><code>LocalDateTime</code></td>
       <td>Extended ISO pattern, optional calendar</td>
-      <td><code>&lt;value calendar="Gregorian 3"&gt;16:45:20.1234567&lt;/value&gt;</td>
+      <td><code>&lt;value calendar="Gregorian 3"&gt;2013-07-26T16:45:20.1234567&lt;/value&gt;</td>
     </tr>
     <tr>
       <td><code>OffsetDateTime</code></td>
       <td>Extended ISO pattern, optional calendar</td>
-      <td><code>&lt;value calendar="Gregorian 3"&gt;16:45:20.1234567+01&lt;/value&gt;</td>
+      <td><code>&lt;value calendar="Gregorian 3"&gt;2013-07-26T16:45:20.1234567+01&lt;/value&gt;</td>
     </tr>
     <tr>
       <td><code>ZonedDateTime</code></td>
       <td>Extended ISO pattern, optional calendar</td>
-      <td><code>&lt;value calendar="Gregorian 3" zone="Europe/London"&gt;16:45:20.1234567+01&lt;/value&gt;</td>
+      <td><code>&lt;value calendar="Gregorian 3" zone="Europe/London"&gt;2013-07-26T16:45:20.1234567+01&lt;/value&gt;</td>
     </tr>
     <tr>
       <td><code>Interval</code></td>
