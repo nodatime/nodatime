@@ -195,7 +195,7 @@ Periods and durations
 There are two similar types in Noda Time used to represent "lengths of time". The
 simplest is [`Duration`][Duration] which is equivalent to [`TimeSpan`][TimeSpan] in the BCL,
 other than in terms of granularity. This is a fixed number of nanoseconds - it's
-the same length of time wherever its applied. `Duration` is used for arithmetic on `Instant`
+the same length of time wherever it's applied. `Duration` is used for arithmetic on `Instant`
 and `ZonedDateTime` values.
 
 A more complex type is [`Period`][Period], which is a set of values associated with different
