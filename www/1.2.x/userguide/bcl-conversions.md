@@ -17,7 +17,7 @@ the ISO-8601 calendar.
 DateTime
 ========
 
-`DateTime` can represent many things (which is [one of the reasons](http://noda-time.blogspot.com/2011/08/what-wrong-with-datetime-anyway.html) Noda Time exists).
+`DateTime` can represent many things (which is [one of the reasons](http://blog.nodatime.org/2011/08/what-wrong-with-datetime-anyway.html) Noda Time exists).
 
 However, the following mappings are reasonable:
 
