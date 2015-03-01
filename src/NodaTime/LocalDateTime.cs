@@ -378,7 +378,11 @@ namespace NodaTime
         /// </remarks>
         /// <returns>A <see cref="DateTime"/> value for the same date and time as this value.</returns>
         [Pure]
-        public DateTime ToDateTimeUnspecified() => ToLocalInstant().ToDateTimeUnspecified();
+        public DateTime ToDateTimeUnspecified() =>
+            new DateTime(
+                TickArithmetic.DaysAndTickOfDayToTicks(date.DaysSinceEpoch, time.TickOfDay) + NodaConstants.BclTicksAtUnixEpoch,
+                DateTimeKind.Unspecified);
+            
 
         [Pure]
         internal LocalInstant ToLocalInstant() => new LocalInstant(date.DaysSinceEpoch, time.NanosecondOfDay);

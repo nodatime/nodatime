@@ -3,20 +3,18 @@
 // as found in the LICENSE.txt file.
 
 using System;
-using JetBrains.Annotations;
 using NodaTime.Annotations;
 using NodaTime.Text;
-using NodaTime.Utility;
 
 namespace NodaTime
 {
     /// <summary>
-    /// Represents a local date and time without reference to a calendar system,
-    /// as the number of ticks since the Unix epoch which would represent that time
-    /// of the same date in UTC. This needs a better description, and possibly a better name
-    /// at some point...
+    /// Represents a local date and time without reference to a calendar system. Essentially
+    /// this is a duration since a Unix epoch shifted by an offset (but we don't store what that
+    /// offset is). This class has been slimmed down considerably over time - it's used much less
+    /// than it used to be... almost solely for time zones.
     /// </summary>
-    internal struct LocalInstant : IEquatable<LocalInstant>, IComparable<LocalInstant>, IComparable
+    internal struct LocalInstant : IEquatable<LocalInstant>
     {
         public static readonly LocalInstant BeforeMinValue = new LocalInstant(Instant.BeforeMinValue.DaysSinceEpoch, deliberatelyInvalid: true);
         public static readonly LocalInstant AfterMaxValue = new LocalInstant(Instant.AfterMaxValue.DaysSinceEpoch, deliberatelyInvalid: true);
@@ -78,26 +76,7 @@ namespace NodaTime
         /// </summary>
         internal long NanosecondOfDay => duration.NanosecondOfFloorDay;
 
-        /// <summary>
-        /// Constructs a <see cref="DateTime"/> from this LocalInstant which has a <see cref="DateTime.Kind" />
-        /// of <see cref="DateTimeKind.Unspecified"/> and represents the same local date and time as this value.
-        /// </summary>
-        /// <remarks>
-        /// <see cref="DateTimeKind.Unspecified"/> is slightly odd - it can be treated as UTC if you use <see cref="DateTime.ToLocalTime"/>
-        /// or as system local time if you use <see cref="DateTime.ToUniversalTime"/>, but it's the only kind which allows
-        /// you to construct a <see cref="DateTimeOffset"/> with an arbitrary offset, which makes it as close to
-        /// the Noda Time non-system-specific "local" concept as exists in .NET.
-        /// </remarks>
-        [Pure]
-        public DateTime ToDateTimeUnspecified() => 
-            new DateTime(NodaConstants.BclTicksAtUnixEpoch + duration.Ticks, DateTimeKind.Unspecified);
-
         #region Operators
-        // <summary>
-        // Returns an instant after adding the given duration
-        // </summary>
-        public static LocalInstant operator +(LocalInstant left, Duration right) => new LocalInstant(left.duration + right);
-
         /// <summary>
         /// Returns a new instant based on this local instant, as if we'd applied a zero offset.
         /// This is just a slight optimization over calling <c>localInstant.Minus(Offset.Zero)</c>.
@@ -115,11 +94,6 @@ namespace NodaTime
         /// <param name="offset">The offset between UTC and a time zone for this local instant</param>
         /// <returns>A new <see cref="Instant"/> representing the difference of the given values.</returns>
         public Instant Minus(Offset offset) => new Instant(duration.MinusSmallNanoseconds(offset.Nanoseconds));
-
-        /// <summary>
-        /// Returns an instant after subtracting the given duration
-        /// </summary>
-        public static LocalInstant operator -(LocalInstant left, Duration right) => new LocalInstant(left.duration - right);
 
         /// <summary>
         /// Implements the operator == (equality).
@@ -202,58 +176,7 @@ namespace NodaTime
         /// <returns><c>true</c> if the left value is greater than or equal to the right value, otherwise <c>false</c>.</returns>
         public static bool operator >=(LocalInstant left, LocalInstant right) => left.duration >= right.duration;
         #endregion // Operators
-
-        #region IComparable<LocalInstant> Members
-        /// <summary>
-        /// Compares the current object with another object of the same type.
-        /// </summary>
-        /// <param name="other">An object to compare with this object.</param>
-        /// <returns>
-        /// A 32-bit signed integer that indicates the relative order of the objects being compared.
-        /// The return value has the following meanings:
-        /// <list type="table">
-        /// <listheader>
-        /// <term>Value</term>
-        /// <description>Meaning</description>
-        /// </listheader>
-        /// <item>
-        /// <term>&lt; 0</term>
-        /// <description>This object is less than the <paramref name="other"/> parameter.</description>
-        /// </item>
-        /// <item>
-        /// <term>0</term>
-        /// <description>This object is equal to <paramref name="other"/>.</description>
-        /// </item>
-        /// <item>
-        /// <term>&gt; 0</term>
-        /// <description>This object is greater than <paramref name="other"/>.</description>
-        /// </item>
-        /// </list>
-        /// </returns>
-        public int CompareTo(LocalInstant other) => duration.CompareTo(other.duration);
-
-        /// <summary>
-        /// Implementation of <see cref="IComparable.CompareTo"/> to compare two local instants.
-        /// </summary>
-        /// <remarks>
-        /// This uses explicit interface implementation to avoid it being called accidentally. The generic implementation should usually be preferred.
-        /// </remarks>
-        /// <exception cref="ArgumentException"><paramref name="obj"/> is non-null but does not refer to an instance of <see cref="LocalInstant"/>.</exception>
-        /// <param name="obj">The object to compare this value with.</param>
-        /// <returns>The result of comparing this instant with another one; see <see cref="CompareTo(NodaTime.LocalInstant)"/> for general details.
-        /// If <paramref name="obj"/> is null, this method returns a value greater than 0.
-        /// </returns>
-        int IComparable.CompareTo(object obj)
-        {
-            if (obj == null)
-            {
-                return 1;
-            }
-            Preconditions.CheckArgument(obj is LocalInstant, nameof(obj), "Object must be of type NodaTime.LocalInstant.");
-            return CompareTo((LocalInstant)obj);
-        }
-        #endregion
-
+        
         #region Object overrides
         /// <summary>
         /// Determines whether the specified <see cref="System.Object"/> is equal to this instance.
