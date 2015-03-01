@@ -875,7 +875,26 @@ namespace NodaTime
                     ? new CalendarSystem(CalendarOrdinal.UmAlQura, UmAlQuraName, UmAlQuraName, new UmAlQuraYearMonthDayCalculator(), Era.AnnoHegirae) 
                     : null;
 
-            // Static constructor to enforce laziness.
+            // Static constructor to enforce laziness. This is actually important to avoid a Heisenbug. Without this, you can get a nasty
+            // cyclic semi-dependency:
+            //  1) Client (e.g. internal test) calls UmAlQuraYearMonthDayCalculator.IsSupported
+            //  2) Type initialization of UmAlQuraYearMonthDayCalculator is triggered
+            //  3) Static constructor of UmAlQuraYearMonthDayCalculator requires NodaConstants
+            //  4) Type initialization of NodaConstants is triggered (early on)
+            //  5) NodaConstants.BclEpoch requires CalendarSystem.ForOrdinal
+            //  6) CalendarSystem.ForOrdinal refers to MiscellaneousCalendars, so without a static constructor here,
+            //     the CLR *can* trigger type initialization
+            //  7) Type initialization of MiscellaneousCalendars calls UmAlQuraYearMonthDayCalculator.IsSupported again
+            //  8) Although UmAlQuraYearMonthDayCalculator isn't initialized yet, it's *being* initialized by this thread, so it's skipped
+            //  9) UmAlQuraYearMonthDayCalculator.IsSupported checks a static field which hasn't *yet* been written - and reports that it's unsupported
+            // 10) MiscellaneousCalendars type initialization decides that the calendar isn't supported, so stores a null reference for the calendar system
+            // 11) Going back up the stack, *now* UmAlQuraYearMonthDayCalculator type initialization completes, setting that it *is* supported.
+            // 12) We have a discrepancy: CalendarSystem.UmAlQura will fail saying it's not supported,
+            //     but UmAlQuraYearMonthDayCalculator.IsSupported returns true. Ick!
+            //
+            // With the static constructor in place, the chain is broken at step 6 - we don't initialize MiscellaneousCalendars
+            // as a side-effect, so we never end up executing UmAlQuraYearMonthDayCalculator.IsSupported before the type initializer
+            // for UmAlQuraYearMonthDayCalculator has completed.
             static MiscellaneousCalendars() { }
         }
 
