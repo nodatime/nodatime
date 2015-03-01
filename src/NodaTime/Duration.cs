@@ -76,7 +76,7 @@ namespace NodaTime
         /// <summary>
         /// Gets the maximum value supported by <see cref="Duration"/>.
         /// </summary>
-        public static Duration MaxValue => new Duration(MaxDays, NodaConstants.NanosecondsPerDay - 1);
+        public static Duration MaxValue => new Duration(MaxDays, NanosecondsPerDay - 1);
 
         /// <summary>
         /// Gets the minimum (largest negative) value supported by <see cref="Duration"/>.

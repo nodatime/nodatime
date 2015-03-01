@@ -23,6 +23,7 @@ namespace NodaTime.Calendars
 
         internal YearMonthDay GetYearMonthDay(int weekYear, int weekOfWeekYear, IsoDayOfWeek dayOfWeek)
         {
+            // TODO: Is this really valid? It means we can't necessarily round-trip. Maybe be more lenient, but then check the resulting days-since-epoch.
             Preconditions.CheckArgumentRange(nameof(weekYear), weekYear, yearMonthDayCalculator.MinYear, yearMonthDayCalculator.MaxYear);
             Preconditions.CheckArgumentRange(nameof(weekOfWeekYear), weekOfWeekYear, 1, GetWeeksInWeekYear(weekYear));
             // TODO: Work out what argument validation we actually want here.

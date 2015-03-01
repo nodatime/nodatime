@@ -70,7 +70,7 @@ that Gregorian year can be converted into the relevant calendar.)
 		<tr>
 			<td>Persian</td>
 			<td>1</td>
-			<td>9376</td>
+			<td>9377</td>
 			<td>622</td>
 			<td>9999</td>
 		</tr>

@@ -2,32 +2,31 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-using System.Diagnostics.CodeAnalysis;
+using NodaTime.Utility;
+using System;
+using System.Globalization;
 
 namespace NodaTime.Calendars
 {
     /// <summary>
-    /// Implementation of the Persian (Solar Hijri) calendar. This is an algorithmic
-    /// implementation rather than the true observational version, and it follows the
-    /// simple 33 year leap cycle implemented by .NET rather than the more complicated
-    /// form of variable-length cycles and grand cycles devised by Ahmad Birashk.
+    /// Base class for the three variants of the Persian (Solar Hijri) calendar.
+    /// Concrete subclasses are nested to allow different start dates and leap year calculations.
     /// </summary>
-    internal sealed class PersianYearMonthDayCalculator : RegularYearMonthDayCalculator
+    /// <remarks>
+    /// The constructor uses IsLeapYear to precompute lots of data; it is therefore important that
+    /// the implementation of IsLeapYear in subclasses uses no instance fields.
+    /// </remarks>
+    internal abstract class PersianYearMonthDayCalculator : RegularYearMonthDayCalculator
     {
-        // This is a long because we're notionally handling 33 bits. The top bit is
-        // false anyway, but IsLeapYear shifts a long for simplicity, so let's be consistent with that.
-        private const long LeapYearPatternBits = (1L << 1) | (1L << 5) | (1L << 9) | (1L << 13)
-            | (1L << 17) | (1L << 22) | (1L << 26) | (1L << 30);
-        private const int LeapYearCycleLength = 33;
         private const int DaysPerNonLeapYear = (31 * 6) + (30 * 5) + 29;
         private const int DaysPerLeapYear = DaysPerNonLeapYear + 1;
-        private const int DaysPerLeapCycle = DaysPerNonLeapYear * 25 + DaysPerLeapYear * 8;
-        private const int AverageDaysPer10Years = (DaysPerLeapCycle * 10) / 33;
-
-        /// <summary>The ticks for the epoch of March 21st 622CE.</summary>
-        private const int DaysAtStartOfYear1Constant = -492268;
+        // Approximation; it'll be pretty close in all variants.
+        private const int AverageDaysPer10Years = (DaysPerNonLeapYear * 25 + DaysPerLeapYear * 8) * 10 / 33;
+        private const int MaxPersianYear = 9377;
 
         private static readonly int[] TotalDaysByMonth;
+
+        private readonly int[] startOfYearInDaysCache;
 
         static PersianYearMonthDayCalculator()
         {
@@ -44,36 +43,33 @@ namespace NodaTime.Calendars
             }
         }
 
-        internal PersianYearMonthDayCalculator()
-            : base(1, 9376, 12, AverageDaysPer10Years, DaysAtStartOfYear1Constant)
+        private PersianYearMonthDayCalculator(int daysAtStartOfYear1)
+            : base(1, MaxPersianYear, 12, AverageDaysPer10Years, daysAtStartOfYear1)
         {
-        }
-
-        protected override int GetDaysFromStartOfYearToStartOfMonth(int year, int month) => TotalDaysByMonth[month];
-
-        protected override int CalculateStartOfYearDays(int year)
-        {
-            // The first cycle starts in year 1, not year 0.
-            // We try to cope with years outside the normal range, in order to allow arithmetic at the boundaries.
-            int cycle = year > 0 ? (year - 1) / LeapYearCycleLength
-                                 : (year - LeapYearCycleLength) / LeapYearCycleLength;
-            int yearAtStartOfCycle = (cycle * LeapYearCycleLength) + 1;
-
-            int days = DaysAtStartOfYear1 + cycle * DaysPerLeapCycle;
-
-            // We've got the days at the start of the cycle (e.g. at the start of year 1, 34, 67 etc).
-            // Now go from that year to (but not including) the year we're looking for, adding the right
-            // number of days in each year. So if we're trying to find the start of year 37, we would
-            // find the days at the start of year 34, then add the days *in* year 34, the days in year 35,
-            // and the days in year 36.
-            for (int i = yearAtStartOfCycle; i < year; i++)
+            startOfYearInDaysCache = new int[MaxYear + 2];
+            int startOfYear = DaysAtStartOfYear1 - GetDaysInYear(0);
+            for (int year = 0; year <= MaxYear + 1; year++)
             {
-                days += GetDaysInYear(i);
+                startOfYearInDaysCache[year] = startOfYear;
+                startOfYear += GetDaysInYear(year);
             }
-            return days;
         }
 
-        internal override YearMonthDay GetYearMonthDay(int year, int dayOfYear)
+        protected sealed override int GetDaysFromStartOfYearToStartOfMonth(int year, int month) => TotalDaysByMonth[month];
+
+        internal sealed override int GetStartOfYearInDays(int year)
+        {
+            Preconditions.DebugCheckArgumentRange(nameof(year), year, MinYear - 1, MaxYear + 1);
+            return startOfYearInDaysCache[year];
+        }
+
+        protected sealed override int CalculateStartOfYearDays(int year)
+        {
+            // This would only be called from GetStartOfYearInDays, which is overridden.
+            throw new NotImplementedException();
+        }
+
+        internal sealed override YearMonthDay GetYearMonthDay(int year, int dayOfYear)
         {
             int dayOfYearZeroBased = dayOfYear - 1;
             int month;
@@ -82,7 +78,7 @@ namespace NodaTime.Calendars
             {
                 // Last day of a leap year.
                 month = 12;
-                day = 31;
+                day = 30;
             }
             else if (dayOfYearZeroBased < 6 * 31)
             {
@@ -101,7 +97,7 @@ namespace NodaTime.Calendars
             return new YearMonthDay(year, month, day);
         }
 
-        internal override YearMonthDay SetYear(YearMonthDay yearMonthDay, int year)
+        internal sealed override YearMonthDay SetYear(YearMonthDay yearMonthDay, int year)
         {
             int month = yearMonthDay.Month;
             int day = yearMonthDay.Day;
@@ -113,22 +109,125 @@ namespace NodaTime.Calendars
             return new YearMonthDay(year, month, day);
         }
 
-        internal override int GetDaysInMonth(int year, int month) =>
+        internal sealed override int GetDaysInMonth(int year, int month) =>
             month < 7 ? 31
                 : month < 12 ? 30
                 : IsLeapYear(year) ? 30 : 29;
-  
-        internal override bool IsLeapYear(int year)
+
+        internal sealed override int GetDaysInYear(int year) => IsLeapYear(year) ? DaysPerLeapYear : DaysPerNonLeapYear;
+
+        /// <summary>
+        /// Persian calendar using the simple 33-year cycle of 1, 5, 9, 13, 17, 22, 26, or 30.
+        /// This corresponds to System.Globalization.PersianCalendar before .NET 4.6.
+        /// </summary>
+        internal class Simple : PersianYearMonthDayCalculator
         {
-            // Handle negative years in order to make calculations near the start of the calendar work cleanly.
-            int yearOfCycle = year >= 0 ? year % LeapYearCycleLength
-                                        : (year % LeapYearCycleLength) + LeapYearCycleLength;
-            // Note the shift of 1L rather than 1, to avoid issues where shifting by 32
-            // would get us back to 1.
-            long key = 1L << yearOfCycle;
-            return (LeapYearPatternBits & key) > 0;
+            // This is a long because we're notionally handling 33 bits. The top bit is
+            // false anyway, but IsLeapYear shifts a long for simplicity, so let's be consistent with that.
+            private const long LeapYearPatternBits = (1L << 1) | (1L << 5) | (1L << 9) | (1L << 13)
+                | (1L << 17) | (1L << 22) | (1L << 26) | (1L << 30);
+            private const int LeapYearCycleLength = 33;
+            private const int DaysPerLeapCycle = DaysPerNonLeapYear * 25 + DaysPerLeapYear * 8;
+
+            /// <summary>The ticks for the epoch of March 21st 622CE.</summary>
+            private const int DaysAtStartOfYear1Constant = -492268;
+
+
+            internal Simple() : base(DaysAtStartOfYear1Constant)
+            {
+            }
+
+            /// <summary>
+            /// Leap year condition using the simple 33-year cycle of 1, 5, 9, 13, 17, 22, 26, or 30.
+            /// This corresponds to System.Globalization.PersianCalendar before .NET 4.6.
+            /// </summary>
+            internal override bool IsLeapYear(int year)
+            {
+                // Handle negative years in order to make calculations near the start of the calendar work cleanly.
+                int yearOfCycle = year >= 0 ? year % LeapYearCycleLength
+                                            : (year % LeapYearCycleLength) + LeapYearCycleLength;
+                // Note the shift of 1L rather than 1, to avoid issues where shifting by 32
+                // would get us back to 1.
+                long key = 1L << yearOfCycle;
+                return (LeapYearPatternBits & key) > 0;
+            }
         }
 
-        internal override int GetDaysInYear(int year) => IsLeapYear(year) ? DaysPerLeapYear : DaysPerNonLeapYear;
+        /// <summary>
+        /// Persian calendar based on Birashk's subcycle/cycle/grand cycle scheme.
+        /// </summary>
+        internal class Arithmetic : PersianYearMonthDayCalculator
+        {
+            internal Arithmetic() : base(-492267)
+            {
+            }
+
+            internal override bool IsLeapYear(int year)
+            {
+                // Offset the cycles for easier arithmetic.
+                int offsetYear = year > 0 ? year - 474 : year - 473;
+                int cycleYear = (offsetYear % 2820) + 474;
+                return ((cycleYear + 38) * 31) % 128 < 31;
+            }
+        }
+
+        /// <summary>
+        /// Persian calendar based on stored BCL 4.6 information (avoids complex arithmetic for
+        /// midday in Tehran).
+        /// </summary>
+        internal class Astronomical : PersianYearMonthDayCalculator
+        {
+            // Ugly, but the simplest way of embedding a big chunk of binary data...
+            private static readonly byte[] AstronomicalLeapYearBits = Convert.FromBase64String(
+                "ICIiIkJERESEiIiICBEREREiIiJCREREhIiIiAgRERERIiIiIkRERISIiIiIEBERESEiIiJEREREiIiIiBARER" +
+                "EhIiIiQkRERISIiIgIERERESIiIkJERESEiIiICBEREREiIiIiRERERIiIiIgQERERISIiIkJERESEiIiICBER" +
+                "EREiIiIiREREhIiIiAgRERERISIiIkRERESIiIiIEBERESEiIiJCREREhIiIiAgRERERIiIiIkRERISIiIgIER" +
+                "ERESEiIiJEREREiIiIiBAREREhIiIiQkRERISIiIgIERERESIiIiJEREREiIiIiBAREREhIiIiQkRERIiIiIgQ" +
+                "ERERISIiIiJERESEiIiICBEREREiIiIiRERERIiIiIgQERERISIiIkJERESEiIiICBEREREiIiIiRERERIiIiA" +
+                "gRERERIiIiIkJERESEiIiIEBERESEiIiJCRERERIiIiAgRERERIiIiIkRERESIiIiIEBERESEiIiJCREREhIiI" +
+                "iAgREREhIiIiIkRERESIiIiIEBERESIiIiJEREREiIiIiBAREREhIiIiQkRERISIiIgIERERESIiIiJEREREiI" +
+                "iIiBAREREiIiIiRERERIiIiIgQERERISIiIkJERESEiIiICBERESEiIiJCREREhIiIiAgRERERIiIiIkRERESI" +
+                "iIiIEBERESIiIiJEREREiIiIiBAREREhIiIiQkRERISIiIgIERERISIiIkJERESEiIiICBEREREiIiIiRERERI" +
+                "iIiAgRERERIiIiIkRERESIiIgIERERESIiIiJEREREiIiIiBAREREhIiIiQkRERIiIiIgQERERISIiIkJERESI" +
+                "iIiIEBERESEiIiJCREREiIiIiBAREREhIiIiQkRERIiIiIgQERERISIiIkRERESIiIiIEBERESIiIiJEREREiI" +
+                "iIiBAREREiIiIiRERERIiIiAgRERERIiIiIkRERISIiIgIERERESIiIkJERESEiIiIEBERESEiIiJEREREiIiI" +
+                "iBAREREiIiIiRERERIiIiAgRERERIiIiIkRERISIiIgQERERISIiIkJERESIiIiIEBERESEiIiJERESEiIiICB" +
+                "ERESEiIiJCREREhIiIiBAREREhIiIiREREhIiIiAgRERERIiIiQkRERIiIiIgQERERIiIiIkRERISIiIgQERER" +
+                "ISIiIkRERESIiIgIERERISIiIkJERESIiIiIEBERESIiIkJERESIiIiIEBERESIiIiJERESEiIiIEBERESEiIi" +
+                "JERESEiIiICBERESEiIiJEREREiIiICBERESEiIiJERESEiIiICBERESEiIiJEREREiIiICBERESEiIiJERESE" +
+                "iIiICBERESEiIiJERESEiIiICBERESEiIiJERESEiIiIEBERESIiIiJERESEiIiIEBERESIiIkJERESIiIgIER" +
+                "ERISIiIkRERESIiIgIERERISIiIkRERISIiIgQERERIiIiQkRERIiIiAgREREhIiIiREREhIiIiBAREREiIiJC" +
+                "REREiIiICBERESEC");
+
+            internal Astronomical() : base(-492267)
+            {
+            }
+
+            // 8 years per byte.
+            internal override bool IsLeapYear(int year) => (AstronomicalLeapYearBits[year >> 3] & (1 << (year & 7))) != 0;
+
+#if DEBUG && !PCL
+
+            /// <summary>
+            /// This method is only present to make it simple to generate the data.
+            /// </summary>
+            /// <returns></returns>
+            internal static string GenerateLeapYearData()
+            {
+                var bcl = new PersianCalendar();
+                byte[] data = new byte[MaxPersianYear / 8 + 1];
+                // We don't really care whether IsLeapYear(MaxPersianYear+1) returns true or false,
+                // but it must be valid to call it.
+                for (int year = 1; year <= MaxPersianYear; year++)
+                {
+                    if (bcl.IsLeapYear(year))
+                    {
+                        data[year >> 3] |= (byte)(1 << (year & 7));
+                    }
+                }
+                return Convert.ToBase64String(data);
+            }
+#endif
+        }
     }
 }

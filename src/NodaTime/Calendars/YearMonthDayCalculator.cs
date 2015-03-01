@@ -38,7 +38,9 @@ namespace NodaTime.Calendars
                 "Calendar year range would invalidate caching.");
             this.MinYear = minYear;
             this.MaxYear = maxYear;
-            this.averageDaysPer10Years = averageDaysPer10Years;
+            // We add an extra day to make sure that
+            // approximations using days-since-epoch are conservative, to avoid going out of bounds.
+            this.averageDaysPer10Years = averageDaysPer10Years + 1;
             this.DaysAtStartOfYear1 = daysAtStartOfYear1;
         }
 
@@ -50,10 +52,13 @@ namespace NodaTime.Calendars
 
         /// <summary>
         /// Compute the start of the given year in days since 1970-01-01 ISO. The year may be outside
-        /// the bounds advertised by the calendar, but only by a single year - this is
-        /// used for internal calls which sometimes need to compare a valid value with
-        /// an invalid one, for estimates etc.
+        /// the bounds advertised by the calendar, but only by a single year. This method is only
+        /// called by <see cref="GetStartOfYearInDays"/> (unless the calendar chooses to call it itself),
+        /// so calendars which override that method and don't call the original implementation may leave
+        /// this unimplemented (e.g. by throwing an exception if it's ever called).
         /// </summary>
+        // TODO(jonskeet): Either hard-code a check that this *is* only called by GetStartOfYearInDays
+        // via a Roslyn test, or work out an attribute to indicate that, and write a more general test.
         protected abstract int CalculateStartOfYearDays([Trusted] int year);
         internal abstract int GetMonthsInYear([Trusted] int year);
         internal abstract int GetDaysInMonth([Trusted] int year, int month);
@@ -98,8 +103,11 @@ namespace NodaTime.Calendars
         /// Fetches the start of the year (in days since 1970-01-01 ISO) from the cache, or calculates
         /// and caches it.
         /// </summary>
+        /// <param name="year">The year to fetch the days at the start of. This must be within 1 year of the min/max
+        /// range, but can exceed it to make week-year calculations simple.</param>
         internal virtual int GetStartOfYearInDays([Trusted] int year)
         {
+            Preconditions.DebugCheckArgumentRange(nameof(year), year, MinYear - 1, MaxYear + 1);
             // TODO(2.0): Check that it's valid to cache values outside the advertised
             // bounds of the calendar (by one year). We used not to cache them, but just
             // the check was relatively expensive.

@@ -114,16 +114,24 @@ Noda Time, as described below.
 Persian (or Solar Hijri)
 ===
 
-First supported in v1.3.0  
+First supported in v1.3.0 ("simple" form only)  
 API access: [`CalendarSystem.GetPersianCalendar()`](noda-method://NodaTime.CalendarSystem.GetPersianCalendar)
 
 The [Persian (or Solar Hijri) calendar](http://en.wikipedia.org/wiki/Solar_Hijri_calendar) is the official calendar of
-Iran and Pakistan. The first day of the Persian calendar is March 18th 622CE (Julian).
+Iran and Pakistan. Three variants of this are supported in Noda Time:
 
-This is properly an observational calendar, but the implementation in Noda Time is equivalent to that of
-the BCL [`PersianCalendar`](http://msdn.microsoft.com/en-us/library/system.globalization.persiancalendar.aspx) class,
-which has a simple leap cycle of 33 years, where years 1, 5, 9, 13, 17, 22, 26, and 30 in each cycle are leap years.
-There is a more complicated algorithmic version proposed by Ahmad Birashk, but this has not been implemented in Noda Time.
+- The "simple" calendar, which was the only one supported in Noda Time 1.3, and matches the behaviour of the BCL
+  `PersianCalendar` before .NET 4.6. This has a simple leap cycle of 33 years, where years 1, 5, 9, 13, 17, 22, 26,
+  and 30 in each cycle are leap years. This calendar starts on March 18th 622CE (Julian).
+- The "astronomical" calendar, where each new year begins on the midnight between the two consecutive solar noons which
+  include the instant of the Northern spring equinox, when the sun enters the northern hemisphere. This matches the
+  behaviour of the BCL `PersianCalendar` from .NET 4.6 onwards, and the Windows 10 Persian calendar. This calendar starts
+  on March 19th 622CE (Julian).
+- The "arithmetic" (or algorithmic) calendar proposed by Ahmad Birashk, which organizes leap years in cycles of 2820 years,
+  where each full cycle consists of 21 subcycles of 128 years, followed by one subcycle of 132 years. Each 128-year
+  subcycle consists of a 29 year sub-subcycle, and three 33 year sub-subcycles. A 132-year subcycle is the same as a
+  128-year subcycle, except the final sub-subcycle has 37 years instead of 33.
+
 
 Hebrew
 ===

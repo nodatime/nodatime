@@ -6,6 +6,7 @@ namespace NodaTime
 {
     /// <summary>
     /// Enumeration of calendar ordinal values. Used for converting between a compact integer representation and a calendar system.
+    /// We use 7 bits to store the calendar ordinal in YearMonthDayCalendar, so we can have up to 128 calendars.
     /// </summary>
     internal enum CalendarOrdinal
     {
@@ -21,17 +22,19 @@ namespace NodaTime
         Coptic = 9,
         HebrewCivil = 10,
         HebrewScriptural = 11,
-        Persian = 12,
-        IslamicAstronomicalBase15 = 13,
-        IslamicAstronomicalBase16 = 14,
-        IslamicAstronomicalIndian = 15,
-        IslamicAstronomicalHabashAlHasib = 16,
-        IslamicCivilBase15 = 17,
-        IslamicCivilBase16 = 18,
-        IslamicCivilIndian = 19,
-        IslamicCivilHabashAlHasib = 20,
-        UmAlQura = 21,
+        PersianSimple = 12,
+        PersianArithmetic = 13,
+        PersianAstronomical = 14,
+        IslamicAstronomicalBase15 = 15,
+        IslamicAstronomicalBase16 = 16,
+        IslamicAstronomicalIndian = 17,
+        IslamicAstronomicalHabashAlHasib = 18,
+        IslamicCivilBase15 = 19,
+        IslamicCivilBase16 = 20,
+        IslamicCivilIndian = 21,
+        IslamicCivilHabashAlHasib = 22,
+        UmAlQura = 23,
         // Not a real ordinal; just present to keep a count. Increase this as the number increases...
-        Size = 22
+        Size = 24
     }
 }
