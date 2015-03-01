@@ -823,7 +823,7 @@ namespace NodaTime
 
         // "Holder" classes for lazy initialization of calendar systems
 
-        private class PersianCalendars
+        private static class PersianCalendars
         {
             internal static readonly CalendarSystem Simple =
                 new CalendarSystem(CalendarOrdinal.PersianSimple, PersianSimpleName, PersianSimpleName, new PersianYearMonthDayCalculator.Simple(), Era.AnnoPersico);
@@ -831,13 +831,16 @@ namespace NodaTime
                 new CalendarSystem(CalendarOrdinal.PersianArithmetic, PersianArithmeticName, PersianArithmeticName, new PersianYearMonthDayCalculator.Arithmetic(), Era.AnnoPersico);
             internal static readonly CalendarSystem Astronomical =
                 new CalendarSystem(CalendarOrdinal.PersianAstronomical, PersianAstronomicalName, PersianAstronomicalName, new PersianYearMonthDayCalculator.Astronomical(), Era.AnnoPersico);
+
+            // Static constructor to enforce laziness.
+            static PersianCalendars() {}
         }
 
         /// <summary>
         /// Specifically the calendars implemented by IslamicYearMonthDayCalculator, as opposed to all
         /// Islam-based calendars (which would include UmAlQura and Persian, for example).
         /// </summary>
-        private class IslamicCalendars
+        private static class IslamicCalendars
         {
             internal static readonly CalendarSystem[,] ByLeapYearPatterAndEpoch;
 
@@ -863,7 +866,7 @@ namespace NodaTime
         /// Odds and ends, with an assumption that it's not *that* painful to initialize UmAlQura if you only
         /// need Coptic, for example.
         /// </summary>
-        private class MiscellaneousCalendars
+        private static class MiscellaneousCalendars
         {
             internal static readonly CalendarSystem Coptic =
                 new CalendarSystem(CalendarOrdinal.Coptic, CopticName, CopticName, new CopticYearMonthDayCalculator(), Era.AnnoMartyrum);
@@ -871,9 +874,12 @@ namespace NodaTime
                 UmAlQuraYearMonthDayCalculator.IsSupported 
                     ? new CalendarSystem(CalendarOrdinal.UmAlQura, UmAlQuraName, UmAlQuraName, new UmAlQuraYearMonthDayCalculator(), Era.AnnoHegirae) 
                     : null;
+
+            // Static constructor to enforce laziness.
+            static MiscellaneousCalendars() { }
         }
 
-        private class GregorianJulianCalendars
+        private static class GregorianJulianCalendars
         {
             internal static readonly CalendarSystem[] GregorianByMinWeekLength;
             internal static readonly CalendarSystem Julian;
@@ -894,13 +900,17 @@ namespace NodaTime
             }
         }
 
-        private class HebrewCalendars
+        private static class HebrewCalendars
         {
             internal static readonly CalendarSystem[] ByMonthNumbering =
             {
                 new CalendarSystem(CalendarOrdinal.HebrewCivil, HebrewCivilId, HebrewName, new HebrewYearMonthDayCalculator(HebrewMonthNumbering.Civil), Era.AnnoMundi),
                 new CalendarSystem(CalendarOrdinal.HebrewScriptural, HebrewScripturalId, HebrewName, new HebrewYearMonthDayCalculator(HebrewMonthNumbering.Scriptural), Era.AnnoMundi)
             };
+
+            // Static constructor to enforce laziness.
+            static HebrewCalendars() { }
+
         }
     }
 }
