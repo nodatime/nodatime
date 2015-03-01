@@ -32,7 +32,7 @@ namespace NodaTime.Test
         public void WithCalendar_OutOfRange()
         {
             LocalDate start = new LocalDate(1, 1, 1);
-            Assert.Throws<ArgumentOutOfRangeException>(() => start.WithCalendar(CalendarSystem.Persian));
+            Assert.Throws<ArgumentOutOfRangeException>(() => start.WithCalendar(CalendarSystem.PersianSimple));
         }
     }
 }
