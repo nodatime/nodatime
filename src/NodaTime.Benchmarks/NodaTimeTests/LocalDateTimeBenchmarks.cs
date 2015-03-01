@@ -42,6 +42,12 @@ namespace NodaTime.Benchmarks.NodaTimeTests
         }
 
         [Benchmark]
+        public void ToDateTimeUnspecified()
+        {
+            Sample.ToDateTimeUnspecified();
+        }
+
+        [Benchmark]
         public void Year()
         {
             Sample.Year.Consume();
