@@ -49,9 +49,9 @@ namespace NodaTime
         private const string IslamicName = "Hijri";
         // TODO: Call these ID where appropriate, and check the names.
         // TODO: Document the serialization problem as the calendar ID has changed.
-        private const string PersianSimpleName = "Persian (Simple)";
-        private const string PersianAstronomicalName = "Persian (Algorithmic)";
-        private const string PersianArithmeticName = "Persian (Arithmetic)";
+        private const string PersianSimpleName = "Persian Simple";
+        private const string PersianAstronomicalName = "Persian Algorithmic";
+        private const string PersianArithmeticName = "Persian Arithmetic";
         private const string HebrewName = "Hebrew";
         private const string HebrewCivilId = HebrewName + " Civil";
         private const string HebrewScripturalId = HebrewName + " Scriptural";
@@ -370,8 +370,8 @@ namespace NodaTime
         ///   <item><term>Gregorian 5</term><description><see cref="CalendarSystem.GetGregorianCalendar"/>(5)</description></item>
         ///   <item><term>Gregorian 6</term><description><see cref="CalendarSystem.GetGregorianCalendar"/>(6)</description></item>
         ///   <item><term>Gregorian 7</term><description><see cref="CalendarSystem.GetGregorianCalendar"/>(7)</description></item>
-        ///   <item><term>Coptic</term><description><see cref="CalendarSystem.Coptic"/>()</description></item>
-        ///   <item><term>Julian</term><description><see cref="CalendarSystem.Julian"/>()</description></item>
+        ///   <item><term>Coptic</term><description><see cref="CalendarSystem.Coptic"/></description></item>
+        ///   <item><term>Julian</term><description><see cref="CalendarSystem.Julian"/></description></item>
         ///   <item><term>Hijri Civil-Indian</term><description><see cref="CalendarSystem.GetIslamicCalendar"/>(IslamicLeapYearPattern.Indian, IslamicEpoch.Civil)</description></item>
         ///   <item><term>Hijri Civil-Base15</term><description><see cref="CalendarSystem.GetIslamicCalendar"/>(IslamicLeapYearPattern.Base15, IslamicEpoch.Civil)</description></item>
         ///   <item><term>Hijri Civil-Base16</term><description><see cref="CalendarSystem.GetIslamicCalendar"/>(IslamicLeapYearPattern.Base16, IslamicEpoch.Civil)</description></item>
@@ -380,10 +380,12 @@ namespace NodaTime
         ///   <item><term>Hijri Astronomical-Base15</term><description><see cref="CalendarSystem.GetIslamicCalendar"/>(IslamicLeapYearPattern.Base15, IslamicEpoch.Astronomical)</description></item>
         ///   <item><term>Hijri Astronomical-Base16</term><description><see cref="CalendarSystem.GetIslamicCalendar"/>(IslamicLeapYearPattern.Base16, IslamicEpoch.Astronomical)</description></item>
         ///   <item><term>Hijri Astronomical-HabashAlHasib</term><description><see cref="CalendarSystem.GetIslamicCalendar"/>(IslamicLeapYearPattern.HabashAlHasib, IslamicEpoch.Astronomical)</description></item>
-        ///   <item><term>Persian</term><description><see cref="CalendarSystem.Persian"/>()</description></item>
+        ///   <item><term>Persian Simple</term><description><see cref="CalendarSystem.PersianSimple"/></description></item>
+        ///   <item><term>Persian Arithmetic</term><description><see cref="CalendarSystem.PersianArithmetic"/></description></item>
+        ///   <item><term>Persian Astronomical</term><description><see cref="CalendarSystem.PersianAstronomical"/></description></item>
         ///   <item><term>Um Al Qura</term><description><see cref="CalendarSystem.UmAlQura"/>()</description></item>
-        ///   <item><term>Hebrew Civil</term><description><see cref="CalendarSystem.GetHebrewCalendar"/>(HebrewMonthNumbering.Civil)</description></item>
-        ///   <item><term>Hebrew Scriptural</term><description><see cref="CalendarSystem.GetHebrewCalendar"/>(HebrewMonthNumbering.Scriptural)</description></item>
+        ///   <item><term>Hebrew Civil</term><description><see cref="CalendarSystem.HebrewCivil"/></description></item>
+        ///   <item><term>Hebrew Scriptural</term><description><see cref="CalendarSystem.HebrewScriptural"/></description></item>
         /// </list>
         /// </remarks>
         /// <value>The unique identifier for this calendar system.</value>
