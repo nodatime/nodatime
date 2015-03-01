@@ -40,22 +40,47 @@ namespace NodaTime
     [Immutable]
     public sealed class CalendarSystem
     {
-        #region Public factory members for calendars
-
+        // IDs and names are separated out (usually with the ID either being the same as the name,
+        // or the base ID being the same as a name and then other IDs being formed from it.) The
+        // differentiation is only present for clarity.
         private const string GregorianName = "Gregorian";
+        private const string GregorianIdBase = GregorianName;
+        // Not part of GregorianJulianCalendars as we want to be able to call it without triggering type initialization.
+        internal static string GetGregorianId(int minDaysInFirstWeek)
+        {
+            return string.Format(CultureInfo.InvariantCulture, "{0} {1}", GregorianIdBase, minDaysInFirstWeek);
+        }
+
         private const string IsoName = "ISO";
+        private const string IsoId = IsoName;
+
         private const string CopticName = "Coptic";
+        private const string CopticId = CopticName;
+
         private const string JulianName = "Julian";
+        private const string JulianId = JulianName;
+
         private const string IslamicName = "Hijri";
-        // TODO: Call these ID where appropriate, and check the names.
-        // TODO: Document the serialization problem as the calendar ID has changed.
-        private const string PersianSimpleName = "Persian Simple";
-        private const string PersianAstronomicalName = "Persian Algorithmic";
-        private const string PersianArithmeticName = "Persian Arithmetic";
+        private const string IslamicIdBase = IslamicName;
+        // Not part of IslamicCalendars as we want to be able to call it without triggering type initialization.
+        internal static string GetIslamicId(IslamicLeapYearPattern leapYearPattern, IslamicEpoch epoch)
+        {
+            return string.Format(CultureInfo.InvariantCulture, "{0} {1}-{2}", IslamicIdBase, epoch, leapYearPattern);
+        }
+
+        private const string PersianName = "Persian`";
+        private const string PersianIdBase = PersianName;
+        private const string PersianSimpleId = PersianIdBase + " Simple";
+        private const string PersianAstronomicalId = PersianIdBase + " Algorithmic";
+        private const string PersianArithmeticId = PersianIdBase + " Arithmetic";
+
         private const string HebrewName = "Hebrew";
-        private const string HebrewCivilId = HebrewName + " Civil";
-        private const string HebrewScripturalId = HebrewName + " Scriptural";
+        private const string HebrewIdBase = HebrewName;
+        private const string HebrewCivilId = HebrewIdBase + " Civil";
+        private const string HebrewScripturalId = HebrewIdBase + " Scriptural";
+
         private const string UmAlQuraName = "Um Al Qura";
+        private const string UmAlQuraId = UmAlQuraName;
 
         // While we could implement some of these as auto-props, it probably adds more confusion than convenience.
         private static readonly CalendarSystem IsoCalendarSystem;
@@ -65,9 +90,10 @@ namespace NodaTime
         {
             var gregorianCalculator = new GregorianYearMonthDayCalculator();
             var gregorianEraCalculator = new GJEraCalculator(gregorianCalculator);
-            IsoCalendarSystem = new CalendarSystem(CalendarOrdinal.Iso, IsoName, IsoName, gregorianCalculator, 4, gregorianEraCalculator);
+            IsoCalendarSystem = new CalendarSystem(CalendarOrdinal.Iso, IsoId, IsoName, gregorianCalculator, 4, gregorianEraCalculator);
         }
 
+        #region Public factory members for calendars
         /// <summary>
         /// Fetches a calendar system by its unique identifier. This provides full round-tripping of a calendar
         /// system. It is not guaranteed that calling this method twice with the same identifier will return
@@ -166,30 +192,30 @@ namespace NodaTime
 
         private static readonly Dictionary<string, Func<CalendarSystem>> IdToFactoryMap = new Dictionary<string, Func<CalendarSystem>>
         {
-            {IsoName, () => Iso},
-            {PersianSimpleName, () => PersianSimple},
-            {PersianArithmeticName, () => PersianArithmetic},
-            {PersianAstronomicalName, () => PersianAstronomical},
+            {IsoId, () => Iso},
+            {PersianSimpleId, () => PersianSimple},
+            {PersianArithmeticId, () => PersianArithmetic},
+            {PersianAstronomicalId, () => PersianAstronomical},
             {HebrewCivilId, () => GetHebrewCalendar(HebrewMonthNumbering.Civil)},
             {HebrewScripturalId, () => GetHebrewCalendar(HebrewMonthNumbering.Scriptural)},
-            {GregorianName + " 1", () => GetGregorianCalendar(1)},
-            {GregorianName + " 2", () => GetGregorianCalendar(2)},
-            {GregorianName + " 3", () => GetGregorianCalendar(3)},
-            {GregorianName + " 4", () => GetGregorianCalendar(4)},
-            {GregorianName + " 5", () => GetGregorianCalendar(5)},
-            {GregorianName + " 6", () => GetGregorianCalendar(6)},
-            {GregorianName + " 7", () => GetGregorianCalendar(7)},
-            {CopticName, () => Coptic},
-            {JulianName, () => Julian},
-            {UmAlQuraName, () => UmAlQura},
-            {IslamicName + " Civil-Indian", () => GetIslamicCalendar(IslamicLeapYearPattern.Indian, IslamicEpoch.Civil)},
-            {IslamicName + " Civil-Base15", () => GetIslamicCalendar(IslamicLeapYearPattern.Base15, IslamicEpoch.Civil)},
-            {IslamicName + " Civil-Base16", () => GetIslamicCalendar(IslamicLeapYearPattern.Base16, IslamicEpoch.Civil)},
-            {IslamicName + " Civil-HabashAlHasib", () => GetIslamicCalendar(IslamicLeapYearPattern.HabashAlHasib, IslamicEpoch.Civil)},
-            {IslamicName + " Astronomical-Indian", () => GetIslamicCalendar(IslamicLeapYearPattern.Indian, IslamicEpoch.Astronomical)},
-            {IslamicName + " Astronomical-Base15", () => GetIslamicCalendar(IslamicLeapYearPattern.Base15, IslamicEpoch.Astronomical)},
-            {IslamicName + " Astronomical-Base16", () => GetIslamicCalendar(IslamicLeapYearPattern.Base16, IslamicEpoch.Astronomical)},
-            {IslamicName + " Astronomical-HabashAlHasib", () => GetIslamicCalendar(IslamicLeapYearPattern.HabashAlHasib, IslamicEpoch.Astronomical)},
+            {GetGregorianId(1), () => GetGregorianCalendar(1)},
+            {GetGregorianId(2), () => GetGregorianCalendar(2)},
+            {GetGregorianId(3), () => GetGregorianCalendar(3)},
+            {GetGregorianId(4), () => GetGregorianCalendar(4)},
+            {GetGregorianId(5), () => GetGregorianCalendar(5)},
+            {GetGregorianId(6), () => GetGregorianCalendar(6)},
+            {GetGregorianId(7), () => GetGregorianCalendar(7)},
+            {CopticId, () => Coptic},
+            {JulianId, () => Julian},
+            {UmAlQuraId, () => UmAlQura},
+            {GetIslamicId(IslamicLeapYearPattern.Indian, IslamicEpoch.Civil), () => GetIslamicCalendar(IslamicLeapYearPattern.Indian, IslamicEpoch.Civil)},
+            {GetIslamicId(IslamicLeapYearPattern.Base15, IslamicEpoch.Civil), () => GetIslamicCalendar(IslamicLeapYearPattern.Base15, IslamicEpoch.Civil)},
+            {GetIslamicId(IslamicLeapYearPattern.Base16, IslamicEpoch.Civil), () => GetIslamicCalendar(IslamicLeapYearPattern.Base16, IslamicEpoch.Civil)},
+            {GetIslamicId(IslamicLeapYearPattern.HabashAlHasib, IslamicEpoch.Civil), () => GetIslamicCalendar(IslamicLeapYearPattern.HabashAlHasib, IslamicEpoch.Civil)},
+            {GetIslamicId(IslamicLeapYearPattern.Indian, IslamicEpoch.Astronomical), () => GetIslamicCalendar(IslamicLeapYearPattern.Indian, IslamicEpoch.Astronomical)},
+            {GetIslamicId(IslamicLeapYearPattern.Base15, IslamicEpoch.Astronomical), () => GetIslamicCalendar(IslamicLeapYearPattern.Base15, IslamicEpoch.Astronomical)},
+            {GetIslamicId(IslamicLeapYearPattern.Base16, IslamicEpoch.Astronomical), () => GetIslamicCalendar(IslamicLeapYearPattern.Base16, IslamicEpoch.Astronomical)},
+            {GetIslamicId(IslamicLeapYearPattern.HabashAlHasib, IslamicEpoch.Astronomical), () => GetIslamicCalendar(IslamicLeapYearPattern.HabashAlHasib, IslamicEpoch.Astronomical)},
         };
 
         /// <summary>
@@ -269,7 +295,7 @@ namespace NodaTime
         /// relies on human observation of the new moon. The tabular calendar, implemented here, is an
         /// arithmetic approximation of the observed form that follows relatively simple rules.
         /// </para>
-        /// <para>You should choose an epoch based on which external system you wish
+        /// <para>You should choose an epoch based Con which external system you wish
         /// to be compatible with. The epoch beginning on July 16th is the more common
         /// one for the tabular calendar, so using <see cref="IslamicEpoch.Civil" />
         /// would usually be a logical choice. However, Windows uses July 15th, so
@@ -321,12 +347,6 @@ namespace NodaTime
 
         private CalendarSystem(CalendarOrdinal ordinal, string id, string name, YearMonthDayCalculator yearMonthDayCalculator, Era singleEra)
             : this(ordinal, id, name, yearMonthDayCalculator, 4, new SingleEraCalculator(singleEra, yearMonthDayCalculator))
-        {
-        }
-
-        private CalendarSystem(CalendarOrdinal ordinal, string name, YearMonthDayCalculator yearMonthDayCalculator, int minDaysInFirstWeek, EraCalculator eraCalculator)
-            : this(ordinal, String.Format(CultureInfo.InvariantCulture, "{0} {1}", name, minDaysInFirstWeek),
-                name, yearMonthDayCalculator, minDaysInFirstWeek, eraCalculator)
         {
         }
 
@@ -826,11 +846,11 @@ namespace NodaTime
         private static class PersianCalendars
         {
             internal static readonly CalendarSystem Simple =
-                new CalendarSystem(CalendarOrdinal.PersianSimple, PersianSimpleName, PersianSimpleName, new PersianYearMonthDayCalculator.Simple(), Era.AnnoPersico);
+                new CalendarSystem(CalendarOrdinal.PersianSimple, PersianSimpleId, PersianName, new PersianYearMonthDayCalculator.Simple(), Era.AnnoPersico);
             internal static readonly CalendarSystem Arithmetic =
-                new CalendarSystem(CalendarOrdinal.PersianArithmetic, PersianArithmeticName, PersianArithmeticName, new PersianYearMonthDayCalculator.Arithmetic(), Era.AnnoPersico);
+                new CalendarSystem(CalendarOrdinal.PersianArithmetic, PersianArithmeticId, PersianName, new PersianYearMonthDayCalculator.Arithmetic(), Era.AnnoPersico);
             internal static readonly CalendarSystem Astronomical =
-                new CalendarSystem(CalendarOrdinal.PersianAstronomical, PersianAstronomicalName, PersianAstronomicalName, new PersianYearMonthDayCalculator.Astronomical(), Era.AnnoPersico);
+                new CalendarSystem(CalendarOrdinal.PersianAstronomical, PersianAstronomicalId, PersianName, new PersianYearMonthDayCalculator.Astronomical(), Era.AnnoPersico);
 
             // Static constructor to enforce laziness.
             static PersianCalendars() {}
@@ -854,9 +874,8 @@ namespace NodaTime
                         var leapYearPattern = (IslamicLeapYearPattern) i;
                         var epoch = (IslamicEpoch) j;
                         var calculator = new IslamicYearMonthDayCalculator((IslamicLeapYearPattern) i, (IslamicEpoch) j);
-                        string id = String.Format(CultureInfo.InvariantCulture, "{0} {1}-{2}", IslamicName, epoch, leapYearPattern);
                         CalendarOrdinal ordinal = CalendarOrdinal.IslamicAstronomicalBase15 + (i - 1) + (j - 1) * 4;
-                        ByLeapYearPatterAndEpoch[i - 1, j - 1] = new CalendarSystem(ordinal, id, IslamicName, calculator, Era.AnnoHegirae);
+                        ByLeapYearPatterAndEpoch[i - 1, j - 1] = new CalendarSystem(ordinal, GetIslamicId(leapYearPattern, epoch), IslamicName, calculator, Era.AnnoHegirae);
                     }
                 }
             }
@@ -869,10 +888,10 @@ namespace NodaTime
         private static class MiscellaneousCalendars
         {
             internal static readonly CalendarSystem Coptic =
-                new CalendarSystem(CalendarOrdinal.Coptic, CopticName, CopticName, new CopticYearMonthDayCalculator(), Era.AnnoMartyrum);
+                new CalendarSystem(CalendarOrdinal.Coptic, CopticId, CopticName, new CopticYearMonthDayCalculator(), Era.AnnoMartyrum);
             internal static readonly CalendarSystem UmAlQura =
                 UmAlQuraYearMonthDayCalculator.IsSupported 
-                    ? new CalendarSystem(CalendarOrdinal.UmAlQura, UmAlQuraName, UmAlQuraName, new UmAlQuraYearMonthDayCalculator(), Era.AnnoHegirae) 
+                    ? new CalendarSystem(CalendarOrdinal.UmAlQura, UmAlQuraId, UmAlQuraName, new UmAlQuraYearMonthDayCalculator(), Era.AnnoHegirae) 
                     : null;
 
             // Static constructor to enforce laziness. This is actually important to avoid a Heisenbug. Without this, you can get a nasty
@@ -906,7 +925,7 @@ namespace NodaTime
             static GregorianJulianCalendars()
             {
                 var julianCalculator = new JulianYearMonthDayCalculator();
-                Julian = new CalendarSystem(CalendarOrdinal.Julian, JulianName, JulianName, new JulianYearMonthDayCalculator(), 4, new GJEraCalculator(julianCalculator));
+                Julian = new CalendarSystem(CalendarOrdinal.Julian, JulianId, JulianName, new JulianYearMonthDayCalculator(), 4, new GJEraCalculator(julianCalculator));
                 // Variations for the calendar systems which have different objects for different "minimum first day of week"
                 // values. These share eras and year/month/day calculators where appropriate.
                 GregorianByMinWeekLength = new CalendarSystem[7];
@@ -914,7 +933,7 @@ namespace NodaTime
                 {
                     // CalendarOrdinal is set up to make this simple :)
                     // The calculators are pinched from the ISO calendar system as they're the same for all of these calendar systems.
-                    GregorianByMinWeekLength[i - 1] = new CalendarSystem((CalendarOrdinal)i, GregorianName, IsoCalendarSystem.YearMonthDayCalculator, i, IsoCalendarSystem.eraCalculator);
+                    GregorianByMinWeekLength[i - 1] = new CalendarSystem((CalendarOrdinal)i, GetGregorianId(i), GregorianName, IsoCalendarSystem.YearMonthDayCalculator, i, IsoCalendarSystem.eraCalculator);
                 }
             }
         }
