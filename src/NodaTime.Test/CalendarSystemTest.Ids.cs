@@ -73,7 +73,8 @@ namespace NodaTime.Test
                     {
                         continue;
                     }
-                    Assert.AreNotEqual(0, comparison.Compare(firstId, 0, firstId.Length, secondId, 0, firstId.Length, CompareOptions.IgnoreCase));
+                    Assert.AreNotEqual(0, comparison.Compare(firstId, 0, firstId.Length, secondId, 0, firstId.Length, CompareOptions.IgnoreCase),
+                        "{0} is a leading substring of {1}", firstId, secondId);
                 }
             }
         }

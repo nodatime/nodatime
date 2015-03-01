@@ -296,23 +296,9 @@ namespace NodaTime.Test.Calendars
         [Test, Timeout(180000)] // Can take a long time under NCrunch.
         public void BclThroughHistory()
         {
-            Calendar hijri = new HijriCalendar();
-            DateTime bclDirect = new DateTime(1, 1, 1, 0, 0, 0, 0, hijri, DateTimeKind.Unspecified);
-
-            CalendarSystem islamicCalendar = CalendarSystem.IslamicBcl;
-            CalendarSystem julianCalendar = CalendarSystem.Julian;
-            LocalDate julianIslamicEpoch = new LocalDate(622, 7, 15, julianCalendar);
-            LocalDate islamicDate = julianIslamicEpoch.WithCalendar(islamicCalendar);
-
-            for (int i = 0; i < 9000 * 365; i++)
-            {
-                Assert.AreEqual(bclDirect, islamicDate.AtMidnight().ToDateTimeUnspecified());
-                Assert.AreEqual(hijri.GetYear(bclDirect), islamicDate.Year, i.ToString());
-                Assert.AreEqual(hijri.GetMonth(bclDirect), islamicDate.Month);
-                Assert.AreEqual(hijri.GetDayOfMonth(bclDirect), islamicDate.Day);
-                bclDirect = hijri.AddDays(bclDirect, 1);
-                islamicDate = islamicDate.PlusDays(1);
-            }
+            var bcl = new HijriCalendar();
+            var noda = CalendarSystem.IslamicBcl;
+            BclEquivalenceHelper.AssertEquivalent(bcl, noda, noda.MinYear, noda.MaxYear);
         }
 
         [Test]
