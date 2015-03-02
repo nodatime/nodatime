@@ -21,6 +21,10 @@ Noda Time supports the calendars listed below. If you would like us to consider 
 another calendar system, please contact [the mailing list](http://groups.google.com/group/noda-time) or
 [file a bug](https://code.google.com/p/noda-time/issues/list).
 
+Note that although the API version listed indicates when a calendar system was first introduced into Noda Time,
+the access to most calendars was simplified in 2.0 to use properties instead of methods. The API access listed
+is from 2.0.0 onwards; please refer to the relevant copy of this user guide if you are using an older version.
+
 ISO
 ===
 
@@ -44,7 +48,10 @@ Gregorian
 ===
 
 First supported in v1.0.0  
-API access: [`CalendarSystem.GetGregorianCalendar()`](noda-method://NodaTime.CalendarSystem.GetGregorianCalendar)
+API access:
+
+- [`CalendarSystem.Gregorian`](noda-property://NodaTime.CalendarSystem.Gregorian)
+- [`CalendarSystem.GetGregorianCalendar`](noda-property://NodaTime.CalendarSystem.GetGregorianCalendar
 
 The [Gregorian calendar](http://en.wikipedia.org/wiki/Gregorian_calendar) was a refinement to the Julian calendar,
 changing the formula for which years are leap years from "whenever the year is divisible by 4" to
@@ -57,13 +64,14 @@ no support for a "cutover" calendar system which observes the Julian calendar un
 cuts over to the Gregorian calendar system. Although such a calendar system would more accurately represent
 the calendar observed in many countries over time, it causes all sorts of API difficulties.
 
-The parameter to `GetGregorianCalendar()` indicates the minimum number of days in the first week of the week-year.
+The parameter to `GetGregorianCalendar()` indicates the minimum number of days in the first week of the week-year;
+the `Gregorian` properties returns the same calendar as `GetGregorianCalendar(4)`.
 
 Julian
 ===
 
 First supported in v1.0.0  
-API access: [`CalendarSystem.GetJulianCalendar()`](noda-method://NodaTime.CalendarSystem.GetJulianCalendar)
+API access: [`CalendarSystem.Julian`](noda-method://NodaTime.CalendarSystem.Julian)
 
 The [Julian calendar](http://en.wikipedia.org/wiki/Julian_calendar) was introduced by Julius Caesar in 46BC, and took
 effect in 45BC. It was like the Gregorian calendar, but with a simpler leap year rule - every year number divisible by
@@ -77,7 +85,7 @@ Coptic (Alexandrian)
 ===
 
 First supported in v1.0.0  
-API access: [`CalendarSystem.GetCopticCalendar()`](noda-method://NodaTime.CalendarSystem.GetCopticCalendar)
+API access: [`CalendarSystem.Coptic`](noda-property://NodaTime.CalendarSystem.Coptic)
 
 The Coptic calendar system is used by the Coptic Orthodox Church. Each year has 12 months of exactly 30 days, followed by
 one month with either 5 or 6 days depending on whether or not the year is a leap year. Like the Julian calendar,
@@ -90,7 +98,10 @@ Islamic (Hijri)
 ===
 
 First supported in v1.0.0  
-API access: [`CalendarSystem.GetIslamicCalendar()`](noda-method://NodaTime.CalendarSystem.GetIslamicCalendar)
+API access:
+
+- [`CalendarSystem.GetIslamicCalendar()`](noda-method://NodaTime.CalendarSystem.GetIslamicCalendar)
+- [`CalendarSystem.IslamicBcl`](noda-property://NodaTime.CalendarSystem.IslamicBcl)
 
 The [Islamic (or Hijri) calendar](http://en.wikipedia.org/wiki/Islamic_calendar) is a lunar calendar with years of 12
 months, totalling either 355 or 354 days depending on whether or not it's a leap year. There are various schemes
@@ -107,6 +118,8 @@ astronomical (July 15th CE Julian) and civil (July 16th CE Julian) and are speci
 
 The `GetIslamicCalendar()` method accepts two parameters, specifying the leap year pattern and epoch. You should carefully
 consider which other systems you need to interoperate with when deciding which values to specify for these parameters.
+The `IslamicBcl` property follows the same leap year pattern and epoch as the BCL `IslamicCalendar` type. It is
+equivalent to the result of calling `GetIslamicCalendar(IslamicLeapYearPattern.Base16, IslamicEpoch.Astronomical)`.
 
 This calendar is not to be confused with the Solar Hijri calendar which is implemented in a simplified form within
 Noda Time, as described below.
@@ -114,8 +127,12 @@ Noda Time, as described below.
 Persian (or Solar Hijri)
 ===
 
-First supported in v1.3.0 ("simple" form only)  
-API access: [`CalendarSystem.GetPersianCalendar()`](noda-method://NodaTime.CalendarSystem.GetPersianCalendar)
+First supported in v1.3.0 ("simple" form only; arithmetic and astronomical introduced in 2.0.0)  
+API access:
+
+- [`CalendarSystem.PersianSimple`](noda-property://NodaTime.CalendarSystem.PersianSimple)
+- [`CalendarSystem.PersianAstronomical`](noda-property://NodaTime.CalendarSystem.PersianAstronomical)
+- [`CalendarSystem.PersianArithmetic`](noda-property://NodaTime.CalendarSystem.PersianArithmetic)
 
 The [Persian (or Solar Hijri) calendar](http://en.wikipedia.org/wiki/Solar_Hijri_calendar) is the official calendar of
 Iran and Pakistan. Three variants of this are supported in Noda Time:
@@ -132,12 +149,44 @@ Iran and Pakistan. Three variants of this are supported in Noda Time:
   subcycle consists of a 29 year sub-subcycle, and three 33 year sub-subcycles. A 132-year subcycle is the same as a
   128-year subcycle, except the final sub-subcycle has 37 years instead of 33.
 
+Um Al Qura
+===
+
+First supported in v2.0.0  
+API access: [`CalendarSystem.UmAlQura`](noda-property://NodaTime.CalendarSystem.UmAlQura)
+
+The [Um Al Qura (or Umm al-Qura) calendar](http://en.wikipedia.org/wiki/Islamic_calendar#Saudi_Arabia.27s_Umm_al-Qura_calendar),
+primarily used in Saudi Arabia, is similar to the Islamic Hijri calendar, except that instead of being algorithmic it relies on
+tabular data. Each month has 29 or 30 days, and each year has 354 or 355 days, but the month lengths cannot be determined
+algorithmically.
+
+The Noda Time implementation uses the BCL
+[`UmAlQuraCalendar`](http://msdn.microsoft.com/en-us/library/system.globalization.umalquracalendar.aspx) to obtain the required
+information, which means it can only work on platforms where that class is available. It isn't available on all PCL-supporting runtimes,
+and the Mono implementation is [known to have serious flaws](https://bugzilla.xamarin.com/show_bug.cgi?id=21930). Where a sensible
+implementation is not available, requesting this calendar will throw a `NotSupportedException`.
+
+**Supported platforms:**
+
+- Windows Phone 8.1 Silverlight
+- Desktop Silverlight
+- Desktop .NET
+
+**Unsupported platforms:**
+
+- Mono (Xamarin.iOS, Xamarin.Android, and desktop) - tested up to v3.6.0
+- Windows Phone 8.1 store apps (despite MSDN claiming otherwise)
+- Windows 8.1 store apps
 
 Hebrew
 ===
 
 First supported in v1.3.0  
-API access: [`CalendarSystem.GetHebrewCalendar()`](noda-method://NodaTime.CalendarSystem.GetHebrewCalendar)
+API access:
+
+- [`CalendarSystem.GetHebrewCalendar()`](noda-method://NodaTime.CalendarSystem.GetHebrewCalendar)
+- [`CalendarSystem.HebrewCivil`](noda-property://NodaTime.CalendarSystem.HebrewCivil)
+- [`CalendarSystem.HebrewScriptural`](noda-property://NodaTime.CalendarSystem.HebrewScriptural)
 
 The [Hebrew calendar](http://en.wikipedia.org/wiki/Hebrew_calendar) is a lunisolar calendar used primarily for determination
 of religious holidays within Judaism. It was originally observational, but a computed version is now commonly used. Even
@@ -163,31 +212,4 @@ Unlike the parameters for the Islamic calendar, the month numbering in the Hebre
 affects the numeric values of the months both accepted when constructing values (such as in the `LocalDate` constructor)
 and retrieving them (such as with `LocalDate.Month`).
 
-Um Al Qura
-===
-
-First supported in v2.0.0  
-API access: [`CalendarSystem.GetUmAlQuraCalendar()`](noda-method://NodaTime.CalendarSystem.GetUmAlQuraCalendar)
-
-The [Um Al Qura (or Umm al-Qura) calendar](http://en.wikipedia.org/wiki/Islamic_calendar#Saudi_Arabia.27s_Umm_al-Qura_calendar),
-primarily used in Saudi Arabia, is similar to the Islamic Hijri calendar, except that instead of being algorithmic it relies on
-tabular data. Each month has 29 or 30 days, and each year has 354 or 355 days, but the month lengths cannot be determined
-algorithmically.
-
-The Noda Time implementation uses the BCL
-[`UmAlQuraCalendar`](http://msdn.microsoft.com/en-us/library/system.globalization.umalquracalendar.aspx) to obtain the required
-information, which means it can only work on platforms where that class is available. It isn't available on all PCL-supporting runtimes,
-and the Mono implementation is [known to have serious flaws](https://bugzilla.xamarin.com/show_bug.cgi?id=21930). Where a sensible
-implementation is not available, requesting this calendar will throw a `NotSupportedException`.
-
-**Supported platforms:**
-
-- Windows Phone 8.1 Silverlight
-- Desktop Silverlight
-- Desktop .NET
-
-**Unsupported platforms:**
-
-- Mono (Xamarin.iOS, Xamarin.Android, and desktop) - tested up to v3.6.0
-- Windows Phone 8.1 store apps (despite MSDN claiming otherwise)
-- Windows 8.1 store apps
+The convenience properties `HebrewScriptural` and `HebrewCivil` are just simpler alternatives to the `GetHebrewCalendar` method call.
