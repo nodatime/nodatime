@@ -295,7 +295,7 @@ namespace NodaTime
         /// relies on human observation of the new moon. The tabular calendar, implemented here, is an
         /// arithmetic approximation of the observed form that follows relatively simple rules.
         /// </para>
-        /// <para>You should choose an epoch based Con which external system you wish
+        /// <para>You should choose an epoch based on which external system you wish
         /// to be compatible with. The epoch beginning on July 16th is the more common
         /// one for the tabular calendar, so using <see cref="IslamicEpoch.Civil" />
         /// would usually be a logical choice. However, Windows uses July 15th, so
