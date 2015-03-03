@@ -90,6 +90,16 @@ namespace NodaTime.Testing
         }
 
         /// <summary>
+        /// Advances the clock by the given number of nanoseconds.
+        /// </summary>
+        /// <param name="nanoseconds">The number of nanoseconds to advance the clock by (or if negative, the number to move it back
+        /// by).</param>
+        public void AdvanceNanoseconds(long nanoseconds)
+        {
+            Advance(Duration.FromNanoseconds(nanoseconds));
+        }
+
+        /// <summary>
         /// Advances the clock by the given number of ticks.
         /// </summary>
         /// <param name="ticks">The number of ticks to advance the clock by (or if negative, the number to move it back
@@ -134,7 +144,7 @@ namespace NodaTime.Testing
         /// </summary>
         /// <param name="hours">The number of hours to advance the clock by (or if negative, the number to move it
         /// back by).</param>
-        public void AdvanceHours(long hours)
+        public void AdvanceHours(int hours)
         {
             Advance(Duration.FromHours(hours));
         }
