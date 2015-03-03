@@ -17,41 +17,35 @@ namespace NodaTime.Testing.TimeZones
     /// </summary>
     public sealed class MultiTransitionDateTimeZone : DateTimeZone
     {
-        private readonly ReadOnlyCollection<ZoneInterval> intervals;
-        private readonly ReadOnlyCollection<Instant> transitions;
-
         /// <summary>
         /// Gets the zone intervals within this time zone, in chronological order, spanning the whole time line.
         /// </summary>
         /// <value>The zone intervals within this time zone, in chronological order, spanning the whole time line.</value>
-        public ReadOnlyCollection<ZoneInterval> Intervals { get { return intervals; } }
+        public ReadOnlyCollection<ZoneInterval> Intervals { get; }
 
         /// <summary>
         /// Gets the transition points between intervals.
         /// </summary>
         /// <value>The transition points between intervals.</value>
-        public ReadOnlyCollection<Instant> Transitions { get { return transitions; } }
+        public ReadOnlyCollection<Instant> Transitions { get; }
 
         private MultiTransitionDateTimeZone(string id, IList<ZoneInterval> intervals)
             : base(id, intervals.Count == 1, intervals.Min(x => x.WallOffset), intervals.Max(x => x.WallOffset))
         {
-            this.intervals = new ReadOnlyCollection<ZoneInterval>(intervals.ToList());
-            transitions = new ReadOnlyCollection<Instant>(intervals.Skip(1).Select(x => x.Start).ToList());
+            Intervals = new ReadOnlyCollection<ZoneInterval>(intervals.ToList());
+            Transitions = new ReadOnlyCollection<Instant>(intervals.Skip(1).Select(x => x.Start).ToList());
         }
 
         /// <inheritdoc />
         public override ZoneInterval GetZoneInterval(Instant instant)
         {
-            // TODO: We've got this binary search in at least three places now.
-            // (PrecalculatedDateTimeZone, BclDateTimeZone, and here.) Maybe we should
-            // have a utility method somewhere...
             int lower = 0; // Inclusive
-            int upper = intervals.Count; // Exclusive
+            int upper = Intervals.Count; // Exclusive
 
             while (lower < upper)
             {
                 int current = (lower + upper) / 2;
-                var candidate = intervals[current];
+                var candidate = Intervals[current];
                 if (candidate.HasStart && candidate.Start > instant)
                 {
                     upper = current;
