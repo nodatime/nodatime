@@ -3,7 +3,6 @@
 // as found in the LICENSE.txt file.
 
 using System;
-using System.Collections.Generic;
 using NodaTime.Annotations;
 using NodaTime.TimeZones.IO;
 using NodaTime.Utility;
@@ -107,7 +106,7 @@ namespace NodaTime.TimeZones
                 }
             }
             // Note: this would indicate a bug. The time zone is meant to cover the whole of time.
-            throw new InvalidOperationException(string.Format("Instant {0} did not exist in time zone {1}", instant, Id));
+            throw new InvalidOperationException($"Instant {instant} did not exist in time zone {Id}");
         }
 
         /// <summary>

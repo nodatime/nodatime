@@ -735,7 +735,7 @@ namespace NodaTime
         /// </summary>
         /// <param name="hours">The number of hours.</param>
         /// <returns>A <see cref="Duration"/> representing the given number of hours.</returns>
-        public static Duration FromHours(long hours) => OneHour * hours;
+        public static Duration FromHours(int hours) => OneHour * hours;
 
         // TODO(2.0): Optimize?
         /// <summary>

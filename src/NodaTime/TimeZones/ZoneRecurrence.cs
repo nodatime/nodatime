@@ -340,7 +340,6 @@ namespace NodaTime.TimeZones
             return hash;
         }
 
-        // TODO(2.0): Use string interpolation.
         /// <summary>
         /// Returns a <see cref="System.String"/> that represents this instance.
         /// </summary>
