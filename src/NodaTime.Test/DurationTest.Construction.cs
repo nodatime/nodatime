@@ -18,82 +18,56 @@ namespace NodaTime.Test
             Assert.AreEqual(0, test.Ticks);
         }
 
-        [Test]
-        public void Factory_StandardDays()
+        private static void TestFactoryMethod(Func<long, Duration> method, long value, long nanosecondsPerUnit)
         {
-            Duration test = Duration.FromDays(1);
-            Assert.AreEqual(1 * NodaConstants.TicksPerDay, test.Ticks);
+            Duration duration = method(value);
+            decimal expectedNanoseconds = (decimal)value * nanosecondsPerUnit;
+            Assert.AreEqual(duration.ToDecimalNanoseconds(), expectedNanoseconds);
+        }
 
-            test = Duration.FromDays(2);
-            Assert.AreEqual(2 * NodaConstants.TicksPerDay, test.Ticks);
-
-            test = Duration.FromDays(0);
-            Assert.AreEqual(Duration.Zero, test);
+        private static void TestFactoryMethod(Func<int, Duration> method, int value, long nanosecondsPerUnit)
+        {
+            Duration duration = method(value);
+            decimal expectedNanoseconds = (decimal)value * nanosecondsPerUnit;
+            Assert.AreEqual(duration.ToDecimalNanoseconds(), expectedNanoseconds);
         }
 
         [Test]
-        public void Factory_StandardHours()
+        [TestCase(-100), TestCase(-1), TestCase(0), TestCase(1), TestCase(100)]
+        public void FromDays(int days)
         {
-            Duration test = Duration.FromHours(1);
-            Assert.AreEqual(1 * NodaConstants.TicksPerHour, test.Ticks);
-
-            test = Duration.FromHours(2);
-            Assert.AreEqual(2 * NodaConstants.TicksPerHour, test.Ticks);
-
-            test = Duration.FromHours(0);
-            Assert.AreEqual(Duration.Zero, test);
+            TestFactoryMethod(Duration.FromDays, days, NanosecondsPerDay);
         }
 
         [Test]
-        public void FromMinutes()
+        [TestCase(-100), TestCase(-1), TestCase(0), TestCase(1), TestCase(100)]
+        public void FromHours(int hours)
         {
-            Duration test = Duration.FromMinutes(1);
-            Assert.AreEqual(1 * NodaConstants.TicksPerMinute, test.Ticks);
-
-            test = Duration.FromMinutes(2);
-            Assert.AreEqual(2 * NodaConstants.TicksPerMinute, test.Ticks);
-
-            test = Duration.FromMinutes(0);
-            Assert.AreEqual(Duration.Zero, test);
+            TestFactoryMethod(Duration.FromHours, hours, NanosecondsPerHour);
         }
 
         [Test]
-        public void FromSeconds()
+        [TestCase(int.MinValue - 100L), TestCase(-100), TestCase(-1), TestCase(0)]
+        [TestCase(1), TestCase(100), TestCase(int.MaxValue + 100L)]
+        public void FromMinutes(long minutes)
         {
-            Duration test = Duration.FromSeconds(1);
-            Assert.AreEqual(1 * NodaConstants.TicksPerSecond, test.Ticks);
-
-            test = Duration.FromSeconds(2);
-            Assert.AreEqual(2 * NodaConstants.TicksPerSecond, test.Ticks);
-
-            test = Duration.FromSeconds(0);
-            Assert.AreEqual(Duration.Zero, test);
+            TestFactoryMethod(Duration.FromMinutes, minutes, NanosecondsPerMinute);
         }
 
         [Test]
-        public void FromMilliseconds()
+        [TestCase(int.MinValue - 100L), TestCase(-100), TestCase(-1), TestCase(0)]
+        [TestCase(1), TestCase(100), TestCase(int.MaxValue + 100L)]
+        public void FromSeconds(long seconds)
         {
-            Duration test = Duration.FromMilliseconds(1);
-            Assert.AreEqual(1 * NodaConstants.TicksPerMillisecond, test.Ticks);
-
-            test = Duration.FromMilliseconds(2);
-            Assert.AreEqual(2 * NodaConstants.TicksPerMillisecond, test.Ticks);
-
-            test = Duration.FromMilliseconds(0);
-            Assert.AreEqual(Duration.Zero, test);
+            TestFactoryMethod(Duration.FromSeconds, seconds, NanosecondsPerSecond);
         }
 
         [Test]
-        public void FromTicks()
+        [TestCase(int.MinValue - 100L), TestCase(-100), TestCase(-1), TestCase(0)]
+        [TestCase(1), TestCase(100), TestCase(int.MaxValue + 100L)]
+        public void FromMilliseconds(long milliseconds)
         {
-            Duration test = Duration.FromTicks(1);
-            Assert.AreEqual(1, test.Ticks);
-
-            test = Duration.FromTicks(2);
-            Assert.AreEqual(2, test.Ticks);
-
-            test = Duration.FromTicks(0);
-            Assert.AreEqual(Duration.Zero, test);
+            TestFactoryMethod(Duration.FromMilliseconds, milliseconds, NanosecondsPerMillisecond);
         }
 
         [Test]

@@ -240,7 +240,6 @@ namespace NodaTime.Test
         [TestCase(0, NodaConstants.NanosecondsPerDay - 1, NodaConstants.NanosecondsPerDay, 0, 0L)]
         [TestCase(1, 0, NodaConstants.NanosecondsPerDay, 0, 1L)]
         [TestCase(1, NodaConstants.NanosecondsPerDay - 1, NodaConstants.NanosecondsPerDay, 0, 1L)]
-
         [TestCase(10, 20L, 5, 2, 4L)]
 
         // Large value, which will use decimal arithmetic

@@ -74,7 +74,10 @@ namespace NodaTime.Test.TimeZones
             CollectionAssert.AreEqual(GetZoneIntervals(ExpectedZone), GetZoneIntervals(converted));
         }
 
-        // TODO: Expose this, too. It's just a copy from DateTimeZone, with the interval taken out. It could be an extension method on IZoneIntervalMap, with optional interval.
+        // TODO: Consider making this part of the NodaTime assembly.
+        // It's just a copy from DateTimeZone, with the interval taken out.
+        // It could be an extension method on IZoneIntervalMap, with optional interval.
+        // On the other hand, IZoneIntervalMap is internal, so it would only be used by us.
         private static IEnumerable<ZoneInterval> GetZoneIntervals(IZoneIntervalMap map)
         {
             var current = Instant.MinValue;
