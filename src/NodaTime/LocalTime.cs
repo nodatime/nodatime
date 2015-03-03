@@ -727,7 +727,6 @@ namespace NodaTime
         #region Binary serialization
         private const string NanoOfDaySerializationName = "nanoOfDay";
 
-        // TODO: Validation!
         /// <summary>
         /// Private constructor only present for serialization.
         /// </summary>

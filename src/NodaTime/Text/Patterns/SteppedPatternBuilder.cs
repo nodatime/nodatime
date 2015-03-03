@@ -197,7 +197,6 @@ namespace NodaTime.Text.Patterns
 
         /// <summary>
         /// Adds text which must be matched exactly when parsing, and appended directly when formatting.
-        /// This overload uses the same failure result for all text values.
         /// </summary>
         internal void AddLiteral(string expectedText, Func<ValueCursor, ParseResult<TResult>> failure)
         {
@@ -209,9 +208,6 @@ namespace NodaTime.Text.Patterns
                 AddFormatAction((value, builder) => builder.Append(expectedChar));
                 return;
             }
-            // TODO: These are ludicrously slow... see
-            // http://msmvps.com/blogs/jon_skeet/archive/2011/08/23/optimization-and-generics-part-2-lambda-expressions-and-reference-types.aspx
-            // for a description of the problem. I need to find a solution though...
             AddParseAction((str, bucket) => str.Match(expectedText) ? null : failure(str));
             AddFormatAction((value, builder) => builder.Append(expectedText));
         }
@@ -284,7 +280,6 @@ namespace NodaTime.Text.Patterns
         /// Adds parse actions for a list of strings, such as days of the week or month names.
         /// The parsing is performed case-insensitively. All candidates are tested, and only the longest
         /// match is used.
-        /// TODO: Make this much more efficient in terms of capture...
         /// </summary>
         internal void AddParseLongestTextAction(char field, Action<TBucket, int> setter, CompareInfo compareInfo, IList<string> textValues)
         {
@@ -306,7 +301,6 @@ namespace NodaTime.Text.Patterns
         /// Adds parse actions for two list of strings, such as non-genitive and genitive month names.
         /// The parsing is performed case-insensitively. All candidates are tested, and only the longest
         /// match is used.
-        /// TODO: Make this much more efficient in terms of capture...
         /// </summary>
         internal void AddParseLongestTextAction(char field, Action<TBucket, int> setter, CompareInfo compareInfo, IList<string> textValues1, IList<string> textValues2)
         {
