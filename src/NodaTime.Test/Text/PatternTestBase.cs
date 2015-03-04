@@ -14,6 +14,8 @@ namespace NodaTime.Test.Text
     /// Derived classes should have internal static fields with the names listed in the TestCaseSource
     /// attributes here: InvalidPatternData, ParseFailureData, ParseData, FormatData. Any field
     /// which is missing cause that test to be "not runnable" for that concrete subclass.
+    /// If a test isn't appropriate (e.g. there's no configurable pattern) just provide a property with
+    /// an array containing a null value - that will be ignored.
     /// </summary>
     public abstract class PatternTestBase<T>
     {
@@ -21,28 +23,28 @@ namespace NodaTime.Test.Text
         [TestCaseSource("InvalidPatternData")]
         public void InvalidPatterns(PatternTestData<T> data)
         {
-            data.TestInvalidPattern();
+            data?.TestInvalidPattern();
         }
 
         [Test]
         [TestCaseSource("ParseFailureData")]
         public void ParseFailures(PatternTestData<T> data)
         {
-            data.TestParseFailure();
+            data?.TestParseFailure();
         }
 
         [Test]
         [TestCaseSource("ParseData")]
         public void Parse(PatternTestData<T> data)
         {
-            data.TestParse();
+            data?.TestParse();
         }
 
         [Test]
         [TestCaseSource("FormatData")]
         public void Format(PatternTestData<T> data)
         {
-            data.TestFormat();
+            data?.TestFormat();
         }
 
         protected void AssertRoundTrip(T value, IPattern<T> pattern)

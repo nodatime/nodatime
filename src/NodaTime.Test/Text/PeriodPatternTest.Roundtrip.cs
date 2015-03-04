@@ -17,7 +17,7 @@ namespace NodaTime.Test.Text
         [TestFixture]
         public class PeriodPatternRoundtripTest : PatternTestBase<Period>
         {
-            internal static readonly Data[] InvalidPatternData = {};
+            internal static readonly Data[] InvalidPatternData = { null };
 
             internal static Data[] ParseFailureData = {
                 new Data { Text = "X5H", Message = Messages.Parse_MismatchedCharacter, Parameters = { 'P' } },
