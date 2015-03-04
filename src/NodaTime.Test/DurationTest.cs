@@ -115,6 +115,25 @@ namespace NodaTime.Test
         }
 
         [Test]
+        public void FromMethods_OutOfRange()
+        {
+            // Not checking the exact values here so much as that the exception is appropriate.
+            Assert.Throws<ArgumentOutOfRangeException>(() => Duration.FromDays(int.MinValue));
+            Assert.Throws<ArgumentOutOfRangeException>(() => Duration.FromDays(int.MaxValue));
+            Assert.Throws<ArgumentOutOfRangeException>(() => Duration.FromHours(int.MinValue));
+            Assert.Throws<ArgumentOutOfRangeException>(() => Duration.FromHours(int.MaxValue));
+            Assert.Throws<ArgumentOutOfRangeException>(() => Duration.FromMinutes(long.MinValue));
+            Assert.Throws<ArgumentOutOfRangeException>(() => Duration.FromMinutes(long.MaxValue));
+            Assert.Throws<ArgumentOutOfRangeException>(() => Duration.FromSeconds(long.MinValue));
+            Assert.Throws<ArgumentOutOfRangeException>(() => Duration.FromSeconds(long.MaxValue));
+            Assert.Throws<ArgumentOutOfRangeException>(() => Duration.FromMilliseconds(long.MinValue));
+            Assert.Throws<ArgumentOutOfRangeException>(() => Duration.FromMilliseconds(long.MaxValue));
+            // FromTicks never throws.
+            Assert.Throws<ArgumentOutOfRangeException>(() => Duration.FromNanoseconds(decimal.MinValue));
+            Assert.Throws<ArgumentOutOfRangeException>(() => Duration.FromNanoseconds(decimal.MaxValue));
+        }
+
+        [Test]
         public void ConstituentParts_Positive()
         {
             var nanos = Duration.FromNanoseconds(NodaConstants.NanosecondsPerDay * 5 + 100);

@@ -1,6 +1,7 @@
 // Copyright 2009 The Noda Time Authors. All rights reserved.
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
+
 using static NodaTime.NodaConstants;
 
 using System;
@@ -55,6 +56,8 @@ namespace NodaTime
         // to be easily 
         internal const int MaxDays = (1 << 24) - 1;
         internal const int MinDays = ~MaxDays;
+        private static readonly decimal MinNanoseconds = (decimal)MinDays * NanosecondsPerDay;
+        private static readonly decimal MaxNanoseconds = (MaxDays + 1M) * NanosecondsPerDay - 1M;
 
         // The -1 here is to allow for the addition of nearly a whole day in the nanoOfDay field.
         private const long MaxDaysForLongNanos = (int) (long.MaxValue / NanosecondsPerDay) - 1;
@@ -141,6 +144,8 @@ namespace NodaTime
 
         internal Duration(int days, [Trusted] long nanoOfDay)
         {
+            // Heavily used: avoid the method call unless it's going to throw.
+            // TODO: Validate that this actually has a measurable impact...
             if (days < MinDays || days > MaxDays)
             {
                 Preconditions.CheckArgumentRange(nameof(days), days, MinDays, MaxDays);
@@ -188,36 +193,31 @@ namespace NodaTime
         /// The minute component of this duration, in the range [-59, 59], truncated towards zero.
         /// </summary>
         /// <value>The minute component of the duration, within the hour.</value>
-        public int Minutes =>
-            unchecked((int) ((NanosecondOfDay / NanosecondsPerMinute) % MinutesPerHour));
+        public int Minutes => unchecked((int) ((NanosecondOfDay / NanosecondsPerMinute) % MinutesPerHour));
 
         /// <summary>
         /// Gets the second component of this duration, in the range [-59, 59], truncated towards zero.
         /// </summary>
         /// <value>The second component of the duration, within the minute.</value>
-        public int Seconds =>
-            unchecked((int) ((NanosecondOfDay / NanosecondsPerSecond) % SecondsPerMinute));
+        public int Seconds => unchecked((int) ((NanosecondOfDay / NanosecondsPerSecond) % SecondsPerMinute));
 
         /// <summary>
         /// Gets the subsecond component of this duration, expressed in milliseconds, in the range [-999, 999] and truncated towards zero.
         /// </summary>
         /// <value>The subsecond component of the duration, in milliseconds.</value>
-        public int Milliseconds =>
-            unchecked((int) ((NanosecondOfDay / NanosecondsPerMillisecond) % MillisecondsPerSecond));
+        public int Milliseconds => unchecked((int) ((NanosecondOfDay / NanosecondsPerMillisecond) % MillisecondsPerSecond));
 
         /// <summary>
         /// Gets the subsecond component of this duration, expressed in ticks, in the range [-9999999, 9999999] and truncated towards zero.
         /// </summary>
         /// <value>The subsecond component of the duration, in ticks.</value>
-        public int SubsecondTicks =>
-            unchecked((int) ((NanosecondOfDay / NanosecondsPerTick) % TicksPerSecond));
+        public int SubsecondTicks => unchecked((int) ((NanosecondOfDay / NanosecondsPerTick) % TicksPerSecond));
 
         /// <summary>
         /// Gets the subsecond component of this duration, expressed in nanoseconds, in the range [-999999999, 999999999].
         /// </summary>
         /// <value>The subsecond component of the duration, in nanoseconds.</value>
-        public int SubsecondNanoseconds =>
-            unchecked((int) (NanosecondOfDay % NanosecondsPerSecond));
+        public int SubsecondNanoseconds => unchecked((int) (NanosecondOfDay % NanosecondsPerSecond));
 
         /// <summary>
         /// Gets the total number of ticks in the duration.
@@ -266,7 +266,7 @@ namespace NodaTime
         /// will return 26.5.
         /// </remarks>
         /// <value>The total number of hours in this duration.</value>
-        public double TotalHours =>days * 24.0 + nanoOfDay / (double) NanosecondsPerHour;
+        public double TotalHours => days * 24.0 + nanoOfDay / (double) NanosecondsPerHour;
 
         /// <summary>
         /// Gets the total number of minutes in this duration, as a <see cref="double"/>.
@@ -277,8 +277,7 @@ namespace NodaTime
         /// of 2 hours, 30 minutes and 45 seconds, the <c>Minutes</c> property will return 30, but <c>TotalMinutes</c>
         /// will return 150.75.
         /// <value>The total number of minutes in this duration.</value>
-        public double TotalMinutes =>
-            days * (double) MinutesPerDay + nanoOfDay / (double) NanosecondsPerMinute;
+        public double TotalMinutes => days * (double) MinutesPerDay + nanoOfDay / (double) NanosecondsPerMinute;
 
         /// <summary>
         /// Gets the total number of seconds in this duration, as a <see cref="double"/>.
@@ -289,8 +288,7 @@ namespace NodaTime
         /// of 10 minutes, 20 seconds and 250 milliseconds, the <c>Seconds</c> property will return 20, but <c>TotalSeconds</c>
         /// will return 620.25.
         /// <value>The total number of minutes in this duration.</value>
-        public double TotalSeconds =>
-            days * (double) SecondsPerDay + nanoOfDay / (double) NanosecondsPerSecond;
+        public double TotalSeconds => days * (double) SecondsPerDay + nanoOfDay / (double) NanosecondsPerSecond;
 
         /// <summary>
         /// Adds a "small" number of nanoseconds to this duration: it is trusted to be less or equal to than 24 hours
@@ -729,37 +727,65 @@ namespace NodaTime
         /// <returns>A <see cref="Duration"/> representing the given number of days.</returns>
         public static Duration FromDays(int days) => new Duration(days, 0L);
 
-        // TODO(2.0): Optimize?
         /// <summary>
         /// Returns a <see cref="Duration"/> that represents the given number of hours.
         /// </summary>
         /// <param name="hours">The number of hours.</param>
         /// <returns>A <see cref="Duration"/> representing the given number of hours.</returns>
-        public static Duration FromHours(int hours) => OneHour * hours;
+        public static Duration FromHours(int hours)
+        {
+            Preconditions.CheckArgumentRange(
+                nameof(hours),
+                hours,
+                (long)MinDays * HoursPerDay,
+                (MaxDays + 1L) * HoursPerDay - 1);
+            return OneHour * hours;
+        }
 
-        // TODO(2.0): Optimize?
         /// <summary>
         /// Returns a <see cref="Duration"/> that represents the given number of minutes.
         /// </summary>
         /// <param name="minutes">The number of minutes.</param>
         /// <returns>A <see cref="Duration"/> representing the given number of minutes.</returns>
-        public static Duration FromMinutes(long minutes) => OneMinute * minutes;
+        public static Duration FromMinutes(long minutes)
+        {
+            Preconditions.CheckArgumentRange(
+                nameof(minutes),
+                minutes,
+                (long)MinDays * MinutesPerDay,
+                (MaxDays + 1L) * MinutesPerDay - 1);
+            return OneMinute * minutes;
+        }
 
-        // TODO(2.0): Optimize?
         /// <summary>
         /// Returns a <see cref="Duration"/> that represents the given number of seconds.
         /// </summary>
         /// <param name="seconds">The number of seconds.</param>
         /// <returns>A <see cref="Duration"/> representing the given number of seconds.</returns>
-        public static Duration FromSeconds(long seconds) => OneSecond * seconds;
+        public static Duration FromSeconds(long seconds)
+        {
+            Preconditions.CheckArgumentRange(
+                nameof(seconds),
+                seconds,
+                (long)MinDays * SecondsPerDay,
+                (MaxDays + 1L) * SecondsPerDay - 1);
+            return OneSecond * seconds;
+        }
 
-        // TODO(2.0): Optimize?
         /// <summary>
         /// Returns a <see cref="Duration"/> that represents the given number of milliseconds.
         /// </summary>
         /// <param name="milliseconds">The number of milliseconds.</param>
         /// <returns>A <see cref="Duration"/> representing the given number of milliseconds.</returns>
-        public static Duration FromMilliseconds(long milliseconds) => OneMillisecond * milliseconds;
+        public static Duration FromMilliseconds(long milliseconds)
+        {
+            Preconditions.CheckArgumentRange(
+                nameof(milliseconds),
+                milliseconds,
+                (long)MinDays * MillisecondsPerDay,
+                (MaxDays + 1L) * (long)MillisecondsPerDay - 1);
+            return OneMillisecond * milliseconds;
+        }
 
         /// <summary>
         /// Returns a <see cref="Duration"/> that represents the given number of ticks.
@@ -780,6 +806,7 @@ namespace NodaTime
         /// <returns>A <see cref="Duration"/> representing the given number of nanoseconds.</returns>
         public static Duration FromNanoseconds(long nanoseconds)
         {
+            // TODO: Try DivRem
             int days = nanoseconds >= 0
                 ? (int) (nanoseconds / NanosecondsPerDay)
                 : (int) ((nanoseconds + 1) / NanosecondsPerDay) - 1;
@@ -796,9 +823,12 @@ namespace NodaTime
         /// <remarks>Any fractional part of <paramref name="nanoseconds"/> is truncated.</remarks>
         /// <param name="nanoseconds">The number of nanoseconds to represent.</param>
         /// <returns>A duration with the given number of nanoseconds.</returns>
-        /// <exception cref="OverflowException">The specified number is outside the range of <see cref="Duration"/>.</exception>
         public static Duration FromNanoseconds(decimal nanoseconds)
         {
+            if (nanoseconds < MinNanoseconds || nanoseconds > MaxNanoseconds)
+            {
+                throw new ArgumentOutOfRangeException(nameof(nanoseconds), $"Value should be in range [{MinNanoseconds}-{MaxNanoseconds}]");
+            }
             // Avoid worrying about what happens in later arithmetic.
             nanoseconds = decimal.Truncate(nanoseconds);
 

@@ -30,8 +30,7 @@ namespace NodaTime.Testing
         {
             if (value < minInclusive || value > maxInclusive)
             {
-                throw new ArgumentOutOfRangeException(paramName,
-                    "Value should be in range [" + minInclusive + "-" + maxInclusive + "]");
+                throw new ArgumentOutOfRangeException(paramName, $"Value should be in range [{minInclusive}-{maxInclusive}]");
             }
         }
 
@@ -39,8 +38,7 @@ namespace NodaTime.Testing
         {
             if (value < minInclusive || value > maxInclusive)
             {
-                throw new ArgumentOutOfRangeException(paramName,
-                    "Value should be in range [" + minInclusive + "-" + maxInclusive + "]");
+                throw new ArgumentOutOfRangeException(paramName, $"Value should be in range [{minInclusive}-{maxInclusive}]");
             }
         }
 
