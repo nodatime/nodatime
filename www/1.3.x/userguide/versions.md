@@ -9,6 +9,33 @@ User-visible changes from 1.0.0-beta1 onwards. See the
 [project repository](http://code.google.com/p/noda-time/source/list) for more
 details.
 
+## 1.3.1, released 2015-03-06 with tzdb 2015a
+
+Bug fixes:
+
+- Worked around a limitation of the .NET `TimeZoneInfo` API that caused
+  `BclDateTimeZone` to incorrectly calculate time zone conversions for
+  Russian time zones before 2014-10-26 ([issue 342][]). (This is essentially
+  the same problem documented in [Microsoft KB
+  3012229](https://support.microsoft.com/kb/3012229).)
+- TZDB zone transitions that occur at 24:00 at the end of the last year in a
+  zone rule are now handled correctly ([issue 335][])
+- Instances of `BclDateTimeZone` are now considered equal if they wrap the
+  same underlying `TimeZoneInfo`, rather than always throwing
+  `NotImplementedException` ([issue 334][])
+- The `NodaTime` assembly now correctly declares a dependency on
+  `System.Xml`, required due to XML serialization support ([issue 339][])
+
+Other:
+
+- Fixed a case issue in the NuGet package definition that broke ASP.NET's
+  `kpm restore` ([issue 345][])
+- Added XamariniOS1 as a NuGet target ([issue 340][])
+- Various reported documentation issues resolved (issues [326][issue 326]
+  and [346][issue 346], among others)
+- Updated `TzdbCompiler` to handle newer versions of the TZDB source
+  distribution
+
 ## 1.3.0, released 2014-06-27 with tzdb 2014e
 
 Major features:
