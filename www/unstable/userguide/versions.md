@@ -9,7 +9,7 @@ User-visible changes from 1.0.0-beta1 onwards. See the
 [project repository](http://code.google.com/p/noda-time/source/list) for more
 details.
 
-## 1.3.1, released 2015-03-TODO with tzdb TODO
+## 1.3.1, released 2015-03-06 with tzdb 2015a
 
 Bug fixes:
 
