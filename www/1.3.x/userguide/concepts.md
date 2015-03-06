@@ -126,7 +126,7 @@ little bundle of magic which simply does the right thing for you.
 See the [calendars documentation](calendars.html) for more details about
 which calendar systems are supported.
 
-<a name="time-zones">Time zones</a>
+<a name="time-zones"></a>Time zones
 -----------------------------------
 
 In the most basic sense, a time zone is a mapping between [UTC][]

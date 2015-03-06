@@ -123,7 +123,7 @@ although a few useful methods are exposed. Most of the time even if you
 an appropriate object, and then pass it to other constructors etc as a
 little bundle of magic which simply does the right thing for you.
 
-<a name="time-zones">Time zones</a>
+<a name="time-zones"></a>Time zones
 -----------------------------------
 
 In the most basic sense, a time zone is a mapping between [UTC][]
