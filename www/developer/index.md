@@ -15,6 +15,6 @@ Resources
 - [Current API documentation][api]
 
 [User Guide]: http://nodatime.org/userguide
-[home]: http://noda-time.googlecode.com
+[home]: https://github.com/nodatime/nodatime
 [web]: http://nodatime.org
 [api]: http://nodatime.org/unstable/api/

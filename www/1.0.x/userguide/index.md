@@ -32,7 +32,7 @@ offline, it's the offline API docs)
 
 [1]: http://blog.nodatime.org
 [2]: http://groups.google.com/group/noda-time
-[home]: http://noda-time.googlecode.com
+[home]: https://github.com/nodatime/nodatime
 [web]: http://nodatime.org
 [4]: http://nodatime.org/userguide
 [5]: http://nodatime.org/api
