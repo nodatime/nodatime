@@ -37,7 +37,7 @@ define the `PCL` conditional compilation symbol, which is used for areas where t
 - Use the Visual Studio _default_ settings in Tools | Options | Text Editor |
   C# | Formatting.
 - Use spaces not tabs
-  ([discussion](http://groups.google.com/group/noda-time/msg/54e7262a08d1ce38)).
+  ([discussion](https://groups.google.com/group/noda-time/msg/54e7262a08d1ce38)).
 
 ## File Layout
 

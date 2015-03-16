@@ -18,7 +18,7 @@ decisions in terms of what to work on next.
 If there's something that should be within Noda Time's
 scope, but we don't support it yet, then *please* either raise an
 issue or post on the
-[mailing list](http://groups.google.com/group/noda-time).
+[mailing list](https://groups.google.com/group/noda-time).
 
 Portable Class Library (PCL) differences
 ========================================

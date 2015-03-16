@@ -31,7 +31,7 @@ offline, it's the offline API docs)
 - [Mailing list][2]
 
 [1]: http://blog.nodatime.org
-[2]: http://groups.google.com/group/noda-time
+[2]: https://groups.google.com/group/noda-time
 [home]: https://github.com/nodatime/nodatime
 [web]: http://nodatime.org
 [4]: http://nodatime.org/userguide

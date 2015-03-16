@@ -318,4 +318,4 @@ See also:
 
 - [The joys of date/time arithmetic](http://blog.nodatime.org/2010/11/joys-of-datetime-arithmetic.html)
 
-[mailing list]: http://groups.google.com/group/noda-time
+[mailing list]: https://groups.google.com/group/noda-time

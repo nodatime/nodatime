@@ -13,4 +13,4 @@ by Noda Time's [current limitations](limitations.html).
 
 If there's something not mentioned there that you feel should be on the
 roadmap, then *please* either raise an issue or post on the
-[mailing list](http://groups.google.com/group/noda-time).
+[mailing list](https://groups.google.com/group/noda-time).

@@ -16,7 +16,7 @@ on first - or whether there are other limitations we hadn't even
 considered. If there's something that should be within Noda Time's
 scope, but we don't support it yet, then *please* either raise an
 issue or post on the
-[mailing list](http://groups.google.com/group/noda-time).
+[mailing list](https://groups.google.com/group/noda-time).
 
 
 Fuller text support

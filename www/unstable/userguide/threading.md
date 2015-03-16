@@ -69,4 +69,4 @@ but be careful around using a writable field of an enum type, for the same reaso
 
 [lippert]: http://blogs.msdn.com/b/ericlippert/archive/2009/10/19/what-is-this-thing-you-call-thread-safe.aspx
 [immutability]: http://blogs.msdn.com/b/ericlippert/archive/tags/immutability/
-[mailing list]: http://groups.google.com/group/noda-time
+[mailing list]: https://groups.google.com/group/noda-time

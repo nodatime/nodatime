@@ -18,7 +18,7 @@ start based on unpredictable conditions such as the weather, or periodic decisio
 are currently out of scope for Noda Time.
 
 Noda Time supports the calendars listed below. If you would like us to consider adding support for
-another calendar system, please contact [the mailing list](http://groups.google.com/group/noda-time) or
+another calendar system, please contact [the mailing list](https://groups.google.com/group/noda-time) or
 [file a bug](https://github.com/nodatime/nodatime/issues).
 
 Note that although the API version listed indicates when a calendar system was first introduced into Noda Time,

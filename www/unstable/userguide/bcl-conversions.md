@@ -152,4 +152,4 @@ Any others?
 ===========
 
 If you have other requirements around BCL conversions, please ask on
-the [mailing list](http://groups.google.com/group/noda-time).
+the [mailing list](https://groups.google.com/group/noda-time).

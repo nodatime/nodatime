@@ -46,7 +46,7 @@ The NodaTime.Serialization.JsonNet assembly is built and tested against Json.NET
 of Json.NET from 4.5.0 onwards will work with Noda Time, but we'd recommend using at least 4.5.11. As far as we know, there
 have been no breaking changes in Json.NET after that which affect Noda Time, but semantic versioning rules suggest that it
 would at least be *possible* for later major versions to cause issues. If you discover any such problem, please report it to the
-[Noda Time mailing list](http://groups.google.com/group/noda-time).
+[Noda Time mailing list](https://groups.google.com/group/noda-time).
 
 Package contents and getting started
 ------------------------------------
