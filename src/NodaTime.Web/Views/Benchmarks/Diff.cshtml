@@ -107,7 +107,7 @@ Date: @Model.Right.StartTime.ToString("yyyy-MM-dd HH:mm'Z'", CultureInfo.Invaria
         {
             <tr>
                 <td style="white-space: nowrap">@item.Date.ToUniversalTime().ToString("yyyy-MM-dd HH:mm'Z'")</td>
-                <td><a href="https://code.google.com/p/noda-time/source/detail?r=@Html.Raw(Html.AttributeEncode(item.Hash))">@item.Hash.Substring(0, 12)</a></td>
+                <td><a href="https://github.com/nodatime/nodatime/commit/@Html.Raw(Html.AttributeEncode(item.Hash))">@item.Hash.Substring(0, 12)</a></td>
                 <td>@item.Message</td>
             </tr>
         }

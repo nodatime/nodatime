@@ -14,7 +14,7 @@ Noda Time runs on Mono, but with some limitations:
 - Noda Time is not *developed* on Mono, so while releases will be tested
   against it (running all the unit tests), code which isn't part
   of a release may not work. Please raise an issue on the
-  [tracker page](http://code.google.com/p/noda-time/issues/list) if
+  [tracker page](https://github.com/nodatime/nodatime/issues) if
   you come across a breakage like this, and we'll fix it as soon
   as possible.
 - `TimeZoneInfo` in Mono has some critical flaws in the latest stable

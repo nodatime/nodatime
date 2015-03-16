@@ -17,7 +17,7 @@ namespace NodaTime.Test.TimeZones
     {
 #pragma warning disable 0414 // Used by tests via reflection - do not remove!
         // This test is effectively disabled on Mono as its time zone support is broken in the current
-        // stable release - see http://code.google.com/p/noda-time/issues/detail?id=97
+        // stable release - see https://github.com/nodatime/nodatime/issues/97
         private static readonly ReadOnlyCollection<TimeZoneInfo> BclZonesOrEmptyOnMono = TestHelper.IsRunningOnMono
             ? new List<TimeZoneInfo>().AsReadOnly() : TimeZoneInfo.GetSystemTimeZones();
 #pragma warning restore 0414

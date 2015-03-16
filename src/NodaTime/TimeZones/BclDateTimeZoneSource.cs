@@ -37,7 +37,7 @@ namespace NodaTime.TimeZones
         {
             // Always include the local time zone, since Mono may not include it in the list of system time zones, even
             // though it allows the Id to be passed to FindSystemTimeZoneById().
-            // See https://code.google.com/p/noda-time/issues/detail?id=235.
+            // See https://github.com/nodatime/nodatime/issues/235.
             return TimeZoneInfo.GetSystemTimeZones()
                 .Select(zone => zone.Id)
                 .Union(GetTimeZoneInfoLocalIdOrEmpty());
@@ -57,7 +57,7 @@ namespace NodaTime.TimeZones
                 // See https://bugzilla.xamarin.com/show_bug.cgi?id=11817
                 var local = TimeZoneInfo.Local;
 
-                if (local != null)  // https://code.google.com/p/noda-time/issues/detail?id=235#c8
+                if (local != null)  // https://github.com/nodatime/nodatime/issues/235#issuecomment-80932079
                 {
                     // Make sure we can look it up again, as there are legitimate cases where the local time zone is not
                     // a system time zone.  If not, this also throws TimeZoneNotFoundException.

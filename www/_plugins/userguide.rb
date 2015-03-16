@@ -60,8 +60,8 @@ module Jekyll
         text.gsub!(@@MethodPattern) { |match| translateurl(match, 'M') }
         text.gsub!(@@FieldPattern) { |match| translateurl(match, 'F') }
         text.gsub!(@@PropertyPattern) { |match| translateurl(match, 'P') }
-        text.gsub!(@@IssueUrlPattern, '\1(http://code.google.com/p/noda-time/issues/detail?id=\2)')
-        text.gsub!(@@IssueLinkPattern, '[issue \1](http://code.google.com/p/noda-time/issues/detail?id=\1)')
+        text.gsub!(@@IssueUrlPattern, '\1(https://github.com/nodatime/nodatime/issues/\2)')
+        text.gsub!(@@IssueLinkPattern, '[issue \1](https://github.com/nodatime/nodatime/issues/\1)')
         text
       end
 

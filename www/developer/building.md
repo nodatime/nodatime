@@ -21,7 +21,7 @@ version or versions as defined by your needs.
 
 [dotnetsdk]: http://msdn.microsoft.com/en-us/netframework/aa569263.aspx
 
-To fetch the source code from the main Google Code repository, you'll need a
+To fetch the source code from the main GitHub repository, you'll need a
 [Mercurial][] client. A good alternative for Microsoft Windows users is
 [TortoiseHg][] which installs shell extensions so that Mercurial can be used
 from the Windows Explorer.
@@ -43,7 +43,7 @@ be able to test the desktop build that way, if you really need to.
 
 ### Fetching and building
 
-To fetch the source code, just clone the Google Code repository:
+To fetch the source code, just clone the GitHub repository:
 
     > hg clone https://code.google.com/p/noda-time/
 
@@ -95,7 +95,7 @@ install [Xcode][xcode] or obtain `make` separately (for example, using
 [xcode]: https://developer.apple.com/xcode/
 [osx-gcc-installer]: https://github.com/kennethreitz/osx-gcc-installer#readme
 
-To fetch the source code from the main Google Code repository,
+To fetch the source code from the main GitHub repository,
 you'll need a [Mercurial][] client.
 
 To run the tests, you'll need [NUnit][] version 2.5.10 or higher. (The version
@@ -110,7 +110,7 @@ of the larger suites.
 
 ### Fetching and building
 
-To fetch the source code, just clone the Google Code repository:
+To fetch the source code, just clone the GitHub repository:
 
     $ hg clone https://code.google.com/p/noda-time/
 

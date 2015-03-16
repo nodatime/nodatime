@@ -65,4 +65,4 @@ already using SymbolSource as one of your symbol servers, you just need to make 
 modules to fetch.)
 
 If you believe you've found a bug in Noda Time, using the SymbolSource version is likely to prove painful after a while - it's
-much better to just fetch the [source code](https://code.google.com/p/noda-time/source/checkout) and build your own copy locally.
+much better to just fetch the [source code](https://github.com/nodatime/nodatime) and build your own copy locally.

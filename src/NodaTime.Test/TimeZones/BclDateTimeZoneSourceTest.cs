@@ -70,7 +70,7 @@ namespace NodaTime.Test.TimeZones
             }
             if (local == null)
             {
-                // https://code.google.com/p/noda-time/issues/detail?id=235#c8
+                // https://github.com/nodatime/nodatime/issues/235#issuecomment-80932079
                 Assert.Ignore("Test requires ability to fetch BCL local time zone (was null)");
             }
 

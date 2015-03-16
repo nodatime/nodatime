@@ -301,7 +301,7 @@ namespace NodaTime.Test.Text
             return CultureInfo.ReadOnly(clone);
         }
 
-        // Fails on Mono: https://code.google.com/p/noda-time/issues/detail?id=98
+        // Fails on Mono: https://github.com/nodatime/nodatime/issues/98
         [Test]
         [TestCaseSource(typeof(Cultures), "AllCulturesOrEmptyOnMono")]
         public void BclLongTimePatternIsValidNodaPattern(CultureInfo culture)
@@ -360,7 +360,7 @@ namespace NodaTime.Test.Text
         private void AssertBclNodaEquality(CultureInfo culture, string patternText)
         {
             // On Mono, some general patterns include an offset at the end.
-            // https://code.google.com/p/noda-time/issues/detail?id=98
+            // https://github.com/nodatime/nodatime/issues/98
             // For the moment, ignore them.
             // TODO(V1.2): Work out what to do in such cases...
             if (patternText.EndsWith("z"))

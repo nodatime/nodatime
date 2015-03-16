@@ -6,7 +6,7 @@ weight: 4060
 ---
 
 User-visible changes from 1.0.0-beta1 onwards. See the
-[project repository](http://code.google.com/p/noda-time/source/list) for more
+[project repository](https://github.com/nodatime/nodatime) for more
 details.
 
 ## 2.0 (current default branch)

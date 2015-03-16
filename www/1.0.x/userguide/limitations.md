@@ -8,7 +8,7 @@ weight: 4040
 Noda Time is a work in progress. It has various limitations, some of
 which we'd obviously like to remove over time. Here's a list of some
 aspects we'd like to improve; see the 
-[issues list](http://code.google.com/p/noda-time/issues/list) for
+[issues list](https://github.com/nodatime/nodatime/issues) for
 others.
 
 Without *your* help, we won't know which of these features to work

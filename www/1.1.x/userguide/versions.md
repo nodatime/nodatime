@@ -6,7 +6,7 @@ weight: 4060
 ---
 
 User-visible changes from 1.0.0-beta1 onwards. See the
-[project repository](http://code.google.com/p/noda-time/source/list) for more
+[project repository](https://github.com/nodatime/nodatime) for more
 details.
 
 ## 1.1.1, released 2013-08-30 with tzdb 2013d

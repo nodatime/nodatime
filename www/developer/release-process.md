@@ -136,7 +136,7 @@ latest stable version in `www/_config.yml`, and (if that new stable release is
 not a patch release), also update the `/api` and `/userguide` redirects in
 `src/NodaTime.Web/web.config`.
 
-Push these changes to Google Code.
+Push these changes to GitHub.
 
 ## Building the release artifacts
 
