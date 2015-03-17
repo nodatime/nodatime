@@ -1,4 +1,4 @@
-﻿using NodaTime.Web.Storage;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
@@ -6,29 +6,26 @@ using System.Xml.Linq;
 
 namespace NodaTime.Web.Storage
 {
-    // A single complete log (a set of entries).
-    public sealed class MercurialLog
+    public static class MercurialLog
     {
-        public ImmutableList<MercurialLogEntry> Entries { get; private set; }
-
-        private MercurialLog()
+        public static ImmutableList<SourceLogEntry> Load(string uri)
         {
+            return XDocument.Load(uri)
+                            .Descendants("logentry")
+                            .Select(LogFromXElement)
+                            .OrderByDescending(x => x.Date)
+                            .ToImmutableList();
         }
 
-        public static MercurialLog Load(string uri)
+        internal static SourceLogEntry LogFromXElement(XElement element)
         {
-            var entries = XDocument.Load(uri)
-                                   .Descendants("logentry")
-                                   .Select(MercurialLogEntry.FromXElement)
-                                   .OrderByDescending(x => x.Date)
-                                   .ToImmutableList();
-            return new MercurialLog { Entries = entries };
-        }
-
-        public IEnumerable<MercurialLogEntry> EntriesBetween(string earlierHashExclusive, string laterHashInclusive)
-        {
-            return Entries.SkipWhile(entry => !entry.Hash.StartsWith(laterHashInclusive))
-                          .TakeWhile(entry => !entry.Hash.StartsWith(earlierHashExclusive));
+            return new SourceLogEntry.Builder {
+                AuthorEmail = (string)element.Element("author").Attribute("email"),
+                AuthorName = (string)element.Element("author"),
+                Date = (DateTimeOffset)element.Element("date"),
+                Message = (string)element.Element("msg"),
+                Hash = (string)element.Attribute("node")
+            }.Build();
         }
     }
 }

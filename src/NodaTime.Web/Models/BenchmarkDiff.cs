@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using NodaTime.Web.Storage;
+using System.Collections.Immutable;
 
 namespace NodaTime.Web.Models
 {
@@ -16,7 +17,7 @@ namespace NodaTime.Web.Models
         public IEnumerable<BenchmarkResult> RightOnly { get; private set; }
         public IEnumerable<BenchmarkPair> LeftBetter { get; private set; }
         public IEnumerable<BenchmarkPair> RightBetter { get; private set; }
-        public IEnumerable<MercurialLogEntry> LogEntries { get; private set; }
+        public IEnumerable<SourceLogEntry> LogEntries { get; private set; }
         public string Machine { get { return Left.Machine; } }
 
         public class BenchmarkPair
@@ -33,7 +34,7 @@ namespace NodaTime.Web.Models
             }
         }
 
-        public BenchmarkDiff(BenchmarkRun left, BenchmarkRun right, MercurialLog log)
+        public BenchmarkDiff(BenchmarkRun left, BenchmarkRun right, ImmutableList<SourceLogEntry> log)
         {
             Left = left;
             Right = right;

@@ -12,9 +12,9 @@ namespace NodaTime.Web.Controllers
     public class BenchmarksController : Controller
     {
         private readonly BenchmarkRepository repository;
-        private readonly MercurialLog log;
+        private readonly ImmutableList<SourceLogEntry> log;
 
-        public BenchmarksController(BenchmarkRepository repository, MercurialLog log)
+        public BenchmarksController(BenchmarkRepository repository, ImmutableList<SourceLogEntry> log)
         {
             this.repository = repository;
             this.log = log;
@@ -61,14 +61,14 @@ namespace NodaTime.Web.Controllers
                     run = candidate;
                 }
             }
-            ImmutableList<MercurialLogEntry> changes = null;
+            ImmutableList<SourceLogEntry> changes = null;
             if (nextLabel != null)
             {
                 string earlierHash = BenchmarkRepository.HashForLabel(nextLabel);
                 string thisHash = BenchmarkRepository.HashForLabel(label);
                 changes = log.EntriesBetween(earlierHash, thisHash).ToImmutableList();
             }
-            return View(new BenchmarkRunAndMercurialLogs(run, changes));
+            return View(new BenchmarkRunAndSourceLogs(run, changes));
         }
 
 
