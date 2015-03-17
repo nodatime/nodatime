@@ -6,6 +6,8 @@ IF NOT EXIST "%SHFBROOT%\NodaTime.presentation" (
   exit /b 1
 )
 
+IF NOT EXIST docs mkdir docs
+
 REM Really force a clean build...
 rmdir /s /q src\NodaTime\bin\Release
 rmdir /s /q src\NodaTime\bin\"Release Portable"
