@@ -2,10 +2,10 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-using System.Security.Policy;
 using NodaTime.Benchmarks.Framework;
 using NodaTime.Text;
 
+#if !V1_0 && !V1_1
 namespace NodaTime.Benchmarks.NodaTimeTests.Text
 {
     [Category("Text")]
@@ -28,3 +28,4 @@ namespace NodaTime.Benchmarks.NodaTimeTests.Text
         }
     }
 }
+#endif

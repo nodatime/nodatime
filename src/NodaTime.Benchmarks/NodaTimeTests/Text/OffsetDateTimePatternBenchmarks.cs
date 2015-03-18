@@ -4,15 +4,20 @@
 
 using NodaTime.Benchmarks.Framework;
 using NodaTime.Text;
+using System.Globalization;
+
+#if !V1_0 && !V1_1
 
 namespace NodaTime.Benchmarks.NodaTimeTests.Text
 {
     [Category("Text")]
     internal class OffsetDateTimePatternBenchmarks
     {
+        private static readonly OffsetDateTime TemplateValue = new LocalDateTime(2000, 1, 1, 0, 0).WithOffset(Offset.Zero);
         private static readonly OffsetDateTime SampleOffsetDateTime = new LocalDateTime(2009, 12, 26, 10, 8, 30).WithOffset(Offset.FromHours(2));
-        private static readonly OffsetDateTimePattern PatternWithLongMonthAndDay = OffsetDateTimePattern.CreateWithInvariantCulture("dddd MMMM dd yyyy HH:mm:ss o<G>");
-        private static readonly OffsetDateTimePattern PatternWithNumbersToSecond = OffsetDateTimePattern.CreateWithInvariantCulture("dd/MM/yyyy HH:mm:ss o<G>");
+        // Note: not using CreateWithInvariantCulture for backward compatibility reasons.
+        private static readonly OffsetDateTimePattern PatternWithLongMonthAndDay = OffsetDateTimePattern.Create("dddd MMMM dd yyyy HH:mm:ss o<G>", CultureInfo.InvariantCulture, TemplateValue);
+        private static readonly OffsetDateTimePattern PatternWithNumbersToSecond = OffsetDateTimePattern.Create("dd/MM/yyyy HH:mm:ss o<G>", CultureInfo.InvariantCulture, TemplateValue);
 
         /// <summary>
         /// This includes both text and numeric parsing to avoid a test which is just a worst case for text.
@@ -42,11 +47,13 @@ namespace NodaTime.Benchmarks.NodaTimeTests.Text
             OffsetDateTimePattern.ExtendedIsoPattern.Format(SampleOffsetDateTime);
         }
 
+#if !V1
         [Benchmark]
         public void ParseIso_NanosecondPrecision()
         {
             OffsetDateTimePattern.ExtendedIsoPattern.Parse("2014-08-01T13:46:12.123456789+02").GetValueOrThrow();
         }
+#endif
 
         [Benchmark]
         public void ParseIso_SecondPrecision()
@@ -55,3 +62,4 @@ namespace NodaTime.Benchmarks.NodaTimeTests.Text
         }
     }
 }
+#endif

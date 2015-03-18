@@ -17,7 +17,7 @@ namespace NodaTime.Benchmarks.Framework
         internal XmlResultHandler(string path)
         {
             document = new XDocument(new XElement("benchmark"));
-            document.Root.Add(new XAttribute("start", SystemClock.Instance.GetCurrentInstant().ToDateTimeUtc()));
+            document.Root.Add(new XAttribute("start", GetCurrentInstant().ToDateTimeUtc()));
             this.path = path;
         }
 
@@ -70,8 +70,18 @@ namespace NodaTime.Benchmarks.Framework
 
         internal override void HandleEndRun()
         {
-            document.Root.Add(new XAttribute("end", SystemClock.Instance.GetCurrentInstant().ToDateTimeUtc()));
+            document.Root.Add(new XAttribute("end", GetCurrentInstant().ToDateTimeUtc()));
             document.Save(path);
+        }
+
+        // Compatibility with 1.x...
+        private static Instant GetCurrentInstant()
+        {
+#if !V1
+            return SystemClock.Instance.GetCurrentInstant();
+#else
+            return SystemClock.Instance.Now;
+#endif
         }
     }
 }

@@ -27,11 +27,13 @@ namespace NodaTime.Benchmarks.NodaTimeTests
             Sample.Plus(Duration.Epsilon);
         }
 
+#if !NO_INTERNALS
         [Benchmark]
         public void PlusOffset()
         {
             Sample.Plus(Offset.Zero);
         }
+#endif
 
         [Benchmark]
         public void InUtc()
@@ -45,6 +47,7 @@ namespace NodaTime.Benchmarks.NodaTimeTests
             Sample.InZone(London);
         }
 
+#if !V1_0 && !V1_1
         [Benchmark]
         public void WithOffset_SameUtcDay()
         {
@@ -62,5 +65,6 @@ namespace NodaTime.Benchmarks.NodaTimeTests
         {
             Sample.WithOffset(LargeNegativeOffset);
         }
+#endif
     }
 }

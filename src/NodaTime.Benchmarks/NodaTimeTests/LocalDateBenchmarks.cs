@@ -10,7 +10,6 @@ namespace NodaTime.Benchmarks.NodaTimeTests
     internal class LocalDateBenchmarks
     {
         private static readonly LocalDate Sample = new LocalDate(2009, 12, 26);
-        private static readonly int SampleDays = Sample.DaysSinceEpoch;
         private static readonly LocalDate SampleBeforeEpoch = new LocalDate(1909, 12, 26);
 
         private static readonly LocalDatePattern Pattern = LocalDatePattern.CreateWithInvariantCulture("dd/MM/yyyy");
@@ -53,6 +52,9 @@ namespace NodaTime.Benchmarks.NodaTimeTests
             }
         }
 
+#if !NO_INTERNALS
+        private static readonly int SampleDays = Sample.DaysSinceEpoch;
+
         [Benchmark]
         public void ConstructionFromDays_SpecifyCalendar()
         {
@@ -64,6 +66,7 @@ namespace NodaTime.Benchmarks.NodaTimeTests
         {
             new LocalDate(SampleDays);
         }
+#endif
 
         [Benchmark]
         public void FromWeekYearWeekAndDay()

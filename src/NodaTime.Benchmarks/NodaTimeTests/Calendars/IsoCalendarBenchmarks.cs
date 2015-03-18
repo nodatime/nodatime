@@ -8,9 +8,11 @@ namespace NodaTime.Benchmarks.NodaTimeTests.Calendars
 {
     public class IsoCalendarBenchmarks
     {
+#if !V1
         private static readonly YearMonthDayCalculator IsoCalculator = CalendarSystem.Iso.YearMonthDayCalculator;
         private static readonly YearMonthDay SampleOptimizedYearMonthDay = new YearMonthDay(2014, 6, 28);
         private static readonly YearMonthDay SampleNotOptimizedYearMonthDay = new YearMonthDay(1600, 6, 28);
+#endif
 
         [Benchmark]
         public void GetDaysInMonth_NotFebruary()
@@ -30,6 +32,7 @@ namespace NodaTime.Benchmarks.NodaTimeTests.Calendars
             CalendarSystem.Iso.GetDaysInMonth(2012, 2);
         }
 
+#if !V1
         [Benchmark]
         public void GetDaysSinceEpoch_InOptimizedRange()
         {
@@ -53,5 +56,6 @@ namespace NodaTime.Benchmarks.NodaTimeTests.Calendars
         {
             IsoCalculator.GetStartOfYearInDays(1600);
         }
+#endif
     }
 }

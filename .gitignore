@@ -52,6 +52,7 @@ nuget/**
 /www/_site/**
 
 # Temporary build output directories
+/tmpbenchmarks/**
 /tmpdocs/**
 /tmpwebdir/**
 /tzdbtmp/**

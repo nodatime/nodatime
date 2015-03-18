@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Configuration Condition=" '$(Configuration)' == '' ">Release</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
@@ -32,7 +32,18 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(NodaVersion)'!=''">
+    <DefineConstants>NO_INTERNALS;V$([System.Text.RegularExpressions.Regex]::Replace($(NodaVersion), "\.", "_"));V$([System.Text.RegularExpressions.Regex]::Replace($(NodaVersion), "^(\d+)\.(\d+)\..*", "$1_$2"));V$([System.Text.RegularExpressions.Regex]::Replace($(NodaVersion), "^(\d+)\..*", "$1"))</DefineConstants>
+  </PropertyGroup>
   <ItemGroup>
+    <Reference Condition="'$(NodaVersion)' != ''" Include="NodaTime">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\NodaTime.$(NodaVersion)\lib\net35-Client\NodaTime.dll</HintPath>
+    </Reference>
+    <Reference Condition="'$(NodaVersion)' != ''" Include="NodaTime.Serialization.JsonNet">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\NodaTime.Serialization.JsonNet.$(NodaVersion)\lib\net35-Client\NodaTime.Serialization.JsonNet.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Newtonsoft.Json.4.5.11\lib\net40\Newtonsoft.Json.dll</HintPath>
@@ -97,11 +108,11 @@
     <Compile Include="Framework\WallTimer.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\NodaTime.Serialization.JsonNet\NodaTime.Serialization.JsonNet.csproj">
+    <ProjectReference Condition="'$(NodaVersion)' == ''" Include="..\NodaTime.Serialization.JsonNet\NodaTime.Serialization.JsonNet.csproj">
       <Project>{a9a2c498-fa61-4495-9953-16d56f8478f3}</Project>
       <Name>NodaTime.Serialization.JsonNet</Name>
     </ProjectReference>
-    <ProjectReference Include="..\NodaTime\NodaTime.csproj">
+    <ProjectReference Condition="'$(NodaVersion)' == ''" Include="..\NodaTime\NodaTime.csproj">
       <Project>{42b687a6-0f76-4638-a372-161c922a998b}</Project>
       <Name>NodaTime</Name>
     </ProjectReference>

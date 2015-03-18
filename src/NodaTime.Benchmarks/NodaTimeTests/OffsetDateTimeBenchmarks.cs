@@ -17,9 +17,11 @@ namespace NodaTime.Benchmarks.NodaTimeTests
         private static readonly OffsetDateTime Sample = new OffsetDateTime(SampleLocal, Offset.Zero);
         private static readonly OffsetDateTime SampleLater = new OffsetDateTime(SampleLocal, OneHourOffset);
 
+#if !V1_0
         private static readonly IComparer<OffsetDateTime> LocalComparer = OffsetDateTime.Comparer.Local;
         private static readonly IComparer<OffsetDateTime> InstantComparer = OffsetDateTime.Comparer.Instant;
-        
+#endif
+
         [Benchmark]
         public void Construction()
         {
@@ -80,6 +82,7 @@ namespace NodaTime.Benchmarks.NodaTimeTests
             Sample.Millisecond.Consume();
         }
 
+#if !V1_0
         [Benchmark]
         public void Date()
         {
@@ -91,6 +94,7 @@ namespace NodaTime.Benchmarks.NodaTimeTests
         {
             Sample.TimeOfDay.Consume();
         }
+#endif
 
         [Benchmark]
         public void TickOfDay()
@@ -134,6 +138,7 @@ namespace NodaTime.Benchmarks.NodaTimeTests
             Sample.YearOfEra.Consume();
         }
 
+#if !V1_0
         [Benchmark]
         public void LocalComparer_Compare()
         {
@@ -149,7 +154,9 @@ namespace NodaTime.Benchmarks.NodaTimeTests
             InstantComparer.Compare(Sample, Sample);
             InstantComparer.Compare(Sample, SampleLater);
         }
+#endif
 
+#if !V1_0 && !V1_1 && !V1_2
         [Benchmark]
         public void WithOffset_SameLocalDay()
         {
@@ -163,5 +170,6 @@ namespace NodaTime.Benchmarks.NodaTimeTests
             // This ends up in the day before
             SampleEarlier.WithOffset(LargeNegativeOffset).Consume();
         }
+#endif
     }
 }

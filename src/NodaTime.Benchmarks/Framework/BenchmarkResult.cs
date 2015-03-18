@@ -31,6 +31,10 @@ namespace NodaTime.Benchmarks.Framework
         // Use ticks here rather than nanoseconds, as otherwise the multiplication could easily overflow. As an alternative,
         // we could use decimal arithmetic or BigInteger...
         internal long CallsPerSecond { get { return iterations * NodaConstants.TicksPerSecond / duration.Ticks; } }
+#if !V1
         internal long NanosecondsPerCall { get { return Duration.ToInt64Nanoseconds() / iterations; } }
+#else
+        internal long NanosecondsPerCall { get { return Duration.Ticks * 100L / iterations; } }
+#endif
     }
 }

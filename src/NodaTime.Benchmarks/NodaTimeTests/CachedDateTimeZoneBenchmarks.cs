@@ -9,6 +9,12 @@ namespace NodaTime.Benchmarks.NodaTimeTests
 {
     internal class CachedDateTimeZoneBenchmarks
     {
+#if V1
+        private const long TicksPerDay = NodaConstants.TicksPerStandardDay;
+#else
+        private const long TicksPerDay = NodaConstants.TicksPerDay;
+#endif
+
         private static readonly DateTimeZone Pacific = DateTimeZoneProviders.Tzdb["America/Los_Angeles"];
         private static readonly Instant SummerUtc = Instant.FromDateTimeUtc(TimeZoneInfoBenchmarks.SummerUtc);
         private static readonly LocalDateTime SummerLocal = SummerUtc.InZone(Pacific).LocalDateTime;
@@ -23,7 +29,7 @@ namespace NodaTime.Benchmarks.NodaTimeTests
 
         public CachedDateTimeZoneBenchmarks()
         {
-            var adjustment = Duration.FromTicks(NodaConstants.TicksPerDay * 365);
+            var adjustment = Duration.FromTicks(TicksPerDay * 365);
             for (int i = 0; i < noCacheInstants.Length; i++)
             {
                 noCacheInstants[i] = NodaConstants.UnixEpoch + (adjustment * i);
@@ -32,7 +38,7 @@ namespace NodaTime.Benchmarks.NodaTimeTests
             {
                 cacheInstants[i] = NodaConstants.UnixEpoch + (adjustment * i);
             }
-            var twoDays = Duration.FromTicks(NodaConstants.TicksPerDay * 2);
+            var twoDays = Duration.FromTicks(TicksPerDay * 2);
             for (int i = 0; i < twoYearsCacheInstants.Length; i++)
             {
                 twoYearsCacheInstants[i] = NodaConstants.UnixEpoch + (twoDays * i);

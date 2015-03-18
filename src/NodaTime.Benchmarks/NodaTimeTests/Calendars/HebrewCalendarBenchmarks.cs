@@ -5,12 +5,14 @@
 using NodaTime.Benchmarks.Framework;
 using NodaTime.Calendars;
 
+#if !V1_0 && !V1_1 && !V1_2
 namespace NodaTime.Benchmarks.NodaTimeTests.Calendars
 {
     internal class HebrewCalendarBenchmarks
     {
-        private static readonly CalendarSystem ScripturalCalendar = CalendarSystem.HebrewScriptural;
-        private static readonly CalendarSystem CivilCalendar = CalendarSystem.HebrewCivil;
+        // Note: avoiding properties for backward compatibility
+        private static readonly CalendarSystem ScripturalCalendar = CalendarSystem.GetHebrewCalendar(HebrewMonthNumbering.Scriptural);
+        private static readonly CalendarSystem CivilCalendar = CalendarSystem.GetHebrewCalendar(HebrewMonthNumbering.Civil);
 
         [Benchmark]
         public void ScripturalConversion()
@@ -33,7 +35,11 @@ namespace NodaTime.Benchmarks.NodaTimeTests.Calendars
         {
             for (int year = 5400; year < 5419; year++)
             {
+#if !V1
                 int maxMonth = calendar.GetMonthsInYear(year);
+#else
+                int maxMonth = calendar.GetMaxMonth(year);
+#endif
                 for (int month = 1; month <= maxMonth; month++)
                 {
                     int maxDay = calendar.GetDaysInMonth(year, month);
@@ -47,3 +53,4 @@ namespace NodaTime.Benchmarks.NodaTimeTests.Calendars
         }
     }
 }
+#endif

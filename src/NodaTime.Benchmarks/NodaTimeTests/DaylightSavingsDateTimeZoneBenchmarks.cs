@@ -4,6 +4,7 @@
 using NodaTime.Benchmarks.Framework;
 using NodaTime.TimeZones;
 
+#if !NO_INTERNALS
 namespace NodaTime.Benchmarks.NodaTimeTests
 {
     /// <summary>
@@ -43,3 +44,4 @@ namespace NodaTime.Benchmarks.NodaTimeTests
         }
     }
 }
+#endif

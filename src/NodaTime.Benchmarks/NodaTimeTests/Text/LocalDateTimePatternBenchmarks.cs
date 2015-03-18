@@ -42,11 +42,13 @@ namespace NodaTime.Benchmarks.NodaTimeTests.Text
             LocalDateTimePattern.ExtendedIsoPattern.Format(SampleLocalDateTime);
         }
 
+#if !V1
         [Benchmark]
         public void ParseIso_NanosecondPrecision()
         {
             LocalDateTimePattern.ExtendedIsoPattern.Parse("2014-08-01T13:46:12.123456789").GetValueOrThrow();
         }
+#endif
 
         [Benchmark]
         public void ParseIso_SecondPrecision()

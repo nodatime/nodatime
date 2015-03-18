@@ -11,22 +11,19 @@ namespace NodaTime.Benchmarks.NodaTimeTests
 {
     internal class OffsetBenchmarks
     {
-        private static readonly NodaFormatInfo InvariantFormatInfo = NodaFormatInfo.GetFormatInfo(CultureInfo.InvariantCulture);
         private static readonly Offset SampleOffset = Offset.FromHoursAndMinutes(12, 34);
 
         private readonly IPattern<Offset> offsetPattern;
-        private readonly OffsetPatternParser offsetPatternParser;
 
         public OffsetBenchmarks()
         {
-            offsetPatternParser = new OffsetPatternParser();
-            offsetPattern = offsetPatternParser.ParsePattern("HH:mm", InvariantFormatInfo);
+            offsetPattern = OffsetPattern.CreateWithInvariantCulture("HH:mm");
         }
-
+        
         [Benchmark]
         public void ParseExactIncludingPreparse_Valid()
         {
-            var pattern = offsetPatternParser.ParsePattern("HH:mm", InvariantFormatInfo);
+            var pattern = OffsetPattern.CreateWithInvariantCulture("HH:mm");
             Offset result;
             ParseResult<Offset> parseResult = pattern.Parse("12:34");
             parseResult.TryGetValue(default(Offset), out result);
@@ -43,7 +40,7 @@ namespace NodaTime.Benchmarks.NodaTimeTests
         [Benchmark]
         public void ParsePattern_Valid()
         {
-            offsetPatternParser.ParsePattern("HH:mm", InvariantFormatInfo);
+            OffsetPattern.CreateWithInvariantCulture("HH:mm");
         }
 
         [Benchmark]

@@ -13,7 +13,11 @@ namespace NodaTime.Benchmarks.NodaTimeTests
         [Benchmark]
         public void FromDays()
         {
+#if !V1
             Duration.FromDays(100).Consume();
+#else
+            Duration.FromStandardDays(100).Consume();
+#endif
         }
 
         [Benchmark]
@@ -46,6 +50,7 @@ namespace NodaTime.Benchmarks.NodaTimeTests
             Duration.FromTicks(100).Consume();
         }
 
+#if !V1
         [Benchmark]
         public void FromInt64Nanoseconds()
         {
@@ -57,6 +62,7 @@ namespace NodaTime.Benchmarks.NodaTimeTests
         {
             Duration.FromNanoseconds(long.MaxValue + 100M).Consume();
         }
+#endif
 
         [Benchmark]
         public void FromTimeSpan()

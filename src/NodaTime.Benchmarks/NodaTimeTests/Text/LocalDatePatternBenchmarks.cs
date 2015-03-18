@@ -25,12 +25,14 @@ namespace NodaTime.Benchmarks.NodaTimeTests.Text
             LocalDatePattern.IsoPattern.Format(SampleLocalDate);
         }
 
+#if !V1
         [Benchmark]
         public void AppendFormatWithIso()
         {
             builder.Clear();
             LocalDatePattern.IsoPattern.AppendFormat(SampleLocalDate, builder);
         }
+#endif
 
         [Benchmark]
         public void FormatWithLongMonth()
