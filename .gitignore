@@ -60,9 +60,10 @@ nuget/**
 # NuGet packages (but not the configuration)
 /src/packages/**/**
 
-# Local copy of benchmark data and Mercurial log, used for testing the dynamic part of the web site
+# Local copy of benchmark data and Mercurial/Git logs, used for testing the dynamic part of the web site
 /src/NodaTime.Web/benchmarkdata/**
 /src/NodaTime.Web/hg-log.xml
+/src/NodaTime.Web/git-log.txt
 
 # Roslyn temporary files
 /src/*.sln.ide/**
