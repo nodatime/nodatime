@@ -10,7 +10,7 @@ using System.Xml.Linq;
 
 namespace NodaTime.Benchmarks.Analyzer
 {
-    internal sealed class BenchmarkFile
+    public sealed class BenchmarkFile
     {
         private readonly string machine;
         private readonly string label;
@@ -22,7 +22,7 @@ namespace NodaTime.Benchmarks.Analyzer
         public Instant StartTime { get { return startTime; } }
         public ReadOnlyCollection<BenchmarkResult> Results { get { return results; } }
 
-        internal BenchmarkFile(string machine, string label, Instant startTime, ReadOnlyCollection<BenchmarkResult> results)
+        public BenchmarkFile(string machine, string label, Instant startTime, ReadOnlyCollection<BenchmarkResult> results)
         {
             this.machine = machine;
             this.label = label;
@@ -30,7 +30,7 @@ namespace NodaTime.Benchmarks.Analyzer
             this.results = results;
         }
 
-        internal static BenchmarkFile FromXDocument(XDocument document)
+        public static BenchmarkFile FromXDocument(XDocument document)
         {
             var root = document.Root;
             return new BenchmarkFile(

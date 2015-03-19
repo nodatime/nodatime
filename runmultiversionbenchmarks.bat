@@ -9,7 +9,7 @@ mkdir tmpbenchmarks
 echo Running benchmarks for current source
 msbuild /verbosity:quiet src\NodaTime.Benchmarks\NodaTime.Benchmarks.csproj /p:Configuration=Release /t:Rebuild
 IF ERRORLEVEL 1 EXIT /B 1
-src\NodaTime.Benchmarks\bin\Release\NodaTime.Benchmarks -x tmpbenchmarks\current.xml -l current
+src\NodaTime.Benchmarks\bin\Release\NodaTime.Benchmarks -x tmpbenchmarks\current.xml -l Current
 IF ERRORLEVEL 1 EXIT /B 1
 
 CALL :runbenchmarks 1.0.1 nojson
@@ -18,7 +18,7 @@ CALL :runbenchmarks 1.1.1 nojson
 IF ERRORLEVEL 1 EXIT /B 1
 CALL :runbenchmarks 1.2.0
 IF ERRORLEVEL 1 EXIT /B 1
-CALL :runbenchmarks 1.3.0
+CALL :runbenchmarks 1.3.1
 IF ERRORLEVEL 1 EXIT /B 1
 goto :end
 
