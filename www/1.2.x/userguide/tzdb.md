@@ -55,11 +55,15 @@ Building a NodaZoneData file
    in NodaTime.TzdbCompiler\Data\winmap in a file beginning "windowsZones". This file comes from [CLDR](http://cldr.unicode.org).
 5. Run NodaTime.TzdbCompiler. I'd suggest leaving it in its build directory and running it like this:
 
-        path\to\NodaTime.TzdbCompiler.exe -s path\to\tzdb-files -w path\to\windowsMapping-file.xml -o path\to\output.nzd -t NodaZoneData
+```bat
+path\to\NodaTime.TzdbCompiler.exe -s path\to\tzdb-files -w path\to\windowsMapping-file.xml -o path\to\output.nzd -t NodaZoneData
+```
 
- For example, rebuilding the 2013h data from Noda Time itself, starting in the NodaTime.TzdbCompiler directory:
+For example, rebuilding the 2013h data from Noda Time itself, starting in the NodaTime.TzdbCompiler directory:
 
-        bin\Release\NodaTime.TzdbCompiler -s Data\2013h -w Data\winmap\windowsZones-23.xml -o tzdb-2013h.nzd -t NodaZoneData
+```bat
+bin\Release\NodaTime.TzdbCompiler -s Data\2013h -w Data\winmap\windowsZones-23.xml -o tzdb-2013h.nzd -t NodaZoneData
+```
 
 The NodaZoneData format is the default output format, so you can omit the final `-t NodaZoneData` if you wish; you may prefer
 to be explicit for clarity.
@@ -78,25 +82,27 @@ file is relatively straightforward:
 
 Here's some sample code for the first three steps above:
 
-    using NodaTime;
-    using NodaTime.TimeZones;
-    using System;
-    using System.IO;
+```csharp
+using NodaTime;
+using NodaTime.TimeZones;
+using System;
+using System.IO;
 
-    public class CustomTzdb
+public class CustomTzdb
+{
+    static void Main()
     {
-        static void Main()
+        IDateTimeZoneProvider provider;
+        // Or use Assembly.GetManifestResourceStream for an embedded file
+        using (var stream = File.OpenRead("tzdb-2013h.nzd"))
         {
-            IDateTimeZoneProvider provider;
-            // Or use Assembly.GetManifestResourceStream for an embedded file
-            using (var stream = File.OpenRead("tzdb-2013h.nzd"))
-            {
-                var source = TzdbDateTimeZoneSource.FromStream(stream);
-                provider = new DateTimeZoneCache(source);
-            }
-            Console.WriteLine(provider.SourceVersionId);
+            var source = TzdbDateTimeZoneSource.FromStream(stream);
+            provider = new DateTimeZoneCache(source);
         }
+        Console.WriteLine(provider.SourceVersionId);
     }
+}
+```
 
 The stream is fully read in the call to `TzdbDateTimeZoneSource.FromStream`, so disposing of it afterwards (as shown above) doesn't
 affect the source you've created. The stream can come from anywhere - typically it would either be a standalone file in the file
@@ -119,11 +125,15 @@ Building the resource file
    in NodaTime.TzdbCompiler\Data\winmap in a file beginning "windowsZones". This file comes from [CLDR](http://cldr.unicode.org).
 5. Run NodaTime.TzdbCompiler. I'd suggest leaving it in its build directory and running it like this:
 
-        path\to\NodaTime.TzdbCompiler.exe -s path\to\tzdb-files -w path\to\windowsMapping-file.xml -o path\to\output.resources -t Resource
+```bat
+path\to\NodaTime.TzdbCompiler.exe -s path\to\tzdb-files -w path\to\windowsMapping-file.xml -o path\to\output.resources -t Resource
+```
 
- For example, rebuilding the 2013h data from Noda Time itself, starting in the NodaTime.TzdbCompiler directory:
+For example, rebuilding the 2013h data from Noda Time itself, starting in the NodaTime.TzdbCompiler directory:
 
-        bin\Release\NodaTime.TzdbCompiler -s Data\2013h -w Data\winmap\windowsZones-23.xml -o tzdb-2013h.resources -t Resource
+```bat
+bin\Release\NodaTime.TzdbCompiler -s Data\2013h -w Data\winmap\windowsZones-23.xml -o tzdb-2013h.resources -t Resource
+```
 
 As an alternative, if there's enough demand, we may well provide pre-built resource files in the Noda Time project download section.
 It's worth knowing the above steps, however, in case you wish to use a cut-down set of time zones for resource-constrained environments.
@@ -142,21 +152,23 @@ file is relatively straightforward:
 
 Here's some sample code for the first three steps above:
 
-    using NodaTime;
-    using NodaTime.TimeZones;
-    using System;
-    using System.Resources;
+```csharp
+using NodaTime;
+using NodaTime.TimeZones;
+using System;
+using System.Resources;
 
-    public class CustomTzdb
+public class CustomTzdb
+{
+    static void Main()
     {
-        static void Main()
-        {
-            var resourceSet = new ResourceSet("tzdb-2013h.resources");
-            var source = new TzdbDateTimeZoneSource(resourceSet);
-            IDateTimeZoneProvider provider = new DateTimeZoneCache(source);
-            Console.WriteLine(provider.SourceVersionId);
-        }
+        var resourceSet = new ResourceSet("tzdb-2013h.resources");
+        var source = new TzdbDateTimeZoneSource(resourceSet);
+        IDateTimeZoneProvider provider = new DateTimeZoneCache(source);
+        Console.WriteLine(provider.SourceVersionId);
     }
+}
+```
 
 You may be surprised that `TzdbDateTimeZoneSource` doesn't implement `IDisposable` even though `ResourceSet` does. `TzdbDateTimeZoneSource`
 will never close or dispose the resource set it's given - it doesn't assume ownership of it. However, it will fail if you dispose the

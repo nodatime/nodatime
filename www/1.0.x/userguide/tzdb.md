@@ -37,11 +37,15 @@ Steps
    in ZoneInfoCompiler\Data\winmap in a file beginning "windowsZones". This file comes from [CLDR](http://cldr.unicode.org).
 5. Run ZoneInfoCompiler. I'd suggest leaving it in its build directory and running it like this:
 
-    path\to\ZoneInfoCompiler.exe -s path\to\tzdb-files -w path\to\windowsMapping-file.xml -o path\to\output.resources -t Resource
+```bat
+path\to\ZoneInfoCompiler.exe -s path\to\tzdb-files -w path\to\windowsMapping-file.xml -o path\to\output.resources -t Resource
+```
 
- For example, rebuilding the 2012c data from Noda Time itself, starting in the ZoneInfoCompiler directory:
+For example, rebuilding the 2012c data from Noda Time itself, starting in the ZoneInfoCompiler directory:
 
-    bin\Release\ZoneInfoCompiler -s Data\2012c -w Data\winmap\windowsZones-21.xml -o tzdb-2012c.resources -t Resource
+```bat
+bin\Release\ZoneInfoCompiler -s Data\2012c -w Data\winmap\windowsZones-21.xml -o tzdb-2012c.resources -t Resource
+```
 
 As an alternative, if there's enough demand, we may well provide pre-built resource files in the Noda Time project download section.
 It's worth knowing the above steps, however, in case you wish to use a cut-down set of time zones for resource-constrained environments.
@@ -60,21 +64,23 @@ file is relatively straightforward:
 
 Here's some sample code for the first three steps above:
 
-	using NodaTime;
-	using NodaTime.TimeZones;
-	using System;
-	using System.Resources;
+```csharp
+using NodaTime;
+using NodaTime.TimeZones;
+using System;
+using System.Resources;
 
-	public class CustomTzdb
-	{
-		static void Main()
-		{
-			var resourceSet = new ResourceSet("tzdb-2012c.resources");
-			var source = new TzdbDateTimeZoneSource(resourceSet);
-			IDateTimeZoneProvider provider = new DateTimeZoneCache(source);
-			Console.WriteLine(provider.SourceVersionId);
-		}
-	}
+public class CustomTzdb
+{
+    static void Main()
+    {
+        var resourceSet = new ResourceSet("tzdb-2012c.resources");
+        var source = new TzdbDateTimeZoneSource(resourceSet);
+        IDateTimeZoneProvider provider = new DateTimeZoneCache(source);
+        Console.WriteLine(provider.SourceVersionId);
+    }
+}
+```
 
 You may be surprised that `TzdbDateTimeZoneSource` doesn't implement `IDisposable` even though `ResourceSet` does. `TzdbDateTimeZoneSource`
 will never close or dispose the resource set it's given - it doesn't assume ownership of it. However, it will fail if you dispose the

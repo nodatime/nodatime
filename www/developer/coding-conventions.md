@@ -47,25 +47,27 @@ define the `PCL` conditional compilation symbol, which is used for areas where t
 
 ## Example
 
-	using System;
-    
-    namespace ConsoleApplication1
+```csharp
+using System;
+
+namespace ConsoleApplication1
+{
+    class Program
     {
-        class Program
+        static void Main(string[] args)
         {
-            static void Main(string[] args)
+            if (args.Length > 1)
             {
-                if (args.Length > 1)
-                {
-                    Console.WriteLine("Hello " + args[0]);
-                }
-                else
-                {
-                    Console.WriteLine("Hello world!");
-                }
+                Console.WriteLine("Hello " + args[0]);
+            }
+            else
+            {
+                Console.WriteLine("Hello world!");
             }
         }
     }
+}
+```
 
 ## Working With Multiple C# Formatting Configurations
 

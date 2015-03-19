@@ -43,23 +43,26 @@ is constructed (via a builder) with any `DateTimeZone` instances you want, and y
 
 If you only need to specify the time zones, it's simplest to just use a collection initializer with the builder, like this:
 
-    var source = new FakeDateTimeZoneSource.Builder
-    {
-	    // Where CreateZone is just a method returning a DateTimeZone...
-        CreateZone("x"),
-		CreateZone("y"),
-		CreateZone("a"),
-		CreateZone("b")
-    }.Build();
+```csharp
+var source = new FakeDateTimeZoneSource.Builder
+{
+    // Where CreateZone is just a method returning a DateTimeZone...
+    CreateZone("x"),
+    CreateZone("y"),
+    CreateZone("a"),
+    CreateZone("b")
+}.Build();
+```
 
 If you need to set other properties on the builder, the zones have to be specified through the `Zones` property:
 
-     var source = new FakeDateTimeZoneSource.Builder
-     {
-	     VersionId = "CustomVersionId",
-         Zones = { CreateZone("x"), CreateZone("y") }
-     }.Build();
-
+```csharp
+ var source = new FakeDateTimeZoneSource.Builder
+ {
+     VersionId = "CustomVersionId",
+     Zones = { CreateZone("x"), CreateZone("y") }
+ }.Build();
+ ```
 
 The production environment should usually be
 configured with one of the providers in [`DateTimeZoneProviders`](noda-type://NodaTime.DateTimeZoneProviders).
@@ -71,8 +74,10 @@ For time zones themselves, there are two fake implementations.
 [`SingleTransitionDateTimeZone`](noda-type://NodaTime.Testing.TimeZones.SingleTransitionDateTimeZone) represents a time zone
 with a single transition between different offsets, and is suitable for most test purposes.
 
-    var transition = new Instant(100000L); // Or use Instant.FromUtc
-    var zone = new SingleTransitionDateTimeZone(transition, 3, 5);
+```csharp
+var transition = new Instant(100000L); // Or use Instant.FromUtc
+var zone = new SingleTransitionDateTimeZone(transition, 3, 5);
+```
 
 This will create a zone which moves from UTC+3 to UTC+5 at the transition point. The ID of the zone can also be specified,
 and the names of the early/late zone intervals are based on the ID. The zone intervals within the time zone do not have a
@@ -82,13 +87,15 @@ For more complex scenarios, [`MultiTransitionDateTimeZone`](noda-type://NodaTime
 allows you to create a time zone from a collection of transitions, using a builder type. The standard and saving offsets for
 each part of the time zone can be specified separately. For example:
 
-    var transition1 = new Instant(0L);
-    var transition2 = new Instant(100000L);
-    var zone = new MultiTransitionDateTimeZone.Builder(2, 1, "X")
-    {
-        { transition1, 2, 0, "Y" },
-        { transition2, 1, 1, "Z" }
-    }.Build();
+```csharp
+var transition1 = new Instant(0L);
+var transition2 = new Instant(100000L);
+var zone = new MultiTransitionDateTimeZone.Builder(2, 1, "X")
+{
+    { transition1, 2, 0, "Y" },
+    { transition2, 1, 1, "Z" }
+}.Build();
+```
 
 The offsets and ID provided to the constructor are used for the beginning of time up until the first specified transition,
 at which point the offsets and ID provided with that transition are used until the next transition, etc.

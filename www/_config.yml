@@ -1,8 +1,6 @@
 name: Noda Time
-pygments: true
-
-markdown:      redcarpet
-markdown_ext:  markdown,mkd,mkdn,md
+markdown: NodaTimeMarkdownParser
+highlighter: pygments
 
 # The latest released version number and date of release.
 latest: 1.3.1

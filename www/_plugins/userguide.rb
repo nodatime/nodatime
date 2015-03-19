@@ -8,7 +8,7 @@ module Jekyll
 
       sorted_collection = context[@collection_name].dup
       sorted_collection = sorted_collection.sort_by { |i| (i && i.to_liquid[@attributes['sort_by']]) || 0 }
- 
+
       parts = context['page']['url'].split('/')
       page_url = parts[0..parts.length-2].join('/')
 
@@ -34,17 +34,17 @@ module Jekyll
       sorted_collection_name = "#{@collection_name}_sorted".sub('.', '_')
       context[sorted_collection_name] = new_collection
       @collection_name = sorted_collection_name
- 
+
       super
     end
- 
+
     def end_tag
       'enduserguide_for'
     end
   end
 
   module Converters
-    class APILink < Redcarpet::Render::HTML
+    module APILink
       @@NamespacePattern = /noda-ns:\/\/([A-Za-z0-9_.]*)/
       @@TypePattern      = /noda-type:\/\/([A-Za-z0-9_.]*)/
       @@MethodPattern      = /noda-method:\/\/([A-Za-z0-9_.]*)/
@@ -70,24 +70,21 @@ module Jekyll
         match.gsub! /\./, '_'
         "#{@@ApiUrlPrefix}#{prefix}_#{match}.htm"
       end
-
-      def postprocess(text)
-        text.gsub! /<pre><code>(.*?)<\/code><\/pre>/m, '<div class="example"><pre class="prettyprint code">\1</pre></div>'
-        text
-      end
     end
 
-    class Markdown < Converter
-      def markdown
-        @markdown ||= Redcarpet::Markdown.new(APILink.new())
-      end
+    class Markdown
+      class NodaTimeMarkdownParser < RedcarpetParser
+        def initialize(config)
+          super
 
-      def convert(content)
-        markdown.render(content)
+          # Patch @renderer to apply our transformations first.
+          @renderer = Class.new(@renderer) do
+            include APILink
+          end
+        end
       end
     end
   end
 end
- 
-Liquid::Template.register_tag('userguide_for', Jekyll::UserGuideFor)
 
+Liquid::Template.register_tag('userguide_for', Jekyll::UserGuideFor)

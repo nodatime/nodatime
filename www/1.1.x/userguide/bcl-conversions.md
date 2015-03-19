@@ -141,8 +141,10 @@ difficult, but there are utility methods in
 [`BclConversions`](noda-type://NodaTime.Utility.BclConversions) to
 make things slightly smoother:
 
-    DayOfWeek bcl = BclConversions.ToDayOfWeek(IsoDayOfWeek.Wednesday);
-    IsoDayOfWeek iso = BclConversions.ToIsoDayOfWeek(DayOfWeek.Wednesday);
+```csharp
+DayOfWeek bcl = BclConversions.ToDayOfWeek(IsoDayOfWeek.Wednesday);
+IsoDayOfWeek iso = BclConversions.ToIsoDayOfWeek(DayOfWeek.Wednesday);
+```
 
 Any others?
 ===========

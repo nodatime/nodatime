@@ -1,13 +1,14 @@
 # Makefile for compiling Noda Time under mono.
 # See www/developer/building.md for requirements.
 
-# Assumes that 'mono', 'xbuild' and 'nunit-console' point to appropriate
-# versions of the respective tools. If this is not true, override the
-# two assignments, either by editing the below, or by running 'make XBUILD=...'
+# Assumes that following point to appropriate versions of the respective tools.
+# If this is not true, override the two assignments, either by editing the
+# below, or by running 'make XBUILD=...'
 
 MONO := mono
 XBUILD := xbuild
 NUNIT := nunit-console
+JEKYLL := jekyll
 # For example, to use a version of NUnit that has been unzipped somewhere else,
 # use something like the following instead.
 # NUNIT := mono ../NUnit-2.6.1/bin/nunit-console.exe
@@ -27,6 +28,11 @@ NUNIT := nunit-console
 #
 #   docs
 #     builds the contents www/ directory using Jekyll.
+#     To install Jekyll on a Debian-like system, do something like the
+#     following:
+#       $ sudo apt-get install ruby-dev nodejs
+#       $ sudo gem install jekyll
+#     (or 'gem install --user-install jekyll', to install it locally.)
 
 # Override the profile: Mono only supports the 'full' .NET framework profile,
 # not the Client profile selected in the project files for the desktop build
@@ -89,7 +95,7 @@ checkfakepcl: fakepcl
 		$(FAKEPCL_TZDBCOMPILER_TEST_DLL)
 
 docs:
-	echo TODO
+	cd www; $(JEKYLL) build
 
 clean:
 	$(XBUILD) $(XBUILDFLAGS_DEBUG) $(SOLUTION) /t:Clean

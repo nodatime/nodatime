@@ -28,12 +28,14 @@ These "fixed lengths of time" are represented in Noda Time with the
 added to either an `Instant` or `ZonedDateTime` using either the `+` operator
 or `Plus` methods:
 
-    Duration duration = Duration.FromMinutes(3);
-    Instant now = SystemClock.Instance.Now;    
-    Instant future = now + duration; // Or now.Plus(duration)
-    
-    ZonedDateTime nowInIsoUtc = now.InUtc();
-    ZonedDateTime thenInIsoUtc = nowInIsoUtc + duration;
+```csharp
+Duration duration = Duration.FromMinutes(3);
+Instant now = SystemClock.Instance.Now;
+Instant future = now + duration; // Or now.Plus(duration)
+
+ZonedDateTime nowInIsoUtc = now.InUtc();
+ZonedDateTime thenInIsoUtc = nowInIsoUtc + duration;
+```
 
 (There are also static `Add` and `Subtract` methods, the `-` operator and
 the instance `Minus` method on both `Instant` and `ZonedDateTime`.)
@@ -41,12 +43,14 @@ the instance `Minus` method on both `Instant` and `ZonedDateTime`.)
 Time line arithmetic is pretty simple, except you might not *always* get
 what you expect when using `ZonedDateTime`, due to daylight saving transitions:
 
-    DateTimeZone london = DateTimeZoneProviders.Tzdb["Europe/London"];
-    // 12:45am on March 27th 2012
-    LocalDateTime local = new LocalDateTime(2012, 3, 27, 0, 45, 00);
-    ZonedDateTime before = london.AtStrictly(local);
-    ZonedDateTime after = before + Duration.FromMinutes(20);
-    
+```csharp
+DateTimeZone london = DateTimeZoneProviders.Tzdb["Europe/London"];
+// 12:45am on March 27th 2012
+LocalDateTime local = new LocalDateTime(2012, 3, 27, 0, 45, 00);
+ZonedDateTime before = london.AtStrictly(local);
+ZonedDateTime after = before + Duration.FromMinutes(20);
+```
+
 We start off with a *local* time of 12.45am. The time that we add is effectively
 "experienced" time - as if we'd simply waited twenty minutes. However, at 1am on that day,
 the clocks in the Europe/London time zone go forward by an hour - so we end up with a local
@@ -84,16 +88,18 @@ years, days, hours etc to a value - a quantity of a single "unit",
 in other words. This is easily achieved via the `PlusXyz` methods on
 all of the local types:
 
-    LocalDate date = new LocalDate(2012, 2, 21);
-    date = date.PlusMonths(1); // March 21st 2012
-    date = date.PlusDays(-1); // March 20th 2012
-    
-    LocalTime time = new LocalTime(7, 15, 0);
-    time = time.PlusHours(3); // 10:15 am
-    
-    LocalDateTime dateTime = date + time;
-    dateTime = dateTime.PlusWeeks(1); // March 27th 2012, 10:15am
-    
+```csharp
+LocalDate date = new LocalDate(2012, 2, 21);
+date = date.PlusMonths(1); // March 21st 2012
+date = date.PlusDays(-1); // March 20th 2012
+
+LocalTime time = new LocalTime(7, 15, 0);
+time = time.PlusHours(3); // 10:15 am
+
+LocalDateTime dateTime = date + time;
+dateTime = dateTime.PlusWeeks(1); // March 27th 2012, 10:15am
+```
+
 All of these types are immutable of course: the `PlusXyz` methods
 don't modify the value they're called on; they return a new value
 with the new date/time.
@@ -103,20 +109,24 @@ to unequal month lengths and the like. When adding a month or a year
 would create an invalid date, the day-of-month is truncated. For
 example:
 
-    LocalDate date = new LocalDate(2012, 2, 29);
-    LocalDate date1 = date.PlusYears(1); // February 28th 2013
+```csharp
+LocalDate date = new LocalDate(2012, 2, 29);
+LocalDate date1 = date.PlusYears(1); // February 28th 2013
 
-    LocalDate date2 = date.PlusMonths(1).PlusDays(1); // March 30th 2012
-    date2 = date2.PlusMonths(-1); // Back to February 29th 2012
+LocalDate date2 = date.PlusMonths(1).PlusDays(1); // March 30th 2012
+date2 = date2.PlusMonths(-1); // Back to February 29th 2012
+```
 
 `LocalTime` wraps around midnight transparently, but the same
 operations on `LocalDateTime` will change the date appropriately too:
 
-    LocalTime time = new LocalTime(20, 30, 0);
-    time = time.PlusHours(6); // 2:30 am
-    
-    LocalDateTime dateTime = new LocalDate(2012, 2, 21) + time;
-    dateTime = dateTime.PlusHours(-6); // 8:30pm on February 20th
+```csharp
+LocalTime time = new LocalTime(20, 30, 0);
+time = time.PlusHours(6); // 2:30 am
+
+LocalDateTime dateTime = new LocalDate(2012, 2, 21) + time;
+dateTime = dateTime.PlusHours(-6); // 8:30pm on February 20th
+```
 
 Hopefully all of this is what you'd expect, but it's worth making
 sure the simple cases are clear before moving on to more complex ones.
@@ -136,9 +146,11 @@ Single-unit periods can be obtained using the `FromXyz` methods, and
 can then be added to the "local" types using the `+` operator or the
 `Plus` method:
 
-    LocalDateTime dateTime = new LocalDateTime(2012, 2, 21, 7, 48, 0);
-    dateTime = dateTime + Period.FromDays(1) + Period.FromMinutes(1);
-    dateTime = dateTime.Plus(Period.FromHours(1));
+```csharp
+LocalDateTime dateTime = new LocalDateTime(2012, 2, 21, 7, 48, 0);
+dateTime = dateTime + Period.FromDays(1) + Period.FromMinutes(1);
+dateTime = dateTime.Plus(Period.FromHours(1));
+```
 
 Adding a period containing date units to a `LocalTime` or adding a
 period containing time units to a `LocalDate` will result in an
@@ -146,8 +158,10 @@ period containing time units to a `LocalDate` will result in an
 
 Periods can be combined using simple addition too:
 
-    Period compound = Period.FromDays(1) + Period.FromMonths(1);
-    
+```csharp
+Period compound = Period.FromDays(1) + Period.FromMonths(1);
+```
+
 Again, this is very simple - the components in the two periods are
 simply summed, with no normalization. Subtraction works in the same
 way.
@@ -155,7 +169,9 @@ way.
 An alternative way of creating a period is to use [`PeriodBuilder`](noda-type://NodaTime.PeriodBuilder)
 which is mutable, with a nullable property for each component:
 
-    Period compound = new PeriodBuilder { Days = 1, Months = 1 }.Build();
+```csharp
+Period compound = new PeriodBuilder { Days = 1, Months = 1 }.Build();
+```
 
 Adding a compound period can sometimes give unexpected results if
 you don't understand how they're handled, but the rule is extremely
@@ -166,19 +182,23 @@ It's easiest to think about where this can be confusing with an
 example. Suppose we add "one month minus three days" to January 30th
 2011:
 
-    Period period = Period.FromMonths(1) - Period.FromDays(3);
-    LocalDate date = new LocalDate(2011, 1, 30);
-    date = date + period;
-    
+```csharp
+Period period = Period.FromMonths(1) - Period.FromDays(3);
+LocalDate date = new LocalDate(2011, 1, 30);
+date = date + period;
+```
+
 If you give this puzzle to a real person, they may well come up with
 an answer of "February 27th" by waiting until the last moment to
 check the validity. Noda Time will give an answer of February 25th,
 as the above code is effectively evaluated as:
 
-    Period period = Period.FromMonths(1) - Period.FromDays(3);
-    LocalDate date = new LocalDate(2011, 1, 30);
-    date = date + Period.FromMonths(1); // February 28th (truncated)
-    date = date - Period.FromDays(3); // February 25th
+```csharp
+Period period = Period.FromMonths(1) - Period.FromDays(3);
+LocalDate date = new LocalDate(2011, 1, 30);
+date = date + Period.FromMonths(1); // February 28th (truncated)
+date = date - Period.FromDays(3); // February 25th
+```
 
 The benefit of this approach is simplicity and predictability: when
 you know the rules, it's very easy to work out what Noda Time will
@@ -204,13 +224,15 @@ with the [`PeriodUnits`](noda-type://NodaTime.PeriodUnits) enum, and
 can be combined using the `|` operator. So for example, to find out
 how many "months and days" old I am at the time of this writing, I'd use:
 
-    var birthday = new LocalDate(1976, 6, 19);
-    var today = new LocalDate(2012, 2, 21);
-    var period = Period.Between(birthday, today,
-                                PeriodUnits.Months | PeriodUnits.Days);
-    
-    Console.WriteLine("Age: {0} months and {1} days",
-                      period.Months, period.Days);
+```csharp
+var birthday = new LocalDate(1976, 6, 19);
+var today = new LocalDate(2012, 2, 21);
+var period = Period.Between(birthday, today,
+                            PeriodUnits.Months | PeriodUnits.Days);
+
+Console.WriteLine("Age: {0} months and {1} days",
+                  period.Months, period.Days);
+```
 
 Just as when adding periods, computing a period works from the largest
 specified unit down to the smallest, at each stage finding the appropriate
@@ -222,12 +244,14 @@ earlier than the first) every component value will be zero or negative.
 
 Note that these rules can very easily give asymmetric results. For example, consider:
 
-    // Remember that 2012 is a leap year...
-    var date1 = new LocalDate(2012, 2, 28);
-    var date2 = new LocalDate(2012, 3, 31);
-        
-    var period1 = Period.Between(date1, date2);
-    var period2 = Period.Between(date2, date1);
+```csharp
+// Remember that 2012 is a leap year...
+var date1 = new LocalDate(2012, 2, 28);
+var date2 = new LocalDate(2012, 3, 31);
+
+var period1 = Period.Between(date1, date2);
+var period2 = Period.Between(date2, date1);
+```
 
 Now `period1` is "1 month and 3 days" - when we add a month to `date1` we get to March 28th, and
 then another 3 days takes us to March 31st. But `period2` is "-1 month and -1 day" - when we subtract

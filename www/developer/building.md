@@ -45,16 +45,22 @@ be able to test the desktop build that way, if you really need to.
 
 To fetch the source code, just clone the GitHub repository:
 
-    > hg clone https://code.google.com/p/noda-time/
+```bat
+> hg clone https://code.google.com/p/noda-time/
+```
 
 To build everything under Visual Studio, simply open the `src\NodaTime-All.sln` file.
 To build with just the SDK and msbuild, run
 
-    > msbuild src\NodaTime-All.sln /property:Configuration=Debug
+```bat
+> msbuild src\NodaTime-All.sln /property:Configuration=Debug
+```
 
 Execute the tests using your favourite NUnit test runner. For example:
 
-    > nunit-console src\NodaTime.Test\bin\Debug\NodaTime.Test.dll
+```bat
+> nunit-console src\NodaTime.Test\bin\Debug\NodaTime.Test.dll
+```
 
 (Include the other test DLLs should you wish to, of course.)
 
@@ -112,14 +118,18 @@ of the larger suites.
 
 To fetch the source code, just clone the GitHub repository:
 
-    $ hg clone https://code.google.com/p/noda-time/
+```sh
+$ hg clone https://code.google.com/p/noda-time/
+```
 
 Building is performed with `make`, using the included Makefile. (If you don't
 have a working `make`, you can also run `xbuild` by hand; see `Makefile` for
 the commands you'll need to run.)
 
-    $ cd noda-time
-    $ make
+```sh
+$ cd noda-time
+$ make
+```
 
 This will build all the Noda Time main projects. The main assembly will be
 written to `src/NodaTime/bin/Debug/NodaTime.dll`; this is all you need to use
@@ -128,13 +138,17 @@ Noda Time itself.
 Other build targets are also available; again, see `Makefile` for documentation.
 In particular, to build and run the tests, run:
 
-    $ make check
+```sh
+$ make check
+```
 
 to use the default (probably Mono-supplied) version of NUnit to run the tests,
 or something like the following to override the location of the NUnit test
 runner:
 
-    $ make check NUNIT='mono ../NUnit-2.6.1/bin/nunit-console.exe'
+```sh
+$ make check NUNIT='mono ../NUnit-2.6.1/bin/nunit-console.exe'
+```
 
 ### Source layout
 

@@ -105,8 +105,10 @@ All of the types in this heading are based on dates in calendars, and they all h
 `ZonedDateTime` or `OffsetDateTime` is out of the range of `Instant`, the value is still valid. For example, consider
 this code:
 
-    LocalDate earliestDate = new LocalDate(-9998, 1, 1);
-    OffsetDateTime offsetDateTime = earliestDate.AtMidnight().WithOffset(Offset.FromHours(10));
+```csharp
+LocalDate earliestDate = new LocalDate(-9998, 1, 1);
+OffsetDateTime offsetDateTime = earliestDate.AtMidnight().WithOffset(Offset.FromHours(10));
+```
 
 Here, `offsetDateTime` has a local date/time value of -9998-01-01T00:00:00, but it's 10 hours ahead of UTC... giving a logical
 instant of -9999-12-31T14:00:00Z... which is out of range. That's fine, and the code above won't throw an exception... unless

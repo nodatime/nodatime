@@ -17,7 +17,9 @@ with ISO-8601, but it shouldn't be used in places where ISO compliance is requir
 
 The format is:
 
-    P (date components) T (time components)
+```
+P (date components) T (time components)
+```
 
 Where each non-zero component within the period is specified as its value followed by a unit specifier from this list:
 

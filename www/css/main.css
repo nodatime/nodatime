@@ -58,7 +58,7 @@ section.body {
 .section h1,
 .section h2 {
   color: #fff;
-  text-align: center; 
+  text-align: center;
 }
 
 .introduction {
@@ -125,7 +125,7 @@ section.body {
 }
 
 .installation .install {
-  margin-top: 50px; 
+  margin-top: 50px;
 }
 
 .installation .install h4 {
@@ -136,15 +136,14 @@ section.body {
   margin-top: 10px;
 }
 
-.usage .example {
+.example {
   margin: -47px 0;
   display: block;
   padding: 0;
-  font-family: Menlo, Consolas, "Courier New", Courier, "Liberation Mono", monospace;
   text-align: left;
 }
 
-.example p.title {  
+.example p.title {
   display: block;
   text-align: center;
   margin: 0 20px;
@@ -168,24 +167,37 @@ section.body {
   border-bottom: 1px solid #111;
 }
 
-.usage .example .code {
+.highlight {
+  font-family: monospace; /* just so that margin-bottom uses the right font. */
+  margin: 0 20px 1.25em 0;
+  border: 1px solid #888;
+  border-radius: 5px;
+  box-shadow: 0 5px 30px rgba(0,0,0,.3);
+}
+
+.example > .highlight {
   height: 350px;
+  border: none;
   border-radius: 0 0 5px 5px;
-  font-size: 15px;
-  /*margin-bottom: 0px;*/
   margin: 0 20px;
 }
 
-.example .code {
+.highlight > pre {
   padding: 20px;
-  text-shadow: none;
-  margin: 0 20px 1.25em 0;
-  background: #3d3d3d;
-  border-radius: 5px;
-  box-shadow: 0 5px 30px rgba(0,0,0,.3);  
-  text-align: left;
   overflow: hidden;
-  color: #fff;
+}
+
+.highlight > pre > code {
+  /* Override parts of foundation.css that we're using elsewhere. */
+  font-family: monospace;
+  font-weight: normal;
+
+  /* Override the default color for code. */
+  color: white;
+}
+
+.example > .highlight > pre > code {
+  font-size: 15px;
 }
 
 footer {
@@ -229,43 +241,4 @@ footer .design {
 .section-container > section .content a:visited
 {
   color: #FFF;
-} 
-
-
-/* Pretty Print */
-/* desert scheme ported from vim to google prettify */
-pre.prettyprint { display: block; background-color: #333 }
-pre .nocode { background-color: none; color: #000 }
-pre .str { color: #ffa0a0 } /* string  - pink */
-pre .kwd { color: #f0e68c; font-weight: bold }
-pre .com { color: #87ceeb } /* comment - skyblue */
-pre .typ { color: #98fb98 } /* type    - lightgreen */
-pre .lit { color: #cd5c5c } /* literal - darkred */
-pre .pun { color: #fff }    /* punctuation */
-pre .pln { color: #fff }    /* plaintext */
-pre .tag { color: #f0e68c; font-weight: bold } /* html/xml tag    - lightyellow */
-pre .atn { color: #bdb76b; font-weight: bold } /* attribute name  - khaki */
-pre .atv { color: #ffa0a0 } /* attribute value - pink */
-pre .dec { color: #98fb98 } /* decimal         - lightgreen */
-
-/* Specify class=linenums on a pre to get line numbering */
-ol.linenums { margin-top: 0; margin-bottom: 0; color: #AEAEAE } /* IE indents via margin-left */
-li.L0,li.L1,li.L2,li.L3,li.L5,li.L6,li.L7,li.L8 { list-style-type: none }
-/* Alternate shading for lines */
-li.L1,li.L3,li.L5,li.L7,li.L9 { }
-
-@media print {
-  pre.prettyprint { background-color: none }
-  pre .str, code .str { color: #060 }
-  pre .kwd, code .kwd { color: #006; font-weight: bold }
-  pre .com, code .com { color: #600; font-style: italic }
-  pre .typ, code .typ { color: #404; font-weight: bold }
-  pre .lit, code .lit { color: #044 }
-  pre .pun, code .pun { color: #440 }
-  pre .pln, code .pln { color: #000 }
-  pre .tag, code .tag { color: #006; font-weight: bold }
-  pre .atn, code .atn { color: #404 }
-  pre .atv, code .atv { color: #060 }
 }
-
-.usage pre.prettyprint { padding: 0px; border: none; background-color: inherit; }

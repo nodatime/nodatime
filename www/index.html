@@ -24,30 +24,27 @@ title: Noda Time | Date and time API for .NET
 	<div class="hide-for-small large-6 columns">
 		<div class="example unit">
                         <p class="title">Examples (see <a href="http://nodatime.org/userguide">User Guide</a>)</p>
-                        <div class="code">
-				<pre class="prettyprint">
 
-// Instant represents time from epoch
-Instant now = SystemClock.Instance.Now;
+<div class="highlight"><pre><code>
+<span class="c1">// Instant represents time from epoch</span>
+<span class="n">Instant</span> <span class="n">now</span> <span class="p">=</span> <span class="n">SystemClock</span><span class="p">.</span><span class="n">Instance</span><span class="p">.</span><span class="n">Now</span><span class="p">;</span>
 
-// Convert an instant to a ZonedDateTime
-ZonedDateTime nowInIsoUtc = now.InUtc();
+<span class="c1">// Convert an instant to a ZonedDateTime</span>
+<span class="n">ZonedDateTime</span> <span class="n">nowInIsoUtc</span> <span class="p">=</span> <span class="n">now</span><span class="p">.</span><span class="n">InUtc</span><span class="p">();</span>
 
-// Create a duration
-Duration duration = Duration.FromMinutes(3);
+<span class="c1">// Create a duration</span>
+<span class="n">Duration</span> <span class="n">duration</span> <span class="p">=</span> <span class="n">Duration</span><span class="p">.</span><span class="n">FromMinutes</span><span class="p">(</span><span class="m">3</span><span class="p">);</span>
 
-// Add it to our ZonedDateTime
-ZonedDateTime thenInIsoUtc = nowInIsoUtc + duration;
+<span class="c1">// Add it to our ZonedDateTime</span>
+<span class="n">ZonedDateTime</span> <span class="n">thenInIsoUtc</span> <span class="p">=</span> <span class="n">nowInIsoUtc</span> <span class="p">+</span> <span class="n">duration</span><span class="p">;</span>
 
-// Time zone support (multiple providers)
-var london = DateTimeZoneProviders.Tzdb["Europe/London"];
+<span class="c1">// Time zone support (multiple providers)</span>
+<span class="kt">var</span> <span class="n">london</span> <span class="p">=</span> <span class="n">DateTimeZoneProviders</span><span class="p">.</span><span class="n">Tzdb</span><span class="p">[</span><span class="s">&quot;Europe/London&quot;</span><span class="p">];</span>
 
-// Time zone conversions
-var localDate = new LocalDateTime(2012, 3, 27, 0, 45, 00);
-var before = london.AtStrictly(localDate);
-
-				</pre>
-			</div>
+<span class="c1">// Time zone conversions</span>
+<span class="kt">var</span> <span class="n">localDate</span> <span class="p">=</span> <span class="k">new</span> <span class="n">LocalDateTime</span><span class="p">(</span><span class="m">2012</span><span class="p">,</span> <span class="m">3</span><span class="p">,</span> <span class="m">27</span><span class="p">,</span> <span class="m">0</span><span class="p">,</span> <span class="m">45</span><span class="p">,</span> <span class="m">00</span><span class="p">);</span>
+<span class="kt">var</span> <span class="n">before</span> <span class="p">=</span> <span class="n">london</span><span class="p">.</span><span class="n">AtStrictly</span><span class="p">(</span><span class="n">localDate</span><span class="p">);</span>
+</code></pre></div>
 		</div>
 	</div>
 </div>

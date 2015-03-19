@@ -26,7 +26,9 @@ mutable types with a parameterless constructor - which is somewhat problematic f
 of immutable types. However, as all structs implicitly have a parameterless constructor, and the `this` expression
 is effectively a `ref` parameter in methods in structs, all the value types listed above have `ReadXml` methods which effectively end with:
 
-    this = valueParsedFromXml;
+```csharp
+this = valueParsedFromXml;
+```
 
 This looks somewhat alarming, but is effectively sensible. It doesn't mutate the existing value so much as replace it with a completely new
 value. XML serialization has been performed using explicit interface implementation in all types, so it's very unlikely that you'll end up
@@ -37,31 +39,31 @@ constructor (nor do we want one). `PeriodBuilder` is a mutable type with a param
 other classes wouldn't contain a `PeriodBuilder` property or field of course - but by exposing a "proxy" property solely for XML serialization purposes,
 an appropriate effect can be achieved. The class might look something like this:
 
+```csharp
+/// <summary>
+/// Sample class to show how to serialize classes which have Period properties.
+/// </summary>
+public class XmlSerializationDemo
+{
+    /// <summary>
+    /// Use this property!
+    /// </summary>
+    [XmlIgnore]
+    public Period Period { get; set; }
 
     /// <summary>
-    /// Sample class to show how to serialize classes which have Period properties.
+    /// Don't use this property! It's only present for the purposes of XML serialization.
     /// </summary>
-    public class XmlSerializationDemo
+    [XmlElement("period")]
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public PeriodBuilder PeriodBuilder
     {
-        /// <summary>
-        /// Use this property!
-        /// </summary>
-        [XmlIgnore]
-        public Period Period { get; set; }
-
-        /// <summary>
-        /// Don't use this property! It's only present for the purposes of XML serialization.
-        /// </summary>
-        [XmlElement("period")]
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public PeriodBuilder PeriodBuilder
-        {
-            get { return Period == null ? null : Period.ToBuilder(); }
-            set { Period = value == null ? null : value.Build(); }
-        }
+        get { return Period == null ? null : Period.ToBuilder(); }
+        set { Period = value == null ? null : value.Build(); }
     }
+}
+```
 
-  
 When serializing, the `XmlSerializer` will fetch the value from the `PeriodBuilder` property, which will in turn fetch the period from the `Period` property and convert it into a builder.
 When deserializing, the `XmlSerializer` will set the value of `PeriodBuilder` from the XML - and the property will in turn build the builder and set the `Period` property.
 
@@ -188,7 +190,9 @@ Custom converters can be created easily from patterns using [`NodaPatternConvert
 
 Between releases 4.0 and 4.5.11, Json.NET introduced automatic date parsing: by default, if the parser detects a value which looks like a date, it will automatically convert it to a `DateTime` or (optionally) to a `DateTimeOffset`. In order to give Noda Time control over the serialization, this must be disabled in `JsonSerializerSettings` or `JsonSerializer`, like this:
 
-    settings.DateParseHandling = DateParseHandling.None;
+```csharp
+settings.DateParseHandling = DateParseHandling.None;
+```
 
 (The same code is valid for both `JsonSerializer` and `JsonSerializerSettings`.)
 

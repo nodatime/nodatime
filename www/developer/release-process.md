@@ -95,8 +95,10 @@ Suppose we were building version 1.2.3-beta4, then:
 
 Update the version number by building the tools solution and then running the `SetVersion` tool:
 
-    msbuild src\NodaTime-Tools.sln
-    src\NodaTime.Tools.SetVersion\bin\debug\SetVersion 1.1.0-dev
+```bat
+msbuild src\NodaTime-Tools.sln
+src\NodaTime.Tools.SetVersion\bin\debug\SetVersion 1.1.0-dev
+```
 
 The version number string should be of the form `1.1.0-dev`.
 
@@ -107,8 +109,10 @@ Switch to the correct branch (e.g. `1.0.x`).
 Update the version number according to the scheme above by building the tools
 solution and then running the `SetVersion` tool:
 
-    msbuild src\NodaTime-Tools.sln
-    src\NodaTime.Tools.SetVersion\bin\debug\SetVersion 1.2.3-beta4
+```bat
+msbuild src\NodaTime-Tools.sln
+src\NodaTime.Tools.SetVersion\bin\debug\SetVersion 1.2.3-beta4
+```
 
 > This will update the following AssemblyInfo files and NuGet package specs to include the
 version number you are building:
@@ -127,7 +131,9 @@ user guide; we leave the documentation in `unstable/` for branches.)
 
 Commit the above, then tag that commit:
 
-    hg tag 1.0.0-beta1
+```bat
+hg tag 1.0.0-beta1
+```
 
 Switch back to the default branch and update the version history in that branch
 to match the changes applied to the release branch, then (if this release
@@ -148,7 +154,9 @@ Copy the Noda Time private key into the top-level directory.
 
 Use the `buildrelease` batch file to build all the release artifacts:
 
-    buildrelease 1.0.0-beta1
+```bat
+buildrelease 1.0.0-beta1
+```
 
 This will create:
 
@@ -172,9 +180,11 @@ front page to point to the new downloads.
 
 Upload the three NuGet packages to nuget.org:
 
-    nuget push NodaTime.1.0.0-beta1.nupkg
-    nuget push NodaTime.Testing.1.0.0-beta1.nupkg
-    nuget push NodaTime.Serialization.JsonNet.1.0.0-beta1.nupkg
+```bat
+nuget push NodaTime.1.0.0-beta1.nupkg
+nuget push NodaTime.Testing.1.0.0-beta1.nupkg
+nuget push NodaTime.Serialization.JsonNet.1.0.0-beta1.nupkg
+```
 
 ## Updating the generated API documentation
 
