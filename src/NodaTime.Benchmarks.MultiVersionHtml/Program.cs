@@ -68,9 +68,19 @@ namespace NodaTime.Benchmarks.MultiVersionHtml
             }
 
             var html = new XElement("html",
-                new XElement("head", new XElement("title", "Multi-version results")),
+                new XElement("head",
+                    new XElement("title", "Multi-version results"),
+                    new XElement("style", LoadStyles())),
                 new XElement("body", table));
             html.Save(outputFile);
+        }
+
+        private static string LoadStyles()
+        {
+            using (var stream = typeof (Program).Assembly.GetManifestResourceStream(typeof(Program), "styles.css"))
+            {
+                return new StreamReader(stream).ReadToEnd();
+            }
         }
     }
 }

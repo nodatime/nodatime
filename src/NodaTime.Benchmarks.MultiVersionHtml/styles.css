@@ -1,0 +1,25 @@
+﻿body
+{
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 14px;
+}
+
+table
+{
+    border-top: 1px solid #ddd;
+}
+
+tr
+{
+    border-color: inherit;
+}
+
+td
+{
+    border-top: 1px solid #ddd;
+}
+
+td.method
+{
+    background-color: lightgray;
+}

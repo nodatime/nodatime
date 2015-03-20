@@ -20,6 +20,10 @@ CALL :runbenchmarks 1.2.0
 IF ERRORLEVEL 1 EXIT /B 1
 CALL :runbenchmarks 1.3.1
 IF ERRORLEVEL 1 EXIT /B 1
+
+msbuild /verbosity:quiet src\NodaTime.Benchmarks\NodaTime.Benchmarks.MultiVersionHtml.csproj /p:Configuration=Release /t:Rebuild
+src\NodaTime.Benchmarks.MultiVersionHtml\bin\Release\NodaTime.Benchmarks.MultiVersionHtml.exe tmpbenchmarks tmpbenchmarks\results.html
+
 goto :end
 
 :runbenchmarks
