@@ -6,6 +6,9 @@ weight: 100
 
 ## Visual Studio (Windows)
 
+TODO: As of 2.0, the following is no longer correct: _building_ Noda Time
+2.0 requires a C# 6 compiler.
+
 Noda Time is mostly developed on Visual Studio 2010 and Visual Studio 2012.
 All versions of Visual Studio 2010 and 2012 which support C#, including Express editions,
 should be able to build Noda Time. If you're using Visual Studio Express, you *may* have
@@ -22,12 +25,12 @@ version or versions as defined by your needs.
 [dotnetsdk]: http://msdn.microsoft.com/en-us/netframework/aa569263.aspx
 
 To fetch the source code from the main GitHub repository, you'll need a
-[Mercurial][] client. A good alternative for Microsoft Windows users is
-[TortoiseHg][] which installs shell extensions so that Mercurial can be used
+[git][] client. A good alternative for Microsoft Windows users is
+[TortoiseGit][] which installs shell extensions so that Mercurial can be used
 from the Windows Explorer.
 
-[Mercurial]: http://mercurial.selenic.com/
-[TortoiseHg]: http://tortoisehg.bitbucket.org/download/
+[git]: http://git-scm.com/
+[TortoiseGit]: https://tortoisegit.org/
 
 To run the tests, you'll need [NUnit][] version 2.5.10 or higher.
 
@@ -46,7 +49,7 @@ be able to test the desktop build that way, if you really need to.
 To fetch the source code, just clone the GitHub repository:
 
 ```bat
-> hg clone https://code.google.com/p/noda-time/
+> git clone https://github.com/nodatime/nodatime.git
 ```
 
 To build everything under Visual Studio, simply open the `src\NodaTime-All.sln` file.
@@ -65,6 +68,10 @@ Execute the tests using your favourite NUnit test runner. For example:
 (Include the other test DLLs should you wish to, of course.)
 
 ## Mono
+
+TODO: Again, the following is incorrect for 2.0, as we require a C# 6
+compiler to build from source.  It's not clear whether any version of Mono
+meets these requirements.
 
 *Note:* If you build Noda Time under Mono but execute it under the Microsoft
 .NET 4 64-bit CLR, you may see exceptions around type initializers and
@@ -101,8 +108,8 @@ install [Xcode][xcode] or obtain `make` separately (for example, using
 [xcode]: https://developer.apple.com/xcode/
 [osx-gcc-installer]: https://github.com/kennethreitz/osx-gcc-installer#readme
 
-To fetch the source code from the main GitHub repository,
-you'll need a [Mercurial][] client.
+To fetch the source code from the main GitHub repository, you'll need a
+[git][] client.
 
 To run the tests, you'll need [NUnit][] version 2.5.10 or higher. (The version
 that comes with stable builds of Mono at the time of this writing doesn't
@@ -119,7 +126,7 @@ of the larger suites.
 To fetch the source code, just clone the GitHub repository:
 
 ```sh
-$ hg clone https://code.google.com/p/noda-time/
+$ git clone https://github.com/nodatime/nodatime.git
 ```
 
 Building is performed with `make`, using the included Makefile. (If you don't
@@ -127,7 +134,7 @@ have a working `make`, you can also run `xbuild` by hand; see `Makefile` for
 the commands you'll need to run.)
 
 ```sh
-$ cd noda-time
+$ cd nodatime
 $ make
 ```
 
