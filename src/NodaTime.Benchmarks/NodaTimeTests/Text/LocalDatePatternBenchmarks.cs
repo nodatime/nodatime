@@ -3,7 +3,7 @@
 // as found in the LICENSE.txt file.
 
 using System.Text;
-using NodaTime.Benchmarks.Framework;
+using Minibench.Framework;
 using NodaTime.Text;
 
 namespace NodaTime.Benchmarks.NodaTimeTests.Text

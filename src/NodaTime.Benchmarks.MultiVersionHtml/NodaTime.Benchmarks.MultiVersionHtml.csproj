@@ -32,12 +32,17 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Minibench.Framework">
+      <HintPath>..\packages\Minibench.Framework.Skeet.0.1.0\lib\net45\Minibench.Framework.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Collections.Immutable, Version=1.0.34.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.Bcl.Immutable.1.0.34\lib\portable-net45+win8+wp8+wpa81\System.Collections.Immutable.dll</HintPath>
+    </Reference>
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
@@ -46,16 +51,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\NodaTime.Benchmarks.Analyzer\NodaTime.Benchmarks.Analyzer.csproj">
-      <Project>{c20855db-c1b4-4349-8325-dabe36fdddd0}</Project>
-      <Name>NodaTime.Benchmarks.Analyzer</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\NodaTime\NodaTime.csproj">
-      <Project>{42b687a6-0f76-4638-a372-161c922a998b}</Project>
-      <Name>NodaTime</Name>
-    </ProjectReference>
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="styles.css" />

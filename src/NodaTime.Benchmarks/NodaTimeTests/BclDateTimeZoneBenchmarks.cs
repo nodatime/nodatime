@@ -3,7 +3,7 @@
 // as found in the LICENSE.txt file.
 #if !PCL
 using NodaTime.Benchmarks.BclTests;
-using NodaTime.Benchmarks.Framework;
+using Minibench.Framework;
 using NodaTime.TimeZones;
 
 namespace NodaTime.Benchmarks.NodaTimeTests

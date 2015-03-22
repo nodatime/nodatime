@@ -5,7 +5,7 @@
 #if !V1_0 && !V1_1
 
 using Newtonsoft.Json;
-using NodaTime.Benchmarks.Framework;
+using Minibench.Framework;
 using NodaTime.Serialization.JsonNet;
 
 namespace NodaTime.Benchmarks.NodaTimeTests.JsonNet

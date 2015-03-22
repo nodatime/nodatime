@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Web.Hosting;
 using System.Web.Mvc;
+using Minibench.Framework;
 using NodaTime.Web.Models;
 using NodaTime.Web.Storage;
 

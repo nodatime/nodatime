@@ -41,6 +41,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Minibench.Framework">
+      <HintPath>..\packages\Minibench.Framework.Skeet.0.1.0\lib\net45\Minibench.Framework.dll</HintPath>
+    </Reference>
     <Reference Include="MoreLinq">
       <HintPath>..\packages\morelinq.1.0.16006\lib\net35\MoreLinq.dll</HintPath>
     </Reference>
@@ -48,8 +51,9 @@
       <HintPath>..\packages\NodaTime.1.3.1\lib\net35-Client\NodaTime.dll</HintPath>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Collections.Immutable">
-      <HintPath>..\packages\Microsoft.Bcl.Immutable.1.0.30\lib\portable-net45+win8+wp8\System.Collections.Immutable.dll</HintPath>
+    <Reference Include="System.Collections.Immutable, Version=1.0.34.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.Bcl.Immutable.1.0.34\lib\portable-net45+win8+wp8+wpa81\System.Collections.Immutable.dll</HintPath>
     </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -130,8 +134,6 @@
     <Compile Include="Models\MethodHistoryModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Storage\BenchmarkRepository.cs" />
-    <Compile Include="Storage\BenchmarkResult.cs" />
-    <Compile Include="Storage\BenchmarkRun.cs" />
     <Compile Include="Storage\CombiningReloader.cs" />
     <Compile Include="Storage\FileWatchingReloader.cs" />
     <Compile Include="Storage\GitLog.cs" />

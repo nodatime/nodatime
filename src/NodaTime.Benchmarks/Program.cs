@@ -2,7 +2,7 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-using NodaTime.Benchmarks.Framework;
+using Minibench.Framework;
 
 namespace NodaTime.Benchmarks
 {
@@ -11,29 +11,10 @@ namespace NodaTime.Benchmarks
     /// </summary>
     internal class Program
     {
-        private static int Main(string[] args)
+        private static int Main()
         {
-            var options = BenchmarkOptions.FromCommandLine(args);
-            // Help screen / error
-            if (options == null)
-            {
-                return 1;
-            }
-            var handler = CreateResultHandler(options);
-            var runner = new BenchmarkRunner(options, handler);
-            runner.RunTests();
-            return 0;
-        }
-
-        private static BenchmarkResultHandler CreateResultHandler(BenchmarkOptions options)
-        {
-            BenchmarkResultHandler handler = new ConsoleResultHandler(options.DisplayRawData);
-            if (options.XmlFile != null)
-            {
-                var xmlHandler = new XmlResultHandler(options.XmlFile);
-                handler = new CompositeResultHandler(new[] { handler, xmlHandler });
-            }
-            return handler;
+            var run = BenchmarkRunner.RunFromCommandLine(typeof(Program).Assembly);
+            return run == null ? 1 : 0;
         }
     }
 }

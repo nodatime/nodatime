@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using NodaTime.Web.Storage;
 using System.Collections.Immutable;
+using Minibench.Framework;
 
 namespace NodaTime.Web.Models
 {
@@ -38,11 +39,13 @@ namespace NodaTime.Web.Models
         {
             Left = left;
             Right = right;
-            LeftOnly = left.Results.ExceptBy(right.Results, result => result.FullyQualifiedMethod);
-            RightOnly = right.Results.ExceptBy(left.Results, result => result.FullyQualifiedMethod);
+            var leftResults = left.AllResults.ToList();
+            var rightResults = right.AllResults.ToList();
+            LeftOnly = leftResults.ExceptBy(rightResults, result => result.FullMethod);
+            RightOnly = rightResults.ExceptBy(leftResults, result => result.FullMethod);
 
-            var pairs = (from l in left.Results
-                         join r in right.Results on l.FullyQualifiedMethod equals r.FullyQualifiedMethod
+            var pairs = (from l in leftResults
+                         join r in rightResults on l.FullMethod equals r.FullMethod
                          select new BenchmarkPair(l, r)).ToList();
 
             LeftBetter = pairs.Where(pair => pair.Percent < ImprovementThreshold).ToList();

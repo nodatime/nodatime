@@ -5,7 +5,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using NodaTime.Benchmarks.Framework;
+using Minibench.Framework;
 
 namespace NodaTime.Benchmarks.BclTests
 {

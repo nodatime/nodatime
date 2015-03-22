@@ -1,4 +1,4 @@
-﻿@model NodaTime.Web.Models.BenchmarkRunAndMercurialLogs
+﻿@model NodaTime.Web.Models.BenchmarkRunAndSourceLogs
 
 @{ViewBag.Title = "Benchmark " + @Model.Run.Machine + "/" + @Model.Run.Label;}
 
@@ -10,10 +10,10 @@
         <th>Duration (ns)</th>
     </tr>
 
-    @foreach (var item in Model.Run.Results)
+    @foreach (var item in Model.Run.AllResults)
     {
         <tr>
-            <td>@Html.ActionLink(item.FullyQualifiedMethod, "MethodHistory", new { machine = Model.Run.Machine, method = item.FullyQualifiedMethod })</td>
+            <td>@Html.ActionLink(item.FullMethod, "MethodHistory", new { machine = Model.Run.Machine, method = item.FullMethod })</td>
             <td>@item.NanosecondsPerCall</td>
         </tr>
     }

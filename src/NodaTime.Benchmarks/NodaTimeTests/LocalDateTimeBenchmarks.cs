@@ -4,7 +4,7 @@
 
 using System;
 using System.Globalization;
-using NodaTime.Benchmarks.Framework;
+using Minibench.Framework;
 
 namespace NodaTime.Benchmarks.NodaTimeTests
 {

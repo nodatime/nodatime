@@ -1,5 +1,5 @@
 ﻿@using System.Globalization
-@using NodaTime.Web.Storage
+@using Minibench.Framework
 @model IEnumerable<BenchmarkRun>
 
 @{ViewBag.Title = "Benchmarks for " + @ViewBag.Machine;}
@@ -34,7 +34,7 @@
                     @Html.RadioButton("right", item.Label)
                 </td>
                 <td>
-                    @item.StartTime.ToString("yyyy-MM-dd HH:mm'Z'", CultureInfo.InvariantCulture)
+                    @item.Start.ToString("yyyy-MM-dd HH:mm'Z'", CultureInfo.InvariantCulture)
                 </td>
                 <td>
                     @Html.ActionLink(item.Label, "BenchmarkRun", new { machine = item.Machine, label = item.Label })

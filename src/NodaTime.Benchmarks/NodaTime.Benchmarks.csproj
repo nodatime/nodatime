@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>NodaTime.Benchmarks</RootNamespace>
     <AssemblyName>NodaTime.Benchmarks</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -23,6 +23,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -31,11 +32,15 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition="'$(NodaVersion)'!=''">
     <DefineConstants>NO_INTERNALS;V$([System.Text.RegularExpressions.Regex]::Replace($(NodaVersion), "\.", "_"));V$([System.Text.RegularExpressions.Regex]::Replace($(NodaVersion), "^(\d+)\.(\d+)\..*", "$1_$2"));V$([System.Text.RegularExpressions.Regex]::Replace($(NodaVersion), "^(\d+)\..*", "$1"))</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Minibench.Framework">
+      <HintPath>..\packages\Minibench.Framework.Skeet.0.1.0\lib\net45\Minibench.Framework.dll</HintPath>
+    </Reference>
     <Reference Condition="'$(NodaVersion)' != ''" Include="NodaTime">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\NodaTime.$(NodaVersion)\lib\net35-Client\NodaTime.dll</HintPath>
@@ -49,6 +54,10 @@
       <HintPath>..\packages\Newtonsoft.Json.4.5.11\lib\net40\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Collections.Immutable, Version=1.0.34.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.Bcl.Immutable.1.0.34\lib\portable-net45+win8+wp8+wpa81\System.Collections.Immutable.dll</HintPath>
+    </Reference>
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -66,10 +75,6 @@
       <Link>CommandLineText.cs</Link>
     </Compile>
     <Compile Include="BclTests\DateTimeOffsetBenchmarks.cs" />
-    <Compile Include="Framework\CategoryAttribute.cs" />
-    <Compile Include="Framework\CompositeResultHandler.cs" />
-    <Compile Include="Framework\ConsoleResultHandler.cs" />
-    <Compile Include="Framework\XmlResultHandler.cs" />
     <Compile Include="NodaTimeTests\CachedDateTimeZoneBenchmarks.cs" />
     <Compile Include="NodaTimeTests\BclDateTimeZoneBenchmarks.cs" />
     <Compile Include="BclTests\TimeZoneInfoBenchmarks.cs" />
@@ -86,8 +91,6 @@
     <Compile Include="NodaTimeTests\OffsetBenchmarks.cs" />
     <Compile Include="NodaTimeTests\PacificZonedDateTimeBenchmarks.cs" />
     <Compile Include="BclTests\UtcDateTimeBenchmarks.cs" />
-    <Compile Include="Framework\BenchmarkResultHandler.cs" />
-    <Compile Include="Framework\BenchmarkRunner.cs" />
     <Compile Include="NodaTimeTests\PeriodBenchmarks.cs" />
     <Compile Include="NodaTimeTests\Text\LocalDatePatternBenchmarks.cs" />
     <Compile Include="NodaTimeTests\Text\InstantPatternBenchmarks.cs" />
@@ -98,14 +101,8 @@
     <Compile Include="NodaTimeTests\UtcZonedDateTimeBenchmarks.cs" />
     <Compile Include="NodaTimeTests\LocalDateTimeBenchmarks.cs" />
     <Compile Include="BclTests\DateTimeBenchmarks.cs" />
-    <Compile Include="Framework\BenchmarkAttribute.cs" />
-    <Compile Include="Framework\BenchmarkOptions.cs" />
-    <Compile Include="Framework\BenchmarkResult.cs" />
-    <Compile Include="Framework\Extensions.cs" />
-    <Compile Include="Framework\IBenchTimer.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Framework\WallTimer.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Condition="'$(NodaVersion)' == ''" Include="..\NodaTime.Serialization.JsonNet\NodaTime.Serialization.JsonNet.csproj">

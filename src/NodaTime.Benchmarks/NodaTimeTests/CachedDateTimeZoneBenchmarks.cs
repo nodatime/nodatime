@@ -3,7 +3,7 @@
 // as found in the LICENSE.txt file.
 
 using NodaTime.Benchmarks.BclTests;
-using NodaTime.Benchmarks.Framework;
+using Minibench.Framework;
 
 namespace NodaTime.Benchmarks.NodaTimeTests
 {

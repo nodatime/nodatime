@@ -9,6 +9,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Xml.Linq;
+using Minibench.Framework;
 
 namespace NodaTime.Benchmarks.Analyzer
 {
@@ -63,27 +64,27 @@ namespace NodaTime.Benchmarks.Analyzer
             }
         }
 
-        static IEnumerable<BenchmarkFile> LoadBenchmarks(string directory, string machine)
+        static IEnumerable<BenchmarkRun> LoadBenchmarks(string directory, string machine)
         {
             return Directory.GetFiles(directory, "*.xml")
-                            .Select(file => BenchmarkFile.FromXDocument(XDocument.Load(file)))
-                            .Where(file => machine == null || file.Machine == machine)
-                            .OrderBy(file => file.StartTime);
+                            .Select(file => BenchmarkRun.FromXElement(XElement.Load(file)))
+                            .Where(run => machine == null || run.Machine == machine)
+                            .OrderBy(run => run.Start);
         }
 
-        static void AnalyzeResults(IEnumerable<BenchmarkFile> files, Options options)
+        static void AnalyzeResults(IEnumerable<BenchmarkRun> runs, Options options)
         {
-            Console.WriteLine("Results for {0}", files.First().Machine);
-            var methodResults = from file in files
-                                from result in file.Results
-                                group new { file, result } by result.FullyQualifiedMethod;
+            Console.WriteLine("Results for {0}", runs.First().Environment.Machine);
+            var methodResults = from run in runs
+                                from result in run.TypeResults.SelectMany(r => r.Results)
+                                group new { run, result } by result.FullMethod;
 
             foreach (var resultSet in methodResults)
             {
-                var method = resultSet.First().result.Type + "." + resultSet.First().result.Method;
+                var method = resultSet.Key;
                 var results = Smooth(resultSet,
-                                     pairs => new { StartTime = pairs.First().file.StartTime,
-                                                    Label = pairs.First().file.Label,
+                                     pairs => new { StartTime = pairs.First().run.Start,
+                                                    Label = pairs.First().run.Options.Label,
                                                     Average = pairs.Average(x => x.result.NanosecondsPerCall) },
                                      options.SmoothingCount);
                 var resultPairs = results.Zip(results.Skip(1), (previous, current) => new { previous, current });

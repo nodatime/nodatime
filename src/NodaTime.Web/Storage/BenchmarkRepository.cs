@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Minibench.Framework;
 using System.Collections.Immutable;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Threading;
-using System.Web;
 using System.Xml.Linq;
-using System.Xml.XPath;
 
 namespace NodaTime.Web.Storage
 {
@@ -36,7 +31,7 @@ namespace NodaTime.Web.Storage
             var files = File.ReadLines(index)
                 .Select(file => XDocument.Load(Path.Combine(directory, file)))
                 .Select(x => BenchmarkRun.FromXElement(x.Root))
-                .OrderByDescending(b => b.StartTime)
+                .OrderByDescending(b => b.Start)
                 .ToImmutableList();
             return new BenchmarkRepository(files);
         }
@@ -48,7 +43,7 @@ namespace NodaTime.Web.Storage
                 .Elements("benchmark")
                 .Select(BenchmarkRun.FromXElement)
                 .OrderByDescending(b => BuildForLabel(b.Label))
-                .ThenByDescending(b => b.StartTime)
+                .ThenByDescending(b => b.Start)
                 .ToImmutableList();
             return new BenchmarkRepository(runs);
         }

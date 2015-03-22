@@ -3,7 +3,7 @@
 // as found in the LICENSE.txt file.
 
 using System.Globalization;
-using NodaTime.Benchmarks.Framework;
+using Minibench.Framework;
 using NodaTime.Globalization;
 using NodaTime.Text;
 

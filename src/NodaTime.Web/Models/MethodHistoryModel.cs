@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using Minibench.Framework;
 
 namespace NodaTime.Web.Models
 {
@@ -22,9 +23,9 @@ namespace NodaTime.Web.Models
             List<Entry> entries = new List<Entry>();
             BenchmarkResult previousResult = null;
             // Work things out in ascending time order, then reverse later. Too confusing otherwise!
-            foreach (var run in runs.OrderBy(f => f.StartTime))
+            foreach (var run in runs.OrderBy(f => f.Start))
             {
-                var result = run.Results.FirstOrDefault(m => m.FullyQualifiedMethod == method);
+                var result = run.AllResults.FirstOrDefault(m => m.FullMethod == method);
                 if (result == null && previousResult == null)
                 {
                     continue;

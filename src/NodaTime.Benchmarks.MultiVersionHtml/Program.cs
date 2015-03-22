@@ -2,14 +2,11 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Xml.Linq;
-using NodaTime.Benchmarks.Analyzer;
+
+using Minibench.Framework;
 
 namespace NodaTime.Benchmarks.MultiVersionHtml
 {
@@ -40,14 +37,14 @@ namespace NodaTime.Benchmarks.MultiVersionHtml
 
         private static void ProcessDirectory(string directory, string outputFile)
         {
-            var files = Directory.GetFiles(directory, "*.xml").Select(XDocument.Load).Select(BenchmarkFile.FromXDocument).ToList();
+            var runs = Directory.GetFiles(directory, "*.xml").Select(XElement.Load).Select(BenchmarkRun.FromXElement).ToList();
 
-            var labels = files.Select(x => x.Label).OrderBy(l => l != "Current").ThenByDescending(l => l).ToList();
+            var labels = runs.Select(x => x.Options.Label).OrderBy(l => l != "Current").ThenByDescending(l => l).ToList();
 
-            var resultsByType = from file in files
-                                from result in file.Results
-                                orderby result.Namespace
-                                group new {file.Label, Result = result} by result.FullType;
+            var resultsByType = from run in runs
+                                from typeResults in run.TypeResults
+                                orderby typeResults.Namespace, typeResults.Type
+                                select typeResults;
 
             var table = new XElement("table",
                 new XElement("thead", new XElement("th", "Method"), labels.Select(l => new XElement("th", l))),
@@ -55,16 +52,16 @@ namespace NodaTime.Benchmarks.MultiVersionHtml
             var body = table.Element("tbody");
             foreach (var typeGroup in resultsByType)
             {
-                body.Add(new XElement("tr", new XElement("td", new XAttribute("class", "method"), new XAttribute("colspan", labels.Count + 1), typeGroup.Key)));
+                body.Add(new XElement("tr", new XElement("td", new XAttribute("class", "method"), new XAttribute("colspan", labels.Count + 1), typeGroup.FullType)));
                 body.Add(
-                    from labelAndResult in typeGroup
-                    group labelAndResult by labelAndResult.Result.Method
+                    from result in typeGroup.Results
+                    group result by result.Method
                     into methodResult
                     where methodResult.Count() != 1 // Ignore methods where we only have a single result, usually for 2.0-only or benchmarks of internal members
                     select new XElement("tr",
                         new XElement("td", methodResult.Key),
                         from label in labels
-                        select new XElement("td", new XAttribute("align", "right"), methodResult.SingleOrDefault(r => r.Label == label)?.Result.NanosecondsPerCall.ToString() ?? "-")));
+                        select new XElement("td", new XAttribute("align", "right"), methodResult.SingleOrDefault(r => r.Run.Label == label)?.NanosecondsPerCall.ToString() ?? "-")));
             }
 
             var html = new XElement("html",

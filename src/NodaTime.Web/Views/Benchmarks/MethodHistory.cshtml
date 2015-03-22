@@ -24,7 +24,7 @@ else
     @foreach (var item in Model.Entries)
     {
         <tr>
-            <td>@item.Run.StartTime.ToString("yyyy-MM-dd HH:mm'Z'", CultureInfo.InvariantCulture)</td>
+            <td>@item.Run.Start.ToString("yyyy-MM-dd HH:mm'Z'", CultureInfo.InvariantCulture)</td>
             <td>@Html.ActionLink(item.Run.Label, "BenchmarkRun", new { machine = item.Run.Machine, label = item.Run.Label })
             <td>@item.Description</td>
         </tr>

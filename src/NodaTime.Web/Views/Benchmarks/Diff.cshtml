@@ -1,16 +1,17 @@
 ﻿@model NodaTime.Web.Models.BenchmarkDiff
 @using System.Globalization
+
 @{ ViewBag.Title = "Diff for " + Model.Machine + " between " + Model.Left.Label + " and " + Model.Right.Label; }
 
 <h2>@ViewBag.Title</h2>
 
 <h3>Left</h3>
 Label: @Html.ActionLink(Model.Left.Label, "BenchmarkRun", new { machine = Model.Machine, label = Model.Left.Label })<br />
-Date: @Model.Left.StartTime.ToString("yyyy-MM-dd HH:mm'Z'", CultureInfo.InvariantCulture)
+Date: @Model.Left.Start.ToString("yyyy-MM-dd HH:mm'Z'", CultureInfo.InvariantCulture)
 
 <h3>Right</h3>
 Label: @Html.ActionLink(Model.Right.Label, "BenchmarkRun", new { machine = Model.Machine, label = Model.Right.Label })<br />
-Date: @Model.Right.StartTime.ToString("yyyy-MM-dd HH:mm'Z'", CultureInfo.InvariantCulture)
+Date: @Model.Right.Start.ToString("yyyy-MM-dd HH:mm'Z'", CultureInfo.InvariantCulture)
 
 @if (Model.LeftOnly.Any())
 {
@@ -24,7 +25,7 @@ Date: @Model.Right.StartTime.ToString("yyyy-MM-dd HH:mm'Z'", CultureInfo.Invaria
         @foreach (var item in Model.LeftOnly)
         {
             <tr>
-                <td>@Html.ActionLink(item.FullyQualifiedMethod, "MethodHistory", new { machine = Model.Machine, method = item.FullyQualifiedMethod })</td>
+                <td>@Html.ActionLink(item.FullMethod, "MethodHistory", new { machine = Model.Machine, method = item.FullMethod })</td>
                 <td>@item.NanosecondsPerCall</td>
             </tr>
         }
@@ -44,7 +45,7 @@ Date: @Model.Right.StartTime.ToString("yyyy-MM-dd HH:mm'Z'", CultureInfo.Invaria
         @foreach (var item in Model.RightOnly)
         {
             <tr>
-                <td>@Html.ActionLink(item.FullyQualifiedMethod, "MethodHistory", new { machine = Model.Machine, method = item.FullyQualifiedMethod })</td>
+                <td>@Html.ActionLink(item.FullMethod, "MethodHistory", new { machine = Model.Machine, method = item.FullMethod })</td>
                 <td>@item.NanosecondsPerCall</td>
             </tr>
         }
@@ -64,7 +65,7 @@ Date: @Model.Right.StartTime.ToString("yyyy-MM-dd HH:mm'Z'", CultureInfo.Invaria
         @foreach (var item in Model.LeftBetter)
         {
             <tr>
-                <td>@Html.ActionLink(item.Left.FullyQualifiedMethod, "MethodHistory", new { machine = Model.Machine, method = item.Left.FullyQualifiedMethod })</td>
+                <td>@Html.ActionLink(item.Left.FullMethod, "MethodHistory", new { machine = Model.Machine, method = item.Left.FullMethod })</td>
                 <td>@item.Left.NanosecondsPerCall</td>
                 <td>@item.Right.NanosecondsPerCall</td>
             </tr>
@@ -85,7 +86,7 @@ Date: @Model.Right.StartTime.ToString("yyyy-MM-dd HH:mm'Z'", CultureInfo.Invaria
         @foreach (var item in Model.RightBetter)
         {
             <tr>
-                <td>@Html.ActionLink(item.Left.FullyQualifiedMethod, "MethodHistory", new { machine = Model.Machine, method = item.Left.FullyQualifiedMethod })</td>
+                <td>@Html.ActionLink(item.Left.FullMethod, "MethodHistory", new { machine = Model.Machine, method = item.Left.FullMethod })</td>
                 <td>@item.Left.NanosecondsPerCall</td>
                 <td>@item.Right.NanosecondsPerCall</td>
             </tr>
