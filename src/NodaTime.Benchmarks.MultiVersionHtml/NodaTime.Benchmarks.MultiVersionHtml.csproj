@@ -32,8 +32,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Minibench.Framework">
-      <HintPath>..\packages\Minibench.Framework.Skeet.0.1.0\lib\net45\Minibench.Framework.dll</HintPath>
+    <Reference Include="Minibench.Framework, Version=1.0.0.0, Culture=neutral, PublicKeyToken=04b316bbadbaf582, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Minibench.Framework.Skeet.0.2.1\lib\net45\Minibench.Framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Collections.Immutable, Version=1.0.34.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
