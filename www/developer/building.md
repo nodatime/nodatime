@@ -69,18 +69,38 @@ Execute the tests using your favourite NUnit test runner. For example:
 
 ## Mono
 
-TODO: Again, the following is incorrect for 2.0, as we require a C# 6
-compiler to build from source.  It's not clear whether any version of Mono
-meets these requirements.
+_Building_ Noda Time 2.0 requires a C# 6 compiler.
 
-*Note:* If you build Noda Time under Mono but execute it under the Microsoft
-.NET 4 64-bit CLR, you may see exceptions around type initializers and
-`RuntimeHelpers.InitializeArray`. We believe this to be due to a
-[bug in .NET][ms-635365] which the Mono compiler happens to trigger. We
-would recommend that you use a binary built by the Microsoft C# compiler if you
-wish to run using this CLR.
+As of March 2015, no released version of Mono supports C# 6, though
+built-from-source versions of what will become Mono 4.0.0 do.
 
-[ms-635365]: http://connect.microsoft.com/VisualStudio/feedback/details/635365
+While not intended to be a complete guide to installing Mono from source, on
+Linux, you probably want to do something approximately like the following:
+
+```sh
+$ sudo apt-get install autoconf automake libtool-bin  # etc
+
+$ PREFIX=$HOME/mono/4.0.0  # or wherever
+$ git clone git@github.com:mono/mono.git mono-git
+$ cd mono-git/
+$ git checkout mono-4.0.0-branch
+$ git submodule init
+$ git submodule update
+$ ./autogen.sh --prefix=$PREFIX
+$ make get-monolite-latest
+$ make EXTERNAL_MCS=${PWD}/mcs/class/lib/monolite/basic.exe
+$ make install
+$ export PATH=$PREFIX/bin:$PATH
+$ mono --version | head -n1
+Mono JIT compiler version 4.0.0 (mono-4.0.0-branch/b7bcd23 Tue 24 Mar 16:03:12 GMT 2015)
+```
+
+(More generally, see the [Mono documentation][mono-git] for more details
+about building from source on Linux.)
+[mono-git]: http://www.mono-project.com/docs/compiling-mono/linux/#building-mono-from-a-git-source-code-checkout
+  "Compiling Mono on Linux: Building Mono From a Git Source Code Checkout"
+
+### Noda Time 1.x
 
 We have tested Mono support using Mono 2.10.5 and 2.10.8.
 
@@ -108,22 +128,10 @@ install [Xcode][xcode] or obtain `make` separately (for example, using
 [xcode]: https://developer.apple.com/xcode/
 [osx-gcc-installer]: https://github.com/kennethreitz/osx-gcc-installer#readme
 
-To fetch the source code from the main GitHub repository, you'll need a
-[git][] client.
-
-To run the tests, you'll need [NUnit][] version 2.5.10 or higher. (The version
-that comes with stable builds of Mono at the time of this writing doesn't
-support everything used by the unit tests of Noda Time.) Version 2.6.1 is
-recommended on non-Windows platforms due to an [NUnit bug][nunit-993247] that
-causes tests to fail with a "Too many open files" exception when running some
-of the larger suites.
-
-[nunit-993247]: https://bugs.launchpad.net/nunitv2/+bug/993247
-  "NUnit Bug #993247: Tests fail with IOException: Too many open files"
-
 ### Fetching and building
 
-To fetch the source code, just clone the GitHub repository:
+To fetch the source code from the main GitHub repository, you'll need a
+[git][] client.
 
 ```sh
 $ git clone https://github.com/nodatime/nodatime.git
@@ -143,15 +151,24 @@ written to `src/NodaTime/bin/Debug/NodaTime.dll`; this is all you need to use
 Noda Time itself.
 
 Other build targets are also available; again, see `Makefile` for documentation.
-In particular, to build and run the tests, run:
+
+To run the tests, you'll need [NUnit][] version 2.5.10 or higher. (The
+version that comes with Mono doesn't support everything used by the unit
+tests of Noda Time.) Version 2.6.1 or higher is recommended on non-Windows
+platforms due to an [NUnit bug][nunit-993247] that causes tests to fail with
+a "Too many open files" exception when running some of the larger suites.
+
+[nunit-993247]: https://bugs.launchpad.net/nunitv2/+bug/993247
+  "NUnit Bug #993247: Tests fail with IOException: Too many open files"
+
+To build and run the tests, run:
 
 ```sh
 $ make check
 ```
 
-to use the default (probably Mono-supplied) version of NUnit to run the tests,
-or something like the following to override the location of the NUnit test
-runner:
+to use the default (from `PATH`) version of NUnit, or something like the
+following to override the location of the NUnit test runner:
 
 ```sh
 $ make check NUNIT='mono ../NUnit-2.6.1/bin/nunit-console.exe'

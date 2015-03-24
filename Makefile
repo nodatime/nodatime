@@ -42,7 +42,10 @@ JEKYLL := jekyll
 # actually builds them against the desktop .NET framework, so the fact that
 # we're overriding the profile here for those configurations is unimportant
 # (and the main reason there are no PCL targets defined here).
-XBUILDFLAGS := /p:TargetFrameworkProfile=''
+#
+# Also override the target framework version: Mono 4.0 does not support
+# targeting .NET framework 3.5, which the desktop build currently declares.
+XBUILDFLAGS := /p:TargetFrameworkProfile='' /p:TargetFrameworkVersion='v4.0'
 XBUILDFLAGS_DEBUG := $(XBUILDFLAGS) /p:Configuration=Debug
 XBUILDFLAGS_RELEASE := $(XBUILDFLAGS) /p:Configuration=Release
 
