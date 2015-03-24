@@ -5,6 +5,7 @@
 # If this is not true, override the two assignments, either by editing the
 # below, or by running 'make XBUILD=...'
 
+NUGET := NuGet.exe
 MONO := mono
 XBUILD := xbuild
 NUNIT := nunit-console
@@ -26,6 +27,8 @@ JEKYLL := jekyll
 #     runs the Clean target for all projects, removing the immediate output
 #     from each.  Note that this does not remove _all_ generated files.
 #
+#   fetch-packages
+#     fetches third-party packages using NuGet.
 #   docs
 #     builds the contents www/ directory using Jekyll.
 #     To install Jekyll on a Debian-like system, do something like the
@@ -96,6 +99,9 @@ check: debug
 checkfakepcl: fakepcl
 	$(NUNIT) $(FAKEPCL_TEST_DLL) $(FAKEPCL_SERIALIZATION_TEST_DLL) \
 		$(FAKEPCL_TZDBCOMPILER_TEST_DLL)
+
+fetch-packages:
+	$(MONO) $(NUGET) restore $(SOLUTION)
 
 docs:
 	cd www; $(JEKYLL) build

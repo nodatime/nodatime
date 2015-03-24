@@ -93,6 +93,17 @@ $ make install
 $ export PATH=$PREFIX/bin:$PATH
 $ mono --version | head -n1
 Mono JIT compiler version 4.0.0 (mono-4.0.0-branch/b7bcd23 Tue 24 Mar 16:03:12 GMT 2015)
+$ mozroots --import --sync  # otherwise NuGet will fail with SSL errors later
+Mozilla Roots Importer - version 4.0.0.0
+Download and import trusted root certificates from Mozilla's MXR.
+Copyright 2002, 2003 Motus Technologies. Copyright 2004-2008 Novell. BSD
+licensed.
+
+Downloading from
+'http://mxr.mozilla.org/seamonkey/source/security/nss/lib/ckfw/builtins/certdata.txt?raw=1'...
+Importing certificates into user store...
+140 new root certificates were added to your trust store.
+Import process completed.
 ```
 
 (More generally, see the [Mono documentation][mono-git] for more details
@@ -127,6 +138,25 @@ install [Xcode][xcode] or obtain `make` separately (for example, using
 [MonoDownload]: http://www.mono-project.com/Download
 [xcode]: https://developer.apple.com/xcode/
 [osx-gcc-installer]: https://github.com/kennethreitz/osx-gcc-installer#readme
+
+### Fetching dependencies
+
+Building Noda Time requires a small number of third-party packages.  These
+can be most easily obtained via [NuGet].
+
+[NuGet]: https://www.nuget.org/
+
+To fetch NuGet.exe locally, download and run (using `mono`) the
+(auto-updating) [NuGet.exe command-line
+tool](http://nuget.codeplex.com/releases/view/58939).
+
+You can then fetch the NuGet packages locally (into `src/packages/`):
+
+```sh
+$ make fetch-packages NUGET=/path/to/NuGet.exe
+```
+
+(`NUGET=` can be omitted if NuGet.exe is in the current directory.)
 
 ### Fetching and building
 
