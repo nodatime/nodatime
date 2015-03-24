@@ -6,6 +6,9 @@ weight: 100
 
 ## Visual Studio (Windows)
 
+TODO: As of 2.0, the following is no longer correct: _building_ Noda Time
+2.0 requires a C# 6 compiler.
+
 Noda Time is mostly developed on Visual Studio 2010 and Visual Studio 2012.
 All versions of Visual Studio 2010 and 2012 which support C#, including Express editions,
 should be able to build Noda Time. If you're using Visual Studio Express, you *may* have
@@ -22,12 +25,12 @@ version or versions as defined by your needs.
 [dotnetsdk]: http://msdn.microsoft.com/en-us/netframework/aa569263.aspx
 
 To fetch the source code from the main GitHub repository, you'll need a
-[Mercurial][] client. A good alternative for Microsoft Windows users is
-[TortoiseHg][] which installs shell extensions so that Mercurial can be used
+[git][] client. A good alternative for Microsoft Windows users is
+[TortoiseGit][] which installs shell extensions so that git can be used
 from the Windows Explorer.
 
-[Mercurial]: http://mercurial.selenic.com/
-[TortoiseHg]: http://tortoisehg.bitbucket.org/download/
+[git]: http://git-scm.com/
+[TortoiseGit]: https://tortoisegit.org/
 
 To run the tests, you'll need [NUnit][] version 2.5.10 or higher.
 
@@ -46,7 +49,7 @@ be able to test the desktop build that way, if you really need to.
 To fetch the source code, just clone the GitHub repository:
 
 ```bat
-> hg clone https://code.google.com/p/noda-time/
+> git clone https://github.com/nodatime/nodatime.git
 ```
 
 To build everything under Visual Studio, simply open the `src\NodaTime-All.sln` file.
@@ -66,14 +69,49 @@ Execute the tests using your favourite NUnit test runner. For example:
 
 ## Mono
 
-*Note:* If you build Noda Time under Mono but execute it under the Microsoft
-.NET 4 64-bit CLR, you may see exceptions around type initializers and
-`RuntimeHelpers.InitializeArray`. We believe this to be due to a
-[bug in .NET][ms-635365] which the Mono compiler happens to trigger. We
-would recommend that you use a binary built by the Microsoft C# compiler if you
-wish to run using this CLR.
+_Building_ Noda Time 2.0 requires a C# 6 compiler.
 
-[ms-635365]: http://connect.microsoft.com/VisualStudio/feedback/details/635365
+As of March 2015, no released version of Mono supports C# 6, though
+built-from-source versions of what will become Mono 4.0.0 do.
+
+While not intended to be a complete guide to installing Mono from source, on
+Linux, you probably want to do something approximately like the following:
+
+```sh
+$ sudo apt-get install autoconf automake libtool-bin  # etc
+
+$ PREFIX=$HOME/mono/4.0.0  # or wherever
+$ git clone git@github.com:mono/mono.git mono-git
+$ cd mono-git/
+$ git checkout mono-4.0.0-branch
+$ git submodule init
+$ git submodule update
+$ ./autogen.sh --prefix=$PREFIX
+$ make get-monolite-latest
+$ make EXTERNAL_MCS=${PWD}/mcs/class/lib/monolite/basic.exe
+$ make install
+$ export PATH=$PREFIX/bin:$PATH
+$ mono --version | head -n1
+Mono JIT compiler version 4.0.0 (mono-4.0.0-branch/b7bcd23 Tue 24 Mar 16:03:12 GMT 2015)
+$ mozroots --import --sync  # otherwise NuGet will fail with SSL errors later
+Mozilla Roots Importer - version 4.0.0.0
+Download and import trusted root certificates from Mozilla's MXR.
+Copyright 2002, 2003 Motus Technologies. Copyright 2004-2008 Novell. BSD
+licensed.
+
+Downloading from
+'http://mxr.mozilla.org/seamonkey/source/security/nss/lib/ckfw/builtins/certdata.txt?raw=1'...
+Importing certificates into user store...
+140 new root certificates were added to your trust store.
+Import process completed.
+```
+
+(More generally, see the [Mono documentation][mono-git] for more details
+about building from source on Linux.)
+[mono-git]: http://www.mono-project.com/docs/compiling-mono/linux/#building-mono-from-a-git-source-code-checkout
+  "Compiling Mono on Linux: Building Mono From a Git Source Code Checkout"
+
+### Noda Time 1.x
 
 We have tested Mono support using Mono 2.10.5 and 2.10.8.
 
@@ -101,33 +139,42 @@ install [Xcode][xcode] or obtain `make` separately (for example, using
 [xcode]: https://developer.apple.com/xcode/
 [osx-gcc-installer]: https://github.com/kennethreitz/osx-gcc-installer#readme
 
-To fetch the source code from the main GitHub repository,
-you'll need a [Mercurial][] client.
+### Fetching the source
 
-To run the tests, you'll need [NUnit][] version 2.5.10 or higher. (The version
-that comes with stable builds of Mono at the time of this writing doesn't
-support everything used by the unit tests of Noda Time.) Version 2.6.1 is
-recommended on non-Windows platforms due to an [NUnit bug][nunit-993247] that
-causes tests to fail with a "Too many open files" exception when running some
-of the larger suites.
-
-[nunit-993247]: https://bugs.launchpad.net/nunitv2/+bug/993247
-  "NUnit Bug #993247: Tests fail with IOException: Too many open files"
-
-### Fetching and building
-
-To fetch the source code, just clone the GitHub repository:
+To fetch the source code from the main GitHub repository, you'll need a
+[git][] client.
 
 ```sh
-$ hg clone https://code.google.com/p/noda-time/
+$ git clone https://github.com/nodatime/nodatime.git
+$ cd nodatime
 ```
 
 Building is performed with `make`, using the included Makefile. (If you don't
 have a working `make`, you can also run `xbuild` by hand; see `Makefile` for
 the commands you'll need to run.)
 
+### Fetching dependencies
+
+Building Noda Time requires a small number of third-party packages.  These
+can be most easily obtained via [NuGet].
+
+[NuGet]: https://www.nuget.org/
+
+To fetch NuGet.exe locally, download and run (using `mono`) the
+(auto-updating) [NuGet.exe command-line
+tool](http://nuget.codeplex.com/releases/view/58939).
+
+You can then fetch the NuGet packages locally (into `src/packages/`):
+
 ```sh
-$ cd noda-time
+$ make fetch-packages NUGET=/path/to/NuGet.exe
+```
+
+(`NUGET=` can be omitted if NuGet.exe is in the current directory.)
+
+### Building
+
+```sh
 $ make
 ```
 
@@ -136,21 +183,32 @@ written to `src/NodaTime/bin/Debug/NodaTime.dll`; this is all you need to use
 Noda Time itself.
 
 Other build targets are also available; again, see `Makefile` for documentation.
-In particular, to build and run the tests, run:
+
+### Testing
+
+To run the tests, you'll need [NUnit][] version 2.5.10 or higher. (The
+version that comes with Mono doesn't support everything used by the unit
+tests of Noda Time.) Version 2.6.1 or higher is recommended on non-Windows
+platforms due to an [NUnit bug][nunit-993247] that causes tests to fail with
+a "Too many open files" exception when running some of the larger suites.
+
+[nunit-993247]: https://bugs.launchpad.net/nunitv2/+bug/993247
+  "NUnit Bug #993247: Tests fail with IOException: Too many open files"
+
+To build and run the tests, run:
 
 ```sh
 $ make check
 ```
 
-to use the default (probably Mono-supplied) version of NUnit to run the tests,
-or something like the following to override the location of the NUnit test
-runner:
+to use the default (from `PATH`) version of NUnit, or something like the
+following to override the location of the NUnit test runner:
 
 ```sh
 $ make check NUNIT='mono ../NUnit-2.6.1/bin/nunit-console.exe'
 ```
 
-### Source layout
+## Source layout
 
 All the source code is under the `src` directory. There are multiple projects:
 

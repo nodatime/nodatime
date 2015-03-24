@@ -5,6 +5,7 @@
 # If this is not true, override the two assignments, either by editing the
 # below, or by running 'make XBUILD=...'
 
+NUGET := NuGet.exe
 MONO := mono
 XBUILD := xbuild
 NUNIT := nunit-console
@@ -26,6 +27,8 @@ JEKYLL := jekyll
 #     runs the Clean target for all projects, removing the immediate output
 #     from each.  Note that this does not remove _all_ generated files.
 #
+#   fetch-packages
+#     fetches third-party packages using NuGet.
 #   docs
 #     builds the contents www/ directory using Jekyll.
 #     To install Jekyll on a Debian-like system, do something like the
@@ -42,7 +45,10 @@ JEKYLL := jekyll
 # actually builds them against the desktop .NET framework, so the fact that
 # we're overriding the profile here for those configurations is unimportant
 # (and the main reason there are no PCL targets defined here).
-XBUILDFLAGS := /p:TargetFrameworkProfile=''
+#
+# Also override the target framework version: Mono 4.0 does not support
+# targeting .NET framework 3.5, which the desktop build currently declares.
+XBUILDFLAGS := /p:TargetFrameworkProfile='' /p:TargetFrameworkVersion='v4.0'
 XBUILDFLAGS_DEBUG := $(XBUILDFLAGS) /p:Configuration=Debug
 XBUILDFLAGS_RELEASE := $(XBUILDFLAGS) /p:Configuration=Release
 
@@ -93,6 +99,9 @@ check: debug
 checkfakepcl: fakepcl
 	$(NUNIT) $(FAKEPCL_TEST_DLL) $(FAKEPCL_SERIALIZATION_TEST_DLL) \
 		$(FAKEPCL_TZDBCOMPILER_TEST_DLL)
+
+fetch-packages:
+	$(MONO) $(NUGET) restore $(SOLUTION)
 
 docs:
 	cd www; $(JEKYLL) build
