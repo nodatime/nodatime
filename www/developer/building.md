@@ -26,7 +26,7 @@ version or versions as defined by your needs.
 
 To fetch the source code from the main GitHub repository, you'll need a
 [git][] client. A good alternative for Microsoft Windows users is
-[TortoiseGit][] which installs shell extensions so that Mercurial can be used
+[TortoiseGit][] which installs shell extensions so that git can be used
 from the Windows Explorer.
 
 [git]: http://git-scm.com/
