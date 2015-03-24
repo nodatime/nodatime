@@ -139,6 +139,20 @@ install [Xcode][xcode] or obtain `make` separately (for example, using
 [xcode]: https://developer.apple.com/xcode/
 [osx-gcc-installer]: https://github.com/kennethreitz/osx-gcc-installer#readme
 
+### Fetching the source
+
+To fetch the source code from the main GitHub repository, you'll need a
+[git][] client.
+
+```sh
+$ git clone https://github.com/nodatime/nodatime.git
+$ cd nodatime
+```
+
+Building is performed with `make`, using the included Makefile. (If you don't
+have a working `make`, you can also run `xbuild` by hand; see `Makefile` for
+the commands you'll need to run.)
+
 ### Fetching dependencies
 
 Building Noda Time requires a small number of third-party packages.  These
@@ -158,21 +172,9 @@ $ make fetch-packages NUGET=/path/to/NuGet.exe
 
 (`NUGET=` can be omitted if NuGet.exe is in the current directory.)
 
-### Fetching and building
-
-To fetch the source code from the main GitHub repository, you'll need a
-[git][] client.
+### Building
 
 ```sh
-$ git clone https://github.com/nodatime/nodatime.git
-```
-
-Building is performed with `make`, using the included Makefile. (If you don't
-have a working `make`, you can also run `xbuild` by hand; see `Makefile` for
-the commands you'll need to run.)
-
-```sh
-$ cd nodatime
 $ make
 ```
 
@@ -181,6 +183,8 @@ written to `src/NodaTime/bin/Debug/NodaTime.dll`; this is all you need to use
 Noda Time itself.
 
 Other build targets are also available; again, see `Makefile` for documentation.
+
+### Testing
 
 To run the tests, you'll need [NUnit][] version 2.5.10 or higher. (The
 version that comes with Mono doesn't support everything used by the unit
@@ -204,7 +208,7 @@ following to override the location of the NUnit test runner:
 $ make check NUNIT='mono ../NUnit-2.6.1/bin/nunit-console.exe'
 ```
 
-### Source layout
+## Source layout
 
 All the source code is under the `src` directory. There are multiple projects:
 
