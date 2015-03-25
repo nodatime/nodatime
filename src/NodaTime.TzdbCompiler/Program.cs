@@ -3,13 +3,12 @@
 // as found in the LICENSE.txt file.
 
 using CommandLine;
+using NodaTime.Extensions;
 using NodaTime.TimeZones;
 using NodaTime.TimeZones.Cldr;
 using NodaTime.TzdbCompiler.Tzdb;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Resources;
 
 namespace NodaTime.TzdbCompiler
 {
@@ -47,6 +46,10 @@ namespace NodaTime.TzdbCompiler
             Console.WriteLine("Reading generated data and validating...");
             var source = Read(options);
             source.Validate();
+            if (options.TextDumpFile != null)
+            {
+                CreateTextDump(source, options.TextDumpFile);
+            }
             return 0;
         }
 
@@ -75,6 +78,15 @@ namespace NodaTime.TzdbCompiler
                 return TzdbDateTimeZoneSource.FromStream(stream);
             }
 #pragma warning restore 0618
+        }
+
+        private static void CreateTextDump(TzdbDateTimeZoneSource source, string file)
+        {
+            var provider = new DateTimeZoneCache(source);
+            using (var writer = File.CreateText(file))
+            {
+                provider.Dump(writer);
+            }
         }
     }
 }

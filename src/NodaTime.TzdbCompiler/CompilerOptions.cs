@@ -22,6 +22,9 @@ namespace NodaTime.TzdbCompiler
         [Option("w", "windows", Required = true, HelpText = "Windows to TZDB time zone mapping file (e.g. windowsZones.xml)")]
         public string WindowsMappingFile { get; set; }
 
+        [Option("t", "text-dump", Required = false, HelpText = "File to dump zone intervals for all zones to, for test purposes.")]
+        public string TextDumpFile { get; set; }
+
         public CompilerOptions()
         {
             OutputFileName = "";

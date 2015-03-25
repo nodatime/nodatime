@@ -18,7 +18,7 @@ REM Rebuild just in case...
 msbuild "src\NodaTime.TzdbCompiler\NodaTime.TzdbCompiler.csproj" /property:Configuration=Release
 IF ERRORLEVEL 1 EXIT /B 1
 
-src\NodaTime.TzdbCompiler\bin\Release\NodaTime.TzdbCompiler.exe -o src\NodaTime\TimeZones\Tzdb.nzd -s data\tzdb\%1 -w %2
+src\NodaTime.TzdbCompiler\bin\Release\NodaTime.TzdbCompiler.exe -o src\NodaTime\TimeZones\Tzdb.nzd -s data\tzdb\%1 -w %2 -t src\NodaTime.Test\TestData\tzdb-dump.txt
 
 copy src\NodaTime\TimeZones\Tzdb.nzd www\tzdb\tzdb%1.nzd
 echo http://nodatime.org/tzdb/tzdb%1.nzd > www\tzdb\latest.txt
