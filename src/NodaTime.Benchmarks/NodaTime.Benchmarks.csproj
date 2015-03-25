@@ -40,7 +40,7 @@
   <ItemGroup>
     <Reference Include="Minibench.Framework, Version=1.0.0.0, Culture=neutral, PublicKeyToken=04b316bbadbaf582, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Minibench.Framework.Skeet.0.2.1\lib\net45\Minibench.Framework.dll</HintPath>
+      <HintPath>..\packages\Minibench.Framework.Skeet.0.2.2\lib\net45\Minibench.Framework.dll</HintPath>
     </Reference>
     <Reference Condition="'$(NodaVersion)' != ''" Include="NodaTime">
       <SpecificVersion>False</SpecificVersion>
