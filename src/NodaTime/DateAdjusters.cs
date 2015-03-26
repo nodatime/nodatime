@@ -7,7 +7,7 @@ using System;
 namespace NodaTime
 {
     /// <summary>
-    /// Factory class for time adjusters: functions from <see cref="LocalDate"/> to <c>LocalTime</c>,
+    /// Factory class for date adjusters: functions from <see cref="LocalDate"/> to <c>LocalDate</c>,
     /// which can be applied to <see cref="LocalDate"/>, <see cref="LocalDateTime"/>, and <see cref="OffsetDateTime"/>.
     /// </summary>
     public static class DateAdjusters
