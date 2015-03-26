@@ -29,14 +29,14 @@ NodaTime Release.snk
 **/obj/
 
 # NUnit output
-/TestResult\.xml$
+/TestResult.xml
 
 # Output from build steps
 /build/tmp/**
 
 # Sandcastle per-user settings
-/build/NodaTime.shfbproj_.+$
-/build/NodaTime-Pcl.shfbproj_.+$
+/build/NodaTime.shfbproj_*
+/build/NodaTime-Pcl.shfbproj_*
 
 # Generated web site
 /www/_site/**
