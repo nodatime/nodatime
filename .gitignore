@@ -36,14 +36,14 @@ NodaTime Release.snk
 **/obj/
 
 # NUnit output
-/TestResult\.xml$
+/TestResult.xml
 
 # The docs directory - we've already got docs/api/Index.html, but we don't want anything new.
 /docs/**
 
 # Sandcastle per-user settings
-/NodaTime.shfbproj_.+$
-/NodaTime-Pcl.shfbproj_.+$
+/NodaTime.shfbproj_*
+/NodaTime-Pcl.shfbproj_*
 
 # NuGet temporary build area (see buildnuget.bat)
 nuget/**
