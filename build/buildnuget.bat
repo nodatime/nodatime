@@ -42,13 +42,13 @@ copy /y %PUBLICPCLAPIDIR%\PublicPclApi\NodaTime.Serialization.JsonNet.xml "%SRCD
 IF EXIST tmp\nuget rmdir /s /q tmp\nuget
 mkdir tmp\nuget
 pushd tmp\nuget
-nuget pack %SRCDIR%\NodaTime\NodaTime.nuspec -Symbols
+nuget pack ..\..\%SRCDIR%\NodaTime\NodaTime.nuspec -Symbols
 IF ERRORLEVEL 1 EXIT /B 1
 
-nuget pack %SRCDIR%\NodaTime.Testing\NodaTime.Testing.nuspec -Symbols
+nuget pack ..\..\%SRCDIR%\NodaTime.Testing\NodaTime.Testing.nuspec -Symbols
 IF ERRORLEVEL 1 EXIT /B 1
 
-nuget pack %SRCDIR%\NodaTime.Serialization.JsonNet\NodaTime.Serialization.JsonNet.nuspec -Symbols
+nuget pack ..\..\%SRCDIR%\NodaTime.Serialization.JsonNet\NodaTime.Serialization.JsonNet.nuspec -Symbols
 IF ERRORLEVEL 1 EXIT /B 1
 
 popd

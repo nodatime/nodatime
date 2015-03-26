@@ -23,6 +23,9 @@ REM Get the PCL version ready to build...
 BuildProjectVariants\bin\Release\BuildProjectVariants ..\src
 IF ERRORLEVEL 1 EXIT /B 1
 
+REM Do the actual builds
+msbuild %SRCDIR%\NodaTime-Core.sln /property:Configuration=Release
+IF ERRORLEVEL 1 EXIT /B 1
 msbuild %SRCDIR%\NodaTime-Core-pcl.sln /property:Configuration=Release
 IF ERRORLEVEL 1 EXIT /B 1
 
@@ -57,7 +60,7 @@ IF ERRORLEVEL 1 EXIT /B 1
 REM Prepare the Sandcastle style, by copying then customizing the VS2010 style
 REM Note that NodaTime.Presentation refers to %STYLE_DIR%; it must be an absolute path.
 
-set STYLE_DIR=%CD%\SandcastleStyle
+set STYLE_DIR=%CD%\tmp\SandcastleStyle
 REM TODO: Make this more portable...
 set SANDCASTLE="%ProgramFiles(x86)%\Sandcastle"
 IF EXIST %STYLE_DIR% rmdir /s /q %STYLE_DIR%

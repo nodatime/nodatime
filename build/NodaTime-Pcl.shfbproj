@@ -22,12 +22,12 @@
 
 Joda Time is the industry standard date and time handling library for Java. Noda Time is an idiomatic port to the .NET platform.</ProjectSummary>
     <DocumentationSources>
-      <DocumentationSource sourceFile="..\src\NodaTime\bin\Signed Release Portable\NodaTime.dll" />
-      <DocumentationSource sourceFile="..\src\NodaTime.Serialization.JsonNet\bin\Signed Release Portable\NodaTime.Serialization.JsonNet.dll" />
-      <DocumentationSource sourceFile="..\src\NodaTime.Serialization.JsonNet\bin\Signed Release Portable\NodaTime.Serialization.JsonNet.xml" />
-      <DocumentationSource sourceFile="..\src\NodaTime.Testing\bin\Signed Release Portable\NodaTime.Testing.dll" />
-      <DocumentationSource sourceFile="..\src\NodaTime.Testing\bin\Signed Release Portable\NodaTime.Testing.xml" />
-      <DocumentationSource sourceFile="..\src\NodaTime\bin\Signed Release Portable\NodaTime.xml" />
+      <DocumentationSource sourceFile="..\src\NodaTime\bin\Release Portable\NodaTime.dll" />
+      <DocumentationSource sourceFile="..\src\NodaTime.Serialization.JsonNet\bin\Release Portable\NodaTime.Serialization.JsonNet.dll" />
+      <DocumentationSource sourceFile="..\src\NodaTime.Serialization.JsonNet\bin\Release Portable\NodaTime.Serialization.JsonNet.xml" />
+      <DocumentationSource sourceFile="..\src\NodaTime.Testing\bin\Release Portable\NodaTime.Testing.dll" />
+      <DocumentationSource sourceFile="..\src\NodaTime.Testing\bin\Release Portable\NodaTime.Testing.xml" />
+      <DocumentationSource sourceFile="..\src\NodaTime\bin\Release Portable\NodaTime.xml" />
     </DocumentationSources>
     <CopyrightHref>http://www.apache.org/licenses/LICENSE-2.0</CopyrightHref>
     <CopyrightText>Copyright 2014 The Noda Time Authors. All rights reserved.</CopyrightText>

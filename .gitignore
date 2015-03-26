@@ -22,7 +22,7 @@ StyleCop.Cache
 Thumbs.db
 
 # Noda Time release (private) key
-build/NodaTime Release.snk
+NodaTime Release.snk
 
 # Build output directories (anywhere)
 **/bin/
