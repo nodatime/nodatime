@@ -25,8 +25,6 @@ namespace NodaTime.Test.Annotations
                                                                 !t.IsDefined(typeof(MutableAttribute), false))
                                                     .ToList();
             var type = typeof (ZonedDateTime.Comparer);
-            Console.WriteLine(type.IsClass && type.IsPublic && type.BaseType != typeof (MulticastDelegate));
-            Console.WriteLine(!(type.IsAbstract && type.IsSealed));
             Assert.IsEmpty(unannotatedClasses, "Unannotated classes: " + string.Join(", ", unannotatedClasses.Select(c => c.Name)));
         }
 
