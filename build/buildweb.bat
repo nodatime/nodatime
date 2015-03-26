@@ -11,6 +11,8 @@ if "%2" == "" (
 set STABLE_DIR=%1
 set WEB_DIR=%2
 
+set TMPOLDDIR=tmp\webdir
+
 call buildapidocs
 IF ERRORLEVEL 1 EXIT /B 1
 call :build_www
@@ -25,14 +27,14 @@ goto :end
 
 
 :clean
-IF EXIST tmpwebdir rmdir /s /q tmpwebdir
+IF EXIST %TMPOLDDIR% rmdir /s /q %TMPOLDDIR%
 
-REM Hacky way to start with a clean directory
-move %WEB_DIR% tmpwebdir
+REM Hacky way to start with a clean directory, leaving only .git
+move %WEB_DIR% %TMPOLDDIR%
 IF ERRORLEVEL 1 EXIT /B 1
 mkdir %WEB_DIR%
-attrib -h tmpwebdir\.git
-move tmpwebdir\.git %WEB_DIR%
+attrib -h %TMPOLDDIR%\.git
+move %TMPOLDDIR%\.git %WEB_DIR%
 attrib +h %WEB_DIR%\.git
 goto :end
 
@@ -46,7 +48,7 @@ goto :end
 
 
 :build_mvc
-pushd src\NodaTime.Web
+pushd ..\src\NodaTime.Web
 REM Assume NuGet restore has already taken place
 REM nuget restore -PackagesDirectory ..\packages
 IF ERRORLEVEL 1 EXIT /B 1
@@ -57,10 +59,10 @@ goto :end
 
 
 :assemble
-xcopy /Q /E /Y www\_site %WEB_DIR%
-xcopy /Q /E /Y /I docs\api %WEB_DIR%\unstable\api
+xcopy /Q /E /Y ..\www\_site %WEB_DIR%
+xcopy /Q /E /Y /I tmp\apidocs %WEB_DIR%\unstable\api
 xcopy /Q /E /Y %STABLE_DIR% %WEB_DIR%
-xcopy /Q /E /Y src\NodaTime.Web\obj\Release\Package\PackageTmp %WEB_DIR%
+xcopy /Q /E /Y ..\src\NodaTime.Web\obj\Release\Package\PackageTmp %WEB_DIR%
 goto :end
 
 :end
