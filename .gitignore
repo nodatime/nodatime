@@ -21,15 +21,8 @@ StyleCop.Cache
 # Auto-created thumbnails
 Thumbs.db
 
-# javac output
-*.class
-
-# Joda Time jar files
-# (It's reasonably easy to end up with one in a working directory...)
-joda-time*.jar
-
 # Noda Time release (private) key
-NodaTime Release.snk
+build/NodaTime Release.snk
 
 # Build output directories (anywhere)
 **/bin/
@@ -38,25 +31,18 @@ NodaTime Release.snk
 # NUnit output
 /TestResult\.xml$
 
-# The docs directory - we've already got docs/api/Index.html, but we don't want anything new.
-/docs/**
+# Output from build steps
+/build/tmp/**
 
 # Sandcastle per-user settings
-/NodaTime.shfbproj_.+$
-/NodaTime-Pcl.shfbproj_.+$
-
-# NuGet temporary build area (see buildnuget.bat)
-nuget/**
+/build/NodaTime.shfbproj_.+$
+/build/NodaTime-Pcl.shfbproj_.+$
 
 # Generated web site
 /www/_site/**
 
 # Temporary build output directories
-/tmpbenchmarks/**
-/tmpdocs/**
-/tmpwebdir/**
-/tzdbtmp/**
-/SandcastleStyleTmp/**
+/build/tmp
 
 # NuGet packages (but not the configuration)
 /src/packages/**/**
