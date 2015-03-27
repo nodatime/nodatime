@@ -40,7 +40,7 @@ goto :end
 
 
 :build_www
-pushd www
+pushd ..\www
 call jekyll build
 IF ERRORLEVEL 1 EXIT /B 1
 popd
