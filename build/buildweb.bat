@@ -57,7 +57,9 @@ pushd ..\src\NodaTime.Web
 REM Assume NuGet restore has already taken place
 REM nuget restore -PackagesDirectory ..\packages
 IF ERRORLEVEL 1 EXIT /B 1
-msbuild /t:Rebuild /p:DeployOnBuild=true /p:Configuration=Release
+REM Build and deploy NodaTime.Web.dll.  See #359 for why we're suppressing PDB
+REM generation.
+msbuild /t:Rebuild /p:DeployOnBuild=true /p:Configuration=Release /p:DebugSymbols=false
 IF ERRORLEVEL 1 EXIT /B 1
 popd
 goto :end
