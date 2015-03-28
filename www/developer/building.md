@@ -6,10 +6,7 @@ weight: 100
 
 ## Visual Studio (Windows)
 
-TODO: As of 2.0, the following is no longer correct: _building_ Noda Time
-2.0 requires a C# 6 compiler.
-
-Noda Time is developed on Visual Studio 2015. All versions of Visual Studio 2015, cinluding
+Noda Time is developed on Visual Studio 2015. All versions of Visual Studio 2015, including
 the community edition, should be able to build Noda Time. You may need to download additional
 platform packs, however.
 
@@ -213,6 +210,5 @@ All the main source code is under the `src` directory. There are multiple projec
 - NodaTime.TzdbCompiler.Test: Tests for NodaTime.TzdbCompiler
 
 The documentation is in the `www` directory with the rest of the website: `www/developer` for the developer guide, and `www/unstable/userguide` for the latest user guide.
-Additionally the `www` directory contains the source for the documentation, and `JodaDump` contains Java code to be used with NodaTime.CheckTimeZones.
 
 There is also experimental source code for Roslyn code diagnostics (under `src`) and various tools for the build process under `build`.
