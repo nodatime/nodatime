@@ -1,25 +1,22 @@
 @echo off
 
-if "%2" == "" (
-  echo Usage: buildweb stable-web-docs-directory output-directory
-  echo e.g. buildweb c:\users\jon\StableWebDocs c:\users\jon\nodatime.org
+if "%1" == "" (
+  echo Usage: buildweb output-directory
+  echo e.g. buildweb c:\users\jon\nodatime.org
   echo It is expected that the output directory already exists and is
   echo set up for git...
   goto end
 )
 
-set STABLE_DIR=%1
-set WEB_DIR=%2
+set WEB_DIR=%1
 
-set TMPOLDDIR=tmp\webdir
-
+call :clean
+IF ERRORLEVEL 1 EXIT /B 1
 call buildapidocs
 IF ERRORLEVEL 1 EXIT /B 1
 call :build_www
 IF ERRORLEVEL 1 EXIT /B 1
 call :build_mvc
-IF ERRORLEVEL 1 EXIT /B 1
-call :clean
 IF ERRORLEVEL 1 EXIT /B 1
 call :assemble
 IF ERRORLEVEL 1 EXIT /B 1
@@ -27,15 +24,23 @@ goto :end
 
 
 :clean
-IF EXIST %TMPOLDDIR% rmdir /s /q %TMPOLDDIR%
+REM Remove the contents of everything we know we'll be rebuilding
+REM This is fairly horrible... we shouldn't need to list it like this, and
+REM this isn't really comprehensive.
+REM First the Jekyll site... (and latest API docs)
+if EXIST %WEB_DIR%\unstable rmdir /s /q %WEB_DIR%\unstable
+if EXIST %WEB_DIR%\developer rmdir /s /q %WEB_DIR%\developer
+if EXIST %WEB_DIR%\tzdb rmdir /s /q %WEB_DIR%\tzdb
+if EXIST %WEB_DIR%\1.0.x\userguide rmdir /s /q %WEB_DIR%\1.0.x\userguide
+if EXIST %WEB_DIR%\1.1.x\userguide rmdir /s /q %WEB_DIR%\1.1.x\userguide
+if EXIST %WEB_DIR%\1.2.x\userguide rmdir /s /q %WEB_DIR%\1.2.x\userguide
+if EXIST %WEB_DIR%\1.3.x\userguide rmdir /s /q %WEB_DIR%\1.3.x\userguide
 
-REM Hacky way to start with a clean directory, leaving only .git
-move %WEB_DIR% %TMPOLDDIR%
-IF ERRORLEVEL 1 EXIT /B 1
-mkdir %WEB_DIR%
-attrib -h %TMPOLDDIR%\.git
-move %TMPOLDDIR%\.git %WEB_DIR%
-attrib +h %WEB_DIR%\.git
+REM Now the web app...
+if EXIST %WEB_DIR%\Content rmdir /s /q %WEB_DIR%\Content
+if EXIST %WEB_DIR%\Views rmdir /s /q %WEB_DIR%\Views
+if EXIST %WEB_DIR%\Scripts rmdir /s /q %WEB_DIR%\Scripts
+if EXIST %WEB_DIR%\bin rmdir /s /q %WEB_DIR%\bin
 goto :end
 
 
@@ -59,10 +64,9 @@ goto :end
 
 
 :assemble
-xcopy /Q /E /Y ..\www\_site %WEB_DIR%
+xcopy /Q /E /Y /I ..\www\_site %WEB_DIR%
 xcopy /Q /E /Y /I tmp\apidocs %WEB_DIR%\unstable\api
-xcopy /Q /E /Y %STABLE_DIR% %WEB_DIR%
-xcopy /Q /E /Y ..\src\NodaTime.Web\obj\Release\Package\PackageTmp %WEB_DIR%
+xcopy /Q /E /Y /I ..\src\NodaTime.Web\obj\Release\Package\PackageTmp %WEB_DIR%
 goto :end
 
 :end

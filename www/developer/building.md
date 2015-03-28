@@ -9,28 +9,15 @@ weight: 100
 TODO: As of 2.0, the following is no longer correct: _building_ Noda Time
 2.0 requires a C# 6 compiler.
 
-Noda Time is mostly developed on Visual Studio 2010 and Visual Studio 2012.
-All versions of Visual Studio 2010 and 2012 which support C#, including Express editions,
-should be able to build Noda Time. If you're using Visual Studio Express, you *may* have
-problems building the PCL version; it depends on other aspects of your computer. Visual
-Studio Express itself doesn't have full support for portable class libraries, so while
-it's important to us that developers with only Visual Studio Express can work on the
-desktop build, we make no guarantees about the PCL build.
-(Please contact the mailing list if you have problems not covered here.) 
-
-You'll also need the [.NET Framework SDK][dotnetsdk]. This library supports
-versions 3.5, 4 and 4.5 of the Framework. Install the appropriate
-version or versions as defined by your needs.
-
-[dotnetsdk]: http://msdn.microsoft.com/en-us/netframework/aa569263.aspx
+Noda Time is developed on Visual Studio 2015. All versions of Visual Studio 2015, cinluding
+the community edition, should be able to build Noda Time. You may need to download additional
+platform packs, however.
 
 To fetch the source code from the main GitHub repository, you'll need a
-[git][] client. A good alternative for Microsoft Windows users is
-[TortoiseGit][] which installs shell extensions so that git can be used
-from the Windows Explorer.
+[git][] client. You may also want a Git GUI, such as [SourceTree][].
 
 [git]: http://git-scm.com/
-[TortoiseGit]: https://tortoisegit.org/
+[SourceTree]: http://www.sourcetreeapp.com/
 
 To run the tests, you'll need [NUnit][] version 2.5.10 or higher.
 
@@ -43,6 +30,9 @@ against .NET 4, but that sort of subtlety seems to cause problems with the abili
 test runners to autodetect which version they should load. We don't use any .NET 4 features
 in our tests though; if you hack at the project file to make it only target .NET 3.5, you should
 be able to test the desktop build that way, if you really need to.
+
+For Noda Time 2.0, it's reasonably likely that we'll target .NET 4.5 for *everything* for simplicity
+and compatibility with other libraries such as `System.Collections.Immutable`.
 
 ### Fetching and building
 
@@ -210,31 +200,19 @@ $ make check NUNIT='mono ../NUnit-2.6.1/bin/nunit-console.exe'
 
 ## Source layout
 
-All the source code is under the `src` directory. There are multiple projects:
+All the main source code is under the `src` directory. There are multiple projects:
 
 - NodaTime: The main library to be distributed
 - NodaTime.Benchmarks: Benchmarks run regularly to check the performance
-- NodaTime.CheckTimeZones: Tool to verify that Joda Time and Noda Time interpret TZDB data in the same way
 - NodaTime.Demo: Demonstration code written as unit tests. Interesting [Stack Overflow](http://stackoverflow.com) questions can lead to code in this project, for example.
 - NodaTime.Serialization.JsonNet: Library to enable [Json.NET](http://json.net) serialization of NodaTime types.
 - NodaTime.Serialization.Test: Tests for all serialization assemblies, under the assumption that at some point we'll support more than just Json.NET.
 - NodaTime.Test: Tests for the main library
 - NodaTime.Testing: Library to help users test code which depends on Noda Time. Also used within our own tests.
-- NodaTime.Tools.SetVersion: Tool to set version numbers on appropriate assemblies as part of the release process
 - NodaTime.TzdbCompiler: Tool to take a TZDB database and convert it into the NodaTime internal format
 - NodaTime.TzdbCompiler.Test: Tests for NodaTime.TzdbCompiler
 
 The documentation is in the `www` directory with the rest of the website: `www/developer` for the developer guide, and `www/unstable/userguide` for the latest user guide.
 Additionally the `www` directory contains the source for the documentation, and `JodaDump` contains Java code to be used with NodaTime.CheckTimeZones.
 
-
-There are four solutions, containing a variety of projects depending on the task at hand. The aim is to have everything you immediately need in one
-place, without too many distractions.
-
-- NodaTime-All.sln: Contains all .NET projects, but not the documentation source. Useful for continuous integration and refactoring.
-- NodaTime-Core.sln: Contains NodaTime, NodaTime.Benchmarks, NodaTime.Serialization.JsonNet and NodaTime.Serialization.Test, NodaTime.Test, NodaTime.Testing.
- This is the "day to day development" solution, containing everything that's shipped and the primary tests for those projects. When we're updating NodaTime.TzdbCompiler,
- that project and its tests may temporarily live in this solution.
-- NodaTime-Documentation.sln: Contains the documentation sources, NodaTime, NodaTime.Testing.SerializationJsonNet and NodaTime.Testing. Useful when writing documentation.
-- NodaTime-Tools.sln: Contains NodaTime (so that project references work), NodaTime.CheckTimeZones, NodaTime.Tools.SetVersion, NodaTime.TzdbCompiler
- and NodaTime.TzdbCompiler.Test. Aimed at times when we need to change our supporting toolset.
+There is also experimental source code for Roslyn code diagnostics (under `src`) and various tools for the build process under `build`.
