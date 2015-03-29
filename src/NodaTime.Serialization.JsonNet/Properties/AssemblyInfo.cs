@@ -16,7 +16,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("NodaTime.Serialization.JsonNet")]
-[assembly: AssemblyCopyright("Copyright 2013 The Noda Time Authors. All rights reserved.")]
+[assembly: AssemblyCopyright("Copyright 2015 The Noda Time Authors. All rights reserved.")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

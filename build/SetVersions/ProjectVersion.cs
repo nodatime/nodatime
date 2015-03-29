@@ -13,26 +13,28 @@ namespace NodaTime.Tools.SetVersion
         /// <summary>
         /// The original input, e.g. 1.1.2-dev
         /// </summary>
-        public string FullText { get; private set; }
+        public string FullText { get; }
 
         /// <summary>
         /// The dependency version, which is Major.Minor.0 for stable releases,
         /// and the full version text otherwise. (i.e. if there's a -foo part at the end,
         /// use the full text.)
         /// </summary>
-        public string Dependency { get; private set; }
+        public string Dependency { get; }
 
         /// <summary>
         /// The major/minor/patch version.
         /// So a full version of 1.1.2-dev would give 1.1.2.
         /// </summary>
-        public string MajorMinorPatch { get; private set; }
+        public string MajorMinorPatch { get; }
 
         /// <summary>
         /// The major/minor version.
         /// So a full version of 1.1.2-dev would give 1.1.
         /// </summary>
-        public string MajorMinor { get; private set; }
+        public string MajorMinor { get; }
+
+        public int Year { get; }
 
         internal ProjectVersion(string text)
         {
@@ -56,6 +58,8 @@ namespace NodaTime.Tools.SetVersion
             {
                 Dependency = patchBase;
             }
+            // We may eventually want to be able to customize this.
+            Year = DateTime.Today.Year;
         }
     }
 }

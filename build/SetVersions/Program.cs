@@ -20,19 +20,32 @@ namespace NodaTime.Tools.SetVersion
                 Console.Error.WriteLine("Usage: SetVersion <version-number>");
                 return 1;
             }
-            if (!Directory.Exists("src"))
+            if (!Directory.Exists("../src"))
             {
-                Console.Error.WriteLine("Run from the top-level NodaTime directory; parent of the src directory");
+                Console.Error.WriteLine("Run from the NodaTime build directory");
                 return 1;
             }
             ProjectVersion version = new ProjectVersion(args[0]);
-            FixNuSpec(version, "src/NodaTime/NodaTime.nuspec");
-            FixNuSpec(version, "src/NodaTime.Testing/NodaTime.Testing.nuspec");
-            FixNuSpec(version, "src/NodaTime.Serialization.JsonNet/NodaTime.Serialization.JsonNet.nuspec");
-            FixAssemblyInfo(version, "src/NodaTime/Properties/AssemblyInfo.cs");
-            FixAssemblyInfo(version, "src/NodaTime.Testing/Properties/AssemblyInfo.cs");
-            FixAssemblyInfo(version, "src/NodaTime.Serialization.JsonNet/Properties/AssemblyInfo.cs");
+            FixShfb(version, "NodaTime.shfbproj");
+            FixShfb(version, "NodaTime-Pcl.shfbproj");
+            FixNuSpec(version, "../src/NodaTime/NodaTime.nuspec");
+            FixNuSpec(version, "../src/NodaTime.Testing/NodaTime.Testing.nuspec");
+            FixNuSpec(version, "../src/NodaTime.Serialization.JsonNet/NodaTime.Serialization.JsonNet.nuspec");
+            FixAssemblyInfo(version, "../src/NodaTime/Properties/AssemblyInfo.cs");
+            FixAssemblyInfo(version, "../src/NodaTime.Testing/Properties/AssemblyInfo.cs");
+            FixAssemblyInfo(version, "../src/NodaTime.Serialization.JsonNet/Properties/AssemblyInfo.cs");
             return 0;
+        }
+
+        private static void FixShfb(ProjectVersion version, string file)
+        {
+            var xml = XDocument.Load(file);
+            XNamespace ns = "http://schemas.microsoft.com/developer/msbuild/2003";
+            foreach (var element in xml.Descendants(ns + "CopyrightText"))
+            {
+                element.Value = $"Copyright {version.Year} The Noda Time Authors. All rights reserved.";
+            }
+            xml.Save(file);
         }
 
         private static void FixNuSpec(ProjectVersion version, string file)
@@ -78,6 +91,7 @@ namespace NodaTime.Tools.SetVersion
                 line = ReplaceAttribute(line, "AssemblyVersion", version.MajorMinor);
                 line = ReplaceAttribute(line, "AssemblyFileVersion", version.MajorMinorPatch);
                 line = ReplaceAttribute(line, "AssemblyInformationalVersion", version.FullText);
+                line = ReplaceAttribute(line, "AssemblyCopyright", $"Copyright {version.Year} The Noda Time Authors. All rights reserved.");
                 lines[i] = line;
             }
             File.WriteAllLines(file, lines);
