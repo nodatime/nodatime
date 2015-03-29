@@ -413,7 +413,7 @@ namespace NodaTime.TzdbCompiler.Test.Tzdb
             var tokens = Tokens.Tokenize(text);
             var rule = Parser.ParseDateTimeOfYear(tokens, true);
             var actual = rule.GetOccurrenceForYear(2012);
-            var expected = new LocalDateTime(2012, 4, 2, 0, 0);
+            var expected = new LocalDateTime(2012, 4, 2, 0, 0).ToLocalInstant();
             Assert.AreEqual(expected, actual);
         }
 
@@ -424,7 +424,7 @@ namespace NodaTime.TzdbCompiler.Test.Tzdb
             var tokens = Tokens.Tokenize(text);
             var rule = Parser.ParseDateTimeOfYear(tokens, true);
             var actual = rule.GetOccurrenceForYear(2012);
-            var expected = new LocalDateTime(2012, 4, 2, 0, 0);
+            var expected = new LocalDateTime(2012, 4, 2, 0, 0).ToLocalInstant();
             Assert.AreEqual(expected, actual);
         }
 
@@ -435,7 +435,7 @@ namespace NodaTime.TzdbCompiler.Test.Tzdb
             var tokens = Tokens.Tokenize(text);
             var rule = Parser.ParseDateTimeOfYear(tokens, true);
             var actual = rule.GetOccurrenceForYear(2012);
-            var expected = new LocalDateTime(2012, 4, 5, 0, 0);
+            var expected = new LocalDateTime(2012, 4, 5, 0, 0).ToLocalInstant();
             Assert.AreEqual(expected, actual);
         }
 
@@ -446,7 +446,7 @@ namespace NodaTime.TzdbCompiler.Test.Tzdb
             var tokens = Tokens.Tokenize(text);
             var rule = Parser.ParseDateTimeOfYear(tokens, true);
             var actual = rule.GetOccurrenceForYear(2012);
-            var expected = new LocalDateTime(2012, 4, 12, 0, 0);
+            var expected = new LocalDateTime(2012, 4, 12, 0, 0).ToLocalInstant();
             Assert.AreEqual(expected, actual);
         }
 

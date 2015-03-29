@@ -78,7 +78,7 @@ namespace NodaTime.Test.TimeZones
         {
             var offset = new ZoneYearOffset(TransitionMode.Utc, 1, 1, 0, true, LocalTime.Midnight);
             var actual = offset.GetOccurrenceForYear(1970);
-            var expected = new LocalDateTime(1970, 1, 1, 0, 0);
+            var expected = new LocalDateTime(1970, 1, 1, 0, 0).ToLocalInstant();
             Assert.AreEqual(expected, actual);
         }
 
@@ -87,43 +87,16 @@ namespace NodaTime.Test.TimeZones
         {
             var offset = new ZoneYearOffset(TransitionMode.Utc, 1, 1, 0, true, LocalTime.Midnight);
             var actual = offset.GetOccurrenceForYear(1971);
-            var expected = new LocalDateTime(1971, 1, 1, 0, 0);
+            var expected = new LocalDateTime(1971, 1, 1, 0, 0).ToLocalInstant();
             Assert.AreEqual(expected, actual);
-        }
-
-        [Test]
-        public void GetOccurrenceForYear_SavingOffsetIgnored_Epoch()
-        {
-            var offset = new ZoneYearOffset(TransitionMode.Utc, 1, 1, 0, true, LocalTime.Midnight);
-            var actual = offset.GetOccurrenceForYear(1970, Offset.FromHours(2), Offset.FromHours(1));
-            var expected = new LocalDateTime(1970, 1, 1, 0, 0).WithOffset(Offset.Zero); // UTC transition
-            Assert.AreEqual(expected, actual);
-        }
-
-        [Test]
-        public void GetOccurrenceForYear_SavingIgnored()
-        {
-            var offset = new ZoneYearOffset(TransitionMode.Standard, 1, 1, 0, true, LocalTime.Midnight);
-            var actual = offset.GetOccurrenceForYear(1970, Offset.FromHours(2), Offset.FromHours(1));
-            var expected = new LocalDateTime(1970, 1, 1, 0, 0).WithOffset(Offset.FromHours(2)); // Standard transition
-            Assert.AreEqual(expected, actual);
-        }
-
-        [Test]
-        public void GetOccurrenceForYear_SavingAndOffset()
-        {
-            var offset = new ZoneYearOffset(TransitionMode.Wall, 1, 1, 0, true, LocalTime.Midnight);
-            var actual = offset.GetOccurrenceForYear(1970, Offset.FromHours(2), Offset.FromHours(1));
-            var expected = new LocalDateTime(1970, 1, 1, 0, 0).WithOffset(Offset.FromHours(3)); // Wall transition
-            Assert.AreEqual(expected, actual);
-        }
+        }        
 
         [Test]
         public void GetOccurrenceForYear_Milliseconds()
         {
             var offset = new ZoneYearOffset(TransitionMode.Utc, 1, 1, 0, true, new LocalTime(0, 0, 0, 1));
             var actual = offset.GetOccurrenceForYear(1970);
-            var expected = new LocalDateTime(1970, 1, 1, 0, 0, 0, 1);
+            var expected = new LocalDateTime(1970, 1, 1, 0, 0, 0, 1).ToLocalInstant();
             Assert.AreEqual(expected, actual);
         }
 
@@ -132,7 +105,7 @@ namespace NodaTime.Test.TimeZones
         {
             var offset = new ZoneYearOffset(TransitionMode.Utc, 1, 1, (int)DayOfWeek.Wednesday, true, LocalTime.Midnight);
             var actual = offset.GetOccurrenceForYear(1970);
-            var expected = new LocalDateTime(1970, 1, 7, 0, 0); // 1970-01-01 was a Thursday
+            var expected = new LocalDateTime(1970, 1, 7, 0, 0).ToLocalInstant(); // 1970-01-01 was a Thursday
             Assert.AreEqual(expected, actual);
         }
 
@@ -141,7 +114,7 @@ namespace NodaTime.Test.TimeZones
         {
             var offset = new ZoneYearOffset(TransitionMode.Utc, 1, 15, (int)DayOfWeek.Wednesday, false, LocalTime.Midnight);
             var actual = offset.GetOccurrenceForYear(1970);
-            var expected = new LocalDateTime(1970, 1, 14, 0, 0); // 1970-01-15 was a Thursday
+            var expected = new LocalDateTime(1970, 1, 14, 0, 0).ToLocalInstant(); // 1970-01-15 was a Thursday
             Assert.AreEqual(expected, actual);
         }
 
@@ -150,7 +123,7 @@ namespace NodaTime.Test.TimeZones
         {
             var offset = new ZoneYearOffset(TransitionMode.Utc, 1, -2, 0, true, LocalTime.Midnight);
             var actual = offset.GetOccurrenceForYear(1970);
-            var expected = new LocalDateTime(1970, 1, 30, 0, 0);
+            var expected = new LocalDateTime(1970, 1, 30, 0, 0).ToLocalInstant();
             Assert.AreEqual(expected, actual);
         }
 
@@ -159,7 +132,7 @@ namespace NodaTime.Test.TimeZones
         {
             var offset = new ZoneYearOffset(TransitionMode.Utc, 1, 5, 0, true, LocalTime.Midnight);
             var actual = offset.GetOccurrenceForYear(1970);
-            var expected = new LocalDateTime(1970, 1, 5, 0, 0);
+            var expected = new LocalDateTime(1970, 1, 5, 0, 0).ToLocalInstant();
             Assert.AreEqual(expected, actual);
         }
 
@@ -168,7 +141,7 @@ namespace NodaTime.Test.TimeZones
         {
             var offset = new ZoneYearOffset(TransitionMode.Utc, 2, 1, 0, true, LocalTime.Midnight);
             var actual = offset.GetOccurrenceForYear(1970);
-            var expected = new LocalDateTime(1970, 2, 1, 0, 0);
+            var expected = new LocalDateTime(1970, 2, 1, 0, 0).ToLocalInstant();
             Assert.AreEqual(expected, actual);
         }
 
@@ -177,7 +150,7 @@ namespace NodaTime.Test.TimeZones
         {
             ZoneYearOffset offset = new ZoneYearOffset(TransitionMode.Utc, 10, -1, (int)IsoDayOfWeek.Sunday, false, LocalTime.Midnight);
             var actual = offset.GetOccurrenceForYear(1996);
-            var expected = new LocalDateTime(1996, 10, 27, 0, 0);
+            var expected = new LocalDateTime(1996, 10, 27, 0, 0).ToLocalInstant();
             Assert.AreEqual(expected, actual);
         }
 
@@ -186,7 +159,7 @@ namespace NodaTime.Test.TimeZones
         {
             ZoneYearOffset offset = new ZoneYearOffset(TransitionMode.Utc, 2, 29, 0, false, LocalTime.Midnight);
             var actual = offset.GetOccurrenceForYear(2012);
-            var expected = new LocalDateTime(2012, 2, 29, 0, 0);
+            var expected = new LocalDateTime(2012, 2, 29, 0, 0).ToLocalInstant();
             Assert.AreEqual(expected, actual);
         }
 
@@ -202,7 +175,7 @@ namespace NodaTime.Test.TimeZones
         {
             ZoneYearOffset offset = new ZoneYearOffset(TransitionMode.Utc, 2, 29, (int) IsoDayOfWeek.Sunday, true, LocalTime.Midnight);
             var actual = offset.GetOccurrenceForYear(2012);
-            var expected = new LocalDateTime(2012, 3, 4, 0, 0); // March 4th is the first Sunday after 2012-02-29
+            var expected = new LocalDateTime(2012, 3, 4, 0, 0).ToLocalInstant(); // March 4th is the first Sunday after 2012-02-29
             Assert.AreEqual(expected, actual);
         }
 
@@ -218,7 +191,7 @@ namespace NodaTime.Test.TimeZones
         {
             ZoneYearOffset offset = new ZoneYearOffset(TransitionMode.Utc, 2, 29, (int) IsoDayOfWeek.Sunday, false, LocalTime.Midnight);
             var actual = offset.GetOccurrenceForYear(2012);
-            var expected = new LocalDateTime(2012, 2, 26, 0, 0); // Feb 26th is the last Sunday before 2012-02-29
+            var expected = new LocalDateTime(2012, 2, 26, 0, 0).ToLocalInstant(); // Feb 26th is the last Sunday before 2012-02-29
             Assert.AreEqual(expected, actual);
         }
 
@@ -227,7 +200,7 @@ namespace NodaTime.Test.TimeZones
         {
             ZoneYearOffset offset = new ZoneYearOffset(TransitionMode.Utc, 2, 29, (int) IsoDayOfWeek.Sunday, false, LocalTime.Midnight);
             var actual = offset.GetOccurrenceForYear(2013);
-            var expected = new LocalDateTime(2013, 2, 24, 0, 0); // Feb 24th is the last Sunday is February 2013
+            var expected = new LocalDateTime(2013, 2, 24, 0, 0).ToLocalInstant(); // Feb 24th is the last Sunday is February 2013
             Assert.AreEqual(expected, actual);
         }
 
@@ -238,7 +211,16 @@ namespace NodaTime.Test.TimeZones
             // we should get the start of November 1st.
             var offset = new ZoneYearOffset(TransitionMode.Utc, 10, -1, (int) IsoDayOfWeek.Thursday, false, LocalTime.Midnight, true);
             var actual = offset.GetOccurrenceForYear(2013);
-            var expected = new LocalDateTime(2013, 11, 1, 0, 0);
+            var expected = new LocalDateTime(2013, 11, 1, 0, 0).ToLocalInstant();
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void GetOccurrenceForYear_WithAddDay_December31st9999()
+        {
+            var offset = new ZoneYearOffset(TransitionMode.Utc, 12, 31, 0, false, LocalTime.Midnight, true);
+            var actual = offset.GetOccurrenceForYear(9999);
+            var expected = LocalInstant.AfterMaxValue;
             Assert.AreEqual(expected, actual);
         }
 

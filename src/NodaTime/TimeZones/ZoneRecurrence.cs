@@ -59,8 +59,8 @@ namespace NodaTime.TimeZones
             this.YearOffset = yearOffset;
             this.FromYear = fromYear;
             this.ToYear = toYear;
-            this.minLocalInstant = fromYear == int.MinValue ? LocalInstant.BeforeMinValue : new LocalDateTime(fromYear, 1, 1, 0, 0).ToLocalInstant();
-            this.maxLocalInstant = toYear == int.MaxValue ? LocalInstant.AfterMaxValue : new LocalDateTime(toYear, 12, 31, 0, 0).PlusNanoseconds(NodaConstants.NanosecondsPerDay - 1).ToLocalInstant();
+            this.minLocalInstant = fromYear == int.MinValue ? LocalInstant.BeforeMinValue : yearOffset.GetOccurrenceForYear(fromYear);
+            this.maxLocalInstant = toYear == int.MaxValue ? LocalInstant.AfterMaxValue : yearOffset.GetOccurrenceForYear(toYear);
         }
 
         /// <summary>
@@ -104,7 +104,8 @@ namespace NodaTime.TimeZones
         /// <param name="instant">The <see cref="Instant"/> lower bound for the next transition.</param>
         /// <param name="standardOffset">The <see cref="Offset"/> standard offset.</param>
         /// <param name="previousSavings">The <see cref="Offset"/> savings adjustment at the given Instant.</param>
-        /// <returns>The next transition, or null if there is no next transition.</returns>
+        /// <returns>The next transition, or null if there is no next transition. The transition may be
+        /// infinite, i.e. after the end of representable time.</returns>
         internal Transition? Next(Instant instant, Offset standardOffset, Offset previousSavings)
         {
             Offset ruleOffset = YearOffset.GetRuleOffset(standardOffset, previousSavings);
@@ -114,16 +115,14 @@ namespace NodaTime.TimeZones
             int targetYear;
             if (safeLocal < minLocalInstant)
             {
-                // Asked for a transition after some point before our first year: crop to first year.
+                // Asked for a transition after some point before the first transition: crop to first year (so we get the first transition)
                 targetYear = FromYear;
             }
-            // TODO(2.0): This should probably be >=, really. The maxLocalInstant is inclusive, but
-            // we're being asked for a transition strictly after safeLocal. *Not* fixing this keeps
-            // us safe (I think) from issue 335, but that's really two bugs cancelling each other out.
-            else if (safeLocal > maxLocalInstant)
+            else if (safeLocal >= maxLocalInstant)
             {
-                // Asked for a transition after our end point: there isn't one.
-                return null;
+                // Asked for a transition after our final transition... or both are beyond the end of time (in which case
+                // we can return an infinite transition)
+                return maxLocalInstant == LocalInstant.AfterMaxValue ? new Transition(Instant.AfterMaxValue, newOffset) :  (Transition?) null;
             }
             else if (!safeLocal.IsValid)
             {
@@ -151,7 +150,7 @@ namespace NodaTime.TimeZones
                 targetYear = CalendarSystem.Iso.YearMonthDayCalculator.GetYear(safeLocal.DaysSinceEpoch, out ignoredDayOfYear);
             }
 
-            LocalInstant transition = YearOffset.GetOccurrenceForYear(targetYear).ToLocalInstant();
+            LocalInstant transition = YearOffset.GetOccurrenceForYear(targetYear);
 
             Instant safeTransition = transition.SafeMinus(ruleOffset);
             if (safeTransition > instant)
@@ -171,7 +170,7 @@ namespace NodaTime.TimeZones
                 return new Transition(Instant.AfterMaxValue, newOffset);
             }
             // It's fine for this to be "end of time", and it can't be "start of time" because we're at least finding a transition in -9997.
-            safeTransition = YearOffset.GetOccurrenceForYear(targetYear).ToLocalInstant().SafeMinus(ruleOffset);
+            safeTransition = YearOffset.GetOccurrenceForYear(targetYear).SafeMinus(ruleOffset);
             return new Transition(safeTransition, newOffset);
         }
 
@@ -181,7 +180,8 @@ namespace NodaTime.TimeZones
         /// <param name="instant">The <see cref="Instant"/> lower bound for the next trasnition.</param>
         /// <param name="standardOffset">The <see cref="Offset"/> standard offset.</param>
         /// <param name="previousSavings">The <see cref="Offset"/> savings adjustment at the given Instant.</param>
-        /// <returns>The previous transition, or null if there is no previous transition.</returns>
+        /// <returns>The previous transition, or null if there is no previous transition. The transition may be
+        /// infinite, i.e. before the start of representable time.</returns>
         internal Transition? PreviousOrSame(Instant instant, Offset standardOffset, Offset previousSavings)
         {
             Offset ruleOffset = YearOffset.GetRuleOffset(standardOffset, previousSavings);
@@ -194,9 +194,10 @@ namespace NodaTime.TimeZones
                 // Asked for a transition before some point after our last year: crop to last year.
                 targetYear = ToYear;
             }
+            // Deliberately < here; "previous or same" means if safeLocal==minLocalInstant, we should compute it for this year.
             else if (safeLocal < minLocalInstant)
             {
-                // Asked for a transition before our first year: there isn't one.
+                // Asked for a transition before our first one
                 return null;
             }
             else if (!safeLocal.IsValid)
@@ -225,7 +226,7 @@ namespace NodaTime.TimeZones
                 targetYear = CalendarSystem.Iso.YearMonthDayCalculator.GetYear(safeLocal.DaysSinceEpoch, out ignoredDayOfYear);
             }
 
-            LocalInstant transition = YearOffset.GetOccurrenceForYear(targetYear).ToLocalInstant();
+            LocalInstant transition = YearOffset.GetOccurrenceForYear(targetYear);
 
             Instant safeTransition = transition.SafeMinus(ruleOffset);
             if (safeTransition <= instant)
@@ -245,7 +246,7 @@ namespace NodaTime.TimeZones
                 return new Transition(Instant.BeforeMinValue, newOffset);
             }
             // It's fine for this to be "start of time", and it can't be "end of time" because we're at latest finding a transition in 9998.
-            safeTransition = YearOffset.GetOccurrenceForYear(targetYear).ToLocalInstant().SafeMinus(ruleOffset);
+            safeTransition = YearOffset.GetOccurrenceForYear(targetYear).SafeMinus(ruleOffset);
             return new Transition(safeTransition, newOffset);
         }
 

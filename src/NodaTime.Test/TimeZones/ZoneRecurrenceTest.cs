@@ -3,6 +3,7 @@
 // as found in the LICENSE.txt file.
 
 using System;
+using NodaTime.Calendars;
 using NodaTime.Test.TimeZones.IO;
 using NodaTime.TimeZones;
 using NUnit.Framework;
@@ -158,6 +159,37 @@ namespace NodaTime.Test.TimeZones
             var unequalValue = new ZoneRecurrence("foo", Offset.Zero, yearOffset, 1971, 2009);
 
             TestHelper.TestEqualsClass(value, equalValue, unequalValue);
+        }
+
+        [Test]
+        public void December31st2400_MaxYear_UtcTransition()
+        {
+            // Each year, the transition is at the midnight at the *end* of December 31st...
+            var yearOffset = new ZoneYearOffset(TransitionMode.Utc, 12, 31, 0, true, LocalTime.Midnight, true);
+            // ... and the recurrence is valid for the whole of time
+            var recurrence = new ZoneRecurrence("awkward", Offset.FromHours(1), yearOffset, GregorianYearMonthDayCalculator.MinGregorianYear, GregorianYearMonthDayCalculator.MaxGregorianYear);
+
+            var next = recurrence.Next(Instant.FromUtc(9999, 6, 1, 0, 0), Offset.Zero, Offset.Zero);
+            Assert.AreEqual(Instant.AfterMaxValue, next.Value.Instant);
+        }
+
+        [Test]
+        public void December31st2400_AskAtNanoBeforeLastTransition()
+        {
+            // The transition occurs after the end of the maximum
+            // Each year, the transition is at the midnight at the *end* of December 31st...
+            var yearOffset = new ZoneYearOffset(TransitionMode.Utc, 12, 31, 0, true, LocalTime.Midnight, true);
+            // ... and the recurrence is valid for the whole of time
+            var recurrence = new ZoneRecurrence("awkward", Offset.FromHours(1), yearOffset, 1, 5000);
+
+            // We can find the final transition
+            var finalTransition = Instant.FromUtc(5001, 1, 1, 0, 0);
+            var next = recurrence.Next(finalTransition - Duration.Epsilon, Offset.Zero, Offset.Zero);
+            Transition? expected = new Transition(finalTransition, Offset.FromHours(1));
+            Assert.AreEqual(expected, next);
+
+            // But we correctly reject anything after that
+            Assert.IsNull(recurrence.Next(finalTransition, Offset.Zero, Offset.Zero));
         }
     }
 }

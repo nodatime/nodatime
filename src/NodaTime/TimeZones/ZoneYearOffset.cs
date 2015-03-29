@@ -185,17 +185,11 @@ namespace NodaTime.TimeZones
                 Mode, monthOfYear, dayOfMonth, AdvanceDayOfWeek, TimeOfDay, addDay);
 
         /// <summary>
-        /// Returns the occurrence of this rule within the given year, at the offset indicated
-        /// by the standard offset, the savings offset when approaching the transition, and
-        /// the transition mode.
+        /// Returns the occurrence of this rule within the given year, as a LocalInstant.
         /// </summary>
-        internal OffsetDateTime GetOccurrenceForYear(int year, Offset standardOffset, Offset savingsOffset) =>
-            GetOccurrenceForYear(year).WithOffset(GetRuleOffset(standardOffset, savingsOffset));
-
-        /// <summary>
-        /// Returns the occurrence of this rule within the given year.
-        /// </summary>
-        internal LocalDateTime GetOccurrenceForYear(int year)
+        /// <remarks>LocalInstant is used here so that we can use the representation of "AfterMaxValue"
+        /// for December 31st 9999 24:00.</remarks>
+        internal LocalInstant GetOccurrenceForYear(int year)
         {
             unchecked
             {
@@ -234,9 +228,14 @@ namespace NodaTime.TimeZones
                 }
                 if (addDay)
                 {
+                    // Adding a day to the last representable day will fail, but we can return an infinite value instead.
+                    if (year == 9999 && date.Month == 12 && date.Day == 31)
+                    {
+                        return LocalInstant.AfterMaxValue;
+                    }
                     date = date.PlusDays(1);
                 }
-                return date + TimeOfDay;
+                return (date + TimeOfDay).ToLocalInstant();
             }
         }
 

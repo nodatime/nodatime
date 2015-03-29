@@ -103,7 +103,9 @@ namespace NodaTime.TzdbCompiler.Tzdb
             {
                 return Instant.AfterMaxValue;
             }
-            return upperYearOffset.GetOccurrenceForYear(upperYear, StandardOffset, savings).ToInstant();
+            var localInstant = upperYearOffset.GetOccurrenceForYear(upperYear);
+            var offset = upperYearOffset.GetRuleOffset(StandardOffset, savings);
+            return localInstant.SafeMinus(offset);
         }
 
         /// <summary>
