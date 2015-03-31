@@ -35,7 +35,7 @@ namespace NodaTime.TimeZones
         public double Longitude => longitudeSeconds / 3600.0;
 
         /// <summary>
-        /// Gets the English name of the country containing the location.
+        /// Gets the English name of the country containing the location, which is never empty.
         /// </summary>
         /// <value>The English name of the country containing the location.</value>
         [NotNull] public string CountryName { get; }
@@ -87,6 +87,8 @@ namespace NodaTime.TimeZones
             this.longitudeSeconds = longitudeSeconds;
             this.CountryName = Preconditions.CheckNotNull(countryName, nameof(countryName));
             this.CountryCode = Preconditions.CheckNotNull(countryCode, nameof(countryCode));
+            Preconditions.CheckArgument(CountryName.Length > 0, nameof(countryName), "Country name cannot be empty");
+            Preconditions.CheckArgument(CountryCode.Length == 2, nameof(countryCode), "Country code must be two characters");
             this.ZoneId = Preconditions.CheckNotNull(zoneId, nameof(zoneId));
             this.Comment = Preconditions.CheckNotNull(comment, nameof(comment));
         }

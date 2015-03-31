@@ -158,6 +158,29 @@ namespace NodaTime.Test.TimeZones
             Assert.AreEqual("", france.Comment);
         }
 
+        // Sample zone location checks to ensure we've serialized and deserialized correctly
+        // Input line: GB,GG,IM,JE	+513030-0000731	Europe/London
+        [Test]
+        public void Zone1970Locations_ContainsBritain()
+        {
+            var zoneLocations = TzdbDateTimeZoneSource.Default.Zone1970Locations;
+            var britain = zoneLocations.Single(g => g.ZoneId == "Europe/London");
+            // Tolerance of about 2 seconds
+            Assert.AreEqual(51.5083, britain.Latitude, 0.00055);
+            Assert.AreEqual(-0.1253, britain.Longitude, 0.00055);
+            Assert.AreEqual("Europe/London", britain.ZoneId);
+            CollectionAssert.AreEqual(
+                new[]
+                {
+                    new TzdbZone1970Location.Country("Britain (UK)", "GB"),
+                    new TzdbZone1970Location.Country("Guernsey", "GG"),
+                    new TzdbZone1970Location.Country("Isle of Man", "IM"),
+                    new TzdbZone1970Location.Country("Jersey", "JE")
+                },
+                britain.Countries.ToArray());
+            Assert.AreEqual("", britain.Comment);
+        }
+
         // Input line: CA	+744144-0944945	America/Resolute	Central Time - Resolute, Nunavut
         // (Note: prior to 2014f, this was "Central Standard Time - Resolute, Nunavut".)
         [Test]

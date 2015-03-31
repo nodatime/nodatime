@@ -198,6 +198,7 @@
     <Compile Include="TimeZones\Delegates.cs" />
     <Compile Include="TimeZones\PartialZoneIntervalMap.cs" />
     <Compile Include="TimeZones\SingleZoneIntervalMap.cs" />
+    <Compile Include="TimeZones\TzdbZone1970Location.cs" />
     <Compile Include="TimeZones\TzdbZoneLocation.cs" />
     <Compile Include="TimeZones\IO\DateTimeZoneReader.cs" />
     <Compile Include="TimeZones\IO\DateTimeZoneWriter.cs" />

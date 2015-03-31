@@ -63,7 +63,8 @@ namespace NodaTime.TzdbCompiler.Tzdb
             string version = sourceDirectory.Name;
             var database = new TzdbDatabase(version);
             ParseAllFiles(fileList, database);
-            database.ZoneLocations = TzdbZoneLocationParser.ParseFiles(sourceDirectory);
+            database.ZoneLocations = TzdbZoneLocationParser.ParseZoneTab(sourceDirectory);
+            database.Zone1970Locations = TzdbZoneLocationParser.ParseZone1970Tab(sourceDirectory);
             return database;
         }
 

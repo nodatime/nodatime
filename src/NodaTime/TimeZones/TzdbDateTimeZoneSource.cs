@@ -100,6 +100,32 @@ namespace NodaTime.TimeZones
         /// <value>A read-only list of zone locations known to this source.</value>
         public IList<TzdbZoneLocation> ZoneLocations { get; }
 
+        /// <summary>
+        /// Gets a read-only list of "zone 1970" locations known to this source, or null if the original source data
+        /// does not include zone locations.
+        /// </summary>
+        /// <remarks>
+        /// <p>
+        /// This location data differs from <see cref="ZoneLocations"/> in two important respects:
+        /// <ul>
+        ///   <li>Where multiple similar zones exist but only differ in transitions before 1970,
+        ///     this location data chooses one zone to be the canonical "post 1970" zone.
+        ///   </li>
+        ///   <li>
+        ///     This location data can represent multiple ISO-3166 country codes in a single entry. For example,
+        ///     the entry corresponding to "Europe/London" includes country codes GB, GG, JE and IM (Britain,
+        ///     Guernsey, Jersey and the Isle of Man, respectively).
+        ///   </li>
+        /// </ul>
+        /// </p>
+        /// <p>
+        /// Every zone location's time zone ID is guaranteed to be valid within this source (assuming the source
+        /// has been validated).
+        /// </p>
+        /// </remarks>
+        /// <value>A read-only list of zone locations known to this source.</value>
+        public IList<TzdbZone1970Location> Zone1970Locations { get; }
+
         /// <inheritdoc />
         /// <remarks>
         /// <para>
@@ -150,6 +176,8 @@ namespace NodaTime.TimeZones
             version = source.TzdbVersion + " (mapping: " + source.WindowsMapping.Version + ")";
             var originalZoneLocations = source.ZoneLocations;
             ZoneLocations = originalZoneLocations == null ? null : new ReadOnlyCollection<TzdbZoneLocation>(originalZoneLocations);
+            var originalZone1970Locations = source.Zone1970Locations;
+            Zone1970Locations = originalZone1970Locations == null ? null : new ReadOnlyCollection<TzdbZone1970Location>(originalZone1970Locations);
         }
 
         /// <inheritdoc />
@@ -289,12 +317,13 @@ namespace NodaTime.TimeZones
                 string canonical;
                 if (!CanonicalIdMap.TryGetValue(entry.Value, out canonical))
                 {
-                    throw new InvalidNodaDataException("Mapping for entry " + entry.Key + " (" + entry.Value + ") is missing");
+                    throw new InvalidNodaDataException(
+                        "Mapping for entry {entry.Key} ({entry.Value}) is missing");
                 }
                 if (entry.Value != canonical)
                 {
-                    throw new InvalidNodaDataException("Mapping for entry " + entry.Key + " (" + entry.Value + ") is not canonical ("
-                        + entry.Value + " maps to " + canonical);
+                    throw new InvalidNodaDataException(
+                        "Mapping for entry {entry.Key} ({entry.Value}) is not canonical ({entry.Value} maps to {canonical}");
                 }
             }
 
@@ -304,7 +333,8 @@ namespace NodaTime.TimeZones
                 // Simplest way of checking is to find the primary mapping...
                 if (!source.WindowsMapping.PrimaryMapping.ContainsKey(mapZone.WindowsId))
                 {
-                    throw new InvalidNodaDataException("Windows mapping for standard ID " + mapZone.WindowsId + " has no primary territory");
+                    throw new InvalidNodaDataException(
+                        $"Windows mapping for standard ID {mapZone.WindowsId} has no primary territory");
                 }
             }
 
@@ -315,7 +345,8 @@ namespace NodaTime.TimeZones
                 {
                     if (!CanonicalIdMap.ContainsKey(id))
                     {
-                        throw new InvalidNodaDataException("Windows mapping uses canonical ID " + id + " which is missing");
+                        throw new InvalidNodaDataException(
+                            $"Windows mapping uses canonical ID {id} which is missing");
                     }
                 }
             }
@@ -328,7 +359,8 @@ namespace NodaTime.TimeZones
                 {
                     if (!CanonicalIdMap.ContainsKey(id))
                     {
-                        throw new InvalidNodaDataException("Windows additional standard name mapping uses canonical ID " + id + " which is missing");
+                        throw new InvalidNodaDataException(
+                            $"Windows additional standard name mapping uses canonical ID {id} which is missing");
                     }
                 }
             }
@@ -340,8 +372,19 @@ namespace NodaTime.TimeZones
                 {
                     if (!CanonicalIdMap.ContainsKey(location.ZoneId))
                     {
-                        throw new InvalidNodaDataException("Zone location " + location.CountryName
-                            + " uses zone ID " + location.ZoneId + " which is missing");
+                        throw new InvalidNodaDataException(
+                            $"Zone location {location.CountryName} uses zone ID {location.ZoneId} which is missing");
+                    }
+                }
+            }
+            if (Zone1970Locations != null)
+            {
+                foreach (var location in Zone1970Locations)
+                {
+                    if (!CanonicalIdMap.ContainsKey(location.ZoneId))
+                    {
+                        throw new InvalidNodaDataException(
+                            $"Zone 1970 location {location.Countries[0].Name} uses zone ID {location.ZoneId} which is missing");
                     }
                 }
             }

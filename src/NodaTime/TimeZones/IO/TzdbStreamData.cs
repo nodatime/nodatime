@@ -25,7 +25,8 @@ namespace NodaTime.TimeZones.IO
             [TzdbStreamFieldId.TzdbVersion] = (builder, field) => builder.HandleTzdbVersionField(field),
             [TzdbStreamFieldId.CldrSupplementalWindowsZones] = (builder, field) => builder.HandleSupplementalWindowsZonesField(field),
             [TzdbStreamFieldId.WindowsAdditionalStandardNameToIdMapping] = (builder, field) => builder.HandleWindowsAdditionalStandardNameToIdMappingField(field),
-            [TzdbStreamFieldId.ZoneLocations] = (builder, field) => builder.HandleZoneLocationsField(field)
+            [TzdbStreamFieldId.ZoneLocations] = (builder, field) => builder.HandleZoneLocationsField(field),
+            [TzdbStreamFieldId.Zone1970Locations] = (builder, field) => builder.HandleZone1970LocationsField(field)
         };
 
         private const int AcceptedVersion = 0;
@@ -57,6 +58,12 @@ namespace NodaTime.TimeZones.IO
         public IList<TzdbZoneLocation> ZoneLocations { get; }
 
         /// <summary>
+        /// Returns the "zone 1970" locations for the source, or null if no such location data is available.
+        /// This needn't be a read-only collection; it won't be exposed directly.
+        /// </summary>
+        public IList<TzdbZone1970Location> Zone1970Locations { get; }
+
+        /// <summary>
         /// Additional mappings from Windows standard name to TZDB ID. Primarily used in
         /// the PCL build, where we can't get at the system ID. This never returns null.
         /// </summary>
@@ -70,6 +77,7 @@ namespace NodaTime.TimeZones.IO
             WindowsMapping = CheckNotNull(builder.windowsMapping, "CLDR Supplemental Windows Zones");
             zoneFields = builder.zoneFields;
             ZoneLocations = builder.zoneLocations;
+            Zone1970Locations = builder.zone1970Locations;
 
             // Add in the canonical IDs as mappings to themselves.
             foreach (var id in zoneFields.Keys)
@@ -149,6 +157,7 @@ namespace NodaTime.TimeZones.IO
             internal string tzdbVersion;
             internal IDictionary<string, string> tzdbIdMap;
             internal IList<TzdbZoneLocation> zoneLocations = null;
+            internal IList<TzdbZone1970Location> zone1970Locations = null;
             internal WindowsZones windowsMapping;
             internal readonly IDictionary<string, TzdbStreamField> zoneFields = new Dictionary<string, TzdbStreamField>();
             internal IDictionary<string, string> windowsAdditionalStandardNameToIdMapping;
@@ -228,6 +237,23 @@ namespace NodaTime.TimeZones.IO
                         array[i] = TzdbZoneLocation.Read(reader);
                     }
                     zoneLocations = array;
+                }
+            }
+
+            internal void HandleZone1970LocationsField(TzdbStreamField field)
+            {
+                CheckSingleField(field, zone1970Locations);
+                CheckStringPoolPresence(field);
+                using (var stream = field.CreateStream())
+                {
+                    var reader = new DateTimeZoneReader(stream, stringPool);
+                    var count = reader.ReadCount();
+                    var array = new TzdbZone1970Location[count];
+                    for (int i = 0; i < count; i++)
+                    {
+                        array[i] = TzdbZone1970Location.Read(reader);
+                    }
+                    zone1970Locations = array;
                 }
             }
 

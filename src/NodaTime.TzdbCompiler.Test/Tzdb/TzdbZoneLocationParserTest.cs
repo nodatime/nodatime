@@ -6,6 +6,7 @@ using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using NodaTime.TzdbCompiler.Tzdb;
+using NodaTime.TimeZones;
 
 namespace NodaTime.TzdbCompiler.Test.Tzdb
 {
@@ -41,6 +42,25 @@ namespace NodaTime.TzdbCompiler.Test.Tzdb
             var location = TzdbZoneLocationParser.ParseLocation(line, SampleCountryMapping);
             Assert.AreEqual("GB", location.CountryCode);
             Assert.AreEqual("Britain (UK)", location.CountryName);
+            Assert.AreEqual(40, location.Latitude);
+            Assert.AreEqual(30, location.Longitude);
+            Assert.AreEqual("Europe/London", location.ZoneId);
+            Assert.AreEqual("", location.Comment);
+        }
+
+        // Most of the code is just from ParseLocation; this is a smoke test, really.
+        [Test]
+        public void ParseEnhancedLocation_Valid()
+        {
+            var countries = new Dictionary<string, TzdbZone1970Location.Country>
+            {
+                {  "CA", new TzdbZone1970Location.Country("Canada", "CA") },
+                {  "GB", new TzdbZone1970Location.Country("Britain (UK)", "GB") },
+                {  "US", new TzdbZone1970Location.Country("United States", "US") },
+            };
+            string line = "GB,CA\t+4000+03000\tEurope/London";
+            var location = TzdbZoneLocationParser.ParseEnhancedLocation(line, countries);
+            CollectionAssert.AreEqual(new[] { countries["GB"], countries["CA"] }, location.Countries);
             Assert.AreEqual(40, location.Latitude);
             Assert.AreEqual(30, location.Longitude);
             Assert.AreEqual("Europe/London", location.ZoneId);

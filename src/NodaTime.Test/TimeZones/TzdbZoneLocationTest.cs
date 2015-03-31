@@ -50,12 +50,15 @@ namespace NodaTime.Test.TimeZones
         }
 
         [Test]
-        public void NullStrings()
+        public void Constructor_InvalidArguments()
         {
             Assert.Throws<ArgumentNullException>(() => new TzdbZoneLocation(0, 0, null, "CO", "Zone", ""));
             Assert.Throws<ArgumentNullException>(() => new TzdbZoneLocation(0, 0, "Name", null, "Zone", ""));
             Assert.Throws<ArgumentNullException>(() => new TzdbZoneLocation(0, 0, "Name", "CO", null, ""));
             Assert.Throws<ArgumentNullException>(() => new TzdbZoneLocation(0, 0, "Name", "CO", "Zone", null));
+            Assert.Throws<ArgumentException>(() => new TzdbZoneLocation(0, 0, "", "CO", "Zone", ""));
+            Assert.Throws<ArgumentException>(() => new TzdbZoneLocation(0, 0, "Name", "Long code", "Zone", ""));
+            Assert.Throws<ArgumentException>(() => new TzdbZoneLocation(0, 0, "Name", "S", "Zone", ""));
         }
     }
 }

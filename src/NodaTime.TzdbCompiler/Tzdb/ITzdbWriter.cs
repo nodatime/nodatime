@@ -5,6 +5,7 @@
 using NodaTime.TimeZones.Cldr;
 namespace NodaTime.TzdbCompiler.Tzdb
 {
+    // TODO: Remove now that there's only one implementation.
     interface ITzdbWriter
     {
         void Write(TzdbDatabase tzdb, WindowsZones mapping);

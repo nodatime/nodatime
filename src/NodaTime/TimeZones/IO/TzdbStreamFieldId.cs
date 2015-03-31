@@ -41,6 +41,11 @@ namespace NodaTime.TimeZones.IO
         /// Single field providing all zone locations. The format is simply a count, and then that many copies of
         /// TzdbZoneLocation data.
         /// </summary>
-        ZoneLocations = 6
+        ZoneLocations = 6,
+        /// <summary>
+        /// Single field providing all "zone 1970" locations. The format is simply a count, and then that many copies of
+        /// TzdbZone1970Location data. This field was introduced in Noda Time 2.0.
+        /// </summary>
+        Zone1970Locations = 7
     }
 }

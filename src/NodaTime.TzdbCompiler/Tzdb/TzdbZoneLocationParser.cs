@@ -19,13 +19,12 @@ namespace NodaTime.TzdbCompiler.Tzdb
     internal static class TzdbZoneLocationParser
     {
         /// <summary>
-        /// Attempts to parse zone locations from zone.tab and iso3166.tab, storing the results in the database.
-        /// If the files are not both present, the database's zone location list will be cleared.
+        /// Attempts to parse zone locations from zone.tab and iso3166.tab, returning the results to be stored
+        /// in the database.
         /// </summary>
-        internal static IList<TzdbZoneLocation> ParseFiles(DirectoryInfo sourceDirectory)
+        internal static IList<TzdbZoneLocation> ParseZoneTab(DirectoryInfo sourceDirectory)
         {
             var iso3166File = Path.Combine(sourceDirectory.FullName, "iso3166.tab");
-            // TODO(2.0): Consider using zone1970.tab if it exists. This was introduced in 2014f.
             var zoneFile = Path.Combine(sourceDirectory.FullName, "zone.tab");
             if (!File.Exists(iso3166File) || !File.Exists(zoneFile))
             {
@@ -42,6 +41,30 @@ namespace NodaTime.TzdbCompiler.Tzdb
                        .ToList();
         }
 
+        /// <summary>
+        /// Attempts to parse zone locations from zone1970.tab and iso3166.tab, returning the results to be stored
+        /// in the database.
+        /// </summary>
+        internal static IList<TzdbZone1970Location> ParseZone1970Tab(DirectoryInfo sourceDirectory)
+        {
+            var iso3166File = Path.Combine(sourceDirectory.FullName, "iso3166.tab");
+            var zoneFile = Path.Combine(sourceDirectory.FullName, "zone1970.tab");
+            if (!File.Exists(iso3166File) || !File.Exists(zoneFile))
+            {
+                Console.WriteLine("Zone1970 location files missing; skipping");
+                return null;
+            }
+            var iso3166 = File.ReadAllLines(iso3166File)
+                              .Where(line => line != "" && !line.StartsWith("#"))
+                              .Select(line => line.Split('\t'))
+                              .ToDictionary(bits => bits[0], bits => new TzdbZone1970Location.Country(code: bits[0], name: bits[1]));
+            return File.ReadAllLines(zoneFile)
+                       .Where(line => line != "" && !line.StartsWith("#"))
+                       .Select(line => ParseEnhancedLocation(line, iso3166))
+                       .ToList();
+        }
+
+
         // Internal for testing
         internal static TzdbZoneLocation ParseLocation(string line, Dictionary<string, string> countryMapping)
         {
@@ -53,6 +76,19 @@ namespace NodaTime.TzdbCompiler.Tzdb
             string zoneId = bits[2];
             string comment = bits.Length == 4 ? bits[3] : "";
             return new TzdbZoneLocation(latLong[0], latLong[1], countryName, countryCode, zoneId, comment);
+        }
+
+        // Internal for testing
+        internal static TzdbZone1970Location ParseEnhancedLocation(string line, Dictionary<string, TzdbZone1970Location.Country> countryMapping)
+        {
+            string[] bits = line.Split('\t');
+            Preconditions.CheckArgument(bits.Length == 3 || bits.Length == 4, "line", "Line must have 3 or 4 tab-separated values");
+            string countryCodes = bits[0];
+            var countries = countryCodes.Split(',').Select(code => countryMapping[code]).ToList();
+            int[] latLong = ParseCoordinates(bits[1]);
+            string zoneId = bits[2];
+            string comment = bits.Length == 4 ? bits[3] : "";
+            return new TzdbZone1970Location(latLong[0], latLong[1], countries, zoneId, comment);
         }
 
         // Internal for testing
