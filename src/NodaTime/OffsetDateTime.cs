@@ -496,7 +496,7 @@ namespace NodaTime
         /// Returns a hash code for this offset date and time.
         /// </summary>
         /// <returns>A hash code for this offset date and time.</returns>
-        public override int GetHashCode() => HashCodeHelper.Initialize().Hash(LocalDateTime).Hash(Offset).Value;
+        public override int GetHashCode() => HashCodeHelper.Hash(LocalDateTime, Offset);
 
         /// <summary>
         /// Compares two <see cref="OffsetDateTime"/> values for equality. This requires
@@ -787,8 +787,7 @@ namespace NodaTime
                 x.yearMonthDayCalendar == y.yearMonthDayCalendar && x.NanosecondOfDay == y.NanosecondOfDay;
 
             /// <inheritdoc />
-            public override int GetHashCode(OffsetDateTime obj) =>
-                HashCodeHelper.Initialize().Hash(obj.yearMonthDayCalendar).Hash(obj.NanosecondOfDay).Value;
+            public override int GetHashCode(OffsetDateTime obj) => HashCodeHelper.Hash(obj.yearMonthDayCalendar, obj.NanosecondOfDay);
         }
 
         /// <summary>

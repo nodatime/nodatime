@@ -186,7 +186,7 @@ internal Instant RawEnd => end;
         /// A 32-bit signed integer that is the hash code for this instance.
         /// </returns>
         /// <filterpriority>2</filterpriority>
-        public override int GetHashCode() => HashCodeHelper.Initialize().Hash(Start).Hash(End).Value;
+        public override int GetHashCode() => HashCodeHelper.Hash(Start, End);
 
         /// <summary>
         /// Returns a string representation of this interval, in extended ISO-8601 format: the format

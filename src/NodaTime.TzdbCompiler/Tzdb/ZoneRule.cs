@@ -129,7 +129,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
         ///   A hash code for this instance, suitable for use in hashing algorithms and data
         ///   structures like a hash table. 
         /// </returns>
-        public override int GetHashCode() => HashCodeHelper.Initialize().Hash(Recurrence).Hash(LetterS).Value;
+        public override int GetHashCode() => HashCodeHelper.Hash(Recurrence, LetterS);
 
         /// <summary>
         ///   Returns a <see cref="System.String" /> that represents this instance.

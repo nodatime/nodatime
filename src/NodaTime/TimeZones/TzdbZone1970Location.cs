@@ -192,7 +192,7 @@ namespace NodaTime.TimeZones
             /// Returns a hash code for this country.
             /// </summary>
             /// <returns>A hash code for this country.</returns>
-            public override int GetHashCode() => HashCodeHelper.Initialize().Hash(Name).Hash(Code).Value;
+            public override int GetHashCode() => HashCodeHelper.Hash(Name, Code);
 
             /// <summary>
             /// Returns a string representation of this country, including the code and name.

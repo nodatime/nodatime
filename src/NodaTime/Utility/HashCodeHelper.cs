@@ -23,12 +23,12 @@ namespace NodaTime.Utility
         /// <summary>
         /// The multiplier for each value.
         /// </summary>
-        private const int HashcodeMultiplier = 37;
+        private const int HashCodeMultiplier = 37;
 
         /// <summary>
         /// The initial hash value.
         /// </summary>
-        private const int HashcodeInitializer = 17;
+        private const int HashCodeInitializer = 17;
 
         public int Value { get; }
 
@@ -38,10 +38,39 @@ namespace NodaTime.Utility
         }
 
         /// <summary>
+        /// Convenience method to hash two values.
+        /// </summary>
+        internal static int Hash<T1, T2>(T1 t1, T2 t2)
+        {
+            unchecked
+            {
+                int hash = HashCodeInitializer;
+                hash = hash * HashCodeMultiplier + (t1?.GetHashCode() ?? 0);
+                hash = hash * HashCodeMultiplier + (t2?.GetHashCode() ?? 0);
+                return hash;
+            }
+        }
+
+        /// <summary>
+        /// Convenience method to hash three values.
+        /// </summary>
+        internal static int Hash<T1, T2, T3>(T1 t1, T2 t2, T3 t3)
+        {
+            unchecked
+            {
+                int hash = HashCodeInitializer;
+                hash = hash * HashCodeMultiplier + (t1?.GetHashCode() ?? 0);
+                hash = hash * HashCodeMultiplier + (t2?.GetHashCode() ?? 0);
+                hash = hash * HashCodeMultiplier + (t3?.GetHashCode() ?? 0);
+                return hash;
+            }
+        }
+
+        /// <summary>
         /// Returns the initial value for a hash code.
         /// </summary>
-        /// <returns>The initial interger value.</returns>
-        internal static HashCodeHelper Initialize() => new HashCodeHelper(HashcodeInitializer);
+        /// <returns>The initial integer wrapped in a <see cref="HashCodeHelper"/> value.</returns>
+        internal static HashCodeHelper Initialize() => new HashCodeHelper(HashCodeInitializer);
 
         /// <summary>
         /// Adds the hash value for the given value to the current hash and returns the new value.
@@ -49,27 +78,12 @@ namespace NodaTime.Utility
         /// <typeparam name="T">The type of the value being hashed.</typeparam>
         /// <param name="value">The value to hash.</param>
         /// <returns>The new hash code.</returns>
-        internal HashCodeHelper Hash<T>(T value)
-        {
-            int hash = 0;
-            if (value != null)
-            {
-                hash = value.GetHashCode();
-            }
-            return MakeHash(hash);
-        }
-
-        /// <summary>
-        /// Adds a new hash value to the current hash value and returns the new value.
-        /// </summary>
-        /// <param name="extraValue">The value to add to the hash code.</param>
-        /// <returns>The new hash code.</returns>
         [SuppressMessage("Microsoft.Usage", "CA2233:OperationsShouldNotOverflow", Justification = "Deliberately overflowing.")]
-        private HashCodeHelper MakeHash(int extraValue)
+        internal HashCodeHelper Hash<T>(T value)
         {
             unchecked
             {
-                return new HashCodeHelper(Value * HashcodeMultiplier + extraValue);
+                return new HashCodeHelper(Value * HashCodeMultiplier + value?.GetHashCode() ?? 0);
             }
         }
     }

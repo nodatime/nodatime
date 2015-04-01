@@ -337,7 +337,7 @@ namespace NodaTime
         /// A 32-bit signed integer that is the hash code for this instance.
         /// </returns>
         /// <filterpriority>2</filterpriority>
-        public override int GetHashCode() => HashCodeHelper.Initialize().Hash(offsetDateTime).Hash(Zone).Value;
+        public override int GetHashCode() => HashCodeHelper.Hash(offsetDateTime, Zone);
         #endregion
 
         #region Operators
