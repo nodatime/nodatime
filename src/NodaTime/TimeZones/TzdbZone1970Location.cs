@@ -152,7 +152,7 @@ namespace NodaTime.TimeZones
             /// <summary>
             /// Gets the English name of the country.
             /// </summary>
-            /// <value>The English name of the country.
+            /// <value>The English name of the country.</value>
             public string Name { get; }
 
             /// <summary>
