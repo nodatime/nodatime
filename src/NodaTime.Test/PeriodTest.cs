@@ -368,18 +368,38 @@ namespace NodaTime.Test
         }
 
         [Test]
-        public void HasTimeComponent_SingleValued()
+        [TestCase(PeriodUnits.Years, false)]
+        [TestCase(PeriodUnits.Weeks, false)]
+        [TestCase(PeriodUnits.Months, false)]
+        [TestCase(PeriodUnits.Days, false)]
+        [TestCase(PeriodUnits.Hours, true)]
+        [TestCase(PeriodUnits.Minutes, true)]
+        [TestCase(PeriodUnits.Seconds, true)]
+        [TestCase(PeriodUnits.Milliseconds, true)]
+        [TestCase(PeriodUnits.Ticks, true)]
+        [TestCase(PeriodUnits.Nanoseconds, true)]
+        public void HasTimeComponent_SingleValued(PeriodUnits unit, bool hasTimeComponent)
         {
-            Assert.IsTrue(Period.FromHours(1).HasTimeComponent);
-            Assert.IsFalse(Period.FromDays(1).HasTimeComponent);
+            var period = new PeriodBuilder {[unit] = 1}.Build();
+            Assert.AreEqual(hasTimeComponent, period.HasTimeComponent);
         }
 
         [Test]
-        public void HasDateComponent_SingleValued()
+        [TestCase(PeriodUnits.Years, true)]
+        [TestCase(PeriodUnits.Weeks, true)]
+        [TestCase(PeriodUnits.Months, true)]
+        [TestCase(PeriodUnits.Days, true)]
+        [TestCase(PeriodUnits.Hours, false)]
+        [TestCase(PeriodUnits.Minutes, false)]
+        [TestCase(PeriodUnits.Seconds, false)]
+        [TestCase(PeriodUnits.Milliseconds, false)]
+        [TestCase(PeriodUnits.Ticks, false)]
+        [TestCase(PeriodUnits.Nanoseconds, false)]
+        public void HasDateComponent_SingleValued(PeriodUnits unit, bool hasDateComponent)
         {
-            Assert.IsFalse(Period.FromHours(1).HasDateComponent);
-            Assert.IsTrue(Period.FromDays(1).HasDateComponent);
-        }
+            var period = new PeriodBuilder {[unit] = 1 }.Build();
+            Assert.AreEqual(hasDateComponent, period.HasDateComponent);
+        }        
 
         [Test]
         public void HasTimeComponent_Compound()
@@ -430,6 +450,13 @@ namespace NodaTime.Test
         {
             Period period = Period.FromDays(1) +  Period.FromHours(2);
             Assert.AreEqual("P1DT2H", period.ToString());
+        }
+
+        [Test]
+        public void ToString_AllUnits()
+        {
+            Period period = new Period(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+            Assert.AreEqual("P1Y2M3W4DT5H6M7S8s9t10n", period.ToString());
         }
 
         [Test]
@@ -520,6 +547,15 @@ namespace NodaTime.Test
             var original = new PeriodBuilder { Milliseconds = 1, Ticks = 15000 }.Build();
             var normalized = original.Normalize();
             var expected = new PeriodBuilder { Milliseconds = 2, Ticks = 5000 }.Build();
+            Assert.AreEqual(expected, normalized);
+        }
+
+        [Test]
+        public void Normalize_Nanoseconds()
+        {
+            var original = new PeriodBuilder { Ticks = 1, Nanoseconds = 150 }.Build();
+            var normalized = original.Normalize();
+            var expected = new PeriodBuilder { Ticks = 2, Nanoseconds = 50}.Build();
             Assert.AreEqual(expected, normalized);
         }
 
@@ -746,12 +782,11 @@ namespace NodaTime.Test
         }
 
         [Test]
-        [Ignore("Still working on period, and determining value range of operations.")]
         [TestCaseSource("AllPeriodUnits")]
         public void Between_ExtremeValues(PeriodUnits units)
         {
-            // We can't use None, and Ticks will *correctly* overflow.
-            if (units == PeriodUnits.None || units == PeriodUnits.Ticks)
+            // We can't use None, and Ticks/Nanoseconds will *correctly* overflow.
+            if (units == PeriodUnits.None || units == PeriodUnits.Ticks || units== PeriodUnits.Nanoseconds)
             {
                 return;
             }
@@ -791,11 +826,11 @@ namespace NodaTime.Test
         {
             TestHelper.AssertBinaryRoundtrip(Period.Zero);
             // Check each field is distinct
-            TestHelper.AssertBinaryRoundtrip(new Period(1, 2, 3, 4, 5L, 6L, 7L, 8L, 9L, new Duration(10, 11L)));
+            TestHelper.AssertBinaryRoundtrip(new Period(1, 2, 3, 4, 5L, 6L, 7L, 8L, 9L, 10L));
             // Check we're not truncating to Int32... (except for date values)
             TestHelper.AssertBinaryRoundtrip(new Period(int.MaxValue, int.MaxValue, int.MinValue, int.MinValue, long.MaxValue,
                                                         long.MinValue, long.MinValue, long.MinValue, long.MinValue,
-                                                        new Duration(Duration.MaxDays, NodaConstants.NanosecondsPerDay - 1)));
+                                                        long.MinValue));
         }
 
         /// <summary>

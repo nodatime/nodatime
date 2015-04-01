@@ -2,6 +2,8 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
+using static NodaTime.NodaConstants;
+
 using System.Text;
 using NodaTime.Annotations;
 using NodaTime.Properties;
@@ -19,7 +21,7 @@ namespace NodaTime.Text
     {
         /// <summary>
         /// Pattern which uses the normal ISO format for all the supported ISO
-        /// fields, but extends the time part with "s" for milliseconds and "t" for ticks.
+        /// fields, but extends the time part with "s" for milliseconds, "t" for ticks and "n" for nanoseconds.
         /// No normalization is carried out, and a period may contain weeks as well as years, months and days.
         /// Each element may also be negative, independently of other elements. This pattern round-trips its
         /// values: a parse/format cycle will produce an identical period, including units.
@@ -149,6 +151,7 @@ namespace NodaTime.Text
                         case 'S': unit = PeriodUnits.Seconds; break;
                         case 's': unit = PeriodUnits.Milliseconds; break;
                         case 't': unit = PeriodUnits.Ticks; break;
+                        case 'n': unit = PeriodUnits.Nanoseconds; break;
                         default: return InvalidUnit(valueCursor, valueCursor.Current);
                     }
                     if ((unit & unitsSoFar) != 0)
@@ -193,6 +196,7 @@ namespace NodaTime.Text
                     AppendValue(builder, value.Seconds, "S");
                     AppendValue(builder, value.Milliseconds, "s");
                     AppendValue(builder, value.Ticks, "t");
+                    AppendValue(builder, value.Nanoseconds, "n");
                 }
                 return builder;
             }
@@ -257,7 +261,7 @@ namespace NodaTime.Text
                         case 'H': unit = PeriodUnits.Hours; break;
                         case 'S': unit = PeriodUnits.Seconds; break;
                         case ',':
-                        case '.': unit = PeriodUnits.Ticks; break; // Special handling below
+                        case '.': unit = PeriodUnits.Nanoseconds; break; // Special handling below
                         default: return InvalidUnit(valueCursor, valueCursor.Current);
                     }
                     if ((unit & unitsSoFar) != 0)
@@ -280,7 +284,7 @@ namespace NodaTime.Text
                     }
 
                     // Seen a . or , which need special handling.
-                    if (unit == PeriodUnits.Ticks)
+                    if (unit == PeriodUnits.Nanoseconds)
                     {
                         // Check for already having seen seconds, e.g. PT5S0.5
                         if ((unitsSoFar & PeriodUnits.Seconds) != 0)
@@ -293,9 +297,9 @@ namespace NodaTime.Text
                         {
                             return ParseResult<Period>.MissingNumber(valueCursor);
                         }
-                        int totalTicks;
-                        // Can cope with at most 9999999 ticks
-                        if (!valueCursor.ParseFraction(7, 7, out totalTicks, false))
+                        int totalNanoseconds;
+                        // Can cope with at most 999999999 nanoseconds
+                        if (!valueCursor.ParseFraction(9, 9, out totalNanoseconds, false))
                         {
                             return ParseResult<Period>.MissingNumber(valueCursor);
                         }
@@ -303,10 +307,11 @@ namespace NodaTime.Text
                         // as the indication of whether this value is negative.
                         if (negative)
                         {
-                            totalTicks = -totalTicks;
+                            totalNanoseconds = -totalNanoseconds;
                         }
-                        builder.Milliseconds = (totalTicks / NodaConstants.TicksPerMillisecond) % NodaConstants.MillisecondsPerSecond;
-                        builder.Ticks = totalTicks % NodaConstants.TicksPerMillisecond;
+                        builder.Milliseconds = (totalNanoseconds / NanosecondsPerMillisecond) % MillisecondsPerSecond;
+                        builder.Ticks = (totalNanoseconds / NanosecondsPerTick) % TicksPerMillisecond;
+                        builder.Nanoseconds = totalNanoseconds % NanosecondsPerTick;
 
                         if (valueCursor.Current != 'S')
                         {
@@ -352,21 +357,21 @@ namespace NodaTime.Text
                     builder.Append("T");
                     AppendValue(builder, value.Hours, "H");
                     AppendValue(builder, value.Minutes, "M");
-                    long ticks = value.Milliseconds * NodaConstants.TicksPerMillisecond + value.Ticks;
+                    long nanoseconds = value.Milliseconds * NanosecondsPerMillisecond + value.Ticks * NanosecondsPerTick + value.Nanoseconds;
                     long seconds = value.Seconds;
-                    if (ticks != 0 || seconds != 0)
+                    if (nanoseconds != 0 || seconds != 0)
                     {
-                        if (ticks < 0 || seconds < 0)
+                        if (nanoseconds < 0 || seconds < 0)
                         {
                             builder.Append("-");
-                            ticks = -ticks;
+                            nanoseconds = -nanoseconds;
                             seconds = -seconds;
                         }
                         FormatHelper.FormatInvariant(seconds, builder);
-                        if (ticks != 0)
+                        if (nanoseconds != 0)
                         {
                             builder.Append(".");
-                            FormatHelper.AppendFractionTruncate((int)ticks, 7, 7, builder);
+                            FormatHelper.AppendFractionTruncate((int)nanoseconds, 9, 9, builder);
                         }
                         builder.Append("S");
                     }

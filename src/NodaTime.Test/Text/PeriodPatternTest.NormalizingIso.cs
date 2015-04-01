@@ -73,7 +73,8 @@ namespace NodaTime.Test.Text
                 new Data(new PeriodBuilder { Seconds = 5 }) { Text = "PT5S" },
                 new Data(new PeriodBuilder { Milliseconds = 5 }) { Text = "PT0.005S" },
                 new Data(new PeriodBuilder { Ticks = 5 }) { Text = "PT0.0000005S" },
-                
+                new Data(new PeriodBuilder { Nanoseconds = 5 }) { Text = "PT0.000000005S" },
+
                 // Compound, negative and zero tests
                 new Data(new PeriodBuilder { Years = 5, Months = 2 }) { Text = "P5Y2M" },
                 new Data(new PeriodBuilder { Months = 1, Hours = 0 }) { Text = "P1M" },
