@@ -8,6 +8,7 @@ using NodaTime.Annotations;
 using NodaTime.TimeZones.IO;
 using NodaTime.Utility;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 
 namespace NodaTime.TimeZones
@@ -89,7 +90,7 @@ namespace NodaTime.TimeZones
             Preconditions.CheckArgumentRange(nameof(longitudeSeconds), longitudeSeconds, -180 * 3600, 180 * 3600);
             this.latitudeSeconds = latitudeSeconds;
             this.longitudeSeconds = longitudeSeconds;
-            this.Countries = Preconditions.CheckNotNull(countries, nameof(countries)).ToList().AsReadOnly();
+            this.Countries = new ReadOnlyCollection<Country>(Preconditions.CheckNotNull(countries, nameof(countries)).ToList());
             Preconditions.CheckArgument(Countries.Count > 0, nameof(countries),
                 "Collection must contain at least one entry");
             foreach (var entry in Countries)
