@@ -332,14 +332,7 @@ namespace NodaTime.TimeZones
         /// A hash code for this instance, suitable for use in hashing algorithms and data
         /// structures like a hash table. 
         /// </returns>
-        public override int GetHashCode()
-        {
-            int hash = HashCodeHelper.Initialize();
-            hash = HashCodeHelper.Hash(hash, Savings);
-            hash = HashCodeHelper.Hash(hash, Name);
-            hash = HashCodeHelper.Hash(hash, YearOffset);
-            return hash;
-        }
+        public override int GetHashCode() => HashCodeHelper.Initialize().Hash(Savings).Hash(Name).Hash(YearOffset).Value;
 
         /// <summary>
         /// Returns a <see cref="System.String"/> that represents this instance.

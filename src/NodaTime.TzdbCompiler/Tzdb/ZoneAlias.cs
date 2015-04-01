@@ -16,8 +16,17 @@ namespace NodaTime.TzdbCompiler.Tzdb
     /// </remarks>
     internal class ZoneAlias : IEquatable<ZoneAlias>
     {
-        private readonly string alias;
-        private readonly string existing;
+        /// <summary>
+        /// Gets the time zone alias name.
+        /// </summary>
+        /// <value>The alias name.</value>
+        internal string Alias { get; }
+
+        /// <summary>
+        /// Gets the existing time zone name.
+        /// </summary>
+        /// <value>The existing name.</value>
+        internal string Existing { get; }
 
         /// <summary>
         ///   Initializes a new instance of the <see cref="ZoneAlias" /> class.
@@ -26,29 +35,12 @@ namespace NodaTime.TzdbCompiler.Tzdb
         /// <param name="alias">The alias zone name.</param>
         internal ZoneAlias(string existing, string alias)
         {
-            this.existing = existing;
-            this.alias = alias;
-        }
-
-        /// <summary>
-        ///   Gets or sets the time zone alias name.
-        /// </summary>
-        /// <value>The alias name.</value>
-        internal string Alias
-        {
-            get { return alias; }
-        }
-
-        /// <summary>
-        ///   Gets or sets the existing time zone name.
-        /// </summary>
-        /// <value>The existing name.</value>
-        internal string Existing
-        {
-            get { return existing; }
+            this.Existing = existing;
+            this.Alias = alias;
         }
 
         #region IEquatable<ZoneAlias> Members
+
         /// <summary>
         ///   Indicates whether the current object is equal to another object of the same type.
         /// </summary>
@@ -57,14 +49,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
         ///   true if the current object is equal to the <paramref name = "other" /> parameter;
         ///   otherwise, false.
         /// </returns>
-        public bool Equals(ZoneAlias other)
-        {
-            if (other == null)
-            {
-                return false;
-            }
-            return Existing == other.Existing && Alias == other.Alias;
-        }
+        public bool Equals(ZoneAlias other) => other != null && Existing == other.Existing && Alias == other.Alias;
         #endregion
 
         /// <summary>
@@ -75,10 +60,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
         ///   <c>true</c> if the specified <see cref="System.Object" /> is equal to this instance;
         ///   otherwise, <c>false</c>.
         /// </returns>
-        public override bool Equals(object obj)
-        {
-            return Equals(obj as ZoneAlias);
-        }
+        public override bool Equals(object obj) => Equals(obj as ZoneAlias);
 
         /// <summary>
         ///   Returns a hash code for this instance.
@@ -87,13 +69,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
         ///   A hash code for this instance, suitable for use in hashing algorithms and data
         ///   structures like a hash table. 
         /// </returns>
-        public override int GetHashCode()
-        {
-            int hash = HashCodeHelper.Initialize();
-            hash = HashCodeHelper.Hash(hash, Existing);
-            hash = HashCodeHelper.Hash(hash, Alias);
-            return hash;
-        }
+        public override int GetHashCode() => HashCodeHelper.Initialize().Hash(Existing).Hash(Alias).Value;
 
         /// <summary>
         ///   Returns a <see cref="System.String" /> that represents this instance.
@@ -101,9 +77,6 @@ namespace NodaTime.TzdbCompiler.Tzdb
         /// <returns>
         ///   A <see cref="System.String" /> that represents this instance.
         /// </returns>
-        public override string ToString()
-        {
-            return Alias + " --> " + Existing;
-        }
+        public override string ToString() => $"{Alias} --> {Existing}";
     }
 }

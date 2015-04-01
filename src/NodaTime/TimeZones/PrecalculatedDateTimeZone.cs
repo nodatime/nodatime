@@ -242,16 +242,12 @@ namespace NodaTime.TimeZones
 
         public override int GetHashCode()
         {
-            int hash = HashCodeHelper.Initialize();
-            hash = HashCodeHelper.Hash(hash, Id);
-            hash = HashCodeHelper.Hash(hash, tailZoneStart);
-            hash = HashCodeHelper.Hash(hash, firstTailZoneInterval);
-            hash = HashCodeHelper.Hash(hash, tailZone);
+            var hash = HashCodeHelper.Initialize().Hash(Id).Hash(tailZoneStart).Hash(firstTailZoneInterval).Hash(tailZone);
             foreach (var period in periods)
             {
-                hash = HashCodeHelper.Hash(hash, period);
+                hash = hash.Hash(period);
             }
-            return hash;
+            return hash.Value;
         }
     }
 }

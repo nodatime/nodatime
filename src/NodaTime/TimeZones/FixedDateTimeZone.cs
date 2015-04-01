@@ -128,13 +128,7 @@ namespace NodaTime.TimeZones
         protected override bool EqualsImpl(DateTimeZone other) =>
             offset == ((FixedDateTimeZone)other).offset && Id == other.Id;
 
-        public override int GetHashCode()
-        {
-            int hash = HashCodeHelper.Initialize();
-            hash = HashCodeHelper.Hash(hash, offset);
-            hash = HashCodeHelper.Hash(hash, Id);
-            return hash;
-        }
+        public override int GetHashCode() => HashCodeHelper.Initialize().Hash(offset).Hash(Id).Value;
 
         /// <summary>
         /// Returns a <see cref="System.String"/> that represents this instance.

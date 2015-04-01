@@ -664,14 +664,7 @@ namespace NodaTime
         /// A hash code for this instance, suitable for use in hashing algorithms and data
         /// structures like a hash table. 
         /// </returns>
-        public override int GetHashCode()
-        {
-            int hash = HashCodeHelper.Initialize();
-            hash = HashCodeHelper.Hash(hash, date);
-            hash = HashCodeHelper.Hash(hash, time);
-            hash = HashCodeHelper.Hash(hash, Calendar);
-            return hash;
-        }
+        public override int GetHashCode() => HashCodeHelper.Initialize().Hash(date).Hash(time).Hash(Calendar).Value;
         #endregion
         /// <summary>
         /// Returns this date/time, with the given date adjuster applied to it, maintaing the existing time of day.

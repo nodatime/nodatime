@@ -70,15 +70,8 @@ namespace NodaTime.TimeZones
                 standardRecurrence.Equals(otherZone.standardRecurrence);
         }
 
-        public override int GetHashCode()
-        {
-            int hashCode = HashCodeHelper.Initialize();
-            hashCode = HashCodeHelper.Hash(hashCode, Id);
-            hashCode = HashCodeHelper.Hash(hashCode, standardOffset);
-            hashCode = HashCodeHelper.Hash(hashCode, dstRecurrence);
-            hashCode = HashCodeHelper.Hash(hashCode, standardRecurrence);
-            return hashCode;
-        }
+        public override int GetHashCode() =>
+            HashCodeHelper.Initialize().Hash(Id).Hash(standardOffset).Hash(dstRecurrence).Hash(standardRecurrence).Value;
 
         /// <summary>
         /// Gets the zone interval for the given instant.

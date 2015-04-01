@@ -276,23 +276,20 @@ namespace NodaTime.TimeZones
 
             public int GetHashCode(ZoneInterval obj)
             {
-                int hash = HashCodeHelper.Initialize();
+                var hash = HashCodeHelper.Initialize();
                 if (CheckOption(options, Options.MatchOffsetComponents))
                 {
-                    hash = HashCodeHelper.Hash(hash, obj.StandardOffset);
-                    hash = HashCodeHelper.Hash(hash, obj.Savings);
+                    hash = hash.Hash(obj.StandardOffset).Hash(obj.Savings);
                 }
                 else
                 {
-                    hash = HashCodeHelper.Hash(hash, obj.WallOffset);
+                    hash = hash.Hash(obj.WallOffset);
                 }
                 if (CheckOption(options, Options.MatchNames))
                 {
-                    hash = HashCodeHelper.Hash(hash, obj.Name);
+                    hash = hash.Hash(obj.Name);
                 }
-                hash = HashCodeHelper.Hash(hash, GetEffectiveStart(obj));
-                hash = HashCodeHelper.Hash(hash, GetEffectiveEnd(obj));
-                return hash;
+                return hash.Hash(GetEffectiveStart(obj)).Hash(GetEffectiveEnd(obj)).Value;
             }
 
             private Instant GetEffectiveStart(ZoneInterval zoneInterval) =>

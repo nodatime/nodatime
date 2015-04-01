@@ -116,18 +116,18 @@ namespace NodaTime.TzdbCompiler.Tzdb
         /// </returns>
         public override int GetHashCode()
         {
-            int hash = HashCodeHelper.Initialize();
-            hash = HashCodeHelper.Hash(hash, Name);
-            hash = HashCodeHelper.Hash(hash, Offset);
-            hash = HashCodeHelper.Hash(hash, Rules);
-            hash = HashCodeHelper.Hash(hash, Format);
-            hash = HashCodeHelper.Hash(hash, UntilYear);
+            var hash = HashCodeHelper.Initialize()
+                .Hash(Name)
+                .Hash(Offset)
+                .Hash(Rules)
+                .Hash(Format)
+                .Hash(UntilYear);
             if (UntilYear != Int32.MaxValue)
             {
-                hash = HashCodeHelper.Hash(hash, UntilYearOffset.GetHashCode());
+                hash = hash.Hash(UntilYearOffset.GetHashCode());
             }
 
-            return hash;
+            return hash.Value;
         }
 
         /// <summary>

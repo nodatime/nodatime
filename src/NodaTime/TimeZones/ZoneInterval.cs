@@ -295,16 +295,14 @@ namespace NodaTime.TimeZones
         ///   A hash code for the current <see cref="T:System.Object" />.
         /// </returns>
         /// <filterpriority>2</filterpriority>
-        public override int GetHashCode()
-        {
-            int hash = HashCodeHelper.Initialize();
-            hash = HashCodeHelper.Hash(hash, Name);
-            hash = HashCodeHelper.Hash(hash, RawStart);
-            hash = HashCodeHelper.Hash(hash, RawEnd);
-            hash = HashCodeHelper.Hash(hash, WallOffset);
-            hash = HashCodeHelper.Hash(hash, Savings);
-            return hash;
-        }
+        public override int GetHashCode() =>
+            HashCodeHelper.Initialize()
+                .Hash(Name)
+                .Hash(RawStart)
+                .Hash(RawEnd)
+                .Hash(WallOffset)
+                .Hash(Savings)
+                .Value;    
 
         /// <summary>
         ///   Returns a <see cref="System.String" /> that represents this instance.

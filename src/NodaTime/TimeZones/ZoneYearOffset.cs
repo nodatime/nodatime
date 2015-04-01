@@ -317,18 +317,16 @@ namespace NodaTime.TimeZones
         /// A hash code for this instance, suitable for use in hashing algorithms and data
         /// structures like a hash table. 
         /// </returns>
-        public override int GetHashCode()
-        {
-            int hash = HashCodeHelper.Initialize();
-            hash = HashCodeHelper.Hash(hash, Mode);
-            hash = HashCodeHelper.Hash(hash, monthOfYear);
-            hash = HashCodeHelper.Hash(hash, dayOfMonth);
-            hash = HashCodeHelper.Hash(hash, dayOfWeek);
-            hash = HashCodeHelper.Hash(hash, AdvanceDayOfWeek);
-            hash = HashCodeHelper.Hash(hash, TimeOfDay);
-            hash = HashCodeHelper.Hash(hash, addDay);
-            return hash;
-        }
+        public override int GetHashCode() =>
+            HashCodeHelper.Initialize()
+                .Hash(Mode)
+                .Hash(monthOfYear)
+                .Hash(dayOfMonth)
+                .Hash(dayOfWeek)
+                .Hash(AdvanceDayOfWeek)
+                .Hash(TimeOfDay)
+                .Hash(addDay)
+                .Value;
         #endregion
     }
 }

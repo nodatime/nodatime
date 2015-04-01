@@ -793,20 +793,18 @@ namespace NodaTime
         /// Returns the hash code for this period, consistent with <see cref="Equals(Period)"/>.
         /// </summary>
         /// <returns>The hash code for this period.</returns>
-        public override int GetHashCode()
-        {
-            int hash = HashCodeHelper.Initialize();
-            hash = HashCodeHelper.Hash(hash, Years);
-            hash = HashCodeHelper.Hash(hash, Months);
-            hash = HashCodeHelper.Hash(hash, Weeks);
-            hash = HashCodeHelper.Hash(hash, Days);
-            hash = HashCodeHelper.Hash(hash, Hours);
-            hash = HashCodeHelper.Hash(hash, Minutes);
-            hash = HashCodeHelper.Hash(hash, Seconds);
-            hash = HashCodeHelper.Hash(hash, Milliseconds);
-            hash = HashCodeHelper.Hash(hash, Ticks);
-            return hash;
-        }
+        public override int GetHashCode() =>
+            HashCodeHelper.Initialize()
+                .Hash(Years)
+                .Hash(Months)
+                .Hash(Weeks)
+                .Hash(Days)
+                .Hash(Hours)
+                .Hash(Minutes)
+                .Hash(Seconds)
+                .Hash(Milliseconds)
+                .Hash(Ticks)
+                .Value;
 
         /// <summary>
         /// Compares the given period for equality with this one.
