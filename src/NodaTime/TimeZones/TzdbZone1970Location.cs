@@ -15,7 +15,7 @@ namespace NodaTime.TimeZones
     /// <summary>
     /// A location entry generated from the "zone1970.tab" file in a TZDB release. This can be used to provide
     /// users with a choice of time zone, although it is not internationalized. This is equivalent to
-    /// <see cref="TzdbLocation"/>, except that multiple countries may be represented.
+    /// <see cref="TzdbZoneLocation"/>, except that multiple countries may be represented.
     /// </summary>
     /// <threadsafety>This type is immutable reference type. See the thread safety section of the user guide for more information.</threadsafety>
     // TODO: Once we've decided whether this approach (two separate classes) is appropriate, work out a better name.
@@ -76,8 +76,8 @@ namespace NodaTime.TimeZones
         /// </remarks>
         /// <param name="latitudeSeconds">Latitude of the location, in seconds.</param>
         /// <param name="longitudeSeconds">Longitude of the location, in seconds.</param>
-        /// <param name="countryName">English country name of the location, in degrees. Must not be null.</param>
-        /// <param name="countryCode">ISO-3166 country code of the location. Must not be null.</param>
+        /// <param name="countries">Countries associated with this location. Must not be null, must have at least
+        /// one entry, and all entries must be non-null.</param>
         /// <param name="zoneId">Time zone identifier of the location. Must not be null.</param>
         /// <param name="comment">Optional comment. Must not be null, but may be empty.</param>
         /// <exception cref="ArgumentOutOfRangeException">The latitude or longitude is invalid.</exception>
