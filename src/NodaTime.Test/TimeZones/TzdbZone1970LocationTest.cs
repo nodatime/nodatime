@@ -83,8 +83,7 @@ namespace NodaTime.Test.TimeZones
             Assert.Throws<ArgumentNullException>(() => new TzdbZone1970Location(0, 0, null, "Zone", ""));
             Assert.Throws<ArgumentException>(() => new TzdbZone1970Location(0, 0, new[] { SampleCountry, null }, "Zone", ""));
             Assert.Throws<ArgumentNullException>(() => new TzdbZone1970Location(0, 0, new[] { SampleCountry }, "Zone", null));
-
-            Assert.Throws<ArgumentException>(() => new TzdbZone1970Location(0, 0, new[] { SampleCountry }, null, ""));
+            Assert.Throws<ArgumentNullException>(() => new TzdbZone1970Location(0, 0, new[] { SampleCountry }, null, ""));
             Assert.Throws<ArgumentException>(() => new TzdbZone1970Location(0, 0, new Country[] { }, null, ""));
         }
 
@@ -101,7 +100,7 @@ namespace NodaTime.Test.TimeZones
         [Test]
         public void CountryEquality()
         {
-            TestHelper.TestEqualsClass(new Country("FR", "France"), new Country("FR", "France"), new Country("DE", "Germany"));
+            TestHelper.TestEqualsClass(new Country("France", "FR"), new Country("France", "FR"), new Country("Germany", "DE"));
         }
     }
 }
