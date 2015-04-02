@@ -24,9 +24,6 @@ namespace NodaTime.Test.Calendars
         /// </summary>
         internal static void AssertEquivalent(Calendar bcl, CalendarSystem noda, int fromYear, int toYear)
         {
-            // Note: Noda Time stops in 9377, whereas the BCL goes into the start of 9378. This is because
-            // Noda Time ensures that the whole year is valid.
-
             // We avoid asking the BCL to create a DateTime on each iteration, simply
             // because the BCL implementation is so slow. Instead, we just check at the start of each month that
             // we're at the date we expect.
