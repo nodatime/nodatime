@@ -2,10 +2,8 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-using System.IO;
 using NodaTime.Test.TimeZones.IO;
 using NodaTime.TimeZones;
-using NodaTime.TimeZones.IO;
 using NUnit.Framework;
 
 namespace NodaTime.Test.TimeZones
@@ -80,6 +78,7 @@ namespace NodaTime.Test.TimeZones
             var interval = zone.GetZoneInterval(NodaConstants.UnixEpoch);
             Assert.AreEqual("id", zone.Id); // Check we don't get this wrong...
             Assert.AreEqual("name", interval.Name);
+            Assert.AreEqual("name", zone.Name);
         }
 
         [Test]
@@ -88,6 +87,7 @@ namespace NodaTime.Test.TimeZones
             var zone = new FixedDateTimeZone("id", Offset.FromHours(5));
             var interval = zone.GetZoneInterval(NodaConstants.UnixEpoch);
             Assert.AreEqual("id", interval.Name);
+            Assert.AreEqual("id", zone.Name);
         }
 
         [Test]
@@ -96,12 +96,11 @@ namespace NodaTime.Test.TimeZones
             var ioHelper = DtzIoHelper.CreateNoStringPool();
             var offset = Offset.FromHours(5);
             ioHelper.Writer.WriteOffset(offset);
-            var zone = FixedDateTimeZone.Read(ioHelper.Reader, "id");
+            var zone = (FixedDateTimeZone) FixedDateTimeZone.Read(ioHelper.Reader, "id");
 
             Assert.AreEqual("id", zone.Id);
-            var interval = zone.GetZoneInterval(NodaConstants.UnixEpoch);
-            Assert.AreEqual(offset, interval.WallOffset);
-            Assert.AreEqual("id", interval.Name);
+            Assert.AreEqual(offset, zone.Offset);
+            Assert.AreEqual("id", zone.Name);
         }
 
         [Test]
@@ -111,12 +110,11 @@ namespace NodaTime.Test.TimeZones
             var offset = Offset.FromHours(5);
             ioHelper.Writer.WriteOffset(offset);
             ioHelper.Writer.WriteString("name");
-            var zone = FixedDateTimeZone.Read(ioHelper.Reader, "id");
+            var zone = (FixedDateTimeZone) FixedDateTimeZone.Read(ioHelper.Reader, "id");
 
             Assert.AreEqual("id", zone.Id);
-            var interval = zone.GetZoneInterval(NodaConstants.UnixEpoch);
-            Assert.AreEqual(offset, interval.WallOffset);
-            Assert.AreEqual("name", interval.Name);
+            Assert.AreEqual(offset, zone.Offset);
+            Assert.AreEqual("name", zone.Name);
         }
 
         [Test]
@@ -125,12 +123,11 @@ namespace NodaTime.Test.TimeZones
             var ioHelper = DtzIoHelper.CreateNoStringPool();
             var oldZone = new FixedDateTimeZone("id", Offset.FromHours(4), "name");
             oldZone.Write(ioHelper.Writer);
-            var newZone = FixedDateTimeZone.Read(ioHelper.Reader, "id");
+            var newZone = (FixedDateTimeZone) FixedDateTimeZone.Read(ioHelper.Reader, "id");
 
             Assert.AreEqual(oldZone.Id, newZone.Id);
-            var oldInterval = oldZone.GetZoneInterval(NodaConstants.UnixEpoch);
-            var newInterval = newZone.GetZoneInterval(NodaConstants.UnixEpoch);
-            Assert.AreEqual(oldInterval, newInterval);
+            Assert.AreEqual(oldZone.Offset, newZone.Offset);
+            Assert.AreEqual(oldZone.Name, newZone.Name);
         }
 
         [Test]

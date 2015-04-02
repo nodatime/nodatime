@@ -17,7 +17,6 @@ namespace NodaTime.TimeZones
     /// <threadsafety>This type is immutable reference type. See the thread safety section of the user guide for more information.</threadsafety>
     internal sealed class FixedDateTimeZone : DateTimeZone
     {
-        private readonly Offset offset;
         private readonly ZoneInterval interval;
 
         /// <summary>
@@ -48,7 +47,6 @@ namespace NodaTime.TimeZones
         /// <param name="name">The name to use in the sole <see cref="ZoneInterval"/> in this zone.</param>
         public FixedDateTimeZone([NotNull] string id, Offset offset, [NotNull] string name) : base(id, true, offset, offset)
         {
-            this.offset = offset;
             interval = new ZoneInterval(name, Instant.BeforeMinValue, Instant.AfterMaxValue, offset, Offset.Zero);
         }
 
@@ -91,7 +89,13 @@ namespace NodaTime.TimeZones
         /// Returns the fixed offset for this time zone.
         /// </summary>
         /// <returns>The fixed offset for this time zone.</returns>
-        public Offset Offset { get { return offset; } }
+        public Offset Offset => MaxOffset;
+
+        /// <summary>
+        /// Returns the name used for the zone interval for this time zone.
+        /// </summary>
+        /// <returns>The name used for the zone interval for this time zone.</returns>
+        public string Name => interval.Name;
 
         /// <summary>
         /// Gets the zone interval for the given instant. This implementation always returns the same interval.
@@ -112,7 +116,7 @@ namespace NodaTime.TimeZones
         /// <returns>
         /// The offset from UTC at the specified instant.
         /// </returns>
-        public override Offset GetUtcOffset(Instant instant) => offset;
+        public override Offset GetUtcOffset(Instant instant) => MaxOffset;
 
         /// <summary>
         /// Writes the time zone to the specified writer.
@@ -121,8 +125,8 @@ namespace NodaTime.TimeZones
         internal void Write([NotNull] IDateTimeZoneWriter writer)
         {
             Preconditions.CheckNotNull(writer, nameof(writer));
-            writer.WriteOffset(offset);
-            writer.WriteString(interval.Name);
+            writer.WriteOffset(Offset);
+            writer.WriteString(Name);
         }
 
         /// <summary>
@@ -141,9 +145,11 @@ namespace NodaTime.TimeZones
         }
 
         protected override bool EqualsImpl(DateTimeZone other) =>
-            offset == ((FixedDateTimeZone)other).offset && Id == other.Id;
+            Offset == ((FixedDateTimeZone)other).Offset &&
+            Id == other.Id && 
+            ((FixedDateTimeZone)other).Name == Name;
 
-        public override int GetHashCode() => HashCodeHelper.Hash(offset, Id);
+        public override int GetHashCode() => HashCodeHelper.Hash(Offset, Id, Name);
 
         /// <summary>
         /// Returns a <see cref="System.String"/> that represents this instance.
