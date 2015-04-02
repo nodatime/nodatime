@@ -13,8 +13,7 @@ using NodaTime.TimeZones.Cldr;
 namespace NodaTime.TzdbCompiler.Tzdb
 {
     /// <summary>
-    /// Implementation of ITzdbWriter which writes in a custom format directly
-    /// to a stream.
+    /// Writes time zone data to a stream in nzd format. 
     /// </summary>
     /// <remarks>
     /// <para>The file format consists of four bytes indicating the file format version/type (mostly for
@@ -28,7 +27,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
     /// or if old fields are removed. 
     /// </para>
     /// </remarks>
-    internal sealed class TzdbStreamWriter : ITzdbWriter
+    internal sealed class TzdbStreamWriter
     {
         private const int Version = 0;
 

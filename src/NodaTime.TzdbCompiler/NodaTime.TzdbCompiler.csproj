@@ -76,7 +76,6 @@
     <Compile Include="OutputType.cs" />
     <Compile Include="Tokens.cs" />
     <Compile Include="Tzdb\DateTimeZoneBuilder.cs" />
-    <Compile Include="Tzdb\ITzdbWriter.cs" />
     <Compile Include="Tzdb\MissingTokenException.cs" />
     <Compile Include="Tzdb\ParserHelper.cs" />
     <Compile Include="CompilerOptions.cs" />

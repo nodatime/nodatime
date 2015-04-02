@@ -63,7 +63,7 @@ namespace NodaTime.TzdbCompiler
             Console.WriteLine("  {0} primary mappings", windowsZones.PrimaryMapping.Count);
         }
 
-        private static ITzdbWriter CreateWriter(CompilerOptions options)
+        private static TzdbStreamWriter CreateWriter(CompilerOptions options)
         {
             string file = Path.ChangeExtension(options.OutputFileName, "nzd");
             return new TzdbStreamWriter(File.Create(file));
