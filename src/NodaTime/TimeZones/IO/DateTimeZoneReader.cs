@@ -16,13 +16,41 @@ namespace NodaTime.TimeZones.IO
     /// </summary>
     internal sealed class DateTimeZoneReader : IDateTimeZoneReader
     {
+        /// <summary>
+        /// Raw stream to read from. Be careful before reading from this - you need to take
+        /// account of bufferedByte as well.
+        /// </summary>
         private readonly Stream input;
-        private readonly IList<string> stringPool; 
+        private readonly IList<string> stringPool;
+        /// <summary>
+        /// Sometimes we need to buffer a byte in memory, e.g. to check if there is any
+        /// more data. Anything reading directly from the stream should check here first.
+        /// </summary>
+        private byte? bufferedByte; 
 
         internal DateTimeZoneReader(Stream input, IList<string> stringPool)
         {
             this.input = input;
             this.stringPool = stringPool;
+        }
+
+        public bool HasMoreData
+        {
+            get
+            {
+                if (bufferedByte != null)
+                {
+                    return true;
+                }
+                int nextByte = input.ReadByte();
+                if (nextByte == -1)
+                {
+                    return false;
+                }
+                // Okay, we got a byte - remember it for the next call to ReadByte.
+                bufferedByte = (byte) nextByte;
+                return true;
+            }
         }
 
         /// <summary>
@@ -212,12 +240,14 @@ namespace NodaTime.TimeZones.IO
         {
             if (stringPool == null)
             {
+                // This will flush the buffered byte if there is one, so we don't need to worry about that
+                // when reading the actual data.
                 int length = ReadCount();
                 var data = new byte[length];
                 int offset = 0;
                 while (offset < length)
                 {
-                    int bytesRead = input.Read(data, 0, length);
+                    int bytesRead = input.Read(data, offset, length - offset);
                     if (bytesRead <= 0)
                     {
                         throw new InvalidNodaDataException("Unexpectedly reached end of data with " + (length - offset) + " bytes still to read");
@@ -283,6 +313,12 @@ namespace NodaTime.TimeZones.IO
         /// <inheritdoc />
         public byte ReadByte()
         {
+            if (bufferedByte != null)
+            {
+                byte ret = bufferedByte.Value;
+                bufferedByte = null;
+                return ret;
+            }
             int value = input.ReadByte();
             if (value == -1)
             {

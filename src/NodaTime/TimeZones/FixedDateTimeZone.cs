@@ -23,6 +23,7 @@ namespace NodaTime.TimeZones
         /// <summary>
         /// Creates a new fixed time zone.
         /// </summary>
+        /// <remarks>The ID and name (for the <see cref="ZoneInterval"/>) are generated based on the offset.</remarks>
         /// <param name="offset">The <see cref="Offset"/> from UTC.</param>
         public FixedDateTimeZone(Offset offset) : this(MakeId(offset), offset)
         {
@@ -31,12 +32,24 @@ namespace NodaTime.TimeZones
         /// <summary>
         /// Initializes a new instance of the <see cref="FixedDateTimeZone"/> class.
         /// </summary>
+        /// <remarks>The name (for the <see cref="ZoneInterval"/>) is deemed to be the same as the ID.</remarks>
         /// <param name="id">The id.</param>
         /// <param name="offset">The offset.</param>
-        public FixedDateTimeZone([NotNull] string id, Offset offset) : base(id, true, offset, offset)
+        public FixedDateTimeZone([NotNull] string id, Offset offset) : this(id, offset, id)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FixedDateTimeZone"/> class.
+        /// </summary>
+        /// <remarks>The name (for the <see cref="ZoneInterval"/>) is deemed to be the same as the ID.</remarks>
+        /// <param name="id">The id.</param>
+        /// <param name="offset">The offset.</param>
+        /// <param name="name">The name to use in the sole <see cref="ZoneInterval"/> in this zone.</param>
+        public FixedDateTimeZone([NotNull] string id, Offset offset, [NotNull] string name) : base(id, true, offset, offset)
         {
             this.offset = offset;
-            interval = new ZoneInterval(id, Instant.BeforeMinValue, Instant.AfterMaxValue, offset, Offset.Zero);
+            interval = new ZoneInterval(name, Instant.BeforeMinValue, Instant.AfterMaxValue, offset, Offset.Zero);
         }
 
         /// <summary>
@@ -109,6 +122,7 @@ namespace NodaTime.TimeZones
         {
             Preconditions.CheckNotNull(writer, nameof(writer));
             writer.WriteOffset(offset);
+            writer.WriteString(interval.Name);
         }
 
         /// <summary>
@@ -122,7 +136,8 @@ namespace NodaTime.TimeZones
             Preconditions.CheckNotNull(reader, nameof(reader));
             Preconditions.CheckNotNull(id, nameof(id));
             var offset = reader.ReadOffset();
-            return new FixedDateTimeZone(id, offset);
+            var name = reader.HasMoreData ? reader.ReadString() : id;
+            return new FixedDateTimeZone(id, offset, name);
         }
 
         protected override bool EqualsImpl(DateTimeZone other) =>

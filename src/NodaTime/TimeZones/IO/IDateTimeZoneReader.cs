@@ -16,6 +16,12 @@ namespace NodaTime.TimeZones.IO
     internal interface IDateTimeZoneReader
     {
         /// <summary>
+        /// Returns whether or not there is more data in this stream.
+        /// </summary>
+        /// <value>Whether or not there is more data in the stream.</value>
+        bool HasMoreData { get; }
+
+        /// <summary>
         /// Reads a non-negative integer from the stream, which must have been written
         /// by a call to <see cref="IDateTimeZoneWriter.WriteCount"/>.
         /// </summary>

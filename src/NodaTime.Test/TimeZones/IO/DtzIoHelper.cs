@@ -43,13 +43,13 @@ namespace NodaTime.Test.TimeZones.IO
         ///   Gets the reader.
         /// </summary>
         /// <value>The reader.</value>
-        private IDateTimeZoneReader Reader { get; set; }
+        internal IDateTimeZoneReader Reader { get; set; }
 
         /// <summary>
         ///   Gets the writer.
         /// </summary>
         /// <value>The writer.</value>
-        private IDateTimeZoneWriter Writer { get; set; }
+        internal IDateTimeZoneWriter Writer { get; set; }
 
         public void Reset()
         {
