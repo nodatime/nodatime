@@ -204,6 +204,13 @@ namespace NodaTime.Test.TimeZones
         }
 
         [Test]
+        public void FixedDateTimeZoneName()
+        {
+            var zulu = DateTimeZoneProviders.Tzdb["Etc/Zulu"];
+            Assert.AreEqual("UTC", zulu.GetZoneInterval(NodaConstants.UnixEpoch).Name);
+        }
+
+        [Test]
         public void VersionId()
         {
             var source = TzdbDateTimeZoneSource.Default;

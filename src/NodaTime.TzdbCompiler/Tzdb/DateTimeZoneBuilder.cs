@@ -201,7 +201,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
                     case 0:
                         return new FixedDateTimeZone(zoneId, Offset.Zero);
                     case 1:
-                        return new FixedDateTimeZone(zoneId, transitions[0].WallOffset);
+                        return new FixedDateTimeZone(zoneId, transitions[0].WallOffset, transitions[0].Name);
                     default:
                         var ret = CreatePrecalculatedDateTimeZone(zoneId, transitions, Instant.AfterMaxValue, null);
                         return ret.IsCachable() ? CachedDateTimeZone.ForZone(ret) : ret;
