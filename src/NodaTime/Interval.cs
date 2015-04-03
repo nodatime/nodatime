@@ -123,11 +123,11 @@ namespace NodaTime
             }
         }
 
-/// <summary>
-/// Returns the raw end value of the interval: a normal instant or <see cref="Instant.AfterMaxValue"/>.
-/// This value should never be exposed.
-/// </summary>
-internal Instant RawEnd => end;
+        /// <summary>
+        /// Returns the raw end value of the interval: a normal instant or <see cref="Instant.AfterMaxValue"/>.
+        /// This value should never be exposed.
+        /// </summary>
+        internal Instant RawEnd => end;
 
         /// <summary>
         /// Returns <c>true</c> if this interval has a fixed end point, or <c>false</c> if it
@@ -164,7 +164,7 @@ internal Instant RawEnd => end;
         /// true if the value of this instant is equal to the value of the <paramref name="other" /> parameter;
         /// otherwise, false.
         /// </returns>
-        public bool Equals(Interval other) => Start == other.Start && End == other.End;
+        public bool Equals(Interval other) => start == other.start && end == other.end;
         #endregion
 
         #region object overrides
@@ -186,7 +186,7 @@ internal Instant RawEnd => end;
         /// A 32-bit signed integer that is the hash code for this instance.
         /// </returns>
         /// <filterpriority>2</filterpriority>
-        public override int GetHashCode() => HashCodeHelper.Hash(Start, End);
+        public override int GetHashCode() => HashCodeHelper.Hash(start, end);
 
         /// <summary>
         /// Returns a string representation of this interval, in extended ISO-8601 format: the format
@@ -198,7 +198,7 @@ internal Instant RawEnd => end;
         public override string ToString()
         {
             var pattern = InstantPattern.ExtendedIsoPattern;
-            return pattern.Format(Start) + "/" + pattern.Format(End);
+            return pattern.Format(start) + "/" + pattern.Format(end);
         }
         #endregion
 
@@ -229,16 +229,8 @@ internal Instant RawEnd => end;
         {
             Preconditions.CheckNotNull(reader, nameof(reader));
             var pattern = InstantPattern.ExtendedIsoPattern;
-            if (!reader.MoveToAttribute("start"))
-            {
-                throw new ArgumentException("No start specified in XML for Interval");
-            }
-            Instant newStart = pattern.Parse(reader.Value).Value;
-            if (!reader.MoveToAttribute("end"))
-            {
-                throw new ArgumentException("No end specified in XML for Interval");
-            }
-            Instant newEnd = pattern.Parse(reader.Value).Value;
+            Instant newStart = reader.MoveToAttribute("start") ? pattern.Parse(reader.Value).Value : Instant.BeforeMinValue;
+            Instant newEnd = reader.MoveToAttribute("end") ? pattern.Parse(reader.Value).Value : Instant.AfterMaxValue;
             this = new Interval(newStart, newEnd);
             // Consume the rest of this element, as per IXmlSerializable.ReadXml contract.
             reader.Skip();
@@ -249,8 +241,14 @@ internal Instant RawEnd => end;
         {
             Preconditions.CheckNotNull(writer, nameof(writer));
             var pattern = InstantPattern.ExtendedIsoPattern;
-            writer.WriteAttributeString("start", pattern.Format(start));
-            writer.WriteAttributeString("end", pattern.Format(end));
+            if (HasStart)
+            {
+                writer.WriteAttributeString("start", pattern.Format(start));
+            }
+            if (HasEnd)
+            {
+                writer.WriteAttributeString("end", pattern.Format(end));
+            }
         }
         #endregion
 
@@ -260,6 +258,7 @@ internal Instant RawEnd => end;
         private const string EndDaysSerializationName = "endDays";
         private const string StartNanosecondOfDaySerializationName = "startNanoOfDay";
         private const string EndNanosecondOfDaySerializationName = "endNanoOfDay";
+        private const string PresenceName = "presence";
 
         /// <summary>
         /// Private constructor only present for serialization.
@@ -267,9 +266,14 @@ internal Instant RawEnd => end;
         /// <param name="info">The <see cref="SerializationInfo"/> to fetch data from.</param>
         /// <param name="context">The source for this deserialization.</param>
         private Interval([NotNull] SerializationInfo info, StreamingContext context)
-            : this(new Instant(new Duration(info, StartDaysSerializationName, StartNanosecondOfDaySerializationName)),
-                   new Instant(new Duration(info, EndDaysSerializationName, EndNanosecondOfDaySerializationName)))
         {
+            var presence = info.GetByte(PresenceName);
+            start = (presence & 1) == 0 ?
+                Instant.BeforeMinValue
+                : new Instant(new Duration(info, StartDaysSerializationName, StartNanosecondOfDaySerializationName));
+            end = (presence & 2) == 0 ?
+                Instant.AfterMaxValue
+                : new Instant(new Duration(info, EndDaysSerializationName, EndNanosecondOfDaySerializationName));
         }
 
         /// <summary>
@@ -280,9 +284,19 @@ internal Instant RawEnd => end;
         [System.Security.SecurityCritical]
         void ISerializable.GetObjectData([NotNull] SerializationInfo info, StreamingContext context)
         {
+            // We can't easily tell which fields are present based on SerializationInfo (other than by iterating),
+            // so we add one extra value to say which other values to include. We may wish to generalize this
+            // at some point...
+            info.AddValue(PresenceName, (byte) ((HasStart ? 1 : 0) | (HasEnd ? 2 : 0)));
             // FIXME:SERIALIZATION
-            start.TimeSinceEpoch.Serialize(info, StartDaysSerializationName, StartNanosecondOfDaySerializationName);
-            end.TimeSinceEpoch.Serialize(info, EndDaysSerializationName, EndNanosecondOfDaySerializationName);
+            if (HasStart)
+            {
+                start.TimeSinceEpoch.Serialize(info, StartDaysSerializationName, StartNanosecondOfDaySerializationName);
+            }
+            if (HasEnd)
+            {
+                end.TimeSinceEpoch.Serialize(info, EndDaysSerializationName, EndNanosecondOfDaySerializationName);
+            }
         }
         #endregion
 #endif

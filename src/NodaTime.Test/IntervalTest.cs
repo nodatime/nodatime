@@ -44,6 +44,18 @@ namespace NodaTime.Test
                 new Interval(SampleStart, SampleEnd),
                 new Interval(SampleStart, SampleEnd),
                 new Interval(NodaConstants.UnixEpoch, SampleEnd));
+            TestHelper.TestEqualsStruct(
+                new Interval(null, SampleEnd),
+                new Interval(null, SampleEnd),
+                new Interval(NodaConstants.UnixEpoch, SampleEnd));
+            TestHelper.TestEqualsStruct(
+                new Interval(SampleStart, SampleEnd),
+                new Interval(SampleStart, SampleEnd),
+                new Interval(NodaConstants.UnixEpoch, SampleEnd));
+            TestHelper.TestEqualsStruct(
+                new Interval(null, null),
+                new Interval(null, null),
+                new Interval(NodaConstants.UnixEpoch, SampleEnd));
         }
 
         [Test]
@@ -76,6 +88,9 @@ namespace NodaTime.Test
         public void BinarySerialization()
         {
             TestHelper.AssertBinaryRoundtrip(new Interval(SampleStart, SampleEnd));
+            TestHelper.AssertBinaryRoundtrip(new Interval(null, SampleEnd));
+            TestHelper.AssertBinaryRoundtrip(new Interval(SampleStart, null));
+            TestHelper.AssertBinaryRoundtrip(new Interval(null, null));
         }
 
         [Test]
@@ -85,6 +100,13 @@ namespace NodaTime.Test
             var end = new LocalDateTime(2013, 10, 12, 17, 1, 2, 120).InUtc().ToInstant();
             var value = new Interval(start, end);
             Assert.AreEqual("2013-04-12T17:53:23.1234567Z/2013-10-12T17:01:02.12Z", value.ToString());
+        }
+
+        [Test]
+        public void ToString_Infinite()
+        {
+            var value = new Interval(null, null);
+            Assert.AreEqual("StartOfTime/EndOfTime", value.ToString());
         }
 
         [Test]
@@ -123,14 +145,35 @@ namespace NodaTime.Test
         }
 
         [Test]
+        public void XmlSerialization_FromBeginningOfTime()
+        {
+            var end = new LocalDateTime(2013, 10, 12, 17, 1, 2).InUtc().ToInstant();
+            var value = new Interval(null, end);
+            TestHelper.AssertXmlRoundtrip(value, "<value end=\"2013-10-12T17:01:02Z\" />");
+        }
+
+        [Test]
+        public void XmlSerialization_ToEndOfTime()
+        {
+            var start = new LocalDateTime(2013, 10, 12, 17, 1, 2).InUtc().ToInstant();
+            var value = new Interval(start, null);
+            TestHelper.AssertXmlRoundtrip(value, "<value start=\"2013-10-12T17:01:02Z\" />");
+        }
+
+        [Test]
+        public void XmlSerialization_AllOfTime()
+        {
+            var value = new Interval(null, null);
+            TestHelper.AssertXmlRoundtrip(value, "<value />");
+        }
+
+        [Test]
         [TestCase("<value start=\"2013-15-12T17:53:23Z\" end=\"2013-11-12T17:53:23Z\"/>",
             typeof(UnparsableValueException), Description = "Invalid month in start")]
         [TestCase("<value start=\"2013-11-12T17:53:23Z\" end=\"2013-15-12T17:53:23Z\"/>",
             typeof(UnparsableValueException), Description = "Invalid month in end")]
         [TestCase("<value start=\"2013-11-12T17:53:23Z\" end=\"2013-11-12T16:53:23Z\"/>",
             typeof(ArgumentOutOfRangeException), Description = "End before start")]
-        [TestCase("<value start=\"2013-11-12T17:53:23Z\"/>", typeof(ArgumentException), Description = "No end")]
-        [TestCase("<value end=\"2013-11-12T16:53:23Z\"/>", typeof(ArgumentException), Description = "No start")]
         public void XmlSerialization_Invalid(string xml, Type expectedExceptionType)
         {
             TestHelper.AssertXmlInvalid<Interval>(xml, expectedExceptionType);

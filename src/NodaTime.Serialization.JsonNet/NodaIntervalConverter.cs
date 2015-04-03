@@ -23,10 +23,8 @@ namespace NodaTime.Serialization.JsonNet
         /// <returns>The <see cref="DateTimeZone"/> identified in the JSON, or null.</returns>
         protected override Interval ReadJsonImpl(JsonReader reader, JsonSerializer serializer)
         {
-            var startInstant = default(Instant);
-            var endInstant = default(Instant);
-            var gotStartInstant = false;
-            var gotEndInstant = false;
+            Instant? startInstant = null;
+            Instant? endInstant = null;
             while (reader.Read())
             {
                 if (reader.TokenType != JsonToken.PropertyName)
@@ -45,19 +43,12 @@ namespace NodaTime.Serialization.JsonNet
                 if (propertyName == "Start")
                 {
                     startInstant = serializer.Deserialize<Instant>(reader);
-                    gotStartInstant = true;
                 }
 
                 if (propertyName == "End")
                 {
                     endInstant = serializer.Deserialize<Instant>(reader);
-                    gotEndInstant = true;
                 }
-            }
-
-            if (!(gotStartInstant && gotEndInstant))
-            {
-                throw new InvalidNodaDataException("An Interval must contain Start and End properties.");
             }
 
             return new Interval(startInstant, endInstant);
@@ -72,10 +63,16 @@ namespace NodaTime.Serialization.JsonNet
         protected override void WriteJsonImpl(JsonWriter writer, Interval value, JsonSerializer serializer)
         {
             writer.WriteStartObject();
-            writer.WritePropertyName("Start");
-            serializer.Serialize(writer, value.Start);
-            writer.WritePropertyName("End");
-            serializer.Serialize(writer, value.End);
+            if (value.HasStart)
+            {
+                writer.WritePropertyName("Start");
+                serializer.Serialize(writer, value.Start);
+            }
+            if (value.HasEnd)
+            {
+                writer.WritePropertyName("End");
+                serializer.Serialize(writer, value.End);
+            }
             writer.WriteEndObject();
         }
     }

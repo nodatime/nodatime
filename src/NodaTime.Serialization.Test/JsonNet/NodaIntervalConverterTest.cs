@@ -2,6 +2,8 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
+using static NodaTime.Serialization.Test.JsonNet.TestHelper;
+
 using Newtonsoft.Json;
 using NodaTime.Serialization.JsonNet;
 using NodaTime.Utility;
@@ -19,45 +21,21 @@ namespace NodaTime.Serialization.Test.JsonNet
         };
 
         [Test]
-        public void Serialize()
+        public void RoundTrip()
         {
             var startInstant = Instant.FromUtc(2012, 1, 2, 3, 4, 5) + Duration.FromMilliseconds(670);
-            var endInstant = Instant.FromUtc(2013, 6, 7, 8, 9, 10) + Duration.FromTicks(1234567);
+            var endInstant = Instant.FromUtc(2013, 6, 7, 8, 9, 10) + Duration.FromNanoseconds(123456789);
             var interval = new Interval(startInstant, endInstant);
-
-            var json = JsonConvert.SerializeObject(interval, Formatting.None, settings);
-
-            string expectedJson = "{\"Start\":\"2012-01-02T03:04:05.67Z\",\"End\":\"2013-06-07T08:09:10.1234567Z\"}";
-            Assert.AreEqual(expectedJson, json);
+            AssertConversions(interval, "{\"Start\":\"2012-01-02T03:04:05.67Z\",\"End\":\"2013-06-07T08:09:10.123456789Z\"}", settings);
         }
 
         [Test]
-        public void Deserialize()
+        public void RoundTrip_Infinite()
         {
-            string json = "{\"Start\":\"2012-01-02T03:04:05.67Z\",\"End\":\"2013-06-07T08:09:10.1234567Z\"}";
-
-            var interval = JsonConvert.DeserializeObject<Interval>(json, settings);
-
-            var startInstant = Instant.FromUtc(2012, 1, 2, 3, 4, 5) + Duration.FromMilliseconds(670);
-            var endInstant = Instant.FromUtc(2013, 6, 7, 8, 9, 10) + Duration.FromTicks(1234567);
-            var expectedInterval = new Interval(startInstant, endInstant);
-            Assert.AreEqual(expectedInterval, interval);
-        }
-
-        [Test]
-        public void Deserialize_MissingEnd()
-        {
-            string json = "{\"Start\":\"2012-01-02T03:04:05Z\"}";
-
-            Assert.Throws<InvalidNodaDataException>(() => JsonConvert.DeserializeObject<Interval>(json, settings));
-        }
-
-        [Test]
-        public void Deserialize_MissingStart()
-        {
-            string json = "{\"End\":\"2012-01-02T03:04:05Z\"}";
-
-            Assert.Throws<InvalidNodaDataException>(() => JsonConvert.DeserializeObject<Interval>(json, settings));
+            var instant = Instant.FromUtc(2013, 6, 7, 8, 9, 10) + Duration.FromNanoseconds(123456789);
+            AssertConversions(new Interval(null, instant), "{\"End\":\"2013-06-07T08:09:10.123456789Z\"}", settings);
+            AssertConversions(new Interval(instant, null), "{\"Start\":\"2013-06-07T08:09:10.123456789Z\"}", settings);
+            AssertConversions(new Interval(null, null), "{}", settings);
         }
 
         [Test]

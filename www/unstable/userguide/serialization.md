@@ -89,7 +89,8 @@ out of the way of those who don't.
 
 Most serialized forms just consist of element text using a specified text handling pattern, as described below. Types which support multiple calendar systems additionally use the `calendar` attribute for the calendar system ID (but only when the calendar system of the value isn't the ISO calendar), while `ZonedDateTime` always uses an extra `zone` attribute for the time zone ID.
 
-`PeriodBuilder` and `Interval` are somewhat different: `PeriodBuilder` uses the round-trip text representation of the `Period` that would be built by it, while `Interval` has only `start` and `end` attributes, each of which is represented as the respective `Instant` converted using the extended ISO pattern.
+`PeriodBuilder` and `Interval` are somewhat different: `PeriodBuilder` uses the round-trip text representation of the `Period` that would be built by it, while `Interval` has only `start` and `end` attributes, each of which is represented as the respective `Instant` converted using the extended ISO pattern. (If an interval has no start or has no end, due to extending to the start or end of time,
+the corresponding attribute is omitted.)
 
 <table>
   <thead>
@@ -222,7 +223,10 @@ All default patterns use the invariant culture.
  offset always includes hours and minutes, to conform with ECMA-262.
  It does not support round-tripping offsets with sub-minute components.
 - `ZonedDateTime`: As `OffsetDateTime`, but with a time zone ID at the end: `yyyy'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFFFFo<G> z`
-- `Interval`: A compound object of the form `{ Start: xxx, End: yyy }` where `xxx` and `yyy` are represented however the serializer sees fit. (Typically using the default representation above.) An alternative form can be specified using the `WithIsoIntervalConverter` extension method on `JsonSerializer`/`JsonSerializerSettings`.
+- `Interval`: A compound object of the form `{ Start: xxx, End: yyy }` where `xxx` and `yyy` are represented however the serializer
+  sees fit. (Typically using the default representation above.) An alternative form can be specified using the `WithIsoIntervalConverter` 
+  extension method on `JsonSerializer`/`JsonSerializerSettings`. If an interval is infinite in either direction, the corresponding
+  property is omitted.
 - `Offset`: general pattern, e.g. `+05` or `-03:30`
 - `Period`: The round-trip period pattern; `NodaConverters.NormalizingIsoPeriodConverter` provides a converter using the normalizing ISO-like pattern
 - `Duration`: A duration pattern of `-H:mm:ss.FFFFFFFFF` (like the standard round-trip pattern, but starting with hours instead of days)

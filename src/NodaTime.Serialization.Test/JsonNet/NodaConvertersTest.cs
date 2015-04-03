@@ -2,6 +2,8 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
+using static NodaTime.Serialization.Test.JsonNet.TestHelper;
+
 using System;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
@@ -195,21 +197,6 @@ namespace NodaTime.Serialization.Test.JsonNet
         {
             var parsed = JsonConvert.DeserializeObject<Duration>("\"25:10:00.1234000\"", NodaConverters.DurationConverter);
             Assert.AreEqual(Duration.FromHours(25) + Duration.FromMinutes(10) + Duration.FromTicks(1234000), parsed);
-        }
-
-        private static void AssertConversions<T>(T value, string expectedJson, JsonConverter converter)
-        {
-            var settings = new JsonSerializerSettings
-            {
-                Converters = { converter },
-                DateParseHandling = DateParseHandling.None
-            };
-
-            var actualJson = JsonConvert.SerializeObject(value, Formatting.None, settings);
-            Assert.AreEqual(expectedJson, actualJson);
-
-            var deserializedValue = JsonConvert.DeserializeObject<T>(expectedJson, settings);
-            Assert.AreEqual(value, deserializedValue);
         }
     }
 }

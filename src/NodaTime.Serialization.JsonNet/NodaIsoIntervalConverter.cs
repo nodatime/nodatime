@@ -31,8 +31,8 @@ namespace NodaTime.Serialization.JsonNet
             string startText = text.Substring(0, slash);
             string endText = text.Substring(slash + 1);
             var pattern = InstantPattern.ExtendedIsoPattern;
-            var start = pattern.Parse(startText).Value;
-            var end = pattern.Parse(endText).Value;
+            var start = startText == "" ? (Instant?) null : pattern.Parse(startText).Value;
+            var end = endText == "" ? (Instant?) null : pattern.Parse(endText).Value;
 
             return new Interval(start, end);
         }
@@ -46,7 +46,7 @@ namespace NodaTime.Serialization.JsonNet
         protected override void WriteJsonImpl(JsonWriter writer, Interval value, JsonSerializer serializer)
         {
             var pattern = InstantPattern.ExtendedIsoPattern;
-            string text = pattern.Format(value.Start) + "/" + pattern.Format(value.End);
+            string text = (value.HasStart ? pattern.Format(value.Start) : "") + "/" + (value.HasEnd ? pattern.Format(value.End) : "");
             writer.WriteValue(text);
         }
     }
