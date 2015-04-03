@@ -287,7 +287,7 @@ namespace NodaTime.TimeZones
         /// Gets just the TZDB version (e.g. "2013a") of the source data.
         /// </summary>
         /// <value>The TZDB version (e.g. "2013a") of the source data.</value>
-        [NotNull] public string TzdbVersion { get { return source.TzdbVersion; } }
+        [NotNull] public string TzdbVersion => source.TzdbVersion;
 
         /// <summary>
         /// Gets the Windows time zone mapping information provided in the CLDR
@@ -295,7 +295,7 @@ namespace NodaTime.TimeZones
         /// </summary>
         /// <value>The Windows time zone mapping information provided in the CLDR
         /// supplemental "windowsZones.xml" file.</value>
-        [NotNull] public WindowsZones WindowsMapping { get { return source.WindowsMapping; } }
+        [NotNull] public WindowsZones WindowsMapping => source.WindowsMapping;
 
         /// <summary>
         /// Validates that the data within this source is consistent with itself.

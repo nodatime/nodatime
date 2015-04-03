@@ -130,23 +130,17 @@ namespace NodaTime.Test.Text
         public sealed class Data : PatternTestData<Duration>
         {
             // Ignored anyway...
-            protected override Duration DefaultTemplate
-            {
-                get { return Duration.Zero; }
-            }
+            protected override Duration DefaultTemplate => Duration.Zero;
 
-            public Data()
-                : this(Duration.Zero)
+            public Data() : this(Duration.Zero)
             {
             }
 
-            public Data(Duration value)
-                : base(value)
+            public Data(Duration value) : base(value)
             {
             }
 
-            public Data(int hours, int minutes)
-                : this(Duration.FromHours(hours) + Duration.FromMinutes(minutes))
+            public Data(int hours, int minutes) : this(Duration.FromHours(hours) + Duration.FromMinutes(minutes))
             {
             }
 
@@ -161,10 +155,7 @@ namespace NodaTime.Test.Text
             {
             }
 
-            internal override IPattern<Duration> CreatePattern()
-            {
-                return DurationPattern.Create(Pattern, Culture);
-            }
+            internal override IPattern<Duration> CreatePattern() => DurationPattern.Create(Pattern, Culture);
         }
     }
 }

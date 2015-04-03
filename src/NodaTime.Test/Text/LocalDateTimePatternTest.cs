@@ -237,10 +237,7 @@ namespace NodaTime.Test.Text
         public sealed class Data : PatternTestData<LocalDateTime>
         {
             // Default to the start of the year 2000.
-            protected override LocalDateTime DefaultTemplate
-            {
-                get { return LocalDateTimePattern.DefaultTemplateValue; }
-            }
+            protected override LocalDateTime DefaultTemplate => LocalDateTimePattern.DefaultTemplateValue;
 
             /// <summary>
             /// Initializes a new instance of the <see cref="Data" /> class.
@@ -266,22 +263,18 @@ namespace NodaTime.Test.Text
             {
             }
 
-            public Data(LocalDate date, LocalTime time)
-                : this(date + time)
+            public Data(LocalDate date, LocalTime time) : this(date + time)
             {
             }
 
-            public Data()
-                : this(LocalDateTimePattern.DefaultTemplateValue)
+            public Data() : this(LocalDateTimePattern.DefaultTemplateValue)
             {
             }
 
-            internal override IPattern<LocalDateTime> CreatePattern()
-            {
-                return LocalDateTimePattern.CreateWithInvariantCulture(Pattern)
+            internal override IPattern<LocalDateTime> CreatePattern() =>
+                LocalDateTimePattern.CreateWithInvariantCulture(Pattern)
                     .WithTemplateValue(Template)
                     .WithCulture(Culture);
-            }
         }
     }
 }

@@ -17,9 +17,6 @@ namespace NodaTime.TzdbCompiler.Tzdb
     /// </remarks>
     internal class ZoneRule : IEquatable<ZoneRule>
     {
-        private readonly string letterS;
-        private readonly ZoneRecurrence recurrence;
-
         /// <summary>
         ///   Initializes a new instance of the <see cref="ZoneRule" /> class.
         /// </summary>
@@ -27,24 +24,15 @@ namespace NodaTime.TzdbCompiler.Tzdb
         /// <param name="letterS">The daylight savings indicator letter for time zone names.</param>
         public ZoneRule(ZoneRecurrence recurrence, string letterS)
         {
-            this.recurrence = recurrence;
-            this.letterS = letterS;
+            this.Recurrence = recurrence;
+            this.LetterS = letterS;
         }
 
-        public string LetterS
-        {
-            get { return letterS; }
-        }
+        public string LetterS { get; }
 
-        public string Name
-        {
-            get { return Recurrence.Name; }
-        }
+        public string Name => Recurrence.Name;
 
-        public ZoneRecurrence Recurrence
-        {
-            get { return recurrence; }
-        }
+        public ZoneRecurrence Recurrence { get; }
 
         #region IEquatable<ZoneRule> Members
         /// <summary>
@@ -55,27 +43,18 @@ namespace NodaTime.TzdbCompiler.Tzdb
         ///   true if the current object is equal to the <paramref name = "other" /> parameter;
         ///   otherwise, false.
         /// </returns>
-        public bool Equals(ZoneRule other)
-        {
-            if (other == null)
-            {
-                return false;
-            }
-            return Equals(recurrence, other.recurrence) && Equals(LetterS, other.LetterS);
-        }
+        public bool Equals(ZoneRule other) => other != null && Equals(Recurrence, other.Recurrence) && Equals(LetterS, other.LetterS);
         #endregion
 
         #region Operator overloads
         /// <summary>
-        ///   Implements the operator ==.
+        /// Implements the operator ==.
         /// </summary>
         /// <param name="left">The left.</param>
         /// <param name="right">The right.</param>
         /// <returns>The result of the operator.</returns>
-        public static bool operator ==(ZoneRule left, ZoneRule right)
-        {
-            return ReferenceEquals(left, null) ? ReferenceEquals(right, null) : left.Equals(right);
-        }
+        public static bool operator ==(ZoneRule left, ZoneRule right) =>        
+            ReferenceEquals(left, null) ? ReferenceEquals(right, null) : left.Equals(right);
 
         /// <summary>
         ///   Implements the operator !=.
@@ -83,10 +62,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
         /// <param name="left">The left.</param>
         /// <param name="right">The right.</param>
         /// <returns>The result of the operator.</returns>
-        public static bool operator !=(ZoneRule left, ZoneRule right)
-        {
-            return !(left == right);
-        }
+        public static bool operator !=(ZoneRule left, ZoneRule right) => !(left == right);
         #endregion
 
         /// <summary>

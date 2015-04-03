@@ -199,18 +199,13 @@ namespace NodaTime.Test.Text
         public sealed class Data : PatternTestData<Offset>
         {
             // Ignored anyway...
-            protected override Offset DefaultTemplate
-            {
-                get { return Offset.Zero; }
-            }
+            protected override Offset DefaultTemplate => Offset.Zero;
 
-            public Data(Offset value)
-                : base(value)
+            public Data(Offset value) : base(value)
             {
             }
 
-            public Data(int hours, int minutes)
-                : this(Offset.FromHoursAndMinutes(hours, minutes))
+            public Data(int hours, int minutes) : this(Offset.FromHoursAndMinutes(hours, minutes))
             {
             }
 
@@ -225,16 +220,12 @@ namespace NodaTime.Test.Text
             {
             }
 
-            internal override IPattern<Offset> CreatePattern()
-            {
-                return OffsetPattern.CreateWithInvariantCulture(Pattern)
+            internal override IPattern<Offset> CreatePattern() =>
+                OffsetPattern.CreateWithInvariantCulture(Pattern)
                     .WithCulture(Culture);
-            }
 
-            internal override IPartialPattern<Offset> CreatePartialPattern()
-            {
-                return OffsetPattern.CreateWithInvariantCulture(Pattern).WithCulture(Culture).UnderlyingPattern;
-            }
+            internal override IPartialPattern<Offset> CreatePartialPattern() =>
+                OffsetPattern.CreateWithInvariantCulture(Pattern).WithCulture(Culture).UnderlyingPattern;
         }
 
     }

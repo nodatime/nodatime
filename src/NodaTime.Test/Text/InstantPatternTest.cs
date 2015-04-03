@@ -66,13 +66,9 @@ namespace NodaTime.Test.Text
         /// </summary>
         public sealed class Data : PatternTestData<Instant>
         {
-            protected override Instant DefaultTemplate
-            {
-                get { return NodaConstants.UnixEpoch; }
-            }
+            protected override Instant DefaultTemplate => NodaConstants.UnixEpoch;
 
-            public Data(Instant value)
-                : base(value)
+            public Data(Instant value) : base(value)
             {
             }
 
@@ -81,16 +77,12 @@ namespace NodaTime.Test.Text
             {
             }
 
-            public Data()
-                : this(NodaConstants.UnixEpoch)
+            public Data() : this(NodaConstants.UnixEpoch)
             {
             }
 
-            internal override IPattern<Instant> CreatePattern()
-            {
-                return InstantPattern.CreateWithInvariantCulture(Pattern)
-                    .WithCulture(Culture);
-            }
+            internal override IPattern<Instant> CreatePattern() =>
+                InstantPattern.CreateWithInvariantCulture(Pattern).WithCulture(Culture);
         }
     }
 }

@@ -18,53 +18,46 @@ namespace NodaTime.TzdbCompiler.Tzdb
     /// </remarks>
     internal class Zone : IEquatable<Zone>
     {
-        private readonly string format;
-        private readonly string name;
-        private readonly Offset offset;
-        private readonly string rules;
-        private readonly int untilYear;
-        private readonly ZoneYearOffset untilYearOffset;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="Zone" /> class.
         /// </summary>
         public Zone(string name, Offset offset, string rules, string format, int untilYear, ZoneYearOffset untilYearOffset)
         {
-            this.name = name;
-            this.offset = offset;
-            this.rules = rules;
-            this.format = format;
-            this.untilYear = untilYear;
-            this.untilYearOffset = untilYearOffset;
+            this.Name = name;
+            this.Offset = offset;
+            this.Rules = rules;
+            this.Format = format;
+            this.UntilYear = untilYear;
+            this.UntilYearOffset = untilYearOffset;
         }
 
-        internal ZoneYearOffset UntilYearOffset { get { return untilYearOffset; } }
+        internal ZoneYearOffset UntilYearOffset { get; }
 
-        internal int UntilYear { get { return untilYear; } }
+        internal int UntilYear { get; }
 
         /// <summary>
         /// Returns the format for generating the label for this time zone.
         /// </summary>
         /// <value>The format string.</value>
-        internal string Format { get { return format; } }
+        internal string Format { get; }
 
         /// <summary>
         /// Returns the name of the time zone.
         /// </summary>
         /// <value>The time zone name.</value>
-        internal string Name { get { return name; } }
+        internal string Name { get; }
 
         /// <summary>
         /// Returns the offset to add to UTC for this time zone.
         /// </summary>
         /// <value>The offset from UTC.</value>
-        internal Offset Offset { get { return offset; } }
+        internal Offset Offset { get; }
 
         /// <summary>
         /// Returns the daylight savings rules name applicable to this zone line.
         /// </summary>
         /// <value>The rules name.</value>
-        internal string Rules { get { return rules; } }
+        internal string Rules { get; }
 
         #region IEquatable<Zone> Members
         /// <summary>
@@ -102,10 +95,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
         ///   <c>true</c> if the specified <see cref="System.Object" /> is equal to this instance;
         ///   otherwise, <c>false</c>.
         /// </returns>
-        public override bool Equals(object obj)
-        {
-            return Equals(obj as Zone);
-        }
+        public override bool Equals(object obj) => Equals(obj as Zone);
 
         /// <summary>
         ///   Returns a hash code for this instance.
@@ -140,7 +130,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
         {
             var builder = new StringBuilder();
             builder.Append(Name).Append(" ");
-            builder.Append(Offset.ToString()).Append(" ");
+            builder.Append(Offset).Append(" ");
             builder.Append(ParserHelper.FormatOptional(Rules)).Append(" ");
             builder.Append(Format);
             if (UntilYear != Int32.MaxValue)

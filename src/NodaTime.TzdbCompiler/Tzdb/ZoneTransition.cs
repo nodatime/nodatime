@@ -21,11 +21,6 @@ namespace NodaTime.TzdbCompiler.Tzdb
     /// </remarks>
     internal sealed class ZoneTransition
     {
-        private readonly Instant instant;
-        private readonly string name;
-        private readonly Offset savings;
-        private readonly Offset standardOffset;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="ZoneTransition"/> class.
         /// </summary>
@@ -38,21 +33,21 @@ namespace NodaTime.TzdbCompiler.Tzdb
         internal ZoneTransition(Instant instant, String name, Offset standardOffset, Offset savings)
         {
             Preconditions.CheckNotNull(name, "name");
-            this.instant = instant;
-            this.name = name;
-            this.standardOffset = standardOffset;
-            this.savings = savings;
+            this.Instant = instant;
+            this.Name = name;
+            this.StandardOffset = standardOffset;
+            this.Savings = savings;
         }
 
-        internal Instant Instant { get { return instant; } }
+        internal Instant Instant { get; }
 
-        internal string Name { get { return name; } }
+        internal string Name { get; }
 
-        internal Offset StandardOffset { get { return standardOffset; } }
+        internal Offset StandardOffset { get; }
 
-        internal Offset Savings { get { return savings; } }
+        internal Offset Savings { get; }
 
-        internal Offset WallOffset { get { return StandardOffset + Savings; } }
+        internal Offset WallOffset => StandardOffset + Savings;
 
         /// <summary>
         /// Determines whether is a transition from the given transition.
@@ -83,21 +78,14 @@ namespace NodaTime.TzdbCompiler.Tzdb
         }
 
         #region Object overrides
+
         /// <summary>
         /// Returns a <see cref="System.String"/> that represents this instance.
         /// </summary>
         /// <returns>
         /// A <see cref="System.String"/> that represents this instance.
         /// </returns>
-        public override string ToString()
-        {
-            var builder = new StringBuilder();
-            builder.Append(name);
-            builder.Append(" at ").Append(Instant);
-            builder.Append(" ").Append(StandardOffset);
-            builder.Append(" [").Append(Savings).Append("]");
-            return builder.ToString();
-        }
+        public override string ToString() => $"{Name} at {Instant} {StandardOffset} [{Savings}]";
         #endregion // Object overrides
     }
 }

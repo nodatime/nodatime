@@ -159,7 +159,6 @@ namespace NodaTime.TzdbCompiler.Tzdb
             private Instant instant;
 
             private List<ZoneRecurrence> rules;
-            private Offset savings;
 
             /// <summary>
             /// Initializes a new instance of the <see cref="TransitionIterator"/> class.
@@ -172,7 +171,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
                 this.startingInstant = startingInstant;
             }
 
-            internal Offset Savings { get { return savings; } }
+            internal Offset Savings { get; private set; }
 
             /// <summary>
             /// Returns the first transition. If called after iteration has started, resets to the
@@ -182,7 +181,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
             internal ZoneTransition First()
             {
                 rules = new List<ZoneRecurrence>(ruleSet.rules);
-                savings = Offset.Zero;
+                Savings = Offset.Zero;
                 var result = GetFirst();
                 SetupNext(result);
                 return result;
@@ -280,7 +279,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
                     // Set first to the best transition found so far, but next iteration may find
                     // something closer to lower limit.
                     firstTransition = new ZoneTransition(startingInstant, next.Name, next.StandardOffset, next.Savings);
-                    savings = next.Savings;
+                    Savings = next.Savings;
                 }
                 // Restore rules
                 rules = saveRules;
@@ -296,7 +295,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
                 for (int i = 0; i < rules.Count; i++)
                 {
                     ZoneRecurrence rule = rules[i];
-                    Transition? nextTransition = rule.Next(nextInstant, ruleSet.StandardOffset, savings);
+                    Transition? nextTransition = rule.Next(nextInstant, ruleSet.StandardOffset, Savings);
                     Instant? next = nextTransition == null ? (Instant?)null : nextTransition.Value.Instant;
                     if (!next.HasValue || next.Value <= nextInstant)
                     {
@@ -329,7 +328,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
                 // Check if upper limit reached or passed.
                 if (ruleSet.upperYear < Int32.MaxValue)
                 {
-                    Instant upperTicks = ruleSet.GetUpperLimit(savings);
+                    Instant upperTicks = ruleSet.GetUpperLimit(Savings);
                     if (nextTicks >= upperTicks)
                     {
                         // At or after upper limit.
@@ -348,7 +347,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
                 if (transition != null)
                 {
                     instant = transition.Instant;
-                    savings = transition.Savings;
+                    Savings = transition.Savings;
                 }
             }
         }

@@ -397,13 +397,9 @@ namespace NodaTime.Test.Text
         public sealed class Data : PatternTestData<LocalTime>
         {
             // Default to midnight
-            protected override LocalTime DefaultTemplate
-            {
-                get { return LocalTime.Midnight; }
-            }
+            protected override LocalTime DefaultTemplate => LocalTime.Midnight;
 
-            public Data(LocalTime value)
-                : base(value)
+            public Data(LocalTime value) : base(value)
             {
             }
 
@@ -427,17 +423,14 @@ namespace NodaTime.Test.Text
             {
             }
 
-            public Data()
-                : this(LocalTime.Midnight)
+            public Data() : this(LocalTime.Midnight)
             {
             }
 
-            internal override IPattern<LocalTime> CreatePattern()
-            {
-                return LocalTimePattern.CreateWithInvariantCulture(Pattern)
+            internal override IPattern<LocalTime> CreatePattern() =>
+                LocalTimePattern.CreateWithInvariantCulture(Pattern)
                     .WithTemplateValue(Template)
                     .WithCulture(Culture);
-            }
         }
     }
 }

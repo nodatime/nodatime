@@ -63,7 +63,7 @@ namespace NodaTime
         /// equal 1 year.
         /// </summary>
         /// <value>An equality comparer which compares periods by first normalizing them.</value>
-        public static IEqualityComparer<Period> NormalizingEqualityComparer { get { return NormalizingPeriodEqualityComparer.Instance; } }
+        public static IEqualityComparer<Period> NormalizingEqualityComparer => NormalizingPeriodEqualityComparer.Instance;
 
         // The fields that make up this period.
 

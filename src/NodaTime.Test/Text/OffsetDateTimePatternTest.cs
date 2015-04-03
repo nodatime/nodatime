@@ -88,17 +88,13 @@ namespace NodaTime.Test.Text
         internal sealed class Data : PatternTestData<OffsetDateTime>
         {
             // Default to the start of the year 2000 UTC
-            protected override OffsetDateTime DefaultTemplate
-            {
-                get { return OffsetDateTimePattern.DefaultTemplateValue; }
-            }
+            protected override OffsetDateTime DefaultTemplate => OffsetDateTimePattern.DefaultTemplateValue;
 
             /// <summary>
             /// Initializes a new instance of the <see cref="Data" /> class.
             /// </summary>
             /// <param name="value">The value.</param>
-            internal Data(OffsetDateTime value)
-                : base(value)
+            internal Data(OffsetDateTime value) : base(value)
             {
             }
 
@@ -122,15 +118,12 @@ namespace NodaTime.Test.Text
             {
             }
 
-            internal Data()
-                : this(OffsetDateTimePattern.DefaultTemplateValue)
+            internal Data() : this(OffsetDateTimePattern.DefaultTemplateValue)
             {
             }
 
-            internal override IPattern<OffsetDateTime> CreatePattern()
-            {
-                return OffsetDateTimePattern.Create(Pattern, Culture, Template);
-            }
+            internal override IPattern<OffsetDateTime> CreatePattern() =>
+                OffsetDateTimePattern.Create(Pattern, Culture, Template);
         }
     }
 }

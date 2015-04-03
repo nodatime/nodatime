@@ -22,13 +22,12 @@ namespace NodaTime.Testing.TimeZones
     {
         private readonly Dictionary<string, DateTimeZone> zones;
         private readonly Dictionary<string, string> bclToZoneIds;
-        private readonly string versionId;
 
         private FakeDateTimeZoneSource(string versionId,
             Dictionary<string, DateTimeZone> zones,
             Dictionary<string, string> bclToZoneIds)
         {
-            this.versionId = versionId;
+            this.VersionId = versionId;
             this.zones = zones;
             this.bclToZoneIds = bclToZoneIds;
         }
@@ -37,19 +36,13 @@ namespace NodaTime.Testing.TimeZones
         /// Creates a time zone provider (<see cref="DateTimeZoneCache"/>) from this source.
         /// </summary>
         /// <returns>A provider backed by this source.</returns>
-        public IDateTimeZoneProvider ToProvider()
-        {
-            return new DateTimeZoneCache(this);
-        }
+        public IDateTimeZoneProvider ToProvider() => new DateTimeZoneCache(this);
 
         /// <inheritdoc />
-        public IEnumerable<string> GetIds()
-        {
-            return zones.Keys;
-        }
+        public IEnumerable<string> GetIds() => zones.Keys;
 
         /// <inheritdoc />
-        public string VersionId { get { return versionId; } }
+        public string VersionId { get; }
 
         /// <inheritdoc />
         public DateTimeZone ForId(string id)
@@ -94,14 +87,14 @@ namespace NodaTime.Testing.TimeZones
             /// </summary>
             /// <value>The dictionary mapping BCL IDs to the canonical IDs served within the provider
             /// being built.</value>
-            public IDictionary<string, string> BclIdsToZoneIds { get { return bclIdsToZoneIds; } }
+            public IDictionary<string, string> BclIdsToZoneIds => bclIdsToZoneIds;
 
             /// <summary>
             /// Gets the list of zones, exposed as a property for use when a test needs to set properties as
             /// well as adding zones.
             /// </summary>
             /// <value>The list of zones within the provider being built.</value>
-            public IList<DateTimeZone> Zones { get { return zones; } }
+            public IList<DateTimeZone> Zones => zones;
 
             /// <summary>
             /// Gets the version ID to advertise; defaults to "TestZones".
@@ -132,19 +125,13 @@ namespace NodaTime.Testing.TimeZones
             /// to enable collection initializers.
             /// </summary>
             /// <returns>An iterator over the zones in this builder.</returns>
-            public IEnumerator<DateTimeZone> GetEnumerator()
-            {
-                return zones.GetEnumerator();
-            }
-            
+            public IEnumerator<DateTimeZone> GetEnumerator() => zones.GetEnumerator();
+
             /// <summary>
             /// Explicit interface implementation of <see cref="IEnumerator"/>.
             /// </summary>
             /// <returns>An iterator over the zones in this builder.</returns>
-            IEnumerator IEnumerable.GetEnumerator()
-            {
-                return GetEnumerator();
-            }
+            IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
             /// <summary>
             /// Builds a time zone source from this builder. The returned

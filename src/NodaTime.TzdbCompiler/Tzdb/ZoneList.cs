@@ -16,9 +16,6 @@ namespace NodaTime.TzdbCompiler.Tzdb
         ///   Gets the name of the Zone objects in this list.
         /// </summary>
         /// <value>The zone name or null if the list is empty.</value>
-        public string Name
-        {
-            get { return Count > 0 ? this[0].Name : null; }
-        }
+        public string Name => Count > 0 ? this[0].Name : null;
     }
 }

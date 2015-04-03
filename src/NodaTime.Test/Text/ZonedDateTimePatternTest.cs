@@ -201,10 +201,7 @@ namespace NodaTime.Test.Text
         public sealed class Data : PatternTestData<ZonedDateTime>
         {
             // Default to the start of the year 2000 UTC
-            protected override ZonedDateTime DefaultTemplate
-            {
-                get { return ZonedDateTimePattern.DefaultTemplateValue; }
-            }
+            protected override ZonedDateTime DefaultTemplate => ZonedDateTimePattern.DefaultTemplateValue;
 
             internal ZoneLocalMappingResolver Resolver { get; set; }
             internal IDateTimeZoneProvider ZoneProvider { get; set; }
@@ -247,15 +244,12 @@ namespace NodaTime.Test.Text
             {
             }
 
-            public Data()
-                : this(ZonedDateTimePattern.DefaultTemplateValue)
+            public Data() : this(ZonedDateTimePattern.DefaultTemplateValue)
             {
             }
 
-            internal override IPattern<ZonedDateTime> CreatePattern()
-            {
-                return ZonedDateTimePattern.Create(Pattern, Culture, Resolver, ZoneProvider, Template);
-            }
+            internal override IPattern<ZonedDateTime> CreatePattern() =>
+                ZonedDateTimePattern.Create(Pattern, Culture, Resolver, ZoneProvider, Template);
         }
     }
 }

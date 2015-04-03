@@ -25,22 +25,22 @@ namespace NodaTime.TzdbCompiler
     public class Tokens
     {
         /// <summary>
-        ///   Represents an empty token list.
+        /// Represents an empty token list.
         /// </summary>
         private static readonly string[] NoTokens = new string[0];
 
         /// <summary>
-        ///   The list of words. This will never be null but may be empty.
+        /// The list of words. This will never be null but may be empty.
         /// </summary>
         private readonly IList<string> words;
 
         /// <summary>
-        ///   The current index into the words list.
+        /// The current index into the words list.
         /// </summary>
         private int index;
 
         /// <summary>
-        ///   Initializes a new instance of the <see cref="Tokens" /> class.
+        /// Initializes a new instance of the <see cref="Tokens" /> class.
         /// </summary>
         /// <param name="words">The words list.</param>
         private Tokens(IList<string> words)
@@ -49,18 +49,15 @@ namespace NodaTime.TzdbCompiler
         }
 
         /// <summary>
-        ///   Gets a value indicating whether this instance has another token.
+        /// Gets a value indicating whether this instance has another token.
         /// </summary>
         /// <value>
-        ///   <c>true</c> if this instance has another token; otherwise, <c>false</c>.
+        /// <c>true</c> if this instance has another token; otherwise, <c>false</c>.
         /// </value>
-        public bool HasNextToken
-        {
-            get { return index < words.Count; }
-        }
+        public bool HasNextToken => index < words.Count;
 
         /// <summary>
-        ///   Returns the next token.
+        /// Returns the next token.
         /// </summary>
         /// <param name="name">The name of the token. Used in the exception to identify the missing token.</param>
         /// <returns>The next token.</returns>
@@ -75,8 +72,8 @@ namespace NodaTime.TzdbCompiler
         }
 
         /// <summary>
-        ///   Returns an object that contains the list of the whitespace separated words in the given
-        ///   string. The string is assumed to be culture invariant.
+        /// Returns an object that contains the list of the whitespace separated words in the given
+        /// string. The string is assumed to be culture invariant.
         /// </summary>
         /// <param name="text">The text to break into words.</param>
         /// <returns>The tokenized text.</returns>
@@ -94,7 +91,7 @@ namespace NodaTime.TzdbCompiler
         }
 
         /// <summary>
-        ///   Tries to get the next token.
+        /// Tries to get the next token.
         /// </summary>
         /// <param name="name">The name of the token.</param>
         /// <param name="result">Where to place the next token.</param>

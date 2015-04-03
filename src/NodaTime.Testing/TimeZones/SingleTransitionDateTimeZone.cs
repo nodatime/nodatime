@@ -11,25 +11,23 @@ namespace NodaTime.Testing.TimeZones
     /// </summary>
     public sealed class SingleTransitionDateTimeZone : DateTimeZone
     {
-        private readonly ZoneInterval earlyInterval;
         /// <summary>
         /// Gets the <see cref="ZoneInterval"/> for the period before the transition, starting at the beginning of time.
         /// </summary>
         /// <value>The zone interval for the period before the transition, starting at the beginning of time.</value>
-        public ZoneInterval EarlyInterval { get { return earlyInterval; } }
+        public ZoneInterval EarlyInterval { get; }
 
-        private readonly ZoneInterval lateInterval;
         /// <summary>
         /// Gets the <see cref="ZoneInterval"/> for the period after the transition, ending at the end of time.
         /// </summary>
         /// <value>The zone interval for the period after the transition, ending at the end of time.</value>
-        public ZoneInterval LateInterval { get { return lateInterval; } }
+        public ZoneInterval LateInterval { get; }
 
         /// <summary>
         /// Gets the transition instant of the zone.
         /// </summary>
         /// <value>The transition instant of the zone.</value>
-        public Instant Transition { get { return earlyInterval.End; } }
+        public Instant Transition => EarlyInterval.End;
 
         /// <summary>
         /// Creates a zone with a single transition between two offsets.
@@ -63,9 +61,9 @@ namespace NodaTime.Testing.TimeZones
         public SingleTransitionDateTimeZone(Instant transitionPoint, Offset offsetBefore, Offset offsetAfter, string id)
             : base(id, false, Offset.Min(offsetBefore, offsetAfter), Offset.Max(offsetBefore, offsetAfter))
         {
-            earlyInterval = new ZoneInterval(id + "-Early", null, transitionPoint,
+            EarlyInterval = new ZoneInterval(id + "-Early", null, transitionPoint,
                 offsetBefore, Offset.Zero);
-            lateInterval = new ZoneInterval(id + "-Late", transitionPoint, null,
+            LateInterval = new ZoneInterval(id + "-Late", transitionPoint, null,
                 offsetAfter, Offset.Zero);
         }
 
@@ -73,16 +71,13 @@ namespace NodaTime.Testing.TimeZones
         /// <remarks>
         /// This returns either the zone interval before or after the transition, based on the instant provided.
         /// </remarks>
-        public override ZoneInterval GetZoneInterval(Instant instant)
-        {
-            return earlyInterval.Contains(instant) ? earlyInterval : lateInterval;
-        }
+        public override ZoneInterval GetZoneInterval(Instant instant) => EarlyInterval.Contains(instant) ? EarlyInterval : LateInterval;
 
         /// <inheritdoc />
         protected override bool EqualsImpl(DateTimeZone zone)
         {
             SingleTransitionDateTimeZone otherZone = (SingleTransitionDateTimeZone)zone;
-            return Id == otherZone.Id && earlyInterval.Equals(otherZone.earlyInterval) && lateInterval.Equals(otherZone.lateInterval);
+            return Id == otherZone.Id && EarlyInterval.Equals(otherZone.EarlyInterval) && LateInterval.Equals(otherZone.LateInterval);
         }
 
         /// <inheritdoc />
@@ -90,8 +85,8 @@ namespace NodaTime.Testing.TimeZones
         {
             int hash = 17;
             hash = hash * 31 + Id.GetHashCode();
-            hash = hash * 31 + earlyInterval.GetHashCode();
-            hash = hash * 31 + lateInterval.GetHashCode();
+            hash = hash * 31 + EarlyInterval.GetHashCode();
+            hash = hash * 31 + LateInterval.GetHashCode();
             return hash;
         }
     }

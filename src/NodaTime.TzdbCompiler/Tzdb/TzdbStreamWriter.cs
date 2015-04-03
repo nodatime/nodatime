@@ -220,22 +220,20 @@ namespace NodaTime.TzdbCompiler.Tzdb
         private class FieldData
         {
             private readonly MemoryStream stream;
-            private readonly TzdbStreamFieldId fieldId;
-            private readonly IDateTimeZoneWriter writer;
 
             internal FieldData(TzdbStreamFieldId fieldId, IList<string> stringPool)
             {
-                this.fieldId = fieldId;
+                this.FieldId = fieldId;
                 this.stream = new MemoryStream();
-                this.writer = new DateTimeZoneWriter(stream, stringPool);
+                this.Writer = new DateTimeZoneWriter(stream, stringPool);
             }
 
-            internal IDateTimeZoneWriter Writer { get { return writer; } }
-            internal TzdbStreamFieldId FieldId { get { return fieldId; } }
+            internal IDateTimeZoneWriter Writer { get; }
+            internal TzdbStreamFieldId FieldId { get; }
 
             internal void WriteTo(Stream output)
             {
-                output.WriteByte((byte)fieldId);
+                output.WriteByte((byte)FieldId);
                 int length = (int) stream.Length;
                 // We've got a 7-bit-encoding routine... might as well use it.
                 new DateTimeZoneWriter(output, null).WriteCount(length);
