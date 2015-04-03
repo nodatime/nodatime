@@ -10,7 +10,7 @@ namespace NodaTime.Utility
     /// Conversion methods which don't naturally fit into any other types - for example, for
     /// enums which can't specify any other code. In most cases, conversions to and from BCL types
     /// are provided within the type itself - such as <see cref="LocalDateTime.ToDateTimeUnspecified"/>
-    /// and <see cref="LocalDateTime.FromDateTime"/>.
+    /// and <see cref="LocalDateTime.FromDateTime(System.DateTime)"/>.
     /// </summary>
     /// <remarks>
     /// These methods are also available in the form of extension methods in the <c>NodaTime.Extensions</c> namespace.

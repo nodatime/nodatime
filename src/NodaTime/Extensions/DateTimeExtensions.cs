@@ -13,7 +13,7 @@ namespace NodaTime.Extensions
         /// <summary>
         /// Converts a <see cref="DateTime"/> of any kind to <see cref="LocalDateTime"/>.
         /// </summary>
-        /// <remarks>This is a convenience method which calls <see cref="LocalDateTime.FromDateTime"/>.</remarks>        
+        /// <remarks>This is a convenience method which calls <see cref="LocalDateTime.FromDateTime(System.DateTime)"/>.</remarks>        
         /// <param name="dateTime">The <c>DateTime</c> to convert.</param>
         /// <returns>A new <see cref="LocalDateTime"/> with the same values as <paramref name="dateTime"/>.</returns>
         public static LocalDateTime ToLocalDateTime(this DateTime dateTime) => LocalDateTime.FromDateTime(dateTime);
