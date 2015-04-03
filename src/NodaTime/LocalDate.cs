@@ -230,6 +230,51 @@ namespace NodaTime
         public LocalDateTime AtMidnight() => new LocalDateTime(this, LocalTime.Midnight);
 
         /// <summary>
+        /// Constructs a <see cref="DateTime"/> from this value which has a <see cref="DateTime.Kind" />
+        /// of <see cref="DateTimeKind.Unspecified"/>. The result is midnight on the day represented
+        /// by this value.
+        /// </summary>
+        /// <remarks>
+        /// <see cref="DateTimeKind.Unspecified"/> is slightly odd - it can be treated as UTC if you use <see cref="DateTime.ToLocalTime"/>
+        /// or as system local time if you use <see cref="DateTime.ToUniversalTime"/>, but it's the only kind which allows
+        /// you to construct a <see cref="DateTimeOffset"/> with an arbitrary offset, which makes it as close to
+        /// the Noda Time non-system-specific "local" concept as exists in .NET.
+        /// </remarks>
+        /// <returns>A <see cref="DateTime"/> value for the same date and time as this value.</returns>
+        [Pure]
+        public DateTime ToDateTimeUnspecified() =>
+            new DateTime(DaysSinceEpoch * NodaConstants.TicksPerDay + NodaConstants.BclTicksAtUnixEpoch, DateTimeKind.Unspecified);
+
+        /// <summary>
+        /// Converts a <see cref="DateTime" /> of any kind to a LocalDate in the ISO calendar, ignoring the time of day.
+        /// This does not perform any time zone conversions, so a DateTime with a <see cref="DateTime.Kind"/> of
+        /// <see cref="DateTimeKind.Utc"/> will still represent the same year/month/day - it won't be converted into the local system time.
+        /// </summary>
+        /// <param name="dateTime">Value to convert into a Noda Time local date</param>
+        /// <returns>A new <see cref="LocalDate"/> with the same values as the specified <c>DateTime</c>.</returns>
+        public static LocalDate FromDateTime(DateTime dateTime)
+        {
+            long ticks = dateTime.Ticks - NodaConstants.BclTicksAtUnixEpoch;
+            int days = TickArithmetic.TicksToDays(ticks);
+            return new LocalDate(days);
+        }
+
+        /// <summary>
+        /// Converts a <see cref="DateTime" /> of any kind to a LocalDate in the specified calendar, ignoring the time of day.
+        /// This does not perform any time zone conversions, so a DateTime with a <see cref="DateTime.Kind"/> of
+        /// <see cref="DateTimeKind.Utc"/> will still represent the same year/month/day - it won't be converted into the local system time.
+        /// </summary>
+        /// <param name="dateTime">Value to convert into a Noda Time local date</param>
+        /// <param name="calendar">The calendar system to convert into</param>
+        /// <returns>A new <see cref="LocalDate"/> with the same values as the specified <c>DateTime</c>.</returns>
+        public static LocalDate FromDateTime(DateTime dateTime, [NotNull] CalendarSystem calendar)
+        {
+            long ticks = dateTime.Ticks - NodaConstants.BclTicksAtUnixEpoch;
+            int days = TickArithmetic.TicksToDays(ticks);
+            return new LocalDate(days, calendar);
+        }
+
+        /// <summary>
         /// Returns the local date corresponding to the given "week year", "week of week year", and "day of week"
         /// in the ISO calendar system.
         /// </summary>

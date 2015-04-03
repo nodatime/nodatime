@@ -23,7 +23,7 @@ namespace NodaTime.Calendars
                     // TODO: Optimize with shifting at some point. Note that this must *not* subtract from ticks,
                     // as it could already be long.MinValue.
                     : (int) ((ticks + 1) / TicksPerDay) - 1;
-            // We're almost always fine to do this...
+            // We're almost always fine (to do this...
             if (ticks >= long.MinValue + TicksPerDay)
             {
                 tickOfDay = ticks - days * TicksPerDay;
@@ -34,6 +34,19 @@ namespace NodaTime.Calendars
                 tickOfDay = ticks - (days + 1) * TicksPerDay + TicksPerDay;
             }
             return days;
+        }
+
+        internal static int TicksToDays(long ticks)
+        {
+            // First work out the number of days, always rounding down (so that ticks * TicksPerDay is always the
+            // start of the day).
+            // The shift approach here is equivalent to dividing by NodaConstants.TicksPerDay, but appears to be
+            // very significantly faster under the x64 JIT (and no slower under the x86 JIT).
+            // See http://stackoverflow.com/questions/22258070 for the inspiration.
+            return ticks >= 0 ? unchecked((int)((ticks >> 14) / 52734375L))
+                    // TODO: Optimize with shifting at some point. Note that this must *not* subtract from ticks,
+                    // as it could already be long.MinValue.
+                    : (int)((ticks + 1) / TicksPerDay) - 1;
         }
 
         internal static long DaysAndTickOfDayToTicks(int days, long tickOfDay) =>

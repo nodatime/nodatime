@@ -45,6 +45,19 @@ namespace NodaTime.Test
         }
 
         [Test]
+        public void FromDateTime_WithCalendar()
+        {
+            // Julian calendar is 13 days behind Gregorian calendar in the 21st century
+            LocalDateTime expected = new LocalDateTime(2011, 08, 05, 20, 53, CalendarSystem.Julian);
+            foreach (DateTimeKind kind in Enum.GetValues(typeof(DateTimeKind)))
+            {
+                DateTime x = new DateTime(2011, 08, 18, 20, 53, 0, kind);
+                LocalDateTime actual = LocalDateTime.FromDateTime(x, CalendarSystem.Julian);
+                Assert.AreEqual(expected, actual);
+            }
+        }
+
+        [Test]
         public void TimeProperties_AfterEpoch()
         {
             // Use the largest valid year as part of validating against overflow

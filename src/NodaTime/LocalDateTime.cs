@@ -402,6 +402,22 @@ namespace NodaTime
             return new LocalDateTime(new LocalDate(days), new LocalTime(unchecked(tickOfDay * NodaConstants.NanosecondsPerTick)));
         }
 
+        /// <summary>
+        /// Converts a <see cref="DateTime" /> of any kind to a LocalDateTime in the specified calendar. This does not perform
+        /// any time zone conversions, so a DateTime with a <see cref="DateTime.Kind"/> of <see cref="DateTimeKind.Utc"/>
+        /// will still have the same day/hour/minute etc - it won't be converted into the local system time.
+        /// </summary>
+        /// <param name="dateTime">Value to convert into a Noda Time local date and time</param>
+        /// <param name="calendar">The calendar system to convert into</param>
+        /// <returns>A new <see cref="LocalDateTime"/> with the same values as the specified <c>DateTime</c>.</returns>
+        public static LocalDateTime FromDateTime(DateTime dateTime, [NotNull] CalendarSystem calendar)
+        {
+            long ticks = dateTime.Ticks - NodaConstants.BclTicksAtUnixEpoch;
+            long tickOfDay;
+            int days = TickArithmetic.TicksToDaysAndTickOfDay(ticks, out tickOfDay);
+            return new LocalDateTime(new LocalDate(days, calendar), new LocalTime(unchecked(tickOfDay * NodaConstants.NanosecondsPerTick)));
+        }
+
         #region Implementation of IEquatable<LocalDateTime>
         /// <summary>
         /// Indicates whether the current object is equal to another object of the same type.

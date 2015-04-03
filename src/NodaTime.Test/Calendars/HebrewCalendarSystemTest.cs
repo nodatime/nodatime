@@ -47,26 +47,7 @@ namespace NodaTime.Test.Calendars
             // The max supported date/time ends part way through the year
             var maxYear = bcl.GetYear(bcl.MaxSupportedDateTime) - 1;
 
-            for (int year = minYear; year <= maxYear; year++)
-            {
-                int months = bcl.GetMonthsInYear(year);
-                Assert.AreEqual(months, noda.GetMonthsInYear(year));
-                for (int month = 1; month <= months; month++)
-                {
-                    Assert.AreEqual(bcl.GetDaysInMonth(year, month), noda.GetDaysInMonth(year, month),
-                        "Year: {0}; Month: {1}", year, month);
-                    for (int day = 1; day < bcl.GetDaysInMonth(year, month); day++)
-                    {
-                        DateTime bclDate = new DateTime(year, month, day, bcl);
-                        LocalDate nodaDate = new LocalDate(year, month, day, noda);
-                        Assert.AreEqual(bclDate, nodaDate.AtMidnight().ToDateTimeUnspecified());
-                        Assert.AreEqual(nodaDate, LocalDateTime.FromDateTime(bclDate).WithCalendar(noda).Date);
-                        Assert.AreEqual(year, nodaDate.Year);
-                        Assert.AreEqual(month, nodaDate.Month);
-                        Assert.AreEqual(day, nodaDate.Day);
-                    }
-                }
-            }
+            BclEquivalenceHelper.AssertEquivalent(bcl, noda, minYear, maxYear);
         }
 
         /// <summary>
@@ -84,6 +65,7 @@ namespace NodaTime.Test.Calendars
             // The max supported date/time ends part way through the year
             var maxYear = bcl.GetYear(bcl.MaxSupportedDateTime) - 1;
 
+            // Can't use BclEquivalenceHelper for this one, because of the month conversions.
             for (int year = minYear; year <= maxYear; year++)
             {
                 int months = bcl.GetMonthsInYear(year);
@@ -98,7 +80,7 @@ namespace NodaTime.Test.Calendars
                         DateTime bclDate = new DateTime(year, civilMonth, day, bcl);
                         LocalDate nodaDate = new LocalDate(year, scripturalMonth, day, noda);
                         Assert.AreEqual(bclDate, nodaDate.AtMidnight().ToDateTimeUnspecified(), "{0}-{1}-{2}", year, scripturalMonth, day);
-                        Assert.AreEqual(nodaDate, LocalDateTime.FromDateTime(bclDate).WithCalendar(noda).Date);
+                        Assert.AreEqual(nodaDate, LocalDateTime.FromDateTime(bclDate, noda).Date);
                         Assert.AreEqual(year, nodaDate.Year);
                         Assert.AreEqual(scripturalMonth, nodaDate.Month);
                         Assert.AreEqual(day, nodaDate.Day);
