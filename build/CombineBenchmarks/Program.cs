@@ -21,6 +21,7 @@ namespace CombineBenchmarks
                 return 1;
             }
             var directory = args[0];
+            Console.WriteLine($"Processing benchmarks in {directory}");
             var index = Path.Combine(directory, "index.txt");
             var output = Path.Combine(directory, "benchmarks.xml");
             var files = Directory.GetFiles(directory, "*.xml")
@@ -29,6 +30,7 @@ namespace CombineBenchmarks
             File.WriteAllLines(index, files.Select(Path.GetFileName).ToArray());
             var doc = new XDocument(new XElement("benchmarks", files.Select(XElement.Load)));
             doc.Save(output);
+            Console.WriteLine($"Updated index and combined file with {files.Count} benchmarks");
             return 0;
         }
     }
