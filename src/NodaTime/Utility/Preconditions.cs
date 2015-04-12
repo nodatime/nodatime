@@ -38,7 +38,7 @@ namespace NodaTime.Utility
 #if DEBUG
             if (argument == null)
             {
-                throw new DebugPreconditionException("{0} is null", paramName);
+                throw new DebugPreconditionException($"{paramName} is null");
             }
 #endif
         }
@@ -49,10 +49,10 @@ namespace NodaTime.Utility
             {
 #if PCL
                 throw new ArgumentOutOfRangeException(paramName,
-                    "Value should be in range [" + minInclusive + "-" + maxInclusive + "]");
+                    $"Value should be in range [{minInclusive}-{maxInclusive}]");
 #else
                 throw new ArgumentOutOfRangeException(paramName, value,
-                    "Value should be in range [" + minInclusive + "-" + maxInclusive + "]");
+                    $"Value should be in range [{minInclusive}-{maxInclusive}]");
 #endif
             }
         }
@@ -66,10 +66,10 @@ namespace NodaTime.Utility
             {
 #if PCL
                 throw new ArgumentOutOfRangeException(paramName,
-                    "Value should be in range [" + minInclusive + "-" + maxInclusive + "]");
+                    $"Value should be in range [{minInclusive}-{maxInclusive}]");
 #else
                 throw new ArgumentOutOfRangeException(paramName, value,
-                    "Value should be in range [" + minInclusive + "-" + maxInclusive + "]");
+                    $"Value should be in range [{minInclusive}-{maxInclusive}]");
 #endif
             }
         }
@@ -85,8 +85,7 @@ namespace NodaTime.Utility
 #if DEBUG
             if (value < minInclusive || value > maxInclusive)
             {
-                throw new DebugPreconditionException("Value {0} for {1} is out of range [{2}-{3}]", value, paramName,
-                    minInclusive, maxInclusive);
+                throw new DebugPreconditionException($"Value {value} for {paramName} is out of range [{minInclusive}-{maxInclusive}]");
             }
 #endif
         }
@@ -102,8 +101,7 @@ namespace NodaTime.Utility
 #if DEBUG
             if (value < minInclusive || value > maxInclusive)
             {
-                throw new DebugPreconditionException("Value {0} for {1} is out of range [{2}-{3}]", value, paramName,
-                    minInclusive, maxInclusive);
+                throw new DebugPreconditionException($"Value {value} for {paramName} is out of range [{minInclusive}-{maxInclusive}]");
             }
 #endif
         }
@@ -181,8 +179,7 @@ namespace NodaTime.Utility
     /// </summary>
     internal class DebugPreconditionException : Exception
     {
-        internal DebugPreconditionException(string format, params object[] args)
-            : base(string.Format(format, args))
+        internal DebugPreconditionException(string message)
         {
         }
     }

@@ -54,7 +54,7 @@ namespace NodaTime
         {
             if (end < start)
             {
-                throw new ArgumentOutOfRangeException("end", "The end parameter must be equal to or later than the start parameter");
+                throw new ArgumentOutOfRangeException(nameof(end), "The end parameter must be equal to or later than the start parameter");
             }
             this.start = start;
             this.end = end;
@@ -78,7 +78,7 @@ namespace NodaTime
             this.end = end ?? Instant.AfterMaxValue;
             if (end < start)
             {
-                throw new ArgumentOutOfRangeException("end", "The end parameter must be equal to or later than the start parameter");
+                throw new ArgumentOutOfRangeException(nameof(end), "The end parameter must be equal to or later than the start parameter");
             }
         }
 

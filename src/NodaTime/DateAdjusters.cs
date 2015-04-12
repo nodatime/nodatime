@@ -66,7 +66,7 @@ namespace NodaTime
             // Avoids boxing...
             if (dayOfWeek < IsoDayOfWeek.Monday || dayOfWeek > IsoDayOfWeek.Sunday)
             {
-                throw new ArgumentOutOfRangeException("dayOfWeek");
+                throw new ArgumentOutOfRangeException(nameof(dayOfWeek));
             }
             return date => date.IsoDayOfWeek == dayOfWeek ? date : date.Next(dayOfWeek);
         }
@@ -83,7 +83,7 @@ namespace NodaTime
             // Avoids boxing...
             if (dayOfWeek < IsoDayOfWeek.Monday || dayOfWeek > IsoDayOfWeek.Sunday)
             {
-                throw new ArgumentOutOfRangeException("dayOfWeek");
+                throw new ArgumentOutOfRangeException(nameof(dayOfWeek));
             }
             return date => date.IsoDayOfWeek == dayOfWeek ? date : date.Previous(dayOfWeek);
         }
@@ -103,7 +103,7 @@ namespace NodaTime
             // Avoids boxing...
             if (dayOfWeek < IsoDayOfWeek.Monday || dayOfWeek > IsoDayOfWeek.Sunday)
             {
-                throw new ArgumentOutOfRangeException("dayOfWeek");
+                throw new ArgumentOutOfRangeException(nameof(dayOfWeek));
             }
             return date => date.Next(dayOfWeek);
         }
@@ -123,7 +123,7 @@ namespace NodaTime
             // Avoids boxing...
             if (dayOfWeek < IsoDayOfWeek.Monday || dayOfWeek > IsoDayOfWeek.Sunday)
             {
-                throw new ArgumentOutOfRangeException("dayOfWeek");
+                throw new ArgumentOutOfRangeException(nameof(dayOfWeek));
             }
             return date => date.Previous(dayOfWeek);
         }

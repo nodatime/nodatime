@@ -148,7 +148,7 @@ namespace NodaTime
                     case PeriodUnits.Milliseconds: return Milliseconds;
                     case PeriodUnits.Ticks: return Ticks;
                     case PeriodUnits.Nanoseconds: return Nanoseconds;
-                    default: throw new ArgumentOutOfRangeException("unit", "Indexer for PeriodBuilder only takes a single unit");
+                    default: throw new ArgumentOutOfRangeException(nameof(unit), "Indexer for PeriodBuilder only takes a single unit");
                 }
             }
             set
@@ -169,7 +169,7 @@ namespace NodaTime
                     case PeriodUnits.Milliseconds: Milliseconds = value; return;
                     case PeriodUnits.Ticks: Ticks = value; return;
                     case PeriodUnits.Nanoseconds: Nanoseconds = value; return;
-                    default: throw new ArgumentOutOfRangeException("unit", "Indexer for PeriodBuilder only takes a single unit");
+                    default: throw new ArgumentOutOfRangeException(nameof(unit), "Indexer for PeriodBuilder only takes a single unit");
                 }
             }
         }

@@ -161,7 +161,7 @@ namespace NodaTime.Calendars
                 case IslamicLeapYearPattern.Base16:        return 623191204; // 0b100101001001010010010010100100
                 case IslamicLeapYearPattern.Indian:        return 690562340; // 0b101001001010010010010100100100
                 case IslamicLeapYearPattern.HabashAlHasib: return 153692453; // 0b001001001010010010100100100101
-                default: throw new ArgumentOutOfRangeException("leapYearPattern");
+                default: throw new ArgumentOutOfRangeException(nameof(leapYearPattern));
             }
         }
 
@@ -175,7 +175,7 @@ namespace NodaTime.Calendars
                 // Epoch 1970-01-01 ISO = 1389-10-22 Islamic (civil) or 1389-10-23 Islamic (astronomical)
                 case IslamicEpoch.Astronomical: return DaysAtAstronomicalEpoch;
                 case IslamicEpoch.Civil:        return DaysAtCivilEpoch;
-                default: throw new ArgumentOutOfRangeException("epoch");
+                default: throw new ArgumentOutOfRangeException(nameof(epoch));
             }
         }
     }

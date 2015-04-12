@@ -137,7 +137,7 @@ namespace NodaTime.TimeZones
             this.options = options;
             if ((options & ~Options.StrictestMatch) != 0)
             {
-                throw new ArgumentOutOfRangeException("The value " + options + " is not defined within ZoneEqualityComparer.Options");
+                throw new ArgumentOutOfRangeException(nameof(options), $"The value {options} is not defined within ZoneEqualityComparer.Options");
             }
             zoneIntervalComparer = new ZoneIntervalEqualityComparer(options, interval);
         }
