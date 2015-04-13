@@ -38,9 +38,6 @@ NodaTime Release.snk
 # NUnit output
 /TestResult.xml
 
-# The docs directory - we've already got docs/api/Index.html, but we don't want anything new.
-/docs/**
-
 # Sandcastle per-user settings
 /NodaTime.shfbproj_*
 /NodaTime-Pcl.shfbproj_*
