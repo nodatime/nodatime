@@ -72,8 +72,6 @@ FAKEPCL_TEST_DLL := \
 	src/NodaTime.Test/${FAKEPCL_OUTPUTPATH}/NodaTime.Test.dll
 FAKEPCL_SERIALIZATION_TEST_DLL := \
 	src/NodaTime.Serialization.Test/${FAKEPCL_OUTPUTPATH}/NodaTime.Serialization.Test.dll
-FAKEPCL_TZDBCOMPILER_TEST_DLL := \
-	src/NodaTime.TzdbCompiler.Test/${FAKEPCL_OUTPUTPATH}/NodaTime.TzdbCompiler.Test.dll
 
 debug:
 	$(XBUILD) $(XBUILDFLAGS_DEBUG) $(SOLUTION)
@@ -85,7 +83,7 @@ release:
 # it is useful to be able to build and test the PCL subset (#if PCL) of Noda
 # Time against the desktop .NET framework; this target (and checkfakepcl)
 # allow that to be done. Note that we do not build the whole solution: for
-# example, we do not expect ZoneInfoCompiler to build against the PCL version.
+# example, we do not expect TzdbCompiler to build against the PCL version.
 fakepcl:
 	$(XBUILD) $(XBUILDFLAGS_FAKEPCL) src/NodaTime/NodaTime.csproj
 	$(XBUILD) $(XBUILDFLAGS_FAKEPCL) src/NodaTime.Test/NodaTime.Test.csproj
@@ -99,8 +97,8 @@ check: debug
 		$(DEBUG_TZDBCOMPILER_TEST_DLL)
 
 checkfakepcl: fakepcl
-	$(NUNIT) $(FAKEPCL_TEST_DLL) $(FAKEPCL_SERIALIZATION_TEST_DLL) \
-		$(FAKEPCL_TZDBCOMPILER_TEST_DLL)
+	$(NUNIT) $(FAKEPCL_TEST_DLL) $(FAKEPCL_SERIALIZATION_TEST_DLL)
+	# Note: no TzdbCompiler tests, since we can't build them #if PCL.
 
 fetch-packages:
 	$(MONO) $(NUGET) restore $(SOLUTION)
