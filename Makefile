@@ -48,7 +48,9 @@ JEKYLL := jekyll
 #
 # Also override the target framework version: Mono 4.0 does not support
 # targeting .NET framework 3.5, which the desktop build currently declares.
-XBUILDFLAGS := /p:TargetFrameworkProfile='' /p:TargetFrameworkVersion='v4.0'
+# We could target v4.0, except that some of our projects (NodaTime.Test, for
+# example) already target v4.5, and so won't build with v4.0.
+XBUILDFLAGS := /p:TargetFrameworkProfile='' /p:TargetFrameworkVersion='v4.5'
 XBUILDFLAGS_DEBUG := $(XBUILDFLAGS) /p:Configuration=Debug
 XBUILDFLAGS_RELEASE := $(XBUILDFLAGS) /p:Configuration=Release
 
