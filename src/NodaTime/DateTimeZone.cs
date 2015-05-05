@@ -402,16 +402,21 @@ namespace NodaTime
 
         /// <summary>
         /// Maps the given <see cref="LocalDateTime"/> to the corresponding <see cref="ZonedDateTime"/> in a lenient
-        /// manner: ambiguous values map to the later of the alternatives, and "skipped" values map to the start of the
-        /// zone interval after the "gap".
+        /// manner: ambiguous values map to the earlier of the alternatives, and "skipped" values are shifted forward
+        /// by the duration of the "gap".
         /// </summary>
         /// <remarks>
         /// See <see cref="AtStrictly"/> and <see cref="ResolveLocal(LocalDateTime, ZoneLocalMappingResolver)"/> for alternative ways to map a local time to a
         /// specific instant.
+        /// <para>Note: The behavior of this method was changed in version 2.0 to fit the most commonly seen real-world
+        /// usage pattern.  Previous versions returned the later instance of ambiguous values, and returned the start of
+        /// the zone interval after the gap for skipped value.  The previous functionality can still be used if desired,
+        /// by using <see cref="ResolveLocal(LocalDateTime, AmbiguousTimeResolver, SkippedTimeResolver)"/> and passing the
+        /// <see cref="ReturnLater"/> and <see cref="ReturnStartOfIntervalAfter"/> resolvers.</para>
         /// </remarks>
         /// <param name="localDateTime">The local date/time to map.</param>
-        /// <returns>The unambiguous mapping if there is one, the later result if the mapping is ambiguous,
-        /// or the start of the later zone interval if the given local date/time is skipped.</returns>
+        /// <returns>The unambiguous mapping if there is one, the earlier result if the mapping is ambiguous,
+        /// or the forward-shifted value if the given local date/time is skipped.</returns>
         public ZonedDateTime AtLeniently(LocalDateTime localDateTime) =>
             ResolveLocal(localDateTime, Resolvers.LenientResolver);
         #endregion
