@@ -67,6 +67,19 @@ namespace NodaTime.TimeZones
         };
 
         /// <summary>
+        /// A <see cref="SkippedTimeResolver"/> which shifts values in the "gap" forward by the duration
+        /// of the gap (which is usually 1 hour).
+        /// </summary>
+        public static readonly SkippedTimeResolver ReturnForwardShifted = (local, zone, before, after) =>
+        {
+            Preconditions.CheckNotNull(zone, nameof(zone));
+            Preconditions.CheckNotNull(before, nameof(before));
+            Preconditions.CheckNotNull(after, nameof(after));
+            long gap = after.WallOffset.Ticks - before.WallOffset.Ticks;
+            return new ZonedDateTime(local.PlusTicks(gap), zone, after.WallOffset);
+        };
+
+        /// <summary>
         /// A <see cref="SkippedTimeResolver"/> which simply throws a <see cref="SkippedTimeException"/>.
         /// </summary>
         public static readonly SkippedTimeResolver ThrowWhenSkipped = (local, zone, before, after) =>
