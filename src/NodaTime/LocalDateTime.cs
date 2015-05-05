@@ -896,14 +896,18 @@ namespace NodaTime
 
         /// <summary>
         /// Returns the mapping of this local date/time within the given <see cref="DateTimeZone" />,
-        /// with "lenient" rules applied such that ambiguous values map to the
-        /// later of the alternatives, and "skipped" values map to the start of the zone interval
-        /// after the "gap".
+        /// with "lenient" rules applied such that ambiguous values map to the earlier of the alternatives, and
+        /// "skipped" values are shifted forward by the duration of the "gap".
         /// </summary>
         /// <remarks>
         /// See <see cref="InZoneStrictly"/> and <see cref="InZone"/> for alternative ways to map a local time to a
         /// specific instant.
         /// This is solely a convenience method for calling <see cref="DateTimeZone.AtLeniently" />.
+        /// <para>Note: The behavior of this method was changed in version 2.0 to fit the most commonly seen real-world
+        /// usage pattern.  Previous versions returned the later instance of ambiguous values, and returned the start of
+        /// the zone interval after the gap for skipped value.  The previous functionality can still be used if desired,
+        /// by using <see cref="InZone(DateTimeZone, ZoneLocalMappingResolver)"/> and passing a resolver that combines the
+        /// <see cref="Resolvers.ReturnLater"/> and <see cref="Resolvers.ReturnStartOfIntervalAfter"/> resolvers.</para>
         /// </remarks>
         /// <param name="zone">The time zone in which to map this local date/time.</param>
         /// <returns>The result of mapping this local date/time in the given time zone.</returns>
