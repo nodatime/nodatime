@@ -32,8 +32,8 @@ namespace NodaTime
     ///   </item>
     ///   <item>
     ///     <description><see cref="AtLeniently"/> will never throw an exception due to ambiguous or skipped times,
-    ///     resolving to the later option of ambiguous matches or the start of the zone interval after the gap for
-    ///     skipped times.</description>
+    ///     resolving to the earlier option of ambiguous matches, or to a value that's forward-shifted by the duration
+    ///     of the gap for skipped times.</description>
     ///   </item>
     ///   <item>
     ///     <description><see cref="ResolveLocal(LocalDateTime, ZoneLocalMappingResolver)"/> will apply a <see cref="ZoneLocalMappingResolver"/> to the result of
