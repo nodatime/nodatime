@@ -398,7 +398,7 @@ namespace NodaTime
         /// <exception cref="AmbiguousTimeException">The given local date/time is ambiguous in this time zone.</exception>
         /// <returns>The unambiguous matching <see cref="ZonedDateTime"/> if it exists.</returns>
         public ZonedDateTime AtStrictly(LocalDateTime localDateTime) =>
-            ResolveLocal(localDateTime, Resolvers.ThrowWhenAmbiguous, Resolvers.ThrowWhenSkipped);
+            ResolveLocal(localDateTime, Resolvers.StrictResolver);
 
         /// <summary>
         /// Maps the given <see cref="LocalDateTime"/> to the corresponding <see cref="ZonedDateTime"/> in a lenient
@@ -413,7 +413,7 @@ namespace NodaTime
         /// <returns>The unambiguous mapping if there is one, the later result if the mapping is ambiguous,
         /// or the start of the later zone interval if the given local date/time is skipped.</returns>
         public ZonedDateTime AtLeniently(LocalDateTime localDateTime) =>
-            ResolveLocal(localDateTime, Resolvers.ReturnLater, Resolvers.ReturnStartOfIntervalAfter);
+            ResolveLocal(localDateTime, Resolvers.LenientResolver);
         #endregion
 
         /// <summary>
