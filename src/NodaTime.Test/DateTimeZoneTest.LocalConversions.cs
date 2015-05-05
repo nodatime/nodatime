@@ -318,28 +318,28 @@ namespace NodaTime.Test
 
         /// <summary>
         /// Pacific time changed from -7 to -8 at 2am wall time on November 2nd 2009,
-        /// so 2am became 1am. We'll return the later result, i.e. with the offset of -8
+        /// so 2am became 1am. We'll return the earlier result, i.e. with the offset of -7
         /// </summary>
         [Test]
-        public void AtLeniently_AmbiguousTime_ReturnsLaterMapping()
+        public void AtLeniently_AmbiguousTime_ReturnsEarlierMapping()
         {
             var local = new LocalDateTime(2009, 11, 1, 1, 30, 0);
             var zoned = Pacific.AtLeniently(local);
             Assert.AreEqual(local, zoned.LocalDateTime);
-            Assert.AreEqual(Offset.FromHours(-8), zoned.Offset);
+            Assert.AreEqual(Offset.FromHours(-7), zoned.Offset);
         }
 
         /// <summary>
         /// Pacific time changed from -8 to -7 at 2am wall time on March 8th 2009,
-        /// so 2am became 3am. This means that 2.30am doesn't exist on that day.
-        /// We'll return 3am, the start of the second interval.
+        /// so 2am became 3am. This means that 2:30am doesn't exist on that day.
+        /// We'll return 3:30am, the forward-shifted value.
         /// </summary>
         [Test]
-        public void AtLeniently_ReturnsStartOfSecondInterval()
+        public void AtLeniently_ReturnsForwardShiftedValue()
         {
             var local = new LocalDateTime(2009, 3, 8, 2, 30, 0);
             var zoned = Pacific.AtLeniently(local);
-            Assert.AreEqual(new LocalDateTime(2009, 3, 8, 3, 0, 0), zoned.LocalDateTime);
+            Assert.AreEqual(new LocalDateTime(2009, 3, 8, 3, 30, 0), zoned.LocalDateTime);
             Assert.AreEqual(Offset.FromHours(-7), zoned.Offset);
         }
 

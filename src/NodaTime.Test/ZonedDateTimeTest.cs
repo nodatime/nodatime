@@ -262,8 +262,10 @@ namespace NodaTime.Test
 
             LocalDateTime local = new LocalDateTime(2011, 6, 13, 1, 30);
             ZonedDateTime zoned = new ZonedDateTime(local, zone, zone.LateInterval.WallOffset);
-            // Leniently will return the later instant
-            Assert.AreEqual(zoned, local.InZoneLeniently(zone));
+
+            // Map the local time to the later of the offsets in a way which is tested elsewhere.
+            var resolver = Resolvers.CreateMappingResolver(Resolvers.ReturnLater, Resolvers.ThrowWhenSkipped);
+            Assert.AreEqual(zoned, local.InZone(zone, resolver));
         }
 
         [Test]
