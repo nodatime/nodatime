@@ -12,3 +12,4 @@ http://nodatime.org/tzdb/tzdb2014j.nzd
 http://nodatime.org/tzdb/tzdb2015a.nzd 
 http://nodatime.org/tzdb/tzdb2015b.nzd 
 http://nodatime.org/tzdb/tzdb2015c.nzd 
+http://nodatime.org/tzdb/tzdb2015d.nzd 
