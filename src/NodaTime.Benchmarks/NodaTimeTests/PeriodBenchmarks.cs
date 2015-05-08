@@ -2,10 +2,14 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-using Minibench.Framework;
+using BenchmarkDotNet;
+using BenchmarkDotNet.Tasks;
 
 namespace NodaTime.Benchmarks.NodaTimeTests
 {
+    [BenchmarkTask(platform: BenchmarkPlatform.X86, jitVersion: BenchmarkJitVersion.LegacyJit)]
+    [BenchmarkTask(platform: BenchmarkPlatform.X64, jitVersion: BenchmarkJitVersion.LegacyJit)]
+    [BenchmarkTask(platform: BenchmarkPlatform.X64, jitVersion: BenchmarkJitVersion.RyuJit)]
     internal class PeriodBenchmarks
     {
         private static readonly LocalDate SampleStartDate = new LocalDate(2012, 3, 26);
@@ -18,57 +22,57 @@ namespace NodaTime.Benchmarks.NodaTimeTests
         private static readonly LocalDateTime SampleEndDateTime = SampleEndDate + SampleEndTime;
 
         [Benchmark]
-        public void Between_LocalDate()
+        public Period Between_LocalDate()
         {
-            Period.Between(SampleStartDate, SampleEndDate).Consume();
+            return Period.Between(SampleStartDate, SampleEndDate);
         }
 
         [Benchmark]
-        public void Between_LocalDate_Years()
+        public Period Between_LocalDate_Years()
         {
-            Period.Between(SampleStartDate, SampleEndDate, PeriodUnits.Years).Consume();
+            return Period.Between(SampleStartDate, SampleEndDate, PeriodUnits.Years);
         }
 
         [Benchmark]
-        public void Between_LocalDate_Months()
+        public Period Between_LocalDate_Months()
         {
-            Period.Between(SampleStartDate, SampleEndDate, PeriodUnits.Months).Consume();
+            return Period.Between(SampleStartDate, SampleEndDate, PeriodUnits.Months);
         }
 
         [Benchmark]
-        public void Between_LocalDate_Days()
+        public Period Between_LocalDate_Days()
         {
-            Period.Between(SampleStartDate, SampleEndDate, PeriodUnits.Days).Consume();
+            return Period.Between(SampleStartDate, SampleEndDate, PeriodUnits.Days);
         }
 
         [Benchmark]
-        public void Between_LocalDate_Days_SameMonth()
+        public Period Between_LocalDate_Days_SameMonth()
         {
-            Period.Between(SampleStartDate, SampleEndDateSameMonth, PeriodUnits.Days).Consume();
+            return Period.Between(SampleStartDate, SampleEndDateSameMonth, PeriodUnits.Days);
         }
 
         [Benchmark]
-        public void Between_LocalDate_Days_SameYear()
+        public Period Between_LocalDate_Days_SameYear()
         {
-            Period.Between(SampleStartDate, SampleEndDateSameYear, PeriodUnits.Days).Consume();
+            return Period.Between(SampleStartDate, SampleEndDateSameYear, PeriodUnits.Days);
         }
 
         [Benchmark]
-        public void Between_LocalTime()
+        public Period Between_LocalTime()
         {
-            Period.Between(SampleStartTime, SampleEndTime).Consume();
+            return Period.Between(SampleStartTime, SampleEndTime);
         }
 
         [Benchmark]
-        public void Between_LocalDateTime()
+        public Period Between_LocalDateTime()
         {
-            Period.Between(SampleStartDateTime, SampleEndDateTime).Consume();
+            return Period.Between(SampleStartDateTime, SampleEndDateTime);
         }
 
         [Benchmark]
-        public void Between_LocalDateTime_Ticks()
+        public Period Between_LocalDateTime_Ticks()
         {
-            Period.Between(SampleStartDateTime, SampleEndDateTime, PeriodUnits.Ticks).Consume();
+            return Period.Between(SampleStartDateTime, SampleEndDateTime, PeriodUnits.Ticks);
         }
     }
 }

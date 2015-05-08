@@ -3,107 +3,112 @@
 // as found in the LICENSE.txt file.
 
 using System;
+using System.ComponentModel;
 using System.Globalization;
-using Minibench.Framework;
+using BenchmarkDotNet;
+using BenchmarkDotNet.Tasks;
 
 namespace NodaTime.Benchmarks.BclTests
 {
+    [BenchmarkTask(platform: BenchmarkPlatform.X86, jitVersion: BenchmarkJitVersion.LegacyJit)]
+    [BenchmarkTask(platform: BenchmarkPlatform.X64, jitVersion: BenchmarkJitVersion.LegacyJit)]
+    [BenchmarkTask(platform: BenchmarkPlatform.X64, jitVersion: BenchmarkJitVersion.RyuJit)]
     [Category("BCL")]
-    internal class DateTimeBenchmarks
+    public class DateTimeBenchmarks
     {
         private static readonly DateTime Sample = new DateTime(2009, 12, 26, 10, 8, 30, 234, DateTimeKind.Local);
 
         [Benchmark]
-        public void ConstructionToDay()
+        public DateTime ConstructionToDay()
         {
-            new DateTime(2009, 12, 26).Consume();
+            return new DateTime(2009, 12, 26);
         }
 
         [Benchmark]
-        public void ConstructionToSecond()
+        public DateTime ConstructionToSecond()
         {
-            new DateTime(2009, 12, 26, 10, 8, 30, DateTimeKind.Local).Consume();
+            return new DateTime(2009, 12, 26, 10, 8, 30, DateTimeKind.Local);
         }
 
         [Benchmark]
-        public void ConstructionToMillisecond()
+        public DateTime ConstructionToMillisecond()
         {
-            new DateTime(2009, 12, 26, 10, 8, 30, 234, DateTimeKind.Local).Consume();
+            return new DateTime(2009, 12, 26, 10, 8, 30, 234, DateTimeKind.Local);
         }
 
         [Benchmark]
-        public void Year()
+        public int Year()
         {
-            Sample.Year.Consume();
+            return Sample.Year;
         }
 
         [Benchmark]
-        public void Month()
+        public int Month()
         {
-            Sample.Month.Consume();
+            return Sample.Month;
         }
 
         [Benchmark]
-        public void DayOfMonth()
+        public int DayOfMonth()
         {
-            Sample.Day.Consume();
+            return Sample.Day;
         }
 
         [Benchmark]
-        public void DayOfWeek()
+        public DayOfWeek DayOfWeek()
         {
-            Sample.DayOfWeek.Consume();
+            return Sample.DayOfWeek;
         }
 
         [Benchmark]
-        public void DayOfYear()
+        public int DayOfYear()
         {
-            Sample.DayOfYear.Consume();
+            return Sample.DayOfYear;
         }
 
         [Benchmark]
-        public void Hour()
+        public int Hour()
         {
-            Sample.Hour.Consume();
+            return Sample.Hour;
         }
 
         [Benchmark]
-        public void Minute()
+        public int Minute()
         {
-            Sample.Minute.Consume();
+            return Sample.Minute;
         }
 
         [Benchmark]
-        public void Second()
+        public int Second()
         {
-            Sample.Second.Consume();
+            return Sample.Second;
         }
 
         [Benchmark]
-        public void Millisecond()
+        public int Millisecond()
         {
-            Sample.Millisecond.Consume();
+            return Sample.Millisecond;
         }
 
         [Benchmark]
-        public void ToUtc()
+        public DateTime ToUtc()
         {
-            Sample.ToUniversalTime();
+            return Sample.ToUniversalTime();
         }
 
         [Benchmark]
         [Category("Text")]
-        public void Format()
+        public string Format()
         {
-            Sample.ToString("dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
+            return Sample.ToString("dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
         }
-        
+
         [Benchmark]
         [Category("Text")]
-        public void TryParseExact()
+        public bool TryParseExact()
         {
             DateTime result;
-            DateTime.TryParseExact("26/12/2009 10:08:30", "dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.None, out result);
+            return DateTime.TryParseExact("26/12/2009 10:08:30", "dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.None, out result);
         }
     }
 }

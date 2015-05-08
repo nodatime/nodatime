@@ -38,9 +38,9 @@
     <DefineConstants>NO_INTERNALS;V$([System.Text.RegularExpressions.Regex]::Replace($(NodaVersion), "\.", "_"));V$([System.Text.RegularExpressions.Regex]::Replace($(NodaVersion), "^(\d+)\.(\d+)\..*", "$1_$2"));V$([System.Text.RegularExpressions.Regex]::Replace($(NodaVersion), "^(\d+)\..*", "$1"))</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Minibench.Framework, Version=1.0.0.0, Culture=neutral, PublicKeyToken=04b316bbadbaf582, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Minibench.Framework.Skeet.0.2.2\lib\net45\Minibench.Framework.dll</HintPath>
+    <Reference Include="BenchmarkDotNet, Version=0.7.7.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\BenchmarkDotNet.0.7.7\lib\net40\BenchmarkDotNet.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Condition="'$(NodaVersion)' != ''" Include="NodaTime">
       <SpecificVersion>False</SpecificVersion>

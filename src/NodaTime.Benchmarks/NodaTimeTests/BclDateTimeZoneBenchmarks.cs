@@ -2,12 +2,16 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 #if !PCL
+using BenchmarkDotNet;
+using BenchmarkDotNet.Tasks;
 using NodaTime.Benchmarks.BclTests;
-using Minibench.Framework;
 using NodaTime.TimeZones;
 
 namespace NodaTime.Benchmarks.NodaTimeTests
 {
+    [BenchmarkTask(platform: BenchmarkPlatform.X86, jitVersion: BenchmarkJitVersion.LegacyJit)]
+    [BenchmarkTask(platform: BenchmarkPlatform.X64, jitVersion: BenchmarkJitVersion.LegacyJit)]
+    [BenchmarkTask(platform: BenchmarkPlatform.X64, jitVersion: BenchmarkJitVersion.RyuJit)]
     internal sealed class BclDateTimeZoneBenchmarks
     {
         private static readonly DateTimeZone PacificZone = BclDateTimeZone.FromTimeZoneInfo(TimeZoneInfoBenchmarks.PacificZone);

@@ -4,11 +4,16 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Globalization;
-using Minibench.Framework;
+using BenchmarkDotNet;
+using BenchmarkDotNet.Tasks;
 
 namespace NodaTime.Benchmarks.BclTests
 {
+    [BenchmarkTask(platform: BenchmarkPlatform.X86, jitVersion: BenchmarkJitVersion.LegacyJit)]
+    [BenchmarkTask(platform: BenchmarkPlatform.X64, jitVersion: BenchmarkJitVersion.LegacyJit)]
+    [BenchmarkTask(platform: BenchmarkPlatform.X64, jitVersion: BenchmarkJitVersion.RyuJit)]
     [Category("BCL")]
     public class DateTimeOffsetBenchmarks
     {
@@ -35,20 +40,20 @@ namespace NodaTime.Benchmarks.BclTests
         }
 
         [Benchmark]
-        public void Comparison_Operators()
+        public bool Comparison_Operators()
         {
-            (sample < earlier).Consume();
+            return (sample < earlier);
 #pragma warning disable 1718
-            (sample < sample).Consume();
+            return (sample < sample);
 #pragma warning restore 1718
-            (sample < later).Consume();
+            return (sample < later);
         }
 
         [Benchmark]
         [Category("Text")]
-        public void Format()
+        public string Format()
         {
-            sample.ToString("dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture).Consume();
+            return sample.ToString("dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
         }
     }
 }

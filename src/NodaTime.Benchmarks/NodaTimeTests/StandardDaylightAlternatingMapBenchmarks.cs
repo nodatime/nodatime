@@ -1,7 +1,9 @@
 ﻿// Copyright 2014 The Noda Time Authors. All rights reserved.
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
-using Minibench.Framework;
+
+using BenchmarkDotNet;
+using BenchmarkDotNet.Tasks;
 using NodaTime.TimeZones;
 
 #if !NO_INTERNALS
@@ -10,6 +12,9 @@ namespace NodaTime.Benchmarks.NodaTimeTests
     /// <summary>
     /// Benchmarks for operations on an uncached StandardDaylightAlternatingMap.
     /// </summary>
+    [BenchmarkTask(platform: BenchmarkPlatform.X86, jitVersion: BenchmarkJitVersion.LegacyJit)]
+    [BenchmarkTask(platform: BenchmarkPlatform.X64, jitVersion: BenchmarkJitVersion.LegacyJit)]
+    [BenchmarkTask(platform: BenchmarkPlatform.X64, jitVersion: BenchmarkJitVersion.RyuJit)]
     internal sealed class StandardDaylightAlternatingMapBenchmarks
     {
         private static readonly Instant January1st = Instant.FromUtc(2010, 1, 1, 0, 0);

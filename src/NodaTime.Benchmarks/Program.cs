@@ -2,7 +2,7 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-using Minibench.Framework;
+using BenchmarkDotNet;
 
 namespace NodaTime.Benchmarks
 {
@@ -11,10 +11,39 @@ namespace NodaTime.Benchmarks
     /// </summary>
     internal class Program
     {
-        private static int Main()
+        private static void Main()
         {
-            var run = BenchmarkRunner.RunFromCommandLine(typeof(Program).Assembly);
-            return run == null ? 1 : 0;
+            var competitionSwitch = new BenchmarkCompetitionSwitch(new[]
+            {
+                typeof(BclTests.DateTimeBenchmarks),
+                typeof(BclTests.DateTimeOffsetBenchmarks),
+                typeof(BclTests.TimeZoneInfoBenchmarks),
+                typeof(BclTests.UtcDateTimeBenchmarks),
+                typeof(NodaTimeTests.Calendars.HebrewCalendarBenchmarks),
+                typeof(NodaTimeTests.Calendars.IsoCalendarBenchmarks),
+                typeof(NodaTimeTests.JsonNet.FormattingBenchmarks),
+                typeof(NodaTimeTests.JsonNet.ParsingBenchmarks),
+                typeof(NodaTimeTests.Text.InstantPatternBenchmarks),
+                typeof(NodaTimeTests.Text.LocalDatePatternBenchmarks),
+                typeof(NodaTimeTests.Text.LocalDateTimePatternBenchmarks),
+                typeof(NodaTimeTests.Text.OffsetDateTimePatternBenchmarks),
+                typeof(NodaTimeTests.Text.PeriodPatternBenchmarks),
+                typeof(NodaTimeTests.Text.ZonedDateTimePatternBenchmarks),
+                typeof(NodaTimeTests.BclDateTimeZoneBenchmarks),
+                typeof(NodaTimeTests.CachedDateTimeZoneBenchmarks),
+                typeof(NodaTimeTests.DurationBenchmarks),
+                typeof(NodaTimeTests.InstantBenchmarks),
+                typeof(NodaTimeTests.LocalDateBenchmarks),
+                typeof(NodaTimeTests.LocalDateTimeBenchmarks),
+                typeof(NodaTimeTests.LocalTimeBenchmarks),
+                typeof(NodaTimeTests.OffsetBenchmarks),
+                typeof(NodaTimeTests.OffsetDateTimeBenchmarks),
+                typeof(NodaTimeTests.PacificZonedDateTimeBenchmarks),
+                typeof(NodaTimeTests.PeriodBenchmarks),
+                typeof(NodaTimeTests.StandardDaylightAlternatingMapBenchmarks),
+                typeof(NodaTimeTests.UtcZonedDateTimeBenchmarks)
+            });
+            competitionSwitch.Run(new[] { "*" });
         }
     }
 }

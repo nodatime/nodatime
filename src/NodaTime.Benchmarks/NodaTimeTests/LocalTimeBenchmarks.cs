@@ -2,10 +2,14 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-using Minibench.Framework;
+using BenchmarkDotNet;
+using BenchmarkDotNet.Tasks;
 
 namespace NodaTime.Benchmarks.NodaTimeTests
 {
+    [BenchmarkTask(platform: BenchmarkPlatform.X86, jitVersion: BenchmarkJitVersion.LegacyJit)]
+    [BenchmarkTask(platform: BenchmarkPlatform.X64, jitVersion: BenchmarkJitVersion.LegacyJit)]
+    [BenchmarkTask(platform: BenchmarkPlatform.X64, jitVersion: BenchmarkJitVersion.RyuJit)]
     internal class LocalTimeBenchmarks
     {
         private static readonly LocalTime Sample = new LocalTime(10, 8, 30, 300, 1234);
@@ -13,135 +17,135 @@ namespace NodaTime.Benchmarks.NodaTimeTests
         private static readonly LocalDateTime LocalDateTime = new LocalDateTime(2011, 9, 14, 15, 10, 25);
 
         [Benchmark]
-        public void ConstructionToMinute()
+        public LocalTime ConstructionToMinute()
         {
-            new LocalTime(15, 10).Consume();
+            return new LocalTime(15, 10);
         }
 
         [Benchmark]
-        public void ConstructionToSecond()
+        public LocalTime ConstructionToSecond()
         {
-            new LocalTime(15, 10, 25).Consume();
+            return new LocalTime(15, 10, 25);
         }
 
         [Benchmark]
-        public void ConstructionToMillisecond()
+        public LocalTime ConstructionToMillisecond()
         {
-            new LocalTime(15, 10, 25, 500).Consume();
+            return new LocalTime(15, 10, 25, 500);
         }
 
         [Benchmark]
-        public void ConstructionToTick()
+        public LocalTime ConstructionToTick()
         {
-            new LocalTime(15, 10, 25, 500, 1234).Consume();
+            return new LocalTime(15, 10, 25, 500, 1234);
         }
 
         [Benchmark]
-        public void ConversionFromLocalDateTime()
+        public LocalTime ConversionFromLocalDateTime()
         {
-            LocalDateTime.TimeOfDay.Consume();
+            return LocalDateTime.TimeOfDay;
         }
 
         [Benchmark]
-        public void Hour()
+        public int Hour()
         {
-            Sample.Hour.Consume();
+            return Sample.Hour;
         }
 
         [Benchmark]
-        public void Minute()
+        public int Minute()
         {
-            Sample.Minute.Consume();
+            return Sample.Minute;
         }
 
         [Benchmark]
-        public void Second()
+        public int Second()
         {
-            Sample.Second.Consume();
+            return Sample.Second;
         }
 
         [Benchmark]
-        public void Millisecond()
+        public int Millisecond()
         {
-            Sample.Millisecond.Consume();
+            return Sample.Millisecond;
         }
 
         [Benchmark]
-        public void ClockHourOfHalfDay()
+        public int ClockHourOfHalfDay()
         {
-            Sample.ClockHourOfHalfDay.Consume();
+            return Sample.ClockHourOfHalfDay;
         }
 
         [Benchmark]
-        public void TickOfSecond()
+        public int TickOfSecond()
         {
-            Sample.TickOfSecond.Consume();
+            return Sample.TickOfSecond;
         }
 
         [Benchmark]
-        public void TickOfDay()
+        public long TickOfDay()
         {
-            Sample.TickOfDay.Consume();
+            return Sample.TickOfDay;
         }
 
         [Benchmark]
-        public void PlusHours()
+        public LocalTime PlusHours()
         {
-            Sample.PlusHours(3).Consume();
+            return Sample.PlusHours(3);
         }
 
         [Benchmark]
-        public void PlusHours_OverflowDay()
+        public LocalTime PlusHours_OverflowDay()
         {
-            Sample.PlusHours(33).Consume();
+            return Sample.PlusHours(33);
         }
 
         [Benchmark]
-        public void PlusHours_Negative()
+        public LocalTime PlusHours_Negative()
         {
-            Sample.PlusHours(-3).Consume();
+            return Sample.PlusHours(-3);
         }
 
         [Benchmark]
-        public void PlusHours_UnderflowDay()
+        public LocalTime PlusHours_UnderflowDay()
         {
-            Sample.PlusHours(-33).Consume();
+            return Sample.PlusHours(-33);
         }
 
         [Benchmark]
-        public void PlusMinutes()
+        public LocalTime PlusMinutes()
         {
-            Sample.PlusMinutes(3).Consume();
+            return Sample.PlusMinutes(3);
         }
 
         [Benchmark]
-        public void PlusSeconds()
+        public LocalTime PlusSeconds()
         {
-            Sample.PlusSeconds(3).Consume();
+            return Sample.PlusSeconds(3);
         }
 
         [Benchmark]
-        public void PlusMilliseconds()
+        public LocalTime PlusMilliseconds()
         {
-            Sample.PlusMilliseconds(3).Consume();
+            return Sample.PlusMilliseconds(3);
         }
 
         [Benchmark]
-        public void PlusTicks()
+        public LocalTime PlusTicks()
         {
-            Sample.PlusTicks(3).Consume();
+            return Sample.PlusTicks(3);
         }
 
         [Benchmark]
-        public void PlusPeriod()
+        public LocalTime PlusPeriod()
         {
-            (Sample + SamplePeriod).Consume();
+            return (Sample + SamplePeriod);
         }
 
         [Benchmark]
-        public void MinusPeriod()
+        public LocalTime MinusPeriod()
         {
-            (Sample - SamplePeriod).Consume();
+            return (Sample - SamplePeriod);
         }
     }
 }

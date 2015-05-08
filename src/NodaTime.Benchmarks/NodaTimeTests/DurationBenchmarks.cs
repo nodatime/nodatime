@@ -1,73 +1,77 @@
-﻿using Minibench.Framework;
-// Copyright 2011 The Noda Time Authors. All rights reserved.
+﻿// Copyright 2011 The Noda Time Authors. All rights reserved.
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 using System;
+using BenchmarkDotNet;
+using BenchmarkDotNet.Tasks;
 
 namespace NodaTime.Benchmarks.NodaTimeTests
 {
+    [BenchmarkTask(platform: BenchmarkPlatform.X86, jitVersion: BenchmarkJitVersion.LegacyJit)]
+    [BenchmarkTask(platform: BenchmarkPlatform.X64, jitVersion: BenchmarkJitVersion.LegacyJit)]
+    [BenchmarkTask(platform: BenchmarkPlatform.X64, jitVersion: BenchmarkJitVersion.RyuJit)]
     public class DurationBenchmarks
     {
         private static readonly TimeSpan SampleTimeSpan = new TimeSpan(1, 2, 3);
 
         [Benchmark]
-        public void FromDays()
+        public Duration FromDays()
         {
 #if !V1
-            Duration.FromDays(100).Consume();
+            return Duration.FromDays(100);
 #else
-            Duration.FromStandardDays(100).Consume();
+            return Duration.FromStandardDays(100);
 #endif
         }
 
         [Benchmark]
-        public void FromHours()
+        public Duration FromHours()
         {
-            Duration.FromHours(100).Consume();
+            return Duration.FromHours(100);
         }
 
         [Benchmark]
-        public void FromMinutes()
+        public Duration FromMinutes()
         {
-            Duration.FromMinutes(100).Consume();
+            return Duration.FromMinutes(100);
         }
 
         [Benchmark]
-        public void FromSeconds()
+        public Duration FromSeconds()
         {
-            Duration.FromSeconds(100).Consume();
+            return Duration.FromSeconds(100);
         }
 
         [Benchmark]
-        public void FromMilliseconds()
+        public Duration FromMilliseconds()
         {
-            Duration.FromMilliseconds(100).Consume();
+            return Duration.FromMilliseconds(100);
         }
 
         [Benchmark]
-        public void FromTicks()
+        public Duration FromTicks()
         {
-            Duration.FromTicks(100).Consume();
+            return Duration.FromTicks(100);
         }
 
 #if !V1
         [Benchmark]
-        public void FromInt64Nanoseconds()
+        public Duration FromInt64Nanoseconds()
         {
-            Duration.FromNanoseconds(int.MaxValue + 1L).Consume();
+            return Duration.FromNanoseconds(int.MaxValue + 1L);
         }
 
         [Benchmark]
-        public void FromDecimalNanoseconds()
+        public Duration FromDecimalNanoseconds()
         {
-            Duration.FromNanoseconds(long.MaxValue + 100M).Consume();
+            return Duration.FromNanoseconds(long.MaxValue + 100M);
         }
 #endif
 
         [Benchmark]
-        public void FromTimeSpan()
+        public Duration FromTimeSpan()
         {
-            Duration.FromTimeSpan(SampleTimeSpan).Consume();
+            return Duration.FromTimeSpan(SampleTimeSpan);
         }
 
     }

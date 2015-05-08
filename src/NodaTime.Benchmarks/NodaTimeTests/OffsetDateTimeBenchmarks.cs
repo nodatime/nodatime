@@ -3,10 +3,15 @@
 // as found in the LICENSE.txt file.
 
 using System.Collections.Generic;
-using Minibench.Framework;
+using BenchmarkDotNet;
+using BenchmarkDotNet.Tasks;
+using NodaTime.Calendars;
 
 namespace NodaTime.Benchmarks.NodaTimeTests
 {
+    [BenchmarkTask(platform: BenchmarkPlatform.X86, jitVersion: BenchmarkJitVersion.LegacyJit)]
+    [BenchmarkTask(platform: BenchmarkPlatform.X64, jitVersion: BenchmarkJitVersion.LegacyJit)]
+    [BenchmarkTask(platform: BenchmarkPlatform.X64, jitVersion: BenchmarkJitVersion.RyuJit)]
     internal class OffsetDateTimeBenchmarks
     {
         private static readonly Offset OneHourOffset = Offset.FromHours(1);
@@ -23,152 +28,154 @@ namespace NodaTime.Benchmarks.NodaTimeTests
 #endif
 
         [Benchmark]
-        public void Construction()
+        public OffsetDateTime Construction()
         {
-            new OffsetDateTime(SampleLocal, OneHourOffset).Consume();
+            return new OffsetDateTime(SampleLocal, OneHourOffset);
         }
 
         [Benchmark]
-        public void Year()
+        public int Year()
         {
-            Sample.Year.Consume();
+            return Sample.Year;
         }
 
         [Benchmark]
-        public void Month()
+        public int Month()
         {
-            Sample.Month.Consume();
+            return Sample.Month;
         }
 
         [Benchmark]
-        public void DayOfMonth()
+        public int DayOfMonth()
         {
-            Sample.Day.Consume();
+            return Sample.Day;
         }
 
         [Benchmark]
-        public void IsoDayOfWeek()
+        public IsoDayOfWeek IsoDayOfWeek()
         {
-            Sample.IsoDayOfWeek.Consume();
+            return Sample.IsoDayOfWeek;
         }
 
         [Benchmark]
-        public void DayOfYear()
+        public int DayOfYear()
         {
-            Sample.DayOfYear.Consume();
+            return Sample.DayOfYear;
         }
 
         [Benchmark]
-        public void Hour()
+        public int Hour()
         {
-            Sample.Hour.Consume();
+            return Sample.Hour;
         }
 
         [Benchmark]
-        public void Minute()
+        public int Minute()
         {
-            Sample.Minute.Consume();
+            return Sample.Minute;
         }
 
         [Benchmark]
-        public void Second()
+        public int Second()
         {
-            Sample.Second.Consume();
+            return Sample.Second;
         }
 
         [Benchmark]
-        public void Millisecond()
+        public int Millisecond()
         {
-            Sample.Millisecond.Consume();
+            return Sample.Millisecond;
         }
 
 #if !V1_0
         [Benchmark]
-        public void Date()
+        public LocalDate Date()
         {
-            Sample.Date.Consume();
+            return Sample.Date;
         }
 
         [Benchmark]
-        public void TimeOfDay()
+        public LocalTime TimeOfDay()
         {
-            Sample.TimeOfDay.Consume();
+            return Sample.TimeOfDay;
         }
 #endif
 
         [Benchmark]
-        public void TickOfDay()
+        public long TickOfDay()
         {
-            Sample.TickOfDay.Consume();
+            return Sample.TickOfDay;
         }
 
         [Benchmark]
-        public void TickOfSecond()
+        public int TickOfSecond()
         {
-            Sample.TickOfSecond.Consume();
+            return Sample.TickOfSecond;
         }
 
         [Benchmark]
-        public void WeekOfWeekYear()
+        public int WeekOfWeekYear()
         {
-            Sample.WeekOfWeekYear.Consume();
+            return Sample.WeekOfWeekYear;
         }
 
         [Benchmark]
-        public void WeekYear()
+        public int WeekYear()
         {
-            Sample.WeekYear.Consume();
+            return Sample.WeekYear;
         }
 
         [Benchmark]
-        public void ClockHourOfHalfDay()
+        public int ClockHourOfHalfDay()
         {
-            Sample.ClockHourOfHalfDay.Consume();
+            return Sample.ClockHourOfHalfDay;
         }
 
         [Benchmark]
-        public void Era()
+        public Era Era()
         {
-            Sample.Era.Consume();
+            return Sample.Era;
         }
 
         [Benchmark]
-        public void YearOfEra()
+        public int YearOfEra()
         {
-            Sample.YearOfEra.Consume();
+            return Sample.YearOfEra;
         }
 
 #if !V1_0
         [Benchmark]
-        public void LocalComparer_Compare()
+        public int LocalComparer_Compare()
         {
-            LocalComparer.Compare(Sample, SampleEarlier);
-            LocalComparer.Compare(Sample, Sample);
-            LocalComparer.Compare(Sample, SampleLater);
+            int value = LocalComparer.Compare(Sample, SampleEarlier);
+            value += LocalComparer.Compare(Sample, Sample);
+            value += LocalComparer.Compare(Sample, SampleLater);
+            return value;
         }
 
         [Benchmark]
-        public void InstantComparer_Compare()
+        public int InstantComparer_Compare()
         {
-            InstantComparer.Compare(Sample, SampleEarlier);
-            InstantComparer.Compare(Sample, Sample);
-            InstantComparer.Compare(Sample, SampleLater);
+            int value = InstantComparer.Compare(Sample, SampleEarlier);
+            value += InstantComparer.Compare(Sample, Sample);
+            value += InstantComparer.Compare(Sample, SampleLater);
+            return value;
         }
 #endif
 
 #if !V1_0 && !V1_1 && !V1_2
         [Benchmark]
-        public void WithOffset_SameLocalDay()
+        public OffsetDateTime WithOffset_SameLocalDay()
         {
             // This just about stays within the same local day
-            SampleEarlier.WithOffset(LargePositiveOffset).Consume();
+            return SampleEarlier.WithOffset(LargePositiveOffset);
         }
 
         [Benchmark]
-        public void WithOffset_DifferentLocalDay()
+        public OffsetDateTime WithOffset_DifferentLocalDay()
         {
             // This ends up in the day before
-            SampleEarlier.WithOffset(LargeNegativeOffset).Consume();
+            return SampleEarlier.WithOffset(LargeNegativeOffset);
         }
 #endif
     }

@@ -4,291 +4,296 @@
 
 using System;
 using System.Globalization;
-using Minibench.Framework;
+using BenchmarkDotNet;
+using BenchmarkDotNet.Tasks;
+using NodaTime.Calendars;
 
 namespace NodaTime.Benchmarks.NodaTimeTests
 {
-    internal class LocalDateTimeBenchmarks
+    [BenchmarkTask(platform: BenchmarkPlatform.X86, jitVersion: BenchmarkJitVersion.LegacyJit)]
+    [BenchmarkTask(platform: BenchmarkPlatform.X64, jitVersion: BenchmarkJitVersion.LegacyJit)]
+    [BenchmarkTask(platform: BenchmarkPlatform.X64, jitVersion: BenchmarkJitVersion.RyuJit)]
+    public class LocalDateTimeBenchmarks
     {
         private static readonly DateTime SampleDateTime = new DateTime(2009, 12, 26, 10, 8, 30);
         private static readonly LocalDateTime Sample = new LocalDateTime(2009, 12, 26, 10, 8, 30);
-        private static readonly CultureInfo MutableCulture = (CultureInfo) CultureInfo.InvariantCulture.Clone();
+        private static readonly CultureInfo MutableCulture = (CultureInfo)CultureInfo.InvariantCulture.Clone();
         private static readonly Period SampleTimePeriod = new PeriodBuilder { Hours = 10, Minutes = 4, Seconds = 5, Milliseconds = 20, Ticks = 30 }.Build();
         private static readonly Period SampleDatePeriod = new PeriodBuilder { Years = 1, Months = 2, Weeks = 3, Days = 4 }.Build();
         private static readonly Period SampleMixedPeriod = SampleDatePeriod + SampleTimePeriod;
 
         [Benchmark]
-        public void ConstructionToMinute()
+        public LocalDateTime ConstructionToMinute()
         {
-            new LocalDateTime(2009, 12, 26, 10, 8).Consume();
+            return new LocalDateTime(2009, 12, 26, 10, 8);
         }
 
         [Benchmark]
-        public void ConstructionToSecond()
+        public LocalDateTime ConstructionToSecond()
         {
-            new LocalDateTime(2009, 12, 26, 10, 8, 30).Consume();
+            return new LocalDateTime(2009, 12, 26, 10, 8, 30);
         }
 
         [Benchmark]
-        public void ConstructionToTick()
+        public LocalDateTime ConstructionToTick()
         {
-            new LocalDateTime(2009, 12, 26, 10, 8, 30, 0, 0).Consume();
+            return new LocalDateTime(2009, 12, 26, 10, 8, 30, 0, 0);
         }
 
         [Benchmark]
-        public void FromDateTime()
+        public LocalDateTime FromDateTime()
         {
-            LocalDateTime.FromDateTime(SampleDateTime);
+            return LocalDateTime.FromDateTime(SampleDateTime);
         }
 
         [Benchmark]
-        public void ToDateTimeUnspecified()
+        public DateTime ToDateTimeUnspecified()
         {
-            Sample.ToDateTimeUnspecified();
+            return Sample.ToDateTimeUnspecified();
         }
 
         [Benchmark]
-        public void Year()
+        public int Year()
         {
-            Sample.Year.Consume();
+            return Sample.Year;
         }
 
         [Benchmark]
-        public void Month()
+        public int Month()
         {
-            Sample.Month.Consume();
+            return Sample.Month;
         }
 
         [Benchmark]
-        public void DayOfMonth()
+        public int DayOfMonth()
         {
-            Sample.Day.Consume();
+            return Sample.Day;
         }
 
         [Benchmark]
-        public void IsoDayOfWeek()
+        public IsoDayOfWeek IsoDayOfWeek()
         {
-            Sample.IsoDayOfWeek.Consume();
+            return Sample.IsoDayOfWeek;
         }
 
         [Benchmark]
-        public void DayOfYear()
+        public int DayOfYear()
         {
-            Sample.DayOfYear.Consume();
+            return Sample.DayOfYear;
         }
 
         [Benchmark]
-        public void Hour()
+        public int Hour()
         {
-            Sample.Hour.Consume();
+            return Sample.Hour;
         }
 
         [Benchmark]
-        public void Minute()
+        public int Minute()
         {
-            Sample.Minute.Consume();
+            return Sample.Minute;
         }
 
         [Benchmark]
-        public void Second()
+        public int Second()
         {
-            Sample.Second.Consume();
+            return Sample.Second;
         }
 
         [Benchmark]
-        public void Millisecond()
+        public int Millisecond()
         {
-            Sample.Millisecond.Consume();
+            return Sample.Millisecond;
         }
 
         [Benchmark]
-        public void Date()
+        public LocalDate Date()
         {
-            Sample.Date.Consume();
+            return Sample.Date;
         }
 
         [Benchmark]
-        public void TimeOfDay()
+        public LocalTime TimeOfDay()
         {
-            Sample.TimeOfDay.Consume();
+            return Sample.TimeOfDay;
         }
 
         [Benchmark]
-        public void TickOfDay()
+        public long TickOfDay()
         {
-            Sample.TickOfDay.Consume();
+            return Sample.TickOfDay;
         }
 
         [Benchmark]
-        public void TickOfSecond()
+        public int TickOfSecond()
         {
-            Sample.TickOfSecond.Consume();
+            return Sample.TickOfSecond;
         }
 
         [Benchmark]
-        public void WeekOfWeekYear()
+        public int WeekOfWeekYear()
         {
-            Sample.WeekOfWeekYear.Consume();
+            return Sample.WeekOfWeekYear;
         }
 
         [Benchmark]
-        public void WeekYear()
+        public int WeekYear()
         {
-            Sample.WeekYear.Consume();
+            return Sample.WeekYear;
         }
 
         [Benchmark]
-        public void ClockHourOfHalfDay()
+        public int ClockHourOfHalfDay()
         {
-            Sample.ClockHourOfHalfDay.Consume();
+            return Sample.ClockHourOfHalfDay;
         }
 
         [Benchmark]
-        public void Era()
+        public Era Era()
         {
-            Sample.Era.Consume();
+            return Sample.Era;
         }
 
         [Benchmark]
-        public void YearOfEra()
+        public int YearOfEra()
         {
-            Sample.YearOfEra.Consume();
+            return Sample.YearOfEra;
         }
 
         [Benchmark]
-        public void ToString_Parameterless()
+        public string ToString_Parameterless()
         {
-            Sample.ToString();
+            return Sample.ToString();
         }
 
         [Benchmark]
-        public void ToString_ExplicitPattern_Invariant()
+        public string ToString_ExplicitPattern_Invariant()
         {
-            Sample.ToString("dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
+            return Sample.ToString("dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
         }
 
         /// <summary>
         /// This test will involve creating a new NodaFormatInfo for each iteration.
         /// </summary>
         [Benchmark]
-        public void ToString_ExplicitPattern_MutableCulture()
+        public string ToString_ExplicitPattern_MutableCulture()
         {
-            Sample.ToString("dd/MM/yyyy HH:mm:ss", MutableCulture);
+            return Sample.ToString("dd/MM/yyyy HH:mm:ss", MutableCulture);
         }
 
         [Benchmark]
-        public void PlusYears()
+        public LocalDateTime PlusYears()
         {
-            Sample.PlusYears(3).Consume();
+            return Sample.PlusYears(3);
         }
 
         [Benchmark]
-        public void PlusMonths()
+        public LocalDateTime PlusMonths()
         {
-            Sample.PlusMonths(3).Consume();
+            return Sample.PlusMonths(3);
         }
 
         [Benchmark]
-        public void PlusWeeks()
+        public LocalDateTime PlusWeeks()
         {
-            Sample.PlusWeeks(3).Consume();
+            return Sample.PlusWeeks(3);
         }
 
         [Benchmark]
-        public void PlusDays()
+        public LocalDateTime PlusDays()
         {
-            Sample.PlusDays(3).Consume();
+            return Sample.PlusDays(3);
         }
 
         [Benchmark]
-        public void PlusHours()
+        public LocalDateTime PlusHours()
         {
-            Sample.PlusHours(3).Consume();
+            return Sample.PlusHours(3);
         }
 
-        public void PlusHours_OverflowDay()
+        public LocalDateTime PlusHours_OverflowDay()
         {
-            Sample.PlusHours(33).Consume();
-        }
-
-        [Benchmark]
-        public void PlusHours_Negative()
-        {
-            Sample.PlusHours(-3).Consume();
+            return Sample.PlusHours(33);
         }
 
         [Benchmark]
-        public void PlusHours_UnderflowDay()
+        public LocalDateTime PlusHours_Negative()
         {
-            Sample.PlusHours(-33).Consume();
+            return Sample.PlusHours(-3);
         }
 
         [Benchmark]
-        public void PlusMinutes()
+        public LocalDateTime PlusHours_UnderflowDay()
         {
-            Sample.PlusMinutes(3).Consume();
+            return Sample.PlusHours(-33);
         }
 
         [Benchmark]
-        public void PlusSeconds()
+        public LocalDateTime PlusMinutes()
         {
-            Sample.PlusSeconds(3).Consume();
+            return Sample.PlusMinutes(3);
         }
 
         [Benchmark]
-        public void PlusMilliseconds()
+        public LocalDateTime PlusSeconds()
         {
-            Sample.PlusMilliseconds(3).Consume();
+            return Sample.PlusSeconds(3);
         }
 
         [Benchmark]
-        public void PlusTicks()
+        public LocalDateTime PlusMilliseconds()
         {
-            Sample.PlusTicks(3).Consume();
+            return Sample.PlusMilliseconds(3);
         }
 
         [Benchmark]
-        public void PlusDatePeriod()
+        public LocalDateTime PlusTicks()
         {
-            (Sample + SampleDatePeriod).Consume();
+            return Sample.PlusTicks(3);
         }
 
         [Benchmark]
-        public void MinusDatePeriod()
+        public LocalDateTime PlusDatePeriod()
         {
-            (Sample - SampleDatePeriod).Consume();
+            return (Sample + SampleDatePeriod);
         }
 
         [Benchmark]
-        public void PlusTimePeriod()
+        public LocalDateTime MinusDatePeriod()
         {
-            (Sample + SampleTimePeriod).Consume();
+            return (Sample - SampleDatePeriod);
         }
 
         [Benchmark]
-        public void MinusTimePeriod()
+        public LocalDateTime PlusTimePeriod()
         {
-            (Sample - SampleTimePeriod).Consume();
+            return (Sample + SampleTimePeriod);
         }
 
         [Benchmark]
-        public void PlusMixedPeriod()
+        public LocalDateTime MinusTimePeriod()
         {
-            (Sample + SampleMixedPeriod).Consume();
+            return (Sample - SampleTimePeriod);
         }
 
         [Benchmark]
-        public void MinusMixedPeriod()
+        public LocalDateTime PlusMixedPeriod()
         {
-            (Sample - SampleMixedPeriod).Consume();
+            return (Sample + SampleMixedPeriod);
+        }
+
+        [Benchmark]
+        public LocalDateTime MinusMixedPeriod()
+        {
+            return (Sample - SampleMixedPeriod);
         }
 
 #if !NO_INTERNALS
-        [Benchmark]
-        public void ToLocalInstant()
-        {
-            Sample.ToLocalInstant().Consume();
-        }
+        //        [Benchmark]
+        //        public LocalInstant ToLocalInstant()
+        //        {
+        //            return Sample.ToLocalInstant();
+        //        }
 #endif
     }
 }

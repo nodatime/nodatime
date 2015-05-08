@@ -3,79 +3,84 @@
 // as found in the LICENSE.txt file.
 
 using System;
-using Minibench.Framework;
+using System.ComponentModel;
+using BenchmarkDotNet;
+using BenchmarkDotNet.Tasks;
 
 namespace NodaTime.Benchmarks.BclTests
 {
+    [BenchmarkTask(platform: BenchmarkPlatform.X86, jitVersion: BenchmarkJitVersion.LegacyJit)]
+    [BenchmarkTask(platform: BenchmarkPlatform.X64, jitVersion: BenchmarkJitVersion.LegacyJit)]
+    [BenchmarkTask(platform: BenchmarkPlatform.X64, jitVersion: BenchmarkJitVersion.RyuJit)]
     [Category("BCL")]
     internal class UtcDateTimeBenchmarks
     {
         private readonly DateTime sample = new DateTime(2009, 12, 26, 10, 8, 30, DateTimeKind.Utc);
 
         [Benchmark]
-        public void Construction()
+        public DateTime Construction()
         {
-            new DateTime(2009, 12, 26, 10, 8, 30, DateTimeKind.Utc).Consume();
+            return new DateTime(2009, 12, 26, 10, 8, 30, DateTimeKind.Utc);
         }
 
         [Benchmark]
-        public void Year()
+        public int Year()
         {
-            sample.Year.Consume();
+            return sample.Year;
         }
 
         [Benchmark]
-        public void Month()
+        public int Month()
         {
-            sample.Month.Consume();
+            return sample.Month;
         }
 
         [Benchmark]
-        public void DayOfMonth()
+        public int DayOfMonth()
         {
-            sample.Day.Consume();
+            return sample.Day;
         }
 
         [Benchmark]
-        public void DayOfWeek()
+        public DayOfWeek DayOfWeek()
         {
-            sample.DayOfWeek.Consume();
+            return sample.DayOfWeek;
         }
 
         [Benchmark]
-        public void DayOfYear()
+        public int DayOfYear()
         {
-            sample.DayOfYear.Consume();
+            return sample.DayOfYear;
         }
 
         [Benchmark]
-        public void Hour()
+        public int Hour()
         {
-            sample.Hour.Consume();
+            return sample.Hour;
         }
 
         [Benchmark]
-        public void Minute()
+        public int Minute()
         {
-            sample.Minute.Consume();
+            return sample.Minute;
         }
 
         [Benchmark]
-        public void Second()
+        public int Second()
         {
-            sample.Second.Consume();
+            return sample.Second;
         }
 
         [Benchmark]
-        public void Millisecond()
+        public int Millisecond()
         {
-            sample.Millisecond.Consume();
+            return sample.Millisecond;
         }
 
         [Benchmark]
-        public void ToLocalTime()
+        public DateTime ToLocalTime()
         {
-            sample.ToLocalTime();
+            return sample.ToLocalTime();
         }
     }
 }

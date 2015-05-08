@@ -3,12 +3,16 @@
 // as found in the LICENSE.txt file.
 
 using System.Globalization;
-using Minibench.Framework;
+using BenchmarkDotNet;
+using BenchmarkDotNet.Tasks;
 using NodaTime.Globalization;
 using NodaTime.Text;
 
 namespace NodaTime.Benchmarks.NodaTimeTests
 {
+    [BenchmarkTask(platform: BenchmarkPlatform.X86, jitVersion: BenchmarkJitVersion.LegacyJit)]
+    [BenchmarkTask(platform: BenchmarkPlatform.X64, jitVersion: BenchmarkJitVersion.LegacyJit)]
+    [BenchmarkTask(platform: BenchmarkPlatform.X64, jitVersion: BenchmarkJitVersion.RyuJit)]
     internal class OffsetBenchmarks
     {
         private static readonly Offset SampleOffset = Offset.FromHoursAndMinutes(12, 34);

@@ -2,11 +2,16 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-using Minibench.Framework;
+using BenchmarkDotNet;
+using BenchmarkDotNet.Tasks;
+using NodaTime.Calendars;
 using NodaTime.Text;
 
 namespace NodaTime.Benchmarks.NodaTimeTests
 {
+    [BenchmarkTask(platform: BenchmarkPlatform.X86, jitVersion: BenchmarkJitVersion.LegacyJit)]
+    [BenchmarkTask(platform: BenchmarkPlatform.X64, jitVersion: BenchmarkJitVersion.LegacyJit)]
+    [BenchmarkTask(platform: BenchmarkPlatform.X64, jitVersion: BenchmarkJitVersion.RyuJit)]
     internal class LocalDateBenchmarks
     {
         private static readonly LocalDate Sample = new LocalDate(2009, 12, 26);
@@ -23,42 +28,44 @@ namespace NodaTime.Benchmarks.NodaTimeTests
         }
 
         [Benchmark]
-        public void PatternParse()
+        public LocalDate PatternParse()
         {
             var parseResult = Pattern.Parse("26/12/2009");
-            parseResult.Value.Consume();
+            return parseResult.Value;
         }
 
         [Benchmark]
-        public void Construction()
+        public LocalDate Construction()
         {
-            new LocalDate(2009, 12, 26).Consume();
+            return new LocalDate(2009, 12, 26);
         }
 
         [Benchmark]
-        public void ConstructionOutsidePrecomputedRange()
+        public LocalDate ConstructionOutsidePrecomputedRange()
         {
-            new LocalDate(1009, 12, 26).Consume();
+            return new LocalDate(1009, 12, 26);
         }
 
         [Benchmark]
-        public void ConstructionAvoidingCache()
+        public LocalDate ConstructionAvoidingCache()
         {
             // Construct the first day of every year between 1000 and 3000 AD. This
             // should thoroughly test CalculateYearTicks, as we'll never get a cache hit.
+            LocalDate localDate = new LocalDate();
             for (int year = 1; year <= 3000; year++)
             {
-                new LocalDate(year, 1, 1).Consume();
+                localDate = new LocalDate(year, 1, 1);
             }
+            return localDate;
         }
 
 #if !NO_INTERNALS
         private static readonly int SampleDays = Sample.DaysSinceEpoch;
 
         [Benchmark]
-        public void ConstructionFromDays_SpecifyCalendar()
+        public LocalDate ConstructionFromDays_SpecifyCalendar()
         {
-            new LocalDate(SampleDays, CalendarSystem.Iso);
+            return new LocalDate(SampleDays, CalendarSystem.Iso);
         }
 
         [Benchmark]
@@ -71,121 +78,121 @@ namespace NodaTime.Benchmarks.NodaTimeTests
         [Benchmark]
         public void FromWeekYearWeekAndDay()
         {
-            LocalDate.FromWeekYearWeekAndDay(2009, 1, NodaTime.IsoDayOfWeek.Thursday).Consume();
+            LocalDate.FromWeekYearWeekAndDay(2009, 1, NodaTime.IsoDayOfWeek.Thursday);
         }
 
         [Benchmark]
-        public void Year()
+        public int Year()
         {
-            Sample.Year.Consume();
+            return Sample.Year;
         }
 
         [Benchmark]
-        public void Month()
+        public int Month()
         {
-            Sample.Month.Consume();
+            return Sample.Month;
         }
 
         [Benchmark]
-        public void DayOfMonth()
+        public int DayOfMonth()
         {
-            Sample.Day.Consume();
+            return Sample.Day;
         }
 
         [Benchmark]
-        public void IsoDayOfWeek()
+        public IsoDayOfWeek IsoDayOfWeek()
         {
-            Sample.IsoDayOfWeek.Consume();
+            return Sample.IsoDayOfWeek;
         }
 
         [Benchmark]
-        public void IsoDayOfWeek_BeforeEpoch()
+        public IsoDayOfWeek IsoDayOfWeek_BeforeEpoch()
         {
-            SampleBeforeEpoch.IsoDayOfWeek.Consume();
+            return SampleBeforeEpoch.IsoDayOfWeek;
         }
         
         [Benchmark]
-        public void DayOfYear()
+        public int DayOfYear()
         {
-            Sample.DayOfYear.Consume();
+            return Sample.DayOfYear;
         }
 
         [Benchmark]
-        public void WeekOfWeekYear()
+        public int WeekOfWeekYear()
         {
-            Sample.WeekOfWeekYear.Consume();
+            return Sample.WeekOfWeekYear;
         }
 
         [Benchmark]
-        public void WeekYear()
+        public int WeekYear()
         {
-            Sample.WeekYear.Consume();
+            return Sample.WeekYear;
         }
 
         [Benchmark]
-        public void Era()
+        public Era Era()
         {
-            Sample.Era.Consume();
+            return Sample.Era;
         }
 
         [Benchmark]
-        public void YearOfEra()
+        public int YearOfEra()
         {
-            Sample.YearOfEra.Consume();
+            return Sample.YearOfEra;
         }
 
         [Benchmark]
-        public void PlusYears()
+        public LocalDate PlusYears()
         {
-            Sample.PlusYears(3).Consume();
+            return Sample.PlusYears(3);
         }
 
         [Benchmark]
-        public void PlusMonths()
+        public LocalDate PlusMonths()
         {
-            Sample.PlusMonths(3).Consume();
+            return Sample.PlusMonths(3);
         }
 
         [Benchmark]
-        public void PlusWeeks()
+        public LocalDate PlusWeeks()
         {
-            Sample.PlusWeeks(3).Consume();
+            return Sample.PlusWeeks(3);
         }
 
         [Benchmark]
-        public void PlusDays()
+        public LocalDate PlusDays()
         {
-            Sample.PlusDays(3).Consume();
+            return Sample.PlusDays(3);
         }
 
         [Benchmark]
-        public void PlusDays_MonthBoundary()
+        public LocalDate PlusDays_MonthBoundary()
         {
-            Sample.PlusDays(-50).Consume();
+            return Sample.PlusDays(-50);
         }
 
         [Benchmark]
-        public void PlusDays_MonthYearBoundary()
+        public LocalDate PlusDays_MonthYearBoundary()
         {
-            Sample.PlusDays(10).Consume();
+            return Sample.PlusDays(10);
         }
 
         [Benchmark]
-        public void PlusDays_LargeGap()
+        public LocalDate PlusDays_LargeGap()
         {
-            Sample.PlusDays(1000).Consume();
+            return Sample.PlusDays(1000);
         }
 
         [Benchmark]
-        public void PlusPeriod()
+        public LocalDate PlusPeriod()
         {
-            (Sample + SamplePeriod).Consume();
+            return (Sample + SamplePeriod);
         }
 
         [Benchmark]
-        public void MinusPeriod()
+        public LocalDate MinusPeriod()
         {
-            (Sample - SamplePeriod).Consume();
+            return (Sample - SamplePeriod);
         }
     }
 }

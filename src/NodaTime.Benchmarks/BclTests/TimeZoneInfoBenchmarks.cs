@@ -3,10 +3,15 @@
 // as found in the LICENSE.txt file.
 
 using System;
-using Minibench.Framework;
+using System.ComponentModel;
+using BenchmarkDotNet;
+using BenchmarkDotNet.Tasks;
 
 namespace NodaTime.Benchmarks.BclTests
 {
+    [BenchmarkTask(platform: BenchmarkPlatform.X86, jitVersion: BenchmarkJitVersion.LegacyJit)]
+    [BenchmarkTask(platform: BenchmarkPlatform.X64, jitVersion: BenchmarkJitVersion.LegacyJit)]
+    [BenchmarkTask(platform: BenchmarkPlatform.X64, jitVersion: BenchmarkJitVersion.RyuJit)]
     [Category("BCL")]
     internal sealed class TimeZoneInfoBenchmarks
     {
