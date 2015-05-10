@@ -45,7 +45,7 @@ namespace NodaTime.TimeZones
         /// A <see cref="SkippedTimeResolver"/> which returns the final tick of the time zone interval
         /// before the "gap".
         /// </summary>
-        public static readonly SkippedTimeResolver ReturnEndOfIntervalBefore = (local, zone, before, after) =>
+        public static SkippedTimeResolver ReturnEndOfIntervalBefore { get; } = (local, zone, before, after) =>
         {
             Preconditions.CheckNotNull(zone, nameof(zone));
             Preconditions.CheckNotNull(before, nameof(before));
@@ -58,7 +58,7 @@ namespace NodaTime.TimeZones
         /// A <see cref="SkippedTimeResolver"/> which returns the first tick of the time zone interval
         /// after the "gap".
         /// </summary>
-        public static readonly SkippedTimeResolver ReturnStartOfIntervalAfter = (local, zone, before, after) =>
+        public static SkippedTimeResolver ReturnStartOfIntervalAfter { get; } = (local, zone, before, after) =>
         {
             Preconditions.CheckNotNull(zone, nameof(zone));
             Preconditions.CheckNotNull(before, nameof(before));
@@ -70,7 +70,7 @@ namespace NodaTime.TimeZones
         /// A <see cref="SkippedTimeResolver"/> which shifts values in the "gap" forward by the duration
         /// of the gap (which is usually 1 hour).
         /// </summary>
-        public static readonly SkippedTimeResolver ReturnForwardShifted = (local, zone, before, after) =>
+        public static SkippedTimeResolver ReturnForwardShifted { get; } = (local, zone, before, after) =>
         {
             Preconditions.CheckNotNull(zone, nameof(zone));
             Preconditions.CheckNotNull(before, nameof(before));
@@ -82,7 +82,7 @@ namespace NodaTime.TimeZones
         /// <summary>
         /// A <see cref="SkippedTimeResolver"/> which simply throws a <see cref="SkippedTimeException"/>.
         /// </summary>
-        public static readonly SkippedTimeResolver ThrowWhenSkipped = (local, zone, before, after) =>
+        public static SkippedTimeResolver ThrowWhenSkipped { get; } = (local, zone, before, after) =>
         {
             Preconditions.CheckNotNull(zone, nameof(zone));
             Preconditions.CheckNotNull(before, nameof(before));
