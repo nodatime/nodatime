@@ -68,7 +68,8 @@ namespace NodaTime.TimeZones
 
         /// <summary>
         /// A <see cref="SkippedTimeResolver"/> which shifts values in the "gap" forward by the duration
-        /// of the gap (which is usually 1 hour).
+        /// of the gap (which is usually 1 hour).  This corresponds to the instant that would have occured,
+        /// had there not been a transition.
         /// </summary>
         public static SkippedTimeResolver ReturnForwardShifted { get; } = (local, zone, before, after) =>
         {
