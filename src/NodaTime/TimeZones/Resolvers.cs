@@ -75,8 +75,7 @@ namespace NodaTime.TimeZones
             Preconditions.CheckNotNull(zone, nameof(zone));
             Preconditions.CheckNotNull(before, nameof(before));
             Preconditions.CheckNotNull(after, nameof(after));
-            long gap = after.WallOffset.Ticks - before.WallOffset.Ticks;
-            return new ZonedDateTime(local.PlusTicks(gap), zone, after.WallOffset);
+            return new ZonedDateTime(new OffsetDateTime(local, before.WallOffset).WithOffset(after.WallOffset), zone);
         };
 
         /// <summary>
