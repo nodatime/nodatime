@@ -19,6 +19,15 @@ See the [Noda Time 1.x to 2.0 migration guide](migration-to-2.html) for full det
   support for the legacy resource-based time zone data format.
 - Removed `Instant(long)` constructor from the public API.
 - Removed `LocalTime.LocalDateTime` property.
+- Changed the behavior of the `LenientResolver` to more closely match real-world usage.
+  This also affects `DateTimeZone.AtLeniently` and `LocalDateTime.InZoneLeniently`.
+   - For ambiguous values, the lenient resolver used to return the later of the two possible instants.
+    It now returns the *earlier* of the two possible instants.  For example, if 01:00 is ambiguous, it used to return
+    1:00 standard time and it now will return 01:00 *daylight* time.
+  - For skipped values, the lenient resolver used to return the instant corresponding to the first possible local time
+    following the "gap".  It now returns the instant that would have occurred if the gap had not existed.  This
+    corresponds to a local time that is shifted forward by the duration of the gap.  For example, if values from
+    02:00 to 02:59 were skipped, a value of 02:30 used to return 03:00 and it will now return 03:30.
 - `Period` and `PeriodBuilder` properties for date-based values (years, months, weeks, days) are now of type `int` rather than `long`.
 - Default values for local date-based structs (`LocalDate` etc) now return 0001-01-01
   instead of the Unix epoch.
@@ -42,6 +51,12 @@ Bug fixes:
 - `BclDateTimeZone` has been reimplemented from scratch. This may result in a very few differences
   in the interpretation of when an adjustment rule starts and ends. It is now known to be incompatible
   with the BCL in well-understood ways which we don't intend to change.
+
+Other:
+
+- Added a `ReturnForwardShifted` resolver, which shifts values in the daylight saving time "gap" forward by the duration of the gap,
+  effectively returning the instant that would have occurred had the gap not existed.  This was added to support the new behavior of
+  the "lenient" resolver (see above), but can also be used separately.
 
 ## 1.3.1, released 2015-03-06 with tzdb 2015a
 
