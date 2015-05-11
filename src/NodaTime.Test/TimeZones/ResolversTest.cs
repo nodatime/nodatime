@@ -73,6 +73,20 @@ namespace NodaTime.Test.TimeZones
         }
 
         [Test]
+        public void ReturnForwardShifted()
+        {
+            var mapping = GapZone.MapLocal(TimeInTransition);
+            Assert.AreEqual(0, mapping.Count);
+            var resolved = Resolvers.ReturnForwardShifted(TimeInTransition, GapZone, mapping.EarlyInterval, mapping.LateInterval);
+
+            var gap = mapping.LateInterval.WallOffset.Ticks - mapping.EarlyInterval.WallOffset.Ticks;
+            var expected = TimeInTransition.ToLocalInstant().Minus(mapping.LateInterval.WallOffset).PlusTicks(gap);
+            Assert.AreEqual(expected, resolved.ToInstant());
+            Assert.AreEqual(mapping.LateInterval.WallOffset, resolved.Offset);
+            Assert.AreEqual(GapZone, resolved.Zone);
+        }
+
+        [Test]
         public void ThrowWhenSkipped()
         {
             var mapping = GapZone.MapLocal(TimeInTransition);

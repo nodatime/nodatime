@@ -155,3 +155,29 @@ Quoting make the intention more explicit, and avoids unintended use of a literal
 expected (e.g. a date pattern of "yyyy-mm-dd"). One exception here is 'T', which is allowed for date/time
 patterns only - so a date/time pattern of "yyyy-MM-ddTHH:mm:ss" is still acceptable for ISO-8601, for example.
 If this change breaks your code, simply escape or quote the literals within the pattern.
+
+Lenient resolver changes
+===
+In 2.0, the `LenientResolver`, which is used by `DateTimeZone.AtLeniently` and `LocalDateTime.InZoneLeniently`,
+was changed to more closely match real-world usage.
+  - For ambiguous values, the lenient resolver used to return the later of the two possible instants.
+    It now returns the *earlier* of the two possible instants.  For example, if 01:00 is ambiguous, it used to return
+    1:00 standard time and it now will return 01:00 *daylight* time.
+  - For skipped values, the lenient resolver used to return the instant corresponding to the first possible local time
+    following the "gap".  It now returns the instant that would have occurred if the gap had not existed.  This
+    corresponds to a local time that is shifted forward by the duration of the gap.  For example, if values from
+    02:00 to 02:59 were skipped, a value of 02:30 used to return 03:00 and it will now return 03:30.
+
+If you require the behavior of the 1.x implementation, you can create a custom resolver that combines the `ReturnLater`
+and `ReturnStartOfIntervalAfter` resolvers.  For example:
+
+```csharp
+var resolver = Resolvers.CreateMappingResolver(
+    Resolvers.ReturnLater, Resolvers.ReturnStartOfIntervalAfter);
+```
+
+You can use this resolver as an argument to `LocalDateTime.InZone` instead of calling `LocalDateTime.InZoneLeniently`,
+or to `DateTimeZone.ResolveLocal` instead of calling `DateTimeZone.AtLeniently`
+
+We would strongly encourage you to carefully evaluate whether you truly need the old behavior or not before making these
+compatibility changes, as we have found that the new behavior aligns more closely with most real-world scenarios.

@@ -45,7 +45,7 @@ namespace NodaTime.TimeZones
         /// A <see cref="SkippedTimeResolver"/> which returns the final tick of the time zone interval
         /// before the "gap".
         /// </summary>
-        public static readonly SkippedTimeResolver ReturnEndOfIntervalBefore = (local, zone, before, after) =>
+        public static SkippedTimeResolver ReturnEndOfIntervalBefore { get; } = (local, zone, before, after) =>
         {
             Preconditions.CheckNotNull(zone, nameof(zone));
             Preconditions.CheckNotNull(before, nameof(before));
@@ -58,7 +58,7 @@ namespace NodaTime.TimeZones
         /// A <see cref="SkippedTimeResolver"/> which returns the first tick of the time zone interval
         /// after the "gap".
         /// </summary>
-        public static readonly SkippedTimeResolver ReturnStartOfIntervalAfter = (local, zone, before, after) =>
+        public static SkippedTimeResolver ReturnStartOfIntervalAfter { get; } = (local, zone, before, after) =>
         {
             Preconditions.CheckNotNull(zone, nameof(zone));
             Preconditions.CheckNotNull(before, nameof(before));
@@ -67,9 +67,22 @@ namespace NodaTime.TimeZones
         };
 
         /// <summary>
+        /// A <see cref="SkippedTimeResolver"/> which shifts values in the "gap" forward by the duration
+        /// of the gap (which is usually 1 hour).  This corresponds to the instant that would have occured,
+        /// had there not been a transition.
+        /// </summary>
+        public static SkippedTimeResolver ReturnForwardShifted { get; } = (local, zone, before, after) =>
+        {
+            Preconditions.CheckNotNull(zone, nameof(zone));
+            Preconditions.CheckNotNull(before, nameof(before));
+            Preconditions.CheckNotNull(after, nameof(after));
+            return new ZonedDateTime(new OffsetDateTime(local, before.WallOffset).WithOffset(after.WallOffset), zone);
+        };
+
+        /// <summary>
         /// A <see cref="SkippedTimeResolver"/> which simply throws a <see cref="SkippedTimeException"/>.
         /// </summary>
-        public static readonly SkippedTimeResolver ThrowWhenSkipped = (local, zone, before, after) =>
+        public static SkippedTimeResolver ThrowWhenSkipped { get; } = (local, zone, before, after) =>
         {
             Preconditions.CheckNotNull(zone, nameof(zone));
             Preconditions.CheckNotNull(before, nameof(before));
@@ -94,12 +107,15 @@ namespace NodaTime.TimeZones
         /// A <see cref="ZoneLocalMappingResolver"/> which never throws an exception due to ambiguity or skipped time.
         /// </summary>
         /// <remarks>
-        /// Ambiguity is handled by returning the later occurrence, and skipped times are mapped to the start of the zone interval
-        /// after the gap. This resolver combines <see cref="ReturnLater"/> and <see cref="ReturnStartOfIntervalAfter"/>.
+        /// Ambiguity is handled by returning the earlier occurrence, and skipped times are shifted forward by the duration
+        /// of the gap. This resolver combines <see cref="ReturnEarlier"/> and <see cref="ReturnForwardShifted"/>.
+        /// <para>Note: The behavior of this resolver was changed in version 2.0 to fit the most commonly seen real-world
+        /// usage pattern.  Previous versions combined the <see cref="ReturnLater"/> and <see cref="ReturnStartOfIntervalAfter"/>
+        /// resolvers, which can still be used separately if desired.</para>
         /// </remarks>
         /// <seealso cref="DateTimeZone.AtLeniently"/>
         public static ZoneLocalMappingResolver LenientResolver { get; } =
-            CreateMappingResolver(ReturnLater, ReturnStartOfIntervalAfter);
+            CreateMappingResolver(ReturnEarlier, ReturnForwardShifted);
 
         /// <summary>
         /// Combines an <see cref="AmbiguousTimeResolver"/> and a <see cref="SkippedTimeResolver"/> to create a

@@ -78,8 +78,11 @@ namespace NodaTime.Demo
             var shanghai = DateTimeZoneProviders.Tzdb["Asia/Shanghai"];
             var localBefore = new LocalDateTime(1900, 12, 31, 23, 54, 16);
             var localAfter = localBefore.PlusSeconds(1);
-            var instantBefore = localBefore.InZoneLeniently(shanghai).ToInstant();
-            var instantAfter = localAfter.InZoneLeniently(shanghai).ToInstant();
+
+            // Note: The behavior of NodaTime's Lenient resolver changed in 2.0, which deviates from the problem described in the original post.
+            var oldLenientResolver = Resolvers.CreateMappingResolver(Resolvers.ReturnLater, Resolvers.ReturnStartOfIntervalAfter);
+            var instantBefore = localBefore.InZone(shanghai, oldLenientResolver).ToInstant();
+            var instantAfter = localAfter.InZone(shanghai, oldLenientResolver).ToInstant();
 
             Assert.AreEqual(Duration.FromSeconds(344), instantAfter - instantBefore);
 
