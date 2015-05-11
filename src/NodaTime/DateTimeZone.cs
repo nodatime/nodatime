@@ -412,7 +412,7 @@ namespace NodaTime
         /// usage pattern.  Previous versions returned the later instance of ambiguous values, and returned the start of
         /// the zone interval after the gap for skipped value.  The previous functionality can still be used if desired,
         /// by using <see cref="ResolveLocal(LocalDateTime, AmbiguousTimeResolver, SkippedTimeResolver)"/> and passing the
-        /// <see cref="ReturnLater"/> and <see cref="ReturnStartOfIntervalAfter"/> resolvers.</para>
+        /// <see cref="Resolvers.ReturnLater"/> and <see cref="Resolvers.ReturnStartOfIntervalAfter"/> resolvers.</para>
         /// </remarks>
         /// <param name="localDateTime">The local date/time to map.</param>
         /// <returns>The unambiguous mapping if there is one, the earlier result if the mapping is ambiguous,
