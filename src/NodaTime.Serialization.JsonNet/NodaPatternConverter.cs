@@ -41,7 +41,7 @@ namespace NodaTime.Serialization.JsonNet
             // or made InternalsVisibleTo this assembly. 
             if (pattern == null)
             {
-                throw new ArgumentNullException("pattern");
+                throw new ArgumentNullException(nameof(pattern));
             }
             this.pattern = pattern;
             this.validator = validator;
@@ -59,9 +59,7 @@ namespace NodaTime.Serialization.JsonNet
             if (reader.TokenType != JsonToken.String)
             {
                 throw new InvalidNodaDataException(
-                    string.Format("Unexpected token parsing {0}. Expected String, got {1}.",
-                    typeof(T).Name,
-                    reader.TokenType));
+                    $"Unexpected token parsing {typeof (T).Name}. Expected String, got {reader.TokenType}.");
             }
             string text = reader.Value.ToString();
             return pattern.Parse(text).Value;
@@ -75,10 +73,7 @@ namespace NodaTime.Serialization.JsonNet
         /// <param name="serializer">The serializer to use for nested serialization</param>
         protected override void WriteJsonImpl(JsonWriter writer, T value, JsonSerializer serializer)
         {
-            if (validator != null)
-            {
-                validator(value);
-            }
+            validator?.Invoke(value);
             writer.WriteValue(pattern.Format(value));
         }
     }

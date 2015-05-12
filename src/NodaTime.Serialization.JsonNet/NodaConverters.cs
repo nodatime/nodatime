@@ -107,8 +107,7 @@ namespace NodaTime.Serialization.JsonNet
                 if (calendar != CalendarSystem.Iso)
                 {
                     throw new ArgumentException(
-                        string.Format("Values of type {0} must (currently) use the ISO calendar in order to be serialized.",
-                        typeof(T).Name));
+                        $"Values of type {typeof (T).Name} must (currently) use the ISO calendar in order to be serialized.");
                 }
             };
         }

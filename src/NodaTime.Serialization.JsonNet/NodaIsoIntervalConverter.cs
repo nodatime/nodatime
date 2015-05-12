@@ -18,8 +18,7 @@ namespace NodaTime.Serialization.JsonNet
             if (reader.TokenType != JsonToken.String)
             {
                 throw new InvalidNodaDataException(
-                    string.Format("Unexpected token parsing Interval. Expected String, got {0}.",
-                    reader.TokenType));
+                    $"Unexpected token parsing Interval. Expected String, got {reader.TokenType}.");
             }
             string text = reader.Value.ToString();
             int slash = text.IndexOf('/');

@@ -43,7 +43,7 @@ namespace NodaTime.Serialization.JsonNet
             {
                 if (objectType != NullableT)
                 {
-                    throw new InvalidNodaDataException(string.Format("Cannot convert null value to {0}.", objectType));
+                    throw new InvalidNodaDataException($"Cannot convert null value to {objectType}.");
                 }
                 return null;
             }
@@ -56,7 +56,7 @@ namespace NodaTime.Serialization.JsonNet
                 {
                     if (objectType != NullableT)
                     {
-                        throw new InvalidNodaDataException(string.Format("Cannot convert null value to {0}.", objectType));
+                        throw new InvalidNodaDataException($"Cannot convert null value to {objectType}.");
                     }
                     return null;
                 }
@@ -90,14 +90,14 @@ namespace NodaTime.Serialization.JsonNet
             // Json.NET should prevent this happening, but let's validate...
             if (value == null)
             {
-                throw new ArgumentNullException("value");
+                throw new ArgumentNullException(nameof(value));
             }
 
             // Note: don't need to worry about value is T? due to the way boxing works.
             // Again, Json.NET probably prevents us from needing to check this, really.
             if (!(value is T))
             {
-                throw new ArgumentException(string.Format("Unexpected value when converting. Expected {0}, got {1}.", typeof(T).FullName, value.GetType().FullName));
+                throw new ArgumentException($"Unexpected value when converting. Expected {typeof (T).FullName}, got {value.GetType().FullName}.");
             }
             WriteJsonImpl(writer, (T)value, serializer);
         }

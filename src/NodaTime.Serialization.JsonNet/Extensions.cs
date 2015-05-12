@@ -23,11 +23,11 @@ namespace NodaTime.Serialization.JsonNet
         {
             if (settings == null)
             {
-                throw new ArgumentNullException("settings");
+                throw new ArgumentNullException(nameof(settings));
             }
             if (provider == null)
             {
-                throw new ArgumentNullException("provider");
+                throw new ArgumentNullException(nameof(provider));
             }
             // Add our converters
             AddDefaultConverters(settings.Converters, provider);
@@ -49,11 +49,11 @@ namespace NodaTime.Serialization.JsonNet
         {
             if (serializer == null)
             {
-                throw new ArgumentNullException("serializer");
+                throw new ArgumentNullException(nameof(serializer));
             }
             if (provider == null)
             {
-                throw new ArgumentNullException("provider");
+                throw new ArgumentNullException(nameof(provider));
             }
             // Add our converters
             AddDefaultConverters(serializer.Converters, provider);
@@ -75,7 +75,7 @@ namespace NodaTime.Serialization.JsonNet
         {
             if (settings == null)
             {
-                throw new ArgumentNullException("settings");
+                throw new ArgumentNullException(nameof(settings));
             }
             ReplaceExistingConverters<Interval>(settings.Converters, NodaConverters.IsoIntervalConverter);
             return settings;
@@ -91,7 +91,7 @@ namespace NodaTime.Serialization.JsonNet
         {
             if (serializer == null)
             {
-                throw new ArgumentNullException("serializer");
+                throw new ArgumentNullException(nameof(serializer));
             }
             ReplaceExistingConverters<Interval>(serializer.Converters, NodaConverters.IsoIntervalConverter);
             return serializer;

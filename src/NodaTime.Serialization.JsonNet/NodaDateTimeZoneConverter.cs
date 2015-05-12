@@ -33,8 +33,7 @@ namespace NodaTime.Serialization.JsonNet
             if (reader.TokenType != JsonToken.String)
             {
                 throw new InvalidNodaDataException(
-                    string.Format("Unexpected token parsing instant. Expected String, got {0}.",
-                    reader.TokenType));
+                    $"Unexpected token parsing instant. Expected String, got {reader.TokenType}.");
             }
 
             var timeZoneId = reader.Value.ToString();
