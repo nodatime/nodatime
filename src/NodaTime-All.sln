@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.22609.0
+VisualStudioVersion = 14.0.22823.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NodaTime", "NodaTime\NodaTime.csproj", "{42B687A6-0F76-4638-A372-161C922A998B}"
 EndProject
@@ -12,6 +12,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NodaTime.TzdbCompiler.Test", "NodaTime.TzdbCompiler.Test\NodaTime.TzdbCompiler.Test.csproj", "{0A4C2376-D366-43DB-92E1-306FFCC81553}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NodaTime.Benchmarks", "NodaTime.Benchmarks\NodaTime.Benchmarks.csproj", "{8123BB5D-1DEB-478A-A1B3-9CA8940CA4C9}"
+	ProjectSection(ProjectDependencies) = postProject
+		{A9A2C498-FA61-4495-9953-16D56F8478F3} = {A9A2C498-FA61-4495-9953-16D56F8478F3}
+		{42B687A6-0F76-4638-A372-161C922A998B} = {42B687A6-0F76-4638-A372-161C922A998B}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NodaTime.Demo", "NodaTime.Demo\NodaTime.Demo.csproj", "{F7EFF3ED-61FE-4E0F-8657-0A6FB263F764}"
 EndProject
