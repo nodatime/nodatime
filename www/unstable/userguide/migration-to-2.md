@@ -160,13 +160,15 @@ Lenient resolver changes
 ===
 In 2.0, the `LenientResolver`, which is used by `DateTimeZone.AtLeniently` and `LocalDateTime.InZoneLeniently`,
 was changed to more closely match real-world usage.
-  - For ambiguous values, the lenient resolver used to return the later of the two possible instants.
-    It now returns the *earlier* of the two possible instants.  For example, if 01:00 is ambiguous, it used to return
-    1:00 standard time and it now will return 01:00 *daylight* time.
-  - For skipped values, the lenient resolver used to return the instant corresponding to the first possible local time
-    following the "gap".  It now returns the instant that would have occurred if the gap had not existed.  This
-    corresponds to a local time that is shifted forward by the duration of the gap.  For example, if values from
-    02:00 to 02:59 were skipped, a value of 02:30 used to return 03:00 and it will now return 03:30.
+
+- For ambiguous values, the lenient resolver used to return the later of the two possible instants.
+  It now returns the *earlier* of the two possible instants.  For example, if 01:00 is ambiguous, it used to return
+  1:00 standard time and it now will return 01:00 *daylight* time.
+
+- For skipped values, the lenient resolver used to return the instant corresponding to the first possible local time
+  following the "gap".  It now returns the instant that would have occurred if the gap had not existed.  This
+  corresponds to a local time that is shifted forward by the duration of the gap.  For example, if values from
+  02:00 to 02:59 were skipped, a value of 02:30 used to return 03:00 and it will now return 03:30.
 
 If you require the behavior of the 1.x implementation, you can create a custom resolver that combines the `ReturnLater`
 and `ReturnStartOfIntervalAfter` resolvers.  For example:
