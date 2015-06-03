@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/nodatime/nodatime.svg?branch=master)](https://travis-ci.org/nodatime/nodatime)
+
 Noda Time is an alternative date and time API for .NET. It helps you to
 think about your data more clearly, and express operations on that data more
 precisely.
