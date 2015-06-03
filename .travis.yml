@@ -1,0 +1,14 @@
+# See http://docs.travis-ci.com/user/languages/csharp/ for details
+
+language: csharp
+install:
+  - nuget restore src/NodaTime-All.sln
+  - nuget install NUnit.Runners -Version 2.6.4 -OutputDirectory testrunner
+  
+# TODO: Run the other unit tests too  
+script:
+  - xbuild /p:Configuration=Release src/NodaTime-All.sln
+  - mono ./testrunner/NUnit.Runners.2.6.4/tools/nunit-console.exe src/NodaTime.Test/bin/Release/NodaTime.Test.dll
+
+mono:
+  - nightly
