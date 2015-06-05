@@ -8,9 +8,12 @@ install:
 # TODO: Run the other unit tests too
 # The framework profile and version is required as currently we target .NET 3.5,
 # which Mono doesn't support as a profile.
+
+# We temporarily only build the debug version, as XML comments in C# 6 source
+# code appear to be broken in the Mono nightly build at the moment.
 script:
-  - xbuild /p:Configuration=Release src/NodaTime-All.sln /p:TargetFrameworkProfile='' /p:TargetFrameworkVersion='v4.5'
-  - mono ./testrunner/NUnit.Runners.2.6.4/tools/nunit-console.exe src/NodaTime.Test/bin/Release/NodaTime.Test.dll
+  - xbuild /p:Configuration=Debug src/NodaTime-All.sln /p:TargetFrameworkProfile='' /p:TargetFrameworkVersion='v4.5'
+  - mono ./testrunner/NUnit.Runners.2.6.4/tools/nunit-console.exe src/NodaTime.Test/bin/Debug/NodaTime.Test.dll
 
 mono:
   - nightly
