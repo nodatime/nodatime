@@ -16,4 +16,4 @@ script:
   - mono ./testrunner/NUnit.Runners.2.6.4/tools/nunit-console.exe src/NodaTime.Test/bin/Debug/NodaTime.Test.dll
 
 mono:
-  - beta
+  - nightly
