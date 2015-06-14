@@ -13,7 +13,7 @@ install:
 # code appear to be broken in the Mono nightly build at the moment.
 script:
   - xbuild /p:Configuration=Debug src/NodaTime-All.sln /p:TargetFrameworkProfile='' /p:TargetFrameworkVersion='v4.5'
-  - mono ./testrunner/NUnit.Runners.2.6.4/tools/nunit-console.exe src/NodaTime.Test/bin/Debug/NodaTime.Test.dll /exclude:Roslyn 
+  - mono ./testrunner/NUnit.Runners.2.6.4/tools/nunit-console.exe src/NodaTime.Test/bin/Debug/NodaTime.Test.dll /exclude=Roslyn
 
 mono:
   - nightly
