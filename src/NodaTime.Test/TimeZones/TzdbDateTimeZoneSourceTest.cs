@@ -255,7 +255,7 @@ namespace NodaTime.Test.TimeZones
         }
 
         [Test]
-        [TestCaseSource(typeof(TimeZoneInfo), "GetSystemTimeZones")]
+        [TestCaseSource(typeof(TimeZoneInfo), nameof(TimeZoneInfo.GetSystemTimeZones))]
         public void GuessZoneIdByTransitionsUncached(TimeZoneInfo bclZone)
         {
             // As of October 17th 2013, the Windows time zone database hasn't noticed that
