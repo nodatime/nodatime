@@ -24,7 +24,7 @@ namespace NodaTime.Test.Annotations
                     var methodCount = map.InterfaceMethods.Length;
                     for (int i = 0; i < methodCount; i++)
                     {
-                        if (map.TargetMethods[i].ReflectedType == type &&
+                        if (map.TargetMethods[i].DeclaringType == type &&
                             map.InterfaceMethods[i].IsDefined(typeof(SecurityCriticalAttribute), false) &&
                             !map.TargetMethods[i].IsDefined(typeof(SecurityCriticalAttribute), false))
                         {
