@@ -19,27 +19,6 @@ namespace NodaTime.Test
     public static class TestHelper
     {
         public static readonly bool IsRunningOnMono = Type.GetType("Mono.Runtime") != null;
-        public static readonly bool XmlExceptionsAreWrapped = CheckForWrappedXmlExceptions();
-
-        /// <summary>
-        /// .NET wraps any exceptions in InvalidOperationException; old versions of Mono don't.
-        /// Newer versions of Mono do, so we need to detect the behaviour of the framework we're
-        /// actually running on.
-        /// </summary>
-        private static bool CheckForWrappedXmlExceptions()
-        {
-            XmlSerializer serializer = new XmlSerializer(typeof(SerializationHelper<int>));
-            var element = new XElement("foo");
-            try
-            {
-                serializer.Deserialize(element.CreateReader());
-            }
-            catch (Exception e)
-            {
-                return e is InvalidOperationException;
-            }
-            throw new Exception("Expected XML deserialization to fail");
-        }
 
         /// <summary>
         /// Asserts that calling the specified delegate with the specified value throws ArgumentException.
@@ -515,15 +494,15 @@ namespace NodaTime.Test
                 stream.Position = 0;
                 var doc = XElement.Load(stream);
                 doc.Element("value").ReplaceWith(XElement.Parse(invalidXml));
-                if (!XmlExceptionsAreWrapped)
+                // Sometimes exceptions are wrapped in InvalidOperationException, sometimes they're not. It's not
+                // always easy to predict. (.NET always does; old Mono never does; new Mono sometimes does - I think.)
+                // Odd that I can't just specify "well it throws something, I'll check the details later". Oh well.
+                var exception = Assert.Throws(Is.InstanceOf(typeof(Exception)), () => serializer.Deserialize(doc.CreateReader()));
+                if (exception is InvalidOperationException)
                 {
-                    Assert.Throws(expectedExceptionType, () => serializer.Deserialize(doc.CreateReader()));
+                    exception = exception.InnerException;
                 }
-                else
-                {
-                    var exception = Assert.Throws<InvalidOperationException>(() => serializer.Deserialize(doc.CreateReader()));
-                    Assert.IsInstanceOf(expectedExceptionType, exception.InnerException);                    
-                }
+                Assert.IsInstanceOf(expectedExceptionType, exception);                    
             }
         }
 
