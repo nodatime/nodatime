@@ -145,7 +145,8 @@ namespace NodaTime
         internal Duration(int days, [Trusted] long nanoOfDay)
         {
             // Heavily used: avoid the method call unless it's going to throw.
-            // TODO: Validate that this actually has a measurable impact...
+            // (Benchmarking Duration.FromDays, unconditionally calling CheckArgumentRange
+            // raises the call time from ~2ns to ~15ns.)
             if (days < MinDays || days > MaxDays)
             {
                 Preconditions.CheckArgumentRange(nameof(days), days, MinDays, MaxDays);

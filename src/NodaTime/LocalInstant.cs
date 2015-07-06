@@ -81,7 +81,7 @@ namespace NodaTime
         /// Returns a new instant based on this local instant, as if we'd applied a zero offset.
         /// This is just a slight optimization over calling <c>localInstant.Minus(Offset.Zero)</c>.
         /// </summary>
-        internal Instant MinusZeroOffset() => new Instant(duration);
+        internal Instant MinusZeroOffset() => Instant.FromTrustedDuration(duration);
 
         /// <summary>
         /// Subtracts the given time zone offset from this local instant, to give an <see cref="Instant" />.
@@ -93,7 +93,7 @@ namespace NodaTime
         /// </remarks>
         /// <param name="offset">The offset between UTC and a time zone for this local instant</param>
         /// <returns>A new <see cref="Instant"/> representing the difference of the given values.</returns>
-        public Instant Minus(Offset offset) => new Instant(duration.MinusSmallNanoseconds(offset.Nanoseconds));
+        public Instant Minus(Offset offset) => Instant.FromUntrustedDuration(duration.MinusSmallNanoseconds(offset.Nanoseconds));
 
         /// <summary>
         /// Implements the operator == (equality).
@@ -133,7 +133,8 @@ namespace NodaTime
             {
                 return Instant.AfterMaxValue;
             }
-            return new Instant(asDuration);
+            // And now we don't need any more checks.
+            return Instant.FromTrustedDuration(asDuration);
         }
 
         /// <summary>

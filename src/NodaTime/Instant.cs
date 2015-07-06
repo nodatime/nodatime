@@ -87,15 +87,14 @@ namespace NodaTime
             this.duration = new Duration(days, 0);
         }
 
-        internal Instant(Duration duration)
+        /// <summary>
+        /// Constructor which constructs a new instance with the given duration, which
+        /// is trusted to be valid. Should only be called from FromTrustedDuration and
+        /// FromUntrustedDuration.
+        /// </summary>
+        private Instant([Trusted] Duration duration)
         {
-            // TODO(2.0): Check callers, and handle ones which might not need validation.
             this.duration = duration;
-            int days = duration.FloorDays;
-            if (days < MinDays || days > MaxDays)
-            {
-                throw new OverflowException("Operation would overflow range of Instant");
-            }
         }
 
         internal Instant([Trusted] int days, [Trusted] long nanoOfDay)
@@ -103,6 +102,29 @@ namespace NodaTime
             Preconditions.DebugCheckArgumentRange(nameof(days), days, MinDays, MaxDays);
             Preconditions.DebugCheckArgumentRange(nameof(nanoOfDay), nanoOfDay, 0, NanosecondsPerDay - 1);
             duration = new Duration(days, nanoOfDay);
+        }
+
+        /// <summary>
+        /// Creates an Instant with the given duration, with no validation (in release mode).
+        /// </summary>
+        internal static Instant FromTrustedDuration([Trusted] Duration duration)
+        {
+            Preconditions.DebugCheckArgumentRange(nameof(duration), duration.FloorDays, MinDays, MaxDays);
+            return new Instant(duration);
+        }
+
+        /// <summary>
+        /// Creates an Instant with the given duration, validating that it has a suitable
+        /// "day" part. (It is assumed that the nanoOfDay is okay.)
+        /// </summary>
+        internal static Instant FromUntrustedDuration(Duration duration)
+        {
+            int days = duration.FloorDays;
+            if (days < MinDays || days > MaxDays)
+            {
+                throw new OverflowException("Operation would overflow range of Instant");
+            }
+            return new Instant(duration);
         }
 
         /// <summary>
@@ -217,7 +239,7 @@ namespace NodaTime
         /// <param name="ticksToAdd">The ticks to add to this instant to create the return value.</param>
         /// <returns>The result of adding the given number of ticks to this instant.</returns>
         [Pure]
-        public Instant PlusTicks(long ticksToAdd) => new Instant(duration + Duration.FromTicks(ticksToAdd));
+        public Instant PlusTicks(long ticksToAdd) => FromUntrustedDuration(duration + Duration.FromTicks(ticksToAdd));
         #region Operators
         /// <summary>
         /// Implements the operator + (addition) for <see cref="Instant" /> + <see cref="Duration" />.
@@ -225,7 +247,7 @@ namespace NodaTime
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
         /// <returns>A new <see cref="Instant" /> representing the sum of the given values.</returns>
-        public static Instant operator +(Instant left, Duration right) => new Instant(left.duration + right);
+        public static Instant operator +(Instant left, Duration right) => FromUntrustedDuration(left.duration + right);
 
         /// <summary>
         /// Adds the given offset to this instant, to return a <see cref="LocalInstant" />.
@@ -538,7 +560,7 @@ namespace NodaTime
         public static Instant FromSecondsSinceUnixEpoch(long seconds)
         {
             Preconditions.CheckArgumentRange(nameof(seconds), seconds, MinSeconds, MaxSeconds);
-            return new Instant(Duration.FromSeconds(seconds));
+            return Instant.FromTrustedDuration(Duration.FromSeconds(seconds));
         }
 
         /// <summary>
@@ -551,7 +573,7 @@ namespace NodaTime
         public static Instant FromMillisecondsSinceUnixEpoch(long milliseconds)
         {
             Preconditions.CheckArgumentRange(nameof(milliseconds), milliseconds, MinMilliseconds, MaxMilliseconds);
-            return new Instant(Duration.FromMilliseconds(milliseconds));
+            return Instant.FromTrustedDuration(Duration.FromMilliseconds(milliseconds));
         }
 
         /// <summary>
@@ -565,7 +587,7 @@ namespace NodaTime
         public static Instant FromTicksSinceUnixEpoch(long ticks)
         {
             Preconditions.CheckArgumentRange(nameof(ticks), ticks, MinTicks, MaxTicks);
-            return new Instant(Duration.FromTicks(ticks));
+            return Instant.FromTrustedDuration(Duration.FromTicks(ticks));
         }
 
         /// <summary>
@@ -667,8 +689,15 @@ namespace NodaTime
         /// <param name="context">The source for this deserialization.</param>
         private Instant([NotNull] SerializationInfo info, StreamingContext context)
             // FIXME:SERIALIZATION COMPATIBILITY
-            : this(new Duration(info))
         {
+            duration = new Duration(info);
+            // Duplication of code in Instant.FromUntrustedDuration,
+            // because we can't chain to a static method...
+            int days = duration.FloorDays;
+            if (days < MinDays || days > MaxDays)
+            {
+                throw new OverflowException("Operation would overflow range of Instant");
+            }
         }
 
         /// <summary>

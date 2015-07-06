@@ -12,9 +12,9 @@ namespace NodaTime.Test
     [TestFixture]
     public partial class InstantTest
     {
-        private static readonly Instant one = new Instant(Duration.FromNanoseconds(1L));
-        private static readonly Instant threeMillion = new Instant(Duration.FromNanoseconds(3000000L));
-        private static readonly Instant negativeFiftyMillion = new Instant(Duration.FromNanoseconds(-50000000L));
+        private static readonly Instant one = Instant.FromUntrustedDuration(Duration.FromNanoseconds(1L));
+        private static readonly Instant threeMillion = Instant.FromUntrustedDuration(Duration.FromNanoseconds(3000000L));
+        private static readonly Instant negativeFiftyMillion = Instant.FromUntrustedDuration(Duration.FromNanoseconds(-50000000L));
 
         [Test]
         public void FromUtcNoSeconds()
@@ -247,7 +247,7 @@ namespace NodaTime.Test
         public void TicksTruncatesDown(long nanoseconds, long expectedTicks)
         {
             Duration nanos = Duration.FromNanoseconds(nanoseconds);
-            Instant instant = new Instant(nanos);
+            Instant instant = Instant.FromUntrustedDuration(nanos);
             Assert.AreEqual(expectedTicks, instant.Ticks);
         }
 

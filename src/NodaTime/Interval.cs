@@ -270,10 +270,10 @@ namespace NodaTime
             var presence = info.GetByte(PresenceName);
             start = (presence & 1) == 0 ?
                 Instant.BeforeMinValue
-                : new Instant(new Duration(info, StartDaysSerializationName, StartNanosecondOfDaySerializationName));
+                : Instant.FromUntrustedDuration(new Duration(info, StartDaysSerializationName, StartNanosecondOfDaySerializationName));
             end = (presence & 2) == 0 ?
                 Instant.AfterMaxValue
-                : new Instant(new Duration(info, EndDaysSerializationName, EndNanosecondOfDaySerializationName));
+                : Instant.FromUntrustedDuration(new Duration(info, EndDaysSerializationName, EndNanosecondOfDaySerializationName));
         }
 
         /// <summary>

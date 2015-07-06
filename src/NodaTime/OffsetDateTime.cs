@@ -358,7 +358,7 @@ namespace NodaTime
         /// </summary>
         /// <returns>The instant represented by this offset date and time</returns>
         [Pure]
-        public Instant ToInstant() => new Instant(ToElapsedTimeSinceEpoch());
+        public Instant ToInstant() => Instant.FromUntrustedDuration(ToElapsedTimeSinceEpoch());
 
         private Duration ToElapsedTimeSinceEpoch()
         {
