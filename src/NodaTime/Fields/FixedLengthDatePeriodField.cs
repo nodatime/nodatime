@@ -65,7 +65,7 @@ namespace NodaTime.Fields
                         }
                     }
                 }
-                return new LocalDate(calculator.GetYearMonthDay(year, newDayOfYear), calendar);
+                return new LocalDate(calculator.GetYearMonthDay(year, newDayOfYear).WithCalendarOrdinal(calendar.Ordinal));
             }
             // LocalDate constructor will validate.
             int days = localDate.DaysSinceEpoch + daysToAdd;

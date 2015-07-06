@@ -48,15 +48,7 @@ namespace NodaTime
         {
             this.yearMonthDayCalendar = yearMonthDayCalendar;
         }
-        /// <summary>
-        /// Constructs an instance from values which are assumed to already have been validated.
-        /// </summary>
-        // TODO: See if we still need this.
-        internal LocalDate([Trusted] YearMonthDay yearMonthDay, [Trusted] [CanBeNull] CalendarSystem calendar)
-        {
-            this.yearMonthDayCalendar = yearMonthDay.WithCalendar(calendar);
-        }
-
+       
         /// <summary>
         /// Constructs an instance from the number of days since the unix epoch, in the ISO
         /// calendar system.
@@ -72,7 +64,6 @@ namespace NodaTime
         /// system. The calendar system is assumed to be non-null, but the days since the epoch are
         /// validated.
         /// </summary>
-        // TODO: See if we still need this.
         internal LocalDate(int daysSinceEpoch, [Trusted] [NotNull] CalendarSystem calendar)
         {
             Preconditions.DebugCheckNotNull(calendar, nameof(calendar));
@@ -141,7 +132,7 @@ namespace NodaTime
 
         /// <summary>Gets the calendar system associated with this local date.</summary>
         /// <value>The calendar system associated with this local date.</value>
-        public CalendarSystem Calendar => CalendarSystem.ForOrdinal(yearMonthDayCalendar.CalendarOrdinal);
+        [NotNull] public CalendarSystem Calendar => CalendarSystem.ForOrdinal(yearMonthDayCalendar.CalendarOrdinal);
 
         /// <summary>Gets the year of this local date.</summary>
         /// <remarks>This returns the "absolute year", so, for the ISO calendar,
@@ -285,7 +276,7 @@ namespace NodaTime
         public static LocalDate FromWeekYearWeekAndDay(int weekYear, int weekOfWeekYear, IsoDayOfWeek dayOfWeek)
         {
             YearMonthDay yearMonthDay = CalendarSystem.Iso.GetYearMonthDayFromWeekYearWeekAndDayOfWeek(weekYear, weekOfWeekYear, dayOfWeek);
-            return new LocalDate(yearMonthDay, CalendarSystem.Iso);
+            return new LocalDate(yearMonthDay.WithCalendarOrdinal(CalendarOrdinal.Iso));
         }
 
         /// <summary>

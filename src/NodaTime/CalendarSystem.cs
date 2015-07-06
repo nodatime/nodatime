@@ -119,7 +119,7 @@ namespace NodaTime
         /// initialized beforehand (as construction populates the array). In other words, this should not be called with an arbitrary ordinal;
         /// this is fine as it's usually called for an existing local date, which must have been initialized using a known calendar system.
         /// </summary>
-        internal static CalendarSystem ForOrdinal([Trusted] CalendarOrdinal ordinal)
+        [NotNull] internal static CalendarSystem ForOrdinal([Trusted] CalendarOrdinal ordinal)
         {
             Preconditions.DebugCheckArgument(ordinal >= 0 && ordinal < CalendarOrdinal.Size, nameof(ordinal),
                 "Unknown ordinal value {0}", ordinal);

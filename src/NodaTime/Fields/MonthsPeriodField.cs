@@ -21,7 +21,7 @@ namespace NodaTime.Fields
             var calendar = localDate.Calendar;
             var calculator = calendar.YearMonthDayCalculator;
             var yearMonthDay = calculator.AddMonths(localDate.YearMonthDay, value);
-            return new LocalDate(yearMonthDay, calendar);
+            return new LocalDate(yearMonthDay.WithCalendar(calendar));
         }
 
         public int Subtract(LocalDate minuendDate, LocalDate subtrahendDate)
