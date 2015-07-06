@@ -43,8 +43,8 @@ namespace NodaTime.Calendars
         /// </summary>
         internal int GetWeekOfWeekYear([Trusted] YearMonthDay yearMonthDay)
         {
-            // TODO(2.0): This is a bit inefficient, as we'll be converting forms several times. We might want to
-            // optimize.
+            // This is a bit inefficient, as we'll be converting forms several times. However, it's
+            // understandable... we might want to optimize in the future if it's reported as a bottleneck.
             int weekYear = GetWeekYear(yearMonthDay);
             int startOfWeekYear = GetWeekYearDaysSinceEpoch(weekYear);
             int daysSinceEpoch = yearMonthDayCalculator.GetDaysSinceEpoch(yearMonthDay);

@@ -22,8 +22,8 @@ namespace NodaTime.Calendars
 
         // Cache of when each year starts (in  terms of absolute days). This is the heart of
         // the algorithm, so just caching this is highly effective.
-        // TODO: Encode the information about month lengths in the cache too. We have plenty of
-        // space as we don't need day numbers to go terribly high.
+        // Each entry additionally encodes the length of Heshvan and Kislev. We could encode
+        // more information too, but those are the tricky bits.
         private static readonly YearStartCacheEntry[] YearCache = YearStartCacheEntry.CreateCache();
 
         internal static bool IsLeapYear(int year) => ((year * 7) + 1) % 19 < 7;
@@ -84,7 +84,8 @@ namespace NodaTime.Calendars
                     // Now "day of year without any Adar"
                     dayOfYear -= 29;
                 }
-                // TODO(2.0): We could definitely do a binary search from here...
+                // We could definitely do a binary search from here, but it would only
+                // a few comparisons at most, and simplicity trumps optimization.
                 if (dayOfYear < 31 + 29 + 30 + 30)
                 {
                     // Nisan
@@ -129,7 +130,10 @@ namespace NodaTime.Calendars
                 int secondAdarLength = isLeap ? 29 : 0;
                 switch (month)
                 {
-                    // TODO(2.0): Check whether the constant addition is optimized here.
+                    // Note: this could be made slightly faster (at least in terms of the apparent IL) by
+                    // putting all the additions of compile-time constants in one place. Indeed, we could
+                    // go further by only using isLeap at most once per case. However, this code is clearer
+                    // and there's no evidence that this is a bottleneck.
                     case 1: // Nisan
                         return 30 + heshvanLength + kislevLength + (29 + 30) + firstAdarLength + secondAdarLength;
                     case 2: // Iyar

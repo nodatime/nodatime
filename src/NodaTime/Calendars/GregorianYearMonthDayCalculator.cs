@@ -96,7 +96,6 @@ namespace NodaTime.Calendars
                 }
                 int month = startOfMonth / 29 + 1;
                 int dayOfMonth = d - startOfMonth;
-                // TODO(2.0): Consider an overload which doesn't take the ordinal. That would save a single bitwise OR, and an argument. Doubt that it's worth it...
                 return new YearMonthDayCalendar(year, month, dayOfMonth, CalendarOrdinal.Iso);
             }
         }

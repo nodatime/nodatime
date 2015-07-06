@@ -25,7 +25,11 @@ namespace NodaTime.Calendars
         // Precomputed values for lengths of year and lengths of months. This is actually 4 times bigger than we
         // need it to be - we only need 13 bits per year, so could have a single short[] cache. However, the code
         // is simpler this way, and it's still only going to be about 1.5K, assuming the BCL still supports ~183 years.
+
+        // The number of days in each year, with array index 1 representing ComputedMinYear.
         private static readonly int[] YearLengths;
+        // A set of 12 bits for each year, indicating the months which are 30 days long instead of 29.
+        // (Month 1 is set in bit 1, etc. Bit 0 and bits 13-31 are unused.)
         private static readonly int[] MonthLengths;
         // Number of days from ComputedMinYear on a per year basis.
         private static readonly int[] YearStartDays;
@@ -146,7 +150,8 @@ namespace NodaTime.Calendars
 
         protected override int GetDaysFromStartOfYearToStartOfMonth([Trusted] int year, [Trusted] int month)
         {
-            // TODO(2.0): Use clever bit shifting to count the number of bits.
+            // While we could do something clever to find the Hamming distance on the masked value here,
+            // it's considerably simpler just to iterate...
             int monthBits = MonthLengths[year - ComputedMinYear + 1];
             int extraDays = 0;
             for (int i = 1; i < month; i++)
