@@ -4,11 +4,10 @@
 
 using static NodaTime.NodaConstants;
 
-namespace NodaTime.Calendars
+namespace NodaTime.Utility
 {
     /// <summary>
     /// Common operations on ticks.
-    /// TODO(2.0): Move into Utility? It's no longer used for calendars at all...
     /// </summary>
     internal static class TickArithmetic
     {
