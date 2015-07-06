@@ -63,7 +63,7 @@ namespace NodaTime
         internal OffsetDateTime([Trusted] YearMonthDayCalendar yearMonthDayCalendar, LocalTime time, Offset offset)
         {
             this.yearMonthDayCalendar = yearMonthDayCalendar;
-            this.nanosecondsAndOffset = time.NanosecondOfDay | (((long) offset.Seconds) << NanosecondsBits);
+            this.nanosecondsAndOffset = CombineNanoOfDayAndOffset(time.NanosecondOfDay, offset);
             Calendar.DebugValidateYearMonthDay(YearMonthDay);
         }
 
@@ -89,7 +89,7 @@ namespace NodaTime
                     nanoOfDay += NanosecondsPerDay;
                 }
                 yearMonthDayCalendar = GregorianYearMonthDayCalculator.GetGregorianYearMonthDayCalendarFromDaysSinceEpoch(days);
-                nanosecondsAndOffset = nanoOfDay | (((long) offset.Seconds) << NanosecondsBits);
+                nanosecondsAndOffset = CombineNanoOfDayAndOffset(nanoOfDay, offset);
             }
         }
 
@@ -115,7 +115,7 @@ namespace NodaTime
                     nanoOfDay += NanosecondsPerDay;
                 }
                 yearMonthDayCalendar = calendar.GetYearMonthDayFromDaysSinceEpoch(days).WithCalendar(calendar);
-                nanosecondsAndOffset = nanoOfDay | (((long) offset.Seconds) << NanosecondsBits);
+                nanosecondsAndOffset = CombineNanoOfDayAndOffset(nanoOfDay, offset);
             }
         }
 
@@ -125,12 +125,13 @@ namespace NodaTime
         /// <param name="localDateTime">Local date and time to represent</param>
         /// <param name="offset">Offset from UTC</param>
         public OffsetDateTime(LocalDateTime localDateTime, Offset offset)
+            : this(localDateTime.Date.YearMonthDayCalendar, CombineNanoOfDayAndOffset(localDateTime.NanosecondOfDay, offset))
         {
-            var date = localDateTime.Date;
-            yearMonthDayCalendar = date.YearMonthDayCalendar;
-            // TODO(2.0): Remove this constructor, and convert the calculation below to a method; it's being done
-            // in too many places.
-            nanosecondsAndOffset = localDateTime.NanosecondOfDay | (((long) offset.Seconds) << NanosecondsBits);
+        }
+
+        private static long CombineNanoOfDayAndOffset(long nanoOfDay, Offset offset)
+        {
+            return nanoOfDay | (((long) offset.Seconds) << NanosecondsBits);
         }
 
         /// <summary>Gets the calendar system associated with this offset date and time.</summary>
@@ -488,7 +489,7 @@ namespace NodaTime
                 }
                 return new OffsetDateTime(
                     days == 0 ? yearMonthDayCalendar : Date.PlusDays(days).YearMonthDayCalendar,
-                    nanos | (((long) offset.Seconds) << NanosecondsBits));
+                    CombineNanoOfDayAndOffset(nanos, offset));
             }
         }
 
