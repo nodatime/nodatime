@@ -114,7 +114,7 @@ namespace NodaTime
                     days--;
                     nanoOfDay += NanosecondsPerDay;
                 }
-                yearMonthDayCalendar = calendar.GetYearMonthDayFromDaysSinceEpoch(days).WithCalendar(calendar);
+                yearMonthDayCalendar = calendar.GetYearMonthDayCalendarFromDaysSinceEpoch(days);
                 nanosecondsAndOffset = CombineNanoOfDayAndOffset(nanoOfDay, offset);
             }
         }

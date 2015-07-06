@@ -56,7 +56,7 @@ namespace NodaTime.Calendars
             {
                 if (daysSinceEpoch < FirstOptimizedDay || daysSinceEpoch > LastOptimizedDay)
                 {
-                    return CalendarSystem.Iso.GetYearMonthDayFromDaysSinceEpoch(daysSinceEpoch).WithCalendarOrdinal(CalendarOrdinal.Iso);
+                    return CalendarSystem.Iso.GetYearMonthDayCalendarFromDaysSinceEpoch(daysSinceEpoch);
                 }
                 // Divide by more than we need to, in order to guarantee that we only need to move forward.
                 // We can still only be out by 1 year.

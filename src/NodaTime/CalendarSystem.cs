@@ -527,15 +527,15 @@ namespace NodaTime
         /// <param name="weekOfWeekYear">ISO-8601 week of week year of value to return</param>
         /// <param name="dayOfWeek">ISO-8601 day of week to return</param>
         /// <returns>The date corresponding to the given week year / week of week year / day of week.</returns>
-        internal YearMonthDay GetYearMonthDayFromWeekYearWeekAndDayOfWeek(int weekYear, int weekOfWeekYear, IsoDayOfWeek dayOfWeek)
+        internal YearMonthDayCalendar GetYearMonthDayCalendarFromWeekYearWeekAndDayOfWeek(int weekYear, int weekOfWeekYear, IsoDayOfWeek dayOfWeek)
         {
-            return weekYearCalculator.GetYearMonthDay(weekYear, weekOfWeekYear, dayOfWeek);
+            return weekYearCalculator.GetYearMonthDay(weekYear, weekOfWeekYear, dayOfWeek).WithCalendarOrdinal(Ordinal);
         }
 
-        internal YearMonthDay GetYearMonthDayFromDaysSinceEpoch(int daysSinceEpoch)
+        internal YearMonthDayCalendar GetYearMonthDayCalendarFromDaysSinceEpoch(int daysSinceEpoch)
         {
             Preconditions.CheckArgumentRange(nameof(daysSinceEpoch), daysSinceEpoch, MinDays, MaxDays);
-            return YearMonthDayCalculator.GetYearMonthDay(daysSinceEpoch);
+            return YearMonthDayCalculator.GetYearMonthDay(daysSinceEpoch).WithCalendarOrdinal(Ordinal);
         }
 
         #region object overrides

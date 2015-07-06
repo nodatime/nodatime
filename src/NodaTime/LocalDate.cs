@@ -67,7 +67,7 @@ namespace NodaTime
         internal LocalDate(int daysSinceEpoch, [Trusted] [NotNull] CalendarSystem calendar)
         {
             Preconditions.DebugCheckNotNull(calendar, nameof(calendar));
-            this.yearMonthDayCalendar = calendar.GetYearMonthDayFromDaysSinceEpoch(daysSinceEpoch).WithCalendar(calendar);
+            this.yearMonthDayCalendar = calendar.GetYearMonthDayCalendarFromDaysSinceEpoch(daysSinceEpoch);
         }
 
         /// <summary>
@@ -275,8 +275,8 @@ namespace NodaTime
         /// <returns>The date corresponding to the given week year / week of week year / day of week.</returns>
         public static LocalDate FromWeekYearWeekAndDay(int weekYear, int weekOfWeekYear, IsoDayOfWeek dayOfWeek)
         {
-            YearMonthDay yearMonthDay = CalendarSystem.Iso.GetYearMonthDayFromWeekYearWeekAndDayOfWeek(weekYear, weekOfWeekYear, dayOfWeek);
-            return new LocalDate(yearMonthDay.WithCalendarOrdinal(CalendarOrdinal.Iso));
+            var ymdc = CalendarSystem.Iso.GetYearMonthDayCalendarFromWeekYearWeekAndDayOfWeek(weekYear, weekOfWeekYear, dayOfWeek);
+            return new LocalDate(ymdc);
         }
 
         /// <summary>
