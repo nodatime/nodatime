@@ -242,6 +242,8 @@ namespace NodaTime.TzdbCompiler.Tzdb
                 Instant nextInstant = Instant.BeforeMinValue;
                 ZoneTransition firstTransition = null;
 
+                // This code is taken directly from Joda Time, but it's not clear how valid it is. It
+                // ends up with some spurious transitions which are then fixed by AddTransition.
                 for (ZoneTransition next = GetNext(nextInstant); next != null; next = GetNext(nextInstant))
                 {
                     nextInstant = next.Instant;

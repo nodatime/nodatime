@@ -112,6 +112,15 @@ namespace NodaTime.TzdbCompiler.Tzdb
         }
 
         /// <summary>
+        /// Converts a single zone into a DateTimeZone. Mostly used for debugging.
+        /// </summary>
+        /// <param name="zoneId">The ID of the zone to convert.</param>
+        internal DateTimeZone GenerateDateTimeZone(string zoneId)
+        {
+            return CreateTimeZone(zoneLists[zoneId]);
+        }
+
+        /// <summary>
         /// Converts each zone in the database into a DateTimeZone.
         /// </summary>
         internal IEnumerable<DateTimeZone> GenerateDateTimeZones()

@@ -39,14 +39,29 @@ namespace NodaTime.TzdbCompiler.Tzdb
             this.Savings = savings;
         }
 
+        /// <summary>
+        /// The instant at which the transition occurs.
+        /// </summary>
         internal Instant Instant { get; }
 
+        /// <summary>
+        /// The name of the zone interval after this transition.
+        /// </summary>
         internal string Name { get; }
 
+        /// <summary>
+        /// The standard offset after this transition.
+        /// </summary>
         internal Offset StandardOffset { get; }
 
+        /// <summary>
+        /// The daylight savings after this transition.
+        /// </summary>
         internal Offset Savings { get; }
 
+        /// <summary>
+        /// The wall offset (savings + standard) after this transition.
+        /// </summary>
         internal Offset WallOffset => StandardOffset + Savings;
 
         /// <summary>

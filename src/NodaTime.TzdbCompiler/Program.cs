@@ -29,26 +29,34 @@ namespace NodaTime.TzdbCompiler
         private static int Main(string[] arguments)
         {
             CompilerOptions options = new CompilerOptions();
-            ICommandLineParser parser = new CommandLineParser(new CommandLineParserSettings(Console.Error));
+            ICommandLineParser parser = new CommandLineParser(new CommandLineParserSettings(Console.Error) { MutuallyExclusive = true });
             if (!parser.ParseArguments(arguments, options))
             {
                 return 1;
             }
 
-            var writer = CreateWriter(options);
             var tzdbCompiler = new TzdbZoneInfoCompiler();
             var tzdb = tzdbCompiler.Compile(options.SourceDirectoryName);
             tzdb.LogCounts();
+            if (options.ZoneId != null)
+            {
+                tzdb.GenerateDateTimeZone(options.ZoneId);
+                return 0;
+            }
             var windowsZones = CldrWindowsZonesParser.Parse(options.WindowsMappingFile);
             LogWindowsZonesSummary(windowsZones);
+            var writer = CreateWriter(options);
             writer.Write(tzdb, windowsZones);
 
-            Console.WriteLine("Reading generated data and validating...");
-            var source = Read(options);
-            source.Validate();
-            if (options.TextDumpFile != null)
+            if (options.OutputFileName != null)
             {
-                CreateTextDump(source, options.TextDumpFile);
+                Console.WriteLine("Reading generated data and validating...");
+                var source = Read(options);
+                source.Validate();
+                if (options.TextDumpFile != null)
+                {
+                    CreateTextDump(source, options.TextDumpFile);
+                }
             }
             return 0;
         }
@@ -65,6 +73,12 @@ namespace NodaTime.TzdbCompiler
 
         private static TzdbStreamWriter CreateWriter(CompilerOptions options)
         {
+            // If we don't have an actual file, just write to an empty stream.
+            // That way, while debugging, we still get to see all the data written etc.
+            if (options.OutputFileName == null)
+            {
+                return new TzdbStreamWriter(new MemoryStream());
+            }
             string file = Path.ChangeExtension(options.OutputFileName, "nzd");
             return new TzdbStreamWriter(File.Create(file));
         }

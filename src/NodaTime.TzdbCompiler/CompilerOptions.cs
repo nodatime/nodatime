@@ -13,7 +13,7 @@ namespace NodaTime.TzdbCompiler
     /// </summary>
     public class CompilerOptions
     {
-        [Option("o", "output", Required = true, HelpText = "The name of the output file.")]
+        [Option("o", "output", Required = false, HelpText = "The name of the output file.", MutuallyExclusiveSet = "Output")]
         public string OutputFileName { get; set; }
 
         [Option("s", "source", Required = true, HelpText = "Source directory containing the TZDB input files.")]
@@ -25,9 +25,14 @@ namespace NodaTime.TzdbCompiler
         [Option("t", "text-dump", Required = false, HelpText = "File to dump zone intervals for all zones to, for test purposes.")]
         public string TextDumpFile { get; set; }
 
+        [Option("z", "zone",
+            Required = false,
+            HelpText = "Single zone ID to compile data for, for test purposes. (Incompatible with -o.)",
+            MutuallyExclusiveSet = "Output")]
+        public string ZoneId { get; set; }
+
         public CompilerOptions()
         {
-            OutputFileName = "";
             SourceDirectoryName = "";
             WindowsMappingFile = "";
         }

@@ -259,6 +259,8 @@ namespace NodaTime.TzdbCompiler.Tzdb
             int transitionCount = transitions.Count;
             if (transitionCount == 0)
             {
+                Preconditions.CheckArgument(!transition.Instant.IsValid,
+                    nameof(transition), "First transition must be at the start of time");
                 transitions.Add(transition);
                 return true;
             }
@@ -280,7 +282,21 @@ namespace NodaTime.TzdbCompiler.Tzdb
             Offset newOffset = lastTransition.WallOffset;
             // If the local time just before the new transition is the same as the local time just
             // before the previous one, just replace the last transition with new one.
-            // TODO(Post-V1): It's not clear what this is doing... work it out and give an example
+            // This code is taken from Joda Time, and is not terribly clear. It appears to occur when
+            // a new rule set starts to apply, and the TransitionIterator effectively starts with the wrong rule.
+            // It appears to be doing the right thing, but a full-scale refactor might be able to remove it...
+
+            // Example: America/Juneau
+            // Zone rules around the problematic transition:
+            // 9:00  US Y% sT    1980 Oct 26  2:00
+            // -8:00  US P% sT    1983 Oct 30  2:00
+            // - 9:00  US Y% sT    1983 Nov 30
+
+            // We have:
+            // Previous but one: { PDT at 1983 - 04 - 24T10: 00:00Z - 08[+01]}
+            // Previous:         { YDT at 1983 - 10 - 30T09: 00:00Z - 09[+01]}
+            // Replaced by:      { YST at 1983 - 10 - 30T10: 00:00Z - 09[+00]}
+            // The transition *to* YDT in October is clearly spurious, but that's what TransitionIterator gives us.
             LocalInstant lastLocalStart = lastTransition.Instant.Plus(lastOffset);
             LocalInstant newLocalStart = transition.Instant.Plus(newOffset);
             if (lastLocalStart == newLocalStart)
