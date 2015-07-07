@@ -5,102 +5,98 @@
 using System;
 using System.Globalization;
 using System.IO;
-using NodaTime.Text;
 using NodaTime.TimeZones;
 using NodaTime.Utility;
 
 namespace NodaTime.TzdbCompiler.Tzdb
 {
     /// <summary>
-    ///   Provides a parser for TZDB time zone description files.
+    /// Provides a parser for TZDB time zone description files.
     /// </summary>
     internal class TzdbZoneInfoParser
     {
         /// <summary>
-        ///   The keyword that specifies the line defines an alias link.
+        /// The keyword that specifies the line defines an alias link.
         /// </summary>
         private const string KeywordLink = "Link";
 
         /// <summary>
-        ///   The keyword that specifies the line defines a daylight savings rule.
+        /// The keyword that specifies the line defines a daylight savings rule.
         /// </summary>
         private const string KeywordRule = "Rule";
 
         /// <summary>
-        ///   The keyword that specifies the line defines a time zone.
+        /// The keyword that specifies the line defines a time zone.
         /// </summary>
         private const string KeywordZone = "Zone";
 
         /// <summary>
-        ///   The days of the week names as they appear in the TZDB zone files. They are
-        ///   always the short name in US English.
+        /// The days of the week names as they appear in the TZDB zone files. They are
+        /// always the short name in US English.
         /// </summary>
         public static readonly string[] DaysOfWeek = { "", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun" };
 
         /// <summary>
-        ///   The months of the year names as they appear in the TZDB zone files. They are
-        ///   always the short name in US English. Extra blank name at the beginning helps
-        ///   to make the indexes to come out right.
+        /// The months of the year names as they appear in the TZDB zone files. They are
+        /// always the short name in US English. 
         /// </summary>
         public static readonly string[] Months = { "", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
 
         /// <summary>
-        ///   Nexts the month.
+        /// Parses the next token as a month number (1-12).
         /// </summary>
         /// <param name="tokens">The tokens.</param>
-        /// <param name="name">The name.</param>
+        /// <param name="name">The name of the expected value, for use in the exception if no value is available.</param>
         private int NextMonth(Tokens tokens, string name)
         {
             var value = NextString(tokens, name);
-            int result = ParseMonth(value);
-            return result == 0 ? 1 : result;
+            return ParseMonth(value);
         }
 
         /// <summary>
-        ///   Nexts the offset.
+        /// Parses the next token as an offset.
         /// </summary>
         /// <param name="tokens">The tokens.</param>
-        /// <param name="name">The name.</param>
+        /// <param name="name">The name of the expected value, for use in the exception if no value is available.</param>
         private Offset NextOffset(Tokens tokens, string name)
         {
             return ParserHelper.ParseOffset(NextString(tokens, name));
         }
 
         /// <summary>
-        ///   Nexts the optional.
+        /// Returns the next token, which is optional, converting "-" to null.
         /// </summary>
         /// <param name="tokens">The tokens.</param>
-        /// <param name="name">The name.</param>
+        /// <param name="name">The name of the expected value, for use in the exception if no value is available.</param>
         private string NextOptional(Tokens tokens, string name)
         {
             return ParserHelper.ParseOptional(NextString(tokens, name));
         }
 
         /// <summary>
-        ///   Nexts the string.
+        /// Returns the next string from the token stream.
         /// </summary>
-        /// <param name="tokens">The tokens.</param>
-        /// <param name="name">The name.</param>
+        /// <param name="tokens">The tokens to parse from.</param>
+        /// <param name="name">The name of the expected value, for use in the exception if no value is available.</param>
         private string NextString(Tokens tokens, string name)
         {
             if (!tokens.HasNextToken)
             {
-                throw new InvalidDataException("Missing zone info token: " + name);
+                throw new InvalidDataException($"Missing zone info token: {name}");
             }
             return tokens.NextToken(name);
         }
 
         /// <summary>
-        ///   Nexts the year.
+        /// Parses the next string from the token stream as a year.
         /// </summary>
         /// <param name="tokens">The tokens.</param>
-        /// <param name="name">The name.</param>
-        /// <param name="defaultValue">The default value.</param>
-        private static int NextYear(Tokens tokens, string name, int defaultValue)
+        /// <param name="defaultValue">The default value to return if the year isn't specified.</param>
+        private static int NextYear(Tokens tokens, int defaultValue)
         {
             int result = defaultValue;
             string text;
-            if (tokens.TryNextToken(name, out text))
+            if (tokens.TryNextToken(out text))
             {
                 result = ParserHelper.ParseYear(text, defaultValue);
             }
@@ -108,8 +104,8 @@ namespace NodaTime.TzdbCompiler.Tzdb
         }
 
         /// <summary>
-        ///   Parses the TZDB time zone info file from the given stream and merges its information
-        ///   with the given database. The stream is not closed or disposed.
+        /// Parses the TZDB time zone info file from the given stream and merges its information
+        /// with the given database. The stream is not closed or disposed.
         /// </summary>
         /// <param name="input">The stream input to parse.</param>
         /// <param name="database">The database to fill.</param>
@@ -119,8 +115,8 @@ namespace NodaTime.TzdbCompiler.Tzdb
         }
 
         /// <summary>
-        ///   Parses the TZDB time zone info file from the given reader and merges its information
-        ///   with the given database. The reader is not closed or disposed.
+        /// Parses the TZDB time zone info file from the given reader and merges its information
+        /// with the given database. The reader is not closed or disposed.
         /// </summary>
         /// <param name="reader">The reader to read.</param>
         /// <param name="database">The database to fill.</param>
@@ -140,15 +136,15 @@ namespace NodaTime.TzdbCompiler.Tzdb
         }
 
         /// <summary>
-        ///   Parses the date time of year.
+        /// Parses the ZoneYearOffset for a rule or zone. This is something like "3rd Sunday of October at 2am".
         /// </summary>
+        /// <remarks>
+        /// IN ON AT
+        /// </remarks>
         /// <param name="tokens">The tokens to parse.</param>
         /// <param name="forRule">True if this is for a Rule line, in which case ON/AT are mandatory;
         /// false for a Zone line, in which case it's part of "until" and they're optional</param>
-        /// <returns>The DateTimeOfYear object.</returns>
-        /// <remarks>
-        ///   IN ON AT
-        /// </remarks>
+        /// <returns>The ZoneYearOffset object.</returns>
         internal ZoneYearOffset ParseDateTimeOfYear(Tokens tokens, bool forRule)
         {
             var mode = ZoneYearOffset.StartOfYear.Mode;
@@ -195,7 +191,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
                             }
                             catch (FormatException e)
                             {
-                                throw new ArgumentException("Unparsable ON token: " + on, e);
+                                throw new ArgumentException($"Unparsable ON token: {on}", e);
                             }
                         }
                     }
@@ -228,7 +224,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
         }
 
         /// <summary>
-        ///   Parses the day of week.
+        /// Parses the day of week.
         /// </summary>
         /// <param name="text">The text.</param>
         private static int ParseDayOfWeek(string text)
@@ -237,37 +233,37 @@ namespace NodaTime.TzdbCompiler.Tzdb
             int index = Array.IndexOf(DaysOfWeek, text, 1);
             if (index == -1)
             {
-                throw new InvalidDataException("Invalid day of week: " + text);
+                throw new InvalidDataException($"Invalid day of week: {text}");
             }
             return index;
         }
 
         /// <summary>
-        ///   Parses a single line of an TZDB zone info file.
+        /// Parses a single line of an TZDB zone info file.
         /// </summary>
         /// <remarks>
-        ///   <para>
-        ///     TZDB files have a simple line based structure. Each line defines one item. Comments
-        ///     start with a hash or pound sign (#) and continue to the end of the line. Blank lines are
-        ///     ignored. Of the remaining there are four line types which are determined by the first
-        ///     keyword on the line.
-        ///   </para>
-        ///   <para>
-        ///     A line beginning with the keyword <c>Link</c> defines an alias between one time zone and
-        ///     another. Both time zones use the same definition but have different names.
-        ///   </para>
-        ///   <para>
-        ///     A line beginning with the keyword <c>Rule</c> defines a daylight savings time
-        ///     calculation rule.
-        ///   </para>
-        ///   <para>
-        ///     A line beginning with the keyword <c>Zone</c> defines a time zone.
-        ///   </para>
-        ///   <para>
-        ///     A line beginning with leading whitespace (an empty keyword) defines another part of the
-        ///     preceeding time zone. As many lines as necessary to define the time zone can be listed,
-        ///     but they must all be together and only the first line can have a name.
-        ///   </para>
+        /// <para>
+        /// TZDB files have a simple line based structure. Each line defines one item. Comments
+        /// start with a hash or pound sign (#) and continue to the end of the line. Blank lines are
+        /// ignored. Of the remaining there are four line types which are determined by the first
+        /// keyword on the line.
+        /// </para>
+        /// <para>
+        /// A line beginning with the keyword <c>Link</c> defines an alias between one time zone and
+        /// another. Both time zones use the same definition but have different names.
+        /// </para>
+        /// <para>
+        /// A line beginning with the keyword <c>Rule</c> defines a daylight savings time
+        /// calculation rule.
+        /// </para>
+        /// <para>
+        /// A line beginning with the keyword <c>Zone</c> defines a time zone.
+        /// </para>
+        /// <para>
+        /// A line beginning with leading whitespace (an empty keyword) defines another part of the
+        /// preceeding time zone. As many lines as necessary to define the time zone can be listed,
+        /// but they must all be together and only the first line can have a name.
+        /// </para>
         /// </remarks>
         /// <param name="line">The line to parse.</param>
         /// <param name="database">The database to fill.</param>
@@ -310,14 +306,14 @@ namespace NodaTime.TzdbCompiler.Tzdb
                     }
                     else
                     {
-                        throw new InvalidDataException("Unexpected zone database keyword: " + keyword);
+                        throw new InvalidDataException($"Unexpected zone database keyword: {keyword}");
                     }
                     break;
             }
         }
 
         /// <summary>
-        ///   Parses an alias link and returns the ZoneAlias object.
+        /// Parses an alias link and returns the ZoneAlias object.
         /// </summary>
         /// <param name="tokens">The tokens to parse.</param>
         /// <returns>The ZoneAlias object.</returns>
@@ -329,38 +325,38 @@ namespace NodaTime.TzdbCompiler.Tzdb
         }
 
         /// <summary>
-        ///   Parses the month.
+        /// Parses the month.
         /// </summary>
         /// <param name="text">The text.</param>
-        /// <returns>The month number 1-12 or 0 if the month is not valid</returns>
+        /// <returns>The month number in the range 1 to 12.</returns>
+        /// <exception cref="InvalidDataException">The month name can't be parsed</exception>
         internal static int ParseMonth(String text)
         {
-            for (int i = 1; i < Months.Length; i++)
+            Preconditions.CheckArgument(!string.IsNullOrEmpty(text), "text", "Value must not be empty or null");
+            int index = Array.IndexOf(Months, text, 1);
+            if (index == -1)
             {
-                if (text == Months[i])
-                {
-                    return i;
-                }
+                throw new InvalidDataException($"Invalid month: {text}");
             }
-            return 0;
+            return index;
         }
 
         /// <summary>
-        ///   Parses a daylight savings rule and returns the Rule object.
+        /// Parses a daylight savings rule and returns the Rule object.
         /// </summary>
         /// <remarks>
-        ///   # Rule    NAME    FROM    TO    TYPE    IN    ON    AT    SAVE    LETTER/S
+        /// # Rule    NAME    FROM    TO    TYPE    IN    ON    AT    SAVE    LETTER/S
         /// </remarks>
         /// <param name="tokens">The tokens to parse.</param>
         /// <returns>The Rule object.</returns>
         internal ZoneRule ParseRule(Tokens tokens)
         {
             var name = NextString(tokens, "GetName");
-            int fromYear = NextYear(tokens, "FromYear", 0);
-            int toYear = NextYear(tokens, "ToYear", fromYear);
+            int fromYear = NextYear(tokens, 0);
+            int toYear = NextYear(tokens, fromYear);
             if (toYear < fromYear)
             {
-                throw new ArgumentException("To year cannot be before the from year in a Rule: " + toYear + " < " + fromYear);
+                throw new ArgumentException($"To year cannot be before the from year in a Rule: {toYear} < {fromYear}");
             }
             /* string type = */
             NextOptional(tokens, "Type");
@@ -385,7 +381,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
             var offset = NextOffset(tokens, "Gmt Offset");
             var rules = NextOptional(tokens, "Rules");
             var format = NextString(tokens, "Format");
-            int year = NextYear(tokens, "Until Year", Int32.MaxValue);
+            int year = NextYear(tokens, Int32.MaxValue);
             
             if (tokens.HasNextToken)
             {

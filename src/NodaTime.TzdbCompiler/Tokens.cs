@@ -64,9 +64,10 @@ namespace NodaTime.TzdbCompiler
         /// <exception cref="MissingTokenException">Thrown if there is no next token.</exception>
         public string NextToken(string name)
         {
-            if (HasNextToken)
+            string result;
+            if (TryNextToken(out result))
             {
-                return words[index++];
+                return result;
             }
             throw new MissingTokenException(name);
         }
@@ -93,14 +94,13 @@ namespace NodaTime.TzdbCompiler
         /// <summary>
         /// Tries to get the next token.
         /// </summary>
-        /// <param name="name">The name of the token.</param>
         /// <param name="result">Where to place the next token.</param>
         /// <returns>True if there was a next token, false otherwise.</returns>
-        public bool TryNextToken(string name, out string result)
+        public bool TryNextToken(out string result)
         {
             if (HasNextToken)
             {
-                result = NextToken(name);
+                result = words[index++];
                 return true;
             }
             result = string.Empty;

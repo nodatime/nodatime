@@ -17,7 +17,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
     /// Not immutable, not thread safe. 
     /// </para>
     /// </remarks>
-    internal sealed class ZoneRecurrenceCollection : IEnumerable<ZoneRecurrence>
+    internal sealed class ZoneRecurrenceCollection
     {
         // Don't pre-calculate more than 100 years into the future. Almost all zones will stop
         // pre-calculating far sooner anyhow. Either a simple DST cycle is detected or the last
@@ -31,33 +31,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
         private int upperYear = Int32.MaxValue;
         private ZoneYearOffset upperYearOffset;
         internal Offset StandardOffset { private get; set; }
-
-        #region IEnumerable<ZoneRecurrence> Members
-        /// <summary>
-        /// Returns an enumerator that iterates through the collection.
-        /// </summary>
-        /// <returns>
-        /// A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate
-        /// through the collection.
-        /// </returns>
-        public IEnumerator<ZoneRecurrence> GetEnumerator()
-        {
-            return rules.GetEnumerator();
-        }
-
-        /// <summary>
-        /// Returns an enumerator that iterates through a collection.
-        /// </summary>
-        /// <returns>
-        /// An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate
-        /// through the collection.
-        /// </returns>
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return rules.GetEnumerator();
-        }
-        #endregion
-
+        
         /// <summary>
         /// Sets the fixed savings for this rule set.
         /// </summary>

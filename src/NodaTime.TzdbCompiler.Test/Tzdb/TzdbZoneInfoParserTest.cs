@@ -10,9 +10,9 @@ using System.IO;
 
 namespace NodaTime.TzdbCompiler.Test.Tzdb
 {
-    ///<summary>
-    ///  This is a test class for containing all of the TzdbZoneInfoParser unit tests.
-    ///</summary>
+    /// <summary>
+    /// Tests for TzdbZoneInfoParser.
+    /// </summary>
     [TestFixture]
     public class TzdbZoneInfoParserTest
     {
@@ -204,20 +204,19 @@ namespace NodaTime.TzdbCompiler.Test.Tzdb
         public void ParseLink_tooFewWords_exception()
         {
             var tokens = Tokens.Tokenize("from");
-            Assert.Throws(typeof(InvalidDataException), () => Parser.ParseLink(tokens));
+            Assert.Throws<InvalidDataException>(() => Parser.ParseLink(tokens));
         }
 
         [Test]
         public void ParseMonth_emptyString_default()
         {
-            Assert.AreEqual(0, TzdbZoneInfoParser.ParseMonth(string.Empty));
+            Assert.Throws<ArgumentException>(() => TzdbZoneInfoParser.ParseMonth(""));
         }
 
         [Test]
         public void ParseMonth_invalidMonth_default()
         {
-            const string month = "Able";
-            Assert.AreEqual(0, TzdbZoneInfoParser.ParseMonth(month));
+            Assert.Throws<InvalidDataException>(() => TzdbZoneInfoParser.ParseMonth("Able"));
         }
 
         [Test]
