@@ -10,14 +10,12 @@ using NodaTime.TimeZones;
 namespace NodaTime.TzdbCompiler.Tzdb
 {
     /// <summary>
-    /// Used to create time zones.
+    /// A rule set associated with a single Zone line, after any rules
+    /// associated with it have been resolved to a collection of ZoneRecurrences.
+    /// It may have an upper bound, or extend to infinity: lower bounds aren't known.
+    /// Likewise it may have rules associated with it, or just a fixed offset and savings.
     /// </summary>
-    /// <remarks>
-    /// <para>
-    /// Not immutable, not thread safe. 
-    /// </para>
-    /// </remarks>
-    internal sealed class ZoneRecurrenceCollection
+    internal sealed class ZoneRuleSet
     {
         // Don't pre-calculate more than 100 years into the future. Almost all zones will stop
         // pre-calculating far sooner anyhow. Either a simple DST cycle is detected or the last
@@ -25,47 +23,31 @@ namespace NodaTime.TzdbCompiler.Tzdb
         // future, then it won't be observed.
         private static readonly Instant PrecomputationLimit = SystemClock.Instance.GetCurrentInstant().InUtc().LocalDateTime.PlusYears(100).InUtc().ToInstant();
 
+        // Either rules or name+fixedSavings is specified.
         private readonly List<ZoneRecurrence> rules = new List<ZoneRecurrence>();
-        private string initialNameKey;
-        private Offset initialSavings;
-        private int upperYear = Int32.MaxValue;
-        private ZoneYearOffset upperYearOffset;
-        internal Offset StandardOffset { private get; set; }
+        private readonly string name;
+        private readonly Offset fixedSavings;
+        private readonly int upperYear;
+        private readonly ZoneYearOffset upperYearOffset;
+        private readonly Offset standardOffset;
+
+        internal ZoneRuleSet(List<ZoneRecurrence> rules, Offset standardOffset, int upperYear, ZoneYearOffset upperYearOffset)
+        {
+            this.rules = rules;
+            this.standardOffset = standardOffset;
+            this.upperYear = upperYear;
+            this.upperYearOffset = upperYearOffset;
+        }
+
+        internal ZoneRuleSet(string name, Offset standardOffset, Offset savings, int upperYear, ZoneYearOffset upperYearOffset)
+        {
+            this.name = name;
+            this.standardOffset = standardOffset;
+            this.fixedSavings = savings;
+            this.upperYear = upperYear;
+            this.upperYearOffset = upperYearOffset;
+        }
         
-        /// <summary>
-        /// Sets the fixed savings for this rule set.
-        /// </summary>
-        /// <param name="nameKey">The name key.</param>
-        /// <param name="savings">The savings <see cref="Offset"/>.</param>
-        internal void SetFixedSavings(String nameKey, Offset savings)
-        {
-            initialNameKey = nameKey;
-            initialSavings = savings;
-        }
-
-        /// <summary>
-        /// Adds the given rule to the set if it is not already in the set.
-        /// </summary>
-        /// <param name="rule">The rule to add.</param>
-        public void AddRule(ZoneRecurrence rule)
-        {
-            if (!rules.Contains(rule))
-            {
-                rules.Add(rule);
-            }
-        }
-
-        /// <summary>
-        /// Sets the inclusive upper limit for where this rule set applies.
-        /// </summary>
-        /// <param name="year">The end year (inclusive).</param>
-        /// <param name="yearOffset">The end point in the year (inclusive).</param>
-        internal void SetUpperLimit(int year, ZoneYearOffset yearOffset)
-        {
-            upperYear = year;
-            upperYearOffset = yearOffset;
-        }
-
         /// <summary>
         /// Gets the inclusive upper limit of time that this rule set applies to.
         /// </summary>
@@ -78,7 +60,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
                 return Instant.AfterMaxValue;
             }
             var localInstant = upperYearOffset.GetOccurrenceForYear(upperYear);
-            var offset = upperYearOffset.GetRuleOffset(StandardOffset, savings);
+            var offset = upperYearOffset.GetRuleOffset(standardOffset, savings);
             return localInstant.SafeMinus(offset);
         }
 
@@ -128,7 +110,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
         /// </remarks>
         internal sealed class TransitionIterator
         {
-            private readonly ZoneRecurrenceCollection ruleSet;
+            private readonly ZoneRuleSet ruleSet;
             private readonly Instant startingInstant;
             private Instant instant;
 
@@ -139,7 +121,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
             /// </summary>
             /// <param name="ruleSet">The rule set to iterate over.</param>
             /// <param name="startingInstant">The starting instant.</param>
-            internal TransitionIterator(ZoneRecurrenceCollection ruleSet, Instant startingInstant)
+            internal TransitionIterator(ZoneRuleSet ruleSet, Instant startingInstant)
             {
                 this.ruleSet = ruleSet;
                 this.startingInstant = startingInstant;
@@ -193,7 +175,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
                         // The order of rules can come in any order, and it doesn't really matter
                         // which rule was chosen the 'start' and which is chosen the 'end'. DaylightSavingsTimeZone
                         // works properly either way.
-                        return new DaylightSavingsDateTimeZone(id, ruleSet.StandardOffset, startRule, endRule);
+                        return new DaylightSavingsDateTimeZone(id, ruleSet.standardOffset, startRule, endRule);
                     }
                 }
                 return null;
@@ -201,10 +183,10 @@ namespace NodaTime.TzdbCompiler.Tzdb
 
             private ZoneTransition GetFirst()
             {
-                if (ruleSet.initialNameKey != null)
+                if (ruleSet.name != null)
                 {
                     // Initial zone info explicitly set, so don't search the rules.
-                    return new ZoneTransition(startingInstant, ruleSet.initialNameKey, ruleSet.StandardOffset, ruleSet.initialSavings);
+                    return new ZoneTransition(startingInstant, ruleSet.name, ruleSet.standardOffset, ruleSet.fixedSavings);
                 }
 
                 // Make a copy before we destroy the rules.
@@ -238,7 +220,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
                             {
                                 if (rule.Savings == Offset.Zero)
                                 {
-                                    firstTransition = new ZoneTransition(startingInstant, rule.Name, ruleSet.StandardOffset, Offset.Zero);
+                                    firstTransition = new ZoneTransition(startingInstant, rule.Name, ruleSet.standardOffset, Offset.Zero);
                                     break;
                                 }
                             }
@@ -247,7 +229,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
                         {
                             // Found no rule without savings. Create a transition with no savings
                             // anyhow, and use the best available name key.
-                            firstTransition = new ZoneTransition(startingInstant, next.Name, ruleSet.StandardOffset, Offset.Zero);
+                            firstTransition = new ZoneTransition(startingInstant, next.Name, ruleSet.standardOffset, Offset.Zero);
                         }
                         break;
                     }
@@ -271,7 +253,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
                 for (int i = 0; i < rules.Count; i++)
                 {
                     ZoneRecurrence rule = rules[i];
-                    Transition? nextTransition = rule.Next(nextInstant, ruleSet.StandardOffset, Savings);
+                    Transition? nextTransition = rule.Next(nextInstant, ruleSet.standardOffset, Savings);
                     Instant? next = nextTransition == null ? (Instant?)null : nextTransition.Value.Instant;
                     if (!next.HasValue || next.Value <= nextInstant)
                     {
@@ -311,7 +293,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
                         return null;
                     }
                 }
-                return new ZoneTransition(nextTicks, nextRule.Name, ruleSet.StandardOffset, nextRule.Savings);
+                return new ZoneTransition(nextTicks, nextRule.Name, ruleSet.standardOffset, nextRule.Savings);
             }
 
             /// <summary>

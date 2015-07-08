@@ -61,86 +61,13 @@ namespace NodaTime.TzdbCompiler.Tzdb
     /// </remarks>
     internal sealed class DateTimeZoneBuilder
     {
-        private readonly IList<ZoneRecurrenceCollection> ruleSets = new List<ZoneRecurrenceCollection>();
+        private readonly IList<ZoneRuleSet> ruleSets;
 
-        /// <summary>
-        /// Gets the last rule set in this builder. If there are currently no rule sets,
-        /// one that spans all of time is created and returned.
-        /// </summary>
-        /// <value>The last rule set.</value>
-        private ZoneRecurrenceCollection LastRuleSet
+        internal DateTimeZoneBuilder(List<ZoneRuleSet> ruleSets)
         {
-            get
-            {
-                if (ruleSets.Count == 0)
-                {
-                    AddEndOfTimeRuleSet();
-                }
-                return ruleSets[ruleSets.Count - 1];
-            }
+            this.ruleSets = ruleSets;
         }
-
-        /// <summary>
-        /// Adds a cutover for added rules.
-        /// </summary>
-        /// <remarks>
-        /// A cutover is a point where the standard offset from GMT/UTC changed. This occurs mostly
-        /// pre-1900. The standard offset at the cutover defaults to 0.
-        /// Call <see cref="DateTimeZoneBuilder.SetStandardOffset"/> afterwards to change it.
-        /// </remarks>
-        /// <param name="year">The year of cutover.</param>
-        /// <param name="yearOffset">The offset into the year of the cutover.</param>
-        /// <returns>This <see cref="DateTimeZoneBuilder"/> for chaining.</returns>
-        public DateTimeZoneBuilder AddCutover(int year, ZoneYearOffset yearOffset)
-        {
-            Preconditions.CheckNotNull(yearOffset, "yearOffset");
-
-            if (ruleSets.Count > 0)
-            {
-                LastRuleSet.SetUpperLimit(year, yearOffset);
-            }
-            AddEndOfTimeRuleSet();
-            return this;
-        }
-
-        /// <summary>
-        /// Sets the standard offset to use for newly added rules until the next cutover is added.
-        /// </summary>
-        /// <param name="standardOffset">The standard offset.</param>
-        /// <returns>This <see cref="DateTimeZoneBuilder"/> for chaining.</returns>
-        public DateTimeZoneBuilder SetStandardOffset(Offset standardOffset)
-        {
-            LastRuleSet.StandardOffset = standardOffset;
-            return this;
-        }
-
-        /// <summary>
-        /// Sets a fixed savings rule at the cutover.
-        /// </summary>
-        /// <param name="nameKey">The name key of new rule.</param>
-        /// <param name="savings">The <see cref="Duration"/> to add to standard offset.</param>
-        /// <returns>This <see cref="DateTimeZoneBuilder"/> for chaining.</returns>
-        public DateTimeZoneBuilder SetFixedSavings(String nameKey, Offset savings)
-        {
-            LastRuleSet.SetFixedSavings(nameKey, savings);
-            return this;
-        }
-
-        /// <summary>
-        /// Adds a recurring daylight saving time rule.
-        /// </summary>
-        /// <param name="recurrence">The zone recurrence defining the recurrening savings.</param>
-        /// <returns>This <see cref="DateTimeZoneBuilder"/> for chaining.</returns> 
-        public DateTimeZoneBuilder AddRecurringSavings(ZoneRecurrence recurrence)
-        {
-            Preconditions.CheckNotNull(recurrence, "recurrence");
-            if (recurrence.FromYear <= recurrence.ToYear)
-            {
-                LastRuleSet.AddRule(recurrence);
-            }
-            return this;
-        }
-
+        
         /// <summary>
         /// Processes all the rules and builds a DateTimeZone.
         /// </summary>
@@ -306,14 +233,6 @@ namespace NodaTime.TzdbCompiler.Tzdb
             }
             transitions.Add(transition);
             return true;
-        }
-
-        /// <summary>
-        /// Adds a rule set that spans from the last one to the end of time.
-        /// </summary>
-        private void AddEndOfTimeRuleSet()
-        {
-            ruleSets.Add(new ZoneRecurrenceCollection());
         }
     }
 }

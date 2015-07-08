@@ -89,7 +89,7 @@
     <Compile Include="Tzdb\Zone.cs" />
     <Compile Include="Tzdb\ZoneAlias.cs" />
     <Compile Include="Tzdb\ZoneList.cs" />
-    <Compile Include="Tzdb\ZoneRecurrenceCollection.cs" />
+    <Compile Include="Tzdb\ZoneRuleSet.cs" />
     <Compile Include="Tzdb\ZoneRule.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Tzdb\ZoneTransition.cs" />

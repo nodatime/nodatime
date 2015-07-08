@@ -11,10 +11,10 @@ using NodaTime.Utility;
 namespace NodaTime.TzdbCompiler.Tzdb
 {
     /// <summary>
-    ///   Contains the parsed information from one zone line of the TZDB zone database.
+    /// Contains the parsed information from one zone line of the TZDB zone database.
     /// </summary>
     /// <remarks>
-    ///   Immutable, thread-safe
+    /// Immutable, thread-safe
     /// </remarks>
     internal class Zone : IEquatable<Zone>
     {

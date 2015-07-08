@@ -65,8 +65,9 @@ namespace NodaTime.TzdbCompiler.Tzdb
         public static bool operator !=(ZoneRule left, ZoneRule right) => !(left == right);
         #endregion
 
+        // TODO: Move to Zone?
         /// <summary>
-        ///   Formats the name.
+        /// Formats the name.
         /// </summary>
         /// <param name="nameFormat">The name format.</param>
         public String FormatName(String nameFormat)

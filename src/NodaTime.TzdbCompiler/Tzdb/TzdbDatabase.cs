@@ -5,6 +5,8 @@
 using System;
 using System.Collections.Generic;
 using NodaTime.TimeZones;
+using NodaTime.Utility;
+using System.Linq;
 
 namespace NodaTime.TzdbCompiler.Tzdb
 {
@@ -137,58 +139,40 @@ namespace NodaTime.TzdbCompiler.Tzdb
         /// <param name="zoneList">The time zone definition parts to add.</param>
         private DateTimeZone CreateTimeZone(ZoneList zoneList)
         {
-            var builder = new DateTimeZoneBuilder();
-            foreach (Zone zone in zoneList)
-            {
-                builder.SetStandardOffset(zone.Offset);
-                if (zone.Rules == null)
-                {
-                    builder.SetFixedSavings(zone.Format, Offset.Zero);
-                }
-                else
-                {
-                    IList<ZoneRule> ruleSet;
-                    if (Rules.TryGetValue(zone.Rules, out ruleSet))
-                    {
-                        AddRecurring(builder, zone.Format, ruleSet);
-                    }
-                    else
-                    {
-                        try
-                        {
-                            // Check if Rules actually just refers to a savings.
-                            var savings = ParserHelper.ParseOffset(zone.Rules);
-                            builder.SetFixedSavings(zone.Format, savings);
-                        }
-                        catch (FormatException)
-                        {
-                            throw new ArgumentException(
-                                String.Format("Daylight savings rule name '{0}' for zone {1} is neither a known ruleset nor a fixed offset",
-                                    zone.Rules, zone.Name));
-                        }
-                    }
-                }
-                if (zone.UntilYear == Int32.MaxValue)
-                {
-                    break;
-                }
-                builder.AddCutover(zone.UntilYear, zone.UntilYearOffset);
-            }
+            Preconditions.CheckArgument(zoneList.Count > 0, nameof(zoneList), "Cannot create a time zone without any Zone entries");
+
+            var transformedRules = zoneList.Select(ZoneToZoneRuleSet).ToList();
+
+            var builder = new DateTimeZoneBuilder(transformedRules);
             return builder.ToDateTimeZone(zoneList.Name);
         }
 
-        /// <summary>
-        /// Adds a recurring savings rule to the time zone builder.
-        /// </summary>
-        /// <param name="builder">The <see cref="DateTimeZoneBuilder" /> to add to.</param>
-        /// <param name="nameFormat">The name format pattern.</param>
-        /// <param name="ruleSet">The <see cref="ZoneRecurrenceCollection" /> describing the recurring savings.</param>
-        private static void AddRecurring(DateTimeZoneBuilder builder, String nameFormat, IEnumerable<ZoneRule> ruleSet)
+        private ZoneRuleSet ZoneToZoneRuleSet(Zone zone)
         {
-            foreach (var rule in ruleSet)
+            if (zone.Rules == null)
             {
-                string name = rule.FormatName(nameFormat);
-                builder.AddRecurringSavings(rule.Recurrence.WithName(name));
+                return new ZoneRuleSet(zone.Format, zone.Offset, Offset.Zero, zone.UntilYear, zone.UntilYearOffset);
+            }
+            IList<ZoneRule> ruleSet;
+            if (Rules.TryGetValue(zone.Rules, out ruleSet))
+            {
+                var rules = ruleSet.Select(x => x.Recurrence.WithName(x.FormatName(zone.Format)));
+                return new ZoneRuleSet(rules.ToList(), zone.Offset, zone.UntilYear, zone.UntilYearOffset);
+            }
+            else
+            {
+                try
+                {
+                    // Check if Rules actually just refers to a savings.
+                    var savings = ParserHelper.ParseOffset(zone.Rules);
+                    return new ZoneRuleSet(zone.Format, zone.Offset, savings, zone.UntilYear, zone.UntilYearOffset);
+                }
+                catch (FormatException)
+                {
+                    throw new ArgumentException(
+                        String.Format("Daylight savings rule name '{0}' for zone {1} is neither a known ruleset nor a fixed offset",
+                            zone.Rules, zone.Name));
+                }
             }
         }
 

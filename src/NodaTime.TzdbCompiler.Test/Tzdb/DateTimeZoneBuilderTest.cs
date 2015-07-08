@@ -5,6 +5,7 @@
 using NUnit.Framework;
 using NodaTime.TimeZones;
 using NodaTime.TzdbCompiler.Tzdb;
+using System.Collections.Generic;
 
 namespace NodaTime.TzdbCompiler.Test.Tzdb
 {
@@ -19,9 +20,8 @@ namespace NodaTime.TzdbCompiler.Test.Tzdb
         public void FixedZone_Western()
         {
             var offset = Offset.FromHours(-5);
-            var builder = new DateTimeZoneBuilder();
-            builder.SetStandardOffset(offset);
-            builder.SetFixedSavings("GMT+5", Offset.Zero);
+            var rules = new List<ZoneRuleSet> { new ZoneRuleSet("GMT+5", offset, Offset.Zero, int.MaxValue, null) };
+            var builder = new DateTimeZoneBuilder(rules);
             var zone = builder.ToDateTimeZone("GMT+5");
             FixedDateTimeZone fixedZone = (FixedDateTimeZone)zone;
             Assert.AreEqual(offset, fixedZone.Offset);
@@ -31,9 +31,8 @@ namespace NodaTime.TzdbCompiler.Test.Tzdb
         public void FixedZone_Eastern()
         {
             var offset = Offset.FromHours(5);
-            var builder = new DateTimeZoneBuilder();
-            builder.SetStandardOffset(offset);
-            builder.SetFixedSavings("GMT-5", Offset.Zero);
+            var rules = new List<ZoneRuleSet> { new ZoneRuleSet("GMT-5", offset, Offset.Zero, int.MaxValue, null) };
+            var builder = new DateTimeZoneBuilder(rules);
             var zone = builder.ToDateTimeZone("GMT-5");
             FixedDateTimeZone fixedZone = (FixedDateTimeZone)zone;
             Assert.AreEqual(offset, fixedZone.Offset);
