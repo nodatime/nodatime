@@ -11,7 +11,7 @@ using System.Linq;
 namespace NodaTime.TzdbCompiler.Tzdb
 {
     /// <summary>
-    ///   Provides an container for the definitions parsed from the TZDB zone info files.
+    /// Provides a container for the definitions parsed from the TZDB zone info files.
     /// </summary>
     internal class TzdbDatabase
     {
@@ -141,40 +141,11 @@ namespace NodaTime.TzdbCompiler.Tzdb
         {
             Preconditions.CheckArgument(zoneList.Count > 0, nameof(zoneList), "Cannot create a time zone without any Zone entries");
 
-            var transformedRules = zoneList.Select(ZoneToZoneRuleSet).ToList();
+            var transformedRules = zoneList.Select(zone => zone.ResolveRules(Rules)).ToList();
 
             var builder = new DateTimeZoneBuilder(transformedRules);
             return builder.ToDateTimeZone(zoneList.Name);
-        }
-
-        private ZoneRuleSet ZoneToZoneRuleSet(Zone zone)
-        {
-            if (zone.Rules == null)
-            {
-                return new ZoneRuleSet(zone.Format, zone.Offset, Offset.Zero, zone.UntilYear, zone.UntilYearOffset);
-            }
-            IList<ZoneRule> ruleSet;
-            if (Rules.TryGetValue(zone.Rules, out ruleSet))
-            {
-                var rules = ruleSet.Select(x => x.Recurrence.WithName(x.FormatName(zone.Format)));
-                return new ZoneRuleSet(rules.ToList(), zone.Offset, zone.UntilYear, zone.UntilYearOffset);
-            }
-            else
-            {
-                try
-                {
-                    // Check if Rules actually just refers to a savings.
-                    var savings = ParserHelper.ParseOffset(zone.Rules);
-                    return new ZoneRuleSet(zone.Format, zone.Offset, savings, zone.UntilYear, zone.UntilYearOffset);
-                }
-                catch (FormatException)
-                {
-                    throw new ArgumentException(
-                        String.Format("Daylight savings rule name '{0}' for zone {1} is neither a known ruleset nor a fixed offset",
-                            zone.Rules, zone.Name));
-                }
-            }
-        }
+        }        
 
         /// <summary>
         /// Writes various informational counts to the log.

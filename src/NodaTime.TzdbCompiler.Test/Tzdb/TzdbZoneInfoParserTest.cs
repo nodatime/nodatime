@@ -482,7 +482,7 @@ namespace NodaTime.TzdbCompiler.Test.Tzdb
             ValidateCounts(database, 0, 1, 0);
             Assert.AreEqual(1, database.ZoneLists[0].Count, "Zones in set");
             var zone = database.ZoneLists[0][0];
-            Assert.AreEqual(Offset.FromHours(9), zone.Offset);
+            Assert.AreEqual(Offset.FromHours(9), zone.StandardOffset);
             Assert.IsNull(zone.Rules);
             Assert.AreEqual(int.MaxValue, zone.UntilYear);
         }
@@ -498,7 +498,7 @@ namespace NodaTime.TzdbCompiler.Test.Tzdb
             ValidateCounts(database, 0, 1, 0);
             Assert.AreEqual(1, database.ZoneLists[0].Count, "Zones in set");
             var zone = database.ZoneLists[0][0];
-            Assert.AreEqual(Offset.FromHours(-9), zone.Offset);
+            Assert.AreEqual(Offset.FromHours(-9), zone.StandardOffset);
             Assert.IsNull(zone.Rules);
             Assert.AreEqual(int.MaxValue, zone.UntilYear);
         }

@@ -7,6 +7,8 @@ using System.Globalization;
 using System.Text;
 using NodaTime.TimeZones;
 using NodaTime.Utility;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace NodaTime.TzdbCompiler.Tzdb
 {
@@ -24,7 +26,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
         public Zone(string name, Offset offset, string rules, string format, int untilYear, ZoneYearOffset untilYearOffset)
         {
             this.Name = name;
-            this.Offset = offset;
+            this.StandardOffset = offset;
             this.Rules = rules;
             this.Format = format;
             this.UntilYear = untilYear;
@@ -48,15 +50,16 @@ namespace NodaTime.TzdbCompiler.Tzdb
         internal string Name { get; }
 
         /// <summary>
-        /// Returns the offset to add to UTC for this time zone.
+        /// Returns the offset to add to UTC for this time zone's standard time.
         /// </summary>
         /// <value>The offset from UTC.</value>
-        internal Offset Offset { get; }
+        internal Offset StandardOffset { get; }
 
         /// <summary>
-        /// Returns the daylight savings rules name applicable to this zone line.
+        /// The name of the set of rules applicable to this zone line, or
+        /// null for just standard time, or an offset for a "fixed savings" rule.
         /// </summary>
-        /// <value>The rules name.</value>
+        /// <value>The name of the rules to apply for this zone line.</value>
         internal string Rules { get; }
 
         #region IEquatable<Zone> Members
@@ -78,7 +81,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
             {
                 return true;
             }
-            var result = Name == other.Name && Offset == other.Offset && Rules == other.Rules && Format == other.Format && UntilYear == other.UntilYear;
+            var result = Name == other.Name && StandardOffset == other.StandardOffset && Rules == other.Rules && Format == other.Format && UntilYear == other.UntilYear;
             if (UntilYear != Int32.MaxValue)
             {
                 result = result && UntilYearOffset.Equals(other.UntilYearOffset);
@@ -108,7 +111,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
         {
             var hash = HashCodeHelper.Initialize()
                 .Hash(Name)
-                .Hash(Offset)
+                .Hash(StandardOffset)
                 .Hash(Rules)
                 .Hash(Format)
                 .Hash(UntilYear);
@@ -130,7 +133,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
         {
             var builder = new StringBuilder();
             builder.Append(Name).Append(" ");
-            builder.Append(Offset).Append(" ");
+            builder.Append(StandardOffset).Append(" ");
             builder.Append(ParserHelper.FormatOptional(Rules)).Append(" ");
             builder.Append(Format);
             if (UntilYear != Int32.MaxValue)
@@ -138,6 +141,34 @@ namespace NodaTime.TzdbCompiler.Tzdb
                 builder.Append(" ").Append(UntilYear.ToString("D4", CultureInfo.InvariantCulture)).Append(" ").Append(UntilYearOffset);
             }
             return builder.ToString();
+        }
+
+        public ZoneRuleSet ResolveRules(IDictionary<string, IList<ZoneRule>> allRules)
+        {
+            if (Rules == null)
+            {
+                return new ZoneRuleSet(Format, StandardOffset, Offset.Zero, UntilYear, UntilYearOffset);
+            }
+            IList<ZoneRule> ruleSet;
+            if (allRules.TryGetValue(Rules, out ruleSet))
+            {
+                var rules = ruleSet.Select(x => x.GetRecurrence(Format));
+                return new ZoneRuleSet(rules.ToList(), StandardOffset, UntilYear, UntilYearOffset);
+            }
+            else
+            {
+                try
+                {
+                    // Check if Rules actually just refers to a savings.
+                    var savings = ParserHelper.ParseOffset(Rules);
+                    return new ZoneRuleSet(Format, StandardOffset, savings, UntilYear, UntilYearOffset);
+                }
+                catch (FormatException)
+                {
+                    throw new ArgumentException(
+                        $"Daylight savings rule name '{Rules}' for zone {Name} is neither a known ruleset nor a fixed offset");
+                }
+            }
         }
     }
 }

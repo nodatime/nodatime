@@ -362,9 +362,9 @@ namespace NodaTime.TzdbCompiler.Tzdb
             NextOptional(tokens, "Type");
             var yearOffset = ParseDateTimeOfYear(tokens, true);
             var savings = NextOffset(tokens, "SaveMillis");
-            var letterS = NextOptional(tokens, "LetterS");
+            var daylightSavingsIndicator = NextOptional(tokens, "LetterS");
             var recurrence = new ZoneRecurrence(name, savings, yearOffset, fromYear, toYear);
-            return new ZoneRule(recurrence, letterS);
+            return new ZoneRule(recurrence, daylightSavingsIndicator);
         }
 
         /// <summary>

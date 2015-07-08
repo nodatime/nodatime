@@ -10,30 +10,39 @@ using NodaTime.Utility;
 namespace NodaTime.TzdbCompiler.Tzdb
 {
     /// <summary>
-    ///   Defines one time zone rule with a validitity range.
+    /// Defines one time zone rule with a validity range.
     /// </summary>
     /// <remarks>
-    ///   Immutable, threadsafe.
+    /// Immutable, threadsafe.
     /// </remarks>
     internal class ZoneRule : IEquatable<ZoneRule>
     {
         /// <summary>
-        ///   Initializes a new instance of the <see cref="ZoneRule" /> class.
+        /// The string to replace "%s" with (if any) when formatting a daylight saving recurrence.
+        /// </summary>
+        private readonly string daylightSavingsIndicator;
+
+        /// <summary>
+        /// The recurrence pattern for the rule.
+        /// </summary>
+        private readonly ZoneRecurrence recurrence;
+
+        /// <summary>
+        /// Returns the name of the rule set this rule belongs to.
+        /// </summary>
+        public string Name => recurrence.Name;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ZoneRule" /> class.
         /// </summary>
         /// <param name="recurrence">The recurrence definition of this rule.</param>
-        /// <param name="letterS">The daylight savings indicator letter for time zone names.</param>
-        public ZoneRule(ZoneRecurrence recurrence, string letterS)
+        /// <param name="daylightSavingsIndicator">The daylight savings indicator letter for time zone names.</param>
+        public ZoneRule(ZoneRecurrence recurrence, string daylightSavingsIndicator)
         {
-            this.Recurrence = recurrence;
-            this.LetterS = letterS;
+            this.recurrence = recurrence;
+            this.daylightSavingsIndicator = daylightSavingsIndicator;
         }
-
-        public string LetterS { get; }
-
-        public string Name => Recurrence.Name;
-
-        public ZoneRecurrence Recurrence { get; }
-
+       
         #region IEquatable<ZoneRule> Members
         /// <summary>
         ///   Indicates whether the current object is equal to another object of the same type.
@@ -43,7 +52,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
         ///   true if the current object is equal to the <paramref name = "other" /> parameter;
         ///   otherwise, false.
         /// </returns>
-        public bool Equals(ZoneRule other) => other != null && Equals(Recurrence, other.Recurrence) && Equals(LetterS, other.LetterS);
+        public bool Equals(ZoneRule other) => other != null && Equals(recurrence, other.recurrence) && Equals(daylightSavingsIndicator, other.daylightSavingsIndicator);
         #endregion
 
         #region Operator overloads
@@ -65,18 +74,26 @@ namespace NodaTime.TzdbCompiler.Tzdb
         public static bool operator !=(ZoneRule left, ZoneRule right) => !(left == right);
         #endregion
 
-        // TODO: Move to Zone?
         /// <summary>
-        /// Formats the name.
+        /// Retrieves the recurrence, after applying the specified name format.
         /// </summary>
+        /// <remarks>
+        /// Multiple zones may apply the same set of rules as to when they change into/out of
+        /// daylight saving time, but with different names.
+        /// </remarks>
         /// <param name="nameFormat">The name format.</param>
-        public String FormatName(String nameFormat)
+        public ZoneRecurrence GetRecurrence(String nameFormat)
+        {
+            return recurrence.WithName(FormatName(nameFormat));
+        }
+
+        private string FormatName(string nameFormat)
         {
             Preconditions.CheckNotNull(nameFormat, "nameFormat");
             int index = nameFormat.IndexOf("/", StringComparison.Ordinal);
             if (index > 0)
             {
-                return Recurrence.Savings == Offset.Zero ? nameFormat.Substring(0, index) : nameFormat.Substring(index + 1);
+                return recurrence.Savings == Offset.Zero ? nameFormat.Substring(0, index) : nameFormat.Substring(index + 1);
             }
             index = nameFormat.IndexOf("%s", StringComparison.Ordinal);
             if (index < 0)
@@ -85,42 +102,42 @@ namespace NodaTime.TzdbCompiler.Tzdb
             }
             var left = nameFormat.Substring(0, index);
             var right = nameFormat.Substring(index + 2);
-            return LetterS == null ? left + right : left + LetterS + right;
+            return left + daylightSavingsIndicator + right;
         }
 
         #region Object overrides
         /// <summary>
-        ///   Determines whether the specified <see cref="System.Object" /> is equal to this instance.
+        /// Determines whether the specified <see cref="System.Object" /> is equal to this instance.
         /// </summary>
         /// <param name="obj">The <see cref="System.Object" /> to compare with this instance.</param>
         /// <returns>
-        ///   <c>true</c> if the specified <see cref="System.Object" /> is equal to this instance;
-        ///   otherwise, <c>false</c>.
+        /// <c>true</c> if the specified <see cref="System.Object" /> is equal to this instance;
+        /// otherwise, <c>false</c>.
         /// </returns>
         public override bool Equals(object obj) => Equals(obj as ZoneRule);
 
         /// <summary>
-        ///   Returns a hash code for this instance.
+        /// Returns a hash code for this instance.
         /// </summary>
         /// <returns>
-        ///   A hash code for this instance, suitable for use in hashing algorithms and data
-        ///   structures like a hash table. 
+        /// A hash code for this instance, suitable for use in hashing algorithms and data
+        /// structures like a hash table. 
         /// </returns>
-        public override int GetHashCode() => HashCodeHelper.Hash(Recurrence, LetterS);
+        public override int GetHashCode() => HashCodeHelper.Hash(recurrence, daylightSavingsIndicator);
 
         /// <summary>
-        ///   Returns a <see cref="System.String" /> that represents this instance.
+        /// Returns a <see cref="System.String" /> that represents this instance.
         /// </summary>
         /// <returns>
-        ///   A <see cref="System.String" /> that represents this instance.
+        /// A <see cref="System.String" /> that represents this instance.
         /// </returns>
         public override string ToString()
         {
             var builder = new StringBuilder();
-            builder.Append(Recurrence);
-            if (LetterS != null)
+            builder.Append(recurrence);
+            if (daylightSavingsIndicator != null)
             {
-                builder.Append(" \"").Append(LetterS).Append("\"");
+                builder.Append(" \"").Append(daylightSavingsIndicator).Append("\"");
             }
             return builder.ToString();
         }
