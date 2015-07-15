@@ -109,6 +109,7 @@ namespace NodaTime.TimeZones
             throw new InvalidOperationException($"Instant {instant} did not exist in time zone {Id}");
         }
 
+        // TODO(2.0): Revisit this, given that it's useless at the moment.
         /// <summary>
         /// Returns true if this time zone is worth caching. Small time zones or time zones with
         /// lots of quick changes do not work well with <see cref="CachedDateTimeZone"/>.
@@ -119,6 +120,11 @@ namespace NodaTime.TimeZones
             // tail zone was non-null... which was *always* the case due to the use of NullDateTimeZone.
             // We could potentially go back to returning tailZone != null - benchmarking required.
             true;
+
+        public DateTimeZone MaybeCreateCachedZone()
+        {
+            return IsCachable() ? CachedDateTimeZone.ForZone(this) : this;
+        }
 
         #region I/O
         /// <summary>

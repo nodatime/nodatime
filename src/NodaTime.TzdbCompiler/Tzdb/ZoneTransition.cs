@@ -5,6 +5,7 @@
 using System;
 using System.Text;
 using NodaTime.Utility;
+using NodaTime.TimeZones;
 
 namespace NodaTime.TzdbCompiler.Tzdb
 {
@@ -90,6 +91,15 @@ namespace NodaTime.TzdbCompiler.Tzdb
             bool later = Instant > other.Instant;
             bool different = Name != other.Name || StandardOffset != other.StandardOffset || Savings != other.Savings;
             return later && different;
+        }
+
+        /// <summary>
+        /// Creates a new zone interval from this transition to the given end point.
+        /// </summary>
+        /// <param name="end">The end of the interval.</param>
+        internal ZoneInterval ToZoneInterval(Instant end)
+        {
+            return new ZoneInterval(Name, Instant, end, StandardOffset + Savings, Savings);
         }
 
         #region Object overrides

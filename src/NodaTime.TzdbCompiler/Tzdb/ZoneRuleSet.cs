@@ -6,6 +6,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using NodaTime.TimeZones;
+using System.Linq;
+using System.Collections.ObjectModel;
 
 namespace NodaTime.TzdbCompiler.Tzdb
 {
@@ -47,15 +49,21 @@ namespace NodaTime.TzdbCompiler.Tzdb
             this.upperYear = upperYear;
             this.upperYearOffset = upperYearOffset;
         }
+
+        /// <summary>
+        /// Returns <c>true</c> if this rule set extends to the end of time, or
+        /// <c>false</c> if it has a finite end point.
+        /// </summary>
+        internal bool IsInfinite { get { return upperYear == int.MaxValue; } }
         
         /// <summary>
         /// Gets the inclusive upper limit of time that this rule set applies to.
         /// </summary>
-        /// <param name="savings">The daylight savings value.</param>
+        /// <param name="savings">The daylight savings value during the final zone interval.</param>
         /// <returns>The <see cref="LocalInstant"/> of the upper limit for this rule set.</returns>
         internal Instant GetUpperLimit(Offset savings)
         {
-            if (upperYear == int.MaxValue)
+            if (IsInfinite)
             {
                 return Instant.AfterMaxValue;
             }
@@ -72,6 +80,100 @@ namespace NodaTime.TzdbCompiler.Tzdb
         internal TransitionIterator Iterator(Instant startingInstant)
         {
             return new TransitionIterator(this, startingInstant);
+        }
+
+
+        internal BoundedIntervalSet ToBoundedIntervalSet(Instant startingInstant, bool finalRuleSet)
+        {
+            if (name != null)
+            {
+                // Fixed offset and savings
+                var limit = GetUpperLimit(fixedSavings);
+                var interval = new ZoneInterval(name, startingInstant, limit, standardOffset + fixedSavings, fixedSavings);
+                return new BoundedIntervalSet(PartialZoneIntervalMap.ForZoneInterval(interval));
+            }
+            var intervals = new List<ZoneInterval>();
+
+            var activeRules = new List<ZoneRecurrence>(this.rules);
+            var firstName = rules.First(rule => rule.Savings == Offset.Zero).Name;
+            // We should never see this transition the final map, as the first rule should always be a fixed offset one. TODO: validate!
+            ZoneTransition lastTransition = new ZoneTransition(Instant.BeforeMinValue, firstName, standardOffset, Offset.Zero);
+
+            while (true)
+            {
+                ZoneTransition bestTransition = null;
+                ZoneRecurrence bestRecurrence = null;
+                for (int i = 0; i < activeRules.Count; i++)
+                {
+                    var rule = activeRules[i];
+                    var nextTransition = rule.Next(lastTransition.Instant, lastTransition.StandardOffset, lastTransition.Savings);
+                    // Once a rule is no longer active, remove it from the list. That way we can tell
+                    // when we can create a tail zone.
+                    if (nextTransition == null)
+                    {
+                        activeRules.RemoveAt(i);
+                        i--;
+                        continue;
+                    }
+                    var zoneTransition = new ZoneTransition(nextTransition.Value.Instant, rule.Name, standardOffset, rule.Savings);
+                    if (!zoneTransition.IsTransitionFrom(lastTransition))
+                    {
+                        continue;
+                    }
+                    if (bestRecurrence == null || zoneTransition.Instant <= bestTransition.Instant)
+                    {
+                        bestRecurrence = rule;
+                        bestTransition = zoneTransition;
+                    }
+                }
+                Instant currentUpperBound = GetUpperLimit(lastTransition.Savings);
+                if (bestRecurrence == null || bestTransition.Instant >= currentUpperBound)
+                {
+                    // No more transitions to find. (We may have run out of rules, or they may be beyond where this rule set expires.)
+                    // Still, we had a final transition, so bridge from there to the current upper bound.
+                    intervals.Add(lastTransition.ToZoneInterval(currentUpperBound));
+                    return new BoundedIntervalSet(intervals, startingInstant, currentUpperBound, null);
+                }
+                // TODO: Only add the interval if it ends after startingInstant? Don't really need to...
+                intervals.Add(lastTransition.ToZoneInterval(bestTransition.Instant));
+                if (finalRuleSet && IsInfinite && activeRules.Count == 2 && bestTransition.Instant >= startingInstant)
+                {
+                    ZoneRecurrence startRule = activeRules[0];
+                    ZoneRecurrence endRule = activeRules[1];
+                    if (startRule.IsInfinite && endRule.IsInfinite)
+                    {
+                        var tailZone = new DaylightSavingsDateTimeZone("ignored", standardOffset, startRule, endRule);
+                        return new BoundedIntervalSet(intervals, startingInstant, intervals.Last().End, tailZone);
+                    }
+                }
+                lastTransition = bestTransition;
+            }
+        }
+
+        /// <summary>
+        /// A partial zone interval map created from the rules, ending when the rules expire *or* when
+        /// the rest of the information can be represented by a tail zone.
+        /// </summary>
+        internal sealed class BoundedIntervalSet
+        {
+            internal PartialZoneIntervalMap PartialMap { get; }
+
+            internal DaylightSavingsDateTimeZone TailZone { get; }
+
+            internal BoundedIntervalSet(PartialZoneIntervalMap partialMap)
+            {
+                this.PartialMap = partialMap;
+                this.TailZone = null;
+            }
+
+            internal BoundedIntervalSet(List<ZoneInterval> intervals, Instant start, Instant end, DaylightSavingsDateTimeZone tailZone)
+            {
+                // Extend the final zone interval to the end of time, just so we can easily build a full map...
+                // the partial map will be restricted to the end point anyway.
+                intervals[intervals.Count - 1] = intervals.Last().WithEnd(Instant.AfterMaxValue);
+                this.PartialMap = new PartialZoneIntervalMap(start, end, new BinarySearchZoneIntervalMap(intervals));
+                this.TailZone = tailZone;
+            }
         }
 
         #region Nested type: TransitionIterator

@@ -130,8 +130,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
                     case 1:
                         return new FixedDateTimeZone(zoneId, transitions[0].WallOffset, transitions[0].Name);
                     default:
-                        var ret = CreatePrecalculatedDateTimeZone(zoneId, transitions, Instant.AfterMaxValue, null);
-                        return ret.IsCachable() ? CachedDateTimeZone.ForZone(ret) : ret;
+                        return CreatePrecalculatedDateTimeZone(zoneId, transitions, Instant.AfterMaxValue, null);
                 }
             }
 
@@ -156,11 +155,10 @@ namespace NodaTime.TzdbCompiler.Tzdb
             }
 
             transitions.RemoveAt(transitions.Count - 1);
-            var zone = CreatePrecalculatedDateTimeZone(zoneId, transitions, lastTransition.Instant, tailZone);
-            return zone.IsCachable() ? CachedDateTimeZone.ForZone(zone) : zone;
+            return CreatePrecalculatedDateTimeZone(zoneId, transitions, lastTransition.Instant, tailZone);
         }
 
-        private static PrecalculatedDateTimeZone CreatePrecalculatedDateTimeZone(string id, IList<ZoneTransition> transitions,
+        private static DateTimeZone CreatePrecalculatedDateTimeZone(string id, IList<ZoneTransition> transitions,
             Instant tailZoneStart, DateTimeZone tailZone)
         {
             // Convert the transitions to intervals
@@ -172,7 +170,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
                 var endInstant = i == size - 1 ? tailZoneStart : transitions[i + 1].Instant;
                 intervals[i] = new ZoneInterval(transition.Name, transition.Instant, endInstant, transition.WallOffset, transition.Savings);
             }
-            return new PrecalculatedDateTimeZone(id, intervals, tailZone);
+            return new PrecalculatedDateTimeZone(id, intervals, tailZone).MaybeCreateCachedZone();
         }
 
         /// <summary>
