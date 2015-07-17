@@ -97,7 +97,6 @@
     <Compile Include="Calendars\PersianYearMonthDayCalculator.cs" />
     <Compile Include="Calendars\RegularYearMonthDayCalculator.cs" />
     <Compile Include="Calendars\SingleEraCalculator.cs" />
-    <Compile Include="TimeZones\BinarySearchZoneIntervalMap.cs" />
     <Compile Include="Utility\TickArithmetic.cs" />
     <Compile Include="Calendars\UmAlQuraYearMonthDayCalculator.cs" />
     <Compile Include="Calendars\WeekYearCalculator.cs" />

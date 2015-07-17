@@ -21,8 +21,7 @@ namespace NodaTime.TzdbCompiler.Test.Tzdb
         {
             var offset = Offset.FromHours(-5);
             var rules = new List<ZoneRuleSet> { new ZoneRuleSet("GMT+5", offset, Offset.Zero, int.MaxValue, null) };
-            var builder = new DateTimeZoneBuilder(rules);
-            var zone = builder.ToDateTimeZone("GMT+5");
+            var zone = DateTimeZoneBuilder.Build("GMT+5", rules);
             FixedDateTimeZone fixedZone = (FixedDateTimeZone)zone;
             Assert.AreEqual(offset, fixedZone.Offset);
         }
@@ -32,8 +31,7 @@ namespace NodaTime.TzdbCompiler.Test.Tzdb
         {
             var offset = Offset.FromHours(5);
             var rules = new List<ZoneRuleSet> { new ZoneRuleSet("GMT-5", offset, Offset.Zero, int.MaxValue, null) };
-            var builder = new DateTimeZoneBuilder(rules);
-            var zone = builder.ToDateTimeZone("GMT-5");
+            var zone = DateTimeZoneBuilder.Build("GMT-5", rules);
             FixedDateTimeZone fixedZone = (FixedDateTimeZone)zone;
             Assert.AreEqual(offset, fixedZone.Offset);
         }

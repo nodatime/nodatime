@@ -5,7 +5,6 @@
 using System;
 using System.Collections.Generic;
 using NodaTime.TimeZones;
-using NodaTime.Utility;
 using System.Linq;
 
 namespace NodaTime.TzdbCompiler.Tzdb
@@ -139,105 +138,9 @@ namespace NodaTime.TzdbCompiler.Tzdb
         /// <param name="zoneList">The time zone definition parts to add.</param>
         private DateTimeZone CreateTimeZone(ZoneList zoneList)
         {
-            Preconditions.CheckArgument(zoneList.Count > 0, nameof(zoneList), "Cannot create a time zone without any Zone entries");
-            
-            var boundedIntervalSets = new List<ZoneRuleSet.BoundedIntervalSet>();
-
-            var instant = Instant.BeforeMinValue;
-            var zones = zoneList.ToList();
-            for (int i = 0; i < zones.Count; i++)
-            {
-                var zone = zones[i];
-                var ruleSet = zone.ResolveRules(Rules);
-                var boundedIntervalSet = ruleSet.ToBoundedIntervalSet(instant, i == zones.Count - 1);
-                boundedIntervalSets.Add(boundedIntervalSet);
-                instant = boundedIntervalSet.PartialMap.End;
-            }
-
-            var zoneId = zoneList.Name;
-            DaylightSavingsDateTimeZone tailZone = boundedIntervalSets.Last().TailZone;
-
-            var tailZoneStart = tailZone == null ? Instant.AfterMaxValue : boundedIntervalSets.Last().PartialMap.End;
-            var partialMaps = boundedIntervalSets.Select(x => x.PartialMap).ToList();
-            if (tailZone != null)
-            {
-                partialMaps.Add(new PartialZoneIntervalMap(tailZoneStart, Instant.AfterMaxValue, tailZone));
-            }
-            FixUpBoundaries(partialMaps);
-            var fullMap = PartialZoneIntervalMap.ConvertToFullMap(partialMaps);
-            var intervals = GetAndFixUpZoneIntervals(fullMap, tailZoneStart);
-
-            if (intervals.Length == 1 && tailZone == null)
-            {
-                return new FixedDateTimeZone(zoneId, intervals[0].WallOffset, intervals[0].Name);
-            }
-            else
-            {
-                return new PrecalculatedDateTimeZone(zoneId, intervals, tailZone);
-            }
+            var ruleSets = zoneList.Select(zone => zone.ResolveRules(Rules)).ToList();
+            return DateTimeZoneBuilder.Build(zoneList.Name, ruleSets);
         }
-
-        private void FixUpBoundaries(List<PartialZoneIntervalMap> partialMaps)
-        {
-            // First remove any empty maps, to make life simpler.
-            partialMaps.RemoveAll(map => map.Start == map.End);
-
-            for (int i = 1; i < partialMaps.Count; i++)
-            {
-                var previousMap = partialMaps[i - 1];
-                var currentMap = partialMaps[i];
-                if (previousMap.Start == previousMap.End || currentMap.Start == currentMap.End)
-                {
-                    continue;
-                }
-                var lastIntervalOfPrevious = previousMap.GetZoneInterval(previousMap.End - Duration.Epsilon);
-                var firstIntervalOfCurrent = currentMap.GetZoneInterval(currentMap.Start);
-                // Effectively move the boundary at the start of the current map. We add
-                // a new partial zone interval map with a single zone interval which is the
-                // extended last interval of the previous map. These will be coalesced in a minute.
-                if (firstIntervalOfCurrent.HasEnd && firstIntervalOfCurrent.IsoLocalEnd == lastIntervalOfPrevious.IsoLocalEnd)
-                {
-                    var end = firstIntervalOfCurrent.End;
-                    var start = firstIntervalOfCurrent.Start;
-                    partialMaps[i] = partialMaps[i].WithStart(end);
-                    partialMaps.Insert(i, PartialZoneIntervalMap.ForZoneInterval(lastIntervalOfPrevious.WithEnd(end).WithStart(start)));
-                }
-            }
-        }
-
-        // TODO: Move the iteration part of this to an extension method on IZoneIntervalMap
-        // and remove it as a "normal" method from DateTimeZone.
-
-        /// <summary>
-        /// Find all the zone intervals in the given map, up to the specified end point.
-        /// Additionally, if two consecutive zone intervals end at the same local time,
-        /// the earlier zone interval is extended to the end of the later zone interval,
-        /// which is removed. This happens when the standard offset changes between two
-        /// rule sets - the final zone interval in the earlier rule set finishes an hour
-        /// earlier than it would in the next rule set.
-        /// </summary>
-        private static ZoneInterval[] GetAndFixUpZoneIntervals(IZoneIntervalMap map, Instant end)
-        {
-            var list = new List<ZoneInterval>();
-            var current = Instant.MinValue;
-            ZoneInterval previousInterval = null;
-            while (current < end)
-            {
-                var zoneInterval = map.GetZoneInterval(current);
-                /*
-                if (previousInterval != null && zoneInterval.HasEnd && zoneInterval.IsoLocalEnd == previousInterval.IsoLocalEnd)
-                {
-                    zoneInterval = previousInterval.WithEnd(zoneInterval.End);
-                    list.RemoveAt(list.Count - 1);
-                }*/
-                list.Add(zoneInterval);
-                previousInterval = zoneInterval;
-                // If this is the end of time, this will just fail on the next comparison.
-                current = zoneInterval.RawEnd;
-            }
-            return list.ToArray();
-        }
-
 
         /// <summary>
         /// Writes various informational counts to the log.

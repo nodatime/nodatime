@@ -4,233 +4,239 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using NodaTime.TimeZones;
 using NodaTime.Utility;
 
 namespace NodaTime.TzdbCompiler.Tzdb
 {
     /// <summary>
-    /// Provides a means of programatically creating complex time zones. Currently internal, but we
-    /// may want to make it public again eventually.
+    /// Mutable class with only a static entry point, which converts and ID + sequence of ZoneRuleSet
+    /// elements into a DateTimeZone.
     /// </summary>
-    /// <remarks>
-    /// <para>
-    /// DateTimeZoneBuilder allows complex DateTimeZones to be constructed. Since creating a new
-    /// DateTimeZone this way is a relatively expensive operation, built zones can be written to a
-    /// file. Reading back the encoded data is a quick operation.
-    /// </para>
-    /// <para>
-    /// DateTimeZoneBuilder itself is mutable and not thread-safe, but the DateTimeZone objects that
-    /// it builds are thread-safe and immutable.
-    /// </para>
-    /// <para>
-    /// It is intended that {@link NodaTime.TzdbCompiler} be used to read time zone data files,
-    /// indirectly calling DateTimeZoneBuilder. The following complex example defines the
-    /// America/Los_Angeles time zone, with all historical transitions:
-    /// </para>
-    /// <para>
-    /// <example>
-    ///     DateTimeZone America_Los_Angeles = new DateTimeZoneBuilder()
-    ///         .AddCutover(-2147483648, 'w', 1, 1, 0, false, 0)
-    ///         .SetStandardOffset(-28378000)
-    ///         .SetFixedSavings("LMT", 0)
-    ///         .AddCutover(1883, 'w', 11, 18, 0, false, 43200000)
-    ///         .SetStandardOffset(-28800000)
-    ///         .AddRecurringSavings("PDT", 3600000, 1918, 1919, 'w',  3, -1, 7, false, 7200000)
-    ///         .AddRecurringSavings("PST",       0, 1918, 1919, 'w', 10, -1, 7, false, 7200000)
-    ///         .AddRecurringSavings("PWT", 3600000, 1942, 1942, 'w',  2,  9, 0, false, 7200000)
-    ///         .AddRecurringSavings("PPT", 3600000, 1945, 1945, 'u',  8, 14, 0, false, 82800000)
-    ///         .AddRecurringSavings("PST",       0, 1945, 1945, 'w',  9, 30, 0, false, 7200000)
-    ///         .AddRecurringSavings("PDT", 3600000, 1948, 1948, 'w',  3, 14, 0, false, 7200000)
-    ///         .AddRecurringSavings("PST",       0, 1949, 1949, 'w',  1,  1, 0, false, 7200000)
-    ///         .AddRecurringSavings("PDT", 3600000, 1950, 1966, 'w',  4, -1, 7, false, 7200000)
-    ///         .AddRecurringSavings("PST",       0, 1950, 1961, 'w',  9, -1, 7, false, 7200000)
-    ///         .AddRecurringSavings("PST",       0, 1962, 1966, 'w', 10, -1, 7, false, 7200000)
-    ///         .AddRecurringSavings("PST",       0, 1967, 2147483647, 'w', 10, -1, 7, false, 7200000)
-    ///         .AddRecurringSavings("PDT", 3600000, 1967, 1973, 'w', 4, -1,  7, false, 7200000)
-    ///         .AddRecurringSavings("PDT", 3600000, 1974, 1974, 'w', 1,  6,  0, false, 7200000)
-    ///         .AddRecurringSavings("PDT", 3600000, 1975, 1975, 'w', 2, 23,  0, false, 7200000)
-    ///         .AddRecurringSavings("PDT", 3600000, 1976, 1986, 'w', 4, -1,  7, false, 7200000)
-    ///         .AddRecurringSavings("PDT", 3600000, 1987, 2147483647, 'w', 4, 1, 7, true, 7200000)
-    ///         .ToDateTimeZone("America/Los_Angeles");
-    /// </example>
-    /// </para>
-    /// <para>
-    /// Original name: DateTimeZoneBuilder.
-    /// </para>
-    /// </remarks>
     internal sealed class DateTimeZoneBuilder
     {
-        private readonly IList<ZoneRuleSet> ruleSets;
+        private readonly List<ZoneInterval> zoneIntervals;
+        private DaylightSavingsDateTimeZone tailZone;
 
-        internal DateTimeZoneBuilder(List<ZoneRuleSet> ruleSets)
+        private DateTimeZoneBuilder()
         {
-            this.ruleSets = ruleSets;
-        }
-        
-        /// <summary>
-        /// Processes all the rules and builds a DateTimeZone.
-        /// </summary>
-        /// <param name="zoneId">Time zone ID to assign</param>
-        public DateTimeZone ToDateTimeZone(String zoneId)
-        {
-            Preconditions.CheckNotNull(zoneId, "zoneId");
-
-            var transitions = new List<ZoneTransition>();
-            DateTimeZone tailZone = null;
-            Instant instant = Instant.BeforeMinValue;
-
-            // TODO: See whether PartialZoneIntervalMap would help to tidy this up.
-            int ruleSetCount = ruleSets.Count;
-            bool tailZoneSeamValid = false;
-            for (int i = 0; i < ruleSetCount; i++)
-            {
-                var ruleSet = ruleSets[i];
-                var transitionIterator = ruleSet.Iterator(instant);
-                ZoneTransition nextTransition = transitionIterator.First();
-                if (nextTransition == null)
-                {
-                    continue;
-                }
-                AddTransition(transitions, nextTransition);
-
-                while ((nextTransition = transitionIterator.Next()) != null)
-                {
-                    if (AddTransition(transitions, nextTransition))
-                    {
-                        if (tailZone != null)
-                        {
-                            // Got the extra transition before DaylightSavingsTimeZone.
-                            // This final transition has a valid start point and offset, but
-                            // we don't know where it ends - which is fine, as the tail zone will
-                            // take over.
-                            tailZoneSeamValid = true;
-                            break;
-                        }
-                    }
-                    if (tailZone == null && i == ruleSetCount - 1)
-                    {
-                        tailZone = transitionIterator.BuildTailZone(zoneId);
-                        // If tailZone is not null, don't break out of main loop until at least one
-                        // more transition is calculated. This ensures a correct 'seam' to the
-                        // DaylightSavingsTimeZone.
-                    }
-                }
-
-                instant = ruleSet.GetUpperLimit(transitionIterator.Savings);
-            }
-
-            // Simple case where we don't have a trailing daylight saving zone.
-            if (tailZone == null)
-            {
-                switch (transitions.Count)
-                {
-                    case 0:
-                        return new FixedDateTimeZone(zoneId, Offset.Zero);
-                    case 1:
-                        return new FixedDateTimeZone(zoneId, transitions[0].WallOffset, transitions[0].Name);
-                    default:
-                        return CreatePrecalculatedDateTimeZone(zoneId, transitions, Instant.AfterMaxValue, null);
-                }
-            }
-
-            // Sanity check
-            if (!tailZoneSeamValid)
-            {
-                throw new InvalidOperationException("Invalid time zone data for id " + zoneId + "; no valid transition before tail zone");
-            }
-
-            // The final transition should not be used for a zone interval,
-            // although it should have the same offset etc as the tail zone for its starting point.
-            var lastTransition = transitions[transitions.Count - 1];
-            var firstTailZoneInterval = tailZone.GetZoneInterval(lastTransition.Instant);
-            if (lastTransition.StandardOffset != firstTailZoneInterval.StandardOffset ||
-                lastTransition.WallOffset != firstTailZoneInterval.WallOffset ||
-                lastTransition.Savings != firstTailZoneInterval.Savings ||
-                lastTransition.Name != firstTailZoneInterval.Name)
-            {
-                throw new InvalidOperationException(
-                    string.Format("Invalid seam to tail zone in time zone {0}; final transition {1} different to first tail zone interval {2}",
-                                  zoneId, lastTransition, firstTailZoneInterval));
-            }
-
-            transitions.RemoveAt(transitions.Count - 1);
-            return CreatePrecalculatedDateTimeZone(zoneId, transitions, lastTransition.Instant, tailZone);
-        }
-
-        private static DateTimeZone CreatePrecalculatedDateTimeZone(string id, IList<ZoneTransition> transitions,
-            Instant tailZoneStart, DateTimeZone tailZone)
-        {
-            // Convert the transitions to intervals
-            int size = transitions.Count;
-            var intervals = new ZoneInterval[size];
-            for (int i = 0; i < size; i++)
-            {
-                var transition = transitions[i];
-                var endInstant = i == size - 1 ? tailZoneStart : transitions[i + 1].Instant;
-                intervals[i] = new ZoneInterval(transition.Name, transition.Instant, endInstant, transition.WallOffset, transition.Savings);
-            }
-            return new PrecalculatedDateTimeZone(id, intervals, tailZone).MaybeCreateCachedZone();
+            this.zoneIntervals = new List<ZoneInterval>();
         }
 
         /// <summary>
-        /// Adds the given transition to the transition list if it represents a new transition.
+        /// Builds a time zone with the given ID from a sequence of rule sets.
         /// </summary>
-        /// <param name="transitions">The list of <see cref="ZoneTransition"/> to add to.</param>
-        /// <param name="transition">The transition to add.</param>
-        /// <returns><c>true</c> if the transition was added.</returns>
-        private static bool AddTransition(IList<ZoneTransition> transitions, ZoneTransition transition)
+        internal static DateTimeZone Build(string id, IList<ZoneRuleSet> ruleSets)
         {
-            int transitionCount = transitions.Count;
-            if (transitionCount == 0)
+            Preconditions.CheckArgument(ruleSets.Count > 0, nameof(ruleSets), "Cannot create a time zone without any Zone entries");
+            var builder = new DateTimeZoneBuilder();
+            return builder.BuildZone(id, ruleSets);
+        }
+
+        private DateTimeZone BuildZone(string id, IList<ZoneRuleSet> ruleSets)
+        {
+            // This does most of the work: for each rule set (correspoding to a zone line
+            // in the original data) we add some zone intervals.
+            foreach (var ruleSet in ruleSets)
             {
-                Preconditions.CheckArgument(!transition.Instant.IsValid,
-                    nameof(transition), "First transition must be at the start of time");
-                transitions.Add(transition);
-                return true;
+                AddIntervals(ruleSet);
             }
 
-            ZoneTransition lastTransition = transitions[transitionCount - 1];
-            if (!transition.IsTransitionFrom(lastTransition))
+            // Some of the abutting zone intervals from the rule set boundaries may have the
+            // same offsets and name, in which case  they can be coalesced.
+            CoalesceIntervals();
+
+            // Finally, construct the time zone itself. Usually, we'll end up with a
+            // PrecalculatedDateTimeZone here. 
+            if (zoneIntervals.Count == 1 && tailZone == null)
             {
-                return false;
+                return new FixedDateTimeZone(id, zoneIntervals[0].WallOffset, zoneIntervals[0].Name);
+            }
+            else
+            {
+                return new PrecalculatedDateTimeZone(id, zoneIntervals.ToArray(), tailZone);
+            }
+        }
+
+        /// <summary>
+        /// Adds the intervals from the given rule set to the end of the zone
+        /// being built. The rule is deemed to take effect from the end of the previous
+        /// zone interval, or the start of time if this is the first rule set (which must
+        /// be a fixed one). Intervals are added until the rule set expires, or
+        /// until we determine that the rule set continues to the end of time,
+        /// possibly with a tail zone - a pair of standard/daylight rules which repeat
+        /// forever.
+        /// </summary>
+        private void AddIntervals(ZoneRuleSet ruleSet)
+        {
+            // We use the last zone interval computed so far (if there is one) to work out where to start.
+            var lastZoneInterval = zoneIntervals.LastOrDefault();
+            var start = lastZoneInterval?.End ?? Instant.BeforeMinValue;
+
+            // Simple case: a zone line with fixed savings (or - for 0)
+            // instead of a rule name. Just a single interval.
+            if (ruleSet.IsFixed)
+            {
+                zoneIntervals.Add(ruleSet.CreateFixedInterval(start));
+                return;
             }
 
-            // A transition after the "beginning of time" one will always be valid.
-            if (lastTransition.Instant == Instant.BeforeMinValue)
+            // Work on a copy of the rule set. We eliminate rules from it as they expire,
+            // so that we can tell when we're down to an infinite pair which can be represented
+            // as a tail zone.
+            var activeRules = new List<ZoneRecurrence>(ruleSet.Rules);
+
+            // Surprisingly tricky bit to work out: how to handle the transition from
+            // one rule set to another. We know the instant at which the new rule set
+            // come in, but not what offsets/name to use from that point onwards: which
+            // of the new rules is in force. We find out which rule would have taken
+            // effect most recently before or on the transition instant - but using
+            // the offsets from the final interval before the transition, instead
+            // of the offsets which would have been in force if the new rule set were
+            // actually extended backwards forever.
+            //
+            // It's possible that the most recent transition we find would actually
+            // have started before that final interval anyway - but this appears to
+            // match what zic produces.
+            //
+            // If we don't have a zone interval at all, we're starting at the start of
+            // time, so there definitely aren't any preceding rules.
+            var firstRule = lastZoneInterval == null ? null :
+                activeRules
+                    .Select(rule => new { rule, prev = rule.PreviousOrSame(start, lastZoneInterval.StandardOffset, lastZoneInterval.Savings) })
+                    .Where(pair => pair.prev != null)
+                    .OrderBy(pair => pair.prev.Value.Instant)
+                    .Select(pair => pair.rule)
+                    .LastOrDefault();
+
+            // Every transition in this rule set will use the same standard offset.
+            var standardOffset = ruleSet.StandardOffset;
+
+            // previousTransition here is ongoing as we loop through the transitions. It's not like
+            // lastZoneInterval, lastStandard and lastSavings, which refer to the last aspects of the
+            // previous rule set. When we set it up, this is effectively the *first* transition leading
+            // into the period in which the new rule set is 
+            ZoneTransition previousTransition;
+            if (firstRule != null)
             {
-                transitions.Add(transition);
-                return true;
+                previousTransition = new ZoneTransition(start, firstRule.Name, standardOffset, firstRule.Savings);
+            }
+            else
+            {
+                // None of the rules in the current set have *any* transitions in the past, apparently.
+                // For an example of this, see Europe/Prague (in 2015e, anyway). A zone line with the
+                // Czech rule takes effect in 1944, but all the rules are from 1945 onwards.
+                // Use standard time until the first transition, regardless of the previous savings,
+                // and take the name for this first interval from the first standard time rule.
+                var name = activeRules.First(rule => rule.Savings == Offset.Zero).Name;
+                previousTransition = new ZoneTransition(start, name, standardOffset, Offset.Zero);
             }
 
-            Offset lastOffset = transitions.Count < 2 ? Offset.Zero : transitions[transitions.Count - 2].WallOffset;
-            Offset newOffset = lastTransition.WallOffset;
-            // If the local time just before the new transition is the same as the local time just
-            // before the previous one, just replace the last transition with new one.
-            // This code is taken from Joda Time, and is not terribly clear. It appears to occur when
-            // a new rule set starts to apply, and the TransitionIterator effectively starts with the wrong rule.
-            // It appears to be doing the right thing, but a full-scale refactor might be able to remove it...
-
-            // Example: America/Juneau
-            // Zone rules around the problematic transition:
-            // 9:00  US Y% sT    1980 Oct 26  2:00
-            // -8:00  US P% sT    1983 Oct 30  2:00
-            // - 9:00  US Y% sT    1983 Nov 30
-
-            // We have:
-            // Previous but one: { PDT at 1983 - 04 - 24T10: 00:00Z - 08[+01]}
-            // Previous:         { YDT at 1983 - 10 - 30T09: 00:00Z - 09[+01]}
-            // Replaced by:      { YST at 1983 - 10 - 30T10: 00:00Z - 09[+00]}
-            // The transition *to* YDT in October is clearly spurious, but that's what TransitionIterator gives us.
-            LocalInstant lastLocalStart = lastTransition.Instant.Plus(lastOffset);
-            LocalInstant newLocalStart = transition.Instant.Plus(newOffset);
-            if (lastLocalStart == newLocalStart)
+            // Main loop - we keep going round until we run out of rules or hit infinity, each of which
+            // corresponds with a return statement in the loop.
+            while (true)
             {
-                transitions.RemoveAt(transitionCount - 1);
-                return AddTransition(transitions, transition);
+                ZoneTransition bestTransition = null;
+                for (int i = 0; i < activeRules.Count; i++)
+                {
+                    var rule = activeRules[i];
+                    var nextTransition = rule.Next(previousTransition.Instant, standardOffset, previousTransition.Savings);
+                    // Once a rule is no longer active, remove it from the list. That way we can tell
+                    // when we can create a tail zone.
+                    if (nextTransition == null)
+                    {
+                        activeRules.RemoveAt(i);
+                        i--;
+                        continue;
+                    }
+                    var zoneTransition = new ZoneTransition(nextTransition.Value.Instant, rule.Name, standardOffset, rule.Savings);
+                    if (!zoneTransition.IsTransitionFrom(previousTransition))
+                    {
+                        continue;
+                    }
+                    if (bestTransition == null || zoneTransition.Instant <= bestTransition.Instant)
+                    {
+                        bestTransition = zoneTransition;
+                    }
+                }
+                Instant currentUpperBound = ruleSet.GetUpperLimit(previousTransition.Savings);
+                if (bestTransition == null || bestTransition.Instant >= currentUpperBound)
+                {
+                    // No more transitions to find. (We may have run out of rules, or they may be beyond where this rule set expires.)
+                    // Add a final interval leading up to the upper bound of the rule set.
+                    zoneIntervals.Add(previousTransition.ToZoneInterval(currentUpperBound));
+                    return;
+                }
+
+                // We have a non-final transition. so add an interval from the previous transition to
+                // this one.
+                zoneIntervals.Add(previousTransition.ToZoneInterval(bestTransition.Instant));
+                previousTransition = bestTransition;
+
+                // Tail zone handling.
+                // The final rule set must extend to infinity. There are potentially three ways
+                // this can happen:
+                // - All rules expire, leaving us with the final real transition, and an upper
+                //   bound of infinity. This is handled above.
+                // - 1 rule is left, but it cannot create more than one transition in a row,
+                //   so again we end up with no transitions to record, and we bail out with
+                //   a final infinite interval.
+                // - 2 rules are left which would alternate infinitely. This is represented
+                //   using a DaylightSavingZone as the tail zone.
+                // 
+                // The code here caters for that last option, but needs to do it in stages.
+                // When we first realize we will have a tail zone (an infinite rule set,
+                // two rules left, both of which are themselves infinite) we can create the
+                // tail zone, but we don't yet know that we're into its regular tick/tock.
+                // It's possible that one rule only starts years after our current transition,
+                // so we need to hit the first transition of that rule before we can create a
+                // "seam" from the list of precomputed zone intervals to the calculated-on-demand 
+                // part of history.
+                // For an example of why this is necessary, see Asia/Amman in 2013e: in late 2011
+                // we hit "two rules left" but the final rule only starts in 2013 - we don't want
+                // to see a bogus transition into that rule in 2012.
+                // We could potentially record fewer zone intervals by keeping track of which
+                // rules have created at least one transition, but this approach is simpler.
+                if (ruleSet.IsInfinite && activeRules.Count == 2)
+                {
+                    if (tailZone != null)
+                    {
+                        // Phase two: both rules must now be active, so we're done.
+                        return;
+                    }
+                    ZoneRecurrence startRule = activeRules[0];
+                    ZoneRecurrence endRule = activeRules[1];
+                    if (startRule.IsInfinite && endRule.IsInfinite)
+                    {
+                        // Phase one: build the zone, so we can go round once again and then return.
+                        tailZone = new DaylightSavingsDateTimeZone("ignored", standardOffset, startRule, endRule);
+                    }
+                }
             }
-            transitions.Add(transition);
-            return true;
+        }
+
+
+        /// <summary>
+        /// Potentially join some abutting zone intervals, usually created
+        /// due to the interval at the end of one rule set having the same name and offsets
+        /// as the interval at the start of the next rule set.
+        /// </summary>
+        private void CoalesceIntervals()
+        {
+            for (int i = 0; i < zoneIntervals.Count - 1; i++)
+            {
+                var current = zoneIntervals[i];
+                var next = zoneIntervals[i + 1];
+                if (current.Name == next.Name &&
+                    current.WallOffset == next.WallOffset &&
+                    current.StandardOffset == next.StandardOffset)
+                {
+                    zoneIntervals[i] = current.WithEnd(next.RawEnd);
+                    zoneIntervals.RemoveAt(i + 1);
+                    i--; // We may need to coalesce the next one, too.
+                }
+            }
         }
     }
 }
