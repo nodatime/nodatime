@@ -16,6 +16,10 @@ REM Really force a clean build...
 rmdir /s /q %SRCDIR%\NodaTime\bin\Release
 rmdir /s /q %SRCDIR%\NodaTime\bin\"Release Portable"
 
+REM Restore required nuget packages
+nuget restore Tools.sln
+nuget restore ..\src\NodaTime-All.sln
+
 msbuild Tools.sln /property:Configuration=Release
 IF ERRORLEVEL 1 EXIT /B 1
 
