@@ -5,8 +5,8 @@ if "%1" == "" (
   goto end
 )
 
-if NOT EXIST "NodaTime Release.snk" (
-  echo Copy NodaTime Release.snk into this directory first.
+if NOT EXIST "..\NodaTime Release.snk" (
+  echo Copy NodaTime Release.snk into the root directory first.
   goto end
 )
 
@@ -16,11 +16,10 @@ set SRCDIR=..\src
 IF EXIST tmp rmdir /s /q tmp
 mkdir tmp
 
-REM FIXME! Need to use git instead...
-hg up -r '%VERSION%'
+git checkout '%VERSION%'
 IF ERRORLEVEL 1 EXIT /B 1
 
-hg archive -r '%VERSION%' NodaTime-%VERSION%-src.zip
+git archive '%VERSION%' NodaTime-%VERSION%-src.zip
 IF ERRORLEVEL 1 EXIT /B 1
 
 set STAGING=tmp\NodaTime-%VERSION%
