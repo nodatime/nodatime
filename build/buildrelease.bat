@@ -16,10 +16,10 @@ set SRCDIR=..\src
 IF EXIST tmp rmdir /s /q tmp
 mkdir tmp
 
-git checkout '%VERSION%'
+git checkout %VERSION%
 IF ERRORLEVEL 1 EXIT /B 1
 
-git archive '%VERSION%' NodaTime-%VERSION%-src.zip
+git archive %VERSION% NodaTime-%VERSION%-src.zip
 IF ERRORLEVEL 1 EXIT /B 1
 
 set STAGING=tmp\NodaTime-%VERSION%
