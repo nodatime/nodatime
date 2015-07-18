@@ -21,7 +21,7 @@ IF ERRORLEVEL 1 EXIT /B 1
 
 REM TODO: Work out how to avoid having this cd...
 cd ..
-git archive %VERSION% -o build/NodaTime-%VERSION%-src.zip --prefix=NodaTime-%VERSION%-src
+git archive %VERSION% -o build/NodaTime-%VERSION%-src.zip --prefix=NodaTime-%VERSION%-src/
 cd build
 IF ERRORLEVEL 1 EXIT /B 1
 
@@ -53,7 +53,9 @@ copy "%SRCDIR%\NodaTime.Testing\bin\Signed Release\NodaTime.Testing.dll" %STAGIN
 copy "%SRCDIR%\NodaTime\bin\Signed Release Portable\NodaTime.dll" %STAGING%\Portable
 copy "%SRCDIR%\NodaTime.Serialization.JsonNet\bin\Signed Release Portable\NodaTime.Serialization.JsonNet.dll" %STAGING%\Portable
 copy "%SRCDIR%\NodaTime.Testing\bin\Signed Release Portable\NodaTime.Testing.dll" %STAGING%\Portable
-  
-zip -r -9 %STAGING%.zip %STAGING%
-  
+
+cd tmp
+zip -r -9 NodaTime-%VERSION%.zip NodaTime-%VERSION%
+cd ..
+
 :end
