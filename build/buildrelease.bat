@@ -19,7 +19,10 @@ mkdir tmp
 git checkout %VERSION%
 IF ERRORLEVEL 1 EXIT /B 1
 
-git archive %VERSION% -o NodaTime-%VERSION%-src.zip ..
+REM TODO: Work out how to avoid having this cd...
+cd ..
+git archive %VERSION% -o build/NodaTime-%VERSION%-src.zip --prefix=NodaTime-%VERSION%-src
+cd build
 IF ERRORLEVEL 1 EXIT /B 1
 
 set STAGING=tmp\NodaTime-%VERSION%
