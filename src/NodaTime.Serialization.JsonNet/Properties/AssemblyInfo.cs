@@ -45,6 +45,6 @@ using System.Runtime.InteropServices;
 
 [assembly: AssemblyVersion("2.0")]
 [assembly: AssemblyFileVersion("2.0.0")]
-[assembly: AssemblyInformationalVersion("2.0.0-alpha")]
+[assembly: AssemblyInformationalVersion("2.0.0-alpha20150718")]
 [assembly: CLSCompliant(true)]
 [assembly: NeutralResourcesLanguage("en")]
