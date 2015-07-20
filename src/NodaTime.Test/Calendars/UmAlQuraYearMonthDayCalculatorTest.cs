@@ -16,9 +16,11 @@ namespace NodaTime.Test.Calendars
 
         private static readonly UmAlQuraYearMonthDayCalculator Calculator = UmAlQuraYearMonthDayCalculator.IsSupported ? new UmAlQuraYearMonthDayCalculator() : null;
 
+#pragma warning disable 0414 // Used by tests via reflection - do not remove!
         // Horrible way to conditionalize tests at execution time...
         private static readonly IEnumerable<string> Supported =
             UmAlQuraYearMonthDayCalculator.IsSupported ? new[] { "(Supported)" } : new string[0];
+#pragma warning restore 0414
 
         private static Calendar GetBclCalendar()
         {
@@ -47,7 +49,7 @@ namespace NodaTime.Test.Calendars
             }
         }
 
-        [Test, TestCaseSource("Supported")]
+        [Test, TestCaseSource(nameof(Supported))]
         public void GetDaysInMonth(string ignored)
         {
             for (int year = Calculator.MinYear; year <= Calculator.MaxYear; year++)

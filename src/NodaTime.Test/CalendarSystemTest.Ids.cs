@@ -15,14 +15,14 @@ namespace NodaTime.Test
     public partial class CalendarSystemTest
     {
         [Test]
-        [TestCaseSource("SupportedIds")]
+        [TestCaseSource(nameof(SupportedIds))]
         public void ValidId(string id)
         {
             Assert.IsInstanceOf<CalendarSystem>(CalendarSystem.ForId(id));
         }
 
         [Test]
-        [TestCaseSource("SupportedIds")]
+        [TestCaseSource(nameof(SupportedIds))]
         public void IdsAreCaseSensitive(string id)
         {
             Assert.Throws<KeyNotFoundException>(() => CalendarSystem.ForId(id.ToLowerInvariant()));
@@ -81,7 +81,7 @@ namespace NodaTime.Test
 
         // Ordinals are similar enough to IDs to keep the tests in this file too...
 
-        [Test, TestCaseSource("SupportedCalendars")]
+        [Test, TestCaseSource(nameof(SupportedCalendars))]
         public void ForOrdinal_Roundtrip(CalendarSystem calendar)
         {
             Assert.AreSame(calendar, CalendarSystem.ForOrdinal(calendar.Ordinal));

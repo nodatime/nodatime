@@ -16,12 +16,6 @@ namespace NodaTime.TzdbCompiler.Tzdb
     /// </summary>
     internal sealed class ZoneRuleSet
     {
-        // Don't pre-calculate more than 100 years into the future. Almost all zones will stop
-        // pre-calculating far sooner anyhow. Either a simple DST cycle is detected or the last
-        // rule is a fixed offset. If a zone has a fixed offset set more than 100 years into the
-        // future, then it won't be observed.
-        private static readonly Instant PrecomputationLimit = SystemClock.Instance.GetCurrentInstant().InUtc().LocalDateTime.PlusYears(100).InUtc().ToInstant();
-
         // Either rules or name+fixedSavings is specified.
         private readonly List<ZoneRecurrence> rules = new List<ZoneRecurrence>();
         private readonly string name;

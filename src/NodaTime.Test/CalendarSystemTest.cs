@@ -12,8 +12,10 @@ namespace NodaTime.Test
     [TestFixture]
     public partial class CalendarSystemTest
     {
+#pragma warning disable 0414 // Used by tests via reflection - do not remove!
         private static readonly IEnumerable<string> SupportedIds = CalendarSystem.Ids.Where(x => x != "Um Al Qura" || UmAlQuraYearMonthDayCalculator.IsSupported).ToList();
         private static readonly List<CalendarSystem> SupportedCalendars = SupportedIds.Select(CalendarSystem.ForId).ToList();
+#pragma warning restore 0414
 
         [Test]
         [TestCaseSource("SupportedCalendars")]
