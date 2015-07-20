@@ -12,7 +12,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
     /// <summary>
     /// Provides a container for the definitions parsed from the TZDB zone info files.
     /// </summary>
-    internal class TzdbDatabase
+    public class TzdbDatabase
     {
         private readonly SortedList<string, ZoneList> zoneLists;
         /// <summary>
@@ -28,7 +28,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
         /// <summary>
         /// Returns the (mutable) map of links from alias to canonical ID.
         /// </summary>
-        internal IDictionary<string, string> Aliases { get; }
+        public IDictionary<string, string> Aliases { get; }
 
         /// <summary>
         /// Mapping from rule name to the zone rules for that name. This is only available for the sake of testing.
@@ -54,7 +54,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
         /// <summary>
         /// Initializes a new instance of the <see cref="TzdbDatabase" /> class.
         /// </summary>
-        internal TzdbDatabase(string version)
+        public TzdbDatabase(string version)
         {
             zoneLists = new SortedList<string, ZoneList>();
             Rules = new Dictionary<string, IList<ZoneRule>>();
@@ -113,22 +113,29 @@ namespace NodaTime.TzdbCompiler.Tzdb
         }
 
         /// <summary>
-        /// Converts a single zone into a DateTimeZone. Mostly used for debugging.
+        /// Converts a single zone into a DateTimeZone. As well as for testing purposes,
+        /// this can be used to resolve aliases.
         /// </summary>
         /// <param name="zoneId">The ID of the zone to convert.</param>
-        internal DateTimeZone GenerateDateTimeZone(string zoneId)
+        public DateTimeZone GenerateDateTimeZone(string zoneId)
         {
-            return CreateTimeZone(zoneLists[zoneId]);
+            string zoneListKey = zoneId;
+            // Recursively resolve aliases
+            while (Aliases.ContainsKey(zoneListKey))
+            {
+                zoneListKey = Aliases[zoneListKey];
+            }
+            return CreateTimeZone(zoneId, zoneLists[zoneListKey]);
         }
 
         /// <summary>
         /// Converts each zone in the database into a DateTimeZone.
         /// </summary>
-        internal IEnumerable<DateTimeZone> GenerateDateTimeZones()
+        public IEnumerable<DateTimeZone> GenerateDateTimeZones()
         {
             foreach (var zoneList in zoneLists.Values)
             {
-                yield return CreateTimeZone(zoneList);
+                yield return CreateTimeZone(zoneList.Name, zoneList);
             }
         }
 
@@ -136,10 +143,10 @@ namespace NodaTime.TzdbCompiler.Tzdb
         /// Returns a newly created <see cref="DateTimeZone" /> built from the given time zone data.
         /// </summary>
         /// <param name="zoneList">The time zone definition parts to add.</param>
-        private DateTimeZone CreateTimeZone(ZoneList zoneList)
+        private DateTimeZone CreateTimeZone(string id, ZoneList zoneList)
         {
             var ruleSets = zoneList.Select(zone => zone.ResolveRules(Rules)).ToList();
-            return DateTimeZoneBuilder.Build(zoneList.Name, ruleSets);
+            return DateTimeZoneBuilder.Build(id, ruleSets);
         }
 
         /// <summary>

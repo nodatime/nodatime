@@ -5,6 +5,7 @@
 using NodaTime.TimeZones;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 
@@ -44,6 +45,12 @@ namespace NodaTime.TzdbCompiler.Tzdb
             "NEWS",
             "zoneinfo2tdf.pl"
         };
+
+        public static ReadOnlyCollection<string> IncludedFiles { get; } = new ReadOnlyCollection<string>(new[]
+        {
+            "africa", "antarctica", "asia", "australasia", "europe",
+            "northamerica", "southamerica", "pacificnew", "etcetera", "backward", "systemv"
+        });
 
         private readonly TzdbZoneInfoParser tzdbParser;
 

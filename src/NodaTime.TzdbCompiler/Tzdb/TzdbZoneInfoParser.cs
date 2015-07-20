@@ -13,7 +13,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
     /// <summary>
     /// Provides a parser for TZDB time zone description files.
     /// </summary>
-    internal class TzdbZoneInfoParser
+    public class TzdbZoneInfoParser
     {
         /// <summary>
         /// The keyword that specifies the line defines an alias link.

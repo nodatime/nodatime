@@ -25,6 +25,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NodaTime.Serialization.Json
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NodaTime.Serialization.Test", "NodaTime.Serialization.Test\NodaTime.Serialization.Test.csproj", "{DA5AF694-C7DF-4989-947D-355C4C5F912B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NodaTime.TzValidate.NodaDump", "NodaTime.TzValidate.NodaDump\NodaTime.TzValidate.NodaDump.csproj", "{2DB2D3ED-AD27-4956-B597-B54A10C4F81D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -67,6 +69,10 @@ Global
 		{DA5AF694-C7DF-4989-947D-355C4C5F912B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DA5AF694-C7DF-4989-947D-355C4C5F912B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DA5AF694-C7DF-4989-947D-355C4C5F912B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2DB2D3ED-AD27-4956-B597-B54A10C4F81D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2DB2D3ED-AD27-4956-B597-B54A10C4F81D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2DB2D3ED-AD27-4956-B597-B54A10C4F81D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2DB2D3ED-AD27-4956-B597-B54A10C4F81D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
