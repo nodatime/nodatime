@@ -6,6 +6,7 @@ using NodaTime.TimeZones;
 using NodaTime.TzdbCompiler.Tzdb;
 using NUnit.Framework;
 using System;
+using System.Globalization;
 using System.IO;
 
 namespace NodaTime.TzdbCompiler.Test.Tzdb
@@ -16,8 +17,6 @@ namespace NodaTime.TzdbCompiler.Test.Tzdb
     [TestFixture]
     public class TzdbZoneInfoParserTest
     {
-        private static readonly string[] MonthNames = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
-
         private TzdbZoneInfoParser Parser { get; set; }
 
         [TestFixtureSetUp]
@@ -208,9 +207,10 @@ namespace NodaTime.TzdbCompiler.Test.Tzdb
         }
 
         [Test]
-        public void ParseMonth_emptyString_default()
+        public void ParseMonth_nullOrEmpty()
         {
             Assert.Throws<ArgumentException>(() => TzdbZoneInfoParser.ParseMonth(""));
+            Assert.Throws<ArgumentException>(() => TzdbZoneInfoParser.ParseMonth(null));
         }
 
         [Test]
@@ -220,20 +220,23 @@ namespace NodaTime.TzdbCompiler.Test.Tzdb
         }
 
         [Test]
-        public void ParseMonth_months()
+        public void ParseMonth_shortMonthNames()
         {
-            for (int i = 0; i < MonthNames.Length; i++)
+            for (int i = 1; i < 12; i++)
             {
-                var month = MonthNames[i];
-                Assert.AreEqual(i + 1, TzdbZoneInfoParser.ParseMonth(month));
+                var month = new DateTime(2000, i, 1).ToString("MMM", CultureInfo.InvariantCulture);
+                Assert.AreEqual(i, TzdbZoneInfoParser.ParseMonth(month));
             }
         }
 
         [Test]
-        public void ParseMonth_nullArgument_default()
+        public void ParseMonth_longMonthNames()
         {
-            string month = null;
-            Assert.AreEqual(0, TzdbZoneInfoParser.ParseMonth(month));
+            for (int i = 1; i < 12; i++)
+            {
+                var month = new DateTime(2000, i, 1).ToString("MMMM", CultureInfo.InvariantCulture);
+                Assert.AreEqual(i, TzdbZoneInfoParser.ParseMonth(month));
+            }
         }
 
         [Test]

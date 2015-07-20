@@ -164,8 +164,14 @@ namespace NodaTime.TzdbCompiler.Tzdb
                 if (bestTransition == null || bestTransition.Instant >= currentUpperBound)
                 {
                     // No more transitions to find. (We may have run out of rules, or they may be beyond where this rule set expires.)
-                    // Add a final interval leading up to the upper bound of the rule set.
-                    zoneIntervals.Add(previousTransition.ToZoneInterval(currentUpperBound));
+                    // Add a final interval leading up to the upper bound of the rule set, unless the previous transition took us up to
+                    // this current bound anyway.
+                    // (This is very rare, but can happen if changing rule brings the upper bound down to the time
+                    // that the transition occurred. Example: 2008d, Europe/Sofia, April 1945.)
+                    if (currentUpperBound > previousTransition.Instant)
+                    {
+                        zoneIntervals.Add(previousTransition.ToZoneInterval(currentUpperBound));
+                    }
                     return;
                 }
 

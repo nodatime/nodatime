@@ -152,7 +152,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
             IList<ZoneRule> ruleSet;
             if (allRules.TryGetValue(Rules, out ruleSet))
             {
-                var rules = ruleSet.Select(x => x.GetRecurrence(Format));
+                var rules = ruleSet.SelectMany(x => x.GetRecurrences(Format));
                 return new ZoneRuleSet(rules.ToList(), StandardOffset, UntilYear, UntilYearOffset);
             }
             else

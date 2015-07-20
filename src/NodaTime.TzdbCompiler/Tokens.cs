@@ -8,6 +8,8 @@ using System.Text.RegularExpressions;
 using JetBrains.Annotations;
 using NodaTime.TzdbCompiler.Tzdb;
 using NodaTime.Utility;
+using System.Text;
+using System.IO;
 
 namespace NodaTime.TzdbCompiler
 {
@@ -82,12 +84,47 @@ namespace NodaTime.TzdbCompiler
         {
             Preconditions.CheckNotNull(text, "text");
             text = text.TrimEnd();
-            var parts = Regex.Split(text, @"\s+", RegexOptions.Compiled | RegexOptions.CultureInvariant);
-            if (parts.Length == 1 && string.IsNullOrEmpty(parts[0]))
+            if (text == "")
             {
-                parts = NoTokens;
+                return new Tokens(NoTokens);
             }
-            var list = new List<string>(parts);
+            // Primitive parser, but we need to handle double quotes.
+            var list = new List<string>();
+            var currentWord = new StringBuilder();
+            bool inQuotes = false;
+            bool lastCharacterWasWhitespace = false;
+            foreach (char c in text)
+            {
+                if (c == '"')
+                {
+                    inQuotes = !inQuotes;
+                    lastCharacterWasWhitespace = false;
+                    continue;
+                }
+                if (char.IsWhiteSpace(c) && !inQuotes)
+                {
+                    if (!lastCharacterWasWhitespace)
+                    {
+                        list.Add(currentWord.ToString());
+                        lastCharacterWasWhitespace = true;
+                        currentWord.Length = 0;
+                    }
+                    // Otherwise, we're just collapsing multiple whitespace
+                }
+                else
+                {
+                    currentWord.Append(c);
+                    lastCharacterWasWhitespace = false;
+                }
+            }
+            if (!lastCharacterWasWhitespace)
+            {
+                list.Add(currentWord.ToString());
+            }
+            if (inQuotes)
+            {
+                throw new InvalidDataException("Line has unterminated quotes");
+            }
             return new Tokens(list);
         }
 

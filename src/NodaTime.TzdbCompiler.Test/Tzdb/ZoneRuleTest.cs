@@ -16,8 +16,8 @@ namespace NodaTime.TzdbCompiler.Test.Tzdb
         {
             var yearOffset = new ZoneYearOffset(TransitionMode.Utc, 10, 31, (int)IsoDayOfWeek.Wednesday, true, LocalTime.Midnight);
             var recurrence = new ZoneRecurrence("bob", Offset.Zero, yearOffset, 1971, 2009);
-            var actual = new ZoneRule(recurrence, "D");
-            var expected = new ZoneRule(recurrence, "D");
+            var actual = new ZoneRule(recurrence, "D", null);
+            var expected = new ZoneRule(recurrence, "D", null);
             Assert.AreEqual(expected, actual);
         }
     }

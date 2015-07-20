@@ -34,13 +34,20 @@ namespace NodaTime.TzdbCompiler.Tzdb
         /// The days of the week names as they appear in the TZDB zone files. They are
         /// always the short name in US English.
         /// </summary>
-        public static readonly string[] DaysOfWeek = { "", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun" };
+        private static readonly string[] DaysOfWeek = { "", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun" };
 
         /// <summary>
         /// The months of the year names as they appear in the TZDB zone files. They are
         /// always the short name in US English. 
         /// </summary>
-        public static readonly string[] Months = { "", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
+        private static readonly string[] ShortMonths = { "", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
+
+        /// <summary>
+        /// ... except when they're actually the long month name, e.g. in Greece in 96d.
+        /// (This is basically only for old files.)
+        /// </summary>
+        private static readonly string[] LongMonths =
+            { "", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" };
 
         /// <summary>
         /// Parses the next token as a month number (1-12).
@@ -333,10 +340,14 @@ namespace NodaTime.TzdbCompiler.Tzdb
         internal static int ParseMonth(String text)
         {
             Preconditions.CheckArgument(!string.IsNullOrEmpty(text), "text", "Value must not be empty or null");
-            int index = Array.IndexOf(Months, text, 1);
+            int index = Array.IndexOf(ShortMonths, text, 1);
             if (index == -1)
             {
-                throw new InvalidDataException($"Invalid month: {text}");
+                index = Array.IndexOf(LongMonths, text, 1);
+                if (index == -1)
+                {
+                    throw new InvalidDataException($"Invalid month: {text}");
+                }
             }
             return index;
         }
@@ -358,13 +369,12 @@ namespace NodaTime.TzdbCompiler.Tzdb
             {
                 throw new ArgumentException($"To year cannot be before the from year in a Rule: {toYear} < {fromYear}");
             }
-            /* string type = */
-            NextOptional(tokens, "Type");
+            var type = NextOptional(tokens, "Type");
             var yearOffset = ParseDateTimeOfYear(tokens, true);
             var savings = NextOffset(tokens, "SaveMillis");
             var daylightSavingsIndicator = NextOptional(tokens, "LetterS");
             var recurrence = new ZoneRecurrence(name, savings, yearOffset, fromYear, toYear);
-            return new ZoneRule(recurrence, daylightSavingsIndicator);
+            return new ZoneRule(recurrence, daylightSavingsIndicator, type);
         }
 
         /// <summary>

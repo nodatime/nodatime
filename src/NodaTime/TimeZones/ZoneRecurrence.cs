@@ -69,6 +69,14 @@ namespace NodaTime.TimeZones
         internal ZoneRecurrence WithName([NotNull] string name) =>
             new ZoneRecurrence(name, Savings, YearOffset, FromYear, ToYear);
 
+        /// <summary>
+        /// Returns a new recurrence with the same values as this, but just for a single year.
+        /// </summary>
+        internal ZoneRecurrence ForSingleYear(int year)
+        {
+            return new ZoneRecurrence(Name, Savings, YearOffset, year, year);
+        }
+
         #region IEquatable<ZoneRecurrence> Members
         /// <summary>
         /// Indicates whether the current object is equal to another object of the same type.

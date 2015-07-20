@@ -22,7 +22,9 @@ namespace NodaTime.TzdbCompiler.Tzdb
         {
             LocalTimePattern.CreateWithInvariantCulture("H:mm:ss.FFF"),
             LocalTimePattern.CreateWithInvariantCulture("H:mm"),
-            LocalTimePattern.CreateWithInvariantCulture("%H")
+            LocalTimePattern.CreateWithInvariantCulture("%H"),
+            // Handle "somewhat broken" data such as a DAVT rule in Antarctica 2009r, with a date/time of "2009 Oct 18 2:0"
+            LocalTimePattern.CreateWithInvariantCulture("H:m")
         };
 
         /// <summary>
@@ -114,6 +116,12 @@ namespace NodaTime.TzdbCompiler.Tzdb
         /// <returns>an integer number of ticks</returns>
         public static Offset ParseOffset([NotNull] string text)
         {
+            // Some old files use "-" for 0 in a few places.
+            // Example: Tonga, 1999f.
+            if (text == "-")
+            {
+                return Offset.Zero;
+            }
             // TODO(2.0): Use normal parsers!
             Preconditions.CheckNotNull(text, "text");
             int sign = 1;
