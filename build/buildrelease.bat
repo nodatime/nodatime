@@ -16,6 +16,8 @@ set SRCDIR=..\src
 IF EXIST tmp rmdir /s /q tmp
 mkdir tmp
 
+REM Note: this means we end up at a detached head. Don't try to commit any changes
+REM without checking out the branch again.
 git checkout %VERSION%
 IF ERRORLEVEL 1 EXIT /B 1
 

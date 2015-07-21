@@ -9,7 +9,7 @@ a checklist by the person doing a release.
 
 ## Prerequisites
 
-- Visual Studio 2012
+- Visual Studio 2015
 - Sandcastle and Sandcastle Help File Builder
 - [Jekyll][] and [redcarpet][] (following the Jekyll Windows installation instructions)
 - NuGet command-line tool
@@ -29,12 +29,12 @@ IL triggers a bug in the .NET 4 64-bit CLR (see the
 When everybody's happy, there are no issues outstanding for the milestone, and
 all the tests pass.
 
-Search the issue tracker for open issues with the right label (e.g.
-`label:Milestone-1.0`).
+Search the issue tracker for open issues with the right milestone (e.g.
+`is:open is:issue milestone:1.4.0`).
 
-Update to the candidate revision (probably tip) of the correct branch (e.g.
+Update to the candidate revision (probably HEAD) of the correct branch (e.g.
 `1.0.x`) and [build and run all the tests](building.html) as normal. The build
-and test steps should pass on Visual Studio 2012 and at least one supported
+and test steps should pass on Visual Studio 2015 and at least one supported
 OS/version combination for Mono (i.e. 'Mono 2.10.9 on Linux').
 
 ## Update the embedded tzdb
@@ -55,14 +55,14 @@ number (per the [Semantic versioning](http://semver.org) spec).
 The branching model used by Noda Time is the Subversion-style backport model.
 In brief:
 
-- feature development is carried out on the default branch
+- feature development is carried out on the master branch
 - named branches (called '1.0.x', '1.1.x', etc) are used for release lines
 - fixes are typically backported to the earlier branches where necessary
-  (typically using `hg graft`).
+  (typically using `git cherry-pick`).
 
 Note the difference between the format of names used for tags ('1.0.0-beta2',
-'1.0.0') and those used for branches ('1.0.x'). Mercurial will allow both to be
-used as revision specifiers, so it is important that they do not collide.
+'1.0.0') and those used for branches ('1.0.x'). Git will allow both to be
+used as "tree-ish" values, so it is important that they do not collide.
 
 ### Branch-specific changes
 
@@ -70,10 +70,10 @@ The only change that needs to be made to the branch after creation is to
 remove the `<Preliminary/>` tag from the Sandcastle project file; see e.g.
 [issue 102][].
 
-### Post-branch updates on the default branch
+### Post-branch updates on the master branch
 
 If this release required the creation of a new branch, then the following files
-on the *default* branch should be updated to bump (at least) the minor version
+on the `master` branch should be updated to bump (at least) the minor version
 number (and `NodaTime.Testing` / `NodaTime.Serialization.JsonNet` dependency
 version), per the following scheme:
 
@@ -96,8 +96,8 @@ Suppose we were building version 1.2.3-beta4, then:
 Update the version number by building the tools solution and then running the `SetVersion` tool:
 
 ```bat
-msbuild src\NodaTime-Tools.sln
-src\NodaTime.Tools.SetVersion\bin\debug\SetVersion 1.1.0-dev
+msbuild build\Tools.sln
+build\SetVersion\bin\Debug\SetVersion.exe 1.1.0-dev
 ```
 
 The version number string should be of the form `1.1.0-dev`.
@@ -110,8 +110,8 @@ Update the version number according to the scheme above by building the tools
 solution and then running the `SetVersion` tool:
 
 ```bat
-msbuild src\NodaTime-Tools.sln
-src\NodaTime.Tools.SetVersion\bin\debug\SetVersion 1.2.3-beta4
+msbuild tools\Tools.sln
+build\SetVersion\bin\Debug\SetVersion.exe 1.2.3-beta4
 ```
 
 > This will update the following AssemblyInfo files and NuGet package specs to include the
@@ -132,17 +132,20 @@ user guide; we leave the documentation in `unstable/` for branches.)
 Commit the above, then tag that commit:
 
 ```bat
-hg tag 1.0.0-beta1
+git tag 1.0.0-beta1
 ```
 
-Switch back to the default branch and update the version history in that branch
+(If the tag has already been applied, use `-f` to force it.)
+
+Switch back to the master branch and update the version history in that branch
 to match the changes applied to the release branch, then (if this release
 changes the latest stable release), update the date and version number of the
 latest stable version in `www/_config.yml`, and (if that new stable release is
 not a patch release), also update the `/api` and `/userguide` redirects in
 `src/NodaTime.Web/web.config`.
 
-Push these changes to GitHub.
+Push these changes to GitHub, ensuring that you push the tags as well as any changes.
+(Use `--tags` from the command line.)
 
 ## Building the release artifacts
 
@@ -152,9 +155,10 @@ the archives.
 
 Copy the Noda Time private key into the top-level directory.
 
-Use the `buildrelease` batch file to build all the release artifacts:
+Use the `build\buildrelease.bat` batch file to build all the release artifacts:
 
 ```bat
+cd build
 buildrelease 1.0.0-beta1
 ```
 
@@ -169,11 +173,13 @@ This will create:
 ## Publishing the artifacts
 
 Upload the source and release zipfiles to the project website, under
-the `downloads` directory. (This directory is not mapped in the main source
-control repository ; typically Jon does this on Bagpuss.)
+the `downloads` directory. To do this, pull the
+[`nodatime.org` repository](https://github.com/nodatime/nodatime.org),
+update the `downloads` directory accordingly, commit and then push back
+up to GitHub. The web site will update automatically.
 
-Edit the `www/downloads/index.html` file to include the new downloads,
-including SHA-1 hash.
+Edit the `downloads/index.html` file to include the new downloads,
+including SHA-256 hash.
 
 If this is a stable release, update the version number and the links on the
 front page to point to the new downloads.
@@ -188,20 +194,20 @@ nuget push NodaTime.Serialization.JsonNet.1.0.0-beta1.nupkg
 
 ## Updating the generated API documentation
 
-Copy the generated API documentation from `docs/api` to the `StableWebDocs`
-directory on Bagpuss (in `/$BRANCH/api/`) to update the web site.
+Copy the generated API documentation from `docs/api` to the corresponding
+`/$BRANCH/api` directory in the `nodatime.org` repository.
 
 ## Announcing the release
 
 Post to the mailing list, blog, etc.
 
-## Post-release updates on the default branch
+## Post-release updates on the master branch
 
 If this release was a stable release, then the generated XML documentation
-should be copied to `data/versionxml/` on the default branch.
+should be copied to `data/versionxml/` on the master branch.
 
 If this release required the creation of a new branch, then the following
-updates need to be made to the default branch for the website:
+updates need to be made to the master branch for the website:
 
 - the user guide source in `www/unstable/userguide` should be copied to
   `www/$BRANCH/userguide` (except for `versions.md`, which should come from the
