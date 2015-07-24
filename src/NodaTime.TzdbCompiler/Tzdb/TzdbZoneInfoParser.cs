@@ -364,6 +364,16 @@ namespace NodaTime.TzdbCompiler.Tzdb
         {
             var name = NextString(tokens, "GetName");
             int fromYear = NextYear(tokens, 0);
+
+            // This basically doesn't happen these days, but if we have any recurrent rules
+            // which start at the dawn of time, make them effective from 1900. This matches
+            // zic behaviour in the only cases of this that we've seen, e.g. the systemv rules
+            // prior to 2001a.
+            if (fromYear == int.MinValue)
+            { 
+                fromYear = 1900;
+            }
+
             int toYear = NextYear(tokens, fromYear);
             if (toYear < fromYear)
             {
