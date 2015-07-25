@@ -41,10 +41,22 @@ namespace NodaTime.TzValidate.NodaDump
             List<DateTimeZone> zones = LoadSource(options.Source);
             zones = zones.OrderBy(zone => zone.Id, StringComparer.Ordinal).ToList();
 
-            foreach (var zone in zones)
+            if (options.ZoneId != null)
             {
+                var zone = zones.FirstOrDefault(z => z.Id == options.ZoneId);
+                if (zone == null)
+                {
+                    throw new Exception($"Unknown zone ID: {options.ZoneId}");
+                }
                 DumpZone(zone, options);
-                Console.Write("\r\n");
+            }
+            else
+            {
+                foreach (var zone in zones)
+                {
+                    DumpZone(zone, options);
+                    Console.Write("\r\n");
+                }
             }
 
             return 0;

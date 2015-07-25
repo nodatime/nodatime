@@ -22,6 +22,9 @@ namespace NodaTime.TzValidate.NodaDump
         [Option("s", "source", Required = true, HelpText = "Data source - a single file or URL, or a directory")]
         public string Source { get; set; }
 
+        [Option("z", "zone", Required = false, HelpText = "Zone ID, to dump a single time zone")]
+        public string ZoneId { get; set; }
+
         internal Instant Start => FromYear == null ? Instant.MinValue : Instant.FromUtc(FromYear.Value, 1, 1, 0, 0);
         internal Instant End => Instant.FromUtc(ToYear, 1, 1, 0, 0);
 
@@ -33,7 +36,7 @@ namespace NodaTime.TzValidate.NodaDump
                 AdditionalNewLineAfterOption = true,
                 Copyright = new CopyrightInfo("The Noda Time Authors", 2015)
             };
-            help.AddPreOptionsLine("Usage: NodaTime.TzValidate.NodaDump -s data-source [-f from-year] [-t to-year]");
+            help.AddPreOptionsLine("Usage: NodaTime.TzValidate.NodaDump -s data-source [-f from-year] [-t to-year] [-z zone id]");
             help.AddPreOptionsLine("The data source can be:");
             help.AddPreOptionsLine("- a Noda Time .nzd file (local or web)");
             help.AddPreOptionsLine("- an IANA data release .tar.gz file (local or web)");
