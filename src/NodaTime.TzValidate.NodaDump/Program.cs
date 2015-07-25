@@ -66,7 +66,7 @@ namespace NodaTime.TzValidate.NodaDump
         {
             Console.Write("{0}\r\n", zone.Id);
             var initial = zone.GetZoneInterval(Instant.MinValue);
-            Console.Write("Initially: {0} {1} {2}\r\n",
+            Console.Write("Initially:           {0} {1} {2}\r\n",
                 OffsetPattern.Format(initial.WallOffset),
                 initial.Savings != Offset.Zero ? "daylight" : "standard",
                 initial.Name);
