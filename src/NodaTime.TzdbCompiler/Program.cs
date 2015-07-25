@@ -9,6 +9,7 @@ using NodaTime.TimeZones.Cldr;
 using NodaTime.TzdbCompiler.Tzdb;
 using System;
 using System.IO;
+using System.Linq;
 
 namespace NodaTime.TzdbCompiler
 {
@@ -43,7 +44,7 @@ namespace NodaTime.TzdbCompiler
                 tzdb.GenerateDateTimeZone(options.ZoneId);
                 return 0;
             }
-            var windowsZones = CldrWindowsZonesParser.Parse(options.WindowsMappingFile);
+            var windowsZones = LoadWindowsZones(options, tzdb.Version);
             LogWindowsZonesSummary(windowsZones);
             var writer = CreateWriter(options);
             writer.Write(tzdb, windowsZones);
@@ -59,6 +60,48 @@ namespace NodaTime.TzdbCompiler
                 }
             }
             return 0;
+        }
+
+        /// <summary>
+        /// Loads the best windows zones file based on the options. If the WindowsMapping option is
+        /// just a straight file, that's used. If it's a directory, this method loads all the XML files
+        /// in the directory (expecting them all to be mapping files) and then picks the best one based
+        /// on the version of TZDB we're targeting - basically, the most recent one before or equal to the
+        /// target version.
+        /// </summary>
+        private static WindowsZones LoadWindowsZones(CompilerOptions options, string targetTzdbVersion)
+        {
+            var mappingPath = options.WindowsMapping;
+            if (File.Exists(mappingPath))
+            {
+                return CldrWindowsZonesParser.Parse(mappingPath);
+            }
+            if (!Directory.Exists(mappingPath))
+            {
+                throw new Exception($"{mappingPath} does not exist as either a file or a directory");
+            }
+            var xmlFiles = Directory.GetFiles(mappingPath, "*.xml");
+            if (xmlFiles.Length == 0)
+            {
+                throw new Exception($"{mappingPath} does not contain any XML files");
+            }
+            var allFiles = xmlFiles
+                .Select(file => CldrWindowsZonesParser.Parse(file))
+                .OrderByDescending(zones => zones.TzdbVersion)
+                .ToList();
+
+            var versions = string.Join(", ", allFiles.Select(z => z.TzdbVersion).ToArray());
+
+            var bestFile = allFiles
+                .Where(zones => StringComparer.Ordinal.Compare(zones.TzdbVersion, targetTzdbVersion) <= 0)
+                .FirstOrDefault();
+
+            if (bestFile == null)
+            {
+                throw new Exception($"No zones files suitable for version {targetTzdbVersion}. Found versions targeting: [{versions}]");
+            }
+            Console.WriteLine($"Picked Windows Zones with TZDB version {bestFile.TzdbVersion} out of [{versions}] as best match for {targetTzdbVersion}");
+            return bestFile;
         }
 
         private static void LogWindowsZonesSummary(WindowsZones windowsZones)

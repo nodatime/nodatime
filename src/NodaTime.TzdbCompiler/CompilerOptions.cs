@@ -17,10 +17,10 @@ namespace NodaTime.TzdbCompiler
         public string OutputFileName { get; set; }
 
         [Option("s", "source", Required = true, HelpText = "Source directory containing the TZDB input files.")]
-        public string SourceDirectoryName { get; set; }
+        public string SourceDirectoryName { get; set; } = "";
 
-        [Option("w", "windows", Required = true, HelpText = "Windows to TZDB time zone mapping file (e.g. windowsZones.xml)")]
-        public string WindowsMappingFile { get; set; }
+        [Option("w", "windows", Required = true, HelpText = "Windows to TZDB time zone mapping file (e.g. windowsZones.xml) or directory")]
+        public string WindowsMapping { get; set; } = "";
 
         [Option("t", "text-dump", Required = false, HelpText = "File to dump zone intervals for all zones to, for test purposes.")]
         public string TextDumpFile { get; set; }
@@ -31,12 +31,6 @@ namespace NodaTime.TzdbCompiler
             MutuallyExclusiveSet = "Output")]
         public string ZoneId { get; set; }
 
-        public CompilerOptions()
-        {
-            SourceDirectoryName = "";
-            WindowsMappingFile = "";
-        }
-
         [HelpOption(HelpText = "Display this help screen.")]
         public string GetUsage()
         {
@@ -46,7 +40,7 @@ namespace NodaTime.TzdbCompiler
                 AdditionalNewLineAfterOption = true,
                 Copyright = new CopyrightInfo("The Noda Time Authors", 2009)
             };
-            help.AddPreOptionsLine("Usage: NodaTime.TzdbCompiler -s <tzdb directory> -w <windowsZone.xml file> -o <output file> [-t ResX/Resource/NodaZoneData]");
+            help.AddPreOptionsLine("Usage: NodaTime.TzdbCompiler -s <tzdb directory> -w <windowsZone.xml file/dir> -o <output file> [-t ResX/Resource/NodaZoneData]");
             help.AddOptions(this);
             return help;
         }
