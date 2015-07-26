@@ -19,7 +19,7 @@ namespace NodaTime.TzValidate.NodaDump
             HelpText = "Upper bound (exclusive) to print transitions until (defaults to 2035)", DefaultValue = 2035)]
         public int ToYear { get; set; }
 
-        [Option("s", "source", Required = true, HelpText = "Data source - a single file or URL, or a directory")]
+        [Option("s", "source", Required = false, HelpText = "Data source - a single file or URL, or a directory")]
         public string Source { get; set; }
 
         [Option("z", "zone", Required = false, HelpText = "Zone ID, to dump a single time zone")]
@@ -36,11 +36,12 @@ namespace NodaTime.TzValidate.NodaDump
                 AdditionalNewLineAfterOption = true,
                 Copyright = new CopyrightInfo("The Noda Time Authors", 2015)
             };
-            help.AddPreOptionsLine("Usage: NodaTime.TzValidate.NodaDump -s data-source [-f from-year] [-t to-year] [-z zone id]");
+            help.AddPreOptionsLine("Usage: NodaTime.TzValidate.NodaDump [-s data-source] [-f from-year] [-t to-year] [-z zone id]");
             help.AddPreOptionsLine("The data source can be:");
             help.AddPreOptionsLine("- a Noda Time .nzd file (local or web)");
             help.AddPreOptionsLine("- an IANA data release .tar.gz file (local or web)");
             help.AddPreOptionsLine("- a local directory of IANA data files");
+            help.AddPreOptionsLine("If no source is provided, DateTimeZoneProviders.Tzdb will be used.");
             help.AddOptions(this);
             return help;
         }

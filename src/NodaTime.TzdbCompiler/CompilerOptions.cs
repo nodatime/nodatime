@@ -16,7 +16,7 @@ namespace NodaTime.TzdbCompiler
         [Option("o", "output", Required = false, HelpText = "The name of the output file.", MutuallyExclusiveSet = "Output")]
         public string OutputFileName { get; set; }
 
-        [Option("s", "source", Required = true, HelpText = "Source directory containing the TZDB input files.")]
+        [Option("s", "source", Required = true, HelpText = "Source directory or archive containing the TZDB input files.")]
         public string SourceDirectoryName { get; set; } = "";
 
         [Option("w", "windows", Required = true, HelpText = "Windows to TZDB time zone mapping file (e.g. windowsZones.xml) or directory")]

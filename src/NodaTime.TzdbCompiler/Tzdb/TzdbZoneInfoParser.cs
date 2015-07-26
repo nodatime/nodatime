@@ -13,7 +13,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
     /// <summary>
     /// Provides a parser for TZDB time zone description files.
     /// </summary>
-    public class TzdbZoneInfoParser
+    internal class TzdbZoneInfoParser
     {
         /// <summary>
         /// The keyword that specifies the line defines an alias link.
@@ -116,7 +116,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
         /// </summary>
         /// <param name="input">The stream input to parse.</param>
         /// <param name="database">The database to fill.</param>
-        public void Parse(Stream input, TzdbDatabase database)
+        internal void Parse(Stream input, TzdbDatabase database)
         {
             Parse(new StreamReader(input, true), database);
         }
@@ -127,17 +127,10 @@ namespace NodaTime.TzdbCompiler.Tzdb
         /// </summary>
         /// <param name="reader">The reader to read.</param>
         /// <param name="database">The database to fill.</param>
-        public void Parse(TextReader reader, TzdbDatabase database)
+        internal void Parse(TextReader reader, TzdbDatabase database)
         {
-            bool firstLine = true;
-            for (var line = reader.ReadLine(); line != null; line = reader.ReadLine())
+            foreach (var line in reader.ReadLines())
             {
-                // Only bother with files which start with comments.
-                if (firstLine && !line.StartsWith("# ", StringComparison.Ordinal))
-                {
-                    return;
-                }
-                firstLine = false;
                 ParseLine(line, database);
             }
         }

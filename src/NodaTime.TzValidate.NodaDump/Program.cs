@@ -5,14 +5,11 @@
 using NodaTime.Text;
 using NodaTime.TimeZones;
 using NodaTime.TzdbCompiler.Tzdb;
-using SharpCompress.Reader.Tar;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
-using NodaTime;
-using System.Diagnostics;
 using CommandLine;
 
 namespace NodaTime.TzValidate.NodaDump
@@ -38,7 +35,7 @@ namespace NodaTime.TzValidate.NodaDump
                 return 1;
             }
 
-            List<DateTimeZone> zones = LoadSource(options.Source);
+            List<DateTimeZone> zones = LoadSource(options);
             zones = zones.OrderBy(zone => zone.Id, StringComparer.Ordinal).ToList();
 
             if (options.ZoneId != null)
@@ -81,78 +78,40 @@ namespace NodaTime.TzValidate.NodaDump
             }
         }
 
-        private static List<DateTimeZone> LoadSource(string source)
+        private static List<DateTimeZone> LoadSource(Options options)
         {
-            if (source.StartsWith("http://") || source.StartsWith("https://"))
+            var source = options.Source;
+            if (source == null)
             {
-                // Remote file - could still be nzd or a gzipped tar file.
-                using (var client = new WebClient())
-                {
-                    return LoadFileSource(source, client.DownloadData(source));
-                }
+                var provider = DateTimeZoneProviders.Tzdb;
+                return provider.Ids.Select(id => provider[id]).ToList();
             }
-            else
-            {
-                // Local file or directory...
-                if (Directory.Exists(source))
-                {
-                    return LoadDirectory(source);
-                }
-                return LoadFileSource(source, File.ReadAllBytes(source));
-            }
-        }
-
-        private static List<DateTimeZone> LoadFileSource(string source, byte[] bytes)
-        {
-            var stream = new MemoryStream(bytes);
-            // Unfortunately, we don't have a magic number at the start of nzd files.
-            // Oh well.
             if (source.EndsWith(".nzd"))
             {
-                var tzdbSource = TzdbDateTimeZoneSource.FromStream(stream);
+                var data = LoadFileOrUrl(source);
+                var tzdbSource = TzdbDateTimeZoneSource.FromStream(new MemoryStream(data));
                 return tzdbSource.GetIds().Select(id => tzdbSource.ForId(id)).ToList();
             }
             else
             {
-                TarReader reader = TarReader.Open(stream);
-                List<byte[]> tzSources = new List<byte[]>();
-                while (reader.MoveToNextEntry())
-                {
-                    if (TzdbZoneInfoCompiler.IncludedFiles.Contains(reader.Entry.Key))
-                    {
-                        var memoryStream = new MemoryStream();
-                        using (var tarStream = reader.OpenEntryStream())
-                        {
-                            tarStream.CopyTo(memoryStream);
-                        }
-                        tzSources.Add(memoryStream.ToArray());
-                    }
-                }
-                return LoadTzSources(tzSources);
+                var compiler = new TzdbZoneInfoCompiler(log: null);
+                var database = compiler.Compile(source);
+                return database.GenerateDateTimeZones()
+                    .Concat(database.Aliases.Keys.Select(database.GenerateDateTimeZone))
+                    .ToList();
             }
         }
 
-        private static List<DateTimeZone> LoadDirectory(string directory)
+        private static byte[] LoadFileOrUrl(string source)
         {
-            return LoadTzSources(TzdbZoneInfoCompiler
-                .IncludedFiles
-                .Select(file => Path.Combine(directory, file))
-                .Where(File.Exists)
-                .Select(File.ReadAllBytes));
-        }
-
-        private static List<DateTimeZone> LoadTzSources(IEnumerable<byte[]> sources)
-        {
-            var parser = new TzdbZoneInfoParser();
-            var database = new TzdbDatabase(version: "ignored");
-            foreach (var source in sources)
+            if (source.StartsWith("http://") || source.StartsWith("https://") || source.StartsWith("ftp://"))
             {
-                parser.Parse(new MemoryStream(source), database);
+                using (var client = new WebClient())
+                {
+                    return client.DownloadData(source);
+                }
             }
-            return database.GenerateDateTimeZones()
-                .Concat(database.Aliases.Keys.Select(database.GenerateDateTimeZone))
-                .ToList();            
-        }
-
+            return File.ReadAllBytes(source);
+        }        
     }
 }
