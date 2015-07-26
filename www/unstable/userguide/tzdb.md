@@ -48,25 +48,20 @@ This may be used for automation.
 Building a NodaZoneData file
 ----------------------------
 
-1. Download the [latest tzdb release](http://www.iana.org/time-zones)
-2. Unpack the tar.gz file - you may need to download extra tools for this; [7-Zip](http://www.7-zip.org/) can cope with .tar.gz
-   files for example, and I'd expect other zip tools to do so too. You should end up with a directory containing files such
-   as "america", "africa", "etcetera".
-3. Ideally, rename the directory to match the version number, e.g. "2013h". The directory name will be used in the version ID
-   reported by the time zone provider later.
-4. Find the Windows mapping file you want to use. Currently, I'd recommend using the version supplied with the Noda Time source
-   in the `data\cldr` directory in a file beginning "windowsZones". This file comes from [CLDR](http://cldr.unicode.org).
-5. Run NodaTime.TzdbCompiler. I'd suggest leaving it in its build directory and running it like this:
+1. Find the link to the [latest tzdb release](http://www.iana.org/time-zones), e.g.
+   http://www.iana.org/time-zones/repository/releases/tzdata2015e.tar.gz
+2. Determine the Windows mapping file you want to use, or let NodaTime.TzdbCompiler do it for you
+   with the versions supplied with the Noda Time source in the `data\cldr` directory. If these are
+   out of date, you can download a new file from [CLDR](http://cldr.unicode.org).
+3. Run NodaTime.TzdbCompiler. I'd suggest leaving it in its build directory and running it like this:
 
 ```bat
-path\to\NodaTime.TzdbCompiler.exe -s path\to\tzdb-files -w path\to\windowsMapping-file.xml -o path\to\output.nzd
+path\to\NodaTime.TzdbCompiler.exe -s tzdb-url -w windows-file-or-directory -o path\to\output.nzd
 ```
 
-For example, rebuilding the 2013h data from Noda Time itself, starting in the project's root directory:
-
-```bat
-src\NodaTime.TzdbCompiler\bin\Release\NodaTime.TzdbCompiler -s data\tzdb\2013h -w data\cldr\windowsZones-24.xml -o tzdb-2013h.nzd
-```
+The `-s` argument can be an unpacked archive directory, a local archive, or a remote archive. The `-w`
+argument can be a path to a single file, or a directory containing multiple Windows Zones XML files, in which
+case the most appropriate one will be selected automatically.
 
 Using a NodaZoneData file
 -------------------------
