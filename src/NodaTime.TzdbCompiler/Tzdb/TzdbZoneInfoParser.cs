@@ -129,9 +129,10 @@ namespace NodaTime.TzdbCompiler.Tzdb
         /// <param name="database">The database to fill.</param>
         internal void Parse(TextReader reader, TzdbDatabase database)
         {
+            string currentZone = null;
             foreach (var line in reader.ReadLines())
             {
-                ParseLine(line, database);
+                currentZone = ParseLine(line, currentZone, database);
             }
         }
 
@@ -267,48 +268,52 @@ namespace NodaTime.TzdbCompiler.Tzdb
         /// </remarks>
         /// <param name="line">The line to parse.</param>
         /// <param name="database">The database to fill.</param>
-        internal void ParseLine(string line, TzdbDatabase database)
+        /// <return>The zone name just parsed, if any - so that it can be passed into the next call.</return>
+        private string ParseLine(string line, string previousZone, TzdbDatabase database)
         {
+            // Trim end-of-line comments
             int index = line.IndexOf("#", StringComparison.Ordinal);
-            if (index == 0)
+            if (index >= 0)
             {
-                return;
-            }
-            if (index > 0)
-            {
-                line = line.Substring(0, index - 1);
+                line = line.Substring(0, index);
             }
             line = line.TrimEnd();
             if (line.Length == 0)
             {
-                return;
+                // We can still continue with the previous zone
+                return previousZone;
             }
+
+            // Okay, everything left in the line should be "real" now.
             var tokens = Tokens.Tokenize(line);
             var keyword = NextString(tokens, "Keyword");
             switch (keyword)
             {
                 case KeywordRule:
                     database.AddRule(ParseRule(tokens));
-                    break;
+                    return null;
                 case KeywordLink:
-                    database.AddAlias(ParseLink(tokens));
-                    break;
+                    var alias = ParseLink(tokens);
+                    database.AddAlias(alias.Item1, alias.Item2);
+                    return null;
                 case KeywordZone:
                     var name = NextString(tokens, "GetName");
-                    var namedZone = ParseZone(name, tokens);
-                    database.AddZone(namedZone);
-                    break;
+                    database.AddZone(ParseZone(name, tokens));
+                    return name;
                 default:
                     if (string.IsNullOrEmpty(keyword))
                     {
-                        var zone = ParseZone(string.Empty, tokens);
-                        database.AddZone(zone);
+                        if (previousZone == null)
+                        {
+                            throw new InvalidDataException("Zone continuation provided with no previous zone line");
+                        }
+                        database.AddZone(ParseZone(previousZone, tokens));
+                        return previousZone;
                     }
                     else
                     {
                         throw new InvalidDataException($"Unexpected zone database keyword: {keyword}");
-                    }
-                    break;
+                    }                    
             }
         }
 
@@ -317,11 +322,11 @@ namespace NodaTime.TzdbCompiler.Tzdb
         /// </summary>
         /// <param name="tokens">The tokens to parse.</param>
         /// <returns>The ZoneAlias object.</returns>
-        internal ZoneAlias ParseLink(Tokens tokens)
+        internal Tuple<string, string> ParseLink(Tokens tokens)
         {
             var existing = NextString(tokens, "Existing");
             var alias = NextString(tokens, "Alias");
-            return new ZoneAlias(existing, alias);
+            return Tuple.Create(existing, alias);
         }
 
         /// <summary>
@@ -376,8 +381,8 @@ namespace NodaTime.TzdbCompiler.Tzdb
             var yearOffset = ParseDateTimeOfYear(tokens, true);
             var savings = NextOffset(tokens, "SaveMillis");
             var daylightSavingsIndicator = NextOptional(tokens, "LetterS");
-            // TODO: Remove the zone here. It's not really a recurrence name; it's the name of the rule, and will be added to the
-            // database accordingly. This probably shouldn't be a ZoneRecurrence at all... put it all in ZoneRule?
+            // The name of the zone recurrence is currently the name of the rule. Later (in ZoneRule.GetRecurrences)
+            // it will be replaced with the formatted name. It's not ideal, but it avoids a lot of duplication.
             var recurrence = new ZoneRecurrence(name, savings, yearOffset, fromYear, toYear);
             return new ZoneRule(recurrence, daylightSavingsIndicator, type);
         }

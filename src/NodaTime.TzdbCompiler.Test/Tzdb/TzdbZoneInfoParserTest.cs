@@ -8,6 +8,8 @@ using NUnit.Framework;
 using System;
 using System.Globalization;
 using System.IO;
+using System.Linq;
+using System.Text;
 
 namespace NodaTime.TzdbCompiler.Test.Tzdb
 {
@@ -33,7 +35,7 @@ namespace NodaTime.TzdbCompiler.Test.Tzdb
         private static void ValidateCounts(TzdbDatabase database, int ruleSets, int zoneLists, int links)
         {
             Assert.AreEqual(ruleSets, database.Rules.Count, "Rules");
-            Assert.AreEqual(zoneLists, database.ZoneLists.Count, "Zones");
+            Assert.AreEqual(zoneLists, database.Zones.Count, "Zones");
             Assert.AreEqual(links, database.Aliases.Count, "Links");
         }
 
@@ -118,8 +120,7 @@ namespace NodaTime.TzdbCompiler.Test.Tzdb
         public void ParseLine_comment()
         {
             const string line = "# Comment";
-            var database = new TzdbDatabase("version");
-            Parser.ParseLine(line, database);
+            var database = ParseText(line);
             ValidateCounts(database, 0, 0, 0);
         }
 
@@ -127,25 +128,33 @@ namespace NodaTime.TzdbCompiler.Test.Tzdb
         public void ParseLine_commentWithLeadingWhitespace()
         {
             const string line = "   # Comment";
-            var database = new TzdbDatabase("version");
-            Parser.ParseLine(line, database);
+            var database = ParseText(line);
             ValidateCounts(database, 0, 0, 0);
         }
 
         [Test]
         public void ParseLine_emptyString()
         {
-            var database = new TzdbDatabase("version");
-            Parser.ParseLine(string.Empty, database);
+            var database = ParseText("");
             ValidateCounts(database, 0, 0, 0);
+        }
+
+        // Assume that all lines work the same way - it's comment handling
+        // that's important here.
+        [Test]
+        public void ParseLine_commentAtEndOfLine()
+        {
+            string line = "Link from to#Comment";
+            var database = ParseText(line);
+            ValidateCounts(database, 0, 0, 1);
+            Assert.AreEqual("from", database.Aliases["to"]);
         }
 
         [Test]
         public void ParseLine_link()
         {
             const string line = "Link from to";
-            var database = new TzdbDatabase("version");
-            Parser.ParseLine(line, database);
+            var database = ParseText(line);
             ValidateCounts(database, 0, 0, 1);
         }
 
@@ -153,8 +162,7 @@ namespace NodaTime.TzdbCompiler.Test.Tzdb
         public void ParseLine_whiteSpace()
         {
             const string line = "    \t\t\n";
-            var database = new TzdbDatabase("version");
-            Parser.ParseLine(line, database);
+            var database = ParseText(line);
             ValidateCounts(database, 0, 0, 0);
         }
 
@@ -162,23 +170,20 @@ namespace NodaTime.TzdbCompiler.Test.Tzdb
         public void ParseLine_zone()
         {
             const string line = "Zone PST 2:00 US P%sT";
-            var database = new TzdbDatabase("version");
-            Parser.ParseLine(line, database);
+            var database = ParseText(line);
             ValidateCounts(database, 0, 1, 0);
-            Assert.AreEqual(1, database.ZoneLists[0].Count, "Zones in set");
+            Assert.AreEqual(1, database.Zones.Values.Single().Count);
         }
 
         [Test]
         public void ParseLine_zonePlus()
         {
-            const string line = "Zone PST 2:00 US P%sT";
-            var database = new TzdbDatabase("version");
-            Parser.ParseLine(line, database);
-
-            const string line2 = "  3:00 US P%sT";
-            Parser.ParseLine(line2, database);
+            string lines =
+                "Zone PST 2:00 US P%sT\n" +
+                "  3:00 US P%sT";
+            var database = ParseText(lines);
             ValidateCounts(database, 0, 1, 0);
-            Assert.AreEqual(2, database.ZoneLists[0].Count, "Zones in set");
+            Assert.AreEqual(2, database.Zones["PST"].Count);
         }
 
         /* ############################################################################### */
@@ -195,7 +200,7 @@ namespace NodaTime.TzdbCompiler.Test.Tzdb
         {
             var tokens = Tokens.Tokenize("from to");
             var actual = Parser.ParseLink(tokens);
-            var expected = new ZoneAlias("from", "to");
+            var expected = Tuple.Create("from", "to");
             Assert.AreEqual(expected, actual);
         }
 
@@ -326,54 +331,47 @@ namespace NodaTime.TzdbCompiler.Test.Tzdb
         }
 
         [Test]
-        public void Parse_emptyStream()
-        {
-            var reader = new StringReader(string.Empty);
-            var database = new TzdbDatabase("version");
-            Parser.Parse(reader, database);
-            ValidateCounts(database, 0, 0, 0);
-        }
-
-        [Test]
         public void Parse_threeLines()
         {
-            const string text = "# A comment\n" + "Zone PST 2:00 US P%sT\n" + "         3:00 -  P%sT\n";
-            var reader = new StringReader(text);
-            var database = new TzdbDatabase("version");
-            Parser.Parse(reader, database);
+            const string text =
+                "# A comment\n" +
+                "Zone PST 2:00 US P%sT\n" +
+                "         3:00 -  P%sT\n";
+            var database = ParseText(text);
             ValidateCounts(database, 0, 1, 0);
-            Assert.AreEqual(2, database.ZoneLists[0].Count, "Zones in set");
+            Assert.AreEqual(2, database.Zones.Values.Single().Count);
         }
 
         [Test]
         public void Parse_threeLinesWithComment()
         {
-            const string text = "# A comment\n" + "Zone PST 2:00 US P%sT # An end of line comment\n" + "         3:00 -  P%sT\n";
-            var reader = new StringReader(text);
-            var database = new TzdbDatabase("version");
-            Parser.Parse(reader, database);
+            const string text =
+                "# A comment\n" +
+                "Zone PST 2:00 US P%sT # An end of line comment\n" +
+                "         3:00 -  P%sT\n";
+            var database = ParseText(text);
             ValidateCounts(database, 0, 1, 0);
-            Assert.AreEqual(2, database.ZoneLists[0].Count, "Zones in set");
+            Assert.AreEqual(2, database.Zones.Values.Single().Count);
         }
 
         [Test]
         public void Parse_twoLines()
         {
-            const string text = "# A comment\n" + "Zone PST 2:00 US P%sT\n";
-            var reader = new StringReader(text);
-            var database = new TzdbDatabase("version");
-            Parser.Parse(reader, database);
+            const string text =
+                "# A comment\n" +
+                "Zone PST 2:00 US P%sT\n";
+            var database = ParseText(text);
             ValidateCounts(database, 0, 1, 0);
-            Assert.AreEqual(1, database.ZoneLists[0].Count, "Zones in set");
+            Assert.AreEqual(1, database.Zones.Values.Single().Count);
         }
 
         [Test]
         public void Parse_twoLinks()
         {
-            const string text = "# First line must be a comment\n" + "Link from to\n" + "Link target source\n";
-            var reader = new StringReader(text);
-            var database = new TzdbDatabase("version");
-            Parser.Parse(reader, database);
+            const string text =
+                "# First line must be a comment\n" +
+                "Link from to\n" + "Link target source\n";
+            var database = ParseText(text);
             ValidateCounts(database, 0, 0, 2);
         }
 
@@ -381,29 +379,33 @@ namespace NodaTime.TzdbCompiler.Test.Tzdb
         public void Parse_twoZones()
         {
             const string text =
-                "# A comment\n" + "Zone PST 2:00 US P%sT # An end of line comment\n" + "         3:00 -  P%sT\n" + "         4:00 -  P%sT\n" +
-                "Zone EST 2:00 US E%sT # An end of line comment\n" + "         3:00 -  E%sT\n";
-            var reader = new StringReader(text);
-            var database = new TzdbDatabase("version");
-            Parser.Parse(reader, database);
+                "# A comment\n" +
+                "Zone PST 2:00 US P%sT # An end of line comment\n" +
+                "         3:00 -  P%sT\n" +
+                "         4:00 -  P%sT\n" +
+                "Zone EST 2:00 US E%sT # An end of line comment\n" +
+                "         3:00 -  E%sT\n";
+            var database = ParseText(text);
             ValidateCounts(database, 0, 2, 0);
-            Assert.AreEqual(2, database.ZoneLists[0].Count, "Zones in set " + database.ZoneLists[0].Name);
-            Assert.AreEqual(3, database.ZoneLists[1].Count, "Zones in set " + database.ZoneLists[1].Name);
+            Assert.AreEqual(3, database.Zones["PST"].Count);
+            Assert.AreEqual(2, database.Zones["EST"].Count);
         }
 
         [Test]
         public void Parse_twoZonesTwoRule()
         {
             const string text =
-                "# A comment\n" + "Rule US 1987 2006 - Apr Sun>=1 2:00 1:00 D\n" + "Rule US 2007 max  - Mar Sun>=8 2:00 1:00 D\n" +
-                "Zone PST 2:00 US P%sT # An end of line comment\n" + "         3:00 -  P%sT\n" + "         4:00 -  P%sT\n" +
-                "Zone EST 2:00 US E%sT # An end of line comment\n" + "         3:00 -  E%sT\n";
-            var reader = new StringReader(text);
-            var database = new TzdbDatabase("version");
-            Parser.Parse(reader, database);
+                "# A comment\n" +
+                "Rule US 1987 2006 - Apr Sun>=1 2:00 1:00 D\n" +
+                "Rule US 2007 max  - Mar Sun>=8 2:00 1:00 D\n" +
+                "Zone PST 2:00 US P%sT # An end of line comment\n" +
+                "         3:00 -  P%sT\n" + "         4:00 -  P%sT\n" +
+                "Zone EST 2:00 US E%sT # An end of line comment\n" +
+                "         3:00 -  E%sT\n";
+            var database = ParseText(text);
             ValidateCounts(database, 1, 2, 0);
-            Assert.AreEqual(2, database.ZoneLists[0].Count, "Zones in set " + database.ZoneLists[0].Name);
-            Assert.AreEqual(3, database.ZoneLists[1].Count, "Zones in set " + database.ZoneLists[1].Name);
+            Assert.AreEqual(3, database.Zones["PST"].Count);
+            Assert.AreEqual(2, database.Zones["EST"].Count);
         }
 
         /* ############################################################################### */
@@ -477,14 +479,13 @@ namespace NodaTime.TzdbCompiler.Test.Tzdb
         [Test]
         public void Parse_Fixed_Eastern()
         {
-            const string text = "# A comment\n" + "Zone\tEtc/GMT-9\t9\t-\tGMT-9\n";
-            var reader = new StringReader(text);
-            var database = new TzdbDatabase("version");
-            Parser.Parse(reader, database);
+            const string text =
+                "# A comment\n" +
+                "Zone\tEtc/GMT-9\t9\t-\tGMT-9\n";
+            var database = ParseText(text);
 
             ValidateCounts(database, 0, 1, 0);
-            Assert.AreEqual(1, database.ZoneLists[0].Count, "Zones in set");
-            var zone = database.ZoneLists[0][0];
+            var zone = database.Zones["Etc/GMT-9"].Single();
             Assert.AreEqual(Offset.FromHours(9), zone.StandardOffset);
             Assert.IsNull(zone.Rules);
             Assert.AreEqual(int.MaxValue, zone.UntilYear);
@@ -493,17 +494,26 @@ namespace NodaTime.TzdbCompiler.Test.Tzdb
         [Test]
         public void Parse_Fixed_Western()
         {
-            const string text = "# A comment\n" + "Zone\tEtc/GMT+9\t-9\t-\tGMT+9\n";
-            var reader = new StringReader(text);
-            var database = new TzdbDatabase("version");
-            Parser.Parse(reader, database);
+            const string text =
+                "# A comment\n" +
+                "Zone\tEtc/GMT+9\t-9\t-\tGMT+9\n";
+            var database = ParseText(text);
 
             ValidateCounts(database, 0, 1, 0);
-            Assert.AreEqual(1, database.ZoneLists[0].Count, "Zones in set");
-            var zone = database.ZoneLists[0][0];
+            var zone = database.Zones["Etc/GMT+9"].Single();
             Assert.AreEqual(Offset.FromHours(-9), zone.StandardOffset);
             Assert.IsNull(zone.Rules);
             Assert.AreEqual(int.MaxValue, zone.UntilYear);
+        }
+
+        /// <summary>
+        /// Helper method to create a database and call Parse with the given text.
+        /// </summary>
+        private TzdbDatabase ParseText(string line)
+        {
+            var database = new TzdbDatabase("version");
+            Parser.Parse(new StringReader(line), database);
+            return database;
         }
     }
 }

@@ -91,8 +91,6 @@
     <Compile Include="Tzdb\TzdbZoneInfoParser.cs" />
     <Compile Include="Tzdb\CldrWindowsZonesParser.cs" />
     <Compile Include="Tzdb\Zone.cs" />
-    <Compile Include="Tzdb\ZoneAlias.cs" />
-    <Compile Include="Tzdb\ZoneList.cs" />
     <Compile Include="Tzdb\ZoneRuleSet.cs" />
     <Compile Include="Tzdb\ZoneRule.cs" />
     <Compile Include="Program.cs" />

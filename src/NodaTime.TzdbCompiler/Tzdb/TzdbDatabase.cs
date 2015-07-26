@@ -14,11 +14,10 @@ namespace NodaTime.TzdbCompiler.Tzdb
     /// </summary>
     public class TzdbDatabase
     {
-        private readonly SortedList<string, ZoneList> zoneLists;
         /// <summary>
         /// Returns the zone lists. This is only available for the sake of testing.
         /// </summary>
-        internal IList<ZoneList> ZoneLists => zoneLists.Values;
+        internal IDictionary<string, IList<Zone>> Zones { get; }
 
         /// <summary>
         /// Returns the version of the TZDB data represented.
@@ -46,35 +45,29 @@ namespace NodaTime.TzdbCompiler.Tzdb
         internal IList<TzdbZone1970Location> Zone1970Locations { get; set; }
 
         /// <summary>
-        /// The zone list which is currently being defined. This is used to gather all of the time zone
-        /// definitions that appear coincident.
-        /// </summary>
-        private ZoneList currentZoneList;
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="TzdbDatabase" /> class.
         /// </summary>
         public TzdbDatabase(string version)
         {
-            zoneLists = new SortedList<string, ZoneList>();
+            Zones = new Dictionary<string, IList<Zone>>();
             Rules = new Dictionary<string, IList<ZoneRule>>();
             Aliases = new Dictionary<string, string>();
-            currentZoneList = null;
-            this.Version = version;
+            Version = version;
         }
 
         /// <summary>
         /// Adds the given zone alias to the database.
         /// </summary>
+        /// <param name="original">The existing zone ID to map the alias to.</param>
         /// <param name="alias">The zone alias to add.</param>
-        internal void AddAlias(ZoneAlias alias)
+        internal void AddAlias(string existing, string alias)
         {
-            Aliases.Add(alias.Alias, alias.Existing);
+            Aliases.Add(alias, existing);
         }
 
         /// <summary>
-        /// Adds the given rule to the appropriate RuleSet. If there is no existing
-        /// RuleSet, one is created and added to the database.
+        /// Adds the given rule to the appropriate rule set. If there is no existing
+        /// rule set, one is created and added to the database.
         /// </summary>
         /// <param name="rule">The rule to add.</param>
         internal void AddRule(ZoneRule rule)
@@ -89,27 +82,19 @@ namespace NodaTime.TzdbCompiler.Tzdb
         }
 
         /// <summary>
-        /// Adds the given zone to the current zone list. If there is no zone list or the
-        /// zone is for a different named zone a new zone list is created.
+        /// Adds the given zone line to the database, creating a new list for
+        /// that zone ID if necessary.
         /// </summary>
         /// <param name="zone">The zone to add.</param>
         internal void AddZone(Zone zone)
         {
-            var name = zone.Name;
-            if (String.IsNullOrEmpty(name))
+            IList<Zone> zoneSet;
+            if (!Zones.TryGetValue(zone.Name, out zoneSet))
             {
-                if (currentZoneList == null)
-                {
-                    throw new InvalidOperationException("A continuation zone must be preceeded by an initially named zone");
-                }
-                name = currentZoneList.Name;
+                zoneSet = new List<Zone>();
+                Zones[zone.Name] = zoneSet;
             }
-            if (currentZoneList == null || currentZoneList.Name != name)
-            {
-                currentZoneList = new ZoneList();
-                zoneLists.Add(name, currentZoneList);
-            }
-            currentZoneList.Add(zone);
+            zoneSet.Add(zone);
         }
 
         /// <summary>
@@ -125,7 +110,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
             {
                 zoneListKey = Aliases[zoneListKey];
             }
-            return CreateTimeZone(zoneId, zoneLists[zoneListKey]);
+            return CreateTimeZone(zoneId, Zones[zoneListKey]);
         }
 
         /// <summary>
@@ -133,9 +118,9 @@ namespace NodaTime.TzdbCompiler.Tzdb
         /// </summary>
         public IEnumerable<DateTimeZone> GenerateDateTimeZones()
         {
-            foreach (var zoneList in zoneLists.Values)
+            foreach (var entry in Zones.OrderBy(pair => pair.Key, StringComparer.Ordinal))
             {
-                yield return CreateTimeZone(zoneList.Name, zoneList);
+                yield return CreateTimeZone(entry.Key, entry.Value);
             }
         }
 
@@ -143,7 +128,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
         /// Returns a newly created <see cref="DateTimeZone" /> built from the given time zone data.
         /// </summary>
         /// <param name="zoneList">The time zone definition parts to add.</param>
-        private DateTimeZone CreateTimeZone(string id, ZoneList zoneList)
+        private DateTimeZone CreateTimeZone(string id, IList<Zone> zoneList)
         {
             var ruleSets = zoneList.Select(zone => zone.ResolveRules(Rules)).ToList();
             return DateTimeZoneBuilder.Build(id, ruleSets);
@@ -156,7 +141,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
         {
             Console.WriteLine("=======================================");
             Console.WriteLine("Rule sets:    {0:D}", Rules.Count);
-            Console.WriteLine("Zones:        {0:D}", zoneLists.Count);
+            Console.WriteLine("Zones:        {0:D}", Zones.Count);
             Console.WriteLine("Aliases:      {0:D}", Aliases.Count);
             Console.WriteLine("Zone locations: {0:D}", ZoneLocations?.Count ?? 0);
             Console.WriteLine("Zone1970 locations: {0:D}", Zone1970Locations?.Count ?? 0);

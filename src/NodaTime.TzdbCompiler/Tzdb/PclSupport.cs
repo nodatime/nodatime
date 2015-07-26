@@ -41,6 +41,6 @@ namespace NodaTime.TzdbCompiler.Tzdb
                 // { "Russia TZ 5 Standard Time", "N.Central Asia Standard Time" },
                 // { "Russia TZ 10 Standard Time", "Russia Time Zone 10" },
                 // { "Russia TZ 11 Standard Time", "Russia Time Zone 11" },
-    });
+            });
     }
 }
