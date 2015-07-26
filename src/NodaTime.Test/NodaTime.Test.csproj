@@ -251,7 +251,7 @@
     <Compile Include="TimeZones\ResolversTest.cs" />
     <Compile Include="TimeZones\TzdbDateTimeZoneSourceTest.cs" />
     <Compile Include="TimeZones\DateTimeZoneCacheTest.cs" />
-    <Compile Include="TimeZones\DaylightSavingDateTimeZoneTest.cs" />
+    <Compile Include="TimeZones\StandardDaylightAlternatingMapTest.cs" />
     <Compile Include="TimeZones\EtcTest.cs" />
     <Compile Include="TimeZones\JordanTest.cs" />
     <Compile Include="TimeZones\PrecalculatedDateTimeZoneTest.cs" />

@@ -8,19 +8,19 @@ using NodaTime.TimeZones;
 namespace NodaTime.Benchmarks.NodaTimeTests
 {
     /// <summary>
-    /// Benchmarks for operations on an uncached DaylightSavingDateTimeZone.
+    /// Benchmarks for operations on an uncached StandardDaylightAlternatingMap.
     /// </summary>
-    internal sealed class DaylightSavingsDateTimeZoneBenchmarks
+    internal sealed class StandardDaylightAlternatingMapBenchmarks
     {
         private static readonly Instant January1st = Instant.FromUtc(2010, 1, 1, 0, 0);
         private static readonly Instant July1st = Instant.FromUtc(2010, 7, 1, 0, 0);
 
-        private static readonly DaylightSavingsDateTimeZone SampleZone;
+        private static readonly StandardDaylightAlternatingMap SampleZone;
 
-        static DaylightSavingsDateTimeZoneBenchmarks()
+        static StandardDaylightAlternatingMapBenchmarks()
         {
             // Build a daylight savings zone which basically models modern America/Los_Angeles.
-            SampleZone = new DaylightSavingsDateTimeZone(Offset.FromHours(-8),
+            SampleZone = new StandardDaylightAlternatingMap(Offset.FromHours(-8),
                 new ZoneRecurrence("PDT", Offset.FromHours(1),
                     new ZoneYearOffset(TransitionMode.Wall, monthOfYear: 3, dayOfMonth: 8, dayOfWeek: 7,
                                        advance: true, timeOfDay: new LocalTime(2, 0)),

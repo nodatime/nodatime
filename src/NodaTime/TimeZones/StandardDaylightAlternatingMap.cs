@@ -20,7 +20,7 @@ namespace NodaTime.TimeZones
     /// only be used as part of a zone which will only ask it for values within the right
     /// portion of the timeline.
     /// </remarks>
-    internal sealed class DaylightSavingsDateTimeZone : IEquatable<DaylightSavingsDateTimeZone>, IZoneIntervalMapWithMinMax
+    internal sealed class StandardDaylightAlternatingMap : IEquatable<StandardDaylightAlternatingMap>, IZoneIntervalMapWithMinMax
     {
         private readonly Offset standardOffset;
         private readonly ZoneRecurrence standardRecurrence;
@@ -30,7 +30,7 @@ namespace NodaTime.TimeZones
         public Offset MaxOffset => Offset.Max(standardOffset, standardOffset + dstRecurrence.Savings);
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DaylightSavingsDateTimeZone"/> class.
+        /// Initializes a new instance of the <see cref="StandardDaylightAlternatingMap"/> class.
         /// </summary>
         /// <remarks>
         /// At least one of the recurrences (it doesn't matter which) must be a "standard", i.e. not have any savings
@@ -40,7 +40,7 @@ namespace NodaTime.TimeZones
         /// <param name="standardOffset">The standard offset.</param>
         /// <param name="startRecurrence">The start recurrence.</param>
         /// <param name="endRecurrence">The end recurrence.</param>
-        internal DaylightSavingsDateTimeZone(Offset standardOffset, ZoneRecurrence startRecurrence, ZoneRecurrence endRecurrence)
+        internal StandardDaylightAlternatingMap(Offset standardOffset, ZoneRecurrence startRecurrence, ZoneRecurrence endRecurrence)
         {
             this.standardOffset = standardOffset;
             // Treat the recurrences as if they extended to the start of time.
@@ -60,9 +60,9 @@ namespace NodaTime.TimeZones
             standardRecurrence = standard;
         }
 
-        public override bool Equals(object other) => Equals(other as DaylightSavingsDateTimeZone);
+        public override bool Equals(object other) => Equals(other as StandardDaylightAlternatingMap);
 
-        public bool Equals(DaylightSavingsDateTimeZone other) =>
+        public bool Equals(StandardDaylightAlternatingMap other) =>
             other != null &&
             standardOffset == other.standardOffset && 
             dstRecurrence.Equals(other.dstRecurrence) &&
@@ -157,7 +157,7 @@ namespace NodaTime.TimeZones
             writer.WriteOffset(dstRecurrence.Savings);
         }
 
-        internal static DaylightSavingsDateTimeZone Read([NotNull] IDateTimeZoneReader reader)
+        internal static StandardDaylightAlternatingMap Read([NotNull] IDateTimeZoneReader reader)
         {
             Preconditions.CheckNotNull(reader, nameof(reader));
             Offset standardOffset = reader.ReadOffset();
@@ -168,7 +168,7 @@ namespace NodaTime.TimeZones
             Offset savings = reader.ReadOffset();
             ZoneRecurrence standardRecurrence = new ZoneRecurrence(standardName, Offset.Zero, standardYearOffset, int.MinValue, int.MaxValue);
             ZoneRecurrence dstRecurrence = new ZoneRecurrence(daylightName, savings, daylightYearOffset, int.MinValue, int.MaxValue);
-            return new DaylightSavingsDateTimeZone(standardOffset, standardRecurrence, dstRecurrence);
+            return new StandardDaylightAlternatingMap(standardOffset, standardRecurrence, dstRecurrence);
         }
     }
 }

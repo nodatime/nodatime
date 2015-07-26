@@ -32,7 +32,7 @@ namespace NodaTime.TimeZones
         /// <param name="id">The id.</param>
         /// <param name="intervals">The intervals before the tail zone.</param>
         /// <param name="tailZone">The tail zone - which can be any IZoneIntervalMap for normal operation,
-        /// but must be a DaylightSavingDateTimeZone if the result is to be serialized.</param>
+        /// but must be a StandardDaylightAlternatingMap if the result is to be serialized.</param>
         [VisibleForTesting]
         internal PrecalculatedDateTimeZone([NotNull] string id, [NotNull] ZoneInterval[] intervals, IZoneIntervalMapWithMinMax tailZone)
             : base(id, false,
@@ -156,7 +156,7 @@ namespace NodaTime.TimeZones
             if (tailZone != null)
             {
                 // This is the only kind of zone we support in the new format. Enforce that...
-                var tailDstZone = (DaylightSavingsDateTimeZone)tailZone;
+                var tailDstZone = (StandardDaylightAlternatingMap)tailZone;
                 tailDstZone.Write(writer);
             }
         }
@@ -185,7 +185,7 @@ namespace NodaTime.TimeZones
                 periods[i] = new ZoneInterval(name, start, nextStart, offset, savings);
                 start = nextStart;
             }
-            var tailZone = reader.ReadByte() == 1 ? DaylightSavingsDateTimeZone.Read(reader) : null;
+            var tailZone = reader.ReadByte() == 1 ? StandardDaylightAlternatingMap.Read(reader) : null;
             return new PrecalculatedDateTimeZone(id, periods, tailZone);
         }
         #endregion // I/O

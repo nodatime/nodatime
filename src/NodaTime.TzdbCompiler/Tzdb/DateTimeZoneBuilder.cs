@@ -17,7 +17,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
     internal sealed class DateTimeZoneBuilder
     {
         private readonly List<ZoneInterval> zoneIntervals;
-        private DaylightSavingsDateTimeZone tailZone;
+        private StandardDaylightAlternatingMap tailZone;
 
         private DateTimeZoneBuilder()
         {
@@ -216,7 +216,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
                     if (startRule.IsInfinite && endRule.IsInfinite)
                     {
                         // Phase one: build the zone, so we can go round once again and then return.
-                        tailZone = new DaylightSavingsDateTimeZone(standardOffset, startRule, endRule);
+                        tailZone = new StandardDaylightAlternatingMap(standardOffset, startRule, endRule);
                     }
                 }
             }

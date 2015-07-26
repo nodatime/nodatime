@@ -193,7 +193,7 @@ namespace NodaTime.TimeZones
                 {
                     var daylightRecurrence = new ZoneRecurrence(zone.DaylightName, Savings, ConvertTransition(rule.DaylightTransitionStart), int.MinValue, int.MaxValue);
                     var standardRecurrence = new ZoneRecurrence(zone.StandardName, Offset.Zero, ConvertTransition(rule.DaylightTransitionEnd), int.MinValue, int.MaxValue);
-                    var recurringMap = new DaylightSavingsDateTimeZone(StandardOffset, standardRecurrence, daylightRecurrence);
+                    var recurringMap = new StandardDaylightAlternatingMap(StandardOffset, standardRecurrence, daylightRecurrence);
                     PartialMap = new PartialZoneIntervalMap(Start, End, recurringMap);
                 }
             }
