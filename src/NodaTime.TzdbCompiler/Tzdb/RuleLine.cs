@@ -12,12 +12,12 @@ using NodaTime.Text;
 namespace NodaTime.TzdbCompiler.Tzdb
 {
     /// <summary>
-    /// Defines one time zone rule with a validity range.
+    /// Defines one "Rule" line from the tz data. (This may be applied to multiple zones.)
     /// </summary>
     /// <remarks>
     /// Immutable, threadsafe.
     /// </remarks>
-    internal class ZoneRule : IEquatable<ZoneRule>
+    internal class RuleLine : IEquatable<RuleLine>
     {
         private static readonly OffsetPattern PercentZPattern = OffsetPattern.CreateWithInvariantCulture("i");
 
@@ -46,11 +46,11 @@ namespace NodaTime.TzdbCompiler.Tzdb
         public string Type { get; }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ZoneRule" /> class.
+        /// Initializes a new instance of the <see cref="RuleLine" /> class.
         /// </summary>
         /// <param name="recurrence">The recurrence definition of this rule.</param>
         /// <param name="daylightSavingsIndicator">The daylight savings indicator letter for time zone names.</param>
-        public ZoneRule(ZoneRecurrence recurrence, string daylightSavingsIndicator, string type)
+        public RuleLine(ZoneRecurrence recurrence, string daylightSavingsIndicator, string type)
         {
             this.recurrence = recurrence;
             this.daylightSavingsIndicator = daylightSavingsIndicator;
@@ -66,7 +66,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
         ///   true if the current object is equal to the <paramref name = "other" /> parameter;
         ///   otherwise, false.
         /// </returns>
-        public bool Equals(ZoneRule other) => other != null && Equals(recurrence, other.recurrence) && Equals(daylightSavingsIndicator, other.daylightSavingsIndicator);
+        public bool Equals(RuleLine other) => other != null && Equals(recurrence, other.recurrence) && Equals(daylightSavingsIndicator, other.daylightSavingsIndicator);
         #endregion
 
         #region Operator overloads
@@ -76,7 +76,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
         /// <param name="left">The left.</param>
         /// <param name="right">The right.</param>
         /// <returns>The result of the operator.</returns>
-        public static bool operator ==(ZoneRule left, ZoneRule right) =>        
+        public static bool operator ==(RuleLine left, RuleLine right) =>        
             ReferenceEquals(left, null) ? ReferenceEquals(right, null) : left.Equals(right);
 
         /// <summary>
@@ -85,7 +85,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
         /// <param name="left">The left.</param>
         /// <param name="right">The right.</param>
         /// <returns>The result of the operator.</returns>
-        public static bool operator !=(ZoneRule left, ZoneRule right) => !(left == right);
+        public static bool operator !=(RuleLine left, RuleLine right) => !(left == right);
         #endregion
 
         /// <summary>
@@ -96,7 +96,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
         /// daylight saving time, but with different names.
         /// </remarks>
         /// <param name="zone">The zone for which this rule is being considered.</param>
-        public IEnumerable<ZoneRecurrence> GetRecurrences(Zone zone)
+        public IEnumerable<ZoneRecurrence> GetRecurrences(ZoneLine zone)
         {
             string name = FormatName(zone);
             if (Type == null)
@@ -134,7 +134,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
             }
         }
 
-        private string FormatName(Zone zone)
+        private string FormatName(ZoneLine zone)
         {
             string nameFormat = zone.Format;
             int index = nameFormat.IndexOf("/", StringComparison.Ordinal);
@@ -169,7 +169,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
         /// <c>true</c> if the specified <see cref="System.Object" /> is equal to this instance;
         /// otherwise, <c>false</c>.
         /// </returns>
-        public override bool Equals(object obj) => Equals(obj as ZoneRule);
+        public override bool Equals(object obj) => Equals(obj as RuleLine);
 
         /// <summary>
         /// Returns a hash code for this instance.

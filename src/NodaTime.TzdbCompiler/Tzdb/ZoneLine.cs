@@ -13,17 +13,17 @@ using System.Linq;
 namespace NodaTime.TzdbCompiler.Tzdb
 {
     /// <summary>
-    /// Contains the parsed information from one zone line of the TZDB zone database.
+    /// Contains the parsed information from one "Zone" line of the TZDB zone database.
     /// </summary>
     /// <remarks>
     /// Immutable, thread-safe
     /// </remarks>
-    internal class Zone : IEquatable<Zone>
+    internal class ZoneLine : IEquatable<ZoneLine>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="Zone" /> class.
+        /// Initializes a new instance of the <see cref="ZoneLine" /> class.
         /// </summary>
-        public Zone(string name, Offset offset, string rules, string format, int untilYear, ZoneYearOffset untilYearOffset)
+        public ZoneLine(string name, Offset offset, string rules, string format, int untilYear, ZoneYearOffset untilYearOffset)
         {
             this.Name = name;
             this.StandardOffset = offset;
@@ -72,7 +72,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
         ///   true if the current object is equal to the <paramref name = "other" /> parameter;
         ///   otherwise, false.
         /// </returns>
-        public bool Equals(Zone other)
+        public bool Equals(ZoneLine other)
         {
             if (ReferenceEquals(null, other))
             {
@@ -99,7 +99,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
         ///   <c>true</c> if the specified <see cref="System.Object" /> is equal to this instance;
         ///   otherwise, <c>false</c>.
         /// </returns>
-        public override bool Equals(object obj) => Equals(obj as Zone);
+        public override bool Equals(object obj) => Equals(obj as ZoneLine);
 
         /// <summary>
         ///   Returns a hash code for this instance.
@@ -144,13 +144,13 @@ namespace NodaTime.TzdbCompiler.Tzdb
             return builder.ToString();
         }
 
-        public ZoneRuleSet ResolveRules(IDictionary<string, IList<ZoneRule>> allRules)
+        public ZoneRuleSet ResolveRules(IDictionary<string, IList<RuleLine>> allRules)
         {
             if (Rules == null)
             {
                 return new ZoneRuleSet(Format, StandardOffset, Offset.Zero, UntilYear, UntilYearOffset);
             }
-            IList<ZoneRule> ruleSet;
+            IList<RuleLine> ruleSet;
             if (allRules.TryGetValue(Rules, out ruleSet))
             {
                 var rules = ruleSet.SelectMany(x => x.GetRecurrences(this));

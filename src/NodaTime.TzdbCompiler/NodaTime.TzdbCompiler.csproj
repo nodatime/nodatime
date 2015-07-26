@@ -89,9 +89,9 @@
     <Compile Include="Tzdb\TzdbZoneInfoCompiler.cs" />
     <Compile Include="Tzdb\TzdbZoneInfoParser.cs" />
     <Compile Include="Tzdb\CldrWindowsZonesParser.cs" />
-    <Compile Include="Tzdb\Zone.cs" />
+    <Compile Include="Tzdb\ZoneLine.cs" />
     <Compile Include="Tzdb\ZoneRuleSet.cs" />
-    <Compile Include="Tzdb\ZoneRule.cs" />
+    <Compile Include="Tzdb\RuleLine.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Tzdb\ZoneTransition.cs" />
   </ItemGroup>

@@ -358,7 +358,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
         /// </remarks>
         /// <param name="tokens">The tokens to parse.</param>
         /// <returns>The Rule object.</returns>
-        internal ZoneRule ParseRule(Tokens tokens)
+        internal RuleLine ParseRule(Tokens tokens)
         {
             var name = NextString(tokens, "GetName");
             int fromYear = NextYear(tokens, 0);
@@ -384,7 +384,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
             // The name of the zone recurrence is currently the name of the rule. Later (in ZoneRule.GetRecurrences)
             // it will be replaced with the formatted name. It's not ideal, but it avoids a lot of duplication.
             var recurrence = new ZoneRecurrence(name, savings, yearOffset, fromYear, toYear);
-            return new ZoneRule(recurrence, daylightSavingsIndicator, type);
+            return new RuleLine(recurrence, daylightSavingsIndicator, type);
         }
 
         /// <summary>
@@ -396,7 +396,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
         /// <param name="name">The name of the zone being parsed.</param>
         /// <param name="tokens">The tokens to parse.</param>
         /// <returns>The Zone object.</returns>
-        internal Zone ParseZone(string name, Tokens tokens)
+        internal ZoneLine ParseZone(string name, Tokens tokens)
         {
             var offset = NextOffset(tokens, "Gmt Offset");
             var rules = NextOptional(tokens, "Rules");
@@ -406,10 +406,10 @@ namespace NodaTime.TzdbCompiler.Tzdb
             if (tokens.HasNextToken)
             {
                 var until = ParseDateTimeOfYear(tokens, false);
-                return new Zone(name, offset, rules, format, year, until);
+                return new ZoneLine(name, offset, rules, format, year, until);
             }
 
-            return new Zone(name, offset, rules, format, year, ZoneYearOffset.StartOfYear);
+            return new ZoneLine(name, offset, rules, format, year, ZoneYearOffset.StartOfYear);
         }
 
         /// <summary>
