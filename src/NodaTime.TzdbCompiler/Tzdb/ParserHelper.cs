@@ -8,7 +8,6 @@ using System.Globalization;
 using System.Text.RegularExpressions;
 using JetBrains.Annotations;
 using NodaTime.Text;
-using NodaTime.Text.Patterns;
 using NodaTime.Utility;
 
 namespace NodaTime.TzdbCompiler.Tzdb

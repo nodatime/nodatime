@@ -2,16 +2,13 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-using System;
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
 using JetBrains.Annotations;
-using NodaTime.TzdbCompiler.Tzdb;
 using NodaTime.Utility;
 using System.Text;
 using System.IO;
 
-namespace NodaTime.TzdbCompiler
+namespace NodaTime.TzdbCompiler.Tzdb
 {
     /// <summary>
     ///   Provides a simple string tokenizer that breaks the string into words that are separated by
@@ -24,7 +21,7 @@ namespace NodaTime.TzdbCompiler
     ///     the line are ignored.
     ///   </para>
     /// </remarks>
-    public class Tokens
+    internal class Tokens
     {
         /// <summary>
         /// Represents an empty token list.

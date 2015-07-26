@@ -75,9 +75,8 @@
       <Link>CommandLineText.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="OutputType.cs" />
     <Compile Include="Tzdb\IoExtensions.cs" />
-    <Compile Include="Tokens.cs" />
+    <Compile Include="Tzdb\Tokens.cs" />
     <Compile Include="Tzdb\DateTimeZoneBuilder.cs" />
     <Compile Include="Tzdb\FileSource.cs" />
     <Compile Include="Tzdb\MissingTokenException.cs" />

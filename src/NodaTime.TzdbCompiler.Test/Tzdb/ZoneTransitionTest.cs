@@ -52,7 +52,7 @@ namespace NodaTime.TzdbCompiler.Test.Tzdb
         }
 
         [Test]
-        public void ISTransitionFrom_unequalStandardOffset_false()
+        public void IsTransitionFrom_unequalStandardOffset_false()
         {
             var newValue = new ZoneTransition(NodaConstants.UnixEpoch, "abc", Offset.Zero, Offset.Zero);
             var oldValue = new ZoneTransition(NodaConstants.UnixEpoch, "abc", Offset.MaxValue, Offset.Zero);

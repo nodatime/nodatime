@@ -7,7 +7,7 @@ using System;
 using System.Collections.Generic;
 using NodaTime.TzdbCompiler.Tzdb;
 
-namespace NodaTime.TzdbCompiler.Test
+namespace NodaTime.TzdbCompiler.Test.Tzdb
 {
     /// <summary>
     /// This is a test class for containing all of the ParserHelper unit tests.

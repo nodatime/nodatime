@@ -32,7 +32,6 @@ namespace NodaTime.TzdbCompiler.Tzdb
 
         private static readonly Regex VersionRegex = new Regex(@"\d{2,4}[a-z]");
 
-        private readonly TzdbZoneInfoParser tzdbParser;
         private readonly TextWriter log;
 
         /// <summary>
@@ -47,7 +46,6 @@ namespace NodaTime.TzdbCompiler.Tzdb
         /// </summary>
         public TzdbZoneInfoCompiler(TextWriter log)
         {
-            tzdbParser = new TzdbZoneInfoParser();
             this.log = log;
         }
 
@@ -69,6 +67,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
 
         private void LoadZoneFiles(FileSource source, TzdbDatabase database)
         {
+            var tzdbParser = new TzdbZoneInfoParser();
             foreach (var file in ZoneFiles)
             {
                 if (source.Contains(file))
