@@ -18,13 +18,18 @@ The following standard patterns are supported:
   Typical pattern text: `+HH:mm`
 - `s`: Short format, displaying information down to the hour.  
   Typical pattern text: `+HH`
-- `g`: General pattern. Formatting depends on the value passed in:
-  - If the offset has seconds, the long format is used; otherwise
-  - If the offset has minutes, the medium format is used; otherwise
-  - The short format is used
-  
-  When parsing, the other standard format patterns are tried one at a time. This is the default format pattern.
-- `G`: As `g`, but using `Z` for an offset of 0, as if it were Z-prefixed. (See below.)  
+- `L`: Long format without punctuation, displaying information down to the second.  
+  Typical pattern text: `+HHmmss`
+- `M`: Medium format without punctuation, displaying information down to the minute.  
+  Typical pattern text: `+HHmm`
+- `S`: Short format without punctuation, displaying information down to the minute.  
+  Typical pattern text: `+HH` (so equivalent to `s` in many cases, but can vary by culture)
+- `g`: General pattern. Formatting depends on the value passed in. If the offset has seconds, the long 
+  format is used; otherwise, if the offset has minutes, the medium format is used; otherwise the short format is used. When parsing, the other standard format patterns are tried one at a time. This is the default format pattern.
+- `G`: As `g`, but using `Z` for an offset of 0, as if it were Z-prefixed. (See below.)
+- `i`: As `g`, but using the colon-free formats (`L`, `M`, `S`)
+- `I`: As `i`, but using `Z` for an offset of 0, as if it were Z-prefixed. (See below.)
+
 
 Custom Patterns
 ---------------

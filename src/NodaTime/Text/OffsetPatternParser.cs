@@ -63,9 +63,13 @@ namespace NodaTime.Text
                 switch (patternText)
                 {
                     case "g":
-                        return CreateGeneralPattern(formatInfo);
+                        return CreateGeneralPattern(formatInfo, "lms");
                     case "G":
-                        return new ZPrefixPattern(CreateGeneralPattern(formatInfo));
+                        return new ZPrefixPattern(CreateGeneralPattern(formatInfo, "lms"));
+                    case "i":
+                        return CreateGeneralPattern(formatInfo, "LMS");
+                    case "I":
+                        return new ZPrefixPattern(CreateGeneralPattern(formatInfo, "LMS"));
                     case "l":
                         patternText = formatInfo.OffsetPatternLong;
                         break;
@@ -74,6 +78,15 @@ namespace NodaTime.Text
                         break;
                     case "s":
                         patternText = formatInfo.OffsetPatternShort;
+                        break;
+                    case "L":
+                        patternText = formatInfo.OffsetPatternLongNoPunctuation;
+                        break;
+                    case "M":
+                        patternText = formatInfo.OffsetPatternMediumNoPunctuation;
+                        break;
+                    case "S":
+                        patternText = formatInfo.OffsetPatternShortNoPunctuation;
                         break;
                     default:
                         throw new InvalidPatternException(Messages.Parse_UnknownStandardFormat, patternText, typeof(Offset));
@@ -99,10 +112,10 @@ namespace NodaTime.Text
 
         #region Standard patterns
 
-        private IPartialPattern<Offset> CreateGeneralPattern(NodaFormatInfo formatInfo)
+        private IPartialPattern<Offset> CreateGeneralPattern(NodaFormatInfo formatInfo, string standardPatterns)
         {
             var patterns = new List<IPartialPattern<Offset>>();
-            foreach (char c in "lms")
+            foreach (char c in standardPatterns)
             {
                 patterns.Add(ParsePartialPattern(c.ToString(), formatInfo));
             }

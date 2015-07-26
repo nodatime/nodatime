@@ -144,6 +144,8 @@ namespace NodaTime.Test.Text
             new Data(12, 0, 0) { Culture = Cultures.EnUs, Text = "12", Pattern = "HH" },
             new Data(2, 0, 0) { Culture = Cultures.EnUs, Text = "2", Pattern = "%H" },
             new Data(2, 0, 0) { Culture = Cultures.EnUs, Text = "2", Pattern = "%H" },
+
+            // Standard patterns with punctuation...
             new Data(5, 0, 0) { Culture = Cultures.EnUs, Text = "+05", Pattern = "G"  },
             new Data(5, 12, 0) { Culture = Cultures.EnUs, Text = "+05:12", Pattern = "G"  },
             new Data(5, 12, 34) { Culture = Cultures.EnUs, Text = "+05:12:34", Pattern = "G"  },
@@ -166,6 +168,32 @@ namespace NodaTime.Test.Text
             new Data(5, 12, 34) { Culture = Cultures.ItIt, Text = "+05.12.34", Pattern = "g" },
             new Data(Offset.MaxValue) { Culture = Cultures.ItIt, Text = "+18", Pattern = "g" },
             new Data(Offset.MinValue) { Culture = Cultures.ItIt, Text = "-18", Pattern = "g" },
+
+            // Standard patterns without punctuation
+            new Data(5, 0, 0) { Culture = Cultures.EnUs, Text = "+05", Pattern = "I"  },
+            new Data(5, 12, 0) { Culture = Cultures.EnUs, Text = "+0512", Pattern = "I"  },
+            new Data(5, 12, 34) { Culture = Cultures.EnUs, Text = "+051234", Pattern = "I"  },
+            new Data(5, 0, 0) { Culture = Cultures.EnUs, Text = "+05", Pattern = "i"  },
+            new Data(5, 12, 0) { Culture = Cultures.EnUs, Text = "+0512", Pattern = "i"  },
+            new Data(5, 12, 34) { Culture = Cultures.EnUs, Text = "+051234", Pattern = "i"  },
+            new Data(Offset.MinValue) { Culture = Cultures.EnUs, Text = "-18", Pattern = "i" },
+            new Data(Offset.Zero) { Culture = Cultures.EnUs, Text = "Z", Pattern = "I"  },
+            new Data(Offset.Zero) { Culture = Cultures.EnUs, Text = "+00", Pattern = "i"  },
+            new Data(Offset.Zero) { Culture = Cultures.EnUs, Text = "+00", Pattern = "S"  },
+            new Data(Offset.Zero) { Culture = Cultures.EnUs, Text = "+0000", Pattern = "M"  },
+            new Data(Offset.Zero) { Culture = Cultures.EnUs, Text = "+000000", Pattern = "L"  },
+            new Data(5, 0, 0) { Culture = Cultures.FrFr, Text = "+05", Pattern = "i" },
+            new Data(5, 12, 0) { Culture = Cultures.FrFr, Text = "+0512", Pattern = "i" },
+            new Data(5, 12, 34) { Culture = Cultures.FrFr, Text = "+051234", Pattern = "i" },
+            new Data(Offset.MaxValue) { Culture = Cultures.FrFr, Text = "+18", Pattern = "i" },
+            new Data(Offset.MinValue) { Culture = Cultures.FrFr, Text = "-18", Pattern = "i" },
+            new Data(5, 0, 0) { Culture = Cultures.ItIt, Text = "+05", Pattern = "i" },
+            new Data(5, 12, 0) { Culture = Cultures.ItIt, Text = "+0512", Pattern = "i" },
+            new Data(5, 12, 34) { Culture = Cultures.ItIt, Text = "+051234", Pattern = "i" },
+            new Data(Offset.MaxValue) { Culture = Cultures.ItIt, Text = "+18", Pattern = "i" },
+            new Data(Offset.MinValue) { Culture = Cultures.ItIt, Text = "-18", Pattern = "i" },
+
+            // Explicit patterns
             new Data(0, 30, 0, true) { Culture = Cultures.EnUs, Text = "-00:30", Pattern = "+HH:mm" },
             new Data(0, 30, 0, true) { Culture = Cultures.EnUs, Text = "-00:30", Pattern = "-HH:mm" },
             new Data(0, 30, 0, false) { Culture = Cultures.EnUs, Text = "00:30", Pattern = "-HH:mm" },

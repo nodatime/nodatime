@@ -345,19 +345,34 @@ namespace NodaTime.Globalization
         public static NodaFormatInfo CurrentInfo => GetInstance(Thread.CurrentThread.CurrentCulture);
 
         /// <summary>
-        /// Gets the <see cref="Offset" /> "L" pattern.
+        /// Gets the <see cref="Offset" /> "l" pattern.
         /// </summary>
         public string OffsetPatternLong => PatternResources.ResourceManager.GetString("OffsetPatternLong", CultureInfo);
 
         /// <summary>
-        /// Gets the <see cref="Offset" /> "M" pattern.
+        /// Gets the <see cref="Offset" /> "m" pattern.
         /// </summary>
         public string OffsetPatternMedium => PatternResources.ResourceManager.GetString("OffsetPatternMedium", CultureInfo);
 
         /// <summary>
-        /// Gets the <see cref="Offset" /> "S" pattern.
+        /// Gets the <see cref="Offset" /> "s" pattern.
         /// </summary>
         public string OffsetPatternShort => PatternResources.ResourceManager.GetString("OffsetPatternShort", CultureInfo);
+
+        /// <summary>
+        /// Gets the <see cref="Offset" /> "L" pattern.
+        /// </summary>
+        public string OffsetPatternLongNoPunctuation => PatternResources.ResourceManager.GetString("OffsetPatternLongNoPunctuation", CultureInfo);
+
+        /// <summary>
+        /// Gets the <see cref="Offset" /> "M" pattern.
+        /// </summary>
+        public string OffsetPatternMediumNoPunctuation => PatternResources.ResourceManager.GetString("OffsetPatternMediumNoPunctuation", CultureInfo);
+
+        /// <summary>
+        /// Gets the <see cref="Offset" /> "S" pattern.
+        /// </summary>
+        public string OffsetPatternShortNoPunctuation => PatternResources.ResourceManager.GetString("OffsetPatternShortNoPunctuation", CultureInfo);
 
         /// <summary>
         /// Clears the cache. Only used for test purposes.

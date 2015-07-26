@@ -138,10 +138,19 @@
   <data name="OffsetPatternLong" xml:space="preserve">
     <value>+HH:mm:ss</value>
   </data>
+  <data name="OffsetPatternLongNoPunctuation" xml:space="preserve">
+    <value>+HHmmss</value>
+  </data>
   <data name="OffsetPatternMedium" xml:space="preserve">
     <value>+HH:mm</value>
   </data>
+  <data name="OffsetPatternMediumNoPunctuation" xml:space="preserve">
+    <value>+HHmm</value>
+  </data>
   <data name="OffsetPatternShort" xml:space="preserve">
+    <value>+HH</value>
+  </data>
+  <data name="OffsetPatternShortNoPunctuation" xml:space="preserve">
     <value>+HH</value>
   </data>
 </root>
