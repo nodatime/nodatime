@@ -376,6 +376,8 @@ namespace NodaTime.TzdbCompiler.Tzdb
             var yearOffset = ParseDateTimeOfYear(tokens, true);
             var savings = NextOffset(tokens, "SaveMillis");
             var daylightSavingsIndicator = NextOptional(tokens, "LetterS");
+            // TODO: Remove the zone here. It's not really a recurrence name; it's the name of the rule, and will be added to the
+            // database accordingly. This probably shouldn't be a ZoneRecurrence at all... put it all in ZoneRule?
             var recurrence = new ZoneRecurrence(name, savings, yearOffset, fromYear, toYear);
             return new ZoneRule(recurrence, daylightSavingsIndicator, type);
         }

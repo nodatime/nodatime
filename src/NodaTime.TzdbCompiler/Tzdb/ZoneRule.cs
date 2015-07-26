@@ -7,6 +7,7 @@ using System.Text;
 using NodaTime.TimeZones;
 using NodaTime.Utility;
 using System.Collections.Generic;
+using NodaTime.Text;
 
 namespace NodaTime.TzdbCompiler.Tzdb
 {
@@ -18,9 +19,13 @@ namespace NodaTime.TzdbCompiler.Tzdb
     /// </remarks>
     internal class ZoneRule : IEquatable<ZoneRule>
     {
+        private static readonly OffsetPattern PercentZPattern = OffsetPattern.CreateWithInvariantCulture("i");
+
         /// <summary>
-        /// The string to replace "%s" with (if any) when formatting a daylight saving recurrence.
+        /// The string to replace "%s" with (if any) when formatting the zone name key.
         /// </summary>
+        /// <remarks>This is always used to replace %s, whether or not the recurrence
+        /// actually includes savings; it is expected to be appropriate to the recurrence.</remarks>
         private readonly string daylightSavingsIndicator;
 
         /// <summary>
@@ -90,10 +95,10 @@ namespace NodaTime.TzdbCompiler.Tzdb
         /// Multiple zones may apply the same set of rules as to when they change into/out of
         /// daylight saving time, but with different names.
         /// </remarks>
-        /// <param name="nameFormat">The name format.</param>
-        public IEnumerable<ZoneRecurrence> GetRecurrences(string nameFormat)
+        /// <param name="zone">The zone for which this rule is being considered.</param>
+        public IEnumerable<ZoneRecurrence> GetRecurrences(Zone zone)
         {
-            string name = FormatName(nameFormat);
+            string name = FormatName(zone);
             if (Type == null)
             {
                 yield return recurrence.WithName(name);
@@ -109,8 +114,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
                 for (int year = recurrence.FromYear; year <= recurrence.ToYear; year++)
                 {
                     if (yearPredicate(year))
-                    {
-                        
+                    {                        
                         yield return recurrence.ForSingleYear(year).WithName(name);
                     }
                 }
@@ -130,22 +134,30 @@ namespace NodaTime.TzdbCompiler.Tzdb
             }
         }
 
-        private string FormatName(string nameFormat)
+        private string FormatName(Zone zone)
         {
-            Preconditions.CheckNotNull(nameFormat, "nameFormat");
+            string nameFormat = zone.Format;
             int index = nameFormat.IndexOf("/", StringComparison.Ordinal);
             if (index > 0)
             {
                 return recurrence.Savings == Offset.Zero ? nameFormat.Substring(0, index) : nameFormat.Substring(index + 1);
             }
             index = nameFormat.IndexOf("%s", StringComparison.Ordinal);
-            if (index < 0)
+            if (index >= 0)
             {
-                return nameFormat;
+                var left = nameFormat.Substring(0, index);
+                var right = nameFormat.Substring(index + 2);
+                return left + daylightSavingsIndicator + right;
             }
-            var left = nameFormat.Substring(0, index);
-            var right = nameFormat.Substring(index + 2);
-            return left + daylightSavingsIndicator + right;
+            index = nameFormat.IndexOf("%z", StringComparison.Ordinal);
+            if (index >= 0)
+            {
+                var wallOffset = zone.StandardOffset + recurrence.Savings;
+                var left = nameFormat.Substring(0, index);
+                var right = nameFormat.Substring(index + 2);
+                return left + PercentZPattern.Format(wallOffset) + right;
+            }
+            return nameFormat;
         }
 
         #region Object overrides

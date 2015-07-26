@@ -38,7 +38,8 @@ namespace NodaTime.TzdbCompiler.Tzdb
         internal int UntilYear { get; }
 
         /// <summary>
-        /// Returns the format for generating the label for this time zone.
+        /// Returns the format for generating the label for this time zone. May contain "%s" to
+        /// be replaced by a daylight savings indicator, or "%z" to be replaced by an offset indicator.
         /// </summary>
         /// <value>The format string.</value>
         internal string Format { get; }
@@ -152,7 +153,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
             IList<ZoneRule> ruleSet;
             if (allRules.TryGetValue(Rules, out ruleSet))
             {
-                var rules = ruleSet.SelectMany(x => x.GetRecurrences(Format));
+                var rules = ruleSet.SelectMany(x => x.GetRecurrences(this));
                 return new ZoneRuleSet(rules.ToList(), StandardOffset, UntilYear, UntilYearOffset);
             }
             else
