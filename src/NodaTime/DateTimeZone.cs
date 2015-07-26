@@ -84,7 +84,7 @@ namespace NodaTime
     /// avoid this if possible.
     /// </threadsafety>
     [Immutable]
-    public abstract class DateTimeZone : IEquatable<DateTimeZone>, IZoneIntervalMap
+    public abstract class DateTimeZone : IEquatable<DateTimeZone>, IZoneIntervalMapWithMinMax
     {
         /// <summary>
         /// The ID of the UTC (Coordinated Universal Time) time zone. This ID is always valid, whatever provider is

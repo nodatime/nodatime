@@ -15,12 +15,12 @@ namespace NodaTime.Benchmarks.NodaTimeTests
         private static readonly Instant January1st = Instant.FromUtc(2010, 1, 1, 0, 0);
         private static readonly Instant July1st = Instant.FromUtc(2010, 7, 1, 0, 0);
 
-        private static readonly DateTimeZone SampleZone;
+        private static readonly DaylightSavingsDateTimeZone SampleZone;
 
         static DaylightSavingsDateTimeZoneBenchmarks()
         {
             // Build a daylight savings zone which basically models modern America/Los_Angeles.
-            SampleZone = new DaylightSavingsDateTimeZone("America/Los_Angeles", Offset.FromHours(-8),
+            SampleZone = new DaylightSavingsDateTimeZone(Offset.FromHours(-8),
                 new ZoneRecurrence("PDT", Offset.FromHours(1),
                     new ZoneYearOffset(TransitionMode.Wall, monthOfYear: 3, dayOfMonth: 8, dayOfWeek: 7,
                                        advance: true, timeOfDay: new LocalTime(2, 0)),

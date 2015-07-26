@@ -216,7 +216,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
                     if (startRule.IsInfinite && endRule.IsInfinite)
                     {
                         // Phase one: build the zone, so we can go round once again and then return.
-                        tailZone = new DaylightSavingsDateTimeZone("ignored", standardOffset, startRule, endRule);
+                        tailZone = new DaylightSavingsDateTimeZone(standardOffset, startRule, endRule);
                     }
                 }
             }

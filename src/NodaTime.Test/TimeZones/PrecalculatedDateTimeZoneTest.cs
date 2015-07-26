@@ -28,8 +28,8 @@ namespace NodaTime.Test.TimeZones
         private static readonly ZoneRecurrence Summer = new ZoneRecurrence("Summer", Offset.FromHours(1),
             new ZoneYearOffset(TransitionMode.Wall, 3, 10, 0, false, new LocalTime(1, 0)), 1960, int.MaxValue);
 
-        private static readonly DaylightSavingsDateTimeZone TailZone = new DaylightSavingsDateTimeZone(
-            "TestTail", Offset.FromHours(-6), Winter, Summer);
+        private static readonly DaylightSavingsDateTimeZone TailZone =
+            new DaylightSavingsDateTimeZone(Offset.FromHours(-6), Winter, Summer);
 
         // We don't actually want an interval from the beginning of time when we ask our composite time zone for an interval
         // - because that could give the wrong idea. So we clamp it at the end of the precalculated interval.
