@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.22609.0
+VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuildProjectVariants", "BuildProjectVariants\BuildProjectVariants.csproj", "{EB7EDA24-926B-49F0-AC20-6C06196BFA7F}"
 EndProject
@@ -11,7 +11,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DocumentAnnotations", "Docu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DocumentVersions", "DocumentVersions\DocumentVersions.csproj", "{828F1038-EDAF-405A-80AD-D479C215EE0B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SetVersions", "SetVersions\SetVersions.csproj", "{6E80DFB9-0FF9-4F17-AC2B-014B44133B9A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SetVersion", "SetVersion\SetVersion.csproj", "{6E80DFB9-0FF9-4F17-AC2B-014B44133B9A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TweakSandcastleStyle", "TweakSandcastleStyle\TweakSandcastleStyle.csproj", "{BD941E4C-CD4F-4C33-9E95-CB72E97C421E}"
 EndProject
