@@ -102,7 +102,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
             if (source.Contains(Zone1970TabFile))
             {
                 var iso3166Dict = iso3166.ToDictionary(bits => bits[0], bits => new TzdbZone1970Location.Country(code: bits[0], name: bits[1]));
-                database.Zone1970Locations = source.ReadLines(ZoneTabFile)
+                database.Zone1970Locations = source.ReadLines(Zone1970TabFile)
                    .Where(line => line != "" && !line.StartsWith("#"))
                    .Select(line => TzdbZoneLocationParser.ParseEnhancedLocation(line, iso3166Dict))
                    .ToList();
