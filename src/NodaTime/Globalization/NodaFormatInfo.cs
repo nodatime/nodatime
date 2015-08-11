@@ -453,12 +453,32 @@ namespace NodaTime.Globalization
                 }
                 else
                 {
+                    string eraNameFromCulture = GetEraNameFromBcl(era, cultureInfo);
+                    if (eraNameFromCulture != null && !pipeDelimited.StartsWith(eraNameFromCulture + "|"))
+                    {
+                        pipeDelimited = eraNameFromCulture + "|" + pipeDelimited;
+                    }
                     allNames = pipeDelimited.Split('|');
                     primaryName = allNames[0];
                     // Order by length, descending to avoid early out (e.g. parsing BCE as BC and then having a spare E)
                     Array.Sort(allNames, (x, y) => y.Length.CompareTo(x.Length));
                 }
                 return new EraDescription(primaryName, new ReadOnlyCollection<string>(allNames));
+            }
+
+            /// <summary>
+            /// Returns the name of the era within a culture according to the BCL, if this is known and we're confident that
+            /// it's correct. (The selection here seems small, but it covers most cases.) This isn't ideal, but it's better
+            /// than nothing, and fixes an issue where non-English BCL cultures have "gg" in their patterns.
+            /// </summary>
+            private static string GetEraNameFromBcl(Era era, CultureInfo culture)
+            {
+                var calendar = culture.DateTimeFormat.Calendar;
+                bool getEraFromCalendar =
+                    (era == Era.Common && calendar is GregorianCalendar) ||
+                    (era == Era.AnnoPersico && calendar is PersianCalendar) ||
+                    (era == Era.AnnoHegirae && (calendar is HijriCalendar || calendar is UmAlQuraCalendar));
+                return getEraFromCalendar ? culture.DateTimeFormat.GetEraName(1) : null;
             }
         }
     }
