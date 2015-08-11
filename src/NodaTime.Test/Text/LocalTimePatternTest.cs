@@ -383,8 +383,13 @@ namespace NodaTime.Test.Text
                 }
                 else
                 {
-                    Assert.IsTrue(ExpectedCharacters.Contains(cursor.Current),
-                        "Pattern '" + pattern + "' contains unquoted, unexpected characters");
+                    // We'll never do anything "special" with non-ascii characters anyway,
+                    // so we don't mind if they're not quoted.
+                    if (cursor.Current < '\u0080')
+                    {
+                        Assert.IsTrue(ExpectedCharacters.Contains(cursor.Current),
+                            "Pattern '" + pattern + "' contains unquoted, unexpected characters");
+                    }
                 }
             }
             // Check that the pattern parses
