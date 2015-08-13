@@ -24,7 +24,7 @@ namespace NodaTime.Text
     /// </remarks>
     internal sealed class InstantPatternParser : IPatternParser<Instant>
     {
-        private const string GeneralPatternText = "yyyy'-'MM'-'dd'T'HH':'mm':'ss'Z'";
+        private const string GeneralPatternText = "uuuu'-'MM'-'dd'T'HH':'mm':'ss'Z'";
 
         public IPattern<Instant> ParsePattern([NotNull] string patternText, NodaFormatInfo formatInfo)
         {
