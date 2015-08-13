@@ -161,7 +161,7 @@ Often you don't have much choice about how to parse or format text: if you're in
 - Custom patterns are rarely appropriate for arbitrary cultures. They generally useful for either the invariant culture or for specific cultures that you have knowledge of. (If you're writing an app which is only used in one country, for example, you have a lot more freedom than if you'll be dealing with cultures you don't have experience of, where the standard patterns are generally a better bet.)
 - If you're logging timestamps, think very carefully before you decide to log them in *any* time zone other than UTC. It's the one time zone that everyone else can work with, and you never need to worry about daylight saving time.
 - When designing a custom pattern:
-  - Consider sortability. A pattern such as `yyyy-MM-dd` is naturally sortable in the text form (assuming you never need years outside the range [0-9999]), whereas neither `dd-MM-yyyy` or `MM-dd-yyyy` is sortable.
+  - Consider sortability. A pattern such as `uuuu-MM-dd` is naturally sortable in the text form (assuming you never need years outside the range [0-9999]), whereas neither `dd-MM-uuuu` or `MM-dd-uuuu` is sortable.
   - Avoid two-digit years. Aside from anything else, the meaning of "2009-10-11" is a lot more obvious than "09-10-11".
   - Think about what precision you need to go down to.
   - Think about whether a fixed-width pattern would be useful or whether you want to save space by removing sub-second insignficant zeroes.

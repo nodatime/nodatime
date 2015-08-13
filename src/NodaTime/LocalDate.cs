@@ -198,11 +198,11 @@ namespace NodaTime
 
         /// <summary>Gets the year of this local date within the era.</summary>
         /// <value>The year of this local date within the era.</value>
-        public int YearOfEra => Calendar.GetYearOfEra(yearMonthDayCalendar.ToYearMonthDay());
+        public int YearOfEra => Calendar.GetYearOfEra(yearMonthDayCalendar.Year);
 
         /// <summary>Gets the era of this local date.</summary>
         /// <value>The era of this local date.</value>
-        public Era Era => Calendar.GetEra(yearMonthDayCalendar.ToYearMonthDay());
+        public Era Era => Calendar.GetEra(yearMonthDayCalendar.Year);
 
         /// <summary>Gets the day of this local date within the year.</summary>
         /// <value>The day of this local date within the year.</value>

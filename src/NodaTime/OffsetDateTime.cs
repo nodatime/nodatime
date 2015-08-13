@@ -200,11 +200,11 @@ namespace NodaTime
 
         /// <summary>Gets the year of this offset date and time within the era.</summary>
         /// <value>The year of this offset date and time within the era.</value>
-        public int YearOfEra => Calendar.GetYearOfEra(yearMonthDayCalendar.ToYearMonthDay());
+        public int YearOfEra => Calendar.GetYearOfEra(yearMonthDayCalendar.Year);
 
         /// <summary>Gets the era of this offset date and time.</summary>
         /// <value>The era of this offset date and time.</value>
-        public Era Era => Calendar.GetEra(yearMonthDayCalendar.ToYearMonthDay());
+        public Era Era => Calendar.GetEra(yearMonthDayCalendar.Year);
 
         /// <summary>Gets the day of this offset date and time within the year.</summary>
         /// <value>The day of this offset date and time within the year.</value>

@@ -19,7 +19,7 @@ namespace NodaTime.Text
     /// <remarks>
     /// Supported standard patterns:
     /// <list type="bullet">
-    ///   <item><description>g: general; the UTC ISO-8601 instant in the style yyyy-MM-ddTHH:mm:ssZ</description></item>
+    ///   <item><description>g: general; the UTC ISO-8601 instant in the style uuuu-MM-ddTHH:mm:ssZ</description></item>
     /// </list>
     /// </remarks>
     internal sealed class InstantPatternParser : IPatternParser<Instant>

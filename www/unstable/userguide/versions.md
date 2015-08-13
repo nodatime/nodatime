@@ -45,6 +45,7 @@ See the [Noda Time 1.x to 2.0 migration guide](migration-to-2.html) for full det
 - Julian and Coptic calendars with a minimum number of days in the first week other than 4 are not supported.
 - Factory methods for the Julian, Coptic and Persian calendars have been converted into properties.
 - `y` and `yyy` are no longer supported in date format specifiers; use `yy` or `yyyy` instead.
+- The date format specifiers `yy` and `yyyy` now refer to the year of era instead of the absolute year; `u` is used for absolute year.
 
 Bug fixes:
 

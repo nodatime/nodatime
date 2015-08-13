@@ -32,7 +32,7 @@ namespace NodaTime.Text
 
         /// <summary>
         /// Gets an invariant local date pattern which is ISO-8601 compatible.
-        /// This corresponds to the text pattern "yyyy'-'MM'-'dd".
+        /// This corresponds to the text pattern "uuuu'-'MM'-'dd".
         /// </summary>
         /// <value>An invariant local date pattern which is ISO-8601 compatible.</value>
         public static LocalDatePattern IsoPattern => Patterns.IsoPatternImpl;
@@ -43,7 +43,7 @@ namespace NodaTime.Text
         /// </summary>
         private static class Patterns
         {
-            internal static readonly LocalDatePattern IsoPatternImpl = CreateWithInvariantCulture("yyyy'-'MM'-'dd");
+            internal static readonly LocalDatePattern IsoPatternImpl = CreateWithInvariantCulture("uuuu'-'MM'-'dd");
         }
 
         private readonly IPattern<LocalDate> pattern;

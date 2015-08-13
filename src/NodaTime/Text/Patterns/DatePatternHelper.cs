@@ -18,16 +18,16 @@ namespace NodaTime.Text.Patterns
     internal static class DatePatternHelper
     {
         /// <summary>
-        /// Creates a character handler for the year specifier (y).
+        /// Creates a character handler for the year-of-era specifier (y).
         /// </summary>
-        internal static CharacterHandler<TResult, TBucket> CreateYearHandler<TResult, TBucket>
+        internal static CharacterHandler<TResult, TBucket> CreateYearOfEraHandler<TResult, TBucket>
             (Func<TResult, int> yearGetter, Action<TBucket, int> setter)
             where TBucket : ParseBucket<TResult>
         {
             return (pattern, builder) =>
             {
                 int count = pattern.GetRepeatCount(4);
-                builder.AddField(PatternFields.Year, pattern.Current);
+                builder.AddField(PatternFields.YearOfEra, pattern.Current);
                 switch (count)
                 {
                     case 2:
@@ -36,12 +36,12 @@ namespace NodaTime.Text.Patterns
                         builder.AddFormatLeftPad(2, value => ((yearGetter(value) % 100) + 100) % 100,
                             assumeNonNegative: true,
                             assumeFitsInCount: true);
-                        // Just remember that we've set this particular field. We can't set it twice as we've already got the Year flag set.
+                        // Just remember that we've set this particular field. We can't set it twice as we've already got the YearOfEra flag set.
                         builder.AddField(PatternFields.YearTwoDigits, pattern.Current);
                         break;
                     case 4:
                         // Left-pad to 4 digits when formatting; parse exactly 4 digits.
-                        builder.AddParseValueAction(4, 4, 'y', -9999, 9999, setter);
+                        builder.AddParseValueAction(4, 4, 'y', 1, 9999, setter);
                         builder.AddFormatLeftPad(4, yearGetter,
                             assumeNonNegative: false,
                             assumeFitsInCount: true);

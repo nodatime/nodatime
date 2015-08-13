@@ -33,7 +33,7 @@ namespace NodaTime.Text
 
         /// <summary>
         /// Gets an invariant local date/time pattern which is ISO-8601 compatible, down to the second.
-        /// This corresponds to the text pattern "yyyy'-'MM'-'dd'T'HH':'mm':'ss", and is also used as the "sortable"
+        /// This corresponds to the text pattern "uuuu'-'MM'-'dd'T'HH':'mm':'ss", and is also used as the "sortable"
         /// standard pattern.
         /// </summary>
         /// <value>An invariant local date/time pattern which is ISO-8601 compatible, down to the second.</value>
@@ -42,7 +42,7 @@ namespace NodaTime.Text
         /// <summary>
         /// Gets an invariant local date/time pattern which is ISO-8601 compatible, providing up to 9 decimal places
         /// of sub-second accuracy. (These digits are omitted when unnecessary.)
-        /// This corresponds to the text pattern "yyyy'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFFFF".
+        /// This corresponds to the text pattern "uuuu'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFFFF".
         /// </summary>
         /// <value>An invariant local date/time pattern which is ISO-8601 compatible, providing up to 9 decimal places
         /// of sub-second accuracy.</value>
@@ -52,7 +52,7 @@ namespace NodaTime.Text
         /// Gets an invariant local date/time pattern which is ISO-8601 compatible, providing up to 7 decimal places
         /// of sub-second accuracy which are always present (including trailing zeroes). This is compatible with the
         /// BCL round-trip formatting of <see cref="DateTime"/> values with a kind of "unspecified".
-        /// This corresponds to the text pattern "yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fffffffff".
+        /// This corresponds to the text pattern "uuuu'-'MM'-'dd'T'HH':'mm':'ss'.'fffffffff".
         /// FIXME(2.0): What should we do with this? Maintain BCL compatibility, or go to nanos?
         /// </summary>
         /// <value>An invariant local date/time pattern which is ISO-8601 compatible, providing up to 7 decimal places
@@ -61,7 +61,7 @@ namespace NodaTime.Text
 
         /// <summary>
         /// Gets an invariant local date/time pattern which round trips values including the calendar system.
-        /// This corresponds to the text pattern "yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fffffffff '('c')'".
+        /// This corresponds to the text pattern "uuuu'-'MM'-'dd'T'HH':'mm':'ss'.'fffffffff '('c')'".
         /// </summary>
         /// <value>An invariant local date/time pattern which round trips values including the calendar system.</value>
         public static LocalDateTimePattern FullRoundtripPattern => Patterns.FullRoundtripPatternImpl;
@@ -72,10 +72,10 @@ namespace NodaTime.Text
         /// </summary>
         internal static class Patterns
         {
-            internal static readonly LocalDateTimePattern GeneralIsoPatternImpl = CreateWithInvariantCulture("yyyy'-'MM'-'dd'T'HH':'mm':'ss");
-            internal static readonly LocalDateTimePattern ExtendedIsoPatternImpl = CreateWithInvariantCulture("yyyy'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFFFF");
-            internal static readonly LocalDateTimePattern BclRoundtripPatternImpl = CreateWithInvariantCulture("yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fffffff");
-            internal static readonly LocalDateTimePattern FullRoundtripPatternImpl = CreateWithInvariantCulture("yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fffffffff '('c')'");
+            internal static readonly LocalDateTimePattern GeneralIsoPatternImpl = CreateWithInvariantCulture("uuuu'-'MM'-'dd'T'HH':'mm':'ss");
+            internal static readonly LocalDateTimePattern ExtendedIsoPatternImpl = CreateWithInvariantCulture("uuuu'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFFFF");
+            internal static readonly LocalDateTimePattern BclRoundtripPatternImpl = CreateWithInvariantCulture("uuuu'-'MM'-'dd'T'HH':'mm':'ss'.'fffffff");
+            internal static readonly LocalDateTimePattern FullRoundtripPatternImpl = CreateWithInvariantCulture("uuuu'-'MM'-'dd'T'HH':'mm':'ss'.'fffffffff '('c')'");
         }
 
         private readonly IPattern<LocalDateTime> pattern;
