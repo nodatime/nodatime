@@ -206,6 +206,15 @@ namespace NodaTime.Test.Text
 
         private void AssertBclNodaEquality(CultureInfo culture, string patternText)
         {
+            // The BCL never seems to use abbreviated month genitive names.
+            // I think it's reasonable that we do. Hmm.
+            // See https://github.com/nodatime/nodatime/issues/377
+            if (patternText.Contains("MMM") && !patternText.Contains("MMMM") &&
+                culture.DateTimeFormat.AbbreviatedMonthGenitiveNames[SampleLocalDate.Month - 1] != culture.DateTimeFormat.AbbreviatedMonthNames[SampleLocalDate.Month - 1])
+            {
+                return;
+            }
+
             var pattern = LocalDatePattern.Create(patternText, culture);
             var calendarSystem = CalendarSystemForCalendar(culture.Calendar);
             if (calendarSystem == null)
