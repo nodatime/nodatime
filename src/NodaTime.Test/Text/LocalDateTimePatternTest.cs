@@ -23,11 +23,9 @@ namespace NodaTime.Test.Text
         
         private static readonly string[] AllStandardPatterns = { "f", "F", "g", "G", "o", "O", "s" };
 
-#pragma warning disable 0414 // Used by tests via reflection - do not remove!
         private static readonly object[] AllCulturesStandardPatterns = (from culture in Cultures.AllCultures
                                                                         from format in AllStandardPatterns
                                                                         select new TestCaseData(culture, format).SetName(culture + ": " + format)).ToArray();
-#pragma warning restore 0414
 
         // The standard example date/time used in all the MSDN samples, which means we can just cut and paste
         // the expected results of the standard patterns.
@@ -130,14 +128,14 @@ namespace NodaTime.Test.Text
         internal static IEnumerable<Data> FormatData = FormatOnlyData.Concat(FormatAndParseData);
 
         [Test]
-        [TestCaseSource("AllCulturesStandardPatterns")]
+        [TestCaseSource(nameof(AllCulturesStandardPatterns))]
         public void BclStandardPatternComparison(CultureInfo culture, string pattern)
         {
             AssertBclNodaEquality(culture, pattern);
         }
 
         [Test]
-        [TestCaseSource("AllCulturesStandardPatterns")]
+        [TestCaseSource(nameof(AllCulturesStandardPatterns))]
         public void ParseFormattedStandardPattern(CultureInfo culture, string patternText)
         {
             var pattern = CreatePatternOrNull(patternText, culture, new LocalDateTime(2000, 1, 1, 0, 0));
@@ -159,15 +157,6 @@ namespace NodaTime.Test.Text
                 culture.DateTimeFormat.PMDesignator == "")
             {
                 pattern = pattern.WithTemplateValue(new LocalDateTime(2000, 1, 1, 12, 0));
-            }
-
-            // The BCL never seems to use abbreviated month genitive names.
-            // I think it's reasonable that we do. Hmm.
-            // See https://github.com/nodatime/nodatime/issues/377
-            if (patternText.Contains("MMM") && !patternText.Contains("MMMM") &&
-                culture.DateTimeFormat.AbbreviatedMonthGenitiveNames[SampleLocalDateTime.Month - 1] != culture.DateTimeFormat.AbbreviatedMonthNames[SampleLocalDateTime.Month - 1])
-            {
-                return;
             }
 
             string formatted = pattern.Format(SampleLocalDateTime);
@@ -195,6 +184,16 @@ namespace NodaTime.Test.Text
 
             var pattern = CreatePatternOrNull(patternText, culture, LocalDateTimePattern.DefaultTemplateValue);
             if (pattern == null)
+            {
+                return;
+            }
+
+            // The BCL never seems to use abbreviated month genitive names.
+            // I think it's reasonable that we do. Hmm.
+            // See https://github.com/nodatime/nodatime/issues/377
+            if ((patternText == "G" || patternText == "g") &&
+                (culture.DateTimeFormat.ShortDatePattern.Contains("MMM") && !culture.DateTimeFormat.ShortDatePattern.Contains("MMMM")) &&
+                culture.DateTimeFormat.AbbreviatedMonthGenitiveNames[SampleLocalDateTime.Month - 1] != culture.DateTimeFormat.AbbreviatedMonthNames[SampleLocalDateTime.Month - 1])
             {
                 return;
             }
