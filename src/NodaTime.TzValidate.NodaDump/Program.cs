@@ -22,7 +22,6 @@ namespace NodaTime.TzValidate.NodaDump
     /// </summary>
     internal class Program
     {
-        private static readonly Instant End = Instant.FromUtc(2035, 1, 1, 0, 0);
         private static readonly IPattern<Instant> InstantPattern = NodaTime.Text.InstantPattern.GeneralPattern;
         private static readonly IPattern<Offset> OffsetPattern = NodaTime.Text.OffsetPattern.CreateWithInvariantCulture("l");
 
