@@ -3,6 +3,7 @@
 // as found in the LICENSE.txt file.
 using System;
 using NodaTime.Annotations;
+using NodaTime.Text;
 using NodaTime.Utility;
 
 namespace NodaTime
@@ -22,10 +23,14 @@ namespace NodaTime
     /// whole month, you can simply provide the first day of the month as the start and the first day of the
     /// next month as the exclusive end.
     /// </para>
+    /// <para>
+    /// Values can be compared for equality, but note that inclusive intervals and exclusive intervals are always
+    /// considered to differ, even if they cover the same range of dates.
+    /// </para>
     /// </remarks>
     /// <threadsafety>This type is immutable reference type. See the thread safety section of the user guide for more information.</threadsafety>
     [Immutable]
-    public sealed class DateInterval
+    public sealed class DateInterval : IEquatable<DateInterval>
     {
         /// <summary>
         /// Gets the start date of the interval, which is always included in the interval.
@@ -46,7 +51,7 @@ namespace NodaTime
         /// <summary>
         /// Indicates whether or not this interval includes its end date.
         /// </summary>
-        /// <value>Whether or not this </value>
+        /// <value>Whether or not this interval includes its end date.</value>
         public bool Inclusive { get; }
 
         /// <summary>
@@ -87,6 +92,73 @@ namespace NodaTime
         }
 
         /// <summary>
+        /// Returns the hash code for this interval, consistent with <see cref="Equals(DateInterval)"/>.
+        /// </summary>
+        /// <returns>The hash code for this interval.</returns>
+        public override int GetHashCode() =>
+            HashCodeHelper.Initialize()
+                .Hash(Start)
+                .Hash(End)
+                .Hash(Inclusive)
+                .Value;
+
+        /// <summary>
+        /// Compares two <see cref="DateInterval" /> values for equality.
+        /// </summary>
+        /// <remarks>
+        /// Date intervals are equal if they have the same start and end dates and are both inclusive or both exclusive:
+        /// an exclusive date interval of [2001-01-01, 2001-02-01) is not equal to the inclusive date interval of
+        /// [2001-01-01, 2001-01-31], even though both contain the same range of dates.
+        /// </remarks>
+        /// <param name="lhs">The first value to compare</param>
+        /// <param name="rhs">The second value to compare</param>
+        /// <returns>True if the two date intervals have the same properties; false otherwise.</returns>
+        public static bool operator ==(DateInterval lhs, DateInterval rhs)
+        {
+            if (ReferenceEquals(lhs, rhs))
+            {
+                return true;
+            }
+            if (ReferenceEquals(lhs, null) || ReferenceEquals(rhs, null))
+            {
+                return false;
+            }
+            return lhs.Start == rhs.Start && lhs.End == rhs.End && lhs.Inclusive == rhs.Inclusive;
+        }
+
+        /// <summary>
+        /// Compares two <see cref="DateInterval" /> values for inequality.
+        /// </summary>
+        /// <remarks>
+        /// Date intervals are equal if they have the same start and end dates and are both inclusive or both exclusive:
+        /// an exclusive date interval of [2001-01-01, 2001-02-01) is not equal to the inclusive date interval of
+        /// [2001-01-01, 2001-01-31], even though both contain the same range of dates.
+        /// </remarks>
+        /// <param name="lhs">The first value to compare</param>
+        /// <param name="rhs">The second value to compare</param>
+        /// <returns>False if the two date intervals have the same properties; true otherwise.</returns>
+        public static bool operator !=(DateInterval lhs, DateInterval rhs) => !(lhs == rhs);
+
+        /// <summary>
+        /// Compares the given date interval for equality with this one.
+        /// </summary>
+        /// <remarks>
+        /// Date intervals are equal if they have the same start and end dates and are both inclusive or both exclusive:
+        /// an exclusive date interval of [2001-01-01, 2001-02-01) is not equal to the inclusive date interval of
+        /// [2001-01-01, 2001-01-31], even though both contain the same range of dates.
+        /// </remarks>
+        /// <param name="other">The date interval to compare this one with.</param>
+        /// <returns>True if this date interval has the same properties as the one specified.</returns>
+        public bool Equals(DateInterval other) => other != null && this == other;
+
+        /// <summary>
+        /// Compares the given object for equality with this one, as per <see cref="Equals(DateInterval)"/>.
+        /// </summary>
+        /// <param name="other">The value to compare this one with.</param>
+        /// <returns>true if the other object is a date interval equal to this one, consistent with <see cref="Equals(DateInterval)"/>.</returns>
+        public override bool Equals(object obj) => obj is DateInterval && this == (DateInterval)obj;
+
+        /// <summary>
         /// Checks whether the given date is within this date interval. This requires
         /// that the date is not earlier than the start date, and not later than the end
         /// date. If the given date is exactly equal to the end date, it is considered
@@ -117,5 +189,19 @@ namespace NodaTime
             // Period.Between will give us the exclusive result, so we need to add 1
             // if this period is inclusive.
             Period.Between(Start, End, PeriodUnits.Days).Days + (Inclusive ? 1 : 0);
+
+        /// <summary>
+        /// Returns a string representation of this interval.
+        /// </summary>
+        /// <returns>
+        /// A string representation of this interval, as [start, end] for inclusive intervals, or [start, end) for
+        /// exclusive intervals, where "start" and "end" are the dates formatted using an ISO-8601 compatible pattern.
+        /// </returns>
+        public override string ToString()
+        {
+            string start = LocalDatePattern.IsoPattern.Format(Start);
+            string end = LocalDatePattern.IsoPattern.Format(End);
+            return $"[{start}, {end}" + (Inclusive ? "]" : ")");
+        }
     }
 }
