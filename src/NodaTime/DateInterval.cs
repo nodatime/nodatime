@@ -202,7 +202,7 @@ namespace NodaTime
             string start = LocalDatePattern.IsoPattern.Format(Start);
             string end = LocalDatePattern.IsoPattern.Format(End);
             string endType = Inclusive ? "]" : ")";
-            return $"[{start}, {end} {endType}";
+            return $"[{start}, {end}{endType}";
         }
     }
 }
