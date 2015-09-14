@@ -74,6 +74,24 @@ namespace NodaTime.Test
         }
 
         [Test]
+        public void Equals_DifferentCalendars()
+        {
+            LocalDate start1 = new LocalDate(2000, 1, 1);
+            LocalDate end1 = new LocalDate(2001, 6, 19);
+            // This is a really, really similar calendar to ISO - the dates could differ by week of year,
+            // but that's all.
+            LocalDate start2 = start1.WithCalendar(CalendarSystem.GetGregorianCalendar(1));
+            LocalDate end2 = end1.WithCalendar(CalendarSystem.GetGregorianCalendar(1));
+            var interval1 = new DateInterval(start1, end1, false);
+            var interval2 = new DateInterval(start2, end2, false);
+            Assert.AreNotEqual(interval1, interval2);
+            Assert.AreNotEqual(interval1.GetHashCode(), interval2.GetHashCode());
+            Assert.IsFalse(interval1 == interval2);
+            Assert.IsTrue(interval1 != interval2);
+            Assert.IsFalse(interval1.Equals(interval2)); // IEquatable implementation
+        }
+
+        [Test]
         public void Equals_DifferentStart()
         {
             LocalDate start1 = new LocalDate(2000, 1, 1);
