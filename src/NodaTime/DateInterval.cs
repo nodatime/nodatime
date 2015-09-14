@@ -154,7 +154,7 @@ namespace NodaTime
         /// <summary>
         /// Compares the given object for equality with this one, as per <see cref="Equals(DateInterval)"/>.
         /// </summary>
-        /// <param name="other">The value to compare this one with.</param>
+        /// <param name="obj">The value to compare this one with.</param>
         /// <returns>true if the other object is a date interval equal to this one, consistent with <see cref="Equals(DateInterval)"/>.</returns>
         public override bool Equals(object obj) => this == (obj as DateInterval);
 
