@@ -474,10 +474,18 @@ namespace NodaTime.Globalization
             private static string GetEraNameFromBcl(Era era, CultureInfo culture)
             {
                 var calendar = culture.DateTimeFormat.Calendar;
+#if PCL
+                var calendarTypeName = calendar.GetType().FullName;
+                bool getEraFromCalendar =
+                    (era == Era.Common && calendarTypeName == "System.Globalization.GregorianCalendar") ||
+                    (era == Era.AnnoPersico && calendarTypeName == "System.Globalization.PersianCalendar") ||
+                    (era == Era.AnnoHegirae && (calendarTypeName == "System.Globalization.HijriCalendar" || calendarTypeName == "System.Globalization.UmAlQuraCalendar"));
+#else
                 bool getEraFromCalendar =
                     (era == Era.Common && calendar is GregorianCalendar) ||
                     (era == Era.AnnoPersico && calendar is PersianCalendar) ||
                     (era == Era.AnnoHegirae && (calendar is HijriCalendar || calendar is UmAlQuraCalendar));
+#endif
                 return getEraFromCalendar ? culture.DateTimeFormat.GetEraName(1) : null;
             }
         }
