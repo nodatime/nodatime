@@ -16,9 +16,11 @@ namespace NodaTime.Calendars
     {
         internal const int MaxYear = 9999;
         internal const int MinYear = 1;
-        private const int ElapsedDaysCacheMask = (1 << 23) - 1; // Low 23 bits
-        private const int IsHeshvanLongCacheBit = 1 << 23;
-        private const int IsKislevShortCacheBit = 1 << 24;
+        // Use the bottom two bits of the day value to indicate Heshvan/Kislev.
+        // Using the top bits causes issues for negative day values (only relevant for
+        // invalid years, but still problematic in general).
+        private const int IsHeshvanLongCacheBit = 1 << 0;
+        private const int IsKislevShortCacheBit = 1 << 1;
 
         // Cache of when each year starts (in  terms of absolute days). This is the heart of
         // the algorithm, so just caching this is highly effective.
@@ -211,7 +213,7 @@ namespace NodaTime.Calendars
         internal static int ElapsedDays(int year)
         {
             int cache = GetOrPopulateCache(year);
-            return cache & ElapsedDaysCacheMask;
+            return cache >> 2;
         }
 
         private static int ElapsedDaysNoCache(int year)
@@ -235,8 +237,8 @@ namespace NodaTime.Calendars
 
         /// <summary>
         /// Returns the cached "elapsed day at start of year / IsHeshvanLong / IsKislevShort" combination,
-        /// populating the cache if necessary. Bits 0-22 are the "elapsed days start of year"; bit 23 is
-        /// "is Heshvan long"; bit 24 is "is Kislev short". If the year is out of the range for the cache,
+        /// populating the cache if necessary. Bits 2-24 are the "elapsed days start of year"; bit 0 is
+        /// "is Heshvan long"; bit 1 is "is Kislev short". If the year is out of the range for the cache,
         /// the value is populated but not cached.
         /// </summary>
         /// <param name="year"></param>
@@ -271,7 +273,7 @@ namespace NodaTime.Calendars
                 int cacheIndex = YearStartCacheEntry.GetCacheIndex(nextYear);
                 YearStartCacheEntry cacheEntry = YearCache[cacheIndex];
                 nextYearDays = cacheEntry.IsValidForYear(nextYear)
-                    ? cacheEntry.StartOfYearDays & ElapsedDaysCacheMask
+                    ? cacheEntry.StartOfYearDays >> 2
                     : ElapsedDaysNoCache(nextYear);
             }
             else
@@ -281,7 +283,7 @@ namespace NodaTime.Calendars
             int daysInYear = nextYearDays - days;
             bool isHeshvanLong = daysInYear % 10 == 5;
             bool isKislevShort = daysInYear % 10 == 3;
-            return days
+            return (days << 2)
                 | (isHeshvanLong ? IsHeshvanLongCacheBit : 0)
                 | (isKislevShort ? IsKislevShortCacheBit : 0);
         }
