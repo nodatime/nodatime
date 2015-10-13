@@ -264,5 +264,23 @@ namespace NodaTime.Text
         /// <returns>A new pattern with the given template value.</returns>
         public ZonedDateTimePattern WithTemplateValue(ZonedDateTime newTemplateValue) =>
             newTemplateValue == TemplateValue ? this : Create(PatternText, FormatInfo, Resolver, ZoneProvider, newTemplateValue);
+
+        /// <summary>
+        /// Creates a pattern like this one, but with the template value modified to use
+        /// the specified calendar system.
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// Care should be taken in two (relatively rare) scenarios. Although the default template value
+        /// is supported by all Noda Time calendar systems, if a pattern is created with a different
+        /// template value and then this method is called with a calendar system which doesn't support that
+        /// date, an exception will be thrown. Additionally, if the pattern only specifies some date fields,
+        /// it's possible that the new template value will not be suitable for all values.
+        /// </para>
+        /// </remarks>
+        /// <param name="calendar">The calendar system to convert the template value into.</param>
+        /// <returns>A new pattern with a template value in the specified calendar system.</returns>
+        public ZonedDateTimePattern WithCalendar([NotNull] CalendarSystem calendar) =>
+            WithTemplateValue(TemplateValue.WithCalendar(calendar));
     }
 }

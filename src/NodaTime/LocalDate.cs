@@ -585,13 +585,13 @@ namespace NodaTime
         /// The returned LocalDate is likely to have different field values to this one.
         /// For example, January 1st 1970 in the Gregorian calendar was December 19th 1969 in the Julian calendar.
         /// </summary>
-        /// <param name="calendarSystem">The calendar system to convert this local date to.</param>
+        /// <param name="calendar">The calendar system to convert this local date to.</param>
         /// <returns>The converted LocalDate</returns>
         [Pure]
-        public LocalDate WithCalendar([NotNull] CalendarSystem calendarSystem)
+        public LocalDate WithCalendar([NotNull] CalendarSystem calendar)
         {
-            Preconditions.CheckNotNull(calendarSystem, nameof(calendarSystem));
-            return new LocalDate(DaysSinceEpoch, calendarSystem);
+            Preconditions.CheckNotNull(calendar, nameof(calendar));
+            return new LocalDate(DaysSinceEpoch, calendar);
         }
 
         /// <summary>
