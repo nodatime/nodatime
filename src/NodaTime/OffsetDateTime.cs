@@ -410,12 +410,12 @@ namespace NodaTime
         /// The returned OffsetDateTime is likely to have different date field values to this one.
         /// For example, January 1st 1970 in the Gregorian calendar was December 19th 1969 in the Julian calendar.
         /// </summary>
-        /// <param name="calendarSystem">The calendar system to convert this offset date and time to.</param>
+        /// <param name="calendar">The calendar system to convert this offset date and time to.</param>
         /// <returns>The converted OffsetDateTime.</returns>
         [Pure]
-        public OffsetDateTime WithCalendar([NotNull] CalendarSystem calendarSystem)
+        public OffsetDateTime WithCalendar([NotNull] CalendarSystem calendar)
         {
-            LocalDate newDate = Date.WithCalendar(calendarSystem);
+            LocalDate newDate = Date.WithCalendar(calendar);
             return new OffsetDateTime(newDate.YearMonthDayCalendar, nanosecondsAndOffset);
         }
 

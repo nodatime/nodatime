@@ -9,6 +9,13 @@ Noda Time 2.0 contains a number of breaking changes. If you have a project which
 1.x and are considering upgrading to 2.0, please read the following migration guide carefully.
 In particular, there are some changes which are changes to execution-time behaviour, and won't show up as compile-time errors.
 
+Parameter names
+====
+
+Some parameters have been renamed for consistency. This should not affect code that uses positional
+argument passing; code which uses named arguments will need to specify the new parameter name where
+there are changes. This does not affect binary compatibility.
+
 Obsolete members
 ====
 

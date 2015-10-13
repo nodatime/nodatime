@@ -46,6 +46,7 @@ See the [Noda Time 1.x to 2.0 migration guide](migration-to-2.html) for full det
 - Factory methods for the Julian, Coptic and Persian calendars have been converted into properties.
 - `y` and `yyy` are no longer supported in date format specifiers; use `yy` or `yyyy` instead.
 - The date format specifiers `yy` and `yyyy` now refer to the year of era instead of the absolute year; `u` is used for absolute year.
+- Some parameters have been renamed for consistency, affecting code which uses named arguments.
 
 Bug fixes:
 
