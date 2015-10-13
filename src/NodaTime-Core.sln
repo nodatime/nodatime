@@ -1,13 +1,17 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.30501.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NodaTime", "NodaTime\NodaTime.csproj", "{42B687A6-0F76-4638-A372-161C922A998B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NodaTime.Test", "NodaTime.Test\NodaTime.Test.csproj", "{F870636C-1018-4392-8C74-76AD498EDD66}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NodaTime.Benchmarks", "NodaTime.Benchmarks\NodaTime.Benchmarks.csproj", "{8123BB5D-1DEB-478A-A1B3-9CA8940CA4C9}"
+	ProjectSection(ProjectDependencies) = postProject
+		{A9A2C498-FA61-4495-9953-16D56F8478F3} = {A9A2C498-FA61-4495-9953-16D56F8478F3}
+		{42B687A6-0F76-4638-A372-161C922A998B} = {42B687A6-0F76-4638-A372-161C922A998B}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NodaTime.Testing", "NodaTime.Testing\NodaTime.Testing.csproj", "{BC9407FE-A661-4DFE-8B24-D2E2F450743F}"
 EndProject
