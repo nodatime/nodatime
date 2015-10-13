@@ -303,28 +303,28 @@ namespace NodaTime.Test.Text
 
         // Fails on Mono: https://github.com/nodatime/nodatime/issues/98
         [Test]
-        [TestCaseSource(typeof(Cultures), "AllCulturesOrEmptyOnMono")]
+        [TestCaseSource(typeof(Cultures), nameof(Cultures.AllCulturesOrEmptyOnMono))]
         public void BclLongTimePatternIsValidNodaPattern(CultureInfo culture)
         {
             AssertValidNodaPattern(culture, culture.DateTimeFormat.LongTimePattern);
         }
 
         [Test]
-        [TestCaseSource(typeof(Cultures), "AllCultures")]
+        [TestCaseSource(typeof(Cultures), nameof(Cultures.AllCultures))]
         public void BclShortTimePatternIsValidNodaPattern(CultureInfo culture)
         {
             AssertValidNodaPattern(culture, culture.DateTimeFormat.ShortTimePattern);
         }
 
         [Test]
-        [TestCaseSource(typeof(Cultures), "AllCultures")]
+        [TestCaseSource(typeof(Cultures), nameof(Cultures.AllCultures))]
         public void BclLongTimePatternGivesSameResultsInNoda(CultureInfo culture)
         {
             AssertBclNodaEquality(culture, culture.DateTimeFormat.LongTimePattern);
         }
 
         [Test]
-        [TestCaseSource(typeof(Cultures), "AllCultures")]
+        [TestCaseSource(typeof(Cultures), nameof(Cultures.AllCultures))]
         public void BclShortTimePatternGivesSameResultsInNoda(CultureInfo culture)
         {
             AssertBclNodaEquality(culture, culture.DateTimeFormat.ShortTimePattern);

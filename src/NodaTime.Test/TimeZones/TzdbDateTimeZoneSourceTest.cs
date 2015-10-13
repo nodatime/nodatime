@@ -15,9 +15,7 @@ namespace NodaTime.Test.TimeZones
     [TestFixture]
     public class TzdbDateTimeZoneSourceTest
     {
-#pragma warning disable 0414 // Used by tests via reflection - do not remove!
         private static readonly List<TimeZoneInfo> SystemTimeZones = TimeZoneInfo.GetSystemTimeZones().ToList();
-#pragma warning restore 0414
 
         [Test]
         [TestCase("UTC", "Etc/GMT")]

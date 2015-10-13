@@ -15,15 +15,13 @@ namespace NodaTime.Test.TimeZones
     [TestFixture]
     public class BclDateTimeZoneTest
     {
-#pragma warning disable 0414 // Used by tests via reflection - do not remove!
         // This test is effectively disabled on Mono as its time zone support is broken in the current
         // stable release - see https://github.com/nodatime/nodatime/issues/97
         private static readonly ReadOnlyCollection<TimeZoneInfo> BclZonesOrEmptyOnMono = TestHelper.IsRunningOnMono
             ? new List<TimeZoneInfo>().AsReadOnly() : TimeZoneInfo.GetSystemTimeZones();
-#pragma warning restore 0414
 
         [Test]
-        [TestCaseSource("BclZonesOrEmptyOnMono")]
+        [TestCaseSource(nameof(BclZonesOrEmptyOnMono))]
         public void AllZoneTransitions(TimeZoneInfo windowsZone)
         {
             var nodaZone = BclDateTimeZone.FromTimeZoneInfo(windowsZone);
@@ -48,7 +46,7 @@ namespace NodaTime.Test.TimeZones
         /// slow test, mostly because TimeZoneInfo is slow.
         /// </summary>
         [Test]
-        [TestCaseSource("BclZonesOrEmptyOnMono")]
+        [TestCaseSource(nameof(BclZonesOrEmptyOnMono))]
         public void AllZonesEveryWeek(TimeZoneInfo windowsZone)
         {
             ValidateZoneEveryWeek(windowsZone);
@@ -71,7 +69,7 @@ namespace NodaTime.Test.TimeZones
         }
 
         [Test]
-        [TestCaseSource("BclZonesOrEmptyOnMono")]
+        [TestCaseSource(nameof(BclZonesOrEmptyOnMono))]
         public void AllZonesStartAndEndOfTime(TimeZoneInfo windowsZone)
         {
             var nodaZone = BclDateTimeZone.FromTimeZoneInfo(windowsZone);

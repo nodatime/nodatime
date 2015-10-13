@@ -193,7 +193,7 @@ namespace NodaTime.Test.Text
         internal static IEnumerable<Data> FormatData = FormatOnlyData.Concat(FormatAndParseData);
         
         [Test]
-        [TestCaseSource(typeof(Cultures), "AllCultures")]
+        [TestCaseSource(typeof(Cultures), nameof(Cultures.AllCultures))]
         public void BclLongDatePatternGivesSameResultsInNoda(CultureInfo culture)
         {
             // See https://bugzilla.xamarin.com/show_bug.cgi?id=11363
@@ -205,7 +205,7 @@ namespace NodaTime.Test.Text
         }
 
         [Test]
-        [TestCaseSource(typeof(Cultures), "AllCultures")]
+        [TestCaseSource(typeof(Cultures), nameof(Cultures.AllCultures))]
         public void BclShortDatePatternGivesSameResultsInNoda(CultureInfo culture)
         {
             AssertBclNodaEquality(culture, culture.DateTimeFormat.ShortDatePattern);
