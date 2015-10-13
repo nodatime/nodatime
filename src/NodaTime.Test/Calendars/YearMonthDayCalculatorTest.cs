@@ -15,8 +15,6 @@ namespace NodaTime.Test.Calendars
     {
         // Here the term "Islamic" only refers to whether the implementation is IslamicYearMonthDayCalculator,
         // not whether the calendar itself is based on Islamic scripture.
-        // TODO(code review): Make sure I've reported a bug for the CodeRush Roslyn preview test runner - it
-        // seems to only have one test per *type* of calculator. (So only one IslamicCalculator per test...)
         private static readonly TestCaseData[] NonIslamicCalculators = {
             new TestCaseData(new GregorianYearMonthDayCalculator()).SetName("Gregorian"),
             new TestCaseData(new CopticYearMonthDayCalculator()).SetName("Coptic"),

@@ -21,6 +21,8 @@ namespace NodaTime.Calendars
         // invalid years, but still problematic in general).
         private const int IsHeshvanLongCacheBit = 1 << 0;
         private const int IsKislevShortCacheBit = 1 << 1;
+        // Number of bits to shift the elapsed days in order to get the cache value.
+        private const int ElapsedDaysCacheShift = 2;
 
         // Cache of when each year starts (in  terms of absolute days). This is the heart of
         // the algorithm, so just caching this is highly effective.
@@ -213,7 +215,7 @@ namespace NodaTime.Calendars
         internal static int ElapsedDays(int year)
         {
             int cache = GetOrPopulateCache(year);
-            return cache >> 2;
+            return cache >> ElapsedDaysCacheShift;
         }
 
         private static int ElapsedDaysNoCache(int year)
@@ -273,7 +275,7 @@ namespace NodaTime.Calendars
                 int cacheIndex = YearStartCacheEntry.GetCacheIndex(nextYear);
                 YearStartCacheEntry cacheEntry = YearCache[cacheIndex];
                 nextYearDays = cacheEntry.IsValidForYear(nextYear)
-                    ? cacheEntry.StartOfYearDays >> 2
+                    ? cacheEntry.StartOfYearDays >> ElapsedDaysCacheShift
                     : ElapsedDaysNoCache(nextYear);
             }
             else
@@ -283,7 +285,7 @@ namespace NodaTime.Calendars
             int daysInYear = nextYearDays - days;
             bool isHeshvanLong = daysInYear % 10 == 5;
             bool isKislevShort = daysInYear % 10 == 3;
-            return (days << 2)
+            return (days << ElapsedDaysCacheShift)
                 | (isHeshvanLong ? IsHeshvanLongCacheBit : 0)
                 | (isKislevShort ? IsKislevShortCacheBit : 0);
         }
