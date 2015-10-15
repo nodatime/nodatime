@@ -75,6 +75,7 @@
     <Compile Include="Annotations\ImmutableAttribute.cs" />
     <Compile Include="Annotations\ReadWriteForEfficiencyAttribute.cs" />
     <Compile Include="Annotations\VisibleForTestingAttribute.cs" />
+    <Compile Include="AnnualDate.cs" />
     <Compile Include="CalendarOrdinal.cs" />
     <Compile Include="CalendarSystem.cs" />
     <Compile Include="AmbiguousTimeException.cs" />

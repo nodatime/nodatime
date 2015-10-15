@@ -121,6 +121,7 @@
     <Compile Include="Annotations\RoslynReadWriteForEfficiencyTest.cs" />
     <Compile Include="Annotations\SecurityTest.cs" />
     <Compile Include="Annotations\TrustedTest.cs" />
+    <Compile Include="AnnualDateTest.cs" />
     <Compile Include="CalendarSystemTest.cs" />
     <Compile Include="CalendarSystemTest.Era.cs">
       <DependentUpon>CalendarSystemTest.cs</DependentUpon>

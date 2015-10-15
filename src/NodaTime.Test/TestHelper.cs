@@ -10,6 +10,7 @@ using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Serialization;
 using NUnit.Framework;
+using System.Linq;
 
 namespace NodaTime.Test
 {
@@ -19,6 +20,13 @@ namespace NodaTime.Test
     public static class TestHelper
     {
         public static readonly bool IsRunningOnMono = Type.GetType("Mono.Runtime") != null;
+
+        /// <summary>
+        /// Does nothing other than let us prove method or constructor calls don't throw.
+        /// </summary>
+        internal static void Consume<T>(this T ignored)
+        {
+        }
 
         /// <summary>
         /// Asserts that calling the specified delegate with the specified value throws ArgumentException.
@@ -174,15 +182,19 @@ namespace NodaTime.Test
         /// <typeparam name="T">The type to test.</typeparam>
         /// <param name="value">The base value.</param>
         /// <param name="equalValue">The value equal to but not the same object as the base value.</param>
-        /// <param name="greaterValue">The value greater than the base value..</param>
-        public static void TestCompareToStruct<T>(T value, T equalValue, T greaterValue) where T : struct, IComparable<T>
+        /// <param name="greaterValue">The values greater than the base value, in ascending order.</param>
+        public static void TestCompareToStruct<T>(T value, T equalValue, params T[] greaterValues) where T : struct, IComparable<T>
         {
-            ValidateInput(value, equalValue, greaterValue, "greaterValue");
             Assert.AreEqual(value.CompareTo(value), 0, "value.CompareTo(value)");
             Assert.AreEqual(value.CompareTo(equalValue), 0, "value.CompareTo(equalValue)");
             Assert.AreEqual(equalValue.CompareTo(value), 0, "equalValue.CompareTo(value)");
-            Assert.Less(value.CompareTo(greaterValue), 0, "value.CompareTo(greaterValue)");
-            Assert.Greater(greaterValue.CompareTo(value), 0, "greaterValue.CompareTo(value)");
+            foreach (var greaterValue in greaterValues)
+            {
+                Assert.Less(value.CompareTo(greaterValue), 0, "value.CompareTo(greaterValue)");
+                Assert.Greater(greaterValue.CompareTo(value), 0, "greaterValue.CompareTo(value)");
+                // Now move up to the next pair...
+                value = greaterValue;
+            }
         }
 
         /// <summary>
@@ -210,8 +222,8 @@ namespace NodaTime.Test
         }
 
         /// <summary>
-        ///   Tests the IEquatable.Equals method for reference objects. Also tests the
-        ///   object equals method.
+        /// Tests the IEquatable.Equals method for reference objects. Also tests the
+        /// object equals method.
         /// </summary>
         /// <typeparam name="T">The type to test.</typeparam>
         /// <param name="value">The base value.</param>
@@ -228,40 +240,46 @@ namespace NodaTime.Test
         }
 
         /// <summary>
-        ///   Tests the IEquatable.Equals method for value objects. Also tests the
-        ///   object equals method.
+        /// Tests the IEquatable.Equals method for value objects. Also tests the
+        /// object equals method.
         /// </summary>
         /// <typeparam name="T">The type to test.</typeparam>
         /// <param name="value">The base value.</param>
         /// <param name="equalValue">The value equal to but not the same object as the base value.</param>
         /// <param name="unEqualValue">The value not equal to the base value.</param>
-        public static void TestEqualsStruct<T>(T value, T equalValue, T unEqualValue) where T : struct, IEquatable<T>
+        public static void TestEqualsStruct<T>(T value, T equalValue, params T[] unEqualValues) where T : struct, IEquatable<T>
         {
-            TestObjectEquals(value, equalValue, unEqualValue);
+            var unEqualArray = unEqualValues.Cast<object>().ToArray();
+            TestObjectEquals(value, equalValue, unEqualArray);
             Assert.True(value.Equals(value), "value.Equals<T>(value)");
             Assert.True(value.Equals(equalValue), "value.Equals<T>(equalValue)");
             Assert.True(equalValue.Equals(value), "equalValue.Equals<T>(value)");
-            Assert.False(value.Equals(unEqualValue), "value.Equals<T>(unEqualValue)");
+            foreach (var unEqualValue in unEqualValues)
+            {
+                Assert.False(value.Equals(unEqualValue), "value.Equals<T>(unEqualValue)");
+            }
         }
 
         /// <summary>
-        ///   Tests the Object.Equals method.
+        /// Tests the Object.Equals method.
         /// </summary>
         /// <remarks>
-        ///   It takes three, non-null values: a value,
-        ///   a value that is equal to but not the same object, and a value that is not equal to the base value.
+        /// It takes two equal values, and then an array of values which should not be equal to the first argument.
         /// </remarks>
         /// <param name="value">The base value.</param>
         /// <param name="equalValue">The value equal to but not the same object as the base value.</param>
         /// <param name="unEqualValue">The value not equal to the base value.</param>
-        public static void TestObjectEquals(object value, object equalValue, object unEqualValue)
+        public static void TestObjectEquals(object value, object equalValue, params object[] unEqualValues)
         {
-            ValidateInput(value, equalValue, unEqualValue, "unEqualValue");
+            ValidateInput(value, equalValue, unEqualValues, "unEqualValue");
             Assert.False(value.Equals(null), "value.Equals(null)");
             Assert.True(value.Equals(value), "value.Equals(value)");
             Assert.True(value.Equals(equalValue), "value.Equals(equalValue)");
             Assert.True(equalValue.Equals(value), "equalValue.Equals(value)");
-            Assert.False(value.Equals(unEqualValue), "value.Equals(unEqualValue)");
+            foreach (var unEqualValue in unEqualValues)
+            {
+                Assert.False(value.Equals(unEqualValue), "value.Equals(unEqualValue)");
+            }
             Assert.AreEqual(value.GetHashCode(), value.GetHashCode(), "GetHashCode() twice for same object");
             Assert.AreEqual(value.GetHashCode(), equalValue.GetHashCode(), "GetHashCode() for two different but equal objects");
         }
@@ -507,7 +525,26 @@ namespace NodaTime.Test
         }
 
         /// <summary>
-        ///   Validates that the input parameters to the test methods are valid.
+        /// Validates that the input parameters to the test methods are valid.
+        /// </summary>
+        /// <param name="value">The base value.</param>
+        /// <param name="equalValue">The value equal to but not the same object as the base value.</param>
+        /// <param name="unEqualValues">The values not equal to the base value.</param>
+        /// <param name="unEqualName">GetName of the not equal value error messages..</param>
+        private static void ValidateInput(object value, object equalValue, object[] unEqualValues, string unEqualName)
+        {
+            Assert.NotNull(value, "value cannot be null in TestObjectEquals() method");
+            Assert.NotNull(equalValue, "equalValue cannot be null in TestObjectEquals() method");
+            Assert.AreNotSame(value, equalValue, "value and equalValue MUST be different objects");
+            foreach (var unEqualValue in unEqualValues)
+            {
+                Assert.NotNull(unEqualValue, unEqualName + " cannot be null in TestObjectEquals() method");
+                Assert.AreNotSame(value, unEqualValue, unEqualName + " and value MUST be different objects");
+            }
+        }
+
+        /// <summary>
+        /// Validates that the input parameters to the test methods are valid.
         /// </summary>
         /// <param name="value">The base value.</param>
         /// <param name="equalValue">The value equal to but not the same object as the base value.</param>
@@ -515,11 +552,7 @@ namespace NodaTime.Test
         /// <param name="unEqualName">GetName of the not equal value error messages..</param>
         private static void ValidateInput(object value, object equalValue, object unEqualValue, string unEqualName)
         {
-            Assert.NotNull(value, "value cannot be null in TestObjectEquals() method");
-            Assert.NotNull(equalValue, "equalValue cannot be null in TestObjectEquals() method");
-            Assert.NotNull(unEqualValue, unEqualName + " cannot be null in TestObjectEquals() method");
-            Assert.AreNotSame(value, equalValue, "value and equalValue MUST be different objects");
-            Assert.AreNotSame(value, unEqualValue, unEqualName + " and value MUST be different objects");
+            ValidateInput(value, equalValue, new object[] { unEqualValue }, unEqualName);
         }
     }
 
