@@ -36,8 +36,27 @@ namespace NodaTime.Text.Patterns
         ZoneAbbreviation = 1 << 17,
         EmbeddedOffset = 1 << 18,
         TotalDuration = 1 << 19, // D, H, M, or S in a DurationPattern.
+        EmbeddedDate = 1 << 20, // No other date fields permitted; use calendar/year/month/day from bucket
+        EmbeddedTime = 1 << 21, // No other time fields permitted; user hours24/minutes/seconds/fractional seconds from bucket
 
-        AllTimeFields = Hours12 | Hours24 | Minutes | Seconds | FractionalSeconds | AmPm,
-        AllDateFields = Year | YearTwoDigits | YearOfEra | MonthOfYearNumeric | MonthOfYearText | DayOfMonth | DayOfWeek | Era | Calendar
+        AllTimeFields = Hours12 | Hours24 | Minutes | Seconds | FractionalSeconds | AmPm | EmbeddedTime,
+        AllDateFields = Year | YearTwoDigits | YearOfEra | MonthOfYearNumeric | MonthOfYearText | DayOfMonth | DayOfWeek | Era | Calendar | EmbeddedDate
+    }
+
+    /// <summary>
+    /// Extension methods on PatternFields; nothing PatternFields-specific here, but we
+    /// can't write this generically due to limitations in C#. (See Unconstrained Melody for details...)
+    /// </summary>
+    internal static class PatternFieldsExtensions
+    {
+        /// <summary>
+        /// Returns true if the given set of fields contains any of the target fields.
+        /// </summary>
+        internal static bool HasAny(this PatternFields fields, PatternFields target) =>(fields & target) != 0;
+
+        /// <summary>
+        /// Returns true if the given set of fields contains all of the target fields.
+        /// </summary>
+        internal static bool HasAll(this PatternFields fields, PatternFields target) => (fields & target) == target;
     }
 }

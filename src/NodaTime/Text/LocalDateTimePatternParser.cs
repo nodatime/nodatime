@@ -50,7 +50,7 @@ namespace NodaTime.Text
             { 't', TimePatternHelper.CreateAmPmHandler<LocalDateTime, LocalDateTimeParseBucket>(time => time.Hour, (bucket, value) => bucket.Time.AmPm = value) },
             { 'c', DatePatternHelper.CreateCalendarHandler<LocalDateTime, LocalDateTimeParseBucket>(value => value.Calendar, (bucket, value) => bucket.Date.Calendar = value) },
             { 'g', DatePatternHelper.CreateEraHandler<LocalDateTime, LocalDateTimeParseBucket>(value => value.Era, bucket => bucket.Date) },
-    };
+        };
 
         internal LocalDateTimePatternParser(LocalDateTime templateValue)
         {

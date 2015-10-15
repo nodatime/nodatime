@@ -40,6 +40,15 @@ namespace NodaTime.Text.Patterns
         }
 
         /// <summary>
+        /// Calls the bucket provider and returns a sample bucket. This means that any values
+        /// normally propagated via the bucket can also be used when building the pattern.
+        /// </summary>
+        internal TBucket CreateSampleBucket()
+        {
+            return bucketProvider();
+        }
+
+        /// <summary>
         /// Sets this pattern to only be capable of formatting; any attempt to parse using the
         /// built pattern will fail immediately.
         /// </summary>
@@ -106,6 +115,19 @@ namespace NodaTime.Text.Patterns
         /// </summary>
         internal IPartialPattern<TResult> Build(TResult sample)
         {
+            // If we've got an embedded date and any *other* date fields, throw.
+            if (usedFields.HasAny(PatternFields.EmbeddedDate) &&
+                usedFields.HasAny(PatternFields.AllDateFields & ~PatternFields.EmbeddedDate))
+            {
+                throw new InvalidPatternException(Messages.Parse_DateFieldAndEmbeddedDate);
+            }
+            // Ditto for time
+            if (usedFields.HasAny(PatternFields.EmbeddedTime) &&
+                usedFields.HasAny(PatternFields.AllTimeFields & ~PatternFields.EmbeddedTime))
+            {
+                throw new InvalidPatternException(Messages.Parse_TimeFieldAndEmbeddedTime);
+            }
+
             Action<TResult, StringBuilder> formatDelegate = null;
             foreach (Action<TResult, StringBuilder> formatAction in formatActions)
             {
@@ -432,6 +454,27 @@ namespace NodaTime.Text.Patterns
 
         internal void AddFormatFractionTruncate(int width, int scale, Func<TResult, int> selector) =>
             AddFormatAction((value, sb) => FormatHelper.AppendFractionTruncate(selector(value), width, scale, sb));
+
+        /// <summary>
+        /// Adds parsing/formatting of an embedded pattern, e.g. an offset within a ZonedDateTime/OffsetDateTime.
+        /// </summary>
+        internal void AddEmbeddedPattern<TEmbedded>(
+            IPartialPattern<TEmbedded> embeddedPattern,
+            Action<TBucket, TEmbedded> parseAction,
+            Func<TResult, TEmbedded> valueExtractor)
+        {
+            AddParseAction((value, bucket) =>
+            {
+                var result = embeddedPattern.ParsePartial(value);
+                if (!result.Success)
+                {
+                    return result.ConvertError<TResult>();
+                }
+                parseAction(bucket, result.Value);
+                return null;
+            });
+            AddFormatAction((value, sb) => embeddedPattern.AppendFormat(valueExtractor(value), sb));
+        }
 
         /// <summary>
         /// Hack to handle genitive month names - we only know what we need to do *after* we've parsed the whole pattern.

@@ -19,6 +19,8 @@ namespace NodaTime.Test.Text
         private static readonly OffsetDateTime MsdnStandardExampleNoMillis = LocalDateTimePatternTest.MsdnStandardExampleNoMillis.WithOffset(Offset.FromHours(1));
         private static readonly OffsetDateTime SampleOffsetDateTimeCoptic = LocalDateTimePatternTest.SampleLocalDateTimeCoptic.WithOffset(Offset.Zero);
 
+        private static readonly Offset AthensOffset = Offset.FromHours(3);
+
         internal static readonly Data[] InvalidPatternData = {
             new Data { Pattern = "dd MM yyyy HH:MM:SS", Message = Messages.Parse_RepeatedFieldInPattern, Parameters = { 'M' } },
             // Note incorrect use of "u" (year) instead of "y" (year of era)
@@ -26,6 +28,17 @@ namespace NodaTime.Test.Text
             // Era specifier and calendar specifier in the same pattern.
             new Data { Pattern = "dd MM yyyy HH:mm:ss gg c", Message = Messages.Parse_CalendarAndEra },
             new Data { Pattern = "g", Message = Messages.Parse_UnknownStandardFormat, Parameters = { 'g', typeof(OffsetDateTime) } },
+            // Invalid patterns involving embedded values
+            new Data { Pattern = "ld<d> yyyy", Message = Messages.Parse_DateFieldAndEmbeddedDate },
+            new Data { Pattern = "l<yyyy-MM-dd HH:mm:ss> dd", Message = Messages.Parse_DateFieldAndEmbeddedDate },
+            new Data { Pattern = "ld<d> ld<f>", Message = Messages.Parse_RepeatedFieldInPattern, Parameters = { 'l' } },
+            new Data { Pattern = "lt<T> HH", Message = Messages.Parse_TimeFieldAndEmbeddedTime },
+            new Data { Pattern = "l<yyyy-MM-dd HH:mm:ss> HH", Message = Messages.Parse_TimeFieldAndEmbeddedTime },
+            new Data { Pattern = "lt<T> lt<t>", Message = Messages.Parse_RepeatedFieldInPattern, Parameters = { 'l' } },
+            new Data { Pattern = "ld<d> l<F>", Message = Messages.Parse_RepeatedFieldInPattern, Parameters = { 'l' } },
+            new Data { Pattern = "l<F> ld<d>", Message = Messages.Parse_RepeatedFieldInPattern, Parameters = { 'l' } },
+            new Data { Pattern = "lt<T> l<F>", Message = Messages.Parse_RepeatedFieldInPattern, Parameters = { 'l' } },
+            new Data { Pattern = "l<F> lt<T>", Message = Messages.Parse_RepeatedFieldInPattern, Parameters = { 'l' } },
         };
 
         internal static Data[] ParseFailureData = {
@@ -78,6 +91,20 @@ namespace NodaTime.Test.Text
             new Data(MsdnStandardExample) { Pattern = "o", Text = "2009-06-15T13:45:30.09+01", Culture = Cultures.FrFr },
             new Data(MsdnStandardExample) { Pattern = "r", Text = "2009-06-15T13:45:30.09+01 (ISO)", Culture = Cultures.FrFr },
 
+            // Custom embedded patterns (or mixture of custom and standard)
+            new Data(2015, 10, 24, 11, 55, 30, AthensOffset) { Pattern = "ld<yyyy*MM*dd>'X'lt<HH_mm_ss> o<g>", Text = "2015*10*24X11_55_30 +03" },
+            new Data(2015, 10, 24, 11, 55, 30, AthensOffset) { Pattern = "lt<HH_mm_ss>'Y'ld<yyyy*MM*dd> o<g>", Text = "11_55_30Y2015*10*24 +03" },
+            new Data(2015, 10, 24, 11, 55, 30, AthensOffset) { Pattern = "l<HH_mm_ss'Y'yyyy*MM*dd> o<g>", Text = "11_55_30Y2015*10*24 +03" },
+            new Data(2015, 10, 24, 11, 55, 30, AthensOffset) { Pattern = "ld<d>'X'lt<HH_mm_ss> o<g>", Text = "10/24/2015X11_55_30 +03" },
+            new Data(2015, 10, 24, 11, 55, 30, AthensOffset) { Pattern = "ld<yyyy*MM*dd>'X'lt<T> o<g>", Text = "2015*10*24X11:55:30 +03" },
+
+            // Standard embedded patterns. Short time versions have a second value of 0 so they can round-trip.
+            new Data(2015, 10, 24, 11, 55, 30, AthensOffset) { Pattern = "ld<D> lt<r> o<g>", Text = "Saturday, 24 October 2015 11:55:30 +03" },
+            new Data(2015, 10, 24, 11, 55, 0, AthensOffset) { Pattern = "l<f> o<g>", Text = "Saturday, 24 October 2015 11:55 +03" },
+            new Data(2015, 10, 24, 11, 55, 30, AthensOffset) { Pattern = "l<F> o<g>", Text = "Saturday, 24 October 2015 11:55:30 +03" },
+            new Data(2015, 10, 24, 11, 55, 0, AthensOffset) { Pattern = "l<g> o<g>", Text = "10/24/2015 11:55 +03" },
+            new Data(2015, 10, 24, 11, 55, 30, AthensOffset) { Pattern = "l<G> o<g>", Text = "10/24/2015 11:55:30 +03" },
+
             // Check that unquoted T still works.
             new Data(2012, 1, 31, 17, 36, 45) { Text = "2012-01-31T17:36:45", Pattern = "yyyy-MM-ddTHH:mm:ss" },
         };
@@ -110,6 +137,11 @@ namespace NodaTime.Test.Text
 
             internal Data(int year, int month, int day, int hour, int minute, int second)
                 : this(new LocalDateTime(year, month, day, hour, minute, second).WithOffset(Offset.Zero))
+            {
+            }
+
+            internal Data(int year, int month, int day, int hour, int minute, int second, Offset offset)
+                : this(new LocalDateTime(year, month, day, hour, minute, second).WithOffset(offset))
             {
             }
 

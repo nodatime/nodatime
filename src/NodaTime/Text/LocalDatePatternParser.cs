@@ -96,7 +96,7 @@ namespace NodaTime.Text
         /// </summary>
         internal sealed class LocalDateParseBucket : ParseBucket<LocalDate>
         {
-            private readonly LocalDate templateValue;
+            internal readonly LocalDate TemplateValue;
 
             internal CalendarSystem Calendar;
             internal int Year;
@@ -109,7 +109,7 @@ namespace NodaTime.Text
 
             internal LocalDateParseBucket(LocalDate templateValue)
             {
-                this.templateValue = templateValue;
+                this.TemplateValue = templateValue;
                 // Only fetch this once.
                 this.Calendar = templateValue.Calendar;
             }
@@ -133,6 +133,10 @@ namespace NodaTime.Text
 
             internal override ParseResult<LocalDate> CalculateValue(PatternFields usedFields, string text)
             {
+                if (usedFields.HasAny(PatternFields.EmbeddedDate))
+                {
+                    return ParseResult<LocalDate>.ForValue(new LocalDate(Year, MonthOfYearNumeric, DayOfMonth, Calendar));
+                }
                 // This will set Year if necessary
                 ParseResult<LocalDate> failure = DetermineYear(usedFields, text);
                 if (failure != null)
@@ -146,7 +150,7 @@ namespace NodaTime.Text
                     return failure;
                 }
 
-                int day = IsFieldUsed(usedFields, PatternFields.DayOfMonth) ? DayOfMonth : templateValue.Day;
+                int day = usedFields.HasAny(PatternFields.DayOfMonth) ? DayOfMonth : TemplateValue.Day;
                 if (day > Calendar.GetDaysInMonth(Year, MonthOfYearNumeric))
                 {
                     return ParseResult<LocalDate>.DayOfMonthOutOfRange(text, day, MonthOfYearNumeric, Year);
@@ -154,7 +158,7 @@ namespace NodaTime.Text
 
                 LocalDate value = new LocalDate(Year, MonthOfYearNumeric, day, Calendar);
 
-                if (IsFieldUsed(usedFields, PatternFields.DayOfWeek) && DayOfWeek != value.DayOfWeek)
+                if (usedFields.HasAny(PatternFields.DayOfWeek) && DayOfWeek != value.DayOfWeek)
                 {
                     return ParseResult<LocalDate>.InconsistentDayOfWeekTextValue(text);
                 }
@@ -189,22 +193,22 @@ namespace NodaTime.Text
             /// </summary>
             private ParseResult<LocalDate> DetermineYear(PatternFields usedFields, string text)
             {
-                if (IsFieldUsed(usedFields, PatternFields.Year))
+                if (usedFields.HasAny(PatternFields.Year))
                 {
                     if (Year > Calendar.MaxYear || Year < Calendar.MinYear)
                     {
                         return ParseResult<LocalDate>.FieldValueOutOfRangePostParse(text, Year, 'u');
                     }
 
-                    if (IsFieldUsed(usedFields, PatternFields.Era) && Era != Calendar.GetEra(Year))
+                    if (usedFields.HasAny(PatternFields.Era) && Era != Calendar.GetEra(Year))
                     {
                         return ParseResult<LocalDate>.InconsistentValues(text, 'g', 'u');
                     }
 
-                    if (IsFieldUsed(usedFields, PatternFields.YearOfEra))
+                    if (usedFields.HasAny(PatternFields.YearOfEra))
                     {
                         int yearOfEraFromYear = Calendar.GetYearOfEra(Year);
-                        if (IsFieldUsed(usedFields, PatternFields.YearTwoDigits))
+                        if (usedFields.HasAny(PatternFields.YearTwoDigits))
                         {
                             // We're only checking the last two digits
                             yearOfEraFromYear = yearOfEraFromYear % 100;
@@ -218,21 +222,21 @@ namespace NodaTime.Text
                 }
 
                 // Use the year from the template value, possibly checking the era.
-                if (!IsFieldUsed(usedFields, PatternFields.YearOfEra))
+                if (!usedFields.HasAny(PatternFields.YearOfEra))
                 {
-                    Year = templateValue.Year;
-                    return IsFieldUsed(usedFields, PatternFields.Era) && Era != Calendar.GetEra(Year)
+                    Year = TemplateValue.Year;
+                    return usedFields.HasAny(PatternFields.Era) && Era != Calendar.GetEra(Year)
                         ? ParseResult<LocalDate>.InconsistentValues(text, 'g', 'u') : null;
                 }
 
-                if (!IsFieldUsed(usedFields, PatternFields.Era))
+                if (!usedFields.HasAny(PatternFields.Era))
                 {
-                    Era = templateValue.Era;
+                    Era = TemplateValue.Era;
                 }
 
-                if (IsFieldUsed(usedFields, PatternFields.YearTwoDigits))
+                if (usedFields.HasAny(PatternFields.YearTwoDigits))
                 {
-                    int century = templateValue.YearOfEra / 100;
+                    int century = TemplateValue.YearOfEra / 100;
                     if (YearOfEra > TwoDigitYearMax && century > 1)
                     {
                         century--;
@@ -267,7 +271,7 @@ namespace NodaTime.Text
                         // No need to change MonthOfYearNumeric - this was just a check
                         break;
                     case 0:
-                        MonthOfYearNumeric = templateValue.Month;
+                        MonthOfYearNumeric = TemplateValue.Month;
                         break;
                 }
                 if (MonthOfYearNumeric > Calendar.GetMonthsInYear(Year))
