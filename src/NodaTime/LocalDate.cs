@@ -478,7 +478,7 @@ namespace NodaTime
         }
 
         /// <summary>
-        /// Compares two dates values to see if the left one is strictly later than the right
+        /// Compares two dates to see if the left one is strictly later than the right
         /// one.
         /// </summary>
         /// <remarks>

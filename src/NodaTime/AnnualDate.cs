@@ -18,8 +18,12 @@ namespace NodaTime
     /// with its leap month.</remarks>
     public struct AnnualDate : IEquatable<AnnualDate>, IComparable<AnnualDate>
     {
-        // The underlying value, which will have a year of 2000, to ensure validity in the face
-        // of February 29th.
+        // The underlying value. We only care about the month and day, but for the sake of
+        // compatibility with the default value, this ends up being in year 1. This would
+        // be an invalid date, but we only actually use it as an argument to SetYear,
+        // which we know ignores the year in the ISO calendar. If we ever allow other calendar
+        // systems, we can have a YearMonthDayCalendar which would still be in year 1 for the
+        // ISO calendar, but would probably be in a more suitable year for other calendars.
         private readonly YearMonthDay value;
 
         /// <summary>
@@ -27,10 +31,13 @@ namespace NodaTime
         /// </summary>
         /// <param name="month">The month of year.</param>
         /// <param name="day">The day of month.</param>
+        /// <exception cref="ArgumentOutOfRangeException">The parameters do not form a valid date.
+        /// (February 29th is considered valid.)</exception>
         public AnnualDate(int month, int day)
         {
+            // The year 2000 is a leap year, so this is fine for all valid dates.
             GregorianYearMonthDayCalculator.ValidateGregorianYearMonthDay(2000, month, day);
-            value = new YearMonthDay(2000, month, day);
+            value = new YearMonthDay(1, month, day);
         }
 
         /// <summary>
@@ -51,7 +58,9 @@ namespace NodaTime
         /// <remarks>
         /// <para>
         /// If this value represents February 29th, and the specified year is not a leap
-        /// year, the returned value will be February 28th of that year.
+        /// year, the returned value will be February 28th of that year. To see whether the
+        /// original month and day is valid without truncation in a particular year,
+        /// use <see cref="IsValidYear"/>
         /// </para>
         /// </remarks>
         /// <param name="year">The year component of the required date.</param>
@@ -62,8 +71,22 @@ namespace NodaTime
             Preconditions.CheckArgumentRange(nameof(year), year,
                 GregorianYearMonthDayCalculator.MinGregorianYear,
                 GregorianYearMonthDayCalculator.MaxGregorianYear);
-            var ymd  = CalendarSystem.Iso.YearMonthDayCalculator.SetYear(value, year);
+            var ymd = CalendarSystem.Iso.YearMonthDayCalculator.SetYear(value, year);
             return new LocalDate(ymd.WithCalendarOrdinal(0)); // ISO calendar
+        }
+
+        /// <summary>
+        /// Checks whether the specified year forms a valid date with the month/day in this
+        /// value, without any truncation. This will always return <code>true</code> except
+        /// for values representing February 29th, where the specified year is a non leap year.
+        /// </summary>
+        /// <param name="year">The year to test for validity</param>
+        /// <returns><code>true</code> if the current value occurs within the given year;
+        /// <code>false</code> otherwise.</returns>
+        [Pure]
+        public bool IsValidYear(int year)
+        {
+            return Month != 2 || Day != 29 || CalendarSystem.Iso.IsLeapYear(year);
         }
 
         /// <summary>
@@ -72,7 +95,6 @@ namespace NodaTime
         /// </summary>
         /// <param name="obj">The object to compare this one with</param>
         /// <returns>True if the specified value is an annual date which is equal to this one; false otherwise</returns>
-
         public override bool Equals(object obj) => obj is AnnualDate && Equals((AnnualDate)obj);
 
         /// <summary>
@@ -118,7 +140,70 @@ namespace NodaTime
             return value.CompareTo(other.value);
         }
 
-        // TODO(code review): Overload ==, !=, <=, >=, < and >? Feels a bit like overkill.
-        // (And what about serialization? Suggest not...)
+        /// <summary>
+        /// Compares two <see cref="AnnualDate" /> values for equality.
+        /// </summary>
+        /// <param name="lhs">The first value to compare</param>
+        /// <param name="rhs">The second value to compare</param>
+        /// <returns>True if the two dates are the same; false otherwise</returns>
+        public static bool operator ==(AnnualDate lhs, AnnualDate rhs) => lhs.value == rhs.value;
+
+        /// <summary>
+        /// Compares two <see cref="AnnualDate" /> values for inequality.
+        /// </summary>
+        /// <param name="lhs">The first value to compare</param>
+        /// <param name="rhs">The second value to compare</param>
+        /// <returns>False if the two dates are the same and in the same calendar; true otherwise</returns>
+        public static bool operator !=(AnnualDate lhs, AnnualDate rhs) => !(lhs == rhs);
+
+        /// <summary>
+        /// Compares two annual dates to see if the left one is strictly earlier than the right
+        /// one.
+        /// </summary>
+        /// <param name="lhs">First operand of the comparison</param>
+        /// <param name="rhs">Second operand of the comparison</param>
+        /// <exception cref="ArgumentException">The calendar system of <paramref name="rhs"/> is not the same
+        /// as the calendar of <paramref name="lhs"/>.</exception>
+        /// <returns>true if the <paramref name="lhs"/> is strictly earlier than <paramref name="rhs"/>, false otherwise.</returns>
+        public static bool operator <(AnnualDate lhs, AnnualDate rhs)
+        {
+            return lhs.CompareTo(rhs) < 0;
+        }
+
+        /// <summary>
+        /// Compares two annual dates to see if the left one is earlier than or equal to the right
+        /// one.
+        /// </summary>
+        /// <param name="lhs">First operand of the comparison</param>
+        /// <param name="rhs">Second operand of the comparison</param>
+        /// <returns>true if the <paramref name="lhs"/> is earlier than or equal to <paramref name="rhs"/>, false otherwise.</returns>
+        public static bool operator <=(AnnualDate lhs, AnnualDate rhs)
+        {
+            return lhs.CompareTo(rhs) <= 0;
+        }
+
+        /// <summary>
+        /// Compares two annual dates to see if the left one is strictly later than the right
+        /// one.
+        /// </summary>
+        /// <param name="lhs">First operand of the comparison</param>
+        /// <param name="rhs">Second operand of the comparison</param>
+        /// <returns>true if the <paramref name="lhs"/> is strictly later than <paramref name="rhs"/>, false otherwise.</returns>
+        public static bool operator >(AnnualDate lhs, AnnualDate rhs)
+        {
+            return lhs.CompareTo(rhs) > 0;
+        }
+
+        /// <summary>
+        /// Compares two annual dates to see if the left one is later than or equal to the right
+        /// one.
+        /// </summary>
+        /// <param name="lhs">First operand of the comparison</param>
+        /// <param name="rhs">Second operand of the comparison</param>
+        /// <returns>true if the <paramref name="lhs"/> is later than or equal to <paramref name="rhs"/>, false otherwise.</returns>
+        public static bool operator >=(AnnualDate lhs, AnnualDate rhs)
+        {
+            return lhs.CompareTo(rhs) >= 0;
+        }
     }
 }

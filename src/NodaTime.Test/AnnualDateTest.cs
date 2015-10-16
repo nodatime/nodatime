@@ -16,7 +16,9 @@ namespace NodaTime.Test
             Assert.AreEqual(29, date.Day);
             Assert.AreEqual(2, date.Month);
             Assert.AreEqual(new LocalDate(2016, 2, 29), date.InYear(2016));
+            Assert.IsTrue(date.IsValidYear(2016));
             Assert.AreEqual(new LocalDate(2015, 2, 28), date.InYear(2015));
+            Assert.IsFalse(date.IsValidYear(2015));
         }
 
         [Test]
@@ -26,7 +28,9 @@ namespace NodaTime.Test
             Assert.AreEqual(19, date.Day);
             Assert.AreEqual(6, date.Month);
             Assert.AreEqual(new LocalDate(2016, 6, 19), date.InYear(2016));
+            Assert.IsTrue(date.IsValidYear(2016));
             Assert.AreEqual(new LocalDate(2015, 6, 19), date.InYear(2015));
+            Assert.IsTrue(date.IsValidYear(2015));
         }
 
         [Test]
@@ -47,9 +51,21 @@ namespace NodaTime.Test
         }
 
         [Test]
+        public void DefaultValueIsJanuary1st()
+        {
+            Assert.AreEqual(new AnnualDate(1, 1), new AnnualDate());
+        }
+
+        [Test]
         public void Comparision()
         {
             TestHelper.TestCompareToStruct(new AnnualDate(6, 19), new AnnualDate(6, 19), new AnnualDate(6, 20), new AnnualDate(7, 1));
+        }
+
+        [Test]
+        public void Operators()
+        {
+            TestHelper.TestOperatorComparisonEquality(new AnnualDate(6, 19), new AnnualDate(6, 19), new AnnualDate(6, 20), new AnnualDate(7, 1));
         }
 
         [Test]
