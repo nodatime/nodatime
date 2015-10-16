@@ -37,6 +37,7 @@ namespace NodaTime
         {
             // The year 2000 is a leap year, so this is fine for all valid dates.
             GregorianYearMonthDayCalculator.ValidateGregorianYearMonthDay(2000, month, day);
+            // See comment above for why this is using year 1, and why that's okay even for February 29th.
             value = new YearMonthDay(1, month, day);
         }
 
