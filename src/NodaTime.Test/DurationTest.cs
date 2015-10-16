@@ -209,11 +209,7 @@ namespace NodaTime.Test
 
             TestHelper.TestCompareToStruct(equal1, equal2, greater1);
             TestHelper.TestNonGenericCompareTo(equal1, equal2, greater1);
-            TestHelper.TestOperatorComparisonEquality(equal1, equal2, greater1);
-
-            TestHelper.TestCompareToStruct(equal1, equal2, greater2);
-            TestHelper.TestNonGenericCompareTo(equal1, equal2, greater2);
-            TestHelper.TestOperatorComparisonEquality(equal1, equal2, greater2);
+            TestHelper.TestOperatorComparisonEquality(equal1, equal2, greater1, greater2);
         }
 
         [Test]

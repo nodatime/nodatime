@@ -10,6 +10,7 @@ using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Serialization;
 using NUnit.Framework;
+using System.Linq;
 
 namespace NodaTime.Test
 {
@@ -19,6 +20,13 @@ namespace NodaTime.Test
     public static class TestHelper
     {
         public static readonly bool IsRunningOnMono = Type.GetType("Mono.Runtime") != null;
+
+        /// <summary>
+        /// Does nothing other than let us prove method or constructor calls don't throw.
+        /// </summary>
+        internal static void Consume<T>(this T ignored)
+        {
+        }
 
         /// <summary>
         /// Asserts that calling the specified delegate with the specified value throws ArgumentException.
@@ -156,16 +164,21 @@ namespace NodaTime.Test
         /// <typeparam name="T">The type to test.</typeparam>
         /// <param name="value">The base value.</param>
         /// <param name="equalValue">The value equal to but not the same object as the base value.</param>
-        /// <param name="greaterValue">The value greater than the base value..</param>
-        public static void TestCompareToClass<T>(T value, T equalValue, T greaterValue) where T : class, IComparable<T>
+        /// <param name="greaterValue">The values greater than the base value, in ascending order.</param>
+        public static void TestCompareToClass<T>(T value, T equalValue, params T[] greaterValues) where T : class, IComparable<T>
         {
-            ValidateInput(value, equalValue, greaterValue, "greaterValue");
+            ValidateInput(value, equalValue, greaterValues, "greaterValue");
             Assert.Greater(value.CompareTo(null), 0, "value.CompareTo<T>(null)");
             Assert.AreEqual(value.CompareTo(value), 0, "value.CompareTo<T>(value)");
             Assert.AreEqual(value.CompareTo(equalValue), 0, "value.CompareTo<T>(equalValue)");
             Assert.AreEqual(equalValue.CompareTo(value), 0, "equalValue.CompareTo<T>(value)");
-            Assert.Less(value.CompareTo(greaterValue), 0, "value.CompareTo<T>(greaterValue)");
-            Assert.Greater(greaterValue.CompareTo(value), 0, "greaterValue.CompareTo<T>(value)");
+            foreach (var greaterValue in greaterValues)
+            {
+                Assert.Less(value.CompareTo(greaterValue), 0, "value.CompareTo<T>(greaterValue)");
+                Assert.Greater(greaterValue.CompareTo(value), 0, "greaterValue.CompareTo<T>(value)");
+                // Now move up to the next pair...
+                value = greaterValue;
+            }
         }
 
         /// <summary>
@@ -174,15 +187,19 @@ namespace NodaTime.Test
         /// <typeparam name="T">The type to test.</typeparam>
         /// <param name="value">The base value.</param>
         /// <param name="equalValue">The value equal to but not the same object as the base value.</param>
-        /// <param name="greaterValue">The value greater than the base value..</param>
-        public static void TestCompareToStruct<T>(T value, T equalValue, T greaterValue) where T : struct, IComparable<T>
+        /// <param name="greaterValue">The values greater than the base value, in ascending order.</param>
+        public static void TestCompareToStruct<T>(T value, T equalValue, params T[] greaterValues) where T : struct, IComparable<T>
         {
-            ValidateInput(value, equalValue, greaterValue, "greaterValue");
             Assert.AreEqual(value.CompareTo(value), 0, "value.CompareTo(value)");
             Assert.AreEqual(value.CompareTo(equalValue), 0, "value.CompareTo(equalValue)");
             Assert.AreEqual(equalValue.CompareTo(value), 0, "equalValue.CompareTo(value)");
-            Assert.Less(value.CompareTo(greaterValue), 0, "value.CompareTo(greaterValue)");
-            Assert.Greater(greaterValue.CompareTo(value), 0, "greaterValue.CompareTo(value)");
+            foreach (var greaterValue in greaterValues)
+            {
+                Assert.Less(value.CompareTo(greaterValue), 0, "value.CompareTo(greaterValue)");
+                Assert.Greater(greaterValue.CompareTo(value), 0, "greaterValue.CompareTo(value)");
+                // Now move up to the next pair...
+                value = greaterValue;
+            }
         }
 
         /// <summary>
@@ -191,27 +208,32 @@ namespace NodaTime.Test
         /// <typeparam name="T">The type to test.</typeparam>
         /// <param name="value">The base value.</param>
         /// <param name="equalValue">The value equal to but not the same object as the base value.</param>
-        /// <param name="greaterValue">The value greater than the base value..</param>
-        public static void TestNonGenericCompareTo<T>(T value, T equalValue, T greaterValue) where T : IComparable
+        /// <param name="greaterValue">The values greater than the base value, in ascending order.</param>
+        public static void TestNonGenericCompareTo<T>(T value, T equalValue, params T[] greaterValues) where T : IComparable
         {
             // Just type the values as plain IComparable for simplicity
             IComparable value2 = value;
             IComparable equalValue2 = equalValue;
-            IComparable greaterValue2 = greaterValue;
 
-            ValidateInput(value2, equalValue2, greaterValue2, "greaterValue");
-            Assert.Greater(value2.CompareTo(null), 0, "value.CompareTo<T>(null)");
-            Assert.AreEqual(value2.CompareTo(value2), 0, "value.CompareTo<T>(value)");
-            Assert.AreEqual(value2.CompareTo(equalValue2), 0, "value.CompareTo<T>(equalValue)");
-            Assert.AreEqual(equalValue2.CompareTo(value2), 0, "equalValue.CompareTo<T>(value)");
-            Assert.Less(value2.CompareTo(greaterValue2), 0, "value.CompareTo<T>(greaterValue)");
-            Assert.Greater(greaterValue2.CompareTo(value2), 0, "greaterValue.CompareTo<T>(value)");
+            ValidateInput(value2, equalValue2, greaterValues, "greaterValues");
+            Assert.Greater(value2.CompareTo(null), 0, "value.CompareTo(null)");
+            Assert.AreEqual(value2.CompareTo(value2), 0, "value.CompareTo(value)");
+            Assert.AreEqual(value2.CompareTo(equalValue2), 0, "value.CompareTo(equalValue)");
+            Assert.AreEqual(equalValue2.CompareTo(value2), 0, "equalValue.CompareTo(value)");
+
+            foreach (IComparable greaterValue in greaterValues)
+            {
+                Assert.Less(value2.CompareTo(greaterValue), 0, "value.CompareTo(greaterValue)");
+                Assert.Greater(greaterValue.CompareTo(value2), 0, "greaterValue.CompareTo(value)");
+                // Now move up to the next pair...
+                value2 = greaterValue;
+            }
             Assert.Throws<ArgumentException>(() => value2.CompareTo(new object()));
         }
 
         /// <summary>
-        ///   Tests the IEquatable.Equals method for reference objects. Also tests the
-        ///   object equals method.
+        /// Tests the IEquatable.Equals method for reference objects. Also tests the
+        /// object equals method.
         /// </summary>
         /// <typeparam name="T">The type to test.</typeparam>
         /// <param name="value">The base value.</param>
@@ -228,125 +250,164 @@ namespace NodaTime.Test
         }
 
         /// <summary>
-        ///   Tests the IEquatable.Equals method for value objects. Also tests the
-        ///   object equals method.
+        /// Tests the IEquatable.Equals method for value objects. Also tests the
+        /// object equals method.
         /// </summary>
         /// <typeparam name="T">The type to test.</typeparam>
         /// <param name="value">The base value.</param>
         /// <param name="equalValue">The value equal to but not the same object as the base value.</param>
         /// <param name="unEqualValue">The value not equal to the base value.</param>
-        public static void TestEqualsStruct<T>(T value, T equalValue, T unEqualValue) where T : struct, IEquatable<T>
+        public static void TestEqualsStruct<T>(T value, T equalValue, params T[] unEqualValues) where T : struct, IEquatable<T>
         {
-            TestObjectEquals(value, equalValue, unEqualValue);
+            var unEqualArray = unEqualValues.Cast<object>().ToArray();
+            TestObjectEquals(value, equalValue, unEqualArray);
             Assert.True(value.Equals(value), "value.Equals<T>(value)");
             Assert.True(value.Equals(equalValue), "value.Equals<T>(equalValue)");
             Assert.True(equalValue.Equals(value), "equalValue.Equals<T>(value)");
-            Assert.False(value.Equals(unEqualValue), "value.Equals<T>(unEqualValue)");
+            foreach (var unEqualValue in unEqualValues)
+            {
+                Assert.False(value.Equals(unEqualValue), "value.Equals<T>(unEqualValue)");
+            }
         }
 
         /// <summary>
-        ///   Tests the Object.Equals method.
+        /// Tests the Object.Equals method.
         /// </summary>
         /// <remarks>
-        ///   It takes three, non-null values: a value,
-        ///   a value that is equal to but not the same object, and a value that is not equal to the base value.
+        /// It takes two equal values, and then an array of values which should not be equal to the first argument.
         /// </remarks>
         /// <param name="value">The base value.</param>
         /// <param name="equalValue">The value equal to but not the same object as the base value.</param>
         /// <param name="unEqualValue">The value not equal to the base value.</param>
-        public static void TestObjectEquals(object value, object equalValue, object unEqualValue)
+        public static void TestObjectEquals(object value, object equalValue, params object[] unEqualValues)
         {
-            ValidateInput(value, equalValue, unEqualValue, "unEqualValue");
+            ValidateInput(value, equalValue, unEqualValues, "unEqualValue");
             Assert.False(value.Equals(null), "value.Equals(null)");
             Assert.True(value.Equals(value), "value.Equals(value)");
             Assert.True(value.Equals(equalValue), "value.Equals(equalValue)");
             Assert.True(equalValue.Equals(value), "equalValue.Equals(value)");
-            Assert.False(value.Equals(unEqualValue), "value.Equals(unEqualValue)");
+            foreach (var unEqualValue in unEqualValues)
+            {
+                Assert.False(value.Equals(unEqualValue), "value.Equals(unEqualValue)");
+            }
             Assert.AreEqual(value.GetHashCode(), value.GetHashCode(), "GetHashCode() twice for same object");
             Assert.AreEqual(value.GetHashCode(), equalValue.GetHashCode(), "GetHashCode() for two different but equal objects");
         }
 
         /// <summary>
-        ///   Tests the less than (^lt;) and greater than (&gt;) operators if they exist on the object.
+        /// Tests the less than (^lt;) and greater than (&gt;) operators if they exist on the object.
         /// </summary>
         /// <typeparam name="T">The type to test.</typeparam>
         /// <param name="value">The base value.</param>
         /// <param name="equalValue">The value equal to but not the same object as the base value.</param>
-        /// <param name="greaterValue">The value greater than the base value..</param>
-        public static void TestOperatorComparison<T>(T value, T equalValue, T greaterValue)
+        /// <param name="greaterValue">The values greater than the base value, in ascending order.</param>
+        public static void TestOperatorComparison<T>(T value, T equalValue, params T[] greaterValues)
         {
-            ValidateInput(value, equalValue, greaterValue, "greaterValue");
+            ValidateInput(value, equalValue, greaterValues, "greaterValue");
             Type type = typeof(T);
             var greaterThan = type.GetMethod("op_GreaterThan", new[] { type, type });
+            var lessThan = type.GetMethod("op_LessThan", new[] { type, type });
+
+            // Comparisons only involving equal values
             if (greaterThan != null)
             {
                 if (!type.IsValueType)
                 {
-                    Assert.True((bool)greaterThan.Invoke(null, new object[] { value, null }), "value > null");
-                    Assert.False((bool)greaterThan.Invoke(null, new object[] { null, value }), "null > value");
+                    Assert.True((bool) greaterThan.Invoke(null, new object[] { value, null }), "value > null");
+                    Assert.False((bool) greaterThan.Invoke(null, new object[] { null, value }), "null > value");
                 }
-                Assert.False((bool)greaterThan.Invoke(null, new object[] { value, value }), "value > value");
-                Assert.False((bool)greaterThan.Invoke(null, new object[] { value, equalValue }), "value > equalValue");
-                Assert.False((bool)greaterThan.Invoke(null, new object[] { equalValue, value }), "equalValue > value");
-                Assert.False((bool)greaterThan.Invoke(null, new object[] { value, greaterValue }), "value > greaterValue");
-                Assert.True((bool)greaterThan.Invoke(null, new object[] { greaterValue, value }), "greaterValue > value");
+                Assert.False((bool) greaterThan.Invoke(null, new object[] { value, value }), "value > value");
+                Assert.False((bool) greaterThan.Invoke(null, new object[] { value, equalValue }), "value > equalValue");
+                Assert.False((bool) greaterThan.Invoke(null, new object[] { equalValue, value }), "equalValue > value");
             }
-            var lessThan = type.GetMethod("op_LessThan", new[] { type, type });
             if (lessThan != null)
             {
                 if (!type.IsValueType)
                 {
-                    Assert.False((bool)lessThan.Invoke(null, new object[] { value, null }), "value < null");
-                    Assert.True((bool)lessThan.Invoke(null, new object[] { null, value }), "null < value");
+                    Assert.False((bool) lessThan.Invoke(null, new object[] { value, null }), "value < null");
+                    Assert.True((bool) lessThan.Invoke(null, new object[] { null, value }), "null < value");
                 }
-                Assert.False((bool)lessThan.Invoke(null, new object[] { value, value }), "value < value");
-                Assert.False((bool)lessThan.Invoke(null, new object[] { value, equalValue }), "value < equalValue");
-                Assert.False((bool)lessThan.Invoke(null, new object[] { equalValue, value }), "equalValue < value");
-                Assert.True((bool)lessThan.Invoke(null, new object[] { value, greaterValue }), "value < greaterValue");
-                Assert.False((bool)lessThan.Invoke(null, new object[] { greaterValue, value }), "greaterValue < value");
+                Assert.False((bool) lessThan.Invoke(null, new object[] { value, value }), "value < value");
+                Assert.False((bool) lessThan.Invoke(null, new object[] { value, equalValue }), "value < equalValue");
+                Assert.False((bool) lessThan.Invoke(null, new object[] { equalValue, value }), "equalValue < value");
+            }
+
+            // Then comparisons involving the greater values
+            foreach (var greaterValue in greaterValues)
+            {
+                if (greaterThan != null)
+                {
+                    Assert.False((bool) greaterThan.Invoke(null, new object[] { value, greaterValue }), "value > greaterValue");
+                    Assert.True((bool) greaterThan.Invoke(null, new object[] { greaterValue, value }), "greaterValue > value");
+                }
+                if (lessThan != null)
+                {
+                    Assert.True((bool) lessThan.Invoke(null, new object[] { value, greaterValue }), "value < greaterValue");
+                    Assert.False((bool) lessThan.Invoke(null, new object[] { greaterValue, value }), "greaterValue < value");
+                }
+                // Now move up to the next pair...
+                value = greaterValue;
             }
         }
 
         /// <summary>
-        ///   Tests the equality (==), inequality (!=), less than (^lt;), greater than (&gt;), less than or equals (&lt;=),
-        ///   and freater than of equals (&gt;=) operators if they exist on the object.
+        /// Tests the equality (==), inequality (!=), less than (&lt;), greater than (&gt;), less than or equals (&lt;=),
+        /// and greater than or equals (&gt;=) operators if they exist on the object.
         /// </summary>
         /// <typeparam name="T">The type to test.</typeparam>
         /// <param name="value">The base value.</param>
         /// <param name="equalValue">The value equal to but not the same object as the base value.</param>
-        /// <param name="greaterValue">The value greater than the base value..</param>
-        public static void TestOperatorComparisonEquality<T>(T value, T equalValue, T greaterValue)
+        /// <param name="greaterValue">The values greater than the base value, in ascending order.</param>
+        public static void TestOperatorComparisonEquality<T>(T value, T equalValue, params T[] greaterValues)
         {
-            TestOperatorEquality(value, equalValue, greaterValue);
-            TestOperatorComparison(value, equalValue, greaterValue);
+            foreach (var greaterValue in greaterValues)
+            {
+                TestOperatorEquality(value, equalValue, greaterValue);
+            }
+            TestOperatorComparison(value, equalValue, greaterValues);
             Type type = typeof(T);
             var greaterThanOrEqual = type.GetMethod("op_GreaterThanOrEqual", new[] { type, type });
+            var lessThanOrEqual = type.GetMethod("op_LessThanOrEqual", new[] { type, type });
+
+            // First the comparisons with equal values
             if (greaterThanOrEqual != null)
             {
                 if (!type.IsValueType)
                 {
-                    Assert.True((bool)greaterThanOrEqual.Invoke(null, new object[] { value, null }), "value >= null");
-                    Assert.False((bool)greaterThanOrEqual.Invoke(null, new object[] { null, value }), "null >= value");
+                    Assert.True((bool) greaterThanOrEqual.Invoke(null, new object[] { value, null }), "value >= null");
+                    Assert.False((bool) greaterThanOrEqual.Invoke(null, new object[] { null, value }), "null >= value");
                 }
-                Assert.True((bool)greaterThanOrEqual.Invoke(null, new object[] { value, value }), "value >= value");
-                Assert.True((bool)greaterThanOrEqual.Invoke(null, new object[] { value, equalValue }), "value >= equalValue");
-                Assert.True((bool)greaterThanOrEqual.Invoke(null, new object[] { equalValue, value }), "equalValue >= value");
-                Assert.False((bool)greaterThanOrEqual.Invoke(null, new object[] { value, greaterValue }), "value >= greaterValue");
-                Assert.True((bool)greaterThanOrEqual.Invoke(null, new object[] { greaterValue, value }), "greaterValue >= value");
+                Assert.True((bool) greaterThanOrEqual.Invoke(null, new object[] { value, value }), "value >= value");
+                Assert.True((bool) greaterThanOrEqual.Invoke(null, new object[] { value, equalValue }), "value >= equalValue");
+                Assert.True((bool) greaterThanOrEqual.Invoke(null, new object[] { equalValue, value }), "equalValue >= value");
             }
-            var lessThanOrEqual = type.GetMethod("op_LessThanOrEqual", new[] { type, type });
             if (lessThanOrEqual != null)
             {
                 if (!type.IsValueType)
                 {
-                    Assert.False((bool)lessThanOrEqual.Invoke(null, new object[] { value, null }), "value <= null");
-                    Assert.True((bool)lessThanOrEqual.Invoke(null, new object[] { null, value }), "null <= value");
+                    Assert.False((bool) lessThanOrEqual.Invoke(null, new object[] { value, null }), "value <= null");
+                    Assert.True((bool) lessThanOrEqual.Invoke(null, new object[] { null, value }), "null <= value");
                 }
-                Assert.True((bool)lessThanOrEqual.Invoke(null, new object[] { value, value }), "value <= value");
-                Assert.True((bool)lessThanOrEqual.Invoke(null, new object[] { value, equalValue }), "value <= equalValue");
-                Assert.True((bool)lessThanOrEqual.Invoke(null, new object[] { equalValue, value }), "equalValue <= value");
-                Assert.True((bool)lessThanOrEqual.Invoke(null, new object[] { value, greaterValue }), "value <= greaterValue");
-                Assert.False((bool)lessThanOrEqual.Invoke(null, new object[] { greaterValue, value }), "greaterValue <= value");
+                Assert.True((bool) lessThanOrEqual.Invoke(null, new object[] { value, value }), "value <= value");
+                Assert.True((bool) lessThanOrEqual.Invoke(null, new object[] { value, equalValue }), "value <= equalValue");
+                Assert.True((bool) lessThanOrEqual.Invoke(null, new object[] { equalValue, value }), "equalValue <= value");
+            }
+
+            // Now the "greater than" values
+            foreach (var greaterValue in greaterValues)
+            {
+                if (greaterThanOrEqual != null)
+                {
+                    Assert.False((bool) greaterThanOrEqual.Invoke(null, new object[] { value, greaterValue }), "value >= greaterValue");
+                    Assert.True((bool) greaterThanOrEqual.Invoke(null, new object[] { greaterValue, value }), "greaterValue >= value");
+                }
+                if (lessThanOrEqual != null)
+                {
+                    Assert.True((bool) lessThanOrEqual.Invoke(null, new object[] { value, greaterValue }), "value <= greaterValue");
+                    Assert.False((bool) lessThanOrEqual.Invoke(null, new object[] { greaterValue, value }), "greaterValue <= value");
+                }
+                // Now move up to the next pair...
+                value = greaterValue;
             }
         }
 
@@ -507,19 +568,34 @@ namespace NodaTime.Test
         }
 
         /// <summary>
-        ///   Validates that the input parameters to the test methods are valid.
+        /// Validates that the input parameters to the test methods are valid.
+        /// </summary>
+        /// <param name="value">The base value.</param>
+        /// <param name="equalValue">The value equal to but not the same object as the base value.</param>
+        /// <param name="unEqualValues">The values not equal to the base value.</param>
+        /// <param name="unEqualName">The name to use in "not equal value" error messages.</param>
+        private static void ValidateInput(object value, object equalValue, object[] unEqualValues, string unEqualName)
+        {
+            Assert.NotNull(value, "value cannot be null in TestObjectEquals() method");
+            Assert.NotNull(equalValue, "equalValue cannot be null in TestObjectEquals() method");
+            Assert.AreNotSame(value, equalValue, "value and equalValue MUST be different objects");
+            foreach (var unEqualValue in unEqualValues)
+            {
+                Assert.NotNull(unEqualValue, unEqualName + " cannot be null in TestObjectEquals() method");
+                Assert.AreNotSame(value, unEqualValue, unEqualName + " and value MUST be different objects");
+            }
+        }
+
+        /// <summary>
+        /// Validates that the input parameters to the test methods are valid.
         /// </summary>
         /// <param name="value">The base value.</param>
         /// <param name="equalValue">The value equal to but not the same object as the base value.</param>
         /// <param name="unEqualValue">The value not equal to the base value.</param>
-        /// <param name="unEqualName">GetName of the not equal value error messages..</param>
+        /// <param name="unEqualName">The name to use in "not equal value" error messages.</param>
         private static void ValidateInput(object value, object equalValue, object unEqualValue, string unEqualName)
         {
-            Assert.NotNull(value, "value cannot be null in TestObjectEquals() method");
-            Assert.NotNull(equalValue, "equalValue cannot be null in TestObjectEquals() method");
-            Assert.NotNull(unEqualValue, unEqualName + " cannot be null in TestObjectEquals() method");
-            Assert.AreNotSame(value, equalValue, "value and equalValue MUST be different objects");
-            Assert.AreNotSame(value, unEqualValue, unEqualName + " and value MUST be different objects");
+            ValidateInput(value, equalValue, new object[] { unEqualValue }, unEqualName);
         }
     }
 

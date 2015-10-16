@@ -31,11 +31,7 @@ namespace NodaTime.Test
 
             TestHelper.TestCompareToStruct(equal, equal, greater1);
             TestHelper.TestNonGenericCompareTo(equal, equal, greater1);
-            TestHelper.TestOperatorComparisonEquality(equal, equal, greater1);
-
-            TestHelper.TestCompareToStruct(equal, equal, greater2);
-            TestHelper.TestNonGenericCompareTo(equal, equal, greater2);
-            TestHelper.TestOperatorComparisonEquality(equal, equal, greater2);
+            TestHelper.TestOperatorComparisonEquality(equal, equal, greater1, greater2);
         }
 
         #region operator +
