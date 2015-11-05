@@ -2,8 +2,6 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-using static NodaTime.NodaConstants;
-
 using System;
 using NUnit.Framework;
 
@@ -11,6 +9,14 @@ namespace NodaTime.Test
 {
     partial class DurationTest
     {
+        // TODO: Remove these and just have using static NodaTime.NodaConstants
+        // when the Mono-latest compiler works properly
+        const long NanosecondsPerDay = NodaConstants.NanosecondsPerDay;
+        const long NanosecondsPerHour = NodaConstants.NanosecondsPerHour;
+        const long NanosecondsPerMinute = NodaConstants.NanosecondsPerMinute;
+        const long NanosecondsPerSecond = NodaConstants.NanosecondsPerSecond;
+        const long NanosecondsPerMillisecond = NodaConstants.NanosecondsPerMillisecond;
+
         [Test]
         public void Zero()
         {
