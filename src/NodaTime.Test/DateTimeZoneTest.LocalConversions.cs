@@ -57,6 +57,7 @@ namespace NodaTime.Test
                 TransitionBackwardToMidnightZone);
             var actual = TransitionBackwardToMidnightZone.AtStartOfDay(TransitionDate);
             Assert.AreEqual(expected, actual);
+            Assert.AreEqual(expected, TransitionDate.AtStartOfDayInZone(TransitionBackwardToMidnightZone));
         }
 
         [Test]
@@ -67,6 +68,7 @@ namespace NodaTime.Test
                 TransitionBackwardAfterMidnightZone);
             var actual = TransitionBackwardAfterMidnightZone.AtStartOfDay(TransitionDate);
             Assert.AreEqual(expected, actual);
+            Assert.AreEqual(expected, TransitionDate.AtStartOfDayInZone(TransitionBackwardAfterMidnightZone));
         }
 
         [Test]
@@ -77,6 +79,7 @@ namespace NodaTime.Test
                 TransitionForwardAtMidnightZone);
             var actual = TransitionForwardAtMidnightZone.AtStartOfDay(TransitionDate);
             Assert.AreEqual(expected, actual);
+            Assert.AreEqual(expected, TransitionDate.AtStartOfDayInZone(TransitionForwardAtMidnightZone));
         }
 
         [Test]
@@ -87,6 +90,7 @@ namespace NodaTime.Test
                 TransitionForwardBeforeMidnightZone);
             var actual = TransitionForwardBeforeMidnightZone.AtStartOfDay(TransitionDate);
             Assert.AreEqual(expected, actual);
+            Assert.AreEqual(expected, TransitionDate.AtStartOfDayInZone(TransitionForwardBeforeMidnightZone));
         }
 
         [Test]
@@ -97,6 +101,7 @@ namespace NodaTime.Test
                 TransitionForwardAtMidnightZone);
             var actual = TransitionForwardAtMidnightZone.AtStartOfDay(new LocalDate(2000, 3, 1));
             Assert.AreEqual(expected, actual);
+            Assert.AreEqual(expected, new LocalDate(2000, 3, 1).AtStartOfDayInZone(TransitionForwardAtMidnightZone));
         }
 
         private static void AssertImpossible(LocalDateTime localTime, DateTimeZone zone)
