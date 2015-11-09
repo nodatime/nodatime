@@ -557,7 +557,7 @@ namespace NodaTime
         /// <param name="seconds">Number of seconds since the Unix epoch. May be negative (for instants before the epoch).</param>
         /// <returns>An <see cref="Instant"/> at exactly the given number of seconds since the Unix epoch.</returns>
         /// <exception cref="ArgumentOutOfRangeException">The constructed instant would be out of the range representable in Noda Time.</exception>
-        public static Instant FromSecondsSinceUnixEpoch(long seconds)
+        public static Instant FromUnixTimeSeconds(long seconds)
         {
             Preconditions.CheckArgumentRange(nameof(seconds), seconds, MinSeconds, MaxSeconds);
             return Instant.FromTrustedDuration(Duration.FromSeconds(seconds));
@@ -570,12 +570,12 @@ namespace NodaTime
         /// <param name="milliseconds">Number of milliseconds since the Unix epoch. May be negative (for instants before the epoch).</param>
         /// <returns>An <see cref="Instant"/> at exactly the given number of milliseconds since the Unix epoch.</returns>
         /// <exception cref="ArgumentOutOfRangeException">The constructed instant would be out of the range representable in Noda Time.</exception>
-        public static Instant FromMillisecondsSinceUnixEpoch(long milliseconds)
+        public static Instant FromUnixTimeMilliseconds(long milliseconds)
         {
             Preconditions.CheckArgumentRange(nameof(milliseconds), milliseconds, MinMilliseconds, MaxMilliseconds);
             return Instant.FromTrustedDuration(Duration.FromMilliseconds(milliseconds));
         }
-
+        
         /// <summary>
         /// Initializes a new instance of the <see cref="Instant" /> struct based
         /// on a number of ticks since the Unix epoch of (ISO) January 1st 1970, midnight, UTC.
@@ -584,10 +584,37 @@ namespace NodaTime
         /// intent more explicitly.</remarks>
         /// <returns>An <see cref="Instant"/> at exactly the given number of ticks since the Unix epoch.</returns>
         /// <param name="ticks">Number of ticks since the Unix epoch. May be negative (for instants before the epoch).</param>
+        [Pure]
         public static Instant FromTicksSinceUnixEpoch(long ticks)
         {
             Preconditions.CheckArgumentRange(nameof(ticks), ticks, MinTicks, MaxTicks);
             return Instant.FromTrustedDuration(Duration.FromTicks(ticks));
+        }
+
+        /// <summary>
+        /// Gets the number of seconds since the Unix epoch. Negative values represent instants before the Unix epoch.
+        /// </summary>
+        /// <remarks>
+        /// If the number of nanoseconds in this instant is not an exact number of seconds, the value is truncated towards the start of time.
+        /// </remarks>
+        /// <value>The number of seconds since the Unix epoch.</value>
+        [Pure]
+        public long ToUnixTimeSeconds()
+        {
+            return duration.FloorDays * SecondsPerDay + duration.NanosecondOfFloorDay / NanosecondsPerSecond;
+        }
+
+        /// <summary>
+        /// Gets the number of milliseconds since the Unix epoch. Negative values represent instants before the Unix epoch.
+        /// </summary>
+        /// <remarks>
+        /// If the number of nanoseconds in this instant is not an exact number of milliseconds, the value is truncated towards the start of time.
+        /// </remarks>
+        /// <value>The number of milliseconds since the Unix epoch.</value>
+        [Pure]
+        public long ToUnixTimeMilliseconds()
+        {
+            return duration.FloorDays * MillisecondsPerDay + duration.NanosecondOfFloorDay / NanosecondsPerMillisecond;
         }
 
         /// <summary>
