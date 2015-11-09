@@ -48,6 +48,8 @@ namespace NodaTime.Utility
                     : (int)((ticks + 1) / TicksPerDay) - 1;
         }
 
+        // TODO(2.0): Check whether this is still required. I don't believe we'll ever see
+        // a value with such a small number of ticks now, due to the decreased date range in 2.0.
         internal static long DaysAndTickOfDayToTicks(int days, long tickOfDay) =>
             days >= (int) (long.MinValue / TicksPerDay)
                 ? days * TicksPerDay + tickOfDay

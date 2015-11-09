@@ -77,15 +77,15 @@ namespace NodaTime.Test
         [Test]
         public void FromTicksSinceUnixEpoch()
         {
-            Instant instant = Instant.FromTicksSinceUnixEpoch(12345L);
-            Assert.AreEqual(12345L, instant.Ticks);
+            Instant instant = Instant.FromUnixTimeTicks(12345L);
+            Assert.AreEqual(12345L, instant.ToUnixTimeTicks());
         }
 
         [Test]
         public void FromUnixTimeMilliseconds_Valid()
         {
             Instant actual = Instant.FromUnixTimeMilliseconds(12345L);
-            Instant expected = Instant.FromTicksSinceUnixEpoch(12345L * NodaConstants.TicksPerMillisecond);
+            Instant expected = Instant.FromUnixTimeTicks(12345L * NodaConstants.TicksPerMillisecond);
             Assert.AreEqual(expected, actual);
         }
 
@@ -105,7 +105,7 @@ namespace NodaTime.Test
         public void FromUnixTimeSeconds_Valid()
         {
             Instant actual = Instant.FromUnixTimeSeconds(12345L);
-            Instant expected = Instant.FromTicksSinceUnixEpoch(12345L * NodaConstants.TicksPerSecond);
+            Instant expected = Instant.FromUnixTimeTicks(12345L * NodaConstants.TicksPerSecond);
             Assert.AreEqual(expected, actual);
         }
 
@@ -145,7 +145,7 @@ namespace NodaTime.Test
         [TestCase(15000, 1)]
         public void ToUnixTimeMilliseconds(long ticks, int expectedMilliseconds)
         {
-            var instant = Instant.FromTicksSinceUnixEpoch(ticks);
+            var instant = Instant.FromUnixTimeTicks(ticks);
             Assert.AreEqual(expectedMilliseconds, instant.ToUnixTimeMilliseconds());
         }
 
@@ -165,8 +165,8 @@ namespace NodaTime.Test
         [Test]
         public void Max()
         {
-            Instant x = Instant.FromTicksSinceUnixEpoch(100);
-            Instant y = Instant.FromTicksSinceUnixEpoch(200);
+            Instant x = Instant.FromUnixTimeTicks(100);
+            Instant y = Instant.FromUnixTimeTicks(200);
             Assert.AreEqual(y, Instant.Max(x, y));
             Assert.AreEqual(y, Instant.Max(y, x));
             Assert.AreEqual(x, Instant.Max(x, Instant.MinValue));
@@ -178,8 +178,8 @@ namespace NodaTime.Test
         [Test]
         public void Min()
         {
-            Instant x = Instant.FromTicksSinceUnixEpoch(100);
-            Instant y = Instant.FromTicksSinceUnixEpoch(200);
+            Instant x = Instant.FromUnixTimeTicks(100);
+            Instant y = Instant.FromUnixTimeTicks(200);
             Assert.AreEqual(x, Instant.Min(x, y));
             Assert.AreEqual(x, Instant.Min(y, x));
             Assert.AreEqual(Instant.MinValue, Instant.Min(x, Instant.MinValue));
@@ -258,7 +258,7 @@ namespace NodaTime.Test
         [Test]
         public void BinarySerialization()
         {
-            TestHelper.AssertBinaryRoundtrip(Instant.FromTicksSinceUnixEpoch(12345L));
+            TestHelper.AssertBinaryRoundtrip(Instant.FromUnixTimeTicks(12345L));
             TestHelper.AssertBinaryRoundtrip(Instant.MinValue);
             TestHelper.AssertBinaryRoundtrip(Instant.MaxValue);
         }
@@ -276,7 +276,7 @@ namespace NodaTime.Test
         {
             Duration nanos = Duration.FromNanoseconds(nanoseconds);
             Instant instant = Instant.FromUntrustedDuration(nanos);
-            Assert.AreEqual(expectedTicks, instant.Ticks);
+            Assert.AreEqual(expectedTicks, instant.ToUnixTimeTicks());
         }
 
         [Test]
@@ -324,8 +324,8 @@ namespace NodaTime.Test
         [Test]
         public void FromUnixTimeMilliseconds_Range()
         {
-            long smallestValid = Instant.MinValue.Ticks / NodaConstants.TicksPerMillisecond;
-            long largestValid = Instant.MaxValue.Ticks / NodaConstants.TicksPerMillisecond;
+            long smallestValid = Instant.MinValue.ToUnixTimeTicks() / NodaConstants.TicksPerMillisecond;
+            long largestValid = Instant.MaxValue.ToUnixTimeTicks() / NodaConstants.TicksPerMillisecond;
             TestHelper.AssertValid(Instant.FromUnixTimeMilliseconds, smallestValid);
             TestHelper.AssertOutOfRange(Instant.FromUnixTimeMilliseconds, smallestValid - 1);
             TestHelper.AssertValid(Instant.FromUnixTimeMilliseconds, largestValid);
@@ -335,8 +335,8 @@ namespace NodaTime.Test
         [Test]
         public void FromUnixTimeSeconds_Range()
         {
-            long smallestValid = Instant.MinValue.Ticks / NodaConstants.TicksPerSecond;
-            long largestValid = Instant.MaxValue.Ticks / NodaConstants.TicksPerSecond;
+            long smallestValid = Instant.MinValue.ToUnixTimeTicks() / NodaConstants.TicksPerSecond;
+            long largestValid = Instant.MaxValue.ToUnixTimeTicks() / NodaConstants.TicksPerSecond;
             TestHelper.AssertValid(Instant.FromUnixTimeSeconds, smallestValid);
             TestHelper.AssertOutOfRange(Instant.FromUnixTimeSeconds, smallestValid - 1);
             TestHelper.AssertValid(Instant.FromUnixTimeSeconds, largestValid);
@@ -346,12 +346,12 @@ namespace NodaTime.Test
         [Test]
         public void FromTicksSinceUnixEpoch_Range()
         {
-            long smallestValid = Instant.MinValue.Ticks;
-            long largestValid = Instant.MaxValue.Ticks;
-            TestHelper.AssertValid(Instant.FromTicksSinceUnixEpoch, smallestValid);
-            TestHelper.AssertOutOfRange(Instant.FromTicksSinceUnixEpoch, smallestValid - 1);
-            TestHelper.AssertValid(Instant.FromTicksSinceUnixEpoch, largestValid);
-            TestHelper.AssertOutOfRange(Instant.FromTicksSinceUnixEpoch, largestValid + 1);
+            long smallestValid = Instant.MinValue.ToUnixTimeTicks();
+            long largestValid = Instant.MaxValue.ToUnixTimeTicks();
+            TestHelper.AssertValid(Instant.FromUnixTimeTicks, smallestValid);
+            TestHelper.AssertOutOfRange(Instant.FromUnixTimeTicks, smallestValid - 1);
+            TestHelper.AssertValid(Instant.FromUnixTimeTicks, largestValid);
+            TestHelper.AssertOutOfRange(Instant.FromUnixTimeTicks, largestValid + 1);
         }
 
         // See issue 269.

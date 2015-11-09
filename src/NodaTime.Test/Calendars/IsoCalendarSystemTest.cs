@@ -46,7 +46,7 @@ namespace NodaTime.Test.Calendars
         [Test]
         public void FieldsOf_GreatAchievement()
         {
-            LocalDateTime now = Instant.FromTicksSinceUnixEpoch((TimeOfGreatAchievement - UnixEpochDateTime).Ticks).InUtc().LocalDateTime;
+            LocalDateTime now = Instant.FromUnixTimeTicks((TimeOfGreatAchievement - UnixEpochDateTime).Ticks).InUtc().LocalDateTime;
 
             Assert.AreEqual(2009, now.Year);
             Assert.AreEqual(2009, now.YearOfEra);

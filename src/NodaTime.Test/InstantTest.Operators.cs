@@ -38,8 +38,8 @@ namespace NodaTime.Test
         [Test]
         public void PlusTicks()
         {
-            Instant instant = Instant.FromTicksSinceUnixEpoch(5);
-            Assert.AreEqual(Instant.FromTicksSinceUnixEpoch(8), instant.PlusTicks(3));
+            Instant instant = Instant.FromUnixTimeTicks(5);
+            Assert.AreEqual(Instant.FromUnixTimeTicks(8), instant.PlusTicks(3));
         }
 
         [Test]

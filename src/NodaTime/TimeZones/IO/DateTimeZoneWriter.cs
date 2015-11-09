@@ -208,7 +208,7 @@ namespace NodaTime.TimeZones.IO
                 if (previous != null && previous.Value != Instant.BeforeMinValue)
                 {
                     // Note that the difference might exceed the range of a long, so we can't use a Duration here.
-                    ulong ticks = (ulong) (value.Ticks - previous.Value.Ticks);
+                    ulong ticks = (ulong) (value.ToUnixTimeTicks() - previous.Value.ToUnixTimeTicks());
                     if (ticks % TicksPerHour == 0)
                     {
                         ulong hours = ticks / TicksPerHour;
@@ -227,7 +227,7 @@ namespace NodaTime.TimeZones.IO
                 // out as a whole number of minutes since an (arbitrary, known) epoch.
                 if (value >= ZoneIntervalConstants.EpochForMinutesSinceEpoch)
                 {
-                    ulong ticks = (ulong) (value.Ticks - ZoneIntervalConstants.EpochForMinutesSinceEpoch.Ticks);
+                    ulong ticks = (ulong) (value.ToUnixTimeTicks() - ZoneIntervalConstants.EpochForMinutesSinceEpoch.ToUnixTimeTicks());
                     if (ticks % TicksPerMinute == 0)
                     {
                         ulong minutes = ticks / TicksPerMinute;
@@ -243,7 +243,7 @@ namespace NodaTime.TimeZones.IO
                 // while most of the values we write here are actually whole numbers of _seconds_, optimising for that
                 // case will save around 2KB (with tzdb 2012j), so doesn't seem worthwhile.
                 WriteCount(ZoneIntervalConstants.MarkerRaw);
-                WriteInt64(value.Ticks);
+                WriteInt64(value.ToUnixTimeTicks());
             }
         }
 
