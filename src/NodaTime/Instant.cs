@@ -563,7 +563,7 @@ namespace NodaTime
             Preconditions.CheckArgumentRange(nameof(milliseconds), milliseconds, MinMilliseconds, MaxMilliseconds);
             return Instant.FromTrustedDuration(Duration.FromMilliseconds(milliseconds));
         }
-        
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Instant" /> struct based
         /// on a number of ticks since the Unix epoch of (ISO) January 1st 1970, midnight, UTC.
@@ -572,7 +572,6 @@ namespace NodaTime
         /// intent more explicitly.</remarks>
         /// <returns>An <see cref="Instant"/> at exactly the given number of ticks since the Unix epoch.</returns>
         /// <param name="ticks">Number of ticks since the Unix epoch. May be negative (for instants before the epoch).</param>
-        [Pure]
         public static Instant FromUnixTimeTicks(long ticks)
         {
             Preconditions.CheckArgumentRange(nameof(ticks), ticks, MinTicks, MaxTicks);

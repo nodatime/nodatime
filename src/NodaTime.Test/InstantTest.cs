@@ -123,11 +123,15 @@ namespace NodaTime.Test
 
         [Test]
         [TestCase(-1500, -2)]
+        [TestCase(-1001, -2)]
         [TestCase(-1000, -1)]
+        [TestCase(-999, -1)]
         [TestCase(-500, -1)]
         [TestCase(0, 0)]
         [TestCase(500, 0)]
+        [TestCase(999, 0)]
         [TestCase(1000, 1)]
+        [TestCase(1001, 1)]
         [TestCase(1500, 1)]
         public void ToUnixTimeSeconds(long milliseconds, int expectedSeconds)
         {
@@ -137,11 +141,15 @@ namespace NodaTime.Test
 
         [Test]
         [TestCase(-15000, -2)]
+        [TestCase(-10001, -2)]
         [TestCase(-10000, -1)]
+        [TestCase(-9999, -1)]
         [TestCase(-5000, -1)]
         [TestCase(0, 0)]
         [TestCase(5000, 0)]
+        [TestCase(9999, 0)]
         [TestCase(10000, 1)]
+        [TestCase(10001, 1)]
         [TestCase(15000, 1)]
         public void ToUnixTimeMilliseconds(long ticks, int expectedMilliseconds)
         {
