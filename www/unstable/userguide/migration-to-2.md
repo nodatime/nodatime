@@ -72,6 +72,15 @@ Factory methods in `CalendarSystem` which either didn't take any parameters (`Ge
 no longer support those parameters (`GetCopticCalendar`, `GetJulianCalendar`) have been converted into properties.
 So for example, the equivalent of `CalendarSystem.GetJulianCalendar(4)` is now just `CalendarSystem.Julian`.
 
+Methods and properties on `Instant` to do with the Unix epoch have been renamed to be consistent with
+methods introduced in `DateTimeOffset` in .NET 4.6:
+
+- `FromSecondsSinceUnixEpoch()` is now `FromUnixTimeSeconds()`
+- `FromMillisecondsSinceUnixEpoch()` is now `FromUnixTimeMilliseconds()`
+- `FromTicksSinceUnixEpoch()` is now `FromUnixTimeTicks()`
+- The `Ticks` property is now `ToUnixTimeTicks()`
+- There are two new methods, `ToUnixTimeSeconds()` and `ToUnixTimeMilliseconds()`
+
 Period
 ====
 

@@ -159,11 +159,7 @@ namespace NodaTime
         /// <summary>
         /// The instant at the Unix epoch of midnight 1st January 1970 UTC.
         /// </summary>
-        /// <remarks>
-        /// This value is not only the Unix epoch, but the Noda Time epoch, as it represents the value
-        /// with a <see cref="Instant.Ticks"/> property of 0.
-        /// </remarks>
-        public static readonly Instant UnixEpoch = Instant.FromTicksSinceUnixEpoch(0);
+        public static readonly Instant UnixEpoch = Instant.FromUnixTimeTicks(0);
 
         /// <summary>
         /// The instant at the BCL epoch of midnight 1st January 0001 UTC.
