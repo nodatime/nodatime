@@ -32,7 +32,7 @@ namespace NodaTime.Test.Globalization
         // Just check we can actually build a NodaFormatInfo for every culture, outside
         // text-specific tests.
         [Test]
-        [TestCaseSource(typeof(Cultures), "AllCultures")]
+        [TestCaseSource(typeof(Cultures), nameof(Cultures.AllCultures))]
         public void ConvertCulture(CultureInfo culture)
         {
             NodaFormatInfo.GetFormatInfo(culture);

@@ -589,7 +589,7 @@ namespace NodaTime
         /// only equal to another local time with the same underlying tick value.
         /// </summary>
         /// <param name="obj">The object to compare this one with</param>
-        /// <returns>True if the specified value is a local time is equal to this one; false otherwise</returns>
+        /// <returns>True if the specified value is a local time which is equal to this one; false otherwise</returns>
         public override bool Equals(object obj) => obj is LocalTime && this == (LocalTime)obj;
 
         /// <summary>

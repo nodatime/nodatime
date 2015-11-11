@@ -46,6 +46,11 @@ See the [Noda Time 1.x to 2.0 migration guide](migration-to-2.html) for full det
 - Factory methods for the Julian, Coptic and Persian calendars have been converted into properties.
 - `y` and `yyy` are no longer supported in date format specifiers; use `yy` or `yyyy` instead.
 - The date format specifiers `yy` and `yyyy` now refer to the year of era instead of the absolute year; `u` is used for absolute year.
+- Some parameters have been renamed for consistency, affecting code which uses named arguments.
+- Factory methods for converting from units since the Unix epoch to `Instant` have been renamed to `FromUnixTimeXyz()`
+- The `Instant.Ticks` property has been converted to a method, `Instant.ToUnixTimeTicks()`. (This reflects
+  the fact that it would no longer reflect the complete state of the object, and aims to obscure the fact
+  that the Unix epoch is the internal epoch in Noda Time.)
 
 Bug fixes:
 

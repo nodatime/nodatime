@@ -14,9 +14,7 @@ namespace NodaTime.Test.TimeZones
     [TestFixture]
     public class TzdbDateTimeZoneTest
     {
-#pragma warning disable 0414 // Used by tests via reflection - do not remove!
         private static readonly IEnumerable<DateTimeZone> AllTzdbZones = DateTimeZoneProviders.Tzdb.GetAllZones();
-#pragma warning restore 0414
 
         [Test]
         [TestCaseSource(nameof(AllTzdbZones))]

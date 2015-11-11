@@ -208,14 +208,14 @@ namespace NodaTime.Test.Text
         internal static IEnumerable<Data> FormatData = FormatOnlyData.Concat(FormatAndParseData);
 
         [Test]
-        [TestCaseSource("ParseData")]
+        [TestCaseSource(nameof(ParseData))]
         public void ParsePartial(PatternTestData<Offset> data)
         {
             data.TestParsePartial();
         }
 
         [Test]
-        [TestCaseSource("FormatData")]
+        [TestCaseSource(nameof(FormatData))]
         public void AppendFormat(PatternTestData<Offset> data)
         {
             data.TestAppendFormat();

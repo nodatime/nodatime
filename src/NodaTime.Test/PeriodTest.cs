@@ -25,9 +25,7 @@ namespace NodaTime.Test
 
         private const PeriodUnits HoursMinutesPeriodType = PeriodUnits.Hours | PeriodUnits.Minutes;
 
-#pragma warning disable 0414 // Used by tests via reflection - do not remove!
         private static readonly PeriodUnits[] AllPeriodUnits = (PeriodUnits[])Enum.GetValues(typeof(PeriodUnits));
-#pragma warning restore 0414
 
         [Test]
         public void BetweenLocalDateTimes_WithoutSpecifyingUnits_OmitsWeeks()
@@ -782,7 +780,7 @@ namespace NodaTime.Test
         }
 
         [Test]
-        [TestCaseSource("AllPeriodUnits")]
+        [TestCaseSource(nameof(AllPeriodUnits))]
         public void Between_ExtremeValues(PeriodUnits units)
         {
             // We can't use None, and Ticks/Nanoseconds will *correctly* overflow.

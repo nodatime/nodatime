@@ -9,6 +9,13 @@ Noda Time 2.0 contains a number of breaking changes. If you have a project which
 1.x and are considering upgrading to 2.0, please read the following migration guide carefully.
 In particular, there are some changes which are changes to execution-time behaviour, and won't show up as compile-time errors.
 
+Parameter names
+====
+
+Some parameters have been renamed for consistency. This should not affect code that uses positional
+argument passing; code which uses named arguments will need to specify the new parameter name where
+there are changes. This does not affect binary compatibility.
+
 Obsolete members
 ====
 
@@ -64,6 +71,15 @@ but having it in the names was a bit obnoxious, particularly in code which used 
 Factory methods in `CalendarSystem` which either didn't take any parameters (`GetPersianCalendar`) or which
 no longer support those parameters (`GetCopticCalendar`, `GetJulianCalendar`) have been converted into properties.
 So for example, the equivalent of `CalendarSystem.GetJulianCalendar(4)` is now just `CalendarSystem.Julian`.
+
+Methods and properties on `Instant` to do with the Unix epoch have been renamed to be consistent with
+methods introduced in `DateTimeOffset` in .NET 4.6:
+
+- `FromSecondsSinceUnixEpoch()` is now `FromUnixTimeSeconds()`
+- `FromMillisecondsSinceUnixEpoch()` is now `FromUnixTimeMilliseconds()`
+- `FromTicksSinceUnixEpoch()` is now `FromUnixTimeTicks()`
+- The `Ticks` property is now `ToUnixTimeTicks()`
+- There are two new methods, `ToUnixTimeSeconds()` and `ToUnixTimeMilliseconds()`
 
 Period
 ====

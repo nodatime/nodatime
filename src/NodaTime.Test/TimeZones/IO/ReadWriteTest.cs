@@ -91,7 +91,7 @@ namespace NodaTime.Test.TimeZones.IO
             dio.TestZoneIntervalTransition(null, Instant.MinValue.PlusTicks(1));
             // The ZoneIntervalTransition has precision to the tick (with no real need to change that).
             // Round to the tick just lower than Instant.MaxValue...
-            Instant tickBeforeMaxInstant = Instant.FromTicksSinceUnixEpoch(Instant.MaxValue.Ticks);
+            Instant tickBeforeMaxInstant = Instant.FromUnixTimeTicks(Instant.MaxValue.ToUnixTimeTicks());
             dio.TestZoneIntervalTransition(null, tickBeforeMaxInstant);
 
             // Encoding as hours-since-previous.

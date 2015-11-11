@@ -166,7 +166,7 @@ namespace NodaTime.Test
             LocalDate start = new LocalDate(2000, 1, 1);
             LocalDate end = new LocalDate(2001, 6, 19);
             var interval = new DateInterval(start, end, false);
-            Assert.IsFalse(interval.Equals(Instant.FromTicksSinceUnixEpoch(0)));
+            Assert.IsFalse(interval.Equals(Instant.FromUnixTimeTicks(0)));
         }
 
         [Test]
