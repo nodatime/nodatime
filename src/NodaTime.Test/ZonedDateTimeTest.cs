@@ -75,9 +75,34 @@ namespace NodaTime.Test
         [Test]
         public void Add_MethodEquivalents()
         {
+            const int minutes = 23;
+            const int hours = 3;
+            const int milliseconds = 40000;
+            const long seconds = 321;
+            const long nanoseconds = 12345;
+            const long ticks = 5432112345;
+
             ZonedDateTime before = SampleZone.AtStrictly(new LocalDateTime(2011, 6, 12, 15, 0));
             Assert.AreEqual(before + Duration.OneDay, ZonedDateTime.Add(before, Duration.OneDay));
             Assert.AreEqual(before + Duration.OneDay, before.Plus(Duration.OneDay));
+            
+            Assert.AreEqual(before + Duration.FromHours(hours), before.PlusHours(hours));
+            Assert.AreEqual(before + Duration.FromHours(-hours), before.PlusHours(-hours));
+
+            Assert.AreEqual(before + Duration.FromMinutes(minutes), before.PlusMinutes(minutes));
+            Assert.AreEqual(before + Duration.FromMinutes(-minutes), before.PlusMinutes(-minutes));
+
+            Assert.AreEqual(before + Duration.FromSeconds(seconds), before.PlusSeconds(seconds));
+            Assert.AreEqual(before + Duration.FromSeconds(-seconds), before.PlusSeconds(-seconds));
+
+            Assert.AreEqual(before + Duration.FromMilliseconds(milliseconds), before.PlusMilliseconds(milliseconds));
+            Assert.AreEqual(before + Duration.FromMilliseconds(-milliseconds), before.PlusMilliseconds(-milliseconds));
+
+            Assert.AreEqual(before + Duration.FromNanoseconds(nanoseconds), before.PlusNanoseconds(nanoseconds));
+            Assert.AreEqual(before + Duration.FromNanoseconds(-nanoseconds), before.PlusNanoseconds(-nanoseconds));
+
+            Assert.AreEqual(before + Duration.FromNanoseconds(ticks), before.PlusNanoseconds(ticks));
+            Assert.AreEqual(before + Duration.FromNanoseconds(-ticks), before.PlusNanoseconds(-ticks));
         }
 
         [Test]
