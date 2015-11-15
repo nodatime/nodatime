@@ -282,11 +282,11 @@ namespace NodaTime.Test
             Assert.AreEqual(start + Duration.FromMilliseconds(milliseconds), start.PlusMilliseconds(milliseconds));
             Assert.AreEqual(start + Duration.FromMilliseconds(-milliseconds), start.PlusMilliseconds(-milliseconds));
 
+            Assert.AreEqual(start + Duration.FromTicks(ticks), start.PlusTicks(ticks));
+            Assert.AreEqual(start + Duration.FromTicks(-ticks), start.PlusTicks(-ticks));
+
             Assert.AreEqual(start + Duration.FromNanoseconds(nanoseconds), start.PlusNanoseconds(nanoseconds));
             Assert.AreEqual(start + Duration.FromNanoseconds(-nanoseconds), start.PlusNanoseconds(-nanoseconds));
-
-            Assert.AreEqual(start + Duration.FromNanoseconds(ticks), start.PlusNanoseconds(ticks));
-            Assert.AreEqual(start + Duration.FromNanoseconds(-ticks), start.PlusNanoseconds(-ticks));
         }
 
         [Test]
