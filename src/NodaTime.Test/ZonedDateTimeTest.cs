@@ -98,11 +98,11 @@ namespace NodaTime.Test
             Assert.AreEqual(before + Duration.FromMilliseconds(milliseconds), before.PlusMilliseconds(milliseconds));
             Assert.AreEqual(before + Duration.FromMilliseconds(-milliseconds), before.PlusMilliseconds(-milliseconds));
 
+            Assert.AreEqual(before + Duration.FromTicks(ticks), before.PlusTicks(ticks));
+            Assert.AreEqual(before + Duration.FromTicks(-ticks), before.PlusTicks(-ticks));
+
             Assert.AreEqual(before + Duration.FromNanoseconds(nanoseconds), before.PlusNanoseconds(nanoseconds));
             Assert.AreEqual(before + Duration.FromNanoseconds(-nanoseconds), before.PlusNanoseconds(-nanoseconds));
-
-            Assert.AreEqual(before + Duration.FromNanoseconds(ticks), before.PlusNanoseconds(ticks));
-            Assert.AreEqual(before + Duration.FromNanoseconds(-ticks), before.PlusNanoseconds(-ticks));
         }
 
         [Test]
