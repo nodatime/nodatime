@@ -1,0 +1,23 @@
+{
+  "version": "2.0.0-*",  
+
+  "dependencies": {
+    "NodaTime": "",
+    "SharpCompress": "0.11.1"
+  },
+  
+  "compile": [
+    "*.cs",
+    "../../lib/commandline/*.cs"
+  ],
+  
+  "frameworks": {
+    "dnx451": {
+      "frameworkAssemblies": {
+        "System.Runtime": "",
+        "System.Threading.Tasks": "",
+        "System.Xml.Linq": ""
+      }
+    }
+  }
+}

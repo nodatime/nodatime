@@ -1,0 +1,42 @@
+{
+  "version": "2.0.0-*",
+  
+  "configurations": {
+    "Debug": {
+      "compilationOptions": {
+        "define": ["DEBUG", "TRACE"]
+      }
+    },
+    "Release": {
+      "compilationOptions": {
+        "define": ["RELEASE", "TRACE"],
+        "optimize": true
+      }
+    }
+  },
+  
+  "commands": {
+    "test": "run"
+  },
+  
+  "dependencies": {
+    "Microsoft.CodeAnalysis": "1.1.0",
+    "NodaTime": "",
+    "NodaTime.Serialization.JsonNet": "",
+    "NodaTime.Testing": "",
+    "NUnit": "3.0.0",
+    "NUnitLite": "3.0.0-*",
+    "System.Xml.XDocument": "4.0.0",
+    "Newtonsoft.Json": "8.0.1"
+  },
+
+  "frameworks": {
+    "dnx451": {
+      "frameworkAssemblies": {
+        "System.Runtime": "",
+        "System.Threading.Tasks": "",
+        "System.Xml.Linq": ""
+      }
+    }
+  }
+}

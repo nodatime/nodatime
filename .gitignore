@@ -27,7 +27,7 @@ Thumbs.db
 **/obj/
 
 # NUnit output
-/TestResult.xml
+TestResult.xml
 
 # Output from build steps
 /build/tmp/**
@@ -56,3 +56,6 @@ Thumbs.db
 # Generated packages/projects
 /src/NodaTime-Core-*.sln
 /src/**/*-*.csproj
+
+# DNX files
+project.lock.json

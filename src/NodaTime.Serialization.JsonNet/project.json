@@ -1,0 +1,35 @@
+{
+  "version": "2.0.0-*",
+  
+  "configurations": {
+    "Debug": {
+      "compilationOptions": {
+        "define": ["DEBUG", "TRACE"]
+      }
+    },
+    "Release": {
+      "compilationOptions": {
+        "define": ["RELEASE", "TRACE"],
+        "optimize": true
+      }
+    }
+  },
+  
+  "dependencies": {
+    "Newtonsoft.Json": "8.0.1",
+    "NodaTime": "",
+  },
+
+  "frameworks": {
+    "net451": {
+    },
+    "dotnet5.4": {
+      "compilationOptions": {
+        "define": ["PCL"]
+      },
+      "dependencies": {
+        "System.Linq": "4.0.0"
+      }
+    }
+  }
+}

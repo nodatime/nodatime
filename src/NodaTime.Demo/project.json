@@ -1,0 +1,17 @@
+{
+  "version": "2.0.0-*",  
+  "commands": {
+    "test": "run"
+  },
+
+  "dependencies": {
+    "NodaTime": "",
+    "NUnit": "3.0.0",
+    "NUnitLite": "3.0.0-*"
+  },
+
+  "frameworks": {
+    "dnx451": {
+    }
+  }
+}

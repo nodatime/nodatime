@@ -15,6 +15,7 @@ namespace NodaTime.Test.Calendars
     public class PersianCalendarSystemTest
     {
         [Test, Timeout(300000)] // Can take a long time under NCrunch.
+        [Category("Slow")]
         public void BclThroughHistory()
         {
             Calendar bcl = new PersianCalendar();

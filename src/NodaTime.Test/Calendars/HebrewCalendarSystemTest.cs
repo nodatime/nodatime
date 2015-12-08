@@ -37,6 +37,7 @@ namespace NodaTime.Test.Calendars
         /// using the civil month numbering.
         /// </summary>
         [Test, Timeout(300000)] // Can take a long time under NCrunch.
+        [Category("Slow")]
         public void BclThroughHistory_Civil()
         {
             Calendar bcl = new HebrewCalendar();

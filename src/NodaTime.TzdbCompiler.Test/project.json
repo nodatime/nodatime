@@ -1,0 +1,39 @@
+{
+  "version": "2.0.0-*",
+  
+  "configurations": {
+    "Debug": {
+      "compilationOptions": {
+        "define": ["DEBUG", "TRACE"]
+      }
+    },
+    "Release": {
+      "compilationOptions": {
+        "define": ["RELEASE", "TRACE"],
+        "optimize": true
+      }
+    }
+  },
+  
+  "commands": {
+    "test": "run"
+  },
+
+  "dependencies": {
+    "NodaTime": "",
+    "NodaTime.Testing": "",
+    "NodaTime.TzdbCompiler": "",
+    "NUnit": "3.0.0",
+    "NUnitLite": "3.0.0-*",
+    "System.Xml.XDocument": "4.0.0"
+  },
+
+  "frameworks": {
+    "dnx451": {
+      "frameworkAssemblies": {
+        "System.Runtime": "",
+        "System.Threading.Tasks": "",
+      }
+    }
+  }
+}
