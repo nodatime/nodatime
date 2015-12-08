@@ -38,8 +38,7 @@ This roadmap was last updated on **2014-06-27**.
 
 - Unscheduled features and issues which we hope to address at some point:
   - Support month name parsing/formatting for the Hebrew calendar using `CultureInfo`
-  - Ethopian and Um Al Qura calendars
-  - Enable embedding Noda Time in SQLCLR
+  - Ethopian calendars
   - More code analysis using Roslyn (e.g. check that all non-nullable parameters are validated)
 
 - Separate CLDR project
