@@ -82,9 +82,13 @@ namespace NodaTime.Test.Text
             // Invalid calendar name
             new Data { Pattern = "c yyyy MM dd", Text = "2015 01 01", Message = Messages.Parse_NoMatchingCalendarSystem },
 
-            // Invald year
+            // Invalid year
             new Data { Template = new LocalDate(1, 1, 1, CalendarSystem.IslamicBcl), Pattern = "uuuu", Text = "9999", Message = Messages.Parse_FieldValueOutOfRange, Parameters = { 9999, 'u', typeof(LocalDate) } },
             new Data { Template = new LocalDate(1, 1, 1, CalendarSystem.IslamicBcl), Pattern = "yyyy", Text = "9999", Message = Messages.Parse_YearOfEraOutOfRange, Parameters = { 9999, "EH", "Hijri" } },
+
+            // https://github.com/nodatime/nodatime/issues/414
+            new Data { Pattern = "yyyy-MM-dd", Text = "1984-00-15", Message = Messages.Parse_FieldValueOutOfRange, Parameters = { 0, 'M', typeof(LocalDate) } },
+            new Data { Pattern = "M/d/yyyy", Text = "00/15/1984", Message = Messages.Parse_FieldValueOutOfRange, Parameters = { 0, 'M', typeof(LocalDate) } }
         };
 
         internal static Data[] ParseOnlyData = {
