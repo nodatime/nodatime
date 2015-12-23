@@ -291,7 +291,7 @@ namespace NodaTime.Text
         /// <param name="allRequired">If true, <paramref name="maximumDigits"/> digits must be present in the
         /// input sequence. If false, there must be just at least one digit.</param>
         /// <returns><c>true</c> if the digits were parsed.</returns>
-        internal bool ParseFraction(int maximumDigits, int scale, out int result, bool allRequired)
+        internal bool ParseFraction(int maximumDigits, int scale, out int result, int minimumDigits)
         {
             unchecked
             {
@@ -302,16 +302,13 @@ namespace NodaTime.Text
 
                 result = 0;
                 int localIndex = Index;
-                int maxIndex = localIndex + maximumDigits;
-                if (maxIndex > Length)
+                int minIndex = localIndex + minimumDigits;
+                if (minIndex > Length)
                 {
                     // If we don't have all the digits we're meant to have, we can't possibly succeed.
-                    if (allRequired)
-                    {
-                        return false;
-                    }
-                    maxIndex = Length;
+                    return false;
                 }
+                int maxIndex = Math.Min(localIndex + maximumDigits, Length);
                 for (; localIndex < maxIndex; localIndex++)
                 {
                     // Optimized digit handling: rather than checking for the range, returning -1
@@ -324,19 +321,14 @@ namespace NodaTime.Text
                     result = result * 10 + digit;
                 }
                 int count = localIndex - Index;
-                // Couldn't parse any digits?
-                if (count == 0)
+                // Couldn't parse the minimum number of digits required?
+                if (count  < minimumDigits)
                 {
                     return false;
                 }
                 result = (int) (result * Math.Pow(10.0, scale - count));
-                bool ret = !allRequired || localIndex == maxIndex;
-                // Only move the cursor on success.
-                if (ret)
-                {
-                    Move(localIndex);
-                }
-                return ret;
+                Move(localIndex);
+                return true;
             }
         }
 

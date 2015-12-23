@@ -299,7 +299,7 @@ namespace NodaTime.Text
                         }
                         int totalNanoseconds;
                         // Can cope with at most 999999999 nanoseconds
-                        if (!valueCursor.ParseFraction(9, 9, out totalNanoseconds, false))
+                        if (!valueCursor.ParseFraction(9, 9, out totalNanoseconds, 1))
                         {
                             return ParseResult<Period>.MissingNumber(valueCursor);
                         }
