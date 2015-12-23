@@ -145,7 +145,7 @@ namespace NodaTime.Text.Patterns
                     case 2:
                         field = PatternFields.MonthOfYearNumeric;
                         // Handle real maximum value in the bucket
-                        builder.AddParseValueAction(count, 2, pattern.Current, 0, 99, numberSetter);
+                        builder.AddParseValueAction(count, 2, pattern.Current, 1, 99, numberSetter);
                         builder.AddFormatAction((value, sb) => FormatHelper.LeftPad(numberGetter(value), count, sb));
                         break;
                     case 3:

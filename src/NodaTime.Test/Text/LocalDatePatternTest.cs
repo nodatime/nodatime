@@ -87,6 +87,10 @@ namespace NodaTime.Test.Text
             new Data(19999, 1, 1) { Pattern = "yyyy'0'MM dd", Text = "19999001 01", Message = Messages.Parse_QuotedStringMismatch, Parameters = { '0' }},
             new Data(19999, 1, 1) { Pattern = "yyyy''0MM dd", Text = "19999001 01", Message = Messages.Parse_MismatchedCharacter, Parameters = { '0' }},
             new Data(19999, 1, 1) { Pattern = @"yyyy\0MM dd", Text = "19999001 01", Message = Messages.Parse_EscapedCharacterMismatch, Parameters = { '0' }},
+
+            // https://github.com/nodatime/nodatime/issues/414
+            new Data { Pattern = "yyyy-MM-dd", Text = "1984-00-15", Message = Messages.Parse_FieldValueOutOfRange, Parameters = { 0, 'M', typeof(LocalDate) } },
+            new Data { Pattern = "M/d/yyyy", Text = "00/15/1984", Message = Messages.Parse_FieldValueOutOfRange, Parameters = { 0, 'M', typeof(LocalDate) } }
         };
 
         internal static Data[] ParseOnlyData = {
