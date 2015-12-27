@@ -17,6 +17,22 @@ namespace NodaTime.Test
         private static readonly Instant negativeFiftyMillion = Instant.FromUntrustedDuration(Duration.FromNanoseconds(-50000000L));
 
         [Test]
+        public void FromJDN()
+        {
+            Instant viaJDN = Instant.FromJulianDayNumber(2436116.31);
+            Instant expected = Instant.FromUtc(1957, 10, 4, 19, 26, 24);
+            Assert.AreEqual(viaJDN, expected);
+        }
+
+        [Test]
+        public void ToJDN()
+        {
+            Instant toJDN = new NodaTime.LocalDateTime(333, 1, 27, 12, 0, CalendarSystem.Julian).InUtc().ToInstant();
+            double expected = 1842713.0;
+            Assert.AreEqual(expected, toJDN.ToJulianDayNumber());
+        }
+
+        [Test]
         public void FromUtcNoSeconds()
         {
             Instant viaUtc = DateTimeZone.Utc.AtStrictly(new LocalDateTime(2008, 4, 3, 10, 35, 0)).ToInstant();
