@@ -502,6 +502,13 @@ namespace NodaTime
         #endregion
 
         /// <summary>
+        /// Constructs a <see cref="double"/> representing the same instant of time as this value.
+        /// </summary>
+        /// <returns>Returns a <see cref="double"/> containing the number of whole and fractional days since the Julian Epoch (Noon January 1st, 4713 BCE)</returns>
+        [Pure]
+        public double ToJulianDayNumber() => this.duration.TotalSeconds / 86400d + 2440587.5;
+
+        /// <summary>
         /// Constructs a <see cref="DateTime"/> from this Instant which has a <see cref="DateTime.Kind" />
         /// of <see cref="DateTimeKind.Utc"/> and represents the same instant of time as this value.
         /// </summary>
@@ -524,6 +531,13 @@ namespace NodaTime
         /// <param name="dateTimeOffset">Date and time value with an offset.</param>
         public static Instant FromDateTimeOffset(DateTimeOffset dateTimeOffset) =>
             BclEpoch.PlusTicks(dateTimeOffset.Ticks - dateTimeOffset.Offset.Ticks);
+
+        /// <summary>
+        /// Converts a Julian Day Number into a new Instant representing the same instant in time
+        /// </summary>
+        /// <param name="JDN">a <see cref="double"/> containing the number of whole and fractional days since the Julian Epoch (Noon January 1st, 4713 BCE)</param>
+        /// <returns>An <see cref="Instant"/> value representing the same instant in time as the given <see cref="double"/>.</returns>
+        public static Instant FromJulianDayNumber(double JDN) => UnixEpoch.PlusTicks(Convert.ToInt64((JDN - 2440587.5) * 86400) * TicksPerSecond);
 
         /// <summary>
         /// Converts a <see cref="DateTime"/> into a new Instant representing the same instant in time.
