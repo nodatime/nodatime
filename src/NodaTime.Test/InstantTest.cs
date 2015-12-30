@@ -17,19 +17,20 @@ namespace NodaTime.Test
         private static readonly Instant negativeFiftyMillion = Instant.FromUntrustedDuration(Duration.FromNanoseconds(-50000000L));
 
         [Test]
-        public void FromJDN()
+        // Gregorian calendar: 1957-10-04
+        [TestCase(2436116.31, 1957, 9, 21, 19, 26, 24, Description = "Sample from Astronomical Algorithms 2nd Edition, chapter 7")]
+        // Gregorian calendar: 2013-01-01
+        [TestCase(2456293.520833, 2012, 12, 19, 0, 30, 0, Description = "Sample from Wikipedia")]
+        [TestCase(1842713.0, 333, 1, 27, 12, 0, 0, Description = "Another sample from Astronomical Algorithms 2nd Edition, chapter 7")]
+        [TestCase(0.0, -4712, 1, 1, 12, 0, 0, Description = "Julian epoch")]
+        public void JulianDateConversions(double julianDate, int year, int month, int day, int hour, int minute, int second)
         {
-            Instant viaJDN = Instant.FromJulianDayNumber(2436116.31);
-            Instant expected = Instant.FromUtc(1957, 10, 4, 19, 26, 24);
-            Assert.AreEqual(viaJDN, expected);
-        }
-
-        [Test]
-        public void ToJDN()
-        {
-            Instant toJDN = new NodaTime.LocalDateTime(333, 1, 27, 12, 0, CalendarSystem.Julian).InUtc().ToInstant();
-            double expected = 1842713.0;
-            Assert.AreEqual(expected, toJDN.ToJulianDayNumber());
+            // When dealing with floating point binary data, if we're accurate to 50 milliseconds, that's fine...
+            // (0.000001 days = ~86ms, as a guide to the scale involved...)
+            Instant actual = Instant.FromJulianDate(julianDate);
+            Instant expected = new LocalDateTime(year, month, day, hour, minute, second, CalendarSystem.Julian).InUtc().ToInstant();
+            Assert.AreEqual(expected.ToUnixTimeMilliseconds(), actual.ToUnixTimeMilliseconds(), 50, "Expected {0}, was {1}", expected, actual);
+            Assert.AreEqual(julianDate, expected.ToJulianDate(), 0.000001);
         }
 
         [Test]
