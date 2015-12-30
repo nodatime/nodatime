@@ -601,7 +601,7 @@ namespace NodaTime
         /// <value>The number of seconds since the Unix epoch.</value>
         [Pure]
         public long ToUnixTimeSeconds() =>
-            duration.FloorDays * SecondsPerDay + duration.NanosecondOfFloorDay / NanosecondsPerSecond;
+            duration.FloorDays * (long) SecondsPerDay + duration.NanosecondOfFloorDay / NanosecondsPerSecond;
 
         /// <summary>
         /// Gets the number of milliseconds since the Unix epoch. Negative values represent instants before the Unix epoch.
@@ -612,7 +612,7 @@ namespace NodaTime
         /// <value>The number of milliseconds since the Unix epoch.</value>
         [Pure]
         public long ToUnixTimeMilliseconds() =>
-            duration.FloorDays * MillisecondsPerDay + duration.NanosecondOfFloorDay / NanosecondsPerMillisecond;
+            duration.FloorDays * (long) MillisecondsPerDay + duration.NanosecondOfFloorDay / NanosecondsPerMillisecond;
 
         /// <summary>
         /// Gets the number of ticks since the Unix epoch. Negative values represent instants before the Unix epoch.

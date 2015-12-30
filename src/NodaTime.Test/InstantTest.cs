@@ -174,6 +174,21 @@ namespace NodaTime.Test
         }
 
         [Test]
+        public void UnixConversions_ExtremeValues()
+        {
+            // Round down to a whole second to make round-tripping work.
+            var max = Instant.MaxValue - Duration.FromSeconds(1) + Duration.Epsilon;
+            Assert.AreEqual(max, Instant.FromUnixTimeSeconds(max.ToUnixTimeSeconds()));
+            Assert.AreEqual(max, Instant.FromUnixTimeMilliseconds(max.ToUnixTimeMilliseconds()));
+            Assert.AreEqual(max, Instant.FromUnixTimeTicks(max.ToUnixTimeTicks()));
+
+            var min = Instant.MinValue;
+            Assert.AreEqual(min, Instant.FromUnixTimeSeconds(min.ToUnixTimeSeconds()));
+            Assert.AreEqual(min, Instant.FromUnixTimeMilliseconds(min.ToUnixTimeMilliseconds()));
+            Assert.AreEqual(min, Instant.FromUnixTimeTicks(min.ToUnixTimeTicks()));
+        }
+
+        [Test]
         public void InZoneWithCalendar()
         {
             CalendarSystem copticCalendar = CalendarSystem.Coptic;
