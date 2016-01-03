@@ -502,11 +502,12 @@ namespace NodaTime
         #endregion
 
         /// <summary>
-        /// Constructs a <see cref="double"/> representing the same instant of time as this value.
+        /// Returns the Julian Date of this instance - the number of days since
+        /// <see cref="NodaConstants.JulianEpoch"/> (noon on January 1st, 4713 BCE in the Julian calendar).
         /// </summary>
-        /// <returns>Returns a <see cref="double"/> containing the number of whole and fractional days since the Julian Epoch (Noon January 1st, 4713 BCE)</returns>
+        /// <returns>The number of days (including fractional days) since the Julian Epoch.</returns>
         [Pure]
-        public double ToJulianDayNumber() => this.duration.TotalSeconds / 86400d + 2440587.5;
+        public double ToJulianDate() => (this - JulianEpoch).TotalDays;
 
         /// <summary>
         /// Constructs a <see cref="DateTime"/> from this Instant which has a <see cref="DateTime.Kind" />
@@ -533,11 +534,21 @@ namespace NodaTime
             BclEpoch.PlusTicks(dateTimeOffset.Ticks - dateTimeOffset.Offset.Ticks);
 
         /// <summary>
-        /// Converts a Julian Day Number into a new Instant representing the same instant in time
+        /// Converts a Julian Date representing the given number of days
+        /// since <see cref="NodaConstants.JulianEpoch"/> (noon on January 1st, 4713 BCE in the Julian calendar)
+        /// into an <see cref="Instant"/>.
         /// </summary>
-        /// <param name="JDN">a <see cref="double"/> containing the number of whole and fractional days since the Julian Epoch (Noon January 1st, 4713 BCE)</param>
-        /// <returns>An <see cref="Instant"/> value representing the same instant in time as the given <see cref="double"/>.</returns>
-        public static Instant FromJulianDayNumber(double JDN) => UnixEpoch.PlusTicks(Convert.ToInt64((JDN - 2440587.5) * 86400) * TicksPerSecond);
+        /// <param name="julianDate">The number of days since the Julian Epoch to convert into an <see cref="Instant"/>.</param>
+        /// <returns>An <see cref="Instant"/> value which is <paramref name="julianDate"/> days after the Julian Epoch.</returns>
+        public static Instant FromJulianDate(double julianDate)
+        {
+            // TODO(2.0): Revisit this when we have more duration code that can cope with double.
+            int days = (int) julianDate;
+            double subDay = julianDate - days;
+            long nanoOfDay = (long) (subDay * NanosecondsPerDay);
+            return NodaConstants.JulianEpoch + Duration.FromDays(days) + Duration.FromNanoseconds(nanoOfDay);
+        }
+
 
         /// <summary>
         /// Converts a <see cref="DateTime"/> into a new Instant representing the same instant in time.
