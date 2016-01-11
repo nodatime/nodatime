@@ -17,65 +17,32 @@ namespace NodaTime.Test.Text.Patterns
         }
 
         [Test]
-        public void TestGetQuotedString_EscapeAtEnd()
+        [TestCase(@"'abc\", Description = "Escape at end")]
+        [TestCase(@"'abc", Description = "Missing close quote")]
+        public void GetQuotedString_Invalid(string pattern)
         {
-            var cursor = new PatternCursor("'abc\\");
-            Assert.AreEqual('\'', GetNextCharacter(cursor));            
+            var cursor = new PatternCursor(pattern);
+            Assert.AreEqual('\'', GetNextCharacter(cursor));
             Assert.Throws<InvalidPatternException>(() => cursor.GetQuotedString('\''));
         }
 
         [Test]
-        public void TestGetQuotedString()
+        [TestCase("'abc'", "abc")]
+        [TestCase("''", "")]
+        [TestCase("'\"abc\"'", "\"abc\"", Description = "Double quotes")]
+        [TestCase("'ab\\c'", "abc", Description = "Escaped backslash")]
+        [TestCase("'ab\\'c'", "ab'c", Description = "Escaped close quote")]
+        public void GetQuotedString_Valid(string pattern, string expected)
         {
-            var cursor = new PatternCursor("'abc'");
+            var cursor = new PatternCursor(pattern);
             Assert.AreEqual('\'', GetNextCharacter(cursor));
             string actual = cursor.GetQuotedString('\'');
-            Assert.AreEqual("abc", actual);
+            Assert.AreEqual(expected, actual);
             Assert.IsFalse(cursor.MoveNext());
         }
 
         [Test]
-        public void TestGetQuotedString_Empty()
-        {
-            var cursor = new PatternCursor("''");
-            char openQuote = GetNextCharacter(cursor);
-            string actual = cursor.GetQuotedString(openQuote);
-            Assert.AreEqual(string.Empty, actual);
-            Assert.IsFalse(cursor.MoveNext());
-        }
-
-        [Test]
-        public void TestGetQuotedString_HandlesDoubleQuote()
-        {
-            var cursor = new PatternCursor("\"abc\"");
-            char openQuote = GetNextCharacter(cursor);
-            string actual = cursor.GetQuotedString(openQuote);
-            Assert.AreEqual("abc", actual);
-            Assert.IsFalse(cursor.MoveNext());
-        }
-
-        [Test]
-        public void TestGetQuotedString_HandlesEscape()
-        {
-            var cursor = new PatternCursor("'ab\\c'");
-            char openQuote = GetNextCharacter(cursor);
-            string actual = cursor.GetQuotedString(openQuote);
-            Assert.AreEqual("abc", actual);
-            Assert.IsFalse(cursor.MoveNext());
-        }
-
-        [Test]
-        public void TestGetQuotedString_HandlesEscapedCloseQuote()
-        {
-            var cursor = new PatternCursor("'ab\\'c'");
-            char openQuote = GetNextCharacter(cursor);
-            string actual = cursor.GetQuotedString(openQuote);
-            Assert.AreEqual("ab'c", actual);
-            Assert.IsFalse(cursor.MoveNext());
-        }
-
-        [Test]
-        public void TestGetQuotedString_HandlesOtherQuote()
+        public void GetQuotedString_HandlesOtherQuote()
         {
             var cursor = new PatternCursor("[abc]");
             GetNextCharacter(cursor);
@@ -85,15 +52,7 @@ namespace NodaTime.Test.Text.Patterns
         }
 
         [Test]
-        public void TestGetQuotedString_MissingCloseQuote()
-        {
-            var cursor = new PatternCursor("'abc");
-            char openQuote = GetNextCharacter(cursor);
-            Assert.Throws<InvalidPatternException>(() => cursor.GetQuotedString(openQuote));
-        }
-
-        [Test]
-        public void TestGetQuotedString_NotAtEnd()
+        public void GetQuotedString_NotAtEnd()
         {
             var cursor = new PatternCursor("'abc'more");
             char openQuote = GetNextCharacter(cursor);
@@ -105,27 +64,20 @@ namespace NodaTime.Test.Text.Patterns
         }
 
         [Test]
-        public void TestGetQuotedString_Simple()
+        [TestCase("aaa", 3)]
+        [TestCase("a", 1)]
+        [TestCase("aaadaa", 3)]
+        public void GetRepeatCount_Valid(string text, int expectedCount)
         {
-            var cursor = new PatternCursor("'abc'");
-            char openQuote = GetNextCharacter(cursor);
-            string actual = cursor.GetQuotedString(openQuote);
-            Assert.AreEqual("abc", actual);
-            Assert.IsFalse(cursor.MoveNext());
-        }
-
-        [Test]
-        public void TestGetRepeatCount_Current()
-        {
-            var cursor = new PatternCursor("aaa");
-            GetNextCharacter(cursor);
+            var cursor = new PatternCursor(text);
+            Assert.IsTrue(cursor.MoveNext());
             int actual = cursor.GetRepeatCount(10);
-            Assert.AreEqual(3, actual);
-            ValidateCurrentCharacter(cursor, 2, 'a');
+            Assert.AreEqual(expectedCount, actual);
+            ValidateCurrentCharacter(cursor, expectedCount - 1, 'a');
         }
 
         [Test]
-        public void TestGetRepeatCount_ExceedsMax()
+        public void GetRepeatCount_ExceedsMax()
         {
             var cursor = new PatternCursor("aaa");
             Assert.IsTrue(cursor.MoveNext());
@@ -133,95 +85,34 @@ namespace NodaTime.Test.Text.Patterns
         }
 
         [Test]
-        public void TestGetRepeatCount_One()
+        [TestCase("x<HH:mm>y", "HH:mm", Description = "Simple")]
+        [TestCase("x<HH:'T'mm>y", "HH:'T'mm", Description = "Quoting")]
+        [TestCase(@"x<HH:\Tmm>y", @"HH:\Tmm", Description = "Escaping")]
+        [TestCase("x<a<b>c>y", "a<b>c", Description = "Simple nesting")]
+        [TestCase("x<a'<'bc>y", "a'<'bc", Description = "Quoted start embedded")]
+        [TestCase("x<a'>'bc>y", "a'>'bc", Description = "Quoted end embedded")]
+        [TestCase(@"x<a\<bc>y", @"a\<bc", Description = "Escaped start embedded")]
+        [TestCase(@"x<a\>bc>y", @"a\>bc", Description = "Escaped end embedded")]
+        public void GetEmbeddedPattern_Valid(string pattern, string expectedEmbedded)
         {
-            var cursor = new PatternCursor("a");
-            Assert.IsTrue(cursor.MoveNext());
-            int actual = cursor.GetRepeatCount(10);
-            Assert.AreEqual(1, actual);
-            ValidateCurrentCharacter(cursor, 0, 'a');
-        }
-
-        [Test]
-        public void TestGetRepeatCount_StopsOnNonMatch()
-        {
-            var cursor = new PatternCursor("aaadaa");
-            Assert.IsTrue(cursor.MoveNext());
-            int actual = cursor.GetRepeatCount(10);
-            Assert.AreEqual(3, actual);
-            ValidateCurrentCharacter(cursor, 2, 'a');
-        }
-
-        [Test]
-        public void TestGetRepeatCount_Three()
-        {
-            var cursor = new PatternCursor("aaa");
-            Assert.IsTrue(cursor.MoveNext());
-            int actual = cursor.GetRepeatCount(10);
-            Assert.AreEqual(3, actual);
-            ValidateCurrentCharacter(cursor, 2, 'a');
-        }
-
-        [Test]
-        public void TestGetEmbeddedPattern_Valid()
-        {
-            var cursor = new PatternCursor("x<HH:mm>y");
+            var cursor = new PatternCursor(pattern);
             cursor.MoveNext();
-            string embedded = cursor.GetEmbeddedPattern('<', '>');
-            Assert.AreEqual("HH:mm", embedded);
-            ValidateCurrentCharacter(cursor, 7, '>');
+            string embedded = cursor.GetEmbeddedPattern();
+            Assert.AreEqual(expectedEmbedded, embedded);
+            ValidateCurrentCharacter(cursor, expectedEmbedded.Length + 2, '>');
         }
 
         [Test]
-        public void TestGetEmbeddedPattern_Valid_WithQuoting()
+        [TestCase("x(oops)", Description = "Wrong start character")]
+        [TestCase("x<oops)", Description = "No end")]
+        [TestCase(@"x<oops\>", Description = "Escaped end")]
+        [TestCase("x<oops'>'", Description = "Quoted end")]
+        [TestCase("x<oops<nested>", Description = "Incomplete after nesting")]
+        public void GetEmbeddedPattern_Invalid(string text)
         {
-            var cursor = new PatternCursor("x<HH:'T'mm>y");
+            var cursor = new PatternCursor(text);
             cursor.MoveNext();
-            string embedded = cursor.GetEmbeddedPattern('<', '>');
-            Assert.AreEqual("HH:'T'mm", embedded);
-            Assert.AreEqual('>', cursor.Current);
-        }
-
-        [Test]
-        public void TestGetEmbeddedPattern_Valid_WithEscaping()
-        {
-            var cursor = new PatternCursor(@"x<HH:\Tmm>y");
-            cursor.MoveNext();
-            string embedded = cursor.GetEmbeddedPattern('<', '>');
-            Assert.AreEqual(@"HH:\Tmm", embedded);
-            Assert.AreEqual('>', cursor.Current);
-        }
-
-        [Test]
-        public void TestGetEmbeddedPattern_WrongOpenCharacter()
-        {
-            var cursor = new PatternCursor("x(oops)");
-            cursor.MoveNext();
-            Assert.Throws<InvalidPatternException>(() => cursor.GetEmbeddedPattern('<', '>'));
-        }
-
-        [Test]
-        public void TestGetEmbeddedPattern_NoCloseCharacter()
-        {
-            var cursor = new PatternCursor("x<oops)");
-            cursor.MoveNext();
-            Assert.Throws<InvalidPatternException>(() => cursor.GetEmbeddedPattern('<', '>'));
-        }
-
-        [Test]
-        public void TestGetEmbeddedPattern_EscapedCloseCharacter()
-        {
-            var cursor = new PatternCursor(@"x<oops\>");
-            cursor.MoveNext();
-            Assert.Throws<InvalidPatternException>(() => cursor.GetEmbeddedPattern('<', '>'));
-        }
-
-        [Test]
-        public void TestGetEmbeddedPattern_QuotedCloseCharacter()
-        {
-            var cursor = new PatternCursor("x<oops'>'");
-            cursor.MoveNext();
-            Assert.Throws<InvalidPatternException>(() => cursor.GetEmbeddedPattern('<', '>'));
+            Assert.Throws<InvalidPatternException>(() => cursor.GetEmbeddedPattern());
         }
     }
 }

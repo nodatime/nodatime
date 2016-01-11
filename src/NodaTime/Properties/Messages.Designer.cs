@@ -340,6 +340,15 @@ namespace NodaTime.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The type of embedded pattern is not supported for this type..
+        /// </summary>
+        internal static string Parse_InvalidEmbeddedPatternType {
+            get {
+                return ResourceManager.GetString("Parse_InvalidEmbeddedPatternType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 24 is only valid as an hour number when the units smaller than hours are all 0..
         /// </summary>
         internal static string Parse_InvalidHour24 {

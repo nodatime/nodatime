@@ -125,6 +125,8 @@ Additionally:
 
 - Where valid, `:` always refers to the culture-specific time separator (a colon in the invariant culture)
 - Where valid, `/` always refers to the culture-specific date separator (a forward slash in the invariant culture)
+- Where valid, `<` and `>` are used for embedding one pattern within another. For consistency, these characters
+  must *always* be quoted when they are intended to be used as text literals.
 
 Any ASCII letters (a-z, A-Z) which are intended to be used as text literals (when parsing, they must be
 matched exactly; when formatting they are reproduced exactly) *must* be quoted or escaped. Even if they do not have

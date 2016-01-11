@@ -79,7 +79,8 @@ namespace NodaTime.Text.Patterns
                 else
                 {
                     char current = patternCursor.Current;
-                    if ((current >= 'A' && current <= 'Z') || (current >= 'a' && current <= 'z'))
+                    if ((current >= 'A' && current <= 'Z') || (current >= 'a' && current <= 'z') ||
+                        current == PatternCursor.EmbeddedPatternStart || current == PatternCursor.EmbeddedPatternStart)
                     {
                         throw new InvalidPatternException(Messages.Parse_UnquotedLiteral, current);
                     }
@@ -454,6 +455,88 @@ namespace NodaTime.Text.Patterns
 
         internal void AddFormatFractionTruncate(int width, int scale, Func<TResult, int> selector) =>
             AddFormatAction((value, sb) => FormatHelper.AppendFractionTruncate(selector(value), width, scale, sb));
+
+        /// <summary>
+        /// Handles date, time and date/time embedded patterns. 
+        /// </summary>
+        internal void AddEmbeddedLocalPartial(
+            PatternCursor pattern,
+            Func<TBucket, LocalDatePatternParser.LocalDateParseBucket> dateBucketExtractor,
+            Func<TBucket, LocalTimePatternParser.LocalTimeParseBucket> timeBucketExtractor,
+            Func<TResult, LocalDate> dateExtractor,
+            Func<TResult, LocalTime> timeExtractor,
+            // null if date/time embedded patterns are invalid
+            Func<TResult, LocalDateTime> dateTimeExtractor)
+        {
+            // This will be d (date-only), t (time-only), or < (date and time)
+            // If it's anything else, we'll see the problem when we try to get the pattern.
+            var patternType = pattern.PeekNext();
+            if (patternType == 'd' || patternType == 't')
+            {
+                pattern.MoveNext();
+            }
+            string embeddedPatternText = pattern.GetEmbeddedPattern();
+            var sampleBucket = CreateSampleBucket();
+            var templateTime = timeBucketExtractor(sampleBucket).TemplateValue;
+            var templateDate = dateBucketExtractor(sampleBucket).TemplateValue;
+            switch (patternType)
+            {
+                case '<':
+                    if (dateTimeExtractor == null)
+                    {
+                        throw new InvalidPatternException(Messages.Parse_InvalidEmbeddedPatternType);
+                    }
+                    AddField(PatternFields.EmbeddedDate, 'l');
+                    AddField(PatternFields.EmbeddedTime, 'l');
+                    AddEmbeddedPattern(
+                        LocalDateTimePattern.Create(embeddedPatternText, FormatInfo, templateDate + templateTime).UnderlyingPattern,
+                        (bucket, value) =>
+                        {
+                            var dateBucket = dateBucketExtractor(bucket);
+                            var timeBucket = timeBucketExtractor(bucket);
+                            dateBucket.Calendar = value.Calendar;
+                            dateBucket.Year = value.Year;
+                            dateBucket.MonthOfYearNumeric = value.Month;
+                            dateBucket.DayOfMonth = value.Day;
+                            timeBucket.Hours24 = value.Hour;
+                            timeBucket.Minutes = value.Minute;
+                            timeBucket.Seconds = value.Second;
+                            timeBucket.FractionalSeconds = value.NanosecondOfSecond;
+                        },
+                        dateTimeExtractor);
+                    break;
+                case 'd':
+                    AddField(PatternFields.EmbeddedDate, 'l');
+                    AddEmbeddedPattern(
+                        LocalDatePattern.Create(embeddedPatternText, FormatInfo, templateDate).UnderlyingPattern,
+                        (bucket, value) =>
+                        {
+                            var dateBucket = dateBucketExtractor(bucket);
+                            dateBucket.Calendar = value.Calendar;
+                            dateBucket.Year = value.Year;
+                            dateBucket.MonthOfYearNumeric = value.Month;
+                            dateBucket.DayOfMonth = value.Day;
+                        },
+                        dateExtractor);
+                    break;
+                case 't':
+                    AddField(PatternFields.EmbeddedTime, 'l');
+                    AddEmbeddedPattern(
+                        LocalTimePattern.Create(embeddedPatternText, FormatInfo, templateTime).UnderlyingPattern,
+                        (bucket, value) =>
+                        {
+                            var timeBucket = timeBucketExtractor(bucket);
+                            timeBucket.Hours24 = value.Hour;
+                            timeBucket.Minutes = value.Minute;
+                            timeBucket.Seconds = value.Second;
+                            timeBucket.FractionalSeconds = value.NanosecondOfSecond;
+                        },
+                        timeExtractor);
+                    break;
+                default:
+                    throw new InvalidOperationException("Bug in Noda Time: embedded pattern type wasn't date, time, or date+time");
+            }
+        }
 
         /// <summary>
         /// Adds parsing/formatting of an embedded pattern, e.g. an offset within a ZonedDateTime/OffsetDateTime.

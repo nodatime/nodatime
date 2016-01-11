@@ -98,12 +98,16 @@ namespace NodaTime.Test.Text
             new Data(2015, 10, 24, 11, 55, 30, AthensOffset) { Pattern = "ld<d>'X'lt<HH_mm_ss> o<g>", Text = "10/24/2015X11_55_30 +03" },
             new Data(2015, 10, 24, 11, 55, 30, AthensOffset) { Pattern = "ld<yyyy*MM*dd>'X'lt<T> o<g>", Text = "2015*10*24X11:55:30 +03" },
 
-            // Standard embedded patterns. Short time versions have a second value of 0 so they can round-trip.
+            // Standard embedded patterns. Short time versions have a seconds value of 0 so they can round-trip.
             new Data(2015, 10, 24, 11, 55, 30, AthensOffset) { Pattern = "ld<D> lt<r> o<g>", Text = "Saturday, 24 October 2015 11:55:30 +03" },
             new Data(2015, 10, 24, 11, 55, 0, AthensOffset) { Pattern = "l<f> o<g>", Text = "Saturday, 24 October 2015 11:55 +03" },
             new Data(2015, 10, 24, 11, 55, 30, AthensOffset) { Pattern = "l<F> o<g>", Text = "Saturday, 24 October 2015 11:55:30 +03" },
             new Data(2015, 10, 24, 11, 55, 0, AthensOffset) { Pattern = "l<g> o<g>", Text = "10/24/2015 11:55 +03" },
             new Data(2015, 10, 24, 11, 55, 30, AthensOffset) { Pattern = "l<G> o<g>", Text = "10/24/2015 11:55:30 +03" },
+
+            // Nested embedded patterns
+            new Data(2015, 10, 24, 11, 55, 30, AthensOffset) { Pattern = "l<ld<D> lt<r>> o<g>", Text = "Saturday, 24 October 2015 11:55:30 +03" },
+            new Data(2015, 10, 24, 11, 55, 30, AthensOffset) { Pattern = "l<'X'lt<HH_mm_ss>'Y'ld<yyyy*MM*dd>'X'> o<g>", Text = "X11_55_30Y2015*10*24X +03" },
 
             // Check that unquoted T still works.
             new Data(2012, 1, 31, 17, 36, 45) { Text = "2012-01-31T17:36:45", Pattern = "yyyy-MM-ddTHH:mm:ss" },

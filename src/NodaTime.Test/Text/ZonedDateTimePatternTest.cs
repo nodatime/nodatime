@@ -210,12 +210,16 @@ namespace NodaTime.Test.Text
             new Data(2015, 10, 24, 11, 55, 30, 0, Athens) { Pattern = "ld<d>'X'lt<HH_mm_ss> z o<g>", Text = "10/24/2015X11_55_30 Europe/Athens +03", ZoneProvider = DateTimeZoneProviders.Tzdb },
             new Data(2015, 10, 24, 11, 55, 30, 0, Athens) { Pattern = "ld<yyyy*MM*dd>'X'lt<T> z o<g>", Text = "2015*10*24X11:55:30 Europe/Athens +03", ZoneProvider = DateTimeZoneProviders.Tzdb },
 
-            // Standard embedded patterns. Short time versions have a second value of 0 so they can round-trip.
+            // Standard embedded patterns. Short time versions have a seconds value of 0 so they can round-trip.
             new Data(2015, 10, 24, 11, 55, 30, 90, Athens) { Pattern = "ld<D> lt<r> z o<g>", Text = "Saturday, 24 October 2015 11:55:30.09 Europe/Athens +03", ZoneProvider = DateTimeZoneProviders.Tzdb },
             new Data(2015, 10, 24, 11, 55, 0, 0, Athens) { Pattern = "l<f> z o<g>", Text = "Saturday, 24 October 2015 11:55 Europe/Athens +03", ZoneProvider = DateTimeZoneProviders.Tzdb },
             new Data(2015, 10, 24, 11, 55, 30, 0, Athens) { Pattern = "l<F> z o<g>", Text = "Saturday, 24 October 2015 11:55:30 Europe/Athens +03", ZoneProvider = DateTimeZoneProviders.Tzdb },
             new Data(2015, 10, 24, 11, 55, 0, 0, Athens) { Pattern = "l<g> z o<g>", Text = "10/24/2015 11:55 Europe/Athens +03", ZoneProvider = DateTimeZoneProviders.Tzdb },
             new Data(2015, 10, 24, 11, 55, 30, 0, Athens) { Pattern = "l<G> z o<g>", Text = "10/24/2015 11:55:30 Europe/Athens +03", ZoneProvider = DateTimeZoneProviders.Tzdb },
+
+            // Nested embedded patterns
+            new Data(2015, 10, 24, 11, 55, 30, 90, Athens) { Pattern = "l<ld<D> lt<r>> z o<g>", Text = "Saturday, 24 October 2015 11:55:30.09 Europe/Athens +03", ZoneProvider = DateTimeZoneProviders.Tzdb },
+            new Data(2015, 10, 24, 11, 55, 30, 0, Athens) { Pattern = "l<'X'lt<HH_mm_ss>'Y'ld<yyyy*MM*dd>'X'> z o<g>", Text = "X11_55_30Y2015*10*24X Europe/Athens +03", ZoneProvider = DateTimeZoneProviders.Tzdb },
 
             // Check that unquoted T still works.
             new Data(2012, 1, 31, 17, 36, 45) { Text = "2012-01-31T17:36:45", Pattern = "yyyy-MM-ddTHH:mm:ss" },

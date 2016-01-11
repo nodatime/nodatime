@@ -55,7 +55,7 @@ namespace NodaTime.Text
             { 'z', HandleZone },
             { 'x', HandleZoneAbbreviation },
             { 'o', HandleOffset },
-            { 'l', HandleLocalPartial },
+            { 'l', (cursor, builder) => builder.AddEmbeddedLocalPartial(cursor, bucket => bucket.Date, bucket => bucket.Time, value => value.Date, value => value.TimeOfDay, value => value.LocalDateTime) },
         };
 
         internal ZonedDateTimePatternParser(ZonedDateTime templateValue, ZoneLocalMappingResolver resolver, IDateTimeZoneProvider zoneProvider)
@@ -126,74 +126,11 @@ namespace NodaTime.Text
             SteppedPatternBuilder<ZonedDateTime, ZonedDateTimeParseBucket> builder)
         {
             builder.AddField(PatternFields.EmbeddedOffset, pattern.Current);
-            string embeddedPattern = pattern.GetEmbeddedPattern('<', '>');
+            string embeddedPattern = pattern.GetEmbeddedPattern();
             var offsetPattern = OffsetPattern.Create(embeddedPattern, builder.FormatInfo).UnderlyingPattern;
             builder.AddEmbeddedPattern(offsetPattern, (bucket, offset) => bucket.Offset = offset, zdt => zdt.Offset);
         }
-
-        private static void HandleLocalPartial(PatternCursor pattern,
-            SteppedPatternBuilder<ZonedDateTime, ZonedDateTimeParseBucket> builder)
-        {
-            // This will be d (date-only), t (time-only), or < (date and time)
-            // If it's anything else, we'll see the problem when we try to get pattern.
-            var patternType = pattern.PeekNext();
-            if (patternType == 'd' || patternType == 't')
-            {
-                pattern.MoveNext();
-            }
-            string embeddedPatternText = pattern.GetEmbeddedPattern('<', '>');
-            var sampleBucket = builder.CreateSampleBucket();
-            switch (patternType)
-            {
-                case '<':
-                    builder.AddField(PatternFields.EmbeddedDate, 'l');
-                    builder.AddField(PatternFields.EmbeddedTime, 'l');
-                    builder.AddEmbeddedPattern(
-                        LocalDateTimePattern.Create(embeddedPatternText, builder.FormatInfo, sampleBucket.Date.TemplateValue + sampleBucket.Time.TemplateValue).UnderlyingPattern,
-                        (bucket, value) =>
-                        {
-                            bucket.Date.Calendar = value.Calendar;
-                            bucket.Date.Year = value.Year;
-                            bucket.Date.MonthOfYearNumeric = value.Month;
-                            bucket.Date.DayOfMonth = value.Day;
-                            bucket.Time.Hours24 = value.Hour;
-                            bucket.Time.Minutes = value.Minute;
-                            bucket.Time.Seconds = value.Second;
-                            bucket.Time.FractionalSeconds = value.NanosecondOfSecond;
-                        },
-                        value => value.LocalDateTime);
-                    break;
-                case 'd':
-                    builder.AddField(PatternFields.EmbeddedDate, 'l');
-                    builder.AddEmbeddedPattern(
-                        LocalDatePattern.Create(embeddedPatternText, builder.FormatInfo, sampleBucket.Date.TemplateValue).UnderlyingPattern,
-                        (bucket, value) =>
-                        {
-                            bucket.Date.Calendar = value.Calendar;
-                            bucket.Date.Year = value.Year;
-                            bucket.Date.MonthOfYearNumeric = value.Month;
-                            bucket.Date.DayOfMonth = value.Day;
-                        },
-                        value => value.Date);
-                    break;
-                case 't':
-                    builder.AddField(PatternFields.EmbeddedTime, 'l');
-                    builder.AddEmbeddedPattern(
-                        LocalTimePattern.Create(embeddedPatternText, builder.FormatInfo, sampleBucket.Time.TemplateValue).UnderlyingPattern,
-                        (bucket, value) =>
-                        {
-                            bucket.Time.Hours24 = value.Hour;
-                            bucket.Time.Minutes = value.Minute;
-                            bucket.Time.Seconds = value.Second;
-                            bucket.Time.FractionalSeconds = value.NanosecondOfSecond;
-                        },
-                        value => value.TimeOfDay);
-                    break;
-                default:
-                    throw new InvalidOperationException("Bug in Noda Time: embedded pattern type wasn't date, time, or date+time");
-            }
-        }
-
+        
         private static ParseResult<ZonedDateTime> ParseZone(ValueCursor value, ZonedDateTimeParseBucket bucket) => bucket.ParseZone(value);
 
         private sealed class ZonedDateTimeParseBucket : ParseBucket<ZonedDateTime>

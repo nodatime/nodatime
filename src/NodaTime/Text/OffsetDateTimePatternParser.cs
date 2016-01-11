@@ -50,7 +50,7 @@ namespace NodaTime.Text
             { 'c', DatePatternHelper.CreateCalendarHandler<OffsetDateTime, OffsetDateTimeParseBucket>(value => value.LocalDateTime.Calendar, (bucket, value) => bucket.Date.Calendar = value) },
             { 'g', DatePatternHelper.CreateEraHandler<OffsetDateTime, OffsetDateTimeParseBucket>(value => value.Era, bucket => bucket.Date) },
             { 'o', HandleOffset },
-            { 'l', HandleLocalPartial },
+            { 'l', (cursor, builder) => builder.AddEmbeddedLocalPartial(cursor, bucket => bucket.Date, bucket => bucket.Time, value => value.Date, value => value.TimeOfDay, value => value.LocalDateTime) },
         };
 
         internal OffsetDateTimePatternParser(OffsetDateTime templateValue)
@@ -98,75 +98,11 @@ namespace NodaTime.Text
             SteppedPatternBuilder<OffsetDateTime, OffsetDateTimeParseBucket> builder)
         {
             builder.AddField(PatternFields.EmbeddedOffset, pattern.Current);
-            string embeddedPattern = pattern.GetEmbeddedPattern('<', '>');
+            string embeddedPattern = pattern.GetEmbeddedPattern();
             var offsetPattern = OffsetPattern.Create(embeddedPattern, builder.FormatInfo).UnderlyingPattern;
             builder.AddEmbeddedPattern(offsetPattern, (bucket, offset) => bucket.Offset = offset, zdt => zdt.Offset);
         }
-
-        // TODO: Remove the duplication between this and ZonedDateTimePatternParser. It's fiddly though, and it's only there twice...
-        private static void HandleLocalPartial(PatternCursor pattern,
-            SteppedPatternBuilder<OffsetDateTime, OffsetDateTimeParseBucket> builder)
-        {
-            // This will be d (date-only), t (time-only), or < (date and time)
-            // If it's anything else, we'll see the problem when we try to get pattern.
-            var patternType = pattern.PeekNext();
-            if (patternType == 'd' || patternType == 't')
-            {
-                pattern.MoveNext();
-            }
-            string embeddedPatternText = pattern.GetEmbeddedPattern('<', '>');
-            var sampleBucket = builder.CreateSampleBucket();
-            switch (patternType)
-            {
-                case '<':
-                    builder.AddField(PatternFields.EmbeddedDate, 'l');
-                    builder.AddField(PatternFields.EmbeddedTime, 'l');
-                    builder.AddEmbeddedPattern(
-                        LocalDateTimePattern.Create(embeddedPatternText, builder.FormatInfo, sampleBucket.Date.TemplateValue + sampleBucket.Time.TemplateValue).UnderlyingPattern,
-                        (bucket, value) =>
-                        {
-                            bucket.Date.Calendar = value.Calendar;
-                            bucket.Date.Year = value.Year;
-                            bucket.Date.MonthOfYearNumeric = value.Month;
-                            bucket.Date.DayOfMonth = value.Day;
-                            bucket.Time.Hours24 = value.Hour;
-                            bucket.Time.Minutes = value.Minute;
-                            bucket.Time.Seconds = value.Second;
-                            bucket.Time.FractionalSeconds = value.NanosecondOfSecond;
-                        },
-                        value => value.LocalDateTime);
-                    break;
-                case 'd':
-                    builder.AddField(PatternFields.EmbeddedDate, 'l');
-                    builder.AddEmbeddedPattern(
-                        LocalDatePattern.Create(embeddedPatternText, builder.FormatInfo, sampleBucket.Date.TemplateValue).UnderlyingPattern,
-                        (bucket, value) =>
-                        {
-                            bucket.Date.Calendar = value.Calendar;
-                            bucket.Date.Year = value.Year;
-                            bucket.Date.MonthOfYearNumeric = value.Month;
-                            bucket.Date.DayOfMonth = value.Day;
-                        },
-                        value => value.Date);
-                    break;
-                case 't':
-                    builder.AddField(PatternFields.EmbeddedTime, 'l');
-                    builder.AddEmbeddedPattern(
-                        LocalTimePattern.Create(embeddedPatternText, builder.FormatInfo, sampleBucket.Time.TemplateValue).UnderlyingPattern,
-                        (bucket, value) =>
-                        {
-                            bucket.Time.Hours24 = value.Hour;
-                            bucket.Time.Minutes = value.Minute;
-                            bucket.Time.Seconds = value.Second;
-                            bucket.Time.FractionalSeconds = value.NanosecondOfSecond;
-                        },
-                        value => value.TimeOfDay);
-                    break;
-                default:
-                    throw new InvalidOperationException("Bug in Noda Time: embedded pattern type wasn't date, time, or date+time");
-            }
-        }
-
+        
         private sealed class OffsetDateTimeParseBucket : ParseBucket<OffsetDateTime>
         {
             internal readonly LocalDatePatternParser.LocalDateParseBucket Date;
