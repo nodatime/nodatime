@@ -55,6 +55,7 @@ namespace NodaTime.Text
             { 'z', HandleZone },
             { 'x', HandleZoneAbbreviation },
             { 'o', HandleOffset },
+            { 'l', (cursor, builder) => builder.AddEmbeddedLocalPartial(cursor, bucket => bucket.Date, bucket => bucket.Time, value => value.Date, value => value.TimeOfDay, value => value.LocalDateTime) },
         };
 
         internal ZonedDateTimePatternParser(ZonedDateTime templateValue, ZoneLocalMappingResolver resolver, IDateTimeZoneProvider zoneProvider)
@@ -125,21 +126,11 @@ namespace NodaTime.Text
             SteppedPatternBuilder<ZonedDateTime, ZonedDateTimeParseBucket> builder)
         {
             builder.AddField(PatternFields.EmbeddedOffset, pattern.Current);
-            string embeddedPattern = pattern.GetEmbeddedPattern('<', '>');
+            string embeddedPattern = pattern.GetEmbeddedPattern();
             var offsetPattern = OffsetPattern.Create(embeddedPattern, builder.FormatInfo).UnderlyingPattern;
-            builder.AddParseAction((value, bucket) =>
-                {
-                    var result = offsetPattern.ParsePartial(value);
-                    if (!result.Success)
-                    {
-                        return result.ConvertError<ZonedDateTime>();
-                    }
-                    bucket.Offset = result.Value;
-                    return null;
-                });
-            builder.AddFormatAction((value, sb) => offsetPattern.AppendFormat(value.Offset, sb));
+            builder.AddEmbeddedPattern(offsetPattern, (bucket, offset) => bucket.Offset = offset, zdt => zdt.Offset);
         }
-
+        
         private static ParseResult<ZonedDateTime> ParseZone(ValueCursor value, ZonedDateTimeParseBucket bucket) => bucket.ParseZone(value);
 
         private sealed class ZonedDateTimeParseBucket : ParseBucket<ZonedDateTime>

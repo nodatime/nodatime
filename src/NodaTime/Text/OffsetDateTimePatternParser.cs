@@ -2,6 +2,7 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
+using System;
 using System.Collections.Generic;
 using NodaTime.Globalization;
 using NodaTime.Properties;
@@ -49,6 +50,7 @@ namespace NodaTime.Text
             { 'c', DatePatternHelper.CreateCalendarHandler<OffsetDateTime, OffsetDateTimeParseBucket>(value => value.LocalDateTime.Calendar, (bucket, value) => bucket.Date.Calendar = value) },
             { 'g', DatePatternHelper.CreateEraHandler<OffsetDateTime, OffsetDateTimeParseBucket>(value => value.Era, bucket => bucket.Date) },
             { 'o', HandleOffset },
+            { 'l', (cursor, builder) => builder.AddEmbeddedLocalPartial(cursor, bucket => bucket.Date, bucket => bucket.Time, value => value.Date, value => value.TimeOfDay, value => value.LocalDateTime) },
         };
 
         internal OffsetDateTimePatternParser(OffsetDateTime templateValue)
@@ -84,7 +86,6 @@ namespace NodaTime.Text
                 }
             }
 
-
             var patternBuilder = new SteppedPatternBuilder<OffsetDateTime, OffsetDateTimeParseBucket>(formatInfo,
                 () => new OffsetDateTimeParseBucket(templateValueDate, templateValueTime, templateValueOffset));
             patternBuilder.ParseCustomPattern(patternText, PatternCharacterHandlers);
@@ -97,21 +98,11 @@ namespace NodaTime.Text
             SteppedPatternBuilder<OffsetDateTime, OffsetDateTimeParseBucket> builder)
         {
             builder.AddField(PatternFields.EmbeddedOffset, pattern.Current);
-            string embeddedPattern = pattern.GetEmbeddedPattern('<', '>');
+            string embeddedPattern = pattern.GetEmbeddedPattern();
             var offsetPattern = OffsetPattern.Create(embeddedPattern, builder.FormatInfo).UnderlyingPattern;
-            builder.AddParseAction((value, bucket) =>
-                {
-                    var result = offsetPattern.ParsePartial(value);
-                    if (!result.Success)
-                    {
-                        return result.ConvertError<OffsetDateTime>();
-                    }
-                    bucket.Offset = result.Value;
-                    return null;
-                });
-            builder.AddFormatAction((value, sb) => offsetPattern.AppendFormat(value.Offset, sb));
+            builder.AddEmbeddedPattern(offsetPattern, (bucket, offset) => bucket.Offset = offset, zdt => zdt.Offset);
         }
-
+        
         private sealed class OffsetDateTimeParseBucket : ParseBucket<OffsetDateTime>
         {
             internal readonly LocalDatePatternParser.LocalDateParseBucket Date;

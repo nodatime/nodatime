@@ -32,6 +32,7 @@ namespace NodaTime.Test.Text
         private static readonly DateTimeZone FixedMinus1 = FixedDateTimeZone.ForOffset(Offset.FromHours(-1));
 
         private static readonly DateTimeZone France = DateTimeZoneProviders.Tzdb["Europe/Paris"];
+        private static readonly DateTimeZone Athens = DateTimeZoneProviders.Tzdb["Europe/Athens"];
 
         private static readonly ZonedDateTime SampleZonedDateTimeCoptic = LocalDateTimePatternTest.SampleLocalDateTimeCoptic.InUtc();
 
@@ -47,6 +48,17 @@ namespace NodaTime.Test.Text
             // Era specifier and calendar specifier in the same pattern.
             new Data { Pattern = "dd MM yyyy HH:mm:ss gg c", Message = Messages.Parse_CalendarAndEra },
             new Data { Pattern = "g", Message = Messages.Parse_UnknownStandardFormat, Parameters = { 'g', typeof(ZonedDateTime) } },
+            // Invalid patterns involving embedded values
+            new Data { Pattern = "ld<d> yyyy", Message = Messages.Parse_DateFieldAndEmbeddedDate },
+            new Data { Pattern = "l<yyyy-MM-dd HH:mm:ss> dd", Message = Messages.Parse_DateFieldAndEmbeddedDate },
+            new Data { Pattern = "ld<d> ld<f>", Message = Messages.Parse_RepeatedFieldInPattern, Parameters = { 'l' } },
+            new Data { Pattern = "lt<T> HH", Message = Messages.Parse_TimeFieldAndEmbeddedTime },
+            new Data { Pattern = "l<yyyy-MM-dd HH:mm:ss> HH", Message = Messages.Parse_TimeFieldAndEmbeddedTime },
+            new Data { Pattern = "lt<T> lt<t>", Message = Messages.Parse_RepeatedFieldInPattern, Parameters = { 'l' } },
+            new Data { Pattern = "ld<d> l<F>", Message = Messages.Parse_RepeatedFieldInPattern, Parameters = { 'l' } },
+            new Data { Pattern = "l<F> ld<d>", Message = Messages.Parse_RepeatedFieldInPattern, Parameters = { 'l' } },
+            new Data { Pattern = "lt<T> l<F>", Message = Messages.Parse_RepeatedFieldInPattern, Parameters = { 'l' } },
+            new Data { Pattern = "l<F> lt<T>", Message = Messages.Parse_RepeatedFieldInPattern, Parameters = { 'l' } },
         };
 
         internal static Data[] ParseFailureData = {
@@ -190,6 +202,24 @@ namespace NodaTime.Test.Text
             // Standard patterns with a time zone provider
             new Data(2013, 01, 13, 15, 44, 30, 0, TestZone1) { Pattern = "G", Text = "2013-01-13T15:44:30 ab (+02)", Culture = Cultures.FrFr },
             new Data(2013, 01, 13, 15, 44, 30, 90, TestZone1) { Pattern = "F", Text = "2013-01-13T15:44:30.09 ab (+02)", Culture = Cultures.FrFr },
+
+            // Custom embedded patterns (or mixture of custom and standard)
+            new Data(2015, 10, 24, 11, 55, 30, 0, Athens) { Pattern = "ld<yyyy*MM*dd>'X'lt<HH_mm_ss> z o<g>", Text = "2015*10*24X11_55_30 Europe/Athens +03", ZoneProvider = DateTimeZoneProviders.Tzdb },
+            new Data(2015, 10, 24, 11, 55, 30, 0, Athens) { Pattern = "lt<HH_mm_ss>'Y'ld<yyyy*MM*dd> z o<g>", Text = "11_55_30Y2015*10*24 Europe/Athens +03", ZoneProvider = DateTimeZoneProviders.Tzdb },
+            new Data(2015, 10, 24, 11, 55, 30, 0, Athens) { Pattern = "l<HH_mm_ss'Y'yyyy*MM*dd> z o<g>", Text = "11_55_30Y2015*10*24 Europe/Athens +03", ZoneProvider = DateTimeZoneProviders.Tzdb },
+            new Data(2015, 10, 24, 11, 55, 30, 0, Athens) { Pattern = "ld<d>'X'lt<HH_mm_ss> z o<g>", Text = "10/24/2015X11_55_30 Europe/Athens +03", ZoneProvider = DateTimeZoneProviders.Tzdb },
+            new Data(2015, 10, 24, 11, 55, 30, 0, Athens) { Pattern = "ld<yyyy*MM*dd>'X'lt<T> z o<g>", Text = "2015*10*24X11:55:30 Europe/Athens +03", ZoneProvider = DateTimeZoneProviders.Tzdb },
+
+            // Standard embedded patterns. Short time versions have a seconds value of 0 so they can round-trip.
+            new Data(2015, 10, 24, 11, 55, 30, 90, Athens) { Pattern = "ld<D> lt<r> z o<g>", Text = "Saturday, 24 October 2015 11:55:30.09 Europe/Athens +03", ZoneProvider = DateTimeZoneProviders.Tzdb },
+            new Data(2015, 10, 24, 11, 55, 0, 0, Athens) { Pattern = "l<f> z o<g>", Text = "Saturday, 24 October 2015 11:55 Europe/Athens +03", ZoneProvider = DateTimeZoneProviders.Tzdb },
+            new Data(2015, 10, 24, 11, 55, 30, 0, Athens) { Pattern = "l<F> z o<g>", Text = "Saturday, 24 October 2015 11:55:30 Europe/Athens +03", ZoneProvider = DateTimeZoneProviders.Tzdb },
+            new Data(2015, 10, 24, 11, 55, 0, 0, Athens) { Pattern = "l<g> z o<g>", Text = "10/24/2015 11:55 Europe/Athens +03", ZoneProvider = DateTimeZoneProviders.Tzdb },
+            new Data(2015, 10, 24, 11, 55, 30, 0, Athens) { Pattern = "l<G> z o<g>", Text = "10/24/2015 11:55:30 Europe/Athens +03", ZoneProvider = DateTimeZoneProviders.Tzdb },
+
+            // Nested embedded patterns
+            new Data(2015, 10, 24, 11, 55, 30, 90, Athens) { Pattern = "l<ld<D> lt<r>> z o<g>", Text = "Saturday, 24 October 2015 11:55:30.09 Europe/Athens +03", ZoneProvider = DateTimeZoneProviders.Tzdb },
+            new Data(2015, 10, 24, 11, 55, 30, 0, Athens) { Pattern = "l<'X'lt<HH_mm_ss>'Y'ld<yyyy*MM*dd>'X'> z o<g>", Text = "X11_55_30Y2015*10*24X Europe/Athens +03", ZoneProvider = DateTimeZoneProviders.Tzdb },
 
             // Check that unquoted T still works.
             new Data(2012, 1, 31, 17, 36, 45) { Text = "2012-01-31T17:36:45", Pattern = "yyyy-MM-ddTHH:mm:ss" },

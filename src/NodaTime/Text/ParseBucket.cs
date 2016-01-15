@@ -19,19 +19,5 @@ namespace NodaTime.Text
         /// <param name="usedFields">Indicates which fields were part of the original text pattern.</param>
         /// <param name="value">Complete value being parsed</param>
         internal abstract ParseResult<T> CalculateValue(PatternFields usedFields, string value);
-
-        /// <summary>
-        /// Convenience method to check whether a particular field has been used. It's here as it'll primarily
-        /// be used by buckets; ideally we'd make it an extension method on PatternFields, or use Unconstrained
-        /// Melody...
-        /// </summary>
-        internal static bool IsFieldUsed(PatternFields usedFields, PatternFields fieldToTest) => (usedFields & fieldToTest) != 0;
-
-        /// <summary>
-        /// Convenience method to check whether a particular field set of fields has been used. This is
-        /// similar to <see cref="IsFieldUsed"/>, except it's expected to be used with multiple fields,
-        /// and will only return true if all the specified fields are present.
-        /// </summary>
-        internal static bool AreAllFieldsUsed(PatternFields usedFields, PatternFields fieldsToTest) => (usedFields & fieldsToTest) == fieldsToTest;
     }
 }

@@ -39,6 +39,12 @@ namespace NodaTime.Test.Text
             new Data { Pattern = "dd MM uuuu HH:mm:ss gg", Message = Messages.Parse_EraWithoutYearOfEra },
             // Era specifier and calendar specifier in the same pattern.
             new Data { Pattern = "dd MM yyyy HH:mm:ss gg c", Message = Messages.Parse_CalendarAndEra },
+            // Embedded pattern start without ld or lt
+            new Data { Pattern = "yyyy MM dd <", Message = Messages.Parse_UnquotedLiteral, Parameters = { '<' } },
+            // Attempt to use a full embedded date/time pattern (not valid for LocalDateTime)
+            new Data { Pattern = "l<yyyy MM dd HH:mm>", Message = Messages.Parse_InvalidEmbeddedPatternType },
+            // Invalid nested pattern (local date pattern doesn't know about embedded patterns)
+            new Data { Pattern = "ld<<D>>", Message = Messages.Parse_UnquotedLiteral, Parameters = { '<' } },
         };
 
         internal static Data[] ParseFailureData = {
@@ -122,6 +128,16 @@ namespace NodaTime.Test.Text
 
             // Check that unquoted T still works.
             new Data(2012, 1, 31, 17, 36, 45) { Text = "2012-01-31T17:36:45", Pattern = "yyyy-MM-ddTHH:mm:ss" },
+
+            // Custom embedded patterns (or mixture of custom and standard)
+            new Data(2015, 10, 24, 11, 55, 30, 0) { Pattern = "ld<yyyy*MM*dd>'X'lt<HH_mm_ss>", Text = "2015*10*24X11_55_30" },
+            new Data(2015, 10, 24, 11, 55, 30, 0) { Pattern = "lt<HH_mm_ss>'Y'ld<yyyy*MM*dd>", Text = "11_55_30Y2015*10*24" },
+            new Data(2015, 10, 24, 11, 55, 30, 0) { Pattern = "ld<d>'X'lt<HH_mm_ss>", Text = "10/24/2015X11_55_30" },
+            new Data(2015, 10, 24, 11, 55, 30, 0) { Pattern = "ld<yyyy*MM*dd>'X'lt<T>", Text = "2015*10*24X11:55:30" },
+
+            // Standard embedded patterns (main use case of embedded patterns). Short time versions have a seconds value of 0 so they can round-trip.
+            new Data(2015, 10, 24, 11, 55, 30, 90) { Pattern = "ld<D> lt<r>", Text = "Saturday, 24 October 2015 11:55:30.09" },
+            new Data(2015, 10, 24, 11, 55, 0) { Pattern = "ld<d> lt<t>", Text = "10/24/2015 11:55" },
         };
 
         internal static IEnumerable<Data> ParseData = ParseOnlyData.Concat(FormatAndParseData);

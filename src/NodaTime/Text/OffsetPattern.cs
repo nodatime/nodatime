@@ -55,7 +55,6 @@ namespace NodaTime.Text
         /// </summary>
         internal IPartialPattern<Offset> UnderlyingPattern { get; }
 
-
         private OffsetPattern(string patternText, NodaFormatInfo formatInfo, IPartialPattern<Offset> pattern)
         {
             this.PatternText = patternText;

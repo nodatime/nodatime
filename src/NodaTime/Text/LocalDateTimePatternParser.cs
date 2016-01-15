@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using NodaTime.Globalization;
 using NodaTime.Properties;
 using NodaTime.Text.Patterns;
+using System;
 
 namespace NodaTime.Text
 {
@@ -50,7 +51,8 @@ namespace NodaTime.Text
             { 't', TimePatternHelper.CreateAmPmHandler<LocalDateTime, LocalDateTimeParseBucket>(time => time.Hour, (bucket, value) => bucket.Time.AmPm = value) },
             { 'c', DatePatternHelper.CreateCalendarHandler<LocalDateTime, LocalDateTimeParseBucket>(value => value.Calendar, (bucket, value) => bucket.Date.Calendar = value) },
             { 'g', DatePatternHelper.CreateEraHandler<LocalDateTime, LocalDateTimeParseBucket>(value => value.Era, bucket => bucket.Date) },
-    };
+            { 'l', (cursor, builder) => builder.AddEmbeddedLocalPartial(cursor, bucket => bucket.Date, bucket => bucket.Time, value => value.Date, value => value.TimeOfDay, null) },
+        };
 
         internal LocalDateTimePatternParser(LocalDateTime templateValue)
         {
