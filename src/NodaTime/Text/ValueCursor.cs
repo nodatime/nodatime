@@ -281,15 +281,12 @@ namespace NodaTime.Text
 
         /// <summary>
         /// Parses digits at the current point in the string as a fractional value.
-        /// At least one digit must be present, if allRequired is false there's no requirement for *all*
-        /// the digits to be present.
         /// </summary>
         /// <param name="maximumDigits">The maximum allowed digits.</param>
         /// <param name="scale">The scale of the fractional value.</param>
         /// <param name="result">The result value scaled by scale. The value of this is not guaranteed
         /// to be anything specific if the return value is false.</param>
-        /// <param name="allRequired">If true, <paramref name="maximumDigits"/> digits must be present in the
-        /// input sequence. If false, there must be just at least one digit.</param>
+        /// <param name="minimumDigits">The minimum number of digits that must be specified in the value.</param>
         /// <returns><c>true</c> if the digits were parsed.</returns>
         internal bool ParseFraction(int maximumDigits, int scale, out int result, int minimumDigits)
         {
