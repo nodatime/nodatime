@@ -98,6 +98,7 @@ namespace NodaTime.Text.Patterns
         /// of <c>"before &lt;outer1 &lt;inner&gt; outer2&gt; after"</c>
         /// this method will return <c>"outer1 &lt;inner&gt; outer2"</c> and the cursor will be positioned
         /// on the final <c>&gt;</c> afterwards.
+        /// </para>
         /// </remarks>
         /// <returns>The embedded pattern, not including the start/end pattern characters.</returns>
         internal string GetEmbeddedPattern()
