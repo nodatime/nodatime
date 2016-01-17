@@ -2,7 +2,7 @@
 
 if "%1" == "" (
   echo Usage: buildweb output-directory
-  echo e.g. buildweb c:\users\jon\nodatime.org
+  echo e.g. buildweb c:\users\jon\NodaTime\nodatime.org
   echo It is expected that the output directory already exists and is
   echo set up for git...
   goto end
@@ -54,8 +54,7 @@ goto :end
 
 :build_mvc
 pushd ..\src\NodaTime.Web
-REM Assume NuGet restore has already taken place
-REM nuget restore -PackagesDirectory ..\packages
+call nuget restore -PackagesDirectory ..\packages
 IF ERRORLEVEL 1 EXIT /B 1
 REM Build and deploy NodaTime.Web.dll.  See #359 for why we're suppressing PDB
 REM generation.
