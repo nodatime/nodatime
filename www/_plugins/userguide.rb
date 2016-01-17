@@ -9,18 +9,13 @@ module Jekyll
       sorted_collection = context[@collection_name].dup
       sorted_collection = sorted_collection.sort_by { |i| (i && i.to_liquid[@attributes['sort_by']]) || 0 }
 
-      parts = context['page']['url'].split('/')
-      page_url = parts[0..parts.length-2].join('/')
-
-      # Handle the root directory, where join will return an empty string
-      if page_url == ''
-        page_url = '/'
-      end
+      parts = context['page']['path'].split('/')
+      page_dir = parts[0..parts.length-2].join('/')
 
       new_collection = []
       sorted_collection.each do |item|
         next if item.data['hidden']
-        if page_url == item.dir # Make sure it's in the same directory
+        if dir_matches?(page_dir, item.path) # Make sure it's in the same directory
           if category.nil?
             new_collection.push(item)
           else
@@ -36,6 +31,12 @@ module Jekyll
       @collection_name = sorted_collection_name
 
       super
+    end
+
+    def dir_matches?(page_dir, item_path)
+      parts = item_path.split('/')
+      item_dir = parts[0..parts.length-2].join('/')
+      return page_dir == item_dir
     end
 
     def end_tag
