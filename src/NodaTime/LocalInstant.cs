@@ -207,7 +207,7 @@ namespace NodaTime
         public override string ToString()
         {
             var date = new LocalDate(duration.FloorDays);
-            var pattern = LocalDateTimePattern.CreateWithInvariantCulture("uuuu-MM-ddTHH:mm:ss LOC");
+            var pattern = LocalDateTimePattern.CreateWithInvariantCulture("uuuu-MM-ddTHH:mm:ss 'LOC'");
             var utc = new LocalDateTime(date, LocalTime.FromNanosecondsSinceMidnight(duration.NanosecondOfFloorDay));
             return pattern.Format(utc);
         }

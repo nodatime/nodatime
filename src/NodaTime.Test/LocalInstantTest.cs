@@ -31,5 +31,11 @@ namespace NodaTime.Test
             Assert.AreEqual(sampleInstant, sampleLocalInstant.Minus(Offset.Zero));
             Assert.AreEqual(sampleInstant, sampleLocalInstant.MinusZeroOffset());
         }
+
+        [Test]
+        public void ToString_Expected()
+        {
+            Assert.AreEqual("1970-01-01T00:00:00 LOC", new LocalInstant(0, 0).ToString());
+        }
     }
 }
