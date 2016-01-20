@@ -25,6 +25,8 @@ namespace NodaTime.Text
     internal sealed class InstantPatternParser : IPatternParser<Instant>
     {
         private const string GeneralPatternText = "uuuu'-'MM'-'dd'T'HH':'mm':'ss'Z'";
+        internal const string BeforeMinValueText = "StartOfTime";
+        internal const string AfterMaxValueText = "EndOfTime";
 
         public IPattern<Instant> ParsePattern([NotNull] string patternText, NodaFormatInfo formatInfo)
         {
@@ -63,8 +65,8 @@ namespace NodaTime.Text
                 // We don't need to be able to parse before-min/after-max values, but it's convenient to be
                 // able to format them - mostly for the sake of testing (but also for ZoneInterval).
                 value.IsValid ? pattern.Format(value.InUtc().LocalDateTime)
-                    : value == Instant.BeforeMinValue ? "StartOfTime"
-                    : "EndOfTime";
+                    : value == Instant.BeforeMinValue ? BeforeMinValueText
+                    : AfterMaxValueText;
 
             public StringBuilder AppendFormat(Instant value, [NotNull] StringBuilder builder) =>
                 pattern.AppendFormat(value.InUtc().LocalDateTime, builder);

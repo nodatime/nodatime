@@ -206,8 +206,16 @@ namespace NodaTime
         /// </returns>
         public override string ToString()
         {
+            if (this == BeforeMinValue)
+            {
+                return InstantPatternParser.BeforeMinValueText;
+            }
+            if (this == AfterMaxValue)
+            {
+                return InstantPatternParser.AfterMaxValueText;
+            }
             var date = new LocalDate(duration.FloorDays);
-            var pattern = LocalDateTimePattern.CreateWithInvariantCulture("uuuu-MM-ddTHH:mm:ss 'LOC'");
+            var pattern = LocalDateTimePattern.CreateWithInvariantCulture("uuuu-MM-ddTHH:mm:ss.FFFFFFFFF 'LOC'");
             var utc = new LocalDateTime(date, LocalTime.FromNanosecondsSinceMidnight(duration.NanosecondOfFloorDay));
             return pattern.Format(utc);
         }
