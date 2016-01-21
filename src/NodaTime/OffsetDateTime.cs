@@ -200,11 +200,11 @@ namespace NodaTime
 
         /// <summary>Gets the year of this offset date and time within the era.</summary>
         /// <value>The year of this offset date and time within the era.</value>
-        public int YearOfEra => Calendar.GetYearOfEra(yearMonthDayCalendar.ToYearMonthDay());
+        public int YearOfEra => Calendar.GetYearOfEra(yearMonthDayCalendar.Year);
 
         /// <summary>Gets the era of this offset date and time.</summary>
         /// <value>The era of this offset date and time.</value>
-        public Era Era => Calendar.GetEra(yearMonthDayCalendar.ToYearMonthDay());
+        public Era Era => Calendar.GetEra(yearMonthDayCalendar.Year);
 
         /// <summary>Gets the day of this offset date and time within the year.</summary>
         /// <value>The day of this offset date and time within the year.</value>
@@ -410,12 +410,12 @@ namespace NodaTime
         /// The returned OffsetDateTime is likely to have different date field values to this one.
         /// For example, January 1st 1970 in the Gregorian calendar was December 19th 1969 in the Julian calendar.
         /// </summary>
-        /// <param name="calendarSystem">The calendar system to convert this offset date and time to.</param>
+        /// <param name="calendar">The calendar system to convert this offset date and time to.</param>
         /// <returns>The converted OffsetDateTime.</returns>
         [Pure]
-        public OffsetDateTime WithCalendar([NotNull] CalendarSystem calendarSystem)
+        public OffsetDateTime WithCalendar([NotNull] CalendarSystem calendar)
         {
-            LocalDate newDate = Date.WithCalendar(calendarSystem);
+            LocalDate newDate = Date.WithCalendar(calendar);
             return new OffsetDateTime(newDate.YearMonthDayCalendar, nanosecondsAndOffset);
         }
 
@@ -566,6 +566,54 @@ namespace NodaTime
         /// <returns>A new <see cref="OffsetDateTime" /> representing the result of the addition.</returns>
         [Pure]
         public OffsetDateTime Plus(Duration duration) => this + duration;
+
+        /// <summary>
+        /// Returns the result of adding a increment of hours to this zoned date and time
+        /// </summary>
+        /// <param name="hours">The number of hours to add</param>
+        /// <returns>A new <see cref="OffsetDateTime" /> representing the result of the addition.</returns>
+        [Pure]
+        public OffsetDateTime PlusHours(int hours) => this + Duration.FromHours(hours);
+
+        /// <summary>
+        /// Returns the result of adding an increment of minutes to this zoned date and time
+        /// </summary>
+        /// <param name="minutes">The number of minutes to add</param>
+        /// <returns>A new <see cref="OffsetDateTime" /> representing the result of the addition.</returns>
+        [Pure]
+        public OffsetDateTime PlusMinutes(int minutes) => this + Duration.FromMinutes(minutes);
+
+        /// <summary>
+        /// Returns the result of adding an increment of seconds to this zoned date and time
+        /// </summary>
+        /// <param name="seconds">The number of seconds to add</param>
+        /// <returns>A new <see cref="OffsetDateTime" /> representing the result of the addition.</returns>
+        [Pure]
+        public OffsetDateTime PlusSeconds(long seconds) => this + Duration.FromSeconds(seconds);
+
+        /// <summary>
+        /// Returns the result of adding an increment of milliseconds to this zoned date and time
+        /// </summary>
+        /// <param name="milliseconds">The number of milliseconds to add</param>
+        /// <returns>A new <see cref="OffsetDateTime" /> representing the result of the addition.</returns>
+        [Pure]
+        public OffsetDateTime PlusMilliseconds(long milliseconds) => this + Duration.FromMilliseconds(milliseconds);
+
+        /// <summary>
+        /// Returns the result of adding an increment of ticks to this zoned date and time
+        /// </summary>
+        /// <param name="ticks">The number of ticks to add</param>
+        /// <returns>A new <see cref="OffsetDateTime" /> representing the result of the addition.</returns>
+        [Pure]
+        public OffsetDateTime PlusTicks(long ticks) => this + Duration.FromTicks(ticks);
+
+        /// <summary>
+        /// Returns the result of adding an increment of nanoseconds to this zoned date and time
+        /// </summary>
+        /// <param name="nanoseconds">The number of nanoseconds to add</param>
+        /// <returns>A new <see cref="OffsetDateTime" /> representing the result of the addition.</returns>
+        [Pure]
+        public OffsetDateTime PlusNanoseconds(long nanoseconds) => this + Duration.FromNanoseconds(nanoseconds);
 
         /// <summary>
         /// Returns a new <see cref="OffsetDateTime"/> with the time advanced by the given duration.

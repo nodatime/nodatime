@@ -308,6 +308,19 @@ namespace NodaTime
             return new ZonedDateTime(ToInstant(), targetZone, Calendar);
         }
 
+        /// <summary>
+        /// Creates a new ZonedDateTime representing the same physical date, time and offset, but in a different calendar.
+        /// The returned ZonedDateTime is likely to have different date field values to this one.
+        /// For example, January 1st 1970 in the Gregorian calendar was December 19th 1969 in the Julian calendar.
+        /// </summary>
+        /// <param name="calendar">The calendar system to convert this zoned date and time to.</param>
+        /// <returns>The converted ZonedDateTime.</returns>
+        [Pure]
+        public ZonedDateTime WithCalendar([NotNull] CalendarSystem calendar)
+        {
+            return new ZonedDateTime(offsetDateTime.WithCalendar(calendar), zone);
+        }
+
         #region Equality
         /// <summary>
         /// Indicates whether the current object is equal to another object of the same type.
@@ -378,6 +391,54 @@ namespace NodaTime
         /// <returns>A new <see cref="ZonedDateTime" /> representing the result of the addition.</returns>
         [Pure]
         public ZonedDateTime Plus(Duration duration) => this + duration;
+
+        /// <summary>
+        /// Returns the result of adding a increment of hours to this zoned date and time
+        /// </summary>
+        /// <param name="hours">The number of hours to add</param>
+        /// <returns>A new <see cref="ZonedDateTime" /> representing the result of the addition.</returns>
+        [Pure]
+        public ZonedDateTime PlusHours(int hours) => this + Duration.FromHours(hours);
+
+        /// <summary>
+        /// Returns the result of adding an increment of minutes to this zoned date and time
+        /// </summary>
+        /// <param name="minutes">The number of minutes to add</param>
+        /// <returns>A new <see cref="ZonedDateTime" /> representing the result of the addition.</returns>
+        [Pure]
+        public ZonedDateTime PlusMinutes(int minutes) => this + Duration.FromMinutes(minutes);
+
+        /// <summary>
+        /// Returns the result of adding an increment of seconds to this zoned date and time
+        /// </summary>
+        /// <param name="seconds">The number of seconds to add</param>
+        /// <returns>A new <see cref="ZonedDateTime" /> representing the result of the addition.</returns>
+        [Pure]
+        public ZonedDateTime PlusSeconds(long seconds) => this + Duration.FromSeconds(seconds);
+
+        /// <summary>
+        /// Returns the result of adding an increment of milliseconds to this zoned date and time
+        /// </summary>
+        /// <param name="milliseconds">The number of milliseconds to add</param>
+        /// <returns>A new <see cref="ZonedDateTime" /> representing the result of the addition.</returns>
+        [Pure]
+        public ZonedDateTime PlusMilliseconds(long milliseconds) => this + Duration.FromMilliseconds(milliseconds);
+
+        /// <summary>
+        /// Returns the result of adding an increment of ticks to this zoned date and time
+        /// </summary>
+        /// <param name="ticks">The number of ticks to add</param>
+        /// <returns>A new <see cref="ZonedDateTime" /> representing the result of the addition.</returns>
+        [Pure]
+        public ZonedDateTime PlusTicks(long ticks) => this + Duration.FromTicks(ticks);
+
+        /// <summary>
+        /// Returns the result of adding an increment of nanoseconds to this zoned date and time
+        /// </summary>
+        /// <param name="nanoseconds">The number of nanoseconds to add</param>
+        /// <returns>A new <see cref="ZonedDateTime" /> representing the result of the addition.</returns>
+        [Pure]
+        public ZonedDateTime PlusNanoseconds(long nanoseconds) => this + Duration.FromNanoseconds(nanoseconds);
 
         /// <summary>
         /// Returns a new <see cref="ZonedDateTime"/> with the time advanced by the given duration. Note that

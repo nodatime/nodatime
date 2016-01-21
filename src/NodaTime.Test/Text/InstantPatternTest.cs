@@ -54,8 +54,8 @@ namespace NodaTime.Test.Text
             new Data(2012, 1, 31, 17, 36, 45) { Text = "2012-01-31T17:36:45", Pattern = "yyyy-MM-ddTHH:mm:ss" },
             new Data(2012, 4, 28, 0, 0, 0) { Text = "2012 avr. 28", Pattern = "yyyy MMM dd", Culture = Cultures.FrFr },
             new Data { Text = " 1970 ", Pattern = " yyyy " },
-            new Data(Instant.MinValue) { Text = "-9998-01-01T00:00:00Z", Pattern = "yyyy-MM-dd'T'HH:mm:ss.FFFFFFFFF'Z'" },
-            new Data(Instant.MaxValue) { Text = "9999-12-31T23:59:59.999999999Z", Pattern = "yyyy-MM-dd'T'HH:mm:ss.FFFFFFFFF'Z'" },
+            new Data(Instant.MinValue) { Text = "-9998-01-01T00:00:00Z", Pattern = "uuuu-MM-dd'T'HH:mm:ss.FFFFFFFFF'Z'" },
+            new Data(Instant.MaxValue) { Text = "9999-12-31T23:59:59.999999999Z", Pattern = "uuuu-MM-dd'T'HH:mm:ss.FFFFFFFFF'Z'" },
         };
 
         internal static IEnumerable<Data> ParseData = ParseOnlyData.Concat(FormatAndParseData);

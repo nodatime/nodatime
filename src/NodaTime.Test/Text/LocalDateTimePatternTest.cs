@@ -23,11 +23,9 @@ namespace NodaTime.Test.Text
         
         private static readonly string[] AllStandardPatterns = { "f", "F", "g", "G", "o", "O", "s" };
 
-#pragma warning disable 0414 // Used by tests via reflection - do not remove!
         private static readonly object[] AllCulturesStandardPatterns = (from culture in Cultures.AllCultures
                                                                         from format in AllStandardPatterns
                                                                         select new TestCaseData(culture, format).SetName(culture + ": " + format)).ToArray();
-#pragma warning restore 0414
 
         // The standard example date/time used in all the MSDN samples, which means we can just cut and paste
         // the expected results of the standard patterns.
@@ -37,10 +35,16 @@ namespace NodaTime.Test.Text
 
         internal static readonly Data[] InvalidPatternData = {
             new Data { Pattern = "dd MM yyyy HH:MM:SS", Message = Messages.Parse_RepeatedFieldInPattern, Parameters = { 'M' } },
-            // Note incorrect use of "y" (year) instead of "Y" (year of era)
-            new Data { Pattern = "dd MM yyyy HH:mm:ss gg", Message = Messages.Parse_EraWithoutYearOfEra },
+            // Note incorrect use of "u" (year) instead of "y" (year of era)
+            new Data { Pattern = "dd MM uuuu HH:mm:ss gg", Message = Messages.Parse_EraWithoutYearOfEra },
             // Era specifier and calendar specifier in the same pattern.
-            new Data { Pattern = "dd MM YYYY HH:mm:ss gg c", Message = Messages.Parse_CalendarAndEra },
+            new Data { Pattern = "dd MM yyyy HH:mm:ss gg c", Message = Messages.Parse_CalendarAndEra },
+            // Embedded pattern start without ld or lt
+            new Data { Pattern = "yyyy MM dd <", Message = Messages.Parse_UnquotedLiteral, Parameters = { '<' } },
+            // Attempt to use a full embedded date/time pattern (not valid for LocalDateTime)
+            new Data { Pattern = "l<yyyy MM dd HH:mm>", Message = Messages.Parse_InvalidEmbeddedPatternType },
+            // Invalid nested pattern (local date pattern doesn't know about embedded patterns)
+            new Data { Pattern = "ld<<D>>", Message = Messages.Parse_UnquotedLiteral, Parameters = { '<' } },
         };
 
         internal static Data[] ParseFailureData = {
@@ -103,10 +107,10 @@ namespace NodaTime.Test.Text
             new Data(MsdnStandardExampleNoMillis) { Pattern = "s", Text = "2009-06-15T13:45:30", Culture = Cultures.FrFr },
 
             // Calendar patterns are invariant
-            new Data(MsdnStandardExample) { Pattern = "(c) yyyy-MM-dd'T'HH:mm:ss.FFFFFFFFF", Text = "(ISO) 2009-06-15T13:45:30.09", Culture = Cultures.FrFr },
-            new Data(MsdnStandardExample) { Pattern = "yyyy-MM-dd(c)'T'HH:mm:ss.FFFFFFFFF", Text = "2009-06-15(ISO)T13:45:30.09", Culture = Cultures.EnUs },
-            new Data(SampleLocalDateTimeCoptic) { Pattern = "(c) yyyy-MM-dd'T'HH:mm:ss.FFFFFFFFF", Text = "(Coptic) 1976-06-19T21:13:34.123456789", Culture = Cultures.FrFr },
-            new Data(SampleLocalDateTimeCoptic) { Pattern = "yyyy-MM-dd'C'c'T'HH:mm:ss.FFFFFFFFF", Text = "1976-06-19CCopticT21:13:34.123456789", Culture = Cultures.EnUs },
+            new Data(MsdnStandardExample) { Pattern = "(c) uuuu-MM-dd'T'HH:mm:ss.FFFFFFFFF", Text = "(ISO) 2009-06-15T13:45:30.09", Culture = Cultures.FrFr },
+            new Data(MsdnStandardExample) { Pattern = "uuuu-MM-dd(c)'T'HH:mm:ss.FFFFFFFFF", Text = "2009-06-15(ISO)T13:45:30.09", Culture = Cultures.EnUs },
+            new Data(SampleLocalDateTimeCoptic) { Pattern = "(c) uuuu-MM-dd'T'HH:mm:ss.FFFFFFFFF", Text = "(Coptic) 1976-06-19T21:13:34.123456789", Culture = Cultures.FrFr },
+            new Data(SampleLocalDateTimeCoptic) { Pattern = "uuuu-MM-dd'C'c'T'HH:mm:ss.FFFFFFFFF", Text = "1976-06-19CCopticT21:13:34.123456789", Culture = Cultures.EnUs },
             
             // Use of the semi-colon "comma dot" specifier
             new Data(2011, 10, 19, 16, 05, 20, 352) { Pattern = "yyyy-MM-dd HH:mm:ss;fff", Text = "2011-10-19 16:05:20.352" },
@@ -124,20 +128,30 @@ namespace NodaTime.Test.Text
 
             // Check that unquoted T still works.
             new Data(2012, 1, 31, 17, 36, 45) { Text = "2012-01-31T17:36:45", Pattern = "yyyy-MM-ddTHH:mm:ss" },
+
+            // Custom embedded patterns (or mixture of custom and standard)
+            new Data(2015, 10, 24, 11, 55, 30, 0) { Pattern = "ld<yyyy*MM*dd>'X'lt<HH_mm_ss>", Text = "2015*10*24X11_55_30" },
+            new Data(2015, 10, 24, 11, 55, 30, 0) { Pattern = "lt<HH_mm_ss>'Y'ld<yyyy*MM*dd>", Text = "11_55_30Y2015*10*24" },
+            new Data(2015, 10, 24, 11, 55, 30, 0) { Pattern = "ld<d>'X'lt<HH_mm_ss>", Text = "10/24/2015X11_55_30" },
+            new Data(2015, 10, 24, 11, 55, 30, 0) { Pattern = "ld<yyyy*MM*dd>'X'lt<T>", Text = "2015*10*24X11:55:30" },
+
+            // Standard embedded patterns (main use case of embedded patterns). Short time versions have a seconds value of 0 so they can round-trip.
+            new Data(2015, 10, 24, 11, 55, 30, 90) { Pattern = "ld<D> lt<r>", Text = "Saturday, 24 October 2015 11:55:30.09" },
+            new Data(2015, 10, 24, 11, 55, 0) { Pattern = "ld<d> lt<t>", Text = "10/24/2015 11:55" },
         };
 
         internal static IEnumerable<Data> ParseData = ParseOnlyData.Concat(FormatAndParseData);
         internal static IEnumerable<Data> FormatData = FormatOnlyData.Concat(FormatAndParseData);
 
         [Test]
-        [TestCaseSource("AllCulturesStandardPatterns")]
+        [TestCaseSource(nameof(AllCulturesStandardPatterns))]
         public void BclStandardPatternComparison(CultureInfo culture, string pattern)
         {
             AssertBclNodaEquality(culture, pattern);
         }
 
         [Test]
-        [TestCaseSource("AllCulturesStandardPatterns")]
+        [TestCaseSource(nameof(AllCulturesStandardPatterns))]
         public void ParseFormattedStandardPattern(CultureInfo culture, string patternText)
         {
             var pattern = CreatePatternOrNull(patternText, culture, new LocalDateTime(2000, 1, 1, 0, 0));
@@ -186,6 +200,16 @@ namespace NodaTime.Test.Text
 
             var pattern = CreatePatternOrNull(patternText, culture, LocalDateTimePattern.DefaultTemplateValue);
             if (pattern == null)
+            {
+                return;
+            }
+
+            // The BCL never seems to use abbreviated month genitive names.
+            // I think it's reasonable that we do. Hmm.
+            // See https://github.com/nodatime/nodatime/issues/377
+            if ((patternText == "G" || patternText == "g") &&
+                (culture.DateTimeFormat.ShortDatePattern.Contains("MMM") && !culture.DateTimeFormat.ShortDatePattern.Contains("MMMM")) &&
+                culture.DateTimeFormat.AbbreviatedMonthGenitiveNames[SampleLocalDateTime.Month - 1] != culture.DateTimeFormat.AbbreviatedMonthNames[SampleLocalDateTime.Month - 1])
             {
                 return;
             }

@@ -15,14 +15,12 @@ namespace NodaTime.Test.Calendars
     [TestFixture]
     public class EraTest
     {
-#pragma warning disable 0414 // Used by tests via reflection - do not remove!
         private static readonly IEnumerable<Era> Eras = typeof(Era).GetProperties(BindingFlags.Public | BindingFlags.Static)
                                                                    .Where(property => property.PropertyType == typeof(Era))
                                                                    .Select(property => property.GetValue(null, null))
                                                                    .Cast<Era>();
-#pragma warning restore 0414
 
-        [TestCaseSource("Eras")]
+        [TestCaseSource(nameof(Eras))]
         [Test]
         public void ResourcePresence(Era era)
         {

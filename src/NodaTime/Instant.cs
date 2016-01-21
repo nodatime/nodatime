@@ -134,18 +134,6 @@ namespace NodaTime
         internal bool IsValid => DaysSinceEpoch >= MinDays && DaysSinceEpoch <= MaxDays;
 
         /// <summary>
-        /// Gets the number of ticks since the Unix epoch. Negative values represent instants before the Unix epoch.
-        /// </summary>
-        /// <remarks>
-        /// A tick is equal to 100 nanoseconds. There are 10,000 ticks in a millisecond. If the number of nanoseconds
-        /// in this instant is not an exact number of ticks, the value is truncated towards the start of time.
-        /// </remarks>
-        /// <value>The number of ticks since the Unix epoch.</value>
-        public long Ticks =>
-            // Can't use Duration.Ticks, as that truncates towards 0.
-            TickArithmetic.DaysAndTickOfDayToTicks(duration.FloorDays, duration.NanosecondOfFloorDay / NanosecondsPerTick);
-
-        /// <summary>
         /// Get the elapsed time since the Unix epoch, to nanosecond resolution.
         /// </summary>
         /// <returns>The elapsed time since the Unix epoch.</returns>
@@ -514,19 +502,27 @@ namespace NodaTime
         #endregion
 
         /// <summary>
+        /// Returns the Julian Date of this instance - the number of days since
+        /// <see cref="NodaConstants.JulianEpoch"/> (noon on January 1st, 4713 BCE in the Julian calendar).
+        /// </summary>
+        /// <returns>The number of days (including fractional days) since the Julian Epoch.</returns>
+        [Pure]
+        public double ToJulianDate() => (this - JulianEpoch).TotalDays;
+
+        /// <summary>
         /// Constructs a <see cref="DateTime"/> from this Instant which has a <see cref="DateTime.Kind" />
         /// of <see cref="DateTimeKind.Utc"/> and represents the same instant of time as this value.
         /// </summary>
         /// <returns>A <see cref="DateTime"/> representing the same instant in time as this value, with a kind of "universal".</returns>
         [Pure]
-        public DateTime ToDateTimeUtc() => new DateTime(BclTicksAtUnixEpoch + Ticks, DateTimeKind.Utc);
+        public DateTime ToDateTimeUtc() => new DateTime(BclTicksAtUnixEpoch + ToUnixTimeTicks(), DateTimeKind.Utc);
 
         /// <summary>
         /// Constructs a <see cref="DateTimeOffset"/> from this Instant which has an offset of zero.
         /// </summary>
         /// <returns>A <see cref="DateTimeOffset"/> representing the same instant in time as this value.</returns>
         [Pure]
-        public DateTimeOffset ToDateTimeOffset() => new DateTimeOffset(BclTicksAtUnixEpoch + Ticks, TimeSpan.Zero);
+        public DateTimeOffset ToDateTimeOffset() => new DateTimeOffset(BclTicksAtUnixEpoch + ToUnixTimeTicks(), TimeSpan.Zero);
 
         /// <summary>
         /// Converts a <see cref="DateTimeOffset"/> into a new Instant representing the same instant in time. Note that
@@ -536,6 +532,23 @@ namespace NodaTime
         /// <param name="dateTimeOffset">Date and time value with an offset.</param>
         public static Instant FromDateTimeOffset(DateTimeOffset dateTimeOffset) =>
             BclEpoch.PlusTicks(dateTimeOffset.Ticks - dateTimeOffset.Offset.Ticks);
+
+        /// <summary>
+        /// Converts a Julian Date representing the given number of days
+        /// since <see cref="NodaConstants.JulianEpoch"/> (noon on January 1st, 4713 BCE in the Julian calendar)
+        /// into an <see cref="Instant"/>.
+        /// </summary>
+        /// <param name="julianDate">The number of days since the Julian Epoch to convert into an <see cref="Instant"/>.</param>
+        /// <returns>An <see cref="Instant"/> value which is <paramref name="julianDate"/> days after the Julian Epoch.</returns>
+        public static Instant FromJulianDate(double julianDate)
+        {
+            // TODO(2.0): Revisit this when we have more duration code that can cope with double.
+            int days = (int) julianDate;
+            double subDay = julianDate - days;
+            long nanoOfDay = (long) (subDay * NanosecondsPerDay);
+            return NodaConstants.JulianEpoch + Duration.FromDays(days) + Duration.FromNanoseconds(nanoOfDay);
+        }
+
 
         /// <summary>
         /// Converts a <see cref="DateTime"/> into a new Instant representing the same instant in time.
@@ -557,7 +570,7 @@ namespace NodaTime
         /// <param name="seconds">Number of seconds since the Unix epoch. May be negative (for instants before the epoch).</param>
         /// <returns>An <see cref="Instant"/> at exactly the given number of seconds since the Unix epoch.</returns>
         /// <exception cref="ArgumentOutOfRangeException">The constructed instant would be out of the range representable in Noda Time.</exception>
-        public static Instant FromSecondsSinceUnixEpoch(long seconds)
+        public static Instant FromUnixTimeSeconds(long seconds)
         {
             Preconditions.CheckArgumentRange(nameof(seconds), seconds, MinSeconds, MaxSeconds);
             return Instant.FromTrustedDuration(Duration.FromSeconds(seconds));
@@ -570,7 +583,7 @@ namespace NodaTime
         /// <param name="milliseconds">Number of milliseconds since the Unix epoch. May be negative (for instants before the epoch).</param>
         /// <returns>An <see cref="Instant"/> at exactly the given number of milliseconds since the Unix epoch.</returns>
         /// <exception cref="ArgumentOutOfRangeException">The constructed instant would be out of the range representable in Noda Time.</exception>
-        public static Instant FromMillisecondsSinceUnixEpoch(long milliseconds)
+        public static Instant FromUnixTimeMilliseconds(long milliseconds)
         {
             Preconditions.CheckArgumentRange(nameof(milliseconds), milliseconds, MinMilliseconds, MaxMilliseconds);
             return Instant.FromTrustedDuration(Duration.FromMilliseconds(milliseconds));
@@ -584,11 +597,45 @@ namespace NodaTime
         /// intent more explicitly.</remarks>
         /// <returns>An <see cref="Instant"/> at exactly the given number of ticks since the Unix epoch.</returns>
         /// <param name="ticks">Number of ticks since the Unix epoch. May be negative (for instants before the epoch).</param>
-        public static Instant FromTicksSinceUnixEpoch(long ticks)
+        public static Instant FromUnixTimeTicks(long ticks)
         {
             Preconditions.CheckArgumentRange(nameof(ticks), ticks, MinTicks, MaxTicks);
             return Instant.FromTrustedDuration(Duration.FromTicks(ticks));
         }
+
+        /// <summary>
+        /// Gets the number of seconds since the Unix epoch. Negative values represent instants before the Unix epoch.
+        /// </summary>
+        /// <remarks>
+        /// If the number of nanoseconds in this instant is not an exact number of seconds, the value is truncated towards the start of time.
+        /// </remarks>
+        /// <value>The number of seconds since the Unix epoch.</value>
+        [Pure]
+        public long ToUnixTimeSeconds() =>
+            duration.FloorDays * (long) SecondsPerDay + duration.NanosecondOfFloorDay / NanosecondsPerSecond;
+
+        /// <summary>
+        /// Gets the number of milliseconds since the Unix epoch. Negative values represent instants before the Unix epoch.
+        /// </summary>
+        /// <remarks>
+        /// If the number of nanoseconds in this instant is not an exact number of milliseconds, the value is truncated towards the start of time.
+        /// </remarks>
+        /// <value>The number of milliseconds since the Unix epoch.</value>
+        [Pure]
+        public long ToUnixTimeMilliseconds() =>
+            duration.FloorDays * (long) MillisecondsPerDay + duration.NanosecondOfFloorDay / NanosecondsPerMillisecond;
+
+        /// <summary>
+        /// Gets the number of ticks since the Unix epoch. Negative values represent instants before the Unix epoch.
+        /// </summary>
+        /// <remarks>
+        /// A tick is equal to 100 nanoseconds. There are 10,000 ticks in a millisecond. If the number of nanoseconds
+        /// in this instant is not an exact number of ticks, the value is truncated towards the start of time.
+        /// </remarks>
+        /// <returns>The number of ticks since the Unix epoch.</returns>
+        [Pure]
+        public long ToUnixTimeTicks() =>
+            TickArithmetic.DaysAndTickOfDayToTicks(duration.FloorDays, duration.NanosecondOfFloorDay / NanosecondsPerTick);
 
         /// <summary>
         /// Returns the <see cref="ZonedDateTime"/> representing the same point in time as this instant, in the UTC time

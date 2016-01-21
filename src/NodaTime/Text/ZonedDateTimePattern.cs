@@ -28,7 +28,7 @@ namespace NodaTime.Text
 
         /// <summary>
         /// Gets an zoned local date/time pattern based on ISO-8601 (down to the second) including offset from UTC and zone ID.
-        /// It corresponds to a custom pattern of "yyyy'-'MM'-'dd'T'HH':'mm':'ss z '('o&lt;g&gt;')'" and is available
+        /// It corresponds to a custom pattern of "uuuu'-'MM'-'dd'T'HH':'mm':'ss z '('o&lt;g&gt;')'" and is available
         /// as the 'G' standard pattern.
         /// </summary>
         /// <remarks>
@@ -42,7 +42,7 @@ namespace NodaTime.Text
         // TODO(2.0): Add tests for this and other patterns from properties.
         /// <summary>
         /// Returns an invariant zoned date/time pattern based on ISO-8601 (down to the nanosecond) including offset from UTC and zone ID.
-        /// It corresponds to a custom pattern of "yyyy'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFFFF z '('o&lt;g&gt;')'" and is available
+        /// It corresponds to a custom pattern of "uuuu'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFFFF z '('o&lt;g&gt;')'" and is available
         /// as the 'F' standard pattern.
         /// </summary>
         /// <remarks>
@@ -61,8 +61,8 @@ namespace NodaTime.Text
         /// </summary>
         internal static class Patterns
         {
-            internal static readonly ZonedDateTimePattern GeneralFormatOnlyPatternImpl = CreateWithInvariantCulture("yyyy'-'MM'-'dd'T'HH':'mm':'ss z '('o<g>')'", null);
-            internal static readonly ZonedDateTimePattern ExtendedFormatOnlyPatternImpl = CreateWithInvariantCulture("yyyy'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFFFF z '('o<g>')'", null);
+            internal static readonly ZonedDateTimePattern GeneralFormatOnlyPatternImpl = CreateWithInvariantCulture("uuuu'-'MM'-'dd'T'HH':'mm':'ss z '('o<g>')'", null);
+            internal static readonly ZonedDateTimePattern ExtendedFormatOnlyPatternImpl = CreateWithInvariantCulture("uuuu'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFFFF z '('o<g>')'", null);
             internal static readonly PatternBclSupport<ZonedDateTime> BclSupport = new PatternBclSupport<ZonedDateTime>("G", fi => fi.ZonedDateTimePatternParser);
         }
 
@@ -264,5 +264,23 @@ namespace NodaTime.Text
         /// <returns>A new pattern with the given template value.</returns>
         public ZonedDateTimePattern WithTemplateValue(ZonedDateTime newTemplateValue) =>
             newTemplateValue == TemplateValue ? this : Create(PatternText, FormatInfo, Resolver, ZoneProvider, newTemplateValue);
+
+        /// <summary>
+        /// Creates a pattern like this one, but with the template value modified to use
+        /// the specified calendar system.
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// Care should be taken in two (relatively rare) scenarios. Although the default template value
+        /// is supported by all Noda Time calendar systems, if a pattern is created with a different
+        /// template value and then this method is called with a calendar system which doesn't support that
+        /// date, an exception will be thrown. Additionally, if the pattern only specifies some date fields,
+        /// it's possible that the new template value will not be suitable for all values.
+        /// </para>
+        /// </remarks>
+        /// <param name="calendar">The calendar system to convert the template value into.</param>
+        /// <returns>A new pattern with a template value in the specified calendar system.</returns>
+        public ZonedDateTimePattern WithCalendar([NotNull] CalendarSystem calendar) =>
+            WithTemplateValue(TemplateValue.WithCalendar(calendar));
     }
 }

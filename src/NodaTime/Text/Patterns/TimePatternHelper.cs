@@ -45,8 +45,8 @@ namespace NodaTime.Text.Patterns
 
                         // If there *was* a decimal separator, we should definitely have a number.
                         int fractionalSeconds;
-                        // Last argument is false because we don't need *all* the digits to be present
-                        if (!valueCursor.ParseFraction(count, maxCount, out fractionalSeconds, false))
+                        // Last argument is 1 because we need at least one digit after the decimal separator
+                        if (!valueCursor.ParseFraction(count, maxCount, out fractionalSeconds, 1))
                         {
                             return ParseResult<TResult>.MismatchedNumber(valueCursor, new string('F', count));
                         }
@@ -97,8 +97,8 @@ namespace NodaTime.Text.Patterns
 
                         // If there *was* a decimal separator, we should definitely have a number.
                         int fractionalSeconds;
-                        // Last argument is false because we don't need *all* the digits to be present
-                        if (!valueCursor.ParseFraction(count, maxCount, out fractionalSeconds, false))
+                        // Last argument is 1 because we need at least one digit to be present after a decimal separator
+                        if (!valueCursor.ParseFraction(count, maxCount, out fractionalSeconds, 1))
                         {
                             return ParseResult<TResult>.MismatchedNumber(valueCursor, new string('F', count));
                         }
@@ -137,7 +137,7 @@ namespace NodaTime.Text.Patterns
                     int fractionalSeconds;
                     // If the pattern is 'f', we need exactly "count" digits. Otherwise ('F') we need
                     // "up to count" digits.
-                    if (!str.ParseFraction(count, maxCount, out fractionalSeconds, patternCharacter == 'f'))
+                    if (!str.ParseFraction(count, maxCount, out fractionalSeconds, patternCharacter == 'f' ? count : 0))
                     {
                         return ParseResult<TResult>.MismatchedNumber(str, new string(patternCharacter, count));
                     }

@@ -33,9 +33,9 @@ namespace NodaTime.Text
             { '\"', SteppedPatternBuilder<LocalDate, LocalDateParseBucket>.HandleQuote },
             { '\\', SteppedPatternBuilder<LocalDate, LocalDateParseBucket>.HandleBackslash },
             { '/', (pattern, builder) => builder.AddLiteral(builder.FormatInfo.DateSeparator, ParseResult<LocalDate>.DateSeparatorMismatch) },
-            { 'y', DatePatternHelper.CreateYearHandler<LocalDate, LocalDateParseBucket>(value => value.Year, (bucket, value) => bucket.Year = value) },
-            { 'Y', SteppedPatternBuilder<LocalDate, LocalDateParseBucket>.HandlePaddedField
-                       (4, PatternFields.YearOfEra, 0, 9999, value => value.YearOfEra, (bucket, value) => bucket.YearOfEra = value) },
+            { 'y', DatePatternHelper.CreateYearOfEraHandler<LocalDate, LocalDateParseBucket>(value => value.YearOfEra, (bucket, value) => bucket.YearOfEra = value) },
+            { 'u', SteppedPatternBuilder<LocalDate, LocalDateParseBucket>.HandlePaddedField
+                       (4, PatternFields.Year, -9999, 9999, value => value.Year, (bucket, value) => bucket.Year = value) },
             { 'M', DatePatternHelper.CreateMonthOfYearHandler<LocalDate, LocalDateParseBucket>
                         (value => value.Month, (bucket, value) => bucket.MonthOfYearText = value, (bucket, value) => bucket.MonthOfYearNumeric = value) },
             { 'd', DatePatternHelper.CreateDayHandler<LocalDate, LocalDateParseBucket>
@@ -96,7 +96,7 @@ namespace NodaTime.Text
         /// </summary>
         internal sealed class LocalDateParseBucket : ParseBucket<LocalDate>
         {
-            private readonly LocalDate templateValue;
+            internal readonly LocalDate TemplateValue;
 
             internal CalendarSystem Calendar;
             internal int Year;
@@ -109,7 +109,7 @@ namespace NodaTime.Text
 
             internal LocalDateParseBucket(LocalDate templateValue)
             {
-                this.templateValue = templateValue;
+                this.TemplateValue = templateValue;
                 // Only fetch this once.
                 this.Calendar = templateValue.Calendar;
             }
@@ -133,6 +133,10 @@ namespace NodaTime.Text
 
             internal override ParseResult<LocalDate> CalculateValue(PatternFields usedFields, string text)
             {
+                if (usedFields.HasAny(PatternFields.EmbeddedDate))
+                {
+                    return ParseResult<LocalDate>.ForValue(new LocalDate(Year, MonthOfYearNumeric, DayOfMonth, Calendar));
+                }
                 // This will set Year if necessary
                 ParseResult<LocalDate> failure = DetermineYear(usedFields, text);
                 if (failure != null)
@@ -146,7 +150,7 @@ namespace NodaTime.Text
                     return failure;
                 }
 
-                int day = IsFieldUsed(usedFields, PatternFields.DayOfMonth) ? DayOfMonth : templateValue.Day;
+                int day = usedFields.HasAny(PatternFields.DayOfMonth) ? DayOfMonth : TemplateValue.Day;
                 if (day > Calendar.GetDaysInMonth(Year, MonthOfYearNumeric))
                 {
                     return ParseResult<LocalDate>.DayOfMonthOutOfRange(text, day, MonthOfYearNumeric, Year);
@@ -154,7 +158,7 @@ namespace NodaTime.Text
 
                 LocalDate value = new LocalDate(Year, MonthOfYearNumeric, day, Calendar);
 
-                if (IsFieldUsed(usedFields, PatternFields.DayOfWeek) && DayOfWeek != value.DayOfWeek)
+                if (usedFields.HasAny(PatternFields.DayOfWeek) && DayOfWeek != value.DayOfWeek)
                 {
                     return ParseResult<LocalDate>.InconsistentDayOfWeekTextValue(text);
                 }
@@ -163,80 +167,90 @@ namespace NodaTime.Text
                 return ParseResult<LocalDate>.ForValue(value);
             }
 
+            /// <summary>
+            /// Work out the year, based on fields of:
+            /// - Year
+            /// - YearOfEra
+            /// - YearTwoDigits (implies YearOfEra)
+            /// - Era
+            /// 
+            /// If the year is specified, that trumps everything else - any other fields
+            /// are just used for checking.
+            /// 
+            /// If nothing is specified, the year of the template value is used.
+            /// 
+            /// If just the era is specified, the year of the template value is used,
+            /// and the specified era is checked against it. (Hopefully no-one will
+            /// expect to get useful information from a format string with era but no year...)
+            /// 
+            /// Otherwise, we have the year of era (possibly only two digits) and possibly the
+            /// era. If the era isn't specified, take it from the template value.
+            /// Finally, if we only have two digits, then use either the century of the template
+            /// value or the previous century if the year-of-era is greater than TwoDigitYearMax...
+            /// and if the template value isn't in the first century already.
+            /// 
+            /// Phew.
+            /// </summary>
             private ParseResult<LocalDate> DetermineYear(PatternFields usedFields, string text)
             {
-                int yearFromEra = 0;
-                if (IsFieldUsed(usedFields, PatternFields.YearOfEra))
+                if (usedFields.HasAny(PatternFields.Year))
                 {
-                    // Odd to have a year-of-era without era, but it's valid...
-                    if (!IsFieldUsed(usedFields, PatternFields.Era))
+                    if (Year > Calendar.MaxYear || Year < Calendar.MinYear)
                     {
-                        Era = Calendar.GetEra(templateValue.YearMonthDay);
+                        return ParseResult<LocalDate>.FieldValueOutOfRangePostParse(text, Year, 'u');
                     }
-                    // Find the absolute year from the year-of-era and era
-                    if (YearOfEra < Calendar.GetMinYearOfEra(Era) || YearOfEra > Calendar.GetMaxYearOfEra(Era))
+
+                    if (usedFields.HasAny(PatternFields.Era) && Era != Calendar.GetEra(Year))
                     {
-                        return ParseResult<LocalDate>.YearOfEraOutOfRange(text, YearOfEra, Era, Calendar);
+                        return ParseResult<LocalDate>.InconsistentValues(text, 'g', 'u');
                     }
-                    yearFromEra = Calendar.GetAbsoluteYear(YearOfEra, Era);
+
+                    if (usedFields.HasAny(PatternFields.YearOfEra))
+                    {
+                        int yearOfEraFromYear = Calendar.GetYearOfEra(Year);
+                        if (usedFields.HasAny(PatternFields.YearTwoDigits))
+                        {
+                            // We're only checking the last two digits
+                            yearOfEraFromYear = yearOfEraFromYear % 100;
+                        }
+                        if (yearOfEraFromYear != YearOfEra)
+                        {
+                            return ParseResult<LocalDate>.InconsistentValues(text, 'y', 'u');
+                        }
+                    }
+                    return null;
                 }
 
-                // Note: we can't have YearTwoDigits without Year, hence there are only 6 options here rather than 8.
-                switch (usedFields & (PatternFields.Year | PatternFields.YearOfEra | PatternFields.YearTwoDigits))
+                // Use the year from the template value, possibly checking the era.
+                if (!usedFields.HasAny(PatternFields.YearOfEra))
                 {
-                    case PatternFields.Year:
-                        // Fine, we'll just use the Year value we've been provided
-                        break;
-                    case PatternFields.Year | PatternFields.YearTwoDigits:
-                        Year = GetAbsoluteYearFromTwoDigits(templateValue.Year, Year);
-                        break;
-                    case PatternFields.YearOfEra:
-                        Year = yearFromEra;
-                        break;
-                    case PatternFields.YearOfEra | PatternFields.Year | PatternFields.YearTwoDigits:
-                        // We've been given a year of era, but only a two digit year. The year of era
-                        // takes precedence, so we just check that the two digits are correct.
-                        // This is a pretty bizarre situation...
-                        if ((Math.Abs(yearFromEra) % 100) != Year)
-                        {
-                            return ParseResult<LocalDate>.InconsistentValues(text, 'y', 'Y');
-                        }
-                        Year = yearFromEra;
-                        break;
-                    case PatternFields.YearOfEra | PatternFields.Year:
-                        if (Year != yearFromEra)
-                        {
-                            return ParseResult<LocalDate>.InconsistentValues(text, 'y', 'Y');
-                        }
-                        Year = yearFromEra;
-                        break;
-                    case 0:
-                        Year = templateValue.Year;
-                        break;
-                    // No default: it would be impossible.
+                    Year = TemplateValue.Year;
+                    return usedFields.HasAny(PatternFields.Era) && Era != Calendar.GetEra(Year)
+                        ? ParseResult<LocalDate>.InconsistentValues(text, 'g', 'u') : null;
                 }
-                if (Year > Calendar.MaxYear || Year < Calendar.MinYear)
+
+                if (!usedFields.HasAny(PatternFields.Era))
                 {
-                    // The field can't be YearOfEra, as we've already validated that earlier.
-                    return ParseResult<LocalDate>.FieldValueOutOfRangePostParse(text, Year, 'y');
+                    Era = TemplateValue.Era;
                 }
+
+                if (usedFields.HasAny(PatternFields.YearTwoDigits))
+                {
+                    int century = TemplateValue.YearOfEra / 100;
+                    if (YearOfEra > TwoDigitYearMax && century > 1)
+                    {
+                        century--;
+                    }
+                    YearOfEra += century * 100;
+                }
+
+                if (YearOfEra < Calendar.GetMinYearOfEra(Era) ||
+                    YearOfEra > Calendar.GetMaxYearOfEra(Era))
+                {
+                    return ParseResult<LocalDate>.YearOfEraOutOfRange(text, YearOfEra, Era, Calendar);
+                }
+                Year = Calendar.GetAbsoluteYear(YearOfEra, Era);
                 return null;
-            }
-
-            private static int GetAbsoluteYearFromTwoDigits(int absoluteBase, int twoDigits)
-            {
-                // There's no particularly obvious meaning for two-digit years when given a
-                // negative value. This is as good as any...
-                if (absoluteBase < 0)
-                {
-                    return -GetAbsoluteYearFromTwoDigits(Math.Abs(absoluteBase), twoDigits);
-                }
-                int absoluteBaseCentury = absoluteBase - absoluteBase % 100;
-                if (twoDigits > TwoDigitYearMax)
-                {
-                    absoluteBaseCentury -= 100;
-                }
-                return absoluteBaseCentury + twoDigits;
             }
 
             private ParseResult<LocalDate> DetermineMonth(PatternFields usedFields, string text)
@@ -257,7 +271,7 @@ namespace NodaTime.Text
                         // No need to change MonthOfYearNumeric - this was just a check
                         break;
                     case 0:
-                        MonthOfYearNumeric = templateValue.Month;
+                        MonthOfYearNumeric = TemplateValue.Month;
                         break;
                 }
                 if (MonthOfYearNumeric > Calendar.GetMonthsInYear(Year))

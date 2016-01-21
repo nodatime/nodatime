@@ -254,6 +254,13 @@ namespace NodaTime.Test
         [Test]
         public void Addition_Duration()
         {
+            const int minutes = 23;
+            const int hours = 3;
+            const int milliseconds = 40000;
+            const long seconds = 321;
+            const long nanoseconds = 12345;
+            const long ticks = 5432112345;
+
             // Test all three approaches... not bothering to check a different calendar,
             // but we'll use two different offsets.
             OffsetDateTime start = new LocalDateTime(2014, 08, 14, 6, 51).WithOffset(Offset.FromHours(1));
@@ -262,6 +269,24 @@ namespace NodaTime.Test
             Assert.AreEqual(expected, start + duration);
             Assert.AreEqual(expected, start.Plus(duration));
             Assert.AreEqual(expected, OffsetDateTime.Add(start, duration));
+
+            Assert.AreEqual(start + Duration.FromHours(hours), start.PlusHours(hours));
+            Assert.AreEqual(start + Duration.FromHours(-hours), start.PlusHours(-hours));
+
+            Assert.AreEqual(start + Duration.FromMinutes(minutes), start.PlusMinutes(minutes));
+            Assert.AreEqual(start + Duration.FromMinutes(-minutes), start.PlusMinutes(-minutes));
+
+            Assert.AreEqual(start + Duration.FromSeconds(seconds), start.PlusSeconds(seconds));
+            Assert.AreEqual(start + Duration.FromSeconds(-seconds), start.PlusSeconds(-seconds));
+
+            Assert.AreEqual(start + Duration.FromMilliseconds(milliseconds), start.PlusMilliseconds(milliseconds));
+            Assert.AreEqual(start + Duration.FromMilliseconds(-milliseconds), start.PlusMilliseconds(-milliseconds));
+
+            Assert.AreEqual(start + Duration.FromTicks(ticks), start.PlusTicks(ticks));
+            Assert.AreEqual(start + Duration.FromTicks(-ticks), start.PlusTicks(-ticks));
+
+            Assert.AreEqual(start + Duration.FromNanoseconds(nanoseconds), start.PlusNanoseconds(nanoseconds));
+            Assert.AreEqual(start + Duration.FromNanoseconds(-nanoseconds), start.PlusNanoseconds(-nanoseconds));
         }
 
         [Test]

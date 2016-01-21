@@ -198,11 +198,11 @@ namespace NodaTime
 
         /// <summary>Gets the year of this local date within the era.</summary>
         /// <value>The year of this local date within the era.</value>
-        public int YearOfEra => Calendar.GetYearOfEra(yearMonthDayCalendar.ToYearMonthDay());
+        public int YearOfEra => Calendar.GetYearOfEra(yearMonthDayCalendar.Year);
 
         /// <summary>Gets the era of this local date.</summary>
         /// <value>The era of this local date.</value>
-        public Era Era => Calendar.GetEra(yearMonthDayCalendar.ToYearMonthDay());
+        public Era Era => Calendar.GetEra(yearMonthDayCalendar.Year);
 
         /// <summary>Gets the day of this local date within the year.</summary>
         /// <value>The day of this local date within the year.</value>
@@ -478,7 +478,7 @@ namespace NodaTime
         }
 
         /// <summary>
-        /// Compares two dates values to see if the left one is strictly later than the right
+        /// Compares two dates to see if the left one is strictly later than the right
         /// one.
         /// </summary>
         /// <remarks>
@@ -581,17 +581,35 @@ namespace NodaTime
         public bool Equals(LocalDate other) => this == other;
 
         /// <summary>
+        /// Resolves this local date into a <see cref="ZonedDateTime"/> in the given time zone representing the
+        /// start of this date in the given zone.
+        /// </summary>
+        /// <remarks>
+        /// This is a convenience method for calling <see cref="DateTimeZone.AtStartOfDay(LocalDate)"/>.
+        /// </remarks>
+        /// <param name="zone">The time zone to map this local date into</param>
+        /// <exception cref="SkippedTimeException">The entire day was skipped due to a very large time zone transition.
+        /// (This is extremely rare.)</exception>
+        /// <returns>The <see cref="ZonedDateTime"/> representing the earliest time on this date, in the given time zone.</returns>
+        [Pure]
+        public ZonedDateTime AtStartOfDayInZone([NotNull] DateTimeZone zone)
+        {
+            Preconditions.CheckNotNull(zone, nameof(zone));
+            return zone.AtStartOfDay(this);
+        }
+        
+        /// <summary>
         /// Creates a new LocalDate representing the same physical date, but in a different calendar.
         /// The returned LocalDate is likely to have different field values to this one.
         /// For example, January 1st 1970 in the Gregorian calendar was December 19th 1969 in the Julian calendar.
         /// </summary>
-        /// <param name="calendarSystem">The calendar system to convert this local date to.</param>
+        /// <param name="calendar">The calendar system to convert this local date to.</param>
         /// <returns>The converted LocalDate</returns>
         [Pure]
-        public LocalDate WithCalendar([NotNull] CalendarSystem calendarSystem)
+        public LocalDate WithCalendar([NotNull] CalendarSystem calendar)
         {
-            Preconditions.CheckNotNull(calendarSystem, nameof(calendarSystem));
-            return new LocalDate(DaysSinceEpoch, calendarSystem);
+            Preconditions.CheckNotNull(calendar, nameof(calendar));
+            return new LocalDate(DaysSinceEpoch, calendar);
         }
 
         /// <summary>

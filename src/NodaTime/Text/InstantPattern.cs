@@ -25,7 +25,7 @@ namespace NodaTime.Text
     {
         /// <summary>
         /// Gets the general pattern, which always uses an invariant culture. The general pattern represents
-        /// an instant as a UTC date/time in ISO-8601 style "yyyy-MM-ddTHH:mm:ss'Z'".
+        /// an instant as a UTC date/time in ISO-8601 style "uuuu-MM-ddTHH:mm:ss'Z'".
         /// </summary>
         /// <value>The general pattern, which always uses an invariant culture.</value>
         public static InstantPattern GeneralPattern => Patterns.GeneralPatternImpl;
@@ -33,7 +33,7 @@ namespace NodaTime.Text
         /// <summary>
         /// Gets an invariant instant pattern which is ISO-8601 compatible, providing up to 9 decimal places
         /// of sub-second accuracy. (These digits are omitted when unnecessary.)
-        /// This corresponds to the text pattern "yyyy'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFFFF'Z'".
+        /// This corresponds to the text pattern "uuuu'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFFFF'Z'".
         /// </summary>
         /// <value>An invariant instant pattern which is ISO-8601 compatible, providing up to 9 decimal places
         /// of sub-second accuracy.</value>
@@ -49,8 +49,8 @@ namespace NodaTime.Text
         /// </summary>
         private static class Patterns
         {
-            internal static readonly InstantPattern ExtendedIsoPatternImpl = CreateWithInvariantCulture("yyyy'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFFFF'Z'");
-            internal static readonly InstantPattern GeneralPatternImpl = CreateWithInvariantCulture("yyyy-MM-ddTHH:mm:ss'Z'");
+            internal static readonly InstantPattern ExtendedIsoPatternImpl = CreateWithInvariantCulture("uuuu'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFFFF'Z'");
+            internal static readonly InstantPattern GeneralPatternImpl = CreateWithInvariantCulture("uuuu-MM-ddTHH:mm:ss'Z'");
         }
 
         private readonly IPattern<Instant> pattern;

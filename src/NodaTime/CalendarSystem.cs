@@ -68,7 +68,7 @@ namespace NodaTime
             return string.Format(CultureInfo.InvariantCulture, "{0} {1}-{2}", IslamicIdBase, epoch, leapYearPattern);
         }
 
-        private const string PersianName = "Persian`";
+        private const string PersianName = "Persian";
         private const string PersianIdBase = PersianName;
         private const string PersianSimpleId = PersianIdBase + " Simple";
         private const string PersianAstronomicalId = PersianIdBase + " Algorithmic";
@@ -672,13 +672,17 @@ namespace NodaTime
             return weekYearCalculator.GetWeekYear(yearMonthDay);
         }
 
-        internal int GetYearOfEra([Trusted] YearMonthDay yearMonthDay)
+        internal int GetYearOfEra([Trusted] int absoluteYear)
         {
-            DebugValidateYearMonthDay(yearMonthDay);
-            return eraCalculator.GetYearOfEra(yearMonthDay);
+            Preconditions.DebugCheckArgumentRange(nameof(absoluteYear), absoluteYear, MinYear, MaxYear);
+            return eraCalculator.GetYearOfEra(absoluteYear);
         }
 
-        internal Era GetEra([Trusted] YearMonthDay yearMonthDay) => eraCalculator.GetEra(yearMonthDay);
+        internal Era GetEra([Trusted] int absoluteYear)
+        {
+            Preconditions.DebugCheckArgumentRange(nameof(absoluteYear), absoluteYear, MinYear, MaxYear);
+            return eraCalculator.GetEra(absoluteYear);
+        }
 
         /// <summary>
         /// In debug configurations only, this method calls <see cref="ValidateYearMonthDay"/>

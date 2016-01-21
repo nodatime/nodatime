@@ -16,7 +16,7 @@ namespace NodaTime.Test.Testing
         [Test]
         public void DirectConstruction()
         {
-            Instant instant = Instant.FromTicksSinceUnixEpoch(100L);
+            Instant instant = Instant.FromUnixTimeTicks(100L);
             FakeClock clock = new FakeClock(instant);
             Assert.AreEqual(instant, clock.GetCurrentInstant());
         }
@@ -24,7 +24,7 @@ namespace NodaTime.Test.Testing
         [Test]
         public void ConstructionWithAdvance()
         {
-            Instant instant = Instant.FromTicksSinceUnixEpoch(100L);
+            Instant instant = Instant.FromUnixTimeTicks(100L);
             Duration advance = Duration.FromTicks(5);
             FakeClock clock = new FakeClock(instant, advance);
             Assert.AreEqual(advance, clock.AutoAdvance);
@@ -36,7 +36,7 @@ namespace NodaTime.Test.Testing
         [Test]
         public void ConstructionThenAdvance()
         {
-            Instant instant = Instant.FromTicksSinceUnixEpoch(100L);
+            Instant instant = Instant.FromUnixTimeTicks(100L);
             FakeClock clock = new FakeClock(instant);
             Assert.AreEqual(instant, clock.GetCurrentInstant());
             Assert.AreEqual(instant, clock.GetCurrentInstant());
@@ -68,65 +68,65 @@ namespace NodaTime.Test.Testing
         [Test]
         public void Advance()
         {
-            FakeClock clock = new FakeClock(Instant.FromTicksSinceUnixEpoch(100L));
+            FakeClock clock = new FakeClock(Instant.FromUnixTimeTicks(100L));
             Duration d = Duration.FromTicks(25);
             clock.Advance(d);
-            Assert.AreEqual(125, clock.GetCurrentInstant().Ticks);
+            Assert.AreEqual(125, clock.GetCurrentInstant().ToUnixTimeTicks());
         }
 
         [Test]
         public void AdvanceTicks()
         {
-            FakeClock clock = new FakeClock(Instant.FromTicksSinceUnixEpoch(100L));
+            FakeClock clock = new FakeClock(Instant.FromUnixTimeTicks(100L));
             clock.AdvanceTicks(3);
-            Assert.AreEqual(103, clock.GetCurrentInstant().Ticks);
+            Assert.AreEqual(103, clock.GetCurrentInstant().ToUnixTimeTicks());
         }
 
         [Test]
         public void AdvanceMilliseconds()
         {
-            FakeClock clock = new FakeClock(Instant.FromTicksSinceUnixEpoch(100L));
+            FakeClock clock = new FakeClock(Instant.FromUnixTimeTicks(100L));
             clock.AdvanceMilliseconds(3);
-            Assert.AreEqual(100 + 3 * NodaConstants.TicksPerMillisecond, clock.GetCurrentInstant().Ticks);
+            Assert.AreEqual(100 + 3 * NodaConstants.TicksPerMillisecond, clock.GetCurrentInstant().ToUnixTimeTicks());
         }
 
         [Test]
         public void AdvanceSeconds()
         {
-            FakeClock clock = new FakeClock(Instant.FromTicksSinceUnixEpoch(100L));
+            FakeClock clock = new FakeClock(Instant.FromUnixTimeTicks(100L));
             clock.AdvanceSeconds(3);
-            Assert.AreEqual(100 + 3 * NodaConstants.TicksPerSecond, clock.GetCurrentInstant().Ticks);
+            Assert.AreEqual(100 + 3 * NodaConstants.TicksPerSecond, clock.GetCurrentInstant().ToUnixTimeTicks());
         }
 
         [Test]
         public void AdvanceMinutes()
         {
-            FakeClock clock = new FakeClock(Instant.FromTicksSinceUnixEpoch(100L));
+            FakeClock clock = new FakeClock(Instant.FromUnixTimeTicks(100L));
             clock.AdvanceMinutes(3);
-            Assert.AreEqual(100 + 3 * NodaConstants.TicksPerMinute, clock.GetCurrentInstant().Ticks);
+            Assert.AreEqual(100 + 3 * NodaConstants.TicksPerMinute, clock.GetCurrentInstant().ToUnixTimeTicks());
         }
 
         [Test]
         public void AdvanceHours()
         {
-            FakeClock clock = new FakeClock(Instant.FromTicksSinceUnixEpoch(100L));
+            FakeClock clock = new FakeClock(Instant.FromUnixTimeTicks(100L));
             clock.AdvanceHours(3);
-            Assert.AreEqual(100 + 3 * NodaConstants.TicksPerHour, clock.GetCurrentInstant().Ticks);
+            Assert.AreEqual(100 + 3 * NodaConstants.TicksPerHour, clock.GetCurrentInstant().ToUnixTimeTicks());
         }
 
         [Test]
         public void AdvanceDays()
         {
-            FakeClock clock = new FakeClock(Instant.FromTicksSinceUnixEpoch(100L));
+            FakeClock clock = new FakeClock(Instant.FromUnixTimeTicks(100L));
             clock.AdvanceDays(3);
-            Assert.AreEqual(100 + 3 * NodaConstants.TicksPerDay, clock.GetCurrentInstant().Ticks);
+            Assert.AreEqual(100 + 3 * NodaConstants.TicksPerDay, clock.GetCurrentInstant().ToUnixTimeTicks());
         }
 
         [Test]
         public void Reset()
         {
-            Instant instant1 = Instant.FromTicksSinceUnixEpoch(100L);
-            Instant instant2 = Instant.FromTicksSinceUnixEpoch(500L);
+            Instant instant1 = Instant.FromUnixTimeTicks(100L);
+            Instant instant2 = Instant.FromUnixTimeTicks(500L);
             FakeClock clock = new FakeClock(instant1);
             Assert.AreEqual(instant1, clock.GetCurrentInstant());
             clock.Reset(instant2);

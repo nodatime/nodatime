@@ -190,7 +190,7 @@ namespace NodaTime
 
         /// <summary>
         /// Returns a string representation of this interval, in extended ISO-8601 format: the format
-        /// is "start/end" where each instant uses a format of "yyyy'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFFFF'Z'".
+        /// is "start/end" where each instant uses a format of "uuuu'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFFFF'Z'".
         /// If the start or end is infinite, the relevant part uses "StartOfTime" or "EndOfTime" to
         /// represent this.
         /// </summary>

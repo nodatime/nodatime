@@ -31,19 +31,15 @@ namespace NodaTime.Test
 
             TestHelper.TestCompareToStruct(equal, equal, greater1);
             TestHelper.TestNonGenericCompareTo(equal, equal, greater1);
-            TestHelper.TestOperatorComparisonEquality(equal, equal, greater1);
-
-            TestHelper.TestCompareToStruct(equal, equal, greater2);
-            TestHelper.TestNonGenericCompareTo(equal, equal, greater2);
-            TestHelper.TestOperatorComparisonEquality(equal, equal, greater2);
+            TestHelper.TestOperatorComparisonEquality(equal, equal, greater1, greater2);
         }
 
         #region operator +
         [Test]
         public void PlusTicks()
         {
-            Instant instant = Instant.FromTicksSinceUnixEpoch(5);
-            Assert.AreEqual(Instant.FromTicksSinceUnixEpoch(8), instant.PlusTicks(3));
+            Instant instant = Instant.FromUnixTimeTicks(5);
+            Assert.AreEqual(Instant.FromUnixTimeTicks(8), instant.PlusTicks(3));
         }
 
         [Test]

@@ -41,7 +41,7 @@ namespace NodaTime.Calendars
             return yearOfEra;
         }
 
-        internal override int GetYearOfEra(YearMonthDay yearMonthDay) => yearMonthDay.Year;
+        internal override int GetYearOfEra(int absoluteYear) => absoluteYear;
 
         internal override int GetMinYearOfEra([NotNull] Era era)
         {
@@ -55,6 +55,6 @@ namespace NodaTime.Calendars
             return maxYear;
         }
 
-        internal override Era GetEra(YearMonthDay yearMonthDay) => era;
+        internal override Era GetEra(int absoluteYear) => era;
     }
 }

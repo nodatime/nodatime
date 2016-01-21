@@ -11,8 +11,8 @@ namespace NodaTime.Test
     [TestFixture]
     public class IntervalTest
     {
-        private static readonly Instant SampleStart = Instant.FromTicksSinceUnixEpoch(-300);
-        private static readonly Instant SampleEnd = Instant.FromTicksSinceUnixEpoch(400);
+        private static readonly Instant SampleStart = Instant.FromUnixTimeTicks(-300);
+        private static readonly Instant SampleEnd = Instant.FromUnixTimeTicks(400);
 
         [Test]
         public void Construction_Success()

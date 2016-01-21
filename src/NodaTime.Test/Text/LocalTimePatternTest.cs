@@ -49,13 +49,18 @@ namespace NodaTime.Test.Text
         internal static Data[] ParseFailureData = {
             new Data { Text = "17 6", Pattern = "HH h", Message = Messages.Parse_InconsistentValues2, Parameters = {'H', 'h', typeof(LocalTime).FullName}},
             new Data { Text = "17 AM", Pattern = "HH tt", Message = Messages.Parse_InconsistentValues2, Parameters = {'H', 't', typeof(LocalTime).FullName}},
+            new Data { Text = "04.", Pattern = "ss.FF", Message = Messages.Parse_MismatchedNumber, Parameters = { "FF" } },
+            new Data { Text = "04.", Pattern = "ss.ff", Message = Messages.Parse_MismatchedNumber, Parameters = { "ff" } },
         };
 
         internal static Data[] ParseOnlyData = {
             new Data(0, 0, 0, 400) { Text = "4", Pattern = "%f", },
             new Data(0, 0, 0, 400) { Text = "4", Pattern = "%F", },
             new Data(0, 0, 0, 400) { Text = "4", Pattern = "FF", },
+            new Data(0, 0, 0, 400) { Text = "40", Pattern = "FF", },
             new Data(0, 0, 0, 400) { Text = "4", Pattern = "FFF", },
+            new Data(0, 0, 0, 400) { Text = "40", Pattern = "FFF" },
+            new Data(0, 0, 0, 400) { Text = "400", Pattern = "FFF" },
             new Data(0, 0, 0, 400) { Text = "40", Pattern = "ff", },
             new Data(0, 0, 0, 400) { Text = "400", Pattern = "fff", },
             new Data(0, 0, 0, 400) { Text = "4000", Pattern = "ffff", },
@@ -93,6 +98,12 @@ namespace NodaTime.Test.Text
             // Parsing using the semi-colon "comma dot" specifier
             new Data(16, 05, 20, 352) { Pattern = "HH:mm:ss;fff", Text = "16:05:20,352" },
             new Data(16, 05, 20, 352) { Pattern = "HH:mm:ss;FFF", Text = "16:05:20,352" },
+
+            // Empty fractional section
+            new Data(0,0,4,0) { Text = "04", Pattern = "ssFF" },
+            new Data(0,0,4,0) { Text = "040", Pattern = "ssFF" },
+            new Data(0,0,4,0) { Text = "040", Pattern = "ssFFF" },
+            new Data(0,0,4,0) { Text = "04", Pattern = "ss.FF"},
         };
 
         internal static Data[] FormatOnlyData = {
@@ -120,7 +131,7 @@ namespace NodaTime.Test.Text
             new Data(1, 1, 1, 456) { Text = "45", Pattern = "FF" },
             new Data(1, 1, 1, 456) { Text = "456", Pattern = "fff" },
             new Data(1, 1, 1, 456) { Text = "456", Pattern = "FFF" },
-
+            new Data(0,0,0,0) {Text = "", Pattern = "FF" },
 
             new Data(5, 6, 7, 8) { Culture = Cultures.EnUs, Text = "0", Pattern = "%f" },
             new Data(5, 6, 7, 8) { Culture = Cultures.EnUs, Text = "00", Pattern = "ff" },
@@ -303,28 +314,28 @@ namespace NodaTime.Test.Text
 
         // Fails on Mono: https://github.com/nodatime/nodatime/issues/98
         [Test]
-        [TestCaseSource(typeof(Cultures), "AllCulturesOrEmptyOnMono")]
+        [TestCaseSource(typeof(Cultures), nameof(Cultures.AllCulturesOrEmptyOnMono))]
         public void BclLongTimePatternIsValidNodaPattern(CultureInfo culture)
         {
             AssertValidNodaPattern(culture, culture.DateTimeFormat.LongTimePattern);
         }
 
         [Test]
-        [TestCaseSource(typeof(Cultures), "AllCultures")]
+        [TestCaseSource(typeof(Cultures), nameof(Cultures.AllCultures))]
         public void BclShortTimePatternIsValidNodaPattern(CultureInfo culture)
         {
             AssertValidNodaPattern(culture, culture.DateTimeFormat.ShortTimePattern);
         }
 
         [Test]
-        [TestCaseSource(typeof(Cultures), "AllCultures")]
+        [TestCaseSource(typeof(Cultures), nameof(Cultures.AllCultures))]
         public void BclLongTimePatternGivesSameResultsInNoda(CultureInfo culture)
         {
             AssertBclNodaEquality(culture, culture.DateTimeFormat.LongTimePattern);
         }
 
         [Test]
-        [TestCaseSource(typeof(Cultures), "AllCultures")]
+        [TestCaseSource(typeof(Cultures), nameof(Cultures.AllCultures))]
         public void BclShortTimePatternGivesSameResultsInNoda(CultureInfo culture)
         {
             AssertBclNodaEquality(culture, culture.DateTimeFormat.ShortTimePattern);
@@ -383,8 +394,13 @@ namespace NodaTime.Test.Text
                 }
                 else
                 {
-                    Assert.IsTrue(ExpectedCharacters.Contains(cursor.Current),
-                        "Pattern '" + pattern + "' contains unquoted, unexpected characters");
+                    // We'll never do anything "special" with non-ascii characters anyway,
+                    // so we don't mind if they're not quoted.
+                    if (cursor.Current < '\u0080')
+                    {
+                        Assert.IsTrue(ExpectedCharacters.Contains(cursor.Current),
+                            "Pattern '" + pattern + "' contains unquoted, unexpected characters");
+                    }
                 }
             }
             // Check that the pattern parses

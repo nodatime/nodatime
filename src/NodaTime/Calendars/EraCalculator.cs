@@ -25,8 +25,8 @@ namespace NodaTime.Calendars
 
         internal abstract int GetMinYearOfEra([NotNull] Era era);
         internal abstract int GetMaxYearOfEra([NotNull] Era era);
-        internal abstract Era GetEra(YearMonthDay yearMonthDay);
-        internal abstract int GetYearOfEra(YearMonthDay yearMonthDay);
+        internal abstract Era GetEra(int absoluteYear);
+        internal abstract int GetYearOfEra(int absoluteYear);
         internal abstract int GetAbsoluteYear(int yearOfEra, [NotNull] Era era);
     }
 }

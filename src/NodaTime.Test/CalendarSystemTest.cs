@@ -12,13 +12,11 @@ namespace NodaTime.Test
     [TestFixture]
     public partial class CalendarSystemTest
     {
-#pragma warning disable 0414 // Used by tests via reflection - do not remove!
         private static readonly IEnumerable<string> SupportedIds = CalendarSystem.Ids.Where(x => x != "Um Al Qura" || UmAlQuraYearMonthDayCalculator.IsSupported).ToList();
         private static readonly List<CalendarSystem> SupportedCalendars = SupportedIds.Select(CalendarSystem.ForId).ToList();
-#pragma warning restore 0414
 
         [Test]
-        [TestCaseSource("SupportedCalendars")]
+        [TestCaseSource(nameof(SupportedCalendars))]
         public void MaxDate(CalendarSystem calendar)
         {
             // Construct the largest LocalDate we can, and validate that all the properties can be fetched without
@@ -27,7 +25,7 @@ namespace NodaTime.Test
         }
 
         [Test]
-        [TestCaseSource("SupportedCalendars")]
+        [TestCaseSource(nameof(SupportedCalendars))]
         public void MinDate(CalendarSystem calendar)
         {
             // Construct the smallest LocalDate we can, and validate that all the properties can be fetched without

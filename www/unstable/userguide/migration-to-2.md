@@ -9,6 +9,13 @@ Noda Time 2.0 contains a number of breaking changes. If you have a project which
 1.x and are considering upgrading to 2.0, please read the following migration guide carefully.
 In particular, there are some changes which are changes to execution-time behaviour, and won't show up as compile-time errors.
 
+Parameter names
+====
+
+Some parameters have been renamed for consistency. This should not affect code that uses positional
+argument passing; code which uses named arguments will need to specify the new parameter name where
+there are changes. This does not affect binary compatibility.
+
 Obsolete members
 ====
 
@@ -64,6 +71,15 @@ but having it in the names was a bit obnoxious, particularly in code which used 
 Factory methods in `CalendarSystem` which either didn't take any parameters (`GetPersianCalendar`) or which
 no longer support those parameters (`GetCopticCalendar`, `GetJulianCalendar`) have been converted into properties.
 So for example, the equivalent of `CalendarSystem.GetJulianCalendar(4)` is now just `CalendarSystem.Julian`.
+
+Methods and properties on `Instant` to do with the Unix epoch have been renamed to be consistent with
+methods introduced in `DateTimeOffset` in .NET 4.6:
+
+- `FromSecondsSinceUnixEpoch()` is now `FromUnixTimeSeconds()`
+- `FromMillisecondsSinceUnixEpoch()` is now `FromUnixTimeMilliseconds()`
+- `FromTicksSinceUnixEpoch()` is now `FromUnixTimeTicks()`
+- The `Ticks` property is now `ToUnixTimeTicks()`
+- There are two new methods, `ToUnixTimeSeconds()` and `ToUnixTimeMilliseconds()`
 
 Period
 ====
@@ -143,6 +159,29 @@ We recommend that you avoid relying on the default values at all - partly for th
 
 Text handling
 ====
+
+Year specifiers
+---
+
+In version 1.x, the `y` format specifier meant "absolute year" (which may be negative) and the `Y` format specifier meant "year of era". Unfortunatly, this is not compatible with the BCL, where `y` really means year of era. Under most calendars this is irrelevant in the BCL, as most only support a single era - but in Noda Time, the default calendar system (Gregorian) supports dates before 1CE.
+
+In version 2.0, `y` means "year of era", and `u` means "absolute year". This use of `u` is in line with
+[Unicode TR-35](http://unicode.org/reports/tr35/tr35-dates.html#Date_Format_Patterns) although
+there are other aspects of format specifiers which aren't - 2.0 is not embracing TR-35 universally, preferring BCL-compatibility, but as the BCL doesn't have any "absolute year" specifier.
+
+For most users this change will be invisible, as it is anticipated that most users only use values where
+absolute year and year of era are the same value. However, anyone using `Y` in their format patterns will
+see an exception thrown, and anyone using `y` but formatting a value where the year is *not* the same as
+the year of era will see different results.
+
+One unfortunate side-effect of this is that the normal BCL handling - using the patterns specified by the BCL - gives ambiguous values. For example, `new LocalDate(-50, 1, 1).ToString()` will return something like "01 January 0051" instead of the previous "01 January -0050". Users whose applications are likely to encounter
+dates before 1CE should consider using custom format patterns with the `u` specifier instead of `y`.
+
+Noda Time's ISO-8601 pattern handling will provide the same text values as before, as the patterns have been
+updated to use `u`. This includes the patterns used in `NodaTime.Serialization.JsonNet`.
+
+Other changes
+---
 
 The numeric standard patterns for `Instant` and `Offset` have been removed, with no direct equivalent.
 These were not known to be useful, felt "alien" in various ways, and cause issues within the 

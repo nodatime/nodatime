@@ -271,7 +271,7 @@ namespace NodaTime.Test.Text
             var value = new ValueCursor("\u0660\u0661");
             Assert.True(value.MoveNext());
             int actual;
-            Assert.False(value.ParseFraction(2, 2, out actual, true));
+            Assert.False(value.ParseFraction(2, 2, out actual, 2));
         }
 
         [Test]

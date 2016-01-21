@@ -211,7 +211,7 @@ namespace NodaTime.TimeZones.IO
                         case DateTimeZoneWriter.ZoneIntervalConstants.MarkerMaxValue:
                             return Instant.AfterMaxValue;
                         case DateTimeZoneWriter.ZoneIntervalConstants.MarkerRaw:
-                            return Instant.FromTicksSinceUnixEpoch(ReadInt64());
+                            return Instant.FromUnixTimeTicks(ReadInt64());
                         default: 
                             throw new InvalidNodaDataException("Unrecognised marker value: " + value);
                     }

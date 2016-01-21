@@ -159,16 +159,18 @@ namespace NodaTime
         /// <summary>
         /// The instant at the Unix epoch of midnight 1st January 1970 UTC.
         /// </summary>
-        /// <remarks>
-        /// This value is not only the Unix epoch, but the Noda Time epoch, as it represents the value
-        /// with a <see cref="Instant.Ticks"/> property of 0.
-        /// </remarks>
-        public static readonly Instant UnixEpoch = Instant.FromTicksSinceUnixEpoch(0);
+        public static Instant UnixEpoch { get; } = Instant.FromUnixTimeTicks(0);
 
         /// <summary>
         /// The instant at the BCL epoch of midnight 1st January 0001 UTC.
         /// </summary>
-        public static readonly Instant BclEpoch = Instant.FromUtc(1, 1, 1, 0, 0);
+        public static Instant BclEpoch { get; } = Instant.FromUtc(1, 1, 1, 0, 0);
+
+        /// <summary>
+        /// The instant at the Julian epoch of noon (UTC) January 1st 4713 BCE in the proleptic
+        /// Julian calendar, or November 24th 4714 BCE in the proleptic Gregorian calendar.
+        /// </summary>
+        public static Instant JulianEpoch { get; } = Instant.FromUtc(-4713, 11, 24, 12, 0);
 
         /// <summary>
         /// The number of ticks in a BCL DateTime at the Unix epoch.

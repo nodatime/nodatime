@@ -29,9 +29,9 @@ namespace NodaTime.Text
             { '\\', SteppedPatternBuilder<ZonedDateTime, ZonedDateTimeParseBucket>.HandleBackslash },
             { '/', (pattern, builder) => builder.AddLiteral(builder.FormatInfo.DateSeparator, ParseResult<ZonedDateTime>.DateSeparatorMismatch) },
             { 'T', (pattern, builder) => builder.AddLiteral('T', ParseResult<ZonedDateTime>.MismatchedCharacter) },
-            { 'y', DatePatternHelper.CreateYearHandler<ZonedDateTime, ZonedDateTimeParseBucket>(value => value.Year, (bucket, value) => bucket.Date.Year = value) },
-            { 'Y', SteppedPatternBuilder<ZonedDateTime, ZonedDateTimeParseBucket>.HandlePaddedField
-                       (5, PatternFields.YearOfEra, 0, 99999, value => value.YearOfEra, (bucket, value) => bucket.Date.YearOfEra = value) },
+            { 'y', DatePatternHelper.CreateYearOfEraHandler<ZonedDateTime, ZonedDateTimeParseBucket>(value => value.YearOfEra, (bucket, value) => bucket.Date.YearOfEra = value) },
+            { 'u', SteppedPatternBuilder<ZonedDateTime, ZonedDateTimeParseBucket>.HandlePaddedField
+                       (4, PatternFields.Year, -9999, 9999, value => value.Year, (bucket, value) => bucket.Date.Year = value) },
             { 'M', DatePatternHelper.CreateMonthOfYearHandler<ZonedDateTime, ZonedDateTimeParseBucket>
                         (value => value.Month, (bucket, value) => bucket.Date.MonthOfYearText = value, (bucket, value) => bucket.Date.MonthOfYearNumeric = value) },
             { 'd', DatePatternHelper.CreateDayHandler<ZonedDateTime, ZonedDateTimeParseBucket>
@@ -55,6 +55,7 @@ namespace NodaTime.Text
             { 'z', HandleZone },
             { 'x', HandleZoneAbbreviation },
             { 'o', HandleOffset },
+            { 'l', (cursor, builder) => builder.AddEmbeddedLocalPartial(cursor, bucket => bucket.Date, bucket => bucket.Time, value => value.Date, value => value.TimeOfDay, value => value.LocalDateTime) },
         };
 
         internal ZonedDateTimePatternParser(ZonedDateTime templateValue, ZoneLocalMappingResolver resolver, IDateTimeZoneProvider zoneProvider)
@@ -125,21 +126,11 @@ namespace NodaTime.Text
             SteppedPatternBuilder<ZonedDateTime, ZonedDateTimeParseBucket> builder)
         {
             builder.AddField(PatternFields.EmbeddedOffset, pattern.Current);
-            string embeddedPattern = pattern.GetEmbeddedPattern('<', '>');
+            string embeddedPattern = pattern.GetEmbeddedPattern();
             var offsetPattern = OffsetPattern.Create(embeddedPattern, builder.FormatInfo).UnderlyingPattern;
-            builder.AddParseAction((value, bucket) =>
-                {
-                    var result = offsetPattern.ParsePartial(value);
-                    if (!result.Success)
-                    {
-                        return result.ConvertError<ZonedDateTime>();
-                    }
-                    bucket.Offset = result.Value;
-                    return null;
-                });
-            builder.AddFormatAction((value, sb) => offsetPattern.AppendFormat(value.Offset, sb));
+            builder.AddEmbeddedPattern(offsetPattern, (bucket, offset) => bucket.Offset = offset, zdt => zdt.Offset);
         }
-
+        
         private static ParseResult<ZonedDateTime> ParseZone(ValueCursor value, ZonedDateTimeParseBucket bucket) => bucket.ParseZone(value);
 
         private sealed class ZonedDateTimeParseBucket : ParseBucket<ZonedDateTime>

@@ -1,13 +1,15 @@
 ﻿// Copyright 2013 The Noda Time Authors. All rights reserved.
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
-using static NodaTime.TimeZones.TzdbZone1970Location;
 
 using System;
 using System.IO;
 using NodaTime.TimeZones;
 using NodaTime.TimeZones.IO;
 using NUnit.Framework;
+
+// TODO: Remove this when Mono-latest supports using static properly.
+using Country = NodaTime.TimeZones.TzdbZone1970Location.Country;
 
 namespace NodaTime.Test.TimeZones
 {

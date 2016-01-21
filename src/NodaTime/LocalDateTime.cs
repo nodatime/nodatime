@@ -715,13 +715,13 @@ namespace NodaTime
         /// The returned LocalDateTime is likely to have different date field values to this one.
         /// For example, January 1st 1970 in the Gregorian calendar was December 19th 1969 in the Julian calendar.
         /// </summary>
-        /// <param name="calendarSystem">The calendar system to convert this local date to.</param>
+        /// <param name="calendar">The calendar system to convert this local date to.</param>
         /// <returns>The converted LocalDateTime.</returns>
         [Pure]
-        public LocalDateTime WithCalendar([NotNull] CalendarSystem calendarSystem)
+        public LocalDateTime WithCalendar([NotNull] CalendarSystem calendar)
         {
-            Preconditions.CheckNotNull(calendarSystem, nameof(calendarSystem));
-            return new LocalDateTime(date.WithCalendar(calendarSystem), time);
+            Preconditions.CheckNotNull(calendar, nameof(calendar));
+            return new LocalDateTime(date.WithCalendar(calendar), time);
         }
 
         /// <summary>

@@ -41,14 +41,12 @@ For the meanings of "absolute" years and text handling, see later details.
     <tr>
       <td><code>yy</code></td>
       <td>
-        Two digit absolute year, in the range 0-99. When parsing, the "base century" is chosen from the template
-        value; if the two-digit year is greater than 30, the corresponding year in the previous century is used.
+        Two digit year of era, in the range 0-99. When parsing, the "base century" is chosen from the template
+        value; if the two-digit year is greater than 30, the corresponding year in the previous century is used, unless the century of the template value is already the first century of the era. If the
+        template value is in the first century and the input is "00", an exception will be thrown on parsing.
         Note that when formatting, no checking is performed to ensure that the year will be parsed to
-        the same value. (For example, 1725 would be formatted as 25 but parsed as 2025.) Negative absolute years
-        are coalesced into 2-digit year numbers in a way which maintains chronological ordering - so for example,
-        95BC is absolute -94; that will be formatted as `06`. The following year (94BC) is absolute -93; that will be
-        formatted as `07`. This is documented for completeness; it is *strongly* recommended that you do not use
-        `yy` with dates which may have negative absolute years.
+        the same value. (For example, 1725 would be formatted as 25 but parsed as 2025.) In general, use of
+        this pattern specifier is discouraged, on the grounds of it leading to ambiguity.
       </td>
       <td>
 	    Assuming a template value of 2000 (the default):
@@ -59,17 +57,21 @@ For the meanings of "absolute" years and text handling, see later details.
     <tr>
       <td><code>yyyy</code></td>
       <td>
-        The absolute year as 4 digits with an optional leading <code>-</code> sign.
+        The year of era as 4 digits.
+      </td>
+      <td>
+        2000 A.D. (ISO calendar, en-US): <code>yyyy g</code> => <code>2000 A.D.</code>
+        13 B.C. (ISO calendar, en-US): <code>yyyy g</code> => <code>0013 B.C.</code>
       </td>
     </tr>
 	<tr>
-	  <td><code>Y</code>, <code>YY</code>, <code>YYY</code>, <code>YYYY</code>
+	  <td><code>u</code>, <code>uu</code>, <code>uuu</code>, <code>uuuu</code>
 	  <td>
-	    The year of era, zero-padded as necessary to the same number of characters as the number of 'Y' characters.
-		See notes below.
-      </td>
+	    The absolute, zero-padded as necessary to the same number of characters as the number of 'u' characters,
+      with an optional leading <code>-</code> sign. See notes below.
+    </td>
 	  <td>
-	    3 B.C.: <code>YYYY</code> => <code>0003</code>
+	    3 B.C.: <code>uuuu</code> => <code>-0002</code>
 	  </td>
 	</tr>
 	<tr>
@@ -78,7 +80,7 @@ For the meanings of "absolute" years and text handling, see later details.
 	    The name of the era. This is calendar and culture specific. See notes below.
 	  </td>
 	  <td>
-	    13 B.C. (ISO calendar, en-US): <code>Y g</code> => <code>13 B.C.</code>
+	    13 B.C. (ISO calendar, en-US): <code>y g</code> => <code>13 B.C.</code>
 	  </td>
 	</tr>
     <tr>
@@ -167,8 +169,9 @@ For the meanings of "absolute" years and text handling, see later details.
       <td>
         The date separator for the format provider; slash in the invariant culture.
       </td>
-      <td>en-US: <code>yyyy/MM/dd</code> => <code>2011/10/09</code><br />
-          de-DE: <code>yyyy/MM/dd</code> => <code>2011.10.09</code></td>
+      <td>en-US: <code>uuuu/MM/dd</code> => <code>2011/10/09</code><br />
+          de-DE: <code>uuuu/MM/dd</code> => <code>2011.10.09</code></td>
+          de-DE: <code>uuuu/MM/dd</code> => <code>2011.10.09</code></td>
     </tr>
   </tbody>
     
@@ -184,7 +187,11 @@ A mapping is provided between "year within era" and "absolute" year - where an a
 and does not generally skip. In the ISO calendar, the absolute year 0 is deemed to be 1 B.C. and the absolute year 1 is
 deemed to be 1 A.D. thus giving a simplified arithmetic system.
 
-Negative absolute years can be both parsed and formatted - so "13 B.C." would be formatted as "-0012" using the "yyyy" format.
+Negative absolute years can be both parsed and formatted - so "13 B.C." would be formatted as "-0012" using the "uuuu" format.
+
+Note that the meaning of the "y" specifier has changed over time: in Noda Time 1.x, this meant "absolute year"; it now means
+"year of era" to be consistent with the BCL. (This used to be handled by the "Y" specifier.) The "u" specifier is now used for
+"absolute year".
 
 **Text sources**
 
