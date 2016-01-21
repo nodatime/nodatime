@@ -11,7 +11,8 @@ namespace NodaTime.Benchmarks
     /// </summary>
     internal class Program
     {
-        private static void Main()
+        // Run it with args = { "*" } for choosing all of target benchmarks
+        private static void Main(string[] args)
         {
             var competitionSwitch = new BenchmarkSwitcher(new[]
             {
@@ -43,7 +44,7 @@ namespace NodaTime.Benchmarks
                 typeof(NodaTimeTests.StandardDaylightAlternatingMapBenchmarks),
                 typeof(NodaTimeTests.UtcZonedDateTimeBenchmarks)
             });
-            competitionSwitch.Run(new[] { "*" });
+            competitionSwitch.Run(args);
         }
     }
 }
