@@ -13,7 +13,7 @@ namespace NodaTime.Benchmarks
     {
         private static void Main()
         {
-            var competitionSwitch = new BenchmarkCompetitionSwitch(new[]
+            var competitionSwitch = new BenchmarkSwitcher(new[]
             {
                 typeof(BclTests.DateTimeBenchmarks),
                 typeof(BclTests.DateTimeOffsetBenchmarks),

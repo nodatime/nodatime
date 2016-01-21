@@ -38,8 +38,8 @@
     <DefineConstants>NO_INTERNALS;V$([System.Text.RegularExpressions.Regex]::Replace($(NodaVersion), "\.", "_"));V$([System.Text.RegularExpressions.Regex]::Replace($(NodaVersion), "^(\d+)\.(\d+)\..*", "$1_$2"));V$([System.Text.RegularExpressions.Regex]::Replace($(NodaVersion), "^(\d+)\..*", "$1"))</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="BenchmarkDotNet, Version=0.7.7.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\BenchmarkDotNet.0.7.7\lib\net40\BenchmarkDotNet.dll</HintPath>
+    <Reference Include="BenchmarkDotNet, Version=0.8.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\BenchmarkDotNet.0.8.2\lib\net40\BenchmarkDotNet.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Condition="'$(NodaVersion)' != ''" Include="NodaTime">
