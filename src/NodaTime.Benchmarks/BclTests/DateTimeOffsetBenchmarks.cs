@@ -42,11 +42,9 @@ namespace NodaTime.Benchmarks.BclTests
         [Benchmark]
         public bool Comparison_Operators()
         {
-            return (sample < earlier);
 #pragma warning disable 1718
-            return (sample < sample);
+            return (sample < earlier) | (sample < sample) | (sample < later);
 #pragma warning restore 1718
-            return (sample < later);
         }
 
         [Benchmark]
