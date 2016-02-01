@@ -5,7 +5,6 @@
 using System;
 using System.Web.Http.Controllers;
 using System.Web.Http.ModelBinding;
-using NodaTime.Text;
 
 namespace NodaTime.Serialization.ModelBinding
 {
