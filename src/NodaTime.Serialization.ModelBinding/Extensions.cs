@@ -6,15 +6,15 @@ namespace NodaTime.Serialization.ModelBinding
 {
     public static class Extensions
     {
-        public static HttpConfiguration ConfigureForNodelTime(this HttpConfiguration config, IDateTimeZoneProvider provider)
+        public static HttpConfiguration ConfigureForNodaTime(this HttpConfiguration config, IDateTimeZoneProvider provider)
         {
             if (config == null)
             {
-                throw new ArgumentNullException(nameof(config));
+                throw new ArgumentNullException("config");
             }
             if (provider == null)
             {
-                throw new ArgumentNullException(nameof(config));
+                throw new ArgumentNullException("config");
             }
 
             var originalActionValueBinder = (IActionValueBinder)config.Services.GetService(typeof(IActionValueBinder));
@@ -27,7 +27,7 @@ namespace NodaTime.Serialization.ModelBinding
         {
             if (config == null)
             {
-                throw new ArgumentNullException(nameof(config));
+                throw new ArgumentNullException("config");
             }
 
             var actionValueBinder = config.Services.GetService(typeof(IActionValueBinder)) as NodaActionValueBinder;

@@ -6,7 +6,7 @@ namespace NodaTime.Serialization.ModelBinding
     public class NodaActionValueBinder : IActionValueBinder
     {
         private readonly IActionValueBinder _original;
-        public NodaModelBinderResolver Resolver { get; }
+        public NodaModelBinderResolver Resolver { get; private set; }
 
         public NodaActionValueBinder(IActionValueBinder original, IDateTimeZoneProvider provider)
         {
