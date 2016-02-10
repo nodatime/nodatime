@@ -9,7 +9,7 @@ using NodaTime.Calendars;
 namespace NodaTime.Benchmarks.NodaTimeTests
 {
     [Config(typeof(BenchmarkConfig))]
-    internal class OffsetDateTimeBenchmarks
+    public class OffsetDateTimeBenchmarks
     {
         private static readonly Offset OneHourOffset = Offset.FromHours(1);
         private static readonly Offset LargePositiveOffset = Offset.FromHours(12);

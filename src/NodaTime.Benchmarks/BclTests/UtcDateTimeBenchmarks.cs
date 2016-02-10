@@ -10,7 +10,7 @@ namespace NodaTime.Benchmarks.BclTests
 {
     [Config(typeof(BenchmarkConfig))]
     [Category("BCL")]
-    internal class UtcDateTimeBenchmarks
+    public class UtcDateTimeBenchmarks
     {
         private readonly DateTime sample = new DateTime(2009, 12, 26, 10, 8, 30, DateTimeKind.Utc);
 

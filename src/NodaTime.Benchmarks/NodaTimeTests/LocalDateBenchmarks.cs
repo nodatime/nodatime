@@ -9,7 +9,7 @@ using NodaTime.Text;
 namespace NodaTime.Benchmarks.NodaTimeTests
 {
     [Config(typeof(BenchmarkConfig))]
-    internal class LocalDateBenchmarks
+    public class LocalDateBenchmarks
     {
         private static readonly LocalDate Sample = new LocalDate(2009, 12, 26);
         private static readonly LocalDate SampleBeforeEpoch = new LocalDate(1909, 12, 26);

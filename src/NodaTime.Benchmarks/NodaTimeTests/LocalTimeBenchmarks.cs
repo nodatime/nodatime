@@ -7,7 +7,7 @@ using BenchmarkDotNet.Attributes;
 namespace NodaTime.Benchmarks.NodaTimeTests
 {
     [Config(typeof(BenchmarkConfig))]
-    internal class LocalTimeBenchmarks
+    public class LocalTimeBenchmarks
     {
         private static readonly LocalTime Sample = new LocalTime(10, 8, 30, 300, 1234);
         private static readonly Period SamplePeriod = new PeriodBuilder { Hours = 10, Minutes = 4, Seconds = 5, Milliseconds = 20, Ticks = 30 }.Build();

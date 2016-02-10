@@ -11,7 +11,7 @@ namespace NodaTime.Benchmarks.NodaTimeTests.Text
 {
     [Config(typeof(BenchmarkConfig))]
     [Category("Text")]
-    internal class ZonedDateTimePatternBenchmarks
+    public class ZonedDateTimePatternBenchmarks
     {
         private static readonly DateTimeZone SampleZone = DateTimeZoneProviders.Tzdb["America/Los_Angeles"];
         private static readonly ZonedDateTime SampleZonedDateTime = new LocalDateTime(2009, 12, 26, 10, 8, 30).InZoneStrictly(SampleZone);

@@ -4,17 +4,14 @@
 
 #if !V1_0 && !V1_1
 
-using BenchmarkDotNet;
-using BenchmarkDotNet.Tasks;
+using BenchmarkDotNet.Attributes;
 using Newtonsoft.Json;
 using NodaTime.Serialization.JsonNet;
 
 namespace NodaTime.Benchmarks.NodaTimeTests.JsonNet
 {
-    [BenchmarkTask(platform: BenchmarkPlatform.X86, jitVersion: BenchmarkJitVersion.LegacyJit)]
-    [BenchmarkTask(platform: BenchmarkPlatform.X64, jitVersion: BenchmarkJitVersion.LegacyJit)]
-    [BenchmarkTask(platform: BenchmarkPlatform.X64, jitVersion: BenchmarkJitVersion.RyuJit)]
-    internal sealed class ParsingBenchmarks
+    [Config(typeof(BenchmarkConfig))]
+    public class ParsingBenchmarks
     {
         private static readonly JsonSerializerSettings settings = new JsonSerializerSettings().ConfigureForNodaTime(DateTimeZoneProviders.Tzdb);
 

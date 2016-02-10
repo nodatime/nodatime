@@ -10,7 +10,7 @@ namespace NodaTime.Benchmarks.BclTests
 {
     [Config(typeof(BenchmarkConfig))]
     [Category("BCL")]
-    internal sealed class TimeZoneInfoBenchmarks
+    public class TimeZoneInfoBenchmarks
     {
         internal static readonly TimeZoneInfo PacificZone = GetPacificTime();
 

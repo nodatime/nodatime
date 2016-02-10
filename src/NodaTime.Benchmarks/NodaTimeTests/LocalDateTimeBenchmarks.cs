@@ -4,6 +4,7 @@
 
 using System;
 using System.Globalization;
+using BenchmarkDotNet.Attributes;
 using NodaTime.Calendars;
 
 namespace NodaTime.Benchmarks.NodaTimeTests

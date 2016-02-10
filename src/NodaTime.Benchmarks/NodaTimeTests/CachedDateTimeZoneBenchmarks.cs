@@ -8,7 +8,7 @@ using NodaTime.Benchmarks.BclTests;
 namespace NodaTime.Benchmarks.NodaTimeTests
 {
     [Config(typeof(BenchmarkConfig))]
-    internal class CachedDateTimeZoneBenchmarks
+    public class CachedDateTimeZoneBenchmarks
     {
 #if V1
         private const long TicksPerDay = NodaConstants.TicksPerStandardDay;

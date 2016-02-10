@@ -11,7 +11,7 @@ using NodaTime.Serialization.JsonNet;
 namespace NodaTime.Benchmarks.NodaTimeTests.JsonNet
 {
     [Config(typeof(BenchmarkConfig))]
-    internal sealed class FormattingBenchmarks
+    public class FormattingBenchmarks
     {
         private static readonly JsonSerializerSettings settings = new JsonSerializerSettings().ConfigureForNodaTime(DateTimeZoneProviders.Tzdb);
 

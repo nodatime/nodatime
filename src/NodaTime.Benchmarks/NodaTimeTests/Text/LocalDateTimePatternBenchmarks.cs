@@ -10,7 +10,7 @@ namespace NodaTime.Benchmarks.NodaTimeTests.Text
 {
     [Config(typeof(BenchmarkConfig))]
     [Category("Text")]
-    internal class LocalDateTimePatternBenchmarks
+    public class LocalDateTimePatternBenchmarks
     {
         private static readonly LocalDateTime SampleLocalDateTime = new LocalDateTime(2009, 12, 26, 10, 8, 30);
         private static readonly LocalDateTimePattern PatternWithLongMonthAndDay = LocalDateTimePattern.CreateWithInvariantCulture("dddd MMMM dd yyyy HH:mm:ss");

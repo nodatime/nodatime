@@ -13,7 +13,7 @@ namespace NodaTime.Benchmarks.NodaTimeTests.Text
 {
     [Config(typeof(BenchmarkConfig))]
     [Category("Text")]
-    internal class OffsetDateTimePatternBenchmarks
+    public class OffsetDateTimePatternBenchmarks
     {
         private static readonly OffsetDateTime TemplateValue = new LocalDateTime(2000, 1, 1, 0, 0).WithOffset(Offset.Zero);
         private static readonly OffsetDateTime SampleOffsetDateTime = new LocalDateTime(2009, 12, 26, 10, 8, 30).WithOffset(Offset.FromHours(2));

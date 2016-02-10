@@ -7,7 +7,7 @@ using BenchmarkDotNet.Attributes;
 namespace NodaTime.Benchmarks.NodaTimeTests
 {
     [Config(typeof(BenchmarkConfig))]
-    internal class PeriodBenchmarks
+    public class PeriodBenchmarks
     {
         private static readonly LocalDate SampleStartDate = new LocalDate(2012, 3, 26);
         private static readonly LocalDate SampleEndDate = new LocalDate(2017, 2, 13);

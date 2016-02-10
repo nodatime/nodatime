@@ -9,7 +9,7 @@ using NodaTime.Calendars;
 namespace NodaTime.Benchmarks.NodaTimeTests.Calendars
 {
     [Config(typeof(BenchmarkConfig))]
-    internal class HebrewCalendarBenchmarks
+    public class HebrewCalendarBenchmarks
     {
         // Note: avoiding properties for backward compatibility
         private static readonly CalendarSystem ScripturalCalendar = CalendarSystem.GetHebrewCalendar(HebrewMonthNumbering.Scriptural);

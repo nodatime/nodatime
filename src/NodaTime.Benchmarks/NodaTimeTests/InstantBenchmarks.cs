@@ -8,7 +8,7 @@ using BenchmarkDotNet.Attributes;
 namespace NodaTime.Benchmarks.NodaTimeTests
 {
     [Config(typeof(BenchmarkConfig))]
-    internal class InstantBenchmarks
+    public class InstantBenchmarks
     {
         private static readonly Instant Sample = Instant.FromUtc(2011, 8, 24, 12, 29, 30);
         private static readonly Offset SmallOffset = Offset.FromHours(1);
@@ -27,14 +27,6 @@ namespace NodaTime.Benchmarks.NodaTimeTests
         {
             return Sample.Plus(Duration.Epsilon);
         }
-
-#if !NO_INTERNALS
-        [Benchmark]
-        public LocalInstant PlusOffset()
-        {
-            return Sample.Plus(Offset.Zero);
-        }
-#endif
 
         [Benchmark]
         public ZonedDateTime InUtc()

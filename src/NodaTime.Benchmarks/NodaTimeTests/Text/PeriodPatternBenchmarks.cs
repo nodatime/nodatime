@@ -10,7 +10,7 @@ namespace NodaTime.Benchmarks.NodaTimeTests.Text
 {
     [Config(typeof(BenchmarkConfig))]
     [Category("Text")]
-    internal class PeriodPatternBenchmarks
+    public class PeriodPatternBenchmarks
     {
         private static readonly Period SamplePeriod = new PeriodBuilder
         {

@@ -8,7 +8,7 @@ using NodaTime.Calendars;
 namespace NodaTime.Benchmarks.NodaTimeTests
 {
     [Config(typeof(BenchmarkConfig))]
-    internal class UtcZonedDateTimeBenchmarks
+    public class UtcZonedDateTimeBenchmarks
     {
         private static readonly LocalDateTime SampleLocal = new LocalDateTime(2009, 12, 26, 10, 8, 30);
         private static readonly ZonedDateTime Sample = DateTimeZone.Utc.AtStrictly(SampleLocal);

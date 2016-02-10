@@ -9,7 +9,7 @@ using NodaTime.TimeZones;
 namespace NodaTime.Benchmarks.NodaTimeTests
 {
     [Config(typeof(BenchmarkConfig))]
-    internal sealed class BclDateTimeZoneBenchmarks
+    public class BclDateTimeZoneBenchmarks
     {
         private static readonly DateTimeZone PacificZone = BclDateTimeZone.FromTimeZoneInfo(TimeZoneInfoBenchmarks.PacificZone);
         private static readonly Instant SummerInstant = Instant.FromDateTimeUtc(TimeZoneInfoBenchmarks.SummerUtc);
