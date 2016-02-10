@@ -3,15 +3,12 @@
 // as found in the LICENSE.txt file.
 
 using System.ComponentModel;
-using BenchmarkDotNet;
-using BenchmarkDotNet.Tasks;
+using BenchmarkDotNet.Attributes;
 using NodaTime.Text;
 
 namespace NodaTime.Benchmarks.NodaTimeTests.Text
 {
-    [BenchmarkTask(platform: BenchmarkPlatform.X86, jitVersion: BenchmarkJitVersion.LegacyJit)]
-    [BenchmarkTask(platform: BenchmarkPlatform.X64, jitVersion: BenchmarkJitVersion.LegacyJit)]
-    [BenchmarkTask(platform: BenchmarkPlatform.X64, jitVersion: BenchmarkJitVersion.RyuJit)]
+    [Config(typeof(BenchmarkConfig))]
     [Category("Text")]
     internal class PeriodPatternBenchmarks
     {

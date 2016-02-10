@@ -3,15 +3,12 @@
 // as found in the LICENSE.txt file.
 
 using System.Collections.Generic;
-using BenchmarkDotNet;
-using BenchmarkDotNet.Tasks;
+using BenchmarkDotNet.Attributes;
 using NodaTime.Calendars;
 
 namespace NodaTime.Benchmarks.NodaTimeTests
 {
-    [BenchmarkTask(platform: BenchmarkPlatform.X86, jitVersion: BenchmarkJitVersion.LegacyJit)]
-    [BenchmarkTask(platform: BenchmarkPlatform.X64, jitVersion: BenchmarkJitVersion.LegacyJit)]
-    [BenchmarkTask(platform: BenchmarkPlatform.X64, jitVersion: BenchmarkJitVersion.RyuJit)]
+    [Config(typeof(BenchmarkConfig))]
     internal class OffsetDateTimeBenchmarks
     {
         private static readonly Offset OneHourOffset = Offset.FromHours(1);

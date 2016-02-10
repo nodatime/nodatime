@@ -5,14 +5,11 @@
 using System;
 using System.ComponentModel;
 using System.Globalization;
-using BenchmarkDotNet;
-using BenchmarkDotNet.Tasks;
+using BenchmarkDotNet.Attributes;
 
 namespace NodaTime.Benchmarks.BclTests
 {
-    [BenchmarkTask(platform: BenchmarkPlatform.X86, jitVersion: BenchmarkJitVersion.LegacyJit)]
-    [BenchmarkTask(platform: BenchmarkPlatform.X64, jitVersion: BenchmarkJitVersion.LegacyJit)]
-    [BenchmarkTask(platform: BenchmarkPlatform.X64, jitVersion: BenchmarkJitVersion.RyuJit)]
+    [Config(typeof(BenchmarkConfig))]
     [Category("BCL")]
     public class DateTimeBenchmarks
     {
