@@ -2,14 +2,16 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-using Minibench.Framework;
+using System.ComponentModel;
+using BenchmarkDotNet.Attributes;
 using NodaTime.Text;
 
 #if !V1_0 && !V1_1
 namespace NodaTime.Benchmarks.NodaTimeTests.Text
 {
+    [Config(typeof(BenchmarkConfig))]
     [Category("Text")]
-    internal class ZonedDateTimePatternBenchmarks
+    public class ZonedDateTimePatternBenchmarks
     {
         private static readonly DateTimeZone SampleZone = DateTimeZoneProviders.Tzdb["America/Los_Angeles"];
         private static readonly ZonedDateTime SampleZonedDateTime = new LocalDateTime(2009, 12, 26, 10, 8, 30).InZoneStrictly(SampleZone);

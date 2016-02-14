@@ -2,80 +2,81 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-using Minibench.Framework;
+using BenchmarkDotNet.Attributes;
 
 namespace NodaTime.Benchmarks.NodaTimeTests
 {
-    internal class PacificZonedDateTimeBenchmarks
+    [Config(typeof(BenchmarkConfig))]
+    public class PacificZonedDateTimeBenchmarks
     {
         private static readonly DateTimeZone Pacific = DateTimeZoneProviders.Tzdb["America/Los_Angeles"];
         private static readonly LocalDateTime SampleLocal = new LocalDateTime(2009, 12, 26, 10, 8, 30);
         private static readonly ZonedDateTime SampleZoned = Pacific.AtStrictly(SampleLocal);
 
         [Benchmark]
-        public void Construction()
+        public ZonedDateTime Construction()
         {
-            Pacific.AtStrictly(SampleLocal);
+            return Pacific.AtStrictly(SampleLocal);
         }
 
         [Benchmark]
-        public void Year()
+        public int Year()
         {
-            SampleZoned.Year.Consume();
+            return SampleZoned.Year;
         }
 
         [Benchmark]
-        public void Month()
+        public int Month()
         {
-            SampleZoned.Month.Consume();
+            return SampleZoned.Month;
         }
 
         [Benchmark]
-        public void DayOfMonth()
+        public int DayOfMonth()
         {
-            SampleZoned.Day.Consume();
+            return SampleZoned.Day;
         }
 
         [Benchmark]
-        public void IsoDayOfWeek()
+        public IsoDayOfWeek IsoDayOfWeek()
         {
-            SampleZoned.IsoDayOfWeek.Consume();
+            return SampleZoned.IsoDayOfWeek;
         }
 
         [Benchmark]
-        public void DayOfYear()
+        public int DayOfYear()
         {
-            SampleZoned.DayOfYear.Consume();
+            return SampleZoned.DayOfYear;
         }
 
         [Benchmark]
-        public void Hour()
+        public int Hour()
         {
-            SampleZoned.Hour.Consume();
+            return SampleZoned.Hour;
         }
 
         [Benchmark]
-        public void Minute()
+        public int Minute()
         {
-            SampleZoned.Minute.Consume();
+            return SampleZoned.Minute;
         }
 
         [Benchmark]
-        public void Second()
+        public int Second()
         {
-            SampleZoned.Second.Consume();
+            return SampleZoned.Second;
         }
 
         [Benchmark]
-        public void Millisecond()
+        public int Millisecond()
         {
-            SampleZoned.Millisecond.Consume();
+            return SampleZoned.Millisecond;
         }
 
         [Benchmark]
-        public void ToInstant()
+        public Instant ToInstant()
         {
-            SampleZoned.ToInstant();
+            return SampleZoned.ToInstant();
         }
     }
 }

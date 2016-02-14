@@ -3,12 +3,14 @@
 // as found in the LICENSE.txt file.
 
 using System;
-using Minibench.Framework;
+using System.ComponentModel;
+using BenchmarkDotNet.Attributes;
 
 namespace NodaTime.Benchmarks.BclTests
 {
+    [Config(typeof(BenchmarkConfig))]
     [Category("BCL")]
-    internal sealed class TimeZoneInfoBenchmarks
+    public class TimeZoneInfoBenchmarks
     {
         internal static readonly TimeZoneInfo PacificZone = GetPacificTime();
 

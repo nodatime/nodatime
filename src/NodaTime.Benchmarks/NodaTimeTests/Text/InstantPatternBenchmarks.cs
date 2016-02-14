@@ -2,14 +2,16 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
+using System.ComponentModel;
 using System.Globalization;
-using Minibench.Framework;
+using BenchmarkDotNet.Attributes;
 using NodaTime.Text;
 
 namespace NodaTime.Benchmarks.NodaTimeTests.Text
 {
+    [Config(typeof(BenchmarkConfig))]
     [Category("Text")]
-    class InstantPatternBenchmarks
+    public class InstantPatternBenchmarks
     {
         private static readonly Instant Sample = Instant.FromUtc(2011, 8, 24, 12, 29, 30);
         private static readonly Instant SampleWithTicks = Instant.FromUtc(2011, 8, 24, 12, 29, 30).PlusTicks(1234567);

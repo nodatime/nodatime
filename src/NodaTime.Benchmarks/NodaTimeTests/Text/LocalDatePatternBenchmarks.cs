@@ -2,14 +2,16 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
+using System.ComponentModel;
 using System.Text;
-using Minibench.Framework;
+using BenchmarkDotNet.Attributes;
 using NodaTime.Text;
 
 namespace NodaTime.Benchmarks.NodaTimeTests.Text
 {
+    [Config(typeof(BenchmarkConfig))]
     [Category("Text")]
-    internal class LocalDatePatternBenchmarks
+    public class LocalDatePatternBenchmarks
     {
         private static readonly LocalDate SampleLocalDate = new LocalDate(2009, 12, 26);
         private static readonly LocalDatePattern PatternWithLongMonth = LocalDatePattern.CreateWithInvariantCulture("MMMM dd yyyy");

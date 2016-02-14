@@ -2,12 +2,13 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
+using BenchmarkDotNet.Attributes;
 using NodaTime.Benchmarks.BclTests;
-using Minibench.Framework;
 
 namespace NodaTime.Benchmarks.NodaTimeTests
 {
-    internal class CachedDateTimeZoneBenchmarks
+    [Config(typeof(BenchmarkConfig))]
+    public class CachedDateTimeZoneBenchmarks
     {
 #if V1
         private const long TicksPerDay = NodaConstants.TicksPerStandardDay;

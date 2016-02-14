@@ -4,13 +4,14 @@
 
 #if !V1_0 && !V1_1
 
+using BenchmarkDotNet.Attributes;
 using Newtonsoft.Json;
-using Minibench.Framework;
 using NodaTime.Serialization.JsonNet;
 
 namespace NodaTime.Benchmarks.NodaTimeTests.JsonNet
 {
-    internal sealed class FormattingBenchmarks
+    [Config(typeof(BenchmarkConfig))]
+    public class FormattingBenchmarks
     {
         private static readonly JsonSerializerSettings settings = new JsonSerializerSettings().ConfigureForNodaTime(DateTimeZoneProviders.Tzdb);
 

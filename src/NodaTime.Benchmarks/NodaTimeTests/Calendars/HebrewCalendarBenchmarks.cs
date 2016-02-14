@@ -2,28 +2,29 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-using Minibench.Framework;
+using BenchmarkDotNet.Attributes;
 using NodaTime.Calendars;
 
 #if !V1_0 && !V1_1 && !V1_2
 namespace NodaTime.Benchmarks.NodaTimeTests.Calendars
 {
-    internal class HebrewCalendarBenchmarks
+    [Config(typeof(BenchmarkConfig))]
+    public class HebrewCalendarBenchmarks
     {
         // Note: avoiding properties for backward compatibility
         private static readonly CalendarSystem ScripturalCalendar = CalendarSystem.GetHebrewCalendar(HebrewMonthNumbering.Scriptural);
         private static readonly CalendarSystem CivilCalendar = CalendarSystem.GetHebrewCalendar(HebrewMonthNumbering.Civil);
 
         [Benchmark]
-        public void ScripturalConversion()
+        public LocalDate ScripturalConversion()
         {
-            TestLeapCycle(ScripturalCalendar);
+            return TestLeapCycle(ScripturalCalendar);
         }
 
         [Benchmark]
-        public void CivilConversion()
+        public LocalDate CivilConversion()
         {
-            TestLeapCycle(CivilCalendar);
+            return TestLeapCycle(CivilCalendar);
         }
 
         /// <summary>
@@ -31,8 +32,9 @@ namespace NodaTime.Benchmarks.NodaTimeTests.Calendars
         /// calendar and back. This exercises fetching the number of days since the epoch and getting
         /// a year/month/day *from* a number of days.
         /// </summary>
-        private static void TestLeapCycle(CalendarSystem calendar)
+        private static LocalDate TestLeapCycle(CalendarSystem calendar)
         {
+            LocalDate returnLocalDate = new LocalDate();
             for (int year = 5400; year < 5419; year++)
             {
 #if !V1
@@ -46,10 +48,11 @@ namespace NodaTime.Benchmarks.NodaTimeTests.Calendars
                     for (int day = 1; day <= maxDay; day++)
                     {
                         var date = new LocalDate(year, month, day, calendar);
-                        date.WithCalendar(CalendarSystem.Iso).WithCalendar(calendar).Consume();
+                        returnLocalDate = date.WithCalendar(CalendarSystem.Iso).WithCalendar(calendar);
                     }
                 }
             }
+            return returnLocalDate;
         }
     }
 }

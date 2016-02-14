@@ -3,11 +3,12 @@
 // as found in the LICENSE.txt file.
 
 using System.Globalization;
-using Minibench.Framework;
+using BenchmarkDotNet.Attributes;
 
 namespace NodaTime.Benchmarks.NodaTimeTests
 {
-    internal class InstantBenchmarks
+    [Config(typeof(BenchmarkConfig))]
+    public class InstantBenchmarks
     {
         private static readonly Instant Sample = Instant.FromUtc(2011, 8, 24, 12, 29, 30);
         private static readonly Offset SmallOffset = Offset.FromHours(1);
@@ -16,54 +17,46 @@ namespace NodaTime.Benchmarks.NodaTimeTests
         private static readonly DateTimeZone London = DateTimeZoneProviders.Tzdb["Europe/London"];
 
         [Benchmark]
-        public void ToStringIso()
+        public string ToStringIso()
         {
-            Sample.ToString("g", CultureInfo.InvariantCulture);
+            return Sample.ToString("g", CultureInfo.InvariantCulture);
         }
 
         [Benchmark]
-        public void PlusDuration()
+        public Instant PlusDuration()
         {
-            Sample.Plus(Duration.Epsilon);
-        }
-
-#if !NO_INTERNALS
-        [Benchmark]
-        public void PlusOffset()
-        {
-            Sample.Plus(Offset.Zero);
-        }
-#endif
-
-        [Benchmark]
-        public void InUtc()
-        {
-            Sample.InUtc();
+            return Sample.Plus(Duration.Epsilon);
         }
 
         [Benchmark]
-        public void InZoneLondon()
+        public ZonedDateTime InUtc()
         {
-            Sample.InZone(London);
+            return Sample.InUtc();
+        }
+
+        [Benchmark]
+        public ZonedDateTime InZoneLondon()
+        {
+            return Sample.InZone(London);
         }
 
 #if !V1_0 && !V1_1
         [Benchmark]
-        public void WithOffset_SameUtcDay()
+        public OffsetDateTime WithOffset_SameUtcDay()
         {
-            Sample.WithOffset(SmallOffset);
+            return Sample.WithOffset(SmallOffset);
         }
 
         [Benchmark]
-        public void WithOffset_NextUtcDay()
+        public OffsetDateTime WithOffset_NextUtcDay()
         {
-            Sample.WithOffset(LargePositiveOffset);
+            return Sample.WithOffset(LargePositiveOffset);
         }
 
         [Benchmark]
-        public void WithOffset_PreviousUtcDay()
+        public OffsetDateTime WithOffset_PreviousUtcDay()
         {
-            Sample.WithOffset(LargeNegativeOffset);
+            return Sample.WithOffset(LargeNegativeOffset);
         }
 #endif
     }

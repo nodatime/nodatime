@@ -1,11 +1,13 @@
 ﻿// Copyright 2014 The Noda Time Authors. All rights reserved.
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
-using Minibench.Framework;
+
+using BenchmarkDotNet.Attributes;
 using NodaTime.Calendars;
 
 namespace NodaTime.Benchmarks.NodaTimeTests.Calendars
 {
+    [Config(typeof(BenchmarkConfig))]
     public class IsoCalendarBenchmarks
     {
 #if !V1

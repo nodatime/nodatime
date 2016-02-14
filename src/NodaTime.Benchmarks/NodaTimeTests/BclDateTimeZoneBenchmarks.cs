@@ -2,13 +2,14 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 #if !PCL
+using BenchmarkDotNet.Attributes;
 using NodaTime.Benchmarks.BclTests;
-using Minibench.Framework;
 using NodaTime.TimeZones;
 
 namespace NodaTime.Benchmarks.NodaTimeTests
 {
-    internal sealed class BclDateTimeZoneBenchmarks
+    [Config(typeof(BenchmarkConfig))]
+    public class BclDateTimeZoneBenchmarks
     {
         private static readonly DateTimeZone PacificZone = BclDateTimeZone.FromTimeZoneInfo(TimeZoneInfoBenchmarks.PacificZone);
         private static readonly Instant SummerInstant = Instant.FromDateTimeUtc(TimeZoneInfoBenchmarks.SummerUtc);

@@ -2,11 +2,13 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-using Minibench.Framework;
+using BenchmarkDotNet.Attributes;
+using NodaTime.Calendars;
 
 namespace NodaTime.Benchmarks.NodaTimeTests
 {
-    internal class UtcZonedDateTimeBenchmarks
+    [Config(typeof(BenchmarkConfig))]
+    public class UtcZonedDateTimeBenchmarks
     {
         private static readonly LocalDateTime SampleLocal = new LocalDateTime(2009, 12, 26, 10, 8, 30);
         private static readonly ZonedDateTime Sample = DateTimeZone.Utc.AtStrictly(SampleLocal);
@@ -18,99 +20,99 @@ namespace NodaTime.Benchmarks.NodaTimeTests
         }
 
         [Benchmark]
-        public void Year()
+        public int Year()
         {
-            Sample.Year.Consume();
+            return Sample.Year;
         }
 
         [Benchmark]
-        public void Month()
+        public int Month()
         {
-            Sample.Month.Consume();
+            return Sample.Month;
         }
 
         [Benchmark]
-        public void DayOfMonth()
+        public int DayOfMonth()
         {
-            Sample.Day.Consume();
+            return Sample.Day;
         }
 
         [Benchmark]
-        public void IsoDayOfWeek()
+        public IsoDayOfWeek IsoDayOfWeek()
         {
-            Sample.IsoDayOfWeek.Consume();
+            return Sample.IsoDayOfWeek;
         }
 
         [Benchmark]
-        public void DayOfYear()
+        public int DayOfYear()
         {
-            Sample.DayOfYear.Consume();
+            return Sample.DayOfYear;
         }
 
         [Benchmark]
-        public void Hour()
+        public int Hour()
         {
-            Sample.Hour.Consume();
+            return Sample.Hour;
         }
 
         [Benchmark]
-        public void Minute()
+        public int Minute()
         {
-            Sample.Minute.Consume();
+            return Sample.Minute;
         }
 
         [Benchmark]
-        public void Second()
+        public int Second()
         {
-            Sample.Second.Consume();
+            return Sample.Second;
         }
 
         [Benchmark]
-        public void Millisecond()
+        public int Millisecond()
         {
-            Sample.Millisecond.Consume();
+            return Sample.Millisecond;
         }
 
         [Benchmark]
-        public void TickOfDay()
+        public long TickOfDay()
         {
-            Sample.TickOfDay.Consume();
+            return Sample.TickOfDay;
         }
 
         [Benchmark]
-        public void TickOfSecond()
+        public int TickOfSecond()
         {
-            Sample.TickOfSecond.Consume();
+            return Sample.TickOfSecond;
         }
 
         [Benchmark]
-        public void WeekOfWeekYear()
+        public int WeekOfWeekYear()
         {
-            Sample.WeekOfWeekYear.Consume();
+            return Sample.WeekOfWeekYear;
         }
 
         [Benchmark]
-        public void WeekYear()
+        public int WeekYear()
         {
-            Sample.WeekYear.Consume();
+            return Sample.WeekYear;
         }
 
         [Benchmark]
-        public void ClockHourOfHalfDay()
+        public int ClockHourOfHalfDay()
         {
-            Sample.ClockHourOfHalfDay.Consume();
+            return Sample.ClockHourOfHalfDay;
         }
 
         [Benchmark]
-        public void Era()
+        public Era Era()
         {
-            Sample.Era.Consume();
+            return Sample.Era;
         }
 
         [Benchmark]
-        public void YearOfEra()
+        public int YearOfEra()
         {
-            Sample.YearOfEra.Consume();
+            return Sample.YearOfEra;
         }
     }
 }
