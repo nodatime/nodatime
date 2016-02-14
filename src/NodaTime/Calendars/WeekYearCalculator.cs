@@ -88,7 +88,7 @@ namespace NodaTime.Calendars
             unchecked(daysSinceEpoch >= -3 ? 1 + ((daysSinceEpoch + 3) % 7)
                                            : 7 + ((daysSinceEpoch + 4) % 7));
 
-        private int GetWeeksInWeekYear([Trusted] int weekYear)
+        internal int GetWeeksInWeekYear([Trusted] int weekYear)
         {
             unchecked
             {

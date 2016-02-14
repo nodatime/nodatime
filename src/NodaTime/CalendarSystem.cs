@@ -615,7 +615,7 @@ namespace NodaTime
         }
 
         /// <summary>
-        /// The maximum valid month (inclusive) within this calendar in the given year.
+        /// Returns the maximum valid month (inclusive) within this calendar in the given year.
         /// </summary>
         /// <remarks>
         /// It is assumed that in all calendars, every month between 1 and this month
@@ -632,6 +632,21 @@ namespace NodaTime
         {
             Preconditions.CheckArgumentRange(nameof(year), year, MinYear, MaxYear);
             return YearMonthDayCalculator.GetMonthsInYear(year);
+        }
+
+        /// <summary>
+        /// Returns the number of weeks in the given week-year.
+        /// </summary>
+        /// <param name="weekYear">The week-year to determine the number of weeks for.</param>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="weekYear"/> is outside
+        /// the range of this calendar.</exception>
+        /// <returns>The number of weeks in the given week-year.</returns>
+        public int GetWeeksInWeekYear(int weekYear)
+        {
+            // TODO: Is this really valid? It means we can't necessarily round-trip. Maybe be more lenient, but then check the resulting days-since-epoch.
+            Preconditions.CheckArgumentRange(nameof(weekYear), weekYear,
+                YearMonthDayCalculator.MinYear, YearMonthDayCalculator.MaxYear);
+            return weekYearCalculator.GetWeeksInWeekYear(weekYear);
         }
 
         internal void ValidateYearMonthDay(int year, int month, int day)
