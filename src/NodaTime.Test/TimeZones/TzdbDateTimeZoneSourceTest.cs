@@ -271,6 +271,14 @@ namespace NodaTime.Test.TimeZones
             {
                 return;
             }
+            // See https://github.com/nodatime/nodatime/issues/440
+            // This time zone was apparently a mistake in both IANA and Windows; it's now effectively
+            // been removed from IANA (America/Santa_Isabel is now a link to America/Tijuana) but while Windows
+            // has it, we know we won't get a decent answer.
+            if (bclZone.Id == "Pacific Standard Time (Mexico)")
+            {
+                return;
+            }
             string id = TzdbDateTimeZoneSource.Default.GuessZoneIdByTransitionsUncached(bclZone);
 
             // Unmappable zones may not be mapped, or may be mapped to something reasonably accurate.
