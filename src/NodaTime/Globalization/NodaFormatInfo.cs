@@ -252,25 +252,10 @@ namespace NodaTime.Globalization
         public IList<string> ShortDayNames { get { EnsureDaysInitialized(); return shortDayNames; } }
 
         /// <summary>
-        /// Gets the number format associated with this formatting information.
-        /// </summary>
-        public NumberFormatInfo NumberFormat => CultureInfo.NumberFormat;
-
-        /// <summary>
         /// Gets the BCL date time format associated with this formatting information.
         /// </summary>
         public DateTimeFormatInfo DateTimeFormat => CultureInfo.DateTimeFormat;
-
-        /// <summary>
-        ///   Gets the positive sign.
-        /// </summary>
-        public string PositiveSign => NumberFormat.PositiveSign;
-
-        /// <summary>
-        /// Gets the negative sign.
-        /// </summary>
-        public string NegativeSign => NumberFormat.NegativeSign;
-
+        
 #if PCL
         /// <summary>
         /// Gets the time separator.
