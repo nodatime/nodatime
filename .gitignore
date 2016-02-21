@@ -22,9 +22,6 @@ StyleCop.Cache
 # Auto-created thumbnails
 Thumbs.db
 
-# Noda Time release (private) key
-NodaTime Release.snk
-
 # Build output directories (anywhere)
 **/bin/
 **/obj/
