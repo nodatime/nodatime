@@ -1,6 +1,10 @@
 {
   "version": "2.0.0-*",  
 
+  "compilationOptions": {
+    "keyFile": "../../NodaTime Release.snk"
+  },
+
   "dependencies": {
     "NodaTime": "",
     "SharpCompress": "0.11.1"

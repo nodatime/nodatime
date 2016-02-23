@@ -1,6 +1,17 @@
 {
-  "version": "2.0.0-*",
+  "version": "2.0.0-alpha20160222",
   
+  "licenseUrl": "http://www.apache.org/licenses/LICENSE-2.0",
+  "projectUrl": "http://nodatime.org/",
+  "summary": "Provides serialization support between Noda Time and Json.NET.",
+  "description": "Provides serialization support between Noda Time and Json.NET.",
+  "tags": ["nodatime", "json", "jsonnet"],
+  "requireLicenseAcceptance": false,
+
+  "compilationOptions": {
+    "keyFile": "../../NodaTime Release.snk"
+  },
+
   "configurations": {
     "Debug": {
       "compilationOptions": {
