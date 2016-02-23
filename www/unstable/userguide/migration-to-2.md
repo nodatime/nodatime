@@ -180,6 +180,13 @@ dates before 1CE should consider using custom format patterns with the `u` speci
 Noda Time's ISO-8601 pattern handling will provide the same text values as before, as the patterns have been
 updated to use `u`. This includes the patterns used in `NodaTime.Serialization.JsonNet`.
 
+Formatting changes
+---
+
+- Text formatting and parsing always uses `+` and `-` now for the positive and negative signs,
+  instead of asking the `NumberFormatInfo` from the culture. (These are the characters used by
+  all standard cultures, so this will only change behavior when using a custom culture.)
+
 Other changes
 ---
 

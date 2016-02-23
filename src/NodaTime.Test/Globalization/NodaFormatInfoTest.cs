@@ -73,10 +73,7 @@ namespace NodaTime.Test.Globalization
         {
             var info = new NodaFormatInfo(enUs);
             Assert.AreSame(enUs, info.CultureInfo);
-            Assert.NotNull(info.NumberFormat);
             Assert.NotNull(info.DateTimeFormat);
-            Assert.AreEqual("+", info.PositiveSign);
-            Assert.AreEqual("-", info.NegativeSign);
             Assert.AreEqual(":", info.TimeSeparator);
             Assert.AreEqual("/", info.DateSeparator);
             Assert.IsInstanceOf<string>(info.OffsetPatternLong);
@@ -157,14 +154,6 @@ namespace NodaTime.Test.Globalization
                 var info = NodaFormatInfo.GetInstance(null);
                 Assert.AreEqual(Thread.CurrentThread.CurrentCulture, info.CultureInfo);
             }
-        }
-
-        [Test]
-        public void TestNumberFormat()
-        {
-            var format = NumberFormatInfo.InvariantInfo;
-            var info = new NodaFormatInfo(enUs);
-            Assert.AreNotEqual(format, info.NumberFormat);
         }
 
         [Test]

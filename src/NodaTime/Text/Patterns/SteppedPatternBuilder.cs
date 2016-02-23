@@ -371,23 +371,21 @@ namespace NodaTime.Text.Patterns
         /// <param name="nonNegativePredicate">Predicate to detect whether the value being formatted is non-negative</param>
         public void AddRequiredSign(Action<TBucket, bool> signSetter, Func<TResult, bool> nonNegativePredicate)
         {
-            string negativeSign = FormatInfo.NegativeSign;
-            string positiveSign = FormatInfo.PositiveSign;
             AddParseAction((str, bucket) =>
             {
-                if (str.Match(negativeSign))
+                if (str.Match("-"))
                 {
                     signSetter(bucket, false);
                     return null;
                 }
-                if (str.Match(positiveSign))
+                if (str.Match("+"))
                 {
                     signSetter(bucket, true);
                     return null;
                 }
                 return ParseResult<TResult>.MissingSign(str);
             });
-            AddFormatAction((value, sb) => sb.Append(nonNegativePredicate(value) ? positiveSign : negativeSign));
+            AddFormatAction((value, sb) => sb.Append(nonNegativePredicate(value) ? "+" : "-"));
         }
 
         /// <summary>
@@ -397,16 +395,14 @@ namespace NodaTime.Text.Patterns
         /// <param name="nonNegativePredicate">Predicate to detect whether the value being formatted is non-negative</param>
         public void AddNegativeOnlySign(Action<TBucket, bool> signSetter, Func<TResult, bool> nonNegativePredicate)
         {
-            string negativeSign = FormatInfo.NegativeSign;
-            string positiveSign = FormatInfo.PositiveSign;
             AddParseAction((str, bucket) =>
             {
-                if (str.Match(negativeSign))
+                if (str.Match("-"))
                 {
                     signSetter(bucket, false);
                     return null;
                 }
-                if (str.Match(positiveSign))
+                if (str.Match("+"))
                 {
                     return ParseResult<TResult>.PositiveSignInvalid(str);
                 }
@@ -417,7 +413,7 @@ namespace NodaTime.Text.Patterns
             {
                 if (!nonNegativePredicate(value))
                 {
-                    builder.Append(negativeSign);
+                    builder.Append("-");
                 }
             });
         }

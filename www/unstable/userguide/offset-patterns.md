@@ -95,9 +95,10 @@ for general notes on custom patterns, including characters used for escaping and
       <td><code>+</code></td>
       <td>
         The sign of the value, always specified whether positive or negative.
-        The character used will depend on the format provider; <code>+</code> and <code>-</code> are
-        used by the invariant culture. A positive offset is used when local time is ahead of
-		UTC (e.g. Europe) and a negative offset is used when local time is behind UTC (e.g. America).
+        <code>+</code> and <code>-</code> are always used as the symbols, regardless
+        of the culture used when constructing the pattern. A positive offset is used 
+        when local time is ahead of UTC (e.g. Europe) and a negative offset is used
+        when local time is behind UTC (e.g. America).
       </td>
       <td>
         Positive value: <code>+HH:mm</code> => <code>+07:30</code> <br />
@@ -108,8 +109,8 @@ for general notes on custom patterns, including characters used for escaping and
       <td><code>-</code></td>
       <td>
         The sign of the value, only specified when the value is negative.
-        The character used will depend on the format provider; <code>-</code> is
-        used by the invariant culture.
+        <code>+</code> and <code>-</code> are always used as the symbols, regardless
+        of the culture used when constructing the pattern.
       </td>
       <td>
         Positive value: <code>-HH:mm</code> => <code>07:30</code> <br />

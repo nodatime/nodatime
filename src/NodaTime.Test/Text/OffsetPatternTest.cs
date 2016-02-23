@@ -7,6 +7,7 @@ using System.Linq;
 using NodaTime.Properties;
 using NodaTime.Text;
 using NUnit.Framework;
+using System.Globalization;
 
 namespace NodaTime.Test.Text
 {
@@ -219,6 +220,18 @@ namespace NodaTime.Test.Text
         public void AppendFormat(PatternTestData<Offset> data)
         {
             data.TestAppendFormat();
+        }
+
+        [Test]
+        public void NumberFormatIgnored()
+        {
+            var culture = (CultureInfo) Cultures.EnUs.Clone();
+            culture.NumberFormat.PositiveSign = "P";
+            culture.NumberFormat.NegativeSign = "N";
+            var pattern = OffsetPattern.Create("+HH:mm", culture);
+
+            Assert.AreEqual("+05:00", pattern.Format(Offset.FromHours(5)));
+            Assert.AreEqual("-05:00", pattern.Format(Offset.FromHours(-5)));
         }
 
         /// <summary>
