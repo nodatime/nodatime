@@ -15,4 +15,4 @@ script:
   - dnu build src/NodaTime.Test
   - dnx -p src/NodaTime.Serialization.Test test
   - dnx -p src/NodaTime.TzdbCompiler.Test test
-  - dnx -p src/NodaTime.Test test "--where=cat != Slow"
+  - dnx -p src/NodaTime.Test test "--where=cat != Slow && cat != Overflow"

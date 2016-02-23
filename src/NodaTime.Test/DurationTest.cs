@@ -316,6 +316,7 @@ namespace NodaTime.Test
         }
 
         [Test]
+        [Category("Overflow")]
         public void TicksWithOverflow()
         {
             Duration maxTicks = Duration.FromTicks(long.MaxValue) + Duration.FromTicks(1);
