@@ -3,7 +3,6 @@
 // as found in the LICENSE.txt file.
 
 using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using NodaTime.Calendars;
 using NodaTime.TimeZones.IO;
@@ -43,8 +42,7 @@ namespace NodaTime.TimeZones
         /// <summary>
         /// An offset that specifies the beginning of the year.
         /// </summary>
-        [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "ZoneYearOffset is immutable")]
-        public static readonly ZoneYearOffset StartOfYear = new ZoneYearOffset(TransitionMode.Wall, 1, 1, 0, false, LocalTime.Midnight);
+        internal static readonly ZoneYearOffset StartOfYear = new ZoneYearOffset(TransitionMode.Wall, 1, 1, 0, false, LocalTime.Midnight);
 
         private readonly int dayOfMonth;
         private readonly int dayOfWeek;

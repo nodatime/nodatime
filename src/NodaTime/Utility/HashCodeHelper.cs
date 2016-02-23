@@ -2,8 +2,6 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-using System.Diagnostics.CodeAnalysis;
-
 namespace NodaTime.Utility
 {
     /// <summary>
@@ -78,7 +76,6 @@ namespace NodaTime.Utility
         /// <typeparam name="T">The type of the value being hashed.</typeparam>
         /// <param name="value">The value to hash.</param>
         /// <returns>The new hash code.</returns>
-        [SuppressMessage("Microsoft.Usage", "CA2233:OperationsShouldNotOverflow", Justification = "Deliberately overflowing.")]
         internal HashCodeHelper Hash<T>(T value)
         {
             unchecked

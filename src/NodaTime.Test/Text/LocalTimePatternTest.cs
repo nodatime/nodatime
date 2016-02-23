@@ -314,9 +314,13 @@ namespace NodaTime.Test.Text
 
         // Fails on Mono: https://github.com/nodatime/nodatime/issues/98
         [Test]
-        [TestCaseSource(typeof(Cultures), nameof(Cultures.AllCulturesOrEmptyOnMono))]
+        [TestCaseSource(typeof(Cultures), nameof(Cultures.AllCulturesOrOneNullOnMono))]
         public void BclLongTimePatternIsValidNodaPattern(CultureInfo culture)
         {
+            if (culture == null)
+            {
+                return;
+            }
             AssertValidNodaPattern(culture, culture.DateTimeFormat.LongTimePattern);
         }
 

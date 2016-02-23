@@ -6,7 +6,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
-using System.Threading;
 using JetBrains.Annotations;
 using NodaTime.Calendars;
 using NodaTime.Properties;
@@ -327,7 +326,7 @@ namespace NodaTime.Globalization
         /// <summary>
         /// Gets the <see cref="NodaFormatInfo" /> object for the current thread.
         /// </summary>
-        public static NodaFormatInfo CurrentInfo => GetInstance(Thread.CurrentThread.CurrentCulture);
+        public static NodaFormatInfo CurrentInfo => GetInstance(CultureInfo.CurrentCulture);
 
         /// <summary>
         /// Gets the <see cref="Offset" /> "l" pattern.

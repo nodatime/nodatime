@@ -3,6 +3,7 @@
 // as found in the LICENSE.txt file.
 
 using System;
+using System.Reflection;
 using Newtonsoft.Json;
 using NodaTime.Utility;
 
@@ -15,7 +16,8 @@ namespace NodaTime.Serialization.JsonNet
     /// <typeparam name="T">The type to convert to/from JSON.</typeparam>
     public abstract class NodaConverterBase<T> : JsonConverter
     {
-        private static readonly Type NullableT = typeof(T).IsValueType ? typeof(Nullable<>).MakeGenericType(typeof(T)) : typeof(T);
+        private static readonly Type NullableT = typeof(T).GetTypeInfo().IsValueType 
+            ? typeof(Nullable<>).MakeGenericType(typeof(T)) : typeof(T);
 
         /// <summary>
         /// Returns whether or not this converter supports the given type.
@@ -25,7 +27,8 @@ namespace NodaTime.Serialization.JsonNet
         /// value types); false otherwise.</returns>
         public override bool CanConvert(Type objectType)
         {
-            return typeof(T).IsAssignableFrom(objectType) || objectType == NullableT;
+            return typeof(T).GetTypeInfo().IsAssignableFrom(objectType.GetTypeInfo())
+                || objectType == NullableT;
         }
 
         /// <summary>

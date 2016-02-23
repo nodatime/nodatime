@@ -668,6 +668,7 @@ namespace NodaTime.Test
         }
 
         [Test]
+        [Category("Overflow")]
         public void ToDuration_Overflow()
         {
             Period period = Period.FromSeconds(long.MaxValue);
@@ -675,6 +676,7 @@ namespace NodaTime.Test
         }
 
         [Test]
+        [Category("Overflow")]
         public void ToDuration_Overflow_WhenPossiblyValid()
         {
             // These two should pretty much cancel each other out - and would, if we had a 128-bit integer

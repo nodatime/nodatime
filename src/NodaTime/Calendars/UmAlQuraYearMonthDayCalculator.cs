@@ -4,6 +4,7 @@
 
 using System;
 using System.Globalization;
+using System.Reflection;
 using NodaTime.Annotations;
 using NodaTime.Utility;
 
@@ -43,7 +44,7 @@ namespace NodaTime.Calendars
             // it with reflection. If we can't, that's fair enough.
             try
             {
-                var type = typeof(Calendar).Assembly.GetType("System.Globalization.UmAlQuraCalendar");
+                var type = typeof(Calendar).GetTypeInfo().Assembly.GetType("System.Globalization.UmAlQuraCalendar");
                 if (type == null)
                 {
                     return;

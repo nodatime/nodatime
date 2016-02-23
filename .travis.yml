@@ -2,18 +2,17 @@
 
 language: csharp
 install:
-  - nuget restore src/NodaTime-All.sln
-  - nuget install NUnit.Runners -Version 2.6.4 -OutputDirectory testrunner
-  
-# TODO: Run the other unit tests too
-# The framework profile and version is required as currently we target .NET 3.5,
-# which Mono doesn't support as a profile.
+  - curl -sSL https://raw.githubusercontent.com/aspnet/Home/dev/dnvminstall.sh | sh && source ~/.dnx/dnvm/dnvm.sh && dnvm upgrade
 
-# We temporarily only build the debug version, as XML comments in C# 6 source
-# code appear to be broken in the Mono nightly build at the moment.
+# Explicitly build the two biggest projects separately; just dnx
+# test would work, but separating out the build step makes for
+# simpler diagnostics. We run the smaller test suites first, to
+# give earlier confirmation that they're working at all.
+# (NodaTime.Test can time out easily...)
 script:
-  - xbuild /p:Configuration=Debug src/NodaTime-All.sln /p:TargetFrameworkProfile='' /p:TargetFrameworkVersion='v4.5'
-  - mono ./testrunner/NUnit.Runners.2.6.4/tools/nunit-console.exe src/NodaTime.Test/bin/Debug/NodaTime.Test.dll
-
-mono:
-  - latest
+  - dnu restore
+  - dnu build src/NodaTime
+  - dnu build src/NodaTime.Test
+  - dnx -p src/NodaTime.Serialization.Test test
+  - dnx -p src/NodaTime.TzdbCompiler.Test test
+  - dnx -p src/NodaTime.Test test "--where=cat != Slow && cat != Overflow"
