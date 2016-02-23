@@ -10,6 +10,7 @@ install:
 # give earlier confirmation that they're working at all.
 # (NodaTime.Test can time out easily...)
 script:
+  - dnvm list
   - dnu restore
   - dnu build src/NodaTime
   - dnu build src/NodaTime.Test
