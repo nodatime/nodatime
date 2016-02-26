@@ -12,6 +12,7 @@ using NodaTime.Properties;
 using NodaTime.Text.Patterns;
 using NodaTime.Utility;
 using JetBrains.Annotations;
+using System.Numerics;
 
 namespace NodaTime.Text
 {
@@ -174,14 +175,12 @@ namespace NodaTime.Text
         [DebuggerStepThrough]
         private sealed class DurationParseBucket : ParseBucket<Duration>
         {
-            private const decimal DecimalNanosecondsPerDay = (decimal) NanosecondsPerDay;
-            private static readonly decimal MinNanos = Duration.MinValue.ToDecimalNanoseconds();
-            private static readonly decimal MaxNanos = Duration.MaxValue.ToDecimalNanoseconds();
+            private static readonly BigInteger BigIntegerNanosecondsPerDay = NanosecondsPerDay;
 
             // TODO: We might want to try to optimize this, but it's *much* simpler to get working reliably this way
             // than to manipulate a real Duration.
             internal bool IsNegative { get; set; }
-            private decimal currentNanos;
+            private BigInteger currentNanos;
 
             internal void AddNanoseconds(long nanoseconds)
             {
@@ -190,12 +189,12 @@ namespace NodaTime.Text
 
             internal void AddDays(int days)
             {
-                currentNanos += days * DecimalNanosecondsPerDay;
+                currentNanos += days * BigIntegerNanosecondsPerDay;
             }
 
-            internal void AddUnits(long units, long nanosecondsPerUnit)
+            internal void AddUnits(long units, BigInteger nanosecondsPerUnit)
             {
-                currentNanos += units * (decimal) nanosecondsPerUnit;
+                currentNanos += units * nanosecondsPerUnit;
             }
 
             /// <summary>
@@ -207,7 +206,7 @@ namespace NodaTime.Text
                 {
                     currentNanos = -currentNanos;
                 }
-                if (currentNanos < MinNanos || currentNanos > MaxNanos)
+                if (currentNanos < Duration.MinNanoseconds || currentNanos > Duration.MaxNanoseconds)
                 {
                     // TODO: Work out whether this is really the best message. (Created a new one...)
                     return ParseResult<Duration>.ForInvalidValuePostParse(text, Messages.Parse_OverallValueOutOfRange,

@@ -15,6 +15,7 @@ using NodaTime.Annotations;
 using NodaTime.Calendars;
 using NodaTime.Text;
 using NodaTime.Utility;
+using System.Numerics;
 
 namespace NodaTime
 {
@@ -56,8 +57,8 @@ namespace NodaTime
         // to be easily 
         internal const int MaxDays = (1 << 24) - 1;
         internal const int MinDays = ~MaxDays;
-        private static readonly decimal MinNanoseconds = (decimal)MinDays * NanosecondsPerDay;
-        private static readonly decimal MaxNanoseconds = (MaxDays + 1M) * NanosecondsPerDay - 1M;
+        internal static readonly BigInteger MinNanoseconds = (BigInteger)MinDays * NanosecondsPerDay;
+        internal static readonly BigInteger MaxNanoseconds = (MaxDays + BigInteger.One) * NanosecondsPerDay - BigInteger.One;
 
         // The -1 here is to allow for the addition of nearly a whole day in the nanoOfDay field.
         private const long MaxDaysForLongNanos = (int) (long.MaxValue / NanosecondsPerDay) - 1;
@@ -497,8 +498,8 @@ namespace NodaTime
                 long nanos = left.ToInt64Nanoseconds() / right;
                 return Duration.FromNanoseconds(nanos);
             }
-            // Fall back to decimal arithmetic.
-            decimal x = left.ToDecimalNanoseconds();
+            // Fall back to BigInteger arithmetic.
+            BigInteger x = left.ToBigIntegerNanoseconds();
             return FromNanoseconds(x / right);
         }
 
@@ -545,8 +546,8 @@ namespace NodaTime
                     }
                 }
             }
-            // Fall back to decimal arithmetic
-            decimal x = left.ToDecimalNanoseconds();
+            // Fall back to BigInteger arithmetic
+            BigInteger x = left.ToBigIntegerNanoseconds();
             return FromNanoseconds(x * right);
         }
 
@@ -819,25 +820,22 @@ namespace NodaTime
         }
 
         /// <summary>
-        /// Converts a number of nanoseconds expressed as a <see cref="Decimal"/> into a duration.
+        /// Converts a number of nanoseconds expressed as a <see cref="BigInteger"/> into a duration.
         /// </summary>
-        /// <remarks>Any fractional part of <paramref name="nanoseconds"/> is truncated.</remarks>
         /// <param name="nanoseconds">The number of nanoseconds to represent.</param>
         /// <returns>A duration with the given number of nanoseconds.</returns>
-        public static Duration FromNanoseconds(decimal nanoseconds)
+        public static Duration FromNanoseconds(BigInteger nanoseconds)
         {
             if (nanoseconds < MinNanoseconds || nanoseconds > MaxNanoseconds)
             {
                 throw new ArgumentOutOfRangeException(nameof(nanoseconds), $"Value should be in range [{MinNanoseconds}-{MaxNanoseconds}]");
             }
-            // Avoid worrying about what happens in later arithmetic.
-            nanoseconds = decimal.Truncate(nanoseconds);
 
             int days = nanoseconds >= 0
                 ? (int) (nanoseconds / NanosecondsPerDay)
                 : (int) ((nanoseconds + 1) / NanosecondsPerDay) - 1;
 
-            long nanoOfDay = (long) (nanoseconds - ((decimal) days) * NanosecondsPerDay);
+            long nanoOfDay = (long) (nanoseconds - ((BigInteger) days) * NanosecondsPerDay);
             return new Duration(days, nanoOfDay);
         }
 
@@ -913,13 +911,12 @@ namespace NodaTime
         }
 
         /// <summary>
-        /// Conversion to a <see cref="Decimal"/> number of nanoseconds, as a convenient built-in numeric
+        /// Conversion to a <see cref="BigInteger"/> number of nanoseconds, as a convenient built-in numeric
         /// type which can always represent values in the range we need.
         /// </summary>
-        /// <remarks>The value returned is always an integer.</remarks>
-        /// <returns>This duration as a number of nanoseconds, represented as a <c>Decimal</c>.</returns>
+        /// <returns>This duration as a number of nanoseconds, represented as a <c>BigInteger</c>.</returns>
         [Pure]
-        public decimal ToDecimalNanoseconds() => ((decimal)days) * NanosecondsPerDay + nanoOfDay;
+        public BigInteger ToBigIntegerNanoseconds() => ((BigInteger) days) * NanosecondsPerDay + nanoOfDay;
 
 #if !PCL
         #region Binary serialization
