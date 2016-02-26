@@ -17,13 +17,17 @@ namespace NodaTime.Test.TimeZones
     {
         // This test is effectively disabled on Mono as its time zone support is broken in the current
         // stable release - see https://github.com/nodatime/nodatime/issues/97
-        private static readonly ReadOnlyCollection<TimeZoneInfo> BclZonesOrEmptyOnMono = TestHelper.IsRunningOnMono
-            ? new List<TimeZoneInfo>().AsReadOnly() : TimeZoneInfo.GetSystemTimeZones();
+        private static readonly ReadOnlyCollection<TimeZoneInfo> BclZonesOrJustNullOnMono = TestHelper.IsRunningOnMono
+            ? new List<TimeZoneInfo> { null }.AsReadOnly() : TimeZoneInfo.GetSystemTimeZones();
 
         [Test]
-        [TestCaseSource(nameof(BclZonesOrEmptyOnMono))]
+        [TestCaseSource(nameof(BclZonesOrJustNullOnMono))]
         public void AllZoneTransitions(TimeZoneInfo windowsZone)
         {
+            if (windowsZone == null)
+            {
+                Assert.Ignore("Test skipped on Mono");
+            }
             var nodaZone = BclDateTimeZone.FromTimeZoneInfo(windowsZone);
 
             Instant instant = Instant.FromUtc(1800, 1, 1, 0, 0);
@@ -46,9 +50,13 @@ namespace NodaTime.Test.TimeZones
         /// slow test, mostly because TimeZoneInfo is slow.
         /// </summary>
         [Test]
-        [TestCaseSource(nameof(BclZonesOrEmptyOnMono))]
+        [TestCaseSource(nameof(BclZonesOrJustNullOnMono))]
         public void AllZonesEveryWeek(TimeZoneInfo windowsZone)
         {
+            if (windowsZone == null)
+            {
+                Assert.Ignore("Test skipped on Mono");
+            }
             ValidateZoneEveryWeek(windowsZone);
         }
 
@@ -69,9 +77,13 @@ namespace NodaTime.Test.TimeZones
         }
 
         [Test]
-        [TestCaseSource(nameof(BclZonesOrEmptyOnMono))]
+        [TestCaseSource(nameof(BclZonesOrJustNullOnMono))]
         public void AllZonesStartAndEndOfTime(TimeZoneInfo windowsZone)
         {
+            if (windowsZone == null)
+            {
+                Assert.Ignore("Test skipped on Mono");
+            }
             var nodaZone = BclDateTimeZone.FromTimeZoneInfo(windowsZone);
             var firstInterval = nodaZone.GetZoneInterval(Instant.MinValue);
             Assert.IsFalse(firstInterval.HasStart);
@@ -134,13 +146,13 @@ namespace NodaTime.Test.TimeZones
         [Test]
         public void Equality()
         {
-            if (BclZonesOrEmptyOnMono.Count < 2)
+            if (BclZonesOrJustNullOnMono.Count < 2)
             {
                 return;
             }
-            var firstEqual = BclDateTimeZone.FromTimeZoneInfo(BclZonesOrEmptyOnMono[0]);
-            var secondEqual = BclDateTimeZone.FromTimeZoneInfo(BclZonesOrEmptyOnMono[0]);
-            var unequal = BclDateTimeZone.FromTimeZoneInfo(BclZonesOrEmptyOnMono[1]);
+            var firstEqual = BclDateTimeZone.FromTimeZoneInfo(BclZonesOrJustNullOnMono[0]);
+            var secondEqual = BclDateTimeZone.FromTimeZoneInfo(BclZonesOrJustNullOnMono[0]);
+            var unequal = BclDateTimeZone.FromTimeZoneInfo(BclZonesOrJustNullOnMono[1]);
             Assert.AreEqual(firstEqual, secondEqual);
             Assert.AreEqual(firstEqual.GetHashCode(), secondEqual.GetHashCode());
             Assert.AreNotSame(firstEqual, secondEqual);
