@@ -1,5 +1,5 @@
 {
-  "version": "2.0.0-*",  
+  "version": "2.0.0-*",
 
   "compilationOptions": {
     "keyFile": "../../NodaTime Release.snk"
@@ -9,12 +9,12 @@
     "NodaTime": "",
     "SharpCompress": "0.11.1"
   },
-  
+
   "compile": [
     "*.cs",
     "../../lib/commandline/*.cs"
   ],
-  
+
   "frameworks": {
     "dnx451": {
       "frameworkAssemblies": {

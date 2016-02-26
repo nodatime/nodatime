@@ -1,6 +1,6 @@
 {
   "version": "2.0.0-*",
-  
+
   "compilationOptions": {
     "keyFile": "../../NodaTime Release.snk"
   },
@@ -8,17 +8,17 @@
   "configurations": {
     "Debug": {
       "compilationOptions": {
-        "define": ["DEBUG", "TRACE"]
+        "define": [ "DEBUG", "TRACE" ]
       }
     },
     "Release": {
       "compilationOptions": {
-        "define": ["RELEASE", "TRACE"],
+        "define": [ "RELEASE", "TRACE" ],
         "optimize": true
       }
     }
   },
-  
+
   "dependencies": {
     "BenchmarkDotNet": "0.9.1",
     "Microsoft.Bcl.Immutable": "1.0.34",

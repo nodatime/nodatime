@@ -4,21 +4,21 @@
   "compilationOptions": {
     "keyFile": "../../NodaTime Release.snk"
   },
-  
+
   "configurations": {
     "Debug": {
       "compilationOptions": {
-        "define": ["DEBUG", "TRACE"]
+        "define": [ "DEBUG", "TRACE" ]
       }
     },
     "Release": {
       "compilationOptions": {
-        "define": ["RELEASE", "TRACE"],
+        "define": [ "RELEASE", "TRACE" ],
         "optimize": true
       }
     }
   },
-  
+
   "commands": {
     "test": "run"
   },

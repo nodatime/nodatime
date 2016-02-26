@@ -1,12 +1,12 @@
 {
   "version": "2.0.0-alpha20160222",
-  "authors": ["Jon Skeet"],
-  "owners": ["Jon Skeet"],
+  "authors": [ "Jon Skeet" ],
+  "owners": [ "Jon Skeet" ],
   "licenseUrl": "http://www.apache.org/licenses/LICENSE-2.0",
   "projectUrl": "http://nodatime.org/",
   "summary": "Noda Time is an alternative date and time API for .NET. It helps you to think about your data more clearly, and express operations on that data more precisely.",
   "description": "Noda Time is a date and time API acting as an alternative to the built-in DateTime/DateTimeOffset etc types built into the .NET framework.",
-  "tags": ["date", "time", "timezone", "calendar", "nodatime"],
+  "tags": [ "date", "time", "timezone", "calendar", "nodatime" ],
   "requireLicenseAcceptance": false,
   "repository": {
     "url": "https://github.com/nodatime/nodatime.git"
@@ -19,20 +19,20 @@
   "configurations": {
     "Debug": {
       "compilationOptions": {
-        "define": ["DEBUG", "TRACE"]
+        "define": [ "DEBUG", "TRACE" ]
       }
     },
     "Release": {
       "compilationOptions": {
-        "define": ["RELEASE", "TRACE"],
+        "define": [ "RELEASE", "TRACE" ],
         "optimize": true
       }
     }
   },
-  
+
   "resource": [
-     "*.resx",
-     "TimeZones/Tzdb.nzd"
+    "*.resx",
+    "TimeZones/Tzdb.nzd"
   ],
 
   "frameworks": {
@@ -43,7 +43,7 @@
     },
     "dotnet5.4": {
       "compilationOptions": {
-        "define": ["PCL"]
+        "define": [ "PCL" ]
       },
       "dependencies": {
         "System.Linq": "4.0.0",
