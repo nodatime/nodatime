@@ -14,6 +14,7 @@ install:
 # run on Windows, given that it relies on Windows BCL TimeZoneInfo
 # to check mappings.
 script:
+  - dnvm list
   - dnu restore
   - dnu build src/NodaTime
   - dnu build src/NodaTime.Test
