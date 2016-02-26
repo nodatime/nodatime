@@ -12,7 +12,6 @@ namespace NodaTime.Test.TimeZones
     /// to have the original test which showed up the problem, as a small contribution
     /// to regression testing.
     /// </summary>
-    [TestFixture]
     public class MiscellaneousBugReports
     {
         [Test]

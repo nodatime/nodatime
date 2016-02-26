@@ -9,7 +9,6 @@ using NUnit.Framework;
 
 namespace NodaTime.Test.Fields
 {
-    [TestFixture]
     public class TimePeriodFieldTest
     {
         // Just a sample really.

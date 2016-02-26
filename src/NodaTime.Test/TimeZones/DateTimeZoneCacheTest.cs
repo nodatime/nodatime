@@ -14,7 +14,6 @@ namespace NodaTime.Test.TimeZones
     /// <summary>
     /// Tests for DateTimeZoneCache.
     /// </summary>
-    [TestFixture]
     public class DateTimeZoneCacheTest
     {
         [Test]

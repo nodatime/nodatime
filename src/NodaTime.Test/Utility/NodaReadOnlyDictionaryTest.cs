@@ -9,7 +9,6 @@ using NUnit.Framework;
 
 namespace NodaTime.Test.Utility
 {
-    [TestFixture]
     public class NodaReadOnlyDictionaryTest
     {
         [Test]

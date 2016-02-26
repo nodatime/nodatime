@@ -13,7 +13,6 @@ using Country = NodaTime.TimeZones.TzdbZone1970Location.Country;
 
 namespace NodaTime.Test.TimeZones
 {
-    [TestFixture]
     public class TzdbZone1970LocationTest
     {
         private static readonly Country SampleCountry =

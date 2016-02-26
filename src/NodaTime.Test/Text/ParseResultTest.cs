@@ -8,7 +8,6 @@ using NUnit.Framework;
 
 namespace NodaTime.Test.Text
 {
-    [TestFixture]
     public class ParseResultTest
     {
         private static readonly ParseResult<int> FailureResult = ParseResult<int>.ForInvalidValue(new ValueCursor("text"), "text");

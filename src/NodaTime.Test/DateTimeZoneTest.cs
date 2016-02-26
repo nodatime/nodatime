@@ -6,7 +6,6 @@ using NUnit.Framework;
 
 namespace NodaTime.Test
 {
-    [TestFixture]
     public partial class DateTimeZoneTest
     {
         // The current implementation caches every half hour, -12 to +15.

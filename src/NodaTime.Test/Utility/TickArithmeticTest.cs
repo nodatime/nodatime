@@ -6,7 +6,6 @@ using NUnit.Framework;
 
 namespace NodaTime.Test.Utility
 {
-    [TestFixture]
     public class TickArithmeticTest
     {
         [Test]

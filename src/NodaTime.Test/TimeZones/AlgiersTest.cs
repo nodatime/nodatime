@@ -13,7 +13,6 @@ namespace NodaTime.Test.TimeZones
     /// decided to stop using DST, it changed its standard offset to be what had previously
     /// been its DST offset, i.e. +1.)
     /// </summary>
-    [TestFixture]
     public class AlgiersTest
     {
         private static readonly DateTimeZone Algiers = DateTimeZoneProviders.Tzdb["Africa/Algiers"];

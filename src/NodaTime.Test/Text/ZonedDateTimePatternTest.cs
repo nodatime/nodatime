@@ -12,7 +12,6 @@ using NUnit.Framework;
 
 namespace NodaTime.Test.Text
 {
-    [TestFixture]
     public class ZonedDateTimePatternTest : PatternTestBase<ZonedDateTime>
     {
         // Three zones with a deliberately leading-substring-matching set of names.

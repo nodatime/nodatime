@@ -15,7 +15,6 @@ namespace NodaTime.Demo
     /// a link to the original question. They may have had nothing to do with .NET in the original
     /// form, but the code demonstrates some aspect of solving the problem in Noda Time.
     /// </summary>
-    [TestFixture]
     public class StackOverflowExamples
     {
         /// <summary>

@@ -15,7 +15,6 @@ namespace NodaTime.TzdbCompiler.Test.Tzdb
     /// <summary>
     /// Tests for TzdbZoneInfoParser.
     /// </summary>
-    [TestFixture]
     public class TzdbZoneInfoParserTest
     {
         private TzdbZoneInfoParser Parser { get; set; }

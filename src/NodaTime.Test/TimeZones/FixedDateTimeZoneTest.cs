@@ -8,7 +8,6 @@ using NUnit.Framework;
 
 namespace NodaTime.Test.TimeZones
 {
-    [TestFixture]
     public class FixedDateTimeZoneTest
     {
         private static readonly Offset ZoneOffset = Offset.FromHours(-8);

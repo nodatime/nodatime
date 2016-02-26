@@ -8,7 +8,6 @@ using NUnit.Framework;
 
 namespace NodaTime.Test.Calendars
 {
-    [TestFixture]
     public partial class IsoCalendarSystemTest
     {
         private static readonly DateTime UnixEpochDateTime = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);

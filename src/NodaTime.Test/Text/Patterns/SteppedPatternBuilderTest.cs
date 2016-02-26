@@ -13,7 +13,6 @@ namespace NodaTime.Test.Text.Patterns
     /// Tests for SteppedPatternBuilder, often using OffsetPatternParser as this is known
     /// to use SteppedPatternBuilder.
     /// </summary>
-    [TestFixture]
     public class SteppedPatternBuilderTest
     {
         private static readonly IPartialPattern<Offset> SimpleOffsetPattern =

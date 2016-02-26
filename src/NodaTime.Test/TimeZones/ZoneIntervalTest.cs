@@ -8,7 +8,6 @@ using NUnit.Framework;
 
 namespace NodaTime.Test.TimeZones
 {
-    [TestFixture]
     public class ZoneIntervalTest
     {
         private static readonly Instant SampleStart = Instant.FromUtc(2011, 6, 3, 10, 15);

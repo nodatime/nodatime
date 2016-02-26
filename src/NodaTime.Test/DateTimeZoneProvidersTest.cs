@@ -10,7 +10,6 @@ namespace NodaTime.Test
     /// <summary>
     /// Tests for DateTimeZoneProviders.
     /// </summary>
-    [TestFixture]
     public class DateTimeZoneProvidersTest
     {
         [Test]

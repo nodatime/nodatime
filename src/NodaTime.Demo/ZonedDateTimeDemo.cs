@@ -6,7 +6,6 @@ using NUnit.Framework;
 
 namespace NodaTime.Demo
 {
-    [TestFixture]
     internal class ZonedDateTimeDemo
     {
         private static readonly DateTimeZone Dublin = DateTimeZoneProviders.Tzdb["Europe/Dublin"];

@@ -13,7 +13,6 @@ namespace NodaTime.TzdbCompiler.Test.Tzdb
     /// Tests for DateTimeZoneBuilder; currently only scant coverage based on bugs which have
     /// previously been found.
     /// </summary>
-    [TestFixture]
     public class DateTimeZoneBuilderTest
     {
         [Test]

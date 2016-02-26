@@ -12,7 +12,6 @@ namespace NodaTime.Test.Text
 {
     public static partial class PeriodPatternTest
     {
-        [TestFixture]
         public class PeriodPatternNormalizingIsoTest : PatternTestBase<Period>
         {
             // Single null value to keep it from being "inconclusive"

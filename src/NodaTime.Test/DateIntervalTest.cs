@@ -7,7 +7,6 @@ using System;
 
 namespace NodaTime.Test
 {
-    [TestFixture]
     public class DateIntervalTest
     {
         private static readonly CalendarSystem JulianCalendar = CalendarSystem.Julian;

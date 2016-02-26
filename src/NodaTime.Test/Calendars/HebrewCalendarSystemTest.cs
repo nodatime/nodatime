@@ -15,7 +15,6 @@ namespace NodaTime.Test.Calendars
     /// See http://blog.nodatime.org/2014/06/hebrew-calendar-cheat-sheet.html
     /// for sample year information.
     /// </summary>
-    [TestFixture]
     public class HebrewCalendarSystemTest
     {
         [Test]

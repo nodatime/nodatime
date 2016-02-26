@@ -12,7 +12,6 @@ using NodaTime.TimeZones;
 
 namespace NodaTime.Test.TimeZones
 {
-    [TestFixture]
     public class BclDateTimeZoneTest
     {
         // This test is effectively disabled on Mono as its time zone support is broken in the current

@@ -16,7 +16,6 @@ namespace NodaTime.Test
     /// <summary>
     /// Tests for <see cref="LocalDateTime" />.
     /// </summary>
-    [TestFixture]
     public partial class LocalDateTimeTest
     {
         private static readonly DateTimeZone Pacific = DateTimeZoneProviders.Tzdb["America/Los_Angeles"];

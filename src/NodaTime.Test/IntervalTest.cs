@@ -8,7 +8,6 @@ using NUnit.Framework;
 
 namespace NodaTime.Test
 {
-    [TestFixture]
     public class IntervalTest
     {
         private static readonly Instant SampleStart = Instant.FromUnixTimeTicks(-300);

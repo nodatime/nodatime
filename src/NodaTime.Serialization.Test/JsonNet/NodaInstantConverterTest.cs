@@ -10,7 +10,6 @@ using NUnit.Framework;
 
 namespace NodaTime.Serialization.Test.JsonNet
 {
-    [TestFixture]
     public class NodaInstantConverterTest
     {
         private readonly JsonSerializerSettings settings = new JsonSerializerSettings

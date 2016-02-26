@@ -14,7 +14,6 @@ namespace NodaTime.Test
     /// <summary>
     /// Tests for OffsetDateTime.
     /// </summary>
-    [TestFixture]
     public class OffsetDateTimeTest
     {
         [Test]

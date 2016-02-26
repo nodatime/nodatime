@@ -20,7 +20,6 @@ namespace NodaTime.Test
     /// functionality is usually through ZonedDateTime. This makes testing easier,
     /// as well as serving as more useful documentation.
     /// </summary>
-    [TestFixture]
     public class ZonedDateTimeTest
     {
         /// <summary>

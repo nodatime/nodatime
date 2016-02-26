@@ -10,7 +10,6 @@ namespace NodaTime.Test
     /// Tests for code in DateTimeZone and code which will be moving out
     /// of DateTimeZones into DateTimeZone over time.
     /// </summary>
-    [TestFixture]
     public partial class DateTimeZoneTest
     {
         [Test]

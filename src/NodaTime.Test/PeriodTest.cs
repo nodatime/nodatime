@@ -9,7 +9,6 @@ using NUnit.Framework;
 
 namespace NodaTime.Test
 {
-    [TestFixture]
     public class PeriodTest
     {
         // June 19th 2010, 2:30:15am

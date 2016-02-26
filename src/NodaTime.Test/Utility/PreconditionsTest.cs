@@ -7,7 +7,6 @@ using NUnit.Framework;
 
 namespace NodaTime.Test.Utility
 {
-    [TestFixture]
     public class PreconditionsTest
     {
         // It's really not worth inventing parameters for these...

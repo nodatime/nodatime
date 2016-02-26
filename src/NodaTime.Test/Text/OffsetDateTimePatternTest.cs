@@ -10,7 +10,6 @@ using NUnit.Framework;
 
 namespace NodaTime.Test.Text
 {
-    [TestFixture]
     public class OffsetDateTimePatternTest : PatternTestBase<OffsetDateTime>
     {
         // The standard example date/time used in all the MSDN samples, which means we can just cut and paste

@@ -10,7 +10,6 @@ using NUnit.Framework;
 
 namespace NodaTime.Test.TimeZones
 {
-    [TestFixture]
     public class ZoneRecurrenceTest
     {
         [Test]

@@ -9,7 +9,6 @@ using System.Linq;
 
 namespace NodaTime.TzdbCompiler.Test.Tzdb
 {
-    [TestFixture]
     public class ZoneRuleTest
     {
         [Test]

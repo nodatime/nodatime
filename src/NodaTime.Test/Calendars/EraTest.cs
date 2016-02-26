@@ -12,7 +12,6 @@ using System.Reflection;
 
 namespace NodaTime.Test.Calendars
 {
-    [TestFixture]
     public class EraTest
     {
         private static readonly IEnumerable<Era> Eras = typeof(Era).GetProperties(BindingFlags.Public | BindingFlags.Static)

@@ -8,7 +8,6 @@ using NUnit.Framework;
 
 namespace NodaTime.Test.Utility
 {
-    [TestFixture]
     public class BclConversionsTest
     {
         // This tests both directions for all valid values.
