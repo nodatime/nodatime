@@ -9,7 +9,6 @@ namespace NodaTime.Test.Calendars
     /// <summary>
     /// Tests for the Julian calendar system via JulianYearMonthDayCalculator.
     /// </summary>
-    [TestFixture]
     public partial class JulianCalendarSystemTest
     {
         private static readonly CalendarSystem Julian = CalendarSystem.Julian;

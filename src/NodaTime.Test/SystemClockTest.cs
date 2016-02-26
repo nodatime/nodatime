@@ -7,7 +7,6 @@ using NUnit.Framework;
 
 namespace NodaTime.Test
 {
-    [TestFixture]
     public class SystemClockTest
     {
         public void InstanceNow()

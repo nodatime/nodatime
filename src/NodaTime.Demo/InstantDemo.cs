@@ -6,7 +6,6 @@ using NUnit.Framework;
 
 namespace NodaTime.Demo
 {
-    [TestFixture]
     public class InstantDemo
     {
         [Test]

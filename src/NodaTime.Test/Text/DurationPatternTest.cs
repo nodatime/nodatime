@@ -10,7 +10,6 @@ using NUnit.Framework;
 
 namespace NodaTime.Test.Text
 {
-    [TestFixture]
     public class DurationPatternTest : PatternTestBase<Duration>
     {
         /// <summary>

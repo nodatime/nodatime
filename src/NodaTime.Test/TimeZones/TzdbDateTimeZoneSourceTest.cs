@@ -12,7 +12,6 @@ using NUnit.Framework;
 
 namespace NodaTime.Test.TimeZones
 {
-    [TestFixture]
     public class TzdbDateTimeZoneSourceTest
     {
         private static readonly List<TimeZoneInfo> SystemTimeZones = TimeZoneInfo.GetSystemTimeZones().ToList();

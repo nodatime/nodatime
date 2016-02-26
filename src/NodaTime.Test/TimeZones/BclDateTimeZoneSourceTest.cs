@@ -11,7 +11,6 @@ using NodaTime.TimeZones;
 
 namespace NodaTime.Test.TimeZones
 {
-    [TestFixture]
     public class BclDateTimeZoneSourceTest
     {
         [Test]

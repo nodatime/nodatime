@@ -10,7 +10,6 @@ using System.Linq;
 
 namespace NodaTime.TzdbCompiler.Test.Tzdb
 {
-    [TestFixture]
     public class PclSupportTest
     {
         private static readonly Dictionary<string, string> DetectedMapping =

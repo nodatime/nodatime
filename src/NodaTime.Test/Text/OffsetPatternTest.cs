@@ -11,7 +11,6 @@ using System.Globalization;
 
 namespace NodaTime.Test.Text
 {
-    [TestFixture]
     public class OffsetPatternTest : PatternTestBase<Offset>
     {
         /// <summary>

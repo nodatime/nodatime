@@ -10,7 +10,6 @@ using NUnit.Framework;
 
 namespace NodaTime.Test
 {
-    [TestFixture]
     public partial class OffsetTest
     {
         private static readonly Offset ThreeHours = TestObjects.CreatePositiveOffset(3, 0, 0);

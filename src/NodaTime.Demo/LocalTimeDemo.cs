@@ -7,7 +7,6 @@ using NUnit.Framework;
 
 namespace NodaTime.Demo
 {
-    [TestFixture]
     public class LocalTimeDemo
     {
         [Test]

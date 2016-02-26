@@ -12,7 +12,6 @@ using NUnit.Framework;
 
 namespace NodaTime.Test.Text
 {
-    [TestFixture]
     public class LocalDatePatternTest : PatternTestBase<LocalDate>
     {
         private static readonly LocalDate SampleLocalDate = new LocalDate(1976, 6, 19);

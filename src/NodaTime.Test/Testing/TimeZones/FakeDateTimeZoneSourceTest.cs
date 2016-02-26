@@ -8,7 +8,6 @@ using NUnit.Framework;
 
 namespace NodaTime.Test.Testing.TimeZones
 {
-    [TestFixture]
     public class FakeDateTimeZoneSourceTest
     {
         // We don't care about the details of the time zones, just the IDs

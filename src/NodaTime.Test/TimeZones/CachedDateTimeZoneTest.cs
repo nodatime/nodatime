@@ -8,7 +8,6 @@ using NUnit.Framework;
 namespace NodaTime.Test.TimeZones
 {
     // Note that this tests CachingZoneIntervalMap as much as CachedDateTimeZone...
-    [TestFixture]
     public class CachedDateTimeZoneTest
     {
         #region Setup/Teardown

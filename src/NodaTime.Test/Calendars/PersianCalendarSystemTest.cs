@@ -11,7 +11,6 @@ namespace NodaTime.Test.Calendars
     /// <summary>
     /// Tests for PersianYearMonthDayCalculator via the Persian CalendarSystem.
     /// </summary>
-    [TestFixture]
     public class PersianCalendarSystemTest
     {
         [Test, Timeout(300000)] // Can take a long time under NCrunch.

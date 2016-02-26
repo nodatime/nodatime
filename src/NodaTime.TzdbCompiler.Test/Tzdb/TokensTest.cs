@@ -12,7 +12,6 @@ namespace NodaTime.TzdbCompiler.Test.Tzdb
     /// <summary>
     /// This is a test class for containing all of the ParserHelper unit tests.
     ///</summary>
-    [TestFixture]
     public class TokensTest
     {
         [Test]

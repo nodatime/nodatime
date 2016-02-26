@@ -8,7 +8,6 @@ using static NodaTime.Text.Patterns.PatternFields;
 
 namespace NodaTime.Test.Text
 {
-    [TestFixture]
     public class PatternFieldsExtensionsTest
     {
         [Test]

@@ -10,7 +10,6 @@ using NUnit.Framework;
 
 namespace NodaTime.Test.TimeZones
 {
-    [TestFixture]
     public class ZoneEqualityComparerTest
     {
         // Sample instants for use in tests. They're on January 1st 2000...2009, midnight UTC.

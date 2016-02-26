@@ -14,7 +14,6 @@ namespace NodaTime.Test.Text
         /// <summary>
         /// Tests for RoundtripPatternImpl.
         /// </summary>
-        [TestFixture]
         public class PeriodPatternRoundtripTest : PatternTestBase<Period>
         {
             internal static readonly Data[] InvalidPatternData = { null };

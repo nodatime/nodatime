@@ -9,7 +9,6 @@ using System.Security;
 
 namespace NodaTime.Test.Annotations
 {
-    [TestFixture]
     public class SecurityTest
     {
         [Test]

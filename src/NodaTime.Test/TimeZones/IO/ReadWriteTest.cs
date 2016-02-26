@@ -9,7 +9,6 @@ using NUnit.Framework;
 
 namespace NodaTime.Test.TimeZones.IO
 {
-    [TestFixture]
     public class ReadWriteTest
     {        
         [Test]

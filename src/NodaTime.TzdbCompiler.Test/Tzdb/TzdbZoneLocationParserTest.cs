@@ -10,7 +10,6 @@ using NodaTime.TimeZones;
 
 namespace NodaTime.TzdbCompiler.Test.Tzdb
 {
-    [TestFixture]
     public class TzdbZoneLocationParserTest
     {
         private static readonly Dictionary<string, string> SampleCountryMapping = new Dictionary<string, string>

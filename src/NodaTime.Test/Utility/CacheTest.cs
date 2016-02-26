@@ -8,7 +8,6 @@ using NUnit.Framework;
 
 namespace NodaTime.Test.Utility
 {
-    [TestFixture]
     public class CacheTest
     {
         private int factoryCallCount;

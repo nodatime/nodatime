@@ -9,7 +9,6 @@ using NUnit.Framework;
 
 namespace NodaTime.Test.Calendars
 {
-    [TestFixture]
     public class UmAlQuraYearMonthDayCalculatorTest
     {
         private static readonly Calendar BclCalendar = GetBclCalendar();

@@ -7,7 +7,6 @@ using NodaTime.TimeZones;
 
 namespace NodaTime.Demo
 {
-    [TestFixture]
     public class TimeZoneDemo
     {
         [Test]

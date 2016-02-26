@@ -8,7 +8,6 @@ using NUnit.Framework;
 
 namespace NodaTime.Test.Calendars
 {
-    [TestFixture]
     public class HebrewScripturalCalculatorTest
     {
         [Test]

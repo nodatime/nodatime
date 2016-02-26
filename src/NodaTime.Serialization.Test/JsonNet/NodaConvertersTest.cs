@@ -15,7 +15,6 @@ namespace NodaTime.Serialization.Test.JsonNet
     /// <summary>
     /// Tests for the converters exposed in NodaConverters.
     /// </summary>
-    [TestFixture]
     public class NodaConvertersTest
     {
         [Test]

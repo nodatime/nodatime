@@ -9,7 +9,6 @@ using System;
 
 namespace NodaTime.TzdbCompiler.Test.Tzdb
 {
-    [TestFixture]
     public class ZoneTransitionTest
     {
         [Test]

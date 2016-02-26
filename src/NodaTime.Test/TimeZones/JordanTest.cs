@@ -11,7 +11,6 @@ namespace NodaTime.Test.TimeZones
     /// This is denoted in the zoneinfo database using lastThu 24:00, which was invalid
     /// in our parser.
     /// </summary>
-    [TestFixture]
     public class JordanTest
     {
         private static readonly DateTimeZone Jordan = DateTimeZoneProviders.Tzdb["Asia/Amman"];

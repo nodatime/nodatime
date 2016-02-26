@@ -6,7 +6,6 @@ using NUnit.Framework;
 
 namespace NodaTime.Test
 {
-    [TestFixture]
     public class YearMonthDayCalendarTest
     {
         [Test]

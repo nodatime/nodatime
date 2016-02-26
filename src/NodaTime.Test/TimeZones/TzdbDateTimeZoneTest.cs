@@ -11,7 +11,6 @@ namespace NodaTime.Test.TimeZones
     /// <summary>
     /// Tests for all TZDB time zones.
     /// </summary>
-    [TestFixture]
     public class TzdbDateTimeZoneTest
     {
         private static readonly IEnumerable<DateTimeZone> AllTzdbZones = DateTimeZoneProviders.Tzdb.GetAllZones();

@@ -10,7 +10,6 @@ namespace NodaTime.Test.Testing
     /// <summary>
     /// Tests for the FakeClock class in the Testing assembly.
     /// </summary>
-    [TestFixture]
     public class FakeClockTest
     {
         [Test]

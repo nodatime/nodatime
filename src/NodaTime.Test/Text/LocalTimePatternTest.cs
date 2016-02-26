@@ -13,7 +13,6 @@ using NUnit.Framework;
 
 namespace NodaTime.Test.Text
 {
-    [TestFixture]
     public partial class LocalTimePatternTest : PatternTestBase<LocalTime>
     {
         private static readonly DateTime SampleDateTime = new DateTime(2000, 1, 1, 21, 13, 34, 123, DateTimeKind.Unspecified).AddTicks(4567);

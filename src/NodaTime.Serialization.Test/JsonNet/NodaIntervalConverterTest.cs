@@ -11,7 +11,6 @@ using NUnit.Framework;
 
 namespace NodaTime.Serialization.Test.JsonNet
 {
-    [TestFixture]
     public class NodaIntervalConverterTest
     {
         private readonly JsonSerializerSettings settings = new JsonSerializerSettings

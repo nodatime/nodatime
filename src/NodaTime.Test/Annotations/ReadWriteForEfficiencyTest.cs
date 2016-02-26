@@ -10,7 +10,6 @@ using System.Reflection;
 
 namespace NodaTime.Test.Annotations
 {
-    [TestFixture]
     public class ReadWriteForEfficiencyTest
     {
         private static IEnumerable<FieldInfo> GetFieldsWithAttribute()

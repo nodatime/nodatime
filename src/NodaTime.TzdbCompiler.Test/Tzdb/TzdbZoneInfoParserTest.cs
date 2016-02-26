@@ -15,17 +15,8 @@ namespace NodaTime.TzdbCompiler.Test.Tzdb
     /// <summary>
     /// Tests for TzdbZoneInfoParser.
     /// </summary>
-    [TestFixture]
     public class TzdbZoneInfoParserTest
     {
-        private TzdbZoneInfoParser Parser { get; set; }
-
-        [TestFixtureSetUp]
-        public void Setup()
-        {
-            Parser = new TzdbZoneInfoParser();
-        }
-
         private static Offset ToOffset(int hours, int minutes)
         {
             return Offset.FromHoursAndMinutes(hours, minutes);
@@ -38,37 +29,39 @@ namespace NodaTime.TzdbCompiler.Test.Tzdb
             Assert.AreEqual(links, database.Aliases.Count, "Links");
         }
 
-        /* ############################################################################### */
-
         [Test]
         public void ParseDateTimeOfYear_emptyString()
         {
+            var parser = new TzdbZoneInfoParser();
             var tokens = Tokens.Tokenize(string.Empty);
-            Assert.Throws(typeof(InvalidDataException), () => Parser.ParseDateTimeOfYear(tokens, true));
+            Assert.Throws(typeof(InvalidDataException), () => parser.ParseDateTimeOfYear(tokens, true));
         }
 
         [Test]
         public void ParseDateTimeOfYear_missingAt_invalidForRule()
         {
+            var parser = new TzdbZoneInfoParser();
             const string text = "Mar lastSun";
             var tokens = Tokens.Tokenize(text);
-            Assert.Throws(typeof(InvalidDataException), () => Parser.ParseDateTimeOfYear(tokens, true));
+            Assert.Throws(typeof(InvalidDataException), () => parser.ParseDateTimeOfYear(tokens, true));
         }
 
         [Test]
         public void ParseDateTimeOfYear_missingOn_invalidForRule()
         {
+            var parser = new TzdbZoneInfoParser();
             const string text = "Mar";
             var tokens = Tokens.Tokenize(text);
-            Assert.Throws(typeof(InvalidDataException), () => Parser.ParseDateTimeOfYear(tokens, true));
+            Assert.Throws(typeof(InvalidDataException), () => parser.ParseDateTimeOfYear(tokens, true));
         }
 
         [Test]
         public void ParseDateTimeOfYear_missingAt_validForZone()
         {
+            var parser = new TzdbZoneInfoParser();
             const string text = "Mar lastSun";
             var tokens = Tokens.Tokenize(text);
-            var actual = Parser.ParseDateTimeOfYear(tokens, false);
+            var actual = parser.ParseDateTimeOfYear(tokens, false);
             var expected = new ZoneYearOffset(TransitionMode.Wall, 3, -1, (int) IsoDayOfWeek.Sunday, false, LocalTime.Midnight);
             Assert.AreEqual(expected, actual);
         }
@@ -76,9 +69,10 @@ namespace NodaTime.TzdbCompiler.Test.Tzdb
         [Test]
         public void ParseDateTimeOfYear_missingOn_validForZone()
         {
+            var parser = new TzdbZoneInfoParser();
             const string text = "Mar";
             var tokens = Tokens.Tokenize(text);
-            var actual = Parser.ParseDateTimeOfYear(tokens, false);
+            var actual = parser.ParseDateTimeOfYear(tokens, false);
             var expected = new ZoneYearOffset(TransitionMode.Wall, 3, 1, 0, false, LocalTime.Midnight);
             Assert.AreEqual(expected, actual);
         }
@@ -86,9 +80,10 @@ namespace NodaTime.TzdbCompiler.Test.Tzdb
         [Test]
         public void ParseDateTimeOfYear_onAfter()
         {
+            var parser = new TzdbZoneInfoParser();
             const string text = "Mar Tue>=14 2:00";
             var tokens = Tokens.Tokenize(text);
-            var actual = Parser.ParseDateTimeOfYear(tokens, true);
+            var actual = parser.ParseDateTimeOfYear(tokens, true);
             var expected = new ZoneYearOffset(TransitionMode.Wall, 3, 14, (int)IsoDayOfWeek.Tuesday, true, new LocalTime(2, 0));
             Assert.AreEqual(expected, actual);
         }
@@ -96,9 +91,10 @@ namespace NodaTime.TzdbCompiler.Test.Tzdb
         [Test]
         public void ParseDateTimeOfYear_onBefore()
         {
+            var parser = new TzdbZoneInfoParser();
             const string text = "Mar Tue<=14 2:00";
             var tokens = Tokens.Tokenize(text);
-            var actual = Parser.ParseDateTimeOfYear(tokens, true);
+            var actual = parser.ParseDateTimeOfYear(tokens, true);
             var expected = new ZoneYearOffset(TransitionMode.Wall, 3, 14, (int)IsoDayOfWeek.Tuesday, false, new LocalTime(2, 0));
             Assert.AreEqual(expected, actual);
         }
@@ -106,14 +102,13 @@ namespace NodaTime.TzdbCompiler.Test.Tzdb
         [Test]
         public void ParseDateTimeOfYear_onLast()
         {
+            var parser = new TzdbZoneInfoParser();
             const string text = "Mar lastTue 2:00";
             var tokens = Tokens.Tokenize(text);
-            var actual = Parser.ParseDateTimeOfYear(tokens, true);
+            var actual = parser.ParseDateTimeOfYear(tokens, true);
             var expected = new ZoneYearOffset(TransitionMode.Wall, 3, -1, (int)IsoDayOfWeek.Tuesday, false, new LocalTime(2, 0));
             Assert.AreEqual(expected, actual);
         }
-
-        /* ############################################################################### */
 
         [Test]
         public void ParseLine_comment()
@@ -185,20 +180,20 @@ namespace NodaTime.TzdbCompiler.Test.Tzdb
             Assert.AreEqual(2, database.Zones["PST"].Count);
         }
 
-        /* ############################################################################### */
-
         [Test]
         public void ParseLink_emptyString_exception()
         {
+            var parser = new TzdbZoneInfoParser();
             var tokens = Tokens.Tokenize(string.Empty);
-            Assert.Throws(typeof(InvalidDataException), () => Parser.ParseLink(tokens));
+            Assert.Throws(typeof(InvalidDataException), () => parser.ParseLink(tokens));
         }
 
         [Test]
         public void ParseLink_simple()
         {
+            var parser = new TzdbZoneInfoParser();
             var tokens = Tokens.Tokenize("from to");
-            var actual = Parser.ParseLink(tokens);
+            var actual = parser.ParseLink(tokens);
             var expected = Tuple.Create("from", "to");
             Assert.AreEqual(expected, actual);
         }
@@ -206,8 +201,9 @@ namespace NodaTime.TzdbCompiler.Test.Tzdb
         [Test]
         public void ParseLink_tooFewWords_exception()
         {
+            var parser = new TzdbZoneInfoParser();
             var tokens = Tokens.Tokenize("from");
-            Assert.Throws<InvalidDataException>(() => Parser.ParseLink(tokens));
+            Assert.Throws<InvalidDataException>(() => parser.ParseLink(tokens));
         }
 
         [Test]
@@ -246,87 +242,96 @@ namespace NodaTime.TzdbCompiler.Test.Tzdb
         [Test]
         public void ParseZone_badOffset_exception()
         {
+            var parser = new TzdbZoneInfoParser();
             var tokens = Tokens.Tokenize("asd US P%sT 1969 Mar 23 14:53:27.856s");
-            Assert.Throws(typeof(FormatException), () => Parser.ParseZone(string.Empty, tokens));
+            Assert.Throws(typeof(FormatException), () => parser.ParseZone(string.Empty, tokens));
         }
-
-        /* ############################################################################### */
 
         [Test]
         public void ParseZone_emptyString_exception()
         {
+            var parser = new TzdbZoneInfoParser();
             var tokens = Tokens.Tokenize(string.Empty);
-            Assert.Throws(typeof(InvalidDataException), () => Parser.ParseZone(string.Empty, tokens));
+            Assert.Throws(typeof(InvalidDataException), () => parser.ParseZone(string.Empty, tokens));
         }
 
         [Test]
         public void ParseZone_optionalRule()
         {
+            var parser = new TzdbZoneInfoParser();
             var tokens = Tokens.Tokenize("2:00 - P%sT");
             var expected = new ZoneLine(string.Empty, ToOffset(2, 0), null, "P%sT", int.MaxValue, ZoneYearOffset.StartOfYear);
-            Assert.AreEqual(expected, Parser.ParseZone(string.Empty, tokens));
+            Assert.AreEqual(expected, parser.ParseZone(string.Empty, tokens));
         }
 
         [Test]
         public void ParseZone_simple()
         {
+            var parser = new TzdbZoneInfoParser();
             var tokens = Tokens.Tokenize("2:00 US P%sT");
             var expected = new ZoneLine(string.Empty, ToOffset(2, 0), "US", "P%sT", int.MaxValue, ZoneYearOffset.StartOfYear);
-            Assert.AreEqual(expected, Parser.ParseZone(string.Empty, tokens));
+            Assert.AreEqual(expected, parser.ParseZone(string.Empty, tokens));
         }
 
         [Test]
         public void ParseZone_tooFewWords1_exception()
         {
+            var parser = new TzdbZoneInfoParser();
             var tokens = Tokens.Tokenize("2:00 US");
-            Assert.Throws(typeof(InvalidDataException), () => Parser.ParseZone(string.Empty, tokens));
+            Assert.Throws(typeof(InvalidDataException), () => parser.ParseZone(string.Empty, tokens));
         }
 
         [Test]
         public void ParseZone_tooFewWords2_exception()
         {
+            var parser = new TzdbZoneInfoParser();
             var tokens = Tokens.Tokenize("2:00");
-            Assert.Throws(typeof(InvalidDataException), () => Parser.ParseZone(string.Empty, tokens));
+            Assert.Throws(typeof(InvalidDataException), () => parser.ParseZone(string.Empty, tokens));
         }
 
         [Test]
         public void ParseZone_withYear()
         {
+            var parser = new TzdbZoneInfoParser();
             var tokens = Tokens.Tokenize("2:00 US P%sT 1969");
             var expected = new ZoneLine(string.Empty, ToOffset(2, 0), "US", "P%sT", 1969, new ZoneYearOffset(TransitionMode.Wall, 1, 1, 0, false, LocalTime.Midnight));
-            Assert.AreEqual(expected, Parser.ParseZone(string.Empty, tokens));
+            Assert.AreEqual(expected, parser.ParseZone(string.Empty, tokens));
         }
 
         [Test]
         public void ParseZone_withYearMonthDay()
         {
+            var parser = new TzdbZoneInfoParser();
             var tokens = Tokens.Tokenize("2:00 US P%sT 1969 Mar 23");
             var expected = new ZoneLine(string.Empty, ToOffset(2, 0), "US", "P%sT", 1969, new ZoneYearOffset(TransitionMode.Wall, 3, 23, 0, false, LocalTime.Midnight));
-            Assert.AreEqual(expected, Parser.ParseZone(string.Empty, tokens));
+            Assert.AreEqual(expected, parser.ParseZone(string.Empty, tokens));
         }
 
         [Test]
         public void ParseZone_withYearMonthDayTime()
         {
+            var parser = new TzdbZoneInfoParser();
             var tokens = Tokens.Tokenize("2:00 US P%sT 1969 Mar 23 14:53:27.856");
             var expected = new ZoneLine(string.Empty, ToOffset(2, 0), "US", "P%sT", 1969, new ZoneYearOffset(TransitionMode.Wall, 3, 23, 0, false, new LocalTime(14, 53, 27, 856)));
-            Assert.AreEqual(expected, Parser.ParseZone(string.Empty, tokens));
+            Assert.AreEqual(expected, parser.ParseZone(string.Empty, tokens));
         }
 
         [Test]
         public void ParseZone_withYearMonthDayTimeZone()
         {
+            var parser = new TzdbZoneInfoParser();
             var tokens = Tokens.Tokenize("2:00 US P%sT 1969 Mar 23 14:53:27.856s");
             var expected = new ZoneLine(string.Empty, ToOffset(2, 0), "US", "P%sT", 1969, new ZoneYearOffset(TransitionMode.Standard, 3, 23, 0, false, new LocalTime(14, 53, 27, 856)));
-            Assert.AreEqual(expected, Parser.ParseZone(string.Empty, tokens));
+            Assert.AreEqual(expected, parser.ParseZone(string.Empty, tokens));
         }
 
         [Test]
         public void ParseZone_withDayOfWeek()
         {
+            var parser = new TzdbZoneInfoParser();
             var tokens = Tokens.Tokenize("2:00 US P%sT 1969 Mar lastSun");
             var expected = new ZoneLine(string.Empty, ToOffset(2, 0), "US", "P%sT", 1969, new ZoneYearOffset(TransitionMode.Wall, 3, -1, (int) IsoDayOfWeek.Sunday, false, LocalTime.Midnight));
-            Assert.AreEqual(expected, Parser.ParseZone(string.Empty, tokens));
+            Assert.AreEqual(expected, parser.ParseZone(string.Empty, tokens));
         }
 
         [Test]
@@ -407,14 +412,13 @@ namespace NodaTime.TzdbCompiler.Test.Tzdb
             Assert.AreEqual(2, database.Zones["EST"].Count);
         }
 
-        /* ############################################################################### */
-
         [Test]
         public void Parse_2400_FromDay_AtLeast_Sunday()
         {
+            var parser = new TzdbZoneInfoParser();
             const string text = "Apr Sun>=1  24:00";
             var tokens = Tokens.Tokenize(text);
-            var rule = Parser.ParseDateTimeOfYear(tokens, true);
+            var rule = parser.ParseDateTimeOfYear(tokens, true);
             var actual = rule.GetOccurrenceForYear(2012);
             var expected = new LocalDateTime(2012, 4, 2, 0, 0).ToLocalInstant();
             Assert.AreEqual(expected, actual);
@@ -423,9 +427,10 @@ namespace NodaTime.TzdbCompiler.Test.Tzdb
         [Test]
         public void Parse_2400_FromDay_AtMost_Sunday()
         {
+            var parser = new TzdbZoneInfoParser();
             const string text = "Apr Sun<=7  24:00";
             var tokens = Tokens.Tokenize(text);
-            var rule = Parser.ParseDateTimeOfYear(tokens, true);
+            var rule = parser.ParseDateTimeOfYear(tokens, true);
             var actual = rule.GetOccurrenceForYear(2012);
             var expected = new LocalDateTime(2012, 4, 2, 0, 0).ToLocalInstant();
             Assert.AreEqual(expected, actual);
@@ -434,9 +439,10 @@ namespace NodaTime.TzdbCompiler.Test.Tzdb
         [Test]
         public void Parse_2400_FromDay_AtLeast_Wednesday()
         {
+            var parser = new TzdbZoneInfoParser();
             const string text = "Apr Wed>=1  24:00";
             var tokens = Tokens.Tokenize(text);
-            var rule = Parser.ParseDateTimeOfYear(tokens, true);
+            var rule = parser.ParseDateTimeOfYear(tokens, true);
             var actual = rule.GetOccurrenceForYear(2012);
             var expected = new LocalDateTime(2012, 4, 5, 0, 0).ToLocalInstant();
             Assert.AreEqual(expected, actual);
@@ -445,9 +451,10 @@ namespace NodaTime.TzdbCompiler.Test.Tzdb
         [Test]
         public void Parse_2400_FromDay_AtMost_Wednesday()
         {
+            var parser = new TzdbZoneInfoParser();
             const string text = "Apr Wed<=14  24:00";
             var tokens = Tokens.Tokenize(text);
-            var rule = Parser.ParseDateTimeOfYear(tokens, true);
+            var rule = parser.ParseDateTimeOfYear(tokens, true);
             var actual = rule.GetOccurrenceForYear(2012);
             var expected = new LocalDateTime(2012, 4, 12, 0, 0).ToLocalInstant();
             Assert.AreEqual(expected, actual);
@@ -456,9 +463,10 @@ namespace NodaTime.TzdbCompiler.Test.Tzdb
         [Test]
         public void Parse_2400_FromDay()
         {
+            var parser = new TzdbZoneInfoParser();
             const string text = "Apr Sun>=1  24:00";
             var tokens = Tokens.Tokenize(text);
-            var actual = Parser.ParseDateTimeOfYear(tokens, true);
+            var actual = parser.ParseDateTimeOfYear(tokens, true);
             var expected = new ZoneYearOffset(TransitionMode.Wall, 4, 1, (int)IsoDayOfWeek.Sunday, true, LocalTime.Midnight, true);
             Assert.AreEqual(expected, actual);
         }
@@ -466,14 +474,13 @@ namespace NodaTime.TzdbCompiler.Test.Tzdb
         [Test]
         public void Parse_2400_Last()
         {
+            var parser = new TzdbZoneInfoParser();
             const string text = "Mar lastSun 24:00";
             var tokens = Tokens.Tokenize(text);
-            var actual = Parser.ParseDateTimeOfYear(tokens, true);
+            var actual = parser.ParseDateTimeOfYear(tokens, true);
             var expected = new ZoneYearOffset(TransitionMode.Wall, 3, -1, (int)IsoDayOfWeek.Sunday, false, LocalTime.Midnight, true);
             Assert.AreEqual(expected, actual);
         }
-
-        /* ############################################################################### */
 
         [Test]
         public void Parse_Fixed_Eastern()
@@ -510,8 +517,9 @@ namespace NodaTime.TzdbCompiler.Test.Tzdb
         /// </summary>
         private TzdbDatabase ParseText(string line)
         {
+            var parser = new TzdbZoneInfoParser();
             var database = new TzdbDatabase("version");
-            Parser.Parse(new StringReader(line), database);
+            parser.Parse(new StringReader(line), database);
             return database;
         }
     }

@@ -15,7 +15,6 @@ namespace NodaTime.Test.TimeZones
     /// 2010 fall transition: October 31st
     /// 2011 spring transition: March 27th
     /// </summary>
-    [TestFixture]
     public class ParisTest
     {
         // Make sure we deal with the uncached time zone

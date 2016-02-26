@@ -9,7 +9,6 @@ using NUnit.Framework;
 
 namespace NodaTime.Test.TimeZones
 {
-    [TestFixture]
     public class PrecalculatedDateTimeZoneTest
     {
         private static readonly ZoneInterval FirstInterval =

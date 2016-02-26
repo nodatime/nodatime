@@ -8,7 +8,6 @@ using NUnit.Framework;
 
 namespace NodaTime.Test
 {
-    [TestFixture]
     public partial class InstantTest
     {
         [Test, Category("Formatting"), Category("Format")]

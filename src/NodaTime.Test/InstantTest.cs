@@ -9,7 +9,6 @@ using NUnit.Framework;
 
 namespace NodaTime.Test
 {
-    [TestFixture]
     public partial class InstantTest
     {
         private static readonly Instant one = Instant.FromUntrustedDuration(Duration.FromNanoseconds(1L));

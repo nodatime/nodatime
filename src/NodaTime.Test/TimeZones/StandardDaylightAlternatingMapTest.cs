@@ -9,7 +9,6 @@ using NUnit.Framework;
 
 namespace NodaTime.Test.TimeZones
 {
-    [TestFixture]
     public class StandardDaylightAlternatingMapTest
     {
         private static readonly ZoneRecurrence Winter = new ZoneRecurrence("Winter", Offset.Zero,

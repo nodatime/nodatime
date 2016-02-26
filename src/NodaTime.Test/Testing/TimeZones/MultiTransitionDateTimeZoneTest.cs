@@ -10,7 +10,6 @@ using NUnit.Framework;
 namespace NodaTime.Test.Testing.TimeZones
 {
     // Test as much to demonstrate a couple of extremes of building as much as anything else...
-    [TestFixture]
     public class MultiTransitionDateTimeZoneTest
     {
         [Test]

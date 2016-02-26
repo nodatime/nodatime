@@ -9,7 +9,6 @@ using System.IO;
 
 namespace NodaTime.Serialization.Test.JsonNet
 {
-    [TestFixture]
     public class ExtensionsTest
     {
         [Test]

@@ -13,7 +13,6 @@ namespace NodaTime.Test.Annotations
     /// <summary>
     /// Tests for annotations around purity. No sniggering at the back, please.
     /// </summary>
-    [TestFixture]
     public class PurityTest
     {
         [Test]

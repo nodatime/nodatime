@@ -13,7 +13,6 @@ using NUnit.Framework;
 
 namespace NodaTime.Test.Globalization
 {
-    [TestFixture]
     public class NodaFormatInfoTest
     {
         private readonly CultureInfo enUs = CultureInfo.GetCultureInfo("en-US");

@@ -13,7 +13,6 @@ namespace NodaTime.Serialization.Test.JsonNet
     /// <summary>
     /// The same tests as NodaIntervalConverterTest, but using the ISO-based interval converter.
     /// </summary>
-    [TestFixture]
     public class NodaIsoIntervalConverterTest
     {
         private readonly JsonSerializerSettings settings = new JsonSerializerSettings

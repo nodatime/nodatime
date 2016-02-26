@@ -10,7 +10,6 @@ using NUnit.Framework;
 
 namespace NodaTime.Test.Text
 {
-    [TestFixture]
     public class InstantPatternTest : PatternTestBase<Instant>
     {
         internal static readonly Data[] InvalidPatternData = {

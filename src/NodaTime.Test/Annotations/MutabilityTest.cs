@@ -9,7 +9,6 @@ using NUnit.Framework;
 
 namespace NodaTime.Test.Annotations
 {
-    [TestFixture]
     public class MutabilityTest
     {
         [Test]

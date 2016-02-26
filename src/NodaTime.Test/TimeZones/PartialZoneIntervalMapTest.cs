@@ -10,7 +10,6 @@ using NUnit.Framework;
 
 namespace NodaTime.Test.TimeZones
 {
-    [TestFixture]
     public class PartialZoneIntervalMapTest
     {
         // Arbitrary instants which are useful for the tests. They happen to be a year

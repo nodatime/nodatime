@@ -9,7 +9,6 @@ using NUnit.Framework;
 
 namespace NodaTime.Test
 {
-    [TestFixture]
     public class ZonedClockTest
     {
         private static readonly DateTimeZone SampleZone = new SingleTransitionDateTimeZone(NodaConstants.UnixEpoch, 1, 2);

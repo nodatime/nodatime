@@ -10,7 +10,6 @@ using NUnit.Framework;
 
 namespace NodaTime.Test.Calendars
 {
-    [TestFixture]
     public class YearMonthDayCalculatorTest
     {
         // Here the term "Islamic" only refers to whether the implementation is IslamicYearMonthDayCalculator,

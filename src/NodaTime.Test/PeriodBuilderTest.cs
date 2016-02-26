@@ -11,7 +11,6 @@ using NUnit.Framework;
 
 namespace NodaTime.Test
 {
-    [TestFixture]
     public class PeriodBuilderTest
     {
         [Test]
