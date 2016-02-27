@@ -5,6 +5,7 @@
 using System;
 using NodaTime.Text;
 using NUnit.Framework;
+using System.Numerics;
 
 namespace NodaTime.Test
 {
@@ -78,16 +79,16 @@ namespace NodaTime.Test
         [TestCase(NodaConstants.NanosecondsPerDay + 1)]
         [TestCase(long.MaxValue - 1)]
         [TestCase(long.MaxValue)]
-        public void DecimalConversions(long int64Nanos)
+        public void BigIntegerConversions(long int64Nanos)
         {
-            decimal decimalNanos = int64Nanos;
-            var nanoseconds = Duration.FromNanoseconds(decimalNanos);
-            Assert.AreEqual(decimalNanos, nanoseconds.ToDecimalNanoseconds());
+            BigInteger bigIntegerNanos = int64Nanos;
+            var nanoseconds = Duration.FromNanoseconds(bigIntegerNanos);
+            Assert.AreEqual(bigIntegerNanos, nanoseconds.ToBigIntegerNanoseconds());
 
             // And multiply it by 100, which proves we still work for values out of the range of Int64
-            decimalNanos *= 100;
-            nanoseconds = Duration.FromNanoseconds(decimalNanos);
-            Assert.AreEqual(decimalNanos, nanoseconds.ToDecimalNanoseconds());
+            bigIntegerNanos *= 100;
+            nanoseconds = Duration.FromNanoseconds(bigIntegerNanos);
+            Assert.AreEqual(bigIntegerNanos, nanoseconds.ToBigIntegerNanoseconds());
         }
 
         [Test]
@@ -107,7 +108,7 @@ namespace NodaTime.Test
         public void FromTicks(long ticks)
         {
             var nanoseconds = Duration.FromTicks(ticks);
-            Assert.AreEqual(ticks * (decimal) NodaConstants.NanosecondsPerTick, nanoseconds.ToDecimalNanoseconds());
+            Assert.AreEqual(ticks * (BigInteger) NodaConstants.NanosecondsPerTick, nanoseconds.ToBigIntegerNanoseconds());
 
             // Just another sanity check, although Ticks is covered in more detail later.
             Assert.AreEqual(ticks, nanoseconds.Ticks);
@@ -128,8 +129,9 @@ namespace NodaTime.Test
             Assert.Throws<ArgumentOutOfRangeException>(() => Duration.FromMilliseconds(long.MinValue));
             Assert.Throws<ArgumentOutOfRangeException>(() => Duration.FromMilliseconds(long.MaxValue));
             // FromTicks never throws.
-            Assert.Throws<ArgumentOutOfRangeException>(() => Duration.FromNanoseconds(decimal.MinValue));
-            Assert.Throws<ArgumentOutOfRangeException>(() => Duration.FromNanoseconds(decimal.MaxValue));
+            // No such concept as BigInteger.Min/MaxValue, so use the values we know to be just outside valid bounds.
+            Assert.Throws<ArgumentOutOfRangeException>(() => Duration.FromNanoseconds(Duration.MaxNanoseconds + 1));
+            Assert.Throws<ArgumentOutOfRangeException>(() => Duration.FromNanoseconds(Duration.MinNanoseconds - 1));
         }
 
         [Test]
@@ -152,7 +154,7 @@ namespace NodaTime.Test
         public void ConstituentParts_Large()
         {
             // And outside the normal range of long...
-            var nanos = Duration.FromNanoseconds(NodaConstants.NanosecondsPerDay * 365000m + 500m);
+            var nanos = Duration.FromNanoseconds(NodaConstants.NanosecondsPerDay * (BigInteger) 365000 + (BigInteger) 500);
             Assert.AreEqual(365000, nanos.FloorDays);
             Assert.AreEqual(500, nanos.NanosecondOfFloorDay);
         }

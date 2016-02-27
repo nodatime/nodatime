@@ -3,6 +3,7 @@
 // as found in the LICENSE.txt file.
 using System;
 using BenchmarkDotNet.Attributes;
+using System.Numerics;
 
 namespace NodaTime.Benchmarks.NodaTimeTests
 {
@@ -59,9 +60,9 @@ namespace NodaTime.Benchmarks.NodaTimeTests
         }
 
         [Benchmark]
-        public Duration FromDecimalNanoseconds()
+        public Duration FromBigIntegerNanoseconds()
         {
-            return Duration.FromNanoseconds(long.MaxValue + 100M);
+            return Duration.FromNanoseconds(long.MaxValue + (BigInteger) 100);
         }
 #endif
 

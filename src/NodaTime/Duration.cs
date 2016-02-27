@@ -12,9 +12,9 @@ using System.Xml.Schema;
 using System.Xml.Serialization;
 using JetBrains.Annotations;
 using NodaTime.Annotations;
-using NodaTime.Calendars;
 using NodaTime.Text;
 using NodaTime.Utility;
+using System.Numerics;
 
 namespace NodaTime
 {
@@ -56,8 +56,8 @@ namespace NodaTime
         // to be easily 
         internal const int MaxDays = (1 << 24) - 1;
         internal const int MinDays = ~MaxDays;
-        private static readonly decimal MinNanoseconds = (decimal)MinDays * NanosecondsPerDay;
-        private static readonly decimal MaxNanoseconds = (MaxDays + 1M) * NanosecondsPerDay - 1M;
+        internal static readonly BigInteger MinNanoseconds = (BigInteger)MinDays * NanosecondsPerDay;
+        internal static readonly BigInteger MaxNanoseconds = (MaxDays + BigInteger.One) * NanosecondsPerDay - BigInteger.One;
 
         // The -1 here is to allow for the addition of nearly a whole day in the nanoOfDay field.
         private const long MaxDaysForLongNanos = (int) (long.MaxValue / NanosecondsPerDay) - 1;
@@ -495,10 +495,10 @@ namespace NodaTime
             if (days >= MinDaysForLongNanos && days <= MaxDaysForLongNanos)
             {
                 long nanos = left.ToInt64Nanoseconds() / right;
-                return Duration.FromNanoseconds(nanos);
+                return FromNanoseconds(nanos);
             }
-            // Fall back to decimal arithmetic.
-            decimal x = left.ToDecimalNanoseconds();
+            // Fall back to BigInteger arithmetic.
+            BigInteger x = left.ToBigIntegerNanoseconds();
             return FromNanoseconds(x / right);
         }
 
@@ -520,34 +520,35 @@ namespace NodaTime
         /// <paramref name="right"/>.</returns>
         public static Duration operator *(Duration left, long right)
         {
-            if (right == 0 || left == Zero)
+            unchecked
             {
-                return Zero;
-            }
-            int days = left.days;
-            // Speculatively try integer arithmetic... currently just for positive nanos because
-            // it's more common and easier to think about.
-            if (days >= 0 && days <= MaxDaysForLongNanos)
-            {
-                long originalNanos = left.ToInt64Nanoseconds();
-                if (right > 0)
+                // Optimize very simple cases that require no arithmetic.
+                if (right == 0 || left == Zero)
                 {
-                    if (right < long.MaxValue / originalNanos)
-                    {
-                        return FromNanoseconds(originalNanos * right);
-                    }
+                    return Zero;
                 }
-                else
+                if (right == 1)
                 {
-                    if (right > long.MinValue / originalNanos)
-                    {
-                        return FromNanoseconds(originalNanos * right);
-                    }
+                    return left;
+                }
+                // Attempt to find a sweet spot... rather than detecting whether arithmetic
+                // will overflow accurately (which is painful), we just check whether both
+                // values are within a common range - durations of more than +/-100 days
+                // are rare, and so is multiplication by huge numbers. (The range we get is
+                // roughly +/- 1000.) If this changes, tests should change too.
+                const int DaysToOptimize = 100;
+                // Almost every real use case will fit in here, I suspect...
+                if (left.days >= -DaysToOptimize &&
+                    left.days < DaysToOptimize && 
+                    right > long.MinValue / (NanosecondsPerDay * DaysToOptimize) &&
+                    right < long.MaxValue / (NanosecondsPerDay * DaysToOptimize))
+                {
+                    long nanos = left.ToInt64NanosecondsUnchecked();
+                    return FromNanoseconds(nanos * right);
                 }
             }
-            // Fall back to decimal arithmetic
-            decimal x = left.ToDecimalNanoseconds();
-            return FromNanoseconds(x * right);
+            // Fall back to BigInteger arithmetic
+            return FromNanoseconds(left.ToBigIntegerNanoseconds() * right);
         }
 
         /// <summary>
@@ -819,25 +820,22 @@ namespace NodaTime
         }
 
         /// <summary>
-        /// Converts a number of nanoseconds expressed as a <see cref="Decimal"/> into a duration.
+        /// Converts a number of nanoseconds expressed as a <see cref="BigInteger"/> into a duration.
         /// </summary>
-        /// <remarks>Any fractional part of <paramref name="nanoseconds"/> is truncated.</remarks>
         /// <param name="nanoseconds">The number of nanoseconds to represent.</param>
         /// <returns>A duration with the given number of nanoseconds.</returns>
-        public static Duration FromNanoseconds(decimal nanoseconds)
+        public static Duration FromNanoseconds(BigInteger nanoseconds)
         {
             if (nanoseconds < MinNanoseconds || nanoseconds > MaxNanoseconds)
             {
                 throw new ArgumentOutOfRangeException(nameof(nanoseconds), $"Value should be in range [{MinNanoseconds}-{MaxNanoseconds}]");
             }
-            // Avoid worrying about what happens in later arithmetic.
-            nanoseconds = decimal.Truncate(nanoseconds);
 
             int days = nanoseconds >= 0
                 ? (int) (nanoseconds / NanosecondsPerDay)
                 : (int) ((nanoseconds + 1) / NanosecondsPerDay) - 1;
 
-            long nanoOfDay = (long) (nanoseconds - ((decimal) days) * NanosecondsPerDay);
+            long nanoOfDay = (long) (nanoseconds - ((BigInteger) days) * NanosecondsPerDay);
             return new Duration(days, nanoOfDay);
         }
 
@@ -893,33 +891,36 @@ namespace NodaTime
         /// <exception cref="System.OverflowException">The number of nanoseconds is outside the representable range.</exception>
         /// <returns>This duration as a number of nanoseconds, represented as an <c>Int64</c>.</returns>
         [Pure]
-        public long ToInt64Nanoseconds()
-        {
-            if (days < 0)
-            {
-                if (days >= MinDaysForLongNanos)
-                {
-                    return unchecked(days * NanosecondsPerDay + nanoOfDay);
-                }
-                // Need to be careful to avoid overflow in a case where it's actually representable
-                return (days + 1) * NanosecondsPerDay + nanoOfDay - NanosecondsPerDay;
-            }
-            if (days <= MaxDaysForLongNanos)
-            {
-                return unchecked(days * NanosecondsPerDay + nanoOfDay);
-            }
+        public long ToInt64Nanoseconds() =>
+            // Fast path (common case)
+            IsInt64Representable ? ToInt64NanosecondsUnchecked()
+            // Need to be careful to avoid overflow in a case where it's actually representable
+            : days < 0 ? (days + 1) * NanosecondsPerDay + nanoOfDay - NanosecondsPerDay
             // Either the multiplication or the addition could overflow, so we do it in a checked context.
-            return days * NanosecondsPerDay + nanoOfDay;
-        }
+            : days * NanosecondsPerDay + nanoOfDay;
+        
+        /// <summary>
+        /// A quick check to tell whether this duration is within the range of an Int64 value of nanoseconds
+        /// (roughly +/- 292 years). This is conservative as it only checks the days field -
+        /// there may be values just within Int64 range for which this property returns true, but they're
+        /// unlikely to come up... this property should *only* be used for optimization purposes.
+        /// </summary>
+        private bool IsInt64Representable => days >= MinDaysForLongNanos && days <= MaxDaysForLongNanos;
 
         /// <summary>
-        /// Conversion to a <see cref="Decimal"/> number of nanoseconds, as a convenient built-in numeric
+        /// Performs an unchecked conversion from this duration to an Int64 value of nanoseconds.
+        /// This should only be called if IsInt64Representable returns true.
+        /// </summary>
+        [Pure]
+        private long ToInt64NanosecondsUnchecked() => unchecked(days * NanosecondsPerDay + nanoOfDay);
+
+        /// <summary>
+        /// Conversion to a <see cref="BigInteger"/> number of nanoseconds, as a convenient built-in numeric
         /// type which can always represent values in the range we need.
         /// </summary>
-        /// <remarks>The value returned is always an integer.</remarks>
-        /// <returns>This duration as a number of nanoseconds, represented as a <c>Decimal</c>.</returns>
+        /// <returns>This duration as a number of nanoseconds, represented as a <c>BigInteger</c>.</returns>
         [Pure]
-        public decimal ToDecimalNanoseconds() => ((decimal)days) * NanosecondsPerDay + nanoOfDay;
+        public BigInteger ToBigIntegerNanoseconds() => ((BigInteger) days) * NanosecondsPerDay + nanoOfDay;
 
 #if !PCL
         #region Binary serialization

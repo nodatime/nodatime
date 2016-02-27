@@ -4,6 +4,7 @@
 
 using System;
 using NUnit.Framework;
+using System.Numerics;
 
 namespace NodaTime.Test
 {
@@ -27,15 +28,15 @@ namespace NodaTime.Test
         private static void TestFactoryMethod(Func<long, Duration> method, long value, long nanosecondsPerUnit)
         {
             Duration duration = method(value);
-            decimal expectedNanoseconds = (decimal)value * nanosecondsPerUnit;
-            Assert.AreEqual(duration.ToDecimalNanoseconds(), expectedNanoseconds);
+            BigInteger expectedNanoseconds = (BigInteger)value * nanosecondsPerUnit;
+            Assert.AreEqual(duration.ToBigIntegerNanoseconds(), expectedNanoseconds);
         }
 
         private static void TestFactoryMethod(Func<int, Duration> method, int value, long nanosecondsPerUnit)
         {
             Duration duration = method(value);
-            decimal expectedNanoseconds = (decimal)value * nanosecondsPerUnit;
-            Assert.AreEqual(duration.ToDecimalNanoseconds(), expectedNanoseconds);
+            BigInteger expectedNanoseconds = (BigInteger) value * nanosecondsPerUnit;
+            Assert.AreEqual(duration.ToBigIntegerNanoseconds(), expectedNanoseconds);
         }
 
         [Test]
@@ -106,15 +107,15 @@ namespace NodaTime.Test
         }
 
         [Test]
-        public void FromNanoSeconds_Decimal()
+        public void FromNanoSeconds_BigInteger()
         {
-            Assert.AreEqual(Duration.OneDay - Duration.Epsilon, Duration.FromNanoseconds(NanosecondsPerDay - 1M));
-            Assert.AreEqual(Duration.OneDay, Duration.FromNanoseconds(NanosecondsPerDay + 0M));
-            Assert.AreEqual(Duration.OneDay + Duration.Epsilon, Duration.FromNanoseconds(NanosecondsPerDay + 1M));
+            Assert.AreEqual(Duration.OneDay - Duration.Epsilon, Duration.FromNanoseconds(NanosecondsPerDay - BigInteger.One));
+            Assert.AreEqual(Duration.OneDay, Duration.FromNanoseconds(NanosecondsPerDay + BigInteger.Zero));
+            Assert.AreEqual(Duration.OneDay + Duration.Epsilon, Duration.FromNanoseconds(NanosecondsPerDay + BigInteger.One));
 
-            Assert.AreEqual(-Duration.OneDay - Duration.Epsilon, Duration.FromNanoseconds(-NanosecondsPerDay - 1M));
-            Assert.AreEqual(-Duration.OneDay, Duration.FromNanoseconds(-NanosecondsPerDay + 0M));
-            Assert.AreEqual(-Duration.OneDay + Duration.Epsilon, Duration.FromNanoseconds(-NanosecondsPerDay + 1M));
+            Assert.AreEqual(-Duration.OneDay - Duration.Epsilon, Duration.FromNanoseconds(-NanosecondsPerDay - BigInteger.One));
+            Assert.AreEqual(-Duration.OneDay, Duration.FromNanoseconds(-NanosecondsPerDay + BigInteger.Zero));
+            Assert.AreEqual(-Duration.OneDay + Duration.Epsilon, Duration.FromNanoseconds(-NanosecondsPerDay + BigInteger.One));
         }
     }
 }
