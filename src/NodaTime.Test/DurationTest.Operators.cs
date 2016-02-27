@@ -4,6 +4,7 @@
 
 using System;
 using NUnit.Framework;
+using System.Numerics;
 
 namespace NodaTime.Test
 {
@@ -96,31 +97,55 @@ namespace NodaTime.Test
 
         #region operator *
         [Test]
-        public void OperatorMultiplication_NonZeroNonOne()
+        // "Old" non-zero non-one test cases for posterity's sake.
+        [TestCase(0, 3000, 1000)]
+        [TestCase(0, 50000, -1000)]
+        [TestCase(0, -50000, 1000)]
+        [TestCase(0, -3000, -1000)]
+        // Zero
+        [TestCase(0, 0, 0)]
+        [TestCase(0, 1, 0)]
+        [TestCase(0, 3000000, 0)]
+        [TestCase(0, -50000000, 0)]
+        [TestCase(1, 1, 0)]
+        [TestCase(0, 0, 10)]
+        [TestCase(0, 0, -10)]
+        // One
+        [TestCase(0, 3000000, 1)]
+        [TestCase(0, 0, 1)]
+        [TestCase(0, -5000000, 1)]
+        // More interesting cases - explore the boundaries of the fast path.
+        // This currently assumes that we're optimizing on multiplying "less than 100 days"
+        // by less than "about a thousand". There's a comment in the code near that constant
+        // to indicate that these tests would need to change if that constant changes.
+        [TestCase(-99, 10000, 800)]
+        [TestCase(-101, 10000, 800)]
+        [TestCase(-99, 10000, 1234)]
+        [TestCase(-101, 10000, 1234)]
+        [TestCase(-99, 10000, -800)]
+        [TestCase(-101, 10000, -800)]
+        [TestCase(-99, 10000, -1234)]
+        [TestCase(-101, 10000, -1234)]
+        [TestCase(99, 10000, 800)]
+        [TestCase(101, 10000, 800)]
+        [TestCase(99, 10000, 1234)]
+        [TestCase(101, 10000, 1234)]
+        [TestCase(99, 10000, -800)]
+        [TestCase(101, 10000, -800)]
+        [TestCase(99, 10000, -1234)]
+        [TestCase(101, 10000, -1234)]
+        public void OperatorMultiplication(int days, long nanos, long rightOperand)
         {
-            Assert.AreEqual(threeMillion, Duration.FromNanoseconds(3000) * 1000, "3000 * 1000");
-            Assert.AreEqual(negativeFiftyMillion, Duration.FromNanoseconds(50000) * -1000, "50000 * -1000");
-            Assert.AreEqual(negativeFiftyMillion, Duration.FromNanoseconds(-50000) * 1000, "-50000 * 1000");
-            Assert.AreEqual(threeMillion, Duration.FromNanoseconds(-3000) * -1000, "-3000 * -1000");
-        }
+            // Rather than expressing an expected answer, just do a "long-hand" version
+            // using ToBigIntegerNanoseconds and FromNanoseconds, trusting those two operations
+            // to be correct.
+            var duration = Duration.FromDays(days) + Duration.FromNanoseconds(nanos);
+            var actual = duration * rightOperand;
 
-        [Test]
-        public void OperatorMultiplication_Zero_IsAbsorbingElement()
-        {
-            Assert.AreEqual(Duration.Zero, Duration.Zero * 0, "0 * 0");
-            Assert.AreEqual(Duration.Zero, Duration.Epsilon * 0, "1 * 0");
-            Assert.AreEqual(Duration.Zero, threeMillion * 0, "3000000 * 0");
-            Assert.AreEqual(Duration.Zero, negativeFiftyMillion * 0, "-50000000 * 0");
+            var expected = Duration.FromNanoseconds(duration.ToBigIntegerNanoseconds() * rightOperand);
+            Assert.AreEqual(expected, actual);
         }
-
-        [Test]
-        public void OperatorMultiplication_One_IsNeutralElement()
-        {
-            Assert.AreEqual(threeMillion, threeMillion * 1, "3000000 * 1");
-            Assert.AreEqual(Duration.Zero, Duration.Zero * 1, "0 * 1");
-            Assert.AreEqual(negativeFiftyMillion, negativeFiftyMillion * 1, "-50000000 * 1");
-        }
-
+        
         [Test]
         public void Commutation()
         {
