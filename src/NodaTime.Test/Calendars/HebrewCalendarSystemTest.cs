@@ -1,6 +1,7 @@
 ﻿// Copyright 2014 The Noda Time Authors. All rights reserved.
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
+
 using NodaTime.Calendars;
 using NodaTime.Text;
 using NUnit.Framework;
@@ -17,6 +18,7 @@ namespace NodaTime.Test.Calendars
     /// </summary>
     public class HebrewCalendarSystemTest
     {
+#if !PCL
         [Test]
         public void IsLeapYear()
         {
@@ -88,6 +90,7 @@ namespace NodaTime.Test.Calendars
                 }
             }
         }
+#endif
 
         // Test cases are in scriptural month numbering, but we check both. This is
         // mostly testing the behaviour of SetYear, via LocalDate.PlusYears.

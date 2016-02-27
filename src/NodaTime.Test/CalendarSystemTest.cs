@@ -4,6 +4,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using NodaTime.Calendars;
 using NUnit.Framework;
 
@@ -37,7 +38,7 @@ namespace NodaTime.Test
             var localDate = new LocalDate(daysSinceEpoch, calendar);
             Assert.AreEqual(expectedYear, localDate.Year);
 
-            foreach (var property in typeof(LocalDate).GetProperties())
+            foreach (var property in typeof(LocalDate).GetTypeInfo().DeclaredProperties)
             {
                 property.GetValue(localDate, null);
             }

@@ -103,11 +103,11 @@ namespace NodaTime.Test.Text
 
             new Data(0, 0, 1, 2, 123400000) { Pattern = "SS.FFFF", Text = "62.1234" },
 
-            new Data(1, 2, 3, 4, 123456789) { Pattern = "D:hh:mm:ss.FFFFFFFFF", Text = "1.02.03.04.123456789", Culture = Cultures.ItIt },
+            new Data(1, 2, 3, 4, 123456789) { Pattern = "D:hh:mm:ss.FFFFFFFFF", Text = "1.02.03.04.123456789", Culture = Cultures.DotTimeSeparator },
 
             // Roundtrip pattern is invariant; redundantly specify the culture to validate that it doesn't make a difference.
-            new Data(1, 2, 3, 4, 123456789) { Pattern = "o", Text = "1:02:03:04.123456789", Culture = Cultures.ItIt },
-            new Data(-1, -2, -3, -4, -123456789) { Pattern = "o", Text = "-1:02:03:04.123456789", Culture = Cultures.ItIt },
+            new Data(1, 2, 3, 4, 123456789) { Pattern = "o", Text = "1:02:03:04.123456789", Culture = Cultures.DotTimeSeparator },
+            new Data(-1, -2, -3, -4, -123456789) { Pattern = "o", Text = "-1:02:03:04.123456789", Culture = Cultures.DotTimeSeparator },
 
             // Extremes...
             new Data(Duration.MinValue) { Pattern = "-D:hh:mm:ss.fffffffff", Text = "-16777216:00:00:00.000000000" },

@@ -15,15 +15,18 @@ namespace NodaTime.Test.Text
     /// </summary>
     internal static class Cultures
     {
-        // Force the cultures to be read-only for tests, to take advantage of caching. Our Continuous Integration system
-        // is very slow at reading resources (in the NodaFormatInfo constructor).
-        // Note: R# suggests using a method group conversion for the Select call here, which is fine with the C# 4 compiler,
-        // but doesn't work with the C# 3 compiler (which doesn't have quite as good type inference).
-        internal static readonly IEnumerable<CultureInfo> AllCultures = CultureInfo.GetCultures(CultureTypes.SpecificCultures)
+        // Force the cultures to be read-only for tests, to take advantage of caching. Note that on .NET Core,
+        // CultureInfo.GetCultures doesn't exist, so we just have a few hand-picked ones.    
+        internal static readonly IEnumerable<CultureInfo> AllCultures =
+#if PCL
+            // TODO: Expand this list very significantly!
+            new[] { "en-US", "fr-FR", "fr-CA", "it-IT" }.Select(name => new CultureInfo(name))
+#else
+            CultureInfo.GetCultures(CultureTypes.SpecificCultures)
+#endif
             .Where(culture => !RuntimeFailsToLookupResourcesForCulture(culture))
-            .Select(culture => FixCultureIfDateTimeFormatBroken(culture))
             .Where(culture => !MonthNamesCompareEqual(culture))
-            .Select(culture => CultureInfo.ReadOnly(culture))
+            .Select(CultureInfo.ReadOnly)
             .ToList();
         // Some tests don't run nicely on Mono, e.g. as they have characters we don't expect in their long/short patterns.
         // Pretend we have no real cultures, for the sake of these tests. Having no entries in this test source causes
@@ -36,17 +39,34 @@ namespace NodaTime.Test.Text
         internal static readonly CultureInfo FrFr = CultureInfo.ReadOnly(new CultureInfo("fr-FR"));
         internal static readonly CultureInfo FrCa = CultureInfo.ReadOnly(new CultureInfo("fr-CA"));
 
-        // We mostly use Italy as an example of a culture with a "." as the time separator
-        // - but it doesn't have it on Mono, so force it here. (In fact, it looks like it
-        // changed to : between .NET 2 and .NET 4 anyway... another reason to force it.)
-        internal static readonly CultureInfo ItIt = CultureInfo.ReadOnly(new CultureInfo("it-IT") {
+        // We need a culture with a non-colon time separator. On .NET Core we can't specify this explicitly,
+        // so we just rely on Finland doing the right thing. On platforms where we can set this explicitly,
+        // we do so - still starting with Finland for consistency.
+#if PCL
+        internal static readonly CultureInfo DotTimeSeparator = CultureInfo.ReadOnly(new CultureInfo("fi-FI"));
+#else
+        internal static readonly CultureInfo DotTimeSeparator = CultureInfo.ReadOnly(new CultureInfo("fi-FI") {
             DateTimeFormat = { TimeSeparator = "." }
         });
-        
+#endif
+
         internal static readonly CultureInfo GenitiveNameTestCulture = CreateGenitiveTestCulture();
         internal static readonly CultureInfo GenitiveNameTestCultureWithLeadingNames = CreateGenitiveTestCultureWithLeadingNames();
         internal static readonly CultureInfo AwkwardDayOfWeekCulture = CreateAwkwardDayOfWeekCulture();
         internal static readonly CultureInfo AwkwardAmPmDesignatorCulture = CreateAwkwardAmPmCulture();
+
+        /// <summary>
+        /// Workaround for the lack of CultureInfo.GetCultureInfo(string) in the PCL.
+        /// Our PCL version doesn't cache, but does at least still return a readonly version.
+        /// </summary>
+        internal static CultureInfo GetCultureInfo(string name)
+        {
+#if PCL
+            return CultureInfo.ReadOnly(new CultureInfo(name));
+#else
+            return CultureInfo.GetCultureInfo(name);
+#endif
+        }
 
         /// <summary>
         /// .NET 3.5 doesn't contain any cultures where the abbreviated month names differ
@@ -121,26 +141,6 @@ namespace NodaTime.Test.Text
             string[] clone = (string[])input.Clone();
             clone[0] = newElement;
             return clone;
-        }
-
-        /// <summary>
-        /// Returns the passed-in culture unless culture.DateTimeFormat fails, in which case returns
-        /// CultureInfo.GetCultureInfo(culture.Name).  This is to work around a bug in pre-4.0.0 versions of Mono where
-        /// the ar-SA culture returned by CultureInfo.GetCultures(CultureTypes.SpecificCultures) is broken in this way.
-        /// See https://bugzilla.xamarin.com/show_bug.cgi?id=29039 for more info.
-        /// TODO: remove if this is fixed by the time Mono 4.0.0 is released.
-        /// </summary>
-        private static CultureInfo FixCultureIfDateTimeFormatBroken(CultureInfo culture)
-        {
-            try
-            {
-                var ignored = culture.DateTimeFormat;
-                return culture;
-            }
-            catch (NullReferenceException)
-            {
-                return CultureInfo.GetCultureInfo(culture.Name);
-            }
         }
 
         /// <summary>

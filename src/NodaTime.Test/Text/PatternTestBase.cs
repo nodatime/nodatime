@@ -62,34 +62,23 @@ namespace NodaTime.Test.Text
         /// </summary>
         internal static CalendarSystem CalendarSystemForCalendar(Calendar bcl)
         {
-            if (bcl is GregorianCalendar)
+            // Yes, this is horrible... but the specific calendars aren't available to test
+            // against in the PCL
+            switch (bcl.GetType().Name)
             {
-                return CalendarSystem.Iso;
-            }
-            if (bcl is HijriCalendar)
-            {
-                return CalendarSystem.IslamicBcl;
-            }
-            // This is *not* a general rule. Noda Time simply doesn't support this calendar, which requires
-            // table-based data. However, using the Islamic calendar with the civil epoch gives the same date for
-            // our sample, which is good enough for now...
-            if (bcl is UmAlQuraCalendar)
-            {
-                // ... On Mono, this actually might not be good enough. So let's just punt on it - the Mono
-                // implementation of UmAlQuraCalendar currently differs from the Windows one, but may get fixed
-                // at some point. Let's just abort the test.
-                if (TestHelper.IsRunningOnMono)
-                {
+                case "GregorianCalendar": return CalendarSystem.Iso;
+                case "HijriCalendar": return CalendarSystem.IslamicBcl;
+                case "HebrewCalendar": return CalendarSystem.HebrewCivil;
+                case "PersianCalendar": return bcl.IsLeapYear(1) ? CalendarSystem.PersianSimple : CalendarSystem.PersianAstronomical;
+                case "UmAlQuraCalendar":
+                    return TestHelper.IsRunningOnMono || !UmAlQuraYearMonthDayCalculator.IsSupported
+                        ? null : CalendarSystem.UmAlQura;
+                case "JulianCalendar":
+                    return CalendarSystem.Julian;
+                default:
+                    // No idea - we can't test with this calendar...
                     return null;
-                }
-                return CalendarSystem.GetIslamicCalendar(IslamicLeapYearPattern.Base16, IslamicEpoch.Civil);
             }
-            if (bcl is JulianCalendar)
-            {
-                return CalendarSystem.Julian;
-            }
-            // No idea - we can't test with this calendar...
-            return null;
         }
     }
 }

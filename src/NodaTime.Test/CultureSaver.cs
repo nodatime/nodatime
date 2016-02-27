@@ -2,6 +2,10 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
+// .NET Core doesn't include a setter for CultureInfo.CurrentCulture,
+// or Thread.CurrentCulture at all
+#if !PCL
+
 using System;
 using System.Globalization;
 using System.Threading;
@@ -65,7 +69,7 @@ namespace NodaTime.Test
             return new BothSaver(newCultureInfo, newUiCultureInfo);
         }
 
-        #region Nested type: BasicSaver
+#region Nested type: BasicSaver
         /// <summary>
         ///   Provides the <see cref="IDisposable" /> for saving the original basic culture and resetting
         ///   it back.
@@ -80,11 +84,11 @@ namespace NodaTime.Test
             /// <param name="newCulture">The new basic culture to set.</param>
             public BasicSaver(CultureInfo newCulture)
             {
-                oldCulture = Thread.CurrentThread.CurrentCulture;
+                oldCulture = CultureInfo.CurrentCulture;
                 Thread.CurrentThread.CurrentCulture = newCulture;
             }
 
-            #region IDisposable Members
+#region IDisposable Members
             /// <summary>
             ///   Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
             /// </summary>
@@ -92,11 +96,11 @@ namespace NodaTime.Test
             {
                 Thread.CurrentThread.CurrentCulture = oldCulture;
             }
-            #endregion
+#endregion
         }
-        #endregion
+#endregion
 
-        #region Nested type: BothSaver
+#region Nested type: BothSaver
         /// <summary>
         ///   Provides the <see cref="IDisposable" /> for saving the original cultures and resetting
         ///   them back.
@@ -120,7 +124,7 @@ namespace NodaTime.Test
                 Thread.CurrentThread.CurrentUICulture = newUiCulture;
             }
 
-            #region IDisposable Members
+#region IDisposable Members
             /// <summary>
             ///   Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
             /// </summary>
@@ -129,11 +133,11 @@ namespace NodaTime.Test
                 Thread.CurrentThread.CurrentCulture = oldCulture;
                 Thread.CurrentThread.CurrentUICulture = oldUiCulture;
             }
-            #endregion
+#endregion
         }
-        #endregion
+#endregion
 
-        #region Nested type: UiSaver
+#region Nested type: UiSaver
         /// <summary>
         ///   Provides the <see cref="IDisposable" /> for saving the original UI culture and resetting
         ///   it back.
@@ -152,7 +156,7 @@ namespace NodaTime.Test
                 Thread.CurrentThread.CurrentUICulture = newCulture;
             }
 
-            #region IDisposable Members
+#region IDisposable Members
             /// <summary>
             ///   Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
             /// </summary>
@@ -160,8 +164,9 @@ namespace NodaTime.Test
             {
                 Thread.CurrentThread.CurrentUICulture = oldCulture;
             }
-            #endregion
+#endregion
         }
-        #endregion
+#endregion
     }
 }
+#endif

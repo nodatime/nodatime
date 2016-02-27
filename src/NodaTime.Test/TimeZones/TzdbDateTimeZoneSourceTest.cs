@@ -9,6 +9,7 @@ using System.Linq;
 using NodaTime.Extensions;
 using NodaTime.TimeZones;
 using NUnit.Framework;
+using System.Reflection;
 
 namespace NodaTime.Test.TimeZones
 {
@@ -29,7 +30,12 @@ namespace NodaTime.Test.TimeZones
                 var bclZone = TimeZoneInfo.FindSystemTimeZoneById(bclId);
                 Assert.AreEqual(tzdbId, source.MapTimeZoneId(bclZone));
             }
+#if PCL
+            // See https://github.com/dotnet/corefx/issues/7552
+            catch (Exception)
+#else
             catch (TimeZoneNotFoundException)
+#endif
             {
                 // This may occur on Mono, for example.
                 Assert.Ignore("Test assumes existence of BCL zone with ID: " + bclId);
@@ -44,7 +50,7 @@ namespace NodaTime.Test.TimeZones
         [Test]
         public void CanLoadNodaTimeResourceFromOnePointOneRelease()
         {
-            var assembly = typeof(TzdbDateTimeZoneSourceTest).Assembly;
+            var assembly = typeof(TzdbDateTimeZoneSourceTest).GetTypeInfo().Assembly;
             TzdbDateTimeZoneSource source;
             using (Stream stream = assembly.GetManifestResourceStream("NodaTime.Test.TestData.Tzdb2013bFromNodaTime1.1.nzd"))
             {
@@ -226,7 +232,7 @@ namespace NodaTime.Test.TimeZones
         public void CheckDump()
         {
             List<string> expected;
-            var assembly = typeof(TzdbDateTimeZoneSourceTest).Assembly;
+            var assembly = typeof(TzdbDateTimeZoneSourceTest).GetTypeInfo().Assembly;
             using (Stream stream = assembly.GetManifestResourceStream("NodaTime.Test.TestData.tzdb-dump.txt"))
             {
                 using (var reader = new StreamReader(stream))

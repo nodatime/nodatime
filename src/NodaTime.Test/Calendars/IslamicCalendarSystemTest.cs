@@ -264,6 +264,7 @@ namespace NodaTime.Test.Calendars
             Assert.AreEqual(fridayEpochJulian, fridayEpoch.WithCalendar(julianCalendar));
         }
 
+#if !PCL
         [Test]
         public void BclUsesAstronomicalEpoch()
         {
@@ -300,6 +301,7 @@ namespace NodaTime.Test.Calendars
             var noda = CalendarSystem.IslamicBcl;
             BclEquivalenceHelper.AssertEquivalent(bcl, noda, noda.MinYear, noda.MaxYear);
         }
+#endif
 
         [Test]
         public void GetDaysInMonth()

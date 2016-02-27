@@ -183,8 +183,8 @@ namespace NodaTime.Test.Text
         internal static readonly Data[] FormatAndParseData = {
             new Data(LocalTime.Midnight) { Culture = Cultures.EnUs, Text = ".", Pattern = "%." },
             new Data(LocalTime.Midnight) { Culture = Cultures.EnUs, Text = ":", Pattern = "%:" },
-            new Data(LocalTime.Midnight) { Culture = Cultures.ItIt, Text = ".", Pattern = "%." },
-            new Data(LocalTime.Midnight) { Culture = Cultures.ItIt, Text = ".", Pattern = "%:" },
+            new Data(LocalTime.Midnight) { Culture = Cultures.DotTimeSeparator, Text = ".", Pattern = "%." },
+            new Data(LocalTime.Midnight) { Culture = Cultures.DotTimeSeparator, Text = ".", Pattern = "%:" },
             new Data(LocalTime.Midnight) { Culture = Cultures.EnUs, Text = "H", Pattern = "\\H" },
             new Data(LocalTime.Midnight) { Culture = Cultures.EnUs, Text = "HHss", Pattern = "'HHss'" },
             new Data(0, 0, 0, 100) { Culture = Cultures.EnUs, Text = "1", Pattern = "%f" },
@@ -236,14 +236,14 @@ namespace NodaTime.Test.Text
             new Data(14, 15, 16, 789, 1200) { Culture = Cultures.EnUs, Text = "14:15:16.78912", Pattern = "r" },
             new Data(14, 15, 16, 789, 1230) { Culture = Cultures.EnUs, Text = "14:15:16.789123", Pattern = "r" },
             new Data(14, 15, 16, 789, 1234) { Culture = Cultures.EnUs, Text = "14:15:16.7891234", Pattern = "r" },
-            new Data(14, 15, 16, 700) { Culture = Cultures.ItIt, Text = "14.15.16.7", Pattern = "r" },
-            new Data(14, 15, 16, 780) { Culture = Cultures.ItIt, Text = "14.15.16.78", Pattern = "r" },
-            new Data(14, 15, 16, 789) { Culture = Cultures.ItIt, Text = "14.15.16.789", Pattern = "r" },
-            new Data(14, 15, 16, 789, 1000) { Culture = Cultures.ItIt, Text = "14.15.16.7891", Pattern = "r" },
-            new Data(14, 15, 16, 789, 1200) { Culture = Cultures.ItIt, Text = "14.15.16.78912", Pattern = "r" },
-            new Data(14, 15, 16, 789, 1230) { Culture = Cultures.ItIt, Text = "14.15.16.789123", Pattern = "r" },
-            new Data(14, 15, 16, 789, 1234) { Culture = Cultures.ItIt, Text = "14.15.16.7891234", Pattern = "r" },
-            new Data(14, 15, 16, 789123456L) { Culture = Cultures.ItIt, Text = "14.15.16.789123456", Pattern = "r" },
+            new Data(14, 15, 16, 700) { Culture = Cultures.DotTimeSeparator, Text = "14.15.16.7", Pattern = "r" },
+            new Data(14, 15, 16, 780) { Culture = Cultures.DotTimeSeparator, Text = "14.15.16.78", Pattern = "r" },
+            new Data(14, 15, 16, 789) { Culture = Cultures.DotTimeSeparator, Text = "14.15.16.789", Pattern = "r" },
+            new Data(14, 15, 16, 789, 1000) { Culture = Cultures.DotTimeSeparator, Text = "14.15.16.7891", Pattern = "r" },
+            new Data(14, 15, 16, 789, 1200) { Culture = Cultures.DotTimeSeparator, Text = "14.15.16.78912", Pattern = "r" },
+            new Data(14, 15, 16, 789, 1230) { Culture = Cultures.DotTimeSeparator, Text = "14.15.16.789123", Pattern = "r" },
+            new Data(14, 15, 16, 789, 1234) { Culture = Cultures.DotTimeSeparator, Text = "14.15.16.7891234", Pattern = "r" },
+            new Data(14, 15, 16, 789123456L) { Culture = Cultures.DotTimeSeparator, Text = "14.15.16.789123456", Pattern = "r" },
 
             // ------------ Template value tests ----------
             // Mixtures of 12 and 24 hour times

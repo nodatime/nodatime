@@ -221,7 +221,7 @@ namespace NodaTime.Test.Text
             // we'll skip round-trip format tests.
             // See https://bugzilla.xamarin.com/show_bug.cgi?id=11364
             bool alwaysInvariantPattern = "Oos".Contains(patternText);
-            if (alwaysInvariantPattern && TestHelper.IsRunningOnMono && !(culture.Calendar is GregorianCalendar))
+            if (alwaysInvariantPattern && TestHelper.IsRunningOnMono && !(culture.Calendar.GetType().Name == "GregorianCalendar"))
             {
                 return;
             }

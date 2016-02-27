@@ -1,4 +1,6 @@
 using NUnitLite;
+using System;
+using System.Reflection;
 
 namespace NodaTime.Test
 {

@@ -15,8 +15,8 @@ namespace NodaTime.Test.Globalization
 {
     public class NodaFormatInfoTest
     {
-        private readonly CultureInfo enUs = CultureInfo.GetCultureInfo("en-US");
-        private readonly CultureInfo enGb = CultureInfo.GetCultureInfo("en-GB");
+        private static readonly CultureInfo enUs = Cultures.GetCultureInfo("en-US");
+        private static readonly CultureInfo enGb = Cultures.GetCultureInfo("en-GB");
 
         private sealed class EmptyFormatProvider : IFormatProvider
         {
@@ -55,7 +55,9 @@ namespace NodaTime.Test.Globalization
             var original = new CultureInfo("en-US");
             var clone = (CultureInfo) original.Clone();
             Assert.AreEqual(original.Name, clone.Name);
-            clone.DateTimeFormat.DateSeparator = "@@@";
+            var dayNames = clone.DateTimeFormat.DayNames;
+            dayNames[1] = "@@@";
+            clone.DateTimeFormat.DayNames = dayNames;
 
             // Fool Noda Time into believing both are read-only, so it can use a cache...
             original = CultureInfo.ReadOnly(original);
@@ -63,8 +65,10 @@ namespace NodaTime.Test.Globalization
 
             var nodaOriginal = NodaFormatInfo.GetFormatInfo(original);
             var nodaClone = NodaFormatInfo.GetFormatInfo(clone);
-            Assert.AreEqual(original.DateTimeFormat.DateSeparator, nodaOriginal.DateSeparator);
-            Assert.AreEqual(clone.DateTimeFormat.DateSeparator, nodaClone.DateSeparator);
+            Assert.AreEqual(original.DateTimeFormat.DayNames[1], nodaOriginal.LongDayNames[1]);
+            Assert.AreEqual(clone.DateTimeFormat.DayNames[1], nodaClone.LongDayNames[1]);
+            // Just check we made a difference...
+            Assert.AreNotEqual(nodaOriginal.LongDayNames[1], nodaClone.LongDayNames[1]);
         }
 
         [Test]
@@ -116,6 +120,7 @@ namespace NodaTime.Test.Globalization
             Assert.Throws<ArgumentNullException>(() => NodaFormatInfo.GetFormatInfo(null));
         }
 
+#if !PCL
         [Test]
         public void TestGetInstance_CultureInfo()
         {
@@ -154,6 +159,7 @@ namespace NodaTime.Test.Globalization
                 Assert.AreEqual(Thread.CurrentThread.CurrentCulture, info.CultureInfo);
             }
         }
+#endif
 
         [Test]
         public void TestOffsetPatternLong()

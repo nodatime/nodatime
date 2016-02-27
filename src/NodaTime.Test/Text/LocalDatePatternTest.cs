@@ -200,7 +200,7 @@ namespace NodaTime.Test.Text
         public void BclLongDatePatternGivesSameResultsInNoda(CultureInfo culture)
         {
             // See https://bugzilla.xamarin.com/show_bug.cgi?id=11363
-            if (TestHelper.IsRunningOnMono && culture.IetfLanguageTag == "mt-MT")
+            if (TestHelper.IsRunningOnMono && culture.Name == "mt-MT")
             {
                 return;
             }

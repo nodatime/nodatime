@@ -129,8 +129,8 @@ namespace NodaTime.Test.Text
         internal static readonly Data[] FormatAndParseData = {
 /*XXX*/            new Data(Offset.Zero) { Culture = Cultures.EnUs, Text = ".", Pattern = "%." }, // decimal separator
             new Data(Offset.Zero) { Culture = Cultures.EnUs, Text = ":", Pattern = "%:" }, // date separator
-/*XXX*/            new Data(Offset.Zero) { Culture = Cultures.ItIt, Text = ".", Pattern = "%." }, // decimal separator (always period)
-            new Data(Offset.Zero) { Culture = Cultures.ItIt, Text = ".", Pattern = "%:" }, // date separator
+/*XXX*/            new Data(Offset.Zero) { Culture = Cultures.DotTimeSeparator, Text = ".", Pattern = "%." }, // decimal separator (always period)
+            new Data(Offset.Zero) { Culture = Cultures.DotTimeSeparator, Text = ".", Pattern = "%:" }, // date separator
             new Data(Offset.Zero) { Culture = Cultures.EnUs, Text = "H", Pattern = "\\H" },
             new Data(Offset.Zero) { Culture = Cultures.EnUs, Text = "HHss", Pattern = "'HHss'" },
             new Data(0, 0, 12) { Culture = Cultures.EnUs, Text = "12", Pattern = "%s" },
@@ -163,11 +163,11 @@ namespace NodaTime.Test.Text
             new Data(5, 12, 34) { Culture = Cultures.FrFr, Text = "+05:12:34", Pattern = "g" },
             new Data(Offset.MaxValue) { Culture = Cultures.FrFr, Text = "+18", Pattern = "g" },
             new Data(Offset.MinValue) { Culture = Cultures.FrFr, Text = "-18", Pattern = "g" },
-            new Data(5, 0, 0) { Culture = Cultures.ItIt, Text = "+05", Pattern = "g" },
-            new Data(5, 12, 0) { Culture = Cultures.ItIt, Text = "+05.12", Pattern = "g" },
-            new Data(5, 12, 34) { Culture = Cultures.ItIt, Text = "+05.12.34", Pattern = "g" },
-            new Data(Offset.MaxValue) { Culture = Cultures.ItIt, Text = "+18", Pattern = "g" },
-            new Data(Offset.MinValue) { Culture = Cultures.ItIt, Text = "-18", Pattern = "g" },
+            new Data(5, 0, 0) { Culture = Cultures.DotTimeSeparator, Text = "+05", Pattern = "g" },
+            new Data(5, 12, 0) { Culture = Cultures.DotTimeSeparator, Text = "+05.12", Pattern = "g" },
+            new Data(5, 12, 34) { Culture = Cultures.DotTimeSeparator, Text = "+05.12.34", Pattern = "g" },
+            new Data(Offset.MaxValue) { Culture = Cultures.DotTimeSeparator, Text = "+18", Pattern = "g" },
+            new Data(Offset.MinValue) { Culture = Cultures.DotTimeSeparator, Text = "-18", Pattern = "g" },
 
             // Standard patterns without punctuation
             new Data(5, 0, 0) { Culture = Cultures.EnUs, Text = "+05", Pattern = "I"  },
@@ -187,11 +187,11 @@ namespace NodaTime.Test.Text
             new Data(5, 12, 34) { Culture = Cultures.FrFr, Text = "+051234", Pattern = "i" },
             new Data(Offset.MaxValue) { Culture = Cultures.FrFr, Text = "+18", Pattern = "i" },
             new Data(Offset.MinValue) { Culture = Cultures.FrFr, Text = "-18", Pattern = "i" },
-            new Data(5, 0, 0) { Culture = Cultures.ItIt, Text = "+05", Pattern = "i" },
-            new Data(5, 12, 0) { Culture = Cultures.ItIt, Text = "+0512", Pattern = "i" },
-            new Data(5, 12, 34) { Culture = Cultures.ItIt, Text = "+051234", Pattern = "i" },
-            new Data(Offset.MaxValue) { Culture = Cultures.ItIt, Text = "+18", Pattern = "i" },
-            new Data(Offset.MinValue) { Culture = Cultures.ItIt, Text = "-18", Pattern = "i" },
+            new Data(5, 0, 0) { Culture = Cultures.DotTimeSeparator, Text = "+05", Pattern = "i" },
+            new Data(5, 12, 0) { Culture = Cultures.DotTimeSeparator, Text = "+0512", Pattern = "i" },
+            new Data(5, 12, 34) { Culture = Cultures.DotTimeSeparator, Text = "+051234", Pattern = "i" },
+            new Data(Offset.MaxValue) { Culture = Cultures.DotTimeSeparator, Text = "+18", Pattern = "i" },
+            new Data(Offset.MinValue) { Culture = Cultures.DotTimeSeparator, Text = "-18", Pattern = "i" },
 
             // Explicit patterns
             new Data(0, 30, 0, true) { Culture = Cultures.EnUs, Text = "-00:30", Pattern = "+HH:mm" },

@@ -90,6 +90,7 @@ namespace NodaTime.Test
                             4563456, ldt.TickOfDay);
         }
 
+#if !PCL // No specific calendar support in BCL
         [Test]
         public void DateTime_Roundtrip_OtherCalendarInBcl()
         {
@@ -101,6 +102,7 @@ namespace NodaTime.Test
             DateTime final = noda.ToDateTimeUnspecified();
             Assert.AreEqual(original, final);
         }
+#endif
 
         [Test]
         public void WithCalendar()

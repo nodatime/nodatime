@@ -3,10 +3,13 @@
 // as found in the LICENSE.txt file.
 
 using System;
-using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
 using NodaTime.Text;
 using NUnit.Framework;
+
+#if !PCL
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
+#endif
 
 namespace NodaTime.Test
 {

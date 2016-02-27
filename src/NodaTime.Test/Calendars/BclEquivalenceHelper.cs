@@ -2,6 +2,8 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
+#if !PCL
+
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -60,3 +62,4 @@ namespace NodaTime.Test.Calendars
         }
     }
 }
+#endif
