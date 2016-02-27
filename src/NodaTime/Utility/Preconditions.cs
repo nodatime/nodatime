@@ -57,6 +57,20 @@ namespace NodaTime.Utility
             }
         }
 
+        internal static void CheckArgumentRange([InvokerParameterName] string paramName, double value, double minInclusive, double maxInclusive)
+        {
+            if (value < minInclusive || value > maxInclusive)
+            {
+#if PCL
+                throw new ArgumentOutOfRangeException(paramName,
+                    $"Value should be in range [{minInclusive}-{maxInclusive}]");
+#else
+                throw new ArgumentOutOfRangeException(paramName, value,
+                    $"Value should be in range [{minInclusive}-{maxInclusive}]");
+#endif
+            }
+        }
+
         // Note: this overload exists for performance reasons. It would be reasonable to call the
         // version using "long" values, but we'd incur conversions on every call. This method
         // may well be called very often.

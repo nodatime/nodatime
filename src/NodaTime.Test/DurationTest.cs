@@ -92,49 +92,6 @@ namespace NodaTime.Test
         }
 
         [Test]
-        [TestCase(long.MinValue)]
-        [TestCase(long.MinValue + 1)]
-        [TestCase(-NodaConstants.TicksPerDay - 1)]
-        [TestCase(-NodaConstants.TicksPerDay)]
-        [TestCase(-NodaConstants.TicksPerDay + 1)]
-        [TestCase(-1)]
-        [TestCase(0)]
-        [TestCase(1)]
-        [TestCase(NodaConstants.TicksPerDay - 1)]
-        [TestCase(NodaConstants.TicksPerDay)]
-        [TestCase(NodaConstants.TicksPerDay + 1)]
-        [TestCase(long.MaxValue - 1)]
-        [TestCase(long.MaxValue)]
-        public void FromTicks(long ticks)
-        {
-            var nanoseconds = Duration.FromTicks(ticks);
-            Assert.AreEqual(ticks * (BigInteger) NodaConstants.NanosecondsPerTick, nanoseconds.ToBigIntegerNanoseconds());
-
-            // Just another sanity check, although Ticks is covered in more detail later.
-            Assert.AreEqual(ticks, nanoseconds.Ticks);
-        }
-
-        [Test]
-        public void FromMethods_OutOfRange()
-        {
-            // Not checking the exact values here so much as that the exception is appropriate.
-            Assert.Throws<ArgumentOutOfRangeException>(() => Duration.FromDays(int.MinValue));
-            Assert.Throws<ArgumentOutOfRangeException>(() => Duration.FromDays(int.MaxValue));
-            Assert.Throws<ArgumentOutOfRangeException>(() => Duration.FromHours(int.MinValue));
-            Assert.Throws<ArgumentOutOfRangeException>(() => Duration.FromHours(int.MaxValue));
-            Assert.Throws<ArgumentOutOfRangeException>(() => Duration.FromMinutes(long.MinValue));
-            Assert.Throws<ArgumentOutOfRangeException>(() => Duration.FromMinutes(long.MaxValue));
-            Assert.Throws<ArgumentOutOfRangeException>(() => Duration.FromSeconds(long.MinValue));
-            Assert.Throws<ArgumentOutOfRangeException>(() => Duration.FromSeconds(long.MaxValue));
-            Assert.Throws<ArgumentOutOfRangeException>(() => Duration.FromMilliseconds(long.MinValue));
-            Assert.Throws<ArgumentOutOfRangeException>(() => Duration.FromMilliseconds(long.MaxValue));
-            // FromTicks never throws.
-            // No such concept as BigInteger.Min/MaxValue, so use the values we know to be just outside valid bounds.
-            Assert.Throws<ArgumentOutOfRangeException>(() => Duration.FromNanoseconds(Duration.MaxNanoseconds + 1));
-            Assert.Throws<ArgumentOutOfRangeException>(() => Duration.FromNanoseconds(Duration.MinNanoseconds - 1));
-        }
-
-        [Test]
         public void ConstituentParts_Positive()
         {
             var nanos = Duration.FromNanoseconds(NodaConstants.NanosecondsPerDay * 5 + 100);

@@ -4,7 +4,7 @@
 
 using System;
 using NUnit.Framework;
-using System.Numerics;
+using static NodaTime.NodaConstants;
 
 namespace NodaTime.Test
 {
@@ -134,7 +134,7 @@ namespace NodaTime.Test
         [TestCase(101, 10000, -800)]
         [TestCase(99, 10000, -1234)]
         [TestCase(101, 10000, -1234)]
-        public void OperatorMultiplication(int days, long nanos, long rightOperand)
+        public void OperatorMultiplication_Int64(int days, long nanos, long rightOperand)
         {
             // Rather than expressing an expected answer, just do a "long-hand" version
             // using ToBigIntegerNanoseconds and FromNanoseconds, trusting those two operations
@@ -143,6 +143,18 @@ namespace NodaTime.Test
             var actual = duration * rightOperand;
 
             var expected = Duration.FromNanoseconds(duration.ToBigIntegerNanoseconds() * rightOperand);
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        [TestCase(1, 0, 0.5, 0, NanosecondsPerDay / 2)]
+        [TestCase(1, 200, 2.5, 2, NanosecondsPerDay / 2 + 500)]
+        [TestCase(-2, NanosecondsPerDay / 2, 2.0, -3, 0)]
+        public void OperatorMultiplication_Double(int days, long nanos, double rightOperand, int expectedDays, long expectedNanos)
+        {
+            var start = new Duration(days, nanos);
+            var actual = start * rightOperand;
+            var expected = new Duration(expectedDays, expectedNanos);
             Assert.AreEqual(expected, actual);
         }
         
@@ -157,6 +169,7 @@ namespace NodaTime.Test
         {
             Assert.AreEqual(Duration.FromNanoseconds(-50000) * 1000, Duration.Multiply(Duration.FromNanoseconds(-50000), 1000));
             Assert.AreEqual(1000 * Duration.FromNanoseconds(-50000), Duration.Multiply(1000, Duration.FromNanoseconds(-50000)));
+            Assert.AreEqual(Duration.FromNanoseconds(-50000) * 1000d, Duration.Multiply(Duration.FromNanoseconds(-50000), 1000d));
         }
         #endregion
 
