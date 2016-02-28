@@ -144,7 +144,7 @@ namespace NodaTime.Test
         }
 
         [Test]
-        public void FromNanoSeconds_Int64()
+        public void FromNanoseconds_Int64()
         {
             Assert.AreEqual(Duration.OneDay - Duration.Epsilon, Duration.FromNanoseconds(NanosecondsPerDay - 1L));
             Assert.AreEqual(Duration.OneDay, Duration.FromNanoseconds(NanosecondsPerDay));
@@ -156,7 +156,7 @@ namespace NodaTime.Test
         }
 
         [Test]
-        public void FromNanoSeconds_BigInteger()
+        public void FromNanoseconds_BigInteger()
         {
             Assert.AreEqual(Duration.OneDay - Duration.Epsilon, Duration.FromNanoseconds(NanosecondsPerDay - BigInteger.One));
             Assert.AreEqual(Duration.OneDay, Duration.FromNanoseconds(NanosecondsPerDay + BigInteger.Zero));
@@ -168,7 +168,7 @@ namespace NodaTime.Test
         }
 
         [Test]
-        public void FromNanoSeconds_Double()
+        public void FromNanoseconds_Double()
         {
             Assert.AreEqual(Duration.OneDay - Duration.Epsilon, Duration.FromNanoseconds(NanosecondsPerDay - 1d));
             Assert.AreEqual(Duration.OneDay, Duration.FromNanoseconds(NanosecondsPerDay + 0d));
@@ -208,38 +208,36 @@ namespace NodaTime.Test
             Assert.AreEqual(ticks, nanoseconds.Ticks);
         }
 
+        private static void AssertOutOfRange<T>(Func<T, Duration> factoryMethod, params T[] values)
+        {
+            foreach (var value in values)
+            {
+                Assert.Throws<ArgumentOutOfRangeException>(() => factoryMethod(value));
+            }
+        }
+
         [Test]
         public void FactoryMethods_OutOfRange()
         {
             // Not checking the exact values here so much as that the exception is appropriate.
-            Assert.Throws<ArgumentOutOfRangeException>(() => Duration.FromDays(int.MinValue));
-            Assert.Throws<ArgumentOutOfRangeException>(() => Duration.FromDays(int.MaxValue));
-            Assert.Throws<ArgumentOutOfRangeException>(() => Duration.FromDays(double.MaxValue));
-            Assert.Throws<ArgumentOutOfRangeException>(() => Duration.FromDays(double.MaxValue));
-            Assert.Throws<ArgumentOutOfRangeException>(() => Duration.FromHours(int.MinValue));
-            Assert.Throws<ArgumentOutOfRangeException>(() => Duration.FromHours(int.MaxValue));
-            Assert.Throws<ArgumentOutOfRangeException>(() => Duration.FromHours(double.MinValue));
-            Assert.Throws<ArgumentOutOfRangeException>(() => Duration.FromHours(double.MaxValue));
-            Assert.Throws<ArgumentOutOfRangeException>(() => Duration.FromMinutes(long.MinValue));
-            Assert.Throws<ArgumentOutOfRangeException>(() => Duration.FromMinutes(long.MaxValue));
-            Assert.Throws<ArgumentOutOfRangeException>(() => Duration.FromMinutes(double.MinValue));
-            Assert.Throws<ArgumentOutOfRangeException>(() => Duration.FromMinutes(double.MaxValue));
-            Assert.Throws<ArgumentOutOfRangeException>(() => Duration.FromSeconds(long.MinValue));
-            Assert.Throws<ArgumentOutOfRangeException>(() => Duration.FromSeconds(long.MaxValue));
-            Assert.Throws<ArgumentOutOfRangeException>(() => Duration.FromSeconds(double.MinValue));
-            Assert.Throws<ArgumentOutOfRangeException>(() => Duration.FromSeconds(double.MaxValue));
-            Assert.Throws<ArgumentOutOfRangeException>(() => Duration.FromMilliseconds(long.MinValue));
-            Assert.Throws<ArgumentOutOfRangeException>(() => Duration.FromMilliseconds(long.MaxValue));
-            Assert.Throws<ArgumentOutOfRangeException>(() => Duration.FromMilliseconds(double.MinValue));
-            Assert.Throws<ArgumentOutOfRangeException>(() => Duration.FromMilliseconds(double.MaxValue));
+            AssertOutOfRange(Duration.FromDays, int.MinValue, int.MaxValue);
+            AssertOutOfRange(Duration.FromHours, int.MinValue, int.MaxValue);
+            AssertOutOfRange(Duration.FromMinutes, long.MinValue, long.MaxValue);
+            AssertOutOfRange(Duration.FromSeconds, long.MinValue, long.MaxValue);
+            AssertOutOfRange(Duration.FromMilliseconds, long.MinValue, long.MaxValue);
             // FromTicks(long) never throws.
-            Assert.Throws<ArgumentOutOfRangeException>(() => Duration.FromTicks(double.MinValue));
-            Assert.Throws<ArgumentOutOfRangeException>(() => Duration.FromTicks(double.MaxValue));
+
+            double[] bigBadDoubles = { double.NegativeInfinity, double.MinValue, double.MaxValue, double.PositiveInfinity, double.NaN };
+            AssertOutOfRange(Duration.FromDays, bigBadDoubles);
+            AssertOutOfRange(Duration.FromHours, bigBadDoubles);
+            AssertOutOfRange(Duration.FromMinutes, bigBadDoubles);
+            AssertOutOfRange(Duration.FromSeconds, bigBadDoubles);
+            AssertOutOfRange(Duration.FromMilliseconds,  bigBadDoubles);
+            AssertOutOfRange(Duration.FromTicks, bigBadDoubles);
+            AssertOutOfRange(Duration.FromNanoseconds, bigBadDoubles);
+            
             // No such concept as BigInteger.Min/MaxValue, so use the values we know to be just outside valid bounds.
-            Assert.Throws<ArgumentOutOfRangeException>(() => Duration.FromNanoseconds(Duration.MaxNanoseconds + 1));
-            Assert.Throws<ArgumentOutOfRangeException>(() => Duration.FromNanoseconds(Duration.MinNanoseconds - 1));
-            Assert.Throws<ArgumentOutOfRangeException>(() => Duration.FromNanoseconds(double.MinValue));
-            Assert.Throws<ArgumentOutOfRangeException>(() => Duration.FromNanoseconds(double.MaxValue));
+            AssertOutOfRange(Duration.FromNanoseconds, Duration.MinNanoseconds - 1, Duration.MaxNanoseconds + 1);
         }
     }
 }

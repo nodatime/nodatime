@@ -42,6 +42,13 @@ namespace NodaTime
     /// example, subtracting one <see cref="Instant"/> from another will always give a valid <c>Duration</c>. See the user guide
     /// for more details of the exact range, but it is not expected that this will ever be exceeded in normal code.
     /// </para>
+    /// <para>
+    /// Various operations accept or return a <see cref="Double"/>, in-keeping with durations often being natural lengths
+    /// of time which are imprecisely measured anyway. The implementation of these operations should never result in a not-a-number
+    /// or infinite value, nor do any operations accept not-a-number or infinite values. Additionally, operations involving
+    /// <c>Double</c> have initially been implemented fairly naïvely; it's possible that future releases will improve the accuracy
+    /// or performance (or both) of various operations.
+    /// </para>
     /// </remarks>
     /// <threadsafety>This type is an immutable value type. See the thread safety section of the user guide for more information.</threadsafety>
 #if !PCL
@@ -58,6 +65,8 @@ namespace NodaTime
         internal const int MinDays = ~MaxDays;
         internal static readonly BigInteger MinNanoseconds = (BigInteger)MinDays * NanosecondsPerDay;
         internal static readonly BigInteger MaxNanoseconds = (MaxDays + BigInteger.One) * NanosecondsPerDay - BigInteger.One;
+        private static readonly double MinDoubleNanoseconds = (double) MinNanoseconds;
+        private static readonly double MaxDoubleNanoseconds = (double) MaxNanoseconds;
 
         // The -1 here is to allow for the addition of nearly a whole day in the nanoOfDay field.
         private const long MaxDaysForLongNanos = (int) (long.MaxValue / NanosecondsPerDay) - 1;
@@ -493,7 +502,7 @@ namespace NodaTime
         public Duration Minus(Duration other) => this - other;
 
         /// <summary>
-        /// Implements the operator / (division).
+        /// Implements the operator / (division) to divide a duration by an <see cref="Int64"/>.
         /// </summary>
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
@@ -519,7 +528,42 @@ namespace NodaTime
         }
 
         /// <summary>
-        /// Divides a duration by a number. Friendly alternative to <c>operator/()</c>.
+        /// Implements the operator / (division) to divide a duration by a <see cref="Double"/>.
+        /// </summary>
+        /// <param name="left">The left hand side of the operator.</param>
+        /// <param name="right">The right hand side of the operator.</param>
+        /// <returns>A new <see cref="Duration"/> representing the result of dividing <paramref name="left"/> by
+        /// <paramref name="right"/>.</returns>
+        public static Duration operator /(Duration left, double right)
+        {
+            // Exclude infinity and NaN
+            Preconditions.CheckArgumentRange(nameof(right), right, double.MinValue, double.MaxValue);
+            if (right == 0d)
+            {
+                throw new DivideByZeroException("Attempt to divide a duration by zero.");
+            }
+            return FromNanoseconds(left.ToDoubleNanoseconds() / right);
+        }
+
+        /// <summary>
+        /// Implements the operator / (division) to divide one duration by another.
+        /// </summary>
+        /// <param name="left">The left hand side of the operator.</param>
+        /// <param name="right">The right hand side of the operator.</param>
+        /// <returns>The <see cref="Double"/> representing the result of dividing <paramref name="left"/> by
+        /// <paramref name="right"/>.</returns>
+        public static double operator /(Duration left, Duration right)
+        {
+            double rightNanos = right.ToDoubleNanoseconds();
+            if (rightNanos == 0d)
+            {
+                throw new DivideByZeroException("Attempt to divide by a zero duration.");
+            }
+            return left.ToDoubleNanoseconds() / rightNanos;
+        }
+
+        /// <summary>
+        /// Divides a duration by an <see cref="Int64"/>. Friendly alternative to <c>operator/()</c>.
         /// </summary>
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
@@ -527,8 +571,28 @@ namespace NodaTime
         /// <paramref name="right"/>.</returns>
         public static Duration Divide(Duration left, long right) => left / right;
 
+        /// <summary>
+        /// Divides a duration by a <see cref="Double"/>. Friendly alternative to <c>operator/()</c>.
+        /// </summary>
+        /// <param name="left">The left hand side of the operator.</param>
+        /// <param name="right">The right hand side of the operator.</param>
+        /// <returns>A new <see cref="Duration"/> representing the result of dividing <paramref name="left"/> by
+        /// <paramref name="right"/>.</returns>
+        public static Duration Divide(Duration left, double right) => left / right;
+
+        /// <summary>
+        /// Divides one duration by another. Friendly alternative to <c>operator/()</c>.
+        /// </summary>
+        /// <param name="left">The left hand side of the operator.</param>
+        /// <param name="right">The right hand side of the operator.</param>
+        /// <returns>The <see cref="Double"/> representing the result of dividing <paramref name="left"/> by
+        /// <paramref name="right"/>.</returns>
+        public static double Divide(Duration left, Duration right) => left / right;
+
         public static Duration operator *(Duration left, double right)
         {
+            // Exclude infinity and NaN
+            Preconditions.CheckArgumentRange(nameof(right), right, double.MinValue, double.MaxValue);
             // TODO: Optimize
             double originalNanos = (double) left.ToBigIntegerNanoseconds();
             double resultNanos = originalNanos * right;
@@ -951,6 +1015,7 @@ namespace NodaTime
         /// <returns>A duration with the given number of nanoseconds.</returns>
         public static Duration FromNanoseconds(double nanoseconds)
         {
+            Preconditions.CheckArgumentRange(nameof(nanoseconds), nanoseconds, MinDoubleNanoseconds, MaxDoubleNanoseconds);
             return nanoseconds >= long.MinValue && nanoseconds <= long.MaxValue
                 ? FromNanoseconds((long) nanoseconds) : FromNanoseconds((BigInteger) nanoseconds);
         }
