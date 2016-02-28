@@ -70,28 +70,56 @@ namespace NodaTime.Test
 
         #region operator /
         [Test]
-        public void OperatorDivision_ByNonZero()
+        [TestCase(1, 0, 2, 0, NanosecondsPerDay / 2)]
+        [TestCase(0, 3000000, 3000, 0, 1000)]
+        [TestCase(0, 3000000, 2000000, 0, 1)]
+        [TestCase(0, 3000000, -2000000, -1, NanosecondsPerDay - 1)]
+        public void OperatorDivision_Int64(int days, long nanoOfDay, long divisor, int expectedDays, long expectedNanoOfDay)
         {
-            Assert.AreEqual(1000, (threeMillion / 3000).ToInt64Nanoseconds(), "3000000 / 3000");
+            var duration = new Duration(days, nanoOfDay);
+            var actual = duration / divisor;
+            var expected = new Duration(expectedDays, expectedNanoOfDay);
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        [TestCase(2, 100, 2.0, 1, 50)]
+        [TestCase(2, NanosecondsPerDay / 2, -0.5, -5, 0)]
+        [TestCase(1, 0, 2, 0, NanosecondsPerDay / 2)]
+        public void OperatorDivision_Double(int days, long nanoOfDay, double divisor, int expectedDays, long expectedNanoOfDay)
+        {
+            var duration = new Duration(days, nanoOfDay);
+            var actual = duration / divisor;
+            var expected = new Duration(expectedDays, expectedNanoOfDay);
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        [TestCase(1, 0, 2, 0, 0.5)]
+        [TestCase(1, 0, 0, NanosecondsPerDay / 2, 2.0)]
+        [TestCase(-1, 0, 3, 0, -1 / 3.0)]
+        public void OperatorDivision_Duration(int dividendDays, long dividendNanoOfDay, int divisorDays, long divisorNanoOfDay, double expected)
+        {
+            var dividend = new Duration(dividendDays, dividendNanoOfDay);
+            var divisor = new Duration(divisorDays, divisorNanoOfDay);
+            var actual = dividend / divisor;
+            Assert.AreEqual(expected, actual);
         }
 
         [Test]
         public void OperatorDivision_ByZero_Throws()
         {
+            Assert.Throws<DivideByZeroException>(() => (threeMillion / 0d).ToString(), "3000000 / 0");
             Assert.Throws<DivideByZeroException>(() => (threeMillion / 0).ToString(), "3000000 / 0");
-        }
-
-        [Test]
-        public void OperatorDivision_Truncates()
-        {
-            Assert.AreEqual(1L, (threeMillion / 2000000).ToInt64Nanoseconds(), "3000000 / 2000000");
-            Assert.AreEqual(-1L, (threeMillion / -2000000).ToInt64Nanoseconds(), "3000000 / -2000000");
+            Assert.Throws<DivideByZeroException>(() => (threeMillion / Duration.Zero).ToString(), "3000000 / 0");
         }
 
         [Test]
         public void OperatorDivision_MethodEquivalent()
         {
             Assert.AreEqual(threeMillion / 2000000, Duration.Divide(threeMillion, 2000000));
+            Assert.AreEqual(threeMillion / 2000000d, Duration.Divide(threeMillion, 2000000d));
+            Assert.AreEqual(negativeFiftyMillion / threeMillion, Duration.Divide(negativeFiftyMillion, threeMillion));
         }
         #endregion
 

@@ -59,7 +59,7 @@ namespace NodaTime.Utility
 
         internal static void CheckArgumentRange([InvokerParameterName] string paramName, double value, double minInclusive, double maxInclusive)
         {
-            if (value < minInclusive || value > maxInclusive)
+            if (value < minInclusive || value > maxInclusive || double.IsNaN(value))
             {
 #if PCL
                 throw new ArgumentOutOfRangeException(paramName,
