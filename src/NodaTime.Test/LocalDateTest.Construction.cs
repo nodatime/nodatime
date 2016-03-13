@@ -108,52 +108,7 @@ namespace NodaTime.Test
             Assert.AreEqual(absolute, withEra);
         }
 
-        [Test]
-        public void FromWeekYearWeekAndDay_BeforeEpoch()
-        {
-            // January 1st 1960 was a Friday. Therefore the first week of week year started
-            // on Monday January 4th.
-            AssertFromWeekYearWeekAndDay(new LocalDate(1960, 1, 19), 1960, 3, IsoDayOfWeek.Tuesday);
-        }
-
-        [Test]
-        public void FromWeekYearWeekAndDay_AfterEpoch()
-        {
-            // According to http://whatweekisit.com anyway...
-            AssertFromWeekYearWeekAndDay(new LocalDate(2012, 10, 19), 2012, 42, IsoDayOfWeek.Friday);
-        }
-
-        [Test]
-        public void FromWeekYearWeekAndDay_EarlierWeekYearThanNormalYear()
-        {
-            // Saturday January 1st of 2011 is part of week 52 of week-year 2010.
-            AssertFromWeekYearWeekAndDay(new LocalDate(2011, 1, 1), 2010, 52, IsoDayOfWeek.Saturday);
-        }
-
-        [Test]
-        public void FromWeekYearWeekAndDay_LaterWeekYearThanNormalYear()
-        {
-            // Monday December 31st of 2012 is part of week 1 of week-year 2013.
-            AssertFromWeekYearWeekAndDay(new LocalDate(2012, 12, 31), 2013, 1, IsoDayOfWeek.Monday);
-        }
-
-        [Test]
-        public void FromWeekYearWeekAndDay_ValidWeek53()
-        {
-            // Sunday 2nd January 2005 is part of week 53 of week year 2004
-            AssertFromWeekYearWeekAndDay(new LocalDate(2005, 1, 2), 2004, 53, IsoDayOfWeek.Sunday);
-        }
-
-        private void AssertFromWeekYearWeekAndDay(LocalDate expected, int weekYear, int weekOfWeekYear, IsoDayOfWeek dayOfWeek)
-        {
-            var actual = LocalDate.FromWeekYearWeekAndDay(weekYear, weekOfWeekYear, dayOfWeek);
-            Assert.AreEqual(expected, actual);
-            // Check that reading the properties works too...
-            Assert.AreEqual(weekYear, actual.WeekYear);
-            Assert.AreEqual(weekOfWeekYear, actual.WeekOfWeekYear);
-            Assert.AreEqual(dayOfWeek, actual.IsoDayOfWeek);
-        }
-
+        // Most tests are in IsoBasedWeekYearRuleTest.
         [Test]
         public void FromWeekYearWeekAndDay_InvalidWeek53()
         {

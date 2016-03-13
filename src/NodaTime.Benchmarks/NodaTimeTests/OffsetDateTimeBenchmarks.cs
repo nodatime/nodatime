@@ -69,12 +69,6 @@ namespace NodaTime.Benchmarks.NodaTimeTests
         public int TickOfSecond() => Sample.TickOfSecond;
 
         [Benchmark]
-        public int WeekOfWeekYear() => Sample.WeekOfWeekYear;
-
-        [Benchmark]
-        public int WeekYear() => Sample.WeekYear;
-
-        [Benchmark]
         public int ClockHourOfHalfDay() => Sample.ClockHourOfHalfDay;
 
         [Benchmark]

@@ -173,31 +173,6 @@ namespace NodaTime
         /// <value>The week day of this offset date and time as a number.</value>
         public int DayOfWeek => Calendar.GetDayOfWeek(yearMonthDayCalendar.ToYearMonthDay());
 
-        /// <summary>
-        /// Gets the "week year" of this offset date and time.
-        /// </summary>
-        /// <remarks>
-        /// <para>
-        /// The week-year is the year that matches with the <see cref="WeekOfWeekYear"/> field.
-        /// In the standard ISO8601 week algorithm, the first week of the year
-        /// is that in which at least 4 days are in the year. As a result of this
-        /// definition, day 1 of the first week may be in the previous year.
-        /// The WeekYear allows you to query the effective year for that day.
-        /// </para>
-        /// <para>
-        /// For example, January 1st 2011 was a Saturday, so only two days of that week
-        /// (Saturday and Sunday) were in 2011. Therefore January 1st is part of
-        /// week 52 of WeekYear 2010. Conversely, December 31st 2012 is a Monday,
-        /// so is part of week 1 of WeekYear 2013.
-        /// </para>
-        /// </remarks>
-        /// <value>The "week year" of this offset date and time.</value>
-        public int WeekYear => Calendar.GetWeekYear(yearMonthDayCalendar.ToYearMonthDay());
-
-        /// <summary>Gets the week within the week-year. See <see cref="WeekYear"/> for more details.</summary>
-        /// <value>The week within the week-year.</value>
-        public int WeekOfWeekYear => Calendar.GetWeekOfWeekYear(yearMonthDayCalendar.ToYearMonthDay());
-
         /// <summary>Gets the year of this offset date and time within the era.</summary>
         /// <value>The year of this offset date and time within the era.</value>
         public int YearOfEra => Calendar.GetYearOfEra(yearMonthDayCalendar.Year);

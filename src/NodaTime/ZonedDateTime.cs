@@ -170,34 +170,9 @@ namespace NodaTime
         /// <value>The year of this zoned date and time within its era.</value>
         public int YearOfEra => offsetDateTime.YearOfEra;
 
-        /// <summary>
-        /// Gets the "week year" of this date and time.
-        /// </summary>
-        /// <remarks>
-        /// <para>
-        /// The WeekYear is the year that matches with the <see cref="WeekOfWeekYear"/> field.
-        /// In the standard ISO-8601 week algorithm, the first week of the year
-        /// is that in which at least 4 days are in the year. As a result of this
-        /// definition, day 1 of the first week may be in the previous year.
-        /// The WeekYear allows you to query the effective year for that day.
-        /// </para>
-        /// <para>
-        /// For example, January 1st 2011 was a Saturday, so only two days of that week
-        /// (Saturday and Sunday) were in 2011. Therefore January 1st is part of
-        /// week 52 of WeekYear 2010. Conversely, December 31st 2012 is a Monday,
-        /// so is part of week 1 of WeekYear 2013.
-        /// </para>
-        /// </remarks>
-        /// <value>The "week year" of this date and time.</value>
-        public int WeekYear => offsetDateTime.WeekYear;
-
         /// <summary>Gets the month of this zoned date and time within the year.</summary>
         /// <value>The month of this zoned date and time within the year.</value>
         public int Month => offsetDateTime.Month;
-
-        /// <summary>Gets the week within the week-year. See <see cref="WeekYear"/> for more details.</summary>
-        /// <value>The week within the week-year.</value>
-        public int WeekOfWeekYear => offsetDateTime.WeekOfWeekYear;
 
         /// <summary>Gets the day of this zoned date and time within the year.</summary>
         /// <value>The day of this zoned date and time within the year.</value>
