@@ -10,11 +10,13 @@ set SRCDIR=..\src
 set DATADIR=..\data
 set WWWDIR=..\www
 
-REM Rebuild just in case...
-msbuild "%SRCDIR%\NodaTime-All.sln" /property:Configuration=Release /target:Rebuild
+call dnu restore %SRCDIR%
 IF ERRORLEVEL 1 EXIT /B 1
 
-%SRCDIR%\NodaTime.TzdbCompiler\bin\Release\NodaTime.TzdbCompiler.exe -o %SRCDIR%\NodaTime\TimeZones\Tzdb.nzd -s http://www.iana.org/time-zones/repository/releases/tzdata%1.tar.gz -w %DATADIR%\cldr -t %SRCDIR%\NodaTime.Test\TestData\tzdb-dump.txt
+call dnu build %SRCDIR%\NodaTime.TzdbCompiler
+IF ERRORLEVEL 1 EXIT /B 1
+
+dnx -p %SRCDIR%\NodaTime.TzdbCompiler run -o %SRCDIR%\NodaTime\TimeZones\Tzdb.nzd -s http://www.iana.org/time-zones/repository/releases/tzdata%1.tar.gz -w %DATADIR%\cldr -t %SRCDIR%\NodaTime.Test\TestData\tzdb-dump.txt
 
 copy %SRCDIR%\NodaTime\TimeZones\Tzdb.nzd %WWWDIR%\tzdb\tzdb%1.nzd
 echo http://nodatime.org/tzdb/tzdb%1.nzd > %WWWDIR%\tzdb\latest.txt
