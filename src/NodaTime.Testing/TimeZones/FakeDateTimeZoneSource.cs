@@ -47,7 +47,7 @@ namespace NodaTime.Testing.TimeZones
         /// <inheritdoc />
         public DateTimeZone ForId(string id)
         {
-            Preconditions.CheckNotNull(id, "id");
+            Preconditions.CheckNotNull(id, nameof(id));
             DateTimeZone zone;
             if (zones.TryGetValue(id, out zone))
             {
@@ -56,10 +56,19 @@ namespace NodaTime.Testing.TimeZones
             throw new ArgumentException("Unknown ID: " + id);
         }
 
-        /// <inheritdoc />
+        // TODO: Work out why inheritdoc doesn't work here. What's special about this method?
+
+        /// <summary>
+        /// Returns this source's corresponding ID for the given BCL time zone.
+        /// </summary>
+        /// <param name="timeZone">The BCL time zone, which must be a known system time zone.</param>
+        /// <returns>
+        /// The ID for the given system time zone for this source, or null if the system time
+        /// zone has no mapping in this source.
+        /// </returns>
         public string MapTimeZoneId(TimeZoneInfo timeZone)
         {
-            Preconditions.CheckNotNull(timeZone, "timeZone");
+            Preconditions.CheckNotNull(timeZone, nameof(timeZone));
 #if PCL
             string id = timeZone.StandardName;
 #else
@@ -116,7 +125,7 @@ namespace NodaTime.Testing.TimeZones
             /// <param name="zone">The zone to add.</param>
             public void Add(DateTimeZone zone)
             {
-                Preconditions.CheckNotNull(zone, "zone");
+                Preconditions.CheckNotNull(zone, nameof(zone));
                 zones.Add(zone);
             }
 
