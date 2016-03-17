@@ -14,31 +14,38 @@ IF NOT EXIST %DESTDIR% mkdir %DESTDIR%
 
 REM Really force a clean build...
 rmdir /s /q %SRCDIR%\NodaTime\bin\Release
-rmdir /s /q %SRCDIR%\NodaTime\bin\"Release Portable"
 
 REM Restore required nuget packages
 nuget restore Tools.sln
 nuget restore ..\src\NodaTime-All.sln
 
-msbuild Tools.sln /property:Configuration=Release
-IF ERRORLEVEL 1 EXIT /B 1
+REM dnu pack probably builds first, but...
+call dnu build ..\src\NodaTime
+call dnu build ..\src\NodaTime.Serialization.JsonNet
+call dnu build ..\src\NodaTime.Testing
 
-REM Get the PCL version ready to build...
-BuildProjectVariants\bin\Release\BuildProjectVariants ..\src
+call dnu pack ..\src\NodaTime --configuration Release
+call dnu pack ..\src\NodaTime.Serialization.JsonNet --configuration Release
+call dnu pack ..\src\NodaTime.Testing --configuration Release
+
+msbuild Tools.sln /property:Configuration=Release
 IF ERRORLEVEL 1 EXIT /B 1
 
 REM Do the actual builds
 msbuild %SRCDIR%\NodaTime-Core.sln /property:Configuration=Release
 IF ERRORLEVEL 1 EXIT /B 1
-msbuild %SRCDIR%\NodaTime-Core-pcl.sln /property:Configuration=Release
-IF ERRORLEVEL 1 EXIT /B 1
 
-set REL=%SRCDIR%\NodaTime\bin\Release
-set TESTING_REL=%SRCDIR%\NodaTime.Testing\bin\Release
-set JSONNET_REL=%SRCDIR%\NodaTime.Serialization.JsonNet\bin\Release
+set REL=%SRCDIR%\NodaTime\bin\Release\net451
+set TESTING_REL=%SRCDIR%\NodaTime.Testing\bin\Release\net451
+set JSONNET_REL=%SRCDIR%\NodaTime.Serialization.JsonNet\bin\Release\net451
 set ANNOTATOR=DocumentAnnotations\bin\Release\DocumentAnnotations.exe
 set VERSION_DOC=DocumentVersions\bin\Release\DocumentVersions
 set MREFBUILDER="c:\Program Files (x86)\Sandcastle\ProductionTools\mrefbuilder.exe"
+
+REM Temporary hack until we work out something better...
+copy %REL%\NodaTime.dll %TESTING_REL%
+copy %REL%\NodaTime.dll %JSONNET_REL%
+copy %USERPROFILE%\.dnx\Packages\Newtonsoft.Json\8.0.1\lib\net45\Newtonsoft.Json.dll %JSONNET_REL%
 
 %MREFBUILDER% %REL%\NodaTime.dll /out:%REL%\NodaTime-Ref.xml
 IF ERRORLEVEL 1 EXIT /B 1
@@ -54,11 +61,11 @@ IF ERRORLEVEL 1 EXIT /B 1
 %ANNOTATOR% %JSONNET_REL%\NodaTime.Serialization.JsonNet.dll %JSONNET_REL%\NodaTime.Serialization.JsonNet.xml %JSONNET_REL%\NodaTime.Serialization.JsonNet.xml
 IF ERRORLEVEL 1 EXIT /B 1
 
-%VERSION_DOC% %REL%\NodaTime.xml %REL%\NodaTime-Ref.xml "%SRCDIR%\NodaTime\bin\Release Portable\NodaTime.xml" %DATADIR%\versionxml %DESTDIR%\history.txt
+%VERSION_DOC% %REL%\NodaTime.xml %REL%\NodaTime-Ref.xml "%SRCDIR%\NodaTime\bin\Release\dotnet5.4\NodaTime.xml" %DATADIR%\versionxml %DESTDIR%\history.txt
 IF ERRORLEVEL 1 EXIT /B 1
-%VERSION_DOC% %TESTING_REL%\NodaTime.Testing.xml %TESTING_REL%\NodaTime.Testing-Ref.xml "%SRCDIR%\NodaTime.Testing\bin\Release Portable\NodaTime.Testing.xml" %DATADIR%\versionxml %DESTDIR%\history-testing.txt
+%VERSION_DOC% %TESTING_REL%\NodaTime.Testing.xml %TESTING_REL%\NodaTime.Testing-Ref.xml "%SRCDIR%\NodaTime.Testing\bin\Release\dotnet5.4\NodaTime.Testing.xml" %DATADIR%\versionxml %DESTDIR%\history-testing.txt
 IF ERRORLEVEL 1 EXIT /B 1
-%VERSION_DOC% %JSONNET_REL%\NodaTime.Serialization.JsonNet.xml %JSONNET_REL%\NodaTime.Serialization.JsonNet-Ref.xml "%SRCDIR%\NodaTime.Serialization.JsonNet\bin\Release Portable\NodaTime.Serialization.JsonNet.xml" %DATADIR%\versionxml %DESTDIR%\history-jsonnet.txt
+%VERSION_DOC% %JSONNET_REL%\NodaTime.Serialization.JsonNet.xml %JSONNET_REL%\NodaTime.Serialization.JsonNet-Ref.xml "%SRCDIR%\NodaTime.Serialization.JsonNet\bin\Release\dotnet5.4\NodaTime.Serialization.JsonNet.xml" %DATADIR%\versionxml %DESTDIR%\history-jsonnet.txt
 IF ERRORLEVEL 1 EXIT /B 1
 
 REM Prepare the Sandcastle style, by copying then customizing the VS2010 style
