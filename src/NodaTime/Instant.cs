@@ -540,14 +540,7 @@ namespace NodaTime
         /// </summary>
         /// <param name="julianDate">The number of days since the Julian Epoch to convert into an <see cref="Instant"/>.</param>
         /// <returns>An <see cref="Instant"/> value which is <paramref name="julianDate"/> days after the Julian Epoch.</returns>
-        public static Instant FromJulianDate(double julianDate)
-        {
-            // TODO(2.0): Revisit this when we have more duration code that can cope with double.
-            int days = (int) julianDate;
-            double subDay = julianDate - days;
-            long nanoOfDay = (long) (subDay * NanosecondsPerDay);
-            return NodaConstants.JulianEpoch + Duration.FromDays(days) + Duration.FromNanoseconds(nanoOfDay);
-        }
+        public static Instant FromJulianDate(double julianDate) => JulianEpoch + Duration.FromDays(julianDate);
 
 
         /// <summary>
