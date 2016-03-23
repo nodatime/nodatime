@@ -17,5 +17,6 @@ script:
   - dnu restore
   - dnu build src/NodaTime
   - dnu build src/NodaTime.Test
+  - dnu build 1.x-src/NodaTime.Tzdb
   - dnx -p src/NodaTime.Serialization.Test test
   - dnx -p src/NodaTime.Test test "--where=cat != Slow && cat != Overflow"
