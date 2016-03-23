@@ -107,7 +107,7 @@ namespace NodaTime.TimeZones
             }
             catch (TimeZoneNotFoundException)
             {                
-                throw new ArgumentException(id + " is not a system time zone ID", "id");
+                throw new ArgumentException(id + " is not a system time zone ID", nameof(id));
             }
         }
 
