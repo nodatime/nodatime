@@ -185,6 +185,16 @@ namespace NodaTime.Test.Text
                 return;
             }
 
+            // The BCL never seems to use abbreviated month genitive names.
+            // I think it's reasonable that we do. Hmm.
+            // See https://github.com/nodatime/nodatime/issues/377
+            if ((patternText == "G" || patternText == "g") &&
+                (culture.DateTimeFormat.ShortDatePattern.Contains("MMM") && !culture.DateTimeFormat.ShortDatePattern.Contains("MMMM")) &&
+                culture.DateTimeFormat.AbbreviatedMonthGenitiveNames[SampleLocalDateTime.Month - 1] != culture.DateTimeFormat.AbbreviatedMonthNames[SampleLocalDateTime.Month - 1])
+            {
+                return;
+            }
+            
             // Formatting a DateTime with an always-invariant pattern (round-trip, sortable) converts to the ISO
             // calendar in .NET (which is reasonable, as there's no associated calendar).
             // We should use the Gregorian calendar for those tests.

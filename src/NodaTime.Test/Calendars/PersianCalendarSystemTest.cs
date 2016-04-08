@@ -8,51 +8,10 @@ using NUnit.Framework;
 
 namespace NodaTime.Test.Calendars
 {
-    /// <summary>
-    /// Tests for PersianYearMonthDayCalculator via the Persian CalendarSystem.
-    /// </summary>
-    [TestFixture]
-    public class PersianCalendarSystemTest
-    {
-        [Test]
-        public void IsLeapYear()
-        {
-            var bcl = new PersianCalendar();
-            var noda = CalendarSystem.GetPersianCalendar();
-
-            for (int year = 1; year < 9379; year++)
-            {
-                Assert.AreEqual(bcl.IsLeapYear(year), noda.IsLeapYear(year));
-            }
-        }
-
-        /// <summary>
-        /// This tests every day for 9000 (ISO) years, testing various aspects of each date.
-        /// </summary>
-        [Test, Timeout(300000)] // Can take a long time under NCrunch.
-        public void BclThroughHistory()
-        {
-            Calendar bcl = new PersianCalendar();
-            CalendarSystem noda = CalendarSystem.GetPersianCalendar();
-
-            for (int year = 1; year < 9378; year++)
-            {
-                for (int month = 1; month < 13; month++)
-                {
-                    Assert.AreEqual(bcl.GetDaysInMonth(year, month), noda.GetDaysInMonth(year, month),
-                        "Year: {0}; Month: {1}", year, month);
-                    for (int day = 1; day < bcl.GetDaysInMonth(year, month); day++)
-                    {
-                        DateTime bclDate = new DateTime(year, month, day, bcl);
-                        LocalDate nodaDate = new LocalDate(year, month, day, noda);
-                        Assert.AreEqual(bclDate, nodaDate.AtMidnight().ToDateTimeUnspecified());
-                        Assert.AreEqual(nodaDate, LocalDateTime.FromDateTime(bclDate).WithCalendar(noda).Date);
-                        Assert.AreEqual(year, nodaDate.Year);
-                        Assert.AreEqual(month, nodaDate.Month);
-                        Assert.AreEqual(day, nodaDate.Day);
-                    }
-                }
-            }
-        }
-    }
+    // No tests here any more!
+    // .NET changed (in 4.6?) to use a more complicated algorithm than in earlier versions.
+    // Noda Time 2.0 supports that via stored data, as well as the earlier algorithm,
+    // but we're not changing 1.x. Unfortunately that means we don't have useful
+    // tests any more, as we were only testing against the BCL. This should be fine
+    // so long as we don't need to change PersianYearMonthDayCalculator in the 1.x line.
 }

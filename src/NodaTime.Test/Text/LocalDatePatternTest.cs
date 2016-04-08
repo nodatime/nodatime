@@ -223,13 +223,26 @@ namespace NodaTime.Test.Text
 
         internal static IEnumerable<Data> ParseData = ParseOnlyData.Concat(FormatAndParseData);
         internal static IEnumerable<Data> FormatData = FormatOnlyData.Concat(FormatAndParseData);
-        
+
+        private static readonly string[] KnownBrokenCultureIds = { "byn-ER", "lo-LA", "ti-ER", "ti-ET", "tig-ER", "wal-ET" };
+
         [Test]
         [TestCaseSource(typeof(Cultures), "AllCultures")]
         public void BclLongDatePatternGivesSameResultsInNoda(CultureInfo culture)
         {
             // See https://bugzilla.xamarin.com/show_bug.cgi?id=11363
             if (TestHelper.IsRunningOnMono && culture.IetfLanguageTag == "mt-MT")
+            {
+                return;
+            }
+
+            // We got year-of-era and year the wrong way round in 1.x.
+            // See https://github.com/nodatime/nodatime/issues/374
+            // It would be a breaking change to make the 2.0 change in 1.x; we could
+            // potentially change the behaviour to allow the given cultures to work
+            // by interpreting YYYY as yyyy if there's no era specifier, but for the moment
+            // these are just expected failures :(
+            if (KnownBrokenCultureIds.Contains(culture.IetfLanguageTag))
             {
                 return;
             }
@@ -245,6 +258,15 @@ namespace NodaTime.Test.Text
 
         private void AssertBclNodaEquality(CultureInfo culture, string patternText)
         {
+            // The BCL never seems to use abbreviated month genitive names.
+            // I think it's reasonable that we do. Hmm.
+            // See https://github.com/nodatime/nodatime/issues/377
+            if (patternText.Contains("MMM") && !patternText.Contains("MMMM") &&
+                culture.DateTimeFormat.AbbreviatedMonthGenitiveNames[SampleLocalDate.Month - 1] != culture.DateTimeFormat.AbbreviatedMonthNames[SampleLocalDate.Month - 1])
+            {
+                return;
+            }
+
             var pattern = LocalDatePattern.Create(patternText, culture);
             var calendarSystem = CalendarSystemForCalendar(culture.Calendar);
             if (calendarSystem == null)

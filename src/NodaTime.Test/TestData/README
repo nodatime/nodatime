@@ -2,10 +2,8 @@ This directory contains the following files, used by
 TzdbDateTimeZoneSourceTest.
 
 Tzdb.resx
-  The current version of TZDB compiled using the current version of
-  TzdbCompiler with the ResX output format. A test verifies that this is
-  equivalent to the stream format shipped with the main Noda Time assembly,
-  in src/NodaTime/TimeZones/Tzdb.nzd.
+  This was removed for 1.3.2, as we're no longer building the resx
+  file in the master (2.x) branch.
 
 Tzdb2012iFromNodaTime1.0.resx
   TZDB 2012i, as distributed with Noda Time 1.0 (in ResX format, which was

@@ -119,30 +119,6 @@ namespace NodaTime.Test.TimeZones
             Assert.Throws<InvalidOperationException>(() => source.ZoneLocations.GetHashCode());
         }
 
-        /// <summary>
-        /// Make sure we can still load the latest version of TZDB as a resource file, and
-        /// that the zones are equivalent to the stream version. (This requires that we
-        /// replace both files each time we rebuild, of course.)
-        /// </summary>
-        [Test]
-        public void ResourceZoneEquivalence()
-        {
-            var streamSource = TzdbDateTimeZoneSource.Default;
-#pragma warning disable 0618
-            var resourceSource = new TzdbDateTimeZoneSource("NodaTime.Test.TestData.Tzdb",
-                Assembly.GetExecutingAssembly());
-#pragma warning restore 0618
-            Assert.AreEqual(streamSource.VersionId, resourceSource.VersionId);
-            CollectionAssert.AreEquivalent(streamSource.GetIds(), resourceSource.GetIds());
-
-            var interval = new Interval(Instant.FromUtc(1850, 1, 1, 0, 0), Instant.FromUtc(2050, 1, 1, 0, 0));
-            var comparer = ZoneEqualityComparer.ForInterval(interval).WithOptions(ZoneEqualityComparer.Options.StrictestMatch);
-            foreach (var id in streamSource.GetIds())
-            {
-                Assert.IsTrue(comparer.Equals(streamSource.ForId(id), resourceSource.ForId(id)),
-                    "Zone {0} is equal under stream and resource formats", id);
-            }
-        }
 #endif
 
         /// <summary>
@@ -222,7 +198,8 @@ namespace NodaTime.Test.TimeZones
             Assert.AreEqual("", france.Comment);
         }
 
-        // Input line: CA	+744144-0944945	America/Resolute	Central Time - Resolute, Nunavut
+        // Input line: CA	+744144-0944945	America/Resolute	Central - NU (Resolute)
+        // (Note: prior to 2016b, this was "Central Time - Resolute, Nunavut".)
         // (Note: prior to 2014f, this was "Central Standard Time - Resolute, Nunavut".)
         [Test]
         public void ZoneLocations_ContainsResolute()
@@ -234,7 +211,7 @@ namespace NodaTime.Test.TimeZones
             Assert.AreEqual(-94.82916, resolute.Longitude, 0.00055);
             Assert.AreEqual("Canada", resolute.CountryName);
             Assert.AreEqual("CA", resolute.CountryCode);
-            Assert.AreEqual("Central Time - Resolute, Nunavut", resolute.Comment);
+            Assert.AreEqual("Central - NU (Resolute)", resolute.Comment);
         }
 
         [Test]
@@ -255,12 +232,9 @@ namespace NodaTime.Test.TimeZones
         [TestCaseSource(typeof(TimeZoneInfo), "GetSystemTimeZones")]
         public void GuessZoneIdByTransitionsUncached(TimeZoneInfo bclZone)
         {
-            // As of October 17th 2013, the Windows time zone database hasn't noticed that
-            // Morocco delayed the DST transition in 2013, so we end up with UTC. It's
-            // annoying, but it's not actually a code issue. Just ignore it for now. We
-            // should check this periodically and remove the hack when it works again.
-            // Likewise Libya has somewhat odd representation in the BCL. Worth looking at more closely later.
-            if (bclZone.Id == "Morocco Standard Time" || bclZone.Id == "Libya Standard Time")
+            // As of April 8th 2016, the Windows time zone database hasn't noticed that
+            // Azerbaijan is no longer observing DST.
+            if (bclZone.Id == "Azerbaijan Standard Time")
             {
                 return;
             }
