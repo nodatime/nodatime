@@ -262,23 +262,13 @@ namespace NodaTime.Test.TimeZones
         [TestCaseSource(nameof(SystemTimeZones))]
         public void GuessZoneIdByTransitionsUncached(TimeZoneInfo bclZone)
         {
-            // As of October 17th 2013, the Windows time zone database hasn't noticed that
-            // Morocco delayed the DST transition in 2013, so we end up with UTC. It's
-            // annoying, but it's not actually a code issue. Just ignore it for now. We
-            // should check this periodically and remove the hack when it works again.
-            // Likewise Libya has somewhat odd representation in the BCL. Worth looking at more closely later.
-            if (bclZone.Id == "Morocco Standard Time" || bclZone.Id == "Libya Standard Time")
+            // As of April 8th 2016, the Windows time zone database hasn't noticed that
+            // Azerbaijan is no longer observing DST.
+            if (bclZone.Id == "Azerbaijan Standard Time")
             {
                 return;
             }
-            // See https://github.com/nodatime/nodatime/issues/440
-            // This time zone was apparently a mistake in both IANA and Windows; it's now effectively
-            // been removed from IANA (America/Santa_Isabel is now a link to America/Tijuana) but while Windows
-            // has it, we know we won't get a decent answer.
-            if (bclZone.Id == "Pacific Standard Time (Mexico)")
-            {
-                return;
-            }
+
             string id = TzdbDateTimeZoneSource.Default.GuessZoneIdByTransitionsUncached(bclZone);
 
             // Unmappable zones may not be mapped, or may be mapped to something reasonably accurate.
