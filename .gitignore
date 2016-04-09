@@ -67,3 +67,5 @@ nuget/**
 # Generated packages/projects
 /src/NodaTime-Core-*.sln
 /src/**/*-*.csproj
+
+/docs

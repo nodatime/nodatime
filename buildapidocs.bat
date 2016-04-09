@@ -6,6 +6,10 @@ IF NOT EXIST "%SHFBROOT%\NodaTime.presentation" (
   exit /b 1
 )
 
+REM This used to be where we built all the docs; we still use it for
+REM history generation. Easiest to leave it for now.
+IF NOT EXIST docs mkdir docs
+
 REM Really force a clean build...
 rmdir /s /q src\NodaTime\bin\Release
 rmdir /s /q src\NodaTime\bin\"Release Portable"
