@@ -1,0 +1,15 @@
+# TODO: Run the other unit tests too
+# The framework profile and version is required as currently we target .NET 3.5,
+# which Mono doesn't support as a profile.
+
+language: csharp
+
+install:
+  - nuget install NUnit.Runners -Version 2.6.4 -OutputDirectory testrunner
+
+script:
+  - xbuild /p:Configuration=Release src/NodaTime-All.sln /p:TargetFrameworkProfile='' /p:TargetFrameworkVersion='v4.0'
+  - mono ./testrunner/NUnit.Runners.2.6.4/tools/nunit-console.exe src/NodaTime.Test/bin/Release/NodaTime.Test.dll
+
+mono:
+  - latest

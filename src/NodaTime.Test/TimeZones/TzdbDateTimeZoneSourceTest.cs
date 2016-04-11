@@ -8,12 +8,15 @@ using System.Linq;
 using System.Reflection;
 using NodaTime.TimeZones;
 using NUnit.Framework;
+using System.Collections.Generic;
 
 namespace NodaTime.Test.TimeZones
 {
     [TestFixture]
     public class TzdbDateTimeZoneSourceTest
     {
+        private static readonly List<TimeZoneInfo> SystemTimeZones = TimeZoneInfo.GetSystemTimeZones().ToList();
+
         [Test]
         [TestCase("UTC", "Etc/GMT")]
         [TestCase("GMT Standard Time", "Europe/London")]
@@ -228,8 +231,10 @@ namespace NodaTime.Test.TimeZones
             StringAssert.StartsWith("TZDB: " + source.TzdbVersion, source.VersionId);
         }
 
+        // We should be able to use TestCaseSource to call TimeZoneInfo.GetSystemTimeZones directly,
+        // but that appears to fail under Mono.
         [Test]
-        [TestCaseSource(typeof(TimeZoneInfo), "GetSystemTimeZones")]
+        [TestCaseSource(nameof(SystemTimeZones))]
         public void GuessZoneIdByTransitionsUncached(TimeZoneInfo bclZone)
         {
             // As of April 8th 2016, the Windows time zone database hasn't noticed that

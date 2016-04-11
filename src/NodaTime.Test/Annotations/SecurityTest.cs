@@ -26,7 +26,8 @@ namespace NodaTime.Test.Annotations
                     var methodCount = map.InterfaceMethods.Length;
                     for (int i = 0; i < methodCount; i++)
                     {
-                        if (map.InterfaceMethods[i].IsDefined(typeof(SecurityCriticalAttribute), false) &&
+                        if (map.TargetMethods[i].DeclaringType == type &&
+                            map.InterfaceMethods[i].IsDefined(typeof(SecurityCriticalAttribute), false) &&
                             !map.TargetMethods[i].IsDefined(typeof(SecurityCriticalAttribute), false))
                         {
                             violations.Add(type.FullName + "/" + map.TargetMethods[i].Name);

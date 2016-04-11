@@ -364,16 +364,15 @@ namespace NodaTime.Test
                 stream.Position = 0;
                 var doc = XElement.Load(stream);
                 doc.Element("value").ReplaceWith(XElement.Parse(invalidXml));
-                // .NET wraps any exceptions in InvalidOperationException; Mono doesn't.
-                if (IsRunningOnMono)
+                // Sometimes exceptions are wrapped in InvalidOperationException, sometimes they're not. It's not
+                // always easy to predict. (.NET always does; old Mono never does; new Mono sometimes does - I think.)
+                // Odd that I can't just specify "well it throws something, I'll check the details later". Oh well.
+                var exception = Assert.Throws(Is.InstanceOf(typeof(Exception)), () => serializer.Deserialize(doc.CreateReader()));
+                if (exception is InvalidOperationException)
                 {
-                    Assert.Throws(expectedExceptionType, () => serializer.Deserialize(doc.CreateReader()));
+                    exception = exception.InnerException;
                 }
-                else
-                {
-                    var exception = Assert.Throws<InvalidOperationException>(() => serializer.Deserialize(doc.CreateReader()));
-                    Assert.IsInstanceOf(expectedExceptionType, exception.InnerException);                    
-                }
+                Assert.IsInstanceOf(expectedExceptionType, exception);
             }
         }
 
