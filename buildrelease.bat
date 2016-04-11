@@ -5,7 +5,7 @@ if "%1" == "" (
   goto end
 )
 
-if NOT EXIST "..\NodaTime Release.snk" (
+if NOT EXIST "NodaTime Release.snk" (
   echo Copy NodaTime Release.snk into the root directory first.
   goto end
 )
