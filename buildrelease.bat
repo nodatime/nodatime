@@ -21,7 +21,7 @@ REM without checking out the branch again.
 git checkout %VERSION%
 IF ERRORLEVEL 1 EXIT /B 1
 
-git archive %VERSION% -o build/NodaTime-%VERSION%-src.zip --prefix=NodaTime-%VERSION%-src/
+git archive %VERSION% -o NodaTime-%VERSION%-src.zip --prefix=NodaTime-%VERSION%-src/
 
 set STAGING=tmp\NodaTime-%VERSION%
 IF EXIST %STAGING% rmdir /s /q %STAGING%
