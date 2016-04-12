@@ -236,12 +236,15 @@ namespace NodaTime.Test.Text
                 return;
             }
 
-            // We got year-of-era and year the wrong way round in 1.x.
+            // We got year-of-era and year wrong in 1.x.
             // See https://github.com/nodatime/nodatime/issues/374
-            // It would be a breaking change to make the 2.0 change in 1.x; we could
-            // potentially change the behaviour to allow the given cultures to work
-            // by interpreting YYYY as yyyy if there's no era specifier, but for the moment
-            // these are just expected failures :(
+            // Basically, in 1.x we treat "y" as absolute year and "Y" as year-of-era.
+            // In 2.0 we treat "y" as year-of-era and "u" as absolute year.
+            // In the "known broken cultures" the format contains an era specifier (g)
+            // which we deem to be invalid due to what 1.x thinks is a lack of a year-of-era specifier.
+            // We could potentially fix this for 1.x by only complaining if we're asked to
+            // format a value where year-of-era and year are different, and ditto for parsing.
+            // At the moment, we're living with the breakage.
             if (KnownBrokenCultureIds.Contains(culture.IetfLanguageTag))
             {
                 return;
