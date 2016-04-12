@@ -5,7 +5,7 @@ if "%1" == "" (
   goto end
 )
 
-if NOT EXIST "..\NodaTime Release.snk" (
+if NOT EXIST "NodaTime Release.snk" (
   echo Copy NodaTime Release.snk into the root directory first.
   goto end
 )
@@ -21,7 +21,7 @@ REM without checking out the branch again.
 git checkout %VERSION%
 IF ERRORLEVEL 1 EXIT /B 1
 
-git archive %VERSION% -o build/NodaTime-%VERSION%-src.zip --prefix=NodaTime-%VERSION%-src/
+git archive %VERSION% -o NodaTime-%VERSION%-src.zip --prefix=NodaTime-%VERSION%-src/
 
 set STAGING=tmp\NodaTime-%VERSION%
 IF EXIST %STAGING% rmdir /s /q %STAGING%
@@ -33,8 +33,8 @@ call buildofflineguide.bat %1
 call buildnuget
 IF ERRORLEVEL 1 EXIT /B 1
 
-xcopy /q /s /i apidocs %STAGING%\docs\api
-xcopy /q /s /i docs\_site %STAGING%\docs\userguide
+xcopy /q /s /i docs\api %STAGING%\docs\api
+xcopy /q /s /i tmpdocs\_site %STAGING%\docs\userguide
 copy AUTHORS.txt %STAGING%
 copy LICENSE.txt %STAGING%
 copy NOTICE.txt %STAGING%
