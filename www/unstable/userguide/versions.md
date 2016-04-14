@@ -65,6 +65,16 @@ Other:
   effectively returning the instant that would have occurred had the gap not existed.  This was added to support the new behavior of
   the "lenient" resolver (see above), but can also be used separately.
 
+## 1.3.2, released 2016-04-14 with tzdb 2016c
+
+Only one code change, primarily an update to TZDB 2016c.
+
+Bug fixes:
+
+- When parsing a date, correctly return a failed parse result when
+  provided a month number of 0, instead of throwing an exception
+  ([issue 414][]).
+
 ## 1.3.1, released 2015-03-06 with tzdb 2015a
 
 Bug fixes:
