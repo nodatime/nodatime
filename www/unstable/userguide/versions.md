@@ -9,6 +9,16 @@ User-visible changes from 1.0.0-beta1 onwards. See the
 [project repository](https://github.com/nodatime/nodatime) for more
 details.
 
+## 1.3.2, released 2016-04-14 with tzdb 2016c
+
+Only one code change, primarily an update to TZDB 2016c.
+
+Bug fixes:
+
+- When parsing a date, correctly return a failed parse result when
+  provided a month number of 0, instead of throwing an exception
+  ([issue 414][]).
+
 ## 1.3.1, released 2015-03-06 with tzdb 2015a
 
 Bug fixes:
