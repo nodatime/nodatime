@@ -19,7 +19,7 @@ are currently out of scope for Noda Time.
 
 Noda Time supports the calendars listed below. If you would like us to consider adding support for
 another calendar system, please contact [the mailing list](http://groups.google.com/group/noda-time) or
-[file a bug](https://code.google.com/p/noda-time/issues/list).
+[file a bug](https://github.com/nodatime/nodatime/issues).
 
 ISO
 ===
