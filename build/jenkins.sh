@@ -1,6 +1,11 @@
 #!/bin/bash
 
 cd `dirname $0`/..
+
+# dnx works without an alias, but for dnu
+# we need to explicitly make the .cmd file available.
+alias dnu=dnu.cmd
+
 dnu restore
 dnu build src/NodaTime
 dnu build src/NodaTime.Testing
