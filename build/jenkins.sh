@@ -4,7 +4,9 @@ cd `dirname $0`/..
 
 # dnx works without an alias, but for dnu
 # we need to explicitly make the .cmd file available.
-alias dnu=dnu.cmd
+# ... and for some reason, it isn't found on the path. That's just weird,
+# but let's get it building to start with...
+alias dnu=/c/Users/skeet/.dnx/runtimes/dnx-clr-win-x86.1.0.0-rc1-update2/bin/dnu.cmd
 
 dnu restore
 dnu build src/NodaTime
