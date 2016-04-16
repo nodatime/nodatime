@@ -24,5 +24,5 @@ dnx -p src/NodaTime.TzdbCompiler.Test test
 
 # Temporarily go back to using batch files...
 pushd build
-buildweb.bat $WEBSITE
+cmd //c buildweb.bat $WEBSITE
 popd
