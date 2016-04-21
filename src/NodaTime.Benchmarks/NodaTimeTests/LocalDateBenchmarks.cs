@@ -32,16 +32,10 @@ namespace NodaTime.Benchmarks.NodaTimeTests
         }
 
         [Benchmark]
-        public LocalDate Construction()
-        {
-            return new LocalDate(2009, 12, 26);
-        }
+        public LocalDate Construction() => new LocalDate(2009, 12, 26);
 
         [Benchmark]
-        public LocalDate ConstructionOutsidePrecomputedRange()
-        {
-            return new LocalDate(1009, 12, 26);
-        }
+        public LocalDate ConstructionOutsidePrecomputedRange() => new LocalDate(1009, 12, 26);
 
         [Benchmark]
         public LocalDate ConstructionAvoidingCache()
@@ -60,10 +54,7 @@ namespace NodaTime.Benchmarks.NodaTimeTests
         private static readonly int SampleDays = Sample.DaysSinceEpoch;
 
         [Benchmark]
-        public LocalDate ConstructionFromDays_SpecifyCalendar()
-        {
-            return new LocalDate(SampleDays, CalendarSystem.Iso);
-        }
+        public LocalDate ConstructionFromDays_SpecifyCalendar() => new LocalDate(SampleDays, CalendarSystem.Iso);
 
         [Benchmark]
         public void ConstructionFromDays_DefaultCalendar()
@@ -79,117 +70,63 @@ namespace NodaTime.Benchmarks.NodaTimeTests
         }
 
         [Benchmark]
-        public int Year()
-        {
-            return Sample.Year;
-        }
+        public int Year() => Sample.Year;
 
         [Benchmark]
-        public int Month()
-        {
-            return Sample.Month;
-        }
+        public int Month() => Sample.Month;
 
         [Benchmark]
-        public int DayOfMonth()
-        {
-            return Sample.Day;
-        }
+        public int DayOfMonth() => Sample.Day;
 
         [Benchmark]
-        public IsoDayOfWeek IsoDayOfWeek()
-        {
-            return Sample.IsoDayOfWeek;
-        }
+        public IsoDayOfWeek IsoDayOfWeek() => Sample.IsoDayOfWeek;
 
         [Benchmark]
         public IsoDayOfWeek IsoDayOfWeek_BeforeEpoch()
         {
             return SampleBeforeEpoch.IsoDayOfWeek;
         }
-        
-        [Benchmark]
-        public int DayOfYear()
-        {
-            return Sample.DayOfYear;
-        }
 
         [Benchmark]
-        public int WeekOfWeekYear()
-        {
-            return Sample.WeekOfWeekYear;
-        }
+        public int DayOfYear() => Sample.DayOfYear;
 
         [Benchmark]
-        public int WeekYear()
-        {
-            return Sample.WeekYear;
-        }
+        public int WeekOfWeekYear() => Sample.WeekOfWeekYear;
 
         [Benchmark]
-        public Era Era()
-        {
-            return Sample.Era;
-        }
+        public int WeekYear() => Sample.WeekYear;
 
         [Benchmark]
-        public int YearOfEra()
-        {
-            return Sample.YearOfEra;
-        }
+        public Era Era() => Sample.Era;
 
         [Benchmark]
-        public LocalDate PlusYears()
-        {
-            return Sample.PlusYears(3);
-        }
+        public int YearOfEra() => Sample.YearOfEra;
 
         [Benchmark]
-        public LocalDate PlusMonths()
-        {
-            return Sample.PlusMonths(3);
-        }
+        public LocalDate PlusYears() => Sample.PlusYears(3);
 
         [Benchmark]
-        public LocalDate PlusWeeks()
-        {
-            return Sample.PlusWeeks(3);
-        }
+        public LocalDate PlusMonths() => Sample.PlusMonths(3);
 
         [Benchmark]
-        public LocalDate PlusDays()
-        {
-            return Sample.PlusDays(3);
-        }
+        public LocalDate PlusWeeks() => Sample.PlusWeeks(3);
 
         [Benchmark]
-        public LocalDate PlusDays_MonthBoundary()
-        {
-            return Sample.PlusDays(-50);
-        }
+        public LocalDate PlusDays() => Sample.PlusDays(3);
 
         [Benchmark]
-        public LocalDate PlusDays_MonthYearBoundary()
-        {
-            return Sample.PlusDays(10);
-        }
+        public LocalDate PlusDays_MonthBoundary() => Sample.PlusDays(-50);
 
         [Benchmark]
-        public LocalDate PlusDays_LargeGap()
-        {
-            return Sample.PlusDays(1000);
-        }
+        public LocalDate PlusDays_MonthYearBoundary() => Sample.PlusDays(10);
 
         [Benchmark]
-        public LocalDate PlusPeriod()
-        {
-            return (Sample + SamplePeriod);
-        }
+        public LocalDate PlusDays_LargeGap() => Sample.PlusDays(1000);
 
         [Benchmark]
-        public LocalDate MinusPeriod()
-        {
-            return (Sample - SamplePeriod);
-        }
+        public LocalDate PlusPeriod() => (Sample + SamplePeriod);
+
+        [Benchmark]
+        public LocalDate MinusPeriod() => (Sample - SamplePeriod);
     }
 }

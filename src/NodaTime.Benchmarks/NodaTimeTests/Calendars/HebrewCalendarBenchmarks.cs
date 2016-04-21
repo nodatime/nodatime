@@ -16,16 +16,10 @@ namespace NodaTime.Benchmarks.NodaTimeTests.Calendars
         private static readonly CalendarSystem CivilCalendar = CalendarSystem.GetHebrewCalendar(HebrewMonthNumbering.Civil);
 
         [Benchmark]
-        public LocalDate ScripturalConversion()
-        {
-            return TestLeapCycle(ScripturalCalendar);
-        }
+        public LocalDate ScripturalConversion() => TestLeapCycle(ScripturalCalendar);
 
         [Benchmark]
-        public LocalDate CivilConversion()
-        {
-            return TestLeapCycle(CivilCalendar);
-        }
+        public LocalDate CivilConversion() => TestLeapCycle(CivilCalendar);
 
         /// <summary>
         /// Converts each day in a full leap cycle (for coverage of different scenarios) to the ISO

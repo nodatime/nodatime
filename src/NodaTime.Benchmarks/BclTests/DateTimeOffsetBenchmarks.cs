@@ -36,19 +36,12 @@ namespace NodaTime.Benchmarks.BclTests
             defaultComparer.Compare(sample, later);
         }
 
-        [Benchmark]
-        public bool Comparison_Operators()
-        {
 #pragma warning disable 1718
-            return (sample < earlier) | (sample < sample) | (sample < later);
-#pragma warning restore 1718
-        }
+        [Benchmark]
+        public bool Comparison_Operators() => (sample < earlier) | (sample < sample) | (sample < later);
 
         [Benchmark]
         [Category("Text")]
-        public string Format()
-        {
-            return sample.ToString("dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
-        }
+        public string Format() => sample.ToString("dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
     }
 }

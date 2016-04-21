@@ -19,57 +19,30 @@ namespace NodaTime.Benchmarks.NodaTimeTests
         private static readonly LocalDateTime SampleEndDateTime = SampleEndDate + SampleEndTime;
 
         [Benchmark]
-        public Period Between_LocalDate()
-        {
-            return Period.Between(SampleStartDate, SampleEndDate);
-        }
+        public Period Between_LocalDate() => Period.Between(SampleStartDate, SampleEndDate);
 
         [Benchmark]
-        public Period Between_LocalDate_Years()
-        {
-            return Period.Between(SampleStartDate, SampleEndDate, PeriodUnits.Years);
-        }
+        public Period Between_LocalDate_Years() => Period.Between(SampleStartDate, SampleEndDate, PeriodUnits.Years);
 
         [Benchmark]
-        public Period Between_LocalDate_Months()
-        {
-            return Period.Between(SampleStartDate, SampleEndDate, PeriodUnits.Months);
-        }
+        public Period Between_LocalDate_Months() => Period.Between(SampleStartDate, SampleEndDate, PeriodUnits.Months);
 
         [Benchmark]
-        public Period Between_LocalDate_Days()
-        {
-            return Period.Between(SampleStartDate, SampleEndDate, PeriodUnits.Days);
-        }
+        public Period Between_LocalDate_Days() => Period.Between(SampleStartDate, SampleEndDate, PeriodUnits.Days);
 
         [Benchmark]
-        public Period Between_LocalDate_Days_SameMonth()
-        {
-            return Period.Between(SampleStartDate, SampleEndDateSameMonth, PeriodUnits.Days);
-        }
+        public Period Between_LocalDate_Days_SameMonth() => Period.Between(SampleStartDate, SampleEndDateSameMonth, PeriodUnits.Days);
 
         [Benchmark]
-        public Period Between_LocalDate_Days_SameYear()
-        {
-            return Period.Between(SampleStartDate, SampleEndDateSameYear, PeriodUnits.Days);
-        }
+        public Period Between_LocalDate_Days_SameYear() => Period.Between(SampleStartDate, SampleEndDateSameYear, PeriodUnits.Days);
 
         [Benchmark]
-        public Period Between_LocalTime()
-        {
-            return Period.Between(SampleStartTime, SampleEndTime);
-        }
+        public Period Between_LocalTime() => Period.Between(SampleStartTime, SampleEndTime);
 
         [Benchmark]
-        public Period Between_LocalDateTime()
-        {
-            return Period.Between(SampleStartDateTime, SampleEndDateTime);
-        }
+        public Period Between_LocalDateTime() => Period.Between(SampleStartDateTime, SampleEndDateTime);
 
         [Benchmark]
-        public Period Between_LocalDateTime_Ticks()
-        {
-            return Period.Between(SampleStartDateTime, SampleEndDateTime, PeriodUnits.Ticks);
-        }
+        public Period Between_LocalDateTime_Ticks() => Period.Between(SampleStartDateTime, SampleEndDateTime, PeriodUnits.Ticks);
     }
 }

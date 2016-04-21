@@ -14,135 +14,69 @@ namespace NodaTime.Benchmarks.NodaTimeTests
         private static readonly LocalDateTime LocalDateTime = new LocalDateTime(2011, 9, 14, 15, 10, 25);
 
         [Benchmark]
-        public LocalTime ConstructionToMinute()
-        {
-            return new LocalTime(15, 10);
-        }
+        public LocalTime ConstructionToMinute() => new LocalTime(15, 10);
 
         [Benchmark]
-        public LocalTime ConstructionToSecond()
-        {
-            return new LocalTime(15, 10, 25);
-        }
+        public LocalTime ConstructionToSecond() => new LocalTime(15, 10, 25);
 
         [Benchmark]
-        public LocalTime ConstructionToMillisecond()
-        {
-            return new LocalTime(15, 10, 25, 500);
-        }
+        public LocalTime ConstructionToMillisecond() => new LocalTime(15, 10, 25, 500);
 
         [Benchmark]
-        public LocalTime ConstructionToTick()
-        {
-            return new LocalTime(15, 10, 25, 500, 1234);
-        }
+        public LocalTime ConstructionToTick() => new LocalTime(15, 10, 25, 500, 1234);
 
         [Benchmark]
-        public LocalTime ConversionFromLocalDateTime()
-        {
-            return LocalDateTime.TimeOfDay;
-        }
+        public LocalTime ConversionFromLocalDateTime() => LocalDateTime.TimeOfDay;
 
         [Benchmark]
-        public int Hour()
-        {
-            return Sample.Hour;
-        }
+        public int Hour() => Sample.Hour;
 
         [Benchmark]
-        public int Minute()
-        {
-            return Sample.Minute;
-        }
+        public int Minute() => Sample.Minute;
 
         [Benchmark]
-        public int Second()
-        {
-            return Sample.Second;
-        }
+        public int Second() => Sample.Second;
 
         [Benchmark]
-        public int Millisecond()
-        {
-            return Sample.Millisecond;
-        }
+        public int Millisecond() => Sample.Millisecond;
 
         [Benchmark]
-        public int ClockHourOfHalfDay()
-        {
-            return Sample.ClockHourOfHalfDay;
-        }
+        public int ClockHourOfHalfDay() => Sample.ClockHourOfHalfDay;
 
         [Benchmark]
-        public int TickOfSecond()
-        {
-            return Sample.TickOfSecond;
-        }
+        public int TickOfSecond() => Sample.TickOfSecond;
 
         [Benchmark]
-        public long TickOfDay()
-        {
-            return Sample.TickOfDay;
-        }
+        public long TickOfDay() => Sample.TickOfDay;
 
         [Benchmark]
-        public LocalTime PlusHours()
-        {
-            return Sample.PlusHours(3);
-        }
+        public LocalTime PlusHours() => Sample.PlusHours(3);
 
         [Benchmark]
-        public LocalTime PlusHours_OverflowDay()
-        {
-            return Sample.PlusHours(33);
-        }
+        public LocalTime PlusHours_OverflowDay() => Sample.PlusHours(33);
 
         [Benchmark]
-        public LocalTime PlusHours_Negative()
-        {
-            return Sample.PlusHours(-3);
-        }
+        public LocalTime PlusHours_Negative() => Sample.PlusHours(-3);
 
         [Benchmark]
-        public LocalTime PlusHours_UnderflowDay()
-        {
-            return Sample.PlusHours(-33);
-        }
+        public LocalTime PlusHours_UnderflowDay() => Sample.PlusHours(-33);
 
         [Benchmark]
-        public LocalTime PlusMinutes()
-        {
-            return Sample.PlusMinutes(3);
-        }
+        public LocalTime PlusMinutes() => Sample.PlusMinutes(3);
 
         [Benchmark]
-        public LocalTime PlusSeconds()
-        {
-            return Sample.PlusSeconds(3);
-        }
+        public LocalTime PlusSeconds() => Sample.PlusSeconds(3);
 
         [Benchmark]
-        public LocalTime PlusMilliseconds()
-        {
-            return Sample.PlusMilliseconds(3);
-        }
+        public LocalTime PlusMilliseconds() => Sample.PlusMilliseconds(3);
 
         [Benchmark]
-        public LocalTime PlusTicks()
-        {
-            return Sample.PlusTicks(3);
-        }
+        public LocalTime PlusTicks() => Sample.PlusTicks(3);
 
         [Benchmark]
-        public LocalTime PlusPeriod()
-        {
-            return (Sample + SamplePeriod);
-        }
+        public LocalTime PlusPeriod() => (Sample + SamplePeriod);
 
         [Benchmark]
-        public LocalTime MinusPeriod()
-        {
-            return (Sample - SamplePeriod);
-        }
+        public LocalTime MinusPeriod() => (Sample - SamplePeriod);
     }
 }

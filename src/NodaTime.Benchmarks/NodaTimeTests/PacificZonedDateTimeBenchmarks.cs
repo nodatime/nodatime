@@ -14,69 +14,36 @@ namespace NodaTime.Benchmarks.NodaTimeTests
         private static readonly ZonedDateTime SampleZoned = Pacific.AtStrictly(SampleLocal);
 
         [Benchmark]
-        public ZonedDateTime Construction()
-        {
-            return Pacific.AtStrictly(SampleLocal);
-        }
+        public ZonedDateTime Construction() => Pacific.AtStrictly(SampleLocal);
 
         [Benchmark]
-        public int Year()
-        {
-            return SampleZoned.Year;
-        }
+        public int Year() => SampleZoned.Year;
 
         [Benchmark]
-        public int Month()
-        {
-            return SampleZoned.Month;
-        }
+        public int Month() => SampleZoned.Month;
 
         [Benchmark]
-        public int DayOfMonth()
-        {
-            return SampleZoned.Day;
-        }
+        public int DayOfMonth() => SampleZoned.Day;
 
         [Benchmark]
-        public IsoDayOfWeek IsoDayOfWeek()
-        {
-            return SampleZoned.IsoDayOfWeek;
-        }
+        public IsoDayOfWeek IsoDayOfWeek() => SampleZoned.IsoDayOfWeek;
 
         [Benchmark]
-        public int DayOfYear()
-        {
-            return SampleZoned.DayOfYear;
-        }
+        public int DayOfYear() => SampleZoned.DayOfYear;
 
         [Benchmark]
-        public int Hour()
-        {
-            return SampleZoned.Hour;
-        }
+        public int Hour() => SampleZoned.Hour;
 
         [Benchmark]
-        public int Minute()
-        {
-            return SampleZoned.Minute;
-        }
+        public int Minute() => SampleZoned.Minute;
 
         [Benchmark]
-        public int Second()
-        {
-            return SampleZoned.Second;
-        }
+        public int Second() => SampleZoned.Second;
 
         [Benchmark]
-        public int Millisecond()
-        {
-            return SampleZoned.Millisecond;
-        }
+        public int Millisecond() => SampleZoned.Millisecond;
 
         [Benchmark]
-        public Instant ToInstant()
-        {
-            return SampleZoned.ToInstant();
-        }
+        public Instant ToInstant() => SampleZoned.ToInstant();
     }
 }

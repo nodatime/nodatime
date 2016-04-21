@@ -20,270 +20,138 @@ namespace NodaTime.Benchmarks.NodaTimeTests
         private static readonly Period SampleMixedPeriod = SampleDatePeriod + SampleTimePeriod;
 
         [Benchmark]
-        public LocalDateTime ConstructionToMinute()
-        {
-            return new LocalDateTime(2009, 12, 26, 10, 8);
-        }
+        public LocalDateTime ConstructionToMinute() => new LocalDateTime(2009, 12, 26, 10, 8);
 
         [Benchmark]
-        public LocalDateTime ConstructionToSecond()
-        {
-            return new LocalDateTime(2009, 12, 26, 10, 8, 30);
-        }
+        public LocalDateTime ConstructionToSecond() => new LocalDateTime(2009, 12, 26, 10, 8, 30);
 
         [Benchmark]
-        public LocalDateTime ConstructionToTick()
-        {
-            return new LocalDateTime(2009, 12, 26, 10, 8, 30, 0, 0);
-        }
+        public LocalDateTime ConstructionToTick() => new LocalDateTime(2009, 12, 26, 10, 8, 30, 0, 0);
 
         [Benchmark]
-        public LocalDateTime FromDateTime()
-        {
-            return LocalDateTime.FromDateTime(SampleDateTime);
-        }
+        public LocalDateTime FromDateTime() => LocalDateTime.FromDateTime(SampleDateTime);
 
         [Benchmark]
-        public DateTime ToDateTimeUnspecified()
-        {
-            return Sample.ToDateTimeUnspecified();
-        }
+        public DateTime ToDateTimeUnspecified() => Sample.ToDateTimeUnspecified();
 
         [Benchmark]
-        public int Year()
-        {
-            return Sample.Year;
-        }
+        public int Year() => Sample.Year;
 
         [Benchmark]
-        public int Month()
-        {
-            return Sample.Month;
-        }
+        public int Month() => Sample.Month;
 
         [Benchmark]
-        public int DayOfMonth()
-        {
-            return Sample.Day;
-        }
+        public int DayOfMonth() => Sample.Day;
 
         [Benchmark]
-        public IsoDayOfWeek IsoDayOfWeek()
-        {
-            return Sample.IsoDayOfWeek;
-        }
+        public IsoDayOfWeek IsoDayOfWeek() => Sample.IsoDayOfWeek;
 
         [Benchmark]
-        public int DayOfYear()
-        {
-            return Sample.DayOfYear;
-        }
+        public int DayOfYear() => Sample.DayOfYear;
 
         [Benchmark]
-        public int Hour()
-        {
-            return Sample.Hour;
-        }
+        public int Hour() => Sample.Hour;
 
         [Benchmark]
-        public int Minute()
-        {
-            return Sample.Minute;
-        }
+        public int Minute() => Sample.Minute;
 
         [Benchmark]
-        public int Second()
-        {
-            return Sample.Second;
-        }
+        public int Second() => Sample.Second;
 
         [Benchmark]
-        public int Millisecond()
-        {
-            return Sample.Millisecond;
-        }
+        public int Millisecond() => Sample.Millisecond;
 
         [Benchmark]
-        public LocalDate Date()
-        {
-            return Sample.Date;
-        }
+        public LocalDate Date() => Sample.Date;
 
         [Benchmark]
-        public LocalTime TimeOfDay()
-        {
-            return Sample.TimeOfDay;
-        }
+        public LocalTime TimeOfDay() => Sample.TimeOfDay;
 
         [Benchmark]
-        public long TickOfDay()
-        {
-            return Sample.TickOfDay;
-        }
+        public long TickOfDay() => Sample.TickOfDay;
 
         [Benchmark]
-        public int TickOfSecond()
-        {
-            return Sample.TickOfSecond;
-        }
+        public int TickOfSecond() => Sample.TickOfSecond;
 
         [Benchmark]
-        public int WeekOfWeekYear()
-        {
-            return Sample.WeekOfWeekYear;
-        }
+        public int WeekOfWeekYear() => Sample.WeekOfWeekYear;
 
         [Benchmark]
-        public int WeekYear()
-        {
-            return Sample.WeekYear;
-        }
+        public int WeekYear() => Sample.WeekYear;
 
         [Benchmark]
-        public int ClockHourOfHalfDay()
-        {
-            return Sample.ClockHourOfHalfDay;
-        }
+        public int ClockHourOfHalfDay() => Sample.ClockHourOfHalfDay;
 
         [Benchmark]
-        public Era Era()
-        {
-            return Sample.Era;
-        }
+        public Era Era() => Sample.Era;
 
         [Benchmark]
-        public int YearOfEra()
-        {
-            return Sample.YearOfEra;
-        }
+        public int YearOfEra() => Sample.YearOfEra;
 
         [Benchmark]
-        public string ToString_Parameterless()
-        {
-            return Sample.ToString();
-        }
+        public string ToString_Parameterless() => Sample.ToString();
 
         [Benchmark]
-        public string ToString_ExplicitPattern_Invariant()
-        {
-            return Sample.ToString("dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
-        }
+        public string ToString_ExplicitPattern_Invariant() => Sample.ToString("dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
 
         /// <summary>
         /// This test will involve creating a new NodaFormatInfo for each iteration.
         /// </summary>
         [Benchmark]
-        public string ToString_ExplicitPattern_MutableCulture()
-        {
-            return Sample.ToString("dd/MM/yyyy HH:mm:ss", MutableCulture);
-        }
+        public string ToString_ExplicitPattern_MutableCulture() => Sample.ToString("dd/MM/yyyy HH:mm:ss", MutableCulture);
 
         [Benchmark]
-        public LocalDateTime PlusYears()
-        {
-            return Sample.PlusYears(3);
-        }
+        public LocalDateTime PlusYears() => Sample.PlusYears(3);
 
         [Benchmark]
-        public LocalDateTime PlusMonths()
-        {
-            return Sample.PlusMonths(3);
-        }
+        public LocalDateTime PlusMonths() => Sample.PlusMonths(3);
 
         [Benchmark]
-        public LocalDateTime PlusWeeks()
-        {
-            return Sample.PlusWeeks(3);
-        }
+        public LocalDateTime PlusWeeks() => Sample.PlusWeeks(3);
 
         [Benchmark]
-        public LocalDateTime PlusDays()
-        {
-            return Sample.PlusDays(3);
-        }
+        public LocalDateTime PlusDays() => Sample.PlusDays(3);
 
         [Benchmark]
-        public LocalDateTime PlusHours()
-        {
-            return Sample.PlusHours(3);
-        }
+        public LocalDateTime PlusHours() => Sample.PlusHours(3);
 
-        public LocalDateTime PlusHours_OverflowDay()
-        {
-            return Sample.PlusHours(33);
-        }
+        public LocalDateTime PlusHours_OverflowDay() => Sample.PlusHours(33);
 
         [Benchmark]
-        public LocalDateTime PlusHours_Negative()
-        {
-            return Sample.PlusHours(-3);
-        }
+        public LocalDateTime PlusHours_Negative() => Sample.PlusHours(-3);
 
         [Benchmark]
-        public LocalDateTime PlusHours_UnderflowDay()
-        {
-            return Sample.PlusHours(-33);
-        }
+        public LocalDateTime PlusHours_UnderflowDay() => Sample.PlusHours(-33);
 
         [Benchmark]
-        public LocalDateTime PlusMinutes()
-        {
-            return Sample.PlusMinutes(3);
-        }
+        public LocalDateTime PlusMinutes() => Sample.PlusMinutes(3);
 
         [Benchmark]
-        public LocalDateTime PlusSeconds()
-        {
-            return Sample.PlusSeconds(3);
-        }
+        public LocalDateTime PlusSeconds() => Sample.PlusSeconds(3);
 
         [Benchmark]
-        public LocalDateTime PlusMilliseconds()
-        {
-            return Sample.PlusMilliseconds(3);
-        }
+        public LocalDateTime PlusMilliseconds() => Sample.PlusMilliseconds(3);
 
         [Benchmark]
-        public LocalDateTime PlusTicks()
-        {
-            return Sample.PlusTicks(3);
-        }
+        public LocalDateTime PlusTicks() => Sample.PlusTicks(3);
 
         [Benchmark]
-        public LocalDateTime PlusDatePeriod()
-        {
-            return (Sample + SampleDatePeriod);
-        }
+        public LocalDateTime PlusDatePeriod() => (Sample + SampleDatePeriod);
 
         [Benchmark]
-        public LocalDateTime MinusDatePeriod()
-        {
-            return (Sample - SampleDatePeriod);
-        }
+        public LocalDateTime MinusDatePeriod() => (Sample - SampleDatePeriod);
 
         [Benchmark]
-        public LocalDateTime PlusTimePeriod()
-        {
-            return (Sample + SampleTimePeriod);
-        }
+        public LocalDateTime PlusTimePeriod() => (Sample + SampleTimePeriod);
 
         [Benchmark]
-        public LocalDateTime MinusTimePeriod()
-        {
-            return (Sample - SampleTimePeriod);
-        }
+        public LocalDateTime MinusTimePeriod() => (Sample - SampleTimePeriod);
 
         [Benchmark]
-        public LocalDateTime PlusMixedPeriod()
-        {
-            return (Sample + SampleMixedPeriod);
-        }
+        public LocalDateTime PlusMixedPeriod() => (Sample + SampleMixedPeriod);
 
         [Benchmark]
-        public LocalDateTime MinusMixedPeriod()
-        {
-            return (Sample - SampleMixedPeriod);
-        }
+        public LocalDateTime MinusMixedPeriod() => (Sample - SampleMixedPeriod);
 
 #if !NO_INTERNALS
         //        [Benchmark]
