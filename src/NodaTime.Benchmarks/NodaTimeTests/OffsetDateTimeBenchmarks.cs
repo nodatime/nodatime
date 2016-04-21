@@ -25,120 +25,63 @@ namespace NodaTime.Benchmarks.NodaTimeTests
 #endif
 
         [Benchmark]
-        public OffsetDateTime Construction()
-        {
-            return new OffsetDateTime(SampleLocal, OneHourOffset);
-        }
+        public OffsetDateTime Construction() => new OffsetDateTime(SampleLocal, OneHourOffset);
 
         [Benchmark]
-        public int Year()
-        {
-            return Sample.Year;
-        }
+        public int Year() => Sample.Year;
 
         [Benchmark]
-        public int Month()
-        {
-            return Sample.Month;
-        }
+        public int Month() => Sample.Month;
 
         [Benchmark]
-        public int DayOfMonth()
-        {
-            return Sample.Day;
-        }
+        public int DayOfMonth() => Sample.Day;
 
         [Benchmark]
-        public IsoDayOfWeek IsoDayOfWeek()
-        {
-            return Sample.IsoDayOfWeek;
-        }
+        public IsoDayOfWeek IsoDayOfWeek() => Sample.IsoDayOfWeek;
 
         [Benchmark]
-        public int DayOfYear()
-        {
-            return Sample.DayOfYear;
-        }
+        public int DayOfYear() => Sample.DayOfYear;
 
         [Benchmark]
-        public int Hour()
-        {
-            return Sample.Hour;
-        }
+        public int Hour() => Sample.Hour;
 
         [Benchmark]
-        public int Minute()
-        {
-            return Sample.Minute;
-        }
+        public int Minute() => Sample.Minute;
 
         [Benchmark]
-        public int Second()
-        {
-            return Sample.Second;
-        }
+        public int Second() => Sample.Second;
 
         [Benchmark]
-        public int Millisecond()
-        {
-            return Sample.Millisecond;
-        }
+        public int Millisecond() => Sample.Millisecond;
 
 #if !V1_0
         [Benchmark]
-        public LocalDate Date()
-        {
-            return Sample.Date;
-        }
+        public LocalDate Date() => Sample.Date;
 
         [Benchmark]
-        public LocalTime TimeOfDay()
-        {
-            return Sample.TimeOfDay;
-        }
+        public LocalTime TimeOfDay() => Sample.TimeOfDay;
 #endif
 
         [Benchmark]
-        public long TickOfDay()
-        {
-            return Sample.TickOfDay;
-        }
+        public long TickOfDay() => Sample.TickOfDay;
 
         [Benchmark]
-        public int TickOfSecond()
-        {
-            return Sample.TickOfSecond;
-        }
+        public int TickOfSecond() => Sample.TickOfSecond;
 
         [Benchmark]
-        public int WeekOfWeekYear()
-        {
-            return Sample.WeekOfWeekYear;
-        }
+        public int WeekOfWeekYear() => Sample.WeekOfWeekYear;
 
         [Benchmark]
-        public int WeekYear()
-        {
-            return Sample.WeekYear;
-        }
+        public int WeekYear() => Sample.WeekYear;
 
         [Benchmark]
-        public int ClockHourOfHalfDay()
-        {
-            return Sample.ClockHourOfHalfDay;
-        }
+        public int ClockHourOfHalfDay() => Sample.ClockHourOfHalfDay;
 
         [Benchmark]
-        public Era Era()
-        {
-            return Sample.Era;
-        }
+        public Era Era() => Sample.Era;
 
         [Benchmark]
-        public int YearOfEra()
-        {
-            return Sample.YearOfEra;
-        }
+        public int YearOfEra() => Sample.YearOfEra;
 
 #if !V1_0
         [Benchmark]
@@ -161,19 +104,13 @@ namespace NodaTime.Benchmarks.NodaTimeTests
 #endif
 
 #if !V1_0 && !V1_1 && !V1_2
+        // This just about stays within the same local day
         [Benchmark]
-        public OffsetDateTime WithOffset_SameLocalDay()
-        {
-            // This just about stays within the same local day
-            return SampleEarlier.WithOffset(LargePositiveOffset);
-        }
+        public OffsetDateTime WithOffset_SameLocalDay() => SampleEarlier.WithOffset(LargePositiveOffset);
 
+        // This ends up in the day before
         [Benchmark]
-        public OffsetDateTime WithOffset_DifferentLocalDay()
-        {
-            // This ends up in the day before
-            return SampleEarlier.WithOffset(LargeNegativeOffset);
-        }
+        public OffsetDateTime WithOffset_DifferentLocalDay() => SampleEarlier.WithOffset(LargeNegativeOffset);
 #endif
     }
 }

@@ -17,47 +17,26 @@ namespace NodaTime.Benchmarks.NodaTimeTests
         private static readonly DateTimeZone London = DateTimeZoneProviders.Tzdb["Europe/London"];
 
         [Benchmark]
-        public string ToStringIso()
-        {
-            return Sample.ToString("g", CultureInfo.InvariantCulture);
-        }
+        public string ToStringIso() => Sample.ToString("g", CultureInfo.InvariantCulture);
 
         [Benchmark]
-        public Instant PlusDuration()
-        {
-            return Sample.Plus(Duration.Epsilon);
-        }
+        public Instant PlusDuration() => Sample.Plus(Duration.Epsilon);
 
         [Benchmark]
-        public ZonedDateTime InUtc()
-        {
-            return Sample.InUtc();
-        }
+        public ZonedDateTime InUtc() => Sample.InUtc();
 
         [Benchmark]
-        public ZonedDateTime InZoneLondon()
-        {
-            return Sample.InZone(London);
-        }
+        public ZonedDateTime InZoneLondon() => Sample.InZone(London);
 
 #if !V1_0 && !V1_1
         [Benchmark]
-        public OffsetDateTime WithOffset_SameUtcDay()
-        {
-            return Sample.WithOffset(SmallOffset);
-        }
+        public OffsetDateTime WithOffset_SameUtcDay() => Sample.WithOffset(SmallOffset);
 
         [Benchmark]
-        public OffsetDateTime WithOffset_NextUtcDay()
-        {
-            return Sample.WithOffset(LargePositiveOffset);
-        }
+        public OffsetDateTime WithOffset_NextUtcDay() => Sample.WithOffset(LargePositiveOffset);
 
         [Benchmark]
-        public OffsetDateTime WithOffset_PreviousUtcDay()
-        {
-            return Sample.WithOffset(LargeNegativeOffset);
-        }
+        public OffsetDateTime WithOffset_PreviousUtcDay() => Sample.WithOffset(LargeNegativeOffset);
 #endif
     }
 }

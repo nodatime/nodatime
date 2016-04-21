@@ -16,89 +16,47 @@ namespace NodaTime.Benchmarks.BclTests
         private static readonly DateTime Sample = new DateTime(2009, 12, 26, 10, 8, 30, 234, DateTimeKind.Local);
 
         [Benchmark]
-        public DateTime ConstructionToDay()
-        {
-            return new DateTime(2009, 12, 26);
-        }
+        public DateTime ConstructionToDay() => new DateTime(2009, 12, 26);
 
         [Benchmark]
-        public DateTime ConstructionToSecond()
-        {
-            return new DateTime(2009, 12, 26, 10, 8, 30, DateTimeKind.Local);
-        }
+        public DateTime ConstructionToSecond() => new DateTime(2009, 12, 26, 10, 8, 30, DateTimeKind.Local);
 
         [Benchmark]
-        public DateTime ConstructionToMillisecond()
-        {
-            return new DateTime(2009, 12, 26, 10, 8, 30, 234, DateTimeKind.Local);
-        }
+        public DateTime ConstructionToMillisecond() => new DateTime(2009, 12, 26, 10, 8, 30, 234, DateTimeKind.Local);
 
         [Benchmark]
-        public int Year()
-        {
-            return Sample.Year;
-        }
+        public int Year() => Sample.Year;
 
         [Benchmark]
-        public int Month()
-        {
-            return Sample.Month;
-        }
+        public int Month() => Sample.Month;
 
         [Benchmark]
-        public int DayOfMonth()
-        {
-            return Sample.Day;
-        }
+        public int DayOfMonth() => Sample.Day;
 
         [Benchmark]
-        public DayOfWeek DayOfWeek()
-        {
-            return Sample.DayOfWeek;
-        }
+        public DayOfWeek DayOfWeek() => Sample.DayOfWeek;
 
         [Benchmark]
-        public int DayOfYear()
-        {
-            return Sample.DayOfYear;
-        }
+        public int DayOfYear() => Sample.DayOfYear;
 
         [Benchmark]
-        public int Hour()
-        {
-            return Sample.Hour;
-        }
+        public int Hour() => Sample.Hour;
 
         [Benchmark]
-        public int Minute()
-        {
-            return Sample.Minute;
-        }
+        public int Minute() => Sample.Minute;
 
         [Benchmark]
-        public int Second()
-        {
-            return Sample.Second;
-        }
+        public int Second() => Sample.Second;
 
         [Benchmark]
-        public int Millisecond()
-        {
-            return Sample.Millisecond;
-        }
+        public int Millisecond() => Sample.Millisecond;
 
         [Benchmark]
-        public DateTime ToUtc()
-        {
-            return Sample.ToUniversalTime();
-        }
+        public DateTime ToUtc() => Sample.ToUniversalTime();
 
         [Benchmark]
         [Category("Text")]
-        public string Format()
-        {
-            return Sample.ToString("dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
-        }
+        public string Format() => Sample.ToString("dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
 
         [Benchmark]
         [Category("Text")]

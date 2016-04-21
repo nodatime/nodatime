@@ -15,69 +15,36 @@ namespace NodaTime.Benchmarks.BclTests
         private readonly DateTime sample = new DateTime(2009, 12, 26, 10, 8, 30, DateTimeKind.Utc);
 
         [Benchmark]
-        public DateTime Construction()
-        {
-            return new DateTime(2009, 12, 26, 10, 8, 30, DateTimeKind.Utc);
-        }
+        public DateTime Construction() => new DateTime(2009, 12, 26, 10, 8, 30, DateTimeKind.Utc);
 
         [Benchmark]
-        public int Year()
-        {
-            return sample.Year;
-        }
+        public int Year() => sample.Year;
 
         [Benchmark]
-        public int Month()
-        {
-            return sample.Month;
-        }
+        public int Month() => sample.Month;
 
         [Benchmark]
-        public int DayOfMonth()
-        {
-            return sample.Day;
-        }
+        public int DayOfMonth() => sample.Day;
 
         [Benchmark]
-        public DayOfWeek DayOfWeek()
-        {
-            return sample.DayOfWeek;
-        }
+        public DayOfWeek DayOfWeek() => sample.DayOfWeek;
 
         [Benchmark]
-        public int DayOfYear()
-        {
-            return sample.DayOfYear;
-        }
+        public int DayOfYear() => sample.DayOfYear;
 
         [Benchmark]
-        public int Hour()
-        {
-            return sample.Hour;
-        }
+        public int Hour() => sample.Hour;
 
         [Benchmark]
-        public int Minute()
-        {
-            return sample.Minute;
-        }
+        public int Minute() => sample.Minute;
 
         [Benchmark]
-        public int Second()
-        {
-            return sample.Second;
-        }
+        public int Second() => sample.Second;
 
         [Benchmark]
-        public int Millisecond()
-        {
-            return sample.Millisecond;
-        }
+        public int Millisecond() => sample.Millisecond;
 
         [Benchmark]
-        public DateTime ToLocalTime()
-        {
-            return sample.ToLocalTime();
-        }
+        public DateTime ToLocalTime() => sample.ToLocalTime();
     }
 }

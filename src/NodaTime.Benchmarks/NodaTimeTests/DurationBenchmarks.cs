@@ -13,64 +13,38 @@ namespace NodaTime.Benchmarks.NodaTimeTests
         private static readonly TimeSpan SampleTimeSpan = new TimeSpan(1, 2, 3);
 
         [Benchmark]
-        public Duration FromDays()
-        {
+        public Duration FromDays() =>
 #if !V1
-            return Duration.FromDays(100);
+            Duration.FromDays(100);
 #else
-            return Duration.FromStandardDays(100);
+            Duration.FromStandardDays(100);
 #endif
-        }
 
         [Benchmark]
-        public Duration FromHours()
-        {
-            return Duration.FromHours(100);
-        }
+        public Duration FromHours() => Duration.FromHours(100);
 
         [Benchmark]
-        public Duration FromMinutes()
-        {
-            return Duration.FromMinutes(100);
-        }
+        public Duration FromMinutes() => Duration.FromMinutes(100);
 
         [Benchmark]
-        public Duration FromSeconds()
-        {
-            return Duration.FromSeconds(100);
-        }
+        public Duration FromSeconds() => Duration.FromSeconds(100);
 
         [Benchmark]
-        public Duration FromMilliseconds()
-        {
-            return Duration.FromMilliseconds(100);
-        }
+        public Duration FromMilliseconds() => Duration.FromMilliseconds(100);
 
         [Benchmark]
-        public Duration FromTicks()
-        {
-            return Duration.FromTicks(100);
-        }
+        public Duration FromTicks() => Duration.FromTicks(100);
 
 #if !V1
         [Benchmark]
-        public Duration FromInt64Nanoseconds()
-        {
-            return Duration.FromNanoseconds(int.MaxValue + 1L);
-        }
+        public Duration FromInt64Nanoseconds() => Duration.FromNanoseconds(int.MaxValue + 1L);
 
         [Benchmark]
-        public Duration FromBigIntegerNanoseconds()
-        {
-            return Duration.FromNanoseconds(long.MaxValue + (BigInteger) 100);
-        }
+        public Duration FromBigIntegerNanoseconds() => Duration.FromNanoseconds(long.MaxValue + (BigInteger)100);
 #endif
 
         [Benchmark]
-        public Duration FromTimeSpan()
-        {
-            return Duration.FromTimeSpan(SampleTimeSpan);
-        }
+        public Duration FromTimeSpan() => Duration.FromTimeSpan(SampleTimeSpan);
 
     }
 }
