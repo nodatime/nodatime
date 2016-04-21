@@ -184,13 +184,10 @@ namespace NodaTime.TzdbCompiler.Tzdb
         {
             private readonly List<string> allStrings = new List<string>();
 
-            public List<string> CreatePool()
-            {
-                return allStrings.GroupBy(x => x)
-                                 .OrderByDescending(g => g.Count())
-                                 .Select(g => g.Key)
-                                 .ToList();
-            }
+            public List<string> CreatePool() => allStrings.GroupBy(x => x)
+                 .OrderByDescending(g => g.Count())
+                 .Select(g => g.Key)
+                 .ToList();
 
             public void WriteString(string value)
             {

@@ -65,20 +65,14 @@ namespace NodaTime.TzdbCompiler.Tzdb
         /// </summary>
         /// <param name="tokens">The tokens.</param>
         /// <param name="name">The name of the expected value, for use in the exception if no value is available.</param>
-        private Offset NextOffset(Tokens tokens, string name)
-        {
-            return ParserHelper.ParseOffset(NextString(tokens, name));
-        }
+        private Offset NextOffset(Tokens tokens, string name) => ParserHelper.ParseOffset(NextString(tokens, name));
 
         /// <summary>
         /// Returns the next token, which is optional, converting "-" to null.
         /// </summary>
         /// <param name="tokens">The tokens.</param>
         /// <param name="name">The name of the expected value, for use in the exception if no value is available.</param>
-        private string NextOptional(Tokens tokens, string name)
-        {
-            return ParserHelper.ParseOptional(NextString(tokens, name));
-        }
+        private string NextOptional(Tokens tokens, string name) => ParserHelper.ParseOptional(NextString(tokens, name));
 
         /// <summary>
         /// Returns the next string from the token stream.

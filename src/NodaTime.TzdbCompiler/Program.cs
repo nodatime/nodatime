@@ -128,13 +128,11 @@ namespace NodaTime.TzdbCompiler
 
         private static TzdbDateTimeZoneSource Read(CompilerOptions options)
         {
-#pragma warning disable 0618
             string file = Path.ChangeExtension(options.OutputFileName, "nzd");
             using (var stream = File.OpenRead(file))
             {
                 return TzdbDateTimeZoneSource.FromStream(stream);
             }
-#pragma warning restore 0618
         }
 
         private static void CreateTextDump(TzdbDateTimeZoneSource source, string file)

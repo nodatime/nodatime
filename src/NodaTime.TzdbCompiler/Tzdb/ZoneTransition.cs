@@ -97,10 +97,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
         /// Creates a new zone interval from this transition to the given end point.
         /// </summary>
         /// <param name="end">The end of the interval.</param>
-        internal ZoneInterval ToZoneInterval(Instant end)
-        {
-            return new ZoneInterval(Name, Instant, end, StandardOffset + Savings, Savings);
-        }
+        internal ZoneInterval ToZoneInterval(Instant end) => new ZoneInterval(Name, Instant, end, StandardOffset + Savings, Savings);
 
         #region Object overrides
 

@@ -49,7 +49,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
 
         internal bool IsFixed => name != null;
 
-        internal IEnumerable<ZoneRecurrence> Rules { get { return rules; } }
+        internal IEnumerable<ZoneRecurrence> Rules => rules;
 
         internal ZoneInterval CreateFixedInterval(Instant start)
         {
