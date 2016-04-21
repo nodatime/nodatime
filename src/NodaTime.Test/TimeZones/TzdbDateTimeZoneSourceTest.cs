@@ -264,7 +264,9 @@ namespace NodaTime.Test.TimeZones
         {
             // As of April 8th 2016, the Windows time zone database hasn't noticed that
             // Azerbaijan is no longer observing DST.
-            if (bclZone.Id == "Azerbaijan Standard Time")
+            // As of April 21st 2016, the Windows time zone database hasn't caught up to
+            // 2016d which includes: "America/Caracas switches from -0430 to -04 on 2016-05-01 at 02:30"
+            if (bclZone.Id == "Azerbaijan Standard Time" || bclZone.Id == "Venezuela Standard Time")
             {
                 return;
             }
@@ -278,7 +280,7 @@ namespace NodaTime.Test.TimeZones
                 return;
             }
 
-            Assert.IsNotNull(id);
+            Assert.IsNotNull(id, $"Unable to guess time zone for {bclZone.Id}");
             var tzdbZone = TzdbDateTimeZoneSource.Default.ForId(id);
 
             var thisYear = SystemClock.Instance.GetCurrentInstant().InUtc().Year;
