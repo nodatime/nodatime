@@ -58,15 +58,14 @@ namespace NodaTime.TzdbCompiler.Tzdb
         /// Reads the input XML file for the windows mappings.
         /// </summary>
         /// <returns>A lookup of Windows time zone mappings</returns>
-        private static IList<MapZone> MapZones(XDocument document)
-        {
-            return document.Root.Element("windowsZones")
+        private static IList<MapZone> MapZones(XDocument document) =>
+            document.Root
+                .Element("windowsZones")
                 .Element("mapTimezones")
                 .Elements("mapZone")
                 .Select(x => new MapZone(x.Attribute("other").Value,
                                          x.Attribute("territory").Value,
                                          x.Attribute("type").Value.Split(' ').ToList()))
                 .ToList();
-        }
     }
 }

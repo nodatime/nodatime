@@ -35,15 +35,9 @@ namespace NodaTime.TzdbCompiler.Tzdb
             this.openFunction = openFunction;
         }
 
-        internal Stream Open(string name)
-        {
-            return openFunction(name);
-        }
+        internal Stream Open(string name) => openFunction(name);
 
-        internal bool Contains(string name)
-        {
-            return Names.Contains(name);
-        }
+        internal bool Contains(string name) => Names.Contains(name);
 
         internal static FileSource FromArchive(Stream archiveData, string fullOrigin)
         {

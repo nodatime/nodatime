@@ -13,10 +13,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
     /// </summary>
     internal static class IoExtensions
     {
-        internal static IEnumerable<string> ReadLines(this Stream stream)
-        {
-            return ReadLines(new StreamReader(stream));
-        }
+        internal static IEnumerable<string> ReadLines(this Stream stream) => ReadLines(new StreamReader(stream));
 
         internal static IEnumerable<string> ReadLines(this TextReader reader)
         {
@@ -40,9 +37,6 @@ namespace NodaTime.TzdbCompiler.Tzdb
         }
 
 
-        internal static IEnumerable<string> ReadLines(this FileSource source, string name)
-        {
-            return ReadLines(() => new StreamReader(source.Open(name)));
-        }
+        internal static IEnumerable<string> ReadLines(this FileSource source, string name) => ReadLines(() => new StreamReader(source.Open(name)));
     }
 }

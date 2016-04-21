@@ -83,10 +83,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
         /// Formats the optional.
         /// </summary>
         /// <param name="value">The value.</param>
-        public static string FormatOptional(string value)
-        {
-            return value ?? "-";
-        }
+        public static string FormatOptional(string value) => value ?? "-";
 
         /// <summary>
         ///   Parses the given text for an integer. Leading and trailing white space is ignored.
