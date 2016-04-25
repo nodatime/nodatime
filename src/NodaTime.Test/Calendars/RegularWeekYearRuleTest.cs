@@ -18,7 +18,7 @@ namespace NodaTime.Test.Calendars
             // In the Gregorian calendar with a minimum of 7 days in the first
             // week, Tuesday January 1st -9998 is in week year -9999. We should be able to
             // round-trip.
-            var rule = WeekYearRule.ForMinDaysInFirstWeek(7);
+            var rule = RegularWeekYearRule.ForMinDaysInFirstWeek(7);
             var date = new LocalDate(-9998, 1, 1);
             Assert.AreEqual(date, rule.GetLocalDate(
                 rule.GetWeekYear(date),
@@ -32,7 +32,7 @@ namespace NodaTime.Test.Calendars
             // In the Gregorian calendar with a minimum of 1 day in the first
             // week, Friday December 31st 9999 is in week year 10000. We should be able to
             // round-trip.
-            var rule = WeekYearRule.ForMinDaysInFirstWeek(1);
+            var rule = RegularWeekYearRule.ForMinDaysInFirstWeek(1);
             var date = new LocalDate(9999, 12, 31);
             Assert.AreEqual(date, rule.GetLocalDate(
                 rule.GetWeekYear(date),
@@ -47,10 +47,10 @@ namespace NodaTime.Test.Calendars
             // and is therefore out of range, even though the week-year
             // and week-of-week-year are valid.
             Assert.Throws<ArgumentOutOfRangeException>(
-                () => WeekYearRule.Iso.GetLocalDate(-9998, 1, Monday));
+                () => RegularWeekYearRule.Iso.GetLocalDate(-9998, 1, Monday));
 
             // Sanity check: no exception for January 1st
-            WeekYearRule.Iso.GetLocalDate(-9998, 1, Tuesday);
+            RegularWeekYearRule.Iso.GetLocalDate(-9998, 1, Tuesday);
         }
 
         [Test]
@@ -60,10 +60,10 @@ namespace NodaTime.Test.Calendars
             // same week is therefore out of range, even though the week-year
             // and week-of-week-year are valid.
             Assert.Throws<ArgumentOutOfRangeException>(
-                () => WeekYearRule.Iso.GetLocalDate(9999, 52, Saturday));
+                () => RegularWeekYearRule.Iso.GetLocalDate(9999, 52, Saturday));
 
             // Sanity check: no exception for December 31st
-            WeekYearRule.Iso.GetLocalDate(9999, 52, Friday);
+            RegularWeekYearRule.Iso.GetLocalDate(9999, 52, Friday);
         }
 
         // Tests ported from IsoCalendarSystemTest and LocalDateTest.Construction
@@ -78,10 +78,10 @@ namespace NodaTime.Test.Calendars
         public void WeekYearDifferentToYear(int year, int month, int day, int weekYear, int weekOfWeekYear, IsoDayOfWeek dayOfWeek)
         {
             var date = new LocalDate(year, month, day);
-            Assert.AreEqual(weekYear, WeekYearRule.Iso.GetWeekYear(date));
-            Assert.AreEqual(weekOfWeekYear, WeekYearRule.Iso.GetWeekOfWeekYear(date));
+            Assert.AreEqual(weekYear, RegularWeekYearRule.Iso.GetWeekYear(date));
+            Assert.AreEqual(weekOfWeekYear, RegularWeekYearRule.Iso.GetWeekOfWeekYear(date));
             Assert.AreEqual(dayOfWeek, date.IsoDayOfWeek);
-            Assert.AreEqual(date, WeekYearRule.Iso.GetLocalDate(weekYear, weekOfWeekYear, dayOfWeek));
+            Assert.AreEqual(date, RegularWeekYearRule.Iso.GetLocalDate(weekYear, weekOfWeekYear, dayOfWeek));
         }
 
         // Ported from CalendarSystemTest.Validation
@@ -99,7 +99,7 @@ namespace NodaTime.Test.Calendars
         [TestCase(2019, 52)]
         public void GetWeeksInWeekYear(int weekYear, int expectedResult)
         {
-            Assert.AreEqual(expectedResult, WeekYearRule.Iso.GetWeeksInWeekYear(weekYear));
+            Assert.AreEqual(expectedResult, RegularWeekYearRule.Iso.GetWeeksInWeekYear(weekYear));
         }
 
         // Ported from LocalDateTest.BasicProperties
@@ -119,7 +119,7 @@ namespace NodaTime.Test.Calendars
         public void WeekOfWeekYear_ComparisonWithOracle(int year, int month, int day, int weekOfWeekYear)
         {
             var date = new LocalDate(year, month, day);
-            Assert.AreEqual(weekOfWeekYear, WeekYearRule.Iso.GetWeekOfWeekYear(date));
+            Assert.AreEqual(weekOfWeekYear, RegularWeekYearRule.Iso.GetWeekOfWeekYear(date));
         }
 
         [Test]
@@ -138,14 +138,14 @@ namespace NodaTime.Test.Calendars
             // Rules which put the first day of the calendar year into the same week year
             for (int i = 1; i <= maxMinDaysInFirstWeekForSameWeekYear; i++)
             {
-                var rule = WeekYearRule.ForMinDaysInFirstWeek(i);
+                var rule = RegularWeekYearRule.ForMinDaysInFirstWeek(i);
                 Assert.AreEqual(year, rule.GetWeekYear(startOfCalendarYear));
                 Assert.AreEqual(1, rule.GetWeekOfWeekYear(startOfCalendarYear));
             }
             // Rules which put the first day of the calendar year into the previous week year
             for (int i = maxMinDaysInFirstWeekForSameWeekYear + 1; i <= 7; i++)
             {
-                var rule = WeekYearRule.ForMinDaysInFirstWeek(i);
+                var rule = RegularWeekYearRule.ForMinDaysInFirstWeek(i);
                 Assert.AreEqual(year - 1, rule.GetWeekYear(startOfCalendarYear));
                 Assert.AreEqual(rule.GetWeeksInWeekYear(year - 1), rule.GetWeekOfWeekYear(startOfCalendarYear));
             }
@@ -162,7 +162,7 @@ namespace NodaTime.Test.Calendars
         public void Iso(int year, int month, int day, int weekYear, int weekOfWeekYear, IsoDayOfWeek dayOfWeek)
         {
             var viaCalendar = new LocalDate(year, month, day);
-            var rule = WeekYearRule.Iso;
+            var rule = RegularWeekYearRule.Iso;
             Assert.AreEqual(weekYear, rule.GetWeekYear(viaCalendar));
             Assert.AreEqual(weekOfWeekYear, rule.GetWeekOfWeekYear(viaCalendar));
             Assert.AreEqual(dayOfWeek, viaCalendar.IsoDayOfWeek);
@@ -190,7 +190,7 @@ namespace NodaTime.Test.Calendars
             int expectedWeeks, int expectedWeekYearOfFirstDay, int expectedWeekOfWeekYearOfFirstDay)
         {
             var civilDate = new LocalDate(year, 1, 1, HebrewCivil);
-            var rule = WeekYearRule.Iso;
+            var rule = RegularWeekYearRule.Iso;
             Assert.AreEqual(expectedFirstDay, civilDate.IsoDayOfWeek);
             Assert.AreEqual(civilDate.WithCalendar(CalendarSystem.Iso), new LocalDate(isoYear, isoMonth, isoDay));
             Assert.AreEqual(expectedWeeks, rule.GetWeeksInWeekYear(year, HebrewCivil));

@@ -8,14 +8,14 @@ using NodaTime.Calendars;
 namespace NodaTime.Benchmarks.NodaTimeTests.Calendars
 {
     [Config(typeof(BenchmarkConfig))]
-    public class WeekYearRuleBenchmarks
+    public class RegularWeekYearRuleBenchmarks
     {
         private static readonly LocalDate Sample = new LocalDate(2009, 12, 26);
 
         [Benchmark]
-        public int IsoWeekOfWeekYear() => WeekYearRule.Iso.GetWeekOfWeekYear(Sample);
+        public int IsoWeekOfWeekYear() => RegularWeekYearRule.Iso.GetWeekOfWeekYear(Sample);
 
         [Benchmark]
-        public int IsoWeekYear() => WeekYearRule.Iso.GetWeekYear(Sample);
+        public int IsoWeekYear() => RegularWeekYearRule.Iso.GetWeekYear(Sample);
     }
 }

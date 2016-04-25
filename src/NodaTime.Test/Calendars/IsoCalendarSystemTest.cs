@@ -26,8 +26,8 @@ namespace NodaTime.Test.Calendars
 
             Assert.AreEqual(1970, epoch.Year);
             Assert.AreEqual(1970, epoch.YearOfEra);
-            Assert.AreEqual(1970, WeekYearRule.Iso.GetWeekYear(epoch.Date));
-            Assert.AreEqual(1, WeekYearRule.Iso.GetWeekOfWeekYear(epoch.Date));
+            Assert.AreEqual(1970, RegularWeekYearRule.Iso.GetWeekYear(epoch.Date));
+            Assert.AreEqual(1, RegularWeekYearRule.Iso.GetWeekOfWeekYear(epoch.Date));
             Assert.AreEqual(1, epoch.Month);
             Assert.AreEqual(1, epoch.Day);
             Assert.AreEqual(1, epoch.DayOfYear);
@@ -49,8 +49,8 @@ namespace NodaTime.Test.Calendars
 
             Assert.AreEqual(2009, now.Year);
             Assert.AreEqual(2009, now.YearOfEra);
-            Assert.AreEqual(2009, WeekYearRule.Iso.GetWeekYear(now.Date));
-            Assert.AreEqual(48, WeekYearRule.Iso.GetWeekOfWeekYear(now.Date));
+            Assert.AreEqual(2009, RegularWeekYearRule.Iso.GetWeekYear(now.Date));
+            Assert.AreEqual(48, RegularWeekYearRule.Iso.GetWeekOfWeekYear(now.Date));
             Assert.AreEqual(11, now.Month);
             Assert.AreEqual(27, now.Day);
             Assert.AreEqual(TimeOfGreatAchievement.DayOfYear, now.DayOfYear);
