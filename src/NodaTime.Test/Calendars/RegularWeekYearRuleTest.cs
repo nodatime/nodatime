@@ -10,7 +10,7 @@ using static NodaTime.CalendarSystem;
 
 namespace NodaTime.Test.Calendars
 {
-    public class WeekYearRuleTest
+    public class RegularWeekYearRuleTest
     {
         [Test]
         public void RoundtripFirstDay_Iso7()

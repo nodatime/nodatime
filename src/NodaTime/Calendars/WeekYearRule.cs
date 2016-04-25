@@ -53,7 +53,7 @@ namespace NodaTime.Calendars
     [Immutable]
     public abstract class WeekYearRule
     {
-        private static readonly WeekYearRule[] isoBasedRules = Enumerable.Range(1, 7).Select(x => new IsoBasedWeekYearRule(x)).ToArray();
+        private static readonly WeekYearRule[] isoBasedRules = Enumerable.Range(1, 7).Select(x => new RegularWeekYearRule(x)).ToArray();
 
         /// <summary>
         /// Returns a <see cref="WeekYearRule"/> similar to ISO-8601, but allowing the minimum number of

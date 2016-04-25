@@ -15,11 +15,11 @@ namespace NodaTime.Calendars
     /// WeekYearRule implementing the rules from Noda Time 1.x. Basically this is the ISO
     /// rules, but with a variable "minimum number of days in the first week".
     /// </summary>
-    internal sealed class IsoBasedWeekYearRule : WeekYearRule
+    internal sealed class RegularWeekYearRule : WeekYearRule
     {
         private readonly int minDaysInFirstWeek;
 
-        internal IsoBasedWeekYearRule(int minDaysInFirstWeek)
+        internal RegularWeekYearRule(int minDaysInFirstWeek)
         {
             Preconditions.DebugCheckArgumentRange(nameof(minDaysInFirstWeek), minDaysInFirstWeek, 1, 7);
             this.minDaysInFirstWeek = minDaysInFirstWeek;
