@@ -2,7 +2,6 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-using System;
 using NodaTime.Calendars;
 using NUnit.Framework;
 
@@ -114,23 +113,6 @@ namespace NodaTime.Test
         public void GetMaxYearOfEra_InvalidEra()
         {
             TestHelper.AssertInvalid(Iso.GetMaxYearOfEra, Era.AnnoPersico);
-        }
-
-        [Test]
-        [TestCase(2009, 53)]
-        [TestCase(2010, 52)]
-        [TestCase(2011, 52)]
-        [TestCase(2012, 52)]
-        [TestCase(2013, 52)]
-        [TestCase(2014, 52)]
-        [TestCase(2015, 53)]
-        [TestCase(2016, 52)]
-        [TestCase(2017, 52)]
-        [TestCase(2018, 52)]
-        [TestCase(2019, 52)]
-        public void GetWeeksInWeekYear(int weekYear, int expectedResult)
-        {
-            Assert.AreEqual(expectedResult, CalendarSystem.Iso.GetWeeksInWeekYear(weekYear));
         }
     }
 }

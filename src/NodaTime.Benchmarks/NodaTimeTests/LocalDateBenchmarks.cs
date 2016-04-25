@@ -91,12 +91,6 @@ namespace NodaTime.Benchmarks.NodaTimeTests
         public int DayOfYear() => Sample.DayOfYear;
 
         [Benchmark]
-        public int WeekOfWeekYear() => Sample.WeekOfWeekYear;
-
-        [Benchmark]
-        public int WeekYear() => Sample.WeekYear;
-
-        [Benchmark]
         public Era Era() => Sample.Era;
 
         [Benchmark]

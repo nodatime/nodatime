@@ -71,7 +71,7 @@ namespace NodaTime.Test
             TestHelper.TestEqualsStruct(original, original, new YearMonthDayCalendar(original.Year + 1, original.Month, original.Day, original.CalendarOrdinal));
             TestHelper.TestEqualsStruct(original, original, new YearMonthDayCalendar(original.Year, original.Month + 1, original.Day, original.CalendarOrdinal));
             TestHelper.TestEqualsStruct(original, original, new YearMonthDayCalendar(original.Year, original.Month, original.Day + 1, original.CalendarOrdinal));
-            TestHelper.TestEqualsStruct(original, original, new YearMonthDayCalendar(original.Year, original.Month, original.Day, CalendarOrdinal.Gregorian1));
+            TestHelper.TestEqualsStruct(original, original, new YearMonthDayCalendar(original.Year, original.Month, original.Day, CalendarOrdinal.Gregorian));
         }
     }
 }

@@ -26,8 +26,8 @@ namespace NodaTime.Test.Calendars
 
             Assert.AreEqual(1970, epoch.Year);
             Assert.AreEqual(1970, epoch.YearOfEra);
-            Assert.AreEqual(1970, epoch.WeekYear);
-            Assert.AreEqual(1, epoch.WeekOfWeekYear);
+            Assert.AreEqual(1970, WeekYearRule.Iso.GetWeekYear(epoch.Date));
+            Assert.AreEqual(1, WeekYearRule.Iso.GetWeekOfWeekYear(epoch.Date));
             Assert.AreEqual(1, epoch.Month);
             Assert.AreEqual(1, epoch.Day);
             Assert.AreEqual(1, epoch.DayOfYear);
@@ -49,8 +49,8 @@ namespace NodaTime.Test.Calendars
 
             Assert.AreEqual(2009, now.Year);
             Assert.AreEqual(2009, now.YearOfEra);
-            Assert.AreEqual(2009, now.WeekYear);
-            Assert.AreEqual(48, now.WeekOfWeekYear);
+            Assert.AreEqual(2009, WeekYearRule.Iso.GetWeekYear(now.Date));
+            Assert.AreEqual(48, WeekYearRule.Iso.GetWeekOfWeekYear(now.Date));
             Assert.AreEqual(11, now.Month);
             Assert.AreEqual(27, now.Day);
             Assert.AreEqual(TimeOfGreatAchievement.DayOfYear, now.DayOfYear);
@@ -102,26 +102,6 @@ namespace NodaTime.Test.Calendars
             Assert.AreEqual(31, CalendarSystem.Iso.GetDaysInMonth(2010, 1));
             Assert.AreEqual(28, CalendarSystem.Iso.GetDaysInMonth(2010, 2));
             Assert.AreEqual(29, CalendarSystem.Iso.GetDaysInMonth(2012, 2));
-        }
-
-        [Test]
-        public void WeekYearLessThanYear()
-        {
-            // January 1st 2011 was a Saturday, and therefore part of WeekYear 2010.
-            LocalDate localDate = new LocalDate(2011, 1, 1);
-            Assert.AreEqual(2011, localDate.Year);
-            Assert.AreEqual(2010, localDate.WeekYear);
-            Assert.AreEqual(52, localDate.WeekOfWeekYear);
-        }
-
-        [Test]
-        public void WeekYearGreaterThanYear()
-        {
-            // December 31st 2012 is a Monday, and thus part of WeekYear 2013.
-            LocalDate localDate = new LocalDate(2012, 12, 31);
-            Assert.AreEqual(2012, localDate.Year);
-            Assert.AreEqual(2013, localDate.WeekYear);
-            Assert.AreEqual(1, localDate.WeekOfWeekYear);
         }
 
         [Test]

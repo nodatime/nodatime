@@ -171,31 +171,6 @@ namespace NodaTime
         /// <value>The week day of this local date as a number.</value>
         public int DayOfWeek => Calendar.GetDayOfWeek(yearMonthDayCalendar.ToYearMonthDay());
 
-        /// <summary>
-        /// Gets the "week year" of this local date.
-        /// </summary>
-        /// <remarks>
-        /// <para>
-        /// The WeekYear is the year that matches with the <see cref="WeekOfWeekYear"/> field.
-        /// In the standard ISO8601 week algorithm, the first week of the year
-        /// is that in which at least 4 days are in the year. As a result of this
-        /// definition, day 1 of the first week may be in the previous year.
-        /// The WeekYear allows you to query the effective year for that day.
-        /// </para>
-        /// <para>
-        /// For example, January 1st 2011 was a Saturday, so only two days of that week
-        /// (Saturday and Sunday) were in 2011. Therefore January 1st is part of
-        /// week 52 of WeekYear 2010. Conversely, December 31st 2012 is a Monday,
-        /// so is part of week 1 of WeekYear 2013.
-        /// </para>
-        /// </remarks>
-        /// <value>The "week year" of this local date.</value>
-        public int WeekYear => Calendar.GetWeekYear(yearMonthDayCalendar.ToYearMonthDay());
-
-        /// <summary>Gets the week within the week-year. See <see cref="WeekYear"/> for more details.</summary>
-        /// <value>The week within the week-year.</value>
-        public int WeekOfWeekYear => Calendar.GetWeekOfWeekYear(yearMonthDayCalendar.ToYearMonthDay());
-
         /// <summary>Gets the year of this local date within the era.</summary>
         /// <value>The year of this local date within the era.</value>
         public int YearOfEra => Calendar.GetYearOfEra(yearMonthDayCalendar.Year);
@@ -267,17 +242,14 @@ namespace NodaTime
 
         /// <summary>
         /// Returns the local date corresponding to the given "week year", "week of week year", and "day of week"
-        /// in the ISO calendar system.
+        /// in the ISO calendar system, using the ISO week-year rules.
         /// </summary>
         /// <param name="weekYear">ISO-8601 week year of value to return</param>
         /// <param name="weekOfWeekYear">ISO-8601 week of week year of value to return</param>
         /// <param name="dayOfWeek">ISO-8601 day of week to return</param>
         /// <returns>The date corresponding to the given week year / week of week year / day of week.</returns>
         public static LocalDate FromWeekYearWeekAndDay(int weekYear, int weekOfWeekYear, IsoDayOfWeek dayOfWeek)
-        {
-            var ymdc = CalendarSystem.Iso.GetYearMonthDayCalendarFromWeekYearWeekAndDayOfWeek(weekYear, weekOfWeekYear, dayOfWeek);
-            return new LocalDate(ymdc);
-        }
+            => WeekYearRule.Iso.GetLocalDate(weekYear, weekOfWeekYear, dayOfWeek, CalendarSystem.Iso);
 
         /// <summary>
         /// Returns the local date corresponding to a particular occurrence of a day-of-week
