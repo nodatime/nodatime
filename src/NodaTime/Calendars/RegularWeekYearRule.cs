@@ -12,21 +12,70 @@ namespace NodaTime.Calendars
     // Possible future feature: allow the first day of the week to vary too.
 
     /// <summary>
-    /// WeekYearRule implementing the rules from Noda Time 1.x. Basically this is the ISO
-    /// rules, but with a variable "minimum number of days in the first week".
+    /// Implements <see cref="IWeekYearRule"/> for a rule where weeks are regular:
+    /// every week has exactly 7 days, which means that some week years straddle
+    /// the calendar year boundary. (So the start of a week can occur in one calendar
+    /// year, and the end of the week in the following calendar year, but the whole
+    /// week is in the same week-year.)
     /// </summary>
-    internal sealed class IsoBasedWeekYearRule : WeekYearRule
+    [Immutable]
+    public sealed class RegularWeekYearRule : IWeekYearRule
     {
+        /// <summary>
+        /// Returns a <see cref="WeekYearRule"/> consistent with ISO-8601.
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// In the standard ISO-8601 week algorithm, the first week of the year
+        /// is that in which at least 4 days are in the year. As a result of this
+        /// definition, day 1 of the first week may be in the previous year. In ISO-8601,
+        /// weeks always begin on a Monday, so this rule is equivalent to the first Thursday
+        /// being in the first Monday-to-Sunday week of the year.
+        /// </para>
+        /// <para>
+        /// For example, January 1st 2011 was a Saturday, so only two days of that week
+        /// (Saturday and Sunday) were in 2011. Therefore January 1st is part of
+        /// week 52 of week-year 2010. Conversely, December 31st 2012 is a Monday,
+        /// so is part of week 1 of week-year 2013.
+        /// </para>
+        /// </remarks>
+        /// <value>A <see cref="WeekYearRule"/> consistent with ISO-8601.</value>
+        public static IWeekYearRule Iso { get; } = new RegularWeekYearRule(4);
+
         private readonly int minDaysInFirstWeek;
 
-        internal IsoBasedWeekYearRule(int minDaysInFirstWeek)
+        private RegularWeekYearRule(int minDaysInFirstWeek)
         {
             Preconditions.DebugCheckArgumentRange(nameof(minDaysInFirstWeek), minDaysInFirstWeek, 1, 7);
             this.minDaysInFirstWeek = minDaysInFirstWeek;
         }
 
+        /// <summary>
+        /// Creates a week year rule where the boundary between one week-year and the next
+        /// is parameterized in terms of how many days of the first week of the week
+        /// year have to be in the new calendar year. Weeks are always deemed to begin on an Monday.
+        /// </summary>
+        /// <remarks>
+        /// <paramref name="minDaysInFirstWeek"/> determines when the first week of the week-year starts.
+        /// For any given calendar year X, consider the Monday-to-Sunday week that includes the first day of the
+        /// calendar year. Usually, some days of that week are in calendar year X, and some are in calendar year 
+        /// X-1. If <paramref name="minDaysInFirstWeek"/> or more of the days are in year X, then the week is
+        /// deemed to be the first week of week-year X. Otherwise, the week is deemed to be the last week of
+        /// week-year X-1, and the first week of week-year X starts on the following Monday.
+        /// </remarks>
+        /// <param name="minDaysInFirstWeek">The minimum number of days in the first Monday-to-Sunday week
+        /// which have to be in the new calendar year for that week to count as being in that week-year.
+        /// Must be in the range 1 to 7 inclusive.
+        /// </param>
+        /// <returns>A <see cref="RegularWeekYearRule"/> with the specified minimum number of days in the first
+        /// week.</returns>
+        public static RegularWeekYearRule ForMinDaysInFirstWeek(int minDaysInFirstWeek)
+        {
+            return new RegularWeekYearRule(minDaysInFirstWeek);
+        }
+
         /// <inheritdoc />
-        public override LocalDate GetLocalDate(int weekYear, int weekOfWeekYear, IsoDayOfWeek dayOfWeek, [NotNull] CalendarSystem calendar)
+        public LocalDate GetLocalDate(int weekYear, int weekOfWeekYear, IsoDayOfWeek dayOfWeek, [NotNull] CalendarSystem calendar)
         {
             Preconditions.CheckNotNull(calendar, nameof(calendar));
             ValidateWeekYear(weekYear, calendar);
@@ -54,7 +103,7 @@ namespace NodaTime.Calendars
         }
 
         /// <inheritdoc />
-        public override int GetWeekOfWeekYear(LocalDate date)
+        public int GetWeekOfWeekYear(LocalDate date)
         {
             YearMonthDay yearMonthDay = date.YearMonthDay;
             YearMonthDayCalculator yearMonthDayCalculator = date.Calendar.YearMonthDayCalculator;
@@ -69,7 +118,7 @@ namespace NodaTime.Calendars
         }
 
         /// <inheritdoc />
-        public override int GetWeeksInWeekYear(int weekYear, [NotNull] CalendarSystem calendar)
+        public int GetWeeksInWeekYear(int weekYear, [NotNull] CalendarSystem calendar)
         {
             Preconditions.CheckNotNull(calendar, nameof(calendar));
             YearMonthDayCalculator yearMonthDayCalculator = calendar.YearMonthDayCalculator;
@@ -91,7 +140,7 @@ namespace NodaTime.Calendars
         }
 
         /// <inheritdoc />
-        public override int GetWeekYear(LocalDate date)
+        public int GetWeekYear(LocalDate date)
         {
             YearMonthDay yearMonthDay = date.YearMonthDay;
             YearMonthDayCalculator yearMonthDayCalculator = date.Calendar.YearMonthDayCalculator;

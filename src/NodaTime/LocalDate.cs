@@ -249,7 +249,7 @@ namespace NodaTime
         /// <param name="dayOfWeek">ISO-8601 day of week to return</param>
         /// <returns>The date corresponding to the given week year / week of week year / day of week.</returns>
         public static LocalDate FromWeekYearWeekAndDay(int weekYear, int weekOfWeekYear, IsoDayOfWeek dayOfWeek)
-            => WeekYearRule.Iso.GetLocalDate(weekYear, weekOfWeekYear, dayOfWeek, CalendarSystem.Iso);
+            => RegularWeekYearRule.Iso.GetLocalDate(weekYear, weekOfWeekYear, dayOfWeek, CalendarSystem.Iso);
 
         /// <summary>
         /// Returns the local date corresponding to a particular occurrence of a day-of-week
