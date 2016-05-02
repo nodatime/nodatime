@@ -120,7 +120,6 @@ namespace NodaTime.Test.Globalization
             Assert.Throws<ArgumentNullException>(() => NodaFormatInfo.GetFormatInfo(null));
         }
 
-#if !PCL
         [Test]
         public void TestGetInstance_CultureInfo()
         {
@@ -151,15 +150,14 @@ namespace NodaTime.Test.Globalization
             using (CultureSaver.SetCultures(enUs, FailingCultureInfo.Instance))
             {
                 var info = NodaFormatInfo.GetInstance(null);
-                Assert.AreEqual(Thread.CurrentThread.CurrentCulture, info.CultureInfo);
+                Assert.AreEqual(CultureInfo.DefaultThreadCurrentCulture, info.CultureInfo);
             }
             using (CultureSaver.SetCultures(enGb, FailingCultureInfo.Instance))
             {
                 var info = NodaFormatInfo.GetInstance(null);
-                Assert.AreEqual(Thread.CurrentThread.CurrentCulture, info.CultureInfo);
+                Assert.AreEqual(CultureInfo.DefaultThreadCurrentCulture, info.CultureInfo);
             }
         }
-#endif
 
         [Test]
         public void TestOffsetPatternLong()

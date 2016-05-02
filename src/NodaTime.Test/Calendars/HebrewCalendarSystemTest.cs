@@ -18,11 +18,10 @@ namespace NodaTime.Test.Calendars
     /// </summary>
     public class HebrewCalendarSystemTest
     {
-#if !PCL
         [Test]
         public void IsLeapYear()
         {
-            var bcl = new HebrewCalendar();
+            var bcl = BclCalendars.Hebrew;
             var minYear = bcl.GetYear(bcl.MinSupportedDateTime);
             var maxYear = bcl.GetYear(bcl.MaxSupportedDateTime);
             var noda = CalendarSystem.HebrewCivil;
@@ -37,11 +36,11 @@ namespace NodaTime.Test.Calendars
         /// This tests every day for the BCL-supported Hebrew calendar range, testing various aspects of each date,
         /// using the civil month numbering.
         /// </summary>
-        [Test, Timeout(300000)] // Can take a long time under NCrunch.
+        [Test]
         [Category("Slow")]
         public void BclThroughHistory_Civil()
         {
-            Calendar bcl = new HebrewCalendar();
+            var bcl = BclCalendars.Hebrew;
             var noda = CalendarSystem.HebrewCivil;
 
             // The min supported date/time starts part way through the year
@@ -56,10 +55,10 @@ namespace NodaTime.Test.Calendars
         /// This tests every day for the BCL-supported Hebrew calendar range, testing various aspects of each date,
         /// using the scriptural month numbering.
         /// </summary>
-        [Test, Timeout(300000)] // Can take a long time under NCrunch.
+        [Test]
         public void BclThroughHistory_Scriptural()
         {
-            Calendar bcl = new HebrewCalendar();
+            var bcl = BclCalendars.Hebrew;
             var noda = CalendarSystem.HebrewScriptural;
 
             // The min supported date/time starts part way through the year
@@ -79,7 +78,7 @@ namespace NodaTime.Test.Calendars
                         "Year: {0}; Month: {1} (civil)", year, civilMonth);
                     for (int day = 1; day < bcl.GetDaysInMonth(year, civilMonth); day++)
                     {
-                        DateTime bclDate = new DateTime(year, civilMonth, day, bcl);
+                        DateTime bclDate = bcl.ToDateTime(year, civilMonth, day, 0, 0, 0, 0);
                         LocalDate nodaDate = new LocalDate(year, scripturalMonth, day, noda);
                         Assert.AreEqual(bclDate, nodaDate.AtMidnight().ToDateTimeUnspecified(), "{0}-{1}-{2}", year, scripturalMonth, day);
                         Assert.AreEqual(nodaDate, LocalDateTime.FromDateTime(bclDate, noda).Date);
@@ -90,7 +89,6 @@ namespace NodaTime.Test.Calendars
                 }
             }
         }
-#endif
 
         // Test cases are in scriptural month numbering, but we check both. This is
         // mostly testing the behaviour of SetYear, via LocalDate.PlusYears.

@@ -2,12 +2,10 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-#if !PCL
 using System;
 using System.Globalization;
 using NodaTime.Calendars;
 using NodaTime.Test.Text;
-#endif
 
 using NUnit.Framework;
 
@@ -18,19 +16,17 @@ namespace NodaTime.Test.Calendars
     /// </summary>
     public class PersianCalendarSystemTest
     {
-#if !PCL
-        [Test, Timeout(300000)] // Can take a long time under NCrunch.
+        [Test]
         [Category("Slow")]
         public void BclThroughHistory()
         {
-            Calendar bcl = new PersianCalendar();
+            Calendar bcl = BclCalendars.Persian;
             // The "right" BCL equivalent to use depends on the version of .NET... pick it appropriately here.
             CalendarSystem noda = PatternTestBase<LocalDate>.CalendarSystemForCalendar(bcl);
             // Note: Noda Time stops in 9377, whereas the BCL goes into the start of 9378. This is because
             // Noda Time ensures that the whole year is valid.
             BclEquivalenceHelper.AssertEquivalent(bcl, noda, noda.MinYear, noda.MaxYear);
         }
-#endif
 
         /// <summary>
         /// Use the examples in Calendrical Calculations for where the arithmetic calendar differs

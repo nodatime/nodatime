@@ -2,15 +2,9 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-#if !PCL
-
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using NUnit.Framework;
+using System;
+using System.Globalization;
 
 namespace NodaTime.Test.Calendars
 {
@@ -29,7 +23,7 @@ namespace NodaTime.Test.Calendars
             // We avoid asking the BCL to create a DateTime on each iteration, simply
             // because the BCL implementation is so slow. Instead, we just check at the start of each month that
             // we're at the date we expect.
-            DateTime bclDate = new DateTime(fromYear, 1, 1, bcl);
+            DateTime bclDate = bcl.ToDateTime(fromYear, 1, 1, 0, 0, 0, 0);
             for (int year = fromYear; year <= toYear; year++)
             {
                 Assert.AreEqual(bcl.GetDaysInYear(year), noda.GetDaysInYear(year), "Year: {0}", year);
@@ -58,8 +52,6 @@ namespace NodaTime.Test.Calendars
                     }
                 }
             }
-
         }
     }
 }
-#endif

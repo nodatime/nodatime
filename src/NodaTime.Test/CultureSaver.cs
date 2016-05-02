@@ -2,13 +2,8 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-// .NET Core doesn't include a setter for CultureInfo.CurrentCulture,
-// or Thread.CurrentCulture at all
-#if !PCL
-
 using System;
 using System.Globalization;
-using System.Threading;
 
 namespace NodaTime.Test
 {
@@ -84,8 +79,8 @@ namespace NodaTime.Test
             /// <param name="newCulture">The new basic culture to set.</param>
             public BasicSaver(CultureInfo newCulture)
             {
-                oldCulture = CultureInfo.CurrentCulture;
-                Thread.CurrentThread.CurrentCulture = newCulture;
+                oldCulture = CultureInfo.DefaultThreadCurrentCulture;
+                CultureInfo.DefaultThreadCurrentCulture = newCulture;
             }
 
 #region IDisposable Members
@@ -94,7 +89,7 @@ namespace NodaTime.Test
             /// </summary>
             public void Dispose()
             {
-                Thread.CurrentThread.CurrentCulture = oldCulture;
+                CultureInfo.DefaultThreadCurrentCulture = oldCulture;
             }
 #endregion
         }
@@ -117,11 +112,11 @@ namespace NodaTime.Test
             /// <param name="newUiCulture">The new UI culture to set.</param>
             public BothSaver(CultureInfo newCulture, CultureInfo newUiCulture)
             {
-                oldCulture = Thread.CurrentThread.CurrentCulture;
-                oldUiCulture = Thread.CurrentThread.CurrentUICulture;
+                oldCulture = CultureInfo.DefaultThreadCurrentCulture;
+                oldUiCulture = CultureInfo.DefaultThreadCurrentUICulture;
 
-                Thread.CurrentThread.CurrentCulture = newCulture;
-                Thread.CurrentThread.CurrentUICulture = newUiCulture;
+                CultureInfo.DefaultThreadCurrentCulture = newCulture;
+                CultureInfo.DefaultThreadCurrentUICulture = newUiCulture;
             }
 
 #region IDisposable Members
@@ -130,10 +125,10 @@ namespace NodaTime.Test
             /// </summary>
             public void Dispose()
             {
-                Thread.CurrentThread.CurrentCulture = oldCulture;
-                Thread.CurrentThread.CurrentUICulture = oldUiCulture;
+                CultureInfo.DefaultThreadCurrentCulture = oldCulture;
+                CultureInfo.DefaultThreadCurrentUICulture = oldUiCulture;
             }
-#endregion
+            #endregion
         }
 #endregion
 
@@ -152,8 +147,8 @@ namespace NodaTime.Test
             /// <param name="newCulture">The new UI culture to set.</param>
             public UiSaver(CultureInfo newCulture)
             {
-                oldCulture = Thread.CurrentThread.CurrentUICulture;
-                Thread.CurrentThread.CurrentUICulture = newCulture;
+                oldCulture = CultureInfo.DefaultThreadCurrentUICulture;
+                CultureInfo.DefaultThreadCurrentUICulture = newCulture;
             }
 
 #region IDisposable Members
@@ -162,11 +157,10 @@ namespace NodaTime.Test
             /// </summary>
             public void Dispose()
             {
-                Thread.CurrentThread.CurrentUICulture = oldCulture;
+                CultureInfo.DefaultThreadCurrentUICulture = oldCulture;
             }
-#endregion
+            #endregion
         }
 #endregion
     }
 }
-#endif
