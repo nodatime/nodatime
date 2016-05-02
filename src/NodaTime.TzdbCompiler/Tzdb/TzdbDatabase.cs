@@ -22,7 +22,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
         /// <summary>
         /// Returns the version of the TZDB data represented.
         /// </summary>
-        internal string Version { get; }
+        public string Version { get; }
 
         /// <summary>
         /// Returns the (mutable) map of links from alias to canonical ID.

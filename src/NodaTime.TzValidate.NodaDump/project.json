@@ -19,13 +19,13 @@
 
   "dependencies": {
     "NodaTime": "",
-    "NodaTime.TzdbCompiler": "",
+    "NodaTime.TzdbCompiler": ""
   },
 
   "frameworks": {
     "dnx451": {
       "frameworkAssemblies": {
-        "System.Runtime": "",
+        "System.Runtime": ""
       }
     }
   }
