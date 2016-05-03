@@ -70,9 +70,7 @@ namespace NodaTime.Test.Text
                 case "HijriCalendar": return CalendarSystem.IslamicBcl;
                 case "HebrewCalendar": return CalendarSystem.HebrewCivil;
                 case "PersianCalendar": return bcl.IsLeapYear(1) ? CalendarSystem.PersianSimple : CalendarSystem.PersianAstronomical;
-                case "UmAlQuraCalendar":
-                    return TestHelper.IsRunningOnMono || !UmAlQuraYearMonthDayCalculator.IsSupported
-                        ? null : CalendarSystem.UmAlQura;
+                case "UmAlQuraCalendar": return CalendarSystem.UmAlQura;
                 case "JulianCalendar":
                     return CalendarSystem.Julian;
                 default:

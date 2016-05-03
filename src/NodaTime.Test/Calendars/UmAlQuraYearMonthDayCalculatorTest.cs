@@ -6,6 +6,7 @@ using NUnit.Framework;
 using System;
 using System.Globalization;
 using System.Linq;
+using System.Reflection;
 
 namespace NodaTime.Test.Calendars
 {
@@ -20,7 +21,7 @@ namespace NodaTime.Test.Calendars
             // Always get it with reflection in the test, just for simplicity.
             try
             {
-                var type = typeof(Calendar).Assembly.GetType("System.Globalization.UmAlQuraCalendar");
+                var type = typeof(Calendar).GetTypeInfo().Assembly.GetType("System.Globalization.UmAlQuraCalendar");
                 if (type == null)
                 {
                     return null;
@@ -73,7 +74,7 @@ namespace NodaTime.Test.Calendars
             var calculator = new UmAlQuraYearMonthDayCalculator();
             for (int year = calculator.MinYear; year <= calculator.MaxYear; year++)
             {
-                var bcl = new DateTime(year, 1, 1, BclCalendar);
+                var bcl = BclCalendar.ToDateTime(year, 1, 1, 0, 0, 0, 0);
                 var days = (bcl - new DateTime(1970, 1, 1)).Days;
                 Assert.AreEqual(days, calculator.GetStartOfYearInDays(year), "year={0}", year);
             }
