@@ -1,31 +1,26 @@
 ﻿// Copyright 2014 The Noda Time Authors. All rights reserved.
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
-using System;
-using System.Collections.Generic;
-using System.Globalization;
 using NodaTime.Calendars;
 using NUnit.Framework;
-using System.Reflection;
+using System;
+using System.Globalization;
+using System.Linq;
 
 namespace NodaTime.Test.Calendars
 {
     public class UmAlQuraYearMonthDayCalculatorTest
     {
+        // TODO: See how much of this can be done with BclEquivalenceHelper.
+        // TODO: FIXME with the new core tests stuff...
         private static readonly Calendar BclCalendar = GetBclCalendar();
-
-        private static readonly UmAlQuraYearMonthDayCalculator Calculator = UmAlQuraYearMonthDayCalculator.IsSupported ? new UmAlQuraYearMonthDayCalculator() : null;
-
-        // Horrible way to conditionalize tests at execution time...
-        private static readonly IEnumerable<string> Supported =
-            UmAlQuraYearMonthDayCalculator.IsSupported ? new[] { "(Supported)" } : new string[0];
 
         private static Calendar GetBclCalendar()
         {
             // Always get it with reflection in the test, just for simplicity.
             try
             {
-                var type = typeof(Calendar).GetTypeInfo().Assembly.GetType("System.Globalization.UmAlQuraCalendar");
+                var type = typeof(Calendar).Assembly.GetType("System.Globalization.UmAlQuraCalendar");
                 if (type == null)
                 {
                     return null;
@@ -39,68 +34,63 @@ namespace NodaTime.Test.Calendars
         }
 
         [Test]
-        public void CannotInstantiateOnUnsupportedPlatform()
+        public void GetDaysInMonth()
         {
-            if (!UmAlQuraYearMonthDayCalculator.IsSupported)
-            {
-                Assert.Throws<NotSupportedException>(() => new UmAlQuraYearMonthDayCalculator());
-            }
-        }
-
-        [Test, TestCaseSource(nameof(Supported))]
-        public void GetDaysInMonth(string ignored)
-        {
-            for (int year = Calculator.MinYear; year <= Calculator.MaxYear; year++)
+            var calculator = new UmAlQuraYearMonthDayCalculator();
+            for (int year = calculator.MinYear; year <= calculator.MaxYear; year++)
             {
                 for (int month = 1; month <= 12; month++)
                 {
-                    Assert.AreEqual(BclCalendar.GetDaysInMonth(year, month), Calculator.GetDaysInMonth(year, month), "year={0}; month={1}", year, month);
+                    Assert.AreEqual(BclCalendar.GetDaysInMonth(year, month), calculator.GetDaysInMonth(year, month), "year={0}; month={1}", year, month);
                 }
             }
         }
 
-        [Test, TestCaseSource(nameof(Supported))]
-        public void GetDaysInYear(string ignored)
+        [Test]
+        public void GetDaysInYear()
         {
-            for (int year = Calculator.MinYear; year <= Calculator.MaxYear; year++)
+            var calculator = new UmAlQuraYearMonthDayCalculator();
+            for (int year = calculator.MinYear; year <= calculator.MaxYear; year++)
             {
-                Assert.AreEqual(BclCalendar.GetDaysInYear(year), Calculator.GetDaysInYear(year), "year={0}", year);
+                Assert.AreEqual(BclCalendar.GetDaysInYear(year), calculator.GetDaysInYear(year), "year={0}", year);
             }
         }
 
-        [Test, TestCaseSource(nameof(Supported))]
-        public void IsLeapYear(string ignored)
+        [Test]
+        public void IsLeapYear()
         {
-            for (int year = Calculator.MinYear; year <= Calculator.MaxYear; year++)
+            var calculator = new UmAlQuraYearMonthDayCalculator();
+            for (int year = calculator.MinYear; year <= calculator.MaxYear; year++)
             {
-                Assert.AreEqual(BclCalendar.IsLeapYear(year), Calculator.IsLeapYear(year), "year={0}", year);
+                Assert.AreEqual(BclCalendar.IsLeapYear(year), calculator.IsLeapYear(year), "year={0}", year);
             }
         }
 
-        [Test, TestCaseSource(nameof(Supported))]
-        public void GetStartOfYearInDays(string ignored)
+        [Test]
+        public void GetStartOfYearInDays()
         {
             // This exercises CalculateStartOfYearInDays too.
-            for (int year = Calculator.MinYear; year <= Calculator.MaxYear; year++)
+            var calculator = new UmAlQuraYearMonthDayCalculator();
+            for (int year = calculator.MinYear; year <= calculator.MaxYear; year++)
             {
-                // .NET Core-compatible alternative to new DateTime(year, 1, 1, BclCalendar)
-                var bcl = BclCalendar.ToDateTime(year, 1, 1, 0, 0, 0, 0);
+                var bcl = new DateTime(year, 1, 1, BclCalendar);
                 var days = (bcl - new DateTime(1970, 1, 1)).Days;
-                Assert.AreEqual(days, Calculator.GetStartOfYearInDays(year), "year={0}", year);
+                Assert.AreEqual(days, calculator.GetStartOfYearInDays(year), "year={0}", year);
             }
         }
 
-        [Test, TestCaseSource(nameof(Supported))]
-        public void GetYearMonthDay_DaysSinceEpoch(string ignored)
+        [Test]
+        public void GetYearMonthDay_DaysSinceEpoch()
         {
-            int daysSinceEpoch = Calculator.GetStartOfYearInDays(Calculator.MinYear);
-            for (int year = Calculator.MinYear; year <= Calculator.MaxYear; year++)
+            var calculator = new UmAlQuraYearMonthDayCalculator();
+            int daysSinceEpoch = calculator.GetStartOfYearInDays(calculator.MinYear);
+            for (int year = calculator.MinYear; year <= calculator.MaxYear; year++)
             {
                 for (int month = 1; month <= 12; month++)
                 {
-                    for (int day = 1; day <= Calculator.GetDaysInMonth(year, month); day++)
+                    for (int day = 1; day <= calculator.GetDaysInMonth(year, month); day++)
                     {
-                        var actual = Calculator.GetYearMonthDay(daysSinceEpoch);
+                        var actual = calculator.GetYearMonthDay(daysSinceEpoch);
                         var expected = new YearMonthDay(year, month, day);
                         Assert.AreEqual(expected, actual, "daysSinceEpoch={0}", daysSinceEpoch);
                         daysSinceEpoch++;
@@ -109,17 +99,18 @@ namespace NodaTime.Test.Calendars
             }
         }
 
-        [Test, TestCaseSource(nameof(Supported))]
-        public void GetYearMonthDay_YearAndDayOfYear(string ignored)
+        [Test]
+        public void GetYearMonthDay_YearAndDayOfYear()
         {
-            for (int year = Calculator.MinYear; year <= Calculator.MaxYear; year++)
+            var calculator = new UmAlQuraYearMonthDayCalculator();
+            for (int year = calculator.MinYear; year <= calculator.MaxYear; year++)
             {
                 int dayOfYear = 1;
                 for (int month = 1; month <= 12; month++)
                 {
-                    for (int day = 1; day <= Calculator.GetDaysInMonth(year, month); day++)
+                    for (int day = 1; day <= calculator.GetDaysInMonth(year, month); day++)
                     {
-                        var actual = Calculator.GetYearMonthDay(year, dayOfYear);
+                        var actual = calculator.GetYearMonthDay(year, dayOfYear);
                         var expected = new YearMonthDay(year, month, day);
                         Assert.AreEqual(expected, actual, "year={0}; dayOfYear={1}", year, dayOfYear);
                         dayOfYear++;
@@ -128,19 +119,84 @@ namespace NodaTime.Test.Calendars
             }
         }
 
-        [Test, TestCaseSource(nameof(Supported))]
-        public void GetDaysFromStartOfYearToStartOfMonth(string ignored)
+        [Test]
+        public void GetDaysFromStartOfYearToStartOfMonth()
         {
-            for (int year = Calculator.MinYear; year <= Calculator.MaxYear; year++)
+            var calculator = new UmAlQuraYearMonthDayCalculator();
+            for (int year = calculator.MinYear; year <= calculator.MaxYear; year++)
             {
                 int dayOfYear = 1;
                 for (int month = 1; month <= 12; month++)
                 {
                     // This delegates to GetDaysFromStartOfYearToStartOfMonth (which is protected).
-                    Assert.AreEqual(dayOfYear, Calculator.GetDayOfYear(new YearMonthDay(year, month, 1)), "year={0}; month={1}", year, month);
-                    dayOfYear += Calculator.GetDaysInMonth(year, month);
+                    Assert.AreEqual(dayOfYear, calculator.GetDayOfYear(new YearMonthDay(year, month, 1)), "year={0}; month={1}", year, month);
+                    dayOfYear += calculator.GetDaysInMonth(year, month);
                 }
             }
         }
+
+#if DEBUG && !PCL
+        // Only a test to make it easy to generate the data.
+        [Test]
+        public void GenerateData()
+        {
+            var bclCalendar = new UmAlQuraCalendar();
+            DateTime minDateTime = bclCalendar.MinSupportedDateTime;            
+
+            // Work out the min and max supported years, ensuring that we support complete years.
+            var minYear = bclCalendar.GetYear(minDateTime);
+            if (bclCalendar.GetMonth(minDateTime) != 1 || bclCalendar.GetDayOfMonth(minDateTime) != 1)
+            {
+                minYear++;
+            }
+
+            DateTime maxDateTime = bclCalendar.MaxSupportedDateTime;
+            var maxYear = bclCalendar.GetYear(maxDateTime);
+            if (bclCalendar.GetMonth(maxDateTime) != 12 || bclCalendar.GetDayOfMonth(maxDateTime) != bclCalendar.GetDaysInMonth(maxYear, 12))
+            {
+                maxYear--;
+            }
+
+            // This is two elements longer than it needs to be, but it's simpler this way.
+            var monthLengths = new ushort[maxYear - minYear + 3];
+            for (int year = minYear; year <= maxYear; year++)
+            {
+                int yearIndex = year - minYear + 1;
+                ushort monthBits = 0;
+                for (int month = 1; month <= 12; month++)
+                {
+                    if (bclCalendar.GetDaysInMonth(year, month) == 30)
+                    {
+                        monthBits |= (ushort) (1 << month);
+                    }
+                }
+                monthLengths[yearIndex] = monthBits;
+            }
+            byte[] data = monthLengths.SelectMany(value => new[] { (byte)(value >> 8), (byte)(value & 0xff) }).ToArray();
+
+            // Assume every 10 years before minDateTime has exactly 3544 days... it doesn't matter whether or not that's
+            // correct, but it gets roughly the right estimate. It doesn't matter that startOfMinYear isn't in UTC; we're only
+            // taking the Ticks property, which doesn't take account of the Kind.
+            DateTime startOfMinYear = bclCalendar.ToDateTime(minYear, 1, 1, 0, 0, 0, 0);
+            var computedDaysAtStartOfMinYear = (int)((startOfMinYear.Ticks - NodaConstants.BclTicksAtUnixEpoch) / NodaConstants.TicksPerDay);
+
+            Console.WriteLine($"private const int ComputedMinYear = {minYear};");
+            Console.WriteLine($"private const int ComputedMaxYear = {maxYear};");
+            Console.WriteLine($"private const int ComputedDaysAtStartOfMinYear = {computedDaysAtStartOfMinYear};");
+            Console.WriteLine("private const string GeneratedData =");
+
+            // Adapted from PersianCalendarSystemTest. If we do this any more, we should
+            // put it somewhere common.
+            var base64 = Convert.ToBase64String(data);
+            var lineLength = 80;
+            for (int start = 0; start < base64.Length; start += lineLength)
+            {
+                var line = base64.Substring(start, Math.Min(lineLength, base64.Length - start));
+                var last = start + lineLength >= base64.Length;
+                Console.WriteLine($"    \"{line}\"{(last ? ";" : " +")}");
+            }
+            Console.WriteLine();
+        }
+#endif
     }
 }
