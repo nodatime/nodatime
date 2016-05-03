@@ -160,23 +160,10 @@ primarily used in Saudi Arabia, is similar to the Islamic Hijri calendar, except
 tabular data. Each month has 29 or 30 days, and each year has 354 or 355 days, but the month lengths cannot be determined
 algorithmically.
 
-The Noda Time implementation uses the BCL
+The Noda Time implementation uses data from the BCL
 [`UmAlQuraCalendar`](http://msdn.microsoft.com/en-us/library/system.globalization.umalquracalendar.aspx) to obtain the required
-information, which means it can only work on platforms where that class is available. It isn't available on all PCL-supporting runtimes,
-and the Mono implementation is [known to have serious flaws](https://bugzilla.xamarin.com/show_bug.cgi?id=21930). Where a sensible
-implementation is not available, requesting this calendar will throw a `NotSupportedException`.
-
-**Supported platforms:**
-
-- Windows Phone 8.1 Silverlight
-- Desktop Silverlight
-- Desktop .NET
-
-**Unsupported platforms:**
-
-- Mono (Xamarin.iOS, Xamarin.Android, and desktop) - tested up to v3.6.0
-- Windows Phone 8.1 store apps (despite MSDN claiming otherwise)
-- Windows 8.1 store apps
+information, but the data is baked into Noda Time so it is available
+on all platforms.
 
 Hebrew
 ===
