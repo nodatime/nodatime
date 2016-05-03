@@ -128,10 +128,9 @@ namespace NodaTime
             {
                 return calendar;
             }
-            // Not found it in the array. Two situations in which this can happen in normal usage:
-            // - The calendar system was initialized in a different thread, and the write to the array isn't visible in this thread yet.
-            // - The calendar isn't supported, e.g. the Um Al Qura calendar. (This does beg the question of how we've got the ordinal though.)
-            // Either way, a simple switch will do the right thing.
+            // Not found it in the array. This can happen if the calendar system was initialized in
+            // a different thread, and the write to the array isn't visible in this thread yet.
+            // A simple switch will do the right thing.
             switch (ordinal)
             {
                 case CalendarOrdinal.Gregorian:
@@ -753,39 +752,15 @@ namespace NodaTime
         /// <value>A Hebrew calendar system using the scriptural month numbering.</value>
         public static CalendarSystem HebrewScriptural => GetHebrewCalendar(HebrewMonthNumbering.Scriptural);
 
-#if PCL
-    /// <summary>
-    /// Returns an Um Al Qura calendar system - an Islamic calendar system primarily used by
-    /// Saudi Arabia.
-    /// </summary>
-        public static CalendarSystem UmAlQura
-#else
         /// <summary>
         /// Returns an Um Al Qura calendar system - an Islamic calendar system primarily used by
         /// Saudi Arabia.
         /// </summary>
         /// <remarks>
-        /// This is a tabular calendar, which relies on data provided by the BCL
-        /// <see cref="UmAlQuraCalendar" /> class during initialization.
-        /// As such, some platforms do not support this calendar. In particular, the Mono implementation
-        /// is known to be unreliable (at least as far as Mono 3.6.0). The calendar is available on
-        /// some Portable Class Library variants, but not all. When in doubt, please test thoroughly
-        /// on all platforms you intend to support.
+        /// This is a tabular calendar, relying on pregenerated data.
         /// </remarks>
         /// <value>A calendar system for the Um Al Qura calendar.</value>
-        /// <exception cref="NotSupportedException">The Um Al Qura calendar is not supported on the current platform.</exception>
-        public static CalendarSystem UmAlQura
-#endif
-        {
-            get
-            {
-                if (MiscellaneousCalendars.UmAlQura != null)
-                {
-                    return MiscellaneousCalendars.UmAlQura;
-                }
-                throw new NotSupportedException("The Um Al Qura calendar is not supported on this platform");
-            }
-        }
+        public static CalendarSystem UmAlQura => MiscellaneousCalendars.UmAlQura;
 
         // "Holder" classes for lazy initialization of calendar systems
 
@@ -836,30 +811,12 @@ namespace NodaTime
             internal static readonly CalendarSystem Coptic =
                 new CalendarSystem(CalendarOrdinal.Coptic, CopticId, CopticName, new CopticYearMonthDayCalculator(), Era.AnnoMartyrum);
             internal static readonly CalendarSystem UmAlQura =
-                UmAlQuraYearMonthDayCalculator.IsSupported 
-                    ? new CalendarSystem(CalendarOrdinal.UmAlQura, UmAlQuraId, UmAlQuraName, new UmAlQuraYearMonthDayCalculator(), Era.AnnoHegirae) 
-                    : null;
+                new CalendarSystem(CalendarOrdinal.UmAlQura, UmAlQuraId, UmAlQuraName, new UmAlQuraYearMonthDayCalculator(), Era.AnnoHegirae);
 
-            // Static constructor to enforce laziness. This is actually important to avoid a Heisenbug. Without this, you can get a nasty
-            // cyclic semi-dependency:
-            //  1) Client (e.g. internal test) calls UmAlQuraYearMonthDayCalculator.IsSupported
-            //  2) Type initialization of UmAlQuraYearMonthDayCalculator is triggered
-            //  3) Static constructor of UmAlQuraYearMonthDayCalculator requires NodaConstants
-            //  4) Type initialization of NodaConstants is triggered (early on)
-            //  5) NodaConstants.BclEpoch requires CalendarSystem.ForOrdinal
-            //  6) CalendarSystem.ForOrdinal refers to MiscellaneousCalendars, so without a static constructor here,
-            //     the CLR *can* trigger type initialization
-            //  7) Type initialization of MiscellaneousCalendars calls UmAlQuraYearMonthDayCalculator.IsSupported again
-            //  8) Although UmAlQuraYearMonthDayCalculator isn't initialized yet, it's *being* initialized by this thread, so it's skipped
-            //  9) UmAlQuraYearMonthDayCalculator.IsSupported checks a static field which hasn't *yet* been written - and reports that it's unsupported
-            // 10) MiscellaneousCalendars type initialization decides that the calendar isn't supported, so stores a null reference for the calendar system
-            // 11) Going back up the stack, *now* UmAlQuraYearMonthDayCalculator type initialization completes, setting that it *is* supported.
-            // 12) We have a discrepancy: CalendarSystem.UmAlQura will fail saying it's not supported,
-            //     but UmAlQuraYearMonthDayCalculator.IsSupported returns true. Ick!
-            //
-            // With the static constructor in place, the chain is broken at step 6 - we don't initialize MiscellaneousCalendars
-            // as a side-effect, so we never end up executing UmAlQuraYearMonthDayCalculator.IsSupported before the type initializer
-            // for UmAlQuraYearMonthDayCalculator has completed.
+            // Static constructor to enforce laziness. This used to be important to avoid a Heisenbug.
+            // I don't believe it's strictly required now, but it does no harm and I don't want to go
+            // through the pain I went through before. Besides, very few users will actually want these
+            // calendars, so making this fully lazy avoids unnecessary initialization.
             static MiscellaneousCalendars() { }
         }
 

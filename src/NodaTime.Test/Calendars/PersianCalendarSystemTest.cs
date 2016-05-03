@@ -69,12 +69,30 @@ namespace NodaTime.Test.Calendars
         }
 
 #if DEBUG && !PCL
-        // Only really present to make it easy to regenerate the astronomical leap year data
+        // Only a test to make it easy to generate the data.
         [Test]
         public void GenerateLeapYearData()
         {
-            string data = PersianYearMonthDayCalculator.Astronomical.GenerateLeapYearData();
-            Assert.IsNotEmpty(data);
+            var maxYear = PersianYearMonthDayCalculator.MaxPersianYear;
+            var bcl = new PersianCalendar();
+            byte[] data = new byte[maxYear / 8 + 1];
+            // We don't really care whether IsLeapYear(MaxPersianYear+1) returns true or false,
+            // but it must be valid to call it.
+            for (int year = 1; year <= maxYear; year++)
+            {
+                if (bcl.IsLeapYear(year))
+                {
+                    data[year >> 3] |= (byte)(1 << (year & 7));
+                }
+            }
+            var base64 = Convert.ToBase64String(data);
+            var lineLength = 80;
+            for (int start = 0; start < base64.Length; start += lineLength)
+            {
+                var line = base64.Substring(start, Math.Min(lineLength, base64.Length - start));
+                var last = start + lineLength >= base64.Length;
+                Console.WriteLine($"\"{line}\"{(last ? "" : " +")}");
+            }
         }
 #endif
     }

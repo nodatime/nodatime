@@ -41,24 +41,6 @@ namespace NodaTime.Test
         }
 
         [Test]
-        public void GetUmAlQuraCalendar_ThrowsOnUnsupportedPlatform()
-        {
-            if (!UmAlQuraYearMonthDayCalculator.IsSupported)
-            {
-                Assert.Throws<NotSupportedException>(() => CalendarSystem.UmAlQura.ToString());
-            }
-        }
-
-        [Test]
-        public void GetUmAlQuraCalendar_WorksOnsupportedPlatform()
-        {
-            if (UmAlQuraYearMonthDayCalculator.IsSupported)
-            {
-                Assert.IsNotNull(CalendarSystem.UmAlQura);
-            }
-        }
-
-        [Test]
         public void NoSubstrings()
         {
             CompareInfo comparison = CultureInfo.InvariantCulture.CompareInfo;
@@ -84,24 +66,6 @@ namespace NodaTime.Test
         public void ForOrdinal_Roundtrip(CalendarSystem calendar)
         {
             Assert.AreSame(calendar, CalendarSystem.ForOrdinal(calendar.Ordinal));
-        }
-
-        [Test]
-        public void ForOrdinal_UmAlQura_ThrowsOnUnsupportedPlatform()
-        {
-            if (!UmAlQuraYearMonthDayCalculator.IsSupported)
-            {
-                Assert.Throws<NotSupportedException>(() => CalendarSystem.ForOrdinal(CalendarOrdinal.UmAlQura));
-            }
-        }
-
-        [Test]
-        public void ForOrdinal_UmAlQura_WorksOnsupportedPlatform()
-        {
-            if (UmAlQuraYearMonthDayCalculator.IsSupported)
-            {
-                Assert.IsNotNull(CalendarSystem.ForOrdinal(CalendarOrdinal.UmAlQura));
-            }
         }
     }
 }

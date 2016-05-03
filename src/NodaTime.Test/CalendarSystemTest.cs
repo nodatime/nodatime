@@ -11,7 +11,7 @@ namespace NodaTime.Test
 {
     public partial class CalendarSystemTest
     {
-        private static readonly IEnumerable<string> SupportedIds = CalendarSystem.Ids.Where(x => x != "Um Al Qura" || UmAlQuraYearMonthDayCalculator.IsSupported).ToList();
+        private static readonly IEnumerable<string> SupportedIds = CalendarSystem.Ids.ToList();
         private static readonly List<CalendarSystem> SupportedCalendars = SupportedIds.Select(CalendarSystem.ForId).ToList();
 
         [Test]
