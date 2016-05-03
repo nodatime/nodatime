@@ -13,6 +13,11 @@ namespace NodaTime.Test.Calendars
     /// </summary>
     internal static class BclEquivalenceHelper
     {
+        internal static void AssertEquivalent(Calendar bcl, CalendarSystem noda)
+        {
+            AssertEquivalent(bcl, noda, noda.MinYear, noda.MaxYear);
+        }
+
         /// <summary>
         /// Checks that each day from the given start year to the end year (inclusive) is equal
         /// between the BCL and the Noda Time calendar. Additionally, the number of days in each month and year

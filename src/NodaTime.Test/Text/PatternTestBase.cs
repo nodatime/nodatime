@@ -53,30 +53,5 @@ namespace NodaTime.Test.Text
             var parseResult = pattern.Parse(text);
             Assert.AreEqual(value, parseResult.Value);            
         }
-
-        /// <summary>
-        /// Tries to work out a roughly-matching calendar system for the given BCL calendar.
-        /// This is needed where we're testing whether days of the week match - even if we can
-        /// get day/month/year values to match without getting the calendar right, the calendar
-        /// affects the day of week.
-        /// </summary>
-        internal static CalendarSystem CalendarSystemForCalendar(Calendar bcl)
-        {
-            // Yes, this is horrible... but the specific calendars aren't available to test
-            // against in the PCL
-            switch (bcl.GetType().Name)
-            {
-                case "GregorianCalendar": return CalendarSystem.Iso;
-                case "HijriCalendar": return CalendarSystem.IslamicBcl;
-                case "HebrewCalendar": return CalendarSystem.HebrewCivil;
-                case "PersianCalendar": return bcl.IsLeapYear(1) ? CalendarSystem.PersianSimple : CalendarSystem.PersianAstronomical;
-                case "UmAlQuraCalendar": return CalendarSystem.UmAlQura;
-                case "JulianCalendar":
-                    return CalendarSystem.Julian;
-                default:
-                    // No idea - we can't test with this calendar...
-                    return null;
-            }
-        }
     }
 }

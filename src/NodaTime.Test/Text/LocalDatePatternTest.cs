@@ -9,6 +9,7 @@ using System.Linq;
 using NodaTime.Properties;
 using NodaTime.Text;
 using NUnit.Framework;
+using NodaTime.Test.Calendars;
 
 namespace NodaTime.Test.Text
 {
@@ -234,7 +235,7 @@ namespace NodaTime.Test.Text
             }
 
             var pattern = LocalDatePattern.Create(patternText, culture);
-            var calendarSystem = CalendarSystemForCalendar(culture.Calendar);
+            var calendarSystem = BclCalendars.CalendarSystemForCalendar(culture.Calendar);
             if (calendarSystem == null)
             {
                 // We can't map this calendar system correctly yet; the test would be invalid.

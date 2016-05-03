@@ -8,6 +8,7 @@ using System.Linq;
 using NodaTime.Properties;
 using NodaTime.Text;
 using NUnit.Framework;
+using NodaTime.Test.Calendars;
 
 namespace NodaTime.Test.Text
 {
@@ -227,7 +228,7 @@ namespace NodaTime.Test.Text
             }
             Calendar calendar = alwaysInvariantPattern ? CultureInfo.InvariantCulture.Calendar : culture.Calendar;
 
-            var calendarSystem = CalendarSystemForCalendar(calendar);
+            var calendarSystem = BclCalendars.CalendarSystemForCalendar(calendar);
             if (calendarSystem == null)
             {
                 // We can't map this calendar system correctly yet; the test would be invalid.

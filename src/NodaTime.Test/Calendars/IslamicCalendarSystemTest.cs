@@ -298,7 +298,7 @@ namespace NodaTime.Test.Calendars
         {
             var bcl = BclCalendars.Hijri;
             var noda = CalendarSystem.IslamicBcl;
-            BclEquivalenceHelper.AssertEquivalent(bcl, noda, noda.MinYear, noda.MaxYear);
+            BclEquivalenceHelper.AssertEquivalent(bcl, noda);
         }
 
         [Test]

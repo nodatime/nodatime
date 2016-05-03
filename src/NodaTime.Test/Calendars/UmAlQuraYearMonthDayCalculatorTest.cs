@@ -6,65 +6,15 @@ using NUnit.Framework;
 using System;
 using System.Globalization;
 using System.Linq;
-using System.Reflection;
 
 namespace NodaTime.Test.Calendars
 {
     public class UmAlQuraYearMonthDayCalculatorTest
     {
-        // TODO: See how much of this can be done with BclEquivalenceHelper.
-        // TODO: FIXME with the new core tests stuff...
-        private static readonly Calendar BclCalendar = GetBclCalendar();
-
-        private static Calendar GetBclCalendar()
-        {
-            // Always get it with reflection in the test, just for simplicity.
-            try
-            {
-                var type = typeof(Calendar).GetTypeInfo().Assembly.GetType("System.Globalization.UmAlQuraCalendar");
-                if (type == null)
-                {
-                    return null;
-                }
-                return (Calendar) Activator.CreateInstance(type);
-            }
-            catch
-            {
-                return null;
-            }
-        }
-
         [Test]
-        public void GetDaysInMonth()
+        public void BclEquivalence()
         {
-            var calculator = new UmAlQuraYearMonthDayCalculator();
-            for (int year = calculator.MinYear; year <= calculator.MaxYear; year++)
-            {
-                for (int month = 1; month <= 12; month++)
-                {
-                    Assert.AreEqual(BclCalendar.GetDaysInMonth(year, month), calculator.GetDaysInMonth(year, month), "year={0}; month={1}", year, month);
-                }
-            }
-        }
-
-        [Test]
-        public void GetDaysInYear()
-        {
-            var calculator = new UmAlQuraYearMonthDayCalculator();
-            for (int year = calculator.MinYear; year <= calculator.MaxYear; year++)
-            {
-                Assert.AreEqual(BclCalendar.GetDaysInYear(year), calculator.GetDaysInYear(year), "year={0}", year);
-            }
-        }
-
-        [Test]
-        public void IsLeapYear()
-        {
-            var calculator = new UmAlQuraYearMonthDayCalculator();
-            for (int year = calculator.MinYear; year <= calculator.MaxYear; year++)
-            {
-                Assert.AreEqual(BclCalendar.IsLeapYear(year), calculator.IsLeapYear(year), "year={0}", year);
-            }
+            BclEquivalenceHelper.AssertEquivalent(BclCalendars.UmAlQura, CalendarSystem.UmAlQura);
         }
 
         [Test]
@@ -74,7 +24,7 @@ namespace NodaTime.Test.Calendars
             var calculator = new UmAlQuraYearMonthDayCalculator();
             for (int year = calculator.MinYear; year <= calculator.MaxYear; year++)
             {
-                var bcl = BclCalendar.ToDateTime(year, 1, 1, 0, 0, 0, 0);
+                var bcl = BclCalendars.UmAlQura.ToDateTime(year, 1, 1, 0, 0, 0, 0);
                 var days = (bcl - new DateTime(1970, 1, 1)).Days;
                 Assert.AreEqual(days, calculator.GetStartOfYearInDays(year), "year={0}", year);
             }
