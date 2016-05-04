@@ -18,12 +18,12 @@
   },
 
   "dependencies": {
-    "BenchmarkDotNet": "0.9.1",
+    "BenchmarkDotNet": "0.9.5",
     "Microsoft.Bcl.Immutable": "1.0.34",
     "Microsoft.CodeAnalysis": "1.1.0",
-    "NodaTime": "2.0.0-*",
-    "NodaTime.Serialization.JsonNet": "2.0.0-*",
-    "NodaTime.Testing": "2.0.0-*",
+    "NodaTime": "",
+    "NodaTime.Serialization.JsonNet": "",
+    "NodaTime.Testing": "",
     "NUnit": "3.0.0",
     "System.Xml.XDocument": "4.0.0",
     "Newtonsoft.Json": "8.0.1"
