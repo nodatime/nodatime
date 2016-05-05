@@ -103,8 +103,28 @@ namespace NodaTime.Test.Text
 
         internal static readonly CultureInfo Invariant = CultureInfo.InvariantCulture;
         internal static readonly CultureInfo EnUs = CultureInfo.ReadOnly(new CultureInfo("en-US"));
-        internal static readonly CultureInfo FrFr = CultureInfo.ReadOnly(new CultureInfo("fr-FR"));
-        internal static readonly CultureInfo FrCa = CultureInfo.ReadOnly(new CultureInfo("fr-CA"));
+        // Specify fr-FR patterns explicitly, as DNX on Linux gives a different answer. We
+        // don't need it to be French really, just an example...
+        internal static readonly CultureInfo FrFr = CultureInfo.ReadOnly(new CultureInfo("fr-FR")
+        {
+            DateTimeFormat =
+            {
+                LongDatePattern = "dddd d MMMM yyyy",
+                LongTimePattern = "HH:mm:ss",
+                ShortDatePattern = "dd/MM/yyyy",
+                ShortTimePattern = "HH:mm"
+            }
+        });
+        internal static readonly CultureInfo FrCa = CultureInfo.ReadOnly(new CultureInfo("fr-CA")
+        {
+            DateTimeFormat =
+            {
+                LongDatePattern = "d MMMM yyyy",
+                LongTimePattern = "HH:mm:ss",
+                ShortDatePattern = "yyyy-MM-dd",
+                ShortTimePattern = "HH:mm"
+            }
+        });
 
         // We need a culture with a non-colon time separator. On .NET Core we can't specify this explicitly,
         // so we just rely on Finland doing the right thing. On platforms where we can set this explicitly,
