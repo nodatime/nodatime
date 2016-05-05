@@ -150,12 +150,12 @@ namespace NodaTime.Test.Globalization
             using (CultureSaver.SetCultures(enUs, FailingCultureInfo.Instance))
             {
                 var info = NodaFormatInfo.GetInstance(null);
-                Assert.AreEqual(CultureInfo.DefaultThreadCurrentCulture, info.CultureInfo);
+                Assert.AreEqual(CultureInfo.CurrentCulture, info.CultureInfo);
             }
             using (CultureSaver.SetCultures(enGb, FailingCultureInfo.Instance))
             {
                 var info = NodaFormatInfo.GetInstance(null);
-                Assert.AreEqual(CultureInfo.DefaultThreadCurrentCulture, info.CultureInfo);
+                Assert.AreEqual(CultureInfo.CurrentCulture, info.CultureInfo);
             }
         }
 

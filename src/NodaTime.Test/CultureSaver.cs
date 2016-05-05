@@ -4,12 +4,13 @@
 
 using System;
 using System.Globalization;
+using System.Threading;
 
 namespace NodaTime.Test
 {
     /// <summary>
-    ///   Provides a simple method for setting the culture of a thread so it can be reset
-    ///   to what it was. Designed to be used in a <c>using</c> statement.
+    /// Provides a simple method for setting the culture of a thread so it can be reset
+    /// to what it was. Designed to be used in a <c>using</c> statement.
     /// </summary>
     /// <example>
     ///   using (CultureSaver.SetUiCulture(new CultureInfo("en-US"))) {
@@ -23,82 +24,94 @@ namespace NodaTime.Test
     /// </remarks>
     public static class CultureSaver
     {
+        // Abstractions over Thread.CurrentThread.CurrentCulture / CultureInfo.CurrentCulture etc.
+
+#if PCL
+        private static CultureInfo CurrentCulture
+        {
+            get { return CultureInfo.DefaultThreadCurrentCulture; }
+            set { CultureInfo.DefaultThreadCurrentCulture = value; }
+        }
+
+        private static CultureInfo CurrentUICulture
+        {
+            get { return CultureInfo.DefaultThreadCurrentUICulture; }
+            set { CultureInfo.DefaultThreadCurrentUICulture = value; }
+        }
+#else
+        private static CultureInfo CurrentCulture
+        {
+            get { return Thread.CurrentThread.CurrentCulture; }
+            set { Thread.CurrentThread.CurrentCulture  = value; }
+        }
+
+        private static CultureInfo CurrentUICulture
+        {
+            get { return Thread.CurrentThread.CurrentUICulture; }
+            set { Thread.CurrentThread.CurrentUICulture = value; }
+        }
+#endif
+
         /// <summary>
-        ///   Sets the basic culture.
+        /// Sets the basic culture.
         /// </summary>
         /// <param name="newCultureInfo">The new culture info.</param>
         /// <returns>An <see cref="IDisposable" /> so the culture can be reset.</returns>
-        public static IDisposable SetBasicCulture(CultureInfo newCultureInfo)
-        {
-            return new BasicSaver(newCultureInfo);
-        }
+        public static IDisposable SetBasicCulture(CultureInfo newCultureInfo) => new BasicSaver(newCultureInfo);
 
         /// <summary>
-        ///   Sets the UI culture of the current thread.
+        /// Sets the UI culture of the current thread.
         /// </summary>
         /// <param name="newCultureInfo">The new culture info.</param>
         /// <returns>An <see cref="IDisposable" /> so the culture can be reset.</returns>
-        public static IDisposable SetUiCulture(CultureInfo newCultureInfo)
-        {
-            return new UiSaver(newCultureInfo);
-        }
+        public static IDisposable SetUiCulture(CultureInfo newCultureInfo) => new UiSaver(newCultureInfo);
 
         /// <summary>
-        ///   Sets both the UI and basic cultures of the current thread.
+        /// Sets both the UI and basic cultures of the current thread.
         /// </summary>
         /// <param name="newCultureInfo">The new culture info.</param>
         /// <returns>An <see cref="IDisposable" /> so the culture can be reset.</returns>
-        public static IDisposable SetCultures(CultureInfo newCultureInfo)
-        {
-            return new BothSaver(newCultureInfo, newCultureInfo);
-        }
+        public static IDisposable SetCultures(CultureInfo newCultureInfo) => new BothSaver(newCultureInfo, newCultureInfo);
 
         /// <summary>
-        ///   Sets both the UI and basic cultures of the current thread.
+        /// Sets both the UI and basic cultures of the current thread.
         /// </summary>
         /// <param name="newCultureInfo">The new culture info.</param>
         /// <param name="newUiCultureInfo">The new UI culture info.</param>
         /// <returns>An <see cref="IDisposable" /> so the culture can be reset.</returns>
         public static IDisposable SetCultures(CultureInfo newCultureInfo, CultureInfo newUiCultureInfo)
-        {
-            return new BothSaver(newCultureInfo, newUiCultureInfo);
-        }
+            => new BothSaver(newCultureInfo, newUiCultureInfo);
 
-#region Nested type: BasicSaver
         /// <summary>
-        ///   Provides the <see cref="IDisposable" /> for saving the original basic culture and resetting
-        ///   it back.
+        /// Provides the <see cref="IDisposable" /> for saving the original basic culture and resetting
+        /// it back.
         /// </summary>
         private sealed class BasicSaver : IDisposable
         {
             private readonly CultureInfo oldCulture;
 
             /// <summary>
-            ///   Initializes a new instance of the <see cref="BasicSaver" /> class.
+            /// Initializes a new instance of the <see cref="BasicSaver" /> class.
             /// </summary>
             /// <param name="newCulture">The new basic culture to set.</param>
             public BasicSaver(CultureInfo newCulture)
             {
-                oldCulture = CultureInfo.DefaultThreadCurrentCulture;
-                CultureInfo.DefaultThreadCurrentCulture = newCulture;
+                oldCulture = CurrentCulture;
+                CurrentCulture = newCulture;
             }
 
-#region IDisposable Members
             /// <summary>
-            ///   Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+            /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
             /// </summary>
             public void Dispose()
             {
-                CultureInfo.DefaultThreadCurrentCulture = oldCulture;
+                CurrentCulture = oldCulture;
             }
-#endregion
         }
-#endregion
 
-#region Nested type: BothSaver
         /// <summary>
-        ///   Provides the <see cref="IDisposable" /> for saving the original cultures and resetting
-        ///   them back.
+        /// Provides the <see cref="IDisposable" /> for saving the original cultures and resetting
+        /// them back.
         /// </summary>
         private sealed class BothSaver : IDisposable
         {
@@ -106,61 +119,53 @@ namespace NodaTime.Test
             private readonly CultureInfo oldUiCulture;
 
             /// <summary>
-            ///   Initializes a new instance of the <see cref="UiSaver" /> class.
+            /// Initializes a new instance of the <see cref="UiSaver" /> class.
             /// </summary>
             /// <param name="newCulture">The new basic culture to set.</param>
             /// <param name="newUiCulture">The new UI culture to set.</param>
             public BothSaver(CultureInfo newCulture, CultureInfo newUiCulture)
             {
-                oldCulture = CultureInfo.DefaultThreadCurrentCulture;
-                oldUiCulture = CultureInfo.DefaultThreadCurrentUICulture;
+                oldCulture = CurrentCulture;
+                oldUiCulture = CurrentUICulture;
 
-                CultureInfo.DefaultThreadCurrentCulture = newCulture;
-                CultureInfo.DefaultThreadCurrentUICulture = newUiCulture;
+                CurrentCulture = newCulture;
+                CurrentUICulture = newUiCulture;
             }
 
-#region IDisposable Members
             /// <summary>
-            ///   Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+            /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
             /// </summary>
             public void Dispose()
             {
-                CultureInfo.DefaultThreadCurrentCulture = oldCulture;
-                CultureInfo.DefaultThreadCurrentUICulture = oldUiCulture;
+                CurrentCulture = oldCulture;
+                CurrentUICulture = oldUiCulture;
             }
-            #endregion
         }
-#endregion
-
-#region Nested type: UiSaver
         /// <summary>
-        ///   Provides the <see cref="IDisposable" /> for saving the original UI culture and resetting
-        ///   it back.
+        /// Provides the <see cref="IDisposable" /> for saving the original UI culture and resetting
+        /// it back.
         /// </summary>
         private sealed class UiSaver : IDisposable
         {
             private readonly CultureInfo oldCulture;
 
             /// <summary>
-            ///   Initializes a new instance of the <see cref="UiSaver" /> class.
+            /// Initializes a new instance of the <see cref="UiSaver" /> class.
             /// </summary>
             /// <param name="newCulture">The new UI culture to set.</param>
             public UiSaver(CultureInfo newCulture)
             {
-                oldCulture = CultureInfo.DefaultThreadCurrentUICulture;
-                CultureInfo.DefaultThreadCurrentUICulture = newCulture;
+                oldCulture = CurrentUICulture;
+                CurrentUICulture = newCulture;
             }
 
-#region IDisposable Members
             /// <summary>
             ///   Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
             /// </summary>
             public void Dispose()
             {
-                CultureInfo.DefaultThreadCurrentUICulture = oldCulture;
+                CurrentUICulture = oldCulture;
             }
-            #endregion
         }
-#endregion
     }
 }
