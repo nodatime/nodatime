@@ -30,7 +30,12 @@ namespace NodaTime.Test.TimeZones
                 var bclZone = TimeZoneInfo.FindSystemTimeZoneById(bclId);
                 Assert.AreEqual(tzdbId, source.MapTimeZoneId(bclZone));
             }
+#if PCL
+            // See https://github.com/dotnet/corefx/issues/7552
+            catch (Exception)
+#else
             catch (TimeZoneNotFoundException)
+#endif
             {
                 // This may occur on Mono, for example.
                 Assert.Ignore("Test assumes existence of BCL zone with ID: " + bclId);
