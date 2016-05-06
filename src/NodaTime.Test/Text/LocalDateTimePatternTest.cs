@@ -8,6 +8,7 @@ using System.Linq;
 using NodaTime.Properties;
 using NodaTime.Text;
 using NUnit.Framework;
+using NodaTime.Test.Calendars;
 
 namespace NodaTime.Test.Text
 {
@@ -221,13 +222,13 @@ namespace NodaTime.Test.Text
             // we'll skip round-trip format tests.
             // See https://bugzilla.xamarin.com/show_bug.cgi?id=11364
             bool alwaysInvariantPattern = "Oos".Contains(patternText);
-            if (alwaysInvariantPattern && TestHelper.IsRunningOnMono && !(culture.Calendar is GregorianCalendar))
+            if (alwaysInvariantPattern && TestHelper.IsRunningOnMono && !(culture.Calendar.GetType().Name == "GregorianCalendar"))
             {
                 return;
             }
             Calendar calendar = alwaysInvariantPattern ? CultureInfo.InvariantCulture.Calendar : culture.Calendar;
 
-            var calendarSystem = CalendarSystemForCalendar(calendar);
+            var calendarSystem = BclCalendars.CalendarSystemForCalendar(calendar);
             if (calendarSystem == null)
             {
                 // We can't map this calendar system correctly yet; the test would be invalid.

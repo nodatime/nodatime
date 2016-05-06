@@ -35,6 +35,14 @@
         "System.Threading.Tasks": "",
         "System.Xml.Linq": ""
       }
+    },
+    "dnxcore50": {
+      "compilationOptions": {
+        "define": [ "PCL" ]
+      },
+      "dependencies": {
+        "System.Console": "4.0.0-beta-23516"
+      }
     }
   }
 }

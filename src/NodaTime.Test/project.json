@@ -30,6 +30,9 @@
     "NodaTime.Testing": "",
     "NUnit": "3.0.0",
     "NUnitLite": "3.0.0-*",
+    "Microsoft.CSharp": "4.0.0",
+    "System.Dynamic.Runtime": "4.0.0",
+    "System.Reflection.Extensions": "4.0.0",
     "System.Xml.XDocument": "4.0.0"
   },
 
@@ -40,6 +43,14 @@
         "System.Threading.Tasks": "",
         "System.Xml.Linq": ""
       }
-    }
+    },
+    "dnxcore50": {
+      "compilationOptions": {
+        "define": [ "PCL" ]
+      },
+      "dependencies": {
+        "System.Console": "4.0.0-beta-23516"
+      }
+    },
   }
 }

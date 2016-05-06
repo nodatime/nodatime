@@ -8,6 +8,7 @@ using System.Globalization;
 using System.Linq;
 using NodaTime.Text;
 using NUnit.Framework;
+using System.Reflection;
 
 namespace NodaTime.Test
 {
@@ -24,10 +25,12 @@ namespace NodaTime.Test
 
             OffsetDateTime odt = new OffsetDateTime(local, offset);
 
-            var localDateTimePropertyNames = typeof(LocalDateTime).GetProperties()
+            var localDateTimePropertyNames = typeof(LocalDateTime).GetTypeInfo()
+                                                                  .DeclaredProperties
                                                                   .Select(p => p.Name)
                                                                   .ToList();
-            var commonProperties = typeof(OffsetDateTime).GetProperties()
+            var commonProperties = typeof(OffsetDateTime).GetTypeInfo()
+                                                         .DeclaredProperties
                                                          .Where(p => localDateTimePropertyNames.Contains(p.Name));
             foreach (var property in commonProperties)
             {

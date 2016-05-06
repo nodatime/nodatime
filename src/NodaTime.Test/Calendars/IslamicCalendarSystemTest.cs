@@ -267,8 +267,8 @@ namespace NodaTime.Test.Calendars
         [Test]
         public void BclUsesAstronomicalEpoch()
         {
-            Calendar hijri = new HijriCalendar();
-            DateTime bclDirect = new DateTime(1, 1, 1, 0, 0, 0, 0, hijri, DateTimeKind.Unspecified);
+            Calendar hijri = BclCalendars.Hijri;
+            DateTime bclDirect = hijri.ToDateTime(1, 1, 1, 0, 0, 0, 0);
 
             CalendarSystem julianCalendar = CalendarSystem.Julian;
             LocalDate julianIslamicEpoch = new LocalDate(622, 7, 15, julianCalendar);
@@ -280,8 +280,8 @@ namespace NodaTime.Test.Calendars
         [Test]
         public void SampleDateBclCompatibility()
         {
-            Calendar hijri = new HijriCalendar();
-            DateTime bclDirect = new DateTime(1302, 10, 15, 0, 0, 0, 0, hijri, DateTimeKind.Unspecified);
+            Calendar hijri = BclCalendars.Hijri;
+            DateTime bclDirect = hijri.ToDateTime(1302, 10, 15, 0, 0, 0, 0);
 
             CalendarSystem islamicCalendar = CalendarSystem.IslamicBcl;
             LocalDate iso = new LocalDate(1302, 10, 15, islamicCalendar);
@@ -292,13 +292,13 @@ namespace NodaTime.Test.Calendars
         /// <summary>
         /// This tests every day for 9000 (ISO) years, to check that it always matches the year, month and day.
         /// </summary>
-        [Test, Timeout(180000)] // Can take a long time under NCrunch.
+        [Test]
         [Category("Slow")]
         public void BclThroughHistory()
         {
-            var bcl = new HijriCalendar();
+            var bcl = BclCalendars.Hijri;
             var noda = CalendarSystem.IslamicBcl;
-            BclEquivalenceHelper.AssertEquivalent(bcl, noda, noda.MinYear, noda.MaxYear);
+            BclEquivalenceHelper.AssertEquivalent(bcl, noda);
         }
 
         [Test]

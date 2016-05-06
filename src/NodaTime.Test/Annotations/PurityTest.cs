@@ -20,16 +20,17 @@ namespace NodaTime.Test.Annotations
         {
             var implicitlyPureNames = new HashSet<string> { "Equals", "GetHashCode", "CompareTo", "ToString" };
 
-            var impureMethods = typeof(Instant).Assembly
-                                               .GetTypes()
+            var impureMethods = typeof(Instant).GetTypeInfo().Assembly
+                                               .DefinedTypes
                                                .Where(t => t.IsValueType && t.IsPublic)
                                                .OrderBy(t => t.Name)
-                                               .SelectMany(m => m.GetMethods(BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly))
+                                               .SelectMany(m => m.DeclaredMethods)
+                                               .Where(m => m.IsPublic && !m.IsStatic)
                                                .Where(m => !m.IsSpecialName) // Real methods, not properties
                                                .Where(m => !implicitlyPureNames.Contains(m.Name))
-                                               .Where(m => !m.IsDefined(typeof(PureAttribute), false))
+                                               .Where(m => !m.IsDefined(typeof(PureAttribute)))
                                                .ToList();
-            Assert.IsEmpty(impureMethods, "Impure methods: " + string.Join(", ", impureMethods.Select(m => m.ReflectedType.Name + "." + m.Name)));
+            Assert.IsEmpty(impureMethods, "Impure methods: " + string.Join(", ", impureMethods.Select(m => m.DeclaringType.Name + "." + m.Name)));
         }
     }
 }

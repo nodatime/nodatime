@@ -33,7 +33,7 @@ namespace NodaTime.Test.TimeZones.IO
         {
             if (readIndex >= writeIndex)
             {
-                throw new InternalBufferOverflowException("IoStream buffer empty in GetByte()");
+                throw new IOException("IoStream buffer empty in GetByte()");
             }
             return buffer[readIndex++];
         }
@@ -97,7 +97,7 @@ namespace NodaTime.Test.TimeZones.IO
         {
             if (writeIndex >= buffer.Length)
             {
-                throw new InternalBufferOverflowException("Exceeded the IoStream buffer size of " + buffer.Length);
+                throw new IOException("Exceeded the IoStream buffer size of " + buffer.Length);
             }
             buffer[writeIndex++] = value;
         }

@@ -21,7 +21,7 @@ namespace NodaTime.Test.Utility
         {
             factoryCallCount = 0;
             return new Cache<string, int>(3, text => { factoryCallCount++; return text.Length; }, 
-                                          StringComparer.InvariantCultureIgnoreCase);
+                                          StringComparer.OrdinalIgnoreCase);
         }
 
         [Test]
