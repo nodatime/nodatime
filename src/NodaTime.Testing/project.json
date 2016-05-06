@@ -39,6 +39,7 @@
         "define": [ "PCL" ]
       },
       "dependencies": {
+        "System.Runtime.Numerics": "4.0.1-beta-23516",
       }
     }
   }
