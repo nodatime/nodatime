@@ -1,9 +1,12 @@
 ﻿// Copyright 2013 The Noda Time Authors. All rights reserved.
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
+
 using System;
 using System.Globalization;
 using NodaTime.Calendars;
+using NodaTime.Test.Text;
+
 using NUnit.Framework;
 
 namespace NodaTime.Test.Calendars
@@ -13,16 +16,15 @@ namespace NodaTime.Test.Calendars
     /// </summary>
     public class PersianCalendarSystemTest
     {
-        [Test, Timeout(300000)] // Can take a long time under NCrunch.
+        [Test]
         [Category("Slow")]
         public void BclThroughHistory()
         {
-            Calendar bcl = new PersianCalendar();
-            // The "right" BCL equivalent to use depends on the version of .NET... pick it appropriately here.
-            CalendarSystem noda = bcl.IsLeapYear(1) ? CalendarSystem.PersianSimple : CalendarSystem.PersianAstronomical;
+            Calendar bcl = BclCalendars.Persian;
+            CalendarSystem noda = BclCalendars.CalendarSystemForCalendar(bcl);
             // Note: Noda Time stops in 9377, whereas the BCL goes into the start of 9378. This is because
             // Noda Time ensures that the whole year is valid.
-            BclEquivalenceHelper.AssertEquivalent(bcl, noda, noda.MinYear, noda.MaxYear);
+            BclEquivalenceHelper.AssertEquivalent(bcl, noda);
         }
 
         /// <summary>
