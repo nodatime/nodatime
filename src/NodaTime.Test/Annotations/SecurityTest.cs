@@ -5,6 +5,7 @@
 using NUnit.Framework;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Security;
 
 namespace NodaTime.Test.Annotations
@@ -15,15 +16,15 @@ namespace NodaTime.Test.Annotations
         public void SecurityAttributesOnInterfaceImplementations()
         {
             var violations = new List<string>();
-            foreach (var type in typeof(Instant).Assembly.GetTypes().Where(type => !type.IsInterface))
+            foreach (var type in typeof(Instant).GetTypeInfo().Assembly.DefinedTypes.Where(type => !type.IsInterface))
             {
-                foreach (var iface in type.GetInterfaces())
+                foreach (var iface in type.ImplementedInterfaces)
                 {
-                    var map = type.GetInterfaceMap(iface);
+                    var map = type.GetRuntimeInterfaceMap(iface);
                     var methodCount = map.InterfaceMethods.Length;
                     for (int i = 0; i < methodCount; i++)
                     {
-                        if (map.TargetMethods[i].DeclaringType == type &&
+                        if (map.TargetMethods[i].DeclaringType.GetTypeInfo() == type &&
                             map.InterfaceMethods[i].IsDefined(typeof(SecurityCriticalAttribute), false) &&
                             !map.TargetMethods[i].IsDefined(typeof(SecurityCriticalAttribute), false))
                         {

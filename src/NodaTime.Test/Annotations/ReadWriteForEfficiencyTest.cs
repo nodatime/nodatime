@@ -14,8 +14,8 @@ namespace NodaTime.Test.Annotations
     {
         private static IEnumerable<FieldInfo> GetFieldsWithAttribute()
         {
-            return from type in typeof(Instant).Assembly.GetTypes()
-                   from field in type.GetFields(BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic)
+            return from type in typeof(Instant).GetTypeInfo().Assembly.DefinedTypes
+                   from field in type.DeclaredFields
                    where field.IsDefined(typeof(ReadWriteForEfficiencyAttribute))
                    select field;
         }
@@ -33,7 +33,7 @@ namespace NodaTime.Test.Annotations
         public void AttributeOnlyAppliedToValueTypeFields()
         {
             var badFields = GetFieldsWithAttribute()
-                .Where(field => !field.FieldType.IsValueType)
+                .Where(field => !field.FieldType.GetTypeInfo().IsValueType)
                 .ToList();
             Assert.IsEmpty(badFields);
         }

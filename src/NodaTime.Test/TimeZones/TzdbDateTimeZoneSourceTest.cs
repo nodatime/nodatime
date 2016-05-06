@@ -9,6 +9,7 @@ using System.Linq;
 using NodaTime.Extensions;
 using NodaTime.TimeZones;
 using NUnit.Framework;
+using System.Reflection;
 
 namespace NodaTime.Test.TimeZones
 {
@@ -44,7 +45,7 @@ namespace NodaTime.Test.TimeZones
         [Test]
         public void CanLoadNodaTimeResourceFromOnePointOneRelease()
         {
-            var assembly = typeof(TzdbDateTimeZoneSourceTest).Assembly;
+            var assembly = typeof(TzdbDateTimeZoneSourceTest).GetTypeInfo().Assembly;
             TzdbDateTimeZoneSource source;
             using (Stream stream = assembly.GetManifestResourceStream("NodaTime.Test.TestData.Tzdb2013bFromNodaTime1.1.nzd"))
             {
@@ -226,7 +227,7 @@ namespace NodaTime.Test.TimeZones
         public void CheckDump()
         {
             List<string> expected;
-            var assembly = typeof(TzdbDateTimeZoneSourceTest).Assembly;
+            var assembly = typeof(TzdbDateTimeZoneSourceTest).GetTypeInfo().Assembly;
             using (Stream stream = assembly.GetManifestResourceStream("NodaTime.Test.TestData.tzdb-dump.txt"))
             {
                 using (var reader = new StreamReader(stream))
