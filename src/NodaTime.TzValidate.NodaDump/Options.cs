@@ -25,6 +25,9 @@ namespace NodaTime.TzValidate.NodaDump
         [Option("z", "zone", Required = false, HelpText = "Zone ID, to dump a single time zone")]
         public string ZoneId { get; set; }
 
+        [Option(null, "hash", Required = false, HelpText = "Only output the SHA-256 hash")]
+        public bool HashOnly { get; set; }
+
         internal Instant Start => FromYear == null ? Instant.MinValue : Instant.FromUtc(FromYear.Value, 1, 1, 0, 0);
         internal Instant End => Instant.FromUtc(ToYear, 1, 1, 0, 0);
 
