@@ -43,6 +43,11 @@ namespace NodaTime.TzValidate.NodaDump
 
             if (options.ZoneId != null)
             {
+                if (options.HashOnly)
+                {
+                    Console.WriteLine("Cannot use --hash option with a single zone ID");
+                    return 1;
+                }
                 var zone = zones.FirstOrDefault(z => z.Id == options.ZoneId);
                 if (zone == null)
                 {
@@ -58,8 +63,15 @@ namespace NodaTime.TzValidate.NodaDump
                     DumpZone(zone, options, writer);
                 }
                 var text = writer.ToString();
-                WriteHeaders(text, version, options, Console.Out);
-                Console.Write(text);
+                if (options.HashOnly)
+                {
+                    Console.WriteLine(ComputeHash(text));
+                }
+                else
+                {
+                    WriteHeaders(text, version, options, Console.Out);
+                    Console.Write(text);
+                }
             }
 
             return 0;
@@ -127,18 +139,26 @@ namespace NodaTime.TzValidate.NodaDump
         private static void WriteHeaders(string text, string version, Options options, TextWriter writer)
         {
             writer.Write($"Version: {version}\n");
-            using (var hashAlgorithm = SHA256.Create())
-            {
-                var bytes = Encoding.UTF8.GetBytes(text);
-                var hash = hashAlgorithm.ComputeHash(bytes);
-                var hashText = BitConverter.ToString(hash).Replace("-", "").ToLowerInvariant();
-                writer.Write($"Body-SHA-256: {hashText}\n");
-            }
+            writer.Write($"Body-SHA-256: {ComputeHash(text)}\n");
             writer.Write("Format: tzvalidate-0.1\n");
             writer.Write($"Range: {options.FromYear ?? 1}-{options.ToYear}\n");
             writer.Write($"Generator: {typeof(Program).GetTypeInfo().Assembly.GetName().Name}\n");
             writer.Write($"GeneratorUrl: https://github.com/nodatime/nodatime\n");
             writer.Write("\n");
+        }
+
+        /// <summary>
+        /// Computes the SHA-256 hash of the given text after encoding it as UTF-8,
+        /// and returns the hash in lower-case hex.
+        /// </summary>
+        private static string ComputeHash(string text)
+        {
+            using (var hashAlgorithm = SHA256.Create())
+            {
+                var bytes = Encoding.UTF8.GetBytes(text);
+                var hash = hashAlgorithm.ComputeHash(bytes);
+                return BitConverter.ToString(hash).Replace("-", "").ToLowerInvariant();
+            }
         }
     }
 }

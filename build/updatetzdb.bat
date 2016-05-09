@@ -24,4 +24,9 @@ echo http://nodatime.org/tzdb/tzdb%1.nzd> %WWWDIR%\tzdb\latest.txt
 del %WWWDIR%\tzdb\index.txt
 FOR %%i IN (%WWWDIR%\tzdb\*.nzd) DO echo http://nodatime.org/tzdb/%%~nxi>> %WWWDIR%\tzdb\index.txt
 
+echo Hash on github pages:
+wget -q -O - http://nodatime.github.io/tzvalidate/tzdata%1%-sha256.txt 2> NUL
+echo Hash from new file:
+dnx -p %SRCDIR%\NodaTime.TzValidate.NodaDump run -s %WWWDIR%\tzdb\tzdb%1.nzd --hash
+
 :end
