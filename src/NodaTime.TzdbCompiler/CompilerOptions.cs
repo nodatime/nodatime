@@ -2,7 +2,6 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-using System.Reflection;
 using CommandLine;
 using CommandLine.Text;
 
@@ -22,9 +21,6 @@ namespace NodaTime.TzdbCompiler
         [Option("w", "windows", Required = true, HelpText = "Windows to TZDB time zone mapping file (e.g. windowsZones.xml) or directory")]
         public string WindowsMapping { get; set; } = "";
 
-        [Option("t", "text-dump", Required = false, HelpText = "File to dump zone intervals for all zones to, for test purposes.")]
-        public string TextDumpFile { get; set; }
-
         [Option("z", "zone",
             Required = false,
             HelpText = "Single zone ID to compile data for, for test purposes. (Incompatible with -o.)",
@@ -34,8 +30,7 @@ namespace NodaTime.TzdbCompiler
         [HelpOption(HelpText = "Display this help screen.")]
         public string GetUsage()
         {
-            string productName = FetchProductName();
-            var help = new HelpText(new HeadingInfo(productName))
+            var help = new HelpText(new HeadingInfo(typeof(CompilerOptions).Namespace))
             {
                 AdditionalNewLineAfterOption = true,
                 Copyright = new CopyrightInfo("The Noda Time Authors", 2009)
@@ -43,20 +38,6 @@ namespace NodaTime.TzdbCompiler
             help.AddPreOptionsLine("Usage: NodaTime.TzdbCompiler -s <tzdb directory> -w <windowsZone.xml file/dir> -o <output file> [-t ResX/Resource/NodaZoneData]");
             help.AddOptions(this);
             return help;
-        }
-
-        private static string FetchProductName()
-        {
-            var program = Assembly.GetEntryAssembly();
-            if (program != null)
-            {
-                var attributes = program.GetCustomAttributes(typeof(AssemblyProductAttribute), false);
-                if (attributes.Length > 0)
-                {
-                    return ((AssemblyProductAttribute)attributes[0]).Product;
-                }
-            }
-            return "Product";
         }
     }
 }

@@ -54,10 +54,6 @@ namespace NodaTime.TzdbCompiler
                 Console.WriteLine("Reading generated data and validating...");
                 var source = Read(options);
                 source.Validate();
-                if (options.TextDumpFile != null)
-                {
-                    CreateTextDump(source, options.TextDumpFile);
-                }
             }
             return 0;
         }
@@ -132,15 +128,6 @@ namespace NodaTime.TzdbCompiler
             using (var stream = File.OpenRead(file))
             {
                 return TzdbDateTimeZoneSource.FromStream(stream);
-            }
-        }
-
-        private static void CreateTextDump(TzdbDateTimeZoneSource source, string file)
-        {
-            var provider = new DateTimeZoneCache(source);
-            using (var writer = File.CreateText(file))
-            {
-                provider.Dump(writer);
             }
         }
     }

@@ -225,32 +225,6 @@ namespace NodaTime.Test.TimeZones
             StringAssert.StartsWith("TZDB: " + source.TzdbVersion, source.VersionId);
         }
 
-        // Note: this test doesn't check that the intervals are right; it checks that they haven't changed since
-        // we last generated them, typically in response to a TZDB update. It means we can change the time zone code
-        // with more confidence.
-        [Test]
-        public void CheckDump()
-        {
-            List<string> expected;
-            var assembly = typeof(TzdbDateTimeZoneSourceTest).GetTypeInfo().Assembly;
-            using (Stream stream = assembly.GetManifestResourceStream("NodaTime.Test.TestData.tzdb-dump.txt"))
-            {
-                using (var reader = new StreamReader(stream))
-                {
-                    expected = ReadLines(reader);
-                }
-            }
-            List<string> actual;
-            using (var writer = new StringWriter())
-            {
-                DateTimeZoneProviders.Tzdb.Dump(writer);
-                actual = ReadLines(new StringReader(writer.ToString()));
-            }
-            // We can improve the diagnostics here if and when we need to. Given that Collections.Assert
-            // says which index (i.e. line - 1) the inputs differ on, it's not hard to then look at tzdb-dump.txt for context.
-            CollectionAssert.AreEqual(expected, actual);
-        }
-
         private static List<string> ReadLines(TextReader reader)
         {
             var ret = new List<string>();
