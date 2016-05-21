@@ -31,10 +31,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System;
-using System.Runtime.Serialization;
 using System.Diagnostics;
 using System.ComponentModel;
 using System.Threading;
+using System.Globalization;
+using System.Linq;
 #endregion
 
 namespace CommandLine
@@ -308,7 +309,7 @@ namespace CommandLine
             if (concreteType == null)
                 throw new ArgumentNullException("concreteType");
 
-            if (!typeof(IList<string>).IsAssignableFrom(concreteType))
+            if (!typeof(IList<string>).GetTypeInfo().IsAssignableFrom(concreteType.GetTypeInfo()))
                 throw new CommandLineParserException("The types are incompatible.");
 
             _concreteType = concreteType;
@@ -401,7 +402,7 @@ namespace CommandLine
 
         public static ArgumentParser Create(string argument, bool ignoreUnknownArguments)
         {
-            if (argument.Equals("-", StringComparison.InvariantCulture))
+            if (argument.Equals("-", StringComparison.Ordinal))
                 return null;
 
             if (argument[0] == '-' && argument[1] == '-')
@@ -416,7 +417,7 @@ namespace CommandLine
         public static bool IsInputValue(string argument)
         {
             if (argument.Length > 0)
-                return argument.Equals("-", StringComparison.InvariantCulture) || argument[0] != '-';
+                return argument.Equals("-", StringComparison.Ordinal) || argument[0] != '-';
 
             return true;
         }
@@ -793,7 +794,6 @@ namespace CommandLine
         }
     }
 
-    [DebuggerDisplay("ShortName = {ShortName}, LongName = {LongName}")]
     internal sealed class OptionInfo
     {
         private readonly OptionAttribute _attribute;
@@ -881,7 +881,7 @@ namespace CommandLine
                     lock (_setValueLock)
                     {
                         //array.SetValue(Convert.ChangeType(values[i], elementType, CultureInfo.InvariantCulture), i);
-                        array.SetValue(Convert.ChangeType(values[i], elementType, Thread.CurrentThread.CurrentCulture), i);
+                        array.SetValue(Convert.ChangeType(values[i], elementType, CultureInfo.CurrentCulture), i);
                         _property.SetValue(options, array, null);
                     }
                 }
@@ -898,7 +898,7 @@ namespace CommandLine
         {
             try
             {
-                if (_property.PropertyType.IsEnum)
+                if (_property.PropertyType.GetTypeInfo().IsEnum)
                 {
                     lock (_setValueLock)
                     {
@@ -910,7 +910,7 @@ namespace CommandLine
                     lock (_setValueLock)
                     {
                         //_property.SetValue(options, Convert.ChangeType(value, _property.PropertyType, CultureInfo.InvariantCulture), null);
-                        _property.SetValue(options, Convert.ChangeType(value, _property.PropertyType, Thread.CurrentThread.CurrentCulture), null);
+                        _property.SetValue(options, Convert.ChangeType(value, _property.PropertyType, CultureInfo.CurrentCulture), null);
                     }
                 }
             }
@@ -932,14 +932,12 @@ namespace CommandLine
 
         private bool SetNullableValue(string value, object options)
         {
-            var nc = new NullableConverter(_property.PropertyType);
-
             try
             {
                 lock (_setValueLock)
                 {
                     //_property.SetValue(options, nc.ConvertFromString(null, CultureInfo.InvariantCulture, value), null);
-                    _property.SetValue(options, nc.ConvertFromString(null, Thread.CurrentThread.CurrentCulture, value), null);
+                    _property.SetValue(options, Convert.ChangeType(value, Nullable.GetUnderlyingType(_property.PropertyType)));
                 }
             }
             // the FormatException (thrown by ConvertFromString) is thrown as Exception.InnerException,
@@ -1507,7 +1505,6 @@ namespace CommandLine
     /// <summary>
     /// This exception is thrown when a generic parsing error occurs.
     /// </summary>
-    [Serializable]
     public sealed class CommandLineParserException : Exception
     {
         internal CommandLineParserException()
@@ -1521,11 +1518,6 @@ namespace CommandLine
 
         internal CommandLineParserException(string message, Exception innerException)
             : base(message, innerException)
-        {
-        }
-
-        internal CommandLineParserException(SerializationInfo info, StreamingContext context)
-            : base(info, context)
         {
         }
     }
@@ -1860,18 +1852,18 @@ namespace CommandLine
             IList<Pair<PropertyInfo, TAttribute>> list = new List<Pair<PropertyInfo, TAttribute>>();
             if (target != null)
             {
-                var propertiesInfo = target.GetType().GetProperties();
+                var propertiesInfo = target.GetType().GetTypeInfo().DeclaredProperties;
 
                 foreach (var property in propertiesInfo)
                 {
                     if (property != null && (property.CanRead && property.CanWrite))
                     {
-                        var setMethod = property.GetSetMethod();
+                        var setMethod = property.SetMethod;
                         if (setMethod != null && !setMethod.IsStatic)
                         {
-                            var attribute = Attribute.GetCustomAttribute(property, typeof(TAttribute), false);
+                            var attribute = property.GetCustomAttributes().OfType<TAttribute>().FirstOrDefault();
                             if (attribute != null)
-                                list.Add(new Pair<PropertyInfo, TAttribute>(property, (TAttribute)attribute));
+                                list.Add(new Pair<PropertyInfo, TAttribute>(property, attribute));
                         }
                     }
                 }
@@ -1883,16 +1875,15 @@ namespace CommandLine
         public static Pair<MethodInfo, TAttribute> RetrieveMethod<TAttribute>(object target)
                 where TAttribute : Attribute
         {
-            var info = target.GetType().GetMethods();
+            var info = target.GetType().GetTypeInfo().DeclaredMethods;
 
             foreach (MethodInfo method in info)
             {
                 if (!method.IsStatic)
                 {
-                    Attribute attribute =
-                        Attribute.GetCustomAttribute(method, typeof(TAttribute), false);
+                    TAttribute attribute = method.GetCustomAttributes().OfType<TAttribute>().FirstOrDefault();
                     if (attribute != null)
-                        return new Pair<MethodInfo, TAttribute>(method, (TAttribute)attribute);
+                        return new Pair<MethodInfo, TAttribute>(method, attribute);
                 }
             }
 
@@ -1902,16 +1893,15 @@ namespace CommandLine
         public static TAttribute RetrieveMethodAttributeOnly<TAttribute>(object target)
                 where TAttribute : Attribute
         {
-            var info = target.GetType().GetMethods();
+            var info = target.GetType().GetTypeInfo().DeclaredMethods;
 
             foreach (MethodInfo method in info)
             {
                 if (!method.IsStatic)
                 {
-                    Attribute attribute =
-                        Attribute.GetCustomAttribute(method, typeof(TAttribute), false);
+                    TAttribute attribute = method.GetCustomAttributes().OfType<TAttribute>().FirstOrDefault();
                     if (attribute != null)
-                        return (TAttribute)attribute;
+                        return attribute;
                 }
             }
 
@@ -1922,18 +1912,18 @@ namespace CommandLine
                 where TAttribute : Attribute
         {
             IList<TAttribute> list = new List<TAttribute>();
-            var info = target.GetType().GetProperties();
+            var info = target.GetType().GetTypeInfo().DeclaredProperties;
 
             foreach (var property in info)
             {
                 if (property != null && (property.CanRead && property.CanWrite))
                 {
-                    var setMethod = property.GetSetMethod();
+                    var setMethod = property.SetMethod;
                     if (setMethod != null && !setMethod.IsStatic)
                     {
-                        var attribute = Attribute.GetCustomAttribute(property, typeof(TAttribute), false);
+                        var attribute = property.GetCustomAttributes().OfType<TAttribute>().FirstOrDefault();
                         if (attribute != null)
-                            list.Add((TAttribute)attribute);
+                            list.Add(attribute);
                     }
                 }
             }
@@ -1944,14 +1934,13 @@ namespace CommandLine
         public static TAttribute GetAttribute<TAttribute>()
             where TAttribute : Attribute
         {
-            object[] a = Assembly.GetEntryAssembly().GetCustomAttributes(typeof(TAttribute), false);
-            if (a == null || a.Length <= 0) return null;
-            return (TAttribute)a[0];
+            var assembly = typeof(ReflectionUtil).GetTypeInfo().Assembly;
+            return assembly.GetCustomAttributes().OfType<TAttribute>().FirstOrDefault();
         }
 
         public static bool IsNullableType(Type type)
         {
-            return type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>);
+            return type.GetTypeInfo().IsGenericType && type.GetTypeInfo().GetGenericTypeDefinition() == typeof(Nullable<>);
         }
     }
 
