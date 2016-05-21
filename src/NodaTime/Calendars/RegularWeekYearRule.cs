@@ -22,7 +22,7 @@ namespace NodaTime.Calendars
     public sealed class RegularWeekYearRule : IWeekYearRule
     {
         /// <summary>
-        /// Returns a <see cref="WeekYearRule"/> consistent with ISO-8601.
+        /// Returns an <see cref="IWeekYearRule"/> consistent with ISO-8601.
         /// </summary>
         /// <remarks>
         /// <para>
@@ -39,7 +39,7 @@ namespace NodaTime.Calendars
         /// so is part of week 1 of week-year 2013.
         /// </para>
         /// </remarks>
-        /// <value>A <see cref="WeekYearRule"/> consistent with ISO-8601.</value>
+        /// <value>A <see cref="IWeekYearRule"/> consistent with ISO-8601.</value>
         public static IWeekYearRule Iso { get; } = new RegularWeekYearRule(4);
 
         private readonly int minDaysInFirstWeek;

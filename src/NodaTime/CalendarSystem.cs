@@ -25,7 +25,7 @@ namespace NodaTime
     /// </para>
     /// <para>
     /// If you need to obtain a <see cref="CalendarSystem" /> instance, use one of the static properties or methods in this
-    /// class, such as the <see cref="Iso" /> property or the <see cref="GetGregorianCalendar(int)" /> method.
+    /// class, such as the <see cref="Iso" /> property or the <see cref="GetHebrewCalendar(HebrewMonthNumbering)" /> method.
     /// </para>
     /// <para>Although this class is currently sealed (as of Noda Time 1.2), in the future this decision may
     /// be reversed. In any case, there is no current intention for third-party developers to be able to implement

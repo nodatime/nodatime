@@ -589,6 +589,13 @@ namespace NodaTime
         /// <paramref name="right"/>.</returns>
         public static double Divide(Duration left, Duration right) => left / right;
 
+        /// <summary>
+        /// Implements the operator * (multiplication).
+        /// </summary>
+        /// <param name="left">The left hand side of the operator.</param>
+        /// <param name="right">The right hand side of the operator.</param>
+        /// <returns>A new <see cref="Duration"/> representing the result of multiplying <paramref name="left"/> by
+        /// <paramref name="right"/>.</returns>
         public static Duration operator *(Duration left, double right)
         {
             // Exclude infinity and NaN
