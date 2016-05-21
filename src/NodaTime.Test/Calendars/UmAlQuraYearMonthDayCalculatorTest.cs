@@ -87,8 +87,7 @@ namespace NodaTime.Test.Calendars
         }
 
 #if DEBUG && !PCL
-        // Only a test to make it easy to generate the data.
-        [Test]
+        [Test, Explicit]
         public void GenerateData()
         {
             var bclCalendar = new UmAlQuraCalendar();
