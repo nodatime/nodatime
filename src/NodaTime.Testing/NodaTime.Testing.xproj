@@ -9,7 +9,7 @@
     <ProjectGuid>acf7179d-ae79-4dd5-b57f-4f9e39c222a9</ProjectGuid>
     <RootNamespace>NodaTime.Testing</RootNamespace>
     <BaseIntermediateOutputPath Condition="'$(BaseIntermediateOutputPath)'=='' ">..\artifacts\obj\$(MSBuildProjectName)</BaseIntermediateOutputPath>
-    <OutputPath Condition="'$(OutputPath)'=='' ">..\artifacts\bin\$(MSBuildProjectName)\</OutputPath>
+    <OutputPath Condition="'$(OutputPath)'=='' ">.\bin\</OutputPath>
   </PropertyGroup>
   <PropertyGroup>
     <SchemaVersion>2.0</SchemaVersion>
@@ -18,4 +18,9 @@
     <DnxInvisibleContent Include="NodaTime.Testing.v2.ncrunchproject" />
   </ItemGroup>
   <Import Project="$(VSToolsPath)\DNX\Microsoft.DNX.targets" Condition="'$(VSToolsPath)' != ''" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties __JSONSchema="http://json.schemastore.org/project-1.0.0-rc2" />
+    </VisualStudio>
+  </ProjectExtensions>
 </Project>
