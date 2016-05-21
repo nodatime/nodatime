@@ -1,24 +1,41 @@
 {
-  "compilationOptions": {
-    "keyFile": "../../NodaTime Release.snk"
+  "buildOptions": {
+    "emitEntryPoint": true,
+    "keyFile": "../../NodaTime Release.snk",
+    "compile": [
+      "*.cs",
+      "../../lib/commandline/*.cs"
+    ]
+  },
+
+  "configurations": {
+    "Debug": {
+      "buildOptions": {
+        "define": [ "DEBUG", "TRACE" ]
+      }
+    },
+    "Release": {
+      "buildOptions": {
+        "define": [ "RELEASE", "TRACE" ],
+        "optimize": true
+      }
+    }
   },
 
   "dependencies": {
-    "NodaTime": "",
-    "SharpCompress": "0.11.1"
+    "NodaTime": { "target": "project" },
+    "SharpCompress": "0.11.6",
+    "System.Net.Http": "4.0.1-rc2-24027"
   },
 
-  "compile": [
-    "*.cs",
-    "../../lib/commandline/*.cs"
-  ],
-
   "frameworks": {
-    "dnx451": {
-      "frameworkAssemblies": {
-        "System.Runtime": "",
-        "System.Threading.Tasks": "",
-        "System.Xml.Linq": ""
+    "netcoreapp1.0": {
+      "imports": [ "dnxcore50", "netcore45" ],
+      "dependencies": {
+        "Microsoft.NETCore.App": {
+          "type": "platform",
+          "version": "1.0.0-rc2-3002702"
+        }
       }
     }
   }

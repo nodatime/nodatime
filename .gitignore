@@ -57,5 +57,5 @@ TestResult.xml
 /src/NodaTime-Core-*.sln
 /src/**/*-*.csproj
 
-# DNX files
+# .NET Core files
 project.lock.json

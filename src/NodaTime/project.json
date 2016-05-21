@@ -1,39 +1,46 @@
 {
   "version": "2.0.0-alpha-*",
-  "authors": [ "Jon Skeet" ],
-  "owners": [ "Jon Skeet" ],
-  "licenseUrl": "http://www.apache.org/licenses/LICENSE-2.0",
-  "projectUrl": "http://nodatime.org/",
-  "summary": "Noda Time is an alternative date and time API for .NET. It helps you to think about your data more clearly, and express operations on that data more precisely.",
+  "title":  "Noda Time",
   "description": "Noda Time is a date and time API acting as an alternative to the built-in DateTime/DateTimeOffset etc types built into the .NET framework.",
-  "tags": [ "date", "time", "timezone", "calendar", "nodatime" ],
-  "requireLicenseAcceptance": false,
-  "repository": {
-    "url": "https://github.com/nodatime/nodatime.git"
+  "authors": [ "Jon Skeet" ],
+
+  "packOptions": {
+    "summary": "Noda Time is an alternative date and time API for .NET. It helps you to think about your data more clearly, and express operations on that data more precisely.",
+    "tags": [ "date", "time", "timezone", "calendar", "nodatime" ],
+    "owners": [ "Jon Skeet" ],
+    "licenseUrl": "http://www.apache.org/licenses/LICENSE-2.0",
+    "projectUrl": "http://nodatime.org/",
+    "requireLicenseAcceptance": false,
+    "repository": {
+      "url": "https://github.com/nodatime/nodatime.git"
+    }
   },
 
-  "compilationOptions": {
-    "keyFile": "../../NodaTime Release.snk"
+  "buildOptions": {
+    "keyFile": "../../NodaTime Release.snk",
+    "embed": {
+      "include": [
+        "*.resx",
+        "TimeZones/Tzdb.nzd"
+      ]
+    },
+    "xmlDoc": true,
+    "additionalArguments": [ "/checked" ]
   },
 
   "configurations": {
     "Debug": {
-      "compilationOptions": {
+      "buildOptions": {
         "define": [ "DEBUG", "TRACE" ]
       }
     },
     "Release": {
-      "compilationOptions": {
+      "buildOptions": {
         "define": [ "RELEASE", "TRACE" ],
         "optimize": true
       }
     }
   },
-
-  "resource": [
-    "*.resx",
-    "TimeZones/Tzdb.nzd"
-  ],
 
   "frameworks": {
     "net451": {
@@ -42,19 +49,19 @@
         "System.Numerics": ""
       }
     },
-    "dotnet5.4": {
-      "compilationOptions": {
+    "netstandard1.3": {
+      "buildOptions": {
         "define": [ "PCL" ]
       },
       "dependencies": {
-        "System.Linq": "4.0.0",
-        "System.Runtime.Numerics": "4.0.1-beta-23516",
-        "System.Runtime.Serialization.Xml": "4.0.0",
-        "System.Threading": "4.0.0",
-        "System.Threading.Thread": "4.0.0-beta-23516",
-        "System.Xml.ReaderWriter": "4.0.0",
-        "System.Xml.XmlDocument": "4.0.0",
-        "System.Xml.XmlSerializer": "4.0.0"
+        "System.Linq": "4.1.0-rc2-24027",
+        "System.Runtime.Numerics": "4.0.1-rc2-24027",
+        "System.Runtime.Serialization.Xml": "4.1.1-rc2-24027",
+        "System.Threading": "4.0.11-rc2-24027",
+        "System.Threading.Thread": "4.0.0-rc2-24027",
+        "System.Xml.ReaderWriter": "4.0.11-rc2-24027",
+        "System.Xml.XmlDocument": "4.0.1-rc2-24027",
+        "System.Xml.XmlSerializer": "4.0.11-rc2-24027"
       }
     }
   }

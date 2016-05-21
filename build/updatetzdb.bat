@@ -10,13 +10,13 @@ set SRCDIR=..\src
 set DATADIR=..\data
 set WWWDIR=..\www
 
-call dnu restore %SRCDIR%
+call dotnet restore -v Error %SRCDIR%
 IF ERRORLEVEL 1 EXIT /B 1
 
-call dnu build %SRCDIR%\NodaTime.TzdbCompiler
+call dotnet build %SRCDIR%\NodaTime.TzdbCompiler %SRCDIR%\NodaTime.TzValidate.NodaDump
 IF ERRORLEVEL 1 EXIT /B 1
 
-dnx -p %SRCDIR%\NodaTime.TzdbCompiler run -o %SRCDIR%\NodaTime\TimeZones\Tzdb.nzd -s http://www.iana.org/time-zones/repository/releases/tzdata%1.tar.gz -w %DATADIR%\cldr
+dotnet run -p %SRCDIR%\NodaTime.TzdbCompiler -- -o %SRCDIR%\NodaTime\TimeZones\Tzdb.nzd -s http://www.iana.org/time-zones/repository/releases/tzdata%1.tar.gz -w %DATADIR%\cldr
 
 copy %SRCDIR%\NodaTime\TimeZones\Tzdb.nzd %WWWDIR%\tzdb\tzdb%1.nzd
 echo http://nodatime.org/tzdb/tzdb%1.nzd> %WWWDIR%\tzdb\latest.txt
@@ -27,6 +27,6 @@ FOR %%i IN (%WWWDIR%\tzdb\*.nzd) DO echo http://nodatime.org/tzdb/%%~nxi>> %WWWD
 echo Hash on github pages:
 wget -q -O - http://nodatime.github.io/tzvalidate/tzdata%1%-sha256.txt 2> NUL
 echo Hash from new file:
-dnx -p %SRCDIR%\NodaTime.TzValidate.NodaDump run -s %WWWDIR%\tzdb\tzdb%1.nzd --hash
+dotnet run -p %SRCDIR%\NodaTime.TzValidate.NodaDump -- -s %WWWDIR%\tzdb\tzdb%1.nzd --hash
 
 :end

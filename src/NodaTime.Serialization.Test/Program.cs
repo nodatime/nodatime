@@ -1,3 +1,4 @@
+using NUnit.Common;
 using NUnitLite;
 using System;
 using System.Reflection;
@@ -6,12 +7,13 @@ namespace NodaTime.Serialization.Test
 {
     public class Program
     {
-        public int Main(string[] args)
+        public static int Main(string[] args)
         {
-#if DNX451
-            return new AutoRun().Execute(args);
+#if PCL
+            var writer = new ExtendedTextWrapper(Console.Out);
+            return new AutoRun(typeof(Program).GetTypeInfo().Assembly).Execute(args, writer, Console.In);
 #else
-            return new AutoRun().Execute(typeof(Program).GetTypeInfo().Assembly, Console.Out, Console.In, args);
+            return new AutoRun().Execute(args);
 #endif
         }
     }

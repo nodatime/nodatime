@@ -30,7 +30,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
         private static XDocument LoadFile(string file)
         {
             // These settings allow the XML parser to ignore the DOCTYPE element
-            var readerSettings = new XmlReaderSettings() { XmlResolver = null, DtdProcessing = DtdProcessing.Ignore };
+            var readerSettings = new XmlReaderSettings() { DtdProcessing = DtdProcessing.Ignore };
             using (var reader = File.OpenRead(file))            
             using (var xmlReader = XmlReader.Create(reader, readerSettings))
             {

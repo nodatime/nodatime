@@ -17,16 +17,16 @@ rmdir /s /q %SRCDIR%\NodaTime\bin\Release
 
 REM Restore required nuget packages
 nuget restore Tools.sln
-nuget restore ..\src\NodaTime-All.sln
+dotnet restore ..\src
 
-REM dnu pack probably builds first, but...
-call dnu build ..\src\NodaTime
-call dnu build ..\src\NodaTime.Serialization.JsonNet
-call dnu build ..\src\NodaTime.Testing
+REM dotnet pack probably builds first, but...
+call dotnet build ..\src\NodaTime
+call dotnet build ..\src\NodaTime.Serialization.JsonNet
+call dotnet build ..\src\NodaTime.Testing
 
-call dnu pack ..\src\NodaTime --configuration Release
-call dnu pack ..\src\NodaTime.Serialization.JsonNet --configuration Release
-call dnu pack ..\src\NodaTime.Testing --configuration Release
+call dotnet pack ..\src\NodaTime --configuration Release
+call dotnet pack ..\src\NodaTime.Serialization.JsonNet --configuration Release
+call dotnet pack ..\src\NodaTime.Testing --configuration Release
 
 msbuild Tools.sln /property:Configuration=Release
 IF ERRORLEVEL 1 EXIT /B 1
@@ -61,11 +61,11 @@ IF ERRORLEVEL 1 EXIT /B 1
 %ANNOTATOR% %JSONNET_REL%\NodaTime.Serialization.JsonNet.dll %JSONNET_REL%\NodaTime.Serialization.JsonNet.xml %JSONNET_REL%\NodaTime.Serialization.JsonNet.xml
 IF ERRORLEVEL 1 EXIT /B 1
 
-%VERSION_DOC% %REL%\NodaTime.xml %REL%\NodaTime-Ref.xml "%SRCDIR%\NodaTime\bin\Release\dotnet5.4\NodaTime.xml" %DATADIR%\versionxml %DESTDIR%\history.txt
+%VERSION_DOC% %REL%\NodaTime.xml %REL%\NodaTime-Ref.xml "%SRCDIR%\NodaTime\bin\Release\net451\NodaTime.xml" %DATADIR%\versionxml %DESTDIR%\history.txt
 IF ERRORLEVEL 1 EXIT /B 1
-%VERSION_DOC% %TESTING_REL%\NodaTime.Testing.xml %TESTING_REL%\NodaTime.Testing-Ref.xml "%SRCDIR%\NodaTime.Testing\bin\Release\dotnet5.4\NodaTime.Testing.xml" %DATADIR%\versionxml %DESTDIR%\history-testing.txt
+%VERSION_DOC% %TESTING_REL%\NodaTime.Testing.xml %TESTING_REL%\NodaTime.Testing-Ref.xml "%SRCDIR%\NodaTime.Testing\bin\Release\net451\NodaTime.Testing.xml" %DATADIR%\versionxml %DESTDIR%\history-testing.txt
 IF ERRORLEVEL 1 EXIT /B 1
-%VERSION_DOC% %JSONNET_REL%\NodaTime.Serialization.JsonNet.xml %JSONNET_REL%\NodaTime.Serialization.JsonNet-Ref.xml "%SRCDIR%\NodaTime.Serialization.JsonNet\bin\Release\dotnet5.4\NodaTime.Serialization.JsonNet.xml" %DATADIR%\versionxml %DESTDIR%\history-jsonnet.txt
+%VERSION_DOC% %JSONNET_REL%\NodaTime.Serialization.JsonNet.xml %JSONNET_REL%\NodaTime.Serialization.JsonNet-Ref.xml "%SRCDIR%\NodaTime.Serialization.JsonNet\bin\Release\net451\NodaTime.Serialization.JsonNet.xml" %DATADIR%\versionxml %DESTDIR%\history-jsonnet.txt
 IF ERRORLEVEL 1 EXIT /B 1
 
 REM Prepare the Sandcastle style, by copying then customizing the VS2010 style

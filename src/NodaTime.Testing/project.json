@@ -1,24 +1,29 @@
 {
   "version": "2.0.0-alpha-*",
-  "licenseUrl": "http://www.apache.org/licenses/LICENSE-2.0",
-  "projectUrl": "http://nodatime.org/",
-  "summary": "Provides extra types which may be useful when testing code which uses Noda Time.",
   "description": "Provides extra types which may be useful when testing code which uses Noda Time, such as a fake programmable implementation of IClock and a time zone which has a fixed transition. These types are also used to test Noda Time itself.",
-  "tags": [ "nodatime", "testing" ],
-  "requireLicenseAcceptance": false,
+  "authors": [ "Jon Skeet" ],
 
-  "compilationOptions": {
-    "keyFile": "../../NodaTime Release.snk"
+  "packOptions": {
+    "licenseUrl": "http://www.apache.org/licenses/LICENSE-2.0",
+    "projectUrl": "http://nodatime.org/",
+    "summary": "Provides extra types which may be useful when testing code which uses Noda Time.",
+    "tags": [ "nodatime", "testing" ],
+    "requireLicenseAcceptance": false
+  },
+
+  "buildOptions": {
+    "keyFile": "../../NodaTime Release.snk",
+    "xmlDoc": true
   },
 
   "configurations": {
     "Debug": {
-      "compilationOptions": {
+      "buildOptions": {
         "define": [ "DEBUG", "TRACE" ]
       }
     },
     "Release": {
-      "compilationOptions": {
+      "buildOptions": {
         "define": [ "RELEASE", "TRACE" ],
         "optimize": true
       }
@@ -26,7 +31,7 @@
   },
 
   "dependencies": {
-    "NodaTime": ""
+    "NodaTime": "2.0.0-*"
   },
 
   "frameworks": {
@@ -34,12 +39,12 @@
       "frameworkAssemblies": {
       }
     },
-    "dotnet5.4": {
-      "compilationOptions": {
+    "netstandard1.3": {
+      "buildOptions": {
         "define": [ "PCL" ]
       },
       "dependencies": {
-        "System.Runtime.Numerics": "4.0.1-beta-23516",
+        "System.Runtime.Numerics": "4.0.1-rc2-24027"
       }
     }
   }

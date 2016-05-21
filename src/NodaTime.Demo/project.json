@@ -1,16 +1,34 @@
 {
-  "commands": {
-    "test": "run"
+  "buildOptions": {
+    "emitEntryPoint": true,
   },
 
   "dependencies": {
-    "NodaTime": "",
-    "NUnit": "3.0.0",
-    "NUnitLite": "3.0.0-*"
+    "NodaTime": { "target": "project" },
+    "NUnit": "3.2.1",
+    "NUnitLite": "3.2.1"
   },
 
   "frameworks": {
-    "dnx451": {
+    "net451": {
+      "frameworkAssemblies": {
+        "System.Runtime": "",
+        "System.Threading.Tasks": "",
+        "System.Xml.Linq": ""
+      }
+    },
+    "netcoreapp1.0": {
+      "imports" : [ "dnxcore50" ],
+      "buildOptions": {
+        "define": [ "PCL" ]
+      },
+      "dependencies": {
+        "Microsoft.NETCore.App": {
+          "version": "1.0.0-*",
+          "type": "platform"
+        },
+        "System.Console": "4.0.0-rc2-24027",
+      }
     }
   }
 }
