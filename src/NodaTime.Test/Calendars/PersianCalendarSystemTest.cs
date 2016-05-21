@@ -72,8 +72,8 @@ namespace NodaTime.Test.Calendars
 
 #if DEBUG && !PCL
         // Only a test to make it easy to generate the data.
-        [Test]
-        public void GenerateLeapYearData()
+        [Test, Explicit]
+        public void GenerateData()
         {
             var maxYear = PersianYearMonthDayCalculator.MaxPersianYear;
             var bcl = new PersianCalendar();
