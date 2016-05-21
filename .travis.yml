@@ -1,21 +1,40 @@
 # See http://docs.travis-ci.com/user/languages/csharp/ for details
 
 language: csharp
-install:
-  - curl -sSL https://raw.githubusercontent.com/aspnet/Home/dev/dnvminstall.sh | sh && source ~/.dnx/dnvm/dnvm.sh && dnvm upgrade
 
-# Explicitly build the two biggest projects separately; just dnx
-# test would work, but separating out the build step makes for
-# simpler diagnostics. We run the smaller test suites first, to
-# give earlier confirmation that they're working at all.
-# (NodaTime.Test can time out easily...)
-# Note that we don't currently run the TzdbCompiler tests, as that
-# fails on Mono in understandable ways - it's really designed to
-# run on Windows, given that it relies on Windows BCL TimeZoneInfo
-# to check mappings.
+sudo: required
+dist: trusty
+
+env:
+  - CLI_VERSION=latest
+
+addons:
+  apt:
+    packages:
+    - gettext
+    - libcurl4-openssl-dev
+    - libicu-dev
+    - libssl-dev
+    - libunwind8
+
+mono:
+  - latest
+
+install:
+  - export DOTNET_INSTALL_DIR="$PWD/.dotnetcli"
+  - curl -sSL https://raw.githubusercontent.com/dotnet/cli/rel/1.0.0/scripts/obtain/dotnet-install.sh | bash /dev/stdin --version "$CLI_VERSION" --install-dir "$DOTNET_INSTALL_DIR"
+  - export PATH="$DOTNET_INSTALL_DIR:$PATH"
+
+# Although TzdbCompiler is portable, the tests aren't, as they
+# check against Windows standard time zone IDs.
+# For Mono we run against the Release configuration due to
+# https://bugzilla.xamarin.com/show_bug.cgi?id=36257
 script:
-  - dnu restore
-  - dnu build src/NodaTime
-  - dnu build src/NodaTime.Test
-  - dnx -p src/NodaTime.Serialization.Test test
-  - dnx -p src/NodaTime.Test test "--where=cat != Slow && cat != Overflow"
+  - dotnet restore
+  - dotnet build src/NodaTime
+  - dotnet build src/NodaTime.Test
+  - dotnet build src/NodaTime.Serialization.Test
+  - dotnet run -p src/NodaTime.Test -f netcoreapp1.0 -- --where=cat!=Slow
+  - dotnet run -p src/NodaTime.Serialization.Test -f netcoreapp1.0
+  - dotnet run -p src/NodaTime.Test -f net451 -c Release -- --where=cat!=Slow
+  - dotnet run -p src/NodaTime.Serialization.Test -f net451 -c Release
