@@ -1,9 +1,9 @@
-﻿using JetBrains.Annotations;
+﻿// Copyright 2016 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0,
+// as found in the LICENSE.txt file.
+
+using JetBrains.Annotations;
 using NodaTime.Utility;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace NodaTime.Calendars
 {
@@ -41,8 +41,7 @@ namespace NodaTime.Calendars
     /// contains calendar information, and there is no method to obtain the day-of-week as that is not affected by the
     /// week year rule being used.
     /// </para>
-    /// <para>Specific rules are obtained using the static factory methods within this class, or with the
-    /// <see cref="Iso"/> property.</para>
+    /// <para>Common rules to use include <see cref="RegularWeekYearRule.Iso"/>.</para>
     /// <para>
     /// All implementations within Noda Time are immutable, and it is advised that any external implementations
     /// should be immutable too.
@@ -128,7 +127,7 @@ namespace NodaTime.Calendars
             Preconditions.CheckNotNull(rule, nameof(rule)).GetLocalDate(weekYear, weekOfWeekYear, dayOfWeek, CalendarSystem.Iso);
 
         /// <summary>
-        /// Convenience overload to call <see cref="GetWeeksInWeekYear(int, CalendarSystem)"/> with
+        /// Convenience overload to call <see cref="IWeekYearRule.GetWeeksInWeekYear(int, CalendarSystem)"/> with
         /// the ISO calendar system.
         /// </summary>
         /// <param name="rule">The rule to delegate the call to.</param>
