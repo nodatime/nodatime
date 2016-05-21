@@ -98,7 +98,8 @@ namespace NodaTime.TimeZones
         /// Gets the local start time of the interval, as a <see cref="LocalDateTime" />
         /// in the ISO calendar.
         /// </summary>
-        /// <value>The local start time of the interval in the ISO calendar.</value>
+        /// <value>The local start time of the interval in the ISO calendar, with the offset of
+        /// this zone interval.</value>
         /// <exception cref="OverflowException">The interval starts too early to represent as a `LocalDateTime`.</exception>
         /// <exception cref="InvalidOperationException">The interval extends to the start of time.</exception>
         public LocalDateTime IsoLocalStart
@@ -112,7 +113,10 @@ namespace NodaTime.TimeZones
         /// Gets the local end time of the interval, as a <see cref="LocalDateTime" />
         /// in the ISO calendar.
         /// </summary>
-        /// <value>The local end time of the interval in the ISO calendar.</value>
+        /// <value>The local end time of the interval in the ISO calendar, with the offset
+        /// of this zone interval. As the end time is exclusive, by the time this local time
+        /// is reached, the next interval will be in effect and the local time will usually
+        /// have changed (e.g. by adding or subtracting an hour).</value>
         /// <exception cref="OverflowException">The interval ends too late to represent as a `LocalDateTime`.</exception>
         /// <exception cref="InvalidOperationException">The interval extends to the end of time.</exception>
         public LocalDateTime IsoLocalEnd
