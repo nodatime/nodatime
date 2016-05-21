@@ -102,8 +102,20 @@ namespace NodaTime.Test.Text
         internal static readonly IEnumerable<CultureInfo> AllCulturesOrOneNullOnMono = TestHelper.IsRunningOnMono ? new CultureInfo[1] : Cultures.AllCultures;
 
         internal static readonly CultureInfo Invariant = CultureInfo.InvariantCulture;
-        internal static readonly CultureInfo EnUs = CultureInfo.ReadOnly(new CultureInfo("en-US"));
-        // Specify fr-FR patterns explicitly, as DNX on Linux gives a different answer. We
+        // Specify en-US patterns explicitly, as .NET Core on Linux gives a different answer. We
+        // don't need it to be US English really, just an example...
+
+        internal static readonly CultureInfo EnUs = CultureInfo.ReadOnly(new CultureInfo("en-US")
+        {
+            DateTimeFormat =
+            {
+                LongDatePattern = "dddd, MMMM d, yyyy",
+                LongTimePattern = "h:mm:ss tt",
+                ShortDatePattern = "M/d/yyyy",
+                ShortTimePattern = "h:mm tt"
+            }
+        });
+        // Specify fr-FR patterns explicitly, as .NET Core on Linux gives a different answer. We
         // don't need it to be French really, just an example...
         internal static readonly CultureInfo FrFr = CultureInfo.ReadOnly(new CultureInfo("fr-FR")
         {
