@@ -14,6 +14,7 @@ using System.Net;
 using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
+using System.Net.Http;
 
 namespace NodaTime.TzValidate.NodaDump
 {
@@ -128,9 +129,11 @@ namespace NodaTime.TzValidate.NodaDump
         {
             if (source.StartsWith("http://") || source.StartsWith("https://") || source.StartsWith("ftp://"))
             {
-                using (var client = new WebClient())
+                using (var client = new HttpClient())
                 {
-                    return client.DownloadData(source);
+                    // I know using .Result is nasty, but we're in a console app, and nothing is
+                    // going to deadlock...
+                    return client.GetAsync(source).Result.EnsureSuccessStatusCode().Content.ReadAsByteArrayAsync().Result;
                 }
             }
             return File.ReadAllBytes(source);

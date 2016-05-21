@@ -108,7 +108,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
             new BinaryWriter(stream).Write(Version);
             fields.WriteTo(stream);
             
-            stream.Close();
+            stream.Dispose();
         }
 
         private static void WriteZone(DateTimeZone zone, IDateTimeZoneWriter writer)
