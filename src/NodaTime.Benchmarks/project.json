@@ -1,36 +1,28 @@
 {
-  "compilationOptions": {
+  "buildOptions": {
     "keyFile": "../../NodaTime Release.snk"
   },
 
   "configurations": {
-    "Debug": {
-      "compilationOptions": {
-        "define": [ "DEBUG", "TRACE" ]
-      }
-    },
-    "Release": {
-      "compilationOptions": {
-        "define": [ "RELEASE", "TRACE" ],
-        "optimize": true
-      }
+    "buidOptions": {
+      "define": [ "RELEASE", "TRACE" ],
+      "optimize": true
     }
   },
 
   "dependencies": {
-    "BenchmarkDotNet": "0.9.5",
+    "BenchmarkDotNet": "0.9.6",
     "Microsoft.Bcl.Immutable": "1.0.34",
     "Microsoft.CodeAnalysis": "1.1.0",
-    "NodaTime": "",
-    "NodaTime.Serialization.JsonNet": "",
-    "NodaTime.Testing": "",
-    "NUnit": "3.0.0",
-    "System.Xml.XDocument": "4.0.0",
-    "Newtonsoft.Json": "8.0.1"
+    "NodaTime": { "target": "project" },
+    "NodaTime.Serialization.JsonNet": { "target": "project" },
+    "NodaTime.Testing": { "target": "project" },
+    "NUnit": "3.2.1",
+    "System.Xml.XDocument": "4.0.11-rc2-24027",
+    "Newtonsoft.Json": "8.0.3"
   },
-
   "frameworks": {
-    "dnx451": {
+    "net451": {
       "frameworkAssemblies": {
         "System.Runtime": "",
         "System.Threading.Tasks": "",

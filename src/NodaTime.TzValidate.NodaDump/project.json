@@ -1,31 +1,36 @@
 {
+  "buildOptions": {
+    "emitEntryPoint": true
+  },
+
   "configurations": {
     "Debug": {
-      "compilationOptions": {
+      "buildOptions": {
         "define": [ "DEBUG", "TRACE" ]
       }
     },
     "Release": {
-      "compilationOptions": {
+      "buildOptions": {
         "define": [ "RELEASE", "TRACE" ],
         "optimize": true
       }
     }
   },
 
-  "commands": {
-    "test": "run"
-  },
-
   "dependencies": {
-    "NodaTime": "",
-    "NodaTime.TzdbCompiler": ""
+    "NodaTime": { "target": "project" },
+    "NodaTime.TzdbCompiler": { "target": "project" },
+    "System.Net.Http": "4.0.1-rc2-24027"
   },
 
   "frameworks": {
-    "dnx451": {
-      "frameworkAssemblies": {
-        "System.Runtime": ""
+    "netcoreapp1.0": {
+      "imports": [ "dnxcore50", "netcore45" ],
+      "dependencies": {
+        "Microsoft.NETCore.App": {
+          "type": "platform",
+          "version": "1.0.0-rc2-3002702"
+        }
       }
     }
   }
