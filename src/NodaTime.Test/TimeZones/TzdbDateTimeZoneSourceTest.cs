@@ -2,13 +2,12 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
+using NodaTime.TimeZones;
+using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using NodaTime.Extensions;
-using NodaTime.TimeZones;
-using NUnit.Framework;
 using System.Reflection;
 
 namespace NodaTime.Test.TimeZones
@@ -242,11 +241,10 @@ namespace NodaTime.Test.TimeZones
         [TestCaseSource(nameof(SystemTimeZones))]
         public void GuessZoneIdByTransitionsUncached(TimeZoneInfo bclZone)
         {
-            // As of April 8th 2016, the Windows time zone database hasn't noticed that
-            // Azerbaijan is no longer observing DST.
             // As of April 21st 2016, the Windows time zone database hasn't caught up to
             // 2016d which includes: "America/Caracas switches from -0430 to -04 on 2016-05-01 at 02:30"
-            if (bclZone.Id == "Azerbaijan Standard Time" || bclZone.Id == "Venezuela Standard Time")
+            // Still need to investigate Morocco...
+            if (bclZone.Id == "Venezuela Standard Time" || bclZone.Id == "Morocco Standard Time")
             {
                 return;
             }
