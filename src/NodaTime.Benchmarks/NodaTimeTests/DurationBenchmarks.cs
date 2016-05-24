@@ -7,7 +7,6 @@ using System.Numerics;
 
 namespace NodaTime.Benchmarks.NodaTimeTests
 {
-    [Config(typeof(BenchmarkConfig))]
     public class DurationBenchmarks
     {
         private static readonly TimeSpan SampleTimeSpan = new TimeSpan(1, 2, 3);

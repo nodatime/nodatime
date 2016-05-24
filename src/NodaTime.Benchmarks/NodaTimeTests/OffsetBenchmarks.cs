@@ -8,7 +8,6 @@ using NodaTime.Text;
 
 namespace NodaTime.Benchmarks.NodaTimeTests
 {
-    [Config(typeof(BenchmarkConfig))]
     public class OffsetBenchmarks
     {
         private static readonly Offset SampleOffset = Offset.FromHoursAndMinutes(12, 34);

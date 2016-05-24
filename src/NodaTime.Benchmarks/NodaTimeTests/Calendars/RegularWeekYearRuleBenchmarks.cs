@@ -7,7 +7,6 @@ using NodaTime.Calendars;
 
 namespace NodaTime.Benchmarks.NodaTimeTests.Calendars
 {
-    [Config(typeof(BenchmarkConfig))]
     public class RegularWeekYearRuleBenchmarks
     {
         private static readonly LocalDate Sample = new LocalDate(2009, 12, 26);

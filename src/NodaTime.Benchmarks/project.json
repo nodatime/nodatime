@@ -1,13 +1,9 @@
 {
   "buildOptions": {
-    "keyFile": "../../NodaTime Release.snk"
-  },
-
-  "configurations": {
-    "buidOptions": {
-      "define": [ "RELEASE", "TRACE" ],
-      "optimize": true
-    }
+    "keyFile": "../../NodaTime Release.snk",
+    "emitEntryPoint": true,
+    "define": [ "RELEASE", "TRACE" ],
+    "optimize": true
   },
 
   "dependencies": {
