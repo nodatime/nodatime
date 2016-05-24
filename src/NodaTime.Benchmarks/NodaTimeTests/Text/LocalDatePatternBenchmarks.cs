@@ -9,7 +9,6 @@ using NodaTime.Text;
 
 namespace NodaTime.Benchmarks.NodaTimeTests.Text
 {
-    [Config(typeof(BenchmarkConfig))]
     [Category("Text")]
     public class LocalDatePatternBenchmarks
     {

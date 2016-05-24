@@ -10,7 +10,6 @@ using NodaTime.Serialization.JsonNet;
 
 namespace NodaTime.Benchmarks.NodaTimeTests.JsonNet
 {
-    [Config(typeof(BenchmarkConfig))]
     public class FormattingBenchmarks
     {
         private static readonly JsonSerializerSettings settings = new JsonSerializerSettings().ConfigureForNodaTime(DateTimeZoneProviders.Tzdb);

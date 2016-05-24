@@ -8,7 +8,6 @@ using BenchmarkDotNet.Attributes;
 
 namespace NodaTime.Benchmarks.BclTests
 {
-    [Config(typeof(BenchmarkConfig))]
     [Category("BCL")]
     public class TimeZoneInfoBenchmarks
     {

@@ -8,7 +8,6 @@ using NodaTime.Calendars;
 #if !V1_0 && !V1_1 && !V1_2
 namespace NodaTime.Benchmarks.NodaTimeTests.Calendars
 {
-    [Config(typeof(BenchmarkConfig))]
     public class HebrewCalendarBenchmarks
     {
         // Note: avoiding properties for backward compatibility

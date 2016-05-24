@@ -6,7 +6,6 @@ using BenchmarkDotNet.Attributes;
 
 namespace NodaTime.Benchmarks.NodaTimeTests
 {
-    [Config(typeof(BenchmarkConfig))]
     public class LocalTimeBenchmarks
     {
         private static readonly LocalTime Sample = new LocalTime(10, 8, 30, 300, 1234);

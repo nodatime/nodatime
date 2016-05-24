@@ -9,7 +9,6 @@ using NodaTime.Text;
 #if !V1_0 && !V1_1
 namespace NodaTime.Benchmarks.NodaTimeTests.Text
 {
-    [Config(typeof(BenchmarkConfig))]
     [Category("Text")]
     public class ZonedDateTimePatternBenchmarks
     {

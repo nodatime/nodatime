@@ -9,7 +9,6 @@ using NodaTime.Calendars;
 
 namespace NodaTime.Benchmarks.NodaTimeTests
 {
-    [Config(typeof(BenchmarkConfig))]
     public class LocalDateTimeBenchmarks
     {
         private static readonly DateTime SampleDateTime = new DateTime(2009, 12, 26, 10, 8, 30);

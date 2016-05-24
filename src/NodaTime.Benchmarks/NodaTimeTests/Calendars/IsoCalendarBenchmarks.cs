@@ -7,7 +7,6 @@ using NodaTime.Calendars;
 
 namespace NodaTime.Benchmarks.NodaTimeTests.Calendars
 {
-    [Config(typeof(BenchmarkConfig))]
     public class IsoCalendarBenchmarks
     {
 #if !V1

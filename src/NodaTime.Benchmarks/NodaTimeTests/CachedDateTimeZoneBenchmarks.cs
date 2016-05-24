@@ -7,7 +7,6 @@ using NodaTime.Benchmarks.BclTests;
 
 namespace NodaTime.Benchmarks.NodaTimeTests
 {
-    [Config(typeof(BenchmarkConfig))]
     public class CachedDateTimeZoneBenchmarks
     {
 #if V1

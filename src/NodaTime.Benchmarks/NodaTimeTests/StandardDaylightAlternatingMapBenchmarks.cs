@@ -11,7 +11,6 @@ namespace NodaTime.Benchmarks.NodaTimeTests
     /// <summary>
     /// Benchmarks for operations on an uncached StandardDaylightAlternatingMap.
     /// </summary>
-    [Config(typeof(BenchmarkConfig))]
     public class StandardDaylightAlternatingMapBenchmarks
     {
         private static readonly Instant January1st = Instant.FromUtc(2010, 1, 1, 0, 0);
