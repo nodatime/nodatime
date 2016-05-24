@@ -1,5 +1,5 @@
 {
-  "version": "2.0.0-alpha-*",
+  "version": "2.0.0-*",
   "title": "Noda Time",
   "description": "Provides serialization support between Noda Time and Json.NET.",
   "authors": [ "Jon Skeet" ],
