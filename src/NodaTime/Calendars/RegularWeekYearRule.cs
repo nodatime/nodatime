@@ -9,8 +9,6 @@ using NodaTime.Utility;
 
 namespace NodaTime.Calendars
 {
-    // Possible future feature: allow the first day of the week to vary too.
-
     /// <summary>
     /// Implements <see cref="IWeekYearRule"/> for a rule where weeks are regular:
     /// every week has exactly 7 days, which means that some week years straddle
@@ -40,14 +38,17 @@ namespace NodaTime.Calendars
         /// </para>
         /// </remarks>
         /// <value>A <see cref="IWeekYearRule"/> consistent with ISO-8601.</value>
-        public static IWeekYearRule Iso { get; } = new RegularWeekYearRule(4);
+        public static IWeekYearRule Iso { get; } = new RegularWeekYearRule(4, IsoDayOfWeek.Monday);
 
         private readonly int minDaysInFirstWeek;
+        private readonly IsoDayOfWeek firstDayOfWeek;
 
-        private RegularWeekYearRule(int minDaysInFirstWeek)
+        private RegularWeekYearRule(int minDaysInFirstWeek, IsoDayOfWeek firstDayOfWeek)
         {
             Preconditions.DebugCheckArgumentRange(nameof(minDaysInFirstWeek), minDaysInFirstWeek, 1, 7);
+            Preconditions.CheckArgumentRange(nameof(firstDayOfWeek), (int)firstDayOfWeek, 1, 7);
             this.minDaysInFirstWeek = minDaysInFirstWeek;
+            this.firstDayOfWeek = firstDayOfWeek;
         }
 
         /// <summary>
@@ -70,7 +71,31 @@ namespace NodaTime.Calendars
         /// <returns>A <see cref="RegularWeekYearRule"/> with the specified minimum number of days in the first
         /// week.</returns>
         public static RegularWeekYearRule ForMinDaysInFirstWeek(int minDaysInFirstWeek)
-            => new RegularWeekYearRule(minDaysInFirstWeek);
+            => ForMinDaysInFirstWeek(minDaysInFirstWeek, IsoDayOfWeek.Monday);
+
+        /// <summary>
+        /// Creates a week year rule where the boundary between one week-year and the next
+        /// is parameterized in terms of how many days of the first week of the week
+        /// year have to be in the new calendar year, and also by which day is deemed
+        /// to be the first day of the week.
+        /// </summary>
+        /// <remarks>
+        /// <paramref name="minDaysInFirstWeek"/> determines when the first week of the week-year starts.
+        /// For any given calendar year X, consider the Monday-to-Sunday week that includes the first day of the
+        /// calendar year. Usually, some days of that week are in calendar year X, and some are in calendar year 
+        /// X-1. If <paramref name="minDaysInFirstWeek"/> or more of the days are in year X, then the week is
+        /// deemed to be the first week of week-year X. Otherwise, the week is deemed to be the last week of
+        /// week-year X-1, and the first week of week-year X starts on the following Monday.
+        /// </remarks>
+        /// <param name="minDaysInFirstWeek">The minimum number of days in the first week (starting on
+        /// <paramref name="firstDayOfWeek" />) which have to be in the new calendar year for that week
+        /// to count as being in that week-year. Must be in the range 1 to 7 inclusive.
+        /// </param>
+        /// <param name="firstDayOfWeek">The first day of the week.</param>
+        /// <returns>A <see cref="RegularWeekYearRule"/> with the specified minimum number of days in the first
+        /// week and first day of the week.</returns>
+        public static RegularWeekYearRule ForMinDaysInFirstWeek(int minDaysInFirstWeek, IsoDayOfWeek firstDayOfWeek)
+            => new RegularWeekYearRule(minDaysInFirstWeek, firstDayOfWeek);
 
         /// <inheritdoc />
         public LocalDate GetLocalDate(int weekYear, int weekOfWeekYear, IsoDayOfWeek dayOfWeek, [NotNull] CalendarSystem calendar)
@@ -90,7 +115,10 @@ namespace NodaTime.Calendars
             
             unchecked
             {
-                int days = GetWeekYearDaysSinceEpoch(yearMonthDayCalculator, weekYear) + (weekOfWeekYear - 1) * 7 + ((int)dayOfWeek - 1);
+                int startOfWeekYear = GetWeekYearDaysSinceEpoch(yearMonthDayCalculator, weekYear);
+                // 0 for "already on the first day of the week" up to 6 "it's the last day of the week".
+                int daysIntoWeek = ((dayOfWeek - firstDayOfWeek) + 7) % 7;
+                int days = startOfWeekYear + (weekOfWeekYear - 1) * 7 + daysIntoWeek;
                 if (days < calendar.MinDays || days > calendar.MaxDays)
                 {
                     throw new ArgumentOutOfRangeException(nameof(weekYear),
@@ -201,16 +229,19 @@ namespace NodaTime.Calendars
                 int startOfYearDayOfWeek = unchecked(startOfCalendarYear >= -3 ? 1 + ((startOfCalendarYear + 3) % 7)
                                            : 7 + ((startOfCalendarYear + 4) % 7));
 
-                if (startOfYearDayOfWeek > (8 - minDaysInFirstWeek))
-                {
-                    // First week is end of previous year because it doesn't have enough days.
-                    return startOfCalendarYear + (8 - startOfYearDayOfWeek);
-                }
-                else
-                {
-                    // First week is start of this year because it has enough days.
-                    return startOfCalendarYear - (startOfYearDayOfWeek - 1);
-                }
+                // How many days have there been from the start of the week containing
+                // the first day of the year, until the first day of the year? To put it another
+                // way, how many days in the week *containing* the start of the calendar year were
+                // in the previous calendar year.
+                // (For example, if the start of the calendar year is Friday and the first day of the week is Monday,
+                // this will be 4.)
+                int daysIntoWeek = ((startOfYearDayOfWeek - (int)firstDayOfWeek) + 7) % 7;
+                int startOfWeekContainingStartOfCalendarYear = startOfCalendarYear - daysIntoWeek;
+
+                bool startOfYearIsInWeek1 = (7 - daysIntoWeek >= minDaysInFirstWeek);
+                return startOfYearIsInWeek1
+                    ? startOfWeekContainingStartOfCalendarYear
+                    : startOfWeekContainingStartOfCalendarYear + 7;
             }
         }
     }

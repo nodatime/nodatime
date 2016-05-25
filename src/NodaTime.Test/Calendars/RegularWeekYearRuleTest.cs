@@ -70,11 +70,11 @@ namespace NodaTime.Test.Calendars
         [Test]
         [TestCase(2011, 1, 1, 2010, 52, Saturday)]
         [TestCase(2012, 12, 31, 2013, 1, Monday)]
-            [TestCase(1960, 1, 19, 1960, 3, Tuesday)]
-            [TestCase(2012, 10, 19, 2012, 42, Friday)]
-            [TestCase(2011, 1, 1, 2010, 52, Saturday)]
-            [TestCase(2012, 12, 31, 2013, 1, Monday)]
-            [TestCase(2005, 1, 2, 2004, 53, Sunday)]
+        [TestCase(1960, 1, 19, 1960, 3, Tuesday)]
+        [TestCase(2012, 10, 19, 2012, 42, Friday)]
+        [TestCase(2011, 1, 1, 2010, 52, Saturday)]
+        [TestCase(2012, 12, 31, 2013, 1, Monday)]
+        [TestCase(2005, 1, 2, 2004, 53, Sunday)]
         public void WeekYearDifferentToYear(int year, int month, int day, int weekYear, int weekOfWeekYear, IsoDayOfWeek dayOfWeek)
         {
             var date = new LocalDate(year, month, day);
@@ -207,5 +207,29 @@ namespace NodaTime.Test.Calendars
             Assert.AreEqual(scripturalDate,
                 rule.GetLocalDate(expectedWeekYearOfFirstDay, expectedWeekOfWeekYearOfFirstDay, expectedFirstDay, HebrewScriptural));
         }
+
+        // Jan 1st 2015 = Thursday
+        // Jan 1st 2016 = Friday
+        // Jan 1st 2017 = Sunday
+        [Test]
+        [TestCase(1, Wednesday, 2015, 2, Friday, 2015, 1, 9)]
+        [TestCase(7, Wednesday, 2015, 2, Friday, 2015, 1, 16)]
+        [TestCase(1, Wednesday, 2015, 1, Wednesday, 2014, 12, 31)]
+        [TestCase(3, Friday, 2016, 1, Friday, 2016, 1, 1)]
+        [TestCase(3, Friday, 2017, 1, Friday, 2016, 12, 30)]
+        // We might want to add more tests here...
+        public void NonMondayFirstDayOfWeek(int minDaysInFirstWeek, IsoDayOfWeek firstDayOfWeek,
+            int weekYear, int week, IsoDayOfWeek dayOfWeek,
+            int expectedYear, int expectedMonth, int expectedDay)
+        {
+            var rule = RegularWeekYearRule.ForMinDaysInFirstWeek(minDaysInFirstWeek, firstDayOfWeek);
+            var actual = rule.GetLocalDate(weekYear, week, dayOfWeek);
+            var expected = new LocalDate(expectedYear, expectedMonth, expectedDay);
+            Assert.AreEqual(expected, actual);
+            Assert.AreEqual(weekYear, rule.GetWeekYear(actual));
+            Assert.AreEqual(week, rule.GetWeekOfWeekYear(actual));
+        }
+
+        
     }
 }
