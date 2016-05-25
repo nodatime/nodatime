@@ -33,7 +33,13 @@ namespace NodaTime.Test.Calendars
             }
             // Try to initialize by reflection instead...
             Type type = typeof(Calendar).GetTypeInfo().Assembly.GetType($"System.Globalization.{name}");
-            return type == null ? null : (Calendar) Activator.CreateInstance(type);
+            if (type == null)
+            {
+                // We can start being defensive if/when we try to test on a platform where
+                // this becomes a problem.
+                throw new Exception($"Unable to get calendar {name}");
+            }
+            return (Calendar) Activator.CreateInstance(type);
         }
 
         public static Calendar Hebrew => GetCalendar("HebrewCalendar");
@@ -43,6 +49,14 @@ namespace NodaTime.Test.Calendars
         public static Calendar Julian => GetCalendar("JulianCalendar");
         public static Calendar Hijri => GetCalendar("HijriCalendar");
 
+        /// <summary>
+        /// Returns a sequence of all the BCL calendar systems for which we have a
+        /// mapping in Noda Time. The first entry is Gregorian so that it's easy to
+        /// comment out the rest for initial testing of a new feature (where the
+        /// Gregorian calendar is typically easy to reason about).
+        /// </summary>
+        public static IEnumerable<Calendar> MappedCalendars =>
+            new[] { Gregorian, Hebrew, UmAlQura, Persian, Julian, Hijri };
 
         /// <summary>
         /// Tries to work out a roughly-matching calendar system for the given BCL calendar.
