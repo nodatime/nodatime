@@ -10,11 +10,10 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net;
+using System.Net.Http;
 using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
-using System.Net.Http;
 
 namespace NodaTime.TzValidate.NodaDump
 {
@@ -37,41 +36,44 @@ namespace NodaTime.TzValidate.NodaDump
             {
                 return 1;
             }
-
-            string version;
-            List<DateTimeZone> zones = LoadSource(options, out version);
-            zones = zones.OrderBy(zone => zone.Id, StringComparer.Ordinal).ToList();
-
-            if (options.ZoneId != null)
+            using (var writer = options.OutputFile == null ? Console.Out : File.CreateText(options.OutputFile))
             {
-                if (options.HashOnly)
+
+                string version;
+                List<DateTimeZone> zones = LoadSource(options, out version);
+                zones = zones.OrderBy(zone => zone.Id, StringComparer.Ordinal).ToList();
+
+                if (options.ZoneId != null)
                 {
-                    Console.WriteLine("Cannot use --hash option with a single zone ID");
-                    return 1;
-                }
-                var zone = zones.FirstOrDefault(z => z.Id == options.ZoneId);
-                if (zone == null)
-                {
-                    throw new Exception($"Unknown zone ID: {options.ZoneId}");
-                }
-                DumpZone(zone, options, Console.Out);
-            }
-            else
-            {
-                var writer = new StringWriter();
-                foreach (var zone in zones)
-                {
+                    if (options.HashOnly)
+                    {
+                        Console.WriteLine("Cannot use --hash option with a single zone ID");
+                        return 1;
+                    }
+                    var zone = zones.FirstOrDefault(z => z.Id == options.ZoneId);
+                    if (zone == null)
+                    {
+                        throw new Exception($"Unknown zone ID: {options.ZoneId}");
+                    }
                     DumpZone(zone, options, writer);
-                }
-                var text = writer.ToString();
-                if (options.HashOnly)
-                {
-                    Console.WriteLine(ComputeHash(text));
                 }
                 else
                 {
-                    WriteHeaders(text, version, options, Console.Out);
-                    Console.Write(text);
+                    var bodyWriter = new StringWriter();
+                    foreach (var zone in zones)
+                    {
+                        DumpZone(zone, options, bodyWriter);
+                    }
+                    var text = bodyWriter.ToString();
+                    if (options.HashOnly)
+                    {
+                        writer.Write(ComputeHash(text) + "\n");
+                    }
+                    else
+                    {
+                        WriteHeaders(text, version, options, writer);
+                        writer.Write(text);
+                    }
                 }
             }
 
