@@ -82,13 +82,25 @@ namespace NodaTime.Calendars
             {
                 int startOfWeekYear = GetRegularWeekYearDaysSinceEpoch(yearMonthDayCalculator, weekYear);
                 int daysIntoWeek = ((dayOfWeek - firstDayOfWeek) + 7) % 7;
-                int days = startOfWeekYear + (weekOfWeekYear - 1) * 7 + daysIntoWeek;
-                if (days < calendar.MinDays || days > calendar.MaxDays)
+                int daysIntoWeekYear = (weekOfWeekYear - 1) * 7 + daysIntoWeek;
+                int days = startOfWeekYear + daysIntoWeekYear;
+                if (days < calendar.MinDays || days > calendar.MaxDays || daysIntoWeekYear < 0)
                 {
                     throw new ArgumentOutOfRangeException(nameof(weekYear),
                         $"The combination of {nameof(weekYear)}, {nameof(weekOfWeekYear)} and {nameof(dayOfWeek)} is invalid");
                 }
-                return new LocalDate(yearMonthDayCalculator.GetYearMonthDay(days).WithCalendar(calendar));
+                LocalDate ret = new LocalDate(yearMonthDayCalculator.GetYearMonthDay(days).WithCalendar(calendar));
+                // The requested week year and the actual calendar year don't match, it could be due to short weeks.
+                // The simplest way to find out is just to check what the week year is...
+                if (weekYear != ret.Year)
+                {
+                    if (GetWeekYear(ret) != weekYear)
+                    {
+                        throw new ArgumentOutOfRangeException(nameof(weekYear),
+                            $"The combination of {nameof(weekYear)}, {nameof(weekOfWeekYear)} and {nameof(dayOfWeek)} is invalid");
+                    }
+                }
+                return ret;
             }
         }
 

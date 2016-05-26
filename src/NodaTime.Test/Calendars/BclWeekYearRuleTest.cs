@@ -74,5 +74,19 @@ namespace NodaTime.Test.Calendars
                     nodaRule.GetWeeksInWeekYear(year, nodaCalendar), "Year {0}", year);
             }
         }
+
+        // Tests where we ask for an invalid combination of week-year/week/day-of-week due to a week being "short"
+        // in BCL rules.
+        // Jan 1st 2016 = Friday
+        [Test]
+        [TestCase(FirstDay, Monday, 2015, 53, IsoDayOfWeek.Saturday)]
+        [TestCase(FirstDay, Monday, 2016, 1, IsoDayOfWeek.Thursday)]
+        public void GetLocalDate_Invalid(
+            CalendarWeekRule bclRule, DayOfWeek firstDayOfWeek,
+            int weekYear, int week, IsoDayOfWeek dayOfWeek)
+        {
+            var nodaRule = BclWeekYearRule.FromCalendarWeekRule(bclRule, firstDayOfWeek);
+            Assert.Throws<ArgumentOutOfRangeException>(() => nodaRule.GetLocalDate(weekYear, week, dayOfWeek));
+        }
     }
 }
