@@ -10,6 +10,8 @@ namespace NodaTime.Calendars
 {
     /// <summary>
     /// A rule determining how "week years" are arranged, including the weeks within the week year.
+    /// Implementations provided by Noda Time itself can be obtained via the <see cref="WeekYearRules"/>
+    /// class.
     /// </summary>
     /// <remarks>
     /// <para>
@@ -42,7 +44,6 @@ namespace NodaTime.Calendars
     /// contains calendar information, and there is no method to obtain the day-of-week as that is not affected by the
     /// week year rule being used.
     /// </para>
-    /// <para>Common rules to use include <see cref="RegularWeekYearRule.Iso"/>.</para>
     /// <para>
     /// All implementations within Noda Time are immutable, and it is advised that any external implementations
     /// should be immutable too.
