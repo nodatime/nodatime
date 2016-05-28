@@ -70,7 +70,8 @@ namespace NodaTime.Calendars
         /// <summary>
         /// Creates a week year rule where the boundary between one week-year and the next
         /// is parameterized in terms of how many days of the first week of the week
-        /// year have to be in the new calendar year. Weeks are always deemed to begin on an Monday.
+        /// year have to be in the new calendar year. In rules created by this method, 
+        /// weeks are always deemed to begin on an Monday.
         /// </summary>
         /// <remarks>
         /// <paramref name="minDaysInFirstWeek"/> determines when the first week of the week-year starts.
@@ -97,11 +98,11 @@ namespace NodaTime.Calendars
         /// </summary>
         /// <remarks>
         /// <paramref name="minDaysInFirstWeek"/> determines when the first week of the week-year starts.
-        /// For any given calendar year X, consider the Monday-to-Sunday week that includes the first day of the
+        /// For any given calendar year X, consider the week that includes the first day of the
         /// calendar year. Usually, some days of that week are in calendar year X, and some are in calendar year 
         /// X-1. If <paramref name="minDaysInFirstWeek"/> or more of the days are in year X, then the week is
         /// deemed to be the first week of week-year X. Otherwise, the week is deemed to be the last week of
-        /// week-year X-1, and the first week of week-year X starts on the following Monday.
+        /// week-year X-1, and the first week of week-year X starts on the following <paramref name="firstDayOfWeek"/>.
         /// </remarks>
         /// <param name="minDaysInFirstWeek">The minimum number of days in the first week (starting on
         /// <paramref name="firstDayOfWeek" />) which have to be in the new calendar year for that week
@@ -176,9 +177,16 @@ namespace NodaTime.Calendars
                         $"The combination of {nameof(weekYear)}, {nameof(weekOfWeekYear)} and {nameof(dayOfWeek)} is invalid");
                 }
                 LocalDate ret = new LocalDate(yearMonthDayCalculator.GetYearMonthDay(days).WithCalendar(calendar));
-                // The requested week year and the actual calendar year don't match, it could be due to short weeks
-                // in a non-regular rule. The simplest way to find out is just to check what the week year is...
-                // This problem doesn't apply to rules with regular weeks.
+
+                // For rules with irregular weeks, the calculation so far may end up computing a date which isn't
+                // in the right week-year. This will happen if the caller has specified a "short" week (i.e. one
+                // at the start or end of the week-year which is not seven days long due to the week year changing
+                // part way through a week) and a day-of-week which corresponds to the "missing" part of the week.
+                // Examples are in RegularWeekYearRuleTest.GetLocalDate_Invalid.
+                // The simplest way to find out is just to check what the week year is, but we only need to do
+                // the full check if the requested week-year is different to the calendar year of the result.
+                // We don't need to check for this in regular rules, because the computation we've already performed
+                // will always be right.
                 if (!regularWeeks && weekYear != ret.Year)
                 {
                     if (GetWeekYear(ret) != weekYear)
