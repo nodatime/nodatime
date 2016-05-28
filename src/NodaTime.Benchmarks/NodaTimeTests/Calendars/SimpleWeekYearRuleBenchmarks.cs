@@ -7,14 +7,14 @@ using NodaTime.Calendars;
 
 namespace NodaTime.Benchmarks.NodaTimeTests.Calendars
 {
-    public class RegularWeekYearRuleBenchmarks
+    public class SimpleWeekYearRuleBenchmarks
     {
         private static readonly LocalDate Sample = new LocalDate(2009, 12, 26);
 
         [Benchmark]
-        public int IsoWeekOfWeekYear() => RegularWeekYearRule.Iso.GetWeekOfWeekYear(Sample);
+        public int IsoWeekOfWeekYear() => WeekYearRules.Iso.GetWeekOfWeekYear(Sample);
 
         [Benchmark]
-        public int IsoWeekYear() => RegularWeekYearRule.Iso.GetWeekYear(Sample);
+        public int IsoWeekYear() => WeekYearRules.Iso.GetWeekYear(Sample);
     }
 }
