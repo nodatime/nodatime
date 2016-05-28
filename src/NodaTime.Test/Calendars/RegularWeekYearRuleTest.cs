@@ -7,11 +7,16 @@ using NUnit.Framework;
 using System;
 using static NodaTime.IsoDayOfWeek;
 using static NodaTime.CalendarSystem;
+using static System.Globalization.CalendarWeekRule;
+using System.Globalization;
 
 namespace NodaTime.Test.Calendars
 {
     public class RegularWeekYearRuleTest
     {
+        private static readonly DayOfWeek[] BclDaysOfWeek = (DayOfWeek[])Enum.GetValues(typeof(DayOfWeek));
+        private static readonly CalendarWeekRule[] CalendarWeekRules = (CalendarWeekRule[])Enum.GetValues(typeof(CalendarWeekRule));
+
         [Test]
         public void RoundtripFirstDay_Iso7()
         {
@@ -230,6 +235,112 @@ namespace NodaTime.Test.Calendars
             Assert.AreEqual(week, rule.GetWeekOfWeekYear(actual));
         }
 
-        
+        // Tests for BCL rules...
+
+        /// <summary>
+        /// For each calendar and rule combination, check everything we can about every date
+        /// from mid December to mid January around each year between 2016 and 2046.
+        /// (For non-Gregorian calendars, the rough equivalent is used...)
+        /// That should give us plenty of coverage.
+        /// </summary>
+        [Test]
+        [Combinatorial]
+        public void BclEquivalence(
+            [ValueSource(typeof(BclCalendars), nameof(BclCalendars.MappedCalendars))] Calendar calendar,
+            [ValueSource(nameof(CalendarWeekRules))] CalendarWeekRule bclRule,
+            [ValueSource(nameof(BclDaysOfWeek))] DayOfWeek firstDayOfWeek)
+        {
+            var nodaCalendar = BclCalendars.CalendarSystemForCalendar(calendar);
+            var nodaRule = RegularWeekYearRule.FromCalendarWeekRule(bclRule, firstDayOfWeek);
+            var startYear = new LocalDate(2016, 1, 1).WithCalendar(nodaCalendar).Year;
+
+            for (int year = startYear; year < startYear + 30; year++)
+            {
+                var startDate = new LocalDate(year, 1, 1, nodaCalendar).PlusDays(-15);
+                for (int day = 0; day < 30; day++)
+                {
+                    var date = startDate.PlusDays(day);
+                    var bclDate = date.ToDateTimeUnspecified();
+                    var bclWeek = calendar.GetWeekOfYear(bclDate, bclRule, firstDayOfWeek);
+                    // Weird... the BCL doesn't have a way of finding out which week-year we're in.
+                    // We're starting at "start of year - 15 days", so a "small" week-of-year
+                    // value means we're in "year", whereas a "large" week-of-year value means
+                    // we're in the "year-1".
+                    var bclWeekYear = bclWeek < 10 ? year : year - 1;
+
+                    Assert.AreEqual(bclWeek, nodaRule.GetWeekOfWeekYear(date), "Date: {0}", date);
+                    Assert.AreEqual(bclWeekYear, nodaRule.GetWeekYear(date), "Date: {0}", date);
+                    Assert.AreEqual(date, nodaRule.GetLocalDate(bclWeekYear, bclWeek, date.IsoDayOfWeek, nodaCalendar),
+                        "Week-year:{0}; Week: {1}; Day: {2}", bclWeekYear, bclWeek, date.IsoDayOfWeek);
+                }
+            }
+        }
+
+        /// <summary>
+        /// The number of weeks in the year is equal to the week-of-week-year for the last
+        /// day of the year.
+        /// </summary>
+        [Test]
+        [Combinatorial]
+        public void GetWeeksInWeekYear(
+            [ValueSource(typeof(BclCalendars), nameof(BclCalendars.MappedCalendars))] Calendar calendar,
+            [ValueSource(nameof(CalendarWeekRules))] CalendarWeekRule bclRule,
+            [ValueSource(nameof(BclDaysOfWeek))] DayOfWeek firstDayOfWeek)
+        {
+            var nodaCalendar = BclCalendars.CalendarSystemForCalendar(calendar);
+            var nodaRule = RegularWeekYearRule.FromCalendarWeekRule(bclRule, firstDayOfWeek);
+            var startYear = new LocalDate(2016, 1, 1).WithCalendar(nodaCalendar).Year;
+
+            for (int year = startYear; year < startYear + 30; year++)
+            {
+                var bclDate = new LocalDate(year + 1, 1, 1, nodaCalendar).PlusDays(-1).ToDateTimeUnspecified();
+                Assert.AreEqual(calendar.GetWeekOfYear(bclDate, bclRule, firstDayOfWeek),
+                    nodaRule.GetWeeksInWeekYear(year, nodaCalendar), "Year {0}", year);
+            }
+        }
+
+        // Tests where we ask for an invalid combination of week-year/week/day-of-week due to a week being "short"
+        // in BCL rules.
+        // Jan 1st 2016 = Friday
+        [Test]
+        [TestCase(FirstDay, DayOfWeek.Monday, 2015, 53, Saturday)]
+        [TestCase(FirstDay, DayOfWeek.Monday, 2016, 1, Thursday)]
+        public void GetLocalDate_Invalid(
+            CalendarWeekRule bclRule, DayOfWeek firstDayOfWeek,
+            int weekYear, int week, IsoDayOfWeek dayOfWeek)
+        {
+            var nodaRule = RegularWeekYearRule.FromCalendarWeekRule(bclRule, firstDayOfWeek);
+            Assert.Throws<ArgumentOutOfRangeException>(() => nodaRule.GetLocalDate(weekYear, week, dayOfWeek));
+        }
+
+        [Test]
+        [Combinatorial]
+        public void RoundtripFirstDayBcl(
+            [ValueSource(nameof(CalendarWeekRules))] CalendarWeekRule bclRule,
+            [ValueSource(nameof(BclDaysOfWeek))] DayOfWeek firstDayOfWeek)
+        {
+            var rule = RegularWeekYearRule.FromCalendarWeekRule(bclRule, firstDayOfWeek);
+            var date = new LocalDate(-9998, 1, 1);
+            Assert.AreEqual(date, rule.GetLocalDate(
+                rule.GetWeekYear(date),
+                rule.GetWeekOfWeekYear(date),
+                date.IsoDayOfWeek));
+        }
+
+        [Test]
+        [Combinatorial]
+        public void RoundtripLastDayBcl(
+            [ValueSource(nameof(CalendarWeekRules))] CalendarWeekRule bclRule,
+            [ValueSource(nameof(BclDaysOfWeek))] DayOfWeek firstDayOfWeek)
+        {
+            var rule = RegularWeekYearRule.FromCalendarWeekRule(bclRule, firstDayOfWeek);
+            var date = new LocalDate(9999, 12, 31);
+            Assert.AreEqual(date, rule.GetLocalDate(
+                rule.GetWeekYear(date),
+                rule.GetWeekOfWeekYear(date),
+                date.IsoDayOfWeek));
+        }
+
+        // TODO: Test the difference in ValidateWeekYear for 9999 between regular and non-regular rules.
     }
 }

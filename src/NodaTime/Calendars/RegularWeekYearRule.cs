@@ -6,6 +6,9 @@ using System;
 using JetBrains.Annotations;
 using NodaTime.Annotations;
 using NodaTime.Utility;
+using System.Globalization;
+using static System.Globalization.CalendarWeekRule;
+using NodaTime.Extensions;
 
 namespace NodaTime.Calendars
 {
@@ -38,17 +41,30 @@ namespace NodaTime.Calendars
         /// </para>
         /// </remarks>
         /// <value>A <see cref="IWeekYearRule"/> consistent with ISO-8601.</value>
-        public static IWeekYearRule Iso { get; } = new RegularWeekYearRule(4, IsoDayOfWeek.Monday);
+        public static IWeekYearRule Iso { get; } = new RegularWeekYearRule(4, IsoDayOfWeek.Monday, true);
 
         private readonly int minDaysInFirstWeek;
         private readonly IsoDayOfWeek firstDayOfWeek;
 
-        private RegularWeekYearRule(int minDaysInFirstWeek, IsoDayOfWeek firstDayOfWeek)
+        /// <summary>
+        /// If true, all weeks are 7 days long, including across calendar-year boundaries.
+        /// This is the state for ISO-like rules.
+        /// 
+        /// If false, the boundary of a calendar year sometimes splits a week in half. The
+        /// last day of the calendar year is *always* in the last week of the same week-year, but
+        /// the first day of the calendar year *may* be in the last week of the previous week-year.
+        /// (Basically, the rule works out when the first day of the week-year would be logically,
+        /// and then cuts it off so that it's never in the previous calendar year.)
+        /// </summary>
+        private readonly bool regularWeeks;
+
+        private RegularWeekYearRule(int minDaysInFirstWeek, IsoDayOfWeek firstDayOfWeek, bool regularWeeks)
         {
             Preconditions.DebugCheckArgumentRange(nameof(minDaysInFirstWeek), minDaysInFirstWeek, 1, 7);
             Preconditions.CheckArgumentRange(nameof(firstDayOfWeek), (int)firstDayOfWeek, 1, 7);
             this.minDaysInFirstWeek = minDaysInFirstWeek;
             this.firstDayOfWeek = firstDayOfWeek;
+            this.regularWeeks = regularWeeks;
         }
 
         /// <summary>
@@ -95,7 +111,42 @@ namespace NodaTime.Calendars
         /// <returns>A <see cref="RegularWeekYearRule"/> with the specified minimum number of days in the first
         /// week and first day of the week.</returns>
         public static RegularWeekYearRule ForMinDaysInFirstWeek(int minDaysInFirstWeek, IsoDayOfWeek firstDayOfWeek)
-            => new RegularWeekYearRule(minDaysInFirstWeek, firstDayOfWeek);
+            => new RegularWeekYearRule(minDaysInFirstWeek, firstDayOfWeek, true);
+
+        /// <summary>
+        /// Creates a rule which behaves the same way as the BCL
+        /// <see cref="Calendar.GetWeekOfYear(DateTime, CalendarWeekRule, DayOfWeek)"/>
+        /// method.
+        /// </summary>
+        /// <remarks>The BCL week year rules are subtly different to the ISO rules.
+        /// In particular, the last few days of the calendar year are always part of the same
+        /// week-year in the BCL rules, whereas in the ISO rules they can fall into the next
+        /// week-year. (The first few days of the calendar year can be part of the previous
+        /// week-year in both kinds of rule.) This means that in the BCL rules, some weeks
+        /// are incomplete, whereas ISO weeks are always exactly 7 days long.
+        /// </remarks>
+        /// <param name="calendarWeekRule">The BCL rule to emulate.</param>
+        /// <param name="firstDayOfWeek">The first day of the week to use in the rule.</param>
+        public static RegularWeekYearRule FromCalendarWeekRule(CalendarWeekRule calendarWeekRule, DayOfWeek firstDayOfWeek)
+        {
+            int minDaysInFirstWeek;
+            switch (calendarWeekRule)
+            {
+                case FirstDay:
+                    minDaysInFirstWeek = 1;
+                    break;
+                case FirstFourDayWeek:
+                    minDaysInFirstWeek = 4;
+                    break;
+                case FirstFullWeek:
+                    minDaysInFirstWeek = 7;
+                    break;
+                default:
+                    throw new ArgumentException($"Unsupported CalendarWeekRule: {calendarWeekRule}", nameof(calendarWeekRule));
+            }
+            return new RegularWeekYearRule(minDaysInFirstWeek, firstDayOfWeek.ToIsoDayOfWeek(), false); 
+        }
+
 
         /// <inheritdoc />
         public LocalDate GetLocalDate(int weekYear, int weekOfWeekYear, IsoDayOfWeek dayOfWeek, [NotNull] CalendarSystem calendar)
@@ -124,7 +175,19 @@ namespace NodaTime.Calendars
                     throw new ArgumentOutOfRangeException(nameof(weekYear),
                         $"The combination of {nameof(weekYear)}, {nameof(weekOfWeekYear)} and {nameof(dayOfWeek)} is invalid");
                 }
-                return new LocalDate(yearMonthDayCalculator.GetYearMonthDay(days).WithCalendar(calendar));
+                LocalDate ret = new LocalDate(yearMonthDayCalculator.GetYearMonthDay(days).WithCalendar(calendar));
+                // The requested week year and the actual calendar year don't match, it could be due to short weeks
+                // in a non-regular rule. The simplest way to find out is just to check what the week year is...
+                // This problem doesn't apply to rules with regular weeks.
+                if (!regularWeeks && weekYear != ret.Year)
+                {
+                    if (GetWeekYear(ret) != weekYear)
+                    {
+                        throw new ArgumentOutOfRangeException(nameof(weekYear),
+                            $"The combination of {nameof(weekYear)}, {nameof(weekOfWeekYear)} and {nameof(dayOfWeek)} is invalid");
+                    }
+                }
+                return ret;
             }
         }
 
@@ -136,6 +199,9 @@ namespace NodaTime.Calendars
             // This is a bit inefficient, as we'll be converting forms several times. However, it's
             // understandable... we might want to optimize in the future if it's reported as a bottleneck.
             int weekYear = GetWeekYear(date);
+            // Even if this is before the *real* start of the week year due to the rule
+            // having short weeks, that doesn't change the week-of-week-year, as we've definitely
+            // got the right week-year to start with.
             int startOfWeekYear = GetWeekYearDaysSinceEpoch(yearMonthDayCalculator, weekYear);
             int daysSinceEpoch = yearMonthDayCalculator.GetDaysSinceEpoch(yearMonthDay);
             int zeroBasedDayOfWeekYear = daysSinceEpoch - startOfWeekYear;
@@ -156,12 +222,19 @@ namespace NodaTime.Calendars
                 // The number of days gained or lost in the week year compared with the calendar year.
                 // So if the week year starts on December 31st of the previous calendar year, this will be +1.
                 // If the week year starts on January 2nd of this calendar year, this will be -1.
+                int extraDaysAtStart = startOfCalendarYear - startOfWeekYear;
 
-                int extraDays = startOfCalendarYear - startOfWeekYear;
+                // At the end of the year, we may have some extra days too.
+                // In a non-regular rule,
+                // we just round up, so assume we effectively have 6 extra days.
+                // TODO: Explain the reasoning for the regular rule part. I know it works, I just
+                // don't know why.
+                int extraDaysAtEnd = regularWeeks ? minDaysInFirstWeek - 1 : 6;
+
                 int daysInThisYear = yearMonthDayCalculator.GetDaysInYear(weekYear);
 
                 // We can have up to "minDaysInFirstWeek - 1" days of the next year, too.
-                return (daysInThisYear + extraDays + (minDaysInFirstWeek - 1)) / 7;
+                return (daysInThisYear + extraDaysAtStart + extraDaysAtEnd) / 7;
             }
         }
 
@@ -184,7 +257,16 @@ namespace NodaTime.Calendars
                     return calendarYear - 1;
                 }
 
-                // By now, we know it's either calendarYear or calendarYear + 1. Check using the number of
+                // By now, we know it's either calendarYear or calendarYear + 1.
+
+                // In non-regular rules, a day can belong to the *previous* week year, but never the *next* week year.
+                // So at this point, we're done.
+                if (!regularWeeks)
+                {
+                    return calendarYear;
+                }
+
+                // Otherwise, check using the number of
                 // weeks in the year. Note that this will fetch the start of the calendar year and the week year
                 // again, so could be optimized by copying some logic here - but only when we find we need to.
                 int weeksInWeekYear = GetWeeksInWeekYear(calendarYear, date.Calendar);
@@ -211,13 +293,16 @@ namespace NodaTime.Calendars
             int minWeekYear = minCalendarYearDays > calendar.MinDays ? calendar.MinYear - 1 : calendar.MinYear;
             int maxCalendarYearDays = GetWeekYearDaysSinceEpoch(calendar.YearMonthDayCalculator, calendar.MaxYear + 1);
             // If week year X + 1 started after the last day in the calendar, then everything is within week year X.
-            int maxWeekYear = maxCalendarYearDays > calendar.MaxDays ? calendar.MaxYear : calendar.MaxYear + 1;
+            // For non-regular rules, we always just use calendar.MaxYear.
+            int maxWeekYear = !regularWeeks || (maxCalendarYearDays > calendar.MaxDays) ? calendar.MaxYear : calendar.MaxYear + 1;
             Preconditions.CheckArgumentRange(nameof(weekYear), weekYear, minWeekYear, maxWeekYear);
         }
 
         /// <summary>
         /// Returns the days at the start of the given week-year. The week-year may be
-        /// 1 higher or lower than the max/min calendar year.
+        /// 1 higher or lower than the max/min calendar year. For non-regular rules (i.e. where some weeks
+        /// can be short) it returns the day when the week-year *would* have started if it were regular.
+        /// So this *always* returns a date on firstDayOfWeek.
         /// </summary>
         private int GetWeekYearDaysSinceEpoch(YearMonthDayCalculator yearMonthDayCalculator, [Trusted] int weekYear)
         {
