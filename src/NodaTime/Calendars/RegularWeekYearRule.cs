@@ -47,24 +47,24 @@ namespace NodaTime.Calendars
         private readonly IsoDayOfWeek firstDayOfWeek;
 
         /// <summary>
-        /// If true, all weeks are 7 days long, including across calendar-year boundaries.
-        /// This is the state for ISO-like rules.
-        /// 
-        /// If false, the boundary of a calendar year sometimes splits a week in half. The
+        /// If true, the boundary of a calendar year sometimes splits a week in half. The
         /// last day of the calendar year is *always* in the last week of the same week-year, but
         /// the first day of the calendar year *may* be in the last week of the previous week-year.
         /// (Basically, the rule works out when the first day of the week-year would be logically,
         /// and then cuts it off so that it's never in the previous calendar year.)
+        ///
+        /// If false, all weeks are 7 days long, including across calendar-year boundaries.
+        /// This is the state for ISO-like rules.
         /// </summary>
-        private readonly bool regularWeeks;
+        private readonly bool irregularWeeks;
 
-        private RegularWeekYearRule(int minDaysInFirstWeek, IsoDayOfWeek firstDayOfWeek, bool regularWeeks)
+        private RegularWeekYearRule(int minDaysInFirstWeek, IsoDayOfWeek firstDayOfWeek, bool irregularWeeks)
         {
             Preconditions.DebugCheckArgumentRange(nameof(minDaysInFirstWeek), minDaysInFirstWeek, 1, 7);
             Preconditions.CheckArgumentRange(nameof(firstDayOfWeek), (int)firstDayOfWeek, 1, 7);
             this.minDaysInFirstWeek = minDaysInFirstWeek;
             this.firstDayOfWeek = firstDayOfWeek;
-            this.regularWeeks = regularWeeks;
+            this.irregularWeeks = irregularWeeks;
         }
 
         /// <summary>
@@ -112,7 +112,7 @@ namespace NodaTime.Calendars
         /// <returns>A <see cref="RegularWeekYearRule"/> with the specified minimum number of days in the first
         /// week and first day of the week.</returns>
         public static RegularWeekYearRule ForMinDaysInFirstWeek(int minDaysInFirstWeek, IsoDayOfWeek firstDayOfWeek)
-            => new RegularWeekYearRule(minDaysInFirstWeek, firstDayOfWeek, true);
+            => new RegularWeekYearRule(minDaysInFirstWeek, firstDayOfWeek, false);
 
         /// <summary>
         /// Creates a rule which behaves the same way as the BCL
@@ -145,7 +145,7 @@ namespace NodaTime.Calendars
                 default:
                     throw new ArgumentException($"Unsupported CalendarWeekRule: {calendarWeekRule}", nameof(calendarWeekRule));
             }
-            return new RegularWeekYearRule(minDaysInFirstWeek, firstDayOfWeek.ToIsoDayOfWeek(), false); 
+            return new RegularWeekYearRule(minDaysInFirstWeek, firstDayOfWeek.ToIsoDayOfWeek(), true); 
         }
 
 
@@ -187,7 +187,7 @@ namespace NodaTime.Calendars
                 // the full check if the requested week-year is different to the calendar year of the result.
                 // We don't need to check for this in regular rules, because the computation we've already performed
                 // will always be right.
-                if (!regularWeeks && weekYear != ret.Year)
+                if (irregularWeeks && weekYear != ret.Year)
                 {
                     if (GetWeekYear(ret) != weekYear)
                     {
@@ -233,11 +233,10 @@ namespace NodaTime.Calendars
                 int extraDaysAtStart = startOfCalendarYear - startOfWeekYear;
 
                 // At the end of the year, we may have some extra days too.
-                // In a non-regular rule,
-                // we just round up, so assume we effectively have 6 extra days.
+                // In a non-regular rule, we just round up, so assume we effectively have 6 extra days.
                 // TODO: Explain the reasoning for the regular rule part. I know it works, I just
                 // don't know why.
-                int extraDaysAtEnd = regularWeeks ? minDaysInFirstWeek - 1 : 6;
+                int extraDaysAtEnd = irregularWeeks ? 6: minDaysInFirstWeek - 1;
 
                 int daysInThisYear = yearMonthDayCalculator.GetDaysInYear(weekYear);
 
@@ -267,9 +266,9 @@ namespace NodaTime.Calendars
 
                 // By now, we know it's either calendarYear or calendarYear + 1.
 
-                // In non-regular rules, a day can belong to the *previous* week year, but never the *next* week year.
+                // In irregular rules, a day can belong to the *previous* week year, but never the *next* week year.
                 // So at this point, we're done.
-                if (!regularWeeks)
+                if (irregularWeeks)
                 {
                     return calendarYear;
                 }
@@ -301,8 +300,8 @@ namespace NodaTime.Calendars
             int minWeekYear = minCalendarYearDays > calendar.MinDays ? calendar.MinYear - 1 : calendar.MinYear;
             int maxCalendarYearDays = GetWeekYearDaysSinceEpoch(calendar.YearMonthDayCalculator, calendar.MaxYear + 1);
             // If week year X + 1 started after the last day in the calendar, then everything is within week year X.
-            // For non-regular rules, we always just use calendar.MaxYear.
-            int maxWeekYear = !regularWeeks || (maxCalendarYearDays > calendar.MaxDays) ? calendar.MaxYear : calendar.MaxYear + 1;
+            // For irregular rules, we always just use calendar.MaxYear.
+            int maxWeekYear = irregularWeeks || (maxCalendarYearDays > calendar.MaxDays) ? calendar.MaxYear : calendar.MaxYear + 1;
             Preconditions.CheckArgumentRange(nameof(weekYear), weekYear, minWeekYear, maxWeekYear);
         }
 
