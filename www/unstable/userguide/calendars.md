@@ -25,6 +25,13 @@ Note that although the API version listed indicates when a calendar system was f
 the access to most calendars was simplified in 2.0 to use properties instead of methods. The API access listed
 is from 2.0.0 onwards; please refer to the relevant copy of this user guide if you are using an older version.
 
+As of Noda Time 2.0.0, calendar systems themselves only deal with
+concepts of eras, years, months and days - not the alternative
+mapping of a date to a "week year, week of week year, day of week".
+That is now represented by
+[`IWeekYearRule`](noda-type://NodaTime.Calendars.IWeekYearRule).
+Details are in the [week year page](weekyears.html).
+
 ISO
 ===
 
@@ -35,14 +42,11 @@ This is the default calendar system when constructing values without explicitly 
 It is designed to correspond to the calendar described in [ISO-8601](http://en.wikipedia.org/wiki/ISO_8601),
 and is equivalent to the Gregorian calendar in all respects other than the century and year-of-century values.
 
-As of Noda Time 2.0, century and year-of-century properties have been removed as they almost certainly didn't
-behave how everyone would have expected, at which point the ISO calendar system and the Gregorian calendar system
-(with a "minimum number of days in the first week" of 4) are equivalent. The separation between them in Noda Time
-is maintained for simplicity, compatibility and consistency.
-
-The ISO calendar system always has at least 4 days in the first week of the week-year, where a week always
-runs Monday to Sunday. The first week of the week-year is therefore always the one containing the first Thursday
-in the year.
+As of Noda Time 2.0, century and year-of-century properties have
+been removed, at which point the ISO calendar system and the
+Gregorian calendar system are equivalent. The separation between
+them in Noda Time is maintained for simplicity, compatibility and
+consistency.
 
 Gregorian
 ===
@@ -63,9 +67,6 @@ at different times. Noda Time's implementation is *proleptic*, in that it extend
 no support for a "cutover" calendar system which observes the Julian calendar until some point, at which point it
 cuts over to the Gregorian calendar system. Although such a calendar system would more accurately represent
 the calendar observed in many countries over time, it causes all sorts of API difficulties.
-
-The parameter to `GetGregorianCalendar()` indicates the minimum number of days in the first week of the week-year;
-the `Gregorian` properties returns the same calendar as `GetGregorianCalendar(4)`.
 
 Julian
 ===
