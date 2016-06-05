@@ -1,13 +1,21 @@
 {
+  "configurations": {
+    "Release": {
+      "buildOptions": {
+        "define": [ "RELEASE", "TRACE" ],
+        "optimize": true
+      }
+    }
+  },
+
   "buildOptions": {
     "keyFile": "../../NodaTime Release.snk",
     "emitEntryPoint": true,
-    "define": [ "RELEASE", "TRACE" ],
     "optimize": true
   },
 
   "dependencies": {
-    "BenchmarkDotNet": "0.9.6",
+    "BenchmarkDotNet": "0.9.7",
     "Microsoft.Bcl.Immutable": "1.0.34",
     "Microsoft.CodeAnalysis": "1.1.0",
     "NodaTime": { "target": "project" },
