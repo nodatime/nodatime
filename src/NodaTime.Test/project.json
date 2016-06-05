@@ -1,6 +1,5 @@
 {
   "buildOptions": {
-    "emitEntryPoint": true,
     "keyFile": "../../NodaTime Release.snk",
     "embed": {
       "include":  [   
@@ -27,12 +26,14 @@
     "NodaTime": { "target": "project" },
     "NodaTime.Testing": { "target": "project" },
     "NUnit": "3.2.1",
-    "NUnitLite": "3.2.1",
+    "dotnet-test-nunit": "3.4.0-alpha-1",
     "Microsoft.CSharp": "4.0.1-rc2-24027",
     "System.Dynamic.Runtime": "4.0.11-rc2-24027",
     "System.Reflection.Extensions": "4.0.1-rc2-24027",
     "System.Xml.XDocument": "4.0.11-rc2-24027"
   },
+
+  "testRunner": "nunit",
 
   "frameworks": {
     "net451": {
@@ -43,12 +44,12 @@
       }
     },
     "netcoreapp1.0": {
-      "imports" : [ "dnxcore50" ],
+      "imports" : [ "dnxcore50", "netcoreapp1.0", "portable-net45+win8" ],
       "buildOptions": {
         "define": [ "PCL" ]
       },
       "dependencies": {
-        "Microsoft.NETCore.App": {
+        "Microsoft.NETCore.App": { 
           "version": "1.0.0-*",
           "type": "platform"
         },
