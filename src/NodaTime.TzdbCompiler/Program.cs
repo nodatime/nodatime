@@ -45,6 +45,11 @@ namespace NodaTime.TzdbCompiler
                 return 0;
             }
             var windowsZones = LoadWindowsZones(options, tzdb.Version);
+            if (options.WindowsOverride != null)
+            {
+                var overrideFile = CldrWindowsZonesParser.Parse(options.WindowsOverride);
+                windowsZones = MergeWindowsZones(windowsZones, overrideFile);
+            }
             LogWindowsZonesSummary(windowsZones);
             var writer = CreateWriter(options);
             writer.Write(tzdb, windowsZones);
@@ -129,6 +134,49 @@ namespace NodaTime.TzdbCompiler
             {
                 return TzdbDateTimeZoneSource.FromStream(stream);
             }
+        }
+
+        /// <summary>
+        /// Merge two WindowsZones objects together. The result has versions present in override,
+        /// but falling back to the original for versions absent in the override. The set of MapZones
+        /// in the result is the union of those in the original and override, but any ID/Territory
+        /// pair present in both results in the override taking priority, unless the override has an
+        /// empty "type" entry, in which case the entry is removed entirely.
+        /// 
+        /// While this method could reasonably be in WindowsZones class, it's only needed in
+        /// TzdbCompiler - and here is as good a place as any.
+        /// 
+        /// The resulting MapZones will be ordered by Windows ID followed by territory.
+        /// </summary>
+        /// <param name="windowsZones">The original WindowsZones</param>
+        /// <param name="overrideFile">The WindowsZones to override entries in the original</param>
+        /// <returns>A merged zones object.</returns>
+        internal static WindowsZones MergeWindowsZones(WindowsZones originalZones, WindowsZones overrideZones)
+        {
+            var version = overrideZones.Version == "" ? originalZones.Version : overrideZones.Version;
+            var tzdbVersion = overrideZones.TzdbVersion == "" ? originalZones.TzdbVersion : overrideZones.TzdbVersion;
+            var windowsVersion = overrideZones.WindowsVersion == "" ? originalZones.WindowsVersion : overrideZones.WindowsVersion;
+
+            // Work everything out using dictionaries, and then sort.
+            var mapZones = originalZones.MapZones.ToDictionary(mz => new { mz.WindowsId, mz.Territory });
+            foreach (var overrideMapZone in overrideZones.MapZones)
+            {
+                var key = new { overrideMapZone.WindowsId, overrideMapZone.Territory };
+                if (overrideMapZone.TzdbIds.Count == 0)
+                {
+                    mapZones.Remove(key);
+                }
+                else
+                {
+                    mapZones[key] = overrideMapZone;
+                }
+            }
+            var mapZoneList = mapZones
+                .OrderBy(pair => pair.Key.WindowsId)
+                .ThenBy(pair => pair.Key.Territory)
+                .Select(pair => pair.Value)
+                .ToList();
+            return new WindowsZones(version, tzdbVersion, windowsVersion, mapZoneList);
         }
     }
 }

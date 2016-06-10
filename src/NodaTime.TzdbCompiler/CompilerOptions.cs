@@ -21,6 +21,9 @@ namespace NodaTime.TzdbCompiler
         [Option("w", "windows", Required = true, HelpText = "Windows to TZDB time zone mapping file (e.g. windowsZones.xml) or directory")]
         public string WindowsMapping { get; set; } = "";
 
+        [Option(null, "windows-override", Required = false, HelpText = "Additional 'override' file providing extra Windows time zone mappings")]
+        public string WindowsOverride { get; set; }
+
         [Option("z", "zone",
             Required = false,
             HelpText = "Single zone ID to compile data for, for test purposes. (Incompatible with -o.)",

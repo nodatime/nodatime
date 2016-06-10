@@ -8,6 +8,8 @@ using JetBrains.Annotations;
 using NodaTime.Annotations;
 using NodaTime.TimeZones.IO;
 using NodaTime.Utility;
+using System;
+using System.Linq;
 
 namespace NodaTime.TimeZones.Cldr
 {
@@ -16,7 +18,7 @@ namespace NodaTime.TimeZones.Cldr
     /// </summary>
     /// <threadsafety>This type is immutable reference type. See the thread safety section of the user guide for more information.</threadsafety>
     [Immutable]
-    public sealed class MapZone
+    public sealed class MapZone : IEquatable<MapZone>
     {
         /// <summary>
         /// Identifier used for the primary territory of each Windows time zone. A zone mapping with
@@ -122,5 +124,30 @@ namespace NodaTime.TimeZones.Cldr
                 writer.WriteString(id);
             }
         }
+
+        /// <inheritdoc />
+        public bool Equals(MapZone other) =>
+            other != null &&
+            WindowsId == other.WindowsId &&
+            Territory == other.Territory &&
+            TzdbIds.SequenceEqual(other.TzdbIds);
+
+        /// <inheritdoc />
+        public override int GetHashCode()
+        {
+            var hash = HashCodeHelper.Initialize().Hash(WindowsId).Hash(Territory);
+            foreach (var id in TzdbIds)
+            {
+                hash = hash.Hash(id);
+            }
+            return hash.Value;
+        }
+
+        /// <inheritdoc />
+        public override bool Equals(object obj) => Equals(obj as MapZone);
+
+        /// <inheritdoc />
+        public override string ToString()
+            => $"Windows ID: {WindowsId}; Territory: {Territory}; TzdbIds: {string.Join(" ", TzdbIds)}";
     }
 }
