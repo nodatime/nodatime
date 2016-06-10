@@ -27,14 +27,16 @@ install:
 
 # Although TzdbCompiler is portable, the tests aren't, as they
 # check against Windows standard time zone IDs.
-# For Mono we run against the Release configuration due to
+# We don't currently run net451 tests on Linux, due to
+# https://github.com/dotnet/cli/issues/3073 (which I believe
+# is the reason NUnit fails as well as xUnit).
+# If we *did* run the tests, we'd need to run a Release configuration
+# until Travis uses Mono 4.3.1, due to
 # https://bugzilla.xamarin.com/show_bug.cgi?id=36257
 script:
   - dotnet restore
   - dotnet build src/NodaTime
   - dotnet build src/NodaTime.Test
   - dotnet build src/NodaTime.Serialization.Test
-  - dotnet run -p src/NodaTime.Test -f netcoreapp1.0 -- --where=cat!=Slow
-  - dotnet run -p src/NodaTime.Serialization.Test -f netcoreapp1.0
-  - dotnet run -p src/NodaTime.Test -f net451 -c Release -- --where=cat!=Slow
-  - dotnet run -p src/NodaTime.Serialization.Test -f net451 -c Release
+  - dotnet test src/NodaTime.Test -f netcoreapp1.0 --where=cat!=Slow
+  - dotnet test src/NodaTime.Serialization.Test -f netcoreapp1.0
