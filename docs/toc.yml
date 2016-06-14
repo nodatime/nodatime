@@ -1,0 +1,8 @@
+# Note: not nested as it expands the bar massively.
+
+- name: Developer guide
+  href: developer/index.md
+- name: API (unstable)
+  href: unstable/api/
+- name: User guide (unstable)
+  href: unstable/userguide/index.md
