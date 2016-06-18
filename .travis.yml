@@ -6,7 +6,7 @@ sudo: required
 dist: trusty
 
 env:
-  - CLI_VERSION=latest
+  - CLI_VERSION=1.0.0-preview2-002886
 
 addons:
   apt:
