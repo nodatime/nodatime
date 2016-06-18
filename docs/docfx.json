@@ -1,0 +1,43 @@
+{
+  "metadata": [
+    {
+      "src": [
+        {
+          "files": [
+            "NodaTime/project.json",
+            "NodaTime.Serialization.JsonNet/project.json",
+            "NodaTime.Testing/project.json"
+          ],
+          "exclude": [ "**/bin/**", "**/obj/**" ],
+          "cwd": "../src"
+        }
+      ],
+      "dest": "unstable/api"
+    }
+  ],
+  "build": {
+    "content": [
+      { "files": [ "index.md", "toc.yml" ] },
+      {
+        "files": [ "**/*.yml" ],
+        "src": "unstable/api",
+        "dest": "unstable/api"
+      },
+      {
+        "files": [ "unstable/userguide/*.md", "unstable/userguide/toc.yml" ],
+      },
+      {
+        "files": [ "developer/*.md", "developer/toc.yml" ],
+      }
+    ],
+    "resource": [
+      { "files": [ "**/*.png" ] }
+    ],
+    "globalMetadata": {
+      "_appTitle": "Noda Time",
+      "_disableContribution": true,
+      "_appFooter": " "
+    },
+    "dest": "_site"
+  }
+}
