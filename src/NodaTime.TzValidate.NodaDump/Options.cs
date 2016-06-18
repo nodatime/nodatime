@@ -31,6 +31,12 @@ namespace NodaTime.TzValidate.NodaDump
         [Option(null, "hash", Required = false, HelpText = "Only output the SHA-256 hash")]
         public bool HashOnly { get; set; }
 
+        [Option(null, "noabbr", Required = false, HelpText = "Disable output of abbreviations")]
+        public bool DisableAbbreviations { get; set; }
+
+        [Option(null, "wallchangeonly", Required = false, HelpText = "Only include changes which affect the wall offset")]
+        public bool WallChangeOnly { get; set; }
+
         internal Instant Start => FromYear == null ? Instant.MinValue : Instant.FromUtc(FromYear.Value, 1, 1, 0, 0);
         internal Instant End => Instant.FromUtc(ToYear, 1, 1, 0, 0);
 
@@ -42,7 +48,7 @@ namespace NodaTime.TzValidate.NodaDump
                 AdditionalNewLineAfterOption = true,
                 Copyright = new CopyrightInfo("The Noda Time Authors", 2015)
             };
-            help.AddPreOptionsLine("Usage: NodaTime.TzValidate.NodaDump [-s data-source] [-f from-year] [-t to-year] [-z zone id]");
+            help.AddPreOptionsLine("Usage: NodaTime.TzValidate.NodaDump [-s data-source] [-f from-year] [-t to-year] [-z zone id] [-o output] [-hash] [-noabbr] [-wallchangeonly]");
             help.AddPreOptionsLine("The data source can be:");
             help.AddPreOptionsLine("- a Noda Time .nzd file (local or web)");
             help.AddPreOptionsLine("- an IANA data release .tar.gz file (local or web)");
