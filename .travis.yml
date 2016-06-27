@@ -20,10 +20,15 @@ addons:
 mono:
   - latest
 
+# TODO: See whether we could use apt sources above instead.
+# But by the time I've investigated that, there'll hopefully
+# be a better solution on Travis anyway.
+
 install:
-  - export DOTNET_INSTALL_DIR="$PWD/.dotnetcli"
-  - curl -sSL https://raw.githubusercontent.com/dotnet/cli/rel/1.0.0/scripts/obtain/dotnet-install.sh | bash /dev/stdin --version "$CLI_VERSION" --install-dir "$DOTNET_INSTALL_DIR"
-  - export PATH="$DOTNET_INSTALL_DIR:$PATH"
+  - sudo sh -c 'echo "deb [arch=amd64] https://apt-mo.trafficmanager.net/repos/dotnet/ trusty main" > /etc/apt/sources.list.d/dotnetdev.list'
+  - sudo apt-key adv --keyserver apt-mo.trafficmanager.net --recv-keys 417A0893
+  - sudo apt-get update
+  - sudo apt-get -qq install dotnet-dev-1.0.0-preview2-003121
 
 # Although TzdbCompiler is portable, the tests aren't, as they
 # check against Windows standard time zone IDs.
