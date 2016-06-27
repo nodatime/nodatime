@@ -11,7 +11,8 @@ Ultimate goals:
 - Should be able to regenerate API reference docs with new style,
   even for old versions.
 - Should not need to fetch/rebuild code in order to rebuild docs of old
-  versions.
+  versions. (Not sure about this... could be handy, e.g. if docfx
+  metadata generator changes.)
 - Should be able to integrate some sort of version picker.
 - Conceptual documentation in markdown
 - Extra information (available in portable code, first version
@@ -73,3 +74,6 @@ Unknown bits
 - Should the home page itself be built in docfx, or is that asking
   too much?
 - Various questions around populating the extra data
+- How do we get docfx to cope with there being multiple API versions
+  with the same UIDs? Aargh. Could disambiguate UIDs, but that's
+  really painful in terms of editing.
