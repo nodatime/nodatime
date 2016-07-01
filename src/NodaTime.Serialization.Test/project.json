@@ -21,10 +21,9 @@
     "NodaTime": { "target": "project" },
     "NodaTime.Serialization.JsonNet": { "target": "project" },
     "NodaTime.Testing": { "target": "project" },
-    "NUnit": "3.2.1",
-    "dotnet-test-nunit": "3.4.0-alpha-1",
-    "System.Xml.XDocument": "4.0.11-rc2-24027",
-    "Newtonsoft.Json": "8.0.3"
+    "NUnit": "3.4.1",
+    "dotnet-test-nunit": "3.4.0-beta-1",
+    "Newtonsoft.Json": "9.0.1"
   },
 
   "testRunner": "nunit",
@@ -44,10 +43,11 @@
       },
       "dependencies": {
         "Microsoft.NETCore.App": {
-          "version": "1.0.0-*",
+          "version": "1.0.0",
           "type": "platform"
         },
-        "System.Console": "4.0.0-rc2-24027",
+        "System.Console": "4.0.0",
+        "System.Xml.XDocument": "4.0.11"
       }
     }
   }

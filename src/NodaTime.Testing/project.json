@@ -31,7 +31,7 @@
   },
 
   "dependencies": {
-    "NodaTime": "2.0.0-*"
+    "NodaTime": { "target": "project" }
   },
 
   "frameworks": {
@@ -44,7 +44,7 @@
         "define": [ "PCL" ]
       },
       "dependencies": {
-        "System.Runtime.Numerics": "4.0.1-rc2-24027"
+        "System.Runtime.Numerics": "4.0.1"
       }
     }
   }

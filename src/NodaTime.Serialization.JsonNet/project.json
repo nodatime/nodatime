@@ -35,7 +35,7 @@
   },
 
   "dependencies": {
-    "Newtonsoft.Json": "8.0.3",
+    "Newtonsoft.Json": "9.0.1",
     "NodaTime": { "target": "project" }
   },
 
@@ -46,9 +46,8 @@
       "buildOptions": {
         "define": [ "PCL" ]
       },
-      "imports": ["dnxcore50"],
       "dependencies": {
-        "System.Linq": "4.1.0-rc2-24027"
+        "System.Linq": "4.1.0"
       }
     }
   }

@@ -20,9 +20,9 @@
   "dependencies": {
     "NodaTime": { "target": "project" },
     "NodaTime.TzdbCompiler": { "target": "project" },
-    "NUnit": "3.2.1",
-    "dotnet-test-nunit": "3.4.0-alpha-1",
-    "System.Xml.XDocument": "4.0.11-rc2-24027"
+    "NUnit": "3.4.0",
+    "dotnet-test-nunit": "3.4.0-alpha-2",
+    "System.Xml.XDocument": "4.0.11"
   },
 
   "testRunner": "nunit",
@@ -32,7 +32,7 @@
       "imports" : [ "dnxcore50", "netcoreapp1.0", "portable-net45+win8" ],
       "dependencies": {
         "Microsoft.NETCore.App": {
-          "version": "1.0.0-*",
+          "version": "1.0.0",
           "type": "platform"
         }
       }
