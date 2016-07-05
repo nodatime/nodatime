@@ -1,13 +1,11 @@
 {
-  "buildOptions": {
-    "emitEntryPoint": true,
-  },
-
   "dependencies": {
     "NodaTime": { "target": "project" },
-    "NUnit": "3.4.0",
-    "NUnitLite": "3.4.0"
+    "NUnit": "3.4.1",
+    "dotnet-test-nunit": "3.4.0-beta-1"
   },
+
+  "testRunner": "nunit",
 
   "frameworks": {
     "net451": {
@@ -23,6 +21,10 @@
         "define": [ "PCL" ]
       },
       "dependencies": {
+         "Microsoft.NETCore.App": {
+          "version": "1.0.0",
+          "type": "platform"
+        },
         "System.Console": "4.0.0"
       }
     }
