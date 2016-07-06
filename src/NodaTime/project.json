@@ -42,29 +42,29 @@
     }
   },
 
+  "dependencies": {
+    "NETStandard.Library": "1.6.0"
+  },
+
   "frameworks": {
-    "net451": {
+    "net40": {
       "frameworkAssemblies": {
         "System.Xml": "",
         "System.Numerics": ""
       }
     },
-    "netstandard1.3": {
+    "net45": {
+      "frameworkAssemblies": {
+        "System.Xml": "",
+        "System.Numerics": ""
+      }
+    },
+    "netstandard1.1": {
       "buildOptions": {
         "define": [ "PCL" ]
       },
       "dependencies": {
-        "System.Diagnostics.Debug": "4.0.11",
-        "System.Globalization": "4.0.11",
-        "System.Linq": "4.1.0",
-        "System.Resources.ResourceManager": "4.0.1",
-        "System.Runtime.Extensions": "4.1.0",
-        "System.Runtime.Numerics": "4.0.1",
         "System.Runtime.Serialization.Xml": "4.1.1",
-        "System.Threading": "4.0.11",
-        "System.Threading.Thread": "4.0.0",
-        "System.Xml.ReaderWriter": "4.0.11",
-        "System.Xml.XmlDocument": "4.0.1",
         "System.Xml.XmlSerializer": "4.0.11"
       }
     }
