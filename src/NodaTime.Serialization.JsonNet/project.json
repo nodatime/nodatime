@@ -40,9 +40,9 @@
   },
 
   "frameworks": {
-    "net451": {
+    "net45": {
     },
-    "netstandard1.3": {
+    "netstandard1.1": {
       "buildOptions": {
         "define": [ "PCL" ]
       },

@@ -42,10 +42,6 @@
     }
   },
 
-  "dependencies": {
-    "NETStandard.Library": "1.6.0"
-  },
-
   "frameworks": {
     "net40": {
       "frameworkAssemblies": {
@@ -64,7 +60,14 @@
         "define": [ "PCL" ]
       },
       "dependencies": {
+        "System.Diagnostics.Debug": "4.0.11",
+        "System.Globalization": "4.0.11",
+        "System.Linq": "4.1.0",
+        "System.Resources.ResourceManager": "4.0.1",
+        "System.Runtime.Extensions": "4.1.0",
+        "System.Runtime.Numerics": "4.0.1",
         "System.Runtime.Serialization.Xml": "4.1.1",
+        "System.Threading": "4.0.11",
         "System.Xml.XmlSerializer": "4.0.11"
       }
     }
