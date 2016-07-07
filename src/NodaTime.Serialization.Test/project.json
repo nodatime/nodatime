@@ -37,7 +37,7 @@
       }
     },
     "netcoreapp1.0": {
-      "imports" : [ "dnxcore50", "netcoreapp1.0", "portable-net45+win8" ],
+      "imports" : [ "dotnet" ],
       "buildOptions": {
         "define": [ "PCL" ]
       },
