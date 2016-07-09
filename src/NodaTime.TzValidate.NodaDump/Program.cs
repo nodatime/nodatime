@@ -27,6 +27,8 @@ namespace NodaTime.TzValidate.NodaDump
     {
         private static readonly IPattern<Instant> InstantPattern = NodaTime.Text.InstantPattern.CreateWithInvariantCulture("uuuu-MM-dd HH:mm:ss'Z'");
         private static readonly IPattern<Offset> OffsetPattern = NodaTime.Text.OffsetPattern.CreateWithInvariantCulture("l");
+        private const string LineFormatWithAbbreviations = "{0} {1} {2} {3}\n";
+        private const string LineFormatWithoutAbbreviations = "{0} {1} {2}\n";
 
         private static int Main(string[] args)
         {
@@ -82,16 +84,25 @@ namespace NodaTime.TzValidate.NodaDump
 
         private static void DumpZone(DateTimeZone zone, Options options, TextWriter writer)
         {
+            string lineFormat = options.DisableAbbreviations ? LineFormatWithoutAbbreviations : LineFormatWithAbbreviations;
             writer.Write($"{zone.Id}\n");
-            var initial = zone.GetZoneInterval(Instant.MinValue);
-            writer.Write("Initially:           {0} {1} {2}\n",
+            var initial = zone.GetZoneInterval(options.Start);
+            writer.Write(lineFormat,
+                "Initially:          ",
                 OffsetPattern.Format(initial.WallOffset),
                 initial.Savings != Offset.Zero ? "daylight" : "standard",
                 initial.Name);
+            // TODO: It would be nice to be able to pass GetZoneIntervals an option like ZoneEqualityComparer...
+            var previousWallOffset = initial.WallOffset;
             foreach (var zoneInterval in zone.GetZoneIntervals(options.Start, options.End)
                 .Where(zi => zi.HasStart && zi.Start >= options.Start))
             {
-                writer.Write("{0} {1} {2} {3}\n",
+                if (options.WallChangeOnly && previousWallOffset == zoneInterval.WallOffset)
+                {
+                    continue;
+                }
+                previousWallOffset = zoneInterval.WallOffset;
+                writer.Write(lineFormat,
                     InstantPattern.Format(zoneInterval.Start),
                     OffsetPattern.Format(zoneInterval.WallOffset),
                     zoneInterval.Savings != Offset.Zero ? "daylight" : "standard",
