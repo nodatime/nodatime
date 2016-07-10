@@ -8,9 +8,12 @@ using CommandLine.Text;
 namespace NodaTime.TzValidate.NodaDump
 {
     /// <summary>
-    /// Options for ZicDump, typically specified on the command line.
+    /// Options for TzValidate dumpers, typically specified on the command line.
+    /// Note that this class unfortunately mixes "pure" dumper options (from/to year, whether
+    /// or not to include abbreviations etc) with "tool" options (source to load from, output file).
+    /// This may be corrected in the future.
     /// </summary>
-    internal sealed class Options
+    public sealed class Options
     {
         [Option("f", "from-year", Required = false, HelpText = "Lower bound (inclusive) to print transitions from.")]
         public int? FromYear { get; set; }
