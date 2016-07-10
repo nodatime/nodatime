@@ -3,17 +3,11 @@
 // as found in the LICENSE.txt file.
 
 using CommandLine;
-using NodaTime.Text;
 using NodaTime.TimeZones;
 using NodaTime.TzdbCompiler.Tzdb;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net.Http;
-using System.Reflection;
-using System.Security.Cryptography;
-using System.Text;
 
 namespace NodaTime.TzValidate.NodaDump
 {
@@ -25,11 +19,6 @@ namespace NodaTime.TzValidate.NodaDump
     /// </summary>
     internal class Program
     {
-        private static readonly IPattern<Instant> InstantPattern = NodaTime.Text.InstantPattern.CreateWithInvariantCulture("uuuu-MM-dd HH:mm:ss'Z'");
-        private static readonly IPattern<Offset> OffsetPattern = NodaTime.Text.OffsetPattern.CreateWithInvariantCulture("l");
-        private const string LineFormatWithAbbreviations = "{0} {1} {2} {3}\n";
-        private const string LineFormatWithoutAbbreviations = "{0} {1} {2}\n";
-
         private static int Main(string[] args)
         {
             Options options = new Options();
@@ -38,103 +27,40 @@ namespace NodaTime.TzValidate.NodaDump
             {
                 return 1;
             }
-            using (var writer = options.OutputFile == null ? Console.Out : File.CreateText(options.OutputFile))
+            TzdbDateTimeZoneSource source = LoadSource(options.Source);
+            var dumper = new ZoneDumper(source, options);
+            try
             {
-
-                string version;
-                List<DateTimeZone> zones = LoadSource(options, out version);
-                zones = zones.OrderBy(zone => zone.Id, StringComparer.Ordinal).ToList();
-
-                if (options.ZoneId != null)
+                using (var writer = options.OutputFile == null ? Console.Out : File.CreateText(options.OutputFile))
                 {
-                    if (options.HashOnly)
-                    {
-                        Console.WriteLine("Cannot use --hash option with a single zone ID");
-                        return 1;
-                    }
-                    var zone = zones.FirstOrDefault(z => z.Id == options.ZoneId);
-                    if (zone == null)
-                    {
-                        throw new Exception($"Unknown zone ID: {options.ZoneId}");
-                    }
-                    DumpZone(zone, options, writer);
+                    dumper.Dump(writer);
                 }
-                else
-                {
-                    var bodyWriter = new StringWriter();
-                    foreach (var zone in zones)
-                    {
-                        DumpZone(zone, options, bodyWriter);
-                    }
-                    var text = bodyWriter.ToString();
-                    if (options.HashOnly)
-                    {
-                        writer.Write(ComputeHash(text) + "\n");
-                    }
-                    else
-                    {
-                        WriteHeaders(text, version, options, writer);
-                        writer.Write(text);
-                    }
-                }
+            }
+            catch (UserErrorException e)
+            {
+                Console.Error.WriteLine($"Error: {e.Message}");
+                return 1;
             }
 
             return 0;
-        }
+        }        
 
-        private static void DumpZone(DateTimeZone zone, Options options, TextWriter writer)
+        private static TzdbDateTimeZoneSource LoadSource(string source)
         {
-            string lineFormat = options.DisableAbbreviations ? LineFormatWithoutAbbreviations : LineFormatWithAbbreviations;
-            writer.Write($"{zone.Id}\n");
-            var initial = zone.GetZoneInterval(options.Start);
-            writer.Write(lineFormat,
-                "Initially:          ",
-                OffsetPattern.Format(initial.WallOffset),
-                initial.Savings != Offset.Zero ? "daylight" : "standard",
-                initial.Name);
-            // TODO: It would be nice to be able to pass GetZoneIntervals an option like ZoneEqualityComparer...
-            var previousWallOffset = initial.WallOffset;
-            foreach (var zoneInterval in zone.GetZoneIntervals(options.Start, options.End)
-                .Where(zi => zi.HasStart && zi.Start >= options.Start))
-            {
-                if (options.WallChangeOnly && previousWallOffset == zoneInterval.WallOffset)
-                {
-                    continue;
-                }
-                previousWallOffset = zoneInterval.WallOffset;
-                writer.Write(lineFormat,
-                    InstantPattern.Format(zoneInterval.Start),
-                    OffsetPattern.Format(zoneInterval.WallOffset),
-                    zoneInterval.Savings != Offset.Zero ? "daylight" : "standard",
-                    zoneInterval.Name);
-            }
-            writer.Write("\n");
-        }
-
-        private static List<DateTimeZone> LoadSource(Options options, out string version)
-        {
-            var source = options.Source;
             if (source == null)
             {
-                var tzdbSource = TzdbDateTimeZoneSource.Default;
-                version = tzdbSource.TzdbVersion;
-                return tzdbSource.GetIds().Select(id => tzdbSource.ForId(id)).ToList();
+                return TzdbDateTimeZoneSource.Default;
             }
             if (source.EndsWith(".nzd"))
             {
                 var data = LoadFileOrUrl(source);
-                var tzdbSource = TzdbDateTimeZoneSource.FromStream(new MemoryStream(data));
-                version = tzdbSource.TzdbVersion;
-                return tzdbSource.GetIds().Select(id => tzdbSource.ForId(id)).ToList();
+                return TzdbDateTimeZoneSource.FromStream(new MemoryStream(data));
             }
             else
             {
                 var compiler = new TzdbZoneInfoCompiler(log: null);
                 var database = compiler.Compile(source);
-                version = database.Version;
-                return database.GenerateDateTimeZones()
-                    .Concat(database.Aliases.Keys.Select(database.GenerateDateTimeZone))
-                    .ToList();
+                return database.ToTzdbDateTimeZoneSource();
             }
         }
 
@@ -150,31 +76,6 @@ namespace NodaTime.TzValidate.NodaDump
                 }
             }
             return File.ReadAllBytes(source);
-        }
-        
-        private static void WriteHeaders(string text, string version, Options options, TextWriter writer)
-        {
-            writer.Write($"Version: {version}\n");
-            writer.Write($"Body-SHA-256: {ComputeHash(text)}\n");
-            writer.Write("Format: tzvalidate-0.1\n");
-            writer.Write($"Range: {options.FromYear ?? 1}-{options.ToYear}\n");
-            writer.Write($"Generator: {typeof(Program).GetTypeInfo().Assembly.GetName().Name}\n");
-            writer.Write($"GeneratorUrl: https://github.com/nodatime/nodatime\n");
-            writer.Write("\n");
-        }
-
-        /// <summary>
-        /// Computes the SHA-256 hash of the given text after encoding it as UTF-8,
-        /// and returns the hash in lower-case hex.
-        /// </summary>
-        private static string ComputeHash(string text)
-        {
-            using (var hashAlgorithm = SHA256.Create())
-            {
-                var bytes = Encoding.UTF8.GetBytes(text);
-                var hash = hashAlgorithm.ComputeHash(bytes);
-                return BitConverter.ToString(hash).Replace("-", "").ToLowerInvariant();
-            }
         }
     }
 }

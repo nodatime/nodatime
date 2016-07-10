@@ -6,6 +6,8 @@ using System;
 using System.Collections.Generic;
 using NodaTime.TimeZones;
 using System.Linq;
+using NodaTime.TimeZones.Cldr;
+using System.IO;
 
 namespace NodaTime.TzdbCompiler.Tzdb
 {
@@ -55,6 +57,19 @@ namespace NodaTime.TzdbCompiler.Tzdb
             // TODO: Remove the "this." when the latest released Mono compiler is happy with it.
             // Current error: "`System.Version' is a `type' but a `variable' was expected"
             this.Version = version;
+        }
+
+        /// <summary>
+        /// Returns the data in this database as a <see cref="TzdbDateTimeZoneSource"/> with no
+        /// Windows mappings.
+        /// </summary>
+        public TzdbDateTimeZoneSource ToTzdbDateTimeZoneSource()
+        {
+            var ms = new MemoryStream();
+            var writer = new TzdbStreamWriter(ms);
+            writer.Write(this, new WindowsZones("n/a", Version, "n/a", new MapZone[0]));
+            ms.Position = 0;
+            return TzdbDateTimeZoneSource.FromStream(ms);
         }
 
         /// <summary>
