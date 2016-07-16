@@ -42,9 +42,6 @@
     "netstandard1.1": {
       "buildOptions": {
         "define": [ "PCL" ]
-      },
-      "dependencies": {
-        "System.Runtime.Numerics": "4.0.1"
       }
     }
   }
