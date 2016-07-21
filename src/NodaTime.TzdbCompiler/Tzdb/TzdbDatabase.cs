@@ -54,9 +54,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
             Zones = new Dictionary<string, IList<ZoneLine>>();
             Rules = new Dictionary<string, IList<RuleLine>>();
             Aliases = new Dictionary<string, string>();
-            // TODO: Remove the "this." when the latest released Mono compiler is happy with it.
-            // Current error: "`System.Version' is a `type' but a `variable' was expected"
-            this.Version = version;
+            Version = version;
         }
 
         /// <summary>
