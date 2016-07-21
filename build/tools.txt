@@ -1,0 +1,23 @@
+Notes on build tool plans...
+
+
+
+SetVersion - need some equivalent, maybe.
+(Or shell script with sed...)
+
+docfx research:
+- Producing a UID from a member. Find the code.
+- Can we add extra yaml properties?
+- Try a custom template
+
+DocumentAnnotations:
+Input: assembly + yml
+Output: yml extras
+
+DocumentVersions - no change needed?
+(Just dotnet and package as a tool)
+Input: assembly and xml
+Output: rewritten xml
+
+TweakSandcastleStyle: kill
+
