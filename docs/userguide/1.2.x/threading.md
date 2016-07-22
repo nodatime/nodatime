@@ -1,10 +1,3 @@
----
-layout: userguide
-title: Threading
-category: advanced
-weight: 3040
----
-
 Each type in the public API has its thread safety documented briefly, but that documentation usually
 refers to this entry in the user guide, too. Readers are advised to read Eric Lippert's blog post,
 ["What is this thing you call thread safe?"][lippert] in addition to this guide. This page aims for

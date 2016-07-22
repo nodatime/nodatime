@@ -1,10 +1,3 @@
----
-layout: userguide
-title: Version history
-category: library
-weight: 4060
----
-
 User-visible changes from 1.0.0-beta1 onwards. See the
 [project repository](https://github.com/nodatime/nodatime) for more
 details.

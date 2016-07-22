@@ -1,10 +1,3 @@
----
-layout: userguide
-title: Trivia
-category: advanced
-weight: 3050
----
-
 The history of time contains many amusing quirks. In many cases, Noda Time
 doesn't make any attempt to support the oddities described below. In
 particular, Noda Time takes an idealized view of calendar systems, ignoring

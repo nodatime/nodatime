@@ -1,10 +1,3 @@
----
-layout: userguide
-title: Serialization
-category: advanced
-weight: 3030
----
-
 XML serialization
 -----------------
 

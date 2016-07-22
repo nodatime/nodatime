@@ -1,10 +1,3 @@
----
-layout: userguide
-title: Design philosophy and conventions
-category: core
-weight: 1040
----
-
 (I should note that the "we" below is mostly the royal "we",
 expressed by the author, Jon Skeet. Hopefully most of the
 contributors to Noda Time agree with most of the below, but please

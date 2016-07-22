@@ -1,10 +1,3 @@
----
-layout: userguide
-title: Limitations of Noda Time
-category: library
-weight: 4040
----
-
 Noda Time is a work in progress. It has various limitations, some of
 which we'd obviously like to remove over time. Here's a list of some
 aspects we'd like to improve; see the 

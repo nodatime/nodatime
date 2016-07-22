@@ -1,10 +1,3 @@
----
-layout: userguide
-title: Calendars
-category: advanced
-weight: 3035
----
-
 As described in the [core concepts documentation](concepts.html), a calendar system is a scheme
 for dividing time into eras, years, months and days and so on. As a matter of simplification,
 Noda Time treats every day as starting and ending at midnight, despite some calendars (such as

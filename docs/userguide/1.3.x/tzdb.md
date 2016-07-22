@@ -1,10 +1,3 @@
----
-layout: userguide
-title: Updating the time zone database
-category: library
-weight: 4020
----
-
 Noda Time comes with a version of the
 [tz database](http://www.iana.org/time-zones) (also known as the IANA Time Zone
 database, or zoneinfo or Olson database), which is now hosted by IANA. This

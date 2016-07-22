@@ -1,10 +1,3 @@
----
-layout: userguide
-title: Choosing (and converting) between types
-category: core
-weight: 1020
----
-
 This is a companion page to the
 ["core concepts"](concepts.html), and ["core types quick reference"](core-types.html)
 pages, describing when it's appropriate to use which type, and how to convert between them.

@@ -1,10 +1,3 @@
----
-layout: userguide
-title: Patterns for LocalTime values
-category: text
-weight: 2050
----
-
 The [`LocalTime`](../api/NodaTime.LocalTime.yml) type supports the following patterns:
 
 Standard Patterns

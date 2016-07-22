@@ -1,10 +1,3 @@
----
-layout: userguide
-title: Current roadmap
-category: library
-weight: 4050
----
-
 Our online Developer Guide contains [an _approximate_ roadmap][roadmap] for the
 major features that we hope to support in Noda Time, some of which are inspired
 by Noda Time's [current limitations](limitations.html).

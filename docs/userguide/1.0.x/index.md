@@ -1,11 +1,3 @@
----
-layout: userguide
-category: intro
-weight: 10
-title: Noda Time User Guide
-linktitle: Overview
----
-
 This guide provides documentation to complement the API reference.
 It is recommended that you read at least the first few pages before
 starting to develop using Noda Time. If you have suggestions or
@@ -13,10 +5,6 @@ questions which are likely to be discussion-based, please post to
 the [mailing list][2], or for quick questions, you can [chat with us online][3].
 For more specific "How do I solve problem X?"
 questions, please ask on [Stack Overflow][so] using the [nodatime tag][so-tag].
-
-<ul class="pagination">
-  <li><a href="rationale.html"><strong>Next</strong>: Why does Noda Time exist?</a></li>
-</ul>
 
 Resources
 ---------

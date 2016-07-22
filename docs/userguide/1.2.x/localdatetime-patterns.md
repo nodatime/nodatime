@@ -1,10 +1,3 @@
----
-layout: userguide
-title: Patterns for LocalDateTime values
-category: text
-weight: 2070
----
-
 The [`LocalDateTime`](../api/NodaTime.LocalDateTime.yml) type supports the following patterns:
 
 Standard Patterns

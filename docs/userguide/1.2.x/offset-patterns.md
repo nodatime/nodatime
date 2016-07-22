@@ -1,10 +1,3 @@
----
-layout: userguide
-title: Patterns for Offset values
-category: text
-weight: 2030
----
-
 The [`Offset`](../api/NodaTime.Offset.yml) type supports the following patterns:
 
 Standard Patterns

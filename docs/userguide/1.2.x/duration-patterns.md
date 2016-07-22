@@ -1,10 +1,3 @@
----
-layout: userguide
-title: Patterns for Duration values
-category: text
-weight: 2020
----
-
 The [`Duration`](../api/NodaTime.Duration.yml) type supports the following patterns:
 
 Standard Patterns

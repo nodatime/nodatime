@@ -1,10 +1,3 @@
----
-layout: userguide
-title: Patterns for Period values
-category: text
-weight: 2100
----
-
 Currently, the [`Period`](../api/NodaTime.Period.yml) type doesn't support custom patterns, but two predefined patterns
 which are exposed in [`PeriodPattern`](../api/NodaTime.Text.PeriodPattern.yml):
 

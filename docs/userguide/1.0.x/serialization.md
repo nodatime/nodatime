@@ -1,10 +1,3 @@
----
-layout: userguide
-title: Serialization
-category: advanced
-weight: 3030
----
-
 Currently serialization is experimental. We will have one serialization assembly for each type of
 serialization we support which requires separate dependencies; if and when "stock" binary and XML
 serialization are supported, they will be included within the main Noda Time assembly.

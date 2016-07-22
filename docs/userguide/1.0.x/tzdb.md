@@ -1,10 +1,3 @@
----
-layout: userguide
-title: Updating the time zone database
-category: library
-weight: 4020
----
-
 Noda Time comes with a version of the [tzdb](http://www.iana.org/time-zones) (aka zoneinfo) database, which is
 now hosted by IANA. This database changes over time, as countries decide to change their time zone rules.
 As new versions of Noda Time are released, the version of tzdb will be updated. However, you may wish to use

@@ -1,10 +1,3 @@
----
-layout: userguide
-title: Patterns for ZonedDateTime values
-category: text
-weight: 2090
----
-
 The [`ZonedDateTime`](../api/NodaTime.ZonedDateTime.yml) type supports the following patterns:
 
 Standard Patterns

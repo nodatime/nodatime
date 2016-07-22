@@ -1,10 +1,3 @@
----
-layout: userguide
-title: Patterns for Instant values
-category: text
-weight: 2040
----
-
 The [`Instant`](../api/NodaTime.Instant.yml) type supports the following patterns:
 
 Standard Patterns

@@ -1,10 +1,3 @@
----
-layout: userguide
-title: Text handling
-category: text
-weight: 2010
----
-
 There are two options for text handling in Noda Time. For some elements of
 formatting, you can follow the "normal" approach from the .NET Base Class
 Library (BCL) - in particular, most of the core Noda Time types implements
