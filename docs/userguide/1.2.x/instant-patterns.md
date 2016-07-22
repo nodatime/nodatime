@@ -5,7 +5,7 @@ category: text
 weight: 2040
 ---
 
-The [`Instant`](noda-type://NodaTime.Instant) type supports the following patterns:
+The [`Instant`](../api/NodaTime.Instant.yml) type supports the following patterns:
 
 Standard Patterns
 -----------------
@@ -30,8 +30,8 @@ The following standard patterns are supported:
 Custom Patterns
 ---------------
 
-[`Instant`](noda-type://NodaTime.Instant) supports all the [`LocalDateTime` custom patterns](localdatetime-patterns.html).
+[`Instant`](../api/NodaTime.Instant.yml) supports all the [`LocalDateTime` custom patterns](localdatetime-patterns.html).
 The pattern allows the culture to be specified, but *always* uses the ISO-8601 calendar, and *always* uses the UTC
 time zone. The "template value" is always the unix epoch.
 
-All instant patterns (other than the standard *numeric* ones) handle [`Instant.MinValue`](noda-field://NodaTime.Instant.MinValue) and [`Instant.MaxValue`](noda-field://NodaTime.Instant.MaxValue) separately. The default formatting of the values are simply "MinInstant" and "MaxInstant" respectively, but a new [`InstantPattern`](noda-type://NodaTime.Text.InstantPattern) with different min/max labels can be created using the [`WithMinMaxLabels`](noda-method://NodaTime.Text.InstantPattern.WithMinMaxLabels) method. The labels must be non-empty strings which differ from each other.
+All instant patterns (other than the standard *numeric* ones) handle [`Instant.MinValue`](noda-field://NodaTime.Instant.MinValue) and [`Instant.MaxValue`](noda-field://NodaTime.Instant.MaxValue) separately. The default formatting of the values are simply "MinInstant" and "MaxInstant" respectively, but a new [`InstantPattern`](../api/NodaTime.Text.InstantPattern.yml) with different min/max labels can be created using the [`WithMinMaxLabels`](noda-method://NodaTime.Text.InstantPattern.WithMinMaxLabels) method. The labels must be non-empty strings which differ from each other.

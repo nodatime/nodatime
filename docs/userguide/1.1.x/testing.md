@@ -22,23 +22,23 @@ reasonably-powerful implementation. (If it's not, please file a bug report.)
 Clocks
 ======
 
-The most obvious dependency is a clock - an implementation of [`NodaTime.IClock`](noda-type://NodaTime.IClock),
+The most obvious dependency is a clock - an implementation of [`NodaTime.IClock`](../api/NodaTime.IClock.yml),
 which simply provides "the current date and time" (as an `Instant`, given that the concept of "now" isn't
-inherently bound to any time zone or calendar). The [`FakeClock`](noda-type://NodaTime.Testing.FakeClock) can
+inherently bound to any time zone or calendar). The [`FakeClock`](../api/NodaTime.Testing.FakeClock.yml) can
 be set to any given instant, advanced manually, or set to advance a given amount each time it's accessed. The production
-environment should normally inject the singleton [`SystemClock`](noda-type://NodaTime.SystemClock) instance which simply
+environment should normally inject the singleton [`SystemClock`](../api/NodaTime.SystemClock.yml) instance which simply
 uses `DateTime.UtcNow` behind the scenes.
 
 Time zone providers and sources
 ===============================
 
-For code which is sensitive to time zone fetching, an [`IDateTimeZoneProvider`](noda-type://NodaTime.IDateTimeZoneProvider) can
+For code which is sensitive to time zone fetching, an [`IDateTimeZoneProvider`](../api/NodaTime.IDateTimeZoneProvider.yml) can
 be injected. There are currently no test doubles for this interface, but usually
-[`DateTimeZoneCache`](noda-type://NodaTime.TimeZones.DateTimeZoneCache) works perfectly well.
+[`DateTimeZoneCache`](../api/NodaTime.TimeZones.DateTimeZoneCache.yml) works perfectly well.
 
 The cache uses another interface
-- [`IDateTimeZoneSource`](noda-type://NodaTime.TimeZones.IDateTimeZoneSource) - to retrieve time zones under the hood, and there
-we *do* have a test double: [`FakeDateTimeZoneSource`](noda-type://NodaTime.Testing.TimeZones.FakeDateTimeZoneSource). This source
+- [`IDateTimeZoneSource`](../api/NodaTime.TimeZones.IDateTimeZoneSource.yml) - to retrieve time zones under the hood, and there
+we *do* have a test double: [`FakeDateTimeZoneSource`](../api/NodaTime.Testing.TimeZones.FakeDateTimeZoneSource.yml). This source
 is constructed (via a builder) with any `DateTimeZone` instances you want, and you can also specify custom Windows `TimeZoneInfo` ID mappings.
 
 If you only need to specify the time zones, it's simplest to just use a collection initializer with the builder, like this:
@@ -65,13 +65,13 @@ If you need to set other properties on the builder, the zones have to be specifi
  ```
 
 The production environment should usually be
-configured with one of the providers in [`DateTimeZoneProviders`](noda-type://NodaTime.DateTimeZoneProviders).
+configured with one of the providers in [`DateTimeZoneProviders`](../api/NodaTime.DateTimeZoneProviders.yml).
 
 Time zones
 ==========
 
 For time zones themselves, there are two fake implementations.
-[`SingleTransitionDateTimeZone`](noda-type://NodaTime.Testing.TimeZones.SingleTransitionDateTimeZone) represents a time zone
+[`SingleTransitionDateTimeZone`](../api/NodaTime.Testing.TimeZones.SingleTransitionDateTimeZone.yml) represents a time zone
 with a single transition between different offsets, and is suitable for most test purposes.
 
 ```csharp
@@ -83,7 +83,7 @@ This will create a zone which moves from UTC+3 to UTC+5 at the transition point.
 and the names of the early/late zone intervals are based on the ID. The zone intervals within the time zone do not have a
 daylight saving aspect; they just have the specified standard offsets.
 
-For more complex scenarios, [`MultiTransitionDateTimeZone`](noda-type://NodaTime.Testing.TimeZones.MultiTransitionDateTimeZone)
+For more complex scenarios, [`MultiTransitionDateTimeZone`](../api/NodaTime.Testing.TimeZones.MultiTransitionDateTimeZone.yml)
 allows you to create a time zone from a collection of transitions, using a builder type. The standard and saving offsets for
 each part of the time zone can be specified separately. For example:
 

@@ -26,7 +26,7 @@ clocks, and the brains of users.
 I'm using "clock" here as anything which is used to represent the
 current time, in whatever form it does so. You may receive the 
 value as part of a web service request, you may request it from an
-[`IClock`](noda-type://NodaTime.IClock), it may be the "last
+[`IClock`](../api/NodaTime.IClock.yml), it may be the "last
 modified" part of a file-system entry, it may be a database
 timestamp: all of these are trying to represent *the current point in
 time* in some fashion.
@@ -55,7 +55,7 @@ Clock/system-generated values
 -----------------------------
 
 Clock-related "point in time" values are usually best represented as
-[`Instant`](noda-type://NodaTime.Instant) values in Noda Time. Even
+[`Instant`](../api/NodaTime.Instant.yml) values in Noda Time. Even
 if they have been recorded in a particular time zone, that time zone
 is rarely relevant other than as a way of converting the local time
 to a universal one. Likewise the calendar system isn't really
@@ -86,11 +86,11 @@ If a user has entered the value (whether directly into your
 application or not), Noda Time offers five types which may be
 appropriate:
 
-- [`ZonedDateTime`](noda-type://NodaTime.ZonedDateTime)
-- [`OffsetDateTime`](noda-type://NodaTime.OffsetDateTime)
-- [`LocalDateTime`](noda-type://NodaTime.LocalDateTime)
-- [`LocalDate`](noda-type://NodaTime.LocalDate)
-- [`LocalTime`](noda-type://NodaTime.LocalTime)
+- [`ZonedDateTime`](../api/NodaTime.ZonedDateTime.yml)
+- [`OffsetDateTime`](../api/NodaTime.OffsetDateTime.yml)
+- [`LocalDateTime`](../api/NodaTime.LocalDateTime.yml)
+- [`LocalDate`](../api/NodaTime.LocalDate.yml)
+- [`LocalTime`](../api/NodaTime.LocalTime.yml)
 
 It's usually easy to spot when the last two are appropriate: if
 you've *only* got a date or *only* got a time, use the obvious
@@ -160,5 +160,5 @@ as they're generally very straightforward.)
 Most of these are pretty simple, but a few are worth calling out
 specifically. The biggest "gotcha" is converting `LocalDateTime` to
 `ZonedDateTime` - it has some corner cases you need to consider. See the ["times zones" section of
-the core concepts guide](concepts.html#time-zones) and the [`DateTimeZone`](noda-type://NodaTime.DateTimeZone) documentation
+the core concepts guide](concepts.html#time-zones) and the [`DateTimeZone`](../api/NodaTime.DateTimeZone.yml) documentation
 for more information.

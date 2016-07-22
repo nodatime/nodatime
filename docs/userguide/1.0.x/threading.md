@@ -20,7 +20,7 @@ Immutable reference types
 -------------------------
 
 These are the simplest to document, and include all time zone and calendar implementations, the time zone providers,
-and [`Period`](noda-type://NodaTime.Period). No members of these types modify visible state; if you have a reference to
+and [`Period`](../api/NodaTime.Period.yml). No members of these types modify visible state; if you have a reference to
 an instance of one of these types, you can do no harm to other threads by calling any members via that reference.
 
 Some of the reference types do contain mutable state internally (usually for caching purposes) but this is invisible to
@@ -43,14 +43,14 @@ are larger than that limited guarantee. I wouldn't want to start relying on it d
 So long as you either make your own fields read-only *or* synchronize access to the fields, you should be fine - but if you
 use unsynchronized access to writable fields, it's entirely possible for a "hybrid" value to be visible, with part of the old
 value and part of the new value. So as an example using Noda Time types, if you tried to format a
-[`LocalDateTime`](noda-type://NodaTime.LocalDateTime) field as a string, and at the same time another thread changed the value,
+[`LocalDateTime`](../api/NodaTime.LocalDateTime.yml) field as a string, and at the same time another thread changed the value,
 you could end up with the date and time from the old value formatted using the calendar system from the new value. Needless to
 say, this is far from ideal - don't do it.
 
 Mutable reference types
 -----------------------
 
-Some classes are deliberately mutable within Noda Time - [`PeriodBuilder`](noda-type://NodaTime.PeriodBuilder) is a good example.
+Some classes are deliberately mutable within Noda Time - [`PeriodBuilder`](../api/NodaTime.PeriodBuilder.yml) is a good example.
 These types are very obviously mutable, and should *not* be shared between threads without explicit synchronization. No type
 in Noda Time has any specific thread affinity, so you shouldn't see any ill effects if you do use synchronization. Even so, we would
 generally recommend against doing this: the types are generally *designed* around making it easy to build a value within a single thread.

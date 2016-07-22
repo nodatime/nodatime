@@ -188,10 +188,10 @@ of the same name. This assembly is built against Json.NET 4.5.11, and is availab
 [installation guide](installation.html) for more details.
 
 An extension method of `ConfigureForNodaTime` is provided on both `JsonSerializer` and
-`JsonSerializerSettings`. Alternatively, the [`NodaConverters`](noda-type://NodaTime.Serialization.JsonNet.NodaConverters) type provides public static read-only fields
+`JsonSerializerSettings`. Alternatively, the [`NodaConverters`](../api/NodaTime.Serialization.JsonNet.NodaConverters.yml) type provides public static read-only fields
 for individual converters. (All converters are immutable.)
 
-Custom converters can be created easily from patterns using [`NodaPatternConverter`](noda-type://NodaTime.Serialization.JsonNet.NodaPatternConverter_1).
+Custom converters can be created easily from patterns using [`NodaPatternConverter`](../api/NodaTime.Serialization.JsonNet.NodaPatternConverter_1.yml).
 
 ### Disabling automatic date parsing ###
 

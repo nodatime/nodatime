@@ -31,7 +31,7 @@ instead of its ID (as we would do normally), we can't fetch arbitrary time zones
 by ID, nor can we ask for the adjustment rules for a particular time zone.
 
 The upshot of this is that we can't currently support
-[`BclDateTimeZone`](noda-type://NodaTime.TimeZones.BclDateTimeZone)
+[`BclDateTimeZone`](../api/NodaTime.TimeZones.BclDateTimeZone.yml)
 on the PCL version of Noda Time.
 
 Additionally, the PCL doesn't support .NET resource files as fully as the desktop
@@ -44,8 +44,8 @@ Fuller text support
 ===================
 
 While it is now possible (as of 1.2.0) to parse and format
-[`ZonedDateTime`](noda-type://NodaTime.ZonedDateTime) and
-[`OffsetDateTime`](noda-type://NodaTime.OffsetDateTime), our text support is
+[`ZonedDateTime`](../api/NodaTime.ZonedDateTime.yml) and
+[`OffsetDateTime`](../api/NodaTime.OffsetDateTime.yml), our text support is
 still lacking in some areas: some other types lack flexible formatting, and
 we may want to optimize further at some point too.
 
@@ -83,7 +83,7 @@ Smarter arithmetic
 ==================
 
 As noted in the [arithmetic guide](arithmetic.html), arithmetic using
-[`Period`](noda-type://NodaTime.Period) is pretty simplistic. We may
+[`Period`](../api/NodaTime.Period.yml) is pretty simplistic. We may
 want something smarter, probably to go alongside the "dumb but
 predictable" existing logic. This will definitely be driven by real
 user requirements though - it would be far too easy to speculate.

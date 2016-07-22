@@ -5,7 +5,7 @@ category: text
 weight: 2020
 ---
 
-The [`Duration`](noda-type://NodaTime.Duration) type supports the following patterns:
+The [`Duration`](../api/NodaTime.Duration.yml) type supports the following patterns:
 
 Standard Patterns
 -----------------

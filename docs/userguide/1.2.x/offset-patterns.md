@@ -5,7 +5,7 @@ category: text
 weight: 2030
 ---
 
-The [`Offset`](noda-type://NodaTime.Offset) type supports the following patterns:
+The [`Offset`](../api/NodaTime.Offset.yml) type supports the following patterns:
 
 Standard Patterns
 -----------------

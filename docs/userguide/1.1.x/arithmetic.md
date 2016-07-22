@@ -13,8 +13,8 @@ subtle bugs where developers may be tempted to mix concepts inappropriately.
 Time Line Arithmetic
 ====================
 
-The [`Instant`](noda-type://NodaTime.Instant) and
-[`ZonedDateTime`](noda-type://NodaTime.ZonedDateTime) types both unambiguously
+The [`Instant`](../api/NodaTime.Instant.yml) and
+[`ZonedDateTime`](../api/NodaTime.ZonedDateTime.yml) types both unambiguously
 refer to a point in time (with the latter additionally holding time
 zone and calendar information). We can add a length of time to that point to get
 another point in time - but only if it's a truly fixed length of time, such as
@@ -24,7 +24,7 @@ that Noda Time doesn't support leap seconds, otherwise even "3
 minutes" wouldn't be a fixed length of time.)
 
 These "fixed lengths of time" are represented in Noda Time with the
-[`Duration`](noda-type://NodaTime.Duration) type, and they can be
+[`Duration`](../api/NodaTime.Duration.yml) type, and they can be
 added to either an `Instant` or `ZonedDateTime` using either the `+` operator
 or `Plus` methods:
 
@@ -69,12 +69,12 @@ Noda Time doesn't involve elapsed time directly, or even truly fixed
 lengths of time - it involves calendrical concepts such as months.
 These operations involve the "local" date and time types, which are
 associated with a
-[`CalendarSystem`](noda-type://NodaTime.CalendarSystem), but not a
+[`CalendarSystem`](../api/NodaTime.CalendarSystem.yml), but not a
 time zone:
 
-- [`LocalDateTime`](noda-type://NodaTime.LocalDateTime)
-- [`LocalDate`](noda-type://NodaTime.LocalDate)
-- [`LocalTime`](noda-type://NodaTime.LocalTime)
+- [`LocalDateTime`](../api/NodaTime.LocalDateTime.yml)
+- [`LocalDate`](../api/NodaTime.LocalDate.yml)
+- [`LocalTime`](../api/NodaTime.LocalTime.yml)
 
 (`LocalTime` doesn't actually have an associated calendar, as Noda
 Time assumes that all calendars model times in the same way, but
@@ -135,7 +135,7 @@ Adding a `Period`
 -----------------
 
 Sometimes you need a more general representation of the value to
-add, which is where [`Period`](noda-type://NodaTime.Period) comes
+add, which is where [`Period`](../api/NodaTime.Period.yml) comes
 in. This is essentially just a collection of unit/value pairs - so
 you can have a period of "1 month and 3 days" or "2 weeks and 10
 hours". Periods aren't normalized, so a period of "2 days" is not
@@ -166,7 +166,7 @@ Again, this is very simple - the components in the two periods are
 simply summed, with no normalization. Subtraction works in the same
 way.
 
-An alternative way of creating a period is to use [`PeriodBuilder`](noda-type://NodaTime.PeriodBuilder)
+An alternative way of creating a period is to use [`PeriodBuilder`](../api/NodaTime.PeriodBuilder.yml)
 which is mutable, with a nullable property for each component:
 
 ```csharp
@@ -220,7 +220,7 @@ There are six overloads - two for each local type, with one using a
 default set of units (year, month, day for dates; all time units for
 times; year, month, day and all time units for date/times) and the
 other allowing you to specify your own value. The units are specified
-with the [`PeriodUnits`](noda-type://NodaTime.PeriodUnits) enum, and
+with the [`PeriodUnits`](../api/NodaTime.PeriodUnits.yml) enum, and
 can be combined using the `|` operator. So for example, to find out
 how many "months and days" old I am at the time of this writing, I'd use:
 
@@ -265,7 +265,7 @@ Why doesn't this work with `ZonedDateTime`?
 ===========================================
 
 All of this code using periods only works with the "local" types - notably there's
-no part of the [`ZonedDateTime`](noda-type://NodaTime.ZonedDateTime) which mentions `Period`.
+no part of the [`ZonedDateTime`](../api/NodaTime.ZonedDateTime.yml) which mentions `Period`.
 This is entirely deliberate, due to the complexities that time zones introduce. Every time
 you perform a calculation on a `ZonedDateTime`, you may end up changing your offset from UTC.
 
@@ -285,7 +285,7 @@ skipped times in the normal way. We believe this makes the API easier to follow 
 to think about the problems which you might otherwise brush under the carpet... but if you have
 better suggestions, please raise them!
 
-Currently Noda Time doesn't support arithmetic with [`OffsetDateTime`](noda-type://NodaTime.OffsetDateTime)
+Currently Noda Time doesn't support arithmetic with [`OffsetDateTime`](../api/NodaTime.OffsetDateTime.yml)
 either, mostly because it's not clear what the use cases would be. You can always convert to either local or
 zoned date/time values, perform arithmetic in that domain and convert back if necessary - but if you find
 yourself in this situation, we'd love to hear about it on the Noda Time mailing list.

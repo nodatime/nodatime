@@ -76,7 +76,7 @@ be for the system default time zone, which you should generally be explicit abou
 DateTimeOffset
 ==============
 
-[`OffsetDateTime`](noda-type://NodaTime.OffsetDateTime) corresponds most closely to `DateTimeOffset`, although you can also use a [`ZonedDateTime`](noda-type://NodaTime.ZonedDateTime) with a fixed time zone. That's exactly what `ZonedDateTime.FromDateTimeOffset` does,
+[`OffsetDateTime`](../api/NodaTime.OffsetDateTime.yml) corresponds most closely to `DateTimeOffset`, although you can also use a [`ZonedDateTime`](../api/NodaTime.ZonedDateTime.yml) with a fixed time zone. That's exactly what `ZonedDateTime.FromDateTimeOffset` does,
 but you must be aware that "real" time zone information is lost as soon as you've got a `DateTimeOffset` - 
 it represents an exact instant in time, with a local offset from UTC, but that doesn't tell you what the
 local offset would be a minute later or earlier. The reverse conversion (`ZonedDateTime.ToDateTimeOffset`)
@@ -89,7 +89,7 @@ to represent the appropriate instant in time - but without any further trace of 
 TimeSpan
 ========
 
-Both [`Offset`](noda-type://NodaTime.Offset) and [`Duration`](noda-type://NodaTime.Duration) are similar to `TimeSpan`,
+Both [`Offset`](../api/NodaTime.Offset.yml) and [`Duration`](../api/NodaTime.Duration.yml) are similar to `TimeSpan`,
 but they're used in different senses; `Offset` is used to indicate the difference between UTC and local time, whereas
 a `Duration` is simply an arbitrary number of ticks.
 
@@ -99,12 +99,12 @@ if the `TimeSpan` has a magnitude of 24 hours or more.
 TimeZoneInfo
 ============
 
-The main time zone type in Noda Time is [`DateTimeZone`](noda-type://NodaTime.DateTimeZone), which the default provider
+The main time zone type in Noda Time is [`DateTimeZone`](../api/NodaTime.DateTimeZone.yml), which the default provider
 creates from the zoneinfo time zone database. However, if you want to create a
 `DateTimeZone` which corresponds exactly to a particular `TimeZoneInfo`,
-there are some options using [`BclDateTimeZone`](noda-type://NodaTime.TimeZones.BclDateTimeZone):
+there are some options using [`BclDateTimeZone`](../api/NodaTime.TimeZones.BclDateTimeZone.yml):
 
-- You can use `DateTimeZoneProviders.Bcl` everywhere you create time zones. (You may well want to inject this as an [`IDateTimeZoneProvider`](noda-type://NodaTime.IDateTimeZoneProvider)
+- You can use `DateTimeZoneProviders.Bcl` everywhere you create time zones. (You may well want to inject this as an [`IDateTimeZoneProvider`](../api/NodaTime.IDateTimeZoneProvider.yml)
   if you're using dependency injection). This is appropriate if you're going to work with various time zones,
   and you only ever care about the BCL versions.
 - To convert a single time zone, you can use `BclDateTimeZone.FromTimeZoneInfo`.
@@ -134,11 +134,11 @@ DayOfWeek
 =========
 
 For every day other than Sunday, `DayOfWeek` and
-[`IsoDayOfWeek`](noda-type://NodaTime.IsoDayOfWeek) have the same
+[`IsoDayOfWeek`](../api/NodaTime.IsoDayOfWeek.yml) have the same
 value. However, `DayOfWeek` uses 0 for Sunday, and `IsoDayOfWeek`
 uses 7 (as per ISO-8601). Converting between the two isn't
 difficult, but there are utility methods in
-[`BclConversions`](noda-type://NodaTime.Utility.BclConversions) to
+[`BclConversions`](../api/NodaTime.Utility.BclConversions.yml) to
 make things slightly smoother:
 
 ```csharp

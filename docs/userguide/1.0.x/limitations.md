@@ -23,8 +23,8 @@ Fuller text support
 ===================
 
 Currently there's no way of parsing or formatting a
-[`ZonedDateTime`](noda-type://NodaTime.ZonedDateTime) or 
-[`OffsetDateTime`](noda-type://NodaTime.OffsetDateTime), partly due to
+[`ZonedDateTime`](../api/NodaTime.ZonedDateTime.yml) or 
+[`OffsetDateTime`](../api/NodaTime.OffsetDateTime.yml), partly due to
 the difficulty of representing time zones or offsets. While this is
 the primary deficiency of our current text support, it's not the
 only one. Some other types lack flexible formatting, and we may want
@@ -58,7 +58,7 @@ Smarter arithmetic
 ==================
 
 As noted in the [arithmetic guide](arithmetic.html), arithmetic using
-[`Period`](noda-type://NodaTime.Period) is pretty simplistic. We may
+[`Period`](../api/NodaTime.Period.yml) is pretty simplistic. We may
 want something smarter, probably to go alongside the "dumb but
 predictable" existing logic. This will definitely be driven by real
 user requirements though - it would be far too easy to speculate.

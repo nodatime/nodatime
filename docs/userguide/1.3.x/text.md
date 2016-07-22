@@ -37,12 +37,12 @@ based on existing ones but with different internationalization
 information or other options.
 
 Each core Noda type has its own pattern type such as
-[`OffsetPattern`](noda-type://NodaTime.Text.OffsetPattern). All
+[`OffsetPattern`](../api/NodaTime.Text.OffsetPattern.yml). All
 these patterns implement the
-[`IPattern<T>`](noda-type://NodaTime.Text.IPattern_1) interface,
+[`IPattern<T>`](../api/NodaTime.Text.IPattern_1.yml) interface,
 which has simple `Format` and `Parse` methods taking just the value
 and text respectively. The result of `Parse` is a
-[`ParseResult<T>`](noda-type://NodaTime.Text.ParseResult_1) which
+[`ParseResult<T>`](../api/NodaTime.Text.ParseResult_1.yml) which
 encapsulates both success and failure results.
 
 The BCL-based API

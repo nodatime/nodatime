@@ -5,7 +5,7 @@ category: text
 weight: 2080
 ---
 
-The [`OffsetDateTime`](noda-type://NodaTime.OffsetDateTime) type supports the following patterns:
+The [`OffsetDateTime`](../api/NodaTime.OffsetDateTime.yml) type supports the following patterns:
 
 Standard Patterns
 -----------------

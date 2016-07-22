@@ -97,7 +97,7 @@ API access: [`CalendarSystem.GetIslamicCalendar()`](noda-method://NodaTime.Calen
 The [Islamic (or Hijri) calendar](http://en.wikipedia.org/wiki/Islamic_calendar) is a lunar calendar with years of 12
 months, totalling either 355 or 354 days depending on whether or not it's a leap year. There are various schemes
 for determining which years are leap years, all based on a 30 year cycle. Noda Time supports four options here,
-specified in the [`IslamicLeapYearPattern`](noda-type://NodaTime.Calendars.IslamicLeapYearPattern) enumeration.
+specified in the [`IslamicLeapYearPattern`](../api/NodaTime.Calendars.IslamicLeapYearPattern.yml) enumeration.
 
 In the Islamic calendar, each day officially begins at sunset, but the Noda Time implementation (like most other date/time
 APIs) ignores this and treats every day as beginning and ending at midnight.
@@ -105,7 +105,7 @@ APIs) ignores this and treats every day as beginning and ending at midnight.
 Year 1 in the Islamic calendar began on July 15th or 16th, 622 CE (Julian) - different sources appear to use different
 epochs, and the "sunset vs midnight" difference exacerbates this. Within Noda Time, the two epochs are known as
 astronomical (July 15th CE Julian) and civil (July 16th CE Julian) and are specified in the
-[`IslamicEpoch`](noda-type://NodaTime.Calendars.IslamicEpoch) enumeration.
+[`IslamicEpoch`](../api/NodaTime.Calendars.IslamicEpoch.yml) enumeration.
 
 The `GetIslamicCalendar()` method accepts two parameters, specifying the leap year pattern and epoch. You should carefully
 consider which other systems you need to interoperate with when deciding which values to specify for these parameters.

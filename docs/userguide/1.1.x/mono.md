@@ -19,7 +19,7 @@ Noda Time runs on Mono, but with some limitations:
   as possible.
 - `TimeZoneInfo` in Mono has some critical flaws in the latest stable
   Mono release at the time of this writing (2.10.8) - while
-  [`BclDateTimeZone`](noda-type://NodaTime.TimeZones.BclDateTimeZone) *may*
+  [`BclDateTimeZone`](../api/NodaTime.TimeZones.BclDateTimeZone.yml) *may*
   do the right thing, it may disagree with the results of calling
   methods directly on the time zone ([issue 97][]).
 - Some cultures in Mono have standard date/time patterns including

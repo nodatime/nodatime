@@ -5,7 +5,7 @@ category: text
 weight: 2050
 ---
 
-The [`LocalTime`](noda-type://NodaTime.LocalTime) type supports the following patterns:
+The [`LocalTime`](../api/NodaTime.LocalTime.yml) type supports the following patterns:
 
 Standard Patterns
 -----------------

@@ -22,18 +22,18 @@ While you *can* use Noda Time without dependency injection, it will make your co
 no particular support for any specific dependency injection framework, but should be easy to configure with any
 reasonably-powerful implementation. (If it's not, please file a bug report.)
 
-The most obvious dependency is a clock - an implementation of [`NodaTime.IClock`](noda-type://NodaTime.IClock),
+The most obvious dependency is a clock - an implementation of [`NodaTime.IClock`](../api/NodaTime.IClock.yml),
 which simply provides "the current date and time" (as an `Instant`, given that the concept of "now" isn't
-inherently bound to any time zone or calendar). The [`FakeClock`](noda-type://NodaTime.Testing.FakeClock) can
+inherently bound to any time zone or calendar). The [`FakeClock`](../api/NodaTime.Testing.FakeClock.yml) can
 be set to any given instant, advanced manually, or set to advance a given amount each time it's accessed. The production
-environment should normally inject the singleton [`SystemClock`](noda-type://NodaTime.SystemClock) instance which simply
+environment should normally inject the singleton [`SystemClock`](../api/NodaTime.SystemClock.yml) instance which simply
 uses `DateTime.UtcNow` behind the scenes.
 
-For code which is sensitive to time zone fetching, an [`IDateTimeZoneProvider`](noda-type://NodaTime.IDateTimeZoneProvider) can
+For code which is sensitive to time zone fetching, an [`IDateTimeZoneProvider`](../api/NodaTime.IDateTimeZoneProvider.yml) can
 be injected. There are currently no test doubles for this interface - please contact the mailing list with requirements
 if to give us feedback on exactly what you'd like provided here. The production environment should usually be
-configured with one of the providers in [`DateTimeZoneProviders`](noda-type://NodaTime.DateTimeZoneProviders).
+configured with one of the providers in [`DateTimeZoneProviders`](../api/NodaTime.DateTimeZoneProviders.yml).
 
 For time zones themselves, a fake implementation representing a time zone with a single transition between different offsets
-is available as [`SingleTransitionDateTimeZone`](noda-type://NodaTime.Testing.TimeZones.SingleTransitionDateTimeZone). Creating
+is available as [`SingleTransitionDateTimeZone`](../api/NodaTime.Testing.TimeZones.SingleTransitionDateTimeZone.yml). Creating
 a time zone with no transitions at all is simple via `DateTimeZone.ForOffset`.
