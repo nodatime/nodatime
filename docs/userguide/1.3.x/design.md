@@ -78,7 +78,7 @@ LocalDateTime()` or `default(LocalDateTime)`) is *not* a useful
 value. This is unfortunate, but hard to avoid.
 
 - All the value types and almost all the reference types are
-immutable and [thread-safe](threading.html). We expect objects like calendars, time
+immutable and [thread-safe](threading.md). We expect objects like calendars, time
 zones, and patterns for formatting and parsing text to be reused
 freely between many threads. Occasionally there's hidden mutability
 in terms of caches, but this should not affect you, the user. We make sure it
@@ -101,8 +101,8 @@ requirements, chances are someone else will want to do something
 similar - so pop along to the [mailing list][4] and we can collaborate on
 trying to solve your problem within Noda Time itself.
 
-[1]: concepts.html
+[1]: concepts.md
 [2]: http://semver.org/
 [3]: http://www.joda.org/joda-time
 [4]: https://groups.google.com/group/noda-time
-[5]: text.html
+[5]: text.md

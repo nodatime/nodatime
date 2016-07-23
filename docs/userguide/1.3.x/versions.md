@@ -241,7 +241,7 @@ API changes:
 Major features:
 
 - Noda Time assemblies are now also available in Portable Class Library
-  versions (see the [installation instructions](installation.html) for details)
+  versions (see the [installation instructions](installation.md) for details)
 - Noda Time now uses a self-contained (and more compact) format for storing
   TZDB data that is not directly tied to .NET resources; the old format was
   not supportable in the PCL build
@@ -341,7 +341,7 @@ Bug fixes:
 Other:
 
 - Symbols for the release are now published to SymbolSource. See the
-  [installation guide](installation.html) for details of how to debug into Noda
+  [installation guide](installation.md) for details of how to debug into Noda
   Time using this
 - The version of SHFB used to generate the documentation has changed, along
   with some settings around which members to generate documentation for.

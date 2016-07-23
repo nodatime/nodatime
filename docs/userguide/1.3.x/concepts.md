@@ -1,5 +1,5 @@
 This is a companion page to the
-["core types quick reference"](core-types.html), and ["choosing between types"](type-choices.html)
+["core types quick reference"](core-types.md), and ["choosing between types"](type-choices.md)
 pages, describing the fundamental concepts in Noda Time.
 
 One of the benefits of Noda Time over the Base Class Library (BCL)
@@ -18,7 +18,7 @@ date and time data for your whole project.
 This document introduces the core concepts, but in order to avoid it
 being too overwhelming, we won't go into the fine details. See
 individual pages (particularly the ["choosing between
-types"](type-choices.html) page) and the [API documentation][api]
+types"](type-choices.md) page) and the [API documentation][api]
 for more information.
 
 "Local" and "global" (or "absolute") types
@@ -116,7 +116,7 @@ although a few useful methods are exposed. Most of the time even if you
 an appropriate object, and then pass it to other constructors etc as a
 little bundle of magic which simply does the right thing for you.
 
-See the [calendars documentation](calendars.html) for more details about
+See the [calendars documentation](calendars.md) for more details about
 which calendar systems are supported.
 
 <a name="time-zones"></a>Time zones
@@ -170,7 +170,7 @@ Noda Time handles two of them: it is able to map BCL `TimeZoneInfo` objects
 using `BclDateTimeZone`, or it can use the [tz database][TZDB] (also known as
 the IANA Time Zone database, or zoneinfo or Olson database). A version of TZDB
 is embedded within the Noda Time distribution, and if you need a more recent
-one, there are [instructions on how to download and use new data](tzdb.html).
+one, there are [instructions on how to download and use new data](tzdb.md).
 We generally recommend that you isolate yourself from the provider you're using
 by only depending on [`IDateTimeZoneProvider`][IDateTimeZoneProvider], and
 injecting the appropriate provider in the normal way. "Stock" providers are
@@ -200,23 +200,23 @@ so on) will always represent the same length of time, but they're still availabl
 periods. [`Period`] is used for arithmetic on locally-based values (`LocalDateTime`,
 `LocalDate`, `LocalTime`).
 
-See the [arithmetic](arithmetic.html) page for more information.
+See the [arithmetic](arithmetic.md) page for more information.
 
-[api]: ../api/Index.html
+[api]: ../api/NodaTime.yml
 [2]: http://blogs.msdn.com/b/bclteam/archive/2007/06/18/a-brief-history-of-datetime-anthony-moore.aspx
-[LocalTime]: noda-type://NodaTime.LocalTime
-[LocalDate]: noda-type://NodaTime.LocalDate
-[LocalDateTime]: noda-type://NodaTime.LocalDateTime
-[Instant]: noda-type://NodaTime.Instant
-[CalendarSystem]: noda-type://NodaTime.CalendarSystem
+[LocalTime]: ../api/NodaTime.LocalTime.yml
+[LocalDate]: ../api/NodaTime.LocalDate.yml
+[LocalDateTime]: ../api/NodaTime.LocalDateTime.yml
+[Instant]: ../api/NodaTime.Instant.yml
+[CalendarSystem]: ../api/NodaTime.CalendarSystem.yml
 [UTC]: http://en.wikipedia.org/wiki/Coordinated_Universal_Time
-[DateTimeZone]: noda-type://NodaTime.DateTimeZone
-[Offset]: noda-type://NodaTime.Offset
-[Period]: noda-type://NodaTime.Period
-[Duration]: noda-type://NodaTime.Duration
-[OffsetDateTime]: noda-type://NodaTime.OffsetDateTime
-[ZonedDateTime]: noda-type://NodaTime.ZonedDateTime
+[DateTimeZone]: ../api/NodaTime.DateTimeZone.yml
+[Offset]: ../api/NodaTime.Offset.yml
+[Period]: ../api/NodaTime.Period.yml
+[Duration]: ../api/NodaTime.Duration.yml
+[OffsetDateTime]: ../api/NodaTime.OffsetDateTime.yml
+[ZonedDateTime]: ../api/NodaTime.ZonedDateTime.yml
 [TZDB]: http://www.iana.org/time-zones
-[IDateTimeZoneProvider]: noda-type://NodaTime.IDateTimeZoneProvider
-[DateTimeZoneProviders]: noda-type://NodaTime.DateTimeZoneProviders
+[IDateTimeZoneProvider]: ../api/NodaTime.IDateTimeZoneProvider.yml
+[DateTimeZoneProviders]: ../api/NodaTime.DateTimeZoneProviders.yml
 [TimeSpan]: http://msdn.microsoft.com/en-us/library/system.timespan.aspx

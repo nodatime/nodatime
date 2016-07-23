@@ -4,7 +4,7 @@ aspects we'd like to improve; see the
 [issues list](https://github.com/nodatime/nodatime/issues) for
 others.
 
-We also have a [roadmap](roadmap.html) of intended releases. This is
+We also have a [roadmap](roadmap.md) of intended releases. This is
 always tentative, of course, but it helps to give some clarity to our
 decisions in terms of what to work on next.
 
@@ -31,7 +31,7 @@ Additionally, the PCL doesn't support .NET resource files as fully as the deskto
 framework; in particular, it doesn't allow you to retrieve non-string resources. This
 has provoked a change from the previous resource-based format used for TZDB, to a
 stream-based format, which is now the default. For most users this will be a no-op
-change, but it does affect how you [build and use a custom version of TZDB](tzdb.html).
+change, but it does affect how you [build and use a custom version of TZDB](tzdb.md).
 
 Fuller text support
 ===================
@@ -71,7 +71,7 @@ highest priority is probably an adapter for the BCL calendars.
 Smarter arithmetic
 ==================
 
-As noted in the [arithmetic guide](arithmetic.html), arithmetic using
+As noted in the [arithmetic guide](arithmetic.md), arithmetic using
 [`Period`](../api/NodaTime.Period.yml) is pretty simplistic. We may
 want something smarter, probably to go alongside the "dumb but
 predictable" existing logic. This will definitely be driven by real

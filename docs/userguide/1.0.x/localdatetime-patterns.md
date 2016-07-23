@@ -27,5 +27,5 @@ The following standard patterns are supported:
 Custom Patterns
 ---------------
 
-The custom format patterns for local date and time are provided by combining the [custom patterns for `LocalDate`](localdate-patterns.html) with
-the [custom patterns for `LocalTime`](localtime-patterns.html). The result is simply the combination of the date and the time.
+The custom format patterns for local date and time are provided by combining the [custom patterns for `LocalDate`](localdate-patterns.md) with
+the [custom patterns for `LocalTime`](localtime-patterns.md). The result is simply the combination of the date and the time.

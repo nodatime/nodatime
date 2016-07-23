@@ -1,5 +1,5 @@
 This is a companion page to the
-["core concepts"](concepts.html), and ["choosing between types"](type-choices.html)
+["core concepts"](concepts.md), and ["choosing between types"](type-choices.md)
 pages, describing the fundamental types in Noda Time very briefly, primarily for reference.
 If you're not familiar with the core concepts, read that page first.
 
@@ -89,7 +89,7 @@ January.
 IClock
 ------
 
-An [`IClock`][IClock] implementation provides information about the current instant. It knows nothing about time zones or calendar systems. For [testability](testing.html), this is defined
+An [`IClock`][IClock] implementation provides information about the current instant. It knows nothing about time zones or calendar systems. For [testability](testing.md), this is defined
 as an interface; in a production deployment you're likely to use the [`SystemClock`][SystemClock] singleton implementation.
 
 Interval
@@ -99,21 +99,21 @@ An [`Interval`][Interval] is simply two instants - a start and an end. The inter
 exactly one of those intervals.
 
 [DST]: http://en.wikipedia.org/wiki/Daylight_saving_time
-[Interval]: noda-type://NodaTime.Interval
-[LocalTime]: noda-type://NodaTime.LocalTime
-[LocalDate]: noda-type://NodaTime.LocalDate
-[LocalDateTime]: noda-type://NodaTime.LocalDateTime
-[Instant]: noda-type://NodaTime.Instant
-[CalendarSystem]: noda-type://NodaTime.CalendarSystem
-[DateTimeZone]: noda-type://NodaTime.DateTimeZone
-[IDateTimeZoneProvider]: noda-type://NodaTime.IDateTimeZoneProvider
-[DateTimeZoneProviders]: noda-type://NodaTime.DateTimeZoneProviders
-[Offset]: noda-type://NodaTime.Offset
-[Period]: noda-type://NodaTime.Period
-[Duration]: noda-type://NodaTime.Duration
-[OffsetDateTime]: noda-type://NodaTime.OffsetDateTime
-[ZonedDateTime]: noda-type://NodaTime.ZonedDateTime
-[IDateTimeZoneProvider]: noda-type://NodaTime.IDateTimeZoneProvider
-[DateTimeZoneProviders]: noda-type://NodaTime.DateTimeZoneProviders
-[IClock]: noda-type://NodaTime.IClock
-[SystemClock]: noda-type://NodaTime.SystemClock
+[Interval]: ../api/NodaTime.Interval.yml
+[LocalTime]: ../api/NodaTime.LocalTime.yml
+[LocalDate]: ../api/NodaTime.LocalDate.yml
+[LocalDateTime]: ../api/NodaTime.LocalDateTime.yml
+[Instant]: ../api/NodaTime.Instant.yml
+[CalendarSystem]: ../api/NodaTime.CalendarSystem.yml
+[DateTimeZone]: ../api/NodaTime.DateTimeZone.yml
+[IDateTimeZoneProvider]: ../api/NodaTime.IDateTimeZoneProvider.yml
+[DateTimeZoneProviders]: ../api/NodaTime.DateTimeZoneProviders.yml
+[Offset]: ../api/NodaTime.Offset.yml
+[Period]: ../api/NodaTime.Period.yml
+[Duration]: ../api/NodaTime.Duration.yml
+[OffsetDateTime]: ../api/NodaTime.OffsetDateTime.yml
+[ZonedDateTime]: ../api/NodaTime.ZonedDateTime.yml
+[IDateTimeZoneProvider]: ../api/NodaTime.IDateTimeZoneProvider.yml
+[DateTimeZoneProviders]: ../api/NodaTime.DateTimeZoneProviders.yml
+[IClock]: ../api/NodaTime.IClock.yml
+[SystemClock]: ../api/NodaTime.SystemClock.yml

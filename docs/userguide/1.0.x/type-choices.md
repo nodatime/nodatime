@@ -1,5 +1,5 @@
 This is a companion page to the
-["core concepts quick reference"](concepts.html), and ["core types"](core-types.html)
+["core concepts quick reference"](concepts.md), and ["core types"](core-types.md)
 pages, describing when it's appropriate to use which type, and how to convert between them.
 
 Ultimately, you should be thinking about what data you really have,
@@ -153,5 +153,5 @@ as they're generally very straightforward.)
 Most of these are pretty simple, but a few are worth calling out
 specifically. The biggest "gotcha" is converting `LocalDateTime` to
 `ZonedDateTime` - it has some corner cases you need to consider. See the ["times zones" section of
-the core concepts guide](concepts.html#time-zones) and the [`DateTimeZone`](../api/NodaTime.DateTimeZone.yml) documentation
+the core concepts guide](concepts.md#time-zones) and the [`DateTimeZone`](../api/NodaTime.DateTimeZone.yml) documentation
 for more information.

@@ -52,7 +52,7 @@ call docfx metadata -f
 REM TODO: Add extra information (versions etc)
 
 echo Running main docfx build
-echo call docfx build
+call docfx build
 
 goto end
 

@@ -20,7 +20,7 @@ System requirements
 
 From release 1.1 onwards, there are two builds of Noda Time: the desktop version and the Portable Class Library version.
 
-The desktop version requires .NET 3.5 (client profile). This build also supports Mono, [with some caveats](mono.html).
+The desktop version requires .NET 3.5 (client profile). This build also supports Mono, [with some caveats](mono.md).
 
 The PCL build is configured to support:
 
@@ -33,7 +33,7 @@ The PCL build also appears to work with Xamarin.iOS and Xamarin.Android apps, bu
 
 Noda Time does *not* support XBox 360 or Silverlight 3, and it's unlikely that we'd ever want to introduce support
 for these. (It's more likely that over time, we'll drop support for Silverlight - but not imminently, of course.)
-See the [limitations](limitations.html) page for differences between the PCL build and the desktop build.
+See the [limitations](limitations.md) page for differences between the PCL build and the desktop build.
 
 The NodaTime.Serialization.JsonNet assembly is built and tested against Json.NET version 4.5.11. It's likely that any version
 of Json.NET from 4.5.0 onwards will work with Noda Time, but we'd recommend using at least 4.5.11. As far as we know, there
@@ -45,14 +45,14 @@ Package contents and getting started
 ------------------------------------
 
 Everything you need to *use* Noda Time is contained in the NodaTime package. The NodaTime.Testing package is designed
-for testing code which uses Noda Time. See the [testing guide](testing.html) for more information. It is expected
+for testing code which uses Noda Time. See the [testing guide](testing.md) for more information. It is expected
 that production code will only refer to the `NodaTime.dll` assembly, and that's all that's required at execution time.
-This assembly includes the [TZDB database](tzdb.html) as an embedded resource.
+This assembly includes the [TZDB database](tzdb.md) as an embedded resource.
 
 For Json.NET serialization, the NodaTime.Serialization.JsonNet package (containing a single assembly of the same name) is 
 required, as well as an appropriate version of Json.NET itself. There is a NuGet dependency from NodaTime.Serialization.JsonNet
 to the newtonsoft.json package, so if you're using NuGet you just need to refer to NodaTime.Serialization.JsonNet and an 
-appropriate version of Json.NET will be installed automatically. See the [serialization guide](serialization.html) for more
+appropriate version of Json.NET will be installed automatically. See the [serialization guide](serialization.md) for more
 information on using Noda Time with Json.NET.
 
 Everything within the NodaTime assembly is in the NodaTime namespace or a "child" namespace. After adding a reference to

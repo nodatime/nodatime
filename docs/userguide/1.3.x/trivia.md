@@ -291,7 +291,7 @@ between a change being announced and Noda Time supporting it in production:
 4. I run a script to pull the latest version from TZDB, build it as an NZD
    file and push it to the Noda Time web site
 5. The system in question pulls the latest version from the web site and
-   [starts using it](tzdb.html)
+   [starts using it](tzdb.md)
 
 As you can see, this depends on a lot of different people, so some delay is
 inevitable. However, if your application is configured to poll the web site

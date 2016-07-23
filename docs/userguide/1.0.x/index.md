@@ -26,7 +26,7 @@ offline, it's the offline API docs)
 [web]: http://nodatime.org
 [4]: http://nodatime.org/userguide
 [5]: http://nodatime.org/api
-[6]: ../api/Index.html
+[6]: ../api/NodaTime.yml
 [Developer guide]: http://nodatime.org/developer/
 [so]: http://stackoverflow.com
 [so-tag]: http://stackoverflow.com/questions/tagged/nodatime

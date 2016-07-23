@@ -18,7 +18,7 @@ The pattern-based API
 
 A *pattern* is an object capable of *parsing* from text to a specific
 type, and *formatting* a value to text. Parsing and formatting don't
-take any other options: the pattern knows everything about how to
+te
 map between the value and text. In particular, internationalization
 is handled by having the pattern hold a [`CultureInfo`][2].
 
@@ -32,10 +32,10 @@ information or other options.
 Each core Noda type has its own pattern type such as
 [`OffsetPattern`](../api/NodaTime.Text.OffsetPattern.yml). All
 these patterns implement the
-[`IPattern<T>`](../api/NodaTime.Text.IPattern_1.yml) interface,
+[`IPattern<T>`](../api/NodaTime.Text.IPattern-1.yml) interface,
 which has simple `Format` and `Parse` methods taking just the value
 and text respectively. The result of `Parse` is a
-[`ParseResult<T>`](../api/NodaTime.Text.ParseResult_1.yml) which
+[`ParseResult<T>`](../api/NodaTime.Text.ParseResult-1.yml) which
 encapsulates both success and failure results.
 
 The BCL-based API
@@ -59,15 +59,15 @@ available patterns are as consistent as possible within reason, but
 documenting each separately avoids confusion with some field
 specifiers being available for some types but not others.
 
-- [Duration patterns](duration-patterns.html)
-- [Offset patterns](offset-patterns.html)
-- [Instant patterns](instant-patterns.html)
-- [LocalTime patterns](localtime-patterns.html)
-- [LocalDate patterns](localdate-patterns.html)
-- [LocalDateTime patterns](localdatetime-patterns.html)
-- [OffsetDateTime patterns](offsetdatetime-patterns.html)
-- [ZonedDateTime patterns](zoneddatetime-patterns.html)
-- [Period patterns](period-patterns.html)
+- [Duration patterns](duration-patterns.md)
+- [Offset patterns](offset-patterns.md)
+- [Instant patterns](instant-patterns.md)
+- [LocalTime patterns](localtime-patterns.md)
+- [LocalDate patterns](localdate-patterns.md)
+- [LocalDateTime patterns](localdatetime-patterns.md)
+- [OffsetDateTime patterns](offsetdatetime-patterns.md)
+- [ZonedDateTime patterns](zoneddatetime-patterns.md)
+- [Period patterns](period-patterns.md)
 
 <a name="custom-patterns"></a>Custom patterns
 ---------------
@@ -160,5 +160,5 @@ Often you don't have much choice about how to parse or format text: if you're in
 
   [2]: http://msdn.microsoft.com/en-us/library/system.globalization.cultureinfo.aspx
   [3]: noda-ns://NodaTime.Text
-  [4]: noda-type://NodaTime.LocalDateTime
-  [5]: noda-type://NodaTime.Instant
+  [4]: ../api/NodaTime.LocalDateTime.yml
+  [5]: ../api/NodaTime.Instant.yml

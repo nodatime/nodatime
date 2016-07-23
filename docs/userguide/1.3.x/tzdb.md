@@ -172,5 +172,5 @@ resource set and then ask for a time zone which hasn't yet been loaded. If you w
 I'd recommend loading the contents of the file into a `MemoryStream` and passing *that* to the `ResourceSet` constructor. Otherwise, in
 most cases it probably isn't a big deal to have the handle to the resource file open throughout the lifetime of the application.
 
-[TzdbDateTimeZoneSource]: noda-type://NodaTime.TimeZones.TzdbDateTimeZoneSource
-[DateTimeZoneCache]: noda-type://NodaTime.TimeZones.DateTimeZoneCache
+[TzdbDateTimeZoneSource]: ../api/NodaTime.TimeZones.TzdbDateTimeZoneSource.yml
+[DateTimeZoneCache]: ../api/NodaTime.TimeZones.DateTimeZoneCache.yml

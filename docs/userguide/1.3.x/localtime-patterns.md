@@ -19,7 +19,7 @@ The following standard patterns are supported:
 Custom Patterns
 ---------------
 
-The following custom format pattern characters are supported for local times. See [custom pattern notes](text.html#custom-patterns)
+The following custom format pattern characters are supported for local times. See [custom pattern notes](text.md#custom-patterns)
 for general notes on custom patterns, including characters used for escaping and text literals.
 
 <table>
@@ -38,7 +38,7 @@ for general notes on custom patterns, including characters used for escaping and
 
         <p>Note that when parsing local date/time values, a value of <code>24</code>
         may be exceptionally permitted to allow
-        <a href="localdatetime-patterns.html">specification of a following day's
+        <a href="localdatetime-patterns.md">specification of a following day's
         midnight</a>.
       </td>
       <td>

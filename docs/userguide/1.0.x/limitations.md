@@ -50,7 +50,7 @@ highest priority is probably an adapter for the BCL calendars.
 Smarter arithmetic
 ==================
 
-As noted in the [arithmetic guide](arithmetic.html), arithmetic using
+As noted in the [arithmetic guide](arithmetic.md), arithmetic using
 [`Period`](../api/NodaTime.Period.yml) is pretty simplistic. We may
 want something smarter, probably to go alongside the "dumb but
 predictable" existing logic. This will definitely be driven by real

@@ -32,10 +32,10 @@ information or other options.
 Each core Noda type has its own pattern type such as
 [`OffsetPattern`](../api/NodaTime.Text.OffsetPattern.yml). All
 these patterns implement the
-[`IPattern<T>`](../api/NodaTime.Text.IPattern_1.yml) interface,
+[`IPattern<T>`](../api/NodaTime.Text.IPattern-1.yml) interface,
 which has simple `Format` and `Parse` methods taking just the value
 and text respectively. The result of `Parse` is a
-[`ParseResult<T>`](../api/NodaTime.Text.ParseResult_1.yml) which
+[`ParseResult<T>`](../api/NodaTime.Text.ParseResult-1.yml) which
 encapsulates both success and failure results.
 
 The BCL-based API
@@ -59,12 +59,12 @@ available patterns are as consistent as possible within reason, but
 documenting each separately avoids confusion with some field
 specifiers being available for some types but not others.
 
-- [Offset patterns](offset-patterns.html)
-- [Instant patterns](instant-patterns.html)
-- [LocalTime patterns](localtime-patterns.html)
-- [LocalDate patterns](localdate-patterns.html)
-- [LocalDateTime patterns](localdatetime-patterns.html)
-- [Period patterns](period-patterns.html)
+- [Offset patterns](offset-patterns.md)
+- [Instant patterns](instant-patterns.md)
+- [LocalTime patterns](localtime-patterns.md)
+- [LocalDate patterns](localdate-patterns.md)
+- [LocalDateTime patterns](localdatetime-patterns.md)
+- [Period patterns](period-patterns.md)
 
 Note that at present, `ZonedDateTime`, `OffsetDateTime` and `Duration` do not support
 any form of parsing or user-specified formatting.
@@ -129,5 +129,5 @@ versions.
 
   [2]: http://msdn.microsoft.com/en-us/library/system.globalization.cultureinfo.aspx
   [3]: noda-ns://NodaTime.Text
-  [4]: noda-type://NodaTime.LocalDateTime
-  [5]: noda-type://NodaTime.Instant
+  [4]: ../api/NodaTime.LocalDateTime.yml
+  [5]: ../api/NodaTime.Instant.yml
