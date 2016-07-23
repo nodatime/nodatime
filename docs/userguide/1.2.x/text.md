@@ -32,10 +32,10 @@ information or other options.
 Each core Noda type has its own pattern type such as
 [`OffsetPattern`](../api/NodaTime.Text.OffsetPattern.yml). All
 these patterns implement the
-[`IPattern<T>`](../api/NodaTime.Text.IPattern`1.yml) interface,
+[`IPattern<T>`](../api/NodaTime.Text.IPattern-1.yml) interface,
 which has simple `Format` and `Parse` methods taking just the value
 and text respectively. The result of `Parse` is a
-[`ParseResult<T>`](../api/NodaTime.Text.ParseResult`1.yml) which
+[`ParseResult<T>`](../api/NodaTime.Text.ParseResult-1.yml) which
 encapsulates both success and failure results.
 
 The BCL-based API
@@ -118,19 +118,14 @@ Additionally:
 
 - Where valid, `:` always refers to the culture-specific time separator (a colon in the invariant culture)
 - Where valid, `/` always refers to the culture-specific date separator (a forward slash in the invariant culture)
-- Where valid, `<` and `>` are used for embedding one pattern within another. For consistency, these characters
-  must *always* be quoted when they are intended to be used as text literals.
 
-Any ASCII letters (a-z, A-Z) which are intended to be used as text literals (when parsing, they must be
-matched exactly; when formatting they are reproduced exactly) *must* be quoted or escaped. Even if they do not have
-a specific meaning for the given pattern type, their presence within the pattern would be a potential cause for 
-confusion and error. Additionally, by effectively reserving all ASCII letters, Noda Time has more room for future
-expansion without compatibility concerns. The one exception to this rule is 'T', which is explicitly allowed within
-date/time-based patterns (`LocalDateTime` etc) as a common separator between the two parts. It is *not* permitted
-(without quoting or escaping) in other patterns such as for `LocalDate` or `LocalTime`.
-
-Any non-letter characters within a custom format which *don't* have a specific meaning are treated as text literals.
-You may wish to escape or quote such characters anyway, for the sake of consistency.
+Any characters within a custom format which *don't* have a specific
+meaning are treated as text literals (when parsing, they must be
+matched exactly; when formatting they are reproduced exactly). This
+is supported mostly for the sake of compatibility. We **strongly
+recommend** that you quote any text literals, to avoid nasty
+surprises if extra characters take on special meanings in later
+versions.
 
 ### Related fields
 
@@ -156,7 +151,7 @@ Often you don't have much choice about how to parse or format text: if you're in
 - Custom patterns are rarely appropriate for arbitrary cultures. They generally useful for either the invariant culture or for specific cultures that you have knowledge of. (If you're writing an app which is only used in one country, for example, you have a lot more freedom than if you'll be dealing with cultures you don't have experience of, where the standard patterns are generally a better bet.)
 - If you're logging timestamps, think very carefully before you decide to log them in *any* time zone other than UTC. It's the one time zone that everyone else can work with, and you never need to worry about daylight saving time.
 - When designing a custom pattern:
-  - Consider sortability. A pattern such as `uuuu-MM-dd` is naturally sortable in the text form (assuming you never need years outside the range [0-9999]), whereas neither `dd-MM-uuuu` or `MM-dd-uuuu` is sortable.
+  - Consider sortability. A pattern such as `yyyy-MM-dd` is naturally sortable in the text form (assuming you never need years outside the range [0-9999]), whereas neither `dd-MM-yyyy` or `MM-dd-yyyy` is sortable.
   - Avoid two-digit years. Aside from anything else, the meaning of "2009-10-11" is a lot more obvious than "09-10-11".
   - Think about what precision you need to go down to.
   - Think about whether a fixed-width pattern would be useful or whether you want to save space by removing sub-second insignficant zeroes.
@@ -164,6 +159,6 @@ Often you don't have much choice about how to parse or format text: if you're in
   - Quote all non-field values other than spaces.
 
   [2]: http://msdn.microsoft.com/en-us/library/system.globalization.cultureinfo.aspx
-  [3]: ../api/NodaTime.Text.yml
+  [3]: noda-ns://NodaTime.Text
   [4]: ../api/NodaTime.LocalDateTime.yml
   [5]: ../api/NodaTime.Instant.yml

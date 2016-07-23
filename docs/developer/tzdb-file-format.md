@@ -154,7 +154,7 @@ eventually refer to a canonical time zone for their data.)
 The format depends on the type of time zone. At the time of this writing, there are only two options, described below.
 In both cases, the format starts with the zone ID (as a string) and then a 1-byte flag to indicate the type.
 
-Fixed time zones (which have a single [`ZoneInterval`](../unstable/api/NodaTime.TimeZones.ZoneInterval.yml) covering
+Fixed time zones (which have a single [`ZoneInterval`](../unstable/api/NodaTime.TimeZones.ZoneInterval.html) covering
   the whole of time). The flag value for a fixed zone is `1`. This is followed by the offset, and as of time zone data
   generated under Noda Time 2.x, also the name for the zone interval. Noda Time 1.x code will ignore the name part,
   and always use the time zone ID as the name for the interval. Noda Time 2.x code will read the name if it exists,
