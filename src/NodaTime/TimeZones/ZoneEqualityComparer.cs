@@ -223,37 +223,10 @@ namespace NodaTime.TimeZones
         private IEnumerable<ZoneInterval> GetIntervals(DateTimeZone zone)
         {
             var allIntervals = zone.GetZoneIntervals(interval.Start, interval.End);
-            return CheckOption(options, Options.MatchAllTransitions) ? allIntervals : CoalesceIntervals(allIntervals);
+            return CheckOption(options, Options.MatchAllTransitions) ? allIntervals : zoneIntervalComparer.CoalesceIntervals(allIntervals);
         }
 
-        private IEnumerable<ZoneInterval> CoalesceIntervals(IEnumerable<ZoneInterval> zoneIntervals)
-        {
-            ZoneInterval current = null;
-            foreach (var zoneInterval in zoneIntervals)
-            {
-                if (current == null)
-                {
-                    current = zoneInterval;
-                    continue;
-                }
-                if (zoneIntervalComparer.EqualExceptStartAndEnd(current, zoneInterval))
-                {
-                    current = current.WithEnd(zoneInterval.RawEnd);
-                }
-                else
-                {
-                    yield return current;
-                    current = zoneInterval;
-                }
-            }
-            // current will only be null if start == end...
-            if (current != null)
-            {
-                yield return current;
-            }
-        }
-
-        private sealed class ZoneIntervalEqualityComparer : IEqualityComparer<ZoneInterval>
+        internal sealed class ZoneIntervalEqualityComparer : IEqualityComparer<ZoneInterval>
         {
             private readonly Options options;
             private readonly Interval interval;
@@ -262,6 +235,33 @@ namespace NodaTime.TimeZones
             {
                 this.options = options;
                 this.interval = interval;
+            }
+
+            internal IEnumerable<ZoneInterval> CoalesceIntervals(IEnumerable<ZoneInterval> zoneIntervals)
+            {
+                ZoneInterval current = null;
+                foreach (var zoneInterval in zoneIntervals)
+                {
+                    if (current == null)
+                    {
+                        current = zoneInterval;
+                        continue;
+                    }
+                    if (EqualExceptStartAndEnd(current, zoneInterval))
+                    {
+                        current = current.WithEnd(zoneInterval.RawEnd);
+                    }
+                    else
+                    {
+                        yield return current;
+                        current = zoneInterval;
+                    }
+                }
+                // current will only be null if start == end...
+                if (current != null)
+                {
+                    yield return current;
+                }
             }
 
             public bool Equals(ZoneInterval x, ZoneInterval y)
@@ -305,7 +305,7 @@ namespace NodaTime.TimeZones
             /// The wall offset is always compared, regardless of options, but the start/end points are
             /// never compared.
             /// </summary>
-            internal bool EqualExceptStartAndEnd(ZoneInterval x, ZoneInterval y)
+            private bool EqualExceptStartAndEnd(ZoneInterval x, ZoneInterval y)
             {
                 if (x.WallOffset != y.WallOffset)
                 {

@@ -6,6 +6,7 @@ using System;
 using System.Linq;
 using NodaTime.Testing.TimeZones;
 using NUnit.Framework;
+using NodaTime.TimeZones;
 
 namespace NodaTime.Test
 {
@@ -101,6 +102,63 @@ namespace NodaTime.Test
             // Just to exercise the other overload
             actual = london.GetZoneIntervals(new Interval(start, end));
             CollectionAssert.AreEqual(expected, actual.ToList());
+        }
+
+        [Test]
+        public void GetZoneIntervals_WithOptions_NoCoalescing()
+        {
+            // We'll ask for 1999-2003, so there are three transitions within that.
+            var transition1 = Instant.FromUtc(2000, 1, 1, 0, 0);
+            var transition2 = Instant.FromUtc(2001, 1, 1, 0, 0);
+            var transition3 = Instant.FromUtc(2002, 1, 1, 0, 0);
+            // And one transition afterwards.
+            var transition4 = Instant.FromUtc(2004, 1, 1, 0, 0);
+            var zone = new MultiTransitionDateTimeZone.Builder(0, "0+0")
+            {
+                { transition1, 1, 1, "1+1" },
+                { transition2, 0, 2, "0+2" },
+                { transition3, 0, 1, "0+1" },
+                { transition4, 0, 0, "0+0" }
+            }.Build();
+            var interval = new Interval(
+                Instant.FromUtc(1999, 1, 1, 0, 0),
+                Instant.FromUtc(2003, 1, 1, 0, 0));
+            // No coalescing required, as the names are different.
+            var zoneIntervals = zone.GetZoneIntervals(interval, ZoneEqualityComparer.Options.MatchNames).ToList();
+            Assert.AreEqual(4, zoneIntervals.Count);
+            CollectionAssert.AreEqual(new[] { transition1, transition2, transition3, transition4 },
+                zoneIntervals.Select(zi => zi.End));
+        }
+
+        [Test]
+        public void GetZoneIntervals_WithOptions_Coalescing()
+        {
+            // We'll ask for 1999-2003, so there are three transitions within that.
+            var transition1 = Instant.FromUtc(2000, 1, 1, 0, 0);
+            var transition2 = Instant.FromUtc(2001, 1, 1, 0, 0);
+            var transition3 = Instant.FromUtc(2002, 1, 1, 0, 0);
+            // And one transition afterwards.
+            var transition4 = Instant.FromUtc(2004, 1, 1, 0, 0);
+            var zone = new MultiTransitionDateTimeZone.Builder(0, "0+0")
+            {
+                { transition1, 1, 1, "1+1" },
+                { transition2, 0, 2, "0+2" },
+                { transition3, 0, 1, "0+1" },
+                { transition4, 0, 0, "0+0" }
+            }.Build();
+            var interval = new Interval(
+                Instant.FromUtc(1999, 1, 1, 0, 0),
+                Instant.FromUtc(2003, 1, 1, 0, 0));
+            // The zone intervals abutting at transition2 are coalesced,
+            // because that only changes the name and standard/daylight split.
+            var zoneIntervals = zone.GetZoneIntervals(interval, ZoneEqualityComparer.Options.OnlyMatchWallOffset).ToList();
+            Assert.AreEqual(3, zoneIntervals.Count);
+            CollectionAssert.AreEqual(new[] { transition1, transition3, transition4 },
+                zoneIntervals.Select(zi => zi.End));
+            CollectionAssert.AreEqual(new[] { Instant.BeforeMinValue, transition1, transition3 },
+                zoneIntervals.Select(zi => zi.RawStart));
+            CollectionAssert.AreEqual(new[] { "0+0", "1+1", "0+1" },
+                zoneIntervals.Select(zi => zi.Name));
         }
     }
 }

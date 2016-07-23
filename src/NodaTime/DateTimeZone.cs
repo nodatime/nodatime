@@ -630,5 +630,39 @@ namespace NodaTime
                 current = zoneInterval.RawEnd;
             }
         }
+
+        /// <summary>
+        /// Returns the zone intervals within the given interval, potentially coalescing some of the
+        /// original intervals according to options.
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// This is equivalent to <see cref="GetZoneIntervals(Interval)"/>, but may coalesce some intervals.
+        /// For example, if the <see cref="ZoneEqualityComparer.Options.OnlyMatchWallOffset"/> is specified,
+        /// and two consecutive zone intervals have the same offset but different names, a single zone interval
+        /// will be returned instead of two separate ones. When zone intervals are coalesced, all aspects of
+        /// the first zone interval are used except its end instant, which is taken from the second zone interval.
+        /// </para>
+        /// <para>
+        /// As the options are only used to determine which intervals to coalesce, the
+        /// <see cref="ZoneEqualityComparer.Options.MatchStartAndEndTransitions"/> option does not affect
+        /// the intervals returned.
+        /// </para>
+        /// </remarks>
+        /// <param name="interval">Interval to find zone intervals for. This is allowed to be unbounded (i.e.
+        /// infinite in both directions).</param>
+        /// <param name="options"></param>
+        /// <returns></returns>
+        public IEnumerable<ZoneInterval> GetZoneIntervals(Interval interval, ZoneEqualityComparer.Options options)
+        {
+            if ((options & ~ZoneEqualityComparer.Options.StrictestMatch) != 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(options),
+                    $"The value {options} is not defined within ZoneEqualityComparer.Options");
+            }
+            var zoneIntervalEqualityComparer = new ZoneEqualityComparer.ZoneIntervalEqualityComparer(options, interval);
+            var originalIntervals = GetZoneIntervals(interval);
+            return zoneIntervalEqualityComparer.CoalesceIntervals(originalIntervals);
+        }
     }
 }
