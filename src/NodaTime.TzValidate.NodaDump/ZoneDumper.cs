@@ -85,16 +85,11 @@ namespace NodaTime.TzValidate.NodaDump
                 OffsetPattern.Format(initial.WallOffset),
                 initial.Savings != Offset.Zero ? "daylight" : "standard",
                 initial.Name);
-            // TODO: It would be nice to be able to pass GetZoneIntervals an option like ZoneEqualityComparer...
-            var previousWallOffset = initial.WallOffset;
-            foreach (var zoneInterval in zone.GetZoneIntervals(options.Start, options.End)
+            var equalityOptions = options.WallChangeOnly ?
+                ZoneEqualityComparer.Options.OnlyMatchWallOffset : ZoneEqualityComparer.Options.StrictestMatch;
+            foreach (var zoneInterval in zone.GetZoneIntervals(new Interval(options.Start, options.End), equalityOptions)
                 .Where(zi => zi.HasStart && zi.Start >= options.Start))
             {
-                if (options.WallChangeOnly && previousWallOffset == zoneInterval.WallOffset)
-                {
-                    continue;
-                }
-                previousWallOffset = zoneInterval.WallOffset;
                 writer.Write(lineFormat,
                     InstantPattern.Format(zoneInterval.Start),
                     OffsetPattern.Format(zoneInterval.WallOffset),
