@@ -56,7 +56,7 @@ namespace NodaTime.TimeZones.Cldr
         /// so "7dc0101" for example.
         /// </remarks>
         /// <value>The Windows time zone database version this Windows zone mapping data was created from.</value>
-        public string WindowsVersion { get; }
+        [NotNull] public string WindowsVersion { get; }
 
         /// <summary>
         /// Gets an immutable collection of mappings from Windows system time zones to
@@ -113,26 +113,6 @@ namespace NodaTime.TimeZones.Cldr
             this.PrimaryMapping = new NodaReadOnlyDictionary<string, string>(
                 mapZones.Where(z => z.Territory == MapZone.PrimaryTerritory)
                         .ToDictionary(z => z.WindowsId, z => z.TzdbIds.Single()));
-        }
-
-        private WindowsZones(string version, NodaReadOnlyDictionary<string, string> primaryMapping)
-        {
-            this.Version = version;
-            this.WindowsVersion = "Unknown";
-            this.TzdbVersion = "Unknown";
-            this.PrimaryMapping = primaryMapping;
-            var mapZoneList = new List<MapZone>(primaryMapping.Count);
-            foreach (var entry in primaryMapping)
-            {
-                mapZoneList.Add(new MapZone(entry.Key, MapZone.PrimaryTerritory, new[] { entry.Value }));
-            }
-            MapZones = new ReadOnlyCollection<MapZone>(mapZoneList);
-        }
-
-        internal static WindowsZones FromPrimaryMapping([NotNull] string version, [NotNull] IDictionary<string, string> mappings)
-        {
-            return new WindowsZones(Preconditions.CheckNotNull(version, nameof(version)),
-                new NodaReadOnlyDictionary<string, string>(Preconditions.CheckNotNull(mappings, nameof(mappings))));
         }
 
         internal static WindowsZones Read(IDateTimeZoneReader reader)
