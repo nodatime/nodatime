@@ -13,6 +13,12 @@
     "requireLicenseAcceptance": false,
     "repository": {
       "url": "https://github.com/nodatime/nodatime.git"
+    },
+    "files": {
+      "mappings": {
+        "build/": "../../packaging/NodaTime.targets",
+        "lib/native/": [ "../../packaging/_._" ]
+      }
     }
   },
 
