@@ -16,7 +16,7 @@
     },
     "files": {
       "mappings": {
-        "build/": "../../packaging/NodaTime.targets",
+        "build/native/": "../../packaging/NodaTime.targets",
         "lib/native/": [ "../../packaging/_._" ]
       }
     }
