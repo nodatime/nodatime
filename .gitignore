@@ -13,11 +13,12 @@
 *.dotCover
 *.ncrunchproject
 *.ncrunchsolution
-_NCrunch*    # cache directories
-.resharper   # solution
-*.ReSharper  # project
-_ReSharper*  # directories
+_NCrunch*
+.resharper
+*.ReSharper
+_ReSharper*
 StyleCop.Cache
+.cr
 
 # Auto-created thumbnails
 Thumbs.db
