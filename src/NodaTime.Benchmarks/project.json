@@ -15,7 +15,7 @@
   },
 
   "dependencies": {
-    "BenchmarkDotNet": "0.9.8",
+    "BenchmarkDotNet": "0.9.9",
     "NodaTime": { "target": "project" },
     "NodaTime.Serialization.JsonNet": { "target": "project" },
     "NodaTime.Testing": { "target": "project" },
@@ -25,7 +25,7 @@
   "testRunner": "nunit",
 
   "frameworks": {
-    "net451": {
+    "net45": {
       "frameworkAssemblies": {
         "System.Runtime": "",
         "System.Threading.Tasks": "",
