@@ -43,34 +43,6 @@ namespace NodaTime.Utility
 #endif
         }
 
-        internal static void CheckArgumentRange([InvokerParameterName] string paramName, long value, long minInclusive, long maxInclusive)
-        {
-            if (value < minInclusive || value > maxInclusive)
-            {
-#if PCL
-                throw new ArgumentOutOfRangeException(paramName,
-                    $"Value should be in range [{minInclusive}-{maxInclusive}]");
-#else
-                throw new ArgumentOutOfRangeException(paramName, value,
-                    $"Value should be in range [{minInclusive}-{maxInclusive}]");
-#endif
-            }
-        }
-
-        internal static void CheckArgumentRange([InvokerParameterName] string paramName, double value, double minInclusive, double maxInclusive)
-        {
-            if (value < minInclusive || value > maxInclusive || double.IsNaN(value))
-            {
-#if PCL
-                throw new ArgumentOutOfRangeException(paramName,
-                    $"Value should be in range [{minInclusive}-{maxInclusive}]");
-#else
-                throw new ArgumentOutOfRangeException(paramName, value,
-                    $"Value should be in range [{minInclusive}-{maxInclusive}]");
-#endif
-            }
-        }
-
         // Note: this overload exists for performance reasons. It would be reasonable to call the
         // version using "long" values, but we'd incur conversions on every call. This method
         // may well be called very often.
@@ -78,14 +50,30 @@ namespace NodaTime.Utility
         {
             if (value < minInclusive || value > maxInclusive)
             {
-#if PCL
-                throw new ArgumentOutOfRangeException(paramName,
-                    $"Value should be in range [{minInclusive}-{maxInclusive}]");
-#else
-                throw new ArgumentOutOfRangeException(paramName, value,
-                    $"Value should be in range [{minInclusive}-{maxInclusive}]");
-#endif
+                ThrowArgumentOutOfRangeException(paramName, value, minInclusive, maxInclusive);
             }
+        }
+
+        internal static void CheckArgumentRange([InvokerParameterName] string paramName, long value, long minInclusive, long maxInclusive)
+        {
+            if (value < minInclusive || value > maxInclusive)
+            {
+                ThrowArgumentOutOfRangeException(paramName, value, minInclusive, maxInclusive);
+            }
+        }
+
+        internal static void CheckArgumentRange([InvokerParameterName] string paramName, double value, double minInclusive, double maxInclusive)
+        {
+            if (value < minInclusive || value > maxInclusive || double.IsNaN(value))
+            {
+                ThrowArgumentOutOfRangeException(paramName, value, minInclusive, maxInclusive);
+            }
+        }
+
+        private static void ThrowArgumentOutOfRangeException<T>([InvokerParameterName] string paramName, T value, T minInclusive, T maxInclusive)
+        {
+            throw new ArgumentOutOfRangeException(paramName, value,
+                $"Value should be in range [{minInclusive}-{maxInclusive}]");
         }
 
         /// <summary>
