@@ -2,7 +2,6 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-using System.ComponentModel;
 using NodaTime.Text;
 using System.Globalization;
 using BenchmarkDotNet.Attributes;

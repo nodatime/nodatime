@@ -31,6 +31,17 @@
         "System.Threading.Tasks": "",
         "System.Xml.Linq": ""
       }
+    },
+    "netcoreapp1.0": {
+      "buildOptions": {
+        "define": ["PCL"]
+      },
+      "dependencies": {
+        "Microsoft.NETCore.App": {
+          "type": "platform",
+          "version": "1.0.0"
+        }
+      }
     }
   }
 }

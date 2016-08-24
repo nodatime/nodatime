@@ -3,6 +3,7 @@
 // as found in the LICENSE.txt file.
 
 using BenchmarkDotNet.Running;
+using System.Reflection;
 
 namespace NodaTime.Benchmarks
 {
@@ -14,7 +15,7 @@ namespace NodaTime.Benchmarks
         // Run it with args = { "*" } for choosing all of target benchmarks
         private static void Main(string[] args)
         {
-            new BenchmarkSwitcher(typeof(Program).Assembly).Run(args);
+            new BenchmarkSwitcher(typeof(Program).GetTypeInfo().Assembly).Run(args);
         }
     }
 }

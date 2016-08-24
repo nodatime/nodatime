@@ -3,7 +3,6 @@
 // as found in the LICENSE.txt file.
 
 using System;
-using System.ComponentModel;
 using BenchmarkDotNet.Attributes;
 
 namespace NodaTime.Benchmarks.BclTests
@@ -19,7 +18,11 @@ namespace NodaTime.Benchmarks.BclTests
             {
                 return TimeZoneInfo.FindSystemTimeZoneById("Pacific Standard Time");
             }
+#if PCL
+            catch (Exception) // Exception doesn't exist in netstandard :(
+#else
             catch (TimeZoneNotFoundException)
+#endif
             {
                 // Maybe we're running on Mono on a system that uses TZDB natively.
                 return TimeZoneInfo.FindSystemTimeZoneById("America/Los_Angeles");
@@ -54,6 +57,7 @@ namespace NodaTime.Benchmarks.BclTests
             PacificZone.GetUtcOffset(WinterOffset);
         }
 
+#if !PCL
         [Benchmark]
         public void ConvertLocalToUtc()
         {
@@ -65,5 +69,6 @@ namespace NodaTime.Benchmarks.BclTests
         {
             TimeZoneInfo.ConvertTimeFromUtc(SummerUtc, PacificZone);
         }
+#endif
     }
 }
