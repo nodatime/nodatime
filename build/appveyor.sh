@@ -10,7 +10,7 @@ cd $(dirname $0)/..
 
 dotnet restore src
 dotnet build -c Release src/NodaTime.Test
-dotnet test -c Release -f net451 src/NodaTime.Test
+dotnet test -c Release -f net451 src/NodaTime.Test --where=cat!=Slow
 
 if [ -n "$COVERALLS_REPO_TOKEN" ]
 then
