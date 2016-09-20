@@ -43,9 +43,6 @@ TestResult.xml
 # Temporary build output directories
 /build/tmp
 
-# NuGet packages (but not the configuration)
-/src/packages/**/**
-
 # Local copy of benchmark data and Mercurial/Git logs, used for testing the dynamic part of the web site
 /src/NodaTime.Web/benchmarkdata/**
 /src/NodaTime.Web/hg-log.xml
@@ -63,3 +60,6 @@ project.lock.json
 
 # BenchmarkDotNet output
 BenchmarkDotNet.Artifacts
+
+# Packages installed during the build
+packages

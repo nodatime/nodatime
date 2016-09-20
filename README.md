@@ -1,4 +1,6 @@
-[![Build Status](https://travis-ci.org/nodatime/nodatime.svg?branch=master)](https://travis-ci.org/nodatime/nodatime)
+[![Travis build Status](https://travis-ci.org/nodatime/nodatime.svg?branch=master)](https://travis-ci.org/nodatime/nodatime)
+[![Appveyor status](https://ci.appveyor.com/api/projects/status/dcv928emm3vx9fli/branch/master?svg=true)](https://ci.appveyor.com/project/jskeet/nodatime/branch/master)
+[![Coverage Status](https://coveralls.io/repos/github/nodatime/nodatime/badge.svg?branch=master)](https://coveralls.io/github/nodatime/nodatime?branch=master)
 
 Noda Time is an alternative date and time API for .NET. It helps you to
 think about your data more clearly, and express operations on that data more
