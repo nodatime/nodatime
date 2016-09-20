@@ -14,9 +14,9 @@ dotnet test -c Release -f net451 src/NodaTime.Test --where=cat!=Slow
 
 if [ -n "$COVERALLS_REPO_TOKEN" ]
 then
-  nuget install -OutputDirectory packages OpenCover -Version 4.6.519
+  nuget install -OutputDirectory packages -Version 4.6.519 OpenCover
   nuget install -OutputDirectory packages -Version 0.7.0 coveralls.net
-  packages/OpenCover/4.6.519/tools/OpenCover.Console.exe \
+  packages/OpenCover.4.6.519/tools/OpenCover.Console.exe \
     -register:user \
     -oldStyle \
     -target:"c:\Program Files\dotnet\dotnet.exe" \
