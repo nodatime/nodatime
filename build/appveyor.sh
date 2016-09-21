@@ -25,5 +25,5 @@ then
     -filter:"+[NodaTime]*" \
     -searchdirs:NodaTime/bin/Release/net451/win7-x64
 
-  packages/coveralls.net.0.7.0/tools/csmacnz.Coveralls.exe --opencover -i coverage.xml
+  packages/coveralls.net.0.7.0/tools/csmacnz.Coveralls.exe --opencover -i coverage.xml --useRelativePaths
 fi
