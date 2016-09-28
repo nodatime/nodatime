@@ -146,7 +146,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
             {
                 foreach (var line in source.ReadLines(Makefile))
                 {
-                    if (line.StartsWith("VERSION="))
+                    if (Regex.IsMatch(line, @"VERSION=\d{4}.*"))
                     {
                         var version = line.Substring(8).Trim();
                         log?.WriteLine($"Inferred version {version} from {Makefile}");
