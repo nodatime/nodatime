@@ -31,14 +31,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
     {
         private const int Version = 0;
 
-        private readonly Stream stream;
-
-        internal TzdbStreamWriter(Stream stream)
-        {
-            this.stream = stream;
-        }
-
-        public void Write(TzdbDatabase database, WindowsZones cldrWindowsZones)
+        public void Write(TzdbDatabase database, WindowsZones cldrWindowsZones, Stream stream)
         {
             FieldCollection fields = new FieldCollection();
 
@@ -107,8 +100,6 @@ namespace NodaTime.TzdbCompiler.Tzdb
             // Now write all the fields out, in the right order.
             new BinaryWriter(stream).Write(Version);
             fields.WriteTo(stream);
-            
-            stream.Dispose();
         }
 
         private static void WriteZone(DateTimeZone zone, IDateTimeZoneWriter writer)

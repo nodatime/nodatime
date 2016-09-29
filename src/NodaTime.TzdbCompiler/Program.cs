@@ -51,8 +51,11 @@ namespace NodaTime.TzdbCompiler
                 windowsZones = MergeWindowsZones(windowsZones, overrideFile);
             }
             LogWindowsZonesSummary(windowsZones);
-            var writer = CreateWriter(options);
-            writer.Write(tzdb, windowsZones);
+            var writer = new TzdbStreamWriter();
+            using (var stream = CreateOutputStream(options))
+            {
+                writer.Write(tzdb, windowsZones, stream);
+            }
 
             if (options.OutputFileName != null)
             {
@@ -115,16 +118,16 @@ namespace NodaTime.TzdbCompiler
             Console.WriteLine("  {0} primary mappings", windowsZones.PrimaryMapping.Count);
         }
 
-        private static TzdbStreamWriter CreateWriter(CompilerOptions options)
+        private static Stream CreateOutputStream(CompilerOptions options)
         {
             // If we don't have an actual file, just write to an empty stream.
             // That way, while debugging, we still get to see all the data written etc.
             if (options.OutputFileName == null)
             {
-                return new TzdbStreamWriter(new MemoryStream());
+                return new MemoryStream();
             }
             string file = Path.ChangeExtension(options.OutputFileName, "nzd");
-            return new TzdbStreamWriter(File.Create(file));
+            return File.Create(file);
         }
 
         private static TzdbDateTimeZoneSource Read(CompilerOptions options)
