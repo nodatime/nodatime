@@ -54,7 +54,7 @@ namespace NodaTime.TzdbCompiler
             var writer = new TzdbStreamWriter();
             using (var stream = CreateOutputStream(options))
             {
-                writer.Write(tzdb, windowsZones, stream);
+                writer.Write(tzdb, windowsZones, PclSupport.StandardNameToIdMap, stream);
             }
 
             if (options.OutputFileName != null)
