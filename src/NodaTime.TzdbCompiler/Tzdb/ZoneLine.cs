@@ -2,13 +2,14 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-using System;
-using System.Globalization;
-using System.Text;
+using NodaTime.Text;
 using NodaTime.TimeZones;
 using NodaTime.Utility;
+using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using System.Text;
 
 namespace NodaTime.TzdbCompiler.Tzdb
 {
@@ -20,6 +21,8 @@ namespace NodaTime.TzdbCompiler.Tzdb
     /// </remarks>
     internal class ZoneLine : IEquatable<ZoneLine>
     {
+        private static readonly OffsetPattern PercentZPattern = OffsetPattern.CreateWithInvariantCulture("i");
+
         /// <summary>
         /// Initializes a new instance of the <see cref="ZoneLine" /> class.
         /// </summary>
@@ -148,7 +151,8 @@ namespace NodaTime.TzdbCompiler.Tzdb
         {
             if (Rules == null)
             {
-                return new ZoneRuleSet(Format, StandardOffset, Offset.Zero, UntilYear, UntilYearOffset);
+                var name = FormatName(Offset.Zero, "");
+                return new ZoneRuleSet(name, StandardOffset, Offset.Zero, UntilYear, UntilYearOffset);
             }
             IList<RuleLine> ruleSet;
             if (allRules.TryGetValue(Rules, out ruleSet))
@@ -162,7 +166,8 @@ namespace NodaTime.TzdbCompiler.Tzdb
                 {
                     // Check if Rules actually just refers to a savings.
                     var savings = ParserHelper.ParseOffset(Rules);
-                    return new ZoneRuleSet(Format, StandardOffset, savings, UntilYear, UntilYearOffset);
+                    var name = FormatName(savings, "");
+                    return new ZoneRuleSet(name, StandardOffset, savings, UntilYear, UntilYearOffset);
                 }
                 catch (FormatException)
                 {
@@ -170,6 +175,30 @@ namespace NodaTime.TzdbCompiler.Tzdb
                         $"Daylight savings rule name '{Rules}' for zone {Name} is neither a known ruleset nor a fixed offset");
                 }
             }
+        }
+
+        internal string FormatName(Offset savings, string daylightSavingsIndicator)
+        {
+            int index = Format.IndexOf("/", StringComparison.Ordinal);
+            if (index >= 0)
+            {
+                return savings == Offset.Zero ? Format.Substring(0, index) : Format.Substring(index + 1);
+            }
+            index = Format.IndexOf("%s", StringComparison.Ordinal);
+            if (index >= 0)
+            {
+                var left = Format.Substring(0, index);
+                var right = Format.Substring(index + 2);
+                return left + daylightSavingsIndicator + right;
+            }
+            index = Format.IndexOf("%z", StringComparison.Ordinal);
+            if (index >= 0)
+            {
+                var left = Format.Substring(0, index);
+                var right = Format.Substring(index + 2);
+                return left + PercentZPattern.Format(StandardOffset + savings) + right;
+            }
+            return Format;
         }
     }
 }
