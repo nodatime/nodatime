@@ -64,8 +64,11 @@ namespace NodaTime.TzdbCompiler.Tzdb
         public TzdbDateTimeZoneSource ToTzdbDateTimeZoneSource()
         {
             var ms = new MemoryStream();
-            var writer = new TzdbStreamWriter(ms);
-            writer.Write(this, new WindowsZones("n/a", Version, "n/a", new MapZone[0]));
+            var writer = new TzdbStreamWriter();
+            writer.Write(this,
+                new WindowsZones("n/a", Version, "n/a", new MapZone[0]), // No Windows mappings,
+                new Dictionary<string, string>(), // No additional name-to-id mappings
+                ms);
             ms.Position = 0;
             return TzdbDateTimeZoneSource.FromStream(ms);
         }
