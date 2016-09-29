@@ -22,3 +22,4 @@ http://nodatime.org/tzdb/tzdb2016c.nzd
 http://nodatime.org/tzdb/tzdb2016d.nzd
 http://nodatime.org/tzdb/tzdb2016e.nzd
 http://nodatime.org/tzdb/tzdb2016f.nzd
+http://nodatime.org/tzdb/tzdb2016g.nzd
