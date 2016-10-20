@@ -1,1 +1,1 @@
-http://nodatime.org/tzdb/tzdb2016g.nzd
+http://nodatime.org/tzdb/tzdb2016h.nzd
