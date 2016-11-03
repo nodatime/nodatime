@@ -158,11 +158,11 @@ namespace NodaTime.TzdbCompiler.Tzdb
         internal void LogCounts()
         {
             Console.WriteLine("=======================================");
-            Console.WriteLine("Rule sets:    {0:D}", Rules.Count);
-            Console.WriteLine("Zones:        {0:D}", Zones.Count);
-            Console.WriteLine("Aliases:      {0:D}", Aliases.Count);
-            Console.WriteLine("Zone locations: {0:D}", ZoneLocations?.Count ?? 0);
-            Console.WriteLine("Zone1970 locations: {0:D}", Zone1970Locations?.Count ?? 0);
+            Console.WriteLine($"Rule sets:    {Rules.Count:D}", Rules.Count);
+            Console.WriteLine($"Zones:        {Zones.Count:D}", Zones.Count);
+            Console.WriteLine($"Aliases:      {Aliases.Count:D}", Aliases.Count);
+            Console.WriteLine($"Zone locations: {ZoneLocations?.Count ?? 0:D}");
+            Console.WriteLine($"Zone1970 locations: {Zone1970Locations?.Count ?? 0:D}");
             Console.WriteLine("=======================================");
         }
     }

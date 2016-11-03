@@ -185,7 +185,7 @@ namespace NodaTime.Test.Text
             }
             catch (FormatException)
             {
-                throw new FormatException(string.Format("Failed to format string '{0}' with {1} parameters", message, parameters.Length));
+                throw new FormatException($"Failed to format string '{message}' with {parameters.Length} parameters");
             }
         }
     }

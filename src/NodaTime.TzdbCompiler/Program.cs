@@ -111,11 +111,11 @@ namespace NodaTime.TzdbCompiler
         private static void LogWindowsZonesSummary(WindowsZones windowsZones)
         {
             Console.WriteLine("Windows Zones:");
-            Console.WriteLine("  Version: {0}", windowsZones.Version);
-            Console.WriteLine("  TZDB version: {0}", windowsZones.TzdbVersion);
-            Console.WriteLine("  Windows version: {0}", windowsZones.WindowsVersion);
-            Console.WriteLine("  {0} MapZones", windowsZones.MapZones.Count);
-            Console.WriteLine("  {0} primary mappings", windowsZones.PrimaryMapping.Count);
+            Console.WriteLine($"  Version: {windowsZones.Version}");
+            Console.WriteLine($"  TZDB version: {windowsZones.TzdbVersion}");
+            Console.WriteLine($"  Windows version: {windowsZones.WindowsVersion}");
+            Console.WriteLine($"  {windowsZones.MapZones.Count} MapZones");
+            Console.WriteLine($"  {windowsZones.PrimaryMapping.Count} primary mappings");
         }
 
         private static Stream CreateOutputStream(CompilerOptions options)

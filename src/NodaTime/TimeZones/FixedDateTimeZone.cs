@@ -61,8 +61,7 @@ namespace NodaTime.TimeZones
             {
                 return UtcId;
             }
-            return string.Format(CultureInfo.InvariantCulture,
-                "{0}{1}", UtcId, OffsetPattern.GeneralInvariantPattern.Format(offset));
+            return UtcId + OffsetPattern.GeneralInvariantPattern.Format(offset);
         }
 
         /// <summary>
