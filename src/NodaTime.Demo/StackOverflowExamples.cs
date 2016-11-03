@@ -28,7 +28,8 @@ namespace NodaTime.Demo
             var julianEpoch = new LocalDate(Era.BeforeCommon, 4713, 1, 1, julianCalendar);
             var sampleDate = julianEpoch.PlusDays(2475213);
 
-            Console.WriteLine("Sample date in ISO calendar: {0}", sampleDate.WithCalendar(CalendarSystem.Iso));
+            var isoDate = sampleDate.WithCalendar(CalendarSystem.Iso);
+            Console.WriteLine($"Sample date in ISO calendar: {isoDate}");
 
             var zoneProvider = DateTimeZoneProviders.Tzdb;
             foreach (var id in zoneProvider.Ids)
@@ -104,7 +105,7 @@ namespace NodaTime.Demo
             Console.WriteLine("Aliases for Europe/London:");
             foreach (var alias in source.Aliases["Europe/London"])
             {
-                Console.WriteLine("  {0}", alias);
+                Console.WriteLine($"  {alias}");
             }
         }
 

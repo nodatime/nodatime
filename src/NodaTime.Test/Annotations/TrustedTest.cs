@@ -20,20 +20,18 @@ namespace NodaTime.Test.Annotations
                                       .Where(InvalidForTrustedParameters)
                                       .ToList();
 
-            Assert.IsEmpty(invalidMembers, "Invalid members: " + string.Join(", ", invalidMembers.Select(MemberDebugName)));
+            Assert.IsEmpty(invalidMembers, "Invalid members: " + string.Join(", ", invalidMembers.Select(FormatMemberDebugName)));
         }
 
-        private static string MemberDebugName(MemberInfo m)
-        {
-            return string.Format("{0}.{1}({2})", m.DeclaringType.Name, m.Name,
+        private static string FormatMemberDebugName(MemberInfo m) =>
+            string.Format("{0}.{1}({2})",
+                m.DeclaringType.Name,
+                m.Name,
                 string.Join(", ", GetParameters(m).Select(p => p.ParameterType)));
-        }
 
-        private static bool InvalidForTrustedParameters(dynamic member)
-        {
+        private static bool InvalidForTrustedParameters(dynamic member) =>
             // We'll need to be more specific at some point, but this will do to start with...
-            return member.IsPublic && member.DeclaringType.IsPublic;
-        }
+            member.IsPublic && member.DeclaringType.IsPublic;
 
         private static IEnumerable<ParameterInfo> GetParameters(MemberInfo member)
         {
