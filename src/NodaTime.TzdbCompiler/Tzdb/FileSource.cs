@@ -2,7 +2,7 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-using SharpCompress.Reader.Tar;
+using SharpCompress.Readers.Tar;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -46,9 +46,14 @@ namespace NodaTime.TzdbCompiler.Tzdb
             {
                 while (reader.MoveToNextEntry())
                 {
+                    if (reader.Entry.IsDirectory)
+                    {
+                        continue;
+                    }
                     var entryStream = new MemoryStream();
                     reader.WriteEntryTo(entryStream);
-                    entries[reader.Entry.Key] = entryStream.ToArray();
+                    // The lzip file puts everything into a subdirectory. Let's just take the filename...
+                    entries[Path.GetFileName(reader.Entry.Key)] = entryStream.ToArray();
                 }
             }
             return new FileSource(entries.Keys.ToList(), file => new MemoryStream(entries[file]), fullOrigin);
