@@ -15,7 +15,7 @@ namespace NodaTime.Test
         public void Zero()
         {
             Duration test = Duration.Zero;
-            Assert.AreEqual(0, test.Ticks);
+            Assert.AreEqual(0, test.BclCompatibleTicks);
         }
 
         private static void TestFactoryMethod(Func<long, Duration> method, long value, long nanosecondsPerUnit)
@@ -205,7 +205,7 @@ namespace NodaTime.Test
             Assert.AreEqual(ticks * (BigInteger) NodaConstants.NanosecondsPerTick, nanoseconds.ToBigIntegerNanoseconds());
 
             // Just another sanity check, although Ticks is covered in more detail later.
-            Assert.AreEqual(ticks, nanoseconds.Ticks);
+            Assert.AreEqual(ticks, nanoseconds.BclCompatibleTicks);
         }
 
         private static void AssertOutOfRange<T>(Func<T, Duration> factoryMethod, params T[] values)

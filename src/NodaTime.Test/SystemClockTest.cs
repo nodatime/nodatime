@@ -13,7 +13,7 @@ namespace NodaTime.Test
         {
             long frameworkNowTicks = NodaConstants.BclEpoch.PlusTicks(DateTime.UtcNow.Ticks).ToUnixTimeTicks();
             long nodaTicks = SystemClock.Instance.GetCurrentInstant().ToUnixTimeTicks();
-            Assert.Less(Math.Abs(nodaTicks - frameworkNowTicks), Duration.FromSeconds(1).Ticks);
+            Assert.Less(Math.Abs(nodaTicks - frameworkNowTicks), Duration.FromSeconds(1).BclCompatibleTicks);
         }
 
         [Test]
