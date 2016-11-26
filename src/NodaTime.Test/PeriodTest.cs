@@ -654,7 +654,7 @@ namespace NodaTime.Test
                 4 * NodaConstants.TicksPerMinute +
                 5 * NodaConstants.TicksPerSecond +
                 6 * NodaConstants.TicksPerMillisecond + 7,
-                period.ToDuration().Ticks);
+                period.ToDuration().BclCompatibleTicks);
         }
 
         [Test]

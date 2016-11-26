@@ -242,9 +242,13 @@ namespace NodaTime
         public int SubsecondNanoseconds => unchecked((int) (NanosecondOfDay % NanosecondsPerSecond));
 
         /// <summary>
-        /// Gets the total number of ticks in the duration.
+        /// Gets the total number of ticks in the duration as a 64-bit integer, truncating towards zero where necessary.
         /// </summary>
         /// <remarks>
+        /// <para>
+        /// Within the constraints specified below, this property is intended to be equivalent to
+        /// <see cref="TimeSpan.Ticks"/>.
+        /// </para>
         /// <para>
         /// If the number of nanoseconds in a duration is not a whole number of ticks, it is truncated towards zero.
         /// For example, durations in the range [-99ns, 99ns] would all count as 0 ticks.
@@ -254,7 +258,8 @@ namespace NodaTime
         /// </remarks>
         /// <exception cref="OverflowException">The number of ticks cannot be represented a signed 64-bit integer.</exception>
         /// <value>The total number of ticks in the duration.</value>
-        public long Ticks
+        /// <seealso cref="TotalTicks"/>
+        public long BclCompatibleTicks
         {
             get
             {
@@ -267,7 +272,7 @@ namespace NodaTime
             }
         }
 
-        // TODO: Reimplement all of these using ToDoubleNanoseconds?
+        // TODO: Reimplement all of these using TotalNanoseconds?
 
         /// <summary>
         /// Gets the total number of days in this duration, as a <see cref="Double"/>.
@@ -295,26 +300,64 @@ namespace NodaTime
         /// <summary>
         /// Gets the total number of minutes in this duration, as a <see cref="Double"/>.
         /// </summary>
-        /// <remarks>This property is the <c>Duration</c> equivalent of <see cref="TimeSpan.TotalMinutes"/>.</remarks>
+        /// <remarks>This property is the <c>Duration</c> equivalent of <see cref="TimeSpan.TotalMinutes"/>.
         /// Unlike <see cref="Minutes"/>, it represents the complete duration in minutes rather than
         /// the whole number of minutes within the hour. So for a duration
         /// of 2 hours, 30 minutes and 45 seconds, the <c>Minutes</c> property will return 30, but <c>TotalMinutes</c>
         /// will return 150.75.
+        /// </remarks>
         /// <value>The total number of minutes in this duration.</value>
         public double TotalMinutes => days * (double) MinutesPerDay + nanoOfDay / (double) NanosecondsPerMinute;
 
         /// <summary>
         /// Gets the total number of seconds in this duration, as a <see cref="Double"/>.
         /// </summary>
-        /// <remarks>This property is the <c>Duration</c> equivalent of <see cref="TimeSpan.TotalSeconds"/>.</remarks>
+        /// <remarks>
+        /// This property is the <c>Duration</c> equivalent of <see cref="TimeSpan.TotalSeconds"/>.
         /// Unlike <see cref="Seconds"/>, it represents the complete duration in seconds rather than
         /// the whole number of seconds within the minute. So for a duration
         /// of 10 minutes, 20 seconds and 250 milliseconds, the <c>Seconds</c> property will return 20, but <c>TotalSeconds</c>
         /// will return 620.25.
-        /// <value>The total number of minutes in this duration.</value>
+        /// </remarks>
+        /// <value>The total number of seconds in this duration.</value>
         public double TotalSeconds => days * (double) SecondsPerDay + nanoOfDay / (double) NanosecondsPerSecond;
 
-        // TODO: TotalMilliseconds, TotalTicks? What about TotalNanoseconds instead of ToDoubleNanoseconds?
+        /// <summary>
+        /// Gets the total number of milliseconds in this duration, as a <see cref="Double"/>.
+        /// </summary>
+        /// <remarks>This property is the <c>Duration</c> equivalent of <see cref="TimeSpan.TotalMilliseconds"/>.
+        /// Unlike <see cref="Milliseconds"/>, it represents the complete duration in seconds rather than
+        /// the whole number of seconds within the minute. So for a duration
+        /// of 10 minutes, 20 seconds and 250 milliseconds, the <c>Seconds</c> property will return 20, but <c>TotalSeconds</c>
+        /// will return 620.25.
+        /// </remarks>
+        /// <value>The total number of milliseconds in this duration.</value>
+        public double TotalMilliseconds => days * (double) MillisecondsPerDay + nanoOfDay / (double) NanosecondsPerMillisecond;
+
+        /// <summary>
+        /// Gets the total number of ticks in this duration, as a <see cref="Double"/>.
+        /// </summary>
+        /// <remarks>This property is the <c>Duration</c> equivalent of <see cref="TimeSpan.Ticks"/>,
+        /// except represented as double-precision floating point number instead of a 64-bit integer. This
+        /// is because <see cref="Duration"/> has a precision of nanoseconds, and also because the range
+        /// of 64-bit integers doesn't cover the number of possible ticks in a <see cref="Duration"/>. (The
+        /// latter is only an issue in durations outside the range of <see cref="TimeSpan"/> - in other words,
+        /// with magnitudes of over 29,000 years.)
+        /// </remarks>
+        /// <value>The total number of ticks in this duration.</value>
+        /// <seealso cref="BclCompatibleTicks"/>
+        public double TotalTicks => days * (double) TicksPerDay + nanoOfDay / (double) NanosecondsPerTick;
+
+        /// <summary>
+        /// Gets the total number of nanoseconds in this duration, as a <see cref="Double"/>.
+        /// </summary>
+        /// <remarks>The result is always an integer, but may not be precise due to the limitations
+        /// of the <c>Double</c> type. In other works, <c>Duration.FromNanoseconds(duration.TotalNanoseconds)</c>
+        /// is not guaranteed to round-trip. To guarantee precision and round-tripping,
+        /// use <see cref="ToBigIntegerNanoseconds" /> and <see cref="FromNanoseconds(BigInteger)"/>.
+        /// </remarks>
+        /// <returns>This duration as a number of nanoseconds, represented as a <c>Double</c>.</returns>
+        public double TotalNanoseconds => ((double) days) * NanosecondsPerDay + nanoOfDay;
 
         /// <summary>
         /// Adds a "small" number of nanoseconds to this duration: it is trusted to be less or equal to than 24 hours
@@ -542,7 +585,7 @@ namespace NodaTime
             {
                 throw new DivideByZeroException("Attempt to divide a duration by zero.");
             }
-            return FromNanoseconds(left.ToDoubleNanoseconds() / right);
+            return FromNanoseconds(left.TotalNanoseconds / right);
         }
 
         /// <summary>
@@ -554,12 +597,12 @@ namespace NodaTime
         /// <paramref name="right"/>.</returns>
         public static double operator /(Duration left, Duration right)
         {
-            double rightNanos = right.ToDoubleNanoseconds();
+            double rightNanos = right.TotalNanoseconds;
             if (rightNanos == 0d)
             {
                 throw new DivideByZeroException("Attempt to divide by a zero duration.");
             }
-            return left.ToDoubleNanoseconds() / rightNanos;
+            return left.TotalNanoseconds / rightNanos;
         }
 
         /// <summary>
@@ -1069,7 +1112,7 @@ namespace NodaTime
         /// <exception cref="OverflowException">The number of ticks cannot be represented a signed 64-bit integer.</exception>
         /// <returns>A new TimeSpan with the same number of ticks as this Duration.</returns>
         [Pure]
-        public TimeSpan ToTimeSpan() => new TimeSpan(Ticks);
+        public TimeSpan ToTimeSpan() => new TimeSpan(BclCompatibleTicks);
 
         #region XML serialization
         /// <inheritdoc />
@@ -1129,14 +1172,6 @@ namespace NodaTime
         /// <returns>This duration as a number of nanoseconds, represented as a <c>BigInteger</c>.</returns>
         [Pure]
         public BigInteger ToBigIntegerNanoseconds() => ((BigInteger) days) * NanosecondsPerDay + nanoOfDay;
-
-        /// <summary>
-        /// Conversion to a <see cref="Double"/> number of nanoseconds. The result is always an integer,
-        /// but may not be precise due to the limitations of the <c>Double</c> type.
-        /// </summary>
-        /// <returns>This duration as a number of nanoseconds, represented as a <c>Double</c>.</returns>
-        [Pure]
-        public double ToDoubleNanoseconds() => ((double) days) * NanosecondsPerDay + nanoOfDay;
 
 #if !PCL
         #region Binary serialization

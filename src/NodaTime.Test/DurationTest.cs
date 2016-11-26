@@ -225,43 +225,43 @@ namespace NodaTime.Test
         }
 
         [Test]
-        public void Ticks_Zero()
+        public void BclCompatibleTick_Zero()
         {
-            Assert.AreEqual(0, Duration.FromTicks(0).Ticks);
-            Assert.AreEqual(0, Duration.FromNanoseconds(99L).Ticks);
-            Assert.AreEqual(0, Duration.FromNanoseconds(-99L).Ticks);
+            Assert.AreEqual(0, Duration.FromTicks(0).BclCompatibleTicks);
+            Assert.AreEqual(0, Duration.FromNanoseconds(99L).BclCompatibleTicks);
+            Assert.AreEqual(0, Duration.FromNanoseconds(-99L).BclCompatibleTicks);
         }
 
         [Test]
         [TestCase(5L)]
         [TestCase(NodaConstants.TicksPerDay * 2)]
         [TestCase(NodaConstants.TicksPerDay * 365000)]
-        public void Ticks_Positive(long ticks)
+        public void BclCompatibleTick_Positive(long ticks)
         {
             Assert.IsTrue(ticks > 0);
             Duration start = Duration.FromTicks(ticks);
-            Assert.AreEqual(ticks, start.Ticks);
+            Assert.AreEqual(ticks, start.BclCompatibleTicks);
 
             // We truncate towards zero... so subtracting 1 nanosecond should
             // reduce the number of ticks, and adding 99 nanoseconds should not change it
-            Assert.AreEqual(ticks - 1, start.MinusSmallNanoseconds(1L).Ticks);
-            Assert.AreEqual(ticks, start.PlusSmallNanoseconds(99L).Ticks);
+            Assert.AreEqual(ticks - 1, start.MinusSmallNanoseconds(1L).BclCompatibleTicks);
+            Assert.AreEqual(ticks, start.PlusSmallNanoseconds(99L).BclCompatibleTicks);
         }
 
         [Test]
         [TestCase(-5L)]
         [TestCase(-NodaConstants.TicksPerDay * 2)]
         [TestCase(-NodaConstants.TicksPerDay * 365000)]
-        public void Ticks_Negative(long ticks)
+        public void BclCompatibleTicks_Negative(long ticks)
         {
             Assert.IsTrue(ticks < 0);
             Duration start = Duration.FromTicks(ticks);
-            Assert.AreEqual(ticks, start.Ticks);
+            Assert.AreEqual(ticks, start.BclCompatibleTicks);
 
             // We truncate towards zero... so subtracting 99 nanoseconds should
             // have no effect, and adding 1 should increase the number of ticks
-            Assert.AreEqual(ticks, start.MinusSmallNanoseconds(99L).Ticks);
-            Assert.AreEqual(ticks + 1, start.PlusSmallNanoseconds(1L).Ticks);
+            Assert.AreEqual(ticks, start.MinusSmallNanoseconds(99L).BclCompatibleTicks);
+            Assert.AreEqual(ticks + 1, start.PlusSmallNanoseconds(1L).BclCompatibleTicks);
         }
 
         [Test]
@@ -275,10 +275,10 @@ namespace NodaTime.Test
 
         [Test]
         [Category("Overflow")]
-        public void TicksWithOverflow()
+        public void BclCompatibleTicks_Overflow()
         {
             Duration maxTicks = Duration.FromTicks(long.MaxValue) + Duration.FromTicks(1);
-            Assert.Throws<OverflowException>(() => maxTicks.Ticks.ToString());
+            Assert.Throws<OverflowException>(() => maxTicks.BclCompatibleTicks.ToString());
         }
 
         [Test]
@@ -320,6 +320,8 @@ namespace NodaTime.Test
             Assert.AreEqual(99.0336, duration.TotalHours, 0.0001);
             Assert.AreEqual(5942.0187, duration.TotalMinutes, 0.0001);
             Assert.AreEqual(356521.123456789, duration.TotalSeconds, 0.000000001);
+            Assert.AreEqual(356521123.456789, duration.TotalMilliseconds, 0.000001);
+            Assert.AreEqual(356521123456789d, duration.TotalNanoseconds, 1);
         }
 
         [Test]
@@ -331,8 +333,10 @@ namespace NodaTime.Test
             Assert.AreEqual(-99.0336, duration.TotalHours, 0.0001);
             Assert.AreEqual(-5942.0187, duration.TotalMinutes, 0.0001);
             Assert.AreEqual(-356521.123456789, duration.TotalSeconds, 0.000000001);
+            Assert.AreEqual(-356521123.456789, duration.TotalMilliseconds, 0.000001);
+            Assert.AreEqual(-356521123456789d, duration.TotalNanoseconds, 1);
         }
-        
+
         [Test]
         public void MaxMinRelationship()
         {
