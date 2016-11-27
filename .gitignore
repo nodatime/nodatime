@@ -63,3 +63,6 @@ BenchmarkDotNet.Artifacts
 
 # Packages installed during the build
 packages
+
+coverage.xml
+coverage
