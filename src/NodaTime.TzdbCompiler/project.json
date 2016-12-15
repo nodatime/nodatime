@@ -24,7 +24,7 @@
 
   "dependencies": {
     "NodaTime": { "target": "project" },
-    "SharpCompress": "0.14.0",
+    "SharpCompress": "0.14.1",
     "System.Net.Http": "4.1.0"
   },
 
