@@ -71,17 +71,5 @@ namespace NodaTime.TimeZones
         {
             return map.GetZoneInterval(instant);
         }
-
-        #region I/O
-        protected override bool EqualsImpl(DateTimeZone zone)
-        {
-            return TimeZone.Equals(((CachedDateTimeZone) zone).TimeZone);
-        }
-
-        public override int GetHashCode()
-        {
-            return TimeZone.GetHashCode();
-        }
-        #endregion
     }
 }

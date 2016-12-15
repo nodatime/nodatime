@@ -280,19 +280,6 @@ namespace NodaTime.TimeZones
             // Always return our local variable; the variable may have changed again.
             return currentSystemDefault;
         }
-
-        /// <inheritdoc />
-        /// <remarks>
-        /// This implementation simply compares the underlying `TimeZoneInfo` values for
-        /// reference equality.
-        /// </remarks>
-        protected override bool EqualsImpl(DateTimeZone zone)
-        {
-            return ReferenceEquals(OriginalZone, ((BclDateTimeZone) zone).OriginalZone);
-        }
-
-        /// <inheritdoc />
-        public override int GetHashCode() => OriginalZone.GetHashCode();
     }
 }
 #endif
