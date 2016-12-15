@@ -16,16 +16,17 @@ namespace NodaTime.Extensions
         /// <remarks>This is a convenience method which calls <see cref="OffsetDateTime.FromDateTimeOffset"/>.</remarks>        
         /// <param name="dateTimeOffset">The <c>DateTimeOffset</c> to convert.</param>
         /// <returns>A new <see cref="OffsetDateTime"/> with the same values as <paramref name="dateTimeOffset"/>.</returns>
-        public static OffsetDateTime ToOffsetDateTime(this DateTime dateTimeOffset) =>
+        public static OffsetDateTime ToOffsetDateTime(this DateTimeOffset dateTimeOffset) =>
             OffsetDateTime.FromDateTimeOffset(dateTimeOffset);
 
         /// <summary>
-        /// Converts a <see cref="DateTimeOffset"/> to <see cref="OffsetDateTime"/>.
+        /// Converts a <see cref="DateTimeOffset"/> to <see cref="ZonedDateTime"/>.
         /// </summary>
         /// <remarks>This is a convenience method which calls <see cref="ZonedDateTime.FromDateTimeOffset"/>.</remarks>        
         /// <param name="dateTimeOffset">The <c>DateTimeOffset</c> to convert.</param>
-        /// <returns>A new <see cref="ZonedDateTime"/> with the same values as <paramref name="dateTimeOffset"/>.</returns>
-        public static ZonedDateTime ToZonedDateTime(this DateTime dateTimeOffset) =>
+        /// <returns>A new <see cref="ZonedDateTime"/> with the same values as <paramref name="dateTimeOffset"/>,
+        /// using a fixed-offset time zone.</returns>
+        public static ZonedDateTime ToZonedDateTime(this DateTimeOffset dateTimeOffset) =>
             ZonedDateTime.FromDateTimeOffset(dateTimeOffset);
 
         /// <summary>
