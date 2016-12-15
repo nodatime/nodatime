@@ -71,9 +71,12 @@ namespace NodaTime
     /// Note that <c>BclDateTimeZone</c> is not available on the PCL build of Noda Time, so this fallback strategy can
     /// only be used with the desktop version.
     /// </para>
-    /// <para>Note that Noda Time does not require that <see cref="DateTimeZone"/> instances be singletons.
-    /// As far as reasonably possible, implementations should implement <see cref="IEquatable{DateTimeZone}"/> in such a way
-    /// that equivalent time zones compare as equal.</para>
+    /// <para>
+    /// Note that Noda Time does not require that <see cref="DateTimeZone"/> instances be singletons.
+    /// Comparing two time zones for equality is not straightforward: if you care about whether two
+    /// zones act the same way within a particular portion of time, use <see cref="ZoneEqualityComparer"/>.
+    /// Additional guarantees are provided by <see cref="IDateTimeZoneProvider"/> and <see cref="ForOffset(Offset)"/>.
+    /// </para>
     /// </remarks>
     /// <threadsafety>
     /// All time zone implementations within Noda Time are immutable and thread-safe.
@@ -84,7 +87,7 @@ namespace NodaTime
     /// avoid this if possible.
     /// </threadsafety>
     [Immutable]
-    public abstract class DateTimeZone : IEquatable<DateTimeZone>, IZoneIntervalMapWithMinMax
+    public abstract class DateTimeZone : IZoneIntervalMapWithMinMax
     {
         /// <summary>
         /// The ID of the UTC (Coordinated Universal Time) time zone. This ID is always valid, whatever provider is
@@ -532,59 +535,6 @@ namespace NodaTime
             ret[-FixedZoneCacheMinimumSeconds / FixedZoneCacheGranularitySeconds] = Utc;
             return ret;
         }
-
-        #region Equality
-        /// <summary>
-        /// Determines whether the specified <see cref="System.Object"/> is equal to this instance.
-        /// </summary>
-        /// <param name="obj">The <see cref="System.Object"/> to compare with this instance.</param>
-        /// <returns>
-        /// <c>true</c> if the specified <see cref="System.Object"/> is equal to this instance;
-        /// otherwise, <c>false</c>.
-        /// </returns>
-        public override sealed bool Equals(object obj) => Equals(obj as DateTimeZone);
-
-        /// <summary>
-        /// Determines whether the specified <see cref="DateTimeZone"/> is equal to this instance.
-        /// </summary>
-        /// <remarks>
-        /// This implementation performs initial checks which would be common to all child implementations,
-        /// and then delegates to <see cref="EqualsImpl"/>.
-        /// </remarks>
-        /// <param name="obj">The <see cref="DateTimeZone"/> to compare with this instance.</param>
-        /// <returns>
-        /// <c>true</c> if the specified <see cref="DateTimeZone"/> is equal to this instance;
-        /// otherwise, <c>false</c>.
-        /// </returns>
-        public bool Equals(DateTimeZone obj)
-        {
-            if (ReferenceEquals(this, obj))
-            {
-                return true;
-            }
-            return !ReferenceEquals(obj, null) && obj.GetType() == GetType() && EqualsImpl(obj);
-        }
-
-        /// <summary>
-        /// Implements equality in derived classes.
-        /// </summary>
-        /// <param name="zone">The zone to compare with this one. This is guaranteed (when called by <see cref="Equals(DateTimeZone)"/>) to
-        /// be a non-null reference of the same type as this instance.</param>
-        /// <returns>
-        /// <c>true</c> if the specified <see cref="DateTimeZone"/> is equal to this instance;
-        /// otherwise, <c>false</c>.
-        /// </returns>
-        protected abstract bool EqualsImpl(DateTimeZone zone);
-
-        /// <summary>
-        /// Returns a hash code for this instance.
-        /// </summary>
-        /// <returns>
-        /// A hash code for this instance, suitable for use in hashing algorithms and data
-        /// structures like a hash table. 
-        /// </returns>
-        public abstract override int GetHashCode();
-        #endregion
 
         /// <summary>
         /// Returns all the zone intervals which occur for any instant in the interval [<paramref name="start"/>, <paramref name="end"/>).

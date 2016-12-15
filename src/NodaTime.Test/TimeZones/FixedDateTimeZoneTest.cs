@@ -132,11 +132,11 @@ namespace NodaTime.Test.TimeZones
         [Test]
         public void Equals()
         {
-            TestHelper.TestEqualsClass<DateTimeZone>(new FixedDateTimeZone(Offset.FromSeconds(300)),
+            TestHelper.TestEqualsClass(new FixedDateTimeZone(Offset.FromSeconds(300)),
                 new FixedDateTimeZone(Offset.FromSeconds(300)),
                 new FixedDateTimeZone(Offset.FromSeconds(500)));
 
-            TestHelper.TestEqualsClass<DateTimeZone>(new FixedDateTimeZone("Foo", Offset.FromSeconds(300)),
+            TestHelper.TestEqualsClass(new FixedDateTimeZone("Foo", Offset.FromSeconds(300)),
                 new FixedDateTimeZone("Foo", Offset.FromSeconds(300)),
                 new FixedDateTimeZone("Bar", Offset.FromSeconds(300)));
         }

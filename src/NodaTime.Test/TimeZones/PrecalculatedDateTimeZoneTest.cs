@@ -278,18 +278,5 @@ namespace NodaTime.Test.TimeZones
             };
             PrecalculatedDateTimeZone.ValidatePeriods(intervals, null);
         }
-
-        [Test]
-        public void Equals()
-        {
-            TestHelper.TestEqualsClass<DateTimeZone>
-                (new PrecalculatedDateTimeZone("Test", new[] { FirstInterval, SecondInterval, ThirdInterval }, TailZone),
-                 new PrecalculatedDateTimeZone("Test", new[] { FirstInterval, SecondInterval, ThirdInterval }, TailZone),
-                 new PrecalculatedDateTimeZone("Test other ID", new[] { FirstInterval, SecondInterval, ThirdInterval }, TailZone));
-            TestHelper.TestEqualsClass<DateTimeZone>
-                (new PrecalculatedDateTimeZone("Test", new[] { FirstInterval, SecondInterval, ThirdInterval }, TailZone),
-                 new PrecalculatedDateTimeZone("Test", new[] { FirstInterval, SecondInterval, ThirdInterval }, TailZone),
-                 new PrecalculatedDateTimeZone("Test", new[] { SecondInterval.WithStart(Instant.BeforeMinValue), ThirdInterval }, TailZone));
-        }
     }
 }

@@ -2,20 +2,23 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-using System.Globalization;
+using JetBrains.Annotations;
 using NodaTime.Text;
 using NodaTime.TimeZones.IO;
 using NodaTime.Utility;
-using JetBrains.Annotations;
+using System;
 
 namespace NodaTime.TimeZones
 {
+    // Implementation note: this implemented IEquatable<FixedDateTimeZone> for the sake of fitting in with our test infrastructure
+    // more than anything else...
+
     /// <summary>
     /// Basic <see cref="DateTimeZone" /> implementation that has a fixed name key and offset i.e.
     /// no daylight savings.
     /// </summary>
     /// <threadsafety>This type is immutable reference type. See the thread safety section of the user guide for more information.</threadsafety>
-    internal sealed class FixedDateTimeZone : DateTimeZone
+    internal sealed class FixedDateTimeZone : DateTimeZone, IEquatable<FixedDateTimeZone>
     {
         private readonly ZoneInterval interval;
 
@@ -24,7 +27,7 @@ namespace NodaTime.TimeZones
         /// </summary>
         /// <remarks>The ID and name (for the <see cref="ZoneInterval"/>) are generated based on the offset.</remarks>
         /// <param name="offset">The <see cref="Offset"/> from UTC.</param>
-        public FixedDateTimeZone(Offset offset) : this(MakeId(offset), offset)
+        internal FixedDateTimeZone(Offset offset) : this(MakeId(offset), offset)
         {
         }
 
@@ -34,7 +37,7 @@ namespace NodaTime.TimeZones
         /// <remarks>The name (for the <see cref="ZoneInterval"/>) is deemed to be the same as the ID.</remarks>
         /// <param name="id">The id.</param>
         /// <param name="offset">The offset.</param>
-        public FixedDateTimeZone([NotNull] string id, Offset offset) : this(id, offset, id)
+        internal FixedDateTimeZone([NotNull] string id, Offset offset) : this(id, offset, id)
         {
         }
 
@@ -45,7 +48,7 @@ namespace NodaTime.TimeZones
         /// <param name="id">The id.</param>
         /// <param name="offset">The offset.</param>
         /// <param name="name">The name to use in the sole <see cref="ZoneInterval"/> in this zone.</param>
-        public FixedDateTimeZone([NotNull] string id, Offset offset, [NotNull] string name) : base(id, true, offset, offset)
+        internal FixedDateTimeZone([NotNull] string id, Offset offset, [NotNull] string name) : base(id, true, offset, offset)
         {
             interval = new ZoneInterval(name, Instant.BeforeMinValue, Instant.AfterMaxValue, offset, Offset.Zero);
         }
@@ -143,11 +146,30 @@ namespace NodaTime.TimeZones
             return new FixedDateTimeZone(id, offset, name);
         }
 
-        protected override bool EqualsImpl(DateTimeZone other) =>
-            Offset == ((FixedDateTimeZone)other).Offset &&
-            Id == other.Id && 
-            ((FixedDateTimeZone)other).Name == Name;
+        /// <summary>
+        /// Indicates whether this instance and a specified object are equal.
+        /// </summary>
+        /// <returns>
+        /// true if <paramref name="obj"/> and this instance are the same type and represent the same value; otherwise, false.
+        /// </returns>
+        /// <param name="obj">Another object to compare to.</param> 
+        /// <filterpriority>2</filterpriority>
+        /// <returns>True if the specified value is a <see cref="FixedDateTimeZone"/> with the same name, ID and offset; otherwise, false.</returns>
+        public override bool Equals(object obj) => Equals(obj as FixedDateTimeZone);
 
+        public bool Equals(FixedDateTimeZone other) =>
+            other != null &&
+            Offset == other.Offset &&
+            Id == other.Id &&
+            Name == other.Name;
+
+        /// <summary>
+        /// Computes the hash code for this instance.
+        /// </summary>
+        /// <returns>
+        /// A 32-bit signed integer that is the hash code for this instance.
+        /// </returns>
+        /// <filterpriority>2</filterpriority>
         public override int GetHashCode() => HashCodeHelper.Hash(Offset, Id, Name);
 
         /// <summary>

@@ -63,19 +63,6 @@ namespace NodaTime.Testing.TimeZones
             throw new InvalidOperationException(string.Format("Instant {0} did not exist in time zone {1}", instant, Id));
         }
 
-        /// <inheritdoc />
-        protected override bool EqualsImpl(DateTimeZone zone)
-        {
-            // Just use reference equality...
-            return ReferenceEquals(this, zone);
-        }
-
-        /// <inheritdoc />
-        public override int GetHashCode()
-        {
-            return RuntimeHelpers.GetHashCode(this);
-        }
-
         /// <summary>
         /// Builder to create instances of <see cref="MultiTransitionDateTimeZone"/>. Each builder
         /// can only be built once.

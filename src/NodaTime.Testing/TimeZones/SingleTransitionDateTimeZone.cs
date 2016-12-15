@@ -72,22 +72,5 @@ namespace NodaTime.Testing.TimeZones
         /// This returns either the zone interval before or after the transition, based on the instant provided.
         /// </remarks>
         public override ZoneInterval GetZoneInterval(Instant instant) => EarlyInterval.Contains(instant) ? EarlyInterval : LateInterval;
-
-        /// <inheritdoc />
-        protected override bool EqualsImpl(DateTimeZone zone)
-        {
-            SingleTransitionDateTimeZone otherZone = (SingleTransitionDateTimeZone)zone;
-            return Id == otherZone.Id && EarlyInterval.Equals(otherZone.EarlyInterval) && LateInterval.Equals(otherZone.LateInterval);
-        }
-
-        /// <inheritdoc />
-        public override int GetHashCode()
-        {
-            int hash = 17;
-            hash = hash * 31 + Id.GetHashCode();
-            hash = hash * 31 + EarlyInterval.GetHashCode();
-            hash = hash * 31 + LateInterval.GetHashCode();
-            return hash;
-        }
     }
 }

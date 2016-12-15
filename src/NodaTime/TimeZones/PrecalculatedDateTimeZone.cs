@@ -217,44 +217,6 @@ namespace NodaTime.TimeZones
             }
             return ret;
         }
-        #endregion
-
-        protected override bool EqualsImpl(DateTimeZone zone)
-        {
-            PrecalculatedDateTimeZone otherZone = (PrecalculatedDateTimeZone)zone;
-
-            // Check the individual fields first...
-            if (Id != otherZone.Id ||
-                !Equals(tailZone, otherZone.tailZone) ||
-                tailZoneStart != otherZone.tailZoneStart ||
-                !Equals(firstTailZoneInterval, otherZone.firstTailZoneInterval))
-            {
-                return false;
-            }
-
-            // Now all the intervals
-            if (periods.Length != otherZone.periods.Length)
-            {
-                return false;
-            }
-            for (int i = 0; i < periods.Length; i++)
-            {
-                if (!periods[i].Equals(otherZone.periods[i]))
-                {
-                    return false;
-                }
-            }
-            return true;                        
-        }
-
-        public override int GetHashCode()
-        {
-            var hash = HashCodeHelper.Initialize().Hash(Id).Hash(tailZoneStart).Hash(firstTailZoneInterval).Hash(tailZone);
-            foreach (var period in periods)
-            {
-                hash = hash.Hash(period);
-            }
-            return hash.Value;
-        }
+        #endregion        
     }
 }
