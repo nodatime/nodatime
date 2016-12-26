@@ -1,63 +1,126 @@
 ﻿<!DOCTYPE html>
-<html>
+<!--[if IE 8]> 				 <html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js" lang="en">
+ <!--<![endif]-->
+
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - NodaTime.Web</title>
+    <meta name="viewport" content="width=device-width" />
+    <title>Noda Time | @ViewData["Title"]</title>
 
-    <environment names="Development">
-        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
-        <link rel="stylesheet" href="~/css/site.css" />
-    </environment>
-    <environment names="Staging,Production">
-        <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.6/css/bootstrap.min.css"
-              asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
-              asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
-        <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
-    </environment>
+    <!-- foundation default -->
+    <link rel="stylesheet" href="/css/foundation.css" />
+
+    <!-- Foundicons -->
+    <link rel="stylesheet" href="/css/general_enclosed_foundicons.css">
+
+    <script src="/js/vendor/custom.modernizr.js"></script>
+
+    <link rel="stylesheet" href="/css/main.css">
+
+    <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-60886284-1', 'auto');
+  ga('send', 'pageview');
+    </script>
 </head>
 <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">NodaTime.Web</a>
-            </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
+
+    <div class="fixed">
+        <nav class="top-bar">
+            <ul class="title-area">
+                <li class="name"><h1><a href="{{ relative }}">Noda Time</a></h1></li>
+                <!-- Remove the class "menu-icon" to get rid of menu icon. Take out "Menu" to just have icon alone -->
+                <li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
+            </ul>
+
+
+            <section class="top-bar-section">
+                <!-- Right Nav Section -->
+                <ul class="right">
+                    <li class="divider"></li>
+                    <li class="has-dropdown">
+                        <a href="#">User Guide</a>
+                        <ul class="dropdown">
+                            <li><label>Versions</label></li>
+                            <li><a href="/1.0.x/userguide">1.0.x</a></li>
+                            <li><a href="/1.1.x/userguide">1.1.x</a></li>
+                            <li><a href="/1.2.x/userguide">1.2.x</a></li>
+                            <li><a href="/1.3.x/userguide">1.3.x</a></li>
+                            <li class="divider hide-for-small"></li>
+                            <li><a href="/unstable/userguide">Unstable</a></li>
+                        </ul>
+                    </li>
+                    <li class="divider hide-for-small"></li>
+                    <li class="has-dropdown">
+                        <a href="#">API</a>
+                        <ul class="dropdown">
+                            <li><label>Versions</label></li>
+                            <li><a href="/1.0.x/api">1.0.x</a></li>
+                            <li><a href="/1.1.x/api">1.1.x</a></li>
+                            <li><a href="/1.2.x/api">1.2.x</a></li>
+                            <li><a href="/1.3.x/api">1.3.x</a></li>
+                            <li class="divider hide-for-small"></li>
+                            <li><a href="/unstable/api">Unstable</a></li>
+                        </ul>
+                    </li>
+                    <li class="divider"></li>
+                    <li>
+                        <a href="/developer">Developer Guide</a>
+                    </li>
+                    <li class="divider"></li>
+                    <li><a href="../#info">More Info</a></li>
+                    <li class="divider show-for-small"></li>
+                    <li class="has-form hide-for-small">
+                        <a class="button" href="/#install">Install</a>
+                    </li>
                 </ul>
+            </section>
+        </nav>
+    </div>
+
+
+    <section class="body">
+        @RenderBody()
+    </section>
+
+    <footer>
+        <div class="row">
+            <div class="small-6 columns">
+                <span>The latest version is @SiteConstants.CurrentRelease, released @SiteConstants.ReleaseDate.</span>
+            </div>
+            <div class="small-6 columns copy">
+                &copy; <a href="https://github.com/nodatime/nodatime/blob/master/AUTHORS.txt">The Noda Time Authors</a>,
+                <span class="design">Web Design by <a href="http://nathanpalmer.com">Nathan Palmer</a></span>
             </div>
         </div>
-    </div>
-    <div class="container body-content">
-        @RenderBody()
-    </div>
-
-    <environment names="Development">
-        <script src="~/lib/jquery/dist/jquery.js"></script>
-        <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
-        <script src="~/js/site.js" asp-append-version="true"></script>
-    </environment>
-    <environment names="Staging,Production">
-        <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"
-                asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
-                asp-fallback-test="window.jQuery">
-        </script>
-        <script src="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.6/bootstrap.min.js"
-                asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
-                asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal">
-        </script>
-        <script src="~/js/site.min.js" asp-append-version="true"></script>
-    </environment>
+    </footer>
 
     @RenderSection("scripts", required: false)
+
+    <script>
+	document.write('<script src=' +
+	('__proto__' in {} ? '/js/vendor/zepto' : '/js/vendor/jquery') +
+	'.js><\/script>')
+    </script>
+
+    <script src="/js/foundation.min.js"></script>
+
+    <script>
+    $(document).foundation();
+    </script>
+
+    <!-- Nuget Button -->
+    <script type="text/javascript">
+  (function () {
+      var nb = document.createElement('script'); nb.type = 'text/javascript'; nb.async = true;
+      nb.src = 'http://s.prabir.me/nuget-button/0.2.1/nuget-button.min.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(nb, s);
+  })();
+    </script>
 </body>
 </html>
